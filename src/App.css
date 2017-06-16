@@ -1,0 +1,16 @@
+.App {
+  font-family: 'Open Sans';
+}
+
+.Menu, .Content {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.Menu {
+  width: 240px;
+}
+
+.blurred {
+  filter: blur(5px);
+}
