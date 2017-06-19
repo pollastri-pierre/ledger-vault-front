@@ -2,13 +2,18 @@
   font-family: 'Open Sans';
 }
 
+.Main {
+  display: table;
+  width: 100%;
+}
+
 .Menu, .Content {
   display: table-cell;
   vertical-align: top;
 }
 
 .Menu {
-  width: 240px;
+  width: 200px;
 }
 
 .blurred {
