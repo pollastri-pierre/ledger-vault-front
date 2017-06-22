@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'open-sans-fontface/open-sans.css';
+import 'material-design-icons/iconfont/material-icons.css';
 
 import Header from './Header';
 import Content from './Content';

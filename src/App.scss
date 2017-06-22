@@ -1,19 +1,29 @@
+$menuWidth: 220px;
+
 .App {
   font-family: 'Open Sans';
 }
 
-.Main {
-  display: table;
-  width: 100%;
+// Clearfix
+.Main::after {
+  content: "";
+  clear: both;
+  display: block;
 }
 
-.Menu, .Content {
-  display: table-cell;
-  vertical-align: top;
+.Menu,
+.Content {
+  float: left;
 }
 
 .Menu {
-  width: 200px;
+  width: $menuWidth;
+}
+
+.Content {
+  width: calc(100% - #{$menuWidth});
+  position: relative;
+  margin-top: -80px;
 }
 
 .blurred {
