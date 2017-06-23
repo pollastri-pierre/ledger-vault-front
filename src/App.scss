@@ -1,7 +1,24 @@
-$menuWidth: 220px;
+$menuWidth: 200px;
+$menuPaddingLeft: 40px;
+$menuPaddingRight: 40px;
 
 .App {
   font-family: 'Open Sans';
+
+  a {
+    color: inherit;
+    opacity: .5;
+    text-decoration: none;
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .material-icons {
+    vertical-align: middle;
+  }
 }
 
 // Clearfix
@@ -18,10 +35,12 @@ $menuWidth: 220px;
 
 .Menu {
   width: $menuWidth;
+  padding-left: $menuPaddingLeft;
+  padding-right: $menuPaddingRight;
 }
 
 .Content {
-  width: calc(100% - #{$menuWidth});
+  width: calc(100% - #{$menuWidth + $menuPaddingRight + $menuPaddingLeft});
   position: relative;
   margin-top: -80px;
 }
