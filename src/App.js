@@ -5,7 +5,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'open-sans-fontface/open-sans.css';
 import 'material-design-icons/iconfont/material-icons.css';
 
-import Header from './Header';
+import ActionBar from './ActionBar';
 import Content from './Content';
 import Menu from './Menu';
 import './App.css';
@@ -19,7 +19,7 @@ injectTapEventPlugin();
 function App(props) {
   return (
     <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>
-      <Header />
+      <ActionBar />
       <div className="Main">
         <Menu />
         <Content />

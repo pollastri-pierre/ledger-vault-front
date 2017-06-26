@@ -1,5 +1,4 @@
 import React from 'react';
-import Chip from 'material-ui/Chip';
 
 import './Menu.css';
 

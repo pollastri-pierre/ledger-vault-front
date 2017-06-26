@@ -1,4 +1,6 @@
-.Header {
+@import 'mixins';
+
+.ActionBar {
   height: 200px;
   background-color: #20222C;
   color: white;
@@ -15,22 +17,7 @@
     bottom: 0;
     opacity: 1;
 
-    &::before {
-      content: '';
-      background-color: white;
-      width: 5px;
-      height: 26px;
-      display: block;
-      position: absolute;
-      left: 0;
-      bottom: calc(50% - (26px /2));
-      opacity: 0;
-      transition: opacity .2s ease;
-    }
-
-    &:hover::before {
-      opacity: 1;
-    }
+    @include highlight-block(white, 0);
   }
 
   .profile-pic {
@@ -69,5 +56,44 @@
 
   .profile-card:hover .profile-view-profile {
     opacity: 1;
+  }
+
+  .content-header {
+    margin-left: 200px;
+    padding: 50px 40px 0 40px;
+  }
+
+  .content-header-left {
+    float: left;
+  }
+
+  .content-header-right {
+    float: right;
+  }
+
+  .content-header-title {
+    font-size: 18px;
+    letter-spacing: -.02em;
+  }
+
+  .content-header-subtitle {
+    font-size: 13px;
+    color: #999999;
+  }
+
+  .content-header-button {
+    display: inline-block;
+    text-align: center;
+    margin: 0 10px;
+  }
+
+  .content-header-button-icon {
+    font-size: 19px;
+  }
+
+  .content-header-button-text {
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-top: 1px;
   }
 }
