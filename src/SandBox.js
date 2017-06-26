@@ -5,7 +5,11 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
+import Paper from 'material-ui/Paper';
 import BlurDialog from './BlurDialog';
+import { Row, Col } from './grid';
+
+import './SandBox.css';
 
 class SandBox extends Component {
   constructor(props) {
@@ -73,16 +77,48 @@ class SandBox extends Component {
               'translate3d(-50%, -100%, 0)',
           }}
         />
-        <RaisedButton
-          label="Dialog Lipsum?"
-          secondary
-          onClick={this.showDialog}
-        />
-        <RaisedButton
-          label="Snack Lipsum?"
-          primary
-          onClick={this.showSnack}
-        />
+        <Row>
+          <Col width={8}>
+            <Row>
+              <Col width={6}>
+                <Paper className="block short-block">
+                  Blah
+                </Paper>
+              </Col>
+              <Col width={6}>
+                <Paper className="block short-block">
+                  Blih
+                </Paper>
+              </Col>
+            </Row>
+            <Row>
+              <Col width={12}>
+                <Paper className="block short-block">
+                  Bluh<br />
+                  <RaisedButton
+                    label="Dialog Lipsum?"
+                    secondary
+                    onClick={this.showDialog}
+                  />
+                  <RaisedButton
+                    label="Snack Lipsum?"
+                    primary
+                    onClick={this.showSnack}
+                  />
+                </Paper>
+              </Col>
+            </Row>
+          </Col>
+          <Col width={4}>
+            <Row>
+              <Col width={12}>
+                <Paper className="block tall-block">
+                  Blouh <i className="material-icons">face</i>
+                </Paper>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </div>
     );
   }
