@@ -6,6 +6,10 @@
   color: white;
   position: relative;
 
+  // Hack preventing white border on blur 
+  margin: -100px -100px 0 -100px;
+  padding: 100px 100px 0 100px;
+
   .profile-card {
     text-decoration: none;
     color: inherit;

@@ -2,7 +2,8 @@ $menuWidth: 190px;
 
 .App {
   font-family: 'Open Sans';
-  // transition: transform .1s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   a {
     color: inherit;
@@ -51,7 +52,7 @@ $menuWidth: 190px;
 
 .blurred {
   filter: blur(5px);
-  transform: scale(1.01);
+  // transform: scale(1.01);
 }
 
 .flipped {
