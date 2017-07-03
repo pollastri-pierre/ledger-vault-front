@@ -28,7 +28,8 @@
   }
 
   .menu-badge {
-    float: right;
+    position: absolute;
+    right: 0;
     background-color: crimson;
     color: white;
     padding: 0 .6em;

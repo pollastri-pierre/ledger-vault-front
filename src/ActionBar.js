@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
+import translate from './translate';
 
 import './ActionBar.css';
 
@@ -11,6 +13,7 @@ class ActionBar extends Component {
       profile: false,
     };
 
+    this.t = this.props.translate;
     this.fetchProfile();
   }
 
@@ -37,7 +40,7 @@ class ActionBar extends Component {
           </div>
           <div className="profile-info">
             <div className="profile-name">{`${profile.name.first} ${profile.name.last}`}</div>
-            <div className="profile-view-profile">View profile</div>
+            <div className="profile-view-profile">{this.t('actionBar.viewProfile')}</div>
           </div>
         </a>);
     } else {
@@ -53,7 +56,7 @@ class ActionBar extends Component {
               Marketing
             </div>
             <div className="content-header-subtitle">
-              Overview
+              {this.t('actionBar.overview')}
             </div>
           </div>
           <div className="content-header-right">
@@ -62,7 +65,7 @@ class ActionBar extends Component {
                 <i className="material-icons flipped">reply</i>
               </div>
               <div className="content-header-button-text">
-                Export
+                {this.t('actionBar.export')}
               </div>
             </a>
             <a className="content-header-button" href="/settings">
@@ -70,7 +73,7 @@ class ActionBar extends Component {
                 <i className="material-icons">settings</i>
               </div>
               <div className="content-header-button-text">
-                Settings
+                {this.t('actionBar.settings')}
               </div>
             </a>
             <a className="content-header-button" href="/activity">
@@ -78,7 +81,7 @@ class ActionBar extends Component {
                 <i className="material-icons">notifications</i>
               </div>
               <div className="content-header-button-text">
-                Activity
+                {this.t('actionBar.activity')}
               </div>
             </a>
           </div>
@@ -88,4 +91,8 @@ class ActionBar extends Component {
   }
 }
 
-export default ActionBar;
+ActionBar.propTypes = {
+  translate: PropTypes.func.isRequired,
+};
+
+export default translate(ActionBar);

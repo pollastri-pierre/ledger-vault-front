@@ -7,6 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import reducers from './reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import I18nProvider from './I18nProvider';
 
 import './index.css';
 
@@ -18,11 +19,16 @@ const muiTheme = getMuiTheme({
 // eslint-disable-next-line
 let store = createStore(reducers);
 
+// Get saved locale or fallback to english
+const locale = window.localStorage.getItem('locale') || 'en';
+
 ReactDOM.render(
-  // Pass the store to every components
+  // Pass the store, muiTheme and i18n to every components
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
-      <App />
+      <I18nProvider locale={locale}>
+        <App />
+      </I18nProvider>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root'));
