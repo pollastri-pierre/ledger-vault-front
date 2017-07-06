@@ -1,8 +1,7 @@
 @import 'mixins';
+@import 'variables';
 
 .Menu {
-  padding-top: 50px;
-
   ul {
     list-style-type: none;
     font-size: 11px;
@@ -10,7 +9,6 @@
     text-transform: uppercase;
     padding: 0;
     margin: 0;
-    padding-right: 30px;
   }
 
   li {
@@ -19,7 +17,7 @@
   }
 
   a {
-    @include highlight-block(#41ccb4, -40px);
+    @include highlight-block($highlightGreen, -40px);
   }
 
   .material-icons {
@@ -30,8 +28,8 @@
   .menu-badge {
     position: absolute;
     right: 0;
-    background-color: crimson;
-    color: white;
+    background-color: $red;
+    color: $white;
     padding: 0 .6em;
     border-radius: 1em;
   }

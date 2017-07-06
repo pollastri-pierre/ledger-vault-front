@@ -1,4 +1,4 @@
-$menuWidth: 190px;
+@import "variables";
 
 .App {
   font-family: 'Open Sans';
@@ -22,15 +22,19 @@ $menuWidth: 190px;
   }
 }
 
-.Main {
-  padding: 0 30px 0 40px;
-}
+// .Main {
+//   padding: 0 30px 0 40px;
+// }
 
 // Clearfix
-.Main::after {
-  content: "";
-  clear: both;
-  display: block;
+.Main {
+  padding: 0 $spacingL;
+
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
 }
 
 .Menu,
@@ -39,13 +43,14 @@ $menuWidth: 190px;
 }
 
 .Menu {
-  width: $menuWidth;
+  width: #{$sidebarWidth - $spacingL};
+  padding: $spacingL $spacingL 0 0;
 }
 
 .Content {
-  width: calc(100% - #{$menuWidth});
+  width: calc(100% - #{$sidebarWidth - ($spacingS / 2)});
   position: relative;
-  margin-top: -80px;
+  margin: -80px -#{$spacingS / 2} 0;
 }
 
 // Helpers
