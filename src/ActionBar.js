@@ -53,12 +53,12 @@ class ActionBar extends Component {
         { profileCard }
         <div className="content-header">
           <div className="content-header-left">
-            <div className="content-header-title">
-              Marketing
-            </div>
-            <div className="content-header-subtitle">
-              {this.t('actionBar.overview')}
-            </div>
+            <img
+              src="img/logo.png"
+              srcSet="img/logo@2x.png 2x, img/logo@3x.png 3x"
+              className="content-header-logo"
+              alt="Ledger Vault logo"
+            />
           </div>
           <div className="content-header-right">
             <Link to="/export" className="content-header-button">

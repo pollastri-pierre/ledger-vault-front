@@ -17,7 +17,7 @@
   }
 
   a {
-    @include highlight-block($highlightGreen, -40px);
+    @include highlight-block($porto, -40px);
   }
 
   .material-icons {
@@ -28,7 +28,7 @@
   .menu-badge {
     position: absolute;
     right: 0;
-    background-color: $red;
+    background-color: $grenade;
     color: $white;
     padding: 0 .6em;
     border-radius: 1em;

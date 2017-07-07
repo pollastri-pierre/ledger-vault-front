@@ -5,7 +5,7 @@ $cardHeight: 30px;
 
 .ActionBar {
   height: $actionbarHeight;
-  background-color: $ledgerBlue;
+  background-color: $night;
   color: $white;
   position: relative;
 
@@ -76,16 +76,6 @@ $cardHeight: 30px;
     float: right;
   }
 
-  .content-header-title {
-    font-size: 18px;
-    letter-spacing: -.02em;
-  }
-
-  .content-header-subtitle {
-    font-size: 13px;
-    color: $gray;
-  }
-
   .content-header-button {
     display: inline-block;
     text-align: center;
@@ -94,6 +84,7 @@ $cardHeight: 30px;
 
   .content-header-button-icon {
     font-size: 19px;
+    line-height: 1em;
   }
 
   .content-header-button-text {
