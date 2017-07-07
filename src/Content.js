@@ -1,11 +1,12 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 
 import SandBox from './SandBox'; // Tests
 
 function Content() {
   return (
     <div className="Content">
-      <SandBox />
+      <Route path="/sandbox" component={SandBox} />
     </div>
   );
 }

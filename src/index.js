@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { BrowserRouter } from 'react-router-dom';
 import reducers from './reducers';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -27,7 +28,9 @@ ReactDOM.render(
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
       <I18nProvider locale={locale}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </I18nProvider>
     </MuiThemeProvider>
   </Provider>,

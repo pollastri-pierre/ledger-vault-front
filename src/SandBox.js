@@ -45,6 +45,16 @@ class SandBox extends Component {
     });
   }
 
+  switchLanguage = () => {
+    if (window.localStorage.getItem('locale') === 'en') {
+      window.localStorage.setItem('locale', 'fr');
+    } else {
+      window.localStorage.setItem('locale', 'en');
+    }
+
+    document.location.reload();
+  }
+
   render() {
     return (
       <div className="SandBox">
@@ -104,6 +114,10 @@ class SandBox extends Component {
                     label="Snack Lipsum?"
                     primary
                     onClick={this.showSnack}
+                  />
+                  <RaisedButton
+                    label="Switch language"
+                    onClick={this.switchLanguage}
                   />
                 </Paper>
               </Col>

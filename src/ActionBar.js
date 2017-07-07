@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
+import { Link } from 'react-router-dom';
 import translate from './translate';
 
 import './ActionBar.css';
@@ -34,7 +35,7 @@ class ActionBar extends Component {
       const profile = this.state.profile.results[0];
 
       profileCard = (
-        <a href="profile" className="profile-card">
+        <Link to="profile" className="profile-card">
           <div className="profile-pic">
             <img src={profile.picture.thumbnail} alt="" />
           </div>
@@ -42,7 +43,7 @@ class ActionBar extends Component {
             <div className="profile-name">{`${profile.name.first} ${profile.name.last}`}</div>
             <div className="profile-view-profile">{this.t('actionBar.viewProfile')}</div>
           </div>
-        </a>);
+        </Link>);
     } else {
       profileCard = <CircularProgress />;
     }
@@ -60,30 +61,30 @@ class ActionBar extends Component {
             </div>
           </div>
           <div className="content-header-right">
-            <a className="content-header-button" href="/export">
+            <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>
               </div>
               <div className="content-header-button-text">
                 {this.t('actionBar.export')}
               </div>
-            </a>
-            <a className="content-header-button" href="/settings">
+            </Link>
+            <Link to="/settings" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons">settings</i>
               </div>
               <div className="content-header-button-text">
                 {this.t('actionBar.settings')}
               </div>
-            </a>
-            <a className="content-header-button" href="/activity">
+            </Link>
+            <Link to="/activity" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons">notifications</i>
               </div>
               <div className="content-header-button-text">
                 {this.t('actionBar.activity')}
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

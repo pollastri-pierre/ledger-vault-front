@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { withRouter } from 'react-router-dom'
 import 'open-sans-fontface/open-sans.css';
 import 'material-design-icons/iconfont/material-icons.css';
 
@@ -32,4 +33,4 @@ App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

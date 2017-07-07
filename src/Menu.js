@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import translate from './translate';
 
 import './Menu.css';
@@ -10,10 +11,13 @@ function Menu(props) {
   return (
     <div className="Menu">
       <ul className="main-menu">
-        <li><a href="/"><i className="material-icons">home</i> {t('menu.dashboard')}</a></li>
-        <li><a href="/new"><i className="material-icons">add</i> {t('menu.newOperation')}</a></li>
-        <li><a href="/pending"><i className="material-icons">format_align_left</i> {t('menu.pendingRequests')}</a> <span className="menu-badge">2</span></li>
-        <li><a href="/search"><i className="material-icons">search</i> {t('menu.search')}</a></li>
+        <li><Link to="/"><i className="material-icons">home</i> {t('menu.dashboard')}</Link></li>
+        <li><Link to="/new"><i className="material-icons">add</i> {t('menu.newOperation')}</Link></li>
+        <li><Link to="/pending"><i className="material-icons">format_align_left</i> {t('menu.pendingRequests')}</Link> <span className="menu-badge">2</span></li>
+        <li><Link to="/search"><i className="material-icons">search</i> {t('menu.search')}</Link></li>
+
+        {/* Test page */}
+        <li><Link to="/sandbox"><i className="material-icons">videogame_asset</i> sandbox</Link></li>
       </ul>
     </div>
   );
