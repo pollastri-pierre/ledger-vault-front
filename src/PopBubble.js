@@ -9,8 +9,8 @@ function PopBubble(props) {
     <Popover
       className="pop-bubble"
       anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-      targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-      style={{ marginTop: '5px' }}
+      targetOrigin={{ horizontal: 'center', vertical: 'top' }}
+      style={{ marginTop: '15px' }}
       {...props}
     >
       {props.children}
