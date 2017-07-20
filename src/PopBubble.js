@@ -24,10 +24,12 @@ function PopBubble(props) {
 
 PopBubble.propTypes = {
   children: PropTypes.node,
+  style: PropTypes.shape({}),
 };
 
 PopBubble.defaultProps = {
   children: '',
+  style: {},
 };
 
 export default PopBubble;
