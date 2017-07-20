@@ -7,11 +7,15 @@ import './PopBubble.css';
 function PopBubble(props) {
   return (
     <Popover
-      className="pop-bubble"
-      anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-      targetOrigin={{ horizontal: 'center', vertical: 'top' }}
-      style={{ marginTop: '15px' }}
       {...props}
+      className="pop-bubble"
+      anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
+      targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
+      style={{
+        marginTop: '15px',
+        borderRadius: 0,
+        ...props.style,
+      }}
     >
       {props.children}
     </Popover>

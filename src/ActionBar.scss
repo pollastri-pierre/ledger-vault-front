@@ -94,6 +94,42 @@ $cardHeight: 30px;
   }
 }
 
+.profile-bubble {
+  width: 180px - $spacingL;
+  padding: $spacingL 0 $spacingL $spacingL;
+  font-size: 11px;
+
+  .profile-bubble-title {
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  .profile-bubble-role {
+    color: $lead;
+  }
+
+  .profile-bubble-divider {
+    width: 95px;
+    margin-top: $spacingS;
+  }
+
+  a {
+    @include highlight-block($porto, -40px);
+    display: block;
+    position: relative;
+    margin-top: $spacingS;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: $lead;
+    opacity: 1;
+
+    &:hover {
+      color: $porto;
+    }
+  }
+}
+
 // Hack preventing white border on blur
 .App.blurred .ActionBar {
   margin: -10px -10px 0 -10px;
