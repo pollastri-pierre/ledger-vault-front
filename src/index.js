@@ -18,7 +18,10 @@ const muiTheme = getMuiTheme({
 
 // Create redux store
 // eslint-disable-next-line
-let store = createStore(reducers);
+let store = createStore(
+  reducers,
+  window.devToolsExtension ? window.devToolsExtension() : f => f,
+);
 
 // Get saved locale or fallback to english
 const locale = window.localStorage.getItem('locale') || 'en';

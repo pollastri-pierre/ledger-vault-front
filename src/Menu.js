@@ -17,7 +17,7 @@ function Menu(props) {
         <li><Link to="/search"><i className="material-icons">search</i> {t('menu.search')}</Link></li>
 
         {/* Test page */}
-        <li><Link to="/sandbox"><i className="material-icons">videogame_asset</i> sandbox</Link></li>
+        <li><Link to="/sandbox"><i className="material-icons">beach_access</i> sandbox</Link></li>
       </ul>
     </div>
   );
