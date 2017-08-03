@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 
 // Redux actions for toggling background blurring
 import { blurBG, unblurBG } from './actions';
@@ -29,17 +28,25 @@ class BlurDialog extends Component {
   }
 
   render() {
-    const defaultActions = (
-      <FlatButton
-        label="Ok"
-        primary
-        onClick={this.props.onRequestClose}
-      />
-    );
-
     return (
       <Dialog
-        actions={defaultActions}
+        overlayStyle={{
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        }}
+        bodyStyle={{
+          color: 'black',
+          padding: '40px',
+        }}
+        contentStyle={{
+          display: 'table',
+          width: 'initial',
+        }}
+        paperProps={{
+          rounded: false,
+          style: {
+            boxShadow: '0px 20px 20px 0 rgba(0, 0, 0, 0.04)',
+          },
+        }}
         {...this.props}
       >
         {this.props.children}
@@ -51,7 +58,6 @@ class BlurDialog extends Component {
 BlurDialog.propTypes = {
   onOpen: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
-  onRequestClose: PropTypes.func.isRequired,
   open: PropTypes.bool,
   children: PropTypes.node,
 };
