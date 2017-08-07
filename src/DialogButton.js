@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import './DialogButton.css';
 
 function DialogButton(props) {
+  const { highlight, right, ...other } = props;
+
   return (
     <button
-      {...props}
-      className={`vlt-dialog-btn ${props.highlight ? 'highlight' : ''} ${props.className}`}
+      {...other}
+      className={`vlt-dialog-btn ${highlight ? 'highlight' : ''} ${props.className}`}
       style={{
-        float: props.right ? 'right' : 'left',
+        float: right ? 'right' : 'left',
         ...props.style,
       }}
     >
