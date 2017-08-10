@@ -2,7 +2,7 @@
   "name": "ledger-vault-front",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:5000",
+  "proxy": "https://192.168.123.26:5000",
   "dependencies": {
     "axios": "^0.16.2",
     "bourbon-neat": "^2.1.0",
@@ -17,6 +17,7 @@
     "react-router-dom": "^4.1.1",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.1",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "u2f-api-polyfill": "^0.4.3"
   },

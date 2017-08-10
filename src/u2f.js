@@ -17,7 +17,7 @@ export function register_device(emailData, u2f) {
       'start_registration',
       JSON.stringify({ email: emailData }),
       {
-        headers: { 'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
       },
     ).then(
       (res) => {
@@ -73,11 +73,11 @@ export function login_u2f(email, u2f) {
   const promise = new Promise((resolve, reject) => {
     const input_email = email;
     axios.post(
-        'start_authentication',
-        JSON.stringify({ email: input_email }),
-        {
-          headers: { 'Content-Type': 'application/json'},
-        },
+      'start_authentication',
+      JSON.stringify({ email: input_email }),
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
     ).then(
       (res) => {
         console.log(res);
@@ -95,7 +95,7 @@ export function login_u2f(email, u2f) {
                 'finish_authentication',
                 JSON.stringify({ email: input_email, response: deviceResponse }),
                 {
-                  headers: { 'Content-Type': 'application/json'},
+                  headers: { 'Content-Type': 'application/json' },
                 },
               ).then(
                 (res1) => {

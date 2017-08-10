@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware, compose } from 'redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -14,21 +15,12 @@ import './index.css';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 import { setCurrentUser } from './actions';
 
+const loggerMiddleware = createLogger();
+
 const muiTheme = getMuiTheme({
   fontFamily: 'Open Sans, sans-serif',
 });
 
-/**
- * Logs all actions and states after they are dispatched.
- */
-const logger = store => next => (action) => {
-  console.group(action.type);
-  console.info('dispatching', action);
-  const result = next(action);
-  console.log('next state', store.getState());
-  console.groupEnd(action.type);
-  return result;
-};
 
 // Create redux store
 // eslint-disable-next-line
@@ -37,7 +29,7 @@ const store = createStore(
   compose(
     applyMiddleware(
       thunk,
-      logger,
+      loggerMiddleware,
     ),
     window.devToolsExtension ? window.devToolsExtension() : f => f,
   ),

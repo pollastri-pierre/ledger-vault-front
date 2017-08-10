@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import isEmpty from 'lodash/isEmpty';
-import { BLUR_BG, UNBLUR_BG, SET_CURRENT_USER } from './actions';
+import { BLUR_BG, UNBLUR_BG, SET_CURRENT_USER, SET_REROUTE, CHECK_AUTH } from './actions';
 
 const initialState = {
   isAuthenticated: false,
+  clearanceLevel: '',
   user: {},
 };
 
@@ -26,15 +27,26 @@ function blurBG(state = { blurredBG: 0 }, action) {
 function auth(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_USER:
-      console.log('test auth', action);
       return Object.assign(
         {},
         state,
         {
           isAuthenticated: (!isEmpty(action.user) && !(action.user === 'undefined')),
           user: action.user,
+          clearanceLevel: ((!isEmpty(action.user) && !(action.user === 'undefined')) ? 'all' : ''),
         },
       );
+    default:
+      return state;
+  }
+}
+
+function setReroute(state = { reroute: '/' }, action) {
+  switch (action.type) {
+    case SET_REROUTE:
+      return Object.assign({}, state, {
+        reroute: action.reroute,
+      });
     default:
       return state;
   }
@@ -43,6 +55,7 @@ function auth(state = initialState, action) {
 const reducers = combineReducers({
   blurBG,
   auth,
+  setReroute,
 });
 
 export default reducers;
