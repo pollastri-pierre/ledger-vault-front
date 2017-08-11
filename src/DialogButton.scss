@@ -14,17 +14,25 @@
   font-family: inherit;
   line-height: 1em;
 
-  &.highlight:hover {
+  &:focus {
+    outline: none;
+  }
+
+  &:hover::after {
+    content: '';
+    display: block;
+    background-color: $lead;
+    width: 100%;
+    height: 5px;
+    margin-top: $spacingL;
+    position: absolute;
+  }
+
+  &.highlight {
     color: $porto;
 
-    &:after {
-      content: '';
-      display: block;
+    &:hover::after {
       background-color: $porto;
-      width: 100%;
-      height: 5px;
-      margin-top: $spacingL;
-      position: absolute;
     }
   }
 }
