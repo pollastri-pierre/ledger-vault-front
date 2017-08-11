@@ -38,6 +38,7 @@ export function loginU2f(emailData, u2f, callback) {
     const test = login_u2f(emailData, u2f);
     test.then((res) => {
       localStorage.setItem('token', res.token);
+      localStorage.setItem('clearanceLevel', 'all');
       setAuthorizationToken(res.token);
       dispatch(setCurrentUser(res.token));
       callback();
@@ -52,6 +53,7 @@ export function loginU2f(emailData, u2f, callback) {
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem('token');
+    localStorage.setItem('clearanceLevel', '');
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
   };

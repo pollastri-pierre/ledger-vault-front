@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { persistStore, autoRehydrate } from 'redux-persist'
 import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware, compose } from 'redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -27,6 +28,7 @@ const muiTheme = getMuiTheme({
 const store = createStore(
   reducers,
   compose(
+    //autoRehydrate(),
     applyMiddleware(
       thunk,
       loggerMiddleware,
@@ -35,7 +37,10 @@ const store = createStore(
   ),
 );
 
-if (localStorage.token) {
+//persistStore(store);
+
+
+if (localStorage.token !== 'undefined' && localStorage) {
   setAuthorizationToken(localStorage.token);
   store.dispatch(setCurrentUser(localStorage.token));
 }
@@ -56,3 +61,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'));
 registerServiceWorker();
+//persistStore(store).purge()
+

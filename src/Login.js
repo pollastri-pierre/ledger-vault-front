@@ -23,6 +23,7 @@ class Login extends Component {
     this.setEmail = this.setEmail.bind(this);
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
     this.forceAuth = this.forceAuth.bind(this);
   }
 
@@ -39,29 +40,20 @@ class Login extends Component {
   login() {
     this.props.loginU2f(this.state.email, global.u2f, (e) => {
       console.log(e);
-      this.setState({ response: e });
     });
   }
 
   forceAuth() {
     this.props.setCurrentUser(this.state.email);
-    console.log(this);
-    this.props.history.push(this.props.reroute);
+    localStorage.setItem('token', 'forcedtoken');
+    localStorage.setItem('clearanceLevel', 'all');
+    console.log(localStorage.reroute);
+    this.props.history.push(localStorage.reroute);
   }
 
   logout(e) {
     e.preventDefault();
     this.props.logout();
-  }
-
-  switchLanguage = () => {
-    if (window.localStorage.getItem('locale') === 'en') {
-      window.localStorage.setItem('locale', 'fr');
-    } else {
-      window.localStorage.setItem('locale', 'en');
-    }
-
-    document.location.reload();
   }
 
   render() {
@@ -95,6 +87,10 @@ class Login extends Component {
           label="testing redirection (force auth)"
           onClick={this.forceAuth}
         />
+        <RaisedButton
+          label="logout"
+          onClick={this.logout}
+        />
         <br/>
         <RaisedButton
           label="login with device"
@@ -123,6 +119,8 @@ Login.propTypes = {
   loginU2f: React.PropTypes.func.isRequired,
   logout: React.PropTypes.func.isRequired,
   reroute: React.PropTypes.string,
+  setCurrentUser: React.PropTypes.func.isRequired,
+  history: React.PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {

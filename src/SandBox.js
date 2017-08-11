@@ -51,8 +51,7 @@ class SandBox extends Component {
     } else {
       window.localStorage.setItem('locale', 'en');
     }
-
-    document.location.reload();
+    this.props.history.go(0);
   }
 
   render() {

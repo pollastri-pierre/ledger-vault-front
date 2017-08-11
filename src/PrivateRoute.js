@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setReroute, checkAuth } from './actions';
+import { setReroute } from './actions';
 
 const mapStateToProps = state => ({
   clearanceLevel: state.auth.clearanceLevel,
@@ -15,17 +15,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
-class PrivateRoute extends Component {
+class PrivateRoute extends PureComponent {
   render() {
+    //this.props.test();
     return (
       <Route
         exact={this.props.exact}
         path={this.props.path}
-        render={(props) => {
-          if (this.props.requiredLevel === '' || ((this.props.clearanceLevel === this.props.requiredLevel))) {
+        render={() => {
+          if (this.props.requiredLevel === '' || ((localStorage.getItem('clearanceLevel') === this.props.requiredLevel))) {
             return React.createElement(this.props.component, this.props);
           }
-          this.props.reroute();
+          //this.props.reroute();
+          localStorage.setItem('reroute', this.props.path);
           return (<Redirect
             to={{
               pathname: '/login',
