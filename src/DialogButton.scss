@@ -9,7 +9,7 @@
   color: $lead;
   cursor: pointer;
   padding: 0;
-  margin: 5px;
+  margin: 0;
   position: relative;
   font-family: inherit;
   line-height: 1em;
@@ -24,7 +24,7 @@
     background-color: $lead;
     width: 100%;
     height: 5px;
-    margin-top: $spacingL;
+    margin-top: $spacingL - 5px;
     position: absolute;
   }
 
