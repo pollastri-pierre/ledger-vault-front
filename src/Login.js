@@ -1,14 +1,19 @@
-//
-// Sandbox for tests and stuff
-//
+import './App.css';
+
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
+import isEmpty from 'lodash/isEmpty';
+
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+//import TextField from 'material-ui/TextField';
+import TextField from './TextField';
 import { connect } from 'react-redux';
+import DialogButton from './DialogButton';
+import translate from './translate';
+import TeamLogin from './TeamLogin';
+import DeviceLogin from './DeviceLogin';
 
 import './Login.css';
-import { deviceRegisterRequest, loginU2f, logout, setCurrentUser } from './actions';
 
 class Login extends Component {
   constructor(props) {
@@ -19,92 +24,31 @@ class Login extends Component {
       response: '',
       snackOpen: false,
       dialogOpen: false,
+      disabled: false,
+      error: false,
+      team: '',
     };
-    this.setEmail = this.setEmail.bind(this);
-    this.register = this.register.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-    this.forceAuth = this.forceAuth.bind(this);
   }
-
-  setEmail(e, newVal) {
-    this.setState({ email: newVal });
-  }
-
-  register() {
-    this.props.deviceRegisterRequest(this.state.email, global.u2f, (e) => {
-      this.response.setState(e);
-    });
-  }
-
-  login() {
-    this.props.loginU2f(this.state.email, global.u2f, (e) => {
-      console.log(e);
-    });
-  }
-
-  forceAuth() {
-    this.props.setCurrentUser(this.state.email);
-    localStorage.setItem('token', 'forcedtoken');
-    localStorage.setItem('clearanceLevel', 'all');
-    console.log(localStorage.reroute);
-    this.props.history.push(localStorage.reroute);
-  }
-
-  logout(e) {
-    e.preventDefault();
-    this.props.logout();
+ 
+  componentWillMount() {
+    localStorage.setItem('email', this.props.match.params.email);
   }
 
   render() {
+    this.t = this.props.translate;
+    let content = null;
+    if ((!isEmpty(this.props.team)) && (this.props.team !== 'error')) {
+      content = <DeviceLogin team={localStorage.team} />;
+    } else {
+      content = <TeamLogin error={this.props.team === 'error'} />;
+    }
     return (
-      <div className="SandBox">
-        <div>
-          <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus
-          massa, sed consectetur est. Integer ultricies finibus lobortis. In quis tincidunt
-          mauris, ut tempus magna. Mauris pretium libero neque, id ullamcorper ex pellentesque
-          a. Nulla condimentum neque at quam hendrerit, imperdiet suscipit orci rhoncus. Proin
-          a felis placerat, tristique est vitae, auctor elit. Maecenas semper volutpat commodo.
-          Maecenas quis mattis neque, eget bibendum enim. Fusce ut cursus diam. Proin eget nisl
-          in massa euismod rhoncus. Fusce interdum orci id lacinia luctus. Sed magna lectus,
-          sodales quis ex eget, tempor molestie velit. Donec urna tortor, volutpat id odio quis,
-          gravida ultricies urna. Praesent et fringilla magna, et rhoncus eros. Maecenas mollis
-          lacinia laoreet. Mauris tortor ex, suscipit a mi ac, fringilla blandit lorem.
-          </p>
+      <div className="Background" >
+        <div className="Banner" >
+          <img src="img/logo.png" alt="Ledger Vault" />
+          <div className="help" >{this.t('login.help')}</div>
         </div>
-        <TextField
-          hintText="Email"
-          value={this.state.email}
-          onChange={this.setEmail}
-        /><br />
-        <RaisedButton
-          label="register device"
-          onClick={this.register}
-        />
-
-        <RaisedButton
-          label="testing redirection (force auth)"
-          onClick={this.forceAuth}
-        />
-        <RaisedButton
-          label="logout"
-          onClick={this.logout}
-        />
-        <br/>
-        <RaisedButton
-          label="login with device"
-          onClick={this.login}
-        />
-        <RaisedButton
-          label="logout"
-          onClick={this.logout}
-        />
-        <br/>
-        <TextField
-          value={this.state.response}
-        /><br />
-        <br/>
+        {content}
       </div>
     );
   }
@@ -112,22 +56,20 @@ class Login extends Component {
 
 Login.defaultProps = {
   reroute: '/',
+  team: '',
 };
 
 Login.propTypes = {
-  deviceRegisterRequest: React.PropTypes.func.isRequired,
-  loginU2f: React.PropTypes.func.isRequired,
-  logout: React.PropTypes.func.isRequired,
-  reroute: React.PropTypes.string,
+  translate: React.PropTypes.func.isRequired,
   setCurrentUser: React.PropTypes.func.isRequired,
-  history: React.PropTypes.object.isRequired,
+  team: React.PropTypes.string,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     reroute: state.setReroute.reroute,
-    auth: state.auth,
+    team: state.auth.team,
   };
 }
 
-export default withRouter(connect(mapStateToProps, { deviceRegisterRequest, loginU2f, logout, setCurrentUser })(Login));
+export default withRouter(connect(mapStateToProps)(translate(Login)));

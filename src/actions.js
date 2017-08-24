@@ -1,12 +1,13 @@
 import { register_device, login_u2f } from './u2f';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import checkDomain from './api/apiUtils';
 
 export const BLUR_BG = 'BLUR_BG';
 export const UNBLUR_BG = 'UNBLUR_BG';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const SET_REROUTE = 'SET_REROUTE';
 export const CHECK_AUTH = 'CHECK_AUTH';
+export const SET_TEAM = 'SET_TEAM';
 
 // Blur background action
 export function blurBG() {
@@ -18,11 +19,11 @@ export function unblurBG() {
   return { type: UNBLUR_BG };
 }
 
-export function deviceRegisterRequest(emailData, u2f, callback) {
+export function deviceRegisterRequest(emailData, u2f) {
   return (dispatch) => {
     const test = register_device(emailData, u2f);
-    test.then((trolo) => callback("success registration"));
-    test.catch((e) => callback(e));
+    test.then((trolo) => console.log("success registration"));
+    test.catch((e) =>  console.log(e));
   };
 }
 
@@ -33,19 +34,23 @@ export function setCurrentUser(user) {
   };
 }
 
-export function loginU2f(emailData, u2f, callback) {
+export function loginU2f(u2f, cb) {
   return (dispatch) => {
-    const test = login_u2f(emailData, u2f);
+    console.log(localStorage.email)
+    const test = login_u2f(localStorage.email, u2f);
     test.then((res) => {
-      localStorage.setItem('token', res.token);
+      console.log('resultat', res);
+      localStorage.setItem('token', res.data.token);
       localStorage.setItem('clearanceLevel', 'all');
-      setAuthorizationToken(res.token);
-      dispatch(setCurrentUser(res.token));
-      callback();
+      setAuthorizationToken(res.data.token);
+      dispatch(setCurrentUser(res.data.token));
+      cb();
     });
     test.catch((e) => {
-      dispatch(setCurrentUser({}));
-      callback(e);
+      console.log('login failed', e);
+      if (localStorage.team) {
+        dispatch(loginU2f(u2f, cb));
+      }
     });
   };
 }
@@ -53,6 +58,7 @@ export function loginU2f(emailData, u2f, callback) {
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem('token');
+    localStorage.removeItem('team');
     localStorage.setItem('clearanceLevel', '');
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));
@@ -63,6 +69,22 @@ export function setReroute(path) {
   return {
     type: SET_REROUTE,
     reroute: path,
+  };
+}
+
+export function setTeam(path) {
+  return {
+    type: SET_TEAM,
+    team: path,
+  };
+}
+
+export function checkTeam(domain) {
+  return (dispatch) => {
+    const promise = checkDomain(domain);
+    promise.then((res) => {
+      dispatch(setTeam(res));
+    });
   };
 }
 

@@ -5,11 +5,18 @@ import MUITextField from 'material-ui/TextField';
 import './TextField.css';
 
 function TextField(props) {
-  const underlineColor = props.errorText ? '#ea2e49' : '#cccccc';
+  const { hasError, ...rest } = props;
+
+  if (!rest.errorText && hasError) {
+    rest.errorText = ' ';
+  }
+
+  const underlineColor = rest.errorText ? '#ea2e49' : '#cccccc';
+  const fontColor = rest.errorText ? '#ea2e49' : 'inherit';
 
   return (
     <MUITextField
-      {...props}
+      {...rest}
       className={`vlt-textfield ${props.className}`}
       fullWidth={props.fullWidth}
       style={{
@@ -20,6 +27,7 @@ function TextField(props) {
       }}
       inputStyle={{
         fontSize: 'inherit',
+        color: fontColor,
         ...props.inputStyle,
       }}
       underlineFocusStyle={{
@@ -39,6 +47,7 @@ function TextField(props) {
       }}
       errorStyle={{
         color: '#ea2e49',
+        ...props.errorStyle,
       }}
     />
   );
@@ -52,7 +61,9 @@ TextField.propTypes = {
   underlineFocusStyle: PropTypes.shape({}),
   underlineStyle: PropTypes.shape({}),
   hintStyle: PropTypes.shape({}),
+  errorStyle: PropTypes.shape({}),
   errorText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  hasError: PropTypes.bool,
 };
 
 TextField.defaultProps = {
@@ -63,7 +74,9 @@ TextField.defaultProps = {
   underlineFocusStyle: {},
   underlineStyle: {},
   hintStyle: {},
+  errorStyle: {},
   errorText: false,
+  hasError: false,
 };
 
 export default TextField;

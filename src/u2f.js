@@ -71,10 +71,10 @@ export function register_device(emailData, u2f) {
 
 export function login_u2f(email, u2f) {
   const promise = new Promise((resolve, reject) => {
-    const input_email = email;
+    const input_team = email;
     axios.post(
-      'start_authentication',
-      JSON.stringify({ email: input_email }),
+      '/start_authentication', //add domain here from args or localstorage
+      JSON.stringify({ email: input_team }),
       {
         headers: { 'Content-Type': 'application/json' },
       },
@@ -83,17 +83,16 @@ export function login_u2f(email, u2f) {
         console.log(res);
         u2f.sign(
           res.data.appId,
-          res.data.registerRequests,
+          res.data.challenge,
           res.data.registeredKeys,
           (deviceResponse) => {
             if (deviceResponse.errorCode) {
               console.log('U2F ERROR: ', U2F_ERROR_CODES[deviceResponse.errorCode]);
             } else {
-              console.log(deviceResponse);
               console.log('Verifying auth with server...');
               axios.post(
-                'finish_authentication',
-                JSON.stringify({ email: input_email, response: deviceResponse }),
+                '/finish_authentication',
+                JSON.stringify({ email: input_team, response: deviceResponse }),
                 {
                   headers: { 'Content-Type': 'application/json' },
                 },
@@ -104,8 +103,7 @@ export function login_u2f(email, u2f) {
                 },
               ).catch(
                 (data) => {
-                  console.log(data);
-                  resolve(data);
+                  reject(data);
                 },
               );
             }
@@ -114,8 +112,7 @@ export function login_u2f(email, u2f) {
       },
     ).catch(
       (data) => {
-        console.log(data);
-        resolve(data);
+        reject(data);
       },
     );
   });

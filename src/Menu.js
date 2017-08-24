@@ -19,7 +19,7 @@ function Menu(props) {
         {/* Test page */}
         <li><Link to="/sandbox"><i className="material-icons">beach_access</i> sandbox</Link></li>
         <li><Link to="/sandbox2"><i className="material-icons">beach_access</i> sandbox2</Link></li>
-        <li><Link to="/login"><i className="material-icons">beach_access</i> login</Link></li>
+        <li><Link to="/logintest"><i className="material-icons">beach_access</i> login</Link></li>
       </ul>
     </div>
   );

@@ -1,11 +1,171 @@
-.block {
-  margin: 0 10px 20px 10px;
+@import 'mixins';
+@import 'variables';
+
+body,
+.Background {
+  font-family: 'Open Sans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: inherit;
+    opacity: .5;
+    text-decoration: none;
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .material-icons {
+    vertical-align: middle;
+    font-size: inherit;
+  }
 }
 
-.short-block {
-  height: 200px;
+.Background {
+  width: 100%;
+  height: 100%;
+  background-color: $cream;
+  text-align: center;
 }
 
-.tall-block {
-  height: 420px;
+.Banner {
+  background-color: $cream;
+  margin: auto;
+  margin-top: 227.5px;
+  padding-bottom: 40px;
+
+  img {
+    width: 131px;
+    height: 23px;
+    display: inline-block;
+  }
+
+  .help {
+    width: 63.5px;
+    margin-left: 205px;
+    margin-right: 0;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: .5;
+    transition: opacity .2s ease;
+    line-height: 1em;
+  }
+
+  .help:hover {
+    opacity: 1;
+  }
+}
+
+.TeamLogin {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  height: 258px;
+  margin: 0 auto;
+  width: 400px;
+  background-color: $white;
+  box-shadow: 0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
+
+  .vlt-dialog-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 40px;
+    margin-right: 40px;
+  }
+
+  .instructions {
+    font-size: 13px;
+    padding-top: 22px;
+  }
+
+  .textField {
+    margin-left: 20px;
+  }
+
+  .user {
+    margin-top: 40px;
+    width: 28px;
+    height: 32px;
+  }
+}
+
+.DeviceLogin {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  height: 379px;
+  margin: 0 auto;
+  width: 400px;
+  background-color: $white;
+  box-shadow: 0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
+
+  .team {
+    width: 320px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .spacer {
+    width: 320px;
+    height: 1px;
+    background-color: $argile;
+    display: inline-block;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .vlt-dialog-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-bottom: 40px;
+    margin-left: 40px;
+  }
+
+  .instructions {
+    text-align: left;
+    font-size: 13px;
+    padding-top: 24px;
+
+    .bullet {
+      float: left;
+      font-size: 18px;
+      margin-left: 45px;
+    }
+
+    .step {
+      margin-left: 77px;
+      margin-right: 58px;
+      font-size: 13px;
+      line-height: 1.54;
+    }
+
+    .item {
+      margin-top: 20px;
+    }
+  }
+
+  .wait {
+      color: $silver;
+      text-align: right;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+    }
+
+  .user {
+    margin-top: 40px;
+    width: 28px;
+    height: 32px;
+  }
 }

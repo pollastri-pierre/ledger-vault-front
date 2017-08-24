@@ -1,0 +1,8 @@
+@import 'mixins';
+@import 'variables';
+body.line {
+  width: 100%;
+  height: 1px;
+  background-color: $mouse;
+  margin-top: 16px;
+}
