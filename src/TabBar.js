@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { activateTab, addTab, exitTabs, addTabBar } from './tabBarActions';
 import TabButton from './TabButton';
-import './TabBar.css'
+import './TabBar.css';
 
 class TabBar extends Component {
   constructor(props) {

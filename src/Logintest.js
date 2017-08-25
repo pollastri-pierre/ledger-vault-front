@@ -135,6 +135,13 @@ class Logintest extends Component {
           label="toggle tabbar"
           onClick={this.toggle}
         />
+        <div className="tabs2">
+          <TabBar id="tilititu" sequential titles={['titi2', 'blah2', 'fdslkuga2']} >
+            <this.state.titi />
+            <this.state.blah />
+            <this.state.sdksdksdk />
+          </TabBar>
+        </div>
         <br/>
         {tabs}
       </div>

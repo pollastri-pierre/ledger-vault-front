@@ -32,6 +32,13 @@ export default {
       stepTwo: 'Make sure your device is powered on, and unlock it by entering your PIN.',
       stepThree: 'Open the Vault app and confirm the authentication request when displayed.',
       awaitingDevice: 'Awaiting device...',
+      logoutTitle: 'See you soon!',
+      logoutMessage: 'You have been successfully logged out. You can now safely close your web browser.',
+      sessionClosedTitle: 'Session expired',
+      sessionClosedMessage: 'Your session has expired. Please login to access the platform anew.',
+      wrongDomainTitle: 'Unknown team domain',
+      wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
+
     },
   },
   fr: {

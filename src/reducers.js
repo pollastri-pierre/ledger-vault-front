@@ -40,7 +40,7 @@ function auth(state = initialState, action) {
       if ((!isEmpty(action.user) && !(action.user === 'undefined'))) {
         localStorage.setItem('clearanceLevel', 'all');
       } else {
-        localStorage.removeItem('team');
+        localStorage.setItem('team', '');
       }
       return Object.assign(
         {},

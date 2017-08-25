@@ -85,6 +85,9 @@ export function checkTeam(domain) {
     promise.then((res) => {
       dispatch(setTeam(res));
     });
+    promise.catch((e) => {
+      dispatch(setTeam('error'));
+    });
   };
 }
 

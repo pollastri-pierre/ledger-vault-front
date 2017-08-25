@@ -8,7 +8,7 @@ import TextField from './TextField';
 import DialogButton from './DialogButton';
 import translate from './translate';
 import { checkTeam } from './actions';
-
+import Alert from './Alert';
 
 class TeamLogin extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class TeamLogin extends Component {
       dialogOpen: false,
       disabled: false,
       error: props.error,
-      team: '',
+      team: props.team,
     };
     this.selectTeam = this.selectTeam.bind(this);
     this.confirm = this.confirm.bind(this);
@@ -31,12 +31,6 @@ class TeamLogin extends Component {
     console.log("will receive pops")
     if (props.error) {
       this.setState({ error: true, disabled: false });
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.error) {
-      console.log("snackbar error");
     }
   }
 
@@ -57,10 +51,22 @@ class TeamLogin extends Component {
     }
   }
 
+  handleRequestClose = () => {
+    this.setState({ error: false });
+  }
+
   render() {
     this.t = this.props.translate;
     return (
       <div className="TeamLogin">
+        <Alert
+          onRequestClose={this.handleRequestClose}
+          open={this.state.error}
+          autoHideDuration={4000}
+          title={this.t('login.wrongDomainTitle')}
+        >
+          <div>{this.t('login.wrongDomainMessage')}</div>
+        </Alert>
         <img className="user" src="img/logo.png" alt="Ledger Vault" />
         <br/>
         <TextField
@@ -84,12 +90,14 @@ class TeamLogin extends Component {
 
 TeamLogin.defaultProps = {
   reroute: '/',
+  team: '',
 };
 
 TeamLogin.propTypes = {
   translate: React.PropTypes.func.isRequired,
   error: React.PropTypes.bool.isRequired,
   checkTeam: React.PropTypes.func.isRequired,
+  team: React.PropTypes.string,
 };
 
 export default withRouter(connect(null, { checkTeam })(translate(TeamLogin)));

@@ -31,6 +31,7 @@ class PrivateRoute extends PureComponent {
           return (<Redirect
             to={{
               pathname: '/login',
+              state: { sessionClosed: true },
             }}
             push
           />);
