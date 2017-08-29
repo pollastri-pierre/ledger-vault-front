@@ -8,6 +8,7 @@ export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const SET_REROUTE = 'SET_REROUTE';
 export const CHECK_AUTH = 'CHECK_AUTH';
 export const SET_TEAM = 'SET_TEAM';
+export const START_LOGIN = 'START_LOGIN';
 
 // Blur background action
 export function blurBG() {
@@ -34,12 +35,20 @@ export function setCurrentUser(user) {
   };
 }
 
+function loginIn(bool) {
+  return {
+    type: START_LOGIN,
+    bool,
+  };
+}
+
 export function loginU2f(u2f, cb) {
   return (dispatch) => {
-    console.log(localStorage.email)
-    const test = login_u2f(localStorage.email, u2f);
+    dispatch(loginIn(true));
+    const test = login_u2f('siu@teich.com', u2f); //siu@teich.com william@bell.com
     test.then((res) => {
-      console.log('resultat', res);
+      dispatch(loginIn(false));
+      console.log('successfuly logged in', res);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('clearanceLevel', 'all');
       setAuthorizationToken(res.data.token);
@@ -49,7 +58,10 @@ export function loginU2f(u2f, cb) {
     test.catch((e) => {
       console.log('login failed', e);
       if (localStorage.team) {
+        console.log('retry')
         dispatch(loginU2f(u2f, cb));
+      } else {
+        dispatch(loginIn(false));
       }
     });
   };
@@ -59,6 +71,7 @@ export function logout() {
   return (dispatch) => {
     localStorage.removeItem('token');
     localStorage.removeItem('team');
+    localStorage.setItem('loginout', true);
     localStorage.setItem('clearanceLevel', '');
     setAuthorizationToken(false);
     dispatch(setCurrentUser({}));

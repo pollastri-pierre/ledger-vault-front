@@ -72,6 +72,7 @@ export function register_device(emailData, u2f) {
 export function login_u2f(email, u2f) {
   const promise = new Promise((resolve, reject) => {
     const input_team = email;
+    console.log('logging with', email);
     axios.post(
       '/start_authentication', //add domain here from args or localstorage
       JSON.stringify({ email: input_team }),
@@ -80,7 +81,7 @@ export function login_u2f(email, u2f) {
       },
     ).then(
       (res) => {
-        console.log(res);
+        console.log(res, "logining");
         u2f.sign(
           res.data.appId,
           res.data.challenge,
@@ -88,6 +89,7 @@ export function login_u2f(email, u2f) {
           (deviceResponse) => {
             if (deviceResponse.errorCode) {
               console.log('U2F ERROR: ', U2F_ERROR_CODES[deviceResponse.errorCode]);
+              reject(U2F_ERROR_CODES[deviceResponse.errorCode]);
             } else {
               console.log('Verifying auth with server...');
               axios.post(

@@ -28,7 +28,7 @@ class DeviceLogin extends Component {
 
 
   redirect = () => {
-    this.props.history.push(localStorage.reroute);
+    this.props.history.push(this.props.reroute);
   }
 
   back(e) {
@@ -73,6 +73,7 @@ DeviceLogin.propTypes = {
   team: React.PropTypes.string.isRequired,
   setTeam: React.PropTypes.func.isRequired,
   history: React.PropTypes.object.isRequired,
+  reroute: React.PropTypes.string.isRequired,
 };
 
 export default withRouter(connect(null, { setTeam, loginU2f })(translate(DeviceLogin)));

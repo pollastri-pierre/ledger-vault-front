@@ -27,11 +27,19 @@ class PrivateRoute extends PureComponent {
             return React.createElement(this.props.component, this.props);
           }
           //this.props.reroute();
+          console.log('this props path', this.props.path);
           localStorage.setItem('reroute', this.props.path);
+          let state = { reroute: this.props.path };
+          if (localStorage.loginout) {
+            state['logout'] = true;
+          } else if (localStorage.sessionClosed) {
+            state['sessionClosed'] = true;
+          }
+
           return (<Redirect
             to={{
               pathname: '/login',
-              state: { sessionClosed: true },
+              state,
             }}
             push
           />);

@@ -45,7 +45,7 @@ class Logintest extends Component {
 
   login() {
     localStorage.setItem('email', this.state.email);
-    this.props.loginU2f(global.u2f);
+    this.props.loginU2f(global.u2f, () => this.props.history.push(localStorage.reroute));
   }
 
   forceAuth() {
@@ -136,7 +136,7 @@ class Logintest extends Component {
           onClick={this.toggle}
         />
         <div className="tabs2">
-          <TabBar id="tilititu" sequential titles={['titi2', 'blah2', 'fdslkuga2']} >
+          <TabBar id="tilititu" titles={['titi2', 'blah2', 'fdslkuga2']} >
             <this.state.titi />
             <this.state.blah />
             <this.state.sdksdksdk />

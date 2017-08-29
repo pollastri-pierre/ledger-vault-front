@@ -22,12 +22,17 @@ class Login extends Component {
     this.state = {
       email: '',
       response: '',
-      logout: props.location.state.logout,
-      sessionClosed: props.location.state.sessionClosed,
+      logout: false,
+      sessionClosed: false,
       disabled: false,
       error: false,
       team: '',
+      reroute: '/default',
     };
+    if (props.location.state) {
+      this.setState({ logou: props.location.state.logout , sessionClosed: props.location.state.sessionClosed });
+      this.setState({ reroute: props.location.state.reroute });
+    }
     console.log(props, this.state)
   }
  
@@ -37,13 +42,15 @@ class Login extends Component {
 
   handleRequestClose = () => {
     this.setState({ logout: false, sessionClosed: false });
+    localStorage.removeItem('loginout');
+    localStorage.removeItem('sessionClosed');
   }
 
   render() {
     this.t = this.props.translate;
     let content = null;
     if ((!isEmpty(this.props.team)) && (this.props.team !== 'error')) {
-      content = <DeviceLogin team={localStorage.team} />;
+      content = <DeviceLogin team={localStorage.team} reroute={this.state.reroute} />;
     } else {
       content = <TeamLogin team={localStorage.team} error={this.props.team === 'error'} />;
     }

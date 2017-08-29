@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import isEmpty from 'lodash/isEmpty';
-import { BLUR_BG, UNBLUR_BG, SET_CURRENT_USER, SET_REROUTE, SET_TEAM } from './actions';
+import { START_LOGIN, BLUR_BG, UNBLUR_BG, SET_CURRENT_USER, SET_REROUTE, SET_TEAM } from './actions';
 import { ACTIVATE_TAB, PREVIOUS_TAB, NEXT_TAB, SAVE_TAB, ADD_TAB, EXIT_TABS, ADD_TABBAR } from './tabBarActions';
 
 const initialState = {
@@ -36,6 +36,14 @@ function blurBG(state = { blurredBG: 0 }, action) {
 
 function auth(state = initialState, action) {
   switch (action.type) {
+    case START_LOGIN:
+      return Object.assign(
+        {},
+        state,
+        {
+          loginIn: action.bool,
+        },
+      );
     case SET_CURRENT_USER:
       if ((!isEmpty(action.user) && !(action.user === 'undefined'))) {
         localStorage.setItem('clearanceLevel', 'all');
