@@ -6,17 +6,28 @@ import translate from './translate';
 class ExampleTab extends Component {
   constructor(props) {
     super(props);
-    if (this.props.state) {
+    console.log(' start', props)
+    if (props.state) {
       this.state = this.props.state;
     } else {
       this.state = {
         value: '',
       };
     }
+    if (props.default) {
+      this.state = {
+        value: props.default,
+      };
+    }
   }
 
   componentWillMount() {
     console.log('will Mount', this.props.index);
+    //this.setState(this.props.state);
+  }
+
+  componentWillUpdate() {
+    console.log('will update', this.props.index);
     this.setState(this.props.state);
   }
 

@@ -7,7 +7,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
 import TabBar from './TabBar';
-import asTab from './Tab';
 import ExampleTab from './ExampleTab';
 
 
@@ -24,9 +23,6 @@ class Logintest extends Component {
       snackOpen: false,
       dialogOpen: false,
       toggle: 1,
-      titi: asTab(ExampleTab, 0),
-      blah: asTab(ExampleTab, 1),
-      sdksdksdk: asTab(ExampleTab, 2),
     };
     this.setEmail = this.setEmail.bind(this);
     this.register = this.register.bind(this);
@@ -73,11 +69,26 @@ class Logintest extends Component {
     } else {
       tabs = (
         <div className="tabs">
-          <TabBar id="popol" sequential titles={['titi', 'blah', 'fdslkuga']} >
-            <this.state.titi />
-            <this.state.blah />
-            <this.state.sdksdksdk />
-          </TabBar>
+          <TabBar
+            id="popopopopop"
+            tabs={
+            [
+              {
+                title: ' titi',
+                content: ExampleTab,
+                props: { default: "default text" },
+              },
+              {
+                title: ' toto',
+                content: ExampleTab,
+              },
+              {
+                title: ' tutu',
+                content: ExampleTab,
+              },
+            ]
+            }
+          />
         </div>
       );
     }

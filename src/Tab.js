@@ -16,7 +16,7 @@ function asTab(WrappedComponent, index, id, otherProps = {}) {
       if (this.props.activeTab === index) {
         JSX = (
           <div>
-            <WrappedComponent index={index} {...callbacks} state={this.props.tabState} otherProps={otherProps} />
+            <WrappedComponent index={index} {...callbacks} state={this.props.tabState} {...otherProps} />
           </div>);
       } else {
         JSX = null;

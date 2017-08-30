@@ -106,7 +106,6 @@ function manageTab(state = initialTabBarState, action) {
       }
 
     case SAVE_TAB: {
-      console.log(action)
       if (state.tabBar[action.id].activeTab < 0) {
         return state;
       }
@@ -134,7 +133,6 @@ function manageTab(state = initialTabBarState, action) {
       if (state.tabBar[action.id].tab.length > action.index) {
         return state;
       }
-      console.log(JSON.stringify(state))
       const tabs = state.tabBar[action.id].tab;
       tabs.push({ state: {} });
       const newTabBar = state.tabBar;
