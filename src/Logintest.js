@@ -81,7 +81,6 @@ class Logintest extends Component {
         </div>
       );
     }
-    console.log(tabs)
     return (
       <div className="SandBox">
         <div>
@@ -136,11 +135,25 @@ class Logintest extends Component {
           onClick={this.toggle}
         />
         <div className="tabs2">
-          <TabBar id="tilititu" titles={['titi2', 'blah2', 'fdslkuga2']} >
-            <this.state.titi />
-            <this.state.blah />
-            <this.state.sdksdksdk />
-          </TabBar>
+          <TabBar
+            id="tilititu"
+            tabs={
+            [
+              {
+                title: ' titi',
+                content: ExampleTab,
+              },
+              {
+                title: ' toto',
+                content: ExampleTab,
+              },
+              {
+                title: ' tutu',
+                content: ExampleTab,
+              },
+            ]
+            }
+          />
         </div>
         <br/>
         {tabs}

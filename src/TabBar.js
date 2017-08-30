@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { activateTab, addTab, exitTabs, addTabBar } from './tabBarActions';
 import TabButton from './TabButton';
+import asTab from './Tab';
 import './TabBar.css';
 
 class TabBar extends Component {
@@ -11,8 +12,9 @@ class TabBar extends Component {
     super(props);
     //props.cleanTabBar();
     props.addTabBar(props.id);
-    props.titles.forEach((item, index) => props.addTab(index, props.id));
+    props.tabs.forEach((item, index) => props.addTab(index, props.id));
     props.activateTab(0, props.id);
+    this.state = {};
   }
   componentWillMount() {
     console.log('tabbar MOUNT', this)
@@ -39,17 +41,15 @@ class TabBar extends Component {
   }
 
   render() {
-    const childrenWithProps = React.Children.map(this.props.children,
-     (child) => React.cloneElement(child, {
-       id: this.props.id,
-     })
-    );
-    const tabs = this.props.titles.map((item, index) => {
+    const tabs = [];
+    const childrenWithProps = this.props.tabs.map((child, index) => {
       let classes = '';
       if (this.props.activeTab === index) { classes += ' active'; }
       if (this.props.sequential && this.props.activeTab < index) { classes += ' locked'; }
       const func = this.handleClick;
-      return <TabButton key={item} data-tab={index} className={classes} onClick={func}>{item}</TabButton>;
+      tabs.push(<TabButton key={child.title} data-tab={index} className={classes} onClick={func}>{child.title}</TabButton>);
+      const Tab = asTab(child.content, index, this.props.id, child.props);
+      return <Tab />;
     });
     if (this.props.activeTab < 0) {
       return null;
@@ -61,7 +61,9 @@ class TabBar extends Component {
         </div>
         <br/>
         <div className="line" />
-        {childrenWithProps}
+        <div className="contentTab">
+          {childrenWithProps}
+        </div>
       </div>
     );
   }
@@ -77,10 +79,10 @@ TabBar.propTypes = {
   activateTab: PropTypes.func.isRequired,
   addTab: PropTypes.func.isRequired,
   exitTabs: PropTypes.func.isRequired,
-  titles: PropTypes.array.isRequired,
   activeTab: PropTypes.number,
   id: PropTypes.string.isRequired,
   addTabBar: PropTypes.func.isRequired,
+  tabs: PropTypes.array.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {

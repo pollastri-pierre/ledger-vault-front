@@ -45,7 +45,7 @@ function loginIn(bool) {
 export function loginU2f(u2f, cb) {
   return (dispatch) => {
     dispatch(loginIn(true));
-    const test = login_u2f('siu@teich.com', u2f); //siu@teich.com william@bell.com
+    const test = login_u2f('marilynn@bellamy.com', u2f); //siu@teich.com william@bell.com  sue@blount.com marilynn@bellamy.com
     test.then((res) => {
       dispatch(loginIn(false));
       console.log('successfuly logged in', res);

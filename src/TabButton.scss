@@ -22,6 +22,26 @@
 
   &.active::after {
     content: '';
+    z-index: 1;
+    display: block;
+    background-color: $porto;
+    width: 100%;
+    height: 2px;
+    margin-top: 5px;
+    position: absolute;
+  }
+
+  &:focus {
+    outline:0;
+  }
+
+  &:hover {
+    color: $black;
+  }
+
+  &:not(.locked):hover::after {
+    content: '';
+    z-index: 1;
     display: block;
     background-color: $porto;
     width: 100%;
@@ -32,7 +52,6 @@
 
   &.locked {
     color: $silver;
+    cursor: default;
   }
-
-  &:focus {outline:0;}
 }

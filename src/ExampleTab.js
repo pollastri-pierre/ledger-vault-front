@@ -35,7 +35,6 @@ class ExampleTab extends Component {
 
 
   render() {
-    console.log(this)
     this.t = this.props.translate;
     return (
       <div>

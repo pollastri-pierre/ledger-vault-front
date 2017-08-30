@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { save, nextTab, previousTab, exitTabs, validate } from './tabBarActions';
 
-function asTab(WrappedComponent, index, otherProps = {}) {
+function asTab(WrappedComponent, index, id, otherProps = {}) {
   class Tab extends Component {
     render() {
       const callbacks = {
-        nextTab: () => this.props.nextTab(this.props.id),
-        previousTab: () => this.props.previousTab(this.props.id),
-        save: x => this.props.save(x, index, this.props.id),
-        exitTabs: () => this.props.exitTabs(this.props.id),
+        nextTab: () => this.props.nextTab(id),
+        previousTab: () => this.props.previousTab(id),
+        save: x => this.props.save(x, index, id),
+        exitTabs: () => this.props.exitTabs(id),
       };
 
       let JSX;
@@ -32,13 +32,12 @@ function asTab(WrappedComponent, index, otherProps = {}) {
     previousTab: React.PropTypes.func.isRequired,
     nextTab: React.PropTypes.func.isRequired,
     exitTabs: React.PropTypes.func.isRequired,
-    id: React.PropTypes.string.isRequired,
   };
 
   function mapStateToProps(state, ownProps) {
     return {
-      tabState: state.manageTab.tabBar[ownProps.id].tab[index].state,
-      activeTab: state.manageTab.tabBar[ownProps.id].activeTab,
+      tabState: state.manageTab.tabBar[id].tab[index].state,
+      activeTab: state.manageTab.tabBar[id].activeTab,
     };
   }
 
