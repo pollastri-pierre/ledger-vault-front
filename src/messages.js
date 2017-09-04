@@ -1,5 +1,9 @@
 export default {
   en: {
+    common: {
+      save: 'Save',
+      cancel: 'Cancel',
+    },
     actionBar: {
       viewProfile: 'View profile',
       overview: 'Overview',
@@ -16,11 +20,22 @@ export default {
       pendingRequests: 'Pending requests',
       search: 'Search',
     },
+    profile: {
+      title: 'Edit profile',
+      name: 'Name',
+      firstName: 'First name',
+      lastName: 'Last name',
+      mail: 'E-mail',
+    },
     role: {
       administrator: 'Administrator',
     },
   },
   fr: {
+    common: {
+      save: 'Enregistrer',
+      cancel: 'Annuler',
+    },
     actionBar: {
       viewProfile: 'Voir le profil',
       overview: 'Vue d\'ensemble',
@@ -36,6 +51,13 @@ export default {
       newOperation: 'Nouvelle operation',
       pendingRequests: 'Requêtes en attente',
       search: 'Recherche',
+    },
+    profile: {
+      title: 'Edit profile',
+      name: 'Nom',
+      firstName: 'First name',
+      lastName: 'Last name',
+      mail: 'E-mail',
     },
     role: {
       administrator: 'Administrateur',

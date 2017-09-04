@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Link } from 'react-router-dom';
 import PopBubble from './PopBubble';
+import BlurDialog from './BlurDialog';
+import Profile from './Profile';
 import Divider from './Divider';
 import translate from './translate';
 
@@ -15,6 +17,7 @@ class ActionBar extends Component {
     this.state = {
       profile: false,
       openProfileMenu: false,
+      openProfileDialog: false,
     };
 
     this.t = this.props.translate;
@@ -42,17 +45,35 @@ class ActionBar extends Component {
   };
 
   closeProfileMenu = () => {
+    this.setState({ openProfileMenu: false });
+  };
+
+  openProfileDialog = (event) => {
+    event.preventDefault();
+
     this.setState({
       openProfileMenu: false,
+      openProfileDialog: true,
     });
   };
 
+  closeProfileDialog = () => {
+    this.setState({ openProfileDialog: false });
+  };
+
+  saveProfile = (profile) => {
+    console.log(profile);
+    this.closeProfileDialog();
+  };
+
   render() {
+    let profile;
     let profileCard;
+    let profileDialog = '';
 
     if (this.state.profile) {
       // Displayed when profile is loaded
-      const profile = this.state.profile.results[0];
+      profile = this.state.profile.results[0];
 
       profileCard = (
         <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
@@ -64,6 +85,22 @@ class ActionBar extends Component {
             <div className="profile-view-profile">{this.t('actionBar.viewProfile')}</div>
           </div>
         </a>
+      );
+
+      profileDialog = (
+        <BlurDialog
+          open={this.state.openProfileDialog}
+          onRequestClose={this.closeProfileDialog}
+        >
+          <Profile
+            firstName={profile.name.first}
+            lastName={profile.name.last}
+            mail={profile.email}
+            picture={profile.picture.large}
+            close={this.closeProfileDialog}
+            save={this.saveProfile}
+          />
+        </BlurDialog>
       );
     } else {
       // Displayed while profile is loading
@@ -89,10 +126,11 @@ class ActionBar extends Component {
             <div className="profile-bubble-title">{this.t('actionBar.myProfile')}</div>
             <div className="profile-bubble-role">{this.t('role.administrator')}</div>
             <Divider className="profile-bubble-divider" />
-            <Link to="/profile">{this.t('actionBar.editProfile')}</Link>
+            <a href="profile" onClick={this.openProfileDialog}>{this.t('actionBar.editProfile')}</a>
             <Link to="/logout">{this.t('actionBar.logOut')}</Link>
           </div>
         </PopBubble>
+        { profileDialog }
         <div className="content-header">
           <div className="content-header-left">
             <img
