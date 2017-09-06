@@ -4,9 +4,10 @@
 
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
 import Paper from 'material-ui/Paper';
+import Tooltip from './Tooltip';
 import BlurDialog from './BlurDialog';
+import Alert from './Alert';
 import { Row, Col } from './grid';
 
 import './SandBox.css';
@@ -74,19 +75,14 @@ class SandBox extends Component {
           gravida ultricies urna. Praesent et fringilla magna, et rhoncus eros. Maecenas mollis
           lacinia laoreet. Mauris tortor ex, suscipit a mi ac, fringilla blandit lorem.
         </BlurDialog>
-        <Snackbar
+        <Alert
           open={this.state.snackOpen}
-          message="Lipsum!"
-          // autoHideDuration={4000}
           onRequestClose={this.hideSnack}
-          style={{
-            top: 0,
-            bottom: 'auto',
-            transform: this.state.snackOpen ?
-              'translate3d(-50%, 0, 0)' :
-              'translate3d(-50%, -100%, 0)',
-          }}
-        />
+          theme="success"
+          title="this is a title"
+        >
+          blah
+        </Alert>
         <Row>
           <Col width={8}>
             <Row>
@@ -104,7 +100,10 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block short-block">
-                  Bluh<br />
+                  <span data-tip="je suis un touletippe" style={{ position: 'absolute' }}>
+                    Bluh
+                  </span>
+                  <br />
                   <RaisedButton
                     label="Dialog Lipsum?"
                     secondary
@@ -127,12 +126,15 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block tall-block">
-                  Blouh <i className="material-icons">face</i>
+                  <a data-tip="je suis un touletippe">
+                    Blouh <i className="material-icons">face</i>
+                  </a>
                 </Paper>
               </Col>
             </Row>
           </Col>
         </Row>
+        <Tooltip />
       </div>
     );
   }
