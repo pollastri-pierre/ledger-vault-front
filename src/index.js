@@ -1,40 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import create from './redux/create';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { BrowserRouter } from 'react-router-dom';
-import reducers from './reducers';
-import App from './App';
+import { ConnectedRouter} from 'react-router-redux'
+import createHistory from 'history/createBrowserHistory'
+import App from './containers/App/App';
 import registerServiceWorker from './registerServiceWorker';
-import I18nProvider from './I18nProvider';
+import './styles/index.css';
 
-import './index.css';
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Open Sans, sans-serif',
 });
 
-// Create redux store
-// eslint-disable-next-line
-let store = createStore(
-  reducers,
-  window.devToolsExtension ? window.devToolsExtension() : f => f,
-);
+const history = createHistory();
+const locale = window.localStorage.getItem('locale') || 'en';
+
+let store = create(history, {
+  locale: locale
+});
+
 
 // Get saved locale or fallback to english
-const locale = window.localStorage.getItem('locale') || 'en';
 
 ReactDOM.render(
   // Pass the store, muiTheme and i18n to every components
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
-      <I18nProvider locale={locale}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </I18nProvider>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('root'));

@@ -1,0 +1,15 @@
+@import 'variables';
+
+.pop-bubble:after {
+  bottom: 100%;
+  left: $spacingL;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-bottom-color: $white;
+  border-width: 15px;
+}
+

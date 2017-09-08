@@ -1,9 +1,0 @@
-@import 'variables';
-
-.vlt-textfield {
-  padding-bottom: $spacingS;
-
-  &:not(:first-child) {
-    padding-top: $spacingS;
-  }
-}
