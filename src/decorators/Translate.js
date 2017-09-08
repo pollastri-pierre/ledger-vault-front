@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Polyglot from 'node-polyglot';
 import { connect } from 'react-redux';
 import messages from '../messages';

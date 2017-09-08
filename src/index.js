@@ -9,6 +9,8 @@ import createHistory from 'history/createBrowserHistory'
 import App from './containers/App/App';
 import registerServiceWorker from './registerServiceWorker';
 import './styles/index.css';
+import { Route, Switch } from 'react-router';
+import { PrivateRoute, Login } from './containers';
 
 
 const muiTheme = getMuiTheme({
@@ -24,13 +26,17 @@ let store = create(history, {
 
 
 // Get saved locale or fallback to english
+//
 
 ReactDOM.render(
   // Pass the store, muiTheme and i18n to every components
   <Provider store={store}>
     <MuiThemeProvider muiTheme={muiTheme}>
       <ConnectedRouter history={history}>
-        <App />
+        <Switch>
+          <Route path='/login' component={Login} />
+          <PrivateRoute path='/' component={App} />
+        </Switch>
       </ConnectedRouter>
     </MuiThemeProvider>
   </Provider>,
