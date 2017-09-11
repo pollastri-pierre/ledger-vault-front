@@ -1,6 +1,6 @@
 import '../../containers/App/App.css';
 import React, { Component } from 'react';
-import isEmpty from 'lodash/isEmpty';
+// import isEmpty from 'lodash/isEmpty';
 
 import { connect } from 'react-redux';
 import { Alert } from '../../components';
@@ -27,6 +27,11 @@ const mapDispatchToProps = (dispatch) => {
 
 
 class Login extends Component {
+  componentWillMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push('/');
+    }
+  }
   render() {
     this.t = this.props.translate;
     let content = null;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Link } from 'react-router-dom';
 import translate from '../../decorators/Translate';
+import _ from 'lodash';
 
 import { PopBubble, Divider } from '../../components';
 
@@ -21,7 +22,7 @@ class ActionBar extends Component {
 
   componentWillMount() {
     // fetchProfile();
-    this.props.fetch();
+    // this.props.fetch();
   }
 
   openProfileMenu = (event) => {
@@ -45,17 +46,17 @@ class ActionBar extends Component {
 
     const t = this.props.translate;
 
-    if (this.props.profile.results) {
+    if (!_.isEmpty(this.props.profile)) {
       // Displayed when profile is loaded
-      const profile = this.props.profile.results[0];
+      const profile = this.props.profile;
 
       profileCard = (
         <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
           <div className="profile-pic">
-            <img src={profile.picture.thumbnail} alt="" />
+            <img src={false} alt="" />
           </div>
           <div className="profile-info">
-            <div className="profile-name">{`${profile.name.first} ${profile.name.last}`}</div>
+            <div className="profile-name">{`${profile.first_name} ${profile.last_name}`}</div>
             <div className="profile-view-profile">{t('actionBar.viewProfile')}</div>
           </div>
         </a>

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import { withRouter } from 'react-router-dom';
 import { fetchProfile } from '../../redux/modules/profile';
+import { logout } from '../../redux/modules/auth';
 import 'open-sans-fontface/open-sans.css';
 import 'material-design-icons/iconfont/material-icons.css';
 
@@ -19,7 +20,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchProfile: () => dispatch(fetchProfile())
+    onLogout: () => dispatch(logout())
   }
 };
 
@@ -30,7 +31,7 @@ injectTapEventPlugin();
 function App(props) {
   return (
     <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>
-      <ActionBar profile={props.profile} fetch={props.onFetchProfile}/>
+      <ActionBar profile={props.profile}  logout={props.onLogout} />
       <div className="Main">
         <Menu />
         <Content />

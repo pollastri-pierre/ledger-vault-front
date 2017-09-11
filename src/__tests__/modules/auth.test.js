@@ -26,6 +26,42 @@ describe('Module auth', () => {
   //   moxios.uninstall();
   // });
 
+  it('setTeamField() should send SET_TEAM_FIELD', () => {
+    expect(setTeamField('t')).toEqual({
+      type: SET_TEAM_FIELD,
+      value: 't'
+    });
+  });
+
+  it('checkTeamError() should send CHECK_TEAM_ERROR', () => {
+    expect(checkTeamError()).toEqual({
+      type: CHECK_TEAM_ERROR
+    });
+  });
+
+  it('checkTeamSuccess() should send CHECK_TEAM_SUCCESS', () => {
+    expect(checkTeamSuccess()).toEqual({
+      type: CHECK_TEAM_SUCCESS
+    });
+  });
+
+  it('logout() should return LOGOUT', () => {
+    expect(logout()).toEqual({
+      type: LOGOUT
+    });
+  });
+
+  it('startAuthenticationFlag() should return START_AUTHENTICATION', () => {
+    expect(startAuthenticationFlag()).toEqual({
+      type: START_AUTHENTICATION
+    });
+  });
+
+  it('reinitTeamError() should return REMOVE_TEAM_ERROR', () => {
+    expect(reinitTeamError()).toEqual({
+      type: REMOVE_TEAM_ERROR
+    });
+  });
 
   it('reducer should set the initialState back', () => {
     const state = {isAuthenticated: true, team: 'test', user: {}};
@@ -73,43 +109,6 @@ describe('Module auth', () => {
     const stateReduced = {isAuthenticated: true, teamValidated: true, team: '', user: {}, teamError: false, isCheckingTeam: false};
 
     expect(reducer(state, action)).toEqual(stateReduced);
-  });
-
-  it('setTeamField() should send SET_TEAM_FIELD', () => {
-    expect(setTeamField('t')).toEqual({
-      type: SET_TEAM_FIELD,
-      value: 't'
-    });
-  });
-
-  it('checkTeamError() should send CHECK_TEAM_ERROR', () => {
-    expect(checkTeamError()).toEqual({
-      type: CHECK_TEAM_ERROR
-    });
-  });
-
-  it('checkTeamSuccess() should send CHECK_TEAM_SUCCESS', () => {
-    expect(checkTeamSuccess()).toEqual({
-      type: CHECK_TEAM_SUCCESS
-    });
-  });
-
-  it('logout() should return LOGOUT', () => {
-    expect(logout()).toEqual({
-      type: LOGOUT
-    });
-  });
-
-  it('startAuthenticationFlag() should return START_AUTHENTICATION', () => {
-    expect(startAuthenticationFlag()).toEqual({
-      type: START_AUTHENTICATION
-    });
-  });
-
-  it('reinitTeamError() should return REMOVE_TEAM_ERROR', () => {
-    expect(reinitTeamError()).toEqual({
-      type: REMOVE_TEAM_ERROR
-    });
   });
 
 

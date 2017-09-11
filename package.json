@@ -2,6 +2,7 @@
   "name": "ledger-vault-front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://147.135.130.117",
   "dependencies": {
     "axios": "^0.16.2",
     "bourbon-neat": "^2.1.0",
@@ -23,7 +24,9 @@
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "u2f-api": "0.0.9",
+    "u2f-api-polyfill": "^0.4.3"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -38,7 +41,7 @@
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
+    "start": "HTTPS=true npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
