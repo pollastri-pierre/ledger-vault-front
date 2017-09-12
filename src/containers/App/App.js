@@ -2,26 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { withRouter } from 'react-router-dom';
-import { fetchProfile } from '../../redux/modules/profile';
-import { logout } from '../../redux/modules/auth';
 import 'open-sans-fontface/open-sans.css';
 import 'material-design-icons/iconfont/material-icons.css';
+import { withRouter } from 'react-router-dom';
+import { logout } from '../../redux/modules/auth';
 
 import { ActionBar, Content, Menu } from '../../components';
 
 import './App.css';
 
 // Set blur status to root element on dispatch
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => ({
   blurredBG: state.blurBG.blurredBG > 0,
-  profile: state.profile
+  profile: state.profile,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    onLogout: () => dispatch(logout())
-  }
+  return { onLogout: () => dispatch(logout()) };
 };
 
 
@@ -31,7 +28,7 @@ injectTapEventPlugin();
 function App(props) {
   return (
     <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>
-      <ActionBar profile={props.profile}  logout={props.onLogout} />
+      <ActionBar profile={props.profile} logout={props.onLogout} />
       <div className="Main">
         <Menu />
         <Content />
@@ -42,7 +39,8 @@ function App(props) {
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
-  profile: PropTypes.object
+  onLogout: PropTypes.func.isRequired,
+  profile: PropTypes.object,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

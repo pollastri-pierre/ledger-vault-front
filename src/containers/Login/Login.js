@@ -1,9 +1,7 @@
-import '../../containers/App/App.css';
 import React, { Component } from 'react';
-// import isEmpty from 'lodash/isEmpty';
-
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Alert } from '../../components';
+import '../../containers/App/App.css';
 import translate from '../../decorators/Translate';
 import TeamLogin from './TeamLogin';
 import DeviceLogin from './DeviceLogin';
@@ -11,19 +9,17 @@ import { setTeamField, logout, startAuthentication, reinitTeamError, resetTeam }
 
 import './Login.css';
 
-const mapStateToProps = state => ({ 
-  auth: state.auth
+const mapStateToProps = state => ({
+  auth: state.auth,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onFieldTeam: (e, val) => dispatch(setTeamField(val)),
-    onLogout: () => dispatch(logout()),
-    onStartAuth: () => dispatch(startAuthentication()),
-    onCloseTeamError: () => dispatch(reinitTeamError()),
-    onResetTeam: () => dispatch(resetTeam())
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  onFieldTeam: (e, val) => dispatch(setTeamField(val)),
+  onLogout: () => dispatch(logout()),
+  onStartAuth: () => dispatch(startAuthentication()),
+  onCloseTeamError: () => dispatch(reinitTeamError()),
+  onResetTeam: () => dispatch(resetTeam()),
+});
 
 
 class Login extends Component {
@@ -32,6 +28,7 @@ class Login extends Component {
       this.props.history.push('/');
     }
   }
+
   render() {
     this.t = this.props.translate;
     let content = null;
@@ -42,7 +39,6 @@ class Login extends Component {
         team={team}
         onCancel={this.props.onResetTeam}
       />);
-
     } else {
       content = (<TeamLogin
         team={team}
@@ -56,28 +52,6 @@ class Login extends Component {
     }
     return (
       <div>
-        <Alert
-          onRequestClose={this.handleRequestClose}
-          open={false}
-          theme="success"
-          autoHideDuration={4000}
-          title={this.t('login.logoutTitle')}
-        >
-          <div>{this.t('login.logoutMessage')}</div>
-        </Alert>
-        <Alert
-          onRequestClose={this.handleRequestClose}
-          open={false}
-          autoHideDuration={4000}
-          theme="error"
-          style={{
-            width: '380px',
-            height: '135px',
-          }}
-          title={this.t('login.sessionClosedTitle')}
-        >
-          <div>{this.t('login.sessionClosedMessage')}</div>
-        </Alert>
         <div className="Background" >
           <div className="Banner" >
             <img src="img/logo.png" alt="Ledger Vault" />
@@ -90,14 +64,23 @@ class Login extends Component {
   }
 }
 
-// Login.defaultProps = {
-//   reroute: '/',
-//   team: '',
-// };
-//
-// Login.propTypes = {
-//   translate: React.PropTypes.func.isRequired,
-//   team: React.PropTypes.string,
-// };
+Login.propTypes = {
+  auth: PropTypes.shape({
+    isAuthenticated: PropTypes.bool,
+    isCheckingTeam: PropTypes.bool,
+    teamError: PropTypes.bool,
+    teamValidated: PropTypes.bool,
+    team: PropTypes.string,
+  }).isRequired,
+  onFieldTeam: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  onStartAuth: PropTypes.func.isRequired,
+  onCloseTeamError: PropTypes.func.isRequired,
+  onResetTeam: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(translate(Login));

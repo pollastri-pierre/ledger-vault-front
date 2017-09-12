@@ -1,8 +1,4 @@
-import axios from 'axios';
 import { GOT_USER_INFO, LOGOUT } from './auth';
-
-export const START_FETCHING = 'START_FETCHING';
-export const GOT_PROFILE = 'GOT_PROFILE';
 
 const initialState = {};
 

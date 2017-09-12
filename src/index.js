@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { ConnectedRouter } from 'react-router-redux';
-import { Route, Switch } from 'react-router';
 import createHistory from 'history/createBrowserHistory';
-import create from './redux/create';
+import { Switch, Route } from 'react-router';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'react-router-redux';
 import App from './containers/App/App';
+import create from './redux/create';
 import registerServiceWorker from './registerServiceWorker';
-import { PrivateRoute, Login, LoginTest, Logout } from './containers';
+import { PrivateRoute, Login, LoginTest, Logout, AlertsContainer } from './containers';
 import { getUserInfos } from './redux/modules/auth';
 
 import './styles/index.css';
@@ -21,9 +21,7 @@ const muiTheme = getMuiTheme({
 const history = createHistory();
 const locale = window.localStorage.getItem('locale') || 'en';
 
-const store = create(history, {
-  locale,
-});
+const store = create(history, { locale });
 
 // Get saved locale or fallback to english
 const token = window.localStorage.getItem('token');
@@ -33,14 +31,17 @@ const render = () => {
     // Pass the store, muiTheme and i18n to every components
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/logintest" component={LoginTest} />
-            <Route path="/logout" component={Logout} />
-            <PrivateRoute path="/" component={App} />
-          </Switch>
-        </ConnectedRouter>
+        <div>
+          <AlertsContainer />
+          <ConnectedRouter history={history}>
+            <Switch>
+              <Route path="/login" component={Login} />
+              <Route path="/logintest" component={LoginTest} />
+              <Route path="/logout" component={Logout} />
+              <PrivateRoute path="/" component={App} />
+            </Switch>
+          </ConnectedRouter>
+        </div>
       </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'));

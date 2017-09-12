@@ -8,6 +8,7 @@
     "bourbon-neat": "^2.1.0",
     "email-validator": "^1.1.1",
     "enzyme": "^2.9.1",
+    "eslint": "^4.6.1",
     "eslint-plugin-import": "^2.7.0",
     "history": "^4.7.2",
     "lodash": "^4.17.4",
