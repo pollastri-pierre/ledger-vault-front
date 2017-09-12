@@ -1,25 +1,22 @@
 export const SWITCH_LANG = 'SWITCH_LANG';
 
 export function switchLang(lang) {
-  return {type: SWITCH_LANG, lang: lang};
-};
+  return { type: SWITCH_LANG, lang };
+}
 
 export function switchLocale() {
-  return function(dispatch, getState) {
+  return (dispatch, getState) => {
     const { locale } = getState();
     let nLang = 'fr';
 
     if (locale === 'fr') {
       nLang = 'en';
-    }
-    else {
+    } else {
       nLang = 'fr';
     }
-
     window.localStorage.setItem('locale', nLang);
     dispatch(switchLang(nLang));
-
-  }
+  };
 }
 
 

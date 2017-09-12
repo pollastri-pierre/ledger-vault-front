@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-// import { setTeam, loginU2f } from './actions';
-//import TextField from 'material-ui/TextField';
 import { DialogButton } from '../../components';
 import translate from '../../decorators/Translate';
 
@@ -10,27 +7,10 @@ import translate from '../../decorators/Translate';
 class DeviceLogin extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      email: '',
-      response: '',
-      snackOpen: false,
-      dialogOpen: false,
-    };
     this.back = this.back.bind(this);
   }
 
-  componentDidMount() {
-    // this.props.loginU2f(global.u2f, this.redirect);
-  }
-
-
-  // redirect = () => {
-  //   this.props.history.push(this.props.reroute);
-  // }
-
-  back(e) {
-    // this.props.setTeam('');
+  back() {
     this.props.onCancel();
   }
 
@@ -39,7 +19,7 @@ class DeviceLogin extends Component {
     return (
       <div className="DeviceLogin">
         <img className="dongle" src="img/logo.png" alt="Dongle" />
-        <br/>
+        <br />
         <div className="team">
           {this.t('login.signIn', { team: this.props.team })}
         </div>
@@ -68,6 +48,7 @@ class DeviceLogin extends Component {
 DeviceLogin.propTypes = {
   translate: PropTypes.func.isRequired,
   team: PropTypes.string.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default translate(DeviceLogin);
