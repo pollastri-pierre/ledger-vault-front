@@ -1,0 +1,61 @@
+@import "../../styles/variables";
+
+body,
+.App {
+  font-family: 'Open Sans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: inherit;
+    opacity: .5;
+    text-decoration: none;
+    transition: opacity .2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .material-icons {
+    vertical-align: middle;
+    font-size: inherit;
+  }
+}
+
+// Clearfix
+.Main {
+  padding: 0 $spacingL;
+
+  &::after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}
+
+.Menu,
+.Content {
+  float: left;
+}
+
+.Menu {
+  width: #{$sidebarWidth - $spacingL};
+  padding: $spacingL $spacingL 0 0;
+}
+
+.Content {
+  width: calc(100% - #{$sidebarWidth - ($spacingS / 2)});
+  position: relative;
+  margin: -80px -#{$spacingS / 2} 0;
+}
+
+// Helpers
+
+.blurred {
+  filter: blur(3px);
+}
+
+.flipped {
+  transform: scaleX(-1);
+}

@@ -2,12 +2,18 @@
   "name": "ledger-vault-front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://147.135.130.117",
   "dependencies": {
+    "axios": "^0.16.2",
     "bourbon-neat": "^2.1.0",
     "email-validator": "^1.1.1",
+    "enzyme": "^2.9.1",
     "eslint-plugin-import": "^2.7.0",
+    "history": "^4.7.2",
+    "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.18.7",
+    "moxios": "^0.4.0",
     "node-polyglot": "^2.2.2",
     "open-sans-fontface": "^1.4.0",
     "prop-types": "^15.5.10",
@@ -17,10 +23,16 @@
     "react-load-script": "0.0.6",
     "react-portal": "^3.1.0",
     "react-redux": "^5.0.5",
+    "react-router": "^4.2.0",
     "react-router-dom": "^4.1.2",
+    "react-router-redux": "^5.0.0-alpha.6",
     "react-tap-event-plugin": "^2.0.1",
     "react-tooltip": "^3.3.0",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0",
+    "u2f-api": "0.0.9",
+    "u2f-api-polyfill": "^0.4.3"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -28,13 +40,14 @@
     "eslint-plugin-react": "^7.1.0",
     "node-sass-chokidar": "0.0.3",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.7",
+    "react-test-renderer": "^15.6.1"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
+    "start": "HTTPS=true npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
