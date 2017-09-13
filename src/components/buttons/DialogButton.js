@@ -26,6 +26,7 @@ DialogButton.propTypes = {
   children: PropTypes.node,
   highlight: PropTypes.bool,
   right: PropTypes.bool,
+  onTouchTap: PropTypes.func,
 };
 
 DialogButton.defaultProps = {
@@ -34,6 +35,7 @@ DialogButton.defaultProps = {
   children: '',
   highlight: false,
   right: false,
+  onTouchTap: () => {} 
 };
 
 export default DialogButton;

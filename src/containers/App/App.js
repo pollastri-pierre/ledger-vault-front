@@ -43,5 +43,7 @@ App.propTypes = {
   profile: PropTypes.object,
 };
 
+export {App as App};
+
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 

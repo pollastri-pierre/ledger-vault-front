@@ -9,10 +9,11 @@ import { ConnectedRouter } from 'react-router-redux';
 import App from './containers/App/App';
 import create from './redux/create';
 import registerServiceWorker from './registerServiceWorker';
-import { PrivateRoute, Login, LoginTest, Logout, AlertsContainer } from './containers';
+import { PrivateRoute, Login, LoginTest, Logout, AlertsContainer, I18nProvider } from './containers';
 import { getUserInfos } from './redux/modules/auth';
 
 import './styles/index.css';
+
 
 const muiTheme = getMuiTheme({
   fontFamily: 'Open Sans, sans-serif',
@@ -31,17 +32,19 @@ const render = () => {
     // Pass the store, muiTheme and i18n to every components
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div>
-          <AlertsContainer />
-          <ConnectedRouter history={history}>
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/logintest" component={LoginTest} />
-              <Route path="/logout" component={Logout} />
-              <PrivateRoute path="/" component={App} />
-            </Switch>
-          </ConnectedRouter>
-        </div>
+        <I18nProvider>
+          <div>
+            <AlertsContainer />
+              <ConnectedRouter history={history}>
+              <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/logintest" component={LoginTest} />
+                <Route path="/logout" component={Logout} />
+                <PrivateRoute path="/" component={App} />
+              </Switch>
+            </ConnectedRouter>
+          </div>
+        </I18nProvider>
       </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'));

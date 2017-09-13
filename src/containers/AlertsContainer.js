@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // import isEmpty from 'lodash/isEmpty';
 import { Alert } from '../components';
-import translate from '../decorators/Translate';
 import { connect } from 'react-redux';
 import { closeMessage } from '../redux/modules/alerts';
 import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT} from '../redux/modules/auth';
@@ -53,9 +53,11 @@ const hasError = (id, alerts) => {
 
 const allMessages = [CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT];
 
-class MessagesContainer extends Component {
+export class MessagesContainer extends Component {
   render() {
-    const { translate, alerts } = this.props;
+    const { alerts } = this.props;
+    const { translate } = this.context;
+    console.log(this.context);
     return (
       <div>
         {_.map(allMessages, (message) => {
@@ -76,5 +78,9 @@ class MessagesContainer extends Component {
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(translate(MessagesContainer));
+
+MessagesContainer.contextTypes = {
+  translate: PropTypes.func.isRequired,
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);
 

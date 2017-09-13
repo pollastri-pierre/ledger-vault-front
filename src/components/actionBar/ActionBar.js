@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { PopBubble, Divider, Profile } from '../../components';
 import { BlurDialog } from '../../containers';
-import translate from '../../decorators/Translate';
 
 import './ActionBar.css';
 
@@ -62,7 +61,7 @@ class ActionBar extends Component {
     let profileCard;
     let profileDialog = '';
 
-    const t = this.props.translate;
+    const t = this.context.translate;
 
     if (!_.isEmpty(this.props.profile)) {
       // Displayed when profile is loaded
@@ -87,10 +86,9 @@ class ActionBar extends Component {
           onRequestClose={this.closeProfileDialog}
         >
           <Profile
-            firstName={profile.name.first}
-            lastName={profile.name.last}
+            firstName={profile.first_name}
+            lastName={profile.last_name}
             mail={profile.email}
-            picture={profile.picture.large}
             close={this.closeProfileDialog}
             save={this.saveProfile}
           />
@@ -167,8 +165,11 @@ class ActionBar extends Component {
 }
 
 ActionBar.propTypes = {
-  translate: PropTypes.func.isRequired,
   profile: PropTypes.shape({}).isRequired,
 };
 
-export default translate(ActionBar);
+ActionBar.contextTypes = {
+  translate: PropTypes.func.isRequired,
+};
+
+export default ActionBar;
