@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-class Logout extends Component {
+export class Logout extends Component {
 
   componentWillMount() {
     this.props.logout();

@@ -8,9 +8,12 @@ describe('App container', () => {
   const props = {
     blurredBG: true,
     profile: {},
-    onLogout: jest.fn()
+    onLogout: jest.fn(),
+    onOpenCloseProfile: jest.fn(),
+    onOpenCloseEdit: jest.fn(),
   };
-  const wrapper = shallow(App(props))
+
+  const wrapper = shallow(App(props));
 
   it('should render a Menu', () => {
     expect(wrapper.find(Menu).length).toBe(1);
@@ -36,7 +39,9 @@ describe('App container', () => {
     const propsNotBlurred = {
       blurredBG: false,
       profile: {},
-      onLogout: jest.fn()
+      onLogout: jest.fn(),
+      onOpenCloseProfile: jest.fn(),
+      onOpenCloseEdit: jest.fn(),
     };
     const wrapper2 = shallow(App(propsNotBlurred));
 

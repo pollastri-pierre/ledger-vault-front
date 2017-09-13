@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const getTitle = (id, alerts, translate) => {
+export const getTitle = (id, alerts, translate) => {
   const message = _.find(alerts, {id: id});
   if (message && message.title) {
     return translate(message.title);
@@ -27,7 +27,7 @@ const getTitle = (id, alerts, translate) => {
   }
 };
 
-const getTheme = (id, alerts) => {
+export const getTheme = (id, alerts) => {
   const message = _.find(alerts, {id: id});
   if (message && message.type) {
     return message.type;
@@ -37,7 +37,7 @@ const getTheme = (id, alerts) => {
   }
 };
 
-const getContent = (id, alerts, translate) => {
+export const getContent = (id, alerts, translate) => {
   const message = _.find(alerts, {id: id});
   if (message && message.content) {
     return translate(message.content);
@@ -51,13 +51,13 @@ const hasError = (id, alerts) => {
   return !_.isUndefined(_.find(alerts, {id: id}));
 }
 
-const allMessages = [CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT];
+export const allMessages = [CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT];
 
 export class MessagesContainer extends Component {
   render() {
     const { alerts } = this.props;
     const { translate } = this.context;
-    console.log(this.context);
+
     return (
       <div>
         {_.map(allMessages, (message) => {
@@ -77,6 +77,10 @@ export class MessagesContainer extends Component {
       </div>
     );
   }
+}
+
+MessagesContainer.propTypes = {
+  onClose: PropTypes.func.isRequired,
 }
 
 MessagesContainer.contextTypes = {

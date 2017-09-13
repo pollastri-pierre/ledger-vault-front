@@ -9,8 +9,24 @@ describe('Module blurBG', () => {
     expect(reducer(state, action)).toEqual(stateReduced);
   });
 
+  it('reducer should leave the blurredBG to 1', () => {
+    const state = { blurredBG: 1};
+    const action = {type: BLUR_BG};
+    const stateReduced = { blurredBG: 1};
+
+    expect(reducer(state, action)).toEqual(stateReduced);
+  });
+
   it('reducer should set the blurredBG to 1', () => {
     const state = { blurredBG: 1};
+    const action = {type: UNBLUR_BG};
+    const stateReduced = { blurredBG: 0};
+
+    expect(reducer(state, action)).toEqual(stateReduced);
+  });
+
+  it('reducer should leave the blurredBG to 0', () => {
+    const state = { blurredBG: 0};
     const action = {type: UNBLUR_BG};
     const stateReduced = { blurredBG: 0};
 

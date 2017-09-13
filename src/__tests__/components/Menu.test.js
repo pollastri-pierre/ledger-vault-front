@@ -6,7 +6,6 @@ import { ConnectedRouter} from 'react-router-redux'
 import { Provider } from 'react-redux';
 import { Menu } from '../../components';
 import { Link } from 'react-router-dom';
-import getElementWithContext from 'react-test-context-provider';
 
 const getState = () => ({
   locale: 'fr',
