@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../containers/App/App.css';
-import translate from '../../decorators/Translate';
 import TeamLogin from './TeamLogin';
 import DeviceLogin from './DeviceLogin';
 import { setTeamField, logout, startAuthentication, reinitTeamError, resetTeam } from '../../redux/modules/auth';
@@ -22,7 +21,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-class Login extends Component {
+export class Login extends Component {
   componentWillMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/');
@@ -30,7 +29,7 @@ class Login extends Component {
   }
 
   render() {
-    this.t = this.props.translate;
+    const t = this.context.translate;
     let content = null;
     const { team, isCheckingTeam, teamError, teamValidated } = this.props.auth;
 
@@ -55,7 +54,7 @@ class Login extends Component {
         <div className="Background" >
           <div className="Banner" >
             <img src="img/logo.png" alt="Ledger Vault" />
-            <div className="help" >{this.t('login.help')}</div>
+            <div className="help" >{t('login.help')}</div>
           </div>
           {content}
         </div>
@@ -77,10 +76,13 @@ Login.propTypes = {
   onStartAuth: PropTypes.func.isRequired,
   onCloseTeamError: PropTypes.func.isRequired,
   onResetTeam: PropTypes.func.isRequired,
-  translate: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(translate(Login));
+Login.contextTypes = {
+  translate: PropTypes.func.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

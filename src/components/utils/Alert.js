@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Snackbar from 'material-ui/Snackbar';
-import Portal from 'react-portal';
 
 function Alert(props) {
   const { title, children, theme: themeName, ...newProps } = props;
@@ -69,25 +68,21 @@ function Alert(props) {
   );
 
   return (
-    <Portal isOpened>
-      <div>
-        <Snackbar
-          {...newProps}
-          className={`top-message ${props.className}`}
-          style={{
-            top: 0,
-            bottom: 'auto',
-            transform: props.open ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, -100%, 0)',
-            ...props.style,
-          }}
-          bodyStyle={bodyStyle}
-          contentStyle={{
-            fontSize: '11px',
-          }}
-          message={content}
-        />
-      </div>
-    </Portal>
+      <Snackbar
+        {...newProps}
+        className={`top-message ${props.className}`}
+        style={{
+          top: 0,
+          bottom: 'auto',
+          transform: props.open ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, -100%, 0)',
+          ...props.style,
+        }}
+        bodyStyle={bodyStyle}
+        contentStyle={{
+          fontSize: '11px',
+        }}
+        message={content}
+      />
   );
 }
 

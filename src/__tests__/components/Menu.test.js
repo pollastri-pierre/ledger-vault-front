@@ -16,13 +16,16 @@ const history = createHistory();
 const translate = (str) => (str);
 
 const store = fakeStore(getState)
+const noop = function(str) { return str};
+const context = { translate: noop };
+
 const wrapper = mount(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <Menu translate={translate} />
+      {Menu({}, context)}
     </ConnectedRouter>
   </Provider>
-);
+, { context });
 
 describe('Menu', () => {
   it('should have a root Menu class div ', () => {

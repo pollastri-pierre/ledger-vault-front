@@ -5,69 +5,43 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { PopBubble, Divider, Profile } from '../../components';
 import { BlurDialog } from '../../containers';
-import translate from '../../decorators/Translate';
 
 import './ActionBar.css';
 
 class ActionBar extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      profile: false,
-      openProfileMenu: false,
-      openProfileDialog: false,
-    };
-  }
-
-  componentWillMount() {
-    // fetchProfile();
-    // this.props.fetch();
+    this.openProfileMenu = this.openProfileMenu.bind(this);
   }
 
   openProfileMenu = (event) => {
     // This prevents ghost click.
     event.preventDefault();
-
-    this.setState({
-      openProfileMenu: true,
-      anchorEl: event.currentTarget.querySelector('.profile-pic'),
-    });
-  };
-
-  closeProfileMenu = () => {
-    this.setState({ openProfileMenu: false });
-  };
+    this.props.openCloseProfile(event.currentTarget.querySelector('.profile-pic'));
+  }
 
   openProfileDialog = (event) => {
     event.preventDefault();
+    this.props.openCloseProfile(this.props.profile.target);
+    this.props.openCloseEdit();
+  }
 
-    this.setState({
-      openProfileMenu: false,
-      openProfileDialog: true,
-    });
-  };
-
-  closeProfileDialog = () => {
-    this.setState({ openProfileDialog: false });
-  };
-
-  saveProfile = (profile) => {
-    console.log(profile);
+  saveProfile = profile => {
     this.closeProfileDialog();
-  };
+  }
 
   render() {
     // let profile;
     let profileCard;
     let profileDialog = '';
 
-    const t = this.props.translate;
+    const t = this.context.translate;
 
-    if (!_.isEmpty(this.props.profile)) {
+    const profile = this.props.profile.user;
+
+    if (!_.isEmpty(profile)) {
       // Displayed when profile is loaded
       // profile = this.state.profile.results[0];
-      const profile = this.props.profile;
 
       profileCard = (
         <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
@@ -81,17 +55,18 @@ class ActionBar extends Component {
         </a>
       );
 
+      console.log(this.props.profile.openEdit);
+
       profileDialog = (
         <BlurDialog
-          open={this.state.openProfileDialog}
-          onRequestClose={this.closeProfileDialog}
+          open={this.props.profile.openEdit}
+          onRequestClose={this.props.openCloseEdit}
         >
           <Profile
-            firstName={profile.name.first}
-            lastName={profile.name.last}
+            firstName={profile.first_name}
+            lastName={profile.last_name}
             mail={profile.email}
-            picture={profile.picture.large}
-            close={this.closeProfileDialog}
+            close={this.props.openCloseEdit}
             save={this.saveProfile}
           />
         </BlurDialog>
@@ -109,9 +84,9 @@ class ActionBar extends Component {
       <div className="ActionBar">
         { profileCard }
         <PopBubble
-          open={this.state.openProfileMenu}
-          anchorEl={this.state.anchorEl}
-          onRequestClose={this.closeProfileMenu}
+          open={this.props.profile.open}
+          anchorEl={this.props.profile.target}
+          onRequestClose={this.props.openCloseProfile}
           style={{
             marginLeft: '50px',
           }}
@@ -167,8 +142,18 @@ class ActionBar extends Component {
 }
 
 ActionBar.propTypes = {
-  translate: PropTypes.func.isRequired,
-  profile: PropTypes.shape({}).isRequired,
+  profile: PropTypes.shape({
+    user: PropTypes.shape({}),
+    target: PropTypes.object,
+    open: PropTypes.bool,
+    openEdit: PropTypes.bool,
+  }).isRequired,
+  openCloseProfile: PropTypes.func.isRequired,
+  openCloseEdit: PropTypes.func.isRequired,
 };
 
-export default translate(ActionBar);
+ActionBar.contextTypes = {
+  translate: PropTypes.func.isRequired,
+};
+
+export default ActionBar;

@@ -20,13 +20,11 @@ export default function reducer(state = initialState, action) {
         return Object.assign({}, state, { blurredBG: 1 });
       }
       return state;
-
     case UNBLUR_BG:
       if (state.blurredBG !== 0) {
         return Object.assign({}, state, { blurredBG: 0 });
       }
       return state;
-
     default:
       return state;
   }

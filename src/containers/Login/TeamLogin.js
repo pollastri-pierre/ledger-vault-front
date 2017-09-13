@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from '../../decorators/Translate';
 import { TextField, DialogButton } from '../../components';
 
-class TeamLogin extends Component {
+export class TeamLogin extends Component {
   constructor(props) {
     super(props);
 
@@ -36,7 +35,7 @@ class TeamLogin extends Component {
   }
 
   render() {
-    this.t = this.props.translate;
+    const t = this.context.translate;
     return (
       <div className="TeamLogin">
         <img className="user" src="img/logo.png" alt="Ledger Vault" />
@@ -52,17 +51,16 @@ class TeamLogin extends Component {
           errorText=""
           onChange={this.props.onChange}
           hintStyle={{ textAlign: 'center', width: '100%' }}
-          hintText={this.t('login.hint')}
+          hintText={t('login.hint')}
         /><br />
-        <div className="instructions" >{this.t('login.instructions')}</div>
-        <DialogButton highlight right onTouchTap={this.selectTeam}>{this.t('common.continue')}</DialogButton>
+        <div className="instructions" >{t('login.instructions')}</div>
+        <DialogButton highlight right onTouchTap={this.selectTeam}>{t('common.continue')}</DialogButton>
       </div>
     );
   }
 }
 
 TeamLogin.propTypes = {
-  translate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onStartAuth: PropTypes.func.isRequired,
   onCloseTeamError: PropTypes.func.isRequired,
@@ -71,4 +69,8 @@ TeamLogin.propTypes = {
   teamError: PropTypes.bool.isRequired,
 };
 
-export default translate(TeamLogin);
+TeamLogin.contextTypes = {
+  translate: PropTypes.func.isRequired,
+}
+
+export default TeamLogin;
