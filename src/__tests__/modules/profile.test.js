@@ -35,8 +35,8 @@ describe('Module profile', () => {
 
   it('reducer should set the open to true', () => {
     const state = initialState;
-    const action = {type: OPEN_CLOSE_PROFILE, target: 'test'};
-    const stateReduced = {...initialState, open: true, target: 'test'};
+    const action = {type: OPEN_CLOSE_PROFILE, target: {}};
+    const stateReduced = {...initialState, open: true, target: {}};
 
     expect(reducer(state, action)).toEqual(stateReduced);
   });
