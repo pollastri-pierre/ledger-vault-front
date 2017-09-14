@@ -41,4 +41,4 @@ Col.propTypes = {
 Col.defaultProps = {
   children: '',
   width: 1,
-}
+};

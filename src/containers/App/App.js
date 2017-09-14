@@ -17,10 +17,7 @@ const mapStateToProps = state => ({
   profile: state.profile,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return { onLogout: () => dispatch(logout()) };
-};
-
+const mapDispatchToProps = dispatch => ({ onLogout: () => dispatch(logout()) });
 
 // Required by Material-UI
 injectTapEventPlugin();
@@ -40,7 +37,7 @@ function App(props) {
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired,
-  profile: PropTypes.object,
+  profile: PropTypes.shape({}),
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
