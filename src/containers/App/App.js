@@ -7,7 +7,6 @@ import 'material-design-icons/iconfont/material-icons.css';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../redux/modules/auth';
 import { openCloseProfile, openCloseEdit } from '../../redux/modules/profile';
-
 import { ActionBar, Content, Menu } from '../../components';
 
 import './App.css';
@@ -29,6 +28,7 @@ const mapDispatchToProps = (dispatch) => {
 // Required by Material-UI
 injectTapEventPlugin();
 
+
 function App(props) {
   return (
     <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>
@@ -45,6 +45,8 @@ function App(props) {
     </div>
   );
 }
+
+
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
