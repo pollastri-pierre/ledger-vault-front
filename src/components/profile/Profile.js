@@ -14,20 +14,20 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      firstName: {
-        value: this.props.firstName,
-        isValid: this.validateName(this.props.firstName),
+      first_name: {
+        value: this.props.profile.first_name,
+        isValid: this.validateName(this.props.profile.first_name),
       },
-      lastName: {
-        value: this.props.lastName,
-        isValid: this.validateName(this.props.lastName),
+      last_name: {
+        value: this.props.profile.last_name,
+        isValid: this.validateName(this.props.profile.last_name),
       },
-      mail: {
-        value: this.props.mail,
-        isValid: this.validateMail(this.props.mail),
+      email: {
+        value: this.props.profile.email,
+        isValid: this.validateMail(this.props.profile.email),
       },
       picture: {
-        value: this.props.picture,
+        value: this.props.profile.picture,
       },
       alert: {},
       alertOpen: false,
@@ -57,10 +57,10 @@ class Profile extends Component {
 
   validateName = name => (typeof name === 'string' && name !== '');
 
-  validateMail = mail => (emailValidator.validate(mail));
+  validateMail = email => (emailValidator.validate(email));
 
   updateName = (event) => {
-    const key = event.target.id === 'profile-form-name-first' ? 'firstName' : 'lastName';
+    const key = event.target.id === 'profile-form-name-first' ? 'first_name' : 'last_name';
 
     this.setState({
       [key]: {
@@ -72,7 +72,7 @@ class Profile extends Component {
 
   updateMail = (event) => {
     this.setState({
-      mail: {
+      email: {
         value: event.target.value,
         isValid: this.validateMail(event.target.value),
       },
@@ -80,7 +80,9 @@ class Profile extends Component {
   };
 
   save = () => {
-    if (!this.state.firstName.isValid || !this.state.lastName.isValid || !this.state.mail.isValid) {
+    if (!this.state.first_name.isValid
+      || !this.state.last_name.isValid
+      || !this.state.email.isValid) {
       this.setState({
         alert: {
           theme: 'error',
@@ -91,9 +93,9 @@ class Profile extends Component {
       });
     } else {
       const newProfile = {
-        firstName: this.state.firstName.value,
-        lastName: this.state.lastName.value,
-        mail: this.state.mail.value,
+        first_name: this.state.first_name.value,
+        last_name: this.state.last_name.value,
+        email: this.state.email.value,
         picture: this.state.picture.value,
       };
 
@@ -127,8 +129,8 @@ class Profile extends Component {
               id="profile-form-name-first"
               className="profile-form-name"
               hintText={this.t('profile.firstName')}
-              value={this.state.firstName.value}
-              hasError={!this.state.firstName.isValid}
+              value={this.state.first_name.value}
+              hasError={!this.state.first_name.isValid}
               onChange={this.updateName}
               style={{
                 fontWeight: 600,
@@ -138,8 +140,8 @@ class Profile extends Component {
               id="profile-form-name-last"
               className="profile-form-name"
               hintText={this.t('profile.lastName')}
-              value={this.state.lastName.value}
-              hasError={!this.state.lastName.isValid}
+              value={this.state.last_name.value}
+              hasError={!this.state.last_name.isValid}
               onChange={this.updateName}
               style={{
                 fontWeight: 600,
@@ -149,8 +151,8 @@ class Profile extends Component {
             <TextField
               id="profile-form-mail"
               hintText={this.t('profile.mail')}
-              value={this.state.mail.value}
-              hasError={!this.state.mail.isValid}
+              value={this.state.email.value}
+              hasError={!this.state.email.isValid}
               onChange={this.updateMail}
             />
             <div className="profile-role">{this.t('role.administrator')}</div>
@@ -178,12 +180,20 @@ class Profile extends Component {
 
 Profile.propTypes = {
   translate: PropTypes.func.isRequired,
-  firstName: PropTypes.string.isRequired,
-  lastName: PropTypes.string.isRequired,
-  mail: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
+  profile: PropTypes.shape({
+    first_name: PropTypes.string.isRequired,
+    last_name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    picture: PropTypes.string,
+  }).isRequired,
   save: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+};
+
+Profile.defaultProps = {
+  profile: {
+    picture: '',
+  },
 };
 
 export default translate(Profile);

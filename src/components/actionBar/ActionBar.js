@@ -87,10 +87,7 @@ class ActionBar extends Component {
           onRequestClose={this.closeProfileDialog}
         >
           <Profile
-            firstName={profile.name.first}
-            lastName={profile.name.last}
-            mail={profile.email}
-            picture={profile.picture.large}
+            profile={profile}
             close={this.closeProfileDialog}
             save={this.saveProfile}
           />
