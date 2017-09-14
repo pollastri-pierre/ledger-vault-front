@@ -1,7 +1,10 @@
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { DialogButton } from '../../components';
+
+injectTapEventPlugin();
 
 describe('DialogButton', () => {
   it('should render children', () => {

@@ -5,12 +5,11 @@ import Dropzone from 'react-dropzone';
 import Script from 'react-load-script';
 import { TextField, Alert } from '../../components';
 import DialogButton from '../../components/buttons/DialogButton';
-import translate from '../../decorators/Translate';
 
 import './Profile.css';
 
 class Profile extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this.state = {
@@ -33,7 +32,7 @@ class Profile extends Component {
       alertOpen: false,
     };
 
-    this.t = props.translate;
+    this.t = context.translate;
   }
 
   onDrop = (files) => {
@@ -179,7 +178,6 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  translate: PropTypes.func.isRequired,
   profile: PropTypes.shape({
     first_name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
@@ -196,4 +194,8 @@ Profile.defaultProps = {
   },
 };
 
-export default translate(Profile);
+Profile.contextTypes = {
+  translate: PropTypes.func.isRequired,
+};
+
+export default Profile;

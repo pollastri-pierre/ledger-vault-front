@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import translate from '../../decorators/Translate';
+// import translate from '../../decorators/Translate';
 
 import './Menu.css';
 
-function Menu(props) {
-  const t = props.translate;
+function Menu(props, context) {
+  const t = context.translate;
 
   return (
     <div className="Menu">
@@ -23,8 +23,8 @@ function Menu(props) {
   );
 }
 
-Menu.propTypes = {
+Menu.contextTypes = {
   translate: PropTypes.func.isRequired,
 };
 
-export default translate(Menu);
+export default Menu;

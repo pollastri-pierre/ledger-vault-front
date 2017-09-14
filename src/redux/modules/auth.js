@@ -178,7 +178,6 @@ export const initialState = {
   teamValidated: false,
   teamError: false,
   team: '',
-  user: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -198,7 +197,7 @@ export default function reducer(state = initialState, action) {
     case RESET_TEAM:
       return { ...state, teamValidated: false };
     case GOT_USER_INFO:
-      return { ...state, user: action.user, isAuthenticated: true };
+      return { ...state, isAuthenticated: true };
     case AUTHENTICATION_FAILED:
       return { ...state, teamValidated: false };
     default:
