@@ -9,7 +9,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import App from './containers/App/App';
 import create from './redux/create';
 import registerServiceWorker from './registerServiceWorker';
-import { PrivateRoute, Login, LoginTest, Logout, AlertsContainer, I18nProvider } from './containers';
+import { OperationDetailsContainer, PrivateRoute, Login, LoginTest, Logout, AlertsContainer, I18nProvider } from './containers';
 import { getUserInfos } from './redux/modules/auth';
 
 import './styles/index.css';
@@ -35,6 +35,7 @@ const render = () => {
         <I18nProvider>
           <div>
             <AlertsContainer />
+            <OperationDetailsContainer />
               <ConnectedRouter history={history}>
               <Switch>
                 <Route path="/login" component={Login} />

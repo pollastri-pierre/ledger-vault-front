@@ -1,5 +1,9 @@
 export default {
   en: {
+    error: {
+      error5xTitle: 'Oups! Something went wrong',
+      error5xContent: 'Sorry, it seems something went wrong with the server. Please retry.',
+    },
     common: {
       save: 'Save',
       continue: 'Continue',
@@ -50,6 +54,10 @@ export default {
     },
   },
   fr: {
+    error: {
+      error5xTitle: 'Oups! Something went wrong',
+      error5xContent: 'Sorry, it seems something went wrong with the server. Please retry.',
+    },
     common: {
       save: 'Enregistrer',
       cancel: 'Annuler',
@@ -85,6 +93,8 @@ export default {
       help: 'Assistance',
       instructions: 'Nom de domaine de votre équipe.',
       hint: 'Your team domain',
+      wrongDomainTitle: 'Unknown team domain',
+      wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
     },
   },
 };

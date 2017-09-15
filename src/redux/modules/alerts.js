@@ -16,6 +16,17 @@ const removeByIndex = (array, index) => array.filter((a, i) => i !== index);
 
 
 export default function reducer(state = initialState, action) {
+  const status = `${action.status}`;
+
+  if (status && status.lastIndexOf('50', 0) === 0) {
+    return [...initialState, {
+      id: action.type,
+      type: 'error',
+      title: 'error.error5xTitle',
+      content: 'error.error5xContent',
+    }];
+  }
+
   switch (action.type) {
     case CHECK_TEAM_ERROR:
       return [...initialState, {

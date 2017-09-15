@@ -1,14 +1,19 @@
 import moxios from 'moxios';
+import { CALL_HISTORY_METHOD } from 'react-router-redux';
 import reducer, {
   getOperationStart,
   gotOperationFail,
   getOperation,
   gotOperation,
   initialState,
+  closeDetail,
+  close,
   GET_OPERATION_START,
+  OPERATION_CLOSE,
   GOT_OPERATION,
   GOT_OPERATION_FAIL,
 } from '../../redux/modules/operations';
+
 
 describe('Module operations', () => {
   beforeEach(() => {
@@ -24,8 +29,38 @@ describe('Module operations', () => {
     expect(getOperationStart()).toEqual({ type: GET_OPERATION_START });
   });
 
+  it('closeDetail should sent OPERATION_CLOSE', () => {
+    expect(closeDetail()).toEqual({ type: OPERATION_CLOSE });
+  });
+
   it('gotOperationFail should sent GOT_OPERATION_FAIL', () => {
     expect(gotOperationFail()).toEqual({ type: GOT_OPERATION_FAIL });
+  });
+
+  it('close should sent OPERATION_CLOSE, and push to a new state', () => {
+    const dispatch = jest.fn();
+    const thunk = close();
+    const getState = () => ({
+      routing: {
+        location: {
+          pathname: '/operations',
+        },
+      },
+    });
+    thunk(dispatch, getState);
+    const calls = dispatch.mock.calls;
+
+    expect(calls[0][0]).toEqual({
+      type: OPERATION_CLOSE,
+    });
+
+    expect(calls[1][0]).toEqual({
+      type: CALL_HISTORY_METHOD,
+      payload: {
+        args: ['/operations'],
+        method: 'push',
+      },
+    });
   });
 
   it('getOperation should dispatch gotOperation with the operation if already cached', () => {
@@ -116,6 +151,13 @@ describe('Module operations', () => {
   });
 
   // testing reducer
+  it('reducer should set the operationInModel to null ', () => {
+    const state = { ...initialState, operationInModal: { id: 1 } };
+    expect(reducer(state, { type: OPERATION_CLOSE })).toEqual({
+      ...initialState, operationInModal: null,
+    });
+  });
+
   it('reducer should set isLoadingOperation to true when GET_OPERATION_START', () => {
     expect(reducer(initialState, { type: GET_OPERATION_START })).toEqual({
       ...initialState, isLoadingOperation: true,
@@ -134,5 +176,12 @@ describe('Module operations', () => {
     expect(reducer(state, { type: GOT_OPERATION_FAIL })).toEqual({
       ...initialState, isLoadingOperation: false,
     });
+  });
+
+  it('reducer should return the state when default is catched', () => {
+    const state = { test: '1' };
+    const action = {type: 'ACTION_NOT_EXIST'};
+
+    expect(reducer(state, action)).toEqual(state);
   });
 });

@@ -45,5 +45,12 @@ describe('Module blurBG', () => {
     });
   });
 
+  it('reducer should return the state when default is catched', () => {
+    const state = { test: '1' };
+    const action = {type: 'ACTION_NOT_EXIST'};
+
+    expect(reducer(state, action)).toEqual(state);
+  });
+
 });
 

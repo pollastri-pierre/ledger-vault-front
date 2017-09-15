@@ -18,6 +18,7 @@ function Menu(props, context) {
 
         {/* Test page */}
         <li><Link to="/sandbox"><i className="material-icons">beach_access</i> sandbox</Link></li>
+        <li><Link to="/operations"><i className="material-icons">beach_access</i> operations</Link></li>
       </ul>
     </div>
   );

@@ -55,8 +55,6 @@ class ActionBar extends Component {
         </a>
       );
 
-      console.log(this.props.profile.openEdit);
-
       profileDialog = (
         <BlurDialog
           open={this.props.profile.openEdit}

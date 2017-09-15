@@ -17,13 +17,11 @@ const mapStateToProps = state => ({
   profile: state.profile,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  return { 
-    onLogout: () => dispatch(logout()),
-    onOpenCloseProfile: (target) => dispatch(openCloseProfile(target)),
-    onOpenCloseEdit: () => dispatch(openCloseEdit())
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onLogout: () => dispatch(logout()),
+  onOpenCloseProfile: target => dispatch(openCloseProfile(target)),
+  onOpenCloseEdit: () => dispatch(openCloseEdit()),
+});
 
 // Required by Material-UI
 injectTapEventPlugin();
@@ -45,13 +43,16 @@ function App(props) {
     </div>
   );
 }
-
-
+App.defaultProps = {
+  profile: {},
+};
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired,
-  profile: PropTypes.object,
+  onOpenCloseProfile: PropTypes.func.isRequired,
+  onOpenCloseEdit: PropTypes.func.isRequired,
+  profile: PropTypes.shape({}),
 };
 
 export { App };

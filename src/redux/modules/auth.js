@@ -27,9 +27,10 @@ export function startAuthenticationFlag() {
   };
 }
 
-export function checkTeamError() {
+export function checkTeamError(status) {
   return {
     type: CHECK_TEAM_ERROR,
+    status,
   };
 }
 
@@ -153,8 +154,8 @@ export function startAuthentication() {
         dispatch(checkTeamSuccess());
         dispatch(finishAuthentication(res.data));
       })
-      .catch(() => {
-        dispatch(checkTeamError());
+      .catch((e) => {
+        dispatch(checkTeamError(e.response.status));
       });
   };
 }
@@ -183,7 +184,7 @@ export const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_TEAM_FIELD:
-      return { ...state, team: action.value };
+      return { ...state, team: action.value, teamError: false };
     case LOGOUT:
       return initialState;
     case CHECK_TEAM_ERROR:
