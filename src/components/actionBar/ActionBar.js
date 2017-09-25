@@ -101,8 +101,8 @@ class ActionBar extends Component {
         <div className="content-header">
           <div className="content-header-left">
             <img
-              src="img/logo.png"
-              srcSet="img/logo@2x.png 2x, img/logo@3x.png 3x"
+              src="/img/logo.png"
+              srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
               className="content-header-logo"
               alt="Ledger Vault logo"
             />

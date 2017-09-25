@@ -4,6 +4,7 @@ import locale from './locale';
 import auth from './auth';
 import alerts from './alerts';
 import operations from './operations';
+import accounts from './accounts';
 
 const reducers = {
   blurBG,
@@ -12,6 +13,7 @@ const reducers = {
   auth,
   alerts,
   operations,
+  accounts,
 };
 
 export default reducers;

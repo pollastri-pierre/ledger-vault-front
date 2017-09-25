@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
-import { getOperation, close } from '../redux/modules/operations';
+import { getOperation, getOperationFake, close } from '../redux/modules/operations';
 import { BlurDialog } from '../containers';
 import { OperationDetails } from '../components';
 // import _ from 'lodash';
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(close()),
-  onGetOperation: id => dispatch(getOperation(id)),
+  onGetOperation: id => dispatch(getOperationFake(id)),
 });
 
 function OperationDetailsContainer(props) {
@@ -21,13 +21,16 @@ function OperationDetailsContainer(props) {
   return (
     <div>
       <BlurDialog
+        className="modal"
         open={(operations.operationInModal !== null)}
         onRequestClose={onClose}
+        nopadding
       >
         <OperationDetails
           operations={operations}
           getOperation={props.onGetOperation}
           close={props.onClose}
+          tabsIndex={operations.tabsIndex}
         />
       </BlurDialog>
     </div>

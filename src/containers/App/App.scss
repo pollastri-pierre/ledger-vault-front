@@ -41,13 +41,16 @@ body,
 
 .Menu {
   width: #{$sidebarWidth - $spacingL};
-  padding: $spacingL $spacingL 0 0;
+  box-sizing: border-box;
+  padding: 25px 35px 0 0;
 }
 
 .Content {
-  width: calc(100% - #{$sidebarWidth - ($spacingS / 2)});
+  width: calc(100% - #{$sidebarWidth - $spacingL });
   position: relative;
-  margin: -80px -#{$spacingS / 2} 0;
+  margin: 0;
+  margin-top: -80px;
+  // margin: -80px $spacingL 0;
 }
 
 // Helpers

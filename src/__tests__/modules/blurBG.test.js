@@ -1,56 +1,14 @@
-import reducer, { UNBLUR_BG, BLUR_BG, blurBG, unblurBG} from '../../redux/modules/blurBG';
+import reducer from '../../redux/modules/blurBG';
+
+import { GET_OPERATION_START, OPERATION_CLOSE } from '../../redux/modules/operations';
 
 describe('Module blurBG', () => {
-  it('reducer should set the blurredBG to 1', () => {
-    const state = { blurredBG: 0};
-    const action = {type: BLUR_BG};
-    const stateReduced = { blurredBG: 1};
-
-    expect(reducer(state, action)).toEqual(stateReduced);
+  it('should set blurredBG when GET_OPERATION_START', () => {
+    expect(reducer({ blurredBG: 0 }, { type: GET_OPERATION_START })).toEqual({ blurredBG: 1 });
   });
 
-  it('reducer should leave the blurredBG to 1', () => {
-    const state = { blurredBG: 1};
-    const action = {type: BLUR_BG};
-    const stateReduced = { blurredBG: 1};
-
-    expect(reducer(state, action)).toEqual(stateReduced);
+  it('should unset blurredBG when OPERATION_CLOSE', () => {
+    expect(reducer({ blurredBG: 1 }, { type: OPERATION_CLOSE })).toEqual({ blurredBG: 0 });
   });
-
-  it('reducer should set the blurredBG to 1', () => {
-    const state = { blurredBG: 1};
-    const action = {type: UNBLUR_BG};
-    const stateReduced = { blurredBG: 0};
-
-    expect(reducer(state, action)).toEqual(stateReduced);
-  });
-
-  it('reducer should leave the blurredBG to 0', () => {
-    const state = { blurredBG: 0};
-    const action = {type: UNBLUR_BG};
-    const stateReduced = { blurredBG: 0};
-
-    expect(reducer(state, action)).toEqual(stateReduced);
-  });
-
-  it('blurBG() should send BLUR_BG', () => {
-    expect(blurBG()).toEqual({
-      type: BLUR_BG
-    });
-  });
-
-  it('unblurBG() should send UNBLUR_BG', () => {
-    expect(unblurBG()).toEqual({
-      type: UNBLUR_BG
-    });
-  });
-
-  it('reducer should return the state when default is catched', () => {
-    const state = { test: '1' };
-    const action = {type: 'ACTION_NOT_EXIST'};
-
-    expect(reducer(state, action)).toEqual(state);
-  });
-
 });
 

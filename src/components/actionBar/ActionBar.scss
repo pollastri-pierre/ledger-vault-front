@@ -15,7 +15,7 @@ $cardHeight: 30px;
     height: $cardHeight;
     width: $sidebarWidth;
     padding-left: $spacingL;
-    margin-bottom: $spacingL;
+    margin-bottom: $spacingL + 9px;
     position: absolute;
     bottom: 0;
     opacity: 1;
@@ -65,7 +65,7 @@ $cardHeight: 30px;
 
   .content-header {
     margin-left: $sidebarWidth;
-    padding: 50px 40px 0 40px;
+    padding: 54px 38px 0 0;
   }
 
   .content-header-left {
@@ -73,13 +73,16 @@ $cardHeight: 30px;
   }
 
   .content-header-right {
+    margin-right: -13px;
+    margin-top: -7px;
     float: right;
   }
 
   .content-header-button {
     display: inline-block;
     text-align: center;
-    margin: 0 10px;
+    font-weight: 600;
+    margin: 0 14px;
   }
 
   .content-header-button-icon {

@@ -6,5 +6,5 @@ export { default as LoginTest } from './LoginTest';
 export { default as Logout } from './Login/Logout';
 export { default as AlertsContainer } from './AlertsContainer';
 export { default as OperationDetailsContainer } from './OperationDetailsContainer';
-export { default as OperationsList } from './Operations/OperationsList';
+export { default as AccountView } from './Account/AccountView';
 export { default as I18nProvider } from './I18nProvider';

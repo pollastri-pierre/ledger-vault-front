@@ -19,10 +19,18 @@ const store = fakeStore(getState)
 const noop = function(str) { return str};
 const context = { translate: noop };
 
+const props = {
+  accounts: {
+    accounts: null,
+  },
+  pathname: '/',
+  getAccounts: jest.fn(),
+};
+
 const wrapper = mount(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {Menu({}, context)}
+      {Menu(props, context)}
     </ConnectedRouter>
   </Provider>
 , { context });
@@ -38,6 +46,26 @@ describe('Menu', () => {
 
   it('should have a 5 li items ', () => {
     expect(wrapper.find('div.Menu').children().find('ul.main-menu').children().find('li').length).toEqual(5);
+  });
+  it('shouldnt have a AccountsMenu if accounts.accounts has a length == 0', () => {
+
+    const wrapper = shallow(<Menu { ...props } />, { context });
+
+    expect(wrapper.find('div.Menu').children().find('AccountsMenu').length).toBe(0);
+  });
+
+  it('should have a AccountsMenu if accounts.accounts has a length > 0', () => {
+    const propsAccounts = {
+      accounts: {
+        accounts: [1, 2],
+      },
+      pathname: '/',
+      getAccounts: jest.fn(),
+    };
+
+    const wrapperAccounts = shallow(<Menu { ...propsAccounts } />, { context });
+
+    expect(wrapperAccounts.find('div.Menu').children().find('AccountsMenu').length).toBe(1);
   });
 
   it('should have a 5 li items with Link to  ', () => {

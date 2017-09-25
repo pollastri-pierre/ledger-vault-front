@@ -32,6 +32,12 @@ export default {
       lastName: 'Last name',
       mail: 'E-mail',
     },
+    operations: {
+      detailsTitle: "Operation's details",
+      overview: 'Overview',
+      details: 'Details',
+      label: 'Label'
+    },
     role: {
       administrator: 'Administrator',
     },
@@ -50,6 +56,8 @@ export default {
       sessionClosedMessage: 'Your session has expired. Please login to access the platform anew.',
       wrongDomainTitle: 'Unknown team domain',
       wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
+      welcomeTitle: 'Welcome',
+      welcomeMessage: 'Hello Welcome on Ledger Vault Application',
 
     },
   },
@@ -85,6 +93,12 @@ export default {
       firstName: 'First name',
       lastName: 'Last name',
       mail: 'E-mail',
+    },
+    operations: {
+      detailsTitle: "Operation's details",
+      overview: 'Overview',
+      details: 'Details',
+      label: 'Label'
     },
     role: {
       administrator: 'Administrateur',

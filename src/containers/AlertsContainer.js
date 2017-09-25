@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Alert } from '../components';
 import { closeMessage } from '../redux/modules/alerts';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../redux/modules/auth';
+import { AUTHENTICATION_SUCCEED, GOT_USER_INFO, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../redux/modules/auth';
 import { GOT_OPERATION_FAIL } from '../redux/modules/operations';
 
 const mapStateToProps = state => ({
@@ -52,11 +52,13 @@ const hasError = (id, alerts) => {
   return !_.isUndefined(_.find(alerts, { id: id }));
 };
 
-export const allMessages = [CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, GOT_OPERATION_FAIL];
+export const allMessages = [CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, GOT_OPERATION_FAIL, AUTHENTICATION_SUCCEED];
 
 export class MessagesContainer extends Component {
   render() {
-    const { alerts } = this.props;
+    const alerts = this.props.alerts.alerts;
+    const cache = this.props.alerts.cache;
+
     const { translate } = this.context;
 
     return (
@@ -67,11 +69,11 @@ export class MessagesContainer extends Component {
               onRequestClose={this.props.onClose.bind(this, message)}
               open={hasError(message, alerts)}
               autoHideDuration={4000}
-              title={getTitle(message, alerts, translate)}
-              theme={getTheme(message, alerts)}
+              title={getTitle(message, cache, translate)}
+              theme={getTheme(message, cache)}
               key={message}
             >
-              <div>{getContent(message, alerts, translate)}</div>
+              <div>{getContent(message, cache, translate)}</div>
             </Alert>
           );
         })}

@@ -113,7 +113,7 @@ export function getUserInfos() {
     dispatch(startGetUserInfos());
     const { routing } = getState();
 
-    return axios.get('organization/members/me', { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } })
+    return axios.get('/organization/members/me', { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } })
       .then((res) => {
         dispatch(gotUserInfos(res.data));
         if (routing.location && routing.location.state && routing.location.state.from) {
@@ -132,7 +132,9 @@ export function finishAuthentication(data) {
       } else {
         axios.post('finish_authentication', { email: team, response: deviceResponse })
           .then((res) => {
-            dispatch(authenticationSucceed());
+            setTimeout(() => {
+              dispatch(authenticationSucceed());
+            }, 500);
             setTokenToLocalStorage(res.data.token);
             dispatch(getUserInfos());
           })
