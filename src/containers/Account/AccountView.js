@@ -1,62 +1,67 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { ListOperation, CardLoading } from '../../components';
+import { withRouter } from 'react-router-dom';
+import { ListOperation } from '../../components';
 import { openOperationModal } from '../../redux/modules/operations';
-import { getBalance } from '../../redux/modules/accounts';
+import { getReceiveAddress, getBalance, getCountervalue } from '../../redux/modules/accounts-info';
 import { getFakeList } from '../../redux/utils/operation';
 import BalanceCard from './BalanceCard';
 import CounterValueCard from './CounterValueCard';
 import ReceiveFundsCard from './ReceiveFundsCard';
 import Quicklook from './Quicklook';
 import './Account.css';
-import CardLoader from '../../decorators/CardLoader';
 
 
 const mapStateToProps = state => ({
   operations: state.operations,
   accounts: state.accounts,
+  accountsInfo: state.accountsInfo,
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetOperation: (id, index) => dispatch(openOperationModal(id, index)),
+  onGetBalance: id => dispatch(getBalance(id)),
+  onGetReceiveAddress: id => dispatch(getReceiveAddress(id)),
+  onGetCountervalue: id => dispatch(getCountervalue(id)),
 });
 
+class AccountView extends Component {
 
-const test = {
-  date: 'Today, 4pm',
-  value: 'ETH 0.99923',
-};
+  componentWillMount() {
+    this.props.onGetBalance(this.props.match.params.id)
+    this.props.onGetReceiveAddress(this.props.match.params.id)
+    this.props.onGetCountervalue(this.props.match.params.id)
+  }
 
-const ctv = {
-  amount: 55.45,
-  countervalue: '18.989',
-};
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.match.params.id !== this.props.match.params.id) {
+      this.props.onGetBalance(nextProps.match.params.id)
+      this.props.onGetReceiveAddress(nextProps.match.params.id)
+      this.props.onGetCountervalue(nextProps.match.params.id)
+    }
+  }
 
+  render() {
+    const { balance, countervalue, receiveAddress, isLoadingBalance, isLoadingCounter, isLoadingAddress } = this.props.accountsInfo;
 
-function AccountView(props) {
-  console.log("here");
-  const Balance = CardLoader(BalanceCard, test, props.onGetBalance, false);
-  const Countervalue = CardLoader(CounterValueCard, ctv, props.onGetBalance, false);
-
-  return (
-    <div className="account-view">
-      <div className="account-view-infos">
-        <div className="infos-left">
-          <div className="infos-left-top">
-
-            <Balance className="bloc balance" />
-            <Countervalue className="bloc countervalue" />
+    return (
+      <div className="account-view">
+        <div className="account-view-infos">
+          <div className="infos-left">
+            <div className="infos-left-top">
+              <BalanceCard data={ balance } loading={ isLoadingBalance } />
+              <CounterValueCard data={ countervalue } loading={ isLoadingCounter }/>
+            </div>
+            <ReceiveFundsCard data={receiveAddress} loading={ isLoadingAddress }/>.
           </div>
-          <ReceiveFundsCard hash="fewfwfwefwekj8f23fkjklj123Hfedfsdf"/>
+          <Quicklook />
         </div>
-        <Quicklook />
+        <ListOperation operations={ getFakeList() } open={ this.props.onGetOperation } />
       </div>
-      <ListOperation operations={ getFakeList() } open={ props.onGetOperation } />
+    );
+  }
 
-    </div>
-  );
 }
 
 AccountView.propTypes = {

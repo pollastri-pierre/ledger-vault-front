@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { CHECK_TEAM_ERROR, GOT_USER_INFO, AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED} from './auth';
+import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
 
 export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
 
@@ -10,8 +10,6 @@ export function closeMessage(id) {
     id,
   };
 }
-
-const removeByIndex = (array, index) => array.filter((a, i) => i !== index);
 
 const addToTabs = (state, message) => {
   state.alerts.push(message);
@@ -47,7 +45,7 @@ export default function reducer(state = initialState, action) {
 
       return copy;
     }
-    case AUTHENTICATION_FAILED:{
+    case AUTHENTICATION_FAILED: {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: LOGOUT,

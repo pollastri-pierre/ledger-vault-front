@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Alert } from '../components';
 import { closeMessage } from '../redux/modules/alerts';
-import { AUTHENTICATION_SUCCEED, GOT_USER_INFO, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../redux/modules/auth';
+import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../redux/modules/auth';
 import { GOT_OPERATION_FAIL } from '../redux/modules/operations';
 
 const mapStateToProps = state => ({
