@@ -3,6 +3,7 @@ import axios from 'axios';
 import { LOCATION_CHANGE, push } from 'react-router-redux';
 import queryString from 'query-string';
 import operationsUtils from '../utils/operation';
+import { getFakeList } from '../utils/operation';
 
 export const GET_OPERATION_START = 'operations/GET_OPERATION_START';
 export const GOT_OPERATION = 'operations/GOT_OPERATION';
@@ -118,8 +119,8 @@ export function getOperationFake(idOperation, tabIndex = 0) {
     } else {
       // we need to request the API to fetch the operation's data
       setTimeout(() => {
-        const operationDetails = operationsUtils.mockOperation;
-        dispatch(gotOperation(operationDetails));
+        const operations = getFakeList();
+        dispatch(gotOperation(operationsUtils.findOperationDetails(idOperation, operations)));
       }, 500);
     }
   };
@@ -151,18 +152,8 @@ export default function reducer(state = initialState, action) {
       if (!copy) {
         copy = [];
       }
-      const findOperation = _.find(copy, { uuid: state.operationInModel });
 
-      if (!findOperation) {
-        const object = {
-          uuid: state.operationInModal,
-          details: action.operation,
-        };
-
-        copy.push(object);
-      } else {
-        findOperation.details = action.operation;
-      }
+      copy.push(action.operation);
       return { ...state, isLoadingOperation: false, operations: copy };
     }
     case OPERATION_CLOSE:

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import CircularProgress from 'material-ui/CircularProgress';
+import { SpinnerAccounts } from '../../components';
 import AccountsMenu from './AccountsMenu';
 
 // import translate from '../../decorators/Translate';
@@ -32,7 +32,7 @@ function Menu(props, context) {
       <div className="menu-accounts">
         <h4>Accounts</h4>
         { accounts.isLoadingAccounts ?
-          <CircularProgress />
+          <SpinnerAccounts />
           : false
         }
         {accounts.accounts && accounts.accounts.length > 0 ?

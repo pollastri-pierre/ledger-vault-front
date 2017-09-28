@@ -5,10 +5,17 @@ import { Alert } from '../../components';
 
 describe('AlertsContainer container', () => {
   const first = allMessages[0];
-  const alerts = [{
-    id: first,
-    type: 'error'
-  }];
+
+  const alerts = {
+    alerts: [{
+      id: first,
+      type: 'error',
+    }],
+    cache: [{
+      id: first,
+      type: 'error',
+    }],
+  };
 
   const context = { translate: jest.fn() };
 

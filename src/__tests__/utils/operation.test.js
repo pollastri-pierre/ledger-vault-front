@@ -1,12 +1,8 @@
 import operationUtils from '../../redux/utils/operation';
 
-
 const data = [{
   uuid: 1,
-  details: {
-    uuid: 1,
-    name: 'test',
-  },
+  name: 'test',
 }];
 
 describe('Utils Operations', () => {
@@ -17,12 +13,7 @@ describe('Utils Operations', () => {
     });
   });
 
-  it('getOperationDetails should return the null if it doesnt exist', () => {
-    expect(operationUtils.findOperationDetails(2, data)).toBe(null);
-  });
-
-  it('getOperationDetails should return the null if it exists but not in detail', () => {
-    const operations = [{ uuid: 1 }];
-    expect(operationUtils.findOperationDetails(1, operations)).toBe(null);
+  it('getOperationDetails should return undefined if it doesnt exist', () => {
+    expect(operationUtils.findOperationDetails(2, data)).toBe(undefined);
   });
 });

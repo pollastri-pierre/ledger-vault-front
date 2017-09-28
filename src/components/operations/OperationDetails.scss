@@ -10,14 +10,20 @@
 
   .operation-overview-header {
     text-align: center;
-    padding-top: 50px;
+    padding-top: 42px;
 
     .crypto-amount {
       color: $black;
       letter-spacing: -0.9px;
       font-size: 22px;
       margin: 0;
-      margin-bottom: 19px;
+      margin-bottom: 12px;
+    }
+
+    .arrow-grey-down {
+      fill: $silver;
+      width: 16px;
+      height: 10px;
     }
 
     .hash {

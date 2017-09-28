@@ -5,21 +5,21 @@
 }
 
 .open-label {
-  width: 20px;
+  width: 16px;
   height: 12px;
   cursor: pointer;
   display: inline-block;
-  background: $argile;
+  fill: $argile;
   vertical-align: middle;
   margin-left: 14px;
 
   &:hover {
-    background: grey;
+    fill: grey;
   }
 }
 
 .confirmed {
-  background-color: #27d0e2;
+  fill: #27d0e2;
   border-radius: 50%;
   display: inline-block;
   height: 11px;

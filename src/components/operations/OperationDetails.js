@@ -62,6 +62,8 @@ class OperationsDetails extends Component {
       operations.operations,
     );
 
+    console.log(operation);
+
     return (
       <div>
         {(operations.isLoadingOperation || !operation) ?

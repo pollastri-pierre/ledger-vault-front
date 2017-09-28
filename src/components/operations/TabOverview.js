@@ -1,4 +1,6 @@
 import React from 'react';
+import ArrowDown from '../icons/ArrowDown';
+import ValidateBadge from '../icons/ValidateBadge';
 
 const getConfirmation = n => {
   if (n > 0) {
@@ -16,6 +18,7 @@ function TabOverview(props) {
         <div className="operation-overview-amount">
           <p className="crypto-amount">-BTC 0.88962</p>
           <span className="arrow-grey-down"></span>
+          <ArrowDown className="arrow-grey-down" />
           <p className="euro-amount">EUR 1,028.93</p>
           <p className="hash">1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</p>
         </div>
@@ -27,7 +30,7 @@ function TabOverview(props) {
             <td>
               <strong>{getConfirmation(operation.confirmations)}</strong>
               {(operation.confirmations > 0) ?
-                <span className="confirmed operation-status" />
+                <ValidateBadge className="confirmed operation-status" />
                 : false}
             </td>
           </tr>

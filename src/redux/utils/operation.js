@@ -3,8 +3,7 @@ import _ from 'lodash';
 const operationsUtils = {
   findOperationDetails: (idOperation, operations) => {
     const find = _.find(operations, { uuid: idOperation });
-    const result = (find && find.details) ? find.details : null;
-    return result;
+    return find;
   },
   mockOperation: {
     uuid: '1',
@@ -20,7 +19,7 @@ const operationsUtils = {
     time: 'Yesterday, 2:34 AM',
     block: {},
     type: 'SEND',
-    amount: 120,
+    amount: 1.2,
     fees: 23,
     account_id: 1,
     senders: ['0xc5a96db085dda36ffbe390f455315d30d6d3dc52'],
@@ -137,25 +136,31 @@ const operationsUtils = {
       ],
     },
   },
-  getFakeList: () => {
-    const arr = [];
-    const op1 = _.cloneDeep(this.mockOperation);
-    op1.uuid = '2'
-    arr.push(op1);
-
-    return arr;
-  },
 };
 
 export function getFakeList() {
-    return [
-      {...operationsUtils.mockOperation, uuid: '2'},
-      {...operationsUtils.mockOperation, uuid: '3', amount: -0.002, time: "Fri 3 Mar, 2:33 AM"},
-      {...operationsUtils.mockOperation, uuid: '4'},
-      {...operationsUtils.mockOperation, uuid: '9', confirmations: 0},
-      {...operationsUtils.mockOperation, uuid: '5', type: 'FROM'},
-      {...operationsUtils.mockOperation, uuid: '6'},
-    ];
+  return [
+    { ...operationsUtils.mockOperation, uuid: '1', time: new Date(2017, 9, 8, 22) },
+    { ...operationsUtils.mockOperation, uuid: '2', amount: 1, time: new Date(2017, 9, 9) },
+    { ...operationsUtils.mockOperation, uuid: '3', time: new Date(2017, 9, 10), amount: 2 },
+    { ...operationsUtils.mockOperation, uuid: '4', confirmations: 0, time: new Date(2017, 9, 11) },
+    { ...operationsUtils.mockOperation, uuid: '5', amount: 1.3, type: 'FROM', time: new Date(2017, 9, 12) },
+    { ...operationsUtils.mockOperation, uuid: '6', time: new Date(2017, 9, 13) },
+    { ...operationsUtils.mockOperation, uuid: '7', amount: 1.8, confirmations: 0, time: new Date(2017, 9, 14, 9) },
+    { ...operationsUtils.mockOperation, uuid: '8', type: 'FROM', time: new Date(2017, 9, 15) },
+    { ...operationsUtils.mockOperation, uuid: '9', amount: 1.5, time: new Date(2017, 9, 16) },
+  ];
+}
+
+export function getFakeNextList() {
+  return [
+    { ...operationsUtils.mockOperation, uuid: '10', time: new Date(2017, 9, 17) },
+    { ...operationsUtils.mockOperation, uuid: '11', amount: 1, time: new Date(2017, 9, 18, 5) },
+    { ...operationsUtils.mockOperation, uuid: '12', time: new Date(2017, 9, 19), amount: 2 },
+    { ...operationsUtils.mockOperation, uuid: '13', confirmations: 0, time: new Date(2017, 9, 20) },
+    { ...operationsUtils.mockOperation, uuid: '14', type: 'FROM', time: new Date(2017, 9, 21) },
+    { ...operationsUtils.mockOperation, uuid: '15', time: new Date(2017, 9, 22) },
+  ];
 }
 
 export default operationsUtils;

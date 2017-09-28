@@ -68,7 +68,7 @@ describe('Module operations', () => {
     const state = {
       operations: {
         operationInModal: null,
-        operations: [{ uuid: 1, details: {uuid: 1, name: 'test'} }],
+        operations: [{ uuid: 1, name: 'test' }],
         isLoadingOperation: true,
         isLoadgingOperations: false,
       },
@@ -169,7 +169,7 @@ describe('Module operations', () => {
     const state = { ...initialState, isLoadingOperation: true, operationInModal: 1 };
 
     expect(reducer(state, { type: GOT_OPERATION, operation: { uuid: 1 } })).toEqual({
-      ...initialState, isLoadingOperation: false, operationInModal: 1, operations: [ { uuid: 1, details: { uuid: 1 }}]
+      ...initialState, isLoadingOperation: false, operationInModal: 1, operations: [ { uuid: 1 }],
     });
   });
 

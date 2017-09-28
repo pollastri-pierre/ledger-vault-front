@@ -84,7 +84,10 @@ export class MessagesContainer extends Component {
 
 MessagesContainer.propTypes = {
   onClose: PropTypes.func.isRequired,
-  alerts: PropTypes.array.isRequired,
+  alerts: PropTypes.shape({
+    alerts: PropTypes.array,
+    cache: PropTypes.array,
+  }).isRequired,
 };
 
 MessagesContainer.contextTypes = {

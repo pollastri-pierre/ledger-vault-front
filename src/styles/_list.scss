@@ -51,6 +51,7 @@
 .list {
   background: white;
   padding: 40px;
+  position: relative;
 
   h2 {
     text-transform: uppercase;
@@ -104,7 +105,7 @@
         color: $black;
         font-size: 10px;
         position: relative;
-        width: 175px;
+        width: 200px;
 
         &:before {
           transition: width 200ms ease;
