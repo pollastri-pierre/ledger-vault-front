@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme';
-import { undecoratedApp } from '../../containers/App/App';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import { AppNotDecorated } from '../../containers/App/App';
 import { ActionBar, Menu, Content } from '../../components';
 
 describe('App container', () => {
@@ -9,9 +10,16 @@ describe('App container', () => {
     onLogout: jest.fn(),
     onOpenCloseProfile: jest.fn(),
     onOpenCloseEdit: jest.fn(),
+    accounts: {},
+    onGetAccounts: jest.fn(),
+    routing: {
+      location: {
+        pathname: '/',
+      },
+    },
   };
 
-  const wrapper = shallow(undecoratedApp(props));
+  const wrapper = shallow(AppNotDecorated(props));
 
   it('should render a Menu', () => {
     expect(wrapper.find(Menu).length).toBe(1);
@@ -40,8 +48,16 @@ describe('App container', () => {
       onLogout: jest.fn(),
       onOpenCloseProfile: jest.fn(),
       onOpenCloseEdit: jest.fn(),
+      accounts: {},
+      onGetAccounts: jest.fn(),
+      routing: {
+        location: {
+          pathname: '/',
+        },
+      },
     };
-    const wrapper2 = shallow(undecoratedApp(propsNotBlurred));
+
+    const wrapper2 = shallow(AppNotDecorated(propsNotBlurred));
 
     expect(wrapper2.hasClass('App')).toBe(true);
     expect(wrapper2.hasClass('blurred')).toBe(false);

@@ -7,7 +7,7 @@ import 'material-design-icons/iconfont/material-icons.css';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../redux/modules/auth';
 import { openCloseProfile, openCloseEdit } from '../../redux/modules/profile';
-
+import { getAccounts } from '../../redux/modules/accounts';
 import { ActionBar, Content, Menu } from '../../components';
 
 import './App.css';
@@ -16,16 +16,20 @@ import './App.css';
 const mapStateToProps = state => ({
   blurredBG: state.blurBG.blurredBG > 0,
   profile: state.profile,
+  accounts: state.accounts,
+  routing: state.routing,
 });
 
 const mapDispatchToProps = dispatch => ({
   onLogout: () => dispatch(logout()),
   onOpenCloseProfile: target => dispatch(openCloseProfile(target)),
   onOpenCloseEdit: () => dispatch(openCloseEdit()),
+  onGetAccounts: () => dispatch(getAccounts()),
 });
 
 // Required by Material-UI
 injectTapEventPlugin();
+
 
 function App(props) {
   return (
@@ -37,20 +41,31 @@ function App(props) {
         openCloseEdit={props.onOpenCloseEdit}
       />
       <div className="Main">
-        <Menu />
+        <Menu
+          getAccounts={props.onGetAccounts}
+          accounts={props.accounts}
+          pathname={props.routing.location.pathname}
+        />
         <Content />
       </div>
     </div>
   );
 }
+App.defaultProps = {
+  profile: {},
+};
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
   onLogout: PropTypes.func.isRequired,
-  profile: PropTypes.shape({}).isRequired,
+  onOpenCloseProfile: PropTypes.func.isRequired,
+  onGetAccounts: PropTypes.func.isRequired,
+  onOpenCloseEdit: PropTypes.func.isRequired,
+  profile: PropTypes.shape({}),
+  profile: PropTypes.shape({}),
 };
 
-export { App as undecoratedApp };
+export { App as AppNotDecorated };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 

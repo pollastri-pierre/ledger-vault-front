@@ -2,18 +2,35 @@
   &::before {
     content: '';
     background-color: $color;
-    width: 5px;
+    width: 0px;
     height: 26px;
     display: block;
     position: absolute;
     left: $left;
     bottom: calc(50% - (26px / 2));
-    opacity: 0;
-    transition: opacity .2s ease;
+    opacity: 1;
+    transition: width .2s ease;
   }
 
   &:hover::before {
     opacity: 1;
+    width: 5px;
   }
 }
+
+@mixin highlight-block-active($color, $left) {
+  &::before {
+    content: '';
+    background-color: $color;
+    width: 5px;
+    height: 26px;
+    display: block;
+    position: absolute;
+    left: $left;
+    opacity: 1;
+    bottom: calc(50% - (26px / 2));
+    transition: opacity .2s ease;
+  }
+}
+
 

@@ -1,0 +1,61 @@
+@import './animations';
+
+.modal {
+  position: relative;
+
+  .tabs_panel[class*='--selected'] {
+    animation: tab 200ms ease;
+  }
+
+  .content {
+    height: 560px;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .inner {
+      padding-top: 89px;
+      padding-bottom: 40px;
+    }
+  }
+
+  header,
+  .footer {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    display: block;
+    background: rgba(255, 255, 255, 0.93);
+    z-index: 10;
+    padding: 40px;
+  }
+
+  header {
+    top: 0;
+    background: -webkit-linear-gradient(top, #ffffff 56%, rgba(255, 255, 255, 0.8) 100%);
+
+    h2 {
+      font-weight: normal;
+      color: $black;
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+  }
+
+  .footer {
+    bottom: 0px;
+    height: 90px;
+  }
+}
+
+.modal-operation-loading {
+  text-align: center;
+  height: 640px;
+  padding-top: 250px;
+  width: 438px;
+}
+

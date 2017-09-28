@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-// import isEmpty from 'lodash/isEmpty';
-
 import { connect } from 'react-redux';
 import { logoutAction } from '../../redux/modules/auth';
 
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(logoutAction()),
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logoutAction()),
+});
 
 
 export class Logout extends Component {
-
   componentWillMount() {
     this.props.logout();
   }
 
   render() {
     return (
-      <Redirect to={{pathname: '/'}} />
+      <Redirect to={{ pathname: '/' }} />
     );
   }
 }
-export default connect(undefined, mapDispatchToProps)(Logout);
 
+Logout.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
+export default connect(undefined, mapDispatchToProps)(Logout);
 

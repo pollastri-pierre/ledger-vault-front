@@ -41,13 +41,16 @@ body,
 
 .Menu {
   width: #{$sidebarWidth - $spacingL};
-  padding: $spacingL $spacingL 0 0;
+  box-sizing: border-box;
+  padding: 25px 35px 0 0;
 }
 
 .Content {
-  width: calc(100% - #{$sidebarWidth - ($spacingS / 2)});
+  width: calc(100% - #{$sidebarWidth - $spacingL });
   position: relative;
-  margin: -80px -#{$spacingS / 2} 0;
+  margin: 0;
+  margin-top: -80px;
+  // margin: -80px $spacingL 0;
 }
 
 // Helpers
@@ -58,4 +61,30 @@ body,
 
 .flipped {
   transform: scaleX(-1);
+}
+
+
+.react-tabs__tab-list {
+  padding-bottom: 14px;
+  border-bottom: 1px solid $mouse;
+  margin: 0;
+  padding: 0;
+  padding-bottom:14px;
+}
+.react-tabs__tab {
+  display: inline;
+  color: $black-5;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 600;
+  margin-right: 30px;
+  text-align: 23px;
+  text-transform: uppercase;
+  padding-bottom: 15px;
+  outline: none;
+}
+
+.react-tabs__tab--selected {
+  border-bottom: 2px solid $porto;
+  color: $black;
 }

@@ -42,7 +42,7 @@ export class TeamLogin extends Component {
         <br />
         <TextField
           onKeyDown={this.confirm}
-          hasError={this.props.teamError}
+          hasError={(this.props.teamError && this.props.team !== '')}
           style={{ width: '320px' }}
           disabled={this.props.isChecking}
           inputStyle={{ textAlign: 'center' }}
