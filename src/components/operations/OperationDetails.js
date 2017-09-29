@@ -62,13 +62,11 @@ class OperationsDetails extends Component {
       operations.operations,
     );
 
-    console.log(operation);
-
     return (
       <div>
         {(operations.isLoadingOperation || !operation) ?
-          <div className="operations-details">
-            <div className="modal-operation-loading">
+          <div className="operation-details">
+            <div className="modal-loading">
               <CircularProgress />
             </div>
             <div className="footer">

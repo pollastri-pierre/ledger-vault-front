@@ -14,6 +14,7 @@
   font-family: inherit;
   line-height: 1em;
   padding-bottom: $spacingL - 5px;
+  transition: opacity 500ms ease;
 
   &:focus {
     outline: none;
@@ -29,11 +30,25 @@
     position: absolute;
   }
 
+  &:disabled {
+    opacity: 0.3;
+  }
+
   &.highlight {
     color: $porto;
 
     &:hover::after {
       background-color: $porto;
+    }
+  }
+
+  &.cancel {
+    &.highlight {
+      color: $lead;
+
+      &:hover::after {
+        background-color: $lead;
+      }
     }
   }
 }

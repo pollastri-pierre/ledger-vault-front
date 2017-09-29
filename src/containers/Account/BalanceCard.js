@@ -21,8 +21,12 @@ function BalanceCard(props) {
   );
 }
 
+BalanceCard.defaultProps = {
+  data: null,
+};
+
 BalanceCard.propTypes = {
-  data: PropTypes.shape({}).isRequired,
+  data: PropTypes.shape({}),
   loading: PropTypes.bool.isRequired,
 };
 

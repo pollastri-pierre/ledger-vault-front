@@ -7,6 +7,7 @@ import 'material-design-icons/iconfont/material-icons.css';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../redux/modules/auth';
 import { openCloseProfile, openCloseEdit } from '../../redux/modules/profile';
+import { openModalAccount } from '../../redux/modules/account-creation';
 import { getAccounts } from '../../redux/modules/accounts';
 import { ActionBar, Content, Menu } from '../../components';
 
@@ -25,6 +26,7 @@ const mapDispatchToProps = dispatch => ({
   onOpenCloseProfile: target => dispatch(openCloseProfile(target)),
   onOpenCloseEdit: () => dispatch(openCloseEdit()),
   onGetAccounts: () => dispatch(getAccounts()),
+  onOpenAccount: () => dispatch(openModalAccount()),
 });
 
 // Required by Material-UI
@@ -39,6 +41,8 @@ function App(props) {
         logout={props.onLogout}
         openCloseProfile={props.onOpenCloseProfile}
         openCloseEdit={props.onOpenCloseEdit}
+        openAccount={props.onOpenAccount}
+        pathname={props.routing.location.pathname}
       />
       <div className="Main">
         <Menu
@@ -53,15 +57,17 @@ function App(props) {
 }
 App.defaultProps = {
   profile: {},
+  accounts: [],
 };
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
+  accounts: PropTypes.shape({}),
   onLogout: PropTypes.func.isRequired,
   onOpenCloseProfile: PropTypes.func.isRequired,
   onGetAccounts: PropTypes.func.isRequired,
+  onOpenAccount: PropTypes.func.isRequired,
   onOpenCloseEdit: PropTypes.func.isRequired,
-  profile: PropTypes.shape({}),
   profile: PropTypes.shape({}),
 };
 

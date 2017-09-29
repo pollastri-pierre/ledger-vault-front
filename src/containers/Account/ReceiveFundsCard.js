@@ -48,13 +48,13 @@ class ReceiveFundsCard extends Component {
 }
 
 ReceiveFundsCard.defaultProps = {
-  hash: '',
+  data: null,
 };
 
 ReceiveFundsCard.propTypes = {
   data: PropTypes.shape({
     hash: PropTypes.string,
-  }).isRequired,
+  }),
   loading: PropTypes.bool.isRequired,
 };
 

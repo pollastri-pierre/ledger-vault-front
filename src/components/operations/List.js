@@ -2,8 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import Infinite from 'react-infinite';
 import PropTypes from 'prop-types';
-import { SpinnerCard } from '../../components';
-import { Tooltip } from '../../components';
+import { SpinnerCard, Tooltip } from '../../components';
 import Comment from '../../components/icons/Comment';
 import { formatDate } from '../../redux/utils/format';
 
@@ -11,7 +10,7 @@ import { formatDate } from '../../redux/utils/format';
 function List(props) {
   const { operations, title, loading } = props;
 
-  const getHash = operation => {
+  const getHash = (operation) => {
     let hash = '';
     if (operation.type === 'SEND') {
       hash = operation.senders[0];
@@ -22,7 +21,7 @@ function List(props) {
     return hash;
   };
 
-  const getCrypto = amount => {
+  const getCrypto = (amount) => {
     if (amount > 0) {
       return `+ BTC ${amount}`;
     }
@@ -31,17 +30,16 @@ function List(props) {
   };
 
   return (
-    <div className='list'>
+    <div className="list">
       <h2>{title}</h2>
       {(loading || _.isNull(operations)) ?
         <SpinnerCard />
-      :
+        :
         <Infinite
           containerHeight={900}
           elementHeight={46}
           useWindowAsScrollContainer
-          handleScroll={() => console.log("scroll")}
-          isInfiniteLoading={true}
+          handleScroll={() => {}}
         >
           <table>
             <thead>
@@ -57,15 +55,15 @@ function List(props) {
             </thead>
             <tbody>
               {_.map(operations, (operation) => {
-                const note = (operation.notes.length > 0) ? operation.notes[0] : {author: {}};
+                const note = (operation.notes.length > 0) ? operation.notes[0] : { author: {} };
 
                 return (
-                  <tr key={operation.uuid} onClick={(e) => props.open(operation.uuid)}>
+                  <tr key={operation.uuid} onClick={e => props.open(operation.uuid)}>
                     <td className="date">
                       {formatDate(operation.time, 'llll')}
 
                       <Comment fill="#e2e2e2"
-                        onClick={(e) => {e.stopPropagation(); props.open(operation.uuid, 2)}} 
+                        onClick={(e) => {e.stopPropagation(); props.open(operation.uuid, 2)}}
                         className="open-label"
                         data-tip
                         data-for={`tooltip-${operation.uuid}`}
@@ -98,11 +96,13 @@ function List(props) {
 }
 List.defaultProps = {
   title: 'Last operations',
+  operations: null,
 };
 
 List.propTypes = {
-  operations: PropTypes.array.isRequired,
+  operations: PropTypes.array,
   title: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default List;

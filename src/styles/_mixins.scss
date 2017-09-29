@@ -19,6 +19,7 @@
 }
 
 @mixin highlight-block-active($color, $left) {
+  opacity: 1;
   &::before {
     content: '';
     background-color: $color;

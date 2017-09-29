@@ -12,7 +12,6 @@ import Quicklook from './Quicklook';
 import './Account.css';
 
 const mapStateToProps = state => ({
-  operations: state.operations,
   accounts: state.accounts,
   accountsInfo: state.accountsInfo,
 });

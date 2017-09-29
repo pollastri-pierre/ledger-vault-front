@@ -34,6 +34,7 @@ class ActionBar extends Component {
 
   render() {
     // let profile;
+    console.log(this.props);
     let profileCard;
     let profileDialog = '';
 
@@ -108,6 +109,16 @@ class ActionBar extends Component {
             />
           </div>
           <div className="content-header-right">
+            { (this.props.pathname === '/') ?
+              <Link to="" onClick={this.props.openAccount} className="content-header-button">
+                <div className="content-header-button-icon">
+                  <i className="material-icons flipped">add</i>
+                </div>
+                <div className="content-header-button-text">account</div>
+              </Link>
+              :
+              false
+            }
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>

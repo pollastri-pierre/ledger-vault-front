@@ -1,0 +1,158 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.account-creation {
+  width: 445px;
+
+  .account-creation-options {
+    position: relative;
+    label {
+      color: $black;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 2px;
+    }
+    
+    .dot {
+      background: black;
+      border-radius: 50%;
+      content: '';
+      width: 6px;
+      height: 6px;
+      margin-right: 10px;
+      position: absolute;
+      top: 42px;
+
+      &.bitcoin {
+        background-color: $bitcoin;
+      }
+      &.dogecoin {
+        background-color: $dogecoin;
+      }
+      &.dash {
+        background-color: $dash;
+      }
+      &.ethereum {
+        background-color: $ethereum;
+      }
+      &.ethereum-classic {
+        background-color: $ethereum-classic;
+      }
+
+      &.litecoin {
+        background-color: $litecoin;
+      }
+    }
+
+    input[type="text"] {
+      border: 0;
+      height: 55px;
+      padding-left: 16px;
+      width: 100%;
+      outline: none;
+      font-size: 13px;
+      color: $black;
+      border-bottom: 1px solid $silver;
+      display: block;
+
+    }
+
+  }
+
+  .account-creation-currencies {
+    .account-creation-currency {
+      outline: none;
+      cursor: pointer;
+      height: 63px;
+      line-height: 63px;
+      border-bottom: 1px solid $argile;
+      opacity: 0.5;
+      position: relative;
+      transition: all 500ms ease;
+
+      @include highlight-block($porto, -40px);
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &.selected {
+        @include highlight-block-active($porto, -40px);
+      }
+
+      &.bitcoin {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -23px;
+          }
+        }
+      }
+
+      &.ethereum {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -183.5px;
+          }
+        }
+      }
+
+      &.ethereum-classic {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -203.5px;
+          }
+        }
+      }
+
+      &.dash {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -115.5px;
+          }
+        }
+      }
+
+      &.litecoin {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -340px;
+          }
+        }
+      }
+
+      &.dogecoin {
+        .currency-name {
+          &:before {
+            background-position: -2.5px -160px;
+          }
+        }
+      }
+
+      .currency-name {
+        font-size: 13px;
+
+        &:before {
+          content: '';
+          display: inline-block;
+          border-radius: 8px;
+          width: 23px;
+          height: 23px;
+          vertical-align: middle;
+          margin-right: 20px;
+
+          background-image: url('/img/icon-currencies.png');
+          background-repeat: no-repeat;
+          background-size: 23px;
+        }
+      }
+      
+      .currency-short {
+        font-size: 10px;
+        float: right;
+        color: $lead;
+      }
+    }
+  }
+}
