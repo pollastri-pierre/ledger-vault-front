@@ -7,6 +7,7 @@ import MainCreation from './MainCreation';
 import AccountCreationMembers from './AccountCreationMembers';
 import AccountCreationApprovals from './AccountCreationApprovals';
 import AccountCreationTimeLock from './AccountCreationTimeLock';
+import AccountCreationRateLimiter from './AccountCreationRateLimiter';
 import './AccountCreation.css';
 
 class AccountCreation extends Component {
@@ -32,7 +33,12 @@ class AccountCreation extends Component {
       addMember,
       setApprovals,
       enableTimeLock,
+      enableRatelimiter,
+      openPopBubble,
       changeTimeLock,
+      changeRatelimiter,
+      changeFrequency,
+      save,
     } = this.props;
 
     let isNextDisabled = false;
@@ -59,6 +65,22 @@ class AccountCreation extends Component {
           timelock={account.security.timelock}
           enable={enableTimeLock}
           change={changeTimeLock}
+          popbubble={account.popBubble}
+          anchor={account.popAnchor}
+          openPopBubble={openPopBubble}
+          changeFrequency={changeFrequency}
+        />);
+        break;
+      case 'rate-limiter':
+        content = (<AccountCreationRateLimiter
+          switchInternalModal={switchInternalModal}
+          ratelimiter={account.security.ratelimiter}
+          enable={enableRatelimiter}
+          change={changeRatelimiter}
+          popbubble={account.popBubble}
+          anchor={account.popAnchor}
+          openPopBubble={openPopBubble}
+          changeFrequency={changeFrequency}
         />);
         break;
       case 'members':
@@ -87,6 +109,7 @@ class AccountCreation extends Component {
           selectCurrency={selectCurrency}
           tabsIndex={tabsIndex}
           onSelect={onSelect}
+          save={save}
           switchInternalModal={switchInternalModal}
         />);
         break;

@@ -4,10 +4,10 @@ import Checkbox from '../form/Checkbox';
 import { PopBubble } from '../';
 import ArrowDown from '../icons/ArrowDown';
 
-function AccountCreationTimeLock(props) {
+function AccountCreationRateLimiter(props) {
   const {
     switchInternalModal,
-    timelock,
+    ratelimiter,
     enable,
     popbubble,
     openPopBubble,
@@ -19,22 +19,22 @@ function AccountCreationTimeLock(props) {
   return (
     <div className="small-modal">
       <header>
-        <h3>Time-lock</h3>
+        <h3>Rate Limiter</h3>
       </header>
       <div className="content">
         <div className="form-field-checkbox" onClick={enable}>
-          <label htmlFor="enable-timelock">Enable</label>
+          <label htmlFor="enable-ratelimiter">Enable</label>
           <Checkbox
-            checked={timelock.enabled}
+            checked={ratelimiter.enabled}
             handleInputChange={enable}
-            labelFor="enable-timelock"
+            labelFor="enable-ratelimiter"
           />
         </div>
         <div className="form-field">
-          <input className="small-padding" type="text" id="text-duration" value={timelock.duration} onChange={e => change(e.target.value)} />
-          <label htmlFor="text-duration">Duration</label>
+          <input className="medium-padding" type="text" id="text-duration" value={ratelimiter.rate} onChange={e => change(e.target.value)} />
+          <label htmlFor="text-duration">Rate</label>
           <span className="count dropdown" onClick={(e) => openPopBubble(e.currentTarget)}>
-            {timelock.frequency}
+            <strong>operation</strong> per {ratelimiter.frequency}
             <ArrowDown className="arrow-down" />
           </span>
           <PopBubble
@@ -47,16 +47,15 @@ function AccountCreationTimeLock(props) {
             }}
           >
             <div className="frequency-bubble">
-              <div onClick={() => changeFrequency('timelock', 'minuts')} className="frequency-bubble-row">minuts</div>
-              <div onClick={() => changeFrequency('timelock', 'hours')} className="frequency-bubble-row">hours</div>
-              <div onClick={() => changeFrequency('timelock', 'days')} className="frequency-bubble-row">days</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'minut')} className="frequency-bubble-row">minuts</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'hour')} className="frequency-bubble-row">hours</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'day')} className="frequency-bubble-row">days</div>
             </div>
           </PopBubble>
         </div>
         <p className="info">
-          Time-lock delays each outgoing operation by
-          a configurable length, after all the required members have given their
-          approvals.
+          Rate-limiter enforces that your team does not exceed a pre-defined
+          number of outgoing transaction per interval of time.
         </p>
       </div>
 
@@ -67,4 +66,5 @@ function AccountCreationTimeLock(props) {
   );
 }
 
-export default AccountCreationTimeLock;
+export default AccountCreationRateLimiter;
+

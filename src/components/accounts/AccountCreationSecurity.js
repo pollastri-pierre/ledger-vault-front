@@ -26,7 +26,8 @@ function AccountCreationSecurity(props) {
           <div className="security-scheme-line disabled">
             <ValidateBadge className="security-icon security-icon-approvals" />
             <span className="security-scheme-name">Approvals</span>
-            <span className="security-scheme-value">3 required
+            <span className="security-scheme-value">
+              {account.security.approvals} required
               <ArrowDown className="security-arrow-right" />
             </span>
           </div>
@@ -37,7 +38,8 @@ function AccountCreationSecurity(props) {
           >
             <ValidateBadge className="security-icon security-icon-approvals" />
             <span className="security-scheme-name">Approvals</span>
-            <span className="security-scheme-value">{account.security.approvals} required
+            <span className="security-scheme-value">
+              {account.security.approvals} required
               <ArrowDown className="security-arrow-right" />
             </span>
           </div>
@@ -49,15 +51,21 @@ function AccountCreationSecurity(props) {
         <div className="security-scheme-line" onClick={() => switchInternalModal('time-lock')}>
           <Hourglass className="security-icon security-icon-time-lock" />
           <span className="security-scheme-name">Time-Lock</span>
-          <span className="security-scheme-value">24 hours
+          <span className="security-scheme-value">
+            {(account.security.timelock.enabled) ?
+              <span>{account.security.timelock.duration} {account.security.timelock.frequency}</span>
+            : 'disabled'}
             <ArrowDown className="security-arrow-right" />
           </span>
         </div>
         <div className="security-scheme-hr" />
-        <div className="security-scheme-line">
+        <div className="security-scheme-line" onClick={() => switchInternalModal('rate-limiter')}>
           <Rates className="security-icon security-icon-rate-limiter" />
           <span className="security-scheme-name">Rate Limiter</span>
-          <span className="security-scheme-value">72 jours
+          <span className="security-scheme-value">
+            {(account.security.ratelimiter.enabled) ?
+              <span>{account.security.ratelimiter.rate} per {account.security.ratelimiter.frequency}</span>
+            : 'disabled'}
             <ArrowDown className="security-arrow-right" />
           </span>
         </div>

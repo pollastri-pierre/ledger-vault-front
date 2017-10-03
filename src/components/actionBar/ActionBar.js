@@ -27,14 +27,11 @@ class ActionBar extends Component {
   }
 
   saveProfile = (profile) => {
-    console.log(profile);
-
     this.closeProfileDialog();
   }
 
   render() {
     // let profile;
-    console.log(this.props);
     let profileCard;
     let profileDialog = '';
 

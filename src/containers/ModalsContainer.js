@@ -17,7 +17,12 @@ import {
   addMember,
   setApprovals,
   enableTimeLock,
+  enableRatelimiter,
+  openPopBubble,
   changeTimeLock,
+  changeRatelimiter,
+  changeFrequency,
+  saveAccount,
 } from '../redux/modules/account-creation';
 
 import {
@@ -50,6 +55,11 @@ const mapDispatchToProps = dispatch => ({
   onSetApprovals: (n) => dispatch(setApprovals(n)),
   onEnableTimeLock: () => dispatch(enableTimeLock()),
   onChangeTimeLock: (v) => dispatch(changeTimeLock(v)),
+  onEnableRatelimiter: () => dispatch(enableRatelimiter()),
+  onChangeRatelimiter: (v) => dispatch(changeRatelimiter(v)),
+  onOpenPopBubble: (anchor) => dispatch(openPopBubble(anchor)),
+  onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
+  onSaveAccount: () => dispatch(saveAccount()),
 });
 
 function ModalsContainer(props) {
@@ -69,6 +79,11 @@ function ModalsContainer(props) {
     onSetApprovals,
     onEnableTimeLock,
     onChangeTimeLock,
+    onEnableRatelimiter,
+    onChangeRatelimiter,
+    onOpenPopBubble,
+    onChangeFrequency,
+    onSaveAccount,
   } = props;
 
   return (
@@ -103,9 +118,14 @@ function ModalsContainer(props) {
           addMember={onAddMember}
           enableTimeLock={onEnableTimeLock}
           changeTimeLock={onChangeTimeLock}
+          enableRatelimiter={onEnableRatelimiter}
+          changeRatelimiter={onChangeRatelimiter}
+          changeFrequency={onChangeFrequency}
+          openPopBubble={onOpenPopBubble}
           changeAccountName={onChangeAccountName}
           currencies={allCurrencies}
           account={accountCreation}
+          save={onSaveAccount}
           close={onCloseAccount}
           switchInternalModal={onSwitchInternalModal}
         />

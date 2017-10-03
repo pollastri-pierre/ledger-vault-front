@@ -7,6 +7,7 @@ import { Alert } from '../components';
 import { closeMessage } from '../redux/modules/alerts';
 import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../redux/modules/auth';
 import { GOT_OPERATION_FAIL } from '../redux/modules/operations';
+import { SAVED_ACCOUNT } from '../redux/modules/account-creation';
 
 const mapStateToProps = state => ({
   alerts: state.alerts,
@@ -47,6 +48,7 @@ const hasError = (id, alerts) => {
 };
 
 export const allMessages = [
+  SAVED_ACCOUNT,
   CHECK_TEAM_ERROR,
   AUTHENTICATION_FAILED,
   LOGOUT,

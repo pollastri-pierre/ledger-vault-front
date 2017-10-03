@@ -15,10 +15,52 @@ export const ENABLE_TIMELOCK = 'account-creation/ENABLE_TIMELOCK';
 export const CHANGE_TIMELOCK = 'account-creation/CHANGE_TIMELOCK';
 export const CHANGE_FREQUEMCY_TIMELOCK = 'account-creation/CHANGE_FREQUEMCY_TIMELOCK';
 export const CHANGE_FREQUEMCY_RATELIMITER = 'account-creation/CHANGE_FREQUEMCY_RATELIMITER';
+export const OPEN_POPBUBBLE = 'account-creation/OPEN_POPBUBBLE';
+export const ENABLE_RATELIMITER = 'account-creation/ENABLE_RATELIMITER';
+export const CHANGE_RATELIMITER = 'account-creation/CHANGE_RATELIMITER';
+
+export const SAVE_ACCOUNT_START = 'account-creation/SAVE_ACCOUNT_START';
+export const SAVED_ACCOUNT = 'account-creation/SAVED_ACCOUNT';
+export const SAVED_ACCOUNT_FAIL = 'account-creation/SAVED_ACCOUNT_FAIL';
+
+
+export function saveAccountStart() {
+  return {
+    type: SAVE_ACCOUNT_START,
+  };
+}
+
+export function savedAccount() {
+  return {
+    type: SAVED_ACCOUNT,
+  };
+}
+
+export function saveAccount() {
+  return dispatch => {
+    dispatch(saveAccountStart());
+    setTimeout(() => {
+      dispatch(savedAccount());
+    }, 1000);
+
+  }
+}
+export function openPopBubble(anchor) {
+  return {
+    type: OPEN_POPBUBBLE,
+    anchor,
+  };
+}
 
 export function enableTimeLock() {
   return {
     type: ENABLE_TIMELOCK,
+  };
+}
+
+export function enableRatelimiter() {
+  return {
+    type: ENABLE_RATELIMITER,
   };
 }
 
@@ -39,6 +81,13 @@ export function changeFrequency(field, frequency) {
 export function changeTimeLock(number) {
   return {
     type: CHANGE_TIMELOCK,
+    number,
+  };
+}
+
+export function changeRatelimiter(number) {
+  return {
+    type: CHANGE_RATELIMITER,
     number,
   };
 }
@@ -133,13 +182,15 @@ export const initialState = {
       duration: 0,
       frequency: 'hours',
     },
-    rateLimiter: {
-      enabled: true,
+    ratelimiter: {
+      enabled: false,
       rate: 0,
-      frequency: 'hours',
+      frequency: 'hour',
     },
   },
   internModalId: 'main',
+  popBubble: false,
+  popAnchor: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -177,7 +228,7 @@ export default function reducer(state = initialState, action) {
           ...state,
           security: {
             ...state.security,
-            approvals: parseInt(action.number, 10),
+            approvals: action.number,
           },
         };
       }
@@ -203,6 +254,17 @@ export default function reducer(state = initialState, action) {
           },
         },
       };
+    case ENABLE_RATELIMITER:
+      return {
+        ...state,
+        security: {
+          ...state.security,
+          ratelimiter: {
+            ...state.security.ratelimiter,
+            enabled: !state.security.ratelimiter.enabled,
+          },
+        },
+      };
     case CHANGE_TIMELOCK: {
       const isNumber = /^[0-9\b]+$/;
 
@@ -221,6 +283,24 @@ export default function reducer(state = initialState, action) {
 
       return state;
     }
+    case CHANGE_RATELIMITER: {
+      const isNumber = /^[0-9\b]+$/;
+
+      if (action.number === '' || isNumber.test(action.number)) {
+        return {
+          ...state,
+          security: {
+            ...state.security,
+            ratelimiter: {
+              ...state.security.ratelimiter,
+              rate: action.number,
+            },
+          },
+        };
+      }
+
+      return state;
+    }
     case CHANGE_FREQUEMCY_TIMELOCK: {
       return {
         ...state,
@@ -231,6 +311,7 @@ export default function reducer(state = initialState, action) {
             frequency: action.frequency,
           },
         },
+        popBubble: false,
       };
     }
     case CHANGE_FREQUEMCY_RATELIMITER: {
@@ -238,13 +319,25 @@ export default function reducer(state = initialState, action) {
         ...state,
         security: {
           ...state.security,
-          rateLimiter: {
-            ...state.security.rateLimiter,
+          ratelimiter: {
+            ...state.security.ratelimiter,
             frequency: action.frequency,
           },
         },
+        popBubble: false,
       };
     }
+    case OPEN_POPBUBBLE:
+      if (typeof action.anchor !== "string") {
+        return { ...state, popBubble: !state.popBubble, popAnchor: action.anchor };
+      }
+      else {
+        return { ...state, popBubble: !state.popBubble };
+      }
+    case SAVE_ACCOUNT_START:
+      return { ...state, modalOpened: false };
+    case SAVED_ACCOUNT:
+      return initialState;
     case LOGOUT:
       return initialState;
     default:

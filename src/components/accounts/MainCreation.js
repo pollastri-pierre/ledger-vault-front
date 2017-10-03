@@ -3,6 +3,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import AccountCreationCurrencies from './AccountCreationCurrencies';
 import AccountCreationOptions from './AccountCreationOptions';
 import AccountCreationSecurity from './AccountCreationSecurity';
+import AccountCreationConfirmation from './AccountCreationConfirmation';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { DialogButton } from '../';
@@ -17,8 +18,11 @@ function MainCreation(props) {
     selectCurrency,
     onSelect,
     tabsIndex,
+    save,
     switchInternalModal,
   } = props;
+
+  console.log(save);
 
   let isNextDisabled = false;
 
@@ -30,7 +34,9 @@ function MainCreation(props) {
       isNextDisabled = (account.options.name === '');
       break;
     case 2:
-      isNextDisabled = (_.isNull(account.currency));
+      isNextDisabled = (account.security.members.length === 0 ||
+        account.security.approvals === 0 ||
+        account.security.approvals > account.security.members.length);
       break;
     default:
       isNextDisabled = true;
@@ -64,7 +70,11 @@ function MainCreation(props) {
                 >
                   3. Security
                 </Tab>
-                <Tab disabled>4. Confirmation</Tab>
+                <Tab
+                  disabled={(account.security.members.length === 0 || account.security.approvals === 0 || account.security.approvals > account.security.members.length)}
+                >
+                  4. Confirmation
+                </Tab>
               </TabList>
             </header>
             <div className="content">
@@ -90,7 +100,9 @@ function MainCreation(props) {
                   />
                 </TabPanel>
                 <TabPanel className="tabs_panel">
-                    Confirmation
+                  <AccountCreationConfirmation
+                    account={account}
+                  />
                 </TabPanel>
               </div>
             </div>
@@ -107,7 +119,7 @@ function MainCreation(props) {
                 Continue
               </DialogButton>
               :
-              <DialogButton highlight right onTouchTap={close}>Done</DialogButton>
+              <DialogButton highlight right onTouchTap={save}>Done</DialogButton>
             }
           </div>
         </Tabs>

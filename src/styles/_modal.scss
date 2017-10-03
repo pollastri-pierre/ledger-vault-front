@@ -1,3 +1,4 @@
+@import './mixins';
 @import './animations';
 
 .modal {
@@ -73,12 +74,13 @@
   padding-top: 250px;
 }
 
-.modal .account-creation-approvals {
+.modal .small-modal {
   box-sizing: border-box;
   width: 445px;
 
   header {
     padding-bottom: 0;
+    position: static;
   }
 
   h3 {
@@ -90,10 +92,11 @@
   }
 
   .content {
-    height: 180px;
-    margin-top: 85px;
+    height: auto;
     padding-left: 39px;
     padding-right: 35px;
+    padding-top: 20px;
+    margin: 0;
     position: relative;
   }
 
@@ -102,6 +105,57 @@
     color: $lead;
     line-height: 1.82;
     margin: 0;
+  }
+
+  .form-field-checkbox {
+    position: relative;
+    margin-bottom: 15px;
+
+    & > label {
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 600;
+      color: $black;
+    }
+
+    .slidebox {
+      position: absolute;
+      right: 0;
+      top: -7px;
+    }
+  }
+
+
+  .form-field {
+    position: relative;
+
+    & > label {
+      position: absolute;
+      top: 10px;
+      font-size: 13px;
+    }
+
+    & > span {
+      font-size: 13px;
+      color: $lead;
+      position: absolute;
+      right: 0px;
+      top: 10px;
+
+      strong {
+        font-weight: normal;
+        color: $black;
+      }
+
+      .arrow-down {
+        cursor: pointer;
+        width: 8px;
+        height: 5px;
+        stroke: black;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+    }
   }
 
   input[type="text"] {
@@ -116,21 +170,34 @@
     font-size: 13px;
     border-bottom: 1px solid $silver;
     margin-bottom: 15px;
-  }
-  
-  label {
-    position: absolute;
-    top: 10px;
-    font-size: 13px;
+
+    &.small-padding {
+      padding-right: 66px;
+    }
+    &.medium-padding {
+      padding-right: 151px;
+    }
   }
 
-  .count {
-    font-size: 13px;
-    color: $lead;
-    position: absolute;
-    right: 40px;
-    top: 10px;
+  .footer {
+    position: static;
   }
+  
+
 
 }
 
+.frequency-bubble {
+  width: 100px;
+  padding: 20px;
+  font-size: 11px;
+
+  .frequency-bubble-row {
+    cursor: pointer;
+    position: relative;
+    height: 26px;
+    line-height: 26px;
+
+    @include highlight-block($porto, -20px);
+  }
+}
