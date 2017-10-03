@@ -1,6 +1,14 @@
 @import '../../styles/variables';
 @import '../../styles/mixins';
 
+#account-creation {
+  height: 560px;
+  transition: height 500ms ease;
+
+  &.members {
+    height: 200px;
+  }
+}
 .account-creation {
   width: 445px;
 
@@ -14,7 +22,6 @@
       display: block;
       margin-top: 2px;
     }
-    
     .dot {
       background: black;
       border-radius: 50%;
@@ -147,7 +154,6 @@
           background-size: 23px;
         }
       }
-      
       .currency-short {
         font-size: 10px;
         float: right;

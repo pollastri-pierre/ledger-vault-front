@@ -1,0 +1,99 @@
+@import '../../styles/animations';
+@import '../../styles/variables';
+
+.account-creation-members {
+  box-sizing: border-box;
+  width: 445px;
+  
+  header {
+    padding-bottom: 0 !important;
+  }
+
+  h3 {
+    font-size: 18.4px;
+    letter-spacing: -0.4px;
+    color: $black;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 37px;
+  }
+
+  .counter {
+    text-transform: uppercase;
+    font-size: 10px;
+    color: $lead;
+    font-weight: 600;
+    float: right;
+    margin-top: -57px;
+  }
+
+  .info {
+    font-size: 11px;
+    color: $lead;
+    line-height: 1.82;
+    margin: 0;
+    margin-bottom: 35px;
+  }
+
+  .account-member-row {
+    border-bottom: 1px solid $argile;
+    cursor: pointer;
+    height: 70px;
+    position: relative;
+    padding-left: 50px;
+
+    &:last-child {
+      border: 0;
+    }
+
+    .member-avatar {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -15px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: $mouse;
+
+      .member-avatar-img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -6.5px;
+        margin-top: -7.5px;
+        fill: none;
+        stroke: white;
+        stroke-width: 2px;
+      }
+
+      img.member-avatar-img {
+        width: 30px; 
+        height: 30px;
+        border-radius: 50%;
+        position: absolute;
+        top: 7px;
+        left: 7px;
+      }
+    }
+  
+    .name {
+      display: inline-block;
+      margin-top: 17px;
+      color: $black;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .role {
+      margin: 0;
+      font-size: 11px;
+      color: $lead;
+    }
+
+    .slidebox {
+      float: right;
+      margin-top: -20px;
+    }
+  }
+}

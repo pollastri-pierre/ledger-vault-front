@@ -234,8 +234,10 @@ export default function reducer(state = initialState, action) {
     case LOCATION_CHANGE: {
       const pathname = action.payload.pathname;
       const split = pathname.split('/account/');
+      console.log(split);
 
-      if (split[1] && split[1] !== state.idAccount) {
+
+      if (split.length === 1 || (split[1] && split[1] !== state.idAccount)) {
         _.each(promises, promise => {
           clearPromise(promise);
         });

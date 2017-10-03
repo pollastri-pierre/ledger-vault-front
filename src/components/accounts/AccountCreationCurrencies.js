@@ -33,10 +33,12 @@ AccountCreationCurrencies.propTypes = {
   onSelect: PropTypes.func.isRequired,
   currency: PropTypes.shape({
     name: PropTypes.string,
+    shortname: PropTypes.string,
   }),
-  currencies: PropTypes.arrayOf({
+  currencies: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
-  }).isRequired,
+    shortname: PropTypes.string,
+  })).isRequired,
 };
 
 export default AccountCreationCurrencies;

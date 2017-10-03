@@ -32,6 +32,10 @@
 
   &:disabled {
     opacity: 0.3;
+
+    &:hover::after {
+      opacity: 0;
+    }
   }
 
   &.highlight {
