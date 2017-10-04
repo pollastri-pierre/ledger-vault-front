@@ -1,3 +1,5 @@
+@import './variables';
+
 @mixin highlight-block($color, $left) {
   &::before {
     content: '';
@@ -15,6 +17,47 @@
   &:hover::before {
     opacity: 1;
     width: 5px;
+  }
+}
+
+@mixin badge-currency($size) {
+  &::before {
+    content: '';
+    display: inline-block;
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+  }
+
+  &.bitcoin {
+    &::before {
+      background: $bitcoin;
+    }
+  }
+  &.ethereum {
+    &::before {
+      background: $ethereum;
+    }
+  }
+  &.litecoin {
+    &::before {
+      background: $litecoin;
+    }
+  }
+  &.dash {
+    &::before {
+      background: $dash;
+    }
+  }
+  &.dogecoin {
+    &::before {
+      background: $dogecoin;
+    }
+  }
+  &.ethereum-classic {
+    &::before {
+      background: $ethereum-classic;
+    }
   }
 }
 

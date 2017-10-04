@@ -1,7 +1,8 @@
 import React from 'react';
-import PeopleThin from '../icons/PeopleThin';
-import Hourglass from '../icons/Hourglass';
-import Rates from '../icons/Rates';
+
+import Rates from '../icons/thin/Rates';
+import PeopleThin from '../icons/thin/People';
+import Hourglass from '../icons/thin/Hourglass';
 
 function AccountCreationConfirmation(props) {
   const { security, options, currency } = props.account;
@@ -39,7 +40,7 @@ function AccountCreationConfirmation(props) {
       <div className="confirmation-infos">
         <div className="confirmation-info">
           <span className="info-title">Name</span>
-          <span className="info-value name">{options.name}</span>
+          <span className={`info-value name ${currency.name.split(' ').join('-').toLowerCase()}`}>{options.name}</span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Currency</span>

@@ -188,9 +188,10 @@
 }
 
 .frequency-bubble {
+  box-sizing: border-box;
   width: 100px;
   padding: 20px;
-  font-size: 11px;
+  font-size: 13px;
 
   .frequency-bubble-row {
     cursor: pointer;
@@ -199,5 +200,8 @@
     line-height: 26px;
 
     @include highlight-block($porto, -20px);
+    &.active {
+      @include highlight-block-active($porto, -20px);
+    }
   }
 }

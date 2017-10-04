@@ -24,34 +24,11 @@
       margin-top: 2px;
     }
     .dot {
-      background: black;
-      border-radius: 50%;
-      content: '';
-      width: 6px;
-      height: 6px;
       margin-right: 10px;
       position: absolute;
-      top: 42px;
+      top: 31px;
 
-      &.bitcoin {
-        background-color: $bitcoin;
-      }
-      &.dogecoin {
-        background-color: $dogecoin;
-      }
-      &.dash {
-        background-color: $dash;
-      }
-      &.ethereum {
-        background-color: $ethereum;
-      }
-      &.ethereum-classic {
-        background-color: $ethereum-classic;
-      }
-
-      &.litecoin {
-        background-color: $litecoin;
-      }
+      @include badge-currency(6px);
     }
 
     input[type="text"] {
@@ -182,6 +159,15 @@
         float: right;
         font-size: 13px;
 
+        &.name {
+          @include badge-currency(6px);
+
+          &:before {
+            margin-right: 10px;
+            vertical-align: middle;
+          }
+        }
+
         &.currency {
           text-transform: uppercase;
           font-size: 10px;
@@ -241,7 +227,8 @@
 
       &.ratelimiter {
         height: 30px;
-        fill: $mouse;
+        stroke: $mouse;
+        stroke-width: 2px;
       }
 
       &.member {
@@ -253,7 +240,6 @@
 
       &.timelock {
         height: 30px;
-        fill: none;
         stroke: $mouse;
         stroke-width: 2px;
       }

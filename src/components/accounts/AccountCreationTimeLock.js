@@ -47,9 +47,9 @@ function AccountCreationTimeLock(props) {
             }}
           >
             <div className="frequency-bubble">
-              <div onClick={() => changeFrequency('timelock', 'minuts')} className="frequency-bubble-row">minuts</div>
-              <div onClick={() => changeFrequency('timelock', 'hours')} className="frequency-bubble-row">hours</div>
-              <div onClick={() => changeFrequency('timelock', 'days')} className="frequency-bubble-row">days</div>
+              <div onClick={() => changeFrequency('timelock', 'minuts')} className={`frequency-bubble-row ${(timelock.frequency === 'minuts') ? 'active' : ''}`}>minuts</div>
+              <div onClick={() => changeFrequency('timelock', 'hours')} className={`frequency-bubble-row ${(timelock.frequency === 'hours') ? 'active' : ''}`}>hours</div>
+              <div onClick={() => changeFrequency('timelock', 'days')} className={`frequency-bubble-row ${(timelock.frequency === 'days') ? 'active' : ''}`}>days</div>
             </div>
           </PopBubble>
         </div>

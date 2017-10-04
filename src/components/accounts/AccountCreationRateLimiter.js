@@ -47,9 +47,9 @@ function AccountCreationRateLimiter(props) {
             }}
           >
             <div className="frequency-bubble">
-              <div onClick={() => changeFrequency('rate-limiter', 'minut')} className="frequency-bubble-row">minuts</div>
-              <div onClick={() => changeFrequency('rate-limiter', 'hour')} className="frequency-bubble-row">hours</div>
-              <div onClick={() => changeFrequency('rate-limiter', 'day')} className="frequency-bubble-row">days</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'minut')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'minut') ? 'active' : ''}`}>minut</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'hour')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'hour') ? 'active' : ''}`}>hour</div>
+              <div onClick={() => changeFrequency('rate-limiter', 'day')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'day') ? 'active' : ''}`}>day</div>
             </div>
           </PopBubble>
         </div>
