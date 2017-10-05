@@ -1,5 +1,5 @@
-@import '../../styles/animations';
-@import '../../styles/variables';
+@import '../../../styles/animations';
+@import '../../../styles/variables';
 
 .account-creation-members {
   box-sizing: border-box;
@@ -37,6 +37,7 @@
 
   .account-member-row {
     border-bottom: 1px solid $argile;
+    outline: none;
     cursor: pointer;
     height: 70px;
     position: relative;

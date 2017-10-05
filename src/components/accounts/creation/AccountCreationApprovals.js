@@ -1,5 +1,6 @@
 import React from 'react';
-import { DialogButton } from '../';
+import PropTypes from 'prop-types';
+import { DialogButton } from '../../';
 
 function AccountCreationApprovals(props) {
   const { switchInternalModal, approvals, setApprovals, members } = props;
@@ -12,10 +13,11 @@ function AccountCreationApprovals(props) {
         <div className="form-field">
           <input
             type="text"
+            id="approval-field"
             value={approvals}
-            onChange={(e) => setApprovals(e.target.value)}
+            onChange={e => setApprovals(e.target.value)}
           />
-          <label>Amount</label>
+          <label htmlFor="approval-field">Amount</label>
           <span className="count">approvals from {members.length} members</span>
         </div>
         <p className="info">
@@ -30,5 +32,12 @@ function AccountCreationApprovals(props) {
     </div>
   );
 }
+
+AccountCreationApprovals.propTypes = {
+  approvals: PropTypes.string.isRequired,
+  members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  switchInternalModal: PropTypes.func.isRequired,
+  setApprovals: PropTypes.func.isRequired,
+};
 
 export default AccountCreationApprovals;

@@ -6,7 +6,6 @@ export const CLOSE_MODAL_ACCOUNT = 'account-creation/CLOSE_MODAL_ACCOUNT';
 export const CHANGE_TAB = 'account-creation/CHANGE_TAB';
 export const SELECT_CURRENCY = 'account-creation/SELECT_CURRENCY';
 export const CHANGE_ACCOUNT_NAME = 'account-creation/CHANGE_ACCOUNT_NAME';
-export const OPEN_MEMBERS = 'account-creation/OPEN_MEMBERS';
 export const SWITCH_INTERN_MODAL = 'account-creation/SWITCH_INTERN_MODAL';
 export const ADD_MEMBER = 'account-creation/ADD_MEMBER';
 export const REMOVE_MEMBER = 'account-creation/REMOVE_MEMBER';
@@ -37,13 +36,12 @@ export function savedAccount() {
 }
 
 export function saveAccount() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(saveAccountStart());
     setTimeout(() => {
       dispatch(savedAccount());
     }, 1000);
-
-  }
+  };
 }
 export function openPopBubble(anchor) {
   return {
@@ -146,12 +144,6 @@ export function changeAccountName(name) {
   };
 }
 
-export function openMembers() {
-  return {
-    type: OPEN_MEMBERS,
-  };
-}
-
 export function switchInternalModal(id) {
   return {
     type: SWITCH_INTERN_MODAL,
@@ -176,15 +168,15 @@ export const initialState = {
   },
   security: {
     members: [],
-    approvals: 0,
+    approvals: '0',
     timelock: {
       enabled: false,
-      duration: 0,
+      duration: '0',
       frequency: 'hours',
     },
     ratelimiter: {
       enabled: false,
-      rate: 0,
+      rate: '0',
       frequency: 'hour',
     },
   },
@@ -196,18 +188,17 @@ export const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case ADD_MEMBER: {
-      const _members = _.cloneDeep(state.security.members);
-      let _approvals = _.cloneDeep(state.security.approvals);
-      const find = _.find(state.security.members, { id: action.member.id});
+      const cMembers = _.cloneDeep(state.security.members);
+      const find = _.find(state.security.members, { id: action.member.id });
 
       if (find) {
-        _.remove(_members, { id: action.member.id });
+        _.remove(cMembers, { id: action.member.id });
       } else {
-        _members.push(action.member);
+        cMembers.push(action.member);
       }
 
       return {
-        ...state, security: { ...state.security, members: _members },
+        ...state, security: { ...state.security, members: cMembers },
       };
     }
     case CHANGE_ACCOUNT_NAME:
@@ -328,12 +319,10 @@ export default function reducer(state = initialState, action) {
       };
     }
     case OPEN_POPBUBBLE:
-      if (typeof action.anchor !== "string") {
+      if (typeof action.anchor !== 'string') {
         return { ...state, popBubble: !state.popBubble, popAnchor: action.anchor };
       }
-      else {
-        return { ...state, popBubble: !state.popBubble };
-      }
+      return { ...state, popBubble: !state.popBubble };
     case SAVE_ACCOUNT_START:
       return { ...state, modalOpened: false };
     case SAVED_ACCOUNT:

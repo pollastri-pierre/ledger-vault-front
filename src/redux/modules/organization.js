@@ -4,7 +4,7 @@ export const GET_ORGANIZATION_MEMBERS_START = 'organization/GET_ORGANIZATION_MEM
 export const GOT_ORGANIZATION_MEMBERS = 'organization/GOT_ORGANIZATION_MEMBERS';
 export const GOT_ORGANIZATION_MEMBERS_FAIL = 'organization/GOT_ORGANIZATION_MEMBERS_FAIL';
 
-const members = [
+const fakeMembers = [
   {
     id: 1,
     name: 'Smith',
@@ -69,20 +69,24 @@ export function getOrganizationMembers() {
   return (dispatch) => {
     dispatch(getOrganizationMembersStart());
     setTimeout(() => {
-      dispatch(gotOrganizationMembers(members));
+      dispatch(gotOrganizationMembers(fakeMembers));
     }, 890);
   };
 }
 
-const initialState = {
+export const initialState = {
   isLoading: false,
   members: null,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case GET_ORGANIZATION_MEMBERS_START:
+      return { ...state, isLoading: true };
     case GOT_ORGANIZATION_MEMBERS:
-      return { ...state, members: action.members };
+      return { ...state, members: action.members, isLoading: false };
+    case GOT_ORGANIZATION_MEMBERS_FAIL:
+      return { ...state, isLoading: false };
     case LOGOUT:
       return initialState;
     default:

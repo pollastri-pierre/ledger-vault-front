@@ -21,6 +21,12 @@ function AccountCreationOptions(props) {
   );
 }
 
+AccountCreationOptions.defaultProps = {
+  currency: {
+    name: '',
+  },
+};
+
 AccountCreationOptions.propTypes = {
   currency: PropTypes.shape({
     name: PropTypes.string,

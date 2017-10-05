@@ -1,13 +1,13 @@
+import React from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import CircularProgress from 'material-ui/CircularProgress';
 import AccountCreationCurrencies from './AccountCreationCurrencies';
 import AccountCreationOptions from './AccountCreationOptions';
 import AccountCreationSecurity from './AccountCreationSecurity';
 import AccountCreationConfirmation from './AccountCreationConfirmation';
-import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { DialogButton } from '../';
-import React from 'react';
+import { DialogButton } from '../../';
 
 function MainCreation(props) {
   const {
@@ -21,8 +21,6 @@ function MainCreation(props) {
     save,
     switchInternalModal,
   } = props;
-
-  console.log(save);
 
   let isNextDisabled = false;
 
@@ -71,7 +69,10 @@ function MainCreation(props) {
                   3. Security
                 </Tab>
                 <Tab
-                  disabled={(account.security.members.length === 0 || account.security.approvals === 0 || account.security.approvals > account.security.members.length)}
+                  disabled={(account.security.members.length === 0 ||
+                    account.security.approvals === 0 ||
+                    account.security.approvals > account.security.members.length)
+                  }
                 >
                   4. Confirmation
                 </Tab>
@@ -127,5 +128,17 @@ function MainCreation(props) {
     </div>
   );
 }
+
+MainCreation.propTypes = {
+  close: PropTypes.func.isRequired,
+  changeAccountName: PropTypes.func.isRequired,
+  currencies: PropTypes.shape({}).isRequired,
+  account: PropTypes.shape({}).isRequired,
+  tabsIndex: PropTypes.number.isRequired,
+  selectCurrency: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
+  switchInternalModal: PropTypes.func.isRequired,
+};
 
 export default MainCreation;

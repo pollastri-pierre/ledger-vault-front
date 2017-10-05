@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import PropTypes from 'prop-types';
-import { DialogButton } from '../';
+import { DialogButton } from '../../';
 import MainCreation from './MainCreation';
 import AccountCreationMembers from './AccountCreationMembers';
 import AccountCreationApprovals from './AccountCreationApprovals';
@@ -40,22 +40,6 @@ class AccountCreation extends Component {
       changeFrequency,
       save,
     } = this.props;
-
-    let isNextDisabled = false;
-
-    switch (tabsIndex) {
-      case 0:
-        isNextDisabled = (_.isNull(account.currency));
-        break;
-      case 1:
-        isNextDisabled = (account.options.name === '');
-        break;
-      case 2:
-        isNextDisabled = (_.isNull(account.currency));
-        break;
-      default:
-        isNextDisabled = true;
-    }
 
     let content;
     switch (account.internModalId) {
@@ -137,9 +121,21 @@ class AccountCreation extends Component {
 }
 
 AccountCreation.propTypes = {
+  organization: PropTypes.shape({}).isRequired,
   currencies: PropTypes.shape({}).isRequired,
   getCurrencies: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+  switchInternalModal: PropTypes.func.isRequired,
+  getOrganizationMembers: PropTypes.func.isRequired,
+  addMember: PropTypes.func.isRequired,
+  setApprovals: PropTypes.func.isRequired,
+  enableTimeLock: PropTypes.func.isRequired,
+  enableRatelimiter: PropTypes.func.isRequired,
+  openPopBubble: PropTypes.func.isRequired,
+  changeTimeLock: PropTypes.func.isRequired,
+  changeRatelimiter: PropTypes.func.isRequired,
+  changeFrequency: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired,
   changeAccountName: PropTypes.func.isRequired,
   selectCurrency: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,

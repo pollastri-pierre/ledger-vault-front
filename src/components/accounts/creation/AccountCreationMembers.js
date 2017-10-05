@@ -1,16 +1,15 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import './AccountCreationMembers.css';
-import { DialogButton } from '../';
-import Checkbox from '../form/Checkbox';
-import { Avatar } from '../../components';
+import Checkbox from '../../form/Checkbox';
+import { Avatar, DialogButton } from '../../../components';
 
-console.log(Avatar);
 
 class AccountCreationMembers extends Component {
   componentWillMount() {
-    const { organization, getOrganizationMembers, members } = this.props;
+    const { organization, getOrganizationMembers } = this.props;
 
     if (_.isNull(organization.members) && !organization.isLoading) {
       getOrganizationMembers();
@@ -37,16 +36,16 @@ class AccountCreationMembers extends Component {
       <div className="account-creation-members">
         <div>
           <header>
-          <h3>Members</h3>
-          {(members.length > 0) ?
-            <span className="counter">{members.length} members selected</span>
-            :
-            false
-          }
-          <p className="info">
-            Members define the group of individuals that have the ability to
-            approve outgoing operations from this account.
-          </p>
+            <h3>Members</h3>
+            {(members.length > 0) ?
+              <span className="counter">{members.length} members selected</span>
+              :
+              false
+            }
+            <p className="info">
+              Members define the group of individuals that have the ability to
+              approve outgoing operations from this account.
+            </p>
           </header>
           <div className="content">
             <div className="inner">
@@ -56,6 +55,8 @@ class AccountCreationMembers extends Component {
                   <div
                     key={member.id}
                     onClick={() => addMember(member)}
+                    role="button"
+                    tabIndex={0}
                     className="account-member-row"
                   >
                     <div className="member-avatar">
@@ -87,5 +88,18 @@ class AccountCreationMembers extends Component {
     );
   }
 }
+
+AccountCreationMembers.propTypes = {
+  organization: PropTypes.shape({}).isRequired,
+  members: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    firstname: PropTypes.string,
+    picture: PropTypes.string,
+  })).isRequired,
+  getOrganizationMembers: PropTypes.func.isRequired,
+  switchInternalModal: PropTypes.func.isRequired,
+  addMember: PropTypes.func.isRequired,
+};
 
 export default AccountCreationMembers;

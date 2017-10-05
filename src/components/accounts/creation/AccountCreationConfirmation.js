@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Rates from '../icons/thin/Rates';
-import PeopleThin from '../icons/thin/People';
-import Hourglass from '../icons/thin/Hourglass';
+import Rates from '../../icons/thin/Rates';
+import PeopleThin from '../../icons/thin/People';
+import Hourglass from '../../icons/thin/Hourglass';
 
 function AccountCreationConfirmation(props) {
   const { security, options, currency } = props.account;
@@ -23,7 +24,8 @@ function AccountCreationConfirmation(props) {
           <span className="security-value">
             {(security.timelock.enabled) ?
               <span>{security.timelock.duration} {security.timelock.frequency}</span>
-            : 'disabled'}
+              : 'disabled'
+            }
           </span>
         </div>
         <div className={`confirmation-security-item ${(!security.ratelimiter.enabled) ? 'disabled' : ''}`}>
@@ -32,7 +34,8 @@ function AccountCreationConfirmation(props) {
           <span className="security-value">
             {(security.ratelimiter.enabled) ?
               <span>{security.ratelimiter.rate} per {security.ratelimiter.frequency}</span>
-            : 'disabled'}
+              : 'disabled'
+            }
           </span>
         </div>
       </div>
@@ -59,5 +62,9 @@ function AccountCreationConfirmation(props) {
     </div>
   );
 }
+
+AccountCreationConfirmation.propTypes = {
+  account: PropTypes.shape({}).isRequired,
+};
 
 export default AccountCreationConfirmation;
