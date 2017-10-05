@@ -20,9 +20,47 @@ class OperationsDetails extends Component {
       note: note,
     };
 
-
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
   }
+
+  componentWillMount() {
+    const { operations, getOperation } = this.props;
+    if (true && !operations.isLoadingOperation) {
+      getOperation(operations.operationInModal);
+    }
+  }
+
+  componentWillReceiveProps(props) {
+    const operation = operationsUtils.findOperationDetails(
+      props.operations.operationInModal,
+      props.operations.operations,
+    );  
+
+    if (operation && operation.notes && operation.notes.length > 0) {
+      this.setState({
+        note: operation.notes[0],
+      });  
+    }  
+  }
+
+  componentDidUpdate() {
+    const content = this.contentNode;
+    const height = `${content.clientHeight - 80}px`;
+    const original = content.querySelector('.original');
+    const copy = content.querySelector('.copy');
+
+    original.style.height = height;
+    copy.style.height = height;
+
+    original.addEventListener('scroll', this.onScroll);
+  }
+
+  onScroll = () => {
+    const original = this.contentNode.querySelector('.original');
+    const copy = this.contentNode.querySelector('.copy');
+
+    copy.scrollTop = original.scrollTop;
+  };
 
   handleChangeTitle = (val) => {
     const newNote = _.cloneDeep(this.state.note);
@@ -31,26 +69,6 @@ class OperationsDetails extends Component {
     this.setState({
       note: newNote,
     });
-  }
-
-  componentWillReceiveProps(props) {
-    const operation = operationsUtils.findOperationDetails(
-      props.operations.operationInModal,
-      props.operations.operations,
-    );
-
-    if (operation && operation.notes && operation.notes.length > 0) {
-      this.setState({
-        note: operation.notes[0],
-      });
-    }
-  }
-
-  componentWillMount() {
-    const { operations, getOperation } = this.props;
-    if (true && !operations.isLoadingOperation) {
-      getOperation(operations.operationInModal);
-    }
   }
 
   render() {
@@ -62,10 +80,14 @@ class OperationsDetails extends Component {
       operations.operations,
     );
 
+    const overview = <TabOverview operation={operation} />;
+    const details = <TabDetails operation={operation} />;
+    const label = <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />;
+
     return (
       <div>
         {(operations.isLoadingOperation || !operation) ?
-          <div className="operation-details">
+          <div className="operation-details wrapper">
             <div className="modal-loading">
               <CircularProgress />
             </div>
@@ -73,30 +95,41 @@ class OperationsDetails extends Component {
               <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
             </div>
           </div>
-        :
-          <Tabs className="operation-details" defaultIndex={this.props.tabsIndex} onSelect={() => {}}>
-            <div>
-              <header>
-                <h2>{ translate('operations.detailsTitle') }</h2>
-                <TabList>
-                  <Tab>{ translate('operations.overview') }</Tab>
-                  <Tab>{ translate('operations.details') }</Tab>
-                  <Tab>{ translate('operations.label') }</Tab>
-                </TabList>
-              </header>
-              <div className="content">
-                <div className="inner">
-                  <TabPanel className='tabs_panel'>
-                    <TabOverview operation={operation} />
-                  </TabPanel>
-                  <TabPanel className='tabs_panel'>
-                    <TabDetails operation={operation} />
-                  </TabPanel>
-                  <TabPanel className='tabs_panel'>
-                    <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />
-                  </TabPanel>
+          :
+          <Tabs className="operation-details wrapper" defaultIndex={this.props.tabsIndex} onSelect={() => {}}>
+            <div className="header">
+              <h2>{ translate('operations.detailsTitle') }</h2>
+              <TabList>
+                <Tab>{ translate('operations.overview') }</Tab>
+                <Tab>{ translate('operations.details') }</Tab>
+                <Tab>{ translate('operations.label') }</Tab>
+              </TabList>
+            </div>
+            <div className="content" ref={(node) => { this.contentNode = node; }}>
+              <TabPanel className='tabs_panel'>
+                <div className="copy">
+                  {React.cloneElement(overview)}
                 </div>
-              </div>
+                <div className="original">
+                  {overview}
+                </div>
+              </TabPanel>
+              <TabPanel className='tabs_panel'>
+                <div className="copy">
+                  {React.cloneElement(details)}
+                </div>
+                <div className="original">
+                  {details}
+                </div>
+              </TabPanel>
+              <TabPanel className='tabs_panel'>
+                <div className="copy">
+                  {React.cloneElement(label)}
+                </div>
+                <div className="original">
+                  {label}
+                </div>
+              </TabPanel>
             </div>
             <div className="footer">
               <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
