@@ -154,6 +154,233 @@ describe('AccountCreation module', () => {
     });
   });
 
+  it('should set the account name', () => {
+    expect(reducer(module.initialState, { type: module.CHANGE_ACCOUNT_NAME, name: 'name' })).toEqual({
+      ...module.initialState,
+      options: {
+        ...module.initialState.options,
+        name: 'name',
+      },
+    });
+  });
+
+  it('should add a member', () => {
+    expect(reducer(module.initialState, { type: module.ADD_MEMBER, member: { id: 1, name: 'name' } })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        members: [{ id: 1, name: 'name' }],
+      },
+    });
+  });
+
+  it('should remove a member if we add an already existing member', () => {
+    const state = {
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        members: [{ id: 1, name: 'name' }],
+      },
+    };
+
+    expect(reducer(state, { type: module.ADD_MEMBER, member: { id: 1, name: 'name' } })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        members: [],
+      },
+    });
+  });
+
+  it('should set approvals', () => {
+    expect(reducer(module.initialState, { type: module.SET_APPROVALS, number: '2' })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        approvals: '2',
+      },
+    });
+  });
+
+  it('should not set approvals if its not a number', () => {
+    expect(reducer(module.initialState, { type: module.SET_APPROVALS, number: 'aa' })).toEqual(module.initialState);
+  });
+
+  it('should set the internModalId', () => {
+    const state = { ...module.initialState, internModalId: 'main' };
+    expect(reducer(state, { type: module.SWITCH_INTERN_MODAL, id: 'members' })).toEqual({
+      ...module.initialState, internModalId: 'members',
+    });
+  });
+
+  it('should enable TIMELOCK', () => {
+    expect(reducer(module.initialState, { type: module.ENABLE_TIMELOCK })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        timelock: {
+          ...module.initialState.security.timelock,
+          enabled: true,
+        },
+      },
+    });
+  });
+
+  it('should enable RATELIMITE', () => {
+    expect(reducer(module.initialState, { type: module.ENABLE_RATELIMITER })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        ratelimiter: {
+          ...module.initialState.security.ratelimiter,
+          enabled: true,
+        },
+      },
+    });
+  });
+
+  it('should disable TIMELOCK', () => {
+    const state = {
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        timelock: {
+          ...module.initialState.security.timelock,
+          enabled: true,
+        },
+      },
+    };
+
+    expect(reducer(state, { type: module.ENABLE_TIMELOCK })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        timelock: {
+          ...module.initialState.security.timelock,
+          enabled: false,
+        },
+      },
+    });
+  });
+
+  it('should disable RATELIMITER', () => {
+    const state = {
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        ratelimiter: {
+          ...module.initialState.security.ratelimiter,
+          enabled: true,
+        },
+      },
+    };
+
+    expect(reducer(state, { type: module.ENABLE_RATELIMITER })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        ratelimiter: {
+          ...module.initialState.security.ratelimiter,
+          enabled: false,
+        },
+      },
+    });
+  });
+
+  it('should change RATELIMITER', () => {
+    expect(reducer(module.initialState, { type: module.CHANGE_RATELIMITER, number: '2' })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        ratelimiter: {
+          ...module.initialState.security.ratelimiter,
+          rate: '2',
+        },
+      },
+    });
+  });
+
+  it('shouldnt change RATELIMITER if not number', () => {
+    expect(reducer(module.initialState, { type: module.CHANGE_RATELIMITER, number: 'w' })).toEqual(module.initialState);
+  });
+
+  it('should change TIMELOCK', () => {
+    expect(reducer(module.initialState, { type: module.CHANGE_TIMELOCK, number: '2' })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        timelock: {
+          ...module.initialState.security.timelock,
+          duration: '2',
+        },
+      },
+    });
+  });
+
+  it('shouldnt change RATELIMITER if not number', () => {
+    expect(reducer(module.initialState, { type: module.CHANGE_RATELIMITER, number: 'w' })).toEqual(module.initialState);
+  });
+
+  it('shouldnt change timelock frequency and set popBubble to false', () => {
+    const state = {
+      ...module.initialState,
+      popBubble: true,
+    };
+
+    expect(reducer(state, { type: module.CHANGE_FREQUEMCY_TIMELOCK, frequency: 'f' })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        timelock: {
+          ...module.initialState.security.timelock,
+          frequency: 'f',
+        },
+      },
+      popBubble: false,
+    });
+  });
+
+  it('shouldnt change ratelimiter frequency and set popBubble to false', () => {
+    const state = {
+      ...module.initialState,
+      popBubble: true,
+    };
+
+    expect(reducer(state, { type: module.CHANGE_FREQUEMCY_RATELIMITER, frequency: 'f' })).toEqual({
+      ...module.initialState,
+      security: {
+        ...module.initialState.security,
+        ratelimiter: {
+          ...module.initialState.security.ratelimiter,
+          frequency: 'f',
+        },
+      },
+      popBubble: false,
+    });
+  });
+
+  it('should set the currency', () => {
+    expect(reducer(module.initialState, { type: module.SELECT_CURRENCY, currency: {} })).toEqual({
+      ...module.initialState, currency: {},
+    });
+  });
+
+  it('should set the popbubble to true', () => {
+    expect(reducer(module.initialState, { type: module.OPEN_POPBUBBLE, anchor: '' })).toEqual({
+      ...module.initialState, popBubble: true,
+    });
+  });
+
+  it('should close the modal at SAVE_ACCOUNT_START', () => {
+    const state = { ...module.initialState, modalOpened: true };
+    expect(reducer(state, { type: module.SAVE_ACCOUNT_START })).toEqual(module.initialState);
+  });
+
+  it('should reset the state at SAVED_ACCOUNT', () => {
+    const state = { ...module.initialState, modalOpened: true };
+    expect(reducer(state, { type: module.SAVED_ACCOUNT })).toEqual(module.initialState);
+  });
+
   it('should reset the state at logout', () => {
     const state = { ...module.initialState, modalOpened: true };
     expect(reducer(state, { type: module.CLOSE_MODAL_ACCOUNT })).toEqual(module.initialState);

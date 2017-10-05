@@ -47,17 +47,17 @@ const mapDispatchToProps = dispatch => ({
   onGetOperation: id => dispatch(getOperationFake(id)),
   onChangeTabAccount: index => dispatch(changeTab(index)),
   onGetCurrencies: () => dispatch(getCurrencies()),
-  onSelectCurrency: (c) => dispatch(selectCurrency(c)),
-  onChangeAccountName: (n) => dispatch(changeAccountName(n)),
-  onSwitchInternalModal: (n) => dispatch(switchInternalModal(n)),
+  onSelectCurrency: c => dispatch(selectCurrency(c)),
+  onChangeAccountName: n => dispatch(changeAccountName(n)),
+  onSwitchInternalModal: n => dispatch(switchInternalModal(n)),
   onGetOrganizationMembers: () => dispatch(getOrganizationMembers()),
-  onAddMember: (m) => dispatch(addMember(m)),
-  onSetApprovals: (n) => dispatch(setApprovals(n)),
+  onAddMember: m => dispatch(addMember(m)),
+  onSetApprovals: n => dispatch(setApprovals(n)),
   onEnableTimeLock: () => dispatch(enableTimeLock()),
-  onChangeTimeLock: (v) => dispatch(changeTimeLock(v)),
+  onChangeTimeLock: v => dispatch(changeTimeLock(v)),
   onEnableRatelimiter: () => dispatch(enableRatelimiter()),
-  onChangeRatelimiter: (v) => dispatch(changeRatelimiter(v)),
-  onOpenPopBubble: (anchor) => dispatch(openPopBubble(anchor)),
+  onChangeRatelimiter: v => dispatch(changeRatelimiter(v)),
+  onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
   onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
   onSaveAccount: () => dispatch(saveAccount()),
 });
@@ -135,6 +135,22 @@ function ModalsContainer(props) {
 }
 
 ModalsContainer.propTypes = {
+  onChangeTabAccount: PropTypes.func.isRequired,
+  onGetCurrencies: PropTypes.func.isRequired,
+  onChangeAccountName: PropTypes.func.isRequired,
+  onSwitchInternalModal: PropTypes.func.isRequired,
+  onGetOrganizationMembers: PropTypes.func.isRequired,
+  onAddMember: PropTypes.func.isRequired,
+  onSetApprovals: PropTypes.func.isRequired,
+  onEnableTimeLock: PropTypes.func.isRequired,
+  onChangeTimeLock: PropTypes.func.isRequired,
+  onEnableRatelimiter: PropTypes.func.isRequired,
+  onChangeRatelimiter: PropTypes.func.isRequired,
+  onOpenPopBubble: PropTypes.func.isRequired,
+  onCloseAccount: PropTypes.func.isRequired,
+  onSaveAccount: PropTypes.func.isRequired,
+  onChangeFrequency: PropTypes.func.isRequired,
+  onSelectCurrency: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onGetOperation: PropTypes.func.isRequired,
   operations: PropTypes.shape({}).isRequired,
@@ -143,6 +159,8 @@ ModalsContainer.propTypes = {
 ModalsContainer.contextTypes = {
   translate: PropTypes.func.isRequired,
 };
+
+export { ModalsContainer as NModalsContainer };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalsContainer);
 

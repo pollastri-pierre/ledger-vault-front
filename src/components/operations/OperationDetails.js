@@ -10,7 +10,7 @@ import TabLabel from './TabLabel';
 import './OperationDetails.css';
 import operationsUtils from '../../redux/utils/operation';
 
-class OperationsDetails extends Component {
+class OperationDetails extends Component {
   constructor(props) {
     super(props);
 
@@ -109,14 +109,14 @@ class OperationsDetails extends Component {
 }
 
 
-OperationsDetails.propTypes = {
+OperationDetails.propTypes = {
   close: PropTypes.func.isRequired,
   getOperation: PropTypes.func.isRequired,
   operations: PropTypes.shape({}).isRequired,
 };
 
-OperationsDetails.contextTypes = {
+OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired,
 };
 
-export default OperationsDetails;
+export default OperationDetails;

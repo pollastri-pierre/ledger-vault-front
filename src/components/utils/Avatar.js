@@ -1,11 +1,12 @@
 import React from 'react';
-import People from '../icons/PeopleThin';
+import PropTypes from 'prop-types';
+import People from '../icons/thin/Profile';
 
 function Avatar(props) {
   const { url, width, height, ...rest } = props;
-  if (url) {
+  if (url && url !== '') {
     return (
-      <img src={props.url} {...rest} />
+      <img src={props.url} {...rest} alt="Profile avatar" />
     );
   }
 
@@ -13,5 +14,17 @@ function Avatar(props) {
     <People width={width} height={height} {...rest} />
   );
 }
+
+Avatar.defaultProps = {
+  url: '',
+  width: '13.5px',
+  height: '15px',
+};
+
+Avatar.propTypes = {
+  url: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string,
+};
 
 export default Avatar;
