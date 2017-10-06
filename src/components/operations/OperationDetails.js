@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { DialogButton } from '../';
+import { DialogButton, Overscroll } from '../';
 import TabDetails from './TabDetails';
 import TabOverview from './TabOverview';
 import TabLabel from './TabLabel';
 import './OperationDetails.css';
 import operationsUtils from '../../redux/utils/operation';
+// import { Overscroll } from '../../components';
 
 class OperationsDetails extends Component {
   constructor(props) {
@@ -43,24 +44,24 @@ class OperationsDetails extends Component {
     }  
   }
 
-  componentDidUpdate() {
-    const content = this.contentNode;
-    const height = `${content.clientHeight - 80}px`;
-    const original = content.querySelector('.original');
-    const copy = content.querySelector('.copy');
+  // componentDidUpdate() {
+  //   const content = this.contentNode;
+  //   const height = `${content.clientHeight - 80}px`;
+  //   const original = content.querySelector('.original');
+  //   const copy = content.querySelector('.copy');
 
-    original.style.height = height;
-    copy.style.height = height;
+  //   original.style.height = height;
+  //   copy.style.height = height;
 
-    original.addEventListener('scroll', this.onScroll);
-  }
+  //   original.addEventListener('scroll', this.onScroll);
+  // }
 
-  onScroll = () => {
-    const original = this.contentNode.querySelector('.original');
-    const copy = this.contentNode.querySelector('.copy');
+  // onScroll = () => {
+  //   const original = this.contentNode.querySelector('.original');
+  //   const copy = this.contentNode.querySelector('.copy');
 
-    copy.scrollTop = original.scrollTop;
-  };
+  //   copy.scrollTop = original.scrollTop;
+  // };
 
   handleChangeTitle = (val) => {
     const newNote = _.cloneDeep(this.state.note);
@@ -107,28 +108,31 @@ class OperationsDetails extends Component {
             </div>
             <div className="content" ref={(node) => { this.contentNode = node; }}>
               <TabPanel className='tabs_panel'>
-                <div className="copy">
-                  {React.cloneElement(overview)}
-                </div>
-                <div className="original">
+                <Overscroll
+                  height={200}
+                  overscrollSize={40}
+                  background="white"
+                >
                   {overview}
-                </div>
+                </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
-                <div className="copy">
-                  {React.cloneElement(details)}
-                </div>
-                <div className="original">
+                <Overscroll
+                  height={200}
+                  overscrollSize={40}
+                  background="white"
+                >
                   {details}
-                </div>
+                </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
-                <div className="copy">
-                  {React.cloneElement(label)}
-                </div>
-                <div className="original">
+                <Overscroll
+                  height={200}
+                  overscrollSize={40}
+                  background="white"
+                >
                   {label}
-                </div>
+                </Overscroll>
               </TabPanel>
             </div>
             <div className="footer">

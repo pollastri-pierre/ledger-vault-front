@@ -69,43 +69,43 @@
     // overflow-y: auto;
     min-height: 0px;
     padding: 0 $spacingL;
-    margin: -40px 0;
+    // margin: -40px 0;
     // padding: ($spacingL * 2) ($spacingL / 2 + 3) ($spacingL * 2) $spacingL;
     // margin: ($spacingL * -2) ($spacingL / 2 - 3) ($spacingL * -2) 0;
 
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
+    // &::-webkit-scrollbar {
+    //   width: 6px;
+    // }
     
-    &::-webkit-scrollbar-track {
-      opacity: 0;
-      width: 6px;
-    }
+    // &::-webkit-scrollbar-track {
+    //   opacity: 0;
+    //   width: 6px;
+    // }
 
-    &::-webkit-scrollbar-thumb {
-      // border-radius: 6px;
-      background-color: $silver;
+    // &::-webkit-scrollbar-thumb {
+    //   // border-radius: 6px;
+    //   background-color: $silver;
       
-      &:hover {
-        background-color: $lead;
-      }
-    }
+    //   &:hover {
+    //     background-color: $lead;
+    //   }
+    // }
 
-    .original {
-      position: relative;
-      background: white;
-      overflow-y: auto;
-      margin: 40px 0;
-    }
+    // .original {
+    //   position: relative;
+    //   background: white;
+    //   overflow-y: auto;
+    //   margin: 40px 0;
+    // }
 
-    .copy {
-      position: absolute;
-      top: 0;
-      width: calc(100% - #{($spacingL * 2 + 6)});
-      filter: blur(3px);
-      overflow: hidden;
-      padding: $spacingL 0 ($spacingL * 2);
-    }
+    // .copy {
+    //   position: absolute;
+    //   top: 0;
+    //   width: calc(100% - #{($spacingL * 2 + 6)});
+    //   filter: blur(3px);
+    //   overflow: hidden;
+    //   padding: $spacingL 0 ($spacingL * 2);
+    // }
   }
 
   .footer {
