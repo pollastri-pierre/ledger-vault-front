@@ -12,11 +12,11 @@ class Overscroll extends Component {
     this.original.addEventListener('scroll', this.onScroll);
     this.resize();
 
-    // this.interval = setInterval(this.resize, 1000);
+    this.interval = setInterval(this.resize, 100);
   }
 
   componentWillUnmount() {
-    // clearInterval(this.interval);
+    clearInterval(this.interval);
   }
 
   onScroll = () => {
@@ -25,14 +25,16 @@ class Overscroll extends Component {
 
   resize = () => {
     if (this.node) {
-      let parent = this.node.parentNode;
+      if (!this.parent) {
+        this.parent = this.node.parentNode;
 
-      while (parent.clientHeight === 0) {
-        parent = parent.parentNode;
+        while (this.parent.clientHeight === 0) {
+          this.parent = this.parent.parentNode;
+        }
       }
 
-      if (this.node.clientHeight !== parent.clientHeight) {
-        this.setState({ height: parent.clientHeight});
+      if (this.node.clientHeight !== this.parent.clientHeight) {
+        this.setState({ height: this.parent.clientHeight });
       }
     }
   };
@@ -46,7 +48,7 @@ class Overscroll extends Component {
       <div
         className="overscroll"
         style={{ position: 'relative' }}
-        ref={(node) => {this.node = node }}
+        ref={(node) => { this.node = node; }}
       >
         <div
           className="copy"
@@ -99,7 +101,6 @@ class Overscroll extends Component {
             style={{
               position: 'absolute',
               width: '100%',
-              // opacity: 0.5,
               bottom: `-${overscrollSize}px`,
               height: `${overscrollSize}px`,
               background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.5), white)',
@@ -114,7 +115,13 @@ class Overscroll extends Component {
 export default Overscroll;
 
 Overscroll.propTypes = {
-  // height: PropTypes.number.isRequired,
-  overscrollSize: PropTypes.number.isRequired,
-  backgroundColor: PropTypes.string.isRequired,
+  overscrollSize: PropTypes.number,
+  backgroundColor: PropTypes.string,
+  children: PropTypes.node,
+};
+
+Overscroll.defaultProps = {
+  overscrollSize: '40',
+  backgroundColor: 'white',
+  children: '',
 };
