@@ -67,7 +67,7 @@ class AccountCreationMembers extends Component {
                         height="15px"
                       />
                     </div>
-                    <span className="name"> {member.firstname} {member.name} </span>
+                    <span className="name">{member.firstname} {member.name}</span>
                     <p className="role"> {member.role} </p>
                     <Checkbox
                       checked={isChecked}

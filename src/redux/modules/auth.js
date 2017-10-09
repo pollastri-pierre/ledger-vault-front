@@ -118,6 +118,8 @@ export function getUserInfos() {
         dispatch(gotUserInfos(res.data));
         if (routing.location && routing.location.state && routing.location.state.from) {
           dispatch(push(routing.location.state.from));
+        } else {
+          dispatch(push('/'));
         }
       });
   };
