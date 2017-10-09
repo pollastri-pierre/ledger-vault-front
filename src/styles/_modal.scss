@@ -1,8 +1,31 @@
 @import './mixins';
 @import './animations';
+@import './variables';
 
 .modal {
-  position: relative;
+  padding: 0;
+
+  & > div {
+    height: 100%;
+
+    & > div {
+      height: 100%;
+
+      & > div {
+        min-height: 300px;
+        max-height: calc(100% - 128px);
+        height: 100%;
+        
+        & > div {
+          height: 100%;
+          
+          & > div {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
 
   .tabs_panel[class*='--selected'] {
     animation: tab 200ms ease;
@@ -19,40 +42,17 @@
     opacity: 0.5;
   }
 
-  .content {
-    height: 560px;
-    overflow-y: scroll;
-    margin-top: 166px;
-    transition: height 500ms ease;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  
-    .inner {
-      padding-left: 39px;
-      padding-right: 39px;
-      padding-bottom: 42%;
-    }
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  header,
-  .footer {
-    box-sizing: border-box;
-    position: absolute;
-    width: 100%;
-    left: 0;
-    display: block;
-    background: rgba(255, 255, 255, 0.93);
-    z-index: 10;
-    padding: 40px;
-
-  }
-
-  header {
-    top: 0;
-    background: -webkit-linear-gradient(top, #ffffff 56%, rgba(255, 255, 255, 0.8) 100%);
-
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: $spacingL $spacingL 0 $spacingL;
+    
     h2 {
       font-weight: normal;
       color: $black;
@@ -62,9 +62,17 @@
     }
   }
 
+  .content {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0px;
+    padding: 0 $spacingL;
+  }
+
   .footer {
-    bottom: 0px;
-    height: 90px;
+    position: relative;
+    z-index: 1;
+    padding: 0 $spacingL;
   }
 }
 

@@ -10,7 +10,7 @@ import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
 import { Row, Col } from '../../components/grid/Grid';
 import { BlurDialog } from '../../containers';
-import { Tooltip, Alert } from '../../components';
+import { Tooltip, Alert, Overscroll } from '../../components';
 import { switchLocale } from '../../redux/modules/locale';
 
 import './SandBox.css';
@@ -105,7 +105,44 @@ class SandBox extends Component {
               </Col>
               <Col width={6}>
                 <Paper className="block short-block">
-                  Blih
+                  <Overscroll
+                    height={200}
+                    overscrollSize={40}
+                    backgroundColor="white"
+                  >
+                    [[ BEGIN ]]<br />
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus
+                    massa, sed consectetur est. Integer ultricies finibus lobortis. In quis tincidunt
+                    mauris, ut tempus magna. Mauris pretium libero neque, id ullamcorper ex pellentesque
+                    a. Nulla condimentum neque at quam hendrerit, imperdiet suscipit orci rhoncus. Proin
+                    a felis placerat, tristique est vitae, auctor elit. Maecenas semper volutpat commodo.
+                    Maecenas quis mattis neque, eget bibendum enim. Fusce ut cursus diam. Proin eget nisl
+                    in massa euismod rhoncus. Fusce interdum orci id lacinia luctus. Sed magna lectus,
+                    sodales quis ex eget, tempor molestie velit. Donec urna tortor, volutpat id odio quis,
+                    gravida ultricies urna. Praesent et fringilla magna, et rhoncus eros. Maecenas mollis
+                    lacinia laoreet. Mauris tortor ex, suscipit a mi ac, fringilla blandit lorem.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus
+                    massa, sed consectetur est. Integer ultricies finibus lobortis. In quis tincidunt
+                    mauris, ut tempus magna. Mauris pretium libero neque, id ullamcorper ex pellentesque
+                    a. Nulla condimentum neque at quam hendrerit, imperdiet suscipit orci rhoncus. Proin
+                    a felis placerat, tristique est vitae, auctor elit. Maecenas semper volutpat commodo.
+                    Maecenas quis mattis neque, eget bibendum enim. Fusce ut cursus diam. Proin eget nisl
+                    in massa euismod rhoncus. Fusce interdum orci id lacinia luctus. Sed magna lectus,
+                    sodales quis ex eget, tempor molestie velit. Donec urna tortor, volutpat id odio quis,
+                    gravida ultricies urna. Praesent et fringilla magna, et rhoncus eros. Maecenas mollis
+                    lacinia laoreet. Mauris tortor ex, suscipit a mi ac, fringilla blandit lorem.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus
+                    massa, sed consectetur est. Integer ultricies finibus lobortis. In quis tincidunt
+                    mauris, ut tempus magna. Mauris pretium libero neque, id ullamcorper ex pellentesque
+                    a. Nulla condimentum neque at quam hendrerit, imperdiet suscipit orci rhoncus. Proin
+                    a felis placerat, tristique est vitae, auctor elit. Maecenas semper volutpat commodo.
+                    Maecenas quis mattis neque, eget bibendum enim. Fusce ut cursus diam. Proin eget nisl
+                    in massa euismod rhoncus. Fusce interdum orci id lacinia luctus. Sed magna lectus,
+                    sodales quis ex eget, tempor molestie velit. Donec urna tortor, volutpat id odio quis,
+                    gravida ultricies urna. Praesent et fringilla magna, et rhoncus eros. Maecenas mollis
+                    lacinia laoreet. Mauris tortor ex, suscipit a mi ac, fringilla blandit lorem.
+                    <br />[[ END ]]
+                  </Overscroll>
                 </Paper>
               </Col>
             </Row>
