@@ -51,8 +51,6 @@
     position: relative;
     z-index: 1;
     padding: $spacingL $spacingL 0 $spacingL;
-    // margin-right: $spacingL;
-    // background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
     
     h2 {
       font-weight: normal;
@@ -66,59 +64,14 @@
   .content {
     position: relative;
     flex: 1 1 auto;
-    // overflow-y: auto;
     min-height: 0px;
     padding: 0 $spacingL;
-
-    // .overscroll > div {
-    //   padding-right: $spacingL / 2;
-    //   padding-left: $spacingL / 2;
-    // }
-    // margin: -40px 0;
-    // padding: ($spacingL * 2) ($spacingL / 2 + 3) ($spacingL * 2) $spacingL;
-    // margin: ($spacingL * -2) ($spacingL / 2 - 3) ($spacingL * -2) 0;
-
-    // &::-webkit-scrollbar {
-    //   width: 6px;
-    // }
-    
-    // &::-webkit-scrollbar-track {
-    //   opacity: 0;
-    //   width: 6px;
-    // }
-
-    // &::-webkit-scrollbar-thumb {
-    //   // border-radius: 6px;
-    //   background-color: $silver;
-      
-    //   &:hover {
-    //     background-color: $lead;
-    //   }
-    // }
-
-    // .original {
-    //   position: relative;
-    //   background: white;
-    //   overflow-y: auto;
-    //   margin: 40px 0;
-    // }
-
-    // .copy {
-    //   position: absolute;
-    //   top: 0;
-    //   width: calc(100% - #{($spacingL * 2 + 6)});
-    //   filter: blur(3px);
-    //   overflow: hidden;
-    //   padding: $spacingL 0 ($spacingL * 2);
-    // }
   }
 
   .footer {
     position: relative;
     z-index: 1;
     padding: 0 $spacingL;
-    // margin-right: $spacingL;
-    // background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
   }
 }
 

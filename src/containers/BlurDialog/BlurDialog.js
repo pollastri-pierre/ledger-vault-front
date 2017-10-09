@@ -3,20 +3,6 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 
 function BlurDialog(props) {
-  let bodyStyle = {};
-
-  if (props.nopadding) {
-    bodyStyle = {
-      padding: '0px',
-      color: 'black',
-    };
-  } else {
-    bodyStyle = {
-      color: 'black',
-      padding: '40px',
-    };
-  }
-
   return (
     <Dialog
       overlayStyle={{
@@ -26,11 +12,9 @@ function BlurDialog(props) {
       bodyStyle={{
         color: 'black',
         padding: props.nopadding ? '0' : '40px',
-
       }}
       contentStyle={{
         width: 'fit-content',
-        // transform: 'translate(0, 15%)',
       }}
       paperProps={{
         rounded: false,
@@ -38,7 +22,6 @@ function BlurDialog(props) {
           boxShadow: '0px 20px 20px 0 rgba(0, 0, 0, 0.04)',
         },
       }}
-      autoDetectWindowHeight={false}
       {...props}
     >
       {props.children}

@@ -9,7 +9,6 @@ import TabOverview from './TabOverview';
 import TabLabel from './TabLabel';
 import './OperationDetails.css';
 import operationsUtils from '../../redux/utils/operation';
-// import { Overscroll } from '../../components';
 
 class OperationsDetails extends Component {
   constructor(props) {
@@ -19,17 +18,19 @@ class OperationsDetails extends Component {
 
     this.state = {
       note: note,
-      height: 0,
     };
+
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
   }
 
-  componentWillMount() {
-    const { operations, getOperation } = this.props;
-    if (true && !operations.isLoadingOperation) {
-      getOperation(operations.operationInModal);
-    }
+  handleChangeTitle = (val) => {
+    const newNote = _.cloneDeep(this.state.note);
+    newNote.title = val;
+
+    this.setState({
+      note: newNote,
+    });
   }
 
   componentWillReceiveProps(props) {
@@ -43,28 +44,13 @@ class OperationsDetails extends Component {
         note: operation.notes[0],
       });
     }
-
-    // if (operation) {
-    //   this.setState({
-    //     height: this.contentNode.clientHeight,
-    //   });
-    // }
   }
 
-  onScroll = () => {
-    const original = this.contentNode.querySelector('.original');
-    const copy = this.contentNode.querySelector('.copy');
-
-    copy.scrollTop = original.scrollTop;
-  };
-
-  handleChangeTitle = (val) => {
-    const newNote = _.cloneDeep(this.state.note);
-    newNote.title = val;
-
-    this.setState({
-      note: newNote,
-    });
+  componentWillMount() {
+    const { operations, getOperation } = this.props;
+    if (true && !operations.isLoadingOperation) {
+      getOperation(operations.operationInModal);
+    }
   }
 
   render() {
@@ -75,10 +61,6 @@ class OperationsDetails extends Component {
       operations.operationInModal,
       operations.operations,
     );
-
-    const overview = <TabOverview operation={operation} />;
-    const details = <TabDetails operation={operation} />;
-    const label = <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />;
 
     return (
       <div>
@@ -103,30 +85,18 @@ class OperationsDetails extends Component {
             </div>
             <div className="content" ref={(node) => { this.contentNode = node; }}>
               <TabPanel className='tabs_panel'>
-                <Overscroll
-                  height={this.state.height}
-                  overscrollSize={40}
-                  backgroundColor="white"
-                >
-                  {overview}
+                <Overscroll>
+                  <TabOverview operation={operation} />
                 </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
-                <Overscroll
-                  height={this.state.height}
-                  overscrollSize={40}
-                  backgroundColor="white"
-                >
-                  {details}
+                <Overscroll>
+                  <TabDetails operation={operation} />
                 </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
-                <Overscroll
-                  height={this.state.height}
-                  overscrollSize={40}
-                  backgroundColor="white"
-                >
-                  {label}
+                <Overscroll>
+                  <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />
                 </Overscroll>
               </TabPanel>
             </div>

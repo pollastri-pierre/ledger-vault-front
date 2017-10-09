@@ -121,7 +121,7 @@ Overscroll.propTypes = {
 };
 
 Overscroll.defaultProps = {
-  overscrollSize: '40',
+  overscrollSize: 40,
   backgroundColor: 'white',
   children: '',
 };
