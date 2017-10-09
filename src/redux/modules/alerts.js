@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
+import { SAVED_ACCOUNT } from './account-creation';
 
 export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
 
@@ -37,6 +38,17 @@ export default function reducer(state = initialState, action) {
   }
 
   switch (action.type) {
+    case SAVED_ACCOUNT: {
+      const copy = _.cloneDeep(state);
+      addToTabs(copy, {
+        id: SAVED_ACCOUNT,
+        type: 'success',
+        title: 'account.creationSuccessTitle',
+        content: 'account.creationSuccessBody',
+      });
+
+      return copy;
+    }
     case CHECK_TEAM_ERROR: {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {

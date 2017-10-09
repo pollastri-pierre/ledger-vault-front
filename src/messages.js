@@ -32,11 +32,15 @@ export default {
       lastName: 'Last name',
       mail: 'E-mail',
     },
+    account: {
+      creationSuccessTitle: 'Account request created',
+      creationSuccessBody: 'The operation request has been successfully created.',
+    },
     operations: {
       detailsTitle: "Operation's details",
       overview: 'Overview',
       details: 'Details',
-      label: 'Label'
+      label: 'Label',
     },
     role: {
       administrator: 'Administrator',

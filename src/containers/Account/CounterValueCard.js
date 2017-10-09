@@ -20,9 +20,12 @@ function CounterValueCard(props) {
     </div>
   );
 }
+CounterValueCard.defaultProps = {
+  data: null,
+};
 
 CounterValueCard.propTypes = {
-  data: PropTypes.shape({}).isRequired,
+  data: PropTypes.shape({}),
   loading: PropTypes.bool.isRequired,
 };
 

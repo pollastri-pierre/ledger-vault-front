@@ -6,6 +6,9 @@ import alerts from './alerts';
 import operations from './operations';
 import accountsInfo from './accounts-info';
 import accounts from './accounts';
+import accountCreation from './account-creation';
+import allCurrencies from './all-currencies';
+import organization from './organization';
 
 const reducers = {
   blurBG,
@@ -16,6 +19,9 @@ const reducers = {
   operations,
   accounts,
   accountsInfo,
+  accountCreation,
+  allCurrencies,
+  organization,
 };
 
 export default reducers;

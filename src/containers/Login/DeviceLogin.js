@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DialogButton } from '../../components';
+import Plug from '../../components/icons/thin/Plug';
 import translate from '../../decorators/Translate';
 
 
@@ -18,7 +19,7 @@ class DeviceLogin extends Component {
     const t = this.context.translate;
     return (
       <div className="DeviceLogin">
-        <img className="dongle" src="img/logo.png" alt="Dongle" />
+        <Plug className="dongle" fill="#e2e2e2"/>
         <br />
         <div className="team">
           {t('login.signIn', { team: this.props.team })}

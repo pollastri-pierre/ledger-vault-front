@@ -1,5 +1,6 @@
 import reducer, { REMOVE_MESSAGE, closeMessage } from '../../redux/modules/alerts';
 import { AUTHENTICATION_FAILED, LOGOUT, CHECK_TEAM_ERROR } from '../../redux/modules/auth';
+import { SAVED_ACCOUNT } from '../../redux/modules/account-creation';
 
 describe('Module alerts', () => {
   it('closeMessage REMOVE_MESSAGE and id', () => {
@@ -46,6 +47,31 @@ describe('Module alerts', () => {
 
     expect(reducer(state, action)).toEqual(state);
   });
+
+  it('reducer should handle SAVED_ACCOUNT', () => {
+    const state = {
+      alerts: [],
+      cache: [],
+    };
+    const action = { type: SAVED_ACCOUNT };
+    const stateReduced = {
+      alerts: [{
+        id: SAVED_ACCOUNT,
+        type: 'success',
+        title: 'account.creationSuccessTitle',
+        content: 'account.creationSuccessBody',
+      }],
+      cache: [{
+        id: SAVED_ACCOUNT,
+        type: 'success',
+        title: 'account.creationSuccessTitle',
+        content: 'account.creationSuccessBody',
+      }],
+    };
+
+    expect(reducer(state, action)).toEqual(stateReduced);
+  });
+
 
   it('reducer should handle CHECK_TEAM_ERROR', () => {
     const state = {

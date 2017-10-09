@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { TextField, DialogButton } from '../../components';
+import Profile from '../../components/icons/thin/Profile';
 
 export class TeamLogin extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ export class TeamLogin extends Component {
     const t = this.context.translate;
     return (
       <div className="TeamLogin">
-        <img className="user" src="img/logo.png" alt="Ledger Vault" />
+        <Profile className="user" />
         <br />
         <TextField
           onKeyDown={this.confirm}

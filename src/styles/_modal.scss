@@ -1,3 +1,4 @@
+@import './mixins';
 @import './animations';
 
 .modal {
@@ -7,17 +8,31 @@
     animation: tab 200ms ease;
   }
 
+  .tabs_panel[class*='--selected'] {
+    animation: tab 200ms ease;
+  }
+  .react-tabs__tab {
+    transition: opacity 500ms ease;
+  }
+
+  .react-tabs__tab--disabled {
+    opacity: 0.5;
+  }
+
   .content {
     height: 560px;
     overflow-y: scroll;
+    margin-top: 166px;
+    transition: height 500ms ease;
 
     &::-webkit-scrollbar {
       display: none;
     }
   
     .inner {
-      padding-top: 89px;
-      padding-bottom: 40px;
+      padding-left: 39px;
+      padding-right: 39px;
+      padding-bottom: 42%;
     }
   }
 
@@ -31,6 +46,7 @@
     background: rgba(255, 255, 255, 0.93);
     z-index: 10;
     padding: 40px;
+
   }
 
   header {
@@ -52,10 +68,141 @@
   }
 }
 
-.modal-operation-loading {
+.modal-loading {
   text-align: center;
   height: 640px;
   padding-top: 250px;
-  width: 438px;
 }
 
+.modal .small-modal {
+  box-sizing: border-box;
+  width: 445px;
+
+  header {
+    padding-bottom: 0;
+    position: static;
+  }
+
+  h3 {
+    font-size: 18.4px;
+    letter-spacing: -0.4px;
+    color: $black;
+    font-weight: normal;
+    margin: 0;
+  }
+
+  .content {
+    height: auto;
+    padding-left: 39px;
+    padding-right: 35px;
+    padding-top: 20px;
+    margin: 0;
+    position: relative;
+  }
+
+  .info {
+    font-size: 11px;
+    color: $lead;
+    line-height: 1.82;
+    margin: 0;
+  }
+
+  .form-field-checkbox {
+    outline: none;
+    position: relative;
+    margin-bottom: 15px;
+
+    & > label {
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 600;
+      color: $black;
+    }
+
+    .slidebox {
+      position: absolute;
+      right: 0;
+      top: -7px;
+    }
+  }
+
+
+  .form-field {
+    position: relative;
+
+    & > label {
+      position: absolute;
+      top: 10px;
+      font-size: 13px;
+    }
+
+    & > span {
+      font-size: 13px;
+      color: $lead;
+      position: absolute;
+      right: 0px;
+      top: 10px;
+
+      strong {
+        font-weight: normal;
+        color: $black;
+      }
+
+      .arrow-down {
+        cursor: pointer;
+        width: 8px;
+        height: 5px;
+        stroke: black;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  input[type="text"] {
+    display: block;
+    box-sizing: border-box;
+    outline: none;
+    width: 100%;
+    height: 40px;
+    border: 0;
+    text-align: right;
+    padding-right: 179px;
+    font-size: 13px;
+    border-bottom: 1px solid $silver;
+    margin-bottom: 15px;
+
+    &.small-padding {
+      padding-right: 66px;
+    }
+    &.medium-padding {
+      padding-right: 151px;
+    }
+  }
+
+  .footer {
+    position: static;
+  }
+  
+
+
+}
+
+.frequency-bubble {
+  box-sizing: border-box;
+  width: 100px;
+  padding: 20px;
+  font-size: 13px;
+
+  .frequency-bubble-row {
+    cursor: pointer;
+    position: relative;
+    height: 26px;
+    line-height: 26px;
+
+    @include highlight-block($porto, -20px);
+    &.active {
+      @include highlight-block-active($porto, -20px);
+    }
+  }
+}
