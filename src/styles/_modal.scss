@@ -148,6 +148,10 @@
         color: $black;
       }
 
+      &.dropdown {
+        outline: none;
+      }
+
       .arrow-down {
         cursor: pointer;
         width: 8px;
@@ -193,12 +197,14 @@
   width: 100px;
   padding: 20px;
   font-size: 13px;
+  outline: none;
 
   .frequency-bubble-row {
     cursor: pointer;
     position: relative;
     height: 26px;
     line-height: 26px;
+    outline: none;
 
     @include highlight-block($porto, -20px);
     &.active {
