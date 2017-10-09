@@ -19,6 +19,7 @@ class OperationsDetails extends Component {
 
     this.state = {
       note: note,
+      height: 0,
     };
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -40,28 +41,22 @@ class OperationsDetails extends Component {
     if (operation && operation.notes && operation.notes.length > 0) {
       this.setState({
         note: operation.notes[0],
-      });  
-    }  
+      });
+    }
+
+    // if (operation) {
+    //   this.setState({
+    //     height: this.contentNode.clientHeight,
+    //   });
+    // }
   }
 
-  // componentDidUpdate() {
-  //   const content = this.contentNode;
-  //   const height = `${content.clientHeight - 80}px`;
-  //   const original = content.querySelector('.original');
-  //   const copy = content.querySelector('.copy');
+  onScroll = () => {
+    const original = this.contentNode.querySelector('.original');
+    const copy = this.contentNode.querySelector('.copy');
 
-  //   original.style.height = height;
-  //   copy.style.height = height;
-
-  //   original.addEventListener('scroll', this.onScroll);
-  // }
-
-  // onScroll = () => {
-  //   const original = this.contentNode.querySelector('.original');
-  //   const copy = this.contentNode.querySelector('.copy');
-
-  //   copy.scrollTop = original.scrollTop;
-  // };
+    copy.scrollTop = original.scrollTop;
+  };
 
   handleChangeTitle = (val) => {
     const newNote = _.cloneDeep(this.state.note);
@@ -109,27 +104,27 @@ class OperationsDetails extends Component {
             <div className="content" ref={(node) => { this.contentNode = node; }}>
               <TabPanel className='tabs_panel'>
                 <Overscroll
-                  height={200}
+                  height={this.state.height}
                   overscrollSize={40}
-                  background="white"
+                  backgroundColor="white"
                 >
                   {overview}
                 </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
                 <Overscroll
-                  height={200}
+                  height={this.state.height}
                   overscrollSize={40}
-                  background="white"
+                  backgroundColor="white"
                 >
                   {details}
                 </Overscroll>
               </TabPanel>
               <TabPanel className='tabs_panel'>
                 <Overscroll
-                  height={200}
+                  height={this.state.height}
                   overscrollSize={40}
-                  background="white"
+                  backgroundColor="white"
                 >
                   {label}
                 </Overscroll>

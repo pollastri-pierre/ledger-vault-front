@@ -108,7 +108,7 @@ class SandBox extends Component {
                   <Overscroll
                     height={200}
                     overscrollSize={40}
-                    background="white"
+                    backgroundColor="white"
                   >
                     [[ BEGIN ]]<br />
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus

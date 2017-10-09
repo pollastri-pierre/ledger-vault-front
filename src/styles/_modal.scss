@@ -50,9 +50,9 @@
   .header {
     position: relative;
     z-index: 1;
-    padding: $spacingL 0 $spacingL $spacingL;
-    margin-right: $spacingL;
-    background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
+    padding: $spacingL $spacingL 0 $spacingL;
+    // margin-right: $spacingL;
+    // background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
     
     h2 {
       font-weight: normal;
@@ -69,6 +69,11 @@
     // overflow-y: auto;
     min-height: 0px;
     padding: 0 $spacingL;
+
+    // .overscroll > div {
+    //   padding-right: $spacingL / 2;
+    //   padding-left: $spacingL / 2;
+    // }
     // margin: -40px 0;
     // padding: ($spacingL * 2) ($spacingL / 2 + 3) ($spacingL * 2) $spacingL;
     // margin: ($spacingL * -2) ($spacingL / 2 - 3) ($spacingL * -2) 0;
@@ -111,9 +116,9 @@
   .footer {
     position: relative;
     z-index: 1;
-    padding: $spacingL 0 0 $spacingL;
-    margin-right: $spacingL;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
+    padding: 0 $spacingL;
+    // margin-right: $spacingL;
+    // background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9) $spacingL, white ($spacingL * 1.5));
   }
 }
 
