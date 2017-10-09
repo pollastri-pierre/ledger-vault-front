@@ -5,6 +5,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
+import { Link } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import { connect } from 'react-redux';
 import { Row, Col } from '../../components/grid/Grid';
@@ -140,6 +141,7 @@ class SandBox extends Component {
                   <a data-tip="je suis un touletippe">
                     Blouh <i className="material-icons">face</i>
                   </a>
+                  <Link to="?operationDetail=1">operation id1</Link>
                 </Paper>
               </Col>
             </Row>

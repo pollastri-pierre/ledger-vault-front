@@ -19,10 +19,18 @@ const store = fakeStore(getState)
 const noop = function(str) { return str};
 const context = { translate: noop };
 
+const props = {
+  accounts: {
+    accounts: null,
+  },
+  pathname: '/',
+  getAccounts: jest.fn(),
+};
+
 const wrapper = mount(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      {Menu({}, context)}
+      {Menu(props, context)}
     </ConnectedRouter>
   </Provider>
 , { context });
@@ -36,16 +44,35 @@ describe('Menu', () => {
     expect(wrapper.find('div.Menu').children().find('ul.main-menu').length).toEqual(1);
   });
 
-  it('should have a 5 li items ', () => {
-    expect(wrapper.find('div.Menu').children().find('ul.main-menu').children().find('li').length).toEqual(5);
+  it('should have a 4 li items ', () => {
+    expect(wrapper.find('div.Menu').children().find('ul.main-menu').children().find('li').length).toEqual(4);
+  });
+  it('shouldnt have a AccountsMenu if accounts.accounts has a length == 0', () => {
+
+    const wrapper = shallow(<Menu { ...props } />, { context });
+
+    expect(wrapper.find('div.Menu').children().find('AccountsMenu').length).toBe(0);
   });
 
-  it('should have a 5 li items with Link to  ', () => {
+  it('should have a AccountsMenu if accounts.accounts has a length > 0', () => {
+    const propsAccounts = {
+      accounts: {
+        accounts: [1, 2],
+      },
+      pathname: '/',
+      getAccounts: jest.fn(),
+    };
+
+    const wrapperAccounts = shallow(<Menu { ...propsAccounts } />, { context });
+
+    expect(wrapperAccounts.find('div.Menu').children().find('AccountsMenu').length).toBe(1);
+  });
+
+  it('should have a 4 li items with Link to  ', () => {
     const home = wrapper.find('div.Menu').children().find('ul.main-menu').childAt(0).children();
     const nnew = wrapper.find('div.Menu').children().find('ul.main-menu').childAt(1).children();
     const pending = wrapper.find('div.Menu').children().find('ul.main-menu').childAt(2).children().at(0);
     const search = wrapper.find('div.Menu').children().find('ul.main-menu').childAt(3).children();
-    const sandbox = wrapper.find('div.Menu').children().find('ul.main-menu').childAt(4).children();
 
     expect(home.type()).toEqual(Link);
     expect(home.at(0).props().to).toEqual('/');
@@ -55,8 +82,6 @@ describe('Menu', () => {
     expect(pending.at(0).props().to).toEqual('/pending');
     expect(search.type()).toEqual(Link);
     expect(search.at(0).props().to).toEqual('/search');
-    expect(sandbox.type()).toEqual(Link);
-    expect(sandbox.at(0).props().to).toEqual('/sandbox');
   });
 });
 

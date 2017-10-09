@@ -35,7 +35,7 @@ body,
 .Banner {
   background-color: $cream;
   margin: auto;
-  margin-top: 227.5px;
+  margin-top: 150px;
   padding-bottom: 40px;
 
   img {
@@ -66,6 +66,7 @@ body,
   position: relative;
   text-align: center;
   display: inline-block;
+  margin-bottom: 150px;
   height: 258px;
   margin: 0 auto;
   width: 400px;
@@ -74,9 +75,8 @@ body,
 
   .vlt-dialog-btn {
     position: absolute;
-    bottom: 0;
+    bottom: 2px;
     right: 0;
-    margin-bottom: 40px;
     margin-right: 40px;
   }
 
@@ -93,6 +93,9 @@ body,
     margin-top: 40px;
     width: 28px;
     height: 32px;
+    fill: none;
+    stroke: $mouse;
+    stroke-width: 2px;
   }
 }
 
@@ -102,9 +105,19 @@ body,
   display: inline-block;
   height: 379px;
   margin: 0 auto;
+  margin-bottom: 50px;
   width: 400px;
   background-color: $white;
   box-shadow: 0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
+
+  .dongle {
+    width: 32px;
+    height: 20px;
+    margin-top: 15px;
+    fill: none;
+    stroke: $mouse;
+    stroke-width: 2px;
+  }
 
   .team {
     width: 320px;
@@ -126,6 +139,7 @@ body,
     position: absolute;
     bottom: 0;
     left: 0;
+    padding: 0;
     margin-bottom: 40px;
     margin-left: 40px;
   }

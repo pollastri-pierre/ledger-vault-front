@@ -9,10 +9,25 @@ import { ConnectedRouter } from 'react-router-redux';
 import App from './containers/App/App';
 import create from './redux/create';
 import registerServiceWorker from './registerServiceWorker';
-import { PrivateRoute, Login, LoginTest, Logout, AlertsContainer, I18nProvider } from './containers';
+
+import {
+  ModalsContainer,
+  PrivateRoute,
+  Login,
+  LoginTest,
+  Logout,
+  AlertsContainer,
+  I18nProvider
+} from './containers';
+
 import { getUserInfos } from './redux/modules/auth';
 
 import './styles/index.css';
+
+// for React-Infinite
+if (window) {
+  window.React = React;
+}
 
 
 const muiTheme = getMuiTheme({
@@ -35,7 +50,8 @@ const render = () => {
         <I18nProvider>
           <div>
             <AlertsContainer />
-            <ConnectedRouter history={history}>
+            <ModalsContainer />
+              <ConnectedRouter history={history}>
               <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/logintest" component={LoginTest} />

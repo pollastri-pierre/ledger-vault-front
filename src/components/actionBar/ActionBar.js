@@ -27,8 +27,6 @@ class ActionBar extends Component {
   }
 
   saveProfile = (profile) => {
-    console.log(profile);
-
     this.closeProfileDialog();
   }
 
@@ -56,8 +54,6 @@ class ActionBar extends Component {
           </div>
         </a>
       );
-
-      console.log(this.props.profile.openEdit);
 
       profileDialog = (
         <BlurDialog
@@ -103,13 +99,23 @@ class ActionBar extends Component {
         <div className="content-header">
           <div className="content-header-left">
             <img
-              src="img/logo.png"
-              srcSet="img/logo@2x.png 2x, img/logo@3x.png 3x"
+              src="/img/logo.png"
+              srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
               className="content-header-logo"
               alt="Ledger Vault logo"
             />
           </div>
           <div className="content-header-right">
+            { (this.props.pathname === '/') ?
+              <Link to="" onClick={this.props.openAccount} className="content-header-button">
+                <div className="content-header-button-icon">
+                  <i className="material-icons flipped">add</i>
+                </div>
+                <div className="content-header-button-text">account</div>
+              </Link>
+              :
+              false
+            }
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>

@@ -49,6 +49,28 @@ describe('Module profile', () => {
     expect(reducer(state, action)).toEqual(stateReduced);
   });
 
+  it('reducer set openEdit to false when OPEN_CLOSE_EDIT', () => {
+    const state = {...initialState, openEdit: true};
+    const action = {type: OPEN_CLOSE_EDIT};
+    const stateReduced = {...initialState, openEdit: false};
+
+    expect(reducer(state, action)).toEqual(stateReduced);
+  });
+
+  it('reducer set openEdit to true when OPEN_CLOSE_EDIT', () => {
+    const state = {...initialState, openEdit: false};
+    const action = {type: OPEN_CLOSE_EDIT};
+    const stateReduced = {...initialState, openEdit: true};
+
+    expect(reducer(state, action)).toEqual(stateReduced);
+  });
+
+  it('reducer should return the state when default is catched', () => {
+    const state = { test: '1' };
+    const action = {type: 'ACTION_NOT_EXIST'};
+
+    expect(reducer(state, action)).toEqual(state);
+  });
 
 });
 

@@ -1,5 +1,9 @@
 export default {
   en: {
+    error: {
+      error5xTitle: 'Oups! Something went wrong',
+      error5xContent: 'Sorry, it seems something went wrong with the server. Please retry.',
+    },
     common: {
       save: 'Save',
       continue: 'Continue',
@@ -28,6 +32,16 @@ export default {
       lastName: 'Last name',
       mail: 'E-mail',
     },
+    account: {
+      creationSuccessTitle: 'Account request created',
+      creationSuccessBody: 'The operation request has been successfully created.',
+    },
+    operations: {
+      detailsTitle: "Operation's details",
+      overview: 'Overview',
+      details: 'Details',
+      label: 'Label',
+    },
     role: {
       administrator: 'Administrator',
     },
@@ -46,10 +60,16 @@ export default {
       sessionClosedMessage: 'Your session has expired. Please login to access the platform anew.',
       wrongDomainTitle: 'Unknown team domain',
       wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
+      welcomeTitle: 'Welcome',
+      welcomeMessage: 'Hello Welcome on Ledger Vault Application',
 
     },
   },
   fr: {
+    error: {
+      error5xTitle: 'Oups! Something went wrong',
+      error5xContent: 'Sorry, it seems something went wrong with the server. Please retry.',
+    },
     common: {
       save: 'Enregistrer',
       cancel: 'Annuler',
@@ -78,6 +98,12 @@ export default {
       lastName: 'Last name',
       mail: 'E-mail',
     },
+    operations: {
+      detailsTitle: "Operation's details",
+      overview: 'Overview',
+      details: 'Details',
+      label: 'Label'
+    },
     role: {
       administrator: 'Administrateur',
     },
@@ -85,6 +111,8 @@ export default {
       help: 'Assistance',
       instructions: 'Nom de domaine de votre équipe.',
       hint: 'Your team domain',
+      wrongDomainTitle: 'Unknown team domain',
+      wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
     },
   },
 };

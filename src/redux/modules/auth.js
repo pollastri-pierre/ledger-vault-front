@@ -27,9 +27,10 @@ export function startAuthenticationFlag() {
   };
 }
 
-export function checkTeamError() {
+export function checkTeamError(status) {
   return {
     type: CHECK_TEAM_ERROR,
+    status,
   };
 }
 
@@ -112,11 +113,13 @@ export function getUserInfos() {
     dispatch(startGetUserInfos());
     const { routing } = getState();
 
-    return axios.get('organization/members/me', { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } })
+    return axios.get('/organization/members/me', { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } })
       .then((res) => {
         dispatch(gotUserInfos(res.data));
         if (routing.location && routing.location.state && routing.location.state.from) {
           dispatch(push(routing.location.state.from));
+        } else {
+          dispatch(push('/'));
         }
       });
   };
@@ -131,7 +134,9 @@ export function finishAuthentication(data) {
       } else {
         axios.post('finish_authentication', { email: team, response: deviceResponse })
           .then((res) => {
-            dispatch(authenticationSucceed());
+            setTimeout(() => {
+              dispatch(authenticationSucceed());
+            }, 500);
             setTokenToLocalStorage(res.data.token);
             dispatch(getUserInfos());
           })
@@ -153,8 +158,8 @@ export function startAuthentication() {
         dispatch(checkTeamSuccess());
         dispatch(finishAuthentication(res.data));
       })
-      .catch(() => {
-        dispatch(checkTeamError());
+      .catch((e) => {
+        dispatch(checkTeamError(e.response.status));
       });
   };
 }
@@ -183,7 +188,7 @@ export const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_TEAM_FIELD:
-      return { ...state, team: action.value };
+      return { ...state, team: action.value, teamError: false };
     case LOGOUT:
       return initialState;
     case CHECK_TEAM_ERROR:

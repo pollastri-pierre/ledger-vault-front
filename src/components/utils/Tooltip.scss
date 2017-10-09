@@ -3,7 +3,7 @@
 .__react_component_tooltip.type-dark.vlt-tooltip {
   background-color: $porto;
   border-radius: 0;
-  padding: $spacingS;
+  padding: 0;// $spacingS;
   &.show {
     opacity: 1;
   }

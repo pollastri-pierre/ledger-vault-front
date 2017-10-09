@@ -1,30 +1,20 @@
+import { GET_OPERATION_START, OPERATION_CLOSE } from './operations';
+import { OPEN_MODAL_ACCOUNT, SAVE_ACCOUNT_START, CLOSE_MODAL_ACCOUNT } from './account-creation';
+
 export const BLUR_BG = 'BLUR_BG';
 export const UNBLUR_BG = 'UNBLUR_BG';
 
-// Blur background action
-export function blurBG() {
-  return { type: BLUR_BG };
-}
-
-// Unblur background action
-export function unblurBG() {
-  return { type: UNBLUR_BG };
-}
-
-const initialState = { blurredBG: 0};
+const initialState = { blurredBG: 0 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case BLUR_BG:
-      if (state.blurredBG !== 1) {
-        return Object.assign({}, state, { blurredBG: 1 });
-      }
-      return state;
-    case UNBLUR_BG:
-      if (state.blurredBG !== 0) {
-        return Object.assign({}, state, { blurredBG: 0 });
-      }
-      return state;
+    case OPEN_MODAL_ACCOUNT:
+    case GET_OPERATION_START:
+      return { ...state, blurredBG: 1 };
+    case CLOSE_MODAL_ACCOUNT:
+    case OPERATION_CLOSE:
+    case SAVE_ACCOUNT_START:
+      return { ...state, blurredBG: 0 };
     default:
       return state;
   }

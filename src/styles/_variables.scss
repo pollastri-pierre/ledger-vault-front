@@ -8,7 +8,8 @@ $spacingL: 40px;
 
 // Colors
 $black: #000000;
-$black-5: rgba(0, 0, 0, 0.05);
+$black-5: rgba(0, 0, 0, 0.5);
+$black-05: rgba(0, 0, 0, 0.05);
 $grenade: #ea2e49;
 $porto: #27d0e2;
 $night: #1d2028;
@@ -21,13 +22,23 @@ $black-50: rgba(0, 0, 0, 0.5);
 $white: #ffffff;
 $cream: #f9f9f9;
 
+$hoverblue: #27d0e2;
+
+$bitcoin: #fcb653;
+$ethereum: #27d0e2;
+$litecoin: #cccccc;
+$dogecoin: #65d196;
+$dash: #0e76aa;
+$ethereum-classic: #3ca569;
+
+
 
 //
 // Layout
 //
 
 // Sidebar
-$sidebarWidth: 240px;
+$sidebarWidth: 280px;
 
 // Actionbar
 $actionbarHeight: 200px;

@@ -7,7 +7,8 @@ import 'material-design-icons/iconfont/material-icons.css';
 import { withRouter } from 'react-router-dom';
 import { logout } from '../../redux/modules/auth';
 import { openCloseProfile, openCloseEdit } from '../../redux/modules/profile';
-
+import { openModalAccount } from '../../redux/modules/account-creation';
+import { getAccounts } from '../../redux/modules/accounts';
 import { ActionBar, Content, Menu } from '../../components';
 
 import './App.css';
@@ -16,16 +17,21 @@ import './App.css';
 const mapStateToProps = state => ({
   blurredBG: state.blurBG.blurredBG > 0,
   profile: state.profile,
+  accounts: state.accounts,
+  routing: state.routing,
 });
 
 const mapDispatchToProps = dispatch => ({
   onLogout: () => dispatch(logout()),
   onOpenCloseProfile: target => dispatch(openCloseProfile(target)),
   onOpenCloseEdit: () => dispatch(openCloseEdit()),
+  onGetAccounts: () => dispatch(getAccounts()),
+  onOpenAccount: () => dispatch(openModalAccount()),
 });
 
 // Required by Material-UI
 injectTapEventPlugin();
+
 
 function App(props) {
   return (
@@ -35,22 +41,37 @@ function App(props) {
         logout={props.onLogout}
         openCloseProfile={props.onOpenCloseProfile}
         openCloseEdit={props.onOpenCloseEdit}
+        openAccount={props.onOpenAccount}
+        pathname={props.routing.location.pathname}
       />
       <div className="Main">
-        <Menu />
+        <Menu
+          getAccounts={props.onGetAccounts}
+          accounts={props.accounts}
+          pathname={props.routing.location.pathname}
+        />
         <Content />
       </div>
     </div>
   );
 }
+App.defaultProps = {
+  profile: {},
+  accounts: [],
+};
 
 App.propTypes = {
   blurredBG: PropTypes.bool.isRequired,
+  accounts: PropTypes.shape({}),
   onLogout: PropTypes.func.isRequired,
-  profile: PropTypes.shape({}).isRequired,
+  onOpenCloseProfile: PropTypes.func.isRequired,
+  onGetAccounts: PropTypes.func.isRequired,
+  onOpenAccount: PropTypes.func.isRequired,
+  onOpenCloseEdit: PropTypes.func.isRequired,
+  profile: PropTypes.shape({}),
 };
 
-export { App as undecoratedApp };
+export { App as AppNotDecorated };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
 
