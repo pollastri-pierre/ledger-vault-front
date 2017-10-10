@@ -99,7 +99,7 @@ $cardHeight: 30px;
 
 .profile-bubble {
   width: 180px - $spacingL;
-  padding: 40px;
+  padding: ($spacingS * 1.5) 0 ($spacingS * 1.5) $spacingL;
   font-size: 11px;
 
   .profile-bubble-title {
@@ -121,18 +121,12 @@ $cardHeight: 30px;
     @include highlight-block($porto, -40px);
     display: block;
     position: relative;
-    margin-top: 18px;
+    margin-top: $spacingS;
     text-transform: uppercase;
     font-weight: 600;
-    color: $lead;
-    opacity: 1;
 
     &:first-child {
       margin: 0;
-    }
-
-    &:hover {
-      color: $porto;
     }
   }
 }

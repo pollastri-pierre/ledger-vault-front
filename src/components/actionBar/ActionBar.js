@@ -89,8 +89,8 @@ class ActionBar extends Component {
           }}
         >
           <div className="profile-bubble">
-            <a href="profile" onClick={this.openProfileDialog}>{t('actionBar.editProfile')}</a>
-            <Link to="/logout">{t('actionBar.logOut')}</Link>
+            <a href="profile" onClick={this.openProfileDialog} className="edit-profile">{t('actionBar.editProfile')}</a>
+            <Link to="/logout" className="log-out">{t('actionBar.logOut')}</Link>
           </div>
         </PopBubble>
         { profileDialog }
