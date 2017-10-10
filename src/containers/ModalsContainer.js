@@ -43,7 +43,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(close()),
-  onCloseAccount: () => dispatch(closeModalAccount()),
+  onCloseAccount: (from) => dispatch(closeModalAccount(from)),
   onGetOperation: id => dispatch(getOperationFake(id)),
   onChangeTabAccount: index => dispatch(changeTab(index)),
   onGetCurrencies: () => dispatch(getCurrencies()),
@@ -104,7 +104,7 @@ function ModalsContainer(props) {
       <BlurDialog
         className="modal"
         open={(accountCreation.modalOpened)}
-        onRequestClose={onCloseAccount}
+        onRequestClose={() => onCloseAccount('esc')}
         nopadding
       >
         <AccountCreation

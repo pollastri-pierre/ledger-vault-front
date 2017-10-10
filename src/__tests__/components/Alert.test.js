@@ -44,7 +44,9 @@ describe('Alert', () => {
       height: 'initial',
       lineHeight: 'initial',
       padding: '40px',
-      backgroundColor: '#41ccb4'
+      backgroundColor: '#27d0e2',
+      width: '379px',
+      boxSizing: 'border-box',
     });
   });
 
@@ -60,7 +62,9 @@ describe('Alert', () => {
       height: 'initial',
       lineHeight: 'initial',
       padding: '40px',
-      backgroundColor: '#ea2e49'
+      backgroundColor: '#ea2e49',
+      width: '379px',
+      boxSizing: 'border-box',
     });
   });
 
@@ -75,7 +79,9 @@ describe('Alert', () => {
     expect(style).toEqual({
       height: 'initial',
       lineHeight: 'initial',
-      padding: '40px'
+      padding: '40px',
+      width: '379px',
+      boxSizing: 'border-box',
     });
   });
 });

@@ -62,6 +62,10 @@ export default {
       wrongDomainMessage: 'This team domain is unknown. Contact your administrator to get more information.',
       welcomeTitle: 'Welcome',
       welcomeMessage: 'Hello Welcome on Ledger Vault Application',
+      apiErrorTitle: 'Wrong challenge',
+      apiErrorMessage: 'It seens the challenge signed by the device is not correct. Please Retry.',
+      timeoutTitle: 'Timeout Error',
+      timeoutMessage: 'You did not accept the authorization on your device. Please retry. ',
 
     },
   },

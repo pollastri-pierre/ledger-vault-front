@@ -47,24 +47,22 @@ describe('Menu', () => {
   it('should have a 4 li items ', () => {
     expect(wrapper.find('div.Menu').children().find('ul.main-menu').children().find('li').length).toEqual(4);
   });
+
   it('shouldnt have a AccountsMenu if accounts.accounts has a length == 0', () => {
-
     const wrapper = shallow(<Menu { ...props } />, { context });
-
     expect(wrapper.find('div.Menu').children().find('AccountsMenu').length).toBe(0);
   });
 
   it('should have a AccountsMenu if accounts.accounts has a length > 0', () => {
     const propsAccounts = {
       accounts: {
-        accounts: [1, 2],
+        accounts: [{}, {}],
       },
       pathname: '/',
       getAccounts: jest.fn(),
     };
 
     const wrapperAccounts = shallow(<Menu { ...propsAccounts } />, { context });
-
     expect(wrapperAccounts.find('div.Menu').children().find('AccountsMenu').length).toBe(1);
   });
 

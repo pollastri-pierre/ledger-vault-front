@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { MessagesContainer, allMessages, getTitle, getTheme, getContent } from '../../containers/AlertsContainer';
 import { Alert } from '../../components';
-import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT } from '../../redux/modules/auth';
+import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT } from '../../redux/modules/auth';
 import { GOT_OPERATION_FAIL } from '../../redux/modules/operations';
 import { SAVED_ACCOUNT } from '../../redux/modules/account-creation';
 
@@ -27,6 +27,8 @@ describe('AlertsContainer container', () => {
       SAVED_ACCOUNT,
       CHECK_TEAM_ERROR,
       AUTHENTICATION_FAILED,
+      AUTHENTICATION_FAILED_API,
+      AUTHENTICATION_FAILED_TIMEOUT,
       LOGOUT,
       GOT_OPERATION_FAIL,
       AUTHENTICATION_SUCCEED,

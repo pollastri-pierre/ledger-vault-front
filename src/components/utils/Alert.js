@@ -11,11 +11,13 @@ function Alert(props) {
     height: 'initial',
     lineHeight: 'initial',
     padding: '40px',
+    width: '379px',
+    boxSizing: 'border-box',
   };
 
   switch (themeName) {
     case 'success':
-      theme.color = '#41ccb4';
+      theme.color = '#27d0e2';
       theme.icon = 'check';
       break;
 

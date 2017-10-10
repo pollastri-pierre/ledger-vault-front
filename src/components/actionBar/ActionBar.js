@@ -85,12 +85,10 @@ class ActionBar extends Component {
           onRequestClose={this.props.openCloseProfile}
           style={{
             marginLeft: '50px',
+            boxShadow: '0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)',
           }}
         >
           <div className="profile-bubble">
-            <div className="profile-bubble-title">{t('actionBar.myProfile')}</div>
-            <div className="profile-bubble-role">{t('role.administrator')}</div>
-            <Divider className="profile-bubble-divider" />
             <a href="profile" onClick={this.openProfileDialog}>{t('actionBar.editProfile')}</a>
             <Link to="/logout">{t('actionBar.logOut')}</Link>
           </div>
