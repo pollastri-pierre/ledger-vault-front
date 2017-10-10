@@ -1,5 +1,5 @@
 import moxios from 'moxios';
-import reducer, { OPEN_CLOSE_PROFILE, OPEN_CLOSE_EDIT, openCloseEdit, openCloseProfile, initialState } from '../../redux/modules/profile';
+import reducer, { OPEN_CLOSE_PROFILE, OPEN_CLOSE_EDIT, CLOSE_EDIT, OPEN_EDIT, openCloseEdit, openCloseProfile, initialState } from '../../redux/modules/profile';
 import { GOT_USER_INFO, LOGOUT } from '../../redux/modules/auth';
 
 describe('Module profile', () => {
@@ -7,14 +7,36 @@ describe('Module profile', () => {
   it('openCloseProfile should return OPEN_CLOSE_PROFILE', () => {
     expect(openCloseProfile('target')).toEqual({
       type: OPEN_CLOSE_PROFILE,
-      target: 'target'
+      target: 'target',
     });
   });
 
-  it('openCloseEdit should return OPEN_CLOSE_EDIT', () => {
-    expect(openCloseEdit()).toEqual({
-      type: OPEN_CLOSE_EDIT
+  it('openCloseEdit should return OPEN_EDIT if openEdit is false', () => {
+    const thunk = openCloseEdit();
+    const dispatch = jest.fn();
+
+    const getState = () => ({
+      profile: {
+        openEdit: false,
+      },
     });
+    thunk(dispatch, getState);
+
+    expect(dispatch).toHaveBeenCalledWith({type: OPEN_EDIT});
+  });
+
+  it('openCloseEdit should return CLOSE_EDIT if openEdit is true', () => {
+    const thunk = openCloseEdit();
+    const dispatch = jest.fn();
+
+    const getState = () => ({
+      profile: {
+        openEdit: true,
+      },
+    });
+    thunk(dispatch, getState);
+
+    expect(dispatch).toHaveBeenCalledWith({type: CLOSE_EDIT});
   });
 
   it('reducer should set the user infos', () => {
@@ -51,7 +73,7 @@ describe('Module profile', () => {
 
   it('reducer set openEdit to false when OPEN_CLOSE_EDIT', () => {
     const state = {...initialState, openEdit: true};
-    const action = {type: OPEN_CLOSE_EDIT};
+    const action = {type: CLOSE_EDIT};
     const stateReduced = {...initialState, openEdit: false};
 
     expect(reducer(state, action)).toEqual(stateReduced);
@@ -59,7 +81,7 @@ describe('Module profile', () => {
 
   it('reducer set openEdit to true when OPEN_CLOSE_EDIT', () => {
     const state = {...initialState, openEdit: false};
-    const action = {type: OPEN_CLOSE_EDIT};
+    const action = {type: OPEN_EDIT};
     const stateReduced = {...initialState, openEdit: true};
 
     expect(reducer(state, action)).toEqual(stateReduced);

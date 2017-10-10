@@ -41,7 +41,7 @@
   .tooltip-label-body {
     text-transform: initial !important;
     font-size: 11px;
-    line-height: 15px;
+    line-height: 1.82;
     font-weight: normal;
     margin: 0;
   }
@@ -52,6 +52,8 @@
   background: white;
   padding: 40px;
   position: relative;
+  box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
+
 
   h2 {
     text-transform: uppercase;
@@ -137,6 +139,7 @@
         font-size: 11px;
         text-transform: initial;
         color: $black;
+        width: 300px;
       }
 
       td.amount-euro,

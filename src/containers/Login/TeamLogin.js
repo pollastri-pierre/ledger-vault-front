@@ -55,7 +55,14 @@ export class TeamLogin extends Component {
           hintText={t('login.hint')}
         /><br />
         <div className="instructions" >{t('login.instructions')}</div>
-        <DialogButton highlight right onTouchTap={this.selectTeam}>{t('common.continue')}</DialogButton>
+        <DialogButton
+          highlight
+          disabled={(this.props.team === '')}
+          right
+          onTouchTap={this.selectTeam}
+        >
+          {t('common.continue')}
+        </DialogButton>
       </div>
     );
   }

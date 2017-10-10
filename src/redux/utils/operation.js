@@ -133,6 +133,18 @@ const operationsUtils = {
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
           script: '',
         },
+        {
+          index: 9,
+          value: 33,
+          address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
+          script: '',
+        },
+        {
+          index: 123,
+          value: 33,
+          address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
+          script: '',
+        },
       ],
     },
   },

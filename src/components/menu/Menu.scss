@@ -18,11 +18,13 @@
   }
 
   a {
-    @include highlight-block($porto, -40px);
+    display: block;
+    padding-left: 40px;
+    @include highlight-block($porto, 0px);
 
     &.active {
       opacity: 1;
-      @include highlight-block-active($porto, -40px);
+      @include highlight-block-active($porto, 0px);
     }
   }
 
@@ -34,6 +36,7 @@
   .menu-badge {
     position: absolute;
     right: 0;
+    top: 0;
     background-color: $grenade;
     color: $white;
     padding: 0 .6em;
@@ -48,6 +51,7 @@
       font-weight: 600;
       margin-bottom: 20px;
       margin-top: 40px;
+      margin-left: 40px;
       text-transform: uppercase;
     }
 
@@ -68,32 +72,32 @@
           }
 
           &.bitcoin {
-            @include highlight-block($bitcoin, -40px);
+            @include highlight-block($bitcoin, 0px);
 
             &.active {
-              @include highlight-block-active($bitcoin, -40px);
+              @include highlight-block-active($bitcoin, 0px);
             }
           }
 
           &.dogecoin {
-            @include highlight-block($dogecoin, -40px);
+            @include highlight-block($dogecoin, 0px);
 
             &.active {
-              @include highlight-block-active($dogecoin, -40px);
+              @include highlight-block-active($dogecoin, 0px);
             }
           }
 
           &.litecoin {
-            @include highlight-block($litecoin, -40px);
+            @include highlight-block($litecoin, 0px);
             &.active {
-              @include highlight-block-active($litecoin, -40px);
+              @include highlight-block-active($litecoin, 0px);
             }
           }
 
           &.ethereum {
-            @include highlight-block($ethereum, -40px);
+            @include highlight-block($ethereum, 0px);
             &.active {
-              @include highlight-block-active($ethereum, -40px);
+              @include highlight-block-active($ethereum, 0px);
             }
           }
         }

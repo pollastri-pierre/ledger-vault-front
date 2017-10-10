@@ -50,7 +50,7 @@ function AccountCreationSecurity(props) {
         }
       </div>
       <h5>Locks</h5>
-      <div className="security-members">
+      <div className="security-timelock-ratelimiter">
         <div className="security-scheme-line" onClick={() => switchInternalModal('time-lock')} role="button" tabIndex={0}>
           <Hourglass className="security-icon security-icon-time-lock" />
           <span className="security-scheme-name">Time-Lock</span>

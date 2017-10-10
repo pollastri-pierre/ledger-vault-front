@@ -25,7 +25,6 @@ body,
 
 // Clearfix
 .Main {
-  padding: 0 $spacingL;
 
   &::after {
     content: "";
@@ -40,13 +39,13 @@ body,
 }
 
 .Menu {
-  width: #{$sidebarWidth - $spacingL};
+  width: $sidebarWidth;
   box-sizing: border-box;
   padding: 25px 35px 0 0;
 }
 
 .Content {
-  width: calc(100% - #{$sidebarWidth - $spacingL });
+  width: calc(100% - #{$sidebarWidth + $spacingL });
   position: relative;
   margin: 0;
   margin-top: -80px;

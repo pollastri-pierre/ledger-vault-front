@@ -10,6 +10,8 @@ export const CHECK_TEAM_ERROR = 'auth/CHECK_TEAM_ERROR';
 export const REMOVE_TEAM_ERROR = 'auth/REMOVE_TEAM_ERROR';
 export const AUTHENTICATION_SUCCEED = 'auth/AUTHENTICATION_SUCCEED';
 export const AUTHENTICATION_FAILED = 'auth/AUTHENTICATION_FAILED';
+export const AUTHENTICATION_FAILED_API = 'auth/AUTHENTICATION_FAILED_API';
+export const AUTHENTICATION_FAILED_TIMEOUT = 'auth/AUTHENTICATION_FAILED_TIMEOUT';
 export const GET_USER_INFOS_START = 'auth/GET_USER_INFOS_START';
 export const GOT_USER_INFO = 'auth/GOT_USER_INFO';
 export const RESET_TEAM = 'auth/RESET_TEAM';
@@ -58,7 +60,19 @@ export function authenticationSucceed() {
   };
 }
 
-export function authenticationFailed() {
+export function authenticationFailed(e) {
+  console.log(e);
+  if (e === 5) {
+    return {
+      type: AUTHENTICATION_FAILED_TIMEOUT,
+    };
+  } else if (e === 'api') {
+    return {
+      type: AUTHENTICATION_FAILED_API,
+    };
+  }
+
+
   return {
     type: AUTHENTICATION_FAILED,
   };
@@ -118,8 +132,6 @@ export function getUserInfos() {
         dispatch(gotUserInfos(res.data));
         if (routing.location && routing.location.state && routing.location.state.from) {
           dispatch(push(routing.location.state.from));
-        } else {
-          dispatch(push('/'));
         }
       });
   };
@@ -130,7 +142,7 @@ export function finishAuthentication(data) {
 
     window.u2f.sign(data.appId, data.challenge, data.registeredKeys, (deviceResponse) => {
       if (deviceResponse.errorCode) {
-        dispatch(authenticationFailed());
+        dispatch(authenticationFailed(deviceResponse.errorCode));
       } else {
         axios.post('finish_authentication', { email: team, response: deviceResponse })
           .then((res) => {
@@ -141,7 +153,7 @@ export function finishAuthentication(data) {
             dispatch(getUserInfos());
           })
           .catch(() => {
-            dispatch(authenticationFailed());
+            dispatch(authenticationFailed('api'));
           });
       }
     });
@@ -203,6 +215,8 @@ export default function reducer(state = initialState, action) {
       return { ...state, teamValidated: false };
     case GOT_USER_INFO:
       return { ...state, isAuthenticated: true };
+    case AUTHENTICATION_FAILED_API:
+    case AUTHENTICATION_FAILED_TIMEOUT:
     case AUTHENTICATION_FAILED:
       return { ...state, teamValidated: false };
     default:

@@ -53,7 +53,11 @@ export class Login extends Component {
       <div>
         <div className="Background" >
           <div className="Banner" >
-            <img src="img/logo.png" alt="Ledger Vault" />
+            <img
+              src="img/logo-black.png"
+              srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
+              alt="Ledger Vault"
+            />
             <div className="help" >{t('login.help')}</div>
           </div>
           {content}

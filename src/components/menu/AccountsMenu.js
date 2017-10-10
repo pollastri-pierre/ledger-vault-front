@@ -17,8 +17,8 @@ function AccountsMenu(props) {
               to={`/account/${account.id}`}
             >
               {account.name}
+              <span className="unit">{account.currency.units[0]}</span>
             </Link>
-            <span className="unit">{account.currency.units[0]}</span>
           </li>
         );
       })}
@@ -27,7 +27,10 @@ function AccountsMenu(props) {
 }
 
 AccountsMenu.propTypes = {
-  accounts: PropTypes.array.isRequired,
+  accounts: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    currency: PropTypes.shape({}),
+  })).isRequired,
   pathname: PropTypes.string.isRequired,
 };
 

@@ -49,7 +49,6 @@ export function getOperations() {
     dispatch(getOperationsStart());
 
     const operations = getFakeList();
-    console.log(operations);
 
     promises[promises.length] = setTimeout(() => {
       dispatch(gotOperations(operations));
@@ -234,8 +233,6 @@ export default function reducer(state = initialState, action) {
     case LOCATION_CHANGE: {
       const pathname = action.payload.pathname;
       const split = pathname.split('/account/');
-      console.log(split);
-
 
       if (split.length === 1 || (split[1] && split[1] !== state.idAccount)) {
         _.each(promises, promise => {

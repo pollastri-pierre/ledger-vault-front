@@ -10,7 +10,7 @@ function AccountCreationApprovals(props) {
         <h3>Approvals</h3>
       </header>
       <div className="content">
-        <div className="form-field">
+        <div className={`form-field ${(parseInt(approvals, 10) > members.length) ? 'error' : ''}`}>
           <input
             type="text"
             id="approval-field"
@@ -27,7 +27,14 @@ function AccountCreationApprovals(props) {
       </div>
 
       <div className="footer">
-        <DialogButton right highlight onTouchTap={() => switchInternalModal('main')}>Done</DialogButton>
+        <DialogButton
+          disabled={(parseInt(approvals, 10) > members.length)}
+          right
+          highlight
+          onTouchTap={() => switchInternalModal('main')}
+        >
+          Done
+        </DialogButton>
       </div>
     </div>
   );

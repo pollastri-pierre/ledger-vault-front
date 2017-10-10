@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
+import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
 import { SAVED_ACCOUNT } from './account-creation';
 
 export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
@@ -58,6 +58,26 @@ export default function reducer(state = initialState, action) {
         content: 'login.wrongDomainMessage',
       });
 
+      return copy;
+    }
+    case AUTHENTICATION_FAILED_API: {
+      const copy = _.cloneDeep(state);
+      addToTabs(copy, {
+        id: AUTHENTICATION_FAILED_API,
+        type: 'error',
+        title: 'login.apiErrorTitle',
+        content: 'login.apiErrorMessage',
+      });
+      return copy;
+    }
+    case AUTHENTICATION_FAILED_TIMEOUT: {
+      const copy = _.cloneDeep(state);
+      addToTabs(copy, {
+        id: AUTHENTICATION_FAILED_TIMEOUT,
+        type: 'error',
+        title: 'login.timeoutTitle',
+        content: 'login.timeoutMessage',
+      });
       return copy;
     }
     case AUTHENTICATION_FAILED: {
