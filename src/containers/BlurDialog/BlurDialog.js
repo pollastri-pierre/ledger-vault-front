@@ -26,7 +26,6 @@ class BlurDialog extends Component {
         }}
         bodyStyle={bodyStyle}
         contentStyle={{
-					position: 'relative',
           display: 'table',
           width: 'initial',
         }}
@@ -53,4 +52,3 @@ BlurDialog.defaultProps = {
 };
 
 export default BlurDialog;
-

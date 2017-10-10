@@ -6,6 +6,7 @@ export { default as PopBubble } from './utils/PopBubble';
 export { default as Alert } from './utils/Alert';
 export { default as Tooltip } from './utils/Tooltip';
 export { default as TextField } from './utils/TextField';
+export { default as Overscroll } from './utils/Overscroll';
 export { default as ActionBar } from './actionBar/ActionBar';
 export { default as Content } from './content/Content';
 export { default as Profile } from './profile/Profile';
