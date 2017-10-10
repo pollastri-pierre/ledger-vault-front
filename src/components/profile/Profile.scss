@@ -14,6 +14,14 @@ $profilePicSize: 80px;
       width: $profilePicSize;
       height: $profilePicSize;
       float: left;
+      border-radius: 50%;      
+      background-color: $argile;
+
+      .profile-default-icon {
+        height: 40%;
+        margin-top: 30%;
+        margin-left: 33%;
+      }
 
       img {
         width: 100%;

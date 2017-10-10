@@ -11,7 +11,7 @@ function BlurDialog(props) {
       }}
       bodyStyle={{
         color: 'black',
-        padding: props.nopadding ? '0' : '40px',
+        padding: props.nopadding ? '0' : '40px 40px 0',
       }}
       contentStyle={{
         width: 'fit-content',

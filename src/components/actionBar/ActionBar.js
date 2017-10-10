@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import { PopBubble, Divider, Profile } from '../../components';
 import { BlurDialog } from '../../containers';
+import ProfileIcon from '../icons/thin/Profile';
 
 import './ActionBar.css';
 
@@ -46,7 +47,7 @@ class ActionBar extends Component {
       profileCard = (
         <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
           <div className="profile-pic">
-            <img src={false} alt="" />
+            { profile.picture ? <img src={profile.picture} alt="" /> : <ProfileIcon className="profile-default-icon" color="white" /> }
           </div>
           <div className="profile-info">
             <div className="profile-name">{`${profile.first_name} ${profile.last_name}`}</div>

@@ -27,11 +27,18 @@ $cardHeight: 30px;
     width: $cardHeight;
     height: $cardHeight;
     float: left;
+    background-color: $argile;
+    border-radius: 50%;
+
+    .profile-default-icon {
+      height: 40%;
+      margin-top: 30%;
+      margin-left: 33%;
+    }
 
     img {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
     }
   }
 

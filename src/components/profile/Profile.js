@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone';
 import Script from 'react-load-script';
 import { TextField, Alert } from '../../components';
 import DialogButton from '../../components/buttons/DialogButton';
+import ProfileIcon from '../icons/thin/Profile';
 
 import './Profile.css';
 
@@ -121,7 +122,9 @@ class Profile extends Component {
             accept="image/jpeg, image/png"
             onDrop={this.onDrop}
           >
-            <div className="profile-pic"><img src={this.state.picture.value} alt="" /></div>
+            <div className="profile-pic">
+              {this.state.picture.value ? <img src={this.state.picture.value} alt="" /> : <ProfileIcon className="profile-default-icon" color="white" />}
+            </div>
           </Dropzone>
           <div className="profile-form">
             <TextField
@@ -170,7 +173,7 @@ class Profile extends Component {
         </Alert>
         <Script
           // Lib for cropping and converting new profile pic
-          url="scripts/jimp.min.js"
+          url="/scripts/jimp.min.js"
         />
       </div>
     );
