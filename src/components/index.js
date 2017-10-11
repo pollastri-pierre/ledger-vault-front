@@ -15,6 +15,7 @@ export { default as AccountCreation } from './accounts/creation/AccountCreation'
 export { default as ListOperation } from './operations/List';
 export { default as EditableComponent } from './utils/ContentEditable';
 export { default as CardLoading } from './utils/CardLoading';
+export { default as Modal } from './utils/Modal';
 export { default as SpinnerCard } from './spinners/SpinnerCard';
 export { default as SpinnerAccounts } from './spinners/SpinnerAccounts';
 export { default as Avatar } from './utils/Avatar';

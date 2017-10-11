@@ -43,9 +43,9 @@ describe('AccountCreationMembers test', () => {
 
   injectTapEventPlugin();
 
-  it('should render in account-creation-members div', () => {
+  it('should render in .account-creation-members.wrapper div', () => {
     const wrapper = shallow(<AccountCreationMembers {...props} />);
-    expect(wrapper.prop('className')).toBe('account-creation-members');
+    expect(wrapper.prop('className')).toBe('account-creation-members wrapper');
   });
 
   it('should not call getOrganizationMembers if members are loaded', () => {
@@ -75,14 +75,9 @@ describe('AccountCreationMembers test', () => {
   });
 
   // testing loading view
-  it('should display a modal-loading', () => {
+  it('should display a CircularPgoress', () => {
     const loadingWrapper = shallow(<AccountCreationMembers {...sPropsLoading} />);
-    expect(loadingWrapper.children().at(0).prop('className')).toBe('modal-loading');
-  });
-
-  it('the modal loading should contain a CircularProgress', () => {
-    const loadingWrapper = shallow(<AccountCreationMembers {...sPropsLoading} />);
-    expect(loadingWrapper.find('.modal-loading').children().at(0).name()).toBe('CircularProgress');
+    expect(loadingWrapper.find('CircularProgress').length).toBe(1);
   });
 
   it('the modal loading should contain a footer', () => {
@@ -106,9 +101,9 @@ describe('AccountCreationMembers test', () => {
   });
 
   // testing when members is loaded
-  it('should display a h3 with Member', () => {
+  it('should display a h2 with Member', () => {
     const wrapper = shallow(<AccountCreationMembers {...props} />);
-    expect(wrapper.find('h3').text()).toBe('Members');
+    expect(wrapper.find('h2').text()).toBe('Members');
   });
 
   it('should display a p.info', () => {
@@ -118,7 +113,7 @@ describe('AccountCreationMembers test', () => {
 
   it('should display a content and inner div', () => {
     const wrapper = shallow(<AccountCreationMembers {...props} />);
-    expect(wrapper.find('.content').children().at(0).prop('className')).toBe('inner');
+    expect(wrapper.find('.content').length).toBe(1);
   });
 
   it('inner div should display the list of members', () => {

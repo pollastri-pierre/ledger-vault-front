@@ -5,7 +5,7 @@ import { DialogButton } from '../../';
 function AccountCreationApprovals(props) {
   const { switchInternalModal, approvals, setApprovals, members } = props;
   return (
-    <div className="small-modal">
+    <div className="small-modal wrapper">
       <header>
         <h3>Approvals</h3>
       </header>

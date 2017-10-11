@@ -2,11 +2,13 @@
 @import './modal';
 @import './list';
 
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans, sans-serif';
   background-color: #F9F9FA;
-  overflow-y: scroll;
+  overflow: hidden;
 }
 

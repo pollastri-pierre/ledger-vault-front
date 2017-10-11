@@ -1,6 +1,8 @@
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Modal } from '../components';
 
 import {
   getOperation,
@@ -23,6 +25,7 @@ import {
   changeRatelimiter,
   changeFrequency,
   saveAccount,
+  OPEN_MODAL_ACCOUNT,
 } from '../redux/modules/account-creation';
 
 import {
@@ -35,6 +38,7 @@ import { OperationDetails, AccountCreation } from '../components';
 // import _ from 'lodash';
 
 const mapStateToProps = state => ({
+  modals: state.modals,
   operations: state.operations,
   organization: state.organization,
   accountCreation: state.accountCreation,
@@ -88,48 +92,42 @@ function ModalsContainer(props) {
 
   return (
     <div>
-      <BlurDialog
-        className="modal"
-        open={(operations.operationInModal !== null)}
-        onRequestClose={onClose}
-        nopadding
-      >
-        <OperationDetails
-          operations={operations}
-          getOperation={props.onGetOperation}
-          close={props.onClose}
-          tabsIndex={operations.tabsIndex}
-        />
-      </BlurDialog>
-      <BlurDialog
-        className="modal"
-        open={(accountCreation.modalOpened)}
-        onRequestClose={() => onCloseAccount('esc')}
-        nopadding
-      >
-        <AccountCreation
-          organization={organization}
-          tabsIndex={accountCreation.currentTab}
-          onSelect={onChangeTabAccount}
-          setApprovals={onSetApprovals}
-          getCurrencies={onGetCurrencies}
-          getOrganizationMembers={onGetOrganizationMembers}
-          selectCurrency={onSelectCurrency}
-          addMember={onAddMember}
-          enableTimeLock={onEnableTimeLock}
-          changeTimeLock={onChangeTimeLock}
-          enableRatelimiter={onEnableRatelimiter}
-          changeRatelimiter={onChangeRatelimiter}
-          changeFrequency={onChangeFrequency}
-          openPopBubble={onOpenPopBubble}
-          changeAccountName={onChangeAccountName}
-          currencies={allCurrencies}
-          account={accountCreation}
-          save={onSaveAccount}
-          close={onCloseAccount}
-          switchInternalModal={onSwitchInternalModal}
-        />
-      </BlurDialog>
+      { props.modals === OPEN_MODAL_ACCOUNT &&
+          <Modal close={onCloseAccount}>
+            <AccountCreation
+              organization={organization}
+              tabsIndex={accountCreation.currentTab}
+              onSelect={onChangeTabAccount}
+              setApprovals={onSetApprovals}
+              getCurrencies={onGetCurrencies}
+              getOrganizationMembers={onGetOrganizationMembers}
+              selectCurrency={onSelectCurrency}
+              addMember={onAddMember}
+              enableTimeLock={onEnableTimeLock}
+              changeTimeLock={onChangeTimeLock}
+              enableRatelimiter={onEnableRatelimiter}
+              changeRatelimiter={onChangeRatelimiter}
+              changeFrequency={onChangeFrequency}
+              openPopBubble={onOpenPopBubble}
+              changeAccountName={onChangeAccountName}
+              currencies={allCurrencies}
+              account={accountCreation}
+              save={onSaveAccount}
+              close={onCloseAccount}
+              switchInternalModal={onSwitchInternalModal}
+            />
+          </Modal>
+      }
+      { operations.operationInModal !== null && !_.isUndefined(operations.operationInModal) &&
+          <Modal close={props.onClose}>
+            <OperationDetails
+              operations={operations}
+              getOperation={props.onGetOperation}
+              close={props.onClose}
+              tabsIndex={operations.tabsIndex}
+            />
+          </Modal>
+      }
     </div>
   );
 }

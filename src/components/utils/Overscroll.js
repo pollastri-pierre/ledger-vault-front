@@ -5,7 +5,7 @@ class Overscroll extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { height: 0 };
+    this.state = { height: 340 };
   }
 
   componentDidMount() {
@@ -24,19 +24,19 @@ class Overscroll extends Component {
   };
 
   resize = () => {
-    if (this.node) {
-      if (!this.parent) {
-        this.parent = this.node.parentNode;
-
-        while (this.parent.clientHeight === 0) {
-          this.parent = this.parent.parentNode;
-        }
-      }
-
-      if (this.node.clientHeight !== this.parent.clientHeight) {
-        this.setState({ height: this.parent.clientHeight });
-      }
-    }
+    // if (this.node) {
+    //   if (!this.parent) {
+    //     this.parent = this.node.parentNode;
+    //
+    //     while (this.parent.clientHeight === 0) {
+    //       this.parent = this.parent.parentNode;
+    //     }
+    //   }
+    //
+    //   if (this.node.clientHeight !== this.parent.clientHeight) {
+    //     this.setState({ height: this.parent.clientHeight });
+    //   }
+    // }
   };
 
   render() {
@@ -92,6 +92,8 @@ class Overscroll extends Component {
               background: backgroundColor,
               margin: '0 -6px',
               padding: '0 6px',
+              marginRight: '-60px', // 
+              paddingRight: '60px', // for hiding ugly scrollbar
             }}
           >
             {this.props.children}

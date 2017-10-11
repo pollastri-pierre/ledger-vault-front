@@ -13,8 +13,8 @@ describe('AccountCreationApprovals test', () => {
   const wrapper = shallow(<AccountCreationApprovals {...props} />);
   // const wrapperDom = mount(<AccountCreationApprovals {...props} />);
 
-  it('should render in small-modal div', () => {
-    expect(wrapper.prop('className')).toBe('small-modal');
+  it('should render in .small-modal.wrapper div', () => {
+    expect(wrapper.prop('className')).toBe('small-modal wrapper');
   });
 
   it('should render a h3 with Approvals', () => {

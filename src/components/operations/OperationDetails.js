@@ -62,50 +62,59 @@ class OperationDetails extends Component {
       operations.operations,
     );
 
-    return (
-      <div>
-        {(operations.isLoadingOperation || !operation) ?
-          <div className="operation-details wrapper">
-            <div className="modal-loading">
-              <CircularProgress />
-            </div>
-            <div className="footer">
-              <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
-            </div>
+    if (operations.isLoadingOperation || !operation) {
+      return (
+        <div className="operation-details wrapper">
+          <div className="header" />
+          <div className="content">
+            <CircularProgress
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginLeft: '-25px',
+                marginTop: '-25px',
+              }}
+            />
           </div>
-          :
-          <Tabs className="operation-details wrapper" defaultIndex={this.props.tabsIndex} onSelect={() => {}}>
-            <div className="header">
-              <h2>{ translate('operations.detailsTitle') }</h2>
-              <TabList>
-                <Tab>{ translate('operations.overview') }</Tab>
-                <Tab>{ translate('operations.details') }</Tab>
-                <Tab>{ translate('operations.label') }</Tab>
-              </TabList>
-            </div>
-            <div className="content" ref={(node) => { this.contentNode = node; }}>
-              <TabPanel className='tabs_panel'>
-                <Overscroll>
-                  <TabOverview operation={operation} />
-                </Overscroll>
-              </TabPanel>
-              <TabPanel className='tabs_panel'>
-                <Overscroll>
-                  <TabDetails operation={operation} />
-                </Overscroll>
-              </TabPanel>
-              <TabPanel className='tabs_panel'>
-                <Overscroll>
-                  <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />
-                </Overscroll>
-              </TabPanel>
-            </div>
-            <div className="footer">
-              <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
-            </div>
-          </Tabs>
-        }
-      </div>
+          <div className="footer">
+            <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <Tabs className="operation-details wrapper" defaultIndex={this.props.tabsIndex} onSelect={() => {}}>
+        <div className="header">
+          <h2>{ translate('operations.detailsTitle') }</h2>
+          <TabList>
+            <Tab>{ translate('operations.overview') }</Tab>
+            <Tab>{ translate('operations.details') }</Tab>
+            <Tab>{ translate('operations.label') }</Tab>
+          </TabList>
+        </div>
+        <div className="content" ref={(node) => { this.contentNode = node; }}>
+          <TabPanel className='tabs_panel'>
+            <Overscroll>
+              <TabOverview operation={operation} />
+            </Overscroll>
+          </TabPanel>
+          <TabPanel className='tabs_panel'>
+            <Overscroll>
+              <TabDetails operation={operation} />
+            </Overscroll>
+          </TabPanel>
+          <TabPanel className='tabs_panel'>
+            <Overscroll>
+              <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />
+            </Overscroll>
+          </TabPanel>
+        </div>
+        <div className="footer">
+          <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
+        </div>
+      </Tabs>
     );
   }
 }

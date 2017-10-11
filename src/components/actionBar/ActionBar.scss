@@ -139,8 +139,9 @@ $cardHeight: 30px;
 }
 
 // Hack preventing white border on blur
-.App.blurred .ActionBar {
-  margin: -10px -10px 0 -10px;
-  padding: 10px 10px 0 10px;
-}
+// .App.blurred .ActionBar {
+//   margin: -1px -10px 0 -1px;
+//   padding: 10px 10px 0 10px;
+//   overflow: hidden;
+// }
 
