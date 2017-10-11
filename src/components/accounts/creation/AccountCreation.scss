@@ -2,16 +2,12 @@
 @import '../../../styles/mixins';
 
 #account-creation {
-  height: 560px;
-  transition: height 500ms ease;
-
-  &.members {
-    height: 200px;
-  }
-
-}
-.account-creation {
   width: 445px;
+  max-height: 615px;
+
+  &.loading {
+    height: 615px;
+  }
 
   .account-creation-options {
     position: relative;
@@ -63,6 +59,10 @@
 
       &:hover {
         opacity: 1;
+      }
+
+      &:last-child {
+        border: 0;
       }
 
       &.selected {

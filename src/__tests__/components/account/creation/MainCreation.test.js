@@ -6,6 +6,7 @@ import AccountCreationCurrencies from '../../../../components/accounts/creation/
 import AccountCreationOptions from '../../../../components/accounts/creation/AccountCreationOptions';
 import AccountCreationSecurity from '../../../../components/accounts/creation/AccountCreationSecurity';
 import AccountCreationConfirmation from '../../../../components/accounts/creation/AccountCreationConfirmation';
+import { Overscroll } from '../../../../components/';
 
 describe('MainCreation Test', () => {
   const props = {
@@ -32,49 +33,10 @@ describe('MainCreation Test', () => {
     },
   };
 
-  it('should disaplay loading is currencies are loading', () => {
-    const sProps = {
-      ...props,
-      currencies: {
-        ...props.currencies,
-        isLoading: true,
-      },
-    };
-    const wrapper = shallow(<MainCreation {...sProps} />);
-    expect(wrapper.find('.account-creation').find('.modal-loading').find('CircularProgress').length).toBe(1);
-  });
-
-  it('should disaplay a footer with DialogButton even if loading', () => {
-    const sProps = {
-      ...props,
-      currencies: {
-        ...props.currencies,
-        isLoading: true,
-      },
-    };
-    const wrapper = shallow(<MainCreation {...sProps} />);
-    expect(wrapper.find('.account-creation').find('.footer').find('DialogButton').length).toBe(1);
-  });
-
-  it('click on DialogButton should trigger close', () => {
-    const sProps = {
-      ...props,
-      currencies: {
-        ...props.currencies,
-        isLoading: true,
-      },
-    };
-    const wrapper = shallow(<MainCreation {...sProps} />);
-    const button = wrapper.find('.account-creation').find('.footer').find('DialogButton');
-    button.simulate('touchTap');
-    expect(props.close).toHaveBeenCalled();
-  });
-
-  // testing when not loading
 
   it('should be a Tabs component', () => {
     const wrapper = shallow(<MainCreation {...props} />);
-    expect(wrapper.children().at(0).type()).toBe(Tabs);
+    expect(wrapper.type()).toBe(Tabs);
   });
 
   it('the Tabs component should have a Header with h2', () => {
@@ -238,14 +200,19 @@ describe('MainCreation Test', () => {
     expect(tablist.children().at(3).prop('disabled')).toBe(false);
   });
 
+  it('first TabPanel should have a wrapper Overscroll', () => {
+    const wrapper = shallow(<MainCreation {...props} />);
+    expect(wrapper.find('TabPanel').children().at(0).type()).toBe(Overscroll);
+  });
+
   it('first TabPanel should Contain AccountCreationCurrencies', () => {
     const wrapper = shallow(<MainCreation {...props} />);
-    expect(wrapper.find('TabPanel').children().at(0).type()).toBe(AccountCreationCurrencies);
+    expect(wrapper.find('TabPanel').children().at(0).children().type()).toBe(AccountCreationCurrencies);
   });
 
   it('AccountCrationCurrencies should have the right props', () => {
     const wrapper = shallow(<MainCreation {...props} />);
-    const currencies = wrapper.find('TabPanel').at(0).children().at(0);
+    const currencies = wrapper.find('TabPanel').at(0).children().at(0).children();
 
     expect(currencies.prop('currency')).toBe(props.account.currency);
     expect(currencies.prop('currencies')).toBe(props.currencies.currencies);

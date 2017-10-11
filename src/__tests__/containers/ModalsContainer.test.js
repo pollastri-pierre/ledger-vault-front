@@ -1,8 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { NModalsContainer } from '../../containers/ModalsContainer';
+import { OPEN_MODAL_ACCOUNT  } from '../../redux/modules/account-creation';
 
 const props = {
+  modals: OPEN_MODAL_ACCOUNT,
   organization: {},
   operations: {
     tabsIndex: 0,
@@ -32,10 +34,17 @@ const props = {
   onSaveAccount: jest.fn(),
 };
 
+const sProps = {
+  ...props,
+  operations: {
+    ...props.operations,
+    operationInModal: 1,
+  },
+};
 
 describe('Modals container', () => {
   it('should render a OperationDetails component', () => {
-    const wrapper = shallow(<NModalsContainer {...props} />, { context: { translate: jest.fn() } });
+    const wrapper = shallow(<NModalsContainer {...sProps} />, { context: { translate: jest.fn() } });
     expect(wrapper.find('OperationDetails').length).toBe(1);
   });
 
@@ -45,13 +54,13 @@ describe('Modals container', () => {
   });
 
   it('should attach the correct props to OperationDetails', () => {
-    const wrapper = shallow(<NModalsContainer {...props} />, { context: { translate: jest.fn() } });
+    const wrapper = shallow(<NModalsContainer {...sProps} />, { context: { translate: jest.fn() } });
     const operation = wrapper.find('OperationDetails');
 
-    expect(operation.prop('operations')).toBe(props.operations);
-    expect(operation.prop('getOperation')).toBe(props.onGetOperation);
-    expect(operation.prop('close')).toBe(props.onClose);
-    expect(operation.prop('tabsIndex')).toBe(props.operations.tabsIndex);
+    expect(operation.prop('operations')).toBe(sProps.operations);
+    expect(operation.prop('getOperation')).toBe(sProps.onGetOperation);
+    expect(operation.prop('close')).toBe(sProps.onClose);
+    expect(operation.prop('tabsIndex')).toBe(sProps.operations.tabsIndex);
   });
 
   it('should attach the correct props to AccountCreation', () => {

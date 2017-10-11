@@ -2,53 +2,38 @@
 @import './animations';
 @import './variables';
 
+#blurdialog {
+  position: fixed;
+  background: rgba(0,0,0,0.2);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // background: black;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#wrapper-modal {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+}
+
 .modal {
-  padding: 0;
+  overflow: hidden; // hiding scrollbar
+  animation: modal 100ms ease;
+  background: white;
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.04);
+  margin: auto;
+  position: relative;
+  width: 440px;
+  z-index: 2;
 
-  & > div {
-    height: 100%;
-
-    & > div {
-      height: 100%;
-
-      & > div {
-        min-height: 300px;
-        max-height: calc(100% - 128px);
-        height: 100%;
-        
-        & > div {
-          height: 100%;
-          
-          & > div {
-            height: 100%;
-          }
-        }
-      }
-    }
-  }
-
-  .tabs_panel[class*='--selected'] {
-    animation: tab 200ms ease;
-  }
-
-  .tabs_panel[class*='--selected'] {
-    animation: tab 200ms ease;
-  }
-  .react-tabs__tab {
-    transition: opacity 500ms ease;
-  }
-
-  .react-tabs__tab--disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  .wrapper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
+  header,
   .header {
     position: relative;
     z-index: 1;
@@ -64,29 +49,44 @@
     }
   }
 
+  .tabs_panel[class*='--selected'] {
+    height: 100%;
+    animation: tab 200ms ease;
+  }
+
+  .react-tabs__tab {
+    transition: opacity 500ms ease;
+  }
+
+  .react-tabs__tab--disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   .content {
     position: relative;
     flex: 1 1 auto;
-    min-height: 0px;
-    padding: 0 $spacingL;
+    height: 429px;
+    padding: $spacingL $spacingL;
   }
-
+  .wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
   .footer {
+    padding: 0 $spacingL 0 $spacingL;
     position: relative;
     z-index: 1;
-    padding: 0 $spacingL;
   }
-}
-
-.modal-loading {
-  text-align: center;
-  height: 640px;
-  padding-top: 250px;
 }
 
 .modal .small-modal {
   box-sizing: border-box;
   width: 445px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   header {
     padding-bottom: 0;
@@ -103,6 +103,7 @@
 
   .content {
     height: auto;
+    min-height: auto;
     padding-left: 39px;
     padding-right: 35px;
     padding-top: 20px;

@@ -25,8 +25,8 @@ describe('AccountCreationCurrencies test', () => {
   const wrapper = shallow(<AccountCreationCurrencies {...props} />);
   // const wrapperDom = mount(<AccountCreationApprovals {...props} />);
 
-  it('should render in account-creation-currencies div', () => {
-    expect(wrapper.prop('className')).toBe('account-creation-currencies');
+  it('should render in .account-creation-currencies.wrapper', () => {
+    expect(wrapper.prop('className')).toBe('account-creation-currencies wrapper');
   });
 
   it('should display as many account-creation-currency as props.currencies length', () => {
