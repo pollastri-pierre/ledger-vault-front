@@ -6,7 +6,7 @@ function AccountCreationCurrencies(props) {
   const { currencies, currency, onSelect } = props;
 
   return (
-    <div className="account-creation-currencies">
+    <div className="account-creation-currencies wrapper">
       {_.map(currencies, cur =>
         (<div
           onClick={() => onSelect(cur)}

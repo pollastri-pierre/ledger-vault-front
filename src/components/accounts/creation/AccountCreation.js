@@ -99,22 +99,31 @@ class AccountCreation extends Component {
         break;
     }
 
+    if (currencies.isLoading || _.isNull(currencies.currencies)) {
+      return (
+        <div id="account-creation" className="wrapper loading">
+          <div className="header" />
+          <div className="content">
+            <CircularProgress
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginLeft: '-25px',
+                marginTop: '-25px',
+              }}
+            />
+          </div>
+          <div className="footer">
+            <DialogButton highlight className="cancel" onTouchTap={close}>Cancel</DialogButton>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div>
-        {(currencies.isLoading || _.isNull(currencies.currencies)) ?
-          <div className="account-creation">
-            <div className="modal-loading">
-              <CircularProgress />
-            </div>
-            <div className="footer">
-              <DialogButton highlight className="cancel" onTouchTap={close}>Cancel</DialogButton>
-            </div>
-          </div>
-          :
-          <div>
-            {content}
-          </div>
-        }
+      <div id="account-creation">
+        {content}
       </div>
     );
   }

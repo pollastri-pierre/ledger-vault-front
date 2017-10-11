@@ -61,7 +61,6 @@ export function authenticationSucceed() {
 }
 
 export function authenticationFailed(e) {
-  console.log(e);
   if (e === 5) {
     return {
       type: AUTHENTICATION_FAILED_TIMEOUT,

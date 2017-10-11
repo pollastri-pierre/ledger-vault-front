@@ -44,7 +44,6 @@ const token = window.localStorage.getItem('token');
 
 const render = () => {
   ReactDOM.render(
-    // Pass the store, muiTheme and i18n to every components
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
         <I18nProvider>

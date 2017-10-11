@@ -9,10 +9,12 @@ import accounts from './accounts';
 import accountCreation from './account-creation';
 import allCurrencies from './all-currencies';
 import organization from './organization';
+import modals from './modals';
 
 const reducers = {
   blurBG,
   profile,
+  modals,
   locale,
   auth,
   alerts,

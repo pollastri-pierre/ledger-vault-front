@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import './AccountCreationMembers.css';
 import Checkbox from '../../form/Checkbox';
-import { Avatar, DialogButton } from '../../../components';
+import { Avatar, DialogButton, Overscroll } from '../../../components';
 
 
 class AccountCreationMembers extends Component {
@@ -21,9 +21,17 @@ class AccountCreationMembers extends Component {
 
     if (organization.isLoading || _.isNull(organization.members)) {
       return (
-        <div className="account-creation-members">
-          <div className="modal-loading">
-            <CircularProgress />
+        <div className="account-creation-members wrapper">
+          <div className="content">
+            <CircularProgress
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginLeft: '-25px',
+                marginTop: '-25px',
+              }}
+            />
           </div>
           <div className="footer">
             <DialogButton right highlight onTouchTap={() => switchInternalModal('main')}>Done</DialogButton>
@@ -33,22 +41,21 @@ class AccountCreationMembers extends Component {
     }
 
     return (
-      <div className="account-creation-members">
-        <div>
-          <header>
-            <h3>Members</h3>
-            {(members.length > 0) ?
-              <span className="counter">{members.length} members selected</span>
-              :
-              false
-            }
-            <p className="info">
-              Members define the group of individuals that have the ability to
-              approve outgoing operations from this account.
-            </p>
-          </header>
-          <div className="content">
-            <div className="inner">
+      <div className="account-creation-members wrapper">
+        <header>
+          <h2>Members</h2>
+          {(members.length > 0) ?
+            <span className="counter">{members.length} members selected</span>
+            :
+            false
+          }
+          <p className="info">
+            Members define the group of individuals that have the ability to
+            approve outgoing operations from this account.
+          </p>
+        </header>
+        <div className="content">
+          <Overscroll>
               {_.map(organization.members, (member) => {
                 const isChecked = (!_.isUndefined(_.find(members, { id: member.id })));
                 return (
@@ -78,9 +85,8 @@ class AccountCreationMembers extends Component {
                   </div>
                 );
               })}
-            </div>
+          </Overscroll>
           </div>
-        </div>
         <div className="footer">
           <DialogButton right highlight onTouchTap={() => switchInternalModal('main')}>Done</DialogButton>
         </div>

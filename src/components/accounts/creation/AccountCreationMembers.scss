@@ -4,11 +4,8 @@
 .account-creation-members {
   box-sizing: border-box;
   width: 445px;
+  min-height: 615px;
   
-  header {
-    padding-bottom: 0 !important;
-  }
-
   h3 {
     font-size: 18.4px;
     letter-spacing: -0.4px;
@@ -32,7 +29,6 @@
     color: $lead;
     line-height: 1.82;
     margin: 0;
-    margin-bottom: 35px;
   }
 
   .account-member-row {

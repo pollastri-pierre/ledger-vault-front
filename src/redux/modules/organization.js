@@ -6,17 +6,17 @@ export const GOT_ORGANIZATION_MEMBERS_FAIL = 'organization/GOT_ORGANIZATION_MEMB
 
 const fakeMembers = [
   {
-    id: 1,
-    name: 'Smith',
-    firstname: 'Henrietta',
-    role: 'Administrator',
-  },
-  {
     id: 2,
     name: 'McAndersen',
     firstname: 'Julie',
     role: 'Administrator',
     picture: 'http://yoursocialcom.eu/wp-content/uploads/avatar-1.png',
+  },
+  {
+    id: 1,
+    name: 'Smith',
+    firstname: 'Henrietta',
+    role: 'Administrator',
   },
   {
     id: 3,

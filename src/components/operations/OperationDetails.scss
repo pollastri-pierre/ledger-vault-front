@@ -1,7 +1,8 @@
 @import '../../styles/variables';
 
 .operation-details {
-  width: 400px;
+  min-height: 615px;
+  max-height: 615px;
 
   .operation-status {
     margin-left: 8px;

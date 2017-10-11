@@ -7,7 +7,7 @@ import AccountCreationCurrencies from './AccountCreationCurrencies';
 import AccountCreationOptions from './AccountCreationOptions';
 import AccountCreationSecurity from './AccountCreationSecurity';
 import AccountCreationConfirmation from './AccountCreationConfirmation';
-import { DialogButton } from '../../';
+import { DialogButton, Overscroll } from '../../';
 
 function MainCreation(props) {
   const {
@@ -41,91 +41,78 @@ function MainCreation(props) {
   }
 
   return (
-    <div>
-      {(currencies.isLoading || _.isNull(currencies.currencies)) ?
-        <div className="account-creation">
-          <div className="modal-loading">
-            <CircularProgress />
-          </div>
-          <div className="footer">
-            <DialogButton highlight className="cancel" onTouchTap={close}>Cancel</DialogButton>
-          </div>
+    <Tabs className="account-creation-main wrapper" selectedIndex={tabsIndex} onSelect={onSelect}>
+      <div>
+        <header>
+          <h2>New account</h2>
+          <TabList>
+            <Tab > 1. Currency </Tab>
+            <Tab
+              disabled={_.isNull(account.currency)}
+            >
+              2. Options
+            </Tab>
+            <Tab
+              disabled={(account.options.name === '')}
+            >
+              3. Security
+            </Tab>
+            <Tab
+              disabled={(account.security.members.length === 0 ||
+                account.security.approvals === 0 ||
+                account.security.approvals > account.security.members.length)
+              }
+            >
+              4. Confirmation
+            </Tab>
+          </TabList>
+        </header>
+        <div className="content">
+          <TabPanel className="tabs_panel">
+            <Overscroll>
+              <AccountCreationCurrencies
+                currency={account.currency}
+                currencies={currencies.currencies}
+                onSelect={selectCurrency}
+              />
+            </Overscroll>
+          </TabPanel>
+          <TabPanel className="tabs_panel">
+            <AccountCreationOptions
+              currency={account.currency}
+              options={account.options}
+              changeName={changeAccountName}
+            />
+          </TabPanel>
+          <TabPanel className="tabs_panel">
+            <AccountCreationSecurity
+              switchInternalModal={switchInternalModal}
+              account={account}
+            />
+          </TabPanel>
+          <TabPanel className="tabs_panel">
+            <AccountCreationConfirmation
+              account={account}
+            />
+          </TabPanel>
         </div>
-        :
-        <Tabs className="account-creation" selectedIndex={tabsIndex} onSelect={onSelect}>
-          <div>
-            <header>
-              <h2>New account</h2>
-              <TabList>
-                <Tab > 1. Currency </Tab>
-                <Tab
-                  disabled={_.isNull(account.currency)}
-                >
-                  2. Options
-                </Tab>
-                <Tab
-                  disabled={(account.options.name === '')}
-                >
-                  3. Security
-                </Tab>
-                <Tab
-                  disabled={(account.security.members.length === 0 ||
-                    account.security.approvals === 0 ||
-                    account.security.approvals > account.security.members.length)
-                  }
-                >
-                  4. Confirmation
-                </Tab>
-              </TabList>
-            </header>
-            <div className="content">
-              <div className="inner">
-                <TabPanel className="tabs_panel">
-                  <AccountCreationCurrencies
-                    currency={account.currency}
-                    currencies={currencies.currencies}
-                    onSelect={selectCurrency}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <AccountCreationOptions
-                    currency={account.currency}
-                    options={account.options}
-                    changeName={changeAccountName}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <AccountCreationSecurity
-                    switchInternalModal={switchInternalModal}
-                    account={account}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <AccountCreationConfirmation
-                    account={account}
-                  />
-                </TabPanel>
-              </div>
-            </div>
-          </div>
-          <div className="footer">
-            <DialogButton className="cancel" highlight onTouchTap={close}>Cancel</DialogButton>
-            {(_.includes([0, 1, 2], tabsIndex)) ?
-              <DialogButton
-                highlight
-                right
-                disabled={isNextDisabled}
-                onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
-              >
-                Continue
-              </DialogButton>
-              :
-              <DialogButton highlight right onTouchTap={save}>Done</DialogButton>
-            }
-          </div>
-        </Tabs>
-      }
-    </div>
+      </div>
+      <div className="footer">
+        <DialogButton className="cancel" highlight onTouchTap={close}>Cancel</DialogButton>
+        {(_.includes([0, 1, 2], tabsIndex)) ?
+          <DialogButton
+            highlight
+            right
+            disabled={isNextDisabled}
+            onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
+          >
+            Continue
+          </DialogButton>
+          :
+          <DialogButton highlight right onTouchTap={save}>Done</DialogButton>
+        }
+      </div>
+    </Tabs>
   );
 }
 
