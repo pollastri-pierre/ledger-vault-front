@@ -1,0 +1,124 @@
+@import '../../styles/variables';
+@import '../../styles/animations';
+@import '../../styles/mixins';
+
+.pending-requests {
+  display: flex;
+
+  .pending-right,
+  .pending-left {
+    width: 50%;
+  }
+
+  .pending-left {
+    margin-right: $spacingS;
+  }
+
+  .bloc {
+    position: relative;
+    margin-bottom: $spacingS;
+    min-height: 150px;
+  }
+
+  .pending-request-list {
+    .header {
+      margin: 0;
+    }
+
+    .header.dark {
+      font-size: 22px;
+      color: $black;
+      letter-spacing: -0.9px;
+      line-height: 1.5;
+    }
+
+    .header.light {
+      font-size: 10px;
+      color: $black;
+      font-weight: 600;
+      line-height: 3;
+      text-transform: uppercase;
+      color: $lead;
+      padding-bottom: 23px;
+      border-bottom: 1px solid $argile;
+    }
+
+    .header span:last-child {
+      float: right;
+    }
+  }
+
+  .pending-request {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 0 10px 0;
+    animation: fadeIn 1.5s ease;
+
+    &.watch:first-child {
+      padding-top: 0;
+    }
+
+    @include highlight-block($porto, -40px);
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $argile;
+    }
+
+    &:first-child {
+      margin-top: 10px;
+    }
+
+    .request-name {
+      float: right;
+      font-size: 13px;
+      color: $black;
+      line-height: 1.77;
+
+      @include badge-currency(6px);
+      &:before {
+        margin-right: 8px;
+      }
+    }
+    .request-date-creation {
+      font-size: 10px;
+      color: $black;
+      text-transform: uppercase;
+      font-weight: 600;
+      line-height: 2.3;
+    }
+    .request-approval-state {
+      font-size: 11px;
+      color: $black;
+      color: $lead;
+      line-height: 2.09;
+
+      &.approved {
+        .confirmed {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .request-currency {
+      float: right;
+      font-size: 11px;
+      color: $lead;
+      text-transform: uppercase;
+      font-weight: 600;
+      line-height: 2.09;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1145px) {
+  .pending-requests {
+    display: block;
+
+    .pending-right,
+    .pending-left {
+      width: 100%;
+      margin: 0 0 $spacingS 0;
+    }
+  }
+}

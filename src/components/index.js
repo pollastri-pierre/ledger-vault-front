@@ -12,6 +12,8 @@ export { default as Content } from './content/Content';
 export { default as Profile } from './profile/Profile';
 export { default as OperationDetails } from './operations/OperationDetails';
 export { default as AccountCreation } from './accounts/creation/AccountCreation';
+export { default as PendingAccountApprove } from './pending/PendingAccountApprove';
+export { default as AccountApprove } from './accounts/approve/AccountApprove';
 export { default as ListOperation } from './operations/List';
 export { default as EditableComponent } from './utils/ContentEditable';
 export { default as CardLoading } from './utils/CardLoading';

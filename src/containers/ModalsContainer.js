@@ -29,12 +29,21 @@ import {
 } from '../redux/modules/account-creation';
 
 import {
+  OPEN_ACCOUNT_APPROVE,
+  closeAccountApprove,
+  getAccountToApprove,
+  aborting,
+  approving,
+  abort,
+} from '../redux/modules/account-approve';
+
+import {
   getOrganizationMembers,
 } from '../redux/modules/organization';
 
 import { getCurrencies } from '../redux/modules/all-currencies';
 import { BlurDialog } from '../containers';
-import { OperationDetails, AccountCreation } from '../components';
+import { OperationDetails, AccountCreation, AccountApprove } from '../components';
 // import _ from 'lodash';
 
 const mapStateToProps = state => ({
@@ -43,6 +52,7 @@ const mapStateToProps = state => ({
   organization: state.organization,
   accountCreation: state.accountCreation,
   allCurrencies: state.allCurrencies,
+  accountToApprove: state.accountApprove,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -64,10 +74,16 @@ const mapDispatchToProps = dispatch => ({
   onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
   onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
   onSaveAccount: () => dispatch(saveAccount()),
+  onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
+  onGetAccountToApprove: () => dispatch(getAccountToApprove()),
+  onAbortingAccount: () => dispatch(aborting()),
+  onAbortAccount: () => dispatch(abort()),
+  onApprovingAccount: () => dispatch(approving()),
 });
 
 function ModalsContainer(props) {
   const { onChangeTabAccount,
+    accountToApprove,
     organization,
     operations,
     allCurrencies,
@@ -88,6 +104,11 @@ function ModalsContainer(props) {
     onOpenPopBubble,
     onChangeFrequency,
     onSaveAccount,
+    onAbortingAccount,
+    onAbortAccount,
+    onCloseAccountApprouve,
+    onGetAccountToApprove,
+    onApprovingAccount,
   } = props;
 
   return (
@@ -115,6 +136,19 @@ function ModalsContainer(props) {
               save={onSaveAccount}
               close={onCloseAccount}
               switchInternalModal={onSwitchInternalModal}
+            />
+          </Modal>
+      }
+      { accountToApprove.modalOpened &&
+          <Modal close={onCloseAccountApprouve}>
+            <AccountApprove
+              account={accountToApprove}
+              getAccount={onGetAccountToApprove}
+              account={accountToApprove}
+              aborting={onAbortingAccount}
+              approving={onApprovingAccount}
+              abort={onAbortAccount}
+              close={onCloseAccountApprouve}
             />
           </Modal>
       }

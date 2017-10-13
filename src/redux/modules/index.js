@@ -7,6 +7,8 @@ import operations from './operations';
 import accountsInfo from './accounts-info';
 import accounts from './accounts';
 import accountCreation from './account-creation';
+import pendingRequests from './pending-requests';
+import accountApprove from './account-approve';
 import allCurrencies from './all-currencies';
 import organization from './organization';
 import modals from './modals';
@@ -21,6 +23,8 @@ const reducers = {
   operations,
   accounts,
   accountsInfo,
+  accountApprove,
+  pendingRequests,
   accountCreation,
   allCurrencies,
   organization,
