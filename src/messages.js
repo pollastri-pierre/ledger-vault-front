@@ -31,6 +31,18 @@ export default {
       firstName: 'First name',
       lastName: 'Last name',
       mail: 'E-mail',
+      updateSuccess: {
+        title: 'Profile Updated',
+        content: 'Your profile has been successfully updated.',
+      },
+      updateInvalid: {
+        title: 'Oops',
+        content: 'All fields must be correctly filled.',
+      },
+      updateFailure: {
+        title: 'Oops',
+        content: 'Your profile could not be updated.',
+      },
     },
     account: {
       creationSuccessTitle: 'Account request created',
@@ -101,12 +113,24 @@ export default {
       firstName: 'First name',
       lastName: 'Last name',
       mail: 'E-mail',
+      updateSuccess: {
+        title: 'Profil mis à jour',
+        content: 'Votre profil a bien été mis à jour.',
+      },
+      updateInvalid: {
+        title: 'Oops',
+        content: 'Tous les champs doivent être correctement renseignés.',
+      },
+      updateFailure: {
+        title: 'Oops',
+        content: 'Votre profil n\'a pas pu être mis à jour.',
+      },
     },
     operations: {
       detailsTitle: "Operation's details",
       overview: 'Overview',
       details: 'Details',
-      label: 'Label'
+      label: 'Label',
     },
     role: {
       administrator: 'Administrateur',
