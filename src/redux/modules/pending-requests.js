@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { LOGOUT } from './auth';
 import { ABORTED, APPROVED } from './account-approve';
+import { SAVED_ACCOUNT } from './account-creation';
 
 export const GET_PENDING_REQUESTS_START = 'pending-requests/GET_PENDING_REQUESTS_START';
 export const GOT_PENDING_REQUESTS = 'pending-requests/GOT_PENDING_REQUESTS';
@@ -11,13 +12,9 @@ const account = {
   name: 'Trackerfund',
   currency: {
     family: 'BITCOIN',
-    units: [],
+    units: [{ name: 'Bitcoin', symbol: 'BTC' } ],
   },
-  security_scheme: {
-    quorum: 5,
-    approvers: ['2323r23', '3rwefef'],
-  },
-  balance: 2,
+  approved: ['edoiooooooo'],
   creation_time: new Date(),
 };
 
@@ -28,12 +25,9 @@ const account2 = {
   currency: {
     ...account.currency,
     family: 'LITECOIN',
+    units: [{ name: 'Litecoin', symbol: 'LTC' } ],
   },
-  security_scheme: {
-    ...account.security_scheme,
-    quorum: 3,
-    approvers: ['few'],
-  },
+  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk'],
 };
 
 const account3 = {
@@ -43,12 +37,9 @@ const account3 = {
   currency: {
     ...account.currency,
     family: 'DOGECOIN',
+    units: [{ name: 'Dogecoin', symbol: 'DOGE' } ],
   },
-  security_scheme: {
-    ...account.security_scheme,
-    quorum: 3,
-    approvers: [],
-  },
+  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
 };
 
 const account4 = {
@@ -58,12 +49,9 @@ const account4 = {
   currency: {
     ...account.currency,
     family: 'LITECOIN',
+    units: [{ name: 'Litecoin', symbol: 'LTC', } ],
   },
-  security_scheme: {
-    ...account.security_scheme,
-    quorum: 3,
-    approvers: [],
-  },
+  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
 };
 
 
@@ -121,15 +109,9 @@ export default function reducer(state = initialState, action) {
       const accountJustApproved = _.find(approveAccounts, {id: action.accountId});
       _.remove(approveAccounts, {id: action.accountId});
 
-      console.log(accountJustApproved);
-      // TODO handle real user hash key
-      accountJustApproved.security_scheme.approvers.push('user_hash');
+      accountJustApproved.approved.push(account.pub_key);
+      watchAccounts.push(accountJustApproved);
 
-      if (accountJustApproved.security_scheme.approvers.length < accountJustApproved.security_scheme.quorum) {
-        watchAccounts.push(accountJustApproved);
-      }
-
-      // we update the approvals and check if it goes to account to watch
       return {
         ...state,
         data: {
@@ -138,11 +120,19 @@ export default function reducer(state = initialState, action) {
           watchAccounts: watchAccounts,
         },
       };
-
     case ABORTED:
       _.remove(approveAccounts, {id: action.accountId});
       return {
         ...state,
+        data: {
+          ...state.data,
+          approveAccounts: approveAccounts,
+        },
+      };
+    case SAVED_ACCOUNT: 
+      approveAccounts.push(action.account);
+      return {
+        ...state, 
         data: {
           ...state.data,
           approveAccounts: approveAccounts,

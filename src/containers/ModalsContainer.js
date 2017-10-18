@@ -39,6 +39,7 @@ import {
 
 import {
   getOrganizationMembers,
+  getOrganizationApprovers,
 } from '../redux/modules/organization';
 
 import { getCurrencies } from '../redux/modules/all-currencies';
@@ -65,6 +66,7 @@ const mapDispatchToProps = dispatch => ({
   onChangeAccountName: n => dispatch(changeAccountName(n)),
   onSwitchInternalModal: n => dispatch(switchInternalModal(n)),
   onGetOrganizationMembers: () => dispatch(getOrganizationMembers()),
+  onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers()),
   onAddMember: m => dispatch(addMember(m)),
   onSetApprovals: n => dispatch(setApprovals(n)),
   onEnableTimeLock: () => dispatch(enableTimeLock()),
@@ -94,6 +96,7 @@ function ModalsContainer(props) {
     onChangeAccountName,
     onSwitchInternalModal,
     onGetOrganizationMembers,
+    onGetOrganizationApprovers,
     onCloseAccount,
     onAddMember,
     onSetApprovals,
@@ -113,7 +116,7 @@ function ModalsContainer(props) {
 
   return (
     <div>
-      { props.modals === OPEN_MODAL_ACCOUNT &&
+      { accountCreation.modalOpened &&
           <Modal close={onCloseAccount}>
             <AccountCreation
               organization={organization}
@@ -143,6 +146,9 @@ function ModalsContainer(props) {
           <Modal close={onCloseAccountApprouve}>
             <AccountApprove
               account={accountToApprove}
+              organization={organization}
+              getOrganizationMembers={onGetOrganizationMembers}
+              getOrganizationApprovers={onGetOrganizationApprovers}
               getAccount={onGetAccountToApprove}
               account={accountToApprove}
               aborting={onAbortingAccount}

@@ -14,7 +14,28 @@ export const APPROVE_START = 'approve-account/APPROVE_START';
 export const APPROVED = 'approve-account/APPROVED';
 export const APPROVED_FAIL = 'approve-account/APPROVED_FAIL';
 
-const account = { };
+const account = {
+  id: 1,
+  name: 'Trackerfund',
+  currency: {
+    family: 'BITCOIN',
+    units: [{
+      name: 'Bitcoin',
+      symbol: 'BTC',
+    }],
+  },
+  security: {
+    approvals: 2,
+    members: ['1', '2', '3', '4'],
+    timelock: {
+      enabled: true,
+      duration: 3,
+    },
+    ratelimiter: {},
+  },
+  creation_time: new Date(),
+  approved: ['ewfwekljfkujkljlkj'],
+};
 
 export function approveStart() {
   return {
@@ -22,10 +43,21 @@ export function approveStart() {
   };
 }
 
-export function approved(accountId) {
+export function approvedFail() {
   return {
-    type: APPROVED,
-    accountId,
+    type: APPROVED_FAIL,
+  };
+}
+
+export function approved(accountId) {
+  return (dispatch, getState) => {
+    const { profile } = getState();
+
+    dispatch({
+      type: APPROVED,
+      accountId,
+      pub_key: profile.user.pub_key || '', // TODO remove when API fixed ( now it sends null )
+    });
   };
 }
 
@@ -43,7 +75,7 @@ export function approving() {
     const { accountApprove } = getState();
     if (accountApprove.isDevice) {
       setTimeout(() => {
-        dispatch(finishApprove(accountApprove.accountId));
+        dispatch(finishApprove(accountApprove.account.id));
       }, 2000);
     }
   };
@@ -58,7 +90,7 @@ export function abortStart() {
 export function aborted(accountId) {
   return {
     type: ABORTED,
-    accountId
+    accountId,
   };
 }
 
@@ -73,7 +105,7 @@ export function abort() {
     dispatch(abortStart());
     const { accountApprove } = getState();
     setTimeout(() => {
-      dispatch(aborted(accountApprove.accountId));
+      dispatch(aborted(accountApprove.account.id));
     }, 500);
   };
 }
@@ -113,10 +145,10 @@ export function getAccountToApprove() {
   };
 }
 
-export function openAccountApprove(accountId, isApproved = false) {
+export function openAccountApprove(account, isApproved = false) {
   return {
     type: OPEN_ACCOUNT_APPROVE,
-    accountId,
+    account,
     isApproved,
   };
 }
@@ -142,14 +174,22 @@ export default function reducer(state = initialState, action) {
     case GET_ACCOUNT_TO_APPROVE_START:
       return { ...state, isLoading: true };
     case GOT_ACCOUNT_TO_APPROVE:
-      return { ...state, isLoading: false, account: action.account };
+      return {
+        ...state,
+        isLoading: false,
+        account: {
+          ...state.account,
+          security: action.account.security,
+        },
+      };
     case GOT_ACCOUNT_TO_APPROVE_FAIL:
       return { ...state, isLoading: false };
     case OPEN_ACCOUNT_APPROVE:
       return {
         ...state,
         modalOpened: true,
-        accountId: action.accountId,
+        account: action.account,
+        isLoading: true,
         isApproved: action.isApproved,
       };
     case CLOSE_ACCOUNT_APPROVE:

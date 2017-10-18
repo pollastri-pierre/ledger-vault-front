@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Rates from '../../icons/thin/Rates';
 import PeopleThin from '../../icons/thin/People';
 import Hourglass from '../../icons/thin/Hourglass';
+import { formatDate } from '../../../redux/utils/format';
 
-function AccountCreationConfirmation(props) {
-  const { security, options, currency } = props.account;
+function AccountApproveDetails(props) {
+  const { security, currency } = props.account;
+  const { account } = props;
 
   return (
     <div>
@@ -42,8 +43,18 @@ function AccountCreationConfirmation(props) {
 
       <div className="confirmation-infos">
         <div className="confirmation-info">
+          <span className="info-title">Status</span>
+          <span className="info-value status">Collecting approvals (33%)</span>
+        </div>
+        <div className="confirmation-info">
+          <span className="info-title">Requested</span>
+          <span className="info-value date">{formatDate(account.creation_time, 'lll')}</span>
+        </div>
+        <div className="confirmation-info">
           <span className="info-title">Name</span>
-          <span className={`info-value name ${currency.units[0].name.split(' ').join('-').toLowerCase()}`}>{options.name}</span>
+          <span className={`info-value name ${currency.units[0].name.split(' ').join('-').toLowerCase()}`}>
+            {account.name}
+          </span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Currency</span>
@@ -54,17 +65,12 @@ function AccountCreationConfirmation(props) {
           <span className="info-value">{security.approvals} of {security.members.length} members</span>
         </div>
       </div>
-      <div className="confirmation-explain">
-        A new account request will be created.
-        The account will not be available until all the members
-        in your team approve the creation request.
-      </div>
     </div>
   );
 }
 
-AccountCreationConfirmation.propTypes = {
+AccountApproveDetails.propTypes = {
   account: PropTypes.shape({}).isRequired,
 };
 
-export default AccountCreationConfirmation;
+export default AccountApproveDetails;

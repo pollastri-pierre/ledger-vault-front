@@ -5,7 +5,7 @@ import ValidateBadge from '../icons/ValidateBadge';
 import { formatDate } from '../../redux/utils/format';
 
 function PendingAccountApprove(props) {
-  const { accounts, open, approved } = props;
+  const { accounts, open, approved, approvers } = props;
   if (accounts.length === 0) {
     return (
       <p>There are no accounts to approve</p>
@@ -40,12 +40,11 @@ function PendingAccountApprove(props) {
       }
       {_.map(accounts, (account) => {
         const currencyClass = account.currency.family.toLowerCase();
-        const { security_scheme } = account;
         return (
           <div
             className={`pending-request ${approved ? 'watch' : ''}`}
             key={account.id}
-            onClick={() => open(account.id, approved)}
+            onClick={() => open(account, approved)}
           >
             <div>
               <span className="request-date-creation">{formatDate(account.creation_time, 'lll')}</span>
@@ -53,7 +52,7 @@ function PendingAccountApprove(props) {
             </div>
             <div>
               <span className={`request-approval-state ${approved ? 'approved' : ''}`}>
-                {approved && 
+                {approved &&
                   <ValidateBadge className="confirmed" />
                 }
 
@@ -62,19 +61,20 @@ function PendingAccountApprove(props) {
                   :
                   'Collecting Approvals'
                 }
-                {` (${security_scheme.approvers.length}/${security_scheme.quorum} ) `}
+                {` (${account.approved.length}/${approvers.length}) `}
               </span>
               <span className="request-currency">{account.currency.family}</span>
             </div>
           </div>
-       );
+        );
       })}
     </div>
   );
 }
 
-PendingAccountApprove.defaultTypes = {
+PendingAccountApprove.defaultProps = {
   approved: false,
+  approvers: [],
 };
 
 PendingAccountApprove.propTypes = {
@@ -84,6 +84,7 @@ PendingAccountApprove.propTypes = {
   })).isRequired,
   open: PropTypes.func.isRequired,
   approved: PropTypes.bool,
+  approvers: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 export default PendingAccountApprove;

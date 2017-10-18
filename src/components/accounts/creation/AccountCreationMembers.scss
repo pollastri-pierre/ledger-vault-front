@@ -2,9 +2,6 @@
 @import '../../../styles/variables';
 
 .account-creation-members {
-  box-sizing: border-box;
-  width: 445px;
-  min-height: 615px;
   
   h3 {
     font-size: 18.4px;
@@ -29,6 +26,10 @@
     color: $lead;
     line-height: 1.82;
     margin: 0;
+
+    &.approve {
+      margin-bottom: $spacingS;
+    }
   }
 
   .account-member-row {
@@ -43,54 +44,95 @@
       border: 0;
     }
 
-    .member-avatar {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      margin-top: -15px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: $mouse;
-
-      .member-avatar-img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-left: -6.5px;
-        margin-top: -7.5px;
-        fill: none;
-        stroke: white;
-        stroke-width: 2px;
-      }
-
-      img.member-avatar-img {
-        width: 30px; 
-        height: 30px;
-        border-radius: 50%;
-        position: absolute;
-        top: 7px;
-        left: 7px;
-      }
-    }
-  
-    .name {
-      display: inline-block;
-      margin-top: 17px;
-      color: $black;
-      margin-bottom: 4px;
-      font-size: 13px;
-    }
-
-    .role {
-      margin: 0;
-      font-size: 11px;
-      color: $lead;
-    }
-
     .slidebox {
       float: right;
       margin-top: -20px;
     }
+  }
+
+  .name {
+    display: inline-block;
+    margin-top: 17px;
+    color: $black;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  .role, .has-approved {
+    margin: 0;
+    font-size: 11px;
+    color: $lead;
+  }
+  .member-avatar {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $mouse;
+
+    .member-avatar-img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -6.5px;
+      margin-top: -7.5px;
+      fill: none;
+      stroke: white;
+      stroke-width: 2px;
+    }
+
+    img.member-avatar-img {
+      width: 30px; 
+      height: 30px;
+      border-radius: 50%;
+      position: absolute;
+      top: 7px;
+      left: 7px;
+    }
+  }
+
+  .account-member-approval {
+    position: relative;
+    display: inline-block;
+    width: 121px;
+    text-align: center;
+
+    .badge-approved {
+      background: white;
+      box-sizing: content-box;
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border: 2px solid white;
+      right: -6px;
+      bottom: -4px;
+      z-index: 2;
+      border-radius: 50%;
+      fill: $porto;
+
+      svg {
+        position: absolute;
+        left: 0;
+      }
+
+      &.not-approved {
+        fill: $silver;
+      }
+
+    }
+
+    .member-avatar {
+      position: relative;
+      margin: auto;
+    }
+
+    img.member-avatar-img {
+      top: 8px;
+      left: 6px;
+    }
+
   }
 }

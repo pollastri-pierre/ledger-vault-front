@@ -25,28 +25,58 @@ export function getCurrencies() {
     setTimeout(() => {
       const currencies = [
         {
-          name: 'Bitcoin',
-          shortname: 'BTC',
+          family: 'Bitcoin',
+          units: [{
+            name: 'bitcoin',
+            code: 'BTC',
+            symbol: 'BTC',
+            magnitude: 2,
+          }],
         },
         {
-          name: 'Dogecoin',
-          shortname: 'DOGE',
+          family: 'Dogecoin',
+          units: [{
+            name: 'dogecoin',
+            code: 'DOGE',
+            symbol: 'DOGE',
+            magnitude: 2,
+          }],
         },
         {
-          name: 'Dash',
-          shortname: 'DASH',
+          family: 'Dash',
+          units: [{
+            name: 'dash',
+            code: 'DASH',
+            symbol: 'DASH',
+            magnitude: 2,
+          }],
         },
         {
-          name: 'Ethereum',
-          shortname: 'ETH',
+          family: 'Ethereum',
+          units: [{
+            name: 'Ethereum',
+            code: 'ETH',
+            symbol: 'ETH',
+            magnitude: 2,
+          }],
         },
         {
-          name: 'Ethereum Classic',
-          shortname: 'ETC',
+          family: 'Ethereum',
+          units: [{
+            name: 'Ethereum Classic',
+            code: 'ETH',
+            symbol: 'ETH',
+            magnitude: 2,
+          }],
         },
         {
-          name: 'Litecoin',
-          shortname: 'LTC',
+          family: 'Litecoin',
+          units: [{
+            name: 'Litecoin',
+            code: 'LTC',
+            symbol: 'LTC',
+            magnitude: 2,
+          }],
         },
       ];
       dispatch(gotCurrencies(currencies));

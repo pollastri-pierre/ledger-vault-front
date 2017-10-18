@@ -42,7 +42,7 @@ function AccountCreationApprovals(props) {
 
 AccountCreationApprovals.propTypes = {
   approvals: PropTypes.string.isRequired,
-  members: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  members: PropTypes.arrayOf(PropTypes.string).isRequired,
   switchInternalModal: PropTypes.func.isRequired,
   setApprovals: PropTypes.func.isRequired,
 };

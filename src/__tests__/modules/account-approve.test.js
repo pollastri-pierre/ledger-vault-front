@@ -8,17 +8,95 @@ import reducer, {
   gotAccountToApproveFail,
   openAccountApprove,
   closeAccountApprove,
+  approveStart,
+  approved,
+  approvedFail,
+  finishApprove,
+  approving,
+  abortStart,
+  aborted,
+  abortedFail,
+  abort,
+  aborting,
   GET_ACCOUNT_TO_APPROVE_START,
   GOT_ACCOUNT_TO_APPROVE,
   GOT_ACCOUNT_TO_APPROVE_FAIL,
   OPEN_ACCOUNT_APPROVE,
   CLOSE_ACCOUNT_APPROVE,
+  APPROVE_START,
+  APPROVED,
+  APPROVED_FAIL,
+  ABORT_START,
+  ABORTING,
+  ABORTED_FAIL,
+  ABORTED,
 } from '../../redux/modules/account-approve';
 
 describe('account-approve module', () => {
+  // TODO test abort, approving, finishApprove when real API implemented 
+
+  it('aborting() should return ABORTING', () => {
+    expect(aborting()).toEqual({
+      type: ABORTING,
+    });
+  });
+
+  it('approveStart() should return APPROVE_START', () => {
+    expect(approveStart()).toEqual({
+      type: APPROVE_START,
+    });
+  });
+
+  it('abortStart() should return ABORT_START', () => {
+    expect(abortStart()).toEqual({
+      type: ABORT_START,
+    });
+  });
+
+  it('abortedFail() should return ABORTED_FAIL', () => {
+    expect(abortedFail()).toEqual({
+      type: ABORTED_FAIL,
+    });
+  });
+
+  it('approvedFail() should return APPROVED_FAIL', () => {
+    expect(approvedFail()).toEqual({
+      type: APPROVED_FAIL,
+    });
+  });
+
+  it('aborted() should return ABORTED with the accountId', () => {
+    expect(aborted(1)).toEqual({
+      type: ABORTED,
+      accountId: 1,
+    });
+  });
+
+
   it('getAccountToApproveStart() should return GET_ACCOUNT_TO_APPROVE_START', () => {
     expect(getAccountToApproveStart()).toEqual({
       type: GET_ACCOUNT_TO_APPROVE_START,
+    });
+  });
+
+  it('approved() should return APPROVED and the accountId and the pub_key of current user', () => {
+    const dispatch = jest.fn();
+    const getState = () => {
+      return {
+        profile: {
+          user: {
+            pub_key: 'hash',
+          },
+        },
+      };
+    };
+
+    const thunk = approved(1);
+    thunk(dispatch, getState);
+    expect(dispatch).toHaveBeenCalledWith({
+      type: APPROVED,
+      accountId: 1,
+      pub_key: 'hash',
     });
   });
 
@@ -36,10 +114,10 @@ describe('account-approve module', () => {
     });
   });
 
-  it('openAccountApprove() should return OPEN_ACCOUNT_APPROVE and accountId', () => {
-    expect(openAccountApprove(300)).toEqual({
+  it('openAccountApprove() should return OPEN_ACCOUNT_APPROVE and account', () => {
+    expect(openAccountApprove({})).toEqual({
       type: OPEN_ACCOUNT_APPROVE,
-      accountId: 300,
+      account: {},
       isApproved: false,
     });
   });
@@ -75,12 +153,12 @@ describe('account-approve module', () => {
     })).toEqual({ ...state, isLoading: false });
   });
 
-  it('reducer should set modalOpened to true and set the accountId when OPEN_ACCOUNT_APPROVE', () => {
+  it('reducer should set modalOpened to true and set the account when OPEN_ACCOUNT_APPROVE', () => {
     expect(reducer(initialState, {
       type: OPEN_ACCOUNT_APPROVE,
-      accountId: 400,
+      account: {},
       isApproved: false,
-    })).toEqual({ ...initialState, modalOpened: true, accountId: 400, isApproved: false });
+    })).toEqual({ ...initialState, modalOpened: true, account: {}, isApproved: false, isLoading: true });
   });
 
   it('reducer should reset modalOpend and accountId when CLOSE_ACCOUNT_APPROVE', () => {
@@ -90,6 +168,57 @@ describe('account-approve module', () => {
       type: CLOSE_ACCOUNT_APPROVE,
     })).toEqual({ ...state, modalOpened: false, accountId: null });
   });
+
+  it('reducer should set modalOpened to false and isAborting to false at ABORT_START', () => {
+    const state = { ...initialState, modalOpened: true, isAborting: true };
+
+    expect(reducer(state, {
+      type: ABORT_START,
+    })).toEqual({ ...state, modalOpened: false, isAborting: false });
+  });
+
+  it('reducer should set isDecive to !state.isDevice at APPROVE_START', () => {
+    const state = { ...initialState, isDevice: false };
+    const state2 = { ...initialState, isDevice: true };
+
+    expect(reducer(state, {
+      type: APPROVE_START,
+    })).toEqual({ ...state, isDevice: true });
+
+    expect(reducer(state2, {
+      type: APPROVE_START,
+    })).toEqual({ ...state, isDevice: false });
+  });
+
+  it('reducer should set account to null and accountId to null at ABORTED', () => {
+    const state = { ...initialState, account: {}, accountId: 1 };
+
+    expect(reducer(state, {
+      type: ABORTED,
+    })).toEqual({ ...state, account: null, accountId: null });
+  });
+
+  it('reducer should reset the state at APPROVED', () => {
+    const state = { ...initialState, account: {}, accountId: 1 };
+
+    expect(reducer(state, {
+      type: APPROVED,
+    })).toEqual(initialState);
+  });
+
+  it('reducer should do set isAborting to !state.isAborting at ABORTING', () => {
+    const state = { ...initialState, isAborting: false };
+    const state2 = { ...initialState, isAborting: true };
+
+    expect(reducer(state, {
+      type: ABORTING,
+    })).toEqual({ ...state, isAborting: true });
+
+    expect(reducer(state2, {
+      type: ABORTING,
+    })).toEqual({ ...state, isAborting: false });
+  });
+
 
   it('reducer should reset the state at LOGOUT', () => {
     const state = { ...initialState, data: {} };

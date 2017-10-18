@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import CircularProgress from 'material-ui/CircularProgress';
-import { DialogButton } from '../../';
+import { DialogButton, Overscroll } from '../../';
 import AbortConfirmation from './AbortConfirmation';
 import ApproveDevice from './ApproveDevice';
+import AccountApproveDetails from './AccountApproveDetails';
+import AccountApproveMembers from './AccountApproveMembers';
+import AccountApproveApprovals from './AccountApproveApprovals';
 import Footer from './Footer';
 import './AccountApprove.css';
 
@@ -14,9 +18,18 @@ class AccountApprove extends Component {
   }
 
   render() {
-    const { close, account, abort, aborting, approving } = this.props;
+    const {
+      organization,
+      getOrganizationMembers,
+      getOrganizationApprovers,
+      close,
+      account,
+      abort,
+      aborting,
+      approving 
+    } = this.props;
 
-    if (account.isLoading) {
+    if (account.isLoading || _.isNull(account.account)) {
       return (
         <div id="account-creation" className="wrapper loading">
           <div className="header" />
@@ -67,13 +80,26 @@ class AccountApprove extends Component {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            details
+            <AccountApproveDetails account={account.account} />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            members
+            <Overscroll>
+              <AccountApproveMembers
+                organization={organization}
+                getOrganizationMembers={getOrganizationMembers}
+                account={account.account}
+              />
+            </Overscroll>
           </TabPanel>
           <TabPanel className="tabs_panel">
-            approvals
+            <Overscroll>
+              <AccountApproveApprovals
+                organization={organization}
+                getOrganizationMembers={getOrganizationMembers}
+                getOrganizationApprovers={getOrganizationApprovers}
+                account={account.account}
+              />
+            </Overscroll>
           </TabPanel>
         </div>
         <Footer

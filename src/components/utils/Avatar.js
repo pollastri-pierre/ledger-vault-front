@@ -11,7 +11,7 @@ function Avatar(props) {
   }
 
   return (
-    <People width={width} height={height} {...rest} />
+    <People width={width} height={height} {...rest} color="white" />
   );
 }
 

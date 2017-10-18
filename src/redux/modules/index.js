@@ -11,12 +11,10 @@ import pendingRequests from './pending-requests';
 import accountApprove from './account-approve';
 import allCurrencies from './all-currencies';
 import organization from './organization';
-import modals from './modals';
 
 const reducers = {
   blurBG,
   profile,
-  modals,
   locale,
   auth,
   alerts,

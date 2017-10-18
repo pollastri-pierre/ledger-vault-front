@@ -6,30 +6,38 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { openAccountApprove } from '../../redux/modules/account-approve';
 import { getPendingRequests } from '../../redux/modules/pending-requests';
+import { getOrganizationApprovers } from '../../redux/modules/organization';
 import { PendingAccountApprove } from '../../components';
 
 import './PendingRequests.css';
 
 const mapStateToProps = state => ({
   pendingRequests: state.pendingRequests,
+  organization: state.organization,
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetPendingRequests: () => dispatch(getPendingRequests()),
   onOpenAccountApprove: (idAccount, isApproved) => dispatch(openAccountApprove(idAccount, isApproved)),
+  onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers()),
 });
 
 class PendingRequests extends Component {
   componentWillMount() {
-    const { onGetPendingRequests, pendingRequests } = this.props;
+    const { onGetOrganizationApprovers, onGetPendingRequests, pendingRequests, organization } = this.props;
 
     if (_.isNull(pendingRequests.data) && !pendingRequests.isLoading) {
       onGetPendingRequests();
     }
+
+    if (_.isNull(organization.approvers) && !organization.isLoadingApprovers) {
+      onGetOrganizationApprovers();
+    }
+
   }
 
   render() {
-    const { pendingRequests, onOpenAccountApprove } = this.props;
+    const { pendingRequests, onOpenAccountApprove, organization } = this.props;
 
     return (
       <div className="pending-requests">
@@ -68,7 +76,7 @@ class PendingRequests extends Component {
         <div className="pending-right">
           <div className="bloc">
             <h3>Accounts to approve</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) ?
+            {pendingRequests.isLoading || _.isNull(pendingRequests.data) || _.isNull(organization.approvers) || _.isNull(organization.isLoadingApprovers) ?
               <CircularProgress
                 size={30}
                 style={{
@@ -80,13 +88,14 @@ class PendingRequests extends Component {
               :
               <PendingAccountApprove
                 accounts={pendingRequests.data.approveAccounts}
+                approvers={organization.approvers}
                 open={onOpenAccountApprove}
               />
             }
           </div>
           <div className="bloc">
             <h3>Accounts to watch</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) ?
+            {pendingRequests.isLoading || _.isNull(pendingRequests.data) || _.isNull(organization.approvers) || _.isNull(organization.isLoadingApprovers) ?
               <CircularProgress
                 size={30}
                 style={{
@@ -98,6 +107,7 @@ class PendingRequests extends Component {
               :
               <PendingAccountApprove
                 accounts={pendingRequests.data.watchAccounts}
+                approvers={organization.approvers}
                 open={onOpenAccountApprove}
                 approved
               />
