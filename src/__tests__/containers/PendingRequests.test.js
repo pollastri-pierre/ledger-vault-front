@@ -270,7 +270,7 @@ describe('PendingRequests container', () => {
     // console.log(wrapper.find('.pending-right .bloc').at(1));
     expect(Pending.prop('accounts')).toEqual(sProps.pendingRequests.data.watchAccounts);
     expect(Pending.prop('approvers')).toEqual(sProps.organization.approvers);
-    expect(Pending.prop('approved')).toEqual(undefined);
+    expect(Pending.prop('approved')).toEqual(false);
     expect(Pending.prop('open')).toEqual(sProps.onOpenAccountApprove);
   });
 
