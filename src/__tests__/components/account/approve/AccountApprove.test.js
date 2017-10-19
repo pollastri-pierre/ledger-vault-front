@@ -16,6 +16,7 @@ const props = {
     isDevice: false,
     account: null,
   },
+  organization: {},
   close: jest.fn(),
   abort: jest.fn(),
   aborting: jest.fn(),
@@ -132,6 +133,7 @@ describe('AccountApprove component', () => {
     const AccountApproveDetails = wrapper.find('.content TabPanel').at(0).find('AccountApproveDetails');
 
     expect(AccountApproveDetails.prop('account')).toEqual(mainProps.account.account);
+    expect(AccountApproveDetails.prop('organization')).toEqual(mainProps.organization);
   });
 
   it('Second TabPanel should contain an AccountApproveMembers', () => {

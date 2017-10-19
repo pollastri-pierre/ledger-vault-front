@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import ValidateBadge from '../../icons/ValidateBadge';
 import Question from '../../icons/full/Question';
-import _ from 'lodash';
 import { Avatar } from '../../../components';
 import './AccountApproveApprovals.css';
 
 
 class AccountApproveApprovals extends Component {
   componentWillMount() {
-    console.log(this.props);
     const { approvers, isLoadingApprovers } = this.props.organization;
 
     if (!isLoadingApprovers && _.isNull(approvers)) {
@@ -25,9 +25,9 @@ class AccountApproveApprovals extends Component {
       return (
         <CircularProgress
           style={{
-            top: "50%",
-            left: "50%",
-            margin: "-25px 0 0 -25px",
+            top: '50%',
+            left: '50%',
+            margin: '-25px 0 0 -25px',
           }}
         />
       );
@@ -67,9 +67,9 @@ class AccountApproveApprovals extends Component {
               </div>
               <span className="name">{member.firstname} {member.name}</span>
               {isApproved ?
-                <p className="has-approved"> Approved </p>
+                <p className="has-approved">Approved</p>
                 :
-                <p className="has-approved"> Pending </p>
+                <p className="has-approved">Pending</p>
               }
             </div>
           );
@@ -81,7 +81,7 @@ class AccountApproveApprovals extends Component {
           </p>
 
           <div className="percentage-bar">
-            <div className="percentage-bar-fill" style={{width: `${percentage}%`}}/>
+            <div className="percentage-bar-fill" style={{ width: `${percentage}%` }} />
           </div>
 
         </div>
@@ -89,6 +89,17 @@ class AccountApproveApprovals extends Component {
     );
   }
 }
+
+AccountApproveApprovals.propTypes = {
+  getOrganizationApprovers: PropTypes.func.isRequired,
+  organization: PropTypes.shape({
+    approvers: PropTypes.arrayOf(PropTypes.shape({})),
+    isLoadingApprovers: PropTypes.bool,
+  }).isRequired,
+  account: PropTypes.shape({
+    approved: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+};
 
 export default AccountApproveApprovals;
 

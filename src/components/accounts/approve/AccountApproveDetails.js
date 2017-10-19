@@ -6,8 +6,11 @@ import Hourglass from '../../icons/thin/Hourglass';
 import { formatDate } from '../../../redux/utils/format';
 
 function AccountApproveDetails(props) {
-  const { security, currency } = props.account;
+  const { security, currency, approved } = props.account;
   const { account } = props;
+  const { approvers } = props.organization;
+
+  const percentage = Math.round(100 * (approved.length / approvers.length));
 
   return (
     <div>
@@ -44,7 +47,11 @@ function AccountApproveDetails(props) {
       <div className="confirmation-infos">
         <div className="confirmation-info">
           <span className="info-title">Status</span>
-          <span className="info-value status">Collecting approvals (33%)</span>
+          { percentage === 100 ?
+            <span className="info-value status">Approved</span>
+            :
+            <span className="info-value status">Collecting approvals ({percentage}%)</span>
+          }
         </div>
         <div className="confirmation-info">
           <span className="info-title">Requested</span>

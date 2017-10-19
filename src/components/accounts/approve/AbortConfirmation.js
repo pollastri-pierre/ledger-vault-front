@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DialogButton } from '../../';
 import Trash from '../../icons/thin/Trash';
 
 function AbortConfirmation(props) {
-  const { abort, close, aborting } = props;
+  const { abort, aborting } = props;
   return (
     <div id="account-abort-confirmation" className="small-modal">
       <header>
@@ -23,5 +24,10 @@ function AbortConfirmation(props) {
     </div>
   );
 }
+
+AbortConfirmation.propTypes = {
+  abort: PropTypes.func.isRequired,
+  aborting: PropTypes.func.isRequired,
+};
 
 export default AbortConfirmation;

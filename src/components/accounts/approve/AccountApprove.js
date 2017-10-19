@@ -80,7 +80,10 @@ class AccountApprove extends Component {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            <AccountApproveDetails account={account.account} />
+            <AccountApproveDetails
+              account={account.account}
+              organization={organization}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <Overscroll>

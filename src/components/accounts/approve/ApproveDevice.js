@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DialogButton } from '../../';
 import Plug from '../../icons/thin/Plug';
 
@@ -23,7 +24,8 @@ function ApproveDevice(props) {
           </li>
           <li>
             <span className="bullet">3.</span>
-            Open the Vault app on the dashboard. When displayed, approve the account request on the device.
+            Open the Vault app on the dashboard. When displayed,
+            approve the account request on the device.
           </li>
         </ul>
       </div>
@@ -31,10 +33,13 @@ function ApproveDevice(props) {
         <DialogButton highlight className="cancel margin" onTouchTap={cancel}>Cancel</DialogButton>
         <div className="wait">awaiting device...</div>
       </div>
-
     </div>
   );
 }
+
+ApproveDevice.propTypes = {
+  cancel: PropTypes.func.isRequired,
+};
 
 export default ApproveDevice;
 
