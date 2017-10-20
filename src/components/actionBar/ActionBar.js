@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
-import { PopBubble, Divider, Profile } from '../../components';
+import { PopBubble, Profile } from '../../components';
 import { BlurDialog } from '../../containers';
 import ProfileIcon from '../icons/thin/Profile';
 

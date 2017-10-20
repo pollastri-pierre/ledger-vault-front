@@ -12,6 +12,7 @@
     "eslint": "^4.6.1",
     "eslint-plugin-import": "^2.7.0",
     "history": "^4.7.2",
+    "ledgerco": "git+https://github.com/LedgerHQ/ledger-node-js-api.git",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.18.7",

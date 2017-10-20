@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { push } from 'react-router-redux';
 import 'u2f-api-polyfill';
+import ledger from 'ledgerco';
 
 export const SET_TEAM_FIELD = 'auth/SET_TEAM_FIELD';
 export const LOGOUT = 'auth/LOGOUT';

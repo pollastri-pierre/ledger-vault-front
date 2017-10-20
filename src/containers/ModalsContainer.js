@@ -25,11 +25,9 @@ import {
   changeRatelimiter,
   changeFrequency,
   saveAccount,
-  OPEN_MODAL_ACCOUNT,
 } from '../redux/modules/account-creation';
 
 import {
-  OPEN_ACCOUNT_APPROVE,
   closeAccountApprove,
   getAccountToApprove,
   aborting,
@@ -43,7 +41,6 @@ import {
 } from '../redux/modules/organization';
 
 import { getCurrencies } from '../redux/modules/all-currencies';
-import { BlurDialog } from '../containers';
 import { OperationDetails, AccountCreation, AccountApprove } from '../components';
 // import _ from 'lodash';
 
@@ -89,7 +86,6 @@ function ModalsContainer(props) {
     organization,
     operations,
     allCurrencies,
-    onClose,
     accountCreation,
     onGetCurrencies,
     onSelectCurrency,
@@ -150,7 +146,6 @@ function ModalsContainer(props) {
               getOrganizationMembers={onGetOrganizationMembers}
               getOrganizationApprovers={onGetOrganizationApprovers}
               getAccount={onGetAccountToApprove}
-              account={accountToApprove}
               aborting={onAbortingAccount}
               approving={onApprovingAccount}
               abort={onAbortAccount}
