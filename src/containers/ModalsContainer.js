@@ -25,16 +25,23 @@ import {
   changeRatelimiter,
   changeFrequency,
   saveAccount,
-  OPEN_MODAL_ACCOUNT,
 } from '../redux/modules/account-creation';
 
 import {
+  closeAccountApprove,
+  getAccountToApprove,
+  aborting,
+  approving,
+  abort,
+} from '../redux/modules/account-approve';
+
+import {
   getOrganizationMembers,
+  getOrganizationApprovers,
 } from '../redux/modules/organization';
 
 import { getCurrencies } from '../redux/modules/all-currencies';
-import { BlurDialog } from '../containers';
-import { OperationDetails, AccountCreation } from '../components';
+import { OperationDetails, AccountCreation, AccountApprove } from '../components';
 // import _ from 'lodash';
 
 const mapStateToProps = state => ({
@@ -43,6 +50,7 @@ const mapStateToProps = state => ({
   organization: state.organization,
   accountCreation: state.accountCreation,
   allCurrencies: state.allCurrencies,
+  accountToApprove: state.accountApprove,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -55,6 +63,7 @@ const mapDispatchToProps = dispatch => ({
   onChangeAccountName: n => dispatch(changeAccountName(n)),
   onSwitchInternalModal: n => dispatch(switchInternalModal(n)),
   onGetOrganizationMembers: () => dispatch(getOrganizationMembers()),
+  onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers()),
   onAddMember: m => dispatch(addMember(m)),
   onSetApprovals: n => dispatch(setApprovals(n)),
   onEnableTimeLock: () => dispatch(enableTimeLock()),
@@ -64,20 +73,26 @@ const mapDispatchToProps = dispatch => ({
   onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
   onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
   onSaveAccount: () => dispatch(saveAccount()),
+  onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
+  onGetAccountToApprove: () => dispatch(getAccountToApprove()),
+  onAbortingAccount: () => dispatch(aborting()),
+  onAbortAccount: () => dispatch(abort()),
+  onApprovingAccount: () => dispatch(approving()),
 });
 
 function ModalsContainer(props) {
   const { onChangeTabAccount,
+    accountToApprove,
     organization,
     operations,
     allCurrencies,
-    onClose,
     accountCreation,
     onGetCurrencies,
     onSelectCurrency,
     onChangeAccountName,
     onSwitchInternalModal,
     onGetOrganizationMembers,
+    onGetOrganizationApprovers,
     onCloseAccount,
     onAddMember,
     onSetApprovals,
@@ -88,11 +103,16 @@ function ModalsContainer(props) {
     onOpenPopBubble,
     onChangeFrequency,
     onSaveAccount,
+    onAbortingAccount,
+    onAbortAccount,
+    onCloseAccountApprouve,
+    onGetAccountToApprove,
+    onApprovingAccount,
   } = props;
 
   return (
     <div>
-      { props.modals === OPEN_MODAL_ACCOUNT &&
+      { accountCreation.modalOpened &&
           <Modal close={onCloseAccount}>
             <AccountCreation
               organization={organization}
@@ -115,6 +135,21 @@ function ModalsContainer(props) {
               save={onSaveAccount}
               close={onCloseAccount}
               switchInternalModal={onSwitchInternalModal}
+            />
+          </Modal>
+      }
+      { accountToApprove.modalOpened &&
+          <Modal close={onCloseAccountApprouve}>
+            <AccountApprove
+              account={accountToApprove}
+              organization={organization}
+              getOrganizationMembers={onGetOrganizationMembers}
+              getOrganizationApprovers={onGetOrganizationApprovers}
+              getAccount={onGetAccountToApprove}
+              aborting={onAbortingAccount}
+              approving={onApprovingAccount}
+              abort={onAbortAccount}
+              close={onCloseAccountApprouve}
             />
           </Modal>
       }

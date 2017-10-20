@@ -43,11 +43,11 @@ function AccountCreationConfirmation(props) {
       <div className="confirmation-infos">
         <div className="confirmation-info">
           <span className="info-title">Name</span>
-          <span className={`info-value name ${currency.name.split(' ').join('-').toLowerCase()}`}>{options.name}</span>
+          <span className={`info-value name ${currency.units[0].name.split(' ').join('-').toLowerCase()}`}>{options.name}</span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Currency</span>
-          <span className="info-value currency">{currency.name}</span>
+          <span className="info-value currency">{currency.units[0].name}</span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Approvals to spend</span>

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function AccountCreationOptions(props) {
-  const classe = props.currency.name.split(' ')
+  const classe = props.currency.units[0].name.split(' ')
     .join('-')
     .toLowerCase();
 
@@ -23,7 +23,7 @@ function AccountCreationOptions(props) {
 
 AccountCreationOptions.defaultProps = {
   currency: {
-    name: '',
+    units: [{name: ''}],
   },
 };
 

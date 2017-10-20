@@ -39,7 +39,7 @@ export class TeamLogin extends Component {
     const t = this.context.translate;
     return (
       <div className="TeamLogin">
-        <Profile className="user" />
+        <Profile className="user" color="#e2e2e2" />
         <br />
         <TextField
           onKeyDown={this.confirm}

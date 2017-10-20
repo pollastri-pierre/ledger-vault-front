@@ -12,13 +12,13 @@ function AccountCreationCurrencies(props) {
           onClick={() => onSelect(cur)}
           role="button"
           tabIndex="0"
-          key={cur.name}
+          key={cur.units[0].name}
           className={`account-creation-currency
-            ${cur.name.split(' ').join('-').toLowerCase()}
-            ${(currency && currency.name === cur.name) ? 'selected' : ''}`}
+            ${cur.units[0].name.split(' ').join('-').toLowerCase()}
+            ${(currency && currency.units[0].name === cur.units[0].name) ? 'selected' : ''}`}
         >
-          <span className="currency-name">{cur.name}</span>
-          <span className="currency-short">{cur.shortname}</span>
+          <span className="currency-name">{cur.units[0].name}</span>
+          <span className="currency-short">{cur.units[0].symbol}</span>
         </div>),
       )}
     </div>

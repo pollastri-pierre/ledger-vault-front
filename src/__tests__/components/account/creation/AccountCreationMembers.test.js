@@ -17,12 +17,14 @@ describe('AccountCreationMembers test', () => {
           id: 1,
           firstname: 'Stéphane',
           name: 'Maniaci',
+          pub_key: 'hash1',
           picture: '',
         },
         {
           id: 2,
           firstname: 'Mateo',
           name: 'Triand',
+          pub_key: 'hash2',
           picture: '',
         },
       ],
@@ -167,11 +169,7 @@ describe('AccountCreationMembers test', () => {
   it('Checbox should be checked if array contains the item', () => {
     const aProps = {
       ...props,
-      members: [{
-        id: 1,
-        firstname: 'Stéphane',
-        name: 'Maniaci',
-      }],
+      members: ['hash1'],
     };
 
     const wrapper = shallow(<AccountCreationMembers {...aProps} />);

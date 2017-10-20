@@ -179,11 +179,11 @@ describe('AccountCreation module', () => {
       ...module.initialState,
       security: {
         ...module.initialState.security,
-        members: [{ id: 1, name: 'name' }],
+        members: ['hash'],
       },
     };
 
-    expect(reducer(state, { type: module.ADD_MEMBER, member: { id: 1, name: 'name' } })).toEqual({
+    expect(reducer(state, { type: module.ADD_MEMBER, member: 'hash' })).toEqual({
       ...module.initialState,
       security: {
         ...module.initialState.security,

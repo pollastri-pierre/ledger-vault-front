@@ -7,11 +7,7 @@ describe('AccountCreationConfirmation test', () => {
     account: {
       security: {
         approvals: 'a',
-        members: [{
-          id: 1,
-          name: 'name',
-          firstname: 'firstname',
-        }],
+        members: ['hash'],
         ratelimiter: {
           enabled: true,
           frequency: 'day',
@@ -27,8 +23,8 @@ describe('AccountCreationConfirmation test', () => {
         name: 'name',
       },
       currency: {
-        name: 'Bitcoin',
-        shortname: 'btc',
+        family: 'BITCOIN',
+        units: [{ name: 'Bitcoin', symbol: 'BTC' } ],
       },
     },
   };

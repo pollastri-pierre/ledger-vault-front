@@ -57,11 +57,12 @@ class AccountCreationMembers extends Component {
         <div className="content">
           <Overscroll>
               {_.map(organization.members, (member) => {
-                const isChecked = (!_.isUndefined(_.find(members, { id: member.id })));
+                // const isChecked = (!_.isUndefined(_.findIndex(members, member.pub_key)));
+                const isChecked = members.indexOf(member.pub_key) > -1;
                 return (
                   <div
                     key={member.id}
-                    onClick={() => addMember(member)}
+                    onClick={() => addMember(member.pub_key)}
                     role="button"
                     tabIndex={0}
                     className="account-member-row"
@@ -80,7 +81,7 @@ class AccountCreationMembers extends Component {
                       checked={isChecked}
                       id={member.id}
                       labelFor={member.name}
-                      handleInputChange={() => addMember(member)}
+                      handleInputChange={() => addMember(member.pub_key)}
                     />
                   </div>
                 );
@@ -97,12 +98,7 @@ class AccountCreationMembers extends Component {
 
 AccountCreationMembers.propTypes = {
   organization: PropTypes.shape({}).isRequired,
-  members: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    firstname: PropTypes.string,
-    picture: PropTypes.string,
-  })).isRequired,
+  members: PropTypes.arrayOf(PropTypes.string).isRequired,
   getOrganizationMembers: PropTypes.func.isRequired,
   switchInternalModal: PropTypes.func.isRequired,
   addMember: PropTypes.func.isRequired,
