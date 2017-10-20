@@ -21,7 +21,7 @@ class AccountCreationMembers extends Component {
 
     if (organization.isLoading || _.isNull(organization.members)) {
       return (
-        <div className="account-creation-members wrapper">
+        <div className="account-creation-members wrapper is-loading">
           <div className="content">
             <CircularProgress
               style={{
