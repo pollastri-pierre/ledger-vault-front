@@ -131,6 +131,9 @@ export default function reducer(state = initialState, action) {
       };
     case SAVED_ACCOUNT: 
       approveAccounts.push(action.account);
+      if (_.isNull(state.data)) {
+        return state;
+      }
       return {
         ...state, 
         data: {

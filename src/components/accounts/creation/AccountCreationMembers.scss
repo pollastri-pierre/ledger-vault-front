@@ -2,7 +2,10 @@
 @import '../../../styles/variables';
 
 .account-creation-members {
-  
+  &.is-loading {
+    min-height: 615px;
+  }
+
   h3 {
     font-size: 18.4px;
     letter-spacing: -0.4px;
