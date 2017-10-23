@@ -29,17 +29,29 @@ export function saveAccountStart() {
   };
 }
 
-export function savedAccount() {
+export function savedAccount(account) {
   return {
     type: SAVED_ACCOUNT,
+    account,
   };
 }
 
 export function saveAccount() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(saveAccountStart());
+    const { accountCreation } = getState();
+
+    const saved = {
+      id: (new Date()).getTime(),
+      name: accountCreation.options.name,
+      currency: accountCreation.currency,
+      creation_time: new Date(),
+      approved: [],
+      security: accountCreation.security,
+    };
+
     setTimeout(() => {
-      dispatch(savedAccount());
+      dispatch(savedAccount(saved));
     }, 1000);
   };
 }
@@ -190,10 +202,11 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case ADD_MEMBER: {
       const cMembers = _.cloneDeep(state.security.members);
-      const find = _.find(state.security.members, { id: action.member.id });
+      // const find = _.find(state.security.members, { id: action.member.id });
+      const index = cMembers.indexOf(action.member);
 
-      if (find) {
-        _.remove(cMembers, { id: action.member.id });
+      if (index > -1) {
+        cMembers.splice(index, 1);
       } else {
         cMembers.push(action.member);
       }

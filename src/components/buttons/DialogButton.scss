@@ -48,6 +48,16 @@
     }
   }
 
+  &.abort {
+    &.highlight {
+      color: $grenade;
+
+      &:hover::after {
+        background-color: $grenade;
+      }
+    }
+  }
+
   &.cancel {
     &.highlight {
       color: $lead;
@@ -56,5 +66,9 @@
         background-color: $lead;
       }
     }
+  }
+
+  &.margin {
+    margin-right: $spacingS;
   }
 }

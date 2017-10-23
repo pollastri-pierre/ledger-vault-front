@@ -146,8 +146,8 @@
     margin-top: 40px;
 
     .confirmation-info {
-      height: 47px;
-      line-height: 47px;
+      height: 45px;
+      line-height: 45px;
       border-top: 1px solid $argile;
 
       .info-title {
@@ -176,6 +176,10 @@
           font-weight: 600;
           color: $lead;
         }
+
+        &.status {
+          font-weight: 600;
+        }
       }
     }
   }
@@ -189,7 +193,7 @@
 
   .confirmation-security {
     text-align: center;
-    margin-top: 9px;
+    margin-top: -2px;
 
     .confirmation-security-item {
       display: inline-block;

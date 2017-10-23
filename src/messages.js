@@ -47,6 +47,10 @@ export default {
     account: {
       creationSuccessTitle: 'Account request created',
       creationSuccessBody: 'The operation request has been successfully created.',
+      abortSuccessTitle: 'Request deleted',
+      abortSuccessBody: 'The account request has been successfully deleted.',
+      approveSuccessTitle: 'Account approved',
+      approveSuccessBody: 'The account have been successfully approved.',
     },
     operations: {
       detailsTitle: "Operation's details",

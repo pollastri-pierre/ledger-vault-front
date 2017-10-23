@@ -4,12 +4,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 const SpinnerCard = () => {
   return (
     <CircularProgress
-      size={25}
+      size={30}
       style={{
         position: 'absolute',
         top: '52%',
         left: '50%',
-        marginLeft: '-12.5px'
+        marginLeft: '-15px'
       }}
     />
   );

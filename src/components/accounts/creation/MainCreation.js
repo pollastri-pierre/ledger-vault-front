@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CircularProgress from 'material-ui/CircularProgress';
 import AccountCreationCurrencies from './AccountCreationCurrencies';
 import AccountCreationOptions from './AccountCreationOptions';
 import AccountCreationSecurity from './AccountCreationSecurity';

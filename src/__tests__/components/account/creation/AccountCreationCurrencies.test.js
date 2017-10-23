@@ -5,25 +5,24 @@ import AccountCreationCurrencies from '../../../../components/accounts/creation/
 describe('AccountCreationCurrencies test', () => {
   const props = {
     onSelect: jest.fn(),
-    currency: {},
+    currency: null,
     currencies: [
       {
-        name: 'Bitcoin',
-        shortname: 'BTC',
+        family: 'BITCOIN',
+        units: [{ name: 'Bitcoin', symbol: 'BTC' } ],
       },
       {
-        name: 'Litecoin',
-        shortname: 'LTC',
+        family: 'LITECOIN',
+        units: [{ name: 'Litecoin', symbol: 'LTC' } ],
       },
       {
-        name: 'Ethereum-classic',
-        shortname: 'ETH',
+        family: 'ETHEREUM',
+        units: [{ name: 'Ethereum Classic', symbol: 'ETH' } ],
       },
     ],
   };
 
   const wrapper = shallow(<AccountCreationCurrencies {...props} />);
-  // const wrapperDom = mount(<AccountCreationApprovals {...props} />);
 
   it('should render in .account-creation-currencies.wrapper', () => {
     expect(wrapper.prop('className')).toBe('account-creation-currencies wrapper');
@@ -46,7 +45,7 @@ describe('AccountCreationCurrencies test', () => {
   });
 
   it('should set the className selected if current currency is selected', () => {
-    const sProps = { ...props, currency: { name: 'Bitcoin', shortname: 'BTC' } };
+    const sProps = { ...props, currency: { family: 'BITCOIN', units: [{name: 'Bitcoin', symbol: 'BTC'}]} };
     const sWrapper = shallow(<AccountCreationCurrencies {...sProps} />);
     expect(sWrapper.find('.account-creation-currency').at(0).prop('className')).toContain('selected');
   });

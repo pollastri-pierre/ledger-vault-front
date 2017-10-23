@@ -5,7 +5,8 @@ import AccountCreationOptions from '../../../../components/accounts/creation/Acc
 describe('AccountCreationOptions test', () => {
   const props = {
     currency: {
-      name: 'Ethereum-classic',
+      family: 'ETHEREUM',
+      units: [{ name: 'Ethereum Classic', symbol: 'ETH' } ],
     },
     options: {
       name: 'name',

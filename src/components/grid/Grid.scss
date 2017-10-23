@@ -3,11 +3,16 @@
 
 $neat-grid: (
   columns: 12,
-  gutter: 0,
+  gutter: 20px,
+);
+
+$custom-neat-grid: (
+  media: 1150px,
 );
 
 .row {
-  @include grid-container;
+  @include grid-collapse;
+  clear: both;
 }
 
 .col-1 {
@@ -31,7 +36,13 @@ $neat-grid: (
 }
 
 .col-6 {
-  @include grid-column(6);
+
+  @include grid-column(12);
+  
+
+  @include grid-media($custom-neat-grid) {
+    @include grid-column(6);
+  }
 }
 
 .col-7 {

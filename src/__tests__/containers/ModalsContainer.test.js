@@ -1,17 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { NModalsContainer } from '../../containers/ModalsContainer';
-import { OPEN_MODAL_ACCOUNT  } from '../../redux/modules/account-creation';
 
 const props = {
-  modals: OPEN_MODAL_ACCOUNT,
   organization: {},
   operations: {
     tabsIndex: 0,
   },
+  accountToApprove: {
+    modalOpened: false,
+  },
   allCurrencies: {},
   accountCreation: {
     currentTab: 0,
+    modalOpened: false,
   },
   onClose: jest.fn(),
   onGetOperation: jest.fn(),
@@ -32,6 +34,11 @@ const props = {
   onOpenPopBubble: jest.fn(),
   onChangeFrequency: jest.fn(),
   onSaveAccount: jest.fn(),
+  onGetAccountToApprove: jest.fn(),
+  onCloseAccountApprouve: jest.fn(),
+  onGetOrganizationApprovers: jest.fn(),
+  onAbortingAccount: jest.fn(),
+  onApprovingAccount: jest.fn(),
 };
 
 const sProps = {
@@ -49,44 +56,97 @@ describe('Modals container', () => {
   });
 
   it('should render a AccountCreation component', () => {
-    const wrapper = shallow(<NModalsContainer {...props} />, { context: { translate: jest.fn() } });
+    const propsAccount = {
+      ...props,
+      accountCreation: {
+        ...props.accountCreation,
+        modalOpened: true,
+      },
+    };
+
+    const wrapper = shallow(<NModalsContainer {...propsAccount} />, { context: { translate: jest.fn() } });
     expect(wrapper.find('AccountCreation').length).toBe(1);
   });
+
+  it('should render a AccountApprove component', () => {
+    const propsAccountApprove = {
+      ...props,
+      accountToApprove: {
+        ...props.accountToApprove,
+        modalOpened: true,
+      },
+    };
+
+    const wrapper = shallow(<NModalsContainer {...propsAccountApprove} />, { context: { translate: jest.fn() } });
+    expect(wrapper.find('AccountApprove').length).toBe(1);
+  });
+
+  it('should attach the correct props to OperationDetails', () => {
+    const propsAccountApprove = {
+      ...props,
+      accountToApprove: {
+        ...props.accountToApprove,
+        modalOpened: true,
+      },
+    };
+
+    const wrapper = shallow(<NModalsContainer {...propsAccountApprove} />, { context: { translate: jest.fn() } });
+    const account = wrapper.find('AccountApprove');
+
+    expect(account.prop('organization')).toEqual(props.organization);
+    expect(account.prop('getOrganizationMembers')).toEqual(props.onGetOrganizationMembers);
+    expect(account.prop('getOrganizationApprovers')).toEqual(props.onGetOrganizationApprovers);
+    expect(account.prop('close')).toEqual(props.onCloseAccountApprouve);
+    expect(account.prop('abort')).toEqual(props.onAbortAccount);
+    expect(account.prop('aborting')).toEqual(props.onAbortingAccount);
+    expect(account.prop('approving')).toEqual(props.onApprovingAccount);
+    expect(account.prop('account')).toEqual(propsAccountApprove.accountToApprove);
+    expect(account.prop('getAccount')).toEqual(propsAccountApprove.onGetAccountToApprove);
+  });
+
 
   it('should attach the correct props to OperationDetails', () => {
     const wrapper = shallow(<NModalsContainer {...sProps} />, { context: { translate: jest.fn() } });
     const operation = wrapper.find('OperationDetails');
 
-    expect(operation.prop('operations')).toBe(sProps.operations);
-    expect(operation.prop('getOperation')).toBe(sProps.onGetOperation);
-    expect(operation.prop('close')).toBe(sProps.onClose);
-    expect(operation.prop('tabsIndex')).toBe(sProps.operations.tabsIndex);
+    expect(operation.prop('operations')).toEqual(sProps.operations);
+    expect(operation.prop('getOperation')).toEqual(sProps.onGetOperation);
+    expect(operation.prop('close')).toEqual(sProps.onClose);
+    expect(operation.prop('tabsIndex')).toEqual(sProps.operations.tabsIndex);
   });
 
   it('should attach the correct props to AccountCreation', () => {
-    const wrapper = shallow(<NModalsContainer {...props} />, { context: { translate: jest.fn() } });
+    const propsAccount = {
+      ...props,
+      accountCreation: {
+        ...props.accountCreation,
+        modalOpened: true,
+      },
+    };
+
+    const wrapper = shallow(<NModalsContainer {...propsAccount} />, { context: { translate: jest.fn() } });
     const account = wrapper.find('AccountCreation');
 
-    expect(account.prop('organization')).toBe(props.organization);
-    expect(account.prop('tabsIndex')).toBe(props.accountCreation.currentTab);
-    expect(account.prop('onSelect')).toBe(props.onChangeTabAccount);
-    expect(account.prop('setApprovals')).toBe(props.onSetApprovals);
-    expect(account.prop('getCurrencies')).toBe(props.onGetCurrencies);
-    expect(account.prop('getOrganizationMembers')).toBe(props.onGetOrganizationMembers);
-    expect(account.prop('selectCurrency')).toBe(props.onSelectCurrency);
-    expect(account.prop('addMember')).toBe(props.onAddMember);
-    expect(account.prop('enableTimeLock')).toBe(props.onEnableTimeLock);
-    expect(account.prop('changeTimeLock')).toBe(props.onChangeTimeLock);
-    expect(account.prop('enableRatelimiter')).toBe(props.onEnableRatelimiter);
-    expect(account.prop('changeRatelimiter')).toBe(props.onChangeRatelimiter);
-    expect(account.prop('changeFrequency')).toBe(props.onChangeFrequency);
-    expect(account.prop('openPopBubble')).toBe(props.onOpenPopBubble);
-    expect(account.prop('changeAccountName')).toBe(props.onChangeAccountName);
-    expect(account.prop('currencies')).toBe(props.allCurrencies);
-    expect(account.prop('save')).toBe(props.onSaveAccount);
-    expect(account.prop('close')).toBe(props.onCloseAccount);
-    expect(account.prop('switchInternalModal')).toBe(props.onSwitchInternalModal);
-    expect(account.prop('account')).toBe(props.accountCreation);
+    expect(account.prop('organization')).toEqual(props.organization);
+    expect(account.prop('tabsIndex')).toEqual(props.accountCreation.currentTab);
+    expect(account.prop('onSelect')).toEqual(props.onChangeTabAccount);
+    expect(account.prop('setApprovals')).toEqual(props.onSetApprovals);
+    expect(account.prop('getCurrencies')).toEqual(props.onGetCurrencies);
+    expect(account.prop('getOrganizationMembers')).toEqual(props.onGetOrganizationMembers);
+    expect(account.prop('selectCurrency')).toEqual(props.onSelectCurrency);
+    expect(account.prop('addMember')).toEqual(props.onAddMember);
+    expect(account.prop('enableTimeLock')).toEqual(props.onEnableTimeLock);
+    expect(account.prop('changeTimeLock')).toEqual(props.onChangeTimeLock);
+    expect(account.prop('enableRatelimiter')).toEqual(props.onEnableRatelimiter);
+    expect(account.prop('changeRatelimiter')).toEqual(props.onChangeRatelimiter);
+    expect(account.prop('changeFrequency')).toEqual(props.onChangeFrequency);
+    expect(account.prop('openPopBubble')).toEqual(props.onOpenPopBubble);
+    expect(account.prop('changeAccountName')).toEqual(props.onChangeAccountName);
+    expect(account.prop('currencies')).toEqual(props.allCurrencies);
+    expect(account.prop('save')).toEqual(props.onSaveAccount);
+    expect(account.prop('close')).toEqual(props.onCloseAccount);
+    expect(account.prop('switchInternalModal')).toEqual(props.onSwitchInternalModal);
+    expect(account.prop('account')).toEqual(propsAccount.accountCreation);
   });
 });
 
