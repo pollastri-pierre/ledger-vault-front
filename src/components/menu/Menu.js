@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { SpinnerAccounts } from '../../components';
 import AccountsMenu from './AccountsMenu';
 
-// import translate from '../../decorators/Translate';
-
 import './Menu.css';
 
 function Menu(props, context) {
@@ -21,7 +19,7 @@ function Menu(props, context) {
     <div className="Menu">
       <ul className="main-menu">
         <li><Link to="/" className={`${props.pathname === '/' ? 'active' : ''}`}><i className="material-icons">home</i> {t('menu.dashboard')}</Link></li>
-        <li><Link to="/new" className={`${props.pathname === '/new' ? 'active' : ''}`}><i className="material-icons">add</i> {t('menu.newOperation')}</Link></li>
+        <li><a href="#" className={`${props.pathname === '/new' ? 'active' : ''}`} onClick={props.openOperation}><i className="material-icons">add</i> {t('menu.newOperation')}</a></li>
         <li><Link to="/pending" className={`${props.pathname === '/pending' ? 'active' : ''}`}><i className="material-icons">format_align_left</i> {t('menu.pendingRequests')}</Link> <span className="menu-badge">2</span></li>
         <li><Link to="/search" className={`${props.pathname === '/search' ? 'active' : ''}`}><i className="material-icons">search</i> {t('menu.search')}</Link></li>
 
@@ -54,6 +52,7 @@ Menu.contextTypes = {
 Menu.propTypes = {
   accounts: PropTypes.shape({}).isRequired,
   getAccounts: PropTypes.func.isRequired,
+  openOperation: PropTypes.func.isRequired,
 };
 
 export default Menu;

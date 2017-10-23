@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal } from '../components';
+import { Modal, OperationDetails, AccountCreation, OperationCreation } from '../components';
+import { getAccounts } from '../redux/modules/accounts';
 
 import {
   getOperation,
@@ -29,13 +30,18 @@ import {
 } from '../redux/modules/account-creation';
 
 import {
+  closeModalOperation,
+  changeTabOperation,
+  saveOperation,
+  OPEN_MODAL_OPERATION,
+} from '../redux/modules/operation-creation';
+
+import {
   getOrganizationMembers,
 } from '../redux/modules/organization';
 
 import { getCurrencies } from '../redux/modules/all-currencies';
 import { BlurDialog } from '../containers';
-import { OperationDetails, AccountCreation } from '../components';
-// import _ from 'lodash';
 
 const mapStateToProps = state => ({
   modals: state.modals,
@@ -43,6 +49,8 @@ const mapStateToProps = state => ({
   organization: state.organization,
   accountCreation: state.accountCreation,
   allCurrencies: state.allCurrencies,
+  operationCreation: state.operationCreation,
+  accounts: state.accounts,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -64,6 +72,10 @@ const mapDispatchToProps = dispatch => ({
   onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
   onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
   onSaveAccount: () => dispatch(saveAccount()),
+  onCloseModalOperation: from => dispatch(closeModalOperation(from)),
+  onChangeTabOperation: index => dispatch(changeTabOperation(index)),
+  onSaveOperation: () => dispatch(saveOperation()),
+  onGetAccounts: () => dispatch(getAccounts()),
 });
 
 function ModalsContainer(props) {
@@ -88,6 +100,12 @@ function ModalsContainer(props) {
     onOpenPopBubble,
     onChangeFrequency,
     onSaveAccount,
+    operationCreation,
+    accounts,
+    onChangeTabOperation,
+    onCloseModalOperation,
+    onSaveOperation,
+    onGetAccounts,
   } = props;
 
   return (
@@ -117,6 +135,18 @@ function ModalsContainer(props) {
               switchInternalModal={onSwitchInternalModal}
             />
           </Modal>
+      }
+      { props.modals === OPEN_MODAL_OPERATION &&
+        <Modal close={onCloseModalOperation}>
+          <OperationCreation
+            close={onCloseModalOperation}
+            onSelect={onChangeTabOperation}
+            save={onSaveOperation}
+            tabsIndex={operationCreation.currentTab}
+            accounts={accounts}
+            getAccounts={onGetAccounts}
+          />
+        </Modal>
       }
       { operations.operationInModal !== null && !_.isUndefined(operations.operationInModal) &&
           <Modal close={props.onClose}>

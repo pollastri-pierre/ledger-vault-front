@@ -8,6 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { logout } from '../../redux/modules/auth';
 import { openCloseProfile, openCloseEdit, saveProfile } from '../../redux/modules/profile';
 import { openModalAccount } from '../../redux/modules/account-creation';
+import { openModalOperation } from '../../redux/modules/operation-creation';
 import { getAccounts } from '../../redux/modules/accounts';
 import { ActionBar, Content, Menu } from '../../components';
 
@@ -28,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
   onOpenCloseEdit: () => dispatch(openCloseEdit()),
   onGetAccounts: () => dispatch(getAccounts()),
   onOpenAccount: () => dispatch(openModalAccount()),
+  onOpenOperation: () => dispatch(openModalOperation()),
 });
 
 // Required by Material-UI
@@ -50,6 +52,7 @@ function App(props) {
         <Menu
           getAccounts={props.onGetAccounts}
           accounts={props.accounts}
+          openOperation={props.onOpenOperation}
           pathname={props.routing.location.pathname}
         />
         <Content />
@@ -69,6 +72,7 @@ App.propTypes = {
   onOpenCloseProfile: PropTypes.func.isRequired,
   onGetAccounts: PropTypes.func.isRequired,
   onOpenAccount: PropTypes.func.isRequired,
+  onOpenOperation: PropTypes.func.isRequired,
   onOpenCloseEdit: PropTypes.func.isRequired,
   profile: PropTypes.shape({}),
   onSaveProfile: PropTypes.func.isRequired,
