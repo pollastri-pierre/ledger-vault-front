@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal, OperationDetails, AccountCreation, OperationCreation } from '../components';
+import { Modal, OperationCreation } from '../components';
 import { getAccounts } from '../redux/modules/accounts';
 
 import {
@@ -32,7 +32,6 @@ import {
   closeModalOperation,
   changeTabOperation,
   saveOperation,
-  OPEN_MODAL_OPERATION,
 } from '../redux/modules/operation-creation';
 
 import {
@@ -158,7 +157,7 @@ function ModalsContainer(props) {
             />
           </Modal>
       }
-      { props.modals === OPEN_MODAL_OPERATION &&
+      { operationCreation.modalOpened &&
         <Modal close={onCloseModalOperation}>
           <OperationCreation
             close={onCloseModalOperation}

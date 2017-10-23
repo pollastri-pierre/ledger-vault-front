@@ -24,9 +24,9 @@ class OperationCreation extends Component {
       accounts,
       getAccounts,
     } = this.props;
-  
+
     let isNextDisabled = false;
-  
+
     // switch (tabsIndex) {
     //   case 0:
     //     isNextDisabled = (_.isNull(account.currency));
@@ -42,7 +42,7 @@ class OperationCreation extends Component {
     //   default:
     //     isNextDisabled = true;
     // }
-  
+
     return (
       <Tabs className="operation-creation-main wrapper" selectedIndex={tabsIndex} onSelect={onSelect}>
         <div>
