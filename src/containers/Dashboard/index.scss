@@ -1,0 +1,21 @@
+#dashboard {
+  display: flex;
+  flex-direction: row;
+  .body {
+    flex: 1;
+    margin-right: 20px;
+    .storages {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-right: -20px;
+      > * {
+        width: calc(33.33% - 20px);
+        margin-right: 20px;
+      }
+    }
+  }
+  .aside {
+    width: 320px;
+  }
+}

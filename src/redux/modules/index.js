@@ -1,4 +1,5 @@
 import blurBG from './blurBG';
+import dashboard from './dashboard';
 import profile from './profile';
 import locale from './locale';
 import auth from './auth';
@@ -10,11 +11,11 @@ import accountCreation from './account-creation';
 import operationCreation from './operation-creation';
 import pendingRequests from './pending-requests';
 import accountApprove from './account-approve';
-import allCurrencies from './all-currencies';
 import organization from './organization';
 
 const reducers = {
   blurBG,
+  dashboard,
   profile,
   locale,
   auth,
@@ -26,8 +27,7 @@ const reducers = {
   pendingRequests,
   accountCreation,
   operationCreation,
-  allCurrencies,
-  organization,
+  organization
 };
 
 export default reducers;

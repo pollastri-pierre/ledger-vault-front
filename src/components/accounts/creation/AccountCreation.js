@@ -11,17 +11,9 @@ import AccountCreationRateLimiter from './AccountCreationRateLimiter';
 import './AccountCreation.css';
 
 class AccountCreation extends Component {
-  componentWillMount() {
-    const { currencies, getCurrencies } = this.props;
-    if (_.isNull(currencies.currencies) && !currencies.isLoading) {
-      getCurrencies();
-    }
-  }
-
   render() {
     const {
       organization,
-      currencies,
       close,
       changeAccountName,
       account,
@@ -38,101 +30,82 @@ class AccountCreation extends Component {
       changeTimeLock,
       changeRatelimiter,
       changeFrequency,
-      save,
+      save
     } = this.props;
 
     let content;
     switch (account.internModalId) {
       case 'time-lock':
-        content = (<AccountCreationTimeLock
-          switchInternalModal={switchInternalModal}
-          timelock={account.security.timelock}
-          enable={enableTimeLock}
-          change={changeTimeLock}
-          popbubble={account.popBubble}
-          anchor={account.popAnchor}
-          openPopBubble={openPopBubble}
-          changeFrequency={changeFrequency}
-        />);
+        content = (
+          <AccountCreationTimeLock
+            switchInternalModal={switchInternalModal}
+            timelock={account.security.timelock}
+            enable={enableTimeLock}
+            change={changeTimeLock}
+            popbubble={account.popBubble}
+            anchor={account.popAnchor}
+            openPopBubble={openPopBubble}
+            changeFrequency={changeFrequency}
+          />
+        );
         break;
       case 'rate-limiter':
-        content = (<AccountCreationRateLimiter
-          switchInternalModal={switchInternalModal}
-          ratelimiter={account.security.ratelimiter}
-          enable={enableRatelimiter}
-          change={changeRatelimiter}
-          popbubble={account.popBubble}
-          anchor={account.popAnchor}
-          openPopBubble={openPopBubble}
-          changeFrequency={changeFrequency}
-        />);
+        content = (
+          <AccountCreationRateLimiter
+            switchInternalModal={switchInternalModal}
+            ratelimiter={account.security.ratelimiter}
+            enable={enableRatelimiter}
+            change={changeRatelimiter}
+            popbubble={account.popBubble}
+            anchor={account.popAnchor}
+            openPopBubble={openPopBubble}
+            changeFrequency={changeFrequency}
+          />
+        );
         break;
       case 'members':
-        content = (<AccountCreationMembers
-          members={account.security.members}
-          organization={organization}
-          switchInternalModal={switchInternalModal}
-          addMember={addMember}
-          getOrganizationMembers={getOrganizationMembers}
-        />);
+        content = (
+          <AccountCreationMembers
+            members={account.security.members}
+            organization={organization}
+            switchInternalModal={switchInternalModal}
+            addMember={addMember}
+            getOrganizationMembers={getOrganizationMembers}
+          />
+        );
         break;
       case 'approvals':
-        content = (<AccountCreationApprovals
-          setApprovals={setApprovals}
-          members={account.security.members}
-          approvals={account.security.approvals}
-          switchInternalModal={switchInternalModal}
-        />);
+        content = (
+          <AccountCreationApprovals
+            setApprovals={setApprovals}
+            members={account.security.members}
+            approvals={account.security.approvals}
+            switchInternalModal={switchInternalModal}
+          />
+        );
         break;
       default:
-        content = (<MainCreation
-          currencies={currencies}
-          close={close}
-          account={account}
-          changeAccountName={changeAccountName}
-          selectCurrency={selectCurrency}
-          tabsIndex={tabsIndex}
-          onSelect={onSelect}
-          save={save}
-          switchInternalModal={switchInternalModal}
-        />);
+        content = (
+          <MainCreation
+            close={close}
+            account={account}
+            changeAccountName={changeAccountName}
+            selectCurrency={selectCurrency}
+            tabsIndex={tabsIndex}
+            onSelect={onSelect}
+            save={save}
+            switchInternalModal={switchInternalModal}
+          />
+        );
         break;
     }
 
-    if (currencies.isLoading || _.isNull(currencies.currencies)) {
-      return (
-        <div id="account-creation" className="wrapper loading">
-          <div className="header" />
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginLeft: '-25px',
-                marginTop: '-25px',
-              }}
-            />
-          </div>
-          <div className="footer">
-            <DialogButton highlight className="cancel" onTouchTap={close}>Cancel</DialogButton>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div id="account-creation">
-        {content}
-      </div>
-    );
+    return <div id="account-creation">{content}</div>;
   }
 }
 
 AccountCreation.propTypes = {
   organization: PropTypes.shape({}).isRequired,
-  currencies: PropTypes.shape({}).isRequired,
-  getCurrencies: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   switchInternalModal: PropTypes.func.isRequired,
   getOrganizationMembers: PropTypes.func.isRequired,
@@ -151,10 +124,10 @@ AccountCreation.propTypes = {
   account: PropTypes.shape({
     currency: PropTypes.shape({}),
     options: PropTypes.shape({
-      name: PropTypes.string,
-    }),
+      name: PropTypes.string
+    })
   }).isRequired,
-  tabsIndex: PropTypes.number.isRequired,
+  tabsIndex: PropTypes.number.isRequired
 };
 
 export default AccountCreation;

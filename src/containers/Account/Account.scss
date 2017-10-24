@@ -12,7 +12,7 @@
     .bloc-content {
       animation: fadeIn 1s ease;
     }
-    
+
     .date {
       font-size: 10px;
       font-weight: 600;
@@ -24,7 +24,6 @@
       font-size: 22px;
       margin: 0;
       margin-bottom: 5px;
-
 
       &.ctv {
         color: $lead;
@@ -40,11 +39,9 @@
       color: $black;
       font-weight: 600;
     }
-
   }
 
   .account-view-infos {
-    margin-bottom: 20px;
     display: flex;
 
     .infos-left-top {
@@ -112,7 +109,6 @@
   }
 }
 
-
 @media screen and (max-width: 1200px) {
   .account-view {
     .account-view-infos {
@@ -144,5 +140,4 @@
       }
     }
   }
-
 }
