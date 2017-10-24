@@ -1,7 +1,7 @@
 window.CRYPTO_CURRENCIES = [
   {
     name: 'bitcoin',
-    family: 'Bitcoin',
+    family: 'BITCOIN',
     color: '#fcb653',
     units: [
       {
@@ -20,7 +20,7 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'dogecoin',
-    family: 'Dogecoin',
+    family: 'BITCOIN',
     color: '#65d196',
     units: [
       {
@@ -33,7 +33,7 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'dash',
-    family: 'Dash',
+    family: 'BITCOIN',
     color: '#0e76aa',
     units: [
       {
@@ -46,11 +46,11 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'ethereum',
-    family: 'Ethereum',
+    family: 'ETHEREUM',
     color: '#27d0e2',
     units: [
       {
-        name: 'ethereum',
+        name: 'ether',
         code: 'ETH',
         symbol: 'ETH',
         magnitude: 8,
@@ -59,11 +59,11 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'ethereum-classic',
-    family: 'Ethereum',
+    family: 'ETHEREUM',
     color: '#3ca569',
     units: [
       {
-        name: 'Ethereum Classic',
+        name: 'ether',
         code: 'ETC',
         symbol: 'ETC',
         magnitude: 8,
@@ -72,11 +72,11 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'litecoin',
-    family: 'Litecoin',
+    family: 'BITCOIN',
     color: '#cccccc',
     units: [
       {
-        name: 'Litecoin',
+        name: 'litecoin',
         code: 'LTC',
         symbol: 'LTC',
         magnitude: 8,
