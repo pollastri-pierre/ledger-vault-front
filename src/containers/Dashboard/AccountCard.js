@@ -9,17 +9,18 @@ const Separator = () => <hr />; // FIXME
 
 class AccountCard extends Component<*> {
   props: {
-    account: Account
+    account: Account,
+    filter: string
   };
   render() {
-    const { account } = this.props;
+    const { account, filter } = this.props;
     const { balance } = account;
     return (
       <Card key={account.id} title={account.name}>
         <EvolutionSince
           value={balance.value}
           valueHistory={balance.valueHistory}
-          filter="yesterday"
+          filter={filter}
         />
         <Separator />
         <div>

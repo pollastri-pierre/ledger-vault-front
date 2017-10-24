@@ -38,7 +38,11 @@ class Dashboard extends Component {
           </Card>
           <div className="storages">
             {dashboard.accounts.map(a => (
-              <AccountCard key={a.id} account={a} />
+              <AccountCard
+                key={a.id}
+                account={a}
+                filter={dashboard.totalBalanceFilter}
+              />
             ))}
           </div>
         </div>
