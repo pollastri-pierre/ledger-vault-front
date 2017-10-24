@@ -1,6 +1,18 @@
 {
-  "extends": ["react-app", "eslint-config-airbnb"],
+  "extends": [
+    "react-app",
+    "eslint-config-airbnb",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype"
+  ],
   "rules": {
-    "react/jsx-filename-extension": "off",
+    "react/jsx-filename-extension": "off"
+  },
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
   }
 }
