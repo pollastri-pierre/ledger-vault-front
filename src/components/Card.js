@@ -1,6 +1,12 @@
+//@flow
 import React, { Component } from 'react';
 
-class Section extends Component {
+class Section extends Component<*> {
+  props: {
+    title: string,
+    titleRight: *,
+    children: *
+  };
   render() {
     const { title, titleRight, children } = this.props;
     return (

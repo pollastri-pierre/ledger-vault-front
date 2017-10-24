@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Card from '../../components/Card';
 import { setTotalBalanceFilter } from '../../redux/modules/dashboard';
-import TotalBalanceFilter from '../../components/TotalBalanceFilter';
-import TotalBalance from '../../components/TotalBalance';
+import TotalBalanceCard from './TotalBalanceCard';
+import AccountCard from './AccountCard';
 
 import './index.css';
 
@@ -12,7 +12,6 @@ import './index.css';
 const Currencies = () => <div>TODO</div>; // FIXME @malik replace with your component import
 const PendingPreview = () => <div>TODO</div>;
 const LastOperationPreview = () => <div>TODO</div>;
-const StoragePreview = () => <div>TODO</div>;
 
 const PendingViewAll = () => <Link to="TODO">VIEW ALL (7)</Link>;
 const LastOperationViewAll = () => <Link to="TODO">VIEW ALL</Link>;
@@ -27,38 +26,19 @@ const mapDispatchToProps = dispatch => ({
 class Dashboard extends Component {
   render() {
     const { dashboard, onTotalBalanceFilterChange } = this.props;
-    const storages = [
-      { id: 0, title: 'cold storage' },
-      { id: 1, title: 'cold storage' },
-      { id: 2, title: 'trackerfund' },
-      { id: 3, title: 'hot wallet' },
-      { id: 4, title: 'etf holdings' }
-    ];
     return (
       <div id="dashboard">
         <div className="body">
-          <Card
-            title="total balance"
-            titleRight={
-              <TotalBalanceFilter
-                value={dashboard.totalBalanceFilter}
-                onChange={onTotalBalanceFilterChange}
-              />
-            }
-          >
-            <TotalBalance
-              totalBalance={dashboard.totalBalance}
-              totalBalanceFilter={dashboard.totalBalanceFilter}
-            />
-          </Card>
+          <TotalBalanceCard
+            dashboard={dashboard}
+            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
+          />
           <Card title="pending" titleRight={<LastOperationViewAll />}>
             <LastOperationPreview />
           </Card>
           <div className="storages">
-            {storages.map(storage => (
-              <Card key={storage.id} title={storage.title}>
-                <StoragePreview storage={storage} />
-              </Card>
+            {dashboard.accounts.map(a => (
+              <AccountCard key={a.id} account={a} />
             ))}
           </div>
         </div>

@@ -42,7 +42,7 @@ const initialState = {
         currencyName: 'ethereum',
         value: 1589831782,
         valueHistory: {
-          yersterday: 1182834846
+          yesterday: 1182834846
         },
         referenceConversion: {
           value: 199553,
@@ -57,7 +57,7 @@ const initialState = {
         currencyName: 'ethereum',
         value: 1589831782,
         valueHistory: {
-          yersterday: 1182834846
+          yesterday: 1182834846
         },
         referenceConversion: {
           value: 199553,
@@ -72,7 +72,7 @@ const initialState = {
         currencyName: 'ethereum',
         value: 1589831782,
         valueHistory: {
-          yersterday: 1182834846
+          yesterday: 1182834846
         },
         referenceConversion: {
           value: 199553,
@@ -87,7 +87,7 @@ const initialState = {
         currencyName: 'ethereum',
         value: 1589831782,
         valueHistory: {
-          yersterday: 1182834846
+          yesterday: 1182834846
         },
         referenceConversion: {
           value: 199553,
@@ -102,7 +102,7 @@ const initialState = {
         currencyName: 'ethereum',
         value: 1589831782,
         valueHistory: {
-          yersterday: 1182834846
+          yesterday: 1182834846
         },
         referenceConversion: {
           value: 199553,
