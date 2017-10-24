@@ -1,0 +1,187 @@
+import _ from 'lodash';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as d3 from 'd3';
+import './PieChart.css';
+
+
+export default class PieChart extends Component {
+
+  static propTypes = {
+    data: PropTypes.instanceOf(Array).isRequired,
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      color : [
+          {
+            name: "yellow",
+            hex: "#fcb653",
+          },
+          {
+            name: "blue",
+            hex: "#0ebdcd",
+          },
+          {
+            name: "green",
+            hex: "#65d196",
+          },
+          {
+            name: "steel",
+            hex: "#cccccc",
+          },
+        ],
+      selected: -1,
+    }
+    this.setSelected.bind(this);
+  }
+
+  setSelected = (index) => {
+    console.log(index)
+    this.setState({selected: index})
+  }
+
+  handleMouseOver = (d, i) => {
+    this.setSelected(d.index)
+  }
+
+  handleMouseOut = (d, i) => {
+    this.setSelected(-1)
+  }
+
+  componentDidMount() {
+    const { selected, color } = this.state;
+    const data = this.props.data;
+ 
+    const svg = d3.select(this.svg);
+    svg.attr("width", parseFloat(d3.select(this.svg.parentNode).style('width'))) //adapt to parent's width
+    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    const width = +svg.attr('width') - margin.left - margin.right;
+    const height = +svg.attr('height') - margin.top - margin.bottom;
+    const outerRadius = 50;
+    const strokeWidth = 2.5;
+    const chartHeight = ( outerRadius ) * 2;
+
+    const g = svg.append('g').attr("class", "chartWrap").attr("height", height).attr("width", width).attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    const arc = d3.arc().outerRadius(outerRadius).innerRadius(outerRadius - strokeWidth).padAngle(0.05);
+
+    const pie = d3.pie().sort(null).value(d => d.value);
+
+    let total = d3.sum(data, (d) => d.value);
+
+    pie(data).forEach((d, i) => {
+      data[i].center = arc.centroid(d) //Save center of arc for position of tooltip 
+      data[i].percentage = ((d.value / total) * 100).toFixed(0) //Save percentage of arc
+    })
+
+    console.log(data)
+
+    const chart = g.append("g").attr("class","chart").attr('transform', `translate(${(width)/2}, ${(chartHeight)/2})`);
+
+    chart.selectAll(".arc").data(pie(data)).enter()
+          .append("g").attr("class", (d, i) => `arc ${'arc' + i}`)
+          .append("path").attr("d", d => arc(d))
+          .attr("class",  (d, i) => (selected !== -1 && selected !== i) ? 'disable' : '')
+          .style("fill", (d, i) => color[i].hex)
+          .on("mouseover", this.handleMouseOver)
+          .on("mouseout", this.handleMouseOut)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { selected } = this.state;
+    const { prevSelected } = prevState;
+    const data = this.props.data;
+    const svg = d3.select(this.svg);
+    const svgWidth = svg.attr("width");
+    const svgHeight = svg.attr("height");
+    if (selected !== prevSelected)
+    {
+      d3.select(this.svg).selectAll(".arc").classed('disable', (d, i) => (selected !== -1 && selected !== i)).classed("selected", (d, i) => (selected !== -1 && selected === i))
+      const tooltip = d3.select(this.tooltip)
+      //Place tooltip
+      tooltip.classed('hide', (selected === -1))
+      if (selected !== -1)
+      {
+        const selectedArc = d3.select(".arc"+selected).data()[0].data;
+        let orientation = Math.abs(selectedArc.center[0]) > Math.abs(selectedArc.center[1]) ? 0 : 1;//getting best orientation (0 for horizontal )
+        let orientationDeltaX = 0
+        let orientationDeltaY = 0
+        let arrowSpacing = 20
+        if (orientation === 0 && selectedArc.center[0] <= 0) //A gauche
+        {
+          orientationDeltaX = -parseFloat(tooltip.style("width")) - arrowSpacing;
+          orientationDeltaY = -parseFloat(tooltip.style("height"))/2;
+          tooltip.classed("lookRight", true);
+        }
+        else if (orientation === 0 && selectedArc.center[0] > 0) //A droite
+        {
+          orientationDeltaX = arrowSpacing;
+          orientationDeltaY = -parseFloat(tooltip.style("height"))/2;
+          tooltip.classed("lookLeft", true);
+        }
+        else if (orientation === 1 && selectedArc.center[1] > 0)//En bas
+        {
+          orientationDeltaX = -parseFloat(tooltip.style("width"))/2;
+          orientationDeltaY = arrowSpacing;
+          tooltip.classed("lookUp", true);
+        }
+        else if (orientation === 1 && selectedArc.center[1] < 0)//En haut
+        {
+          orientationDeltaX = -parseFloat(tooltip.style("width"))/2
+          orientationDeltaY = -parseFloat(tooltip.style("height")) - arrowSpacing;
+          tooltip.classed("lookDown", true);
+        }
+        tooltip.style("left", selectedArc.center[0] + (svgWidth / 2) + orientationDeltaX + "px")
+        tooltip.style("top", selectedArc.center[1] + (svgHeight / 2) + orientationDeltaY +  "px")
+        tooltip.select(".percentage").text(`${selectedArc.percentage}%`);
+      }
+      else
+      {
+        tooltip.classed("lookLeft", false);
+        tooltip.classed("lookRight", false);
+        tooltip.classed("lookUp", false);
+        tooltip.classed("lookDown", false); 
+      }
+    }
+  }
+
+  render() {
+    const { selected, color } = this.state
+    return (
+      <div>
+        <svg height="150" ref={(c) => { this.svg = c; }} />
+        <div className="tooltip hide" ref={(t) => {this.tooltip = t; }}>
+          <div className="tooltipTextWrap">
+            <div className="tooltipText">
+              <span className="percentage"></span>
+              <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].label : ''}</span>
+            </div>
+          </div>
+        </div>
+        <table className="currencyTable">
+          <tbody>
+            {
+              _.map(this.props.data, (currency, id) => {
+                return (
+
+                  <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''} ${ (selected !== -1 && selected === id) ? 'selected' : ''}`} key={id}>
+                    <td className="" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
+                      <span className={`bullet round inline bg-${color[id].name}`}></span>
+                      <span className="inline uppercase currencyName">{currency.label}</span>
+                    </td>
+                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.value}</td>
+                  </tr>
+
+                )
+
+              })
+
+            }
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
