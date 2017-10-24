@@ -8,7 +8,7 @@ import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, AUTHEN
 import { SAVE_PROFILE_INVALID, SAVE_PROFILE_FAIL, SAVED_PROFILE } from '../redux/modules/profile';
 import { GOT_OPERATION_FAIL } from '../redux/modules/operations';
 import { SAVED_ACCOUNT } from '../redux/modules/account-creation';
-import { ABORTED, APPROVED } from '../redux/modules/account-approve';
+import { ABORTED, APPROVED } from '../redux/modules/entity-approve';
 
 const mapStateToProps = state => ({
   alerts: state.alerts,

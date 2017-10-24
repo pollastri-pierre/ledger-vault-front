@@ -44,7 +44,7 @@ function PendingAccountApprove(props) {
           <div
             className={`pending-request ${approved ? 'watch' : ''}`}
             key={account.id}
-            onClick={() => open(account, approved)}
+            onClick={() => open('account', account, approved)}
           >
             <div>
               <span className="request-date-creation">

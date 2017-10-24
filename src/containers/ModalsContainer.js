@@ -1,14 +1,14 @@
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Modal, OperationCreation } from '../components';
-import { getAccounts } from '../redux/modules/accounts';
+import {connect} from 'react-redux';
+import {Modal, OperationCreation} from '../components';
+import {getAccounts} from '../redux/modules/accounts';
 
 import {
   getOperation,
   getOperationFake,
-  close
+  close,
 } from '../redux/modules/operations';
 
 import {
@@ -25,33 +25,33 @@ import {
   changeTimeLock,
   changeRatelimiter,
   changeFrequency,
-  saveAccount
+  saveAccount,
 } from '../redux/modules/account-creation';
 
 import {
   closeModalOperation,
   changeTabOperation,
-  saveOperation
+  saveOperation,
 } from '../redux/modules/operation-creation';
 
 import {
-  closeAccountApprove,
+  closeApprove,
   getAccountToApprove,
   aborting,
   approving,
-  abort
-} from '../redux/modules/account-approve';
+  abort,
+} from '../redux/modules/entity-approve';
 
 import {
   getOrganizationMembers,
-  getOrganizationApprovers
+  getOrganizationApprovers,
 } from '../redux/modules/organization';
 
-import { BlurDialog } from '../containers';
 import {
   OperationDetails,
   AccountCreation,
-  AccountApprove
+  AccountApprove,
+  OperationApprove,
 } from '../components';
 
 const mapStateToProps = state => ({
@@ -61,7 +61,7 @@ const mapStateToProps = state => ({
   accountCreation: state.accountCreation,
   operationCreation: state.operationCreation,
   accounts: state.accounts,
-  accountToApprove: state.accountApprove
+  entityToApprove: state.entityApprove,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -87,17 +87,17 @@ const mapDispatchToProps = dispatch => ({
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
   onGetAccounts: () => dispatch(getAccounts()),
-  onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
+  onCloseApprove: () => dispatch(closeApprove()),
   onGetAccountToApprove: () => dispatch(getAccountToApprove()),
   onAbortingAccount: () => dispatch(aborting()),
   onAbortAccount: () => dispatch(abort()),
-  onApprovingAccount: () => dispatch(approving())
+  onApprovingAccount: () => dispatch(approving()),
 });
 
 function ModalsContainer(props) {
   const {
     onChangeTabAccount,
-    accountToApprove,
+    entityToApprove,
     organization,
     operations,
     accountCreation,
@@ -124,9 +124,13 @@ function ModalsContainer(props) {
     onGetAccounts,
     onAbortingAccount,
     onAbortAccount,
-    onCloseAccountApprouve,
+    onGetOperationToApprove,
+    onAbortingOperation,
+    onApprovingOperation,
+    onAbortOperation,
+    onCloseApprove,
     onGetAccountToApprove,
-    onApprovingAccount
+    onApprovingAccount,
   } = props;
 
   return (
@@ -155,6 +159,36 @@ function ModalsContainer(props) {
           />
         </Modal>
       )}
+      {entityToApprove.modalOpened &&
+        entityToApprove.entity === 'operation' && (
+          <Modal close={onCloseApprove}>
+            <OperationApprove
+              operation={entityToApprove}
+              organization={organization}
+              aborting={onAbortingAccount}
+              approving={onApprovingAccount}
+              abort={onAbortAccount}
+              close={onCloseApprove}
+              close={onCloseApprove}
+            />
+          </Modal>
+        )}
+      {entityToApprove.modalOpened &&
+        entityToApprove.entity === 'account' && (
+          <Modal close={onCloseApprove}>
+            <AccountApprove
+              account={entityToApprove}
+              organization={organization}
+              getOrganizationMembers={onGetOrganizationMembers}
+              getOrganizationApprovers={onGetOrganizationApprovers}
+              getAccount={onGetAccountToApprove}
+              aborting={onAbortingAccount}
+              approving={onApprovingAccount}
+              abort={onAbortAccount}
+              close={onCloseApprove}
+            />
+          </Modal>
+        )}
       {operationCreation.modalOpened && (
         <Modal close={onCloseModalOperation}>
           <OperationCreation
@@ -167,32 +201,32 @@ function ModalsContainer(props) {
           />
         </Modal>
       )}
-      {accountToApprove.modalOpened && (
-        <Modal close={onCloseAccountApprouve}>
-          <AccountApprove
-            account={accountToApprove}
+      {accountCreation.modalOpened && (
+        <Modal close={onCloseAccount}>
+          <AccountCreation
             organization={organization}
+            tabsIndex={accountCreation.currentTab}
+            onSelect={onChangeTabAccount}
+            setApprovals={onSetApprovals}
+            getCurrencies={onGetCurrencies}
             getOrganizationMembers={onGetOrganizationMembers}
-            getOrganizationApprovers={onGetOrganizationApprovers}
-            getAccount={onGetAccountToApprove}
-            aborting={onAbortingAccount}
-            approving={onApprovingAccount}
-            abort={onAbortAccount}
-            close={onCloseAccountApprouve}
+            selectCurrency={onSelectCurrency}
+            addMember={onAddMember}
+            enableTimeLock={onEnableTimeLock}
+            changeTimeLock={onChangeTimeLock}
+            enableRatelimiter={onEnableRatelimiter}
+            changeRatelimiter={onChangeRatelimiter}
+            changeFrequency={onChangeFrequency}
+            openPopBubble={onOpenPopBubble}
+            changeAccountName={onChangeAccountName}
+            currencies={allCurrencies}
+            account={accountCreation}
+            save={onSaveAccount}
+            close={onCloseAccount}
+            switchInternalModal={onSwitchInternalModal}
           />
         </Modal>
       )}
-      {operations.operationInModal !== null &&
-        !_.isUndefined(operations.operationInModal) && (
-          <Modal close={props.onClose}>
-            <OperationDetails
-              operations={operations}
-              getOperation={props.onGetOperation}
-              close={props.onClose}
-              tabsIndex={operations.tabsIndex}
-            />
-          </Modal>
-        )}
     </div>
   );
 }
@@ -215,13 +249,13 @@ ModalsContainer.propTypes = {
   onSelectCurrency: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onGetOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired
+  operations: PropTypes.shape({}).isRequired,
 };
 
 ModalsContainer.contextTypes = {
-  translate: PropTypes.func.isRequired
+  translate: PropTypes.func.isRequired,
 };
 
-export { ModalsContainer as NModalsContainer };
+export {ModalsContainer as NModalsContainer};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalsContainer);

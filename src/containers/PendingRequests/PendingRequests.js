@@ -1,30 +1,41 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import _ from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { openAccountApprove } from '../../redux/modules/account-approve';
-import { getPendingRequests } from '../../redux/modules/pending-requests';
-import { getOrganizationApprovers } from '../../redux/modules/organization';
-import { PendingAccountApprove } from '../../components';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
+import {openApprove} from '../../redux/modules/entity-approve';
+import {getPendingRequests} from '../../redux/modules/pending-requests';
+import {getOrganizationApprovers} from '../../redux/modules/organization';
+import {getAccounts} from '../../redux/modules/accounts';
+import {PendingAccountApprove, PendingOperationApprove} from '../../components';
 
 import './PendingRequests.css';
 
 const mapStateToProps = state => ({
   pendingRequests: state.pendingRequests,
   organization: state.organization,
+  accounts: state.accounts,
 });
 
 const mapDispatchToProps = dispatch => ({
   onGetPendingRequests: () => dispatch(getPendingRequests()),
-  onOpenAccountApprove: (idAccount, isApproved) => dispatch(openAccountApprove(idAccount, isApproved)),
+  onGetAccounts: () => dispatch(getAccounts()),
+  onOpenApprove: (entity, object, isApproved) =>
+    dispatch(openApprove(entity, object, isApproved)),
   onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers()),
 });
 
 class PendingRequests extends Component {
   componentWillMount() {
-    const { onGetOrganizationApprovers, onGetPendingRequests, pendingRequests, organization } = this.props;
+    const {
+      onGetOrganizationApprovers,
+      onGetPendingRequests,
+      onGetAccounts,
+      pendingRequests,
+      accounts,
+      organization,
+    } = this.props;
 
     if (_.isNull(pendingRequests.data) && !pendingRequests.isLoading) {
       onGetPendingRequests();
@@ -34,17 +45,23 @@ class PendingRequests extends Component {
       onGetOrganizationApprovers();
     }
 
+    if (_.isNull(accounts.accounts) && !accounts.isLoadingAccounts) {
+      onGetAccounts();
+    }
   }
 
   render() {
-    const { pendingRequests, onOpenAccountApprove, organization } = this.props;
+    const {pendingRequests, onOpenApprove, organization, accounts} = this.props;
 
     return (
       <div className="pending-requests">
         <div className="pending-left">
           <div className="bloc">
             <h3>Operations to approve</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) ?
+            {pendingRequests.isLoading ||
+            _.isNull(pendingRequests.data) ||
+            _.isNull(accounts.accounts) ||
+            accounts.isLoadingAccounts ? (
               <CircularProgress
                 size={30}
                 style={{
@@ -53,13 +70,20 @@ class PendingRequests extends Component {
                   marginLeft: '-15px',
                 }}
               />
-              :
-              <p>There are no operations to approve</p>
-            }
+            ) : (
+              <PendingOperationApprove
+                operations={pendingRequests.data.approveOperations}
+                accounts={accounts.accounts}
+                open={onOpenApprove}
+              />
+            )}
           </div>
           <div className="bloc">
             <h3>Operations to watch</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) ?
+            {pendingRequests.isLoading ||
+            _.isNull(pendingRequests.data) ||
+            accounts.isLoadingAccounts ||
+            _.isNull(accounts.accounts) ? (
               <CircularProgress
                 size={30}
                 style={{
@@ -68,15 +92,23 @@ class PendingRequests extends Component {
                   marginLeft: '-15px',
                 }}
               />
-              :
-              <p>There are no operations to watch</p>
-            }
+            ) : (
+              <PendingOperationApprove
+                operations={pendingRequests.data.watchOperations}
+                approved
+                accounts={accounts.accounts}
+                open={onOpenApprove}
+              />
+            )}
           </div>
         </div>
         <div className="pending-right">
           <div className="bloc">
             <h3>Accounts to approve</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) || _.isNull(organization.approvers) || _.isNull(organization.isLoadingApprovers) ?
+            {pendingRequests.isLoading ||
+            _.isNull(pendingRequests.data) ||
+            _.isNull(organization.approvers) ||
+            _.isNull(organization.isLoadingApprovers) ? (
               <CircularProgress
                 size={30}
                 style={{
@@ -85,17 +117,20 @@ class PendingRequests extends Component {
                   marginLeft: '-15px',
                 }}
               />
-              :
+            ) : (
               <PendingAccountApprove
                 accounts={pendingRequests.data.approveAccounts}
                 approvers={organization.approvers}
-                open={onOpenAccountApprove}
+                open={onOpenApprove}
               />
-            }
+            )}
           </div>
           <div className="bloc">
             <h3>Accounts to watch</h3>
-            {pendingRequests.isLoading || _.isNull(pendingRequests.data) || _.isNull(organization.approvers) || _.isNull(organization.isLoadingApprovers) ?
+            {pendingRequests.isLoading ||
+            _.isNull(pendingRequests.data) ||
+            _.isNull(organization.approvers) ||
+            _.isNull(organization.isLoadingApprovers) ? (
               <CircularProgress
                 size={30}
                 style={{
@@ -104,14 +139,14 @@ class PendingRequests extends Component {
                   marginLeft: '-15px',
                 }}
               />
-              :
+            ) : (
               <PendingAccountApprove
                 accounts={pendingRequests.data.watchAccounts}
                 approvers={organization.approvers}
-                open={onOpenAccountApprove}
+                open={onOpenApprove}
                 approved
               />
-            }
+            )}
           </div>
         </div>
       </div>
@@ -121,10 +156,12 @@ class PendingRequests extends Component {
 
 PendingRequests.propTypes = {
   onGetPendingRequests: PropTypes.func.isRequired,
-  onOpenAccountApprove: PropTypes.func.isRequired,
+  onOpenApprove: PropTypes.func.isRequired,
   pendingRequests: PropTypes.shape({}).isRequired,
 };
 
-export { PendingRequests as PendingRequestNotDecorated };
+export {PendingRequests as PendingRequestNotDecorated};
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PendingRequests));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(PendingRequests),
+);

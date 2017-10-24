@@ -1,11 +1,21 @@
 import _ from 'lodash';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
-import { SAVED_ACCOUNT } from './account-creation';
-import { SAVE_PROFILE_INVALID, SAVE_PROFILE_FAIL, SAVED_PROFILE } from './profile';
-import { ABORTED, APPROVED } from './account-approve';
+import {
+  CHECK_TEAM_ERROR,
+  AUTHENTICATION_FAILED_API,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_FAILED_TIMEOUT,
+  LOGOUT,
+  AUTHENTICATION_SUCCEED,
+} from './auth';
+import {SAVED_ACCOUNT} from './account-creation';
+import {
+  SAVE_PROFILE_INVALID,
+  SAVE_PROFILE_FAIL,
+  SAVED_PROFILE,
+} from './profile';
+import {ABORTED, APPROVED} from './entity-approve';
 
 export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
-
 
 export function closeMessage(id) {
   return {
@@ -42,22 +52,28 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case APPROVED: {
       const copy = _.cloneDeep(state);
+      const title = `${action.entity}s.abortSuccessTitle`;
+      const body = `${action.entity}s.abortSuccessBody`;
+
       addToTabs(copy, {
         id: APPROVED,
         type: 'success',
-        title: 'account.approveSuccessTitle',
-        content: 'account.approveSuccessBody',
+        title,
+        content: body,
       });
 
       return copy;
     }
     case ABORTED: {
       const copy = _.cloneDeep(state);
+      const title = `${action.entity}s.abortSuccessTitle`;
+      const body = `${action.entity}s.abortSuccessBody`;
+
       addToTabs(copy, {
         id: ABORTED,
         type: 'success',
-        title: 'account.abortSuccessTitle',
-        content: 'account.abortSuccessBody',
+        title,
+        content: body,
       });
 
       return copy;
@@ -166,13 +182,12 @@ export default function reducer(state = initialState, action) {
     }
     case REMOVE_MESSAGE: {
       const alerts = _.cloneDeep(state.alerts);
-      const index = _.findIndex(alerts, { id: action.id });
+      const index = _.findIndex(alerts, {id: action.id});
       alerts.splice(index, 1);
 
-      return { ...state, alerts };
+      return {...state, alerts};
     }
     default:
       return state;
   }
 }
-

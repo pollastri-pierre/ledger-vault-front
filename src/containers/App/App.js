@@ -1,16 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'open-sans-fontface/open-sans.css';
 import 'material-design-icons/iconfont/material-icons.css';
-import { withRouter } from 'react-router-dom';
-import { logout } from '../../redux/modules/auth';
-import { openCloseProfile, openCloseEdit, saveProfile } from '../../redux/modules/profile';
-import { openModalAccount } from '../../redux/modules/account-creation';
-import { openModalOperation } from '../../redux/modules/operation-creation';
-import { getAccounts } from '../../redux/modules/accounts';
-import { ActionBar, Content, Menu } from '../../components';
+import {withRouter} from 'react-router-dom';
+import {logout} from '../../redux/modules/auth';
+import {
+  openCloseProfile,
+  openCloseEdit,
+  saveProfile,
+} from '../../redux/modules/profile';
+import {openModalAccount} from '../../redux/modules/account-creation';
+import {openModalOperation} from '../../redux/modules/operation-creation';
+import {getAccounts} from '../../redux/modules/accounts';
+import {ActionBar, Content, Menu} from '../../components';
 
 import './App.css';
 
@@ -34,7 +38,6 @@ const mapDispatchToProps = dispatch => ({
 
 // Required by Material-UI
 injectTapEventPlugin();
-
 
 function App(props) {
   return (
@@ -83,7 +86,6 @@ App.propTypes = {
   }).isRequired,
 };
 
-export { App as AppNotDecorated };
+export {App as AppNotDecorated};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
-

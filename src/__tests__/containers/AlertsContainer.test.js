@@ -5,7 +5,7 @@ import { Alert } from '../../components';
 import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT } from '../../redux/modules/auth';
 import { GOT_OPERATION_FAIL } from '../../redux/modules/operations';
 import { SAVED_ACCOUNT } from '../../redux/modules/account-creation';
-import { ABORTED, APPROVED } from '../../redux/modules/account-approve';
+import { ABORTED, APPROVED } from '../../redux/modules/entity-approve';
 
 describe('AlertsContainer container', () => {
   const first = allMessages[0];

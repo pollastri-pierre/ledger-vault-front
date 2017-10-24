@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import CircularProgress from 'material-ui/CircularProgress';
 import { DialogButton, Overscroll } from '../../';
-import AbortConfirmation from './AbortConfirmation';
-import ApproveDevice from './ApproveDevice';
+import AbortConfirmation from '../../approve/AbortConfirmation';
+import ApproveDevice from '../../approve/ApproveDevice';
 import AccountApproveDetails from './AccountApproveDetails';
 import AccountApproveMembers from './AccountApproveMembers';
 import AccountApproveApprovals from './AccountApproveApprovals';
-import Footer from './Footer';
+import Footer from '../../approve/Footer';
 import './AccountApprove.css';
 
 class AccountApprove extends Component {
@@ -55,6 +55,7 @@ class AccountApprove extends Component {
     if (account.isAborting) {
       return (
         <AbortConfirmation
+          entity="account"
           aborting={aborting}
           abort={abort}
         />
@@ -63,6 +64,7 @@ class AccountApprove extends Component {
     if (account.isDevice) {
       return (
         <ApproveDevice
+          entity="account"
           cancel={approving}
         />
       );

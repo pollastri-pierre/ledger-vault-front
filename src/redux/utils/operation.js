@@ -250,6 +250,22 @@ export function getFakeList() {
   ];
 }
 
+export function getOperationsToApprove() {
+  return [
+    { ...operationsUtils.mockOperation, uuid: '1', time: new Date(2017, 9, 8, 22), approvers: ['ewfwekljfkujkljlkj'], approved: []},
+    { ...operationsUtils.mockOperation, uuid: '2', amount: 1, time: new Date(2017, 9, 9), approvers: ['ewfwekljfkujkljlkj'], approved: [] },
+    { ...operationsUtils.mockOperation, uuid: '3', time: new Date(2017, 9, 10), amount: 2, approvers: ['ewfwekljfkujkljlkj'], approved: [] },
+    { ...operationsUtils.mockOperation, uuid: '4', confirmations: 0, time: new Date(2017, 9, 11), approvers: ['ewfwekljfkujkljlkj'], approved: [] },
+  ];
+}
+
+export function getOperationsToWatch() {
+  return [
+    { ...operationsUtils.mockOperation, uuid: '10', time: new Date(2017, 9, 17), approved: [] },
+    { ...operationsUtils.mockOperation, uuid: '11', amount: 1, time: new Date(2017, 9, 18, 5), approved: [] },
+  ];
+}
+
 export function getFakeNextList() {
   return [
     {

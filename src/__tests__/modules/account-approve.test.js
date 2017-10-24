@@ -1,4 +1,4 @@
-import { LOGOUT } from '../../redux/modules/auth';
+import {LOGOUT} from '../../redux/modules/auth';
 
 import reducer, {
   initialState,
@@ -30,10 +30,10 @@ import reducer, {
   ABORTING,
   ABORTED_FAIL,
   ABORTED,
-} from '../../redux/modules/account-approve';
+} from '../../redux/modules/entity-approve';
 
-describe('account-approve module', () => {
-  // TODO test abort, approving, finishApprove when real API implemented 
+describe('entity-approve module', () => {
+  // TODO test abort, approving, finishApprove when real API implemented
 
   it('aborting() should return ABORTING', () => {
     expect(aborting()).toEqual({
@@ -71,7 +71,6 @@ describe('account-approve module', () => {
       accountId: 1,
     });
   });
-
 
   it('getAccountToApproveStart() should return GET_ACCOUNT_TO_APPROVE_START', () => {
     expect(getAccountToApproveStart()).toEqual({
@@ -128,102 +127,132 @@ describe('account-approve module', () => {
     });
   });
 
-
   // testing reducers
 
   it('reducer should set isLoading to true when GET_ACCOUNT_TO_APPROVE_START', () => {
-    expect(reducer(initialState, {
-      type: GET_ACCOUNT_TO_APPROVE_START,
-    })).toEqual({ ...initialState, isLoading: true });
+    expect(
+      reducer(initialState, {
+        type: GET_ACCOUNT_TO_APPROVE_START,
+      }),
+    ).toEqual({...initialState, isLoading: true});
   });
 
   it('reducer should set isLoading to false and set the account at GOT_ACCOUNT_TO_APPROVE', () => {
-    const state = { ...initialState, isLoading: true };
-    expect(reducer(state, {
-      type: GOT_ACCOUNT_TO_APPROVE,
-      account: {},
-    })).toEqual({ ...state, isLoading: false, account: {} });
+    const state = {...initialState, isLoading: true};
+    expect(
+      reducer(state, {
+        type: GOT_ACCOUNT_TO_APPROVE,
+        account: {},
+      }),
+    ).toEqual({...state, isLoading: false, account: {}});
   });
 
   it('reducer should set isLoading to false when GOT_ACCOUNT_TO_APPROVE_FAIL', () => {
-    const state = { ...initialState, isLoading: true };
-    expect(reducer(state, {
-      type: GOT_ACCOUNT_TO_APPROVE_FAIL,
-      status: 400,
-    })).toEqual({ ...state, isLoading: false });
+    const state = {...initialState, isLoading: true};
+    expect(
+      reducer(state, {
+        type: GOT_ACCOUNT_TO_APPROVE_FAIL,
+        status: 400,
+      }),
+    ).toEqual({...state, isLoading: false});
   });
 
   it('reducer should set modalOpened to true and set the account when OPEN_ACCOUNT_APPROVE', () => {
-    expect(reducer(initialState, {
-      type: OPEN_ACCOUNT_APPROVE,
+    expect(
+      reducer(initialState, {
+        type: OPEN_ACCOUNT_APPROVE,
+        account: {},
+        isApproved: false,
+      }),
+    ).toEqual({
+      ...initialState,
+      modalOpened: true,
       account: {},
       isApproved: false,
-    })).toEqual({ ...initialState, modalOpened: true, account: {}, isApproved: false, isLoading: true });
+      isLoading: true,
+    });
   });
 
   it('reducer should reset modalOpend and accountId when CLOSE_ACCOUNT_APPROVE', () => {
-    const state = { ...initialState, modalOpened: true, accountId: 3 };
+    const state = {...initialState, modalOpened: true, accountId: 3};
 
-    expect(reducer(state, {
-      type: CLOSE_ACCOUNT_APPROVE,
-    })).toEqual({ ...state, modalOpened: false, accountId: null });
+    expect(
+      reducer(state, {
+        type: CLOSE_ACCOUNT_APPROVE,
+      }),
+    ).toEqual({...state, modalOpened: false, accountId: null});
   });
 
   it('reducer should set modalOpened to false and isAborting to false at ABORT_START', () => {
-    const state = { ...initialState, modalOpened: true, isAborting: true };
+    const state = {...initialState, modalOpened: true, isAborting: true};
 
-    expect(reducer(state, {
-      type: ABORT_START,
-    })).toEqual({ ...state, modalOpened: false, isAborting: false });
+    expect(
+      reducer(state, {
+        type: ABORT_START,
+      }),
+    ).toEqual({...state, modalOpened: false, isAborting: false});
   });
 
   it('reducer should set isDecive to !state.isDevice at APPROVE_START', () => {
-    const state = { ...initialState, isDevice: false };
-    const state2 = { ...initialState, isDevice: true };
+    const state = {...initialState, isDevice: false};
+    const state2 = {...initialState, isDevice: true};
 
-    expect(reducer(state, {
-      type: APPROVE_START,
-    })).toEqual({ ...state, isDevice: true });
+    expect(
+      reducer(state, {
+        type: APPROVE_START,
+      }),
+    ).toEqual({...state, isDevice: true});
 
-    expect(reducer(state2, {
-      type: APPROVE_START,
-    })).toEqual({ ...state, isDevice: false });
+    expect(
+      reducer(state2, {
+        type: APPROVE_START,
+      }),
+    ).toEqual({...state, isDevice: false});
   });
 
   it('reducer should set account to null and accountId to null at ABORTED', () => {
-    const state = { ...initialState, account: {}, accountId: 1 };
+    const state = {...initialState, account: {}, accountId: 1};
 
-    expect(reducer(state, {
-      type: ABORTED,
-    })).toEqual({ ...state, account: null, accountId: null });
+    expect(
+      reducer(state, {
+        type: ABORTED,
+      }),
+    ).toEqual({...state, account: null, accountId: null});
   });
 
   it('reducer should reset the state at APPROVED', () => {
-    const state = { ...initialState, account: {}, accountId: 1 };
+    const state = {...initialState, account: {}, accountId: 1};
 
-    expect(reducer(state, {
-      type: APPROVED,
-    })).toEqual(initialState);
+    expect(
+      reducer(state, {
+        type: APPROVED,
+      }),
+    ).toEqual(initialState);
   });
 
   it('reducer should do set isAborting to !state.isAborting at ABORTING', () => {
-    const state = { ...initialState, isAborting: false };
-    const state2 = { ...initialState, isAborting: true };
+    const state = {...initialState, isAborting: false};
+    const state2 = {...initialState, isAborting: true};
 
-    expect(reducer(state, {
-      type: ABORTING,
-    })).toEqual({ ...state, isAborting: true });
+    expect(
+      reducer(state, {
+        type: ABORTING,
+      }),
+    ).toEqual({...state, isAborting: true});
 
-    expect(reducer(state2, {
-      type: ABORTING,
-    })).toEqual({ ...state, isAborting: false });
+    expect(
+      reducer(state2, {
+        type: ABORTING,
+      }),
+    ).toEqual({...state, isAborting: false});
   });
 
-
   it('reducer should reset the state at LOGOUT', () => {
-    const state = { ...initialState, data: {} };
-    expect(reducer(state, {
-      type: LOGOUT,
-    })).toEqual(initialState);
+    const state = {...initialState, data: {}};
+    expect(
+      reducer(state, {
+        type: LOGOUT,
+      }),
+    ).toEqual(initialState);
   });
 });

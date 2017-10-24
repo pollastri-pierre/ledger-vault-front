@@ -1,7 +1,8 @@
 import { LOGOUT } from './auth';
 
 export const OPEN_ACCOUNT_APPROVE = 'approve-account/OPEN_ACCOUNT_APPROVE';
-export const CLOSE_ACCOUNT_APPROVE = 'approve-account/CLOSE_ACCOUNT_APPROVE';
+export const OPEN_OPERATION_APPROVE = 'approve-account/OPEN_OPERATION_APPROVE';
+export const CLOSE_APPROVE = 'approve-account/CLOSE_APPROVE';
 export const GET_ACCOUNT_TO_APPROVE_START = 'approve-account/GET_ACCOUNT_TO_APPROVE_START';
 export const GOT_ACCOUNT_TO_APPROVE = 'approve-account/GOT_ACCOUNT_TO_APPROVE';
 export const GOT_ACCOUNT_TO_APPROVE_FAIL = 'approve-account/GOT_ACCOUNT_TO_APPROVE_FAIL';
@@ -49,22 +50,23 @@ export function approvedFail() {
   };
 }
 
-export function approved(accountId) {
+export function approved(entity, entityId) {
   return (dispatch, getState) => {
     const { profile } = getState();
 
     dispatch({
       type: APPROVED,
-      accountId,
+      entity,
+      entityId,
       pub_key: profile.user.pub_key || '', // TODO remove when API fixed ( now it sends null )
     });
   };
 }
 
-export function finishApprove(accountId) {
+export function finishApprove(entity, entityId) {
   return (dispatch) => {
     setTimeout(() => {
-      dispatch(approved(accountId));
+      dispatch(approved(entity, entityId));
     }, 500);
   };
 }
@@ -72,10 +74,15 @@ export function finishApprove(accountId) {
 export function approving() {
   return (dispatch, getState) => {
     dispatch(approveStart());
-    const { accountApprove } = getState();
-    if (accountApprove.isDevice) {
+    const { entityApprove } = getState();
+    if (entityApprove.isDevice) {
       setTimeout(() => {
-        dispatch(finishApprove(accountApprove.account.id));
+        const entity = entityApprove.entity;
+        if (entity === 'account') {
+          dispatch(finishApprove(entity, entityApprove.account.id));
+        } else {
+          dispatch(finishApprove(entity, entityApprove.operation.uuid));
+        }
       }, 2000);
     }
   };
@@ -87,10 +94,11 @@ export function abortStart() {
   };
 }
 
-export function aborted(accountId) {
+export function aborted(entity, entityId) {
   return {
     type: ABORTED,
-    accountId,
+    entity,
+    entityId,
   };
 }
 
@@ -103,9 +111,14 @@ export function abortedFail() {
 export function abort() {
   return (dispatch, getState) => {
     dispatch(abortStart());
-    const { accountApprove } = getState();
+    const { entityApprove } = getState();
     setTimeout(() => {
-      dispatch(aborted(accountApprove.account.id));
+      const entity = entityApprove.entity;
+      if (entity === 'account') {
+        dispatch(aborted(entity, entityApprove.account.id));
+      } else {
+        dispatch(aborted(entity, entityApprove.operation.uuid));
+      }
     }, 500);
   };
 }
@@ -145,6 +158,13 @@ export function getAccountToApprove() {
   };
 }
 
+export function openApprove(entity, object, isApproved = false) {
+  if (entity === 'operation') {
+    return openOperationApprove(object, isApproved);
+  }
+  return openAccountApprove(object, isApproved);
+}
+
 export function openAccountApprove(account, isApproved = false) {
   return {
     type: OPEN_ACCOUNT_APPROVE,
@@ -153,9 +173,17 @@ export function openAccountApprove(account, isApproved = false) {
   };
 }
 
-export function closeAccountApprove() {
+export function openOperationApprove(operation, isApproved = false) {
   return {
-    type: CLOSE_ACCOUNT_APPROVE,
+    type: OPEN_OPERATION_APPROVE,
+    operation,
+    isApproved,
+  };
+}
+
+export function closeApprove() {
+  return {
+    type: CLOSE_APPROVE,
   };
 }
 
@@ -167,6 +195,7 @@ export const initialState = {
   isApproved: false,
   isAborting: false,
   isDevice: false,
+  entity: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -188,18 +217,28 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         modalOpened: true,
+        entity: 'account',
         account: action.account,
         isLoading: true,
         isApproved: action.isApproved,
       };
-    case CLOSE_ACCOUNT_APPROVE:
+    case OPEN_OPERATION_APPROVE:
+      return {
+        ...state,
+        modalOpened: true,
+        entity: 'operation',
+        operation: action.operation,
+        isLoading: true,
+        isApproved: action.isApproved,
+      };
+    case CLOSE_APPROVE:
       return initialState;
     case ABORT_START:
       return { ...state, modalOpened: false, isAborting: false };
     case APPROVE_START:
       return { ...state, isDevice: !state.isDevice };
     case ABORTED:
-      return { ...state, account: null, accountId: null };
+      return initialState; //{ ...state, account: null, accountId: null };
     case APPROVED:
       return initialState;
     case ABORTED_FAIL:

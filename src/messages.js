@@ -44,9 +44,9 @@ export default {
         content: 'Your profile could not be updated.',
       },
     },
-    account: {
+    accounts: {
       creationSuccessTitle: 'Account request created',
-      creationSuccessBody: 'The operation request has been successfully created.',
+      creationSuccessBody: 'The opereation request has been successfully created.',
       abortSuccessTitle: 'Request deleted',
       abortSuccessBody: 'The account request has been successfully deleted.',
       approveSuccessTitle: 'Account approved',
@@ -57,6 +57,10 @@ export default {
       overview: 'Overview',
       details: 'Details',
       label: 'Label',
+      abortSuccessTitle: 'Request deleted',
+      abortSuccessBody: 'The operation request has been successfully deleted.',
+      approveSuccessTitle: 'Operation approved',
+      approveSuccessBody: 'The operation have been successfully approved.',
     },
     role: {
       administrator: 'Administrator',
