@@ -20,7 +20,7 @@ const initialState = {
   // these below are probably downloaded from a server... not yet made these async
   // also we need to think which we want to have here vs in other store
   totalBalance: {
-    currencyName: 'eur',
+    currencyName: 'EUR',
     value: 1589049,
     valueHistory: {
       yesterday: 1543125,
@@ -46,7 +46,7 @@ const initialState = {
         },
         referenceConversion: {
           value: 199553,
-          currencyName: 'eur'
+          currencyName: 'EUR'
         }
       }
     },
@@ -61,7 +61,7 @@ const initialState = {
         },
         referenceConversion: {
           value: 199553,
-          currencyName: 'eur'
+          currencyName: 'EUR'
         }
       }
     },
@@ -76,7 +76,7 @@ const initialState = {
         },
         referenceConversion: {
           value: 199553,
-          currencyName: 'eur'
+          currencyName: 'EUR'
         }
       }
     },
@@ -91,7 +91,7 @@ const initialState = {
         },
         referenceConversion: {
           value: 199553,
-          currencyName: 'eur'
+          currencyName: 'EUR'
         }
       }
     },
@@ -106,7 +106,7 @@ const initialState = {
         },
         referenceConversion: {
           value: 199553,
-          currencyName: 'eur'
+          currencyName: 'EUR'
         }
       }
     }

@@ -1,5 +1,6 @@
 window.CRYPTO_CURRENCIES = [
   {
+    name: 'bitcoin',
     family: 'Bitcoin',
     units: [
       {
@@ -11,6 +12,7 @@ window.CRYPTO_CURRENCIES = [
     ]
   },
   {
+    name: 'dogecoin',
     family: 'Dogecoin',
     units: [
       {
@@ -22,6 +24,7 @@ window.CRYPTO_CURRENCIES = [
     ]
   },
   {
+    name: 'dash',
     family: 'Dash',
     units: [
       {
@@ -33,10 +36,11 @@ window.CRYPTO_CURRENCIES = [
     ]
   },
   {
+    name: 'ethereum',
     family: 'Ethereum',
     units: [
       {
-        name: 'Ethereum',
+        name: 'ethereum',
         code: 'ETH',
         symbol: 'ETH',
         magnitude: 2

@@ -1,6 +1,8 @@
 //@flow
 import React, { PureComponent } from 'react';
 import CurrencyUnitValue from './CurrencyUnitValue';
+import counterValueUnits from '../countervalue-units';
+import currencies from '../currencies';
 
 // This is a "smart" component that accepts a currencyName (e.g. bitcoin) and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
@@ -19,13 +21,19 @@ class CurrencyNameValue extends PureComponent {
   };
   render() {
     const { currencyName, ...rest } = this.props;
-    const unit = {
-      // FIXME TEMPORARY we need to actually infer it
-      name: currencyName,
-      code: currencyName.toUpperCase(),
-      symbol: currencyName,
-      magnitude: 'eur usd'.indexOf(currencyName.toLowerCase()) === -1 ? 8 : 2
-    };
+    let unit;
+    // try to find a countervalues unit
+    if (currencyName in counterValueUnits) {
+      unit = counterValueUnits[currencyName];
+    } else {
+      // try to find a crypto currencies unit
+      unit = currencies.find(c => c.name === currencyName);
+    }
+
+    if (!unit) {
+      throw new Error(`currency "${currencyName}" not found`);
+    }
+
     return <CurrencyUnitValue {...rest} unit={unit} />;
   }
 }
