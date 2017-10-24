@@ -3,6 +3,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import ValidateBadge from '../icons/ValidateBadge';
 import DateFormat from '../DateFormat';
+import AccountName from '../AccountName';
 
 function PendingAccountApprove(props) {
   const { accounts, open, approved, approvers } = props;
@@ -39,7 +40,6 @@ function PendingAccountApprove(props) {
         </div>
       }
       {_.map(accounts, (account) => {
-        const currencyClass = account.currency.family.toLowerCase();
         return (
           <div
             className={`pending-request ${approved ? 'watch' : ''}`}
@@ -50,8 +50,8 @@ function PendingAccountApprove(props) {
               <span className="request-date-creation">
                 <DateFormat date={account.creation_time} />
               </span>
-              <span className={`request-name ${currencyClass}`}>
-                {account.name}
+              <span className="request-name">
+                <AccountName name={account.name} currency={account.currency} />
               </span>
             </div>
             <div>

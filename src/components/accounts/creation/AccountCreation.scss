@@ -19,15 +19,13 @@
       display: block;
       margin-top: 2px;
     }
-    .dot {
+    .badge-currency {
       margin-right: 10px;
       position: absolute;
-      top: 29px;
-
-      @include badge-currency(6px);
+      top: 40px;
     }
 
-    input[type="text"] {
+    input[type='text'] {
       border: 0;
       height: 55px;
       padding-left: 16px;
@@ -38,9 +36,7 @@
       color: $black;
       border-bottom: 1px solid $silver;
       display: block;
-
     }
-
   }
 
   .account-creation-currencies {
@@ -162,8 +158,6 @@
         font-size: 13px;
 
         &.name {
-          @include badge-currency(6px);
-
           &:before {
             margin-right: 10px;
             vertical-align: middle;
@@ -250,6 +244,5 @@
         stroke-width: 2px;
       }
     }
-
   }
 }

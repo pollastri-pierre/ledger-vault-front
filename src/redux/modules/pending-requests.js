@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { LOGOUT } from './auth';
 import { ABORTED, APPROVED } from './account-approve';
 import { SAVED_ACCOUNT } from './account-creation';
+import currencies from '../../currencies';
 
 export const GET_PENDING_REQUESTS_START = 'pending-requests/GET_PENDING_REQUESTS_START';
 export const GOT_PENDING_REQUESTS = 'pending-requests/GOT_PENDING_REQUESTS';
@@ -10,10 +11,7 @@ export const GOT_PENDING_REQUESTS_FAIL = 'pending-requests/GOT_PENDING_REQUESTS_
 const account = {
   id: 1,
   name: 'Trackerfund',
-  currency: {
-    family: 'BITCOIN',
-    units: [{ name: 'Bitcoin', symbol: 'BTC' } ],
-  },
+  currency: currencies[0],
   approved: ['edoiooooooo'],
   creation_time: new Date(),
 };
@@ -22,11 +20,7 @@ const account2 = {
   ...account,
   id: 2,
   name: 'LIT Holdings',
-  currency: {
-    ...account.currency,
-    family: 'LITECOIN',
-    units: [{ name: 'Litecoin', symbol: 'LTC' } ],
-  },
+  currency: currencies[1],
   approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk'],
 };
 
@@ -34,11 +28,7 @@ const account3 = {
   ...account,
   id: 8,
   name: 'Hot wallet',
-  currency: {
-    ...account.currency,
-    family: 'DOGECOIN',
-    units: [{ name: 'Dogecoin', symbol: 'DOGE' } ],
-  },
+  currency: currencies[2],
   approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
 };
 
@@ -46,11 +36,7 @@ const account4 = {
   ...account,
   id: 3,
   name: 'Cold storage',
-  currency: {
-    ...account.currency,
-    family: 'LITECOIN',
-    units: [{ name: 'Litecoin', symbol: 'LTC', } ],
-  },
+  currency: currencies[3],
   approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
 };
 
@@ -129,13 +115,13 @@ export default function reducer(state = initialState, action) {
           approveAccounts: approveAccounts,
         },
       };
-    case SAVED_ACCOUNT: 
+    case SAVED_ACCOUNT:
       approveAccounts.push(action.account);
       if (_.isNull(state.data)) {
         return state;
       }
       return {
-        ...state, 
+        ...state,
         data: {
           ...state.data,
           approveAccounts: approveAccounts,
@@ -147,4 +133,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

@@ -4,6 +4,7 @@ import Rates from '../../icons/thin/Rates';
 import PeopleThin from '../../icons/thin/People';
 import Hourglass from '../../icons/thin/Hourglass';
 import DateFormat from '../../DateFormat';
+import AccountName from '../../AccountName';
 
 function AccountApproveDetails(props) {
   const { security, currency, approved } = props.account;
@@ -61,8 +62,8 @@ function AccountApproveDetails(props) {
         </div>
         <div className="confirmation-info">
           <span className="info-title">Name</span>
-          <span className={`info-value name ${currency.units[0].name.split(' ').join('-').toLowerCase()}`}>
-            {account.name}
+          <span className="info-value name">
+            <AccountName name={account.name} currency={currency} />
           </span>
         </div>
         <div className="confirmation-info">

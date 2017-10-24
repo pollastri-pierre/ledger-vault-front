@@ -2,6 +2,7 @@ window.CRYPTO_CURRENCIES = [
   {
     name: 'bitcoin',
     family: 'Bitcoin',
+    color: '#fcb653',
     units: [
       {
         name: 'bitcoin',
@@ -20,6 +21,7 @@ window.CRYPTO_CURRENCIES = [
   {
     name: 'dogecoin',
     family: 'Dogecoin',
+    color: '#65d196',
     units: [
       {
         name: 'dogecoin',
@@ -32,6 +34,7 @@ window.CRYPTO_CURRENCIES = [
   {
     name: 'dash',
     family: 'Dash',
+    color: '#0e76aa',
     units: [
       {
         name: 'dash',
@@ -44,6 +47,7 @@ window.CRYPTO_CURRENCIES = [
   {
     name: 'ethereum',
     family: 'Ethereum',
+    color: '#27d0e2',
     units: [
       {
         name: 'ethereum',
@@ -54,7 +58,9 @@ window.CRYPTO_CURRENCIES = [
     ]
   },
   {
+    name: 'ethereum-classic',
     family: 'Ethereum',
+    color: '#3ca569',
     units: [
       {
         name: 'Ethereum Classic',
@@ -65,7 +71,9 @@ window.CRYPTO_CURRENCIES = [
     ]
   },
   {
+    name: 'litecoin',
     family: 'Litecoin',
+    color: '#cccccc',
     units: [
       {
         name: 'Litecoin',

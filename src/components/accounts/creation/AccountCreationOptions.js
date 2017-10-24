@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import BadgeCurrency from '../../BadgeCurrency'
 
 function AccountCreationOptions(props) {
-  const classe = props.currency.units[0].name.split(' ')
-    .join('-')
-    .toLowerCase();
-
   return (
     <div className="account-creation-options">
       <label htmlFor="name">Name</label>
-      <div className={`dot ${classe}`} />
+      <BadgeCurrency currency={props.currency} />
       <input
         type="text"
         name="name"

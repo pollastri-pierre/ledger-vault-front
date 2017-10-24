@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Rates from '../../icons/thin/Rates';
 import PeopleThin from '../../icons/thin/People';
 import Hourglass from '../../icons/thin/Hourglass';
+import AccountName from '../../AccountName';
 
 function AccountCreationConfirmation(props) {
   const { security, options, currency } = props.account;
@@ -43,7 +44,9 @@ function AccountCreationConfirmation(props) {
       <div className="confirmation-infos">
         <div className="confirmation-info">
           <span className="info-title">Name</span>
-          <span className={`info-value name ${currency.units[0].name.split(' ').join('-').toLowerCase()}`}>{options.name}</span>
+          <span className="info-value name">
+            <AccountName name={options.name} currency={currency} />
+          </span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Currency</span>

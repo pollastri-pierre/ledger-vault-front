@@ -1,36 +1,24 @@
+import currencies from '../../currencies';
 export const data = [
   {
     id: 1,
     name: 'Cold storage',
-    currency: {
-      name: 'bitcoin',
-      familiy: 'BITCOIN',
-      units: ['BTC'],
-    },
+    currency: currencies[0],
     balanace: 55,
-    creation_time: 12324322,
+    creation_time: 12324322
   },
   {
     id: 2,
     name: 'Cold storage',
-    currency: {
-      name: 'litecoin',
-      familiy: 'BITCOIN',
-      units: ['LTC'],
-    },
+    currency: currencies[1],
     balanace: 22,
-    creation_time: 12324322,
+    creation_time: 12324322
   },
   {
     id: 3,
     name: 'Hot wallet',
-    currency: {
-      name: 'dogecoin',
-      familiy: 'BITCOIN',
-      units: ['DOGE'],
-    },
+    currency: currencies[2],
     balanace: 34,
-    creation_time: 12324322,
-  },
+    creation_time: 12324322
+  }
 ];
-

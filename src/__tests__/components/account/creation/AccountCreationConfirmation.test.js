@@ -133,4 +133,3 @@ describe('AccountCreationConfirmation test', () => {
     expect(wrapper.find('.confirmation-explain').length).toBe(1);
   });
 });
-

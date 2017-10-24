@@ -9,5 +9,8 @@ export type Unit = {
 export type Currency = {
   name: string,
   family: string,
+  color: string,
   units: Array<Unit>
 };
+
+export type Account = *; // TODO

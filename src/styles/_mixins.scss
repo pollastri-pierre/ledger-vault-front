@@ -25,47 +25,6 @@
   }
 }
 
-@mixin badge-currency($size) {
-  &::before {
-    content: '';
-    display: inline-block;
-    width: $size;
-    height: $size;
-    border-radius: 50%;
-  }
-
-  &.bitcoin {
-    &::before {
-      background: $bitcoin;
-    }
-  }
-  &.ethereum {
-    &::before {
-      background: $ethereum;
-    }
-  }
-  &.litecoin {
-    &::before {
-      background: $litecoin;
-    }
-  }
-  &.dash {
-    &::before {
-      background: $dash;
-    }
-  }
-  &.dogecoin {
-    &::before {
-      background: $dogecoin;
-    }
-  }
-  &.ethereum-classic {
-    &::before {
-      background: $ethereum-classic;
-    }
-  }
-}
-
 @mixin highlight-block-active($color, $left) {
   opacity: 1;
   &::before {
@@ -81,5 +40,3 @@
     transition: opacity .2s ease;
   }
 }
-
-
