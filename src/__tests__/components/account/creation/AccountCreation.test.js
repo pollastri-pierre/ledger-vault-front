@@ -4,23 +4,20 @@ import { AccountCreation } from '../../../../components';
 
 describe('AccountCreation test', () => {
   const props = {
-    organization: {
-    },
-    currencies: {
-    },
+    organization: {},
+    currencies: {},
     close: jest.fn(),
     changeAccountName: jest.fn(),
-    getCurrencies: jest.fn(),
     account: {
       internModalId: 'main',
       security: {
         timelock: {},
         ratelimiter: {},
         approvals: '',
-        members: [],
+        members: []
       },
       popBubble: false,
-      popAnchor: {},
+      popAnchor: {}
     },
     selectCurrency: jest.fn(),
     onSelect: jest.fn(),
@@ -35,7 +32,7 @@ describe('AccountCreation test', () => {
     changeTimeLock: jest.fn(),
     changeRatelimiter: jest.fn(),
     changeFrequency: jest.fn(),
-    save: jest.fn(),
+    save: jest.fn()
   };
 
   it('should render MainCreation component with right props', () => {
@@ -60,22 +57,26 @@ describe('AccountCreation test', () => {
       ...props,
       account: {
         ...props.account,
-        internModalId: 'rate-limiter',
-      },
+        internModalId: 'rate-limiter'
+      }
     };
     const wrapper = shallow(<AccountCreation {...sProps} />);
     const Ratelimiter = wrapper.find('AccountCreationRateLimiter');
 
     expect(Ratelimiter.length).toBe(1);
 
-    expect(Ratelimiter.prop('ratelimiter')).toEqual(props.account.security.ratelimiter);
+    expect(Ratelimiter.prop('ratelimiter')).toEqual(
+      props.account.security.ratelimiter
+    );
     expect(Ratelimiter.prop('enable')).toEqual(props.enableRatelimiter);
     expect(Ratelimiter.prop('change')).toEqual(props.changeRatelimiter);
     expect(Ratelimiter.prop('popbubble')).toEqual(props.account.popBubble);
     expect(Ratelimiter.prop('openPopBubble')).toEqual(props.openPopBubble);
     expect(Ratelimiter.prop('anchor')).toEqual(props.account.popAnchor);
     expect(Ratelimiter.prop('changeFrequency')).toEqual(props.changeFrequency);
-    expect(Ratelimiter.prop('switchInternalModal')).toEqual(props.switchInternalModal);
+    expect(Ratelimiter.prop('switchInternalModal')).toEqual(
+      props.switchInternalModal
+    );
   });
 
   it('should render Members component with right props', () => {
@@ -83,8 +84,8 @@ describe('AccountCreation test', () => {
       ...props,
       account: {
         ...props.account,
-        internModalId: 'members',
-      },
+        internModalId: 'members'
+      }
     };
     const wrapper = shallow(<AccountCreation {...sProps} />);
     const Members = wrapper.find('AccountCreationMembers');
@@ -93,9 +94,13 @@ describe('AccountCreation test', () => {
 
     expect(Members.prop('members')).toEqual(props.account.security.members);
     expect(Members.prop('organization')).toEqual(props.organization);
-    expect(Members.prop('getOrganizationMembers')).toEqual(props.getOrganizationMembers);
+    expect(Members.prop('getOrganizationMembers')).toEqual(
+      props.getOrganizationMembers
+    );
     expect(Members.prop('addMember')).toEqual(props.addMember);
-    expect(Members.prop('switchInternalModal')).toEqual(props.switchInternalModal);
+    expect(Members.prop('switchInternalModal')).toEqual(
+      props.switchInternalModal
+    );
   });
 
   it('should render TimeLock component with right props', () => {
@@ -103,8 +108,8 @@ describe('AccountCreation test', () => {
       ...props,
       account: {
         ...props.account,
-        internModalId: 'time-lock',
-      },
+        internModalId: 'time-lock'
+      }
     };
     const wrapper = shallow(<AccountCreation {...sProps} />);
     const TimeLock = wrapper.find('AccountCreationTimeLock');
@@ -118,17 +123,18 @@ describe('AccountCreation test', () => {
     expect(TimeLock.prop('openPopBubble')).toEqual(props.openPopBubble);
     expect(TimeLock.prop('anchor')).toEqual(props.account.popAnchor);
     expect(TimeLock.prop('changeFrequency')).toEqual(props.changeFrequency);
-    expect(TimeLock.prop('switchInternalModal')).toEqual(props.switchInternalModal);
+    expect(TimeLock.prop('switchInternalModal')).toEqual(
+      props.switchInternalModal
+    );
   });
-
 
   it('should render Approvals component with right props', () => {
     const sProps = {
       ...props,
       account: {
         ...props.account,
-        internModalId: 'approvals',
-      },
+        internModalId: 'approvals'
+      }
     };
     const wrapper = shallow(<AccountCreation {...sProps} />);
     const Approvals = wrapper.find('AccountCreationApprovals');
@@ -137,7 +143,11 @@ describe('AccountCreation test', () => {
 
     expect(Approvals.prop('setApprovals')).toEqual(props.setApprovals);
     expect(Approvals.prop('members')).toEqual(props.account.security.members);
-    expect(Approvals.prop('approvals')).toEqual(props.account.security.approvals);
-    expect(Approvals.prop('switchInternalModal')).toEqual(props.switchInternalModal);
+    expect(Approvals.prop('approvals')).toEqual(
+      props.account.security.approvals
+    );
+    expect(Approvals.prop('switchInternalModal')).toEqual(
+      props.switchInternalModal
+    );
   });
 });
