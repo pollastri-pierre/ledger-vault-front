@@ -17,7 +17,7 @@ function AccountsMenu(props) {
               to={`/account/${account.id}`}
             >
               {account.name}
-              <span className="unit">{account.currency.units[0]}</span>
+              <span className="unit">{account.currency.units[0].code}</span>
             </Link>
           </li>
         );
