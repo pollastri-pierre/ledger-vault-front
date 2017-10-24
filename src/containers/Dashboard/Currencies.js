@@ -8,7 +8,7 @@ function Currencies(props) {
 
   const computedCurrencies = _.reduce(accounts, (currencies, account) => {
     const currency = account.currency.name;
-    const balance = account.balanace; //be carefull, typo !!!
+    const balance = account.balance;
     currencies[currency] = !_.isNil(currencies[currency]) ? (currencies[currency] + balance) : balance;
     return currencies;
   }, {})
