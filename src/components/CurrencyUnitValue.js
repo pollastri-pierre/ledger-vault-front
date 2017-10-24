@@ -1,6 +1,7 @@
 //@flow
 import React, { PureComponent } from 'react';
 import numeral from 'numeral';
+import type { Unit } from '../datatypes';
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
@@ -12,15 +13,9 @@ import numeral from 'numeral';
 // so I suggest we have a redux store that context all user prefered unit per currencyName,
 // and create a smarter component on top of this that would provide unit implicitely
 // and would just accept that currencyName as prop.
-class CurrencyUnitValue extends PureComponent {
+class CurrencyUnitValue extends PureComponent<*> {
   props: {
-    unit: {
-      // usually provided by server
-      name: string,
-      code: string,
-      symbol: string,
-      magnitude: number
-    },
+    unit: Unit,
     value: number, // e.g. 10000 . for EUR it means €100.00
     alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
     showAllDigits?: boolean

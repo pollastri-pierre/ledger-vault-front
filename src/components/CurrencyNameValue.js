@@ -7,9 +7,9 @@ import currencies from '../currencies';
 // This is a "smart" component that accepts a currencyName (e.g. bitcoin) and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
-class CurrencyNameValue extends PureComponent {
+class CurrencyNameValue extends PureComponent<*> {
   props: {
-    currencyName: number,
+    currencyName: string,
     value: number,
     alwaysShowSign?: boolean
   };

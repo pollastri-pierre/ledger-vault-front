@@ -1,5 +1,7 @@
+//@flow
+import type { Unit } from './datatypes';
 // inspired by https://github.com/smirzaei/currency-formatter/blob/master/currencies.json
-export default {
+const units: { [key: string]: Unit } = {
   AED: { name: 'AED', code: 'AED', symbol: 'د.إ.‏', magnitude: 2 },
   AFN: { name: 'AFN', code: 'AFN', symbol: '؋', magnitude: 2 },
   ALL: { name: 'ALL', code: 'ALL', symbol: 'Lek', magnitude: 2 },
@@ -162,3 +164,5 @@ export default {
   ZMW: { name: 'ZMW', code: 'ZMW', symbol: 'ZK', magnitude: 2 },
   WON: { name: 'WON', code: 'WON', symbol: '₩', magnitude: 2 }
 };
+
+export default units;
