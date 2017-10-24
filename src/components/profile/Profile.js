@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import emailValidator from 'email-validator';
 import Dropzone from 'react-dropzone';
 import Script from 'react-load-script';
-import { TextField, Alert } from '../../components';
+import { TextField } from '../../components';
 import DialogButton from '../../components/buttons/DialogButton';
 import ProfileIcon from '../icons/thin/Profile';
 
@@ -29,8 +29,6 @@ class Profile extends Component {
       picture: {
         value: this.props.profile.picture,
       },
-      alert: {},
-      alertOpen: false,
     };
 
     this.t = context.translate;
@@ -80,17 +78,12 @@ class Profile extends Component {
   };
 
   save = () => {
-    if (!this.state.first_name.isValid
+    const error = (!this.state.first_name.isValid
       || !this.state.last_name.isValid
-      || !this.state.email.isValid) {
-      this.setState({
-        alert: {
-          theme: 'error',
-          title: 'oops',
-          message: 'Lipsum, mec.',
-        },
-        alertOpen: true,
-      });
+      || !this.state.email.isValid);
+
+    if (error) {
+      this.props.save(error);
     } else {
       const newProfile = {
         first_name: this.state.first_name.value,
@@ -99,12 +92,8 @@ class Profile extends Component {
         picture: this.state.picture.value,
       };
 
-      this.props.save(newProfile);
+      this.props.save(error, newProfile);
     }
-  };
-
-  closeAlert = () => {
-    this.setState({ alertOpen: false });
   };
 
   render() {
@@ -163,14 +152,6 @@ class Profile extends Component {
         <div style={{ height: '50px' }} />
         <DialogButton onTouchTap={this.props.close}>{this.t('common.cancel')}</DialogButton>
         <DialogButton highlight right onTouchTap={this.save}>{this.t('common.save')}</DialogButton>
-        <Alert
-          open={this.state.alertOpen}
-          onRequestClose={this.closeAlert}
-          theme={this.state.alert.theme}
-          title={this.state.alert.title}
-        >
-          {this.state.alert.message}
-        </Alert>
         <Script
           // Lib for cropping and converting new profile pic
           url="/scripts/jimp.min.js"

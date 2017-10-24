@@ -1,15 +1,37 @@
-import { GOT_USER_INFO, LOGOUT } from './auth';
+import axios from 'axios';
+import { getUserInfos, GOT_USER_INFO, LOGOUT } from './auth';
 
 export const OPEN_CLOSE_PROFILE = 'profile/OPEN_CLOSE_PROFILE';
 export const OPEN_CLOSE_EDIT = 'profile/OPEN_CLOSE_EDIT';
 export const OPEN_EDIT = 'profile/OPEN_EDIT';
 export const CLOSE_EDIT = 'profile/CLOSE_EDIT';
 
+export const SAVE_PROFILE_INVALID = 'profile/SAVE_PROFILE_INVALID';
+export const SAVE_PROFILE_FAIL = 'profile/SAVE_PROFILE_FAIL';
+export const SAVED_PROFILE = 'profile/SAVED_PROFILE';
+
 export const initialState = {
   user: {},
   open: false,
   openEdit: false,
 };
+
+export function saveProfileInvalid() {
+  return {
+    type: SAVE_PROFILE_INVALID,
+  };
+}
+export function saveProfileFail() {
+  return {
+    type: SAVE_PROFILE_FAIL,
+  };
+}
+
+export function savedProfile() {
+  return {
+    type: SAVED_PROFILE,
+  };
+}
 
 export function openCloseProfile(target) {
   return {
@@ -39,6 +61,24 @@ export function openCloseEdit() {
     } else {
       dispatch(openEdit());
     }
+  };
+}
+
+export function saveProfile(error, profile) {
+  if (error) {
+    return (dispatch) => {
+      dispatch(saveProfileInvalid());
+    };
+  }
+
+  return (dispatch) => {
+    axios.put('/organization/members/me', profile, { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } }).then(() => {
+      dispatch(savedProfile());
+      dispatch(closeEdit());
+      dispatch(getUserInfos());
+    }).catch((e) => {
+      dispatch(saveProfileFail(e));
+    });
   };
 }
 

@@ -2,7 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Modal } from '../components';
+import { Modal, OperationCreation } from '../components';
+import { getAccounts } from '../redux/modules/accounts';
 
 import {
   getOperation,
@@ -28,6 +29,12 @@ import {
 } from '../redux/modules/account-creation';
 
 import {
+  closeModalOperation,
+  changeTabOperation,
+  saveOperation
+} from '../redux/modules/operation-creation';
+
+import {
   closeAccountApprove,
   getAccountToApprove,
   aborting,
@@ -40,18 +47,20 @@ import {
   getOrganizationApprovers
 } from '../redux/modules/organization';
 
+import { BlurDialog } from '../containers';
 import {
   OperationDetails,
   AccountCreation,
   AccountApprove
 } from '../components';
-// import _ from 'lodash';
 
 const mapStateToProps = state => ({
   modals: state.modals,
   operations: state.operations,
   organization: state.organization,
   accountCreation: state.accountCreation,
+  operationCreation: state.operationCreation,
+  accounts: state.accounts,
   accountToApprove: state.accountApprove
 });
 
@@ -74,6 +83,10 @@ const mapDispatchToProps = dispatch => ({
   onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
   onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
   onSaveAccount: () => dispatch(saveAccount()),
+  onCloseModalOperation: from => dispatch(closeModalOperation(from)),
+  onChangeTabOperation: index => dispatch(changeTabOperation(index)),
+  onSaveOperation: () => dispatch(saveOperation()),
+  onGetAccounts: () => dispatch(getAccounts()),
   onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
   onGetAccountToApprove: () => dispatch(getAccountToApprove()),
   onAbortingAccount: () => dispatch(aborting()),
@@ -103,6 +116,12 @@ function ModalsContainer(props) {
     onOpenPopBubble,
     onChangeFrequency,
     onSaveAccount,
+    operationCreation,
+    accounts,
+    onChangeTabOperation,
+    onCloseModalOperation,
+    onSaveOperation,
+    onGetAccounts,
     onAbortingAccount,
     onAbortAccount,
     onCloseAccountApprouve,
@@ -133,6 +152,18 @@ function ModalsContainer(props) {
             save={onSaveAccount}
             close={onCloseAccount}
             switchInternalModal={onSwitchInternalModal}
+          />
+        </Modal>
+      )}
+      {operationCreation.modalOpened && (
+        <Modal close={onCloseModalOperation}>
+          <OperationCreation
+            close={onCloseModalOperation}
+            onSelect={onChangeTabOperation}
+            save={onSaveOperation}
+            tabsIndex={operationCreation.currentTab}
+            accounts={accounts}
+            getAccounts={onGetAccounts}
           />
         </Modal>
       )}

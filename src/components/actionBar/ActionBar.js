@@ -10,11 +10,6 @@ import ProfileIcon from '../icons/thin/Profile';
 import './ActionBar.css';
 
 class ActionBar extends Component {
-  constructor(props) {
-    super(props);
-    this.openProfileMenu = this.openProfileMenu.bind(this);
-  }
-
   openProfileMenu = (event) => {
     // This prevents ghost click.
     event.preventDefault();
@@ -27,12 +22,7 @@ class ActionBar extends Component {
     this.props.openCloseEdit();
   }
 
-  saveProfile = (profile) => {
-    this.closeProfileDialog();
-  }
-
   render() {
-    // let profile;
     let profileCard;
     let profileDialog = '';
 
@@ -42,7 +32,6 @@ class ActionBar extends Component {
 
     if (!_.isEmpty(profile)) {
       // Displayed when profile is loaded
-      // profile = this.state.profile.results[0];
 
       profileCard = (
         <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
@@ -64,7 +53,7 @@ class ActionBar extends Component {
           <Profile
             profile={profile}
             close={this.props.openCloseEdit}
-            save={this.saveProfile}
+            save={this.props.saveProfile}
           />
         </BlurDialog>
       );
@@ -155,6 +144,9 @@ ActionBar.propTypes = {
   }).isRequired,
   openCloseProfile: PropTypes.func.isRequired,
   openCloseEdit: PropTypes.func.isRequired,
+  saveProfile: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
+  openAccount: PropTypes.func.isRequired,
 };
 
 ActionBar.contextTypes = {

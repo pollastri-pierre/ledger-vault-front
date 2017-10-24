@@ -8,6 +8,7 @@ import operations from './operations';
 import accountsInfo from './accounts-info';
 import accounts from './accounts';
 import accountCreation from './account-creation';
+import operationCreation from './operation-creation';
 import pendingRequests from './pending-requests';
 import accountApprove from './account-approve';
 import organization from './organization';
@@ -25,6 +26,7 @@ const reducers = {
   accountApprove,
   pendingRequests,
   accountCreation,
+  operationCreation,
   organization
 };
 

@@ -61,13 +61,13 @@ class Overscroll extends Component {
             top: `-${(overscrollSize - 6)}px`,
             paddingTop: `${overscrollSize - 6}px `,
             paddingBottom: `${overscrollSize}px`,
-            height: `${(height - 6)}px`,
+            height: `${(height + (overscrollSize * 2) - 6)}px`,
           }}
         >
           {this.props.children}
         </div>
         <div
-          className="wrapper"
+          className="overscroll-wrapper"
           style={{
             position: 'relative',
           }}
