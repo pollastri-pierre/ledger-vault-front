@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Rates from '../../icons/thin/Rates';
 import PeopleThin from '../../icons/thin/People';
 import Hourglass from '../../icons/thin/Hourglass';
-import { formatDate } from '../../../redux/utils/format';
+import DateFormat from '../../DateFormat';
 
 function AccountApproveDetails(props) {
   const { security, currency, approved } = props.account;
@@ -55,7 +55,9 @@ function AccountApproveDetails(props) {
         </div>
         <div className="confirmation-info">
           <span className="info-title">Requested</span>
-          <span className="info-value date">{formatDate(account.creation_time, 'lll')}</span>
+          <span className="info-value date">
+            <DateFormat date={account.creation_time} />
+          </span>
         </div>
         <div className="confirmation-info">
           <span className="info-title">Name</span>

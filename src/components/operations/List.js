@@ -4,8 +4,7 @@ import Infinite from 'react-infinite';
 import PropTypes from 'prop-types';
 import { SpinnerCard, Tooltip } from '../../components';
 import Comment from '../../components/icons/Comment';
-import { formatDate } from '../../redux/utils/format';
-
+import DateFormat from '../../components/DateFormat';
 
 function List(props) {
   const { operations, title, loading } = props;
@@ -60,7 +59,7 @@ function List(props) {
                 return (
                   <tr key={operation.uuid} onClick={e => props.open(operation.uuid)}>
                     <td className="date">
-                      {formatDate(operation.time, 'llll')}
+                      <DateFormat format="llll" date={operation.time} />
 
                       <Comment fill="#e2e2e2"
                         onClick={(e) => {e.stopPropagation(); props.open(operation.uuid, 2)}}

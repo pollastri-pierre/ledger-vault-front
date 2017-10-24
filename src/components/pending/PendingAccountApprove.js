@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import ValidateBadge from '../icons/ValidateBadge';
-import { formatDate } from '../../redux/utils/format';
+import DateFormat from '../DateFormat';
 
 function PendingAccountApprove(props) {
   const { accounts, open, approved, approvers } = props;
@@ -47,8 +47,12 @@ function PendingAccountApprove(props) {
             onClick={() => open(account, approved)}
           >
             <div>
-              <span className="request-date-creation">{formatDate(account.creation_time, 'lll')}</span>
-              <span className={`request-name ${currencyClass}`}>{account.name}</span>
+              <span className="request-date-creation">
+                <DateFormat date={account.creation_time} />
+              </span>
+              <span className={`request-name ${currencyClass}`}>
+                {account.name}
+              </span>
             </div>
             <div>
               <span className={`request-approval-state ${approved ? 'approved' : ''}`}>

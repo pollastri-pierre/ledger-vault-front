@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AccountApproveDetails from '../../../../components/accounts/approve/AccountApproveDetails';
-import { formatDate } from '../../../../redux/utils/format';
+import moment from 'moment';
 
 const props = {
   account: {

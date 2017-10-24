@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { PendingAccountApprove } from '../../../components';
-import { formatDate } from '../../../redux/utils/format';
+import moment from 'moment';
 
 const props = {
   accounts: [
@@ -123,7 +123,9 @@ describe('AccountView container', () => {
     const wrapper = shallow(<PendingAccountApprove {...props} />);
     const line = wrapper.find('.pending-request').at(0);
 
-    expect(line.find('.request-date-creation').text()).toBe(formatDate(props.accounts[0].creation_time, 'lll'));
+    expect(line.find('.request-date-creation').text()).toBe(
+      moment(props.accounts[0].creation_time).format('lll')
+    );
   });
 
   it('should have a .request-name', () => {
