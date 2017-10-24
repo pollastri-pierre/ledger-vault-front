@@ -16,9 +16,11 @@ class CurrencyNameValue extends PureComponent {
   render() {
     const { currencyName, ...rest } = this.props;
     let unit;
+    let showAllDigits = false;
     // try to find a countervalues unit
     if (currencyName in counterValueUnits) {
       unit = counterValueUnits[currencyName];
+      showAllDigits = true;
     } else {
       // try to find a crypto currencies unit
       const currency = currencies.find(c => c.name === currencyName);
@@ -34,7 +36,9 @@ class CurrencyNameValue extends PureComponent {
       throw new Error(`currency "${currencyName}" not found`);
     }
 
-    return <CurrencyUnitValue {...rest} unit={unit} />;
+    return (
+      <CurrencyUnitValue showAllDigits={showAllDigits} unit={unit} {...rest} />
+    );
   }
 }
 

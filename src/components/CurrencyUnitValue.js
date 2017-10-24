@@ -22,16 +22,26 @@ class CurrencyUnitValue extends PureComponent {
       magnitude: number
     },
     value: number, // e.g. 10000 . for EUR it means €100.00
-    alwaysShowSign?: boolean // do you want to show the + before the number (N.B. minus is always displayed)
+    alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
+    showAllDigits?: boolean
   };
   render() {
-    const { unit, value, alwaysShowSign } = this.props;
+    const { unit, value, alwaysShowSign, showAllDigits } = this.props;
     let absValue = Math.abs(value);
-    let format = '0,0.';
     let divider = 1;
-    for (let i = 0; i < unit.magnitude; i++) {
-      format += '0';
-      divider *= 10;
+    let format = '0,0';
+    if (unit.magnitude > 0) {
+      format += '.';
+      if (!showAllDigits) {
+        format += '[';
+      }
+      for (let i = 0; i < unit.magnitude; i++) {
+        format += '0';
+        divider *= 10;
+      }
+      if (!showAllDigits) {
+        format += ']';
+      }
     }
     return (
       <span>
