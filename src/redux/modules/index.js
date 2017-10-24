@@ -1,4 +1,5 @@
 import blurBG from './blurBG';
+import dashboard from './dashboard';
 import profile from './profile';
 import locale from './locale';
 import auth from './auth';
@@ -14,6 +15,7 @@ import organization from './organization';
 
 const reducers = {
   blurBG,
+  dashboard,
   profile,
   locale,
   auth,
@@ -25,7 +27,7 @@ const reducers = {
   pendingRequests,
   accountCreation,
   allCurrencies,
-  organization,
+  organization
 };
 
 export default reducers;

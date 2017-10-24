@@ -4,12 +4,12 @@ class Section extends Component {
   render() {
     const { title, titleRight, children } = this.props;
     return (
-      <div className="dashboard-section">
+      <div className="bloc">
         <header>
-          <span className="title">{title}</span>
+          <h3>{title}</h3>
           <span className="title-right">{titleRight}</span>
         </header>
-        {children}
+        <div className="bloc-content">{children}</div>
       </div>
     );
   }

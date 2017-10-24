@@ -27,8 +27,7 @@ function Currencies(props) {
   //_.isNull(accounts) should display empty chart not loading ?? 
 
   return (
-    <div className="bloc currencies">
-      <h3>Currencies</h3>
+    <div className="currencies">
       { (loading || _.isNull(accounts)) ?
           <SpinnerCard />
         :

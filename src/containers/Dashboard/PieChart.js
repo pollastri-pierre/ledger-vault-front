@@ -50,34 +50,43 @@ export default class PieChart extends Component {
     this.setSelected(-1)
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
+    const { selected, color } = this.state;
     const svg = d3.select(this.svg);
-    console.log(svg.select(() => this.parentNode));
-    svg.attr("width", d3.select(svg.select(() => this.parentNode)).attr("width")); //adapt to parent's width
+    svg.attr("width", parseFloat(d3.select(this.svg.parentNode).style('width'))) //adapt to parent's width
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr('width') - margin.left - margin.right;
     const height = +svg.attr('height') - margin.top - margin.bottom;
     const outerRadius = 50;
     const strokeWidth = 2.5;
     const chartHeight = ( outerRadius + strokeWidth ) * 2;
-    //const chartWidth = chartHeight; //perfect circle
 
-    const g = svg.append('g').classed("chartWrap", true).attr("height", height).attr("width", width).attr('transform', `translate(${margin.left}, ${margin.top})`);
+    const g = svg.append('g').attr("class", "chartWrap").attr("height", height).attr("width", width).attr('transform', `translate(${margin.left}, ${margin.top})`);
     const data = this.props.data;
 
     const arc = d3.arc().outerRadius(outerRadius).innerRadius(outerRadius - strokeWidth).padAngle(0.05);
 
     const pie = d3.pie().sort(null).value(d => d.value);
 
-    const chart = g.append("g").classed("chart", true).attr('transform', `translate(${(width)/2}, ${(chartHeight)/2})`);
-    /* const arcs = */ chart.selectAll(".arc").data(pie(data)).enter()
-                      .append("g").attr("class", "arc hover")
+    const chart = g.append("g").attr("class","chart").attr('transform', `translate(${(width)/2}, ${(chartHeight)/2})`);
+
+    chart.selectAll(".arc").data(pie(data)).enter()
+                      .append("g").attr("class", "arc")
                       .append("path").attr("d", d => arc(d))
-                      .style("fill", (d, i) => this.state.color[i].hex)
+                      .attr("class",  (d, i) => (selected !== -1 && selected !== i) ? 'disable' : '')
+                      .style("fill", (d, i) => color[i].hex)
                       .on("mouseover", this.handleMouseOver)
                       .on("mouseout", this.handleMouseOut)
-                      .style("cursor", "pointer");
-    //const toolTip = g.append("g")
+
+    const toolTip = g.append("g").attr("class", "tooltip").append("rect")
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("updated")
+    const { selected } = this.state;
+    const { prevSelected } = prevState;
+    d3.select(this.svg).selectAll(".arc").classed('disable', (d, i) => (selected !== -1 && selected !== i))
+    d3.select(this.svg).select(".tooltip").classed('display', (selected !== -1))
   }
 
   render() {
@@ -92,11 +101,11 @@ export default class PieChart extends Component {
                 return (
 
                   <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''}`} key={id}>
-                    <td className="hover" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
+                    <td className="" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
                       <span className={`bullet round inline bg-${color[id].name}`}></span>
                       <span className="inline uppercase currencyName">{currency.label}</span>
                     </td>
-                    <td className="currencyBalance hover" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.value}</td>
+                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.value}</td>
                   </tr>
 
                 )
