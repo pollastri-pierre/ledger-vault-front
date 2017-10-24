@@ -9,26 +9,25 @@ function BalanceCard(props) {
   return (
     <div className="bloc balance">
       <h3>Balance</h3>
-      { (loading || _.isNull(data)) ?
+      {loading || _.isNull(data) ? (
         <SpinnerCard />
-        :
+      ) : (
         <div className="bloc-content">
-          <p className="amount">{ data.value }</p>
-          <span className="date">{ data.date }</span>
+          <p className="amount">{data.value}</p>
+          <span className="date">{data.date}</span>
         </div>
-      }
+      )}
     </div>
   );
 }
 
 BalanceCard.defaultProps = {
-  data: null,
+  data: null
 };
 
 BalanceCard.propTypes = {
   data: PropTypes.shape({}),
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired
 };
-
 
 export default BalanceCard;

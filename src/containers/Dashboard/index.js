@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Section from './Section';
+import { connect } from 'react-redux';
+import Card from '../../components/Card';
+import { setTotalBalanceFilter } from '../../redux/modules/dashboard';
+import TotalBalanceFilter from '../../components/TotalBalanceFilter';
+import TotalBalance from '../../components/TotalBalance';
+
 import './index.css';
 
 // Replace these with imports
 const Currencies = () => <div>TODO</div>; // FIXME @malik replace with your component import
 const PendingPreview = () => <div>TODO</div>;
-const TotalBalance = () => <div>TODO</div>;
 const LastOperationPreview = () => <div>TODO</div>;
 const StoragePreview = () => <div>TODO</div>;
 
 const PendingViewAll = () => <Link to="TODO">VIEW ALL (7)</Link>;
 const LastOperationViewAll = () => <Link to="TODO">VIEW ALL</Link>;
-const TotalBalanceFilter = () => <span>YERSTERDAY</span>;
+
+const mapStateToProps = ({ dashboard }) => ({ dashboard });
+
+const mapDispatchToProps = dispatch => ({
+  onTotalBalanceFilterChange: totalBalanceFilter =>
+    dispatch(setTotalBalanceFilter(totalBalanceFilter))
+});
 
 class Dashboard extends Component {
   render() {
+    const { dashboard, onTotalBalanceFilterChange } = this.props;
     const storages = [
       { id: 0, title: 'cold storage' },
       { id: 1, title: 'cold storage' },
@@ -26,31 +37,42 @@ class Dashboard extends Component {
     return (
       <div id="dashboard">
         <div className="body">
-          <Section title="total balance" titleRight={<TotalBalanceFilter />}>
-            <TotalBalance />
-          </Section>
-          <Section title="pending" titleRight={<LastOperationViewAll />}>
+          <Card
+            title="total balance"
+            titleRight={
+              <TotalBalanceFilter
+                value={dashboard.totalBalanceFilter}
+                onChange={onTotalBalanceFilterChange}
+              />
+            }
+          >
+            <TotalBalance
+              totalBalance={dashboard.totalBalance}
+              totalBalanceFilter={dashboard.totalBalanceFilter}
+            />
+          </Card>
+          <Card title="pending" titleRight={<LastOperationViewAll />}>
             <LastOperationPreview />
-          </Section>
+          </Card>
           <div className="storages">
             {storages.map(storage => (
-              <Section key={storage.id} title={storage.title}>
+              <Card key={storage.id} title={storage.title}>
                 <StoragePreview storage={storage} />
-              </Section>
+              </Card>
             ))}
           </div>
         </div>
         <div className="aside">
-          <Section title="currencies">
+          <Card title="currencies">
             <Currencies />
-          </Section>
-          <Section title="pending" titleRight={<PendingViewAll />}>
+          </Card>
+          <Card title="pending" titleRight={<PendingViewAll />}>
             <PendingPreview />
-          </Section>
+          </Card>
         </div>
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
