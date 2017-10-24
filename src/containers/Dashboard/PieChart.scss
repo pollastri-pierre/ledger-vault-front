@@ -1,0 +1,68 @@
+$steel : #767676;
+$yellow : #fcb653;
+$blue : #0ebdcd;
+$green : #65d196;
+
+td {
+	padding: 0px;
+}
+.bullet {
+	width: 6px;
+	height: 6px;
+	margin-top: 8px;
+}
+
+.round {
+	border-radius: 50%;
+}
+
+.inline {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.currencyName {
+	font-size: 10px;
+	color: $steel;
+	margin-left: 10px;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.bg-yellow {
+	background-color: $yellow;
+}
+
+.bg-blue {
+	background-color: $blue;
+}
+
+.bg-green {
+	background-color: $green;
+}
+
+.bg-steel {
+	background-color: $steel;
+}
+
+.currencyBalance {
+	font-size: 13px;
+}
+
+.currency {
+	line-height: 23px;
+}
+
+.currencyTable {
+	width: 100%;
+}
+
+.disable {
+	opacity: 0.5;
+}
+
+.hover:hover {
+	cursor: pointer;
+}
