@@ -1,8 +1,13 @@
+//@flow
 import React, { Component } from 'react';
 import CurrencyNameValue from '../CurrencyNameValue';
 import DeltaChange from '../DeltaChange';
 
-class TotalBalance extends Component {
+class TotalBalance extends Component<*> {
+  props: {
+    totalBalance: *,
+    totalBalanceFilter: string
+  };
   render() {
     const { totalBalance, totalBalanceFilter } = this.props;
     return (
