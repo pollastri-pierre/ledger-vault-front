@@ -13,19 +13,10 @@ import Currencies from './Currencies';
 import { setTotalBalanceFilter } from '../../redux/modules/dashboard';
 import TotalBalanceCard from './TotalBalanceCard';
 import AccountCard from './AccountCard';
+import LastOperationCard from './LastOperationCard';
+import PendingCard from './PendingCard';
 
-//STYLES 
 import './index.css';
-
-// Replace these with imports
-//const Currencies = () => <div>TODO</div>; // FIXME @malik replace with your component import
-const PendingPreview = () => <div>TODO</div>;
-const LastOperationPreview = () => <div>TODO</div>;
-
-const PendingViewAll = () => <Link to="TODO">VIEW ALL (7)</Link>;
-const LastOperationViewAll = () => <Link to="TODO">VIEW ALL</Link>;
-
-//const mapStateToProps = ({ dashboard }) => ({ dashboard });
 
 const mapStateToProps = state => ({
   accounts: state.accounts,
@@ -38,9 +29,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(setTotalBalanceFilter(totalBalanceFilter))
 });
 
-
 class Dashboard extends Component {
-
   componentWillMount() {
     this.update(this.props);
   }
@@ -60,11 +49,7 @@ class Dashboard extends Component {
       { id: 4, title: 'etf holdings' }
     ];
 
-
-    const {
-      isLoadingAccounts,
-      accounts,
-    } = this.props.accounts;
+    const { isLoadingAccounts, accounts } = this.props.accounts;
 
     return (
       <div id="dashboard">
@@ -73,9 +58,7 @@ class Dashboard extends Component {
             dashboard={dashboard}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          <Card title="pending" titleRight={<LastOperationViewAll />}>
-            <LastOperationPreview />
-          </Card>
+          <LastOperationCard {...dashboard.lastOperations} />
           <div className="storages">
             {dashboard.accounts.map(a => (
               <AccountCard
@@ -88,11 +71,9 @@ class Dashboard extends Component {
         </div>
         <div className="aside">
           <Card title="currencies">
-            <Currencies accounts={accounts} loading={isLoadingAccounts}/>
+            <Currencies accounts={accounts} loading={isLoadingAccounts} />
           </Card>
-          <Card title="pending" titleRight={<PendingViewAll />}>
-            <PendingPreview />
-          </Card>
+          <PendingCard {...dashboard.pending} />
         </div>
       </div>
     );

@@ -1,3 +1,8 @@
+//@flow
+import moment from 'moment';
+import { getFakeList as getOperationFakeList } from '../../redux/utils/operation';
+import { data as accountsMock } from '../../redux/utils/accounts';
+
 export const SET_TOTAL_BALANCE_FILTER = 'dashboard/SET_TOTAL_BALANCE_FILTER';
 
 /*
@@ -9,10 +14,13 @@ export const TotalBalanceFilters = {
   month: { title: 'a month ago' }
 };
 
-export const setTotalBalanceFilter = totalBalanceFilter => ({
+export const setTotalBalanceFilter = (totalBalanceFilter: string) => ({
   type: SET_TOTAL_BALANCE_FILTER,
   totalBalanceFilter
 });
+
+const inferPendingDataMomentDate = ({ type, data }) =>
+  type === 'account' ? moment(data.creation_time) : moment(data.time);
 
 // NB this is a WIP, does not reflect yet all the data models
 const initialState = {
@@ -28,12 +36,18 @@ const initialState = {
       month: 2043125
     }
   },
-  pending: [
-    /* TODO */
-  ],
-  members: [
-    /* TODO */
-  ],
+  lastOperations: {
+    operations: getOperationFakeList()
+  },
+  pending: {
+    total: 7,
+    events: getOperationFakeList()
+      .map(data => ({ type: 'operation', data }))
+      .concat(accountsMock.map(data => ({ type: 'account', data })))
+      .sort((a, b) =>
+        inferPendingDataMomentDate(a).diff(inferPendingDataMomentDate(b))
+      )
+  },
   accounts: [
     {
       id: 0,

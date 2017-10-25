@@ -14,3 +14,9 @@ export type Currency = {
 };
 
 export type Account = *; // TODO
+
+export type Operation = *; // TODO
+
+export type PendingEvent =
+  | { type: 'account', data: Account }
+  | { type: 'operation', data: Operation };
