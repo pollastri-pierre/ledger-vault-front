@@ -9,7 +9,7 @@ function Currencies(props) {
   const computedCurrencies = _.reduce(accounts, (currencies, account) => {
     const currency_name = account.currency.name;
     const balance = account.balance;
-    //check if currency already added 
+    //check if currency already added
     if (_.isNil(currencies[currency_name]))
       currencies[currency_name] = { meta : account.currency, balance: 0 }
     currencies[currency_name].balance += balance
@@ -30,4 +30,3 @@ function Currencies(props) {
 }
 
 export default Currencies;
-

@@ -149,26 +149,31 @@ export default class PieChart extends Component {
     return (
       <div>
         <svg height="150" ref={(c) => { this.svg = c; }} />
-        <div className="tooltip hide" ref={(t) => {this.tooltip = t; }}>
-          <div className="tooltipTextWrap">
-            <div className="tooltipText">
-              <span className="percentage"></span>
-              <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].meta.name : ''}</span>
+        {
+          selected !== -1 ? 
+            <div className="tooltip hide" style={{background: this.props.data[selected].meta.color, borderColor: this.props.data[selected].meta.color}} ref={(t) => {this.tooltip = t; }}>
+              <div className="tooltipTextWrap">
+                <div className="tooltipText">
+                  <span className="percentage"></span>
+                  <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].meta.name : ''}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          :
+          ''
+        }
         <table className="currencyTable">
           <tbody>
             {
               _.map(this.props.data, (currency, id) => {
                 return (
 
-                  <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''} ${ (selected !== -1 && selected === id) ? 'selected' : ''}`} key={id}>
-                    <td className="" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
+                  <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''} ${ (selected !== -1 && selected === id) ? 'selected' : ''}`} key={id} onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
+                    <td>
                       <span className="bullet round inline" style={{background: currency.meta.color}}></span>
                       <span className="inline uppercase currencyName">{currency.meta.name}</span>
                     </td>
-                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.meta.units[0].code} {currency.balance}</td>
+                    <td className="currencyBalance">{currency.meta.units[0].code} {currency.balance}</td>
                   </tr>
 
                 )

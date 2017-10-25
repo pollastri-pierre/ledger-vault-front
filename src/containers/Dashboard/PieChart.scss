@@ -9,6 +9,7 @@ $mouse : #e2e2e2;
 	position: relative;
 	font-weight: 600;
 	min-height: 250px;
+	height: 100%;
 }
 
 td {
@@ -62,10 +63,13 @@ td {
 
 .currency {
 	line-height: 23px;
+	cursor: default;
 }
 
 .currencyTable {
 	width: 100%;
+	position: absolute;
+    bottom: 0px;
 }
 
 .disable {
@@ -81,7 +85,6 @@ td {
   width: 100px;
   height: 70px;
   padding: 10px;
-  background: $blue;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
   text-align: right;
   z-index: 10;
@@ -131,7 +134,7 @@ td {
 }
 
 .tooltip:before {
-	border-color: $blue !important;
+	border-color: inherit;
 }
 
 
