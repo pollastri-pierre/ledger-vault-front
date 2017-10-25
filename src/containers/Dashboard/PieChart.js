@@ -52,7 +52,7 @@ export default class PieChart extends Component {
   componentDidMount() {
     const { selected, color } = this.state;
     const data = this.props.data;
-     
+
     const svg = d3.select(this.svg);
     svg.attr("width", parseFloat(d3.select(this.svg.parentNode).style('width'))) //adapt to parent's width
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -168,7 +168,7 @@ export default class PieChart extends Component {
                       <span className="bullet round inline" style={{background: currency.meta.color}}></span>
                       <span className="inline uppercase currencyName">{currency.meta.name}</span>
                     </td>
-                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.balance}</td>
+                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.meta.units[0].code} {currency.balance}</td>
                   </tr>
 
                 )
