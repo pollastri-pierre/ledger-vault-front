@@ -3,14 +3,20 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import ValidateBadge from '../icons/ValidateBadge';
 import {formatDate} from '../../redux/utils/format';
+import CurrencyNameValue from '../CurrencyNameValue';
 
 function PendingOperationApprove(props) {
-  const {operations, open, approved, approvers} = props;
+  const {operations, open, approved, accounts, approvers} = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
 
-  const totalAmount = '-EUR 15,256.89';
+  // const totalAmount = '-EUR 15,256.89';
+  const totalAmount = _.reduce(
+    operations,
+    (sum, op) => op.amount_flat + sum,
+    0,
+  );
 
   return (
     <div className="pending-request-list">
@@ -23,7 +29,7 @@ function PendingOperationApprove(props) {
               <span>{operations.length} operations</span>
             )}
 
-            <span>{totalAmount}</span>
+            <CurrencyNameValue currencyName="EUR" value={totalAmount} />
           </p>
           <p className="header light">
             <span>pending approval</span>
@@ -33,6 +39,11 @@ function PendingOperationApprove(props) {
       )}
       {_.map(operations, operation => {
         const currencyClass = operation.currency_name.toLowerCase();
+        const account = _.find(
+          accounts,
+          account => account.id === operation.account_id,
+        );
+
         return (
           <div
             className={`pending-request operation ${approved ? 'watch' : ''}`}
@@ -43,9 +54,17 @@ function PendingOperationApprove(props) {
                 {formatDate(operation.time, 'LL')}
               </span>
               <span className="request-operation-amount crypto">
-                -BTC 0.399823
+                <CurrencyNameValue
+                  currencyName="BTC"
+                  value={operation.amount}
+                />
               </span>
-              <span className="request-operation-amount">-EUR 36.05</span>
+              <span className="request-operation-amount">
+                <CurrencyNameValue
+                  currencyName="EUR"
+                  value={operation.amount_flat}
+                />
+              </span>
             </div>
             <div>
               <span
@@ -57,8 +76,9 @@ function PendingOperationApprove(props) {
                 {approved ? 'Approved' : 'Collecting Approvals'}
                 {` (3/6) `}
               </span>
-              <span className="request-name operation bitcoin">
-                Trackerfund
+              <span
+                className={`request-name operation ${account.currency.name}`}>
+                {account.name}
               </span>
             </div>
           </div>
@@ -75,6 +95,12 @@ PendingOperationApprove.defaultProps = {
 
 PendingOperationApprove.propTypes = {
   operations: PropTypes.arrayOf(
+    PropTypes.shape({
+      uuid: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  ).isRequired,
+  accounts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,

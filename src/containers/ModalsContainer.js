@@ -208,7 +208,6 @@ function ModalsContainer(props) {
             tabsIndex={accountCreation.currentTab}
             onSelect={onChangeTabAccount}
             setApprovals={onSetApprovals}
-            getCurrencies={onGetCurrencies}
             getOrganizationMembers={onGetOrganizationMembers}
             selectCurrency={onSelectCurrency}
             addMember={onAddMember}
@@ -219,7 +218,6 @@ function ModalsContainer(props) {
             changeFrequency={onChangeFrequency}
             openPopBubble={onOpenPopBubble}
             changeAccountName={onChangeAccountName}
-            currencies={allCurrencies}
             account={accountCreation}
             save={onSaveAccount}
             close={onCloseAccount}
@@ -227,6 +225,17 @@ function ModalsContainer(props) {
           />
         </Modal>
       )}
+      {operations.operationInModal !== null &&
+        !_.isUndefined(operations.operationInModal) && (
+          <Modal close={props.onClose}>
+            <OperationDetails
+              operations={operations}
+              getOperation={props.onGetOperation}
+              close={props.onClose}
+              tabsIndex={operations.tabsIndex}
+            />
+          </Modal>
+        )}
     </div>
   );
 }

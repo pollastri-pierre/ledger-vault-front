@@ -3,7 +3,7 @@ import currencies from '../../currencies';
 
 const operationsUtils = {
   findOperationDetails: (idOperation, operations) => {
-    const find = _.find(operations, { uuid: idOperation });
+    const find = _.find(operations, {uuid: idOperation});
     return find;
   },
   mockOperation: {
@@ -15,7 +15,7 @@ const operationsUtils = {
       level: '',
       weight: 3,
       conflicts: ['conflict1'],
-      origin: 'Ledger API'
+      origin: 'Ledger API',
     },
     confirmations: 31,
     time: 'Yesterday, 2:34 AM',
@@ -24,7 +24,7 @@ const operationsUtils = {
     amount: 120000000,
     reference_conversion: {
       currency_name: 'EUR',
-      amount: 543210
+      amount: 543210,
     },
     fees: 23,
     account_id: 0,
@@ -46,8 +46,8 @@ const operationsUtils = {
           register_date: '',
           u2f_device: 'blob',
           email: 'florent.teissier@ledger.fr',
-          groups: ['group1']
-        }
+          groups: ['group1'],
+        },
       },
       {
         id: 2,
@@ -64,9 +64,9 @@ const operationsUtils = {
           register_date: '',
           u2f_device: 'blob',
           email: 'florent.teissier@ledger.fr',
-          groups: ['group1']
-        }
-      }
+          groups: ['group1'],
+        },
+      },
     ],
     transaction: {
       version: '',
@@ -81,7 +81,7 @@ const operationsUtils = {
           address: '1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
+          sequence: '',
         },
         {
           value: '0.02',
@@ -91,7 +91,7 @@ const operationsUtils = {
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
+          sequence: '',
         },
         {
           value: '0.005',
@@ -101,7 +101,7 @@ const operationsUtils = {
           address: '1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
+          sequence: '',
         },
         {
           value: '0.02',
@@ -111,7 +111,7 @@ const operationsUtils = {
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
+          sequence: '',
         },
         {
           value: '0.005',
@@ -121,7 +121,7 @@ const operationsUtils = {
           address: '1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
+          sequence: '',
         },
         {
           value: '0.02',
@@ -131,31 +131,31 @@ const operationsUtils = {
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
           signature_script: '',
           coinbase: '',
-          sequence: ''
-        }
+          sequence: '',
+        },
       ],
       outputs: [
         {
           index: 3,
           value: 33,
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
-          script: ''
+          script: '',
         },
         {
           index: 9,
           value: 33,
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
-          script: ''
+          script: '',
         },
         {
           index: 123,
           value: 33,
           address: '1MTAZHMFKEIJ06CHKHCNTTHQABYW',
-          script: ''
-        }
-      ]
-    }
-  }
+          script: '',
+        },
+      ],
+    },
+  },
 };
 
 export function getFakeList() {
@@ -172,7 +172,7 @@ export function getFakeList() {
       amount: 100000000,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: 300000
+        amount: 300000,
       },
       account_id: 1,
       time: new Date(2017, 9, 9),
@@ -186,7 +186,7 @@ export function getFakeList() {
       account_id: 2,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: 600000
+        amount: 600000,
       },
       currency: currencies[0],
     },
@@ -205,17 +205,17 @@ export function getFakeList() {
       account_id: 4,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: -200000
+        amount: -200000,
       },
       type: 'FROM',
       time: new Date(2017, 9, 12),
-      currency: currencies[1]
+      currency: currencies[1],
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '6',
       time: new Date(2017, 9, 13),
-      currency: currencies[0]
+      currency: currencies[0],
     },
     {
       ...operationsUtils.mockOperation,
@@ -223,7 +223,7 @@ export function getFakeList() {
       amount: 180000000,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: 280000
+        amount: 280000,
       },
       confirmations: 0,
       time: new Date(2017, 9, 14, 9),
@@ -242,27 +242,67 @@ export function getFakeList() {
       amount: -150000000,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: -230000
+        amount: -230000,
       },
       time: new Date(2017, 9, 16),
       currency: currencies[0],
-    }
+    },
   ];
 }
 
 export function getOperationsToApprove() {
   return [
-    { ...operationsUtils.mockOperation, uuid: '1', time: new Date(2017, 9, 8, 22), approvers: ['ewfwekljfkujkljlkj'], approved: []},
-    { ...operationsUtils.mockOperation, uuid: '2', amount: 1, time: new Date(2017, 9, 9), approvers: ['ewfwekljfkujkljlkj'], approved: [] },
-    { ...operationsUtils.mockOperation, uuid: '3', time: new Date(2017, 9, 10), amount: 2, approvers: ['ewfwekljfkujkljlkj'], approved: [] },
-    { ...operationsUtils.mockOperation, uuid: '4', confirmations: 0, time: new Date(2017, 9, 11), approvers: ['ewfwekljfkujkljlkj'], approved: [] },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '1',
+      time: new Date(2017, 9, 8, 22),
+      approvers: ['ewfwekljfkujkljlkj'],
+      approved: [],
+    },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '2',
+      account_id: 2,
+      amount: 1,
+      time: new Date(2017, 9, 9),
+      approvers: ['ewfwekljfkujkljlkj'],
+      approved: [],
+    },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '3',
+      time: new Date(2017, 9, 10),
+      amount: 2,
+      approvers: ['ewfwekljfkujkljlkj'],
+      approved: [],
+    },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '4',
+      account_id: 3,
+      confirmations: 0,
+      time: new Date(2017, 9, 11),
+      approvers: ['ewfwekljfkujkljlkj'],
+      approved: [],
+    },
   ];
 }
 
 export function getOperationsToWatch() {
   return [
-    { ...operationsUtils.mockOperation, uuid: '10', time: new Date(2017, 9, 17), approved: [] },
-    { ...operationsUtils.mockOperation, uuid: '11', amount: 1, time: new Date(2017, 9, 18, 5), approved: [] },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '10',
+      time: new Date(2017, 9, 17),
+      approved: [],
+    },
+    {
+      ...operationsUtils.mockOperation,
+      uuid: '11',
+      amount: 1,
+      time: new Date(2017, 9, 18, 5),
+      approved: [],
+    },
   ];
 }
 
@@ -271,37 +311,37 @@ export function getFakeNextList() {
     {
       ...operationsUtils.mockOperation,
       uuid: '10',
-      time: new Date(2017, 9, 17)
+      time: new Date(2017, 9, 17),
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '11',
       amount: 100000000,
-      time: new Date(2017, 9, 18, 5)
+      time: new Date(2017, 9, 18, 5),
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '12',
       time: new Date(2017, 9, 19),
-      amount: 200000000
+      amount: 200000000,
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '13',
       confirmations: 0,
-      time: new Date(2017, 9, 20)
+      time: new Date(2017, 9, 20),
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '14',
       type: 'FROM',
-      time: new Date(2017, 9, 21)
+      time: new Date(2017, 9, 21),
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '15',
-      time: new Date(2017, 9, 22)
-    }
+      time: new Date(2017, 9, 22),
+    },
   ];
 }
 

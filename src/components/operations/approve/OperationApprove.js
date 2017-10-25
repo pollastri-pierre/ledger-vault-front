@@ -6,6 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {DialogButton, Overscroll} from '../../';
 import AbortConfirmation from '../../approve/AbortConfirmation';
 import ApproveDevice from '../../approve//ApproveDevice';
+import OperationApproveDedails from './OperationApproveDedails';
 import Footer from '../../approve/Footer';
 
 class OperationApprove extends Component {
@@ -40,7 +41,9 @@ class OperationApprove extends Component {
           </TabList>
         </div>
         <div className="content">
-          <TabPanel className="tabs_panel" />
+          <TabPanel className="tabs_panel">
+            <OperationApproveDedails operation={operation} />
+          </TabPanel>
           <TabPanel className="tabs_panel" />
           <TabPanel className="tabs_panel" />
         </div>
