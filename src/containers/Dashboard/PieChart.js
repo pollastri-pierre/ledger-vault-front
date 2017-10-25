@@ -66,6 +66,8 @@ export default class PieChart extends Component {
 
     const arc = d3.arc().outerRadius(outerRadius).innerRadius(outerRadius - strokeWidth).padAngle(0.05);
 
+    const invisibleArc = d3.arc().outerRadius(outerRadius).innerRadius(1.5).padAngle(0.05);
+
     const pie = d3.pie().sort(null).value(d => d.balance);
 
     let total = d3.sum(data, (d) => d.balance);
@@ -82,6 +84,13 @@ export default class PieChart extends Component {
           .append("path").attr("d", d => arc(d))
           .attr("class",  (d, i) => (selected !== -1 && selected !== i) ? 'disable' : '')
           .style("fill", (d) => d.data.meta.color)
+
+    //transparent Chart for hovering purposes
+    chart.selectAll(".invisibleArc").data(pie(data)).enter()
+          .append("g").attr("class", (d, i) => `invisibleArc ${'invisibleArc' + i}`)
+          .append("path").attr("d", d => invisibleArc(d))
+          .attr("class",  (d, i) => (selected !== -1 && selected !== i) ? 'disable' : '')
+          .style("opacity", 0) //make it transparent
           .on("mouseover", this.handleMouseOver)
           .on("mouseout", this.handleMouseOut)
   }
@@ -151,7 +160,7 @@ export default class PieChart extends Component {
         <svg height="150" ref={(c) => { this.svg = c; }} />
         {
           selected !== -1 ? 
-            <div className="tooltip hide" style={{background: this.props.data[selected].meta.color, borderColor: this.props.data[selected].meta.color}} ref={(t) => {this.tooltip = t; }}>
+            <div className="tooltip hide" style={{color: this.props.data[selected].meta.color, borderColor: this.props.data[selected].meta.color}} ref={(t) => {this.tooltip = t; }}>
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <span className="percentage"></span>

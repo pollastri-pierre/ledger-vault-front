@@ -89,6 +89,7 @@ td {
   text-align: right;
   z-index: 10;
   pointer-events: none;
+  background-color: currentColor;
   .tooltipTextWrap {
   	position: relative;
   	width: 100%;
@@ -134,7 +135,7 @@ td {
 }
 
 .tooltip:before {
-	border-color: inherit;
+	border-color: currentColor;
 }
 
 
