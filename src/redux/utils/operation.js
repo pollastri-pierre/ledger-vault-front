@@ -195,11 +195,11 @@ export function getFakeList() {
     {
       ...operationsUtils.mockOperation,
       uuid: '5',
-      amount: 130000000,
+      amount: -130000000,
       account_id: 4,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: 200000
+        amount: -200000
       },
       type: 'FROM',
       time: new Date(2017, 9, 12)
@@ -229,10 +229,10 @@ export function getFakeList() {
     {
       ...operationsUtils.mockOperation,
       uuid: '9',
-      amount: 150000000,
+      amount: -150000000,
       reference_conversion: {
         currency_name: 'EUR',
-        amount: 230000
+        amount: -230000
       },
       time: new Date(2017, 9, 16)
     }

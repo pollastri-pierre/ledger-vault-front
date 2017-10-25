@@ -39,7 +39,12 @@ class CurrencyUnitValue extends PureComponent<*> {
       }
     }
     return (
-      <span>
+      <span
+        className={[
+          'currency-unit-value',
+          'sign-' + (value < 0 ? 'negative' : value > 0 ? 'positive' : 'zero')
+        ].join(' ')}
+      >
         {(value < 0 ? '- ' : alwaysShowSign ? '+ ' : '') +
           unit.code +
           ' ' +
