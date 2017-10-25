@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from 'react';
 import CurrencyUnitValue from './CurrencyUnitValue';
 import counterValueUnits from '../countervalue-units';
@@ -8,11 +8,16 @@ import currencies from '../currencies';
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
 class CurrencyNameValue extends PureComponent<*> {
+  static defaultProps = {
+    alwaysShowSign: false,
+  };
+
   props: {
     currencyName: string,
     value: number,
     alwaysShowSign?: boolean
   };
+
   render() {
     const { currencyName, ...rest } = this.props;
     let unit;
