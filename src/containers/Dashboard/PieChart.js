@@ -34,7 +34,7 @@ export default class PieChart extends Component {
   }
 
   componentDidMount() {
-    const { selected, color } = this.state;
+    const { selected } = this.state;
     const data = this.props.data;
 
     const svg = d3.select(this.svg);
@@ -82,7 +82,6 @@ export default class PieChart extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { selected } = this.state;
     const { prevSelected } = prevState;
-    const data = this.props.data;
     const svg = d3.select(this.svg);
     const svgWidth = svg.attr("width");
     const svgHeight = svg.attr("height");
@@ -146,7 +145,7 @@ export default class PieChart extends Component {
         <svg height="150" ref={(c) => { this.svg = c; }} />
         {
           selected !== -1 ?
-            <div className="tooltip hide" style={selected != -1 ? {color: this.props.data[selected].meta.color} : {} } ref={(t) => {this.tooltip = t; }}>
+            <div className="tooltip hide" style={{color: this.props.data[selected].meta.color}} ref={(t) => {this.tooltip = t; }}>
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div>
