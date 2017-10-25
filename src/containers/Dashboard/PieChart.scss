@@ -83,11 +83,12 @@ td {
   background: $blue;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
   text-align: right;
+  z-index: 10;
+  pointer-events: none;
   .tooltipTextWrap {
   	position: relative;
   	width: 100%;
   	height: 100%;
-
   	.tooltipText {
   		position: absolute;
   		.currencyName {

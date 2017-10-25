@@ -38,7 +38,6 @@ export default class PieChart extends Component {
   }
 
   setSelected = (index) => {
-    console.log(index)
     this.setState({selected: index})
   }
 
@@ -53,7 +52,7 @@ export default class PieChart extends Component {
   componentDidMount() {
     const { selected, color } = this.state;
     const data = this.props.data;
- 
+     
     const svg = d3.select(this.svg);
     svg.attr("width", parseFloat(d3.select(this.svg.parentNode).style('width'))) //adapt to parent's width
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -67,16 +66,14 @@ export default class PieChart extends Component {
 
     const arc = d3.arc().outerRadius(outerRadius).innerRadius(outerRadius - strokeWidth).padAngle(0.05);
 
-    const pie = d3.pie().sort(null).value(d => d.value);
+    const pie = d3.pie().sort(null).value(d => d.balance);
 
-    let total = d3.sum(data, (d) => d.value);
+    let total = d3.sum(data, (d) => d.balance);
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d) //Save center of arc for position of tooltip 
-      data[i].percentage = ((d.value / total) * 100).toFixed(0) //Save percentage of arc
+      data[i].percentage = ((d.data.balance / total) * 100).toFixed(0) //Save percentage of arc
     })
-
-    console.log(data)
 
     const chart = g.append("g").attr("class","chart").attr('transform', `translate(${(width)/2}, ${(chartHeight)/2})`);
 
@@ -84,7 +81,7 @@ export default class PieChart extends Component {
           .append("g").attr("class", (d, i) => `arc ${'arc' + i}`)
           .append("path").attr("d", d => arc(d))
           .attr("class",  (d, i) => (selected !== -1 && selected !== i) ? 'disable' : '')
-          .style("fill", (d, i) => color[i].hex)
+          .style("fill", (d) => d.data.meta.color)
           .on("mouseover", this.handleMouseOver)
           .on("mouseout", this.handleMouseOut)
   }
@@ -156,7 +153,7 @@ export default class PieChart extends Component {
           <div className="tooltipTextWrap">
             <div className="tooltipText">
               <span className="percentage"></span>
-              <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].label : ''}</span>
+              <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].meta.name : ''}</span>
             </div>
           </div>
         </div>
@@ -168,10 +165,10 @@ export default class PieChart extends Component {
 
                   <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''} ${ (selected !== -1 && selected === id) ? 'selected' : ''}`} key={id}>
                     <td className="" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
-                      <span className={`bullet round inline bg-${color[id].name}`}></span>
-                      <span className="inline uppercase currencyName">{currency.label}</span>
+                      <span className="bullet round inline" style={{background: currency.meta.color}}></span>
+                      <span className="inline uppercase currencyName">{currency.meta.name}</span>
                     </td>
-                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.value}</td>
+                    <td className="currencyBalance" onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>{currency.balance}</td>
                   </tr>
 
                 )
