@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getAccounts } from '../../redux/modules/accounts';
+import _ from 'lodash';
+import { SpinnerCard } from '../../components';
 
 //Components
 import Card from '../../components/Card';
@@ -65,7 +67,8 @@ class Dashboard extends Component {
       isLoadingAccounts,
       accounts,
     } = this.props.accounts;
-
+    console.log(dashboard)
+    console.log(accounts)
     return (
       <div id="dashboard">
         <div className="body">
@@ -77,13 +80,17 @@ class Dashboard extends Component {
             <LastOperationPreview />
           </Card>
           <div className="storages">
-            {dashboard.accounts.map(a => (
-              <AccountCard
-                key={a.id}
-                account={a}
-                filter={dashboard.totalBalanceFilter}
-              />
-            ))}
+            { isLoadingAccounts ?
+                <SpinnerCard />
+              :
+                dashboard.accounts.map(a => (
+                  <AccountCard
+                    key={a.id}
+                    account={a}
+                    filter={dashboard.totalBalanceFilter}
+                  />
+                ))
+            }
           </div>
         </div>
         <div className="aside">
