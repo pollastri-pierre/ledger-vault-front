@@ -5,7 +5,7 @@ import Card from '../../components/Card';
 import DateFormat from '../../components/DateFormat';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
 import AccountName from '../../components/AccountName';
-import LastOperationTable from '../../components/LastOperationTable';
+import DataTableOperation from '../../components/DataTableOperation';
 import type { Operation, Account } from '../../datatypes';
 
 class LastOperationCard extends Component<*> {
@@ -20,7 +20,11 @@ class LastOperationCard extends Component<*> {
         title="last operations"
         titleRight={<Link to="TODO">VIEW ALL</Link>}
       >
-        <LastOperationTable operations={operations} accounts={accounts} />
+        <DataTableOperation
+          columnIds={['date', 'name', 'countervalue', 'amount']}
+          operations={operations}
+          accounts={accounts}
+        />
       </Card>
     );
   }

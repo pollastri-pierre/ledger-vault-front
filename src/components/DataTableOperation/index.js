@@ -1,21 +1,23 @@
 //@flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Card from './Card';
-import DateFormat from './DateFormat';
-import CurrencyNameValue from './CurrencyNameValue';
-import AccountName from './AccountName';
-import currencies from '../currencies';
-import type { Operation, Account, Currency } from '../datatypes';
-import DataTable from './DataTable';
+import Card from '../Card';
+import DateFormat from '../DateFormat';
+import CurrencyNameValue from '../CurrencyNameValue';
+import AccountName from '../AccountName';
+import currencies from '../../currencies';
+import type { Operation, Account, Currency } from '../../datatypes';
+import DataTable from '../DataTable';
+import './index.css';
 
-class LastOperationTable extends Component<*> {
+class DataTableOperation extends Component<*> {
   props: {
     operations: Array<Operation>,
-    accounts: Array<Account>
+    accounts: Array<Account>,
+    columnIds: Array<string>
   };
   render() {
-    const { operations, accounts } = this.props;
+    const { operations, accounts, columnIds } = this.props;
     const data = operations.map(operation => {
       const account: ?Account = accounts.find(
         a => a.id === operation.account_id
@@ -39,6 +41,16 @@ class LastOperationTable extends Component<*> {
           currency && <AccountName name={account.name} currency={currency} />
       },
       {
+        className: 'address',
+        title: 'address',
+        renderCell: () => <span>TODO</span>
+      },
+      {
+        className: 'status',
+        title: 'status',
+        renderCell: () => <span>TODO</span>
+      },
+      {
         className: 'countervalue',
         title: '',
         renderCell: ({ operation }) => (
@@ -60,9 +72,9 @@ class LastOperationTable extends Component<*> {
           />
         )
       }
-    ];
+    ].filter(c => columnIds.includes(c.className));
     return <DataTable data={data} columns={columns} />;
   }
 }
 
-export default LastOperationTable;
+export default DataTableOperation;

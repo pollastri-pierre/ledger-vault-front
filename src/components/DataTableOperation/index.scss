@@ -1,0 +1,24 @@
+table.data-table {
+  td.countervalue,
+  td.amount,
+  th.amount {
+    text-align: right;
+  }
+  td.date {
+    font-size: 10px;
+    font-weight: 600;
+  }
+  td.name {
+    font-size: 13px;
+  }
+  td.countervalue {
+    font-size: 13px;
+    color: #767676;
+  }
+  td.amount {
+    font-size: 13px;
+    .currency-unit-value.sign-positive {
+      font-weight: 600;
+    }
+  }
+}
