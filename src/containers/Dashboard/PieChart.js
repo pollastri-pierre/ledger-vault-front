@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import CurrencyNameValue from '../../components/CurrencyNameValue';
 import './PieChart.css';
 
 
@@ -14,24 +15,6 @@ export default class PieChart extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      color : [
-          {
-            name: "yellow",
-            hex: "#fcb653",
-          },
-          {
-            name: "blue",
-            hex: "#0ebdcd",
-          },
-          {
-            name: "green",
-            hex: "#65d196",
-          },
-          {
-            name: "steel",
-            hex: "#cccccc",
-          },
-        ],
       selected: -1,
     }
     this.setSelected.bind(this);
@@ -154,22 +137,28 @@ export default class PieChart extends Component {
   }
 
   render() {
-    const { selected, color } = this.state
+    const { selected } = this.state;
+
+
     return (
       <div>
         <svg height="150" ref={(c) => { this.svg = c; }} />
         {
-          selected !== -1 ? 
-            <div className="tooltip hide" style={{color: this.props.data[selected].meta.color, borderColor: this.props.data[selected].meta.color}} ref={(t) => {this.tooltip = t; }}>
+          selected !== -1 ?
+            <div className="tooltip hide" style={selected != -1 ? {color: this.props.data[selected].meta.color} : {} } ref={(t) => {this.tooltip = t; }}>
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
-                  <span className="percentage"></span>
-                  <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].meta.name : ''}</span>
+                  <div>
+                    <span className="percentage"></span>
+                  </div>
+                  <div>
+                    <span className="uppercase currencyName">{this.props.data[selected] ? this.props.data[selected].meta.name : ''}</span>
+                  </div>
                 </div>
               </div>
             </div>
           :
-          ''
+            ""
         }
         <table className="currencyTable">
           <tbody>
@@ -182,7 +171,7 @@ export default class PieChart extends Component {
                       <span className="bullet round inline" style={{background: currency.meta.color}}></span>
                       <span className="inline uppercase currencyName">{currency.meta.name}</span>
                     </td>
-                    <td className="currencyBalance">{currency.meta.units[0].code} {currency.balance}</td>
+                    <td className="currencyBalance"><CurrencyNameValue currencyName={currency.meta.name} value={currency.balance}/>{currency.balance}</td>
                   </tr>
 
                 )
