@@ -16,7 +16,7 @@ class EvolutionSince extends Component<*> {
     const { value, valueHistory, filter } = this.props;
     return (
       <DashboardField label={`since ${TotalBalanceFilters[filter].title}`}>
-        <DeltaChange before={valueHistory[filter]} after={value} showArrows />
+        <DeltaChange before={valueHistory[filter]} after={value} showArrow />
       </DashboardField>
     );
   }

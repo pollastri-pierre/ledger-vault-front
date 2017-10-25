@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from 'react';
+import "./DashboardField.css";
 
 class DashboardField extends Component<*> {
   props: {
@@ -12,7 +13,7 @@ class DashboardField extends Component<*> {
     return (
       <div style={{ textAlign: align }}>
         <div>{children}</div>
-        <div>{label}</div>
+        <div className="DashboardFieldLabel uppercase">{label}</div>
       </div>
     );
   }
