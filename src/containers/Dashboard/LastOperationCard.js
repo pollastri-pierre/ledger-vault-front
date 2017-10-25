@@ -15,7 +15,7 @@ class LastOperationCard extends Component<*> {
         title="last operations"
         titleRight={<Link to="TODO">VIEW ALL</Link>}
       >
-        {operations.map(op => <div>{op.currency_name}</div>)}
+        {operations.map(op => <div key={op.id}>{op.currency_name}</div>)}
       </Card>
     );
   }

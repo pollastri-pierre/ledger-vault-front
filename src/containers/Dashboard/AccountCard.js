@@ -14,26 +14,26 @@ class AccountCard extends Component<*> {
   };
   render() {
     const { account, filter } = this.props;
-    const { balance } = account;
+    const { reference_conversion } = account;
     return (
       <Card key={account.id} title={account.name}>
         <EvolutionSince
-          value={balance.value}
-          valueHistory={balance.valueHistory}
+          value={account.balance}
+          valueHistory={account.balance_history}
           filter={filter}
         />
         <Separator />
         <div>
           <div>
             <CurrencyNameValue
-              currencyName={balance.currencyName}
-              value={balance.value}
+              currencyName={account.currency.name}
+              value={account.balance}
             />
           </div>
           <div>
             <CurrencyNameValue
-              currencyName={balance.referenceConversion.currencyName}
-              value={balance.referenceConversion.value}
+              currencyName={reference_conversion.currency_name}
+              value={reference_conversion.value}
             />
           </div>
         </div>
