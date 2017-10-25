@@ -33,12 +33,14 @@ class OperationRow extends Component<*> {
           <CurrencyNameValue
             currencyName={operation.reference_conversion.currency_name}
             value={operation.reference_conversion.amount}
+            alwaysShowSign
           />
         </td>
         <td className="amount">
           <CurrencyNameValue
             currencyName={operation.currency_name}
             value={operation.amount}
+            alwaysShowSign
           />
         </td>
       </tr>

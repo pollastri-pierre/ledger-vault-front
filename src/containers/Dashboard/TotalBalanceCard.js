@@ -6,6 +6,7 @@ import TotalBalanceFilter from '../../components/TotalBalanceFilter';
 import DateFormat from '../../components/DateFormat';
 import Card from '../../components/Card';
 import DashboardField from './DashboardField';
+import EvolutionSince from './EvolutionSince';
 import { TotalBalanceFilters } from '../../redux/modules/dashboard';
 import './TotalBalanceCard.css';
 
@@ -36,14 +37,11 @@ class TotalBalance extends Component<*> {
               value={totalBalance.value}
             />
           </DashboardField>
-          <DashboardField
-            label={`since ${TotalBalanceFilters[totalBalanceFilter].title}`}
-          >
-            <DeltaChange
-              before={totalBalance.valueHistory[totalBalanceFilter]}
-              after={totalBalance.value}
-            />
-          </DashboardField>
+          <EvolutionSince
+            value={totalBalance.value}
+            valueHistory={totalBalance.valueHistory}
+            filter={totalBalanceFilter}
+          />
           <DashboardField label="accounts" align="right">
             {totalBalance.accountsCount}
           </DashboardField>
