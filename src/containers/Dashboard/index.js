@@ -60,7 +60,14 @@ class Dashboard extends Component {
             dashboard={dashboard}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          <LastOperationCard {...dashboard.lastOperations} />
+          {isLoadingAccounts ? (
+            <SpinnerCard />
+          ) : (
+            <LastOperationCard
+              {...dashboard.lastOperations}
+              accounts={accounts}
+            />
+          )}
           <div className="storages">
             {isLoadingAccounts ? (
               <SpinnerCard />
