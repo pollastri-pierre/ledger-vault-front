@@ -170,9 +170,9 @@ export default class PieChart extends Component {
                   <tr className={`currency ${ (selected !== -1 && selected !== id) ? 'disable' : ''} ${ (selected !== -1 && selected === id) ? 'selected' : ''}`} key={id} onMouseOver={() => this.setSelected(id)} onMouseOut={() => this.setSelected(-1)}>
                     <td>
                       <BadgeCurrency currency={currency.meta} />
-                      <span className="inline uppercase currencyName">{currency.meta.name}</span>
+                      <span className="uppercase currencyName">{currency.meta.name}</span>
                     </td>
-                    <td className="currencyBalance"><CurrencyNameValue currencyName={currency.meta.name} value={currency.balance}/>{currency.balance}</td>
+                    <td className="currencyBalance"><CurrencyNameValue currencyName={currency.meta.name} value={currency.balance}/></td>
                   </tr>
 
                 )
