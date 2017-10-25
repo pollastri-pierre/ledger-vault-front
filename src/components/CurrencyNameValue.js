@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import counterValueUnits from "../countervalue-units";
@@ -9,7 +9,7 @@ import currencies from "../currencies";
 
 class CurrencyNameValue extends PureComponent<*> {
   static defaultProps = {
-    alwaysShowSign: false,
+    alwaysShowSign: false
   };
 
   props: {
