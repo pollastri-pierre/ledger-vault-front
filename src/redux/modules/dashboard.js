@@ -29,18 +29,24 @@ const initialState = {
   // also we need to think which we want to have here vs in other store
   totalBalance: {
     currencyName: 'EUR',
+    date: new Date().toISOString(),
     value: 1589049,
     valueHistory: {
       yesterday: 1543125,
       week: 1031250,
       month: 2043125
-    }
+    },
+    accountsCount: 5,
+    currenciesCount: 4,
+    membersCount: 8
   },
   lastOperations: {
     operations: getOperationFakeList()
   },
   pending: {
-    total: 7,
+    total: getOperationFakeList().length + accountsMock.length,
+    totalOperations: getOperationFakeList().length,
+    totalAccounts: accountsMock.length,
     events: getOperationFakeList()
       .map(data => ({ type: 'operation', data }))
       .concat(accountsMock.map(data => ({ type: 'account', data })))
