@@ -33,7 +33,7 @@ class AccountCard extends Component<*> {
           <div>
             <CurrencyNameValue
               currencyName={reference_conversion.currency_name}
-              value={reference_conversion.value}
+              value={reference_conversion.balance}
             />
           </div>
         </div>
