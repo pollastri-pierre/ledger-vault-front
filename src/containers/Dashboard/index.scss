@@ -1,7 +1,7 @@
 #dashboard {
   display: flex;
   flex-direction: row;
-  .body {
+  > .body {
     flex: 1;
     margin-right: 20px;
     .storages {
@@ -15,7 +15,7 @@
       }
     }
   }
-  .aside {
+  > .aside {
     width: 320px;
   }
 }

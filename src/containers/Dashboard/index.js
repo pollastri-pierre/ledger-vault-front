@@ -51,7 +51,6 @@ class Dashboard extends Component {
       { id: 4, title: 'etf holdings' }
     ];
 
-
     const { isLoadingAccounts, accounts } = this.props.accounts;
 
     return (
@@ -61,25 +60,36 @@ class Dashboard extends Component {
             dashboard={dashboard}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          <LastOperationCard {...dashboard.lastOperations} />
+          {isLoadingAccounts ? (
+            <SpinnerCard />
+          ) : (
+            <LastOperationCard
+              {...dashboard.lastOperations}
+              accounts={accounts}
+            />
+          )}
           <div className="storages">
-            { isLoadingAccounts ?
-                <SpinnerCard />
-              :
-                dashboard.accounts.map(a => (
-                  <AccountCard
-                    key={a.id}
-                    account={a}
-                    filter={dashboard.totalBalanceFilter}
-                  />
-                ))
-            }
+            {isLoadingAccounts ? (
+              <SpinnerCard />
+            ) : (
+              accounts.map(a => (
+                <AccountCard
+                  key={a.id}
+                  account={a}
+                  filter={dashboard.totalBalanceFilter}
+                />
+              ))
+            )}
           </div>
         </div>
         <div className="aside">
-          <Card title="currencies">
-            <Currencies accounts={accounts} loading={isLoadingAccounts} />
-          </Card>
+          {isLoadingAccounts ? (
+            <SpinnerCard />
+          ) : (
+            <Card title="currencies">
+              <Currencies accounts={accounts} loading={isLoadingAccounts} />
+            </Card>
+          )}
           <PendingCard {...dashboard.pending} />
         </div>
       </div>

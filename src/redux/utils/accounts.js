@@ -1,24 +1,83 @@
 import currencies from '../../currencies';
 export const data = [
   {
-    id: 1,
-    name: 'Cold storage',
-    currency: currencies[0],
+    id: 0,
+    name: 'cold storage',
     creation_time: 1508923040570,
-    balance: 55
+    currency: currencies[0],
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    reference_conversion: {
+      balance: 199553,
+      currency_name: 'EUR'
+    }
+  },
+  {
+    id: 1,
+    name: 'cold storage',
+    creation_time: 1508923040570,
+    currency: currencies[0],
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    reference_conversion: {
+      balance: 199553,
+      currency_name: 'EUR'
+    }
   },
   {
     id: 2,
-    name: 'Cold storage',
+    name: 'trackerfund',
+    creation_time: 1508923040570,
     currency: currencies[1],
-    balance: 22,
-    creation_time: 1508920640570
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    reference_conversion: {
+      balance: 199553,
+      currency_name: 'EUR'
+    }
   },
   {
     id: 3,
-    name: 'Hot wallet',
+    name: 'hot wallet',
+    creation_time: 1508923040570,
     currency: currencies[2],
-    balance: 34,
-    creation_time: 1508923600570
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    reference_conversion: {
+      balance: 199553,
+      currency_name: 'EUR'
+    }
+  },
+  {
+    id: 4,
+    name: 'etf holdings',
+    creation_time: 1508923040570,
+    currency: currencies[2],
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    reference_conversion: {
+      balance: 199553,
+      currency_name: 'EUR'
+    }
   }
 ];
