@@ -15,7 +15,7 @@ class OperationApprove extends Component {
   }
 
   render() {
-    const {close, operation, abort, approving, aborting} = this.props;
+    const {close, operation, abort, approving, aborting, accounts} = this.props;
 
     if (operation.isAborting) {
       return (
@@ -42,7 +42,10 @@ class OperationApprove extends Component {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            <OperationApproveDedails operation={operation} />
+            <OperationApproveDedails
+              operation={operation.operation}
+              accounts={accounts.accounts}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel" />
           <TabPanel className="tabs_panel" />

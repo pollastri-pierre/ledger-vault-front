@@ -2,8 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import ValidateBadge from '../icons/ValidateBadge';
-import {formatDate} from '../../redux/utils/format';
+import AccountName from '../AccountName';
 import CurrencyNameValue from '../CurrencyNameValue';
+import DateFormat from '../DateFormat';
 
 function PendingOperationApprove(props) {
   const {operations, open, approved, accounts, approvers} = props;
@@ -51,7 +52,7 @@ function PendingOperationApprove(props) {
             onClick={() => open('operation', operation, approved)}>
             <div>
               <span className="request-date-creation">
-                {formatDate(operation.time, 'LL')}
+                <DateFormat date={operation.time} />
               </span>
               <span className="request-operation-amount crypto">
                 <CurrencyNameValue
@@ -76,10 +77,7 @@ function PendingOperationApprove(props) {
                 {approved ? 'Approved' : 'Collecting Approvals'}
                 {` (3/6) `}
               </span>
-              <span
-                className={`request-name operation ${account.currency.name}`}>
-                {account.name}
-              </span>
+              <AccountName name={account.name} currency={account.currency} />
             </div>
           </div>
         );

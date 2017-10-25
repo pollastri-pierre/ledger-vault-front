@@ -163,6 +163,7 @@ function ModalsContainer(props) {
         entityToApprove.entity === 'operation' && (
           <Modal close={onCloseApprove}>
             <OperationApprove
+              accounts={accounts}
               operation={entityToApprove}
               organization={organization}
               aborting={onAbortingAccount}
@@ -230,6 +231,7 @@ function ModalsContainer(props) {
           <Modal close={props.onClose}>
             <OperationDetails
               operations={operations}
+              accounts={accounts}
               getOperation={props.onGetOperation}
               close={props.onClose}
               tabsIndex={operations.tabsIndex}

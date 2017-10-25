@@ -1,50 +1,53 @@
+import _ from 'lodash';
 import React from 'react';
 import ArrowDown from '../../icons/ArrowDown';
 import PropTypes from 'prop-types';
+import LineRow from '../../LineRow';
+import AccountName from '../../AccountName';
+import DateFormat from '../../DateFormat';
+import ConfirmationStatus from '../../ConfirmationStatus';
+import OverviewOperation from '../../OverviewOperation';
+import Amount from '../../Amount';
 
 function OperationApproveDetails(props) {
-  const {operation} = props;
+  const {operation, accounts} = props;
 
+  const account = _.find(
+    accounts,
+    account => account.id === operation.account_id,
+  );
   return (
-    <div className="operation-details">
-      <div className="operation-overview-header">
-        <div className="operation-overview-amount">
-          <p className="crypto-amount">-BTC 0.88962</p>
-          <span className="arrow-grey-down" />
-          <ArrowDown className="arrow-grey-down" />
-          <p className="euro-amount">EUR 1,028.93</p>
-          <p className="hash">1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</p>
-        </div>
+    <div>
+      <OverviewOperation
+        hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
+        amount={operation.amount}
+        currency={account.currency.name}
+        amount_flat={operation.amount_flat}
+      />
+      <div className="operation-list">
+        <LineRow label="status">Collecting Approvals</LineRow>
+        <LineRow label="requested">
+          <DateFormat date={operation.time} />
+        </LineRow>
+        <LineRow label="account to debit">
+          <AccountName name={account.name} currency={account.currency} />
+        </LineRow>
+        <LineRow label="Confirmation fees">
+          <Amount
+            amount_crypto={operation.fees}
+            amount_flat={operation.fees_flat}
+            currencyName={account.currency.name}
+          />
+        </LineRow>
+        <LineRow label="Total Spent">
+          <Amount
+            amount_crypto={operation.amount}
+            amount_flat={operation.amount_flat}
+            currencyName={account.currency.name}
+            strong
+          />
+        </LineRow>
       </div>
-      <table className="operation-list">
-        <tbody>
-          <tr>
-            <td>STATUS</td>
-            <td>Collecting Approvals</td>
-          </tr>
-          <tr>
-            <td>REQUESTED</td>
-            <td>Mon, 7th Mar, 2:34 AM</td>
-          </tr>
-          <tr>
-            <td>ACCOUNT TO DEBIT</td>
-            <td>Cold wallet {operation.account_id}</td>
-          </tr>
-          <tr>
-            <td>Confirmation Fees</td>
-            <td>
-              BTC 0.0015 <span className="euro-amount">(EUR 0.25)</span>
-            </td>
-          </tr>
-          <tr>
-            <td>TOTAL SPENT</td>
-            <td>
-              <strong>BTC 0.0015</strong>{' '}
-              <span className="euro-amount">(EUR 0.25)</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }
