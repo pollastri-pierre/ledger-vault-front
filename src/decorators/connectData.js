@@ -43,22 +43,27 @@ export default (Decorated: *, opts: Opts) => {
           this.setState({ result });
         });
     }
+
+    forceUpdate = () => this.sync(this.apiParams);
+
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
     }
+
     componentWillReceiveProps(props: *) {
       const apiParams = propsToApiParams(props);
       if (!isEqual(apiParams, this.apiParams)) {
         this.sync(apiParams);
       }
     }
+
     render() {
       const { data, ...props } = this.props;
       const { result } = this.state;
       if (!result) return <RenderLoading {...props} />;
       const extraProps = {
         [api]: denormalize(result, apiSpec[api].responseSchema, data.entities),
-        forceUpdate: () => this.sync(this.apiParams)
+        forceUpdate: this.forceUpdate
       };
       return <Decorated {...props} {...extraProps} />;
     }

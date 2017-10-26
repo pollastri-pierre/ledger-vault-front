@@ -21,28 +21,20 @@ function mergeEntities(prev, patch) {
   return entities;
 }
 
-export function fetchData(action) {
-  const q = query(action);
-  return dispatch => {
-    // dispatch({ type: 'DATA_FETCH_START', q });
-    return q.then(data => {
-      const result = normalize(data, apiSpec[action.id].responseSchema);
-      dispatch({
-        type: 'DATA_FETCHED',
-        result
-      });
-      return result.result;
+export const fetchData = action => dispatch =>
+  query(action).then(data => {
+    const result = normalize(data, apiSpec[action.id].responseSchema);
+    dispatch({
+      type: 'DATA_FETCHED',
+      result
     });
-  };
-}
+    return result.result;
+  });
 
 const reducers = {
-  DATA_FETCHED: (store, { result }) => {
-    let { entities } = store;
-    return {
-      entities: mergeEntities(entities, result.entities)
-    };
-  }
+  DATA_FETCHED: (store, { result }) => ({
+    entities: mergeEntities(store.entities, result.entities)
+  })
 };
 
 export default (state = initialState, action) =>
