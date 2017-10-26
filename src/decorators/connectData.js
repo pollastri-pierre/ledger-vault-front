@@ -18,24 +18,30 @@ const defaultOpts = {
   propsToApiParams: _ => null
 };
 
-let requestId = 0;
-
 export default (Decorated: *, opts: Opts) => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
-  class Clazz extends Component<*> {
+  class Clazz extends Component<*, *> {
     apiParams: *;
-    requestId: number = 0;
+
+    state: {
+      result: ?Object
+    } = {
+      // local state to keep the result id of the query (will be denormalize with the schema+data entities)
+      result: null
+    };
+
     sync(apiParams: *) {
       this.apiParams = apiParams;
-      requestId++;
-      this.requestId = requestId;
-      this.props.dispatch(
-        fetchData({
-          id: api,
-          requestId,
-          ...apiParams
-        })
-      );
+      this.props
+        .dispatch(
+          fetchData({
+            id: api,
+            ...apiParams
+          })
+        )
+        .then(result => {
+          this.setState({ result });
+        });
     }
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
@@ -48,13 +54,12 @@ export default (Decorated: *, opts: Opts) => {
     }
     render() {
       const { data, ...props } = this.props;
-      const result = data.requestResults[this.requestId];
-      console.log('data', data);
+      const { result } = this.state;
       if (!result) return <RenderLoading {...props} />;
       const extraProps = {
-        [api]: denormalize(result, apiSpec[api].responseSchema, data.entities)
+        [api]: denormalize(result, apiSpec[api].responseSchema, data.entities),
+        forceUpdate: () => this.sync(this.apiParams)
       };
-      console.log(extraProps);
       return <Decorated {...props} {...extraProps} />;
     }
   }

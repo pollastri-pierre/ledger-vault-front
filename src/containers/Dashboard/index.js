@@ -62,36 +62,25 @@ class Dashboard extends Component {
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
           {isLoadingAccounts ? (
-            <SpinnerCard />
+            <Card title="last operations">
+              <SpinnerCard />
+            </Card>
           ) : (
             <LastOperationCard
               {...dashboard.lastOperations}
               accounts={accounts}
             />
           )}
-          <div className="storages">
-            {isLoadingAccounts ? (
-              <SpinnerCard />
-            ) : (
-              accounts.map(a => (
-                <AccountCard
-                  key={a.id}
-                  account={a}
-                  filter={dashboard.totalBalanceFilter}
-                />
-              ))
-            )}
-          </div>
           <Storages filter={dashboard.totalBalanceFilter} />
         </div>
         <div className="aside">
-          {isLoadingAccounts ? (
-            <SpinnerCard />
-          ) : (
-            <Card title="currencies">
+          <Card title="currencies">
+            {isLoadingAccounts ? (
+              <SpinnerCard />
+            ) : (
               <Currencies accounts={accounts} loading={isLoadingAccounts} />
-            </Card>
-          )}
+            )}
+          </Card>
           <PendingCard {...dashboard.pending} />
         </div>
       </div>

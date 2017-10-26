@@ -9,9 +9,7 @@ currencies.forEach(c => {
   currenciesMap[c.name] = c;
 });
 const initialState = {
-  entities: { currencies: currenciesMap },
-  loadingAPIs: {},
-  requestResults: {}
+  entities: { currencies: currenciesMap }
 };
 
 function mergeEntities(prev, patch) {
@@ -26,46 +24,23 @@ function mergeEntities(prev, patch) {
 export function fetchData(action) {
   const q = query(action);
   return dispatch => {
-    console.log('yo');
-    dispatch({ type: 'DATA_FETCH_START', requestId: action.requestId, q });
-    return q
-      .catch(e => {
-        console.error('API failed', e); // TODO handle error properly
-      })
-      .then(data => {
-        console.log('API got ', data);
-        const result = normalize(data, apiSpec[action.id].responseSchema);
-        dispatch({
-          type: 'DATA_FETCHED',
-          result,
-          requestId: action.requestId
-        });
+    // dispatch({ type: 'DATA_FETCH_START', q });
+    return q.then(data => {
+      const result = normalize(data, apiSpec[action.id].responseSchema);
+      dispatch({
+        type: 'DATA_FETCHED',
+        result
       });
+      return result.result;
+    });
   };
 }
 
 const reducers = {
-  DATA_FETCH_START: (
-    { loadingAPIs, entities },
-    { requestId, queryHash, q }
-  ) => {
+  DATA_FETCHED: (store, { result }) => {
+    let { entities } = store;
     return {
-      entities,
-      loadingAPIs: {
-        ...loadingAPIs,
-        [requestId]: q
-      }
-    };
-  },
-  DATA_FETCHED: (store, { result, requestId }) => {
-    let { loadingAPIs, entities, requestResults } = store;
-    loadingAPIs = { ...loadingAPIs };
-    delete loadingAPIs[requestId];
-    console.log('fetched', result);
-    return {
-      entities: mergeEntities(entities, result.entities),
-      loadingAPIs,
-      requestResults: { ...requestResults, [requestId]: result.result }
+      entities: mergeEntities(entities, result.entities)
     };
   }
 };
