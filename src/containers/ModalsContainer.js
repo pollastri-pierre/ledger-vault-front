@@ -32,8 +32,8 @@ import {
   closeModalOperation,
   changeTabOperation,
   selectAccount,
-  saveOperation,
-} from '../redux/modules/operation-creation';
+  saveOperation
+} from "../redux/modules/operation-creation";
 
 import {
   closeAccountApprove,

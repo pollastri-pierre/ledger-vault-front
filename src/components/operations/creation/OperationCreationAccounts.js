@@ -1,9 +1,9 @@
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import CurrencyNameValue from '../../CurrencyNameValue';
+import _ from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import CurrencyNameValue from "../../CurrencyNameValue";
 
-import './OperationCreationAccounts.css';
+import "./OperationCreationAccounts.css";
 
 function OperationCreationAccounts(props) {
   const { accounts, selectedAccount, onSelect } = props;
@@ -18,13 +18,21 @@ function OperationCreationAccounts(props) {
           tabIndex="0"
           key={cur.id}
           className={`operation-creation-account
-            ${cur.currency.name.split(' ').join('-').toLowerCase()}
-            ${selectedAccount && selectedAccount.id === cur.id ? 'selected' : ''}`}
+            ${cur.currency.name
+              .split(" ")
+              .join("-")
+              .toLowerCase()}
+            ${selectedAccount && selectedAccount.id === cur.id
+              ? "selected"
+              : ""}`}
         >
           <div className="account-top">
             <span className="account-name">{cur.name}</span>
             <span className="account-balance">
-              <CurrencyNameValue currencyName={cur.currency.name} value={cur.balance} />
+              <CurrencyNameValue
+                currencyName={cur.currency.name}
+                value={cur.balance}
+              />
             </span>
           </div>
           <div className="account-botom">
@@ -38,13 +46,13 @@ function OperationCreationAccounts(props) {
 }
 
 OperationCreationAccounts.defaultProps = {
-  selectedAccount: {},
+  selectedAccount: {}
 };
 
 OperationCreationAccounts.propTypes = {
   onSelect: PropTypes.func.isRequired,
   accounts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedAccount: PropTypes.shape({}),
+  selectedAccount: PropTypes.shape({})
 };
 
 export default OperationCreationAccounts;
