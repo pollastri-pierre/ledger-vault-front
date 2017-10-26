@@ -72,13 +72,18 @@ export function saveProfile(error, profile) {
   }
 
   return (dispatch) => {
-    axios.put('/organization/members/me', profile, { headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') } }).then(() => {
-      dispatch(savedProfile());
-      dispatch(closeEdit());
-      dispatch(getUserInfos());
-    }).catch((e) => {
-      dispatch(saveProfileFail(e));
-    });
+    axios
+      .put('/organization/members/me', profile, {
+        headers: { 'X-Ledger-Auth': window.localStorage.getItem('token') },
+      })
+      .then(() => {
+        dispatch(savedProfile());
+        dispatch(closeEdit());
+        dispatch(getUserInfos());
+      })
+      .catch((e) => {
+        dispatch(saveProfileFail(e));
+      });
   };
 }
 
@@ -103,4 +108,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

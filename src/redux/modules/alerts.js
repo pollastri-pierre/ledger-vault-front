@@ -1,11 +1,17 @@
 import _ from 'lodash';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
+import {
+  CHECK_TEAM_ERROR,
+  AUTHENTICATION_FAILED_API,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_FAILED_TIMEOUT,
+  LOGOUT,
+  AUTHENTICATION_SUCCEED,
+} from './auth';
 import { SAVED_ACCOUNT } from './account-creation';
 import { SAVE_PROFILE_INVALID, SAVE_PROFILE_FAIL, SAVED_PROFILE } from './profile';
 import { ABORTED, APPROVED } from './account-approve';
 
 export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
-
 
 export function closeMessage(id) {
   return {
@@ -175,4 +181,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

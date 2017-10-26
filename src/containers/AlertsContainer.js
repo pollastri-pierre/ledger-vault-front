@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Alert } from '../components';
 import { closeMessage } from '../redux/modules/alerts';
-import { AUTHENTICATION_SUCCEED, CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT } from '../redux/modules/auth';
+import {
+  AUTHENTICATION_SUCCEED,
+  CHECK_TEAM_ERROR,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_FAILED_API,
+  AUTHENTICATION_FAILED_TIMEOUT,
+  LOGOUT,
+} from '../redux/modules/auth';
 import { SAVE_PROFILE_INVALID, SAVE_PROFILE_FAIL, SAVED_PROFILE } from '../redux/modules/profile';
 import { GOT_OPERATION_FAIL } from '../redux/modules/operations';
 import { SAVED_ACCOUNT } from '../redux/modules/account-creation';
@@ -69,20 +76,18 @@ export function MessagesContainer(props, context) {
   const { translate } = context;
   return (
     <div>
-      {
-        _.map(allMessages, message => (
-          <Alert
-            onRequestClose={() => props.onClose(message)}
-            open={hasError(message, alerts)}
-            autoHideDuration={4000}
-            title={getTitle(message, cache, translate)}
-            theme={getTheme(message, cache)}
-            key={message}
-          >
-            <div>{getContent(message, cache, translate)}</div>
-          </Alert>
-        ))
-      }
+      {_.map(allMessages, message => (
+        <Alert
+          onRequestClose={() => props.onClose(message)}
+          open={hasError(message, alerts)}
+          autoHideDuration={4000}
+          title={getTitle(message, cache, translate)}
+          theme={getTheme(message, cache)}
+          key={message}
+        >
+          <div>{getContent(message, cache, translate)}</div>
+        </Alert>
+      ))}
     </div>
   );
 }
@@ -99,4 +104,3 @@ MessagesContainer.contextTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);
-

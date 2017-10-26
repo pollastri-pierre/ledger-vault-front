@@ -8,12 +8,14 @@ function AccountsMenu(props) {
 
   return (
     <ul className="accounts-menu-list">
-      {_.map(accounts, account => {
+      {_.map(accounts, (account) => {
         const url = `/account/${account.id}`;
         return (
           <li key={account.id}>
             <Link
-              className={`${account.currency.name} ${props.pathname.startsWith(url) ? 'active' : ''}`}
+              className={`${account.currency.name} ${props.pathname.startsWith(url)
+                ? 'active'
+                : ''}`}
               to={`/account/${account.id}`}
             >
               {account.name}
@@ -27,10 +29,12 @@ function AccountsMenu(props) {
 }
 
 AccountsMenu.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    currency: PropTypes.shape({}),
-  })).isRequired,
+  accounts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      currency: PropTypes.shape({}),
+    }),
+  ).isRequired,
   pathname: PropTypes.string.isRequired,
 };
 

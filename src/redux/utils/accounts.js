@@ -18,7 +18,7 @@ export const data = [
       familiy: 'BITCOIN',
       units: ['LTC'],
     },
-    balance: 22,
+    balance: 220,
     creation_time: 12324322,
   },
   {
@@ -29,7 +29,7 @@ export const data = [
       familiy: 'BITCOIN',
       units: ['DOGE'],
     },
-    balance: 34,
+    balance: -34,
     creation_time: 12324322,
   },
 ];

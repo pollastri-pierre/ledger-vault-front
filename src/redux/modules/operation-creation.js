@@ -4,10 +4,11 @@ export const OPEN_MODAL_OPERATION = 'operation-creation/OPEN_MODAL_OPERATION';
 export const CLOSE_MODAL_OPERATION = 'operation-creation/CLOSE_MODAL_OPERATION';
 export const CHANGE_OPERATION_TAB = 'operation-creation/CHANGE_OPERATION_TAB';
 
+export const SELECT_ACCOUNT = 'operation-creation/SELECT_ACCOUNT';
+
 export const SAVE_OPERATION_START = 'operation-creation/SAVE_OPERATION_START';
 export const SAVED_OPERATION = 'operation-creation/SAVED_OPERATION';
 export const SAVED_OPERATION_FAIL = 'operation-creation/SAVED_OPERATION_FAIL';
-
 
 export function saveOperationStart() {
   return {
@@ -50,9 +51,24 @@ export function changeTabOperation(index) {
   };
 }
 
+export function selectAccountItem(account) {
+  return {
+    type: SELECT_ACCOUNT,
+    account,
+  };
+}
+
+export function selectAccount(account) {
+  return (dispatch) => {
+    dispatch(selectAccountItem(account));
+    dispatch(changeTabOperation(1));
+  };
+}
+
 export const initialState = {
   modalOpened: false,
   currentTab: 0,
+  account: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -66,6 +82,8 @@ export default function reducer(state = initialState, action) {
       return initialState;
     case CHANGE_OPERATION_TAB:
       return { ...state, currentTab: action.index };
+    case SELECT_ACCOUNT:
+      return { ...state, account: action.account };
     case SAVE_OPERATION_START:
       return { ...state, modalOpened: false };
     case SAVED_OPERATION:

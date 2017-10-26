@@ -14,13 +14,13 @@ class ActionBar extends Component {
     // This prevents ghost click.
     event.preventDefault();
     this.props.openCloseProfile(event.currentTarget.querySelector('.profile-pic'));
-  }
+  };
 
   openProfileDialog = (event) => {
     event.preventDefault();
     this.props.openCloseProfile(this.props.profile.target);
     this.props.openCloseEdit();
-  }
+  };
 
   render() {
     let profileCard;
@@ -34,9 +34,13 @@ class ActionBar extends Component {
       // Displayed when profile is loaded
 
       profileCard = (
-        <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
+        <a href="profile" className="profile-card" onClick={this.openProfileMenu}>
           <div className="profile-pic">
-            { profile.picture ? <img src={profile.picture} alt="" /> : <ProfileIcon className="profile-default-icon" color="white" /> }
+            {profile.picture ? (
+              <img src={profile.picture} alt="" />
+            ) : (
+              <ProfileIcon className="profile-default-icon" color="white" />
+            )}
           </div>
           <div className="profile-info">
             <div className="profile-name">{`${profile.first_name} ${profile.last_name}`}</div>
@@ -46,10 +50,7 @@ class ActionBar extends Component {
       );
 
       profileDialog = (
-        <BlurDialog
-          open={this.props.profile.openEdit}
-          onRequestClose={this.props.openCloseEdit}
-        >
+        <BlurDialog open={this.props.profile.openEdit} onRequestClose={this.props.openCloseEdit}>
           <Profile
             profile={profile}
             close={this.props.openCloseEdit}
@@ -68,7 +69,7 @@ class ActionBar extends Component {
 
     return (
       <div className="ActionBar">
-        { profileCard }
+        {profileCard}
         <PopBubble
           open={this.props.profile.open}
           anchorEl={this.props.profile.target}
@@ -79,11 +80,15 @@ class ActionBar extends Component {
           }}
         >
           <div className="profile-bubble">
-            <a href="profile" onClick={this.openProfileDialog} className="edit-profile">{t('actionBar.editProfile')}</a>
-            <Link to="/logout" className="log-out">{t('actionBar.logOut')}</Link>
+            <a href="profile" onClick={this.openProfileDialog} className="edit-profile">
+              {t('actionBar.editProfile')}
+            </a>
+            <Link to="/logout" className="log-out">
+              {t('actionBar.logOut')}
+            </Link>
           </div>
         </PopBubble>
-        { profileDialog }
+        {profileDialog}
         <div className="content-header">
           <div className="content-header-left">
             <img
@@ -94,39 +99,33 @@ class ActionBar extends Component {
             />
           </div>
           <div className="content-header-right">
-            { (this.props.pathname === '/') ?
+            {this.props.pathname === '/' ? (
               <Link to="" onClick={this.props.openAccount} className="content-header-button">
                 <div className="content-header-button-icon">
                   <i className="material-icons flipped">add</i>
                 </div>
                 <div className="content-header-button-text">account</div>
               </Link>
-              :
+            ) : (
               false
-            }
+            )}
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>
               </div>
-              <div className="content-header-button-text">
-                {t('actionBar.export')}
-              </div>
+              <div className="content-header-button-text">{t('actionBar.export')}</div>
             </Link>
             <Link to="/settings" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons">settings</i>
               </div>
-              <div className="content-header-button-text">
-                {t('actionBar.settings')}
-              </div>
+              <div className="content-header-button-text">{t('actionBar.settings')}</div>
             </Link>
             <Link to="/activity" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons">notifications</i>
               </div>
-              <div className="content-header-button-text">
-                {t('actionBar.activity')}
-              </div>
+              <div className="content-header-button-text">{t('actionBar.activity')}</div>
             </Link>
           </div>
         </div>

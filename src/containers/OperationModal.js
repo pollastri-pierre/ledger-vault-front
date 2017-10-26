@@ -21,16 +21,11 @@ const mapDispatchToProps = dispatch => ({
 });
 
 function OperationModal(props) {
-  const {
-    onChangeTab,
-    onClose,
-    onSaveOperation,
-    tabsIndex,
-  } = props;
+  const { onChangeTab, onClose, onSaveOperation, tabsIndex } = props;
 
   return (
     <div>
-      { props.modals === OPEN_MODAL_OPERATION &&
+      {props.modals === OPEN_MODAL_OPERATION && (
         <Modal close={onClose}>
           <OperationCreation
             tabsIndex={tabsIndex}
@@ -39,7 +34,7 @@ function OperationModal(props) {
             close={onClose}
           />
         </Modal>
-      }
+      )}
     </div>
   );
 }
