@@ -15,6 +15,7 @@ import {
   ABORT_START,
   APPROVED
 } from "./account-approve";
+import { OPEN_EDIT, CLOSE_EDIT } from "./profile";
 
 export const BLUR_BG = "BLUR_BG";
 export const UNBLUR_BG = "UNBLUR_BG";

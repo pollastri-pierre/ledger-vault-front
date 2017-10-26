@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CircularProgress from "material-ui/CircularProgress";
-import { DialogButton, Overscroll } from "../../";
-import OperationCreationAccounts from "./OperationCreationAccounts";
+import React, { Component } from 'react';
+import _ from 'lodash';
+import PropTypes from 'prop-types';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import CircularProgress from 'material-ui/CircularProgress';
+import { DialogButton, Overscroll } from '../../';
+import OperationCreationAccounts from './OperationCreationAccounts';
 
 class OperationCreation extends Component {
   componentWillMount() {
@@ -16,32 +16,18 @@ class OperationCreation extends Component {
   }
 
   render() {
-    const {
-      close,
-      onSelect,
-      tabsIndex,
-      save,
-      accounts,
-      getAccounts
-    } = this.props;
+    const { close, onSelect, tabsIndex, save, accounts, operation, selectAccount } = this.props;
 
-    let isNextDisabled = false;
+    let isNextDisabled;
 
-    // switch (tabsIndex) {
-    //   case 0:
-    //     isNextDisabled = (_.isNull(account.currency));
-    //     break;
-    //   case 1:
-    //     isNextDisabled = (account.options.name === '');
-    //     break;
-    //   case 2:
-    //     isNextDisabled = (account.security.members.length === 0 ||
-    //       account.security.approvals === 0 ||
-    //       account.security.approvals > account.security.members.length);
-    //     break;
-    //   default:
-    //     isNextDisabled = true;
-    // }
+    switch (tabsIndex) {
+      case 0:
+        isNextDisabled = (_.isNull(operation.account));
+        break;
+      default:
+        isNextDisabled = true;
+    }
+
     return (
       <Tabs
         className="operation-creation-main wrapper"
@@ -65,7 +51,8 @@ class OperationCreation extends Component {
                 {accounts.accounts && accounts.accounts.length > 0 ? (
                   <OperationCreationAccounts
                     accounts={accounts.accounts}
-                    onSelect={cur => console.log(cur)}
+                    onSelect={selectAccount}
+                    selectedAccount={operation.account}
                   />
                 ) : (
                   false
@@ -111,7 +98,7 @@ OperationCreation.propTypes = {
   close: PropTypes.func.isRequired,
   tabsIndex: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired
+  save: PropTypes.func.isRequired,
 };
 
 export default OperationCreation;

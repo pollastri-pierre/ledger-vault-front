@@ -31,8 +31,9 @@ import {
 import {
   closeModalOperation,
   changeTabOperation,
-  saveOperation
-} from "../redux/modules/operation-creation";
+  selectAccount,
+  saveOperation,
+} from '../redux/modules/operation-creation';
 
 import {
   closeAccountApprove,
@@ -61,7 +62,7 @@ const mapStateToProps = state => ({
   accountCreation: state.accountCreation,
   operationCreation: state.operationCreation,
   accounts: state.accounts,
-  accountToApprove: state.accountApprove
+  accountToApprove: state.accountApprove,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -86,12 +87,13 @@ const mapDispatchToProps = dispatch => ({
   onCloseModalOperation: from => dispatch(closeModalOperation(from)),
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
+  onSelectAccount: a => dispatch(selectAccount(a)),
   onGetAccounts: () => dispatch(getAccounts()),
   onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
   onGetAccountToApprove: () => dispatch(getAccountToApprove()),
   onAbortingAccount: () => dispatch(aborting()),
   onAbortAccount: () => dispatch(abort()),
-  onApprovingAccount: () => dispatch(approving())
+  onApprovingAccount: () => dispatch(approving()),
 });
 
 function ModalsContainer(props) {
@@ -120,13 +122,14 @@ function ModalsContainer(props) {
     accounts,
     onChangeTabOperation,
     onCloseModalOperation,
+    onSelectAccount,
     onSaveOperation,
     onGetAccounts,
     onAbortingAccount,
     onAbortAccount,
     onCloseAccountApprouve,
     onGetAccountToApprove,
-    onApprovingAccount
+    onApprovingAccount,
   } = props;
 
   return (
@@ -160,10 +163,12 @@ function ModalsContainer(props) {
           <OperationCreation
             close={onCloseModalOperation}
             onSelect={onChangeTabOperation}
+            selectAccount={onSelectAccount}
             save={onSaveOperation}
             tabsIndex={operationCreation.currentTab}
             accounts={accounts}
             getAccounts={onGetAccounts}
+            operation={operationCreation}
           />
         </Modal>
       )}
@@ -215,11 +220,11 @@ ModalsContainer.propTypes = {
   onSelectCurrency: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   onGetOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired
+  operations: PropTypes.shape({}).isRequired,
 };
 
 ModalsContainer.contextTypes = {
-  translate: PropTypes.func.isRequired
+  translate: PropTypes.func.isRequired,
 };
 
 export { ModalsContainer as NModalsContainer };

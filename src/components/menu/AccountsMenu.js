@@ -12,7 +12,7 @@ function AccountsMenu(props: { accounts: Array<Account>, pathname: string }) {
   const { accounts } = props;
   return (
     <ul className="accounts-menu-list">
-      {_.map(accounts, account => {
+      {_.map(accounts, (account) => {
         const url = `/account/${account.id}`;
         return (
           <li key={account.id}>
