@@ -1,7 +1,7 @@
 window.CRYPTO_CURRENCIES = [
   {
     name: 'bitcoin',
-    family: 'bitcoin',
+    family: 'BITCOIN',
     units: [
       {
         name: 'bitcoin',
@@ -19,7 +19,7 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'dogecoin',
-    family: 'bitcoin',
+    family: 'BITCOIN',
     units: [
       {
         name: 'dogecoin',
@@ -31,7 +31,7 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'ethereum',
-    family: 'ethereum',
+    family: 'ETHEREUM',
     units: [
       {
         name: 'ether',
@@ -43,7 +43,7 @@ window.CRYPTO_CURRENCIES = [
   },
   {
     name: 'ethereum classic',
-    family: 'ethereum',
+    family: 'ETHEREUM',
     units: [
       {
         name: 'ether',
@@ -56,7 +56,7 @@ window.CRYPTO_CURRENCIES = [
   {
 
     name: 'litecoin',
-    family: 'bitcoin',
+    family: 'BITCOIN',
     units: [
       {
         name: 'litecoin',
