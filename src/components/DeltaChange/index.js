@@ -1,10 +1,10 @@
 //@flow
 import React, { PureComponent } from 'react';
+import ArrowUp from "../icons/ArrowUp";
 import './index.css';
 
-// FIXME should this be an image?
-const arrowIncr = <span className="arrow incr">↗</span>;
-const arrowDecr = <span className="arrow decr">↘</span>;
+const arrowIncr = <ArrowUp className="arrow incr"/>;
+const arrowDecr = <ArrowUp className="arrow decr"/>;
 
 // render a delta percentage (e.g. +2.89%) from a before and after value
 class DeltaChange extends PureComponent<*> {

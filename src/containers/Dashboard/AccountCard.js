@@ -8,7 +8,7 @@ import BadgeCurrency from '../../components/BadgeCurrency';
 
 import "./AccountCard.css"
 
-const Separator = () => <div className="separator" />; // FIXME
+const Separator = () => <div className="separator" />;
 
 class AccountCard extends Component<*> {
   props: {
