@@ -8,6 +8,11 @@ import {
   AUTHENTICATION_SUCCEED
 } from "./auth";
 import { SAVED_ACCOUNT } from "./account-creation";
+import {
+  SAVE_PROFILE_INVALID,
+  SAVE_PROFILE_FAIL,
+  SAVED_PROFILE
+} from "./profile";
 import { ABORTED, APPROVED } from "./account-approve";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";

@@ -1,10 +1,10 @@
-@import './mixins';
-@import './animations';
-@import './variables';
+@import "./mixins";
+@import "./animations";
+@import "./variables";
 
 #blurdialog {
   position: fixed;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   top: 0;
   left: 0;
   right: 0;
@@ -30,15 +30,21 @@
   box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.04);
   margin: auto;
   position: relative;
-  // width: 440px;
   z-index: 2;
+
+  .tab-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.7;
+    text-transform: uppercase;
+  }
 
   header,
   .header {
     position: relative;
     z-index: 1;
     padding: $spacingL $spacingL 0 $spacingL;
-    
+
     h2 {
       font-weight: normal;
       color: $black;
@@ -49,7 +55,7 @@
     }
   }
 
-  .tabs_panel[class*='--selected'] {
+  .tabs_panel[class*="--selected"] {
     height: 100%;
     animation: tab 200ms ease;
   }
@@ -138,7 +144,6 @@
     }
   }
 
-
   .form-field {
     position: relative;
 
@@ -205,9 +210,6 @@
   .footer {
     position: static;
   }
-  
-
-
 }
 
 .frequency-bubble {
@@ -229,8 +231,4 @@
       @include highlight-block-active($porto, -20px);
     }
   }
-}
-
-[data-reactroot] {
-  // padding: 0 !important;
 }

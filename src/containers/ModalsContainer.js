@@ -31,6 +31,7 @@ import {
 import {
   closeModalOperation,
   changeTabOperation,
+  selectAccount,
   saveOperation
 } from "../redux/modules/operation-creation";
 
@@ -86,6 +87,7 @@ const mapDispatchToProps = dispatch => ({
   onCloseModalOperation: from => dispatch(closeModalOperation(from)),
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
+  onSelectAccount: a => dispatch(selectAccount(a)),
   onGetAccounts: () => dispatch(getAccounts()),
   onCloseAccountApprouve: () => dispatch(closeAccountApprove()),
   onGetAccountToApprove: () => dispatch(getAccountToApprove()),
@@ -120,6 +122,7 @@ function ModalsContainer(props) {
     accounts,
     onChangeTabOperation,
     onCloseModalOperation,
+    onSelectAccount,
     onSaveOperation,
     onGetAccounts,
     onAbortingAccount,
@@ -160,10 +163,12 @@ function ModalsContainer(props) {
           <OperationCreation
             close={onCloseModalOperation}
             onSelect={onChangeTabOperation}
+            selectAccount={onSelectAccount}
             save={onSaveOperation}
             tabsIndex={operationCreation.currentTab}
             accounts={accounts}
             getAccounts={onGetAccounts}
+            operation={operationCreation}
           />
         </Modal>
       )}

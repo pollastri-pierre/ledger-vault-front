@@ -22,26 +22,20 @@ class OperationCreation extends Component {
       tabsIndex,
       save,
       accounts,
-      getAccounts
+      operation,
+      selectAccount
     } = this.props;
 
-    let isNextDisabled = false;
+    let isNextDisabled;
 
-    // switch (tabsIndex) {
-    //   case 0:
-    //     isNextDisabled = (_.isNull(account.currency));
-    //     break;
-    //   case 1:
-    //     isNextDisabled = (account.options.name === '');
-    //     break;
-    //   case 2:
-    //     isNextDisabled = (account.security.members.length === 0 ||
-    //       account.security.approvals === 0 ||
-    //       account.security.approvals > account.security.members.length);
-    //     break;
-    //   default:
-    //     isNextDisabled = true;
-    // }
+    switch (tabsIndex) {
+      case 0:
+        isNextDisabled = _.isNull(operation.account);
+        break;
+      default:
+        isNextDisabled = true;
+    }
+
     return (
       <Tabs
         className="operation-creation-main wrapper"
@@ -65,7 +59,8 @@ class OperationCreation extends Component {
                 {accounts.accounts && accounts.accounts.length > 0 ? (
                   <OperationCreationAccounts
                     accounts={accounts.accounts}
-                    onSelect={cur => console.log(cur)}
+                    onSelect={selectAccount}
+                    selectedAccount={operation.account}
                   />
                 ) : (
                   false
