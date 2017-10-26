@@ -5,6 +5,9 @@ import { withRouter } from 'react-router-dom';
 import { getAccounts } from '../../redux/modules/accounts';
 import _ from 'lodash';
 import { SpinnerCard } from '../../components';
+import { ListOperation } from '../../components'
+import { openOperationModal } from '../../redux/modules/operations';
+
 
 //Components
 import Card from '../../components/Card';
@@ -26,6 +29,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  onGetOperation: (id, index) => dispatch(openOperationModal(id, index)),
   onGetAccounts: id => dispatch(getAccounts()),
   onTotalBalanceFilterChange: totalBalanceFilter =>
     dispatch(setTotalBalanceFilter(totalBalanceFilter))
@@ -42,7 +46,7 @@ class Dashboard extends Component {
 
   render() {
     const { dashboard, onTotalBalanceFilterChange } = this.props;
-
+    console.log(dashboard);
     const storages = [
       { id: 0, title: 'cold storage' },
       { id: 1, title: 'cold storage' },
@@ -63,9 +67,12 @@ class Dashboard extends Component {
           {isLoadingAccounts ? (
             <SpinnerCard />
           ) : (
-            <LastOperationCard
-              {...dashboard.lastOperations}
+            <ListOperation
+              columnIds={['date', 'account', 'amount']}
+              operations={dashboard.lastOperations.operations}
+              loading={false}
               accounts={accounts}
+              open={this.props.onGetOperation}
             />
           )}
           <div className="storages">
