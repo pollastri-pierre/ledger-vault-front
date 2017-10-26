@@ -16,6 +16,7 @@ const mapStateToProps = state => ({
   pendingRequests: state.pendingRequests,
   organization: state.organization,
   accounts: state.accounts,
+  profile: state.profile,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -51,7 +52,13 @@ class PendingRequests extends Component {
   }
 
   render() {
-    const {pendingRequests, onOpenApprove, organization, accounts} = this.props;
+    const {
+      pendingRequests,
+      profile,
+      onOpenApprove,
+      organization,
+      accounts,
+    } = this.props;
 
     return (
       <div className="pending-requests">
@@ -74,6 +81,7 @@ class PendingRequests extends Component {
               <PendingOperationApprove
                 operations={pendingRequests.data.approveOperations}
                 accounts={accounts.accounts}
+                user={profile.user}
                 open={onOpenApprove}
               />
             )}
@@ -96,6 +104,7 @@ class PendingRequests extends Component {
               <PendingOperationApprove
                 operations={pendingRequests.data.watchOperations}
                 approved
+                user={profile.user}
                 accounts={accounts.accounts}
                 open={onOpenApprove}
               />
@@ -121,6 +130,7 @@ class PendingRequests extends Component {
               <PendingAccountApprove
                 accounts={pendingRequests.data.approveAccounts}
                 approvers={organization.approvers}
+                user={profile.user}
                 open={onOpenApprove}
               />
             )}
@@ -144,6 +154,7 @@ class PendingRequests extends Component {
                 accounts={pendingRequests.data.watchAccounts}
                 approvers={organization.approvers}
                 open={onOpenApprove}
+                user={profile.user}
                 approved
               />
             )}

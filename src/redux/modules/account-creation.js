@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { LOGOUT } from './auth';
+import {LOGOUT} from './auth';
 
 export const OPEN_MODAL_ACCOUNT = 'account-creation/OPEN_MODAL_ACCOUNT';
 export const CLOSE_MODAL_ACCOUNT = 'account-creation/CLOSE_MODAL_ACCOUNT';
@@ -12,8 +12,10 @@ export const REMOVE_MEMBER = 'account-creation/REMOVE_MEMBER';
 export const SET_APPROVALS = 'account-creation/SET_APPROVALS';
 export const ENABLE_TIMELOCK = 'account-creation/ENABLE_TIMELOCK';
 export const CHANGE_TIMELOCK = 'account-creation/CHANGE_TIMELOCK';
-export const CHANGE_FREQUEMCY_TIMELOCK = 'account-creation/CHANGE_FREQUEMCY_TIMELOCK';
-export const CHANGE_FREQUEMCY_RATELIMITER = 'account-creation/CHANGE_FREQUEMCY_RATELIMITER';
+export const CHANGE_FREQUEMCY_TIMELOCK =
+  'account-creation/CHANGE_FREQUEMCY_TIMELOCK';
+export const CHANGE_FREQUEMCY_RATELIMITER =
+  'account-creation/CHANGE_FREQUEMCY_RATELIMITER';
 export const OPEN_POPBUBBLE = 'account-creation/OPEN_POPBUBBLE';
 export const ENABLE_RATELIMITER = 'account-creation/ENABLE_RATELIMITER';
 export const CHANGE_RATELIMITER = 'account-creation/CHANGE_RATELIMITER';
@@ -21,7 +23,6 @@ export const CHANGE_RATELIMITER = 'account-creation/CHANGE_RATELIMITER';
 export const SAVE_ACCOUNT_START = 'account-creation/SAVE_ACCOUNT_START';
 export const SAVED_ACCOUNT = 'account-creation/SAVED_ACCOUNT';
 export const SAVED_ACCOUNT_FAIL = 'account-creation/SAVED_ACCOUNT_FAIL';
-
 
 export function saveAccountStart() {
   return {
@@ -39,10 +40,10 @@ export function savedAccount(account) {
 export function saveAccount() {
   return (dispatch, getState) => {
     dispatch(saveAccountStart());
-    const { accountCreation } = getState();
+    const {accountCreation} = getState();
 
     const saved = {
-      id: (new Date()).getTime(),
+      id: new Date().getTime(),
       name: accountCreation.options.name,
       currency: accountCreation.currency,
       creation_time: new Date(),
@@ -130,9 +131,14 @@ export function openModalAccount() {
 }
 
 export function closeModalAccount(from) {
-  return {
-    type: CLOSE_MODAL_ACCOUNT,
-    from,
+  return (dispatch, getState) => {
+    const {accountCreation} = getState();
+
+    if (!(from === 'esc' && accountCreation.currentTab > 0)) {
+      dispatch({
+        type: CLOSE_MODAL_ACCOUNT,
+      });
+    }
   };
 }
 
@@ -165,12 +171,11 @@ export function switchInternalModal(id) {
 }
 
 export function selectCurrency(currency) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(selectCurrencyItem(currency));
     dispatch(changeTab(1));
   };
 }
-
 
 export const initialState = {
   modalOpened: false,
@@ -212,7 +217,8 @@ export default function reducer(state = initialState, action) {
       }
 
       return {
-        ...state, security: { ...state.security, members: cMembers },
+        ...state,
+        security: {...state.security, members: cMembers},
       };
     }
     case CHANGE_ACCOUNT_NAME:
@@ -224,7 +230,7 @@ export default function reducer(state = initialState, action) {
         },
       };
     case SWITCH_INTERN_MODAL:
-      return { ...state, internModalId: action.id };
+      return {...state, internModalId: action.id};
     case SET_APPROVALS: {
       const isNumber = /^[0-9\b]+$/;
 
@@ -241,16 +247,13 @@ export default function reducer(state = initialState, action) {
       return state;
     }
     case OPEN_MODAL_ACCOUNT:
-      return { ...state, modalOpened: true };
+      return {...state, modalOpened: true};
     case CLOSE_MODAL_ACCOUNT:
-      if (action.from === 'esc') {
-        return { ...state, modalOpened: false };
-      }
       return initialState;
     case CHANGE_TAB:
-      return { ...state, currentTab: action.index };
+      return {...state, currentTab: action.index};
     case SELECT_CURRENCY:
-      return { ...state, currency: action.currency };
+      return {...state, currency: action.currency};
     case ENABLE_TIMELOCK:
       return {
         ...state,
@@ -337,11 +340,15 @@ export default function reducer(state = initialState, action) {
     }
     case OPEN_POPBUBBLE:
       if (typeof action.anchor !== 'string') {
-        return { ...state, popBubble: !state.popBubble, popAnchor: action.anchor };
+        return {
+          ...state,
+          popBubble: !state.popBubble,
+          popAnchor: action.anchor,
+        };
       }
-      return { ...state, popBubble: !state.popBubble };
+      return {...state, popBubble: !state.popBubble};
     case SAVE_ACCOUNT_START:
-      return { ...state, modalOpened: false };
+      return {...state, modalOpened: false};
     case SAVED_ACCOUNT:
       return initialState;
     case LOGOUT:

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import ValidateBadge from '../../icons/ValidateBadge';
 import Question from '../../icons/full/Question';
-import { Avatar } from '../../../components';
+import {Avatar} from '../../../components';
 import './AccountApproveApprovals.css';
-
+import ApprovalList from '../../ApprovalList';
 
 class AccountApproveApprovals extends Component {
   componentWillMount() {
-    const { approvers, isLoadingApprovers } = this.props.organization;
+    const {approvers, isLoadingApprovers} = this.props.organization;
 
     if (!isLoadingApprovers && _.isNull(approvers)) {
       this.props.getOrganizationApprovers();
@@ -18,8 +18,8 @@ class AccountApproveApprovals extends Component {
   }
 
   render() {
-    const { approvers, isLoadingApprovers } = this.props.organization;
-    const { approved } = this.props.account;
+    const {approvers, isLoadingApprovers} = this.props.organization;
+    const {approved} = this.props.account;
 
     if (isLoadingApprovers || _.isNull(approvers)) {
       return (
@@ -33,58 +33,15 @@ class AccountApproveApprovals extends Component {
       );
     }
 
-    const percentage = Math.round(100 * (approved.length / approvers.length));
+    console.log(approvers);
 
     return (
       <div className="account-creation-members">
         <p className="info approve">
-          The account will be available when the following members
-          in yout team approve the creation request.
+          The account will be available when the following members in yout team
+          approve the creation request.
         </p>
-        {_.map(approvers, (member) => {
-          const isApproved = this.props.account.approved.indexOf(member.pub_key) > -1;
-          return (
-            <div
-              key={member.id}
-              className="account-member-approval"
-            >
-              <div className="member-avatar">
-                {isApproved ?
-                  <div className="badge-approved">
-                    <ValidateBadge />
-                  </div>
-                  :
-                  <div className="badge-approved not-approved">
-                    <Question />
-                  </div>
-                }
-                <Avatar
-                  className="member-avatar-img"
-                  url={member.picture}
-                  width="13.5px"
-                  height="15px"
-                />
-              </div>
-              <span className="name">{member.firstname} {member.name}</span>
-              {isApproved ?
-                <p className="has-approved">Approved</p>
-                :
-                <p className="has-approved">Pending</p>
-              }
-            </div>
-          );
-        })}
-        <div className="approval-percentage">
-          <p>
-            {approved.length} collected, {(approvers.length - approved.length)} remaining
-            <span> ({percentage}%)</span>
-          </p>
-
-          <div className="percentage-bar">
-            <div className="percentage-bar-fill" style={{ width: `${percentage}%` }} />
-          </div>
-
-        </div>
+        <ApprovalList approvers={approvers} approved={approved} />
       </div>
     );
   }
@@ -102,4 +59,3 @@ AccountApproveApprovals.propTypes = {
 };
 
 export default AccountApproveApprovals;
-

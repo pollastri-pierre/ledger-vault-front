@@ -25,8 +25,9 @@ const operationsUtils = {
     reference_conversion: {
       currency_name: 'EUR',
       amount: 543210,
+      fees: 239990,
     },
-    fees: 23,
+    fees: 12000000,
     account_id: 0,
     senders: ['0xc5a96db085dda36ffbe390f455315d30d6d3dc52'],
     recipients: ['0x063dd253c8da4ea9b12105781c9611b8297f5d14'],
@@ -173,6 +174,7 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: 300000,
+        fees: 232222,
       },
       account_id: 1,
       time: new Date(2017, 9, 9),
@@ -187,6 +189,7 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: 600000,
+        fees: 200000,
       },
       currency: currencies[0],
     },
@@ -206,6 +209,7 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: -200000,
+        fees: 222220,
       },
       type: 'FROM',
       time: new Date(2017, 9, 12),
@@ -224,6 +228,7 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: 280000,
+        fees: 22222,
       },
       confirmations: 0,
       time: new Date(2017, 9, 14, 9),
@@ -243,6 +248,7 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: -230000,
+        fees: 222222,
       },
       time: new Date(2017, 9, 16),
       currency: currencies[0],
@@ -256,8 +262,7 @@ export function getOperationsToApprove() {
       ...operationsUtils.mockOperation,
       uuid: '1',
       time: new Date(2017, 9, 8, 22),
-      approvers: ['ewfwekljfkujkljlkj'],
-      approved: [],
+      approved: ['wewoleoolele'],
     },
     {
       ...operationsUtils.mockOperation,
@@ -265,16 +270,14 @@ export function getOperationsToApprove() {
       account_id: 2,
       amount: 1,
       time: new Date(2017, 9, 9),
-      approvers: ['ewfwekljfkujkljlkj'],
-      approved: [],
+      approved: ['fewewoleoolelewf'],
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '3',
       time: new Date(2017, 9, 10),
       amount: 2,
-      approvers: ['ewfwekljfkujkljlkj'],
-      approved: [],
+      approved: ['fewwewoleoolelef'],
     },
     {
       ...operationsUtils.mockOperation,
@@ -282,8 +285,7 @@ export function getOperationsToApprove() {
       account_id: 3,
       confirmations: 0,
       time: new Date(2017, 9, 11),
-      approvers: ['ewfwekljfkujkljlkj'],
-      approved: [],
+      approved: ['fdsfwewoleooleles'],
     },
   ];
 }
@@ -294,14 +296,15 @@ export function getOperationsToWatch() {
       ...operationsUtils.mockOperation,
       uuid: '10',
       time: new Date(2017, 9, 17),
-      approved: [],
+      approvers: ['ewfwekljfkujkljlkj'],
+      approved: ['fdsfs'],
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '11',
       amount: 1,
       time: new Date(2017, 9, 18, 5),
-      approved: [],
+      approved: ['fdsfs'],
     },
   ];
 }

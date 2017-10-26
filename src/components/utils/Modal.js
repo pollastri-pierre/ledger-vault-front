@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 const classename = 'modal';
@@ -20,9 +20,7 @@ class Modal extends Component {
   }
 
   handle(e) {
-    if (e.keyCode === 27) {
-      this.props.close('esc');
-    }
+    this.props.close();
   }
 
   clickHandle(e) {
@@ -31,14 +29,11 @@ class Modal extends Component {
     }
   }
 
-
   render() {
     return (
       <div id="blurdialog" onClick={e => this.clickHandle(e)}>
         <div id="wrapper-modal">
-          <div className={classename}>
-            { this.props.children }
-          </div>
+          <div className={classename}>{this.props.children}</div>
         </div>
       </div>
     );
@@ -51,4 +46,3 @@ Modal.propTypes = {
 };
 
 export default Modal;
-

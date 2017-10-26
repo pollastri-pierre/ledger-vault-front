@@ -14,7 +14,6 @@ class OverviewOperation extends Component<*> {
 
   render() {
     const {hash, amount, amount_flat, currency} = this.props;
-    console.log(this.props);
     return (
       <div className="operation-overview-header">
         <div className="operation-overview-amount">

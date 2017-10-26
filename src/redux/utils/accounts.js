@@ -6,15 +6,19 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[0],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 2,
+      approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
-      month: 2182834846
+      month: 2182834846,
     },
     reference_conversion: {
       balance: 199553,
-      currency_name: 'EUR'
-    }
+      currency_name: 'EUR',
+    },
   },
   {
     id: 1,
@@ -22,15 +26,19 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[0],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
-      month: 2182834846
+      month: 2182834846,
     },
     reference_conversion: {
       balance: 199553,
-      currency_name: 'EUR'
-    }
+      currency_name: 'EUR',
+    },
   },
   {
     id: 2,
@@ -38,15 +46,19 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[1],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
-      month: 2182834846
+      month: 2182834846,
     },
     reference_conversion: {
       balance: 199553,
-      currency_name: 'EUR'
-    }
+      currency_name: 'EUR',
+    },
   },
   {
     id: 3,
@@ -54,15 +66,19 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[2],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
-      month: 2182834846
+      month: 2182834846,
     },
     reference_conversion: {
       balance: 199553,
-      currency_name: 'EUR'
-    }
+      currency_name: 'EUR',
+    },
   },
   {
     id: 4,
@@ -70,14 +86,18 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[2],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
-      month: 2182834846
+      month: 2182834846,
     },
     reference_conversion: {
       balance: 199553,
-      currency_name: 'EUR'
-    }
-  }
+      currency_name: 'EUR',
+    },
+  },
 ];

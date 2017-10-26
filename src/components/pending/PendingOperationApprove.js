@@ -5,9 +5,10 @@ import ValidateBadge from '../icons/ValidateBadge';
 import AccountName from '../AccountName';
 import CurrencyNameValue from '../CurrencyNameValue';
 import DateFormat from '../DateFormat';
+import ApprovalStatus from '../ApprovalStatus';
 
 function PendingOperationApprove(props) {
-  const {operations, open, approved, accounts, approvers} = props;
+  const {operations, open, approved, accounts, approvers, user} = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -15,7 +16,7 @@ function PendingOperationApprove(props) {
   // const totalAmount = '-EUR 15,256.89';
   const totalAmount = _.reduce(
     operations,
-    (sum, op) => op.amount_flat + sum,
+    (sum, op) => op.reference_conversion.amount + sum,
     0,
   );
 
@@ -63,20 +64,17 @@ function PendingOperationApprove(props) {
               <span className="request-operation-amount">
                 <CurrencyNameValue
                   currencyName="EUR"
-                  value={operation.amount_flat}
+                  value={operation.reference_conversion.amount}
                 />
               </span>
             </div>
             <div>
-              <span
-                className={`request-approval-state ${approved
-                  ? 'approved'
-                  : ''}`}>
-                {approved && <ValidateBadge className="confirmed" />}
-
-                {approved ? 'Approved' : 'Collecting Approvals'}
-                {` (3/6) `}
-              </span>
+              <ApprovalStatus
+                approved={operation.approved}
+                approvers={account.security_scheme.approvers}
+                nbRequired={account.security_scheme.quorum}
+                user_hash={user.pub_key}
+              />
               <AccountName name={account.name} currency={account.currency} />
             </div>
           </div>

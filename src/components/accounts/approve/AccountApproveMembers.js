@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
-import { Avatar } from '../../../components';
-
+import {Avatar} from '../../../components';
+import MemberAvatar from '../../MemberAvatar';
 
 class AccountApproveMembers extends Component {
   componentWillMount() {
-    const { members, isLoading } = this.props.organization;
+    const {members, isLoading} = this.props.organization;
 
     if (!isLoading && _.isNull(members)) {
       this.props.getOrganizationMembers();
@@ -15,7 +15,7 @@ class AccountApproveMembers extends Component {
   }
 
   render() {
-    const { members, isLoading } = this.props.organization;
+    const {members, isLoading} = this.props.organization;
     const membersAccount = this.props.account.security.members;
 
     if (isLoading || _.isNull(members)) {
@@ -36,24 +36,18 @@ class AccountApproveMembers extends Component {
           Members define the group of individuals that have the ability to
           approve outgoing operations from this account.
         </p>
-        {_.map(membersAccount, (hash) => {
-          const member = _.find(members, { pub_key: hash });
+        {_.map(membersAccount, hash => {
+          const member = _.find(members, {pub_key: hash});
           return (
             <div
               key={member.id}
               role="button"
               tabIndex={0}
-              className="account-member-row"
-            >
-              <div className="member-avatar">
-                <Avatar
-                  className="member-avatar-img"
-                  url={member.picture}
-                  width="13.5px"
-                  height="15px"
-                />
-              </div>
-              <span className="name">{member.firstname} {member.name}</span>
+              className="account-member-row">
+              <MemberAvatar url={member.picture} />
+              <span className="name">
+                {member.firstname} {member.name}
+              </span>
               <p className="role">{member.role}</p>
             </div>
           );

@@ -4,48 +4,46 @@ import PropTypes from 'prop-types';
 import ValidateBadge from '../icons/ValidateBadge';
 import DateFormat from '../DateFormat';
 import AccountName from '../AccountName';
+import ApprovalStatus from '../ApprovalStatus';
 
 function PendingAccountApprove(props) {
-  const { accounts, open, approved, approvers } = props;
+  const {accounts, open, approved, approvers, user} = props;
   if (accounts.length === 0) {
-    return (
-      <p>There are no accounts to approve</p>
-    );
+    return <p>There are no accounts to approve</p>;
   }
 
   const nbCurrencies = _.size(
-    _.groupBy(accounts, account => { return account.currency.family; })
+    _.groupBy(accounts, account => account.currency.family),
   );
 
   return (
     <div className="pending-request-list">
-      {!approved &&
+      {!approved && (
         <div>
           <p className="header dark">
-            { accounts.length === 1 ?
+            {accounts.length === 1 ? (
               <span>1 account</span>
-              :
+            ) : (
               <span>{accounts.length} accounts</span>
-            }
+            )}
             <span>{nbCurrencies}</span>
           </p>
           <p className="header light">
             <span>pending approval</span>
-            { nbCurrencies === 1 ?
+            {nbCurrencies === 1 ? (
               <span>currency</span>
-              :
+            ) : (
               <span>currencies</span>
-            }
+            )}
           </p>
         </div>
-      }
-      {_.map(accounts, (account) => {
+      )}
+      {_.map(accounts, account => {
         return (
           <div
             className={`pending-request ${approved ? 'watch' : ''}`}
             key={account.id}
-            onClick={() => open('account', account, approved)}
-          >
+            onClick={() => open('account', account, approved)}>
             <div>
               <span className="request-date-creation">
                 <DateFormat date={account.creation_time} />
@@ -55,19 +53,14 @@ function PendingAccountApprove(props) {
               </span>
             </div>
             <div>
-              <span className={`request-approval-state ${approved ? 'approved' : ''}`}>
-                {approved &&
-                  <ValidateBadge className="confirmed" />
-                }
-
-                {approved ?
-                  'Approved'
-                  :
-                  'Collecting Approvals'
-                }
-                {` (${account.approved.length}/${approvers.length}) `}
+              <ApprovalStatus
+                approved={account.approved}
+                approvers={approvers}
+                user_hash={user.pub_key}
+              />
+              <span className="request-currency">
+                {account.currency.family}
               </span>
-              <span className="request-currency">{account.currency.family}</span>
             </div>
           </div>
         );
@@ -82,10 +75,12 @@ PendingAccountApprove.defaultProps = {
 };
 
 PendingAccountApprove.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  })).isRequired,
+  accounts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+  ).isRequired,
   open: PropTypes.func.isRequired,
   approved: PropTypes.bool,
   approvers: PropTypes.arrayOf(PropTypes.shape({})),

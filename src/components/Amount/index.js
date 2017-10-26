@@ -1,7 +1,6 @@
 //@flow
 import React, {Component} from 'react';
 import CurrencyNameValue from '../CurrencyNameValue';
-import type {Unit} from '../datatypes';
 import './index.css';
 
 class Amount extends Component<*> {
@@ -9,7 +8,7 @@ class Amount extends Component<*> {
     amount_crypto: number,
     amount_flat: number,
     strong: boolean,
-    unit: Unit,
+    currencyName: string,
   };
 
   render() {

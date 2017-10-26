@@ -9,14 +9,6 @@ import ConfirmationStatus from '../ConfirmationStatus';
 import OverviewOperation from '../OverviewOperation';
 import Amount from '../Amount';
 
-const getConfirmation = n => {
-  if (n > 0) {
-    return `Confirmed (${n})`;
-  } else {
-    return 'Unconfirmed';
-  }
-};
-
 function TabOverview(props) {
   const {operation, accounts} = props;
   const account = _.find(
@@ -30,7 +22,7 @@ function TabOverview(props) {
         hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
         amount={operation.amount}
         currency={account.currency.name}
-        amount_flat={operation.amount_flat}
+        amount_flat={operation.reference_conversion.amount}
       />
       <div className="operation-list">
         <LineRow label="status">
@@ -46,7 +38,7 @@ function TabOverview(props) {
         <LineRow label="fees">
           <Amount
             amount_crypto={operation.fees}
-            amount_flat={operation.fees_flat}
+            amount_flat={operation.reference_conversion.fees}
             currencyName={account.currency.name}
           />
         </LineRow>

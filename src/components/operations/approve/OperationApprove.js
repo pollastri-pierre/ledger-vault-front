@@ -7,6 +7,8 @@ import {DialogButton, Overscroll} from '../../';
 import AbortConfirmation from '../../approve/AbortConfirmation';
 import ApproveDevice from '../../approve//ApproveDevice';
 import OperationApproveDedails from './OperationApproveDedails';
+import OperationApproveApprovals from './OperationApproveApprovals';
+import ApprovalList from '../../ApprovalList';
 import Footer from '../../approve/Footer';
 
 class OperationApprove extends Component {
@@ -15,7 +17,15 @@ class OperationApprove extends Component {
   }
 
   render() {
-    const {close, operation, abort, approving, aborting, accounts} = this.props;
+    const {
+      close,
+      operation,
+      abort,
+      approving,
+      aborting,
+      accounts,
+      organization,
+    } = this.props;
 
     if (operation.isAborting) {
       return (
@@ -47,7 +57,13 @@ class OperationApprove extends Component {
               accounts={accounts.accounts}
             />
           </TabPanel>
-          <TabPanel className="tabs_panel" />
+          <TabPanel className="tabs_panel">
+            <OperationApproveApprovals
+              accounts={accounts.accounts}
+              members={organization.members}
+              operation={operation.operation}
+            />
+          </TabPanel>
           <TabPanel className="tabs_panel" />
         </div>
         <Footer
