@@ -115,7 +115,9 @@ function List(props) {
                                   alwaysShowSign
                                 />
                               </td>,
-                              <td key={nbColumn} className={`amount-crypto ${operation.amount > 0 ? "positive" : ""}`}><CurrencyNameValue currencyName={accounts[operation.account_id].currency.name} value={operation.amount} alwaysShowSign/></td>
+                              <td key={nbColumn} className={`amount-crypto ${operation.amount > 0 ? "positive" : ""}`}>
+                                <CurrencyNameValue currencyName={accounts[operation.account_id].currency.name} value={operation.amount} alwaysShowSign/>
+                              </td>
                               ] 
                             )
                           default:

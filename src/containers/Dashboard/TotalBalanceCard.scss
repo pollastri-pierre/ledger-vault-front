@@ -1,5 +1,13 @@
 .total-balance .body {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+}
+
+.total-balance {
+	header {
+		h3 {
+			margin: 0px;
+		}
+	}
 }

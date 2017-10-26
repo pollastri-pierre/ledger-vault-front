@@ -10,8 +10,8 @@ import type { PendingEvent } from '../../datatypes';
 import './PendingCard.css';
 
 const Row = ({ date, children }) => (
-  <div className="row">
-    <div className="date">
+  <div className="pending-list-row">
+    <div className="date uppercase">
       <DateFormat date={date} />
     </div>
     <div className="body">{children}</div>
@@ -46,13 +46,13 @@ class PendingCard extends Component<*> {
     return (
       <Card
         title="pending"
-        titleRight={<Link to="TODO">VIEW ALL ({total})</Link>}
+        titleRight={<Link to="TODO">VIEW ALL ({total})</Link>} className="pendingCard"
       >
-        <header>
-          <DashboardField label="operations" align="center">
+        <header className="pendingHeader">
+          <DashboardField label="operations" align="center" className="pendingHeaderNumber">
             {totalOperations}
           </DashboardField>
-          <DashboardField label="account" align="center">
+          <DashboardField label="account" align="center" className="pendingHeaderNumber">
             {totalAccounts}
           </DashboardField>
         </header>
