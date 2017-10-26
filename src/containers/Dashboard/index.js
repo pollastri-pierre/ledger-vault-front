@@ -17,6 +17,7 @@ import TotalBalanceCard from './TotalBalanceCard';
 import AccountCard from './AccountCard';
 import LastOperationCard from './LastOperationCard';
 import PendingCard from './PendingCard';
+import Storages from './Storages';
 
 import './index.css';
 
@@ -81,6 +82,7 @@ class Dashboard extends Component {
               ))
             )}
           </div>
+          <Storages filter={dashboard.totalBalanceFilter} />
         </div>
         <div className="aside">
           {isLoadingAccounts ? (

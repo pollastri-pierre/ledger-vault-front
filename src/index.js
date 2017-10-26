@@ -29,9 +29,8 @@ if (window) {
   window.React = React;
 }
 
-
 const muiTheme = getMuiTheme({
-  fontFamily: 'Open Sans, sans-serif',
+  fontFamily: 'Open Sans, sans-serif'
 });
 
 const history = createHistory();
@@ -50,7 +49,7 @@ const render = () => {
           <div>
             <AlertsContainer />
             <ModalsContainer />
-              <ConnectedRouter history={history}>
+            <ConnectedRouter history={history}>
               <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/logintest" component={LoginTest} />
@@ -62,17 +61,19 @@ const render = () => {
         </I18nProvider>
       </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root'));
+    document.getElementById('root')
+  );
   registerServiceWorker();
 };
 
 if (token) {
-  getUserInfos()(store.dispatch, store.getState).then(() => {
-    render();
-  }).catch(() => {
-    render();
-  });
+  getUserInfos()(store.dispatch, store.getState)
+    .then(() => {
+      render();
+    })
+    .catch(() => {
+      render();
+    });
 } else {
   render();
 }
-

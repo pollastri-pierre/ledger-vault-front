@@ -12,6 +12,7 @@ import operationCreation from './operation-creation';
 import pendingRequests from './pending-requests';
 import accountApprove from './account-approve';
 import organization from './organization';
+import data from './data';
 
 const reducers = {
   blurBG,
@@ -27,7 +28,8 @@ const reducers = {
   pendingRequests,
   accountCreation,
   operationCreation,
-  organization
+  organization,
+  data
 };
 
 export default reducers;

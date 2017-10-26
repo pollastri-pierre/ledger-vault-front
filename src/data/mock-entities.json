@@ -1,0 +1,84 @@
+{
+  "accounts": {
+    "0": {
+      "id": "0",
+      "name": "cold storage",
+      "creation_time": 1508923040570,
+      "currency": "bitcoin",
+      "balance": 1589831782,
+      "balance_history": {
+        "yesterday": 1182834846,
+        "week": 118283484,
+        "month": 2182834846
+      },
+      "reference_conversion": {
+        "balance": 199553,
+        "currency_name": "EUR"
+      }
+    },
+    "1": {
+      "id": "1",
+      "name": "cold storage",
+      "creation_time": 1508923040570,
+      "currency": "bitcoin",
+      "balance": 1589831782,
+      "balance_history": {
+        "yesterday": 1182834846,
+        "week": 118283484,
+        "month": 2182834846
+      },
+      "reference_conversion": {
+        "balance": 199553,
+        "currency_name": "EUR"
+      }
+    },
+    "2": {
+      "id": "2",
+      "name": "trackerfund",
+      "creation_time": 1508923040570,
+      "currency": "dogecoin",
+      "balance": 1589831782,
+      "balance_history": {
+        "yesterday": 1182834846,
+        "week": 118283484,
+        "month": 2182834846
+      },
+      "reference_conversion": {
+        "balance": 199553,
+        "currency_name": "EUR"
+      }
+    },
+    "3": {
+      "id": "3",
+      "name": "hot wallet",
+      "creation_time": 1508923040570,
+      "currency": "dash",
+      "balance": 1589831782,
+      "balance_history": {
+        "yesterday": 1182834846,
+        "week": 118283484,
+        "month": 2182834846
+      },
+      "reference_conversion": {
+        "balance": 199553,
+        "currency_name": "EUR"
+      }
+    },
+    "4": {
+      "id": "4",
+      "name": "etf holdings",
+      "creation_time": 1508923040570,
+      "currency": "litecoin",
+      "balance": 1589831782,
+      "balance_history": {
+        "yesterday": 1182834846,
+        "week": 118283484,
+        "month": 2182834846
+      },
+      "reference_conversion": {
+        "balance": 199553,
+        "currency_name": "EUR"
+      }
+    }
+  }
+}
