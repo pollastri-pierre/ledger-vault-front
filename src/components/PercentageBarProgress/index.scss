@@ -1,0 +1,15 @@
+@import '../../styles/variables';
+
+.percentage-bar {
+  height: 2px;
+  background: $mouse;
+  position: relative;
+
+  .percentage-bar-fill {
+    height: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $porto;
+  }
+}

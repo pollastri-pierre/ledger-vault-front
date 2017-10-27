@@ -166,6 +166,7 @@ function ModalsContainer(props) {
               accounts={accounts}
               operation={entityToApprove}
               organization={organization}
+              getOrganizationMembers={onGetOrganizationMembers}
               aborting={onAbortingAccount}
               approving={onApprovingAccount}
               abort={onAbortAccount}

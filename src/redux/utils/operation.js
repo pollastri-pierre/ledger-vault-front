@@ -296,7 +296,6 @@ export function getOperationsToWatch() {
       ...operationsUtils.mockOperation,
       uuid: '10',
       time: new Date(2017, 9, 17),
-      approvers: ['ewfwekljfkujkljlkj'],
       approved: ['fdsfs'],
     },
     {

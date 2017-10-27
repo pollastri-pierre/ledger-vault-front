@@ -8,12 +8,13 @@ import AbortConfirmation from '../../approve/AbortConfirmation';
 import ApproveDevice from '../../approve//ApproveDevice';
 import OperationApproveDedails from './OperationApproveDedails';
 import OperationApproveApprovals from './OperationApproveApprovals';
+import OperationApproveLocks from './OperationApproveLocks';
 import ApprovalList from '../../ApprovalList';
 import Footer from '../../approve/Footer';
 
 class OperationApprove extends Component {
   componentWillMount() {
-    // this.props.getOperation();
+    this.props.getOrganizationMembers();
   }
 
   render() {
@@ -36,6 +37,31 @@ class OperationApprove extends Component {
         />
       );
     }
+
+    if (organization.isLoading || _.isNull(organization.members)) {
+      return (
+        <div id="account-creation" className="wrapper loading">
+          <div className="header" />
+          <div className="content">
+            <CircularProgress
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginLeft: '-25px',
+                marginTop: '-25px',
+              }}
+            />
+          </div>
+          <div className="footer">
+            <DialogButton highlight className="cancel" onTouchTap={close}>
+              Close
+            </DialogButton>
+          </div>
+        </div>
+      );
+    }
+
     if (operation.isDevice) {
       return <ApproveDevice cancel={approving} entity="operation" />;
     }
@@ -64,7 +90,9 @@ class OperationApprove extends Component {
               operation={operation.operation}
             />
           </TabPanel>
-          <TabPanel className="tabs_panel" />
+          <TabPanel className="tabs_panel">
+            <OperationApproveLocks />
+          </TabPanel>
         </div>
         <Footer
           close={close}

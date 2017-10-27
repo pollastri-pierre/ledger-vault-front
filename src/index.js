@@ -17,7 +17,7 @@ import {
   LoginTest,
   Logout,
   AlertsContainer,
-  I18nProvider
+  I18nProvider,
 } from './containers';
 
 import { getUserInfos } from './redux/modules/auth';
@@ -30,7 +30,7 @@ if (window) {
 }
 
 const muiTheme = getMuiTheme({
-  fontFamily: 'Open Sans, sans-serif'
+  fontFamily: 'Open Sans, sans-serif',
 });
 
 const history = createHistory();
@@ -61,7 +61,7 @@ const render = () => {
         </I18nProvider>
       </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById('root'),
   );
   registerServiceWorker();
 };
