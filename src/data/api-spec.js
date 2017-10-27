@@ -1,5 +1,5 @@
 //@flow
-import { Account, Operation } from './schema';
+import { Account, Member, Operation } from './schema';
 
 export type APISpec = {
   uri: string | ((_: Object) => string),
@@ -13,12 +13,18 @@ type API = { [_: string]: APISpec };
  */
 
 const api: API = {
+  members: {
+    uri: '/members',
+    method: 'GET',
+    responseSchema: [Member]
+  },
   accounts: {
     uri: '/accounts',
     method: 'GET',
     responseSchema: [Account]
   },
   account: {
+    // just an example, not actually yet used
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: 'GET',
     responseSchema: Account

@@ -3,8 +3,16 @@ import { denormalize } from 'normalizr';
 import apiSpec from './api-spec';
 import mockEntities from './mock-entities.js';
 
+console.log('MOCK', mockEntities);
+
 const mockGETSync = (uri: string) => {
   switch (uri) {
+    case '/members':
+      return denormalize(
+        Object.keys(mockEntities.members),
+        apiSpec.members.responseSchema,
+        mockEntities
+      );
     case '/accounts':
       return denormalize(
         Object.keys(mockEntities.accounts),

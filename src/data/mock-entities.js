@@ -7,22 +7,17 @@ currencies.forEach(c => {
 });
 
 const genNote = i => ({
-  id: i,
+  id: '' + i,
   title: 'Note ' + i,
   body:
     'This is a note label. Lorem ipsum, is it ok ? This is a note label. Lorem ipsum, is it ok ? ',
-  created_at: '',
-  author: {
-    id: 1,
-    pub_key: 'pubkey',
-    firstname: 'Florent',
-    name: 'Teissier',
-    picture: '',
-    register_date: '',
-    u2f_device: 'blob',
-    email: 'florent.teissier@ledger.fr',
-    groups: ['group1']
-  }
+  created_at: new Date(
+    2017,
+    9,
+    1 + Math.round(20 * Math.random()),
+    10
+  ).toISOString(),
+  author: '' + i % 5
 });
 
 const defaultGenOperation = {
@@ -32,6 +27,107 @@ const defaultGenOperation = {
   confirmations: 31,
   type: 'SEND'
 };
+
+const genPubKey = () =>
+  Array(64)
+    .fill(null)
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join('');
+
+const genU2F = () =>
+  Array(128)
+    .fill(null)
+    .map(() => Math.floor(Math.random() * 16).toString(16))
+    .join('');
+
+const genMember = fields => ({
+  pub_key: genPubKey(),
+  u2f_device: genU2F(),
+  ...fields
+});
+
+const members = {
+  '0': genMember({
+    id: '0',
+    last_name: 'Getto',
+    first_name: 'David',
+    role: 'Administrator',
+    register_date: new Date(2017, 8, 1, 10).toISOString(),
+    email: 'david.getto@ledger.fr',
+    groups: []
+  }),
+  '1': genMember({
+    id: '1',
+    last_name: 'Smith',
+    first_name: 'Henrietta',
+    role: 'Administrator',
+    register_date: new Date(2017, 9, 1, 9).toISOString(),
+    email: 'smith.henrietta@ledger.fr',
+    groups: ['0']
+  }),
+  '2': genMember({
+    id: '2',
+    last_name: 'McAndersen',
+    first_name: 'Julie',
+    role: 'Administrator',
+    picture: 'http://yoursocialcom.eu/wp-content/uploads/avatar-1.png',
+    register_date: new Date(2017, 9, 2, 9).toISOString(),
+    email: 'julie.mcanderson@ledger.fr',
+    groups: ['0']
+  }),
+  '3': genMember({
+    id: '3',
+    last_name: 'Josh',
+    first_name: 'Emily',
+    role: 'Operator',
+    picture:
+      'http://www.marketaccessbd.com/wp-content/uploads/2014/08/avatar-8.png',
+    register_date: new Date(2017, 9, 10, 9).toISOString(),
+    email: 'emily.josh@ledger.fr',
+    groups: ['1']
+  }),
+  '4': genMember({
+    id: '4',
+    last_name: 'Galvok Jr',
+    first_name: 'Peder',
+    role: 'Operator',
+    register_date: new Date(2017, 10, 2, 9).toISOString(),
+    email: 'peder.g@ledger.fr',
+    groups: ['1']
+  }),
+  '5': genMember({
+    id: '5',
+    last_name: 'St Mamba',
+    first_name: 'Paul',
+    role: 'Operator',
+    register_date: new Date(2017, 10, 10, 9).toISOString(),
+    email: 'paul.sm@ledger.fr',
+    groups: []
+  }),
+  '6': genMember({
+    id: '6',
+    last_name: 'Teissier',
+    first_name: 'Florent',
+    role: 'Operator',
+    picture: 'https://avatars3.githubusercontent.com/u/944835?v=4&s=460',
+    register_date: new Date(2017, 10, 20, 9).toISOString(),
+    email: 'florent.teissier@ledger.fr',
+    groups: ['0', '1']
+  })
+};
+
+const genSecurityScheme = () => ({
+  quorum: 4,
+  approvers: Object.keys(members)
+    .map(k => members[k])
+    .filter(m => m.role === 'Administrator')
+    .map(m => m.pub_key),
+  time_lock: 600,
+  rate_limiter: {
+    max_transaction: 10,
+    time_slot: 300
+  }
+});
 
 const genOperation = opts => {
   const { uuid, time, account_id, amount, confirmations, type } = {
@@ -153,6 +249,19 @@ const genOperation = opts => {
 };
 
 export default {
+  groups: {
+    '0': {
+      id: '0',
+      name: 'First Group',
+      members: ['1', '2', '6']
+    },
+    '1': {
+      id: '1',
+      name: 'Second Group',
+      members: ['3', '4', '6']
+    }
+  },
+  members,
   operations: {
     '1': genOperation({ uuid: '1' }),
     '2': genOperation({
@@ -233,6 +342,7 @@ export default {
     '0': {
       id: '0',
       name: 'cold storage',
+      security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: 'bitcoin',
       balance: 1589831782,
@@ -249,6 +359,7 @@ export default {
     '1': {
       id: '1',
       name: 'cold storage',
+      security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: 'bitcoin',
       balance: 1589831782,
@@ -265,6 +376,7 @@ export default {
     '2': {
       id: '2',
       name: 'trackerfund',
+      security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: 'dogecoin',
       balance: 1589831782,
@@ -281,6 +393,7 @@ export default {
     '3': {
       id: '3',
       name: 'hot wallet',
+      security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: 'dash',
       balance: 1589831782,
@@ -297,6 +410,7 @@ export default {
     '4': {
       id: '4',
       name: 'etf holdings',
+      security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: 'litecoin',
       balance: 1589831782,

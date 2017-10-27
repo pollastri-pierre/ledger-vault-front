@@ -58,6 +58,7 @@ class Dashboard extends Component<
 export default connectData(Dashboard, {
   api: {
     dashboard: api.dashboard,
-    accounts: api.accounts
+    accounts: api.accounts,
+    members: api.members
   }
 });
