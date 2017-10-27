@@ -8,7 +8,7 @@ import DateFormat from '../../components/DateFormat';
 import CurrencyNameValue from "../CurrencyNameValue";
 import BadgeCurrency from '../../components/BadgeCurrency';
 
-
+// TODO let's move this into DataTableOperation
 function List(props) {
   const { operations, title, loading, columnIds, accounts } = props;
   console.log(operations);
@@ -118,7 +118,7 @@ function List(props) {
                               <td key={nbColumn} className={`amount-crypto ${operation.amount > 0 ? "positive" : ""}`}>
                                 <CurrencyNameValue currencyName={accounts[operation.account_id].currency.name} value={operation.amount} alwaysShowSign/>
                               </td>
-                              ] 
+                              ]
                             )
                           default:
                             throw new Error(`Unsupported column name "${column}"`);

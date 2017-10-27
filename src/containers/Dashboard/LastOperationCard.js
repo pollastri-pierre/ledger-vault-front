@@ -14,7 +14,7 @@ class LastOperationCard extends Component<*> {
     accounts: Array<Account>
   };
   render() {
-    const { operations, accounts } = this.props;
+    const { operations } = this.props;
     return (
       <Card
         title="last operations"
@@ -23,7 +23,6 @@ class LastOperationCard extends Component<*> {
         <DataTableOperation
           columnIds={['date', 'name', 'countervalue', 'amount']}
           operations={operations}
-          accounts={accounts}
         />
       </Card>
     );
