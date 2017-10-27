@@ -1,9 +1,8 @@
+//@flow
 import React, { Component } from 'react';
 import AccountCard from './AccountCard';
-import connectData from '../../decorators/connectData';
-import api from '../../data/api-spec';
 
-class Storages extends Component {
+class Storages extends Component<{ accounts: *, filter: string }> {
   render() {
     const { accounts, filter } = this.props;
     return (
@@ -16,8 +15,4 @@ class Storages extends Component {
   }
 }
 
-export default connectData(Storages, {
-  api: {
-    accounts: api.accounts
-  }
-});
+export default Storages;

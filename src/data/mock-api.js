@@ -25,7 +25,14 @@ const mockGETSync = (uri: string) => {
     case '/dashboard':
       return denormalize(
         {
-          lastOperations: Object.keys(mockEntities.operations).slice(0, 6)
+          lastOperations: Object.keys(mockEntities.operations).slice(0, 6),
+          pending: {
+            operations: Object.keys(mockEntities.operations).slice(6, 9),
+            accounts: Object.keys(mockEntities.accounts).slice(1, 3),
+            total: 7,
+            totalAccounts: 3,
+            totalOperations: 4
+          }
         },
         apiSpec.dashboard.responseSchema,
         mockEntities

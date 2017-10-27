@@ -1,5 +1,4 @@
 import blurBG from './blurBG';
-import dashboard from './dashboard';
 import profile from './profile';
 import locale from './locale';
 import auth from './auth';
@@ -16,7 +15,6 @@ import data from './data';
 
 const reducers = {
   blurBG,
-  dashboard,
   profile,
   locale,
   auth,

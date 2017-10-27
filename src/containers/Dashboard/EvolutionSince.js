@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import DeltaChange from '../../components/DeltaChange';
 import DashboardField from './DashboardField';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
+import { TotalBalanceFilters } from '../../components/TotalBalanceFilter';
 
 type Filter = 'yesterday' | 'week' | 'month';
 

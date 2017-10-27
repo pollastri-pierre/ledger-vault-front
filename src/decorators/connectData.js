@@ -11,7 +11,7 @@ import type { APISpec } from '../data/api-spec';
 type Opts = {
   // TODO multi api. we need to pull multiple endpoints sometimes
   api: { [_: string]: APISpec },
-  propsToApiParams: (props: *) => Object,
+  propsToApiParams?: (props: *) => Object,
   RenderLoading?: (props: Object) => *
   // TODO RenderError
 };
@@ -20,6 +20,8 @@ const defaultOpts = {
   RenderLoading: SpinnerCard,
   propsToApiParams: _ => null
 };
+
+// TODO it would be great to infer the type of props the Decorated will receives <3
 
 export default (Decorated: *, opts: Opts) => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };

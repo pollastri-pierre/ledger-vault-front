@@ -6,7 +6,7 @@ import DashboardField from './DashboardField';
 import DateFormat from '../../components/DateFormat';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
 import AccountName from '../../components/AccountName';
-import type { PendingEvent, Account } from '../../datatypes';
+import type { Operation, Account } from '../../datatypes';
 import './PendingCard.css';
 
 const Row = ({ date, children }) => (
@@ -18,7 +18,7 @@ const Row = ({ date, children }) => (
   </div>
 );
 
-const OperationRow = ({ data }) => (
+const OperationRow = ({ data }: { data: Operation }) => (
   <Row date={data.time}>
     <CurrencyNameValue currencyName={data.currency_name} value={data.amount} />
   </Row>
@@ -34,15 +34,14 @@ const PendingCardRowPerType = {
   account: AccountRow
 };
 
-class PendingCard extends Component<*> {
-  props: {
-    events: Array<PendingEvent>,
-    total: number,
-    totalOperations: number,
-    totalAccounts: number
-  };
+class PendingCard extends Component<{ pending: * }> {
   render() {
-    const { events, total, totalOperations, totalAccounts } = this.props;
+    const {
+      pending: { operations, accounts, total, totalOperations, totalAccounts }
+    } = this.props;
+    const events = operations
+      .map(data => ({ type: 'operation', data }))
+      .concat(accounts.map(data => ({ type: 'account', data })));
     return (
       <Card
         title="pending"

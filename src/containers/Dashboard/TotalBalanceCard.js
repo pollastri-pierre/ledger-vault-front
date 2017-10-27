@@ -2,22 +2,36 @@
 import React, { Component } from 'react';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
 import DeltaChange from '../../components/DeltaChange';
-import TotalBalanceFilter from '../../components/TotalBalanceFilter';
+import TotalBalanceFilter, {
+  TotalBalanceFilters
+} from '../../components/TotalBalanceFilter';
 import DateFormat from '../../components/DateFormat';
 import Card from '../../components/Card';
 import DashboardField from './DashboardField';
 import EvolutionSince from './EvolutionSince';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
 import './TotalBalanceCard.css';
 
-class TotalBalance extends Component<*> {
-  props: {
-    dashboard: *,
-    onTotalBalanceFilterChange: (value: string) => void
-  };
+class TotalBalance extends Component<{
+  accounts: *,
+  filter: string,
+  onTotalBalanceFilterChange: (value: string) => void
+}> {
   render() {
-    const { dashboard, onTotalBalanceFilterChange } = this.props;
-    const { totalBalance, totalBalanceFilter } = dashboard;
+    const { accounts, filter, onTotalBalanceFilterChange } = this.props;
+    const totalBalance = {
+      // TODO COMPUTE!
+      currencyName: 'EUR',
+      date: new Date().toISOString(),
+      value: 1589049,
+      valueHistory: {
+        yesterday: 1543125,
+        week: 1031250,
+        month: 2043125
+      },
+      accountsCount: 5,
+      currenciesCount: 4,
+      membersCount: 8
+    };
 
     return (
       <Card
@@ -25,7 +39,7 @@ class TotalBalance extends Component<*> {
         title="total balance"
         titleRight={
           <TotalBalanceFilter
-            value={totalBalanceFilter}
+            value={filter}
             onChange={onTotalBalanceFilterChange}
           />
         }
@@ -40,7 +54,7 @@ class TotalBalance extends Component<*> {
           <EvolutionSince
             value={totalBalance.value}
             valueHistory={totalBalance.valueHistory}
-            filter={totalBalanceFilter}
+            filter={filter}
           />
           <DashboardField label="accounts" align="right">
             {totalBalance.accountsCount}

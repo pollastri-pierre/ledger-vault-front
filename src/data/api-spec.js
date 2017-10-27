@@ -27,8 +27,16 @@ const api: API = {
     uri: '/dashboard',
     method: 'GET',
     responseSchema: {
-      lastOperations: [Operation]
-      // pending: [what type goes here?]
+      lastOperations: [Operation],
+      pending: {
+        operations: [Operation],
+        accounts: [Account]
+        /*
+        total: number,
+        totalAccounts: number,
+        totalOperations: number
+        */
+      }
     }
   }
 };

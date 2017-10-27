@@ -1,100 +1,63 @@
+//@flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { getAccounts } from '../../redux/modules/accounts';
-import _ from 'lodash';
-import { SpinnerCard } from '../../components';
 import connectData from '../../decorators/connectData';
+import api from '../../data/api-spec';
 
-//Components
 import Card from '../../components/Card';
-
-//Containers
 import Currencies from './Currencies';
-
-import { setTotalBalanceFilter } from '../../redux/modules/dashboard';
 import TotalBalanceCard from './TotalBalanceCard';
-import AccountCard from './AccountCard';
 import LastOperationCard from './LastOperationCard';
 import PendingCard from './PendingCard';
 import Storages from './Storages';
 
 import './index.css';
 
-const mapStateToProps = state => ({
-  accounts: state.accounts,
-  dashboard: state.dashboard
-});
+class Dashboard extends Component<
+  { dashboard: *, accounts: * },
+  { filter: string }
+> {
+  state = {
+    filter: 'yesterday'
+  };
 
-const mapDispatchToProps = dispatch => ({
-  onGetAccounts: id => dispatch(getAccounts()),
-  onTotalBalanceFilterChange: totalBalanceFilter =>
-    dispatch(setTotalBalanceFilter(totalBalanceFilter))
-});
-
-class Dashboard extends Component {
-  componentWillMount() {
-    this.update(this.props);
-  }
-
-  update(props) {
-    this.props.onGetAccounts();
-  }
+  onTotalBalanceFilterChange = (filter: string) => {
+    this.setState({ filter });
+  };
 
   render() {
-    const { dashboard, onTotalBalanceFilterChange } = this.props;
-
-    const storages = [
-      { id: 0, title: 'cold storage' },
-      { id: 1, title: 'cold storage' },
-      { id: 2, title: 'trackerfund' },
-      { id: 3, title: 'hot wallet' },
-      { id: 4, title: 'etf holdings' }
-    ];
-
-    const { isLoadingAccounts, accounts } = this.props.accounts;
+    const { dashboard, accounts } = this.props;
+    const { filter } = this.state;
+    const { onTotalBalanceFilterChange } = this;
 
     return (
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            dashboard={dashboard}
+            accounts={accounts}
+            filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          {isLoadingAccounts ? (
-            <Card title="last operations">
-              <SpinnerCard />
-            </Card>
-          ) : (
-            <LastOperationCard
-              {...dashboard.lastOperations}
-              accounts={accounts}
-            />
-          )}
-          <Storages filter={dashboard.totalBalanceFilter} />
+          <LastOperationCard
+            operations={dashboard.lastOperations}
+            accounts={accounts}
+          />
+          <Storages accounts={accounts} filter={filter} />
         </div>
         <div className="aside">
           <Card title="currencies">
-            {isLoadingAccounts ? (
-              <SpinnerCard />
-            ) : (
-              <Currencies accounts={accounts} loading={isLoadingAccounts} />
-            )}
+            <Currencies accounts={accounts} />
           </Card>
-          <PendingCard {...dashboard.pending} />
+          <PendingCard pending={dashboard.pending} />
         </div>
       </div>
     );
   }
 }
 
-// TMP
-const reduxDecoration = connect(mapStateToProps, mapDispatchToProps)(Dashboard);
-
-export default reduxDecoration;
-/*
-export default connectData(reduxDecoration, {
-  api: 'dashboard'
+export default connectData(Dashboard, {
+  api: {
+    dashboard: api.dashboard,
+    accounts: api.accounts
+  }
 });
-*/

@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
+
+/*
+to be specified..
+*/
+export const TotalBalanceFilters = {
+  yesterday: { title: 'yesterday' },
+  week: { title: 'a week ago' },
+  month: { title: 'a month ago' }
+};
 
 class TotalBalanceFilter extends Component {
   onChange = (event, index, value) => this.props.onChange(value);
