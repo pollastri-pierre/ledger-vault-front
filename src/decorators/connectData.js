@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { denormalize } from 'normalizr';
 import React, { Component } from 'react';
 import isEqual from 'lodash/isEqual';
-import apiSpec from '../data/api-spec';
 import { fetchData } from '../redux/modules/data';
 import SpinnerCard from '../components/spinners/SpinnerCard';
 import type { APISpec } from '../data/api-spec';
