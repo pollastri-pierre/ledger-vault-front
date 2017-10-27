@@ -43,6 +43,21 @@ const api: API = {
         totalOperations: number
         */
       }
+      /*
+      totalBalance: {
+        currencyName: string,
+        date: string,
+        value: number,
+        valueHistory: {
+          yesterday: number,
+          week: number,
+          month: number
+        },
+        accountsCount: number,
+        currenciesCount: number,
+        membersCount: number
+      }
+      */
     }
   }
 };

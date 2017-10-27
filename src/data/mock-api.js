@@ -29,6 +29,19 @@ const mockGETSync = (uri: string) => {
             total: 7,
             totalAccounts: 3,
             totalOperations: 4
+          },
+          totalBalance: {
+            currencyName: 'EUR',
+            date: new Date().toISOString(),
+            value: 1589049,
+            valueHistory: {
+              yesterday: 1543125,
+              week: 1031250,
+              month: 2043125
+            },
+            accountsCount: 5,
+            currenciesCount: 4,
+            membersCount: 8
           }
         },
         apiSpec.dashboard.responseSchema,

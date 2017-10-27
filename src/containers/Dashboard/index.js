@@ -34,7 +34,7 @@ class Dashboard extends Component<
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            accounts={accounts}
+            totalBalance={dashboard.totalBalance}
             filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />

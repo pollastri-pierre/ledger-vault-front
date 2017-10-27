@@ -12,27 +12,12 @@ import EvolutionSince from './EvolutionSince';
 import './TotalBalanceCard.css';
 
 class TotalBalance extends Component<{
-  accounts: *,
+  totalBalance: *,
   filter: string,
   onTotalBalanceFilterChange: (value: string) => void
 }> {
   render() {
-    const { accounts, filter, onTotalBalanceFilterChange } = this.props;
-    const totalBalance = {
-      // TODO COMPUTE!
-      currencyName: 'EUR',
-      date: new Date().toISOString(),
-      value: 1589049,
-      valueHistory: {
-        yesterday: 1543125,
-        week: 1031250,
-        month: 2043125
-      },
-      accountsCount: 5,
-      currenciesCount: 4,
-      membersCount: 8
-    };
-
+    const { totalBalance, filter, onTotalBalanceFilterChange } = this.props;
     return (
       <Card
         className="total-balance"
