@@ -6,11 +6,14 @@ import isEqual from 'lodash/isEqual';
 import apiSpec from '../data/api-spec';
 import { fetchData } from '../redux/modules/data';
 import SpinnerCard from '../components/spinners/SpinnerCard';
+import type { APISpec } from '../data/api-spec';
 
 type Opts = {
-  api: string,
-  propsToApiParams?: (props: Object) => Object,
+  // TODO multi api. we need to pull multiple endpoints sometimes
+  api: { [_: string]: APISpec },
+  propsToApiParams: (props: *) => Object,
   RenderLoading?: (props: Object) => *
+  // TODO RenderError
 };
 
 const defaultOpts = {
@@ -20,28 +23,30 @@ const defaultOpts = {
 
 export default (Decorated: *, opts: Opts) => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
+  const apiKeys = Object.keys(api);
+
   class Clazz extends Component<*, *> {
     apiParams: *;
 
     state: {
-      result: ?Object
+      results: ?Object
     } = {
-      // local state to keep the result id of the query (will be denormalize with the schema+data entities)
-      result: null
+      // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
+      results: null
     };
 
     sync(apiParams: *) {
+      const { dispatch } = this.props;
       this.apiParams = apiParams;
-      this.props
-        .dispatch(
-          fetchData({
-            id: api,
-            ...apiParams
-          })
-        )
-        .then(result => {
-          this.setState({ result });
+      Promise.all(
+        apiKeys.map(key => dispatch(fetchData(api[key], apiParams)))
+      ).then(all => {
+        const results = {};
+        all.forEach((result, i) => {
+          results[apiKeys[i]] = result;
         });
+        this.setState({ results });
+      });
     }
 
     forceUpdate = () => this.sync(this.apiParams);
@@ -58,16 +63,23 @@ export default (Decorated: *, opts: Opts) => {
     }
 
     render() {
-      const { data, ...props } = this.props;
-      const { result } = this.state;
-      if (!result) return <RenderLoading {...props} />;
+      const { dataStore, ...props } = this.props;
+      const { results } = this.state;
+      if (!results) return <RenderLoading {...props} />;
       const extraProps = {
-        [api]: denormalize(result, apiSpec[api].responseSchema, data.entities),
         forceUpdate: this.forceUpdate
       };
+      apiKeys.map(key => {
+        const data = denormalize(
+          results[key],
+          api[key].responseSchema,
+          dataStore.entities
+        );
+        extraProps[key] = data;
+      });
       return <Decorated {...props} {...extraProps} />;
     }
   }
 
-  return connect(({ data }) => ({ data }))(Clazz);
+  return connect(({ data }) => ({ dataStore: data }))(Clazz);
 };

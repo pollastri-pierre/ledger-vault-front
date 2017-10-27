@@ -21,9 +21,9 @@ function mergeEntities(prev, patch) {
   return entities;
 }
 
-export const fetchData = action => dispatch =>
-  query(action).then(data => {
-    const result = normalize(data, apiSpec[action.id].responseSchema);
+export const fetchData = (spec, apiParams, body) => dispatch =>
+  query(spec, apiParams, body).then(data => {
+    const result = normalize(data, spec.responseSchema);
     dispatch({
       type: 'DATA_FETCHED',
       result

@@ -6,7 +6,7 @@ import DashboardField from './DashboardField';
 import DateFormat from '../../components/DateFormat';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
 import AccountName from '../../components/AccountName';
-import type { PendingEvent } from '../../datatypes';
+import type { PendingEvent, Account } from '../../datatypes';
 import './PendingCard.css';
 
 const Row = ({ date, children }) => (
@@ -23,7 +23,7 @@ const OperationRow = ({ data }) => (
     <CurrencyNameValue currencyName={data.currency_name} value={data.amount} />
   </Row>
 );
-const AccountRow = ({ data }) => (
+const AccountRow = ({ data }: { data: Account }) => (
   <Row date={data.time}>
     <AccountName name={data.name} currency={data.currency} />
   </Row>

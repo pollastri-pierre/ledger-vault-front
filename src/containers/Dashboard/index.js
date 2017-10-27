@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { getAccounts } from '../../redux/modules/accounts';
 import _ from 'lodash';
 import { SpinnerCard } from '../../components';
+import connectData from '../../decorators/connectData';
 
 //Components
 import Card from '../../components/Card';
@@ -88,6 +89,12 @@ class Dashboard extends Component {
   }
 }
 
-export { Dashboard as DashboardNotDecorated };
+// TMP
+const reduxDecoration = connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default reduxDecoration;
+/*
+export default connectData(reduxDecoration, {
+  api: 'dashboard'
+});
+*/

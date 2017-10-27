@@ -28,6 +28,7 @@ const initialState = {
   // these below are probably downloaded from a server... not yet made these async
   // also we need to think which we want to have here vs in other store
   totalBalance: {
+    // TODO these will be probably client side computed from accounts/members
     currencyName: 'EUR',
     date: new Date().toISOString(),
     value: 1589049,
@@ -62,7 +63,7 @@ const reducers = {
   })
 };
 
-export default (state = initialState, action) =>
+export default (state: * = initialState, action: *) =>
   action.type in reducers
     ? { ...state, ...reducers[action.type](action) }
     : state;

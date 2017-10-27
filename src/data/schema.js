@@ -4,7 +4,7 @@ import { schema, normalize } from 'normalizr';
 // The schema defines how entities connect to each other
 // this define the front model schema, not exactly the one coming from the API (without the _id fields)
 
-export const currency = new schema.Entity(
+export const Currency = new schema.Entity(
   'currencies',
   {},
   {
@@ -12,25 +12,30 @@ export const currency = new schema.Entity(
   }
 );
 
-export const account = new schema.Entity('accounts', { currency });
+export const Account = new schema.Entity('accounts', { currency: Currency });
 
-export const operation = new schema.Entity(
+export const Operation = new schema.Entity(
   'operations',
-  { account },
+  { account: Account, currency: Currency },
   {
+    idAttribute: 'uuid',
     processStrategy: ({ account_id, ...entity }) => ({
       ...entity,
-      account: account_id
+      // NB this is to reconnect a disconnected model.
+      // that means it will suppose account_id is already loaded.
+      // we need to do smart loading system for that.
+      account: account_id,
+      currency: entity.currency_name
     })
   }
 );
 
-export const group = new schema.Entity('groups');
+export const Group = new schema.Entity('groups');
 
-export const member = new schema.Entity('members', {
-  groups: [group]
+export const Member = new schema.Entity('members', {
+  groups: [Group]
 });
 
-group.define({
-  members: [member]
+Group.define({
+  members: [Member]
 });
