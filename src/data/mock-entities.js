@@ -312,5 +312,5 @@ export default {
     }
   },
   // currencies are statically provided, we add them in the entities mock
-  currencies: currenciesMap,
+  currencies: currenciesMap
 };
