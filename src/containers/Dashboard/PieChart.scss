@@ -90,6 +90,7 @@ td {
   pointer-events: none;
   background-color: currentColor;
   padding: 15px;
+  transition: opacity 0.3s ease-out;
   .tooltipTextWrap {
   	position: relative;
   	width: 100%;

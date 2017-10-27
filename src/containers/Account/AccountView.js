@@ -71,6 +71,7 @@ class AccountView extends Component {
           />
         </div>
         <ListOperation
+          columnIds={['date', 'adress', 'status', 'amount']}
           operations={operations}
           loading={isLoadingOperations}
           open={this.props.onGetOperation}

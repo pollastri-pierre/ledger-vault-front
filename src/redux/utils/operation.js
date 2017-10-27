@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import currencies from '../../currencies';
 
 const operationsUtils = {
   findOperationDetails: (idOperation, operations) => {
@@ -7,6 +8,7 @@ const operationsUtils = {
   },
   mockOperation: {
     uuid: '1',
+    currency: currencies[0],
     currency_name: 'bitcoin',
     currency_family: 'BITCOIN',
     trust: {
@@ -161,7 +163,8 @@ export function getFakeList() {
     {
       ...operationsUtils.mockOperation,
       uuid: '1',
-      time: new Date(2017, 9, 8, 22)
+      time: new Date(2017, 9, 8, 22),
+      currency: currencies[0],
     },
     {
       ...operationsUtils.mockOperation,
@@ -172,7 +175,8 @@ export function getFakeList() {
         amount: 300000
       },
       account_id: 1,
-      time: new Date(2017, 9, 9)
+      time: new Date(2017, 9, 9),
+      currency: currencies[1],
     },
     {
       ...operationsUtils.mockOperation,
@@ -183,14 +187,16 @@ export function getFakeList() {
       reference_conversion: {
         currency_name: 'EUR',
         amount: 600000
-      }
+      },
+      currency: currencies[0],
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '4',
       confirmations: 0,
       account_id: 3,
-      time: new Date(2017, 9, 11)
+      time: new Date(2017, 9, 11),
+      currency: currencies[0],
     },
     {
       ...operationsUtils.mockOperation,
@@ -202,12 +208,14 @@ export function getFakeList() {
         amount: -200000
       },
       type: 'FROM',
-      time: new Date(2017, 9, 12)
+      time: new Date(2017, 9, 12),
+      currency: currencies[1]
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '6',
-      time: new Date(2017, 9, 13)
+      time: new Date(2017, 9, 13),
+      currency: currencies[0]
     },
     {
       ...operationsUtils.mockOperation,
@@ -218,13 +226,15 @@ export function getFakeList() {
         amount: 280000
       },
       confirmations: 0,
-      time: new Date(2017, 9, 14, 9)
+      time: new Date(2017, 9, 14, 9),
+      currency: currencies[1],
     },
     {
       ...operationsUtils.mockOperation,
       uuid: '8',
       type: 'FROM',
-      time: new Date(2017, 9, 15)
+      time: new Date(2017, 9, 15),
+      currency: currencies[1],
     },
     {
       ...operationsUtils.mockOperation,
@@ -234,7 +244,8 @@ export function getFakeList() {
         currency_name: 'EUR',
         amount: -230000
       },
-      time: new Date(2017, 9, 16)
+      time: new Date(2017, 9, 16),
+      currency: currencies[0],
     }
   ];
 }

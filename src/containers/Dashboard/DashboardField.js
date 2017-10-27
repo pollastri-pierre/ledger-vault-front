@@ -9,10 +9,10 @@ class DashboardField extends Component<*> {
     align?: string
   };
   render() {
-    const { label, children, align } = this.props;
+    const { label, children, align, ...rest } = this.props;
     return (
-      <div style={{ textAlign: align }}>
-        <div>{children}</div>
+      <div style={{ textAlign: align }} {...rest}>
+        <div className="DashboardNumber">{children}</div>
         <div className="DashboardFieldLabel uppercase">{label}</div>
       </div>
     );

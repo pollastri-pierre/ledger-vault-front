@@ -15,7 +15,7 @@ class Section extends Component<*> {
       <div className={`bloc ${className}`}>
         <header>
           <h3>{title}</h3>
-          <span className="title-right">{titleRight}</span>
+          <h3 className="title-right">{titleRight}</h3>
         </header>
         <div className="bloc-content">{children}</div>
       </div>

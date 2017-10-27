@@ -53,7 +53,7 @@
   padding: 40px;
   position: relative;
   box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
-
+  margin-bottom: 20px;
 
   h2 {
     text-transform: uppercase;
@@ -74,9 +74,12 @@
 
     td.align-right {
       text-align: right;
+      span {
+        text-align: right;
+      }
     }
 
-    thead td {
+    thead td, thead td span{
       font-size: 10px;
       font-weight: 600;
       color: $lead;
@@ -101,7 +104,8 @@
         }
       }
 
-      td.date {
+      td.date,
+      td.date span {
         font-size: 10px;
         font-weight: 600;
         color: $black;
@@ -122,37 +126,43 @@
         }
       }
 
-      td.type {
-        color: $lead;
-        font-size: 10px;
-        width: 50px;
+      td.adress {
+        span.type {
+          color: $steel;
+          font-size: 10px;
+          width: 50px;
+        }
+        span.hash {
+          font-size: 11px;
+          text-transform: initial;
+          color: $black;
+          width: 300px;
+          margin-left: 20px;
+        }
       }
 
-      td.status {
+      td.status span {
         text-align: left;
         font-size: 11px;
         color: $lead;
         text-transform: initial;
       }
 
-      td.hash {
-        font-size: 11px;
-        text-transform: initial;
-        color: $black;
-        width: 300px;
-      }
-
       td.amount-euro,
-      td.anount-crypto {
+      td.amount-crypto,
+      td.amount-euro span,
+      td.amount-crypto span {
         font-size: 13px;
         text-align: right;
       }
 
-      td.amount-euro {
+      td.amount-euro,
+      td.amount-euro span {
         color: $lead;
       }
 
-      td.amount-crypto {
+      td.amount-crypto,
+      td.amount-crypto span {
         color: $black;
         text-align: right;
         font-size: 13px;
