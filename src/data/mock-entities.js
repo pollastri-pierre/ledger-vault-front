@@ -1,5 +1,11 @@
 //@flow
 
+import currencies from '../currencies';
+const currenciesMap = {};
+currencies.forEach(c => {
+  currenciesMap[c.name] = c;
+});
+
 const genNote = i => ({
   id: i,
   title: 'Note ' + i,
@@ -304,5 +310,7 @@ export default {
         currency_name: 'EUR'
       }
     }
-  }
+  },
+  // currencies are statically provided, we add them in the entities mock
+  currencies: currenciesMap,
 };

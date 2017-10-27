@@ -1,18 +1,7 @@
 //@flow
 import { denormalize } from 'normalizr';
 import apiSpec from './api-spec';
-import currencies from '../currencies';
-import mockEntitiesJSON from './mock-entities.js';
-const mockEntities = { ...mockEntitiesJSON };
-const currenciesMap = {};
-currencies.forEach(c => {
-  currenciesMap[c.name] = c;
-});
-mockEntities.currencies = currenciesMap;
-
-const delay = ms => new Promise(success => setTimeout(success, ms));
-
-// TODO mock PER URL
+import mockEntities from './mock-entities.js';
 
 const mockGETSync = (uri: string) => {
   switch (uri) {
@@ -40,6 +29,8 @@ const mockGETSync = (uri: string) => {
   }
   throw new Error('mock does not implement uri=' + uri);
 };
+
+const delay = ms => new Promise(success => setTimeout(success, ms));
 
 export const mockGET = (uri: string): Promise<*> =>
   delay(400 + 400 * Math.random()).then(() => mockGETSync(uri));
