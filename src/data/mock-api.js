@@ -10,9 +10,11 @@ currencies.forEach(c => {
 });
 mockEntities.currencies = currenciesMap;
 
+const delay = ms => new Promise(success => setTimeout(success, ms));
+
 // TODO mock PER URL
 
-export const mockGET = (uri: string): Object | Array<Object> => {
+const mockGETSync = (uri: string) => {
   switch (uri) {
     case '/accounts':
       return denormalize(
@@ -32,25 +34,5 @@ export const mockGET = (uri: string): Object | Array<Object> => {
   throw new Error('mock does not implement uri=' + uri);
 };
 
-/*
-const apiMocks = {
-  accounts: Object.keys(mockEntities.accounts),
-  dashboard: {
-    lastOperations: Object.keys(mockEntities.operations).slice(0, 6)
-  }
-};
-
-const data = {};
-Object.keys(apiMocks).map(k => {
-  data[k] = (params: *) => {
-    const mock = apiMocks[k];
-    return denormalize(
-      typeof mock === 'function' ? mock(params) : mock,
-      apiSpec[k].responseSchema,
-      mockEntities
-    );
-  };
-});
-
-export default data;
-*/
+export const mockGET = (uri: string): Promise<*> =>
+  delay(400 + 400 * Math.random()).then(() => mockGETSync(uri));
