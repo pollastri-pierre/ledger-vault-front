@@ -1,5 +1,5 @@
 //@flow
-import { schema, normalize } from 'normalizr';
+import { schema } from 'normalizr';
 
 // The schema defines how entities connect to each other
 // this define the front model schema, not exactly the one coming from the API (without the _id fields)
