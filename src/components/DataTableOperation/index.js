@@ -13,15 +13,16 @@ import './index.css';
 class DataTableOperation extends Component<*> {
   props: {
     operations: Array<Operation>,
-    accounts: Array<Account>,
+    accounts?: Array<Account>, // DEPRECATED
     columnIds: Array<string>
   };
   render() {
     const { operations, accounts, columnIds } = this.props;
     const data = operations.map(operation => {
-      const account: ?Account = accounts.find(
-        a => a.id === operation.account_id
-      );
+      const account: ?Account =
+        operation.account ||
+        /* DEPRECATED */ (accounts &&
+          accounts.find(a => a.id === operation.account_id));
       const currency: ?Currency = currencies.find(
         c => c.name === operation.currency_name
       );

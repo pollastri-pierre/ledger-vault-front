@@ -1,111 +1,81 @@
+//@flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { ListOperation } from '../../components';
-import { openOperationModal } from '../../redux/modules/operations';
-import { getReceiveAddress, getBalance, getCountervalue, getOperations } from '../../redux/modules/accounts-info';
-import BalanceCard from './BalanceCard';
-import CounterValueCard from './CounterValueCard';
+import connectData from '../../decorators/connectData';
+import api from '../../data/api-spec';
+import CurrencyNameValue from '../../components/CurrencyNameValue';
+import Card from '../../components/Card';
 import ReceiveFundsCard from './ReceiveFundsCard';
-import Quicklook from './Quicklook';
+import DataTableOperation from '../../components/DataTableOperation';
+import QuicklookGraph from './QuicklookGraph';
+import type { Account, Operation } from '../../datatypes';
 import './Account.css';
 
-const mapStateToProps = state => ({
-  accounts: state.accounts,
-  accountsInfo: state.accountsInfo,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onGetOperation: (id, index) => dispatch(openOperationModal(id, index)),
-  onGetOperations: (id, index) => dispatch(getOperations(id, index)),
-  onGetBalance: id => dispatch(getBalance(id)),
-  onGetReceiveAddress: id => dispatch(getReceiveAddress(id)),
-  onGetCountervalue: id => dispatch(getCountervalue(id)),
-});
-
-class AccountView extends Component {
-  componentWillMount() {
-    this.update(this.props);
-  }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.update(nextProps);
-    }
-  }
-
-  update(props) {
-    this.props.onGetBalance(props.match.params.id);
-    this.props.onGetReceiveAddress(props.match.params.id);
-    this.props.onGetCountervalue(props.match.params.id);
-    this.props.onGetOperations(props.match.params.id, 0);
-  }
-
+class AccountView extends Component<{
+  account: Account,
+  operations: Array<Operation>
+}> {
   render() {
-    const {
-      balance,
-      countervalue,
-      receiveAddress,
-      operations,
-      isLoadingBalance,
-      isLoadingCounter,
-      isLoadingAddress,
-      isLoadingOperations,
-      isLoadingNextOperations,
-    } = this.props.accountsInfo;
-
+    const { account, operations } = this.props;
     return (
       <div className="account-view">
         <div className="account-view-infos">
           <div className="infos-left">
             <div className="infos-left-top">
-              <BalanceCard data={balance} loading={isLoadingBalance} />
-              <CounterValueCard data={countervalue} loading={isLoadingCounter} />
+              <Card className="balance" title="Balance">
+                <p className="amount">
+                  <CurrencyNameValue
+                    currencyName={account.currency.name}
+                    value={account.balance}
+                  />
+                </p>
+                <span className="date">Today, 3AM{/* TODO */}</span>
+              </Card>
+
+              <Card className="countervalue" title="Countervalue">
+                <div className="bloc-content">
+                  <p className="amount ctv">
+                    <CurrencyNameValue
+                      currencyName={account.reference_conversion.currency_name}
+                      value={account.reference_conversion.balance}
+                    />
+                  </p>
+                  <span className="date">
+                    ETH 1 ≈ {account.reference_conversion.currency_name} ???
+                    {/* FIXME we need that data too */}
+                  </span>
+                </div>
+              </Card>
             </div>
-            <ReceiveFundsCard data={receiveAddress} loading={isLoadingAddress} />
+            <ReceiveFundsCard hash={account.receive_address} />
           </div>
-          <Quicklook
-            operations={operations}
-            loading={isLoadingOperations || isLoadingNextOperations}
-          />
+          <Card className="quicklook" title="Quicklook">
+            <QuicklookGraph
+              data={operations.map((o: Operation) => ({
+                time: new Date(o.time),
+                amount: o.amount
+              }))}
+            />
+          </Card>
         </div>
-        <ListOperation
-          columnIds={['date', 'adress', 'status', 'amount']}
-          operations={operations}
-          loading={isLoadingOperations}
-          open={this.props.onGetOperation}
-        />
+        <Card
+          title="last operations"
+          titleRight={
+            <span>
+              VIEW ALL{/* TODO make that a component, use react-router <Link> */}
+            </span>
+          }
+        >
+          <DataTableOperation
+            operations={operations}
+            columnIds={['date', 'address', 'status', 'amount']}
+          />
+        </Card>
       </div>
     );
   }
 }
 
-AccountView.propTypes = {
-  onGetBalance: PropTypes.func.isRequired,
-  onGetReceiveAddress: PropTypes.func.isRequired,
-  onGetCountervalue: PropTypes.func.isRequired,
-  onGetOperations: PropTypes.func.isRequired,
-  onGetOperation: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  accountsInfo: PropTypes.shape({
-    balance: PropTypes.shape({}),
-    countervalue: PropTypes.shape({}),
-    receiveAddress: PropTypes.shape({}),
-    operations: PropTypes.array,
-    isLoadingCounter: PropTypes.bool.isRequired,
-    isLoadingAddress: PropTypes.bool.isRequired,
-    isLoadingBalance: PropTypes.bool.isRequired,
-    isLoadingOperations: PropTypes.bool.isRequired,
-    isLoadingNextOperations: PropTypes.bool.isRequired,
-  }).isRequired,
-};
-
-export { AccountView as AccountViewNotDecorated };
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountView));
-
+export default connectData(AccountView, {
+  api: { account: api.account, operations: api.accountOperations },
+  propsToApiParams: props => ({ accountId: props.match.params.id })
+});

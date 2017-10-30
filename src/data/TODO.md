@@ -1,0 +1,6 @@
+- need to think how to handle things that are "singleton". like for instance, your settings. there need to be a root concept maybe.
+- implement a case using a parametrized API.
+- mock more things (members, groups)
+- implement a POST case. We should be able to express the responseType with the schema too. it takes a body. we need an utility method, probably available via connectData, that would allow us to perform an arbitrary query.
+- implement a more complex system that would load missing data. Exemple: if someone else creates a new account and an operation on it, we don't refresh our page but we just load something like that Operation view page, we need to be able to load missing linked account. We can take server's data, compare it with the schema, and if we have missing ids, we do cascading of API calls until everything is loaded...
+- implement the network
