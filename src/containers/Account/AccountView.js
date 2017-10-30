@@ -1,14 +1,14 @@
 //@flow
-import React, { Component } from 'react';
-import connectData from '../../decorators/connectData';
-import api from '../../data/api-spec';
-import CurrencyNameValue from '../../components/CurrencyNameValue';
-import Card from '../../components/Card';
-import ReceiveFundsCard from './ReceiveFundsCard';
-import DataTableOperation from '../../components/DataTableOperation';
-import QuicklookGraph from './QuicklookGraph';
-import type { Account, Operation } from '../../datatypes';
-import './Account.css';
+import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import Card from "../../components/Card";
+import ReceiveFundsCard from "./ReceiveFundsCard";
+import DataTableOperation from "../../components/DataTableOperation";
+import QuicklookGraph from "./QuicklookGraph";
+import type { Account, Operation } from "../../datatypes";
+import "./Account.css";
 
 class AccountView extends Component<{
   account: Account,
@@ -67,7 +67,7 @@ class AccountView extends Component<{
         >
           <DataTableOperation
             operations={operations}
-            columnIds={['date', 'address', 'status', 'amount']}
+            columnIds={["date", "address", "status", "amount"]}
           />
         </Card>
       </div>

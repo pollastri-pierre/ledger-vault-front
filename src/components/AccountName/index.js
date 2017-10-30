@@ -1,8 +1,8 @@
 //@flow
-import React, { Component } from 'react';
-import BadgeCurrency from '../BadgeCurrency';
-import type { Currency } from '../../datatypes';
-import './index.css';
+import React, { Component } from "react";
+import BadgeCurrency from "../BadgeCurrency";
+import type { Currency } from "../../datatypes";
+import "./index.css";
 
 class AccountName extends Component<*> {
   props: {

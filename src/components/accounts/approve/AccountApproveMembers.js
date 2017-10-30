@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
-import _ from 'lodash';
-import { Avatar } from '../../../components';
-
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import CircularProgress from "material-ui/CircularProgress";
+import _ from "lodash";
+import { Avatar } from "../../../components";
 
 class AccountApproveMembers extends Component {
   componentWillMount() {
@@ -22,9 +21,9 @@ class AccountApproveMembers extends Component {
       return (
         <CircularProgress
           style={{
-            top: '50%',
-            left: '50%',
-            margin: '-25px 0 0 -25px',
+            top: "50%",
+            left: "50%",
+            margin: "-25px 0 0 -25px"
           }}
         />
       );
@@ -36,7 +35,7 @@ class AccountApproveMembers extends Component {
           Members define the group of individuals that have the ability to
           approve outgoing operations from this account.
         </p>
-        {_.map(membersAccount, (hash) => {
+        {_.map(membersAccount, hash => {
           const member = _.find(members, { pub_key: hash });
           return (
             <div
@@ -53,7 +52,9 @@ class AccountApproveMembers extends Component {
                   height="15px"
                 />
               </div>
-              <span className="name">{member.firstname} {member.name}</span>
+              <span className="name">
+                {member.firstname} {member.name}
+              </span>
               <p className="role">{member.role}</p>
             </div>
           );
@@ -66,14 +67,14 @@ class AccountApproveMembers extends Component {
 AccountApproveMembers.propTypes = {
   organization: PropTypes.shape({
     members: PropTypes.arrayOf(PropTypes.shape({})),
-    isLoading: PropTypes.bool,
+    isLoading: PropTypes.bool
   }).isRequired,
   account: PropTypes.shape({
     security: PropTypes.shape({
-      members: PropTypes.arrayOf(PropTypes.string),
-    }),
+      members: PropTypes.arrayOf(PropTypes.string)
+    })
   }).isRequired,
-  getOrganizationMembers: PropTypes.func.isRequired,
+  getOrganizationMembers: PropTypes.func.isRequired
 };
 
 export default AccountApproveMembers;

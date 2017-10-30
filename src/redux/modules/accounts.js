@@ -1,33 +1,33 @@
-import { LOGOUT } from './auth';
+import { LOGOUT } from "./auth";
 
-import { data } from '../utils/accounts';
+import { data } from "../utils/accounts";
 
-export const GET_ACCOUNTS_START = 'accounts/GET_ACCOUNTS_START';
-export const GOT_ACCOUNTS = 'accounts/GOT_ACCOUNTS';
-export const GOT_ACCOUNTS_FAIL = 'accounts/GOT_ACCOUNTS_FAIL';
+export const GET_ACCOUNTS_START = "accounts/GET_ACCOUNTS_START";
+export const GOT_ACCOUNTS = "accounts/GOT_ACCOUNTS";
+export const GOT_ACCOUNTS_FAIL = "accounts/GOT_ACCOUNTS_FAIL";
 
 export function getAccountStart() {
   return {
-    type: GET_ACCOUNTS_START,
+    type: GET_ACCOUNTS_START
   };
 }
 
 export function gotAccounts(accounts) {
   return {
     type: GOT_ACCOUNTS,
-    accounts,
+    accounts
   };
 }
 
 export function gotAccountsFail(status) {
   return {
     type: GOT_ACCOUNTS_FAIL,
-    status,
+    status
   };
 }
 
 export function getAccounts() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(getAccountStart());
     setTimeout(() => {
       dispatch(gotAccounts(data));
@@ -37,7 +37,7 @@ export function getAccounts() {
 
 const initialState = {
   isLoadingAccounts: false,
-  accounts: null,
+  accounts: null
 };
 
 export default function reducer(state = initialState, action) {
@@ -54,4 +54,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

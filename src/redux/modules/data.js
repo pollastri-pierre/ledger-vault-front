@@ -1,13 +1,13 @@
-import { normalize, denormalize } from 'normalizr';
-import currencies from '../../currencies';
-import apiSpec from '../../data/api-spec';
-import { mockGET } from '../../data/mock-api';
-import type { APISpec } from './api-spec';
+import { normalize, denormalize } from "normalizr";
+import currencies from "../../currencies";
+import apiSpec from "../../data/api-spec";
+import { mockGET } from "../../data/mock-api";
+import type { APISpec } from "./api-spec";
 
 const getJSON = mockGET;
 
 const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
-  typeof uri === 'function' ? uri(apiParams || {}) : uri;
+  typeof uri === "function" ? uri(apiParams || {}) : uri;
 
 const query = (
   spec: APISpec,
@@ -15,12 +15,11 @@ const query = (
   body: ?Object
 ): Promise<*> => {
   const uri = resolveURI(spec, apiParams);
-  if (spec.method === 'GET') {
+  if (spec.method === "GET") {
     return getJSON(uri);
   }
-  throw new Error('no mock supported yet for method=' + spec.method);
+  throw new Error("no mock supported yet for method=" + spec.method);
 };
-
 
 // This initialize the initial entities (things like currencies are already available)
 const currenciesMap = {};
@@ -44,7 +43,7 @@ export const fetchData = (spec, apiParams, body) => dispatch =>
   query(spec, apiParams, body).then(data => {
     const result = normalize(data, spec.responseSchema);
     dispatch({
-      type: 'DATA_FETCHED',
+      type: "DATA_FETCHED",
       result
     });
     return result.result;

@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Section extends Component<*> {
   props: {
@@ -8,7 +8,7 @@ class Section extends Component<*> {
     titleRight: *,
     children: *
   };
-  static defaultProps = { className: '' };
+  static defaultProps = { className: "" };
   render() {
     const { title, titleRight, children, className } = this.props;
     return (

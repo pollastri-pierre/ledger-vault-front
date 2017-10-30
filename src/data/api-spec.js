@@ -1,5 +1,5 @@
 //@flow
-import { Account, Member, Operation } from './schema';
+import { Account, Member, Operation } from "./schema";
 
 export type APISpec = {
   uri: string | ((_: Object) => string),
@@ -14,28 +14,28 @@ type API = { [_: string]: APISpec };
 
 const api: API = {
   members: {
-    uri: '/members',
-    method: 'GET',
+    uri: "/members",
+    method: "GET",
     responseSchema: [Member]
   },
   accounts: {
-    uri: '/accounts',
-    method: 'GET',
+    uri: "/accounts",
+    method: "GET",
     responseSchema: [Account]
   },
   account: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
-    method: 'GET',
+    method: "GET",
     responseSchema: Account
   },
   accountOperations: {
     uri: ({ accountId }) => `/accounts/${accountId}/operations`,
-    method: 'GET',
+    method: "GET",
     responseSchema: [Operation]
   },
   dashboard: {
-    uri: '/dashboard',
-    method: 'GET',
+    uri: "/dashboard",
+    method: "GET",
     responseSchema: {
       lastOperations: [Operation],
       pending: {

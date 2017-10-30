@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import React, { Component } from "react";
+import SelectField from "material-ui/SelectField";
+import MenuItem from "material-ui/MenuItem";
 
 /*
 to be specified..
 */
 export const TotalBalanceFilters = {
-  yesterday: { title: 'yesterday' },
-  week: { title: 'a week ago' },
-  month: { title: 'a month ago' }
+  yesterday: { title: "yesterday" },
+  week: { title: "a week ago" },
+  month: { title: "a month ago" }
 };
 
 class TotalBalanceFilter extends Component {

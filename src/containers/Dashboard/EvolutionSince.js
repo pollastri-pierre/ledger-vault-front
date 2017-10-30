@@ -1,10 +1,10 @@
 //@flow
-import React, { Component } from 'react';
-import DeltaChange from '../../components/DeltaChange';
-import DashboardField from './DashboardField';
-import { TotalBalanceFilters } from '../../components/TotalBalanceFilter';
+import React, { Component } from "react";
+import DeltaChange from "../../components/DeltaChange";
+import DashboardField from "./DashboardField";
+import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 
-type Filter = 'yesterday' | 'week' | 'month';
+type Filter = "yesterday" | "week" | "month";
 
 class EvolutionSince extends Component<*> {
   props: {

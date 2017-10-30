@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import { Link } from "react-router-dom";
 
 function AccountsMenu(props) {
   const { accounts } = props;
@@ -13,7 +13,11 @@ function AccountsMenu(props) {
         return (
           <li key={account.id}>
             <Link
-              className={`${account.currency.name} ${props.pathname.startsWith(url) ? 'active' : ''}`}
+              className={`${account.currency.name} ${props.pathname.startsWith(
+                url
+              )
+                ? "active"
+                : ""}`}
               to={`/account/${account.id}`}
             >
               {account.name}
@@ -27,11 +31,13 @@ function AccountsMenu(props) {
 }
 
 AccountsMenu.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    currency: PropTypes.shape({}),
-  })).isRequired,
-  pathname: PropTypes.string.isRequired,
+  accounts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      currency: PropTypes.shape({})
+    })
+  ).isRequired,
+  pathname: PropTypes.string.isRequired
 };
 
 export default AccountsMenu;

@@ -1,15 +1,15 @@
 //@flow
-import React, { Component } from 'react';
-import CurrencyNameValue from '../../components/CurrencyNameValue';
-import DeltaChange from '../../components/DeltaChange';
+import React, { Component } from "react";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import DeltaChange from "../../components/DeltaChange";
 import TotalBalanceFilter, {
   TotalBalanceFilters
-} from '../../components/TotalBalanceFilter';
-import DateFormat from '../../components/DateFormat';
-import Card from '../../components/Card';
-import DashboardField from './DashboardField';
-import EvolutionSince from './EvolutionSince';
-import './TotalBalanceCard.css';
+} from "../../components/TotalBalanceFilter";
+import DateFormat from "../../components/DateFormat";
+import Card from "../../components/Card";
+import DashboardField from "./DashboardField";
+import EvolutionSince from "./EvolutionSince";
+import "./TotalBalanceCard.css";
 
 class TotalBalance extends Component<{
   totalBalance: *,

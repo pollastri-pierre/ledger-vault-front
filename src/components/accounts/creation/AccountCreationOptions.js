@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import BadgeCurrency from '../../BadgeCurrency'
+import React from "react";
+import PropTypes from "prop-types";
+import BadgeCurrency from "../../BadgeCurrency";
 
 function AccountCreationOptions(props) {
   return (
@@ -20,18 +20,18 @@ function AccountCreationOptions(props) {
 
 AccountCreationOptions.defaultProps = {
   currency: {
-    units: [{name: ''}],
-  },
+    units: [{ name: "" }]
+  }
 };
 
 AccountCreationOptions.propTypes = {
   currency: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string
   }),
   options: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string
   }).isRequired,
-  changeName: PropTypes.func.isRequired,
+  changeName: PropTypes.func.isRequired
 };
 
 export default AccountCreationOptions;

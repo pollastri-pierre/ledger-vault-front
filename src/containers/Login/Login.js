@@ -1,15 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import '../../containers/App/App.css';
-import TeamLogin from './TeamLogin';
-import DeviceLogin from './DeviceLogin';
-import { setTeamField, logout, startAuthentication, reinitTeamError, resetTeam } from '../../redux/modules/auth';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import "../../containers/App/App.css";
+import TeamLogin from "./TeamLogin";
+import DeviceLogin from "./DeviceLogin";
+import {
+  setTeamField,
+  logout,
+  startAuthentication,
+  reinitTeamError,
+  resetTeam
+} from "../../redux/modules/auth";
 
-import './Login.css';
+import "./Login.css";
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  auth: state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,14 +23,13 @@ const mapDispatchToProps = dispatch => ({
   onLogout: () => dispatch(logout()),
   onStartAuth: () => dispatch(startAuthentication()),
   onCloseTeamError: () => dispatch(reinitTeamError()),
-  onResetTeam: () => dispatch(resetTeam()),
+  onResetTeam: () => dispatch(resetTeam())
 });
-
 
 export class Login extends Component {
   componentWillMount() {
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push('/');
+      this.props.history.push("/");
     }
   }
 
@@ -34,31 +39,30 @@ export class Login extends Component {
     const { team, isCheckingTeam, teamError, teamValidated } = this.props.auth;
 
     if (teamValidated) {
-      content = (<DeviceLogin
-        team={team}
-        onCancel={this.props.onResetTeam}
-      />);
+      content = <DeviceLogin team={team} onCancel={this.props.onResetTeam} />;
     } else {
-      content = (<TeamLogin
-        team={team}
-        teamError={teamError}
-        isChecking={isCheckingTeam}
-        onChange={this.props.onFieldTeam}
-        onLogout={this.props.onLogout}
-        onStartAuth={this.props.onStartAuth}
-        onCloseTeamError={this.props.onCloseTeamError}
-      />);
+      content = (
+        <TeamLogin
+          team={team}
+          teamError={teamError}
+          isChecking={isCheckingTeam}
+          onChange={this.props.onFieldTeam}
+          onLogout={this.props.onLogout}
+          onStartAuth={this.props.onStartAuth}
+          onCloseTeamError={this.props.onCloseTeamError}
+        />
+      );
     }
     return (
       <div>
-        <div className="Background" >
-          <div className="Banner" >
+        <div className="Background">
+          <div className="Banner">
             <img
               src="img/logo-black.png"
               srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
               alt="Ledger Vault"
             />
-            <div className="help" >{t('login.help')}</div>
+            <div className="help">{t("login.help")}</div>
           </div>
           {content}
         </div>
@@ -73,7 +77,7 @@ Login.propTypes = {
     isCheckingTeam: PropTypes.bool,
     teamError: PropTypes.bool,
     teamValidated: PropTypes.bool,
-    team: PropTypes.string,
+    team: PropTypes.string
   }).isRequired,
   onFieldTeam: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
@@ -81,12 +85,12 @@ Login.propTypes = {
   onCloseTeamError: PropTypes.func.isRequired,
   onResetTeam: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+    push: PropTypes.func
+  }).isRequired
 };
 
 Login.contextTypes = {
-  translate: PropTypes.func.isRequired,
-}
+  translate: PropTypes.func.isRequired
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

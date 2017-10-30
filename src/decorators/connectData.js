@@ -1,11 +1,11 @@
 //@flow
-import { connect } from 'react-redux';
-import { denormalize } from 'normalizr';
-import React, { Component } from 'react';
-import isEqual from 'lodash/isEqual';
-import { fetchData } from '../redux/modules/data';
-import SpinnerCard from '../components/spinners/SpinnerCard';
-import type { APISpec } from '../data/api-spec';
+import { connect } from "react-redux";
+import { denormalize } from "normalizr";
+import React, { Component } from "react";
+import isEqual from "lodash/isEqual";
+import { fetchData } from "../redux/modules/data";
+import SpinnerCard from "../components/spinners/SpinnerCard";
+import type { APISpec } from "../data/api-spec";
 
 type Opts = {
   // TODO multi api. we need to pull multiple endpoints sometimes

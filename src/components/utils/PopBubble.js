@@ -1,20 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Popover from 'material-ui/Popover';
+import React from "react";
+import PropTypes from "prop-types";
+import Popover from "material-ui/Popover";
 
-import './PopBubble.css';
+import "./PopBubble.css";
 
 function PopBubble(props) {
   return (
     <Popover
       {...props}
       className="pop-bubble"
-      anchorOrigin={{ horizontal: 'middle', vertical: 'bottom' }}
-      targetOrigin={{ horizontal: 'middle', vertical: 'top' }}
+      anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
+      targetOrigin={{ horizontal: "middle", vertical: "top" }}
       style={{
-        marginTop: '15px',
+        marginTop: "15px",
         borderRadius: 0,
-        ...props.style,
+        ...props.style
       }}
     >
       {props.children}
@@ -24,13 +24,12 @@ function PopBubble(props) {
 
 PopBubble.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.shape({}),
+  style: PropTypes.shape({})
 };
 
 PopBubble.defaultProps = {
-  children: '',
-  style: {},
+  children: "",
+  style: {}
 };
 
 export default PopBubble;
-
