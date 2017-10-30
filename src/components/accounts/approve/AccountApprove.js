@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CircularProgress from 'material-ui/CircularProgress';
-import { DialogButton, Overscroll } from '../../';
-import AbortConfirmation from '../../approve/AbortConfirmation';
-import ApproveDevice from '../../approve/ApproveDevice';
-import AccountApproveDetails from './AccountApproveDetails';
-import AccountApproveMembers from './AccountApproveMembers';
-import AccountApproveApprovals from './AccountApproveApprovals';
-import Footer from '../../approve/Footer';
-import './AccountApprove.css';
+import React, { Component } from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import CircularProgress from "material-ui/CircularProgress";
+import { DialogButton, Overscroll } from "../../";
+import AbortConfirmation from "../../approve/AbortConfirmation";
+import ApproveDevice from "../../approve/ApproveDevice";
+import AccountApproveDetails from "./AccountApproveDetails";
+import AccountApproveMembers from "./AccountApproveMembers";
+import AccountApproveApprovals from "./AccountApproveApprovals";
+import Footer from "../../approve/Footer";
+import "./AccountApprove.css";
 
 class AccountApprove extends Component {
   componentWillMount() {
@@ -26,7 +26,7 @@ class AccountApprove extends Component {
       account,
       abort,
       aborting,
-      approving 
+      approving
     } = this.props;
 
     if (account.isLoading || _.isNull(account.account)) {
@@ -36,17 +36,18 @@ class AccountApprove extends Component {
           <div className="content">
             <CircularProgress
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginLeft: '-25px',
-                marginTop: '-25px',
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-25px",
+                marginTop: "-25px"
               }}
             />
-
           </div>
           <div className="footer">
-            <DialogButton highlight className="cancel" onTouchTap={close}>Close</DialogButton>
+            <DialogButton highlight className="cancel" onTouchTap={close}>
+              Close
+            </DialogButton>
           </div>
         </div>
       );
@@ -54,20 +55,11 @@ class AccountApprove extends Component {
 
     if (account.isAborting) {
       return (
-        <AbortConfirmation
-          entity="account"
-          aborting={aborting}
-          abort={abort}
-        />
+        <AbortConfirmation entity="account" aborting={aborting} abort={abort} />
       );
     }
     if (account.isDevice) {
-      return (
-        <ApproveDevice
-          entity="account"
-          cancel={approving}
-        />
-      );
+      return <ApproveDevice entity="account" cancel={approving} />;
     }
 
     return (
@@ -121,7 +113,7 @@ class AccountApprove extends Component {
 AccountApprove.propTypes = {
   getAccount: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  account: PropTypes.shape({}).isRequired,
+  account: PropTypes.shape({}).isRequired
 };
 
 export default AccountApprove;

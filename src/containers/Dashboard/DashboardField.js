@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import "./DashboardField.css";
 
 class DashboardField extends Component<*> {

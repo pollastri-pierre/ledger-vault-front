@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './DialogButton.css';
+import "./DialogButton.css";
 
 function DialogButton(props) {
   const { highlight, right, ...other } = props;
@@ -9,10 +9,12 @@ function DialogButton(props) {
   return (
     <button
       {...other}
-      className={`vlt-dialog-btn ${highlight ? 'highlight' : ''} ${props.className}`}
+      className={`vlt-dialog-btn ${highlight
+        ? "highlight"
+        : ""} ${props.className}`}
       style={{
-        float: right ? 'right' : 'left',
-        ...props.style,
+        float: right ? "right" : "left",
+        ...props.style
       }}
     >
       {props.children}
@@ -26,16 +28,16 @@ DialogButton.propTypes = {
   children: PropTypes.node,
   highlight: PropTypes.bool,
   right: PropTypes.bool,
-  onTouchTap: PropTypes.func,
+  onTouchTap: PropTypes.func
 };
 
 DialogButton.defaultProps = {
-  className: '',
+  className: "",
   style: {},
-  children: '',
+  children: "",
   highlight: false,
   right: false,
-  onTouchTap: () => {} 
+  onTouchTap: () => {}
 };
 
 export default DialogButton;

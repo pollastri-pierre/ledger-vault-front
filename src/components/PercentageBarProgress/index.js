@@ -1,11 +1,11 @@
 //@flow
-import React, { PureComponent } from 'react';
-import './index.css';
+import React, { PureComponent } from "react";
+import "./index.css";
 
 class PercentageBarProgress extends PureComponent<*> {
   props: {
     percentage: number,
-    label: *,
+    label: *
   };
   render() {
     const { percentage, label } = this.props;

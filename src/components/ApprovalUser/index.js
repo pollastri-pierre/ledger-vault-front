@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import MemberAvatar from '../MemberAvatar';
-import ValidateBadge from '../icons/ValidateBadge';
-import Question from '../icons/full/Question';
-import './index.css';
+import React from "react";
+import PropTypes from "prop-types";
+import MemberAvatar from "../MemberAvatar";
+import ValidateBadge from "../icons/ValidateBadge";
+import Question from "../icons/full/Question";
+import "./index.css";
 
 function Approvalmember(props) {
-  const {member, isApproved} = props;
+  const { member, isApproved } = props;
 
-  const name = member.firstname + ' ' + member.name;
+  const name = member.firstname + " " + member.name;
   let slice;
   if (name.length > 10) {
-    slice = name.slice(0, 10) + '...';
+    slice = name.slice(0, 10) + "...";
   } else {
     slice = name;
   }
@@ -38,7 +38,7 @@ function Approvalmember(props) {
 
 Approvalmember.propTypes = {
   member: PropTypes.shape({}),
-  isApproved: PropTypes.bool,
+  isApproved: PropTypes.bool
 };
 
 export default Approvalmember;

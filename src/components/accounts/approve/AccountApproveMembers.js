@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
-import _ from 'lodash';
-import { Avatar } from '../../../components';
-import MemberAvatar from '../../MemberAvatar';
-import InfoModal from '../../InfoModal';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import CircularProgress from "material-ui/CircularProgress";
+import _ from "lodash";
+import { Avatar } from "../../../components";
+import MemberAvatar from "../../MemberAvatar";
+import InfoModal from "../../InfoModal";
 
 class AccountApproveMembers extends Component {
   componentWillMount() {
@@ -23,9 +23,9 @@ class AccountApproveMembers extends Component {
       return (
         <CircularProgress
           style={{
-            top: '50%',
-            left: '50%',
-            margin: '-25px 0 0 -25px',
+            top: "50%",
+            left: "50%",
+            margin: "-25px 0 0 -25px"
           }}
         />
       );
@@ -46,7 +46,8 @@ class AccountApproveMembers extends Component {
               key={member.id}
               role="button"
               tabIndex={0}
-              className="account-member-row">
+              className="account-member-row"
+            >
               <MemberAvatar url={member.picture} />
               <span className="name">
                 {member.firstname} {member.name}
@@ -63,14 +64,14 @@ class AccountApproveMembers extends Component {
 AccountApproveMembers.propTypes = {
   organization: PropTypes.shape({
     members: PropTypes.arrayOf(PropTypes.shape({})),
-    isLoading: PropTypes.bool,
+    isLoading: PropTypes.bool
   }).isRequired,
   account: PropTypes.shape({
     security: PropTypes.shape({
-      members: PropTypes.arrayOf(PropTypes.string),
-    }),
+      members: PropTypes.arrayOf(PropTypes.string)
+    })
   }).isRequired,
-  getOrganizationMembers: PropTypes.func.isRequired,
+  getOrganizationMembers: PropTypes.func.isRequired
 };
 
 export default AccountApproveMembers;

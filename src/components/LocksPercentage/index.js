@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import PercentageBarProgress from '../PercentageBarProgress';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import PercentageBarProgress from "../PercentageBarProgress";
 
 function LocksPercentage(props) {
   const { percentage } = props;
@@ -10,9 +10,7 @@ function LocksPercentage(props) {
   let percent = 0;
 
   if (_.isNull(percentage)) {
-   label = (
-    <p>waiting for members approvals...</p>
-   );
+    label = <p>waiting for members approvals...</p>;
   } else {
     percent = percentage;
     label = (
@@ -31,7 +29,7 @@ function LocksPercentage(props) {
 }
 
 LocksPercentage.propTypes = {
-  percentage: PropTypes.number.isRequired,
+  percentage: PropTypes.number.isRequired
 };
 
 export default LocksPercentage;

@@ -1,7 +1,7 @@
 //@flow
-import React, { PureComponent } from 'react';
-import numeral from 'numeral';
-import type { Unit } from '../datatypes';
+import React, { PureComponent } from "react";
+import numeral from "numeral";
+import type { Unit } from "../datatypes";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
@@ -24,30 +24,30 @@ class CurrencyUnitValue extends PureComponent<*> {
     const { unit, value, alwaysShowSign, showAllDigits } = this.props;
     let absValue = Math.abs(value);
     let divider = 1;
-    let format = '0,0';
+    let format = "0,0";
     if (unit.magnitude > 0) {
-      format += '.';
+      format += ".";
       if (!showAllDigits) {
-        format += '[';
+        format += "[";
       }
       for (let i = 0; i < unit.magnitude; i++) {
-        format += '0';
+        format += "0";
         divider *= 10;
       }
       if (!showAllDigits) {
-        format += ']';
+        format += "]";
       }
     }
     return (
       <span
         className={[
-          'currency-unit-value',
-          'sign-' + (value < 0 ? 'negative' : value > 0 ? 'positive' : 'zero')
-        ].join(' ')}
+          "currency-unit-value",
+          "sign-" + (value < 0 ? "negative" : value > 0 ? "positive" : "zero")
+        ].join(" ")}
       >
-        {(value < 0 ? '- ' : alwaysShowSign ? '+ ' : '') +
+        {(value < 0 ? "- " : alwaysShowSign ? "+ " : "") +
           unit.code +
-          ' ' +
+          " " +
           numeral(absValue / divider).format(format)}
       </span>
     );

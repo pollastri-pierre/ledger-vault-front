@@ -1,14 +1,14 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import ValidateBadge from '../icons/ValidateBadge';
-import AccountName from '../AccountName';
-import CurrencyNameValue from '../CurrencyNameValue';
-import DateFormat from '../DateFormat';
-import ApprovalStatus from '../ApprovalStatus';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import ValidateBadge from "../icons/ValidateBadge";
+import AccountName from "../AccountName";
+import CurrencyNameValue from "../CurrencyNameValue";
+import DateFormat from "../DateFormat";
+import ApprovalStatus from "../ApprovalStatus";
 
 function PendingOperationApprove(props) {
-  const {operations, open, approved, accounts, approvers, user} = props;
+  const { operations, open, approved, accounts, approvers, user } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -17,7 +17,7 @@ function PendingOperationApprove(props) {
   const totalAmount = _.reduce(
     operations,
     (sum, op) => op.reference_conversion.amount + sum,
-    0,
+    0
   );
 
   return (
@@ -43,14 +43,15 @@ function PendingOperationApprove(props) {
         const currencyClass = operation.currency_name.toLowerCase();
         const account = _.find(
           accounts,
-          account => account.id === operation.account_id,
+          account => account.id === operation.account_id
         );
 
         return (
           <div
-            className={`pending-request operation ${approved ? 'watch' : ''}`}
+            className={`pending-request operation ${approved ? "watch" : ""}`}
             key={operation.uuid}
-            onClick={() => open('operation', operation, approved)}>
+            onClick={() => open("operation", operation, approved)}
+          >
             <div>
               <span className="request-date-creation">
                 <DateFormat date={operation.time} />
@@ -86,25 +87,25 @@ function PendingOperationApprove(props) {
 
 PendingOperationApprove.defaultProps = {
   approved: false,
-  approvers: [],
+  approvers: []
 };
 
 PendingOperationApprove.propTypes = {
   operations: PropTypes.arrayOf(
     PropTypes.shape({
       uuid: PropTypes.string,
-      name: PropTypes.string,
-    }),
+      name: PropTypes.string
+    })
   ).isRequired,
   accounts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
-    }),
+      name: PropTypes.string
+    })
   ).isRequired,
   open: PropTypes.func.isRequired,
   approved: PropTypes.bool,
-  approvers: PropTypes.arrayOf(PropTypes.shape({})),
+  approvers: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
 export default PendingOperationApprove;

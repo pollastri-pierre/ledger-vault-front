@@ -1,13 +1,13 @@
-import _ from 'lodash';
-import React from 'react';
-import ArrowDown from '../../icons/ArrowDown';
-import PropTypes from 'prop-types';
-import LineRow from '../../LineRow';
-import AccountName from '../../AccountName';
-import DateFormat from '../../DateFormat';
-import ConfirmationStatus from '../../ConfirmationStatus';
-import OverviewOperation from '../../OverviewOperation';
-import Amount from '../../Amount';
+import _ from "lodash";
+import React from "react";
+import ArrowDown from "../../icons/ArrowDown";
+import PropTypes from "prop-types";
+import LineRow from "../../LineRow";
+import AccountName from "../../AccountName";
+import DateFormat from "../../DateFormat";
+import ConfirmationStatus from "../../ConfirmationStatus";
+import OverviewOperation from "../../OverviewOperation";
+import Amount from "../../Amount";
 
 function OperationApproveDetails(props) {
   const { operation, account } = props;
@@ -50,7 +50,7 @@ function OperationApproveDetails(props) {
 
 OperationApproveDetails.propTypes = {
   operation: PropTypes.shape({}),
-  account: PropTypes.shape({}),
+  account: PropTypes.shape({})
 };
 
 export default OperationApproveDetails;

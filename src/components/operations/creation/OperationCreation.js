@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CircularProgress from 'material-ui/CircularProgress';
-import { DialogButton, Overscroll } from '../../';
-import OperationCreationAccounts from './OperationCreationAccounts';
+import React, { Component } from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import CircularProgress from "material-ui/CircularProgress";
+import { DialogButton, Overscroll } from "../../";
+import OperationCreationAccounts from "./OperationCreationAccounts";
 
 class OperationCreation extends Component {
   componentWillMount() {
@@ -22,7 +22,7 @@ class OperationCreation extends Component {
       tabsIndex,
       save,
       accounts,
-      getAccounts,
+      getAccounts
     } = this.props;
 
     let isNextDisabled = false;
@@ -44,65 +44,51 @@ class OperationCreation extends Component {
     // }
 
     return (
-      <Tabs className="operation-creation-main wrapper" selectedIndex={tabsIndex} onSelect={onSelect}>
+      <Tabs
+        className="operation-creation-main wrapper"
+        selectedIndex={tabsIndex}
+        onSelect={onSelect}
+      >
         <div>
           <header>
             <h2>New operation</h2>
             <TabList>
               <Tab> 1. Account </Tab>
-              <Tab
-                disabled={false}
-              >
-                2. Details
-              </Tab>
-              <Tab
-                disabled={false}
-              >
-                3. Label
-              </Tab>
-              <Tab
-                disabled={false}
-              >
-                4. Confirmation
-              </Tab>
+              <Tab disabled={false}>2. Details</Tab>
+              <Tab disabled={false}>3. Label</Tab>
+              <Tab disabled={false}>4. Confirmation</Tab>
             </TabList>
           </header>
           <div className="content">
             <TabPanel className="tabs_panel">
               <Overscroll>
-                {accounts.isLoadingAccounts ?
-                  <CircularProgress />
-                  : false
-                }
-                {accounts.accounts && accounts.accounts.length > 0 ?
+                {accounts.isLoadingAccounts ? <CircularProgress /> : false}
+                {accounts.accounts && accounts.accounts.length > 0 ? (
                   <OperationCreationAccounts
                     accounts={accounts.accounts}
                     onSelect={cur => console.log(cur)}
                   />
-                  : false
-                }
+                ) : (
+                  false
+                )}
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>
-                Details
-              </Overscroll>
+              <Overscroll>Details</Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>
-                Label
-              </Overscroll>
+              <Overscroll>Label</Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>
-                Confirmation
-              </Overscroll>
+              <Overscroll>Confirmation</Overscroll>
             </TabPanel>
           </div>
         </div>
         <div className="footer">
-          <DialogButton className="cancel" highlight onTouchTap={close}>Cancel</DialogButton>
-          {(_.includes([0, 1, 2], tabsIndex)) ?
+          <DialogButton className="cancel" highlight onTouchTap={close}>
+            Cancel
+          </DialogButton>
+          {_.includes([0, 1, 2], tabsIndex) ? (
             <DialogButton
               highlight
               right
@@ -111,9 +97,11 @@ class OperationCreation extends Component {
             >
               Continue
             </DialogButton>
-            :
-            <DialogButton highlight right onTouchTap={save}>Done</DialogButton>
-          }
+          ) : (
+            <DialogButton highlight right onTouchTap={save}>
+              Done
+            </DialogButton>
+          )}
         </div>
       </Tabs>
     );
@@ -124,7 +112,7 @@ OperationCreation.propTypes = {
   close: PropTypes.func.isRequired,
   tabsIndex: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired,
+  save: PropTypes.func.isRequired
 };
 
 export default OperationCreation;

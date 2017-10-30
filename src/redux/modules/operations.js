@@ -1,38 +1,39 @@
-import _ from 'lodash';
-import axios from 'axios';
-import { LOCATION_CHANGE, push } from 'react-router-redux';
-import queryString from 'query-string';
-import operationsUtils from '../utils/operation';
-import { getFakeList } from '../utils/operation';
+import _ from "lodash";
+import axios from "axios";
+import { LOCATION_CHANGE, push } from "react-router-redux";
+import queryString from "query-string";
+import operationsUtils from "../utils/operation";
+import { getFakeList } from "../utils/operation";
 
-export const GET_OPERATION_START = 'operations/GET_OPERATION_START';
-export const GOT_OPERATION = 'operations/GOT_OPERATION';
-export const GOT_OPERATION_FAIL = 'operations/GOT_OPERATION_FAIL';
-export const OPERATION_CLOSE = 'operations/OPERATION_CLOSE';
-export const SAVE_OPERATION_NOTE_START = 'operations/SAVE_OPERATION_NOTE_START';
-export const SAVE_OPERATION_NOTE_SUCCESS = 'operations/SAVE_OPERATION_NOTE_SUCCESS';
-export const SAVE_OPERATION_NOTE_FAIL = 'operations/SAVE_OPERATION_NOTE_FAIL';
+export const GET_OPERATION_START = "operations/GET_OPERATION_START";
+export const GOT_OPERATION = "operations/GOT_OPERATION";
+export const GOT_OPERATION_FAIL = "operations/GOT_OPERATION_FAIL";
+export const OPERATION_CLOSE = "operations/OPERATION_CLOSE";
+export const SAVE_OPERATION_NOTE_START = "operations/SAVE_OPERATION_NOTE_START";
+export const SAVE_OPERATION_NOTE_SUCCESS =
+  "operations/SAVE_OPERATION_NOTE_SUCCESS";
+export const SAVE_OPERATION_NOTE_FAIL = "operations/SAVE_OPERATION_NOTE_FAIL";
 
 export function saveOperationNoteStart() {
   return {
-    type: SAVE_OPERATION_NOTE_START,
+    type: SAVE_OPERATION_NOTE_START
   };
-};
+}
 
 export function saveOperationNoteFail(status) {
   return {
     type: SAVE_OPERATION_NOTE_FAIL,
     status
   };
-};
+}
 
 export function saveOperationNoteSucces(idOperation, note) {
   return {
     type: SAVE_OPERATION_NOTE_SUCCESS,
     idOperation,
-    note,
+    note
   };
-};
+}
 
 export function saveOperationNote(idOperation) {
   return dispatch => {
@@ -42,25 +43,25 @@ export function saveOperationNote(idOperation) {
     }, 2000);
     // dispatch(saveOperationNoteSuccess());
   };
-};
+}
 
 export function getOperationStart(tabIndex) {
   return {
     type: GET_OPERATION_START,
-    tabIndex,
+    tabIndex
   };
 }
 
 export function gotOperationFail(status) {
   return {
     type: GOT_OPERATION_FAIL,
-    status,
+    status
   };
 }
 
 export function closeDetail() {
   return {
-    type: OPERATION_CLOSE,
+    type: OPERATION_CLOSE
   };
 }
 
@@ -78,7 +79,7 @@ export function close() {
 export function gotOperation(operation) {
   return {
     type: GOT_OPERATION,
-    operation,
+    operation
   };
 }
 
@@ -89,20 +90,26 @@ export function getOperation(idOperation) {
     const { operations } = getState().operations;
     // const find = _.find(operations, { id: idOperation });
 
-    const operation = operationsUtils.findOperationDetails(idOperation, operations);
+    const operation = operationsUtils.findOperationDetails(
+      idOperation,
+      operations
+    );
 
     if (operation) {
       dispatch(gotOperation(operation));
     } else {
       // we need to request the API to fetch the operation's data
-      axios.get(`operations/${idOperation}`).then((result) => {
-        dispatch(gotOperation(result.data));
-      }).catch((e) => {
-        dispatch(close());
-        setTimeout(() => {
-          dispatch(gotOperationFail(e.response.status));
-        }, 800);
-      });
+      axios
+        .get(`operations/${idOperation}`)
+        .then(result => {
+          dispatch(gotOperation(result.data));
+        })
+        .catch(e => {
+          dispatch(close());
+          setTimeout(() => {
+            dispatch(gotOperationFail(e.response.status));
+          }, 800);
+        });
     }
   };
 }
@@ -112,7 +119,10 @@ export function getOperationFake(idOperation, tabIndex = 0) {
     dispatch(getOperationStart(tabIndex));
 
     const { operations } = getState().operations;
-    const operation = operationsUtils.findOperationDetails(idOperation, operations);
+    const operation = operationsUtils.findOperationDetails(
+      idOperation,
+      operations
+    );
 
     if (operation) {
       dispatch(gotOperation(operation));
@@ -120,25 +130,28 @@ export function getOperationFake(idOperation, tabIndex = 0) {
       // we need to request the API to fetch the operation's data
       setTimeout(() => {
         const operations = getFakeList();
-        dispatch(gotOperation(operationsUtils.findOperationDetails(idOperation, operations)));
+        dispatch(
+          gotOperation(
+            operationsUtils.findOperationDetails(idOperation, operations)
+          )
+        );
       }, 500);
     }
   };
 }
 
-
 export function openOperationModal(idOperation, tabIndex = 0) {
   return dispatch => {
     dispatch(push(`?operationDetail=${idOperation}&tab=${tabIndex}`));
   };
-};
+}
 
 export const initialState = {
   operations: null,
   operationInModal: null,
   isLoadingOperations: false,
   isLoadingOperation: false,
-  tabsIndex: 0,
+  tabsIndex: 0
 };
 
 // export function hydrateArrayWithOperationDetails = () => ();
@@ -164,8 +177,12 @@ export default function reducer(state = initialState, action) {
       const { search } = action.payload;
       const params = queryString.parse(search);
       if (params.operationDetail) {
-        const tab = (params.tab) ? parseInt(params.tab, 0) : 0;
-        return { ...state, operationInModal: params.operationDetail, tabsIndex: tab };
+        const tab = params.tab ? parseInt(params.tab, 0) : 0;
+        return {
+          ...state,
+          operationInModal: params.operationDetail,
+          tabsIndex: tab
+        };
       }
       return state;
     }

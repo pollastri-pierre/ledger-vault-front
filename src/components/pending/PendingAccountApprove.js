@@ -1,19 +1,19 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import ValidateBadge from '../icons/ValidateBadge';
-import DateFormat from '../DateFormat';
-import AccountName from '../AccountName';
-import ApprovalStatus from '../ApprovalStatus';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import ValidateBadge from "../icons/ValidateBadge";
+import DateFormat from "../DateFormat";
+import AccountName from "../AccountName";
+import ApprovalStatus from "../ApprovalStatus";
 
 function PendingAccountApprove(props) {
-  const {accounts, open, approved, approvers, user} = props;
+  const { accounts, open, approved, approvers, user } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
 
   const nbCurrencies = _.size(
-    _.groupBy(accounts, account => account.currency.family),
+    _.groupBy(accounts, account => account.currency.family)
   );
 
   return (
@@ -41,9 +41,10 @@ function PendingAccountApprove(props) {
       {_.map(accounts, account => {
         return (
           <div
-            className={`pending-request ${approved ? 'watch' : ''}`}
+            className={`pending-request ${approved ? "watch" : ""}`}
             key={account.id}
-            onClick={() => open('account', account, approved)}>
+            onClick={() => open("account", account, approved)}
+          >
             <div>
               <span className="request-date-creation">
                 <DateFormat date={account.creation_time} />
@@ -71,19 +72,19 @@ function PendingAccountApprove(props) {
 
 PendingAccountApprove.defaultProps = {
   approved: false,
-  approvers: [],
+  approvers: []
 };
 
 PendingAccountApprove.propTypes = {
   accounts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
-    }),
+      name: PropTypes.string
+    })
   ).isRequired,
   open: PropTypes.func.isRequired,
   approved: PropTypes.bool,
-  approvers: PropTypes.arrayOf(PropTypes.shape({})),
+  approvers: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
 export default PendingAccountApprove;

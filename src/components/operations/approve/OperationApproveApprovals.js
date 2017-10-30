@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import ApprovalList from '../../ApprovalList';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import ApprovalList from "../../ApprovalList";
 
 function OperationApproveApprovals(props) {
   const { account, operation, members } = props;
@@ -27,7 +27,7 @@ function OperationApproveApprovals(props) {
 OperationApproveApprovals.propTypes = {
   operation: PropTypes.shape({}),
   account: PropTypes.shape({}),
-  members: PropTypes.arrayOf(PropTypes.shape({})),
+  members: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
 export default OperationApproveApprovals;

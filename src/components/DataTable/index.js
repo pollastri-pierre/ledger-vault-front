@@ -1,6 +1,6 @@
 //@flow
-import React, { Component } from 'react';
-import './index.css';
+import React, { Component } from "react";
+import "./index.css";
 
 type Column<Cell> = {
   title: string,

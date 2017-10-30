@@ -1,29 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Snackbar from 'material-ui/Snackbar';
+import React from "react";
+import PropTypes from "prop-types";
+import Snackbar from "material-ui/Snackbar";
 
 function Alert(props) {
   const { title, children, theme: themeName, ...newProps } = props;
-  let iconDiv = '';
-  let titleDiv = '';
+  let iconDiv = "";
+  let titleDiv = "";
   const theme = {};
   const bodyStyle = {
-    height: 'initial',
-    lineHeight: 'initial',
-    padding: '40px',
-    width: '379px',
-    boxSizing: 'border-box',
+    height: "initial",
+    lineHeight: "initial",
+    padding: "40px",
+    width: "379px",
+    boxSizing: "border-box"
   };
 
   switch (themeName) {
-    case 'success':
-      theme.color = '#27d0e2';
-      theme.icon = 'check';
+    case "success":
+      theme.color = "#27d0e2";
+      theme.icon = "check";
       break;
 
-    case 'error':
-      theme.color = '#ea2e49';
-      theme.icon = 'close';
+    case "error":
+      theme.color = "#ea2e49";
+      theme.icon = "close";
       break;
 
     default:
@@ -38,7 +38,7 @@ function Alert(props) {
 
   if (theme.icon) {
     iconDiv = (
-      <div style={{ fontSize: '38px', lineHeight: 0, marginRight: '30px' }} >
+      <div style={{ fontSize: "38px", lineHeight: 0, marginRight: "30px" }}>
         <i className="material-icons">{theme.icon}</i>
       </div>
     );
@@ -50,8 +50,8 @@ function Alert(props) {
         className="top-message-title"
         style={{
           fontWeight: 600,
-          textTransform: 'uppercase',
-          marginBottom: '15px',
+          textTransform: "uppercase",
+          marginBottom: "15px"
         }}
       >
         {title}
@@ -60,7 +60,7 @@ function Alert(props) {
   }
 
   const content = (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: "flex" }}>
       {iconDiv}
       <div>
         {titleDiv}
@@ -70,21 +70,23 @@ function Alert(props) {
   );
 
   return (
-      <Snackbar
-        {...newProps}
-        className={`top-message ${props.className}`}
-        style={{
-          top: 0,
-          bottom: 'auto',
-          transform: props.open ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, -100%, 0)',
-          ...props.style,
-        }}
-        bodyStyle={bodyStyle}
-        contentStyle={{
-          fontSize: '11px',
-        }}
-        message={content}
-      />
+    <Snackbar
+      {...newProps}
+      className={`top-message ${props.className}`}
+      style={{
+        top: 0,
+        bottom: "auto",
+        transform: props.open
+          ? "translate3d(-50%, 0, 0)"
+          : "translate3d(-50%, -100%, 0)",
+        ...props.style
+      }}
+      bodyStyle={bodyStyle}
+      contentStyle={{
+        fontSize: "11px"
+      }}
+      message={content}
+    />
   );
 }
 
@@ -94,17 +96,16 @@ Alert.propTypes = {
   style: PropTypes.shape({}),
   open: PropTypes.bool,
   theme: PropTypes.string,
-  title: PropTypes.node,
+  title: PropTypes.node
 };
 
 Alert.defaultProps = {
-  className: '',
-  children: '',
+  className: "",
+  children: "",
   style: {},
   open: false,
-  theme: '',
-  title: '',
+  theme: "",
+  title: ""
 };
 
 export default Alert;
-

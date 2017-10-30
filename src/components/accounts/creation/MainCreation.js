@@ -1,12 +1,12 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import AccountCreationCurrencies from './AccountCreationCurrencies';
-import AccountCreationOptions from './AccountCreationOptions';
-import AccountCreationSecurity from './AccountCreationSecurity';
-import AccountCreationConfirmation from './AccountCreationConfirmation';
-import { DialogButton, Overscroll } from '../../';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import AccountCreationCurrencies from "./AccountCreationCurrencies";
+import AccountCreationOptions from "./AccountCreationOptions";
+import AccountCreationSecurity from "./AccountCreationSecurity";
+import AccountCreationConfirmation from "./AccountCreationConfirmation";
+import { DialogButton, Overscroll } from "../../";
 
 function MainCreation(props) {
   const {
@@ -27,7 +27,7 @@ function MainCreation(props) {
       isNextDisabled = _.isNull(account.currency);
       break;
     case 1:
-      isNextDisabled = account.options.name === '';
+      isNextDisabled = account.options.name === "";
       break;
     case 2:
       isNextDisabled =
@@ -51,7 +51,7 @@ function MainCreation(props) {
           <TabList>
             <Tab> 1. Currency </Tab>
             <Tab disabled={_.isNull(account.currency)}>2. Options</Tab>
-            <Tab disabled={account.options.name === ''}>3. Security</Tab>
+            <Tab disabled={account.options.name === ""}>3. Security</Tab>
             <Tab
               disabled={
                 account.security.members.length === 0 ||

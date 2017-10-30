@@ -1,22 +1,25 @@
-import React, {Component} from 'react';
-import _ from 'lodash';
-import CircularProgress from 'material-ui/CircularProgress';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
-import {openApprove} from '../../redux/modules/entity-approve';
-import {getPendingRequests} from '../../redux/modules/pending-requests';
-import {getOrganizationApprovers} from '../../redux/modules/organization';
-import {getAccounts} from '../../redux/modules/accounts';
-import {PendingAccountApprove, PendingOperationApprove} from '../../components';
+import React, { Component } from "react";
+import _ from "lodash";
+import CircularProgress from "material-ui/CircularProgress";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { openApprove } from "../../redux/modules/entity-approve";
+import { getPendingRequests } from "../../redux/modules/pending-requests";
+import { getOrganizationApprovers } from "../../redux/modules/organization";
+import { getAccounts } from "../../redux/modules/accounts";
+import {
+  PendingAccountApprove,
+  PendingOperationApprove
+} from "../../components";
 
-import './PendingRequests.css';
+import "./PendingRequests.css";
 
 const mapStateToProps = state => ({
   pendingRequests: state.pendingRequests,
   organization: state.organization,
   accounts: state.accounts,
-  profile: state.profile,
+  profile: state.profile
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,7 +27,7 @@ const mapDispatchToProps = dispatch => ({
   onGetAccounts: () => dispatch(getAccounts()),
   onOpenApprove: (entity, object, isApproved) =>
     dispatch(openApprove(entity, object, isApproved)),
-  onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers()),
+  onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers())
 });
 
 class PendingRequests extends Component {
@@ -35,7 +38,7 @@ class PendingRequests extends Component {
       onGetAccounts,
       pendingRequests,
       accounts,
-      organization,
+      organization
     } = this.props;
 
     if (_.isNull(pendingRequests.data) && !pendingRequests.isLoading) {
@@ -57,7 +60,7 @@ class PendingRequests extends Component {
       profile,
       onOpenApprove,
       organization,
-      accounts,
+      accounts
     } = this.props;
 
     return (
@@ -72,9 +75,9 @@ class PendingRequests extends Component {
               <CircularProgress
                 size={30}
                 style={{
-                  position: 'absolute',
-                  left: '50%',
-                  marginLeft: '-15px',
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: "-15px"
                 }}
               />
             ) : (
@@ -95,9 +98,9 @@ class PendingRequests extends Component {
               <CircularProgress
                 size={30}
                 style={{
-                  position: 'absolute',
-                  left: '50%',
-                  marginLeft: '-15px',
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: "-15px"
                 }}
               />
             ) : (
@@ -121,9 +124,9 @@ class PendingRequests extends Component {
               <CircularProgress
                 size={30}
                 style={{
-                  position: 'absolute',
-                  left: '50%',
-                  marginLeft: '-15px',
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: "-15px"
                 }}
               />
             ) : (
@@ -144,9 +147,9 @@ class PendingRequests extends Component {
               <CircularProgress
                 size={30}
                 style={{
-                  position: 'absolute',
-                  left: '50%',
-                  marginLeft: '-15px',
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: "-15px"
                 }}
               />
             ) : (
@@ -168,11 +171,11 @@ class PendingRequests extends Component {
 PendingRequests.propTypes = {
   onGetPendingRequests: PropTypes.func.isRequired,
   onOpenApprove: PropTypes.func.isRequired,
-  pendingRequests: PropTypes.shape({}).isRequired,
+  pendingRequests: PropTypes.shape({}).isRequired
 };
 
-export {PendingRequests as PendingRequestNotDecorated};
+export { PendingRequests as PendingRequestNotDecorated };
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(PendingRequests),
+  connect(mapStateToProps, mapDispatchToProps)(PendingRequests)
 );

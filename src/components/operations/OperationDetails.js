@@ -1,23 +1,23 @@
-import _ from 'lodash';
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import {DialogButton, Overscroll} from '../';
-import TabDetails from './TabDetails';
-import TabOverview from './TabOverview';
-import TabLabel from './TabLabel';
-import './OperationDetails.css';
-import operationsUtils from '../../redux/utils/operation';
+import _ from "lodash";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import CircularProgress from "material-ui/CircularProgress";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { DialogButton, Overscroll } from "../";
+import TabDetails from "./TabDetails";
+import TabOverview from "./TabOverview";
+import TabLabel from "./TabLabel";
+import "./OperationDetails.css";
+import operationsUtils from "../../redux/utils/operation";
 
 class OperationDetails extends Component {
   constructor(props) {
     super(props);
 
-    let note = {author: {}};
+    let note = { author: {} };
 
     this.state = {
-      note: note,
+      note: note
     };
 
     this.handleChangeTitle = this.handleChangeTitle.bind(this);
@@ -28,37 +28,37 @@ class OperationDetails extends Component {
     newNote.title = val;
 
     this.setState({
-      note: newNote,
+      note: newNote
     });
   };
 
   componentWillReceiveProps(props) {
     const operation = operationsUtils.findOperationDetails(
       props.operations.operationInModal,
-      props.operations.operations,
+      props.operations.operations
     );
 
     if (operation && operation.notes && operation.notes.length > 0) {
       this.setState({
-        note: operation.notes[0],
+        note: operation.notes[0]
       });
     }
   }
 
   componentWillMount() {
-    const {operations, getOperation, accounts} = this.props;
+    const { operations, getOperation, accounts } = this.props;
     if (true && !operations.isLoadingOperation) {
       getOperation(operations.operationInModal);
     }
   }
 
   render() {
-    const {operations, accounts} = this.props;
-    const {translate} = this.context;
+    const { operations, accounts } = this.props;
+    const { translate } = this.context;
 
     const operation = operationsUtils.findOperationDetails(
       operations.operationInModal,
-      operations.operations,
+      operations.operations
     );
 
     if (
@@ -72,11 +72,11 @@ class OperationDetails extends Component {
           <div className="content">
             <CircularProgress
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginLeft: '-25px',
-                marginTop: '-25px',
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-25px",
+                marginTop: "-25px"
               }}
             />
           </div>
@@ -93,20 +93,22 @@ class OperationDetails extends Component {
       <Tabs
         className="operation-details wrapper"
         defaultIndex={this.props.tabsIndex}
-        onSelect={() => {}}>
+        onSelect={() => {}}
+      >
         <div className="header">
-          <h2>{translate('operations.detailsTitle')}</h2>
+          <h2>{translate("operations.detailsTitle")}</h2>
           <TabList>
-            <Tab>{translate('operations.overview')}</Tab>
-            <Tab>{translate('operations.details')}</Tab>
-            <Tab>{translate('operations.label')}</Tab>
+            <Tab>{translate("operations.overview")}</Tab>
+            <Tab>{translate("operations.details")}</Tab>
+            <Tab>{translate("operations.label")}</Tab>
           </TabList>
         </div>
         <div
           className="content"
           ref={node => {
             this.contentNode = node;
-          }}>
+          }}
+        >
           <TabPanel className="tabs_panel">
             <Overscroll>
               <TabOverview operation={operation} accounts={accounts.accounts} />
@@ -139,11 +141,11 @@ class OperationDetails extends Component {
 OperationDetails.propTypes = {
   close: PropTypes.func.isRequired,
   getOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired,
+  operations: PropTypes.shape({}).isRequired
 };
 
 OperationDetails.contextTypes = {
-  translate: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 export default OperationDetails;

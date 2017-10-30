@@ -1,24 +1,24 @@
 //@flow
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import connectData from '../../decorators/connectData';
-import api from '../../data/api-spec';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 
-import Card from '../../components/Card';
-import Currencies from './Currencies';
-import TotalBalanceCard from './TotalBalanceCard';
-import LastOperationCard from './LastOperationCard';
-import PendingCard from './PendingCard';
-import Storages from './Storages';
+import Card from "../../components/Card";
+import Currencies from "./Currencies";
+import TotalBalanceCard from "./TotalBalanceCard";
+import LastOperationCard from "./LastOperationCard";
+import PendingCard from "./PendingCard";
+import Storages from "./Storages";
 
-import './index.css';
+import "./index.css";
 
 class Dashboard extends Component<
   { dashboard: *, accounts: * },
   { filter: string }
 > {
   state = {
-    filter: 'yesterday'
+    filter: "yesterday"
   };
 
   onTotalBalanceFilterChange = (filter: string) => {
@@ -34,7 +34,7 @@ class Dashboard extends Component<
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            accounts={accounts}
+            totalBalance={dashboard.totalBalance}
             filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />

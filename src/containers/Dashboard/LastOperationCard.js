@@ -1,12 +1,12 @@
 //@flow
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Card from '../../components/Card';
-import DateFormat from '../../components/DateFormat';
-import CurrencyNameValue from '../../components/CurrencyNameValue';
-import AccountName from '../../components/AccountName';
-import DataTableOperation from '../../components/DataTableOperation';
-import type { Operation, Account } from '../../datatypes';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Card from "../../components/Card";
+import DateFormat from "../../components/DateFormat";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import AccountName from "../../components/AccountName";
+import DataTableOperation from "../../components/DataTableOperation";
+import type { Operation, Account } from "../../datatypes";
 
 class LastOperationCard extends Component<*> {
   props: {
@@ -21,7 +21,7 @@ class LastOperationCard extends Component<*> {
         titleRight={<Link to="TODO">VIEW ALL</Link>}
       >
         <DataTableOperation
-          columnIds={['date', 'name', 'countervalue', 'amount']}
+          columnIds={["date", "name", "countervalue", "amount"]}
           operations={operations}
         />
       </Card>

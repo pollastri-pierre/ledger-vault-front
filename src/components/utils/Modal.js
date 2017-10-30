@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-const classename = 'modal';
+const classename = "modal";
 
 class Modal extends Component {
   constructor(props) {
@@ -12,11 +12,11 @@ class Modal extends Component {
   }
 
   componentWillMount() {
-    document.addEventListener('keydown', this.handle);
+    document.addEventListener("keydown", this.handle);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handle);
+    document.removeEventListener("keydown", this.handle);
   }
 
   handle(e) {
@@ -25,7 +25,7 @@ class Modal extends Component {
 
   clickHandle(e) {
     if (!e.target.closest(`.${classename}`)) {
-      this.props.close('esc');
+      this.props.close("esc");
     }
   }
 
@@ -42,7 +42,7 @@ class Modal extends Component {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  close: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired
 };
 
 export default Modal;

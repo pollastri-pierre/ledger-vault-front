@@ -1,5 +1,5 @@
 //@flow
-import { Account, Member, Operation } from './schema';
+import { Account, Member, Operation } from "./schema";
 
 export type APISpec = {
   uri: string | ((_: Object) => string),
@@ -9,29 +9,33 @@ export type APISpec = {
 type API = { [_: string]: APISpec };
 
 /**
- * This specifies the API and how they map to the schema model
+ * This specifies the API and how it maps to the schema model
  */
 
 const api: API = {
   members: {
-    uri: '/members',
-    method: 'GET',
+    uri: "/members",
+    method: "GET",
     responseSchema: [Member]
   },
   accounts: {
-    uri: '/accounts',
-    method: 'GET',
+    uri: "/accounts",
+    method: "GET",
     responseSchema: [Account]
   },
   account: {
-    // just an example, not actually yet used
     uri: ({ accountId }) => `/accounts/${accountId}`,
-    method: 'GET',
+    method: "GET",
     responseSchema: Account
   },
+  accountOperations: {
+    uri: ({ accountId }) => `/accounts/${accountId}/operations`,
+    method: "GET",
+    responseSchema: [Operation]
+  },
   dashboard: {
-    uri: '/dashboard',
-    method: 'GET',
+    uri: "/dashboard",
+    method: "GET",
     responseSchema: {
       lastOperations: [Operation],
       pending: {
@@ -43,6 +47,21 @@ const api: API = {
         totalOperations: number
         */
       }
+      /*
+      totalBalance: {
+        currencyName: string,
+        date: string,
+        value: number,
+        valueHistory: {
+          yesterday: number,
+          week: number,
+          month: number
+        },
+        accountsCount: number,
+        currenciesCount: number,
+        membersCount: number
+      }
+      */
     }
   }
 };

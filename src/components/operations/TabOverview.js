@@ -1,19 +1,19 @@
-import _ from 'lodash';
-import React from 'react';
-import ArrowDown from '../icons/ArrowDown';
-import ValidateBadge from '../icons/ValidateBadge';
-import LineRow from '../LineRow';
-import AccountName from '../AccountName';
-import DateFormat from '../DateFormat';
-import ConfirmationStatus from '../ConfirmationStatus';
-import OverviewOperation from '../OverviewOperation';
-import Amount from '../Amount';
+import _ from "lodash";
+import React from "react";
+import ArrowDown from "../icons/ArrowDown";
+import ValidateBadge from "../icons/ValidateBadge";
+import LineRow from "../LineRow";
+import AccountName from "../AccountName";
+import DateFormat from "../DateFormat";
+import ConfirmationStatus from "../ConfirmationStatus";
+import OverviewOperation from "../OverviewOperation";
+import Amount from "../Amount";
 
 function TabOverview(props) {
-  const {operation, accounts} = props;
+  const { operation, accounts } = props;
   const account = _.find(
     accounts,
-    account => account.id === operation.account_id,
+    account => account.id === operation.account_id
   );
 
   return (

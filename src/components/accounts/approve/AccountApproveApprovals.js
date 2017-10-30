@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import CircularProgress from 'material-ui/CircularProgress';
-import ValidateBadge from '../../icons/ValidateBadge';
-import Question from '../../icons/full/Question';
-import { Avatar } from '../../../components';
-import './AccountApproveApprovals.css';
-import InfoModal from '../../InfoModal';
-import ApprovalList from '../../ApprovalList';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import CircularProgress from "material-ui/CircularProgress";
+import ValidateBadge from "../../icons/ValidateBadge";
+import Question from "../../icons/full/Question";
+import { Avatar } from "../../../components";
+import "./AccountApproveApprovals.css";
+import InfoModal from "../../InfoModal";
+import ApprovalList from "../../ApprovalList";
 
 class AccountApproveApprovals extends Component {
   componentWillMount() {
@@ -26,9 +26,9 @@ class AccountApproveApprovals extends Component {
       return (
         <CircularProgress
           style={{
-            top: '50%',
-            left: '50%',
-            margin: '-25px 0 0 -25px',
+            top: "50%",
+            left: "50%",
+            margin: "-25px 0 0 -25px"
           }}
         />
       );
@@ -52,11 +52,11 @@ AccountApproveApprovals.propTypes = {
   getOrganizationApprovers: PropTypes.func.isRequired,
   organization: PropTypes.shape({
     approvers: PropTypes.arrayOf(PropTypes.shape({})),
-    isLoadingApprovers: PropTypes.bool,
+    isLoadingApprovers: PropTypes.bool
   }).isRequired,
   account: PropTypes.shape({
-    approved: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
+    approved: PropTypes.arrayOf(PropTypes.string)
+  }).isRequired
 };
 
 export default AccountApproveApprovals;

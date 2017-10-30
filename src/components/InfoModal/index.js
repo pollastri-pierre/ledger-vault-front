@@ -1,10 +1,10 @@
 //@flow
-import React, { PureComponent } from 'react';
-import './index.css';
+import React, { PureComponent } from "react";
+import "./index.css";
 
 class InfoModal extends PureComponent<*> {
   props: {
-    children: *,
+    children: *
   };
   render() {
     const { children } = this.props;

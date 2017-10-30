@@ -1,16 +1,16 @@
-import React from 'react';
-import _ from 'lodash';
-import InfoModal from '../../InfoModal';
-import ApproveLockRow from '../../ApproveLockRow';
-import Hourglass from '../../icons/thin/Hourglass';
-import ValidateBadge from '../../icons/ValidateBadge';
-import Rates from '../../icons/thin/Rates';
+import React from "react";
+import _ from "lodash";
+import InfoModal from "../../InfoModal";
+import ApproveLockRow from "../../ApproveLockRow";
+import Hourglass from "../../icons/thin/Hourglass";
+import ValidateBadge from "../../icons/ValidateBadge";
+import Rates from "../../icons/thin/Rates";
 
-import LocksPercentage from '../../LocksPercentage';
+import LocksPercentage from "../../LocksPercentage";
 
 function OperationApproveLocks(props) {
   const { account, operation } = props;
-  const isUnactive = (operation.approved.length < account.security_scheme.quorum);
+  const isUnactive = operation.approved.length < account.security_scheme.quorum;
 
   return (
     <div>
@@ -18,7 +18,7 @@ function OperationApproveLocks(props) {
         Funds will be spent when required approvals have been collected from the
         account's members and locks have completed
       </InfoModal>
-      {!_.isNull(account.security_scheme.rate_limiter) &&
+      {!_.isNull(account.security_scheme.rate_limiter) && (
         <ApproveLockRow
           icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
           name="Time-lock"
@@ -26,9 +26,9 @@ function OperationApproveLocks(props) {
           state="15 hours left"
           unactive={isUnactive}
         />
-      }
+      )}
 
-      {!_.isNull(account.security_scheme.time_lock) &&
+      {!_.isNull(account.security_scheme.time_lock) && (
         <ApproveLockRow
           icon={
             <Hourglass
@@ -43,12 +43,12 @@ function OperationApproveLocks(props) {
           state={<ValidateBadge className="confirmed" />}
           unactive={isUnactive}
         />
-      }
-      {isUnactive ?
+      )}
+      {isUnactive ? (
         <LocksPercentage percentage={null} />
-      :
+      ) : (
         <LocksPercentage percentage={55} />
-      }
+      )}
     </div>
   );
 }

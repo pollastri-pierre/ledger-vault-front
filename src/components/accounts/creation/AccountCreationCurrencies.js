@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import currencies from '../../../currencies';
+import _ from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import currencies from "../../../currencies";
 
 function AccountCreationCurrencies(props) {
   const { currency, onSelect } = props;
@@ -16,12 +16,12 @@ function AccountCreationCurrencies(props) {
           key={cur.units[0].name}
           className={`account-creation-currency
             ${cur.units[0].name
-              .split(' ')
-              .join('-')
+              .split(" ")
+              .join("-")
               .toLowerCase()}
             ${currency && currency.units[0].name === cur.units[0].name
-              ? 'selected'
-              : ''}`}
+              ? "selected"
+              : ""}`}
         >
           <span className="currency-name">{cur.units[0].name}</span>
           <span className="currency-short">{cur.units[0].symbol}</span>

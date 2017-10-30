@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import createHistory from 'history/createBrowserHistory';
-import { Switch, Route } from 'react-router';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import App from './containers/App/App';
-import create from './redux/create';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import createHistory from "history/createBrowserHistory";
+import { Switch, Route } from "react-router";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "react-router-redux";
+import App from "./containers/App/App";
+import create from "./redux/create";
+import registerServiceWorker from "./registerServiceWorker";
 
 import {
   ModalsContainer,
@@ -17,12 +17,12 @@ import {
   LoginTest,
   Logout,
   AlertsContainer,
-  I18nProvider,
-} from './containers';
+  I18nProvider
+} from "./containers";
 
-import { getUserInfos } from './redux/modules/auth';
+import { getUserInfos } from "./redux/modules/auth";
 
-import './styles/index.css';
+import "./styles/index.css";
 
 // for React-Infinite
 if (window) {
@@ -30,16 +30,16 @@ if (window) {
 }
 
 const muiTheme = getMuiTheme({
-  fontFamily: 'Open Sans, sans-serif',
+  fontFamily: "Open Sans, sans-serif"
 });
 
 const history = createHistory();
-const locale = window.localStorage.getItem('locale') || 'en';
+const locale = window.localStorage.getItem("locale") || "en";
 
 const store = create(history, { locale });
 
 // Get saved locale or fallback to english
-const token = window.localStorage.getItem('token');
+const token = window.localStorage.getItem("token");
 
 const render = () => {
   ReactDOM.render(
@@ -61,7 +61,7 @@ const render = () => {
         </I18nProvider>
       </MuiThemeProvider>
     </Provider>,
-    document.getElementById('root'),
+    document.getElementById("root")
   );
   registerServiceWorker();
 };

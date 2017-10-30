@@ -1,15 +1,15 @@
 //@flow
-import React, { PureComponent } from 'react';
-import ValidateBadge from '../icons/ValidateBadge';
-import _ from 'lodash';
-import './index.css';
+import React, { PureComponent } from "react";
+import ValidateBadge from "../icons/ValidateBadge";
+import _ from "lodash";
+import "./index.css";
 
 class ApprovalStatus extends PureComponent<*> {
   props: {
     approved: Array<string>,
     approvers: Array<*>,
     nbRequired: number,
-    user_hash: string,
+    user_hash: string
   };
 
   render() {
@@ -23,7 +23,7 @@ class ApprovalStatus extends PureComponent<*> {
       <span className="approval-status">
         {isApproved ? (
           <span>
-            <ValidateBadge className="confirmed" /> Approved ({approved.length}{' '}
+            <ValidateBadge className="confirmed" /> Approved ({approved.length}{" "}
             / {approvers.length})
           </span>
         ) : (

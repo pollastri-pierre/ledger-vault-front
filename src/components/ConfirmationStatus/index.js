@@ -1,15 +1,15 @@
 //@flow
-import React, {Component} from 'react';
-import ValidateBadge from '../icons/ValidateBadge';
-import './index.css';
+import React, { Component } from "react";
+import ValidateBadge from "../icons/ValidateBadge";
+import "./index.css";
 
 class ConfirmationStatus extends Component<*> {
   props: {
-    nbConfirmations: number,
+    nbConfirmations: number
   };
 
   render() {
-    const {nbConfirmations} = this.props;
+    const { nbConfirmations } = this.props;
 
     if (nbConfirmations > 0) {
       return (

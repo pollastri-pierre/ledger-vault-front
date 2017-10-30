@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import PercentageBarProgress from '../PercentageBarProgress';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import PercentageBarProgress from "../PercentageBarProgress";
 
 function ApprovalPercentage(props) {
   const { approved, approvers, nbRequired } = props;
@@ -22,7 +22,7 @@ function ApprovalPercentage(props) {
 ApprovalPercentage.propTypes = {
   approvers: PropTypes.arrayOf(PropTypes.shape({})),
   approved: PropTypes.arrayOf(PropTypes.string),
-  nbRequired: PropTypes.number,
+  nbRequired: PropTypes.number
 };
 
 export default ApprovalPercentage;

@@ -1,45 +1,42 @@
 //@flow
-import React, { Component } from 'react';
-import CurrencyNameValue from '../../components/CurrencyNameValue';
-import DeltaChange from '../../components/DeltaChange';
-import TotalBalanceFilter, {
-  TotalBalanceFilters
-} from '../../components/TotalBalanceFilter';
-import DateFormat from '../../components/DateFormat';
-import Card from '../../components/Card';
-import DashboardField from './DashboardField';
-import EvolutionSince from './EvolutionSince';
-import './TotalBalanceCard.css';
+import React, { Component } from "react";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
+import DateFormat from "../../components/DateFormat";
+import Card from "../../components/Card";
+import DashboardField from "./DashboardField";
+import EvolutionSince from "./EvolutionSince";
+import "./TotalBalanceCard.css";
+import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import _ from "lodash";
 
 class TotalBalance extends Component<{
-  accounts: *,
+  totalBalance: *,
   filter: string,
   onTotalBalanceFilterChange: (value: string) => void
 }> {
+  reShapeData = data => {
+    return { key: data, title: TotalBalanceFilters[data].title };
+  };
   render() {
-    const { accounts, filter, onTotalBalanceFilterChange } = this.props;
-    const totalBalance = {
-      // TODO COMPUTE!
-      currencyName: 'EUR',
-      date: new Date().toISOString(),
-      value: 1589049,
-      valueHistory: {
-        yesterday: 1543125,
-        week: 1031250,
-        month: 2043125
+    console.log(this.props);
+    const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
+    const values = _.reduce(
+      Object.keys(TotalBalanceFilters),
+      (values, filter) => {
+        values.push({ key: filter, title: TotalBalanceFilters[filter].title });
+        return values;
       },
-      accountsCount: 5,
-      currenciesCount: 4,
-      membersCount: 8
-    };
-
+      []
+    );
     return (
       <Card
         className="total-balance"
         title="total balance"
         titleRight={
-          <TotalBalanceFilter
-            value={filter}
+          <CustomSelectField
+            values={values}
+            selected={this.reShapeData(filter)}
             onChange={onTotalBalanceFilterChange}
           />
         }

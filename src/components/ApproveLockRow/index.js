@@ -1,6 +1,6 @@
 //@flow
-import React, { PureComponent } from 'react';
-import './index.css';
+import React, { PureComponent } from "react";
+import "./index.css";
 
 class ApproveLockRow extends PureComponent<*> {
   props: {
@@ -8,16 +8,16 @@ class ApproveLockRow extends PureComponent<*> {
     name: string,
     value: string,
     unactive?: boolean,
-    state?: *,
+    state?: *
   };
 
   render() {
     const { icon, name, value, state, unactive } = this.props;
 
-    const currentState = unactive ? 'unactive' : state;
+    const currentState = unactive ? "unactive" : state;
 
     return (
-      <div className={`approve-lock-row ${unactive ? 'unactive' : ''}`}>
+      <div className={`approve-lock-row ${unactive ? "unactive" : ""}`}>
         <div className="approve-lock-icon">{icon}</div>
         <span className="approve-lock-name">{name}</span>
         <span className="approve-lock-value">{value}</span>

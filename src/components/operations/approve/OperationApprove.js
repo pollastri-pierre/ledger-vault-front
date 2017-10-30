@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CircularProgress from 'material-ui/CircularProgress';
-import { DialogButton, Overscroll } from '../../';
-import AbortConfirmation from '../../approve/AbortConfirmation';
-import ApproveDevice from '../../approve//ApproveDevice';
-import OperationApproveDedails from './OperationApproveDedails';
-import OperationApproveApprovals from './OperationApproveApprovals';
-import OperationApproveLocks from './OperationApproveLocks';
-import ApprovalList from '../../ApprovalList';
-import Footer from '../../approve/Footer';
+import React, { Component } from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import CircularProgress from "material-ui/CircularProgress";
+import { DialogButton, Overscroll } from "../../";
+import AbortConfirmation from "../../approve/AbortConfirmation";
+import ApproveDevice from "../../approve//ApproveDevice";
+import OperationApproveDedails from "./OperationApproveDedails";
+import OperationApproveApprovals from "./OperationApproveApprovals";
+import OperationApproveLocks from "./OperationApproveLocks";
+import ApprovalList from "../../ApprovalList";
+import Footer from "../../approve/Footer";
 
 class OperationApprove extends Component {
   componentWillMount() {
@@ -25,7 +25,7 @@ class OperationApprove extends Component {
       approving,
       aborting,
       accounts,
-      organization,
+      organization
     } = this.props;
 
     if (operation.isAborting) {
@@ -45,11 +45,11 @@ class OperationApprove extends Component {
           <div className="content">
             <CircularProgress
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginLeft: '-25px',
-                marginTop: '-25px',
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginLeft: "-25px",
+                marginTop: "-25px"
               }}
             />
           </div>
@@ -68,7 +68,7 @@ class OperationApprove extends Component {
 
     const currentAccount = _.find(
       accounts.accounts,
-      account => account.id === operation.operation.account_id,
+      account => account.id === operation.operation.account_id
     );
 
     return (
@@ -116,7 +116,7 @@ class OperationApprove extends Component {
 OperationApprove.propTypes = {
   getOperation: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
-  operation: PropTypes.shape({}).isRequired,
+  operation: PropTypes.shape({}).isRequired
 };
 
 export default OperationApprove;

@@ -1,6 +1,6 @@
 //@flow
-import React, { Component } from 'react';
-import AccountCard from './AccountCard';
+import React, { Component } from "react";
+import AccountCard from "./AccountCard";
 
 class Storages extends Component<{ accounts: *, filter: string }> {
   render() {

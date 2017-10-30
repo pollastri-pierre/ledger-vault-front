@@ -1,8 +1,8 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import AccountCreationSecurity from '../../../../components/accounts/creation/AccountCreationSecurity';
+import React from "react";
+import { shallow } from "enzyme";
+import AccountCreationSecurity from "../../../../components/accounts/creation/AccountCreationSecurity";
 
-describe('AccountCreationSecurity test', () => {
+describe("AccountCreationSecurity test", () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
@@ -10,119 +10,137 @@ describe('AccountCreationSecurity test', () => {
   const props = {
     account: {
       security: {
-        approvals: 'a',
-        members: [{
-          id: 1,
-          name: 'name',
-          firstname: 'firstname',
-        }],
+        approvals: "a",
+        members: [
+          {
+            id: 1,
+            name: "name",
+            firstname: "firstname"
+          }
+        ],
         ratelimiter: {
           enabled: true,
-          frequency: 'day',
-          rate: 3,
+          frequency: "day",
+          rate: 3
         },
         timelock: {
           enabled: true,
-          frequency: 'hour',
-          duration: 3,
-        },
+          frequency: "hour",
+          duration: 3
+        }
       },
       options: {
-        name: 'name',
+        name: "name"
       },
       currency: {
-        name: 'Bitcoin',
-        shortname: 'btc',
-      },
+        name: "Bitcoin",
+        shortname: "btc"
+      }
     },
-    switchInternalModal: jest.fn(),
+    switchInternalModal: jest.fn()
   };
 
-  it('should be a .account-creation-security div', () => {
+  it("should be a .account-creation-security div", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    expect(wrapper.find('div.account-creation-security').length).toBe(1);
+    expect(wrapper.find("div.account-creation-security").length).toBe(1);
   });
 
-  it('should have a h4 with Security Scheme', () => {
+  it("should have a h4 with Security Scheme", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    expect(wrapper.find('h4').text()).toBe('Security Scheme');
+    expect(wrapper.find("h4").text()).toBe("Security Scheme");
   });
 
-  it('first h5 should be members', () => {
+  it("first h5 should be members", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    expect(wrapper.find('h5').at(0).text()).toBe('Members');
+    expect(
+      wrapper
+        .find("h5")
+        .at(0)
+        .text()
+    ).toBe("Members");
   });
 
-  it('first .security-scheme-line should call switchInternalModal(members)', () => {
+  it("first .security-scheme-line should call switchInternalModal(members)", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    const line = wrapper.find('.security-members .security-scheme-line').at(0);
+    const line = wrapper.find(".security-members .security-scheme-line").at(0);
 
-    line.simulate('click');
-    expect(props.switchInternalModal).toHaveBeenCalledWith('members');
+    line.simulate("click");
+    expect(props.switchInternalModal).toHaveBeenCalledWith("members");
   });
 
-  it('second .security-scheme-line should call switchInternalModal(approvals)', () => {
+  it("second .security-scheme-line should call switchInternalModal(approvals)", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    const line = wrapper.find('.security-members .security-scheme-line').at(1);
+    const line = wrapper.find(".security-members .security-scheme-line").at(1);
 
-    line.simulate('click');
-    expect(props.switchInternalModal).toHaveBeenCalledWith('approvals');
+    line.simulate("click");
+    expect(props.switchInternalModal).toHaveBeenCalledWith("approvals");
   });
 
-  it('timelock security-scheme-line onClick should call switchInternalModal(time-lock)', () => {
+  it("timelock security-scheme-line onClick should call switchInternalModal(time-lock)", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    const line = wrapper.find('.security-timelock-ratelimiter .security-scheme-line').at(0);
+    const line = wrapper
+      .find(".security-timelock-ratelimiter .security-scheme-line")
+      .at(0);
 
-    line.simulate('click');
-    expect(props.switchInternalModal).toHaveBeenCalledWith('time-lock');
+    line.simulate("click");
+    expect(props.switchInternalModal).toHaveBeenCalledWith("time-lock");
   });
 
-  it('ratelimiter security-scheme-line onClick should call switchInternalModal(rate-limiter)', () => {
+  it("ratelimiter security-scheme-line onClick should call switchInternalModal(rate-limiter)", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    const line = wrapper.find('.security-timelock-ratelimiter .security-scheme-line').at(1);
+    const line = wrapper
+      .find(".security-timelock-ratelimiter .security-scheme-line")
+      .at(1);
 
-    line.simulate('click');
-    expect(props.switchInternalModal).toHaveBeenCalledWith('rate-limiter');
+    line.simulate("click");
+    expect(props.switchInternalModal).toHaveBeenCalledWith("rate-limiter");
   });
 
-  it('should contain the members length', () => {
+  it("should contain the members length", () => {
     const wrapper = shallow(<AccountCreationSecurity {...props} />);
-    const members = wrapper.find('.security-members .security-scheme-line').at(0).find('.security-scheme-value');
+    const members = wrapper
+      .find(".security-members .security-scheme-line")
+      .at(0)
+      .find(".security-scheme-value");
 
-    expect(members.text()).toBe('1 selected<ArrowDown />');
+    expect(members.text()).toBe("1 selected<ArrowDown />");
   });
 
-  it('approvals should be disabled if members length === 0', () => {
+  it("approvals should be disabled if members length === 0", () => {
     const sProps = {
       ...props,
       account: {
         ...props.account,
         security: {
           ...props.account.security,
-          members: [],
-        },
-      },
+          members: []
+        }
+      }
     };
     const wrapper = shallow(<AccountCreationSecurity {...sProps} />);
-    const approvals = wrapper.find('.security-members .security-scheme-line').at(1);
+    const approvals = wrapper
+      .find(".security-members .security-scheme-line")
+      .at(1);
 
-    expect(approvals.prop('className')).toContain('disabled');
+    expect(approvals.prop("className")).toContain("disabled");
   });
 
-  it('approvals should have an error className  if approvals > members.length', () => {
+  it("approvals should have an error className  if approvals > members.length", () => {
     const sProps = {
       ...props,
       account: {
         ...props.account,
         security: {
           ...props.account.security,
-          approvals: 2,
-        },
-      },
+          approvals: 2
+        }
+      }
     };
     const wrapper = shallow(<AccountCreationSecurity {...sProps} />);
-    const approvals = wrapper.find('.security-members .security-scheme-line').at(1);
+    const approvals = wrapper
+      .find(".security-members .security-scheme-line")
+      .at(1);
 
-    expect(approvals.prop('className')).toContain('error');
+    expect(approvals.prop("className")).toContain("error");
   });
 });
