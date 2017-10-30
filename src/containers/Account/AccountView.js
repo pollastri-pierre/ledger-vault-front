@@ -16,6 +16,7 @@ class AccountView extends Component<{
 }> {
   render() {
     const { account, operations } = this.props;
+    console.log(operations);
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -52,7 +53,8 @@ class AccountView extends Component<{
             <QuicklookGraph
               data={operations.map((o: Operation) => ({
                 time: new Date(o.time),
-                amount: o.amount
+                amount: o.amount,
+                currency: o.currency
               }))}
             />
           </Card>
