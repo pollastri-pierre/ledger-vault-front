@@ -4,7 +4,6 @@ import { denormalize } from "normalizr";
 import React, { Component } from "react";
 import isEqual from "lodash/isEqual";
 import { fetchData } from "../redux/modules/data";
-import SpinnerCard from "../components/spinners/SpinnerCard";
 import type { APISpec } from "../data/api-spec";
 
 type Opts = {
@@ -16,11 +15,13 @@ type Opts = {
 };
 
 const defaultOpts = {
-  RenderLoading: SpinnerCard,
+  RenderLoading: () => null,
   propsToApiParams: _ => null
 };
 
 // TODO it would be great to infer the type of props the Decorated will receives <3
+
+const neverEnding: Promise<any> = new Promise(() => {});
 
 export default (Decorated: *, opts: Opts) => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
@@ -36,12 +37,15 @@ export default (Decorated: *, opts: Opts) => {
       results: null
     };
 
+    _unmounted = false;
+
     sync(apiParams: *) {
       const { dispatch } = this.props;
       this.apiParams = apiParams;
       Promise.all(
         apiKeys.map(key => dispatch(fetchData(api[key], apiParams)))
       ).then(all => {
+        if (this._unmounted) return;
         const results = {};
         all.forEach((result, i) => {
           results[apiKeys[i]] = result;
@@ -50,10 +54,30 @@ export default (Decorated: *, opts: Opts) => {
       });
     }
 
-    forceUpdate = () => this.sync(this.apiParams);
+    /**
+     * Perform an API call. body can be provided for POST apis
+     * this can also be used to "refresh" data.
+     */
+    fetchData = (api: APISpec, body?: Object): Promise<*> =>
+      this.props
+        .dispatch(fetchData(api, this.apiParams, body))
+        .then(
+          result =>
+            this._unmounted
+              ? neverEnding
+              : denormalize(
+                  result,
+                  api.responseSchema,
+                  this.props.dataStore.entities
+                )
+        );
 
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
+    }
+
+    componentWillUnmount() {
+      this._unmounted = true;
     }
 
     componentWillReceiveProps(props: *) {
@@ -68,7 +92,7 @@ export default (Decorated: *, opts: Opts) => {
       const { results } = this.state;
       if (!results) return <RenderLoading {...props} />;
       const extraProps = {
-        forceUpdate: this.forceUpdate
+        fetchData: this.fetchData
       };
       apiKeys.map(key => {
         const data = denormalize(

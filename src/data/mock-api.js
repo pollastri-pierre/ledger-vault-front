@@ -2,6 +2,7 @@
 import { denormalize } from "normalizr";
 import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
+import { getJSON } from "./network";
 
 const mockGETSync = (uri: string) => {
   let m;
@@ -28,7 +29,7 @@ const mockGETSync = (uri: string) => {
     }
   }
   switch (uri) {
-    case "/members":
+    case "/organization/members":
       return denormalize(
         Object.keys(mockEntities.members),
         apiSpec.members.responseSchema,
@@ -69,7 +70,8 @@ const mockGETSync = (uri: string) => {
         mockEntities
       );
   }
-  throw new Error("mock does not implement uri=" + uri);
+
+  return getJSON(uri);
 };
 
 const delay = ms => new Promise(success => setTimeout(success, ms));

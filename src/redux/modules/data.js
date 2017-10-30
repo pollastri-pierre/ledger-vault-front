@@ -2,9 +2,8 @@
 import { normalize } from "normalizr";
 import currencies from "../../currencies";
 import { mockGET } from "../../data/mock-api";
+import { sendJSON } from "../../data/network";
 import type { APISpec } from "../../data/api-spec";
-
-const getJSON = mockGET;
 
 const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
   typeof uri === "function" ? uri(apiParams || {}) : uri;
@@ -16,9 +15,10 @@ const query = (
 ): Promise<*> => {
   const uri = resolveURI(spec, apiParams);
   if (spec.method === "GET") {
-    return getJSON(uri);
+    return mockGET(uri);
+  } else {
+    return sendJSON(uri, spec.method, body);
   }
-  throw new Error("no mock supported yet for method=" + spec.method);
 };
 
 // This initialize the initial entities (things like currencies are already available)

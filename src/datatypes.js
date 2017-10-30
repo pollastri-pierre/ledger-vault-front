@@ -15,6 +15,8 @@ export type Currency = {
 
 export type Account = *; // TODO
 
+export type Member = *;
+
 export type Note = *;
 
 export type TransactionInput = *;
