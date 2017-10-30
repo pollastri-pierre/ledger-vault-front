@@ -351,6 +351,7 @@ export default {
         week: 118283484,
         month: 2182834846
       },
+      receive_address: '15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx',
       reference_conversion: {
         balance: 199553,
         currency_name: 'EUR'
@@ -368,6 +369,7 @@ export default {
         week: 118283484,
         month: 2182834846
       },
+      receive_address: '15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx',
       reference_conversion: {
         balance: 199553,
         currency_name: 'EUR'
@@ -385,6 +387,7 @@ export default {
         week: 118283484,
         month: 2182834846
       },
+      receive_address: '15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx',
       reference_conversion: {
         balance: 199553,
         currency_name: 'EUR'
@@ -402,6 +405,7 @@ export default {
         week: 118283484,
         month: 2182834846
       },
+      receive_address: '15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx',
       reference_conversion: {
         balance: 199553,
         currency_name: 'EUR'
@@ -419,6 +423,7 @@ export default {
         week: 118283484,
         month: 2182834846
       },
+      receive_address: '15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx',
       reference_conversion: {
         balance: 199553,
         currency_name: 'EUR'

@@ -29,6 +29,12 @@ const api: API = {
     method: 'GET',
     responseSchema: Account
   },
+  accountOperations: {
+    // just an example, not actually yet used
+    uri: ({ accountId }) => `/accounts/${accountId}/operations`,
+    method: 'GET',
+    responseSchema: [Operation]
+  },
   dashboard: {
     uri: '/dashboard',
     method: 'GET',

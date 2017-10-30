@@ -6,6 +6,29 @@ import mockEntities from './mock-entities.js';
 console.log('MOCK', mockEntities);
 
 const mockGETSync = (uri: string) => {
+  let m;
+  m = /\/accounts\/(.+)/.exec(uri);
+  if (m) {
+    const account = mockEntities.accounts[m[1]];
+    if (account) {
+      return denormalize(
+        account.id,
+        apiSpec.account.responseSchema,
+        mockEntities
+      );
+    }
+  }
+  m = /\/accounts\/(.+)\/operations/.exec(uri);
+  if (m) {
+    const account = mockEntities.accounts[m[1]];
+    if (account) {
+      return denormalize(
+        Object.keys(mockEntities.operations).slice(2, 7),
+        apiSpec.accountOperations.responseSchema,
+        mockEntities
+      );
+    }
+  }
   switch (uri) {
     case '/members':
       return denormalize(
