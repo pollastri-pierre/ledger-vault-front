@@ -1,0 +1,46 @@
+@import "../../styles/_variables";
+
+.CustomSelectField {
+	.LabelSelectField {
+		&:hover {
+			cursor: pointer;
+		}
+		.ArrowDown {
+			display: inline-block;
+			vertical-align: top;
+			width: 11px;
+		    fill: $ocean !important;
+		    margin-top: 4px;
+		}
+		.label {
+			display: inline-block;
+			vertical-align: top;
+			color: $ocean;
+			margin-left: 10px;
+		}	
+	}
+}
+
+.menuElem {
+	padding: 10px;
+	opacity: 0.5;
+	text-transform: uppercase;
+	&.selected {
+		opacity: 1;
+		&:after {
+		    -webkit-transition: width 200ms ease;
+		    -o-transition: width 200ms ease;
+		    transition: width 200ms ease;
+		    background: $ocean;
+		    content: '';
+		    height: 26px;
+		    width: 5px;
+		    position: absolute;
+			margin-top: -5px;
+		    right: -20px;
+		}
+	}
+	&:hover {
+		cursor: pointer;
+	}
+}

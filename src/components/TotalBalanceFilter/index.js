@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
+import "./TotalBalanceFilter.css";
+import CustomSelectField from "../CustomSelectField/CustomSelectField.js";
+import _ from "lodash";
 
-/*
-to be specified..
-*/
 export const TotalBalanceFilters = {
   yesterday: { title: "yesterday" },
   week: { title: "a week ago" },
@@ -13,24 +11,24 @@ export const TotalBalanceFilters = {
 
 class TotalBalanceFilter extends Component {
   onChange = (event, index, value) => this.props.onChange(value);
+
   render() {
-    const { value } = this.props;
+    const values = _.reduce(
+      Object.keys(TotalBalanceFilters),
+      (values, filter) => {
+        values.push({ key: filter, title: TotalBalanceFilters[filter].title });
+        return values;
+      },
+      []
+    );
     return (
       // FIXME this is not pixel perfect with wireframes.
       // we need to see how to make material-ui match that.
-      <SelectField
-        value={value}
+      <CustomSelectField
+        values={values}
+        selected={values[0]}
         onChange={this.onChange}
-        style={{ width: 150 }}
-      >
-        {Object.keys(TotalBalanceFilters).map(id => (
-          <MenuItem
-            key={id}
-            value={id}
-            primaryText={TotalBalanceFilters[id].title}
-          />
-        ))}
-      </SelectField>
+      />
     );
   }
 }
