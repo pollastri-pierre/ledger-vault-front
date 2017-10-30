@@ -1,8 +1,8 @@
-import { normalize, denormalize } from "normalizr";
+//@flow
+import { normalize } from "normalizr";
 import currencies from "../../currencies";
-import apiSpec from "../../data/api-spec";
 import { mockGET } from "../../data/mock-api";
-import type { APISpec } from "./api-spec";
+import type { APISpec } from "../../data/api-spec";
 
 const getJSON = mockGET;
 
