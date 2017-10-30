@@ -1,3 +1,5 @@
+// FIXME drop this file, should directly import the component file
+
 export { default as DialogButton } from "./buttons/DialogButton";
 export { default as Grid } from "./grid/Grid";
 export { default as Menu } from "./menu/Menu";

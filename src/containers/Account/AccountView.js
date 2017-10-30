@@ -16,7 +16,6 @@ class AccountView extends Component<{
 }> {
   render() {
     const { account, operations } = this.props;
-    console.log(operations);
     return (
       <div className="account-view">
         <div className="account-view-infos">

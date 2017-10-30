@@ -10,6 +10,8 @@ import type { Operation, Account, Currency } from "../../datatypes";
 import DataTable from "../DataTable";
 import "./index.css";
 
+// TODO migrate all the operations/List in this component.
+
 class DataTableOperation extends Component<*> {
   props: {
     operations: Array<Operation>,

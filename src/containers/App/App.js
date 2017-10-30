@@ -28,6 +28,7 @@ injectTapEventPlugin();
 
 type Props = {
   blurredBG: boolean,
+  // TODO the blurredBG will no longer be a store, but part of the Modal component...
   routing: Object,
   onLogout: Function,
   onOpenAccount: Function,
@@ -53,4 +54,5 @@ function App(props: Props) {
   );
 }
 
+// Soon, App won't need to be connected
 export default connect(mapStateToProps, mapDispatchToProps)(App);

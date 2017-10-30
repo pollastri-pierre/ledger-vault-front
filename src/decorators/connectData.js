@@ -6,11 +6,21 @@ import isEqual from "lodash/isEqual";
 import { fetchData } from "../redux/modules/data";
 import type { APISpec } from "../data/api-spec";
 
-type Opts = {
+type FetchData = (api: APISpec, body?: Object) => Promise<*>;
+// prettier-ignore
+type PropsWithoutA<Props, A> = $Diff<Props, A & {
+  fetchData?: FetchData,
+  loading?: boolean
+}>;
+// prettier-ignore
+type In<Props, S> = Class<React.Component<Props, S>>;
+// prettier-ignore
+type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
+type Opts<Props, A> = {
   // TODO multi api. we need to pull multiple endpoints sometimes
-  api: { [_: string]: APISpec },
+  api: A,
   propsToApiParams?: (props: *) => Object,
-  RenderLoading?: (props: Object) => *
+  RenderLoading?: (props: PropsWithoutA<Props, A>) => *
   // TODO RenderError
 };
 
@@ -19,11 +29,12 @@ const defaultOpts = {
   propsToApiParams: _ => null
 };
 
-// TODO it would be great to infer the type of props the Decorated will receives <3
-
 const neverEnding: Promise<any> = new Promise(() => {});
 
-export default (Decorated: *, opts: Opts) => {
+export default <Props, A: { [_: string]: APISpec }, S>(
+  Decorated: In<Props, S>,
+  opts: Opts<Props, A>
+): Out<Props, A> => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
   const apiKeys = Object.keys(api);
 
@@ -31,10 +42,12 @@ export default (Decorated: *, opts: Opts) => {
     apiParams: *;
 
     state: {
-      results: ?Object
+      results: ?Object,
+      loading: boolean
     } = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
-      results: null
+      results: null,
+      loading: false
     };
 
     _unmounted = false;
@@ -42,6 +55,7 @@ export default (Decorated: *, opts: Opts) => {
     sync(apiParams: *) {
       const { dispatch } = this.props;
       this.apiParams = apiParams;
+      this.setState({ loading: true });
       Promise.all(
         apiKeys.map(key => dispatch(fetchData(api[key], apiParams)))
       ).then(all => {
@@ -50,7 +64,7 @@ export default (Decorated: *, opts: Opts) => {
         all.forEach((result, i) => {
           results[apiKeys[i]] = result;
         });
-        this.setState({ results });
+        this.setState({ results, loading: false });
       });
     }
 
@@ -58,7 +72,7 @@ export default (Decorated: *, opts: Opts) => {
      * Perform an API call. body can be provided for POST apis
      * this can also be used to "refresh" data.
      */
-    fetchData = (api: APISpec, body?: Object): Promise<*> =>
+    fetchData: FetchData = (api, body) =>
       this.props
         .dispatch(fetchData(api, this.apiParams, body))
         .then(
@@ -89,10 +103,11 @@ export default (Decorated: *, opts: Opts) => {
 
     render() {
       const { dataStore, ...props } = this.props;
-      const { results } = this.state;
+      const { results, loading } = this.state;
       if (!results) return <RenderLoading {...props} />;
       const extraProps = {
-        fetchData: this.fetchData
+        fetchData: this.fetchData,
+        loading
       };
       apiKeys.map(key => {
         const data = denormalize(

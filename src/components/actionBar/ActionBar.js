@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { PopBubble } from "../../components";
 import ProfileCard from "./ProfileCard";
-import type { Member } from "../../datatypes";
 
 import "./ActionBar.css";
 
@@ -47,6 +46,7 @@ class ActionBar extends Component<*, *> {
 
   render() {
     const { profileOpened, profileTarget, profileOpenedEdit } = this.state;
+    // FIXME introduce a component for i18n
     const t = this.context.translate;
     return (
       <div className="ActionBar">
