@@ -54,5 +54,5 @@ export type Operation = {
 };
 
 export type PendingEvent =
-  | { type: 'account', data: Account }
-  | { type: 'operation', data: Operation };
+  | { type: "account", data: Account }
+  | { type: "operation", data: Operation };

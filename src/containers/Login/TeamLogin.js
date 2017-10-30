@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { TextField, DialogButton } from '../../components';
-import Profile from '../../components/icons/thin/Profile';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { TextField, DialogButton } from "../../components";
+import Profile from "../../components/icons/thin/Profile";
 
 export class TeamLogin extends Component {
   constructor(props) {
@@ -12,15 +12,15 @@ export class TeamLogin extends Component {
   }
 
   componentDidMount() {
-    document.addEventListener('keypress', this.confirm);
+    document.addEventListener("keypress", this.confirm);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keypress', this.confirm);
+    document.removeEventListener("keypress", this.confirm);
   }
 
   selectTeam() {
-    if (this.props.team !== '' && !this.props.isChecking) {
+    if (this.props.team !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
     }
   }
@@ -33,7 +33,7 @@ export class TeamLogin extends Component {
 
   handleRequestClose = () => {
     this.props.onCloseTeamError();
-  }
+  };
 
   render() {
     const t = this.context.translate;
@@ -43,25 +43,26 @@ export class TeamLogin extends Component {
         <br />
         <TextField
           onKeyDown={this.confirm}
-          hasError={(this.props.teamError && this.props.team !== '')}
-          style={{ width: '320px' }}
+          hasError={this.props.teamError && this.props.team !== ""}
+          style={{ width: "320px" }}
           disabled={this.props.isChecking}
-          inputStyle={{ textAlign: 'center' }}
+          inputStyle={{ textAlign: "center" }}
           value={this.props.team}
           id="textField"
           errorText=""
           onChange={this.props.onChange}
-          hintStyle={{ textAlign: 'center', width: '100%' }}
-          hintText={t('login.hint')}
-        /><br />
-        <div className="instructions" >{t('login.instructions')}</div>
+          hintStyle={{ textAlign: "center", width: "100%" }}
+          hintText={t("login.hint")}
+        />
+        <br />
+        <div className="instructions">{t("login.instructions")}</div>
         <DialogButton
           highlight
-          disabled={(this.props.team === '')}
+          disabled={this.props.team === ""}
           right
           onTouchTap={this.selectTeam}
         >
-          {t('common.continue')}
+          {t("common.continue")}
         </DialogButton>
       </div>
     );
@@ -74,11 +75,11 @@ TeamLogin.propTypes = {
   onCloseTeamError: PropTypes.func.isRequired,
   isChecking: PropTypes.bool.isRequired,
   team: PropTypes.string.isRequired,
-  teamError: PropTypes.bool.isRequired,
+  teamError: PropTypes.bool.isRequired
 };
 
 TeamLogin.contextTypes = {
-  translate: PropTypes.func.isRequired,
-}
+  translate: PropTypes.func.isRequired
+};
 
 export default TeamLogin;

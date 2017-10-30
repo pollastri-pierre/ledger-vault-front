@@ -1,33 +1,27 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './Grid.css';
+import "./Grid.css";
 
 export function Row(props) {
   return (
-    <div
-      className="row"
-      {...props}
-    >
+    <div className="row" {...props}>
       {props.children}
     </div>
   );
 }
 
 Row.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 Row.defaultProps = {
-  children: '',
+  children: ""
 };
 
 export function Col(props) {
   return (
-    <div
-      className={`col-${props.width}`}
-      {...props}
-    >
+    <div className={`col-${props.width}`} {...props}>
       {props.children}
     </div>
   );
@@ -35,10 +29,10 @@ export function Col(props) {
 
 Col.propTypes = {
   children: PropTypes.node,
-  width: PropTypes.number,
+  width: PropTypes.number
 };
 
 Col.defaultProps = {
-  children: '',
-  width: 1,
+  children: "",
+  width: 1
 };

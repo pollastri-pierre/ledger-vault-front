@@ -1,9 +1,9 @@
-import React from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { mount, shallow } from 'enzyme';
-import { PendingRequestNotDecorated } from '../../containers/PendingRequests/PendingRequests';
+import React from "react";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import injectTapEventPlugin from "react-tap-event-plugin";
+import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { mount, shallow } from "enzyme";
+import { PendingRequestNotDecorated } from "../../containers/PendingRequests/PendingRequests";
 
 const props = {
   onGetPendingRequests: jest.fn(),
@@ -13,18 +13,17 @@ const props = {
     members: null,
     approvers: null,
     isLoading: false,
-    isLoadingApprovers: false,
+    isLoadingApprovers: false
   },
   pendingRequests: {
     data: null,
-    isLoading: false,
-  },
+    isLoading: false
+  }
 };
 
 injectTapEventPlugin();
 
-
-describe('PendingRequests container', () => {
+describe("PendingRequests container", () => {
   afterEach(() => {
     props.onGetPendingRequests.mockReset();
     props.onGetPendingRequests.mockRestore();
@@ -34,223 +33,235 @@ describe('PendingRequests container', () => {
     props.onGetOrganizationApprovers.mockRestore();
   });
 
-  it('should call onGetPendingRequests when mounting', () => {
+  it("should call onGetPendingRequests when mounting", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...props} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetPendingRequests).toHaveBeenCalled();
   });
 
-  it('should not call onGetPendingRequests when mounting if already loading', () => {
+  it("should not call onGetPendingRequests when mounting if already loading", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
 
     const sProps = {
       ...props,
       pendingRequests: {
         ...props.pendingRequests,
-        isLoading: true,
-      },
+        isLoading: true
+      }
     };
 
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...sProps} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetPendingRequests).not.toHaveBeenCalled();
   });
 
-  it('should not call onGetPendingRequests when mounting if data exist', () => {
+  it("should not call onGetPendingRequests when mounting if data exist", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
 
     const sProps = {
       ...props,
       pendingRequests: {
         ...props.pendingRequests,
-        data: {},
-      },
+        data: {}
+      }
     };
 
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...sProps} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetPendingRequests).not.toHaveBeenCalled();
   });
 
-  it('should call onGetOrganizationApprovers when mounting', () => {
+  it("should call onGetOrganizationApprovers when mounting", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...props} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetOrganizationApprovers).toHaveBeenCalled();
   });
 
-  it('should not call onGetOrganizationApprovers when mounting if data exist', () => {
+  it("should not call onGetOrganizationApprovers when mounting if data exist", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
 
     const sProps = {
       ...props,
       organization: {
         ...props.organization,
-        approvers: ['hash'],
-      },
+        approvers: ["hash"]
+      }
     };
 
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...sProps} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetOrganizationApprovers).not.toHaveBeenCalled();
   });
 
-  it('should not call onGetOrganizationApprovers when mounting if already loading', () => {
+  it("should not call onGetOrganizationApprovers when mounting if already loading", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
 
     const sProps = {
       ...props,
       organization: {
         ...props.organization,
-        isLoadingApprovers: true,
-      },
+        isLoadingApprovers: true
+      }
     };
 
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...sProps} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetOrganizationApprovers).not.toHaveBeenCalled();
   });
 
-  it('should call onGetOrganizationApprovers when mounting', () => {
+  it("should call onGetOrganizationApprovers when mounting", () => {
     const muiTheme = getMuiTheme({
-      fontFamily: 'Open Sans, sans-serif',
+      fontFamily: "Open Sans, sans-serif"
     });
     mount(
       <MuiThemeProvider muiTheme={muiTheme}>
         <PendingRequestNotDecorated {...props} />
-      </MuiThemeProvider>,
+      </MuiThemeProvider>
     );
 
     expect(props.onGetOrganizationApprovers).toHaveBeenCalled();
   });
 
-  it('should be a .pending-requests div', () => {
+  it("should be a .pending-requests div", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.prop('className')).toBe('pending-requests');
+    expect(wrapper.prop("className")).toBe("pending-requests");
   });
 
-  it('.pending-requests should have a .pending-left and .pending-right', () => {
+  it(".pending-requests should have a .pending-left and .pending-right", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-left').length).toBe(1);
-    expect(wrapper.find('.pending-right').length).toBe(1);
+    expect(wrapper.find(".pending-left").length).toBe(1);
+    expect(wrapper.find(".pending-right").length).toBe(1);
   });
 
-  it('.first bloc in pending-left should have an h3 Operations to approve', () => {
+  it(".first bloc in pending-left should have an h3 Operations to approve", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-left .bloc')
-      .at(0)
-      .find('h3')
-      .text(),
-    ).toBe('Operations to approve');
+    expect(
+      wrapper
+        .find(".pending-left .bloc")
+        .at(0)
+        .find("h3")
+        .text()
+    ).toBe("Operations to approve");
   });
 
-  it('.first bloc in pending-left should have a loader if data is loading', () => {
+  it(".first bloc in pending-left should have a loader if data is loading", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-left .bloc')
-      .at(0)
-      .find('CircularProgress')
-      .length,
+    expect(
+      wrapper
+        .find(".pending-left .bloc")
+        .at(0)
+        .find("CircularProgress").length
     ).toBe(1);
   });
 
-  it('.second bloc in pending-left should have an h3 Operations to watch', () => {
+  it(".second bloc in pending-left should have an h3 Operations to watch", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-left .bloc')
-      .at(1)
-      .find('h3')
-      .text(),
-    ).toBe('Operations to watch');
+    expect(
+      wrapper
+        .find(".pending-left .bloc")
+        .at(1)
+        .find("h3")
+        .text()
+    ).toBe("Operations to watch");
   });
 
-  it('.second bloc in pending-left should have a loader if data is loading', () => {
+  it(".second bloc in pending-left should have a loader if data is loading", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-left .bloc')
-      .at(1)
-      .find('CircularProgress')
-      .length,
+    expect(
+      wrapper
+        .find(".pending-left .bloc")
+        .at(1)
+        .find("CircularProgress").length
     ).toBe(1);
   });
 
-  it('.first bloc in pending-right should have an h3 Account to approve', () => {
+  it(".first bloc in pending-right should have an h3 Account to approve", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-right .bloc')
-      .at(0)
-      .find('h3')
-      .text(),
-    ).toBe('Accounts to approve');
+    expect(
+      wrapper
+        .find(".pending-right .bloc")
+        .at(0)
+        .find("h3")
+        .text()
+    ).toBe("Accounts to approve");
   });
 
-  it('.first bloc in pending-left should have a loader if data is loading', () => {
+  it(".first bloc in pending-left should have a loader if data is loading", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-right .bloc')
-      .at(0)
-      .find('CircularProgress')
-      .length,
+    expect(
+      wrapper
+        .find(".pending-right .bloc")
+        .at(0)
+        .find("CircularProgress").length
     ).toBe(1);
   });
 
-  it('.second bloc in pending-right should have an h3 Account to watch', () => {
+  it(".second bloc in pending-right should have an h3 Account to watch", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-right .bloc')
-      .at(1)
-      .find('h3')
-      .text(),
-    ).toBe('Accounts to watch');
+    expect(
+      wrapper
+        .find(".pending-right .bloc")
+        .at(1)
+        .find("h3")
+        .text()
+    ).toBe("Accounts to watch");
   });
 
-  it('.second bloc in pending-left should have a loader if data is loading', () => {
+  it(".second bloc in pending-left should have a loader if data is loading", () => {
     const wrapper = shallow(<PendingRequestNotDecorated {...props} />);
-    expect(wrapper.find('.pending-right .bloc')
-      .at(1)
-      .find('CircularProgress')
-      .length,
+    expect(
+      wrapper
+        .find(".pending-right .bloc")
+        .at(1)
+        .find("CircularProgress").length
     ).toBe(1);
   });
 
-  it('.first bloc in pending-right should display a PendingAccountApprove if data ready', () => {
+  it(".first bloc in pending-right should display a PendingAccountApprove if data ready", () => {
     const sProps = {
       ...props,
       organization: {
         ...props.organization,
         isLoadingApprovers: false,
-        approvers: [{ id: 1, pub_key: 'hash' }],
+        approvers: [{ id: 1, pub_key: "hash" }]
       },
       pendingRequests: {
         ...props.pendingRequests,
@@ -258,29 +269,33 @@ describe('PendingRequests container', () => {
           watchOperations: [{}],
           approveOperations: [{}],
           watchAccounts: [{}],
-          approveAccounts: [{}],
+          approveAccounts: [{}]
         },
-        isLoading: false,
-      },
-
+        isLoading: false
+      }
     };
     const wrapper = shallow(<PendingRequestNotDecorated {...sProps} />);
-    const Pending = wrapper.find('.pending-right .bloc').at(0).find('PendingAccountApprove');
+    const Pending = wrapper
+      .find(".pending-right .bloc")
+      .at(0)
+      .find("PendingAccountApprove");
 
     // console.log(wrapper.find('.pending-right .bloc').at(1));
-    expect(Pending.prop('accounts')).toEqual(sProps.pendingRequests.data.watchAccounts);
-    expect(Pending.prop('approvers')).toEqual(sProps.organization.approvers);
-    expect(Pending.prop('approved')).toEqual(false);
-    expect(Pending.prop('open')).toEqual(sProps.onOpenAccountApprove);
+    expect(Pending.prop("accounts")).toEqual(
+      sProps.pendingRequests.data.watchAccounts
+    );
+    expect(Pending.prop("approvers")).toEqual(sProps.organization.approvers);
+    expect(Pending.prop("approved")).toEqual(false);
+    expect(Pending.prop("open")).toEqual(sProps.onOpenAccountApprove);
   });
 
-  it('.second bloc in pending-right should display a PendingAccountApprove if data ready', () => {
+  it(".second bloc in pending-right should display a PendingAccountApprove if data ready", () => {
     const sProps = {
       ...props,
       organization: {
         ...props.organization,
         isLoadingApprovers: false,
-        approvers: [{ id: 1, pub_key: 'hash' }],
+        approvers: [{ id: 1, pub_key: "hash" }]
       },
       pendingRequests: {
         ...props.pendingRequests,
@@ -288,20 +303,23 @@ describe('PendingRequests container', () => {
           watchOperations: [{}],
           approveOperations: [{}],
           watchAccounts: [{}],
-          approveAccounts: [{}],
+          approveAccounts: [{}]
         },
-        isLoading: false,
-      },
-
+        isLoading: false
+      }
     };
     const wrapper = shallow(<PendingRequestNotDecorated {...sProps} />);
-    const Pending = wrapper.find('.pending-right .bloc').at(1).find('PendingAccountApprove');
+    const Pending = wrapper
+      .find(".pending-right .bloc")
+      .at(1)
+      .find("PendingAccountApprove");
 
     // console.log(wrapper.find('.pending-right .bloc').at(1));
-    expect(Pending.prop('accounts')).toEqual(sProps.pendingRequests.data.watchAccounts);
-    expect(Pending.prop('approvers')).toEqual(sProps.organization.approvers);
-    expect(Pending.prop('approved')).toEqual(true);
-    expect(Pending.prop('open')).toEqual(sProps.onOpenAccountApprove);
+    expect(Pending.prop("accounts")).toEqual(
+      sProps.pendingRequests.data.watchAccounts
+    );
+    expect(Pending.prop("approvers")).toEqual(sProps.organization.approvers);
+    expect(Pending.prop("approved")).toEqual(true);
+    expect(Pending.prop("open")).toEqual(sProps.onOpenAccountApprove);
   });
 });
-

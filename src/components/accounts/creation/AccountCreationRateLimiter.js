@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Checkbox from '../../form/Checkbox';
-import { PopBubble, DialogButton } from '../../';
-import ArrowDown from '../../icons/ArrowDown';
+import React from "react";
+import PropTypes from "prop-types";
+import Checkbox from "../../form/Checkbox";
+import { PopBubble, DialogButton } from "../../";
+import ArrowDown from "../../icons/ArrowDown";
 
 function AccountCreationRateLimiter(props) {
   const {
@@ -13,7 +13,7 @@ function AccountCreationRateLimiter(props) {
     openPopBubble,
     anchor,
     change,
-    changeFrequency,
+    changeFrequency
   } = props;
 
   return (
@@ -22,7 +22,12 @@ function AccountCreationRateLimiter(props) {
         <h3>Rate Limiter</h3>
       </header>
       <div className="content">
-        <div className="form-field-checkbox" onClick={enable} role="button" tabIndex={0}>
+        <div
+          className="form-field-checkbox"
+          onClick={enable}
+          role="button"
+          tabIndex={0}
+        >
           <label htmlFor="enable-ratelimiter">Enable</label>
           <Checkbox
             checked={ratelimiter.enabled}
@@ -31,9 +36,20 @@ function AccountCreationRateLimiter(props) {
           />
         </div>
         <div className="form-field">
-          <input className="medium-padding" type="text" id="text-duration" value={ratelimiter.rate} onChange={e => change(e.target.value)} />
+          <input
+            className="medium-padding"
+            type="text"
+            id="text-duration"
+            value={ratelimiter.rate}
+            onChange={e => change(e.target.value)}
+          />
           <label htmlFor="text-duration">Rate</label>
-          <span className="count dropdown" role="button" tabIndex={0} onClick={e => openPopBubble(e.currentTarget)}>
+          <span
+            className="count dropdown"
+            role="button"
+            tabIndex={0}
+            onClick={e => openPopBubble(e.currentTarget)}
+          >
             <strong>operation</strong> per {ratelimiter.frequency}
             <ArrowDown className="arrow-down" />
           </span>
@@ -42,14 +58,44 @@ function AccountCreationRateLimiter(props) {
             onRequestClose={openPopBubble}
             anchorEl={anchor}
             style={{
-              marginLeft: '34px',
-              marginTop: '11px',
+              marginLeft: "34px",
+              marginTop: "11px"
             }}
           >
             <div className="frequency-bubble">
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'minut')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'minut') ? 'active' : ''}`}>minut</div>
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'hour')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'hour') ? 'active' : ''}`}>hour</div>
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'day')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'day') ? 'active' : ''}`}>day</div>
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => changeFrequency("rate-limiter", "minut")}
+                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                "minut"
+                  ? "active"
+                  : ""}`}
+              >
+                minut
+              </div>
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => changeFrequency("rate-limiter", "hour")}
+                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                "hour"
+                  ? "active"
+                  : ""}`}
+              >
+                hour
+              </div>
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => changeFrequency("rate-limiter", "day")}
+                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                "day"
+                  ? "active"
+                  : ""}`}
+              >
+                day
+              </div>
             </div>
           </PopBubble>
         </div>
@@ -60,7 +106,13 @@ function AccountCreationRateLimiter(props) {
       </div>
 
       <div className="footer">
-        <DialogButton right highlight onTouchTap={() => switchInternalModal('main')}>Done</DialogButton>
+        <DialogButton
+          right
+          highlight
+          onTouchTap={() => switchInternalModal("main")}
+        >
+          Done
+        </DialogButton>
       </div>
     </div>
   );
@@ -74,8 +126,7 @@ AccountCreationRateLimiter.propTypes = {
   enable: PropTypes.func.isRequired,
   openPopBubble: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
-  changeFrequency: PropTypes.func.isRequired,
+  changeFrequency: PropTypes.func.isRequired
 };
 
 export default AccountCreationRateLimiter;
-

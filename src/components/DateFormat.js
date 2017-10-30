@@ -1,6 +1,6 @@
 //@flow
-import moment from 'moment';
-import React, { Component } from 'react';
+import moment from "moment";
+import React, { Component } from "react";
 
 class DateFormat extends Component<*> {
   props: {
@@ -8,7 +8,7 @@ class DateFormat extends Component<*> {
     format: string
   };
   static defaultProps = {
-    format: 'lll'
+    format: "lll"
   };
   render() {
     const { date, format } = this.props;

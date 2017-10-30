@@ -1,37 +1,46 @@
 //@flow
-import React, { Component } from 'react';
-import CurrencyNameValue from '../../components/CurrencyNameValue';
-import {
-  TotalBalanceFilters
-} from '../../components/TotalBalanceFilter';
-import DateFormat from '../../components/DateFormat';
-import Card from '../../components/Card';
-import DashboardField from './DashboardField';
-import EvolutionSince from './EvolutionSince';
-import './TotalBalanceCard.css';
+import React, { Component } from "react";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
+import DateFormat from "../../components/DateFormat";
+import Card from "../../components/Card";
+import DashboardField from "./DashboardField";
+import EvolutionSince from "./EvolutionSince";
+import "./TotalBalanceCard.css";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
 import _ from "lodash";
 
 class TotalBalance extends Component<{
-    totalBalance: *,
-    filter: string,
-    onTotalBalanceFilterChange: (value: string) => void
-  }>
-  {
-
-  reShapeData = (data) => {return {key: data, title: TotalBalanceFilters[data].title}}
+  totalBalance: *,
+  filter: string,
+  onTotalBalanceFilterChange: (value: string) => void
+}> {
+  reShapeData = data => {
+    return { key: data, title: TotalBalanceFilters[data].title };
+  };
   render() {
-    console.log(this.props)
+    console.log(this.props);
     const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
-    const values = _.reduce(Object.keys(TotalBalanceFilters), (values, filter) => {values.push({key: filter, title: TotalBalanceFilters[filter].title}); return values;}, []);
+    const values = _.reduce(
+      Object.keys(TotalBalanceFilters),
+      (values, filter) => {
+        values.push({ key: filter, title: TotalBalanceFilters[filter].title });
+        return values;
+      },
+      []
+    );
     return (
       <Card
         className="total-balance"
         title="total balance"
         titleRight={
-          <CustomSelectField values={values} selected={this.reShapeData(filter)} onChange={onTotalBalanceFilterChange} />
+          <CustomSelectField
+            values={values}
+            selected={this.reShapeData(filter)}
+            onChange={onTotalBalanceFilterChange}
+          />
         }
-        >
+      >
         <div className="body">
           <DashboardField label={<DateFormat date={totalBalance.date} />}>
             <CurrencyNameValue

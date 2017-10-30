@@ -1,14 +1,14 @@
 //@flow
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Card from '../Card';
-import DateFormat from '../DateFormat';
-import CurrencyNameValue from '../CurrencyNameValue';
-import AccountName from '../AccountName';
-import currencies from '../../currencies';
-import type { Operation, Account, Currency } from '../../datatypes';
-import DataTable from '../DataTable';
-import './index.css';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import Card from "../Card";
+import DateFormat from "../DateFormat";
+import CurrencyNameValue from "../CurrencyNameValue";
+import AccountName from "../AccountName";
+import currencies from "../../currencies";
+import type { Operation, Account, Currency } from "../../datatypes";
+import DataTable from "../DataTable";
+import "./index.css";
 
 class DataTableOperation extends Component<*> {
   props: {
@@ -30,30 +30,30 @@ class DataTableOperation extends Component<*> {
     });
     const columns = [
       {
-        className: 'date',
-        title: 'date',
+        className: "date",
+        title: "date",
         renderCell: ({ operation }) => <DateFormat date={operation.time} />
       },
       {
-        className: 'name',
-        title: 'account',
+        className: "name",
+        title: "account",
         renderCell: ({ account, currency }) =>
           account &&
           currency && <AccountName name={account.name} currency={currency} />
       },
       {
-        className: 'address',
-        title: 'address',
+        className: "address",
+        title: "address",
         renderCell: () => <span>TODO</span>
       },
       {
-        className: 'status',
-        title: 'status',
+        className: "status",
+        title: "status",
         renderCell: () => <span>TODO</span>
       },
       {
-        className: 'countervalue',
-        title: '',
+        className: "countervalue",
+        title: "",
         renderCell: ({ operation }) => (
           <CurrencyNameValue
             currencyName={operation.reference_conversion.currency_name}
@@ -63,8 +63,8 @@ class DataTableOperation extends Component<*> {
         )
       },
       {
-        className: 'amount',
-        title: 'amount',
+        className: "amount",
+        title: "amount",
         renderCell: ({ operation }) => (
           <CurrencyNameValue
             currencyName={operation.currency_name}

@@ -1,7 +1,7 @@
 //@flow
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Qrious from 'qrious';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Qrious from "qrious";
 
 type Props = {
   hash: string
@@ -25,9 +25,9 @@ class ReceiveFundsCard extends Component<Props> {
     const { canvas } = this;
     if (!canvas) return;
     this.qr = new Qrious({
-      foreground: 'black',
+      foreground: "black",
       element: canvas,
-      level: 'H',
+      level: "H",
       size: 100,
       value: hash
     });

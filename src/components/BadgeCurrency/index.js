@@ -1,7 +1,7 @@
 //@flow
-import React, { PureComponent } from 'react';
-import type { Currency } from '../../datatypes';
-import './index.css';
+import React, { PureComponent } from "react";
+import type { Currency } from "../../datatypes";
+import "./index.css";
 
 class BadgeCurrency extends PureComponent<*> {
   props: {

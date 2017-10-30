@@ -1,8 +1,12 @@
-import React from 'react';
+import React from "react";
 
 function People(props) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.18 24.28" {...props} >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 29.18 24.28"
+      {...props}
+    >
       <title>people_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Mode_Isolation" data-name="Mode Isolation">

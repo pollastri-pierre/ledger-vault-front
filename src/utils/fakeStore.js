@@ -1,14 +1,14 @@
 /* fake redux store for testing */
 
-const noop = function() { };
+const noop = function() {};
 
-const fakeStore = (getState) => {
-    const store = {
-        subscribe: noop,
-        dispatch: noop,
-        getState: getState,
-    };
+const fakeStore = getState => {
+  const store = {
+    subscribe: noop,
+    dispatch: noop,
+    getState: getState
+  };
 
-    return store;
+  return store;
 };
 export default fakeStore;

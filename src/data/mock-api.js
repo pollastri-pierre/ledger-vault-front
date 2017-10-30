@@ -1,9 +1,7 @@
 //@flow
-import { denormalize } from 'normalizr';
-import apiSpec from './api-spec';
-import mockEntities from './mock-entities.js';
-
-console.log('MOCK', mockEntities);
+import { denormalize } from "normalizr";
+import apiSpec from "./api-spec";
+import mockEntities from "./mock-entities.js";
 
 const mockGETSync = (uri: string) => {
   let m;
@@ -30,19 +28,19 @@ const mockGETSync = (uri: string) => {
     }
   }
   switch (uri) {
-    case '/members':
+    case "/members":
       return denormalize(
         Object.keys(mockEntities.members),
         apiSpec.members.responseSchema,
         mockEntities
       );
-    case '/accounts':
+    case "/accounts":
       return denormalize(
         Object.keys(mockEntities.accounts),
         apiSpec.accounts.responseSchema,
         mockEntities
       );
-    case '/dashboard':
+    case "/dashboard":
       return denormalize(
         {
           lastOperations: Object.keys(mockEntities.operations).slice(0, 6),
@@ -54,7 +52,7 @@ const mockGETSync = (uri: string) => {
             totalOperations: 4
           },
           totalBalance: {
-            currencyName: 'EUR',
+            currencyName: "EUR",
             date: new Date().toISOString(),
             value: 1589049,
             valueHistory: {
@@ -71,7 +69,7 @@ const mockGETSync = (uri: string) => {
         mockEntities
       );
   }
-  throw new Error('mock does not implement uri=' + uri);
+  throw new Error("mock does not implement uri=" + uri);
 };
 
 const delay = ms => new Promise(success => setTimeout(success, ms));

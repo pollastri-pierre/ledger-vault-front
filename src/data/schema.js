@@ -1,12 +1,12 @@
 //@flow
-import { schema } from 'normalizr';
+import { schema } from "normalizr";
 
 // The schema defines how entities connect to each other
 // this define the front model schema, not exactly the one coming from the API (without the _id fields)
 
-export const Group = new schema.Entity('groups');
+export const Group = new schema.Entity("groups");
 
-export const Member = new schema.Entity('members', {
+export const Member = new schema.Entity("members", {
   groups: [Group]
 });
 
@@ -18,17 +18,17 @@ Group.define({
 */
 
 export const Currency = new schema.Entity(
-  'currencies',
+  "currencies",
   {},
   {
-    idAttribute: 'name'
+    idAttribute: "name"
   }
 );
 
-export const Account = new schema.Entity('accounts', { currency: Currency });
+export const Account = new schema.Entity("accounts", { currency: Currency });
 
 export const Operation = new schema.Entity(
-  'operations',
+  "operations",
   {
     account: Account,
     currency: Currency,
@@ -39,7 +39,7 @@ export const Operation = new schema.Entity(
     ]
   },
   {
-    idAttribute: 'uuid',
+    idAttribute: "uuid",
     processStrategy: ({ account_id, ...entity }) => ({
       ...entity,
       // NB this is to reconnect a disconnected model.

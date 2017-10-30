@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { DialogButton } from '../../';
-import Plug from '../../icons/thin/Plug';
+import React from "react";
+import PropTypes from "prop-types";
+import { DialogButton } from "../../";
+import Plug from "../../icons/thin/Plug";
 
 function ApproveDevice(props) {
   const { cancel } = props;
@@ -20,17 +20,20 @@ function ApproveDevice(props) {
           </li>
           <li>
             <span className="bullet">2.</span>
-            Power on your device and unlock it by entering your 4 to 8 digit personal PIN code.
+            Power on your device and unlock it by entering your 4 to 8 digit
+            personal PIN code.
           </li>
           <li>
             <span className="bullet">3.</span>
-            Open the Vault app on the dashboard. When displayed,
-            approve the account request on the device.
+            Open the Vault app on the dashboard. When displayed, approve the
+            account request on the device.
           </li>
         </ul>
       </div>
       <div className="footer">
-        <DialogButton highlight className="cancel margin" onTouchTap={cancel}>Cancel</DialogButton>
+        <DialogButton highlight className="cancel margin" onTouchTap={cancel}>
+          Cancel
+        </DialogButton>
         <div className="wait">awaiting device...</div>
       </div>
     </div>
@@ -38,8 +41,7 @@ function ApproveDevice(props) {
 }
 
 ApproveDevice.propTypes = {
-  cancel: PropTypes.func.isRequired,
+  cancel: PropTypes.func.isRequired
 };
 
 export default ApproveDevice;
-
