@@ -17,11 +17,9 @@ type In<Props, S> = Class<React.Component<Props, S>>;
 // prettier-ignore
 type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<Props, A> = {
-  // TODO multi api. we need to pull multiple endpoints sometimes
   api: A,
   propsToApiParams?: (props: *) => Object,
   RenderLoading?: (props: PropsWithoutA<Props, A>) => *
-  // TODO RenderError
 };
 
 const defaultOpts = {
@@ -47,6 +45,8 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     } = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
       results: null,
+      // when data gets potentially reloaded, this is a state to track that.
+      // TODO: in the future we might move it to the store so if the data gets globally reloaded we can provide this too... it might be a bool per API
       loading: false
     };
 
