@@ -1,8 +1,7 @@
 //@flow
 import React, { Component } from 'react';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
-import DeltaChange from '../../components/DeltaChange';
-import TotalBalanceFilter, {
+import {
   TotalBalanceFilters
 } from '../../components/TotalBalanceFilter';
 import DateFormat from '../../components/DateFormat';
@@ -23,7 +22,7 @@ class TotalBalance extends Component<{
   reShapeData = (data) => {return {key: data, title: TotalBalanceFilters[data].title}}
   render() {
     console.log(this.props)
-    const { dashboard, onTotalBalanceFilterChange, filter, totalBalance } = this.props;
+    const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
     const values = _.reduce(Object.keys(TotalBalanceFilters), (values, filter) => {values.push({key: filter, title: TotalBalanceFilters[filter].title}); return values;}, []);
     return (
       <Card

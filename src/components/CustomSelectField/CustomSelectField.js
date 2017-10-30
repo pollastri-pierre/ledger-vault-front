@@ -33,7 +33,7 @@ class CustomSelectField extends Component {
           <span className="label">{selected.title}</span>
         </div>
         <PopBubble
-          open={this.state.isOpen}
+          open={isOpen}
           anchorEl={this.filter}
           onRequestClose={this.close}
           style={{
