@@ -9,7 +9,7 @@ export type APISpec = {
 type API = { [_: string]: APISpec };
 
 /**
- * This specifies the API and how they map to the schema model
+ * This specifies the API and how it maps to the schema model
  */
 
 const api: API = {
@@ -24,13 +24,11 @@ const api: API = {
     responseSchema: [Account]
   },
   account: {
-    // just an example, not actually yet used
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: 'GET',
     responseSchema: Account
   },
   accountOperations: {
-    // just an example, not actually yet used
     uri: ({ accountId }) => `/accounts/${accountId}/operations`,
     method: 'GET',
     responseSchema: [Operation]
