@@ -8,6 +8,11 @@ export const data = [
     balance: 1589831782,
     security_scheme: {
       quorum: 2,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300,
+      },
+      time_lock: 5000,
       approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
     },
     balance_history: {
@@ -28,6 +33,11 @@ export const data = [
     balance: 1589831782,
     security_scheme: {
       quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300,
+      },
+      time_lock: 5000,
       approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
     },
     balance_history: {
@@ -48,6 +58,11 @@ export const data = [
     balance: 1589831782,
     security_scheme: {
       quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300,
+      },
+      time_lock: 5000,
       approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
     },
     balance_history: {
@@ -68,6 +83,11 @@ export const data = [
     balance: 1589831782,
     security_scheme: {
       quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300,
+      },
+      time_lock: 5000,
       approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
     },
     balance_history: {
@@ -88,6 +108,8 @@ export const data = [
     balance: 1589831782,
     security_scheme: {
       quorum: 1,
+      rate_limiter: null,
+      time_lock: null,
       approvers: ['wewoleoolele', 'ewfwekljfkujkljlkj'],
     },
     balance_history: {

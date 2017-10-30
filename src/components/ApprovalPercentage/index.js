@@ -2,7 +2,6 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import PercentageBarProgress from '../PercentageBarProgress';
-import './index.css';
 
 function ApprovalPercentage(props) {
   const { approved, approvers, nbRequired } = props;
@@ -10,16 +9,14 @@ function ApprovalPercentage(props) {
 
   const percentage = Math.round(100 * (approved.length / nbTotal));
 
-  return (
-    <div className="approval-percentage">
-      <p>
-        {approved.length} collected, {approvers.length - nbTotal} remaining
-        <span> ({percentage}%)</span>
-      </p>
-
-      <PercentageBarProgress percentage={percentage} />
-    </div>
+  const label = (
+    <p>
+      {approved.length} collected, {approvers.length - nbTotal} remaining
+      <span> ({percentage}%)</span>
+    </p>
   );
+
+  return <PercentageBarProgress percentage={percentage} label={label} />;
 }
 
 ApprovalPercentage.propTypes = {

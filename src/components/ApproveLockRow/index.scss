@@ -1,0 +1,50 @@
+@import '../../styles/variables';
+
+.approve-lock-row {
+  border-bottom: 1px solid $argile;
+  position: relative;
+  padding-left: 50px;
+
+  &:last-child {
+    border: 0;
+  }
+
+  &.unactive {
+    opacity: 0.5;
+  }
+
+  .approve-lock-name,
+  .approve-lock-value {
+    display: block;
+    margin: 0;
+  }
+
+  .approve-lock-icon {
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }
+
+  .approve-lock-name {
+    font-size: 13px;
+    color: $black;
+    line-height: 1.77;
+    margin-top: 15px;
+  }
+
+  .approve-lock-value {
+    font-size: 11px;
+    line-height: 2.09;
+    color: $steel;
+    margin-bottom: 15px;
+  }
+
+  .approve-lock-state {
+    font-size: 13px;
+    color: $steel;
+    line-height: 1.77;
+    position: absolute;
+    right: 0;
+    top: 10%;
+  }
+}

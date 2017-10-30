@@ -4,14 +4,7 @@ import PropTypes from 'prop-types';
 import ApprovalList from '../../ApprovalList';
 
 function OperationApproveApprovals(props) {
-  const {accounts, operation, members} = props;
-
-  console.log(props);
-
-  const account = _.find(
-    accounts,
-    account => account.id === operation.account_id,
-  );
+  const { account, operation, members } = props;
 
   const approvers = [];
   _.map(account.security_scheme.approvers, approver => {
@@ -33,7 +26,7 @@ function OperationApproveApprovals(props) {
 
 OperationApproveApprovals.propTypes = {
   operation: PropTypes.shape({}),
-  accounts: PropTypes.arrayOf(PropTypes.shape({})),
+  account: PropTypes.shape({}),
   members: PropTypes.arrayOf(PropTypes.shape({})),
 };
 

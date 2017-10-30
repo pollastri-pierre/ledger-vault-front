@@ -4,7 +4,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ListOperation } from '../../components';
 import { openOperationModal } from '../../redux/modules/operations';
-import { getReceiveAddress, getBalance, getCountervalue, getOperations } from '../../redux/modules/accounts-info';
+import {
+  getReceiveAddress,
+  getBalance,
+  getCountervalue,
+  getOperations,
+} from '../../redux/modules/accounts-info';
 import BalanceCard from './BalanceCard';
 import CounterValueCard from './CounterValueCard';
 import ReceiveFundsCard from './ReceiveFundsCard';
@@ -61,9 +66,15 @@ class AccountView extends Component {
           <div className="infos-left">
             <div className="infos-left-top">
               <BalanceCard data={balance} loading={isLoadingBalance} />
-              <CounterValueCard data={countervalue} loading={isLoadingCounter} />
+              <CounterValueCard
+                data={countervalue}
+                loading={isLoadingCounter}
+              />
             </div>
-            <ReceiveFundsCard data={receiveAddress} loading={isLoadingAddress} />
+            <ReceiveFundsCard
+              data={receiveAddress}
+              loading={isLoadingAddress}
+            />
           </div>
           <Quicklook
             operations={operations}
@@ -107,5 +118,6 @@ AccountView.propTypes = {
 
 export { AccountView as AccountViewNotDecorated };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountView));
-
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AccountView),
+);

@@ -10,12 +10,8 @@ import OverviewOperation from '../../OverviewOperation';
 import Amount from '../../Amount';
 
 function OperationApproveDetails(props) {
-  const {operation, accounts} = props;
+  const { operation, account } = props;
 
-  const account = _.find(
-    accounts,
-    account => account.id === operation.account_id,
-  );
   return (
     <div>
       <OverviewOperation
@@ -54,6 +50,7 @@ function OperationApproveDetails(props) {
 
 OperationApproveDetails.propTypes = {
   operation: PropTypes.shape({}),
+  account: PropTypes.shape({}),
 };
 
 export default OperationApproveDetails;

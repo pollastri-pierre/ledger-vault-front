@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import CircularProgress from 'material-ui/CircularProgress';
-import {DialogButton, Overscroll} from '../../';
+import { DialogButton, Overscroll } from '../../';
 import AbortConfirmation from '../../approve/AbortConfirmation';
 import ApproveDevice from '../../approve//ApproveDevice';
 import OperationApproveDedails from './OperationApproveDedails';
@@ -66,6 +66,11 @@ class OperationApprove extends Component {
       return <ApproveDevice cancel={approving} entity="operation" />;
     }
 
+    const currentAccount = _.find(
+      accounts.accounts,
+      account => account.id === operation.operation.account_id,
+    );
+
     return (
       <Tabs id="account-creation" className="wrapper loading">
         <div className="header">
@@ -80,18 +85,21 @@ class OperationApprove extends Component {
           <TabPanel className="tabs_panel">
             <OperationApproveDedails
               operation={operation.operation}
-              accounts={accounts.accounts}
+              account={currentAccount}
             />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <OperationApproveApprovals
-              accounts={accounts.accounts}
               members={organization.members}
+              account={currentAccount}
               operation={operation.operation}
             />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <OperationApproveLocks />
+            <OperationApproveLocks
+              account={currentAccount}
+              operation={operation.operation}
+            />
           </TabPanel>
         </div>
         <Footer

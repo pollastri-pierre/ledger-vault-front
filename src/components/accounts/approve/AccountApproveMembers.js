@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
-import {Avatar} from '../../../components';
+import { Avatar } from '../../../components';
 import MemberAvatar from '../../MemberAvatar';
+import InfoModal from '../../InfoModal';
 
 class AccountApproveMembers extends Component {
   componentWillMount() {
-    const {members, isLoading} = this.props.organization;
+    const { members, isLoading } = this.props.organization;
 
     if (!isLoading && _.isNull(members)) {
       this.props.getOrganizationMembers();
@@ -15,7 +16,7 @@ class AccountApproveMembers extends Component {
   }
 
   render() {
-    const {members, isLoading} = this.props.organization;
+    const { members, isLoading } = this.props.organization;
     const membersAccount = this.props.account.security.members;
 
     if (isLoading || _.isNull(members)) {
@@ -32,12 +33,14 @@ class AccountApproveMembers extends Component {
 
     return (
       <div className="account-creation-members">
-        <p className="info approve">
-          Members define the group of individuals that have the ability to
-          approve outgoing operations from this account.
-        </p>
+        <InfoModal>
+          <p>
+            Members define the group of individuals that have the ability to
+            approve outgoing operations from this account.
+          </p>
+        </InfoModal>
         {_.map(membersAccount, hash => {
-          const member = _.find(members, {pub_key: hash});
+          const member = _.find(members, { pub_key: hash });
           return (
             <div
               key={member.id}

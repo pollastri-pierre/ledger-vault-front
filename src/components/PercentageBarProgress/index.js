@@ -5,16 +5,20 @@ import './index.css';
 class PercentageBarProgress extends PureComponent<*> {
   props: {
     percentage: number,
+    label: *,
   };
   render() {
-    const { percentage } = this.props;
+    const { percentage, label } = this.props;
 
     return (
-      <div className="percentage-bar">
-        <div
-          className="percentage-bar-fill"
-          style={{ width: `${percentage}%` }}
-        />
+      <div className="wrapper-percentage">
+        {label}
+        <div className="percentage-bar">
+          <div
+            className="percentage-bar-fill"
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
       </div>
     );
   }

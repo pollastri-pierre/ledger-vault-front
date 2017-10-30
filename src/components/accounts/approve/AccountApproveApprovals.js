@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import CircularProgress from 'material-ui/CircularProgress';
 import ValidateBadge from '../../icons/ValidateBadge';
 import Question from '../../icons/full/Question';
-import {Avatar} from '../../../components';
+import { Avatar } from '../../../components';
 import './AccountApproveApprovals.css';
+import InfoModal from '../../InfoModal';
 import ApprovalList from '../../ApprovalList';
 
 class AccountApproveApprovals extends Component {
   componentWillMount() {
-    const {approvers, isLoadingApprovers} = this.props.organization;
+    const { approvers, isLoadingApprovers } = this.props.organization;
 
     if (!isLoadingApprovers && _.isNull(approvers)) {
       this.props.getOrganizationApprovers();
@@ -18,8 +19,8 @@ class AccountApproveApprovals extends Component {
   }
 
   render() {
-    const {approvers, isLoadingApprovers} = this.props.organization;
-    const {approved} = this.props.account;
+    const { approvers, isLoadingApprovers } = this.props.organization;
+    const { approved } = this.props.account;
 
     if (isLoadingApprovers || _.isNull(approvers)) {
       return (
@@ -37,10 +38,10 @@ class AccountApproveApprovals extends Component {
 
     return (
       <div className="account-creation-members">
-        <p className="info approve">
+        <InfoModal>
           The account will be available when the following members in yout team
           approve the creation request.
-        </p>
+        </InfoModal>
         <ApprovalList approvers={approvers} approved={approved} />
       </div>
     );
