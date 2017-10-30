@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
 import ArrowDown from "../icons/ArrowDown";
 import "./TotalBalanceFilter.css";
 import CustomSelectField from "../CustomSelectField/CustomSelectField.js"
 import _ from "lodash";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+
+
+export const TotalBalanceFilters = {
+ yesterday: { title: 'yesterday' },
+ week: { title: 'a week ago' },
+ month: { title: 'a month ago' }
+};
+
 
 class TotalBalanceFilter extends Component {
 

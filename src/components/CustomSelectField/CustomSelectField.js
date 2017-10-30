@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
 import ArrowDown from "../icons/ArrowDown";
 import "../TotalBalanceFilter/TotalBalanceFilter.css";
 import _ from "lodash"
