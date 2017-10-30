@@ -35,7 +35,6 @@ const mapDispatchToProps = dispatch => ({
 // Required by Material-UI
 injectTapEventPlugin();
 
-
 function App(props) {
   return (
     <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>

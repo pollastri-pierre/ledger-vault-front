@@ -2,32 +2,39 @@
 import React, { Component } from 'react';
 import CurrencyNameValue from '../../components/CurrencyNameValue';
 import DeltaChange from '../../components/DeltaChange';
-import TotalBalanceFilter from '../../components/TotalBalanceFilter';
+//import TotalBalanceFilter from '../../components/TotalBalanceFilter';
 import DateFormat from '../../components/DateFormat';
 import Card from '../../components/Card';
 import DashboardField from './DashboardField';
 import EvolutionSince from './EvolutionSince';
 import { TotalBalanceFilters } from '../../redux/modules/dashboard';
 import './TotalBalanceCard.css';
+import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import _ from "lodash";
 
 class TotalBalance extends Component<*> {
   props: {
     dashboard: *,
     onTotalBalanceFilterChange: (value: string) => void
   };
+
+  reShapeData = (data) => {return {key: data, title: TotalBalanceFilters[data].title}}
   render() {
     const { dashboard, onTotalBalanceFilterChange } = this.props;
     const { totalBalance, totalBalanceFilter } = dashboard;
+
+    console.log(totalBalanceFilter);
+    console.log(TotalBalanceFilters)
+
+    const values = _.reduce(Object.keys(TotalBalanceFilters), (values, filter) => {values.push({key: filter, title: TotalBalanceFilters[filter].title}); return values;}, []);
+
 
     return (
       <Card
         className="total-balance"
         title="total balance"
         titleRight={
-          <TotalBalanceFilter
-            value={totalBalanceFilter}
-            onChange={onTotalBalanceFilterChange}
-          />
+          <CustomSelectField values={values} selected={this.reShapeData(totalBalanceFilter)} onChange={onTotalBalanceFilterChange} />
         }
       >
         <div className="body">
