@@ -39,7 +39,9 @@ function mergeEntities(prev, patch) {
   return entities;
 }
 
-export const fetchData = (spec, apiParams, body) => dispatch =>
+export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
+  dispatch: Function
+): Promise<*> =>
   query(spec, apiParams, body).then(data => {
     const result = normalize(data, spec.responseSchema);
     dispatch({
@@ -55,7 +57,7 @@ const reducers = {
   })
 };
 
-export default (state = initialState, action) =>
+export default (state: * = initialState, action: Object) =>
   action.type in reducers
     ? { ...state, ...reducers[action.type](state, action) }
     : state;

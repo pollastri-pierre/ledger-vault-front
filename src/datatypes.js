@@ -33,6 +33,7 @@ export type Operation = {
   uuid: string,
   currency_name: string,
   currency_family: string,
+  currency: Currency,
   trust: {
     level: string,
     weight: number,

@@ -15,11 +15,11 @@ class TotalBalance extends Component<{
   filter: string,
   onTotalBalanceFilterChange: (value: string) => void
 }> {
-  reShapeData = data => {
-    return { key: data, title: TotalBalanceFilters[data].title };
+  reShapeData = (filter: string) => {
+    return { key: filter, title: TotalBalanceFilters[filter].title };
   };
+
   render() {
-    console.log(this.props);
     const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
     const values = _.reduce(
       Object.keys(TotalBalanceFilters),
