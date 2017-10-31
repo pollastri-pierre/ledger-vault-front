@@ -8,12 +8,11 @@ import CardField from "../../components/CardField";
 import EvolutionSince from "./EvolutionSince";
 import "./TotalBalanceCard.css";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
-import _ from "lodash";
 
 class TotalBalance extends Component<{
   totalBalance: *,
-  filter: string,
-  onTotalBalanceFilterChange: (value: string) => void
+  filter: *,
+  onTotalBalanceFilterChange: (value: *) => void
 }> {
   render() {
     const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;

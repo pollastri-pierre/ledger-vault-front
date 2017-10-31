@@ -69,9 +69,7 @@ class OperationDetails extends Component {
           }}
         >
           <TabPanel className="tabs_panel">
-            <Overscroll>
-              <TabOverview operation={operation} />
-            </Overscroll>
+            <TabOverview operation={operation} />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <Overscroll>
@@ -79,12 +77,10 @@ class OperationDetails extends Component {
             </Overscroll>
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <Overscroll>
-              <TabLabel
-                note={this.state.note}
-                changeTitle={this.handleChangeTitle}
-              />
-            </Overscroll>
+            <TabLabel
+              note={this.state.note}
+              changeTitle={this.handleChangeTitle}
+            />
           </TabPanel>
         </div>
         <div className="footer">

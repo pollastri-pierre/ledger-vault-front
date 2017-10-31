@@ -2,15 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
 
 import "./Menu.css";
 
 function Menu(props, context) {
   const t = context.translate;
 
-  const { accounts, pathname } = props;
+  const { pathname } = props;
 
   return (
     <div className="Menu">
@@ -58,11 +56,7 @@ function Menu(props, context) {
 
       <div className="menu-accounts">
         <h4>Accounts</h4>
-        {accounts.length > 0 ? (
-          <AccountsMenu accounts={accounts} pathname={pathname} />
-        ) : (
-          false
-        )}
+        <AccountsMenu pathname={pathname} />
       </div>
     </div>
   );
@@ -73,13 +67,8 @@ Menu.contextTypes = {
 };
 
 Menu.propTypes = {
-  accounts: PropTypes.array.isRequired,
   pathname: PropTypes.string.isRequired,
   openOperation: PropTypes.func.isRequired
 };
 
-export default connectData(Menu, {
-  api: {
-    accounts: api.accounts
-  }
-});
+export default Menu;

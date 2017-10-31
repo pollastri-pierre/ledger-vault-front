@@ -26,7 +26,9 @@ const defaultGenOperation = {
   amount: 120000000,
   confirmations: 31,
   type: "SEND",
-  approved: []
+  approved: [],
+  currency_name: "bitcoin",
+  currency_family: "BITCOIN"
 };
 
 const genPubKey = () =>
@@ -133,14 +135,23 @@ const genSecurityScheme = () => ({
 });
 
 const genOperation = opts => {
-  const { uuid, time, account_id, amount, confirmations, type } = {
+  const {
+    uuid,
+    time,
+    account_id,
+    amount,
+    confirmations,
+    type,
+    currency_name,
+    currency_family
+  } = {
     ...defaultGenOperation,
     ...opts
   };
   return {
     uuid,
-    currency_name: "bitcoin",
-    currency_family: "BITCOIN",
+    currency_name,
+    currency_family,
     trust: {
       level: "",
       weight: 3,
@@ -330,16 +341,45 @@ export default {
     "13": genOperation({
       uuid: "13",
       confirmations: 0,
-      time: new Date(2017, 9, 20).toISOString()
+      time: new Date(2017, 9, 20).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
     }),
     "14": genOperation({
       uuid: "14",
       type: "FROM",
-      time: new Date(2017, 9, 21).toISOString()
+      time: new Date(2017, 9, 21).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
     }),
     "15": genOperation({
       uuid: "15",
-      time: new Date(2017, 9, 22).toISOString()
+      time: new Date(2017, 9, 22).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
+    }),
+    "16": genOperation({
+      uuid: "16",
+      confirmations: 0,
+      time: new Date(2017, 9, 20).toISOString(),
+      amount: 40502021,
+      currency_name: "dash",
+      currency_family: "Dash"
+    }),
+    "17": genOperation({
+      uuid: "17",
+      type: "FROM",
+      time: new Date(2017, 9, 21).toISOString(),
+      amount: -40502021,
+      currency_name: "dash",
+      currency_family: "Dash"
+    }),
+    "18": genOperation({
+      uuid: "18",
+      time: new Date(2017, 9, 22).toISOString(),
+      amount: 280502021,
+      currency_name: "dash",
+      currency_family: "Dash"
     })
   },
   accounts: {

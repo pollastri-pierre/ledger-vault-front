@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from "react";
 import ArrowDown from "../icons/ArrowDown";
 import "../TotalBalanceFilter/TotalBalanceFilter.css";
@@ -5,16 +6,18 @@ import _ from "lodash";
 import PopBubble from "../utils/PopBubble.js";
 import "./CustomSelectField.css";
 
-class CustomSelectField extends Component {
-  constructor(props) {
-    super(props);
+class CustomSelectField<T: { title: string }> extends Component<*, *> {
+  props: {
+    values: Array<T>,
+    selected: T,
+    onChange: (value: *) => void
+  };
+  state: * = {
+    isOpen: false
+  };
+  filter: ?HTMLElement;
 
-    this.state = {
-      isOpen: false
-    };
-  }
-
-  onChange = value => {
+  onChange = (value: *) => {
     this.props.onChange(value);
   };
 
@@ -49,8 +52,9 @@ class CustomSelectField extends Component {
             textAlign: "right"
           }}
         >
-          {_.map(values, value => (
+          {_.map(values, (value, i) => (
             <div
+              key={i}
               className={`menuElem ${selected.title === value.title
                 ? "selected"
                 : ""}`}

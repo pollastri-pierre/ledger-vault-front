@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./TotalBalanceFilter.css";
 import CustomSelectField from "../CustomSelectField/CustomSelectField.js";
-import _ from "lodash";
 
 export const TotalBalanceFilters = [
   { title: "yesterday", key: "yesterday" },

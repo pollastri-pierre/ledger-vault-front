@@ -8,6 +8,7 @@ import { openApprove } from "../../redux/modules/entity-approve";
 import { getPendingRequests } from "../../redux/modules/pending-requests";
 import { getOrganizationApprovers } from "../../redux/modules/organization";
 import { getAccounts } from "../../redux/modules/accounts";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 import {
@@ -74,5 +75,6 @@ export default connectData(PendingRequests, {
     accounts: api.accounts,
     profile: api.profile,
     approversAccount: api.approvers
-  }
+  },
+  RenderLoading: SpinnerCard
 });
