@@ -13,15 +13,26 @@ type API = { [_: string]: APISpec };
  */
 
 const api: API = {
-  members: {
-    uri: "/members",
-    method: "GET",
-    responseSchema: [Member]
-  },
   accounts: {
     uri: "/accounts",
     method: "GET",
     responseSchema: [Account]
+  },
+  members: {
+    uri: "/organization/members",
+    method: "GET",
+    responseSchema: [Member]
+  },
+  profile: {
+    uri: "/organization/members/me",
+    method: "GET",
+    responseSchema: Member
+  },
+  saveProfile: {
+    uri: "/organization/members/me",
+    method: "PUT",
+    // input : Member
+    responseSchema: Member
   },
   account: {
     uri: ({ accountId }) => `/accounts/${accountId}`,

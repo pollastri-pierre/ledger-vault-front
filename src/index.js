@@ -80,3 +80,6 @@ if (token) {
 */
 
 render();
+// ^^^ TODO we should not have to pull getUserInfos() actually but instead
+// we will need to handle server error case when it returns a specific code
+// meaning user token is invalid

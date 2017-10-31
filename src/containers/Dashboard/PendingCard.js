@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Card from "../../components/Card";
-import DashboardField from "./DashboardField";
+import CardField from "../../components/CardField";
 import DateFormat from "../../components/DateFormat";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import AccountName from "../../components/AccountName";
@@ -49,20 +49,12 @@ class PendingCard extends Component<{ pending: * }> {
         className="pendingCard"
       >
         <header className="pendingHeader">
-          <DashboardField
-            label="operations"
-            align="center"
-            className="pendingHeaderNumber"
-          >
+          <CardField label="operations" align="center">
             {totalOperations}
-          </DashboardField>
-          <DashboardField
-            label="account"
-            align="center"
-            className="pendingHeaderNumber"
-          >
+          </CardField>
+          <CardField label="account" align="center">
             {totalAccounts}
-          </DashboardField>
+          </CardField>
         </header>
         <div className="pending-list">
           {events.map((o, i) => {

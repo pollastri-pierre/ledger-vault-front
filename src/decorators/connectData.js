@@ -4,25 +4,35 @@ import { denormalize } from "normalizr";
 import React, { Component } from "react";
 import isEqual from "lodash/isEqual";
 import { fetchData } from "../redux/modules/data";
-import SpinnerCard from "../components/spinners/SpinnerCard";
 import type { APISpec } from "../data/api-spec";
 
-type Opts = {
-  // TODO multi api. we need to pull multiple endpoints sometimes
-  api: { [_: string]: APISpec },
+type FetchData = (api: APISpec, body?: Object) => Promise<*>;
+// prettier-ignore
+type PropsWithoutA<Props, A> = $Diff<Props, A & {
+  fetchData?: FetchData,
+  loading?: boolean
+}>;
+// prettier-ignore
+type In<Props, S> = Class<React.Component<Props, S>>;
+// prettier-ignore
+type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
+type Opts<Props, A> = {
+  api: A,
   propsToApiParams?: (props: *) => Object,
-  RenderLoading?: (props: Object) => *
-  // TODO RenderError
+  RenderLoading?: (props: PropsWithoutA<Props, A>) => *
 };
 
 const defaultOpts = {
-  RenderLoading: SpinnerCard,
+  RenderLoading: () => null,
   propsToApiParams: _ => null
 };
 
-// TODO it would be great to infer the type of props the Decorated will receives <3
+const neverEnding: Promise<any> = new Promise(() => {});
 
-export default (Decorated: *, opts: Opts) => {
+export default <Props, A: { [_: string]: APISpec }, S>(
+  Decorated: In<Props, S>,
+  opts: Opts<Props, A>
+): Out<Props, A> => {
   const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
   const apiKeys = Object.keys(api);
 
@@ -30,30 +40,58 @@ export default (Decorated: *, opts: Opts) => {
     apiParams: *;
 
     state: {
-      results: ?Object
+      results: ?Object,
+      loading: boolean
     } = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
-      results: null
+      results: null,
+      // when data gets potentially reloaded, this is a state to track that.
+      // TODO: in the future we might move it to the store so if the data gets globally reloaded we can provide this too... it might be a bool per API
+      loading: false
     };
+
+    _unmounted = false;
 
     sync(apiParams: *) {
       const { dispatch } = this.props;
       this.apiParams = apiParams;
+      this.setState({ loading: true });
       Promise.all(
         apiKeys.map(key => dispatch(fetchData(api[key], apiParams)))
       ).then(all => {
+        if (this._unmounted) return;
         const results = {};
         all.forEach((result, i) => {
           results[apiKeys[i]] = result;
         });
-        this.setState({ results });
+        this.setState({ results, loading: false });
       });
     }
 
-    forceUpdate = () => this.sync(this.apiParams);
+    /**
+     * Perform an API call. body can be provided for POST apis
+     * this can also be used to "refresh" data.
+     */
+    fetchData: FetchData = (api, body) =>
+      this.props
+        .dispatch(fetchData(api, this.apiParams, body))
+        .then(
+          result =>
+            this._unmounted
+              ? neverEnding
+              : denormalize(
+                  result,
+                  api.responseSchema,
+                  this.props.dataStore.entities
+                )
+        );
 
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
+    }
+
+    componentWillUnmount() {
+      this._unmounted = true;
     }
 
     componentWillReceiveProps(props: *) {
@@ -65,10 +103,11 @@ export default (Decorated: *, opts: Opts) => {
 
     render() {
       const { dataStore, ...props } = this.props;
-      const { results } = this.state;
+      const { results, loading } = this.state;
       if (!results) return <RenderLoading {...props} />;
       const extraProps = {
-        forceUpdate: this.forceUpdate
+        fetchData: this.fetchData,
+        loading
       };
       apiKeys.map(key => {
         const data = denormalize(

@@ -11,32 +11,40 @@ type Column<Cell> = {
 export default class DataTable<Cell> extends Component<*> {
   props: {
     columns: Array<Column<Cell>>,
-    data: Array<Cell>
+    data: Array<Cell>,
+    renderRow: (cell: Cell, index: number, children: *) => *
+  };
+  static defaultProps = {
+    renderRow: (cell, index, children) => <tr key={index}>{children}</tr>
   };
   render() {
-    const { columns, data } = this.props;
+    const { columns, data, renderRow } = this.props;
     return (
       <table className="data-table">
         <thead>
           <tr>
-            {columns.map(column => (
-              <th className={column.className}>{column.title}</th>
+            {columns.map((column, i) => (
+              <th key={i} className={column.className}>
+                {column.title}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.map((cell, y) => (
-            <tr key={y}>
-              {columns.map((column, x) => {
+          {data.map((cell, y) =>
+            renderRow(
+              cell,
+              y,
+              columns.map((column, x) => {
                 const C = column.renderCell;
                 return (
                   <td key={x} className={column.className}>
                     <C {...cell} />
                   </td>
                 );
-              })}
-            </tr>
-          ))}
+              })
+            )
+          )}
         </tbody>
       </table>
     );

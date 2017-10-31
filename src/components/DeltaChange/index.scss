@@ -1,29 +1,30 @@
 $lead: #999999;
 
 .delta-change {
-	font-size: 22px;
-	color: $lead;
-	.arrow {
-		margin-left: 8px;
-		width: 8px;
-		vertical-align: top;
-    	margin-top: 11px;
-		&.incr {
-		    -ms-transform: rotate(45deg); /* IE 9 */
-		    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
-		    transform: rotate(45deg);
-			polyline, line {
-				stroke: #27d0e2 !important;
-			}
-		}
-		&.decr {
-			-ms-transform: rotate(135deg); /* IE 9 */
-		    -webkit-transform: rotate(135deg); /* Chrome, Safari, Opera */
-		    transform: rotate(135deg);
-			polyline, line {
-				stroke: #ea2e49 !important;				
-			}
-		}
-	}
+  font-size: 22px;
+  color: $lead;
+  .arrow {
+    margin-left: 8px;
+    width: 8px;
+    vertical-align: top;
+    margin-top: 11px;
+    &.incr {
+      -ms-transform: rotate(45deg); /* IE 9 */
+      -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+      transform: rotate(45deg);
+      polyline,
+      line {
+        stroke: #27d0e2 !important;
+      }
+    }
+    &.decr {
+      -ms-transform: rotate(135deg); /* IE 9 */
+      -webkit-transform: rotate(135deg); /* Chrome, Safari, Opera */
+      transform: rotate(135deg);
+      polyline,
+      line {
+        stroke: #ea2e49 !important;
+      }
+    }
+  }
 }
-
