@@ -10,38 +10,20 @@ import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
 
 class AccountApproveApprovals extends Component {
-  componentWillMount() {
-    const { approvers, isLoadingApprovers } = this.props.organization;
-
-    if (!isLoadingApprovers && _.isNull(approvers)) {
-      this.props.getOrganizationApprovers();
-    }
-  }
-
   render() {
-    const { approvers, isLoadingApprovers } = this.props.organization;
     const { approved } = this.props.account;
-
-    if (isLoadingApprovers || _.isNull(approvers)) {
-      return (
-        <CircularProgress
-          style={{
-            top: "50%",
-            left: "50%",
-            margin: "-25px 0 0 -25px"
-          }}
-        />
-      );
-    }
+    const { approvers } = this.props;
 
     console.log(approvers);
+    console.log(approved);
 
     return (
       <div className="account-creation-members">
         <InfoModal>
-          The account will be available when the following members in yout team
+          The account will be available when the following members in your team
           approve the creation request.
         </InfoModal>
+
         <ApprovalList approvers={approvers} approved={approved} />
       </div>
     );

@@ -1,16 +1,14 @@
-import _ from "lodash";
 import React from "react";
-import ArrowDown from "../../icons/ArrowDown";
 import PropTypes from "prop-types";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import DateFormat from "../../DateFormat";
-import ConfirmationStatus from "../../ConfirmationStatus";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
 
 function OperationApproveDetails(props) {
-  const { operation, account } = props;
+  const { operation } = props;
+  const { account } = operation;
 
   return (
     <div>

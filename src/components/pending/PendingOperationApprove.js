@@ -1,5 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
 import _ from "lodash";
+import { openEntityApprove } from "../../redux/modules/entity-approve";
 import PropTypes from "prop-types";
 import ValidateBadge from "../icons/ValidateBadge";
 import AccountName from "../AccountName";
@@ -8,12 +10,19 @@ import DateFormat from "../DateFormat";
 import ApprovalStatus from "../ApprovalStatus";
 
 function PendingOperationApprove(props) {
-  const { operations, open, approved, accounts, approvers, user } = props;
+  const {
+    operations,
+    open,
+    approved,
+    accounts,
+    approvers,
+    user,
+    onOpenApprove
+  } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
 
-  // const totalAmount = '-EUR 15,256.89';
   const totalAmount = _.reduce(
     operations,
     (sum, op) => op.reference_conversion.amount + sum,
@@ -41,16 +50,13 @@ function PendingOperationApprove(props) {
       )}
       {_.map(operations, operation => {
         const currencyClass = operation.currency_name.toLowerCase();
-        const account = _.find(
-          accounts,
-          account => account.id === operation.account_id
-        );
+        const account = operation.account;
 
         return (
           <div
             className={`pending-request operation ${approved ? "watch" : ""}`}
             key={operation.uuid}
-            onClick={() => open("operation", operation, approved)}
+            onClick={() => onOpenApprove("operation", operation.uuid, approved)}
           >
             <div>
               <span className="request-date-creation">
@@ -108,4 +114,9 @@ PendingOperationApprove.propTypes = {
   approvers: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
-export default PendingOperationApprove;
+const mapDispatchToProps = dispatch => ({
+  onOpenApprove: (entity, object, isApproved) =>
+    dispatch(openEntityApprove(entity, object, isApproved))
+});
+
+export default connect(undefined, mapDispatchToProps)(PendingOperationApprove);

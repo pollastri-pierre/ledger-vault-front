@@ -8,7 +8,7 @@ import "./index.css";
 function Approvalmember(props) {
   const { member, isApproved } = props;
 
-  const name = member.firstname + " " + member.name;
+  const name = member.first_name + " " + member.last_name;
   let slice;
   if (name.length > 10) {
     slice = name.slice(0, 10) + "...";

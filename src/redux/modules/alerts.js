@@ -13,7 +13,6 @@ import {
   SAVE_PROFILE_FAIL,
   SAVED_PROFILE
 } from "./profile";
-import { ABORTED, APPROVED } from "./entity-approve";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 
@@ -50,34 +49,6 @@ export default function reducer(state = initialState, action) {
   }
 
   switch (action.type) {
-    case APPROVED: {
-      const copy = _.cloneDeep(state);
-      const title = `${action.entity}s.abortSuccessTitle`;
-      const body = `${action.entity}s.abortSuccessBody`;
-
-      addToTabs(copy, {
-        id: APPROVED,
-        type: "success",
-        title,
-        content: body
-      });
-
-      return copy;
-    }
-    case ABORTED: {
-      const copy = _.cloneDeep(state);
-      const title = `${action.entity}s.abortSuccessTitle`;
-      const body = `${action.entity}s.abortSuccessBody`;
-
-      addToTabs(copy, {
-        id: ABORTED,
-        type: "success",
-        title,
-        content: body
-      });
-
-      return copy;
-    }
     case SAVED_ACCOUNT: {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {

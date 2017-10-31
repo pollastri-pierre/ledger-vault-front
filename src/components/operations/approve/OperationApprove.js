@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import ModalLoading from "../../../components/ModalLoading";
+import api from "../../../data/api-spec";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -10,66 +12,43 @@ import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import OperationApproveLocks from "./OperationApproveLocks";
 import ApprovalList from "../../ApprovalList";
+import connectData from "../../../decorators/connectData";
 import Footer from "../../approve/Footer";
 
 class OperationApprove extends Component {
-  componentWillMount() {
-    this.props.getOrganizationMembers();
+  constructor() {
+    super();
+    this.aborting = this.aborting.bind(this);
+    this.approving = this.approving.bind(this);
+    this.state = {};
   }
 
-  render() {
-    const {
-      close,
-      operation,
-      abort,
-      approving,
-      aborting,
-      accounts,
-      organization
-    } = this.props;
+  aborting() {
+    this.setState({ ...this.state, isAborting: !this.state.isAborting });
+  }
 
-    if (operation.isAborting) {
+  approving() {
+    this.setState({ ...this.state, isDevice: !this.state.isDevice });
+  }
+
+  abort() {}
+
+  render() {
+    const { close, operation, members } = this.props;
+
+    if (this.state.isAborting) {
       return (
         <AbortConfirmation
-          aborting={aborting}
-          abort={abort}
+          aborting={this.aborting}
+          abort={this.abort}
           entity="operation"
         />
       );
     }
 
-    if (organization.isLoading || _.isNull(organization.members)) {
-      return (
-        <div id="account-creation" className="wrapper loading">
-          <div className="header" />
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: "-25px",
-                marginTop: "-25px"
-              }}
-            />
-          </div>
-          <div className="footer">
-            <DialogButton highlight className="cancel" onTouchTap={close}>
-              Close
-            </DialogButton>
-          </div>
-        </div>
-      );
+    if (this.state.isDevice) {
+      return <ApproveDevice cancel={this.approving} entity="operation" />;
     }
-
-    if (operation.isDevice) {
-      return <ApproveDevice cancel={approving} entity="operation" />;
-    }
-
-    const currentAccount = _.find(
-      accounts.accounts,
-      account => account.id === operation.operation.account_id
-    );
 
     return (
       <Tabs id="account-creation" className="wrapper loading">
@@ -83,30 +62,23 @@ class OperationApprove extends Component {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            <OperationApproveDedails
-              operation={operation.operation}
-              account={currentAccount}
-            />
+            <OperationApproveDedails operation={operation} />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <OperationApproveApprovals
-              members={organization.members}
-              account={currentAccount}
-              operation={operation.operation}
+              members={members}
+              operation={operation}
             />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <OperationApproveLocks
-              account={currentAccount}
-              operation={operation.operation}
-            />
+            <OperationApproveLocks operation={operation} />
           </TabPanel>
         </div>
         <Footer
           close={close}
-          approve={approving}
-          aborting={aborting}
-          approved={operation.isApproved}
+          approve={this.approving}
+          aborting={this.aborting}
+          approved={false}
         />
       </Tabs>
     );
@@ -119,4 +91,8 @@ OperationApprove.propTypes = {
   operation: PropTypes.shape({}).isRequired
 };
 
-export default OperationApprove;
+export default connectData(OperationApprove, {
+  api: { operation: api.operation, members: api.members },
+  propsToApiParams: props => ({ operationId: props.operationId }),
+  RenderLoading: ModalLoading
+});

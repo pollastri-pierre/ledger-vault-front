@@ -9,7 +9,8 @@ import Rates from "../../icons/thin/Rates";
 import LocksPercentage from "../../LocksPercentage";
 
 function OperationApproveLocks(props) {
-  const { account, operation } = props;
+  const { operation } = props;
+  const { account } = operation;
   const isUnactive = operation.approved.length < account.security_scheme.quorum;
 
   return (

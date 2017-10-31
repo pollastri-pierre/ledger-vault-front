@@ -31,7 +31,6 @@ class ActionBar extends Component {
     const t = this.context.translate;
 
     const profile = this.props.profile.user;
-    console.log(this.props.profile);
     if (!_.isEmpty(profile)) {
       // Displayed when profile is loaded
 

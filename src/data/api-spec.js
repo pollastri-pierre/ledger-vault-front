@@ -14,7 +14,12 @@ type API = { [_: string]: APISpec };
 
 const api: API = {
   members: {
-    uri: "/members",
+    uri: "/organization/members",
+    method: "GET",
+    responseSchema: [Member]
+  },
+  approvers: {
+    uri: "/organization/approvers",
     method: "GET",
     responseSchema: [Member]
   },
@@ -28,10 +33,25 @@ const api: API = {
     method: "GET",
     responseSchema: Account
   },
+  operation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "GET",
+    responseSchema: Operation
+  },
   accountOperations: {
     uri: ({ accountId }) => `/accounts/${accountId}/operations`,
     method: "GET",
     responseSchema: [Operation]
+  },
+  pendings: {
+    uri: "/pendings",
+    method: "GET",
+    responseSchema: {
+      approveOperations: [Operation],
+      watchOperations: [Operation],
+      approveAccounts: [Account],
+      watchAccounts: [Account]
+    }
   },
   dashboard: {
     uri: "/dashboard",

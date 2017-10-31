@@ -4,7 +4,6 @@ import {
   getOperationsToWatch
 } from "../utils/operation";
 import { LOGOUT } from "./auth";
-import { ABORTED, APPROVED } from "./entity-approve";
 import { SAVED_ACCOUNT } from "./account-creation";
 import currencies from "../../currencies";
 
@@ -99,48 +98,48 @@ export default function reducer(state = initialState, action) {
       return { ...state, isLoading: false };
     case GOT_PENDING_REQUESTS:
       return { ...state, isLoading: false, data: action.requests };
-    case APPROVED:
-      if (action.entity === "account") {
-        const accountJustApproved = _.find(approveAccounts, {
-          id: action.entityId
-        });
-        _.remove(approveAccounts, { id: action.entityId });
-        accountJustApproved.approved.push(action.pub_key);
-        watchAccounts.push(accountJustApproved);
-      } else {
-        const operationJustApproved = _.find(approveOperations, {
-          uuid: action.entityId
-        });
-        _.remove(approveOperations, { uuid: action.entityId });
-        operationJustApproved.approved.push(action.pub_key);
-        watchOperations.push(operationJustApproved);
-      }
-
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          approveAccounts: approveAccounts,
-          watchAccounts: watchAccounts,
-          approveOperations: approveOperations,
-          watchOperations: watchOperations
-        }
-      };
-    case ABORTED:
-      if (action.entity === "account") {
-        _.remove(approveAccounts, { id: action.entityId });
-      } else {
-        _.remove(approveOperations, { uuid: action.entityId });
-      }
-
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          approveAccounts: approveAccounts,
-          approveOperations: approveOperations
-        }
-      };
+    // case APPROVED:
+    //   if (action.entity === "account") {
+    //     const accountJustApproved = _.find(approveAccounts, {
+    //       id: action.entityId
+    //     });
+    //     _.remove(approveAccounts, { id: action.entityId });
+    //     accountJustApproved.approved.push(action.pub_key);
+    //     watchAccounts.push(accountJustApproved);
+    //   } else {
+    //     const operationJustApproved = _.find(approveOperations, {
+    //       uuid: action.entityId
+    //     });
+    //     _.remove(approveOperations, { uuid: action.entityId });
+    //     operationJustApproved.approved.push(action.pub_key);
+    //     watchOperations.push(operationJustApproved);
+    //   }
+    //
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       approveAccounts: approveAccounts,
+    //       watchAccounts: watchAccounts,
+    //       approveOperations: approveOperations,
+    //       watchOperations: watchOperations
+    //     }
+    //   };
+    // case ABORTED:
+    //   if (action.entity === "account") {
+    //     _.remove(approveAccounts, { id: action.entityId });
+    //   } else {
+    //     _.remove(approveOperations, { uuid: action.entityId });
+    //   }
+    //
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       approveAccounts: approveAccounts,
+    //       approveOperations: approveOperations
+    //     }
+    //   };
     case SAVED_ACCOUNT:
       approveAccounts.push(action.account);
       if (_.isNull(state.data)) {

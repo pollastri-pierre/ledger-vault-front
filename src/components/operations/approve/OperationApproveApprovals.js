@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 import ApprovalList from "../../ApprovalList";
 
 function OperationApproveApprovals(props) {
-  const { account, operation, members } = props;
+  const { operation, members } = props;
+  const { account } = operation;
 
   const approvers = [];
   _.map(account.security_scheme.approvers, approver => {

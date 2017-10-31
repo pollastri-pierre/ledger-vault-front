@@ -34,13 +34,7 @@ import {
   saveOperation
 } from "../redux/modules/operation-creation";
 
-import {
-  closeApprove,
-  getAccountToApprove,
-  aborting,
-  approving,
-  abort
-} from "../redux/modules/entity-approve";
+import { closeApprove } from "../redux/modules/entity-approve";
 
 import {
   getOrganizationMembers,
@@ -87,11 +81,7 @@ const mapDispatchToProps = dispatch => ({
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
   onGetAccounts: () => dispatch(getAccounts()),
-  onCloseApprove: () => dispatch(closeApprove()),
-  onGetAccountToApprove: () => dispatch(getAccountToApprove()),
-  onAbortingAccount: () => dispatch(aborting()),
-  onAbortAccount: () => dispatch(abort()),
-  onApprovingAccount: () => dispatch(approving())
+  onCloseApprove: () => dispatch(closeApprove())
 });
 
 function ModalsContainer(props) {
@@ -122,15 +112,9 @@ function ModalsContainer(props) {
     onCloseModalOperation,
     onSaveOperation,
     onGetAccounts,
-    onAbortingAccount,
-    onAbortAccount,
     onGetOperationToApprove,
-    onAbortingOperation,
-    onApprovingOperation,
-    onAbortOperation,
     onCloseApprove,
-    onGetAccountToApprove,
-    onApprovingAccount
+    onGetAccountToApprove
   } = props;
 
   return (
@@ -163,14 +147,7 @@ function ModalsContainer(props) {
         entityToApprove.entity === "operation" && (
           <Modal close={onCloseApprove}>
             <OperationApprove
-              accounts={accounts}
-              operation={entityToApprove}
-              organization={organization}
-              getOrganizationMembers={onGetOrganizationMembers}
-              aborting={onAbortingAccount}
-              approving={onApprovingAccount}
-              abort={onAbortAccount}
-              close={onCloseApprove}
+              operationId={entityToApprove.entityId}
               close={onCloseApprove}
             />
           </Modal>
@@ -179,14 +156,7 @@ function ModalsContainer(props) {
         entityToApprove.entity === "account" && (
           <Modal close={onCloseApprove}>
             <AccountApprove
-              account={entityToApprove}
-              organization={organization}
-              getOrganizationMembers={onGetOrganizationMembers}
-              getOrganizationApprovers={onGetOrganizationApprovers}
-              getAccount={onGetAccountToApprove}
-              aborting={onAbortingAccount}
-              approving={onApprovingAccount}
-              abort={onAbortAccount}
+              accountId={entityToApprove.entityId}
               close={onCloseApprove}
             />
           </Modal>

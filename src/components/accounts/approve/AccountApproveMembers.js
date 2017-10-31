@@ -7,37 +7,15 @@ import MemberAvatar from "../../MemberAvatar";
 import InfoModal from "../../InfoModal";
 
 class AccountApproveMembers extends Component {
-  componentWillMount() {
-    const { members, isLoading } = this.props.organization;
-
-    if (!isLoading && _.isNull(members)) {
-      this.props.getOrganizationMembers();
-    }
-  }
-
   render() {
-    const { members, isLoading } = this.props.organization;
-    const membersAccount = this.props.account.security.members;
-
-    if (isLoading || _.isNull(members)) {
-      return (
-        <CircularProgress
-          style={{
-            top: "50%",
-            left: "50%",
-            margin: "-25px 0 0 -25px"
-          }}
-        />
-      );
-    }
+    const { members } = this.props;
+    const membersAccount = this.props.account.security_scheme.approvers;
 
     return (
       <div className="account-creation-members">
         <InfoModal>
-          <p>
-            Members define the group of individuals that have the ability to
-            approve outgoing operations from this account.
-          </p>
+          Members define the group of individuals that have the ability to
+          approve outgoing operations from this account.
         </InfoModal>
         {_.map(membersAccount, hash => {
           const member = _.find(members, { pub_key: hash });
@@ -50,7 +28,7 @@ class AccountApproveMembers extends Component {
             >
               <MemberAvatar url={member.picture} />
               <span className="name">
-                {member.firstname} {member.name}
+                {member.first_name} {member.last_name}
               </span>
               <p className="role">{member.role}</p>
             </div>

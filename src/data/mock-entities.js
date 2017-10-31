@@ -25,7 +25,8 @@ const defaultGenOperation = {
   account_id: "0",
   amount: 120000000,
   confirmations: 31,
-  type: "SEND"
+  type: "SEND",
+  approved: []
 };
 
 const genPubKey = () =>
@@ -117,8 +118,9 @@ const members = {
 };
 
 const genSecurityScheme = () => ({
-  quorum: 4,
+  quorum: 2,
   approvers: Object.keys(members)
+    .slice(0, 2)
     .map(k => members[k])
     .filter(m => m.role === "Administrator")
     .map(m => m.pub_key),
@@ -148,6 +150,7 @@ const genOperation = opts => {
     time,
     block: {},
     type,
+    approved: [],
     amount,
     reference_conversion: {
       currency_name: "EUR",
@@ -355,7 +358,8 @@ export default {
       reference_conversion: {
         balance: 199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "1": {
       id: "1",
@@ -373,7 +377,8 @@ export default {
       reference_conversion: {
         balance: 199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "2": {
       id: "2",
@@ -391,7 +396,8 @@ export default {
       reference_conversion: {
         balance: 199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "3": {
       id: "3",
@@ -409,7 +415,8 @@ export default {
       reference_conversion: {
         balance: 199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "4": {
       id: "4",
@@ -427,7 +434,8 @@ export default {
       reference_conversion: {
         balance: 199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     }
   },
   // currencies are statically provided, we add them in the entities mock

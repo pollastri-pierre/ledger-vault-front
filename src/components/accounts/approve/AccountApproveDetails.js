@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import PropTypes from "prop-types";
 import Rates from "../../icons/thin/Rates";
 import PeopleThin from "../../icons/thin/People";
@@ -7,9 +8,9 @@ import DateFormat from "../../DateFormat";
 import AccountName from "../../AccountName";
 
 function AccountApproveDetails(props) {
-  const { security, currency, approved } = props.account;
+  const { security_scheme, currency, approved } = props.account;
   const { account } = props;
-  const { approvers } = props.organization;
+  const { approvers } = props;
 
   const percentage = Math.round(100 * (approved.length / approvers.length));
 
@@ -20,37 +21,40 @@ function AccountApproveDetails(props) {
           <PeopleThin className="security-icon member" />
           <span className="security-title">Members</span>
           <span className="security-value">
-            {security.members.length} selected
+            {security_scheme.approvers.length} selected
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${!security.timelock.enabled
+          className={`confirmation-security-item ${_.isNull(
+            security_scheme.time_lock
+          )
             ? "disabled"
             : ""}`}
         >
           <Hourglass className="security-icon timelock" />
           <span className="security-title">Time-lock</span>
           <span className="security-value">
-            {security.timelock.enabled ? (
-              <span>
-                {security.timelock.duration} {security.timelock.frequency}
-              </span>
+            {!_.isNull(security_scheme.time_lock) ? (
+              <span>{security_scheme.time_lock}</span>
             ) : (
               "disabled"
             )}
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${!security.ratelimiter.enabled
+          className={`confirmation-security-item ${_.isNull(
+            security_scheme.rate_limiter
+          )
             ? "disabled"
             : ""}`}
         >
           <Rates className="security-icon ratelimiter" />
           <span className="security-title">Rate limiter</span>
           <span className="security-value">
-            {security.ratelimiter.enabled ? (
+            {!_.isNull(security_scheme.rate_limiter) ? (
               <span>
-                {security.ratelimiter.rate} per {security.ratelimiter.frequency}
+                {security_scheme.rate_limiter.max_transaction} per{" "}
+                {security_scheme.rate_limiter.time_slot}
               </span>
             ) : (
               "disabled"
@@ -89,7 +93,8 @@ function AccountApproveDetails(props) {
         <div className="confirmation-info">
           <span className="info-title">Approvals to spend</span>
           <span className="info-value">
-            {security.approvals} of {security.members.length} members
+            {security_scheme.quorum} of {security_scheme.approvers.length}{" "}
+            members
           </span>
         </div>
       </div>

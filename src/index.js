@@ -66,14 +66,16 @@ const render = () => {
   registerServiceWorker();
 };
 
-if (token) {
-  getUserInfos()(store.dispatch, store.getState)
-    .then(() => {
-      render();
-    })
-    .catch(() => {
-      render();
-    });
-} else {
-  render();
-}
+render();
+
+// if (token) {
+//   getUserInfos()(store.dispatch, store.getState)
+//     .then(() => {
+//       render();
+//     })
+//     .catch(() => {
+//       render();
+//     });
+// } else {
+//   render();
+// }

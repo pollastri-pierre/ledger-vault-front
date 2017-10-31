@@ -16,6 +16,17 @@ const mockGETSync = (uri: string) => {
       );
     }
   }
+  m = /\/operations\/(.+)/.exec(uri);
+  if (m) {
+    const operation = mockEntities.operations[m[1]];
+    if (operation) {
+      return denormalize(
+        operation.uuid,
+        apiSpec.operation.responseSchema,
+        mockEntities
+      );
+    }
+  }
   m = /\/accounts\/(.+)\/operations/.exec(uri);
   if (m) {
     const account = mockEntities.accounts[m[1]];
@@ -28,9 +39,15 @@ const mockGETSync = (uri: string) => {
     }
   }
   switch (uri) {
-    case "/members":
+    case "/organization/members":
       return denormalize(
         Object.keys(mockEntities.members),
+        apiSpec.members.responseSchema,
+        mockEntities
+      );
+    case "/organization/approvers":
+      return denormalize(
+        Object.keys(mockEntities.members).slice(4, 6),
         apiSpec.members.responseSchema,
         mockEntities
       );
@@ -38,6 +55,17 @@ const mockGETSync = (uri: string) => {
       return denormalize(
         Object.keys(mockEntities.accounts),
         apiSpec.accounts.responseSchema,
+        mockEntities
+      );
+    case "/pendings":
+      return denormalize(
+        {
+          approveOperations: Object.keys(mockEntities.operations).slice(0, 4),
+          watchOperations: Object.keys(mockEntities.operations).slice(4, 6),
+          approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
+          watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
+        },
+        apiSpec.pendings.responseSchema,
         mockEntities
       );
     case "/dashboard":
