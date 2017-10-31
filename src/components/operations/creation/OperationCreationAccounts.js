@@ -8,8 +8,6 @@ import './OperationCreationAccounts.css';
 function OperationCreationAccounts(props) {
   const { accounts, selectedAccount, onSelect } = props;
 
-  console.log(selectedAccount);
-
   return (
     <div className="operation-creation-accounts wrapper">
       <div className="tab-title">Account to debit</div>
