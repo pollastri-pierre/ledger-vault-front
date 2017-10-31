@@ -78,7 +78,6 @@ export default class QuicklookGraph extends Component {
       .range([height, 0]);
 
     data = _.map(data, transaction => {
-      console.log(transaction);
       return {
         ...transaction,
         x: x(transaction.date),
@@ -172,14 +171,6 @@ export default class QuicklookGraph extends Component {
         .classed("selected", (d, i) => selected !== -1 && selected === i);
       if (selected !== -1) {
         const selectedDot = d3.select(".dot.selected").data()[0];
-        console.log(selectedDot);
-        console.log(tooltip);
-        console.log(
-          "x : ",
-          `${selectedDot.x} px`,
-          "y : ",
-          `${selectedDot.y} px`
-        );
         tooltip.style("left", `${selectedDot.x + 10}px`);
         tooltip.style("top", `${selectedDot.y}px`);
       }
@@ -188,7 +179,6 @@ export default class QuicklookGraph extends Component {
 
   render() {
     const { selected } = this.state;
-    console.log(this.props.data);
     return (
       <div>
         {selected !== -1 ? (

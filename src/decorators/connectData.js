@@ -19,11 +19,19 @@ type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<Props, A> = {
   api: A,
   propsToApiParams?: (props: *) => Object,
-  RenderLoading?: (props: PropsWithoutA<Props, A>) => *
+  RenderLoading?: (props: PropsWithoutA<Props, A>) => *,
+  RenderError?: (props: PropsWithoutA<Props, A>, error: Error) => *
+};
+
+type State = {
+  results: ?Object,
+  error: ?Error,
+  loading: boolean
 };
 
 const defaultOpts = {
   RenderLoading: () => null,
+  RenderError: () => null,
   propsToApiParams: _ => null
 };
 
@@ -33,21 +41,28 @@ export default <Props, A: { [_: string]: APISpec }, S>(
   Decorated: In<Props, S>,
   opts: Opts<Props, A>
 ): Out<Props, A> => {
-  const { api, propsToApiParams, RenderLoading } = { ...defaultOpts, ...opts };
+  const { api, propsToApiParams, RenderLoading, RenderError } = {
+    ...defaultOpts,
+    ...opts
+  };
   const apiKeys = Object.keys(api);
+  const displayName = `connectData(${Decorated.displayName ||
+    Decorated.name ||
+    ""})`;
 
   class Clazz extends Component<*, *> {
+    static displayName = displayName;
+
     apiParams: *;
 
-    state: {
-      results: ?Object,
-      loading: boolean
-    } = {
+    state: State = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
       results: null,
       // when data gets potentially reloaded, this is a state to track that.
       // TODO: in the future we might move it to the store so if the data gets globally reloaded we can provide this too... it might be a bool per API
-      loading: false
+      loading: false,
+      // if any of the api fails, we will have an error
+      error: null
     };
 
     _unmounted = false;
@@ -55,17 +70,23 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     sync(apiParams: *) {
       const { dispatch } = this.props;
       this.apiParams = apiParams;
-      this.setState({ loading: true });
-      Promise.all(
-        apiKeys.map(key => dispatch(fetchData(api[key], apiParams)))
-      ).then(all => {
-        if (this._unmounted) return;
-        const results = {};
-        all.forEach((result, i) => {
-          results[apiKeys[i]] = result;
+      this.setState({ error: null, loading: true });
+      Promise.all(apiKeys.map(key => dispatch(fetchData(api[key], apiParams))))
+        .then(all => {
+          if (this._unmounted) return;
+          const results = {};
+          all.forEach((result, i) => {
+            results[apiKeys[i]] = result;
+          });
+          this.setState({ results, loading: false });
+        })
+        .catch(error => {
+          if (this._unmounted) return;
+          this.setState({
+            error,
+            loading: false
+          });
         });
-        this.setState({ results, loading: false });
-      });
     }
 
     /**
@@ -103,13 +124,14 @@ export default <Props, A: { [_: string]: APISpec }, S>(
 
     render() {
       const { dataStore, ...props } = this.props;
-      const { results, loading } = this.state;
+      const { results, error, loading } = this.state;
+      if (error) return <RenderError {...props} error={error} />;
       if (!results) return <RenderLoading {...props} />;
       const extraProps = {
         fetchData: this.fetchData,
         loading
       };
-      apiKeys.map(key => {
+      apiKeys.forEach(key => {
         const data = denormalize(
           results[key],
           api[key].responseSchema,
