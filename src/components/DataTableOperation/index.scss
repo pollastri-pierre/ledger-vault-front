@@ -41,6 +41,23 @@ table.data-table {
     font-size: 13px;
     color: #767676;
   }
+  td.address {
+    .type {
+      font-size: 10px;
+      color: #767676;
+      font-weight: 600;
+      width: 36px;
+      padding-right: 5px;
+      display: inline-block;
+    }
+    .hash {
+      font-size: 11px;
+    }
+  }
+  td.status {
+    font-size: 11px;
+    color: #767676;
+  }
   td.amount {
     font-size: 13px;
     .currency-unit-value.sign-positive {
