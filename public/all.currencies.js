@@ -11,10 +11,22 @@ window.CRYPTO_CURRENCIES = [
         magnitude: 8
       },
       {
-        name: "millibitcoin",
+        name: "milli-bitcoin",
         code: "mBTC",
         symbol: "mBTC",
         magnitude: 5
+      },
+      {
+        name: "micro-bitcoin",
+        code: "bit",
+        symbol: "μBTC",
+        magnitude: 2
+      },
+      {
+        name: "satoshi",
+        code: "sat",
+        symbol: "sat",
+        magnitude: 0
       }
     ]
   },
