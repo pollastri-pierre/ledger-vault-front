@@ -13,7 +13,7 @@ type PropsWithoutA<Props, A> = $Diff<Props, A & {
     loading?: boolean
   }>;
 // prettier-ignore
-type In<Props, S> = Class<React.Component<Props, S>>;
+type In<Props, S> = Class<React.Component<Props, S>> | (props: Props)=>*;
 // prettier-ignore
 type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
