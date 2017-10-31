@@ -180,8 +180,8 @@ export default class QuicklookGraph extends Component {
         .classed("selected", (d, i) => selected !== -1 && selected === i);
       if (selected !== -1) {
         const selectedDot = d3.select(".dot.selected").data()[0];
-        tooltip.style("left", `${selectedDot.x + 10}px`);
-        tooltip.style("top", `${selectedDot.y}px`);
+        tooltip.style("left", `${selectedDot.x - 30}px`);
+        tooltip.style("top", `${selectedDot.y - 65}px`);
       }
     }
   }
@@ -191,38 +191,43 @@ export default class QuicklookGraph extends Component {
     const { data } = this.props;
     return (
       <div className="QuicklookGraph">
-        {selected !== -1 ? (
-          <div
-            className="tooltip lookDown hide"
-            style={{ color: data[selected].currency.color }}
-            ref={t => {
-              this.tooltip = t;
-            }}
-          >
-            <div className="tooltipTextWrap">
-              <div className="tooltipText">
-                <div className="uppercase">
-                  {data[selected].currency.units[0].code}{" "}
-                  {data[selected].amount}
-                </div>
-                <div>
-                  <span className="uppercase date">
-                    <DateFormat format="ddd D MMM" date={data[selected].date} />
-                  </span>
+        <div className="chartWrap">
+          {selected !== -1 ? (
+            <div
+              className="tooltip lookDown hide"
+              style={{ color: data[selected].currency.color }}
+              ref={t => {
+                this.tooltip = t;
+              }}
+            >
+              <div className="tooltipTextWrap">
+                <div className="tooltipText">
+                  <div className="uppercase">
+                    {data[selected].currency.units[0].code}{" "}
+                    {data[selected].amount}
+                  </div>
+                  <div>
+                    <span className="uppercase date">
+                      <DateFormat
+                        format="ddd D MMM"
+                        date={data[selected].date}
+                      />
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          ""
-        )}
-        <svg
-          width="300"
-          height="190"
-          ref={c => {
-            this.svg = c;
-          }}
-        />
+          ) : (
+            ""
+          )}
+          <svg
+            width="300"
+            height="190"
+            ref={c => {
+              this.svg = c;
+            }}
+          />
+        </div>
       </div>
     );
   }

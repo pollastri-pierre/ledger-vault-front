@@ -1,6 +1,9 @@
 @import "../../styles/_variables";
 .QuicklookGraph {
   padding-top: 20px;
+  .chartWrap {
+    position: relative;
+  }
   .tooltip {
     position: absolute;
     width: auto !important;
