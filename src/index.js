@@ -65,7 +65,7 @@ const render = () => {
   );
   registerServiceWorker();
 };
-
+/*
 if (token) {
   getUserInfos()(store.dispatch, store.getState)
     .then(() => {
@@ -77,3 +77,6 @@ if (token) {
 } else {
   render();
 }
+*/
+
+render();

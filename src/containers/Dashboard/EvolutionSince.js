@@ -10,14 +10,17 @@ class EvolutionSince extends Component<*> {
   props: {
     value: number,
     valueHistory: { [_: Filter]: number },
-    filter: Filter
+    filter: { title: string, key: string }
   };
   render() {
     const { value, valueHistory, filter } = this.props;
-    console.log(filter);
     return (
-      <DashboardField label={`since ${TotalBalanceFilters[filter].title}`}>
-        <DeltaChange before={valueHistory[filter]} after={value} showArrow />
+      <DashboardField label={`since ${filter.title}`}>
+        <DeltaChange
+          before={valueHistory[filter.key]}
+          after={value}
+          showArrow
+        />
       </DashboardField>
     );
   }

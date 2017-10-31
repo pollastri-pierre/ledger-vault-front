@@ -78,7 +78,6 @@ export default class QuicklookGraph extends Component {
       .range([height, 0]);
 
     data = _.map(data, transaction => {
-      console.log(transaction);
       return {
         ...transaction,
         x: x(transaction.date),
@@ -154,7 +153,16 @@ export default class QuicklookGraph extends Component {
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
       .attr("class", (d, i) => `dot${i}`)
-      .classed("dot", true)
+      .classed("dot", true);
+    g
+      .selectAll("dot")
+      .data(data)
+      .enter()
+      .append("circle")
+      .attr("r", 20)
+      .attr("opacity", 0)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
       .on("mouseover", this.handleMouseOver)
       .on("mouseout", this.handleMouseOut);
   }
@@ -172,14 +180,6 @@ export default class QuicklookGraph extends Component {
         .classed("selected", (d, i) => selected !== -1 && selected === i);
       if (selected !== -1) {
         const selectedDot = d3.select(".dot.selected").data()[0];
-        console.log(selectedDot);
-        console.log(tooltip);
-        console.log(
-          "x : ",
-          `${selectedDot.x} px`,
-          "y : ",
-          `${selectedDot.y} px`
-        );
         tooltip.style("left", `${selectedDot.x + 10}px`);
         tooltip.style("top", `${selectedDot.y}px`);
       }
@@ -188,13 +188,13 @@ export default class QuicklookGraph extends Component {
 
   render() {
     const { selected } = this.state;
-    console.log(this.props.data);
+    const { data } = this.props;
     return (
-      <div>
+      <div className="QuicklookGraph">
         {selected !== -1 ? (
           <div
             className="tooltip lookDown hide"
-            style={{ color: this.props.data[selected].currency.color }}
+            style={{ color: data[selected].currency.color }}
             ref={t => {
               this.tooltip = t;
             }}
@@ -202,15 +202,12 @@ export default class QuicklookGraph extends Component {
             <div className="tooltipTextWrap">
               <div className="tooltipText">
                 <div className="uppercase">
-                  {this.props.data[selected].currency.units[0].code}{" "}
-                  {this.props.data[selected].amount}
+                  {data[selected].currency.units[0].code}{" "}
+                  {data[selected].amount}
                 </div>
                 <div>
                   <span className="uppercase date">
-                    <DateFormat
-                      format="ddd D MMM"
-                      date={this.props.data[selected].date}
-                    />
+                    <DateFormat format="ddd D MMM" date={data[selected].date} />
                   </span>
                 </div>
               </div>
@@ -221,7 +218,7 @@ export default class QuicklookGraph extends Component {
         )}
         <svg
           width="300"
-          height="270"
+          height="190"
           ref={c => {
             this.svg = c;
           }}

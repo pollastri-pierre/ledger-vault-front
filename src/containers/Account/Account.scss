@@ -1,5 +1,5 @@
-@import '../../styles/variables';
-@import '../../styles/animations';
+@import "../../styles/variables";
+@import "../../styles/animations";
 
 .account-view {
   .bloc {
@@ -102,6 +102,29 @@
     .quicklook {
       height: 399px;
       width: 34.6%;
+      .bloc-content {
+        .dateLabel {
+          font-size: 11px;
+          color: $steel;
+          padding-top: 30px;
+          text-align: right;
+        }
+        header {
+          .react-tabs__tab-list {
+            width: 100%;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-pack: justify;
+            justify-content: space-around;
+            padding-bottom: 0px;
+            li {
+              margin-right: 0px;
+            }
+          }
+        }
+      }
     }
 
     .balance {

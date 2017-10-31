@@ -18,7 +18,7 @@ class Dashboard extends Component<
   { filter: string }
 > {
   state = {
-    filter: "yesterday"
+    filter: { title: "yesterday", key: "yesterday" }
   };
 
   onTotalBalanceFilterChange = (filter: string) => {

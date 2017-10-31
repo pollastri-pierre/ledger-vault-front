@@ -15,28 +15,16 @@ class TotalBalance extends Component<{
   filter: string,
   onTotalBalanceFilterChange: (value: string) => void
 }> {
-  reShapeData = data => {
-    return { key: data, title: TotalBalanceFilters[data].title };
-  };
   render() {
-    console.log(this.props);
     const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
-    const values = _.reduce(
-      Object.keys(TotalBalanceFilters),
-      (values, filter) => {
-        values.push({ key: filter, title: TotalBalanceFilters[filter].title });
-        return values;
-      },
-      []
-    );
     return (
       <Card
         className="total-balance"
         title="total balance"
         titleRight={
           <CustomSelectField
-            values={values}
-            selected={this.reShapeData(filter)}
+            values={TotalBalanceFilters}
+            selected={filter}
             onChange={onTotalBalanceFilterChange}
           />
         }
