@@ -209,7 +209,7 @@ export function logoutAction() {
 }
 
 export const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("token"),
   isCheckingTeam: false,
   teamValidated: false,
   teamError: false,

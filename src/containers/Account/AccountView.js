@@ -4,6 +4,8 @@ import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import Card from "../../components/Card";
+import DateFormat from "../../components/DateFormat";
+import CardField from "../../components/CardField";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
@@ -22,28 +24,24 @@ class AccountView extends Component<{
           <div className="infos-left">
             <div className="infos-left-top">
               <Card className="balance" title="Balance">
-                <p className="amount">
+                <CardField label={<DateFormat date={new Date()} />}>
                   <CurrencyNameValue
                     currencyName={account.currency.name}
                     value={account.balance}
                   />
-                </p>
-                <span className="date">Today, 3AM{/* TODO */}</span>
+                </CardField>
               </Card>
 
               <Card className="countervalue" title="Countervalue">
-                <div className="bloc-content">
-                  <p className="amount ctv">
-                    <CurrencyNameValue
-                      currencyName={account.reference_conversion.currency_name}
-                      value={account.reference_conversion.balance}
-                    />
-                  </p>
-                  <span className="date">
-                    ETH 1 ≈ {account.reference_conversion.currency_name} ???
-                    {/* FIXME we need that data too */}
-                  </span>
-                </div>
+                <CardField
+                  label={`ETH 1 ≈ ${account.reference_conversion
+                    .currency_name} ???`}
+                >
+                  <CurrencyNameValue
+                    currencyName={account.reference_conversion.currency_name}
+                    value={account.reference_conversion.balance}
+                  />
+                </CardField>
               </Card>
             </div>
             <ReceiveFundsCard hash={account.receive_address} />
@@ -68,7 +66,7 @@ class AccountView extends Component<{
         >
           <DataTableOperation
             operations={operations}
-            columnIds={["date", "address", "status", "amount"]}
+            columnIds={["date", "address", "status", "countervalue", "amount"]}
           />
         </Card>
       </div>

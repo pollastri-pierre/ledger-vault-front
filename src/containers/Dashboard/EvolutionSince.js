@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import DeltaChange from "../../components/DeltaChange";
-import DashboardField from "./DashboardField";
+import CardField from "../../components/CardField";
 import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 
 type Filter = "yesterday" | "week" | "month";
@@ -14,11 +14,10 @@ class EvolutionSince extends Component<*> {
   };
   render() {
     const { value, valueHistory, filter } = this.props;
-    console.log(filter);
     return (
-      <DashboardField label={`since ${TotalBalanceFilters[filter].title}`}>
+      <CardField label={`since ${TotalBalanceFilters[filter].title}`}>
         <DeltaChange before={valueHistory[filter]} after={value} showArrow />
-      </DashboardField>
+      </CardField>
     );
   }
 }

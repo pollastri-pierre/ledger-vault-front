@@ -21,7 +21,7 @@ class LastOperationCard extends Component<*> {
         titleRight={<Link to="TODO">VIEW ALL</Link>}
       >
         <DataTableOperation
-          columnIds={["date", "name", "countervalue", "amount"]}
+          columnIds={["date", "account", "countervalue", "amount"]}
           operations={operations}
         />
       </Card>

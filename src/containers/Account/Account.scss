@@ -1,46 +1,6 @@
-@import '../../styles/variables';
-@import '../../styles/animations';
+@import "../../styles/variables";
 
 .account-view {
-  .bloc {
-    box-sizing: border-box;
-    background: white;
-    padding: 40px;
-    box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
-    position: relative;
-
-    .bloc-content {
-      animation: fadeIn 1s ease;
-    }
-
-    .date {
-      font-size: 10px;
-      font-weight: 600;
-      color: $lead;
-      text-transform: uppercase;
-    }
-
-    .amount {
-      font-size: 22px;
-      margin: 0;
-      margin-bottom: 5px;
-
-      &.ctv {
-        color: $lead;
-      }
-    }
-
-    h3 {
-      text-transform: uppercase;
-      font-size: 11px;
-      line-height: 10px;
-      margin: 0;
-      margin-bottom: 25px;
-      color: $black;
-      font-weight: 600;
-    }
-  }
-
   .account-view-infos {
     display: flex;
 
@@ -48,8 +8,8 @@
       display: flex;
     }
 
-    .countervalue,
-    .balance {
+    .bloc.countervalue,
+    .bloc.balance {
       width: 50%;
       height: 161px;
       display: inline-block;
@@ -103,9 +63,6 @@
       height: 399px;
       width: 34.6%;
     }
-
-    .balance {
-    }
   }
 }
 
@@ -118,9 +75,6 @@
 
       .quicklook {
         display: none;
-      }
-
-      .balance {
       }
     }
   }
