@@ -52,8 +52,9 @@ class CustomSelectField<T: { title: string }> extends Component<*, *> {
             textAlign: "right"
           }}
         >
-          {_.map(values, value => (
+          {_.map(values, (value, i) => (
             <div
+              key={i}
               className={`menuElem ${selected.title === value.title
                 ? "selected"
                 : ""}`}
