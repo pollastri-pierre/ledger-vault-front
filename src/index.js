@@ -24,11 +24,6 @@ import { getUserInfos } from "./redux/modules/auth";
 
 import "./styles/index.css";
 
-// for React-Infinite
-if (window) {
-  window.React = React;
-}
-
 const muiTheme = getMuiTheme({
   fontFamily: "Open Sans, sans-serif"
 });

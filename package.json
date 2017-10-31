@@ -27,7 +27,6 @@
     "react-contenteditable": "^2.0.4",
     "react-dom": "^15.6.1",
     "react-dropzone": "^4.2.1",
-    "react-infinite": "^0.12.1",
     "react-load-script": "0.0.6",
     "react-portal": "^3.2.0",
     "react-redux": "^5.0.5",
@@ -58,8 +57,10 @@
     "react-test-renderer": "^15.6.1"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "build-css":
+      "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
     "start": "HTTPS=true npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
