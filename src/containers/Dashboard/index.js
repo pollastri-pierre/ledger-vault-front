@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 

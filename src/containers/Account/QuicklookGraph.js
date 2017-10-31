@@ -26,7 +26,6 @@ export default class QuicklookGraph extends Component {
   };
 
   componentDidMount() {
-    const { selected } = this.state;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
