@@ -4,6 +4,8 @@ import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 
+// TODO use flowtype & fix eslint
+// TODO the component don't allow to send new data at the moment. try switch accross accounts
 export default class QuicklookGraph extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ export default class QuicklookGraph extends Component {
   };
 
   componentDidMount() {
+    if (this.props.data.length === 0) return;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
@@ -188,6 +191,7 @@ export default class QuicklookGraph extends Component {
   render() {
     const { selected } = this.state;
     const { data } = this.props;
+    if (data.length === 0) return null;
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">
