@@ -60,9 +60,7 @@ class ActionBar extends Component<*, *> {
           anchorEl={profileTarget}
           onRequestClose={this.openCloseProfile}
           style={{
-            marginLeft: "50px",
-            boxShadow:
-              "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)"
+            marginLeft: "50px"
           }}
         >
           <div className="profile-bubble">

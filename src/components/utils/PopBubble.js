@@ -14,6 +14,8 @@ function PopBubble(props) {
       style={{
         marginTop: "15px",
         borderRadius: 0,
+        boxShadow:
+          "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
         ...props.style
       }}
     >

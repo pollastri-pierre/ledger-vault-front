@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CircularProgress from "material-ui/CircularProgress";
 import { DialogButton, Overscroll } from "../../";
 import OperationCreationAccounts from "./OperationCreationAccounts";
+import OperationCreationDetails from "./OperationCreationDetails";
 
 class OperationCreation extends Component {
   componentWillMount() {
@@ -26,15 +27,12 @@ class OperationCreation extends Component {
       selectAccount
     } = this.props;
 
-    let isNextDisabled;
-
-    switch (tabsIndex) {
-      case 0:
-        isNextDisabled = _.isNull(operation.account);
-        break;
-      default:
-        isNextDisabled = true;
-    }
+    const disabledTabs = [
+      false, // tab 0
+      operation.account === null, // tab 1
+      true, // tab 2
+      true // tab 3
+    ];
 
     return (
       <Tabs
@@ -47,9 +45,9 @@ class OperationCreation extends Component {
             <h2>New operation</h2>
             <TabList>
               <Tab> 1. Account </Tab>
-              <Tab disabled={false}>2. Details</Tab>
-              <Tab disabled={false}>3. Label</Tab>
-              <Tab disabled={false}>4. Confirmation</Tab>
+              <Tab disabled={disabledTabs[1]}>2. Details</Tab>
+              <Tab disabled={disabledTabs[2]}>3. Label</Tab>
+              <Tab disabled={disabledTabs[3]}>4. Confirmation</Tab>
             </TabList>
           </header>
           <div className="content">
@@ -68,7 +66,9 @@ class OperationCreation extends Component {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Details</Overscroll>
+              <Overscroll>
+                <OperationCreationDetails account={operation.account} />
+              </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
               <Overscroll>Label</Overscroll>
@@ -86,7 +86,7 @@ class OperationCreation extends Component {
             <DialogButton
               highlight
               right
-              disabled={isNextDisabled}
+              disabled={disabledTabs[tabsIndex + 1]}
               onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
             >
               Continue

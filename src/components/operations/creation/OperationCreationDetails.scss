@@ -1,0 +1,32 @@
+@import '../../../styles/mixins';
+@import '../../../styles/variables';
+
+.operation-creation-unit-list {
+  list-style-type: none;
+  padding: 20px 30px 20px 0;
+  margin: 0;
+
+  li {
+    margin: 10px 0;
+    height: 18.5px;
+    position: relative;
+  }
+
+  a {
+    display: block;
+    padding-left: 40px;
+    @include highlight-block($porto, 0px);
+
+    &.active {
+      opacity: 1;
+      @include highlight-block-active($porto, 0px);
+    }
+  }
+}
+
+.operation-creation-details {
+  .operation-creation-arrow-down {
+    height: 1em;
+    width: 1em;
+  }
+}
