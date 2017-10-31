@@ -393,7 +393,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 6199553,
         currency_name: "EUR"
       }
     },
@@ -411,7 +411,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 19553,
+        balance: 719553,
         currency_name: "EUR"
       }
     },
@@ -421,7 +421,7 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 589831782,
+      balance: 325898317820,
       balance_history: {
         yesterday: 118834846,
         week: 0,
@@ -429,7 +429,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 19953,
+        balance: 199530,
         currency_name: "EUR"
       }
     },
@@ -447,7 +447,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 299553,
+        balance: 8299553,
         currency_name: "EUR"
       }
     },
@@ -457,15 +457,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "litecoin",
-      balance: 91589831782,
+      balance: 89158983182,
       balance_history: {
-        yesterday: 991182834846,
-        week: 118283484,
-        month: 22182834846
+        yesterday: 99118234846,
+        week: 11823484,
+        month: 2218234846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 92199553,
+        balance: 3321993,
         currency_name: "EUR"
       }
     }

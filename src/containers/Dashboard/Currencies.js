@@ -11,8 +11,14 @@ function Currencies({ accounts }) {
       const balance = account.balance;
       //check if currency already added
       if (_.isNil(currencies[currency_name]))
-        currencies[currency_name] = { meta: account.currency, balance: 0 };
+        currencies[currency_name] = {
+          meta: account.currency,
+          balance: 0,
+          counterValueBalance: 0
+        };
       currencies[currency_name].balance += balance;
+      currencies[currency_name].counterValueBalance +=
+        account.reference_conversion.balance;
       return currencies;
     },
     {}
