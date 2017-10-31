@@ -6,7 +6,7 @@ import { getJSON } from "./network";
 
 const mockGETSync = (uri: string) => {
   let m;
-  m = /\/accounts\/(.+)/.exec(uri);
+  m = /^\/accounts\/([^/]+)$/.exec(uri);
   if (m) {
     const account = mockEntities.accounts[m[1]];
     if (account) {
@@ -15,9 +15,11 @@ const mockGETSync = (uri: string) => {
         apiSpec.account.responseSchema,
         mockEntities
       );
+    } else {
+      throw new Error("Account Not Found");
     }
   }
-  m = /\/accounts\/(.+)\/operations/.exec(uri);
+  m = /^\/accounts\/([^/]+)\/operations$/.exec(uri);
   if (m) {
     const account = mockEntities.accounts[m[1]];
     if (account) {
@@ -26,6 +28,8 @@ const mockGETSync = (uri: string) => {
         apiSpec.accountOperations.responseSchema,
         mockEntities
       );
+    } else {
+      throw new Error("Account Not Found");
     }
   }
   switch (uri) {
