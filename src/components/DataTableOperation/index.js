@@ -1,16 +1,21 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import Card from "../Card";
+import { connect } from "react-redux";
 import DateFormat from "../DateFormat";
 import CurrencyNameValue from "../CurrencyNameValue";
 import AccountName from "../AccountName";
-import currencies from "../../currencies";
+import { openOperationModal } from "../../redux/modules/operations";
 import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import Tooltip from "../utils/Tooltip";
 import type { Operation } from "../../datatypes";
 import "./index.css";
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch => ({
+  onGetOperation: (id, n) => dispatch(openOperationModal(id, n))
+});
 
 const getHash = (operation: Operation): string => {
   let hash = "";
@@ -29,18 +34,20 @@ let DataTableOperationCount = 0;
 class DataTableOperation extends Component<*> {
   props: {
     operations: Array<Operation>,
-    columnIds: Array<string>
+    columnIds: Array<string>,
+    onGetOperation: (uuid: string, n: ?number) => void
   };
 
   id = ++DataTableOperationCount;
 
   openOperation = (uuid: string, n: ?number) => {
-    console.log("TODO OPEN", uuid, n);
+    this.props.onGetOperation(uuid, n);
   };
 
   renderRow = (operation: Operation, index: number, children: *) => (
     <tr
       key={operation.uuid}
+      style={{ cursor: "pointer" }}
       onClick={() => {
         this.openOperation(operation.uuid);
       }}
@@ -147,4 +154,4 @@ class DataTableOperation extends Component<*> {
   }
 }
 
-export default DataTableOperation;
+export default connect(mapStateToProps, mapDispatchToProps)(DataTableOperation);
