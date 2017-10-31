@@ -9,19 +9,18 @@ import type { APISpec } from "../data/api-spec";
 type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 // prettier-ignore
 type PropsWithoutA<Props, A> = $Diff<Props, A & {
-  fetchData?: FetchData,
-  loading?: boolean,
-  error?: Error
-}>;
+    fetchData?: FetchData,
+    loading?: boolean
+  }>;
 // prettier-ignore
 type In<Props, S> = Class<React.Component<Props, S>>;
 // prettier-ignore
 type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
-type Opts<Props, A> = {
+type Opts<A> = {
   api: A,
   propsToApiParams?: (props: *) => Object,
-  RenderLoading?: (props: PropsWithoutA<Props, A>) => *,
-  RenderError?: (props: PropsWithoutA<Props, A>, error: Error) => *
+  RenderLoading?: *,
+  RenderError?: *
 };
 
 type State = {
@@ -33,14 +32,23 @@ type State = {
 const defaultOpts = {
   RenderLoading: () => null,
   RenderError: () => null,
-  propsToApiParams: _ => null
+  propsToApiParams: _ => null // eslint-disable-line no-unused-vars
 };
 
 const neverEnding: Promise<any> = new Promise(() => {});
 
+const mapStateToProps = state => ({
+  dataStore: state.data
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchAPI: (spec, apiParams, body) =>
+    dispatch(fetchData(spec, apiParams, body))
+});
+
 export default <Props, A: { [_: string]: APISpec }, S>(
   Decorated: In<Props, S>,
-  opts: Opts<Props, A>
+  opts: Opts<A>
 ): Out<Props, A> => {
   const { api, propsToApiParams, RenderLoading, RenderError } = {
     ...defaultOpts,
@@ -69,10 +77,10 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     _unmounted = false;
 
     sync(apiParams: *) {
-      const { dispatch } = this.props;
+      const { fetchAPI } = this.props;
       this.apiParams = apiParams;
       this.setState({ error: null, loading: true });
-      Promise.all(apiKeys.map(key => dispatch(fetchData(api[key], apiParams))))
+      Promise.all(apiKeys.map(key => fetchAPI(api[key], apiParams)))
         .then(all => {
           if (this._unmounted) return;
           const results = {};
@@ -96,7 +104,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
      */
     fetchData: FetchData = (api, body) =>
       this.props
-        .dispatch(fetchData(api, this.apiParams, body))
+        .fetchAPI(api, this.apiParams, body)
         .then(
           result =>
             this._unmounted
@@ -144,5 +152,5 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     }
   }
 
-  return connect(({ data }) => ({ dataStore: data }))(Clazz);
+  return connect(mapStateToProps, mapDispatchToProps)(Clazz);
 };

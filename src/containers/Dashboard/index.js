@@ -9,18 +9,19 @@ import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
+import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
 
 class Dashboard extends Component<
   { dashboard: *, accounts: * },
-  { filter: string }
+  { filter: Filter }
 > {
   state = {
     filter: { title: "yesterday", key: "yesterday" }
   };
 
-  onTotalBalanceFilterChange = (filter: string) => {
+  onTotalBalanceFilterChange = (filter: Filter) => {
     this.setState({ filter });
   };
 
