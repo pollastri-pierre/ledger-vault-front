@@ -1,46 +1,7 @@
-@import '../../styles/variables';
-@import '../../styles/animations';
+@import "../../styles/variables";
+@import "../../styles/animations";
 
 .account-view {
-  .bloc {
-    box-sizing: border-box;
-    background: white;
-    padding: 40px;
-    box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
-    position: relative;
-
-    .bloc-content {
-      animation: fadeIn 1s ease;
-    }
-
-    .date {
-      font-size: 10px;
-      font-weight: 600;
-      color: $lead;
-      text-transform: uppercase;
-    }
-
-    .amount {
-      font-size: 22px;
-      margin: 0;
-      margin-bottom: 5px;
-
-      &.ctv {
-        color: $lead;
-      }
-    }
-
-    h3 {
-      text-transform: uppercase;
-      font-size: 11px;
-      line-height: 10px;
-      margin: 0;
-      margin-bottom: 25px;
-      color: $black;
-      font-weight: 600;
-    }
-  }
-
   .account-view-infos {
     display: flex;
 
@@ -48,8 +9,8 @@
       display: flex;
     }
 
-    .countervalue,
-    .balance {
+    .bloc.countervalue,
+    .bloc.balance {
       width: 50%;
       height: 161px;
       display: inline-block;
@@ -102,9 +63,29 @@
     .quicklook {
       height: 399px;
       width: 34.6%;
-    }
-
-    .balance {
+      .bloc-content {
+        .dateLabel {
+          font-size: 11px;
+          color: $steel;
+          padding-top: 30px;
+          text-align: right;
+        }
+        header {
+          .react-tabs__tab-list {
+            width: 100%;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-pack: justify;
+            justify-content: space-around;
+            padding-bottom: 0px;
+            li {
+              margin-right: 0px;
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -118,9 +99,6 @@
 
       .quicklook {
         display: none;
-      }
-
-      .balance {
       }
     }
   }

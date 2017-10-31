@@ -12,11 +12,6 @@ import {
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT
 } from "../redux/modules/auth";
-import {
-  SAVE_PROFILE_INVALID,
-  SAVE_PROFILE_FAIL,
-  SAVED_PROFILE
-} from "../redux/modules/profile";
 import { GOT_OPERATION_FAIL } from "../redux/modules/operations";
 import { SAVED_ACCOUNT } from "../redux/modules/account-creation";
 
@@ -64,10 +59,7 @@ export const allMessages = [
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT,
   GOT_OPERATION_FAIL,
-  AUTHENTICATION_SUCCEED,
-  SAVE_PROFILE_INVALID,
-  SAVE_PROFILE_FAIL,
-  SAVED_PROFILE
+  AUTHENTICATION_SUCCEED
 ];
 
 export function MessagesContainer(props, context) {

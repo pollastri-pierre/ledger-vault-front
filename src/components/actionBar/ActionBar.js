@@ -1,89 +1,64 @@
+//@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
 import { Link } from "react-router-dom";
-import _ from "lodash";
-import { PopBubble, Profile } from "../../components";
-import { BlurDialog } from "../../containers";
-import ProfileIcon from "../icons/thin/Profile";
+import { PopBubble } from "../../components";
+import ProfileCard from "./ProfileCard";
 
 import "./ActionBar.css";
 
-class ActionBar extends Component {
-  openProfileMenu = event => {
-    // This prevents ghost click.
-    event.preventDefault();
-    this.props.openCloseProfile(
-      event.currentTarget.querySelector(".profile-pic")
-    );
+class ActionBar extends Component<*, *> {
+  props: {
+    openCloseProfile: Function,
+    openCloseEdit: Function,
+    saveProfile: Function,
+    pathname: string,
+    openAccount: Function
+  };
+  state = {
+    profileOpened: false,
+    profileOpenedEdit: false,
+    profileTarget: null
   };
 
-  openProfileDialog = event => {
+  static contextTypes = {
+    translate: PropTypes.func.isRequired
+  };
+
+  openProfileDialog = (event: *) => {
     event.preventDefault();
-    this.props.openCloseProfile(this.props.profile.target);
-    this.props.openCloseEdit();
+    this.openCloseProfile();
+    this.openCloseEdit();
+  };
+
+  openCloseProfile = (profileTarget: *) => {
+    this.setState(({ profileOpened }) => ({
+      profileOpened: !profileOpened,
+      profileTarget
+    }));
+  };
+
+  openCloseEdit = () => {
+    this.setState(({ profileOpenedEdit }) => ({
+      profileOpenedEdit: !profileOpenedEdit
+    }));
   };
 
   render() {
-    let profileCard;
-    let profileDialog = "";
-
+    const { profileOpened, profileTarget, profileOpenedEdit } = this.state;
+    // FIXME introduce a component for i18n
     const t = this.context.translate;
-
-    const profile = this.props.profile.user;
-    if (!_.isEmpty(profile)) {
-      // Displayed when profile is loaded
-
-      profileCard = (
-        <a
-          href="profile"
-          className="profile-card"
-          onClick={this.openProfileMenu}
-        >
-          <div className="profile-pic">
-            {profile.picture ? (
-              <img src={profile.picture} alt="" />
-            ) : (
-              <ProfileIcon className="profile-default-icon" color="white" />
-            )}
-          </div>
-          <div className="profile-info">
-            <div className="profile-name">{`${profile.first_name} ${profile.last_name}`}</div>
-            <div className="profile-view-profile">
-              {t("actionBar.viewProfile")}
-            </div>
-          </div>
-        </a>
-      );
-
-      profileDialog = (
-        <BlurDialog
-          open={this.props.profile.openEdit}
-          onRequestClose={this.props.openCloseEdit}
-        >
-          <Profile
-            profile={profile}
-            close={this.props.openCloseEdit}
-            save={this.props.saveProfile}
-          />
-        </BlurDialog>
-      );
-    } else {
-      // Displayed while profile is loading
-      profileCard = (
-        <div className="profile-card">
-          <CircularProgress />
-        </div>
-      );
-    }
-
     return (
       <div className="ActionBar">
-        {profileCard}
+        <ProfileCard
+          openCloseProfile={this.openCloseProfile}
+          openCloseEdit={this.openCloseEdit}
+          profileOpenedEdit={profileOpenedEdit}
+        />
         <PopBubble
-          open={this.props.profile.open}
-          anchorEl={this.props.profile.target}
-          onRequestClose={this.props.openCloseProfile}
+          open={profileOpened}
+          anchorEl={profileTarget}
+          onRequestClose={this.openCloseProfile}
           style={{
             marginLeft: "50px",
             boxShadow:
@@ -103,7 +78,6 @@ class ActionBar extends Component {
             </Link>
           </div>
         </PopBubble>
-        {profileDialog}
         <div className="content-header">
           <div className="content-header-left">
             <img
@@ -158,23 +132,5 @@ class ActionBar extends Component {
     );
   }
 }
-
-ActionBar.propTypes = {
-  profile: PropTypes.shape({
-    user: PropTypes.shape({}),
-    target: PropTypes.object,
-    open: PropTypes.bool,
-    openEdit: PropTypes.bool
-  }).isRequired,
-  openCloseProfile: PropTypes.func.isRequired,
-  openCloseEdit: PropTypes.func.isRequired,
-  saveProfile: PropTypes.func.isRequired,
-  pathname: PropTypes.string.isRequired,
-  openAccount: PropTypes.func.isRequired
-};
-
-ActionBar.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
 
 export default ActionBar;

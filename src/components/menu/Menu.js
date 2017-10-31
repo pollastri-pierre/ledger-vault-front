@@ -1,19 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { SpinnerAccounts } from "../../components";
 import AccountsMenu from "./AccountsMenu";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 
 import "./Menu.css";
 
 function Menu(props, context) {
   const t = context.translate;
 
-  const { accounts, getAccounts, pathname } = props;
-
-  if (!accounts.accounts && !accounts.isLoadingAccounts) {
-    getAccounts();
-  }
+  const { accounts, pathname } = props;
 
   return (
     <div className="Menu">
@@ -27,7 +24,11 @@ function Menu(props, context) {
           <a
             href="#"
             className={`${props.pathname === "/new" ? "active" : ""}`}
-            onClick={props.openOperation}
+            onClick={
+              // TODO make a button that is connected to redux and do not need this openOperation cb
+              // TODO ideally this should use react-router with /operations/new (bookmarkable & no need to have redux)
+              props.openOperation
+            }
           >
             <i className="material-icons">add</i> {t("menu.newOperation")}
           </a>
@@ -57,9 +58,8 @@ function Menu(props, context) {
 
       <div className="menu-accounts">
         <h4>Accounts</h4>
-        {accounts.isLoadingAccounts ? <SpinnerAccounts /> : false}
-        {accounts.accounts && accounts.accounts.length > 0 ? (
-          <AccountsMenu accounts={accounts.accounts} pathname={pathname} />
+        {accounts.length > 0 ? (
+          <AccountsMenu accounts={accounts} pathname={pathname} />
         ) : (
           false
         )}
@@ -73,9 +73,13 @@ Menu.contextTypes = {
 };
 
 Menu.propTypes = {
-  accounts: PropTypes.shape({}).isRequired,
-  getAccounts: PropTypes.func.isRequired,
+  accounts: PropTypes.array.isRequired,
+  pathname: PropTypes.string.isRequired,
   openOperation: PropTypes.func.isRequired
 };
 
-export default Menu;
+export default connectData(Menu, {
+  api: {
+    accounts: api.accounts
+  }
+});

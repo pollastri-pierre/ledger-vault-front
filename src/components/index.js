@@ -1,3 +1,5 @@
+// FIXME drop this file, should directly import the component file
+
 export { default as DialogButton } from "./buttons/DialogButton";
 export { default as Grid } from "./grid/Grid";
 export { default as Menu } from "./menu/Menu";
@@ -27,7 +29,7 @@ export { default as AccountApprove } from "./accounts/approve/AccountApprove";
 export {
   default as OperationApprove
 } from "./operations/approve/OperationApprove";
-export { default as ListOperation } from "./operations/List";
+// export { default as ListOperation } from "./operations/List";
 export { default as EditableComponent } from "./utils/ContentEditable";
 export { default as CardLoading } from "./utils/CardLoading";
 export { default as Modal } from "./utils/Modal";

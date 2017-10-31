@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 
@@ -18,7 +17,7 @@ class Dashboard extends Component<
   { filter: string }
 > {
   state = {
-    filter: "yesterday"
+    filter: { title: "yesterday", key: "yesterday" }
   };
 
   onTotalBalanceFilterChange = (filter: string) => {

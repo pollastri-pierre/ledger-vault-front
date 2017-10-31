@@ -166,8 +166,8 @@ class Profile extends Component {
         <DialogButton highlight right onTouchTap={this.save}>
           {this.t("common.save")}
         </DialogButton>
-        <Script url="/scripts/jimp.min.js" /> // Lib for cropping and converting
-        new profile pic
+        <Script url="/scripts/jimp.min.js" />
+        {/* Lib for cropping and converting new profile pic */}
       </div>
     );
   }

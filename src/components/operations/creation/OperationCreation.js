@@ -42,7 +42,6 @@ class OperationCreation extends Component {
     //   default:
     //     isNextDisabled = true;
     // }
-
     return (
       <Tabs
         className="operation-creation-main wrapper"

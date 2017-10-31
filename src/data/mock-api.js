@@ -2,10 +2,11 @@
 import { denormalize } from "normalizr";
 import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
+import { getJSON } from "./network";
 
 const mockGETSync = (uri: string) => {
   let m;
-  m = /\/accounts\/(.+)/.exec(uri);
+  m = /^\/accounts\/([^/]+)$/.exec(uri);
   if (m) {
     const account = mockEntities.accounts[m[1]];
     if (account) {
@@ -14,9 +15,11 @@ const mockGETSync = (uri: string) => {
         apiSpec.account.responseSchema,
         mockEntities
       );
+    } else {
+      throw new Error("Account Not Found");
     }
   }
-  m = /\/operations\/(.+)/.exec(uri);
+  m = /\/operations\/([^/]+)/.exec(uri);
   if (m) {
     const operation = mockEntities.operations[m[1]];
     if (operation) {
@@ -27,7 +30,7 @@ const mockGETSync = (uri: string) => {
       );
     }
   }
-  m = /\/accounts\/(.+)\/operations/.exec(uri);
+  m = /^\/accounts\/([^/]+)\/operations$/.exec(uri);
   if (m) {
     const account = mockEntities.accounts[m[1]];
     if (account) {
@@ -36,6 +39,8 @@ const mockGETSync = (uri: string) => {
         apiSpec.accountOperations.responseSchema,
         mockEntities
       );
+    } else {
+      throw new Error("Account Not Found");
     }
   }
   switch (uri) {
@@ -97,7 +102,8 @@ const mockGETSync = (uri: string) => {
         mockEntities
       );
   }
-  throw new Error("mock does not implement uri=" + uri);
+
+  return getJSON(uri);
 };
 
 const delay = ms => new Promise(success => setTimeout(success, ms));

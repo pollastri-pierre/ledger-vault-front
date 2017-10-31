@@ -1,0 +1,134 @@
+@import "../../styles/_variables";
+.QuicklookGraph {
+  padding-top: 20px;
+  .chartWrap {
+    position: relative;
+  }
+  .tooltip {
+    position: absolute;
+    width: auto !important;
+    height: auto !important;
+    padding: 10px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
+    z-index: 10;
+    pointer-events: none;
+    background-color: currentColor;
+    padding: 15px;
+    transition: opacity 0.3s ease-out;
+    .tooltipTextWrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      .tooltipText {
+        color: white;
+        font-size: 13px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .date {
+          color: $mouse;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+
+  .tooltip.lookLeft {
+    .tooltipText {
+      span {
+        float: left;
+      }
+    }
+  }
+
+  .tooltip.lookRight {
+    .tooltipText {
+      span {
+        float: right;
+      }
+    }
+  }
+
+  .tooltip.lookUp {
+    .tooltipText {
+      span {
+        float: right;
+      }
+    }
+  }
+
+  .tooltip.lookDown {
+    .tooltipText {
+      span {
+        float: right;
+      }
+    }
+  }
+
+  .tooltip:before {
+    border-color: currentColor;
+  }
+
+  .tooltip.lookLeft:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    border-top: 10px solid transparent !important;
+    border-bottom: 10px solid transparent !important;
+    border-right: 10px solid;
+
+    left: -10px;
+
+    top: 25px;
+  }
+
+  .tooltip.lookRight:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    border-top: 10px solid transparent !important;
+    border-bottom: 10px solid transparent !important;
+    border-left: 10px solid;
+
+    left: 100px;
+
+    top: 25px;
+  }
+
+  .tooltip.lookDown:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    border-top: 10px solid;
+    border-right: 10px solid transparent !important;
+    border-left: 10px solid transparent !important;
+
+    left: 40px;
+
+    top: 63px !important;
+  }
+
+  .tooltip.lookUp:before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+
+    border-bottom: 10px solid;
+    border-left: 10px solid transparent !important;
+    border-right: 10px solid transparent !important;
+
+    left: 40px;
+
+    top: -10px;
+  }
+}

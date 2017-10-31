@@ -8,11 +8,6 @@ import {
   AUTHENTICATION_SUCCEED
 } from "./auth";
 import { SAVED_ACCOUNT } from "./account-creation";
-import {
-  SAVE_PROFILE_INVALID,
-  SAVE_PROFILE_FAIL,
-  SAVED_PROFILE
-} from "./profile";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 
@@ -118,36 +113,6 @@ export default function reducer(state = initialState, action) {
         type: "success",
         title: "login.welcomeTitle",
         content: "login.welcomeMessage"
-      });
-      return copy;
-    }
-    case SAVED_PROFILE: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVED_PROFILE,
-        type: "success",
-        title: "profile.updateSuccess.title",
-        content: "profile.updateSuccess.content"
-      });
-      return copy;
-    }
-    case SAVE_PROFILE_INVALID: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVE_PROFILE_INVALID,
-        type: "error",
-        title: "profile.updateInvalid.title",
-        content: "profile.updateInvalid.content"
-      });
-      return copy;
-    }
-    case SAVE_PROFILE_FAIL: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVE_PROFILE_FAIL,
-        type: "error",
-        title: "profile.updateFailure.title",
-        content: "profile.updateFailure.content"
       });
       return copy;
     }

@@ -15,6 +15,8 @@ export type Currency = {
 
 export type Account = *; // TODO
 
+export type Member = *;
+
 export type Note = *;
 
 export type TransactionInput = *;
@@ -31,6 +33,7 @@ export type Operation = {
   uuid: string,
   currency_name: string,
   currency_family: string,
+  currency: Currency,
   trust: {
     level: string,
     weight: number,

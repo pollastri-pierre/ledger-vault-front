@@ -1,11 +1,13 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import type { Account } from "../../datatypes";
 
-function AccountsMenu(props) {
+// TODO use react-router NavLink so we don't have to pass in pathname !!
+
+function AccountsMenu(props: { accounts: Array<Account>, pathname: string }) {
   const { accounts } = props;
-
   return (
     <ul className="accounts-menu-list">
       {_.map(accounts, account => {
@@ -29,15 +31,5 @@ function AccountsMenu(props) {
     </ul>
   );
 }
-
-AccountsMenu.propTypes = {
-  accounts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      currency: PropTypes.shape({})
-    })
-  ).isRequired,
-  pathname: PropTypes.string.isRequired
-};
 
 export default AccountsMenu;
