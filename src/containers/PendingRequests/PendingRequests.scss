@@ -73,11 +73,6 @@
       font-size: 13px;
       color: $black;
       line-height: 1.77;
-
-      @include badge-currency(6px);
-      &:before {
-        margin-right: 8px;
-      }
     }
     .request-date-creation {
       font-size: 10px;

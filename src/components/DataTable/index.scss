@@ -1,0 +1,17 @@
+table.data-table {
+  width: 100%;
+  th {
+    text-align: left;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 10px;
+    color: #767676;
+  }
+  tbody td {
+    border-bottom: 1px solid #eee;
+    height: 40px;
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+}

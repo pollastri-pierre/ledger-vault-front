@@ -21,9 +21,12 @@ $white-50: rgba(255, 255, 255, 0.5);
 $black-50: rgba(0, 0, 0, 0.5);
 $white: #ffffff;
 $cream: #f9f9f9;
+$steel: #767676;
+$ocean: #27d0e2;
 
 $hoverblue: #27d0e2;
 
+// FIXME drop these, they are provided in the currencies
 $bitcoin: #fcb653;
 $ethereum: #27d0e2;
 $litecoin: #cccccc;
@@ -42,4 +45,3 @@ $sidebarWidth: 280px;
 
 // Actionbar
 $actionbarHeight: 200px;
-

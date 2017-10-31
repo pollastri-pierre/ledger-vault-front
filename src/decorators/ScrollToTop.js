@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-export default (WrappedComponent) => {
+export default WrappedComponent => {
   class ClickToTop extends Component {
     static handleEvent() {
       window.scrollTo(0, 0);
@@ -17,4 +17,3 @@ export default (WrappedComponent) => {
 
   return ClickToTop;
 };
-

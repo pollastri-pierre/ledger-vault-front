@@ -1,88 +1,75 @@
-import _ from 'lodash';
-import { LOGOUT } from './auth';
-import { ABORTED, APPROVED } from './account-approve';
-import { SAVED_ACCOUNT } from './account-creation';
+import _ from "lodash";
+import { LOGOUT } from "./auth";
+import { ABORTED, APPROVED } from "./account-approve";
+import { SAVED_ACCOUNT } from "./account-creation";
+import currencies from "../../currencies";
 
-export const GET_PENDING_REQUESTS_START = 'pending-requests/GET_PENDING_REQUESTS_START';
-export const GOT_PENDING_REQUESTS = 'pending-requests/GOT_PENDING_REQUESTS';
-export const GOT_PENDING_REQUESTS_FAIL = 'pending-requests/GOT_PENDING_REQUESTS_FAIL';
+export const GET_PENDING_REQUESTS_START =
+  "pending-requests/GET_PENDING_REQUESTS_START";
+export const GOT_PENDING_REQUESTS = "pending-requests/GOT_PENDING_REQUESTS";
+export const GOT_PENDING_REQUESTS_FAIL =
+  "pending-requests/GOT_PENDING_REQUESTS_FAIL";
 
 const account = {
   id: 1,
-  name: 'Trackerfund',
-  currency: {
-    family: 'BITCOIN',
-    units: [{ name: 'Bitcoin', symbol: 'BTC' } ],
-  },
-  approved: ['edoiooooooo'],
-  creation_time: new Date(),
+  name: "Trackerfund",
+  currency: currencies[0],
+  approved: ["edoiooooooo"],
+  creation_time: new Date()
 };
 
 const account2 = {
   ...account,
   id: 2,
-  name: 'LIT Holdings',
-  currency: {
-    ...account.currency,
-    family: 'LITECOIN',
-    units: [{ name: 'Litecoin', symbol: 'LTC' } ],
-  },
-  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk'],
+  name: "LIT Holdings",
+  currency: currencies[1],
+  approved: ["edoiooooooo", "fewrfsdiekjfkdsjk"]
 };
 
 const account3 = {
   ...account,
   id: 8,
-  name: 'Hot wallet',
-  currency: {
-    ...account.currency,
-    family: 'DOGECOIN',
-    units: [{ name: 'Dogecoin', symbol: 'DOGE' } ],
-  },
-  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
+  name: "Hot wallet",
+  currency: currencies[2],
+  approved: ["edoiooooooo", "fewrfsdiekjfkdsjk", "ewfwekljfkujkljlkj"]
 };
 
 const account4 = {
   ...account,
   id: 3,
-  name: 'Cold storage',
-  currency: {
-    ...account.currency,
-    family: 'LITECOIN',
-    units: [{ name: 'Litecoin', symbol: 'LTC', } ],
-  },
-  approved: ['edoiooooooo', 'fewrfsdiekjfkdsjk', 'ewfwekljfkujkljlkj'],
+  name: "Cold storage",
+  currency: currencies[3],
+  approved: ["edoiooooooo", "fewrfsdiekjfkdsjk", "ewfwekljfkujkljlkj"]
 };
-
 
 const requests = {
   approveOperations: [],
   approveAccounts: [account, account2],
   watchOperations: [],
-  watchAccounts: [account3, account4],
+  watchAccounts: [account3, account4]
 };
 
 export function gotPendingRequests(requests) {
   return {
     type: GOT_PENDING_REQUESTS,
-    requests,
+    requests
   };
 }
 
 export function gotPendingRequestsFail(status) {
   return {
     type: GOT_PENDING_REQUESTS_FAIL,
-    status,
+    status
   };
 }
 export function getPendingRequestsStart() {
   return {
-    type: GET_PENDING_REQUESTS_START,
+    type: GET_PENDING_REQUESTS_START
   };
 }
 
 export function getPendingRequests() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(getPendingRequestsStart());
     setTimeout(() => {
       dispatch(gotPendingRequests(requests));
@@ -92,12 +79,12 @@ export function getPendingRequests() {
 
 export const initialState = {
   isLoading: false,
-  data: null,
+  data: null
 };
 
 export default function reducer(state = initialState, action) {
-  const approveAccounts = (state.data) ? state.data.approveAccounts : [];
-  const watchAccounts = (state.data) ? state.data.watchAccounts : [];
+  const approveAccounts = state.data ? state.data.approveAccounts : [];
+  const watchAccounts = state.data ? state.data.watchAccounts : [];
   switch (action.type) {
     case GET_PENDING_REQUESTS_START:
       return { ...state, isLoading: true };
@@ -106,8 +93,10 @@ export default function reducer(state = initialState, action) {
     case GOT_PENDING_REQUESTS:
       return { ...state, isLoading: false, data: action.requests };
     case APPROVED:
-      const accountJustApproved = _.find(approveAccounts, {id: action.accountId});
-      _.remove(approveAccounts, {id: action.accountId});
+      const accountJustApproved = _.find(approveAccounts, {
+        id: action.accountId
+      });
+      _.remove(approveAccounts, { id: action.accountId });
 
       accountJustApproved.approved.push(account.pub_key);
       watchAccounts.push(accountJustApproved);
@@ -117,29 +106,29 @@ export default function reducer(state = initialState, action) {
         data: {
           ...state.data,
           approveAccounts: approveAccounts,
-          watchAccounts: watchAccounts,
-        },
+          watchAccounts: watchAccounts
+        }
       };
     case ABORTED:
-      _.remove(approveAccounts, {id: action.accountId});
+      _.remove(approveAccounts, { id: action.accountId });
       return {
         ...state,
         data: {
           ...state.data,
-          approveAccounts: approveAccounts,
-        },
+          approveAccounts: approveAccounts
+        }
       };
-    case SAVED_ACCOUNT: 
+    case SAVED_ACCOUNT:
       approveAccounts.push(action.account);
       if (_.isNull(state.data)) {
         return state;
       }
       return {
-        ...state, 
+        ...state,
         data: {
           ...state.data,
-          approveAccounts: approveAccounts,
-        },
+          approveAccounts: approveAccounts
+        }
       };
     case LOGOUT:
       return initialState;
@@ -147,4 +136,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

@@ -1,14 +1,14 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
-import PropTypes from 'prop-types';
-import { DialogButton } from '../../';
-import MainCreation from './MainCreation';
-import AccountCreationMembers from './AccountCreationMembers';
-import AccountCreationApprovals from './AccountCreationApprovals';
-import AccountCreationTimeLock from './AccountCreationTimeLock';
-import AccountCreationRateLimiter from './AccountCreationRateLimiter';
-import './AccountCreation.css';
+import _ from "lodash";
+import React, { Component } from "react";
+import CircularProgress from "material-ui/CircularProgress";
+import PropTypes from "prop-types";
+import { DialogButton } from "../../";
+import MainCreation from "./MainCreation";
+import AccountCreationMembers from "./AccountCreationMembers";
+import AccountCreationApprovals from "./AccountCreationApprovals";
+import AccountCreationTimeLock from "./AccountCreationTimeLock";
+import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
+import "./AccountCreation.css";
 
 class AccountCreation extends Component {
   render() {
@@ -35,7 +35,7 @@ class AccountCreation extends Component {
 
     let content;
     switch (account.internModalId) {
-      case 'time-lock':
+      case "time-lock":
         content = (
           <AccountCreationTimeLock
             switchInternalModal={switchInternalModal}
@@ -49,7 +49,7 @@ class AccountCreation extends Component {
           />
         );
         break;
-      case 'rate-limiter':
+      case "rate-limiter":
         content = (
           <AccountCreationRateLimiter
             switchInternalModal={switchInternalModal}
@@ -63,7 +63,7 @@ class AccountCreation extends Component {
           />
         );
         break;
-      case 'members':
+      case "members":
         content = (
           <AccountCreationMembers
             members={account.security.members}
@@ -74,7 +74,7 @@ class AccountCreation extends Component {
           />
         );
         break;
-      case 'approvals':
+      case "approvals":
         content = (
           <AccountCreationApprovals
             setApprovals={setApprovals}

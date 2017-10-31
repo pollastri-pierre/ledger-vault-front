@@ -1,11 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
+//@flow
+import React from "react";
+import _ from "lodash";
+import { Link } from "react-router-dom";
+import type { Account } from "../../datatypes";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 
-function AccountsMenu(props) {
+// TODO use react-router NavLink so we don't have to pass in pathname !!
+
+function AccountsMenu(props: { accounts: Array<Account>, pathname: string }) {
   const { accounts } = props;
-
   return (
     <ul className="accounts-menu-list">
       {_.map(accounts, account => {
@@ -13,11 +17,15 @@ function AccountsMenu(props) {
         return (
           <li key={account.id}>
             <Link
-              className={`${account.currency.name} ${props.pathname.startsWith(url) ? 'active' : ''}`}
+              className={`${account.currency.name} ${props.pathname.startsWith(
+                url
+              )
+                ? "active"
+                : ""}`}
               to={`/account/${account.id}`}
             >
               {account.name}
-              <span className="unit">{account.currency.units[0]}</span>
+              <span className="unit">{account.currency.units[0].code}</span>
             </Link>
           </li>
         );
@@ -26,12 +34,8 @@ function AccountsMenu(props) {
   );
 }
 
-AccountsMenu.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    currency: PropTypes.shape({}),
-  })).isRequired,
-  pathname: PropTypes.string.isRequired,
-};
-
-export default AccountsMenu;
+export default connectData(AccountsMenu, {
+  api: {
+    accounts: api.accounts
+  }
+});

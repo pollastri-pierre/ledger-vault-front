@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import MUITextField from 'material-ui/TextField';
+import React from "react";
+import PropTypes from "prop-types";
+import MUITextField from "material-ui/TextField";
 
-import './TextField.css';
+import "./TextField.css";
 
 function TextField(props) {
   const { hasError, ...rest } = props;
 
   if (!rest.errorText && hasError) {
-    rest.errorText = ' ';
+    rest.errorText = " ";
   }
 
-  const underlineColor = rest.errorText ? '#ea2e49' : '#cccccc';
-  const fontColor = rest.errorText ? '#ea2e49' : 'inherit';
+  const underlineColor = rest.errorText ? "#ea2e49" : "#cccccc";
+  const fontColor = rest.errorText ? "#ea2e49" : "inherit";
 
   return (
     <MUITextField
@@ -20,34 +20,34 @@ function TextField(props) {
       className={`vlt-textfield ${props.className}`}
       fullWidth={props.fullWidth}
       style={{
-        fontSize: 'inherit',
-        height: 'initial',
-        lineHeight: 'initial',
-        ...props.style,
+        fontSize: "inherit",
+        height: "initial",
+        lineHeight: "initial",
+        ...props.style
       }}
       inputStyle={{
-        fontSize: 'inherit',
+        fontSize: "inherit",
         color: fontColor,
-        ...props.inputStyle,
+        ...props.inputStyle
       }}
       underlineFocusStyle={{
         borderBottom: `1px solid ${underlineColor}`,
         bottom: 0,
-        ...props.underlineFocusStyle,
+        ...props.underlineFocusStyle
       }}
       underlineStyle={{
-        borderColor: '#eeeeee',
+        borderColor: "#eeeeee",
         bottom: 0,
-        ...props.underlineStyle,
+        ...props.underlineStyle
       }}
       hintStyle={{
-        fontSize: 'inherit',
-        bottom: 'initial',
-        ...props.hintStyle,
+        fontSize: "inherit",
+        bottom: "initial",
+        ...props.hintStyle
       }}
       errorStyle={{
-        color: '#ea2e49',
-        ...props.errorStyle,
+        color: "#ea2e49",
+        ...props.errorStyle
       }}
     />
   );
@@ -63,11 +63,11 @@ TextField.propTypes = {
   hintStyle: PropTypes.shape({}),
   errorStyle: PropTypes.shape({}),
   errorText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  hasError: PropTypes.bool,
+  hasError: PropTypes.bool
 };
 
 TextField.defaultProps = {
-  className: '',
+  className: "",
   fullWidth: true,
   style: {},
   inputStyle: {},
@@ -76,7 +76,7 @@ TextField.defaultProps = {
   hintStyle: {},
   errorStyle: {},
   errorText: false,
-  hasError: false,
+  hasError: false
 };
 
 export default TextField;

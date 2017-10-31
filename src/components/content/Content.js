@@ -1,8 +1,8 @@
-import React from 'react';
-import { Route } from 'react-router';
+import React from "react";
+import { Route } from "react-router";
 
-import { SandBox, AccountView, PendingRequests } from '../../containers'; // Tests
-import Dashboard from '../../containers/Dashboard';
+import { SandBox, AccountView, PendingRequests } from "../../containers"; // Tests
+import Dashboard from "../../containers/Dashboard";
 
 function Content() {
   return (

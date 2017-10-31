@@ -10,7 +10,7 @@
   &.place-top {
     margin-top: -15px;
     &::after {
-      border-top: 15px solid $porto;
+      border-top: 15px solid white;
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
       bottom: -15px;
@@ -21,7 +21,7 @@
   &.place-bottom {
     margin-top: 15px;
     &::after {
-      border-bottom: 15px solid $porto;
+      border-bottom: 15px solid white;
       border-left: 15px solid transparent;
       border-right: 15px solid transparent;
       top: -15px;
@@ -32,7 +32,7 @@
   &.place-left {
     margin-left: -15px;
     &::after {
-      border-left: 15px solid $porto;
+      border-left: 15px solid white;
       border-top: 15px solid transparent;
       border-bottom: 15px solid transparent;
       right: -15px;
@@ -43,7 +43,7 @@
   &.place-right {
     margin-left: 15px;
     &::after {
-      border-right: 15px solid $porto;
+      border-right: 15px solid white;
       border-top: 15px solid transparent;
       border-bottom: 15px solid transparent;
       left: -15px;

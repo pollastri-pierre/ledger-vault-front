@@ -1,16 +1,21 @@
-import _ from 'lodash';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED_API, AUTHENTICATION_FAILED, AUTHENTICATION_FAILED_TIMEOUT, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
-import { SAVED_ACCOUNT } from './account-creation';
-import { SAVE_PROFILE_INVALID, SAVE_PROFILE_FAIL, SAVED_PROFILE } from './profile';
-import { ABORTED, APPROVED } from './account-approve';
+import _ from "lodash";
+import {
+  CHECK_TEAM_ERROR,
+  AUTHENTICATION_FAILED_API,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_FAILED_TIMEOUT,
+  LOGOUT,
+  AUTHENTICATION_SUCCEED
+} from "./auth";
+import { SAVED_ACCOUNT } from "./account-creation";
+import { ABORTED, APPROVED } from "./account-approve";
 
-export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
-
+export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 
 export function closeMessage(id) {
   return {
     type: REMOVE_MESSAGE,
-    id,
+    id
   };
 }
 
@@ -21,19 +26,19 @@ const addToTabs = (state, message) => {
 
 const initialState = {
   alerts: [],
-  cache: [],
+  cache: []
 };
 
 export default function reducer(state = initialState, action) {
   const status = `${action.status}`;
 
-  if (status && status.lastIndexOf('50', 0) === 0) {
+  if (status && status.lastIndexOf("50", 0) === 0) {
     const copy = _.cloneDeep(state);
     addToTabs(copy, {
       id: action.type,
-      type: 'error',
-      title: 'error.error5xTitle',
-      content: 'error.error5xContent',
+      type: "error",
+      title: "error.error5xTitle",
+      content: "error.error5xContent"
     });
 
     return copy;
@@ -44,9 +49,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: APPROVED,
-        type: 'success',
-        title: 'account.approveSuccessTitle',
-        content: 'account.approveSuccessBody',
+        type: "success",
+        title: "account.approveSuccessTitle",
+        content: "account.approveSuccessBody"
       });
 
       return copy;
@@ -55,9 +60,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: ABORTED,
-        type: 'success',
-        title: 'account.abortSuccessTitle',
-        content: 'account.abortSuccessBody',
+        type: "success",
+        title: "account.abortSuccessTitle",
+        content: "account.abortSuccessBody"
       });
 
       return copy;
@@ -66,9 +71,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: SAVED_ACCOUNT,
-        type: 'success',
-        title: 'account.creationSuccessTitle',
-        content: 'account.creationSuccessBody',
+        type: "success",
+        title: "account.creationSuccessTitle",
+        content: "account.creationSuccessBody"
       });
 
       return copy;
@@ -77,9 +82,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: CHECK_TEAM_ERROR,
-        type: 'error',
-        title: 'login.wrongDomainTitle',
-        content: 'login.wrongDomainMessage',
+        type: "error",
+        title: "login.wrongDomainTitle",
+        content: "login.wrongDomainMessage"
       });
 
       return copy;
@@ -88,9 +93,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: AUTHENTICATION_FAILED_API,
-        type: 'error',
-        title: 'login.apiErrorTitle',
-        content: 'login.apiErrorMessage',
+        type: "error",
+        title: "login.apiErrorTitle",
+        content: "login.apiErrorMessage"
       });
       return copy;
     }
@@ -98,9 +103,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: AUTHENTICATION_FAILED_TIMEOUT,
-        type: 'error',
-        title: 'login.timeoutTitle',
-        content: 'login.timeoutMessage',
+        type: "error",
+        title: "login.timeoutTitle",
+        content: "login.timeoutMessage"
       });
       return copy;
     }
@@ -108,9 +113,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: AUTHENTICATION_FAILED,
-        type: 'error',
-        title: 'login.wrongDomainTitle',
-        content: 'login.wrongDomainMessage',
+        type: "error",
+        title: "login.wrongDomainTitle",
+        content: "login.wrongDomainMessage"
       });
       return copy;
     }
@@ -118,9 +123,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: LOGOUT,
-        type: 'success',
-        title: 'login.logoutTitle',
-        content: 'login.logoutMessage',
+        type: "success",
+        title: "login.logoutTitle",
+        content: "login.logoutMessage"
       });
       return copy;
     }
@@ -128,39 +133,9 @@ export default function reducer(state = initialState, action) {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {
         id: AUTHENTICATION_SUCCEED,
-        type: 'success',
-        title: 'login.welcomeTitle',
-        content: 'login.welcomeMessage',
-      });
-      return copy;
-    }
-    case SAVED_PROFILE: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVED_PROFILE,
-        type: 'success',
-        title: 'profile.updateSuccess.title',
-        content: 'profile.updateSuccess.content',
-      });
-      return copy;
-    }
-    case SAVE_PROFILE_INVALID: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVE_PROFILE_INVALID,
-        type: 'error',
-        title: 'profile.updateInvalid.title',
-        content: 'profile.updateInvalid.content',
-      });
-      return copy;
-    }
-    case SAVE_PROFILE_FAIL: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVE_PROFILE_FAIL,
-        type: 'error',
-        title: 'profile.updateFailure.title',
-        content: 'profile.updateFailure.content',
+        type: "success",
+        title: "login.welcomeTitle",
+        content: "login.welcomeMessage"
       });
       return copy;
     }
@@ -175,4 +150,3 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-

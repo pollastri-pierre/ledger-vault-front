@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactTooltip from 'react-tooltip';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactTooltip from "react-tooltip";
 
-import './Tooltip.css';
+import "./Tooltip.css";
 
 function Tooltip(props) {
   return (
@@ -15,11 +15,11 @@ function Tooltip(props) {
 }
 
 Tooltip.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.string
 };
 
 Tooltip.defaultProps = {
-  className: '',
+  className: ""
 };
 
 export default Tooltip;

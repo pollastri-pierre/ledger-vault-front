@@ -1,12 +1,12 @@
-import _ from 'lodash';
-import React from 'react';
+import _ from "lodash";
+import React from "react";
 
 const getAmount = (amount, currency) => {
-  let sign = '';
+  let sign = "";
   if (amount < 0) {
-    sign = '-';
+    sign = "-";
   } else {
-    sign = '+';
+    sign = "+";
   }
   return `${sign} ${currency} ${amount}`;
 };
@@ -14,14 +14,21 @@ const getAmount = (amount, currency) => {
 function TabDetails(props) {
   const { transaction } = props.operation;
 
-  const sumOutputs = _.reduce(transaction.outputs, (sum, output) => {
-    return sum + parseFloat(output.value, 10);
-  }, 0);
+  const sumOutputs = _.reduce(
+    transaction.outputs,
+    (sum, output) => {
+      return sum + parseFloat(output.value, 10);
+    },
+    0
+  );
 
-  const sumInputs = _.reduce(transaction.inputs, (sum, input) => {
-    return sum + parseFloat(input.value, 10);
-  }, 0);
-
+  const sumInputs = _.reduce(
+    transaction.inputs,
+    (sum, input) => {
+      return sum + parseFloat(input.value, 10);
+    },
+    0
+  );
 
   return (
     <div className="operation-details-tab">
@@ -31,7 +38,9 @@ function TabDetails(props) {
         <thead>
           <tr>
             <td>INPUTS</td>
-            <td><strong>{getAmount(sumInputs, 'BTC')}</strong></td>
+            <td>
+              <strong>{getAmount(sumInputs, "BTC")}</strong>
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +59,9 @@ function TabDetails(props) {
         <thead>
           <tr>
             <td>OUTPUTS</td>
-            <td><strong>{getAmount(sumOutputs, 'BTC')}</strong></td>
+            <td>
+              <strong>{getAmount(sumOutputs, "BTC")}</strong>
+            </td>
           </tr>
         </thead>
         <tbody>

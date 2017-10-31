@@ -1,23 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './Divider.css';
+import "./Divider.css";
 
 function Divider(props) {
-  return (
-    <div
-      {...props}
-      className={`divider ${props.className}`}
-    />
-  );
+  return <div {...props} className={`divider ${props.className}`} />;
 }
 
 Divider.propTypes = {
-  className: PropTypes.node,
+  className: PropTypes.node
 };
 
 Divider.defaultProps = {
-  className: '',
+  className: ""
 };
 
 export default Divider;

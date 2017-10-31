@@ -1,12 +1,12 @@
-import React from 'react';
-import ArrowDown from '../icons/ArrowDown';
-import ValidateBadge from '../icons/ValidateBadge';
+import React from "react";
+import ArrowDown from "../icons/ArrowDown";
+import ValidateBadge from "../icons/ValidateBadge";
 
 const getConfirmation = n => {
   if (n > 0) {
     return `Confirmed (${n})`;
   } else {
-    return 'Unconfirmed';
+    return "Unconfirmed";
   }
 };
 
@@ -17,7 +17,7 @@ function TabOverview(props) {
       <div className="operation-overview-header">
         <div className="operation-overview-amount">
           <p className="crypto-amount">-BTC 0.88962</p>
-          <span className="arrow-grey-down"></span>
+          <span className="arrow-grey-down" />
           <ArrowDown className="arrow-grey-down" />
           <p className="euro-amount">EUR 1,028.93</p>
           <p className="hash">1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</p>
@@ -29,9 +29,11 @@ function TabOverview(props) {
             <td>STATUS</td>
             <td>
               <strong>{getConfirmation(operation.confirmations)}</strong>
-              {(operation.confirmations > 0) ?
+              {operation.confirmations > 0 ? (
                 <ValidateBadge className="confirmed operation-status" />
-                : false}
+              ) : (
+                false
+              )}
             </td>
           </tr>
           <tr>
@@ -44,11 +46,16 @@ function TabOverview(props) {
           </tr>
           <tr>
             <td>Fees</td>
-            <td>BTC 0.0015 <span className="euro-amount">(EUR 0.25)</span></td>
+            <td>
+              BTC 0.0015 <span className="euro-amount">(EUR 0.25)</span>
+            </td>
           </tr>
           <tr>
             <td>TOTAL SPENT</td>
-            <td><strong>BTC 0.0015</strong> <span className="euro-amount">(EUR 0.25)</span></td>
+            <td>
+              <strong>BTC 0.0015</strong>{" "}
+              <span className="euro-amount">(EUR 0.25)</span>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function Hourglass(props) {
   return (
@@ -14,9 +14,7 @@ function Hourglass(props) {
         </g>
       </g>
     </svg>
-
   );
 }
 
 export default Hourglass;
-

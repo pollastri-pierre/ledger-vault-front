@@ -1,0 +1,15 @@
+.total-balance .body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.total-balance {
+	header {
+		align-items: normal !important;
+		padding-bottom: 30px;
+		h3 {
+			margin: 0px;
+		}
+	}
+}

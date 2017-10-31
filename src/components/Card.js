@@ -1,13 +1,21 @@
-import React, { Component } from 'react';
+//@flow
+import React, { Component } from "react";
 
-class Section extends Component {
+class Section extends Component<*> {
+  props: {
+    title: string,
+    className: string,
+    titleRight: *,
+    children: *
+  };
+  static defaultProps = { className: "" };
   render() {
-    const { title, titleRight, children } = this.props;
+    const { title, titleRight, children, className } = this.props;
     return (
-      <div className="bloc">
+      <div className={`bloc ${className}`}>
         <header>
           <h3>{title}</h3>
-          <span className="title-right">{titleRight}</span>
+          {titleRight ? <h3 className="title-right">{titleRight}</h3> : null}
         </header>
         <div className="bloc-content">{children}</div>
       </div>

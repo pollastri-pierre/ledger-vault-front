@@ -1,15 +1,15 @@
-import React from 'react';
-import _ from 'lodash';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Modal, OperationCreation } from '../components';
-import { getAccounts } from '../redux/modules/accounts';
+import React from "react";
+import _ from "lodash";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Modal, OperationCreation } from "../components";
+import { getAccounts } from "../redux/modules/accounts";
 
 import {
   getOperation,
   getOperationFake,
   close
-} from '../redux/modules/operations';
+} from "../redux/modules/operations";
 
 import {
   closeModalAccount,
@@ -26,13 +26,13 @@ import {
   changeRatelimiter,
   changeFrequency,
   saveAccount
-} from '../redux/modules/account-creation';
+} from "../redux/modules/account-creation";
 
 import {
   closeModalOperation,
   changeTabOperation,
   saveOperation
-} from '../redux/modules/operation-creation';
+} from "../redux/modules/operation-creation";
 
 import {
   closeAccountApprove,
@@ -40,19 +40,19 @@ import {
   aborting,
   approving,
   abort
-} from '../redux/modules/account-approve';
+} from "../redux/modules/account-approve";
 
 import {
   getOrganizationMembers,
   getOrganizationApprovers
-} from '../redux/modules/organization';
+} from "../redux/modules/organization";
 
-import { BlurDialog } from '../containers';
+import { BlurDialog } from "../containers";
 import {
   OperationDetails,
   AccountCreation,
   AccountApprove
-} from '../components';
+} from "../components";
 
 const mapStateToProps = state => ({
   modals: state.modals,

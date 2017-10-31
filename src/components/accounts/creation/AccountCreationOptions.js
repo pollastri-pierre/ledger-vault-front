@@ -1,15 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
+import BadgeCurrency from "../../BadgeCurrency";
 
 function AccountCreationOptions(props) {
-  const classe = props.currency.units[0].name.split(' ')
-    .join('-')
-    .toLowerCase();
-
   return (
     <div className="account-creation-options">
       <label htmlFor="name">Name</label>
-      <div className={`dot ${classe}`} />
+      <BadgeCurrency currency={props.currency} />
       <input
         type="text"
         name="name"
@@ -23,18 +20,18 @@ function AccountCreationOptions(props) {
 
 AccountCreationOptions.defaultProps = {
   currency: {
-    units: [{name: ''}],
-  },
+    units: [{ name: "" }]
+  }
 };
 
 AccountCreationOptions.propTypes = {
   currency: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string
   }),
   options: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string
   }).isRequired,
-  changeName: PropTypes.func.isRequired,
+  changeName: PropTypes.func.isRequired
 };
 
 export default AccountCreationOptions;

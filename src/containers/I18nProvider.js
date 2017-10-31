@@ -1,9 +1,9 @@
-import { Children, Component } from 'react';
-import PropTypes from 'prop-types';
-import Polyglot from 'node-polyglot';
-import { connect } from 'react-redux';
+import { Children, Component } from "react";
+import PropTypes from "prop-types";
+import Polyglot from "node-polyglot";
+import { connect } from "react-redux";
 
-import messages from '../messages';
+import messages from "../messages";
 
 const mapStateToProps = state => ({ locale: state.locale });
 
@@ -12,7 +12,7 @@ class I18nProvider extends Component {
     const { locale } = this.props;
     const polyglot = new Polyglot({
       locale,
-      phrases: messages[locale],
+      phrases: messages[locale]
     });
 
     const translate = polyglot.t.bind(polyglot);
@@ -27,12 +27,12 @@ class I18nProvider extends Component {
 
 I18nProvider.childContextTypes = {
   locale: PropTypes.string.isRequired,
-  translate: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 I18nProvider.propTypes = {
   locale: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired
 };
 
 export default connect(mapStateToProps)(I18nProvider);

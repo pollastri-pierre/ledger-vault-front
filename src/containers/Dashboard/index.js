@@ -1,78 +1,64 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Card from '../../components/Card';
-import { setTotalBalanceFilter } from '../../redux/modules/dashboard';
-import TotalBalanceFilter from '../../components/TotalBalanceFilter';
-import TotalBalance from '../../components/TotalBalance';
+//@flow
+import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 
-import './index.css';
+import Card from "../../components/Card";
+import Currencies from "./Currencies";
+import TotalBalanceCard from "./TotalBalanceCard";
+import LastOperationCard from "./LastOperationCard";
+import PendingCard from "./PendingCard";
+import Storages from "./Storages";
+import type { Filter } from "./EvolutionSince";
 
-// Replace these with imports
-const Currencies = () => <div>TODO</div>; // FIXME @malik replace with your component import
-const PendingPreview = () => <div>TODO</div>;
-const LastOperationPreview = () => <div>TODO</div>;
-const StoragePreview = () => <div>TODO</div>;
+import "./index.css";
 
-const PendingViewAll = () => <Link to="TODO">VIEW ALL (7)</Link>;
-const LastOperationViewAll = () => <Link to="TODO">VIEW ALL</Link>;
+class Dashboard extends Component<
+  { dashboard: *, accounts: * },
+  { filter: Filter }
+> {
+  state = {
+    filter: { title: "yesterday", key: "yesterday" }
+  };
 
-const mapStateToProps = ({ dashboard }) => ({ dashboard });
+  onTotalBalanceFilterChange = (filter: Filter) => {
+    this.setState({ filter });
+  };
 
-const mapDispatchToProps = dispatch => ({
-  onTotalBalanceFilterChange: totalBalanceFilter =>
-    dispatch(setTotalBalanceFilter(totalBalanceFilter))
-});
-
-class Dashboard extends Component {
   render() {
-    const { dashboard, onTotalBalanceFilterChange } = this.props;
-    const storages = [
-      { id: 0, title: 'cold storage' },
-      { id: 1, title: 'cold storage' },
-      { id: 2, title: 'trackerfund' },
-      { id: 3, title: 'hot wallet' },
-      { id: 4, title: 'etf holdings' }
-    ];
+    const { dashboard, accounts } = this.props;
+    const { filter } = this.state;
+    const { onTotalBalanceFilterChange } = this;
+
     return (
       <div id="dashboard">
         <div className="body">
-          <Card
-            title="total balance"
-            titleRight={
-              <TotalBalanceFilter
-                value={dashboard.totalBalanceFilter}
-                onChange={onTotalBalanceFilterChange}
-              />
-            }
-          >
-            <TotalBalance
-              totalBalance={dashboard.totalBalance}
-              totalBalanceFilter={dashboard.totalBalanceFilter}
-            />
-          </Card>
-          <Card title="pending" titleRight={<LastOperationViewAll />}>
-            <LastOperationPreview />
-          </Card>
-          <div className="storages">
-            {storages.map(storage => (
-              <Card key={storage.id} title={storage.title}>
-                <StoragePreview storage={storage} />
-              </Card>
-            ))}
-          </div>
+          <TotalBalanceCard
+            totalBalance={dashboard.totalBalance}
+            filter={filter}
+            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
+          />
+          <LastOperationCard
+            operations={dashboard.lastOperations}
+            accounts={accounts}
+          />
+          <Storages accounts={accounts} filter={filter} />
         </div>
         <div className="aside">
           <Card title="currencies">
-            <Currencies />
+            <Currencies accounts={accounts} />
           </Card>
-          <Card title="pending" titleRight={<PendingViewAll />}>
-            <PendingPreview />
-          </Card>
+          <PendingCard pending={dashboard.pending} />
         </div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connectData(Dashboard, {
+  api: {
+    dashboard: api.dashboard,
+    accounts: api.accounts,
+    members: api.members
+  }
+});

@@ -1,28 +1,26 @@
-import React, { Component } from 'react';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { TotalBalanceFilters } from '../../redux/modules/dashboard';
+import React, { Component } from "react";
+import "./TotalBalanceFilter.css";
+import CustomSelectField from "../CustomSelectField/CustomSelectField.js";
+import _ from "lodash";
+
+export const TotalBalanceFilters = [
+  { title: "yesterday", key: "yesterday" },
+  { title: "a week ago", key: "week" },
+  { title: "a month ago", key: "month" }
+];
 
 class TotalBalanceFilter extends Component {
-  onChange = (event, index, value) => this.props.onChange(value);
+  onChange = value => this.props.onChange(value);
+
   render() {
-    const { value } = this.props;
     return (
       // FIXME this is not pixel perfect with wireframes.
       // we need to see how to make material-ui match that.
-      <SelectField
-        value={value}
+      <CustomSelectField
+        values={TotalBalanceFilters}
+        selected={TotalBalanceFilters[0]}
         onChange={this.onChange}
-        style={{ width: 150 }}
-      >
-        {Object.keys(TotalBalanceFilters).map(id => (
-          <MenuItem
-            key={id}
-            value={id}
-            primaryText={TotalBalanceFilters[id].title}
-          />
-        ))}
-      </SelectField>
+      />
     );
   }
 }

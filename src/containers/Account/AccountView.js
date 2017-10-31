@@ -1,110 +1,186 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { ListOperation } from '../../components';
-import { openOperationModal } from '../../redux/modules/operations';
-import { getReceiveAddress, getBalance, getCountervalue, getOperations } from '../../redux/modules/accounts-info';
-import BalanceCard from './BalanceCard';
-import CounterValueCard from './CounterValueCard';
-import ReceiveFundsCard from './ReceiveFundsCard';
-import Quicklook from './Quicklook';
-import './Account.css';
+//@flow
+import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
+import CurrencyNameValue from "../../components/CurrencyNameValue";
+import Card from "../../components/Card";
+import DateFormat from "../../components/DateFormat";
+import CardField from "../../components/CardField";
+import ReceiveFundsCard from "./ReceiveFundsCard";
+import DataTableOperation from "../../components/DataTableOperation";
+import QuicklookGraph from "./QuicklookGraph";
+import type { Account, Operation } from "../../datatypes";
+import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "./Account.css";
 
-const mapStateToProps = state => ({
-  accounts: state.accounts,
-  accountsInfo: state.accountsInfo,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onGetOperation: (id, index) => dispatch(openOperationModal(id, index)),
-  onGetOperations: (id, index) => dispatch(getOperations(id, index)),
-  onGetBalance: id => dispatch(getBalance(id)),
-  onGetReceiveAddress: id => dispatch(getReceiveAddress(id)),
-  onGetCountervalue: id => dispatch(getCountervalue(id)),
-});
-
-class AccountView extends Component {
-  componentWillMount() {
-    this.update(this.props);
+class AccountView extends Component<
+  {
+    account: Account,
+    operations: Array<Operation>
+  },
+  *
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      quickLookGraphFilter: this.quickLookGraphFilters[0],
+      tabsIndex: 0
+    };
   }
 
-  componentWillUpdate(nextProps) {
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.update(nextProps);
-    }
-  }
+  onQuickLookGraphFilterChange = filter => {
+    this.setState({ quickLookGraphFilter: filter });
+  };
 
-  update(props) {
-    this.props.onGetBalance(props.match.params.id);
-    this.props.onGetReceiveAddress(props.match.params.id);
-    this.props.onGetCountervalue(props.match.params.id);
-    this.props.onGetOperations(props.match.params.id, 0);
-  }
+  quickLookGraphFilters = [
+    { title: "balance", key: "balance" },
+    { title: "countervalue", key: "countervalue" },
+    { title: "payments", key: "payments" }
+  ];
+
+  selectTab = index => {
+    this.setState({ tabsIndex: index });
+  };
 
   render() {
-    const {
-      balance,
-      countervalue,
-      receiveAddress,
-      operations,
-      isLoadingBalance,
-      isLoadingCounter,
-      isLoadingAddress,
-      isLoadingOperations,
-      isLoadingNextOperations,
-    } = this.props.accountsInfo;
-
+    const { account, operations } = this.props;
+    const { tabsIndex, quickLookGraphFilter } = this.state;
+    const beginDate = "March, 13th";
+    const endDate = "19th, 2017";
     return (
       <div className="account-view">
         <div className="account-view-infos">
           <div className="infos-left">
             <div className="infos-left-top">
-              <BalanceCard data={balance} loading={isLoadingBalance} />
-              <CounterValueCard data={countervalue} loading={isLoadingCounter} />
+              <Card className="balance" title="Balance">
+                <CardField label={<DateFormat date={new Date()} />}>
+                  <CurrencyNameValue
+                    currencyName={account.currency.name}
+                    value={account.balance}
+                  />
+                </CardField>
+              </Card>
+
+              <Card className="countervalue" title="Countervalue">
+                <CardField
+                  label={`ETH 1 ≈ ${account.reference_conversion
+                    .currency_name} ???`}
+                >
+                  <CurrencyNameValue
+                    currencyName={account.reference_conversion.currency_name}
+                    value={account.reference_conversion.balance}
+                  />
+                </CardField>
+              </Card>
             </div>
-            <ReceiveFundsCard data={receiveAddress} loading={isLoadingAddress} />
+            <ReceiveFundsCard hash={account.receive_address} />
           </div>
-          <Quicklook
-            operations={operations}
-            loading={isLoadingOperations || isLoadingNextOperations}
-          />
+          <Card
+            className="quicklook"
+            title="Quicklook"
+            titleRight={
+              <CustomSelectField
+                values={this.quickLookGraphFilters}
+                selected={quickLookGraphFilter}
+                onChange={this.onQuickLookGraphFilterChange}
+              />
+            }
+          >
+            <Tabs
+              className=""
+              selectedIndex={tabsIndex}
+              onSelect={this.selectTab}
+            >
+              <header>
+                <TabList>
+                  <Tab> Year </Tab>
+                  <Tab disabled={false}>month</Tab>
+                  <Tab disabled={false}>week</Tab>
+                  <Tab disabled={false}>day</Tab>
+                </TabList>
+              </header>
+              <div className="content">
+                <TabPanel className="tabs_panel">
+                  <div className="dateLabel">
+                    {`From ${beginDate} to ${endDate}`}
+                  </div>
+                  <QuicklookGraph
+                    labelHeader={`From ${beginDate} to ${endDate}`}
+                    data={operations.map((o: Operation) => ({
+                      time: new Date(o.time),
+                      amount: o.amount,
+                      currency: o.currency
+                    }))}
+                  />
+                </TabPanel>
+                <TabPanel className="tabs_panel">
+                  <div className="dateLabel">
+                    {`From ${beginDate} to ${endDate}`}
+                  </div>
+                  <QuicklookGraph
+                    data={operations.map((o: Operation) => ({
+                      time: new Date(o.time),
+                      amount: o.amount,
+                      currency: o.currency
+                    }))}
+                  />
+                </TabPanel>
+                <TabPanel className="tabs_panel">
+                  <div className="dateLabel">
+                    {`From ${beginDate} to ${endDate}`}
+                  </div>
+                  <QuicklookGraph
+                    data={operations.map((o: Operation) => ({
+                      time: new Date(o.time),
+                      amount: o.amount,
+                      currency: o.currency
+                    }))}
+                  />
+                </TabPanel>
+                <TabPanel className="tabs_panel">
+                  <div className="dateLabel">
+                    {`From ${beginDate} to ${endDate}`}
+                  </div>
+                  <QuicklookGraph
+                    data={operations.map((o: Operation) => ({
+                      time: new Date(o.time),
+                      amount: o.amount,
+                      currency: o.currency
+                    }))}
+                  />
+                </TabPanel>
+              </div>
+            </Tabs>
+          </Card>
         </div>
-        <ListOperation
-          operations={operations}
-          loading={isLoadingOperations}
-          open={this.props.onGetOperation}
-        />
+        <Card
+          title="last operations"
+          titleRight={
+            <span>
+              VIEW ALL{/* TODO make that a component, use react-router <Link> */}
+            </span>
+          }
+        >
+          <DataTableOperation
+            operations={operations}
+            columnIds={["date", "address", "status", "countervalue", "amount"]}
+          />
+        </Card>
       </div>
     );
   }
 }
 
-AccountView.propTypes = {
-  onGetBalance: PropTypes.func.isRequired,
-  onGetReceiveAddress: PropTypes.func.isRequired,
-  onGetCountervalue: PropTypes.func.isRequired,
-  onGetOperations: PropTypes.func.isRequired,
-  onGetOperation: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  accountsInfo: PropTypes.shape({
-    balance: PropTypes.shape({}),
-    countervalue: PropTypes.shape({}),
-    receiveAddress: PropTypes.shape({}),
-    operations: PropTypes.array,
-    isLoadingCounter: PropTypes.bool.isRequired,
-    isLoadingAddress: PropTypes.bool.isRequired,
-    isLoadingBalance: PropTypes.bool.isRequired,
-    isLoadingOperations: PropTypes.bool.isRequired,
-    isLoadingNextOperations: PropTypes.bool.isRequired,
-  }).isRequired,
-};
+// FIXME have a generic component for screen errors
+const RenderError = ({ error }: { error: Error }) => (
+  <span style={{ color: "#fff" }}>
+    {(error && error.message) || error.toString()}
+  </span>
+);
 
-export { AccountView as AccountViewNotDecorated };
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountView));
-
+export default connectData(AccountView, {
+  api: { account: api.account, operations: api.accountOperations },
+  propsToApiParams: props => ({ accountId: props.match.params.id }),
+  RenderError
+});
