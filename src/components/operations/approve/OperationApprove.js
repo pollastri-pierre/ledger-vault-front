@@ -34,7 +34,7 @@ class OperationApprove extends Component {
   abort() {}
 
   render() {
-    const { close, operation, members } = this.props;
+    const { close, operation, members, profile } = this.props;
 
     if (this.state.isAborting) {
       return (
@@ -78,7 +78,7 @@ class OperationApprove extends Component {
           close={close}
           approve={this.approving}
           aborting={this.aborting}
-          approved={false}
+          approved={operation.approved.indexOf(profile.pub_key) > -1}
         />
       </Tabs>
     );
@@ -92,7 +92,7 @@ OperationApprove.propTypes = {
 };
 
 export default connectData(OperationApprove, {
-  api: { operation: api.operation, members: api.members },
-  propsToApiParams: props => ({ operationId: props.operationId }),
+  api: { operation: api.operation, members: api.members, profile: api.profile },
+  propsToApiParams: props => ({ operationId: 1 }),
   RenderLoading: ModalLoading
 });

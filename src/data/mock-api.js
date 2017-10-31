@@ -44,6 +44,12 @@ const mockGETSync = (uri: string) => {
     }
   }
   switch (uri) {
+    case "/organization/members/me":
+      return denormalize(
+        Object.keys(mockEntities.members)[0],
+        apiSpec.profile.responseSchema,
+        mockEntities
+      );
     case "/organization/members":
       return denormalize(
         Object.keys(mockEntities.members),
@@ -52,7 +58,7 @@ const mockGETSync = (uri: string) => {
       );
     case "/organization/approvers":
       return denormalize(
-        Object.keys(mockEntities.members).slice(4, 6),
+        Object.keys(mockEntities.members).slice(0, 2),
         apiSpec.members.responseSchema,
         mockEntities
       );

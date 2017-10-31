@@ -34,7 +34,7 @@ class AccountApprove extends Component {
   }
 
   render() {
-    const { members, approvers, close, account, abort } = this.props;
+    const { members, approvers, close, account, abort, profile } = this.props;
 
     if (this.state.isAborting) {
       return (
@@ -81,7 +81,7 @@ class AccountApprove extends Component {
           close={close}
           approve={this.approving}
           aborting={this.aborting}
-          approved={false}
+          approved={account.approved.indexOf(profile.pub_key) > -1}
         />
       </Tabs>
     );
@@ -93,7 +93,12 @@ AccountApprove.propTypes = {
 };
 
 export default connectData(AccountApprove, {
-  api: { account: api.account, members: api.members, approvers: api.approvers },
+  api: {
+    account: api.account,
+    members: api.members,
+    approvers: api.approvers,
+    profile: api.profile
+  },
   propsToApiParams: props => ({ accountId: props.accountId }),
   RenderLoading: ModalLoading
 });

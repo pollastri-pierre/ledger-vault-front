@@ -12,7 +12,6 @@ import {
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT
 } from "../redux/modules/auth";
-import { GOT_OPERATION_FAIL } from "../redux/modules/operations";
 import { SAVED_ACCOUNT } from "../redux/modules/account-creation";
 
 const mapStateToProps = state => ({
@@ -58,7 +57,6 @@ export const allMessages = [
   AUTHENTICATION_FAILED_API,
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT,
-  GOT_OPERATION_FAIL,
   AUTHENTICATION_SUCCEED
 ];
 

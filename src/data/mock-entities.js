@@ -50,6 +50,7 @@ const genMember = fields => ({
 const members = {
   "0": genMember({
     id: "0",
+    pub_key: "hash",
     last_name: "Getto",
     first_name: "David",
     role: "Administrator",
@@ -397,7 +398,7 @@ export default {
         balance: 199553,
         currency_name: "EUR"
       },
-      approved: []
+      approved: ["hash"]
     },
     "3": {
       id: "3",
@@ -416,7 +417,7 @@ export default {
         balance: 199553,
         currency_name: "EUR"
       },
-      approved: []
+      approved: ["hash"]
     },
     "4": {
       id: "4",

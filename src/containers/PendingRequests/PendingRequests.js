@@ -17,32 +17,9 @@ import {
 
 import "./PendingRequests.css";
 
-// const mapStateToProps = state => ({
-//   pendingRequests: state.pendingRequests,
-//   organization: state.organization,
-//   accounts: state.accounts,
-//   profile: state.profile
-// });
-//
-// const mapDispatchToProps = dispatch => ({
-//   onGetPendingRequests: () => dispatch(getPendingRequests()),
-//   onGetAccounts: () => dispatch(getAccounts()),
-//   onOpenApprove: (entity, object, isApproved) =>
-//     dispatch(openApprove(entity, object, isApproved)),
-//   onGetOrganizationApprovers: () => dispatch(getOrganizationApprovers())
-// });
-
 class PendingRequests extends Component {
   render() {
-    const { accounts, pendingRequests, approversAccount } = this.props;
-
-    console.log(this.props);
-
-    const profile = {
-      user: {
-        hash: "efew"
-      }
-    };
+    const { accounts, pendingRequests, approversAccount, profile } = this.props;
 
     return (
       <div className="pending-requests">
@@ -52,7 +29,7 @@ class PendingRequests extends Component {
             <PendingOperationApprove
               operations={pendingRequests.approveOperations}
               accounts={accounts}
-              user={profile.user}
+              user={profile}
             />
           </div>
           <div className="bloc">
@@ -60,7 +37,7 @@ class PendingRequests extends Component {
             <PendingOperationApprove
               operations={pendingRequests.watchOperations}
               approved
-              user={profile.user}
+              user={profile}
               accounts={accounts}
             />
           </div>
@@ -71,7 +48,7 @@ class PendingRequests extends Component {
             <PendingAccountApprove
               accounts={pendingRequests.approveAccounts}
               approvers={approversAccount}
-              user={profile.user}
+              user={profile}
             />
           </div>
           <div className="bloc">
@@ -79,7 +56,7 @@ class PendingRequests extends Component {
             <PendingAccountApprove
               accounts={pendingRequests.watchAccounts}
               approvers={approversAccount}
-              user={profile.user}
+              user={profile}
               approved
             />
           </div>
@@ -89,17 +66,13 @@ class PendingRequests extends Component {
   }
 }
 
-PendingRequests.propTypes = {
-  accounts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  pendingRequests: PropTypes.shape({}).isRequired
-};
-
 export { PendingRequests as PendingRequestNotDecorated };
 
 export default connectData(PendingRequests, {
   api: {
     pendingRequests: api.pendings,
     accounts: api.accounts,
+    profile: api.profile,
     approversAccount: api.approvers
   }
 });

@@ -5,11 +5,7 @@ import { connect } from "react-redux";
 import { Modal, OperationCreation } from "../components";
 import { getAccounts } from "../redux/modules/accounts";
 
-import {
-  getOperation,
-  getOperationFake,
-  close
-} from "../redux/modules/operations";
+import { close } from "../redux/modules/operations";
 
 import {
   closeModalAccount,
@@ -61,7 +57,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(close()),
   onCloseAccount: from => dispatch(closeModalAccount(from)),
-  onGetOperation: id => dispatch(getOperationFake(id)),
   onChangeTabAccount: index => dispatch(changeTab(index)),
   onSelectCurrency: c => dispatch(selectCurrency(c)),
   onChangeAccountName: n => dispatch(changeAccountName(n)),
@@ -201,10 +196,8 @@ function ModalsContainer(props) {
         !_.isUndefined(operations.operationInModal) && (
           <Modal close={props.onClose}>
             <OperationDetails
-              operations={operations}
-              accounts={accounts}
-              getOperation={props.onGetOperation}
               close={props.onClose}
+              operationId={operations.operationInModal}
               tabsIndex={operations.tabsIndex}
             />
           </Modal>
@@ -230,7 +223,6 @@ ModalsContainer.propTypes = {
   onChangeFrequency: PropTypes.func.isRequired,
   onSelectCurrency: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
-  onGetOperation: PropTypes.func.isRequired,
   operations: PropTypes.shape({}).isRequired
 };
 

@@ -10,12 +10,8 @@ import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
 
 function TabOverview(props) {
-  const { operation, accounts } = props;
-  const account = _.find(
-    accounts,
-    account => account.id === operation.account_id
-  );
-
+  const { operation } = props;
+  const { account } = operation;
   return (
     <div>
       <OverviewOperation

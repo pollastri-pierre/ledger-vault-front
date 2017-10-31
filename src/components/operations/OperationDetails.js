@@ -1,5 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import api from "../../data/api-spec";
+import ModalLoading from "../../components/ModalLoading";
 import PropTypes from "prop-types";
 import CircularProgress from "material-ui/CircularProgress";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -8,11 +10,13 @@ import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
+import connectData from "../../decorators/connectData";
 import operationsUtils from "../../redux/utils/operation";
 
 class OperationDetails extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
 
     let note = { author: {} };
 
@@ -32,12 +36,8 @@ class OperationDetails extends Component {
     });
   };
 
-  componentWillReceiveProps(props) {
-    const operation = operationsUtils.findOperationDetails(
-      props.operations.operationInModal,
-      props.operations.operations
-    );
-
+  componentDidMount() {
+    const { operation } = this.props;
     if (operation && operation.notes && operation.notes.length > 0) {
       this.setState({
         note: operation.notes[0]
@@ -45,49 +45,8 @@ class OperationDetails extends Component {
     }
   }
 
-  componentWillMount() {
-    const { operations, getOperation, accounts } = this.props;
-    if (true && !operations.isLoadingOperation) {
-      getOperation(operations.operationInModal);
-    }
-  }
-
   render() {
-    const { operations, accounts } = this.props;
-    const { translate } = this.context;
-
-    const operation = operationsUtils.findOperationDetails(
-      operations.operationInModal,
-      operations.operations
-    );
-
-    if (
-      accounts.isLoadingAccounts ||
-      operations.isLoadingOperation ||
-      !operation
-    ) {
-      return (
-        <div className="operation-details wrapper">
-          <div className="header" />
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: "-25px",
-                marginTop: "-25px"
-              }}
-            />
-          </div>
-          <div className="footer">
-            <DialogButton highlight right onTouchTap={this.props.close}>
-              Done
-            </DialogButton>
-          </div>
-        </div>
-      );
-    }
+    const { operation } = this.props;
 
     return (
       <Tabs
@@ -96,11 +55,11 @@ class OperationDetails extends Component {
         onSelect={() => {}}
       >
         <div className="header">
-          <h2>{translate("operations.detailsTitle")}</h2>
+          <h2>Operation's details</h2>
           <TabList>
-            <Tab>{translate("operations.overview")}</Tab>
-            <Tab>{translate("operations.details")}</Tab>
-            <Tab>{translate("operations.label")}</Tab>
+            <Tab>Overview</Tab>
+            <Tab>Details</Tab>
+            <Tab>Label</Tab>
           </TabList>
         </div>
         <div
@@ -111,7 +70,7 @@ class OperationDetails extends Component {
         >
           <TabPanel className="tabs_panel">
             <Overscroll>
-              <TabOverview operation={operation} accounts={accounts.accounts} />
+              <TabOverview operation={operation} />
             </Overscroll>
           </TabPanel>
           <TabPanel className="tabs_panel">
@@ -139,13 +98,15 @@ class OperationDetails extends Component {
 }
 
 OperationDetails.propTypes = {
-  close: PropTypes.func.isRequired,
-  getOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired
+  close: PropTypes.func.isRequired
 };
 
 OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default OperationDetails;
+export default connectData(OperationDetails, {
+  api: { operation: api.operation },
+  propsToApiParams: props => ({ operationId: props.operationId }),
+  RenderLoading: ModalLoading
+});

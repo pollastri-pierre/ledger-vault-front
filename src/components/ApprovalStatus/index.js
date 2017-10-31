@@ -17,7 +17,7 @@ class ApprovalStatus extends PureComponent<*> {
     const nbTotal = _.isNumber(nbRequired) ? nbRequired : approvers.length;
 
     const isApproved =
-      approvers.indexOf(user_hash) > -1 || approvers.length === approved.length;
+      approved.indexOf(user_hash) > -1 || approvers.length === approved.length;
 
     return (
       <span className="approval-status">
