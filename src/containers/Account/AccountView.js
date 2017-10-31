@@ -14,10 +14,13 @@ import CustomSelectField from "../../components/CustomSelectField/CustomSelectFi
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "./Account.css";
 
-class AccountView extends Component<{
-  account: Account,
-  operations: Array<Operation>
-}> {
+class AccountView extends Component<
+  {
+    account: Account,
+    operations: Array<Operation>
+  },
+  *
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +30,6 @@ class AccountView extends Component<{
   }
 
   onQuickLookGraphFilterChange = filter => {
-    console.log(filter);
     this.setState({ quickLookGraphFilter: filter });
   };
 

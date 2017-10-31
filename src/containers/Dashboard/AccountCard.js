@@ -13,7 +13,7 @@ const Separator = () => <div className="separator" />;
 class AccountCard extends Component<*> {
   props: {
     account: Account,
-    filter: string
+    filter: *
   };
   render() {
     const { account, filter } = this.props;

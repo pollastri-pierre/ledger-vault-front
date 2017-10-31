@@ -2,15 +2,16 @@
 import React, { Component } from "react";
 import DeltaChange from "../../components/DeltaChange";
 import CardField from "../../components/CardField";
-import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 
-type Filter = "yesterday" | "week" | "month";
+export type FilterKey = "yesterday" | "week" | "month";
+export type Filter = { title: string, key: FilterKey };
 
+// TODO move into components
 class EvolutionSince extends Component<*> {
   props: {
     value: number,
-    valueHistory: { [_: Filter]: number },
-    filter: { title: string, key: string }
+    valueHistory: { [_: FilterKey]: number },
+    filter: Filter
   };
   render() {
     const { value, valueHistory, filter } = this.props;

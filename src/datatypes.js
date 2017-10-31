@@ -1,4 +1,7 @@
 //@flow
+
+// TODO move this in data/ folder
+
 export type Unit = {
   name: string,
   code: string,
