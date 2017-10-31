@@ -10,7 +10,8 @@ type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 // prettier-ignore
 type PropsWithoutA<Props, A> = $Diff<Props, A & {
   fetchData?: FetchData,
-  loading?: boolean
+  loading?: boolean,
+  error?: Error
 }>;
 // prettier-ignore
 type In<Props, S> = Class<React.Component<Props, S>>;

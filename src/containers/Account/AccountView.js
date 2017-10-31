@@ -170,13 +170,15 @@ class AccountView extends Component<{
   }
 }
 
+// FIXME have a generic component for screen errors
+const RenderError = ({ error }: { error: Error }) => (
+  <span style={{ color: "#fff" }}>
+    {(error && error.message) || error.toString()}
+  </span>
+);
+
 export default connectData(AccountView, {
   api: { account: api.account, operations: api.accountOperations },
   propsToApiParams: props => ({ accountId: props.match.params.id }),
-  RenderError: ({ error }) => (
-    // FIXME have a generic component for screen errors
-    <span style={{ color: "#fff" }}>
-      {(error && error.message) || "" + error}
-    </span>
-  )
+  RenderError
 });
