@@ -9,15 +9,15 @@
 			display: inline-block;
 			vertical-align: top;
 			width: 11px;
-		    fill: $ocean !important;
-		    margin-top: 4px;
+			fill: $ocean !important;
+			margin-top: 2px;
 		}
 		.label {
 			display: inline-block;
 			vertical-align: top;
 			color: $ocean;
 			margin-left: 10px;
-		}	
+		}
 	}
 }
 
@@ -25,22 +25,30 @@
 	padding: 10px;
 	opacity: 0.5;
 	text-transform: uppercase;
+	&:after {
+		background: $ocean;
+		content: "";
+		height: 26px;
+		width: 0px;
+		position: absolute;
+		margin-top: -5px;
+		right: -21px;
+		opacity: 0;
+	}
 	&.selected {
-		opacity: 1;
 		&:after {
-		    -webkit-transition: width 200ms ease;
-		    -o-transition: width 200ms ease;
-		    transition: width 200ms ease;
-		    background: $ocean;
-		    content: '';
-		    height: 26px;
-		    width: 5px;
-		    position: absolute;
-			margin-top: -5px;
-		    right: -20px;
+			opacity: 1;
+			width: 5px;
 		}
 	}
 	&:hover {
 		cursor: pointer;
+		&:after {
+			opacity: 1;
+			width: 5px;
+			-webkit-transition: width 200ms ease;
+			-o-transition: width 200ms ease;
+			transition: width 200ms ease;
+		}
 	}
 }

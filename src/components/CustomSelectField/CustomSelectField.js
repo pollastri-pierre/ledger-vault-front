@@ -56,7 +56,7 @@ class CustomSelectField extends Component {
                 : ""}`}
               onClick={() => {
                 this.close();
-                this.onChange(value.key);
+                this.onChange(value);
               }}
             >
               {value.title}
