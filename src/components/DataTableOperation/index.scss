@@ -1,4 +1,30 @@
+@import "../../styles/_variables";
+
 table.data-table {
+  thead {
+    tr:before {
+      opacity: 0;
+    }
+  }
+  tr:before {
+    background: $ocean;
+    content: "";
+    height: 26px;
+    width: 0px;
+    position: absolute;
+    margin-left: -42px;
+    margin-top: 6px;
+  }
+  tr {
+    &:hover {
+      &:before {
+        width: 5px;
+        -webkit-transition: width 200ms ease;
+        -o-transition: width 200ms ease;
+        transition: width 200ms ease;
+      }
+    }
+  }
   td.countervalue,
   td.amount,
   th.amount {
