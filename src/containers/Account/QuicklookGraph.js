@@ -26,6 +26,7 @@ export default class QuicklookGraph extends Component {
   };
 
   componentDidMount() {
+    const { dateRange, tick, data } = this.props;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
@@ -36,23 +37,15 @@ export default class QuicklookGraph extends Component {
       .classed("chart", true)
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    let minX = this.props.data[0].time;
-    let maxX = this.props.data[0].time;
+    let minX = data[0].time;
+    let maxX = data[0].time;
 
-    let minY = this.props.data[0].amount;
-    let maxY = this.props.data[0].amount;
+    let minY = data[0].amount;
+    let maxY = data[0].amount;
 
-    let data = _.map(this.props.data, transaction => {
-      if (transaction.time < minX) {
-        minX = transaction.time;
-      }
-
+    let computedData = _.map(data, transaction => {
       if (transaction.amount < minY) {
         minY = transaction.amount;
-      }
-
-      if (transaction.time > maxX) {
-        maxX = transaction.time;
       }
 
       if (transaction.amount > maxY) {
@@ -66,17 +59,21 @@ export default class QuicklookGraph extends Component {
       };
     });
 
+    minX = dateRange[0];
+    maxX = dateRange[1];
+
     const x = d3
       .scaleTime()
       .domain([minX, maxX])
-      .range([0, width]);
+      .range([55, width])
+      .nice();
 
     const y = d3
       .scaleLinear()
       .domain([minY, maxY])
       .range([height, 0]);
 
-    data = _.map(data, transaction => {
+    computedData = _.map(computedData, transaction => {
       return {
         ...transaction,
         x: x(transaction.date),
@@ -84,8 +81,18 @@ export default class QuicklookGraph extends Component {
       };
     });
 
-    const xAxis = d3.axisBottom(x).ticks(d3.timeDay);
-
+    console.log(computedData);
+    const timeFormat =
+      tick === "month"
+        ? "%m"
+        : tick === "week"
+          ? "%w"
+          : tick === "day" ? "%d" : tick === "hour" ? "%H" : "";
+    let xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat(timeFormat));
+    if (tick === "day") {
+      console.log("hey");
+      xAxis = xAxis.ticks(9);
+    }
     const yAxis = d3
       .axisRight(y)
       .ticks(3)
@@ -95,7 +102,10 @@ export default class QuicklookGraph extends Component {
       s.call(xAxis);
       s.select(".domain").remove();
       s.selectAll(".tick line").attr("display", "none");
-      s.selectAll(".tick text").attr("fill", "#999999");
+      s
+        .selectAll(".tick text")
+        .attr("fill", "#999999")
+        .attr("x", 0);
     }
 
     function customYAxis(s) {
@@ -108,7 +118,7 @@ export default class QuicklookGraph extends Component {
 
       s
         .selectAll(".tick text")
-        .attr("x", -20)
+        .attr("x", 0)
         .attr("dy", -12)
         .attr("fill", "#999999");
 
@@ -125,6 +135,14 @@ export default class QuicklookGraph extends Component {
 
     g.append("g").call(customYAxis);
 
+    g
+      .append("text")
+      .text(tick.toUpperCase())
+      .attr("dy", 166)
+      .attr("fill", "#999999")
+      .attr("font-size", "10px")
+      .attr("text-transform", "uppercase");
+
     const valueline = d3
       .line()
       .x(d => x(d.date))
@@ -132,20 +150,20 @@ export default class QuicklookGraph extends Component {
 
     g
       .append("path")
-      .data([data])
+      .data([computedData])
       .attr("class", "line")
       .attr("d", valueline)
-      .attr("stroke", this.props.data[0].currency.color)
+      .attr("stroke", computedData[0].currency.color)
       .attr("fill", "none")
       .attr("stroke-width", "2px");
 
     g
       .selectAll("dot")
-      .data(data)
+      .data(computedData)
       .enter()
       .append("circle")
       .attr("r", 3)
-      .attr("fill", this.props.data[0].currency.color)
+      .attr("fill", computedData[0].currency.color)
       .style("stroke", "white")
       .style("stroke-width", 2)
       .attr("opacity", 0)
@@ -153,9 +171,10 @@ export default class QuicklookGraph extends Component {
       .attr("cy", d => d.y)
       .attr("class", (d, i) => `dot${i}`)
       .classed("dot", true);
+
     g
       .selectAll("dot")
-      .data(data)
+      .data(computedData)
       .enter()
       .append("circle")
       .attr("r", 20)
@@ -188,6 +207,7 @@ export default class QuicklookGraph extends Component {
   render() {
     const { selected } = this.state;
     const { data } = this.props;
+    console.log(data);
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">
@@ -209,7 +229,7 @@ export default class QuicklookGraph extends Component {
                     <span className="uppercase date">
                       <DateFormat
                         format="ddd D MMM"
-                        date={data[selected].date}
+                        date={data[selected].time}
                       />
                     </span>
                   </div>
