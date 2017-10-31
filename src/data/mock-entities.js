@@ -403,15 +403,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "bitcoin",
-      balance: 1589831782,
+      balance: 189831782,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 182834846,
+        week: 11283484,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 19553,
         currency_name: "EUR"
       }
     },
@@ -421,15 +421,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 1589831782,
+      balance: 589831782,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 118834846,
+        week: 0,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 19953,
         currency_name: "EUR"
       }
     },
@@ -439,7 +439,7 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 1589831782,
+      balance: 99058831782,
       balance_history: {
         yesterday: 1182834846,
         week: 118283484,
@@ -447,7 +447,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 299553,
         currency_name: "EUR"
       }
     },
@@ -457,15 +457,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "litecoin",
-      balance: 1589831782,
+      balance: 91589831782,
       balance_history: {
-        yesterday: 1182834846,
+        yesterday: 991182834846,
         week: 118283484,
-        month: 2182834846
+        month: 22182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 92199553,
         currency_name: "EUR"
       }
     }

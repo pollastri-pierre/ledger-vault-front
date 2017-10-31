@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
 import Card from "../../components/Card";
 import DateFormat from "../../components/DateFormat";
 import CardField from "../../components/CardField";
@@ -64,8 +65,16 @@ class AccountView extends Component<
 
               <Card className="countervalue" title="Countervalue">
                 <CardField
-                  label={`ETH 1 ≈ ${account.reference_conversion
-                    .currency_name} ???`}
+                  label={
+                    <CurrencyCounterValueConversion
+                      fromCurrencyName={account.currency.name}
+                      toCurrencyName={
+                        account.reference_conversion.currency_name
+                      }
+                      fromValue={account.balance}
+                      toValue={account.reference_conversion.balance}
+                    />
+                  }
                 >
                   <CurrencyNameValue
                     currencyName={account.reference_conversion.currency_name}
