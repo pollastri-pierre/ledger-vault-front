@@ -5,6 +5,23 @@ import mockEntities from "./mock-entities.js";
 import network from "./network";
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
+  if (method === "DELETE") {
+    return {};
+  }
+
+  if (method === "PUT") {
+    let m;
+    m = /^\/operations\/([^/]+)$/.exec(uri);
+    if (m) {
+      return {};
+    }
+
+    m = /^\/accounts\/([^/]+)$/.exec(uri);
+    if (m) {
+      return {};
+    }
+  }
+
   if (method === "GET") {
     let m;
     m = /^\/accounts\/([^/]+)$/.exec(uri);

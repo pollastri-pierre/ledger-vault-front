@@ -39,6 +39,16 @@ const api: API = {
     // input : Member
     responseSchema: Member
   },
+  abortAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "DELETE",
+    responseSchema: Account
+  },
+  approveAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "PUT",
+    responseSchema: Account
+  },
   account: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "GET",
@@ -47,6 +57,16 @@ const api: API = {
   operation: {
     uri: ({ operationId }) => `/operations/${operationId}`,
     method: "GET",
+    responseSchema: Operation
+  },
+  abortOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "DELETE",
+    responseSchema: Operation
+  },
+  approveOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "PUT",
     responseSchema: Operation
   },
   accountOperations: {

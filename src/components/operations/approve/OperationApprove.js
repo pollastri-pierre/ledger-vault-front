@@ -20,6 +20,7 @@ class OperationApprove extends Component {
     super();
     this.aborting = this.aborting.bind(this);
     this.approving = this.approving.bind(this);
+    this.abort = this.abort.bind(this);
     this.state = {};
   }
 
@@ -28,10 +29,23 @@ class OperationApprove extends Component {
   }
 
   approving() {
+    const { fetchData, close } = this.props;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
+
+    // TODO: replace setTimeout by device API call
+    setTimeout(() => {
+      return fetchData(api.approveOperation).then(() => {
+        return fetchData(api.pendings).then(() => close());
+      });
+    }, 500);
   }
 
-  abort() {}
+  abort() {
+    const { fetchData, close } = this.props;
+    return fetchData(api.abortOperation).then(() => {
+      return fetchData(api.pendings).then(() => close());
+    });
+  }
 
   render() {
     const { close, operation, members, profile } = this.props;

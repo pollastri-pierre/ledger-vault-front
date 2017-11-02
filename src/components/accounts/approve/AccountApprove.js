@@ -21,6 +21,7 @@ class AccountApprove extends Component {
 
     this.aborting = this.aborting.bind(this);
     this.approving = this.approving.bind(this);
+    this.abort = this.abort.bind(this);
 
     this.state = {};
   }
@@ -30,7 +31,22 @@ class AccountApprove extends Component {
   }
 
   approving() {
+    const { fetchData, close } = this.props;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
+
+    // TODO: replace setTimeout by device API call
+    setTimeout(() => {
+      return fetchData(api.approveOperation).then(() => {
+        return fetchData(api.pendings).then(() => close());
+      });
+    }, 500);
+  }
+
+  abort() {
+    const { fetchData, close } = this.props;
+    return fetchData(api.abortAccount).then(() => {
+      return fetchData(api.pendings).then(() => close());
+    });
   }
 
   render() {
@@ -41,7 +57,7 @@ class AccountApprove extends Component {
         <AbortConfirmation
           entity="account"
           aborting={this.aborting}
-          abort={abort}
+          abort={this.abort}
         />
       );
     }

@@ -1,25 +1,52 @@
-import React from "react";
+//@flow
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import "./DialogButton.css";
 
-function DialogButton(props) {
-  const { highlight, right, ...other } = props;
+const neverEnding: Promise<any> = new Promise(() => {});
 
-  return (
-    <button
-      {...other}
-      className={`vlt-dialog-btn ${highlight
-        ? "highlight"
-        : ""} ${props.className}`}
-      style={{
-        float: right ? "right" : "left",
-        ...props.style
-      }}
-    >
-      {props.children}
-    </button>
-  );
+export default class DialogButton extends Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.onClick = this.onClick.bind(this);
+  }
+
+  _unmounted = false;
+
+  onClick() {
+    this.setState({ pending: true });
+    Promise.resolve()
+      .then(this.props.onTouchTap)
+      .then(() => {
+        !this._unmounted ? this.setState({ pending: false }) : false;
+      });
+  }
+
+  componentWillUnmount() {
+    this._unmounted = true;
+  }
+
+  render() {
+    const { highlight, right, ...other } = this.props;
+
+    return (
+      <button
+        {...other}
+        className={`vlt-dialog-btn ${highlight ? "highlight" : ""} ${this.props
+          .className}`}
+        style={{
+          float: right ? "right" : "left",
+          ...this.props.style
+        }}
+        disabled={this.state.pending}
+        onTouchTap={this.onClick}
+      >
+        {this.props.children}
+      </button>
+    );
+  }
 }
 
 DialogButton.propTypes = {
@@ -39,5 +66,3 @@ DialogButton.defaultProps = {
   right: false,
   onTouchTap: () => {}
 };
-
-export default DialogButton;

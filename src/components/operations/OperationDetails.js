@@ -102,7 +102,7 @@ OperationDetails.contextTypes = {
 };
 
 export default connectData(OperationDetails, {
-  api: { operation: api.operation },
+  api: { operation: api.operation, accounts: api.accounts },
   propsToApiParams: props => ({ operationId: props.operationId }),
   RenderLoading: ModalLoading
 });
