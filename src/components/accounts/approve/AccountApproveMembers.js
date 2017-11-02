@@ -3,38 +3,20 @@ import PropTypes from "prop-types";
 import CircularProgress from "material-ui/CircularProgress";
 import _ from "lodash";
 import { Avatar } from "../../../components";
+import MemberAvatar from "../../MemberAvatar";
+import InfoModal from "../../InfoModal";
 
 class AccountApproveMembers extends Component {
-  componentWillMount() {
-    const { members, isLoading } = this.props.organization;
-
-    if (!isLoading && _.isNull(members)) {
-      this.props.getOrganizationMembers();
-    }
-  }
-
   render() {
-    const { members, isLoading } = this.props.organization;
-    const membersAccount = this.props.account.security.members;
-
-    if (isLoading || _.isNull(members)) {
-      return (
-        <CircularProgress
-          style={{
-            top: "50%",
-            left: "50%",
-            margin: "-25px 0 0 -25px"
-          }}
-        />
-      );
-    }
+    const { members } = this.props;
+    const membersAccount = this.props.account.security_scheme.approvers;
 
     return (
       <div className="account-creation-members">
-        <p className="info approve">
+        <InfoModal>
           Members define the group of individuals that have the ability to
           approve outgoing operations from this account.
-        </p>
+        </InfoModal>
         {_.map(membersAccount, hash => {
           const member = _.find(members, { pub_key: hash });
           return (
@@ -44,16 +26,9 @@ class AccountApproveMembers extends Component {
               tabIndex={0}
               className="account-member-row"
             >
-              <div className="member-avatar">
-                <Avatar
-                  className="member-avatar-img"
-                  url={member.picture}
-                  width="13.5px"
-                  height="15px"
-                />
-              </div>
+              <MemberAvatar url={member.picture} />
               <span className="name">
-                {member.firstname} {member.name}
+                {member.first_name} {member.last_name}
               </span>
               <p className="role">{member.role}</p>
             </div>

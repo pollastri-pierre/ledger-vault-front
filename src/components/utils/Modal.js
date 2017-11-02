@@ -21,7 +21,7 @@ class Modal extends Component {
 
   handle(e) {
     if (e.keyCode === 27) {
-      this.props.close("esc");
+      this.props.close();
     }
   }
 

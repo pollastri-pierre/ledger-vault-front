@@ -56,6 +56,12 @@
 
     &.watch:first-child {
       padding-top: 0;
+
+      &.operation {
+        .request-operation-amount {
+          top: 5px;
+        }
+      }
     }
 
     @include highlight-block($porto, -40px);
@@ -68,12 +74,33 @@
       margin-top: 10px;
     }
 
-    .request-name {
+    .account-name {
       float: right;
       font-size: 13px;
       color: $black;
       line-height: 1.77;
+
+      &.operation {
+        font-size: 11px;
+      }
     }
+
+    .request-operation-amount {
+      font-size: 13px;
+      color: $steel;
+      position: absolute;
+      top: 14px;
+      left: 43%;
+
+      &.crypto {
+        margin-left: 43px;
+        color: $black;
+        float: right;
+        position: static;
+        padding-top: 3px;
+      }
+    }
+
     .request-date-creation {
       font-size: 10px;
       color: $black;
@@ -104,7 +131,6 @@
     }
   }
 }
-
 
 @media screen and (max-width: 1145px) {
   .pending-requests {

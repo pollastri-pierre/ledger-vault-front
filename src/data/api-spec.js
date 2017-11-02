@@ -26,6 +26,11 @@ const api: API = {
     method: "GET",
     responseSchema: [Member]
   },
+  approvers: {
+    uri: "/organization/approvers",
+    method: "GET",
+    responseSchema: [Member]
+  },
   profile: {
     uri: "/organization/members/me",
     method: "GET",
@@ -37,15 +42,50 @@ const api: API = {
     // input : Member
     responseSchema: Member
   },
+  abortAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "DELETE",
+    responseSchema: Account
+  },
+  approveAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "PUT",
+    responseSchema: Account
+  },
   account: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "GET",
     responseSchema: Account
   },
+  operation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "GET",
+    responseSchema: Operation
+  },
+  abortOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "DELETE",
+    responseSchema: Operation
+  },
+  approveOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "PUT",
+    responseSchema: Operation
+  },
   accountOperations: {
     uri: ({ accountId }) => `/accounts/${accountId}/operations`,
     method: "GET",
     responseSchema: [Operation]
+  },
+  pendings: {
+    uri: "/pendings",
+    method: "GET",
+    responseSchema: {
+      approveOperations: [Operation],
+      watchOperations: [Operation],
+      approveAccounts: [Account],
+      watchAccounts: [Account]
+    }
   },
   dashboard: {
     uri: "/dashboard",

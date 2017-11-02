@@ -1,0 +1,10 @@
+@import '../../styles/variables';
+
+.amount-strong {
+  font-weight: 600;
+}
+.flat-amount {
+  color: $lead;
+  font-size: 11px;
+  font-weight: 600;
+}

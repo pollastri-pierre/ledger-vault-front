@@ -6,6 +6,15 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[0],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 2,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300
+      },
+      time_lock: 5000,
+      approvers: ["wewoleoolele", "ewfwekljfkujkljlkj"]
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
@@ -22,6 +31,15 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[0],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300
+      },
+      time_lock: 5000,
+      approvers: ["wewoleoolele", "ewfwekljfkujkljlkj"]
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
@@ -38,6 +56,15 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[1],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300
+      },
+      time_lock: 5000,
+      approvers: ["wewoleoolele", "ewfwekljfkujkljlkj"]
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
@@ -54,6 +81,15 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[2],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      rate_limiter: {
+        max_transaction: 2,
+        time_slot: 300
+      },
+      time_lock: 5000,
+      approvers: ["wewoleoolele", "ewfwekljfkujkljlkj"]
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,
@@ -70,6 +106,12 @@ export const data = [
     creation_time: 1508923040570,
     currency: currencies[2],
     balance: 1589831782,
+    security_scheme: {
+      quorum: 1,
+      rate_limiter: null,
+      time_lock: null,
+      approvers: ["wewoleoolele", "ewfwekljfkujkljlkj"]
+    },
     balance_history: {
       yesterday: 1182834846,
       week: 118283484,

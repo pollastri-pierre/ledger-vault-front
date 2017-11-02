@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { DialogButton } from "../../";
-import Plug from "../../icons/thin/Plug";
+import { DialogButton } from "../";
+import Plug from "../icons/thin/Plug";
 
 function ApproveDevice(props) {
-  const { cancel } = props;
+  const { cancel, entity } = props;
   return (
     <div id="account-approve-device" className="small-modal">
       <header>
         <Plug className="plug-icon" fill="#e2e2e2" />
-        <h3>Approve account</h3>
+        <h3>Approve {entity}</h3>
       </header>
 
       <div className="content">
@@ -25,8 +25,8 @@ function ApproveDevice(props) {
           </li>
           <li>
             <span className="bullet">3.</span>
-            Open the Vault app on the dashboard. When displayed, approve the
-            account request on the device.
+            Open the Vault app on the dashboard. When displayed, approve the{" "}
+            {entity} request on the device.
           </li>
         </ul>
       </div>
@@ -41,7 +41,8 @@ function ApproveDevice(props) {
 }
 
 ApproveDevice.propTypes = {
-  cancel: PropTypes.func.isRequired
+  cancel: PropTypes.func.isRequired,
+  entity: PropTypes.string.isRequired
 };
 
 export default ApproveDevice;

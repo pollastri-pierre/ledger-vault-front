@@ -12,9 +12,7 @@ import {
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT
 } from "../redux/modules/auth";
-import { GOT_OPERATION_FAIL } from "../redux/modules/operations";
 import { SAVED_ACCOUNT } from "../redux/modules/account-creation";
-import { ABORTED, APPROVED } from "../redux/modules/account-approve";
 
 const mapStateToProps = state => ({
   alerts: state.alerts
@@ -59,10 +57,7 @@ export const allMessages = [
   AUTHENTICATION_FAILED_API,
   AUTHENTICATION_FAILED_TIMEOUT,
   LOGOUT,
-  GOT_OPERATION_FAIL,
-  AUTHENTICATION_SUCCEED,
-  ABORTED,
-  APPROVED
+  AUTHENTICATION_SUCCEED
 ];
 
 export function MessagesContainer(props, context) {
