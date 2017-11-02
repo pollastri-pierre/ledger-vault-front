@@ -397,7 +397,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 6199553,
         currency_name: "EUR"
       },
       approved: []
@@ -408,15 +408,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "bitcoin",
-      balance: 1589831782,
+      balance: 189831782,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 182834846,
+        week: 11283484,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 719553,
         currency_name: "EUR"
       },
       approved: []
@@ -427,15 +427,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 1589831782,
+      balance: 325898317820,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 118834846,
+        week: 0,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 199530,
         currency_name: "EUR"
       },
       approved: ["hash"]
@@ -446,7 +446,7 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 1589831782,
+      balance: 99058831782,
       balance_history: {
         yesterday: 1182834846,
         week: 118283484,
@@ -454,7 +454,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 8299553,
         currency_name: "EUR"
       },
       approved: ["hash"]
@@ -465,15 +465,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "litecoin",
-      balance: 1589831782,
+      balance: 89158983182,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 99118234846,
+        week: 11823484,
+        month: 2218234846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 3321993,
         currency_name: "EUR"
       },
       approved: []
