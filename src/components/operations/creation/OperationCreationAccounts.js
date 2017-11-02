@@ -36,7 +36,7 @@ function OperationCreationAccounts(props) {
             </span>
           </div>
           <div className="account-botom">
-            <span className="account-currency">{cur.currency.units[0]}</span>
+            <span className="account-currency">{cur.currency.name}</span>
             <span className="account-countervalue">EUR 42</span>
           </div>
         </div>
