@@ -16,7 +16,7 @@ class PercentageBarProgress extends PureComponent<*> {
         <div className="percentage-bar">
           <div
             className="percentage-bar-fill"
-            style={{ width: `${percentage}%` }}
+            style={{ width: `${100 * percentage}%` }}
           />
         </div>
       </div>

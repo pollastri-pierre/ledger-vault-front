@@ -166,7 +166,8 @@ const genOperation = opts => {
     amount,
     reference_conversion: {
       currency_name: "EUR",
-      amount: Math.round(amount * 0.0005)
+      amount: Math.round(amount * 0.0005),
+      fees: Math.round(23 * 0.0005)
     },
     fees: 23,
     account_id,

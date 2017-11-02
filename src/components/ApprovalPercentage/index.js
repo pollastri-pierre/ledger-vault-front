@@ -7,12 +7,12 @@ function ApprovalPercentage(props) {
   const { approved, approvers, nbRequired } = props;
   const nbTotal = _.isNumber(nbRequired) ? nbRequired : approvers.length;
 
-  const percentage = Math.round(100 * (approved.length / nbTotal));
+  const percentage = approved.length / nbTotal;
 
   const label = (
     <p>
       {approved.length} collected, {approvers.length - nbTotal} remaining
-      <span> ({percentage}%)</span>
+      <span> ({100 * percentage}%)</span>
     </p>
   );
 

@@ -41,7 +41,7 @@ function TabOverview(props) {
         <LineRow label="Total spent">
           <Amount
             amount_crypto={operation.amount}
-            amount_flat={operation.amount_flat}
+            amount_flat={operation.reference_conversion.amount}
             currencyName={account.currency.name}
             strong
           />

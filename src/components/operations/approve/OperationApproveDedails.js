@@ -36,7 +36,7 @@ function OperationApproveDetails(props) {
         <LineRow label="Total Spent">
           <Amount
             amount_crypto={operation.amount}
-            amount_flat={operation.amount_flat}
+            amount_flat={operation.reference_conversion.amount}
             currencyName={account.currency.name}
             strong
           />

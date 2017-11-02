@@ -48,7 +48,7 @@ function OperationApproveLocks(props) {
       {isUnactive ? (
         <LocksPercentage percentage={null} />
       ) : (
-        <LocksPercentage percentage={55} />
+        <LocksPercentage percentage={0.5} />
       )}
     </div>
   );

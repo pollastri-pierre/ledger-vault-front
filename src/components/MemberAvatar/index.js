@@ -19,8 +19,8 @@ function Avatar(props) {
 
 Avatar.defaultProps = {
   url: "",
-  width: "13.5px",
-  height: "15px"
+  width: "14px",
+  height: "16px"
 };
 
 Avatar.propTypes = {

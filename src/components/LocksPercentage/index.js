@@ -16,7 +16,7 @@ function LocksPercentage(props) {
     label = (
       <p>
         waiting for completion
-        <span> ({percentage}%)</span>
+        <span> ({Math.round(100 * percentage)}%)</span>
       </p>
     );
   }
