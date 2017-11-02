@@ -1,63 +1,68 @@
 import React, { Component } from "react";
-import _ from "lodash";
+// import _ from "lodash";
+import api from "../../../data/api-spec";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CircularProgress from "material-ui/CircularProgress";
-import { DialogButton, Overscroll } from "../../";
-import AbortConfirmation from "./AbortConfirmation";
-import ApproveDevice from "./ApproveDevice";
+// import CircularProgress from "material-ui/CircularProgress";
+import { Overscroll } from "../../";
+import ModalLoading from "../../../components/ModalLoading";
+import AbortConfirmation from "../../approve/AbortConfirmation";
+import ApproveDevice from "../../approve/ApproveDevice";
 import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
 import AccountApproveApprovals from "./AccountApproveApprovals";
-import Footer from "./Footer";
+import Footer from "../../approve/Footer";
+import connectData from "../../../decorators/connectData";
 import "./AccountApprove.css";
 
 class AccountApprove extends Component {
-  componentWillMount() {
-    this.props.getAccount();
+  constructor(props) {
+    super(props);
+
+    this.aborting = this.aborting.bind(this);
+    this.approving = this.approving.bind(this);
+    this.abort = this.abort.bind(this);
+
+    this.state = {};
+  }
+
+  aborting() {
+    this.setState({ ...this.state, isAborting: !this.state.isAborting });
+  }
+
+  approving() {
+    const { fetchData, close } = this.props;
+    this.setState({ ...this.state, isDevice: !this.state.isDevice });
+
+    // TODO: replace setTimeout by device API call
+    setTimeout(() => {
+      return fetchData(api.approveOperation).then(() => {
+        return fetchData(api.pendings).then(() => close());
+      });
+    }, 500);
+  }
+
+  abort() {
+    const { fetchData, close } = this.props;
+    return fetchData(api.abortAccount).then(() => {
+      return fetchData(api.pendings).then(() => close());
+    });
   }
 
   render() {
-    const {
-      organization,
-      getOrganizationMembers,
-      getOrganizationApprovers,
-      close,
-      account,
-      abort,
-      aborting,
-      approving
-    } = this.props;
+    const { members, approvers, close, account, abort, profile } = this.props;
 
-    if (account.isLoading || _.isNull(account.account)) {
+    if (this.state.isAborting) {
       return (
-        <div id="account-creation" className="wrapper loading">
-          <div className="header" />
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: "-25px",
-                marginTop: "-25px"
-              }}
-            />
-          </div>
-          <div className="footer">
-            <DialogButton highlight className="cancel" onTouchTap={close}>
-              Close
-            </DialogButton>
-          </div>
-        </div>
+        <AbortConfirmation
+          entity="account"
+          aborting={this.aborting}
+          abort={this.abort}
+        />
       );
     }
-
-    if (account.isAborting) {
-      return <AbortConfirmation aborting={aborting} abort={abort} />;
-    }
-    if (account.isDevice) {
-      return <ApproveDevice cancel={approving} />;
+    if (this.state.isDevice) {
+      return <ApproveDevice entity="account" cancel={this.approving} />;
     }
 
     return (
@@ -72,36 +77,27 @@ class AccountApprove extends Component {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            <AccountApproveDetails
-              account={account.account}
-              organization={organization}
-            />
+            <AccountApproveDetails account={account} approvers={approvers} />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <Overscroll>
-              <AccountApproveMembers
-                organization={organization}
-                getOrganizationMembers={getOrganizationMembers}
-                account={account.account}
-              />
+              <AccountApproveMembers members={members} account={account} />
             </Overscroll>
           </TabPanel>
           <TabPanel className="tabs_panel">
             <Overscroll>
               <AccountApproveApprovals
-                organization={organization}
-                getOrganizationMembers={getOrganizationMembers}
-                getOrganizationApprovers={getOrganizationApprovers}
-                account={account.account}
+                approvers={approvers}
+                account={account}
               />
             </Overscroll>
           </TabPanel>
         </div>
         <Footer
           close={close}
-          approve={approving}
-          aborting={aborting}
-          approved={account.isApproved}
+          approve={this.approving}
+          aborting={this.aborting}
+          approved={account.approved.indexOf(profile.pub_key) > -1}
         />
       </Tabs>
     );
@@ -109,9 +105,16 @@ class AccountApprove extends Component {
 }
 
 AccountApprove.propTypes = {
-  getAccount: PropTypes.func.isRequired,
-  close: PropTypes.func.isRequired,
-  account: PropTypes.shape({}).isRequired
+  close: PropTypes.func.isRequired
 };
 
-export default AccountApprove;
+export default connectData(AccountApprove, {
+  api: {
+    account: api.account,
+    members: api.members,
+    approvers: api.approvers,
+    profile: api.profile
+  },
+  propsToApiParams: props => ({ accountId: props.accountId }),
+  RenderLoading: ModalLoading
+});

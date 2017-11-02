@@ -8,6 +8,9 @@ export type APISpec = {
 };
 type API = { [_: string]: APISpec };
 
+// TODO: how to express the response type per API with flowtype? same with input type
+// TODO: different cache strategy. for instance, it's ok to cache /accounts because not much things should change BUT it should still refresh in some cases. cache invalidation can be tricky so we don't want to think about this too early
+
 /**
  * This specifies the API and how it maps to the schema model
  */
@@ -23,6 +26,11 @@ const api: API = {
     method: "GET",
     responseSchema: [Member]
   },
+  approvers: {
+    uri: "/organization/approvers",
+    method: "GET",
+    responseSchema: [Member]
+  },
   profile: {
     uri: "/organization/members/me",
     method: "GET",
@@ -34,15 +42,50 @@ const api: API = {
     // input : Member
     responseSchema: Member
   },
+  abortAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "DELETE",
+    responseSchema: Account
+  },
+  approveAccount: {
+    uri: ({ accountId }) => `/accounts/${accountId}`,
+    method: "PUT",
+    responseSchema: Account
+  },
   account: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "GET",
     responseSchema: Account
   },
+  operation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "GET",
+    responseSchema: Operation
+  },
+  abortOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "DELETE",
+    responseSchema: Operation
+  },
+  approveOperation: {
+    uri: ({ operationId }) => `/operations/${operationId}`,
+    method: "PUT",
+    responseSchema: Operation
+  },
   accountOperations: {
     uri: ({ accountId }) => `/accounts/${accountId}/operations`,
     method: "GET",
     responseSchema: [Operation]
+  },
+  pendings: {
+    uri: "/pendings",
+    method: "GET",
+    responseSchema: {
+      approveOperations: [Operation],
+      watchOperations: [Operation],
+      approveAccounts: [Account],
+      watchAccounts: [Account]
+    }
   },
   dashboard: {
     uri: "/dashboard",

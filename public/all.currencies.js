@@ -1,10 +1,12 @@
+// TODO I think we might reconsider this to be part of the data.
+// or at least we will on client side, "rehydrate" our data store with these so they can evolve over time (e.g. for rates)
 window.CRYPTO_CURRENCIES = [
   {
     name: "bitcoin",
     family: "Bitcoin",
     color: "#fcb653",
-    current_rate: {
-      value: 0.000061,
+    rate: {
+      value: 0.0061,
       currency_name: "EUR"
     },
     units: [
@@ -26,7 +28,7 @@ window.CRYPTO_CURRENCIES = [
     name: "dogecoin",
     family: "Dogecoin",
     color: "#65d196",
-    current_rate: {
+    rate: {
       value: 0.000000001,
       currency_name: "EUR"
     },
@@ -43,7 +45,7 @@ window.CRYPTO_CURRENCIES = [
     name: "dash",
     family: "Dash",
     color: "#0e76aa",
-    current_rate: {
+    rate: {
       value: 0.00000003,
       currency_name: "EUR"
     },
@@ -60,7 +62,7 @@ window.CRYPTO_CURRENCIES = [
     name: "ethereum",
     family: "Ethereum",
     color: "#27d0e2",
-    current_rate: {
+    rate: {
       value: 0.000245,
       currency_name: "EUR"
     },
@@ -77,7 +79,7 @@ window.CRYPTO_CURRENCIES = [
     name: "ethereum-classic",
     family: "Ethereum",
     color: "#3ca569",
-    current_rate: {
+    rate: {
       value: 0.000008,
       currency_name: "EUR"
     },
@@ -94,7 +96,7 @@ window.CRYPTO_CURRENCIES = [
     name: "litecoin",
     family: "Litecoin",
     color: "#cccccc",
-    current_rate: {
+    rate: {
       value: 0.000044,
       currency_name: "EUR"
     },

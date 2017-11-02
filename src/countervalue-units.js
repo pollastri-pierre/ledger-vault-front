@@ -164,5 +164,8 @@ const units: { [key: string]: Unit } = {
   ZMW: { name: "ZMW", code: "ZMW", symbol: "ZK", magnitude: 2 },
   WON: { name: "WON", code: "WON", symbol: "₩", magnitude: 2 }
 };
+for (let u in units) {
+  units[u].showAllDigits = true;
+}
 
 export default units;

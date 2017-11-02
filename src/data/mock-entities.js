@@ -24,8 +24,10 @@ const defaultGenOperation = {
   time: new Date(2017, 9, 14, 9).toISOString(),
   account_id: "0",
   amount: 120000000,
+  fees: 2300,
   confirmations: 31,
   type: "SEND",
+  approved: [],
   currency_name: "bitcoin",
   currency_family: "BITCOIN"
 };
@@ -51,6 +53,7 @@ const genMember = fields => ({
 const members = {
   "0": genMember({
     id: "0",
+    pub_key: "hash",
     last_name: "Getto",
     first_name: "David",
     role: "Administrator",
@@ -119,8 +122,9 @@ const members = {
 };
 
 const genSecurityScheme = () => ({
-  quorum: 4,
+  quorum: 2,
   approvers: Object.keys(members)
+    .slice(0, 2)
     .map(k => members[k])
     .filter(m => m.role === "Administrator")
     .map(m => m.pub_key),
@@ -140,6 +144,7 @@ const genOperation = opts => {
     confirmations,
     type,
     currency_name,
+    fees,
     currency_family
   } = {
     ...defaultGenOperation,
@@ -159,12 +164,14 @@ const genOperation = opts => {
     time,
     block: {},
     type,
+    approved: [],
     amount,
     reference_conversion: {
       currency_name: "EUR",
-      amount: Math.round(amount * 0.0005)
+      amount: Math.round(amount * 0.0005),
+      fees: Math.round(fees * 0.0005)
     },
-    fees: 23,
+    fees,
     account_id,
     senders: ["0xc5a96db085dda36ffbe390f455315d30d6d3dc52"],
     recipients: ["0x063dd253c8da4ea9b12105781c9611b8297f5d14"],
@@ -400,7 +407,8 @@ export default {
       reference_conversion: {
         balance: 6199553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "1": {
       id: "1",
@@ -418,7 +426,8 @@ export default {
       reference_conversion: {
         balance: 719553,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     },
     "2": {
       id: "2",
@@ -426,17 +435,18 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 325898317820,
+      balance: 3258983178200000,
       balance_history: {
-        yesterday: 118834846,
-        week: 0,
-        month: 182834846
+        yesterday: 0.6 * 3258983178200000,
+        week: 0.7 * 3258983178200000,
+        month: 0.9 * 3258983178200000
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
         balance: 199530,
         currency_name: "EUR"
-      }
+      },
+      approved: ["hash"]
     },
     "3": {
       id: "3",
@@ -444,17 +454,18 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 99058831782,
+      balance: 99058831782000,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 99058831782000,
+        week: 0.5 * 99058831782000,
+        month: 0
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
         balance: 8299553,
         currency_name: "EUR"
-      }
+      },
+      approved: ["hash"]
     },
     "4": {
       id: "4",
@@ -472,7 +483,8 @@ export default {
       reference_conversion: {
         balance: 3321993,
         currency_name: "EUR"
-      }
+      },
+      approved: []
     }
   },
   // currencies are statically provided, we add them in the entities mock

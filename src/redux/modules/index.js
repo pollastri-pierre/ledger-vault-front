@@ -8,7 +8,7 @@ import accounts from "./accounts";
 import accountCreation from "./account-creation";
 import operationCreation from "./operation-creation";
 import pendingRequests from "./pending-requests";
-import accountApprove from "./account-approve";
+import entityApprove from "./entity-approve";
 import organization from "./organization";
 import data from "./data";
 
@@ -20,7 +20,7 @@ const reducers = {
   operations,
   accounts,
   accountsInfo,
-  accountApprove,
+  entityApprove,
   pendingRequests,
   accountCreation,
   operationCreation,

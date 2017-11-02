@@ -1,20 +1,21 @@
 import React from "react";
+import { connect } from "react-redux";
 import _ from "lodash";
+import { openEntityApprove } from "../../redux/modules/entity-approve";
 import PropTypes from "prop-types";
 import ValidateBadge from "../icons/ValidateBadge";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
+import ApprovalStatus from "../ApprovalStatus";
 
 function PendingAccountApprove(props) {
-  const { accounts, open, approved, approvers } = props;
+  const { accounts, open, approved, approvers, user, onOpenApprove } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
 
   const nbCurrencies = _.size(
-    _.groupBy(accounts, account => {
-      return account.currency.family;
-    })
+    _.groupBy(accounts, account => account.currency.family)
   );
 
   return (
@@ -44,7 +45,7 @@ function PendingAccountApprove(props) {
           <div
             className={`pending-request ${approved ? "watch" : ""}`}
             key={account.id}
-            onClick={() => open(account, approved)}
+            onClick={() => onOpenApprove("account", account.id, approved)}
           >
             <div>
               <span className="request-date-creation">
@@ -55,16 +56,11 @@ function PendingAccountApprove(props) {
               </span>
             </div>
             <div>
-              <span
-                className={`request-approval-state ${approved
-                  ? "approved"
-                  : ""}`}
-              >
-                {approved && <ValidateBadge className="confirmed" />}
-
-                {approved ? "Approved" : "Collecting Approvals"}
-                {` (${account.approved.length}/${approvers.length}) `}
-              </span>
+              <ApprovalStatus
+                approved={account.approved}
+                approvers={approvers}
+                user_hash={user.pub_key}
+              />
               <span className="request-currency">
                 {account.currency.family}
               </span>
@@ -93,4 +89,8 @@ PendingAccountApprove.propTypes = {
   approvers: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
-export default PendingAccountApprove;
+const mapDispatchToProps = dispatch => ({
+  onOpenApprove: (entity, id, isApproved) =>
+    dispatch(openEntityApprove(entity, id, isApproved))
+});
+export default connect(undefined, mapDispatchToProps)(PendingAccountApprove);

@@ -1,30 +1,29 @@
 //@flow
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { findUnit } from "./CurrencyNameValue";
+import { inferUnitValue } from "../data/currency";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {
-    fromCurrencyName: string,
-    toCurrencyName: string,
-    fromValue: number,
-    toValue: number
+    currencyName: string,
+    data: *
   };
   render() {
-    const { fromCurrencyName, toCurrencyName, fromValue, toValue } = this.props;
-    if (fromValue <= 0) return null;
-    const { unit: fromUnit } = findUnit(fromCurrencyName);
-    const { unit: toUnit } = findUnit(toCurrencyName);
-    const v1 = Math.pow(10, fromUnit.magnitude);
-    const v2 = Math.round(v1 * toValue / fromValue);
+    const { currencyName, data } = this.props;
+    const { unit } = inferUnitValue(data, currencyName);
+    const value = Math.pow(10, unit.magnitude);
+    const toUnitValue = inferUnitValue(data, currencyName, value, true);
     return (
       <span>
-        <CurrencyUnitValue unit={fromUnit} value={v1} />
+        <CurrencyUnitValue unit={unit} value={value} />
         {" ≈ "}
-        <CurrencyUnitValue unit={toUnit} value={v2} />
+        <CurrencyUnitValue {...toUnitValue} />
       </span>
     );
   }
 }
 
-export default CurrencyCounterValueConversion;
+export default connect(({ data }) => ({ data }), () => ({}))(
+  CurrencyCounterValueConversion
+);

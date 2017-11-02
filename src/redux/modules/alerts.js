@@ -8,7 +8,6 @@ import {
   AUTHENTICATION_SUCCEED
 } from "./auth";
 import { SAVED_ACCOUNT } from "./account-creation";
-import { ABORTED, APPROVED } from "./account-approve";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 
@@ -45,28 +44,6 @@ export default function reducer(state = initialState, action) {
   }
 
   switch (action.type) {
-    case APPROVED: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: APPROVED,
-        type: "success",
-        title: "account.approveSuccessTitle",
-        content: "account.approveSuccessBody"
-      });
-
-      return copy;
-    }
-    case ABORTED: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: ABORTED,
-        type: "success",
-        title: "account.abortSuccessTitle",
-        content: "account.abortSuccessBody"
-      });
-
-      return copy;
-    }
     case SAVED_ACCOUNT: {
       const copy = _.cloneDeep(state);
       addToTabs(copy, {

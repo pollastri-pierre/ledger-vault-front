@@ -131,9 +131,14 @@ export function openModalAccount() {
 }
 
 export function closeModalAccount(from) {
-  return {
-    type: CLOSE_MODAL_ACCOUNT,
-    from
+  return (dispatch, getState) => {
+    const { accountCreation } = getState();
+
+    if (!(from === "esc" && accountCreation.currentTab > 0)) {
+      dispatch({
+        type: CLOSE_MODAL_ACCOUNT
+      });
+    }
   };
 }
 
@@ -244,9 +249,6 @@ export default function reducer(state = initialState, action) {
     case OPEN_MODAL_ACCOUNT:
       return { ...state, modalOpened: true };
     case CLOSE_MODAL_ACCOUNT:
-      if (action.from === "esc") {
-        return { ...state, modalOpened: false };
-      }
       return initialState;
     case CHANGE_TAB:
       return { ...state, currentTab: action.index };

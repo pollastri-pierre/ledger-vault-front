@@ -1,0 +1,27 @@
+@import "../../styles/variables";
+
+.member-avatar {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: $mouse;
+  position: relative;
+
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -7px;
+    margin-top: -8px;
+  }
+}

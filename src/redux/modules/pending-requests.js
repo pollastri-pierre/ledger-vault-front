@@ -1,6 +1,9 @@
 import _ from "lodash";
+import {
+  getOperationsToApprove,
+  getOperationsToWatch
+} from "../utils/operation";
 import { LOGOUT } from "./auth";
-import { ABORTED, APPROVED } from "./account-approve";
 import { SAVED_ACCOUNT } from "./account-creation";
 import currencies from "../../currencies";
 
@@ -43,9 +46,9 @@ const account4 = {
 };
 
 const requests = {
-  approveOperations: [],
+  approveOperations: getOperationsToApprove(),
   approveAccounts: [account, account2],
-  watchOperations: [],
+  watchOperations: getOperationsToWatch(),
   watchAccounts: [account3, account4]
 };
 
@@ -85,6 +88,9 @@ export const initialState = {
 export default function reducer(state = initialState, action) {
   const approveAccounts = state.data ? state.data.approveAccounts : [];
   const watchAccounts = state.data ? state.data.watchAccounts : [];
+  const approveOperations = state.data ? state.data.approveOperations : [];
+  const watchOperations = state.data ? state.data.watchOperations : [];
+
   switch (action.type) {
     case GET_PENDING_REQUESTS_START:
       return { ...state, isLoading: true };
@@ -92,32 +98,48 @@ export default function reducer(state = initialState, action) {
       return { ...state, isLoading: false };
     case GOT_PENDING_REQUESTS:
       return { ...state, isLoading: false, data: action.requests };
-    case APPROVED:
-      const accountJustApproved = _.find(approveAccounts, {
-        id: action.accountId
-      });
-      _.remove(approveAccounts, { id: action.accountId });
-
-      accountJustApproved.approved.push(account.pub_key);
-      watchAccounts.push(accountJustApproved);
-
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          approveAccounts: approveAccounts,
-          watchAccounts: watchAccounts
-        }
-      };
-    case ABORTED:
-      _.remove(approveAccounts, { id: action.accountId });
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          approveAccounts: approveAccounts
-        }
-      };
+    // case APPROVED:
+    //   if (action.entity === "account") {
+    //     const accountJustApproved = _.find(approveAccounts, {
+    //       id: action.entityId
+    //     });
+    //     _.remove(approveAccounts, { id: action.entityId });
+    //     accountJustApproved.approved.push(action.pub_key);
+    //     watchAccounts.push(accountJustApproved);
+    //   } else {
+    //     const operationJustApproved = _.find(approveOperations, {
+    //       uuid: action.entityId
+    //     });
+    //     _.remove(approveOperations, { uuid: action.entityId });
+    //     operationJustApproved.approved.push(action.pub_key);
+    //     watchOperations.push(operationJustApproved);
+    //   }
+    //
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       approveAccounts: approveAccounts,
+    //       watchAccounts: watchAccounts,
+    //       approveOperations: approveOperations,
+    //       watchOperations: watchOperations
+    //     }
+    //   };
+    // case ABORTED:
+    //   if (action.entity === "account") {
+    //     _.remove(approveAccounts, { id: action.entityId });
+    //   } else {
+    //     _.remove(approveOperations, { uuid: action.entityId });
+    //   }
+    //
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       approveAccounts: approveAccounts,
+    //       approveOperations: approveOperations
+    //     }
+    //   };
     case SAVED_ACCOUNT:
       approveAccounts.push(action.account);
       if (_.isNull(state.data)) {

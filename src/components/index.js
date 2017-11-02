@@ -22,7 +22,14 @@ export {
 export {
   default as PendingAccountApprove
 } from "./pending/PendingAccountApprove";
+export {
+  default as PendingOperationApprove
+} from "./pending/PendingOperationApprove";
 export { default as AccountApprove } from "./accounts/approve/AccountApprove";
+export {
+  default as OperationApprove
+} from "./operations/approve/OperationApprove";
+// export { default as ListOperation } from "./operations/List";
 export { default as EditableComponent } from "./utils/ContentEditable";
 export { default as CardLoading } from "./utils/CardLoading";
 export { default as Modal } from "./utils/Modal";
