@@ -6,7 +6,7 @@ body {
 
 body,
 .App {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
@@ -14,9 +14,9 @@ body,
 
   a {
     color: inherit;
-    opacity: .5;
+    opacity: 0.5;
     text-decoration: none;
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
 
     &:hover {
       opacity: 1;
@@ -33,9 +33,12 @@ body,
   }
 }
 
+body.blurDialogOpened .App {
+  filter: blur(3px);
+}
+
 // Clearfix
 .Main {
-
   &::after {
     content: "";
     clear: both;
@@ -72,13 +75,12 @@ body,
   transform: scaleX(-1);
 }
 
-
 .react-tabs__tab-list {
   padding-bottom: 14px;
   border-bottom: 1px solid $mouse;
   margin: 0;
   padding: 0;
-  padding-bottom:14px;
+  padding-bottom: 14px;
 }
 .react-tabs__tab {
   display: inline;

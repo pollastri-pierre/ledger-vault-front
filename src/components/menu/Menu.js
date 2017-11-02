@@ -1,62 +1,51 @@
 import React from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
+import { openModalOperation } from "../../redux/modules/operation-creation";
 
 import "./Menu.css";
 
+const mapStateToProps = () => ({});
+
+// TODO we can use more react router for this
+const mapDispatchToProps = dispatch => ({
+  openOperation: () => dispatch(openModalOperation())
+});
+
 function Menu(props, context) {
   const t = context.translate;
-
-  const { pathname } = props;
-
   return (
     <div className="Menu">
       <ul className="main-menu">
         <li>
-          <Link to="/" className={`${props.pathname === "/" ? "active" : ""}`}>
+          <NavLink to="/dashboard/">
             <i className="material-icons">home</i> {t("menu.dashboard")}
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <a
-            href="#"
-            className={`${props.pathname === "/new" ? "active" : ""}`}
-            onClick={
-              // TODO make a button that is connected to redux and do not need this openOperation cb
-              // TODO ideally this should use react-router with /operations/new (bookmarkable & no need to have redux)
-              props.openOperation
-            }
-          >
+          <NavLink to="new-operation" onClick={props.openOperation}>
             <i className="material-icons">add</i> {t("menu.newOperation")}
-          </a>
+          </NavLink>
         </li>
         <li>
-          <Link
-            to="/pending"
-            className={`${props.pathname === "/pending" ? "active" : ""}`}
-          >
+          <NavLink to="/pending">
             <i className="material-icons">format_align_left</i>{" "}
             {t("menu.pendingRequests")}
-          </Link>{" "}
+          </NavLink>{" "}
           <span className="menu-badge">2</span>
         </li>
         <li>
-          <Link
-            to="/search"
-            className={`${props.pathname === "/search" ? "active" : ""}`}
-          >
+          <NavLink to="/search">
             <i className="material-icons">search</i> {t("menu.search")}
-          </Link>
+          </NavLink>
         </li>
-
-        {/* Test page */}
-        {/* <li><Link to="/sandbox" className={`${props.pathname === '/sandbox' ? 'active' : ''}`}><i className="material-icons">beach_access</i> sandbox</Link></li> */}
       </ul>
 
       <div className="menu-accounts">
         <h4>Accounts</h4>
-        <AccountsMenu pathname={pathname} />
+        <AccountsMenu />
       </div>
     </div>
   );
@@ -67,8 +56,7 @@ Menu.contextTypes = {
 };
 
 Menu.propTypes = {
-  pathname: PropTypes.string.isRequired,
   openOperation: PropTypes.func.isRequired
 };
 
-export default Menu;
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

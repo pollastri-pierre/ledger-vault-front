@@ -221,9 +221,7 @@ export default class QuicklookGraph extends Component {
     const { selected } = this.state;
     let { data } = this.props;
     if (data.length === 0) return null;
-    console.log(data);
     data = _.sortBy(data, elem => new Date(elem.time).toISOString());
-    console.log(data);
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">

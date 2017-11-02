@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Modal, OperationCreation } from "../components";
 import { getAccounts } from "../redux/modules/accounts";
-
+import { setBlurState } from "../containers/BlurDialog/BlurDialog";
 import { close } from "../redux/modules/operations";
 
 import {
@@ -79,6 +79,18 @@ const mapDispatchToProps = dispatch => ({
   onCloseApprove: () => dispatch(closeApprove())
 });
 
+class ModalWrap extends Component {
+  componentDidMount() {
+    setBlurState(true);
+  }
+  componentWillUnmount() {
+    setBlurState(false);
+  }
+  render() {
+    return <Modal {...this.props} />;
+  }
+}
+
 function ModalsContainer(props) {
   const {
     onChangeTabAccount,
@@ -112,10 +124,13 @@ function ModalsContainer(props) {
     onGetAccountToApprove
   } = props;
 
+  // TODO need to refactor this into the same style of the Profile Edit Modal
+  // using react-router & rendering from contextual place
+
   return (
     <div>
       {accountCreation.modalOpened && (
-        <Modal close={onCloseAccount}>
+        <ModalWrap close={onCloseAccount}>
           <AccountCreation
             organization={organization}
             tabsIndex={accountCreation.currentTab}
@@ -136,28 +151,28 @@ function ModalsContainer(props) {
             close={onCloseAccount}
             switchInternalModal={onSwitchInternalModal}
           />
-        </Modal>
+        </ModalWrap>
       )}
       {entityToApprove.modalOpened &&
         entityToApprove.entity === "operation" && (
-          <Modal close={onCloseApprove}>
+          <ModalWrap close={onCloseApprove}>
             <OperationApprove
               operationId={entityToApprove.entityId}
               close={onCloseApprove}
             />
-          </Modal>
+          </ModalWrap>
         )}
       {entityToApprove.modalOpened &&
         entityToApprove.entity === "account" && (
-          <Modal close={onCloseApprove}>
+          <ModalWrap close={onCloseApprove}>
             <AccountApprove
               accountId={entityToApprove.entityId}
               close={onCloseApprove}
             />
-          </Modal>
+          </ModalWrap>
         )}
       {operationCreation.modalOpened && (
-        <Modal close={onCloseModalOperation}>
+        <ModalWrap close={onCloseModalOperation}>
           <OperationCreation
             close={onCloseModalOperation}
             onSelect={onChangeTabOperation}
@@ -166,10 +181,10 @@ function ModalsContainer(props) {
             accounts={accounts}
             getAccounts={onGetAccounts}
           />
-        </Modal>
+        </ModalWrap>
       )}
       {accountCreation.modalOpened && (
-        <Modal close={onCloseAccount}>
+        <ModalWrap close={onCloseAccount}>
           <AccountCreation
             organization={organization}
             tabsIndex={accountCreation.currentTab}
@@ -190,17 +205,17 @@ function ModalsContainer(props) {
             close={onCloseAccount}
             switchInternalModal={onSwitchInternalModal}
           />
-        </Modal>
+        </ModalWrap>
       )}
       {operations.operationInModal !== null &&
         !_.isUndefined(operations.operationInModal) && (
-          <Modal close={props.onClose}>
+          <ModalWrap close={props.onClose}>
             <OperationDetails
               close={props.onClose}
               operationId={operations.operationInModal}
               tabsIndex={operations.tabsIndex}
             />
-          </Modal>
+          </ModalWrap>
         )}
     </div>
   );
