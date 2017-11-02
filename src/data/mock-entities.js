@@ -25,7 +25,9 @@ const defaultGenOperation = {
   account_id: "0",
   amount: 120000000,
   confirmations: 31,
-  type: "SEND"
+  type: "SEND",
+  currency_name: "bitcoin",
+  currency_family: "BITCOIN"
 };
 
 const genPubKey = () =>
@@ -130,14 +132,23 @@ const genSecurityScheme = () => ({
 });
 
 const genOperation = opts => {
-  const { uuid, time, account_id, amount, confirmations, type } = {
+  const {
+    uuid,
+    time,
+    account_id,
+    amount,
+    confirmations,
+    type,
+    currency_name,
+    currency_family
+  } = {
     ...defaultGenOperation,
     ...opts
   };
   return {
     uuid,
-    currency_name: "bitcoin",
-    currency_family: "BITCOIN",
+    currency_name,
+    currency_family,
     trust: {
       level: "",
       weight: 3,
@@ -263,7 +274,12 @@ export default {
   },
   members,
   operations: {
-    "1": genOperation({ uuid: "1" }),
+    "1": genOperation({
+      uuid: "1",
+      amount: 100000000,
+      account_id: "1",
+      time: new Date(2017, 11, 2).toISOString()
+    }),
     "2": genOperation({
       uuid: "2",
       amount: 100000000,
@@ -326,16 +342,45 @@ export default {
     "13": genOperation({
       uuid: "13",
       confirmations: 0,
-      time: new Date(2017, 9, 20).toISOString()
+      time: new Date(2017, 9, 20).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
     }),
     "14": genOperation({
       uuid: "14",
       type: "FROM",
-      time: new Date(2017, 9, 21).toISOString()
+      time: new Date(2017, 9, 21).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
     }),
     "15": genOperation({
       uuid: "15",
-      time: new Date(2017, 9, 22).toISOString()
+      time: new Date(2017, 9, 22).toISOString(),
+      currency_name: "litecoin",
+      currency_family: "Litecoin"
+    }),
+    "16": genOperation({
+      uuid: "16",
+      confirmations: 0,
+      time: new Date(2017, 9, 20).toISOString(),
+      amount: 40502021,
+      currency_name: "dash",
+      currency_family: "Dash"
+    }),
+    "17": genOperation({
+      uuid: "17",
+      type: "FROM",
+      time: new Date(2017, 9, 21).toISOString(),
+      amount: -40502021,
+      currency_name: "dash",
+      currency_family: "Dash"
+    }),
+    "18": genOperation({
+      uuid: "18",
+      time: new Date(2017, 9, 22).toISOString(),
+      amount: 280502021,
+      currency_name: "dash",
+      currency_family: "Dash"
     })
   },
   accounts: {
@@ -353,7 +398,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 6199553,
         currency_name: "EUR"
       }
     },
@@ -363,15 +408,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "bitcoin",
-      balance: 1589831782,
+      balance: 189831782,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 182834846,
+        week: 11283484,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 719553,
         currency_name: "EUR"
       }
     },
@@ -381,15 +426,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 1589831782,
+      balance: 325898317820,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 118834846,
+        week: 0,
+        month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 199530,
         currency_name: "EUR"
       }
     },
@@ -399,7 +444,7 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 1589831782,
+      balance: 99058831782,
       balance_history: {
         yesterday: 1182834846,
         week: 118283484,
@@ -407,7 +452,7 @@ export default {
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 8299553,
         currency_name: "EUR"
       }
     },
@@ -417,15 +462,15 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "litecoin",
-      balance: 1589831782,
+      balance: 89158983182,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 99118234846,
+        week: 11823484,
+        month: 2218234846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
-        balance: 199553,
+        balance: 3321993,
         currency_name: "EUR"
       }
     }

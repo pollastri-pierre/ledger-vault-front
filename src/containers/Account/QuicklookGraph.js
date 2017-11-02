@@ -4,6 +4,8 @@ import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 
+// TODO use flowtype & fix eslint
+// TODO the component don't allow to send new data at the moment. try switch accross accounts
 export default class QuicklookGraph extends Component {
   constructor(props) {
     super(props);
@@ -47,26 +49,11 @@ export default class QuicklookGraph extends Component {
   };
 
   drawLine = data => {
-    //DrawLine
-    this.svg
-      .select(".valueline")
-      .data([computedData])
-      .attr("class", "line")
-      .attr("d", valueline)
-      .attr("stroke", computedData[0].currency.color)
-      .attr("fill", "none")
-      .attr("stroke-width", "2px");
-
     //Append visible dots
   };
-
-  valueline = d3
-    .line()
-    .x(d => x(d.date))
-    .y(d => y(d.value));
-
   componentDidMount() {
     const { dateRange, tick, data } = this.props;
+    if (this.props.data.length === 0) return;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
@@ -171,6 +158,11 @@ export default class QuicklookGraph extends Component {
 
     g.append("g").call(customYAxis);
 
+    const valueline = d3
+      .line()
+      .x(d => x(d.date))
+      .y(d => y(d.value));
+
     g
       .append("text")
       .text(tick.toUpperCase())
@@ -184,7 +176,7 @@ export default class QuicklookGraph extends Component {
       .classed("valueline", true)
       .data([computedData])
       .attr("class", "line")
-      .attr("d", this.valueline)
+      .attr("d", valueline)
       .attr("stroke", computedData[0].currency.color)
       .attr("fill", "none")
       .attr("stroke-width", "2px");
@@ -227,7 +219,10 @@ export default class QuicklookGraph extends Component {
 
   render() {
     const { selected } = this.state;
-    const { data } = this.props;
+    let { data } = this.props;
+    if (data.length === 0) return null;
+    console.log(data);
+    data = _.sortBy(data, elem => new Date(elem.time).toISOString());
     console.log(data);
     return (
       <div className="QuicklookGraph">

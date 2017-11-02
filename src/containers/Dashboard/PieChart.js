@@ -69,13 +69,15 @@ export default class PieChart extends Component {
     const pie = d3
       .pie()
       .sort(null)
-      .value(d => d.balance);
+      .value(d => d.counterValueBalance);
 
-    let total = d3.sum(data, d => d.balance);
+    let total = d3.sum(data, d => d.counterValueBalance);
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
-      data[i].percentage = (d.data.balance / total * 100).toFixed(0); //Save percentage of arc
+      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(
+        0
+      ); //Save percentage of arc
     });
 
     const chart = g

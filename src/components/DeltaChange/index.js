@@ -15,7 +15,7 @@ class DeltaChange extends PureComponent<*> {
   };
   render() {
     const { before, after, showArrow } = this.props;
-    if (!before || !after) return <span />;
+    if (!before || !after) return <span className="delta-change">{" "}</span>;
     const ratio = after / before;
     return (
       <span className="delta-change">
