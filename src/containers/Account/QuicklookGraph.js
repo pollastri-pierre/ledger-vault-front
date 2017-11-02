@@ -25,6 +25,46 @@ export default class QuicklookGraph extends Component {
     this.setSelected(-1);
   };
 
+  handleScroll = () => {};
+
+  handleHovering = prevState => {
+    const { selected } = this.state;
+    const { prevSelected } = prevState;
+    if (selected !== prevSelected) {
+      const tooltip = d3.select(this.tooltip);
+      tooltip.classed("hide", selected === -1);
+      d3
+        .select(this.svg)
+        .selectAll(".dot")
+        .attr("opacity", (d, i) => (selected === i ? 1 : 0))
+        .classed("selected", (d, i) => selected !== -1 && selected === i);
+      if (selected !== -1) {
+        const selectedDot = d3.select(".dot.selected").data()[0];
+        tooltip.style("left", `${selectedDot.x - 30}px`);
+        tooltip.style("top", `${selectedDot.y - 65}px`);
+      }
+    }
+  };
+
+  drawLine = data => {
+    //DrawLine
+    this.svg
+      .select(".valueline")
+      .data([computedData])
+      .attr("class", "line")
+      .attr("d", valueline)
+      .attr("stroke", computedData[0].currency.color)
+      .attr("fill", "none")
+      .attr("stroke-width", "2px");
+
+    //Append visible dots
+  };
+
+  valueline = d3
+    .line()
+    .x(d => x(d.date))
+    .y(d => y(d.value));
+
   componentDidMount() {
     const { dateRange, tick, data } = this.props;
     const svg = d3.select(this.svg);
@@ -81,7 +121,6 @@ export default class QuicklookGraph extends Component {
       };
     });
 
-    console.log(computedData);
     const timeFormat =
       tick === "month"
         ? "%m"
@@ -89,10 +128,7 @@ export default class QuicklookGraph extends Component {
           ? "%w"
           : tick === "day" ? "%d" : tick === "hour" ? "%H" : "";
     let xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat(timeFormat));
-    if (tick === "day") {
-      console.log("hey");
-      xAxis = xAxis.ticks(9);
-    }
+
     const yAxis = d3
       .axisRight(y)
       .ticks(3)
@@ -143,21 +179,19 @@ export default class QuicklookGraph extends Component {
       .attr("font-size", "10px")
       .attr("text-transform", "uppercase");
 
-    const valueline = d3
-      .line()
-      .x(d => x(d.date))
-      .y(d => y(d.value));
-
     g
       .append("path")
+      .classed("valueline", true)
       .data([computedData])
       .attr("class", "line")
-      .attr("d", valueline)
+      .attr("d", this.valueline)
       .attr("stroke", computedData[0].currency.color)
       .attr("fill", "none")
       .attr("stroke-width", "2px");
 
     g
+      .append("g")
+      .classed("visibleDots", true)
       .selectAll("dot")
       .data(computedData)
       .enter()
@@ -173,7 +207,9 @@ export default class QuicklookGraph extends Component {
       .classed("dot", true);
 
     g
-      .selectAll("dot")
+      .append("g")
+      .classed("hoveringDots", true)
+      .selectAll("hoveringDot")
       .data(computedData)
       .enter()
       .append("circle")
@@ -186,22 +222,7 @@ export default class QuicklookGraph extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { selected } = this.state;
-    const { prevSelected } = prevState;
-    if (selected !== prevSelected) {
-      const tooltip = d3.select(this.tooltip);
-      tooltip.classed("hide", selected === -1);
-      d3
-        .select(this.svg)
-        .selectAll(".dot")
-        .attr("opacity", (d, i) => (selected === i ? 1 : 0))
-        .classed("selected", (d, i) => selected !== -1 && selected === i);
-      if (selected !== -1) {
-        const selectedDot = d3.select(".dot.selected").data()[0];
-        tooltip.style("left", `${selectedDot.x - 30}px`);
-        tooltip.style("top", `${selectedDot.y - 65}px`);
-      }
-    }
+    this.handleHovering(prevState);
   }
 
   render() {
