@@ -97,18 +97,14 @@ class AccountView extends Component<
                 <CardField
                   label={
                     <CurrencyCounterValueConversion
-                      fromCurrencyName={account.currency.name}
-                      toCurrencyName={
-                        account.reference_conversion.currency_name
-                      }
-                      fromValue={account.balance}
-                      toValue={account.reference_conversion.balance}
+                      currencyName={account.currency.name}
                     />
                   }
                 >
                   <CurrencyNameValue
-                    currencyName={account.reference_conversion.currency_name}
-                    value={account.reference_conversion.balance}
+                    currencyName={account.currency.name}
+                    value={account.balance}
+                    countervalue
                   />
                 </CardField>
               </Card>

@@ -160,10 +160,6 @@ const genOperation = opts => {
     block: {},
     type,
     amount,
-    reference_conversion: {
-      currency_name: "EUR",
-      amount: Math.round(amount * 0.0005)
-    },
     fees: 23,
     account_id,
     senders: ["0xc5a96db085dda36ffbe390f455315d30d6d3dc52"],
@@ -426,11 +422,11 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 325898317820,
+      balance: 3258983178200000,
       balance_history: {
-        yesterday: 118834846,
-        week: 0,
-        month: 182834846
+        yesterday: 0.6 * 3258983178200000,
+        week: 0.7 * 3258983178200000,
+        month: 0.9 * 3258983178200000
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
@@ -444,11 +440,11 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 99058831782,
+      balance: 99058831782000,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 99058831782000,
+        week: 0.5 * 99058831782000,
+        month: 0
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {

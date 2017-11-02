@@ -6,14 +6,19 @@ export type Unit = {
   name: string,
   code: string,
   symbol: string,
-  magnitude: number
+  magnitude: number,
+  showAllDigits?: boolean
 };
 
 export type Currency = {
   name: string,
   family: string,
   color: string,
-  units: Array<Unit>
+  units: Array<Unit>,
+  rate?: {
+    value: number,
+    currency_name: string
+  }
 };
 
 export type Account = *; // TODO

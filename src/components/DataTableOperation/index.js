@@ -27,8 +27,6 @@ const getHash = (operation: Operation): string => {
   return hash;
 };
 
-// TODO migrate all the operations/List in this component.
-
 let DataTableOperationCount = 0;
 
 class DataTableOperation extends Component<*> {
@@ -126,9 +124,10 @@ class DataTableOperation extends Component<*> {
         title: "",
         renderCell: operation => (
           <CurrencyNameValue
-            currencyName={operation.reference_conversion.currency_name}
-            value={operation.reference_conversion.amount}
+            currencyName={operation.currency_name}
+            value={operation.amount}
             alwaysShowSign
+            countervalue
           />
         )
       },

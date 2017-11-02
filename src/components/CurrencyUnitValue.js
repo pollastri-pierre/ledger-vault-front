@@ -9,19 +9,13 @@ const nonBreakableSpace = " ";
 class CurrencyUnitValue extends PureComponent<{
   unit: Unit,
   value: number, // e.g. 10000 . for EUR it means €100.00
-  alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
-  showAllDigits?: boolean
+  alwaysShowSign?: boolean // do you want to show the + before the number (N.B. minus is always displayed)
 }> {
-  static defaultProps = {
-    alwaysShowSign: false,
-    showAllDigits: false
-  };
-
   render() {
-    const { unit, value, alwaysShowSign, showAllDigits } = this.props;
+    const { unit, value, alwaysShowSign } = this.props;
     const { magnitude, code } = unit;
     const floatValue = value / 10 ** magnitude;
-    const minimumFractionDigits = showAllDigits ? magnitude : 0;
+    const minimumFractionDigits = unit.showAllDigits ? magnitude : 0;
     const maximumFractionDigits = Math.max(
       minimumFractionDigits,
       Math.max(
