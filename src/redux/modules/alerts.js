@@ -1,3 +1,9 @@
+import {
+  AUTHENTICATION_FAILED,
+  LOGOUT,
+  CHECK_TEAM_ERROR,
+  AUTHENTICATION_SUCCEED
+} from "./auth";
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
 
@@ -7,15 +13,18 @@ export function closeMessage() {
   };
 }
 
+export function addMessage(title, content, type = "success") {
+  return {
+    type: ADD_MESSAGE,
+    title,
+    content,
+    type
+  };
+}
+
 /* important to set visible to false for minimum State instead of null because of how material ui works */
 
 const initialState = { visible: false };
-
-const verbsByHTTPMethod = {
-  PUT: "updated",
-  POST: "created",
-  DELETE: "deleted"
-};
 
 export default function reducer(state = initialState, action) {
   const status = `${action.status}`;
@@ -31,19 +40,37 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
     case "DATA_FETCHED":
-      if (action.spec.method !== "GET") {
-        const verb = verbsByHTTPMethod[action.spec.method] || "modified";
-        const resource = action.spec.resource || "resource";
-
-        return {
-          type: "success",
-          title: `${resource} ${verb} `,
-          content: `the ${resource} has been successfully ${verb}`,
-          visible: true
-        };
+      if (action.spec.notif) {
+        const { title, content, type = "success" } = action.spec.notif;
+        return { visible: true, title, content, type };
       }
-
       return state;
+    case ADD_MESSAGE:
+      const { title, content, type } = action;
+      return { visible: true, title, content, type };
+    case LOGOUT:
+      return {
+        visible: true,
+        title: "See you soon!",
+        content:
+          "You have been successfully loggee out. You can now safely close your web browser.",
+        type: "success"
+      };
+    case AUTHENTICATION_FAILED:
+      return {
+        visible: true,
+        title: "Unkown team domain",
+        content:
+          "This team domain is unkown. Contact your administrator to get more information.",
+        type: "error"
+      };
+    case AUTHENTICATION_SUCCEED:
+      return {
+        visible: true,
+        title: "Welcome",
+        content: "Hello. Welcome on Ledger Vault Application",
+        type: "success"
+      };
     case REMOVE_MESSAGE:
       return { ...state, visible: false };
     default:
