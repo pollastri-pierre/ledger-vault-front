@@ -1,10 +1,11 @@
 // @flow
 
-import React, { Component } from "react";
+import * as React from "react";
+import { Component } from "react";
 import currencies from "../../../currencies";
 import { PopBubble } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
-import type { Currency } from "../../../datatypes";
+import type { Currency, Unit } from "../../../datatypes";
 
 import "./OperationCreationDetails.css";
 
@@ -14,7 +15,12 @@ type Props = {
   }
 };
 
-class OperationCreationDetails extends Component<Props> {
+type State = {
+  unit: Unit,
+  unitMenuOpen: boolean
+};
+
+class OperationCreationDetails extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -22,17 +28,21 @@ class OperationCreationDetails extends Component<Props> {
     this.currency = currencies.find(c => c.name === account.currency.name);
 
     this.state = {
+      // $FlowFixMe
       unit: this.currency.units[0],
       unitMenuOpen: false
     };
   }
 
-  currency: Currency;
+  currency: typeof undefined | Currency;
+  anchor: ?HTMLDivElement;
 
-  selectUnit = e => {
+  selectUnit = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const unitNb = e.target.dataset.unit;
-    const unit = this.currency.units[unitNb];
+    const target: HTMLDivElement = e.currentTarget;
+    const unitNb: number = parseInt(target.dataset.unit);
+    // $FlowFixMe
+    const unit: Unit = this.currency.units[unitNb];
 
     this.setState({ unit, unitMenuOpen: false });
   };
@@ -69,7 +79,8 @@ class OperationCreationDetails extends Component<Props> {
             onRequestClose={() => this.setState({ unitMenuOpen: false })}
           >
             <ul className="operation-creation-unit-list">
-              {this.currency.units.map((unit, index) => (
+              {// $FlowFixMe
+                this.currency.units.map((unit, index) => (
                 <li key={unit.name}>
                   <a
                     href="unit"
