@@ -1,18 +1,18 @@
 // @flow
 
-import React, { Component } from 'react';
-import currencies from '../../../currencies';
-import { PopBubble } from '../../../components';
-import ArrowDown from '../../icons/ArrowDown';
-import type { Currency } from '../../../datatypes';
+import React, { Component } from "react";
+import currencies from "../../../currencies";
+import { PopBubble } from "../../../components";
+import ArrowDown from "../../icons/ArrowDown";
+import type { Currency } from "../../../datatypes";
 
-import './OperationCreationDetails.css';
+import "./OperationCreationDetails.css";
 
 type Props = {
-    account: {
-      currency: Currency
-    },
-  };
+  account: {
+    currency: Currency
+  }
+};
 
 class OperationCreationDetails extends Component<Props> {
   constructor(props: Props) {
@@ -23,13 +23,13 @@ class OperationCreationDetails extends Component<Props> {
 
     this.state = {
       unit: this.currency.units[0],
-      unitMenuOpen: false,
+      unitMenuOpen: false
     };
   }
 
   currency: Currency;
 
-  selectUnit = (e) => {
+  selectUnit = e => {
     e.preventDefault();
     const unitNb = e.target.dataset.unit;
     const unit = this.currency.units[unitNb];
@@ -43,21 +43,24 @@ class OperationCreationDetails extends Component<Props> {
         <div className="tab-title">Amount</div>
         <div
           className="operation-creation-unit-selector"
-          ref={(e) => {
+          ref={e => {
             this.anchor = e;
           }}
           onClick={() => this.setState({ unitMenuOpen: true })}
           role="button"
           tabIndex={0}
           style={{
-            width: 'fit-content',
-            cursor: 'pointer',
+            width: "fit-content",
+            cursor: "pointer"
           }}
         >
-          <div className="operation-creation-unit" style={{ float: 'left' }}>
+          <div className="operation-creation-unit" style={{ float: "left" }}>
             {this.state.unit.code}
           </div>
-          <div className="operation-creation-arrow-down" style={{ float: 'left' }}>
+          <div
+            className="operation-creation-arrow-down"
+            style={{ float: "left" }}
+          >
             <ArrowDown />
           </div>
           <PopBubble
@@ -72,7 +75,9 @@ class OperationCreationDetails extends Component<Props> {
                     href="unit"
                     onClick={this.selectUnit}
                     data-unit={index}
-                    className={unit.name === this.state.unit.name ? 'active' : ''}
+                    className={
+                      unit.name === this.state.unit.name ? "active" : ""
+                    }
                   >
                     {unit.code}
                   </a>
