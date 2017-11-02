@@ -52,7 +52,9 @@ export default class QuicklookGraph extends Component {
     //Append visible dots
   };
   componentDidMount() {
-    const { dateRange, tick, data } = this.props;
+    let { dateRange, tick, data } = this.props;
+    data = _.sortBy(data, elem => new Date(elem.time).toISOString());
+
     if (this.props.data.length === 0) return;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -62,7 +64,8 @@ export default class QuicklookGraph extends Component {
     const g = svg
       .append("g")
       .classed("chart", true)
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .attr("width", width);
 
     let minX = data[0].time;
     let maxX = data[0].time;
@@ -180,6 +183,15 @@ export default class QuicklookGraph extends Component {
       .attr("stroke", computedData[0].currency.color)
       .attr("fill", "none")
       .attr("stroke-width", "2px");
+
+    svg
+      .append("clipPath")
+      .attr("id", "clip")
+      .append("rect")
+      .attr("width", width - 55)
+      .attr("height", height + margin.top + margin.bottom)
+      .attr("x", 55 + margin.left)
+      .attr("y", 0);
 
     g
       .append("g")
