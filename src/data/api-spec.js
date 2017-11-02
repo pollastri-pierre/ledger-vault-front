@@ -39,17 +39,20 @@ const api: API = {
   saveProfile: {
     uri: "/organization/members/me",
     method: "PUT",
+    resource: "profile",
     // input : Member
     responseSchema: Member
   },
   abortAccount: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "DELETE",
+    resource: "account request",
     responseSchema: Account
   },
   approveAccount: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "PUT",
+    resource: "account request",
     responseSchema: Account
   },
   account: {
@@ -65,11 +68,13 @@ const api: API = {
   abortOperation: {
     uri: ({ operationId }) => `/operations/${operationId}`,
     method: "DELETE",
+    resource: "operation request",
     responseSchema: Operation
   },
   approveOperation: {
     uri: ({ operationId }) => `/operations/${operationId}`,
     method: "PUT",
+    resource: "operation request",
     responseSchema: Operation
   },
   accountOperations: {
