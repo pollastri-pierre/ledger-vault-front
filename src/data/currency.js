@@ -30,10 +30,6 @@ export function inferUnitValue(
     // try to find a crypto currencies unit
     const currency = getCurrency(currencyName, data);
     if (currency) {
-      // TODO:
-      // this will depend on user pref (if you select mBTC vs BTC , etc..)
-      // we might have a redux store that store user prefered unit per currencyName
-      unit = currency.units[0];
       if (countervalue) {
         // countervalue was required instead
         const { rate } = currency;
@@ -48,11 +44,17 @@ export function inferUnitValue(
         }
         value = Math.round(rate.value * value);
         unit = counterUnitValue;
+      } else {
+        // TODO: this will depend on user pref (if you select mBTC vs BTC , etc..)
+        // we might have a redux store that store user prefered unit per currencyName
+        unit = currency.units[0];
+        if (!unit) {
+          throw new Error(`currency "${currencyName}" have no units`);
+        }
       }
+    } else {
+      throw new Error(`currency "${currencyName}" not found`);
     }
-  }
-  if (!unit) {
-    throw new Error(`currency "${currencyName}" not found`);
   }
   return { unit, value };
 }
