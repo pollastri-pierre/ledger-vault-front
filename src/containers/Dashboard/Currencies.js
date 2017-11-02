@@ -1,8 +1,12 @@
+//@flow
 import _ from "lodash";
+import { connect } from "react-redux";
 import React from "react";
 import PieChart from "./PieChart";
+import { inferUnitValue } from "../../data/currency";
+import type { Account } from "../../datatypes";
 
-function Currencies({ accounts }) {
+function Currencies({ accounts, data }: { accounts: Array<Account>, data: * }) {
   //compute currencies from accounts balance
   const computedCurrencies = _.reduce(
     accounts,
@@ -17,14 +21,18 @@ function Currencies({ accounts }) {
           counterValueBalance: 0
         };
       currencies[currency_name].balance += balance;
-      currencies[currency_name].counterValueBalance +=
-        account.reference_conversion.balance;
+      currencies[currency_name].counterValueBalance += inferUnitValue(
+        data,
+        currency_name,
+        balance,
+        true
+      ).value;
       return currencies;
     },
     {}
   );
 
-  let data = _.reduce(
+  const pieChartData = _.reduce(
     Object.keys(computedCurrencies),
     (currenciesList, currencies) => {
       currenciesList.push(computedCurrencies[currencies]);
@@ -35,9 +43,9 @@ function Currencies({ accounts }) {
 
   return (
     <div className="currencies">
-      <PieChart data={data} />
+      <PieChart data={pieChartData} />
     </div>
   );
 }
 
-export default Currencies;
+export default connect(({ data }) => ({ data }), () => ({}))(Currencies);

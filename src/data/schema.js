@@ -45,6 +45,7 @@ export const Operation = new schema.Entity(
       // NB this is to reconnect a disconnected model.
       // that means it will suppose account_id is already loaded.
       // we need to do smart loading system for that.
+      // TODO i'm not sure if it's a good idea at all. schema better should reject the API because we can have runtime breaking cases ATM. ideally the API should yield the Account object in Operation
       account: account_id,
       currency: entity.currency_name
     })

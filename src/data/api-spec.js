@@ -8,6 +8,9 @@ export type APISpec = {
 };
 type API = { [_: string]: APISpec };
 
+// TODO: how to express the response type per API with flowtype? same with input type
+// TODO: different cache strategy. for instance, it's ok to cache /accounts because not much things should change BUT it should still refresh in some cases. cache invalidation can be tricky so we don't want to think about this too early
+
 /**
  * This specifies the API and how it maps to the schema model
  */
