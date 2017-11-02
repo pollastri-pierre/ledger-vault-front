@@ -24,6 +24,7 @@ const defaultGenOperation = {
   time: new Date(2017, 9, 14, 9).toISOString(),
   account_id: "0",
   amount: 120000000,
+  fees: 2300,
   confirmations: 31,
   type: "SEND",
   approved: [],
@@ -143,6 +144,7 @@ const genOperation = opts => {
     confirmations,
     type,
     currency_name,
+    fees,
     currency_family
   } = {
     ...defaultGenOperation,
@@ -167,9 +169,9 @@ const genOperation = opts => {
     reference_conversion: {
       currency_name: "EUR",
       amount: Math.round(amount * 0.0005),
-      fees: Math.round(23 * 0.0005)
+      fees: Math.round(fees * 0.0005)
     },
-    fees: 23,
+    fees,
     account_id,
     senders: ["0xc5a96db085dda36ffbe390f455315d30d6d3dc52"],
     recipients: ["0x063dd253c8da4ea9b12105781c9611b8297f5d14"],
@@ -279,7 +281,12 @@ export default {
   },
   members,
   operations: {
-    "1": genOperation({ uuid: "1" }),
+    "1": genOperation({
+      uuid: "1",
+      amount: 100000000,
+      account_id: "1",
+      time: new Date(2017, 11, 2).toISOString()
+    }),
     "2": genOperation({
       uuid: "2",
       amount: 100000000,
@@ -428,11 +435,11 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dogecoin",
-      balance: 325898317820,
+      balance: 3258983178200000,
       balance_history: {
-        yesterday: 118834846,
-        week: 0,
-        month: 182834846
+        yesterday: 0.6 * 3258983178200000,
+        week: 0.7 * 3258983178200000,
+        month: 0.9 * 3258983178200000
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {
@@ -447,11 +454,11 @@ export default {
       security_scheme: genSecurityScheme(),
       creation_time: 1508923040570,
       currency: "dash",
-      balance: 99058831782,
+      balance: 99058831782000,
       balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
+        yesterday: 99058831782000,
+        week: 0.5 * 99058831782000,
+        month: 0
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
       reference_conversion: {

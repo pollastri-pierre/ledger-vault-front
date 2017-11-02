@@ -17,7 +17,6 @@ class AccountCard extends Component<*> {
   };
   render() {
     const { account, filter } = this.props;
-    const { reference_conversion } = account;
 
     const title = (
       <div>
@@ -42,8 +41,9 @@ class AccountCard extends Component<*> {
           </div>
           <div className="realcur">
             <CurrencyNameValue
-              currencyName={reference_conversion.currency_name}
-              value={reference_conversion.balance}
+              currencyName={account.currency.name}
+              value={account.balance}
+              countervalue
             />
           </div>
         </div>

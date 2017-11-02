@@ -13,8 +13,6 @@ class TotalBalanceFilter extends Component {
 
   render() {
     return (
-      // FIXME this is not pixel perfect with wireframes.
-      // we need to see how to make material-ui match that.
       <CustomSelectField
         values={TotalBalanceFilters}
         selected={TotalBalanceFilters[0]}

@@ -43,10 +43,40 @@ class AccountView extends Component<
   selectTab = index => {
     this.setState({ tabsIndex: index });
   };
+  getLastWeek = () => {
+    var today = new Date();
+    var lastWeek = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+    return lastWeek;
+  };
+  getDateRange = tabsIndex => {
+    const max = new Date();
+    let min = new Date();
+    min =
+      tabsIndex === 0
+        ? new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+        : min;
+    min =
+      tabsIndex === 1
+        ? new Date(new Date().setMonth(new Date().getMonth() - 1))
+        : min;
+    min = tabsIndex === 2 ? this.getLastWeek() : min;
+    min =
+      tabsIndex === 3
+        ? new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+        : min;
+
+    return [min, max];
+  };
 
   render() {
     const { account, operations } = this.props;
     const { tabsIndex, quickLookGraphFilter } = this.state;
+    const dateRange = this.getDateRange(tabsIndex);
+    console.log(dateRange);
     const beginDate = "March, 13th";
     const endDate = "19th, 2017";
     return (
@@ -67,18 +97,14 @@ class AccountView extends Component<
                 <CardField
                   label={
                     <CurrencyCounterValueConversion
-                      fromCurrencyName={account.currency.name}
-                      toCurrencyName={
-                        account.reference_conversion.currency_name
-                      }
-                      fromValue={account.balance}
-                      toValue={account.reference_conversion.balance}
+                      currencyName={account.currency.name}
                     />
                   }
                 >
                   <CurrencyNameValue
-                    currencyName={account.reference_conversion.currency_name}
-                    value={account.reference_conversion.balance}
+                    currencyName={account.currency.name}
+                    value={account.balance}
+                    countervalue
                   />
                 </CardField>
               </Card>
@@ -115,7 +141,8 @@ class AccountView extends Component<
                     {`From ${beginDate} to ${endDate}`}
                   </div>
                   <QuicklookGraph
-                    labelHeader={`From ${beginDate} to ${endDate}`}
+                    dateRange={dateRange}
+                    tick="month"
                     data={operations.map((o: Operation) => ({
                       time: new Date(o.time),
                       amount: o.amount,
@@ -128,6 +155,8 @@ class AccountView extends Component<
                     {`From ${beginDate} to ${endDate}`}
                   </div>
                   <QuicklookGraph
+                    tick="day"
+                    dateRange={dateRange}
                     data={operations.map((o: Operation) => ({
                       time: new Date(o.time),
                       amount: o.amount,
@@ -140,6 +169,8 @@ class AccountView extends Component<
                     {`From ${beginDate} to ${endDate}`}
                   </div>
                   <QuicklookGraph
+                    tick="day"
+                    dateRange={dateRange}
                     data={operations.map((o: Operation) => ({
                       time: new Date(o.time),
                       amount: o.amount,
@@ -152,6 +183,8 @@ class AccountView extends Component<
                     {`From ${beginDate} to ${endDate}`}
                   </div>
                   <QuicklookGraph
+                    tick="hour"
+                    dateRange={dateRange}
                     data={operations.map((o: Operation) => ({
                       time: new Date(o.time),
                       amount: o.amount,

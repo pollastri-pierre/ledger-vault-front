@@ -27,7 +27,32 @@ export default class QuicklookGraph extends Component {
     this.setSelected(-1);
   };
 
+  handleScroll = () => {};
+
+  handleHovering = prevState => {
+    const { selected } = this.state;
+    const { prevSelected } = prevState;
+    if (selected !== prevSelected) {
+      const tooltip = d3.select(this.tooltip);
+      tooltip.classed("hide", selected === -1);
+      d3
+        .select(this.svg)
+        .selectAll(".dot")
+        .attr("opacity", (d, i) => (selected === i ? 1 : 0))
+        .classed("selected", (d, i) => selected !== -1 && selected === i);
+      if (selected !== -1) {
+        const selectedDot = d3.select(".dot.selected").data()[0];
+        tooltip.style("left", `${selectedDot.x - 30}px`);
+        tooltip.style("top", `${selectedDot.y - 65}px`);
+      }
+    }
+  };
+
+  drawLine = data => {
+    //Append visible dots
+  };
   componentDidMount() {
+    const { dateRange, tick, data } = this.props;
     if (this.props.data.length === 0) return;
     const svg = d3.select(this.svg);
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
@@ -39,23 +64,15 @@ export default class QuicklookGraph extends Component {
       .classed("chart", true)
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    let minX = this.props.data[0].time;
-    let maxX = this.props.data[0].time;
+    let minX = data[0].time;
+    let maxX = data[0].time;
 
-    let minY = this.props.data[0].amount;
-    let maxY = this.props.data[0].amount;
+    let minY = data[0].amount;
+    let maxY = data[0].amount;
 
-    let data = _.map(this.props.data, transaction => {
-      if (transaction.time < minX) {
-        minX = transaction.time;
-      }
-
+    let computedData = _.map(data, transaction => {
       if (transaction.amount < minY) {
         minY = transaction.amount;
-      }
-
-      if (transaction.time > maxX) {
-        maxX = transaction.time;
       }
 
       if (transaction.amount > maxY) {
@@ -69,17 +86,21 @@ export default class QuicklookGraph extends Component {
       };
     });
 
+    minX = dateRange[0];
+    maxX = dateRange[1];
+
     const x = d3
       .scaleTime()
       .domain([minX, maxX])
-      .range([0, width]);
+      .range([55, width])
+      .nice();
 
     const y = d3
       .scaleLinear()
       .domain([minY, maxY])
       .range([height, 0]);
 
-    data = _.map(data, transaction => {
+    computedData = _.map(computedData, transaction => {
       return {
         ...transaction,
         x: x(transaction.date),
@@ -87,7 +108,13 @@ export default class QuicklookGraph extends Component {
       };
     });
 
-    const xAxis = d3.axisBottom(x).ticks(d3.timeDay);
+    const timeFormat =
+      tick === "month"
+        ? "%m"
+        : tick === "week"
+          ? "%w"
+          : tick === "day" ? "%d" : tick === "hour" ? "%H" : "";
+    let xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat(timeFormat));
 
     const yAxis = d3
       .axisRight(y)
@@ -98,7 +125,10 @@ export default class QuicklookGraph extends Component {
       s.call(xAxis);
       s.select(".domain").remove();
       s.selectAll(".tick line").attr("display", "none");
-      s.selectAll(".tick text").attr("fill", "#999999");
+      s
+        .selectAll(".tick text")
+        .attr("fill", "#999999")
+        .attr("x", 0);
     }
 
     function customYAxis(s) {
@@ -111,7 +141,7 @@ export default class QuicklookGraph extends Component {
 
       s
         .selectAll(".tick text")
-        .attr("x", -20)
+        .attr("x", 0)
         .attr("dy", -12)
         .attr("fill", "#999999");
 
@@ -134,21 +164,32 @@ export default class QuicklookGraph extends Component {
       .y(d => y(d.value));
 
     g
+      .append("text")
+      .text(tick.toUpperCase())
+      .attr("dy", 166)
+      .attr("fill", "#999999")
+      .attr("font-size", "10px")
+      .attr("text-transform", "uppercase");
+
+    g
       .append("path")
-      .data([data])
+      .classed("valueline", true)
+      .data([computedData])
       .attr("class", "line")
       .attr("d", valueline)
-      .attr("stroke", this.props.data[0].currency.color)
+      .attr("stroke", computedData[0].currency.color)
       .attr("fill", "none")
       .attr("stroke-width", "2px");
 
     g
+      .append("g")
+      .classed("visibleDots", true)
       .selectAll("dot")
-      .data(data)
+      .data(computedData)
       .enter()
       .append("circle")
       .attr("r", 3)
-      .attr("fill", this.props.data[0].currency.color)
+      .attr("fill", computedData[0].currency.color)
       .style("stroke", "white")
       .style("stroke-width", 2)
       .attr("opacity", 0)
@@ -156,9 +197,12 @@ export default class QuicklookGraph extends Component {
       .attr("cy", d => d.y)
       .attr("class", (d, i) => `dot${i}`)
       .classed("dot", true);
+
     g
-      .selectAll("dot")
-      .data(data)
+      .append("g")
+      .classed("hoveringDots", true)
+      .selectAll("hoveringDot")
+      .data(computedData)
       .enter()
       .append("circle")
       .attr("r", 20)
@@ -170,28 +214,16 @@ export default class QuicklookGraph extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { selected } = this.state;
-    const { prevSelected } = prevState;
-    if (selected !== prevSelected) {
-      const tooltip = d3.select(this.tooltip);
-      tooltip.classed("hide", selected === -1);
-      d3
-        .select(this.svg)
-        .selectAll(".dot")
-        .attr("opacity", (d, i) => (selected === i ? 1 : 0))
-        .classed("selected", (d, i) => selected !== -1 && selected === i);
-      if (selected !== -1) {
-        const selectedDot = d3.select(".dot.selected").data()[0];
-        tooltip.style("left", `${selectedDot.x - 30}px`);
-        tooltip.style("top", `${selectedDot.y - 65}px`);
-      }
-    }
+    this.handleHovering(prevState);
   }
 
   render() {
     const { selected } = this.state;
-    const { data } = this.props;
+    let { data } = this.props;
     if (data.length === 0) return null;
+    console.log(data);
+    data = _.sortBy(data, elem => new Date(elem.time).toISOString());
+    console.log(data);
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">
@@ -213,7 +245,7 @@ export default class QuicklookGraph extends Component {
                     <span className="uppercase date">
                       <DateFormat
                         format="ddd D MMM"
-                        date={data[selected].date}
+                        date={data[selected].time}
                       />
                     </span>
                   </div>
