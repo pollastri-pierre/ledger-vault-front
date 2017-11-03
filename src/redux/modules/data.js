@@ -9,11 +9,12 @@ const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
 export const apiSpecCacheKey = (
   apiSpec: APISpec,
   apiParams: ?Object
-): ?string => (apiSpec.cached ? resolveURI(apiSpec, apiParams) : null);
+): ?string => apiSpec.method + "_" + resolveURI(apiSpec, apiParams);
 
 const initialState = {
   entities: {},
-  caches: {} // by URI
+  caches: {},
+  pending: {}
 };
 
 function mergeEntities(prev, patch) {
@@ -29,6 +30,12 @@ export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
   dispatch: Function
 ): Promise<*> => {
   const uri = resolveURI(spec, apiParams);
+  const cacheKey = apiSpecCacheKey(spec, apiParams);
+  dispatch({
+    type: "DATA_FETCH",
+    spec,
+    cacheKey
+  });
   return network(uri, spec.method, body)
     .then(data => {
       const result = normalize(data, spec.responseSchema);
@@ -36,12 +43,12 @@ export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
         type: "DATA_FETCHED",
         result,
         spec,
-        cacheKey: apiSpecCacheKey(spec, apiParams)
+        cacheKey
       });
       return result.result;
     })
     .catch(error => {
-      dispatch({ type: "DATA_FETCHED_FAIL", error, spec });
+      dispatch({ type: "DATA_FETCHED_FAIL", error, spec, cacheKey });
       throw error;
     });
 };
@@ -49,9 +56,16 @@ export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
 const reducers = {
   DATA_FETCHED: (store, { result, cacheKey }) => ({
     entities: mergeEntities(store.entities, result.entities),
-    caches: cacheKey
-      ? { ...store.caches, [cacheKey]: result.result }
-      : store.caches
+    caches: { ...store.caches, [cacheKey]: result.result },
+    pending: { ...store.pending, [cacheKey]: false }
+  }),
+  DATA_FETCHED_FAIL: (store, { cacheKey }) => ({
+    ...store,
+    pending: { ...store.pending, [cacheKey]: false }
+  }),
+  DATA_FETCH: (store, { cacheKey }) => ({
+    ...store,
+    pending: { ...store.pending, [cacheKey]: true }
   })
 };
 

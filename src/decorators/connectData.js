@@ -10,7 +10,7 @@ type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 // prettier-ignore
 type PropsWithoutA<Props, A> = $Diff<Props, A & {
     fetchData?: FetchData,
-    loading?: boolean
+    reloading?: boolean
   }>;
 // prettier-ignore
 type In<Props, S> = Class<React.Component<Props, S>> | (props: Props)=>*;
@@ -75,9 +75,6 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     state: State = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
       results: null,
-      // when data gets potentially reloaded, this is a state to track that.
-      // TODO: in the future we might move it to the store so if the data gets globally reloaded we can provide this too... it might be a bool per API
-      loading: false,
       // if any of the api fails, we will have an error
       error: null
     };
@@ -94,6 +91,10 @@ export default <Props, A: { [_: string]: APISpec }, S>(
         const apiSpec = api[key];
         const cacheKey = apiSpecCacheKey(apiSpec, apiParams);
         if (cacheKey && !forceFetch && cacheKey in dataStore.caches) {
+          if (!apiSpec.cached) {
+            // we still need to refresh the API, it can just happen asyncronously tho
+            fetchAPI(apiSpec, apiParams);
+          }
           syncData[key] = dataStore.caches[cacheKey];
         } else {
           asyncData[key] = fetchAPI(apiSpec, apiParams);
@@ -102,7 +103,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
 
       const asyncDataKeys = Object.keys(asyncData);
       if (asyncDataKeys.length > 0) {
-        this.setState({ error: null, loading: true });
+        this.setState({ error: null });
         Promise.all(asyncDataKeys.map(key => asyncData[key]))
           .then(all => {
             if (this._unmounted) return;
@@ -110,17 +111,16 @@ export default <Props, A: { [_: string]: APISpec }, S>(
             all.forEach((result, i) => {
               results[asyncDataKeys[i]] = result;
             });
-            this.setState({ results, loading: false });
+            this.setState({ results });
           })
           .catch(error => {
             if (this._unmounted) return;
             this.setState({
-              error,
-              loading: false
+              error
             });
           });
       } else {
-        this.setState({ results: syncData, loading: false });
+        this.setState({ results: syncData });
       }
     }
 
@@ -159,22 +159,32 @@ export default <Props, A: { [_: string]: APISpec }, S>(
 
     render() {
       const { dataStore, ...props } = this.props;
-      const { results, error, loading } = this.state;
+      const { results, error } = this.state;
       if (error) return <RenderError {...props} error={error} />;
       if (!results) return <RenderLoading {...props} />;
-      const extraProps = {
-        fetchData: this.fetchData,
-        loading
-      };
+      let reloading = false;
+      const apiData = {};
+      const { apiParams } = this;
       apiKeys.forEach(key => {
-        const data = denormalize(
+        const apiSpec = api[key];
+        apiData[key] = denormalize(
           results[key],
-          api[key].responseSchema,
+          apiSpec.responseSchema,
           dataStore.entities
         );
-        extraProps[key] = data;
+        console.log(dataStore.pending, apiSpecCacheKey(apiSpec, apiParams));
+        if (dataStore.pending[apiSpecCacheKey(apiSpec, apiParams)]) {
+          reloading = true;
+        }
       });
-      return <Decorated {...props} {...extraProps} />;
+      return (
+        <Decorated
+          {...props}
+          {...apiData}
+          reloading={reloading}
+          fetchData={this.fetchData}
+        />
+      );
     }
   }
 

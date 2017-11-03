@@ -11,12 +11,17 @@ import type { Operation, Account } from "../../datatypes";
 class LastOperationCard extends Component<*> {
   props: {
     operations: Array<Operation>,
-    accounts: Array<Account>
+    accounts: Array<Account>,
+    reloading: boolean
   };
   render() {
-    const { operations } = this.props;
+    const { operations, reloading } = this.props;
     return (
-      <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+      <Card
+        reloading={reloading}
+        title="last operations"
+        titleRight={<ViewAllLink to="/search" />}
+      >
         <DataTableOperation
           columnIds={["date", "account", "countervalue", "amount"]}
           operations={operations}

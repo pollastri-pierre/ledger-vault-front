@@ -14,12 +14,19 @@ import CustomSelectField from "../../components/CustomSelectField/CustomSelectFi
 class TotalBalance extends Component<{
   totalBalance: *,
   filter: *,
-  onTotalBalanceFilterChange: (value: *) => void
+  onTotalBalanceFilterChange: (value: *) => void,
+  reloading: boolean
 }> {
   render() {
-    const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
+    const {
+      onTotalBalanceFilterChange,
+      filter,
+      totalBalance,
+      reloading
+    } = this.props;
     return (
       <Card
+        reloading={reloading}
         className="total-balance"
         title="total balance"
         titleRight={

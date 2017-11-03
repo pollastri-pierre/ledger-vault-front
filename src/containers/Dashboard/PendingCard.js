@@ -37,9 +37,16 @@ const PendingCardRowPerType = {
   account: AccountRow
 };
 
-class PendingCard extends Component<{ pendings: *, accounts: * }> {
+class PendingCard extends Component<{
+  pendings: *,
+  accounts: *,
+  reloading: boolean
+}> {
   render() {
-    const { pendings: { approveOperations, approveAccounts } } = this.props;
+    const {
+      pendings: { approveOperations, approveAccounts },
+      reloading
+    } = this.props;
     const events = approveOperations
       .map(data => ({ type: "operation", data }))
       .concat(approveAccounts.map(data => ({ type: "account", data })));
@@ -48,6 +55,7 @@ class PendingCard extends Component<{ pendings: *, accounts: * }> {
     const total = totalOperations + totalAccounts;
     return (
       <Card
+        reloading={reloading}
         title="pending"
         titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
         className="pendingCard"
