@@ -1,4 +1,3 @@
-import blurBG from "./blurBG";
 import locale from "./locale";
 import auth from "./auth";
 import alerts from "./alerts";
@@ -13,7 +12,6 @@ import organization from "./organization";
 import data from "./data";
 
 const reducers = {
-  blurBG,
   locale,
   auth,
   alerts,

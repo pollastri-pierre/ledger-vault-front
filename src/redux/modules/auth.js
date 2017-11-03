@@ -208,20 +208,20 @@ export function logoutAction() {
   };
 }
 
-export const initialState = {
+export const createInitialState = () => ({
   isAuthenticated: !!localStorage.getItem("token"),
   isCheckingTeam: false,
   teamValidated: false,
   teamError: false,
   team: ""
-};
+});
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = createInitialState(), action) {
   switch (action.type) {
     case SET_TEAM_FIELD:
       return { ...state, team: action.value, teamError: false };
     case LOGOUT:
-      return initialState;
+      return createInitialState();
     case CHECK_TEAM_ERROR:
       return { ...state, teamError: true, isCheckingTeam: false };
     case CHECK_TEAM_SUCCESS:

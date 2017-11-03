@@ -76,7 +76,6 @@ class AccountView extends Component<
     const { account, operations } = this.props;
     const { tabsIndex, quickLookGraphFilter } = this.state;
     const dateRange = this.getDateRange(tabsIndex);
-    console.log(dateRange);
     const beginDate = "March, 13th";
     const endDate = "19th, 2017";
     return (
