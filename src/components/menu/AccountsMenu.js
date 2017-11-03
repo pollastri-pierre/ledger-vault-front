@@ -12,7 +12,7 @@ function AccountsMenu({ accounts }: { accounts: Array<Account> }) {
     <ul className="accounts-menu-list">
       {accounts.map(account => (
         <li key={account.id}>
-          <NavLink to={`/account/${account.id}/`}>
+          <NavLink to={`/account/${account.id}`}>
             {account.name}
             <span className="unit">{account.currency.units[0].code}</span>
           </NavLink>

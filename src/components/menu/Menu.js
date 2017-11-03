@@ -20,7 +20,7 @@ function Menu(props, context) {
     <div className="Menu">
       <ul className="main-menu">
         <li>
-          <NavLink to="/dashboard/">
+          <NavLink to="/dashboard">
             <i className="material-icons">home</i> {t("menu.dashboard")}
           </NavLink>
         </li>

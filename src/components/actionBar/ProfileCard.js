@@ -16,12 +16,13 @@ class ProfileCard extends Component<
   {
     profile: Member,
     fetchData: Function,
-    history: *
+    history: *,
+    location: *
   },
   *
 > {
   state = {
-    profileOpened: false
+    bubbleOpened: false
   };
 
   // FIXME translate should be a component so i don't have to depend on context
@@ -29,21 +30,14 @@ class ProfileCard extends Component<
     translate: PropTypes.func.isRequired
   };
 
-  profileRef: *;
+  anchorEl: *;
 
   onProfileRef = (ref: *) => {
-    this.profileRef = ref;
-  };
-
-  openProfileDialog = (event: *) => {
-    event.preventDefault();
-    this.setState({
-      profileOpened: false
-    });
+    this.anchorEl = ref;
   };
 
   onCloseBubble = () => {
-    this.setState({ profileOpened: false });
+    this.setState({ bubbleOpened: false });
   };
 
   onCloseProfileEdit = () => {
@@ -51,23 +45,21 @@ class ProfileCard extends Component<
   };
 
   onClickProfileCard = (event: *) => {
-    // This prevents ghost click.
-    event.preventDefault();
-    this.setState(({ profileOpened }) => ({
-      profileOpened: !profileOpened
-    }));
+    this.setState({
+      bubbleOpened: !this.state.bubbleOpened
+    });
   };
 
   saveProfile = (error, profile: Member) =>
     this.props.fetchData(api.saveProfile, profile);
 
   render() {
-    const { profile } = this.props;
+    const { profile, location } = this.props;
+    const { bubbleOpened } = this.state;
     const t = this.context.translate;
     return (
       <span>
-        <a
-          href="profile"
+        <span
           className="profile-card"
           onClick={this.onClickProfileCard}
           ref={this.onProfileRef}
@@ -87,11 +79,11 @@ class ProfileCard extends Component<
               {t("actionBar.viewProfile")}
             </div>
           </div>
-        </a>
+        </span>
 
         <PopBubble
-          anchorEl={this.profileRef}
-          open={this.state.profileOpened}
+          anchorEl={this.anchorEl}
+          open={bubbleOpened}
           onRequestClose={this.onCloseBubble}
           style={{
             boxShadow:
@@ -99,7 +91,9 @@ class ProfileCard extends Component<
           }}
         >
           <div className="profile-bubble" onClick={this.onCloseBubble}>
-            <Link to="profile-edit">{t("actionBar.editProfile")}</Link>
+            <Link to={location.pathname + "/profile-edit"}>
+              {t("actionBar.editProfile")}
+            </Link>
             <Link to="/logout">{t("actionBar.logOut")}</Link>
           </div>
         </PopBubble>
