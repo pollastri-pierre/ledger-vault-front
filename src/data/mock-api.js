@@ -134,7 +134,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
 
 const delay = ms => new Promise(success => setTimeout(success, ms));
 
-export default (uri: string, init: string): ?Promise<*> => {
+export default (uri: string, init: *): ?Promise<*> => {
   const method = typeof init.method === "string" ? init.method : "GET";
   const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
   const mockRes = mockSync(uri, method, body);
