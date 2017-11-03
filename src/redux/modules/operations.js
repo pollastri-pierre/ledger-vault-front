@@ -2,8 +2,6 @@ import _ from "lodash";
 import axios from "axios";
 import { LOCATION_CHANGE, push } from "react-router-redux";
 import queryString from "query-string";
-import operationsUtils from "../utils/operation";
-import { getFakeList } from "../utils/operation";
 
 export const OPEN_MODAL_OPERATION_DETAILS =
   "operations/OPEN_MODAL_OPERATION_DETAILS";

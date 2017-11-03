@@ -1,10 +1,11 @@
 //@flow
-import { Account, Member, Operation } from "./schema";
+import { Account, Member, Operation, Currency } from "./schema";
 
 export type APISpec = {
   uri: string | ((_: Object) => string),
   method: string,
-  responseSchema: Object | Array<Object>
+  responseSchema: Object | Array<Object>,
+  cached?: boolean
 };
 type API = { [_: string]: APISpec };
 
@@ -27,6 +28,12 @@ const genericRenderNotif = (resource, verb) => ({
 });
 
 const api: API = {
+  currencies: {
+    uri: "/currencies",
+    method: "GET",
+    responseSchema: [Currency],
+    cached: true
+  },
   profile: {
     uri: "/organization/members/me",
     method: "GET",

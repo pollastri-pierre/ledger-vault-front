@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import React, { Component } from "react";
 import isEqual from "lodash/isEqual";
-import { fetchData } from "../redux/modules/data";
+import { fetchData, apiSpecCacheKey } from "../redux/modules/data";
 import type { APISpec } from "../data/api-spec";
 
 type FetchData = (api: APISpec, body?: Object) => Promise<*>;
@@ -19,6 +19,7 @@ type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
   api: A,
   propsToApiParams?: (props: *) => Object,
+  forceFetch?: boolean,
   RenderLoading?: *,
   RenderError?: *
 };
@@ -30,6 +31,7 @@ type State = {
 };
 
 const defaultOpts = {
+  forceFetch: false,
   RenderLoading: () => null,
   RenderError: () => null,
   propsToApiParams: _ => null // eslint-disable-line no-unused-vars
@@ -50,7 +52,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
   Decorated: In<Props, S>,
   opts: Opts<A>
 ): Out<Props, A> => {
-  const { api, propsToApiParams, RenderLoading, RenderError } = {
+  const { api, propsToApiParams, RenderLoading, RenderError, forceFetch } = {
     ...defaultOpts,
     ...opts
   };
@@ -83,25 +85,43 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     _unmounted = false;
 
     sync(apiParams: *) {
-      const { fetchAPI } = this.props;
+      const { fetchAPI, dataStore } = this.props;
       this.apiParams = apiParams;
-      this.setState({ error: null, loading: true });
-      Promise.all(apiKeys.map(key => fetchAPI(api[key], apiParams)))
-        .then(all => {
-          if (this._unmounted) return;
-          const results = {};
-          all.forEach((result, i) => {
-            results[apiKeys[i]] = result;
+
+      const asyncData = {};
+      const syncData = {};
+      apiKeys.forEach(key => {
+        const apiSpec = api[key];
+        const cacheKey = apiSpecCacheKey(apiSpec, apiParams);
+        if (cacheKey && !forceFetch && cacheKey in dataStore.caches) {
+          syncData[key] = dataStore.caches[cacheKey];
+        } else {
+          asyncData[key] = fetchAPI(apiSpec, apiParams);
+        }
+      });
+
+      const asyncDataKeys = Object.keys(asyncData);
+      if (asyncDataKeys.length > 0) {
+        this.setState({ error: null, loading: true });
+        Promise.all(asyncDataKeys.map(key => asyncData[key]))
+          .then(all => {
+            if (this._unmounted) return;
+            const results = { ...syncData };
+            all.forEach((result, i) => {
+              results[asyncDataKeys[i]] = result;
+            });
+            this.setState({ results, loading: false });
+          })
+          .catch(error => {
+            if (this._unmounted) return;
+            this.setState({
+              error,
+              loading: false
+            });
           });
-          this.setState({ results, loading: false });
-        })
-        .catch(error => {
-          if (this._unmounted) return;
-          this.setState({
-            error,
-            loading: false
-          });
-        });
+      } else {
+        this.setState({ results: syncData, loading: false });
+      }
     }
 
     /**

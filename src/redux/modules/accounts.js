@@ -1,7 +1,5 @@
 import { LOGOUT } from "./auth";
 
-import { data } from "../utils/accounts";
-
 export const GET_ACCOUNTS_START = "accounts/GET_ACCOUNTS_START";
 export const GOT_ACCOUNTS = "accounts/GOT_ACCOUNTS";
 export const GOT_ACCOUNTS_FAIL = "accounts/GOT_ACCOUNTS_FAIL";
@@ -30,7 +28,7 @@ export function getAccounts() {
   return dispatch => {
     dispatch(getAccountStart());
     setTimeout(() => {
-      dispatch(gotAccounts(data));
+      dispatch(gotAccounts([]));
     }, 2000);
   };
 }

@@ -73,6 +73,12 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       }
     }
     switch (uri) {
+      case "/currencies":
+        return denormalize(
+          Object.keys(mockEntities.currencies),
+          apiSpec.currencies.responseSchema,
+          mockEntities
+        );
       case "/organization/members/me":
         return denormalize(
           Object.keys(mockEntities.members)[0],
@@ -130,11 +136,18 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         );
     }
   }
-
-  return network(uri, method, body);
 };
 
 const delay = ms => new Promise(success => setTimeout(success, ms));
 
-export default (uri: string, method: string, body: ?Object): Promise<*> =>
-  delay(400 + 400 * Math.random()).then(() => mockSync(uri, method, body));
+export default (uri: string, method: string, body: ?Object): Promise<*> => {
+  const mockRes = mockSync(uri, method, body);
+  if (mockRes) {
+    return delay(400 + 400 * Math.random()).then(() => {
+      console.warn("mock: " + method + " " + uri, body || "", "\n=>", mockRes);
+      return mockRes;
+    });
+  } else {
+    return network(uri, method, body);
+  }
+};

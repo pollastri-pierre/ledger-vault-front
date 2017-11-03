@@ -1,22 +1,19 @@
 //@flow
 import { normalize } from "normalizr";
-import currencies from "../../currencies";
 import mock from "../../data/mock-api";
 import type { APISpec } from "../../data/api-spec";
 
 const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
   typeof uri === "function" ? uri(apiParams || {}) : uri;
 
-const query = (spec: APISpec, apiParams: ?Object, body: ?Object): Promise<*> =>
-  mock(resolveURI(spec, apiParams), spec.method, body);
+export const apiSpecCacheKey = (
+  apiSpec: APISpec,
+  apiParams: ?Object
+): ?string => (apiSpec.cached ? resolveURI(apiSpec, apiParams) : null);
 
-// This initialize the initial entities (things like currencies are already available)
-const currenciesMap = {};
-currencies.forEach(c => {
-  currenciesMap[c.name] = c;
-});
 const initialState = {
-  entities: { currencies: currenciesMap }
+  entities: {},
+  caches: {} // by URI
 };
 
 function mergeEntities(prev, patch) {
@@ -30,21 +27,31 @@ function mergeEntities(prev, patch) {
 
 export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
   dispatch: Function
-): Promise<*> =>
-  query(spec, apiParams, body)
+): Promise<*> => {
+  const uri = resolveURI(spec, apiParams);
+  return mock(uri, spec.method, body)
     .then(data => {
       const result = normalize(data, spec.responseSchema);
-      dispatch({ type: "DATA_FETCHED", result, spec });
+      dispatch({
+        type: "DATA_FETCHED",
+        result,
+        spec,
+        cacheKey: apiSpecCacheKey(spec, apiParams)
+      });
       return result.result;
     })
     .catch(error => {
       dispatch({ type: "DATA_FETCHED_FAIL", error, spec });
       throw error;
     });
+};
 
 const reducers = {
-  DATA_FETCHED: (store, { result }) => ({
-    entities: mergeEntities(store.entities, result.entities)
+  DATA_FETCHED: (store, { result, cacheKey }) => ({
+    entities: mergeEntities(store.entities, result.entities),
+    caches: cacheKey
+      ? { ...store.caches, [cacheKey]: result.result }
+      : store.caches
   })
 };
 
