@@ -27,6 +27,12 @@ const genericRenderNotif = (resource, verb) => ({
 });
 
 const api: API = {
+  profile: {
+    uri: "/organization/members/me",
+    method: "GET",
+    responseSchema: Member,
+    logoutUserIfStatusCode: 403
+  },
   accounts: {
     uri: "/accounts",
     method: "GET",
@@ -41,11 +47,6 @@ const api: API = {
     uri: "/organization/approvers",
     method: "GET",
     responseSchema: [Member]
-  },
-  profile: {
-    uri: "/organization/members/me",
-    method: "GET",
-    responseSchema: Member
   },
   saveProfile: {
     uri: "/organization/members/me",
@@ -106,36 +107,34 @@ const api: API = {
       watchAccounts: [Account]
     }
   },
-  dashboard: {
-    uri: "/dashboard",
+  dashboardTotalBalance: {
+    uri: "/dashboard/total-balance",
     method: "GET",
-    responseSchema: {
-      lastOperations: [Operation],
-      pending: {
-        operations: [Operation],
-        accounts: [Account]
-        /*
-        total: number,
-        totalAccounts: number,
-        totalOperations: number
-        */
-      }
-      /*
-      totalBalance: {
-        currencyName: string,
-        date: string,
-        value: number,
-        valueHistory: {
-          yesterday: number,
-          week: number,
-          month: number
-        },
-        accountsCount: number,
-        currenciesCount: number,
-        membersCount: number
-      }
-      */
+    responseSchema: {}
+    // This API is needed because we can't compute all informations ourself
+    // this returns this:
+    /*
+    {
+      date: string, // the calculation time (probably "now")
+      balance: number,
+      currency_name: string,
+      balanceHistory: {
+        // this is the historically counter value balance at a given time in the past
+        // we can't calculate it ourself because we need to know the rate at a given time
+        yesterday: number,
+        week: number,
+        month: number
+      },
+      accountsCount: number,
+      currenciesCount: number,
+      membersCount: number
     }
+    */
+  },
+  dashboardLastOperations: {
+    uri: "/dashboard/last-operations",
+    method: "GET",
+    responseSchema: [Operation]
   }
 };
 

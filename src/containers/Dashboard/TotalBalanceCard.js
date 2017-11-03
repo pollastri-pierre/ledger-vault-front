@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import DateFormat from "../../components/DateFormat";
@@ -55,4 +57,22 @@ class TotalBalance extends Component<{
   }
 }
 
-export default TotalBalance;
+class RenderError extends Component<*> {
+  render() {
+    return <Card className="total-balance" title="total balance" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return <Card className="total-balance" title="total balance" />;
+  }
+}
+
+export default connectData(TotalBalance, {
+  api: {
+    totalBalance: api.dashboardTotalBalance
+  },
+  RenderError,
+  RenderLoading
+});

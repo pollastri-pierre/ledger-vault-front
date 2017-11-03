@@ -1,34 +1,31 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  isAuthenticated: state.auth.isAuthenticated
 });
 
-const PrivateRoute = ({ component: Component, auth, ...rest }) => (
+const PrivateRoute = ({
+  component: Component,
+  isAuthenticated,
+  ...rest
+}: *) => (
   <Route
     {...rest}
     render={props => {
-      return true || auth.isAuthenticated ? (
+      return isAuthenticated ? (
         <Component {...props} />
       ) : (
         <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
+          to={
+            "/login?redirectTo=" + encodeURIComponent(props.location.pathname)
+          }
         />
       );
     }}
   />
 );
 
-PrivateRoute.propTypes = {
-  // component: PropTypes.element.isRequired,
-  auth: PropTypes.shape({}).isRequired,
-  location: PropTypes.shape({}).isRequired
-};
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps, () => {})(PrivateRoute);
