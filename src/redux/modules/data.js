@@ -31,16 +31,16 @@ function mergeEntities(prev, patch) {
 export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
   dispatch: Function
 ): Promise<*> =>
-  query(spec, apiParams, body).then(data => {
-    const result = normalize(data, spec.responseSchema);
-    dispatch({
-      type: "DATA_FETCHED",
-      result,
-      spec: spec
+  query(spec, apiParams, body)
+    .then(data => {
+      const result = normalize(data, spec.responseSchema);
+      dispatch({ type: "DATA_FETCHED", result, spec });
+      return result.result;
+    })
+    .catch(error => {
+      dispatch({ type: "DATA_FETCHED_FAIL", error, spec });
+      throw error;
     });
-
-    return result.result;
-  });
 
 const reducers = {
   DATA_FETCHED: (store, { result }) => ({

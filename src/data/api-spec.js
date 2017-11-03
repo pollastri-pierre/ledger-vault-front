@@ -27,6 +27,12 @@ const genericRenderNotif = (resource, verb) => ({
 });
 
 const api: API = {
+  profile: {
+    uri: "/organization/members/me",
+    method: "GET",
+    responseSchema: Member,
+    logoutUserIfStatusCode: 403
+  },
   accounts: {
     uri: "/accounts",
     method: "GET",
@@ -41,11 +47,6 @@ const api: API = {
     uri: "/organization/approvers",
     method: "GET",
     responseSchema: [Member]
-  },
-  profile: {
-    uri: "/organization/members/me",
-    method: "GET",
-    responseSchema: Member
   },
   saveProfile: {
     uri: "/organization/members/me",

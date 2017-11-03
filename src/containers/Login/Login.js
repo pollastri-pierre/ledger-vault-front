@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import queryString from "query-string";
 import "../../containers/App/App.css";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
@@ -28,8 +29,13 @@ const mapDispatchToProps = dispatch => ({
 
 export class Login extends Component {
   componentWillMount() {
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/");
+    const { auth, history, location } = this.props;
+    if (auth.isAuthenticated) {
+      const { redirectTo } = queryString.parse(
+        (location.search || "").slice(1)
+      );
+      console.log(redirectTo);
+      history.replace(redirectTo || "/");
     }
   }
 
@@ -86,7 +92,8 @@ Login.propTypes = {
   onResetTeam: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func
-  }).isRequired
+  }).isRequired,
+  location: PropTypes.object.isRequired
 };
 
 Login.contextTypes = {

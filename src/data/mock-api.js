@@ -2,9 +2,14 @@
 import { denormalize } from "normalizr";
 import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
-import network from "./network";
+import network, { NetworkError } from "./network";
+
+let simulateForbiddenForAll = false;
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
+  if (simulateForbiddenForAll) {
+    throw new NetworkError({ message: "forbidden", status: 403 });
+  }
   if (method === "DELETE") {
     return {};
   }
