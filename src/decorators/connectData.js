@@ -10,17 +10,23 @@ type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 // prettier-ignore
 type PropsWithoutA<Props, A> = $Diff<Props, A & {
     fetchData?: FetchData,
-    reloading?: boolean
+    reloading?: boolean,
+    forceFetch?: () => void
   }>;
 // prettier-ignore
 type In<Props, S> = Class<React.Component<Props, S>> | (props: Props)=>*;
 // prettier-ignore
 type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
+  // an object of { [propName: string]: APISpec }
   api: A,
+  // allow to pass parameters to the api uri function that will be used to generate api URL.
   propsToApiParams?: (props: *) => Object,
+  // allow to reload data
   forceFetch?: boolean,
+  // allow to implement the loading rendering. default is blank
   RenderLoading?: *,
+  // allow to implement the error rendering. default is blank
   RenderError?: *
 };
 
@@ -119,7 +125,10 @@ export default <Props, A: { [_: string]: APISpec }, S>(
             });
           });
       } else {
-        this.setState({ results: syncData });
+        this.setState({
+          error: null,
+          results: syncData
+        });
       }
     }
 
@@ -140,6 +149,8 @@ export default <Props, A: { [_: string]: APISpec }, S>(
                   this.props.dataStore.entities
                 )
         );
+
+    forceFetch = () => this.sync(this.apiParams);
 
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
@@ -163,7 +174,15 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     render() {
       const { dataStore, ...props } = this.props;
       const { results, error } = this.state;
-      if (error) return <RenderError {...props} error={error} />;
+      if (error)
+        return (
+          <RenderError
+            {...props}
+            error={error}
+            forceFetch={this.forceFetch}
+            fetchData={this.fetchData}
+          />
+        );
       if (!results) return <RenderLoading {...props} />;
       let reloading = false;
       const apiData = {};
@@ -184,6 +203,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
           {...props}
           {...apiData}
           reloading={reloading}
+          forceFetch={this.forceFetch}
           fetchData={this.fetchData}
         />
       );
