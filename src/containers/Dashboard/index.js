@@ -1,7 +1,9 @@
 //@flow
 import React, { Component } from "react";
+import queryString from "query-string";
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
+import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
@@ -10,30 +12,29 @@ import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
 
-class Dashboard extends Component<{}, { filter: Filter }> {
-  state = {
-    // TODO remove this state, it will comes from the URL. we need to spec at a single place a list of possible filters
-    // filter prop should not be an object but just the key
-    filter: { title: "yesterday", key: "yesterday" }
-  };
-
+class Dashboard extends Component<*> {
   onTotalBalanceFilterChange = (filter: Filter) => {
-    this.setState({ filter });
+    this.props.history.replace({
+      search: "?filter=" + filter.key
+    });
   };
 
   render() {
-    const { filter } = this.state;
+    const { location } = this.props;
     const { onTotalBalanceFilterChange } = this;
+    const { filter } = queryString.parse(location.search.slice(1));
+    const filterObj =
+      TotalBalanceFilters.find(f => f.key === filter) || TotalBalanceFilters[0];
 
     return (
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            filter={filter}
+            filter={filterObj}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
           <LastOperationCard />
-          <Storages filter={filter} />
+          <Storages filter={filterObj} />
         </div>
         <div className="aside">
           <Card title="currencies">
