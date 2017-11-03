@@ -44,14 +44,16 @@ class ProfileCard extends Component<
     this.props.history.goBack();
   };
 
-  onClickProfileCard = (event: *) => {
+  onClickProfileCard = (/* event: * */) => {
     this.setState({
       bubbleOpened: !this.state.bubbleOpened
     });
   };
 
   saveProfile = (error, profile: Member) =>
-    this.props.fetchData(api.saveProfile, profile);
+    this.props
+      .fetchData(api.saveProfile, profile)
+      .then(() => this.onCloseProfileEdit());
 
   render() {
     const { profile, location } = this.props;
