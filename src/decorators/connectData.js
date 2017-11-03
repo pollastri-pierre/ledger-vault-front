@@ -26,8 +26,7 @@ type Opts<A> = {
 
 type State = {
   results: ?Object,
-  error: ?Error,
-  loading: boolean
+  error: ?Error
 };
 
 const defaultOpts = {
@@ -172,7 +171,6 @@ export default <Props, A: { [_: string]: APISpec }, S>(
           apiSpec.responseSchema,
           dataStore.entities
         );
-        console.log(dataStore.pending, apiSpecCacheKey(apiSpec, apiParams));
         if (dataStore.pending[apiSpecCacheKey(apiSpec, apiParams)]) {
           reloading = true;
         }
