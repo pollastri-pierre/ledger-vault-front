@@ -1,39 +1,42 @@
 //@flow
 import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
-import { connect } from "react-redux";
 import React, { Component } from "react";
 import PieChart from "./PieChart";
 import { inferUnitValue } from "../../data/currency";
-import type { Account } from "../../datatypes";
+import type { Account, Currency } from "../../datatypes";
 
-function Currencies({ accounts, data }: { accounts: Array<Account>, data: * }) {
+function Currencies({
+  accounts,
+  currencies
+}: {
+  accounts: Array<Account>,
+  currencies: Array<Currency>
+}) {
   //compute currencies from accounts balance
-  const computedCurrencies = accounts.reduce((currencies, account) => {
+  const data = accounts.reduce((acc, account) => {
     const currency_name = account.currency.name;
     const balance = account.balance;
     //check if currency already added
-    if (!currencies[currency_name]) {
-      currencies[currency_name] = {
+    if (!acc[currency_name]) {
+      acc[currency_name] = {
         meta: account.currency,
         balance: 0,
         counterValueBalance: 0
       };
     }
-    currencies[currency_name].balance += balance;
-    currencies[currency_name].counterValueBalance += inferUnitValue(
-      data,
+    acc[currency_name].balance += balance;
+    acc[currency_name].counterValueBalance += inferUnitValue(
+      currencies,
       currency_name,
       balance,
       true
     ).value;
-    return currencies;
+    return acc;
   }, {});
 
-  const pieChartData = Object.keys(
-    computedCurrencies
-  ).reduce((currenciesList, currencies) => {
-    currenciesList.push(computedCurrencies[currencies]);
+  const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
+    currenciesList.push(data[c]);
     return currenciesList;
   }, []);
 
@@ -57,12 +60,11 @@ class RenderLoading extends Component<*> {
 }
 
 // TODO we need to have connectData to also connect data?
-export default connect(({ data }) => ({ data }), () => ({}))(
-  connectData(Currencies, {
-    api: {
-      accounts: api.accounts
-    },
-    RenderError,
-    RenderLoading
-  })
-);
+export default connectData(Currencies, {
+  api: {
+    accounts: api.accounts,
+    currencies: api.currencies
+  },
+  RenderError,
+  RenderLoading
+});

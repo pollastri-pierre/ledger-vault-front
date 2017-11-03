@@ -1,19 +1,20 @@
 //@flow
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
+import connectData from "../decorators/connectData";
+import api from "../data/api-spec";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import { inferUnitValue } from "../data/currency";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {
     currencyName: string,
-    data: *
+    currencies: *
   };
   render() {
-    const { currencyName, data } = this.props;
-    const { unit } = inferUnitValue(data, currencyName);
+    const { currencyName, currencies } = this.props;
+    const { unit } = inferUnitValue(currencies, currencyName);
     const value = Math.pow(10, unit.magnitude);
-    const toUnitValue = inferUnitValue(data, currencyName, value, true);
+    const toUnitValue = inferUnitValue(currencies, currencyName, value, true);
     return (
       <span>
         <CurrencyUnitValue unit={unit} value={value} />
@@ -24,6 +25,8 @@ class CurrencyCounterValueConversion extends PureComponent<*> {
   }
 }
 
-export default connect(({ data }) => ({ data }), () => ({}))(
-  CurrencyCounterValueConversion
-);
+export default connectData(CurrencyCounterValueConversion, {
+  api: {
+    currencies: api.currencies
+  }
+});

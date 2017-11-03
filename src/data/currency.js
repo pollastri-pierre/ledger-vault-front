@@ -4,20 +4,8 @@ import type { Currency, Unit } from "../datatypes";
 
 type UnitValue = { value: number, unit: Unit };
 
-type DataStore = {
-  entities: {
-    currencies: {
-      [_: string]: Currency
-    }
-  }
-};
-
-export function getCurrency(currencyName: string, data: DataStore): ?Currency {
-  return data.entities.currencies[currencyName];
-}
-
 export function inferUnitValue(
-  data: DataStore,
+  currencies: Array<Currency>,
   currencyName: string,
   value: number = 0, // by default, value just would get ignored
   countervalue: boolean = false // calculate and return the countervalue of the currency
@@ -28,7 +16,7 @@ export function inferUnitValue(
     unit = counterUnitValues[currencyName];
   } else {
     // try to find a crypto currencies unit
-    const currency = getCurrency(currencyName, data);
+    const currency = currencies.find(c => c.name === currencyName);
     if (currency) {
       if (countervalue) {
         // countervalue was required instead
