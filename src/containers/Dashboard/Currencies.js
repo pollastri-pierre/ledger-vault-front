@@ -59,7 +59,6 @@ class RenderLoading extends Component<*> {
   }
 }
 
-// TODO we need to have connectData to also connect data?
 export default connectData(Currencies, {
   api: {
     accounts: api.accounts,

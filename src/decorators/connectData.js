@@ -156,6 +156,10 @@ export default <Props, A: { [_: string]: APISpec }, S>(
       }
     }
 
+    componentDidCatch(error) {
+      this.setState({ error });
+    }
+
     render() {
       const { dataStore, ...props } = this.props;
       const { results, error } = this.state;

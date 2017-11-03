@@ -12,6 +12,8 @@ import "./index.css";
 
 class Dashboard extends Component<{}, { filter: Filter }> {
   state = {
+    // TODO remove this state, it will comes from the URL. we need to spec at a single place a list of possible filters
+    // filter prop should not be an object but just the key
     filter: { title: "yesterday", key: "yesterday" }
   };
 
