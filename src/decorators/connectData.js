@@ -59,6 +59,12 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     Decorated.name ||
     ""})`;
 
+  for (let k in api) {
+    if (!api[k]) {
+      console.error("Invalid api provided to " + displayName, api);
+    }
+  }
+
   class Clazz extends Component<*, *> {
     static displayName = displayName;
 

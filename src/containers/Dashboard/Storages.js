@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 import AccountCard from "./AccountCard";
 
 class Storages extends Component<{ accounts: *, filter: * }> {
@@ -15,4 +17,8 @@ class Storages extends Component<{ accounts: *, filter: * }> {
   }
 }
 
-export default Storages;
+export default connectData(Storages, {
+  api: {
+    accounts: api.accounts
+  }
+});

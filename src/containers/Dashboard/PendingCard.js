@@ -1,8 +1,11 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
+import CardLoading from "../../components/utils/CardLoading";
 import DateFormat from "../../components/DateFormat";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import AccountName from "../../components/AccountName";
@@ -34,14 +37,15 @@ const PendingCardRowPerType = {
   account: AccountRow
 };
 
-class PendingCard extends Component<{ pending: * }> {
+class PendingCard extends Component<{ pendings: *, accounts: * }> {
   render() {
-    const {
-      pending: { operations, accounts, total, totalOperations, totalAccounts }
-    } = this.props;
-    const events = operations
+    const { pendings: { approveOperations, approveAccounts } } = this.props;
+    const events = approveOperations
       .map(data => ({ type: "operation", data }))
-      .concat(accounts.map(data => ({ type: "account", data })));
+      .concat(approveAccounts.map(data => ({ type: "account", data })));
+    const totalOperations = approveOperations.length;
+    const totalAccounts = approveAccounts.length;
+    const total = totalOperations + totalAccounts;
     return (
       <Card
         title="pending"
@@ -67,4 +71,27 @@ class PendingCard extends Component<{ pending: * }> {
   }
 }
 
-export default PendingCard;
+class RenderError extends Component<*> {
+  render() {
+    return <Card title="pending" className="pendingCard" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return (
+      <Card title="pending" className="pendingCard">
+        <CardLoading />
+      </Card>
+    );
+  }
+}
+
+export default connectData(PendingCard, {
+  api: {
+    accounts: api.accounts,
+    pendings: api.pendings
+  },
+  RenderError,
+  RenderLoading
+});

@@ -108,32 +108,24 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           apiSpec.pendings.responseSchema,
           mockEntities
         );
-      case "/dashboard":
-        return denormalize(
-          {
-            lastOperations: Object.keys(mockEntities.operations).slice(0, 6),
-            pending: {
-              operations: Object.keys(mockEntities.operations).slice(6, 9),
-              accounts: Object.keys(mockEntities.accounts).slice(1, 3),
-              total: 7,
-              totalAccounts: 3,
-              totalOperations: 4
-            },
-            totalBalance: {
-              currencyName: "EUR",
-              date: new Date().toISOString(),
-              value: 1589049,
-              valueHistory: {
-                yesterday: 1543125,
-                week: 1031250,
-                month: 2043125
-              },
-              accountsCount: 5,
-              currenciesCount: 4,
-              membersCount: 8
-            }
+      case "/dashboard/total-balance":
+        return {
+          currencyName: "EUR",
+          date: new Date().toISOString(),
+          value: 1589049,
+          valueHistory: {
+            yesterday: 1543125,
+            week: 1031250,
+            month: 2043125
           },
-          apiSpec.dashboard.responseSchema,
+          accountsCount: 5,
+          currenciesCount: 4,
+          membersCount: 8
+        };
+      case "/dashboard/last-operations":
+        return denormalize(
+          Object.keys(mockEntities.operations).slice(0, 6),
+          apiSpec.dashboardLastOperations.responseSchema,
           mockEntities
         );
     }
