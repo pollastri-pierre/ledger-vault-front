@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
 import DateFormat from "../../components/DateFormat";
@@ -45,7 +45,7 @@ class PendingCard extends Component<{ pending: * }> {
     return (
       <Card
         title="pending"
-        titleRight={<Link to="TODO">VIEW ALL ({total})</Link>}
+        titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
         className="pendingCard"
       >
         <header className="pendingHeader">

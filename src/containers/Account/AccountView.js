@@ -195,14 +195,7 @@ class AccountView extends Component<
             </Tabs>
           </Card>
         </div>
-        <Card
-          title="last operations"
-          titleRight={
-            <span>
-              VIEW ALL{/* TODO make that a component, use react-router <Link> */}
-            </span>
-          }
-        >
+        <Card title="last operations">
           <DataTableOperation
             operations={operations}
             columnIds={["date", "address", "status", "countervalue", "amount"]}

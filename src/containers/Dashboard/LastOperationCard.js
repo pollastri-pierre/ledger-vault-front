@@ -1,10 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
-import DateFormat from "../../components/DateFormat";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
-import AccountName from "../../components/AccountName";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../datatypes";
 
@@ -16,10 +13,7 @@ class LastOperationCard extends Component<*> {
   render() {
     const { operations } = this.props;
     return (
-      <Card
-        title="last operations"
-        titleRight={<Link to="TODO">VIEW ALL</Link>}
-      >
+      <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
         <DataTableOperation
           columnIds={["date", "account", "countervalue", "amount"]}
           operations={operations}
