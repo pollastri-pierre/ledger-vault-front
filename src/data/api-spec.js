@@ -33,6 +33,9 @@ const api: API = {
     method: "GET",
     responseSchema: [Currency],
     cached: true
+    // TODO: cached bool might be too basic.
+    // we might want diff strategy (always cache, cache but refresh, never cache)
+    // also we should be able to override this behavior for a given usecase / Component?
   },
   profile: {
     uri: "/organization/members/me",
