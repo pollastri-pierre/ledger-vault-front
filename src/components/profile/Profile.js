@@ -89,7 +89,7 @@ class Profile extends Component {
       !this.state.email.isValid;
 
     if (error) {
-      this.props.save(error);
+      return this.props.save(error);
     } else {
       const newProfile = {
         first_name: this.state.first_name.value,
@@ -98,7 +98,7 @@ class Profile extends Component {
         picture: this.state.picture.value
       };
 
-      this.props.save(error, newProfile);
+      return this.props.save(error, newProfile);
     }
   };
 

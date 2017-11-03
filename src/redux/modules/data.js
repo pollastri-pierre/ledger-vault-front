@@ -35,8 +35,10 @@ export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
     const result = normalize(data, spec.responseSchema);
     dispatch({
       type: "DATA_FETCHED",
-      result
+      result,
+      spec: spec
     });
+
     return result.result;
   });
 

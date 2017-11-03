@@ -15,6 +15,17 @@ type API = { [_: string]: APISpec };
  * This specifies the API and how it maps to the schema model
  */
 
+const verbsByHTTPMethod = {
+  PUT: "updated",
+  POST: "created",
+  DELETE: "deleted"
+};
+
+const genericRenderNotif = (resource, verb) => ({
+  title: `${resource} ${verbsByHTTPMethod[verb]}`,
+  content: `the ${resource} has been successfully ${verbsByHTTPMethod[verb]}`
+});
+
 const api: API = {
   accounts: {
     uri: "/accounts",
@@ -39,17 +50,23 @@ const api: API = {
   saveProfile: {
     uri: "/organization/members/me",
     method: "PUT",
+    notif: {
+      title: "Profile updated",
+      content: "Your profile informations have been successfully updated"
+    },
     // input : Member
     responseSchema: Member
   },
   abortAccount: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "DELETE",
+    notif: genericRenderNotif("account request", "DELETE"),
     responseSchema: Account
   },
   approveAccount: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "PUT",
+    notif: genericRenderNotif("account request", "PUT"),
     responseSchema: Account
   },
   account: {
@@ -65,11 +82,13 @@ const api: API = {
   abortOperation: {
     uri: ({ operationId }) => `/operations/${operationId}`,
     method: "DELETE",
+    notif: genericRenderNotif("operation request", "DELETE"),
     responseSchema: Operation
   },
   approveOperation: {
     uri: ({ operationId }) => `/operations/${operationId}`,
     method: "PUT",
+    notif: genericRenderNotif("operation request", "PUT"),
     responseSchema: Operation
   },
   accountOperations: {
