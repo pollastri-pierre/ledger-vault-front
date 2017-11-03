@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
 import { openModalOperation } from "../../redux/modules/operation-creation";
+import PendingsMenuBadge from "./PendingsMenuBadge";
 
 import "./Menu.css";
 
@@ -34,7 +35,7 @@ function Menu(props, context) {
             <i className="material-icons">format_align_left</i>{" "}
             {t("menu.pendingRequests")}
           </NavLink>{" "}
-          <span className="menu-badge">2</span>
+          <PendingsMenuBadge />
         </li>
         <li>
           <NavLink to="/search">
