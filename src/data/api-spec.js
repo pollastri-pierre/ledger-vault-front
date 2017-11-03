@@ -124,7 +124,7 @@ const api: API = {
     {
       date: string, // the calculation time (probably "now")
       balance: number,
-      currency_name: string,
+      currencyName: string,
       balanceHistory: {
         // this is the historically counter value balance at a given time in the past
         // we can't calculate it ourself because we need to know the rate at a given time
