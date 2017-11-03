@@ -2,14 +2,8 @@
 import { denormalize } from "normalizr";
 import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
-import network, { NetworkError } from "./network";
-
-let simulateForbiddenForAll = false;
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
-  if (simulateForbiddenForAll) {
-    throw new NetworkError({ message: "forbidden", status: 403 });
-  }
   if (method === "DELETE") {
     return {};
   }
@@ -140,14 +134,19 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
 
 const delay = ms => new Promise(success => setTimeout(success, ms));
 
-export default (uri: string, method: string, body: ?Object): Promise<*> => {
+export default (uri: string, init: string): ?Promise<*> => {
+  const method = typeof init.method === "string" ? init.method : "GET";
+  const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
   const mockRes = mockSync(uri, method, body);
   if (mockRes) {
     return delay(400 + 400 * Math.random()).then(() => {
       console.warn("mock: " + method + " " + uri, body || "", "\n=>", mockRes);
-      return mockRes;
+      return {
+        status: 200,
+        json: () => Promise.resolve(mockRes)
+      };
     });
   } else {
-    return network(uri, method, body);
+    return null;
   }
 };

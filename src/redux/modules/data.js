@@ -1,6 +1,6 @@
 //@flow
 import { normalize } from "normalizr";
-import mock from "../../data/mock-api";
+import network from "../../data/network";
 import type { APISpec } from "../../data/api-spec";
 
 const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
@@ -29,7 +29,7 @@ export const fetchData = (spec: APISpec, apiParams: ?Object, body: ?Object) => (
   dispatch: Function
 ): Promise<*> => {
   const uri = resolveURI(spec, apiParams);
-  return mock(uri, spec.method, body)
+  return network(uri, spec.method, body)
     .then(data => {
       const result = normalize(data, spec.responseSchema);
       dispatch({
