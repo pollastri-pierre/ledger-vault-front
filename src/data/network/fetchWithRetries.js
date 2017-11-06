@@ -1,4 +1,5 @@
 //@flow
+import fetchF from "./fetchF";
 
 // inspired from https://github.com/facebook/fbjs/blob/master/packages/fbjs/src/fetch/fetchWithRetries.js
 
@@ -33,7 +34,7 @@ function fetchWithRetries(
       requestsAttempted++;
       requestStartTime = Date.now();
       let isRequestAlive = true;
-      const request = fetch(uri, init);
+      const request = fetchF(uri, init);
       const requestTimeout = setTimeout(() => {
         isRequestAlive = false;
         if (shouldRetry(requestsAttempted)) {

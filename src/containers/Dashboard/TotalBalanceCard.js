@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import DateFormat from "../../components/DateFormat";
@@ -12,12 +14,19 @@ import CustomSelectField from "../../components/CustomSelectField/CustomSelectFi
 class TotalBalance extends Component<{
   totalBalance: *,
   filter: *,
-  onTotalBalanceFilterChange: (value: *) => void
+  onTotalBalanceFilterChange: (value: *) => void,
+  reloading: boolean
 }> {
   render() {
-    const { onTotalBalanceFilterChange, filter, totalBalance } = this.props;
+    const {
+      onTotalBalanceFilterChange,
+      filter,
+      totalBalance,
+      reloading
+    } = this.props;
     return (
       <Card
+        reloading={reloading}
         className="total-balance"
         title="total balance"
         titleRight={
@@ -55,4 +64,22 @@ class TotalBalance extends Component<{
   }
 }
 
-export default TotalBalance;
+class RenderError extends Component<*> {
+  render() {
+    return <Card className="total-balance" title="total balance" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return <Card className="total-balance" title="total balance" />;
+  }
+}
+
+export default connectData(TotalBalance, {
+  api: {
+    totalBalance: api.dashboardTotalBalance
+  },
+  RenderError,
+  RenderLoading
+});

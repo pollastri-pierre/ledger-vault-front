@@ -2,18 +2,21 @@
 import React, { Component } from "react";
 import ArrowDown from "../icons/ArrowDown";
 import CurrencyNameValue from "../CurrencyNameValue";
+import CurrencyUnitValue from "../CurrencyUnitValue";
+import { countervalueForRate } from "../../data/currency";
 import "./index.css";
 
 class OverviewOperation extends Component<*> {
   props: {
     amount: number,
-    amount_flat: number,
+    rate: *,
     hash: string,
     currency: string
   };
 
   render() {
-    const { hash, amount, amount_flat, currency } = this.props;
+    const { hash, amount, rate, currency } = this.props;
+    const counterValueUnit = countervalueForRate(rate, amount);
     return (
       <div className="operation-overview-header">
         <div className="operation-overview-amount">
@@ -22,7 +25,7 @@ class OverviewOperation extends Component<*> {
           </p>
           <ArrowDown className="arrow-grey-down" />
           <p className="euro-amount">
-            <CurrencyNameValue currencyName="EUR" value={amount_flat} />
+            <CurrencyUnitValue {...counterValueUnit} />
           </p>
           <p className="hash">{hash}</p>
         </div>

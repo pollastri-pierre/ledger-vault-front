@@ -1,18 +1,19 @@
 //@flow
 import React, { Component } from "react";
 
-class Section extends Component<*> {
+class Card extends Component<*> {
   props: {
     title: string,
     className: string,
+    reloading: boolean,
     titleRight: *,
     children: *
   };
   static defaultProps = { className: "" };
   render() {
-    const { title, titleRight, children, className } = this.props;
+    const { title, titleRight, children, className, reloading } = this.props;
     return (
-      <div className={`bloc ${className}`}>
+      <div className={`bloc ${className} ${reloading ? "reloading" : ""}`}>
         <header>
           <h3>{title}</h3>
           {titleRight ? <h3 className="title-right">{titleRight}</h3> : null}
@@ -23,4 +24,4 @@ class Section extends Component<*> {
   }
 }
 
-export default Section;
+export default Card;

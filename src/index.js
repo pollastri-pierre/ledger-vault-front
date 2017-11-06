@@ -20,8 +20,6 @@ import {
   I18nProvider
 } from "./containers";
 
-import { getUserInfos } from "./redux/modules/auth";
-
 import "./styles/index.css";
 
 const muiTheme = getMuiTheme({
@@ -33,48 +31,26 @@ const locale = window.localStorage.getItem("locale") || "en";
 
 const store = create(history, { locale });
 
-// Get saved locale or fallback to english
-const token = window.localStorage.getItem("token");
+ReactDOM.render(
+  <Provider store={store}>
+    <MuiThemeProvider muiTheme={muiTheme}>
+      <I18nProvider>
+        <div>
+          <AlertsContainer />
+          <ModalsContainer />
+          <ConnectedRouter history={history}>
+            <Switch>
+              <Route path="/login" component={Login} />
+              <Route path="/logintest" component={LoginTest} />
+              <Route path="/logout" component={Logout} />
+              <PrivateRoute path="/" component={App} />
+            </Switch>
+          </ConnectedRouter>
+        </div>
+      </I18nProvider>
+    </MuiThemeProvider>
+  </Provider>,
+  document.getElementById("root")
+);
 
-const render = () => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <I18nProvider>
-          <div>
-            <AlertsContainer />
-            <ModalsContainer />
-            <ConnectedRouter history={history}>
-              <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/logintest" component={LoginTest} />
-                <Route path="/logout" component={Logout} />
-                <PrivateRoute path="/" component={App} />
-              </Switch>
-            </ConnectedRouter>
-          </div>
-        </I18nProvider>
-      </MuiThemeProvider>
-    </Provider>,
-    document.getElementById("root")
-  );
-  registerServiceWorker();
-};
-/*
-if (token) {
-  getUserInfos()(store.dispatch, store.getState)
-    .then(() => {
-      render();
-    })
-    .catch(() => {
-      render();
-    });
-} else {
-  render();
-}
-*/
-
-render();
-// ^^^ TODO we should not have to pull getUserInfos() actually but instead
-// we will need to handle server error case when it returns a specific code
-// meaning user token is invalid
+registerServiceWorker();

@@ -1,14 +1,18 @@
-import _ from "lodash";
-import PropTypes from "prop-types";
+//@flow
 import React from "react";
-import currencies from "../../../currencies";
+import connectData from "../../../decorators/connectData";
+import api from "../../../data/api-spec";
+import type { Currency } from "../../../datatypes";
 
-function AccountCreationCurrencies(props) {
-  const { currency, onSelect } = props;
-
+function AccountCreationCurrencies(props: {
+  currencies: Array<Currency>,
+  currency: Currency, // FIXME this should just be the currency.name for a better normalization
+  onSelect: (cur: Currency) => void // SAME
+}) {
+  const { currencies, currency, onSelect } = props;
   return (
     <div className="account-creation-currencies wrapper">
-      {_.map(currencies, cur => (
+      {currencies.map(cur => (
         <div
           onClick={() => onSelect(cur)}
           role="button"
@@ -31,16 +35,8 @@ function AccountCreationCurrencies(props) {
   );
 }
 
-AccountCreationCurrencies.defaultProps = {
-  currency: {}
-};
-
-AccountCreationCurrencies.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  currency: PropTypes.shape({
-    name: PropTypes.string,
-    shortname: PropTypes.string
-  })
-};
-
-export default AccountCreationCurrencies;
+export default connectData(AccountCreationCurrencies, {
+  api: {
+    currencies: api.currencies
+  }
+});

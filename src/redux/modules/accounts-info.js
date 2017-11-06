@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { LOCATION_CHANGE } from "react-router-redux";
 import { LOGOUT } from "./auth";
-import { getFakeList } from "../utils/operation";
 
 export const GET_BALANCE_START = "accounts-info/GET_BALANCE_START";
 export const GOT_BALANCE = "accounts-info/GOT_BALANCE";
@@ -48,7 +47,7 @@ export function getOperations() {
   return dispatch => {
     dispatch(getOperationsStart());
 
-    const operations = getFakeList();
+    const operations = [];
 
     promises[promises.length] = setTimeout(() => {
       dispatch(gotOperations(operations));

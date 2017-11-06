@@ -1,45 +1,42 @@
 //@flow
-import _ from "lodash";
-import { connect } from "react-redux";
-import React from "react";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
+import React, { Component } from "react";
 import PieChart from "./PieChart";
-import { inferUnitValue } from "../../data/currency";
-import type { Account } from "../../datatypes";
+import { countervalueForRate, getCurrencyRate } from "../../data/currency";
+import type { Account, Currency } from "../../datatypes";
 
-function Currencies({ accounts, data }: { accounts: Array<Account>, data: * }) {
+function Currencies({
+  accounts,
+  currencies
+}: {
+  accounts: Array<Account>,
+  currencies: Array<Currency>
+}) {
   //compute currencies from accounts balance
-  const computedCurrencies = _.reduce(
-    accounts,
-    (currencies, account) => {
-      const currency_name = account.currency.name;
-      const balance = account.balance;
-      //check if currency already added
-      if (_.isNil(currencies[currency_name]))
-        currencies[currency_name] = {
-          meta: account.currency,
-          balance: 0,
-          counterValueBalance: 0
-        };
-      currencies[currency_name].balance += balance;
-      currencies[currency_name].counterValueBalance += inferUnitValue(
-        data,
-        currency_name,
-        balance,
-        true
-      ).value;
-      return currencies;
-    },
-    {}
-  );
+  const data = accounts.reduce((acc, account) => {
+    const currency_name = account.currency.name;
+    const balance = account.balance;
+    //check if currency already added
+    if (!acc[currency_name]) {
+      acc[currency_name] = {
+        meta: account.currency,
+        balance: 0,
+        counterValueBalance: 0
+      };
+    }
+    acc[currency_name].balance += balance;
+    acc[currency_name].counterValueBalance += countervalueForRate(
+      getCurrencyRate(currencies, currency_name),
+      balance
+    ).value;
+    return acc;
+  }, {});
 
-  const pieChartData = _.reduce(
-    Object.keys(computedCurrencies),
-    (currenciesList, currencies) => {
-      currenciesList.push(computedCurrencies[currencies]);
-      return currenciesList;
-    },
-    []
-  );
+  const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
+    currenciesList.push(data[c]);
+    return currenciesList;
+  }, []);
 
   return (
     <div className="currencies">
@@ -48,4 +45,23 @@ function Currencies({ accounts, data }: { accounts: Array<Account>, data: * }) {
   );
 }
 
-export default connect(({ data }) => ({ data }), () => ({}))(Currencies);
+class RenderError extends Component<*> {
+  render() {
+    return <div className="currencies" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return <div className="currencies" />;
+  }
+}
+
+export default connectData(Currencies, {
+  api: {
+    accounts: api.accounts,
+    currencies: api.currencies
+  },
+  RenderError,
+  RenderLoading
+});

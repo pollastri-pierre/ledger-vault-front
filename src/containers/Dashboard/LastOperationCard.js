@@ -1,24 +1,26 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import connectData from "../../decorators/connectData";
+import api from "../../data/api-spec";
+import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
-import DateFormat from "../../components/DateFormat";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
-import AccountName from "../../components/AccountName";
+import CardLoading from "../../components/utils/CardLoading";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../datatypes";
 
 class LastOperationCard extends Component<*> {
   props: {
     operations: Array<Operation>,
-    accounts: Array<Account>
+    accounts: Array<Account>,
+    reloading: boolean
   };
   render() {
-    const { operations } = this.props;
+    const { operations, reloading } = this.props;
     return (
       <Card
+        reloading={reloading}
         title="last operations"
-        titleRight={<Link to="TODO">VIEW ALL</Link>}
+        titleRight={<ViewAllLink to="/search" />}
       >
         <DataTableOperation
           columnIds={["date", "account", "countervalue", "amount"]}
@@ -29,4 +31,28 @@ class LastOperationCard extends Component<*> {
   }
 }
 
-export default LastOperationCard;
+class RenderError extends Component<*> {
+  render() {
+    return (
+      <Card title="last operations" titleRight={<ViewAllLink to="/search" />} />
+    );
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return (
+      <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+        <CardLoading />
+      </Card>
+    );
+  }
+}
+export default connectData(LastOperationCard, {
+  api: {
+    operations: api.dashboardLastOperations,
+    accounts: api.accounts
+  },
+  RenderError,
+  RenderLoading
+});

@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import api from "../../data/api-spec";
 import ModalLoading from "../../components/ModalLoading";
 import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
@@ -11,12 +10,10 @@ import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
 import connectData from "../../decorators/connectData";
-import operationsUtils from "../../redux/utils/operation";
 
 class OperationDetails extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
 
     let note = { author: {} };
 

@@ -1,10 +1,9 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
-
+import queryString from "query-string";
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
+import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
@@ -13,52 +12,39 @@ import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
 
-class Dashboard extends Component<
-  { dashboard: *, accounts: * },
-  { filter: Filter }
-> {
-  state = {
-    filter: { title: "yesterday", key: "yesterday" }
-  };
-
+class Dashboard extends Component<*> {
   onTotalBalanceFilterChange = (filter: Filter) => {
-    this.setState({ filter });
+    this.props.history.replace({
+      search: "?filter=" + filter.key
+    });
   };
 
   render() {
-    const { dashboard, accounts } = this.props;
-    const { filter } = this.state;
+    const { location } = this.props;
     const { onTotalBalanceFilterChange } = this;
+    const { filter } = queryString.parse(location.search.slice(1));
+    const filterObj =
+      TotalBalanceFilters.find(f => f.key === filter) || TotalBalanceFilters[0];
 
     return (
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            totalBalance={dashboard.totalBalance}
-            filter={filter}
+            filter={filterObj}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          <LastOperationCard
-            operations={dashboard.lastOperations}
-            accounts={accounts}
-          />
-          <Storages accounts={accounts} filter={filter} />
+          <LastOperationCard />
+          <Storages filter={filterObj} />
         </div>
         <div className="aside">
           <Card title="currencies">
-            <Currencies accounts={accounts} />
+            <Currencies />
           </Card>
-          <PendingCard pending={dashboard.pending} />
+          <PendingCard />
         </div>
       </div>
     );
   }
 }
 
-export default connectData(Dashboard, {
-  api: {
-    dashboard: api.dashboard,
-    accounts: api.accounts,
-    members: api.members
-  }
-});
+export default Dashboard;

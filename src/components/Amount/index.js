@@ -1,27 +1,26 @@
 //@flow
 import React, { Component } from "react";
 import CurrencyNameValue from "../CurrencyNameValue";
+import CurrencyUnitValue from "../CurrencyUnitValue";
+import { countervalueForRate } from "../../data/currency";
 import "./index.css";
 
 class Amount extends Component<*> {
   props: {
-    amount_crypto: number,
-    amount_flat: number,
-    strong: boolean,
-    currencyName: string
+    currencyName: string,
+    value: number,
+    rate: *,
+    strong?: boolean
   };
 
   render() {
-    const { currencyName, amount_flat, amount_crypto, strong } = this.props;
-
+    const { currencyName, value, rate, strong } = this.props;
+    const counterValueUnit = countervalueForRate(rate, value);
     return (
       <span className={`${strong ? "amount-strong" : ""}`}>
-        <CurrencyNameValue
-          currencyName={currencyName}
-          value={amount_crypto}
-        />{" "}
+        <CurrencyNameValue currencyName={currencyName} value={value} />{" "}
         <span className="flat-amount">
-          (<CurrencyNameValue currencyName="EUR" value={amount_flat} />)
+          <CurrencyUnitValue {...counterValueUnit} />
         </span>
       </span>
     );

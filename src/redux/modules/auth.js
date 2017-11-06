@@ -14,8 +14,6 @@ export const AUTHENTICATION_FAILED = "auth/AUTHENTICATION_FAILED";
 export const AUTHENTICATION_FAILED_API = "auth/AUTHENTICATION_FAILED_API";
 export const AUTHENTICATION_FAILED_TIMEOUT =
   "auth/AUTHENTICATION_FAILED_TIMEOUT";
-export const GET_USER_INFOS_START = "auth/GET_USER_INFOS_START";
-export const GOT_USER_INFO = "auth/GOT_USER_INFO";
 export const RESET_TEAM = "auth/RESET_TEAM";
 
 export function setTeamField(val) {
@@ -111,40 +109,6 @@ export function registerDevice(email) {
   };
 }
 
-export function startGetUserInfos() {
-  return {
-    type: GET_USER_INFOS_START
-  };
-}
-
-export function gotUserInfos(user) {
-  return {
-    type: GOT_USER_INFO,
-    user
-  };
-}
-
-export function getUserInfos() {
-  return (dispatch, getState) => {
-    dispatch(startGetUserInfos());
-    const { routing } = getState();
-
-    return axios
-      .get("/organization/members/me", {
-        headers: { "X-Ledger-Auth": window.localStorage.getItem("token") }
-      })
-      .then(res => {
-        dispatch(gotUserInfos(res.data));
-        if (
-          routing.location &&
-          routing.location.state &&
-          routing.location.state.from
-        ) {
-          dispatch(push(routing.location.state.from));
-        }
-      });
-  };
-}
 export function finishAuthentication(data) {
   return (dispatch, getState) => {
     const { team } = getState().auth;
@@ -163,11 +127,10 @@ export function finishAuthentication(data) {
               response: deviceResponse
             })
             .then(res => {
+              setTokenToLocalStorage(res.data.token);
               setTimeout(() => {
                 dispatch(authenticationSucceed());
               }, 500);
-              setTokenToLocalStorage(res.data.token);
-              dispatch(getUserInfos());
             })
             .catch(() => {
               dispatch(authenticationFailed("api"));
@@ -203,25 +166,36 @@ export function logout() {
 
 export function logoutAction() {
   return dispatch => {
-    dispatch(logout());
     window.localStorage.removeItem("token");
+    dispatch(logout());
   };
 }
 
-export const initialState = {
+export const createInitialState = () => ({
   isAuthenticated: !!localStorage.getItem("token"),
   isCheckingTeam: false,
   teamValidated: false,
   teamError: false,
   team: ""
-};
+});
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = createInitialState(), action) {
   switch (action.type) {
     case SET_TEAM_FIELD:
       return { ...state, team: action.value, teamError: false };
     case LOGOUT:
-      return initialState;
+      return createInitialState();
+    case "DATA_FETCHED_FAIL": {
+      const shouldLogout =
+        action.error.status &&
+        action.error.status === action.spec.logoutUserIfStatusCode;
+      if (shouldLogout) {
+        window.localStorage.removeItem("token");
+        return createInitialState();
+      } else {
+        return state;
+      }
+    }
     case CHECK_TEAM_ERROR:
       return { ...state, teamError: true, isCheckingTeam: false };
     case CHECK_TEAM_SUCCESS:
@@ -237,8 +211,6 @@ export default function reducer(state = initialState, action) {
       return { ...state, isCheckingTeam: true };
     case RESET_TEAM:
       return { ...state, teamValidated: false };
-    case GOT_USER_INFO:
-      return { ...state, isAuthenticated: true };
     case AUTHENTICATION_FAILED_API:
     case AUTHENTICATION_FAILED_TIMEOUT:
     case AUTHENTICATION_FAILED:

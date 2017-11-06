@@ -2,6 +2,11 @@
 
 // TODO move this in data/ folder
 
+export type Rate = {
+  value: number,
+  currency_name: string
+};
+
 export type Unit = {
   name: string,
   code: string,
@@ -15,10 +20,7 @@ export type Currency = {
   family: string,
   color: string,
   units: Array<Unit>,
-  rate?: {
-    value: number,
-    currency_name: string
-  }
+  rate?: Rate
 };
 
 export type Account = *; // TODO
@@ -52,8 +54,8 @@ export type Operation = {
   time: string,
   type: string,
   amount: number,
-  reference_conversion: {
-    amount: number,
+  rate: {
+    value: number,
     currency_name: string
   },
   fees: number,

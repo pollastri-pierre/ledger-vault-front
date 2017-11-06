@@ -4,94 +4,39 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Alert } from "../components";
 import { closeMessage } from "../redux/modules/alerts";
-import {
-  AUTHENTICATION_SUCCEED,
-  CHECK_TEAM_ERROR,
-  AUTHENTICATION_FAILED,
-  AUTHENTICATION_FAILED_API,
-  AUTHENTICATION_FAILED_TIMEOUT,
-  LOGOUT
-} from "../redux/modules/auth";
-import { SAVED_ACCOUNT } from "../redux/modules/account-creation";
 
 const mapStateToProps = state => ({
   alerts: state.alerts
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClose: id => dispatch(closeMessage(id))
+  onClose: () => dispatch(closeMessage())
 });
 
-export const getTitle = (id, alerts, translate) => {
-  const message = _.find(alerts, { id });
-  if (message && message.title) {
-    return translate(message.title);
-  }
-
-  return "";
-};
-
-export const getTheme = (id, alerts) => {
-  const message = _.find(alerts, { id });
-  if (message && message.type) {
-    return message.type;
-  }
-
-  return "";
-};
-
-export const getContent = (id, alerts, translate) => {
-  const message = _.find(alerts, { id });
-  if (message && message.content) {
-    return translate(message.content);
-  }
-  return "";
-};
-
-const hasError = (id, alerts) => !_.isUndefined(_.find(alerts, { id }));
-
-export const allMessages = [
-  SAVED_ACCOUNT,
-  CHECK_TEAM_ERROR,
-  AUTHENTICATION_FAILED,
-  AUTHENTICATION_FAILED_API,
-  AUTHENTICATION_FAILED_TIMEOUT,
-  LOGOUT,
-  AUTHENTICATION_SUCCEED
-];
-
 export function MessagesContainer(props, context) {
-  const alerts = props.alerts.alerts;
-  const cache = props.alerts.cache;
+  const { alerts, onClose } = props;
 
-  const { translate } = context;
   return (
     <div>
-      {_.map(allMessages, message => (
-        <Alert
-          onRequestClose={() => props.onClose(message)}
-          open={hasError(message, alerts)}
-          autoHideDuration={4000}
-          title={getTitle(message, cache, translate)}
-          theme={getTheme(message, cache)}
-          key={message}
-        >
-          <div>{getContent(message, cache, translate)}</div>
-        </Alert>
-      ))}
+      <Alert
+        onRequestClose={onClose}
+        open={alerts.visible}
+        autoHideDuration={4000}
+        title={alerts.title}
+        theme={alerts.type}
+      >
+        <div>{alerts.content}</div>
+      </Alert>
     </div>
   );
 }
 
 MessagesContainer.propTypes = {
   alerts: PropTypes.shape({
-    alerts: PropTypes.array,
-    cache: PropTypes.array
+    type: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.string
   }).isRequired
-};
-
-MessagesContainer.contextTypes = {
-  translate: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);

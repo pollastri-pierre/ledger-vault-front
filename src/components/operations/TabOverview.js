@@ -1,7 +1,4 @@
-import _ from "lodash";
 import React from "react";
-import ArrowDown from "../icons/ArrowDown";
-import ValidateBadge from "../icons/ValidateBadge";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
@@ -12,13 +9,14 @@ import Amount from "../Amount";
 function TabOverview(props) {
   const { operation } = props;
   const { account } = operation;
+  const { rate } = operation;
   return (
     <div>
       <OverviewOperation
         hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
         amount={operation.amount}
         currency={account.currency.name}
-        amount_flat={operation.reference_conversion.amount}
+        rate={rate}
       />
       <div className="operation-list">
         <LineRow label="status">
@@ -33,15 +31,15 @@ function TabOverview(props) {
         </LineRow>
         <LineRow label="fees">
           <Amount
-            amount_crypto={operation.fees}
-            amount_flat={operation.reference_conversion.fees}
+            value={operation.fees}
+            rate={rate}
             currencyName={account.currency.name}
           />
         </LineRow>
         <LineRow label="Total spent">
           <Amount
-            amount_crypto={operation.amount}
-            amount_flat={operation.reference_conversion.amount}
+            value={operation.amount}
+            rate={rate}
             currencyName={account.currency.name}
             strong
           />

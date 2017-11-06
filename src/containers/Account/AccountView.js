@@ -18,7 +18,8 @@ import "./Account.css";
 class AccountView extends Component<
   {
     account: Account,
-    operations: Array<Operation>
+    operations: Array<Operation>,
+    reloading: boolean
   },
   *
 > {
@@ -73,10 +74,9 @@ class AccountView extends Component<
   };
 
   render() {
-    const { account, operations } = this.props;
+    const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter } = this.state;
     const dateRange = this.getDateRange(tabsIndex);
-    console.log(dateRange);
     const beginDate = "March, 13th";
     const endDate = "19th, 2017";
     return (
@@ -84,7 +84,7 @@ class AccountView extends Component<
         <div className="account-view-infos">
           <div className="infos-left">
             <div className="infos-left-top">
-              <Card className="balance" title="Balance">
+              <Card reloading={reloading} className="balance" title="Balance">
                 <CardField label={<DateFormat date={new Date()} />}>
                   <CurrencyNameValue
                     currencyName={account.currency.name}
@@ -93,7 +93,11 @@ class AccountView extends Component<
                 </CardField>
               </Card>
 
-              <Card className="countervalue" title="Countervalue">
+              <Card
+                reloading={reloading}
+                className="countervalue"
+                title="Countervalue"
+              >
                 <CardField
                   label={
                     <CurrencyCounterValueConversion
@@ -112,6 +116,7 @@ class AccountView extends Component<
             <ReceiveFundsCard hash={account.receive_address} />
           </div>
           <Card
+            reloading={reloading}
             className="quicklook"
             title="Quicklook"
             titleRight={
@@ -196,14 +201,7 @@ class AccountView extends Component<
             </Tabs>
           </Card>
         </div>
-        <Card
-          title="last operations"
-          titleRight={
-            <span>
-              VIEW ALL{/* TODO make that a component, use react-router <Link> */}
-            </span>
-          }
-        >
+        <Card reloading={reloading} title="last operations">
           <DataTableOperation
             operations={operations}
             columnIds={["date", "address", "status", "countervalue", "amount"]}

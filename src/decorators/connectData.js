@@ -3,33 +3,40 @@ import { connect } from "react-redux";
 import { denormalize } from "normalizr";
 import React, { Component } from "react";
 import isEqual from "lodash/isEqual";
-import { fetchData } from "../redux/modules/data";
+import { fetchData, apiSpecCacheKey } from "../redux/modules/data";
 import type { APISpec } from "../data/api-spec";
 
 type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 // prettier-ignore
 type PropsWithoutA<Props, A> = $Diff<Props, A & {
     fetchData?: FetchData,
-    loading?: boolean
+    reloading?: boolean,
+    forceFetch?: () => void
   }>;
 // prettier-ignore
 type In<Props, S> = Class<React.Component<Props, S>> | (props: Props)=>*;
 // prettier-ignore
 type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
+  // an object of { [propName: string]: APISpec }
   api: A,
+  // allow to pass parameters to the api uri function that will be used to generate api URL.
   propsToApiParams?: (props: *) => Object,
+  // allow to reload data
+  forceFetch?: boolean,
+  // allow to implement the loading rendering. default is blank
   RenderLoading?: *,
+  // allow to implement the error rendering. default is blank
   RenderError?: *
 };
 
 type State = {
   results: ?Object,
-  error: ?Error,
-  loading: boolean
+  error: ?Error
 };
 
 const defaultOpts = {
+  forceFetch: false,
   RenderLoading: () => null,
   RenderError: () => null,
   propsToApiParams: _ => null // eslint-disable-line no-unused-vars
@@ -50,7 +57,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
   Decorated: In<Props, S>,
   opts: Opts<A>
 ): Out<Props, A> => {
-  const { api, propsToApiParams, RenderLoading, RenderError } = {
+  const { api, propsToApiParams, RenderLoading, RenderError, forceFetch } = {
     ...defaultOpts,
     ...opts
   };
@@ -58,6 +65,12 @@ export default <Props, A: { [_: string]: APISpec }, S>(
   const displayName = `connectData(${Decorated.displayName ||
     Decorated.name ||
     ""})`;
+
+  for (let k in api) {
+    if (!api[k]) {
+      console.error("Invalid api provided to " + displayName, api);
+    }
+  }
 
   class Clazz extends Component<*, *> {
     static displayName = displayName;
@@ -67,9 +80,6 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     state: State = {
       // local state to keep the results of api queries (only keeping the minimal normalized version here. i.e. the ids)
       results: null,
-      // when data gets potentially reloaded, this is a state to track that.
-      // TODO: in the future we might move it to the store so if the data gets globally reloaded we can provide this too... it might be a bool per API
-      loading: false,
       // if any of the api fails, we will have an error
       error: null
     };
@@ -77,25 +87,49 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     _unmounted = false;
 
     sync(apiParams: *) {
-      const { fetchAPI } = this.props;
+      const { fetchAPI, dataStore } = this.props;
       this.apiParams = apiParams;
-      this.setState({ error: null, loading: true });
-      Promise.all(apiKeys.map(key => fetchAPI(api[key], apiParams)))
-        .then(all => {
-          if (this._unmounted) return;
-          const results = {};
-          all.forEach((result, i) => {
-            results[apiKeys[i]] = result;
+
+      const asyncData = {};
+      const syncData = {};
+      apiKeys.forEach(key => {
+        const apiSpec = api[key];
+        const cacheKey = apiSpecCacheKey(apiSpec, apiParams);
+        if (cacheKey && !forceFetch && cacheKey in dataStore.caches) {
+          if (!apiSpec.cached) {
+            // we still need to refresh the API, it can just happen asyncronously tho
+            fetchAPI(apiSpec, apiParams);
+          }
+          syncData[key] = dataStore.caches[cacheKey];
+        } else {
+          asyncData[key] = fetchAPI(apiSpec, apiParams);
+        }
+      });
+
+      const asyncDataKeys = Object.keys(asyncData);
+      if (asyncDataKeys.length > 0) {
+        this.setState({ error: null });
+        Promise.all(asyncDataKeys.map(key => asyncData[key]))
+          .then(all => {
+            if (this._unmounted) return;
+            const results = { ...syncData };
+            all.forEach((result, i) => {
+              results[asyncDataKeys[i]] = result;
+            });
+            this.setState({ results });
+          })
+          .catch(error => {
+            if (this._unmounted) return;
+            this.setState({
+              error
+            });
           });
-          this.setState({ results, loading: false });
-        })
-        .catch(error => {
-          if (this._unmounted) return;
-          this.setState({
-            error,
-            loading: false
-          });
+      } else {
+        this.setState({
+          error: null,
+          results: syncData
         });
+      }
     }
 
     /**
@@ -116,6 +150,8 @@ export default <Props, A: { [_: string]: APISpec }, S>(
                 )
         );
 
+    forceFetch = () => this.sync(this.apiParams);
+
     componentWillMount() {
       this.sync(propsToApiParams(this.props));
     }
@@ -131,24 +167,46 @@ export default <Props, A: { [_: string]: APISpec }, S>(
       }
     }
 
+    componentDidCatch(error) {
+      this.setState({ error });
+    }
+
     render() {
       const { dataStore, ...props } = this.props;
-      const { results, error, loading } = this.state;
-      if (error) return <RenderError {...props} error={error} />;
+      const { results, error } = this.state;
+      if (error)
+        return (
+          <RenderError
+            {...props}
+            error={error}
+            forceFetch={this.forceFetch}
+            fetchData={this.fetchData}
+          />
+        );
       if (!results) return <RenderLoading {...props} />;
-      const extraProps = {
-        fetchData: this.fetchData,
-        loading
-      };
+      let reloading = false;
+      const apiData = {};
+      const { apiParams } = this;
       apiKeys.forEach(key => {
-        const data = denormalize(
+        const apiSpec = api[key];
+        apiData[key] = denormalize(
           results[key],
-          api[key].responseSchema,
+          apiSpec.responseSchema,
           dataStore.entities
         );
-        extraProps[key] = data;
+        if (dataStore.pending[apiSpecCacheKey(apiSpec, apiParams)]) {
+          reloading = true;
+        }
       });
-      return <Decorated {...props} {...extraProps} />;
+      return (
+        <Decorated
+          {...props}
+          {...apiData}
+          reloading={reloading}
+          forceFetch={this.forceFetch}
+          fetchData={this.fetchData}
+        />
+      );
     }
   }
 

@@ -1,9 +1,117 @@
 //@flow
 
-import currencies from "../currencies";
-const currenciesMap = {};
-currencies.forEach(c => {
-  currenciesMap[c.name] = c;
+const currencies = {};
+[
+  {
+    name: "bitcoin",
+    family: "Bitcoin",
+    color: "#fcb653",
+    rate: {
+      value: 0.0061,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "bitcoin",
+        code: "BTC",
+        symbol: "Ƀ",
+        magnitude: 8
+      },
+      {
+        name: "",
+        code: "mBTC",
+        symbol: "mBTC",
+        magnitude: 5
+      }
+    ]
+  },
+  {
+    name: "dogecoin",
+    family: "Dogecoin",
+    color: "#65d196",
+    rate: {
+      value: 0.000000001,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "dogecoin",
+        code: "DOGE",
+        symbol: "DOGE",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "dash",
+    family: "Dash",
+    color: "#0e76aa",
+    rate: {
+      value: 0.00000003,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "dash",
+        code: "DASH",
+        symbol: "DASH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "ethereum",
+    family: "Ethereum",
+    color: "#27d0e2",
+    rate: {
+      value: 0.000245,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "ethereum",
+        code: "ETH",
+        symbol: "ETH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "ethereum-classic",
+    family: "Ethereum",
+    color: "#3ca569",
+    rate: {
+      value: 0.000008,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "Ethereum Classic",
+        code: "ETH",
+        symbol: "ETH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "litecoin",
+    family: "Litecoin",
+    color: "#cccccc",
+    rate: {
+      value: 0.000044,
+      currency_name: "EUR"
+    },
+    units: [
+      {
+        name: "Litecoin",
+        code: "LTC",
+        symbol: "LTC",
+        magnitude: 8
+      }
+    ]
+  }
+].forEach(c => {
+  currencies[c.name] = c;
 });
 
 const genNote = i => ({
@@ -166,10 +274,9 @@ const genOperation = opts => {
     type,
     approved: [],
     amount,
-    reference_conversion: {
-      currency_name: "EUR",
-      amount: Math.round(amount * 0.0005),
-      fees: Math.round(fees * 0.0005)
+    rate: {
+      value: 0.0061,
+      currency_name: "EUR"
     },
     fees,
     account_id,
@@ -404,10 +511,6 @@ export default {
         month: 2182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 6199553,
-        currency_name: "EUR"
-      },
       approved: []
     },
     "1": {
@@ -423,10 +526,6 @@ export default {
         month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 719553,
-        currency_name: "EUR"
-      },
       approved: []
     },
     "2": {
@@ -442,10 +541,6 @@ export default {
         month: 0.9 * 3258983178200000
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199530,
-        currency_name: "EUR"
-      },
       approved: ["hash"]
     },
     "3": {
@@ -461,10 +556,6 @@ export default {
         month: 0
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 8299553,
-        currency_name: "EUR"
-      },
       approved: ["hash"]
     },
     "4": {
@@ -480,13 +571,8 @@ export default {
         month: 2218234846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 3321993,
-        currency_name: "EUR"
-      },
       approved: []
     }
   },
-  // currencies are statically provided, we add them in the entities mock
-  currencies: currenciesMap
+  currencies
 };

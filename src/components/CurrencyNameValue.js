@@ -1,8 +1,14 @@
 //@flow
-import { connect } from "react-redux";
 import React, { PureComponent } from "react";
+import connectData from "../decorators/connectData";
+import api from "../data/api-spec";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { inferUnitValue } from "../data/currency";
+import {
+  inferUnit,
+  getCurrencyRate,
+  countervalueForRate
+} from "../data/currency";
+import type { Currency, Rate } from "../datatypes";
 
 type Props = {
   // it can be a crypto currency name or also can be a countervalue like EUR
@@ -12,23 +18,41 @@ type Props = {
   // always show a sign in front of the value (force a "+" to display for positives)
   alwaysShowSign?: boolean,
   // if true, display the countervalue instead of the actual crypto currency
-  countervalue: boolean,
+  countervalue?: boolean,
+  // override the rate to use (default is the currency current rate)
+  rate: ?Rate,
   // data store
-  data: *
+  currencies: Array<Currency>
 };
 
 // This is a "smart" component that accepts a currencyName (e.g. bitcoin) and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
 class CurrencyNameValue extends PureComponent<Props> {
-  static defaultProps = {
-    countervalue: false
-  };
   render() {
-    const { currencyName, countervalue, value, data, ...rest } = this.props;
-    const UnitValue = inferUnitValue(data, currencyName, value, countervalue);
-    return <CurrencyUnitValue {...rest} {...UnitValue} />;
+    const {
+      currencyName,
+      countervalue,
+      value,
+      currencies,
+      rate,
+      ...rest
+    } = this.props;
+    let unitValue = countervalue
+      ? countervalueForRate(
+          rate || getCurrencyRate(currencies, currencyName),
+          value
+        )
+      : {
+          unit: inferUnit(currencies, currencyName),
+          value
+        };
+    return <CurrencyUnitValue {...rest} {...unitValue} />;
   }
 }
 
-export default connect(({ data }) => ({ data }), () => ({}))(CurrencyNameValue);
+export default connectData(CurrencyNameValue, {
+  api: {
+    currencies: api.currencies
+  }
+});
