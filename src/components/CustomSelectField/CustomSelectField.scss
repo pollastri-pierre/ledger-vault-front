@@ -36,6 +36,7 @@
 		opacity: 0;
 	}
 	&.selected {
+		opacity: 1;
 		&:after {
 			opacity: 1;
 			width: 5px;
