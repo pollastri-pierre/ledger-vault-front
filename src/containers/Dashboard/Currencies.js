@@ -3,7 +3,7 @@ import connectData from "../../decorators/connectData";
 import api from "../../data/api-spec";
 import React, { Component } from "react";
 import PieChart from "./PieChart";
-import { inferUnitValue } from "../../data/currency";
+import { countervalueForRate, getCurrencyRate } from "../../data/currency";
 import type { Account, Currency } from "../../datatypes";
 
 function Currencies({
@@ -26,11 +26,9 @@ function Currencies({
       };
     }
     acc[currency_name].balance += balance;
-    acc[currency_name].counterValueBalance += inferUnitValue(
-      currencies,
-      currency_name,
-      balance,
-      true
+    acc[currency_name].counterValueBalance += countervalueForRate(
+      getCurrencyRate(currencies, currency_name),
+      balance
     ).value;
     return acc;
   }, {});
