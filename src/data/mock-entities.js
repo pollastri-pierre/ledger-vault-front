@@ -274,10 +274,9 @@ const genOperation = opts => {
     type,
     approved: [],
     amount,
-    reference_conversion: {
-      currency_name: "EUR",
-      amount: Math.round(amount * 0.0005),
-      fees: Math.round(fees * 0.0005)
+    rate: {
+      value: 0.0061,
+      currency_name: "EUR"
     },
     fees,
     account_id,
@@ -512,10 +511,6 @@ export default {
         month: 2182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 6199553,
-        currency_name: "EUR"
-      },
       approved: []
     },
     "1": {
@@ -531,10 +526,6 @@ export default {
         month: 182834846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 719553,
-        currency_name: "EUR"
-      },
       approved: []
     },
     "2": {
@@ -550,10 +541,6 @@ export default {
         month: 0.9 * 3258983178200000
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199530,
-        currency_name: "EUR"
-      },
       approved: ["hash"]
     },
     "3": {
@@ -569,10 +556,6 @@ export default {
         month: 0
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 8299553,
-        currency_name: "EUR"
-      },
       approved: ["hash"]
     },
     "4": {
@@ -588,10 +571,6 @@ export default {
         month: 2218234846
       },
       receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 3321993,
-        currency_name: "EUR"
-      },
       approved: []
     }
   },

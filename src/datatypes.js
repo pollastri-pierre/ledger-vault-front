@@ -54,8 +54,8 @@ export type Operation = {
   time: string,
   type: string,
   amount: number,
-  reference_conversion: {
-    amount: number,
+  rate: {
+    value: number,
     currency_name: string
   },
   fees: number,

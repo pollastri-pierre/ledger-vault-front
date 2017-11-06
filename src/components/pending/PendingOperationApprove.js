@@ -1,13 +1,15 @@
+//@flow
 import React from "react";
 import { connect } from "react-redux";
 import _ from "lodash";
 import { openEntityApprove } from "../../redux/modules/entity-approve";
 import PropTypes from "prop-types";
-import ValidateBadge from "../icons/ValidateBadge";
 import AccountName from "../AccountName";
+import CurrencyUnitValue from "../CurrencyUnitValue";
 import CurrencyNameValue from "../CurrencyNameValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatus from "../ApprovalStatus";
+import { countervalueForRate } from "../../data/currency";
 
 function PendingOperationApprove(props) {
   const {
@@ -23,9 +25,10 @@ function PendingOperationApprove(props) {
     return <p>There are no operations to approve</p>;
   }
 
-  const totalAmount = _.reduce(
+  let totalAmountCurrency = operations[0].rate.currency_name;
+  const totalAmountCounterValue = _.reduce(
     operations,
-    (sum, op) => op.reference_conversion.amount + sum,
+    (sum, op) => countervalueForRate(op.rate, op.amount).value + sum,
     0
   );
 
@@ -40,7 +43,10 @@ function PendingOperationApprove(props) {
               <span>{operations.length} operations</span>
             )}
 
-            <CurrencyNameValue currencyName="EUR" value={totalAmount} />
+            <CurrencyNameValue
+              currencyName={totalAmountCurrency}
+              value={totalAmountCounterValue}
+            />
           </p>
           <p className="header light">
             <span>pending approval</span>
@@ -49,8 +55,11 @@ function PendingOperationApprove(props) {
         </div>
       )}
       {_.map(operations, operation => {
-        const currencyClass = operation.currency_name.toLowerCase();
         const account = operation.account;
+        const amountUnitValue = countervalueForRate(
+          operation.rate,
+          operation.amount
+        );
 
         return (
           <div
@@ -64,15 +73,12 @@ function PendingOperationApprove(props) {
               </span>
               <span className="request-operation-amount crypto">
                 <CurrencyNameValue
-                  currencyName="BTC"
+                  currencyName={operation.currency_name}
                   value={operation.amount}
                 />
               </span>
               <span className="request-operation-amount">
-                <CurrencyNameValue
-                  currencyName="EUR"
-                  value={operation.reference_conversion.amount}
-                />
+                <CurrencyUnitValue {...amountUnitValue} />
               </span>
             </div>
             <div>

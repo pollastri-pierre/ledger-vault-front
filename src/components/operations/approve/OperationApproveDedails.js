@@ -9,6 +9,7 @@ import Amount from "../../Amount";
 function OperationApproveDetails(props) {
   const { operation } = props;
   const { account } = operation;
+  const { rate } = operation;
 
   return (
     <div>
@@ -16,7 +17,7 @@ function OperationApproveDetails(props) {
         hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
         amount={operation.amount}
         currency={account.currency.name}
-        amount_flat={operation.reference_conversion.amount}
+        rate={rate}
       />
       <div className="operation-list">
         <LineRow label="status">Collecting Approvals</LineRow>
@@ -28,16 +29,16 @@ function OperationApproveDetails(props) {
         </LineRow>
         <LineRow label="Confirmation fees">
           <Amount
-            amount_crypto={operation.fees}
-            amount_flat={operation.reference_conversion.fees}
             currencyName={account.currency.name}
+            value={operation.fees}
+            rate={rate}
           />
         </LineRow>
         <LineRow label="Total Spent">
           <Amount
-            amount_crypto={operation.amount}
-            amount_flat={operation.reference_conversion.amount}
             currencyName={account.currency.name}
+            value={operation.amount}
+            rate={rate}
             strong
           />
         </LineRow>
