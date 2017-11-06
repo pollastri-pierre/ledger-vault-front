@@ -8,7 +8,7 @@ function PopBubble(props) {
   return (
     <Popover
       {...props}
-      className="pop-bubble"
+      className={`pop-bubble ${props.className}`}
       anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
       targetOrigin={{ horizontal: "middle", vertical: "top" }}
       style={{
@@ -26,12 +26,14 @@ function PopBubble(props) {
 
 PopBubble.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.shape({})
+  style: PropTypes.shape({}),
+  className: PropTypes.string
 };
 
 PopBubble.defaultProps = {
   children: "",
-  style: {}
+  style: {},
+  className: ""
 };
 
 export default PopBubble;
