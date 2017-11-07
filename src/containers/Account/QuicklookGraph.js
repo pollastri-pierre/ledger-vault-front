@@ -12,12 +12,9 @@ export default class QuicklookGraph extends Component {
     this.state = {
       selected: -1,
       data: [],
-      domainX: [],
-      domainY: [],
       xAxis: "",
       yAxis: "",
       mounted: 0,
-      margin: { top: 20, right: 20, bottom: 20, left: 20 },
       width: 300 - 20 - 20,
       height: 190 - 20 - 20,
       compute: 0,
@@ -27,7 +24,8 @@ export default class QuicklookGraph extends Component {
   }
 
   setSelected = index => {
-    this.setState({ selected: index });
+    if (index !== this.state.data.length - 1)
+      this.setState({ selected: index });
   };
 
   handleMouseOver = (d, i) => {
@@ -163,21 +161,23 @@ export default class QuicklookGraph extends Component {
   };
 
   computeData = () => {
-    const { width, height, data, domainX, domainY, xAxis, yAxis } = this.state;
+    const { width, height, data, xAxis, yAxis } = this.state;
     let computedData = data.slice();
 
+    let domainX = [
+      d3.min(data, function(d) {
+        return d.date;
+      }),
+      new Date()
+    ];
     const x = d3.event.transform.rescaleX(
       d3
         .scaleTime()
-        .domain(
-          d3.extent(data, function(d) {
-            return d.date;
-          })
-        )
+        .domain(domainX)
         .range([55, width])
-        .nice()
     );
-    const timeDelta = x.domain()[1] - x.domain()[0];
+    domainX = x.domain();
+    const timeDelta = domainX[1] - domainX[0];
 
     const tick =
       timeDelta >= 31556952000 * 2
@@ -188,19 +188,47 @@ export default class QuicklookGraph extends Component {
 
     let newXAxis = xAxis.scale(x);
 
+    const domainY = [
+      d3.min(data, function(d) {
+        return d.value;
+      }),
+      d3.max(data, function(d) {
+        return d.value;
+      })
+    ];
+    let domainY2 = [-1, 1];
+    let flag = 1;
+
+    _.map(data, (elem, i) => {
+      if (elem.date <= domainX[1] && elem.date >= domainX[0]) {
+        if (flag) {
+          domainY2 = [elem.value, elem.value];
+          flag = 0;
+        }
+        if (elem.value <= domainY2[0]) {
+          domainY2[0] = elem.value;
+        } else if (elem.value >= domainY2[1]) {
+          domainY2[1] = elem.value;
+        }
+      }
+    });
+
+    if (flag) {
+      domainY2 = domainY;
+    } else if (domainY2[0] === domainY2[1]) {
+      domainY2[0] -= domainY2[0] / 2;
+      domainY2[1] += domainY2[1] / 2;
+    }
+
     const y = d3
       .scaleLinear()
-      .domain([
-        d3.min(data, function(d) {
-          return d.value;
-        }),
-        d3.max(data, function(d) {
-          return d.value;
-        })
-      ])
+      .domain(domainY2)
       .range([height, 0]);
 
-    const newYAxis = yAxis.scale(y);
+    const newYAxis = yAxis
+      .scale(y)
+      .ticks(3)
+      .tickSize(width);
 
     computedData = _.map(data, transaction => {
       return {
@@ -220,11 +248,15 @@ export default class QuicklookGraph extends Component {
 
   componentDidMount() {
     let { dateRange, tick, data } = this.props;
+    data.push({ ...data[data.length - 1] });
+    data[data.length - 1].time = new Date();
+    data[data.length - 1].tooltip = false;
+
     data = _.sortBy(data, elem => new Date(elem.time).toISOString());
-
     if (this.props.data.length === 0) return;
+    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
-    const { margin, width, height } = this.state;
+    const { width, height } = this.state;
 
     const svg = d3.select(this.svg);
     svg.attr("height", height + margin.top + margin.bottom);
@@ -242,9 +274,12 @@ export default class QuicklookGraph extends Component {
         return d.amount;
       })
     ];
-    let domainX = d3.extent(data, function(d) {
-      return d.time;
-    });
+    let domainX = [
+      d3.min(data, function(d) {
+        return d.time;
+      }),
+      new Date()
+    ];
 
     let computedData = _.map(data, transaction => {
       return {
@@ -255,9 +290,8 @@ export default class QuicklookGraph extends Component {
     });
     const x = d3
       .scaleTime()
-      .domain([domainX[0], domainX[1]])
-      .range([55, width])
-      .nice();
+      .domain([domainX[0], new Date()])
+      .range([55, width]);
 
     const y = d3
       .scaleLinear()
@@ -332,7 +366,7 @@ export default class QuicklookGraph extends Component {
     g.append("g").classed("hoveringDots", true);
     const zoom = d3
       .zoom()
-      .scaleExtent([1, Infinity])
+      .scaleExtent([1, 100])
       .translateExtent([[55, 0], [width, height]])
       .extent([[55, 0], [width, height]])
       .on(
@@ -347,8 +381,6 @@ export default class QuicklookGraph extends Component {
     svg.call(zoom);
     this.setState({
       data: computedData,
-      domainX: domainX,
-      domainY: domainY,
       xAxis: xAxis,
       yAxis: yAxis,
       mounted: 1,
@@ -357,7 +389,7 @@ export default class QuicklookGraph extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { domainX, domainY, xAxis, yAxis, compute, data } = this.state;
+    const { compute, data } = this.state;
     if (this.state.mounted) {
       if (compute) {
         this.computeData();
