@@ -52,10 +52,11 @@ class OperationCreationDetails extends Component<Props, State> {
     const value = parseFloat(amount) || 0;
     const balance = this.props.account.balance;
     const max = balance / 10 ** magnitude;
+    const decimals = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
 
     this.setState({
       amount,
-      amountIsValid: value <= max
+      amountIsValid: value <= max && decimals.length <= magnitude
     });
   };
 
