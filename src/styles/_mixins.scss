@@ -1,18 +1,17 @@
-@import './variables';
+@import "./variables";
 
-@mixin highlight-block($color, $left) {
+@mixin highlight-block-common($color) {
   &::before {
-    content: '';
+    content: "";
     cursor: pointer;
     background-color: $color;
     width: 0px;
     height: 26px;
     display: block;
     position: absolute;
-    left: $left;
     bottom: calc(50% - (26px / 2));
     opacity: 1;
-    transition: width .2s ease;
+    transition: width 0.2s ease;
   }
 
   &.active {
@@ -25,10 +24,26 @@
   }
 }
 
+@mixin highlight-block($color, $left) {
+  @include highlight-block-common($color);
+
+  &::before {
+    left: $left;
+  }
+}
+
+@mixin highlight-block-right($color, $right) {
+  @include highlight-block-common($color);
+
+  &::before {
+    right: $right;
+  }
+}
+
 @mixin highlight-block-active($color, $left) {
   opacity: 1;
   &::before {
-    content: '';
+    content: "";
     background-color: $color;
     width: 5px;
     height: 26px;
@@ -37,6 +52,6 @@
     left: $left;
     opacity: 1;
     bottom: calc(50% - (26px / 2));
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
   }
 }
