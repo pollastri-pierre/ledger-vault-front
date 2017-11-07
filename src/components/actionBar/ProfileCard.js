@@ -3,8 +3,7 @@ import React, { Component } from "react";
 import { Route, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import type { Member } from "../../datatypes";
-import Profile from "../../components/profile/Profile";
-import { BlurDialog } from "../../containers";
+import ProfileEditModal from "../ProfileEditModal";
 import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
@@ -15,7 +14,6 @@ import api from "../../data/api-spec";
 class ProfileCard extends Component<
   {
     profile: Member,
-    fetchData: Function,
     history: *,
     location: *
   },
@@ -40,20 +38,11 @@ class ProfileCard extends Component<
     this.setState({ bubbleOpened: false });
   };
 
-  onCloseProfileEdit = () => {
-    this.props.history.goBack();
-  };
-
   onClickProfileCard = (/* event: * */) => {
     this.setState({
       bubbleOpened: !this.state.bubbleOpened
     });
   };
-
-  saveProfile = (error, profile: Member) =>
-    this.props
-      .fetchData(api.saveProfile, profile)
-      .then(() => this.onCloseProfileEdit());
 
   render() {
     const { profile, location } = this.props;
@@ -100,18 +89,7 @@ class ProfileCard extends Component<
           </div>
         </PopBubble>
 
-        <Route
-          path="*/profile-edit"
-          render={() => (
-            <BlurDialog open onRequestClose={this.onCloseProfileEdit}>
-              <Profile
-                profile={profile}
-                close={this.onCloseProfileEdit}
-                save={this.saveProfile}
-              />
-            </BlurDialog>
-          )}
-        />
+        <Route path="*/profile-edit" component={ProfileEditModal} />
       </span>
     );
   }
