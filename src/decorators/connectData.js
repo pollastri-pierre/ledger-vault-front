@@ -7,16 +7,19 @@ import { fetchData, apiSpecCacheKey } from "../redux/modules/data";
 import type { APISpec } from "../data/api-spec";
 
 type FetchData = (api: APISpec, body?: Object) => Promise<*>;
+
+// FIXME the flowtypes here still have some issues. trying hard to hunt them all :o
+
 // prettier-ignore
-type PropsWithoutA<Props, A> = $Diff<Props, A & {
+type PropsWithoutA<Props, A> = $Diff<Props, $ObjMap<A, any> & {
     fetchData?: FetchData,
     reloading?: boolean,
     forceFetch?: () => void
-  }>;
+  }> | {| |}/* HACK */;
 // prettier-ignore
-type In<Props, S> = Class<React.Component<Props, S>> | (props: Props)=>*;
+type In<Props> = React$ComponentType<Props>;
 // prettier-ignore
-type Out<Props, A> = Class<React.Component<PropsWithoutA<Props, A>>>;
+type Out<Props, A> = Class<React$Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
   // an object of { [propName: string]: APISpec }
   api: A,
@@ -53,8 +56,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchData(spec, apiParams, body))
 });
 
-export default <Props, A: { [_: string]: APISpec }, S>(
-  Decorated: In<Props, S>,
+export default <Props, A: { [_: string]: APISpec }>(
+  Decorated: In<Props>,
   opts: Opts<A>
 ): Out<Props, A> => {
   const { api, propsToApiParams, RenderLoading, RenderError, forceFetch } = {

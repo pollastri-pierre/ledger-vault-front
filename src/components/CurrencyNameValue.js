@@ -20,7 +20,7 @@ type Props = {
   // if true, display the countervalue instead of the actual crypto currency
   countervalue?: boolean,
   // override the rate to use (default is the currency current rate)
-  rate: ?Rate,
+  rate?: Rate,
   // data store
   currencies: Array<Currency>
 };

@@ -8,13 +8,13 @@ import {
   countervalueForRate,
   getCurrencyRate
 } from "../data/currency";
-import type { Rate } from "../datatypes";
+import type { Rate, Currency } from "../datatypes";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {
     currencyName: string,
-    currencies: *,
-    rate: ?Rate // override the rate to use (default is the currency current rate)
+    currencies: Array<Currency>,
+    rate?: Rate // override the rate to use (default is the currency current rate)
   };
   render() {
     let { currencyName, currencies, rate } = this.props;
