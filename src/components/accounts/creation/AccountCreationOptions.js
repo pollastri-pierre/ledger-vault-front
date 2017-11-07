@@ -11,7 +11,7 @@ function AccountCreationOptions(props) {
         type="text"
         name="name"
         placeholder="Account's name"
-        value={props.options.name}
+        value={props.name}
         onChange={e => props.changeName(e.target.value)}
       />
     </div>
@@ -28,9 +28,7 @@ AccountCreationOptions.propTypes = {
   currency: PropTypes.shape({
     name: PropTypes.string
   }),
-  options: PropTypes.shape({
-    name: PropTypes.string
-  }).isRequired,
+  name: PropTypes.string.isRequired,
   changeName: PropTypes.func.isRequired
 };
 

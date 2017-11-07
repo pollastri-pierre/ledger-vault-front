@@ -4,6 +4,18 @@ import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
+  if (method === "POST") {
+    switch (uri) {
+      case "/organization/account":
+        console.log(body);
+        return denormalize(
+          Object.keys(mockEntities.accounts[0]),
+          apiSpec.newAccount.responseSchema,
+          mockEntities
+        );
+    }
+  }
+
   if (method === "DELETE") {
     return {};
   }

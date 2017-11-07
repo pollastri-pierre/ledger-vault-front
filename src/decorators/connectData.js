@@ -61,7 +61,7 @@ export default <Props, A: { [_: string]: APISpec }, S>(
     ...defaultOpts,
     ...opts
   };
-  const apiKeys = Object.keys(api);
+  const apiKeys = Object.keys(api || {});
   const displayName = `connectData(${Decorated.displayName ||
     Decorated.name ||
     ""})`;

@@ -40,7 +40,9 @@ export default class DialogButton extends Component {
           float: right ? "right" : "left",
           ...this.props.style
         }}
-        disabled={this.state.pending}
+        disabled={
+          this.props.disabled ? this.props.disabled : this.state.pending
+        }
         onTouchTap={this.onClick}
       >
         {this.props.children}

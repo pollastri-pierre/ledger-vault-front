@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
 import { openModalOperation } from "../../redux/modules/operation-creation";
 import PendingsMenuBadge from "./PendingsMenuBadge";
@@ -60,4 +60,4 @@ Menu.propTypes = {
   openOperation: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));

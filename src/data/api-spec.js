@@ -68,6 +68,15 @@ const api: API = {
     // input : Member
     responseSchema: Member
   },
+  newAccount: {
+    uri: "/organization/account",
+    method: "POST",
+    notif: {
+      title: "Account request created",
+      content: "The account request has been successfully created"
+    },
+    responseSchema: Account
+  },
   abortAccount: {
     uri: ({ accountId }) => `/accounts/${accountId}`,
     method: "DELETE",
