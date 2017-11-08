@@ -1,6 +1,6 @@
 //@flow
 import { denormalize } from "normalizr";
-import apiSpec from "./api-spec";
+import * as apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
@@ -139,13 +139,24 @@ export default (uri: string, init: *): ?Promise<*> => {
   const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
   const mockRes = mockSync(uri, method, body);
   if (mockRes) {
-    return delay(400 + 400 * Math.random()).then(() => {
-      console.warn("mock: " + method + " " + uri, body || "", "\n=>", mockRes);
-      return {
-        status: 200,
-        json: () => Promise.resolve(mockRes)
-      };
-    });
+    return delay(400 + 400 * Math.random())
+      .then(() => {
+        console.warn(
+          "mock: " + method + " " + uri,
+          body || "",
+          "\n=>",
+          mockRes
+        );
+        // if (Math.random() < 0.3) throw new Error("MOCK_HTTP_FAILURE");
+        return {
+          status: 200,
+          json: () => Promise.resolve(mockRes)
+        };
+      })
+      .catch(e => {
+        console.warn("mock: " + method + " " + uri + " FAILED", e);
+        throw e;
+      });
   } else {
     return null;
   }

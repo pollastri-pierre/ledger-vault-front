@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
-import connectData from "../decorators/connectData";
-import api from "../data/api-spec";
+import connectData from "../restlay/connectData";
+import * as api from "../data/api-spec";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import {
   inferUnit,
@@ -41,7 +41,7 @@ class CurrencyCounterValueConversion extends PureComponent<*> {
 }
 
 export default connectData(CurrencyCounterValueConversion, {
-  api: {
+  queries: {
     currencies: api.currencies
   }
 });

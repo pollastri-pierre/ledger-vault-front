@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/CircularProgress";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 
 class ProfileCard extends Component<
   {
@@ -104,7 +104,7 @@ const RenderLoading = () => (
 export default withRouter(
   connectData(ProfileCard, {
     RenderLoading,
-    api: {
+    queries: {
       profile: api.profile
     }
   })

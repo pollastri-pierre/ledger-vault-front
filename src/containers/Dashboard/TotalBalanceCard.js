@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import DateFormat from "../../components/DateFormat";
@@ -77,9 +77,10 @@ class RenderLoading extends Component<*> {
 }
 
 export default connectData(TotalBalance, {
-  api: {
+  queries: {
     totalBalance: api.dashboardTotalBalance
   },
+  optimisticRendering: true,
   RenderError,
   RenderLoading
 });

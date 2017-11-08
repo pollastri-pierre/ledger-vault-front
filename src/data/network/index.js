@@ -1,6 +1,5 @@
 //@flow
 import fetchWithRetries from "./fetchWithRetries";
-import groupConcurrentPromise from "./groupConcurrentPromise";
 
 export function NetworkError(obj: *) {
   this.name = "NetworkError";
@@ -18,14 +17,11 @@ export default function(
     Accept: "application/json",
     "Content-Type": "application/json"
   };
-  return (method === "GET"
-    ? groupConcurrentPromise(uri, () => fetchWithRetries(uri, { headers }))
-    : fetchWithRetries(uri, {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : undefined
-      })
-  ).then(response => {
+  const options: Object = { headers, method };
+  if (method !== "GET" && body) {
+    options.body = JSON.stringify(body);
+  }
+  return fetchWithRetries(uri, options).then(response => {
     if (response.status < 200 || response.status >= 300) {
       const baseErrorObject = {
         message: "network error",

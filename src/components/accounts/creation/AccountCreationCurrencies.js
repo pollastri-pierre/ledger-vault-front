@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
-import connectData from "../../../decorators/connectData";
-import api from "../../../data/api-spec";
+import connectData from "../../../restlay/connectData";
+import * as api from "../../../data/api-spec";
 import type { Currency } from "../../../datatypes";
 
 function AccountCreationCurrencies(props: {
@@ -36,7 +36,7 @@ function AccountCreationCurrencies(props: {
 }
 
 export default connectData(AccountCreationCurrencies, {
-  api: {
+  queries: {
     currencies: api.currencies
   }
 });

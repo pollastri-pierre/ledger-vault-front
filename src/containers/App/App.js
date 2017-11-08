@@ -1,8 +1,8 @@
 //@flow
 import React from "react";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import "open-sans-fontface/open-sans.css";
 import "material-design-icons/iconfont/material-icons.css";
 import Content from "../../components/content/Content";
@@ -25,7 +25,7 @@ function App() {
 }
 
 export default connectData(App, {
-  api: {
+  queries: {
     // we need to pull these at least
     currencies: api.currencies
   }
