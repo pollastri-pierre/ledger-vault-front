@@ -4,30 +4,20 @@ import "./index.css";
 import ArrowDown from "../icons/ArrowDown";
 
 class SecurityRow extends Component<*> {
-  constructor() {
-    super();
-    this.callback = this.callback.bind(this);
-  }
   props: {
-    icon: *,
+    icon: React$Element<*> | string,
     label: string,
     disabled?: boolean,
-    onClick?: Function,
-    children: *
+    onClick: Function,
+    children: React$Element<*> | string
   };
-
-  callback() {
-    if (!this.props.disabled) {
-      this.props.onClick();
-    }
-  }
 
   render() {
     const { children, icon, label, disabled, onClick } = this.props;
     return (
       <div
         className={`security-scheme-row ${disabled ? "disabled" : ""}`}
-        onClick={this.callback}
+        onClick={disabled ? null : onClick}
       >
         {icon}
         <div className="security-label">{label}</div>

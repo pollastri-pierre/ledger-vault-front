@@ -48,18 +48,13 @@ type Props = {
 };
 
 class AccountCreation extends Component<Props> {
-  constructor() {
-    super();
-    this.close = this.close.bind(this);
-  }
-
   componentWillMount() {
     this.props.onClearState();
   }
 
-  close() {
+  close = () => {
     this.props.history.goBack();
-  }
+  };
 
   render() {
     const {
@@ -130,6 +125,7 @@ class AccountCreation extends Component<Props> {
         break;
       default:
         content = (
+          // $FlowFixMe
           <MainCreation
             account={account}
             changeAccountName={onChangeAccountName}

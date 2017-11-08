@@ -16,18 +16,10 @@ import type APISpec from "./APISpec";
 
 type FetchData = (api: APISpec, body?: Object) => Promise<*>;
 
-// FIXME the flowtypes here still have some issues. trying hard to hunt them all :o
-
-// prettier-ignore
-type PropsWithoutA<Props, A> = $Diff<Props, $ObjMap<A, any> & {
-    reloading?: boolean,
-    fetchData?: FetchData,
-    forceFetch?: () => void,
-  }> | {| |}/* HACK */;
 // prettier-ignore
 type In<Props> = React$ComponentType<Props>;
 // prettier-ignore
-type Out<Props, A> = Class<React$Component<PropsWithoutA<Props, A>>>;
+type Out<Props, A> = Class<React$Component<*, *>>; // FIXME figure out flowtype of the output component. a mixing of $Diff, $ObjMap, $Shape magics?
 type Opts<A> = {
   // an object of { [propName: string]: APISpec }
   queries?: A,
@@ -63,35 +55,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchDataAction(store => store.data)(spec, apiParams, body))
 });
 
-export default <Props, A: { [_: string]: APIQuerySpec }>(
+function connectData<A: { [_: string]: APIQuerySpec }, Props>(
   Decorated: In<Props>,
-  opts?: Opts<A> = {}
-): Out<Props, A> => {
+  opts?: Opts<A>
+): Out<Props, A> {
   type APIProps = $ObjMap<A, any>; // TODO we should be able to infer the response type with this
 
   const displayName = `connectData(${Decorated.displayName ||
     Decorated.name ||
     ""})`;
-
-  // TOOD drop deprecated
-  if (opts.api) {
-    //$FlowFixMe
-    opts.queries = opts.api;
-    console.warn(
-      "DEPRECATED opts.api usage on " +
-        displayName +
-        ". use opts.queries instead"
-    );
-  }
-  if (opts.propsToApiParams) {
-    //$FlowFixMe
-    opts.propsToQueryParams = opts.propsToApiParams;
-    console.warn(
-      "DEPRECATED opts.propsToApiParams usage on " +
-        displayName +
-        ". use opts.propsToQueryParams instead"
-    );
-  }
 
   const {
     queries,
@@ -105,19 +77,6 @@ export default <Props, A: { [_: string]: APIQuerySpec }>(
     ...opts
   };
   const queriesKeys = Object.keys(queries);
-
-  for (let k in queries) {
-    if (!queries[k]) {
-      console.error("Invalid queries provided to " + displayName, queries);
-    } else if (queries[k].method !== "GET") {
-      console.error(
-        "Unexpected queries '" +
-          k +
-          "'. Only GET calls are supported in queries option:",
-        queries[k]
-      );
-    }
-  }
 
   class Clazz extends Component<
     { dataStore: Store, fetchAPI: * } & *,
@@ -142,7 +101,8 @@ export default <Props, A: { [_: string]: APIQuerySpec }>(
     sync(apiParams: ?Object): Array<Promise<*>> {
       const { fetchAPI, dataStore } = this.props;
       this.apiParams = apiParams;
-      return queriesKeys
+      // $FlowFixMe filter() don't seem to be flowtyped correctly
+      const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
           const apiSpec = queries[key];
           if (forceFetch || !cacheIsFresh(dataStore, apiSpec, apiParams)) {
@@ -150,6 +110,7 @@ export default <Props, A: { [_: string]: APIQuerySpec }>(
           }
         })
         .filter(p => p);
+      return promises;
     }
 
     /**
@@ -273,4 +234,6 @@ export default <Props, A: { [_: string]: APIQuerySpec }>(
   }
 
   return connect(mapStateToProps, mapDispatchToProps)(Clazz);
-};
+}
+
+export default connectData;

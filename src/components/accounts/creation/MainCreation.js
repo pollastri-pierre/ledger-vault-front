@@ -9,16 +9,17 @@ import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton, Overscroll } from "../../";
+import type { Account, Currency } from "../../../datatypes";
 
 type Props = {
   changeAccountName: Function,
-  selectCurrency: Function,
+  selectCurrency: (cur: Currency) => void,
   onSelect: Function,
   close: Function,
   switchInternalModal: Function,
   fetchData: Function,
   tabsIndex: number,
-  account: *
+  account: Account
 };
 
 function MainCreation(props: Props) {
