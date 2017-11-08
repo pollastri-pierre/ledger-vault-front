@@ -7,7 +7,14 @@ import Hourglass from "../../icons/thin/Hourglass";
 import AccountName from "../../AccountName";
 
 function AccountCreationConfirmation(props) {
-  const { security, options, currency } = props.account;
+  const {
+    name,
+    approvers,
+    rate_limiter,
+    time_lock,
+    currency,
+    quorum
+  } = props.account;
 
   return (
     <div>
@@ -15,21 +22,19 @@ function AccountCreationConfirmation(props) {
         <div className="confirmation-security-item">
           <PeopleThin className="security-icon member" />
           <span className="security-title">Members</span>
-          <span className="security-value">
-            {security.members.length} selected
-          </span>
+          <span className="security-value">{approvers.length} selected</span>
         </div>
         <div
-          className={`confirmation-security-item ${!security.timelock.enabled
+          className={`confirmation-security-item ${!time_lock.enabled
             ? "disabled"
             : ""}`}
         >
           <Hourglass className="security-icon timelock" />
           <span className="security-title">Time-lock</span>
           <span className="security-value">
-            {security.timelock.enabled ? (
+            {time_lock.enabled ? (
               <span>
-                {security.timelock.duration} {security.timelock.frequency}
+                {time_lock.value} {time_lock.frequency}
               </span>
             ) : (
               "disabled"
@@ -37,16 +42,16 @@ function AccountCreationConfirmation(props) {
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${!security.ratelimiter.enabled
+          className={`confirmation-security-item ${!rate_limiter.enabled
             ? "disabled"
             : ""}`}
         >
           <Rates className="security-icon ratelimiter" />
           <span className="security-title">Rate limiter</span>
           <span className="security-value">
-            {security.ratelimiter.enabled ? (
+            {rate_limiter.enabled ? (
               <span>
-                {security.ratelimiter.rate} per {security.ratelimiter.frequency}
+                {rate_limiter.value} per {rate_limiter.frequency}
               </span>
             ) : (
               "disabled"
@@ -59,7 +64,7 @@ function AccountCreationConfirmation(props) {
         <div className="confirmation-info">
           <span className="info-title">Name</span>
           <span className="info-value name">
-            <AccountName name={options.name} currency={currency} />
+            <AccountName name={name} currency={currency} />
           </span>
         </div>
         <div className="confirmation-info">
@@ -69,7 +74,7 @@ function AccountCreationConfirmation(props) {
         <div className="confirmation-info">
           <span className="info-title">Approvals to spend</span>
           <span className="info-value">
-            {security.approvals} of {security.members.length} members
+            {quorum} of {approvers.length} members
           </span>
         </div>
       </div>

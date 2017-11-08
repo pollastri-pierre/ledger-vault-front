@@ -1,13 +1,26 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
+import InfoModal from "../../InfoModal";
 import ArrowDown from "../../icons/ArrowDown";
 
-function AccountCreationRateLimiter(props) {
+type Props = {
+  rate_limiter: *,
+  popbubble: boolean,
+  anchor?: boolean,
+  anchor: React.DOM,
+  enable: () => Function,
+  switchInternalModal: string => Function,
+  changeFrequency: (a: string, b: string) => Function,
+  openPopBubble: (*) => Function,
+  change: (a: string) => Function
+};
+
+function AccountCreationRateLimiter(props: Props) {
   const {
     switchInternalModal,
-    ratelimiter,
+    rate_limiter,
     enable,
     popbubble,
     openPopBubble,
@@ -30,7 +43,7 @@ function AccountCreationRateLimiter(props) {
         >
           <label htmlFor="enable-ratelimiter">Enable</label>
           <Checkbox
-            checked={ratelimiter.enabled}
+            checked={rate_limiter.enabled}
             handleInputChange={enable}
             labelFor="enable-ratelimiter"
           />
@@ -40,7 +53,7 @@ function AccountCreationRateLimiter(props) {
             className="medium-padding"
             type="text"
             id="text-duration"
-            value={ratelimiter.rate}
+            value={rate_limiter.value}
             onChange={e => change(e.target.value)}
           />
           <label htmlFor="text-duration">Rate</label>
@@ -50,7 +63,7 @@ function AccountCreationRateLimiter(props) {
             tabIndex={0}
             onClick={e => openPopBubble(e.currentTarget)}
           >
-            <strong>operation</strong> per {ratelimiter.frequency}
+            <strong>operation</strong> per {rate_limiter.frequency}
             <ArrowDown className="arrow-down" />
           </span>
           <PopBubble
@@ -67,7 +80,7 @@ function AccountCreationRateLimiter(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "minut")}
-                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                className={`frequency-bubble-row ${rate_limiter.frequency ===
                 "minut"
                   ? "active"
                   : ""}`}
@@ -78,7 +91,7 @@ function AccountCreationRateLimiter(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "hour")}
-                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                className={`frequency-bubble-row ${rate_limiter.frequency ===
                 "hour"
                   ? "active"
                   : ""}`}
@@ -89,7 +102,7 @@ function AccountCreationRateLimiter(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "day")}
-                className={`frequency-bubble-row ${ratelimiter.frequency ===
+                className={`frequency-bubble-row ${rate_limiter.frequency ===
                 "day"
                   ? "active"
                   : ""}`}
@@ -99,10 +112,10 @@ function AccountCreationRateLimiter(props) {
             </div>
           </PopBubble>
         </div>
-        <p className="info">
+        <InfoModal>
           Rate-limiter enforces that your team does not exceed a pre-defined
           number of outgoing transaction per interval of time.
-        </p>
+        </InfoModal>
       </div>
 
       <div className="footer">
@@ -117,16 +130,5 @@ function AccountCreationRateLimiter(props) {
     </div>
   );
 }
-
-AccountCreationRateLimiter.propTypes = {
-  ratelimiter: PropTypes.shape({}).isRequired,
-  popbubble: PropTypes.bool.isRequired,
-  anchor: PropTypes.shape({}).isRequired,
-  switchInternalModal: PropTypes.func.isRequired,
-  enable: PropTypes.func.isRequired,
-  openPopBubble: PropTypes.func.isRequired,
-  change: PropTypes.func.isRequired,
-  changeFrequency: PropTypes.func.isRequired
-};
 
 export default AccountCreationRateLimiter;

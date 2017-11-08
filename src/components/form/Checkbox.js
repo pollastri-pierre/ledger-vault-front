@@ -1,8 +1,14 @@
+//@flow
+
 import React from "react";
-import PropTypes from "prop-types";
 import "./Checkbox.css";
 
-function Checkbox(props) {
+type Props = {
+  labelFor: string,
+  handleInputChange: Function,
+  checked?: boolean
+};
+function Checkbox(props: Props) {
   const { labelFor, checked, handleInputChange } = props;
 
   return (
@@ -22,12 +28,6 @@ function Checkbox(props) {
 Checkbox.defaultProps = {
   handleInputChange: () => {},
   checked: false
-};
-
-Checkbox.propTypes = {
-  labelFor: PropTypes.string.isRequired,
-  handleInputChange: PropTypes.func,
-  checked: PropTypes.bool
 };
 
 export default Checkbox;

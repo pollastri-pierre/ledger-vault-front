@@ -1,42 +1,28 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route } from "react-router";
+import { Route, withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
-import { openModalAccount } from "../../redux/modules/account-creation";
+import AccountCreation from "../accounts/creation/AccountCreation";
 
 import "./ActionBar.css";
 
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = dispatch => ({
-  openAccount: () => dispatch(openModalAccount())
-});
-
-const NewAccountLink = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(({ openAccount }) => (
-  <Link
-    to="/dashboard/new-account"
-    onClick={openAccount /* TODO remove */}
-    className="content-header-button"
-  >
+const NewAccountLink = () => (
+  <Link to="/dashboard/new-account" className="content-header-button">
     <div className="content-header-button-icon">
       <i className="material-icons flipped">add</i>
     </div>
     <div className="content-header-button-text">account</div>
   </Link>
-));
+);
 
 class ActionBar extends Component<*, *> {
   props: {
     openCloseProfile: Function,
     openCloseEdit: Function,
-    saveProfile: Function,
-    openAccount: Function
+    saveProfile: Function
   };
   static contextTypes = {
     translate: PropTypes.func.isRequired
@@ -45,9 +31,11 @@ class ActionBar extends Component<*, *> {
   render() {
     // FIXME introduce a component for i18n
     const t = this.context.translate;
+
     return (
       <div className="ActionBar">
         <ProfileCard />
+        <Route path="*/new-account" component={AccountCreation} />
         <div className="content-header">
           <div className="content-header-left">
             <img
@@ -58,7 +46,7 @@ class ActionBar extends Component<*, *> {
             />
           </div>
           <div className="content-header-right">
-            <Route path="/dashboard/" render={() => <NewAccountLink />} />
+            <Route path="/dashboard" render={() => <NewAccountLink />} />
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>
@@ -90,4 +78,4 @@ class ActionBar extends Component<*, *> {
   }
 }
 
-export default ActionBar;
+export default withRouter(ActionBar);
