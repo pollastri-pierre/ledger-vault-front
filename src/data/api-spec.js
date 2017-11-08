@@ -22,33 +22,28 @@ const genericRenderNotif = (resource, verb) => ({
 
 export const currencies = new APIQuerySpec({
   uri: "/currencies",
-  method: "GET",
   responseSchema: [Currency],
   cacheMaxAge: 60
 });
 
 export const profile = new APIQuerySpec({
   uri: "/organization/members/me",
-  method: "GET",
   responseSchema: Member,
   logoutUserIfStatusCode: 403
 });
 
 export const accounts = new APIQuerySpec({
   uri: "/accounts",
-  method: "GET",
   responseSchema: [Account]
 });
 
 export const members = new APIQuerySpec({
   uri: "/organization/members",
-  method: "GET",
   responseSchema: [Member]
 });
 
 export const approvers = new APIQuerySpec({
   uri: "/organization/approvers",
-  method: "GET",
   responseSchema: [Member]
 });
 
@@ -89,13 +84,11 @@ export const approveAccount = new APIMutationSpec({
 
 export const account = new APIQuerySpec({
   uri: ({ accountId }) => `/accounts/${accountId}`,
-  method: "GET",
   responseSchema: Account
 });
 
 export const operation = new APIQuerySpec({
   uri: ({ operationId }) => `/operations/${operationId}`,
-  method: "GET",
   responseSchema: Operation
 });
 
@@ -115,13 +108,11 @@ export const approveOperation = new APIMutationSpec({
 
 export const accountOperations = new APIQuerySpec({
   uri: ({ accountId }) => `/accounts/${accountId}/operations`,
-  method: "GET",
   responseSchema: [Operation]
 });
 
 export const pendings = new APIQuerySpec({
   uri: "/pendings",
-  method: "GET",
   responseSchema: {
     approveOperations: [Operation],
     watchOperations: [Operation],
@@ -153,6 +144,5 @@ export const dashboardTotalBalance = new APIQuerySpec({
 
 export const dashboardLastOperations = new APIQuerySpec({
   uri: "/dashboard/last-operations",
-  method: "GET",
   responseSchema: [Operation]
 });
