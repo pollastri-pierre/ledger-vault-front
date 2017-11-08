@@ -1,20 +1,20 @@
 //@flow
 import React, { PureComponent } from "react";
-import connectData from "../decorators/connectData";
-import api from "../data/api-spec";
+import connectData from "../restlay/connectData";
+import * as api from "../data/api-spec";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import {
   inferUnit,
   countervalueForRate,
   getCurrencyRate
 } from "../data/currency";
-import type { Rate } from "../datatypes";
+import type { Rate, Currency } from "../datatypes";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {
     currencyName: string,
-    currencies: *,
-    rate: ?Rate // override the rate to use (default is the currency current rate)
+    currencies: Array<Currency>,
+    rate?: Rate // override the rate to use (default is the currency current rate)
   };
   render() {
     let { currencyName, currencies, rate } = this.props;
@@ -41,7 +41,7 @@ class CurrencyCounterValueConversion extends PureComponent<*> {
 }
 
 export default connectData(CurrencyCounterValueConversion, {
-  api: {
+  queries: {
     currencies: api.currencies
   }
 });

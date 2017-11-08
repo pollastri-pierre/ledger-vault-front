@@ -2,6 +2,8 @@
 import fiatUnits from "../fiat-units";
 import type { Currency, Unit, Rate } from "../datatypes";
 
+// This define utility to deal with currencies, units, countervalues
+
 type UnitValue = { value: number, unit: Unit };
 
 export function getCurrency(

@@ -11,7 +11,6 @@ export { default as TextField } from "./utils/TextField";
 export { default as Overscroll } from "./utils/Overscroll";
 export { default as ActionBar } from "./actionBar/ActionBar";
 export { default as Content } from "./content/Content";
-export { default as Profile } from "./profile/Profile";
 export { default as OperationDetails } from "./operations/OperationDetails";
 export {
   default as AccountCreation

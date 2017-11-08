@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
@@ -96,10 +96,11 @@ class RenderLoading extends Component<*> {
 }
 
 export default connectData(PendingCard, {
-  api: {
+  queries: {
     accounts: api.accounts,
     pendings: api.pendings
   },
+  optimisticRendering: true,
   RenderError,
   RenderLoading
 });

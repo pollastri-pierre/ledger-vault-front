@@ -1,22 +1,35 @@
+//@flow
 import React from "react";
 import _ from "lodash";
-import PropTypes from "prop-types";
+import connectData from "../../../restlay/connectData";
+import * as api from "../../../data/api-spec";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton, Overscroll } from "../../";
+import type { Account, Currency } from "../../../datatypes";
 
-function MainCreation(props) {
+type Props = {
+  changeAccountName: Function,
+  selectCurrency: (cur: Currency) => void,
+  onSelect: Function,
+  close: Function,
+  switchInternalModal: Function,
+  fetchData: Function,
+  tabsIndex: number,
+  account: Account
+};
+
+function MainCreation(props: Props) {
   const {
-    close,
     changeAccountName,
     account,
     selectCurrency,
     onSelect,
     tabsIndex,
-    save,
+    close,
     switchInternalModal
   } = props;
 
@@ -27,17 +40,23 @@ function MainCreation(props) {
       isNextDisabled = _.isNull(account.currency);
       break;
     case 1:
-      isNextDisabled = account.options.name === "";
+      isNextDisabled = account.name === "";
       break;
     case 2:
       isNextDisabled =
-        account.security.members.length === 0 ||
-        account.security.approvals === 0 ||
-        account.security.approvals > account.security.members.length;
+        account.approvers.length === 0 ||
+        account.quorum === 0 ||
+        account.quorum > account.approvers.length;
       break;
     default:
       isNextDisabled = true;
   }
+
+  const save = () => {
+    // TODO formating data to send it to the API here
+    const data = { data: "23" };
+    return props.fetchData(api.newAccount, data).then(() => close());
+  };
 
   return (
     <Tabs
@@ -51,12 +70,12 @@ function MainCreation(props) {
           <TabList>
             <Tab> 1. Currency </Tab>
             <Tab disabled={_.isNull(account.currency)}>2. Options</Tab>
-            <Tab disabled={account.options.name === ""}>3. Security</Tab>
+            <Tab disabled={account.name === ""}>3. Security</Tab>
             <Tab
               disabled={
-                account.security.members.length === 0 ||
-                account.security.approvals === 0 ||
-                account.security.approvals > account.security.members.length
+                account.approvers.length === 0 ||
+                account.quorum === 0 ||
+                account.quorum > account.approvers.length
               }
             >
               4. Confirmation
@@ -75,7 +94,7 @@ function MainCreation(props) {
           <TabPanel className="tabs_panel">
             <AccountCreationOptions
               currency={account.currency}
-              options={account.options}
+              name={account.name}
               changeName={changeAccountName}
             />
           </TabPanel>
@@ -91,9 +110,6 @@ function MainCreation(props) {
         </div>
       </div>
       <div className="footer">
-        <DialogButton className="cancel" highlight onTouchTap={close}>
-          Cancel
-        </DialogButton>
         {_.includes([0, 1, 2], tabsIndex) ? (
           <DialogButton
             highlight
@@ -113,15 +129,4 @@ function MainCreation(props) {
   );
 }
 
-MainCreation.propTypes = {
-  close: PropTypes.func.isRequired,
-  changeAccountName: PropTypes.func.isRequired,
-  account: PropTypes.shape({}).isRequired,
-  tabsIndex: PropTypes.number.isRequired,
-  selectCurrency: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired,
-  switchInternalModal: PropTypes.func.isRequired
-};
-
-export default MainCreation;
+export default connectData(MainCreation);

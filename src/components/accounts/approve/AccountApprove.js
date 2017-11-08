@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import _ from "lodash";
-import api from "../../../data/api-spec";
+import * as api from "../../../data/api-spec";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 // import CircularProgress from "material-ui/CircularProgress";
@@ -12,7 +12,7 @@ import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
 import AccountApproveApprovals from "./AccountApproveApprovals";
 import Footer from "../../approve/Footer";
-import connectData from "../../../decorators/connectData";
+import connectData from "../../../restlay/connectData";
 import "./AccountApprove.css";
 
 class AccountApprove extends Component {
@@ -109,12 +109,12 @@ AccountApprove.propTypes = {
 };
 
 export default connectData(AccountApprove, {
-  api: {
+  queries: {
     account: api.account,
     members: api.members,
     approvers: api.approvers,
     profile: api.profile
   },
-  propsToApiParams: props => ({ accountId: props.accountId }),
+  propsToQueryParams: props => ({ accountId: props.accountId }),
   RenderLoading: ModalLoading
 });

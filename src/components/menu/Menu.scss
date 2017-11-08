@@ -1,5 +1,5 @@
-@import '../../styles/mixins';
-@import '../../styles/variables';
+@import "../../styles/mixins";
+@import "../../styles/variables";
 
 .Menu {
   ul {
@@ -39,7 +39,7 @@
     top: 0;
     background-color: $grenade;
     color: $white;
-    padding: 0 .6em;
+    padding: 0 0.6em;
     border-radius: 1em;
   }
 
@@ -64,41 +64,18 @@
         a {
           text-transform: initial;
           font-size: 13px;
-          color: $black-5;
+          span {
+            color: $black-5;
+          }
 
-          &:hover,
-          &.active {
+          &:hover span,
+          &.active span {
             color: $black;
           }
 
-          &.bitcoin {
-            @include highlight-block($bitcoin, 0px);
-
-            &.active {
-              @include highlight-block-active($bitcoin, 0px);
-            }
-          }
-
-          &.dogecoin {
-            @include highlight-block($dogecoin, 0px);
-
-            &.active {
-              @include highlight-block-active($dogecoin, 0px);
-            }
-          }
-
-          &.litecoin {
-            @include highlight-block($litecoin, 0px);
-            &.active {
-              @include highlight-block-active($litecoin, 0px);
-            }
-          }
-
-          &.ethereum {
-            @include highlight-block($ethereum, 0px);
-            &.active {
-              @include highlight-block-active($ethereum, 0px);
-            }
+          @include highlight-block(currentColor, 0px);
+          &.active {
+            @include highlight-block(currentColor, 0px);
           }
         }
 

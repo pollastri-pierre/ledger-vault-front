@@ -40,7 +40,7 @@ function AccountCreationTimeLock(props) {
             className="small-padding"
             type="text"
             id="text-duration"
-            value={timelock.duration}
+            value={timelock.value}
             onChange={e => change(e.target.value)}
           />
           <label htmlFor="text-duration">Duration</label>

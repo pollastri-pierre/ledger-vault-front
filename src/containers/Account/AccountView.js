@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
 import Card from "../../components/Card";
@@ -195,7 +195,7 @@ const RenderError = ({ error }: { error: Error }) => (
 );
 
 export default connectData(AccountView, {
-  api: { account: api.account, operations: api.accountOperations },
-  propsToApiParams: props => ({ accountId: props.match.params.id }),
+  queries: { account: api.account, operations: api.accountOperations },
+  propsToQueryParams: props => ({ accountId: props.match.params.id }),
   RenderError
 });
