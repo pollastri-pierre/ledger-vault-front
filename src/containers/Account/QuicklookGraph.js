@@ -24,8 +24,9 @@ export default class QuicklookGraph extends Component {
   }
 
   setSelected = index => {
-    if (index !== this.state.data.length - 1)
+    if (index !== this.state.data.length - 1) {
       this.setState({ selected: index });
+    }
   };
 
   handleMouseOver = (d, i) => {
@@ -36,7 +37,7 @@ export default class QuicklookGraph extends Component {
     this.setSelected(-1);
   };
 
-  handleHovering = prevState => {
+  handleTooltip = prevState => {
     const { selected } = this.state;
     if (selected !== prevState.selected) {
       const tooltip = d3.select(this.tooltip);
@@ -55,12 +56,14 @@ export default class QuicklookGraph extends Component {
   };
 
   drawInvisibleDots = data => {
-    d3.selectAll(".hoverdot").remove();
-
-    d3
+    const selection = d3
       .select(".hoveringDots")
-      .selectAll("hoveringDot")
-      .data(data)
+      .selectAll(".hoverdot")
+      .data(data, d => d.x);
+
+    selection.exit().remove();
+
+    selection
       .enter()
       .append("circle")
       .classed("hoverdot", true)
@@ -73,11 +76,14 @@ export default class QuicklookGraph extends Component {
   };
 
   drawVisibleDots = data => {
-    d3.selectAll(".dot").remove();
-    d3
+    const selection = d3
       .select(".visibleDots")
-      .selectAll("dot")
-      .data(data)
+      .selectAll(".dot")
+      .data(data, d => d.x);
+
+    selection.exit().remove();
+
+    selection
       .enter()
       .append("circle")
       .attr("r", 3)
@@ -98,9 +104,10 @@ export default class QuicklookGraph extends Component {
         return d.x;
       })
       .y(d => d.y);
-    d3
-      .select(".valueline")
-      .data([data])
+
+    const selection = d3.select(".valueline").data([data]);
+
+    selection
       .attr("class", "valueline")
       .attr("d", valueline)
       .attr("stroke", data[0].currency.color)
@@ -114,7 +121,6 @@ export default class QuicklookGraph extends Component {
   };
 
   drawAxis = () => {
-    const { xAxis, yAxis } = this.state;
     d3.select(".xAxis").call(this.customXAxis);
     d3.select(".yAxis").call(this.customYAxis);
   };
@@ -128,7 +134,6 @@ export default class QuicklookGraph extends Component {
 
   customXAxis = s => {
     const { xAxis } = this.state;
-
     s.call(xAxis);
     s.select(".domain").remove();
     s.selectAll(".tick line").attr("display", "none");
@@ -161,22 +166,46 @@ export default class QuicklookGraph extends Component {
   };
 
   computeData = () => {
-    const { width, height, data, xAxis, yAxis } = this.state;
+    const { width, height, data } = this.state;
+    const { dateRange } = this.props;
     let computedData = data.slice();
 
-    let domainX = [
+    const maxDomainX = [
       d3.min(data, function(d) {
-        return d.date;
+        return d.time;
       }),
-      new Date()
+      d3.max(data, function(d) {
+        return d.time;
+      })
     ];
-    const x = d3.event.transform.rescaleX(
-      d3
-        .scaleTime()
-        .domain(domainX)
-        .range([55, width])
-    );
+    let domainX = dateRange || maxDomainX;
+
+    let x = d3
+      .scaleTime()
+      .domain(domainX)
+      .range([55, width]);
+    if (d3.event) {
+      x = d3.event.transform.rescaleX(
+        d3
+          .scaleTime()
+          .domain(domainX)
+          .range([55, width])
+      );
+    }
+
     domainX = x.domain();
+    console.log("domainX: ", domainX);
+    console.log("maxDomainX", maxDomainX);
+    console.log("dateRange ", dateRange);
+    domainX[0] = domainX[0] < maxDomainX[0] ? maxDomainX[0] : domainX[0];
+    domainX[1] = domainX[1] > maxDomainX[1] ? maxDomainX[1] : domainX[1];
+    console.log("last decision ", domainX);
+
+    x = d3
+      .scaleTime()
+      .domain(domainX)
+      .range([55, width]);
+
     const timeDelta = domainX[1] - domainX[0];
 
     const tick =
@@ -186,16 +215,47 @@ export default class QuicklookGraph extends Component {
           ? "month"
           : timeDelta >= 86400000 ? "day" : "hour";
 
+    //Setting up xAxis tick format behaviour. subject to change
+    const formatMillisecond = d3.timeFormat(".%L"),
+      formatSecond = d3.timeFormat(":%S"),
+      formatMinute = d3.timeFormat("%I:%M"),
+      formatHour = d3.timeFormat("%I %p"),
+      formatDay = d3.timeFormat("%a %d"),
+      formatWeek = d3.timeFormat("%m/%d"),
+      formatMonth = d3.timeFormat("%b"),
+      formatYear = d3.timeFormat("%Y");
+
+    //setting up xAxis
+    const xAxis = d3
+      .axisBottom(x)
+      .ticks(4)
+      .tickFormat((date, i) => {
+        return (d3.timeSecond(date) < date
+          ? formatMillisecond
+          : d3.timeMinute(date) < date
+            ? formatSecond
+            : d3.timeHour(date) < date
+              ? formatMinute
+              : d3.timeDay(date) < date
+                ? formatHour
+                : d3.timeMonth(date) < date
+                  ? d3.timeWeek(date) < date ? formatDay : formatWeek
+                  : d3.timeYear(date) < date ? formatMonth : formatYear)(date);
+      });
+
     let newXAxis = xAxis.scale(x);
 
     const domainY = [
       d3.min(data, function(d) {
-        return d.value;
+        return d.amount;
       }),
       d3.max(data, function(d) {
-        return d.value;
+        return d.amount;
       })
     ];
+
+    /* Calculate new Ydomain ... to be approved
+
     let domainY2 = [-1, 1];
     let flag = 1;
 
@@ -219,10 +279,16 @@ export default class QuicklookGraph extends Component {
       domainY2[0] -= domainY2[0] / 2;
       domainY2[1] += domainY2[1] / 2;
     }
+    */
+    //setting uo yAxis
+    const yAxis = d3
+      .axisRight(y)
+      .ticks(3)
+      .tickSize(width);
 
     const y = d3
       .scaleLinear()
-      .domain(domainY2)
+      .domain(domainY)
       .range([height, 0]);
 
     const newYAxis = yAxis
@@ -233,8 +299,8 @@ export default class QuicklookGraph extends Component {
     computedData = _.map(data, transaction => {
       return {
         ...transaction,
-        x: x(transaction.date),
-        y: y(transaction.value)
+        x: x(transaction.time),
+        y: y(transaction.amount)
       };
     });
     this.setState({
@@ -246,127 +312,13 @@ export default class QuicklookGraph extends Component {
     });
   };
 
-  componentDidMount() {
-    let { dateRange, tick, data } = this.props;
-    data.push({ ...data[data.length - 1] });
-    data[data.length - 1].time = new Date();
-    data[data.length - 1].tooltip = false;
-
-    data = _.sortBy(data, elem => new Date(elem.time).toISOString());
-    if (this.props.data.length === 0) return;
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-
+  setupZoomBehaviour = () => {
     const { width, height } = this.state;
-
-    const svg = d3.select(this.svg);
-    svg.attr("height", height + margin.top + margin.bottom);
-    svg.attr("width", width + margin.left + margin.right);
-    const g = svg
-      .append("g")
-      .classed("chart", true)
-      .attr("transform", `translate(${margin.left}, ${margin.top})`)
-      .attr("width", width);
-    let domainY = [
-      d3.min(data, function(d) {
-        return d.amount;
-      }),
-      d3.max(data, function(d) {
-        return d.amount;
-      })
-    ];
-    let domainX = [
-      d3.min(data, function(d) {
-        return d.time;
-      }),
-      new Date()
-    ];
-
-    let computedData = _.map(data, transaction => {
-      return {
-        date: transaction.time,
-        value: transaction.amount,
-        currency: transaction.currency
-      };
-    });
-    const x = d3
-      .scaleTime()
-      .domain([domainX[0], new Date()])
-      .range([55, width]);
-
-    const y = d3
-      .scaleLinear()
-      .domain([domainY[0], domainY[1]])
-      .range([height, 0]);
-
-    computedData = _.map(computedData, transaction => {
-      return {
-        ...transaction,
-        x: x(transaction.date),
-        y: y(transaction.value)
-      };
-    });
-    const formatMillisecond = d3.timeFormat(".%L"),
-      formatSecond = d3.timeFormat(":%S"),
-      formatMinute = d3.timeFormat("%I:%M"),
-      formatHour = d3.timeFormat("%I %p"),
-      formatDay = d3.timeFormat("%a %d"),
-      formatWeek = d3.timeFormat("%m/%d"),
-      formatMonth = d3.timeFormat("%b"),
-      formatYear = d3.timeFormat("%Y");
-
-    const xAxis = d3
-      .axisBottom(x)
-      .ticks(4)
-      .tickFormat((date, i) => {
-        return (d3.timeSecond(date) < date
-          ? formatMillisecond
-          : d3.timeMinute(date) < date
-            ? formatSecond
-            : d3.timeHour(date) < date
-              ? formatMinute
-              : d3.timeDay(date) < date
-                ? formatHour
-                : d3.timeMonth(date) < date
-                  ? d3.timeWeek(date) < date ? formatDay : formatWeek
-                  : d3.timeYear(date) < date ? formatMonth : formatYear)(date);
-      });
-
-    const yAxis = d3
-      .axisRight(y)
-      .ticks(3)
-      .tickSize(width);
-
-    g
-      .append("g")
-      .classed("xAxis", true)
-      .attr("transform", `translate(0, ${height})`);
-
-    g.append("g").classed("yAxis", true);
-
-    g
-      .append("text")
-      .classed("xAxisLabel", true)
-      .attr("dy", 166)
-      .attr("fill", "#999999")
-      .attr("font-size", "10px")
-      .attr("text-transform", "uppercase");
-    g.append("path").classed("valueline", true);
-
-    g
-      .append("clipPath")
-      .attr("id", "clip")
-      .append("rect")
-      .attr("width", width - 55)
-      .attr("height", height + 100)
-      .attr("x", 55)
-      .attr("y", -50);
-
-    g.append("g").classed("visibleDots", true);
-
-    g.append("g").classed("hoveringDots", true);
+    const { svg } = this;
+    //setting up zoom behaviour
     const zoom = d3
       .zoom()
-      .scaleExtent([1, 100])
+      .scaleExtent([0, Infinity])
       .translateExtent([[55, 0], [width, height]])
       .extent([[55, 0], [width, height]])
       .on(
@@ -378,13 +330,110 @@ export default class QuicklookGraph extends Component {
           });
         }.bind(this)
       );
-    svg.call(zoom);
+    d3.select(svg).call(zoom);
+  };
+
+  resetZoomBehaviour = () => {
+    const { width, height } = this.state;
+    const { svg } = this;
+    //setting up zoom behaviour
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0, Infinity])
+      .translateExtent([[55, 0], [width, height]])
+      .extent([[55, 0], [width, height]])
+      .on(
+        "zoom",
+        function() {
+          this.setState({
+            compute: 1,
+            selected: -1
+          });
+        }.bind(this)
+      );
+    d3.select(svg).call(zoom.transform, d3.zoomIdentity);
+  };
+
+  initPlaceholders = () => {
+    const { width, height } = this.state;
+
+    //init svg with d3js margin convention
+    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    const svg = d3.select(this.svg);
+    svg.attr("height", height + margin.top + margin.bottom);
+    svg.attr("width", width + margin.left + margin.right);
+
+    const g = svg
+      .append("g")
+      .classed("chart", true)
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .attr("width", width);
+
+    //init xAxis placeholder
+    g
+      .append("g")
+      .classed("xAxis", true)
+      .attr("transform", `translate(0, ${height})`);
+
+    //init yAxis placeholder
+    g.append("g").classed("yAxis", true);
+
+    //init xAxisLabel placeholder
+    g
+      .append("text")
+      .classed("xAxisLabel", true)
+      .attr("dy", 166)
+      .attr("fill", "#999999")
+      .attr("font-size", "10px")
+      .attr("text-transform", "uppercase");
+
+    //init line placeholde
+    g.append("path").classed("valueline", true);
+
+    //init clipPath for zooming purposes
+    g
+      .append("clipPath")
+      .attr("id", "clip")
+      .append("rect")
+      .attr("width", width - 55)
+      .attr("height", height + 100)
+      .attr("x", 55)
+      .attr("y", -50);
+
+    //init placeholder for visible dots
+    g.append("g").classed("visibleDots", true);
+    //init placeholder for invisible dots (bigger invisible dots for better ux)
+    g.append("g").classed("hoveringDots", true);
+  };
+
+  isEqual = (A, B) => {
+    let objectsAreSame = true;
+    for (var propertyName in A) {
+      if (A[propertyName] !== B[propertyName]) {
+        objectsAreSame = false;
+        break;
+      }
+    }
+    return objectsAreSame;
+  };
+
+  componentDidMount() {
+    let { tick, data } = this.props;
+    const { width, height } = this.state;
+
+    //return if no data
+    if (this.props.data.length === 0) return;
+    //init placeholders
+    this.initPlaceholders();
+
+    //setting up zoom behaviour
+    this.setupZoomBehaviour();
+
     this.setState({
-      data: computedData,
-      xAxis: xAxis,
-      yAxis: yAxis,
+      data: data,
       mounted: 1,
-      tick: tick
+      tick: tick,
+      compute: 1
     });
   }
 
@@ -393,10 +442,15 @@ export default class QuicklookGraph extends Component {
     if (this.state.mounted) {
       if (compute) {
         this.computeData();
-        this.drawVisibleDots(data);
-        this.drawInvisibleDots(data);
+      } else if (!this.isEqual(prevProps.dateRange, this.props.dateRange)) {
+        this.resetZoomBehaviour();
+      } else if (!this.isEqual(this.props.data, prevProps.data)) {
+        let newData = this.props.data.slice();
+        this.setState({ data: newData, compute: 1 });
       } else {
-        this.handleHovering(prevState);
+        this.drawInvisibleDots(data);
+        this.drawVisibleDots(data);
+        this.handleTooltip(prevState);
         this.draw();
       }
     }
@@ -406,7 +460,6 @@ export default class QuicklookGraph extends Component {
     const { selected } = this.state;
     let { data } = this.props;
     if (data.length === 0) return null;
-    data = _.sortBy(data, elem => new Date(elem.time).toISOString());
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">

@@ -14,6 +14,7 @@ import type { Account, Operation } from "../../datatypes";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "./Account.css";
+import _ from "lodash";
 
 class AccountView extends Component<
   {
@@ -73,12 +74,31 @@ class AccountView extends Component<
     return [min, max];
   };
 
+  getTick = index => {
+    const values = ["month", "day", "day", "hour"];
+    return values[index];
+  };
+
+  getOperations = data => {
+    data = data.map((o: Operation) => ({
+      time: new Date(o.time),
+      amount: o.amount,
+      currency: o.currency
+    }));
+    data.push({ ...data[data.length - 1] });
+    data[data.length - 1].time = new Date();
+    data[data.length - 1].tooltip = false;
+    _.sortBy(data, elem => new Date(elem.time).toISOString());
+    return data;
+  };
+
   render() {
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter } = this.state;
     const dateRange = this.getDateRange(tabsIndex);
     const beginDate = "March, 13th";
     const endDate = "19th, 2017";
+
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -140,63 +160,18 @@ class AccountView extends Component<
                   <Tab disabled={false}>day</Tab>
                 </TabList>
               </header>
+              <div className="dateLabel">
+                {`From ${beginDate} to ${endDate}`}
+              </div>
               <div className="content">
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    dateRange={dateRange}
-                    tick="month"
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    tick="day"
-                    dateRange={dateRange}
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    tick="day"
-                    dateRange={dateRange}
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    tick="hour"
-                    dateRange={dateRange}
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
+                <QuicklookGraph
+                  dateRange={this.getDateRange(tabsIndex)}
+                  data={this.getOperations(operations)}
+                />
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
               </div>
             </Tabs>
           </Card>
