@@ -5,15 +5,13 @@ import type { Account } from "../../datatypes";
 import connectData from "../../restlay/connectData";
 import * as api from "../../data/api-spec";
 
-// FIXME i don't know how to set currency.color because style is currently in a ::before
-
 function AccountsMenu({ accounts }: { accounts: Array<Account> }) {
   return (
     <ul className="accounts-menu-list">
       {accounts.map(account => (
-        <li key={account.id}>
+        <li style={{ color: account.currency.color }} key={account.id}>
           <NavLink to={`/account/${account.id}`}>
-            {account.name}
+            <span>{account.name}</span>
             <span className="unit">{account.currency.units[0].code}</span>
           </NavLink>
         </li>
