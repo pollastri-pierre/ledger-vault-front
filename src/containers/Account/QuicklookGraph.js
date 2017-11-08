@@ -408,9 +408,12 @@ export default class QuicklookGraph extends Component {
 
   isEqual = (A, B) => {
     let objectsAreSame = true;
-    for (var propertyName in A) {
+    for (let propertyName in A) {
       if (A[propertyName] !== B[propertyName]) {
         objectsAreSame = false;
+        console.log(propertyName);
+        console.log(A[propertyName]);
+        console.log(B[propertyName]);
         break;
       }
     }
@@ -443,15 +446,21 @@ export default class QuicklookGraph extends Component {
       if (compute) {
         this.computeData();
       } else if (!this.isEqual(prevProps.dateRange, this.props.dateRange)) {
+        console.log("prevProps ", prevProps.dateRange);
+        console.log("currProps ", this.props.dateRange);
+        console.log("reseting zoom");
         this.resetZoomBehaviour();
-      } else if (!this.isEqual(this.props.data, prevProps.data)) {
-        let newData = this.props.data.slice();
-        this.setState({ data: newData, compute: 1 });
       } else {
         this.drawInvisibleDots(data);
         this.drawVisibleDots(data);
         this.handleTooltip(prevState);
         this.draw();
+      }
+
+      if (!this.isEqual(this.props.data, prevProps.data)) {
+        console.log("there is new data");
+        let newData = this.props.data.slice();
+        this.setState({ data: newData, compute: 1 });
       }
     }
   }
