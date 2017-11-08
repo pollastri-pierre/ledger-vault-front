@@ -5,12 +5,12 @@ import emailValidator from "email-validator";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 import Script from "react-load-script";
-import connectData from "../../decorators/connectData";
+import connectData from "../../restlay/connectData";
 import { TextField } from "../../components";
 import DialogButton from "../../components/buttons/DialogButton";
 import { BlurDialog } from "../../containers";
 import ProfileIcon from "../icons/thin/Profile";
-import api from "../../data/api-spec";
+import * as api from "../../data/api-spec";
 import type { Member } from "../../datatypes";
 
 import "./index.css";
@@ -185,7 +185,7 @@ class ProfileEditModal extends Component<
 
 export default withRouter(
   connectData(ProfileEditModal, {
-    api: {
+    queries: {
       profile: api.profile
     }
   })

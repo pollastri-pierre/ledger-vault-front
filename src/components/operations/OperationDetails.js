@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import api from "../../data/api-spec";
+import * as api from "../../data/api-spec";
 import ModalLoading from "../../components/ModalLoading";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -9,7 +9,7 @@ import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
-import connectData from "../../decorators/connectData";
+import connectData from "../../restlay/connectData";
 
 class OperationDetails extends Component {
   constructor(props) {
@@ -99,7 +99,7 @@ OperationDetails.contextTypes = {
 };
 
 export default connectData(OperationDetails, {
-  api: { operation: api.operation, accounts: api.accounts },
-  propsToApiParams: props => ({ operationId: props.operationId }),
+  queries: { operation: api.operation, accounts: api.accounts },
+  propsToQueryParams: props => ({ operationId: props.operationId }),
   RenderLoading: ModalLoading
 });

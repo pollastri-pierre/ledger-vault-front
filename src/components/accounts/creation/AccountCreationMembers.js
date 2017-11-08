@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import connectData from "../../../decorators/connectData";
-import api from "../../../data/api-spec";
+import connectData from "../../../restlay/connectData";
+import * as api from "../../../data/api-spec";
 import PropTypes from "prop-types";
 import CircularProgress from "material-ui/CircularProgress";
 import "./AccountCreationMembers.css";
@@ -86,7 +86,7 @@ AccountCreationMembers.propTypes = {
 
 export default connectData(AccountCreationMembers, {
   RenderLoading: ModalLoading,
-  api: {
+  queries: {
     members: api.members
   }
 });

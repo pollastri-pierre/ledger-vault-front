@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import AccountCard from "./AccountCard";
 
 class Storages extends Component<{ accounts: *, filter: * }> {
@@ -18,7 +18,8 @@ class Storages extends Component<{ accounts: *, filter: * }> {
 }
 
 export default connectData(Storages, {
-  api: {
+  queries: {
     accounts: api.accounts
-  }
+  },
+  optimisticRendering: true
 });

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ModalLoading from "../../../components/ModalLoading";
-import api from "../../../data/api-spec";
+import * as api from "../../../data/api-spec";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -12,7 +12,7 @@ import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import OperationApproveLocks from "./OperationApproveLocks";
 import ApprovalList from "../../ApprovalList";
-import connectData from "../../../decorators/connectData";
+import connectData from "../../../restlay/connectData";
 import Footer from "../../approve/Footer";
 
 class OperationApprove extends Component {
@@ -106,7 +106,7 @@ OperationApprove.propTypes = {
 };
 
 export default connectData(OperationApprove, {
-  api: { operation: api.operation, members: api.members, profile: api.profile },
-  propsToApiParams: props => ({ operationId: 1 }),
+  queries: { operation: api.operation, members: api.members, profile: api.profile },
+  propsToQueryParams: props => ({ operationId: 1 }),
   RenderLoading: ModalLoading
 });

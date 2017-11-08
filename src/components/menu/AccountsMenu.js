@@ -2,8 +2,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import type { Account } from "../../datatypes";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 
 // FIXME i don't know how to set currency.color because style is currently in a ::before
 
@@ -23,7 +23,7 @@ function AccountsMenu({ accounts }: { accounts: Array<Account> }) {
 }
 
 export default connectData(AccountsMenu, {
-  api: {
+  queries: {
     accounts: api.accounts
   }
 });

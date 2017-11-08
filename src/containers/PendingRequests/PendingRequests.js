@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import connectData from "../../restlay/connectData";
+import * as api from "../../data/api-spec";
 import {
   PendingAccountApprove,
   PendingOperationApprove
@@ -61,7 +61,7 @@ class PendingRequests extends Component {
 export { PendingRequests as PendingRequestNotDecorated };
 
 export default connectData(PendingRequests, {
-  api: {
+  queries: {
     pendingRequests: api.pendings,
     accounts: api.accounts,
     profile: api.profile,

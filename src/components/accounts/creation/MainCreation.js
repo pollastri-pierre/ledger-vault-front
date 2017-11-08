@@ -1,8 +1,8 @@
 //@flow
 import React from "react";
 import _ from "lodash";
-import connectData from "../../../decorators/connectData";
-import api from "../../../data/api-spec";
+import connectData from "../../../restlay/connectData";
+import * as api from "../../../data/api-spec";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
