@@ -63,6 +63,16 @@ export const saveProfile = new APIMutationSpec({
   responseSchema: Member
 });
 
+export const newAccount = new APIMutationSpec({
+  uri: "/organization/account",
+  method: "POST",
+  notif: {
+    title: "Account request created",
+    content: "The account request has been successfully created"
+  },
+  responseSchema: Account
+});
+
 export const abortAccount = new APIMutationSpec({
   uri: ({ accountId }) => `/accounts/${accountId}`,
   method: "DELETE",

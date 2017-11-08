@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+
+.security-icon {
+  display: inline-block;
+  vertical-align: middle;
+  fill: $mouse;
+}
+.security-members-icon {
+  witdh: 15px;
+  height: 13px;
+}
+
+.security-ratelimiter-icon {
+  witdh: 13px;
+  height: 13px;
+}
+
+.security-quorum-icon {
+  witdh: 13px;
+  height: 13px;
+}
+
+.security-timelock-icon {
+  witdh: 12px;
+  height: 13px;
+}

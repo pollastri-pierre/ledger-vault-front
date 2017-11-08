@@ -30,7 +30,7 @@ type In<Props> = React$ComponentType<Props>;
 type Out<Props, A> = Class<React$Component<PropsWithoutA<Props, A>>>;
 type Opts<A> = {
   // an object of { [propName: string]: APISpec }
-  queries: A,
+  queries?: A,
   // allow to pass parameters to the api uri function that will be used to generate api URL.
   propsToQueryParams?: (props: *) => Object,
   // allow to implement the loading rendering. default is blank
@@ -65,7 +65,7 @@ const mapDispatchToProps = dispatch => ({
 
 export default <Props, A: { [_: string]: APIQuerySpec }>(
   Decorated: In<Props>,
-  opts: Opts<A>
+  opts?: Opts<A> = {}
 ): Out<Props, A> => {
   type APIProps = $ObjMap<A, any>; // TODO we should be able to infer the response type with this
 

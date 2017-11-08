@@ -1,61 +1,24 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import connectData from "../../../restlay/connectData";
+import * as api from "../../../data/api-spec";
 import PropTypes from "prop-types";
 import CircularProgress from "material-ui/CircularProgress";
 import "./AccountCreationMembers.css";
 import Checkbox from "../../form/Checkbox";
+import ModalLoading from "../../../components/ModalLoading";
 import { Avatar, DialogButton, Overscroll } from "../../../components";
 
 class AccountCreationMembers extends Component {
-  componentWillMount() {
-    const { organization, getOrganizationMembers } = this.props;
-
-    if (_.isNull(organization.members) && !organization.isLoading) {
-      getOrganizationMembers();
-    }
-  }
-
   render() {
-    const {
-      switchInternalModal,
-      organization,
-      addMember,
-      members
-    } = this.props;
-
-    if (organization.isLoading || _.isNull(organization.members)) {
-      return (
-        <div className="account-creation-members wrapper is-loading">
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: "-25px",
-                marginTop: "-25px"
-              }}
-            />
-          </div>
-          <div className="footer">
-            <DialogButton
-              right
-              highlight
-              onTouchTap={() => switchInternalModal("main")}
-            >
-              Done
-            </DialogButton>
-          </div>
-        </div>
-      );
-    }
+    const { switchInternalModal, addMember, members, approvers } = this.props;
 
     return (
       <div className="account-creation-members wrapper">
         <header>
           <h2>Members</h2>
-          {members.length > 0 ? (
-            <span className="counter">{members.length} members selected</span>
+          {approvers.length > 0 ? (
+            <span className="counter">{approvers.length} members selected</span>
           ) : (
             false
           )}
@@ -66,9 +29,8 @@ class AccountCreationMembers extends Component {
         </header>
         <div className="content">
           <Overscroll>
-            {_.map(organization.members, member => {
-              // const isChecked = (!_.isUndefined(_.findIndex(members, member.pub_key)));
-              const isChecked = members.indexOf(member.pub_key) > -1;
+            {_.map(members, member => {
+              const isChecked = approvers.indexOf(member.pub_key) > -1;
               return (
                 <div
                   key={member.id}
@@ -86,7 +48,7 @@ class AccountCreationMembers extends Component {
                     />
                   </div>
                   <span className="name">
-                    {member.firstname} {member.name}
+                    {member.first_name} {member.last_name}
                   </span>
                   <p className="role"> {member.role} </p>
                   <Checkbox
@@ -122,4 +84,9 @@ AccountCreationMembers.propTypes = {
   addMember: PropTypes.func.isRequired
 };
 
-export default AccountCreationMembers;
+export default connectData(AccountCreationMembers, {
+  RenderLoading: ModalLoading,
+  queries: {
+    members: api.members
+  }
+});
