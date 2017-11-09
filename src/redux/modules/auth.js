@@ -121,6 +121,7 @@ export function finishAuthentication(data) {
         if (deviceResponse.errorCode) {
           dispatch(authenticationFailed(deviceResponse.errorCode));
         } else {
+          // FIXME we should drop usage of axios / moxios. directly use fetch()
           axios
             .post("finish_authentication", {
               email: team,
