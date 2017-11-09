@@ -55,9 +55,9 @@ class CustomSelectField<T: { title: string }> extends Component<*, *> {
           {_.map(values, (value, i) => (
             <div
               key={i}
-              className={`menuElem ${selected.title === value.title
-                ? "selected"
-                : ""}`}
+              className={`menuElem ${
+                selected.title === value.title ? "selected" : ""
+              }`}
               onClick={() => {
                 this.close();
                 this.onChange(value);

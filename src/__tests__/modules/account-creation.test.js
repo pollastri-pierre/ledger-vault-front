@@ -204,15 +204,15 @@ describe("AccountCreation module", () => {
       }
     };
 
-    expect(
-      reducer(state, { type: module.ADD_MEMBER, member: "hash" })
-    ).toEqual({
-      ...module.initialState,
-      security: {
-        ...module.initialState.security,
-        members: []
+    expect(reducer(state, { type: module.ADD_MEMBER, member: "hash" })).toEqual(
+      {
+        ...module.initialState,
+        security: {
+          ...module.initialState.security,
+          members: []
+        }
       }
-    });
+    );
   });
 
   it("should set approvals", () => {

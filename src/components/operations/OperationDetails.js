@@ -1,6 +1,6 @@
+//@flow
 import _ from "lodash";
 import React, { Component } from "react";
-import * as api from "../../data/api-spec";
 import ModalLoading from "../../components/ModalLoading";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -10,24 +10,26 @@ import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
+import OperationQuery from "../../api/queries/OperationQuery";
+import AccountsQuery from "../../api/queries/AccountsQuery";
 
-class OperationDetails extends Component {
-  constructor(props) {
-    super(props);
+class OperationDetails extends Component<
+  {
+    operation: *,
+    tabsIndex: *,
+    close: Function
+  },
+  *
+> {
+  state = {
+    note: { author: {}, title: "" }
+  };
 
-    let note = { author: {} };
-
-    this.state = {
-      note: note
-    };
-
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
-  }
+  contentNode: *;
 
   handleChangeTitle = val => {
     const newNote = _.cloneDeep(this.state.note);
     newNote.title = val;
-
     this.setState({
       note: newNote
     });
@@ -52,7 +54,7 @@ class OperationDetails extends Component {
         onSelect={() => {}}
       >
         <div className="header">
-          <h2>Operation's details</h2>
+          <h2>{"Operation's details"}</h2>
           <TabList>
             <Tab>Overview</Tab>
             <Tab>Details</Tab>
@@ -90,16 +92,12 @@ class OperationDetails extends Component {
   }
 }
 
-OperationDetails.propTypes = {
-  close: PropTypes.func.isRequired
-};
-
 OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
 export default connectData(OperationDetails, {
-  queries: { operation: api.operation, accounts: api.accounts },
+  queries: { operation: OperationQuery, accounts: AccountsQuery },
   propsToQueryParams: props => ({ operationId: props.operationId }),
   RenderLoading: ModalLoading
 });

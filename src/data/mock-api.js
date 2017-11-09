@@ -1,16 +1,15 @@
 //@flow
 import { denormalize } from "normalizr";
-import * as apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
+import schema from "./schema";
 
-const mockSync = (uri: string, method: string, body: ?Object) => {
+const mockSync = (uri: string, method: string, _body: ?Object) => {
   if (method === "POST") {
     switch (uri) {
       case "/organization/account":
-        console.log(body);
         return denormalize(
           Object.keys(mockEntities.accounts[0]),
-          apiSpec.newAccount.responseSchema,
+          [schema.Account],
           mockEntities
         );
     }
@@ -39,11 +38,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     if (m) {
       const account = mockEntities.accounts[m[1]];
       if (account) {
-        return denormalize(
-          account.id,
-          apiSpec.account.responseSchema,
-          mockEntities
-        );
+        return denormalize(account.id, schema.Account, mockEntities);
       } else {
         throw new Error("Account Not Found");
       }
@@ -52,11 +47,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     if (m) {
       const operation = mockEntities.operations[m[1]];
       if (operation) {
-        return denormalize(
-          operation.uuid,
-          apiSpec.operation.responseSchema,
-          mockEntities
-        );
+        return denormalize(operation.uuid, schema.Operation, mockEntities);
       } else {
         throw new Error("Account Not Found");
       }
@@ -69,11 +60,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         const opKeys = Object.keys(mockEntities.operations).filter(
           key => mockEntities.operations[key].currency_name === account.currency
         );
-        return denormalize(
-          opKeys,
-          apiSpec.accountOperations.responseSchema,
-          mockEntities
-        );
+        return denormalize(opKeys, [schema.Operation], mockEntities);
       } else {
         throw new Error("Account Not Found");
       }
@@ -82,31 +69,31 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       case "/currencies":
         return denormalize(
           Object.keys(mockEntities.currencies),
-          apiSpec.currencies.responseSchema,
+          [schema.Currency],
           mockEntities
         );
       case "/organization/members/me":
         return denormalize(
           Object.keys(mockEntities.members)[0],
-          apiSpec.profile.responseSchema,
+          schema.Member,
           mockEntities
         );
       case "/organization/members":
         return denormalize(
           Object.keys(mockEntities.members),
-          apiSpec.members.responseSchema,
+          [schema.Member],
           mockEntities
         );
       case "/organization/approvers":
         return denormalize(
           Object.keys(mockEntities.members).slice(0, 2),
-          apiSpec.members.responseSchema,
+          [schema.Member],
           mockEntities
         );
       case "/accounts":
         return denormalize(
           Object.keys(mockEntities.accounts),
-          apiSpec.accounts.responseSchema,
+          [schema.Account],
           mockEntities
         );
       case "/pendings":
@@ -117,7 +104,12 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
             approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
             watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
           },
-          apiSpec.pendings.responseSchema,
+          {
+            approveOperations: [schema.Operation],
+            watchOperations: [schema.Operation],
+            approveAccounts: [schema.Account],
+            watchAccounts: [schema.Account]
+          },
           mockEntities
         );
       case "/dashboard/total-balance":
@@ -137,7 +129,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       case "/dashboard/last-operations":
         return denormalize(
           Object.keys(mockEntities.operations).slice(0, 6),
-          apiSpec.dashboardLastOperations.responseSchema,
+          [schema.Operation],
           mockEntities
         );
     }

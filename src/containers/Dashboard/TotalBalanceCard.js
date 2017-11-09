@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
 import DateFormat from "../../components/DateFormat";
@@ -10,6 +9,7 @@ import CardField from "../../components/CardField";
 import EvolutionSince from "./EvolutionSince";
 import "./TotalBalanceCard.css";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
 
 class TotalBalance extends Component<{
   totalBalance: *,
@@ -78,7 +78,7 @@ class RenderLoading extends Component<*> {
 
 export default connectData(TotalBalance, {
   queries: {
-    totalBalance: api.dashboardTotalBalance
+    totalBalance: DashboardTotalBalanceQuery
   },
   optimisticRendering: true,
   RenderError,

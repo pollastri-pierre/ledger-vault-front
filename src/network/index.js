@@ -10,7 +10,7 @@ NetworkError.prototype = Object.create(Error.prototype);
 export default function(
   uri: string,
   method: string,
-  body: ?Object
+  body: ?(Object | Array<Object>)
 ): Promise<Object | Array<*>> {
   const headers = {
     "X-Ledger-Auth": window.localStorage.getItem("token"),

@@ -11,9 +11,9 @@ function AccountCreationApprovals(props) {
       </header>
       <div className="content">
         <div
-          className={`form-field ${parseInt(approvals, 10) > members.length
-            ? "error"
-            : ""}`}
+          className={`form-field ${
+            parseInt(approvals, 10) > members.length ? "error" : ""
+          }`}
         >
           <input
             type="text"

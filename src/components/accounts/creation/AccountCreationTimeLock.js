@@ -67,10 +67,9 @@ function AccountCreationTimeLock(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("timelock", "minuts")}
-                className={`frequency-bubble-row ${timelock.frequency ===
-                "minuts"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  timelock.frequency === "minuts" ? "active" : ""
+                }`}
               >
                 minuts
               </div>
@@ -78,10 +77,9 @@ function AccountCreationTimeLock(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("timelock", "hours")}
-                className={`frequency-bubble-row ${timelock.frequency ===
-                "hours"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  timelock.frequency === "hours" ? "active" : ""
+                }`}
               >
                 hours
               </div>
@@ -89,9 +87,9 @@ function AccountCreationTimeLock(props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("timelock", "days")}
-                className={`frequency-bubble-row ${timelock.frequency === "days"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  timelock.frequency === "days" ? "active" : ""
+                }`}
               >
                 days
               </div>

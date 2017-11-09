@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
+import PendingsQuery from "../../api/queries/PendingsQuery";
 
 class PendingsMenuBadge extends Component<*> {
   render() {
@@ -14,6 +14,6 @@ class PendingsMenuBadge extends Component<*> {
 
 export default connectData(PendingsMenuBadge, {
   queries: {
-    pendings: api.pendings
+    pendings: PendingsQuery
   }
 });

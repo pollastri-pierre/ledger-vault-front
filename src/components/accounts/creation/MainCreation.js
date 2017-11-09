@@ -2,7 +2,7 @@
 import React from "react";
 import _ from "lodash";
 import connectData from "../../../restlay/connectData";
-import * as api from "../../../data/api-spec";
+import NewAccountMutation from "../../../api/mutations/NewAccountMutation";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
@@ -17,7 +17,7 @@ type Props = {
   onSelect: Function,
   close: Function,
   switchInternalModal: Function,
-  fetchData: Function,
+  restlay: *,
   tabsIndex: number,
   account: Account
 };
@@ -52,11 +52,14 @@ function MainCreation(props: Props) {
       isNextDisabled = true;
   }
 
-  const save = () => {
-    // TODO formating data to send it to the API here
-    const data = { data: "23" };
-    return props.fetchData(api.newAccount, data).then(() => close());
-  };
+  const save = () =>
+    props.restlay
+      .commitMutation(
+        new NewAccountMutation({
+          put_data_here: 42
+        })
+      )
+      .then(close);
 
   return (
     <Tabs

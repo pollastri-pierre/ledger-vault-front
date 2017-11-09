@@ -25,9 +25,9 @@ function AccountCreationConfirmation(props) {
           <span className="security-value">{approvers.length} selected</span>
         </div>
         <div
-          className={`confirmation-security-item ${!time_lock.enabled
-            ? "disabled"
-            : ""}`}
+          className={`confirmation-security-item ${
+            !time_lock.enabled ? "disabled" : ""
+          }`}
         >
           <Hourglass className="security-icon timelock" />
           <span className="security-title">Time-lock</span>
@@ -42,9 +42,9 @@ function AccountCreationConfirmation(props) {
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${!rate_limiter.enabled
-            ? "disabled"
-            : ""}`}
+          className={`confirmation-security-item ${
+            !rate_limiter.enabled ? "disabled" : ""
+          }`}
         >
           <Rates className="security-icon ratelimiter" />
           <span className="security-title">Rate limiter</span>

@@ -1,9 +1,13 @@
+//@flow
 import React, { Component } from "react";
-// import _ from "lodash";
-import * as api from "../../../data/api-spec";
-import PropTypes from "prop-types";
+import AccountQuery from "../../../api/queries/AccountQuery";
+import ApproversQuery from "../../../api/queries/ApproversQuery";
+import ProfileQuery from "../../../api/queries/ProfileQuery";
+import MembersQuery from "../../../api/queries/MembersQuery";
+import PendingsQuery from "../../../api/queries/PendingsQuery";
+import ApproveAccount from "../../../api/mutations/ApproveAccountMutation";
+import AbortAccount from "../../../api/mutations/AbortAccountMutation";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-// import CircularProgress from "material-ui/CircularProgress";
 import { Overscroll } from "../../";
 import ModalLoading from "../../../components/ModalLoading";
 import AbortConfirmation from "../../approve/AbortConfirmation";
@@ -15,42 +19,47 @@ import Footer from "../../approve/Footer";
 import connectData from "../../../restlay/connectData";
 import "./AccountApprove.css";
 
-class AccountApprove extends Component {
-  constructor(props) {
-    super(props);
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    this.aborting = this.aborting.bind(this);
-    this.approving = this.approving.bind(this);
-    this.abort = this.abort.bind(this);
+class AccountApprove extends Component<
+  {
+    accountId: string,
+    restlay: *,
+    close: *,
+    members: *,
+    approvers: *,
+    account: *,
+    profile: *
+  },
+  *
+> {
+  state = {};
 
-    this.state = {};
-  }
-
-  aborting() {
+  aborting = () => {
     this.setState({ ...this.state, isAborting: !this.state.isAborting });
-  }
+  };
 
-  approving() {
-    const { fetchData, close } = this.props;
+  approving = () => {
+    const { restlay, close, accountId } = this.props;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
+    // TODO: replace delay by device API call
+    return delay(500)
+      .then(() => restlay.commitMutation(new ApproveAccount({ accountId })))
+      .then(() => restlay.refreshQuery(new PendingsQuery()))
+      .then(close);
+  };
 
-    // TODO: replace setTimeout by device API call
-    setTimeout(() => {
-      return fetchData(api.approveOperation).then(() => {
-        return fetchData(api.pendings).then(() => close());
-      });
-    }, 500);
-  }
-
-  abort() {
-    const { fetchData, close } = this.props;
-    return fetchData(api.abortAccount).then(() => {
-      return fetchData(api.pendings).then(() => close());
-    });
-  }
+  abort = () => {
+    const { restlay, accountId, close } = this.props;
+    // TODO: replace delay by device API call
+    return delay(500)
+      .then(() => restlay.commitMutation(new AbortAccount({ accountId })))
+      .then(() => restlay.refreshQuery(new PendingsQuery()))
+      .then(close);
+  };
 
   render() {
-    const { members, approvers, close, account, abort, profile } = this.props;
+    const { members, approvers, close, account, profile } = this.props;
 
     if (this.state.isAborting) {
       return (
@@ -104,16 +113,12 @@ class AccountApprove extends Component {
   }
 }
 
-AccountApprove.propTypes = {
-  close: PropTypes.func.isRequired
-};
-
 export default connectData(AccountApprove, {
   queries: {
-    account: api.account,
-    members: api.members,
-    approvers: api.approvers,
-    profile: api.profile
+    account: AccountQuery,
+    members: MembersQuery,
+    approvers: ApproversQuery,
+    profile: ProfileQuery
   },
   propsToQueryParams: props => ({ accountId: props.accountId }),
   RenderLoading: ModalLoading
