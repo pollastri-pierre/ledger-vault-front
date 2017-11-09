@@ -87,7 +87,12 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
   const queriesKeys = Object.keys(queries);
 
   class Clazz extends Component<
-    { dataStore: Store, fetchAPI: * } & *,
+    {
+      dataStore: Store,
+      executeQueryOrMutation: <In, Res>(
+        Mutation<In, Res> | Query<In, Res>
+      ) => Promise<Res>
+    } & *,
     {
       catchedError: ?Error,
       initialPending: boolean
@@ -113,7 +118,7 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
         const instances = {};
         queriesKeys.forEach(key => {
           const Q = queries[key];
-          const query = new Q(apiParams);
+          const query: Query<*, *> = new Q(apiParams);
           instances[key] = query;
         });
         this.queriesInstances = instances;
@@ -225,11 +230,7 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
         // all results are available, we will make the api props data object
         const data: APIProps = {};
         results.forEach(({ query, result, key }) => {
-          data[key] = denormalize(
-            result,
-            query.responseSchema || {},
-            dataStore.entities
-          );
+          data[key] = query.getResponse(result, dataStore);
         });
         queriedData = data;
         if (!havePendings) {
