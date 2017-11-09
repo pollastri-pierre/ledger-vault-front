@@ -21,6 +21,7 @@
     display: block;
     padding-left: 40px;
     @include highlight-block($porto, 0px);
+    @include opacity(0.5);
 
     &.active {
       opacity: 1;

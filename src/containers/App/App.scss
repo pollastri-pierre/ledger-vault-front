@@ -14,13 +14,8 @@ body,
 
   a {
     color: inherit;
-    opacity: 0.5;
     text-decoration: none;
     transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   .material-icons {

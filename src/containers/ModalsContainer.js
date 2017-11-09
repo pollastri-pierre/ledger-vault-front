@@ -13,8 +13,6 @@ import {
   saveOperation
 } from "../redux/modules/operation-creation";
 
-import { closeApprove } from "../redux/modules/entity-approve";
-
 import {
   OperationDetails,
   AccountApprove,
@@ -27,8 +25,7 @@ const mapStateToProps = state => ({
   organization: state.organization,
   accountCreation: state.accountCreation,
   operationCreation: state.operationCreation,
-  accounts: state.accounts,
-  entityToApprove: state.entityApprove
+  accounts: state.accounts
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -36,8 +33,7 @@ const mapDispatchToProps = dispatch => ({
   onCloseModalOperation: from => dispatch(closeModalOperation(from)),
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
-  onGetAccounts: () => dispatch(getAccounts()),
-  onCloseApprove: () => dispatch(closeApprove())
+  onGetAccounts: () => dispatch(getAccounts())
 });
 
 class ModalWrap extends Component {
@@ -54,19 +50,14 @@ class ModalWrap extends Component {
 
 function ModalsContainer(props) {
   const {
-    entityToApprove,
     organization,
     operations,
-    onGetOrganizationApprovers,
     operationCreation,
     accounts,
     onChangeTabOperation,
     onCloseModalOperation,
     onSaveOperation,
-    onGetAccounts,
-    onGetOperationToApprove,
-    onCloseApprove,
-    onGetAccountToApprove
+    onGetAccounts
   } = props;
 
   // TODO need to refactor this into the same style of the Profile Edit Modal
@@ -74,24 +65,6 @@ function ModalsContainer(props) {
 
   return (
     <div>
-      {entityToApprove.modalOpened &&
-        entityToApprove.entity === "operation" && (
-          <ModalWrap close={onCloseApprove}>
-            <OperationApprove
-              operationId={entityToApprove.entityId}
-              close={onCloseApprove}
-            />
-          </ModalWrap>
-        )}
-      {entityToApprove.modalOpened &&
-        entityToApprove.entity === "account" && (
-          <ModalWrap close={onCloseApprove}>
-            <AccountApprove
-              accountId={entityToApprove.entityId}
-              close={onCloseApprove}
-            />
-          </ModalWrap>
-        )}
       {operationCreation.modalOpened && (
         <ModalWrap close={onCloseModalOperation}>
           <OperationCreation

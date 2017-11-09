@@ -6,7 +6,6 @@ import accountsInfo from "./accounts-info";
 import accounts from "./accounts";
 import accountCreation from "./account-creation";
 import operationCreation from "./operation-creation";
-import entityApprove from "./entity-approve";
 import organization from "./organization";
 import data from "./data";
 
@@ -17,7 +16,6 @@ const reducers = {
   operations,
   accounts,
   accountsInfo,
-  entityApprove,
   accountCreation,
   operationCreation,
   organization,

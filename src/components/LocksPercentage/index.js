@@ -1,9 +1,13 @@
+//@flow
 import React from "react";
 import _ from "lodash";
-import PropTypes from "prop-types";
 import PercentageBarProgress from "../PercentageBarProgress";
 
-function LocksPercentage(props) {
+type Props = {
+  percentage?: number
+};
+
+function LocksPercentage(props: Props) {
   const { percentage } = props;
 
   let label;
@@ -27,9 +31,5 @@ function LocksPercentage(props) {
     </div>
   );
 }
-
-LocksPercentage.propTypes = {
-  percentage: PropTypes.number.isRequired
-};
 
 export default LocksPercentage;

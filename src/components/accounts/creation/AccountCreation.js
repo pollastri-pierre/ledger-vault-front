@@ -73,78 +73,90 @@ class AccountCreation extends Component<Props> {
     } = this.props;
 
     const account = this.props.accountCreation;
-
-    let content;
-    switch (account.internModalId) {
-      case "time-lock":
-        content = (
-          <AccountCreationTimeLock
-            switchInternalModal={onSwitchInternalModal}
-            timelock={account.time_lock}
-            enable={onEnableTimeLock}
-            change={onChangeTimeLock}
-            popbubble={account.popBubble}
-            anchor={account.popAnchor}
-            openPopBubble={onOpenPopBubble}
-            changeFrequency={onChangeFrequency}
-          />
-        );
-        break;
-      case "rate-limiter":
-        content = (
-          <AccountCreationRateLimiter
-            switchInternalModal={onSwitchInternalModal}
-            rate_limiter={account.rate_limiter}
-            enable={onEnableRatelimiter}
-            change={onChangeRatelimiter}
-            popbubble={account.popBubble}
-            anchor={account.popAnchor}
-            openPopBubble={onOpenPopBubble}
-            changeFrequency={onChangeFrequency}
-          />
-        );
-        break;
-      case "members":
-        content = (
-          <AccountCreationMembers
-            approvers={account.approvers}
-            switchInternalModal={onSwitchInternalModal}
-            addMember={onAddMember}
-          />
-        );
-        break;
-      case "approvals":
-        content = (
-          <AccountCreationApprovals
-            setApprovals={onSetApprovals}
-            members={account.approvers}
-            approvals={account.quorum}
-            switchInternalModal={onSwitchInternalModal}
-          />
-        );
-        break;
-      default:
-        content = (
-          // $FlowFixMe
-          <MainCreation
-            account={account}
-            changeAccountName={onChangeAccountName}
-            selectCurrency={onSelectCurrency}
-            tabsIndex={account.currentTab}
-            onSelect={onChangeTabAccount}
-            close={this.close}
-            switchInternalModal={onSwitchInternalModal}
-          />
-        );
-        break;
-    }
-
     return (
-      <BlurDialog open nopadding onRequestClose={this.close}>
-        <div id="account-creation" className="modal">
-          {content}
-        </div>
-      </BlurDialog>
+      <div>
+        <BlurDialog
+          open={account.internModalId === "members"}
+          nopadding
+          onRequestClose={this.close}
+        >
+          <div id="account-creation" className="modal">
+            <AccountCreationMembers
+              approvers={account.approvers}
+              switchInternalModal={onSwitchInternalModal}
+              addMember={onAddMember}
+            />
+          </div>
+        </BlurDialog>
+        <BlurDialog
+          open={account.internModalId === "approvals"}
+          nopadding
+          onRequestClose={this.close}
+        >
+          <div className="modal">
+            <AccountCreationApprovals
+              setApprovals={onSetApprovals}
+              members={account.approvers}
+              approvals={account.quorum}
+              switchInternalModal={onSwitchInternalModal}
+            />
+          </div>
+        </BlurDialog>
+        <BlurDialog
+          open={account.internModalId === "time-lock"}
+          nopadding
+          onRequestClose={this.close}
+        >
+          <div className="modal">
+            <AccountCreationTimeLock
+              switchInternalModal={onSwitchInternalModal}
+              timelock={account.time_lock}
+              enable={onEnableTimeLock}
+              change={onChangeTimeLock}
+              popbubble={account.popBubble}
+              anchor={account.popAnchor}
+              openPopBubble={onOpenPopBubble}
+              changeFrequency={onChangeFrequency}
+            />
+          </div>
+        </BlurDialog>
+        <BlurDialog
+          open={account.internModalId === "rate-limiter"}
+          nopadding
+          onRequestClose={this.close}
+        >
+          <div className="modal">
+            <AccountCreationRateLimiter
+              switchInternalModal={onSwitchInternalModal}
+              rate_limiter={account.rate_limiter}
+              enable={onEnableRatelimiter}
+              change={onChangeRatelimiter}
+              popbubble={account.popBubble}
+              anchor={account.popAnchor}
+              openPopBubble={onOpenPopBubble}
+              changeFrequency={onChangeFrequency}
+            />
+          </div>
+        </BlurDialog>
+
+        <BlurDialog
+          open={account.internModalId === "main"}
+          nopadding
+          onRequestClose={this.close}
+        >
+          <div id="account-creation" className="modal">
+            <MainCreation
+              account={account}
+              changeAccountName={onChangeAccountName}
+              selectCurrency={onSelectCurrency}
+              tabsIndex={account.currentTab}
+              onSelect={onChangeTabAccount}
+              close={this.close}
+              switchInternalModal={onSwitchInternalModal}
+            />
+          </div>
+        </BlurDialog>
+      </div>
     );
   }
 }

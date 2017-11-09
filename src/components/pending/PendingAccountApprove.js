@@ -1,15 +1,19 @@
+//@flow
 import React from "react";
-import { connect } from "react-redux";
 import _ from "lodash";
-import { openEntityApprove } from "../../redux/modules/entity-approve";
-import PropTypes from "prop-types";
-import ValidateBadge from "../icons/ValidateBadge";
+import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 
-function PendingAccountApprove(props) {
-  const { accounts, open, approved, approvers, user, onOpenApprove } = props;
+type Props = {
+  accounts: array,
+  approved?: boolean,
+  approvers: array,
+  user: *
+};
+function PendingAccountApprove(props: Props) {
+  const { accounts, approved, approvers, user } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
@@ -42,10 +46,10 @@ function PendingAccountApprove(props) {
       )}
       {_.map(accounts, account => {
         return (
-          <div
+          <Link
             className={`pending-request ${approved ? "watch" : ""}`}
+            to={`/pending/account/${account.id}`}
             key={account.id}
-            onClick={() => onOpenApprove("account", account.id, approved)}
           >
             <div>
               <span className="request-date-creation">
@@ -65,32 +69,11 @@ function PendingAccountApprove(props) {
                 {account.currency.family}
               </span>
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>
   );
 }
 
-PendingAccountApprove.defaultProps = {
-  approved: false,
-  approvers: []
-};
-
-PendingAccountApprove.propTypes = {
-  accounts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string
-    })
-  ).isRequired,
-  open: PropTypes.func.isRequired,
-  approved: PropTypes.bool,
-  approvers: PropTypes.arrayOf(PropTypes.shape({}))
-};
-
-const mapDispatchToProps = dispatch => ({
-  onOpenApprove: (entity, id, isApproved) =>
-    dispatch(openEntityApprove(entity, id, isApproved))
-});
-export default connect(undefined, mapDispatchToProps)(PendingAccountApprove);
+export default PendingAccountApprove;
