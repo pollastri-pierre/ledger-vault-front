@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import connectData from "../restlay/connectData";
-import * as api from "../data/api-spec";
+import CurrenciesQuery from "../api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import {
   inferUnit,
@@ -53,6 +53,6 @@ class CurrencyNameValue extends PureComponent<Props> {
 
 export default connectData(CurrencyNameValue, {
   queries: {
-    currencies: api.currencies
+    currencies: CurrenciesQuery
   }
 });

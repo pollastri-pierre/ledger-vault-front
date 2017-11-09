@@ -10,7 +10,9 @@ import { TextField } from "../../components";
 import DialogButton from "../../components/buttons/DialogButton";
 import { BlurDialog } from "../../containers";
 import ProfileIcon from "../icons/thin/Profile";
-import * as api from "../../data/api-spec";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import SaveProfile from "../../api/mutations/SaveProfileMutation";
+
 import type { Member } from "../../datatypes";
 
 import "./index.css";
@@ -30,7 +32,7 @@ const validators: { [_: string]: Validator } = {
 class ProfileEditModal extends Component<
   {
     profile: Member,
-    fetchData: Function,
+    restlay: *,
     history: *
   },
   *
@@ -89,13 +91,15 @@ class ProfileEditModal extends Component<
   };
 
   save = () =>
-    this.props
-      .fetchData(api.saveProfile, {
-        first_name: this.state.first_name.value,
-        last_name: this.state.last_name.value,
-        email: this.state.email.value,
-        picture: this.state.picture.value
-      })
+    this.props.restlay
+      .commitMutation(
+        new SaveProfile({
+          first_name: this.state.first_name.value,
+          last_name: this.state.last_name.value,
+          email: this.state.email.value,
+          picture: this.state.picture.value
+        })
+      )
       .then(this.close);
 
   render() {
@@ -178,7 +182,7 @@ class ProfileEditModal extends Component<
 export default withRouter(
   connectData(ProfileEditModal, {
     queries: {
-      profile: api.profile
+      profile: ProfileQuery
     }
   })
 );

@@ -40,8 +40,12 @@ export default function reducer(state = initialState, action) {
 
   switch (action.type) {
     case "DATA_FETCHED":
-      if (action.spec.notif) {
-        const { title, content, type = "success" } = action.spec.notif;
+      if (action.queryOrMutation.notif) {
+        const {
+          title,
+          content,
+          type = "success"
+        } = action.queryOrMutation.notif;
         return { visible: true, title, content, type };
       }
       return state;

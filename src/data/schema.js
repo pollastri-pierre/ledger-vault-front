@@ -4,9 +4,9 @@ import { schema } from "normalizr";
 // The schema defines how entities connect to each other
 // this define the front model schema, not exactly the one coming from the API (without the _id fields)
 
-export const Group = new schema.Entity("groups");
+const Group = new schema.Entity("groups");
 
-export const Member = new schema.Entity("members", {
+const Member = new schema.Entity("members", {
   groups: [Group]
 });
 
@@ -17,7 +17,7 @@ Group.define({
 });
 */
 
-export const Currency = new schema.Entity(
+const Currency = new schema.Entity(
   "currencies",
   {},
   {
@@ -25,9 +25,9 @@ export const Currency = new schema.Entity(
   }
 );
 
-export const Account = new schema.Entity("accounts", { currency: Currency });
+const Account = new schema.Entity("accounts", { currency: Currency });
 
-export const Operation = new schema.Entity(
+const Operation = new schema.Entity(
   "operations",
   {
     account: Account,
@@ -51,3 +51,11 @@ export const Operation = new schema.Entity(
     })
   }
 );
+
+export default {
+  Group,
+  Member,
+  Currency,
+  Account,
+  Operation
+};

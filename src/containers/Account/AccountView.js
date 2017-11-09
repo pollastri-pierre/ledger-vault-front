@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
 import Card from "../../components/Card";
@@ -12,6 +11,8 @@ import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
 import type { Account, Operation } from "../../datatypes";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
+import AccountQuery from "../../api/queries/AccountQuery";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "./Account.css";
 
@@ -220,7 +221,7 @@ const RenderError = ({ error }: { error: Error }) => (
 );
 
 export default connectData(AccountView, {
-  queries: { account: api.account, operations: api.accountOperations },
+  queries: { account: AccountQuery, operations: AccountOperationsQuery },
   propsToQueryParams: props => ({ accountId: props.match.params.id }),
   RenderError
 });

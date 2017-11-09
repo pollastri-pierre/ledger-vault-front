@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
 import {
   PendingAccountApprove,
   PendingOperationApprove
 } from "../../components";
+import AccountsQuery from "../../api/queries/AccountsQuery";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import PendingsQuery from "../../api/queries/PendingsQuery";
+import ApproversQuery from "../../api/queries/ApproversQuery";
 
 import "./PendingRequests.css";
 
@@ -62,10 +65,10 @@ export { PendingRequests as PendingRequestNotDecorated };
 
 export default connectData(PendingRequests, {
   queries: {
-    pendingRequests: api.pendings,
-    accounts: api.accounts,
-    profile: api.profile,
-    approversAccount: api.approvers
+    pendingRequests: PendingsQuery,
+    accounts: AccountsQuery,
+    profile: ProfileQuery,
+    approversAccount: ApproversQuery
   },
   RenderLoading: SpinnerCard
 });

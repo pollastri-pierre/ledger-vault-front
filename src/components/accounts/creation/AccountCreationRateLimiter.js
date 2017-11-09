@@ -80,10 +80,9 @@ function AccountCreationRateLimiter(props: Props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "minut")}
-                className={`frequency-bubble-row ${rate_limiter.frequency ===
-                "minut"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency === "minut" ? "active" : ""
+                }`}
               >
                 minut
               </div>
@@ -91,10 +90,9 @@ function AccountCreationRateLimiter(props: Props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "hour")}
-                className={`frequency-bubble-row ${rate_limiter.frequency ===
-                "hour"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency === "hour" ? "active" : ""
+                }`}
               >
                 hour
               </div>
@@ -102,10 +100,9 @@ function AccountCreationRateLimiter(props: Props) {
                 role="button"
                 tabIndex={0}
                 onClick={() => changeFrequency("rate-limiter", "day")}
-                className={`frequency-bubble-row ${rate_limiter.frequency ===
-                "day"
-                  ? "active"
-                  : ""}`}
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency === "day" ? "active" : ""
+                }`}
               >
                 day
               </div>

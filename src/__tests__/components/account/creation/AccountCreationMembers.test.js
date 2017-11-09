@@ -204,8 +204,9 @@ describe("AccountCreationMembers test", () => {
       .at(0);
     const row = inner.children().at(0);
     expect(row.find(".name").text()).toBe(
-      `${props.organization.members[0].firstname} ${props.organization
-        .members[0].name}`
+      `${props.organization.members[0].firstname} ${
+        props.organization.members[0].name
+      }`
     );
   });
 

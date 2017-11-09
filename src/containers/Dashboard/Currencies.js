@@ -1,10 +1,11 @@
 //@flow
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
 import React, { Component } from "react";
 import PieChart from "./PieChart";
 import { countervalueForRate, getCurrencyRate } from "../../data/currency";
 import type { Account, Currency } from "../../datatypes";
+import AccountsQuery from "../../api/queries/AccountsQuery";
+import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 
 function Currencies({
   accounts,
@@ -59,8 +60,8 @@ class RenderLoading extends Component<*> {
 
 export default connectData(Currencies, {
   queries: {
-    accounts: api.accounts,
-    currencies: api.currencies
+    accounts: AccountsQuery,
+    currencies: CurrenciesQuery
   },
   optimisticRendering: true,
   RenderError,

@@ -1,9 +1,8 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import connectData from "../../../restlay/connectData";
-import * as api from "../../../data/api-spec";
+import MembersQuery from "../../../api/queries/MembersQuery";
 import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
 import "./AccountCreationMembers.css";
 import Checkbox from "../../form/Checkbox";
 import ModalLoading from "../../../components/ModalLoading";
@@ -79,6 +78,7 @@ class AccountCreationMembers extends Component {
 AccountCreationMembers.propTypes = {
   organization: PropTypes.shape({}).isRequired,
   members: PropTypes.arrayOf(PropTypes.string).isRequired,
+  approvers: PropTypes.arrayOf(PropTypes.string).isRequired,
   getOrganizationMembers: PropTypes.func.isRequired,
   switchInternalModal: PropTypes.func.isRequired,
   addMember: PropTypes.func.isRequired
@@ -87,6 +87,6 @@ AccountCreationMembers.propTypes = {
 export default connectData(AccountCreationMembers, {
   RenderLoading: ModalLoading,
   queries: {
-    members: api.members
+    members: MembersQuery
   }
 });

@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
 import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
@@ -10,6 +9,8 @@ import DateFormat from "../../components/DateFormat";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import AccountName from "../../components/AccountName";
 import type { Operation, Account } from "../../datatypes";
+import AccountsQuery from "../../api/queries/AccountsQuery";
+import PendingsQuery from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
 const Row = ({ date, children }) => (
@@ -97,8 +98,8 @@ class RenderLoading extends Component<*> {
 
 export default connectData(PendingCard, {
   queries: {
-    accounts: api.accounts,
-    pendings: api.pendings
+    accounts: AccountsQuery,
+    pendings: PendingsQuery
   },
   optimisticRendering: true,
   RenderError,

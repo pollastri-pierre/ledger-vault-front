@@ -189,7 +189,7 @@ export default function reducer(state = createInitialState(), action) {
     case "DATA_FETCHED_FAIL": {
       const shouldLogout =
         action.error.status &&
-        action.error.status === action.spec.logoutUserIfStatusCode;
+        action.error.status === action.queryOrMutation.logoutUserIfStatusCode;
       if (shouldLogout) {
         window.localStorage.removeItem("token");
         return createInitialState();

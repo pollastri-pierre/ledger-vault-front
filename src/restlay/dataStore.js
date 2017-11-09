@@ -1,57 +1,43 @@
 //@flow
 import { normalize } from "normalizr";
-import network from "../data/network"; // TODO this is an external dep. we need a way to inject the "network layer" (relay have a NetworkLayer concept, very interesting stuff)
-import type APISpec from "./APISpec";
-import type APIQuerySpec from "./APIQuerySpec";
+import network from "../network"; // TODO this is an external dep. we need a way to inject the "network layer" (relay have a NetworkLayer concept, very interesting stuff)
+import Mutation from "./Mutation";
+import Query from "./Query";
 
-type Entities = {
+export type Entities = {
   [_: string]: { [_: string]: Object }
 };
-type Result = {
-  result: Object | Array<Object>,
+type Result<R> = {
+  result: R,
   time: number
 };
 
 export type Store = {
   entities: Entities,
-  results: { [_: string]: Result },
+  results: { [_: string]: Result<*> },
   pending: { [_: string]: Promise<*> },
   errors: { [_: string]: Error }
 };
 
-const resolveURI = ({ uri }: APISpec, apiParams: ?Object): string =>
-  typeof uri === "function" ? uri(apiParams || {}) : uri;
-
-const apiSpecCacheKey = (apiSpec: APISpec, apiParams: ?Object): string =>
-  apiSpec.method + "_" + resolveURI(apiSpec, apiParams);
-
-export const getResultCache = (
+export function getQueryCacheResult<R>(
   store: Store,
-  apiSpec: APISpec,
-  apiParams: ?Object
-): ?Result => store.results[apiSpecCacheKey(apiSpec, apiParams)];
+  query: Query<*, R>
+): Result<R> {
+  // $FlowFixMe
+  return store.results[query.getCacheKey()];
+}
 
-export const cacheIsFresh = (
-  store: Store,
-  apiSpec: APIQuerySpec,
-  apiParams: ?Object
-): boolean => {
-  const cache = getResultCache(store, apiSpec, apiParams);
+export function queryCacheIsFresh(store: Store, query: Query<*, *>): boolean {
+  const cache = getQueryCacheResult(store, query);
   if (!cache) return false;
-  return Date.now() < cache.time + 1000 * apiSpec.cacheMaxAge;
-};
+  return Date.now() < cache.time + 1000 * query.cacheMaxAge;
+}
 
-export const getResultError = (
-  store: Store,
-  apiSpec: APISpec,
-  apiParams: ?Object
-): ?Error => store.errors[apiSpecCacheKey(apiSpec, apiParams)];
+export const getQueryError = (store: Store, query: Query<*, *>): ?Error =>
+  store.errors[query.getCacheKey()];
 
-export const isPending = (
-  store: Store,
-  apiSpec: APISpec,
-  apiParams: ?Object
-): boolean => !!store.pending[apiSpecCacheKey(apiSpec, apiParams)];
+export const queryIsPending = (store: Store, query: Query<*, *>): boolean =>
+  !!store.pending[query.getCacheKey()];
 
 const initialState: Store = {
   entities: {},
@@ -75,36 +61,47 @@ function mergeEntities(prev: Entities, patch: Entities): Entities {
   return entities;
 }
 
-export const fetchDataAction = (stateLense: (state: Object) => Store) => (
-  spec: APISpec,
-  apiParams: ?Object,
-  body: ?Object
-) => (dispatch: Function, getState: () => *): Promise<*> => {
-  const uri = resolveURI(spec, apiParams);
-  const cacheKey = apiSpecCacheKey(spec, apiParams);
-  if (spec.method === "GET") {
-    // we need to not do a query if one is already in progress at this level because we don't to have tons of dispatch() happening
+// FIXME might split into 2 functions, one for query, one for mutation
+export const executeQueryOrMutation = (
+  stateLense: (state: Object) => Store
+) => <In, Out>(queryOrMutation: Query<In, Out> | Mutation<In, Out>) => (
+  dispatch: Function,
+  getState: () => *
+): Promise<Out> => {
+  const uri: string = queryOrMutation.uri;
+  let cacheKey, method, body;
+  if (queryOrMutation instanceof Query) {
+    cacheKey = queryOrMutation.getCacheKey();
     const pendingPromise = stateLense(getState()).pending[cacheKey];
     if (pendingPromise) return pendingPromise;
+    method = "GET";
+  } else {
+    method = queryOrMutation.method;
+    body = queryOrMutation.getBody();
   }
-  const promise = network(uri, spec.method, body)
+  const promise = network(uri, method, body)
     .then(data => {
-      const result = normalize(data, spec.responseSchema);
+      const result = normalize(data, queryOrMutation.responseSchema || {});
       dispatch({
         type: "DATA_FETCHED",
         result,
-        spec,
+        queryOrMutation,
         cacheKey
       });
       return result.result;
     })
     .catch(error => {
-      dispatch({ type: "DATA_FETCHED_FAIL", error, spec, cacheKey });
+      dispatch({
+        type: "DATA_FETCHED_FAIL",
+        error,
+        queryOrMutation,
+        cacheKey
+      });
       throw error;
     });
   dispatch({
     type: "DATA_FETCH",
-    spec,
+    queryOrMutation,
     cacheKey,
     promise
   });
@@ -112,27 +109,45 @@ export const fetchDataAction = (stateLense: (state: Object) => Store) => (
 };
 
 const reducers = {
-  DATA_FETCHED: (store, { result, cacheKey }) => ({
-    entities: mergeEntities(store.entities, result.entities),
-    results: {
-      ...store.results,
-      [cacheKey]: { result: result.result, time: Date.now() }
-    },
-    pending: without(store.pending, cacheKey),
-    errors: without(store.errors, cacheKey)
-  }),
-  DATA_FETCHED_FAIL: (store, { cacheKey, error }) => ({
-    ...store,
-    pending: without(store.pending, cacheKey),
-    errors: { ...store.errors, [cacheKey]: error }
-  }),
-  DATA_FETCH: (store, { cacheKey, promise }) => ({
-    ...store,
-    pending: { ...store.pending, [cacheKey]: promise }
-  })
+  DATA_FETCHED: (store, { result, cacheKey }) => {
+    const entities = mergeEntities(store.entities, result.entities);
+    if (!cacheKey) {
+      return { ...store, entities };
+    } else {
+      return {
+        entities,
+        results: {
+          ...store.results,
+          [cacheKey]: { result: result.result, time: Date.now() }
+        },
+        pending: without(store.pending, cacheKey),
+        errors: without(store.errors, cacheKey)
+      };
+    }
+  },
+  DATA_FETCHED_FAIL: (store, { cacheKey, error }) =>
+    cacheKey
+      ? {
+          ...store,
+          pending: without(store.pending, cacheKey),
+          errors: { ...store.errors, [cacheKey]: error }
+        }
+      : null,
+  DATA_FETCH: (store, { cacheKey, promise }) =>
+    cacheKey
+      ? {
+          ...store,
+          pending: { ...store.pending, [cacheKey]: promise }
+        }
+      : null
 };
 
-export const reducer = (state: * = initialState, action: Object) =>
-  action.type in reducers
-    ? { ...state, ...reducers[action.type](state, action) }
-    : state;
+export const reducer = (state: * = initialState, action: Object) => {
+  if (action.type in reducers) {
+    const patch = reducers[action.type](state, action);
+    if (patch) {
+      return { ...state, ...patch };
+    }
+  }
+  return state;
+};

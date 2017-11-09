@@ -25,11 +25,9 @@ function AccountApproveDetails(props) {
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${_.isNull(
-            security_scheme.time_lock
-          )
-            ? "disabled"
-            : ""}`}
+          className={`confirmation-security-item ${
+            _.isNull(security_scheme.time_lock) ? "disabled" : ""
+          }`}
         >
           <Hourglass className="security-icon timelock" />
           <span className="security-title">Time-lock</span>
@@ -42,11 +40,9 @@ function AccountApproveDetails(props) {
           </span>
         </div>
         <div
-          className={`confirmation-security-item ${_.isNull(
-            security_scheme.rate_limiter
-          )
-            ? "disabled"
-            : ""}`}
+          className={`confirmation-security-item ${
+            _.isNull(security_scheme.rate_limiter) ? "disabled" : ""
+          }`}
         >
           <Rates className="security-icon ratelimiter" />
           <span className="security-title">Rate limiter</span>

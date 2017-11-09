@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import connectData from "../../../restlay/connectData";
-import * as api from "../../../data/api-spec";
+import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import type { Currency } from "../../../datatypes";
 
 function AccountCreationCurrencies(props: {
@@ -23,9 +23,11 @@ function AccountCreationCurrencies(props: {
               .split(" ")
               .join("-")
               .toLowerCase()}
-            ${currency && currency.units[0].name === cur.units[0].name
-              ? "selected"
-              : ""}`}
+            ${
+              currency && currency.units[0].name === cur.units[0].name
+                ? "selected"
+                : ""
+            }`}
         >
           <span className="currency-name">{cur.units[0].name}</span>
           <span className="currency-short">{cur.units[0].symbol}</span>
@@ -37,6 +39,6 @@ function AccountCreationCurrencies(props: {
 
 export default connectData(AccountCreationCurrencies, {
   queries: {
-    currencies: api.currencies
+    currencies: CurrenciesQuery
   }
 });
