@@ -44,11 +44,21 @@
     padding-bottom: $spacingS * 1.5;
   }
 
+  .tab-title:not(:first-of-type) {
+    padding-top: $spacingS * 1.5;
+  }
+
+  .title-address {
+    padding-bottom: 0;
+  }
+
   .operation-creation-arrow-down {
     width: 11px;
   }
 
   .operation-creation-amount-field {
+    padding-bottom: 16px !important;
+
     div {
       right: 0;
       padding-right: 23px !important;
@@ -58,5 +68,11 @@
       text-align: right;
       padding: 0 23px 0 70px !important;
     }
+  }
+
+  .operation-creation-countervalue {
+    color: $lead;
+    padding-top: 16px;
+    line-height: 1em;
   }
 }
