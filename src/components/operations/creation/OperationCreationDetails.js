@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Component } from "react";
+import bitcoinAddress from "bitcoin-address";
 import currencies from "../../../currencies";
 import { PopBubble, TextField } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
@@ -21,7 +22,9 @@ type State = {
   unitMenuOpen: boolean,
   maxMenuOpen: boolean,
   amount: string,
-  amountIsValid: boolean
+  amountIsValid: boolean,
+  address: string,
+  addressIsValid: boolean
 };
 
 class OperationCreationDetails extends Component<Props, State> {
@@ -37,7 +40,9 @@ class OperationCreationDetails extends Component<Props, State> {
       unitMenuOpen: false,
       maxMenuOpen: false,
       amount: "",
-      amountIsValid: true
+      amountIsValid: true,
+      address: "",
+      addressIsValid: true
     };
   }
 
@@ -96,13 +101,28 @@ class OperationCreationDetails extends Component<Props, State> {
     this.setAmount(`${amount}`);
   };
 
+  updateAddress = (e: SyntheticEvent<HTMLInputElement>) => {
+    const address: string = e.currentTarget.value.trim();
+    const addressIsValid: boolean =
+      address === "" || bitcoinAddress.validate(address);
+
+    this.setState({
+      address,
+      addressIsValid
+    });
+  };
+
   render() {
     return (
       <div className="operation-creation-details wrapper">
+
+        {/* Amount */}
+
         <div className="tab-title">Amount</div>
         <div className="amount-field-wrapper" style={{ position: "relative" }}>
           <TextField
             className="operation-creation-amount-field"
+            id="operation-creation-amount-field"
             hintText="0"
             value={this.state.amount}
             hasError={!this.state.amountIsValid}
@@ -149,6 +169,22 @@ class OperationCreationDetails extends Component<Props, State> {
             <ArrowDown />
           </div>
         </div>
+        <div className="operation-creation-countervalue">
+          <div
+            style={{
+              float: "left"
+            }}
+          >
+            EUR
+          </div>
+          <div
+            style={{
+              float: "right"
+            }}
+          >
+            1,024.42
+          </div>
+        </div>
         <PopBubble
           open={this.state.unitMenuOpen}
           anchorEl={this.unitMenuAnchor}
@@ -180,9 +216,21 @@ class OperationCreationDetails extends Component<Props, State> {
             Send max
           </a>
         </PopBubble>
-        <br />
-        <div className="tab-title">Address to credit</div>
-        <br />
+
+        {/* Address */}
+
+        <div className="tab-title title-address">Address to credit</div>
+        <TextField
+          className="operation-creation-address"
+          id="operation-creation-address"
+          style={{ fontSize: "13px" }}
+          onChange={this.updateAddress}
+          hasError={!this.state.addressIsValid}
+          value={this.state.address}
+        />
+
+        {/* Fees */}
+
         <div className="tab-title">Confirmation fees</div>
       </div>
     );
