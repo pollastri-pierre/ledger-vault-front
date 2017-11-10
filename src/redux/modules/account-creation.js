@@ -148,7 +148,7 @@ export const initialState = {
     value: 0,
     frequency: "day"
   },
-  interModalId: "main",
+  internModalId: "main",
   popBubble: false,
   popAnchor: null
 };

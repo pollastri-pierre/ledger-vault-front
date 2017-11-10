@@ -1,0 +1,32 @@
+@import "../../styles/variables";
+
+.badge-security {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0 20px 0 20px;
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  .security-icon {
+    margin-bottom: 10px;
+  }
+
+  .security-title,
+  .security-value {
+    display: block;
+  }
+
+  .security-title {
+    font-size: 13px;
+    color: $black;
+    margin-bottom: 5px;
+  }
+
+  .security-value {
+    font-size: 11px;
+    color: $lead;
+  }
+}

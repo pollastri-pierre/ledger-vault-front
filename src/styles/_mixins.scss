@@ -1,8 +1,17 @@
-@import './variables';
+@import "./variables";
 
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  transition: opacity 0.2s ease;
+
+  &.active,
+  &:hover {
+    opacity: 1;
+  }
+}
 @mixin highlight-block($color, $left) {
   &::before {
-    content: '';
+    content: "";
     cursor: pointer;
     background-color: $color;
     width: 0px;
@@ -12,7 +21,7 @@
     left: $left;
     bottom: calc(50% - (26px / 2));
     opacity: 1;
-    transition: width .2s ease;
+    transition: width 0.2s ease;
   }
 
   &.active {
@@ -28,7 +37,7 @@
 @mixin highlight-block-active($color, $left) {
   opacity: 1;
   &::before {
-    content: '';
+    content: "";
     background-color: $color;
     width: 5px;
     height: 26px;
@@ -37,6 +46,6 @@
     left: $left;
     opacity: 1;
     bottom: calc(50% - (26px / 2));
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
   }
 }

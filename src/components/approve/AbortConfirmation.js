@@ -1,15 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { DialogButton } from "../";
-import Trash from "../icons/thin/Trash";
+import { TrashIcon } from "../icons";
+import "./index.css";
 
 function AbortConfirmation(props) {
   const { abort, aborting, entity } = props;
   return (
-    <div id="account-abort-confirmation" className="small-modal">
+    <div className="abort-confirmation">
       <header>
-        <Trash className="trash-icon" />
-        <h3>Abort {entity}</h3>
+        <TrashIcon />
+        <h3>Abort {entity} request</h3>
       </header>
 
       <div className="content">

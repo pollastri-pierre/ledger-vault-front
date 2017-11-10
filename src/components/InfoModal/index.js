@@ -7,9 +7,13 @@ class InfoModal extends PureComponent<*> {
     children: *
   };
   render() {
-    const { children } = this.props;
+    const { children, className, ...rest } = this.props;
 
-    return <div className="info-modal">{children}</div>;
+    return (
+      <div className={`info-modal ${className}`} {...rest}>
+        {children}
+      </div>
+    );
   }
 }
 

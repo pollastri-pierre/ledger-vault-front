@@ -1,9 +1,7 @@
 //@flow
 import React from "react";
-import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import _ from "lodash";
-import { openEntityApprove } from "../../redux/modules/entity-approve";
-import PropTypes from "prop-types";
 import AccountName from "../AccountName";
 import CurrencyUnitValue from "../CurrencyUnitValue";
 import CurrencyNameValue from "../CurrencyNameValue";
@@ -11,16 +9,13 @@ import DateFormat from "../DateFormat";
 import ApprovalStatus from "../ApprovalStatus";
 import { countervalueForRate } from "../../data/currency";
 
-function PendingOperationApprove(props) {
-  const {
-    operations,
-    open,
-    approved,
-    accounts,
-    approvers,
-    user,
-    onOpenApprove
-  } = props;
+type Props = {
+  operations: array,
+  approved?: boolean,
+  user: *
+};
+function PendingOperationApprove(props: Props) {
+  const { operations, approved, user } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -62,10 +57,10 @@ function PendingOperationApprove(props) {
         );
 
         return (
-          <div
+          <Link
             className={`pending-request operation ${approved ? "watch" : ""}`}
+            to={`/pending/operation/${account.id}`}
             key={operation.uuid}
-            onClick={() => onOpenApprove("operation", operation.uuid, approved)}
           >
             <div>
               <span className="request-date-creation">
@@ -90,39 +85,11 @@ function PendingOperationApprove(props) {
               />
               <AccountName name={account.name} currency={account.currency} />
             </div>
-          </div>
+          </Link>
         );
       })}
     </div>
   );
 }
 
-PendingOperationApprove.defaultProps = {
-  approved: false,
-  approvers: []
-};
-
-PendingOperationApprove.propTypes = {
-  operations: PropTypes.arrayOf(
-    PropTypes.shape({
-      uuid: PropTypes.string,
-      name: PropTypes.string
-    })
-  ).isRequired,
-  accounts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string
-    })
-  ).isRequired,
-  open: PropTypes.func.isRequired,
-  approved: PropTypes.bool,
-  approvers: PropTypes.arrayOf(PropTypes.shape({}))
-};
-
-const mapDispatchToProps = dispatch => ({
-  onOpenApprove: (entity, object, isApproved) =>
-    dispatch(openEntityApprove(entity, object, isApproved))
-});
-
-export default connect(undefined, mapDispatchToProps)(PendingOperationApprove);
+export default PendingOperationApprove;

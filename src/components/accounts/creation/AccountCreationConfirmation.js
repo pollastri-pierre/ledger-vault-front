@@ -1,10 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-import Rates from "../../icons/thin/Rates";
-import PeopleThin from "../../icons/thin/People";
-import Hourglass from "../../icons/thin/Hourglass";
+import {
+  BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon,
+  BigSecurityRateLimiterIcon
+} from "../../icons";
+import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
+import InfoModal from "../../InfoModal";
 
 function AccountCreationConfirmation(props) {
   const {
@@ -19,45 +22,27 @@ function AccountCreationConfirmation(props) {
   return (
     <div>
       <div className="confirmation-security">
-        <div className="confirmation-security-item">
-          <PeopleThin className="security-icon member" />
-          <span className="security-title">Members</span>
-          <span className="security-value">{approvers.length} selected</span>
-        </div>
-        <div
-          className={`confirmation-security-item ${
-            !time_lock.enabled ? "disabled" : ""
-          }`}
-        >
-          <Hourglass className="security-icon timelock" />
-          <span className="security-title">Time-lock</span>
-          <span className="security-value">
-            {time_lock.enabled ? (
-              <span>
-                {time_lock.value} {time_lock.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
-        <div
-          className={`confirmation-security-item ${
-            !rate_limiter.enabled ? "disabled" : ""
-          }`}
-        >
-          <Rates className="security-icon ratelimiter" />
-          <span className="security-title">Rate limiter</span>
-          <span className="security-value">
-            {rate_limiter.enabled ? (
-              <span>
-                {rate_limiter.value} per {rate_limiter.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
+        <BadgeSecurity
+          icon={<BigSecurityMembersIcon />}
+          label="Members"
+          value={`${approvers.length} selected`}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityTimeLockIcon />}
+          label="Time-lock"
+          disabled={!time_lock.enabled}
+          value={`${!time_lock.enabled
+            ? "disabled"
+            : time_lock.value + " " + time_lock.frequency}`}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityRateLimiterIcon />}
+          label="Rate Limiter"
+          disabled={!rate_limiter.enabled}
+          value={`${!rate_limiter.enabled
+            ? "disabled"
+            : rate_limiter.value + " per " + rate_limiter.frequency}`}
+        />
       </div>
 
       <div className="confirmation-infos">
@@ -78,16 +63,12 @@ function AccountCreationConfirmation(props) {
           </span>
         </div>
       </div>
-      <div className="confirmation-explain">
+      <InfoModal className="confirmation-explain">
         A new account request will be created. The account will not be available
         until all the members in your team approve the creation request.
-      </div>
+      </InfoModal>
     </div>
   );
 }
-
-AccountCreationConfirmation.propTypes = {
-  account: PropTypes.shape({}).isRequired
-};
 
 export default AccountCreationConfirmation;

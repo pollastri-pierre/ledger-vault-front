@@ -10,9 +10,23 @@
   height: 13px;
 }
 
+.security-members-big-icon {
+  height: 30px;
+  fill: none;
+  stroke: $mouse;
+  stroke-width: 2px;
+}
+
 .security-ratelimiter-icon {
   witdh: 13px;
   height: 13px;
+}
+
+.security-ratelimiter-big-icon {
+  height: 30px;
+  stroke: $mouse;
+  stroke-width: 2px;
+  fill: none;
 }
 
 .security-quorum-icon {
@@ -23,4 +37,28 @@
 .security-timelock-icon {
   witdh: 12px;
   height: 13px;
+}
+.security-timelock-big-icon {
+  height: 30px;
+  stroke: $mouse;
+  fill: none;
+  stroke-width: 2px;
+}
+
+.plug-icon {
+  width: 32px;
+  height: 20px;
+  fill: none;
+  stroke: $mouse;
+  stroke-width: 2px;
+  margin-bottom: 10px;
+}
+
+.trash-icon {
+  fill: none;
+  width: 27px;
+  height: 32px;
+  stroke: $mouse;
+  stroke-width: 2px;
+  margin-bottom: 10px;
 }
