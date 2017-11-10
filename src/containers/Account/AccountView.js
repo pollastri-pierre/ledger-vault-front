@@ -28,12 +28,17 @@ class AccountView extends Component<
     super(props);
     this.state = {
       quickLookGraphFilter: this.quickLookGraphFilters[0],
-      tabsIndex: 0
+      tabsIndex: 0,
+      labelDateRange: this.getLabelDateRange(this.getDateRange(this.tabsIndex))
     };
   }
 
   onQuickLookGraphFilterChange = filter => {
     this.setState({ quickLookGraphFilter: filter });
+  };
+
+  onDomainChange = domain => {
+    this.setState({ labelDateRange: this.getLabelDateRange(domain) });
   };
 
   quickLookGraphFilters = [
@@ -47,6 +52,8 @@ class AccountView extends Component<
   };
   getLastWeek = () => {
     var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     var lastWeek = new Date(
       today.getFullYear(),
       today.getMonth(),
@@ -54,9 +61,46 @@ class AccountView extends Component<
     );
     return lastWeek;
   };
+
+  getLabelDateRange = domain => {
+    const timeDelta = domain[1] - domain[0];
+
+    const dateRange =
+      timeDelta <= 86400000
+        ? "day"
+        : timeDelta <= 2629746000
+          ? "month"
+          : timeDelta <= 31556952000 ? "year" : "hour";
+
+    let res = "";
+    if (dateRange === "day") {
+      //Same day
+      res = [
+        <DateFormat date={domain[0]} format="MMMM Do, YYYY h:mm" />,
+        <DateFormat date={domain[1]} format="h:mm" />
+      ];
+    } else if (dateRange === "month") {
+      //Same month
+      res = [
+        <DateFormat date={domain[0]} format="MMMM Do" />,
+        <DateFormat date={domain[1]} format="Do, YYYY" />
+      ];
+    } else if (dateRange === "year") {
+      //Same year
+      res = [
+        <DateFormat date={domain[0]} format="MMMM Do" />,
+        <DateFormat date={domain[1]} format="MMMM Do, YYYY" />
+      ];
+    } else
+      res = [
+        <DateFormat date={domain[0]} format="MMMM Do, YYYY" />,
+        <DateFormat date={domain[1]} format="MMMM Do, YYYY" />
+      ];
+    return res;
+  };
   getDateRange = tabsIndex => {
-    const max = new Date();
-    let min = new Date();
+    const max = new Date().setHours(0, 0, 0, 0);
+    let min = new Date().setHours(0, 0, 0, 0);
     min =
       tabsIndex === 0
         ? new Date(new Date().setFullYear(new Date().getFullYear() - 1))
@@ -74,19 +118,15 @@ class AccountView extends Component<
     return [min, max];
   };
 
-  getTick = index => {
-    const values = ["month", "day", "day", "hour"];
-    return values[index];
-  };
-
   getOperations = data => {
     data = data.map((o: Operation) => ({
       time: new Date(o.time),
       amount: o.amount,
-      currency: o.currency
+      currency: o.currency,
+      tooltip: true
     }));
     data.push({ ...data[data.length - 1] });
-    data[data.length - 1].time = new Date();
+    data[data.length - 1].time = new Date().setHours(0, 0, 0, 0);
     data[data.length - 1].tooltip = false;
     _.sortBy(data, elem => new Date(elem.time).toISOString());
     return data;
@@ -94,11 +134,9 @@ class AccountView extends Component<
 
   render() {
     const { account, operations, reloading } = this.props;
-    const { tabsIndex, quickLookGraphFilter } = this.state;
-    const dateRange = this.getDateRange(tabsIndex);
-    const beginDate = "March, 13th";
-    const endDate = "19th, 2017";
-
+    const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
+    const dateRange = this.getDateRange(dateRange);
+    console.log("rendering accountView");
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -161,10 +199,12 @@ class AccountView extends Component<
                 </TabList>
               </header>
               <div className="dateLabel">
-                {`From ${beginDate} to ${endDate}`}
+                From {labelDateRange[0]} to {labelDateRange[1]}
               </div>
               <div className="content">
                 <QuicklookGraph
+                  onDomainChange={this.onDomainChange}
+                  minDomain={this.getDateRange(0)}
                   dateRange={this.getDateRange(tabsIndex)}
                   data={this.getOperations(operations)}
                 />
