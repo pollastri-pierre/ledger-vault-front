@@ -15,15 +15,21 @@ import AccountQuery from "../../../api/queries/AccountQuery";
 import ApproversQuery from "../../../api/queries/ApproversQuery";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
+import type { Member, Account } from "../../../datatypes";
 
 type Props = {
-  members: Array<*>,
-  profile: *,
-  approvers: Array<*>,
-  account: *,
+  members: Array<Member>,
+  profile: Member,
+  approvers: Array<Member>,
+  account: Account,
   close: Function,
   approve: Function,
-  aborting: Function
+  aborting: Function,
+  match: {
+    params: {
+      id: string
+    }
+  }
 };
 class AccountApprove extends Component<Props> {
   render() {
@@ -76,18 +82,20 @@ class AccountApprove extends Component<Props> {
   }
 }
 
-export default withRouter(
-  connectData(AccountApprove, {
-    RenderError: () => {
-      return <Redirect to="/pending" />;
-    },
-    queries: {
-      account: AccountQuery,
-      members: MembersQuery,
-      approvers: ApproversQuery,
-      profile: ProfileQuery
-    },
-    propsToQueryParams: props => ({ accountId: props.match.params.id }),
-    RenderLoading: ModalLoading
-  })
-);
+const RenderError = () => {
+  return <Redirect to="/pending" />;
+};
+
+const connected = connectData(AccountApprove, {
+  RenderError,
+  queries: {
+    account: AccountQuery,
+    members: MembersQuery,
+    approvers: ApproversQuery,
+    profile: ProfileQuery
+  },
+  propsToQueryParams: props => ({ accountId: props.match.params.id }),
+  RenderLoading: ModalLoading
+});
+
+export default withRouter(connected);
