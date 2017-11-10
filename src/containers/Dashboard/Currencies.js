@@ -40,7 +40,7 @@ function Currencies({
   }, []);
 
   return (
-    <div className="currencies">
+    <div className="dashboard-currencies">
       <PieChart data={pieChartData} />
     </div>
   );
@@ -48,13 +48,13 @@ function Currencies({
 
 class RenderError extends Component<*> {
   render() {
-    return <div className="currencies" />;
+    return <div className="dashboard-currencies" />;
   }
 }
 
 class RenderLoading extends Component<*> {
   render() {
-    return <div className="currencies" />;
+    return <div className="dashboard-currencies" />;
   }
 }
 
