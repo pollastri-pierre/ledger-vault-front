@@ -196,8 +196,7 @@ export default class QuicklookGraph extends Component {
   };
 
   computeData = data => {
-    const { width, height, transform } = this.state;
-    const { dateRange } = this.props;
+    const { width, transform } = this.state;
     let computedData = data.slice();
 
     let { x, y } = this.computeXY(data);
@@ -205,9 +204,6 @@ export default class QuicklookGraph extends Component {
     if (transform) {
       x = transform.rescaleX(x);
     }
-
-    const domainX = x.domain();
-
     //Setting up xAxis tick format behaviour. subject to change
     const formatMillisecond = d3.timeFormat(".%L"),
       formatSecond = d3.timeFormat(":%S"),
@@ -360,8 +356,7 @@ export default class QuicklookGraph extends Component {
   };
 
   componentDidMount() {
-    const { data: dataProp, dateRange: dateRange } = this.props;
-    const { width, height } = this.state;
+    const { data: dataProp } = this.props;
 
     //return if no data
     if (dataProp.length === 0) return;
@@ -400,7 +395,7 @@ export default class QuicklookGraph extends Component {
       const { x, y } = this.computeXY(dataProp);
       duration = 500;
       this.zoomTo(dateRange[0], dateRange[1], x, y);
-    } else if (prevState.transform != this.state.transform) {
+    } else if (prevState.transform !== this.state.transform) {
       //Redrawing grpah because of new zoom
       const { data, xAxis, yAxis, x } = this.computeData(dataProp);
       this.props.onDomainChange(x.domain());

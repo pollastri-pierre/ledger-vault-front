@@ -64,14 +64,17 @@ class AccountView extends Component<
   };
 
   getLabelDateRange = domain => {
-    const timeDelta = domain[1] - domain[0];
+    console.log(domain);
 
     const dateRange =
-      timeDelta <= 86400000
+      new Date(domain[0]).getDate() == new Date(domain[1]).getDate()
         ? "day"
-        : timeDelta <= 2629746000
+        : new Date(domain[0]).getMonth() == new Date(domain[1]).getMonth()
           ? "month"
-          : timeDelta <= 31556952000 ? "year" : "hour";
+          : new Date(domain[0]).getFullYear() ==
+            new Date(domain[1]).getFullYear()
+            ? "year"
+            : "hour";
 
     let res = "";
     if (dateRange === "day") {
@@ -100,8 +103,8 @@ class AccountView extends Component<
     return res;
   };
   getDateRange = tabsIndex => {
-    const max = new Date().setHours(0, 0, 0, 0);
-    let min = new Date().setHours(0, 0, 0, 0);
+    const max = new Date();
+    let min = new Date();
     min =
       tabsIndex === 0
         ? new Date(new Date().setFullYear(new Date().getFullYear() - 1))
@@ -115,8 +118,8 @@ class AccountView extends Component<
       tabsIndex === 3
         ? new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
         : min;
-
-    return [min, max];
+    console.log(min);
+    return [min.setHours(0, 0, 0, 0), max.setHours(0, 0, 0, 0)];
   };
 
   getOperations = data => {
