@@ -1,12 +1,14 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
+import DashboardLastOperationsQuery from "../../api/queries/DashboardLastOperationsQuery";
+import AccountsQuery from "../../api/queries/AccountsQuery";
 import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardLoading from "../../components/utils/CardLoading";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../datatypes";
+import { Route, withRouter } from "react-router";
 
 class LastOperationCard extends Component<*> {
   props: {
@@ -48,12 +50,13 @@ class RenderLoading extends Component<*> {
     );
   }
 }
-export default connectData(LastOperationCard, {
+const c = connectData(LastOperationCard, {
   queries: {
-    operations: api.dashboardLastOperations,
-    accounts: api.accounts
+    operations: DashboardLastOperationsQuery,
+    accounts: AccountsQuery
   },
   optimisticRendering: true,
   RenderError,
   RenderLoading
 });
+export default c;

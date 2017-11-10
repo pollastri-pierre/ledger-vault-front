@@ -1,12 +1,13 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import connectData from "../../../restlay/connectData";
-import * as api from "../../../data/api-spec";
+import MembersQuery from "../../../api/queries/MembersQuery";
 import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
 import "./AccountCreationMembers.css";
 import Checkbox from "../../form/Checkbox";
 import ModalLoading from "../../../components/ModalLoading";
+import MemberRow from "../../../components/MemberRow";
+import InfoModal from "../../../components/InfoModal";
 import { Avatar, DialogButton, Overscroll } from "../../../components";
 
 class AccountCreationMembers extends Component {
@@ -22,42 +23,22 @@ class AccountCreationMembers extends Component {
           ) : (
             false
           )}
-          <p className="info">
+          <InfoModal>
             Members define the group of individuals that have the ability to
             approve outgoing operations from this account.
-          </p>
+          </InfoModal>
         </header>
         <div className="content">
           <Overscroll>
             {_.map(members, member => {
               const isChecked = approvers.indexOf(member.pub_key) > -1;
               return (
-                <div
+                <MemberRow
                   key={member.id}
-                  onClick={() => addMember(member.pub_key)}
-                  role="button"
-                  tabIndex={0}
-                  className="account-member-row"
-                >
-                  <div className="member-avatar">
-                    <Avatar
-                      className="member-avatar-img"
-                      url={member.picture}
-                      width="13.5px"
-                      height="15px"
-                    />
-                  </div>
-                  <span className="name">
-                    {member.first_name} {member.last_name}
-                  </span>
-                  <p className="role"> {member.role} </p>
-                  <Checkbox
-                    checked={isChecked}
-                    id={member.id}
-                    labelFor={member.name}
-                    handleInputChange={() => addMember(member.pub_key)}
-                  />
-                </div>
+                  member={member}
+                  checked={isChecked}
+                  onSelect={addMember}
+                />
               );
             })}
           </Overscroll>
@@ -79,6 +60,7 @@ class AccountCreationMembers extends Component {
 AccountCreationMembers.propTypes = {
   organization: PropTypes.shape({}).isRequired,
   members: PropTypes.arrayOf(PropTypes.string).isRequired,
+  approvers: PropTypes.arrayOf(PropTypes.string).isRequired,
   getOrganizationMembers: PropTypes.func.isRequired,
   switchInternalModal: PropTypes.func.isRequired,
   addMember: PropTypes.func.isRequired
@@ -87,6 +69,6 @@ AccountCreationMembers.propTypes = {
 export default connectData(AccountCreationMembers, {
   RenderLoading: ModalLoading,
   queries: {
-    members: api.members
+    members: MembersQuery
   }
 });

@@ -1,20 +1,34 @@
+//@flow
 import React, { Component } from "react";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
+import EntityApprove from "../../components/approve/EntityApprove";
+import { Route } from "react-router";
 import {
   PendingAccountApprove,
   PendingOperationApprove
 } from "../../components";
+import AccountsQuery from "../../api/queries/AccountsQuery";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import PendingsQuery from "../../api/queries/PendingsQuery";
+import ApproversQuery from "../../api/queries/ApproversQuery";
 
 import "./PendingRequests.css";
 
-class PendingRequests extends Component {
+class PendingRequests extends Component<*> {
   render() {
     const { accounts, pendingRequests, approversAccount, profile } = this.props;
 
     return (
       <div className="pending-requests">
+        <Route
+          path={`*/account/:id`}
+          render={() => <EntityApprove entity="account" />}
+        />
+        <Route
+          path={`*/operation/:id`}
+          render={() => <EntityApprove entity="operation" />}
+        />
         <div className="pending-left">
           <div className="bloc">
             <h3>Operations to approve</h3>
@@ -38,6 +52,7 @@ class PendingRequests extends Component {
           <div className="bloc">
             <h3>Accounts to approve</h3>
             <PendingAccountApprove
+              r
               accounts={pendingRequests.approveAccounts}
               approvers={approversAccount}
               user={profile}
@@ -62,10 +77,10 @@ export { PendingRequests as PendingRequestNotDecorated };
 
 export default connectData(PendingRequests, {
   queries: {
-    pendingRequests: api.pendings,
-    accounts: api.accounts,
-    profile: api.profile,
-    approversAccount: api.approvers
+    pendingRequests: PendingsQuery,
+    accounts: AccountsQuery,
+    profile: ProfileQuery,
+    approversAccount: ApproversQuery
   },
   RenderLoading: SpinnerCard
 });

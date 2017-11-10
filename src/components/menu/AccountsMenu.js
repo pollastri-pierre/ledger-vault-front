@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import type { Account } from "../../datatypes";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
+import AccountsQuery from "../../api/queries/AccountsQuery";
 
 function AccountsMenu({ accounts }: { accounts: Array<Account> }) {
   return (
@@ -22,6 +22,6 @@ function AccountsMenu({ accounts }: { accounts: Array<Account> }) {
 
 export default connectData(AccountsMenu, {
   queries: {
-    accounts: api.accounts
+    accounts: AccountsQuery
   }
 });

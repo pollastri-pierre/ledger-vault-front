@@ -92,6 +92,7 @@ $cardHeight: 30px;
     text-align: center;
     font-weight: 600;
     margin: 0 14px;
+    @include opacity(0.5);
   }
 
   .content-header-button-icon {

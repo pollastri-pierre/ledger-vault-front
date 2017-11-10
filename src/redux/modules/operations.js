@@ -1,5 +1,3 @@
-import _ from "lodash";
-import axios from "axios";
 import { LOCATION_CHANGE, push } from "react-router-redux";
 import queryString from "query-string";
 

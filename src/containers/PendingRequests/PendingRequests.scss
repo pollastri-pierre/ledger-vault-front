@@ -1,6 +1,6 @@
-@import '../../styles/variables';
-@import '../../styles/animations';
-@import '../../styles/mixins';
+@import "../../styles/variables";
+@import "../../styles/animations";
+@import "../../styles/mixins";
 
 .pending-requests {
   display: flex;
@@ -50,6 +50,7 @@
 
   .pending-request {
     cursor: pointer;
+    display: block;
     position: relative;
     padding: 10px 0 10px 0;
     animation: fadeIn 1.5s ease;

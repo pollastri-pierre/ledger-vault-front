@@ -9,7 +9,7 @@ import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/CircularProgress";
 import connectData from "../../restlay/connectData";
-import * as api from "../../data/api-spec";
+import ProfileQuery from "../../api/queries/ProfileQuery";
 
 class ProfileCard extends Component<
   {
@@ -105,7 +105,7 @@ export default withRouter(
   connectData(ProfileCard, {
     RenderLoading,
     queries: {
-      profile: api.profile
+      profile: ProfileQuery
     }
   })
 );

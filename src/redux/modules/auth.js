@@ -121,6 +121,7 @@ export function finishAuthentication(data) {
         if (deviceResponse.errorCode) {
           dispatch(authenticationFailed(deviceResponse.errorCode));
         } else {
+          // FIXME we should drop usage of axios / moxios. directly use fetch()
           axios
             .post("finish_authentication", {
               email: team,
@@ -188,7 +189,7 @@ export default function reducer(state = createInitialState(), action) {
     case "DATA_FETCHED_FAIL": {
       const shouldLogout =
         action.error.status &&
-        action.error.status === action.spec.logoutUserIfStatusCode;
+        action.error.status === action.queryOrMutation.logoutUserIfStatusCode;
       if (shouldLogout) {
         window.localStorage.removeItem("token");
         return createInitialState();

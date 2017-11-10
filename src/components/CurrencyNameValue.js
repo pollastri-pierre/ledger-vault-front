@@ -1,7 +1,7 @@
 //@flow
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import connectData from "../restlay/connectData";
-import * as api from "../data/api-spec";
+import CurrenciesQuery from "../api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import {
   inferUnit,
@@ -21,14 +21,15 @@ type Props = {
   countervalue?: boolean,
   // override the rate to use (default is the currency current rate)
   rate?: Rate,
-  // data store
+
+  // from connectData
   currencies: Array<Currency>
 };
 
 // This is a "smart" component that accepts a currencyName (e.g. bitcoin) and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
-class CurrencyNameValue extends PureComponent<Props> {
+class CurrencyNameValue extends Component<Props> {
   render() {
     const {
       currencyName,
@@ -53,6 +54,6 @@ class CurrencyNameValue extends PureComponent<Props> {
 
 export default connectData(CurrencyNameValue, {
   queries: {
-    currencies: api.currencies
+    currencies: CurrenciesQuery
   }
 });

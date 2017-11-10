@@ -1,72 +1,44 @@
+//@flow
 import React, { Component } from "react";
-// import _ from "lodash";
-import * as api from "../../../data/api-spec";
-import PropTypes from "prop-types";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-// import CircularProgress from "material-ui/CircularProgress";
 import { Overscroll } from "../../";
-import ModalLoading from "../../../components/ModalLoading";
-import AbortConfirmation from "../../approve/AbortConfirmation";
-import ApproveDevice from "../../approve/ApproveDevice";
+import { withRouter, Redirect } from "react-router";
+import connectData from "../../../restlay/connectData";
+
+import Footer from "../../approve/Footer";
+// import CircularProgress from "material-ui/CircularProgress";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
+import ModalLoading from "../../../components/ModalLoading";
 import AccountApproveApprovals from "./AccountApproveApprovals";
-import Footer from "../../approve/Footer";
-import connectData from "../../../restlay/connectData";
-import "./AccountApprove.css";
+import AccountQuery from "../../../api/queries/AccountQuery";
+import ApproversQuery from "../../../api/queries/ApproversQuery";
+import ProfileQuery from "../../../api/queries/ProfileQuery";
+import MembersQuery from "../../../api/queries/MembersQuery";
 
-class AccountApprove extends Component {
-  constructor(props) {
-    super(props);
-
-    this.aborting = this.aborting.bind(this);
-    this.approving = this.approving.bind(this);
-    this.abort = this.abort.bind(this);
-
-    this.state = {};
-  }
-
-  aborting() {
-    this.setState({ ...this.state, isAborting: !this.state.isAborting });
-  }
-
-  approving() {
-    const { fetchData, close } = this.props;
-    this.setState({ ...this.state, isDevice: !this.state.isDevice });
-
-    // TODO: replace setTimeout by device API call
-    setTimeout(() => {
-      return fetchData(api.approveOperation).then(() => {
-        return fetchData(api.pendings).then(() => close());
-      });
-    }, 500);
-  }
-
-  abort() {
-    const { fetchData, close } = this.props;
-    return fetchData(api.abortAccount).then(() => {
-      return fetchData(api.pendings).then(() => close());
-    });
-  }
-
+type Props = {
+  members: array,
+  profile: *,
+  approvers: array,
+  account: *,
+  close: Function,
+  approve: Function,
+  aborting: Function
+};
+class AccountApprove extends Component<Props> {
   render() {
-    const { members, approvers, close, account, abort, profile } = this.props;
-
-    if (this.state.isAborting) {
-      return (
-        <AbortConfirmation
-          entity="account"
-          aborting={this.aborting}
-          abort={this.abort}
-        />
-      );
-    }
-    if (this.state.isDevice) {
-      return <ApproveDevice entity="account" cancel={this.approving} />;
-    }
+    const {
+      members,
+      profile,
+      approvers,
+      account,
+      close,
+      approve,
+      aborting
+    } = this.props;
 
     return (
-      <Tabs id="account-creation" className="wrapper loading">
+      <Tabs>
         <div className="header">
           <h2>Account request</h2>
           <TabList>
@@ -95,8 +67,8 @@ class AccountApprove extends Component {
         </div>
         <Footer
           close={close}
-          approve={this.approving}
-          aborting={this.aborting}
+          approve={approve}
+          aborting={aborting}
           approved={account.approved.indexOf(profile.pub_key) > -1}
         />
       </Tabs>
@@ -104,17 +76,18 @@ class AccountApprove extends Component {
   }
 }
 
-AccountApprove.propTypes = {
-  close: PropTypes.func.isRequired
-};
-
-export default connectData(AccountApprove, {
-  queries: {
-    account: api.account,
-    members: api.members,
-    approvers: api.approvers,
-    profile: api.profile
-  },
-  propsToQueryParams: props => ({ accountId: props.accountId }),
-  RenderLoading: ModalLoading
-});
+export default withRouter(
+  connectData(AccountApprove, {
+    RenderError: () => {
+      return <Redirect to="/pending" />;
+    },
+    queries: {
+      account: AccountQuery,
+      members: MembersQuery,
+      approvers: ApproversQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({ accountId: props.match.params.id }),
+    RenderLoading: ModalLoading
+  })
+);

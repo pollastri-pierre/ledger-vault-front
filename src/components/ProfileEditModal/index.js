@@ -4,13 +4,15 @@ import PropTypes from "prop-types";
 import emailValidator from "email-validator";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
-import Script from "react-load-script";
+import rectCrop from "rect-crop";
 import connectData from "../../restlay/connectData";
 import { TextField } from "../../components";
 import DialogButton from "../../components/buttons/DialogButton";
 import { BlurDialog } from "../../containers";
 import ProfileIcon from "../icons/thin/Profile";
-import * as api from "../../data/api-spec";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import SaveProfile from "../../api/mutations/SaveProfileMutation";
+
 import type { Member } from "../../datatypes";
 
 import "./index.css";
@@ -30,7 +32,7 @@ const validators: { [_: string]: Validator } = {
 class ProfileEditModal extends Component<
   {
     profile: Member,
-    fetchData: Function,
+    restlay: *,
     history: *
   },
   *
@@ -57,26 +59,20 @@ class ProfileEditModal extends Component<
     this._unmounted = true;
   }
 
-  onDrop = files => {
-    if (files.length && typeof window.Jimp !== "undefined") {
-      window.Jimp
-        .read(files[0].preview)
-        .then(image => {
-          image
-            .cover(100, 100)
-            .getBase64(window.Jimp.MIME_JPEG, (err, base64) => {
-              if (err) throw err;
-              this.setState({
-                picture: {
-                  value: base64,
-                  isValid: true
-                }
-              });
-            });
-        })
-        .catch(err => {
-          throw err;
-        });
+  onDrop = (files: *) => {
+    if (files.length) {
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 160;
+      const ctx = canvas.getContext("2d");
+      const img = new Image();
+      img.src = files[0].preview;
+      img.onload = () => {
+        if (this._unmounted) return;
+        const [x, y, w, h] = rectCrop.largest(canvas, img);
+        ctx.drawImage(img, x, y, w, h, 0, 0, canvas.width, canvas.height);
+        const value = canvas.toDataURL();
+        this.setState({ picture: { value, isValid: true } });
+      };
     }
   };
 
@@ -95,13 +91,15 @@ class ProfileEditModal extends Component<
   };
 
   save = () =>
-    this.props
-      .fetchData(api.saveProfile, {
-        first_name: this.state.first_name.value,
-        last_name: this.state.last_name.value,
-        email: this.state.email.value,
-        picture: this.state.picture.value
-      })
+    this.props.restlay
+      .commitMutation(
+        new SaveProfile({
+          first_name: this.state.first_name.value,
+          last_name: this.state.last_name.value,
+          email: this.state.email.value,
+          picture: this.state.picture.value
+        })
+      )
       .then(this.close);
 
   render() {
@@ -175,8 +173,6 @@ class ProfileEditModal extends Component<
           <DialogButton highlight right onTouchTap={error ? null : this.save}>
             {t("common.save")}
           </DialogButton>
-          <Script url="/scripts/jimp.min.js" />
-          {/* Lib for cropping and converting new profile pic */}
         </div>
       </BlurDialog>
     );
@@ -186,7 +182,7 @@ class ProfileEditModal extends Component<
 export default withRouter(
   connectData(ProfileEditModal, {
     queries: {
-      profile: api.profile
+      profile: ProfileQuery
     }
   })
 );

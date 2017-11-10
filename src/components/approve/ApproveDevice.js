@@ -1,14 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { DialogButton } from "../";
-import Plug from "../icons/thin/Plug";
+import { PlugIcon } from "../icons";
+import "./index.css";
 
 function ApproveDevice(props) {
   const { cancel, entity } = props;
   return (
-    <div id="account-approve-device" className="small-modal">
+    <div className="approve-device">
       <header>
-        <Plug className="plug-icon" fill="#e2e2e2" />
+        <PlugIcon fill="#e2e2e2" />
+
         <h3>Approve {entity}</h3>
       </header>
 

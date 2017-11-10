@@ -1,6 +1,6 @@
 import React from "react";
 
-function Hourglass(props) {
+function HourglassThin(props) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 32" {...props}>
       <title>hourglass</title>
@@ -44,4 +44,4 @@ function Hourglass(props) {
   );
 }
 
-export default Hourglass;
+export default HourglassThin;
