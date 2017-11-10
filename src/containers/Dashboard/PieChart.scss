@@ -6,7 +6,6 @@ $mouse: #e2e2e2;
 
 .dashboard-currencies {
   position: relative;
-  font-weight: 600;
   min-height: 250px;
   height: 100%;
 
@@ -32,6 +31,7 @@ $mouse: #e2e2e2;
     font-size: 10px;
     color: $steel;
     margin-left: 10px;
+    font-weight: 600;
   }
 
   .uppercase {

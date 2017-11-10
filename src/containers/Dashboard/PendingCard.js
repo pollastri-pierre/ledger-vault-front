@@ -15,7 +15,7 @@ import "./PendingCard.css";
 
 const Row = ({ date, children }) => (
   <div className="pending-list-row">
-    <div className="date uppercase">
+    <div className="date">
       <DateFormat date={date} />
     </div>
     <div className="body">{children}</div>

@@ -33,6 +33,8 @@ table.data-table {
   td.date {
     font-size: 10px;
     font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
   td.account {
     font-size: 13px;

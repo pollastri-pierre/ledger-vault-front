@@ -1,34 +1,36 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
 .pendingCard {
-	> header {
-		h3 {
-			margin: 0px;
-		}
-	}
-	.pendingHeader {
-		padding: 20px 47px;
-		.DashboardNumber {
-			padding-bottom: 20px;
-	    	font-size: 22px;
-		}
-	}
-	.pending-list-row:last-child{
-		border-bottom: none;
-		padding-bottom: 0px;
-	}
-	.pending-list-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		border-bottom: 1px solid $argile;
-		padding: 20px 0px;
-		.date {
-			font-size: 10px;
-			color: black;
-		}
-		.body {
-			font-size: 13px;
-		}
-	}
+  > header {
+    h3 {
+      margin: 0px;
+    }
+  }
+  .pendingHeader {
+    padding: 20px 46px;
+    .DashboardNumber {
+      padding-bottom: 20px;
+      font-size: 22px;
+    }
+  }
+  .pending-list-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0px;
+  }
+  .pending-list-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid $argile;
+    padding: 10px 0px;
+    .date {
+      font-size: 10px;
+      color: black;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .body {
+      font-size: 13px;
+    }
+  }
 }
