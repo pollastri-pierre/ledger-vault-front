@@ -49,7 +49,7 @@ class RenderLoading extends Component<*> {
     );
   }
 }
-export default connectData(LastOperationCard, {
+const c = connectData(LastOperationCard, {
   queries: {
     operations: DashboardLastOperationsQuery,
     accounts: AccountsQuery
@@ -58,3 +58,4 @@ export default connectData(LastOperationCard, {
   RenderError,
   RenderLoading
 });
+export default c;

@@ -1,6 +1,5 @@
 //@flow
 import { connect } from "react-redux";
-import { denormalize } from "normalizr";
 import React, { Component } from "react";
 import isEqual from "lodash/isEqual";
 import {
@@ -14,7 +13,7 @@ import type { Store } from "./dataStore";
 import Query from "./Query";
 import Mutation from "./Mutation";
 
-export type RestlayEnvironment = {
+export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   refreshQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
   forceFetch: () => void
@@ -22,23 +21,54 @@ export type RestlayEnvironment = {
   isReloadingData: (data: Object) => boolean,
   isOptimisticData: (data: Object) => boolean
   */
-};
+|};
+
+type ConnectedProps = {|
+  dataStore: Store,
+  executeQueryOrMutation: <In, Res>(
+    m: Mutation<In, Res> | Query<In, Res>
+  ) => Promise<Res>
+|};
+
+type InjectedProps = {|
+  restlay: RestlayEnvironment,
+  reloading: boolean
+|};
+
+type ExtractQuery = <Q>(Class<Q>) => Q;
+type ExtractQueryResult = <In, Out>(Class<Query<In, Out>>) => Out;
+type ExtractQueryIn = <In, Out>(Class<Query<In, Out>>) => In;
 
 // prettier-ignore
-type In<Props> = React$ComponentType<Props>;
+type In<Props, A> = React$ComponentType<$ObjMap<A, ExtractQueryResult> & InjectedProps & Props>;
 // prettier-ignore
-type Out<Props, A> = Class<React$Component<*, *>>; // FIXME figure out flowtype of the output component. a mixing of $Diff, $ObjMap, $Shape magics?
-type Opts<A> = {
+type Out<Props> = React$ComponentType<Props>;
+
+type ClazzProps<Props> = ConnectedProps & Props;
+
+type Opts<Props, A> = {
   // an object of { [propName: string]: Class<Query> }
   queries?: A,
+
   // allow to pass parameters to the api uri function that will be used to generate api URL.
-  propsToQueryParams?: (props: *) => Object,
+  propsToQueryParams?: (props: Props) => $Values<$ObjMap<A, ExtractQueryIn>>,
+
   // allow to implement the loading rendering. default is blank
-  RenderLoading?: *,
+  // prettier-ignore
+  RenderLoading?: React$ComponentType<$Shape<Props & {|
+    restlay: RestlayEnvironment
+  |}>>,
+
   // allow to implement the error rendering. default is blank
-  RenderError?: *,
+  // prettier-ignore
+  RenderError?: React$ComponentType<$Shape<Props & {|
+    error: Error,
+    restlay: RestlayEnvironment
+  |}>>,
+
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
+
   // allow the component to render if the api data was previously loaded
   optimisticRendering?: boolean
 };
@@ -52,7 +82,10 @@ const defaultOpts = {
   optimisticRendering: false
 };
 
-const neverEnding: Promise<any> = new Promise(() => {});
+const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
+  const { dataStore, executeQueryOrMutation, ...rest } = props; // eslint-disable-line no-unused-vars
+  return rest;
+};
 
 const mapStateToProps = (state: Object): { dataStore: Store } => ({
   dataStore: state.data
@@ -63,16 +96,20 @@ const mapDispatchToProps = dispatch => ({
     dispatch(executeQueryOrMutation(store => store.data)(queryOrMutation))
 });
 
-function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
-  Decorated: In<Props>,
-  opts?: Opts<A>
-): Out<Props, A> {
-  type APIProps = $ObjMap<A, any>; // TODO we should be able to infer the response type with this
+export default function connectData<
+  A: { [key: string]: Class<Query<any, any>> },
+  Props: Object
+>(Decorated: In<Props, A>, opts?: Opts<Props, A>): Out<Props> {
+  type APIProps = $ObjMap<A, ExtractQueryResult>;
 
   const displayName = `connectData(${Decorated.displayName ||
     Decorated.name ||
     ""})`;
 
+  const allOpts = {
+    ...defaultOpts,
+    ...opts
+  };
   const {
     queries,
     propsToQueryParams,
@@ -80,19 +117,11 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
     RenderLoading,
     RenderError,
     forceFetch
-  } = {
-    ...defaultOpts,
-    ...opts
-  };
-  const queriesKeys = Object.keys(queries);
+  } = allOpts;
+  const queriesKeys: Array<$Keys<A>> = Object.keys(queries);
 
   class Clazz extends Component<
-    {
-      dataStore: Store,
-      executeQueryOrMutation: <In, Res>(
-        Mutation<In, Res> | Query<In, Res>
-      ) => Promise<Res>
-    } & *,
+    ClazzProps<Props>,
     {
       catchedError: ?Error,
       initialPending: boolean
@@ -108,14 +137,14 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
     };
 
     apiParams: Object = {};
-    queriesInstances: ?{ [_: string]: Query<*, *> };
+    queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
     lastCompleteQueriedData: ?APIProps = null;
 
     sync(apiParams: Object): Array<Promise<*>> {
       const { executeQueryOrMutation, dataStore } = this.props;
       if (this.apiParams !== apiParams || !this.queriesInstances) {
-        const instances = {};
+        const instances: $ObjMap<A, ExtractQuery> = {};
         queriesKeys.forEach(key => {
           const Q = queries[key];
           const query: Query<*, *> = new Q(apiParams);
@@ -140,7 +169,7 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
     // This "environment" is a restlay prop that will be passed to the component.
     // the idea is to put everything in an object to not pollute props and introduce new things over time
     restlay: RestlayEnvironment = {
-      commitMutation: m => {
+      commitMutation: <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
         if (!(m instanceof Mutation)) {
           console.error(m);
           throw new Error(
@@ -150,7 +179,7 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
         const { executeQueryOrMutation } = this.props;
         return executeQueryOrMutation(m);
       },
-      refreshQuery: query => {
+      refreshQuery: <In, Res>(query: Query<In, Res>): Promise<Res> => {
         if (!(query instanceof Query)) {
           console.error(query);
           throw new Error("invalid mutation provided in restlay.refreshQuery");
@@ -164,7 +193,9 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
     };
 
     componentWillMount() {
-      const promises = this.sync(propsToQueryParams(this.props));
+      const promises = this.sync(
+        propsToQueryParams(extractInputProps(this.props))
+      );
       if (promises.length > 0) {
         this.setState({ initialPending: true });
         Promise.all(promises).then(() => {
@@ -178,8 +209,8 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
       this._unmounted = true;
     }
 
-    componentWillReceiveProps(props: *) {
-      const apiParams = propsToQueryParams(props);
+    componentWillReceiveProps(props: ClazzProps<Props>) {
+      const apiParams = propsToQueryParams(extractInputProps(props));
       if (!isEqual(apiParams, this.apiParams)) {
         this.sync(apiParams);
       }
@@ -190,8 +221,9 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
     }
 
     render() {
-      const { dataStore, ...props } = this.props;
-      const { apiParams, queriesInstances, restlay } = this;
+      const props = extractInputProps(this.props);
+      const { dataStore } = this.props;
+      const { queriesInstances, restlay } = this;
       const { catchedError, initialPending } = this.state;
       if (!queriesInstances) {
         // this should never happen
@@ -206,16 +238,17 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
         return <RenderError {...props} error={error} restlay={restlay} />;
       }
       const results = [];
-      queriesKeys.forEach(key => {
+      for (let key in queriesInstances) {
         const query = queriesInstances[key];
         const cache = getQueryCacheResult(dataStore, query);
-        if (!cache) return;
-        results.push({
-          result: cache.result,
-          key,
-          query
-        });
-      });
+        if (cache) {
+          results.push({
+            result: cache.result,
+            key,
+            query
+          });
+        }
+      }
 
       const havePendings =
         initialPending || results.some(r => queryIsPending(dataStore, r.query));
@@ -256,5 +289,3 @@ function connectData<A: { [_: string]: Class<Query<any, any>> }, Props>(
 
   return connect(mapStateToProps, mapDispatchToProps)(Clazz);
 }
-
-export default connectData;

@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from "react";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
@@ -12,7 +13,7 @@ import ApproversQuery from "../../api/queries/ApproversQuery";
 
 import "./PendingRequests.css";
 
-class PendingRequests extends Component {
+class PendingRequests extends Component<*> {
   render() {
     const { accounts, pendingRequests, approversAccount, profile } = this.props;
 
