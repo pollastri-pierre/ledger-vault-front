@@ -14,16 +14,15 @@ type Result<R> = {
 
 export type Store = {
   entities: Entities,
-  results: { [_: string]: Result<*> },
-  pending: { [_: string]: Promise<*> },
+  results: { [_: string]: Result<any> },
+  pending: { [_: string]: Promise<any> },
   errors: { [_: string]: Error }
 };
 
-export function getQueryCacheResult<R>(
+export function getQueryCacheResult<I, R>(
   store: Store,
-  query: Query<*, R>
-): Result<R> {
-  // $FlowFixMe
+  query: Query<I, R>
+): ?Result<R> {
   return store.results[query.getCacheKey()];
 }
 

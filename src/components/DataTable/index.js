@@ -15,7 +15,9 @@ export default class DataTable<Cell> extends Component<*> {
     renderRow: (cell: Cell, index: number, children: *) => *
   };
   static defaultProps = {
-    renderRow: (cell, index, children) => <tr key={index}>{children}</tr>
+    renderRow: (cell: Cell, index: number, children: *) => (
+      <tr key={index}>{children}</tr>
+    )
   };
   render() {
     const { columns, data, renderRow } = this.props;

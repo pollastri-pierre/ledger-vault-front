@@ -15,7 +15,8 @@ class TotalBalance extends Component<{
   totalBalance: *,
   filter: *,
   onTotalBalanceFilterChange: (value: *) => void,
-  reloading: boolean
+  reloading: *,
+  restlay: *
 }> {
   render() {
     const {
