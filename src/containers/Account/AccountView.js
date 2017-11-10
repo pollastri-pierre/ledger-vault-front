@@ -64,8 +64,6 @@ class AccountView extends Component<
   };
 
   getLabelDateRange = domain => {
-    console.log(domain);
-
     const dateRange =
       new Date(domain[0]).getDate() == new Date(domain[1]).getDate()
         ? "day"
@@ -118,7 +116,6 @@ class AccountView extends Component<
       tabsIndex === 3
         ? new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
         : min;
-    console.log(min);
     return [min.setHours(0, 0, 0, 0), max.setHours(0, 0, 0, 0)];
   };
 
@@ -140,7 +137,6 @@ class AccountView extends Component<
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
     const dateRange = this.getDateRange(dateRange);
-    console.log("rendering accountView");
     return (
       <div className="account-view">
         <div className="account-view-infos">

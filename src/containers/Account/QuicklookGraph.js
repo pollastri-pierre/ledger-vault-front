@@ -5,7 +5,6 @@ import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 
 // TODO use flowtype & fix eslint
-// TODO the component don't allow to send new data at the moment. try switch accross accounts
 export default class QuicklookGraph extends Component {
   state = {
     selected: -1,
@@ -391,7 +390,6 @@ export default class QuicklookGraph extends Component {
 
       /* calling computeData just to get x and y. but unnecessary computation ???? 
       x and y are needed to compute transform */
-      console.log("dateRange changed : ", dateRange);
       const { x, y } = this.computeXY(dataProp);
       duration = 500;
       this.zoomTo(dateRange[0], dateRange[1], x, y);
