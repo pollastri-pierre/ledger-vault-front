@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import connectData from "../../decorators/connectData";
+import connectData from "../../restlay/connectData";
 import EntityApprove from "../../components/approve/EntityApprove";
 import { Route } from "react-router";
 import {

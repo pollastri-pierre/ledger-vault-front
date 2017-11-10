@@ -1,7 +1,9 @@
 //@flow
 import _ from "lodash";
 import React, { Component } from "react";
+import { BlurDialog } from "../../containers";
 import ModalLoading from "../../components/ModalLoading";
+import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
@@ -33,6 +35,10 @@ class OperationDetails extends Component<
     this.setState({
       note: newNote
     });
+  };
+
+  close = () => {
+    this.props.history.goBack();
   };
 
   componentDidMount() {

@@ -6,7 +6,8 @@ import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import OperationApproveLocks from "./OperationApproveLocks";
 import ModalLoading from "../../../components/ModalLoading";
-import connectData from "../../../decorators/connectData";
+import { withRouter, Redirect } from "react-router";
+import connectData from "../../../restlay/connectData";
 import OperationQuery from "../../../api/queries/OperationQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
@@ -65,12 +66,19 @@ class OperationApprove extends Component<Props> {
   }
 }
 
-export default connectData(OperationApprove, {
-  queries: {
-    operation: OperationQuery,
-    members: MembersQuery,
-    profile: ProfileQuery
-  },
-  propsToQueryParams: props => ({ operationId: props.operationId }),
-  RenderLoading: ModalLoading
-});
+export default withRouter(
+  connectData(OperationApprove, {
+    RenderError: () => {
+      return <Redirect to="/pending" />;
+    },
+    queries: {
+      operation: OperationQuery,
+      members: MembersQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({
+      operationId: props.match.params.id
+    }),
+    RenderLoading: ModalLoading
+  })
+);

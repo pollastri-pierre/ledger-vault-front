@@ -1,8 +1,9 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../../decorators/connectData";
-import api from "../../../data/api-spec";
+import { Overscroll } from "../../";
 import { withRouter, Redirect } from "react-router";
+import connectData from "../../../restlay/connectData";
+
 import Footer from "../../approve/Footer";
 // import CircularProgress from "material-ui/CircularProgress";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -75,13 +76,18 @@ class AccountApprove extends Component<Props> {
   }
 }
 
-export default connectData(AccountApprove, {
-  queries: {
-    account: AccountQuery,
-    members: MembersQuery,
-    approvers: ApproversQuery,
-    profile: ProfileQuery
-  },
-  propsToQueryParams: props => ({ accountId: props.accountId }),
-  RenderLoading: ModalLoading
-});
+export default withRouter(
+  connectData(AccountApprove, {
+    RenderError: () => {
+      return <Redirect to="/pending" />;
+    },
+    queries: {
+      account: AccountQuery,
+      members: MembersQuery,
+      approvers: ApproversQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({ accountId: props.match.params.id }),
+    RenderLoading: ModalLoading
+  })
+);

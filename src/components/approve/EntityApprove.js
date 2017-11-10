@@ -1,21 +1,25 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
-import { DialogButton } from "../";
+import connectData from "../../restlay/connectData";
 import { withRouter } from "react-router";
 import { BlurDialog } from "../../containers";
 import AbortConfirmation from "./AbortConfirmation";
 import ApproveDevice from "./ApproveDevice";
 import AccountApprove from "../accounts/approve/AccountApprove";
-import OperationApprove from "../operations/approve/OperationApprove";
-import Footer from "./Footer";
 
-const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
+import PendingsQuery from "../../api/queries/PendingsQuery";
+import ApproveAccount from "../../api/mutations/ApproveAccountMutation";
+import AbortAccount from "../../api/mutations/AbortAccountMutation";
+import ApproveOperation from "../../api/mutations/ApproveOperationMutation";
+import AbortOperation from "../../api/mutations/AbortOperationMutation";
+import OperationApprove from "../operations/approve/OperationApprove";
+
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 type Props = {
   history: *,
   match: *,
+  restlay: *,
   entity: string,
   approved: boolean,
   fetchData: Function
@@ -40,32 +44,42 @@ class EntityApprove extends Component<Props, State> {
   };
 
   approving = () => {
-    const { fetchData, entity } = this.props;
+    const { restlay, entity } = this.props;
+    const { id } = this.props.match.params;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
+    // TODO: replace delay by device API call
 
-    // TODO: replace setTimeout by device/NANO API call
-    const request = api[`approve${capitalize(entity)}`];
-
-    setTimeout(() => {
-      return fetchData(request).then(() => {
-        return fetchData(api.pendings).then(() => this.close());
-      });
-    }, 500);
+    if (entity === "account") {
+      return delay(500)
+        .then(() => restlay.commitMutation(new ApproveAccount({ id })))
+        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(this.close);
+    } else {
+      return delay(500)
+        .then(() => restlay.commitMutation(new ApproveOperation({ id })))
+        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(this.close);
+    }
   };
 
   abort = () => {
-    const { fetchData, entity } = this.props;
-    const close = this.close;
-
-    const request = api[`abort${capitalize(entity)}`];
-
-    return fetchData(request).then(() => {
-      return fetchData(api.pendings).then(() => close());
-    });
+    const { restlay, entity } = this.props;
+    const { id } = this.props.match.params;
+    // TODO: replace delay by device API call
+    if (entity === "account") {
+      return delay(500)
+        .then(() => restlay.commitMutation(new AbortAccount({ id })))
+        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(this.close);
+    } else {
+      return delay(500)
+        .then(() => restlay.commitMutation(new AbortOperation({ id })))
+        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(this.close);
+    }
   };
 
   render() {
-    console.log(this.props);
     const { entity, approved } = this.props;
     const { isDevice, isAborting } = this.state;
 
@@ -111,11 +125,4 @@ class EntityApprove extends Component<Props, State> {
   }
 }
 
-export default withRouter(
-  connectData(EntityApprove, {
-    propsToApiParams: props => ({
-      operationId: props.match.params.id,
-      accountId: props.match.params.id
-    })
-  })
-);
+export default withRouter(connectData(EntityApprove));
