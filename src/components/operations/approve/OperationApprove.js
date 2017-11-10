@@ -14,7 +14,7 @@ import ProfileQuery from "../../../api/queries/ProfileQuery";
 
 type Props = {
   operation: *,
-  members: array,
+  members: Array<*>,
   profile: *,
   close: Function,
   approve: Function,

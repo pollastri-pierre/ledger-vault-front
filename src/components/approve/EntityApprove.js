@@ -21,7 +21,6 @@ type Props = {
   match: *,
   restlay: *,
   entity: string,
-  approved: boolean,
   fetchData: Function
 };
 
@@ -51,12 +50,16 @@ class EntityApprove extends Component<Props, State> {
 
     if (entity === "account") {
       return delay(500)
-        .then(() => restlay.commitMutation(new ApproveAccount({ id })))
+        .then(() =>
+          restlay.commitMutation(new ApproveAccount({ accountId: id }))
+        )
         .then(() => restlay.refreshQuery(new PendingsQuery()))
         .then(this.close);
     } else {
       return delay(500)
-        .then(() => restlay.commitMutation(new ApproveOperation({ id })))
+        .then(() =>
+          restlay.commitMutation(new ApproveOperation({ operationId: id }))
+        )
         .then(() => restlay.refreshQuery(new PendingsQuery()))
         .then(this.close);
     }
@@ -68,19 +71,21 @@ class EntityApprove extends Component<Props, State> {
     // TODO: replace delay by device API call
     if (entity === "account") {
       return delay(500)
-        .then(() => restlay.commitMutation(new AbortAccount({ id })))
+        .then(() => restlay.commitMutation(new AbortAccount({ accountId: id })))
         .then(() => restlay.refreshQuery(new PendingsQuery()))
         .then(this.close);
     } else {
       return delay(500)
-        .then(() => restlay.commitMutation(new AbortOperation({ id })))
+        .then(() =>
+          restlay.commitMutation(new AbortOperation({ operationId: id }))
+        )
         .then(() => restlay.refreshQuery(new PendingsQuery()))
         .then(this.close);
     }
   };
 
   render() {
-    const { entity, approved } = this.props;
+    const { entity } = this.props;
     const { isDevice, isAborting } = this.state;
 
     return (

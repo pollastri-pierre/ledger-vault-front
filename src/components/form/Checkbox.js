@@ -5,7 +5,7 @@ import "./Checkbox.css";
 
 type Props = {
   labelFor: string,
-  handleInputChange: Function,
+  handleInputChange?: (checked: boolean) => void,
   checked?: boolean
 };
 function Checkbox(props: Props) {
@@ -17,7 +17,11 @@ function Checkbox(props: Props) {
         type="checkbox"
         id={labelFor}
         checked={checked}
-        onChange={handleInputChange}
+        onChange={
+          handleInputChange
+            ? (e: *) => handleInputChange(e.target.checked)
+            : null
+        }
       />
       <label htmlFor={labelFor} />
       <span />

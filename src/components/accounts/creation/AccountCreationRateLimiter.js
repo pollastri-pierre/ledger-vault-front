@@ -10,11 +10,11 @@ type Props = {
   popbubble: boolean,
   anchor?: boolean,
   anchor: React.DOM,
-  enable: () => Function,
-  switchInternalModal: string => Function,
-  changeFrequency: (a: string, b: string) => Function,
-  openPopBubble: (*) => Function,
-  change: (a: string) => Function
+  enable: () => void,
+  switchInternalModal: string => void,
+  changeFrequency: (a: string, b: string) => void,
+  openPopBubble: (*) => void,
+  change: (a: string) => void
 };
 
 function AccountCreationRateLimiter(props: Props) {

@@ -1,9 +1,7 @@
 //@flow
 import _ from "lodash";
 import React, { Component } from "react";
-import { BlurDialog } from "../../containers";
 import ModalLoading from "../../components/ModalLoading";
-import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
@@ -14,12 +12,14 @@ import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
 import OperationQuery from "../../api/queries/OperationQuery";
 import AccountsQuery from "../../api/queries/AccountsQuery";
+import type { Operation } from "../../datatypes";
 
 class OperationDetails extends Component<
   {
-    operation: *,
+    operation: Operation,
     tabsIndex: *,
-    close: Function
+    close: Function,
+    history: *
   },
   *
 > {

@@ -19,7 +19,7 @@ type Props = {
   switchInternalModal: Function,
   restlay: *,
   tabsIndex: number,
-  account: Account
+  account: *
 };
 
 function MainCreation(props: Props) {

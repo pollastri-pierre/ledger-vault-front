@@ -17,9 +17,9 @@ import ProfileQuery from "../../../api/queries/ProfileQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
 
 type Props = {
-  members: array,
+  members: Array<*>,
   profile: *,
-  approvers: array,
+  approvers: Array<*>,
   account: *,
   close: Function,
   approve: Function,

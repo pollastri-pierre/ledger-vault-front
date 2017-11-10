@@ -1,39 +1,40 @@
 //@flow
 import React, { Component } from "react";
 import MemberAvatar from "../MemberAvatar";
+import MemberRole from "../MemberRole";
 import Checkbox from "../form/Checkbox";
+import type { Member } from "../../datatypes";
 import "./index.css";
 
 class MemberRow extends Component<*> {
   props: {
-    onSelect?: Function,
+    onSelect?: (pub_key: string) => void,
     checked?: boolean,
-    member: *
+    member: Member
   };
 
-  click = () => {
-    const { member, onSelect } = this.props;
-    if (onSelect) {
-      onSelect(member.pub_key);
-    }
+  onClick = () => {
+    const { onSelect } = this.props;
+    if (onSelect) onSelect(this.props.member.pub_key);
   };
 
   render() {
     const { member, onSelect, checked } = this.props;
 
     return (
-      <div className="member-row" onClick={this.click}>
+      <div className="member-row" onClick={this.onClick}>
         <MemberAvatar url={member.picture} />
         <span className="name">
           {member.first_name} {member.last_name}
         </span>
-        <p className="role">{member.role}</p>
+        <p className="role">
+          <MemberRole member={member} />
+        </p>
         {onSelect && (
           <Checkbox
             checked={checked}
-            id={member.id}
-            labelFor={member.name}
-            handleInputChange={() => this.test(member.pub_key)}
+            labelFor={member.id}
+            handleInputChange={this.onClick}
           />
         )}
       </div>
