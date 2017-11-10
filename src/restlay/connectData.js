@@ -46,7 +46,7 @@ type In<Props, A> = React$ComponentType<{
   ...InjectedProps
 }>;
 // prettier-ignore
-type Out<Props> = React$ComponentType<Props>;
+type Out<Props> = React$ComponentType<$Shape<Props>>; // FIXME $Shape is not technically correct but is a workaround
 
 type ClazzProps<Props> = { ...ConnectedProps, ...Props };
 
