@@ -1,7 +1,6 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import "./AccountCreationSecurity.css";
-
 import SecurityRow from "../../SecurityRow";
 import {
   SecurityMembersIcon,
@@ -10,7 +9,10 @@ import {
   SecurityTimelockIcon
 } from "../../icons";
 
-function AccountCreationSecurity(props) {
+function AccountCreationSecurity(props: {
+  account: Object,
+  switchInternalModal: Function
+}) {
   const { account, switchInternalModal } = props;
   return (
     <div className="account-creation-security">
@@ -63,10 +65,5 @@ function AccountCreationSecurity(props) {
     </div>
   );
 }
-
-AccountCreationSecurity.propTypes = {
-  switchInternalModal: PropTypes.func.isRequired,
-  account: PropTypes.shape({}).isRequired
-};
 
 export default AccountCreationSecurity;

@@ -1,8 +1,13 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import BadgeCurrency from "../../BadgeCurrency";
+import type { Currency } from "../../../data/types";
 
-function AccountCreationOptions(props) {
+function AccountCreationOptions(props: {
+  currency: Currency,
+  name: string,
+  changeName: Function
+}) {
   return (
     <div className="account-creation-options">
       <label htmlFor="name">Name</label>
@@ -17,19 +22,5 @@ function AccountCreationOptions(props) {
     </div>
   );
 }
-
-AccountCreationOptions.defaultProps = {
-  currency: {
-    units: [{ name: "" }]
-  }
-};
-
-AccountCreationOptions.propTypes = {
-  currency: PropTypes.shape({
-    name: PropTypes.string
-  }),
-  name: PropTypes.string.isRequired,
-  changeName: PropTypes.func.isRequired
-};
 
 export default AccountCreationOptions;

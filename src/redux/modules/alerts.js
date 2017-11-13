@@ -1,11 +1,11 @@
-import {
-  AUTHENTICATION_FAILED,
-  LOGOUT,
-  CHECK_TEAM_ERROR,
-  AUTHENTICATION_SUCCEED
-} from "./auth";
+//@flow
+import { AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from "./auth";
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
+
+export type Store = {
+  visible: boolean
+};
 
 export function closeMessage() {
   return {
@@ -13,20 +13,24 @@ export function closeMessage() {
   };
 }
 
-export function addMessage(title, content, type = "success") {
+export function addMessage(
+  title: string,
+  content: string,
+  messageType: string = "success"
+) {
   return {
     type: ADD_MESSAGE,
     title,
     content,
-    type
+    messageType
   };
 }
 
 /* important to set visible to false for minimum State instead of null because of how material ui works */
 
-const initialState = { visible: false };
+const initialState: Store = { visible: false };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: Store = initialState, action: Object) {
   const status = `${action.status}`;
 
   // FIXME should we keep this ? This let us catch any action with a field 'status' set to 5xx ( basically for error 500/503 ) and display a generic message
@@ -49,9 +53,10 @@ export default function reducer(state = initialState, action) {
         return { visible: true, title, content, type };
       }
       return state;
-    case ADD_MESSAGE:
+    case ADD_MESSAGE: {
       const { title, content, type } = action;
       return { visible: true, title, content, type };
+    }
     case LOGOUT:
       return {
         visible: true,

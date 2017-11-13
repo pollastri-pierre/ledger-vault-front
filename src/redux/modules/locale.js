@@ -1,11 +1,14 @@
+//@flow
 export const SWITCH_LANG = "SWITCH_LANG";
 
-export function switchLang(lang) {
+export type Store = string;
+
+export function switchLang(lang: string) {
   return { type: SWITCH_LANG, lang };
 }
 
 export function switchLocale() {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     const { locale } = getState();
     let nLang = "fr";
 
@@ -21,7 +24,7 @@ export function switchLocale() {
 
 const initialState = "en";
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
     case SWITCH_LANG:
       return action.lang;

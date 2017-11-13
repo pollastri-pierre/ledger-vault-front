@@ -1,10 +1,11 @@
+//@flow
 import React from "react";
 import PropTypes from "prop-types";
 import ReactTooltip from "react-tooltip";
 
 import "./Tooltip.css";
 
-function Tooltip(props) {
+function Tooltip(props: { className: string }) {
   return (
     <ReactTooltip
       {...props}

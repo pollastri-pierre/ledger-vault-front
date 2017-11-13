@@ -8,7 +8,7 @@ const mockSync = (uri: string, method: string, _body: ?Object) => {
     switch (uri) {
       case "/organization/account":
         return denormalize(
-          Object.keys(mockEntities.accounts[0]),
+          Object.keys(mockEntities.accounts["0"]),
           [schema.Account],
           mockEntities
         );

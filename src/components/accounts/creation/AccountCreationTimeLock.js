@@ -1,10 +1,19 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
 import ArrowDown from "../../icons/ArrowDown";
 
-function AccountCreationTimeLock(props) {
+function AccountCreationTimeLock(props: {
+  switchInternalModal: Function,
+  timelock: Object,
+  popbubble: boolean,
+  anchor?: Object,
+  enable: Function,
+  openPopBubble: Function,
+  change: Function,
+  changeFrequency: Function
+}) {
   const {
     switchInternalModal,
     timelock,
@@ -114,20 +123,5 @@ function AccountCreationTimeLock(props) {
     </div>
   );
 }
-
-AccountCreationTimeLock.defaultProps = {
-  anchor: {}
-};
-
-AccountCreationTimeLock.propTypes = {
-  switchInternalModal: PropTypes.func.isRequired,
-  timelock: PropTypes.shape({}).isRequired,
-  popbubble: PropTypes.bool.isRequired,
-  anchor: PropTypes.shape({}),
-  enable: PropTypes.func.isRequired,
-  openPopBubble: PropTypes.func.isRequired,
-  change: PropTypes.func.isRequired,
-  changeFrequency: PropTypes.func.isRequired
-};
 
 export default AccountCreationTimeLock;

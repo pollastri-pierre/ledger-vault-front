@@ -1,15 +1,18 @@
+//@flow
 import React from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
 import ApprovalList from "../../ApprovalList";
+import type { Account, Operation, Member } from "../../../data/types";
 
-function OperationApproveApprovals(props) {
-  const { operation, members } = props;
-  const { account } = operation;
+function OperationApproveApprovals(props: {
+  account: Account,
+  operation: Operation,
+  members: Array<Member>
+}) {
+  const { operation, members, account } = props;
 
   const approvers = [];
-  _.map(account.security_scheme.approvers, approver => {
-    const member = _.find(members, m => m.pub_key === approver);
+  account.security_scheme.approvers.forEach(approver => {
+    const member = members.find(m => m.pub_key === approver);
     if (member) {
       approvers.push(member);
     }
@@ -24,11 +27,5 @@ function OperationApproveApprovals(props) {
     />
   );
 }
-
-OperationApproveApprovals.propTypes = {
-  operation: PropTypes.shape({}),
-  account: PropTypes.shape({}),
-  members: PropTypes.arrayOf(PropTypes.shape({}))
-};
 
 export default OperationApproveApprovals;

@@ -1,6 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
-import type { Unit } from "../datatypes";
+import type { Unit } from "../data/types";
 
 const nonBreakableSpace = " ";
 

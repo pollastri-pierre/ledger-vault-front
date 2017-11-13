@@ -1,9 +1,10 @@
+//@flow
 import React from "react";
 import PropTypes from "prop-types";
 
 import "./Grid.css";
 
-export function Row(props) {
+export function Row(props: *) {
   return (
     <div className="row" {...props}>
       {props.children}
@@ -19,7 +20,7 @@ Row.defaultProps = {
   children: ""
 };
 
-export function Col(props) {
+export function Col(props: *) {
   return (
     <div className={`col-${props.width}`} {...props}>
       {props.children}

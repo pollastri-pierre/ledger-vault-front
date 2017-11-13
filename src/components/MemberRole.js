@@ -1,6 +1,6 @@
 //@flow
 import { Component } from "react";
-import type { Member } from "../datatypes";
+import type { Member } from "../data/types";
 
 class MemberRole extends Component<{ member: Member }> {
   render() {

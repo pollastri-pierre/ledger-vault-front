@@ -1,18 +1,29 @@
+//@flow
 import ContentEditable from "react-contenteditable";
-import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-class EditableComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      html: props.value
-    };
+class EditableComponent extends Component<
+  {
+    value: string,
+    className: string,
+    placeholder: string,
+    onChange: Function
+  },
+  {
+    html: string
   }
+> {
+  static defaultProps = {
+    value: "",
+    className: "",
+    placeholder: ""
+  };
+  state = {
+    html: this.props.value
+  };
 
-  handleChange = evt => {
+  handleChange = (evt: *) => {
     this.props.onChange(evt.target.value);
-    // this.setState({ html: evt.target.value });
   };
 
   render() {
@@ -27,17 +38,5 @@ class EditableComponent extends Component {
     );
   }
 }
-
-EditableComponent.defaultProps = {
-  value: "",
-  className: "",
-  placeholder: ""
-};
-
-EditableComponent.propTypes = {
-  value: PropTypes.string,
-  className: PropTypes.string,
-  placeholder: PropTypes.string
-};
 
 export default EditableComponent;

@@ -1,7 +1,7 @@
 //@flow
 import Mutation from "../../restlay/Mutation";
 import schema from "../../data/schema";
-import type { Account } from "../../datatypes";
+import type { Account } from "../../data/types";
 
 type Input = {
   // TODO define the input types here

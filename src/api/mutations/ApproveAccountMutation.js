@@ -2,7 +2,7 @@
 import Mutation from "../../restlay/Mutation";
 import schema from "../../data/schema";
 import genericRenderNotif from "../../data/genericRenderNotif";
-import type { Account } from "../../datatypes";
+import type { Account } from "../../data/types";
 
 type Input = {
   accountId: string

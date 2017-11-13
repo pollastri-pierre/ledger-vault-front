@@ -1,14 +1,13 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 
-function Profile(props) {
+function Profile(props: { color: string }) {
   const style = {
     fill: "none",
     stroke: props.color,
     strokeMiterlimit: "10",
     strokeWidth: "2px"
   };
-
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.8 32" {...props}>
       <title>profile</title>
@@ -26,10 +25,6 @@ function Profile(props) {
     </svg>
   );
 }
-
-Profile.propTypes = {
-  color: PropTypes.string
-};
 
 Profile.defaultProps = {
   color: "#000"

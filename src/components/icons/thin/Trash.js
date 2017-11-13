@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function Trash(props) {
+function Trash(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.95 32" {...props}>
       <title>trash</title>

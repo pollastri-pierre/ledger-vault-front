@@ -1,3 +1,5 @@
+// FIXME this file is deprecated. see the new approach of how new account, operation approve modals, etc.. are rendered
+
 import React, { Component } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";

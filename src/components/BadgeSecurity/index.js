@@ -4,10 +4,10 @@ import "./index.css";
 
 class BadgeSecurity extends PureComponent<*> {
   props: {
-    icon: *,
+    icon: string | React$Element<*>,
     label: string,
-    value: *,
-    disabled: *
+    value: string | React$Element<*>,
+    disabled: boolean
   };
 
   render() {

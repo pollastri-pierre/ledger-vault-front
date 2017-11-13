@@ -1,8 +1,14 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-import { DialogButton } from "../../";
+import DialogButton from "../../buttons/DialogButton";
+import type { Member } from "../../../data/types";
 
-function AccountCreationApprovals(props) {
+function AccountCreationApprovals(props: {
+  members: Member[],
+  approvals: string,
+  switchInternalModal: Function,
+  setApprovals: (v: string) => void
+}) {
   const { switchInternalModal, approvals, setApprovals, members } = props;
   return (
     <div className="small-modal wrapper">
@@ -43,12 +49,5 @@ function AccountCreationApprovals(props) {
     </div>
   );
 }
-
-AccountCreationApprovals.propTypes = {
-  approvals: PropTypes.string.isRequired,
-  members: PropTypes.arrayOf(PropTypes.string).isRequired,
-  switchInternalModal: PropTypes.func.isRequired,
-  setApprovals: PropTypes.func.isRequired
-};
 
 export default AccountCreationApprovals;

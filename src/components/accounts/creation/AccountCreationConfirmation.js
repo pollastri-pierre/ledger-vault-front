@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 
 import {
@@ -9,7 +10,7 @@ import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
 import InfoModal from "../../InfoModal";
 
-function AccountCreationConfirmation(props) {
+function AccountCreationConfirmation(props: { account: Object }) {
   const {
     name,
     approvers,
@@ -31,17 +32,21 @@ function AccountCreationConfirmation(props) {
           icon={<BigSecurityTimeLockIcon />}
           label="Time-lock"
           disabled={!time_lock.enabled}
-          value={`${!time_lock.enabled
-            ? "disabled"
-            : time_lock.value + " " + time_lock.frequency}`}
+          value={`${
+            !time_lock.enabled
+              ? "disabled"
+              : time_lock.value + " " + time_lock.frequency
+          }`}
         />
         <BadgeSecurity
           icon={<BigSecurityRateLimiterIcon />}
           label="Rate Limiter"
           disabled={!rate_limiter.enabled}
-          value={`${!rate_limiter.enabled
-            ? "disabled"
-            : rate_limiter.value + " per " + rate_limiter.frequency}`}
+          value={`${
+            !rate_limiter.enabled
+              ? "disabled"
+              : rate_limiter.value + " per " + rate_limiter.frequency
+          }`}
         />
       </div>
 

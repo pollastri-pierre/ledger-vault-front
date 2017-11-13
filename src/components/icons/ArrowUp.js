@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function ArrowUp(props) {
+function ArrowUp(props: *) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

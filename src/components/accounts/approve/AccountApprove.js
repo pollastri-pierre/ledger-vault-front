@@ -15,7 +15,7 @@ import AccountQuery from "../../../api/queries/AccountQuery";
 import ApproversQuery from "../../../api/queries/ApproversQuery";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
-import type { Member, Account } from "../../../datatypes";
+import type { Member, Account } from "../../../data/types";
 
 type Props = {
   members: Array<Member>,

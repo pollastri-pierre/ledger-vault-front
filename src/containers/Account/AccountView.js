@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from "react";
+import _ from "lodash";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import connectData from "../../restlay/connectData";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
@@ -9,18 +11,18 @@ import CardField from "../../components/CardField";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
-import type { Account, Operation } from "../../datatypes";
 import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
 import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import AccountQuery from "../../api/queries/AccountQuery";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
+import type { Account, Operation, Currency } from "../../data/types";
 import "./Account.css";
-import _ from "lodash";
 
 class AccountView extends Component<
   {
     account: Account,
     operations: Array<Operation>,
+    currencies: Array<Currency>,
     reloading: boolean
   },
   *
@@ -78,25 +80,25 @@ class AccountView extends Component<
     if (dateRange === "day") {
       //Same day
       res = [
-        <DateFormat date={domain[0]} format="MMMM Do, YYYY h:mm" />,
-        <DateFormat date={domain[1]} format="h:mm" />
+        <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY h:mm" />,
+        <DateFormat key="1" date={domain[1]} format="h:mm" />
       ];
     } else if (dateRange === "month") {
       //Same month
       res = [
-        <DateFormat date={domain[0]} format="MMMM Do" />,
-        <DateFormat date={domain[1]} format="Do, YYYY" />
+        <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
+        <DateFormat key="1" date={domain[1]} format="Do, YYYY" />
       ];
     } else if (dateRange === "year") {
       //Same year
       res = [
-        <DateFormat date={domain[0]} format="MMMM Do" />,
-        <DateFormat date={domain[1]} format="MMMM Do, YYYY" />
+        <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
       ];
     } else
       res = [
-        <DateFormat date={domain[0]} format="MMMM Do, YYYY" />,
-        <DateFormat date={domain[1]} format="MMMM Do, YYYY" />
+        <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY" />,
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
       ];
     return res;
   };
@@ -120,15 +122,17 @@ class AccountView extends Component<
   };
 
   getOperations = data => {
+    const { currencies } = this.props;
     const { quickLookGraphFilter } = this.state;
     let operations = [];
     let factor = 1;
     if (quickLookGraphFilter.key === "balance") {
       operations = data.map((o: Operation, i: number) => {
+        const currency = currencies.find(c => c.name === o.currency_name);
         return {
           time: new Date(o.time),
           amount: o.amount + (i > 0 ? data[i - 1].amount : 0),
-          currency: o.currency,
+          currency,
           tooltip: true
         };
       });
@@ -143,7 +147,7 @@ class AccountView extends Component<
       operations = operations.map((o: Operation) => ({
         time: new Date(o.time),
         amount: o.amount * factor,
-        currency: o.currency,
+        currency: currencies.find(c => c.name === o.currency_name),
         tooltip: true
       }));
     }
@@ -154,7 +158,6 @@ class AccountView extends Component<
   render() {
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
-    const dateRange = this.getDateRange(tabsIndex);
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -253,7 +256,11 @@ const RenderError = ({ error }: { error: Error }) => (
 );
 
 export default connectData(AccountView, {
-  queries: { account: AccountQuery, operations: AccountOperationsQuery },
+  queries: {
+    currencies: CurrenciesQuery,
+    account: AccountQuery,
+    operations: AccountOperationsQuery
+  },
   propsToQueryParams: props => ({ accountId: props.match.params.id }),
   RenderError
 });

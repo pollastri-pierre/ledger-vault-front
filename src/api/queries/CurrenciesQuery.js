@@ -1,7 +1,7 @@
 //@flow
 import Query from "../../restlay/Query";
 import schema from "../../data/schema";
-import type { Currency } from "../../datatypes";
+import type { Currency } from "../../data/types";
 
 type Input = void;
 type Response = Currency[];

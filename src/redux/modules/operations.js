@@ -1,5 +1,8 @@
+//@flow
 import { LOCATION_CHANGE, push } from "react-router-redux";
 import queryString from "query-string";
+
+// FIXME this file should be removed to the new Route / Modal approach
 
 export const OPEN_MODAL_OPERATION_DETAILS =
   "operations/OPEN_MODAL_OPERATION_DETAILS";
@@ -15,14 +18,14 @@ export function saveOperationNoteStart() {
   };
 }
 
-export function saveOperationNoteFail(status) {
+export function saveOperationNoteFail(status: *) {
   return {
     type: SAVE_OPERATION_NOTE_FAIL,
     status
   };
 }
 
-export function saveOperationNoteSucces(idOperation, note) {
+export function saveOperationNoteSucces(idOperation: *, note: *) {
   return {
     type: SAVE_OPERATION_NOTE_SUCCESS,
     idOperation,
@@ -30,8 +33,8 @@ export function saveOperationNoteSucces(idOperation, note) {
   };
 }
 
-export function saveOperationNote(idOperation) {
-  return dispatch => {
+export function saveOperationNote() {
+  return (dispatch: Function) => {
     dispatch(saveOperationNoteStart());
     setTimeout(() => {
       dispatch(saveOperationNoteSucces(2));
@@ -47,7 +50,7 @@ export function closeDetail() {
 }
 
 export function close() {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     dispatch(closeDetail());
 
     const { routing } = getState();
@@ -57,21 +60,26 @@ export function close() {
   };
 }
 
-export function openOperationModal(idOperation, tabIndex = 0) {
-  return dispatch => {
+export function openOperationModal(idOperation: *, tabIndex: number = 0) {
+  return (dispatch: Function) => {
     dispatch({ type: OPEN_MODAL_OPERATION_DETAILS, idOperation, tabIndex });
     dispatch(push(`?operationDetail=${idOperation}&tab=${tabIndex}`));
   };
 }
 
-export const initialState = {
+type State = {
+  tabsIndex: number,
+  operationInModal: *
+};
+
+export const initialState: State = {
   operationInModal: null,
   tabsIndex: 0
 };
 
 // export function hydrateArrayWithOperationDetails = () => ();
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: State = initialState, action: Object) {
   switch (action.type) {
     case OPEN_MODAL_OPERATION_DETAILS:
       return {

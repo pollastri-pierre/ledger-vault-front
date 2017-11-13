@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -27,14 +28,13 @@ const mapDispatchToProps = dispatch => ({
   onResetTeam: () => dispatch(resetTeam())
 });
 
-export class Login extends Component {
+export class Login extends Component<*> {
   componentWillMount() {
     const { auth, history, location } = this.props;
     if (auth.isAuthenticated) {
       const { redirectTo } = queryString.parse(
         (location.search || "").slice(1)
       );
-      console.log(redirectTo);
       history.replace(redirectTo || "/");
     }
   }

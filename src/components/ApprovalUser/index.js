@@ -1,11 +1,12 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import MemberAvatar from "../MemberAvatar";
 import ValidateBadge from "../icons/ValidateBadge";
 import Question from "../icons/full/Question";
+import type { Member } from "../../data/types";
 import "./index.css";
 
-function Approvalmember(props) {
+function Approvalmember(props: { member: Member, isApproved: boolean }) {
   const { member, isApproved } = props;
 
   const name = member.first_name + " " + member.last_name;
@@ -35,10 +36,5 @@ function Approvalmember(props) {
     </div>
   );
 }
-
-Approvalmember.propTypes = {
-  member: PropTypes.shape({}),
-  isApproved: PropTypes.bool
-};
 
 export default Approvalmember;

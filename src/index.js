@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import ReactDOM from "react-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
@@ -31,26 +32,29 @@ const locale = window.localStorage.getItem("locale") || "en";
 
 const store = create(history, { locale });
 
-ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <I18nProvider>
-        <div>
-          <AlertsContainer />
-          <ModalsContainer />
-          <ConnectedRouter history={history}>
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/logintest" component={LoginTest} />
-              <Route path="/logout" component={Logout} />
-              <PrivateRoute path="/" component={App} />
-            </Switch>
-          </ConnectedRouter>
-        </div>
-      </I18nProvider>
-    </MuiThemeProvider>
-  </Provider>,
-  document.getElementById("root")
-);
+const $root = document.getElementById("root");
+
+$root &&
+  ReactDOM.render(
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <I18nProvider>
+          <div>
+            <AlertsContainer />
+            <ModalsContainer />
+            <ConnectedRouter history={history}>
+              <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/logintest" component={LoginTest} />
+                <Route path="/logout" component={Logout} />
+                <PrivateRoute path="/" component={App} />
+              </Switch>
+            </ConnectedRouter>
+          </div>
+        </I18nProvider>
+      </MuiThemeProvider>
+    </Provider>,
+    $root
+  );
 
 registerServiceWorker();

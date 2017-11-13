@@ -1,16 +1,20 @@
-import _ from "lodash";
+//@flow
 import React, { Component } from "react";
 import connectData from "../../../restlay/connectData";
 import MembersQuery from "../../../api/queries/MembersQuery";
-import PropTypes from "prop-types";
 import "./AccountCreationMembers.css";
-import Checkbox from "../../form/Checkbox";
 import ModalLoading from "../../../components/ModalLoading";
 import MemberRow from "../../../components/MemberRow";
 import InfoModal from "../../../components/InfoModal";
-import { Avatar, DialogButton, Overscroll } from "../../../components";
+import { DialogButton, Overscroll } from "../../../components";
+import type { Member } from "../../../data/types";
 
-class AccountCreationMembers extends Component {
+class AccountCreationMembers extends Component<{
+  switchInternalModal: Function,
+  addMember: Function,
+  members: Member[],
+  approvers: string[]
+}> {
   render() {
     const { switchInternalModal, addMember, members, approvers } = this.props;
 
@@ -30,7 +34,7 @@ class AccountCreationMembers extends Component {
         </header>
         <div className="content">
           <Overscroll>
-            {_.map(members, member => {
+            {members.map(member => {
               const isChecked = approvers.indexOf(member.pub_key) > -1;
               return (
                 <MemberRow
@@ -56,15 +60,6 @@ class AccountCreationMembers extends Component {
     );
   }
 }
-
-AccountCreationMembers.propTypes = {
-  organization: PropTypes.shape({}).isRequired,
-  members: PropTypes.arrayOf(PropTypes.string).isRequired,
-  approvers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  getOrganizationMembers: PropTypes.func.isRequired,
-  switchInternalModal: PropTypes.func.isRequired,
-  addMember: PropTypes.func.isRequired
-};
 
 export default connectData(AccountCreationMembers, {
   RenderLoading: ModalLoading,

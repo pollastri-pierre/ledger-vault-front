@@ -1,5 +1,7 @@
+//@flow
 import _ from "lodash";
 import { LOGOUT } from "./auth";
+import type { Member, Currency } from "../../data/types";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
@@ -23,7 +25,7 @@ export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
 
-export function openPopBubble(anchor) {
+export function openPopBubble(anchor: ?Node) {
   return {
     type: OPEN_POPBUBBLE,
     anchor
@@ -42,7 +44,7 @@ export function enableRatelimiter() {
   };
 }
 
-export function changeFrequency(field, frequency) {
+export function changeFrequency(field: string, frequency: string) {
   if (field === "rate-limiter") {
     return {
       type: CHANGE_FREQUEMCY_RATELIMITER,
@@ -56,35 +58,35 @@ export function changeFrequency(field, frequency) {
   };
 }
 
-export function changeTimeLock(number) {
+export function changeTimeLock(number: number) {
   return {
     type: CHANGE_TIMELOCK,
     number
   };
 }
 
-export function changeRatelimiter(number) {
+export function changeRatelimiter(number: number) {
   return {
     type: CHANGE_RATELIMITER,
     number
   };
 }
 
-export function addMember(member) {
+export function addMember(member: Member) {
   return {
     type: ADD_MEMBER,
     member
   };
 }
 
-export function setApprovals(number) {
+export function setApprovals(number: number) {
   return {
     type: SET_APPROVALS,
     number
   };
 }
 
-export function removeMember(member) {
+export function removeMember(member: Member) {
   return {
     type: REMOVE_MEMBER,
     member
@@ -97,42 +99,63 @@ export function clearState() {
   };
 }
 
-export function changeTab(index) {
+export function changeTab(index: number) {
   return {
     type: CHANGE_TAB,
     index
   };
 }
 
-export function selectCurrencyItem(currency) {
+export function selectCurrencyItem(currency: Currency) {
   return {
     type: SELECT_CURRENCY,
     currency
   };
 }
 
-export function changeAccountName(name) {
+export function changeAccountName(name: string) {
   return {
     type: CHANGE_ACCOUNT_NAME,
     name
   };
 }
 
-export function switchInternalModal(id) {
+export function switchInternalModal(id: string) {
   return {
     type: SWITCH_INTERN_MODAL,
     id
   };
 }
 
-export function selectCurrency(currency) {
-  return dispatch => {
+export function selectCurrency(currency: Currency) {
+  return (dispatch: Function) => {
     dispatch(selectCurrencyItem(currency));
     dispatch(changeTab(1));
   };
 }
 
-export const initialState = {
+export type State = {
+  currentTab: number,
+  currency: ?Currency,
+  name: string,
+  approvers: Member[],
+  quorum: string,
+  time_lock: {
+    enabled: boolean,
+    value: number,
+    frequency: string
+  },
+  rate_limiter: {
+    enabled: boolean,
+    value: number,
+    frequency: string
+  },
+  internModalId: string,
+  popBubble: boolean,
+  popAnchor: ?Node
+};
+
+export const initialState: State = {
   currentTab: 0,
   currency: null,
   name: "",
@@ -153,7 +176,10 @@ export const initialState = {
   popAnchor: null
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state: State = initialState,
+  action: Object
+): State {
   switch (action.type) {
     case CLEAR_STATE:
       return initialState;

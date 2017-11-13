@@ -1,6 +1,6 @@
 //@flow
 import fiatUnits from "../fiat-units";
-import type { Currency, Unit, Rate } from "../datatypes";
+import type { Currency, Unit, Rate } from "./types";
 
 // This define utility to deal with currencies, units, countervalues
 

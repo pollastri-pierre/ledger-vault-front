@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
-import type { Account } from "../../datatypes";
+import type { Account, Member } from "../../data/types";
 
 type Props = {
   accounts: Account[],
   approved?: boolean,
-  approvers: string[],
+  approvers: Member[],
   user: *
 };
 function PendingAccountApprove(props: Props) {

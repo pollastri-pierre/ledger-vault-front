@@ -2,7 +2,7 @@
 import React from "react";
 import connectData from "../../../restlay/connectData";
 import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
-import type { Currency } from "../../../datatypes";
+import type { Currency } from "../../../data/types";
 
 function AccountCreationCurrencies(props: {
   currencies: Array<Currency>,

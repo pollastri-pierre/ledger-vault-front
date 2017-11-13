@@ -1,10 +1,14 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-import { DialogButton } from "../";
+import DialogButton from "../buttons/DialogButton";
 import { TrashIcon } from "../icons";
 import "./index.css";
 
-function AbortConfirmation(props) {
+function AbortConfirmation(props: {
+  abort: Function,
+  aborting: Function,
+  entity: string
+}) {
   const { abort, aborting, entity } = props;
   return (
     <div className="abort-confirmation">
@@ -30,11 +34,5 @@ function AbortConfirmation(props) {
     </div>
   );
 }
-
-AbortConfirmation.propTypes = {
-  abort: PropTypes.func.isRequired,
-  aborting: PropTypes.func.isRequired,
-  entity: PropTypes.string.isRequired
-};
 
 export default AbortConfirmation;

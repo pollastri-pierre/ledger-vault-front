@@ -1,10 +1,9 @@
 //@flow
 import React from "react";
-import _ from "lodash";
 import PercentageBarProgress from "../PercentageBarProgress";
 
 type Props = {
-  percentage: number
+  percentage?: number
 };
 
 function LocksPercentage(props: Props) {
@@ -13,7 +12,7 @@ function LocksPercentage(props: Props) {
   let label;
   let percent = 0;
 
-  if (_.isNull(percentage)) {
+  if (typeof percentage !== "number") {
     label = <p>waiting for members approvals...</p>;
   } else {
     percent = percentage;

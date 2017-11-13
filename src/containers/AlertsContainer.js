@@ -1,6 +1,5 @@
-import _ from "lodash";
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Alert } from "../components";
 import { closeMessage } from "../redux/modules/alerts";
@@ -13,9 +12,16 @@ const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(closeMessage())
 });
 
-export function MessagesContainer(props, context) {
+export function MessagesContainer(props: {
+  alerts: {
+    visible: boolean,
+    type: string,
+    title: string,
+    content: string
+  },
+  onClose: Function
+}) {
   const { alerts, onClose } = props;
-
   return (
     <div>
       <Alert
@@ -30,13 +36,5 @@ export function MessagesContainer(props, context) {
     </div>
   );
 }
-
-MessagesContainer.propTypes = {
-  alerts: PropTypes.shape({
-    type: PropTypes.string,
-    title: PropTypes.string,
-    content: PropTypes.string
-  }).isRequired
-};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);

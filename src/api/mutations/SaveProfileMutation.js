@@ -1,7 +1,7 @@
 //@flow
 import Mutation from "../../restlay/Mutation";
 import schema from "../../data/schema";
-import type { Member } from "../../datatypes";
+import type { Member } from "../../data/types";
 
 type Input = {
   first_name: string,

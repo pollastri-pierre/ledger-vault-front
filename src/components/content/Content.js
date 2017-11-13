@@ -1,7 +1,6 @@
+//@flow
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
-import OperationDetails from "../operations/OperationDetails";
-
 import { SandBox, AccountView, PendingRequests } from "../../containers"; // Tests
 import Dashboard from "../../containers/Dashboard";
 

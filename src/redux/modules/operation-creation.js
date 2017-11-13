@@ -1,3 +1,4 @@
+//@flow
 import { LOGOUT } from "./auth";
 
 export const OPEN_MODAL_OPERATION = "operation-creation/OPEN_MODAL_OPERATION";
@@ -21,7 +22,7 @@ export function savedOperation() {
 }
 
 export function saveOperation() {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch(saveOperationStart());
     setTimeout(() => {
       dispatch(savedOperation());
@@ -35,26 +36,31 @@ export function openModalOperation() {
   };
 }
 
-export function closeModalOperation(from) {
+export function closeModalOperation(from: string) {
   return {
     type: CLOSE_MODAL_OPERATION,
     from
   };
 }
 
-export function changeTabOperation(index) {
+export function changeTabOperation(index: number) {
   return {
     type: CHANGE_OPERATION_TAB,
     index
   };
 }
 
-export const initialState = {
+export type State = {
+  modalOpened: boolean,
+  currentTab: number
+};
+
+export const initialState: State = {
   modalOpened: false,
   currentTab: 0
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: State = initialState, action: Object) {
   switch (action.type) {
     case OPEN_MODAL_OPERATION:
       return { ...state, modalOpened: true };

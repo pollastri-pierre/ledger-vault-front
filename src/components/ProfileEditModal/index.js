@@ -13,7 +13,7 @@ import ProfileIcon from "../icons/thin/Profile";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import SaveProfile from "../../api/mutations/SaveProfileMutation";
 
-import type { Member } from "../../datatypes";
+import type { Member } from "../../data/types";
 
 import "./index.css";
 

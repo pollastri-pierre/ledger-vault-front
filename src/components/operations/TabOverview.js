@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
@@ -5,10 +6,10 @@ import DateFormat from "../DateFormat";
 import ConfirmationStatus from "../ConfirmationStatus";
 import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
+import type { Operation, Account } from "../../data/types";
 
-function TabOverview(props) {
-  const { operation } = props;
-  const { account } = operation;
+function TabOverview(props: { operation: Operation, account: Account }) {
+  const { operation, account } = props;
   const { rate } = operation;
   return (
     <div>

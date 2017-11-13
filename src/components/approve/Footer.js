@@ -1,9 +1,14 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-import { DialogButton } from "../";
+import DialogButton from "../buttons/DialogButton";
 import "./Footer.css";
 
-function Footer(props) {
+function Footer(props: {
+  approved: boolean,
+  close: Function,
+  approve: Function,
+  aborting: Function
+}) {
   const { approved, close, approve, aborting } = props;
 
   if (approved) {
@@ -32,12 +37,5 @@ function Footer(props) {
     </div>
   );
 }
-
-Footer.propTypes = {
-  approved: PropTypes.bool,
-  close: PropTypes.func,
-  approve: PropTypes.func,
-  abort: PropTypes.func
-};
 
 export default Footer;

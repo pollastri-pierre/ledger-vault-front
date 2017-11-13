@@ -8,7 +8,7 @@ import {
   countervalueForRate,
   getCurrencyRate
 } from "../data/currency";
-import type { Rate, Currency } from "../datatypes";
+import type { Rate, Currency } from "../data/types";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {

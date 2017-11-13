@@ -1,10 +1,10 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import Popover from "material-ui/Popover";
 
 import "./PopBubble.css";
 
-function PopBubble(props) {
+function PopBubble(props: *) {
   return (
     <Popover
       {...props}
@@ -21,11 +21,6 @@ function PopBubble(props) {
     </Popover>
   );
 }
-
-PopBubble.propTypes = {
-  children: PropTypes.node,
-  style: PropTypes.shape({})
-};
 
 PopBubble.defaultProps = {
   children: "",

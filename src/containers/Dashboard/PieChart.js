@@ -1,45 +1,44 @@
+//@flow
 import _ from "lodash";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import * as d3 from "d3";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
 import "./PieChart.css";
 
-export default class PieChart extends Component {
-  static propTypes = {
-    data: PropTypes.instanceOf(Array).isRequired
+export default class PieChart extends Component<
+  {
+    data: Array<*>
+  },
+  { selected: number }
+> {
+  state = {
+    selected: -1
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: -1
-    };
-    this.setSelected.bind(this);
-  }
+  svg: ?Element;
+  tooltip: ?Element;
 
-  setSelected = index => {
+  setSelected = (index: number) => {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d, i) => {
+  handleMouseOver = (d: *) => {
     this.setSelected(d.index);
   };
 
-  handleMouseOut = (d, i) => {
+  handleMouseOut = () => {
     this.setSelected(-1);
   };
 
   componentDidMount() {
     const { selected } = this.state;
     const data = this.props.data;
+    const $svg = this.svg;
+    if (!$svg) return;
 
-    const svg = d3.select(this.svg);
-    svg.attr(
-      "width",
-      parseFloat(d3.select(this.svg.parentNode).style("width"))
-    ); //adapt to parent's width
+    const svg = d3.select($svg);
+    svg.attr("width", parseFloat(d3.select($svg.parentNode).style("width"))); //adapt to parent's width
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
     const height = +svg.attr("height") - margin.top - margin.bottom;
@@ -117,7 +116,7 @@ export default class PieChart extends Component {
       .on("mouseout", this.handleMouseOut);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: *, prevState: *) {
     const { selected } = this.state;
     const { prevSelected } = prevState;
     const svg = d3.select(this.svg);

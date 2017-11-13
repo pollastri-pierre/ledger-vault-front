@@ -1,10 +1,10 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-import { EditableComponent } from "../../components";
+import EditableComponent from "../utils/ContentEditable";
+import type { Note } from "../../data/types";
 
-function TabLabel(props) {
+function TabLabel(props: { note: Note, changeTitle: Function }) {
   const { note } = props;
-
   return (
     <div className="operation-label">
       <div key={note.id}>
@@ -20,21 +20,12 @@ function TabLabel(props) {
           placeholder="Message.."
           value={note.body}
         />
-
-        {note.author.firstname && note.author.name ? (
-          <div className="operation-label-author">
-            Published by {note.author.firstname} {note.author.name}
-          </div>
-        ) : (
-          false
-        )}
+        <div className="operation-label-author">
+          Published by {note.author.first_name} {note.author.last_name}
+        </div>
       </div>
     </div>
   );
 }
-
-TabLabel.propTypes = {
-  note: PropTypes.shape({}).isRequired
-};
 
 export default TabLabel;

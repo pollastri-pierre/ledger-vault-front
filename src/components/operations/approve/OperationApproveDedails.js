@@ -1,14 +1,17 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import DateFormat from "../../DateFormat";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
+import type { Operation, Account } from "../../../data/types";
 
-function OperationApproveDetails(props) {
-  const { operation } = props;
-  const { account } = operation;
+function OperationApproveDetails(props: {
+  operation: Operation,
+  account: Account
+}) {
+  const { operation, account } = props;
   const { rate } = operation;
 
   return (
@@ -46,10 +49,5 @@ function OperationApproveDetails(props) {
     </div>
   );
 }
-
-OperationApproveDetails.propTypes = {
-  operation: PropTypes.shape({}),
-  account: PropTypes.shape({})
-};
 
 export default OperationApproveDetails;

@@ -1,10 +1,10 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import { DialogButton } from "../";
 import { PlugIcon } from "../icons";
 import "./index.css";
 
-function ApproveDevice(props) {
+function ApproveDevice(props: { cancel: Function, entity: string }) {
   const { cancel, entity } = props;
   return (
     <div className="approve-device">
@@ -41,10 +41,5 @@ function ApproveDevice(props) {
     </div>
   );
 }
-
-ApproveDevice.propTypes = {
-  cancel: PropTypes.func.isRequired,
-  entity: PropTypes.string.isRequired
-};
 
 export default ApproveDevice;

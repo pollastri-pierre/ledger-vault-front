@@ -1,3 +1,4 @@
+//@flow
 export { default as SandBox } from "./SandBox/SandBox";
 export { default as BlurDialog } from "./BlurDialog/BlurDialog";
 export { default as PrivateRoute } from "./Login/PrivateRoute";
@@ -9,3 +10,5 @@ export { default as ModalsContainer } from "./ModalsContainer";
 export { default as PendingRequests } from "./PendingRequests/PendingRequests";
 export { default as AccountView } from "./Account/AccountView";
 export { default as I18nProvider } from "./I18nProvider";
+
+// FIXME deprecated. directly import the file/folder component

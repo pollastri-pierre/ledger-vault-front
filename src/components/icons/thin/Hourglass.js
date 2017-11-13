@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function HourglassThin(props) {
+function HourglassThin(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 32" {...props}>
       <title>hourglass</title>

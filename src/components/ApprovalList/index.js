@@ -2,7 +2,7 @@
 import React from "react";
 import ApprovalUser from "../ApprovalUser";
 import ApprovalPercentage from "../ApprovalPercentage";
-import type { Member } from "../../datatypes";
+import type { Member } from "../../data/types";
 
 function ApprovalList(props: {
   approvers: Array<Member>,

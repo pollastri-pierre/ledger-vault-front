@@ -1,6 +1,5 @@
+//@flow
 import React from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
 import {
   BigSecurityTimeLockIcon,
   BigSecurityMembersIcon,
@@ -11,14 +10,15 @@ import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
+import type { Account, Member } from "../../../data/types";
 
-function AccountApproveDetails(props) {
-  const { security_scheme, currency, approved } = props.account;
-  const { account } = props;
-  const { approvers } = props;
-
+function AccountApproveDetails(props: {
+  account: Account,
+  approvers: Member[]
+}) {
+  const { account, approvers } = props;
+  const { security_scheme, currency, approved } = account;
   const percentage = Math.round(100 * (approved.length / approvers.length));
-
   return (
     <div>
       <div style={{ textAlign: "center", marginBottom: "40px" }}>
@@ -30,20 +30,22 @@ function AccountApproveDetails(props) {
         <BadgeSecurity
           icon={<BigSecurityTimeLockIcon />}
           label="Time-lock"
-          disabled={_.isNull(security_scheme.time_lock)}
-          value={`${_.isNull(security_scheme.time_lock)
-            ? "disabled"
-            : security_scheme.time_lock}`}
+          disabled={!security_scheme.time_lock}
+          value={`${
+            !security_scheme.time_lock ? "disabled" : security_scheme.time_lock
+          }`}
         />
         <BadgeSecurity
           icon={<BigSecurityRateLimiterIcon />}
           label="Rate Limiter"
-          disabled={_.isNull(security_scheme.rate_limiter)}
-          value={`${_.isNull(security_scheme.rate_limiter)
-            ? "disabled"
-            : security_scheme.rate_limiter.max_transaction +
-              " per " +
-              security_scheme.rate_limiter.time_slot}`}
+          disabled={!security_scheme.rate_limiter}
+          value={`${
+            !security_scheme.rate_limiter
+              ? "disabled"
+              : security_scheme.rate_limiter.max_transaction +
+                " per " +
+                security_scheme.rate_limiter.time_slot
+          }`}
         />
       </div>
       <div>
@@ -72,9 +74,5 @@ function AccountApproveDetails(props) {
     </div>
   );
 }
-
-AccountApproveDetails.propTypes = {
-  account: PropTypes.shape({}).isRequired
-};
 
 export default AccountApproveDetails;

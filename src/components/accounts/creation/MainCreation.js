@@ -9,7 +9,7 @@ import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton, Overscroll } from "../../";
-import type { Account, Currency } from "../../../datatypes";
+import type { Account, Currency } from "../../../data/types";
 
 type Props = {
   changeAccountName: Function,

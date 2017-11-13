@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import type { Account } from "../../datatypes";
+import type { Account } from "../../data/types";
 import Card from "../../components/Card";
 import EvolutionSince from "./EvolutionSince";
 import CurrencyNameValue from "../../components/CurrencyNameValue";

@@ -1,7 +1,7 @@
 //@flow
 import Query from "../../restlay/Query";
 import schema from "../../data/schema";
-import type { Operation } from "../../datatypes";
+import type { Operation } from "../../data/types";
 
 type Input = {
   accountId: string

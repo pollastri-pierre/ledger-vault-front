@@ -4,8 +4,8 @@ import "./index.css";
 
 class CardField extends Component<*> {
   props: {
-    label: *,
-    children: *,
+    label: string | React$Element<*>,
+    children: string | React$Element<*>,
     align?: string,
     className?: string
   };

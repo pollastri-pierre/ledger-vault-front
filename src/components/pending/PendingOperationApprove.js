@@ -2,13 +2,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import AccountName from "../AccountName";
 import CurrencyUnitValue from "../CurrencyUnitValue";
 import CurrencyNameValue from "../CurrencyNameValue";
 import DateFormat from "../DateFormat";
-import ApprovalStatus from "../ApprovalStatus";
+import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import { countervalueForRate } from "../../data/currency";
-import type { Operation, Member } from "../../datatypes";
+import type { Operation, Member } from "../../data/types";
 
 type Props = {
   operations: Array<Operation>,
@@ -51,7 +50,6 @@ function PendingOperationApprove(props: Props) {
         </div>
       )}
       {operations.map(operation => {
-        const account = operation.account;
         const amountUnitValue = countervalueForRate(
           operation.rate,
           operation.amount
@@ -60,7 +58,7 @@ function PendingOperationApprove(props: Props) {
         return (
           <Link
             className={`pending-request operation ${approved ? "watch" : ""}`}
-            to={`/pending/operation/${account.id}`}
+            to={`/pending/operation/${operation.uuid}`}
             key={operation.uuid}
           >
             <div>
@@ -77,15 +75,7 @@ function PendingOperationApprove(props: Props) {
                 <CurrencyUnitValue {...amountUnitValue} />
               </span>
             </div>
-            <div>
-              <ApprovalStatus
-                approved={operation.approved}
-                approvers={account.security_scheme.approvers}
-                nbRequired={account.security_scheme.quorum}
-                user_hash={user.pub_key}
-              />
-              <AccountName name={account.name} currency={account.currency} />
-            </div>
+            <ApprovalStatusWithAccountName user={user} operation={operation} />
           </Link>
         );
       })}

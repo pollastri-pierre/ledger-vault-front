@@ -11,21 +11,35 @@ import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
 import OperationQuery from "../../api/queries/OperationQuery";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import type { Operation } from "../../datatypes";
+import AccountQuery from "../../api/queries/AccountQuery";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import type { Operation, Account, Note, Member } from "../../data/types";
 
 class OperationDetails extends Component<
   {
+    profile: Member,
+    account: Account,
     operation: Operation,
     tabsIndex: *,
     close: Function,
     history: *
   },
-  *
+  { note: Note }
 > {
-  state = {
-    note: { author: {}, title: "" }
-  };
+  constructor({ profile }) {
+    super();
+    const note: Note = {
+      author: profile,
+      id: "",
+      title: "",
+      body: "",
+      created_at: new Date().toUTCString()
+    };
+    // FIXME why is this inlined in a state?
+    this.state = {
+      note
+    };
+  }
 
   contentNode: *;
 
@@ -51,8 +65,7 @@ class OperationDetails extends Component<
   }
 
   render() {
-    const { operation } = this.props;
-
+    const { operation, account } = this.props;
     return (
       <Tabs
         className="operation-details wrapper"
@@ -74,7 +87,7 @@ class OperationDetails extends Component<
           }}
         >
           <TabPanel className="tabs_panel">
-            <TabOverview operation={operation} />
+            <TabOverview operation={operation} account={account} />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <Overscroll>
@@ -102,8 +115,18 @@ OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default connectData(OperationDetails, {
-  queries: { operation: OperationQuery, accounts: AccountsQuery },
-  propsToQueryParams: props => ({ operationId: props.operationId }),
-  RenderLoading: ModalLoading
-});
+export default connectData(
+  connectData(OperationDetails, {
+    RenderLoading: ModalLoading,
+    queries: { account: AccountQuery },
+    propsToQueryParams: props => ({ accountId: props.operation.account_id })
+  }),
+  {
+    RenderLoading: ModalLoading,
+    queries: {
+      operation: OperationQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({ operationId: props.operationId })
+  }
+);

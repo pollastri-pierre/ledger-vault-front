@@ -1,7 +1,6 @@
-import axios from "axios";
-import { push } from "react-router-redux";
+//@flow
 import "u2f-api-polyfill";
-import ledger from "ledgerco";
+import network from "../../network";
 
 export const SET_TEAM_FIELD = "auth/SET_TEAM_FIELD";
 export const LOGOUT = "auth/LOGOUT";
@@ -16,7 +15,7 @@ export const AUTHENTICATION_FAILED_TIMEOUT =
   "auth/AUTHENTICATION_FAILED_TIMEOUT";
 export const RESET_TEAM = "auth/RESET_TEAM";
 
-export function setTeamField(val) {
+export function setTeamField(val: string) {
   return {
     type: SET_TEAM_FIELD,
     value: val
@@ -29,7 +28,7 @@ export function startAuthenticationFlag() {
   };
 }
 
-export function checkTeamError(status) {
+export function checkTeamError(status: string) {
   return {
     type: CHECK_TEAM_ERROR,
     status
@@ -60,7 +59,7 @@ export function authenticationSucceed() {
   };
 }
 
-export function authenticationFailed(e) {
+export function authenticationFailed(e: mixed) {
   if (e === 5) {
     return {
       type: AUTHENTICATION_FAILED_TIMEOUT
@@ -76,41 +75,42 @@ export function authenticationFailed(e) {
   };
 }
 
-export function setTokenToLocalStorage(token) {
+export function setTokenToLocalStorage(token: string) {
   window.localStorage.setItem("token", token);
 }
 
-export function finishRegistration(data, email) {
-  return () => {
-    window.u2f.register(
-      data.appId,
-      data.registerRequests,
-      data.registeredKeys,
-      deviceResponse => {
-        if (deviceResponse.errorCode) {
-          // dispatch(authenticationFailed());
-        } else {
-          axios
-            .post("finish_registration", { email, response: deviceResponse })
-            .then(res => {
-              console.log(res.data);
-            });
+export function finishRegistration(data: Object, email: string) {
+  return (): Promise<Object> =>
+    new Promise((success, failure) =>
+      window.u2f.register(
+        data.appId,
+        data.registerRequests,
+        data.registeredKeys,
+        response => {
+          if (response.errorCode) {
+            // dispatch(authenticationFailed());
+            failure(new Error(response.errorCode));
+          } else {
+            network("/finish_registration", "POST", { email, response }).then(
+              success,
+              failure
+            );
+          }
         }
-      }
+      )
     );
-  };
 }
 
-export function registerDevice(email) {
-  return dispatch => {
-    axios.post("start_registration", { email }).then(res => {
+export function registerDevice(email: string) {
+  return (dispatch: Function) => {
+    network("/start_registration", "POST", { email }).then(res => {
       dispatch(finishRegistration(res.data, email));
     });
   };
 }
 
-export function finishAuthentication(data) {
-  return (dispatch, getState) => {
+export function finishAuthentication(data: Object) {
+  return (dispatch: Function, getState: Function) => {
     const { team } = getState().auth;
 
     window.u2f.sign(
@@ -121,12 +121,10 @@ export function finishAuthentication(data) {
         if (deviceResponse.errorCode) {
           dispatch(authenticationFailed(deviceResponse.errorCode));
         } else {
-          // FIXME we should drop usage of axios / moxios. directly use fetch()
-          axios
-            .post("finish_authentication", {
-              email: team,
-              response: deviceResponse
-            })
+          network("/finish_authentication", "POST", {
+            email: team,
+            response: deviceResponse
+          })
             .then(res => {
               setTokenToLocalStorage(res.data.token);
               setTimeout(() => {
@@ -143,12 +141,10 @@ export function finishAuthentication(data) {
 }
 
 export function startAuthentication() {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     dispatch(startAuthenticationFlag());
     const { team } = getState().auth;
-
-    axios
-      .post("start_authentication", { email: team })
+    network("/start_authentication", "POST", { email: team })
       .then(res => {
         dispatch(checkTeamSuccess());
         dispatch(finishAuthentication(res.data));
@@ -166,13 +162,21 @@ export function logout() {
 }
 
 export function logoutAction() {
-  return dispatch => {
+  return (dispatch: Function) => {
     window.localStorage.removeItem("token");
     dispatch(logout());
   };
 }
 
-export const createInitialState = () => ({
+export type State = {
+  team: string,
+  isAuthenticated: boolean,
+  isCheckingTeam: boolean,
+  teamValidated: boolean,
+  teamError: boolean
+};
+
+export const createInitialState = (): State => ({
   isAuthenticated: !!localStorage.getItem("token"),
   isCheckingTeam: false,
   teamValidated: false,
@@ -180,7 +184,10 @@ export const createInitialState = () => ({
   team: ""
 });
 
-export default function reducer(state = createInitialState(), action) {
+export default function reducer(
+  state: State = createInitialState(),
+  action: Object
+) {
   switch (action.type) {
     case SET_TEAM_FIELD:
       return { ...state, team: action.value, teamError: false };

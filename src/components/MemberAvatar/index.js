@@ -1,17 +1,16 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import People from "../icons/thin/Profile";
 import "./index.css";
 
-function Avatar(props) {
-  const { url, width, height, ...rest } = props;
-
+function Avatar(props: { url: ?string, width: number, height: number }) {
+  const { url, width, height } = props;
   return (
     <span className="member-avatar">
-      {url && url !== "" ? (
+      {url ? (
         <img src={props.url} alt="Profile avatar" />
       ) : (
-        <People width={width} height={height} color="white" />
+        <People width={width + "px"} height={height + "px"} color="white" />
       )}
     </span>
   );
@@ -19,14 +18,8 @@ function Avatar(props) {
 
 Avatar.defaultProps = {
   url: "",
-  width: "14px",
-  height: "16px"
-};
-
-Avatar.propTypes = {
-  url: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string
+  width: 14,
+  height: 16
 };
 
 export default Avatar;

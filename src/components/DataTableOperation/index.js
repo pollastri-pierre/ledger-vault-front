@@ -8,7 +8,7 @@ import { openOperationModal } from "../../redux/modules/operations";
 import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import Tooltip from "../utils/Tooltip";
-import type { Operation } from "../../datatypes";
+import type { Operation, Account } from "../../data/types";
 import "./index.css";
 
 const mapStateToProps = () => ({});
@@ -31,6 +31,7 @@ let DataTableOperationCount = 0;
 
 class DataTableOperation extends Component<*> {
   props: {
+    accounts?: Array<Account>,
     operations: Array<Operation>,
     columnIds: Array<string>,
     onGetOperation: (uuid: string, n: ?number) => void
@@ -55,7 +56,7 @@ class DataTableOperation extends Component<*> {
   );
 
   render() {
-    const { operations, columnIds } = this.props;
+    const { accounts, operations, columnIds } = this.props;
     const columns = [
       {
         className: "date",
@@ -94,9 +95,14 @@ class DataTableOperation extends Component<*> {
       {
         className: "account",
         title: "account",
-        renderCell: ({ account, currency }) =>
-          account &&
-          currency && <AccountName name={account.name} currency={currency} />
+        renderCell: operation => {
+          const account =
+            accounts && accounts.find(a => a.id === operation.account_id);
+          if (!account) return;
+          return (
+            <AccountName name={account.name} currency={account.currency} />
+          );
+        }
       },
       {
         className: "address",

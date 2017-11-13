@@ -8,7 +8,7 @@ import CardLoading from "../../components/utils/CardLoading";
 import DateFormat from "../../components/DateFormat";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import AccountName from "../../components/AccountName";
-import type { Operation, Account } from "../../datatypes";
+import type { Operation, Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";

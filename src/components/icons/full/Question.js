@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function Question(props) {
+function Question(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" {...props}>
       <title>question badge_1</title>

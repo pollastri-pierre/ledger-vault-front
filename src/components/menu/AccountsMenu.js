@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import { NavLink } from "react-router-dom";
-import type { Account } from "../../datatypes";
+import type { Account } from "../../data/types";
 import connectData from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 

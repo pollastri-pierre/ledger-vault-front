@@ -8,7 +8,7 @@ import {
   getCurrencyRate,
   countervalueForRate
 } from "../data/currency";
-import type { Currency, Rate } from "../datatypes";
+import type { Currency, Rate } from "../data/types";
 
 type Props = {
   // it can be a crypto currency name or also can be a countervalue like EUR

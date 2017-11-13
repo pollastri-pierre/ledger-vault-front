@@ -2,7 +2,7 @@
 import Mutation from "../../restlay/Mutation";
 import genericRenderNotif from "../../data/genericRenderNotif";
 import schema from "../../data/schema";
-import type { Operation } from "../../datatypes";
+import type { Operation } from "../../data/types";
 
 type In = {
   operationId: string

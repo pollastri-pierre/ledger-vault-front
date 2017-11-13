@@ -7,7 +7,7 @@ import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardLoading from "../../components/utils/CardLoading";
 import DataTableOperation from "../../components/DataTableOperation";
-import type { Operation, Account } from "../../datatypes";
+import type { Operation, Account } from "../../data/types";
 
 class LastOperationCard extends Component<*> {
   props: {
@@ -16,7 +16,7 @@ class LastOperationCard extends Component<*> {
     reloading: boolean
   };
   render() {
-    const { operations, reloading } = this.props;
+    const { accounts, operations, reloading } = this.props;
     return (
       <Card
         reloading={reloading}
@@ -26,6 +26,7 @@ class LastOperationCard extends Component<*> {
         <DataTableOperation
           columnIds={["date", "account", "countervalue", "amount"]}
           operations={operations}
+          accounts={accounts}
         />
       </Card>
     );

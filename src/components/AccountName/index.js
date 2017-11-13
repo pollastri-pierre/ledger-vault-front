@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import BadgeCurrency from "../BadgeCurrency";
-import type { Currency } from "../../datatypes";
+import type { Currency } from "../../data/types";
 import "./index.css";
 
 class AccountName extends Component<*> {

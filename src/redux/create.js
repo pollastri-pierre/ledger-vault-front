@@ -1,3 +1,4 @@
+//@flow
 import {
   createStore as _createStore,
   applyMiddleware,
@@ -8,7 +9,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import reducers from "./modules/index";
 
-export default function createStore(history, data) {
+export default function createStore(history: *, data: *) {
   const middleware = routerMiddleware(history);
 
   const combinedReducers = combineReducers({

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Route, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import type { Member } from "../../datatypes";
+import type { Member } from "../../data/types";
 import ProfileEditModal from "../ProfileEditModal";
 import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
