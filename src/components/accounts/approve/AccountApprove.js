@@ -25,11 +25,7 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
-  match: {
-    params: {
-      id: string
-    }
-  }
+  match: *
 };
 class AccountApprove extends Component<Props> {
   render() {
@@ -94,7 +90,7 @@ const connected = connectData(AccountApprove, {
     approvers: ApproversQuery,
     profile: ProfileQuery
   },
-  propsToQueryParams: props => ({ accountId: props.match.params.id }),
+  propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),
   RenderLoading: ModalLoading
 });
 

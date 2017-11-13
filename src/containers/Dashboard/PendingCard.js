@@ -46,7 +46,7 @@ const PendingCardRowPerType = {
 
 class PendingCard extends Component<{
   pendings: *,
-  accounts: *,
+  accounts: Account[],
   reloading: boolean
 }> {
   render() {

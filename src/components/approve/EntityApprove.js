@@ -20,8 +20,7 @@ type Props = {
   history: *,
   match: *,
   restlay: *,
-  entity: string,
-  fetchData: Function
+  entity: string
 };
 
 type State = {

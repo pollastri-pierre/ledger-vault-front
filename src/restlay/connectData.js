@@ -40,13 +40,10 @@ type ExtractQueryResult = <In, Out>(Class<Query<In, Out>>) => Out;
 type ExtractQueryIn = <In, Out>(Class<Query<In, Out>>) => In;
 
 // prettier-ignore
-type In<Props, A> = React$ComponentType<{
-  ...Props,
-  ...$ObjMap<A, ExtractQueryResult>,
-  ...InjectedProps
-}>;
+type InProps<Props, A> = $Supertype<InjectedProps & $ObjMap<A, ExtractQueryResult> & Props>;
+type In<Props, A> = Class<React$Component<InProps<Props, A>, any>>;
 // prettier-ignore
-type Out<Props> = React$ComponentType<$Shape<Props>>; // FIXME $Shape is not technically correct but is a workaround
+type Out<Props> = Class<React$Component<Props, any>>;
 
 type ClazzProps<Props> = { ...ConnectedProps, ...Props };
 

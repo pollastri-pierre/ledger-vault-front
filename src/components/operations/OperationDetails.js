@@ -20,6 +20,7 @@ class OperationDetails extends Component<
     profile: Member,
     account: Account,
     operation: Operation,
+    operationId: string,
     tabsIndex: *,
     close: Function,
     history: *

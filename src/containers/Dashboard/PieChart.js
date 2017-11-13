@@ -4,11 +4,16 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import type { Currency } from "../../data/types";
 import "./PieChart.css";
 
 export default class PieChart extends Component<
   {
-    data: Array<*>
+    data: Array<{
+      meta: Currency,
+      balance: number,
+      counterValueBalance: number
+    }>
   },
   { selected: number }
 > {

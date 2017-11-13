@@ -21,7 +21,8 @@ type Props = {
   profile: Member,
   close: Function,
   approve: Function,
-  aborting: Function
+  aborting: Function,
+  match: *
 };
 class OperationApprove extends Component<Props> {
   render() {
@@ -96,7 +97,7 @@ export default withRouter(
         profile: ProfileQuery
       },
       propsToQueryParams: props => ({
-        operationId: props.match.params.id
+        operationId: props.match.params.id || ""
       })
     }
   )

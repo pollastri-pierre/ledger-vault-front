@@ -23,7 +23,12 @@ class AccountView extends Component<
     account: Account,
     operations: Array<Operation>,
     currencies: Array<Currency>,
-    reloading: boolean
+    reloading: boolean,
+    match: {
+      params: {
+        id: string
+      }
+    }
   },
   *
 > {
