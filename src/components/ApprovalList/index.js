@@ -1,15 +1,18 @@
-import _ from "lodash";
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import ApprovalUser from "../ApprovalUser";
 import ApprovalPercentage from "../ApprovalPercentage";
+import type { Member } from "../../datatypes";
 
-function ApprovalList(props) {
+function ApprovalList(props: {
+  approvers: Array<Member>,
+  approved: Array<string>,
+  nbRequired?: number
+}) {
   const { approved, approvers, nbRequired } = props;
-
   return (
     <div>
-      {_.map(approvers, member => {
+      {approvers.map(member => {
         const isApproved = approved.indexOf(member.pub_key) > -1;
 
         return (
@@ -29,11 +32,5 @@ function ApprovalList(props) {
     </div>
   );
 }
-
-ApprovalList.propTypes = {
-  approvers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  approved: PropTypes.arrayOf(PropTypes.string).isRequired,
-  nbRequired: PropTypes.number
-};
 
 export default ApprovalList;

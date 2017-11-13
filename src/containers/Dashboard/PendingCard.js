@@ -13,7 +13,13 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
-const Row = ({ date, children }) => (
+const Row = ({
+  date,
+  children
+}: {
+  date: string,
+  children: React$Element<*>
+}) => (
   <div className="pending-list-row">
     <div className="date">
       <DateFormat date={date} />
@@ -28,7 +34,7 @@ const OperationRow = ({ data }: { data: Operation }) => (
   </Row>
 );
 const AccountRow = ({ data }: { data: Account }) => (
-  <Row date={data.time}>
+  <Row date={data.creation_time}>
     <AccountName name={data.name} currency={data.currency} />
   </Row>
 );

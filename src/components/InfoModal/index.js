@@ -4,7 +4,8 @@ import "./index.css";
 
 class InfoModal extends PureComponent<*> {
   props: {
-    children: *
+    children: *,
+    className: *
   };
   render() {
     const { children, className, ...rest } = this.props;

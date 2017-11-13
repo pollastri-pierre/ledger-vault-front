@@ -152,7 +152,7 @@ const genU2F = () =>
     .map(() => Math.floor(Math.random() * 16).toString(16))
     .join("");
 
-const genMember = fields => ({
+const genMember = (fields: *) => ({
   pub_key: genPubKey(),
   u2f_device: genU2F(),
   ...fields
@@ -243,7 +243,7 @@ const genSecurityScheme = () => ({
   }
 });
 
-const genOperation = opts => {
+const genOperation = (opts: *) => {
   const {
     uuid,
     time,

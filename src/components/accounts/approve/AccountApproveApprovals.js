@@ -3,10 +3,11 @@ import React, { Component } from "react";
 import "./AccountApproveApprovals.css";
 import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
+import type { Account, Member } from "../../../datatypes";
 
 type Props = {
-  account: *,
-  approvers: array
+  account: Account,
+  approvers: Array<Member>
 };
 
 class AccountApproveApprovals extends Component<Props> {

@@ -1,15 +1,17 @@
 //@flow
 import React from "react";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
+import size from "lodash/size";
 import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
+import type { Account } from "../../datatypes";
 
 type Props = {
-  accounts: array,
+  accounts: Account[],
   approved?: boolean,
-  approvers: array,
+  approvers: string[],
   user: *
 };
 function PendingAccountApprove(props: Props) {
@@ -18,8 +20,8 @@ function PendingAccountApprove(props: Props) {
     return <p>There are no accounts to approve</p>;
   }
 
-  const nbCurrencies = _.size(
-    _.groupBy(accounts, account => account.currency.family)
+  const nbCurrencies = size(
+    groupBy(accounts, account => account.currency.family)
   );
 
   return (
@@ -44,34 +46,30 @@ function PendingAccountApprove(props: Props) {
           </p>
         </div>
       )}
-      {_.map(accounts, account => {
-        return (
-          <Link
-            className={`pending-request ${approved ? "watch" : ""}`}
-            to={`/pending/account/${account.id}`}
-            key={account.id}
-          >
-            <div>
-              <span className="request-date-creation">
-                <DateFormat date={account.creation_time} />
-              </span>
-              <span className="request-name">
-                <AccountName name={account.name} currency={account.currency} />
-              </span>
-            </div>
-            <div>
-              <ApprovalStatus
-                approved={account.approved}
-                approvers={approvers}
-                user_hash={user.pub_key}
-              />
-              <span className="request-currency">
-                {account.currency.family}
-              </span>
-            </div>
-          </Link>
-        );
-      })}
+      {accounts.map(account => (
+        <Link
+          className={`pending-request ${approved ? "watch" : ""}`}
+          to={`/pending/account/${account.id}`}
+          key={account.id}
+        >
+          <div>
+            <span className="request-date-creation">
+              <DateFormat date={account.creation_time} />
+            </span>
+            <span className="request-name">
+              <AccountName name={account.name} currency={account.currency} />
+            </span>
+          </div>
+          <div>
+            <ApprovalStatus
+              approved={account.approved}
+              approvers={approvers}
+              user_hash={user.pub_key}
+            />
+            <span className="request-currency">{account.currency.family}</span>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

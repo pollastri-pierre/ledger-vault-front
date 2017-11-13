@@ -8,7 +8,6 @@ import Card from "../../components/Card";
 import CardLoading from "../../components/utils/CardLoading";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../datatypes";
-import { Route, withRouter } from "react-router";
 
 class LastOperationCard extends Component<*> {
   props: {

@@ -8,11 +8,12 @@ import CurrencyNameValue from "../CurrencyNameValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatus from "../ApprovalStatus";
 import { countervalueForRate } from "../../data/currency";
+import type { Operation, Member } from "../../datatypes";
 
 type Props = {
-  operations: array,
+  operations: Array<Operation>,
   approved?: boolean,
-  user: *
+  user: Member
 };
 function PendingOperationApprove(props: Props) {
   const { operations, approved, user } = props;
@@ -49,7 +50,7 @@ function PendingOperationApprove(props: Props) {
           </p>
         </div>
       )}
-      {_.map(operations, operation => {
+      {operations.map(operation => {
         const account = operation.account;
         const amountUnitValue = countervalueForRate(
           operation.rate,

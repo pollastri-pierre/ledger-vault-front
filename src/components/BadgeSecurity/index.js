@@ -6,7 +6,8 @@ class BadgeSecurity extends PureComponent<*> {
   props: {
     icon: *,
     label: string,
-    value: *
+    value: *,
+    disabled: *
   };
 
   render() {

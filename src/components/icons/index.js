@@ -4,7 +4,6 @@ import People from "./People";
 import PeopleThin from "./thin/People";
 import ValidateBadge from "./ValidateBadge";
 import Rates from "./Rates";
-import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import Trash from "./thin/Trash";
 import Hourglass from "./Hourglass";
@@ -28,11 +27,11 @@ export function SecurityTimelockIcon() {
   return <Hourglass className="security-icon security-timelock-icon" />;
 }
 
-export function PlugIcon(props) {
+export function PlugIcon(props: *) {
   return <Plug className="plug-icon" {...props} />;
 }
 
-export function TrashIcon(props) {
+export function TrashIcon(props: *) {
   return <Trash className="trash-icon" {...props} />;
 }
 

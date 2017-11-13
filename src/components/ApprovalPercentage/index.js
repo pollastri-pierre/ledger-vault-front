@@ -1,11 +1,16 @@
+//@flow
 import React from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
 import PercentageBarProgress from "../PercentageBarProgress";
+import type { Member } from "../../datatypes";
 
-function ApprovalPercentage(props) {
+function ApprovalPercentage(props: {
+  approvers: Member[],
+  approved: string[],
+  nbRequired?: number
+}) {
   const { approved, approvers, nbRequired } = props;
-  const nbTotal = _.isNumber(nbRequired) ? nbRequired : approvers.length;
+  const nbTotal =
+    typeof nbRequired === "number" ? nbRequired : approvers.length;
 
   const percentage = approved.length / nbTotal;
 
@@ -18,11 +23,5 @@ function ApprovalPercentage(props) {
 
   return <PercentageBarProgress percentage={percentage} label={label} />;
 }
-
-ApprovalPercentage.propTypes = {
-  approvers: PropTypes.arrayOf(PropTypes.shape({})),
-  approved: PropTypes.arrayOf(PropTypes.string),
-  nbRequired: PropTypes.number
-};
 
 export default ApprovalPercentage;

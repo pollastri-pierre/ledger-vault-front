@@ -4,7 +4,7 @@ import _ from "lodash";
 import PercentageBarProgress from "../PercentageBarProgress";
 
 type Props = {
-  percentage?: number
+  percentage: number
 };
 
 function LocksPercentage(props: Props) {
