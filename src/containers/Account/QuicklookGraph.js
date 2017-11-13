@@ -1,28 +1,38 @@
+// @flow
+
 import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 
+const fn = function(arg: number) {
+  return arg;
+};
 // TODO use flowtype & fix eslint
-export default class QuicklookGraph extends Component {
+export default class QuicklookGraph extends Component<*, *> {
   state = {
     selected: -1,
     width: 300 - 20 - 20,
     height: 190 - 20 - 20,
-    transform: null,
-    tickLabel: ""
+    tickLabel: "",
+    x: fn,
+    y: fn
   };
+  tooltip: ?HTMLDivElement;
 
-  setSelected = index => {
+  svg: ?*;
+
+  setSelected = (index: number) => {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d, i) => {
+  handleMouseOver = (d: *, i: number) => {
+    console.log(d);
     this.setSelected(i);
   };
 
-  handleMouseOut = (d, i) => {
+  handleMouseOut = (d: *, i: number) => {
     this.setSelected(-1);
   };
 
@@ -42,7 +52,7 @@ export default class QuicklookGraph extends Component {
     }
   };
 
-  drawInvisibleDots = data => {
+  drawInvisibleDots = (data: Array<*>) => {
     const selection = d3
       .select(".hoveringDots")
       .selectAll(".hoverdot")
@@ -60,7 +70,7 @@ export default class QuicklookGraph extends Component {
       .on("mouseover", this.handleMouseOver);
   };
 
-  drawVisibleDots = data => {
+  drawVisibleDots = (data: Array<*>) => {
     const selection = d3
       .select(".visibleDots")
       .selectAll(".dot")
@@ -82,7 +92,7 @@ export default class QuicklookGraph extends Component {
       .classed("dot", true);
   };
 
-  drawLine = data => {
+  drawLine = (data: Array<*>) => {
     const valueline = d3
       .line()
       .x(d => {
@@ -101,7 +111,7 @@ export default class QuicklookGraph extends Component {
       .attr("clip-path", "url(#clip)");
   };
 
-  drawxAxisLabel = domainX => {
+  drawxAxisLabel = (domainX: Array<*>) => {
     const timeDelta = domainX[1] - domainX[0];
 
     const tickLabel =
@@ -113,18 +123,21 @@ export default class QuicklookGraph extends Component {
     d3.select(".xAxisLabel").text(tickLabel.toUpperCase());
   };
 
-  drawAxis = (xAxis, yAxis) => {
+  drawAxis = (xAxis: *, yAxis: *) => {
     d3.select(".xAxis").call(this.customXAxis, xAxis);
     d3.select(".yAxis").call(this.customYAxis, yAxis);
   };
 
-  drawGraph = (data, xAxis, yAxis, x) => {
+  drawGraph = (data: Array<*>, xAxis: *, yAxis: *) => {
     this.drawAxis(xAxis, yAxis);
-    this.drawxAxisLabel(x.domain());
+    const x = this.state.x;
+    let domain = [];
+    if (x) domain = x.domain();
+    this.drawxAxisLabel(domain);
     this.drawLine(data);
   };
 
-  customXAxis = (s, xAxis) => {
+  customXAxis = (s: *, xAxis: *) => {
     s.call(xAxis);
     s.select(".domain").remove();
     s.selectAll(".tick line").attr("display", "none");
@@ -134,7 +147,7 @@ export default class QuicklookGraph extends Component {
       .attr("x", 0);
   };
 
-  customYAxis = (s, yAxis) => {
+  customYAxis = (s: *, yAxis: *) => {
     s.call(yAxis);
     s.select(".domain").remove();
     s
@@ -154,7 +167,7 @@ export default class QuicklookGraph extends Component {
       .attr("stroke-dasharray", "1,2");
   };
 
-  computeXY = data => {
+  computeXY = (data: Array<*>) => {
     const { width, height } = this.state;
     const { minDomain } = this.props;
 
@@ -190,19 +203,22 @@ export default class QuicklookGraph extends Component {
       .scaleLinear()
       .domain(domainY)
       .range([height, 0]);
-
+    this.setState({ x: x, y: y });
     return { x: x, y: y };
   };
 
-  computeData = data => {
-    const { width, transform } = this.state;
+  computeData = (data: Array<*>) => {
+    const { width, x, y } = this.state;
+    if (!x)
+      return {
+        data: data,
+        xAxis: null,
+        yAxis: null,
+        x: null
+      };
+
     let computedData = data.slice();
 
-    let { x, y } = this.computeXY(data);
-
-    if (transform) {
-      x = transform.rescaleX(x);
-    }
     //Setting up xAxis tick format behaviour. subject to change
     const formatMillisecond = d3.timeFormat(".%L"),
       formatSecond = d3.timeFormat(":%S"),
@@ -240,12 +256,14 @@ export default class QuicklookGraph extends Component {
       .tickSize(width);
 
     computedData = _.map(data, transaction => {
+      if (!x && !y) return transaction;
       return {
         ...transaction,
         x: x(transaction.time),
         y: y(transaction.amount)
       };
     });
+
     return {
       data: computedData,
       xAxis: newXAxis,
@@ -260,16 +278,20 @@ export default class QuicklookGraph extends Component {
     //setting up zoom behaviour
     const zoom = d3
       .zoom()
-      .scaleExtent([1, Infinity])
-      .translateExtent([[55, 0], [width, height]])
-      .extent([[55, 0], [width, height]])
+      //.scaleExtent([0, Infinity])
+      //.translateExtent([[55, 0], [width, height]])
+      //.extent([[55, 0], [width, height]])
       .on(
         "zoom",
         function() {
+          const { x } = this.state;
+          if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")
+            return;
+          /*
           this.setState({
-            transform: d3.event.transform,
+            x: d3.event.transform.rescaleX(x),
             selected: -1
-          });
+          });*/
         }.bind(this)
       );
     d3.select(svg).call(zoom);
@@ -333,45 +355,42 @@ export default class QuicklookGraph extends Component {
       .attr("clip-path", "url(#clip)");
   };
 
-  isEqual = (A, B) => {
-    let objectsAreSame = true;
-    for (let propertyName in A) {
-      if (!_.eq(A[propertyName], B[propertyName])) {
-        objectsAreSame = false;
-        break;
-      }
-    }
-    return objectsAreSame;
-  };
-
-  zoomTo = (d0, d1, x, y) => {
-    const { width } = this.state;
+  zoomTo = (d0: number, d1: number) => {
+    const { width, x } = this.state;
     this.setState({
-      transform: d3.zoomIdentity
+      x: d3.zoomIdentity
         .scale(width / (x(d1) - x(d0)))
-        .translate(-x(d0), 0),
+        .translate(-x(d0), 0)
+        .rescaleX(x),
       selected: -1
     });
   };
 
   componentDidMount() {
-    const { data: dataProp } = this.props;
+    console.log(this.props);
 
     //return if no data
-    if (dataProp.length === 0) return;
+    if (this.props.data.length === 0) return;
     //init placeholders
+
     this.initPlaceholders();
 
     //setting up zoom behaviour
     this.setupZoomBehaviour();
 
-    const { data, xAxis, yAxis, x } = this.computeData(dataProp);
+    this.computeXY(this.props.data);
+
+    /* const { data, xAxis, yAxis } = this.computeData(this.props.data);
+
     this.drawInvisibleDots(data);
-    this.drawVisibleDots(data);
-    this.drawGraph(data, xAxis, yAxis, x);
+
+    this.drawVisibleDots(data);    console.log("13")
+
+    this.drawGraph(data, xAxis, yAxis);    console.log("14")
+    */
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: *, prevState: *) {
     const { selected } = this.state;
     const { dateRange, data: dataProp } = this.props;
     let duration = 0;
@@ -380,26 +399,24 @@ export default class QuicklookGraph extends Component {
       //Hovering on tooltip
       this.handleTooltip();
     }
-
-    if (
+    if (JSON.stringify(dataProp) !== JSON.stringify(prevProps.data)) {
+      this.computeXY(dataProp);
+    } else if (
       JSON.stringify(prevProps.dateRange) !==
-        JSON.stringify(this.props.dateRange) ||
-      JSON.stringify(dataProp) !== JSON.stringify(prevProps.data)
+      JSON.stringify(this.props.dateRange)
     ) {
       //dateRange in props changed. Computing new transform and resetting the state
 
-      /* calling computeData just to get x and y. but unnecessary computation ???? 
-      x and y are needed to compute transform */
-      const { x, y } = this.computeXY(dataProp);
+      /* calling computeData just to get x and y. */
       duration = 500;
-      this.zoomTo(dateRange[0], dateRange[1], x, y);
-    } else if (prevState.transform !== this.state.transform) {
+      this.zoomTo(dateRange[0], dateRange[1]);
+    } else if (prevState.x !== this.state.x) {
       //Redrawing grpah because of new zoom
-      const { data, xAxis, yAxis, x } = this.computeData(dataProp);
-      this.props.onDomainChange(x.domain());
+      const { data, xAxis, yAxis } = this.computeData(dataProp);
+      this.props.onDomainChange(this.state.x.domain());
       this.drawInvisibleDots(data);
       this.drawVisibleDots(data);
-      this.drawGraph(data, xAxis, yAxis, x);
+      this.drawGraph(data, xAxis, yAxis);
     }
   }
 

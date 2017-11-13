@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
@@ -30,7 +30,7 @@ class AccountView extends Component<
     this.state = {
       quickLookGraphFilter: this.quickLookGraphFilters[0],
       tabsIndex: 0,
-      labelDateRange: this.getLabelDateRange(this.getDateRange(this.tabsIndex))
+      labelDateRange: this.getLabelDateRange(this.getDateRange(0))
     };
   }
 
@@ -120,23 +120,41 @@ class AccountView extends Component<
   };
 
   getOperations = data => {
-    data = data.map((o: Operation) => ({
-      time: new Date(o.time),
-      amount: o.amount,
-      currency: o.currency,
-      tooltip: true
-    }));
-    data.push({ ...data[data.length - 1] });
-    data[data.length - 1].time = new Date().setHours(0, 0, 0, 0);
-    data[data.length - 1].tooltip = false;
-    _.sortBy(data, elem => new Date(elem.time).toISOString());
-    return data;
+    const { quickLookGraphFilter } = this.state;
+    let operations = [];
+    let factor = 1;
+    if (quickLookGraphFilter.key === "balance") {
+      operations = data.map((o: Operation, i: number) => {
+        return {
+          time: new Date(o.time),
+          amount: o.amount + (i > 0 ? data[i - 1].amount : 0),
+          currency: o.currency,
+          tooltip: true
+        };
+      });
+      operations.push({ ...operations[operations.length - 1] });
+      operations[operations.length - 1].time = new Date().setHours(0, 0, 0, 0);
+      operations[operations.length - 1].tooltip = false;
+    } else {
+      factor =
+        quickLookGraphFilter.key === "countervalue"
+          ? operations[0].currency.rate.value
+          : 1;
+      operations = operations.map((o: Operation) => ({
+        time: new Date(o.time),
+        amount: o.amount * factor,
+        currency: o.currency,
+        tooltip: true
+      }));
+    }
+    _.sortBy(operations, elem => new Date(elem.time).toISOString());
+    return operations;
   };
 
   render() {
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
-    const dateRange = this.getDateRange(dateRange);
+    const dateRange = this.getDateRange(tabsIndex);
     return (
       <div className="account-view">
         <div className="account-view-infos">
