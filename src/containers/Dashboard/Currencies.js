@@ -15,46 +15,46 @@ type AggregatedData = {
   }
 };
 
-class Currencies extends Component<{
+function Currencies({
+  accounts,
+  currencies
+}: {
   accounts: Array<Account>,
   currencies: Array<Currency>
-}> {
-  render() {
-    const { accounts, currencies } = this.props;
-    //compute currencies from accounts balance
-    const data: AggregatedData = accounts.reduce(
-      (acc: AggregatedData, account) => {
-        const currency_name = account.currency.name;
-        const balance = account.balance;
-        //check if currency already added
-        if (!acc[currency_name]) {
-          acc[currency_name] = {
-            meta: account.currency,
-            balance: 0,
-            counterValueBalance: 0
-          };
-        }
-        acc[currency_name].balance += balance;
-        acc[currency_name].counterValueBalance += countervalueForRate(
-          getCurrencyRate(currencies, currency_name),
-          balance
-        ).value;
-        return acc;
-      },
-      {}
-    );
+}) {
+  //compute currencies from accounts balance
+  const data: AggregatedData = accounts.reduce(
+    (acc: AggregatedData, account) => {
+      const currency_name = account.currency.name;
+      const balance = account.balance;
+      //check if currency already added
+      if (!acc[currency_name]) {
+        acc[currency_name] = {
+          meta: account.currency,
+          balance: 0,
+          counterValueBalance: 0
+        };
+      }
+      acc[currency_name].balance += balance;
+      acc[currency_name].counterValueBalance += countervalueForRate(
+        getCurrencyRate(currencies, currency_name),
+        balance
+      ).value;
+      return acc;
+    },
+    {}
+  );
 
-    const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
-      currenciesList.push(data[c]);
-      return currenciesList;
-    }, []);
+  const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
+    currenciesList.push(data[c]);
+    return currenciesList;
+  }, []);
 
-    return (
-      <div className="dashboard-currencies">
-        <PieChart data={pieChartData} />
-      </div>
-    );
-  }
+  return (
+    <div className="dashboard-currencies">
+      <PieChart data={pieChartData} />
+    </div>
+  );
 }
 
 class RenderError extends Component<*> {

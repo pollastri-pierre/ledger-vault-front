@@ -41,7 +41,9 @@ type ExtractQueryIn = <In, Out>(Class<Query<In, Out>>) => In;
 
 // prettier-ignore
 type InProps<Props, A> = $Supertype<InjectedProps & $ObjMap<A, ExtractQueryResult> & Props>;
-type In<Props, A> = Class<React$Component<InProps<Props, A>, any>>;
+type In<Props, A> =
+  | Class<React$Component<InProps<Props, A>, any>>
+  | ((props: InProps<Props, A>, ctx: any) => any);
 // prettier-ignore
 type Out<Props> = Class<React$Component<Props, any>>;
 
