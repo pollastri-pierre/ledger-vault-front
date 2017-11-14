@@ -1,22 +1,19 @@
 //@flow
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
-import { openModalOperation } from "../../redux/modules/operation-creation";
 import PendingsMenuBadge from "./PendingsMenuBadge";
-
+import NewOperationModal from "../NewOperationModal";
+import ModalRoute from "../ModalRoute";
 import "./Menu.css";
 
-const mapStateToProps = () => ({});
-
-// TODO we can use more react router for this
-const mapDispatchToProps = dispatch => ({
-  openOperation: () => dispatch(openModalOperation())
-});
-
-function Menu(props, context) {
+function Menu(
+  props: {
+    location: *
+  },
+  context
+) {
   const t = context.translate;
   return (
     <div className="Menu">
@@ -27,7 +24,7 @@ function Menu(props, context) {
           </NavLink>
         </li>
         <li>
-          <NavLink to="new-operation" onClick={props.openOperation}>
+          <NavLink to={props.location.pathname + "/new-operation"}>
             <i className="material-icons">add</i> {t("menu.newOperation")}
           </NavLink>
         </li>
@@ -49,6 +46,8 @@ function Menu(props, context) {
         <h4>Accounts</h4>
         <AccountsMenu />
       </div>
+
+      <ModalRoute path="*/new-operation" component={NewOperationModal} />
     </div>
   );
 }
@@ -57,8 +56,4 @@ Menu.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-Menu.propTypes = {
-  openOperation: PropTypes.func.isRequired
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));
+export default withRouter(Menu);

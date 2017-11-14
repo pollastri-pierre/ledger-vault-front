@@ -22,7 +22,8 @@ type Props = {
   // injected by decorators:
   operation: Operation,
   account: Account,
-  profile: Member
+  profile: Member,
+  history: *
 };
 
 type State = {
@@ -64,11 +65,19 @@ class OperationDetails extends Component<Props, State> {
     }
   }
 
+  onSelect = (index: number) => {
+    this.props.history.replace("" + index);
+  };
+
   render() {
     const { operation, account, close, tabIndex } = this.props;
     return (
-      <div className="modal">
-        <Tabs className="wrapper" defaultIndex={tabIndex} onSelect={() => {}}>
+      <div className="operation-details modal">
+        <Tabs
+          className="wrapper"
+          selectedIndex={tabIndex}
+          onSelect={this.onSelect}
+        >
           <div className="header">
             <h2>{"Operation's details"}</h2>
             <TabList>

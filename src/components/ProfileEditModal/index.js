@@ -8,10 +8,10 @@ import rectCrop from "rect-crop";
 import connectData from "../../restlay/connectData";
 import { TextField } from "../../components";
 import DialogButton from "../../components/buttons/DialogButton";
-import { BlurDialog } from "../../containers";
 import ProfileIcon from "../icons/thin/Profile";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import SaveProfile from "../../api/mutations/SaveProfileMutation";
+import RenderLoading from "../ModalLoading";
 
 import type { Member } from "../../data/types";
 
@@ -33,7 +33,8 @@ class ProfileEditModal extends Component<
   {
     profile: Member,
     restlay: *,
-    history: *
+    history: *,
+    close: Function
   },
   *
 > {
@@ -85,11 +86,6 @@ class ProfileEditModal extends Component<
     });
   };
 
-  close = () => {
-    if (this._unmounted) return;
-    this.props.history.goBack();
-  };
-
   save = () =>
     this.props.restlay
       .commitMutation(
@@ -100,7 +96,7 @@ class ProfileEditModal extends Component<
           picture: this.state.picture.value
         })
       )
-      .then(this.close);
+      .then(this.props.close);
 
   render() {
     const t = this.context.translate;
@@ -110,77 +106,76 @@ class ProfileEditModal extends Component<
       !this.state.email.isValid;
 
     return (
-      <BlurDialog open onRequestClose={this.close}>
-        <div className="Profile">
-          <div className="profile-title">{t("profile.title")}</div>
-          <div className="profile-body">
-            <Dropzone
-              style={{
-                width: "initial",
-                height: "initial",
-                border: "none",
-                cursor: "pointer"
-              }}
-              accept="image/jpeg, image/png"
-              onDrop={this.onDrop}
-            >
-              <div className="profile-pic">
-                {this.state.picture.value ? (
-                  <img src={this.state.picture.value} alt="" />
-                ) : (
-                  <ProfileIcon className="profile-default-icon" color="white" />
-                )}
-              </div>
-            </Dropzone>
-            <div className="profile-form">
-              <TextField
-                name="first_name"
-                className="profile-form-name"
-                hintText={t("profile.firstName")}
-                value={this.state.first_name.value}
-                hasError={!this.state.first_name.isValid}
-                onChange={this.updateField}
-                style={{
-                  fontWeight: 600
-                }}
-              />
-              <TextField
-                name="last_name"
-                className="profile-form-name"
-                hintText={t("profile.lastName")}
-                value={this.state.last_name.value}
-                hasError={!this.state.last_name.isValid}
-                onChange={this.updateField}
-                style={{
-                  fontWeight: 600
-                }}
-              />
-              <br />
-              <TextField
-                name="email"
-                hintText={t("profile.mail")}
-                value={this.state.email.value}
-                hasError={!this.state.email.isValid}
-                onChange={this.updateField}
-              />
-              <div className="profile-role">{t("role.administrator")}</div>
+      <div className="Profile">
+        <div className="profile-title">{t("profile.title")}</div>
+        <div className="profile-body">
+          <Dropzone
+            style={{
+              width: "initial",
+              height: "initial",
+              border: "none",
+              cursor: "pointer"
+            }}
+            accept="image/jpeg, image/png"
+            onDrop={this.onDrop}
+          >
+            <div className="profile-pic">
+              {this.state.picture.value ? (
+                <img src={this.state.picture.value} alt="" />
+              ) : (
+                <ProfileIcon className="profile-default-icon" color="white" />
+              )}
             </div>
+          </Dropzone>
+          <div className="profile-form">
+            <TextField
+              name="first_name"
+              className="profile-form-name"
+              hintText={t("profile.firstName")}
+              value={this.state.first_name.value}
+              hasError={!this.state.first_name.isValid}
+              onChange={this.updateField}
+              style={{
+                fontWeight: 600
+              }}
+            />
+            <TextField
+              name="last_name"
+              className="profile-form-name"
+              hintText={t("profile.lastName")}
+              value={this.state.last_name.value}
+              hasError={!this.state.last_name.isValid}
+              onChange={this.updateField}
+              style={{
+                fontWeight: 600
+              }}
+            />
+            <br />
+            <TextField
+              name="email"
+              hintText={t("profile.mail")}
+              value={this.state.email.value}
+              hasError={!this.state.email.isValid}
+              onChange={this.updateField}
+            />
+            <div className="profile-role">{t("role.administrator")}</div>
           </div>
-          <div style={{ height: "50px" }} />
-          <DialogButton onTouchTap={this.close}>
-            {t("common.cancel")}
-          </DialogButton>
-          <DialogButton highlight right onTouchTap={error ? null : this.save}>
-            {t("common.save")}
-          </DialogButton>
         </div>
-      </BlurDialog>
+        <div style={{ height: "50px" }} />
+        <DialogButton onTouchTap={this.props.close}>
+          {t("common.cancel")}
+        </DialogButton>
+        <DialogButton highlight right onTouchTap={error ? null : this.save}>
+          {t("common.save")}
+        </DialogButton>
+      </div>
     );
   }
 }
 
 export default withRouter(
   connectData(ProfileEditModal, {
+    RenderLoading,
     queries: {
       profile: ProfileQuery
     }

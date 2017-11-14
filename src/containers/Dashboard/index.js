@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router";
 import queryString from "query-string";
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
@@ -10,6 +9,7 @@ import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
 import OperationModal from "../../components/operations/OperationModal";
+import ModalRoute from "../../components/ModalRoute";
 import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
@@ -45,7 +45,7 @@ class Dashboard extends Component<*> {
           <PendingCard />
         </div>
 
-        <Route
+        <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
         />

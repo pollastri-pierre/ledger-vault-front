@@ -1,32 +1,18 @@
 //@flow
 import React, { Component } from "react";
-import { withRouter } from "react-router";
-import { BlurDialog } from "../../containers";
 import OperationDetails from "./OperationDetails";
 
 type Props = {
   history: *,
-  match: *
+  match: *,
+  close: *
 };
 
 class OperationModal extends Component<Props> {
-  close = () => {
-    this.props.history.goBack();
-  };
-
   render() {
     const index = parseInt(this.props.match.params.tabIndex, 10);
-    return (
-      <BlurDialog
-        open
-        nopadding
-        onRequestClose={this.close}
-        className="operation-details"
-      >
-        <OperationDetails close={this.close} tabIndex={index} />
-      </BlurDialog>
-    );
+    return <OperationDetails close={this.props.close} tabIndex={index} />;
   }
 }
 
-export default withRouter(OperationModal);
+export default OperationModal;

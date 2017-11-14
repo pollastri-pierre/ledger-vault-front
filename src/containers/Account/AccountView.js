@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from "react";
-import { Route } from "react-router";
-import OperationModal from "../../components/operations/OperationModal";
 import _ from "lodash";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import ModalRoute from "../../components/ModalRoute";
+import OperationModal from "../../components/operations/OperationModal";
 import connectData from "../../restlay/connectData";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
 import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
@@ -251,7 +251,7 @@ class AccountView extends Component<
             columnIds={["date", "address", "status", "countervalue", "amount"]}
           />
         </Card>
-        <Route
+        <ModalRoute
           path={`${this.props.match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
         />

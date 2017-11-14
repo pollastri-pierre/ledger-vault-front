@@ -1,9 +1,10 @@
 //@flow
 import React, { Component } from "react";
-import { Route, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import type { Member } from "../../data/types";
 import ProfileEditModal from "../ProfileEditModal";
+import ModalRoute from "../ModalRoute";
 import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
@@ -89,7 +90,7 @@ class ProfileCard extends Component<
           </div>
         </PopBubble>
 
-        <Route path="*/profile-edit" component={ProfileEditModal} />
+        <ModalRoute path="*/profile-edit" component={ProfileEditModal} />
       </span>
     );
   }
