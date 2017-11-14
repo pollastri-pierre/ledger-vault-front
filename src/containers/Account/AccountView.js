@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router";
+import { Route } from "react-router";
 import OperationModal from "../../components/operations/OperationModal";
 import _ from "lodash";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -27,6 +27,7 @@ class AccountView extends Component<
     currencies: Array<Currency>,
     reloading: boolean,
     match: {
+      url: string,
       params: {
         id: string
       }

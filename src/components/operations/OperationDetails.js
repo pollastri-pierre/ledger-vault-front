@@ -9,7 +9,6 @@ import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
-import { BlurDialog } from "../../containers";
 import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
 import OperationQuery from "../../api/queries/OperationQuery";
@@ -17,20 +16,21 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import type { Operation, Account, Note, Member } from "../../data/types";
 
-class OperationDetails extends Component<
-  {
-    profile: Member,
-    account: Account,
-    operation: Operation,
-    operationId: string,
-    tabsIndex: *,
-    close: Function,
-    history: *,
-    tabIndex: number
-  },
-  { note: Note }
-> {
-  constructor({ profile }) {
+type Props = {
+  close: Function,
+  tabIndex: number,
+  // injected by decorators:
+  operation: Operation,
+  account: Account,
+  profile: Member
+};
+
+type State = {
+  note: Note
+};
+
+class OperationDetails extends Component<Props, State> {
+  constructor({ profile }: *) {
     super();
     const note: Note = {
       author: profile,
@@ -65,14 +65,10 @@ class OperationDetails extends Component<
   }
 
   render() {
-    const { operation, account, close } = this.props;
+    const { operation, account, close, tabIndex } = this.props;
     return (
       <div className="modal">
-        <Tabs
-          className="wrapper"
-          defaultIndex={this.props.tabIndex}
-          onSelect={() => {}}
-        >
+        <Tabs className="wrapper" defaultIndex={tabIndex} onSelect={() => {}}>
           <div className="header">
             <h2>{"Operation's details"}</h2>
             <TabList>
@@ -131,7 +127,7 @@ export default withRouter(
         profile: ProfileQuery
       },
       propsToQueryParams: props => ({
-        operationId: props.match.params.operationId
+        operationId: props.match.params.operationId || ""
       })
     }
   )

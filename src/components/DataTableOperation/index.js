@@ -1,8 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-import { connect } from "react-redux";
 import DateFormat from "../DateFormat";
 import CurrencyNameValue from "../CurrencyNameValue";
 import AccountName from "../AccountName";
@@ -28,12 +26,14 @@ class DataTableOperation extends Component<*> {
   props: {
     accounts?: Array<Account>,
     operations: Array<Operation>,
-    columnIds: Array<string>
+    columnIds: Array<string>,
+    history: *,
+    match: *
   };
 
   id = ++DataTableOperationCount;
 
-  openOperation = (uuid: string, n: ?number = 0) => {
+  openOperation = (uuid: string, n: number = 0) => {
     this.props.history.push(`${this.props.match.url}/operation/${uuid}/${n}`);
   };
 

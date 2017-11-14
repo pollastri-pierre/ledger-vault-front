@@ -71,6 +71,9 @@ export const executeQueryOrMutation = (
   let cacheKey, method, body;
   if (queryOrMutation instanceof Query) {
     cacheKey = queryOrMutation.getCacheKey();
+    // FIXME i'm not sure pendingPromises should be in the store...
+    // the problem is if there are tons of concurrent calls,
+    // store is not yet uptdated with this pendings. mmh
     const pendingPromise = stateLense(getState()).pending[cacheKey];
     if (pendingPromise) return pendingPromise;
     method = "GET";
