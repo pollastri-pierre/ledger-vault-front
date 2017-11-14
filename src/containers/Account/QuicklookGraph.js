@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
+import CurrencyUnitValue from "../../components/CurrencyUnitValue.js";
 
 const fn = function(arg: number) {
   return arg;
@@ -24,11 +25,12 @@ export default class QuicklookGraph extends Component<*, *> {
   svg: ?*;
 
   setSelected = (index: number) => {
+    console.log("STATE : selecting");
+
     this.setState({ selected: index });
   };
 
   handleMouseOver = (d: *, i: number) => {
-    console.log(d);
     this.setSelected(i);
   };
 
@@ -77,6 +79,7 @@ export default class QuicklookGraph extends Component<*, *> {
       .data(data, d => d.x + d.y + d.time);
 
     selection.exit().remove();
+    console.log(data[0]);
 
     selection
       .enter()
@@ -168,43 +171,46 @@ export default class QuicklookGraph extends Component<*, *> {
   };
 
   computeXY = (data: Array<*>) => {
-    const { width, height } = this.state;
-    const { minDomain } = this.props;
+    console.log("STATE : computeXY");
+    this.setState((prevState, props) => {
+      const { width, height } = prevState;
+      const { minDomain } = props;
 
-    const maxDomainX = [
-      d3.min(data, function(d) {
-        return d.time;
-      }),
-      d3.max(data, function(d) {
-        return d.time;
-      })
-    ];
+      const maxDomainX = [
+        d3.min(data, function(d) {
+          return d.time;
+        }),
+        d3.max(data, function(d) {
+          return d.time;
+        })
+      ];
 
-    let domainX = [];
+      //let domainX = [];
+      /*
+      domainX[0] = maxDomainX[0] < minDomain[0] ? maxDomainX[0] : minDomain[0];
+      domainX[1] = maxDomainX[1] > minDomain[1] ? maxDomainX[1] : minDomain[1];
+*/
+      const x = d3
+        .scaleTime()
+        .domain(maxDomainX)
+        .range([55, width]);
 
-    domainX[0] = maxDomainX[0] < minDomain[0] ? maxDomainX[0] : minDomain[0];
-    domainX[1] = maxDomainX[1] > minDomain[1] ? maxDomainX[1] : minDomain[1];
+      const domainY = [
+        d3.min(data, function(d) {
+          return d.amount;
+        }),
+        d3.max(data, function(d) {
+          return d.amount;
+        })
+      ];
 
-    const x = d3
-      .scaleTime()
-      .domain(domainX)
-      .range([55, width]);
+      const y = d3
+        .scaleLinear()
+        .domain(domainY)
+        .range([height, 0]);
 
-    const domainY = [
-      d3.min(data, function(d) {
-        return d.amount;
-      }),
-      d3.max(data, function(d) {
-        return d.amount;
-      })
-    ];
-
-    const y = d3
-      .scaleLinear()
-      .domain(domainY)
-      .range([height, 0]);
-    this.setState({ x: x, y: y });
-    return { x: x, y: y };
+      return { x: x, y: y };
+    });
   };
 
   computeData = (data: Array<*>) => {
@@ -272,29 +278,25 @@ export default class QuicklookGraph extends Component<*, *> {
     };
   };
 
+  //setting up zoom behaviour
   setupZoomBehaviour = () => {
-    const { width, height } = this.state;
-    const { svg } = this;
-    //setting up zoom behaviour
     const zoom = d3
       .zoom()
       //.scaleExtent([0, Infinity])
       //.translateExtent([[55, 0], [width, height]])
       //.extent([[55, 0], [width, height]])
-      .on(
-        "zoom",
-        function() {
-          const { x } = this.state;
-          if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")
-            return;
-          /*
-          this.setState({
-            x: d3.event.transform.rescaleX(x),
+      .on("zoom", () => {
+        console.log("STATE : zoom");
+        this.setState((prevState, props) => {
+          const { x } = prevState;
+          const newX = d3.event.transform.rescaleX(x);
+          return {
+            x: newX,
             selected: -1
-          });*/
-        }.bind(this)
-      );
-    d3.select(svg).call(zoom);
+          };
+        });
+      });
+    d3.select(".zoom").call(zoom);
   };
 
   initPlaceholders = () => {
@@ -343,11 +345,22 @@ export default class QuicklookGraph extends Component<*, *> {
       .attr("x", 55)
       .attr("y", -50);
 
+    //init placeholder for zooming
+    svg.classed("zoom", true);
+    //.append("rect")
+    //.attr("class", "zoom")
+    //.attr("transform", `translate(${margin.left}, ${margin.top})`)
+    //.attr("width", width)
+    //.attr("height", height + margin.top + margin.bottom)
+    //.style("fill", "none")
+    //.style("pointer-events", "all");
+
     //init placeholder for visible dots
     g
       .append("g")
       .classed("visibleDots", true)
       .attr("clip-path", "url(#clip)");
+
     //init placeholder for invisible dots (bigger invisible dots for better ux)
     g
       .append("g")
@@ -356,13 +369,15 @@ export default class QuicklookGraph extends Component<*, *> {
   };
 
   zoomTo = (d0: number, d1: number) => {
-    const { width, x } = this.state;
-    this.setState({
-      x: d3.zoomIdentity
-        .scale(width / (x(d1) - x(d0)))
-        .translate(-x(d0), 0)
-        .rescaleX(x),
-      selected: -1
+    this.setState((prevState, props) => {
+      const { width, x } = prevState;
+      return {
+        x: d3.zoomIdentity
+          .scale(width / (x(d1) - x(d0)))
+          .translate(-x(d0), 0)
+          .rescaleX(x),
+        selected: -1
+      };
     });
   };
 
@@ -376,25 +391,15 @@ export default class QuicklookGraph extends Component<*, *> {
     this.initPlaceholders();
 
     //setting up zoom behaviour
-    this.setupZoomBehaviour();
+    //this.setupZoomBehaviour();
 
     this.computeXY(this.props.data);
-
-    /* const { data, xAxis, yAxis } = this.computeData(this.props.data);
-
-    this.drawInvisibleDots(data);
-
-    this.drawVisibleDots(data);    console.log("13")
-
-    this.drawGraph(data, xAxis, yAxis);    console.log("14")
-    */
   }
 
   componentDidUpdate(prevProps: *, prevState: *) {
     const { selected } = this.state;
     const { dateRange, data: dataProp } = this.props;
     let duration = 0;
-
     if (selected !== prevState.selected) {
       //Hovering on tooltip
       this.handleTooltip();
@@ -406,12 +411,12 @@ export default class QuicklookGraph extends Component<*, *> {
       JSON.stringify(this.props.dateRange)
     ) {
       //dateRange in props changed. Computing new transform and resetting the state
-
       /* calling computeData just to get x and y. */
-      duration = 500;
+      //duration = 500;
       this.zoomTo(dateRange[0], dateRange[1]);
     } else if (prevState.x !== this.state.x) {
       //Redrawing grpah because of new zoom
+      console.log(dataProp);
       const { data, xAxis, yAxis } = this.computeData(dataProp);
       this.props.onDomainChange(this.state.x.domain());
       this.drawInvisibleDots(data);
@@ -438,8 +443,10 @@ export default class QuicklookGraph extends Component<*, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    {data[selected].currency.units[0].code}{" "}
-                    {data[selected].amount}
+                    <CurrencyUnitValue
+                      unit={data[selected].currency.units[0]}
+                      value={data[selected].amount}
+                    />
                   </div>
                   <div>
                     <span className="uppercase date">

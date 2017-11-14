@@ -130,33 +130,49 @@ class AccountView extends Component<
     const { currencies } = this.props;
     const { quickLookGraphFilter } = this.state;
     let operations = [];
-    let factor = 1;
+    operations = data.map((o: Operation) => {
+      const currency = currencies.find(c => c.name === o.currency_name);
+      return {
+        time: new Date(o.time),
+        amount: o.amount,
+        currency,
+        tooltip: true
+      };
+    });
     if (quickLookGraphFilter.key === "balance") {
-      operations = data.map((o: Operation, i: number) => {
-        const currency = currencies.find(c => c.name === o.currency_name);
+      operations = operations.map((o: Operation, i: number): Array<
+        Operations
+      > => {
         return {
-          time: new Date(o.time),
-          amount: o.amount + (i > 0 ? data[i - 1].amount : 0),
-          currency,
-          tooltip: true
+          ...o,
+          amount: operations.slice(0, i).reduce((a: number, b: Operation) => {
+            return a + b.amount;
+          }, 0),
+          tooltip: false
         };
       });
-      operations.push({ ...operations[operations.length - 1] });
-      operations[operations.length - 1].time = new Date().setHours(0, 0, 0, 0);
-      operations[operations.length - 1].tooltip = false;
-    } else {
-      factor =
-        quickLookGraphFilter.key === "countervalue"
-          ? operations[0].currency.rate.value
-          : 1;
-      operations = operations.map((o: Operation) => ({
-        time: new Date(o.time),
-        amount: o.amount * factor,
-        currency: currencies.find(c => c.name === o.currency_name),
-        tooltip: true
-      }));
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date().setHours(0, 0, 0, 0),
+        tooltip: false
+      });
+    } else if (quickLookGraphFilter.key === "countervalue") {
+      operations = operations.map((o: Operation) => {
+        return {
+          ...o,
+          amount: o.amount * o.currency.rate.value
+        };
+      });
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date().setHours(0, 0, 0, 0),
+        tooltip: false
+      });
     }
-    _.sortBy(operations, elem => new Date(elem.time).toISOString());
+    operations = _.sortBy(operations, elem =>
+      new Date(elem.time).toISOString()
+    );
+
     return operations;
   };
 
