@@ -26,44 +26,8 @@ type Props = {
   history: *
 };
 
-type State = {
-  note: Note
-};
-
-class OperationDetails extends Component<Props, State> {
-  constructor({ profile }: *) {
-    super();
-    const note: Note = {
-      author: profile,
-      id: "",
-      title: "",
-      body: "",
-      created_at: new Date().toUTCString()
-    };
-    // FIXME why is this inlined in a state?
-    this.state = {
-      note
-    };
-  }
-
+class OperationDetails extends Component<Props> {
   contentNode: *;
-
-  handleChangeTitle = val => {
-    const newNote = _.cloneDeep(this.state.note);
-    newNote.title = val;
-    this.setState({
-      note: newNote
-    });
-  };
-
-  componentDidMount() {
-    const { operation } = this.props;
-    if (operation && operation.notes && operation.notes.length > 0) {
-      this.setState({
-        note: operation.notes[0]
-      });
-    }
-  }
 
   onSelect = (index: number) => {
     this.props.history.replace("" + index);
@@ -71,6 +35,7 @@ class OperationDetails extends Component<Props, State> {
 
   render() {
     const { operation, account, close, tabIndex } = this.props;
+    const note = operation.notes[0];
     return (
       <div className="operation-details modal">
         <Tabs
@@ -101,10 +66,7 @@ class OperationDetails extends Component<Props, State> {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <TabLabel
-                note={this.state.note}
-                changeTitle={this.handleChangeTitle}
-              />
+              {note ? <TabLabel note={note} /> : null}
             </TabPanel>
           </div>
           <div className="footer">
