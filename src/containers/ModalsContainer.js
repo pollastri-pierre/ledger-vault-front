@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 import { Modal, OperationCreation } from "../components";
 import { getAccounts } from "../redux/modules/accounts";
 import { setBlurState } from "../containers/BlurDialog/BlurDialog";
-import { close } from "../redux/modules/operations";
 
 import {
   closeModalOperation,
@@ -23,7 +22,6 @@ import {
 
 const mapStateToProps = state => ({
   modals: state.modals,
-  operations: state.operations,
   organization: state.organization,
   accountCreation: state.accountCreation,
   operationCreation: state.operationCreation,
@@ -31,7 +29,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClose: () => dispatch(close()),
   onCloseModalOperation: from => dispatch(closeModalOperation(from)),
   onChangeTabOperation: index => dispatch(changeTabOperation(index)),
   onSaveOperation: () => dispatch(saveOperation()),
@@ -79,16 +76,6 @@ function ModalsContainer(props) {
           />
         </ModalWrap>
       )}
-      {operations.operationInModal !== null &&
-        !_.isUndefined(operations.operationInModal) && (
-          <ModalWrap close={props.onClose}>
-            <OperationDetails
-              close={props.onClose}
-              operationId={operations.operationInModal}
-              tabsIndex={operations.tabsIndex}
-            />
-          </ModalWrap>
-        )}
     </div>
   );
 }

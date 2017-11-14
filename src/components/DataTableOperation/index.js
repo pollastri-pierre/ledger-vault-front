@@ -1,21 +1,16 @@
 //@flow
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import DateFormat from "../DateFormat";
 import CurrencyNameValue from "../CurrencyNameValue";
 import AccountName from "../AccountName";
-import { openOperationModal } from "../../redux/modules/operations";
 import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import Tooltip from "../utils/Tooltip";
 import type { Operation, Account } from "../../data/types";
 import "./index.css";
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = dispatch => ({
-  onGetOperation: (id, n) => dispatch(openOperationModal(id, n))
-});
 
 const getHash = (operation: Operation): string => {
   let hash = "";
@@ -33,23 +28,20 @@ class DataTableOperation extends Component<*> {
   props: {
     accounts?: Array<Account>,
     operations: Array<Operation>,
-    columnIds: Array<string>,
-    onGetOperation: (uuid: string, n: ?number) => void
+    columnIds: Array<string>
   };
 
   id = ++DataTableOperationCount;
 
-  openOperation = (uuid: string, n: ?number) => {
-    this.props.onGetOperation(uuid, n);
+  openOperation = (uuid: string, n: ?number = 0) => {
+    this.props.history.push(`${this.props.match.url}/operation/${uuid}/${n}`);
   };
 
   renderRow = (operation: Operation, index: number, children: *) => (
     <tr
       key={operation.uuid}
       style={{ cursor: "pointer" }}
-      onClick={() => {
-        this.openOperation(operation.uuid);
-      }}
+      onClick={() => this.openOperation(operation.uuid, 0)}
     >
       {children}
     </tr>
@@ -159,4 +151,4 @@ class DataTableOperation extends Component<*> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTableOperation);
+export default withRouter(DataTableOperation);
