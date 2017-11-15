@@ -4,7 +4,11 @@ import PropTypes from "prop-types";
 import "./Divider.css";
 
 function Divider(props) {
-  return <div {...props} className={`divider ${props.className}`} />;
+  return (
+    <div {...props} className={`divider ${props.className}`}>
+      &nbsp;
+    </div>
+  );
 }
 
 Divider.propTypes = {
