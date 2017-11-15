@@ -1,14 +1,15 @@
 //@flow
-
-// TODO move this in data/ folder
+import FiatUnits from "../fiat-units";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
+export type Fiat = $Keys<typeof FiatUnits>;
+
 export type Rate = {
   value: number,
-  currency_name: string
+  fiat: Fiat
 };
 
 export type Unit = {
@@ -23,24 +24,35 @@ export type Currency = {
   name: string,
   family: string,
   color: string,
-  units: Array<Unit>,
-  rate?: Rate
+  units: Unit[]
 };
 export type CurrencyEntity = Currency;
+
+export type RateLimiter = {
+  max_transaction: number,
+  time_slot: number
+};
 
 export type SecurityScheme = {
   quorum: number,
   approvers: string[],
   time_lock?: number,
-  rate_limiter?: {
-    max_transaction: number,
-    time_slot: number
-  }
+  rate_limiter?: RateLimiter
+};
+
+type AccountSettings = {
+  fiat: Fiat,
+  unitIndex: number,
+  countervalueSource: string,
+  blockchainExplorer: string
 };
 
 type AccountCommon = {
   id: string,
   name: string,
+  currencyRate: Rate,
+  currencyRateInReferenceFiat: Rate,
+  settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: number,
   creation_time: string,
@@ -116,14 +128,14 @@ export type Transaction = {
   version: string,
   hash: string,
   lock_time: string,
-  inputs: Array<TransactionInput>,
-  outputs: Array<TransactionOutput>
+  inputs: TransactionInput[],
+  outputs: TransactionOutput[]
 };
 
 export type Trust = {
   level: string,
   weight: number,
-  conflicts: Array<string>,
+  conflicts: string[],
   origin: string
 };
 
@@ -139,14 +151,14 @@ type OperationCommon = {
   rate: Rate,
   fees: number,
   account_id: string,
-  approved: Array<string>,
-  senders: Array<string>,
-  recipients: Array<string>,
+  approved: string[],
+  senders: string[],
+  recipients: string[],
   transaction: Transaction
 };
 export type Operation = OperationCommon & {
-  notes: Array<Note>
+  notes: Note[]
 };
 export type OperationEntity = OperationCommon & {
-  notes: Array<NoteEntity>
+  notes: NoteEntity[]
 };

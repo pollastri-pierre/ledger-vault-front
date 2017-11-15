@@ -3,6 +3,8 @@
 $profilePicSize: 80px;
 
 .Profile {
+  padding: 40px 40px 0px;
+
   .profile-title {
     font-size: 18.4px;
   }
@@ -36,7 +38,7 @@ $profilePicSize: 80px;
       font-size: 13px;
 
       .profile-form-name {
-        width: calc(50% - #{$spacingS / 2})!important;
+        width: calc(50% - #{$spacingS / 2}) !important;
         padding-top: 0;
 
         &:first-child {

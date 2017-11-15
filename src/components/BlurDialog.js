@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Dialog from "material-ui/Dialog";
 
 let blurredCache = false;
-export function setBlurState(blurred: boolean) {
+function setBlurState(blurred: boolean) {
   if (typeof document === "undefined" || !document.body) return;
   if (blurred !== blurredCache) {
     blurredCache = blurred;

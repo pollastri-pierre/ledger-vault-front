@@ -20,7 +20,7 @@ function PendingOperationApprove(props: Props) {
     return <p>There are no operations to approve</p>;
   }
 
-  let totalAmountCurrency = operations[0].rate.currency_name;
+  let totalAmountCurrency = operations[0].rate.fiat;
   const totalAmountCounterValue = _.reduce(
     operations,
     (sum, op) => countervalueForRate(op.rate, op.amount).value + sum,

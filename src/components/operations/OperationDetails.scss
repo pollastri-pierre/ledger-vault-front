@@ -1,4 +1,4 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
 .operation-details {
   min-height: 615px;
@@ -107,7 +107,7 @@
     }
   }
 
-  .euro-amount {
+  .fiat-amount {
     color: $lead;
     font-size: 11px;
     font-weight: 600;

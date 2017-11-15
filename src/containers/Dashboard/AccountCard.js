@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import type { Account } from "../../data/types";
 import Card from "../../components/Card";
 import EvolutionSince from "./EvolutionSince";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
 
 import "./AccountCard.css";
@@ -34,14 +34,11 @@ class AccountCard extends Component<*> {
         <Separator />
         <div>
           <div className="cryptocur">
-            <CurrencyNameValue
-              currencyName={account.currency.name}
-              value={account.balance}
-            />
+            <CurrencyAccountValue account={account} value={account.balance} />
           </div>
           <div className="realcur">
-            <CurrencyNameValue
-              currencyName={account.currency.name}
+            <CurrencyAccountValue
+              account={account}
               value={account.balance}
               countervalue
             />

@@ -3,11 +3,7 @@ import React, { Component } from "react";
 import connectData from "../restlay/connectData";
 import CurrenciesQuery from "../api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import {
-  inferUnit,
-  getCurrencyRate,
-  countervalueForRate
-} from "../data/currency";
+import { inferUnit, countervalueForRate } from "../data/currency";
 import type { Currency, Rate } from "../data/types";
 
 type Props = {
@@ -39,15 +35,15 @@ class CurrencyNameValue extends Component<Props> {
       rate,
       ...rest
     } = this.props;
-    let unitValue = countervalue
-      ? countervalueForRate(
-          rate || getCurrencyRate(currencies, currencyName),
-          value
-        )
-      : {
-          unit: inferUnit(currencies, currencyName),
-          value
-        };
+    if (countervalue && !rate) {
+      throw new Error(
+        "CurrencyNameValue: Can't calculate countervalue without an explicit rate. Consider using CurrencyAccountValue component instead"
+      );
+    }
+    let unitValue =
+      countervalue && rate
+        ? countervalueForRate(rate, value)
+        : { value, unit: inferUnit(currencies, currencyName) };
     return <CurrencyUnitValue {...rest} {...unitValue} />;
   }
 }

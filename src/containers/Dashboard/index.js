@@ -8,6 +8,8 @@ import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
+import OperationModal from "../../components/operations/OperationModal";
+import ModalRoute from "../../components/ModalRoute";
 import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
@@ -20,7 +22,7 @@ class Dashboard extends Component<*> {
   };
 
   render() {
-    const { location } = this.props;
+    const { location, match } = this.props;
     const { onTotalBalanceFilterChange } = this;
     const { filter } = queryString.parse(location.search.slice(1));
     const filterObj =
@@ -42,6 +44,11 @@ class Dashboard extends Component<*> {
           </Card>
           <PendingCard />
         </div>
+
+        <ModalRoute
+          path={`${match.url}/operation/:operationId/:tabIndex`}
+          component={OperationModal}
+        />
       </div>
     );
   }

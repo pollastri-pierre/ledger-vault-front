@@ -5,17 +5,21 @@ import "./index.css";
 type Column<Cell> = {
   title: string,
   className: string,
-  renderCell: (cell: Cell) => *
+  renderCell: (cell: Cell) => any
 };
 
 export default class DataTable<Cell> extends Component<*> {
   props: {
     columns: Array<Column<Cell>>,
     data: Array<Cell>,
-    renderRow: (cell: Cell, index: number, children: *) => *
+    renderRow: (
+      cell: Cell,
+      index: number,
+      children: string | React$Node
+    ) => React$Node
   };
   static defaultProps = {
-    renderRow: (cell: Cell, index: number, children: *) => (
+    renderRow: (cell: Cell, index: number, children: string | React$Node) => (
       <tr key={index}>{children}</tr>
     )
   };

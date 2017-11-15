@@ -1,10 +1,17 @@
 //@flow
 import fiatUnits from "../fiat-units";
-import type { Currency, Unit, Rate } from "./types";
+import type { Account, Currency, Unit, Rate } from "./types";
 
 // This define utility to deal with currencies, units, countervalues
 
 type UnitValue = { value: number, unit: Unit };
+
+export function getAccountCurrencyUnit(account: Account): Unit {
+  return (
+    account.currency.units[account.settings.unitIndex] ||
+    account.currency.units[0]
+  );
+}
 
 export function getCurrency(
   currencies: Array<Currency>,
@@ -17,22 +24,11 @@ export function getCurrency(
   return currency;
 }
 
-export function getCurrencyRate(
-  currencies: Array<Currency>,
-  currencyName: string
-): Rate {
-  const { rate } = getCurrency(currencies, currencyName);
-  if (!rate) {
-    throw new Error(`currency "${currencyName}" have no rate`);
-  }
-  return rate;
-}
-
 // calculate the counter value at a specific rate
 export function countervalueForRate(rate: Rate, value: number): UnitValue {
-  const unit = fiatUnits[rate.currency_name];
+  const unit = fiatUnits[rate.fiat];
   if (!unit) {
-    throw new Error(`countervalue "${rate.currency_name}" not found`);
+    throw new Error(`countervalue "${rate.fiat}" not found`);
   }
   return {
     value: Math.round(rate.value * value),

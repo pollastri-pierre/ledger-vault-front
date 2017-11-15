@@ -4,7 +4,7 @@ import schema from "../../data/schema";
 import type { Operation, Account } from "../../data/types";
 
 type Input = void;
-type Response = {
+export type Response = {
   approveOperations: [Operation],
   watchOperations: [Operation],
   approveAccounts: [Account],

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import { withRouter } from "react-router";
-import { BlurDialog } from "../../containers";
+import BlurDialog from "../BlurDialog"; // FIXME use ModalRoute
 import AbortConfirmation from "./AbortConfirmation";
 import ApproveDevice from "./ApproveDevice";
 import AccountApprove from "../accounts/approve/AccountApprove";

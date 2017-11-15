@@ -19,7 +19,7 @@ function OperationApproveDetails(props: {
       <OverviewOperation
         hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
         amount={operation.amount}
-        currency={account.currency.name}
+        account={account}
         rate={rate}
       />
       <div className="operation-list">
@@ -31,15 +31,11 @@ function OperationApproveDetails(props: {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="Confirmation fees">
-          <Amount
-            currencyName={account.currency.name}
-            value={operation.fees}
-            rate={rate}
-          />
+          <Amount account={account} value={operation.fees} rate={rate} />
         </LineRow>
         <LineRow label="Total Spent">
           <Amount
-            currencyName={account.currency.name}
+            account={account}
             value={operation.amount}
             rate={rate}
             strong
