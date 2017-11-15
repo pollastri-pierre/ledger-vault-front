@@ -58,7 +58,7 @@ const mockSync = (uri: string, method: string, _body: ?Object) => {
       const account = mockEntities.accounts[m[1]];
       if (account) {
         const opKeys = Object.keys(mockEntities.operations).filter(
-          key => mockEntities.operations[key].currency_name === account.currency
+          key => mockEntities.operations[key].account_id === account.id
         );
         return denormalize(opKeys, [schema.Operation], mockEntities);
       } else {

@@ -2,15 +2,15 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
-import type { Currency } from "../../data/types";
+import type { Currency, Account } from "../../data/types";
 import "./PieChart.css";
 
 export default class PieChart extends Component<
   {
     data: Array<{
-      meta: Currency,
+      account: Account,
       balance: number,
       counterValueBalance: number
     }>
@@ -101,7 +101,7 @@ export default class PieChart extends Component<
         "class",
         (d, i) => (selected !== -1 && selected !== i ? "disable" : "")
       )
-      .style("fill", d => d.data.meta.color);
+      .style("fill", d => d.data.account.currency.color);
 
     //transparent Chart for hovering purposes
     chart
@@ -200,7 +200,7 @@ export default class PieChart extends Component<
         {selected !== -1 ? (
           <div
             className="tooltip hide"
-            style={{ color: this.props.data[selected].meta.color }}
+            style={{ color: this.props.data[selected].account.currency.color }}
             ref={t => {
               this.tooltip = t;
             }}
@@ -213,7 +213,7 @@ export default class PieChart extends Component<
                 <div>
                   <span className="uppercase currencyName">
                     {this.props.data[selected]
-                      ? this.props.data[selected].meta.name
+                      ? this.props.data[selected].account.currency.name
                       : ""}
                   </span>
                 </div>
@@ -225,7 +225,7 @@ export default class PieChart extends Component<
         )}
         <table className="currencyTable">
           <tbody>
-            {_.map(this.props.data, (currency, id) => {
+            {_.map(this.props.data, (data, id) => {
               return (
                 <tr
                   className={`currency ${
@@ -236,15 +236,15 @@ export default class PieChart extends Component<
                   onMouseOut={() => this.setSelected(-1)}
                 >
                   <td>
-                    <BadgeCurrency currency={currency.meta} />
+                    <BadgeCurrency currency={data.account.currency} />
                     <span className="uppercase currencyName">
-                      {currency.meta.name}
+                      {data.account.currency.name}
                     </span>
                   </td>
                   <td className="currencyBalance">
-                    <CurrencyNameValue
-                      currencyName={currency.meta.name}
-                      value={currency.balance}
+                    <CurrencyAccountValue
+                      account={data.account}
+                      value={data.balance}
                     />
                   </td>
                 </tr>

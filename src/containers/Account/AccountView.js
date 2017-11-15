@@ -5,7 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import ModalRoute from "../../components/ModalRoute";
 import OperationModal from "../../components/operations/OperationModal";
 import connectData from "../../restlay/connectData";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
 import Card from "../../components/Card";
 import DateFormat from "../../components/DateFormat";
@@ -150,7 +150,7 @@ class AccountView extends Component<
     } else {
       factor =
         quickLookGraphFilter.key === "countervalue"
-          ? operations[0].currency.rate.value
+          ? operations[0].rate.value
           : 1;
       operations = operations.map((o: Operation) => ({
         time: new Date(o.time),
@@ -173,8 +173,8 @@ class AccountView extends Component<
             <div className="infos-left-top">
               <Card reloading={reloading} className="balance" title="Balance">
                 <CardField label={<DateFormat date={new Date()} />}>
-                  <CurrencyNameValue
-                    currencyName={account.currency.name}
+                  <CurrencyAccountValue
+                    account={account}
                     value={account.balance}
                   />
                 </CardField>
@@ -186,14 +186,10 @@ class AccountView extends Component<
                 title="Countervalue"
               >
                 <CardField
-                  label={
-                    <CurrencyCounterValueConversion
-                      currencyName={account.currency.name}
-                    />
-                  }
+                  label={<CurrencyCounterValueConversion account={account} />}
                 >
-                  <CurrencyNameValue
-                    currencyName={account.currency.name}
+                  <CurrencyAccountValue
+                    account={account}
                     value={account.balance}
                     countervalue
                   />
@@ -247,6 +243,7 @@ class AccountView extends Component<
         </div>
         <Card reloading={reloading} title="last operations">
           <DataTableOperation
+            accounts={[account]}
             operations={operations}
             columnIds={["date", "address", "status", "countervalue", "amount"]}
           />

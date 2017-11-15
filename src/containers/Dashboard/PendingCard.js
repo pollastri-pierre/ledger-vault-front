@@ -6,11 +6,12 @@ import Card from "../../components/Card";
 import CardField from "../../components/CardField";
 import CardLoading from "../../components/utils/CardLoading";
 import DateFormat from "../../components/DateFormat";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import AccountName from "../../components/AccountName";
 import type { Operation, Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
+import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
 const Row = ({
@@ -28,35 +29,36 @@ const Row = ({
   </div>
 );
 
-const OperationRow = ({ data }: { data: Operation }) => (
-  <Row date={data.time}>
-    <CurrencyNameValue currencyName={data.currency_name} value={data.amount} />
-  </Row>
-);
+const OperationRow = ({
+  data,
+  account
+}: {
+  data: Operation,
+  account: ?Account
+}) =>
+  account ? (
+    <Row date={data.time}>
+      <CurrencyAccountValue account={account} value={data.amount} />
+    </Row>
+  ) : null;
+
 const AccountRow = ({ data }: { data: Account }) => (
   <Row date={data.creation_time}>
     <AccountName name={data.name} currency={data.currency} />
   </Row>
 );
 
-const PendingCardRowPerType = {
-  operation: OperationRow,
-  account: AccountRow
-};
-
 class PendingCard extends Component<{
-  pendings: *,
+  pendings: PendingsQueryResponse,
   accounts: Account[],
   reloading: boolean
 }> {
   render() {
     const {
+      accounts,
       pendings: { approveOperations, approveAccounts },
       reloading
     } = this.props;
-    const events = approveOperations
-      .map(data => ({ type: "operation", data }))
-      .concat(approveAccounts.map(data => ({ type: "account", data })));
     const totalOperations = approveOperations.length;
     const totalAccounts = approveAccounts.length;
     const total = totalOperations + totalAccounts;
@@ -76,10 +78,19 @@ class PendingCard extends Component<{
           </CardField>
         </header>
         <div className="pending-list">
-          {events.map((o, i) => {
-            const Row = PendingCardRowPerType[o.type];
-            return <Row key={i} {...o} />;
-          })}
+          {approveOperations
+            .map((operation, i) => (
+              <OperationRow
+                key={"op_" + i}
+                data={operation}
+                account={accounts.find(a => a.id === operation.account_id)}
+              />
+            ))
+            .concat(
+              approveAccounts.map((account, i) => (
+                <AccountRow key={"ac_" + i} data={account} />
+              ))
+            )}
         </div>
       </Card>
     );

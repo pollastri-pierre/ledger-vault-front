@@ -1,26 +1,19 @@
 //@flow
 import React, { PureComponent } from "react";
-import connectData from "../restlay/connectData";
-import CurrenciesQuery from "../api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import {
-  inferUnit,
-  countervalueForRate,
-  getCurrencyRate
-} from "../data/currency";
-import type { Rate, Currency } from "../data/types";
+import { getAccountCurrencyUnit, countervalueForRate } from "../data/currency";
+import type { Rate, Account } from "../data/types";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {
-    currencyName: string,
-    currencies: Array<Currency>,
+    account: Account,
     rate?: Rate // override the rate to use (default is the currency current rate)
   };
   render() {
-    let { currencyName, currencies, rate } = this.props;
-    const unit = inferUnit(currencies, currencyName);
+    let { account, rate } = this.props;
+    const unit = getAccountCurrencyUnit(account);
     if (!rate) {
-      rate = getCurrencyRate(currencies, currencyName);
+      rate = account.currencyRate;
     }
     const one = Math.pow(10, unit.magnitude); // 1 in satoshis
     const value =
@@ -40,8 +33,4 @@ class CurrencyCounterValueConversion extends PureComponent<*> {
   }
 }
 
-export default connectData(CurrencyCounterValueConversion, {
-  queries: {
-    currencies: CurrenciesQuery
-  }
-});
+export default CurrencyCounterValueConversion;

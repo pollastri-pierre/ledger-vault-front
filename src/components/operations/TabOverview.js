@@ -16,7 +16,7 @@ function TabOverview(props: { operation: Operation, account: Account }) {
       <OverviewOperation
         hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
         amount={operation.amount}
-        currency={account.currency.name}
+        account={account}
         rate={rate}
       />
       <div className="operation-list">
@@ -31,17 +31,13 @@ function TabOverview(props: { operation: Operation, account: Account }) {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="fees">
-          <Amount
-            value={operation.fees}
-            rate={rate}
-            currencyName={account.currency.name}
-          />
+          <Amount account={account} value={operation.fees} rate={rate} />
         </LineRow>
         <LineRow label="Total spent">
           <Amount
+            account={account}
             value={operation.amount}
             rate={rate}
-            currencyName={account.currency.name}
             strong
           />
         </LineRow>

@@ -1,24 +1,28 @@
 //@flow
 import React, { Component } from "react";
-import CurrencyNameValue from "../CurrencyNameValue";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 import CurrencyUnitValue from "../CurrencyUnitValue";
 import { countervalueForRate } from "../../data/currency";
+import type { Account, Rate } from "../../data/types";
 import "./index.css";
 
 class Amount extends Component<*> {
   props: {
-    currencyName: string,
+    account: Account,
     value: number,
-    rate: *,
+    rate?: Rate,
     strong?: boolean
   };
 
   render() {
-    const { currencyName, value, rate, strong } = this.props;
-    const counterValueUnit = countervalueForRate(rate, value);
+    const { account, value, rate, strong } = this.props;
+    const counterValueUnit = countervalueForRate(
+      rate || account.currencyRate,
+      value
+    );
     return (
       <span className={`${strong ? "amount-strong" : ""}`}>
-        <CurrencyNameValue currencyName={currencyName} value={value} />{" "}
+        <CurrencyAccountValue account={account} value={value} />{" "}
         <span className="flat-amount">
           <CurrencyUnitValue {...counterValueUnit} />
         </span>

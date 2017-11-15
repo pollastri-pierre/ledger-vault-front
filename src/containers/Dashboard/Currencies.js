@@ -2,26 +2,19 @@
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import PieChart from "./PieChart";
-import { countervalueForRate, getCurrencyRate } from "../../data/currency";
+import { countervalueForRate } from "../../data/currency";
 import type { Account, Currency } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
-import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 
 type AggregatedData = {
   [_: string]: {
-    meta: Currency,
+    account: Account,
     balance: number,
     counterValueBalance: number
   }
 };
 
-function Currencies({
-  accounts,
-  currencies
-}: {
-  accounts: Array<Account>,
-  currencies: Array<Currency>
-}) {
+function Currencies({ accounts }: { accounts: Array<Account> }) {
   //compute currencies from accounts balance
   const data: AggregatedData = accounts.reduce(
     (acc: AggregatedData, account) => {
@@ -30,14 +23,14 @@ function Currencies({
       //check if currency already added
       if (!acc[currency_name]) {
         acc[currency_name] = {
-          meta: account.currency,
+          account,
           balance: 0,
           counterValueBalance: 0
         };
       }
       acc[currency_name].balance += balance;
       acc[currency_name].counterValueBalance += countervalueForRate(
-        getCurrencyRate(currencies, currency_name),
+        account.currencyRate, // FIXME this is not good. we should have account.currencyRateInReferenceFiat so we compare the same thing!
         balance
       ).value;
       return acc;
@@ -71,8 +64,7 @@ class RenderLoading extends Component<*> {
 
 export default connectData(Currencies, {
   queries: {
-    accounts: AccountsQuery,
-    currencies: CurrenciesQuery
+    accounts: AccountsQuery
   },
   optimisticRendering: true,
   RenderError,
