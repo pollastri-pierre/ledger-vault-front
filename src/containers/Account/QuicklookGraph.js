@@ -187,15 +187,18 @@ export default class QuicklookGraph extends Component<Props, *> {
       .domain(domainX)
       .range([55, width]);
 
+    const minY = d3.min(data, function(d) {
+      return d.amount;
+    });
+    console.log(data);
     const domainY = [
-      d3.min(data, function(d) {
-        return d.amount;
-      }),
+      minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
         return d.amount;
       })
     ];
 
+    console.log(domainY);
     const y = d3
       .scaleLinear()
       .domain(domainY)
@@ -346,7 +349,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       return {
         transform: d3.zoomIdentity
           .scale((width - 55) / (x(d1) - x(d0)))
-          .translate(-x(d0), 0),
+          .translate(55 - x(d0), 0),
         selected: -1
       };
     });
