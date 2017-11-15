@@ -23,10 +23,16 @@ const mockCurrencies: CurrencyEntity[] = [
         magnitude: 8
       },
       {
-        name: "",
+        name: "mBTC",
         code: "mBTC",
-        symbol: "mBTC",
+        symbol: "Ƀ",
         magnitude: 5
+      },
+      {
+        name: "satoshi",
+        code: "satoshi",
+        symbol: "Ƀ",
+        magnitude: 0
       }
     ]
   },
@@ -351,7 +357,7 @@ const accounts: { [_: string]: AccountEntity } = {
       fiat: "EUR"
     },
     settings: {
-      unitIndex: 0,
+      unitIndex: 1,
       fiat: "EUR",
       countervalueSource: "kraken",
       blockchainExplorer: "blockchain.info"
