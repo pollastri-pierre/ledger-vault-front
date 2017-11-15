@@ -33,19 +33,29 @@ class ModalRoute extends Component<*> {
       history: PropTypes.object.isRequired
     })
   };
-  _unmounted = false;
+  _unmounted: boolean = false;
   componentWillUnmount() {
     this._unmounted = true;
   }
+  historyLengthOnEnter: number = 0;
   close = () => {
     if (this._unmounted) return;
-    this.context.router.history.goBack();
+    const move =
+      this.historyLengthOnEnter - this.context.router.history.length - 1;
+    // TODO we probably need to handle case where use just loaded a modal page.
+    // in such case we need to replace the history and remove the part before the modal route path
+    this.context.router.history.go(move);
   };
+  lastMatch: ?Object;
   render() {
     const { component, render, children, ...rest } = this.props; // eslint-disable-line no-unused-vars
     return (
       <Route {...rest}>
         {routeProps => {
+          if (routeProps.match && !this.lastMatch) {
+            this.historyLengthOnEnter = this.context.router.history.length;
+          }
+          this.lastMatch = routeProps.match;
           const inner = renderInner(routeProps, this.props, {
             close: this.close
           });

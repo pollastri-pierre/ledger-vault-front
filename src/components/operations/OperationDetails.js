@@ -1,5 +1,4 @@
 //@flow
-import _ from "lodash";
 import React, { Component } from "react";
 import ModalLoading from "../../components/ModalLoading";
 import { withRouter } from "react-router";
@@ -14,7 +13,7 @@ import connectData from "../../restlay/connectData";
 import OperationQuery from "../../api/queries/OperationQuery";
 import AccountQuery from "../../api/queries/AccountQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";
-import type { Operation, Account, Note, Member } from "../../data/types";
+import type { Operation, Account, Member } from "../../data/types";
 
 type Props = {
   close: Function,

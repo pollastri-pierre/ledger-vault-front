@@ -1,11 +1,12 @@
 //@flow
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Route, withRouter } from "react-router";
 import PropTypes from "prop-types";
+import { Route, withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
+import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
+import SettingsModal from "../SettingsModal";
 
 import "./ActionBar.css";
 
@@ -18,17 +19,12 @@ const NewAccountLink = () => (
   </Link>
 );
 
-class ActionBar extends Component<*, *> {
-  props: {
-    openCloseProfile: Function,
-    openCloseEdit: Function,
-    saveProfile: Function
-  };
+class ActionBar extends Component<{ location: Object }> {
   static contextTypes = {
     translate: PropTypes.func.isRequired
   };
-
   render() {
+    const { location } = this.props;
     // FIXME introduce a component for i18n
     const t = this.context.translate;
 
@@ -36,6 +32,8 @@ class ActionBar extends Component<*, *> {
       <div className="ActionBar">
         <ProfileCard />
         <Route path="*/new-account" component={AccountCreation} />
+        <ModalRoute path="*/settings" component={SettingsModal} />
+
         <div className="content-header">
           <div className="content-header-left">
             <img
@@ -46,7 +44,7 @@ class ActionBar extends Component<*, *> {
             />
           </div>
           <div className="content-header-right">
-            <Route path="/dashboard" render={() => <NewAccountLink />} />
+            <Route path="/dashboard" component={NewAccountLink} />
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>
@@ -55,7 +53,10 @@ class ActionBar extends Component<*, *> {
                 {t("actionBar.export")}
               </div>
             </Link>
-            <Link to="/settings" className="content-header-button">
+            <Link
+              to={location.pathname + "/settings"}
+              className="content-header-button"
+            >
               <div className="content-header-button-icon">
                 <i className="material-icons">settings</i>
               </div>

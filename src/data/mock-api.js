@@ -132,6 +132,24 @@ const mockSync = (uri: string, method: string, _body: ?Object) => {
           [schema.Operation],
           mockEntities
         );
+      case "/settings":
+        return {
+          blockchainExplorers: [
+            {
+              id: "blockchain.info"
+            }
+          ],
+          countervalueSources: [
+            {
+              id: "kraken",
+              fiats: ["EUR", "USD"]
+            },
+            {
+              id: "btcchina",
+              fiats: ["CNY"]
+            }
+          ]
+        };
     }
   }
 };

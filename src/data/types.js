@@ -40,7 +40,7 @@ export type SecurityScheme = {
   rate_limiter?: RateLimiter
 };
 
-type AccountSettings = {
+export type AccountSettings = {
   fiat: Fiat,
   unitIndex: number,
   countervalueSource: string,
