@@ -30,7 +30,7 @@ function Currencies({ accounts }: { accounts: Array<Account> }) {
       }
       acc[currency_name].balance += balance;
       acc[currency_name].counterValueBalance += countervalueForRate(
-        account.currencyRate, // FIXME this is not good. we should have account.currencyRateInReferenceFiat so we compare the same thing!
+        account.currencyRateInReferenceFiat,
         balance
       ).value;
       return acc;

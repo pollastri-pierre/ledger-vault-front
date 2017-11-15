@@ -331,6 +331,10 @@ const accounts: { [_: string]: AccountEntity } = {
       value: 0.008,
       fiat: "USD"
     },
+    currencyRateInReferenceFiat: {
+      value: 0.008,
+      fiat: "USD"
+    },
     settings: {
       unitIndex: 0,
       fiat: "USD",
@@ -355,6 +359,10 @@ const accounts: { [_: string]: AccountEntity } = {
     currencyRate: {
       value: 0.006,
       fiat: "EUR"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.008,
+      fiat: "USD"
     },
     settings: {
       unitIndex: 1,
@@ -381,6 +389,10 @@ const accounts: { [_: string]: AccountEntity } = {
       value: 0.000000001,
       fiat: "CNY"
     },
+    currencyRateInReferenceFiat: {
+      value: 0.0000000001,
+      fiat: "USD"
+    },
     settings: {
       unitIndex: 0,
       fiat: "CNY",
@@ -406,6 +418,10 @@ const accounts: { [_: string]: AccountEntity } = {
       value: 0.00000003,
       fiat: "EUR"
     },
+    currencyRateInReferenceFiat: {
+      value: 0.00000004,
+      fiat: "USD"
+    },
     settings: {
       unitIndex: 0,
       fiat: "EUR",
@@ -430,6 +446,10 @@ const accounts: { [_: string]: AccountEntity } = {
     currencyRate: {
       value: 0.000044,
       fiat: "EUR"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.00006,
+      fiat: "USD"
     },
     settings: {
       unitIndex: 0,

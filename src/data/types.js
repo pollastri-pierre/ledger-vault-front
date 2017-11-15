@@ -51,6 +51,7 @@ type AccountCommon = {
   id: string,
   name: string,
   currencyRate: Rate,
+  currencyRateInReferenceFiat: Rate,
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: number,
