@@ -62,7 +62,7 @@ class ModalRoute extends Component<*> {
           const open = !!routeProps.match;
           return (
             <BlurDialog open={open} onRequestClose={this.close} nopadding>
-              <StaticContainer shouldUpdate={open}>{inner}</StaticContainer>
+              {inner}
             </BlurDialog>
           );
         }}

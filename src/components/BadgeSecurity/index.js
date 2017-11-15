@@ -16,7 +16,11 @@ class BadgeSecurity extends PureComponent<*> {
       <div className={`badge-security ${disabled ? "disabled" : ""}`}>
         <div className="security-icon">{icon}</div>
         <span className="security-title">{label}</span>
-        <span className="security-value">{value}</span>
+        {disabled ? (
+          <span className="security-value">disabled</span>
+        ) : (
+          <span className="security-value">{value}</span>
+        )}
       </div>
     );
   }

@@ -18,11 +18,13 @@ class AccountApproveMembers extends Component<Props> {
           Members define the group of individuals that have the ability to
           approve outgoing operations from this account.
         </InfoModal>
-        {account.security_scheme.approvers.map(hash => {
-          const member = find(members, { pub_key: hash });
-          if (!member) return null;
-          return <MemberRow member={member} key={member.id} />;
-        })}
+        <div style={{ marginTop: "40px" }}>
+          {account.security_scheme.approvers.map(hash => {
+            const member = find(members, { pub_key: hash });
+            if (!member) return null;
+            return <MemberRow member={member} key={member.id} />;
+          })}
+        </div>
       </div>
     );
   }

@@ -6,6 +6,8 @@ import {
   BigSecurityRateLimiterIcon
 } from "../../icons";
 
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
 import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
@@ -31,21 +33,21 @@ function AccountApproveDetails(props: {
           icon={<BigSecurityTimeLockIcon />}
           label="Time-lock"
           disabled={!security_scheme.time_lock}
-          value={`${
-            !security_scheme.time_lock ? "disabled" : security_scheme.time_lock
-          }`}
+          value={<TimeLockValue time_lock={security_scheme.time_lock} />}
         />
         <BadgeSecurity
           icon={<BigSecurityRateLimiterIcon />}
           label="Rate Limiter"
           disabled={!security_scheme.rate_limiter}
-          value={`${
-            !security_scheme.rate_limiter
-              ? "disabled"
-              : security_scheme.rate_limiter.max_transaction +
-                " per " +
+          value={
+            <RateLimiterValue
+              max_transaction={security_scheme.rate_limiter.max_transaction}
+              time_slot={
+                security_scheme.rate_limiter &&
                 security_scheme.rate_limiter.time_slot
-          }`}
+              }
+            />
+          }
         />
       </div>
       <div>

@@ -22,7 +22,9 @@ class AccountApproveApprovals extends Component<Props> {
           approve the creation request.
         </InfoModal>
 
-        <ApprovalList approvers={approvers} approved={approved} />
+        <div style={{ marginTop: "40px" }}>
+          <ApprovalList approvers={approvers} approved={approved} />
+        </div>
       </div>
     );
   }
