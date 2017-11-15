@@ -48,7 +48,6 @@ class CurrencyNameValue extends Component<Props> {
           unit: inferUnit(currencies, currencyName),
           value
         };
-    console.log(unitValue);
     return <CurrencyUnitValue {...rest} {...unitValue} />;
   }
 }

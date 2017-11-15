@@ -45,18 +45,16 @@ class AccountView extends Component<
     this.setState({ quickLookGraphFilter: filter });
   };
 
-  onDomainChange = domain => {
-    this.setState({ labelDateRange: this.getLabelDateRange(domain) });
-  };
-
   quickLookGraphFilters = [
     { title: "balance", key: "balance" },
-    { title: "countervalue", key: "countervalue" },
-    { title: "payments", key: "payments" }
+    { title: "countervalue", key: "countervalue" }
   ];
 
   selectTab = index => {
-    this.setState({ tabsIndex: index });
+    this.setState({
+      tabsIndex: index,
+      labelDateRange: this.getLabelDateRange(this.getDateRange(index))
+    });
   };
   getLastWeek = () => {
     var today = new Date();
@@ -71,15 +69,18 @@ class AccountView extends Component<
   };
 
   getLabelDateRange = domain => {
+    const day1 = new Date(domain[0]).getDate();
+    const month1 = new Date(domain[0]).getMonth();
+    const year1 = new Date(domain[0]).getFullYear();
+    const day2 = new Date(domain[1]).getDate();
+    const month2 = new Date(domain[1]).getMonth();
+    const year2 = new Date(domain[1]).getFullYear();
     const dateRange =
-      new Date(domain[0]).getDate() == new Date(domain[1]).getDate()
+      day1 === day2 && month1 === month2 && year1 === year2
         ? "day"
-        : new Date(domain[0]).getMonth() == new Date(domain[1]).getMonth()
+        : month1 === month2 && year1 === year2
           ? "month"
-          : new Date(domain[0]).getFullYear() ==
-            new Date(domain[1]).getFullYear()
-            ? "year"
-            : "hour";
+          : year1 === year2 ? "year" : "hour";
 
     let res = "";
     if (dateRange === "day") {
@@ -129,7 +130,9 @@ class AccountView extends Component<
   getOperations = data => {
     const { currencies } = this.props;
     const { quickLookGraphFilter } = this.state;
+    console.log(data);
     let operations = [];
+    if (!data.length) return [];
     operations = data.map((o: Operation) => {
       const currency = currencies.find(c => c.name === o.currency_name);
       return {
@@ -147,8 +150,7 @@ class AccountView extends Component<
           ...o,
           amount: operations.slice(0, i).reduce((a: number, b: Operation) => {
             return a + b.amount;
-          }, 0),
-          tooltip: false
+          }, 0)
         };
       });
       operations.push({
@@ -172,13 +174,14 @@ class AccountView extends Component<
     operations = _.sortBy(operations, elem =>
       new Date(elem.time).toISOString()
     );
-
     return operations;
   };
 
   render() {
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
+
+    const data = this.getOperations(operations);
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -220,11 +223,13 @@ class AccountView extends Component<
             className="quicklook"
             title="Quicklook"
             titleRight={
-              <CustomSelectField
-                values={this.quickLookGraphFilters}
-                selected={quickLookGraphFilter}
-                onChange={this.onQuickLookGraphFilterChange}
-              />
+              data.length && (
+                <CustomSelectField
+                  values={this.quickLookGraphFilters}
+                  selected={quickLookGraphFilter}
+                  onChange={this.onQuickLookGraphFilterChange}
+                />
+              )
             }
           >
             <Tabs
@@ -245,10 +250,9 @@ class AccountView extends Component<
               </div>
               <div className="content">
                 <QuicklookGraph
-                  onDomainChange={this.onDomainChange}
-                  minDomain={this.getDateRange(0)}
                   dateRange={this.getDateRange(tabsIndex)}
-                  data={this.getOperations(operations)}
+                  data={data}
+                  currency={data.length ? data[0].currency : null} //FIXME
                 />
                 <TabPanel className="tabs_panel" />
                 <TabPanel className="tabs_panel" />
