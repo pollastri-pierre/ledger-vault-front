@@ -1,6 +1,7 @@
 //@flow
 import Mutation from "../../restlay/Mutation";
 import genericRenderNotif from "../../data/genericRenderNotif";
+import type { Store } from "../../restlay/dataStore";
 
 type Input = {
   accountId: string
