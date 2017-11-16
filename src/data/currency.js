@@ -36,6 +36,39 @@ export function countervalueForRate(rate: Rate, value: number): UnitValue {
   };
 }
 
+const nonBreakableSpace = " ";
+
+export function formatCurrencyUnit(
+  unit: Unit,
+  value: number,
+  showCode: boolean,
+  alwaysShowSign: boolean,
+  showAllDigits: boolean
+): string {
+  console.log(unit);
+  const { magnitude, code } = unit;
+  const floatValue = value / 10 ** magnitude;
+  const minimumFractionDigits = showAllDigits ? magnitude : 0;
+  const maximumFractionDigits = Math.max(
+    minimumFractionDigits,
+    Math.max(
+      0,
+      // dynamic max number of digits based on the value itself. to only show significant part
+      Math.min(4 - Math.round(Math.log10(Math.abs(floatValue))), magnitude)
+    )
+  );
+
+  const format =
+    (showCode ? code : "") +
+    nonBreakableSpace +
+    (alwaysShowSign && floatValue > 0 ? "+" : "") +
+    floatValue.toLocaleString("en-EN", {
+      maximumFractionDigits,
+      minimumFractionDigits
+    });
+  return format;
+}
+
 // Infer the currency unit. works with fiat too.
 export function inferUnit(
   currencies: Array<Currency>,

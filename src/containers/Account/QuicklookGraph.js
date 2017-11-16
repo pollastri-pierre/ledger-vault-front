@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 import CurrencyUnitValue from "../../components/CurrencyUnitValue.js";
+import { formatCurrencyUnit } from "../../data/currency";
 
 type Props = {
   data: Arrray<*>,
@@ -479,10 +480,7 @@ export default class QuicklookGraph extends Component<Props, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    <CurrencyUnitValue
-                      unit={currency.units[0]}
-                      value={data[selected].amount}
-                    />
+                    {currency.units[0].code} {data[selected].amount}
                   </div>
                   <div>
                     <span className="uppercase date">

@@ -19,6 +19,7 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 import type { Account, Operation, Currency } from "../../data/types";
 import "./Account.css";
+import { formatCurrencyUnit } from "../../data/currency";
 
 class AccountView extends Component<
   {
@@ -136,25 +137,30 @@ class AccountView extends Component<
     console.log(data);
     let operations = [];
     if (!data.length) return [];
+
     operations = data.map((o: Operation) => {
-      const currency = currencies.find(c => c.name === o.currency_name);
       return {
         time: new Date(o.time),
         amount: o.amount,
-        currency,
         tooltip: true
       };
     });
-    console.log(operations);
-    if (quickLookGraphFilter.key === "balance") {
+    console.log("hey");
+    console.log(quickLookGraphFilter);
+    if (quickLookGraphFilter === "balance") {
       operations = operations.map((o: Operation, i: number): Array<
         Operations
       > => {
         return {
           ...o,
-          amount: operations.slice(0, i).reduce((a: number, b: Operation) => {
-            return a + b.amount;
-          }, 0)
+          amount: parseFloat(
+            formatCurrencyUnit(
+              account.currency,
+              operations.slice(0, i).reduce((a: number, b: Operation) => {
+                return a + b.amount;
+              }, 0)
+            )
+          )
         };
       });
       operations.push({
@@ -162,7 +168,7 @@ class AccountView extends Component<
         time: new Date(),
         tooltip: false
       });
-    } else if (quickLookGraphFilter.key === "countervalue") {
+    } else if (quickLookGraphFilter === "countervalue") {
       operations = operations.map((o: Operation) => {
         return {
           ...o,
@@ -182,9 +188,9 @@ class AccountView extends Component<
   };
 
   render() {
-    const { account, operations, reloading } = this.props;
+    const { account, operations, reloading, currencies } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
-
+    console.log(account);
     const data = this.getOperations(operations);
     return (
       <div className="account-view">
@@ -259,7 +265,7 @@ class AccountView extends Component<
                   <QuicklookGraph
                     dateRange={this.getDateRange(tabsIndex)}
                     data={data}
-                    currency={data.length ? data[0].currency : null} //FIXME
+                    currency={account.currency} //FIXME
                   />
                 </div>
                 <TabPanel className="tabs_panel" />
