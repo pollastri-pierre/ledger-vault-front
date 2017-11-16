@@ -23,8 +23,7 @@ class ApprovalStatus extends PureComponent<*> {
       <span className="approval-status">
         {isApproved ? (
           <span>
-            <ValidateBadge className="confirmed" /> Approved ({approved.length}{" "}
-            / {approvers.length})
+            <ValidateBadge className="confirmed" /> Approved ({approved.length}/{approvers.length})
           </span>
         ) : (
           <span>
