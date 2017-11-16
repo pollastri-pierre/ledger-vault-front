@@ -44,7 +44,7 @@ export default class PieChart extends Component<
 
     const svg = d3.select($svg);
     svg.attr("width", parseFloat(d3.select($svg.parentNode).style("width"))); //adapt to parent's width
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    const margin = { top: 10, right: 10, bottom: 10, left: 10 };
     const width = +svg.attr("width") - margin.left - margin.right;
     const height = +svg.attr("height") - margin.top - margin.bottom;
     const outerRadius = 50;
@@ -67,8 +67,7 @@ export default class PieChart extends Component<
     const invisibleArc = d3
       .arc()
       .outerRadius(outerRadius)
-      .innerRadius(1.5)
-      .padAngle(0.05);
+      .innerRadius(1.5);
 
     const pie = d3
       .pie()

@@ -5,8 +5,6 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
-import CurrencyUnitValue from "../../components/CurrencyUnitValue.js";
-import { formatCurrencyUnit } from "../../data/currency";
 
 type Props = {
   data: Arrray<*>,
@@ -176,7 +174,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   computeXY = (data: Array<*>) => {
-    const { width, height, margin } = this.state;
+    const { width, height } = this.state;
 
     const domainX = [
       d3.min(data, function(d) {
@@ -195,7 +193,6 @@ export default class QuicklookGraph extends Component<Props, *> {
     const minY = d3.min(data, function(d) {
       return d.amount;
     });
-    console.log(data);
     const domainY = [
       minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
@@ -203,7 +200,6 @@ export default class QuicklookGraph extends Component<Props, *> {
       })
     ];
 
-    console.log(domainY);
     const y = d3
       .scaleLinear()
       .domain(domainY)
@@ -410,11 +406,9 @@ export default class QuicklookGraph extends Component<Props, *> {
   componentDidMount() {
     const { margin } = this.state;
     const { data, dateRange } = this.props;
-    console.log("dataprop", data);
     const parent = d3.select(d3.select(this.svg).node().parentNode);
     const height =
       parseFloat(parent.style("height")) - margin.top - margin.bottom;
-    console.log(parseFloat(parent.style("height")));
     const width =
       parseFloat(parent.style("width")) - margin.left - margin.right;
 
@@ -429,9 +423,8 @@ export default class QuicklookGraph extends Component<Props, *> {
   }
 
   componentDidUpdate(prevProps: *, prevState: *) {
-    const { selected, transform } = this.state;
+    const { selected } = this.state;
     const { dateRange, data: dataProp } = this.props;
-    let duration = 0;
     if (!dataProp.length) {
       this.displayNoData();
       return;
@@ -450,13 +443,10 @@ export default class QuicklookGraph extends Component<Props, *> {
       JSON.stringify(dataProp) !== JSON.stringify(prevProps.data)
     ) {
       //dateRange in props changed. Computing new transform and resetting the state
-      duration = 500;
-      console.log("GOING TO : ", dateRange.map(a => new Date(a)));
       this.zoomTo(dateRange[0], dateRange[1], dataProp);
-    } else if (prevState.transform != this.state.transform) {
+    } else if (prevState.transform !== this.state.transform) {
       //Redrawing graph
       const { data, xAxis, yAxis, x } = this.computeData(dataProp);
-      console.log("drwaing this domain : ", x.domain());
       this.drawInvisibleDots(data);
       this.drawVisibleDots(data);
       this.drawGraph(data, xAxis, yAxis, x);
