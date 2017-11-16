@@ -132,7 +132,7 @@ class AccountView extends Component<
   };
 
   getOperations = data => {
-    const { currencies } = this.props;
+    const { currencies, account } = this.props;
     const { quickLookGraphFilter } = this.state;
     console.log(data);
     let operations = [];
@@ -155,7 +155,7 @@ class AccountView extends Component<
           ...o,
           amount: parseFloat(
             formatCurrencyUnit(
-              account.currency,
+              account.currency.units[0],
               operations.slice(0, i).reduce((a: number, b: Operation) => {
                 return a + b.amount;
               }, 0)
