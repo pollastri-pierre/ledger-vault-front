@@ -66,7 +66,8 @@
           text-transform: initial;
           font-size: 13px;
           span {
-            color: $black-5;
+            color: $black;
+            font-weight: normal;
           }
 
           &:hover span,
