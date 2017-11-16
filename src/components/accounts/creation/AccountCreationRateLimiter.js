@@ -12,7 +12,7 @@ type Props = {
   anchor: React.DOM,
   enable: () => void,
   switchInternalModal: string => void,
-  changeFrequency: (a: string, b: string) => void,
+  changeFrequency: (a: string, b: { value: number, label: string }) => void,
   openPopBubble: (*) => void,
   change: (a: string) => void
 };
@@ -83,11 +83,11 @@ function AccountCreationRateLimiter(props: Props) {
                   changeFrequency("rate-limiter", {
                     value: 60,
                     label: "minut"
-                  })}
-                className={`frequency-bubble-row ${rate_limiter.frequency
-                  .value === 60
-                  ? "active"
-                  : ""}`}
+                  })
+                }
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency.value === 60 ? "active" : ""
+                }`}
               >
                 minut
               </div>
@@ -98,11 +98,11 @@ function AccountCreationRateLimiter(props: Props) {
                   changeFrequency("rate-limiter", {
                     value: 3600,
                     label: "hour"
-                  })}
-                className={`frequency-bubble-row ${rate_limiter.frequency
-                  .value === 3600
-                  ? "active"
-                  : ""}`}
+                  })
+                }
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency.value === 3600 ? "active" : ""
+                }`}
               >
                 hour
               </div>
@@ -113,11 +113,11 @@ function AccountCreationRateLimiter(props: Props) {
                   changeFrequency("rate-limiter", {
                     value: 84600,
                     label: "day"
-                  })}
-                className={`frequency-bubble-row ${rate_limiter.frequency
-                  .value === 84600
-                  ? "active"
-                  : ""}`}
+                  })
+                }
+                className={`frequency-bubble-row ${
+                  rate_limiter.frequency.value === 84600 ? "active" : ""
+                }`}
               >
                 day
               </div>

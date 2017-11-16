@@ -134,6 +134,8 @@ export function selectCurrency(currency: Currency) {
   };
 }
 
+type Freq = { label: string, value: number };
+
 export type State = {
   currentTab: number,
   currency: ?Currency,
@@ -143,12 +145,12 @@ export type State = {
   time_lock: {
     enabled: boolean,
     value: number,
-    frequency: string
+    frequency: Freq
   },
   rate_limiter: {
     enabled: boolean,
     value: number,
-    frequency: string
+    frequency: Freq
   },
   internModalId: string,
   popBubble: boolean,
