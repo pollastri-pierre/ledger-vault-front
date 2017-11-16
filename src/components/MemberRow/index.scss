@@ -8,6 +8,10 @@
   position: relative;
   padding-left: 50px;
 
+  &.not-select {
+    cursor: default;
+  }
+
   .name {
     display: inline-block;
     margin-top: 17px;
