@@ -75,11 +75,11 @@ class AccountView extends Component<
 
   getLabelDateRange = domain => {
     const dateRange =
-      new Date(domain[0]).getDate() == new Date(domain[1]).getDate()
+      new Date(domain[0]).getDate() === new Date(domain[1]).getDate()
         ? "day"
-        : new Date(domain[0]).getMonth() == new Date(domain[1]).getMonth()
+        : new Date(domain[0]).getMonth() === new Date(domain[1]).getMonth()
           ? "month"
-          : new Date(domain[0]).getFullYear() ==
+          : new Date(domain[0]).getFullYear() ===
             new Date(domain[1]).getFullYear()
             ? "year"
             : "hour";

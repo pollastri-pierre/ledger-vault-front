@@ -59,7 +59,7 @@ function AccountCreationTimeLock(props: {
             tabIndex={0}
             onClick={e => openPopBubble(e.currentTarget)}
           >
-            {timelock.frequency}
+            {timelock.frequency.label}
             <ArrowDown className="arrow-down" />
           </span>
           <PopBubble
@@ -75,30 +75,36 @@ function AccountCreationTimeLock(props: {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("timelock", "minuts")}
-                className={`frequency-bubble-row ${
-                  timelock.frequency === "minuts" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("timelock", { label: "minuts", value: 60 })}
+                className={`frequency-bubble-row ${timelock.frequency.label ===
+                "minuts"
+                  ? "active"
+                  : ""}`}
               >
                 minuts
               </div>
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("timelock", "hours")}
-                className={`frequency-bubble-row ${
-                  timelock.frequency === "hours" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("timelock", { label: "hours", value: 3600 })}
+                className={`frequency-bubble-row ${timelock.frequency.label ===
+                "hours"
+                  ? "active"
+                  : ""}`}
               >
                 hours
               </div>
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("timelock", "days")}
-                className={`frequency-bubble-row ${
-                  timelock.frequency === "days" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("timelock", { label: "days", value: 84600 })}
+                className={`frequency-bubble-row ${timelock.frequency.label ===
+                "days"
+                  ? "active"
+                  : ""}`}
               >
                 days
               </div>

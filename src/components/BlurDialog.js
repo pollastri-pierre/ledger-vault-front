@@ -15,19 +15,27 @@ function setBlurState(blurred: boolean) {
   }
 }
 
+const actives = [];
+
 class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   static defaultProps = {
     open: false,
     nopadding: false
   };
+  setActive = (active: boolean) => {
+    const index = actives.indexOf(this);
+    if (active && index === -1) actives.push(this); // add this in actives
+    if (!active && index !== -1) actives.splice(index, 1); // remove this in actives
+    setBlurState(actives.length > 0);
+  };
   componentDidMount() {
-    setBlurState(this.props.open);
+    this.setActive(this.props.open);
   }
   componentWillUnmount() {
-    setBlurState(false);
+    this.setActive(false);
   }
   componentWillReceiveProps(props: *) {
-    setBlurState(props.open);
+    this.setActive(props.open);
   }
   render() {
     const { props } = this;

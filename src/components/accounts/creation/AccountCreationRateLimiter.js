@@ -63,7 +63,7 @@ function AccountCreationRateLimiter(props: Props) {
             tabIndex={0}
             onClick={e => openPopBubble(e.currentTarget)}
           >
-            <strong>operation</strong> per {rate_limiter.frequency}
+            <strong>operation</strong> per {rate_limiter.frequency.label}
             <ArrowDown className="arrow-down" />
           </span>
           <PopBubble
@@ -79,30 +79,45 @@ function AccountCreationRateLimiter(props: Props) {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("rate-limiter", "minut")}
-                className={`frequency-bubble-row ${
-                  rate_limiter.frequency === "minut" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("rate-limiter", {
+                    value: 60,
+                    label: "minut"
+                  })}
+                className={`frequency-bubble-row ${rate_limiter.frequency
+                  .value === 60
+                  ? "active"
+                  : ""}`}
               >
                 minut
               </div>
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("rate-limiter", "hour")}
-                className={`frequency-bubble-row ${
-                  rate_limiter.frequency === "hour" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("rate-limiter", {
+                    value: 3600,
+                    label: "hour"
+                  })}
+                className={`frequency-bubble-row ${rate_limiter.frequency
+                  .value === 3600
+                  ? "active"
+                  : ""}`}
               >
                 hour
               </div>
               <div
                 role="button"
                 tabIndex={0}
-                onClick={() => changeFrequency("rate-limiter", "day")}
-                className={`frequency-bubble-row ${
-                  rate_limiter.frequency === "day" ? "active" : ""
-                }`}
+                onClick={() =>
+                  changeFrequency("rate-limiter", {
+                    value: 84600,
+                    label: "day"
+                  })}
+                className={`frequency-bubble-row ${rate_limiter.frequency
+                  .value === 84600
+                  ? "active"
+                  : ""}`}
               >
                 day
               </div>

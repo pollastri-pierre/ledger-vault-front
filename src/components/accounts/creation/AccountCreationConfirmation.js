@@ -9,6 +9,8 @@ import {
 import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
 import InfoModal from "../../InfoModal";
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
 
 function AccountCreationConfirmation(props: { account: Object }) {
   const {
@@ -22,7 +24,7 @@ function AccountCreationConfirmation(props: { account: Object }) {
 
   return (
     <div>
-      <div className="confirmation-security">
+      <div style={{ textAlign: "center" }}>
         <BadgeSecurity
           icon={<BigSecurityMembersIcon />}
           label="Members"
@@ -32,21 +34,22 @@ function AccountCreationConfirmation(props: { account: Object }) {
           icon={<BigSecurityTimeLockIcon />}
           label="Time-lock"
           disabled={!time_lock.enabled}
-          value={`${
-            !time_lock.enabled
-              ? "disabled"
-              : time_lock.value + " " + time_lock.frequency
-          }`}
+          value={
+            <TimeLockValue
+              time_lock={time_lock.value * time_lock.frequency.value}
+            />
+          }
         />
         <BadgeSecurity
           icon={<BigSecurityRateLimiterIcon />}
           label="Rate Limiter"
           disabled={!rate_limiter.enabled}
-          value={`${
-            !rate_limiter.enabled
-              ? "disabled"
-              : rate_limiter.value + " per " + rate_limiter.frequency
-          }`}
+          value={
+            <RateLimiterValue
+              max_transaction={rate_limiter.value}
+              time_slot={rate_limiter.frequency.value}
+            />
+          }
         />
       </div>
 

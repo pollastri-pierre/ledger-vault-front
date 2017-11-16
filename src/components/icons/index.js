@@ -4,6 +4,7 @@ import People from "./People";
 import PeopleThin from "./thin/People";
 import ValidateBadge from "./ValidateBadge";
 import Rates from "./Rates";
+import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import Trash from "./thin/Trash";
 import Hourglass from "./Hourglass";
@@ -44,5 +45,10 @@ export function BigSecurityMembersIcon() {
 }
 
 export function BigSecurityRateLimiterIcon() {
-  return <PeopleThin className="security-icon security-ratelimiter-big-icon" />;
+  return (
+    <RatesThin
+      stroke="#e2e2e2"
+      className="security-icon security-ratelimiter-big-icon"
+    />
+  );
 }

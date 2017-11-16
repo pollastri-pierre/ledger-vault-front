@@ -6,7 +6,7 @@ class ApproveLockRow extends PureComponent<*> {
   props: {
     icon: *,
     name: string,
-    value: string,
+    value: *,
     unactive?: boolean,
     state?: *
   };

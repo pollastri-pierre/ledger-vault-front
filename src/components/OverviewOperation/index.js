@@ -22,10 +22,10 @@ class OverviewOperation extends Component<{
           <p className="crypto-amount">
             <CurrencyAccountValue account={account} value={amount} />
           </p>
-          <ArrowDown className="arrow-grey-down" />
           <p className="fiat-amount">
             <CurrencyUnitValue {...counterValueUnit} />
           </p>
+          <ArrowDown className="arrow-grey-down" />
           <p className="hash">{hash}</p>
         </div>
       </div>
