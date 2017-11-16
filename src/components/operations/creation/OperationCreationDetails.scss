@@ -1,7 +1,9 @@
 @import "../../../styles/mixins";
 @import "../../../styles/variables";
 
-.operation-creation-unit-list {
+.operation-creation-unit-list,
+.operation-creation-fees-list
+ {
   list-style-type: none;
   padding: 20px 30px 20px 0;
   margin: 0;
@@ -22,6 +24,10 @@
       @include highlight-block-active($porto, 0px);
     }
   }
+}
+
+.operation-creation-fees-list {
+  font-size: 13px;
 }
 
 .operation-creation-send-max {
@@ -53,6 +59,7 @@
   }
 
   .operation-creation-arrow-down {
+    display: inline-block;
     width: 11px;
   }
 
@@ -74,5 +81,24 @@
     color: $lead;
     padding-top: 16px;
     line-height: 1em;
+  }
+
+  .operation-creation-fees-button {
+    cursor: pointer;
+    font-size: 13px;
+    width: fit-content;
+
+    .operation-creation-arrow-down {
+      width: 8px;
+      margin-left: 10px;
+    }
+  }
+
+  .operation-creation-fees-divider {
+    margin: $spacingS 0;
+  }
+
+  .operation-creation-fees-countervalue {
+    color: $steel;
   }
 }
