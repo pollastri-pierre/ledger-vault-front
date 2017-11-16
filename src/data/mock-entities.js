@@ -9,6 +9,7 @@ import type {
   SecurityScheme,
   Transaction
 } from "./types";
+import moment from "moment";
 
 const mockCurrencies: CurrencyEntity[] = [
   {
@@ -116,18 +117,6 @@ const genNote = (i: number): NoteEntity => ({
   ).toISOString(),
   author: "" + i % 5
 });
-
-const defaultGenOperation = {
-  time: new Date(2017, 9, 14, 9).toISOString(),
-  account_id: "0",
-  amount: 120000000,
-  fees: 2300,
-  confirmations: 31,
-  type: "SEND",
-  approved: [],
-  currency_name: "bitcoin",
-  currency_family: "BITCOIN"
-};
 
 const genPubKey = () =>
   Array(64)
@@ -468,6 +457,21 @@ const accounts: { [_: string]: AccountEntity } = {
   }
 };
 
+const defaultGenOperation = {
+  time: new Date(2017, 9, 14, 9).toISOString(),
+  account_id: "0",
+  amount: 120000000,
+  fees: 2300,
+  confirmations: 31,
+  type: "SEND",
+  approved: [],
+  currency_name: "bitcoin",
+  currency_family: "BITCOIN",
+  approvedTime: null,
+  endOfTimeLockTime: null,
+  endOfRateLimiterTime: null
+};
+
 const genOperation = (opts: *): OperationEntity => {
   const {
     uuid,
@@ -478,7 +482,11 @@ const genOperation = (opts: *): OperationEntity => {
     type,
     currency_name,
     fees,
-    currency_family
+    currency_family,
+    approvedTime,
+    endOfTimeLockTime,
+    endOfRateLimiterTime,
+    approved
   } = {
     ...defaultGenOperation,
     ...opts
@@ -497,7 +505,10 @@ const genOperation = (opts: *): OperationEntity => {
     time,
     block: {},
     type,
-    approved: [],
+    approved,
+    approvedTime,
+    endOfTimeLockTime,
+    endOfRateLimiterTime,
     amount,
     rate: accounts[account_id].currencyRate,
     fees,
@@ -557,16 +568,34 @@ const operations: { [_: string]: OperationEntity } = {
     amount: -130000000,
     account_id: "4",
     type: "FROM",
+    approved: ["0", "1"],
+    approvedTime: moment()
+      .subtract(1, "hours")
+      .toISOString(),
+    endOfTimeLockTime: moment()
+      .add(2, "hours")
+      .toISOString(),
+    endOfRateLimiterTime: moment()
+      .add(28, "minutes")
+      .toISOString(),
     time: new Date(2017, 9, 12).toISOString()
   }),
   "6": genOperation({
     uuid: "6",
+    approved: ["0", "1"],
+    approvedTime: moment()
+      .subtract(2, "hours")
+      .toISOString(),
+    endOfTimeLockTime: moment()
+      .add(12, "minutes")
+      .toISOString(),
     time: new Date(2017, 9, 13).toISOString()
   }),
   "7": genOperation({
     uuid: "7",
     amount: 180000000,
     confirmations: 0,
+    approved: ["0"],
     time: new Date(2017, 9, 14, 9).toISOString()
   }),
   "8": genOperation({

@@ -7,15 +7,16 @@ import CurrencyNameValue from "../CurrencyNameValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import { countervalueForRate } from "../../data/currency";
-import type { Operation, Member } from "../../data/types";
+import type { Account, Operation, Member } from "../../data/types";
 
 type Props = {
-  operations: Array<Operation>,
+  accounts: Account[],
+  operations: Operation[],
   approved?: boolean,
   user: Member
 };
 function PendingOperationApprove(props: Props) {
-  const { operations, approved, user } = props;
+  const { accounts, operations, approved, user } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -54,6 +55,9 @@ function PendingOperationApprove(props: Props) {
           operation.rate,
           operation.amount
         );
+        const account: ?Account = accounts.find(
+          a => a.id === operation.account_id
+        );
 
         return (
           <Link
@@ -75,7 +79,13 @@ function PendingOperationApprove(props: Props) {
                 <CurrencyUnitValue {...amountUnitValue} />
               </span>
             </div>
-            <ApprovalStatusWithAccountName user={user} operation={operation} />
+            {account ? (
+              <ApprovalStatusWithAccountName
+                user={user}
+                operation={operation}
+                account={account}
+              />
+            ) : null}
           </Link>
         );
       })}

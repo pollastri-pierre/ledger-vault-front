@@ -5,20 +5,15 @@ import AccountName from "../../AccountName";
 import DateFormat from "../../DateFormat";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
-import type { Operation, Account } from "../../../data/types";
+import ApprovalStatus from "../../ApprovalStatus";
+import type { Operation, Account, Member } from "../../../data/types";
 
-const Approvals = ({ operation, account }) => {
-  const quorum = account.security_scheme.quorum;
-  const approved = operation.approved;
-  const percentage = Math.round(100 * (approved / quorum));
-
-  return <span>{`collecting approvals (${percentage}%)`}</span>;
-};
 function OperationApproveDetails(props: {
   operation: Operation,
-  account: Account
+  account: Account,
+  profile: Member
 }) {
-  const { operation, account } = props;
+  const { operation, account, profile } = props;
   const { rate } = operation;
 
   return (
@@ -31,9 +26,13 @@ function OperationApproveDetails(props: {
       />
       <div className="operation-list">
         <LineRow label="status">
-          <strong>
-            <Approvals operation={operation} account={account} />
-          </strong>
+          <ApprovalStatus
+            approvingObject={operation}
+            approved={operation.approved}
+            approvers={account.security_scheme.approvers}
+            nbRequired={account.security_scheme.quorum}
+            user={profile}
+          />
         </LineRow>
         <LineRow label="requested">
           <DateFormat date={operation.time} />
