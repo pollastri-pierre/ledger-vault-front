@@ -27,7 +27,9 @@ function AccountCreationSecurity(props: {
           label="Members"
           onClick={() => switchInternalModal("members")}
         >
-          {account.approvers.length} selected
+          {account.approvers.length > 0
+            ? `${account.approvers.length} selected`
+            : "None"}
         </SecurityRow>
         <SecurityRow
           icon={<SecurityQuorumIcon />}
@@ -35,7 +37,7 @@ function AccountCreationSecurity(props: {
           disabled={account.approvers.length === 0}
           onClick={() => switchInternalModal("approvals")}
         >
-          {account.quorum} required
+          {account.quorum > 0 ? `${account.quorum} required` : "None"}
         </SecurityRow>
       </div>
       <h5>Locks</h5>

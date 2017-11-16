@@ -47,7 +47,7 @@ class MainCreation extends Component<Props> {
       case 2:
         isNextDisabled =
           account.approvers.length === 0 ||
-          account.quorum === 0 ||
+          account.quorum === "0" ||
           account.quorum > account.approvers.length;
         break;
       default:
