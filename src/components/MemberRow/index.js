@@ -22,7 +22,10 @@ class MemberRow extends Component<*> {
     const { member, onSelect, checked } = this.props;
 
     return (
-      <div className="member-row" onClick={this.onClick}>
+      <div
+        className={`member-row ${!onSelect ? "not-select" : ""}`}
+        onClick={this.onClick}
+      >
         <MemberAvatar url={member.picture} />
         <span className="name">
           {member.first_name} {member.last_name}

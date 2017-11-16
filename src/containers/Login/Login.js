@@ -28,7 +28,18 @@ const mapDispatchToProps = dispatch => ({
   onResetTeam: () => dispatch(resetTeam())
 });
 
-export class Login extends Component<*> {
+type Props = {
+  auth: *,
+  history: *,
+  location: *,
+  onFieldTeam: (e: *, val: *) => void,
+  onLogout: () => void,
+  onStartAuth: () => void,
+  onCloseTeamError: () => void,
+  onResetTeam: () => void
+};
+
+export class Login extends Component<Props> {
   componentWillMount() {
     const { auth, history, location } = this.props;
     if (auth.isAuthenticated) {
@@ -39,8 +50,8 @@ export class Login extends Component<*> {
     }
   }
 
-  componentWillUpdate(nextProps) {
-    const { auth, history, location } = nextProps;
+  componentWillUpdate(nextProps: Props) {
+    const { history, location } = nextProps;
     if (nextProps.auth.isAuthenticated) {
       const { redirectTo } = queryString.parse(
         (location.search || "").slice(1)
