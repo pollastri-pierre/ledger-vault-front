@@ -221,33 +221,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       x = transform.rescaleX(x);
     }
 
-    //Setting up xAxis tick format behaviour. subject to change
-    const formatMillisecond = d3.timeFormat(".%L"),
-      formatSecond = d3.timeFormat(":%S"),
-      formatMinute = d3.timeFormat("%I:%M"),
-      formatHour = d3.timeFormat("%I %p"),
-      formatDay = d3.timeFormat("%a %d"),
-      formatWeek = d3.timeFormat("%m/%d"),
-      formatMonth = d3.timeFormat("%b"),
-      formatYear = d3.timeFormat("%Y");
-
-    //setting up xAxis
-    const xAxis = d3
-      .axisBottom(x)
-      .ticks(4)
-      .tickFormat((date, i) => {
-        return (d3.timeSecond(date) < date
-          ? formatMillisecond
-          : d3.timeMinute(date) < date
-            ? formatSecond
-            : d3.timeHour(date) < date
-              ? formatMinute
-              : d3.timeDay(date) < date
-                ? formatHour
-                : d3.timeMonth(date) < date
-                  ? d3.timeWeek(date) < date ? formatDay : formatWeek
-                  : d3.timeYear(date) < date ? formatMonth : formatYear)(date);
-      });
+    const xAxis = this.generateFormatedXAxis(x);
 
     let newXAxis = xAxis.scale(x);
 
@@ -361,15 +335,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     });
   };
 
-  displayNoData = () => {
-    const { width } = this.state;
-    const { dateRange: domainX } = this.props;
-
-    const x = d3
-      .scaleTime()
-      .domain(domainX)
-      .range([0, width]);
-
+  generateFormatedXAxis = x => {
     //Setting up xAxis tick format behaviour. subject to change
     const formatMillisecond = d3.timeFormat(".%L"),
       formatSecond = d3.timeFormat(":%S"),
@@ -397,6 +363,20 @@ export default class QuicklookGraph extends Component<Props, *> {
                   ? d3.timeWeek(date) < date ? formatDay : formatWeek
                   : d3.timeYear(date) < date ? formatMonth : formatYear)(date);
       });
+
+    return xAxis;
+  };
+
+  displayNoData = () => {
+    const { width } = this.state;
+    const { dateRange: domainX } = this.props;
+
+    const x = d3
+      .scaleTime()
+      .domain(domainX)
+      .range([0, width]);
+
+    const xAxis = this.generateFormatedXAxis(x);
 
     d3.select(".noData").attr("opacity", 1);
     this.drawxAxisLabel(domainX);
