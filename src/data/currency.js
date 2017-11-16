@@ -24,12 +24,17 @@ export function getCurrency(
   return currency;
 }
 
-// calculate the counter value at a specific rate
-export function countervalueForRate(rate: Rate, value: number): UnitValue {
+export function getUnitFromRate(rate: Rate): Unit {
   const unit = fiatUnits[rate.fiat];
   if (!unit) {
     throw new Error(`countervalue "${rate.fiat}" not found`);
   }
+  return unit;
+}
+
+// calculate the counter value at a specific rate
+export function countervalueForRate(rate: Rate, value: number): UnitValue {
+  const unit = getUnitFromRate(rate);
   return {
     value: Math.round(rate.value * value),
     unit
