@@ -142,7 +142,8 @@ class AccountView extends Component<
       return {
         time: new Date(o.time),
         amount: o.amount,
-        tooltip: true
+        tooltip: true,
+        rate: o.rate
       };
     });
     console.log("hey");
@@ -172,7 +173,7 @@ class AccountView extends Component<
       operations = operations.map((o: Operation) => {
         return {
           ...o,
-          amount: o.amount * o.currency.rate.value
+          amount: o.amount * o.rate.value
         };
       });
       operations.push({
@@ -190,7 +191,7 @@ class AccountView extends Component<
   render() {
     const { account, operations, reloading, currencies } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
-    console.log(account);
+
     const data = this.getOperations(operations);
     return (
       <div className="account-view">
