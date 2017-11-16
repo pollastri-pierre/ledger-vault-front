@@ -2,9 +2,28 @@
 import { denormalize } from "normalizr";
 import mockEntities from "./mock-entities.js";
 import schema from "./schema";
+import type { Account } from "../data/types";
 
-const mockSync = (uri: string, method: string, _body: ?Object) => {
+const mockSync = (uri: string, method: string, body: ?Object) => {
   if (method === "POST") {
+    let m;
+    m = /^\/accounts\/([^/]+)\/settings$/.exec(uri);
+    if (m) {
+      const account = mockEntities.accounts[m[1]];
+      if (!body) throw new Error("invalid body");
+      if (account) {
+        const accountObj: Account = denormalize(
+          account.id,
+          schema.Account,
+          mockEntities
+        );
+        account.name = body.name;
+        account.settings = body.settings;
+        return accountObj;
+      } else {
+        throw new Error("Account Not Found");
+      }
+    }
     switch (uri) {
       case "/organization/account":
         return denormalize(
@@ -132,6 +151,24 @@ const mockSync = (uri: string, method: string, _body: ?Object) => {
           [schema.Operation],
           mockEntities
         );
+      case "/settings-data":
+        return {
+          blockchainExplorers: [
+            {
+              id: "blockchain.info"
+            }
+          ],
+          countervalueSources: [
+            {
+              id: "kraken",
+              fiats: ["EUR", "USD"]
+            },
+            {
+              id: "btcchina",
+              fiats: ["CNY"]
+            }
+          ]
+        };
     }
   }
 };

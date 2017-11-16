@@ -104,7 +104,7 @@ export function finishRegistration(data: Object, email: string) {
 export function registerDevice(email: string) {
   return (dispatch: Function) => {
     network("/start_registration", "POST", { email }).then(res => {
-      dispatch(finishRegistration(res.data, email));
+      dispatch(finishRegistration(res, email));
     });
   };
 }
@@ -126,7 +126,7 @@ export function finishAuthentication(data: Object) {
             response: deviceResponse
           })
             .then(res => {
-              setTokenToLocalStorage(res.data.token);
+              setTokenToLocalStorage(res.token);
               setTimeout(() => {
                 dispatch(authenticationSucceed());
               }, 500);
@@ -147,10 +147,11 @@ export function startAuthentication() {
     network("/start_authentication", "POST", { email: team })
       .then(res => {
         dispatch(checkTeamSuccess());
-        dispatch(finishAuthentication(res.data));
+        dispatch(finishAuthentication(res));
       })
       .catch(e => {
-        dispatch(checkTeamError(e.response.status));
+        console.log(e);
+        // dispatch(checkTeamError(e.response.status));
       });
   };
 }
@@ -219,6 +220,8 @@ export default function reducer(
       return { ...state, isCheckingTeam: true };
     case RESET_TEAM:
       return { ...state, teamValidated: false };
+    case AUTHENTICATION_SUCCEED:
+      return { ...state, isAuthenticated: true };
     case AUTHENTICATION_FAILED_API:
     case AUTHENTICATION_FAILED_TIMEOUT:
     case AUTHENTICATION_FAILED:

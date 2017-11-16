@@ -13,7 +13,7 @@ import CardField from "../../components/CardField";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
-import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import { Select, Option } from "../../components/Select";
 import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import AccountQuery from "../../api/queries/AccountQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
@@ -38,7 +38,7 @@ class AccountView extends Component<
   constructor(props) {
     super(props);
     this.state = {
-      quickLookGraphFilter: this.quickLookGraphFilters[0],
+      quickLookGraphFilter: "balance",
       tabsIndex: 0,
       labelDateRange: this.getLabelDateRange(this.getDateRange(0))
     };
@@ -224,11 +224,17 @@ class AccountView extends Component<
             title="Quicklook"
             titleRight={
               data.length && (
-                <CustomSelectField
-                  values={this.quickLookGraphFilters}
-                  selected={quickLookGraphFilter}
-                  onChange={this.onQuickLookGraphFilterChange}
-                />
+                <Select onChange={this.onQuickLookGraphFilterChange}>
+                  {this.quickLookGraphFilters.map(({ title, key }) => (
+                    <Option
+                      key={key}
+                      value={key}
+                      selected={quickLookGraphFilter === key}
+                    >
+                      {title}
+                    </Option>
+                  ))}
+                </Select>
               )
             }
           >

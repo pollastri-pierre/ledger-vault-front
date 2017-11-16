@@ -2,19 +2,20 @@
 import React, { Component } from "react";
 import type { Account } from "../../data/types";
 import Card from "../../components/Card";
-import EvolutionSince from "./EvolutionSince";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import EvolutionSince, {
+  TotalBalanceFilters
+} from "../../components/EvolutionSince";
 
 import "./AccountCard.css";
 
 const Separator = () => <div className="separator" />;
 
-class AccountCard extends Component<*> {
-  props: {
-    account: Account,
-    filter: *
-  };
+class AccountCard extends Component<{
+  account: Account,
+  filter: string
+}> {
   render() {
     const { account, filter } = this.props;
 
@@ -29,7 +30,7 @@ class AccountCard extends Component<*> {
         <EvolutionSince
           value={account.balance}
           valueHistory={account.balance_history}
-          filter={filter}
+          filter={TotalBalanceFilters.find(f => f.key === filter)}
         />
         <Separator />
         <div>

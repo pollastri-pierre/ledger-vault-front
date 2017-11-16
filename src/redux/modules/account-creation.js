@@ -44,7 +44,7 @@ export function enableRatelimiter() {
   };
 }
 
-export function changeFrequency(field: string, frequency: string) {
+export function changeFrequency(field: string, frequency: Object) {
   if (field === "rate-limiter") {
     return {
       type: CHANGE_FREQUEMCY_RATELIMITER,
@@ -164,12 +164,12 @@ export const initialState: State = {
   time_lock: {
     enabled: false,
     value: 0,
-    frequency: "minuts"
+    frequency: { label: "minuts", value: 60 }
   },
   rate_limiter: {
     enabled: false,
     value: 0,
-    frequency: "day"
+    frequency: { label: "day", value: 84600 }
   },
   internModalId: "main",
   popBubble: false,

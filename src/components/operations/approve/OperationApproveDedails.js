@@ -7,6 +7,13 @@ import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
 import type { Operation, Account } from "../../../data/types";
 
+const Approvals = ({ operation, account }) => {
+  const quorum = account.security_scheme.quorum;
+  const approved = operation.approved;
+  const percentage = Math.round(100 * (approved / quorum));
+
+  return <span>{`collecting approvals (${percentage}%)`}</span>;
+};
 function OperationApproveDetails(props: {
   operation: Operation,
   account: Account
@@ -23,7 +30,11 @@ function OperationApproveDetails(props: {
         rate={rate}
       />
       <div className="operation-list">
-        <LineRow label="status">Collecting Approvals</LineRow>
+        <LineRow label="status">
+          <strong>
+            <Approvals operation={operation} account={account} />
+          </strong>
+        </LineRow>
         <LineRow label="requested">
           <DateFormat date={operation.time} />
         </LineRow>

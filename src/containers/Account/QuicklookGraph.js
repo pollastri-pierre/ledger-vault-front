@@ -64,7 +64,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .enter()
       .append("circle")
       .classed("hoverdot", true)
-      .attr("r", 10)
+      .attr("r", 5)
       .attr("opacity", 0)
       .attr("cx", d => d.x)
       .attr("cy", d => d.y)
@@ -328,7 +328,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     g
       .append("g")
       .classed("visibleDots", true)
-      .attr("clip-path");
+      .attr("clip-path", "url(#clip)");
 
     //init placeholder for invisible dots (bigger invisible dots for better ux)
     g

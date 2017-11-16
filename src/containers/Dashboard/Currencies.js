@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import PieChart from "./PieChart";
 import { countervalueForRate } from "../../data/currency";
-import type { Account, Currency } from "../../data/types";
+import type { Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 
 type AggregatedData = {

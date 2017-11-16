@@ -11,7 +11,7 @@ import DialogButton from "../../components/buttons/DialogButton";
 import ProfileIcon from "../icons/thin/Profile";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import SaveProfile from "../../api/mutations/SaveProfileMutation";
-import RenderLoading from "../ModalLoading";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 
 import type { Member } from "../../data/types";
 
@@ -172,6 +172,14 @@ class ProfileEditModal extends Component<
     );
   }
 }
+
+const RenderLoading = () => {
+  return (
+    <div style={{ width: "520px", height: "332px" }}>
+      <SpinnerCard />
+    </div>
+  );
+};
 
 export default withRouter(
   connectData(ProfileEditModal, {

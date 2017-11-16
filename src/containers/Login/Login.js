@@ -39,6 +39,16 @@ export class Login extends Component<*> {
     }
   }
 
+  componentWillUpdate(nextProps) {
+    const { auth, history, location } = nextProps;
+    if (nextProps.auth.isAuthenticated) {
+      const { redirectTo } = queryString.parse(
+        (location.search || "").slice(1)
+      );
+      history.push(redirectTo || "/");
+    }
+  }
+
   render() {
     const t = this.context.translate;
     let content = null;

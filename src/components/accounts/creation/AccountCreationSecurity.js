@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 import "./AccountCreationSecurity.css";
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
 import {
   SecurityMembersIcon,
@@ -14,6 +16,7 @@ function AccountCreationSecurity(props: {
   switchInternalModal: Function
 }) {
   const { account, switchInternalModal } = props;
+  console.log(account.time_lock);
   return (
     <div className="account-creation-security">
       <h4>Security Scheme</h4>
@@ -42,9 +45,11 @@ function AccountCreationSecurity(props: {
         onClick={() => switchInternalModal("time-lock")}
       >
         {account.time_lock.enabled ? (
-          <span>
-            {account.time_lock.value} {account.time_lock.frequency}
-          </span>
+          <TimeLockValue
+            time_lock={
+              account.time_lock.value * account.time_lock.frequency.value
+            }
+          />
         ) : (
           "disabled"
         )}
@@ -55,9 +60,10 @@ function AccountCreationSecurity(props: {
         onClick={() => switchInternalModal("rate-limiter")}
       >
         {account.rate_limiter.enabled ? (
-          <span>
-            {account.rate_limiter.value} per {account.rate_limiter.frequency}
-          </span>
+          <RateLimiterValue
+            max_transaction={account.rate_limiter.value}
+            time_slot={account.rate_limiter.frequency.value}
+          />
         ) : (
           "disabled"
         )}

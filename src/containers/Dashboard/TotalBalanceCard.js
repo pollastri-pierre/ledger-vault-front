@@ -2,19 +2,20 @@
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import CurrencyNameValue from "../../components/CurrencyNameValue";
-import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
+import EvolutionSince, {
+  TotalBalanceFilters
+} from "../../components/EvolutionSince";
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import EvolutionSince from "./EvolutionSince";
 import "./TotalBalanceCard.css";
-import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import { Select, Option } from "../../components/Select";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
 
 class TotalBalance extends Component<{
   totalBalance: *,
-  filter: *,
-  onTotalBalanceFilterChange: (value: *) => void,
+  filter: string,
+  onTotalBalanceFilterChange: (filter: string) => void,
   reloading: *,
   restlay: *
 }> {
@@ -31,11 +32,13 @@ class TotalBalance extends Component<{
         className="total-balance"
         title="total balance"
         titleRight={
-          <CustomSelectField
-            values={TotalBalanceFilters}
-            selected={filter}
-            onChange={onTotalBalanceFilterChange}
-          />
+          <Select onChange={onTotalBalanceFilterChange}>
+            {TotalBalanceFilters.map(({ key, title }) => (
+              <Option key={key} value={key} selected={filter === key}>
+                {title}
+              </Option>
+            ))}
+          </Select>
         }
       >
         <div className="body">
@@ -48,7 +51,7 @@ class TotalBalance extends Component<{
           <EvolutionSince
             value={totalBalance.value}
             valueHistory={totalBalance.valueHistory}
-            filter={filter}
+            filter={TotalBalanceFilters.find(f => f.key === filter)}
           />
           <CardField label="accounts" align="right">
             {totalBalance.accountsCount}
