@@ -9,6 +9,16 @@ import InfoModal from "../../../components/InfoModal";
 import { DialogButton, Overscroll } from "../../../components";
 import type { Member } from "../../../data/types";
 
+const SelectedCounter = ({ count }) => {
+  if (count === 0) {
+    return false;
+  }
+  if (count === 1) {
+    return <span className="counter">{count} member selected</span>;
+  }
+  return <span className="counter">{count} members selected</span>;
+};
+
 class AccountCreationMembers extends Component<{
   switchInternalModal: Function,
   addMember: Function,
@@ -22,11 +32,7 @@ class AccountCreationMembers extends Component<{
       <div className="account-creation-members wrapper">
         <header>
           <h2>Members</h2>
-          {approvers.length > 0 ? (
-            <span className="counter">{approvers.length} members selected</span>
-          ) : (
-            false
-          )}
+          <SelectedCounter count={approvers.length} />
           <InfoModal>
             Members define the group of individuals that have the ability to
             approve outgoing operations from this account.

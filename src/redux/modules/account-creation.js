@@ -139,7 +139,7 @@ export type State = {
   currency: ?Currency,
   name: string,
   approvers: Member[],
-  quorum: string,
+  quorum: number,
   time_lock: {
     enabled: boolean,
     value: number,
@@ -160,7 +160,7 @@ export const initialState: State = {
   currency: null,
   name: "",
   approvers: [],
-  quorum: "0",
+  quorum: 0,
   time_lock: {
     enabled: false,
     value: 0,
@@ -193,8 +193,16 @@ export default function reducer(
         cMembers.push(action.member);
       }
 
+      // reset approvals if approvers.length < approvals
+      let quorum = _.cloneDeep(state.quorum);
+
+      if (cMembers.length < quorum) {
+        quorum = 0;
+      }
+
       return {
         ...state,
+        quorum: quorum,
         approvers: cMembers
       };
     }
@@ -211,7 +219,7 @@ export default function reducer(
       if (action.number === "" || isNumber.test(action.number)) {
         return {
           ...state,
-          quorum: action.number
+          quorum: parseInt(action.number, 10) || 0
         };
       }
 
@@ -245,7 +253,7 @@ export default function reducer(
           ...state,
           time_lock: {
             ...state.time_lock,
-            value: action.number
+            value: parseInt(action.number, 10) || 0
           }
         };
       }
@@ -260,7 +268,7 @@ export default function reducer(
           ...state,
           rate_limiter: {
             ...state.rate_limiter,
-            value: action.number
+            value: parseInt(action.number, 10) || 0
           }
         };
       }
