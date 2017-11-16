@@ -12,7 +12,7 @@ type Props = {
   accounts: Account[],
   approved?: boolean,
   approvers: Member[],
-  user: *
+  user: Member
 };
 function PendingAccountApprove(props: Props) {
   const { accounts, approved, approvers, user } = props;
@@ -64,7 +64,8 @@ function PendingAccountApprove(props: Props) {
             <ApprovalStatus
               approved={account.approved}
               approvers={approvers}
-              user_hash={user.pub_key}
+              nbRequired={approvers.length}
+              user={user}
             />
             <span className="request-currency">{account.currency.family}</span>
           </div>

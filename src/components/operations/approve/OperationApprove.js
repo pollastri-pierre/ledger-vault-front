@@ -48,7 +48,11 @@ class OperationApprove extends Component<Props> {
         </div>
         <div className="content">
           <TabPanel className="tabs_panel">
-            <OperationApproveDedails operation={operation} account={account} />
+            <OperationApproveDedails
+              operation={operation}
+              account={account}
+              profile={profile}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <OperationApproveApprovals

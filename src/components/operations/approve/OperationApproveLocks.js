@@ -7,6 +7,7 @@ import Hourglass from "../../icons/thin/Hourglass";
 import ValidateBadge from "../../icons/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
 import LocksPercentage from "../../LocksPercentage";
+import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
 import type { Account, Operation } from "../../../data/types";
 
 const getTimeLock = (seconds: number) => {
@@ -19,9 +20,7 @@ function OperationApproveLocks(props: {
 }) {
   const { operation, account } = props;
   const isUnactive = operation.approved.length < account.security_scheme.quorum;
-
-  console.log(account.security_scheme);
-
+  const approvingObjectMeta = calculateApprovingObjectMeta(operation);
   return (
     <div>
       <InfoModal>
@@ -34,7 +33,12 @@ function OperationApproveLocks(props: {
             icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
             name="Time-lock"
             value={getTimeLock(account.security_scheme.time_lock)}
-            state="15 hours left"
+            state={
+              (approvingObjectMeta &&
+                approvingObjectMeta.timeLockRemaining) || (
+                <ValidateBadge className="confirmed" />
+              )
+            }
             unactive={isUnactive}
           />
         )}
@@ -58,12 +62,21 @@ function OperationApproveLocks(props: {
                 time_slot={account.security_scheme.rate_limiter.time_slot}
               />
             }
-            state={<ValidateBadge className="confirmed" />}
+            state={
+              (approvingObjectMeta &&
+                approvingObjectMeta.rateLimiterRemaining) || (
+                <ValidateBadge className="confirmed" />
+              )
+            }
             unactive={isUnactive}
           />
         )}
       </div>
-      {isUnactive ? <LocksPercentage /> : <LocksPercentage percentage={0.5} />}
+      {isUnactive || !approvingObjectMeta ? (
+        <LocksPercentage />
+      ) : (
+        <LocksPercentage percentage={approvingObjectMeta.globalPercentage} />
+      )}
     </div>
   );
 }

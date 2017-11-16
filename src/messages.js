@@ -24,7 +24,7 @@ export default {
     menu: {
       dashboard: "Dashboard",
       newOperation: "New operation",
-      pendingRequests: "Pending requests",
+      pendingRequests: "Pending",
       search: "Search"
     },
     profile: {

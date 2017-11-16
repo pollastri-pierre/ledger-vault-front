@@ -119,7 +119,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         return denormalize(
           {
             approveOperations: Object.keys(mockEntities.operations).slice(0, 4),
-            watchOperations: Object.keys(mockEntities.operations).slice(4, 6),
+            watchOperations: Object.keys(mockEntities.operations).slice(4, 7),
             approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
             watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
           },

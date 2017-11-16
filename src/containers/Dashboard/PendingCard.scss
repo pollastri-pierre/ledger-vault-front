@@ -24,10 +24,11 @@
     border-bottom: 1px solid $argile;
     padding: 10px 0px;
     .date {
-      font-size: 10px;
       color: black;
-      text-transform: uppercase;
+      font-size: 10px;
       font-weight: 600;
+      line-height: 18px;
+      text-transform: uppercase;
     }
     .body {
       font-size: 13px;
