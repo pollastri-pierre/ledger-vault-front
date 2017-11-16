@@ -16,9 +16,10 @@ type Props = {
 export default class QuicklookGraph extends Component<Props, *> {
   state = {
     selected: -1,
-    width: 300 - 20 - 20,
-    height: 190 - 20 - 20,
-    transform: ""
+    width: 100,
+    height: 100,
+    transform: "",
+    margin: { top: 20, right: 0, bottom: 20, left: 65 }
   };
 
   tooltip: ?HTMLDivElement;
@@ -38,7 +39,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   handleTooltip = () => {
-    const { selected } = this.state;
+    const { selected, margin } = this.state;
     const tooltip = d3.select(this.tooltip);
     tooltip.classed("hide", selected === -1);
     d3
@@ -48,7 +49,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .classed("selected", (d, i) => selected !== -1 && selected === i);
     if (selected !== -1) {
       const selectedDot = d3.select(".dot.selected").data()[0];
-      tooltip.style("left", `${selectedDot.x - 30}px`);
+      tooltip.style("left", `${selectedDot.x + margin.right + 15}px`);
       tooltip.style("top", `${selectedDot.y - 65}px`);
     }
   };
@@ -118,12 +119,15 @@ export default class QuicklookGraph extends Component<Props, *> {
   drawxAxisLabel = (domainX: Array<*>) => {
     const timeDelta = domainX[1] - domainX[0];
 
+    const yearInMs = 31556952000;
+    const monthInMs = 2629746000;
+    const dayInMs = 86400000;
     const tickLabel =
-      timeDelta >= 31556952000 * 2
+      timeDelta >= yearInMs * 2
         ? "year"
-        : timeDelta >= 2629746000 * 2
+        : timeDelta >= monthInMs * 2
           ? "month"
-          : timeDelta >= 86400000 ? "day" : "hour";
+          : timeDelta >= dayInMs ? "day" : "hour";
     d3.select(".xAxisLabel").text(tickLabel.toUpperCase());
   };
 
@@ -161,7 +165,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     s
       .selectAll(".tick text")
       .attr("x", 0)
-      .attr("dy", -12)
+      .attr("dy", -8)
       .attr("fill", "#999999");
 
     s
@@ -171,7 +175,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   computeXY = (data: Array<*>) => {
-    const { width, height } = this.state;
+    const { width, height, margin } = this.state;
 
     const domainX = [
       d3.min(data, function(d) {
@@ -185,7 +189,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const x = d3
       .scaleTime()
       .domain(domainX)
-      .range([55, width]);
+      .range([0, width]);
 
     const minY = d3.min(data, function(d) {
       return d.amount;
@@ -208,14 +212,14 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   computeData = (data: Array<*>) => {
-    const { width, transform } = this.state;
+    const { width, transform, margin } = this.state;
 
     let computedData = data.slice();
 
     let { x, y } = this.computeXY(data);
 
     if (transform) {
-      x = transform.translate(35, 0).rescaleX(x);
+      x = transform.rescaleX(x);
     }
 
     //Setting up xAxis tick format behaviour. subject to change
@@ -252,7 +256,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const yAxis = d3
       .axisRight(y)
       .ticks(3)
-      .tickSize(width);
+      .tickSize(width + margin.left);
 
     computedData = _.map(data, transaction => {
       if (!x && !y) return transaction;
@@ -272,10 +276,10 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   initPlaceholders = () => {
-    const { width, height } = this.state;
+    const { width, height, margin } = this.state;
 
     //init svg with d3js margin convention
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+
     const svg = d3.select(this.svg);
     svg.attr("height", height + margin.top + margin.bottom);
     svg.attr("width", width + margin.left + margin.right);
@@ -293,13 +297,17 @@ export default class QuicklookGraph extends Component<Props, *> {
       .attr("transform", `translate(0, ${height})`);
 
     //init yAxis placeholder
-    g.append("g").classed("yAxis", true);
+    g
+      .append("g")
+      .classed("yAxis", true)
+      .attr("transform", `translate(${-margin.left}, 0)`);
 
     //init xAxisLabel placeholder
     g
       .append("text")
       .classed("xAxisLabel", true)
       .attr("dy", 166)
+      .attr("dx", -margin.left)
       .attr("fill", "#999999")
       .attr("font-size", "10px")
       .attr("text-transform", "uppercase");
@@ -312,16 +320,15 @@ export default class QuicklookGraph extends Component<Props, *> {
       .append("clipPath")
       .attr("id", "clip")
       .append("rect")
-      .attr("width", width - 55)
-      .attr("height", height + 100)
-      .attr("x", 55)
-      .attr("y", -50);
+      .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom);
 
     //init placeholder for visible dots
     g
       .append("g")
       .classed("visibleDots", true)
-      .attr("clip-path", "url(#clip)");
+      .attr("clip-path");
 
     //init placeholder for invisible dots (bigger invisible dots for better ux)
     g
@@ -348,8 +355,8 @@ export default class QuicklookGraph extends Component<Props, *> {
       const { x } = this.computeXY(data);
       return {
         transform: d3.zoomIdentity
-          .scale((width - 55) / (x(d1) - x(d0)))
-          .translate(55 - x(d0), 0),
+          .scale(width / (x(d1) - x(d0)))
+          .translate(-x(d0), 0),
         selected: -1
       };
     });
@@ -362,7 +369,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const x = d3
       .scaleTime()
       .domain(domainX)
-      .range([55, width]);
+      .range([0, width]);
 
     //Setting up xAxis tick format behaviour. subject to change
     const formatMillisecond = d3.timeFormat(".%L"),
@@ -400,13 +407,24 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   componentDidMount() {
+    const { margin } = this.state;
     const { data, dateRange } = this.props;
-    //init placeholders
-    this.initPlaceholders();
-    //return if no data
-    if (data.length) {
-      this.zoomTo(dateRange[0], dateRange[1], data);
-    }
+    console.log("dataprop", data);
+    const parent = d3.select(d3.select(this.svg).node().parentNode);
+    const height =
+      parseFloat(parent.style("height")) - margin.top - margin.bottom;
+    console.log(parseFloat(parent.style("height")));
+    const width =
+      parseFloat(parent.style("width")) - margin.left - margin.right;
+
+    this.setState({ height: height, width: width }, () => {
+      //init placeholders
+      this.initPlaceholders();
+      //return if no data
+      if (data.length) {
+        this.zoomTo(dateRange[0], dateRange[1], data);
+      }
+    });
   }
 
   componentDidUpdate(prevProps: *, prevState: *) {

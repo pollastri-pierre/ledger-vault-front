@@ -145,6 +145,7 @@ class AccountView extends Component<
         tooltip: true
       };
     });
+    console.log(operations);
     if (quickLookGraphFilter.key === "balance") {
       operations = operations.map((o: Operation, i: number): Array<
         Operations
@@ -158,7 +159,7 @@ class AccountView extends Component<
       });
       operations.push({
         ...operations[operations.length - 1],
-        time: new Date().setHours(0, 0, 0, 0),
+        time: new Date(),
         tooltip: false
       });
     } else if (quickLookGraphFilter.key === "countervalue") {
@@ -170,7 +171,7 @@ class AccountView extends Component<
       });
       operations.push({
         ...operations[operations.length - 1],
-        time: new Date().setHours(0, 0, 0, 0),
+        time: new Date(),
         tooltip: false
       });
     }
@@ -248,11 +249,13 @@ class AccountView extends Component<
                 From {labelDateRange[0]} to {labelDateRange[1]}
               </div>
               <div className="content">
-                <QuicklookGraph
-                  dateRange={this.getDateRange(tabsIndex)}
-                  data={data}
-                  currency={data.length ? data[0].currency : null} //FIXME
-                />
+                <div className="quickLookGraphWrap">
+                  <QuicklookGraph
+                    dateRange={this.getDateRange(tabsIndex)}
+                    data={data}
+                    currency={data.length ? data[0].currency : null} //FIXME
+                  />
+                </div>
                 <TabPanel className="tabs_panel" />
                 <TabPanel className="tabs_panel" />
                 <TabPanel className="tabs_panel" />
