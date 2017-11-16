@@ -48,18 +48,16 @@ class AccountView extends Component<
     this.setState({ quickLookGraphFilter: filter });
   };
 
-  onDomainChange = domain => {
-    this.setState({ labelDateRange: this.getLabelDateRange(domain) });
-  };
-
   quickLookGraphFilters = [
     { title: "balance", key: "balance" },
-    { title: "countervalue", key: "countervalue" },
-    { title: "payments", key: "payments" }
+    { title: "countervalue", key: "countervalue" }
   ];
 
   selectTab = index => {
-    this.setState({ tabsIndex: index });
+    this.setState({
+      tabsIndex: index,
+      labelDateRange: this.getLabelDateRange(this.getDateRange(index))
+    });
   };
   getLastWeek = () => {
     var today = new Date();
@@ -74,15 +72,18 @@ class AccountView extends Component<
   };
 
   getLabelDateRange = domain => {
+    const day1 = new Date(domain[0]).getDate();
+    const month1 = new Date(domain[0]).getMonth();
+    const year1 = new Date(domain[0]).getFullYear();
+    const day2 = new Date(domain[1]).getDate();
+    const month2 = new Date(domain[1]).getMonth();
+    const year2 = new Date(domain[1]).getFullYear();
     const dateRange =
-      new Date(domain[0]).getDate() === new Date(domain[1]).getDate()
+      day1 === day2 && month1 === month2 && year1 === year2
         ? "day"
-        : new Date(domain[0]).getMonth() === new Date(domain[1]).getMonth()
+        : month1 === month2 && year1 === year2
           ? "month"
-          : new Date(domain[0]).getFullYear() ===
-            new Date(domain[1]).getFullYear()
-            ? "year"
-            : "hour";
+          : year1 === year2 ? "year" : "hour";
 
     let res = "";
     if (dateRange === "day") {
@@ -132,38 +133,59 @@ class AccountView extends Component<
   getOperations = data => {
     const { currencies } = this.props;
     const { quickLookGraphFilter } = this.state;
+    console.log(data);
     let operations = [];
-    let factor = 1;
-    if (quickLookGraphFilter === "balance") {
-      operations = data.map((o: Operation, i: number) => {
-        const currency = currencies.find(c => c.name === o.currency_name);
+    if (!data.length) return [];
+    operations = data.map((o: Operation) => {
+      const currency = currencies.find(c => c.name === o.currency_name);
+      return {
+        time: new Date(o.time),
+        amount: o.amount,
+        currency,
+        tooltip: true
+      };
+    });
+    console.log(operations);
+    if (quickLookGraphFilter.key === "balance") {
+      operations = operations.map((o: Operation, i: number): Array<
+        Operations
+      > => {
         return {
-          time: new Date(o.time),
-          amount: o.amount + (i > 0 ? data[i - 1].amount : 0),
-          currency,
-          tooltip: true
+          ...o,
+          amount: operations.slice(0, i).reduce((a: number, b: Operation) => {
+            return a + b.amount;
+          }, 0)
         };
       });
-      operations.push({ ...operations[operations.length - 1] });
-      operations[operations.length - 1].time = new Date().setHours(0, 0, 0, 0);
-      operations[operations.length - 1].tooltip = false;
-    } else {
-      factor =
-        quickLookGraphFilter === "countervalue" ? operations[0].rate.value : 1;
-      operations = operations.map((o: Operation) => ({
-        time: new Date(o.time),
-        amount: o.amount * factor,
-        currency: currencies.find(c => c.name === o.currency_name),
-        tooltip: true
-      }));
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date(),
+        tooltip: false
+      });
+    } else if (quickLookGraphFilter.key === "countervalue") {
+      operations = operations.map((o: Operation) => {
+        return {
+          ...o,
+          amount: o.amount * o.currency.rate.value
+        };
+      });
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date(),
+        tooltip: false
+      });
     }
-    _.sortBy(operations, elem => new Date(elem.time).toISOString());
+    operations = _.sortBy(operations, elem =>
+      new Date(elem.time).toISOString()
+    );
     return operations;
   };
 
   render() {
     const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
+
+    const data = this.getOperations(operations);
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -201,17 +223,19 @@ class AccountView extends Component<
             className="quicklook"
             title="Quicklook"
             titleRight={
-              <Select onChange={this.onQuickLookGraphFilterChange}>
-                {this.quickLookGraphFilters.map(({ title, key }) => (
-                  <Option
-                    key={key}
-                    value={key}
-                    selected={quickLookGraphFilter === key}
-                  >
-                    {title}
-                  </Option>
-                ))}
-              </Select>
+              data.length && (
+                <Select onChange={this.onQuickLookGraphFilterChange}>
+                  {this.quickLookGraphFilters.map(({ title, key }) => (
+                    <Option
+                      key={key}
+                      value={key}
+                      selected={quickLookGraphFilter === key}
+                    >
+                      {title}
+                    </Option>
+                  ))}
+                </Select>
+              )
             }
           >
             <Tabs
@@ -231,12 +255,13 @@ class AccountView extends Component<
                 From {labelDateRange[0]} to {labelDateRange[1]}
               </div>
               <div className="content">
-                <QuicklookGraph
-                  onDomainChange={this.onDomainChange}
-                  minDomain={this.getDateRange(0)}
-                  dateRange={this.getDateRange(tabsIndex)}
-                  data={this.getOperations(operations)}
-                />
+                <div className="quickLookGraphWrap">
+                  <QuicklookGraph
+                    dateRange={this.getDateRange(tabsIndex)}
+                    data={data}
+                    currency={data.length ? data[0].currency : null} //FIXME
+                  />
+                </div>
                 <TabPanel className="tabs_panel" />
                 <TabPanel className="tabs_panel" />
                 <TabPanel className="tabs_panel" />
