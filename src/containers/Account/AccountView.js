@@ -132,9 +132,8 @@ class AccountView extends Component<
   };
 
   getOperations = data => {
-    const { currencies, account } = this.props;
+    const { account } = this.props;
     const { quickLookGraphFilter } = this.state;
-    console.log(data);
     let operations = [];
     if (!data.length) return [];
 
@@ -146,8 +145,6 @@ class AccountView extends Component<
         rate: o.rate
       };
     });
-    console.log("hey");
-    console.log(quickLookGraphFilter);
     if (quickLookGraphFilter === "balance") {
       operations = operations.map((o: Operation, i: number): Array<
         Operations
@@ -189,7 +186,7 @@ class AccountView extends Component<
   };
 
   render() {
-    const { account, operations, reloading, currencies } = this.props;
+    const { account, operations, reloading } = this.props;
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
 
     const data = this.getOperations(operations);

@@ -45,7 +45,6 @@ export function formatCurrencyUnit(
   alwaysShowSign: boolean,
   showAllDigits: boolean
 ): string {
-  console.log(unit);
   const { magnitude, code } = unit;
   const floatValue = value / 10 ** magnitude;
   const minimumFractionDigits = showAllDigits ? magnitude : 0;
