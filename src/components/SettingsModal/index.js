@@ -1,16 +1,23 @@
 //@flow
 import React, { Component } from "react";
+import debounce from "lodash/debounce";
 import { NavLink, Switch, Route, Redirect } from "react-router-dom";
+import { Tabs, Tab, TabList } from "react-tabs";
+import FiatUnits from "../../fiat-units";
+import TextField from "../utils/TextField";
 import connectData from "../../restlay/connectData";
+import ModalLoading from "../ModalLoading";
 import type { RestlayEnvironment } from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
-import SettingsQuery from "../../api/queries/SettingsQuery";
+import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
+import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
+import { Select, Option } from "../Select";
 import type {
   Account,
   SecurityScheme,
   AccountSettings
 } from "../../data/types";
-import type { Response as SettingsQueryResponse } from "../../api/queries/SettingsQuery";
+import type { Response as SettingsDataQueryResponse } from "../../api/queries/SettingsDataQuery";
 
 const { REACT_APP_SECRET_CODE } = process.env;
 
@@ -27,9 +34,23 @@ class NavAccount extends Component<{
   }
 }
 
-class SecuritySchemeSettingsEdit extends Component<{
-  securityScheme: SecurityScheme,
-  onChange: SecurityScheme => void
+class SettingsField extends Component<{
+  label: string,
+  children: React$Node
+}> {
+  render() {
+    const { children, label } = this.props;
+    return (
+      <label className="settings-field">
+        <span className="label">{label}</span>
+        <span className="body">{children}</span>
+      </label>
+    );
+  }
+}
+
+class SecuritySchemeView extends Component<{
+  securityScheme: SecurityScheme
 }> {
   render() {
     return <p>...</p>;
@@ -37,33 +58,37 @@ class SecuritySchemeSettingsEdit extends Component<{
 }
 
 type Props = {
-  settings: SettingsQueryResponse,
+  settingsData: SettingsDataQueryResponse,
   account: Account,
   restlay: RestlayEnvironment
 };
 type State = {
   name: string,
-  security_scheme: SecurityScheme,
   settings: AccountSettings
 };
 class AccountSettingsEdit extends Component<Props, State> {
   constructor({ account }: Props) {
     super();
-    const { security_scheme, name, settings } = account;
+    const { name, settings } = account;
     this.state = {
-      security_scheme,
       name,
       settings
     };
   }
-  onSecuritySchemeChange = (security_scheme: SecurityScheme) => {
-    this.setState({ security_scheme });
+  debouncedCommit = debounce(() => {
+    const { props: { restlay, account }, state } = this;
+    const m = new SaveAccountSettingsMutation({ ...state, account });
+    restlay.commitMutation(m);
+  }, 300);
+  update = (update: $Shape<State>) => {
+    this.setState(update);
+    this.debouncedCommit();
   };
   onAccountNameChange = (name: string) => {
-    this.setState({ name });
+    this.update({ name });
   };
   onUnitIndexChange = (unitIndex: number) => {
-    this.setState({
+    this.update({
       settings: {
         ...this.state.settings,
         unitIndex
@@ -71,7 +96,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   onBlockchainExplorerChange = (blockchainExplorer: string) => {
-    this.setState({
+    this.update({
       settings: {
         ...this.state.settings,
         blockchainExplorer
@@ -79,7 +104,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   onCountervalueSourceChange = (countervalueSource: string) => {
-    this.setState({
+    this.update({
       settings: {
         ...this.state.settings,
         countervalueSource
@@ -87,7 +112,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   onFiatChange = (fiat: string) => {
-    this.setState({
+    this.update({
       settings: {
         ...this.state.settings,
         fiat
@@ -95,30 +120,91 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   render() {
-    const { security_scheme } = this.state;
+    const { account, settingsData } = this.props;
+    const { name, settings } = this.state;
+    const countervalueSourceData = settingsData.countervalueSources.find(
+      c => c.id === settings.countervalueSource
+    );
     return (
       <div className="account-settings">
         <h3>Security scheme</h3>
-        <SecuritySchemeSettingsEdit
-          onChange={this.onSecuritySchemeChange}
-          securityScheme={security_scheme}
-        />
+        <SecuritySchemeView securityScheme={account.security_scheme} />
         <h3>General</h3>
-        <p>...</p>
+        <SettingsField label="Account Name">
+          <TextField
+            name="last_name"
+            className="profile-form-name"
+            value={name}
+            hasError={!name}
+            onChange={this.onAccountNameChange}
+          />
+        </SettingsField>
+        <SettingsField label="Units">
+          <Tabs
+            selectedIndex={settings.unitIndex}
+            onSelect={this.onUnitIndexChange}
+          >
+            <TabList>
+              {account.currency.units.map((unit, tabIndex) => (
+                <Tab key={tabIndex}>{unit.name}</Tab>
+              ))}
+            </TabList>
+          </Tabs>
+        </SettingsField>
+        <SettingsField label="Blockchain Explorer">
+          <Select onChange={this.onBlockchainExplorerChange}>
+            {settingsData.blockchainExplorers.map(({ id }) => (
+              <Option
+                key={id}
+                selected={settings.blockchainExplorer === id}
+                value={id}
+              >
+                {id}
+              </Option>
+            ))}
+          </Select>
+        </SettingsField>
         <h3>Countervalue</h3>
-        <p>...</p>
+        <SettingsField label="Source">
+          <Select onChange={this.onCountervalueSourceChange}>
+            {settingsData.countervalueSources.map(({ id }) => (
+              <Option
+                key={id}
+                selected={settings.countervalueSource === id}
+                value={id}
+              >
+                {id}
+              </Option>
+            ))}
+          </Select>
+        </SettingsField>
+        {countervalueSourceData ? (
+          <SettingsField label="Source">
+            <Select onChange={this.onFiatChange}>
+              {countervalueSourceData.fiats.map(fiat => (
+                <Option
+                  key={fiat}
+                  selected={settings.fiat === fiat}
+                  value={fiat}
+                >
+                  {fiat} - {FiatUnits[fiat].name}
+                </Option>
+              ))}
+            </Select>
+          </SettingsField>
+        ) : null}
       </div>
     );
   }
 }
 
 class SettingsModal extends Component<{
-  settings: SettingsQueryResponse,
+  settingsData: SettingsDataQueryResponse,
   accounts: Account[],
   restlay: RestlayEnvironment
 }> {
   render() {
-    const { settings, accounts, restlay } = this.props;
+    const { settingsData, accounts, restlay } = this.props;
     return (
       <div className="settings modal">
         <aside>
@@ -147,7 +233,7 @@ class SettingsModal extends Component<{
                   return account ? (
                     <AccountSettingsEdit
                       {...props}
-                      settings={settings}
+                      settingsData={settingsData}
                       account={account}
                       restlay={restlay}
                     />
@@ -166,8 +252,9 @@ class SettingsModal extends Component<{
 }
 
 export default connectData(SettingsModal, {
+  RenderLoading: ModalLoading,
   queries: {
-    settings: SettingsQuery,
+    settingsData: SettingsDataQuery,
     accounts: AccountsQuery
   }
 });

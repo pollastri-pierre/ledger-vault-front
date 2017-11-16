@@ -3,21 +3,24 @@ import React, { Component } from "react";
 import queryString from "query-string";
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
-import { TotalBalanceFilters } from "../../components/TotalBalanceFilter";
+import { TotalBalanceFilters } from "../../components/EvolutionSince";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
 import OperationModal from "../../components/operations/OperationModal";
 import ModalRoute from "../../components/ModalRoute";
-import type { Filter } from "./EvolutionSince";
 
 import "./index.css";
 
-class Dashboard extends Component<*> {
-  onTotalBalanceFilterChange = (filter: Filter) => {
+class Dashboard extends Component<{
+  match: *,
+  location: *,
+  history: *
+}> {
+  onTotalBalanceFilterChange = (filter: string) => {
     this.props.history.replace({
-      search: "?filter=" + filter.key
+      search: "?filter=" + filter
     });
   };
 
@@ -25,8 +28,7 @@ class Dashboard extends Component<*> {
     const { location, match } = this.props;
     const { onTotalBalanceFilterChange } = this;
     const { filter } = queryString.parse(location.search.slice(1));
-    const filterObj =
-      TotalBalanceFilters.find(f => f.key === filter) || TotalBalanceFilters[0];
+    const filterObj = filter || TotalBalanceFilters[0].key;
 
     return (
       <div id="dashboard">

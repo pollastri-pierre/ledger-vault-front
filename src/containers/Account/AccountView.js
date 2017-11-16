@@ -13,7 +13,7 @@ import CardField from "../../components/CardField";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
-import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
+import { Select, Option } from "../../components/Select";
 import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import AccountQuery from "../../api/queries/AccountQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
@@ -38,7 +38,7 @@ class AccountView extends Component<
   constructor(props) {
     super(props);
     this.state = {
-      quickLookGraphFilter: this.quickLookGraphFilters[0],
+      quickLookGraphFilter: "balance",
       tabsIndex: 0,
       labelDateRange: this.getLabelDateRange(this.getDateRange(0))
     };
@@ -134,7 +134,7 @@ class AccountView extends Component<
     const { quickLookGraphFilter } = this.state;
     let operations = [];
     let factor = 1;
-    if (quickLookGraphFilter.key === "balance") {
+    if (quickLookGraphFilter === "balance") {
       operations = data.map((o: Operation, i: number) => {
         const currency = currencies.find(c => c.name === o.currency_name);
         return {
@@ -149,9 +149,7 @@ class AccountView extends Component<
       operations[operations.length - 1].tooltip = false;
     } else {
       factor =
-        quickLookGraphFilter.key === "countervalue"
-          ? operations[0].rate.value
-          : 1;
+        quickLookGraphFilter === "countervalue" ? operations[0].rate.value : 1;
       operations = operations.map((o: Operation) => ({
         time: new Date(o.time),
         amount: o.amount * factor,
@@ -203,11 +201,17 @@ class AccountView extends Component<
             className="quicklook"
             title="Quicklook"
             titleRight={
-              <CustomSelectField
-                values={this.quickLookGraphFilters}
-                selected={quickLookGraphFilter}
-                onChange={this.onQuickLookGraphFilterChange}
-              />
+              <Select onChange={this.onQuickLookGraphFilterChange}>
+                {this.quickLookGraphFilters.map(({ title, key }) => (
+                  <Option
+                    key={key}
+                    value={key}
+                    selected={quickLookGraphFilter === key}
+                  >
+                    {title}
+                  </Option>
+                ))}
+              </Select>
             }
           >
             <Tabs

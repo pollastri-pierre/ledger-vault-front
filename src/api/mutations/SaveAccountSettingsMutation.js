@@ -1,27 +1,20 @@
 //@flow
 import Mutation from "../../restlay/Mutation";
-import genericRenderNotif from "../../data/genericRenderNotif";
-import type {
-  Account,
-  SecurityScheme,
-  AccountSettings
-} from "../../data/types";
+import type { Account, AccountSettings } from "../../data/types";
 
-type Input = {
+type In = {
   account: Account,
   name: string,
-  security_scheme: SecurityScheme,
   settings: AccountSettings
 };
 
-type Response = Account;
+type Res = Account;
 
-export default class AbortAccountMutation extends Mutation<Input, Response> {
+export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   method = "POST";
-  notif = genericRenderNotif("account settings", "POST");
   uri = `/accounts/${this.props.account.id}/settings`;
   getBody() {
-    const { account: { id }, name, security_scheme, settings } = this.props;
-    return { id, name, security_scheme, settings };
+    const { account: { id }, name, settings } = this.props;
+    return { id, name, settings };
   }
 }

@@ -32,7 +32,11 @@ class ActionBar extends Component<{ location: Object }> {
       <div className="ActionBar">
         <ProfileCard />
         <Route path="*/new-account" component={AccountCreation} />
-        <ModalRoute path="*/settings" component={SettingsModal} />
+        <ModalRoute
+          path="*/settings"
+          component={SettingsModal}
+          undoAllHistoryOnClickOutside
+        />
 
         <div className="content-header">
           <div className="content-header-left">

@@ -28,6 +28,9 @@ function renderInner(routeProps, { component, render, children }, extraProps) {
 }
 
 class ModalRoute extends Component<*> {
+  static defaultProps = {
+    undoAllHistoryOnClickOutside: false
+  };
   static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired
@@ -38,14 +41,16 @@ class ModalRoute extends Component<*> {
     this._unmounted = true;
   }
   historyLengthOnEnter: number = 0;
-  close = () => {
+  close = (undoAllHistory?: boolean = false) => {
     if (this._unmounted) return;
-    const move =
-      this.historyLengthOnEnter - this.context.router.history.length - 1;
+    const move = undoAllHistory
+      ? this.historyLengthOnEnter - this.context.router.history.length - 1
+      : -1;
     // TODO we probably need to handle case where use just loaded a modal page.
     // in such case we need to replace the history and remove the part before the modal route path
     this.context.router.history.go(move);
   };
+  onRequestClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
   lastMatch: ?Object;
   render() {
     const { component, render, children, ...rest } = this.props; // eslint-disable-line no-unused-vars
@@ -61,7 +66,11 @@ class ModalRoute extends Component<*> {
           });
           const open = !!routeProps.match;
           return (
-            <BlurDialog open={open} onRequestClose={this.close} nopadding>
+            <BlurDialog
+              open={open}
+              onRequestClose={this.onRequestClose}
+              nopadding
+            >
               <StaticContainer shouldUpdate={open}>{inner}</StaticContainer>
             </BlurDialog>
           );

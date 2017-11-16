@@ -13,6 +13,6 @@ export type Response = {
   }>
 };
 
-export default class SettingsQuery extends Query<Input, Response> {
-  uri = "/settings";
+export default class SettingsDataQuery extends Query<Input, Response> {
+  uri = "/settings-data";
 }
