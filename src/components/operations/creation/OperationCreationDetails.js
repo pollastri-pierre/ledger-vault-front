@@ -4,9 +4,10 @@ import * as React from "react";
 import { Component } from "react";
 import bitcoinAddress from "bitcoin-address";
 import currencies from "../../../currencies";
-import { PopBubble, TextField } from "../../../components";
+import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
 import type { Currency, Unit } from "../../../datatypes";
+import CurrencyNameValue from "../../CurrencyNameValue";
 
 import "./OperationCreationDetails.css";
 
@@ -24,7 +25,15 @@ type State = {
   amount: string,
   amountIsValid: boolean,
   address: string,
-  addressIsValid: boolean
+  addressIsValid: boolean,
+  feesMenuOpen: boolean,
+  feesSelected: string,
+  feesAmount: number
+};
+
+type Fee = {
+  amount: number,
+  title: string
 };
 
 class OperationCreationDetails extends Component<Props, State> {
@@ -34,6 +43,22 @@ class OperationCreationDetails extends Component<Props, State> {
     const { account } = this.props;
     this.currency = currencies.find(c => c.name === account.currency.name);
 
+    // TODO Get fees from the gate
+    this.fees = {
+      low: {
+        amount: 15000,
+        title: "Slow (1 hour)"
+      },
+      medium: {
+        amount: 30000,
+        title: "Medium (30 minutes)"
+      },
+      high: {
+        amount: 45000,
+        title: "Fast (10 minutes)"
+      }
+    };
+
     this.state = {
       // $FlowFixMe
       unit: this.currency.units[0],
@@ -42,21 +67,32 @@ class OperationCreationDetails extends Component<Props, State> {
       amount: "",
       amountIsValid: true,
       address: "",
-      addressIsValid: true
+      addressIsValid: true,
+      feesMenuOpen: false,
+      feesSelected: "medium",
+      feesAmount: this.fees.medium.amount
     };
   }
 
   currency: ?Currency;
   unitMenuAnchor: ?HTMLDivElement;
   maxMenuAnchor: ?HTMLDivElement;
+  feesMenuAnchor: ?HTMLDivElement;
+  // feesList
+  fees: {
+    low: Fee,
+    medium: Fee,
+    high: Fee
+  };
 
   setAmount = (
-    amount: string,
-    magnitude: number = this.state.unit.magnitude
+    amount: string = this.state.amount,
+    magnitude: number = this.state.unit.magnitude,
+    fees: number = this.state.feesAmount
   ) => {
     const value = parseFloat(amount) || 0;
     const balance = this.props.account.balance;
-    const max = balance / 10 ** magnitude;
+    const max = (balance - fees) / 10 ** magnitude;
     const decimals = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
 
     this.setState({
@@ -94,7 +130,8 @@ class OperationCreationDetails extends Component<Props, State> {
 
     const magnitude = this.state.unit.magnitude;
     const balance = this.props.account.balance;
-    const amount = balance / 10 ** magnitude;
+    const fees = this.state.feesAmount;
+    const amount = (balance - fees) / 10 ** magnitude;
 
     this.setState({ maxMenuOpen: false });
 
@@ -112,10 +149,47 @@ class OperationCreationDetails extends Component<Props, State> {
     });
   };
 
+  selectFee = (e: SyntheticEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const target: HTMLDivElement = e.currentTarget;
+    const feesSelected: string = target.dataset.fee;
+    const feesAmount: number = this.fees[feesSelected].amount;
+
+    this.setState({
+      feesSelected,
+      feesAmount,
+      feesMenuOpen: false
+    });
+
+    this.setAmount(undefined, undefined, feesAmount);
+  };
+
+  feesList = () => {
+    let list = [];
+
+    for (const key in this.fees) {
+      const fee: Fee = this.fees[key];
+
+      list.push(
+        <li key={key}>
+          <a
+            href="fee"
+            onClick={this.selectFee}
+            data-fee={key}
+            className={key === this.state.feesSelected ? "active" : ""}
+          >
+            {fee.title}
+          </a>
+        </li>
+      );
+    }
+
+    return list;
+  };
+
   render() {
     return (
       <div className="operation-creation-details wrapper">
-
         {/* Amount */}
 
         <div className="tab-title">Amount</div>
@@ -232,6 +306,60 @@ class OperationCreationDetails extends Component<Props, State> {
         {/* Fees */}
 
         <div className="tab-title">Confirmation fees</div>
+        <div
+          className="operation-creation-fees-wrapper"
+          style={{ position: "relative" }}
+        >
+          <div
+            className="operation-creation-fees-button"
+            ref={e => {
+              this.feesMenuAnchor = e;
+            }}
+            onClick={() => this.setState({ feesMenuOpen: true })}
+            style={{
+              float: "left"
+            }}
+          >
+            {this.fees[this.state.feesSelected].title}
+            <div className="operation-creation-arrow-down">
+              <ArrowDown />
+            </div>
+          </div>
+          <div
+            className="operation-creation-fees-amount"
+            style={{
+              float: "right",
+              fontSize: "13px",
+              fontWeight: 600
+            }}
+          >
+            <CurrencyNameValue
+              // $FlowFixMe
+              currencyName={this.currency.name}
+              value={this.state.feesAmount}
+            />
+          </div>
+        </div>
+        <Divider className="operation-creation-fees-divider" />
+        <div className="operation-creation-fees-countervalue">
+          <div
+            style={{
+              float: "right",
+              fontSize: "11px",
+              fontWeight: 600
+            }}
+          >
+            EUR 0.25
+          </div>
+        </div>
+        <PopBubble
+          open={this.state.feesMenuOpen}
+          anchorEl={this.feesMenuAnchor}
+          onRequestClose={() => this.setState({ feesMenuOpen: false })}
+          className="operation-creation-fees-menu"
+        >
+          <ul className="operation-creation-fees-list">{this.feesList()}</ul>
+        </PopBubble>
       </div>
     );
   }
