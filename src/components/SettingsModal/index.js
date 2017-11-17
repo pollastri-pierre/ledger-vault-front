@@ -246,6 +246,7 @@ class SettingsModal extends Component<{
                     <AccountSettingsEdit
                       {...props}
                       settingsData={settingsData}
+                      key={account.id}
                       account={account}
                       restlay={restlay}
                     />
