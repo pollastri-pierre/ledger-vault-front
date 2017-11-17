@@ -1,23 +1,26 @@
 //@flow
 import React, { Component } from "react";
 import debounce from "lodash/debounce";
-import { NavLink, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { NavLink } from "react-router-relative-link";
 import { Tabs, Tab, TabList } from "react-tabs";
 import FiatUnits from "../../fiat-units";
-import TextField from "../utils/TextField";
+import TextField from "material-ui/TextField";
 import connectData from "../../restlay/connectData";
-import ModalLoading from "../ModalLoading";
 import type { RestlayEnvironment } from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
 import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import { Select, Option } from "../Select";
+import DialogButton from "../buttons/DialogButton";
 import type {
   Account,
   SecurityScheme,
   AccountSettings
 } from "../../data/types";
 import type { Response as SettingsDataQueryResponse } from "../../api/queries/SettingsDataQuery";
+import "./index.css";
 
 const { REACT_APP_SECRET_CODE } = process.env;
 
@@ -28,7 +31,8 @@ class NavAccount extends Component<{
     const { account } = this.props;
     return (
       <NavLink className="nav-account" to={account.id}>
-        {account.name}
+        <span className="name">{account.name}</span>
+        <span className="currency">{account.currency.name}</span>
       </NavLink>
     );
   }
@@ -129,70 +133,76 @@ class AccountSettingsEdit extends Component<Props, State> {
       <div className="account-settings">
         <h3>Security scheme</h3>
         <SecuritySchemeView securityScheme={account.security_scheme} />
-        <h3>General</h3>
-        <SettingsField label="Account Name">
-          <TextField
-            name="last_name"
-            className="profile-form-name"
-            value={name}
-            hasError={!name}
-            onChange={this.onAccountNameChange}
-          />
-        </SettingsField>
-        <SettingsField label="Units">
-          <Tabs
-            selectedIndex={settings.unitIndex}
-            onSelect={this.onUnitIndexChange}
-          >
-            <TabList>
-              {account.currency.units.map((unit, tabIndex) => (
-                <Tab key={tabIndex}>{unit.name}</Tab>
-              ))}
-            </TabList>
-          </Tabs>
-        </SettingsField>
-        <SettingsField label="Blockchain Explorer">
-          <Select onChange={this.onBlockchainExplorerChange}>
-            {settingsData.blockchainExplorers.map(({ id }) => (
-              <Option
-                key={id}
-                selected={settings.blockchainExplorer === id}
-                value={id}
-              >
-                {id}
-              </Option>
-            ))}
-          </Select>
-        </SettingsField>
-        <h3>Countervalue</h3>
-        <SettingsField label="Source">
-          <Select onChange={this.onCountervalueSourceChange}>
-            {settingsData.countervalueSources.map(({ id }) => (
-              <Option
-                key={id}
-                selected={settings.countervalueSource === id}
-                value={id}
-              >
-                {id}
-              </Option>
-            ))}
-          </Select>
-        </SettingsField>
-        {countervalueSourceData ? (
-          <SettingsField label="Source">
-            <Select onChange={this.onFiatChange}>
-              {countervalueSourceData.fiats.map(fiat => (
+        <section>
+          <h3>General</h3>
+          <SettingsField label="Account Name">
+            <TextField
+              inputStyle={{ textAlign: "right" }}
+              underlineShow={false}
+              name="last_name"
+              className="profile-form-name"
+              value={name}
+              hasError={!name}
+              onChange={this.onAccountNameChange}
+            />
+          </SettingsField>
+          <SettingsField label="Units">
+            <Tabs
+              selectedIndex={settings.unitIndex}
+              onSelect={this.onUnitIndexChange}
+            >
+              <TabList>
+                {account.currency.units.map((unit, tabIndex) => (
+                  <Tab key={tabIndex}>{unit.name}</Tab>
+                ))}
+              </TabList>
+            </Tabs>
+          </SettingsField>
+          <SettingsField label="Blockchain Explorer">
+            <Select onChange={this.onBlockchainExplorerChange}>
+              {settingsData.blockchainExplorers.map(({ id }) => (
                 <Option
-                  key={fiat}
-                  selected={settings.fiat === fiat}
-                  value={fiat}
+                  key={id}
+                  selected={settings.blockchainExplorer === id}
+                  value={id}
                 >
-                  {fiat} - {FiatUnits[fiat].name}
+                  {id}
                 </Option>
               ))}
             </Select>
           </SettingsField>
-        ) : null}
+        </section>
+        <section>
+          <h3>Countervalue</h3>
+          <SettingsField label="Source">
+            <Select onChange={this.onCountervalueSourceChange}>
+              {settingsData.countervalueSources.map(({ id }) => (
+                <Option
+                  key={id}
+                  selected={settings.countervalueSource === id}
+                  value={id}
+                >
+                  {id}
+                </Option>
+              ))}
+            </Select>
+          </SettingsField>
+          {countervalueSourceData ? (
+            <SettingsField label="Source">
+              <Select onChange={this.onFiatChange}>
+                {countervalueSourceData.fiats.map(fiat => (
+                  <Option
+                    key={fiat}
+                    selected={settings.fiat === fiat}
+                    value={fiat}
+                  >
+                    {fiat} - {FiatUnits[fiat].name}
+                  </Option>
+                ))}
+              </Select>
+            </SettingsField>
+          ) : null}
+        </section>
       </div>
     );
   }
@@ -201,27 +211,29 @@ class AccountSettingsEdit extends Component<Props, State> {
 class SettingsModal extends Component<{
   settingsData: SettingsDataQueryResponse,
   accounts: Account[],
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
+  close: Function
 }> {
   render() {
-    const { settingsData, accounts, restlay } = this.props;
+    const { settingsData, accounts, restlay, close } = this.props;
     return (
       <div className="settings modal">
         <aside>
           <h3>ACCOUNTS</h3>
-          {accounts.map(account => (
-            <NavAccount account={account} key={account.id} />
-          ))}
-          <footer>
-            <code className="version">
-              {REACT_APP_SECRET_CODE || "unversioned"}
-            </code>
-            <a className="support" href="mailto:support@ledger.fr">
-              support
-            </a>
-          </footer>
+          <div className="accounts">
+            {accounts.map(account => (
+              <NavAccount account={account} key={account.id} />
+            ))}
+          </div>
+          <span className="version">
+            {REACT_APP_SECRET_CODE || "unversioned"}
+          </span>
+          <a className="support" href="mailto:support@ledger.fr">
+            support
+          </a>
         </aside>
         <div className="body">
+          <h2>Settings</h2>
           {accounts.length > 0 ? (
             <Switch>
               <Route
@@ -245,14 +257,25 @@ class SettingsModal extends Component<{
               />
             </Switch>
           ) : null}
+          <footer>
+            <DialogButton highlight right onTouchTap={close}>
+              Done
+            </DialogButton>
+          </footer>
         </div>
       </div>
     );
   }
 }
 
+const RenderLoading = () => (
+  <div className="modal settings">
+    <SpinnerCard />
+  </div>
+);
+
 export default connectData(SettingsModal, {
-  RenderLoading: ModalLoading,
+  RenderLoading,
   queries: {
     settingsData: SettingsDataQuery,
     accounts: AccountsQuery

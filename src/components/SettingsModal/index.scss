@@ -1,0 +1,98 @@
+.modal.settings {
+  width: 690px;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  h2 {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 2em;
+  }
+  h3 {
+    font-size: 11px;
+    line-height: 2em;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  > aside {
+    padding: 20px 30px;
+    width: 250px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    .accounts {
+      flex: 1;
+      .nav-account {
+        display: block;
+        padding: 20px 0px;
+        border-bottom: 1px solid #e2e2e2;
+        opacity: 0.5;
+        &.active {
+          opacity: 1;
+        }
+        &:last-child {
+          border-bottom: none;
+        }
+        span {
+          display: block;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .name {
+          font-size: 13px;
+          margin-bottom: 5px;
+        }
+        .currency {
+          font-size: 10px;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: #767676;
+        }
+      }
+      .version,
+      .support {
+        color: #767676;
+        font-size: 11px;
+        display: block;
+        padding: 10px;
+        text-transform: uppercase;
+      }
+    }
+  }
+  > .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    > * {
+      padding: 0 20px;
+    }
+  }
+  .account-settings {
+    flex: 1;
+    section {
+      margin-bottom: 10px;
+    }
+  }
+  .settings-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    border-bottom: 1px solid #e2e2e2;
+    &:last-child {
+      border-bottom: none;
+    }
+    margin-bottom: 8px;
+    > .label {
+      font-size: 13px;
+    }
+    > .body {
+      .react-tabs {
+        position: relative;
+        bottom: -6px;
+      }
+    }
+  }
+}

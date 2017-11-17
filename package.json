@@ -25,6 +25,7 @@
         "react-redux": "^5.0.5",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.1.2",
+        "react-router-relative-link": "^4.0.0-alpha.2",
         "react-tabs": "^2.1.0",
         "react-tap-event-plugin": "^3.0.2",
         "react-tooltip": "^3.4.0",
@@ -53,13 +54,10 @@
         "react-test-renderer": "^16.0.0"
     },
     "scripts": {
-        "build-css":
-            "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-        "watch-css":
-            "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+        "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+        "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
         "start-js": "react-scripts start",
-        "start":
-            "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
+        "start": "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
         "build": "./scripts/build.sh",
         "test": "react-scripts test --env=jsdom",
         "coverage": "react-scripts test --env=jsdom --coverage",
