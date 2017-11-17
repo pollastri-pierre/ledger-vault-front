@@ -14,6 +14,15 @@ import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettings
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import { Select, Option } from "../Select";
 import DialogButton from "../buttons/DialogButton";
+import {
+  BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon,
+  BigSecurityRateLimiterIcon
+} from "../icons";
+import BadgeSecurity from "../BadgeSecurity";
+import RateLimiterValue from "../RateLimiterValue";
+import TimeLockValue from "../TimeLockValue";
+
 import type {
   Account,
   SecurityScheme,
@@ -57,7 +66,37 @@ class SecuritySchemeView extends Component<{
   securityScheme: SecurityScheme
 }> {
   render() {
-    return <p>...</p>;
+    const {
+      securityScheme: { quorum, approvers, time_lock, rate_limiter }
+    } = this.props;
+    return (
+      <div className="security-scheme">
+        <BadgeSecurity
+          icon={<BigSecurityMembersIcon />}
+          label="Members"
+          value={`${approvers.length} of ${quorum}`}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityTimeLockIcon />}
+          label="Time-lock"
+          disabled={!time_lock}
+          value={<TimeLockValue time_lock={time_lock} />}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityRateLimiterIcon />}
+          label="Rate Limiter"
+          disabled={!rate_limiter}
+          value={
+            rate_limiter && (
+              <RateLimiterValue
+                max_transaction={rate_limiter.max_transaction}
+                time_slot={rate_limiter.time_slot}
+              />
+            )
+          }
+        />
+      </div>
+    );
   }
 }
 
