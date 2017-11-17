@@ -6,13 +6,11 @@ import Checkbox from "../form/Checkbox";
 import type { Member } from "../../data/types";
 import "./index.css";
 
-class MemberRow extends Component<*> {
-  props: {
-    onSelect?: (pub_key: string) => void,
-    checked?: boolean,
-    member: Member
-  };
-
+class MemberRow extends Component<{
+  onSelect?: (pub_key: string) => void,
+  checked?: boolean,
+  member: Member
+}> {
   onClick = () => {
     const { onSelect } = this.props;
     if (onSelect) onSelect(this.props.member.pub_key);

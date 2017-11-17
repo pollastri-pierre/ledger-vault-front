@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import { Transition } from "react-transition-group";
 
@@ -26,9 +25,15 @@ const transitionStyles = {
   exiting: { opacity: 1, transform: "translateY(-25%)" }
 };
 
-const Fade = ({ in: inProp, children }) => (
+const Fade = ({
+  in: inProp,
+  children
+}: {
+  in: boolean,
+  children: React$Node | string
+}) => (
   <Transition in={inProp} timeout={duration}>
-    {state => (
+    {(state: $Keys<typeof transitionStyles>) => (
       <div
         style={{
           ...defaultStyle,
@@ -61,7 +66,7 @@ class Popover extends Component<
   }
 
   clickHandle = (e: *) => {
-    if (!e.target.closest(`.popover`)) {
+    if (!e.target.closest(".popover")) {
       this.setState({ isVisible: false });
     }
   };

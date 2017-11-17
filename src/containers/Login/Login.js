@@ -29,9 +29,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 type Props = {
-  auth: *,
-  history: *,
-  location: *,
+  auth: {
+    team: string,
+    isCheckingTeam: boolean,
+    teamError: boolean,
+    teamValidated: boolean
+  },
+  history: Object,
+  location: Object,
   onFieldTeam: (e: *, val: *) => void,
   onLogout: () => void,
   onStartAuth: () => void,
@@ -40,6 +45,9 @@ type Props = {
 };
 
 export class Login extends Component<Props> {
+  context: {
+    translate: string => string
+  };
   componentWillMount() {
     const { auth, history, location } = this.props;
     if (auth.isAuthenticated) {
@@ -97,25 +105,6 @@ export class Login extends Component<Props> {
     );
   }
 }
-
-Login.propTypes = {
-  auth: PropTypes.shape({
-    isAuthenticated: PropTypes.bool,
-    isCheckingTeam: PropTypes.bool,
-    teamError: PropTypes.bool,
-    teamValidated: PropTypes.bool,
-    team: PropTypes.string
-  }).isRequired,
-  onFieldTeam: PropTypes.func.isRequired,
-  onLogout: PropTypes.func.isRequired,
-  onStartAuth: PropTypes.func.isRequired,
-  onCloseTeamError: PropTypes.func.isRequired,
-  onResetTeam: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func
-  }).isRequired,
-  location: PropTypes.object.isRequired
-};
 
 Login.contextTypes = {
   translate: PropTypes.func.isRequired

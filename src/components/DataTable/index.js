@@ -8,16 +8,15 @@ type Column<Cell> = {
   renderCell: (cell: Cell) => any
 };
 
-export default class DataTable<Cell> extends Component<*> {
-  props: {
-    columns: Array<Column<Cell>>,
-    data: Array<Cell>,
-    renderRow: (
-      cell: Cell,
-      index: number,
-      children: string | React$Node
-    ) => React$Node
-  };
+export default class DataTable<Cell> extends Component<{
+  columns: Array<Column<Cell>>,
+  data: Array<Cell>,
+  renderRow: (
+    cell: Cell,
+    index: number,
+    children: string | React$Node
+  ) => React$Node
+}> {
   static defaultProps = {
     renderRow: (cell: Cell, index: number, children: string | React$Node) => (
       <tr key={index}>{children}</tr>

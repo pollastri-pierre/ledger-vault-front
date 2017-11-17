@@ -40,13 +40,12 @@ function AccountApproveDetails(props: {
           label="Rate Limiter"
           disabled={!security_scheme.rate_limiter}
           value={
-            <RateLimiterValue
-              max_transaction={security_scheme.rate_limiter.max_transaction}
-              time_slot={
-                security_scheme.rate_limiter &&
-                security_scheme.rate_limiter.time_slot
-              }
-            />
+            security_scheme.rate_limiter && (
+              <RateLimiterValue
+                max_transaction={security_scheme.rate_limiter.max_transaction}
+                time_slot={security_scheme.rate_limiter.time_slot}
+              />
+            )
           }
         />
       </div>

@@ -76,13 +76,13 @@ function AccountCreationTimeLock(props: {
                 role="button"
                 tabIndex={0}
                 onClick={() =>
-                  changeFrequency("timelock", { label: "minuts", value: 60 })}
+                  changeFrequency("timelock", { label: "minutes", value: 60 })}
                 className={`frequency-bubble-row ${timelock.frequency.label ===
-                "minuts"
+                "minutes"
                   ? "active"
                   : ""}`}
               >
-                minuts
+                minutes
               </div>
               <div
                 role="button"

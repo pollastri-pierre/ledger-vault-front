@@ -3,15 +3,13 @@ import React, { Component } from "react";
 import "./index.css";
 import ArrowDown from "../icons/ArrowDown";
 
-class SecurityRow extends Component<*> {
-  props: {
-    icon: React$Element<*> | string,
-    label: string,
-    disabled?: boolean,
-    onClick: Function,
-    children: React$Element<*> | string
-  };
-
+class SecurityRow extends Component<{
+  icon: React$Node | string,
+  label: string,
+  disabled?: boolean,
+  onClick: Function,
+  children: React$Node | string
+}> {
   render() {
     const { children, icon, label, disabled, onClick } = this.props;
     return (

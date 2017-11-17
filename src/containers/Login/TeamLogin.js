@@ -12,6 +12,9 @@ export class TeamLogin extends Component<{
   team: string,
   teamError: boolean
 }> {
+  context: {
+    translate: string => string
+  };
   componentDidMount() {
     // FIXME a better way is to use a wrapping <form>, hook on onSubmit so we can catch the ENTER or any submitting other ways
     document.addEventListener("keypress", this.confirm);

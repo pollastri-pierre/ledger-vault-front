@@ -4,7 +4,10 @@ import CurrencyUnitValue from "./CurrencyUnitValue";
 import { countervalueForRate, getAccountCurrencyUnit } from "../data/currency";
 import type { Account, Rate } from "../data/types";
 
-type Props = {
+// This is a "smart" component that accepts a contextual account and a value number
+// and infer the proper "unit" to use and delegate to CurrencyUnitValue
+
+class CurrencyAccountValue extends Component<{
   // the contextual account object
   account: Account,
   // it is the value to display without any digits (for BTC it is satoshi, for EUR it is the nb of cents)
@@ -15,12 +18,7 @@ type Props = {
   countervalue?: boolean,
   // override the rate to use (default is the account.currentRate)
   rate?: Rate
-};
-
-// This is a "smart" component that accepts a contextual account and a value number
-// and infer the proper "unit" to use and delegate to CurrencyUnitValue
-
-class CurrencyAccountValue extends Component<Props> {
+}> {
   render() {
     const { account, countervalue, value, rate, ...rest } = this.props;
     let unitValue = countervalue

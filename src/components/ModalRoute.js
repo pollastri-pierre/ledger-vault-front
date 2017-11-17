@@ -27,7 +27,12 @@ function renderInner(routeProps, { component, render, children }, extraProps) {
   return null;
 }
 
-class ModalRoute extends Component<*> {
+class ModalRoute extends Component<{
+  undoAllHistoryOnClickOutside?: boolean,
+  component?: *,
+  render?: *,
+  children?: *
+}> {
   static defaultProps = {
     undoAllHistoryOnClickOutside: false
   };

@@ -10,9 +10,11 @@ import "./Menu.css";
 
 function Menu(
   props: {
-    location: *
+    location: Object
   },
-  context
+  context: {
+    translate: Function
+  }
 ) {
   const t = context.translate;
   return (

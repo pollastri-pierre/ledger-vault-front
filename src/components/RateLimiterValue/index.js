@@ -7,11 +7,11 @@ class RateLimiterValue extends PureComponent<*> {
     time_slot: number
   };
 
-  getFreauency = (max_transaction: number, frequency: number) => {
+  getFrequency = (max_transaction: number, frequency: number) => {
     const operations = max_transaction > 1 ? "operations" : "operation";
     let granularity = "day";
     if (frequency === 60) {
-      granularity = "minut";
+      granularity = "minute";
     } else if (frequency === 3600) {
       granularity = "hour";
     }
@@ -24,7 +24,7 @@ class RateLimiterValue extends PureComponent<*> {
   render() {
     const { max_transaction, time_slot, ...rest } = this.props;
     return (
-      <span {...rest}>{this.getFreauency(max_transaction, time_slot)}</span>
+      <span {...rest}>{this.getFrequency(max_transaction, time_slot)}</span>
     );
   }
 }
