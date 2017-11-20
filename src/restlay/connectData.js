@@ -16,7 +16,7 @@ import GlobalLoading from "../components/GlobalLoading";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
-  refreshQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
+  fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
   forceFetch: () => void
   /* IDEA
   isReloadingData: (data: Object) => boolean,
@@ -183,10 +183,10 @@ export default function connectData<
         const { executeQueryOrMutation } = this.props;
         return executeQueryOrMutation(m);
       },
-      refreshQuery: <In, Res>(query: Query<In, Res>): Promise<Res> => {
+      fetchQuery: <In, Res>(query: Query<In, Res>): Promise<Res> => {
         if (!(query instanceof Query)) {
           console.error(query);
-          throw new Error("invalid mutation provided in restlay.refreshQuery");
+          throw new Error("invalid mutation provided in restlay.fetchQuery");
         }
         const { executeQueryOrMutation } = this.props;
         return executeQueryOrMutation(query);

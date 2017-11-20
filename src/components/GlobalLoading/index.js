@@ -6,7 +6,7 @@ import "./index.css";
 const progress = new Animated.Value(0);
 const opacity = new Animated.Value(1);
 
-export class GlobalLoadingRendering extends Component<void> {
+export class GlobalLoadingRendering extends Component<{}> {
   interpolatedWidth = progress.interpolate({
     inputRange: [0, 1],
     outputRange: ["0%", "100%"]
@@ -24,7 +24,7 @@ export class GlobalLoadingRendering extends Component<void> {
 let instanceCount = 0;
 export default class GlobalLoading extends Component<*> {
   componentDidMount() {
-    if (instanceCount === 0) {
+    if (instanceCount++ === 0) {
       opacity.setValue(1);
       progress.setValue(0);
     }
@@ -33,11 +33,9 @@ export default class GlobalLoading extends Component<*> {
       tension: 5,
       friction: 200
     }).start();
-    ++instanceCount;
   }
   componentWillUnmount() {
-    --instanceCount;
-    if (instanceCount === 0) {
+    if (--instanceCount === 0) {
       Animated.spring(opacity, { toValue: 0 }).start();
     }
   }
