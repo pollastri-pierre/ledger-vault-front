@@ -115,7 +115,7 @@ const genNote = (i: number): NoteEntity => ({
     1 + Math.round(20 * Math.random()),
     10
   ).toISOString(),
-  author: "" + i % 5
+  author: "mock_" + i % 5
 });
 
 const genPubKey = () =>
@@ -137,8 +137,8 @@ const genMember = (fields: *): MemberEntity => ({
 });
 
 const members = {
-  "0": genMember({
-    id: "0",
+  mock_0: genMember({
+    id: "mock_0",
     pub_key: "hash",
     last_name: "Getto",
     first_name: "David",
@@ -147,8 +147,8 @@ const members = {
     email: "david.getto@ledger.fr",
     groups: []
   }),
-  "1": genMember({
-    id: "1",
+  mock_1: genMember({
+    id: "mock_1",
     last_name: "Smith",
     first_name: "Henrietta",
     role: "Administrator",
@@ -156,8 +156,8 @@ const members = {
     email: "smith.henrietta@ledger.fr",
     groups: ["0"]
   }),
-  "2": genMember({
-    id: "2",
+  mock_2: genMember({
+    id: "mock_2",
     last_name: "McAndersen",
     first_name: "Julie",
     role: "Administrator",
@@ -166,8 +166,8 @@ const members = {
     email: "julie.mcanderson@ledger.fr",
     groups: ["0"]
   }),
-  "3": genMember({
-    id: "3",
+  mock_3: genMember({
+    id: "mock_3",
     last_name: "Josh",
     first_name: "Emily",
     role: "Operator",
@@ -177,8 +177,8 @@ const members = {
     email: "emily.josh@ledger.fr",
     groups: ["1"]
   }),
-  "4": genMember({
-    id: "4",
+  mock_4: genMember({
+    id: "mock_4",
     last_name: "Galvok Jr",
     first_name: "Peder",
     role: "Operator",
@@ -186,8 +186,8 @@ const members = {
     email: "peder.g@ledger.fr",
     groups: ["1"]
   }),
-  "5": genMember({
-    id: "5",
+  mock_5: genMember({
+    id: "mock_5",
     last_name: "St Mamba",
     first_name: "Paul",
     role: "Operator",
@@ -195,8 +195,8 @@ const members = {
     email: "paul.sm@ledger.fr",
     groups: []
   }),
-  "6": genMember({
-    id: "6",
+  mock_6: genMember({
+    id: "mock_6",
     last_name: "Teissier",
     first_name: "Florent",
     role: "Operator",
@@ -529,12 +529,12 @@ const groups: { [_: string]: GroupEntity } = {
   "0": {
     id: "0",
     name: "First Group",
-    members: ["1", "2", "6"]
+    members: ["mock_1", "mock_2", "mock_6"]
   },
   "1": {
     id: "1",
     name: "Second Group",
-    members: ["3", "4", "6"]
+    members: ["mock_3", "mock_4", "mock_6"]
   }
 };
 

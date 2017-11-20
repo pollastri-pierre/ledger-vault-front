@@ -4,6 +4,7 @@
     "private": true,
     "proxy": "https://ledger-vault-preprod.herokuapp.com",
     "dependencies": {
+        "animated": "^0.2.1",
         "bourbon-neat": "^2.1.0",
         "d3": "^4.11.0",
         "email-validator": "^1.1.1",
