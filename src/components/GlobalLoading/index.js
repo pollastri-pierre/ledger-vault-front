@@ -22,22 +22,33 @@ export class GlobalLoadingRendering extends Component<{}> {
 }
 
 let instanceCount = 0;
-export default class GlobalLoading extends Component<*> {
-  componentDidMount() {
-    if (instanceCount++ === 0) {
-      opacity.setValue(1);
-      progress.setValue(0);
+export function load() {
+  if (instanceCount++ === 0) {
+    opacity.setValue(1);
+    progress.setValue(0);
+  }
+  Animated.spring(progress, {
+    toValue: 1,
+    tension: 5,
+    friction: 200
+  }).start();
+
+  return function unload() {
+    if (--instanceCount === 0) {
+      Animated.spring(opacity, {
+        toValue: 0
+      }).start();
     }
-    Animated.spring(progress, {
-      toValue: 1,
-      tension: 5,
-      friction: 200
-    }).start();
+  };
+}
+
+export default class GlobalLoading extends Component<*> {
+  unload: Function;
+  componentDidMount() {
+    this.unload = load();
   }
   componentWillUnmount() {
-    if (--instanceCount === 0) {
-      Animated.spring(opacity, { toValue: 0 }).start();
-    }
+    this.unload();
   }
   render() {
     return null;

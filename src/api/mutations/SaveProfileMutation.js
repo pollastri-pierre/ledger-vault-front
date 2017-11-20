@@ -15,9 +15,13 @@ type Response = Member;
 export default class SaveProfileMutation extends Mutation<Input, Response> {
   uri = "/organization/members/me";
   method = "PUT";
-  notif = {
+  successNotification = {
     title: "Profile updated",
     content: "Your profile informations have been successfully updated"
+  };
+  errorNotification = {
+    title: "Oops",
+    content: "Something went wrong when updating your profile"
   };
   responseSchema = schema.Member;
 

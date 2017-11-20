@@ -13,7 +13,7 @@ type Res = Operation;
 export default class ApproveOperationMutation extends Mutation<In, Res> {
   uri = `/operations/${this.props.operationId}`;
   method = "PUT";
-  notif = genericRenderNotif("operation request", "PUT");
+  successNotification = genericRenderNotif("operation request", "PUT");
   responseSchema = schema.Operation;
 
   // TODO implement optimisticUpdater

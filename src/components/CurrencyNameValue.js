@@ -26,6 +26,11 @@ type Props = {
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
 class CurrencyNameValue extends Component<Props> {
+  componentDidMount() {
+    console.warn(
+      "Usage of CurrencyNameValue is deprecated. Use one of these: CurrencyUnitValue, CurrencyFiatValue or CurrencyAccountValue"
+    );
+  }
   render() {
     const {
       currencyName,

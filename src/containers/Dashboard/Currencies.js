@@ -1,10 +1,11 @@
 //@flow
-import React, { Component } from "react";
+import React from "react";
 import connectData from "../../restlay/connectData";
 import PieChart from "./PieChart";
 import { countervalueForRate } from "../../data/currency";
 import type { Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
+import TryAgain from "../../components/TryAgain";
 
 type AggregatedData = {
   [_: string]: {
@@ -50,17 +51,13 @@ function Currencies({ accounts }: { accounts: Array<Account> }) {
   );
 }
 
-class RenderError extends Component<*> {
-  render() {
-    return <div className="dashboard-currencies" />;
-  }
-}
+const RenderError = ({ error, restlay }: *) => (
+  <div className="dashboard-currencies">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </div>
+);
 
-class RenderLoading extends Component<*> {
-  render() {
-    return <div className="dashboard-currencies" />;
-  }
-}
+const RenderLoading = () => <div className="dashboard-currencies" />;
 
 export default connectData(Currencies, {
   queries: {

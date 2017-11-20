@@ -109,13 +109,13 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           Object.keys(mockEntities.currencies),
           [schema.Currency],
           mockEntities
-        ); /*
+        );
       case "/organization/members/me":
         return denormalize(
           Object.keys(mockEntities.members)[0],
           schema.Member,
           mockEntities
-        );*/
+        );
       case "/organization/members":
         return denormalize(
           Object.keys(mockEntities.members),

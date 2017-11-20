@@ -12,12 +12,14 @@ import {
 import type { Store } from "./dataStore";
 import Query from "./Query";
 import Mutation from "./Mutation";
+
+// FIXME how to make this "generic"
 import GlobalLoading from "../components/GlobalLoading";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
-  forceFetch: () => void
+  forceFetch: () => Promise<void>
   /* IDEA
   isReloadingData: (data: Object) => boolean,
   isOptimisticData: (data: Object) => boolean
@@ -59,16 +61,16 @@ type Opts<Props, A> = {
 
   // allow to implement the loading rendering. default is blank
   // prettier-ignore
-  RenderLoading?: React$ComponentType<$Shape<Props & {|
+  RenderLoading?: React$ComponentType<$Shape<{
     restlay: RestlayEnvironment
-  |}>>,
+  } & Props>>,
 
   // allow to implement the error rendering. default is blank
   // prettier-ignore
-  RenderError?: React$ComponentType<$Shape<Props & {|
+  RenderError?: React$ComponentType<$Shape<{
     error: Error,
     restlay: RestlayEnvironment
-  |}>>,
+  } & Props>>,
 
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
@@ -145,7 +147,10 @@ export default function connectData<
     _unmounted = false;
     lastCompleteQueriedData: ?APIProps = null;
 
-    sync(apiParams: Object): Array<Promise<*>> {
+    sync(
+      apiParams: Object,
+      forceFetchMode: boolean = false
+    ): Array<Promise<*>> {
       const { executeQueryOrMutation, dataStore } = this.props;
       if (this.apiParams !== apiParams || !this.queriesInstances) {
         const instances: $ObjMap<A, ExtractQuery> = {};
@@ -162,7 +167,11 @@ export default function connectData<
       const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
           const query = queriesInstances[key];
-          if (forceFetch || !queryCacheIsFresh(dataStore, query)) {
+          if (
+            forceFetchMode ||
+            forceFetch ||
+            !queryCacheIsFresh(dataStore, query)
+          ) {
             return executeQueryOrMutation(query);
           }
         })
@@ -192,7 +201,7 @@ export default function connectData<
         return executeQueryOrMutation(query);
       },
       forceFetch: () => {
-        this.sync(this.apiParams);
+        return Promise.all(this.sync(this.apiParams, true)).then(() => {});
       }
     };
 

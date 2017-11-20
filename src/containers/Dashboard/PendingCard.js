@@ -4,13 +4,13 @@ import connectData from "../../restlay/connectData";
 import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import CardLoading from "../../components/utils/CardLoading";
 import DateFormat from "../../components/DateFormat";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import AccountName from "../../components/AccountName";
 import type { Operation, Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
+import TryAgain from "../../components/TryAgain";
 import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
@@ -97,21 +97,13 @@ class PendingCard extends Component<{
   }
 }
 
-class RenderError extends Component<*> {
-  render() {
-    return <Card title="pending" className="pendingCard" />;
-  }
-}
+const RenderError = ({ error, restlay }: *) => (
+  <Card title="pending" className="pendingCard">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+);
 
-class RenderLoading extends Component<*> {
-  render() {
-    return (
-      <Card title="pending" className="pendingCard">
-        <CardLoading />
-      </Card>
-    );
-  }
-}
+const RenderLoading = () => <Card title="pending" className="pendingCard" />;
 
 export default connectData(PendingCard, {
   queries: {
