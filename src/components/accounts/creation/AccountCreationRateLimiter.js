@@ -82,14 +82,14 @@ function AccountCreationRateLimiter(props: Props) {
                 onClick={() =>
                   changeFrequency("rate-limiter", {
                     value: 60,
-                    label: "minut"
+                    label: "minute"
                   })}
                 className={`frequency-bubble-row ${rate_limiter.frequency
                   .value === 60
                   ? "active"
                   : ""}`}
               >
-                minut
+                minute
               </div>
               <div
                 role="button"

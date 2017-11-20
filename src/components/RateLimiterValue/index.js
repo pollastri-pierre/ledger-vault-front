@@ -11,7 +11,7 @@ class RateLimiterValue extends PureComponent<*> {
     const operations = max_transaction > 1 ? "operations" : "operation";
     let granularity = "day";
     if (frequency === 60) {
-      granularity = "minut";
+      granularity = "minute";
     } else if (frequency === 3600) {
       granularity = "hour";
     }
