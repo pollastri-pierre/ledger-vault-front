@@ -9,7 +9,7 @@ import DateFormat from "../../components/DateFormat";
 type Props = {
   data: Arrray<*>,
   dateRange: Array<*>,
-  currency: Array<*>
+  currency: Curency
 };
 
 export default class QuicklookGraph extends Component<Props, *> {

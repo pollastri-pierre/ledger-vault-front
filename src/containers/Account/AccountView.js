@@ -17,7 +17,12 @@ import { Select, Option } from "../../components/Select";
 import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import AccountQuery from "../../api/queries/AccountQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
-import type { Account, Operation, Currency } from "../../data/types";
+import type {
+  Account,
+  Operation,
+  Currency,
+  lineChartPoint
+} from "../../data/types";
 import "./Account.css";
 import { formatCurrencyUnit, getUnitFromRate } from "../../data/currency";
 
@@ -45,7 +50,7 @@ class AccountView extends Component<
     };
   }
 
-  onQuickLookGraphFilterChange = filter => {
+  onQuickLookGraphFilterChange = (filter: string): void => {
     this.setState({ quickLookGraphFilter: filter });
   };
 
@@ -54,7 +59,7 @@ class AccountView extends Component<
     { title: "countervalue", key: "countervalue" }
   ];
 
-  selectTab = index => {
+  selectTab = (index: number): void => {
     this.setState({
       tabsIndex: index,
       labelDateRange: this.getLabelDateRange(this.getDateRange(index))
@@ -112,7 +117,7 @@ class AccountView extends Component<
       ];
     return res;
   };
-  getDateRange = tabsIndex => {
+  getDateRange = (tabsIndex: number) => {
     const max = new Date();
     let min = new Date();
     min =
@@ -131,13 +136,13 @@ class AccountView extends Component<
     return [min.setHours(0, 0, 0, 0), max.setHours(0, 0, 0, 0)];
   };
 
-  getOperations = data => {
+  getOperations = (data: Operation[]) => {
     const { account } = this.props;
     const { quickLookGraphFilter } = this.state;
     let operations = [];
     if (!data.length) return [];
-
-    operations = data.map((o: Operation) => {
+    //PROBABLY NEEDS TO BE FIXED
+    operations = data.map((o: Operation): lineChartPoint => {
       return {
         time: new Date(o.time),
         amount: o.amount,
@@ -146,30 +151,35 @@ class AccountView extends Component<
       };
     });
     if (quickLookGraphFilter === "balance") {
-      operations = operations.map((o: Operation, i: number): Array<
-        Operations
-      > => {
-        console.log(o.rate);
-
-        return {
-          ...o,
-          amount: parseFloat(
-            formatCurrencyUnit(
-              account.currency.units[0],
-              operations.slice(0, i).reduce((a: number, b: Operation) => {
-                return a + b.amount;
-              }, 0)
+      operations = operations.map(
+        ((o: lineChartPoint, i: number): lineChartPoint => {
+          console.log(o);
+          return {
+            ...o,
+            amount: parseFloat(
+              formatCurrencyUnit(
+                account.currency.units[0],
+                operations.slice(0, i).reduce(
+                  ((a: number, b: lineChartPoint) => {
+                    return a + b.amount;
+                  }: Function),
+                  0
+                ),
+                false,
+                false,
+                false
+              )
             )
-          )
-        };
-      });
+          };
+        }: Function)
+      );
       operations.push({
         ...operations[operations.length - 1],
         time: new Date(),
         tooltip: false
       });
     } else if (quickLookGraphFilter === "countervalue") {
-      operations = operations.map((o: Operation) => {
+      operations = operations.map((o: lineChartPoint) => {
         return {
           ...o,
           amount: o.amount * o.rate.value
@@ -192,17 +202,14 @@ class AccountView extends Component<
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
 
     const data = this.getOperations(operations);
-    console.log(data);
-    let selectedCurrency = account.currency;
 
-    if (quickLookGraphFilter === "balance") {
-      selectedCurrency = account.currency;
-      selectedCurrency.code = account.currency.units[0].code;
-    } else if (quickLookGraphFilter === "countervalue") {
-      selectedCurrency = getUnitFromRate(operations[0].rate);
+    let selectedCurrency = account.currency;
+    //PROBABLY NEEDS TO BE FIXED
+    if (quickLookGraphFilter === "countervalue") {
+      selectedCurrency.units.push(getUnitFromRate(operations[0].rate));
       selectedCurrency.color = account.currency.color;
     }
-    console.log(selectedCurrency);
+
     return (
       <div className="account-view">
         <div className="account-view-infos">
