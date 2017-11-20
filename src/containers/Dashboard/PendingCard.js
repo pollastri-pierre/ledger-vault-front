@@ -1,51 +1,72 @@
 //@flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import connectData from "../../restlay/connectData";
+import ViewAllLink from "../../components/ViewAllLink";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
+import CardLoading from "../../components/utils/CardLoading";
 import DateFormat from "../../components/DateFormat";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import AccountName from "../../components/AccountName";
-import type { Operation, Account } from "../../datatypes";
+import type { Operation, Account } from "../../data/types";
+import AccountsQuery from "../../api/queries/AccountsQuery";
+import PendingsQuery from "../../api/queries/PendingsQuery";
+import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
-const Row = ({ date, children }) => (
+const Row = ({
+  date,
+  children
+}: {
+  date: string,
+  children: React$Element<*>
+}) => (
   <div className="pending-list-row">
-    <div className="date uppercase">
+    <div className="date">
       <DateFormat date={date} />
     </div>
     <div className="body">{children}</div>
   </div>
 );
 
-const OperationRow = ({ data }: { data: Operation }) => (
-  <Row date={data.time}>
-    <CurrencyNameValue currencyName={data.currency_name} value={data.amount} />
-  </Row>
-);
+const OperationRow = ({
+  data,
+  account
+}: {
+  data: Operation,
+  account: ?Account
+}) =>
+  account ? (
+    <Row date={data.time}>
+      <CurrencyAccountValue account={account} value={data.amount} />
+    </Row>
+  ) : null;
+
 const AccountRow = ({ data }: { data: Account }) => (
-  <Row date={data.time}>
+  <Row date={data.creation_time}>
     <AccountName name={data.name} currency={data.currency} />
   </Row>
 );
 
-const PendingCardRowPerType = {
-  operation: OperationRow,
-  account: AccountRow
-};
-
-class PendingCard extends Component<{ pending: * }> {
+class PendingCard extends Component<{
+  pendings: PendingsQueryResponse,
+  accounts: Account[],
+  reloading: boolean
+}> {
   render() {
     const {
-      pending: { operations, accounts, total, totalOperations, totalAccounts }
+      accounts,
+      pendings: { approveOperations, approveAccounts },
+      reloading
     } = this.props;
-    const events = operations
-      .map(data => ({ type: "operation", data }))
-      .concat(accounts.map(data => ({ type: "account", data })));
+    const totalOperations = approveOperations.length;
+    const totalAccounts = approveAccounts.length;
+    const total = totalOperations + totalAccounts;
     return (
       <Card
+        reloading={reloading}
         title="pending"
-        titleRight={<Link to="TODO">VIEW ALL ({total})</Link>}
+        titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
         className="pendingCard"
       >
         <header className="pendingHeader">
@@ -57,14 +78,47 @@ class PendingCard extends Component<{ pending: * }> {
           </CardField>
         </header>
         <div className="pending-list">
-          {events.map((o, i) => {
-            const Row = PendingCardRowPerType[o.type];
-            return <Row key={i} {...o} />;
-          })}
+          {approveOperations
+            .map((operation, i) => (
+              <OperationRow
+                key={"op_" + i}
+                data={operation}
+                account={accounts.find(a => a.id === operation.account_id)}
+              />
+            ))
+            .concat(
+              approveAccounts.map((account, i) => (
+                <AccountRow key={"ac_" + i} data={account} />
+              ))
+            )}
         </div>
       </Card>
     );
   }
 }
 
-export default PendingCard;
+class RenderError extends Component<*> {
+  render() {
+    return <Card title="pending" className="pendingCard" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return (
+      <Card title="pending" className="pendingCard">
+        <CardLoading />
+      </Card>
+    );
+  }
+}
+
+export default connectData(PendingCard, {
+  queries: {
+    accounts: AccountsQuery,
+    pendings: PendingsQuery
+  },
+  optimisticRendering: true,
+  RenderError,
+  RenderLoading
+});

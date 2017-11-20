@@ -1,50 +1,55 @@
-// @flow
-import React, { PureComponent } from "react";
+//@flow
+import React, { Component } from "react";
+import connectData from "../restlay/connectData";
+import CurrenciesQuery from "../api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import counterValueUnits from "../countervalue-units";
-import currencies from "../currencies";
+import { inferUnit, countervalueForRate } from "../data/currency";
+import type { Currency, Rate } from "../data/types";
+
+type Props = {
+  // it can be a crypto currency name or also can be a countervalue like EUR
+  currencyName: string,
+  // it is the value to display without any digits (for BTC it is satoshi, for EUR it is the nb of cents)
+  value: number,
+  // always show a sign in front of the value (force a "+" to display for positives)
+  alwaysShowSign?: boolean,
+  // if true, display the countervalue instead of the actual crypto currency
+  countervalue?: boolean,
+  // override the rate to use (default is the currency current rate)
+  rate?: Rate,
+
+  // from connectData
+  currencies: Array<Currency>
+};
 
 // This is a "smart" component that accepts a currencyName (e.g. bitcoin) and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 
-class CurrencyNameValue extends PureComponent<*> {
-  static defaultProps = {
-    alwaysShowSign: false
-  };
-
-  props: {
-    currencyName: string,
-    value: number,
-    alwaysShowSign?: boolean
-  };
-
+class CurrencyNameValue extends Component<Props> {
   render() {
-    const { currencyName, ...rest } = this.props;
-    let unit;
-    let showAllDigits = false;
-    // try to find a countervalues unit
-    if (currencyName in counterValueUnits) {
-      unit = counterValueUnits[currencyName];
-      showAllDigits = true;
-    } else {
-      // try to find a crypto currencies unit
-      const currency = currencies.find(c => c.name === currencyName);
-      if (currency) {
-        // TODO:
-        // this will depend on user pref (if you select mBTC vs BTC , etc..)
-        // we might have a redux store that store user prefered unit per currencyName
-        unit = currency.units[0];
-      }
+    const {
+      currencyName,
+      countervalue,
+      value,
+      currencies,
+      rate,
+      ...rest
+    } = this.props;
+    if (countervalue && !rate) {
+      throw new Error(
+        "CurrencyNameValue: Can't calculate countervalue without an explicit rate. Consider using CurrencyAccountValue component instead"
+      );
     }
-
-    if (!unit) {
-      throw new Error(`currency "${currencyName}" not found`);
-    }
-
-    return (
-      <CurrencyUnitValue showAllDigits={showAllDigits} unit={unit} {...rest} />
-    );
+    let unitValue =
+      countervalue && rate
+        ? countervalueForRate(rate, value)
+        : { value, unit: inferUnit(currencies, currencyName) };
+    return <CurrencyUnitValue {...rest} {...unitValue} />;
   }
 }
 
-export default CurrencyNameValue;
+export default connectData(CurrencyNameValue, {
+  queries: {
+    currencies: CurrenciesQuery
+  }
+});

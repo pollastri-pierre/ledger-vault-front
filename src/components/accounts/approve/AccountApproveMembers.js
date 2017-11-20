@@ -1,80 +1,33 @@
+//@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
-import _ from "lodash";
-import { Avatar } from "../../../components";
+import find from "lodash/find";
+import MemberRow from "../../MemberRow";
+import InfoModal from "../../InfoModal";
+import type { Member, Account } from "../../../data/types";
 
-class AccountApproveMembers extends Component {
-  componentWillMount() {
-    const { members, isLoading } = this.props.organization;
-
-    if (!isLoading && _.isNull(members)) {
-      this.props.getOrganizationMembers();
-    }
-  }
-
+type Props = {
+  members: Array<Member>,
+  account: Account
+};
+class AccountApproveMembers extends Component<Props> {
   render() {
-    const { members, isLoading } = this.props.organization;
-    const membersAccount = this.props.account.security.members;
-
-    if (isLoading || _.isNull(members)) {
-      return (
-        <CircularProgress
-          style={{
-            top: "50%",
-            left: "50%",
-            margin: "-25px 0 0 -25px"
-          }}
-        />
-      );
-    }
-
+    const { members, account } = this.props;
     return (
-      <div className="account-creation-members">
-        <p className="info approve">
+      <div>
+        <InfoModal>
           Members define the group of individuals that have the ability to
           approve outgoing operations from this account.
-        </p>
-        {_.map(membersAccount, hash => {
-          const member = _.find(members, { pub_key: hash });
-          return (
-            <div
-              key={member.id}
-              role="button"
-              tabIndex={0}
-              className="account-member-row"
-            >
-              <div className="member-avatar">
-                <Avatar
-                  className="member-avatar-img"
-                  url={member.picture}
-                  width="13.5px"
-                  height="15px"
-                />
-              </div>
-              <span className="name">
-                {member.firstname} {member.name}
-              </span>
-              <p className="role">{member.role}</p>
-            </div>
-          );
-        })}
+        </InfoModal>
+        <div style={{ marginTop: "40px" }}>
+          {account.security_scheme.approvers.map(hash => {
+            const member = find(members, { pub_key: hash });
+            if (!member) return null;
+            return <MemberRow member={member} key={member.id} />;
+          })}
+        </div>
       </div>
     );
   }
 }
-
-AccountApproveMembers.propTypes = {
-  organization: PropTypes.shape({
-    members: PropTypes.arrayOf(PropTypes.shape({})),
-    isLoading: PropTypes.bool
-  }).isRequired,
-  account: PropTypes.shape({
-    security: PropTypes.shape({
-      members: PropTypes.arrayOf(PropTypes.string)
-    })
-  }).isRequired,
-  getOrganizationMembers: PropTypes.func.isRequired
-};
 
 export default AccountApproveMembers;

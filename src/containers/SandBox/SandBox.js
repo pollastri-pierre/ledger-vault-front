@@ -8,8 +8,8 @@ import RaisedButton from "material-ui/RaisedButton";
 import { Link } from "react-router-dom";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
-import { Row, Col } from "../../components/grid/Grid";
-import { BlurDialog } from "../../containers";
+import { Row, Col } from "./grid/Grid";
+import BlurDialog from "../../components/BlurDialog";
 import { Tooltip, Alert, Overscroll } from "../../components";
 import { switchLocale } from "../../redux/modules/locale";
 

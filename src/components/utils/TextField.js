@@ -1,10 +1,21 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import MUITextField from "material-ui/TextField";
 
 import "./TextField.css";
 
-function TextField(props) {
+function TextField(props: {
+  className: string,
+  fullWidth: boolean,
+  style: Object,
+  inputStyle: Object,
+  underlineFocusStyle: Object,
+  underlineStyle: Object,
+  hintStyle: Object,
+  errorStyle: Object,
+  errorText: string | boolean,
+  hasError: boolean
+}) {
   const { hasError, ...rest } = props;
 
   if (!rest.errorText && hasError) {
@@ -52,19 +63,6 @@ function TextField(props) {
     />
   );
 }
-
-TextField.propTypes = {
-  className: PropTypes.string,
-  fullWidth: PropTypes.bool,
-  style: PropTypes.shape({}),
-  inputStyle: PropTypes.shape({}),
-  underlineFocusStyle: PropTypes.shape({}),
-  underlineStyle: PropTypes.shape({}),
-  hintStyle: PropTypes.shape({}),
-  errorStyle: PropTypes.shape({}),
-  errorText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  hasError: PropTypes.bool
-};
 
 TextField.defaultProps = {
   className: "",

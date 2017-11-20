@@ -1,5 +1,6 @@
-import _ from "lodash";
+//@flow
 import React from "react";
+import type { Operation } from "../../data/types";
 
 const getAmount = (amount, currency) => {
   let sign = "";
@@ -11,24 +12,16 @@ const getAmount = (amount, currency) => {
   return `${sign} ${currency} ${amount}`;
 };
 
-function TabDetails(props) {
+function TabDetails(props: { operation: Operation }) {
   const { transaction } = props.operation;
 
-  const sumOutputs = _.reduce(
-    transaction.outputs,
-    (sum, output) => {
-      return sum + parseFloat(output.value, 10);
-    },
-    0
-  );
+  const sumOutputs = transaction.outputs.reduce((sum, output) => {
+    return sum + parseFloat(output.value);
+  }, 0);
 
-  const sumInputs = _.reduce(
-    transaction.inputs,
-    (sum, input) => {
-      return sum + parseFloat(input.value, 10);
-    },
-    0
-  );
+  const sumInputs = transaction.inputs.reduce((sum, input) => {
+    return sum + parseFloat(input.value);
+  }, 0);
 
   return (
     <div className="operation-details-tab">
@@ -44,7 +37,7 @@ function TabDetails(props) {
           </tr>
         </thead>
         <tbody>
-          {_.map(transaction.inputs, input => {
+          {transaction.inputs.map(input => {
             return (
               <tr key={input.index}>
                 <td className="not-bold">{input.address}</td>
@@ -65,7 +58,7 @@ function TabDetails(props) {
           </tr>
         </thead>
         <tbody>
-          {_.map(transaction.outputs, output => {
+          {transaction.outputs.map(output => {
             return (
               <tr key={output.index}>
                 <td className="not-bold">{output.address}</td>

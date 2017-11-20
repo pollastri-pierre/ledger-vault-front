@@ -1,12 +1,110 @@
 //@flow
+import type {
+  AccountEntity,
+  CurrencyEntity,
+  NoteEntity,
+  GroupEntity,
+  MemberEntity,
+  OperationEntity,
+  SecurityScheme,
+  Transaction
+} from "./types";
+import moment from "moment";
 
-import currencies from "../currencies";
-const currenciesMap = {};
-currencies.forEach(c => {
-  currenciesMap[c.name] = c;
-});
+const mockCurrencies: CurrencyEntity[] = [
+  {
+    name: "bitcoin",
+    family: "Bitcoin",
+    color: "#fcb653",
+    units: [
+      {
+        name: "bitcoin",
+        code: "BTC",
+        symbol: "Ƀ",
+        magnitude: 8
+      },
+      {
+        name: "mBTC",
+        code: "mBTC",
+        symbol: "Ƀ",
+        magnitude: 5
+      },
+      {
+        name: "satoshi",
+        code: "satoshi",
+        symbol: "Ƀ",
+        magnitude: 0
+      }
+    ]
+  },
+  {
+    name: "dogecoin",
+    family: "Dogecoin",
+    color: "#65d196",
+    units: [
+      {
+        name: "dogecoin",
+        code: "DOGE",
+        symbol: "DOGE",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "dash",
+    family: "Dash",
+    color: "#0e76aa",
+    units: [
+      {
+        name: "dash",
+        code: "DASH",
+        symbol: "DASH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "ethereum",
+    family: "Ethereum",
+    color: "#27d0e2",
+    units: [
+      {
+        name: "ethereum",
+        code: "ETH",
+        symbol: "ETH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "ethereum-classic",
+    family: "Ethereum",
+    color: "#3ca569",
+    units: [
+      {
+        name: "Ethereum Classic",
+        code: "ETH",
+        symbol: "ETH",
+        magnitude: 8
+      }
+    ]
+  },
+  {
+    name: "litecoin",
+    family: "Litecoin",
+    color: "#cccccc",
+    units: [
+      {
+        name: "Litecoin",
+        code: "LTC",
+        symbol: "LTC",
+        magnitude: 8
+      }
+    ]
+  }
+];
 
-const genNote = i => ({
+const genNote = (i: number): NoteEntity => ({
   id: "" + i,
   title: "Note " + i,
   body:
@@ -17,16 +115,8 @@ const genNote = i => ({
     1 + Math.round(20 * Math.random()),
     10
   ).toISOString(),
-  author: "" + i % 5
+  author: "mock_" + i % 5
 });
-
-const defaultGenOperation = {
-  time: new Date(2017, 9, 14, 9).toISOString(),
-  account_id: "0",
-  amount: 120000000,
-  confirmations: 31,
-  type: "SEND"
-};
 
 const genPubKey = () =>
   Array(64)
@@ -40,15 +130,16 @@ const genU2F = () =>
     .map(() => Math.floor(Math.random() * 16).toString(16))
     .join("");
 
-const genMember = fields => ({
+const genMember = (fields: *): MemberEntity => ({
   pub_key: genPubKey(),
   u2f_device: genU2F(),
   ...fields
 });
 
 const members = {
-  "0": genMember({
-    id: "0",
+  mock_0: genMember({
+    id: "mock_0",
+    pub_key: "hash",
     last_name: "Getto",
     first_name: "David",
     role: "Administrator",
@@ -56,8 +147,8 @@ const members = {
     email: "david.getto@ledger.fr",
     groups: []
   }),
-  "1": genMember({
-    id: "1",
+  mock_1: genMember({
+    id: "mock_1",
     last_name: "Smith",
     first_name: "Henrietta",
     role: "Administrator",
@@ -65,8 +156,8 @@ const members = {
     email: "smith.henrietta@ledger.fr",
     groups: ["0"]
   }),
-  "2": genMember({
-    id: "2",
+  mock_2: genMember({
+    id: "mock_2",
     last_name: "McAndersen",
     first_name: "Julie",
     role: "Administrator",
@@ -75,8 +166,8 @@ const members = {
     email: "julie.mcanderson@ledger.fr",
     groups: ["0"]
   }),
-  "3": genMember({
-    id: "3",
+  mock_3: genMember({
+    id: "mock_3",
     last_name: "Josh",
     first_name: "Emily",
     role: "Operator",
@@ -86,8 +177,8 @@ const members = {
     email: "emily.josh@ledger.fr",
     groups: ["1"]
   }),
-  "4": genMember({
-    id: "4",
+  mock_4: genMember({
+    id: "mock_4",
     last_name: "Galvok Jr",
     first_name: "Peder",
     role: "Operator",
@@ -95,8 +186,8 @@ const members = {
     email: "peder.g@ledger.fr",
     groups: ["1"]
   }),
-  "5": genMember({
-    id: "5",
+  mock_5: genMember({
+    id: "mock_5",
     last_name: "St Mamba",
     first_name: "Paul",
     role: "Operator",
@@ -104,8 +195,8 @@ const members = {
     email: "paul.sm@ledger.fr",
     groups: []
   }),
-  "6": genMember({
-    id: "6",
+  mock_6: genMember({
+    id: "mock_6",
     last_name: "Teissier",
     first_name: "Florent",
     role: "Operator",
@@ -116,9 +207,10 @@ const members = {
   })
 };
 
-const genSecurityScheme = () => ({
-  quorum: 4,
+const genSecurityScheme = (): SecurityScheme => ({
+  quorum: 2,
   approvers: Object.keys(members)
+    .slice(0, 2)
     .map(k => members[k])
     .filter(m => m.role === "Administrator")
     .map(m => m.pub_key),
@@ -129,15 +221,280 @@ const genSecurityScheme = () => ({
   }
 });
 
-const genOperation = opts => {
-  const { uuid, time, account_id, amount, confirmations, type } = {
+const genTransaction = (): Transaction => ({
+  version: "?",
+  hash: "e46a1467e7cb83b737791b7ae1e351b7941cba51cfd01973981ab55e6f20f2be",
+  lock_time: new Date().toUTCString(),
+  inputs: [
+    {
+      value: 50000,
+      index: 3,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    },
+    {
+      value: 2000,
+      index: 9,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    },
+    {
+      value: 50000,
+      index: 8,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    },
+    {
+      value: 2000,
+      index: 1,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    },
+    {
+      value: 50000,
+      index: 0,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    },
+    {
+      value: 2000,
+      index: 7,
+      previous_tx_hash: "",
+      previous_tx_output_index: 0,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      signature_script: "",
+      coinbase: "",
+      sequence: 0xffffff
+    }
+  ],
+  outputs: [
+    {
+      index: 3,
+      value: 33,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      script: ""
+    },
+    {
+      index: 9,
+      value: 33,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      script: ""
+    },
+    {
+      index: 123,
+      value: 33,
+      address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
+      script: ""
+    }
+  ]
+});
+
+const accounts: { [_: string]: AccountEntity } = {
+  "0": {
+    id: "0",
+    name: "cold storage",
+    security_scheme: genSecurityScheme(),
+    creation_time: new Date().toUTCString(),
+    currency: "bitcoin",
+    currencyRate: {
+      value: 0.008,
+      fiat: "USD"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.008,
+      fiat: "USD"
+    },
+    settings: {
+      unitIndex: 0,
+      fiat: "USD",
+      countervalueSource: "kraken",
+      blockchainExplorer: "blockchain.info"
+    },
+    balance: 1589831782,
+    balance_history: {
+      yesterday: 1182834846,
+      week: 118283484,
+      month: 2182834846
+    },
+    receive_address: "1" + genPubKey().slice(0, 33),
+    approved: []
+  },
+  "1": {
+    id: "1",
+    name: "cold storage",
+    security_scheme: genSecurityScheme(),
+    creation_time: new Date().toUTCString(),
+    currency: "bitcoin",
+    currencyRate: {
+      value: 0.006,
+      fiat: "EUR"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.008,
+      fiat: "USD"
+    },
+    settings: {
+      unitIndex: 1,
+      fiat: "EUR",
+      countervalueSource: "kraken",
+      blockchainExplorer: "blockchain.info"
+    },
+    balance: 189831782,
+    balance_history: {
+      yesterday: 182834846,
+      week: 11283484,
+      month: 182834846
+    },
+    receive_address: "1" + genPubKey().slice(0, 33),
+    approved: []
+  },
+  "2": {
+    id: "2",
+    name: "trackerfund",
+    security_scheme: genSecurityScheme(),
+    creation_time: new Date().toUTCString(),
+    currency: "dogecoin",
+    currencyRate: {
+      value: 0.000000001,
+      fiat: "CNY"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.0000000001,
+      fiat: "USD"
+    },
+    settings: {
+      unitIndex: 0,
+      fiat: "CNY",
+      countervalueSource: "btcchina",
+      blockchainExplorer: "blockchain.info"
+    },
+    balance: 3258983178200000,
+    balance_history: {
+      yesterday: 0.6 * 3258983178200000,
+      week: 0.7 * 3258983178200000,
+      month: 0.9 * 3258983178200000
+    },
+    receive_address: "1" + genPubKey().slice(0, 33),
+    approved: ["hash"]
+  },
+  "3": {
+    id: "3",
+    name: "hot wallet",
+    security_scheme: genSecurityScheme(),
+    creation_time: new Date().toUTCString(),
+    currency: "dash",
+    currencyRate: {
+      value: 0.00000003,
+      fiat: "EUR"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.00000004,
+      fiat: "USD"
+    },
+    settings: {
+      unitIndex: 0,
+      fiat: "EUR",
+      countervalueSource: "kraken",
+      blockchainExplorer: "blockchain.info"
+    },
+    balance: 99058831782000,
+    balance_history: {
+      yesterday: 99058831782000,
+      week: 0.5 * 99058831782000,
+      month: 0
+    },
+    receive_address: "1" + genPubKey().slice(0, 33),
+    approved: ["hash"]
+  },
+  "4": {
+    id: "4",
+    name: "etf holdings",
+    security_scheme: genSecurityScheme(),
+    creation_time: new Date().toUTCString(),
+    currency: "litecoin",
+    currencyRate: {
+      value: 0.000044,
+      fiat: "EUR"
+    },
+    currencyRateInReferenceFiat: {
+      value: 0.00006,
+      fiat: "USD"
+    },
+    settings: {
+      unitIndex: 0,
+      fiat: "EUR",
+      countervalueSource: "kraken",
+      blockchainExplorer: "blockchain.info"
+    },
+    balance: 89158983182,
+    balance_history: {
+      yesterday: 99118234846,
+      week: 11823484,
+      month: 2218234846
+    },
+    receive_address: "1" + genPubKey().slice(0, 33),
+    approved: []
+  }
+};
+
+const defaultGenOperation = {
+  time: new Date(2017, 9, 14, 9).toISOString(),
+  account_id: "0",
+  amount: 120000000,
+  fees: 2300,
+  confirmations: 31,
+  type: "SEND",
+  approved: [],
+  currency_name: "bitcoin",
+  currency_family: "BITCOIN",
+  approvedTime: null,
+  endOfTimeLockTime: null,
+  endOfRateLimiterTime: null
+};
+
+const genOperation = (opts: *): OperationEntity => {
+  const {
+    uuid,
+    time,
+    account_id,
+    amount,
+    confirmations,
+    type,
+    currency_name,
+    fees,
+    currency_family,
+    approvedTime,
+    endOfTimeLockTime,
+    endOfRateLimiterTime,
+    approved
+  } = {
     ...defaultGenOperation,
     ...opts
   };
   return {
     uuid,
-    currency_name: "bitcoin",
-    currency_family: "BITCOIN",
+    currency_name,
+    currency_family,
     trust: {
       level: "",
       weight: 3,
@@ -148,288 +505,172 @@ const genOperation = opts => {
     time,
     block: {},
     type,
+    approved,
+    approvedTime,
+    endOfTimeLockTime,
+    endOfRateLimiterTime,
     amount,
-    reference_conversion: {
-      currency_name: "EUR",
-      amount: Math.round(amount * 0.0005)
-    },
-    fees: 23,
+    rate: accounts[account_id].currencyRate,
+    fees,
     account_id,
     senders: ["0xc5a96db085dda36ffbe390f455315d30d6d3dc52"],
     recipients: ["0x063dd253c8da4ea9b12105781c9611b8297f5d14"],
     notes: [genNote(1), genNote(2)],
-    transaction: {
-      version: "",
-      hash: "e46a1467e7cb83b737791b7ae1e351b7941cba51cfd01973981ab55e6f20f2be",
-      lock_time: "",
-      inputs: [
-        {
-          value: 50000,
-          index: 3,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        },
-        {
-          value: 2000,
-          index: 9,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        },
-        {
-          value: 50000,
-          index: 8,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        },
-        {
-          value: 2000,
-          index: 1,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        },
-        {
-          value: 50000,
-          index: 0,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMCC8AFFFDKOTY6CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        },
-        {
-          value: 2000,
-          index: 7,
-          previous_tx_hash: "",
-          previous_tx_output_index: "",
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          signature_script: "",
-          coinbase: "",
-          sequence: ""
-        }
-      ],
-      outputs: [
-        {
-          index: 3,
-          value: 33,
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          script: ""
-        },
-        {
-          index: 9,
-          value: 33,
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          script: ""
-        },
-        {
-          index: 123,
-          value: 33,
-          address: "1MTAZHMFKEIJ06CHKHCNTTHQABYW",
-          script: ""
-        }
-      ]
-    }
+    transaction: genTransaction()
   };
 };
 
+const currencies: { [_: string]: CurrencyEntity } = {};
+mockCurrencies.forEach(c => {
+  currencies[c.name] = c;
+});
+
+const groups: { [_: string]: GroupEntity } = {
+  "0": {
+    id: "0",
+    name: "First Group",
+    members: ["mock_1", "mock_2", "mock_6"]
+  },
+  "1": {
+    id: "1",
+    name: "Second Group",
+    members: ["mock_3", "mock_4", "mock_6"]
+  }
+};
+
+const operations: { [_: string]: OperationEntity } = {
+  "1": genOperation({
+    uuid: "1",
+    amount: 100000000,
+    account_id: "1",
+    time: new Date(2016, 10, 2).toISOString()
+  }),
+  "2": genOperation({
+    uuid: "2",
+    amount: 100000000,
+    account_id: "1",
+    time: new Date(2017, 9, 9).toISOString()
+  }),
+  "3": genOperation({
+    uuid: "3",
+    time: new Date(2017, 9, 10).toISOString(),
+    amount: 200000000,
+    account_id: "2"
+  }),
+  "4": genOperation({
+    uuid: "4",
+    confirmations: 0,
+    account_id: "3",
+    time: new Date(2017, 9, 11).toISOString()
+  }),
+  "5": genOperation({
+    uuid: "5",
+    amount: -130000000,
+    account_id: "4",
+    type: "FROM",
+    approved: ["0", "1"],
+    approvedTime: moment()
+      .subtract(1, "hours")
+      .toISOString(),
+    endOfTimeLockTime: moment()
+      .add(2, "hours")
+      .toISOString(),
+    endOfRateLimiterTime: moment()
+      .add(28, "minutes")
+      .toISOString(),
+    time: new Date(2017, 9, 12).toISOString()
+  }),
+  "6": genOperation({
+    uuid: "6",
+    approved: ["0", "1"],
+    approvedTime: moment()
+      .subtract(2, "hours")
+      .toISOString(),
+    endOfTimeLockTime: moment()
+      .add(12, "minutes")
+      .toISOString(),
+    time: new Date(2017, 9, 13).toISOString()
+  }),
+  "7": genOperation({
+    uuid: "7",
+    amount: 180000000,
+    confirmations: 0,
+    approved: ["0"],
+    time: new Date(2017, 9, 14, 9).toISOString()
+  }),
+  "8": genOperation({
+    uuid: "8",
+    type: "FROM",
+    time: new Date(2017, 9, 15).toISOString()
+  }),
+  "9": genOperation({
+    uuid: "9",
+    amount: -150000000,
+    time: new Date(2017, 9, 16).toISOString()
+  }),
+  "10": genOperation({
+    uuid: "10",
+    time: new Date(2017, 9, 17).toISOString()
+  }),
+  "11": genOperation({
+    uuid: "11",
+    amount: 100000000,
+    time: new Date(2017, 9, 18, 5).toISOString()
+  }),
+  "12": genOperation({
+    uuid: "12",
+    time: new Date(2017, 9, 19).toISOString(),
+    amount: 200000000
+  }),
+  "13": genOperation({
+    uuid: "13",
+    confirmations: 0,
+    time: new Date(2017, 9, 20).toISOString(),
+    currency_name: "litecoin",
+    currency_family: "Litecoin"
+  }),
+  "14": genOperation({
+    uuid: "14",
+    type: "FROM",
+    time: new Date(2017, 9, 21).toISOString(),
+    currency_name: "litecoin",
+    currency_family: "Litecoin"
+  }),
+  "15": genOperation({
+    uuid: "15",
+    time: new Date(2017, 9, 22).toISOString(),
+    currency_name: "litecoin",
+    currency_family: "Litecoin"
+  }),
+  "16": genOperation({
+    uuid: "16",
+    confirmations: 0,
+    time: new Date(2017, 9, 20).toISOString(),
+    amount: 40502021,
+    currency_name: "dash",
+    currency_family: "Dash"
+  }),
+  "17": genOperation({
+    uuid: "17",
+    type: "FROM",
+    time: new Date(2017, 9, 21).toISOString(),
+    amount: -40502021,
+    currency_name: "dash",
+    currency_family: "Dash"
+  }),
+  "18": genOperation({
+    uuid: "18",
+    time: new Date(2017, 9, 22).toISOString(),
+    amount: 280502021,
+    currency_name: "dash",
+    currency_family: "Dash"
+  })
+};
+
 export default {
-  groups: {
-    "0": {
-      id: "0",
-      name: "First Group",
-      members: ["1", "2", "6"]
-    },
-    "1": {
-      id: "1",
-      name: "Second Group",
-      members: ["3", "4", "6"]
-    }
-  },
+  groups,
   members,
-  operations: {
-    "1": genOperation({ uuid: "1" }),
-    "2": genOperation({
-      uuid: "2",
-      amount: 100000000,
-      account_id: "1",
-      time: new Date(2017, 9, 9).toISOString()
-    }),
-    "3": genOperation({
-      uuid: "3",
-      time: new Date(2017, 9, 10).toISOString(),
-      amount: 200000000,
-      account_id: "2"
-    }),
-    "4": genOperation({
-      uuid: "4",
-      confirmations: 0,
-      account_id: "3",
-      time: new Date(2017, 9, 11).toISOString()
-    }),
-    "5": genOperation({
-      uuid: "5",
-      amount: -130000000,
-      account_id: "4",
-      type: "FROM",
-      time: new Date(2017, 9, 12).toISOString()
-    }),
-    "6": genOperation({
-      uuid: "6",
-      time: new Date(2017, 9, 13).toISOString()
-    }),
-    "7": genOperation({
-      uuid: "7",
-      amount: 180000000,
-      confirmations: 0,
-      time: new Date(2017, 9, 14, 9).toISOString()
-    }),
-    "8": genOperation({
-      uuid: "8",
-      type: "FROM",
-      time: new Date(2017, 9, 15).toISOString()
-    }),
-    "9": genOperation({
-      uuid: "9",
-      amount: -150000000,
-      time: new Date(2017, 9, 16).toISOString()
-    }),
-    "10": genOperation({
-      uuid: "10",
-      time: new Date(2017, 9, 17).toISOString()
-    }),
-    "11": genOperation({
-      uuid: "11",
-      amount: 100000000,
-      time: new Date(2017, 9, 18, 5).toISOString()
-    }),
-    "12": genOperation({
-      uuid: "12",
-      time: new Date(2017, 9, 19).toISOString(),
-      amount: 200000000
-    }),
-    "13": genOperation({
-      uuid: "13",
-      confirmations: 0,
-      time: new Date(2017, 9, 20).toISOString()
-    }),
-    "14": genOperation({
-      uuid: "14",
-      type: "FROM",
-      time: new Date(2017, 9, 21).toISOString()
-    }),
-    "15": genOperation({
-      uuid: "15",
-      time: new Date(2017, 9, 22).toISOString()
-    })
-  },
-  accounts: {
-    "0": {
-      id: "0",
-      name: "cold storage",
-      security_scheme: genSecurityScheme(),
-      creation_time: 1508923040570,
-      currency: "bitcoin",
-      balance: 1589831782,
-      balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
-      },
-      receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199553,
-        currency_name: "EUR"
-      }
-    },
-    "1": {
-      id: "1",
-      name: "cold storage",
-      security_scheme: genSecurityScheme(),
-      creation_time: 1508923040570,
-      currency: "bitcoin",
-      balance: 1589831782,
-      balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
-      },
-      receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199553,
-        currency_name: "EUR"
-      }
-    },
-    "2": {
-      id: "2",
-      name: "trackerfund",
-      security_scheme: genSecurityScheme(),
-      creation_time: 1508923040570,
-      currency: "dogecoin",
-      balance: 1589831782,
-      balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
-      },
-      receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199553,
-        currency_name: "EUR"
-      }
-    },
-    "3": {
-      id: "3",
-      name: "hot wallet",
-      security_scheme: genSecurityScheme(),
-      creation_time: 1508923040570,
-      currency: "dash",
-      balance: 1589831782,
-      balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
-      },
-      receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199553,
-        currency_name: "EUR"
-      }
-    },
-    "4": {
-      id: "4",
-      name: "etf holdings",
-      security_scheme: genSecurityScheme(),
-      creation_time: 1508923040570,
-      currency: "litecoin",
-      balance: 1589831782,
-      balance_history: {
-        yesterday: 1182834846,
-        week: 118283484,
-        month: 2182834846
-      },
-      receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
-      reference_conversion: {
-        balance: 199553,
-        currency_name: "EUR"
-      }
-    }
-  },
-  // currencies are statically provided, we add them in the entities mock
-  currencies: currenciesMap
+  operations,
+  accounts,
+  currencies
 };

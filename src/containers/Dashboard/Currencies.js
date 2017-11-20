@@ -1,37 +1,72 @@
-import _ from "lodash";
-import React from "react";
+//@flow
+import React, { Component } from "react";
+import connectData from "../../restlay/connectData";
 import PieChart from "./PieChart";
+import { countervalueForRate } from "../../data/currency";
+import type { Account } from "../../data/types";
+import AccountsQuery from "../../api/queries/AccountsQuery";
 
-function Currencies({ accounts }) {
+type AggregatedData = {
+  [_: string]: {
+    account: Account,
+    balance: number,
+    counterValueBalance: number
+  }
+};
+
+function Currencies({ accounts }: { accounts: Array<Account> }) {
   //compute currencies from accounts balance
-  const computedCurrencies = _.reduce(
-    accounts,
-    (currencies, account) => {
+  const data: AggregatedData = accounts.reduce(
+    (acc: AggregatedData, account) => {
       const currency_name = account.currency.name;
       const balance = account.balance;
       //check if currency already added
-      if (_.isNil(currencies[currency_name]))
-        currencies[currency_name] = { meta: account.currency, balance: 0 };
-      currencies[currency_name].balance += balance;
-      return currencies;
+      if (!acc[currency_name]) {
+        acc[currency_name] = {
+          account,
+          balance: 0,
+          counterValueBalance: 0
+        };
+      }
+      acc[currency_name].balance += balance;
+      acc[currency_name].counterValueBalance += countervalueForRate(
+        account.currencyRateInReferenceFiat,
+        balance
+      ).value;
+      return acc;
     },
     {}
   );
 
-  let data = _.reduce(
-    Object.keys(computedCurrencies),
-    (currenciesList, currencies) => {
-      currenciesList.push(computedCurrencies[currencies]);
-      return currenciesList;
-    },
-    []
-  );
+  const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
+    currenciesList.push(data[c]);
+    return currenciesList;
+  }, []);
 
   return (
-    <div className="currencies">
-      <PieChart data={data} />
+    <div className="dashboard-currencies">
+      <PieChart data={pieChartData} />
     </div>
   );
 }
 
-export default Currencies;
+class RenderError extends Component<*> {
+  render() {
+    return <div className="dashboard-currencies" />;
+  }
+}
+
+class RenderLoading extends Component<*> {
+  render() {
+    return <div className="dashboard-currencies" />;
+  }
+}
+
+export default connectData(Currencies, {
+  queries: {
+    accounts: AccountsQuery
+  },
+  optimisticRendering: true,
+  RenderError,
+  RenderLoading
+});

@@ -1,3 +1,4 @@
+//@flow
 import { Children, Component } from "react";
 import PropTypes from "prop-types";
 import Polyglot from "node-polyglot";
@@ -7,7 +8,9 @@ import messages from "../messages";
 
 const mapStateToProps = state => ({ locale: state.locale });
 
-class I18nProvider extends Component {
+// FIXME is that a duplicate with decorators/Translate? xD
+
+class I18nProvider extends Component<*> {
   getChildContext() {
     const { locale } = this.props;
     const polyglot = new Polyglot({
@@ -35,4 +38,5 @@ I18nProvider.propTypes = {
   children: PropTypes.element.isRequired
 };
 
+// $FlowFixMe
 export default connect(mapStateToProps)(I18nProvider);

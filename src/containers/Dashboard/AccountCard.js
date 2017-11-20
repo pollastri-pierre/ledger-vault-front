@@ -1,23 +1,23 @@
 //@flow
 import React, { Component } from "react";
-import type { Account } from "../../datatypes";
+import type { Account } from "../../data/types";
 import Card from "../../components/Card";
-import EvolutionSince from "./EvolutionSince";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import EvolutionSince, {
+  TotalBalanceFilters
+} from "../../components/EvolutionSince";
 
 import "./AccountCard.css";
 
 const Separator = () => <div className="separator" />;
 
-class AccountCard extends Component<*> {
-  props: {
-    account: Account,
-    filter: *
-  };
+class AccountCard extends Component<{
+  account: Account,
+  filter: string
+}> {
   render() {
     const { account, filter } = this.props;
-    const { reference_conversion } = account;
 
     const title = (
       <div>
@@ -26,24 +26,22 @@ class AccountCard extends Component<*> {
       </div>
     );
     return (
-      <Card key={account.id} title={title}>
+      <Card className="account-card" key={account.id} title={title}>
         <EvolutionSince
           value={account.balance}
           valueHistory={account.balance_history}
-          filter={filter}
+          filter={TotalBalanceFilters.find(f => f.key === filter)}
         />
         <Separator />
         <div>
           <div className="cryptocur">
-            <CurrencyNameValue
-              currencyName={account.currency.name}
-              value={account.balance}
-            />
+            <CurrencyAccountValue account={account} value={account.balance} />
           </div>
           <div className="realcur">
-            <CurrencyNameValue
-              currencyName={reference_conversion.currency_name}
-              value={reference_conversion.balance}
+            <CurrencyAccountValue
+              account={account}
+              value={account.balance}
+              countervalue
             />
           </div>
         </div>

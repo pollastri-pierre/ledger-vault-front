@@ -1,19 +1,14 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-
 import "./Divider.css";
 
-function Divider(props) {
+function Divider(props: { className: string }) {
   return (
     <div {...props} className={`divider ${props.className}`}>
       &nbsp;
     </div>
   );
 }
-
-Divider.propTypes = {
-  className: PropTypes.node
-};
 
 Divider.defaultProps = {
   className: ""

@@ -1,21 +1,14 @@
 //@flow
 import React, { Component } from "react";
-import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import DateFormat from "../DateFormat";
-import CurrencyNameValue from "../CurrencyNameValue";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 import AccountName from "../AccountName";
-import { openOperationModal } from "../../redux/modules/operations";
 import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import Tooltip from "../utils/Tooltip";
-import type { Operation } from "../../datatypes";
+import type { Operation, Account, Note } from "../../data/types";
 import "./index.css";
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = dispatch => ({
-  onGetOperation: (id, n) => dispatch(openOperationModal(id, n))
-});
 
 const getHash = (operation: Operation): string => {
   let hash = "";
@@ -27,43 +20,48 @@ const getHash = (operation: Operation): string => {
   return hash;
 };
 
-// TODO migrate all the operations/List in this component.
-
 let DataTableOperationCount = 0;
 
-class DataTableOperation extends Component<*> {
-  props: {
-    operations: Array<Operation>,
-    columnIds: Array<string>,
-    onGetOperation: (uuid: string, n: ?number) => void
-  };
-
+class DataTableOperation extends Component<{
+  operations: Array<Operation>,
+  accounts: Array<Account>, // accounts is an array that should at least contains the operations's account_id
+  columnIds: Array<string>,
+  history: Object,
+  match: Object
+}> {
   id = ++DataTableOperationCount;
 
-  openOperation = (uuid: string, n: ?number) => {
-    this.props.onGetOperation(uuid, n);
+  openOperation = (uuid: string, n: number = 0) => {
+    this.props.history.push(`${this.props.match.url}/operation/${uuid}/${n}`);
   };
 
-  renderRow = (operation: Operation, index: number, children: *) => (
+  renderRow = (
+    { operation }: { operation: Operation },
+    index: number,
+    children: string | React$Node
+  ) => (
     <tr
       key={operation.uuid}
       style={{ cursor: "pointer" }}
-      onClick={() => {
-        this.openOperation(operation.uuid);
-      }}
+      onClick={() => this.openOperation(operation.uuid, 0)}
     >
       {children}
     </tr>
   );
 
   render() {
-    const { operations, columnIds } = this.props;
-    const columns = [
+    const { accounts, operations, columnIds } = this.props;
+    type Cell = {
+      operation: Operation,
+      account: ?Account
+    };
+    const columns: Array<{ className: *, title: *, renderCell: Cell => * }> = [
       {
         className: "date",
         title: "date",
-        renderCell: operation => {
-          const note = operation.notes.length > 0 ? operation.notes[0] : null;
+        renderCell: ({ operation }) => {
+          const note: ?Note =
+            operation.notes.length > 0 ? operation.notes[0] : null;
           const tooltipId =
             "DataTableOperationCount" + this.id + "_tooltip_" + operation.uuid;
           return (
@@ -71,7 +69,7 @@ class DataTableOperation extends Component<*> {
               <DateFormat format="ddd D MMM, h:mmA" date={operation.time} />
               <Comment
                 fill="#e2e2e2"
-                onClick={e => {
+                onClick={(e: Event) => {
                   e.stopPropagation();
                   this.openOperation(operation.uuid, 2);
                 }}
@@ -79,11 +77,11 @@ class DataTableOperation extends Component<*> {
                 data-tip
                 data-for={tooltipId}
               />
-              {note && (
+              {!note ? null : (
                 <Tooltip id={tooltipId} className="tooltip-label">
                   <p className="tooltip-label-title">{note.title}</p>
                   <p className="tooltip-label-name">
-                    {note.author.firstname} {note.author.name}
+                    {note.author.first_name} {note.author.last_name}
                   </p>
                   <div className="hr" />
                   <p className="tooltip-label-body">{note.body}</p>
@@ -96,14 +94,15 @@ class DataTableOperation extends Component<*> {
       {
         className: "account",
         title: "account",
-        renderCell: ({ account, currency }) =>
-          account &&
-          currency && <AccountName name={account.name} currency={currency} />
+        renderCell: ({ account }) =>
+          account ? (
+            <AccountName name={account.name} currency={account.currency} />
+          ) : null
       },
       {
         className: "address",
         title: "address",
-        renderCell: operation => (
+        renderCell: ({ operation }) => (
           <span>
             <span className="type">
               {operation.type === "SEND" ? "TO" : "FROM"}
@@ -115,7 +114,7 @@ class DataTableOperation extends Component<*> {
       {
         className: "status",
         title: "status",
-        renderCell: operation => (
+        renderCell: ({ operation }) => (
           <span>
             {operation.confirmations > 0 ? "Confirmed" : "Not confirmed"}
           </span>
@@ -124,34 +123,38 @@ class DataTableOperation extends Component<*> {
       {
         className: "countervalue",
         title: "",
-        renderCell: operation => (
-          <CurrencyNameValue
-            currencyName={operation.reference_conversion.currency_name}
-            value={operation.reference_conversion.amount}
-            alwaysShowSign
-          />
-        )
+        renderCell: ({ operation, account }) =>
+          account ? (
+            <CurrencyAccountValue
+              account={account}
+              rate={operation.rate}
+              value={operation.amount}
+              alwaysShowSign
+              countervalue
+            />
+          ) : null
       },
       {
         className: "amount",
         title: "amount",
-        renderCell: operation => (
-          <CurrencyNameValue
-            currencyName={operation.currency_name}
-            value={operation.amount}
-            alwaysShowSign
-          />
-        )
+        renderCell: ({ operation, account }) =>
+          account ? (
+            <CurrencyAccountValue
+              account={account}
+              value={operation.amount}
+              alwaysShowSign
+            />
+          ) : null
       }
     ].filter(c => columnIds.includes(c.className));
+    const data: Array<Cell> = operations.map(operation => ({
+      operation,
+      account: accounts.find(a => a.id === operation.account_id)
+    }));
     return (
-      <DataTable
-        data={operations}
-        columns={columns}
-        renderRow={this.renderRow}
-      />
+      <DataTable data={data} columns={columns} renderRow={this.renderRow} />
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataTableOperation);
+export default withRouter(DataTableOperation);

@@ -25,12 +25,12 @@
 
 .modal {
   overflow: hidden; // hiding scrollbar
-  animation: modal 100ms ease;
   background: white;
   box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.04);
   margin: auto;
   position: relative;
   z-index: 2;
+  width: 440px;
 
   .tab-title {
     font-size: 11.5px;
@@ -57,7 +57,6 @@
 
   .tabs_panel[class*="--selected"] {
     height: 100%;
-    animation: tab 200ms ease;
   }
 
   .react-tabs__tab {
@@ -89,7 +88,6 @@
 
 .modal .small-modal {
   box-sizing: border-box;
-  width: 445px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -122,26 +120,6 @@
     color: $lead;
     line-height: 1.82;
     margin: 0;
-  }
-
-  .form-field-checkbox {
-    outline: none;
-    position: relative;
-    cursor: pointer;
-    margin-bottom: 15px;
-
-    & > label {
-      text-transform: uppercase;
-      font-size: 11px;
-      font-weight: 600;
-      color: $black;
-    }
-
-    .slidebox {
-      position: absolute;
-      right: 0;
-      top: -7px;
-    }
   }
 
   .form-field {
@@ -200,7 +178,7 @@
     margin-bottom: 15px;
 
     &.small-padding {
-      padding-right: 66px;
+      padding-right: 74px;
     }
     &.medium-padding {
       padding-right: 151px;

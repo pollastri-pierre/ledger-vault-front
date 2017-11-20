@@ -1,31 +1,47 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import _ from "lodash";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import ModalRoute from "../../components/ModalRoute";
+import OperationModal from "../../components/operations/OperationModal";
+import connectData from "../../restlay/connectData";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
+import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
 import Card from "../../components/Card";
 import DateFormat from "../../components/DateFormat";
 import CardField from "../../components/CardField";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import QuicklookGraph from "./QuicklookGraph";
-import type { Account, Operation } from "../../datatypes";
-import CustomSelectField from "../../components/CustomSelectField/CustomSelectField.js";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { Select, Option } from "../../components/Select";
+import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
+import AccountQuery from "../../api/queries/AccountQuery";
+import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
+import type { Account, Operation, Currency } from "../../data/types";
 import "./Account.css";
+import { formatCurrencyUnit, getUnitFromRate } from "../../data/currency";
 
 class AccountView extends Component<
   {
     account: Account,
-    operations: Array<Operation>
+    operations: Array<Operation>,
+    currencies: Array<Currency>,
+    reloading: boolean,
+    match: {
+      url: string,
+      params: {
+        id: string
+      }
+    }
   },
   *
 > {
   constructor(props) {
     super(props);
     this.state = {
-      quickLookGraphFilter: this.quickLookGraphFilters[0],
-      tabsIndex: 0
+      quickLookGraphFilter: "balance",
+      tabsIndex: 0,
+      labelDateRange: this.getLabelDateRange(this.getDateRange(0))
     };
   }
 
@@ -35,41 +51,184 @@ class AccountView extends Component<
 
   quickLookGraphFilters = [
     { title: "balance", key: "balance" },
-    { title: "countervalue", key: "countervalue" },
-    { title: "payments", key: "payments" }
+    { title: "countervalue", key: "countervalue" }
   ];
 
   selectTab = index => {
-    this.setState({ tabsIndex: index });
+    this.setState({
+      tabsIndex: index,
+      labelDateRange: this.getLabelDateRange(this.getDateRange(index))
+    });
+  };
+  getLastWeek = () => {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    var lastWeek = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+    return lastWeek;
+  };
+
+  getLabelDateRange = domain => {
+    const day1 = new Date(domain[0]).getDate();
+    const month1 = new Date(domain[0]).getMonth();
+    const year1 = new Date(domain[0]).getFullYear();
+    const day2 = new Date(domain[1]).getDate();
+    const month2 = new Date(domain[1]).getMonth();
+    const year2 = new Date(domain[1]).getFullYear();
+    const dateRange =
+      day1 === day2 && month1 === month2 && year1 === year2
+        ? "day"
+        : month1 === month2 && year1 === year2
+          ? "month"
+          : year1 === year2 ? "year" : "hour";
+
+    let res = "";
+    if (dateRange === "day") {
+      //Same day
+      res = [
+        <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY h:mm" />,
+        <DateFormat key="1" date={domain[1]} format="h:mm" />
+      ];
+    } else if (dateRange === "month") {
+      //Same month
+      res = [
+        <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
+        <DateFormat key="1" date={domain[1]} format="Do, YYYY" />
+      ];
+    } else if (dateRange === "year") {
+      //Same year
+      res = [
+        <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
+      ];
+    } else
+      res = [
+        <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY" />,
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
+      ];
+    return res;
+  };
+  getDateRange = tabsIndex => {
+    const max = new Date();
+    let min = new Date();
+    min =
+      tabsIndex === 0
+        ? new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+        : min;
+    min =
+      tabsIndex === 1
+        ? new Date(new Date().setMonth(new Date().getMonth() - 1))
+        : min;
+    min = tabsIndex === 2 ? this.getLastWeek() : min;
+    min =
+      tabsIndex === 3
+        ? new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+        : min;
+    return [min.setHours(0, 0, 0, 0), max.setHours(0, 0, 0, 0)];
+  };
+
+  getOperations = data => {
+    const { account } = this.props;
+    const { quickLookGraphFilter } = this.state;
+    let operations = [];
+    if (!data.length) return [];
+
+    operations = data.map((o: Operation) => {
+      return {
+        time: new Date(o.time),
+        amount: o.amount,
+        tooltip: true,
+        rate: o.rate
+      };
+    });
+    if (quickLookGraphFilter === "balance") {
+      operations = operations.map((o: Operation, i: number): Array<
+        Operations
+      > => {
+        console.log(o.rate);
+
+        return {
+          ...o,
+          amount: parseFloat(
+            formatCurrencyUnit(
+              account.currency.units[0],
+              operations.slice(0, i).reduce((a: number, b: Operation) => {
+                return a + b.amount;
+              }, 0)
+            )
+          )
+        };
+      });
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date(),
+        tooltip: false
+      });
+    } else if (quickLookGraphFilter === "countervalue") {
+      operations = operations.map((o: Operation) => {
+        return {
+          ...o,
+          amount: o.amount * o.rate.value
+        };
+      });
+      operations.push({
+        ...operations[operations.length - 1],
+        time: new Date(),
+        tooltip: false
+      });
+    }
+    operations = _.sortBy(operations, elem =>
+      new Date(elem.time).toISOString()
+    );
+    return operations;
   };
 
   render() {
-    const { account, operations } = this.props;
-    const { tabsIndex, quickLookGraphFilter } = this.state;
-    const beginDate = "March, 13th";
-    const endDate = "19th, 2017";
+    const { account, operations, reloading } = this.props;
+    const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
+
+    const data = this.getOperations(operations);
+    console.log(data);
+    let selectedCurrency = account.currency;
+
+    if (quickLookGraphFilter === "balance") {
+      selectedCurrency = account.currency;
+      selectedCurrency.code = account.currency.units[0].code;
+    } else if (quickLookGraphFilter === "countervalue") {
+      selectedCurrency = getUnitFromRate(operations[0].rate);
+      selectedCurrency.color = account.currency.color;
+    }
+    console.log(selectedCurrency);
     return (
       <div className="account-view">
         <div className="account-view-infos">
           <div className="infos-left">
             <div className="infos-left-top">
-              <Card className="balance" title="Balance">
+              <Card reloading={reloading} className="balance" title="Balance">
                 <CardField label={<DateFormat date={new Date()} />}>
-                  <CurrencyNameValue
-                    currencyName={account.currency.name}
+                  <CurrencyAccountValue
+                    account={account}
                     value={account.balance}
                   />
                 </CardField>
               </Card>
 
-              <Card className="countervalue" title="Countervalue">
+              <Card
+                reloading={reloading}
+                className="countervalue"
+                title="Countervalue"
+              >
                 <CardField
-                  label={`ETH 1 ≈ ${account.reference_conversion
-                    .currency_name} ???`}
+                  label={<CurrencyCounterValueConversion account={account} />}
                 >
-                  <CurrencyNameValue
-                    currencyName={account.reference_conversion.currency_name}
-                    value={account.reference_conversion.balance}
+                  <CurrencyAccountValue
+                    account={account}
+                    value={account.balance}
+                    countervalue
                   />
                 </CardField>
               </Card>
@@ -77,14 +236,23 @@ class AccountView extends Component<
             <ReceiveFundsCard hash={account.receive_address} />
           </div>
           <Card
+            reloading={reloading}
             className="quicklook"
             title="Quicklook"
             titleRight={
-              <CustomSelectField
-                values={this.quickLookGraphFilters}
-                selected={quickLookGraphFilter}
-                onChange={this.onQuickLookGraphFilterChange}
-              />
+              data.length && (
+                <Select onChange={this.onQuickLookGraphFilterChange}>
+                  {this.quickLookGraphFilters.map(({ title, key }) => (
+                    <Option
+                      key={key}
+                      value={key}
+                      selected={quickLookGraphFilter === key}
+                    >
+                      {title}
+                    </Option>
+                  ))}
+                </Select>
+              )
             }
           >
             <Tabs
@@ -100,73 +268,36 @@ class AccountView extends Component<
                   <Tab disabled={false}>day</Tab>
                 </TabList>
               </header>
+              <div className="dateLabel">
+                From {labelDateRange[0]} to {labelDateRange[1]}
+              </div>
               <div className="content">
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
+                <div className="quickLookGraphWrap">
                   <QuicklookGraph
-                    labelHeader={`From ${beginDate} to ${endDate}`}
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
+                    dateRange={this.getDateRange(tabsIndex)}
+                    data={data}
+                    currency={selectedCurrency}
                   />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
-                <TabPanel className="tabs_panel">
-                  <div className="dateLabel">
-                    {`From ${beginDate} to ${endDate}`}
-                  </div>
-                  <QuicklookGraph
-                    data={operations.map((o: Operation) => ({
-                      time: new Date(o.time),
-                      amount: o.amount,
-                      currency: o.currency
-                    }))}
-                  />
-                </TabPanel>
+                </div>
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
+                <TabPanel className="tabs_panel" />
               </div>
             </Tabs>
           </Card>
         </div>
-        <Card
-          title="last operations"
-          titleRight={
-            <span>
-              VIEW ALL{/* TODO make that a component, use react-router <Link> */}
-            </span>
-          }
-        >
+        <Card reloading={reloading} title="last operations">
           <DataTableOperation
+            accounts={[account]}
             operations={operations}
             columnIds={["date", "address", "status", "countervalue", "amount"]}
           />
         </Card>
+        <ModalRoute
+          path={`${this.props.match.url}/operation/:operationId/:tabIndex`}
+          component={OperationModal}
+        />
       </div>
     );
   }
@@ -180,7 +311,11 @@ const RenderError = ({ error }: { error: Error }) => (
 );
 
 export default connectData(AccountView, {
-  api: { account: api.account, operations: api.accountOperations },
-  propsToApiParams: props => ({ accountId: props.match.params.id }),
+  queries: {
+    currencies: CurrenciesQuery,
+    account: AccountQuery,
+    operations: AccountOperationsQuery
+  },
+  propsToQueryParams: props => ({ accountId: props.match.params.id }),
   RenderError
 });

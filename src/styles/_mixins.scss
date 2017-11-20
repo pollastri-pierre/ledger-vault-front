@@ -1,5 +1,15 @@
 @import "./variables";
 
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  transition: opacity 0.2s ease;
+
+  &.active,
+  &:hover {
+    opacity: 1;
+  }
+}
+
 @mixin highlight-block-common($color) {
   &::before {
     content: "";

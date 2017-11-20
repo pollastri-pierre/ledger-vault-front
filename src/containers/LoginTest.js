@@ -1,10 +1,8 @@
+//@flow
 import "./App/App.css";
 import React, { Component } from "react";
-// import isEmpty from 'lodash/isEmpty';
-
 import { connect } from "react-redux";
 import { registerDevice } from "../redux/modules/auth";
-
 import "./Login/Login.css";
 
 const mapStateToProps = state => ({
@@ -17,24 +15,18 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class LoginTest extends Component {
-  constructor(props) {
-    super(props);
+class LoginTest extends Component<*, *> {
+  state = {
+    field: ""
+  };
 
-    this.state = {
-      field: ""
-    };
-  }
-
-  onChange(event) {
+  onChange(event: *) {
     this.setState({
       field: event.target.value
     });
   }
 
   render() {
-    // const { team, isCheckingTeam, teamError, teamValidated } = this.props.auth;
-
     return (
       <div>
         <input

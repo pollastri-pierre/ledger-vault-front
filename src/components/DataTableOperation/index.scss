@@ -1,4 +1,30 @@
+@import "../../styles/_variables";
+
 table.data-table {
+  thead {
+    tr:before {
+      opacity: 0;
+    }
+  }
+  tr:before {
+    background: $ocean;
+    content: "";
+    height: 26px;
+    width: 0px;
+    position: absolute;
+    margin-left: -42px;
+    margin-top: 6px;
+  }
+  tr {
+    &:hover {
+      &:before {
+        width: 5px;
+        -webkit-transition: width 200ms ease;
+        -o-transition: width 200ms ease;
+        transition: width 200ms ease;
+      }
+    }
+  }
   td.countervalue,
   td.amount,
   th.amount {
@@ -7,12 +33,31 @@ table.data-table {
   td.date {
     font-size: 10px;
     font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
   td.account {
     font-size: 13px;
   }
   td.countervalue {
     font-size: 13px;
+    color: #767676;
+  }
+  td.address {
+    .type {
+      font-size: 10px;
+      color: #767676;
+      font-weight: 600;
+      width: 36px;
+      padding-right: 5px;
+      display: inline-block;
+    }
+    .hash {
+      font-size: 11px;
+    }
+  }
+  td.status {
+    font-size: 11px;
     color: #767676;
   }
   td.amount {

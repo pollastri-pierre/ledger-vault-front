@@ -1,64 +1,47 @@
+//@flow
 import React from "react";
-import ArrowDown from "../icons/ArrowDown";
-import ValidateBadge from "../icons/ValidateBadge";
+import LineRow from "../LineRow";
+import AccountName from "../AccountName";
+import DateFormat from "../DateFormat";
+import ConfirmationStatus from "../ConfirmationStatus";
+import OverviewOperation from "../OverviewOperation";
+import Amount from "../Amount";
+import type { Operation, Account } from "../../data/types";
 
-const getConfirmation = n => {
-  if (n > 0) {
-    return `Confirmed (${n})`;
-  } else {
-    return "Unconfirmed";
-  }
-};
-
-function TabOverview(props) {
-  const { operation } = props;
+function TabOverview(props: { operation: Operation, account: Account }) {
+  const { operation, account } = props;
+  const { rate } = operation;
   return (
     <div>
-      <div className="operation-overview-header">
-        <div className="operation-overview-amount">
-          <p className="crypto-amount">-BTC 0.88962</p>
-          <span className="arrow-grey-down" />
-          <ArrowDown className="arrow-grey-down" />
-          <p className="euro-amount">EUR 1,028.93</p>
-          <p className="hash">1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX</p>
-        </div>
+      <OverviewOperation
+        hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
+        amount={operation.amount}
+        account={account}
+        rate={rate}
+      />
+      <div className="operation-list">
+        <LineRow label="status">
+          <ConfirmationStatus nbConfirmations={operation.confirmations} />
+        </LineRow>
+
+        <LineRow label="send date">
+          <DateFormat date={operation.time} />
+        </LineRow>
+        <LineRow label="account">
+          <AccountName name={account.name} currency={account.currency} />
+        </LineRow>
+        <LineRow label="fees">
+          <Amount account={account} value={operation.fees} rate={rate} />
+        </LineRow>
+        <LineRow label="Total spent">
+          <Amount
+            account={account}
+            value={operation.amount}
+            rate={rate}
+            strong
+          />
+        </LineRow>
       </div>
-      <table className="operation-list">
-        <tbody>
-          <tr>
-            <td>STATUS</td>
-            <td>
-              <strong>{getConfirmation(operation.confirmations)}</strong>
-              {operation.confirmations > 0 ? (
-                <ValidateBadge className="confirmed operation-status" />
-              ) : (
-                false
-              )}
-            </td>
-          </tr>
-          <tr>
-            <td>SEND DATE</td>
-            <td>Mon, 7th Mar, 2:34 AM</td>
-          </tr>
-          <tr>
-            <td>ACCOUNT</td>
-            <td>Cold wallet {operation.account_id}</td>
-          </tr>
-          <tr>
-            <td>Fees</td>
-            <td>
-              BTC 0.0015 <span className="euro-amount">(EUR 0.25)</span>
-            </td>
-          </tr>
-          <tr>
-            <td>TOTAL SPENT</td>
-            <td>
-              <strong>BTC 0.0015</strong>{" "}
-              <span className="euro-amount">(EUR 0.25)</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   );
 }

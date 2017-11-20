@@ -1,7 +1,6 @@
-import axios from "axios";
-import { push } from "react-router-redux";
+//@flow
 import "u2f-api-polyfill";
-import ledger from "ledgerco";
+import network from "../../network";
 
 export const SET_TEAM_FIELD = "auth/SET_TEAM_FIELD";
 export const LOGOUT = "auth/LOGOUT";
@@ -14,11 +13,9 @@ export const AUTHENTICATION_FAILED = "auth/AUTHENTICATION_FAILED";
 export const AUTHENTICATION_FAILED_API = "auth/AUTHENTICATION_FAILED_API";
 export const AUTHENTICATION_FAILED_TIMEOUT =
   "auth/AUTHENTICATION_FAILED_TIMEOUT";
-export const GET_USER_INFOS_START = "auth/GET_USER_INFOS_START";
-export const GOT_USER_INFO = "auth/GOT_USER_INFO";
 export const RESET_TEAM = "auth/RESET_TEAM";
 
-export function setTeamField(val) {
+export function setTeamField(val: string) {
   return {
     type: SET_TEAM_FIELD,
     value: val
@@ -31,7 +28,7 @@ export function startAuthenticationFlag() {
   };
 }
 
-export function checkTeamError(status) {
+export function checkTeamError(status: string) {
   return {
     type: CHECK_TEAM_ERROR,
     status
@@ -62,7 +59,7 @@ export function authenticationSucceed() {
   };
 }
 
-export function authenticationFailed(e) {
+export function authenticationFailed(e: mixed) {
   if (e === 5) {
     return {
       type: AUTHENTICATION_FAILED_TIMEOUT
@@ -78,75 +75,42 @@ export function authenticationFailed(e) {
   };
 }
 
-export function setTokenToLocalStorage(token) {
+export function setTokenToLocalStorage(token: string) {
   window.localStorage.setItem("token", token);
 }
 
-export function finishRegistration(data, email) {
-  return () => {
-    window.u2f.register(
-      data.appId,
-      data.registerRequests,
-      data.registeredKeys,
-      deviceResponse => {
-        if (deviceResponse.errorCode) {
-          // dispatch(authenticationFailed());
-        } else {
-          axios
-            .post("finish_registration", { email, response: deviceResponse })
-            .then(res => {
-              console.log(res.data);
-            });
+export function finishRegistration(data: Object, email: string) {
+  return (): Promise<Object> =>
+    new Promise((success, failure) =>
+      window.u2f.register(
+        data.appId,
+        data.registerRequests,
+        data.registeredKeys,
+        response => {
+          if (response.errorCode) {
+            // dispatch(authenticationFailed());
+            failure(new Error(response.errorCode));
+          } else {
+            network("/finish_registration", "POST", { email, response }).then(
+              success,
+              failure
+            );
+          }
         }
-      }
+      )
     );
-  };
 }
 
-export function registerDevice(email) {
-  return dispatch => {
-    axios.post("start_registration", { email }).then(res => {
-      dispatch(finishRegistration(res.data, email));
+export function registerDevice(email: string) {
+  return (dispatch: Function) => {
+    network("/start_registration", "POST", { email }).then(res => {
+      dispatch(finishRegistration(res, email));
     });
   };
 }
 
-export function startGetUserInfos() {
-  return {
-    type: GET_USER_INFOS_START
-  };
-}
-
-export function gotUserInfos(user) {
-  return {
-    type: GOT_USER_INFO,
-    user
-  };
-}
-
-export function getUserInfos() {
-  return (dispatch, getState) => {
-    dispatch(startGetUserInfos());
-    const { routing } = getState();
-
-    return axios
-      .get("/organization/members/me", {
-        headers: { "X-Ledger-Auth": window.localStorage.getItem("token") }
-      })
-      .then(res => {
-        dispatch(gotUserInfos(res.data));
-        if (
-          routing.location &&
-          routing.location.state &&
-          routing.location.state.from
-        ) {
-          dispatch(push(routing.location.state.from));
-        }
-      });
-  };
-}
-export function finishAuthentication(data) {
-  return (dispatch, getState) => {
+export function finishAuthentication(data: Object) {
+  return (dispatch: Function, getState: Function) => {
     const { team } = getState().auth;
 
     window.u2f.sign(
@@ -157,17 +121,15 @@ export function finishAuthentication(data) {
         if (deviceResponse.errorCode) {
           dispatch(authenticationFailed(deviceResponse.errorCode));
         } else {
-          axios
-            .post("finish_authentication", {
-              email: team,
-              response: deviceResponse
-            })
+          network("/finish_authentication", "POST", {
+            email: team,
+            response: deviceResponse
+          })
             .then(res => {
+              setTokenToLocalStorage(res.token);
               setTimeout(() => {
                 dispatch(authenticationSucceed());
               }, 500);
-              setTokenToLocalStorage(res.data.token);
-              dispatch(getUserInfos());
             })
             .catch(() => {
               dispatch(authenticationFailed("api"));
@@ -179,18 +141,17 @@ export function finishAuthentication(data) {
 }
 
 export function startAuthentication() {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     dispatch(startAuthenticationFlag());
     const { team } = getState().auth;
-
-    axios
-      .post("start_authentication", { email: team })
+    network("/start_authentication", "POST", { email: team })
       .then(res => {
         dispatch(checkTeamSuccess());
-        dispatch(finishAuthentication(res.data));
+        dispatch(finishAuthentication(res));
       })
       .catch(e => {
-        dispatch(checkTeamError(e.response.status));
+        console.log(e);
+        // dispatch(checkTeamError(e.response.status));
       });
   };
 }
@@ -202,26 +163,48 @@ export function logout() {
 }
 
 export function logoutAction() {
-  return dispatch => {
-    dispatch(logout());
+  return (dispatch: Function) => {
     window.localStorage.removeItem("token");
+    dispatch(logout());
   };
 }
 
-export const initialState = {
+export type State = {
+  team: string,
+  isAuthenticated: boolean,
+  isCheckingTeam: boolean,
+  teamValidated: boolean,
+  teamError: boolean
+};
+
+export const createInitialState = (): State => ({
   isAuthenticated: !!localStorage.getItem("token"),
   isCheckingTeam: false,
   teamValidated: false,
   teamError: false,
   team: ""
-};
+});
 
-export default function reducer(state = initialState, action) {
+export default function reducer(
+  state: State = createInitialState(),
+  action: Object
+) {
   switch (action.type) {
     case SET_TEAM_FIELD:
       return { ...state, team: action.value, teamError: false };
     case LOGOUT:
-      return initialState;
+      return createInitialState();
+    case "DATA_FETCHED_FAIL": {
+      const shouldLogout =
+        action.error.status &&
+        action.error.status === action.queryOrMutation.logoutUserIfStatusCode;
+      if (shouldLogout) {
+        window.localStorage.removeItem("token");
+        return createInitialState();
+      } else {
+        return state;
+      }
+    }
     case CHECK_TEAM_ERROR:
       return { ...state, teamError: true, isCheckingTeam: false };
     case CHECK_TEAM_SUCCESS:
@@ -237,7 +220,7 @@ export default function reducer(state = initialState, action) {
       return { ...state, isCheckingTeam: true };
     case RESET_TEAM:
       return { ...state, teamValidated: false };
-    case GOT_USER_INFO:
+    case AUTHENTICATION_SUCCEED:
       return { ...state, isAuthenticated: true };
     case AUTHENTICATION_FAILED_API:
     case AUTHENTICATION_FAILED_TIMEOUT:

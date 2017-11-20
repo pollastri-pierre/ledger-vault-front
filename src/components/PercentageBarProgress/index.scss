@@ -1,0 +1,37 @@
+@import '../../styles/variables';
+
+.wrapper-percentage {
+  text-align: center;
+  margin: auto;
+  margin-top: 80px;
+  width: 270px;
+
+  p {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+
+    span {
+      font-size: 10px;
+      color: $lead;
+      font-weight: 600;
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+
+  .percentage-bar {
+    height: 2px;
+    background: $mouse;
+    position: relative;
+
+    .percentage-bar-fill {
+      height: 2px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: $porto;
+    }
+  }
+}

@@ -1,45 +1,49 @@
+//@flow
 import _ from "lodash";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import * as d3 from "d3";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import type { Account } from "../../data/types";
 import "./PieChart.css";
 
-export default class PieChart extends Component {
-  static propTypes = {
-    data: PropTypes.instanceOf(Array).isRequired
+export default class PieChart extends Component<
+  {
+    data: Array<{
+      account: Account,
+      balance: number,
+      counterValueBalance: number
+    }>
+  },
+  { selected: number }
+> {
+  state = {
+    selected: -1
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: -1
-    };
-    this.setSelected.bind(this);
-  }
+  svg: ?Element;
+  tooltip: ?Element;
 
-  setSelected = index => {
+  setSelected = (index: number) => {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d, i) => {
+  handleMouseOver = (d: *) => {
     this.setSelected(d.index);
   };
 
-  handleMouseOut = (d, i) => {
+  handleMouseOut = () => {
     this.setSelected(-1);
   };
 
   componentDidMount() {
     const { selected } = this.state;
     const data = this.props.data;
+    const $svg = this.svg;
+    if (!$svg) return;
 
-    const svg = d3.select(this.svg);
-    svg.attr(
-      "width",
-      parseFloat(d3.select(this.svg.parentNode).style("width"))
-    ); //adapt to parent's width
+    const svg = d3.select($svg);
+    svg.attr("width", parseFloat(d3.select($svg.parentNode).style("width"))); //adapt to parent's width
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
     const width = +svg.attr("width") - margin.left - margin.right;
     const height = +svg.attr("height") - margin.top - margin.bottom;
@@ -63,19 +67,20 @@ export default class PieChart extends Component {
     const invisibleArc = d3
       .arc()
       .outerRadius(outerRadius)
-      .innerRadius(1.5)
-      .padAngle(0.05);
+      .innerRadius(1.5);
 
     const pie = d3
       .pie()
       .sort(null)
-      .value(d => d.balance);
+      .value(d => d.counterValueBalance);
 
-    let total = d3.sum(data, d => d.balance);
+    let total = d3.sum(data, d => d.counterValueBalance);
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
-      data[i].percentage = (d.data.balance / total * 100).toFixed(0); //Save percentage of arc
+      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(
+        0
+      ); //Save percentage of arc
     });
 
     const chart = g
@@ -95,7 +100,7 @@ export default class PieChart extends Component {
         "class",
         (d, i) => (selected !== -1 && selected !== i ? "disable" : "")
       )
-      .style("fill", d => d.data.meta.color);
+      .style("fill", d => d.data.account.currency.color);
 
     //transparent Chart for hovering purposes
     chart
@@ -115,7 +120,7 @@ export default class PieChart extends Component {
       .on("mouseout", this.handleMouseOut);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: *, prevState: *) {
     const { selected } = this.state;
     const { prevSelected } = prevState;
     const svg = d3.select(this.svg);
@@ -194,7 +199,7 @@ export default class PieChart extends Component {
         {selected !== -1 ? (
           <div
             className="tooltip hide"
-            style={{ color: this.props.data[selected].meta.color }}
+            style={{ color: this.props.data[selected].account.currency.color }}
             ref={t => {
               this.tooltip = t;
             }}
@@ -207,7 +212,7 @@ export default class PieChart extends Component {
                 <div>
                   <span className="uppercase currencyName">
                     {this.props.data[selected]
-                      ? this.props.data[selected].meta.name
+                      ? this.props.data[selected].account.currency.name
                       : ""}
                   </span>
                 </div>
@@ -219,28 +224,26 @@ export default class PieChart extends Component {
         )}
         <table className="currencyTable">
           <tbody>
-            {_.map(this.props.data, (currency, id) => {
+            {_.map(this.props.data, (data, id) => {
               return (
                 <tr
-                  className={`currency ${selected !== -1 && selected !== id
-                    ? "disable"
-                    : ""} ${selected !== -1 && selected === id
-                    ? "selected"
-                    : ""}`}
+                  className={`currency ${
+                    selected !== -1 && selected !== id ? "disable" : ""
+                  } ${selected !== -1 && selected === id ? "selected" : ""}`}
                   key={id}
                   onMouseOver={() => this.setSelected(id)}
                   onMouseOut={() => this.setSelected(-1)}
                 >
                   <td>
-                    <BadgeCurrency currency={currency.meta} />
+                    <BadgeCurrency currency={data.account.currency} />
                     <span className="uppercase currencyName">
-                      {currency.meta.name}
+                      {data.account.currency.name}
                     </span>
                   </td>
                   <td className="currencyBalance">
-                    <CurrencyNameValue
-                      currencyName={currency.meta.name}
-                      value={currency.balance}
+                    <CurrencyAccountValue
+                      account={data.account}
+                      value={data.balance}
                     />
                   </td>
                 </tr>

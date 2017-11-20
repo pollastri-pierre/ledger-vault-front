@@ -1,20 +1,27 @@
+//@flow
 import React from "react";
-import _ from "lodash";
-import PropTypes from "prop-types";
-import ValidateBadge from "../icons/ValidateBadge";
+import groupBy from "lodash/groupBy";
+import size from "lodash/size";
+import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
+import ApprovalStatus from "../ApprovalStatus";
+import type { Account, Member } from "../../data/types";
 
-function PendingAccountApprove(props) {
-  const { accounts, open, approved, approvers } = props;
+type Props = {
+  accounts: Account[],
+  approved?: boolean,
+  approvers: Member[],
+  user: Member
+};
+function PendingAccountApprove(props: Props) {
+  const { accounts, approved, approvers, user } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
 
-  const nbCurrencies = _.size(
-    _.groupBy(accounts, account => {
-      return account.currency.family;
-    })
+  const nbCurrencies = size(
+    groupBy(accounts, account => account.currency.family)
   );
 
   return (
@@ -39,58 +46,33 @@ function PendingAccountApprove(props) {
           </p>
         </div>
       )}
-      {_.map(accounts, account => {
-        return (
-          <div
-            className={`pending-request ${approved ? "watch" : ""}`}
-            key={account.id}
-            onClick={() => open(account, approved)}
-          >
-            <div>
-              <span className="request-date-creation">
-                <DateFormat date={account.creation_time} />
-              </span>
-              <span className="request-name">
-                <AccountName name={account.name} currency={account.currency} />
-              </span>
-            </div>
-            <div>
-              <span
-                className={`request-approval-state ${approved
-                  ? "approved"
-                  : ""}`}
-              >
-                {approved && <ValidateBadge className="confirmed" />}
-
-                {approved ? "Approved" : "Collecting Approvals"}
-                {` (${account.approved.length}/${approvers.length}) `}
-              </span>
-              <span className="request-currency">
-                {account.currency.family}
-              </span>
-            </div>
+      {accounts.map(account => (
+        <Link
+          className={`pending-request ${approved ? "watch" : ""}`}
+          to={`/pending/account/${account.id}`}
+          key={account.id}
+        >
+          <div>
+            <span className="request-date-creation">
+              <DateFormat date={account.creation_time} />
+            </span>
+            <span className="request-name">
+              <AccountName name={account.name} currency={account.currency} />
+            </span>
           </div>
-        );
-      })}
+          <div>
+            <ApprovalStatus
+              approved={account.approved}
+              approvers={approvers}
+              nbRequired={approvers.length}
+              user={user}
+            />
+            <span className="request-currency">{account.currency.family}</span>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
-
-PendingAccountApprove.defaultProps = {
-  approved: false,
-  approvers: []
-};
-
-PendingAccountApprove.propTypes = {
-  accounts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string
-    })
-  ).isRequired,
-  open: PropTypes.func.isRequired,
-  approved: PropTypes.bool,
-  approvers: PropTypes.arrayOf(PropTypes.shape({}))
-};
 
 export default PendingAccountApprove;

@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function People(props) {
+function People(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 29.05" {...props}>
       <title>people</title>

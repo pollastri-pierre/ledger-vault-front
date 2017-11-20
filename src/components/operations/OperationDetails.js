@@ -1,147 +1,104 @@
-import _ from "lodash";
+//@flow
 import React, { Component } from "react";
+import ModalLoading from "../../components/ModalLoading";
+import { withRouter } from "react-router";
 import PropTypes from "prop-types";
-import CircularProgress from "material-ui/CircularProgress";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
-import operationsUtils from "../../redux/utils/operation";
+import connectData from "../../restlay/connectData";
+import OperationQuery from "../../api/queries/OperationQuery";
+import AccountQuery from "../../api/queries/AccountQuery";
+import ProfileQuery from "../../api/queries/ProfileQuery";
+import type { Operation, Account, Member } from "../../data/types";
 
-class OperationDetails extends Component {
-  constructor(props) {
-    super(props);
+type Props = {
+  close: Function,
+  tabIndex: number,
+  // injected by decorators:
+  operation: Operation,
+  account: Account,
+  profile: Member,
+  history: *
+};
 
-    let note = { author: {} };
+class OperationDetails extends Component<Props> {
+  contentNode: *;
 
-    this.state = {
-      note: note
-    };
-
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
-  }
-
-  handleChangeTitle = val => {
-    const newNote = _.cloneDeep(this.state.note);
-    newNote.title = val;
-
-    this.setState({
-      note: newNote
-    });
+  onSelect = (index: number) => {
+    this.props.history.replace("" + index);
   };
 
-  componentWillReceiveProps(props) {
-    const operation = operationsUtils.findOperationDetails(
-      props.operations.operationInModal,
-      props.operations.operations
-    );
-
-    if (operation && operation.notes && operation.notes.length > 0) {
-      this.setState({
-        note: operation.notes[0]
-      });
-    }
-  }
-
-  componentWillMount() {
-    const { operations, getOperation } = this.props;
-    if (true && !operations.isLoadingOperation) {
-      getOperation(operations.operationInModal);
-    }
-  }
-
   render() {
-    const { operations } = this.props;
-    const { translate } = this.context;
-
-    const operation = operationsUtils.findOperationDetails(
-      operations.operationInModal,
-      operations.operations
-    );
-
-    if (operations.isLoadingOperation || !operation) {
-      return (
-        <div className="operation-details wrapper">
-          <div className="header" />
-          <div className="content">
-            <CircularProgress
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: "-25px",
-                marginTop: "-25px"
-              }}
-            />
+    const { operation, account, close, tabIndex } = this.props;
+    const note = operation.notes[0];
+    return (
+      <div className="operation-details modal">
+        <Tabs
+          className="wrapper"
+          selectedIndex={tabIndex}
+          onSelect={this.onSelect}
+        >
+          <div className="header">
+            <h2>{"Operation's details"}</h2>
+            <TabList>
+              <Tab>Overview</Tab>
+              <Tab>Details</Tab>
+              <Tab>Label</Tab>
+            </TabList>
+          </div>
+          <div
+            className="content"
+            ref={node => {
+              this.contentNode = node;
+            }}
+          >
+            <TabPanel className="tabs_panel">
+              <TabOverview operation={operation} account={account} />
+            </TabPanel>
+            <TabPanel className="tabs_panel">
+              <Overscroll>
+                <TabDetails operation={operation} />
+              </Overscroll>
+            </TabPanel>
+            <TabPanel className="tabs_panel">
+              {note ? <TabLabel note={note} /> : null}
+            </TabPanel>
           </div>
           <div className="footer">
-            <DialogButton highlight right onTouchTap={this.props.close}>
+            <DialogButton highlight right onTouchTap={close}>
               Done
             </DialogButton>
           </div>
-        </div>
-      );
-    }
-
-    return (
-      <Tabs
-        className="operation-details wrapper"
-        defaultIndex={this.props.tabsIndex}
-        onSelect={() => {}}
-      >
-        <div className="header">
-          <h2>{translate("operations.detailsTitle")}</h2>
-          <TabList>
-            <Tab>{translate("operations.overview")}</Tab>
-            <Tab>{translate("operations.details")}</Tab>
-            <Tab>{translate("operations.label")}</Tab>
-          </TabList>
-        </div>
-        <div
-          className="content"
-          ref={node => {
-            this.contentNode = node;
-          }}
-        >
-          <TabPanel className="tabs_panel">
-            <Overscroll>
-              <TabOverview operation={operation} />
-            </Overscroll>
-          </TabPanel>
-          <TabPanel className="tabs_panel">
-            <Overscroll>
-              <TabDetails operation={operation} />
-            </Overscroll>
-          </TabPanel>
-          <TabPanel className="tabs_panel">
-            <Overscroll>
-              <TabLabel
-                note={this.state.note}
-                changeTitle={this.handleChangeTitle}
-              />
-            </Overscroll>
-          </TabPanel>
-        </div>
-        <div className="footer">
-          <DialogButton highlight right onTouchTap={this.props.close}>
-            Done
-          </DialogButton>
-        </div>
-      </Tabs>
+        </Tabs>
+      </div>
     );
   }
 }
-
-OperationDetails.propTypes = {
-  close: PropTypes.func.isRequired,
-  getOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired
-};
 
 OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default OperationDetails;
+export default withRouter(
+  connectData(
+    connectData(OperationDetails, {
+      RenderLoading: ModalLoading,
+      queries: { account: AccountQuery },
+      propsToQueryParams: props => ({ accountId: props.operation.account_id })
+    }),
+    {
+      RenderLoading: ModalLoading,
+      queries: {
+        operation: OperationQuery,
+        profile: ProfileQuery
+      },
+      propsToQueryParams: props => ({
+        operationId: props.match.params.operationId || ""
+      })
+    }
+  )
+);

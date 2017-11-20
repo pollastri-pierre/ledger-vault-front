@@ -1,81 +1,48 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Route, withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import { PopBubble } from "../../components";
 import ProfileCard from "./ProfileCard";
+import ModalRoute from "../ModalRoute";
+import AccountCreation from "../accounts/creation/AccountCreation";
+import SettingsModal from "../SettingsModal";
 
 import "./ActionBar.css";
 
-class ActionBar extends Component<*, *> {
-  props: {
-    openCloseProfile: Function,
-    openCloseEdit: Function,
-    saveProfile: Function,
-    pathname: string,
-    openAccount: Function
-  };
-  state = {
-    profileOpened: false,
-    profileOpenedEdit: false,
-    profileTarget: null
-  };
+const NewAccountLink = () => (
+  <Link to="/dashboard/new-account" className="content-header-button">
+    <div className="content-header-button-icon">
+      <i className="material-icons flipped">add</i>
+    </div>
+    <div className="content-header-button-text">account</div>
+  </Link>
+);
 
+class ActionBar extends Component<{
+  location: Object
+}> {
   static contextTypes = {
     translate: PropTypes.func.isRequired
   };
-
-  openProfileDialog = (event: *) => {
-    event.preventDefault();
-    this.openCloseProfile();
-    this.openCloseEdit();
+  context: {
+    translate: string => string
   };
-
-  openCloseProfile = (profileTarget: *) => {
-    this.setState(({ profileOpened }) => ({
-      profileOpened: !profileOpened,
-      profileTarget
-    }));
-  };
-
-  openCloseEdit = () => {
-    this.setState(({ profileOpenedEdit }) => ({
-      profileOpenedEdit: !profileOpenedEdit
-    }));
-  };
-
   render() {
-    const { profileOpened, profileTarget, profileOpenedEdit } = this.state;
+    const { location } = this.props;
     // FIXME introduce a component for i18n
     const t = this.context.translate;
+
     return (
       <div className="ActionBar">
-        <ProfileCard
-          openCloseProfile={this.openCloseProfile}
-          openCloseEdit={this.openCloseEdit}
-          profileOpenedEdit={profileOpenedEdit}
+        <ProfileCard />
+        <Route path="*/new-account" component={AccountCreation} />
+        <ModalRoute
+          path="*/settings"
+          component={SettingsModal}
+          undoAllHistoryOnClickOutside
         />
-        <PopBubble
-          open={profileOpened}
-          anchorEl={profileTarget}
-          onRequestClose={this.openCloseProfile}
-          style={{
-            marginLeft: "50px"
-          }}
-        >
-          <div className="profile-bubble">
-            <a
-              href="profile"
-              onClick={this.openProfileDialog}
-              className="edit-profile"
-            >
-              {t("actionBar.editProfile")}
-            </a>
-            <Link to="/logout" className="log-out">
-              {t("actionBar.logOut")}
-            </Link>
-          </div>
-        </PopBubble>
+
         <div className="content-header">
           <div className="content-header-left">
             <img
@@ -86,20 +53,7 @@ class ActionBar extends Component<*, *> {
             />
           </div>
           <div className="content-header-right">
-            {this.props.pathname === "/" ? (
-              <Link
-                to=""
-                onClick={this.props.openAccount}
-                className="content-header-button"
-              >
-                <div className="content-header-button-icon">
-                  <i className="material-icons flipped">add</i>
-                </div>
-                <div className="content-header-button-text">account</div>
-              </Link>
-            ) : (
-              false
-            )}
+            <Route path="/dashboard" component={NewAccountLink} />
             <Link to="/export" className="content-header-button">
               <div className="content-header-button-icon">
                 <i className="material-icons flipped">reply</i>
@@ -108,7 +62,10 @@ class ActionBar extends Component<*, *> {
                 {t("actionBar.export")}
               </div>
             </Link>
-            <Link to="/settings" className="content-header-button">
+            <Link
+              to={location.pathname + "/settings"}
+              className="content-header-button"
+            >
               <div className="content-header-button-icon">
                 <i className="material-icons">settings</i>
               </div>
@@ -131,4 +88,4 @@ class ActionBar extends Component<*, *> {
   }
 }
 
-export default ActionBar;
+export default withRouter(ActionBar);

@@ -1,32 +1,37 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
-
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
+import { TotalBalanceFilters } from "../../components/EvolutionSince";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
-import type { Filter } from "./EvolutionSince";
+import OperationModal from "../../components/operations/OperationModal";
+import ModalRoute from "../../components/ModalRoute";
 
 import "./index.css";
 
 class Dashboard extends Component<
-  { dashboard: *, accounts: * },
-  { filter: Filter }
+  {
+    match: *,
+    location: *,
+    history: *
+  },
+  {
+    filter: string
+  }
 > {
   state = {
-    filter: { title: "yesterday", key: "yesterday" }
+    filter: TotalBalanceFilters[0].key
   };
 
-  onTotalBalanceFilterChange = (filter: Filter) => {
+  onTotalBalanceFilterChange = (filter: string) => {
     this.setState({ filter });
   };
 
   render() {
-    const { dashboard, accounts } = this.props;
+    const { match } = this.props;
     const { filter } = this.state;
     const { onTotalBalanceFilterChange } = this;
 
@@ -34,31 +39,25 @@ class Dashboard extends Component<
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            totalBalance={dashboard.totalBalance}
             filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
-          <LastOperationCard
-            operations={dashboard.lastOperations}
-            accounts={accounts}
-          />
-          <Storages accounts={accounts} filter={filter} />
+          <LastOperationCard />
+          <Storages filter={filter} />
         </div>
         <div className="aside">
           <Card title="currencies">
-            <Currencies accounts={accounts} />
+            <Currencies />
           </Card>
-          <PendingCard pending={dashboard.pending} />
+          <PendingCard />
         </div>
+        <ModalRoute
+          path={`${match.url}/operation/:operationId/:tabIndex`}
+          component={OperationModal}
+        />
       </div>
     );
   }
 }
 
-export default connectData(Dashboard, {
-  api: {
-    dashboard: api.dashboard,
-    accounts: api.accounts,
-    members: api.members
-  }
-});
+export default Dashboard;

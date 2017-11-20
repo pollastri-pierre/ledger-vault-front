@@ -1,42 +1,57 @@
 // @flow
 import React, { PureComponent } from "react";
-import type { Unit } from "../datatypes";
+import type { Unit } from "../data/types";
+
+const nonBreakableSpace = " ";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
-// N.B. we might consider use more <span> if we want to apply various style.
-
-// TODO: we will have a CurrencyNameValue
-// unit prop is annoying to provide as we don't always have it.
-// also this will depend based on user pref (if you select mBTC vs BTC , etc..)
-// so I suggest we have a redux store that context all user prefered unit per currencyName,
-// and create a smarter component on top of this that would provide unit implicitely
-// and would just accept that currencyName as prop.
-class CurrencyUnitValue extends PureComponent<*> {
-  static defaultProps = {
-    alwaysShowSign: false,
-    showAllDigits: false
-  };
-
-  props: {
-    unit: Unit,
-    value: number, // e.g. 10000 . for EUR it means €100.00
-    alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
-    showAllDigits?: boolean
-  };
-
+class CurrencyUnitValue extends PureComponent<{
+  unit: Unit,
+  value: number, // e.g. 10000 . for EUR it means €100.00
+  alwaysShowSign?: boolean // do you want to show the + before the number (N.B. minus is always displayed)
+}> {
   render() {
-    const { unit, value, alwaysShowSign, showAllDigits } = this.props;
-    const floatValue = value / 10 ** unit.magnitude;
-    const format = {
-      maximumFractionDigits: unit.magnitude,
-      minimumFractionDigits: showAllDigits ? unit.magnitude : 0
-    };
+    const { unit, value, alwaysShowSign } = this.props;
+    const { magnitude, code } = unit;
+    const floatValue = value / 10 ** magnitude;
+    const minimumFractionDigits = unit.showAllDigits ? magnitude : 0;
+    const maximumFractionDigits = Math.max(
+      minimumFractionDigits,
+      Math.max(
+        0,
+        // dynamic max number of digits based on the value itself. to only show significant part
+        Math.min(4 - Math.round(Math.log10(Math.abs(floatValue))), magnitude)
+      )
+    );
+
+    const className = [
+      "currency-unit-value",
+      "sign-" + (value < 0 ? "negative" : value > 0 ? "positive" : "zero")
+    ].join(" ");
+
+    const title =
+      code +
+      nonBreakableSpace +
+      (alwaysShowSign && floatValue > 0 ? "+" : "") +
+      floatValue.toLocaleString("en-EN", {
+        maximumFractionDigits: magnitude,
+        minimumFractionDigits
+      });
+
+    const format =
+      code +
+      nonBreakableSpace +
+      (alwaysShowSign && floatValue > 0 ? "+" : "") +
+      floatValue.toLocaleString("en-EN", {
+        maximumFractionDigits,
+        minimumFractionDigits
+      });
 
     return (
-      <span>{`${unit.code} ${alwaysShowSign && floatValue > 0
-        ? "+"
-        : ""}${floatValue.toLocaleString("en-EN", format)}`}</span>
+      <span title={title} className={className}>
+        {format}
+      </span>
     );
   }
 }

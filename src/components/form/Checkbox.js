@@ -1,8 +1,14 @@
+//@flow
+
 import React from "react";
-import PropTypes from "prop-types";
 import "./Checkbox.css";
 
-function Checkbox(props) {
+type Props = {
+  labelFor: string,
+  checked: boolean,
+  handleInputChange?: (checked: boolean) => void
+};
+function Checkbox(props: Props) {
   const { labelFor, checked, handleInputChange } = props;
 
   return (
@@ -11,7 +17,11 @@ function Checkbox(props) {
         type="checkbox"
         id={labelFor}
         checked={checked}
-        onChange={handleInputChange}
+        onChange={
+          handleInputChange
+            ? (e: *) => handleInputChange(e.target.checked)
+            : null
+        }
       />
       <label htmlFor={labelFor} />
       <span />
@@ -20,14 +30,7 @@ function Checkbox(props) {
 }
 
 Checkbox.defaultProps = {
-  handleInputChange: () => {},
   checked: false
-};
-
-Checkbox.propTypes = {
-  labelFor: PropTypes.string.isRequired,
-  handleInputChange: PropTypes.func,
-  checked: PropTypes.bool
 };
 
 export default Checkbox;

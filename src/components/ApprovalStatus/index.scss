@@ -1,0 +1,12 @@
+@import '../../styles/variables';
+
+.approval-status {
+  font-size: 11px;
+  color: $black;
+  color: $lead;
+  line-height: 2.09;
+
+  .confirmed {
+    margin-right: 10px;
+  }
+}

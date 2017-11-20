@@ -1,41 +1,30 @@
 //@flow
-import React from "react";
-import _ from "lodash";
-import { Link } from "react-router-dom";
-import type { Account } from "../../datatypes";
-import connectData from "../../decorators/connectData";
-import api from "../../data/api-spec";
+import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
+import type { Account } from "../../data/types";
+import connectData from "../../restlay/connectData";
+import AccountsQuery from "../../api/queries/AccountsQuery";
 
-// TODO use react-router NavLink so we don't have to pass in pathname !!
-
-function AccountsMenu(props: { accounts: Array<Account>, pathname: string }) {
-  const { accounts } = props;
-  return (
-    <ul className="accounts-menu-list">
-      {_.map(accounts, account => {
-        const url = `/account/${account.id}`;
-        return (
-          <li key={account.id}>
-            <Link
-              className={`${account.currency.name} ${props.pathname.startsWith(
-                url
-              )
-                ? "active"
-                : ""}`}
-              to={`/account/${account.id}`}
-            >
-              {account.name}
+class AccountsMenu extends Component<{ accounts: Array<Account> }> {
+  render() {
+    const { accounts } = this.props;
+    return (
+      <ul className="accounts-menu-list">
+        {accounts.map(account => (
+          <li style={{ color: account.currency.color }} key={account.id}>
+            <NavLink to={`/account/${account.id}`}>
+              <span>{account.name}</span>
               <span className="unit">{account.currency.units[0].code}</span>
-            </Link>
+            </NavLink>
           </li>
-        );
-      })}
-    </ul>
-  );
+        ))}
+      </ul>
+    );
+  }
 }
 
 export default connectData(AccountsMenu, {
-  api: {
-    accounts: api.accounts
+  queries: {
+    accounts: AccountsQuery
   }
 });

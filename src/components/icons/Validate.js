@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function Validate(props) {
+function Validate(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 22.17" {...props}>
       <title>validate_1</title>

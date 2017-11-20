@@ -18,6 +18,10 @@
       margin-right: 20px;
     }
 
+    .bloc.countervalue {
+      color: $lead;
+    }
+
     .funds {
       margin-right: 20px;
       height: 218px;
@@ -59,10 +63,21 @@
     .infos-left {
       width: 65.4%;
     }
-
     .quicklook {
       height: 399px;
       width: 34.6%;
+      .quickLookGraphWrap {
+        height: 208px;
+        width: 100%;
+        .QuicklookGraph {
+          width: 100%;
+          height: 100%;
+          .chartWrap {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
       .bloc-content {
         .dateLabel {
           font-size: 11px;

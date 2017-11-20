@@ -1,5 +1,5 @@
-@import '../../../styles/variables';
-@import '../../../styles/mixins';
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
 
 #account-creation {
   width: 445px;
@@ -25,7 +25,7 @@
       top: 40px;
     }
 
-    input[type='text'] {
+    input[type="text"] {
       border: 0;
       height: 55px;
       padding-left: 16px;
@@ -117,7 +117,7 @@
         font-size: 13px;
 
         &:before {
-          content: '';
+          content: "";
           display: inline-block;
           border-radius: 8px;
           width: 23px;
@@ -125,7 +125,7 @@
           vertical-align: middle;
           margin-right: 20px;
 
-          background-image: url('/img/icon-currencies.png');
+          background-image: url("/img/icon-currencies.png");
           background-repeat: no-repeat;
           background-size: 23px;
         }
@@ -156,6 +156,7 @@
       .info-value {
         float: right;
         font-size: 13px;
+        line-height: 44px;
 
         &.name {
           &:before {
@@ -179,70 +180,6 @@
   }
 
   .confirmation-explain {
-    font-size: 11px;
-    color: $lead;
-    line-height: 1.82;
     margin-top: 30px;
-  }
-
-  .confirmation-security {
-    text-align: center;
-    margin-top: -2px;
-
-    .confirmation-security-item {
-      display: inline-block;
-      margin-right: 50px;
-      text-align: center;
-      vertical-align: middle;
-
-      &:last-child {
-        margin: 0;
-      }
-
-      &.disabled {
-        opacity: 0.5;
-      }
-    }
-
-    .security-title,
-    .security-value {
-      display: block;
-    }
-
-    .security-title {
-      font-size: 13px;
-      color: $black;
-      margin-bottom: 5px;
-    }
-
-    .security-value {
-      font-size: 11px;
-      color: $lead;
-    }
-
-    .security-icon {
-      display: block;
-      margin: auto;
-      margin-bottom: 17px;
-
-      &.ratelimiter {
-        height: 30px;
-        stroke: $mouse;
-        stroke-width: 2px;
-      }
-
-      &.member {
-        height: 30px;
-        fill: none;
-        stroke: $mouse;
-        stroke-width: 2px;
-      }
-
-      &.timelock {
-        height: 30px;
-        stroke: $mouse;
-        stroke-width: 2px;
-      }
-    }
   }
 }

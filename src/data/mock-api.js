@@ -1,84 +1,204 @@
 //@flow
 import { denormalize } from "normalizr";
-import apiSpec from "./api-spec";
 import mockEntities from "./mock-entities.js";
-import { getJSON } from "./network";
+import schema from "./schema";
+import type { Account } from "../data/types";
 
-const mockGETSync = (uri: string) => {
-  let m;
-  m = /^\/accounts\/([^/]+)$/.exec(uri);
-  if (m) {
-    const account = mockEntities.accounts[m[1]];
-    if (account) {
-      return denormalize(
-        account.id,
-        apiSpec.account.responseSchema,
-        mockEntities
-      );
-    } else {
-      throw new Error("Account Not Found");
+const mockSync = (uri: string, method: string, body: ?Object) => {
+  if (method === "POST") {
+    let m;
+    m = /^\/accounts\/([^/]+)\/settings$/.exec(uri);
+    if (m) {
+      const account = mockEntities.accounts[m[1]];
+      if (!body) throw new Error("invalid body");
+      if (account) {
+        const accountObj: Account = denormalize(
+          account.id,
+          schema.Account,
+          mockEntities
+        );
+        account.name = body.name;
+        account.settings = body.settings;
+        return accountObj;
+      } else {
+        throw new Error("Account Not Found");
+      }
+    }
+    switch (uri) {
+      case "/organization/account":
+        return denormalize(
+          Object.keys(mockEntities.accounts["0"]),
+          [schema.Account],
+          mockEntities
+        );
     }
   }
-  m = /^\/accounts\/([^/]+)\/operations$/.exec(uri);
-  if (m) {
-    const account = mockEntities.accounts[m[1]];
-    if (account) {
-      return denormalize(
-        Object.keys(mockEntities.operations).slice(2, 7),
-        apiSpec.accountOperations.responseSchema,
-        mockEntities
-      );
-    } else {
-      throw new Error("Account Not Found");
+
+  if (method === "DELETE") {
+    return {};
+  }
+
+  if (method === "PUT") {
+    let m;
+    m = /^\/operations\/([^/]+)$/.exec(uri);
+    if (m) {
+      return {};
+    }
+
+    m = /^\/accounts\/([^/]+)$/.exec(uri);
+    if (m) {
+      return {};
     }
   }
-  switch (uri) {
-    case "/organization/members":
-      return denormalize(
-        Object.keys(mockEntities.members),
-        apiSpec.members.responseSchema,
-        mockEntities
-      );
-    case "/accounts":
-      return denormalize(
-        Object.keys(mockEntities.accounts),
-        apiSpec.accounts.responseSchema,
-        mockEntities
-      );
-    case "/dashboard":
-      return denormalize(
-        {
-          lastOperations: Object.keys(mockEntities.operations).slice(0, 6),
-          pending: {
-            operations: Object.keys(mockEntities.operations).slice(6, 9),
-            accounts: Object.keys(mockEntities.accounts).slice(1, 3),
-            total: 7,
-            totalAccounts: 3,
-            totalOperations: 4
+
+  if (method === "GET") {
+    let m;
+    m = /^\/accounts\/([^/]+)$/.exec(uri);
+    if (m) {
+      const account = mockEntities.accounts[m[1]];
+      if (account) {
+        return denormalize(account.id, schema.Account, mockEntities);
+      } else {
+        throw new Error("Account Not Found");
+      }
+    }
+    m = /^\/operations\/([^/]+)$/.exec(uri);
+    if (m) {
+      const operation = mockEntities.operations[m[1]];
+      if (operation) {
+        return denormalize(operation.uuid, schema.Operation, mockEntities);
+      } else {
+        throw new Error("Account Not Found");
+      }
+    }
+
+    m = /^\/accounts\/([^/]+)\/operations$/.exec(uri);
+    if (m) {
+      const account = mockEntities.accounts[m[1]];
+      if (account) {
+        const opKeys = Object.keys(mockEntities.operations).filter(
+          key => mockEntities.operations[key].account_id === account.id
+        );
+        return denormalize(opKeys, [schema.Operation], mockEntities);
+      } else {
+        throw new Error("Account Not Found");
+      }
+    }
+    switch (uri) {
+      case "/currencies":
+        return denormalize(
+          Object.keys(mockEntities.currencies),
+          [schema.Currency],
+          mockEntities
+        ); /*
+      case "/organization/members/me":
+        return denormalize(
+          Object.keys(mockEntities.members)[0],
+          schema.Member,
+          mockEntities
+        );*/
+      case "/organization/members":
+        return denormalize(
+          Object.keys(mockEntities.members),
+          [schema.Member],
+          mockEntities
+        );
+      case "/organization/approvers":
+        return denormalize(
+          Object.keys(mockEntities.members).slice(0, 2),
+          [schema.Member],
+          mockEntities
+        );
+      case "/accounts":
+        return denormalize(
+          Object.keys(mockEntities.accounts),
+          [schema.Account],
+          mockEntities
+        );
+      case "/pendings":
+        return denormalize(
+          {
+            approveOperations: Object.keys(mockEntities.operations).slice(0, 4),
+            watchOperations: Object.keys(mockEntities.operations).slice(4, 7),
+            approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
+            watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
           },
-          totalBalance: {
-            currencyName: "EUR",
-            date: new Date().toISOString(),
-            value: 1589049,
-            valueHistory: {
-              yesterday: 1543125,
-              week: 1031250,
-              month: 2043125
+          {
+            approveOperations: [schema.Operation],
+            watchOperations: [schema.Operation],
+            approveAccounts: [schema.Account],
+            watchAccounts: [schema.Account]
+          },
+          mockEntities
+        );
+      case "/dashboard/total-balance":
+        return {
+          currencyName: "EUR",
+          date: new Date().toISOString(),
+          value: 1589049,
+          valueHistory: {
+            yesterday: 1543125,
+            week: 1031250,
+            month: 2043125
+          },
+          accountsCount: 5,
+          currenciesCount: 4,
+          membersCount: 8
+        };
+      case "/dashboard/last-operations":
+        return denormalize(
+          Object.keys(mockEntities.operations).slice(0, 6),
+          [schema.Operation],
+          mockEntities
+        );
+      case "/settings-data":
+        return {
+          blockchainExplorers: [
+            {
+              id: "blockchain.info"
+            }
+          ],
+          countervalueSources: [
+            {
+              id: "kraken",
+              fiats: ["EUR", "USD"]
             },
-            accountsCount: 5,
-            currenciesCount: 4,
-            membersCount: 8
-          }
-        },
-        apiSpec.dashboard.responseSchema,
-        mockEntities
-      );
+            {
+              id: "btcchina",
+              fiats: ["CNY"]
+            }
+          ]
+        };
+    }
   }
-
-  return getJSON(uri);
 };
 
 const delay = ms => new Promise(success => setTimeout(success, ms));
 
-export const mockGET = (uri: string): Promise<*> =>
-  delay(400 + 400 * Math.random()).then(() => mockGETSync(uri));
+export default (uri: string, init: *): ?Promise<*> => {
+  const method = typeof init.method === "string" ? init.method : "GET";
+  const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
+  const mockRes = mockSync(uri, method, body);
+  if (mockRes) {
+    return delay(400 + 400 * Math.random())
+      .then(() => {
+        console.warn(
+          "mock: " + method + " " + uri,
+          body || "",
+          "\n=>",
+          mockRes
+        );
+        // if (Math.random() < 0.3) throw new Error("MOCK_HTTP_FAILURE");
+        return {
+          status: 200,
+          json: () => Promise.resolve(mockRes)
+        };
+      })
+      .catch(e => {
+        console.warn("mock: " + method + " " + uri + " FAILED", e);
+        throw e;
+      });
+  } else {
+    return null;
+  }
+};

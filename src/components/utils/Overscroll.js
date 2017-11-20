@@ -1,17 +1,31 @@
+//@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
-class Overscroll extends Component {
-  constructor(props) {
-    super(props);
+class Overscroll extends Component<
+  {
+    overscrollSize: number,
+    backgroundColor: string,
+    children: *
+  },
+  { height: number }
+> {
+  static defaultProps = {
+    overscrollSize: 40,
+    backgroundColor: "white",
+    children: ""
+  };
 
-    this.state = { height: 340 };
-  }
+  state = { height: 340 };
+
+  original: ?Element;
+  node: ?Element;
+  copy: ?Element;
+  interval: *;
 
   componentDidMount() {
-    this.original.addEventListener("scroll", this.onScroll);
+    const { original } = this;
+    if (original) original.addEventListener("scroll", this.onScroll);
     this.resize();
-
     this.interval = setInterval(this.resize, 100);
   }
 
@@ -20,7 +34,10 @@ class Overscroll extends Component {
   }
 
   onScroll = () => {
-    this.copy.scrollTop = this.original.scrollTop;
+    const { original, copy } = this;
+    if (original && copy) {
+      copy.scrollTop = original.scrollTop;
+    }
   };
 
   resize = () => {
@@ -123,15 +140,3 @@ class Overscroll extends Component {
 }
 
 export default Overscroll;
-
-Overscroll.propTypes = {
-  overscrollSize: PropTypes.number,
-  backgroundColor: PropTypes.string,
-  children: PropTypes.node
-};
-
-Overscroll.defaultProps = {
-  overscrollSize: 40,
-  backgroundColor: "white",
-  children: ""
-};

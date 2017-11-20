@@ -1,17 +1,22 @@
+//@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { TextField, DialogButton } from "../../components";
 import Profile from "../../components/icons/thin/Profile";
 
-export class TeamLogin extends Component {
-  constructor(props) {
-    super(props);
-
-    this.selectTeam = this.selectTeam.bind(this);
-    this.confirm = this.confirm.bind(this);
-  }
-
+export class TeamLogin extends Component<{
+  onChange: Function,
+  onStartAuth: Function,
+  onCloseTeamError: Function,
+  isChecking: boolean,
+  team: string,
+  teamError: boolean
+}> {
+  context: {
+    translate: string => string
+  };
   componentDidMount() {
+    // FIXME a better way is to use a wrapping <form>, hook on onSubmit so we can catch the ENTER or any submitting other ways
     document.addEventListener("keypress", this.confirm);
   }
 
@@ -19,17 +24,17 @@ export class TeamLogin extends Component {
     document.removeEventListener("keypress", this.confirm);
   }
 
-  selectTeam() {
+  selectTeam = () => {
     if (this.props.team !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
     }
-  }
+  };
 
-  confirm(e) {
+  confirm = (e: *) => {
     if (e.charCode === 13) {
       this.selectTeam();
     }
-  }
+  };
 
   handleRequestClose = () => {
     this.props.onCloseTeamError();
@@ -68,15 +73,6 @@ export class TeamLogin extends Component {
     );
   }
 }
-
-TeamLogin.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onStartAuth: PropTypes.func.isRequired,
-  onCloseTeamError: PropTypes.func.isRequired,
-  isChecking: PropTypes.bool.isRequired,
-  team: PropTypes.string.isRequired,
-  teamError: PropTypes.bool.isRequired
-};
 
 TeamLogin.contextTypes = {
   translate: PropTypes.func.isRequired

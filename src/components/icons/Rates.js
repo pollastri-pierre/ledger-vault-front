@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function Rates(props) {
+function Rates(props: *) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 28.57" {...props}>
       <title>rates_1</title>

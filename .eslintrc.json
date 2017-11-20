@@ -1,9 +1,11 @@
 {
   "parser": "babel-eslint",
   "env": {
+    "node": true,
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -16,7 +18,9 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
-    "semi": ["error", "always"]
+    "semi": ["error", "always"],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "flowtype/generic-spacing": 0
   },
   "settings": {
     "flowtype": {

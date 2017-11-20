@@ -1,67 +1,56 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
-import Rates from "../../icons/thin/Rates";
-import PeopleThin from "../../icons/thin/People";
-import Hourglass from "../../icons/thin/Hourglass";
+import {
+  BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon,
+  BigSecurityRateLimiterIcon
+} from "../../icons";
+
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
+import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
+import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
+import type { Account, Member } from "../../../data/types";
 
-function AccountApproveDetails(props) {
-  const { security, currency, approved } = props.account;
-  const { account } = props;
-  const { approvers } = props.organization;
-
+function AccountApproveDetails(props: {
+  account: Account,
+  approvers: Member[]
+}) {
+  const { account, approvers } = props;
+  const { security_scheme, currency, approved } = account;
   const percentage = Math.round(100 * (approved.length / approvers.length));
-
   return (
     <div>
-      <div className="confirmation-security">
-        <div className="confirmation-security-item">
-          <PeopleThin className="security-icon member" />
-          <span className="security-title">Members</span>
-          <span className="security-value">
-            {security.members.length} selected
-          </span>
-        </div>
-        <div
-          className={`confirmation-security-item ${!security.timelock.enabled
-            ? "disabled"
-            : ""}`}
-        >
-          <Hourglass className="security-icon timelock" />
-          <span className="security-title">Time-lock</span>
-          <span className="security-value">
-            {security.timelock.enabled ? (
-              <span>
-                {security.timelock.duration} {security.timelock.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
-        <div
-          className={`confirmation-security-item ${!security.ratelimiter.enabled
-            ? "disabled"
-            : ""}`}
-        >
-          <Rates className="security-icon ratelimiter" />
-          <span className="security-title">Rate limiter</span>
-          <span className="security-value">
-            {security.ratelimiter.enabled ? (
-              <span>
-                {security.ratelimiter.rate} per {security.ratelimiter.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
+      <div style={{ textAlign: "center", marginBottom: "40px" }}>
+        <BadgeSecurity
+          icon={<BigSecurityMembersIcon />}
+          label="Members"
+          value={`${security_scheme.approvers.length} selected`}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityTimeLockIcon />}
+          label="Time-lock"
+          disabled={!security_scheme.time_lock}
+          value={<TimeLockValue time_lock={security_scheme.time_lock} />}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityRateLimiterIcon />}
+          label="Rate Limiter"
+          disabled={!security_scheme.rate_limiter}
+          value={
+            security_scheme.rate_limiter && (
+              <RateLimiterValue
+                max_transaction={security_scheme.rate_limiter.max_transaction}
+                time_slot={security_scheme.rate_limiter.time_slot}
+              />
+            )
+          }
+        />
       </div>
-
-      <div className="confirmation-infos">
-        <div className="confirmation-info">
-          <span className="info-title">Status</span>
+      <div>
+        <LineRow label="status">
           {percentage === 100 ? (
             <span className="info-value status">Approved</span>
           ) : (
@@ -69,36 +58,22 @@ function AccountApproveDetails(props) {
               Collecting approvals ({percentage}%)
             </span>
           )}
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Requested</span>
-          <span className="info-value date">
-            <DateFormat date={account.creation_time} />
-          </span>
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Name</span>
-          <span className="info-value name">
-            <AccountName name={account.name} currency={currency} />
-          </span>
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Currency</span>
+        </LineRow>
+        <LineRow label="requested">
+          <DateFormat date={account.creation_time} />
+        </LineRow>
+        <LineRow label="name">
+          <AccountName name={account.name} currency={currency} />
+        </LineRow>
+        <LineRow label="currency">
           <span className="info-value currency">{currency.units[0].name}</span>
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Approvals to spend</span>
-          <span className="info-value">
-            {security.approvals} of {security.members.length} members
-          </span>
-        </div>
+        </LineRow>
+        <LineRow label="Approvals to spend">
+          {security_scheme.quorum} of {security_scheme.approvers.length} members
+        </LineRow>
       </div>
     </div>
   );
 }
-
-AccountApproveDetails.propTypes = {
-  account: PropTypes.shape({}).isRequired
-};
 
 export default AccountApproveDetails;

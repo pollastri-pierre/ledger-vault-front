@@ -1,6 +1,7 @@
+//@flow
 import React from "react";
 
-function Plug(props) {
+function Plug(props: { fill: string }) {
   const { fill } = props;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 20.12" {...props}>

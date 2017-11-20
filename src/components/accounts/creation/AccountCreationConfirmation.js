@@ -1,65 +1,63 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 
-import Rates from "../../icons/thin/Rates";
-import PeopleThin from "../../icons/thin/People";
-import Hourglass from "../../icons/thin/Hourglass";
+import {
+  BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon,
+  BigSecurityRateLimiterIcon
+} from "../../icons";
+import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
+import InfoModal from "../../InfoModal";
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
 
-function AccountCreationConfirmation(props) {
-  const { security, options, currency } = props.account;
+function AccountCreationConfirmation(props: { account: Object }) {
+  const {
+    name,
+    approvers,
+    rate_limiter,
+    time_lock,
+    currency,
+    quorum
+  } = props.account;
 
   return (
     <div>
-      <div className="confirmation-security">
-        <div className="confirmation-security-item">
-          <PeopleThin className="security-icon member" />
-          <span className="security-title">Members</span>
-          <span className="security-value">
-            {security.members.length} selected
-          </span>
-        </div>
-        <div
-          className={`confirmation-security-item ${!security.timelock.enabled
-            ? "disabled"
-            : ""}`}
-        >
-          <Hourglass className="security-icon timelock" />
-          <span className="security-title">Time-lock</span>
-          <span className="security-value">
-            {security.timelock.enabled ? (
-              <span>
-                {security.timelock.duration} {security.timelock.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
-        <div
-          className={`confirmation-security-item ${!security.ratelimiter.enabled
-            ? "disabled"
-            : ""}`}
-        >
-          <Rates className="security-icon ratelimiter" />
-          <span className="security-title">Rate limiter</span>
-          <span className="security-value">
-            {security.ratelimiter.enabled ? (
-              <span>
-                {security.ratelimiter.rate} per {security.ratelimiter.frequency}
-              </span>
-            ) : (
-              "disabled"
-            )}
-          </span>
-        </div>
+      <div style={{ textAlign: "center" }}>
+        <BadgeSecurity
+          icon={<BigSecurityMembersIcon />}
+          label="Members"
+          value={`${approvers.length} selected`}
+        />
+        <BadgeSecurity
+          icon={<BigSecurityTimeLockIcon />}
+          label="Time-lock"
+          disabled={!time_lock.enabled}
+          value={
+            <TimeLockValue
+              time_lock={time_lock.value * time_lock.frequency.value}
+            />
+          }
+        />
+        <BadgeSecurity
+          icon={<BigSecurityRateLimiterIcon />}
+          label="Rate Limiter"
+          disabled={!rate_limiter.enabled}
+          value={
+            <RateLimiterValue
+              max_transaction={rate_limiter.value}
+              time_slot={rate_limiter.frequency.value}
+            />
+          }
+        />
       </div>
 
       <div className="confirmation-infos">
         <div className="confirmation-info">
           <span className="info-title">Name</span>
           <span className="info-value name">
-            <AccountName name={options.name} currency={currency} />
+            <AccountName name={name} currency={currency} />
           </span>
         </div>
         <div className="confirmation-info">
@@ -69,20 +67,16 @@ function AccountCreationConfirmation(props) {
         <div className="confirmation-info">
           <span className="info-title">Approvals to spend</span>
           <span className="info-value">
-            {security.approvals} of {security.members.length} members
+            {quorum} of {approvers.length} members
           </span>
         </div>
       </div>
-      <div className="confirmation-explain">
+      <InfoModal className="confirmation-explain">
         A new account request will be created. The account will not be available
         until all the members in your team approve the creation request.
-      </div>
+      </InfoModal>
     </div>
   );
 }
-
-AccountCreationConfirmation.propTypes = {
-  account: PropTypes.shape({}).isRequired
-};
 
 export default AccountCreationConfirmation;

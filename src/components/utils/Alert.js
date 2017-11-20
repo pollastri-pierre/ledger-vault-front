@@ -1,13 +1,20 @@
+//@flow
 import React from "react";
-import PropTypes from "prop-types";
 import Snackbar from "material-ui/Snackbar";
 
-function Alert(props) {
+function Alert(props: {
+  className: string,
+  children: *,
+  style: Object,
+  open: boolean,
+  theme: string,
+  title: *
+}) {
   const { title, children, theme: themeName, ...newProps } = props;
   let iconDiv = "";
   let titleDiv = "";
   const theme = {};
-  const bodyStyle = {
+  const bodyStyle: Object = {
     height: "initial",
     lineHeight: "initial",
     padding: "40px",
@@ -89,15 +96,6 @@ function Alert(props) {
     />
   );
 }
-
-Alert.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-  style: PropTypes.shape({}),
-  open: PropTypes.bool,
-  theme: PropTypes.string,
-  title: PropTypes.node
-};
 
 Alert.defaultProps = {
   className: "",

@@ -1,0 +1,20 @@
+//@flow
+import Mutation from "../../restlay/Mutation";
+import type { Account, AccountSettings } from "../../data/types";
+
+type In = {
+  account: Account,
+  name: string,
+  settings: AccountSettings
+};
+
+type Res = Account;
+
+export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
+  method = "POST";
+  uri = `/accounts/${this.props.account.id}/settings`;
+  getBody() {
+    const { account: { id }, name, settings } = this.props;
+    return { id, name, settings };
+  }
+}

@@ -1,0 +1,43 @@
+@import "../../styles/variables";
+
+.member-row {
+  border-bottom: 1px solid $argile;
+  outline: none;
+  cursor: pointer;
+  height: 70px;
+  position: relative;
+  padding-left: 50px;
+
+  &.not-select {
+    cursor: default;
+  }
+
+  .name {
+    display: inline-block;
+    margin-top: 17px;
+    color: $black;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  .role {
+    margin: 0;
+    font-size: 11px;
+    color: $lead;
+  }
+
+  .member-avatar {
+    position: absolute;
+    top: 21px;
+    left: 0;
+  }
+
+  &:last-child {
+    border: 0;
+  }
+
+  .slidebox {
+    float: right;
+    margin-top: -20px;
+  }
+}

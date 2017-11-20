@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MemberAvatar renders an url 1`] = `
+<span
+  className="member-avatar"
+>
+  <img
+    alt="Profile avatar"
+    src="https://avatars1.githubusercontent.com/u/211411?s=460&v=4"
+  />
+</span>
+`;
