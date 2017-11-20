@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import InfoModal from "../../InfoModal";
 import DialogButton from "../../buttons/DialogButton";
 import type { Member } from "../../../data/types";
 
@@ -17,9 +18,9 @@ function AccountCreationApprovals(props: {
       </header>
       <div className="content">
         <div
-          className={`form-field ${
-            parseInt(approvals, 10) > members.length ? "error" : ""
-          }`}
+          className={`form-field ${parseInt(approvals, 10) > members.length
+            ? "error"
+            : ""}`}
         >
           <input
             type="text"
@@ -31,8 +32,10 @@ function AccountCreationApprovals(props: {
           <span className="count">approvals from {members.length} members</span>
         </div>
         <p className="info">
-          Approvals define the number of required signatures from the group of
-          members allowed to approve outgoing operations.
+          <InfoModal>
+            Approvals define the number of required signatures from the group of
+            members allowed to approve outgoing operations.
+          </InfoModal>
         </p>
       </div>
 

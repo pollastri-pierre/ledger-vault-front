@@ -39,7 +39,9 @@ function AccountCreationRateLimiter(props: Props) {
         <EnableForm checked={rate_limiter.enabled} toggle={enable}>
           <div className="form-field">
             <input
-              className="medium-padding"
+              className={`medium-padding ${rate_limiter.value === 0
+                ? "error"
+                : ""}`}
               type="text"
               id="text-duration"
               value={rate_limiter.value}
@@ -52,7 +54,7 @@ function AccountCreationRateLimiter(props: Props) {
               tabIndex={0}
               onClick={e => openPopBubble(e.currentTarget)}
             >
-              <strong>operation</strong> per {rate_limiter.frequency.label}
+              <strong>operations</strong> per {rate_limiter.frequency.label}
               <ArrowDown className="arrow-down" />
             </span>
             <PopBubble
