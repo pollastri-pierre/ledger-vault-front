@@ -49,6 +49,7 @@
     }
   }
 
+  .tabs_panel:hover,
   .tabs_panel[class*="--selected"] {
     height: 100%;
   }
