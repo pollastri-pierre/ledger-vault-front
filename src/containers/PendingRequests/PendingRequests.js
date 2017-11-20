@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
 import EntityApprove from "../../components/approve/EntityApprove";
 import { Route } from "react-router";
@@ -83,6 +82,5 @@ export default connectData(PendingRequests, {
     accounts: AccountsQuery,
     profile: ProfileQuery,
     approversAccount: ApproversQuery
-  },
-  RenderLoading: SpinnerCard
+  }
 });

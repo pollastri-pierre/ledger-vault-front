@@ -12,6 +12,7 @@ import {
 import type { Store } from "./dataStore";
 import Query from "./Query";
 import Mutation from "./Mutation";
+import GlobalLoading from "../components/GlobalLoading";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
@@ -78,7 +79,7 @@ type Opts<Props, A> = {
 
 const defaultOpts = {
   queries: {},
-  RenderLoading: () => null,
+  RenderLoading: GlobalLoading,
   RenderError: () => null,
   propsToQueryParams: _ => ({}),
   forceFetch: false,

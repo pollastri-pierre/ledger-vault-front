@@ -180,7 +180,7 @@ export default (uri: string, init: *): ?Promise<*> => {
   const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
   const mockRes = mockSync(uri, method, body);
   if (mockRes) {
-    return delay(400 + 400 * Math.random())
+    return delay(300 + 800 * Math.random())
       .then(() => {
         console.warn(
           "mock: " + method + " " + uri,
