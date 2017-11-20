@@ -2,14 +2,12 @@
 import React, { PureComponent } from "react";
 import "./index.css";
 
-class BadgeSecurity extends PureComponent<*> {
-  props: {
-    icon: string | React$Element<*>,
-    label: string,
-    value: string | React$Element<*>,
-    disabled: boolean
-  };
-
+class BadgeSecurity extends PureComponent<{
+  icon: string | React$Node,
+  label: string,
+  value: string | React$Node,
+  disabled?: boolean
+}> {
   render() {
     const { icon, label, value, disabled } = this.props;
     return (

@@ -9,6 +9,9 @@ class DeviceLogin extends Component<{
   onCancel: Function,
   team: string
 }> {
+  context: {
+    translate: (string, ?Object) => string
+  };
   render() {
     const { team, onCancel } = this.props;
     const t = this.context.translate;

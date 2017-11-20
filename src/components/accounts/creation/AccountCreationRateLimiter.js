@@ -12,7 +12,7 @@ type Props = {
   anchor: React.DOM,
   enable: () => void,
   switchInternalModal: string => void,
-  changeFrequency: (a: string, b: string) => void,
+  changeFrequency: (a: string, b: { value: number, label: string }) => void,
   openPopBubble: (*) => void,
   change: (a: string) => void
 };

@@ -19,7 +19,7 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 import type { Account, Operation, Currency } from "../../data/types";
 import "./Account.css";
-import { formatCurrencyUnit } from "../../data/currency";
+import { formatCurrencyUnit, getUnitFromRate } from "../../data/currency";
 
 class AccountView extends Component<
   {
@@ -149,6 +149,8 @@ class AccountView extends Component<
       operations = operations.map((o: Operation, i: number): Array<
         Operations
       > => {
+        console.log(o.rate);
+
         return {
           ...o,
           amount: parseFloat(
@@ -190,6 +192,17 @@ class AccountView extends Component<
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
 
     const data = this.getOperations(operations);
+    console.log(data);
+    let selectedCurrency = account.currency;
+
+    if (quickLookGraphFilter === "balance") {
+      selectedCurrency = account.currency;
+      selectedCurrency.code = account.currency.units[0].code;
+    } else if (quickLookGraphFilter === "countervalue") {
+      selectedCurrency = getUnitFromRate(operations[0].rate);
+      selectedCurrency.color = account.currency.color;
+    }
+    console.log(selectedCurrency);
     return (
       <div className="account-view">
         <div className="account-view-infos">
@@ -263,7 +276,7 @@ class AccountView extends Component<
                   <QuicklookGraph
                     dateRange={this.getDateRange(tabsIndex)}
                     data={data}
-                    currency={account.currency} //FIXME
+                    currency={selectedCurrency}
                   />
                 </div>
                 <TabPanel className="tabs_panel" />

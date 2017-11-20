@@ -26,8 +26,8 @@ class DataTableOperation extends Component<{
   operations: Array<Operation>,
   accounts: Array<Account>, // accounts is an array that should at least contains the operations's account_id
   columnIds: Array<string>,
-  history: *,
-  match: *
+  history: Object,
+  match: Object
 }> {
   id = ++DataTableOperationCount;
 

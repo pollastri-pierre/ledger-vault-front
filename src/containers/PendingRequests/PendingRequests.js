@@ -13,13 +13,16 @@ import ProfileQuery from "../../api/queries/ProfileQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import ApproversQuery from "../../api/queries/ApproversQuery";
 import type { Account, Member } from "../../data/types";
-
+import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingRequests.css";
 
+const EntityApproveAccount = () => <EntityApprove entity="account" />;
+const EntityApproveOperation = () => <EntityApprove entity="operation" />;
+
 class PendingRequests extends Component<{
-  accounts: Array<Account>,
-  pendingRequests: *,
-  approversAccount: Array<Member>,
+  accounts: Account[],
+  pendingRequests: PendingRequestsQueryResponse,
+  approversAccount: Member[],
   profile: Member
 }> {
   render() {
@@ -27,14 +30,8 @@ class PendingRequests extends Component<{
 
     return (
       <div className="pending-requests">
-        <Route
-          path="*/account/:id"
-          render={() => <EntityApprove entity="account" />}
-        />
-        <Route
-          path="*/operation/:id"
-          render={() => <EntityApprove entity="operation" />}
-        />
+        <Route path="*/account/:id" component={EntityApproveAccount} />
+        <Route path="*/operation/:id" component={EntityApproveOperation} />
         <div className="pending-left">
           <div className="bloc">
             <h3>Operations to approve</h3>

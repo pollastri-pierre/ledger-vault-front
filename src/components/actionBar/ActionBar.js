@@ -19,9 +19,14 @@ const NewAccountLink = () => (
   </Link>
 );
 
-class ActionBar extends Component<{ location: Object }> {
+class ActionBar extends Component<{
+  location: Object
+}> {
   static contextTypes = {
     translate: PropTypes.func.isRequired
+  };
+  context: {
+    translate: string => string
   };
   render() {
     const { location } = this.props;

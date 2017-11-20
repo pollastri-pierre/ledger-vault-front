@@ -2,13 +2,12 @@
 import React, { Component } from "react";
 import "./index.css";
 
-class CardField extends Component<*> {
-  props: {
-    label: string | React$Element<*>,
-    children: string | React$Element<*>,
-    align?: string,
-    className?: string
-  };
+class CardField extends Component<{
+  label: string | React$Node,
+  children: string | React$Node,
+  align?: string,
+  className?: string
+}> {
   render() {
     const { label, children, align, className } = this.props;
     return (

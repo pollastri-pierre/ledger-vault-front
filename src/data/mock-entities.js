@@ -336,7 +336,7 @@ const accounts: { [_: string]: AccountEntity } = {
       week: 118283484,
       month: 2182834846
     },
-    receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
+    receive_address: "1" + genPubKey().slice(0, 33),
     approved: []
   },
   "1": {
@@ -365,7 +365,7 @@ const accounts: { [_: string]: AccountEntity } = {
       week: 11283484,
       month: 182834846
     },
-    receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
+    receive_address: "1" + genPubKey().slice(0, 33),
     approved: []
   },
   "2": {
@@ -394,7 +394,7 @@ const accounts: { [_: string]: AccountEntity } = {
       week: 0.7 * 3258983178200000,
       month: 0.9 * 3258983178200000
     },
-    receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
+    receive_address: "1" + genPubKey().slice(0, 33),
     approved: ["hash"]
   },
   "3": {
@@ -423,7 +423,7 @@ const accounts: { [_: string]: AccountEntity } = {
       week: 0.5 * 99058831782000,
       month: 0
     },
-    receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
+    receive_address: "1" + genPubKey().slice(0, 33),
     approved: ["hash"]
   },
   "4": {
@@ -452,7 +452,7 @@ const accounts: { [_: string]: AccountEntity } = {
       week: 11823484,
       month: 2218234846
     },
-    receive_address: "15rbHzwPeyb6yUfK8zyp7RUoDUznqoTrtx",
+    receive_address: "1" + genPubKey().slice(0, 33),
     approved: []
   }
 };

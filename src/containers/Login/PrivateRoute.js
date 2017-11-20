@@ -11,10 +11,13 @@ const PrivateRoute = ({
   component: Component,
   isAuthenticated,
   ...rest
-}: *) => (
+}: {
+  component: React$ComponentType<*>,
+  isAuthenticated: boolean
+}) => (
   <Route
     {...rest}
-    render={props => {
+    render={(props: *) => {
       return isAuthenticated ? (
         <Component {...props} />
       ) : (

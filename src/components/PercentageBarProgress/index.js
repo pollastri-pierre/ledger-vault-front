@@ -2,11 +2,10 @@
 import React, { PureComponent } from "react";
 import "./index.css";
 
-class PercentageBarProgress extends PureComponent<*> {
-  props: {
-    percentage: number,
-    label: *
-  };
+class PercentageBarProgress extends PureComponent<{
+  percentage: number,
+  label: string | React$Node
+}> {
   render() {
     const { percentage, label } = this.props;
 

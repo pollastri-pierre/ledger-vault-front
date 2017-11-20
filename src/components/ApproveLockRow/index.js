@@ -2,15 +2,13 @@
 import React, { PureComponent } from "react";
 import "./index.css";
 
-class ApproveLockRow extends PureComponent<*> {
-  props: {
-    icon: *,
-    name: string,
-    value: *,
-    unactive?: boolean,
-    state?: *
-  };
-
+class ApproveLockRow extends PureComponent<{
+  icon: string | React$Node,
+  name: string | React$Node,
+  value: string | React$Node,
+  unactive?: boolean,
+  state?: string | React$Node
+}> {
   render() {
     const { icon, name, value, state, unactive } = this.props;
 

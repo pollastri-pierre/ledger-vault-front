@@ -4,11 +4,10 @@ import BadgeCurrency from "../BadgeCurrency";
 import type { Currency } from "../../data/types";
 import "./index.css";
 
-class AccountName extends Component<*> {
-  props: {
-    name: string,
-    currency: Currency
-  };
+class AccountName extends Component<{
+  name: string | React$Node,
+  currency: Currency
+}> {
   render() {
     const { name, currency } = this.props;
     return (

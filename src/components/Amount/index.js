@@ -6,14 +6,12 @@ import { countervalueForRate } from "../../data/currency";
 import type { Account, Rate } from "../../data/types";
 import "./index.css";
 
-class Amount extends Component<*> {
-  props: {
-    account: Account,
-    value: number,
-    rate?: Rate,
-    strong?: boolean
-  };
-
+class Amount extends Component<{
+  account: Account,
+  value: number,
+  rate?: Rate,
+  strong?: boolean
+}> {
   render() {
     const { account, value, rate, strong } = this.props;
     const counterValueUnit = countervalueForRate(

@@ -33,6 +33,7 @@ export class Option<T> extends Component<{
   }
 }
 
+// TODO we need to have a max-height and scroll because on big select, it will go off screen (see Settings screen)
 export class Select<T> extends Component<
   {
     onChange: (value: T) => void,
