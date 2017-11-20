@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import queryString from "query-string";
 import Card from "../../components/Card";
 import Currencies from "./Currencies";
 import { TotalBalanceFilters } from "../../components/EvolutionSince";
@@ -13,32 +12,38 @@ import ModalRoute from "../../components/ModalRoute";
 
 import "./index.css";
 
-class Dashboard extends Component<{
-  match: *,
-  location: *,
-  history: *
-}> {
+class Dashboard extends Component<
+  {
+    match: *,
+    location: *,
+    history: *
+  },
+  {
+    filter: string
+  }
+> {
+  state = {
+    filter: TotalBalanceFilters[0].key
+  };
+
   onTotalBalanceFilterChange = (filter: string) => {
-    this.props.history.replace({
-      search: "?filter=" + filter
-    });
+    this.setState({ filter });
   };
 
   render() {
-    const { location, match } = this.props;
+    const { match } = this.props;
+    const { filter } = this.state;
     const { onTotalBalanceFilterChange } = this;
-    const { filter } = queryString.parse(location.search.slice(1));
-    const filterObj = filter || TotalBalanceFilters[0].key;
 
     return (
       <div id="dashboard">
         <div className="body">
           <TotalBalanceCard
-            filter={filterObj}
+            filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
           />
           <LastOperationCard />
-          <Storages filter={filterObj} />
+          <Storages filter={filter} />
         </div>
         <div className="aside">
           <Card title="currencies">
@@ -46,7 +51,6 @@ class Dashboard extends Component<{
           </Card>
           <PendingCard />
         </div>
-
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
