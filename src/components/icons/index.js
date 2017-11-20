@@ -7,6 +7,10 @@ import Rates from "./Rates";
 import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import Trash from "./thin/Trash";
+import Home from "./full/Home";
+import Plus from "./full/Plus";
+import Lines from "./full/Lines";
+import Search from "./full/Search";
 import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
 
@@ -42,6 +46,21 @@ export function BigSecurityTimeLockIcon() {
 
 export function BigSecurityMembersIcon() {
   return <PeopleThin className="security-icon security-members-big-icon" />;
+}
+
+export function MenuDashboardIcon(props: *) {
+  return <Home className="menu-icon-dashboard" {...props} />;
+}
+
+export function MenuPendingIcon(props: *) {
+  return <Lines className="menu-icon-pending" {...props} />;
+}
+
+export function MenuSearchIcon(props: *) {
+  return <Search className="menu-icon-search" {...props} />;
+}
+export function MenuNewOperationIcon(props: *) {
+  return <Plus className="menu-icon-new-operation" {...props} />;
 }
 
 export function BigSecurityRateLimiterIcon() {

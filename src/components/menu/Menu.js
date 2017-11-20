@@ -6,8 +6,15 @@ import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import ModalRoute from "../ModalRoute";
+import {
+  MenuDashboardIcon,
+  MenuPendingIcon,
+  MenuSearchIcon,
+  MenuNewOperationIcon
+} from "../icons";
 import "./Menu.css";
 
+const styleIcon = { marginRight: "12px", verticalAlign: "baseline" };
 function Menu(
   props: {
     location: Object
@@ -22,24 +29,27 @@ function Menu(
       <ul className="main-menu">
         <li>
           <NavLink to="/dashboard">
-            <i className="material-icons">home</i> {t("menu.dashboard")}
+            <MenuDashboardIcon style={styleIcon} />
+            {t("menu.dashboard")}
           </NavLink>
         </li>
         <li>
           <NavLink to={props.location.pathname + "/new-operation"}>
-            <i className="material-icons">add</i> {t("menu.newOperation")}
+            <MenuNewOperationIcon style={styleIcon} />
+            {t("menu.newOperation")}
           </NavLink>
         </li>
         <li>
           <NavLink to="/pending">
-            <i className="material-icons">format_align_left</i>{" "}
+            <MenuPendingIcon style={styleIcon} />
             {t("menu.pendingRequests")}
           </NavLink>{" "}
           <PendingsMenuBadge />
         </li>
         <li>
           <NavLink to="/search">
-            <i className="material-icons">search</i> {t("menu.search")}
+            <MenuSearchIcon style={styleIcon} />
+            {t("menu.search")}
           </NavLink>
         </li>
       </ul>
