@@ -1,0 +1,17 @@
+.TryAgain {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  padding: 40px;
+  cursor: pointer;
+  &.pending {
+    opacity: 0.5;
+  }
+  strong {
+    font-size: 1.4em;
+  }
+  p.error {
+    opacity: 0.5;
+    font-size: 0.8em;
+  }
+}

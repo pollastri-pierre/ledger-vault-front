@@ -14,7 +14,9 @@ export default class Mutation<Input, Response> {
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object>;
   // notification to trigger after data fetch
-  notif: ?{ title: string, content: string };
+  successNotification: ?{ title: string, content: string };
+  errorNotification: ?{ title: string, content: string };
+  // $TODO for these *Notification => needs to be more thought. I think it probably should be functions too that receive the error / result
 
   constructor(props: Input) {
     this.props = props;

@@ -4,6 +4,13 @@ import PropTypes from "prop-types";
 
 import "./DialogButton.css";
 
+// TODO : IMO remove disabled prop, instead the fact we don't pass onTouchTap
+// would mean it's a disabled button.
+// TODO i kinda prefer "action" instead of "onTouchTap"
+// TODO : flowtype instead of proptypes
+// TODO : exploding {...rest} on a DOM element is generally a bad practice
+// and can accidentally leak things on the DOM (see React doc, pretty sure this is mentioned somewhere)
+
 export default class DialogButton extends Component<*, *> {
   static propTypes = {
     className: PropTypes.string,
@@ -12,13 +19,10 @@ export default class DialogButton extends Component<*, *> {
     highlight: PropTypes.bool,
     right: PropTypes.bool,
     disabled: PropTypes.bool,
-    pending: PropTypes.bool,
     onTouchTap: PropTypes.func
   };
   static defaultProps = {
     className: "",
-    style: {},
-    children: "",
     highlight: false,
     right: false,
     onTouchTap: () => {}
@@ -31,6 +35,7 @@ export default class DialogButton extends Component<*, *> {
     this.setState({ pending: true });
     Promise.resolve()
       .then(this.props.onTouchTap)
+      .catch(e => e)
       .then(() => {
         !this._unmounted ? this.setState({ pending: false }) : false;
       });
