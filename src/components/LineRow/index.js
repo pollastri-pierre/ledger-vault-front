@@ -2,11 +2,10 @@
 import React, { Component } from "react";
 import "./index.css";
 
-class LineRow extends Component<*> {
-  props: {
-    label: string,
-    children: *
-  };
+class LineRow extends Component<{
+  label: string,
+  children: React$Node | string
+}> {
   render() {
     const { label, children } = this.props;
     return (

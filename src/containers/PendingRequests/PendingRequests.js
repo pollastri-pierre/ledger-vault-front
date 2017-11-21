@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
 import EntityApprove from "../../components/approve/EntityApprove";
 import { Route } from "react-router";
@@ -12,14 +11,18 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import ApproversQuery from "../../api/queries/ApproversQuery";
+import TryAgain from "../../components/TryAgain";
 import type { Account, Member } from "../../data/types";
-
+import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingRequests.css";
 
+const EntityApproveAccount = () => <EntityApprove entity="account" />;
+const EntityApproveOperation = () => <EntityApprove entity="operation" />;
+
 class PendingRequests extends Component<{
-  accounts: Array<Account>,
-  pendingRequests: *,
-  approversAccount: Array<Member>,
+  accounts: Account[],
+  pendingRequests: PendingRequestsQueryResponse,
+  approversAccount: Member[],
   profile: Member
 }> {
   render() {
@@ -27,14 +30,8 @@ class PendingRequests extends Component<{
 
     return (
       <div className="pending-requests">
-        <Route
-          path="*/account/:id"
-          render={() => <EntityApprove entity="account" />}
-        />
-        <Route
-          path="*/operation/:id"
-          render={() => <EntityApprove entity="operation" />}
-        />
+        <Route path="*/account/:id" component={EntityApproveAccount} />
+        <Route path="*/operation/:id" component={EntityApproveOperation} />
         <div className="pending-left">
           <div className="bloc">
             <h3>Operations to approve</h3>
@@ -80,12 +77,38 @@ class PendingRequests extends Component<{
 
 export { PendingRequests as PendingRequestNotDecorated };
 
+const RenderError = ({ error, restlay }: *) => (
+  <TryAgain error={error} action={restlay.forceFetch} />
+);
+
+const RenderLoading = () => (
+  <div className="pending-requests">
+    <div className="pending-left">
+      <div className="bloc">
+        <h3>Operations to approve</h3>
+      </div>
+      <div className="bloc">
+        <h3>Operations to watch</h3>
+      </div>
+    </div>
+    <div className="pending-right">
+      <div className="bloc">
+        <h3>Accounts to approve</h3>
+      </div>
+      <div className="bloc">
+        <h3>Accounts to watch</h3>
+      </div>
+    </div>
+  </div>
+);
+
 export default connectData(PendingRequests, {
+  RenderError,
+  RenderLoading,
   queries: {
     pendingRequests: PendingsQuery,
     accounts: AccountsQuery,
     profile: ProfileQuery,
     approversAccount: ApproversQuery
-  },
-  RenderLoading: SpinnerCard
+  }
 });

@@ -9,10 +9,9 @@ class TimeLockValue extends PureComponent<*> {
   getDuration = (time_lock: number) => {
     let granularity = "days";
 
-    const minuts = { value: time_lock / 60, label: "minuts" };
+    const minuts = { value: time_lock / 60, label: "minutes" };
     const hours = { value: time_lock / 3600, label: "hours" };
     const days = { value: time_lock / 84600, label: "days" };
-
     const values = [minuts, hours, days]
       .filter(item => Number.isInteger(item.value))
       .sort(item => item.value);

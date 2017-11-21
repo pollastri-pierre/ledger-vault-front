@@ -24,7 +24,7 @@ class ReceiveFundsCard extends PureComponent<Props> {
     this.drawQR(this.props.hash);
   }
 
-  drawQR = (hash: string) => {
+  drawQR(hash: string) {
     const { canvas } = this;
     const { size, pixelRatio } = this.props;
     if (!canvas) return;
@@ -35,7 +35,7 @@ class ReceiveFundsCard extends PureComponent<Props> {
       size: size * pixelRatio,
       value: hash
     });
-  };
+  }
 
   onCanvasRef = (c: ?HTMLCanvasElement) => {
     this.canvas = c;

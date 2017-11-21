@@ -166,7 +166,7 @@ export const initialState: State = {
   time_lock: {
     enabled: false,
     value: 0,
-    frequency: { label: "minuts", value: 60 }
+    frequency: { label: "minutes", value: 60 }
   },
   rate_limiter: {
     enabled: false,

@@ -13,7 +13,7 @@ type Response = Account;
 export default class ApproveAccountMutation extends Mutation<Input, Response> {
   uri = `/accounts/${this.props.accountId}`;
   method = "PUT";
-  notif = genericRenderNotif("account request", "PUT");
+  successNotification = genericRenderNotif("account request", "PUT");
   responseSchema = schema.Account;
   // TODO implement optimisticUpdater
 }

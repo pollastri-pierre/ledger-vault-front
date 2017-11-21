@@ -1,0 +1,29 @@
+@import "../../styles/variables";
+.enable-form {
+  .form-field-checkbox {
+    outline: none;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+    & > label {
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 600;
+      color: $black;
+    }
+
+    .slidebox {
+      position: absolute;
+      right: 0;
+      top: -7px;
+    }
+  }
+
+  .enable-form-form {
+    &.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+  }
+}

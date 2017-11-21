@@ -52,14 +52,14 @@ class EntityApprove extends Component<Props, State> {
         .then(() =>
           restlay.commitMutation(new ApproveAccount({ accountId: id }))
         )
-        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(() => restlay.fetchQuery(new PendingsQuery()))
         .then(this.close);
     } else {
       return delay(500)
         .then(() =>
           restlay.commitMutation(new ApproveOperation({ operationId: id }))
         )
-        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(() => restlay.fetchQuery(new PendingsQuery()))
         .then(this.close);
     }
   };
@@ -71,14 +71,14 @@ class EntityApprove extends Component<Props, State> {
     if (entity === "account") {
       return delay(500)
         .then(() => restlay.commitMutation(new AbortAccount({ accountId: id })))
-        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(() => restlay.fetchQuery(new PendingsQuery()))
         .then(this.close);
     } else {
       return delay(500)
         .then(() =>
           restlay.commitMutation(new AbortOperation({ operationId: id }))
         )
-        .then(() => restlay.refreshQuery(new PendingsQuery()))
+        .then(() => restlay.fetchQuery(new PendingsQuery()))
         .then(this.close);
     }
   };

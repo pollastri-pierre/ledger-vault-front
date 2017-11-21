@@ -1,4 +1,4 @@
-@import './variables';
+@import "./variables";
 
 .tooltip-label {
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
@@ -44,8 +44,8 @@
     line-height: 1.82;
     font-weight: normal;
     margin: 0;
+    white-space: normal !important;
   }
-
 }
 
 .list {
@@ -79,7 +79,8 @@
       }
     }
 
-    thead td, thead td span{
+    thead td,
+    thead td span {
       font-size: 10px;
       font-weight: 600;
       color: $lead;
@@ -96,7 +97,6 @@
       &:last-child {
         border-bottom: 0;
       }
-
 
       &:hover {
         td.date:before {
@@ -116,7 +116,7 @@
         &:before {
           transition: width 200ms ease;
           background: $hoverblue;
-          content: '';
+          content: "";
           height: 26px;
           width: 0px;
           position: absolute;

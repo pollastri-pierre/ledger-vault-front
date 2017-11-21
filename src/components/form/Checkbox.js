@@ -5,8 +5,8 @@ import "./Checkbox.css";
 
 type Props = {
   labelFor: string,
-  handleInputChange?: (checked: boolean) => void,
-  checked?: boolean
+  checked: boolean,
+  handleInputChange?: (checked: boolean) => void
 };
 function Checkbox(props: Props) {
   const { labelFor, checked, handleInputChange } = props;
@@ -30,7 +30,6 @@ function Checkbox(props: Props) {
 }
 
 Checkbox.defaultProps = {
-  handleInputChange: () => {},
   checked: false
 };
 

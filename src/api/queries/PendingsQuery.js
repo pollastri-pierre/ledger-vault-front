@@ -5,10 +5,10 @@ import type { Operation, Account } from "../../data/types";
 
 type Input = void;
 export type Response = {
-  approveOperations: [Operation],
-  watchOperations: [Operation],
-  approveAccounts: [Account],
-  watchAccounts: [Account]
+  approveOperations: Operation[],
+  watchOperations: Operation[],
+  approveAccounts: Account[],
+  watchAccounts: Account[]
 };
 
 export default class PendingsQuery extends Query<Input, Response> {

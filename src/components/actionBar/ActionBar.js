@@ -7,21 +7,30 @@ import ProfileCard from "./ProfileCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
 import SettingsModal from "../SettingsModal";
+import {
+  ActionAddAccountIcon,
+  ActionExportIcon,
+  ActionSettingsIcon,
+  ActionActivityIcon
+} from "../icons";
 
 import "./ActionBar.css";
 
 const NewAccountLink = () => (
   <Link to="/dashboard/new-account" className="content-header-button">
-    <div className="content-header-button-icon">
-      <i className="material-icons flipped">add</i>
-    </div>
+    <ActionAddAccountIcon />
     <div className="content-header-button-text">account</div>
   </Link>
 );
 
-class ActionBar extends Component<{ location: Object }> {
+class ActionBar extends Component<{
+  location: Object
+}> {
   static contextTypes = {
     translate: PropTypes.func.isRequired
+  };
+  context: {
+    translate: string => string
   };
   render() {
     const { location } = this.props;
@@ -50,9 +59,7 @@ class ActionBar extends Component<{ location: Object }> {
           <div className="content-header-right">
             <Route path="/dashboard" component={NewAccountLink} />
             <Link to="/export" className="content-header-button">
-              <div className="content-header-button-icon">
-                <i className="material-icons flipped">reply</i>
-              </div>
+              <ActionExportIcon style={{ marginBottom: "2px" }} />
               <div className="content-header-button-text">
                 {t("actionBar.export")}
               </div>
@@ -61,17 +68,13 @@ class ActionBar extends Component<{ location: Object }> {
               to={location.pathname + "/settings"}
               className="content-header-button"
             >
-              <div className="content-header-button-icon">
-                <i className="material-icons">settings</i>
-              </div>
+              <ActionSettingsIcon />
               <div className="content-header-button-text">
                 {t("actionBar.settings")}
               </div>
             </Link>
             <Link to="/activity" className="content-header-button">
-              <div className="content-header-button-icon">
-                <i className="material-icons">notifications</i>
-              </div>
+              <ActionActivityIcon />
               <div className="content-header-button-text">
                 {t("actionBar.activity")}
               </div>

@@ -49,6 +49,7 @@
     }
   }
 
+  .tabs_panel:hover,
   .tabs_panel[class*="--selected"] {
     height: 100%;
   }
@@ -82,7 +83,6 @@
 
 .modal .small-modal {
   box-sizing: border-box;
-  width: 445px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -115,26 +115,6 @@
     color: $lead;
     line-height: 1.82;
     margin: 0;
-  }
-
-  .form-field-checkbox {
-    outline: none;
-    position: relative;
-    cursor: pointer;
-    margin-bottom: 15px;
-
-    & > label {
-      text-transform: uppercase;
-      font-size: 11px;
-      font-weight: 600;
-      color: $black;
-    }
-
-    .slidebox {
-      position: absolute;
-      right: 0;
-      top: -7px;
-    }
   }
 
   .form-field {
@@ -193,7 +173,7 @@
     margin-bottom: 15px;
 
     &.small-padding {
-      padding-right: 66px;
+      padding-right: 74px;
     }
     &.medium-padding {
       padding-right: 151px;

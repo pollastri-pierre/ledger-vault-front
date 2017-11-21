@@ -7,35 +7,18 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  // a {
-  //   color: inherit;
-  //   opacity: .5;
-  //   text-decoration: none;
-  //   transition: opacity .2s ease;
-  //
-  //   &:hover {
-  //     opacity: 1;
-  //   }
-  // }
-  //
   .material-icons {
     vertical-align: middle;
     font-size: inherit;
   }
 }
 
-.Background {
-  width: 100%;
-  height: 100%;
-  background-color: $cream;
-  text-align: center;
-}
-
 .Banner {
-  background-color: $cream;
+  width: 400px;
   margin: auto;
-  margin-top: 150px;
-  padding-bottom: 40px;
+  margin-bottom: 20px;
+  position: relative;
+  text-align: left;
 
   img {
     width: 131px;
@@ -45,10 +28,8 @@ body,
 
   .help {
     width: 63.5px;
-    margin-left: 205px;
     cursor: pointer;
     margin-right: 0;
-    display: inline-block;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -56,6 +37,9 @@ body,
     transition: opacity 0.2s ease;
     vertical-align: super;
     line-height: 1em;
+    position: absolute;
+    top: 5px;
+    right: 0;
   }
 
   .help:hover {

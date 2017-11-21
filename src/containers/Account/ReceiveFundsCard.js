@@ -20,7 +20,7 @@ class ReceiveFundsCard extends Component<Props> {
             <p className="info">
               A new address is generated when a first payment is received on the
               current address. Previous addresses remain valid and do not
-              expire. remain valid and do not expire.
+              expire.
             </p>
           </div>
         </div>
