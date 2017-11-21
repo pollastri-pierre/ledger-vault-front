@@ -6,9 +6,8 @@ import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
 import ValidateBadge from "../../icons/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
-import LocksPercentage from "../../LocksPercentage";
-import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
 import type { Account, Operation } from "../../../data/types";
+import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
 
 const getTimeLock = (seconds: number) => {
   return `${Math.round(10 * (seconds / 3600)) / 10} hours delay`;
@@ -72,11 +71,6 @@ function OperationApproveLocks(props: {
           />
         )}
       </div>
-      {isUnactive || !approvingObjectMeta ? (
-        <LocksPercentage />
-      ) : (
-        <LocksPercentage percentage={approvingObjectMeta.globalPercentage} />
-      )}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Footer from "../../approve/Footer";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
+import ApprovalPercentage from "../../../components/ApprovalPercentage";
 import OperationApproveLocks from "./OperationApproveLocks";
 import ModalLoading from "../../../components/ModalLoading";
 import { withRouter, Redirect } from "react-router";
@@ -11,7 +12,9 @@ import connectData from "../../../restlay/connectData";
 import AccountQuery from "../../../api/queries/AccountQuery";
 import OperationQuery from "../../../api/queries/OperationQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
+import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
+import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
 import type { Account, Operation, Member } from "../../../data/types";
 
 type Props = {
@@ -36,6 +39,19 @@ class OperationApprove extends Component<Props> {
       aborting
     } = this.props;
 
+    const approvers = [];
+    account.security_scheme.approvers.forEach(approver => {
+      const member = members.find(m => m.pub_key === approver);
+      if (member) {
+        approvers.push(member);
+      }
+    });
+
+    const quorum = account.security_scheme.quorum;
+    const isUnactive =
+      operation.approved.length < account.security_scheme.quorum;
+    const approvingObjectMeta = calculateApprovingObjectMeta(operation);
+
     return (
       <Tabs>
         <div className="header">
@@ -53,6 +69,12 @@ class OperationApprove extends Component<Props> {
               account={account}
               profile={profile}
             />
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={operation.approved.indexOf(profile.pub_key) > -1}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <OperationApproveApprovals
@@ -60,17 +82,39 @@ class OperationApprove extends Component<Props> {
               operation={operation}
               account={account}
             />
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={operation.approved.indexOf(profile.pub_key) > -1}
+              percentage={
+                <ApprovalPercentage
+                  approvers={approvers}
+                  approved={operation.approved}
+                  nbRequired={quorum}
+                />
+              }
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
             <OperationApproveLocks operation={operation} account={account} />
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={operation.approved.indexOf(profile.pub_key) > -1}
+              percentage={
+                isUnactive || !approvingObjectMeta ? (
+                  <LocksPercentage />
+                ) : (
+                  <LocksPercentage
+                    percentage={approvingObjectMeta.globalPercentage}
+                  />
+                )
+              }
+            />
           </TabPanel>
         </div>
-        <Footer
-          close={close}
-          approve={approve}
-          aborting={aborting}
-          approved={operation.approved.indexOf(profile.pub_key) > -1}
-        />
       </Tabs>
     );
   }

@@ -11,6 +11,7 @@ import type { Operation, Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import TryAgain from "../../components/TryAgain";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingCard.css";
 
@@ -103,7 +104,11 @@ const RenderError = ({ error, restlay }: *) => (
   </Card>
 );
 
-const RenderLoading = () => <Card title="pending" className="pendingCard" />;
+const RenderLoading = () => (
+  <Card title="pending" className="pendingCard">
+    <SpinnerCard />
+  </Card>
+);
 
 export default connectData(PendingCard, {
   queries: {

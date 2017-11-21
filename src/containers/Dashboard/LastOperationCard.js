@@ -6,6 +6,7 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import ViewAllLink from "../../components/ViewAllLink";
 import TryAgain from "../../components/TryAgain";
 import Card from "../../components/Card";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../data/types";
 
@@ -40,7 +41,9 @@ const RenderError = ({ restlay, error }: *) => (
 );
 
 const RenderLoading = () => (
-  <Card title="last operations" titleRight={<ViewAllLink to="/search" />} />
+  <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+    <SpinnerCard />
+  </Card>
 );
 
 const c = connectData(LastOperationCard, {

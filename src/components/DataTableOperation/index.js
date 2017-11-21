@@ -7,6 +7,7 @@ import AccountName from "../AccountName";
 import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import Tooltip from "../utils/Tooltip";
+import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
 import "./index.css";
 
@@ -151,7 +152,9 @@ class DataTableOperation extends Component<{
       operation,
       account: accounts.find(a => a.id === operation.account_id)
     }));
-    return (
+    return data.length === 0 ? (
+      <NoDataPlaceholder title="No operations." />
+    ) : (
       <DataTable data={data} columns={columns} renderRow={this.renderRow} />
     );
   }

@@ -561,6 +561,7 @@ const operations: { [_: string]: OperationEntity } = {
     uuid: "4",
     confirmations: 0,
     account_id: "3",
+    approved: ["hash"],
     time: new Date(2017, 9, 11).toISOString()
   }),
   "5": genOperation({

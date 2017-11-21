@@ -66,14 +66,7 @@ function fetchWithRetries(
               console.warn("fetchWithRetries: HTTP error, retrying.");
               retryRequest();
             } else {
-              // Request was not successful, giving up.
-              const error: any = new Error(
-                "fetchWithRetries(): Still no successful response after " +
-                  requestsAttempted +
-                  " retries, giving up."
-              );
-              error.response = response;
-              reject(error);
+              resolve(response);
             }
           }
         })
