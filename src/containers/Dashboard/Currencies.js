@@ -6,6 +6,7 @@ import { countervalueForRate } from "../../data/currency";
 import type { Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import TryAgain from "../../components/TryAgain";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 
 type AggregatedData = {
   [_: string]: {
@@ -57,7 +58,11 @@ const RenderError = ({ error, restlay }: *) => (
   </div>
 );
 
-const RenderLoading = () => <div className="dashboard-currencies" />;
+const RenderLoading = () => (
+  <div className="dashboard-currencies">
+    <SpinnerCard />
+  </div>
+);
 
 export default connectData(Currencies, {
   queries: {

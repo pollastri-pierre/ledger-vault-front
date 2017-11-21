@@ -11,6 +11,7 @@ import CardField from "../../components/CardField";
 import "./TotalBalanceCard.css";
 import { Select, Option } from "../../components/Select";
 import TryAgain from "../../components/TryAgain";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
 
 class TotalBalance extends Component<{
@@ -76,7 +77,9 @@ const RenderError = ({ error, restlay }: *) => (
 );
 
 const RenderLoading = () => (
-  <Card className="total-balance" title="total balance" />
+  <Card className="total-balance" title="total balance">
+    <SpinnerCard />
+  </Card>
 );
 
 export default connectData(TotalBalance, {
