@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import errorFormatter from "../../formatters/error";
 import "./index.css";
 
 class TryAgain extends Component<
@@ -39,7 +40,7 @@ class TryAgain extends Component<
       >
         <p>An error occured.</p>
         <strong>Reload</strong>
-        <p className="error">{((error && error.message) || "").toString()}</p>
+        <p className="error">{errorFormatter(error)}</p>
       </div>
     );
   }

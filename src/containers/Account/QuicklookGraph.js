@@ -104,10 +104,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       })
       .y(d => d.y);
 
-    console.log(data);
-
     const selection = d3.select(".valueline").data([data]);
-    console.log(currency.color);
     selection
       .attr("class", "valueline")
       .attr("d", valueline)
@@ -438,7 +435,6 @@ export default class QuicklookGraph extends Component<Props, *> {
   render() {
     const { selected } = this.state;
     let { data, currency } = this.props;
-    console.log(currency);
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">

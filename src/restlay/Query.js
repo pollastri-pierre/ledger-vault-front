@@ -16,8 +16,6 @@ export default class Query<Input, Response> {
   logoutUserIfStatusCode: ?number;
 
   uri: string;
-  successNotification: ?{ title: string, content: string };
-  errorNotification: ?{ title: string, content: string };
   responseSchema: ?(Object | Array<Object>);
 
   constructor(props: Input) {

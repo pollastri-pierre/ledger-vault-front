@@ -27,10 +27,13 @@ export default function<T>(
         message: "network error",
         status: response.status
       };
-      throw response
+      return response
         .json()
-        .then(json => new NetworkError({ ...baseErrorObject, json }))
-        .catch(() => new NetworkError(baseErrorObject));
+        .then(
+          json => new NetworkError({ ...baseErrorObject, json }),
+          () => new NetworkError(baseErrorObject)
+        )
+        .then(e => Promise.reject(e));
     }
     return response.json();
   });

@@ -149,8 +149,6 @@ class AccountView extends Component<
       operations = operations.map((o: Operation, i: number): Array<
         Operations
       > => {
-        console.log(o.rate);
-
         return {
           ...o,
           amount: parseFloat(
@@ -192,7 +190,6 @@ class AccountView extends Component<
     const { tabsIndex, quickLookGraphFilter, labelDateRange } = this.state;
 
     const data = this.getOperations(operations);
-    console.log(data);
     let selectedCurrency = account.currency;
 
     if (quickLookGraphFilter === "balance") {
@@ -202,7 +199,6 @@ class AccountView extends Component<
       selectedCurrency = getUnitFromRate(operations[0].rate);
       selectedCurrency.color = account.currency.color;
     }
-    console.log(selectedCurrency);
     return (
       <div className="account-view">
         <div className="account-view-infos">
