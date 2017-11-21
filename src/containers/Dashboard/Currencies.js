@@ -45,7 +45,7 @@ function Currencies({ accounts }: { accounts: Array<Account> }) {
 
   return (
     <div className="dashboard-currencies">
-      <PieChart data={pieChartData} />
+      <PieChart data={pieChartData} width="140" height="140" />
     </div>
   );
 }

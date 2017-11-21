@@ -13,7 +13,9 @@ export default class PieChart extends Component<
       account: Account,
       balance: number,
       counterValueBalance: number
-    }>
+    }>,
+    width: number,
+    height: number
   },
   { selected: number }
 > {
@@ -38,25 +40,24 @@ export default class PieChart extends Component<
 
   componentDidMount() {
     const { selected } = this.state;
-    const data = this.props.data;
+    const { data, width, height } = this.props;
     const $svg = this.svg;
     if (!$svg) return;
 
     const svg = d3.select($svg);
-    svg.attr("width", parseFloat(d3.select($svg.parentNode).style("width"))); //adapt to parent's width
-    const margin = { top: 20, right: 20, bottom: 20, left: 20 };
-    const width = +svg.attr("width") - margin.left - margin.right;
-    const height = +svg.attr("height") - margin.top - margin.bottom;
-    const outerRadius = 50;
+    //svg.attr("width", parseFloat(d3.select($svg.parentNode).style("width"))); //adapt to parent's width
+    const margin = { top: 0, right: 0, bottom: 0, left: 0 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom; //+svg.attr("height") - margin.top - margin.bottom;
     const strokeWidth = 2.5;
-    const chartHeight = outerRadius * 2;
-
-    const g = svg
-      .append("g")
-      .attr("class", "chartWrap")
-      .attr("height", height)
-      .attr("width", width)
+    const outerRadius = chartWidth / 2;
+    //const chartHeight = outerRadius * 2;
+    svg
+      .attr("height", chartHeight)
+      .attr("width", chartWidth)
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    const g = svg.append("g").attr("class", "chartWrap");
 
     const arc = d3
       .arc()
@@ -67,7 +68,7 @@ export default class PieChart extends Component<
     const invisibleArc = d3
       .arc()
       .outerRadius(outerRadius)
-      .innerRadius(1.5);
+      .innerRadius(0);
 
     const pie = d3
       .pie()
@@ -83,12 +84,9 @@ export default class PieChart extends Component<
       ); //Save percentage of arc
     });
 
-    const chart = g
-      .append("g")
-      .attr("class", "chart")
-      .attr("transform", `translate(${width / 2}, ${chartHeight / 2})`);
+    g.attr("transform", `translate(${chartWidth / 2}, ${chartHeight / 2})`);
 
-    chart
+    g
       .selectAll(".arc")
       .data(pie(data))
       .enter()
@@ -103,7 +101,7 @@ export default class PieChart extends Component<
       .style("fill", d => d.data.account.currency.color);
 
     //transparent Chart for hovering purposes
-    chart
+    g
       .selectAll(".invisibleArc")
       .data(pie(data))
       .enter()
@@ -189,39 +187,45 @@ export default class PieChart extends Component<
     const { selected } = this.state;
 
     return (
-      <div>
-        <svg
-          height="150"
-          ref={c => {
-            this.svg = c;
-          }}
-        />
-        {selected !== -1 ? (
-          <div
-            className="tooltip hide"
-            style={{ color: this.props.data[selected].account.currency.color }}
-            ref={t => {
-              this.tooltip = t;
-            }}
-          >
-            <div className="tooltipTextWrap">
-              <div className="tooltipText">
-                <div>
-                  <span className="percentage" />
-                </div>
-                <div>
-                  <span className="uppercase currencyName">
-                    {this.props.data[selected]
-                      ? this.props.data[selected].account.currency.name
-                      : ""}
-                  </span>
+      <div className="pieChart">
+        <div className="chartTooltipWrap">
+          <div className="centerChart">
+            <svg
+              height="150"
+              ref={c => {
+                this.svg = c;
+              }}
+            />
+            {selected !== -1 ? (
+              <div
+                className="tooltip hide"
+                style={{
+                  color: this.props.data[selected].account.currency.color
+                }}
+                ref={t => {
+                  this.tooltip = t;
+                }}
+              >
+                <div className="tooltipTextWrap">
+                  <div className="tooltipText">
+                    <div>
+                      <span className="percentage" />
+                    </div>
+                    <div>
+                      <span className="uppercase currencyName">
+                        {this.props.data[selected]
+                          ? this.props.data[selected].account.currency.name
+                          : ""}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
-        ) : (
-          ""
-        )}
+        </div>
         <table className="currencyTable">
           <tbody>
             {_.map(this.props.data, (data, id) => {
