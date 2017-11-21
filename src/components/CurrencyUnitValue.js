@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import type { Unit } from "../data/types";
-
+import { formatCurrencyUnit } from "../data/currency";
 const nonBreakableSpace = " ";
 
 // This is a "dumb" component that accepts a unit object and a value number
@@ -39,14 +39,7 @@ class CurrencyUnitValue extends PureComponent<{
         minimumFractionDigits
       });
 
-    const format =
-      code +
-      nonBreakableSpace +
-      (alwaysShowSign && floatValue > 0 ? "+" : "") +
-      floatValue.toLocaleString("en-EN", {
-        maximumFractionDigits,
-        minimumFractionDigits
-      });
+    const format = formatCurrencyUnit(unit, value, true, false, false);
 
     return (
       <span title={title} className={className}>
