@@ -23,12 +23,6 @@ function ApprovalList(props: {
           />
         );
       })}
-
-      <ApprovalPercentage
-        approvers={approvers}
-        approved={approved}
-        nbRequired={nbRequired}
-      />
     </div>
   );
 }

@@ -107,7 +107,7 @@ class EntityApprove extends Component<Props, State> {
           nopadding
           onRequestClose={this.close}
         >
-          <div className="modal">
+          <div className="modal" style={{ height: "615px" }}>
             {entity === "account" && (
               <AccountApprove
                 close={this.close}
