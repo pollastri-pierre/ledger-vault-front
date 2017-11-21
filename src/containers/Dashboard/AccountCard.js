@@ -41,7 +41,7 @@ class AccountCard extends Component<{
             <CurrencyAccountValue
               account={account}
               value={account.balance}
-              countervalue
+              countervalue={true}
             />
           </div>
         </div>

@@ -21,9 +21,10 @@ class CurrencyAccountValue extends Component<{
 }> {
   render() {
     const { account, countervalue, value, rate, ...rest } = this.props;
-    let unitValue = countervalue
-      ? countervalueForRate(rate || account.currencyRate, value)
-      : { value, unit: getAccountCurrencyUnit(account) };
+    let unitValue =
+      countervalue && rate && account.currencyRate
+        ? countervalueForRate(rate || account.currencyRate, value)
+        : { value, unit: getAccountCurrencyUnit(account) };
     return <CurrencyUnitValue {...rest} {...unitValue} />;
   }
 }

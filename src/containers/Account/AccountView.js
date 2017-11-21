@@ -24,7 +24,11 @@ import type {
   lineChartPoint
 } from "../../data/types";
 import "./Account.css";
-import { formatCurrencyUnit, getUnitFromRate } from "../../data/currency";
+import {
+  formatCurrencyUnit,
+  getUnitFromRate,
+  getAccountCurrencyUnit
+} from "../../data/currency";
 
 class AccountView extends Component<
   {
@@ -153,7 +157,6 @@ class AccountView extends Component<
     if (quickLookGraphFilter === "balance") {
       operations = operations.map(
         ((o: lineChartPoint, i: number): lineChartPoint => {
-          console.log(o);
           return {
             ...o,
             amount: parseFloat(
@@ -203,11 +206,10 @@ class AccountView extends Component<
 
     const data = this.getOperations(operations);
 
-    let selectedCurrency = account.currency;
+    let currencyUnit = getAccountCurrencyUnit(account);
     //PROBABLY NEEDS TO BE FIXED
     if (quickLookGraphFilter === "countervalue") {
-      selectedCurrency.units.push(getUnitFromRate(operations[0].rate));
-      selectedCurrency.color = account.currency.color;
+      currencyUnit = getUnitFromRate(operations[0].rate);
     }
 
     return (
@@ -283,7 +285,8 @@ class AccountView extends Component<
                   <QuicklookGraph
                     dateRange={this.getDateRange(tabsIndex)}
                     data={data}
-                    currency={selectedCurrency}
+                    currencyUnit={currencyUnit}
+                    currencyColor={account.currency.color}
                   />
                 </div>
                 <TabPanel className="tabs_panel" />

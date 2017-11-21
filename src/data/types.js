@@ -174,3 +174,15 @@ export type lineChartPoint = {
   tooltip: boolean,
   rate: Rate
 };
+
+export type lineChartPointEnhanced = {
+  ...lineChartPoint,
+  x: number,
+  y: number
+};
+
+export type pieChartData = {
+  account: Account,
+  balance: number,
+  counterValueBalance: number
+};

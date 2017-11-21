@@ -4,16 +4,12 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
-import type { Account } from "../../data/types";
+import type { pieChartData } from "../../data/types";
 import "./PieChart.css";
 
 export default class PieChart extends Component<
   {
-    data: Array<{
-      account: Account,
-      balance: number,
-      counterValueBalance: number
-    }>,
+    data: Array<pieChartData>,
     width: number,
     height: number
   },
@@ -31,6 +27,7 @@ export default class PieChart extends Component<
   };
 
   handleMouseOver = (d: *) => {
+    console.log(d);
     this.setSelected(d.index);
   };
 

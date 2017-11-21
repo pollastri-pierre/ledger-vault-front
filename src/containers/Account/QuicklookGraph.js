@@ -5,11 +5,12 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
-
+import type { lineChartPointEnhanced, Unit } from "../../data/types";
 type Props = {
-  data: Arrray<*>,
+  data: Array<*>,
   dateRange: Array<*>,
-  currency: Curency
+  currencyUnit: Unit,
+  currencyColor: string
 };
 
 export default class QuicklookGraph extends Component<Props, *> {
@@ -29,18 +30,18 @@ export default class QuicklookGraph extends Component<Props, *> {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d: *, i: number) => {
+  handleMouseOver = (d: lineChartPointEnhanced, i: number) => {
     if (d.tooltip) this.setSelected(i);
   };
 
-  handleMouseOut = (d: *, i: number) => {
+  handleMouseOut = () => {
     this.setSelected(-1);
   };
 
   handleTooltip = () => {
     const { selected, margin } = this.state;
-    const tooltip = d3.select(this.tooltip);
-    tooltip.classed("hide", selected === -1);
+    const tooltipElement = d3.select(this.tooltip);
+    tooltipElement.classed("hide", selected === -1);
     d3
       .select(this.svg)
       .selectAll(".dot")
@@ -48,8 +49,8 @@ export default class QuicklookGraph extends Component<Props, *> {
       .classed("selected", (d, i) => selected !== -1 && selected === i);
     if (selected !== -1) {
       const selectedDot = d3.select(".dot.selected").data()[0];
-      tooltip.style("left", `${selectedDot.x + margin.right + 15}px`);
-      tooltip.style("top", `${selectedDot.y - 65}px`);
+      tooltipElement.style("left", `${selectedDot.x + margin.right + 15}px`);
+      tooltipElement.style("top", `${selectedDot.y - 65}px`);
     }
   };
 
@@ -72,7 +73,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   drawVisibleDots = (data: Array<*>) => {
-    const { currency } = this.props;
+    const { currencyColor } = this.props;
     const selection = d3
       .select(".visibleDots")
       .selectAll(".dot")
@@ -84,7 +85,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .enter()
       .append("circle")
       .attr("r", 3)
-      .attr("fill", currency.color)
+      .attr("fill", currencyColor)
       .style("stroke", "white")
       .style("stroke-width", 2)
       .attr("opacity", 0)
@@ -95,7 +96,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   drawLine = (data: Array<*>) => {
-    const { currency } = this.props;
+    const { currencyColor } = this.props;
 
     const valueline = d3
       .line()
@@ -104,14 +105,12 @@ export default class QuicklookGraph extends Component<Props, *> {
       })
       .y(d => d.y);
 
-    console.log(data);
-
     const selection = d3.select(".valueline").data([data]);
-    console.log(currency.color);
+
     selection
       .attr("class", "valueline")
       .attr("d", valueline)
-      .attr("stroke", currency.color)
+      .attr("stroke", currencyColor)
       .attr("fill", "none")
       .attr("stroke-width", "2px")
       .attr("clip-path", "url(#clip)");
@@ -323,7 +322,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   zoomTo = (d0: number, d1: number, data: Array<*>) => {
-    this.setState((prevState, props) => {
+    this.setState(prevState => {
       const { width } = prevState;
       const { x } = this.computeXY(data);
       return {
@@ -350,7 +349,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const xAxis = d3
       .axisBottom(x)
       .ticks(4)
-      .tickFormat((date, i) => {
+      .tickFormat(date => {
         return (d3.timeSecond(date) < date
           ? formatMillisecond
           : d3.timeMinute(date) < date
@@ -437,15 +436,14 @@ export default class QuicklookGraph extends Component<Props, *> {
 
   render() {
     const { selected } = this.state;
-    let { data, currency } = this.props;
-    console.log(currency);
+    let { data, currencyUnit, currencyColor } = this.props;
     return (
       <div className="QuicklookGraph">
         <div className="chartWrap">
           {selected !== -1 ? (
             <div
               className="tooltip lookDown hide"
-              style={{ color: currency.color }}
+              style={{ color: currencyColor }}
               ref={t => {
                 this.tooltip = t;
               }}
@@ -453,7 +451,7 @@ export default class QuicklookGraph extends Component<Props, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    {currency.code} {data[selected].amount}
+                    {currencyUnit.code} {data[selected].amount}
                   </div>
                   <div>
                     <span className="uppercase date">

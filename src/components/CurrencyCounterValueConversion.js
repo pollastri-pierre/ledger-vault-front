@@ -21,7 +21,6 @@ class CurrencyCounterValueConversion extends PureComponent<*> {
       // (e.g. it will never be 1 DOGE = 0.00 EUR but it will be 1'000 DOGE = 1.00 EUR)
       one *
       Math.pow(10, Math.max(0, 2 - Math.floor(Math.log10(rate.value * one))));
-
     let toUnitValue = countervalueForRate(rate, value);
     return (
       <span>
