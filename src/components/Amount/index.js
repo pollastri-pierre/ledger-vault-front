@@ -14,10 +14,14 @@ class Amount extends Component<{
 }> {
   render() {
     const { account, value, rate, strong } = this.props;
-    const counterValueUnit = countervalueForRate(
-      rate || account.currencyRate,
-      value
-    );
+    let finalRate = rate;
+    if (!rate) {
+      finalRate = account.currencyRate;
+    }
+    let counterValueUnit;
+    if (finalRate) {
+      counterValueUnit = countervalueForRate(finalRate, value);
+    }
     return (
       <span className={`${strong ? "amount-strong" : ""}`}>
         <CurrencyAccountValue account={account} value={value} />{" "}

@@ -4,8 +4,9 @@ import connectData from "../../restlay/connectData";
 import DashboardLastOperationsQuery from "../../api/queries/DashboardLastOperationsQuery";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import ViewAllLink from "../../components/ViewAllLink";
+import TryAgain from "../../components/TryAgain";
 import Card from "../../components/Card";
-import CardLoading from "../../components/utils/CardLoading";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../data/types";
 
@@ -33,23 +34,18 @@ class LastOperationCard extends Component<*> {
   }
 }
 
-class RenderError extends Component<*> {
-  render() {
-    return (
-      <Card title="last operations" titleRight={<ViewAllLink to="/search" />} />
-    );
-  }
-}
+const RenderError = ({ restlay, error }: *) => (
+  <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+);
 
-class RenderLoading extends Component<*> {
-  render() {
-    return (
-      <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
-        <CardLoading />
-      </Card>
-    );
-  }
-}
+const RenderLoading = () => (
+  <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+    <SpinnerCard />
+  </Card>
+);
+
 const c = connectData(LastOperationCard, {
   queries: {
     operations: DashboardLastOperationsQuery,

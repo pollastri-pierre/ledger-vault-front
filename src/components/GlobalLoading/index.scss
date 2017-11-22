@@ -1,0 +1,9 @@
+.GlobalLoading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 3px;
+  background-color: #27d0e2;
+  pointer-events: none;
+}

@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import CurrencyNameValue from "../../components/CurrencyNameValue";
+import CurrencyFiatValue from "../../components/CurrencyFiatValue";
 import EvolutionSince, {
   TotalBalanceFilters
 } from "../../components/EvolutionSince";
@@ -10,6 +10,8 @@ import Card from "../../components/Card";
 import CardField from "../../components/CardField";
 import "./TotalBalanceCard.css";
 import { Select, Option } from "../../components/Select";
+import TryAgain from "../../components/TryAgain";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
 
 class TotalBalance extends Component<{
@@ -43,8 +45,8 @@ class TotalBalance extends Component<{
       >
         <div className="body">
           <CardField label={<DateFormat date={totalBalance.date} />}>
-            <CurrencyNameValue
-              currencyName={totalBalance.currencyName}
+            <CurrencyFiatValue
+              fiat={totalBalance.currencyName}
               value={totalBalance.value}
             />
           </CardField>
@@ -68,17 +70,17 @@ class TotalBalance extends Component<{
   }
 }
 
-class RenderError extends Component<*> {
-  render() {
-    return <Card className="total-balance" title="total balance" />;
-  }
-}
+const RenderError = ({ error, restlay }: *) => (
+  <Card className="total-balance" title="total balance">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+);
 
-class RenderLoading extends Component<*> {
-  render() {
-    return <Card className="total-balance" title="total balance" />;
-  }
-}
+const RenderLoading = () => (
+  <Card className="total-balance" title="total balance">
+    <SpinnerCard />
+  </Card>
+);
 
 export default connectData(TotalBalance, {
   queries: {

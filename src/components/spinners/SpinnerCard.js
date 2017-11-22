@@ -8,9 +8,10 @@ const SpinnerCard = () => {
       size={30}
       style={{
         position: "absolute",
-        top: "52%",
+        top: "50%",
         left: "50%",
-        marginLeft: "-15px"
+        marginLeft: "-15px",
+        marginTop: "-15px"
       }}
     />
   );

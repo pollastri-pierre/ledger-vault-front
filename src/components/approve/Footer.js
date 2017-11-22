@@ -7,13 +7,14 @@ function Footer(props: {
   approved: boolean,
   close: Function,
   approve: Function,
-  aborting: Function
+  aborting: Function,
+  percentage?: *
 }) {
-  const { approved, close, approve, aborting } = props;
+  const { approved, close, approve, aborting, percentage } = props;
 
   if (approved) {
     return (
-      <div className="footer">
+      <div className="footer-approve">
         <DialogButton highlight className="cancel" onTouchTap={close}>
           Close
         </DialogButton>
@@ -22,7 +23,8 @@ function Footer(props: {
   }
 
   return (
-    <div className="footer">
+    <div className="footer-approve">
+      {percentage}
       <DialogButton highlight className="cancel" onTouchTap={close}>
         Close
       </DialogButton>

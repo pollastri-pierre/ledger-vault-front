@@ -47,7 +47,7 @@ class MainCreation extends Component<Props> {
       case 2:
         isNextDisabled =
           account.approvers.length === 0 ||
-          account.quorum === "0" ||
+          account.quorum === 0 ||
           account.quorum > account.approvers.length;
         break;
       default:
@@ -89,12 +89,10 @@ class MainCreation extends Component<Props> {
           </header>
           <div className="content">
             <TabPanel className="tabs_panel">
-              <Overscroll>
-                <AccountCreationCurrencies
-                  currency={account.currency}
-                  onSelect={selectCurrency}
-                />
-              </Overscroll>
+              <AccountCreationCurrencies
+                currency={account.currency}
+                onSelect={selectCurrency}
+              />
             </TabPanel>
             <TabPanel className="tabs_panel">
               <AccountCreationOptions

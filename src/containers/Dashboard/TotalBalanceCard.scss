@@ -5,11 +5,15 @@
 }
 
 .total-balance {
-	header {
-		align-items: normal !important;
-		padding-bottom: 30px;
-		h3 {
-			margin: 0px;
-		}
-	}
+  min-height: 180px;
+  .evolution-since {
+    min-width: 200px;
+  }
+  header {
+    align-items: normal !important;
+    padding-bottom: 30px;
+    h3 {
+      margin: 0px;
+    }
+  }
 }

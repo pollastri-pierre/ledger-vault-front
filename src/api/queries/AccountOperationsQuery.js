@@ -8,6 +8,8 @@ type Input = {
 };
 type Response = Operation[];
 
+// Fetch operations of an account
+// This API is paginated
 export default class AccountOperationsQuery extends Query<Input, Response> {
   uri = `/accounts/${this.props.accountId}/operations`;
   responseSchema = [schema.Operation];

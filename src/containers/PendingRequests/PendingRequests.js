@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
 import EntityApprove from "../../components/approve/EntityApprove";
 import { Route } from "react-router";
@@ -12,6 +11,8 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import ApproversQuery from "../../api/queries/ApproversQuery";
+import SpinnerCard from "../../components/spinners/SpinnerCard";
+import TryAgain from "../../components/TryAgain";
 import type { Account, Member } from "../../data/types";
 import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingRequests.css";
@@ -77,12 +78,42 @@ class PendingRequests extends Component<{
 
 export { PendingRequests as PendingRequestNotDecorated };
 
+const RenderError = ({ error, restlay }: *) => (
+  <TryAgain error={error} action={restlay.forceFetch} />
+);
+
+const RenderLoading = () => (
+  <div className="pending-requests">
+    <div className="pending-left">
+      <div className="bloc">
+        <h3>Operations to approve</h3>
+        <SpinnerCard />
+      </div>
+      <div className="bloc">
+        <h3>Operations to watch</h3>
+        <SpinnerCard />
+      </div>
+    </div>
+    <div className="pending-right">
+      <div className="bloc">
+        <h3>Accounts to approve</h3>
+        <SpinnerCard />
+      </div>
+      <div className="bloc">
+        <h3>Accounts to watch</h3>
+        <SpinnerCard />
+      </div>
+    </div>
+  </div>
+);
+
 export default connectData(PendingRequests, {
+  RenderError,
+  RenderLoading,
   queries: {
     pendingRequests: PendingsQuery,
     accounts: AccountsQuery,
     profile: ProfileQuery,
     approversAccount: ApproversQuery
-  },
-  RenderLoading: SpinnerCard
+  }
 });

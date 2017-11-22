@@ -1,75 +1,76 @@
 //@flow
-import React from "react";
-import type { Operation } from "../../data/types";
+import React, { Component, PureComponent } from "react";
+import type { Operation, Account } from "../../data/types";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 
-const getAmount = (amount, currency) => {
-  let sign = "";
-  if (amount < 0) {
-    sign = "-";
-  } else {
-    sign = "+";
+class OperationList<T: *> extends Component<{
+  account: Account,
+  title: string,
+  entries: Array<T>
+}> {
+  render() {
+    const { account, title, entries } = this.props;
+    // TODO this should not be a table. we don't want the price column to potentially take the whole space just because one cell do.
+    // TODO the address cell probably should have proper text-overflow , nowrap
+    return (
+      <table className="operation-list details">
+        <thead>
+          <tr>
+            <td>{title}</td>
+            <td>
+              <strong>
+                <CurrencyAccountValue
+                  account={account}
+                  value={entries.reduce((s, e) => s + e.value, 0)}
+                  alwaysShowSign
+                />
+              </strong>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map(e => (
+            <tr key={e.index}>
+              <td>{e.address}</td>
+              <td>
+                <CurrencyAccountValue
+                  account={account}
+                  value={e.value}
+                  alwaysShowSign
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   }
-  return `${sign} ${currency} ${amount}`;
-};
+}
 
-function TabDetails(props: { operation: Operation }) {
-  const { transaction } = props.operation;
-
-  const sumOutputs = transaction.outputs.reduce((sum, output) => {
-    return sum + parseFloat(output.value);
-  }, 0);
-
-  const sumInputs = transaction.inputs.reduce((sum, input) => {
-    return sum + parseFloat(input.value);
-  }, 0);
-
-  return (
-    <div className="operation-details-tab">
-      <h4>Identifier</h4>
-      <p>{transaction.hash}</p>
-      <table className="operation-list details">
-        <thead>
-          <tr>
-            <td>INPUTS</td>
-            <td>
-              <strong>{getAmount(sumInputs, "BTC")}</strong>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {transaction.inputs.map(input => {
-            return (
-              <tr key={input.index}>
-                <td className="not-bold">{input.address}</td>
-                <td>{input.value}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
-      <table className="operation-list details">
-        <thead>
-          <tr>
-            <td>OUTPUTS</td>
-            <td>
-              <strong>{getAmount(sumOutputs, "BTC")}</strong>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {transaction.outputs.map(output => {
-            return (
-              <tr key={output.index}>
-                <td className="not-bold">{output.address}</td>
-                <td>{output.value}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
+class TabDetails extends PureComponent<{
+  operation: Operation,
+  account: Account
+}> {
+  render() {
+    const { operation, account } = this.props;
+    const { transaction } = operation;
+    return (
+      <div className="operation-details-tab">
+        <h4>Identifier</h4>
+        <p>{transaction.hash}</p>
+        <OperationList
+          title="INPUTS"
+          account={account}
+          entries={transaction.inputs}
+        />
+        <OperationList
+          title="OUTPUTS"
+          account={account}
+          entries={transaction.outputs}
+        />
+      </div>
+    );
+  }
 }
 
 export default TabDetails;

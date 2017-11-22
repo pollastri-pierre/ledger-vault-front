@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import AccountCard from "./AccountCard";
 import AccountsQuery from "../../api/queries/AccountsQuery";
+import TryAgain from "../../components/TryAgain";
 
 class Storages extends Component<{ accounts: *, filter: * }> {
   render() {
@@ -17,9 +18,14 @@ class Storages extends Component<{ accounts: *, filter: * }> {
   }
 }
 
+const RenderError = ({ error, restlay }: *) => (
+  <TryAgain error={error} action={restlay.forceFetch} />
+);
+
 export default connectData(Storages, {
   queries: {
     accounts: AccountsQuery
   },
-  optimisticRendering: true
+  optimisticRendering: true,
+  RenderError
 });

@@ -7,6 +7,7 @@ import connectData from "../../../restlay/connectData";
 import Footer from "../../approve/Footer";
 // import CircularProgress from "material-ui/CircularProgress";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import ApprovalPercentage from "../../../components/ApprovalPercentage";
 import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
 import ModalLoading from "../../../components/ModalLoading";
@@ -52,27 +53,45 @@ class AccountApprove extends Component<Props> {
         <div className="content">
           <TabPanel className="tabs_panel">
             <AccountApproveDetails account={account} approvers={approvers} />
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={account.approved.indexOf(profile.pub_key) > -1}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <Overscroll>
+            <Overscroll top={40} bottom={100}>
               <AccountApproveMembers members={members} account={account} />
             </Overscroll>
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={account.approved.indexOf(profile.pub_key) > -1}
+            />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <Overscroll>
+            <Overscroll top={40} bottom={100}>
               <AccountApproveApprovals
                 approvers={approvers}
                 account={account}
               />
             </Overscroll>
+            <Footer
+              close={close}
+              approve={approve}
+              aborting={aborting}
+              approved={account.approved.indexOf(profile.pub_key) > -1}
+              percentage={
+                <ApprovalPercentage
+                  approvers={approvers}
+                  approved={account.approved}
+                />
+              }
+            />
           </TabPanel>
         </div>
-        <Footer
-          close={close}
-          approve={approve}
-          aborting={aborting}
-          approved={account.approved.indexOf(profile.pub_key) > -1}
-        />
       </Tabs>
     );
   }

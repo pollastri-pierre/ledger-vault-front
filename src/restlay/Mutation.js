@@ -2,6 +2,8 @@
 import type { Store } from "./dataStore";
 import { denormalize } from "normalizr";
 
+type Notification = { title: string, content: string };
+
 // A mutation maps to another verb on the API and means a modification of the data.
 // it will allow us to define mutation response etc..
 export default class Mutation<Input, Response> {
@@ -13,8 +15,6 @@ export default class Mutation<Input, Response> {
   method: string;
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object>;
-  // notification to trigger after data fetch
-  notif: ?{ title: string, content: string };
 
   constructor(props: Input) {
     this.props = props;
@@ -44,4 +44,10 @@ export default class Mutation<Input, Response> {
   getResponse(result: Object, store: Store): Response {
     return denormalize(result, this.responseSchema, store.entities);
   }
+
+  // notification to trigger after data fetch
+  getSuccessNotification(_response: Response): ?Notification {}
+
+  // notification to trigger after data fetch failure
+  getErrorNotification(_error: *): ?Notification {}
 }

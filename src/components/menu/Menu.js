@@ -48,7 +48,7 @@ function Menu(
         </li>
         <li>
           <NavLink to="/search">
-            <MenuSearchIcon style={styleIcon} />
+            <MenuSearchIcon style={{ marginRight: "15px" }} />
             {t("menu.search")}
           </NavLink>
         </li>

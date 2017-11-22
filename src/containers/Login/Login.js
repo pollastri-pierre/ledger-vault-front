@@ -89,17 +89,25 @@ export class Login extends Component<Props> {
       );
     }
     return (
-      <div>
-        <div className="Background">
-          <div className="Banner">
-            <img
-              src="img/logo-black.png"
-              srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
-              alt="Ledger Vault"
-            />
-            <div className="help">{t("login.help")}</div>
+      <div style={{ display: "table", width: "100vw", height: "100vh" }}>
+        <div
+          style={{
+            display: "table-cell",
+            textAlign: "center",
+            verticalAlign: "middle"
+          }}
+        >
+          <div className="Background">
+            <div className="Banner">
+              <img
+                src="img/logo-black.png"
+                srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
+                alt="Ledger Vault"
+              />
+              <div className="help">{t("login.help")}</div>
+            </div>
+            {content}
           </div>
-          {content}
         </div>
       </div>
     );

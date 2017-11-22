@@ -63,6 +63,7 @@ type AccountCommon = {
 export type Account = AccountCommon & {
   currency: Currency
 };
+
 export type AccountEntity = AccountCommon & {
   currency: string
 };
@@ -157,11 +158,31 @@ type OperationCommon = {
   approved: string[],
   senders: string[],
   recipients: string[],
-  transaction: Transaction
+  transaction: Transaction,
+  exploreURL: ?string
 };
 export type Operation = OperationCommon & {
   notes: Note[]
 };
 export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
+};
+
+export type lineChartPoint = {
+  time: Date,
+  amount: number,
+  tooltip: boolean,
+  rate: Rate
+};
+
+export type lineChartPointEnhanced = {
+  ...lineChartPoint,
+  x: number,
+  y: number
+};
+
+export type pieChartData = {
+  account: Account,
+  balance: number,
+  counterValueBalance: number
 };

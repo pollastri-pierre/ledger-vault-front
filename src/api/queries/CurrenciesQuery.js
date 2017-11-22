@@ -6,6 +6,7 @@ import type { Currency } from "../../data/types";
 type Input = void;
 type Response = Currency[];
 
+// Fetch all currencies of the organization
 export default class CurrenciesQuery extends Query<Input, Response> {
   uri = "/currencies";
   responseSchema = [schema.Currency];

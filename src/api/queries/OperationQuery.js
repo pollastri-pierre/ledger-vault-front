@@ -8,6 +8,7 @@ type Input = {
 };
 type Response = Operation;
 
+// Fetch a single operation
 export default class OperationQuery extends Query<Input, Response> {
   uri = `/operations/${this.props.operationId}`;
   responseSchema = schema.Operation;
