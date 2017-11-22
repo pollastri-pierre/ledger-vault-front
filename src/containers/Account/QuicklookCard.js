@@ -14,13 +14,12 @@ import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
-import { withRouter } from "react-router";
 
 type Props = {
+  accountId: string,
   account: Account,
   operations: Array<Operation>,
   reloading: boolean,
-  accountId: string,
   match: {
     url: string,
     params: {
@@ -269,15 +268,15 @@ export class QuicklookCard extends Component<Props, State> {
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <div>
+  <Card className="quicklook" title="Quicklook">
     <TryAgain error={error} action={restlay.forceFetch} />
-  </div>
+  </Card>
 );
 
 const RenderLoading = () => (
-  <div>
+  <Card className="quicklook" title="Quicklook">
     <SpinnerCard />
-  </div>
+  </Card>
 );
 
 export default connectData(QuicklookCard, {

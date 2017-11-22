@@ -11,6 +11,7 @@ export type Response = {
   watchAccounts: Account[]
 };
 
+// a mashup of everything we need for pending screen
 export default class PendingsQuery extends Query<Input, Response> {
   uri = "/pendings";
   responseSchema = {

@@ -13,6 +13,7 @@ export type Response = {
   }>
 };
 
+// return all extra data we need to load the account settings screen
 export default class SettingsDataQuery extends Query<Input, Response> {
   uri = "/settings-data";
 }

@@ -16,11 +16,18 @@ class CurrencyUnitValue extends PureComponent<{
       "currency-unit-value",
       "sign-" + (value < 0 ? "negative" : value > 0 ? "positive" : "zero")
     ].join(" ");
-    const title = formatCurrencyUnit(unit, value, true, alwaysShowSign, true);
-    const format = formatCurrencyUnit(unit, value, true, alwaysShowSign, false);
     return (
-      <span title={title} className={className}>
-        {format}
+      <span
+        title={formatCurrencyUnit(unit, value, true, alwaysShowSign, true)}
+        className={className}
+      >
+        {formatCurrencyUnit(
+          unit,
+          value,
+          true,
+          alwaysShowSign,
+          unit.showAllDigits
+        )}
       </span>
     );
   }
