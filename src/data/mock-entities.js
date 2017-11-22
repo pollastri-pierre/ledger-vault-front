@@ -469,7 +469,9 @@ const defaultGenOperation = {
   currency_family: "BITCOIN",
   approvedTime: null,
   endOfTimeLockTime: null,
-  endOfRateLimiterTime: null
+  endOfRateLimiterTime: null,
+  exploreURL:
+    "https://blockchain.info/address/17SkEw2md5avVNyYgj6RiXuQKNwkXaxFyQ"
 };
 
 const genOperation = (opts: *): OperationEntity => {
@@ -486,7 +488,8 @@ const genOperation = (opts: *): OperationEntity => {
     approvedTime,
     endOfTimeLockTime,
     endOfRateLimiterTime,
-    approved
+    approved,
+    exploreURL
   } = {
     ...defaultGenOperation,
     ...opts
@@ -513,6 +516,7 @@ const genOperation = (opts: *): OperationEntity => {
     rate: accounts[account_id].currencyRate,
     fees,
     account_id,
+    exploreURL,
     senders: ["0xc5a96db085dda36ffbe390f455315d30d6d3dc52"],
     recipients: ["0x063dd253c8da4ea9b12105781c9611b8297f5d14"],
     notes: [genNote(1), genNote(2)],

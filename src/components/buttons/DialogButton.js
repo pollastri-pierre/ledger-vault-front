@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 
 import "./DialogButton.css";
 
-// TODO : IMO remove disabled prop, instead the fact we don't pass onTouchTap
-// would mean it's a disabled button.
+// TODO: this probably shouldn't be a <button>, there are cases we would use a <Link> in children instead of a onTouchTap ?
 // TODO i kinda prefer "action" instead of "onTouchTap"
 // TODO : flowtype instead of proptypes
 // TODO : exploding {...rest} on a DOM element is generally a bad practice
@@ -46,7 +45,7 @@ export default class DialogButton extends Component<*, *> {
   }
 
   render() {
-    const { highlight, right, ...other } = this.props;
+    const { highlight, right, onTouchTap, ...other } = this.props;
 
     return (
       <button
@@ -61,7 +60,7 @@ export default class DialogButton extends Component<*, *> {
         disabled={
           this.props.disabled ? this.props.disabled : this.state.pending
         }
-        onTouchTap={this.onClick}
+        onTouchTap={onTouchTap ? this.onClick : null}
       >
         {this.props.children}
       </button>

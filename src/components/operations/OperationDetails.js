@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import ModalLoading from "../../components/ModalLoading";
-import { withRouter } from "react-router";
+import { withRouter, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
@@ -69,6 +69,13 @@ class OperationDetails extends Component<Props> {
             </TabPanel>
           </div>
           <div className="footer">
+            {operation.exploreURL ? (
+              <DialogButton>
+                <a target="_blank" href={operation.exploreURL}>
+                  Explore
+                </a>
+              </DialogButton>
+            ) : null}
             <DialogButton highlight right onTouchTap={close}>
               Done
             </DialogButton>

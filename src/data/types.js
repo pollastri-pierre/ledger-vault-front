@@ -158,7 +158,8 @@ type OperationCommon = {
   approved: string[],
   senders: string[],
   recipients: string[],
-  transaction: Transaction
+  transaction: Transaction,
+  exploreURL: ?string
 };
 export type Operation = OperationCommon & {
   notes: Note[]
