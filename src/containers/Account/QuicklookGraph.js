@@ -40,6 +40,7 @@ export default class QuicklookGraph extends Component<Props, *> {
 
   handleTooltip = () => {
     const { selected, margin } = this.state;
+
     const tooltipElement = d3.select(this.tooltip);
     tooltipElement.classed("hide", selected === -1);
     d3
