@@ -20,6 +20,7 @@ type Props = {
   account: Account,
   operations: Array<Operation>,
   reloading: boolean,
+  accountId: string,
   match: {
     url: string,
     params: {
@@ -143,7 +144,6 @@ export class QuicklookCard extends Component<Props, State> {
   getOperations = (data: Operation[]) => {
     const { account } = this.props;
     const { quicklookFilter } = this.state;
-    console.log(quicklookFilter);
     let operations = [];
     if (!data.length) return [];
     //PROBABLY NEEDS TO BE FIXED
@@ -211,7 +211,6 @@ export class QuicklookCard extends Component<Props, State> {
     if (quicklookFilter === "countervalue") {
       currencyUnit = getUnitFromRate(operations[0].rate);
     }
-
     return (
       data.length && (
         <Card
@@ -281,15 +280,13 @@ const RenderLoading = () => (
   </div>
 );
 
-export default withRouter(
-  connectData(QuicklookCard, {
-    queries: {
-      account: AccountQuery,
-      operations: AccountOperationsQuery
-    },
-    propsToQueryParams: props => ({ accountId: props.match.params.id }),
-    optimisticRendering: true,
-    RenderError,
-    RenderLoading
-  })
-);
+export default connectData(QuicklookCard, {
+  queries: {
+    account: AccountQuery,
+    operations: AccountOperationsQuery
+  },
+  propsToQueryParams: props => ({ accountId: props.accountId }),
+  optimisticRendering: true,
+  RenderError,
+  RenderLoading
+});

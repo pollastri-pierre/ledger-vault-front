@@ -75,7 +75,7 @@ class AccountView extends Component<
             <ReceiveFundsCard hash={account.receive_address} />
           </div>
 
-          <QuicklookCard />
+          <QuicklookCard accountId={this.props.match.params.id} />
         </div>
         <Card reloading={reloading} title="last operations">
           <DataTableOperation
