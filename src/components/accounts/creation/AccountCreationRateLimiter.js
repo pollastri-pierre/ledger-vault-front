@@ -5,6 +5,7 @@ import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import InfoModal from "../../InfoModal";
+import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import ArrowDown from "../../icons/ArrowDown";
 import { addMessage } from "../../../redux/modules/alerts";
 
@@ -104,17 +105,18 @@ class AccountCreationRateLimiter extends Component<Props, State> {
         </header>
         <div className="content">
           <EnableForm checked={rate_limiter.enabled} toggle={this.onToggle}>
-            <div className="form-field">
-              <input
-                className={`medium-padding ${rate_limiter.value === 0
-                  ? "error"
-                  : ""}`}
-                type="text"
-                id="text-duration"
-                value={rate_limiter.value}
-                onChange={e => this.onChangeValue(e.target.value)}
-              />
-              <label htmlFor="text-duration">Rate</label>
+            <InputTextWithUnity
+              label="Rate"
+              hasError={rate_limiter.value === 0 && rate_limiter.enabled}
+              field={
+                <input
+                  type="text"
+                  id="text-duration"
+                  value={rate_limiter.value}
+                  onChange={e => this.onChangeValue(e.target.value)}
+                />
+              }
+            >
               <span
                 className="count dropdown"
                 role="button"
@@ -181,7 +183,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                   </div>
                 </div>
               </PopBubble>
-            </div>
+            </InputTextWithUnity>
             <InfoModal>
               Rate-limiter enforces that your team does not exceed a pre-defined
               number of outgoing transaction per interval of time.

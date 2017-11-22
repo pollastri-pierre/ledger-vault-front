@@ -6,6 +6,7 @@ import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import ArrowDown from "../../icons/ArrowDown";
 import { connect } from "react-redux";
+import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import { addMessage } from "../../../redux/modules/alerts";
 
 const mapDispatchToProps = dispatch => ({
@@ -103,15 +104,18 @@ class AccountCreationTimeLock extends Component<Props, State> {
         </header>
         <div className="content">
           <EnableForm checked={timelock.enabled} toggle={this.onToggle}>
-            <div className="form-field">
-              <input
-                className="small-padding"
-                type="text"
-                id="text-duration"
-                value={timelock.value}
-                onChange={e => this.onChangeValue(e.target.value)}
-              />
-              <label htmlFor="text-duration">Duration</label>
+            <InputTextWithUnity
+              hasError={timelock.value === 0 && timelock.enabled}
+              label="Duration"
+              field={
+                <input
+                  type="text"
+                  id="text-duration"
+                  value={timelock.value}
+                  onChange={e => this.onChangeValue(e.target.value)}
+                />
+              }
+            >
               <span
                 className="count dropdown"
                 role="button"
@@ -177,7 +181,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
                   </div>
                 </div>
               </PopBubble>
-            </div>
+            </InputTextWithUnity>
             <InfoModal>
               Time-lock delays each outgoing operation by a configurable length,
               after all the required members have given their approvals.
