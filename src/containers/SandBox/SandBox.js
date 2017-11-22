@@ -106,11 +106,7 @@ class SandBox extends Component {
               </Col>
               <Col width={6}>
                 <Paper className="block short-block">
-                  <Overscroll
-                    height={200}
-                    overscrollSize={40}
-                    backgroundColor="white"
-                  >
+                  <Overscroll top={40} bottom={40} backgroundColor="white">
                     [[ BEGIN ]]<br />
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Vestibulum quis tempus massa, sed consectetur est. Integer

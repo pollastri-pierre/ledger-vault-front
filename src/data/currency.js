@@ -39,14 +39,15 @@ export function countervalueForRate(rate: Rate, value: number): UnitValue {
   };
 }
 
+// TODO move in new formatters/ directory
 const nonBreakableSpace = " ";
-
 export function formatCurrencyUnit(
   unit: Unit,
   value: number,
-  showCode: boolean,
-  alwaysShowSign: boolean,
-  showAllDigits: boolean
+  // TODO probably should have an option object, so it's more readable than writing (unit,value,false,true,false)
+  showCode: boolean = false,
+  alwaysShowSign: boolean = false,
+  showAllDigits: boolean = false
 ): string {
   const { magnitude, code } = unit;
   const floatValue = value / 10 ** magnitude;
@@ -61,9 +62,9 @@ export function formatCurrencyUnit(
   );
 
   const format =
+    (alwaysShowSign && floatValue > 0 ? "+" + nonBreakableSpace : "") +
     (showCode ? code : "") +
     nonBreakableSpace +
-    (alwaysShowSign && floatValue > 0 ? "+" : "") +
     floatValue.toLocaleString("en-EN", {
       maximumFractionDigits,
       minimumFractionDigits
