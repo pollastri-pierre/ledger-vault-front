@@ -3,10 +3,12 @@
 import * as React from "react";
 import { Component } from "react";
 import bitcoinAddress from "bitcoin-address";
-import currencies from "../../../currencies";
+// import currencies from "../../../currencies";
+import connectData from "../../../restlay/connectData";
+import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
-import type { Currency, Unit } from "../../../datatypes";
+import type { Currency, Unit } from "../../../data/types";
 import CurrencyNameValue from "../../CurrencyNameValue";
 
 import "./OperationCreationDetails.css";
@@ -15,7 +17,10 @@ type Props = {
   account: {
     currency: Currency,
     balance: number
-  }
+  },
+
+  // from connectData
+  currencies: Array<Currency>
 };
 
 type State = {
@@ -40,7 +45,10 @@ class OperationCreationDetails extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { account } = this.props;
+    const { account, currencies } = this.props;
+
+    console.log(account);
+
     this.currency = currencies.find(c => c.name === account.currency.name);
 
     // TODO Get fees from the gate
@@ -365,4 +373,8 @@ class OperationCreationDetails extends Component<Props, State> {
   }
 }
 
-export default OperationCreationDetails;
+export default connectData(OperationCreationDetails, {
+  queries: {
+    currencies: CurrenciesQuery
+  }
+});

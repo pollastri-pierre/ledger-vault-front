@@ -23,20 +23,20 @@ class OperationCreation extends Component {
       tabsIndex,
       save,
       accounts,
-      operation,
-      selectAccount
+      selectedAccount,
+      selectAccount,
     } = this.props;
 
     const disabledTabs = [
       false, // tab 0
-      operation.account === null, // tab 1
+      selectedAccount === null, // tab 1
       true, // tab 2
       true // tab 3
     ];
 
     return (
       <Tabs
-        className="operation-creation-main wrapper"
+        className="operation-creation-main modal wrapper"
         selectedIndex={tabsIndex}
         onSelect={onSelect}
       >
@@ -58,7 +58,7 @@ class OperationCreation extends Component {
                   <OperationCreationAccounts
                     accounts={accounts.accounts}
                     onSelect={selectAccount}
-                    selectedAccount={operation.account}
+                    selectedAccount={selectedAccount}
                   />
                 ) : (
                   false
@@ -67,7 +67,7 @@ class OperationCreation extends Component {
             </TabPanel>
             <TabPanel className="tabs_panel">
               <Overscroll>
-                <OperationCreationDetails account={operation.account} />
+                <OperationCreationDetails account={selectedAccount} />
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
@@ -87,7 +87,7 @@ class OperationCreation extends Component {
               highlight
               right
               disabled={disabledTabs[tabsIndex + 1]}
-              onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
+              onTouchTap={() => onSelect(tabsIndex + 1)}
             >
               Continue
             </DialogButton>

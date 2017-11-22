@@ -11,20 +11,32 @@ class NewOperationModal extends Component<
     close: Function
   },
   {
-    tabsIndex: number
+    tabsIndex: number,
+    selectedAccount: ?Account
   }
 > {
   state = {
-    tabsIndex: 0
+    tabsIndex: 0,
+    selectedAccount: null
   };
+
   onSaveOperation = () => {
     console.log(
       "TODO: this.props.restlay.commitUpdate(new SaveOperationMutation({...}))"
     );
   };
+
   onSelect = (tabsIndex: number) => {
     this.setState({ tabsIndex });
   };
+
+  selectAccount = (selectedAccount: Account) => {
+    this.setState({
+      selectedAccount,
+      tabsIndex: 1
+    });
+  };
+
   render() {
     const { accounts, close } = this.props;
     return (
@@ -37,6 +49,8 @@ class NewOperationModal extends Component<
           isLoadingAccounts: false,
           accounts
         }}
+        selectAccount={this.selectAccount}
+        selectedAccount={this.state.selectedAccount}
         getAccounts={() => {
           console.warn("getAccounts is no longer needed");
         }}
