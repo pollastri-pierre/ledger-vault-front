@@ -14,18 +14,12 @@ import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
-import { withRouter } from "react-router";
 
 type Props = {
+  accountId: string,
   account: Account,
   operations: Array<Operation>,
-  reloading: boolean,
-  match: {
-    url: string,
-    params: {
-      id: string
-    }
-  }
+  reloading: boolean
 };
 
 type State = {
@@ -270,26 +264,24 @@ export class QuicklookCard extends Component<Props, State> {
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <div>
+  <Card className="quicklook" title="Quicklook">
     <TryAgain error={error} action={restlay.forceFetch} />
-  </div>
+  </Card>
 );
 
 const RenderLoading = () => (
-  <div>
+  <Card className="quicklook" title="Quicklook">
     <SpinnerCard />
-  </div>
+  </Card>
 );
 
-export default withRouter(
-  connectData(QuicklookCard, {
-    queries: {
-      account: AccountQuery,
-      operations: AccountOperationsQuery
-    },
-    propsToQueryParams: props => ({ accountId: props.match.params.id }),
-    optimisticRendering: true,
-    RenderError,
-    RenderLoading
-  })
-);
+export default connectData(QuicklookCard, {
+  queries: {
+    account: AccountQuery,
+    operations: AccountOperationsQuery
+  },
+  propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
+  optimisticRendering: true,
+  RenderError,
+  RenderLoading
+});
