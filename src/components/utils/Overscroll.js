@@ -1,36 +1,44 @@
 //@flow
 import React, { Component } from "react";
 
-class Overscroll extends Component<
-  {
-    overscrollSize: number,
-    backgroundColor: string,
-    children: *
-  },
-  { height: number }
-> {
+/**
+ * This creates a blurred scroll container.
+ * The container max height can be defined by the parent container.
+ * It is recommended to use a PureComponent for the parent container
+ * to try to avoid re-rendering as much as possible (children gets dups twice)
+ * top and bottom define how much blur overflow (maximum height, opt-in).
+ * It does not have to be precise as you can put a bigger value and have a container doing overflow:hidden.
+ */
+class Overscroll extends Component<{
+  top: number, // how much to overflow on the top (opt-in)
+  bottom: number, // how much to overflow on the bottom (opt-in)
+  children: string | React$Node,
+  blurSize: number,
+  padding: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
+  pushScrollBarRight: number // how much pixel to push the scrollbar on the right
+}> {
   static defaultProps = {
-    overscrollSize: 40,
+    top: 0,
+    bottom: 0,
     backgroundColor: "white",
-    children: ""
+    blurSize: 6,
+    padding: 12,
+    pushScrollBarRight: 80
   };
-
-  state = { height: 340 };
 
   original: ?Element;
   node: ?Element;
   copy: ?Element;
-  interval: *;
+  raf: *;
 
   componentDidMount() {
     const { original } = this;
     if (original) original.addEventListener("scroll", this.onScroll);
-    this.resize();
-    this.interval = setInterval(this.resize, 100);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    const { original } = this;
+    if (original) original.removeEventListener("scroll", this.onScroll);
   }
 
   onScroll = () => {
@@ -40,99 +48,82 @@ class Overscroll extends Component<
     }
   };
 
-  resize = () => {
-    // if (this.node) {
-    //   if (!this.parent) {
-    //     this.parent = this.node.parentNode;
-    //
-    //     while (this.parent.clientHeight === 0) {
-    //       this.parent = this.parent.parentNode;
-    //     }
-    //   }
-    //
-    //   if (this.node.clientHeight !== this.parent.clientHeight) {
-    //     this.setState({ height: this.parent.clientHeight });
-    //   }
-    // }
+  onRef = (node: ?Element) => {
+    this.node = node;
+  };
+  onCopyRef = (node: ?Element) => {
+    this.copy = node;
+  };
+  onOriginalRef = (node: ?Element) => {
+    this.original = node;
   };
 
   render() {
-    const height = this.state.height;
-    const overscrollSize = this.props.overscrollSize;
-    const backgroundColor = this.props.backgroundColor;
+    const {
+      top,
+      bottom,
+      children,
+      blurSize,
+      padding,
+      pushScrollBarRight
+    } = this.props;
+
+    const rootStyle = {
+      position: "relative",
+      height: "100%",
+      margin: -padding
+    };
+    const copyStyle = {
+      position: "absolute",
+      filter: "blur(" + blurSize + "px)",
+      overflow: "hidden",
+      width: "100%",
+      top: `-${top - padding}px`,
+      padding: padding,
+      paddingTop: `${top}px `,
+      paddingBottom: `${bottom}px`,
+      height: `calc(100% + ${top + bottom - 2 * padding}px)`
+    };
+    const innerContainerStyle = {
+      position: "relative",
+      height: "100%"
+    };
+    const topLayerStyle = {
+      position: "absolute",
+      width: "100%",
+      top: `-${top}px`,
+      height: `${top}px`,
+      background: "linear-gradient(to top, rgba(255, 255, 255, 0.5), white)"
+    };
+    const bottomLayerStyle = {
+      position: "absolute",
+      width: "100%",
+      bottom: `-${bottom}px`,
+      height: `${bottom}px`,
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), white)"
+    };
+    const originalStyle = {
+      position: "relative",
+      overflowY: "auto",
+      height: "100%",
+      background: "white", // NB used to be a prop. but if we want to customize it, we also need to customize the linear-gradient
+      padding: padding,
+      // for hiding ugly scrollbar
+      marginRight: "-" + pushScrollBarRight + "px",
+      paddingRight: pushScrollBarRight + padding + "px"
+    };
 
     return (
-      <div
-        className="overscroll"
-        style={{ position: "relative" }}
-        ref={node => {
-          this.node = node;
-        }}
-      >
-        <div
-          className="copy"
-          ref={node => {
-            this.copy = node;
-          }}
-          style={{
-            position: "absolute",
-            filter: "blur(3px)",
-            overflow: "hidden",
-            width: "calc(100% - 15px)",
-            top: `-${overscrollSize - 6}px`,
-            paddingTop: `${overscrollSize - 6}px `,
-            paddingBottom: `${overscrollSize}px`,
-            height: `${height + overscrollSize * 2 - 6}px`
-          }}
-        >
-          {this.props.children}
+      <div style={rootStyle} ref={this.onRef}>
+        <div ref={this.onCopyRef} style={copyStyle}>
+          {children}
         </div>
-        <div
-          className="overscroll-wrapper"
-          style={{
-            position: "relative"
-          }}
-        >
-          <div
-            className="overscroll-top"
-            style={{
-              position: "absolute",
-              width: "100%",
-              top: `-${overscrollSize}px`,
-              height: `${overscrollSize}px`,
-              background:
-                "linear-gradient(to top, rgba(255, 255, 255, 0.5), white)"
-            }}
-          />
-          <div
-            className="original"
-            ref={node => {
-              this.original = node;
-            }}
-            style={{
-              position: "relative",
-              overflowY: "auto",
-              height: `${height}px`,
-              background: backgroundColor,
-              margin: "0 -6px",
-              padding: "0 6px",
-              marginRight: "-60px", //
-              paddingRight: "60px" // for hiding ugly scrollbar
-            }}
-          >
-            {this.props.children}
+        <div style={innerContainerStyle}>
+          <div style={topLayerStyle} />
+          <div ref={this.onOriginalRef} style={originalStyle}>
+            {children}
           </div>
-          <div
-            className="overscroll-bottom"
-            style={{
-              position: "absolute",
-              width: "100%",
-              bottom: `-${overscrollSize}px`,
-              height: `${overscrollSize}px`,
-              background:
-                "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), white)"
-            }}
-          />
+          <div style={bottomLayerStyle} />
         </div>
       </div>
     );
