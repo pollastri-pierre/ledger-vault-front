@@ -19,13 +19,7 @@ type Props = {
   accountId: string,
   account: Account,
   operations: Array<Operation>,
-  reloading: boolean,
-  match: {
-    url: string,
-    params: {
-      id: string
-    }
-  }
+  reloading: boolean
 };
 
 type State = {
