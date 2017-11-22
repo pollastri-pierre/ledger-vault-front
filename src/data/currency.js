@@ -44,9 +44,9 @@ const nonBreakableSpace = " ";
 export function formatCurrencyUnit(
   unit: Unit,
   value: number,
-  showCode: boolean,
-  alwaysShowSign: boolean,
-  showAllDigits: boolean
+  showCode: boolean = false,
+  alwaysShowSign: boolean = false,
+  showAllDigits: boolean = false
 ): string {
   const { magnitude, code } = unit;
   const floatValue = value / 10 ** magnitude;
@@ -61,9 +61,9 @@ export function formatCurrencyUnit(
   );
 
   const format =
+    (alwaysShowSign && floatValue > 0 ? "+" + nonBreakableSpace : "") +
     (showCode ? code : "") +
     nonBreakableSpace +
-    (alwaysShowSign && floatValue > 0 ? "+" : "") +
     floatValue.toLocaleString("en-EN", {
       maximumFractionDigits,
       minimumFractionDigits
