@@ -18,6 +18,7 @@ type Response = {
   membersCount: number
 };
 
+// fetch all data needed for the Dashboard Total Balance card
 export default class DashboardTotalBalanceQuery extends Query<Input, Response> {
   uri = "/dashboard/total-balance";
 }
