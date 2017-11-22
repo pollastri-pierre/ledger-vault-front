@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import ModalLoading from "../../components/ModalLoading";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";

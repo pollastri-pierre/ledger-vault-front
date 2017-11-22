@@ -11,5 +11,4 @@ type Response = Account;
 export default class AccountQuery extends Query<Input, Response> {
   uri = `/accounts/${this.props.accountId}`;
   responseSchema = schema.Account;
-  cacheMaxAge = 10;
 }

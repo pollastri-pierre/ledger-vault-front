@@ -298,7 +298,7 @@ class SettingsModal extends Component<{
             </Switch>
           ) : null}
           <footer>
-            <DialogButton highlight right onTouchTap={close}>
+            <DialogButton highlight right onTouchTap={() => close(true)}>
               Done
             </DialogButton>
           </footer>
