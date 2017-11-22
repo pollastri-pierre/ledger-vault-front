@@ -39,11 +39,12 @@ export function countervalueForRate(rate: Rate, value: number): UnitValue {
   };
 }
 
+// TODO move in new formatters/ directory
 const nonBreakableSpace = " ";
-
 export function formatCurrencyUnit(
   unit: Unit,
   value: number,
+  // TODO probably should have an option object, so it's more readable than writing (unit,value,false,true,false)
   showCode: boolean = false,
   alwaysShowSign: boolean = false,
   showAllDigits: boolean = false
