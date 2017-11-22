@@ -17,12 +17,8 @@ import {
   switchInternalModal,
   addMember,
   setApprovals,
-  enableTimeLock,
-  enableRatelimiter,
-  openPopBubble,
-  changeTimeLock,
-  changeRatelimiter,
-  changeFrequency,
+  setTimelock,
+  setRatelimiter,
   clearState
 } from "../../../redux/modules/account-creation";
 
@@ -35,12 +31,10 @@ type Props = {
   onChangeAccountName: Function,
   onAddMember: Function,
   onSetApprovals: Function,
-  onEnableTimeLock: Function,
+  onSetTimelock: Function,
+  onSetRatelimiter: Function,
   onEnableRatelimiter: Function,
-  onChangeTimeLock: Function,
   onChangeRatelimiter: Function,
-  onOpenPopBubble: Function,
-  onChangeFrequency: Function,
   close: Function,
   onClearState: Function,
   accountCreation: *,
@@ -64,12 +58,10 @@ class AccountCreation extends Component<Props> {
       onSwitchInternalModal,
       onAddMember,
       onSetApprovals,
-      onEnableTimeLock,
+      onSetTimelock,
+      onSetRatelimiter,
       onEnableRatelimiter,
-      onOpenPopBubble,
-      onChangeTimeLock,
-      onChangeRatelimiter,
-      onChangeFrequency
+      onChangeRatelimiter
     } = this.props;
 
     const account = this.props.accountCreation;
@@ -78,7 +70,7 @@ class AccountCreation extends Component<Props> {
         <BlurDialog
           open={account.internModalId === "members"}
           nopadding
-          onRequestClose={this.close}
+          onRequestClose={() => onSwitchInternalModal("main")}
         >
           <div id="account-creation" className="modal">
             <AccountCreationMembers
@@ -88,11 +80,7 @@ class AccountCreation extends Component<Props> {
             />
           </div>
         </BlurDialog>
-        <BlurDialog
-          open={account.internModalId === "approvals"}
-          nopadding
-          onRequestClose={this.close}
-        >
+        <BlurDialog open={account.internModalId === "approvals"} nopadding>
           <div className="modal">
             <AccountCreationApprovals
               setApprovals={onSetApprovals}
@@ -102,39 +90,21 @@ class AccountCreation extends Component<Props> {
             />
           </div>
         </BlurDialog>
-        <BlurDialog
-          open={account.internModalId === "time-lock"}
-          nopadding
-          onRequestClose={this.close}
-        >
+        <BlurDialog open={account.internModalId === "time-lock"} nopadding>
           <div className="modal">
             <AccountCreationTimeLock
               switchInternalModal={onSwitchInternalModal}
               timelock={account.time_lock}
-              enable={onEnableTimeLock}
-              change={onChangeTimeLock}
-              popbubble={account.popBubble}
-              anchor={account.popAnchor}
-              openPopBubble={onOpenPopBubble}
-              changeFrequency={onChangeFrequency}
+              setTimelock={onSetTimelock}
             />
           </div>
         </BlurDialog>
-        <BlurDialog
-          open={account.internModalId === "rate-limiter"}
-          nopadding
-          onRequestClose={this.close}
-        >
+        <BlurDialog open={account.internModalId === "rate-limiter"} nopadding>
           <div className="modal">
             <AccountCreationRateLimiter
               switchInternalModal={onSwitchInternalModal}
               rate_limiter={account.rate_limiter}
-              enable={onEnableRatelimiter}
-              change={onChangeRatelimiter}
-              popbubble={account.popBubble}
-              anchor={account.popAnchor}
-              openPopBubble={onOpenPopBubble}
-              changeFrequency={onChangeFrequency}
+              setRatelimiter={onSetRatelimiter}
             />
           </div>
         </BlurDialog>
@@ -168,12 +138,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onAddMember: m => dispatch(addMember(m)),
   onSetApprovals: n => dispatch(setApprovals(n)),
-  onEnableTimeLock: () => dispatch(enableTimeLock()),
-  onChangeTimeLock: v => dispatch(changeTimeLock(v)),
-  onEnableRatelimiter: () => dispatch(enableRatelimiter()),
-  onChangeRatelimiter: v => dispatch(changeRatelimiter(v)),
-  onOpenPopBubble: anchor => dispatch(openPopBubble(anchor)),
-  onChangeFrequency: (field, freq) => dispatch(changeFrequency(field, freq)),
+  onSetTimelock: timelock => dispatch(setTimelock(timelock)),
+  onSetRatelimiter: ratelimiter => dispatch(setRatelimiter(ratelimiter)),
   onChangeTabAccount: index => dispatch(changeTab(index)),
   onSelectCurrency: c => dispatch(selectCurrency(c)),
   onChangeAccountName: n => dispatch(changeAccountName(n)),
