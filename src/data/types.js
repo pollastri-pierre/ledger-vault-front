@@ -60,14 +60,13 @@ type AccountCommon = {
   balance_history: { [_: string]: number },
   approved: string[]
 };
-export type Account = {
-  ...AccountCommon,
+export type Account = AccountCommon & {
   currency: Currency
 };
 
-export type AccountEntity = {
+export type AccountEntity = AccountCommon & {
   currency: string
-} & AccountCommon;
+};
 
 type MemberCommon = {
   id: string,
@@ -164,7 +163,7 @@ type OperationCommon = {
 export type Operation = OperationCommon & {
   notes: Note[]
 };
-export type OperationEntity = {
+export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
 };
 

@@ -20,7 +20,7 @@ const Row = ({
   children
 }: {
   date: string,
-  children: React$Element<*>
+  children: React$Node | string
 }) => (
   <div className="pending-list-row">
     <div className="date">
@@ -31,21 +31,21 @@ const Row = ({
 );
 
 const OperationRow = ({
-  data,
+  operation,
   account
 }: {
-  data: Operation,
+  operation: Operation,
   account: ?Account
 }) =>
   account ? (
-    <Row date={data.time}>
-      <CurrencyAccountValue account={account} value={data.amount} />
+    <Row date={operation.time}>
+      <CurrencyAccountValue account={account} value={operation.amount} />
     </Row>
   ) : null;
 
-const AccountRow = ({ data }: { data: Account }) => (
-  <Row date={data.creation_time}>
-    <AccountName name={data.name} currency={data.currency} />
+const AccountRow = ({ account }: { account: Account }) => (
+  <Row date={account.creation_time}>
+    <AccountName name={account.name} currency={account.currency} />
   </Row>
 );
 
@@ -83,13 +83,13 @@ class PendingCard extends Component<{
             .map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
-                data={operation}
+                operation={operation}
                 account={accounts.find(a => a.id === operation.account_id)}
               />
             ))
             .concat(
               approveAccounts.map((account, i) => (
-                <AccountRow key={"ac_" + i} data={account} />
+                <AccountRow key={"ac_" + i} account={account} />
               ))
             )}
         </div>
