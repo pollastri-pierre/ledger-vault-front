@@ -129,7 +129,11 @@ export default class QuicklookGraph extends Component<Props, *> {
         : timeDelta >= monthInMs * 2
           ? "month"
           : timeDelta >= dayInMs ? "day" : "hour";
-    d3.select(".xAxisLabel").text(tickLabel.toUpperCase());
+    d3
+      .select(".xAxisLabel")
+      .text(tickLabel.toUpperCase())
+      .attr("fill", "#767676")
+      .attr("style", "font-weight: 600; font-family: 'Open Sans'");
   };
 
   drawAxis = (xAxis: *, yAxis: *) => {
@@ -151,7 +155,8 @@ export default class QuicklookGraph extends Component<Props, *> {
     s.selectAll(".tick line").attr("display", "none");
     s
       .selectAll(".tick text")
-      .attr("fill", "#999999")
+      .attr("fill", "#767676")
+      .attr("style", "font-weight: 600; font-family: 'Open Sans'")
       .attr("x", 0);
   };
 
@@ -167,7 +172,8 @@ export default class QuicklookGraph extends Component<Props, *> {
       .selectAll(".tick text")
       .attr("x", 0)
       .attr("dy", -8)
-      .attr("fill", "#999999");
+      .attr("fill", "#767676")
+      .attr("style", "font-weight: 600; font-family: 'Open Sans'");
 
     s
       .selectAll(".tick:first-of-type line")

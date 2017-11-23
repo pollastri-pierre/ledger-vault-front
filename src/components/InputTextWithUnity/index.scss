@@ -16,7 +16,7 @@
   & > label {
     position: absolute;
     font-size: 13px;
-    top: 0;
+    top: 11px;
     left: 0;
   }
 
@@ -35,6 +35,7 @@
     font-size: 13px;
     border-bottom: 1px solid $silver;
     margin-bottom: 15px;
+    font-family: "Open Sans";
   }
 
   .unity-right {
@@ -46,6 +47,7 @@
     border-bottom: 1px solid $silver;
     height: 40px;
     cursor: pointer;
+    outline: none;
     line-height: 40px;
 
     strong {
@@ -54,6 +56,10 @@
     }
 
     &.dropdown {
+      outline: none;
+    }
+
+    span {
       outline: none;
     }
   }

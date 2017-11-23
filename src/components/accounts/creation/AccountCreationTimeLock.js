@@ -86,7 +86,8 @@ class AccountCreationTimeLock extends Component<Props, State> {
       timelock: {
         ...this.state.timelock,
         frequency: val
-      }
+      },
+      popover: false
     });
   };
 

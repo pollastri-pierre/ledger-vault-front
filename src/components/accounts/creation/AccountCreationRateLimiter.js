@@ -87,7 +87,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
       rate_limiter: {
         ...this.state.rate_limiter,
         frequency: val
-      }
+      },
+      popover: false
     });
   };
 
@@ -131,7 +132,6 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 onRequestClose={this.openFrequency}
                 anchorEl={this.state.anchor}
                 style={{
-                  marginLeft: "34px",
                   marginTop: "11px"
                 }}
               >
