@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import InfoModal from "../../InfoModal";
@@ -96,8 +95,6 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     this.props.switchInternalModal("main");
   };
   render() {
-    const { switchInternalModal, onAddMessage, setRatelimiter } = this.props;
-
     const { rate_limiter, popover } = this.state;
     return (
       <div className="small-modal">

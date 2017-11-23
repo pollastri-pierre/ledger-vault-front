@@ -9,6 +9,10 @@
     height: 615px;
   }
 
+  .content {
+    padding-top: 26px;
+  }
+
   .account-creation-options {
     position: relative;
     label {
@@ -124,7 +128,7 @@
           width: 23px;
           height: 23px;
           vertical-align: middle;
-          margin-right: 20px;
+          margin-right: 15px;
 
           background-image: url("/img/icon-currencies.png");
           background-repeat: no-repeat;

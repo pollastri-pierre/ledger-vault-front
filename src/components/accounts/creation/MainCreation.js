@@ -89,10 +89,12 @@ class MainCreation extends Component<Props> {
           </header>
           <div className="content">
             <TabPanel className="tabs_panel">
-              <AccountCreationCurrencies
-                currency={account.currency}
-                onSelect={selectCurrency}
-              />
+              <Overscroll top={132} bottom={51}>
+                <AccountCreationCurrencies
+                  currency={account.currency}
+                  onSelect={selectCurrency}
+                />
+              </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
               <AccountCreationOptions

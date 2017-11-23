@@ -1,15 +1,13 @@
 //@flow
 import React from "react";
 import ApprovalUser from "../ApprovalUser";
-import ApprovalPercentage from "../ApprovalPercentage";
 import type { Member } from "../../data/types";
 
 function ApprovalList(props: {
   approvers: Array<Member>,
-  approved: Array<string>,
-  nbRequired?: number
+  approved: Array<string>
 }) {
-  const { approved, approvers, nbRequired } = props;
+  const { approved, approvers } = props;
   return (
     <div>
       {approvers.map(member => {

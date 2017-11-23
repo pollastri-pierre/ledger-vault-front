@@ -79,7 +79,8 @@ class ProfileCard extends Component<
           onRequestClose={this.onCloseBubble}
           style={{
             boxShadow:
-              "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)"
+              "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+            marginTop: "30px"
           }}
         >
           <div className="profile-bubble" onClick={this.onCloseBubble}>

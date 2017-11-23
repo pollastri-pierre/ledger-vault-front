@@ -33,8 +33,6 @@ type Props = {
   onSetApprovals: Function,
   onSetTimelock: Function,
   onSetRatelimiter: Function,
-  onEnableRatelimiter: Function,
-  onChangeRatelimiter: Function,
   close: Function,
   onClearState: Function,
   accountCreation: *,
@@ -59,9 +57,7 @@ class AccountCreation extends Component<Props> {
       onAddMember,
       onSetApprovals,
       onSetTimelock,
-      onSetRatelimiter,
-      onEnableRatelimiter,
-      onChangeRatelimiter
+      onSetRatelimiter
     } = this.props;
 
     const account = this.props.accountCreation;
