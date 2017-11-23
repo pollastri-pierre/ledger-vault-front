@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../../restlay/connectData";
+import ModalLoading from "../../../components/ModalLoading";
 import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import type { Currency } from "../../../data/types";
 
@@ -25,11 +26,9 @@ class AccountCreationCurrencies extends Component<{
               .split(" ")
               .join("-")
               .toLowerCase()}
-            ${
-              currency && currency.units[0].name === cur.units[0].name
-                ? "selected"
-                : ""
-            }`}
+            ${currency && currency.units[0].name === cur.units[0].name
+              ? "selected"
+              : ""}`}
           >
             <span className="currency-name">{cur.units[0].name}</span>
             <span className="currency-short">{cur.units[0].symbol}</span>
@@ -43,5 +42,6 @@ class AccountCreationCurrencies extends Component<{
 export default connectData(AccountCreationCurrencies, {
   queries: {
     currencies: CurrenciesQuery
-  }
+  },
+  RenderLoading: ModalLoading
 });

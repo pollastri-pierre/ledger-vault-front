@@ -12,17 +12,18 @@ function Checkbox(props: Props) {
   const { labelFor, checked, handleInputChange } = props;
 
   return (
-    <div className="slidebox">
-      <input
-        type="checkbox"
-        id={labelFor}
-        checked={checked}
-        onChange={
-          handleInputChange
-            ? (e: *) => handleInputChange(e.target.checked)
-            : null
-        }
-      />
+    <div
+      className="slidebox"
+      onClick={
+        handleInputChange
+          ? (e: *) => {
+              e.preventDefault();
+              handleInputChange(e.target.checked);
+            }
+          : null
+      }
+    >
+      <input type="checkbox" id={labelFor} checked={checked} />
       <label htmlFor={labelFor} />
       <span />
     </div>
