@@ -7,9 +7,47 @@ import type {
   MemberEntity,
   OperationEntity,
   SecurityScheme,
-  Transaction
+  Transaction,
+  BalanceEntity,
+  DataPoint
 } from "./types";
 import moment from "moment";
+
+const getRandomInt = (min: number, max: number): number => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
+const randomDate = (start: Date, end: Date): Date => {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+};
+
+const genBalance = (): BalanceEntity => {
+  const nb_operations: number = getRandomInt(2, 500);
+  let previous_balance: number = 0;
+  let previous_date: Date = randomDate(new Date(4, 1), new Date(16, 1));
+  const balance: DataPoint = [...Array(nb_operations)].map((elem, i) => {
+    console.log("hey");
+    if (i === 0) {
+      previous_date = randomDate(previous_date, new Date());
+      previous_balance = 0;
+    } else if (i === nb_operations - 1) {
+      previous_balance = getRandomInt(0, (previous_balance * 2);
+      previous_date = new Date();
+    } else {
+      previous_balance = getRandomInt(0, (previous_balance * 2));
+      previous_date = randomDate(previous_date, new Date());
+    }
+    return {
+      value: previous_balance,
+      date: previous_date
+    };
+  });
+  return { balance: balance, counterValueBalance: balance };
+};
 
 const mockCurrencies: CurrencyEntity[] = [
   {
@@ -672,10 +710,13 @@ const operations: { [_: string]: OperationEntity } = {
   })
 };
 
+const balance = genBalance();
+
 export default {
   groups,
   members,
   operations,
   accounts,
-  currencies
+  currencies,
+  balance
 };

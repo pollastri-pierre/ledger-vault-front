@@ -170,6 +170,8 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           [schema.Operation],
           mockEntities
         );
+      case "/balance":
+        return mockEntities.balance;
       case "/settings-data":
         return {
           blockchainExplorers: [

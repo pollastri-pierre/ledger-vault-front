@@ -1,7 +1,12 @@
 //@flow
 import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import type { Account, Operation, lineChartPoint } from "../../data/types";
+import type {
+  Account,
+  Operation,
+  lineChartPoint,
+  BalanceEntity
+} from "../../data/types";
 import { getUnitFromRate, getAccountCurrencyUnit } from "../../data/currency";
 import { Select, Option } from "../../components/Select";
 import DateFormat from "../../components/DateFormat";
@@ -10,6 +15,7 @@ import { formatCurrencyUnit } from "../../data/currency";
 import _ from "lodash";
 import Card from "../../components/Card";
 import AccountQuery from "../../api/queries/AccountQuery";
+import BalanceQuery from "../../api/queries/BalanceQuery";
 import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
@@ -19,7 +25,8 @@ type Props = {
   accountId: string,
   account: Account,
   operations: Array<Operation>,
-  reloading: boolean
+  reloading: boolean,
+  balance: BalanceEntity
 };
 
 type State = {
@@ -195,11 +202,11 @@ export class QuicklookCard extends Component<Props, State> {
   };
 
   render() {
-    const { operations, account, reloading } = this.props;
+    const { operations, account, reloading, balance } = this.props;
     const data = this.getOperations(operations);
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
-
+    console.log(balance);
     // FIXME PROBABLY NEEDS TO BE FIXED
     if (quicklookFilter === "countervalue") {
       currencyUnit = getUnitFromRate(operations[0].rate);
@@ -276,7 +283,8 @@ const RenderLoading = () => (
 export default connectData(QuicklookCard, {
   queries: {
     account: AccountQuery,
-    operations: AccountOperationsQuery
+    operations: AccountOperationsQuery,
+    balance: BalanceQuery
   },
   propsToQueryParams: props => ({ accountId: props.accountId }),
   optimisticRendering: true,

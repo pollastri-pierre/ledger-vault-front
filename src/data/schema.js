@@ -35,10 +35,13 @@ const Operation = new schema.Entity(
   }
 );
 
+const Balance = new schema.Entity("balance");
+
 export default {
   Group,
   Member,
   Currency,
   Account,
-  Operation
+  Operation,
+  Balance
 };

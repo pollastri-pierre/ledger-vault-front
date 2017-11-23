@@ -186,3 +186,13 @@ export type pieChartData = {
   balance: number,
   counterValueBalance: number
 };
+
+type DataPoint = {
+  value: number,
+  date: Date
+};
+
+export type BalanceEntity = {
+  balance: DataPoint[],
+  counterValueBalance: DataPoint[]
+};
