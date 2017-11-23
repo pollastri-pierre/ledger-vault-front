@@ -3,6 +3,8 @@ import { normalize } from "normalizr";
 import network from "../network"; // TODO this is an external dep. we need a way to inject the "network layer" (relay have a NetworkLayer concept, very interesting stuff)
 import Mutation from "./Mutation";
 import Query from "./Query";
+import { merge, without } from "./ImmutableUtils";
+import isEqual from "lodash/isEqual";
 
 export type Entities = {
   [_: string]: { [_: string]: Object }
@@ -41,21 +43,24 @@ export const queryIsPending = (store: Store, query: Query<*, *>): boolean =>
 const initialState: Store = {
   entities: {},
   results: {},
+
+  // TODO : remove dispatch DATA_FETCH (the pending event). instead we will maintain a global promise cache and also
+  // the pending state needs to be per connectData instance and not anymore in the sture because we don't want to display a pending
+  // if the component is not the creator of the "reload"
+  // similarily probably the errors needs to be kept at the connectData component level so a new request won't affect a neighbor listening to the same query
+
   pending: {},
   errors: {}
 };
 
-function without(obj: { [_: string]: any }, key: string) {
-  const o = { ...obj };
-  delete o[key];
-  return o;
-}
-
+// NB we do not preserve the entities object immutable, but only for the object entity itself
 function mergeEntities(prev: Entities, patch: Entities): Entities {
-  const all = { ...patch, ...prev };
+  const all = { ...patch, ...prev }; // potentially there are new collections
   const entities = {};
   for (let type in all) {
-    entities[type] = { ...all[type], ...patch[type] };
+    const patchColl = patch[type];
+    const oldColl = all[type];
+    entities[type] = merge(oldColl, patchColl, isEqual);
   }
   return entities;
 }
@@ -101,6 +106,7 @@ export const executeQueryOrMutation = (
       });
       throw error;
     });
+
   dispatch({
     type: "DATA_FETCH",
     queryOrMutation,

@@ -571,7 +571,6 @@ const operations: { [_: string]: OperationEntity } = {
   "5": genOperation({
     uuid: "5",
     amount: -130000000,
-    account_id: "4",
     type: "FROM",
     approved: ["0", "1"],
     approvedTime: moment()
@@ -671,6 +670,22 @@ const operations: { [_: string]: OperationEntity } = {
     currency_family: "Dash"
   })
 };
+
+for (let i = 0; i < 500; i += 10) {
+  const uuid = "mock_ltc_" + i;
+  const t = 1500000000000 + i * 23000000;
+  operations[uuid] = genOperation({
+    uuid,
+    time: new Date(t),
+    account_id: "4",
+    amount:
+      9999999 *
+      (0.4 + Math.cos((t - 1500000000000 + Math.sin(t)) / 100)) *
+      Math.exp((t - 1500000000000) / 1000000000),
+    currency_name: "litecoin",
+    currency_family: "Litecoin"
+  });
+}
 
 export default {
   groups,

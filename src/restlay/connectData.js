@@ -274,6 +274,8 @@ export default function connectData<
         //queriedData = this.lastCompleteQueriedData;
       } else if (!havePendings || optimisticRendering) {
         // all results are available, we will make the api props data object
+
+        // TODO "bake" that object at the componentWillReceiveProps level AND only if it receives a new store / and probably need to deeply compare the object for now to keep using the same reference
         const data: APIProps = {};
         results.forEach(({ query, result, key }) => {
           data[key] = query.getResponse(result, dataStore);
