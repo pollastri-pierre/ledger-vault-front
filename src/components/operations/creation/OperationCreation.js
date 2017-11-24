@@ -6,6 +6,7 @@ import CircularProgress from "material-ui/CircularProgress";
 import { DialogButton, Overscroll } from "../../";
 import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
+import OperationCreationLabel from "./OperationCreationLabel";
 
 class OperationCreation extends Component {
   render() {
@@ -25,7 +26,7 @@ class OperationCreation extends Component {
       false, // tab 0
       selectedAccount === null, // tab 1
       !details.amount || !details.address || !details.fees, // tab 2
-      true // tab 3
+      !details.amount || !details.address || !details.fees // tab 3
     ];
 
     return (
@@ -68,7 +69,9 @@ class OperationCreation extends Component {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Label</Overscroll>
+              <Overscroll>
+                <OperationCreationLabel />
+              </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
               <Overscroll>Confirmation</Overscroll>
