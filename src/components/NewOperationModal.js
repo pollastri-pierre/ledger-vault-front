@@ -5,6 +5,12 @@ import connectData from "../restlay/connectData";
 import AccountsQuery from "../api/queries/AccountsQuery";
 import type { Account } from "../data/types";
 
+export type Details = {
+  amount: ?number,
+  fees: ?number,
+  address: ?string
+};
+
 class NewOperationModal extends Component<
   {
     accounts: Array<Account>,
@@ -12,12 +18,18 @@ class NewOperationModal extends Component<
   },
   {
     tabsIndex: number,
-    selectedAccount: ?Account
+    selectedAccount: ?Account,
+    details: Details
   }
 > {
   state = {
     tabsIndex: 0,
-    selectedAccount: null
+    selectedAccount: null,
+    details: {
+      amount: null,
+      fees: null,
+      address: null
+    }
   };
 
   onSaveOperation = () => {
@@ -37,6 +49,12 @@ class NewOperationModal extends Component<
     });
   };
 
+  saveDetails = (details: Details) => {
+    console.log(details);
+    
+    this.setState({ details });
+  };
+
   render() {
     const { accounts, close } = this.props;
     return (
@@ -44,16 +62,10 @@ class NewOperationModal extends Component<
         close={close}
         onSelect={this.onSelect}
         save={this.onSaveOperation}
-        tabsIndex={this.state.tabsIndex}
-        accounts={{
-          isLoadingAccounts: false,
-          accounts
-        }}
+        accounts={accounts}
         selectAccount={this.selectAccount}
-        selectedAccount={this.state.selectedAccount}
-        getAccounts={() => {
-          console.warn("getAccounts is no longer needed");
-        }}
+        saveDetails={this.saveDetails}
+        {...this.state}
       />
     );
   }

@@ -8,8 +8,9 @@ import connectData from "../../../restlay/connectData";
 import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
-import type { Currency, Unit } from "../../../data/types";
 import CurrencyNameValue from "../../CurrencyNameValue";
+import type { Currency, Unit } from "../../../data/types";
+import type { Details } from "../../NewOperationModal";
 
 import "./OperationCreationDetails.css";
 
@@ -18,6 +19,8 @@ type Props = {
     currency: Currency,
     balance: number
   },
+  saveDetails: Function,
+  details: Details,
 
   // from connectData
   currencies: Array<Currency>
@@ -29,6 +32,7 @@ type State = {
   maxMenuOpen: boolean,
   amount: string,
   amountIsValid: boolean,
+  satoshis: integer,
   address: string,
   addressIsValid: boolean,
   feesMenuOpen: boolean,
@@ -46,8 +50,6 @@ class OperationCreationDetails extends Component<Props, State> {
     super(props);
 
     const { account, currencies } = this.props;
-
-    console.log(account);
 
     this.currency = currencies.find(c => c.name === account.currency.name);
 
@@ -74,6 +76,7 @@ class OperationCreationDetails extends Component<Props, State> {
       maxMenuOpen: false,
       amount: "",
       amountIsValid: true,
+      satoshis: 0,
       address: "",
       addressIsValid: true,
       feesMenuOpen: false,
@@ -81,6 +84,23 @@ class OperationCreationDetails extends Component<Props, State> {
       feesAmount: this.fees.medium.amount
     };
   }
+
+  // componentWillMount() {
+  //   const { details } = this.props;
+  //
+  //   if (details.amount || details.fees) {
+  //     const amount: string =
+  //       typeof details.amount === "number" ? `${details.amount}` : "";
+  //     const fees: ?number =
+  //       typeof details.fees === "number" ? details.fees : undefined;
+  //
+  //     this.setAmount(amount, undefined, fees);
+  //   }
+  //
+  //   if (typeof details.address === "string") {
+  //     this.setState({ address: details.address });
+  //   }
+  // }
 
   currency: ?Currency;
   unitMenuAnchor: ?HTMLDivElement;
@@ -98,15 +118,19 @@ class OperationCreationDetails extends Component<Props, State> {
     magnitude: number = this.state.unit.magnitude,
     fees: number = this.state.feesAmount
   ) => {
-    const value = parseFloat(amount) || 0;
-    const balance = this.props.account.balance;
-    const max = (balance - fees) / 10 ** magnitude;
-    const decimals = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
+    const satoshis: number = Math.round((parseFloat(amount) || 0) * 10 ** magnitude);
+    const balance: number = this.props.account.balance;
+    const max: number = balance - fees;
+    const decimals:string = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
 
-    this.setState({
-      amount,
-      amountIsValid: value <= max && decimals.length <= magnitude
-    });
+    this.setState(
+      {
+        amount,
+        amountIsValid: satoshis <= max && decimals.length <= magnitude,
+        satoshis: satoshis
+      },
+      this.validateTab
+    );
   };
 
   selectUnit = (e: SyntheticEvent<HTMLDivElement>) => {
@@ -151,10 +175,13 @@ class OperationCreationDetails extends Component<Props, State> {
     const addressIsValid: boolean =
       address === "" || bitcoinAddress.validate(address);
 
-    this.setState({
-      address,
-      addressIsValid
-    });
+    this.setState(
+      {
+        address,
+        addressIsValid
+      },
+      this.validateTab
+    );
   };
 
   selectFee = (e: SyntheticEvent<HTMLDivElement>) => {
@@ -193,6 +220,19 @@ class OperationCreationDetails extends Component<Props, State> {
     }
 
     return list;
+  };
+
+  validateTab = () => {
+    const details: Details = {
+      amount: this.state.satoshis > 0 && this.state.amountIsValid ? this.state.satoshis : null,
+      address:
+        this.state.address !== "" && this.state.addressIsValid
+          ? this.state.address
+          : null,
+      fees: this.state.feesAmount
+    };
+
+    this.props.saveDetails(details);
   };
 
   render() {

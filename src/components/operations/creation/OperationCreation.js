@@ -8,14 +8,6 @@ import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 
 class OperationCreation extends Component {
-  componentWillMount() {
-    const { accounts, getAccounts } = this.props;
-
-    if (!accounts.accounts && !accounts.isLoadingAccounts) {
-      getAccounts();
-    }
-  }
-
   render() {
     const {
       close,
@@ -25,12 +17,14 @@ class OperationCreation extends Component {
       accounts,
       selectedAccount,
       selectAccount,
+      details,
+      saveDetails
     } = this.props;
 
     const disabledTabs = [
       false, // tab 0
       selectedAccount === null, // tab 1
-      true, // tab 2
+      !details.amount || !details.address || !details.fees, // tab 2
       true // tab 3
     ];
 
@@ -53,10 +47,9 @@ class OperationCreation extends Component {
           <div className="content">
             <TabPanel className="tabs_panel">
               <Overscroll>
-                {accounts.isLoadingAccounts ? <CircularProgress /> : false}
-                {accounts.accounts && accounts.accounts.length > 0 ? (
+                {accounts && accounts.length > 0 ? (
                   <OperationCreationAccounts
-                    accounts={accounts.accounts}
+                    accounts={accounts}
                     onSelect={selectAccount}
                     selectedAccount={selectedAccount}
                   />
@@ -67,7 +60,11 @@ class OperationCreation extends Component {
             </TabPanel>
             <TabPanel className="tabs_panel">
               <Overscroll>
-                <OperationCreationDetails account={selectedAccount} />
+                <OperationCreationDetails
+                  account={selectedAccount}
+                  details={details}
+                  saveDetails={saveDetails}
+                />
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
