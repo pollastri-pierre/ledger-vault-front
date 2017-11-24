@@ -671,12 +671,12 @@ const operations: { [_: string]: OperationEntity } = {
   })
 };
 
-for (let i = 0; i < 500; i += 10) {
+for (let i = 0; i < 500; i += 1) {
   const uuid = "mock_ltc_" + i;
   const t = 1500000000000 + i * 23000000;
   operations[uuid] = genOperation({
     uuid,
-    time: new Date(t),
+    time: new Date(t).toISOString(),
     account_id: "4",
     amount:
       9999999 *
