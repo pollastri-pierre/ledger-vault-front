@@ -1,6 +1,8 @@
 //@flow
 let fetchF;
-if (process.env.NODE_ENV !== "development") {
+
+// path for video demo
+if (false && process.env.NODE_ENV !== "development") {
   fetchF = fetch;
 } else {
   const mockAPI = require("../data/mock-api").default;
