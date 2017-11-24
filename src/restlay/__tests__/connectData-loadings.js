@@ -8,10 +8,10 @@ import {
   flushPromises,
   NullComponent
 } from "../tests-utils";
-import { syncNetwork, AnimalsQuery } from "../tests-utils/mock-1";
+import { mockNetworkSync, AnimalsQuery } from "../tests-utils/mock-1";
 
 test("RenderLoading gets rendered before network success", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const Animals = connectData(NullComponent, {
     RenderLoading: () => "LOADING...",

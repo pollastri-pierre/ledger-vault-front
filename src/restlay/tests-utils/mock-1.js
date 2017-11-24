@@ -1,8 +1,10 @@
 //@flow
-import type { NetworkF } from "../dataStore";
 import Query from "../Query";
 import Mutation from "../Mutation";
 import { schema } from "normalizr";
+
+// TODO add a more complex schema (2-3 models, interconnected)
+// TODO some queries are cached, etc.. need to cover all possible features here
 
 type Animal = {
   id: string,
@@ -45,7 +47,11 @@ const animals: Animal[] = [
   }
 ];
 
-export const syncNetwork = (uri: string, method: string, body: any): any => {
+export const mockNetworkSync = (
+  uri: string,
+  method: string,
+  body: any
+): any => {
   let m;
   if (method === "GET" && uri === "/animals") {
     return animals;

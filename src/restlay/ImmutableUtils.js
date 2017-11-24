@@ -20,10 +20,3 @@ export function merge(
   }
   return !copy ? old : copy;
 }
-
-export function without(obj: { [_: string]: any }, key: string) {
-  if (!(key in obj)) return obj;
-  const o = { ...obj };
-  delete o[key];
-  return o;
-}

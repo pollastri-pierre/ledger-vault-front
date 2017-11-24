@@ -8,8 +8,9 @@ inspirations from this GraphQL library.
 ## Roadmap
 
 * DOCUMENTATION!
-* TESTS! we need heavy tests so we can test different scenario, and if
-  everything works as expected.
-* reloading / optimisticRendering (from cache) => this needs to be more thought,
-  tested and polished.
 * pagination.
+
+### future
+
+* optimistic updates? aka local update implementation of mutations. complex
+  topic.

@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import renderer from "react-test-renderer";
 import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
-import { syncNetwork, AnimalsQuery, AnimalQuery } from "../tests-utils/mock-1";
+import { mockNetworkSync, AnimalsQuery, AnimalQuery } from "../tests-utils/mock-1";
 
 test("the mock-1 and utility functions works", () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const inst = renderer.create(render(<div />));
   expect(inst.toJSON()).toMatchSnapshot();
@@ -16,7 +16,7 @@ test("the mock-1 and utility functions works", () => {
 });
 
 test("a simple query works", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   class AnimalsR extends Component<*> {
     render() {
@@ -47,7 +47,7 @@ test("a simple query works", async () => {
 });
 
 test("query with props works", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   class AnimalR extends Component<*> {
     render() {

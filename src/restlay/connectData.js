@@ -208,11 +208,11 @@ export default function connectData<
 
     syncProps(
       props: ClazzProps<Props>,
+      statePatch: $Shape<State> = {},
       forceFetchMode: boolean = false
     ): Promise<*> {
       // FIXME can we simplify the code?
-
-      let { pending, data } = this.state;
+      const state = { ...this.state, ...statePatch };
       const { queriesInstances } = this;
       const { dataStore } = props;
       let p: ?Promise<*>;
@@ -226,14 +226,15 @@ export default function connectData<
         const syncId = ++this.syncAPI_id;
         const promises = this.syncAPI(apiParams, forceFetchMode);
         if (promises.length > 0) {
-          pending = true;
-          if (!this.state.pending) this.setState({ apiError: null, pending });
+          state.pending = true;
+          state.apiError = null;
           p = Promise.all(promises).then(
             () => {
               if (this._unmounted || syncId !== this.syncAPI_id) return;
-              this.setState({ apiError: null, pending: false }, () => {
-                this.syncProps(this.props); // we need to sync again to make sure data is in sync
-              });
+              // we need to sync again to make sure data is in sync.
+              // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
+              // NB we patch with a subset of state because local state variable might be outdated
+              this.syncProps(this.props, { apiError: null, pending: false });
             },
             apiError => {
               if (this._unmounted || syncId !== this.syncAPI_id) return;
@@ -258,14 +259,14 @@ export default function connectData<
       }
 
       if (results.length === queriesKeys.length) {
-        if (!pending || optimisticRendering) {
+        if (!state.pending || optimisticRendering) {
           const newData: APIProps = {};
           let nbOfChanges = 0;
           results.forEach(({ query, result, key }) => {
             let item = query.getResponse(result, dataStore);
-            if (data && isEqual(item, data[key])) {
+            if (state.data && isEqual(item, state.data[key])) {
               // keep previous reference if deep equals
-              item = data[key];
+              item = state.data[key];
             } else {
               nbOfChanges++;
             }
@@ -273,15 +274,14 @@ export default function connectData<
           });
           if (nbOfChanges > 0) {
             // only set newData if it's actually new data^^
-            this.setState({
-              catchedError: null,
-              apiError: null,
-              data: newData
-            });
+            state.catchedError = null;
+            state.apiError = null;
+            state.data = newData;
           }
         }
       }
 
+      this.setState(state);
       return p || Promise.resolve();
     }
 
@@ -340,7 +340,7 @@ export default function connectData<
         }
         return this.execute(query);
       },
-      forceFetch: () => this.syncProps(this.props, true).then(() => {})
+      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {})
     };
 
     render() {

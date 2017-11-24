@@ -5,46 +5,42 @@ import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
 import { mockNetworkSync, AnimalQuery } from "../tests-utils/mock-1";
 
-test("freezeTransition=true should not render a pending step", async () => {
+test("multiple update with same props trigger no re-rendering", async () => {
   const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
-  let node;
-  let renderCount = 0;
-
-  function check() {
-    expect(node).toBeDefined();
-    if (!node) return;
-    const { animal, animalId, reloading } = node.props;
-    expect(reloading).toBe(false);
-    if (animal) expect(animal.id).toBe(animalId); // animalId always should be a.id
-  }
+  let update = 0;
 
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillMount() {
-        node = this;
+      componentWillUpdate() {
+        ++update;
       }
       render() {
-        renderCount++;
         return null;
       }
     },
     {
       queries: { animal: AnimalQuery },
-      propsToQueryParams: ({ animalId }) => ({ animalId }),
-      freezeTransition: true
+      propsToQueryParams: ({ animalId }) => ({ animalId })
     }
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
   await flushPromises();
-  check();
-  expect(renderCount).toBe(1);
-  inst.update(render(<Animal animalId="id_doge" />));
-  check();
+  expect(update).toBe(0);
+  inst.update(render(<Animal animalId="id_max" />));
   net.tick();
   await flushPromises();
-  check();
-  expect(renderCount).toBe(2);
+  inst.update(render(<Animal animalId="id_max" />));
+  net.tick();
+  await flushPromises();
+  inst.update(render(<Animal animalId="id_max" />));
+  net.tick();
+  await flushPromises();
+  expect(update).toBe(0);
   inst.unmount();
+});
+
+test("triggering new queries don't redraw if data doesn't change", async () => {
+  expect(this).toBe("implemented");
 });

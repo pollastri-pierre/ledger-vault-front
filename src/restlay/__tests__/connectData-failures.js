@@ -8,10 +8,10 @@ import {
   flushPromises,
   NullComponent
 } from "../tests-utils";
-import { syncNetwork, AnimalQuery } from "../tests-utils/mock-1";
+import { mockNetworkSync, AnimalQuery } from "../tests-utils/mock-1";
 
 test("RenderError gets rendered if network fails. it receives error that is the exact thrown error", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const AnimalNotFound = connectData(NullComponent, {
     RenderLoading: () => "LOADING...",
@@ -28,7 +28,7 @@ test("RenderError gets rendered if network fails. it receives error that is the 
 });
 
 test("RenderError gets rendered if an error is thrown in a child", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const expectedThrownError = new Error("expectedThrownError");
   // $FlowFixMe
@@ -53,7 +53,7 @@ test("RenderError gets rendered if an error is thrown in a child", async () => {
 });
 
 test("a network error can be recovered after an update", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const Animal = connectData(({ animal }) => animal.id, {
     RenderError: () => "oops",
@@ -72,7 +72,7 @@ test("a network error can be recovered after an update", async () => {
 });
 
 test("a thrown error can be recovered after an update", async () => {
-  const net = networkFromMock(syncNetwork);
+  const net = networkFromMock(mockNetworkSync);
   const render = createRender(net.network);
   const Animal = connectData(
     ({ animal }) => {

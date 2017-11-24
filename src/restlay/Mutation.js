@@ -45,6 +45,9 @@ export default class Mutation<Input, Response> {
     return denormalize(result, this.responseSchema, store.entities);
   }
 
+  // FIXME technically the 2 following methods has nothing to do in this generic library model.
+  // not sure how put it in project specific only
+
   // notification to trigger after data fetch
   getSuccessNotification(_response: Response): ?Notification {}
 
