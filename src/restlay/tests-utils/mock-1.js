@@ -16,6 +16,11 @@ export class AnimalsQuery extends Query<void, Animal[]> {
   responseSchema = [schemaAnimal];
 }
 
+export class AnimalQuery extends Query<{ animalId: string }, Animal> {
+  uri = "/animals/" + this.props.animalId;
+  responseSchema = schemaAnimal;
+}
+
 export class AddAnimalMutation extends Mutation<{ animal: Object }, Animal> {
   method = "POST";
   uri = "/animals";
@@ -29,20 +34,26 @@ const genId = ((id: number) => () => "id_" + ++id)(0);
 
 const animals: Animal[] = [
   {
-    id: genId(),
+    id: "id_max",
     name: "max",
     age: 14
   },
   {
-    id: genId(),
+    id: "id_doge",
     name: "doge",
     age: 5
   }
 ];
 
 export const syncNetwork = (uri: string, method: string, body: any): any => {
+  let m;
   if (method === "GET" && uri === "/animals") {
     return animals;
+  }
+  if (method === "GET" && (m = uri.match(/^\/animals\/([^/]+)$/))) {
+    const animal = animals.find(a => m && a.id === m[1]);
+    if (!animal) throw "notfound";
+    return animal;
   }
   if (method === "POST" && uri === "/animals") {
     const animal = { id: genId(), ...body };

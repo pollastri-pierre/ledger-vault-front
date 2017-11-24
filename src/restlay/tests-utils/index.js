@@ -1,11 +1,17 @@
 //@flow
-import React from "react";
+import React, { Component } from "react";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import RestlayProvider from "../RestlayProvider";
 import { reducer } from "../dataStore";
 import type { NetworkF } from "../dataStore";
+
+export class NullComponent extends Component<{}> {
+  render() {
+    return null;
+  }
+}
 
 export function flushPromises(): Promise<any> {
   return new Promise(resolve => setImmediate(resolve));

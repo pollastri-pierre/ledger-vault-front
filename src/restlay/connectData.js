@@ -1,5 +1,6 @@
 //@flow
 import { connect } from "react-redux";
+import invariant from "invariant";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import shallowEqual from "fbjs/lib/shallowEqual";
@@ -73,8 +74,14 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
 
-  // allow the component to render if the api data was previously loaded
-  optimisticRendering?: boolean
+  // allow the component to render if the api data was previously loaded in cache
+  optimisticRendering?: boolean,
+
+  // when new props changes the query params / new data refresh, don't render anything until it loads
+  freezeTransition?: boolean,
+
+  // when new data is reloading, always render again RenderLoading
+  renderLoadingInTransition?: boolean
 };
 
 const defaultOpts = {
@@ -83,7 +90,9 @@ const defaultOpts = {
   RenderError: () => null,
   propsToQueryParams: _ => ({}),
   forceFetch: false,
-  optimisticRendering: false
+  optimisticRendering: false,
+  freezeTransition: false,
+  renderLoadingInTransition: false
 };
 
 const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
@@ -106,7 +115,14 @@ export default function connectData<
     ""})`;
 
   // options that are not overridable by restlayProvider
-  const { queries, propsToQueryParams, optimisticRendering, forceFetch } = {
+  const {
+    queries,
+    propsToQueryParams,
+    optimisticRendering,
+    renderLoadingInTransition,
+    freezeTransition,
+    forceFetch
+  } = {
     ...defaultOpts,
     ...opts
   };
@@ -171,7 +187,7 @@ export default function connectData<
         this.updateQueryInstances(apiParams);
       }
       const queriesInstances = this.queriesInstances;
-      if (!queriesInstances) throw new Error("no queriesInstances in sync !?");
+      invariant(queriesInstances, "queriesInstances must be defined");
       // $FlowFixMe filter() don't seem to be flowtyped correctly
       const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
@@ -211,11 +227,11 @@ export default function connectData<
         const promises = this.syncAPI(apiParams, forceFetchMode);
         if (promises.length > 0) {
           pending = true;
-          if (!this.state.pending) this.setState({ pending });
+          if (!this.state.pending) this.setState({ apiError: null, pending });
           p = Promise.all(promises).then(
             () => {
               if (this._unmounted || syncId !== this.syncAPI_id) return;
-              this.setState({ pending: false }, () => {
+              this.setState({ apiError: null, pending: false }, () => {
                 this.syncProps(this.props); // we need to sync again to make sure data is in sync
               });
             },
@@ -257,7 +273,11 @@ export default function connectData<
           });
           if (nbOfChanges > 0) {
             // only set newData if it's actually new data^^
-            this.setState({ data: newData });
+            this.setState({
+              catchedError: null,
+              apiError: null,
+              data: newData
+            });
           }
         }
       }
@@ -272,6 +292,32 @@ export default function connectData<
         executeQueryOrMutation(this.context.restlayProvider.props.network)(
           queryOrMutation
         )
+      );
+    }
+
+    componentWillMount() {
+      this.syncProps(this.props);
+    }
+
+    componentWillUnmount() {
+      this._unmounted = true;
+    }
+
+    componentWillReceiveProps(props: ClazzProps<Props>) {
+      this.syncProps(props);
+    }
+
+    componentDidCatch(catchedError: Error) {
+      this.setState({ catchedError });
+    }
+
+    shouldComponentUpdate(props: ClazzProps<Props>, state: State) {
+      if (state.pending && freezeTransition) return false;
+      return (
+        !shallowEqual(
+          extractInputProps(this.props),
+          extractInputProps(props)
+        ) || !shallowEqual(this.state, state)
       );
     }
 
@@ -297,31 +343,6 @@ export default function connectData<
       forceFetch: () => this.syncProps(this.props, true).then(() => {})
     };
 
-    componentWillMount() {
-      this.syncProps(this.props);
-    }
-
-    componentWillUnmount() {
-      this._unmounted = true;
-    }
-
-    componentWillReceiveProps(props: ClazzProps<Props>) {
-      this.syncProps(props);
-    }
-
-    componentDidCatch(catchedError: Error) {
-      this.setState({ catchedError });
-    }
-
-    shouldComponentUpdate(props: ClazzProps<Props>, state: State) {
-      return (
-        !shallowEqual(
-          extractInputProps(this.props),
-          extractInputProps(props)
-        ) || !shallowEqual(this.state, state)
-      );
-    }
-
     render() {
       const { restlay } = this;
       const { data, apiError, catchedError, pending } = this.state;
@@ -331,7 +352,7 @@ export default function connectData<
       if (error) {
         return <RenderError {...props} error={error} restlay={restlay} />;
       }
-      if (!data) {
+      if (!data || (pending && renderLoadingInTransition)) {
         return <RenderLoading {...props} restlay={restlay} />;
       }
       return (
