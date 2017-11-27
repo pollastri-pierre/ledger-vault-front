@@ -10,20 +10,24 @@ export const SWITCH_INTERN_MODAL = "account-creation/SWITCH_INTERN_MODAL";
 export const ADD_MEMBER = "account-creation/ADD_MEMBER";
 export const REMOVE_MEMBER = "account-creation/REMOVE_MEMBER";
 export const SET_APPROVALS = "account-creation/SET_APPROVALS";
-export const ENABLE_TIMELOCK = "account-creation/ENABLE_TIMELOCK";
-export const CHANGE_TIMELOCK = "account-creation/CHANGE_TIMELOCK";
-export const CHANGE_FREQUEMCY_TIMELOCK =
-  "account-creation/CHANGE_FREQUEMCY_TIMELOCK";
-export const CHANGE_FREQUEMCY_RATELIMITER =
-  "account-creation/CHANGE_FREQUEMCY_RATELIMITER";
+export const SET_TIMELOCK = "account-creation/SET_TIMELOCK";
+export const SET_RATELIMITER = "account-creation/SET_RATELIMITER";
 export const OPEN_POPBUBBLE = "account-creation/OPEN_POPBUBBLE";
-export const ENABLE_RATELIMITER = "account-creation/ENABLE_RATELIMITER";
-export const CHANGE_RATELIMITER = "account-creation/CHANGE_RATELIMITER";
 export const CLEAR_STATE = "account-creation/CLEAR_STATE";
 
 export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
+
+type Timelock = {
+  enabled: boolean,
+  value: Object
+};
+
+type Ratelimiter = {
+  enabled: boolean,
+  value: Object
+};
 
 export function openPopBubble(anchor: ?Node) {
   return {
@@ -32,43 +36,17 @@ export function openPopBubble(anchor: ?Node) {
   };
 }
 
-export function enableTimeLock() {
+export function setTimelock(timelock: Timelock) {
   return {
-    type: ENABLE_TIMELOCK
+    type: SET_TIMELOCK,
+    timelock
   };
 }
 
-export function enableRatelimiter() {
+export function setRatelimiter(ratelimiter: Ratelimiter) {
   return {
-    type: ENABLE_RATELIMITER
-  };
-}
-
-export function changeFrequency(field: string, frequency: Object) {
-  if (field === "rate-limiter") {
-    return {
-      type: CHANGE_FREQUEMCY_RATELIMITER,
-      frequency
-    };
-  }
-
-  return {
-    type: CHANGE_FREQUEMCY_TIMELOCK,
-    frequency
-  };
-}
-
-export function changeTimeLock(number: number) {
-  return {
-    type: CHANGE_TIMELOCK,
-    number
-  };
-}
-
-export function changeRatelimiter(number: number) {
-  return {
-    type: CHANGE_RATELIMITER,
-    number
+    type: SET_RATELIMITER,
+    ratelimiter
   };
 }
 
@@ -231,71 +209,11 @@ export default function reducer(
       return { ...state, currentTab: action.index };
     case SELECT_CURRENCY:
       return { ...state, currency: action.currency };
-    case ENABLE_TIMELOCK:
-      return {
-        ...state,
-        time_lock: {
-          ...state.time_lock,
-          enabled: !state.time_lock.enabled
-        }
-      };
-    case ENABLE_RATELIMITER:
-      return {
-        ...state,
-        rate_limiter: {
-          ...state.rate_limiter,
-          enabled: !state.rate_limiter.enabled
-        }
-      };
-    case CHANGE_TIMELOCK: {
-      const isNumber = /^[0-9\b]+$/;
-
-      if (action.number === "" || isNumber.test(action.number)) {
-        return {
-          ...state,
-          time_lock: {
-            ...state.time_lock,
-            value: parseInt(action.number, 10) || 0
-          }
-        };
-      }
-
-      return state;
+    case SET_TIMELOCK: {
+      return { ...state, time_lock: action.timelock };
     }
-    case CHANGE_RATELIMITER: {
-      const isNumber = /^[0-9\b]+$/;
-
-      if (action.number === "" || isNumber.test(action.number)) {
-        return {
-          ...state,
-          rate_limiter: {
-            ...state.rate_limiter,
-            value: parseInt(action.number, 10) || 0
-          }
-        };
-      }
-
-      return state;
-    }
-    case CHANGE_FREQUEMCY_TIMELOCK: {
-      return {
-        ...state,
-        time_lock: {
-          ...state.time_lock,
-          frequency: action.frequency
-        },
-        popBubble: false
-      };
-    }
-    case CHANGE_FREQUEMCY_RATELIMITER: {
-      return {
-        ...state,
-        rate_limiter: {
-          ...state.rate_limiter,
-          frequency: action.frequency
-        },
-        popBubble: false
-      };
+    case SET_RATELIMITER: {
+      return { ...state, rate_limiter: action.ratelimiter };
     }
     case OPEN_POPBUBBLE:
       if (typeof action.anchor !== "string") {

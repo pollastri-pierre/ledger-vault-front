@@ -137,7 +137,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       case "/pendings":
         return denormalize(
           {
-            approveOperations: Object.keys(mockEntities.operations).slice(0, 4),
+            approveOperations: Object.keys(mockEntities.operations).slice(0, 3),
             watchOperations: Object.keys(mockEntities.operations).slice(4, 7),
             approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
             watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
