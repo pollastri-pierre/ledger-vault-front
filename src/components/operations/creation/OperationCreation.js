@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CircularProgress from "material-ui/CircularProgress";
 import { DialogButton, Overscroll } from "../../";
 import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
+import OperationCreationConfirmation from "./OperationCreationConfirmation";
+
+import "./OperationCreation.css";
 
 class OperationCreation extends Component {
   render() {
@@ -74,7 +76,12 @@ class OperationCreation extends Component {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Confirmation</Overscroll>
+              <Overscroll>
+                <OperationCreationConfirmation
+                  account={selectedAccount}
+                  details={details}
+                />
+              </Overscroll>
             </TabPanel>
           </div>
         </div>
@@ -93,7 +100,7 @@ class OperationCreation extends Component {
             </DialogButton>
           ) : (
             <DialogButton highlight right onTouchTap={save}>
-              Done
+              Confirm
             </DialogButton>
           )}
         </div>

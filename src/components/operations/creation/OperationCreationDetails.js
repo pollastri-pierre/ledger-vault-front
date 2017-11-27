@@ -9,16 +9,18 @@ import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
 import CurrencyNameValue from "../../CurrencyNameValue";
-import type { Currency, Unit } from "../../../data/types";
+import type { Currency, Unit, Account } from "../../../data/types";
 import type { Details } from "../../NewOperationModal";
+import AccountCalculateFeeQuery from "../../../api/queries/AccountCalculateFeeQuery";
+import {
+  countervalueForRate,
+  formatCurrencyUnit
+} from "../../../data/currency";
 
 import "./OperationCreationDetails.css";
 
 type Props = {
-  account: {
-    currency: Currency,
-    balance: number
-  },
+  account: Account,
   saveDetails: Function,
   details: Details,
 
@@ -32,7 +34,7 @@ type State = {
   maxMenuOpen: boolean,
   amount: string,
   amountIsValid: boolean,
-  satoshis: integer,
+  satoshis: number,
   address: string,
   addressIsValid: boolean,
   feesMenuOpen: boolean,
@@ -41,7 +43,6 @@ type State = {
 };
 
 type Fee = {
-  amount: number,
   title: string
 };
 
@@ -53,18 +54,14 @@ class OperationCreationDetails extends Component<Props, State> {
 
     this.currency = currencies.find(c => c.name === account.currency.name);
 
-    // TODO Get fees from the gate
     this.fees = {
-      low: {
-        amount: 15000,
+      slow: {
         title: "Slow (1 hour)"
       },
       medium: {
-        amount: 30000,
         title: "Medium (30 minutes)"
       },
-      high: {
-        amount: 45000,
+      fast: {
         title: "Fast (10 minutes)"
       }
     };
@@ -81,26 +78,11 @@ class OperationCreationDetails extends Component<Props, State> {
       addressIsValid: true,
       feesMenuOpen: false,
       feesSelected: "medium",
-      feesAmount: this.fees.medium.amount
+      feesAmount: 0
     };
-  }
 
-  // componentWillMount() {
-  //   const { details } = this.props;
-  //
-  //   if (details.amount || details.fees) {
-  //     const amount: string =
-  //       typeof details.amount === "number" ? `${details.amount}` : "";
-  //     const fees: ?number =
-  //       typeof details.fees === "number" ? details.fees : undefined;
-  //
-  //     this.setAmount(amount, undefined, fees);
-  //   }
-  //
-  //   if (typeof details.address === "string") {
-  //     this.setState({ address: details.address });
-  //   }
-  // }
+    this.setFees("medium");
+  }
 
   currency: ?Currency;
   unitMenuAnchor: ?HTMLDivElement;
@@ -108,9 +90,9 @@ class OperationCreationDetails extends Component<Props, State> {
   feesMenuAnchor: ?HTMLDivElement;
   // feesList
   fees: {
-    low: Fee,
+    slow: Fee,
     medium: Fee,
-    high: Fee
+    fast: Fee
   };
 
   setAmount = (
@@ -118,10 +100,14 @@ class OperationCreationDetails extends Component<Props, State> {
     magnitude: number = this.state.unit.magnitude,
     fees: number = this.state.feesAmount
   ) => {
-    const satoshis: number = Math.round((parseFloat(amount) || 0) * 10 ** magnitude);
+    const satoshis: number = Math.round(
+      (parseFloat(amount) || 0) * 10 ** magnitude
+    );
     const balance: number = this.props.account.balance;
     const max: number = balance - fees;
-    const decimals:string = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
+    const decimals: string = amount
+      .replace(/(.*\.|.*[^.])/, "")
+      .replace(/0+$/, "");
 
     this.setState(
       {
@@ -184,47 +170,40 @@ class OperationCreationDetails extends Component<Props, State> {
     );
   };
 
+  setFees = (fee: string) => {
+    const { restlay, account } = this.props;
+
+    restlay
+      .fetchQuery(
+        new AccountCalculateFeeQuery({ account, speed: fee })
+      )
+      .then(res => {
+        const feesAmount = res.value;
+
+        this.setState({ feesAmount });
+        this.setAmount(undefined, undefined, feesAmount);
+      });
+  };
+
   selectFee = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
     const target: HTMLDivElement = e.currentTarget;
     const feesSelected: string = target.dataset.fee;
-    const feesAmount: number = this.fees[feesSelected].amount;
+
+    this.setFees(feesSelected);
 
     this.setState({
       feesSelected,
-      feesAmount,
       feesMenuOpen: false
     });
-
-    this.setAmount(undefined, undefined, feesAmount);
-  };
-
-  feesList = () => {
-    let list = [];
-
-    for (const key in this.fees) {
-      const fee: Fee = this.fees[key];
-
-      list.push(
-        <li key={key}>
-          <a
-            href="fee"
-            onClick={this.selectFee}
-            data-fee={key}
-            className={key === this.state.feesSelected ? "active" : ""}
-          >
-            {fee.title}
-          </a>
-        </li>
-      );
-    }
-
-    return list;
   };
 
   validateTab = () => {
     const details: Details = {
-      amount: this.state.satoshis > 0 && this.state.amountIsValid ? this.state.satoshis : null,
+      amount:
+        this.state.satoshis > 0 && this.state.amountIsValid
+          ? this.state.satoshis
+          : null,
       address:
         this.state.address !== "" && this.state.addressIsValid
           ? this.state.address
@@ -235,7 +214,24 @@ class OperationCreationDetails extends Component<Props, State> {
     this.props.saveDetails(details);
   };
 
+  getCounterValue = (sat: number, showCode: boolean = false) => {
+    const counterValue = countervalueForRate(
+      this.props.account.currencyRate,
+      sat
+    );
+    const fiat = formatCurrencyUnit(
+      counterValue.unit,
+      counterValue.value,
+      showCode,
+      false,
+      true
+    );
+
+    return fiat;
+  };
+
   render() {
+    // console.log(this.props.account.currencyRate.fiat);
     return (
       <div className="operation-creation-details wrapper">
         {/* Amount */}
@@ -297,14 +293,14 @@ class OperationCreationDetails extends Component<Props, State> {
               float: "left"
             }}
           >
-            EUR
+            {this.props.account.currencyRate.fiat}
           </div>
           <div
             style={{
               float: "right"
             }}
           >
-            1,024.42
+            {this.getCounterValue(this.state.satoshis)}
           </div>
         </div>
         <PopBubble
@@ -397,7 +393,7 @@ class OperationCreationDetails extends Component<Props, State> {
               fontWeight: 600
             }}
           >
-            EUR 0.25
+            {this.getCounterValue(this.state.feesAmount, true)}
           </div>
         </div>
         <PopBubble
@@ -406,7 +402,38 @@ class OperationCreationDetails extends Component<Props, State> {
           onRequestClose={() => this.setState({ feesMenuOpen: false })}
           className="operation-creation-fees-menu"
         >
-          <ul className="operation-creation-fees-list">{this.feesList()}</ul>
+          <ul className="operation-creation-fees-list">
+            <li>
+              <a
+                href="fee"
+                onClick={this.selectFee}
+                data-fee="slow"
+                className={this.state.feesSelected === "slow" ? "active" : ""}
+              >
+                Slow (1 hour)
+              </a>
+            </li>
+            <li>
+              <a
+                href="fee"
+                onClick={this.selectFee}
+                data-fee="medium"
+                className={this.state.feesSelected === "medium" ? "active" : ""}
+              >
+                Medium (30 minutes)
+              </a>
+            </li>
+            <li>
+              <a
+                href="fee"
+                onClick={this.selectFee}
+                data-fee="fast"
+                className={this.state.feesSelected === "fast" ? "active" : ""}
+              >
+                Fast (10 minutes)
+              </a>
+            </li>
+          </ul>
         </PopBubble>
       </div>
     );
