@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import renderer from "react-test-renderer";
 import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
-import { mockNetworkSync, AnimalsQuery, AnimalQuery } from "../tests-utils/mock-1";
+import createMock, { AnimalsQuery, AnimalQuery } from "../tests-utils/mock-1";
 
 test("the mock-1 and utility functions works", () => {
-  const net = networkFromMock(mockNetworkSync);
+  const net = networkFromMock(createMock());
   const render = createRender(net.network);
   const inst = renderer.create(render(<div />));
   expect(inst.toJSON()).toMatchSnapshot();
@@ -15,8 +15,17 @@ test("the mock-1 and utility functions works", () => {
   inst.unmount();
 });
 
+test("connectData can be used without data, render in sync and receives a restlay prop object", async () => {
+  const net = networkFromMock(createMock());
+  const render = createRender(net.network);
+  const Root = connectData(({ restlay }) => typeof restlay);
+  const inst = renderer.create(render(<Root />));
+  expect(inst.toJSON()).toBe("object");
+  inst.unmount();
+});
+
 test("a simple query works", async () => {
-  const net = networkFromMock(mockNetworkSync);
+  const net = networkFromMock(createMock());
   const render = createRender(net.network);
   class AnimalsR extends Component<*> {
     render() {
@@ -47,7 +56,7 @@ test("a simple query works", async () => {
 });
 
 test("query with props works", async () => {
-  const net = networkFromMock(mockNetworkSync);
+  const net = networkFromMock(createMock());
   const render = createRender(net.network);
   class AnimalR extends Component<*> {
     render() {

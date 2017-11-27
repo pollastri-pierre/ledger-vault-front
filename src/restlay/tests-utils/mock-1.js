@@ -21,50 +21,68 @@ export class AnimalsQuery extends Query<void, Animal[]> {
 export class AnimalQuery extends Query<{ animalId: string }, Animal> {
   uri = "/animals/" + this.props.animalId;
   responseSchema = schemaAnimal;
+  cacheMaxAge = 2;
+}
+
+export class IncrementAgesMutation extends Mutation<void, Animal[]> {
+  method = "POST";
+  uri = "/increment-ages";
+  responseSchema = [schemaAnimal];
 }
 
 export class AddAnimalMutation extends Mutation<{ animal: Object }, Animal> {
   method = "POST";
   uri = "/animals";
-  responseSchema = [schemaAnimal];
+  responseSchema = schemaAnimal;
   getBody() {
     return this.props.animal;
   }
 }
 
-const genId = ((id: number) => () => "id_" + ++id)(0);
+export default () => {
+  const genId = ((id: number) => () => "id_" + ++id)(0);
 
-const animals: Animal[] = [
-  {
-    id: "id_max",
-    name: "max",
-    age: 14
-  },
-  {
-    id: "id_doge",
-    name: "doge",
-    age: 5
+  const animals: Animal[] = [
+    {
+      id: "id_max",
+      name: "max",
+      age: 14
+    },
+    {
+      id: "id_doge",
+      name: "doge",
+      age: 5
+    }
+  ];
+  function incrementAge() {
+    animals.forEach(a => a.age++);
   }
-];
 
-export const mockNetworkSync = (
-  uri: string,
-  method: string,
-  body: any
-): any => {
-  let m;
-  if (method === "GET" && uri === "/animals") {
-    return animals;
-  }
-  if (method === "GET" && (m = uri.match(/^\/animals\/([^/]+)$/))) {
-    const animal = animals.find(a => m && a.id === m[1]);
-    if (!animal) throw "notfound";
-    return animal;
-  }
-  if (method === "POST" && uri === "/animals") {
-    const animal = { id: genId(), ...body };
-    animals.push(animal);
-    return animal;
-  }
-  throw "notfound";
+  const networkSync = (uri: string, method: string, body: any): any => {
+    let m;
+    if (method === "GET" && uri === "/animals") {
+      return animals;
+    }
+    if (method === "GET" && (m = uri.match(/^\/animals\/([^/]+)$/))) {
+      const animal = animals.find(a => m && a.id === m[1]);
+      if (!animal) throw "notfound";
+      return animal;
+    }
+    if (method === "POST" && uri === "/animals") {
+      const animal = { id: genId(), ...body };
+      animals.push(animal);
+      return animal;
+    }
+    if (method === "POST" && uri === "/animals") {
+      const animal = { id: genId(), ...body };
+      animals.push(animal);
+      return animal;
+    }
+    if (method === "POST" && uri === "/increment-ages") {
+      incrementAge();
+      return animals;
+    }
+    throw "notfound";
+  };
+  return { networkSync, incrementAge };
 };

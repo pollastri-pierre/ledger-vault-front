@@ -5,7 +5,10 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import RestlayProvider from "../RestlayProvider";
 import { reducer } from "../dataStore";
-import type { NetworkF } from "../dataStore";
+import type { NetworkF } from "../RestlayProvider";
+
+export const delay = (ms: number): Promise<any> =>
+  new Promise(success => setTimeout(success, ms));
 
 export class NullComponent extends Component<{}> {
   render() {
@@ -56,36 +59,42 @@ export const defer = () => {
 // returns {network,tick}
 // network function: can be passed to createRender
 // tick function: needs to be called to redeem pending network calls. (also returns number of waiters)
+// tickOne function: redeem only one pending network call and returns number of calls (0 or 1)
 // countTickWaiters function: gets the number of network call awaiting
-export const networkFromMock = (
-  syncMockFunction: Function
-): {
+export const networkFromMock = (mock: {
+  networkSync: Function
+}): {
   network: NetworkF,
   tick: () => number,
+  tickOne: () => number,
   countTickWaiters: () => number
 } => {
-  let tickD = defer();
-  let tickWaiters = 0;
+  let tickDefers = [];
   const waitTick = () => {
-    ++tickWaiters;
-    return tickD.promise.then(() => {
-      --tickWaiters;
+    const d = defer();
+    tickDefers.push(d);
+    return d.promise.then(() => {
+      const i = tickDefers.indexOf(d);
+      if (i !== -1) tickDefers.splice(i, 1);
     });
   };
   return {
-    tick: () => {
-      const nb = tickWaiters;
+    tickOne: () => {
+      if (tickDefers.length === 0) return 0;
+      const [tickD] = tickDefers.splice(0, 1);
       tickD.resolve();
-      tickD = defer();
+      return 1;
+    },
+    tick: () => {
+      const nb = tickDefers.length;
+      tickDefers.forEach(tickD => {
+        tickD.resolve();
+        tickD = defer();
+      });
       return nb;
     },
-    countTickWaiters: () => tickWaiters,
+    countTickWaiters: () => tickDefers.length,
     network: (uri, method, body) =>
-      waitTick().then(() => syncMockFunction(uri, method, body))
+      waitTick().then(() => mock.networkSync(uri, method, body))
   };
 };
-
-// Just a dumb test to ignore jest warning there is no tests
-test("utils", () => {
-  expect(createRender).toBeInstanceOf(Function);
-});

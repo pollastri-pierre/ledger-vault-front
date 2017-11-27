@@ -135,6 +135,8 @@ export default function connectData<
     data: ?APIProps
   };
 
+  const withoutPending = ({ pending, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
+
   class Clazz extends Component<ClazzProps<Props>, State> {
     context: {
       restlayProvider: RestlayProvider
@@ -159,6 +161,7 @@ export default function connectData<
       ...this.context.restlayProvider.props.connectDataOptDefaults,
       ...opts
     };
+
     getOptions() {
       return this._options;
     }
@@ -166,6 +169,30 @@ export default function connectData<
     apiParams: ?Object = null;
     queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
+
+    executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
+
+    execute<In, Out>(
+      queryOrMutation: Query<In, Out> | Mutation<In, Out>
+    ): Promise<Out> {
+      return this.props.dispatch(this.executeQueryF(queryOrMutation));
+    }
+
+    commitMutation = <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
+      if (!(m instanceof Mutation)) {
+        console.error(m);
+        throw new Error("invalid mutation provided in restlay.commitMutation");
+      }
+      return this.execute(m);
+    };
+
+    fetchQuery = <In, Res>(query: Query<In, Res>): Promise<Res> => {
+      if (!(query instanceof Query)) {
+        console.error(query);
+        throw new Error("invalid mutation provided in restlay.fetchQuery");
+      }
+      return this.execute(query);
+    };
 
     updateQueryInstances(apiParams: Object) {
       const instances: $ObjMap<A, ExtractQuery> = {};
@@ -197,7 +224,7 @@ export default function connectData<
             forceFetch ||
             !queryCacheIsFresh(dataStore, query)
           ) {
-            return this.execute(query);
+            return this.fetchQuery(query);
           }
         })
         .filter(p => p);
@@ -213,7 +240,6 @@ export default function connectData<
     ): Promise<*> {
       // FIXME can we simplify the code?
       const state = { ...this.state, ...statePatch };
-      const { queriesInstances } = this;
       const { dataStore } = props;
       let p: ?Promise<*>;
 
@@ -225,9 +251,9 @@ export default function connectData<
       ) {
         const syncId = ++this.syncAPI_id;
         const promises = this.syncAPI(apiParams, forceFetchMode);
+        state.pending = true;
+        state.apiError = null;
         if (promises.length > 0) {
-          state.pending = true;
-          state.apiError = null;
           p = Promise.all(promises).then(
             () => {
               if (this._unmounted || syncId !== this.syncAPI_id) return;
@@ -244,17 +270,14 @@ export default function connectData<
         }
       }
 
+      const { queriesInstances } = this;
       const results = [];
       for (let key in queriesInstances) {
         const query = queriesInstances[key];
         const cache = getQueryCacheResult(dataStore, query);
         if (cache) {
           const { result } = cache;
-          results.push({
-            result,
-            key,
-            query
-          });
+          results.push({ result, key, query });
         }
       }
 
@@ -264,6 +287,7 @@ export default function connectData<
           let nbOfChanges = 0;
           results.forEach(({ query, result, key }) => {
             let item = query.getResponse(result, dataStore);
+            // FIXME PERF: isEqual on data should not be required if we improve normalizr to keep references
             if (state.data && isEqual(item, state.data[key])) {
               // keep previous reference if deep equals
               item = state.data[key];
@@ -285,16 +309,6 @@ export default function connectData<
       return p || Promise.resolve();
     }
 
-    execute<In, Out>(
-      queryOrMutation: Query<In, Out> | Mutation<In, Out>
-    ): Promise<Out> {
-      return this.props.dispatch(
-        executeQueryOrMutation(this.context.restlayProvider.props.network)(
-          queryOrMutation
-        )
-      );
-    }
-
     componentWillMount() {
       this.syncProps(this.props);
     }
@@ -312,34 +326,26 @@ export default function connectData<
     }
 
     shouldComponentUpdate(props: ClazzProps<Props>, state: State) {
-      if (state.pending && freezeTransition) return false;
+      if (freezeTransition) {
+        if (state.pending) return false;
+      } else {
+        if (state.pending !== this.state.pending) {
+          return true;
+        }
+      }
       return (
         !shallowEqual(
           extractInputProps(this.props),
           extractInputProps(props)
-        ) || !shallowEqual(this.state, state)
+        ) || !shallowEqual(withoutPending(this.state), withoutPending(state))
       );
     }
 
     // This "environment" is a restlay prop that will be passed to the component.
     // the idea is to put everything in an object to not pollute props and introduce new things over time
     restlay: RestlayEnvironment = {
-      commitMutation: <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
-        if (!(m instanceof Mutation)) {
-          console.error(m);
-          throw new Error(
-            "invalid mutation provided in restlay.commitMutation"
-          );
-        }
-        return this.execute(m);
-      },
-      fetchQuery: <In, Res>(query: Query<In, Res>): Promise<Res> => {
-        if (!(query instanceof Query)) {
-          console.error(query);
-          throw new Error("invalid mutation provided in restlay.fetchQuery");
-        }
-        return this.execute(query);
-      },
+      commitMutation: this.commitMutation,
+      fetchQuery: this.fetchQuery,
       forceFetch: () => this.syncProps(this.props, {}, true).then(() => {})
     };
 
@@ -350,11 +356,16 @@ export default function connectData<
       const error = catchedError || apiError;
       const { RenderError, RenderLoading } = this.getOptions();
       if (error) {
+        // there is an error
         return <RenderError {...props} error={error} restlay={restlay} />;
       }
-      if (!data || (pending && renderLoadingInTransition)) {
+      if (
+        (!data && queriesKeys.length > 0) || // there is no data yet (and we expect at least one data)
+        (pending && renderLoadingInTransition) // it is reloading and we want to render loading again
+      ) {
         return <RenderLoading {...props} restlay={restlay} />;
       }
+      // all data is here and ready to render the Decorated component
       return (
         <Decorated {...props} {...data} reloading={pending} restlay={restlay} />
       );

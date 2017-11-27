@@ -4,6 +4,7 @@ import Mutation from "./Mutation";
 import Query from "./Query";
 import { merge } from "./ImmutableUtils";
 import isEqual from "lodash/isEqual";
+import type RestlayProvider from "./RestlayProvider";
 
 export type Entities = {
   [_: string]: { [_: string]: Object }
@@ -13,19 +14,13 @@ type Result<R> = {
   time: number
 };
 
-export type NetworkF = <T>(
-  uri: string,
-  method: string,
-  body: ?(Object | Array<Object>)
-) => Promise<T>;
-
 type DispatchF = (action: Object) => void;
 
 type QueryDispatchF = <In, Out>(
   queryOrMutation: Query<In, Out> | Mutation<In, Out>
 ) => (dispatch: DispatchF) => Promise<Out>;
 
-type ExecuteQueryOrMutation = (n: NetworkF) => QueryDispatchF;
+type ExecuteQueryOrMutation = (ctx: RestlayProvider) => QueryDispatchF;
 
 export type Store = {
   entities: Entities,
@@ -61,39 +56,35 @@ function mergeEntities(prev: Entities, patch: Entities): Entities {
   }
   return entities;
 }
-
-// FIXME this cache probably should live in the RestlayProvider too
-// because we want to clear it & don't share it across impls, etc..
-const globalPromiseCache: { [_: string]: Promise<any> } = {};
-
 export const executeQueryOrMutation: ExecuteQueryOrMutation =
   // network is dynamically provided so the library can be mocked (e.g. for tests)
-  network => queryOrMutation => dispatch => {
+  ctx => queryOrMutation => dispatch => {
     const uri = queryOrMutation.uri;
     let cacheKey, method, body;
     if (queryOrMutation instanceof Query) {
       cacheKey = queryOrMutation.getCacheKey();
-      const pendingPromise = globalPromiseCache[cacheKey];
+      const pendingPromise = ctx.globalPromiseCache[cacheKey];
       if (pendingPromise) return pendingPromise;
       method = "GET";
     } else {
       method = queryOrMutation.method;
       body = queryOrMutation.getBody();
     }
-    const promise = network(uri, method, body)
+    const promise = ctx
+      .network(uri, method, body)
       .then(data => {
         const result = normalize(data, queryOrMutation.responseSchema || {});
-        if (cacheKey) delete globalPromiseCache[cacheKey];
+        if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
         dispatch({
           type: "DATA_FETCHED",
           result,
           queryOrMutation,
           cacheKey
         });
-        return result.result;
+        return data;
       })
       .catch(error => {
-        if (cacheKey) delete globalPromiseCache[cacheKey];
+        if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
         dispatch({
           type: "DATA_FETCHED_FAIL",
           error,
@@ -103,7 +94,7 @@ export const executeQueryOrMutation: ExecuteQueryOrMutation =
         throw error;
       });
 
-    if (cacheKey) globalPromiseCache[cacheKey] = promise;
+    if (cacheKey) ctx.globalPromiseCache[cacheKey] = promise;
     return promise;
   };
 
