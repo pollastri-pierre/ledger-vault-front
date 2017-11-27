@@ -9,7 +9,8 @@
     opacity: 1;
   }
 }
-@mixin highlight-block($color, $left) {
+
+@mixin highlight-block-common($color) {
   &::before {
     content: "";
     cursor: pointer;
@@ -18,7 +19,6 @@
     height: 26px;
     display: block;
     position: absolute;
-    left: $left;
     bottom: calc(50% - (26px / 2));
     opacity: 1;
     transition: width 0.2s ease;
@@ -31,6 +31,22 @@
   &:hover::before {
     opacity: 1;
     width: 5px;
+  }
+}
+
+@mixin highlight-block($color, $left) {
+  @include highlight-block-common($color);
+
+  &::before {
+    left: $left;
+  }
+}
+
+@mixin highlight-block-right($color, $right) {
+  @include highlight-block-common($color);
+
+  &::before {
+    right: $right;
   }
 }
 

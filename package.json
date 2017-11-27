@@ -6,6 +6,7 @@
   "dependencies": {
     "animated": "^0.2.1",
     "bourbon-neat": "^2.1.0",
+    "bitcoin-address": "^0.3.0",
     "d3": "^4.11.0",
     "email-validator": "^1.1.1",
     "fbjs": "^0.8.16",

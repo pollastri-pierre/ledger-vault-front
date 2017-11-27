@@ -3,7 +3,14 @@ import React, { Component } from "react";
 import OperationCreation from "./operations/creation/OperationCreation";
 import connectData from "../restlay/connectData";
 import AccountsQuery from "../api/queries/AccountsQuery";
+import ModalLoading from "../components/ModalLoading";
 import type { Account } from "../data/types";
+
+export type Details = {
+  amount: ?number,
+  fees: ?number,
+  address: ?string
+};
 
 class NewOperationModal extends Component<
   {
@@ -11,20 +18,46 @@ class NewOperationModal extends Component<
     close: Function
   },
   {
-    tabsIndex: number
+    tabsIndex: number,
+    selectedAccount: ?Account,
+    details: Details
   }
 > {
   state = {
-    tabsIndex: 0
+    tabsIndex: 0,
+    selectedAccount: null,
+    details: {
+      amount: null,
+      fees: null,
+      address: null
+    }
   };
+
   onSaveOperation = () => {
     console.log(
       "TODO: this.props.restlay.commitUpdate(new SaveOperationMutation({...}))"
     );
+
+    this.props.close();
   };
+
   onSelect = (tabsIndex: number) => {
     this.setState({ tabsIndex });
   };
+
+  selectAccount = (selectedAccount: Account) => {
+    this.setState({
+      selectedAccount,
+      tabsIndex: 1
+    });
+  };
+
+  saveDetails = (details: Details) => {
+    console.log(details);
+
+    this.setState({ details });
+  };
+
   render() {
     const { accounts, close } = this.props;
     return (
@@ -32,20 +65,17 @@ class NewOperationModal extends Component<
         close={close}
         onSelect={this.onSelect}
         save={this.onSaveOperation}
-        tabsIndex={this.state.tabsIndex}
-        accounts={{
-          isLoadingAccounts: false,
-          accounts
-        }}
-        getAccounts={() => {
-          console.warn("getAccounts is no longer needed");
-        }}
+        accounts={accounts}
+        selectAccount={this.selectAccount}
+        saveDetails={this.saveDetails}
+        {...this.state}
       />
     );
   }
 }
 
 export default connectData(NewOperationModal, {
+  RenderLoading: ModalLoading,
   queries: {
     accounts: AccountsQuery
   }
