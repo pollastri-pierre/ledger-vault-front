@@ -1,42 +1,69 @@
 import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
+import CurrencyNameValue from "../../CurrencyNameValue";
+import CurrencyUnitValue from "../../CurrencyUnitValue";
+import { countervalueForRate } from "../../../data/currency";
+
+import "./OperationCreationAccounts.css";
 
 function OperationCreationAccounts(props) {
-  const { accounts, account, onSelect } = props;
-
-  console.log(accounts);
+  const { accounts, selectedAccount, onSelect } = props;
 
   return (
     <div className="operation-creation-accounts wrapper">
-      {_.map(accounts, cur => (
-        <div
-          onClick={() => onSelect(cur)}
-          role="button"
-          tabIndex="0"
-          key={cur.id}
-          className={`operation-creation-account
-            ${cur.name
+      <div className="tab-title">Account to debit</div>
+      {_.map(accounts, cur => {
+        const counterValueUnit = countervalueForRate(
+          cur.currencyRate,
+          cur.balance
+        );
+
+        return (
+          <div
+            onClick={() => onSelect(cur)}
+            role="button"
+            tabIndex="0"
+            key={cur.id}
+            className={`operation-creation-account
+            ${cur.currency.name
               .split(" ")
               .join("-")
               .toLowerCase()}
-            ${account && account.name === cur.name ? "selected" : ""}`}
-        >
-          <span className="account-name">{cur.name}</span>
-        </div>
-      ))}
+            ${
+              selectedAccount && selectedAccount.id === cur.id ? "selected" : ""
+            }`}
+          >
+            <div className="account-top">
+              <span className="account-name">{cur.name}</span>
+              <span className="account-balance">
+                <CurrencyNameValue
+                  currencyName={cur.currency.name}
+                  value={cur.balance}
+                />
+              </span>
+            </div>
+            <div className="account-botom">
+              <span className="account-currency">{cur.currency.name}</span>
+              <span className="account-countervalue">
+                <CurrencyUnitValue {...counterValueUnit} />
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 OperationCreationAccounts.defaultProps = {
-  account: {}
+  selectedAccount: {}
 };
 
 OperationCreationAccounts.propTypes = {
   onSelect: PropTypes.func.isRequired,
-  // accounts: PropTypes.shape({}).isRequired,
-  account: PropTypes.shape({})
+  accounts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedAccount: PropTypes.shape({})
 };
 
 export default OperationCreationAccounts;

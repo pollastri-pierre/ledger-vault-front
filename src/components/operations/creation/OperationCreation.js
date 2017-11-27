@@ -2,19 +2,15 @@ import React, { Component } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import CircularProgress from "material-ui/CircularProgress";
 import { DialogButton, Overscroll } from "../../";
 import OperationCreationAccounts from "./OperationCreationAccounts";
+import OperationCreationDetails from "./OperationCreationDetails";
+import OperationCreationLabel from "./OperationCreationLabel";
+import OperationCreationConfirmation from "./OperationCreationConfirmation";
+
+import "./OperationCreation.css";
 
 class OperationCreation extends Component {
-  componentWillMount() {
-    const { accounts, getAccounts } = this.props;
-
-    if (!accounts.accounts && !accounts.isLoadingAccounts) {
-      getAccounts();
-    }
-  }
-
   render() {
     const {
       close,
@@ -22,29 +18,22 @@ class OperationCreation extends Component {
       tabsIndex,
       save,
       accounts,
-      getAccounts
+      selectedAccount,
+      selectAccount,
+      details,
+      saveDetails
     } = this.props;
 
-    let isNextDisabled = false;
+    const disabledTabs = [
+      false, // tab 0
+      selectedAccount === null, // tab 1
+      !details.amount || !details.address || !details.fees, // tab 2
+      !details.amount || !details.address || !details.fees // tab 3
+    ];
 
-    // switch (tabsIndex) {
-    //   case 0:
-    //     isNextDisabled = (_.isNull(account.currency));
-    //     break;
-    //   case 1:
-    //     isNextDisabled = (account.options.name === '');
-    //     break;
-    //   case 2:
-    //     isNextDisabled = (account.security.members.length === 0 ||
-    //       account.security.approvals === 0 ||
-    //       account.security.approvals > account.security.members.length);
-    //     break;
-    //   default:
-    //     isNextDisabled = true;
-    // }
     return (
       <Tabs
-        className="operation-creation-main wrapper"
+        className="operation-creation-main modal wrapper"
         selectedIndex={tabsIndex}
         onSelect={onSelect}
       >
@@ -53,19 +42,19 @@ class OperationCreation extends Component {
             <h2>New operation</h2>
             <TabList>
               <Tab> 1. Account </Tab>
-              <Tab disabled={false}>2. Details</Tab>
-              <Tab disabled={false}>3. Label</Tab>
-              <Tab disabled={false}>4. Confirmation</Tab>
+              <Tab disabled={disabledTabs[1]}>2. Details</Tab>
+              <Tab disabled={disabledTabs[2]}>3. Label</Tab>
+              <Tab disabled={disabledTabs[3]}>4. Confirmation</Tab>
             </TabList>
           </header>
           <div className="content">
             <TabPanel className="tabs_panel">
               <Overscroll>
-                {accounts.isLoadingAccounts ? <CircularProgress /> : false}
-                {accounts.accounts && accounts.accounts.length > 0 ? (
+                {accounts && accounts.length > 0 ? (
                   <OperationCreationAccounts
-                    accounts={accounts.accounts}
-                    onSelect={cur => console.log(cur)}
+                    accounts={accounts}
+                    onSelect={selectAccount}
+                    selectedAccount={selectedAccount}
                   />
                 ) : (
                   false
@@ -73,13 +62,26 @@ class OperationCreation extends Component {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Details</Overscroll>
+              <Overscroll>
+                <OperationCreationDetails
+                  account={selectedAccount}
+                  details={details}
+                  saveDetails={saveDetails}
+                />
+              </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Label</Overscroll>
+              <Overscroll>
+                <OperationCreationLabel />
+              </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>Confirmation</Overscroll>
+              <Overscroll>
+                <OperationCreationConfirmation
+                  account={selectedAccount}
+                  details={details}
+                />
+              </Overscroll>
             </TabPanel>
           </div>
         </div>
@@ -91,14 +93,14 @@ class OperationCreation extends Component {
             <DialogButton
               highlight
               right
-              disabled={isNextDisabled}
-              onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
+              disabled={disabledTabs[tabsIndex + 1]}
+              onTouchTap={() => onSelect(tabsIndex + 1)}
             >
               Continue
             </DialogButton>
           ) : (
             <DialogButton highlight right onTouchTap={save}>
-              Done
+              Confirm
             </DialogButton>
           )}
         </div>

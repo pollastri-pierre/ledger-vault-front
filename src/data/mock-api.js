@@ -93,9 +93,9 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       }
       const speed = m[2];
       const mockValuePerSpeed = {
-        slow: 0.0001,
-        medium: 0.0002,
-        fast: 0.001
+        slow: 3000,
+        medium: 6000,
+        fast: 12000
       };
       if (!(speed in mockValuePerSpeed)) {
         throw new Error("calculate-fee: invalid speed");
