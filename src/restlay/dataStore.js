@@ -1,10 +1,10 @@
 //@flow
 import { normalize } from "normalizr";
-import network from "../network"; // TODO this is an external dep. we need a way to inject the "network layer" (relay have a NetworkLayer concept, very interesting stuff)
 import Mutation from "./Mutation";
 import Query from "./Query";
-import { merge, without } from "./ImmutableUtils";
+import { merge } from "./ImmutableUtils";
 import isEqual from "lodash/isEqual";
+import type RestlayProvider from "./RestlayProvider";
 
 export type Entities = {
   [_: string]: { [_: string]: Object }
@@ -14,11 +14,17 @@ type Result<R> = {
   time: number
 };
 
+type DispatchF = (action: Object) => void;
+
+type QueryDispatchF = <In, Out>(
+  queryOrMutation: Query<In, Out> | Mutation<In, Out>
+) => (dispatch: DispatchF) => Promise<Out>;
+
+type ExecuteQueryOrMutation = (ctx: RestlayProvider) => QueryDispatchF;
+
 export type Store = {
   entities: Entities,
-  results: { [_: string]: Result<any> },
-  pending: { [_: string]: Promise<any> },
-  errors: { [_: string]: Error }
+  results: { [_: string]: Result<any> }
 };
 
 export function getQueryCacheResult<I, R>(
@@ -34,23 +40,9 @@ export function queryCacheIsFresh(store: Store, query: Query<*, *>): boolean {
   return Date.now() < cache.time + 1000 * query.cacheMaxAge;
 }
 
-export const getQueryError = (store: Store, query: Query<*, *>): ?Error =>
-  store.errors[query.getCacheKey()];
-
-export const queryIsPending = (store: Store, query: Query<*, *>): boolean =>
-  !!store.pending[query.getCacheKey()];
-
 const initialState: Store = {
   entities: {},
-  results: {},
-
-  // TODO : remove dispatch DATA_FETCH (the pending event). instead we will maintain a global promise cache and also
-  // the pending state needs to be per connectData instance and not anymore in the sture because we don't want to display a pending
-  // if the component is not the creator of the "reload"
-  // similarily probably the errors needs to be kept at the connectData component level so a new request won't affect a neighbor listening to the same query
-
-  pending: {},
-  errors: {}
+  results: {}
 };
 
 // NB we do not preserve the entities object immutable, but only for the object entity itself
@@ -64,57 +56,47 @@ function mergeEntities(prev: Entities, patch: Entities): Entities {
   }
   return entities;
 }
-
-// FIXME might split into 2 functions, one for query, one for mutation
-export const executeQueryOrMutation = (
-  stateLense: (state: Object) => Store
-) => <In, Out>(queryOrMutation: Query<In, Out> | Mutation<In, Out>) => (
-  dispatch: Function,
-  getState: () => *
-): Promise<Out> => {
-  const uri: string = queryOrMutation.uri;
-  let cacheKey, method, body;
-  if (queryOrMutation instanceof Query) {
-    cacheKey = queryOrMutation.getCacheKey();
-    // FIXME i'm not sure pendingPromises should be in the store...
-    // the problem is if there are tons of concurrent calls,
-    // store is not yet uptdated with this pendings. mmh
-    const pendingPromise = stateLense(getState()).pending[cacheKey];
-    if (pendingPromise) return pendingPromise;
-    method = "GET";
-  } else {
-    method = queryOrMutation.method;
-    body = queryOrMutation.getBody();
-  }
-  const promise = network(uri, method, body)
-    .then(data => {
-      const result = normalize(data, queryOrMutation.responseSchema || {});
-      dispatch({
-        type: "DATA_FETCHED",
-        result,
-        queryOrMutation,
-        cacheKey
+export const executeQueryOrMutation: ExecuteQueryOrMutation =
+  // network is dynamically provided so the library can be mocked (e.g. for tests)
+  ctx => queryOrMutation => dispatch => {
+    const uri = queryOrMutation.uri;
+    let cacheKey, method, body;
+    if (queryOrMutation instanceof Query) {
+      cacheKey = queryOrMutation.getCacheKey();
+      const pendingPromise = ctx.globalPromiseCache[cacheKey];
+      if (pendingPromise) return pendingPromise;
+      method = "GET";
+    } else {
+      method = queryOrMutation.method;
+      body = queryOrMutation.getBody();
+    }
+    const promise = ctx
+      .network(uri, method, body)
+      .then(data => {
+        const result = normalize(data, queryOrMutation.responseSchema || {});
+        if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
+        dispatch({
+          type: "DATA_FETCHED",
+          result,
+          queryOrMutation,
+          cacheKey
+        });
+        return data;
+      })
+      .catch(error => {
+        if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
+        dispatch({
+          type: "DATA_FETCHED_FAIL",
+          error,
+          queryOrMutation,
+          cacheKey
+        });
+        throw error;
       });
-      return result.result;
-    })
-    .catch(error => {
-      dispatch({
-        type: "DATA_FETCHED_FAIL",
-        error,
-        queryOrMutation,
-        cacheKey
-      });
-      throw error;
-    });
 
-  dispatch({
-    type: "DATA_FETCH",
-    queryOrMutation,
-    cacheKey,
-    promise
-  });
-  return promise;
-};
+    if (cacheKey) ctx.globalPromiseCache[cacheKey] = promise;
+    return promise;
+  };
 
 const reducers = {
   DATA_FETCHED: (store, { result, cacheKey }) => {
@@ -127,27 +109,10 @@ const reducers = {
         results: {
           ...store.results,
           [cacheKey]: { result: result.result, time: Date.now() }
-        },
-        pending: without(store.pending, cacheKey),
-        errors: without(store.errors, cacheKey)
+        }
       };
     }
-  },
-  DATA_FETCHED_FAIL: (store, { cacheKey, error }) =>
-    cacheKey
-      ? {
-          ...store,
-          pending: without(store.pending, cacheKey),
-          errors: { ...store.errors, [cacheKey]: error }
-        }
-      : null,
-  DATA_FETCH: (store, { cacheKey, promise }) =>
-    cacheKey
-      ? {
-          ...store,
-          pending: { ...store.pending, [cacheKey]: promise }
-        }
-      : null
+  }
 };
 
 export const reducer = (state: * = initialState, action: Object) => {

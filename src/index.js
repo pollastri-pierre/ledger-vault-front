@@ -9,6 +9,9 @@ import { Provider } from "react-redux";
 import App from "./containers/App/App";
 import create from "./redux/create";
 import registerServiceWorker from "./registerServiceWorker";
+import RestlayProvider from "./restlay/RestlayProvider";
+import GlobalLoading from "./components/GlobalLoading";
+import network from "./network";
 
 import {
   PrivateRoute,
@@ -34,21 +37,26 @@ const $root = document.getElementById("root");
 $root &&
   ReactDOM.render(
     <Provider store={store}>
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <I18nProvider>
-          <div>
-            <AlertsContainer />
-            <BrowserRouter>
-              <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/logintest" component={LoginTest} />
-                <Route path="/logout" component={Logout} />
-                <PrivateRoute path="/" component={App} />
-              </Switch>
-            </BrowserRouter>
-          </div>
-        </I18nProvider>
-      </MuiThemeProvider>
+      <RestlayProvider
+        network={network}
+        connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
+      >
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <I18nProvider>
+            <div>
+              <AlertsContainer />
+              <BrowserRouter>
+                <Switch>
+                  <Route path="/login" component={Login} />
+                  <Route path="/logintest" component={LoginTest} />
+                  <Route path="/logout" component={Logout} />
+                  <PrivateRoute path="/" component={App} />
+                </Switch>
+              </BrowserRouter>
+            </div>
+          </I18nProvider>
+        </MuiThemeProvider>
+      </RestlayProvider>
     </Provider>,
     $root
   );
