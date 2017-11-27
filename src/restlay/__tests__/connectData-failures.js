@@ -9,7 +9,7 @@ import {
   flushPromises,
   NullComponent
 } from "../tests-utils";
-import createMock, { AnimalQuery } from "../tests-utils/mock-1";
+import createMock, { AnimalQuery, AnimalsQuery } from "../tests-utils/mock-1";
 
 test("RenderError gets rendered if network fails. it receives error that is the exact thrown error", async () => {
   const net = networkFromMock(createMock());
@@ -86,6 +86,25 @@ test("a network error can be recovered after an update", async () => {
   inst.unmount();
 });
 
+test("a network error can be recovered after an update when many queries", async () => {
+  const net = networkFromMock(createMock());
+  const render = createRender(net.network);
+  const Animal = connectData(({ animal }) => animal.id, {
+    RenderError: () => "oops",
+    queries: { animal: AnimalQuery, animals: AnimalsQuery },
+    propsToQueryParams: ({ animalId }) => ({ animalId })
+  });
+  const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));
+  net.tick();
+  await flushPromises();
+  expect(inst.toJSON()).toBe("oops");
+  inst.update(render(<Animal animalId="id_doge" />));
+  net.tick();
+  await flushPromises();
+  expect(inst.toJSON()).toBe("id_doge");
+  inst.unmount();
+});
+
 test("a network error can be forceFetched without error", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
@@ -112,8 +131,6 @@ test("a network error can be forceFetched without error", async () => {
   expect(inst.toJSON()).toBe("oops");
   inst.unmount();
 });
-
-// TODO test that a single failure with a success still produces an error
 
 test("a thrown error can be recovered after an update", async () => {
   const net = networkFromMock(createMock());

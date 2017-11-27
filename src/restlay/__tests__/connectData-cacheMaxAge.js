@@ -38,6 +38,34 @@ test("if a query defines cacheMaxAge, have recent cache, it should not fetch aga
   inst.unmount();
 });
 
+test("new props where data is cached", async () => {
+  const net = networkFromMock(createMock());
+  const render = createRender(net.network);
+  const Animal = connectData(({ animal }) => animal.name, {
+    RenderLoading: () => "loading",
+    RenderError: ({ error }) => error.message,
+    queries: { animal: AnimalQuery },
+    propsToQueryParams: ({ animalId }) => ({ animalId })
+  });
+  const inst = renderer.create(render(<Animal animalId="id_max" />));
+  expect(net.tick()).toBe(1);
+  await flushPromises();
+  expect(inst.toJSON()).toBe("max");
+  inst.update(render(<Animal animalId="id_doge" />));
+  expect(net.tick()).toBe(1);
+  await flushPromises();
+  expect(inst.toJSON()).toBe("doge");
+  inst.update(render(<Animal animalId="id_max" />));
+  expect(net.tick()).toBe(0);
+  await flushPromises();
+  expect(inst.toJSON()).toBe("max");
+  inst.update(render(<Animal animalId="id_doge" />));
+  expect(net.tick()).toBe(0);
+  await flushPromises();
+  expect(inst.toJSON()).toBe("doge");
+  inst.unmount();
+});
+
 test("if a query have cacheMaxAge, but cache is too old, it should fetch again on a new mount", async () => {
   const mock = createMock();
   const net = networkFromMock(mock);
