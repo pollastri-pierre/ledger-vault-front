@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import OperationCreation from "./operations/creation/OperationCreation";
 import connectData from "../restlay/connectData";
 import AccountsQuery from "../api/queries/AccountsQuery";
+import ModalLoading from "../components/ModalLoading";
 import type { Account } from "../data/types";
 
 export type Details = {
@@ -36,6 +37,8 @@ class NewOperationModal extends Component<
     console.log(
       "TODO: this.props.restlay.commitUpdate(new SaveOperationMutation({...}))"
     );
+
+    this.props.close();
   };
 
   onSelect = (tabsIndex: number) => {
@@ -51,7 +54,7 @@ class NewOperationModal extends Component<
 
   saveDetails = (details: Details) => {
     console.log(details);
-    
+
     this.setState({ details });
   };
 
@@ -72,6 +75,7 @@ class NewOperationModal extends Component<
 }
 
 export default connectData(NewOperationModal, {
+  RenderLoading: ModalLoading,
   queries: {
     accounts: AccountsQuery
   }
