@@ -63,6 +63,7 @@ test("multiple queries trigger only one React update", async () => {
   expect(inst.toJSON()).toBe(null);
   expect(net.tickOne()).toBe(1);
   await flushPromises();
+  expect(inst.toJSON()).toBe(null);
   expect(net.tickOne()).toBe(1);
   await flushPromises();
   expect(inst.toJSON()).toBe("doge_2");

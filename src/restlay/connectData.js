@@ -243,9 +243,9 @@ export default function connectData<
       ) {
         const syncId = ++this.syncAPI_id;
         const promises = this.syncAPI(apiParams, forceFetchMode);
-        state.pending = true;
-        state.apiError = null;
         if (promises.length > 0) {
+          state.pending = true;
+          state.apiError = null;
           p = Promise.all(promises).then(
             () => {
               if (this._unmounted || syncId !== this.syncAPI_id) return;
