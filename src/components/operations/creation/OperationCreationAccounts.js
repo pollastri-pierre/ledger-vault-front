@@ -1,7 +1,7 @@
 import _ from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
-import CurrencyNameValue from "../../CurrencyNameValue";
+import CurrencyAccountValue from "../../CurrencyAccountValue";
 import CurrencyUnitValue from "../../CurrencyUnitValue";
 import { countervalueForRate } from "../../../data/currency";
 
@@ -37,8 +37,8 @@ function OperationCreationAccounts(props) {
             <div className="account-top">
               <span className="account-name">{cur.name}</span>
               <span className="account-balance">
-                <CurrencyNameValue
-                  currencyName={cur.currency.name}
+                <CurrencyAccountValue
+                  account={cur}
                   value={cur.balance}
                 />
               </span>
