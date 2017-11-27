@@ -168,28 +168,21 @@ export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
 };
 
-export type lineChartPoint = {
-  time: Date,
-  amount: number,
-  tooltip: boolean,
-  rate: Rate
+type DataPoint = {
+  date: number,
+  value: number
 };
 
-export type lineChartPointEnhanced = {
-  ...lineChartPoint,
+export type DataPointEnhanced = {
+  ...DataPoint,
   x: number,
   y: number
 };
 
-export type pieChartData = {
+export type PieChartData = {
   account: Account,
   balance: number,
   counterValueBalance: number
-};
-
-type DataPoint = {
-  value: number,
-  date: Date
 };
 
 export type BalanceEntity = {

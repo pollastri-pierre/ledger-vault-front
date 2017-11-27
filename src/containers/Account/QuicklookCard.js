@@ -1,18 +1,11 @@
 //@flow
 import React, { Component } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import type {
-  Account,
-  Operation,
-  lineChartPoint,
-  BalanceEntity
-} from "../../data/types";
+import type { Account, Operation, BalanceEntity } from "../../data/types";
 import { getUnitFromRate, getAccountCurrencyUnit } from "../../data/currency";
 import { Select, Option } from "../../components/Select";
 import DateFormat from "../../components/DateFormat";
-import QuicklookGraph from "./QuicklookGraph";
-import { formatCurrencyUnit } from "../../data/currency";
-import _ from "lodash";
+import QuicklookWrap from "./QuickLookWrap";
 import Card from "../../components/Card";
 import AccountQuery from "../../api/queries/AccountQuery";
 import BalanceQuery from "../../api/queries/BalanceQuery";
@@ -25,7 +18,6 @@ type Props = {
   accountId: string,
   account: Account,
   operations: Array<Operation>,
-  reloading: boolean,
   balance: BalanceEntity
 };
 
@@ -77,22 +69,14 @@ export class QuicklookCard extends Component<Props, State> {
   };
 
   getDateRange = (tabsIndex: number): number[] => {
-    const max = new Date();
-    let min = new Date();
-    min =
-      tabsIndex === 0
-        ? new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-        : min;
-    min =
-      tabsIndex === 1
-        ? new Date(new Date().setMonth(new Date().getMonth() - 1))
-        : min;
-    min = tabsIndex === 2 ? this.getLastWeek() : min;
-    min =
-      tabsIndex === 3
-        ? new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
-        : min;
-    return [min.setHours(0, 0, 0, 0), max.setHours(0, 0, 0, 0)];
+    const dayInMs = 86400000;
+    const max = new Date().getTime();
+    let min = max;
+    min = tabsIndex === 0 ? max - dayInMs * 365 : min;
+    min = tabsIndex === 1 ? max - dayInMs * 30 : min;
+    min = tabsIndex === 2 ? max - dayInMs * 7 : min;
+    min = tabsIndex === 3 ? max - dayInMs : min;
+    return [min, max];
   };
 
   getLabelDateRange = (
@@ -141,78 +125,18 @@ export class QuicklookCard extends Component<Props, State> {
     return res;
   };
 
-  getOperations = (data: Operation[]) => {
-    const { account } = this.props;
-    const { quicklookFilter } = this.state;
-    let operations = [];
-    if (!data.length) return [];
-    //PROBABLY NEEDS TO BE FIXED
-    operations = data.map((o: Operation): lineChartPoint => {
-      return {
-        time: new Date(o.time),
-        amount: o.amount,
-        tooltip: true,
-        rate: o.rate
-      };
-    });
-    if (quicklookFilter === "balance") {
-      operations = operations.map(
-        ((o: lineChartPoint, i: number): lineChartPoint => {
-          return {
-            ...o,
-            amount: parseFloat(
-              formatCurrencyUnit(
-                account.currency.units[0],
-                operations.slice(0, i).reduce(
-                  ((a: number, b: lineChartPoint) => {
-                    return a + b.amount;
-                  }: Function),
-                  0
-                ),
-                false,
-                false,
-                false
-              )
-            )
-          };
-        }: Function)
-      );
-      operations.push({
-        ...operations[operations.length - 1],
-        time: new Date(),
-        tooltip: false
-      });
-    } else if (quicklookFilter === "countervalue") {
-      operations = operations.map((o: lineChartPoint) => {
-        return {
-          ...o,
-          amount: o.amount * o.rate.value
-        };
-      });
-      operations.push({
-        ...operations[operations.length - 1],
-        time: new Date(),
-        tooltip: false
-      });
-    }
-    operations = _.sortBy(operations, elem =>
-      new Date(elem.time).toISOString()
-    );
-    return operations;
-  };
-
   render() {
-    const { operations, account, reloading, balance } = this.props;
-    const data = this.getOperations(operations);
+    const { operations, account, balance, reloading, accountId } = this.props;
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
-    console.log(balance);
+    const selectedBalance =
+      quicklookFilter === "balance" ? "balance" : "counterValueBalance";
     // FIXME PROBABLY NEEDS TO BE FIXED
     if (quicklookFilter === "countervalue") {
       currencyUnit = getUnitFromRate(operations[0].rate);
     }
     return (
-      data.length && (
+      selectedBalance.length && (
         <Card
           reloading={reloading}
           className="quicklook"
@@ -249,9 +173,15 @@ export class QuicklookCard extends Component<Props, State> {
             </div>
             <div className="content">
               <div className="quickLookGraphWrap">
-                <QuicklookGraph
+                <QuicklookWrap
+                  accountId={accountId}
+                  filter={
+                    quicklookFilter === "balance"
+                      ? "balance"
+                      : "counterValueBalance"
+                  }
+                  granularity={tabsIndex}
                   dateRange={this.getDateRange(tabsIndex)}
-                  data={data}
                   currencyUnit={currencyUnit}
                   currencyColor={account.currency.color}
                 />
@@ -286,7 +216,10 @@ export default connectData(QuicklookCard, {
     operations: AccountOperationsQuery,
     balance: BalanceQuery
   },
-  propsToQueryParams: props => ({ accountId: props.accountId }),
+  propsToQueryParams: props => ({
+    accountId: props.accountId,
+    granularity: 1
+  }),
   optimisticRendering: true,
   RenderError,
   RenderLoading

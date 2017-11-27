@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
-import type { lineChartPointEnhanced, Unit } from "../../data/types";
+import type { DataPointEnhanced, Unit } from "../../data/types";
 type Props = {
   data: Array<*>,
   dateRange: Array<*>,
@@ -30,8 +30,8 @@ export default class QuicklookGraph extends Component<Props, *> {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d: lineChartPointEnhanced, i: number) => {
-    if (d.tooltip) this.setSelected(i);
+  handleMouseOver = (d: DataPointEnhanced, i: number) => {
+    this.setSelected(i);
   };
 
   handleMouseOut = () => {
@@ -59,7 +59,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const selection = d3
       .select(".hoveringDots")
       .selectAll(".hoverdot")
-      .data(data, d => d.x + d.y + d.time);
+      .data(data, d => d.x + d.y + d.date);
     selection.exit().remove();
     selection
       .enter()
@@ -78,7 +78,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const selection = d3
       .select(".visibleDots")
       .selectAll(".dot")
-      .data(data, d => d.x + d.y + d.time);
+      .data(data, d => d.x + d.y + d.date);
 
     selection.exit().remove();
 
@@ -186,10 +186,10 @@ export default class QuicklookGraph extends Component<Props, *> {
 
     const domainX = [
       d3.min(data, function(d) {
-        return d.time;
+        return d.date;
       }),
       d3.max(data, function(d) {
-        return d.time;
+        return d.date;
       })
     ];
 
@@ -199,12 +199,12 @@ export default class QuicklookGraph extends Component<Props, *> {
       .range([0, width]);
 
     const minY = d3.min(data, function(d) {
-      return d.amount;
+      return d.value;
     });
     const domainY = [
       minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
-        return d.amount;
+        return d.value;
       })
     ];
 
@@ -241,8 +241,8 @@ export default class QuicklookGraph extends Component<Props, *> {
       if (!x && !y) return transaction;
       return {
         ...transaction,
-        x: x(transaction.time),
-        y: y(transaction.amount)
+        x: x(transaction.date),
+        y: y(transaction.value)
       };
     });
 
@@ -300,7 +300,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .attr("id", "clip")
       .append("rect")
       .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
-      .attr("width", width + margin.left + margin.right)
+      .attr("width", width + margin.left + margin.right + 20)
       .attr("height", height + margin.top + margin.bottom);
 
     //init placeholder for visible dots
@@ -435,6 +435,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     } else if (prevState.transform !== this.state.transform) {
       //Redrawing graph
       const { data, xAxis, yAxis, x } = this.computeData(dataProp);
+      console.log(data);
       this.drawInvisibleDots(data);
       this.drawVisibleDots(data);
       this.drawGraph(data, xAxis, yAxis, x);
@@ -458,13 +459,13 @@ export default class QuicklookGraph extends Component<Props, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    {currencyUnit.code} {data[selected].amount}
+                    {currencyUnit.code} {data[selected].value}
                   </div>
                   <div>
                     <span className="uppercase date">
                       <DateFormat
                         format="ddd D MMM"
-                        date={data[selected].time}
+                        date={data[selected].date}
                       />
                     </span>
                   </div>

@@ -4,12 +4,12 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
-import type { pieChartData } from "../../data/types";
+import type { PieChartData } from "../../data/types";
 import "./PieChart.css";
 
 export default class PieChart extends Component<
   {
-    data: Array<pieChartData>,
+    data: Array<PieChartData>,
     width: number,
     height: number
   },

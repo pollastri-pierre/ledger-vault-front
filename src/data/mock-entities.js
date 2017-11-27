@@ -8,46 +8,9 @@ import type {
   OperationEntity,
   SecurityScheme,
   Transaction,
-  BalanceEntity,
-  DataPoint
+  BalanceEntity
 } from "./types";
 import moment from "moment";
-
-const getRandomInt = (min: number, max: number): number => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-const randomDate = (start: Date, end: Date): Date => {
-  return new Date(
-    start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
-};
-
-const genBalance = (): BalanceEntity => {
-  const nb_operations: number = getRandomInt(2, 500);
-  let previous_balance: number = 0;
-  let previous_date: Date = randomDate(new Date(4, 1), new Date(16, 1));
-  const balance: DataPoint = [...Array(nb_operations)].map((elem, i) => {
-    console.log("hey");
-    if (i === 0) {
-      previous_date = randomDate(previous_date, new Date());
-      previous_balance = 0;
-    } else if (i === nb_operations - 1) {
-      previous_balance = getRandomInt(0, (previous_balance * 2);
-      previous_date = new Date();
-    } else {
-      previous_balance = getRandomInt(0, (previous_balance * 2));
-      previous_date = randomDate(previous_date, new Date());
-    }
-    return {
-      value: previous_balance,
-      date: previous_date
-    };
-  });
-  return { balance: balance, counterValueBalance: balance };
-};
 
 const mockCurrencies: CurrencyEntity[] = [
   {
@@ -609,7 +572,6 @@ const operations: { [_: string]: OperationEntity } = {
   "5": genOperation({
     uuid: "5",
     amount: -130000000,
-    account_id: "4",
     type: "FROM",
     approved: ["0", "1"],
     approvedTime: moment()
@@ -710,7 +672,54 @@ const operations: { [_: string]: OperationEntity } = {
   })
 };
 
-const balance = genBalance();
+for (let i = 0; i < 500; i += 10) {
+  const uuid = "mock_ltc_" + i;
+  const t = 1500000000000 + i * 23000000;
+  operations[uuid] = genOperation({
+    uuid,
+    time: new Date(t),
+    account_id: "4",
+    amount:
+      9999999 *
+      (0.4 + Math.cos((t - 1500000000000 + Math.sin(t)) / 100)) *
+      Math.exp((t - 1500000000000) / 1000000000),
+    currency_name: "litecoin",
+    currency_family: "Litecoin"
+  });
+}
+const genBalance = (
+  accountId: number,
+  expectedGranularity: number,
+  range: number
+): BalanceEntity => {
+  let balance = [];
+  const begin_t = new Date().getTime() - (range || 31536000000); //account creation date
+  const final_t = new Date().getTime(); //Now
+  const dt = final_t - begin_t;
+  const nb_transac = 500;
+  const granularity = 2 * (expectedGranularity + 1);
+  const step = dt / (nb_transac / granularity); //step between each datapoint
+  let t = begin_t;
+  let date = begin_t;
+  for (
+    let i = 0;
+    i < nb_transac && date <= final_t;
+    i += granularity + Math.floor(Math.random() * 5)
+  ) {
+    date = t + step * i;
+    balance.push({
+      date: Math.min(final_t, date),
+      value: Math.max(
+        0,
+        999 * Math.exp(-dt / (t + step * i - begin_t)) +
+          99 * (accountId + 1) * Math.sin(t) * Math.exp(Math.cos(t + step * i))
+      )
+    });
+  }
+  return { balance: balance, counterValueBalance: balance };
+};
+
+const balance = genBalance;
 
 export default {
   groups,

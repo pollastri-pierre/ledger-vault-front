@@ -3,6 +3,9 @@
   padding-top: 20px;
   .chartWrap {
     position: relative;
+    svg {
+      overflow: visible;
+    }
   }
   .tooltip {
     position: absolute;
