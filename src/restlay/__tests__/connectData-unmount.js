@@ -9,7 +9,7 @@ import {
   networkFromMock,
   flushPromises
 } from "../tests-utils";
-import createMock, {AnimalQuery} from "../tests-utils/mock-1";
+import createMock, { AnimalQuery } from "../tests-utils/mock-1";
 
 test("if component terminates earlier it should not trigger errors if there are pending work", async () => {
   const net = networkFromMock(createMock());

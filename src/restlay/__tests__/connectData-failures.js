@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import invariant from "invariant";
 import renderer from "react-test-renderer";
 import connectData from "../connectData";
 import {
@@ -24,6 +25,20 @@ test("RenderError gets rendered if network fails. it receives error that is the 
   expect(net.tick()).toBe(1);
   await flushPromises();
   expect(inst.toJSON()).toBe("notfound");
+  inst.unmount();
+});
+
+test("RenderError is by default rendering null", async () => {
+  const net = networkFromMock(createMock());
+  const render = createRender(net.network);
+  const AnimalNotFound = connectData(NullComponent, {
+    queries: { animal: AnimalQuery },
+    propsToQueryParams: () => ({ animalId: "DOES_NOT_EXIST" })
+  });
+  const inst = renderer.create(render(<AnimalNotFound />));
+  expect(net.tick()).toBe(1);
+  await flushPromises();
+  expect(inst.toJSON()).toBe(null);
   inst.unmount();
 });
 
@@ -68,6 +83,33 @@ test("a network error can be recovered after an update", async () => {
   net.tick();
   await flushPromises();
   expect(inst.toJSON()).toBe("id_doge");
+  inst.unmount();
+});
+
+test("a network error can be forceFetched without error", async () => {
+  const net = networkFromMock(createMock());
+  const render = createRender(net.network);
+  let rlay;
+  const Animal = connectData(NullComponent, {
+    RenderError: ({ restlay }) => ((rlay = restlay), "oops"),
+    queries: { animal: AnimalQuery },
+    propsToQueryParams: ({ animalId }) => ({ animalId })
+  });
+  const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));
+  net.tick();
+  await flushPromises();
+  invariant(rlay, "restlay is available");
+  expect(inst.toJSON()).toBe("oops");
+  rlay.forceFetch();
+  net.tick();
+  await flushPromises();
+  expect(inst.toJSON()).toBe("oops");
+  rlay.forceFetch();
+  rlay.forceFetch();
+  rlay.forceFetch();
+  net.tick();
+  await flushPromises();
+  expect(inst.toJSON()).toBe("oops");
   inst.unmount();
 });
 

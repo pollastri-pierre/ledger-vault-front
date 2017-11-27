@@ -179,18 +179,10 @@ export default function connectData<
     }
 
     commitMutation = <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
-      if (!(m instanceof Mutation)) {
-        console.error(m);
-        throw new Error("invalid mutation provided in restlay.commitMutation");
-      }
       return this.execute(m);
     };
 
     fetchQuery = <In, Res>(query: Query<In, Res>): Promise<Res> => {
-      if (!(query instanceof Query)) {
-        console.error(query);
-        throw new Error("invalid mutation provided in restlay.fetchQuery");
-      }
       return this.execute(query);
     };
 

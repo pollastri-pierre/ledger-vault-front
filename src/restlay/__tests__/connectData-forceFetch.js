@@ -70,6 +70,16 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
   expect(inst.toJSON()).toMatchObject({
     children: ["doge_20", "max_20", "max_15", "doge_5", "2"]
   });
+  rlay.forceFetch();
+  rlay.forceFetch();
+  rlay.forceFetch();
+  rlay.forceFetch();
+  rlay.forceFetch();
+  expect(net.tick()).toBe(1);
+  await flushPromises();
+  expect(inst.toJSON()).toMatchObject({
+    children: ["doge_20", "max_20", "max_15", "doge_5", "2"]
+  });
   inst.unmount();
 });
 
