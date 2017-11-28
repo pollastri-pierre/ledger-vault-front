@@ -10,7 +10,7 @@ import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
 import BlurDialog from "../../components/BlurDialog";
-import { Tooltip, Alert, Overscroll } from "../../components";
+import { Alert, Overscroll } from "../../components";
 import { switchLocale } from "../../redux/modules/locale";
 
 import "./SandBox.css";
@@ -198,7 +198,6 @@ class SandBox extends Component {
             </Row>
           </Col>
         </Row>
-        <Tooltip />
       </div>
     );
   }
