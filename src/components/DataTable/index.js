@@ -5,7 +5,7 @@ import "./index.css";
 type Column<Cell> = {
   title: string,
   className: string,
-  renderCell: (cell: Cell) => any
+  renderCell: React$ComponentType<$Shape<Cell>>
 };
 
 export default class DataTable<Cell> extends Component<{
