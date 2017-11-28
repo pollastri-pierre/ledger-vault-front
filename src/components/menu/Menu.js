@@ -23,6 +23,7 @@ function Menu(
     translate: Function
   }
 ) {
+  const { location } = props;
   const t = context.translate;
   return (
     <div className="Menu">
@@ -34,7 +35,7 @@ function Menu(
           </NavLink>
         </li>
         <li>
-          <NavLink to={props.location.pathname + "/new-operation"}>
+          <NavLink to={location.pathname + "/new-operation"}>
             <MenuNewOperationIcon style={styleIcon} />
             {t("menu.newOperation")}
           </NavLink>
@@ -56,7 +57,7 @@ function Menu(
 
       <div className="menu-accounts">
         <h4>Accounts</h4>
-        <AccountsMenu />
+        <AccountsMenu location={location} />
       </div>
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
