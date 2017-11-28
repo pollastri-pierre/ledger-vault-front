@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
@@ -69,4 +69,4 @@ Menu.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default withRouter(Menu);
+export default Menu;

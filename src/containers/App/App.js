@@ -11,13 +11,13 @@ import "./App.css";
 
 injectTapEventPlugin(); // Required by Material-UI
 
-function App() {
+function App({ location }: *) {
   return (
     <div className="App">
       <GlobalLoadingRendering />
       <ActionBar />
       <div className="Main">
-        <Menu />
+        <Menu location={location} />
         <Content />
       </div>
     </div>
