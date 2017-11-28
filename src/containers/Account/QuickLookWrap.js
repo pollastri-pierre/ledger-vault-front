@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import type { Account, BalanceEntity, Unit } from "../../data/types";
+import type { BalanceEntity, Unit } from "../../data/types";
 import QuicklookGraph from "./QuicklookGraph";
 import BalanceQuery from "../../api/queries/BalanceQuery";
 import TryAgain from "../../components/TryAgain";
@@ -9,8 +9,7 @@ import connectData from "../../restlay/connectData";
 
 type Props = {
   accountId: string,
-  account: Account,
-  granularity: string,
+  granularity: number,
   balance: BalanceEntity,
   currencyUnit: Unit,
   dateRange: Array<*>,
