@@ -1,0 +1,104 @@
+@import "../../../styles/mixins";
+@import "../../../styles/variables";
+
+.operation-creation-unit-list,
+.operation-creation-fees-list
+ {
+  list-style-type: none;
+  padding: 20px 30px 20px 0;
+  margin: 0;
+
+  li {
+    margin: 10px 0;
+    height: 18.5px;
+    position: relative;
+  }
+
+  a {
+    display: block;
+    padding-left: 40px;
+    @include highlight-block($porto, 0px);
+
+    &.active {
+      opacity: 1;
+      @include highlight-block-active($porto, 0px);
+    }
+  }
+}
+
+.operation-creation-fees-list {
+  font-size: 13px;
+}
+
+.operation-creation-send-max {
+  padding: 30px;
+
+  a {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    @include highlight-block-right($porto, -30px);
+  }
+}
+
+.operation-creation-details {
+  position: relative;
+  font-size: 21.8px;
+
+  .tab-title {
+    padding-bottom: $spacingS * 1.5;
+  }
+
+  .tab-title:not(:first-of-type) {
+    padding-top: $spacingS * 1.5;
+  }
+
+  .title-address {
+    padding-bottom: 0;
+  }
+
+  .operation-creation-arrow-down {
+    display: inline-block;
+    width: 11px;
+  }
+
+  .operation-creation-amount-field {
+    padding-bottom: 16px !important;
+
+    div {
+      right: 0;
+      padding-right: 23px !important;
+    }
+
+    input {
+      text-align: right;
+      padding: 0 23px 0 70px !important;
+    }
+  }
+
+  .operation-creation-countervalue {
+    color: $lead;
+    padding-top: 16px;
+    line-height: 1em;
+  }
+
+  .operation-creation-fees-button {
+    cursor: pointer;
+    font-size: 13px;
+    width: fit-content;
+
+    .operation-creation-arrow-down {
+      width: 8px;
+      margin-left: 10px;
+    }
+  }
+
+  .operation-creation-fees-divider {
+    margin: $spacingS 0;
+  }
+
+  .operation-creation-fees-countervalue {
+    color: $steel;
+  }
+}

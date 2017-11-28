@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import type { Unit } from "../data/types";
 import { formatCurrencyUnit } from "../data/currency";

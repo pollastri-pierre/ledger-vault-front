@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink, withRouter } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
@@ -23,6 +23,7 @@ function Menu(
     translate: Function
   }
 ) {
+  const { location } = props;
   const t = context.translate;
   return (
     <div className="Menu">
@@ -34,7 +35,7 @@ function Menu(
           </NavLink>
         </li>
         <li>
-          <NavLink to={props.location.pathname + "/new-operation"}>
+          <NavLink to={location.pathname + "/new-operation"}>
             <MenuNewOperationIcon style={styleIcon} />
             {t("menu.newOperation")}
           </NavLink>
@@ -56,7 +57,7 @@ function Menu(
 
       <div className="menu-accounts">
         <h4>Accounts</h4>
-        <AccountsMenu />
+        <AccountsMenu location={location} />
       </div>
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
@@ -68,4 +69,4 @@ Menu.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default withRouter(Menu);
+export default Menu;

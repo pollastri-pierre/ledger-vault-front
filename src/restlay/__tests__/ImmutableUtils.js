@@ -1,5 +1,5 @@
 //@flow
-import { merge } from "./ImmutableUtils";
+import { merge } from "../ImmutableUtils";
 import isEqual from "lodash/isEqual";
 
 test("merge do the merge work", () => {

@@ -1,20 +1,19 @@
 //@flow
 import { connect } from "react-redux";
+import invariant from "invariant";
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import shallowEqual from "fbjs/lib/shallowEqual";
 import isEqual from "lodash/isEqual";
 import {
   executeQueryOrMutation,
   getQueryCacheResult,
-  queryCacheIsFresh,
-  getQueryError,
-  queryIsPending
+  queryCacheIsFresh
 } from "./dataStore";
 import type { Store } from "./dataStore";
 import Query from "./Query";
 import Mutation from "./Mutation";
-
-// FIXME how to make this "generic"
-import GlobalLoading from "../components/GlobalLoading";
+import type RestlayProvider from "./RestlayProvider";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
@@ -28,9 +27,7 @@ export type RestlayEnvironment = {|
 
 type ConnectedProps = {|
   dataStore: Store,
-  executeQueryOrMutation: <In, Res>(
-    m: Mutation<In, Res> | Query<In, Res>
-  ) => Promise<Res>
+  dispatch: Function
 |};
 
 type InjectedProps = {|
@@ -52,13 +49,7 @@ type Out<Props> = Class<React$Component<Props, any>>;
 
 type ClazzProps<Props> = { ...ConnectedProps, ...Props };
 
-type Opts<Props, A> = {
-  // an object of { [propName: string]: Class<Query> }
-  queries?: A,
-
-  // allow to pass parameters to the api uri function that will be used to generate api URL.
-  propsToQueryParams?: (props: Props) => $Values<$ObjMap<A, ExtractQueryIn>>,
-
+export type ContextOverridableOpts<Props> = {
   // allow to implement the loading rendering. default is blank
   // prettier-ignore
   RenderLoading?: React$ComponentType<$Shape<{
@@ -70,36 +61,47 @@ type Opts<Props, A> = {
   RenderError?: React$ComponentType<$Shape<{
     error: Error,
     restlay: RestlayEnvironment
-  } & Props>>,
+  } & Props>>
+};
+
+type Opts<Props, A> = ContextOverridableOpts<Props> & {
+  // an object of { [propName: string]: Class<Query> }
+  queries?: A,
+
+  // allow to pass parameters to the api uri function that will be used to generate api URL.
+  propsToQueryParams?: (props: Props) => $Values<$ObjMap<A, ExtractQueryIn>>,
 
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
 
-  // allow the component to render if the api data was previously loaded
-  optimisticRendering?: boolean
+  // allow the component to render if the api data was previously loaded in cache
+  optimisticRendering?: boolean,
+
+  // when new props changes the query params / new data refresh, don't render anything until it loads
+  freezeTransition?: boolean,
+
+  // when new data is reloading, always render again RenderLoading
+  renderLoadingInTransition?: boolean
 };
 
 const defaultOpts = {
   queries: {},
-  RenderLoading: GlobalLoading,
+  RenderLoading: () => null,
   RenderError: () => null,
   propsToQueryParams: _ => ({}),
   forceFetch: false,
-  optimisticRendering: false
+  optimisticRendering: false,
+  freezeTransition: false,
+  renderLoadingInTransition: false
 };
 
 const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
-  const { dataStore, executeQueryOrMutation, ...rest } = props; // eslint-disable-line no-unused-vars
+  const { dataStore, dispatch, ...rest } = props; // eslint-disable-line no-unused-vars
   return rest;
 };
 
 const mapStateToProps = (state: Object): { dataStore: Store } => ({
   dataStore: state.data
-});
-
-const mapDispatchToProps = dispatch => ({
-  executeQueryOrMutation: queryOrMutation =>
-    dispatch(executeQueryOrMutation(store => store.data)(queryOrMutation))
 });
 
 export default function connectData<
@@ -112,57 +114,99 @@ export default function connectData<
     Decorated.name ||
     ""})`;
 
-  const allOpts = {
-    ...defaultOpts,
-    ...opts
-  };
+  // options that are not overridable by restlayProvider
   const {
     queries,
     propsToQueryParams,
     optimisticRendering,
-    RenderLoading,
-    RenderError,
+    renderLoadingInTransition,
+    freezeTransition,
     forceFetch
-  } = allOpts;
+  } = {
+    ...defaultOpts,
+    ...opts
+  };
   const queriesKeys: Array<$Keys<A>> = Object.keys(queries);
 
-  class Clazz extends Component<
-    ClazzProps<Props>,
-    {
-      catchedError: ?Error,
-      initialPending: boolean
-    }
-  > {
+  type State = {
+    catchedError: ?Error,
+    apiError: ?Error,
+    pending: boolean,
+    data: ?APIProps
+  };
+
+  const withoutPending = ({ pending, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
+
+  class Clazz extends Component<ClazzProps<Props>, State> {
+    context: {
+      restlayProvider: RestlayProvider
+    };
+
     static displayName = displayName;
+    static contextTypes = {
+      restlayProvider: PropTypes.object.isRequired
+    };
 
     state = {
       // this holds the componentDidCatch errors
       catchedError: null,
+      apiError: null,
       // we need to wait a potential initial sync to not render initially with previous data if optimisticRendering is not asked
-      initialPending: false
+      pending: false,
+      data: null
     };
 
-    apiParams: Object = {};
+    _options = {
+      ...defaultOpts,
+      ...this.context.restlayProvider.props.connectDataOptDefaults,
+      ...opts
+    };
+
+    getOptions() {
+      return this._options;
+    }
+
+    apiParams: ?Object = null;
     queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
-    lastCompleteQueriedData: ?APIProps = null;
 
-    sync(
+    executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
+
+    execute<In, Out>(
+      queryOrMutation: Query<In, Out> | Mutation<In, Out>
+    ): Promise<Out> {
+      return this.props.dispatch(this.executeQueryF(queryOrMutation));
+    }
+
+    commitMutation = <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
+      return this.execute(m);
+    };
+
+    fetchQuery = <In, Res>(query: Query<In, Res>): Promise<Res> => {
+      return this.execute(query);
+    };
+
+    updateQueryInstances(apiParams: Object) {
+      const instances: $ObjMap<A, ExtractQuery> = {};
+      queriesKeys.forEach(key => {
+        const Q = queries[key];
+        const query: Query<*, *> = new Q(apiParams);
+        instances[key] = query;
+      });
+      this.queriesInstances = instances;
+      this.apiParams = apiParams;
+    }
+
+    syncAPI(
       apiParams: Object,
       forceFetchMode: boolean = false
     ): Array<Promise<*>> {
-      const { executeQueryOrMutation, dataStore } = this.props;
+      const { dataStore } = this.props;
       if (this.apiParams !== apiParams || !this.queriesInstances) {
-        const instances: $ObjMap<A, ExtractQuery> = {};
-        queriesKeys.forEach(key => {
-          const Q = queries[key];
-          const query: Query<*, *> = new Q(apiParams);
-          instances[key] = query;
-        });
-        this.queriesInstances = instances;
-        this.apiParams = apiParams;
+        this.updateQueryInstances(apiParams);
       }
       const queriesInstances = this.queriesInstances;
+      invariant(queriesInstances, "queriesInstances must be defined");
       // $FlowFixMe filter() don't seem to be flowtyped correctly
       const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
@@ -172,50 +216,93 @@ export default function connectData<
             forceFetch ||
             !queryCacheIsFresh(dataStore, query)
           ) {
-            return executeQueryOrMutation(query);
+            return this.fetchQuery(query);
           }
         })
         .filter(p => p);
       return promises;
     }
 
-    // This "environment" is a restlay prop that will be passed to the component.
-    // the idea is to put everything in an object to not pollute props and introduce new things over time
-    restlay: RestlayEnvironment = {
-      commitMutation: <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
-        if (!(m instanceof Mutation)) {
-          console.error(m);
-          throw new Error(
-            "invalid mutation provided in restlay.commitMutation"
+    syncAPI_id = 0;
+
+    syncProps(
+      props: ClazzProps<Props>,
+      statePatch: $Shape<State> = {},
+      forceFetchMode: boolean = false
+    ): Promise<*> {
+      // FIXME can we simplify the code?
+      const state = { ...this.state, ...statePatch };
+      const { dataStore } = props;
+      let p: ?Promise<*>;
+
+      const apiParams = propsToQueryParams(extractInputProps(props));
+      if (
+        !this.apiParams ||
+        !isEqual(apiParams, this.apiParams) ||
+        forceFetchMode
+      ) {
+        const syncId = ++this.syncAPI_id;
+        const promises = this.syncAPI(apiParams, forceFetchMode);
+        if (promises.length > 0) {
+          state.pending = true;
+          state.apiError = null;
+          p = Promise.all(promises).then(
+            () => {
+              if (this._unmounted || syncId !== this.syncAPI_id) return;
+              // we need to sync again to make sure data is in sync.
+              // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
+              // NB we patch with a subset of state because local state variable might be outdated
+              this.syncProps(this.props, { apiError: null, pending: false });
+            },
+            apiError => {
+              if (this._unmounted || syncId !== this.syncAPI_id) return;
+              this.setState({ apiError, pending: false });
+            }
           );
         }
-        const { executeQueryOrMutation } = this.props;
-        return executeQueryOrMutation(m);
-      },
-      fetchQuery: <In, Res>(query: Query<In, Res>): Promise<Res> => {
-        if (!(query instanceof Query)) {
-          console.error(query);
-          throw new Error("invalid mutation provided in restlay.fetchQuery");
-        }
-        const { executeQueryOrMutation } = this.props;
-        return executeQueryOrMutation(query);
-      },
-      forceFetch: () => {
-        return Promise.all(this.sync(this.apiParams, true)).then(() => {});
       }
-    };
+
+      const { queriesInstances } = this;
+      const results = [];
+      for (let key in queriesInstances) {
+        const query = queriesInstances[key];
+        const cache = getQueryCacheResult(dataStore, query);
+        if (cache) {
+          const { result } = cache;
+          results.push({ result, key, query });
+        }
+      }
+
+      if (results.length === queriesKeys.length) {
+        if (!state.pending || optimisticRendering) {
+          const newData: APIProps = {};
+          let nbOfChanges = 0;
+          results.forEach(({ query, result, key }) => {
+            let item = query.getResponse(result, dataStore);
+            // FIXME PERF: isEqual on data should not be required if we improve normalizr to keep references
+            if (state.data && isEqual(item, state.data[key])) {
+              // keep previous reference if deep equals
+              item = state.data[key];
+            } else {
+              nbOfChanges++;
+            }
+            newData[key] = item;
+          });
+          if (nbOfChanges > 0) {
+            // only set newData if it's actually new data^^
+            state.catchedError = null;
+            state.apiError = null;
+            state.data = newData;
+          }
+        }
+      }
+
+      this.setState(state);
+      return p || Promise.resolve();
+    }
 
     componentWillMount() {
-      const promises = this.sync(
-        propsToQueryParams(extractInputProps(this.props))
-      );
-      if (promises.length > 0) {
-        this.setState({ initialPending: true });
-        Promise.all(promises).then(() => {
-          if (this._unmounted) return;
-          this.setState({ initialPending: false });
-        });
-      }
+      this.syncProps(this.props);
     }
 
     componentWillUnmount() {
@@ -223,84 +310,59 @@ export default function connectData<
     }
 
     componentWillReceiveProps(props: ClazzProps<Props>) {
-      const apiParams = propsToQueryParams(extractInputProps(props));
-      if (!isEqual(apiParams, this.apiParams)) {
-        this.sync(apiParams);
-      }
+      this.syncProps(props);
     }
 
     componentDidCatch(catchedError: Error) {
       this.setState({ catchedError });
     }
 
-    render() {
-      const props = extractInputProps(this.props);
-      const { dataStore } = this.props;
-      const { queriesInstances, restlay } = this;
-      const { catchedError, initialPending } = this.state;
-      if (!queriesInstances) {
-        // this should never happen
-        throw new Error("queriesInstances not set in connectData");
+    shouldComponentUpdate(props: ClazzProps<Props>, state: State) {
+      if (freezeTransition) {
+        if (state.pending) return false;
+      } else {
+        if (state.pending !== this.state.pending) {
+          return true;
+        }
       }
-      const error =
-        catchedError ||
-        queriesKeys.find(key =>
-          getQueryError(dataStore, queriesInstances[key])
-        ); // take the first API error
+      return (
+        !shallowEqual(
+          extractInputProps(this.props),
+          extractInputProps(props)
+        ) || !shallowEqual(withoutPending(this.state), withoutPending(state))
+      );
+    }
+
+    // This "environment" is a restlay prop that will be passed to the component.
+    // the idea is to put everything in an object to not pollute props and introduce new things over time
+    restlay: RestlayEnvironment = {
+      commitMutation: this.commitMutation,
+      fetchQuery: this.fetchQuery,
+      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {})
+    };
+
+    render() {
+      const { restlay } = this;
+      const { data, apiError, catchedError, pending } = this.state;
+      const props = extractInputProps(this.props);
+      const error = catchedError || apiError;
+      const { RenderError, RenderLoading } = this.getOptions();
       if (error) {
+        // there is an error
         return <RenderError {...props} error={error} restlay={restlay} />;
       }
-      const results = [];
-      for (let key in queriesInstances) {
-        const query = queriesInstances[key];
-        const cache = getQueryCacheResult(dataStore, query);
-        if (cache) {
-          results.push({
-            result: cache.result,
-            key,
-            query
-          });
-        }
-      }
-
-      const havePendings =
-        initialPending || results.some(r => queryIsPending(dataStore, r.query));
-
-      let queriedData: ?APIProps = this.lastCompleteQueriedData;
-
-      if (results.length !== queriesKeys.length) {
-        // one of the result is missing, we can't render yet so we keep rendering the old queried data if we can
-        // we keep rending the old lastCompleteQueriedData to "freeze" the rendering until the new data is ready instead of reloading
-        //queriedData = this.lastCompleteQueriedData;
-      } else if (!havePendings || optimisticRendering) {
-        // all results are available, we will make the api props data object
-
-        // TODO "bake" that object at the componentWillReceiveProps level AND only if it receives a new store / and probably need to deeply compare the object for now to keep using the same reference
-        const data: APIProps = {};
-        results.forEach(({ query, result, key }) => {
-          data[key] = query.getResponse(result, dataStore);
-        });
-        queriedData = data;
-        if (!havePendings) {
-          this.lastCompleteQueriedData = queriedData; // save only when we reach no pendings
-        }
-      }
-
-      if (!queriedData) {
-        // in case there were not a complete api yet, it means we are still loading
+      if (
+        (!data && queriesKeys.length > 0) || // there is no data yet (and we expect at least one data)
+        (pending && renderLoadingInTransition) // it is reloading and we want to render loading again
+      ) {
         return <RenderLoading {...props} restlay={restlay} />;
       }
-
+      // all data is here and ready to render the Decorated component
       return (
-        <Decorated
-          {...props}
-          {...queriedData}
-          reloading={havePendings}
-          restlay={restlay}
-        />
+        <Decorated {...props} {...data} reloading={pending} restlay={restlay} />
       );
     }
   }
 
-  return connect(mapStateToProps, mapDispatchToProps)(Clazz);
+  return connect(mapStateToProps)(Clazz);
 }

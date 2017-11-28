@@ -1,6 +1,5 @@
 //@flow
 import type { Store } from "./dataStore";
-import { denormalize } from "normalizr";
 
 type Notification = { title: string, content: string };
 
@@ -39,15 +38,12 @@ export default class Mutation<Input, Response> {
   // - to have rollback on error.
   // - to provide a way that a given data is optimistic so we can vary the rendering based on that.
 
-  // Internal
-
-  getResponse(result: Object, store: Store): Response {
-    return denormalize(result, this.responseSchema, store.entities);
-  }
+  // FIXME technically the 2 following methods has nothing to do in this generic library model.
+  // not sure how put it in project specific only
 
   // notification to trigger after data fetch
-  getSuccessNotification(_response: Response): ?Notification {}
+  +getSuccessNotification: (_response: Response) => ?Notification;
 
   // notification to trigger after data fetch failure
-  getErrorNotification(_error: *): ?Notification {}
+  +getErrorNotification: (_error: *) => ?Notification;
 }
