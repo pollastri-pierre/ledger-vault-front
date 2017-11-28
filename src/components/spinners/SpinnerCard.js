@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import CircularProgress from "material-ui/CircularProgress";
+import CircularProgress from "material-ui/Progress/CircularProgress";
 import { load } from "../GlobalLoading";
 
 class SpinnerCard extends PureComponent<{}> {

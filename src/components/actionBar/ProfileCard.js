@@ -8,7 +8,7 @@ import ModalRoute from "../ModalRoute";
 import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
-import CircularProgress from "material-ui/CircularProgress";
+import CircularProgress from "material-ui/Progress/CircularProgress";
 import connectData from "../../restlay/connectData";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 

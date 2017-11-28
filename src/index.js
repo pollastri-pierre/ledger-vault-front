@@ -1,8 +1,8 @@
 //@flow
 import React from "react";
 import ReactDOM from "react-dom";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { cyan } from "material-ui/colors";
 import { Switch, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -24,8 +24,9 @@ import {
 
 import "./styles/index.css";
 
-const muiTheme = getMuiTheme({
-  fontFamily: "Open Sans, sans-serif"
+const muiTheme = createMuiTheme({
+  fontFamily: "Open Sans, sans-serif",
+  palette: cyan
 });
 
 const locale = window.localStorage.getItem("locale") || "en";
