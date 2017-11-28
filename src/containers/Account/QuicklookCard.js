@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import SelectTab from "../../components/SelectTab/SelectTab";
 import type { Account } from "../../data/types";
-import { getUnitFromRate, getAccountCurrencyUnit } from "../../data/currency";
+import { getAccountCurrencyUnit, getFiatUnit } from "../../data/currency";
 import { Select, Option } from "../../components/Select";
 import DateFormat from "../../components/DateFormat";
 import QuicklookWrap from "./QuickLookWrap";
@@ -126,10 +126,10 @@ export class QuicklookCard extends Component<Props, State> {
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
     const selectedBalance =
-      quicklookFilter === "balance" ? "balance" : "counterValueBalance";
+      quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
     // FIXME PROBABLY NEEDS TO BE FIXED
-    if (quicklookFilter === "countervalue") {
-      //currencyUnit = getUnitFromRate();
+    if (quicklookFilter.key === "countervalue") {
+      currencyUnit = getFiatUnit(account.settings.fiat);
     }
     return (
       selectedBalance.length && (

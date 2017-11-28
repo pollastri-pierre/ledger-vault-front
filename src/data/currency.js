@@ -22,6 +22,14 @@ export function getCurrency(
   return currency;
 }
 
+export function getFiatUnit(fiat: string): Unit {
+  const unit = fiatUnits[fiat];
+  if (!unit) {
+    throw new Error(`unit "${fiat}" not found`);
+  }
+  return unit;
+}
+
 export function getUnitFromRate(rate: Rate): Unit {
   const unit = fiatUnits[rate.fiat];
   if (!unit) {

@@ -28,6 +28,7 @@ export class QuicklookWrap extends Component<Props, State> {
       currencyColor,
       filter
     } = this.props;
+    console.log(balance);
     const selectedBalance = balance[filter];
     return (
       selectedBalance.length && (

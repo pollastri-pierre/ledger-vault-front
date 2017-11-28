@@ -709,11 +709,16 @@ const genBalance = (
     date = t + step * i;
     balance.push({
       date: Math.min(final_t, date),
-      value: Math.max(
-        0,
-        999 * Math.exp(-dt / (t + step * i - begin_t)) +
-          99 * (accountId + 1) * Math.sin(t) * Math.exp(Math.cos(t + step * i))
-      )
+      value:
+        100000000 *
+        Math.max(
+          0,
+          999 * Math.exp(-dt / (t + step * i - begin_t)) +
+            99 *
+              (accountId + 1) *
+              Math.sin(t) *
+              Math.exp(Math.cos(t + step * i))
+        )
     });
   }
   let counterValueBalance = balance.map(a => ({
