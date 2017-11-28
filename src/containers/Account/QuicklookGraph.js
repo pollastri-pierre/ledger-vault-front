@@ -435,7 +435,6 @@ export default class QuicklookGraph extends Component<Props, *> {
     } else if (prevState.transform !== this.state.transform) {
       //Redrawing graph
       const { data, xAxis, yAxis, x } = this.computeData(dataProp);
-      console.log(data);
       this.drawInvisibleDots(data);
       this.drawVisibleDots(data);
       this.drawGraph(data, xAxis, yAxis, x);

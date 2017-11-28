@@ -8,8 +8,6 @@ import DateFormat from "../../components/DateFormat";
 import QuicklookWrap from "./QuickLookWrap";
 import Card from "../../components/Card";
 import AccountQuery from "../../api/queries/AccountQuery";
-import BalanceQuery from "../../api/queries/BalanceQuery";
-import AccountOperationsQuery from "../../api/queries/AccountOperationsQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
@@ -162,7 +160,7 @@ export class QuicklookCard extends Component<Props, State> {
           >
             <header>
               <TabList>
-                <Tab> Year </Tab>
+                <Tab> Year {}</Tab>
                 <Tab disabled={false}>month</Tab>
                 <Tab disabled={false}>week</Tab>
                 <Tab disabled={false}>day</Tab>
@@ -171,26 +169,22 @@ export class QuicklookCard extends Component<Props, State> {
             <div className="dateLabel">
               From {labelDateRange[0]} to {labelDateRange[1]}
             </div>
-            <div className="content">
-              <div className="quickLookGraphWrap">
-                <QuicklookWrap
-                  accountId={accountId}
-                  filter={
-                    quicklookFilter === "balance"
-                      ? "balance"
-                      : "counterValueBalance"
-                  }
-                  granularity={tabsIndex}
-                  dateRange={this.getDateRange(tabsIndex)}
-                  currencyUnit={currencyUnit}
-                  currencyColor={account.currency.color}
-                />
-              </div>
-              <TabPanel className="tabs_panel" />
-              <TabPanel className="tabs_panel" />
-              <TabPanel className="tabs_panel" />
-              <TabPanel className="tabs_panel" />
-            </div>
+            <QuicklookWrap
+              accountId={accountId}
+              filter={
+                quicklookFilter.key === "balance"
+                  ? "balance"
+                  : "counterValueBalance"
+              }
+              granularity={tabsIndex}
+              dateRange={this.getDateRange(tabsIndex)}
+              currencyUnit={currencyUnit}
+              currencyColor={account.currency.color}
+            />
+            <TabPanel className="tabs_panel" />
+            <TabPanel className="tabs_panel" />
+            <TabPanel className="tabs_panel" />
+            <TabPanel className="tabs_panel" />
           </Tabs>
         </Card>
       )
@@ -212,13 +206,10 @@ const RenderLoading = () => (
 
 export default connectData(QuicklookCard, {
   queries: {
-    account: AccountQuery,
-    operations: AccountOperationsQuery,
-    balance: BalanceQuery
+    account: AccountQuery
   },
   propsToQueryParams: props => ({
-    accountId: props.accountId,
-    granularity: 1
+    accountId: props.accountId
   }),
   optimisticRendering: true,
   RenderError,

@@ -690,7 +690,7 @@ for (let i = 0; i < 500; i += 10) {
 const genBalance = (
   accountId: number,
   expectedGranularity: number,
-  range: number
+  range: ?number
 ): BalanceEntity => {
   let balance = [];
   const begin_t = new Date().getTime() - (range || 31536000000); //account creation date
@@ -716,7 +716,11 @@ const genBalance = (
       )
     });
   }
-  return { balance: balance, counterValueBalance: balance };
+  let counterValueBalance = balance.map(a => ({
+    value: a.value * Math.random(),
+    date: a.date
+  }));
+  return { balance: balance, counterValueBalance: counterValueBalance };
 };
 
 const balance = genBalance;

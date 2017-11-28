@@ -103,12 +103,13 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       return { value: mockValuePerSpeed[speed] };
     }
 
-    m = /^\/balance\/([^/]+)\/([^/]+)\/([^/]+\/)?$/.exec(uri);
+    m = /^\/balance\/([^/]+)\/([^/]+)\/([^/]+\/)?([^/]+\/)?$/.exec(uri);
     if (m) {
       return mockEntities.balance(
         parseInt(m[1]),
-        parseInt(m[1]),
-        parseInt(m[3])
+        parseInt(m[2]),
+        parseInt(m[3]),
+        parseInt(m[4])
       );
     }
 

@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import type { Account, BalanceEntity, Unit } from "../../data/types";
 import QuicklookGraph from "./QuicklookGraph";
-import Card from "../../components/Card";
 import BalanceQuery from "../../api/queries/BalanceQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
@@ -49,16 +48,10 @@ export class QuicklookWrap extends Component<Props, State> {
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <Card className="quicklook" title="Quicklook">
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </Card>
+  <TryAgain error={error} action={restlay.forceFetch} />
 );
 
-const RenderLoading = () => (
-  <Card className="quicklook" title="Quicklook">
-    <SpinnerCard />
-  </Card>
-);
+const RenderLoading = () => <SpinnerCard />;
 
 export default connectData(QuicklookWrap, {
   queries: {
