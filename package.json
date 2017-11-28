@@ -12,7 +12,6 @@
     "fbjs": "^0.8.16",
     "history": "^4.7.2",
     "invariant": "^2.2.2",
-    "ledgerco": "git+https://github.com/LedgerHQ/ledger-node-js-api.git",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.19.4",
@@ -57,13 +56,10 @@
     "react-test-renderer": "^16.0.0"
   },
   "scripts": {
-    "build-css":
-      "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-    "watch-css":
-      "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
-    "start":
-      "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
+    "start": "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
     "build": "./scripts/build.sh",
     "test": "react-scripts test --env=jsdom",
     "coverage": "react-scripts test --env=jsdom --coverage",
