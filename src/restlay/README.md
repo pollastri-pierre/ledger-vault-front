@@ -14,3 +14,9 @@ inspirations from this GraphQL library.
 
 * optimistic updates? aka local update implementation of mutations. complex
   topic.
+
+### Tradeoffs
+
+* there is currently a strong dependency on react-redux. `<RestlayProvider>`
+  needs to be inside a redux store `<Provider>` and your store needs to use
+  `redux-thunk` middleware and have a `data` that is `restlay/dataStore`.

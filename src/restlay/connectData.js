@@ -7,7 +7,7 @@ import shallowEqual from "fbjs/lib/shallowEqual";
 import isEqual from "lodash/isEqual";
 import {
   executeQueryOrMutation,
-  getQueryCacheResult,
+  getPendingQueryResult,
   queryCacheIsFresh
 } from "./dataStore";
 import type { Store } from "./dataStore";
@@ -39,8 +39,12 @@ type InjectedProps = {|
 |};
 
 type ExtractQuery = <Q>(Class<Q>) => Q;
-type ExtractQueryResult = <In, Out>(Class<Query<In, Out>>) => Out;
-type ExtractQueryIn = <In, Out>(Class<Query<In, Out>>) => In;
+type ExtractQueryResult = <In, Out, O>(
+  Class<Query<In, Out> | ConnectionQuery<In, O>>
+) => Out;
+type ExtractQueryIn = <In, Out>(
+  Class<Query<In, Out> | ConnectionQuery<In, Out>>
+) => In;
 
 // prettier-ignore
 type InProps<Props, A> = $Supertype<InjectedProps & $ObjMap<A, ExtractQueryResult> & Props>;
@@ -70,7 +74,7 @@ export type ContextOverridableOpts<Props> = {
 type Opts<Props, A> = ContextOverridableOpts<Props> & {
   initialVariables?: Object,
 
-  // an object of { [propName: string]: Class<Query> }
+  // an object of { [propName: string]: Class<Query|ConnectionQuery> }
   queries?: A,
 
   // allow to pass parameters to the api uri function that will be used to generate api URL.
@@ -114,7 +118,9 @@ const mapStateToProps = (state: Object): { dataStore: Store } => ({
 });
 
 export default function connectData<
-  A: { [key: string]: Class<Query<any, any>> },
+  A: {
+    [key: string]: Class<Query<any, any> | ConnectionQuery<any, any>>
+  },
   Props: Object
 >(Decorated: In<Props, A>, opts?: Opts<Props, A>): Out<Props> {
   type APIProps = $ObjMap<A, ExtractQueryResult>;
@@ -146,7 +152,7 @@ export default function connectData<
     variables: Object
   };
 
-  const withoutPending = ({ pending, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
+  const sCUStateSubset = ({ pending, variables, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
 
   class Clazz extends Component<ClazzProps<Props>, State> {
     context: {
@@ -184,9 +190,12 @@ export default function connectData<
 
     setVariables = (vars: Object): void => {
       const { variables } = this.state;
-      const newVariables = { ...variables, ...vars };
-      if (isEqual(newVariables, variables)) {
+      let newVariables = { ...variables, ...vars };
+      if (!isEqual(newVariables, variables)) {
         this.syncProps(this.props, { variables: newVariables });
+      } else {
+        // we want to keep same variables ref but still trigger a syncProps
+        this.syncProps(this.props);
       }
     };
 
@@ -194,17 +203,22 @@ export default function connectData<
 
     executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
 
-    execute<In, Out>(
-      queryOrMutation: Query<In, Out> | Mutation<In, Out>
+    execute<Out: *>(
+      queryOrMutation:
+        | Query<any, Out>
+        | Mutation<any, Out>
+        | ConnectionQuery<any, any>
     ): Promise<Out> {
       return this.props.dispatch(this.executeQueryF(queryOrMutation));
     }
 
-    commitMutation = <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
+    commitMutation = <Res>(m: Mutation<any, Res>): Promise<Res> => {
       return this.execute(m);
     };
 
-    fetchQuery = <In, Res>(query: Query<In, Res>): Promise<Res> => {
+    fetchQuery = <Res>(
+      query: Query<any, Res> | ConnectionQuery<any, any>
+    ): Promise<Res> => {
       return this.execute(query);
     };
 
@@ -212,7 +226,7 @@ export default function connectData<
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
         const Q = queries[key];
-        const query: Query<*, *> = new Q(apiParams);
+        const query: Query<*, *> | ConnectionQuery<*, *> = new Q(apiParams);
         instances[key] = query;
       });
       this.queriesInstances = instances;
@@ -221,10 +235,15 @@ export default function connectData<
 
     syncAPI(
       apiParams: Object,
+      props: ClazzProps<Props>,
+      state: State,
       forceFetchMode: boolean = false
     ): Array<Promise<*>> {
-      const { dataStore } = this.props;
-      if (this.apiParams !== apiParams || !this.queriesInstances) {
+      const { restlayProvider } = this.context;
+      const { dataStore } = props;
+      let queryUpdated = false;
+      if (!isEqual(apiParams, this.apiParams) || !this.queriesInstances) {
+        queryUpdated = true;
         this.updateQueryInstances(apiParams);
       }
       const queriesInstances = this.queriesInstances;
@@ -233,17 +252,40 @@ export default function connectData<
       const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
           const query = queriesInstances[key];
-          if (
-            query instanceof Query &&
-            !(query instanceof ConnectionQuery) &&
-            (forceFetchMode ||
-              forceFetch ||
-              !queryCacheIsFresh(dataStore, query))
-          ) {
+          const pendingQuery = restlayProvider.getPendingQuery(query);
+          if (pendingQuery) return; // If data is already pending we ignore calling fetchQuery again.
+          let needsRefresh =
+            forceFetch ||
+            forceFetchMode ||
+            (queryUpdated &&
+              // FIXME later we might have a cache for ConnectionQuery actually, not incompatible, just need to iterate step-by-step
+              (query instanceof Query
+                ? !queryCacheIsFresh(dataStore, query)
+                : true));
+
+          if (query instanceof ConnectionQuery) {
+            const size = state.variables[key];
+            if (typeof size !== "number") {
+              throw new Error(
+                "a variable '" + key + "' is expected on " + displayName
+              );
+            }
+            if (!needsRefresh) {
+              const cache = getPendingQueryResult(dataStore, query);
+              needsRefresh =
+                !cache ||
+                (size !== cache.result.edges.length &&
+                  cache.result.pageInfo.hasNextPage);
+            }
+            query.setSize(size);
+          }
+
+          if (needsRefresh) {
             return this.fetchQuery(query);
           }
         })
         .filter(p => p);
+
       return promises;
     }
 
@@ -257,47 +299,14 @@ export default function connectData<
       // FIXME can we simplify the code?
       const state: State = { ...this.state, ...statePatch };
       const { dataStore } = props;
-      let p: ?Promise<*>;
-      let promises = [];
 
       const apiParams = propsToQueryParams(
         extractInputProps(props),
         state.variables
       );
-      if (
-        !this.apiParams ||
-        !isEqual(apiParams, this.apiParams) ||
-        forceFetchMode
-      ) {
-        promises = promises.concat(this.syncAPI(apiParams, forceFetchMode));
-      }
+      const promises = this.syncAPI(apiParams, props, state, forceFetchMode);
 
-      // specific logic for the ConnectionQuery (later we might think about trying to uniformizing things, tricky)
-      const { queriesInstances } = this;
-      invariant(queriesInstances, "queriesInstances should be defined");
-      // $FlowFixMe
-      const pagesToPull: Array<Promise<*>> = queriesKeys
-        .map(key => {
-          const query = queriesInstances[key];
-          if (query instanceof ConnectionQuery) {
-            const cache = getQueryCacheResult(dataStore, query);
-            const size = state.variables[query.pageSizeVariableName];
-            if (typeof size !== "number") {
-              throw new Error(
-                "a variable '" +
-                  query.pageSizeVariableName +
-                  "' is expected on " +
-                  displayName
-              );
-            }
-            const shouldFetchMore = !cache || cache.result.edges.length < size;
-            return shouldFetchMore ? this.fetchQuery(query) : null;
-          }
-        })
-        .filter(p => p);
-
-      promises = promises.concat(pagesToPull);
-
+      let p: ?Promise<*>;
       if (promises.length > 0) {
         state.pending = true;
         state.apiError = null;
@@ -317,10 +326,11 @@ export default function connectData<
         );
       }
 
+      const { queriesInstances } = this;
       const results = [];
       for (let key in queriesInstances) {
         const query = queriesInstances[key];
-        const cache = getQueryCacheResult(dataStore, query);
+        const cache = getPendingQueryResult(dataStore, query);
         if (cache) {
           const { result } = cache;
           results.push({ result, key, query });
@@ -383,7 +393,7 @@ export default function connectData<
         !shallowEqual(
           extractInputProps(this.props),
           extractInputProps(props)
-        ) || !shallowEqual(withoutPending(this.state), withoutPending(state))
+        ) || !shallowEqual(sCUStateSubset(this.state), sCUStateSubset(state))
       );
     }
 

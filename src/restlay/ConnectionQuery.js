@@ -1,27 +1,53 @@
 //@flow
-import invariant from "invariant";
-import Query from "./Query";
-import type { Connection } from "./dataStore";
+import type { Store } from "./dataStore";
+import { denormalize } from "normalizr";
 
-// extends Query to add connection concept, an API that paginates
-export default class ConnectionQuery<
-  In: { pageSizeVariableName: String },
-  T
-> extends Query<In, Connection<T>> {
+export type Connection<T> = {
+  edges: Array<{
+    cursor: string,
+    node: T
+  }>,
+  pageInfo: {
+    hasNextPage: boolean
+  }
+};
+
+// extends Query idea to add connection concept, an API that paginates
+// see original idea: https://github.com/LedgerHQ/ledger-vault-front/issues/30#issuecomment-346409116
+class ConnectionQuery<In, Node> {
+  props: In;
+  // define the URI to hit for the API. can also pass a template function
+  uri: string;
+  // define the Schema of the edges[*].node field in the connection object.
   nodeSchema: Object = {};
-  pageSizeVariableName: string;
 
   constructor(props: In) {
-    super(props);
-    invariant(
-      typeof props.pageSizeVariableName === "string",
-      "pageSizeVariableName must be provided to ConnectionQuery"
-    );
-    this.pageSizeVariableName = props.pageSizeVariableName;
+    this.props = props;
   }
 
-  getPaginationURLParams(first: number, after: string) {
-    return { first, after };
+  // Overridable
+  getPaginationURLParams(first?: number, after?: string): Object {
+    const params = {};
+    if (first !== undefined) params.first = first;
+    if (after !== undefined) params.after = after;
+    return params;
+  }
+
+  // ...Internals...
+
+  size = 0;
+  setSize(size: number) {
+    this.size = size;
+  }
+  getSize() {
+    return this.size;
+  }
+
+  // HACK
+  firstQueryDone = false;
+
+  getCacheKey(): string {
+    return this.uri;
   }
 
   getResponseSchema() {
@@ -29,4 +55,9 @@ export default class ConnectionQuery<
       edges: [{ node: this.nodeSchema }]
     };
   }
+
+  getResponse(result: Object, store: Store): Connection<Node> {
+    return denormalize(result, this.getResponseSchema(), store.entities);
+  }
 }
+export default ConnectionQuery;
