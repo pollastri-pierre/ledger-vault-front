@@ -6,6 +6,7 @@ import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 import type { DataPointEnhanced, Unit } from "../../data/types";
+import { formatCurrencyUnit } from "../../data/currency";
 type Props = {
   data: Array<*>,
   dateRange: Array<*>,
@@ -218,6 +219,7 @@ export default class QuicklookGraph extends Component<Props, *> {
 
   computeData = (data: Array<*>) => {
     const { width, transform, margin } = this.state;
+    const { currencyUnit } = this.props;
 
     let computedData = data.slice();
 
@@ -235,7 +237,8 @@ export default class QuicklookGraph extends Component<Props, *> {
     const yAxis = d3
       .axisRight(y)
       .ticks(3)
-      .tickSize(width + margin.left);
+      .tickSize(width + margin.left)
+      .tickFormat(value => formatCurrencyUnit(currencyUnit, value));
 
     computedData = _.map(data, transaction => {
       if (!x && !y) return transaction;
@@ -458,7 +461,11 @@ export default class QuicklookGraph extends Component<Props, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    {currencyUnit.code} {data[selected].value}
+                    {formatCurrencyUnit(
+                      currencyUnit,
+                      data[selected].value,
+                      true
+                    )}
                   </div>
                   <div>
                     <span className="uppercase date">

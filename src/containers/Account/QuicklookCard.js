@@ -1,8 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import type { Account, Operation, BalanceEntity } from "../../data/types";
-import { getUnitFromRate, getAccountCurrencyUnit } from "../../data/currency";
+import SelectTab from "../../components/SelectTab/SelectTab";
+import type { Account } from "../../data/types";
+import { getAccountCurrencyUnit, getFiatUnit } from "../../data/currency";
 import { Select, Option } from "../../components/Select";
 import DateFormat from "../../components/DateFormat";
 import QuicklookWrap from "./QuickLookWrap";
@@ -14,9 +14,7 @@ import connectData from "../../restlay/connectData";
 
 type Props = {
   accountId: string,
-  account: Account,
-  operations: Array<Operation>,
-  balance: BalanceEntity
+  account: Account
 };
 
 type State = {
@@ -124,19 +122,18 @@ export class QuicklookCard extends Component<Props, State> {
   };
 
   render() {
-    const { operations, account, balance, reloading, accountId } = this.props;
+    const { account, accountId } = this.props;
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
     const selectedBalance =
-      quicklookFilter === "balance" ? "balance" : "counterValueBalance";
+      quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
     // FIXME PROBABLY NEEDS TO BE FIXED
-    if (quicklookFilter === "countervalue") {
-      currencyUnit = getUnitFromRate(operations[0].rate);
+    if (quicklookFilter.key === "countervalue") {
+      currencyUnit = getFiatUnit(account.settings.fiat);
     }
     return (
       selectedBalance.length && (
         <Card
-          reloading={reloading}
           className="quicklook"
           title="Quicklook"
           titleRight={
@@ -153,39 +150,28 @@ export class QuicklookCard extends Component<Props, State> {
             </Select>
           }
         >
-          <Tabs
-            className=""
-            selectedIndex={tabsIndex}
-            onSelect={this.selectTab}
-          >
-            <header>
-              <TabList>
-                <Tab> Year {}</Tab>
-                <Tab disabled={false}>month</Tab>
-                <Tab disabled={false}>week</Tab>
-                <Tab disabled={false}>day</Tab>
-              </TabList>
-            </header>
-            <div className="dateLabel">
-              From {labelDateRange[0]} to {labelDateRange[1]}
-            </div>
-            <QuicklookWrap
-              accountId={accountId}
-              filter={
-                quicklookFilter.key === "balance"
-                  ? "balance"
-                  : "counterValueBalance"
-              }
-              granularity={tabsIndex}
-              dateRange={this.getDateRange(tabsIndex)}
-              currencyUnit={currencyUnit}
-              currencyColor={account.currency.color}
+          <header>
+            <SelectTab
+              tabs={["year", "month", "week", "day"]}
+              onChange={this.selectTab}
+              selected={tabsIndex}
             />
-            <TabPanel className="tabs_panel" />
-            <TabPanel className="tabs_panel" />
-            <TabPanel className="tabs_panel" />
-            <TabPanel className="tabs_panel" />
-          </Tabs>
+          </header>
+          <div className="dateLabel">
+            From {labelDateRange[0]} to {labelDateRange[1]}
+          </div>
+          <QuicklookWrap
+            accountId={accountId}
+            filter={
+              quicklookFilter.key === "balance"
+                ? "balance"
+                : "counterValueBalance"
+            }
+            granularity={tabsIndex}
+            dateRange={this.getDateRange(tabsIndex)}
+            currencyUnit={currencyUnit}
+            currencyColor={account.currency.color}
+          />
         </Card>
       )
     );

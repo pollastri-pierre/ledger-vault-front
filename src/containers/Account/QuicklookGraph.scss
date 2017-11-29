@@ -1,6 +1,9 @@
 @import "../../styles/_variables";
 .QuicklookGraph {
   padding-top: 20px;
+  .noData {
+    pointer-events: none;
+  }
   .chartWrap {
     position: relative;
     svg {

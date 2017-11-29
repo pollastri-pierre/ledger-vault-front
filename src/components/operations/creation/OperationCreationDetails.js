@@ -1,6 +1,7 @@
 // @flow
 
 import * as React from "react";
+import invariant from "invariant";
 import { Component } from "react";
 import bitcoinAddress from "bitcoin-address";
 // import currencies from "../../../currencies";
@@ -12,6 +13,7 @@ import CurrencyNameValue from "../../CurrencyNameValue";
 import type { Currency, Unit, Account } from "../../../data/types";
 import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "../../../api/queries/AccountCalculateFeeQuery";
+import type { Speed } from "../../../api/queries/AccountCalculateFeeQuery";
 import {
   countervalueForRate,
   formatCurrencyUnit
@@ -25,6 +27,7 @@ type Props = {
   details: Details,
 
   // from connectData
+  restlay: *,
   currencies: Array<Currency>
 };
 
@@ -170,13 +173,11 @@ class OperationCreationDetails extends Component<Props, State> {
     );
   };
 
-  setFees = (fee: string) => {
+  setFees = (fee: Speed) => {
     const { restlay, account } = this.props;
 
     restlay
-      .fetchQuery(
-        new AccountCalculateFeeQuery({ account, speed: fee })
-      )
+      .fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee }))
       .then(res => {
         const feesAmount = res.value;
 
@@ -187,9 +188,15 @@ class OperationCreationDetails extends Component<Props, State> {
 
   selectFee = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const target: HTMLDivElement = e.currentTarget;
-    const feesSelected: string = target.dataset.fee;
-
+    const target = e.currentTarget;
+    const feesSelected = target.dataset.fee;
+    invariant(
+      feesSelected === "fast" ||
+        feesSelected === "slow" ||
+        feesSelected === "medium",
+      "invalid fee %s",
+      feesSelected
+    );
     this.setFees(feesSelected);
 
     this.setState({

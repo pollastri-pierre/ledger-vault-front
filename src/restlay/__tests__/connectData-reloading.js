@@ -3,7 +3,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
-import createMock, {AnimalQuery} from "../tests-utils/mock-1";
+import createMock, { AnimalQuery } from "../tests-utils/mock-1";
 
 test("reloading boolean gets injected by default during a transition", async () => {
   const net = networkFromMock(createMock());

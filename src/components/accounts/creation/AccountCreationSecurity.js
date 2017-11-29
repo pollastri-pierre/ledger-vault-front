@@ -16,7 +16,6 @@ function AccountCreationSecurity(props: {
   switchInternalModal: Function
 }) {
   const { account, switchInternalModal } = props;
-  console.log(account.time_lock);
   return (
     <div className="account-creation-security">
       <h4>Security Scheme</h4>

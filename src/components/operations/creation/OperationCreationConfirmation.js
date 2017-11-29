@@ -6,13 +6,16 @@ import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
 
 import type { Account } from "../../../data/types";
-import type { Details } from "../../NewOperationModal";
 
-function OperationCreationConfirmation(props: { details: Details, account: Account }) {
+function OperationCreationConfirmation(props: {
+  details: {
+    amount: number,
+    fees: number,
+    address: string
+  },
+  account: Account
+}) {
   const { details, account } = props;
-
-  console.log(details);
-
   return (
     <div>
       <OverviewOperation
@@ -26,7 +29,11 @@ function OperationCreationConfirmation(props: { details: Details, account: Accou
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="confirmation fees">
-          <Amount account={account} value={details.fees} rate={account.currencyRate} />
+          <Amount
+            account={account}
+            value={details.fees}
+            rate={account.currencyRate}
+          />
         </LineRow>
         <LineRow label="Total spent">
           <Amount
@@ -37,15 +44,17 @@ function OperationCreationConfirmation(props: { details: Details, account: Accou
           />
         </LineRow>
       </div>
-      <div className="operation-creation-confirmation-warning"
+      <div
+        className="operation-creation-confirmation-warning"
         style={{
           fontSize: "11px",
           color: "#767676",
           lineHeight: "1.82",
           marginTop: "30px"
         }}
-        >
-        A new operation request will be created. Funds will not be spent until the security scheme of the account is satisfied
+      >
+        A new operation request will be created. Funds will not be spent until
+        the security scheme of the account is satisfied
       </div>
     </div>
   );

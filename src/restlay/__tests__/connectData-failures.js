@@ -138,7 +138,12 @@ test("a thrown error can be recovered after an update", async () => {
   const render = createRender(net.network);
   const Animal = connectData(
     ({ animal }) => {
-      if (animal.id === "id_max") throw new Error("sorry_max");
+      if (animal.id === "id_max") {
+        const err = new Error("sorry_max");
+        //$FlowFixMe
+        err.suppressReactErrorLogging = true;
+        throw err;
+      }
       return animal.id;
     },
     {

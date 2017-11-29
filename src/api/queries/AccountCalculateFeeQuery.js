@@ -2,9 +2,11 @@
 import Query from "../../restlay/Query";
 import type { Account } from "../../data/types";
 
+export type Speed = "slow" | "medium" | "fast";
+
 type Input = {
   account: Account,
-  speed: "slow" | "medium" | "fast"
+  speed: Speed
 };
 type Response = {
   value: number

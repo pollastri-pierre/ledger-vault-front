@@ -26,9 +26,11 @@ class AccountCreationCurrencies extends Component<{
               .split(" ")
               .join("-")
               .toLowerCase()}
-            ${currency && currency.units[0].name === cur.units[0].name
-              ? "selected"
-              : ""}`}
+            ${
+              currency && currency.units[0].name === cur.units[0].name
+                ? "selected"
+                : ""
+            }`}
           >
             <span className="currency-name">{cur.units[0].name}</span>
             <span className="currency-short">{cur.units[0].symbol}</span>

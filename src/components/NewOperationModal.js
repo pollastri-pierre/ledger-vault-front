@@ -34,7 +34,7 @@ class NewOperationModal extends Component<
   };
 
   onSaveOperation = () => {
-    console.log(
+    console.warn(
       "TODO: this.props.restlay.commitUpdate(new SaveOperationMutation({...}))"
     );
 
@@ -53,8 +53,6 @@ class NewOperationModal extends Component<
   };
 
   saveDetails = (details: Details) => {
-    console.log(details);
-
     this.setState({ details });
   };
 

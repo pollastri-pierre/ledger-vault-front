@@ -9,7 +9,7 @@ import InfoModal from "../../../components/InfoModal";
 import { DialogButton, Overscroll } from "../../../components";
 import type { Member } from "../../../data/types";
 
-const SelectedCounter = ({ count }) => {
+const SelectedCounter = ({ count }: { count: number }) => {
   if (count === 0) {
     return false;
   }
