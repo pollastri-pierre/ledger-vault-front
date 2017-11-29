@@ -7,8 +7,6 @@ class TimeLockValue extends PureComponent<*> {
   };
 
   getDuration = (time_lock: number) => {
-    let granularity = "days";
-
     const minuts = { value: time_lock / 60, label: "minutes" };
     const hours = { value: time_lock / 3600, label: "hours" };
     const days = { value: time_lock / 84600, label: "days" };

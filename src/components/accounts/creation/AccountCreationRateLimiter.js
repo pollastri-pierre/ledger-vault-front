@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import InfoModal from "../../InfoModal";
@@ -17,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
 type Props = {
   setRatelimiter: Function,
   switchInternalModal: string => void,
-  ratelimiter: Object,
+  rate_limiter: Object,
   onAddMessage: (t: string, m: string, ty: string) => void
 };
 
@@ -73,7 +72,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     });
   };
 
-  openFrequency = target => {
+  openFrequency = () => {
     this.setState({
       ...this.state,
       popover: !this.state.popover,
@@ -96,8 +95,6 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     this.props.switchInternalModal("main");
   };
   render() {
-    const { switchInternalModal, onAddMessage, setRatelimiter } = this.props;
-
     const { rate_limiter, popover } = this.state;
     return (
       <div className="small-modal">
@@ -122,7 +119,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 className="count dropdown"
                 role="button"
                 tabIndex={0}
-                onClick={e => this.openFrequency(e.currentTarget)}
+                onClick={this.openFrequency}
               >
                 <strong>operations</strong> per {rate_limiter.frequency.label}
                 <ArrowDown className="arrow-down" />

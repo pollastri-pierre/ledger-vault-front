@@ -1,7 +1,6 @@
 //@flow
 import InfoModal from "../../InfoModal";
 import React, { Component } from "react";
-import Checkbox from "../../form/Checkbox";
 import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import ArrowDown from "../../icons/ArrowDown";
@@ -26,8 +25,6 @@ type State = {
   popover: boolean,
   anchor?: Object
 };
-
-type Validator = (value: string) => boolean;
 
 class AccountCreationTimeLock extends Component<Props, State> {
   constructor(props) {

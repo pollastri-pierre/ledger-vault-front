@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import _ from "lodash";
-import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../../";
 import OperationCreationAccounts from "./OperationCreationAccounts";
@@ -10,7 +9,7 @@ import OperationCreationConfirmation from "./OperationCreationConfirmation";
 
 import "./OperationCreation.css";
 
-class OperationCreation extends Component {
+class OperationCreation extends Component<*> {
   render() {
     const {
       close,
@@ -108,12 +107,5 @@ class OperationCreation extends Component {
     );
   }
 }
-
-OperationCreation.propTypes = {
-  close: PropTypes.func.isRequired,
-  tabsIndex: PropTypes.number.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  save: PropTypes.func.isRequired
-};
 
 export default OperationCreation;

@@ -27,7 +27,6 @@ export default class PieChart extends Component<
   };
 
   handleMouseOver = (d: *) => {
-    console.log(d);
     this.setSelected(d.index);
   };
 

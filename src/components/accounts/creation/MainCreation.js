@@ -8,7 +8,7 @@ import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
-import { DialogButton, Overscroll } from "../../";
+import { DialogButton } from "../../";
 import type { Currency } from "../../../data/types";
 
 type Props = {

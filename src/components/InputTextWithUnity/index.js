@@ -1,7 +1,13 @@
+//@flow
 import React from "react";
 import "./index.css";
 
-function InputTextWithUnity(props) {
+function InputTextWithUnity(props: {
+  children: React$Node | string,
+  field: React$Node | string,
+  hasError: boolean,
+  label: React$Node | string
+}) {
   const { children, field, hasError, label } = props;
   return (
     <div className={`field-text-unity ${hasError ? "error" : ""}`}>

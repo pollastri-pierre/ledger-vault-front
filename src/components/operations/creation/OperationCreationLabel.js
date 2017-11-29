@@ -11,7 +11,7 @@ type Props = {
 
 class OperationCreationLabel extends PureComponent<Props> {
   update = (ev: SyntheticEvent<HTMLInputElement>) => {
-    console.log(ev.currentTarget.value);
+    console.warn("NOT IMPLEMENTED", ev.currentTarget.value);
   };
 
   render() {

@@ -150,7 +150,7 @@ export function startAuthentication() {
         dispatch(finishAuthentication(res));
       })
       .catch(e => {
-        console.log(e);
+        console.error(e);
         // dispatch(checkTeamError(e.response.status));
       });
   };

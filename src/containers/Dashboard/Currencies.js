@@ -45,8 +45,6 @@ function Currencies({ accounts }: { accounts: Array<Account> }) {
     return currenciesList;
   }, []);
 
-  console.log(pieChartData);
-
   return (
     <div className="dashboard-currencies">
       <PieChart data={pieChartData} width={140} height={140} />
