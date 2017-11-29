@@ -4,11 +4,15 @@ import Popover from "material-ui/Popover";
 
 import "./PopBubble.css";
 
-function PopBubble(props: *) {
+function PopBubble(props: {
+  className?: string,
+  style?: Object,
+  children?: React$Node
+}) {
   return (
     <Popover
       {...props}
-      className={`pop-bubble ${props.className}`}
+      className={`pop-bubble ${props.className || ""}`}
       anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
       targetOrigin={{ horizontal: "middle", vertical: "top" }}
       style={{

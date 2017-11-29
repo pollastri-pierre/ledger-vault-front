@@ -690,7 +690,8 @@ for (let i = 0; i < 500; i += 10) {
 const genBalance = (
   accountId: number,
   expectedGranularity: number,
-  range: ?number
+  range: ?number,
+  _unused?: ?*
 ): BalanceEntity => {
   let balance = [];
   const begin_t = new Date().getTime() - (range || 31536000000); //account creation date

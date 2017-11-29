@@ -37,10 +37,7 @@ function OperationCreationAccounts(props) {
             <div className="account-top">
               <span className="account-name">{cur.name}</span>
               <span className="account-balance">
-                <CurrencyAccountValue
-                  account={cur}
-                  value={cur.balance}
-                />
+                <CurrencyAccountValue account={cur} value={cur.balance} />
               </span>
             </div>
             <div className="account-botom">

@@ -92,6 +92,7 @@ test("a network error can be recovered after an update when many queries", async
   const Animal = connectData(({ animal }) => animal.id, {
     RenderError: () => "oops",
     queries: { animal: AnimalQuery, animals: AnimalsQuery },
+    // $FlowFixMe
     propsToQueryParams: ({ animalId }) => ({ animalId })
   });
   const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));

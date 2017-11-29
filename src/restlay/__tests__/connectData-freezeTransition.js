@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import renderer from "react-test-renderer";
 import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
-import createMock, {AnimalQuery} from "../tests-utils/mock-1";
+import createMock, { AnimalQuery } from "../tests-utils/mock-1";
 
 test("freezeTransition=true should not render a pending step", async () => {
   const net = networkFromMock(createMock());
