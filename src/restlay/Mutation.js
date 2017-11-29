@@ -26,6 +26,10 @@ export default class Mutation<Input, Response> {
     return null;
   }
 
+  getResponseSchema() {
+    return this.responseSchema;
+  }
+
   /*
    * Allow a mutation to define the optimistic behavior
    */

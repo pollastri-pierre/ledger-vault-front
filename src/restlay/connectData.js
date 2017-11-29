@@ -12,13 +12,16 @@ import {
 } from "./dataStore";
 import type { Store } from "./dataStore";
 import Query from "./Query";
+import ConnectionQuery from "./ConnectionQuery";
 import Mutation from "./Mutation";
 import type RestlayProvider from "./RestlayProvider";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
-  forceFetch: () => Promise<void>
+  forceFetch: () => Promise<void>,
+  setVariables: Object => void,
+  getVariables: () => Object
   /* IDEA
   isReloadingData: (data: Object) => boolean,
   isOptimisticData: (data: Object) => boolean
@@ -65,11 +68,16 @@ export type ContextOverridableOpts<Props> = {
 };
 
 type Opts<Props, A> = ContextOverridableOpts<Props> & {
+  initialVariables?: Object,
+
   // an object of { [propName: string]: Class<Query> }
   queries?: A,
 
   // allow to pass parameters to the api uri function that will be used to generate api URL.
-  propsToQueryParams?: (props: Props) => $Values<$ObjMap<A, ExtractQueryIn>>,
+  propsToQueryParams?: (
+    props: Props,
+    vars: Object
+  ) => $Values<$ObjMap<A, ExtractQueryIn>>,
 
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
@@ -85,10 +93,11 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
 };
 
 const defaultOpts = {
+  initialVariables: {},
   queries: {},
   RenderLoading: () => null,
   RenderError: () => null,
-  propsToQueryParams: _ => ({}),
+  propsToQueryParams: (_1, _2) => ({}),
   forceFetch: false,
   optimisticRendering: false,
   freezeTransition: false,
@@ -121,7 +130,8 @@ export default function connectData<
     optimisticRendering,
     renderLoadingInTransition,
     freezeTransition,
-    forceFetch
+    forceFetch,
+    initialVariables
   } = {
     ...defaultOpts,
     ...opts
@@ -132,7 +142,8 @@ export default function connectData<
     catchedError: ?Error,
     apiError: ?Error,
     pending: boolean,
-    data: ?APIProps
+    data: ?APIProps,
+    variables: Object
   };
 
   const withoutPending = ({ pending, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
@@ -153,7 +164,8 @@ export default function connectData<
       apiError: null,
       // we need to wait a potential initial sync to not render initially with previous data if optimisticRendering is not asked
       pending: false,
-      data: null
+      data: null,
+      variables: initialVariables
     };
 
     _options = {
@@ -169,6 +181,16 @@ export default function connectData<
     apiParams: ?Object = null;
     queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
+
+    setVariables = (vars: Object): void => {
+      const { variables } = this.state;
+      const newVariables = { ...variables, ...vars };
+      if (isEqual(newVariables, variables)) {
+        this.syncProps(this.props, { variables: newVariables });
+      }
+    };
+
+    getVariables = () => this.state.variables;
 
     executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
 
@@ -212,9 +234,11 @@ export default function connectData<
         .map(key => {
           const query = queriesInstances[key];
           if (
-            forceFetchMode ||
-            forceFetch ||
-            !queryCacheIsFresh(dataStore, query)
+            query instanceof Query &&
+            !(query instanceof ConnectionQuery) &&
+            (forceFetchMode ||
+              forceFetch ||
+              !queryCacheIsFresh(dataStore, query))
           ) {
             return this.fetchQuery(query);
           }
@@ -231,38 +255,68 @@ export default function connectData<
       forceFetchMode: boolean = false
     ): Promise<*> {
       // FIXME can we simplify the code?
-      const state = { ...this.state, ...statePatch };
+      const state: State = { ...this.state, ...statePatch };
       const { dataStore } = props;
       let p: ?Promise<*>;
+      let promises = [];
 
-      const apiParams = propsToQueryParams(extractInputProps(props));
+      const apiParams = propsToQueryParams(
+        extractInputProps(props),
+        state.variables
+      );
       if (
         !this.apiParams ||
         !isEqual(apiParams, this.apiParams) ||
         forceFetchMode
       ) {
-        const syncId = ++this.syncAPI_id;
-        const promises = this.syncAPI(apiParams, forceFetchMode);
-        if (promises.length > 0) {
-          state.pending = true;
-          state.apiError = null;
-          p = Promise.all(promises).then(
-            () => {
-              if (this._unmounted || syncId !== this.syncAPI_id) return;
-              // we need to sync again to make sure data is in sync.
-              // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
-              // NB we patch with a subset of state because local state variable might be outdated
-              this.syncProps(this.props, { apiError: null, pending: false });
-            },
-            apiError => {
-              if (this._unmounted || syncId !== this.syncAPI_id) return;
-              this.setState({ apiError, pending: false });
-            }
-          );
-        }
+        promises = promises.concat(this.syncAPI(apiParams, forceFetchMode));
       }
 
+      // specific logic for the ConnectionQuery (later we might think about trying to uniformizing things, tricky)
       const { queriesInstances } = this;
+      invariant(queriesInstances, "queriesInstances should be defined");
+      // $FlowFixMe
+      const pagesToPull: Array<Promise<*>> = queriesKeys
+        .map(key => {
+          const query = queriesInstances[key];
+          if (query instanceof ConnectionQuery) {
+            const cache = getQueryCacheResult(dataStore, query);
+            const size = state.variables[query.pageSizeVariableName];
+            if (typeof size !== "number") {
+              throw new Error(
+                "a variable '" +
+                  query.pageSizeVariableName +
+                  "' is expected on " +
+                  displayName
+              );
+            }
+            const shouldFetchMore = !cache || cache.result.edges.length < size;
+            return shouldFetchMore ? this.fetchQuery(query) : null;
+          }
+        })
+        .filter(p => p);
+
+      promises = promises.concat(pagesToPull);
+
+      if (promises.length > 0) {
+        state.pending = true;
+        state.apiError = null;
+        const syncId = ++this.syncAPI_id;
+        p = Promise.all(promises).then(
+          () => {
+            if (this._unmounted || syncId !== this.syncAPI_id) return;
+            // we need to sync again to make sure data is in sync.
+            // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
+            // NB we patch with a subset of state because local state variable might be outdated
+            this.syncProps(this.props, { apiError: null, pending: false });
+          },
+          apiError => {
+            if (this._unmounted || syncId !== this.syncAPI_id) return;
+            this.setState({ apiError, pending: false });
+          }
+        );
+      }
+
       const results = [];
       for (let key in queriesInstances) {
         const query = queriesInstances[key];
@@ -338,7 +392,9 @@ export default function connectData<
     restlay: RestlayEnvironment = {
       commitMutation: this.commitMutation,
       fetchQuery: this.fetchQuery,
-      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {})
+      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
+      getVariables: this.getVariables,
+      setVariables: this.setVariables
     };
 
     render() {

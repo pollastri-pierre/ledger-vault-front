@@ -672,7 +672,7 @@ const operations: { [_: string]: OperationEntity } = {
   })
 };
 
-for (let i = 0; i < 500; i += 10) {
+for (let i = 0; i < 500; i += 1) {
   const uuid = "mock_ltc_" + i;
   const t = 1500000000000 + i * 23000000;
   operations[uuid] = genOperation({

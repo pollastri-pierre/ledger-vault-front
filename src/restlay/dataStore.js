@@ -2,9 +2,13 @@
 import { normalize } from "normalizr";
 import Mutation from "./Mutation";
 import Query from "./Query";
+import ConnectionQuery from "./ConnectionQuery";
 import { merge } from "./ImmutableUtils";
 import isEqual from "lodash/isEqual";
 import type RestlayProvider from "./RestlayProvider";
+
+export const DATA_FETCHED = "@restlay/DATA_FETCHED";
+export const DATA_FETCHED_FAIL = "@restlay/DATA_FETCHED_FAIL";
 
 export type Entities = {
   [_: string]: { [_: string]: Object }
@@ -21,6 +25,16 @@ type QueryDispatchF = <In, Out>(
 ) => (dispatch: DispatchF) => Promise<Out>;
 
 type ExecuteQueryOrMutation = (ctx: RestlayProvider) => QueryDispatchF;
+
+export type Connection<T> = {
+  edges: Array<{
+    cursor: string,
+    node: T
+  }>,
+  pageInfo: {
+    hasNextPage: boolean
+  }
+};
 
 export type Store = {
   entities: Entities,
@@ -73,10 +87,13 @@ export const executeQueryOrMutation: ExecuteQueryOrMutation =
     const promise = ctx
       .network(uri, method, body)
       .then(data => {
-        const result = normalize(data, queryOrMutation.responseSchema || {});
+        const result = normalize(
+          data,
+          queryOrMutation.getResponseSchema() || {}
+        );
         if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
         dispatch({
-          type: "DATA_FETCHED",
+          type: DATA_FETCHED,
           result,
           queryOrMutation,
           cacheKey
@@ -86,7 +103,7 @@ export const executeQueryOrMutation: ExecuteQueryOrMutation =
       .catch(error => {
         if (cacheKey) delete ctx.globalPromiseCache[cacheKey];
         dispatch({
-          type: "DATA_FETCHED_FAIL",
+          type: DATA_FETCHED_FAIL,
           error,
           queryOrMutation,
           cacheKey
@@ -98,8 +115,19 @@ export const executeQueryOrMutation: ExecuteQueryOrMutation =
     return promise;
   };
 
+const accumulateConnectionEdges = <T>(
+  oldConnection: ?Connection<T>,
+  connection: Connection<T>
+): Connection<T> => {
+  if (!oldConnection) return connection;
+  return {
+    edges: oldConnection.edges.concat(connection.edges),
+    pageInfo: connection.pageInfo
+  };
+};
+
 const reducers = {
-  DATA_FETCHED: (store, { result, cacheKey }) => {
+  [DATA_FETCHED]: (store, { queryOrMutation, result, cacheKey }) => {
     const entities = mergeEntities(store.entities, result.entities);
     if (!cacheKey) {
       return { ...store, entities };
@@ -108,7 +136,13 @@ const reducers = {
         entities,
         results: {
           ...store.results,
-          [cacheKey]: { result: result.result, time: Date.now() }
+          [cacheKey]: {
+            result:
+              queryOrMutation instanceof ConnectionQuery
+                ? accumulateConnectionEdges(store.results[cacheKey], result)
+                : result.result,
+            time: Date.now()
+          }
         }
       };
     }
