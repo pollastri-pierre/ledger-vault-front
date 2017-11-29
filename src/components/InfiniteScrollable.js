@@ -67,7 +67,8 @@ export default class InfiniteScrollable extends Component<
   }
 
   getScrollParent() {
-    return scrollparent(findDOMNode(this));
+    // $FlowFixMe
+    return scrollparent(findDOMNode(this)); // eslint-disable-line react/no-find-dom-node
   }
 
   syncScrollBodyListener = () => {
