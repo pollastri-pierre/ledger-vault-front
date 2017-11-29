@@ -43,7 +43,7 @@ class ConnectionQuery<In, Node> {
     return this.size;
   }
 
-  // HACK
+  // HACK this is a memory so we know if we need to reset or not the connection (if you start a new ConnectionQuery, it will starts from scratch)
   firstQueryDone = false;
 
   getCacheKey(): string {

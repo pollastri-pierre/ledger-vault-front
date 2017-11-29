@@ -70,9 +70,31 @@ const accumulateConnectionEdges = <T>(
   connection: Connection<T>
 ): Connection<T> => {
   if (!oldConnection) return connection;
+  const pageInfo = { ...connection.pageInfo };
+  if (connection.pageInfo.hasNextPage && connection.edges.length === 0) {
+    console.warn(
+      "API issue: connection says hasNextPage but edges.length is 0!"
+    );
+    pageInfo.hasNextPage = false;
+  }
+  const edges = oldConnection.edges.concat(connection.edges);
+  if (process.env.NODE_ENV === "development" && oldConnection) {
+    const cursors = {};
+    edges.forEach((e, i) => {
+      if (!e.cursor) {
+        console.warn("API issue: an edge must have a cursor defined");
+      }
+      if (cursors[e.cursor]) {
+        console.warn(
+          "API issue: duplicate cursor found at index " + i + ": " + e.cursor
+        );
+      }
+      cursors[e.cursor] = true;
+    });
+  }
   return {
-    edges: oldConnection.edges.concat(connection.edges),
-    pageInfo: connection.pageInfo
+    edges,
+    pageInfo
   };
 };
 

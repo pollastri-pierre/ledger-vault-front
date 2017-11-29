@@ -226,6 +226,9 @@ export default function connectData<
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
         const Q = queries[key];
+        // TODO : we might want to be more lazy with a "shouldQueryUpdate" or
+        // something that would check if we really want to create a new instance.
+        // for instance if query params changes but only concern one of the query
         const query: Query<*, *> | ConnectionQuery<*, *> = new Q(apiParams);
         instances[key] = query;
       });
@@ -258,7 +261,8 @@ export default function connectData<
             forceFetch ||
             forceFetchMode ||
             (queryUpdated &&
-              // FIXME later we might have a cache for ConnectionQuery actually, not incompatible, just need to iterate step-by-step
+              // FIXME later we might have a cache for ConnectionQuery actually,
+              // not incompatible, just need to iterate step-by-step
               (query instanceof Query
                 ? !queryCacheIsFresh(dataStore, query)
                 : true));
@@ -316,6 +320,8 @@ export default function connectData<
             if (this._unmounted || syncId !== this.syncAPI_id) return;
             // we need to sync again to make sure data is in sync.
             // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
+            // FIXME we need to change this probably so it avoid potential "infinite recursion" cases.
+            // what we somehow want is to exec the second part of this function.. but need to be sure we are in sync with everything tho
             // NB we patch with a subset of state because local state variable might be outdated
             this.syncProps(this.props, { apiError: null, pending: false });
           },
