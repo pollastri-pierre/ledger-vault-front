@@ -7,23 +7,37 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DataTableOperation from "../../components/DataTableOperation";
+import InfiniteScrollable from "../../components/InfiniteScrollable";
 import type { Account, Operation } from "../../data/types";
+import type { Connection } from "../../restlay/ConnectionQuery";
 
 class AccountLastOperationsCard extends Component<{
   accountId: string,
   account: Account,
-  operations: Operation[],
-  reloading: boolean
+  operations: Connection<Operation>,
+  reloading: boolean,
+  restlay: *
 }> {
   render() {
-    const { account, operations, reloading } = this.props;
+    const { account, operations, reloading, restlay } = this.props;
     return (
-      <Card reloading={reloading} title="last operations">
-        <DataTableOperation
-          accounts={[account]}
-          operations={operations}
-          columnIds={["date", "address", "status", "countervalue", "amount"]}
-        />
+      <Card title="last operations">
+        <InfiniteScrollable restlay={restlay} restlayVariable="operations">
+          <DataTableOperation
+            accounts={[account]}
+            operations={
+              operations.edges.map(
+                e => e.node
+              ) /* FIXME implement InfiniteScrollable */
+            }
+            columnIds={["date", "address", "status", "countervalue", "amount"]}
+          />
+          {reloading ? (
+            <div style={{ position: "relative", height: 50 }}>
+              <SpinnerCard />
+            </div>
+          ) : null}
+        </InfiniteScrollable>
       </Card>
     );
   }
@@ -45,6 +59,9 @@ export default connectData(AccountLastOperationsCard, {
   queries: {
     account: AccountQuery,
     operations: AccountOperationsQuery
+  },
+  initialVariables: {
+    operations: 20
   },
   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
   optimisticRendering: true,

@@ -20,7 +20,7 @@ export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
   forceFetch: () => Promise<void>,
-  setVariables: Object => void,
+  setVariables: Object => Promise<void>,
   getVariables: () => Object
   /* IDEA
   isReloadingData: (data: Object) => boolean,
@@ -188,15 +188,10 @@ export default function connectData<
     queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
 
-    setVariables = (vars: Object): void => {
+    setVariables = (vars: Object): Promise<void> => {
       const { variables } = this.state;
       let newVariables = { ...variables, ...vars };
-      if (!isEqual(newVariables, variables)) {
-        this.syncProps(this.props, { variables: newVariables });
-      } else {
-        // we want to keep same variables ref but still trigger a syncProps
-        this.syncProps(this.props);
-      }
+      return this.syncProps(this.props, { variables: newVariables });
     };
 
     getVariables = () => this.state.variables;
@@ -323,11 +318,14 @@ export default function connectData<
             // FIXME we need to change this probably so it avoid potential "infinite recursion" cases.
             // what we somehow want is to exec the second part of this function.. but need to be sure we are in sync with everything tho
             // NB we patch with a subset of state because local state variable might be outdated
-            this.syncProps(this.props, { apiError: null, pending: false });
+            return this.syncProps(this.props, {
+              apiError: null,
+              pending: false
+            });
           },
           apiError => {
             if (this._unmounted || syncId !== this.syncAPI_id) return;
-            this.setState({ apiError, pending: false });
+            return this.setState({ apiError, pending: false });
           }
         );
       }

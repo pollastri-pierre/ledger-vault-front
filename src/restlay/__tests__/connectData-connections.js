@@ -6,6 +6,9 @@ import connectData from "../connectData";
 import { createRender, networkFromMock, flushPromises } from "../tests-utils";
 import createMock, { WorldQuery } from "../tests-utils/mock-1";
 
+// TODO setVariables returns a promise that ends on completion
+// TODO test using getVariables()
+
 test("connection query works with initial query", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
