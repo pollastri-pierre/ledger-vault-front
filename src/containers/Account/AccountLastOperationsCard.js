@@ -15,11 +15,10 @@ class AccountLastOperationsCard extends Component<{
   accountId: string,
   account: Account,
   operations: Connection<Operation>,
-  reloading: boolean,
   restlay: *
 }> {
   render() {
-    const { account, operations, reloading, restlay } = this.props;
+    const { account, operations, restlay } = this.props;
     return (
       <Card title="last operations">
         <InfiniteScrollable restlay={restlay} restlayVariable="operations">
@@ -32,11 +31,6 @@ class AccountLastOperationsCard extends Component<{
             }
             columnIds={["date", "address", "status", "countervalue", "amount"]}
           />
-          {reloading ? (
-            <div style={{ position: "relative", height: 50 }}>
-              <SpinnerCard />
-            </div>
-          ) : null}
         </InfiniteScrollable>
       </Card>
     );
@@ -64,7 +58,7 @@ export default connectData(AccountLastOperationsCard, {
     operations: 20
   },
   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  optimisticRendering: true,
+  freezeTransition: true,
   RenderError,
   RenderLoading
 });

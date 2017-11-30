@@ -1,8 +1,9 @@
 //@flow
-import { Component } from "react";
+import React, { Component } from "react";
 import invariant from "invariant";
 import { findDOMNode } from "react-dom";
 import type { RestlayEnvironment } from "../restlay/connectData";
+import SpinnerCard from "./spinners/SpinnerCard";
 
 const regex = /(auto|scroll)/;
 
@@ -117,6 +118,13 @@ export default class InfiniteScrollable extends Component<
   };
 
   render() {
-    return this.props.children;
+    return [
+      this.props.children,
+      this.state.loading ? (
+        <div key="loading" style={{ position: "relative", height: 50 }}>
+          <SpinnerCard />
+        </div>
+      ) : null
+    ];
   }
 }
