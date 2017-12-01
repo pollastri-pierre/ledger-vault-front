@@ -17,7 +17,7 @@
     "material-ui": "^0.19.4",
     "moment": "^2.19.1",
     "node-polyglot": "^2.2.2",
-    "normalizr": "gre/normalizr#entity-cache",
+    "normalizr-gre": "^3.2.4",
     "open-sans-fontface": "^1.4.0",
     "prop-types": "^15.5.10",
     "qrious": "^4.0.2",

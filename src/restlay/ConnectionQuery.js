@@ -1,6 +1,6 @@
 //@flow
 import type { Store } from "./dataStore";
-import { denormalize } from "normalizr";
+import { denormalize } from "normalizr-gre";
 
 export type Connection<T> = {
   edges: Array<{

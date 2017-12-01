@@ -1,6 +1,6 @@
 //@flow
 import type { Store } from "./dataStore";
-import { denormalize } from "normalizr";
+import { denormalize } from "normalizr-gre";
 
 // A query maps to a GET on the api, it is idempotent to fetch and can be cached
 export default class Query<Input, Response> {

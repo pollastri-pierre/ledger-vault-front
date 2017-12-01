@@ -1,7 +1,7 @@
 //@flow
 import URL from "url";
 import findIndex from "lodash/findIndex";
-import { denormalize } from "normalizr";
+import { denormalize } from "normalizr-gre";
 import mockEntities from "./mock-entities.js";
 import schema from "./schema";
 import type { Account } from "../data/types";

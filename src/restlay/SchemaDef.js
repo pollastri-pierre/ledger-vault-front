@@ -1,5 +1,5 @@
 //@flow
-import * as Normalizr from "normalizr";
+import * as Normalizr from "normalizr-gre";
 
 export function create(
   collectionName: string,

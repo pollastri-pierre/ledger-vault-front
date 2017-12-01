@@ -1,5 +1,5 @@
 //@flow
-import { normalize } from "normalizr";
+import { normalize } from "normalizr-gre";
 import URL from "url";
 import Mutation from "./Mutation";
 import Query from "./Query";
