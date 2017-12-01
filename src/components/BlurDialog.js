@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import Dialog from "material-ui/Dialog";
+import Slide from "material-ui/transitions/Slide";
 
 let blurredCache = false;
 function setBlurState(blurred: boolean) {
@@ -16,6 +17,10 @@ function setBlurState(blurred: boolean) {
 }
 
 const actives = [];
+
+function Transition(props) {
+  return <Slide timeout={20000} direction="down" {...props} />;
+}
 
 class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   static defaultProps = {
@@ -39,28 +44,7 @@ class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   }
   render() {
     const { props } = this;
-    return (
-      <Dialog
-        overlayStyle={{
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
-          boxShadow: "0px 20px 20px 0 rgba(0, 0, 0, 0.04)"
-        }}
-        bodyStyle={{
-          color: "black",
-          padding: props.nopadding ? "0" : "40px 40px 0"
-        }}
-        contentStyle={{
-          width: "fit-content"
-        }}
-        paperProps={{
-          rounded: false,
-          style: {
-            boxShadow: "0px 20px 20px 0 rgba(0, 0, 0, 0.04)"
-          }
-        }}
-        {...props}
-      />
-    );
+    return <Dialog {...props} transition={Transition} />;
   }
 }
 

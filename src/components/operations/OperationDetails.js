@@ -95,15 +95,13 @@ OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default withRouter(
-  connectData(OperationDetails, {
-    RenderLoading: ModalLoading,
-    queries: {
-      operationWithAccount: OperationWithAccountQuery,
-      profile: ProfileQuery
-    },
-    propsToQueryParams: props => ({
-      operationId: props.match.params.operationId || ""
-    })
+export default connectData(OperationDetails, {
+  RenderLoading: ModalLoading,
+  queries: {
+    operationWithAccount: OperationWithAccountQuery,
+    profile: ProfileQuery
+  },
+  propsToQueryParams: props => ({
+    operationId: props.match.params.operationId || ""
   })
-);
+});

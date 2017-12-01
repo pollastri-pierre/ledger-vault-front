@@ -63,6 +63,7 @@ class PendingRequests extends Component<{
           </div>
           <div className="bloc">
             <h3>Accounts to watch</h3>
+            <SpinnerCard />
             <PendingAccountApprove
               accounts={pendingRequests.watchAccounts}
               approvers={approversAccount}
