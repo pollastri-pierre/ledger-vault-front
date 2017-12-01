@@ -43,7 +43,7 @@ class AccountView extends Component<
           </div>
           <QuicklookCard accountId={accountId} />
         </div>
-        <AccountLastOperationsCard accountId={accountId} />
+        <AccountLastOperationsCard key={accountId} accountId={accountId} />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}

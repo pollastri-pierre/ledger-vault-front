@@ -7,18 +7,21 @@ import shallowEqual from "fbjs/lib/shallowEqual";
 import isEqual from "lodash/isEqual";
 import {
   executeQueryOrMutation,
-  getQueryCacheResult,
+  getPendingQueryResult,
   queryCacheIsFresh
 } from "./dataStore";
 import type { Store } from "./dataStore";
 import Query from "./Query";
+import ConnectionQuery from "./ConnectionQuery";
 import Mutation from "./Mutation";
 import type RestlayProvider from "./RestlayProvider";
 
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
-  forceFetch: () => Promise<void>
+  forceFetch: () => Promise<void>,
+  setVariables: Object => Promise<void>,
+  getVariables: () => Object
   /* IDEA
   isReloadingData: (data: Object) => boolean,
   isOptimisticData: (data: Object) => boolean
@@ -36,8 +39,12 @@ type InjectedProps = {|
 |};
 
 type ExtractQuery = <Q>(Class<Q>) => Q;
-type ExtractQueryResult = <In, Out>(Class<Query<In, Out>>) => Out;
-type ExtractQueryIn = <In, Out>(Class<Query<In, Out>>) => In;
+type ExtractQueryResult = <In, Out, O>(
+  Class<Query<In, Out> | ConnectionQuery<In, O>>
+) => Out;
+type ExtractQueryIn = <In, Out>(
+  Class<Query<In, Out> | ConnectionQuery<In, Out>>
+) => In;
 
 // prettier-ignore
 type InProps<Props, A> = $Supertype<InjectedProps & $ObjMap<A, ExtractQueryResult> & Props>;
@@ -65,11 +72,16 @@ export type ContextOverridableOpts<Props> = {
 };
 
 type Opts<Props, A> = ContextOverridableOpts<Props> & {
-  // an object of { [propName: string]: Class<Query> }
+  initialVariables?: Object,
+
+  // an object of { [propName: string]: Class<Query|ConnectionQuery> }
   queries?: A,
 
   // allow to pass parameters to the api uri function that will be used to generate api URL.
-  propsToQueryParams?: (props: Props) => $Values<$ObjMap<A, ExtractQueryIn>>,
+  propsToQueryParams?: (
+    props: Props,
+    vars: Object
+  ) => $Values<$ObjMap<A, ExtractQueryIn>>,
 
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
@@ -85,10 +97,11 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
 };
 
 const defaultOpts = {
+  initialVariables: {},
   queries: {},
   RenderLoading: () => null,
   RenderError: () => null,
-  propsToQueryParams: _ => ({}),
+  propsToQueryParams: (_1, _2) => ({}),
   forceFetch: false,
   optimisticRendering: false,
   freezeTransition: false,
@@ -105,7 +118,9 @@ const mapStateToProps = (state: Object): { dataStore: Store } => ({
 });
 
 export default function connectData<
-  A: { [key: string]: Class<Query<any, any>> },
+  A: {
+    [key: string]: Class<Query<any, any> | ConnectionQuery<any, any>>
+  },
   Props: Object
 >(Decorated: In<Props, A>, opts?: Opts<Props, A>): Out<Props> {
   type APIProps = $ObjMap<A, ExtractQueryResult>;
@@ -121,7 +136,8 @@ export default function connectData<
     optimisticRendering,
     renderLoadingInTransition,
     freezeTransition,
-    forceFetch
+    forceFetch,
+    initialVariables
   } = {
     ...defaultOpts,
     ...opts
@@ -132,10 +148,11 @@ export default function connectData<
     catchedError: ?Error,
     apiError: ?Error,
     pending: boolean,
-    data: ?APIProps
+    data: ?APIProps,
+    variables: Object
   };
 
-  const withoutPending = ({ pending, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
+  const sCUStateSubset = ({ pending, variables, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
 
   class Clazz extends Component<ClazzProps<Props>, State> {
     context: {
@@ -153,7 +170,8 @@ export default function connectData<
       apiError: null,
       // we need to wait a potential initial sync to not render initially with previous data if optimisticRendering is not asked
       pending: false,
-      data: null
+      data: null,
+      variables: initialVariables
     };
 
     _options = {
@@ -170,19 +188,32 @@ export default function connectData<
     queriesInstances: ?$ObjMap<A, ExtractQuery>;
     _unmounted = false;
 
+    setVariables = (vars: Object): Promise<void> => {
+      const { variables } = this.state;
+      let newVariables = { ...variables, ...vars };
+      return this.syncProps(this.props, { variables: newVariables });
+    };
+
+    getVariables = () => this.state.variables;
+
     executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
 
-    execute<In, Out>(
-      queryOrMutation: Query<In, Out> | Mutation<In, Out>
+    execute<Out: *>(
+      queryOrMutation:
+        | Query<any, Out>
+        | Mutation<any, Out>
+        | ConnectionQuery<any, any>
     ): Promise<Out> {
       return this.props.dispatch(this.executeQueryF(queryOrMutation));
     }
 
-    commitMutation = <In, Res>(m: Mutation<In, Res>): Promise<Res> => {
+    commitMutation = <Res>(m: Mutation<any, Res>): Promise<Res> => {
       return this.execute(m);
     };
 
-    fetchQuery = <In, Res>(query: Query<In, Res>): Promise<Res> => {
+    fetchQuery = <Res>(
+      query: Query<any, Res> | ConnectionQuery<any, any>
+    ): Promise<Res> => {
       return this.execute(query);
     };
 
@@ -190,7 +221,10 @@ export default function connectData<
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
         const Q = queries[key];
-        const query: Query<*, *> = new Q(apiParams);
+        // TODO : we might want to be more lazy with a "shouldQueryUpdate" or
+        // something that would check if we really want to create a new instance.
+        // for instance if query params changes but only concern one of the query
+        const query: Query<*, *> | ConnectionQuery<*, *> = new Q(apiParams);
         instances[key] = query;
       });
       this.queriesInstances = instances;
@@ -199,10 +233,15 @@ export default function connectData<
 
     syncAPI(
       apiParams: Object,
+      props: ClazzProps<Props>,
+      state: State,
       forceFetchMode: boolean = false
     ): Array<Promise<*>> {
-      const { dataStore } = this.props;
-      if (this.apiParams !== apiParams || !this.queriesInstances) {
+      const { restlayProvider } = this.context;
+      const { dataStore } = props;
+      let queryUpdated = false;
+      if (!isEqual(apiParams, this.apiParams) || !this.queriesInstances) {
+        queryUpdated = true;
         this.updateQueryInstances(apiParams);
       }
       const queriesInstances = this.queriesInstances;
@@ -211,15 +250,41 @@ export default function connectData<
       const promises: Array<Promise<*>> = queriesKeys
         .map(key => {
           const query = queriesInstances[key];
-          if (
-            forceFetchMode ||
+          const pendingQuery = restlayProvider.getPendingQuery(query);
+          if (pendingQuery) return; // If data is already pending we ignore calling fetchQuery again.
+          let needsRefresh =
             forceFetch ||
-            !queryCacheIsFresh(dataStore, query)
-          ) {
+            forceFetchMode ||
+            (queryUpdated &&
+              // FIXME later we might have a cache for ConnectionQuery actually,
+              // not incompatible, just need to iterate step-by-step
+              (query instanceof Query
+                ? !queryCacheIsFresh(dataStore, query)
+                : true));
+
+          if (query instanceof ConnectionQuery) {
+            const size = state.variables[key];
+            if (typeof size !== "number") {
+              throw new Error(
+                "a variable '" + key + "' is expected on " + displayName
+              );
+            }
+            if (!needsRefresh) {
+              const cache = getPendingQueryResult(dataStore, query);
+              needsRefresh =
+                !cache ||
+                (size !== cache.result.edges.length &&
+                  cache.result.pageInfo.hasNextPage);
+            }
+            query.setSize(size);
+          }
+
+          if (needsRefresh) {
             return this.fetchQuery(query);
           }
         })
         .filter(p => p);
+
       return promises;
     }
 
@@ -231,42 +296,45 @@ export default function connectData<
       forceFetchMode: boolean = false
     ): Promise<*> {
       // FIXME can we simplify the code?
-      const state = { ...this.state, ...statePatch };
+      const state: State = { ...this.state, ...statePatch };
       const { dataStore } = props;
-      let p: ?Promise<*>;
 
-      const apiParams = propsToQueryParams(extractInputProps(props));
-      if (
-        !this.apiParams ||
-        !isEqual(apiParams, this.apiParams) ||
-        forceFetchMode
-      ) {
+      const apiParams = propsToQueryParams(
+        extractInputProps(props),
+        state.variables
+      );
+      const promises = this.syncAPI(apiParams, props, state, forceFetchMode);
+
+      let p: ?Promise<*>;
+      if (promises.length > 0) {
+        state.pending = true;
+        state.apiError = null;
         const syncId = ++this.syncAPI_id;
-        const promises = this.syncAPI(apiParams, forceFetchMode);
-        if (promises.length > 0) {
-          state.pending = true;
-          state.apiError = null;
-          p = Promise.all(promises).then(
-            () => {
-              if (this._unmounted || syncId !== this.syncAPI_id) return;
-              // we need to sync again to make sure data is in sync.
-              // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
-              // NB we patch with a subset of state because local state variable might be outdated
-              this.syncProps(this.props, { apiError: null, pending: false });
-            },
-            apiError => {
-              if (this._unmounted || syncId !== this.syncAPI_id) return;
-              this.setState({ apiError, pending: false });
-            }
-          );
-        }
+        p = Promise.all(promises).then(
+          () => {
+            if (this._unmounted || syncId !== this.syncAPI_id) return;
+            // we need to sync again to make sure data is in sync.
+            // FIXME ^ really? after all tests are implemented, check again if we can't just do a setState with the patch
+            // FIXME we need to change this probably so it avoid potential "infinite recursion" cases.
+            // what we somehow want is to exec the second part of this function.. but need to be sure we are in sync with everything tho
+            // NB we patch with a subset of state because local state variable might be outdated
+            return this.syncProps(this.props, {
+              apiError: null,
+              pending: false
+            });
+          },
+          apiError => {
+            if (this._unmounted || syncId !== this.syncAPI_id) return;
+            return this.setState({ apiError, pending: false });
+          }
+        );
       }
 
       const { queriesInstances } = this;
       const results = [];
       for (let key in queriesInstances) {
         const query = queriesInstances[key];
-        const cache = getQueryCacheResult(dataStore, query);
+        const cache = getPendingQueryResult(dataStore, query);
         if (cache) {
           const { result } = cache;
           results.push({ result, key, query });
@@ -329,7 +397,7 @@ export default function connectData<
         !shallowEqual(
           extractInputProps(this.props),
           extractInputProps(props)
-        ) || !shallowEqual(withoutPending(this.state), withoutPending(state))
+        ) || !shallowEqual(sCUStateSubset(this.state), sCUStateSubset(state))
       );
     }
 
@@ -338,7 +406,9 @@ export default function connectData<
     restlay: RestlayEnvironment = {
       commitMutation: this.commitMutation,
       fetchQuery: this.fetchQuery,
-      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {})
+      forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
+      getVariables: this.getVariables,
+      setVariables: this.setVariables
     };
 
     render() {

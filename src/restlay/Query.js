@@ -1,6 +1,6 @@
 //@flow
 import type { Store } from "./dataStore";
-import { denormalize } from "normalizr";
+import { denormalize } from "normalizr-gre";
 
 // A query maps to a GET on the api, it is idempotent to fetch and can be cached
 export default class Query<Input, Response> {
@@ -15,11 +15,12 @@ export default class Query<Input, Response> {
   // The response HTTP Code that will trigger the user to logout automatically
   logoutUserIfStatusCode: ?number; // FIXME technically this has nothing to do in this generic library model. not sure how put it in project specific only
 
-  uri: string;
-  responseSchema: ?(Object | Array<Object>);
-
   constructor(props: Input) {
     this.props = props;
+  }
+
+  getResponseSchema() {
+    return this.responseSchema;
   }
 
   getCacheKey(): string {
@@ -29,6 +30,6 @@ export default class Query<Input, Response> {
   // Internal
 
   getResponse(result: Object, store: Store): Response {
-    return denormalize(result, this.responseSchema, store.entities);
+    return denormalize(result, this.getResponseSchema(), store.entities);
   }
 }

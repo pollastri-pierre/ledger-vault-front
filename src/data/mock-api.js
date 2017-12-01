@@ -1,10 +1,13 @@
 //@flow
-import { denormalize } from "normalizr";
+import URL from "url";
+import findIndex from "lodash/findIndex";
+import { denormalize } from "normalizr-gre";
 import mockEntities from "./mock-entities.js";
 import schema from "./schema";
 import type { Account } from "../data/types";
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
+  const q = URL.parse(uri, true);
   if (method === "POST") {
     let m;
     m = /^\/accounts\/([^/]+)\/settings$/.exec(uri);
@@ -72,14 +75,30 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       }
     }
 
-    m = /^\/accounts\/([^/]+)\/operations$/.exec(uri);
+    m = q && q.pathname && /^\/accounts\/([^/]+)\/operations$/.exec(q.pathname);
     if (m) {
       const account = mockEntities.accounts[m[1]];
       if (account) {
+        let { first, after } = { first: 50, after: null, ...q.query };
+        first = Math.min(first, 100); // server is free to maximize the count number
+        const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
+        let start = 0;
         const opKeys = Object.keys(mockEntities.operations).filter(
           key => mockEntities.operations[key].account_id === account.id
         );
-        return denormalize(opKeys, [schema.Operation], mockEntities);
+        if (after !== null) {
+          const i = findIndex(opKeys, k => "C_" + k === after);
+          if (i === -1) {
+            throw new Error("after cursor not found '" + after + "'");
+          }
+          start = i + 1;
+        }
+        const edges = opKeys.slice(start, start + first).map(key => ({
+          node: denormalize(key, schema.Operation, mockEntities),
+          cursor: cursorPrefixToNodeId + key
+        }));
+        const hasNextPage = opKeys.length > start + first;
+        return { edges, pageInfo: { hasNextPage } };
       } else {
         throw new Error("Account Not Found");
       }

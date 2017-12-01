@@ -1,27 +1,21 @@
 //@flow
-import { schema } from "normalizr";
+import { create } from "../restlay/SchemaDef";
 
 // The schema defines how entities connect to each other in the API model
 
-const Member = new schema.Entity("members");
+const Member = create("members");
 
-const Group = new schema.Entity("groups", {
+const Group = create("groups", {
   members: [Member]
 });
 
-const Currency = new schema.Entity(
-  "currencies",
-  {},
-  {
-    idAttribute: "name"
-  }
-);
+const Currency = create("currencies", {}, "name");
 
-const Account = new schema.Entity("accounts", {
+const Account = create("accounts", {
   currency: Currency
 });
 
-const Operation = new schema.Entity(
+const Operation = create(
   "operations",
   {
     notes: [
@@ -30,12 +24,10 @@ const Operation = new schema.Entity(
       }
     ]
   },
-  {
-    idAttribute: "uuid"
-  }
+  "uuid"
 );
 
-const Balance = new schema.Entity("balance");
+const Balance = create("balance");
 
 export default {
   Group,

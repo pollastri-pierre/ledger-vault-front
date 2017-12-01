@@ -7,23 +7,33 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DataTableOperation from "../../components/DataTableOperation";
+import InfiniteScrollable from "../../components/InfiniteScrollable";
 import type { Account, Operation } from "../../data/types";
+import type { Connection } from "../../restlay/ConnectionQuery";
+
+const columnIds = ["date", "address", "status", "countervalue", "amount"];
 
 class AccountLastOperationsCard extends Component<{
   accountId: string,
   account: Account,
-  operations: Operation[],
-  reloading: boolean
+  operations: Connection<Operation>,
+  restlay: *
 }> {
   render() {
-    const { account, operations, reloading } = this.props;
+    const { account, operations, restlay } = this.props;
     return (
-      <Card reloading={reloading} title="last operations">
-        <DataTableOperation
-          accounts={[account]}
-          operations={operations}
-          columnIds={["date", "address", "status", "countervalue", "amount"]}
-        />
+      <Card title="last operations">
+        <InfiniteScrollable
+          restlay={restlay}
+          restlayVariable="operations"
+          chunkSize={20}
+        >
+          <DataTableOperation
+            accounts={[account]}
+            operations={operations.edges.map(e => e.node)}
+            columnIds={columnIds}
+          />
+        </InfiniteScrollable>
       </Card>
     );
   }
@@ -46,8 +56,10 @@ export default connectData(AccountLastOperationsCard, {
     account: AccountQuery,
     operations: AccountOperationsQuery
   },
+  initialVariables: {
+    operations: 20
+  },
   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  optimisticRendering: true,
   RenderError,
   RenderLoading
 });
