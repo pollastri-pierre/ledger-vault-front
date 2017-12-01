@@ -26,7 +26,7 @@ class AccountLastOperationsCard extends Component<{
         <InfiniteScrollable
           restlay={restlay}
           restlayVariable="operations"
-          chunkSize={5}
+          chunkSize={20}
         >
           <DataTableOperation
             accounts={[account]}
