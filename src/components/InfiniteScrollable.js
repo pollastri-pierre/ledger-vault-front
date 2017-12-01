@@ -68,14 +68,21 @@ export default class InfiniteScrollable extends Component<
   }
 
   getScrollParent() {
-    // $FlowFixMe
-    return scrollparent(findDOMNode(this)); // eslint-disable-line react/no-find-dom-node
+    try {
+      // $FlowFixMe
+      return scrollparent(findDOMNode(this)); // eslint-disable-line react/no-find-dom-node
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   syncScrollBodyListener = () => {
-    const resizeBoundOnDom = resizeEventOn(this.getScrollParent());
+    const node = this.getScrollParent();
+    if (!node) return;
+    const resizeBoundOnDom = resizeEventOn(node);
     if (resizeBoundOnDom !== this.resizeBoundOnDom) {
       this.unbindResizeEvent();
+      this.resizeBoundOnDom = resizeBoundOnDom;
       resizeBoundOnDom.addEventListener("scroll", this.checkScroll);
     }
   };

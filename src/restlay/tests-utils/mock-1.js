@@ -4,7 +4,7 @@ import findIndex from "lodash/findIndex";
 import Query from "../Query";
 import ConnectionQuery from "../ConnectionQuery";
 import Mutation from "../Mutation";
-import { schema } from "normalizr";
+import { create } from "../../restlay/SchemaDef";
 
 // TODO add a more complex schema (2-3 models, interconnected)
 // TODO some queries are cached, etc.. need to cover all possible features here
@@ -14,7 +14,7 @@ type Animal = {
   name: string,
   age: number
 };
-const schemaAnimal = new schema.Entity("animals");
+const schemaAnimal = create("animals");
 
 export class WorldQuery extends ConnectionQuery<void, Animal[]> {
   uri = "/world";

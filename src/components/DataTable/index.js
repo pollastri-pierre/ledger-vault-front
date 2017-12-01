@@ -1,29 +1,41 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import "./index.css";
 
 type Column<Cell> = {
   title: string,
   className: string,
-  renderCell: React$ComponentType<$Shape<Cell>>
+  Cell: React$ComponentType<$Shape<Cell>>
 };
 
-export default class DataTable<Cell> extends Component<{
+class DefaultRow<Cell> extends Component<{
+  cell: Cell,
+  index: number,
+  children: React$Node
+}> {
+  shouldComponentUpdate({ cell }: *) {
+    return this.props.cell !== cell;
+  }
+  render() {
+    const { index, children } = this.props;
+    return <tr key={index}>{children}</tr>;
+  }
+}
+
+export default class DataTable<Cell> extends PureComponent<{
   columns: Array<Column<Cell>>,
   data: Array<Cell>,
-  renderRow: (
+  Row: React$ComponentType<{
     cell: Cell,
     index: number,
-    children: string | React$Node
-  ) => React$Node
+    children: React$Node
+  }>
 }> {
   static defaultProps = {
-    renderRow: (cell: Cell, index: number, children: string | React$Node) => (
-      <tr key={index}>{children}</tr>
-    )
+    Row: DefaultRow
   };
   render() {
-    const { columns, data, renderRow } = this.props;
+    const { columns, data, Row } = this.props;
     return (
       <table className="data-table">
         <thead>
@@ -36,20 +48,15 @@ export default class DataTable<Cell> extends Component<{
           </tr>
         </thead>
         <tbody>
-          {data.map((cell, y) =>
-            renderRow(
-              cell,
-              y,
-              columns.map((column, x) => {
-                const C = column.renderCell;
-                return (
-                  <td key={x} className={column.className}>
-                    <C {...cell} />
-                  </td>
-                );
-              })
-            )
-          )}
+          {data.map((cell, y) => (
+            <Row cell={cell} key={y} index={y}>
+              {columns.map((column, x) => (
+                <td key={x} className={column.className}>
+                  <column.Cell {...cell} />
+                </td>
+              ))}
+            </Row>
+          ))}
         </tbody>
       </table>
     );

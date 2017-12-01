@@ -10,6 +10,8 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DataTableOperation from "../../components/DataTableOperation";
 import type { Operation, Account } from "../../data/types";
 
+const columnIds = ["date", "account", "countervalue", "amount"];
+
 class LastOperationCard extends Component<*> {
   props: {
     operations: Array<Operation>,
@@ -25,7 +27,7 @@ class LastOperationCard extends Component<*> {
         titleRight={<ViewAllLink to="/search" />}
       >
         <DataTableOperation
-          columnIds={["date", "account", "countervalue", "amount"]}
+          columnIds={columnIds}
           operations={operations}
           accounts={accounts}
         />

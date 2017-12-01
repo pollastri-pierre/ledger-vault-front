@@ -11,6 +11,11 @@ import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
 import "./index.css";
 
+type Cell = {
+  operation: Operation,
+  account: ?Account
+};
+
 const stopPropagation = (e: SyntheticEvent<*>) => e.stopPropagation();
 
 class OperationNoteLink extends Component<{ operation: Operation }> {
@@ -37,7 +42,7 @@ class OperationNoteLink extends Component<{ operation: Operation }> {
   }
 }
 
-class DateColumn extends Component<{ operation: Operation }> {
+class DateColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     return (
@@ -49,7 +54,7 @@ class DateColumn extends Component<{ operation: Operation }> {
   }
 }
 
-class AccountColumn extends Component<{ account: ?Account }> {
+class AccountColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
     return account ? (
@@ -58,7 +63,7 @@ class AccountColumn extends Component<{ account: ?Account }> {
   }
 }
 
-class AddressColumn extends Component<{ operation: Operation }> {
+class AddressColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     let hash = "";
@@ -78,7 +83,7 @@ class AddressColumn extends Component<{ operation: Operation }> {
   }
 }
 
-class StatusColumn extends Component<{ operation: Operation }> {
+class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     return (
@@ -87,10 +92,7 @@ class StatusColumn extends Component<{ operation: Operation }> {
   }
 }
 
-class AmountColumn extends Component<{
-  operation: Operation,
-  account: ?Account
-}> {
+class AmountColumn extends Component<Cell> {
   render() {
     const { operation, account } = this.props;
     return account ? (
@@ -103,10 +105,7 @@ class AmountColumn extends Component<{
   }
 }
 
-class CountervalueColumn extends Component<{
-  operation: Operation,
-  account: ?Account
-}> {
+class CountervalueColumn extends Component<Cell> {
   render() {
     const { operation, account } = this.props;
     return account ? (
@@ -125,63 +124,90 @@ const COLS = [
   {
     className: "date",
     title: "date",
-    renderCell: DateColumn
+    Cell: DateColumn
   },
   {
     className: "account",
     title: "account",
-    renderCell: AccountColumn
+    Cell: AccountColumn
   },
   {
     className: "address",
     title: "address",
-    renderCell: AddressColumn
+    Cell: AddressColumn
   },
   {
     className: "status",
     title: "status",
-    renderCell: StatusColumn
+    Cell: StatusColumn
   },
   {
     className: "countervalue",
     title: "",
-    renderCell: CountervalueColumn
+    Cell: CountervalueColumn
   },
   {
     className: "amount",
     title: "amount",
-    renderCell: AmountColumn
+    Cell: AmountColumn
   }
 ];
 
-class DataTableOperation extends Component<{
-  operations: Array<Operation>,
-  accounts: Array<Account>, // accounts is an array that should at least contains the operations's account_id
-  columnIds: Array<string>,
-  history: Object,
-  match: Object
+class Row extends Component<{
+  cell: Cell,
+  index: number,
+  children: React$Node,
+  openOperation: (string, number) => void
 }> {
+  shouldComponentUpdate({ cell }: *) {
+    return this.props.cell.operation !== cell.operation;
+  }
+  render() {
+    const { openOperation, cell: { operation }, children } = this.props;
+    return (
+      <tr
+        style={{ cursor: "pointer" }}
+        onClick={() => openOperation(operation.uuid, 0)}
+      >
+        {children}
+      </tr>
+    );
+  }
+}
+
+class DataTableOperation extends Component<
+  {
+    operations: Array<Operation>,
+    accounts: Array<Account>, // accounts is an array that should at least contains the operations's account_id
+    columnIds: Array<string>,
+    history: Object,
+    match: Object
+  },
+  *
+> {
+  state = {
+    columns: COLS.filter(c => this.props.columnIds.includes(c.className))
+  };
+
   openOperation = (uuid: string, n: number = 0) => {
     this.props.history.push(`${this.props.match.url}/operation/${uuid}/${n}`);
   };
 
-  renderRow = (
-    { operation }: { operation: Operation },
-    index: number,
-    children: string | React$Node
-  ) => (
-    <tr
-      key={operation.uuid}
-      style={{ cursor: "pointer" }}
-      onClick={() => this.openOperation(operation.uuid, 0)}
-    >
-      {children}
-    </tr>
+  renderRow = (props: *) => (
+    <Row {...props} openOperation={this.openOperation} />
   );
 
+  componentWillReceiveProps(props) {
+    if (props.columnIds !== this.props.columnIds) {
+      this.setState({
+        columns: COLS.filter(c => props.columnIds.includes(c.className))
+      });
+    }
+  }
+
   render() {
-    const { accounts, operations, columnIds } = this.props;
-    const columns = COLS.filter(c => columnIds.includes(c.className));
+    const { columns } = this.state;
+    const { accounts, operations } = this.props;
     const data = operations.map(operation => ({
       operation,
       account: accounts.find(a => a.id === operation.account_id)
@@ -189,7 +215,7 @@ class DataTableOperation extends Component<{
     return data.length === 0 ? (
       <NoDataPlaceholder title="No operations." />
     ) : (
-      <DataTable data={data} columns={columns} renderRow={this.renderRow} />
+      <DataTable data={data} columns={columns} Row={this.renderRow} />
     );
   }
 }

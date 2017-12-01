@@ -11,6 +11,8 @@ import InfiniteScrollable from "../../components/InfiniteScrollable";
 import type { Account, Operation } from "../../data/types";
 import type { Connection } from "../../restlay/ConnectionQuery";
 
+const columnIds = ["date", "address", "status", "countervalue", "amount"];
+
 class AccountLastOperationsCard extends Component<{
   accountId: string,
   account: Account,
@@ -21,15 +23,15 @@ class AccountLastOperationsCard extends Component<{
     const { account, operations, restlay } = this.props;
     return (
       <Card title="last operations">
-        <InfiniteScrollable restlay={restlay} restlayVariable="operations">
+        <InfiniteScrollable
+          restlay={restlay}
+          restlayVariable="operations"
+          chunkSize={5}
+        >
           <DataTableOperation
             accounts={[account]}
-            operations={
-              operations.edges.map(
-                e => e.node
-              ) /* FIXME implement InfiniteScrollable */
-            }
-            columnIds={["date", "address", "status", "countervalue", "amount"]}
+            operations={operations.edges.map(e => e.node)}
+            columnIds={columnIds}
           />
         </InfiniteScrollable>
       </Card>
@@ -58,7 +60,6 @@ export default connectData(AccountLastOperationsCard, {
     operations: 20
   },
   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  freezeTransition: true,
   RenderError,
   RenderLoading
 });
