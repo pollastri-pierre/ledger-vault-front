@@ -110,7 +110,6 @@ class AccountCreation extends Component<Props> {
           nopadding
           onRequestClose={this.close}
         >
-          {account,internModalId === "main" && 
           <div id="account-creation" className="modal">
             <MainCreation
               account={account}
