@@ -163,7 +163,6 @@ export class QuicklookCard extends Component<Props, State> {
             From {labelDateRange[0]} to {labelDateRange[1]}
           </div>
           <QuicklookWrap
-            key={accountId}
             accountId={accountId}
             filter={
               quicklookFilter.key === "balance"

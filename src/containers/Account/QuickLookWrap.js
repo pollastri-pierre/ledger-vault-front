@@ -29,8 +29,7 @@ export class QuicklookWrap extends Component<Props, State> {
       currencyUnit,
       dateRange,
       currencyColor,
-      filter,
-      accountId
+      filter
     } = this.props;
     const selectedBalance = balance[filter];
     return (

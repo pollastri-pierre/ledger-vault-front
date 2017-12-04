@@ -41,7 +41,7 @@ class AccountView extends Component<
             </div>
             <ReceiveFundsCard accountId={accountId} />
           </div>
-          <QuicklookCard accountId={accountId} />
+          <QuicklookCard accountId={accountId} key={accountId} />
         </div>
         <AccountLastOperationsCard key={accountId} accountId={accountId} />
         <ModalRoute
