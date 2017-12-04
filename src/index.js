@@ -24,328 +24,356 @@ import {
 
 import "./styles/index.css";
 
-const red50 = "#ffebee";
-const red100 = "#ffcdd2";
-const red200 = "#ef9a9a";
-const red300 = "#e57373";
-const red400 = "#ef5350";
-const red500 = "#f44336";
-const red600 = "#e53935";
-const red700 = "#d32f2f";
-const red800 = "#c62828";
-const red900 = "#b71c1c";
-const redA100 = "#ff8a80";
-const redA200 = "#ff5252";
-const redA400 = "#ff1744";
-const redA700 = "#d50000";
-
-const pink50 = "#fce4ec";
-const pink100 = "#f8bbd0";
-const pink200 = "#f48fb1";
-const pink300 = "#f06292";
-const pink400 = "#ec407a";
-const pink500 = "#e91e63";
-const pink600 = "#d81b60";
-const pink700 = "#c2185b";
-const pink800 = "#ad1457";
-const pink900 = "#880e4f";
-const pinkA100 = "#ff80ab";
-const pinkA200 = "#ff4081";
-const pinkA400 = "#f50057";
-const pinkA700 = "#c51162";
-
-const purple50 = "#f3e5f5";
-const purple100 = "#e1bee7";
-const purple200 = "#ce93d8";
-const purple300 = "#ba68c8";
-const purple400 = "#ab47bc";
-const purple500 = "#9c27b0";
-const purple600 = "#8e24aa";
-const purple700 = "#7b1fa2";
-const purple800 = "#6a1b9a";
-const purple900 = "#4a148c";
-const purpleA100 = "#ea80fc";
-const purpleA200 = "#e040fb";
-const purpleA400 = "#d500f9";
-const purpleA700 = "#aa00ff";
-
-const deepPurple50 = "#ede7f6";
-const deepPurple100 = "#d1c4e9";
-const deepPurple200 = "#b39ddb";
-const deepPurple300 = "#9575cd";
-const deepPurple400 = "#7e57c2";
-const deepPurple500 = "#673ab7";
-const deepPurple600 = "#5e35b1";
-const deepPurple700 = "#512da8";
-const deepPurple800 = "#4527a0";
-const deepPurple900 = "#311b92";
-const deepPurpleA100 = "#b388ff";
-const deepPurpleA200 = "#7c4dff";
-const deepPurpleA400 = "#651fff";
-const deepPurpleA700 = "#6200ea";
-
-const indigo50 = "#e8eaf6";
-const indigo100 = "#c5cae9";
-const indigo200 = "#9fa8da";
-const indigo300 = "#7986cb";
-const indigo400 = "#5c6bc0";
-const indigo500 = "#3f51b5";
-const indigo600 = "#3949ab";
-const indigo700 = "#303f9f";
-const indigo800 = "#283593";
-const indigo900 = "#1a237e";
-const indigoA100 = "#8c9eff";
-const indigoA200 = "#536dfe";
-const indigoA400 = "#3d5afe";
-const indigoA700 = "#304ffe"
-
-const blue50 = "#e3f2fd";
-const blue100 = "#bbdefb";
-const blue200 = "#90caf9";
-const blue300 = "#64b5f6";
-const blue400 = "#42a5f5";
-const blue500 = "#2196f3";
-const blue600 = "#1e88e5";
-const blue700 = "#1976d2";
-const blue800 = "#1565c0";
-const blue900 = "#0d47a1";
-const blueA100 = "#82b1ff";
-const blueA200 = "#448aff";
-const blueA400 = "#2979ff";
-const blueA700 = "#2962ff";
-
-const lightBlue50 = "#e1f5fe";
-const lightBlue100 = "#b3e5fc";
-const lightBlue200 = "#81d4fa";
-const lightBlue300 = "#4fc3f7";
-const lightBlue400 = "#29b6f6";
-const lightBlue500 = "#03a9f4";
-const lightBlue600 = "#039be5";
-const lightBlue700 = "#0288d1";
-const lightBlue800 = "#0277bd";
-const lightBlue900 = "#01579b";
-const lightBlueA100 = "#80d8ff";
-const lightBlueA200 = "#40c4ff";
-const lightBlueA400 = "#00b0ff";
-const lightBlueA700 = "#0091ea";
-
-const cyan50 = "#e0f7fa";
-const cyan100 = "#b2ebf2";
-const cyan200 = "#80deea";
-const cyan300 = "#4dd0e1";
-const cyan400 = "#26c6da";
-const cyan500 = "#00bcd4";
-const cyan600 = "#00acc1";
-const cyan700 = "#0097a7";
-const cyan800 = "#00838f";
-const cyan900 = "#006064";
-const cyanA100 = "#84ffff";
-const cyanA200 = "#18ffff";
-const cyanA400 = "#00e5ff";
-const cyanA700 = "#00b8d4";
-
-const teal50 = "#e0f2f1";
-const teal100 = "#b2dfdb";
-const teal200 = "#80cbc4";
-const teal300 = "#4db6ac";
-const teal400 = "#26a69a";
-const teal500 = "#009688";
-const teal600 = "#00897b";
-const teal700 = "#00796b";
-const teal800 = "#00695c";
-const teal900 = "#004d40";
-const tealA100 = "#a7ffeb";
-const tealA200 = "#64ffda";
-const tealA400 = "#1de9b6";
-const tealA700 = "#00bfa5";
-
-const green50 = "#e8f5e9";
-const green100 = "#c8e6c9";
-const green200 = "#a5d6a7";
-const green300 = "#81c784";
-const green400 = "#66bb6a";
-const green500 = "#4caf50";
-const green600 = "#43a047";
-const green700 = "#388e3c";
-const green800 = "#2e7d32";
-const green900 = "#1b5e20";
-const greenA100 = "#b9f6ca";
-const greenA200 = "#69f0ae";
-const greenA400 = "#00e676";
-const greenA700 = "#00c853";
-
-const lightGreen50 = "#f1f8e9";
-const lightGreen100 = "#dcedc8";
-const lightGreen200 = "#c5e1a5";
-const lightGreen300 = "#aed581";
-const lightGreen400 = "#9ccc65";
-const lightGreen500 = "#8bc34a";
-const lightGreen600 = "#7cb342";
-const lightGreen700 = "#689f38";
-const lightGreen800 = "#558b2f";
-const lightGreen900 = "#33691e";
-const lightGreenA100 = "#ccff90";
-const lightGreenA200 = "#b2ff59";
-const lightGreenA400 = "#76ff03";
-const lightGreenA700 = "#64dd17";
-
-const lime50 = "#f9fbe7";
-const lime100 = "#f0f4c3";
-const lime200 = "#e6ee9c";
-const lime300 = "#dce775";
-const lime400 = "#d4e157";
-const lime500 = "#cddc39";
-const lime600 = "#c0ca33";
-const lime700 = "#afb42b";
-const lime800 = "#9e9d24";
-const lime900 = "#827717";
-const limeA100 = "#f4ff81";
-const limeA200 = "#eeff41";
-const limeA400 = "#c6ff00";
-const limeA700 = "#aeea00";
-
-const yellow50 = "#fffde7";
-const yellow100 = "#fff9c4";
-const yellow200 = "#fff59d";
-const yellow300 = "#fff176";
-const yellow400 = "#ffee58";
-const yellow500 = "#ffeb3b";
-const yellow600 = "#fdd835";
-const yellow700 = "#fbc02d";
-const yellow800 = "#f9a825";
-const yellow900 = "#f57f17";
-const yellowA100 = "#ffff8d";
-const yellowA200 = "#ffff00";
-const yellowA400 = "#ffea00";
-const yellowA700 = "#ffd600";
-
-const amber50 = "#fff8e1";
-const amber100 = "#ffecb3";
-const amber200 = "#ffe082";
-const amber300 = "#ffd54f";
-const amber400 = "#ffca28";
-const amber500 = "#ffc107";
-const amber600 = "#ffb300";
-const amber700 = "#ffa000";
-const amber800 = "#ff8f00";
-const amber900 = "#ff6f00";
-const amberA100 = "#ffe57f";
-const amberA200 = "#ffd740";
-const amberA400 = "#ffc400";
-const amberA700 = "#ffab00";
-
-const orange50 = "#fff3e0";
-const orange100 = "#ffe0b2";
-const orange200 = "#ffcc80";
-const orange300 = "#ffb74d";
-const orange400 = "#ffa726";
-const orange500 = "#ff9800";
-const orange600 = "#fb8c00";
-const orange700 = "#f57c00";
-const orange800 = "#ef6c00";
-const orange900 = "#e65100";
-const orangeA100 = "#ffd180";
-const orangeA200 = "#ffab40";
-const orangeA400 = "#ff9100";
-const orangeA700 = "#ff6d00";
-
-const deepOrange50 = "#fbe9e7";
-const deepOrange100 = "#ffccbc";
-const deepOrange200 = "#ffab91";
-const deepOrange300 = "#ff8a65";
-const deepOrange400 = "#ff7043";
-const deepOrange500 = "#ff5722";
-const deepOrange600 = "#f4511e";
-const deepOrange700 = "#e64a19";
-const deepOrange800 = "#d84315";
-const deepOrange900 = "#bf360c";
-const deepOrangeA100 = "#ff9e80";
-const deepOrangeA200 = "#ff6e40";
-const deepOrangeA400 = "#ff3d00";
-const deepOrangeA700 = "#dd2c00";
-
-const brown50 = "#efebe9";
-const brown100 = "#d7ccc8";
-const brown200 = "#bcaaa4";
-const brown300 = "#a1887f";
-const brown400 = "#8d6e63";
-const brown500 = "#795548";
-const brown600 = "#6d4c41";
-const brown700 = "#5d4037";
-const brown800 = "#4e342e";
-const brown900 = "#3e2723";
-
-const blueGrey50 = "#eceff1";
-const blueGrey100 = "#cfd8dc";
-const blueGrey200 = "#b0bec5";
-const blueGrey300 = "#90a4ae";
-const blueGrey400 = "#78909c";
-const blueGrey500 = "#607d8b";
-const blueGrey600 = "#546e7a";
-const blueGrey700 = "#455a64";
-const blueGrey800 = "#37474f";
-const blueGrey900 = "#263238";
-
-const grey50 = "#fafafa";
-const grey100 = "#f5f5f5";
-const grey200 = "#eeeeee";
-const grey300 = "#e0e0e0";
-const grey400 = "#bdbdbd";
-const grey500 = "#9e9e9e";
-const grey600 = "#757575";
-const grey700 = "#616161";
-const grey800 = "#424242";
-const grey900 = "#212121";
-
-const black = "#000000";
-const white = "#ffffff";
-
-const transparent = "rgba(0, 0, 0, 0)";
-const fullBlack = "rgba(0, 0, 0, 1)";
-const darkBlack = "rgba(0, 0, 0, 0.87)";
-const lightBlack = "rgba(0, 0, 0, 0.54)";
-const minBlack = "rgba(0, 0, 0, 0.26)";
-const faintBlack = "rgba(0, 0, 0, 0.12)";
-const fullWhite = "rgba(255, 255, 255, 1)";
-const darkWhite = "rgba(255, 255, 255, 0.87)";
-const lightWhite = "rgba(255, 255, 255, 0.54)";
-
-const spacing = {
-  iconSize: 24,
-  desktopGutter: 24,
-  desktopGutterMore: 32,
-  desktopGutterLess: 16,
-  desktopGutterMini: 8,
-  desktopKeylineIncrement: 64,
-  desktopDropDownMenuItemHeight: 32,
-  desktopDropDownMenuFontSize: 15,
-  desktopDrawerMenuItemHeight: 48,
-  desktopSubheaderHeight: 48,
-  desktopToolbarHeight: 56
-};
 const theme = {
-  spacing: spacing,
-  fontFamily: "Roboto, sans-serif",
-  borderRadius: 2,
+  direction: "ltr",
   palette: {
-    primary: "blue",
-    secondary: "blue",
-    primary3Color: grey400,
-    accent1Color: pinkA200,
-    accent2Color: grey100,
-    accent3Color: grey500,
-    textColor: darkBlack,
-    secondaryTextColor: "grey",
-    alternateTextColor: white,
-    canvasColor: white,
-    borderColor: grey300,
-    disabledColor: "grey",
-    pickerHeaderColor: cyan500,
-    clockCircleColor: "grey",
-    shadowColor: fullBlack
+    common: {
+      black: "#000",
+      white: "#fff",
+      transparent: "rgba(0, 0, 0, 0)",
+      fullBlack: "rgba(0, 0, 0, 1)",
+      darkBlack: "rgba(0, 0, 0, 0.87)",
+      lightBlack: "rgba(0, 0, 0, 0.54)",
+      minBlack: "rgba(0, 0, 0, 0.26)",
+      faintBlack: "rgba(0, 0, 0, 0.12)",
+      fullWhite: "rgba(255, 255, 255, 1)",
+      darkWhite: "rgba(255, 255, 255, 0.87)",
+      lightWhite: "rgba(255, 255, 255, 0.54)"
+    },
+    type: "light",
+    primary: {
+      "50": "#e3f2fd",
+      "100": "#bbdefb",
+      "200": "#90caf9",
+      "300": "#64b5f6",
+      "400": "#42a5f5",
+      "500": "#2196f3",
+      "600": "#1e88e5",
+      "700": "#1976d2",
+      "800": "#1565c0",
+      "900": "#0d47a1",
+      A100: "#82b1ff",
+      A200: "#448aff",
+      A400: "#2979ff",
+      A700: "#2962ff",
+      contrastDefaultColor: "light"
+    },
+    secondary: {
+      "50": "#fce4ec",
+      "100": "#f8bbd0",
+      "200": "#f48fb1",
+      "300": "#f06292",
+      "400": "#ec407a",
+      "500": "#e91e63",
+      "600": "#d81b60",
+      "700": "#c2185b",
+      "800": "#ad1457",
+      "900": "#880e4f",
+      A100: "#ff80ab",
+      A200: "#ff4081",
+      A400: "#f50057",
+      A700: "#c51162",
+      contrastDefaultColor: "light"
+    },
+    error: {
+      "50": "#ffebee",
+      "100": "#ffcdd2",
+      "200": "#ef9a9a",
+      "300": "#e57373",
+      "400": "#ef5350",
+      "500": "#f44336",
+      "600": "#e53935",
+      "700": "#d32f2f",
+      "800": "#c62828",
+      "900": "#b71c1c",
+      A100: "#ff8a80",
+      A200: "#ff5252",
+      A400: "#ff1744",
+      A700: "#d50000",
+      contrastDefaultColor: "light"
+    },
+    grey: {
+      "50": "#fafafa",
+      "100": "#f5f5f5",
+      "200": "#eeeeee",
+      "300": "#e0e0e0",
+      "400": "#bdbdbd",
+      "500": "#9e9e9e",
+      "600": "#757575",
+      "700": "#616161",
+      "800": "#424242",
+      "900": "#212121",
+      A100: "#d5d5d5",
+      A200: "#aaaaaa",
+      A400: "#303030",
+      A700: "#616161",
+      contrastDefaultColor: "dark"
+    },
+    shades: {
+      dark: {
+        text: {
+          primary: "rgba(255, 255, 255, 1)",
+          secondary: "rgba(255, 255, 255, 0.7)",
+          disabled: "rgba(255, 255, 255, 0.5)",
+          hint: "rgba(255, 255, 255, 0.5)",
+          icon: "rgba(255, 255, 255, 0.5)",
+          divider: "rgba(255, 255, 255, 0.12)",
+          lightDivider: "rgba(255, 255, 255, 0.075)"
+        },
+        input: {
+          bottomLine: "rgba(255, 255, 255, 0.7)",
+          helperText: "rgba(255, 255, 255, 0.7)",
+          labelText: "rgba(255, 255, 255, 0.7)",
+          inputText: "rgba(255, 255, 255, 1)",
+          disabled: "rgba(255, 255, 255, 0.5)"
+        },
+        action: {
+          active: "rgba(255, 255, 255, 1)",
+          disabled: "rgba(255, 255, 255, 0.3)"
+        },
+        background: {
+          default: "#303030",
+          paper: "#424242",
+          appBar: "#212121",
+          contentFrame: "#212121"
+        },
+        line: {
+          stepper: "#bdbdbd"
+        }
+      },
+      light: {
+        text: {
+          primary: "rgba(0, 0, 0, 0.87)",
+          secondary: "rgba(0, 0, 0, 0.54)",
+          disabled: "rgba(0, 0, 0, 0.38)",
+          hint: "rgba(0, 0, 0, 0.38)",
+          icon: "rgba(0, 0, 0, 0.38)",
+          divider: "rgba(0, 0, 0, 0.12)",
+          lightDivider: "rgba(0, 0, 0, 0.075)"
+        },
+        input: {
+          bottomLine: "rgba(0, 0, 0, 0.42)",
+          helperText: "rgba(0, 0, 0, 0.54)",
+          labelText: "rgba(0, 0, 0, 0.54)",
+          inputText: "rgba(0, 0, 0, 0.87)",
+          disabled: "rgba(0, 0, 0, 0.42)"
+        },
+        action: {
+          active: "rgba(0, 0, 0, 0.54)",
+          disabled: "rgba(0, 0, 0, 0.26)"
+        },
+        background: {
+          default: "#fafafa",
+          paper: "#fff",
+          appBar: "#f5f5f5",
+          contentFrame: "#eeeeee"
+        },
+        line: {
+          stepper: "#bdbdbd"
+        }
+      }
+    },
+    text: {
+      primary: "rgba(0, 0, 0, 0.87)",
+      secondary: "rgba(0, 0, 0, 0.54)",
+      disabled: "rgba(0, 0, 0, 0.38)",
+      hint: "rgba(0, 0, 0, 0.38)",
+      icon: "rgba(0, 0, 0, 0.38)",
+      divider: "rgba(0, 0, 0, 0.12)",
+      lightDivider: "rgba(0, 0, 0, 0.075)"
+    },
+    input: {
+      bottomLine: "rgba(0, 0, 0, 0.42)",
+      helperText: "rgba(0, 0, 0, 0.54)",
+      labelText: "rgba(0, 0, 0, 0.54)",
+      inputText: "rgba(0, 0, 0, 0.87)",
+      disabled: "rgba(0, 0, 0, 0.42)"
+    },
+    action: {
+      active: "rgba(0, 0, 0, 0.54)",
+      disabled: "rgba(0, 0, 0, 0.26)"
+    },
+    background: {
+      default: "#fafafa",
+      paper: "#fff",
+      appBar: "#f5f5f5",
+      contentFrame: "#eeeeee"
+    },
+    line: {
+      stepper: "#bdbdbd"
+    }
+  },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    display4: {
+      fontSize: "7rem",
+      fontWeight: 300,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      letterSpacing: "-.04em",
+      lineHeight: "1.14286em",
+      marginLeft: "-.06em",
+      color: "rgba(0, 0, 0, 0.54)"
+    },
+    display3: {
+      fontSize: "3.5rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      letterSpacing: "-.02em",
+      lineHeight: "1.30357em",
+      marginLeft: "-.04em",
+      color: "rgba(0, 0, 0, 0.54)"
+    },
+    display2: {
+      fontSize: "2.8125rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.06667em",
+      marginLeft: "-.04em",
+      color: "rgba(0, 0, 0, 0.54)"
+    },
+    display1: {
+      fontSize: "2.125rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.20588em",
+      marginLeft: "-.04em",
+      color: "rgba(0, 0, 0, 0.54)"
+    },
+    headline: {
+      fontSize: "1.5rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.35417em",
+      color: "rgba(0, 0, 0, 0.87)"
+    },
+    title: {
+      fontSize: "1.3125rem",
+      fontWeight: 500,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.16667em",
+      color: "rgba(0, 0, 0, 0.87)"
+    },
+    subheading: {
+      fontSize: "1rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.5em",
+      color: "rgba(0, 0, 0, 0.87)"
+    },
+    body2: {
+      fontSize: "0.875rem",
+      fontWeight: 500,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.71429em",
+      color: "rgba(0, 0, 0, 0.87)"
+    },
+    body1: {
+      fontSize: "0.875rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.46429em",
+      color: "rgba(0, 0, 0, 0.87)"
+    },
+    caption: {
+      fontSize: "0.75rem",
+      fontWeight: 400,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: "1.375em",
+      color: "rgba(0, 0, 0, 0.54)"
+    },
+    button: {
+      fontSize: "0.875rem",
+      textTransform: "uppercase",
+      fontWeight: 500,
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+    }
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 56,
+      "@media (min-width:0px) and (orientation: landscape)": {
+        minHeight: 48
+      },
+      "@media (min-width:600px)": {
+        minHeight: 64
+      }
+    }
+  },
+  breakpoints: {
+    keys: ["xs", "sm", "md", "lg", "xl"],
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920
+    }
+  },
+  shadows: [
+    "none",
+    "0px 1px 3px 0px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.12)",
+    "0px 1px 5px 0px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 3px 1px -2px rgba(0, 0, 0, 0.12)",
+    "0px 1px 8px 0px rgba(0, 0, 0, 0.2),0px 3px 4px 0px rgba(0, 0, 0, 0.14),0px 3px 3px -2px rgba(0, 0, 0, 0.12)",
+    "0px 2px 4px -1px rgba(0, 0, 0, 0.2),0px 4px 5px 0px rgba(0, 0, 0, 0.14),0px 1px 10px 0px rgba(0, 0, 0, 0.12)",
+    "0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12)",
+    "0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 6px 10px 0px rgba(0, 0, 0, 0.14),0px 1px 18px 0px rgba(0, 0, 0, 0.12)",
+    "0px 4px 5px -2px rgba(0, 0, 0, 0.2),0px 7px 10px 1px rgba(0, 0, 0, 0.14),0px 2px 16px 1px rgba(0, 0, 0, 0.12)",
+    "0px 5px 5px -3px rgba(0, 0, 0, 0.2),0px 8px 10px 1px rgba(0, 0, 0, 0.14),0px 3px 14px 2px rgba(0, 0, 0, 0.12)",
+    "0px 5px 6px -3px rgba(0, 0, 0, 0.2),0px 9px 12px 1px rgba(0, 0, 0, 0.14),0px 3px 16px 2px rgba(0, 0, 0, 0.12)",
+    "0px 6px 6px -3px rgba(0, 0, 0, 0.2),0px 10px 14px 1px rgba(0, 0, 0, 0.14),0px 4px 18px 3px rgba(0, 0, 0, 0.12)",
+    "0px 6px 7px -4px rgba(0, 0, 0, 0.2),0px 11px 15px 1px rgba(0, 0, 0, 0.14),0px 4px 20px 3px rgba(0, 0, 0, 0.12)",
+    "0px 7px 8px -4px rgba(0, 0, 0, 0.2),0px 12px 17px 2px rgba(0, 0, 0, 0.14),0px 5px 22px 4px rgba(0, 0, 0, 0.12)",
+    "0px 7px 8px -4px rgba(0, 0, 0, 0.2),0px 13px 19px 2px rgba(0, 0, 0, 0.14),0px 5px 24px 4px rgba(0, 0, 0, 0.12)",
+    "0px 7px 9px -4px rgba(0, 0, 0, 0.2),0px 14px 21px 2px rgba(0, 0, 0, 0.14),0px 5px 26px 4px rgba(0, 0, 0, 0.12)",
+    "0px 8px 9px -5px rgba(0, 0, 0, 0.2),0px 15px 22px 2px rgba(0, 0, 0, 0.14),0px 6px 28px 5px rgba(0, 0, 0, 0.12)",
+    "0px 8px 10px -5px rgba(0, 0, 0, 0.2),0px 16px 24px 2px rgba(0, 0, 0, 0.14),0px 6px 30px 5px rgba(0, 0, 0, 0.12)",
+    "0px 8px 11px -5px rgba(0, 0, 0, 0.2),0px 17px 26px 2px rgba(0, 0, 0, 0.14),0px 6px 32px 5px rgba(0, 0, 0, 0.12)",
+    "0px 9px 11px -5px rgba(0, 0, 0, 0.2),0px 18px 28px 2px rgba(0, 0, 0, 0.14),0px 7px 34px 6px rgba(0, 0, 0, 0.12)",
+    "0px 9px 12px -6px rgba(0, 0, 0, 0.2),0px 19px 29px 2px rgba(0, 0, 0, 0.14),0px 7px 36px 6px rgba(0, 0, 0, 0.12)",
+    "0px 10px 13px -6px rgba(0, 0, 0, 0.2),0px 20px 31px 3px rgba(0, 0, 0, 0.14),0px 8px 38px 7px rgba(0, 0, 0, 0.12)",
+    "0px 10px 13px -6px rgba(0, 0, 0, 0.2),0px 21px 33px 3px rgba(0, 0, 0, 0.14),0px 8px 40px 7px rgba(0, 0, 0, 0.12)",
+    "0px 10px 14px -6px rgba(0, 0, 0, 0.2),0px 22px 35px 3px rgba(0, 0, 0, 0.14),0px 8px 42px 7px rgba(0, 0, 0, 0.12)",
+    "0px 11px 14px -7px rgba(0, 0, 0, 0.2),0px 23px 36px 3px rgba(0, 0, 0, 0.14),0px 9px 44px 8px rgba(0, 0, 0, 0.12)",
+    "0px 11px 15px -7px rgba(0, 0, 0, 0.2),0px 24px 38px 3px rgba(0, 0, 0, 0.14),0px 9px 46px 8px rgba(0, 0, 0, 0.12)"
+  ],
+  transitions: {
+    easing: {
+      easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
+      easeOut: "cubic-bezier(0.0, 0, 0.2, 1)",
+      easeIn: "cubic-bezier(0.4, 0, 1, 1)",
+      sharp: "cubic-bezier(0.4, 0, 0.6, 1)"
+    },
+    duration: {
+      shortest: 150,
+      shorter: 200,
+      short: 250,
+      standard: 300,
+      complex: 375,
+      enteringScreen: 225,
+      leavingScreen: 195
+    }
+  },
+  spacing: {
+    unit: 8
+  },
+  zIndex: {
+    mobileStepper: 900,
+    menu: 1000,
+    appBar: 1100,
+    drawerOverlay: 1200,
+    navDrawer: 1300,
+    dialogOverlay: 1400,
+    dialog: 1500,
+    layer: 2000,
+    popover: 2100,
+    snackbar: 2900,
+    tooltip: 3000
   }
 };
-
 const muiTheme = createMuiTheme(theme);
 
 const locale = window.localStorage.getItem("locale") || "en";

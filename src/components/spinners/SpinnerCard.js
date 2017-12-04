@@ -15,6 +15,7 @@ class SpinnerCard extends PureComponent<{}> {
     return (
       <CircularProgress
         size={30}
+        color="primary"
         style={{
           position: "absolute",
           top: "50%",

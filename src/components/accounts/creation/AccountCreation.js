@@ -110,6 +110,7 @@ class AccountCreation extends Component<Props> {
           nopadding
           onRequestClose={this.close}
         >
+          {account,internModalId === "main" && 
           <div id="account-creation" className="modal">
             <MainCreation
               account={account}
@@ -121,6 +122,7 @@ class AccountCreation extends Component<Props> {
               switchInternalModal={onSwitchInternalModal}
             />
           </div>
+          }
         </BlurDialog>
       </div>
     );
@@ -143,6 +145,4 @@ const mapDispatchToProps = dispatch => ({
   onClearState: () => dispatch(clearState())
 });
 
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(AccountCreation)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountCreation);

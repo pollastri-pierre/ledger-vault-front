@@ -26,41 +26,7 @@ function TextField(props: {
   const fontColor = rest.errorText ? "#ea2e49" : "inherit";
 
   return (
-    <MUITextField
-      {...rest}
-      className={`vlt-textfield ${props.className}`}
-      fullWidth={props.fullWidth}
-      style={{
-        fontSize: "inherit",
-        height: "initial",
-        lineHeight: "initial",
-        ...props.style
-      }}
-      inputStyle={{
-        fontSize: "inherit",
-        color: fontColor,
-        ...props.inputStyle
-      }}
-      underlineFocusStyle={{
-        borderBottom: `1px solid ${underlineColor}`,
-        bottom: 0,
-        ...props.underlineFocusStyle
-      }}
-      underlineStyle={{
-        borderColor: "#eeeeee",
-        bottom: 0,
-        ...props.underlineStyle
-      }}
-      hintStyle={{
-        fontSize: "inherit",
-        bottom: "initial",
-        ...props.hintStyle
-      }}
-      errorStyle={{
-        color: "#ea2e49",
-        ...props.errorStyle
-      }}
-    />
+    <MUITextField {...rest} className={`vlt-textfield ${props.className}`} />
   );
 }
 
