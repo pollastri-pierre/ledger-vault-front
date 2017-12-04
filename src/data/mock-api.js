@@ -65,13 +65,23 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         throw new Error("Account Not Found");
       }
     }
-    m = /^\/operations\/([^/]+)$/.exec(uri);
+    m = /^\/operations\/([^/]+)\/with-account/.exec(uri);
     if (m) {
-      const operation = mockEntities.operations[m[1]];
-      if (operation) {
-        return denormalize(operation.uuid, schema.Operation, mockEntities);
+      const operationEntity = mockEntities.operations[m[1]];
+      if (operationEntity) {
+        const operation = denormalize(
+          operationEntity.uuid,
+          schema.Operation,
+          mockEntities
+        );
+        const account = denormalize(
+          operation.account_id,
+          schema.Account,
+          mockEntities
+        );
+        return { operation, account };
       } else {
-        throw new Error("Account Not Found");
+        throw new Error("Operation Not Found");
       }
     }
 
