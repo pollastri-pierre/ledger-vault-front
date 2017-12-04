@@ -10,8 +10,7 @@ import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
-import OperationQuery from "../../api/queries/OperationQuery";
-import AccountQuery from "../../api/queries/AccountQuery";
+import OperationWithAccountQuery from "../../api/queries/OperationWithAccountQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import type { Operation, Account, Member } from "../../data/types";
 
@@ -19,8 +18,10 @@ type Props = {
   close: Function,
   tabIndex: number,
   // injected by decorators:
-  operation: Operation,
-  account: Account,
+  operationWithAccount: {
+    operation: Operation,
+    account: Account
+  },
   profile: Member,
   history: *
 };
@@ -33,7 +34,11 @@ class OperationDetails extends Component<Props> {
   };
 
   render() {
-    const { operation, account, close, tabIndex } = this.props;
+    const {
+      operationWithAccount: { operation, account },
+      close,
+      tabIndex
+    } = this.props;
     const note = operation.notes[0];
     return (
       <div className="operation-details modal">
@@ -91,21 +96,14 @@ OperationDetails.contextTypes = {
 };
 
 export default withRouter(
-  connectData(
-    connectData(OperationDetails, {
-      RenderLoading: ModalLoading,
-      queries: { account: AccountQuery },
-      propsToQueryParams: props => ({ accountId: props.operation.account_id })
-    }),
-    {
-      RenderLoading: ModalLoading,
-      queries: {
-        operation: OperationQuery,
-        profile: ProfileQuery
-      },
-      propsToQueryParams: props => ({
-        operationId: props.match.params.operationId || ""
-      })
-    }
-  )
+  connectData(OperationDetails, {
+    RenderLoading: ModalLoading,
+    queries: {
+      operationWithAccount: OperationWithAccountQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({
+      operationId: props.match.params.operationId || ""
+    })
+  })
 );

@@ -9,8 +9,7 @@ import OperationApproveLocks from "./OperationApproveLocks";
 import ModalLoading from "../../../components/ModalLoading";
 import { withRouter, Redirect } from "react-router";
 import connectData from "../../../restlay/connectData";
-import AccountQuery from "../../../api/queries/AccountQuery";
-import OperationQuery from "../../../api/queries/OperationQuery";
+import OperationWithAccountQuery from "../../../api/queries/OperationWithAccountQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
 import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
@@ -18,8 +17,10 @@ import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
 import type { Account, Operation, Member } from "../../../data/types";
 
 type Props = {
-  account: Account,
-  operation: Operation,
+  operationWithAccount: {
+    account: Account,
+    operation: Operation
+  },
   members: Array<Member>,
   profile: Member,
   close: Function,
@@ -30,9 +31,8 @@ type Props = {
 class OperationApprove extends Component<Props> {
   render() {
     const {
-      account,
+      operationWithAccount: { account, operation },
       profile,
-      operation,
       members,
       close,
       approve,
@@ -125,28 +125,16 @@ const RenderError = () => {
 };
 
 export default withRouter(
-  connectData(
-    connectData(OperationApprove, {
-      RenderError,
-      RenderLoading: ModalLoading,
-      queries: {
-        account: AccountQuery
-      },
-      propsToQueryParams: ({ operation }) => ({
-        accountId: operation.account_id
-      })
-    }),
-    {
-      RenderError,
-      RenderLoading: ModalLoading,
-      queries: {
-        operation: OperationQuery,
-        members: MembersQuery,
-        profile: ProfileQuery
-      },
-      propsToQueryParams: props => ({
-        operationId: props.match.params.id || ""
-      })
-    }
-  )
+  connectData(OperationApprove, {
+    RenderError,
+    RenderLoading: ModalLoading,
+    queries: {
+      operationWithAccount: OperationWithAccountQuery,
+      members: MembersQuery,
+      profile: ProfileQuery
+    },
+    propsToQueryParams: props => ({
+      operationId: props.match.params.id || ""
+    })
+  })
 );
