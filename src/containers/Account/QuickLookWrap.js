@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import type { BalanceEntity, Unit } from "../../data/types";
+import type { DataPoint, Unit } from "../../data/types";
 import QuicklookGraph from "./QuicklookGraph";
 import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
 import TryAgain from "../../components/TryAgain";
@@ -9,7 +9,10 @@ import connectData from "../../restlay/connectData";
 
 type Props = {
   accountId: string,
-  balance: BalanceEntity,
+  balance: {
+    balance: DataPoint[],
+    countervalueBalance: DataPoint[]
+  },
   currencyUnit: Unit,
   range: "year" | "month" | "week" | "day",
   currencyColor: string,
@@ -24,10 +27,10 @@ export class QuicklookWrap extends Component<Props, State> {
     const {
       balance,
       currencyUnit,
-      range,
       dateRange,
       currencyColor,
-      filter
+      filter,
+      accountId
     } = this.props;
     const selectedBalance = balance[filter];
     return (
@@ -48,10 +51,20 @@ export class QuicklookWrap extends Component<Props, State> {
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <TryAgain error={error} action={restlay.forceFetch} />
+  <div className="content">
+    <div className="quickLookGraphWrap">
+      <TryAgain error={error} action={restlay.forceFetch} />
+    </div>
+  </div>
 );
 
-const RenderLoading = () => <SpinnerCard />;
+const RenderLoading = () => (
+  <div className="content">
+    <div className="quickLookGraphWrap">
+      <SpinnerCard />
+    </div>
+  </div>
+);
 
 export default connectData(QuicklookWrap, {
   queries: {
