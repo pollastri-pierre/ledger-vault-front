@@ -144,7 +144,7 @@ export class QuicklookCard extends Component<Props, State> {
                   value={key}
                   selected={quicklookFilter.key === key}
                 >
-                  {title}
+                  {title.toUpperCase()}
                 </Option>
               ))}
             </Select>

@@ -4,7 +4,20 @@ import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
 import mockEntities from "./mock-entities.js";
 import schema from "./schema";
-import type { Account } from "../data/types";
+import type { Operation, Account } from "../data/types";
+
+function keywordsMatchesOperation(
+  keywords: string,
+  op: Operation,
+  acc: Account
+): boolean {
+  //TODO console.log(keywords, op, acc);
+  if (!keywords) return true;
+  const words = keywords.split(/\s+/);
+  return words.some(w => {
+    return acc.name.includes(w);
+  });
+}
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
   const q = URL.parse(uri, true);
@@ -83,6 +96,41 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       } else {
         throw new Error("Operation Not Found");
       }
+    }
+
+    m = q && q.pathname && /^\/search\/operations$/.exec(q.pathname);
+    if (m) {
+      const operations = Object.keys(mockEntities.operations);
+      let { keywords, currencyName, accountId, first, after } = {
+        first: 50,
+        after: null,
+        ...q.query
+      };
+      first = Math.min(first, 100); // server is free to maximize the count number
+      const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
+      let start = 0;
+      const opKeys = operations.filter(key => {
+        const op = denormalize(key, schema.Operation, mockEntities);
+        const acc = denormalize(op.account_id, schema.Account, mockEntities);
+        return (
+          (!accountId || op.account_id === accountId) &&
+          (!currencyName || op.currency_name === currencyName) &&
+          keywordsMatchesOperation(keywords, op, acc)
+        );
+      });
+      if (after !== null) {
+        const i = findIndex(opKeys, k => "C_" + k === after);
+        if (i === -1) {
+          throw new Error("after cursor not found '" + after + "'");
+        }
+        start = i + 1;
+      }
+      const edges = opKeys.slice(start, start + first).map(key => ({
+        node: denormalize(key, schema.Operation, mockEntities),
+        cursor: cursorPrefixToNodeId + key
+      }));
+      const hasNextPage = opKeys.length > start + first;
+      return { edges, pageInfo: { hasNextPage } };
     }
 
     m = q && q.pathname && /^\/accounts\/([^/]+)\/operations$/.exec(q.pathname);
