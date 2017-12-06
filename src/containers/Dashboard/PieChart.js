@@ -4,14 +4,8 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import type { PieChartData } from "../../data/types";
 import "./PieChart.css";
-import type { Account } from "../../data/types";
-
-type PieChartData = {
-  account: Account,
-  balance: number,
-  counterValueBalance: number
-};
 
 export default class PieChart extends Component<
   {

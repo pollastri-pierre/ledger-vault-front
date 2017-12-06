@@ -116,10 +116,11 @@ $mouse: #e2e2e2;
       width: 100%;
       text-align: center;
       height: 140px;
+      display: flex;
+      justify-content: center;
       .centerChart {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        width: 140px;
+        position: relative;
       }
     }
   }
