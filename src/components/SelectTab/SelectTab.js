@@ -6,13 +6,15 @@ type Props = {
   tabs: string[],
   onChange: Function,
   selected: number,
-  theme?: "inline" | "header"
+  theme: "inline" | "header"
 };
 
 export default class SelectTab extends Component<Props, {}> {
+  static defaultProps = {
+    theme: "header"
+  };
   render() {
-    const { tabs, onChange, selected } = this.props;
-    const theme = this.props.theme ? this.props.theme : "header";
+    const { tabs, onChange, selected, theme } = this.props;
     return (
       <div className={`tabs ${theme}`}>
         {tabs.map((elem, i) => {

@@ -127,8 +127,11 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.setState(update);
     this.debouncedCommit();
   };
-  onAccountNameChange = (name: Object) => {
-    this.update({ name: name.target.value });
+  onAccountNameChange = (e: Event) => {
+    const target = e.target;
+    if (target instanceof HTMLInputElement) {
+      this.update({ name: target.value });
+    }
   };
   onUnitIndexChange = (unitIndex: number) => {
     this.update({
@@ -168,7 +171,6 @@ class AccountSettingsEdit extends Component<Props, State> {
     const countervalueSourceData = settingsData.countervalueSources.find(
       c => c.id === settings.countervalueSource
     );
-    console.log(account.currency.units.map(elem => elem.name));
     return (
       <div className="account-settings">
         <h3>Security scheme</h3>
