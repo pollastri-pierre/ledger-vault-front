@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import ModalLoading from "../../components/ModalLoading";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { DialogButton, Overscroll } from "../";
@@ -95,15 +94,13 @@ OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default withRouter(
-  connectData(OperationDetails, {
-    RenderLoading: ModalLoading,
-    queries: {
-      operationWithAccount: OperationWithAccountQuery,
-      profile: ProfileQuery
-    },
-    propsToQueryParams: props => ({
-      operationId: props.match.params.operationId || ""
-    })
+export default connectData(OperationDetails, {
+  RenderLoading: ModalLoading,
+  queries: {
+    operationWithAccount: OperationWithAccountQuery,
+    profile: ProfileQuery
+  },
+  propsToQueryParams: props => ({
+    operationId: props.match.params.operationId || ""
   })
-);
+});

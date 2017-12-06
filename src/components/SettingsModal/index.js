@@ -127,11 +127,9 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.setState(update);
     this.debouncedCommit();
   };
-  onAccountNameChange = (e: Event) => {
-    const target = e.target;
-    if (target instanceof HTMLInputElement) {
-      this.update({ name: target.value });
-    }
+  onAccountNameChange = (e: SyntheticInputEvent<>) => {
+    const name = e.target.value;
+    this.update({ name });
   };
   onUnitIndexChange = (unitIndex: number) => {
     this.update({
@@ -179,10 +177,11 @@ class AccountSettingsEdit extends Component<Props, State> {
           <h3>General</h3>
           <SettingsField label="Account Name">
             <TextField
-              inputStyle={{ textAlign: "right" }}
-              underlineShow={false}
+              InputProps={{
+                style: { textAlign: "right" },
+                disableUnderline: true
+              }}
               name="last_name"
-              className="profile-form-name"
               value={name}
               hasError={!name}
               onChange={this.onAccountNameChange}

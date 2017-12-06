@@ -11,7 +11,15 @@ type Props = {
 class OperationModal extends Component<Props> {
   render() {
     const index = parseInt(this.props.match.params.tabIndex, 10);
-    return <OperationDetails close={this.props.close} tabIndex={index} />;
+    const { match, history } = this.props;
+    return (
+      <OperationDetails
+        close={this.props.close}
+        tabIndex={index}
+        match={match}
+        history={history}
+      />
+    );
   }
 }
 

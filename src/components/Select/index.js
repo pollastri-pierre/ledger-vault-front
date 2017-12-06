@@ -45,7 +45,7 @@ export class Select<T> extends Component<
   }
 > {
   static childContextTypes = contextTypes;
-  filter: ?Element;
+  filter: ?HTMLElement;
 
   static defaultProps = {
     theme: "blue"
@@ -61,7 +61,7 @@ export class Select<T> extends Component<
     };
   }
 
-  onFilterRef = (el: ?Element) => {
+  onFilterRef = (el: *) => {
     this.filter = el;
   };
 

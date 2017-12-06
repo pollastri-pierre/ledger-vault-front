@@ -2,10 +2,9 @@
 @import "../../../styles/variables";
 
 .operation-creation-unit-list,
-.operation-creation-fees-list
- {
+.operation-creation-fees-list {
   list-style-type: none;
-  padding: 20px 30px 20px 0;
+  padding: 0;
   margin: 0;
 
   li {
@@ -16,12 +15,11 @@
 
   a {
     display: block;
-    padding-left: 40px;
-    @include highlight-block($porto, 0px);
+    @include highlight-block($porto, -20px);
 
     &.active {
       opacity: 1;
-      @include highlight-block-active($porto, 0px);
+      @include highlight-block-active($porto, -20px);
     }
   }
 }
@@ -31,14 +29,14 @@
 }
 
 .operation-creation-send-max {
-  padding: 30px;
+  padding: 20px;
 
   a {
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
 
-    @include highlight-block-right($porto, -30px);
+    @include highlight-block-right($porto, 0px);
   }
 }
 
@@ -47,7 +45,7 @@
   font-size: 21.8px;
 
   .tab-title {
-    padding-bottom: $spacingS * 1.5;
+    padding-bottom: $spacingS;
   }
 
   .tab-title:not(:first-of-type) {
@@ -56,6 +54,7 @@
 
   .title-address {
     padding-bottom: 0;
+    margin-bottom: 10px;
   }
 
   .operation-creation-arrow-down {
@@ -68,19 +67,17 @@
 
     div {
       right: 0;
-      padding-right: 23px !important;
     }
 
     input {
       text-align: right;
-      padding: 0 23px 0 70px !important;
     }
   }
 
   .operation-creation-countervalue {
     color: $lead;
-    padding-top: 16px;
-    line-height: 1em;
+    padding-top: 0px;
+    line-height: 2em;
   }
 
   .operation-creation-fees-button {
@@ -95,7 +92,7 @@
   }
 
   .operation-creation-fees-divider {
-    margin: $spacingS 0;
+    margin: 16px 0;
   }
 
   .operation-creation-fees-countervalue {

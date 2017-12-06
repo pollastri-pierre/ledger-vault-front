@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import CircularProgress from "material-ui/CircularProgress";
+import CircularProgress from "material-ui/Progress/CircularProgress";
 import { load } from "../GlobalLoading";
 
 class SpinnerCard extends PureComponent<{}> {
@@ -15,6 +15,7 @@ class SpinnerCard extends PureComponent<{}> {
     return (
       <CircularProgress
         size={30}
+        color="primary"
         style={{
           position: "absolute",
           top: "50%",

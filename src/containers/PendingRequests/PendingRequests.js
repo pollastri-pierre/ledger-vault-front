@@ -2,12 +2,12 @@
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import EntityApprove from "../../components/approve/EntityApprove";
-import { Route } from "react-router";
 import {
   PendingAccountApprove,
   PendingOperationApprove
 } from "../../components";
 import AccountsQuery from "../../api/queries/AccountsQuery";
+import ModalRoute from "../../components/ModalRoute";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import ApproversQuery from "../../api/queries/ApproversQuery";
@@ -17,8 +17,12 @@ import type { Account, Member } from "../../data/types";
 import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
 import "./PendingRequests.css";
 
-const EntityApproveAccount = () => <EntityApprove entity="account" />;
-const EntityApproveOperation = () => <EntityApprove entity="operation" />;
+const EntityApproveAccount = props => (
+  <EntityApprove entity="account" {...props} />
+);
+const EntityApproveOperation = props => (
+  <EntityApprove entity="operation" {...props} />
+);
 
 class PendingRequests extends Component<{
   accounts: Account[],
@@ -31,8 +35,8 @@ class PendingRequests extends Component<{
 
     return (
       <div className="pending-requests">
-        <Route path="*/account/:id" component={EntityApproveAccount} />
-        <Route path="*/operation/:id" component={EntityApproveOperation} />
+        <ModalRoute path="*/account/:id" component={EntityApproveAccount} />
+        <ModalRoute path="*/operation/:id" component={EntityApproveOperation} />
         <div className="pending-left">
           <div className="bloc">
             <h3>Operations to approve</h3>

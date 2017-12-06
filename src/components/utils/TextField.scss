@@ -1,10 +1,16 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
 .vlt-textfield {
   padding-bottom: $spacingS;
+  font-size: 13px;
+  width: 100%;
 
-  &:not(:first-child) {
-    padding-top: $spacingS;
+  textarea {
+    margin-bottom: 13px;
+  }
+
+  .vlt-textfield-input {
+    font-size: 13px;
+    padding-bottom: 15px;
   }
 }
-

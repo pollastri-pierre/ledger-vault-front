@@ -1,8 +1,7 @@
 //@flow
 import React from "react";
 import ReactDOM from "react-dom";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 import { Switch, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -12,6 +11,7 @@ import registerServiceWorker from "./registerServiceWorker";
 import RestlayProvider from "./restlay/RestlayProvider";
 import GlobalLoading from "./components/GlobalLoading";
 import network from "./network";
+import theme from "./styles/theme";
 
 import {
   PrivateRoute,
@@ -24,9 +24,7 @@ import {
 
 import "./styles/index.css";
 
-const muiTheme = getMuiTheme({
-  fontFamily: "Open Sans, sans-serif"
-});
+const muiTheme = createMuiTheme(theme);
 
 const locale = window.localStorage.getItem("locale") || "en";
 
@@ -41,7 +39,7 @@ $root &&
         network={network}
         connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
       >
-        <MuiThemeProvider muiTheme={muiTheme}>
+        <MuiThemeProvider theme={muiTheme}>
           <I18nProvider>
             <div>
               <AlertsContainer />

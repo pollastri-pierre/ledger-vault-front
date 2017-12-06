@@ -8,7 +8,7 @@ import ModalRoute from "../ModalRoute";
 import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
-import CircularProgress from "material-ui/CircularProgress";
+import CircularProgress from "material-ui/Progress/CircularProgress";
 import connectData from "../../restlay/connectData";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 
@@ -74,13 +74,11 @@ class ProfileCard extends Component<
         </span>
 
         <PopBubble
+          style={{ marginLeft: "50px" }}
           anchorEl={this.anchorEl}
           open={bubbleOpened}
           onRequestClose={this.onCloseBubble}
-          style={{
-            boxShadow:
-              "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)"
-          }}
+          direction="left"
         >
           <div className="profile-bubble" onClick={this.onCloseBubble}>
             <Link to={location.pathname + "/profile-edit"}>

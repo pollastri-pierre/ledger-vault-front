@@ -4,7 +4,7 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import RaisedButton from "material-ui/RaisedButton";
+// import RaisedButton from "material-ui/RaisedButton";
 import { Link } from "react-router-dom";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
@@ -167,20 +167,6 @@ class SandBox extends Component {
                     Bluh
                   </span>
                   <br />
-                  <RaisedButton
-                    label="Dialog Lipsum?"
-                    secondary
-                    onClick={this.showDialog}
-                  />
-                  <RaisedButton
-                    label="Snack Lipsum?"
-                    primary
-                    onClick={this.showSnack}
-                  />
-                  <RaisedButton
-                    label="Switch language"
-                    onClick={this.switchLanguage}
-                  />
                 </Paper>
               </Col>
             </Row>

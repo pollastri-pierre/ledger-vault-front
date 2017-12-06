@@ -1,6 +1,8 @@
 //@flow
+import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 import Dialog from "material-ui/Dialog";
+import Slide from "material-ui/transitions/Slide";
 
 let blurredCache = false;
 function setBlurState(blurred: boolean) {
@@ -17,10 +19,18 @@ function setBlurState(blurred: boolean) {
 
 const actives = [];
 
-class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
+function Transition(props) {
+  return <Slide direction="down" {...props} />;
+}
+
+const styles = { paper: { maxWidth: "none" } };
+const CustomDialog = withStyles(styles)(Dialog);
+
+class BlurDialog extends Component<{
+  open: boolean
+}> {
   static defaultProps = {
-    open: false,
-    nopadding: false
+    open: false
   };
   setActive = (active: boolean) => {
     const index = actives.indexOf(this);
@@ -40,25 +50,10 @@ class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   render() {
     const { props } = this;
     return (
-      <Dialog
-        overlayStyle={{
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
-          boxShadow: "0px 20px 20px 0 rgba(0, 0, 0, 0.04)"
-        }}
-        bodyStyle={{
-          color: "black",
-          padding: props.nopadding ? "0" : "40px 40px 0"
-        }}
-        contentStyle={{
-          width: "fit-content"
-        }}
-        paperProps={{
-          rounded: false,
-          style: {
-            boxShadow: "0px 20px 20px 0 rgba(0, 0, 0, 0.04)"
-          }
-        }}
+      <CustomDialog
         {...props}
+        transition={Transition}
+        transitionDuration={200}
       />
     );
   }

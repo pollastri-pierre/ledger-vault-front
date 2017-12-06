@@ -9,6 +9,8 @@ type Props = {
   updateComment: Function
 };
 
+const styleInput = { fontSize: "16px" };
+
 class OperationCreationLabel extends PureComponent<Props> {
   update = (ev: SyntheticEvent<HTMLInputElement>) => {
     console.warn("NOT IMPLEMENTED", ev.currentTarget.value);
@@ -20,14 +22,17 @@ class OperationCreationLabel extends PureComponent<Props> {
         <TextField
           className="operation-creation-label-title"
           id="operation-creation-label-title"
-          hintText="Title"
+          placeholder="Title"
+          inputProps={{ style: styleInput }}
           onChange={this.update}
+          style={{ marginBottom: "20px" }}
         />
         <TextField
           className="operation-creation-label-comment"
           id="operation-creation-label-comment"
-          hintText="Comment"
-          multiLine
+          placeholder="Comment"
+          inputProps={{ style: styleInput }}
+          multiline
           onChange={this.update}
         />
       </div>

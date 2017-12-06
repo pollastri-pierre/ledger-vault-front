@@ -13,7 +13,8 @@ class SearchFiltersCard extends Component<{
   currencies: Currency[],
   accounts: Account[]
 }> {
-  onKeywordsChange = (e: Event, keywords: string) => {
+  onKeywordsChange = (e: SyntheticInputEvent<>) => {
+    const keywords = e.target.value;
     this.props.onChangeFilters({ keywords });
   };
   onAccountChange = (accountId: ?string) => {
@@ -30,8 +31,7 @@ class SearchFiltersCard extends Component<{
           <label>
             <h3>keywords</h3>
             <TextField
-              id="search-filters-keywords"
-              hintText="Date, amount, comment,..."
+              placeholder="Date, amount, comment,..."
               fullWidth
               autoFocus
               onChange={this.onKeywordsChange}

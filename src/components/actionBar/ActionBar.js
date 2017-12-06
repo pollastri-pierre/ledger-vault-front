@@ -40,7 +40,7 @@ class ActionBar extends Component<{
     return (
       <div className="ActionBar">
         <ProfileCard />
-        <Route path="*/new-account" component={AccountCreation} />
+        <ModalRoute path="*/new-account" component={AccountCreation} />
         <ModalRoute
           path="*/settings"
           component={SettingsModal}
