@@ -129,6 +129,7 @@ export class QuicklookCard extends Component<Props, State> {
     let currencyUnit = getAccountCurrencyUnit(account);
     const filter =
       quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
+
     const range = this.tabsList[tabsIndex];
     const dateRange = this.getDateRange(tabsIndex);
     // FIXME PROBABLY NEEDS TO BE FIXED
@@ -158,6 +159,7 @@ export class QuicklookCard extends Component<Props, State> {
             tabs={this.tabsList}
             onChange={this.selectTab}
             selected={tabsIndex}
+            theme="header"
           />
         </header>
         <div className="dateLabel">

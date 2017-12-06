@@ -1,17 +1,22 @@
 //@flow
 import React, { Component } from "react";
 import "./SelectTab.css";
+
 type Props = {
   tabs: string[],
   onChange: Function,
-  selected: number
+  selected: number,
+  theme: "inline" | "header"
 };
 
 export default class SelectTab extends Component<Props, {}> {
+  static defaultProps = {
+    theme: "header"
+  };
   render() {
-    const { tabs, onChange, selected } = this.props;
+    const { tabs, onChange, selected, theme } = this.props;
     return (
-      <div className="tabs">
+      <div className={`tabs ${theme}`}>
         {tabs.map((elem, i) => {
           return (
             <div

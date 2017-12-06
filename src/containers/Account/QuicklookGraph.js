@@ -193,10 +193,10 @@ export default class QuicklookGraph extends Component<Props, *> {
 
     const domainX = [
       d3.min(data, function(d) {
-        return d.date;
+        return d[0];
       }),
       d3.max(data, function(d) {
-        return d.date;
+        return d[0];
       })
     ];
 
@@ -206,12 +206,12 @@ export default class QuicklookGraph extends Component<Props, *> {
       .range([0, width]);
 
     const minY = d3.min(data, function(d) {
-      return d.value;
+      return d[1];
     });
     const domainY = [
       minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
-        return d.value;
+        return d[1];
       })
     ];
 
@@ -245,12 +245,11 @@ export default class QuicklookGraph extends Component<Props, *> {
       .tickFormat(value => formatCurrencyUnit(currencyUnit, value));
 
     const computedData = data.map(([date, value]) => ({
-      date,
-      value,
+      date: date,
+      value: value,
       x: x(date),
       y: y(value)
     }));
-
     return {
       data: computedData,
       xAxis: newXAxis,
