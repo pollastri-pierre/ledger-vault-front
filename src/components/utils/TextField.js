@@ -4,43 +4,23 @@ import MUITextField from "material-ui/TextField";
 
 import "./TextField.css";
 
-function TextField(props: {
-  className: string,
-  fullWidth: boolean,
-  style: Object,
-  inputStyle: Object,
-  underlineFocusStyle: Object,
-  underlineStyle: Object,
-  hintStyle: Object,
-  errorStyle: Object,
-  errorText: string | boolean,
-  hasError: boolean
-}) {
-  const { hasError, ...rest } = props;
-
-  if (!rest.errorText && hasError) {
-    rest.errorText = " ";
-  }
-
-  const underlineColor = rest.errorText ? "#ea2e49" : "#cccccc";
-  const fontColor = rest.errorText ? "#ea2e49" : "inherit";
-
+function TextField(props) {
+  const { className } = props;
   return (
-    <MUITextField {...rest} className={`vlt-textfield ${props.className}`} />
+    <MUITextField
+      {...props}
+      fullWidth
+      InputProps={{
+        style: { fontSize: "13px", paddingBottom: "5px" }
+      }}
+      className={`vlt-textfield ${props.className}`}
+    />
   );
 }
 
 TextField.defaultProps = {
   className: "",
-  fullWidth: true,
-  style: {},
-  inputStyle: {},
-  underlineFocusStyle: {},
-  underlineStyle: {},
-  hintStyle: {},
-  errorStyle: {},
-  errorText: false,
-  hasError: false
+  error: false
 };
 
 export default TextField;

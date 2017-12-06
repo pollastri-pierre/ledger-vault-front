@@ -1,7 +1,6 @@
 //@flow
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { withRouter } from "react-router";
 import BlurDialog from "../../BlurDialog"; // FIXME use ModalRoute
 import MainCreation from "./MainCreation";
 import AccountCreationMembers from "./AccountCreationMembers";
@@ -121,7 +120,6 @@ class AccountCreation extends Component<Props> {
               switchInternalModal={onSwitchInternalModal}
             />
           </div>
-          }
         </BlurDialog>
       </div>
     );

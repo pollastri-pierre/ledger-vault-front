@@ -61,13 +61,11 @@ class OperationCreation extends Component<*> {
               </Overscroll>
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll>
-                <OperationCreationDetails
-                  account={selectedAccount}
-                  details={details}
-                  saveDetails={saveDetails}
-                />
-              </Overscroll>
+              <OperationCreationDetails
+                account={selectedAccount}
+                details={details}
+                saveDetails={saveDetails}
+              />
             </TabPanel>
             <TabPanel className="tabs_panel">
               <Overscroll>

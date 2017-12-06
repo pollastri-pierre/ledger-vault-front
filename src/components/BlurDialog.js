@@ -1,4 +1,5 @@
 //@flow
+import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 import Dialog from "material-ui/Dialog";
 import Slide from "material-ui/transitions/Slide";
@@ -18,8 +19,14 @@ function setBlurState(blurred: boolean) {
 
 const actives = [];
 
+const styles = {
+  paper: {
+    maxWidth: "none"
+  }
+};
+
 function Transition(props) {
-  return <Slide timeout={20000} direction="down" {...props} />;
+  return <Slide direction="down" {...props} />;
 }
 
 class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
@@ -44,8 +51,10 @@ class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   }
   render() {
     const { props } = this;
-    return <Dialog {...props} transition={Transition} />;
+    return (
+      <Dialog {...props} transition={Transition} transitionDuration={200} />
+    );
   }
 }
 
-export default BlurDialog;
+export default withStyles(styles)(BlurDialog);

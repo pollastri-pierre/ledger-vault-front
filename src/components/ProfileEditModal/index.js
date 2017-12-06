@@ -131,9 +131,9 @@ class ProfileEditModal extends Component<
             <TextField
               name="first_name"
               className="profile-form-name"
-              hintText={t("profile.firstName")}
+              placeholder={t("profile.firstName")}
               value={this.state.first_name.value}
-              hasError={!this.state.first_name.isValid}
+              error={!this.state.first_name.isValid}
               onChange={this.updateField}
               style={{
                 fontWeight: 600
@@ -142,18 +142,19 @@ class ProfileEditModal extends Component<
             <TextField
               name="last_name"
               className="profile-form-name"
-              hintText={t("profile.lastName")}
+              placeholder={t("profile.lastName")}
               value={this.state.last_name.value}
-              hasError={!this.state.last_name.isValid}
+              error={!this.state.last_name.isValid}
               onChange={this.updateField}
               style={{
                 fontWeight: 600
               }}
             />
             <br />
+            <br />
             <TextField
               name="email"
-              hintText={t("profile.mail")}
+              placeholder={t("profile.mail")}
               value={this.state.email.value}
               hasError={!this.state.email.isValid}
               onChange={this.updateField}
@@ -175,7 +176,7 @@ class ProfileEditModal extends Component<
 
 const RenderLoading = () => {
   return (
-    <div style={{ width: "520px", height: "332px" }}>
+    <div style={{ width: "520px", height: "320px" }}>
       <SpinnerCard />
     </div>
   );

@@ -1,8 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
-import { withRouter } from "react-router";
-import BlurDialog from "../BlurDialog"; // FIXME use ModalRoute
 import AbortConfirmation from "./AbortConfirmation";
 import ApproveDevice from "./ApproveDevice";
 import AccountApprove from "../accounts/approve/AccountApprove";
@@ -89,44 +87,40 @@ class EntityApprove extends Component<Props, State> {
 
     return (
       <div className="entity-approve">
-        <BlurDialog open={!isDevice && isAborting}>
-          <AbortConfirmation
-            entity={entity}
-            aborting={this.aborting}
-            abort={this.abort}
-          />
-        </BlurDialog>
-        <BlurDialog
-          open={this.state.isDevice && !this.state.isAborting}
-          nopadding
-        >
-          <ApproveDevice entity={entity} cancel={this.approving} />
-        </BlurDialog>
-        <BlurDialog
-          open={!this.state.isDevice && !this.state.isAborting}
-          nopadding
-          onRequestClose={this.close}
-        >
-          <div className="modal" style={{ height: "615px" }}>
-            {entity === "account" && (
-              <AccountApprove
-                close={this.close}
-                approve={this.approving}
-                aborting={this.aborting}
-              />
-            )}
-            {entity === "operation" && (
-              <OperationApprove
-                close={this.close}
-                approve={this.approving}
-                aborting={this.aborting}
-              />
-            )}
-          </div>
-        </BlurDialog>
+        {!isDevice &&
+          isAborting && (
+            <AbortConfirmation
+              entity={entity}
+              aborting={this.aborting}
+              abort={this.abort}
+            />
+          )}
+        {this.state.isDevice &&
+          !this.state.isAborting && (
+            <ApproveDevice entity={entity} cancel={this.approving} />
+          )}
+        {!this.state.isDevice &&
+          !this.state.isAborting && (
+            <div className="modal" style={{ height: "615px" }}>
+              {entity === "account" && (
+                <AccountApprove
+                  close={this.close}
+                  approve={this.approving}
+                  aborting={this.aborting}
+                />
+              )}
+              {entity === "operation" && (
+                <OperationApprove
+                  close={this.close}
+                  approve={this.approving}
+                  aborting={this.aborting}
+                />
+              )}
+            </div>
+          )}
       </div>
     );
   }
 }
 
-export default withRouter(connectData(EntityApprove));
+export default connectData(EntityApprove);

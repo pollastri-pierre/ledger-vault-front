@@ -1,6 +1,39 @@
 //@flow
+import { withStyles } from "material-ui/styles";
 import React from "react";
 import Snackbar from "material-ui/Snackbar";
+import { SnackbarContent } from "material-ui/Snackbar";
+
+const common = {
+  padding: "30px",
+  width: "380px",
+  fontFamily: "inherit",
+  fontSize: "11px",
+  lineHeight: "1.82",
+  boxShadow: "0 10px 10px 0 rgba(0, 0, 0, 0.04)"
+};
+const error = {
+  root: {
+    background: "#ea2e49",
+    ...common
+  }
+};
+const success = {
+  root: {
+    background: "#27d0e2",
+    ...common
+  }
+};
+
+function Snack(props) {
+  const { message, classes } = props;
+  return (
+    <SnackbarContent message={message} classes={{ root: props.classes.root }} />
+  );
+}
+
+const Error = withStyles(error)(Snack);
+const Success = withStyles(success)(Snack);
 
 function Alert(props: {
   className: string,
@@ -14,22 +47,13 @@ function Alert(props: {
   let iconDiv = "";
   let titleDiv = "";
   const theme = {};
-  const bodyStyle: Object = {
-    height: "initial",
-    lineHeight: "initial",
-    padding: "40px",
-    width: "379px",
-    boxSizing: "border-box"
-  };
 
   switch (themeName) {
     case "success":
-      theme.color = "#27d0e2";
       theme.icon = "check";
       break;
 
     case "error":
-      theme.color = "#ea2e49";
       theme.icon = "close";
       break;
 
@@ -37,10 +61,6 @@ function Alert(props: {
       theme.color = false;
       theme.icon = false;
       break;
-  }
-
-  if (theme.color) {
-    bodyStyle.backgroundColor = theme.color;
   }
 
   if (theme.icon) {
@@ -58,7 +78,7 @@ function Alert(props: {
         style={{
           fontWeight: 600,
           textTransform: "uppercase",
-          marginBottom: "15px"
+          marginBottom: "10px"
         }}
       >
         {title}
@@ -80,20 +100,14 @@ function Alert(props: {
     <Snackbar
       {...newProps}
       className={`top-message ${props.className}`}
-      style={{
-        top: 0,
-        bottom: "auto",
-        transform: props.open
-          ? "translate3d(-50%, 0, 0)"
-          : "translate3d(-50%, -100%, 0)",
-        ...props.style
-      }}
-      bodyStyle={bodyStyle}
-      contentStyle={{
-        fontSize: "11px"
-      }}
-      message={content}
-    />
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    >
+      {themeName === "error" ? (
+        <Error message={content} />
+      ) : (
+        <Success message={content} />
+      )}
+    </Snackbar>
   );
 }
 

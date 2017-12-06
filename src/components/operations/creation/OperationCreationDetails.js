@@ -239,9 +239,10 @@ class OperationCreationDetails extends Component<Props, State> {
           <TextField
             className="operation-creation-amount-field"
             id="operation-creation-amount-field"
-            hintText="0"
+            placeholder="0"
             value={this.state.amount}
-            hasError={!this.state.amountIsValid}
+            inputProps={{ style: { paddingRight: "20px", fontSize: "18px" } }}
+            error={!this.state.amountIsValid}
             onChange={this.updateAmount}
             style={{ textAlign: "right" }}
           />
@@ -338,9 +339,8 @@ class OperationCreationDetails extends Component<Props, State> {
         <TextField
           className="operation-creation-address"
           id="operation-creation-address"
-          style={{ fontSize: "13px" }}
           onChange={this.updateAddress}
-          hasError={!this.state.addressIsValid}
+          error={!this.state.addressIsValid}
           value={this.state.address}
         />
 

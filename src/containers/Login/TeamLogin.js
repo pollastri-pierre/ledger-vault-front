@@ -48,16 +48,14 @@ export class TeamLogin extends Component<{
         <br />
         <TextField
           onKeyDown={this.confirm}
-          hasError={this.props.teamError && this.props.team !== ""}
+          error={this.props.teamError && this.props.team !== ""}
           style={{ width: "320px" }}
+          inputProps={{ style: { textAlign: "center" } }}
           disabled={this.props.isChecking}
-          inputStyle={{ textAlign: "center" }}
           value={this.props.team}
           id="textField"
-          errorText=""
           onChange={this.props.onChange}
-          hintStyle={{ textAlign: "center", width: "100%" }}
-          hintText={t("login.hint")}
+          placeholder={t("login.hint")}
         />
         <br />
         <div className="instructions">{t("login.instructions")}</div>

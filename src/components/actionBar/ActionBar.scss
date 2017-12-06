@@ -108,9 +108,9 @@ $cardHeight: 30px;
 }
 
 .profile-bubble {
-  width: 180px - $spacingL;
-  padding: ($spacingS * 1.5) 0 ($spacingS * 1.5) $spacingL;
   font-size: 11px;
+  padding-left: 20px;
+  width: 140px;
 
   .profile-bubble-title {
     font-weight: 600;
@@ -134,9 +134,14 @@ $cardHeight: 30px;
     margin-top: $spacingS;
     text-transform: uppercase;
     font-weight: 600;
+    opacity: 0.5;
 
     &:first-child {
       margin: 0;
+    }
+
+    &:hover {
+      opacity: 1;
     }
   }
 }
