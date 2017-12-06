@@ -1,7 +1,6 @@
 //@flow
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import BlurDialog from "../../BlurDialog"; // FIXME use ModalRoute
 import MainCreation from "./MainCreation";
 import AccountCreationMembers from "./AccountCreationMembers";
 import AccountCreationApprovals from "./AccountCreationApprovals";

@@ -27,9 +27,7 @@ const success = {
 
 function Snack(props: { message: *, classes: Object }) {
   const { message, classes } = props;
-  return (
-    <SnackbarContent message={message} classes={{ root: props.classes.root }} />
-  );
+  return <SnackbarContent message={message} classes={{ root: classes.root }} />;
 }
 
 const Error = withStyles(error)(Snack);
@@ -92,7 +90,7 @@ function Alert(props: { children: *, open: boolean, theme: string, title: * }) {
   return (
     <Snackbar
       {...newProps}
-      className={`top-message`}
+      className="top-message"
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
     >
       {themeName === "error" ? (

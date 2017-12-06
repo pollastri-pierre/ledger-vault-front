@@ -2,7 +2,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
-import { cyan } from "material-ui/colors";
 import { Switch, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";

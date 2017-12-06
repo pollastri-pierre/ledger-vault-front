@@ -23,7 +23,7 @@ function TextField(props: Props) {
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" }
       }}
-      className={`vlt-textfield`}
+      className="vlt-textfield"
     />
   );
 }
