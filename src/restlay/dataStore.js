@@ -139,18 +139,16 @@ export const executeQueryOrMutation =
       if (count < 0) {
         const cacheKey = queryOrMutation.getCacheKey();
         //$FlowFixMe
-        return Promise.resolve().then(
-          () => (
-            // needs to happen in async
-            dispatch({
-              type: DATA_CONNECTION_SPLICE,
-              cacheKey,
-              size,
-              queryOrMutation
-            }),
-            cache ? sliceConnection(cache.result, size) : emptyConnection
-          )
-        );
+        return Promise.resolve().then(() => {
+          // needs to happen in async
+          dispatch({
+            type: DATA_CONNECTION_SPLICE,
+            cacheKey,
+            size,
+            queryOrMutation
+          });
+          return cache ? sliceConnection(cache.result, size) : emptyConnection;
+        });
       } else if (count === 0) {
         // $FlowFixMe
         return Promise.resolve((cache && cache.result) || emptyConnection);

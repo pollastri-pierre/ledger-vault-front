@@ -36,7 +36,8 @@ export default class DialogButton extends Component<*, *> {
       .then(this.props.onTouchTap)
       .catch(e => e)
       .then(() => {
-        !this._unmounted ? this.setState({ pending: false }) : false;
+        if (this._unmounted) return;
+        this.setState({ pending: false });
       });
   };
 

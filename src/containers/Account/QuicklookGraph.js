@@ -1,14 +1,20 @@
 // @flow
-
-import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
 import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
-import type { DataPointEnhanced, Unit } from "../../data/types";
+import type { Unit } from "../../data/types";
 import { formatCurrencyUnit } from "../../data/currency";
+
+type DataPointEnhanced = {
+  date: number,
+  value: number,
+  x: number,
+  y: number
+};
+
 type Props = {
-  data: Array<*>,
+  data: Array<[number, number]>,
   dateRange: Array<*>,
   currencyUnit: Unit,
   currencyColor: string
@@ -217,11 +223,9 @@ export default class QuicklookGraph extends Component<Props, *> {
     return { x: x, y: y };
   };
 
-  computeData = (data: Array<*>) => {
+  computeData = (data: Array<[number, number]>) => {
     const { width, transform, margin } = this.state;
     const { currencyUnit } = this.props;
-
-    let computedData = data.slice();
 
     let { x, y } = this.computeXY(data);
 
@@ -240,14 +244,12 @@ export default class QuicklookGraph extends Component<Props, *> {
       .tickSize(width + margin.left)
       .tickFormat(value => formatCurrencyUnit(currencyUnit, value));
 
-    computedData = _.map(data, transaction => {
-      if (!x && !y) return transaction;
-      return {
-        ...transaction,
-        x: x(transaction.date),
-        y: y(transaction.value)
-      };
-    });
+    const computedData = data.map(([date, value]) => ({
+      date,
+      value,
+      x: x(date),
+      y: y(value)
+    }));
 
     return {
       data: computedData,
@@ -515,18 +517,11 @@ export default class QuicklookGraph extends Component<Props, *> {
               <div className="tooltipTextWrap">
                 <div className="tooltipText">
                   <div className="uppercase">
-                    {formatCurrencyUnit(
-                      currencyUnit,
-                      data[selected].value,
-                      true
-                    )}
+                    {formatCurrencyUnit(currencyUnit, data[selected][1], true)}
                   </div>
                   <div>
                     <span className="uppercase date">
-                      <DateFormat
-                        format="ddd D MMM"
-                        date={data[selected].date}
-                      />
+                      <DateFormat format="ddd D MMM" date={data[selected][0]} />
                     </span>
                   </div>
                 </div>
