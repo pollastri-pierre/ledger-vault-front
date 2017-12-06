@@ -17,6 +17,8 @@ import {
   formatCurrencyUnit
 } from "../../../data/currency";
 
+import type { Currency } from "../../../data/types";
+
 import "./OperationCreationDetails.css";
 
 type Props = {
