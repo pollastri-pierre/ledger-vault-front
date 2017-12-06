@@ -24,7 +24,7 @@ export class Option<T> extends Component<{
     const { onOptionClick } = this.context;
     return (
       <div
-        className={`menuElem ${selected ? "selected" : ""}`}
+        className={`option ${selected ? "selected" : ""}`}
         onClick={() => onOptionClick(value)}
       >
         {children}
@@ -81,7 +81,7 @@ export class Select<T> extends Component<
   render() {
     const { children, theme } = this.props;
     const { isOpen } = this.state;
-    const arrayChildren: Array<Option<T>> = React.Children.toArray(children);
+    const arrayChildren = React.Children.toArray(children);
     const selectedOption =
       arrayChildren.find(({ props }) => props.selected) || arrayChildren[0];
     return (
@@ -92,14 +92,13 @@ export class Select<T> extends Component<
           onClick={() => this.toggle()}
         >
           <ArrowDown className="ArrowDown" />
-          <span className="label">
-            {selectedOption ? selectedOption.props.children : null}
-          </span>
+          <span className="label">{selectedOption}</span>
         </div>
         <PopBubble
           open={isOpen}
           anchorEl={this.filter}
           onRequestClose={this.close}
+          className="Select-menu"
           style={{
             boxShadow:
               "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",

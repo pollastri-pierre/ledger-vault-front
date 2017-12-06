@@ -127,31 +127,33 @@ export class QuicklookCard extends Component<Props, State> {
     const { account, accountId } = this.props;
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
-    const selectedBalance =
+    const filter =
       quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
+    const range = this.tabsList[tabsIndex];
+    const dateRange = this.getDateRange(tabsIndex);
     // FIXME PROBABLY NEEDS TO BE FIXED
     if (quicklookFilter.key === "countervalue") {
       currencyUnit = getFiatUnit(account.settings.fiat);
     }
     return (
       selectedBalance.length && (
-        <Card
-          className="quicklook"
-          title="Quicklook"
-          titleRight={
-            <Select onChange={this.onQuicklookFilterChange}>
-              {quicklookFilters.map(({ title, key }) => (
-                <Option
-                  key={key}
-                  value={key}
-                  selected={quicklookFilter.key === key}
-                >
-                  {title}
-                </Option>
-              ))}
-            </Select>
-          }
-        >
+      <Card
+        className="quicklook"
+        title="Quicklook"
+        titleRight={
+          <Select onChange={this.onQuicklookFilterChange}>
+            {quicklookFilters.map(({ title, key }) => (
+              <Option
+                key={key}
+                value={key}
+                selected={quicklookFilter.key === key}
+              >
+                {title.toUpperCase()}
+              </Option>
+            ))}
+          </Select>
+        }
+      >
           <header>
             <SelectTab
               tabs={this.tabsList}
@@ -175,8 +177,19 @@ export class QuicklookCard extends Component<Props, State> {
             currencyUnit={currencyUnit}
             currencyColor={account.currency.color}
           />
-        </Card>
-      )
+        </header>
+        <div className="dateLabel">
+          From {labelDateRange[0]} to {labelDateRange[1]}
+        </div>
+        <QuicklookWrap
+          accountId={accountId}
+          filter={filter}
+          range={range}
+          dateRange={dateRange}
+          currencyUnit={currencyUnit}
+          currencyColor={account.currency.color}
+        />
+      </Card>
     );
   }
 }

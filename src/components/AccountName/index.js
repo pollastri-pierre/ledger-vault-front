@@ -4,6 +4,7 @@ import BadgeCurrency from "../BadgeCurrency";
 import type { Currency } from "../../data/types";
 import "./index.css";
 
+// FIXME why is that not just taking Account ?
 class AccountName extends Component<{
   name: string | React$Node,
   currency: Currency

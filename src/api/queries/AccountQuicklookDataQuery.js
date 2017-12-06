@@ -1,18 +1,19 @@
 //@flow
 import Query from "../../restlay/Query";
 
+export type Range = "year" | "month" | "week" | "day";
 type Input = {
   accountId: string,
   // this defines the time window AND the granularity of the data
-  range: "year" | "month" | "week" | "day"
+  range: Range
 };
 type DataPoint = [number, number]; // a [ timestamp, value ] tuple
-type Response = {
+export type Response = {
   // the data is assumed to contains all dates of the given range at a specific granularity
   // (even if there where no transaction at that time)
   // e.g. for a day range of a 1h granularity, arrays would have 25 points
   balance: DataPoint[],
-  countervalueBalance: DataPoint[]
+  counterValueBalance: DataPoint[]
 };
 
 // Fetch data for the Quicklook graph. data should be baked with all Account's operations

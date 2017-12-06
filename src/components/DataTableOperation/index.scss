@@ -115,6 +115,10 @@ table.data-table {
     color: #767676;
   }
   td.address {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
     .type {
       font-size: 10px;
       color: #767676;

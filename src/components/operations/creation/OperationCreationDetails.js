@@ -4,13 +4,11 @@ import * as React from "react";
 import invariant from "invariant";
 import { Component } from "react";
 import bitcoinAddress from "bitcoin-address";
-// import currencies from "../../../currencies";
 import connectData from "../../../restlay/connectData";
-import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
 import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
 import CurrencyNameValue from "../../CurrencyNameValue";
-import type { Currency, Unit, Account } from "../../../data/types";
+import type { Unit, Account } from "../../../data/types";
 import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "../../../api/queries/AccountCalculateFeeQuery";
 import type { Speed } from "../../../api/queries/AccountCalculateFeeQuery";
@@ -27,8 +25,7 @@ type Props = {
   details: Details,
 
   // from connectData
-  restlay: *,
-  currencies: Array<Currency>
+  restlay: *
 };
 
 type State = {
@@ -50,12 +47,20 @@ type Fee = {
 };
 
 class OperationCreationDetails extends Component<Props, State> {
+  unitMenuAnchor: ?HTMLDivElement;
+  maxMenuAnchor: ?HTMLDivElement;
+  feesMenuAnchor: ?HTMLDivElement;
+  // feesList
+  fees: {
+    slow: Fee,
+    medium: Fee,
+    fast: Fee
+  };
+
   constructor(props: Props) {
     super(props);
 
-    const { account, currencies } = this.props;
-
-    this.currency = currencies.find(c => c.name === account.currency.name);
+    const { account } = this.props;
 
     this.fees = {
       slow: {
@@ -70,8 +75,7 @@ class OperationCreationDetails extends Component<Props, State> {
     };
 
     this.state = {
-      // $FlowFixMe
-      unit: this.currency.units[0],
+      unit: account.currency.units[0],
       unitMenuOpen: false,
       maxMenuOpen: false,
       amount: "",
@@ -86,17 +90,6 @@ class OperationCreationDetails extends Component<Props, State> {
 
     this.setFees("medium");
   }
-
-  currency: ?Currency;
-  unitMenuAnchor: ?HTMLDivElement;
-  maxMenuAnchor: ?HTMLDivElement;
-  feesMenuAnchor: ?HTMLDivElement;
-  // feesList
-  fees: {
-    slow: Fee,
-    medium: Fee,
-    fast: Fee
-  };
 
   setAmount = (
     amount: string = this.state.amount,
@@ -124,10 +117,9 @@ class OperationCreationDetails extends Component<Props, State> {
 
   selectUnit = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const target: HTMLDivElement = e.currentTarget;
-    const unitNb: number = parseInt(target.dataset.unit);
-    // $FlowFixMe
-    const unit: Unit = this.currency.units[unitNb];
+    const target = e.currentTarget;
+    const unitNb = parseInt(target.dataset.unit, 10); // FIXME ideally shouldn't need to use a dataset html attribute but have the data passed-in
+    const unit = this.props.account.currency.units[unitNb];
 
     this.setState({
       unit,
@@ -138,9 +130,8 @@ class OperationCreationDetails extends Component<Props, State> {
   };
 
   updateAmount = (e: SyntheticEvent<HTMLInputElement>) => {
-    const value: string = e.currentTarget.value;
-    const regex: regex = /^(\d*\.?\d*)?$/;
-
+    const value = e.currentTarget.value;
+    const regex = /^(\d*\.?\d*)?$/;
     if (regex.test(value)) {
       this.setAmount(value);
     }
@@ -238,7 +229,7 @@ class OperationCreationDetails extends Component<Props, State> {
   };
 
   render() {
-    // console.log(this.props.account.currencyRate.fiat);
+    const { account } = this.props;
     return (
       <div className="operation-creation-details wrapper">
         {/* Amount */}
@@ -316,8 +307,7 @@ class OperationCreationDetails extends Component<Props, State> {
           onRequestClose={() => this.setState({ unitMenuOpen: false })}
         >
           <ul className="operation-creation-unit-list">
-            {// $FlowFixMe
-            this.currency.units.map((unit, index) => (
+            {account.currency.units.map((unit, index) => (
               <li key={unit.name}>
                 <a
                   href="unit"
@@ -385,8 +375,7 @@ class OperationCreationDetails extends Component<Props, State> {
             }}
           >
             <CurrencyNameValue
-              // $FlowFixMe
-              currencyName={this.currency.name}
+              currencyName={account.currency.name}
               value={this.state.feesAmount}
             />
           </div>
@@ -447,8 +436,4 @@ class OperationCreationDetails extends Component<Props, State> {
   }
 }
 
-export default connectData(OperationCreationDetails, {
-  queries: {
-    currencies: CurrenciesQuery
-  }
-});
+export default connectData(OperationCreationDetails);

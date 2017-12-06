@@ -37,7 +37,7 @@ class TotalBalance extends Component<{
           <Select onChange={onTotalBalanceFilterChange}>
             {TotalBalanceFilters.map(({ key, title }) => (
               <Option key={key} value={key} selected={filter === key}>
-                {title}
+                {title.toUpperCase()}
               </Option>
             ))}
           </Select>

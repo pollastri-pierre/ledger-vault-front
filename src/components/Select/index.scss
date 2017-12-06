@@ -39,10 +39,9 @@
   }
 }
 
-.menuElem {
+.Select-menu .option {
   padding: 10px;
   opacity: 0.5;
-  text-transform: uppercase;
   &:after {
     background: $ocean;
     content: "";
