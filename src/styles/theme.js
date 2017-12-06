@@ -7,7 +7,7 @@ const theme = {
       transparent: "rgba(0, 0, 0, 0)",
       fullBlack: "rgba(0, 0, 0, 1)",
       darkBlack: "rgba(0, 0, 0, 0.87)",
-      lightBlack: "rgba(0, 0, 0, 0.54)",
+      lightBlack: "rgba(0, 0, 0, 0.2)",
       minBlack: "rgba(0, 0, 0, 0.26)",
       faintBlack: "rgba(0, 0, 0, 0.12)",
       fullWhite: "rgba(255, 255, 255, 1)",
