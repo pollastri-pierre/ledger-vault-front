@@ -89,9 +89,12 @@
       font-size: 13px;
     }
     > .body {
-      .react-tabs {
+      .tabs {
+        bottom: -7px;
         position: relative;
-        bottom: -6px;
+        .tab {
+          margin: 0 10px;
+        }
       }
     }
   }

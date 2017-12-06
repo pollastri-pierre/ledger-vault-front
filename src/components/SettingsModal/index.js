@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import debounce from "lodash/debounce";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { NavLink } from "react-router-relative-link";
-import { Tabs, Tab, TabList } from "react-tabs";
+import SelectTab from "../../components/SelectTab/SelectTab";
 import FiatUnits from "../../fiat-units";
 import TextField from "material-ui/TextField";
 import connectData from "../../restlay/connectData";
@@ -127,8 +127,11 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.setState(update);
     this.debouncedCommit();
   };
-  onAccountNameChange = (name: string) => {
-    this.update({ name });
+  onAccountNameChange = (e: Event) => {
+    const target = e.target;
+    if (target instanceof HTMLInputElement) {
+      this.update({ name: target.value });
+    }
   };
   onUnitIndexChange = (unitIndex: number) => {
     this.update({
@@ -186,19 +189,15 @@ class AccountSettingsEdit extends Component<Props, State> {
             />
           </SettingsField>
           <SettingsField label="Units">
-            <Tabs
-              selectedIndex={settings.unitIndex}
-              onSelect={this.onUnitIndexChange}
-            >
-              <TabList>
-                {account.currency.units.map((unit, tabIndex) => (
-                  <Tab key={tabIndex}>{unit.name}</Tab>
-                ))}
-              </TabList>
-            </Tabs>
+            <SelectTab
+              tabs={account.currency.units.map(elem => elem.name)}
+              onChange={this.onUnitIndexChange}
+              selected={settings.unitIndex}
+              theme="inline"
+            />
           </SettingsField>
           <SettingsField label="Blockchain Explorer">
-            <Select onChange={this.onBlockchainExplorerChange}>
+            <Select onChange={this.onBlockchainExplorerChange} theme="black">
               {settingsData.blockchainExplorers.map(({ id }) => (
                 <Option
                   key={id}
@@ -214,7 +213,7 @@ class AccountSettingsEdit extends Component<Props, State> {
         <section>
           <h3>Countervalue</h3>
           <SettingsField label="Source">
-            <Select onChange={this.onCountervalueSourceChange}>
+            <Select onChange={this.onCountervalueSourceChange} theme="black">
               {settingsData.countervalueSources.map(({ id }) => (
                 <Option
                   key={id}
@@ -228,7 +227,7 @@ class AccountSettingsEdit extends Component<Props, State> {
           </SettingsField>
           {countervalueSourceData ? (
             <SettingsField label="Source">
-              <Select onChange={this.onFiatChange}>
+              <Select onChange={this.onFiatChange} theme="black">
                 {countervalueSourceData.fiats.map(fiat => (
                   <Option
                     key={fiat}

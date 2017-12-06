@@ -37,7 +37,8 @@ export class Option<T> extends Component<{
 export class Select<T> extends Component<
   {
     onChange: (value: T) => void,
-    children: React$Node
+    children: React$Node,
+    theme: "blue" | "black"
   },
   {
     isOpen: boolean
@@ -45,6 +46,10 @@ export class Select<T> extends Component<
 > {
   static childContextTypes = contextTypes;
   filter: ?Element;
+
+  static defaultProps = {
+    theme: "blue"
+  };
 
   state = {
     isOpen: false
@@ -74,7 +79,7 @@ export class Select<T> extends Component<
   };
 
   render() {
-    const { children } = this.props;
+    const { children, theme } = this.props;
     const { isOpen } = this.state;
     const arrayChildren = React.Children.toArray(children);
     const selectedOption =
@@ -82,7 +87,7 @@ export class Select<T> extends Component<
     return (
       <div className="Select">
         <div
-          className="LabelSelectField"
+          className={`LabelSelectField ${theme}`}
           ref={this.onFilterRef}
           onClick={() => this.toggle()}
         >
