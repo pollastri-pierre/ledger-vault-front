@@ -121,6 +121,8 @@ export class QuicklookCard extends Component<Props, State> {
     return res;
   };
 
+  tabsList = ["year", "month", "week", "day"];
+
   render() {
     const { account, accountId } = this.props;
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
@@ -152,7 +154,7 @@ export class QuicklookCard extends Component<Props, State> {
         >
           <header>
             <SelectTab
-              tabs={["year", "month", "week", "day"]}
+              tabs={this.tabsList}
               onChange={this.selectTab}
               selected={tabsIndex}
             />
@@ -167,7 +169,7 @@ export class QuicklookCard extends Component<Props, State> {
                 ? "balance"
                 : "counterValueBalance"
             }
-            granularity={tabsIndex}
+            range={this.tabsList[tabsIndex]}
             dateRange={this.getDateRange(tabsIndex)}
             currencyUnit={currencyUnit}
             currencyColor={account.currency.color}

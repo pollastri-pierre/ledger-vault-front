@@ -687,18 +687,29 @@ for (let i = 0; i < 500; i += 1) {
     currency_family: "Litecoin"
   });
 }
-const genBalance = (
-  accountId: number,
-  expectedGranularity: number,
-  range: ?number,
-  _unused?: ?*
-): BalanceEntity => {
+
+const granularityRangeEg = {
+  year: 0,
+  month: 1,
+  week: 2,
+  day: 3
+};
+const dayInMs = 86400000;
+
+const timeTable = {
+  year: dayInMs * 365,
+  month: dayInMs * 31,
+  week: dayInMs * 7,
+  day: dayInMs * 1
+};
+
+const genBalance = (accountId: number, range: string): BalanceEntity => {
   let balance = [];
-  const begin_t = new Date().getTime() - (range || 31536000000); //account creation date
+  const begin_t = new Date().getTime() - timeTable[range]; //account creation date
   const final_t = new Date().getTime(); //Now
   const dt = final_t - begin_t;
   const nb_transac = 500;
-  const granularity = 2 * (expectedGranularity + 1);
+  const granularity = 2 * (granularityRangeEg[range] + 1);
   const step = dt / (nb_transac / granularity); //step between each datapoint
   let t = begin_t;
   let date = begin_t;

@@ -168,7 +168,7 @@ export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
 };
 
-type DataPoint = {
+export type DataPoint = {
   date: number,
   value: number
 };

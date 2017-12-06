@@ -304,7 +304,8 @@ export default class QuicklookGraph extends Component<Props, *> {
       .append("rect")
       .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
       .attr("width", width + margin.left + margin.right + 20)
-      .attr("height", height + margin.top + margin.bottom);
+      .attr("height", height + margin.top + margin.bottom)
+      .classed("cliprect", true);
 
     //init placeholder for visible dots
     g
@@ -329,6 +330,36 @@ export default class QuicklookGraph extends Component<Props, *> {
       .attr("font-size", "13px")
       .attr("opacity", 0)
       .classed("noData", true);
+  };
+
+  updatePlaceholders = () => {
+    const { width, height, margin } = this.state;
+
+    //init svg with d3js margin convention
+
+    const svg = d3.select(this.svg);
+    svg.attr("height", height + margin.top + margin.bottom);
+    svg.attr("width", width + margin.left + margin.right);
+
+    const g = svg
+      .select("chart")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
+      .attr("width", width);
+
+    //init xAxis placeholder
+    g.select("xAxis").attr("transform", `translate(0, ${height})`);
+
+    //init clipPath for zooming purposes
+    g
+      .select(".cliprect")
+      .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
+      .attr("width", width + margin.left + margin.right + 20)
+      .attr("height", height + margin.top + margin.bottom);
+
+    //update placeholder for NO DATA AVAILABLE text
+    g
+      .select(".noData")
+      .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
   };
 
   zoomTo = (d0: number, d1: number, data: Array<*>) => {
@@ -395,6 +426,7 @@ export default class QuicklookGraph extends Component<Props, *> {
   };
 
   componentDidMount() {
+    window.addEventListener("resize", this.resize);
     const { margin } = this.state;
     const { data, dateRange } = this.props;
     const parent = d3.select(d3.select(this.svg).node().parentNode);
@@ -411,6 +443,28 @@ export default class QuicklookGraph extends Component<Props, *> {
         this.zoomTo(dateRange[0], dateRange[1], data);
       }
     });
+  }
+
+  resize = () => {
+    const { margin } = this.state;
+    const { data, dateRange } = this.props;
+    const parent = d3.select(d3.select(this.svg).node().parentNode);
+    const height =
+      parseFloat(parent.style("height")) - margin.top - margin.bottom;
+    const width =
+      parseFloat(parent.style("width")) - margin.left - margin.right;
+
+    this.setState({ height: height, width: width }, () => {
+      this.updatePlaceholders();
+      //return if no data
+      if (data.length) {
+        this.zoomTo(dateRange[0], dateRange[1], data);
+      }
+    });
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resize);
   }
 
   componentDidUpdate(prevProps: *, prevState: *) {
