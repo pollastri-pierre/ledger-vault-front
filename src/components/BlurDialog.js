@@ -19,20 +19,18 @@ function setBlurState(blurred: boolean) {
 
 const actives = [];
 
-const styles = {
-  paper: {
-    maxWidth: "none"
-  }
-};
-
 function Transition(props) {
   return <Slide direction="down" {...props} />;
 }
 
-class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
+const styles = { paper: { maxWidth: "none" } };
+const CustomDialog = withStyles(styles)(Dialog);
+
+class BlurDialog extends Component<{
+  open: boolean
+}> {
   static defaultProps = {
-    open: false,
-    nopadding: false
+    open: false
   };
   setActive = (active: boolean) => {
     const index = actives.indexOf(this);
@@ -52,9 +50,13 @@ class BlurDialog extends Component<{ open: boolean, nopadding: boolean }> {
   render() {
     const { props } = this;
     return (
-      <Dialog {...props} transition={Transition} transitionDuration={200} />
+      <CustomDialog
+        {...props}
+        transition={Transition}
+        transitionDuration={200}
+      />
     );
   }
 }
 
-export default withStyles(styles)(BlurDialog);
+export default BlurDialog;

@@ -17,9 +17,14 @@ const styles = {
 function PopBubble(props: {
   className?: string,
   style?: Object,
-  children?: React$Node
+  classes?: Object,
+  children?: React$Node,
+  open: boolean,
+  anchorEl: ?HTMLElement,
+  direction?: *,
+  onRequestClose: (event: Object) => void
 }) {
-  let triangle = {
+  let triangle: Object = {
     position: "absolute",
     top: "-12px",
     background: "white",
@@ -42,19 +47,12 @@ function PopBubble(props: {
       {...props}
       className={`pop-bubble ${props.className || ""}`}
       anchorOrigin={{ horizontal: horizontal, vertical: "bottom" }}
-      transformOrigin={{ horizontal: horizontal }}
-      classes={{ paper: props.classes.paper }}
+      transformOrigin={{ horizontal: horizontal, vertical: "top" }}
     >
       <div style={triangle} />
       {props.children}
     </Popover>
   );
 }
-
-PopBubble.defaultProps = {
-  children: "",
-  style: {},
-  className: ""
-};
 
 export default withStyles(styles)(PopBubble);

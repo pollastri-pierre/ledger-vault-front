@@ -4,8 +4,18 @@ import MUITextField from "material-ui/TextField";
 
 import "./TextField.css";
 
-function TextField(props) {
-  const { className } = props;
+type Props = {
+  placeholder?: string,
+  value?: string,
+  inputProps?: Object,
+  error?: boolean,
+  onChange?: (e: Object) => void,
+  style?: Object,
+  autofocus?: boolean,
+  fullWidth?: boolean,
+  inputStyle?: Object
+};
+function TextField(props: Props) {
   return (
     <MUITextField
       {...props}
@@ -13,14 +23,9 @@ function TextField(props) {
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" }
       }}
-      className={`vlt-textfield ${props.className}`}
+      className={`vlt-textfield`}
     />
   );
 }
-
-TextField.defaultProps = {
-  className: "",
-  error: false
-};
 
 export default TextField;

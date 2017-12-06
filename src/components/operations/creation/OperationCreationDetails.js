@@ -91,6 +91,17 @@ class OperationCreationDetails extends Component<Props, State> {
     this.setFees("medium");
   }
 
+  currency: ?Currency;
+  unitMenuAnchor: ?HTMLElement;
+  maxMenuAnchor: ?HTMLElement;
+  feesMenuAnchor: ?HTMLElement;
+  // feesList
+  fees: {
+    slow: Fee,
+    medium: Fee,
+    fast: Fee
+  };
+
   setAmount = (
     amount: string = this.state.amount,
     magnitude: number = this.state.unit.magnitude,
@@ -237,11 +248,15 @@ class OperationCreationDetails extends Component<Props, State> {
         <div className="tab-title">Amount</div>
         <div className="amount-field-wrapper" style={{ position: "relative" }}>
           <TextField
-            className="operation-creation-amount-field"
-            id="operation-creation-amount-field"
             placeholder="0"
             value={this.state.amount}
-            inputProps={{ style: { paddingRight: "20px", fontSize: "18px" } }}
+            inputProps={{
+              style: {
+                textAlign: "right",
+                paddingRight: "20px",
+                fontSize: "18px"
+              }
+            }}
             error={!this.state.amountIsValid}
             onChange={this.updateAmount}
             style={{ textAlign: "right" }}
@@ -337,8 +352,6 @@ class OperationCreationDetails extends Component<Props, State> {
 
         <div className="tab-title title-address">Address to credit</div>
         <TextField
-          className="operation-creation-address"
-          id="operation-creation-address"
           onChange={this.updateAddress}
           error={!this.state.addressIsValid}
           value={this.state.address}
