@@ -40,7 +40,7 @@ class SearchFiltersCard extends Component<{
 
           <label>
             <h3>account</h3>
-            <Select onChange={this.onAccountChange}>
+            <Select theme="black" onChange={this.onAccountChange}>
               <Option value={null} selected={filters.accountId === null}>
                 All
               </Option>
@@ -57,7 +57,7 @@ class SearchFiltersCard extends Component<{
 
           <label>
             <h3>currency</h3>
-            <Select onChange={this.onCurrencyChange}>
+            <Select theme="black" onChange={this.onCurrencyChange}>
               <Option value={null} selected={filters.currencyName === null}>
                 All
               </Option>
