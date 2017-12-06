@@ -38,7 +38,7 @@ export class Select<T> extends Component<
   {
     onChange: (value: T) => void,
     children: React$Node,
-    theme?: "blue" | "black"
+    theme: "blue" | "black"
   },
   {
     isOpen: boolean
@@ -46,6 +46,10 @@ export class Select<T> extends Component<
 > {
   static childContextTypes = contextTypes;
   filter: ?Element;
+
+  static defaultProps = {
+    theme: "blue"
+  };
 
   state = {
     isOpen: false
@@ -75,12 +79,11 @@ export class Select<T> extends Component<
   };
 
   render() {
-    const { children } = this.props;
+    const { children, theme } = this.props;
     const { isOpen } = this.state;
     const arrayChildren: Array<Option<T>> = React.Children.toArray(children);
     const selectedOption =
       arrayChildren.find(({ props }) => props.selected) || arrayChildren[0];
-    const theme = this.props.theme ? this.props.theme : "blue";
     return (
       <div className="Select">
         <div
