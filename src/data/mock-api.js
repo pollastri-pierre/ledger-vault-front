@@ -2,7 +2,7 @@
 import URL from "url";
 import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
-import mockEntities from "./mock-entities.js";
+import mockEntities, { genBalance } from "./mock-entities.js";
 import schema from "./schema";
 import type { Operation, Account } from "../data/types";
 
@@ -176,7 +176,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
 
     m = /^\/accounts\/([^/]+)\/(balance\?range=)([^/]+)$/.exec(uri);
     if (m) {
-      return mockEntities.balance(parseInt(m[1]), m[3]);
+      return genBalance(parseInt(m[1]), m[3]);
     }
     switch (uri) {
       case "/currencies":

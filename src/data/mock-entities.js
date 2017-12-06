@@ -7,8 +7,7 @@ import type {
   MemberEntity,
   OperationEntity,
   SecurityScheme,
-  Transaction,
-  BalanceEntity
+  Transaction
 } from "./types";
 import moment from "moment";
 
@@ -703,7 +702,10 @@ const timeTable = {
   day: dayInMs * 1
 };
 
-const genBalance = (accountId: number, range: string): BalanceEntity => {
+export const genBalance = (
+  accountId: number,
+  range: $Keys<typeof timeTable>
+) => {
   let balance = [];
   const begin_t = new Date().getTime() - timeTable[range]; //account creation date
   const final_t = new Date().getTime(); //Now
@@ -719,10 +721,9 @@ const genBalance = (accountId: number, range: string): BalanceEntity => {
     i += granularity + Math.floor(Math.random() * 5)
   ) {
     date = t + step * i;
-    balance.push({
-      date: Math.min(final_t, date),
-      value:
-        100000000 *
+    balance.push([
+      Math.min(final_t, date),
+      100000000 *
         Math.max(
           0,
           999 * Math.exp(-dt / (t + step * i - begin_t)) +
@@ -731,22 +732,16 @@ const genBalance = (accountId: number, range: string): BalanceEntity => {
               Math.sin(t) *
               Math.exp(Math.cos(t + step * i))
         )
-    });
+    ]);
   }
-  let counterValueBalance = balance.map(a => ({
-    value: a.value * Math.random(),
-    date: a.date
-  }));
+  let counterValueBalance = balance.map(a => [a[0], a[1] * Math.random()]);
   return { balance: balance, counterValueBalance: counterValueBalance };
 };
-
-const balance = genBalance;
 
 export default {
   groups,
   members,
   operations,
   accounts,
-  currencies,
-  balance
+  currencies
 };

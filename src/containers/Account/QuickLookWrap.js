@@ -1,28 +1,31 @@
 //@flow
 import React, { Component } from "react";
-import type { DataPoint, Unit } from "../../data/types";
+import type { Unit } from "../../data/types";
 import QuicklookGraph from "./QuicklookGraph";
 import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
+import type {
+  Range,
+  Response as Balance
+} from "../../api/queries/AccountQuicklookDataQuery";
+
+type Filter = $Keys<Balance>;
 
 type Props = {
   accountId: string,
-  balance: {
-    balance: DataPoint[],
-    countervalueBalance: DataPoint[]
-  },
+  balance: Balance,
   currencyUnit: Unit,
-  range: "year" | "month" | "week" | "day",
+  range: Range,
   currencyColor: string,
   dateRange: Array<*>,
-  filter: string
+  filter: Filter
 };
 
 type State = {};
 
-export class QuicklookWrap extends Component<Props, State> {
+class QuicklookWrap extends Component<Props, State> {
   render() {
     const {
       balance,
@@ -69,7 +72,7 @@ export default connectData(QuicklookWrap, {
   queries: {
     balance: AccountQuicklookDataQuery
   },
-  propsToQueryParams: props => ({
+  propsToQueryParams: (props: { accountId: string, range: Range }) => ({
     accountId: props.accountId,
     range: props.range
   }),
