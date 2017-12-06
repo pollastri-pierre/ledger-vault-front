@@ -41,6 +41,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           [schema.Account],
           mockEntities
         );
+      default:
     }
   }
 
@@ -175,8 +176,9 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     }
 
     m = /^\/accounts\/([^/]+)\/(balance\?range=)([^/]+)$/.exec(uri);
+    // FIXME ^ use `q` instead
     if (m) {
-      return genBalance(parseInt(m[1]), m[3]);
+      return genBalance(parseInt(m[1], 10), m[3]);
     }
     switch (uri) {
       case "/currencies":
@@ -263,6 +265,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
             }
           ]
         };
+      default:
     }
   }
 };

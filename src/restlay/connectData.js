@@ -16,6 +16,8 @@ import ConnectionQuery from "./ConnectionQuery";
 import Mutation from "./Mutation";
 import type RestlayProvider from "./RestlayProvider";
 
+/* eslint-disable no-use-before-define */
+
 export type RestlayEnvironment = {|
   commitMutation: <In, Res>(m: Mutation<In, Res>) => Promise<Res>,
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
@@ -45,6 +47,8 @@ type ExtractQueryResult = <In, Out, O>(
 type ExtractQueryIn = <In, Out>(
   Class<Query<In, Out> | ConnectionQuery<In, Out>>
 ) => In;
+
+/* eslint-enable no-use-before-define */
 
 // prettier-ignore
 type InProps<Props, A> = $Supertype<InjectedProps & $ObjMap<A, ExtractQueryResult> & Props>;
@@ -251,7 +255,7 @@ export default function connectData<
         .map(key => {
           const query = queriesInstances[key];
           const pendingQuery = restlayProvider.getPendingQuery(query);
-          if (pendingQuery) return; // If data is already pending we ignore calling fetchQuery again.
+          if (pendingQuery) return null; // If data is already pending we ignore calling fetchQuery again.
           let needsRefresh =
             forceFetch ||
             forceFetchMode ||
@@ -282,6 +286,8 @@ export default function connectData<
           if (needsRefresh) {
             return this.fetchQuery(query);
           }
+
+          return null;
         })
         .filter(p => p);
 
