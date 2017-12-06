@@ -129,6 +129,7 @@ export class QuicklookCard extends Component<Props, State> {
     let currencyUnit = getAccountCurrencyUnit(account);
     const filter =
       quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
+
     const range = this.tabsList[tabsIndex];
     const dateRange = this.getDateRange(tabsIndex);
     // FIXME PROBABLY NEEDS TO BE FIXED
@@ -136,7 +137,6 @@ export class QuicklookCard extends Component<Props, State> {
       currencyUnit = getFiatUnit(account.settings.fiat);
     }
     return (
-      selectedBalance.length && (
       <Card
         className="quicklook"
         title="Quicklook"
@@ -154,28 +154,12 @@ export class QuicklookCard extends Component<Props, State> {
           </Select>
         }
       >
-          <header>
-            <SelectTab
-              tabs={this.tabsList}
-              onChange={this.selectTab}
-              selected={tabsIndex}
-              theme="header"
-            />
-          </header>
-          <div className="dateLabel">
-            From {labelDateRange[0]} to {labelDateRange[1]}
-          </div>
-          <QuicklookWrap
-            accountId={accountId}
-            filter={
-              quicklookFilter.key === "balance"
-                ? "balance"
-                : "counterValueBalance"
-            }
-            range={this.tabsList[tabsIndex]}
-            dateRange={this.getDateRange(tabsIndex)}
-            currencyUnit={currencyUnit}
-            currencyColor={account.currency.color}
+        <header>
+          <SelectTab
+            tabs={this.tabsList}
+            onChange={this.selectTab}
+            selected={tabsIndex}
+            theme="header"
           />
         </header>
         <div className="dateLabel">
