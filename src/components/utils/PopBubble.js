@@ -39,7 +39,8 @@ function PopBubble(props: {
   const horizontal = props.direction ? props.direction : "right";
 
   if (horizontal === "left") {
-    (triangle.right = "auto"), (triangle.left = "20px");
+    triangle["right"] = "auto";
+    triangle["left"] = "20px";
   }
 
   return (
