@@ -4,14 +4,15 @@ import "./SelectTab.css";
 type Props = {
   tabs: string[],
   onChange: Function,
-  selected: number
+  selected: number,
+  underline?: boolean
 };
 
 export default class SelectTab extends Component<Props, {}> {
   render() {
-    const { tabs, onChange, selected } = this.props;
+    const { tabs, onChange, selected, underline } = this.props;
     return (
-      <div className="tabs">
+      <div className={`tabs ${underline ? "underline" : ""}`}>
         {tabs.map((elem, i) => {
           return (
             <div

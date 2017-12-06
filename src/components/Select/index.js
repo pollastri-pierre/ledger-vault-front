@@ -37,7 +37,8 @@ export class Option<T> extends Component<{
 export class Select<T> extends Component<
   {
     onChange: (value: T) => void,
-    children: React$Node
+    children: React$Node,
+    theme?: "blue" | "black"
   },
   {
     isOpen: boolean
@@ -79,10 +80,11 @@ export class Select<T> extends Component<
     const arrayChildren: Array<Option<T>> = React.Children.toArray(children);
     const selectedOption =
       arrayChildren.find(({ props }) => props.selected) || arrayChildren[0];
+    const theme = this.props.theme ? this.props.theme : "blue";
     return (
       <div className="Select">
         <div
-          className="LabelSelectField"
+          className={`LabelSelectField ${theme}`}
           ref={this.onFilterRef}
           onClick={() => this.toggle()}
         >

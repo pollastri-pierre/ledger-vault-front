@@ -157,6 +157,7 @@ export class QuicklookCard extends Component<Props, State> {
               tabs={this.tabsList}
               onChange={this.selectTab}
               selected={tabsIndex}
+              underline={true}
             />
           </header>
           <div className="dateLabel">
