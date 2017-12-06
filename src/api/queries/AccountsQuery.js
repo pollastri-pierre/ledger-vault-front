@@ -10,5 +10,4 @@ type Response = Account[];
 export default class AccountsQuery extends Query<Input, Response> {
   uri = "/accounts";
   responseSchema = [schema.Account];
-  cacheMaxAge = 30; // FIXME we need a way to refresh cache when creating a new account
 }

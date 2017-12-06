@@ -6,18 +6,12 @@ import mockEntities from "./mock-entities.js";
 import schema from "./schema";
 import type { Operation, Account } from "../data/types";
 
-function keywordsMatchesOperation(
+const keywordsMatchesOperation = (
   keywords: string,
   op: Operation,
   acc: Account
-): boolean {
-  //TODO console.log(keywords, op, acc);
-  if (!keywords) return true;
-  const words = keywords.split(/\s+/);
-  return words.some(w => {
-    return acc.name.includes(w);
-  });
-}
+): boolean =>
+  !keywords || keywords.split(/\s+/).every(w => acc.name.includes(w));
 
 const mockSync = (uri: string, method: string, body: ?Object) => {
   const q = URL.parse(uri, true);

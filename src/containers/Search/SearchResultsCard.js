@@ -4,12 +4,10 @@ import connectData from "../../restlay/connectData";
 import Card from "../../components/Card";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import AccountsQuery from "../../api/queries/AccountsQuery";
 import SearchQuery from "../../api/queries/SearchQuery";
 import InfiniteScrollable from "../../components/InfiniteScrollable";
 import DataTableOperation from "../../components/DataTableOperation";
 import Overscroll from "../../components/utils/Overscroll";
-import CardLoading from "../../components/utils/CardLoading";
 import type { Account, Operation } from "../../data/types";
 import type { Connection } from "../../restlay/ConnectionQuery";
 import "./SearchResultsCard.css";
@@ -65,8 +63,7 @@ const RenderLoading = () => (
 
 export default connectData(SearchResults, {
   queries: {
-    search: SearchQuery,
-    accounts: AccountsQuery
+    search: SearchQuery
   },
   initialVariables: {
     search: 30

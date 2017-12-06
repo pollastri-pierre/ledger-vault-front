@@ -1,14 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
-import connectData from "../../restlay/connectData";
 import Card from "../../components/Card";
 import { Select, Option } from "../../components/Select";
 import AccountOption from "../../components/AccountOption";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 import type { Currency, Account } from "../../data/types";
 import "./SearchFiltersCard.css";
 
@@ -83,23 +78,4 @@ class SearchFiltersCard extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card className="search-filters">
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </Card>
-);
-
-const RenderLoading = () => (
-  <Card className="search-filters">
-    <SpinnerCard />
-  </Card>
-);
-
-export default connectData(SearchFiltersCard, {
-  queries: {
-    currencies: CurrenciesQuery,
-    accounts: AccountsQuery
-  },
-  RenderError,
-  RenderLoading
-});
+export default SearchFiltersCard;
