@@ -93,7 +93,7 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
   freezeTransition?: boolean,
 
   // when new data is reloading, always render again RenderLoading
-  renderLoadingInTransition?: boolean
+  renderLoadingInTransition?: boolean // FIXME likely want to drop this and prefer the user to use `key` prop
 };
 
 const defaultOpts = {
