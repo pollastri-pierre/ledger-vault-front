@@ -191,7 +191,7 @@ class AccountSettingsEdit extends Component<Props, State> {
               tabs={account.currency.units.map(elem => elem.name)}
               onChange={this.onUnitIndexChange}
               selected={settings.unitIndex}
-              underline={false}
+              theme="inline"
             />
           </SettingsField>
           <SettingsField label="Blockchain Explorer">

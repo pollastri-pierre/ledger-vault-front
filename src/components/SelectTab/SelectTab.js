@@ -1,18 +1,20 @@
 //@flow
 import React, { Component } from "react";
 import "./SelectTab.css";
+
 type Props = {
   tabs: string[],
   onChange: Function,
   selected: number,
-  underline?: boolean
+  theme?: "inline" | "header"
 };
 
 export default class SelectTab extends Component<Props, {}> {
   render() {
-    const { tabs, onChange, selected, underline } = this.props;
+    const { tabs, onChange, selected } = this.props;
+    const theme = this.props.theme ? this.props.theme : "header";
     return (
-      <div className={`tabs ${underline ? "underline" : ""}`}>
+      <div className={`tabs ${theme}`}>
         {tabs.map((elem, i) => {
           return (
             <div
