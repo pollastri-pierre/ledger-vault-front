@@ -132,7 +132,7 @@ export default class InfiniteScrollable extends Component<
       this.props.children,
       this.state.loading ? (
         <div key="loading" style={{ position: "relative", height: 50 }}>
-          <SpinnerCard />
+          <SpinnerCard disableGlobalSpinner />
         </div>
       ) : null
     ];
