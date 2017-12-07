@@ -19,8 +19,6 @@ import {
 
 import type { Currency } from "../../../data/types";
 
-import "./OperationCreationDetails.css";
-
 type Props = {
   account: Account,
   saveDetails: Function,

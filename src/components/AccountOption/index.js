@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import AccountName from "../AccountName";
 import { Option } from "../Select";
-import "./index.css";
 import type { Account } from "../../data/types";
 
 class AccountOption extends Component<{

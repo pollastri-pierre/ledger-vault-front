@@ -1,7 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
 import type { Currency } from "../../data/types";
-import "./index.css";
 
 class BadgeCurrency extends PureComponent<{
   size: number,

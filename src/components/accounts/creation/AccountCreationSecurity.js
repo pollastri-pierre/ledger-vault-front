@@ -1,6 +1,5 @@
 //@flow
 import React from "react";
-import "./AccountCreationSecurity.css";
 import RateLimiterValue from "../../RateLimiterValue";
 import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";

@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import "./DialogButton.css";
-
 // TODO: this probably shouldn't be a <button>, there are cases we would use a <Link> in children instead of a onTouchTap ?
 // TODO i kinda prefer "action" instead of "onTouchTap"
 // TODO : flowtype instead of proptypes
@@ -51,9 +49,8 @@ export default class DialogButton extends Component<*, *> {
     return (
       <button
         {...other}
-        className={`vlt-dialog-btn ${highlight ? "highlight" : ""} ${
-          this.props.className
-        }`}
+        className={`vlt-dialog-btn ${highlight ? "highlight" : ""} ${this.props
+          .className}`}
         style={{
           float: right ? "right" : "left",
           ...this.props.style

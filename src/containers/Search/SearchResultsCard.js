@@ -10,7 +10,6 @@ import DataTableOperation from "../../components/DataTableOperation";
 import Overscroll from "../../components/utils/Overscroll";
 import type { Account, Operation } from "../../data/types";
 import type { Connection } from "../../restlay/ConnectionQuery";
-import "./SearchResultsCard.css";
 const columnIds = ["date", "account", "countervalue", "amount"];
 
 class SearchResults extends Component<{
@@ -25,9 +24,10 @@ class SearchResults extends Component<{
       <Card
         className="search-results"
         title={`${(search.edges.length || "no") +
-          (search.pageInfo.hasNextPage ? "+" : "")} operation${
-          search.edges.length > 1 ? "s" : ""
-        } found`}
+          (search.pageInfo.hasNextPage ? "+" : "")} operation${search.edges
+          .length > 1
+          ? "s"
+          : ""} found`}
       >
         <div className="body">
           <Overscroll top={50} bottom={100}>

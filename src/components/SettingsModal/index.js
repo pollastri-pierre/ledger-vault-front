@@ -29,7 +29,6 @@ import type {
   AccountSettings
 } from "../../data/types";
 import type { Response as SettingsDataQueryResponse } from "../../api/queries/SettingsDataQuery";
-import "./index.css";
 
 const { REACT_APP_SECRET_CODE } = process.env;
 

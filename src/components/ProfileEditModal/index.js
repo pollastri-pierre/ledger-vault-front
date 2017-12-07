@@ -15,8 +15,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 
 import type { Member } from "../../data/types";
 
-import "./index.css";
-
 type Validator = (value: string) => boolean;
 
 const validateName: Validator = name => typeof name === "string" && name !== "";

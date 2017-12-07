@@ -8,8 +8,6 @@ import EvolutionSince, {
   TotalBalanceFilters
 } from "../../components/EvolutionSince";
 
-import "./AccountCard.css";
-
 const Separator = () => <div className="separator" />;
 
 class AccountCard extends Component<{

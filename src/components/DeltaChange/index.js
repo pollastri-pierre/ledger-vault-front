@@ -1,7 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
 import ArrowUp from "../icons/ArrowUp";
-import "./index.css";
 
 const arrowIncr = <ArrowUp className="arrow incr" />;
 const arrowDecr = <ArrowUp className="arrow decr" />;

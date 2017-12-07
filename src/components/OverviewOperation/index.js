@@ -5,7 +5,6 @@ import CurrencyAccountValue from "../CurrencyAccountValue";
 import CurrencyUnitValue from "../CurrencyUnitValue";
 import { countervalueForRate } from "../../data/currency";
 import type { Rate, Account } from "../../data/types";
-import "./index.css";
 
 class OverviewOperation extends Component<{
   amount: number,

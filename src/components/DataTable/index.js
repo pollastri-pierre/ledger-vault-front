@@ -1,6 +1,5 @@
 //@flow
 import React, { Component, PureComponent } from "react";
-import "./index.css";
 
 type Column<Cell> = {
   title: string,

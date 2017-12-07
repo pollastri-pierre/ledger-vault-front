@@ -15,7 +15,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import TryAgain from "../../components/TryAgain";
 import type { Account, Member } from "../../data/types";
 import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
-import "./PendingRequests.css";
 
 const EntityApproveAccount = props => (
   <EntityApprove entity="account" {...props} />

@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import "../../containers/App/App.css";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
 import {
@@ -13,8 +12,6 @@ import {
   reinitTeamError,
   resetTeam
 } from "../../redux/modules/auth";
-
-import "./Login.css";
 
 const mapStateToProps = state => ({
   auth: state.auth

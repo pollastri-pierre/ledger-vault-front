@@ -13,7 +13,6 @@ import PendingsQuery from "../../api/queries/PendingsQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
-import "./PendingCard.css";
 
 const Row = ({
   date,

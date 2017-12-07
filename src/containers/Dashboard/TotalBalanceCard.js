@@ -8,7 +8,6 @@ import EvolutionSince, {
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import "./TotalBalanceCard.css";
 import { Select, Option } from "../../components/Select";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";

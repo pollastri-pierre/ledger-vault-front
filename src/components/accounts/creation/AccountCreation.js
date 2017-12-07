@@ -6,7 +6,6 @@ import AccountCreationMembers from "./AccountCreationMembers";
 import AccountCreationApprovals from "./AccountCreationApprovals";
 import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
-import "./AccountCreation.css";
 
 import {
   changeTab,

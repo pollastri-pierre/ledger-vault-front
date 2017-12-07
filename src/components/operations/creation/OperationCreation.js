@@ -7,8 +7,6 @@ import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
 import OperationCreationConfirmation from "./OperationCreationConfirmation";
 
-import "./OperationCreation.css";
-
 class OperationCreation extends Component<*> {
   render() {
     const {

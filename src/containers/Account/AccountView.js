@@ -7,7 +7,6 @@ import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
-import "./Account.css";
 
 class AccountView extends Component<
   {

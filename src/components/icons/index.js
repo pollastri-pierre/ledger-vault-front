@@ -17,8 +17,6 @@ import Search from "./full/Search";
 import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
 
-import "./index.css";
-
 export function SecurityMembersIcon() {
   return <People className="security-icon security-members-icon" />;
 }

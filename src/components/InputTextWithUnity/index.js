@@ -1,6 +1,5 @@
 //@flow
 import React from "react";
-import "./index.css";
 
 function InputTextWithUnity(props: {
   children: React$Node | string,

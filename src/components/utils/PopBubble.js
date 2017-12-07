@@ -2,7 +2,6 @@
 import React from "react";
 import Popover from "material-ui/Popover";
 import { withStyles } from "material-ui/styles";
-import "./PopBubble.css";
 
 const styles = {
   paper: {

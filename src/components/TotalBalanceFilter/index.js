@@ -1,5 +1,4 @@
 //@flow
-import "./TotalBalanceFilter.css";
 type Filter = { title: string, key: string };
 export const TotalBalanceFilters: Filter[] = [
   { title: "yesterday", key: "yesterday" },

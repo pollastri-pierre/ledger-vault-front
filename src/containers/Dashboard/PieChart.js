@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
-import "./PieChart.css";
 import type { Account } from "../../data/types";
 
 type PieChartData = {
@@ -233,9 +232,11 @@ export default class PieChart extends Component<
             {_.map(this.props.data, (data, id) => {
               return (
                 <tr
-                  className={`currency ${
-                    selected !== -1 && selected !== id ? "disable" : ""
-                  } ${selected !== -1 && selected === id ? "selected" : ""}`}
+                  className={`currency ${selected !== -1 && selected !== id
+                    ? "disable"
+                    : ""} ${selected !== -1 && selected === id
+                    ? "selected"
+                    : ""}`}
                   key={id}
                   onMouseOver={() => this.setSelected(id)}
                   onMouseOut={() => this.setSelected(-1)}

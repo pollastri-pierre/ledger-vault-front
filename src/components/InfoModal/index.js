@@ -1,6 +1,5 @@
 //@flow
 import React, { PureComponent } from "react";
-import "./index.css";
 
 class InfoModal extends PureComponent<{
   children: React$Node | string,

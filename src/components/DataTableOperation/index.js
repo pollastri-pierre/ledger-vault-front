@@ -9,7 +9,6 @@ import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
-import "./index.css";
 
 type Cell = {
   operation: Operation,

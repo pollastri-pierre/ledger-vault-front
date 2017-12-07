@@ -14,8 +14,6 @@ import {
   ActionActivityIcon
 } from "../icons";
 
-import "./ActionBar.css";
-
 const NewAccountLink = () => (
   <Link to="/dashboard/new-account" className="content-header-button">
     <ActionAddAccountIcon />

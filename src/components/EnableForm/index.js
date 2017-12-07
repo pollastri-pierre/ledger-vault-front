@@ -1,7 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
 import Checkbox from "../form/Checkbox";
-import "./index.css";
 
 type Props = {
   checked: boolean,

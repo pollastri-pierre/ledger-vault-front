@@ -4,7 +4,6 @@ import MemberAvatar from "../MemberAvatar";
 import MemberRole from "../MemberRole";
 import Checkbox from "../form/Checkbox";
 import type { Member } from "../../data/types";
-import "./index.css";
 
 class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,

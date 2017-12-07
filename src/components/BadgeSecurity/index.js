@@ -1,6 +1,5 @@
 //@flow
 import React, { PureComponent } from "react";
-import "./index.css";
 
 class BadgeSecurity extends PureComponent<{
   icon: string | React$Node,

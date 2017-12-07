@@ -1,6 +1,5 @@
 //@flow
 import React, { PureComponent } from "react";
-import "./index.css";
 
 class ApproveLockRow extends PureComponent<{
   icon: string | React$Node,

@@ -2,10 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ArrowDown from "../icons/ArrowDown";
-import "../TotalBalanceFilter/TotalBalanceFilter.css";
 import PopBubble from "../utils/PopBubble.js";
-import "./index.css";
-
 const contextTypes = {
   onOptionClick: PropTypes.func.isRequired
 };

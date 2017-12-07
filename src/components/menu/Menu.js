@@ -12,7 +12,6 @@ import {
   MenuSearchIcon,
   MenuNewOperationIcon
 } from "../icons";
-import "./Menu.css";
 
 const styleIcon = { marginRight: "12px", verticalAlign: "baseline" };
 function Menu(

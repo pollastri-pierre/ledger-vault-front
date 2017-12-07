@@ -5,8 +5,6 @@ import CurrencyAccountValue from "../../CurrencyAccountValue";
 import CurrencyUnitValue from "../../CurrencyUnitValue";
 import { countervalueForRate } from "../../../data/currency";
 
-import "./OperationCreationAccounts.css";
-
 function OperationCreationAccounts(props) {
   const { accounts, selectedAccount, onSelect } = props;
 
@@ -30,9 +28,9 @@ function OperationCreationAccounts(props) {
               .split(" ")
               .join("-")
               .toLowerCase()}
-            ${
-              selectedAccount && selectedAccount.id === cur.id ? "selected" : ""
-            }`}
+            ${selectedAccount && selectedAccount.id === cur.id
+              ? "selected"
+              : ""}`}
           >
             <div className="account-top">
               <span className="account-name">{cur.name}</span>

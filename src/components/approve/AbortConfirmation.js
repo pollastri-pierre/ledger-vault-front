@@ -2,7 +2,6 @@
 import React from "react";
 import DialogButton from "../buttons/DialogButton";
 import { TrashIcon } from "../icons";
-import "./index.css";
 
 function AbortConfirmation(props: {
   abort: Function,

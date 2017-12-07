@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import "./index.css";
 
 class ViewAllLink extends Component<{
   to: string,

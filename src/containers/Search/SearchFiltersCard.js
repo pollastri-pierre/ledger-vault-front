@@ -5,7 +5,6 @@ import Card from "../../components/Card";
 import { Select, Option } from "../../components/Select";
 import AccountOption from "../../components/AccountOption";
 import type { Currency, Account } from "../../data/types";
-import "./SearchFiltersCard.css";
 
 class SearchFiltersCard extends Component<{
   filters: Object,

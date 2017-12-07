@@ -13,8 +13,6 @@ import BlurDialog from "../../components/BlurDialog";
 import { Alert, Overscroll } from "../../components";
 import { switchLocale } from "../../redux/modules/locale";
 
-import "./SandBox.css";
-
 const mapStateToProps = state => ({
   locale: state.locale
 });

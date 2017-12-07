@@ -7,7 +7,6 @@ import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
-import "./OperationDetails.css";
 import connectData from "../../restlay/connectData";
 import OperationWithAccountQuery from "../../api/queries/OperationWithAccountQuery";
 import ProfileQuery from "../../api/queries/ProfileQuery";

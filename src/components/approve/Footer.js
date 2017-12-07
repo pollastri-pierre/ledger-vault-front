@@ -1,7 +1,6 @@
 //@flow
 import React from "react";
 import DialogButton from "../buttons/DialogButton";
-import "./Footer.css";
 
 function Footer(props: {
   approved: boolean,

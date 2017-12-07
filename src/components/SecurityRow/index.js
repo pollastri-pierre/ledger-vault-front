@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import "./index.css";
 import ArrowDown from "../icons/ArrowDown";
 
 class SecurityRow extends Component<{

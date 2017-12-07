@@ -2,7 +2,6 @@
 import React from "react";
 import { DialogButton } from "../";
 import { PlugIcon } from "../icons";
-import "./index.css";
 
 function ApproveDevice(props: { cancel: Function, entity: string }) {
   const { cancel, entity } = props;

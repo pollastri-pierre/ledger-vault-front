@@ -22,8 +22,6 @@ import {
   I18nProvider
 } from "./containers";
 
-import "./styles/index.css";
-
 const muiTheme = createMuiTheme(theme);
 
 const locale = window.localStorage.getItem("locale") || "en";

@@ -1,7 +1,6 @@
 //@flow
 import React from "react";
 import People from "../icons/thin/Profile";
-import "./index.css";
 
 function Avatar(props: { url: ?string, width: number, height: number }) {
   const { url, width, height } = props;

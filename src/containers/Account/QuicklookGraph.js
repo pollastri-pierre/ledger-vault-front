@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from "react";
 import * as d3 from "d3";
-import "./QuicklookGraph.css";
 import DateFormat from "../../components/DateFormat";
 import type { Unit } from "../../data/types";
 import { formatCurrencyUnit } from "../../data/currency";

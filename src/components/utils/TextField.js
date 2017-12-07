@@ -2,8 +2,6 @@
 import React from "react";
 import MUITextField from "material-ui/TextField";
 
-import "./TextField.css";
-
 type Props = {
   placeholder?: string,
   value?: string,

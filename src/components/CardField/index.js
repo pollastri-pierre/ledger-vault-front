@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import "./index.css";
 
 class CardField extends Component<{
   label: string | React$Node,

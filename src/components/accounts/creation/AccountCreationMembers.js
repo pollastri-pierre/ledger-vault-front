@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import connectData from "../../../restlay/connectData";
 import MembersQuery from "../../../api/queries/MembersQuery";
-import "./AccountCreationMembers.css";
 import ModalLoading from "../../../components/ModalLoading";
 import MemberRow from "../../../components/MemberRow";
 import InfoModal from "../../../components/InfoModal";

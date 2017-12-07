@@ -1,9 +1,7 @@
 //@flow
-import "./App/App.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { registerDevice } from "../redux/modules/auth";
-import "./Login/Login.css";
 
 const mapStateToProps = state => ({
   auth: state.auth

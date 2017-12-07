@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import ValidateBadge from "../icons/ValidateBadge";
-import "./index.css";
 
 class ConfirmationStatus extends Component<*> {
   props: {

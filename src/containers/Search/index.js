@@ -8,8 +8,6 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 import type { Account, Currency } from "../../data/types";
 
-import "./index.css";
-
 type Filters = {
   keywords: ?string,
   accountId: ?string,

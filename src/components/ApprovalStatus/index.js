@@ -7,7 +7,6 @@ import type {
   ApprovingObject,
   ApprovingObjectMeta
 } from "../../data/approvingObject";
-import "./index.css";
 
 class ApprovalStatus extends PureComponent<{
   approved: Array<string>,

@@ -10,8 +10,6 @@ import Storages from "./Storages";
 import OperationModal from "../../components/operations/OperationModal";
 import ModalRoute from "../../components/ModalRoute";
 
-import "./index.css";
-
 class Dashboard extends Component<
   {
     match: *,

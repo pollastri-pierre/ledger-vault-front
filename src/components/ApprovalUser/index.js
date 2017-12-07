@@ -4,7 +4,6 @@ import MemberAvatar from "../MemberAvatar";
 import ValidateBadge from "../icons/ValidateBadge";
 import Question from "../icons/full/Question";
 import type { Member } from "../../data/types";
-import "./index.css";
 
 function Approvalmember(props: { member: Member, isApproved: boolean }) {
   const { member, isApproved } = props;
