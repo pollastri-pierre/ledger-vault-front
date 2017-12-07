@@ -25,16 +25,17 @@
     .ArrowDown {
       display: inline-block;
       vertical-align: top;
-      width: 11px;
+      width: 8px;
       fill: $black !important;
-      margin-top: 8px;
+      margin-top: 10px;
       float: right;
     }
     .label {
       display: inline-block;
-      vertical-align: top;
+      vertical-align: bottom;
       color: $black;
       margin-right: 10px;
+      font-size: 13px;
     }
   }
 }
