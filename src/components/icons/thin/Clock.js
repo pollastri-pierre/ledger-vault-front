@@ -11,7 +11,6 @@ function ClockThin(props: *) {
             <circle
               style={{
                 fill: "none",
-                stroke: "#000",
                 strokeMiterlimit: "10",
                 strokeWidth: "2px"
               }}
@@ -22,7 +21,6 @@ function ClockThin(props: *) {
             <polyline
               style={{
                 fill: "none",
-                stroke: "#000",
                 strokeMiterlimit: "10",
                 strokeWidth: "2px"
               }}
