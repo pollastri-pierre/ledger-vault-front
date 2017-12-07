@@ -16,6 +16,7 @@ import Share from "./full/Share";
 import Search from "./full/Search";
 import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
+import ClockThin from "./thin/Clock";
 
 import "./index.css";
 
@@ -86,6 +87,15 @@ export function BigSecurityRateLimiterIcon() {
     <RatesThin
       stroke="#e2e2e2"
       className="security-icon security-ratelimiter-big-icon"
+    />
+  );
+}
+
+export function BigSecurityAutoExpireIcon() {
+  return (
+    <ClockThin
+      stroke="#e2e2e2"
+      className="security-icon security-autoexpire-big-icon"
     />
   );
 }
