@@ -7,7 +7,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import SearchQuery from "../../api/queries/SearchQuery";
 import InfiniteScrollable from "../../components/InfiniteScrollable";
 import DataTableOperation from "../../components/DataTableOperation";
-import Overscroll from "../../components/utils/Overscroll";
 import type { Account, Operation } from "../../data/types";
 import type { Connection } from "../../restlay/ConnectionQuery";
 import "./SearchResultsCard.css";
@@ -30,19 +29,17 @@ class SearchResults extends Component<{
         } found`}
       >
         <div className="body">
-          <Overscroll top={50} bottom={100}>
-            <InfiniteScrollable
-              restlay={restlay}
-              restlayVariable="search"
-              chunkSize={20}
-            >
-              <DataTableOperation
-                accounts={accounts}
-                operations={search.edges.map(e => e.node)}
-                columnIds={columnIds}
-              />
-            </InfiniteScrollable>
-          </Overscroll>
+          <InfiniteScrollable
+            restlay={restlay}
+            restlayVariable="search"
+            chunkSize={20}
+          >
+            <DataTableOperation
+              accounts={accounts}
+              operations={search.edges.map(e => e.node)}
+              columnIds={columnIds}
+            />
+          </InfiniteScrollable>
         </div>
       </Card>
     );
