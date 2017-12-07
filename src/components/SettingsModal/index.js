@@ -39,7 +39,6 @@ class NavAccount extends Component<{
 }> {
   render() {
     const { account } = this.props;
-    console.log(account);
     return (
       <NavLink
         className="nav-account"
