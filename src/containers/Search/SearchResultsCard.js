@@ -30,7 +30,7 @@ class SearchResults extends Component<{
         } found`}
       >
         <div className="body">
-          <Overscroll top={50} bottom={100}>
+          <Overscroll top={50} bottom={98}>
             <InfiniteScrollable
               restlay={restlay}
               restlayVariable="search"

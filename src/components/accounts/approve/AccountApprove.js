@@ -61,7 +61,7 @@ class AccountApprove extends Component<Props> {
             />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <Overscroll top={40} bottom={100}>
+            <Overscroll top={40} bottom={98}>
               <AccountApproveMembers members={members} account={account} />
             </Overscroll>
             <Footer
@@ -72,7 +72,7 @@ class AccountApprove extends Component<Props> {
             />
           </TabPanel>
           <TabPanel className="tabs_panel">
-            <Overscroll top={40} bottom={100}>
+            <Overscroll top={40} bottom={98}>
               <AccountApproveApprovals
                 approvers={approvers}
                 account={account}

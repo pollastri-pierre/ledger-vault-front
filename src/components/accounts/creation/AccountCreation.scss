@@ -2,9 +2,6 @@
 @import "../../../styles/mixins";
 
 #account-creation {
-  width: 445px;
-  max-height: 615px;
-
   &.loading {
     height: 615px;
   }

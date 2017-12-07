@@ -3,9 +3,7 @@
 @import "./variables";
 
 .modal {
-  overflow: hidden; // hiding scrollbar
   background: white;
-  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.04);
   margin: auto;
   position: relative;
   z-index: 2;

@@ -64,7 +64,7 @@ class OperationDetails extends Component<Props> {
               <TabOverview operation={operation} account={account} />
             </TabPanel>
             <TabPanel className="tabs_panel">
-              <Overscroll top={40} bottom={100}>
+              <Overscroll top={40} bottom={98}>
                 <TabDetails operation={operation} account={account} />
               </Overscroll>
             </TabPanel>
