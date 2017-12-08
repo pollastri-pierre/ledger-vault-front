@@ -1,7 +1,7 @@
 //@flow
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
-import Dialog from "material-ui/Dialog";
+import Dialog, { withMobileDialog } from "material-ui/Dialog";
 import Slide from "material-ui/transitions/Slide";
 
 let blurredCache = false;
@@ -24,7 +24,9 @@ function Transition(props) {
 }
 
 const styles = { paper: { maxWidth: "none" } };
-const CustomDialog = withStyles(styles)(Dialog);
+const CustomDialog = withStyles(styles)(
+  withMobileDialog({ breakpoint: "xs" })(Dialog)
+);
 
 class BlurDialog extends Component<{
   open: boolean
