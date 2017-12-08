@@ -17,7 +17,8 @@ import DialogButton from "../buttons/DialogButton";
 import {
   BigSecurityTimeLockIcon,
   BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon
+  BigSecurityRateLimiterIcon,
+  BigSecurityAutoExpireIcon
 } from "../icons";
 import BadgeSecurity from "../BadgeSecurity";
 import RateLimiterValue from "../RateLimiterValue";
@@ -39,7 +40,11 @@ class NavAccount extends Component<{
   render() {
     const { account } = this.props;
     return (
-      <NavLink className="nav-account" to={account.id}>
+      <NavLink
+        className="nav-account"
+        style={{ color: account.currency.color }}
+        to={account.id}
+      >
         <span className="name">{account.name}</span>
         <span className="currency">{account.currency.name}</span>
       </NavLink>
@@ -67,7 +72,13 @@ class SecuritySchemeView extends Component<{
 }> {
   render() {
     const {
-      securityScheme: { quorum, approvers, time_lock, rate_limiter }
+      securityScheme: {
+        quorum,
+        approvers,
+        time_lock,
+        rate_limiter,
+        auto_expire
+      }
     } = this.props;
     return (
       <div className="security-scheme">
@@ -94,6 +105,12 @@ class SecuritySchemeView extends Component<{
               />
             )
           }
+        />
+        <BadgeSecurity
+          icon={<BigSecurityAutoExpireIcon />}
+          label="Auto-expire"
+          disabled={!auto_expire}
+          value={<TimeLockValue time_lock={auto_expire} />}
         />
       </div>
     );
@@ -225,7 +242,7 @@ class AccountSettingsEdit extends Component<Props, State> {
             </Select>
           </SettingsField>
           {countervalueSourceData ? (
-            <SettingsField label="Source">
+            <SettingsField label="Fiat Currency">
               <Select onChange={this.onFiatChange} theme="black">
                 {countervalueSourceData.fiats.map(fiat => (
                   <Option
