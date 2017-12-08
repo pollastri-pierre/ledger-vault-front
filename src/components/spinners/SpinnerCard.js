@@ -3,13 +3,17 @@ import React, { PureComponent } from "react";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import { load } from "../GlobalLoading";
 
-class SpinnerCard extends PureComponent<{}> {
-  unload: Function;
+class SpinnerCard extends PureComponent<{ disableGlobalSpinner?: boolean }> {
+  unload: ?Function;
   componentDidMount() {
-    this.unload = load();
+    if (!this.props.disableGlobalSpinner) {
+      this.unload = load();
+    }
   }
   componentWillUnmount() {
-    this.unload();
+    if (this.unload) {
+      this.unload();
+    }
   }
   render() {
     return (
