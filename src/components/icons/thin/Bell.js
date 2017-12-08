@@ -1,9 +1,24 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Bell(props: *) {
+const styles = {
+  common: {
+    height: "13px",
+    width: "16px"
+  },
+  white: {
+    fill: "white"
+  }
+};
+function Bell({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.77 32" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 28.77 32"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>bell</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Line">
@@ -17,4 +32,4 @@ function Bell(props: *) {
   );
 }
 
-export default Bell;
+export default injectSheet(styles)(Bell);

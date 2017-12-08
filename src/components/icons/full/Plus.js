@@ -1,9 +1,24 @@
 //@flow
 import React from "react";
+import injectSheet from "react-jss";
 
-function Plus(props: *) {
+const styles = {
+  header: {
+    width: "16px",
+    height: "16px"
+  },
+  menu: {
+    width: "11px",
+    height: "11px"
+  }
+};
+function Plus({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 30"
+      className={classes[type]}
+    >
       <title>plus_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +32,4 @@ function Plus(props: *) {
   );
 }
 
-export default Plus;
+export default injectSheet(styles)(Plus);

@@ -57,7 +57,7 @@ class ActionBar extends Component<{
           <div className="content-header-right">
             <Route path="/dashboard" component={NewAccountLink} />
             <Link to="/export" className="content-header-button">
-              <ActionExportIcon style={{ marginBottom: "2px" }} />
+              <ActionExportIcon />
               <div className="content-header-button-text">
                 {t("actionBar.export")}
               </div>

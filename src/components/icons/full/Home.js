@@ -1,9 +1,25 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Home(props: *) {
+const styles = {
+  common: {
+    height: "11px",
+    width: "9px"
+  },
+  black: {
+    fill: "black"
+  }
+};
+
+function Home({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 25.31" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 25.31"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>home</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +33,4 @@ function Home(props: *) {
   );
 }
 
-export default Home;
+export default injectSheet(styles)(Home);

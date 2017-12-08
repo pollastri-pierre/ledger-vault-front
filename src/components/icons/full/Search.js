@@ -1,9 +1,25 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Search(props: *) {
+const styles = {
+  common: {
+    height: "11px",
+    width: "8.5px"
+  },
+  black: {
+    fill: "black"
+  }
+};
+
+function Search({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.98 30" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 22.98 30"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>search_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +33,4 @@ function Search(props: *) {
   );
 }
 
-export default Search;
+export default injectSheet(styles)(Search);

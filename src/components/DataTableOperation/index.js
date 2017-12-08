@@ -24,7 +24,7 @@ class OperationNoteLink extends Component<{ operation: Operation }> {
     return (
       <span className="OperationNoteLink">
         <Link to={`./operation/${operation.uuid}/2`} onClick={stopPropagation}>
-          <Comment fill="#e2e2e2" className="open-label" />
+          <Comment />
         </Link>
         {!note ? null : (
           <div className="tooltip-label">

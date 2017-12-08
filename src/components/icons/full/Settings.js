@@ -1,9 +1,25 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Settings(props: *) {
+const styles = {
+  common: {
+    height: "16px",
+    width: "16px"
+  },
+  white: {
+    fill: "white"
+  }
+};
+
+function Settings({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 30"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>settings_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +33,4 @@ function Settings(props: *) {
   );
 }
 
-export default Settings;
+export default injectSheet(styles)(Settings);

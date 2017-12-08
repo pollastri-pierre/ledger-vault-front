@@ -1,9 +1,22 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function ArrowDown(props: *) {
+const styles = {
+  common: {
+    width: "11px",
+    height: "7px"
+  }
+};
+
+function ArrowDown({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 18.25" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 18.25"
+      className={classnames(classes.common)}
+    >
       <title>dropdown</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +30,4 @@ function ArrowDown(props: *) {
   );
 }
 
-export default ArrowDown;
+export default injectSheet(styles)(ArrowDown);

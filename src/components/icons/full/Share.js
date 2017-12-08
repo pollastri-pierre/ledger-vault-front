@@ -1,9 +1,24 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Share(props: *) {
+const styles = {
+  common: {
+    height: "13px",
+    width: "16px"
+  },
+  white: {
+    fill: "white"
+  }
+};
+function Share({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 23.63" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 23.63"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>share_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +32,4 @@ function Share(props: *) {
   );
 }
 
-export default Share;
+export default injectSheet(styles)(Share);

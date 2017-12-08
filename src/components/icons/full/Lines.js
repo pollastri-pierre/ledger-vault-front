@@ -1,9 +1,25 @@
 //@flow
 import React from "react";
+import classnames from "classnames";
+import injectSheet from "react-jss";
 
-function Lines(props: *) {
+const styles = {
+  common: {
+    height: "9.5px",
+    width: "11px"
+  },
+  black: {
+    fill: "black"
+  }
+};
+
+function Lines({ classes, type }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 25.78" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 25.78"
+      className={classnames(classes.common, classes[type])}
+    >
       <title>lines_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -17,4 +33,4 @@ function Lines(props: *) {
   );
 }
 
-export default Lines;
+export default injectSheet(styles)(Lines);

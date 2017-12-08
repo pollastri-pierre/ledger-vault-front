@@ -16,74 +16,72 @@ import Share from "./full/Share";
 import Search from "./full/Search";
 import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
+import injectSheet from "react-jss";
+
+import colors from "../../shared/colors";
 
 export function SecurityMembersIcon() {
-  return <People className="security-icon security-members-icon" />;
+  return <People />;
 }
 
 export function SecurityQuorumIcon() {
-  return <ValidateBadge className="security-icon security-quorum-icon" />;
+  return <ValidateBadge />;
 }
 
 export function SecurityRateLimiterIcon() {
-  return <Rates className="security-icon security-ratelimiter-icon" />;
+  return <Rates />;
 }
 
 export function SecurityTimelockIcon() {
-  return <Hourglass className="security-icon security-timelock-icon" />;
+  return <Hourglass />;
 }
 
 export function PlugIcon(props: *) {
-  return <Plug className="plug-icon" {...props} />;
+  return <Plug />;
 }
 
 export function TrashIcon(props: *) {
-  return <Trash className="trash-icon" {...props} />;
+  return <Trash />;
 }
 
 export function BigSecurityTimeLockIcon() {
-  return <HourglassThin className="security-icon security-timelock-big-icon" />;
+  return <HourglassThin />;
 }
 
 export function BigSecurityMembersIcon() {
-  return <PeopleThin className="security-icon security-members-big-icon" />;
+  return <PeopleThin />;
 }
 
-export function MenuDashboardIcon(props: *) {
-  return <Home className="menu-icon-dashboard" {...props} />;
+export function MenuDashboardIcon() {
+  return <Home type="black" />;
 }
 
-export function MenuPendingIcon(props: *) {
-  return <Lines className="menu-icon-pending" {...props} />;
+export function MenuPendingIcon() {
+  return <Lines type="black" />;
 }
 
-export function MenuSearchIcon(props: *) {
-  return <Search className="menu-icon-search" {...props} />;
+export function MenuSearchIcon() {
+  return <Search type="black" />;
 }
 export function MenuNewOperationIcon(props: *) {
-  return <Plus className="menu-icon-new-operation" {...props} />;
+  return <Plus type="menu" />;
 }
 
-export function ActionAddAccountIcon(props: *) {
-  return <Plus className="actionbar-icon-new-account" {...props} />;
+export function ActionAddAccountIcon() {
+  return <Plus type="header" />;
 }
 
-export function ActionExportIcon(props: *) {
-  return <Share className="actionbar-icon-export" {...props} />;
+export function ActionExportIcon() {
+  return <Share type="white" />;
 }
-export function ActionSettingsIcon(props: *) {
-  return <Settings className="actionbar-icon-settings" {...props} />;
+export function ActionSettingsIcon() {
+  return <Settings type="white" />;
 }
 
-export function ActionActivityIcon(props: *) {
-  return <Bell className="actionbar-icon-activity" {...props} />;
+export function ActionActivityIcon() {
+  return <Bell type="white" />;
 }
 
 export function BigSecurityRateLimiterIcon() {
-  return (
-    <RatesThin
-      stroke="#e2e2e2"
-      className="security-icon security-ratelimiter-big-icon"
-    />
-  );
+  return <RatesThin stroke={colors.mouse} />;
 }

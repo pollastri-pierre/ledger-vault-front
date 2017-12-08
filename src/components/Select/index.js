@@ -88,7 +88,7 @@ export class Select<T> extends Component<
           ref={this.onFilterRef}
           onClick={() => this.toggle()}
         >
-          <ArrowDown className="ArrowDown" />
+          <ArrowDown />
           <span className="label">{selectedOption}</span>
         </div>
         <PopBubble

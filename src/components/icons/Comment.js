@@ -1,9 +1,23 @@
 //@flow
 import React from "react";
+import injectSheet from "react-jss";
+import colors from "../../shared/colors";
 
-function Comment(props: *) {
+const style = {
+  icon: {
+    width: "16px",
+    height: "12px"
+  }
+};
+
+function Comment({ classes }) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 22.38" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 22.38"
+      fill={colors.mouse}
+      className={classes.icon}
+    >
       <title>comment_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">
@@ -14,4 +28,4 @@ function Comment(props: *) {
   );
 }
 
-export default Comment;
+export default injectSheet(style)(Comment);
