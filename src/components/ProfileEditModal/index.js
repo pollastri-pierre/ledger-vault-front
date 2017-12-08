@@ -96,10 +96,10 @@ class ProfileEditModal extends Component<
           picture: this.state.picture.value
         })
       )
-      .then(self.props.close);
+      .then(this.props.close);
 
   render() {
-    const t = self.context.translate;
+    const t = this.context.translate;
     const error =
       !this.state.first_name.isValid ||
       !this.state.last_name.isValid ||
