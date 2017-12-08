@@ -168,9 +168,3 @@ export type Operation = OperationCommon & {
 export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
 };
-
-export type PieChartData = {
-  account: Account,
-  balance: number,
-  counterValueBalance: number
-};
