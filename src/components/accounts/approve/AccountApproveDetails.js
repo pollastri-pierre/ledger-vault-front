@@ -23,7 +23,14 @@ function AccountApproveDetails(props: {
   const percentage = Math.round(100 * (approved.length / approvers.length));
   return (
     <div>
-      <div style={{ textAlign: "center", marginBottom: "40px" }}>
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom: "40px",
+          display: "flex",
+          flexDirection: "row"
+        }}
+      >
         <BadgeSecurity
           icon={<BigSecurityMembersIcon />}
           label="Members"
