@@ -86,7 +86,8 @@ class Overscroll extends Component<{
     };
     const innerContainerStyle = {
       position: "relative",
-      height: "100%"
+      height: "100%",
+      overflow: "hidden"
     };
     const topLayerStyle = {
       position: "absolute",
@@ -118,13 +119,13 @@ class Overscroll extends Component<{
         <div ref={this.onCopyRef} style={copyStyle}>
           {children}
         </div>
+        <div style={topLayerStyle} />
         <div style={innerContainerStyle}>
-          <div style={topLayerStyle} />
           <div ref={this.onOriginalRef} style={originalStyle}>
             {children}
           </div>
-          <div style={bottomLayerStyle} />
         </div>
+        <div style={bottomLayerStyle} />
       </div>
     );
   }
