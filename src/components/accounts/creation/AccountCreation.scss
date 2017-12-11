@@ -49,7 +49,7 @@
       position: relative;
       transition: all 500ms ease;
 
-      @include highlight-block($porto, -40px);
+      @include highlight-block($porto, -36px);
 
       &:hover {
         opacity: 1;
@@ -60,7 +60,7 @@
       }
 
       &.selected {
-        @include highlight-block-active($porto, -40px);
+        @include highlight-block-active($porto, -36px);
       }
 
       &.bitcoin {
