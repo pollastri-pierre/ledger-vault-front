@@ -45,6 +45,27 @@ export default class QuicklookGraph extends Component<Props, *> {
     this.setSelected(-1);
   };
 
+  bisectDate = d3.bisector(d => d.date).left;
+
+  mousemove = () => {
+    const { data: dataProp } = this.props;
+    const { margin } = this.state;
+    const { data, x } = this.computeData(dataProp);
+    const x0 = x.invert(d3.mouse(this.svg)[0] - margin.left);
+    const i = this.bisectDate(data, x0, 1);
+    const d0 = data[i - 1];
+    const d1 = data[i];
+    let final = 0;
+    if (!d0) {
+      final = i;
+    } else if (!d1) {
+      final = i - 1;
+    } else {
+      final = x0 - d0[0] > d1[0] - x0 ? i : i - 1;
+    }
+    this.setSelected(final);
+  };
+
   handleTooltip = () => {
     const { selected, margin } = this.state;
 
@@ -62,25 +83,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     }
   };
 
-  drawInvisibleDots = (data: Array<*>) => {
-    const selection = d3
-      .select(".hoveringDots")
-      .selectAll(".hoverdot")
-      .data(data, d => d.x + d.y + d.date);
-    selection.exit().remove();
-    selection
-      .enter()
-      .append("circle")
-      .classed("hoverdot", true)
-      .attr("r", 5)
-      .attr("opacity", 0)
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y)
-      .on("mouseout", this.handleMouseOut)
-      .on("mouseover", this.handleMouseOver);
-  };
-
-  drawVisibleDots = (data: Array<*>) => {
+  drawVisibleDots = (data: DataPointEnhanced[]) => {
     const { currencyColor } = this.props;
     const selection = d3
       .select(".visibleDots")
@@ -103,7 +106,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .classed("dot", true);
   };
 
-  drawLine = (data: Array<*>) => {
+  drawLine = (data: DataPointEnhanced[]) => {
     const { currencyColor } = this.props;
 
     const valueline = d3
@@ -303,21 +306,25 @@ export default class QuicklookGraph extends Component<Props, *> {
       .append("clipPath")
       .attr("id", "clip")
       .append("rect")
-      .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
-      .attr("width", width + margin.left + margin.right + 20)
+      .attr("transform", `translate(-5, ${-(margin.top + margin.bottom) / 2})`)
+      .attr("width", width + 10)
       .attr("height", height + margin.top + margin.bottom)
       .classed("cliprect", true);
+
+    g
+      .append("rect")
+      .attr("transform", `translate(-5, ${-(margin.top + margin.bottom) / 2})`)
+      .attr("width", width + 10)
+      .attr("height", height + margin.top + margin.bottom)
+      .attr("fill", "transparent")
+      .on("mousemove", this.mousemove)
+      .on("mouseout", this.handleMouseOut)
+      .classed("hoverMap", true);
 
     //init placeholder for visible dots
     g
       .append("g")
       .classed("visibleDots", true)
-      .attr("clip-path", "url(#clip)");
-
-    //init placeholder for invisible dots (bigger invisible dots for better ux)
-    g
-      .append("g")
-      .classed("hoveringDots", true)
       .attr("clip-path", "url(#clip)");
 
     //init placeholder for NO DATA AVAILABLE text
@@ -363,7 +370,7 @@ export default class QuicklookGraph extends Component<Props, *> {
       .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
   };
 
-  zoomTo = (d0: number, d1: number, data: Array<*>) => {
+  zoomTo = (d0: number, d1: number, data: Array<[number, number]>) => {
     this.setState(prevState => {
       const { width } = prevState;
       const { x } = this.computeXY(data);
@@ -376,7 +383,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     });
   };
 
-  generateFormatedXAxis = x => {
+  generateFormatedXAxis = (x: Function) => {
     //Setting up xAxis tick format behaviour. subject to change
     const formatMillisecond = d3.timeFormat(".%L"),
       formatSecond = d3.timeFormat(":%S"),
@@ -493,7 +500,6 @@ export default class QuicklookGraph extends Component<Props, *> {
     } else if (prevState.transform !== this.state.transform) {
       //Redrawing graph
       const { data, xAxis, yAxis, x } = this.computeData(dataProp);
-      this.drawInvisibleDots(data);
       this.drawVisibleDots(data);
       this.drawGraph(data, xAxis, yAxis, x);
     }
