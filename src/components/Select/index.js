@@ -19,13 +19,15 @@ export class Option<T> extends Component<{
     onOptionClick: T => void
   };
   static contextTypes = contextTypes;
+  onClick = () => {
+    this.context.onOptionClick(this.props.value);
+  };
   render() {
-    const { selected, value, children } = this.props;
-    const { onOptionClick } = this.context;
+    const { selected, children } = this.props;
     return (
       <div
         className={`option ${selected ? "selected" : ""}`}
-        onClick={() => onOptionClick(value)}
+        onClick={this.onClick}
       >
         {children}
       </div>
@@ -83,13 +85,14 @@ export class Select<T> extends Component<
     const { isOpen } = this.state;
     const arrayChildren = React.Children.toArray(children);
     const selectedOption =
+      // FIXME to be improved. we are assuming children are direct Option here, which might not be true.
       arrayChildren.find(({ props }) => props.selected) || arrayChildren[0];
     return (
       <div className="Select">
         <div
           className={`LabelSelectField ${theme}`}
           ref={this.onFilterRef}
-          onClick={() => this.toggle()}
+          onClick={this.toggle}
         >
           <ArrowDown className="ArrowDown" />
           <span className="label">{selectedOption}</span>
