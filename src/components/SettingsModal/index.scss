@@ -31,7 +31,9 @@
         display: block;
         padding: 20px 0px;
         border-bottom: 1px solid #e2e2e2;
-        opacity: 0.5;
+        > * {
+          opacity: 0.5;
+        }
         position: relative;
         &.active {
           opacity: 1;
@@ -117,7 +119,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
+    height: 39px;
     border-bottom: 1px solid #e2e2e2;
     &:last-child {
       border-bottom: none;

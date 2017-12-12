@@ -277,14 +277,12 @@ class SettingsModal extends Component<{
               <NavAccount account={account} key={account.id} />
             ))}
           </div>
-          <div className="footernotes">
-            <span className="version">
-              {REACT_APP_SECRET_CODE || "unversioned"}
-            </span>
-            <a className="support" href="mailto:support@ledger.fr">
-              support
-            </a>
-          </div>
+          <span className="version">
+            {REACT_APP_SECRET_CODE || "unversioned"}
+          </span>
+          <a className="support" href="mailto:support@ledger.fr">
+            support
+          </a>
         </aside>
         <div className="body">
           <h2>Settings</h2>
