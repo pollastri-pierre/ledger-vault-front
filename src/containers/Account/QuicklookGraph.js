@@ -112,9 +112,9 @@ export default class QuicklookGraph extends Component<Props, *> {
     const valueline = d3
       .line()
       .x(d => {
-        return d.x;
+        return d.x.toFixed(1);
       })
-      .y(d => d.y);
+      .y(d => d.y.toFixed(1));
 
     const selection = d3.select(".valueline").data([data]);
 
@@ -438,10 +438,12 @@ export default class QuicklookGraph extends Component<Props, *> {
     const { margin } = this.state;
     const { data, dateRange } = this.props;
     const parent = d3.select(d3.select(this.svg).node().parentNode);
-    const height =
-      parseFloat(parent.style("height")) - margin.top - margin.bottom;
-    const width =
-      parseFloat(parent.style("width")) - margin.left - margin.right;
+    const height = Math.round(
+      parseFloat(parent.style("height")) - margin.top - margin.bottom
+    );
+    const width = Math.round(
+      parseFloat(parent.style("width")) - margin.left - margin.right
+    );
 
     this.setState({ height: height, width: width }, () => {
       //init placeholders
