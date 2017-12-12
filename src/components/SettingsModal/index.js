@@ -23,7 +23,7 @@ import {
 import BadgeSecurity from "../BadgeSecurity";
 import RateLimiterValue from "../RateLimiterValue";
 import TimeLockValue from "../TimeLockValue";
-
+import SettingsTextField from "../SettingsTextField";
 import type {
   Account,
   SecurityScheme,
@@ -149,12 +149,14 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.update({ name });
   };
   onUnitIndexChange = (unitIndex: number) => {
-    this.update({
-      settings: {
-        ...this.state.settings,
-        unitIndex
-      }
-    });
+    if (unitIndex !== this.state.settings.unitIndex) {
+      this.update({
+        settings: {
+          ...this.state.settings,
+          unitIndex
+        }
+      });
+    }
   };
   onBlockchainExplorerChange = (blockchainExplorer: string) => {
     this.update({
@@ -193,11 +195,7 @@ class AccountSettingsEdit extends Component<Props, State> {
         <section>
           <h3>General</h3>
           <SettingsField label="Account Name">
-            <TextField
-              InputProps={{
-                style: { textAlign: "right" },
-                disableUnderline: true
-              }}
+            <SettingsTextField
               name="last_name"
               value={name}
               hasError={!name}
@@ -273,18 +271,25 @@ class SettingsModal extends Component<{
     return (
       <div className="settings modal">
         <aside>
-          <h3>ACCOUNTS</h3>
-          <div className="accounts">
-            {accounts.map(account => (
-              <NavAccount account={account} key={account.id} />
-            ))}
+          <div className="asideScrollWrap">
+            <h3>ACCOUNTS</h3>
+            <div className="accounts">
+              {accounts.map(account => (
+                <div>
+                  <NavAccount account={account} key={account.id} />
+                  <NavAccount account={account} key={account.id} />
+                </div>
+              ))}
+            </div>
+            <div className="footernotes">
+              <span className="version">
+                {REACT_APP_SECRET_CODE || "unversioned"}
+              </span>
+              <a className="support" href="mailto:support@ledger.fr">
+                support
+              </a>
+            </div>
           </div>
-          <span className="version">
-            {REACT_APP_SECRET_CODE || "unversioned"}
-          </span>
-          <a className="support" href="mailto:support@ledger.fr">
-            support
-          </a>
         </aside>
         <div className="body">
           <h2>Settings</h2>

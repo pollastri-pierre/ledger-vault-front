@@ -38,7 +38,7 @@ export type SecurityScheme = {
   approvers: string[],
   time_lock?: number,
   rate_limiter?: RateLimiter,
-  auto_expire?: number
+  auto_expire?: number | null
 };
 
 export type AccountSettings = {
