@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import { Link } from "react-router-dom";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
@@ -28,7 +29,9 @@ function TabOverview(props: { operation: Operation, account: Account }) {
           <DateFormat date={operation.time} />
         </LineRow>
         <LineRow label="account">
-          <AccountName name={account.name} currency={account.currency} />
+          <Link to={`/account/${account.id}`}>
+            <AccountName name={account.name} currency={account.currency} />
+          </Link>
         </LineRow>
         <LineRow label="fees">
           <Amount account={account} value={operation.fees} rate={rate} />
