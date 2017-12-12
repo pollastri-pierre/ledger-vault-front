@@ -16,6 +16,7 @@ import {
   countervalueForRate,
   formatCurrencyUnit
 } from "../../../data/currency";
+import CryptoAddressPicker from "../../CryptoAddressPicker";
 
 import type { Currency } from "../../../data/types";
 
@@ -163,11 +164,9 @@ class OperationCreationDetails extends Component<Props, State> {
     this.setAmount(`${amount}`);
   };
 
-  updateAddress = (e: SyntheticEvent<HTMLInputElement>) => {
-    const address: string = e.currentTarget.value.trim();
+  updateAddress = (address: string) => {
     const addressIsValid: boolean =
       address === "" || bitcoinAddress.validate(address);
-
     this.setState(
       {
         address,
@@ -353,10 +352,11 @@ class OperationCreationDetails extends Component<Props, State> {
         {/* Address */}
 
         <div className="tab-title title-address">Address to credit</div>
-        <TextField
+        <CryptoAddressPicker
+          id="address"
           onChange={this.updateAddress}
-          error={!this.state.addressIsValid}
           value={this.state.address}
+          isValid={this.state.addressIsValid}
         />
 
         {/* Fees */}

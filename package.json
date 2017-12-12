@@ -20,6 +20,7 @@
     "normalizr-gre": "^3.2.4",
     "open-sans-fontface": "^1.4.0",
     "prop-types": "^15.5.10",
+    "qrcode-reader": "^1.0.4",
     "qrious": "^4.0.2",
     "query-string": "^5.0.0",
     "react": "^16.0.0",
