@@ -134,6 +134,9 @@
         position: relative;
         .tab {
           margin: 0 10px;
+          &:last-child {
+            margin-right: 0px;
+          }
         }
       }
     }
