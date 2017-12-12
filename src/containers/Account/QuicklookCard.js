@@ -172,6 +172,7 @@ export class QuicklookCard extends Component<Props, State> {
           dateRange={dateRange}
           currencyUnit={currencyUnit}
           currencyColor={account.currency.color}
+          key={accountId + range}
         />
       </Card>
     );
