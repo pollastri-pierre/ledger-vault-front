@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { NavLink } from "react-router-relative-link";
 import SelectTab from "../../components/SelectTab/SelectTab";
 import FiatUnits from "../../fiat-units";
-import TextField from "material-ui/TextField";
 import connectData from "../../restlay/connectData";
 import type { RestlayEnvironment } from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
