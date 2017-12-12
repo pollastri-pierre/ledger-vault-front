@@ -271,24 +271,19 @@ class SettingsModal extends Component<{
     return (
       <div className="settings modal">
         <aside>
-          <div className="asideScrollWrap">
-            <h3>ACCOUNTS</h3>
-            <div className="accounts">
-              {accounts.map(account => (
-                <div>
-                  <NavAccount account={account} key={account.id} />
-                  <NavAccount account={account} key={account.id} />
-                </div>
-              ))}
-            </div>
-            <div className="footernotes">
-              <span className="version">
-                {REACT_APP_SECRET_CODE || "unversioned"}
-              </span>
-              <a className="support" href="mailto:support@ledger.fr">
-                support
-              </a>
-            </div>
+          <h3>ACCOUNTS</h3>
+          <div className="accounts">
+            {accounts.map(account => (
+              <NavAccount account={account} key={account.id} />
+            ))}
+          </div>
+          <div className="footernotes">
+            <span className="version">
+              {REACT_APP_SECRET_CODE || "unversioned"}
+            </span>
+            <a className="support" href="mailto:support@ledger.fr">
+              support
+            </a>
           </div>
         </aside>
         <div className="body">

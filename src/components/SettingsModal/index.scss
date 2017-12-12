@@ -3,6 +3,8 @@
   height: 600px;
   display: flex;
   flex-direction: row;
+  overflow-y: hidden;
+  position: relative;
   h2 {
     font-size: 18px;
     font-weight: normal;
@@ -17,13 +19,12 @@
   > aside {
     width: 250px;
     background-color: #f9f9f9;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-direction: column;
     flex-direction: column;
-    height: 100%;
-    .asideScrollWrap {
-      padding: 20px 30px;
-      overflow: scroll;
-    }
+    overflow-y: scroll;
+    padding: 20px 30px;
     .accounts {
       flex: 1;
       .nav-account {
@@ -96,6 +97,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
     > * {
       padding: 0 20px;
     }
