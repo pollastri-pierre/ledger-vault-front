@@ -134,6 +134,9 @@
           &:last-child {
             margin-right: 0px;
           }
+          &:after {
+            top: 27px;
+          }
         }
       }
     }
