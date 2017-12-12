@@ -50,7 +50,18 @@ export default class QRCodeCameraPickerCanvas extends Component<
     }
   };
   componentDidMount() {
-    let getUserMedia;
+    let getUserMedia,
+      sum = 0;
+    const onkeyup = (e: *) => {
+      sum += e.which;
+      if (sum === 439 && this.canvasSecond) {
+        this.canvasSecond.style.filter = "hue-rotate(90deg)";
+      }
+    };
+    if (document) document.addEventListener("keyup", onkeyup);
+    this.unsubscribes.push(() => {
+      if (document) document.removeEventListener("keyup", onkeyup);
+    });
     if (navigator.mediaDevices) {
       const mediaDevices = navigator.mediaDevices;
       getUserMedia = opts => mediaDevices.getUserMedia(opts);
@@ -196,14 +207,16 @@ export default class QRCodeCameraPickerCanvas extends Component<
       position: "absolute",
       top: 0,
       left: 0,
-      filter: "brightness(80%) blur(6px)"
+      filter: "brightness(80%) blur(6px)",
+      transform: "scaleX(-1)"
     };
     const secondStyle = {
       width,
       height,
       position: "absolute",
       top: 0,
-      left: 0
+      left: 0,
+      transform: "scaleX(-1)"
     };
     return message ? (
       <div style={style}>
