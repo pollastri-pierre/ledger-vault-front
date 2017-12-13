@@ -3,7 +3,6 @@
 import * as React from "react";
 import invariant from "invariant";
 import { Component } from "react";
-import bitcoinAddress from "bitcoin-address";
 import connectData from "../../../restlay/connectData";
 import { PopBubble, TextField, Divider } from "../../../components";
 import ArrowDown from "../../icons/ArrowDown";
@@ -11,11 +10,13 @@ import CurrencyNameValue from "../../CurrencyNameValue";
 import type { Unit, Account } from "../../../data/types";
 import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "../../../api/queries/AccountCalculateFeeQuery";
+import ValidateAddressQuery from "../../../api/queries/ValidateAddressQuery";
 import type { Speed } from "../../../api/queries/AccountCalculateFeeQuery";
 import {
   countervalueForRate,
   formatCurrencyUnit
 } from "../../../data/currency";
+import CryptoAddressPicker from "../../CryptoAddressPicker";
 
 import type { Currency } from "../../../data/types";
 
@@ -163,18 +164,21 @@ class OperationCreationDetails extends Component<Props, State> {
     this.setAmount(`${amount}`);
   };
 
-  updateAddress = (e: SyntheticEvent<HTMLInputElement>) => {
-    const address: string = e.currentTarget.value.trim();
-    const addressIsValid: boolean =
-      address === "" || bitcoinAddress.validate(address);
-
-    this.setState(
-      {
-        address,
-        addressIsValid
-      },
-      this.validateTab
-    );
+  updateAddress = (address: string) => {
+    const { restlay, account: { currency } } = this.props;
+    this.setState({ address, addressIsValid: false }, this.validateTab); // FIXME we might want a "pending" internal state for the component to render not a red validation but another thing
+    // NB ideally we will want the CONTINUE button to wait the validation passed.
+    // it means we probably need to do the validation from parent and pass-in the validation state
+    if (address) {
+      restlay // TODO potentially should debounce this check.
+        .fetchQuery(new ValidateAddressQuery({ currency, address }))
+        .then(r => {
+          if (address === this.state.address) {
+            // still on same address
+            this.setState({ addressIsValid: r.valid }, this.validateTab);
+          }
+        });
+    }
   };
 
   setFees = (fee: Speed) => {
@@ -210,6 +214,7 @@ class OperationCreationDetails extends Component<Props, State> {
   };
 
   validateTab = () => {
+    // FIXME this should be refactored and remove. validation to be done in render() / address/amount to come via props from parent
     const details: Details = {
       amount:
         this.state.satoshis > 0 && this.state.amountIsValid
@@ -353,10 +358,11 @@ class OperationCreationDetails extends Component<Props, State> {
         {/* Address */}
 
         <div className="tab-title title-address">Address to credit</div>
-        <TextField
+        <CryptoAddressPicker
+          id="address"
           onChange={this.updateAddress}
-          error={!this.state.addressIsValid}
           value={this.state.address}
+          isValid={this.state.addressIsValid}
         />
 
         {/* Fees */}
