@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 
-class Comment extends PureComponent<*> {
+export default class Comment extends PureComponent<*> {
   render() {
     return (
       <svg viewBox="0 0 30 22.38" {...this.props}>
@@ -10,5 +10,3 @@ class Comment extends PureComponent<*> {
     );
   }
 }
-
-export default Comment;
