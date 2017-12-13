@@ -10,8 +10,55 @@ import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import connectData from "../../restlay/connectData";
+import injectSheet from "react-jss";
+import { mixinHoverSelected } from "../../shared/common";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 
+const styles = {
+  base: {
+    ...mixinHoverSelected("white", "0px"),
+    cursor: "pointer",
+    textDecoration: "none",
+    height: "30px",
+    width: "280px",
+    paddingLeft: "40px",
+    marginBottom: "49px",
+    position: "absolute",
+    bottom: "0",
+    opacity: "1"
+  },
+  circle: {
+    width: "30px",
+    textAlign: "center",
+    boxSizing: "border-box",
+    paddingTop: "5px",
+    height: "30px",
+    float: "left",
+    background: "#eee",
+    borderRadius: "50%"
+  },
+  profile_info: {
+    position: "relative",
+    height: "100%",
+    marginLeft: "30px",
+    paddingLeft: "20px"
+  },
+  profile_name: {
+    fontSize: "13px",
+    textTransform: "capitalize",
+    lineHeight: "1em"
+  },
+  profile_view_profile: {
+    fontSize: "11px",
+    textTransform: "uppercase",
+    opacity: ".5",
+    fontWeight: "600",
+    position: "absolute",
+    bottom: "0",
+    lineHeight: "1em",
+    transition: "opacity .2s ease"
+  }
+};
 class ProfileCard extends Component<
   {
     profile: Member,
@@ -46,28 +93,28 @@ class ProfileCard extends Component<
   };
 
   render() {
-    const { profile, location } = this.props;
+    const { profile, location, classes } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
     return (
       <span>
         <span
-          className="profile-card"
+          className={classes.base}
           onClick={this.onClickProfileCard}
           ref={this.onProfileRef}
         >
-          <div className="profile-pic">
+          <div className={classes.circle}>
             {profile.picture ? (
               <img src={profile.picture} alt="" />
             ) : (
-              <ProfileIcon className="profile-default-icon" color="white" />
+              <ProfileIcon />
             )}
           </div>
-          <div className="profile-info">
-            <div className="profile-name">
+          <div className={classes.profile_info}>
+            <div className={classes.profile_name}>
               {profile.first_name} {profile.last_name}
             </div>
-            <div className="profile-view-profile">
+            <div className={classes.profile_view_profile}>
               {t("actionBar.viewProfile")}
             </div>
           </div>
@@ -101,7 +148,7 @@ const RenderLoading = () => (
 );
 
 export default withRouter(
-  connectData(ProfileCard, {
+  connectData(injectSheet(styles)(ProfileCard), {
     RenderLoading,
     queries: {
       profile: ProfileQuery

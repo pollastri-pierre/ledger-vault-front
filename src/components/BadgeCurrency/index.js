@@ -1,7 +1,16 @@
 //@flow
 import React, { PureComponent } from "react";
 import type { Currency } from "../../data/types";
+import injectSheet from "react-jss";
 
+const styles = {
+  base: {
+    verticalAlign: "middle",
+    marginRight: "10px",
+    display: "inline-block",
+    borderRadius: "50%"
+  }
+};
 class BadgeCurrency extends PureComponent<{
   size: number,
   currency: Currency
@@ -10,14 +19,14 @@ class BadgeCurrency extends PureComponent<{
     size: 6
   };
   render() {
-    const { size, currency } = this.props;
+    const { size, currency, classes } = this.props;
     return (
       <span
-        className="badge-currency"
+        className={classes.base}
         style={{ width: size, height: size, background: currency.color }}
       />
     );
   }
 }
 
-export default BadgeCurrency;
+export default injectSheet(styles)(BadgeCurrency);

@@ -1,6 +1,65 @@
 //@flow
 import React, { Component, PureComponent } from "react";
+import colors from "../../shared/colors";
+import injectSheet from "react-jss";
 
+const styles = {
+  base: {
+    width: "100%",
+    borderCollapse: "collapse",
+    "& th": {
+      textAlign: "left",
+      textTransform: "uppercase",
+      fontWeight: "600",
+      fontSize: "10px",
+      color: colors.steel,
+      "&.amount": {
+        textAlign: "right"
+      }
+    },
+    "& tbody td": {
+      borderBottom: `1px solid ${colors.argile}`,
+      height: "40px"
+    },
+    "& tbody tr:last-child td": {
+      borderBottom: "0"
+    }
+  },
+  right: {
+    textAlign: "right"
+  },
+  address: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "250px"
+  },
+  countervalue: {
+    textAlign: "right",
+    fontSize: "13px",
+    color: colors.steel
+  },
+  amount: {
+    textAlign: "right",
+    fontSize: "13px",
+    "& .sign-positive": {
+      fontWeight: "600"
+    }
+  },
+  date: {
+    fontSize: "10px",
+    fontWeight: "600",
+    textTransform: "uppercase",
+    whiteSpace: "nowrap"
+  },
+  account: {
+    fontSize: "13px"
+  },
+  status: {
+    fontiSize: "11px",
+    color: colors.steel
+  }
+};
 type Column<Cell> = {
   title: string,
   className: string,
@@ -21,7 +80,7 @@ class DefaultRow<Cell> extends Component<{
   }
 }
 
-export default class DataTable<Cell> extends PureComponent<{
+class DataTable<Cell> extends PureComponent<{
   columns: Array<Column<Cell>>,
   data: Array<Cell>,
   Row: React$ComponentType<{
@@ -34,13 +93,13 @@ export default class DataTable<Cell> extends PureComponent<{
     Row: DefaultRow
   };
   render() {
-    const { columns, data, Row } = this.props;
+    const { columns, data, Row, classes } = this.props;
     return (
-      <table className="data-table">
+      <table className={classes.base}>
         <thead>
           <tr>
             {columns.map((column, i) => (
-              <th key={i} className={column.className}>
+              <th key={i} className={classes[column.className]}>
                 {column.title}
               </th>
             ))}
@@ -50,7 +109,7 @@ export default class DataTable<Cell> extends PureComponent<{
           {data.map((cell, y) => (
             <Row cell={cell} key={y} index={y}>
               {columns.map((column, x) => (
-                <td key={x} className={column.className}>
+                <td key={x} className={classes[column.className]}>
                   <column.Cell {...cell} />
                 </td>
               ))}
@@ -61,3 +120,4 @@ export default class DataTable<Cell> extends PureComponent<{
     );
   }
 }
+export default injectSheet(styles)(DataTable);

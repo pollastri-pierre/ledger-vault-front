@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import colors from "../../shared/colors";
 import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
@@ -9,6 +10,7 @@ import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
+import injectSheet from "react-jss";
 
 type Cell = {
   operation: Operation,
@@ -17,12 +19,38 @@ type Cell = {
 
 const stopPropagation = (e: SyntheticEvent<*>) => e.stopPropagation();
 
-class OperationNoteLink extends Component<{ operation: Operation }> {
+const styles = {
+  table: {
+    "& thead": {
+      "tr:before": {
+        opacity: 0
+      }
+    },
+    "tr:before": {
+      background: colors.ocean,
+      content: '""',
+      height: "26px",
+      width: "0px",
+      position: "absolute",
+      marginLeft: "-42px",
+      marginTop: "6px"
+    },
+    "tr:hover:before": {
+      width: "5px",
+      transition: "width 200ms ease"
+    }
+  }
+};
+
+class OperationNoteLink extends Component<{
+  operation: Operation,
+  classes: Object
+}> {
   render() {
-    const { operation } = this.props;
+    const { operation, classes } = this.props;
     const note: ?Note = operation.notes.length > 0 ? operation.notes[0] : null;
     return (
-      <span className="OperationNoteLink">
+      <span className={classes.base}>
         <Link to={`./operation/${operation.uuid}/2`} onClick={stopPropagation}>
           <Comment />
         </Link>
@@ -41,13 +69,38 @@ class OperationNoteLink extends Component<{ operation: Operation }> {
   }
 }
 
+const styles_note = {
+  base: {
+    position: "relative",
+    "& .tooltip-label ": {
+      pointerEvents: "none",
+      opacity: "0",
+      transition: "opacity 0.2s",
+      zIndex: "100",
+      position: "absolute",
+      bottom: "30px",
+      left: "-150px",
+      fontSize: "11px",
+      padding: "30px",
+      background: "white",
+      boxShadow:
+        "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+      width: "350px"
+    },
+    "&:hover .tooltip-label": {
+      opacity: 1
+    }
+  }
+};
+const OpNoteLink = injectSheet(styles_note)(OperationNoteLink);
+
 class DateColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     return (
       <span>
         <DateFormat format="ddd D MMM, h:mmA" date={operation.time} />
-        <OperationNoteLink operation={operation} />
+        <OpNoteLink operation={operation} />
       </span>
     );
   }

@@ -1,5 +1,22 @@
 //@flow
 import React, { Component } from "react";
+import injectSheet from "react-jss";
+
+const styles = {
+  base: {
+    display: "inline-block"
+  },
+  label: {
+    color: "#767676",
+    fontWeight: "600",
+    fontSize: "10px",
+    textTransform: "uppercase"
+  },
+  value: {
+    fontSize: "22px",
+    paddingBottom: "10px"
+  }
+};
 
 class CardField extends Component<{
   label: string | React$Node,
@@ -8,17 +25,14 @@ class CardField extends Component<{
   className?: string
 }> {
   render() {
-    const { label, children, align, className } = this.props;
+    const { label, children, align, classes } = this.props;
     return (
-      <div
-        className={"CardField " + (className || "")}
-        style={{ textAlign: align }}
-      >
-        <div className="value">{children}</div>
-        <div className="label">{label}</div>
+      <div className={classes.base} style={{ textAlign: align }}>
+        <div className={classes.value}>{children}</div>
+        <div className={classes.label}>{label}</div>
       </div>
     );
   }
 }
 
-export default CardField;
+export default injectSheet(styles)(CardField);

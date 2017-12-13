@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
+import colors from "../../shared/colors";
 import SettingsModal from "../SettingsModal";
+import injectSheet from "react-jss";
 import {
   ActionAddAccountIcon,
   ActionExportIcon,
@@ -14,15 +16,50 @@ import {
   ActionActivityIcon
 } from "../icons";
 
+const styles = {
+  base: {
+    height: "200px",
+    background: colors.night,
+    color: "white",
+    position: "relative"
+  },
+  header: {
+    marginLeft: "280px",
+    padding: "54px 38px 0 0"
+  },
+  header_left: {
+    float: "left"
+  },
+  actions: {
+    float: "right",
+    margin: "-7px -13px",
+    "& a": {
+      display: "inline-block",
+      textDecoration: "none",
+      textTransform: "uppercase",
+      textAlign: "center",
+      fontWeight: "600",
+      fontSize: "11px",
+      color: "white",
+      margin: "0 14px",
+      opacity: ".5",
+      "&:hover": {
+        opacity: "1"
+      }
+    }
+  }
+};
+
 const NewAccountLink = () => (
-  <Link to="/dashboard/new-account" className="content-header-button">
-    <ActionAddAccountIcon />
+  <Link to="/dashboard/new-account">
+    <ActionAddAccountIcon type="white" />
     <div className="content-header-button-text">account</div>
   </Link>
 );
 
 class ActionBar extends Component<{
-  location: Object
+  location: Object,
+  classes: Object
 }> {
   static contextTypes = {
     translate: PropTypes.func.isRequired
@@ -31,12 +68,12 @@ class ActionBar extends Component<{
     translate: string => string
   };
   render() {
-    const { location } = this.props;
+    const { location, classes } = this.props;
     // FIXME introduce a component for i18n
     const t = this.context.translate;
 
     return (
-      <div className="ActionBar">
+      <div className={classes.base}>
         <ProfileCard />
         <ModalRoute path="*/new-account" component={AccountCreation} />
         <ModalRoute
@@ -45,8 +82,8 @@ class ActionBar extends Component<{
           undoAllHistoryOnClickOutside
         />
 
-        <div className="content-header">
-          <div className="content-header-left">
+        <div className={classes.header}>
+          <div className={classes.header_left}>
             <img
               src="/img/logo.png"
               srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
@@ -54,9 +91,9 @@ class ActionBar extends Component<{
               alt="Ledger Vault logo"
             />
           </div>
-          <div className="content-header-right">
+          <div className={classes.actions}>
             <Route path="/dashboard" component={NewAccountLink} />
-            <Link to="/export" className="content-header-button">
+            <Link to="/export">
               <ActionExportIcon />
               <div className="content-header-button-text">
                 {t("actionBar.export")}
@@ -84,4 +121,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withRouter(ActionBar);
+export default withRouter(injectSheet(styles)(ActionBar));

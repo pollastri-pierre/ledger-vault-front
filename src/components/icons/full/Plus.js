@@ -5,7 +5,8 @@ import injectSheet from "react-jss";
 const styles = {
   header: {
     width: "16px",
-    height: "16px"
+    height: "16px",
+    fill: "white"
   },
   menu: {
     width: "11px",

@@ -178,7 +178,7 @@ const theme = {
     }
   },
   typography: {
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: "Open Sans",
     fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: 400,
@@ -186,7 +186,7 @@ const theme = {
     display4: {
       fontSize: "7rem",
       fontWeight: 300,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       letterSpacing: "-.04em",
       lineHeight: "1.14286em",
       marginLeft: "-.06em",
@@ -195,7 +195,7 @@ const theme = {
     display3: {
       fontSize: "3.5rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       letterSpacing: "-.02em",
       lineHeight: "1.30357em",
       marginLeft: "-.04em",
@@ -204,7 +204,7 @@ const theme = {
     display2: {
       fontSize: "2.8125rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.06667em",
       marginLeft: "-.04em",
       color: "rgba(0, 0, 0, 0.54)"
@@ -212,7 +212,7 @@ const theme = {
     display1: {
       fontSize: "2.125rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.20588em",
       marginLeft: "-.04em",
       color: "rgba(0, 0, 0, 0.54)"
@@ -220,42 +220,42 @@ const theme = {
     headline: {
       fontSize: "1.5rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.35417em",
       color: "rgba(0, 0, 0, 0.87)"
     },
     title: {
       fontSize: "1.3125rem",
       fontWeight: 500,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.16667em",
       color: "rgba(0, 0, 0, 0.87)"
     },
     subheading: {
       fontSize: "1rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.5em",
       color: "rgba(0, 0, 0, 0.87)"
     },
     body2: {
       fontSize: "0.875rem",
       fontWeight: 500,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.71429em",
       color: "rgba(0, 0, 0, 0.87)"
     },
     body1: {
       fontSize: "0.875rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.46429em",
       color: "rgba(0, 0, 0, 0.87)"
     },
     caption: {
       fontSize: "0.75rem",
       fontWeight: 400,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "Open Sans",
       lineHeight: "1.375em",
       color: "rgba(0, 0, 0, 0.54)"
     },
@@ -263,7 +263,7 @@ const theme = {
       fontSize: "0.875rem",
       textTransform: "uppercase",
       fontWeight: 500,
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"
+      fontFamily: "Open Sans"
     }
   },
   mixins: {

@@ -1,4 +1,5 @@
 //@flow
+import "open-sans-fontface/open-sans.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";

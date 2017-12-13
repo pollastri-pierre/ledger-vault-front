@@ -12,7 +12,15 @@ import { Select, Option } from "../../components/Select";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
+import injectSheet from "react-jss";
 
+const styles = {
+  body: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
+};
 class TotalBalance extends Component<{
   totalBalance: *,
   filter: string,
@@ -24,13 +32,13 @@ class TotalBalance extends Component<{
     const {
       onTotalBalanceFilterChange,
       filter,
+      classes,
       totalBalance,
       reloading
     } = this.props;
     return (
       <Card
         reloading={reloading}
-        className="total-balance"
         title="total balance"
         titleRight={
           <Select onChange={onTotalBalanceFilterChange}>
@@ -42,7 +50,7 @@ class TotalBalance extends Component<{
           </Select>
         }
       >
-        <div className="body">
+        <div className={classes.body}>
           <CardField label={<DateFormat date={totalBalance.date} />}>
             <CurrencyFiatValue
               fiat={totalBalance.currencyName}
@@ -81,7 +89,7 @@ const RenderLoading = () => (
   </Card>
 );
 
-export default connectData(TotalBalance, {
+export default connectData(injectSheet(styles)(TotalBalance), {
   queries: {
     totalBalance: DashboardTotalBalanceQuery
   },

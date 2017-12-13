@@ -4,6 +4,9 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
+import injectSheet from "react-jss";
+import classnames from "classnames";
+import colors from "../../shared/colors";
 import type { Account } from "../../data/types";
 
 type PieChartData = {
@@ -12,7 +15,42 @@ type PieChartData = {
   counterValueBalance: number
 };
 
-export default class PieChart extends Component<
+const styles = {
+  wrapper: {
+    width: "100%",
+    textAlign: "center",
+    height: "140px"
+  },
+  centerChart: {
+    position: "absolute",
+    left: "50%",
+    transform: "translateX(-50%)"
+  },
+  table: {
+    width: "100%",
+    marginTop: "10px",
+    textAlign: "justify",
+    "& .currency": {
+      lineHeight: "23px",
+      cursor: "default"
+    }
+  },
+  uppercase: {
+    textTransform: "uppercase"
+  },
+  currencyBalance: {
+    fontSize: "13px",
+    textAlign: "right"
+  },
+  currencyName: {
+    color: colors.steel,
+    fontSize: "10px",
+    marginLeft: "10px",
+    fontWeight: "600"
+  }
+};
+
+class PieChart extends Component<
   {
     data: Array<PieChartData>,
     width: number,
@@ -186,11 +224,12 @@ export default class PieChart extends Component<
 
   render() {
     const { selected } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div className="pieChart">
-        <div className="chartTooltipWrap">
-          <div className="centerChart">
+      <div>
+        <div className={classes.wrapper}>
+          <div className={classes.center}>
             <svg
               height="150"
               ref={c => {
@@ -227,7 +266,7 @@ export default class PieChart extends Component<
             )}
           </div>
         </div>
-        <table className="currencyTable">
+        <table className={classes.table}>
           <tbody>
             {_.map(this.props.data, (data, id) => {
               return (
@@ -243,11 +282,16 @@ export default class PieChart extends Component<
                 >
                   <td>
                     <BadgeCurrency currency={data.account.currency} />
-                    <span className="uppercase currencyName">
+                    <span
+                      className={classnames(
+                        classes.currencyName,
+                        classes.uppercase
+                      )}
+                    >
                       {data.account.currency.name}
                     </span>
                   </td>
-                  <td className="currencyBalance">
+                  <td className={classes.currencyBalance}>
                     <CurrencyAccountValue
                       account={data.account}
                       value={data.balance}
@@ -262,3 +306,5 @@ export default class PieChart extends Component<
     );
   }
 }
+
+export default injectSheet(styles)(PieChart);

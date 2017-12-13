@@ -2,12 +2,44 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ArrowDown from "../icons/ArrowDown";
+import colors from "../../shared/colors";
+import injectSheet from "react-jss";
+import classnames from "classnames";
 import PopBubble from "../utils/PopBubble.js";
 const contextTypes = {
   onOptionClick: PropTypes.func.isRequired
 };
 
-export class Option<T> extends Component<{
+const stylesOptions = {
+  base: {
+    padding: "10px",
+    opacity: "0.5",
+    cursor: "pointer",
+    "&:after": {
+      background: colors.ocean,
+      content: '""',
+      height: "26px",
+      width: "0px",
+      position: "absolute",
+      marginTop: "-5px",
+      right: "0"
+    },
+    "&:hover:after": {
+      opacity: "1",
+      width: "5px",
+      transition: "width 200ms ease"
+    }
+  },
+  selected: {
+    opacity: "1",
+    "&:after": {
+      opacity: "1",
+      width: "5px"
+    }
+  }
+};
+
+class Option_c<T> extends Component<{
   children: string | React$Node,
   value: T, // data to attach to the option that will be passed to onChange
   selected?: boolean
@@ -17,11 +49,11 @@ export class Option<T> extends Component<{
   };
   static contextTypes = contextTypes;
   render() {
-    const { selected, value, children } = this.props;
+    const { selected, value, children, classes } = this.props;
     const { onOptionClick } = this.context;
     return (
       <div
-        className={`option ${selected ? "selected" : ""}`}
+        className={classnames(classes.base, { [classes.selected]: selected })}
         onClick={() => onOptionClick(value)}
       >
         {children}
@@ -30,8 +62,18 @@ export class Option<T> extends Component<{
   }
 }
 
+export const Option = injectSheet(stylesOptions)(Option_c);
+
 // TODO we need to have a max-height and scroll because on big select, it will go off screen (see Settings screen)
-export class Select<T> extends Component<
+const styleSelect = {
+  label: {
+    display: "inline-block",
+    verticalAlign: "top",
+    color: colors.ocean,
+    marginLeft: "10px"
+  }
+};
+class Select_c<T> extends Component<
   {
     onChange: (value: T) => void,
     children: React$Node,
@@ -76,7 +118,7 @@ export class Select<T> extends Component<
   };
 
   render() {
-    const { children, theme } = this.props;
+    const { children, theme, classes } = this.props;
     const { isOpen } = this.state;
     const arrayChildren = React.Children.toArray(children);
     const selectedOption =
@@ -89,7 +131,7 @@ export class Select<T> extends Component<
           onClick={() => this.toggle()}
         >
           <ArrowDown />
-          <span className="label">{selectedOption}</span>
+          <span className={classes.label}>{selectedOption}</span>
         </div>
         <PopBubble
           open={isOpen}
@@ -110,3 +152,5 @@ export class Select<T> extends Component<
     );
   }
 }
+
+export const Select = injectSheet(styleSelect)(Select_c);
