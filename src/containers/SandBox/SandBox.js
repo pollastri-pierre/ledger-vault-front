@@ -6,6 +6,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 // import RaisedButton from "material-ui/RaisedButton";
 import { Link } from "react-router-dom";
+import List, { ListItem } from "material-ui/List";
+import Input, { InputLabel } from "material-ui/Input";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
@@ -160,13 +164,26 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block short-block">
-                  <span
-                    data-tip="je suis un touletippe"
-                    style={{ position: "absolute" }}
-                  >
-                    Bluh
-                  </span>
-                  <br />
+                  <List>
+                    <ListItem style={{ color: "red" }} button>
+                      <span style={{ color: "black" }}>FOO</span>
+                    </ListItem>
+                    <ListItem button>BAR</ListItem>
+                  </List>
+                  <List className="list-item-ticker-right">
+                    <ListItem button>FOO</ListItem>
+                    <ListItem button>BAR</ListItem>
+                  </List>
+                  <div style={{ padding: 20 }}>
+                    <Select value="" displayEmpty>
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={10}>Ten</MenuItem>
+                      <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                  </div>
                 </Paper>
               </Col>
             </Row>

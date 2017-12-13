@@ -12,6 +12,9 @@ body {
   background-color: #f9f9fa;
   overflow: hidden;
 }
+:focus {
+  outline: none;
+}
 
 /* TODO migrate this CSS to the component "Card" and rename to card when all bloc migrated */
 .bloc {

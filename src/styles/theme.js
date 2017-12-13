@@ -1,5 +1,35 @@
 const theme = {
   direction: "ltr",
+  overrides: {
+    MuiListItem: {
+      button: {
+        "&:hover": {
+          backgroundColor: "transparent"
+        },
+        "&:before": {
+          content: "''",
+          cursor: "pointer",
+          backgroundColor: "currentColor",
+          width: 0,
+          height: 26,
+          display: "block",
+          position: "absolute",
+          bottom: "calc(50% - (26px / 2))",
+          opacity: 1,
+          transition: "width 0.2s ease",
+          left: 0
+        },
+        ".list-item-ticker-right &:before": {
+          left: "auto",
+          right: 0
+        },
+        "&:hover:before": {
+          opacity: 1,
+          width: 5
+        }
+      }
+    }
+  },
   palette: {
     common: {
       black: "#000",
