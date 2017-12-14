@@ -5,7 +5,7 @@ import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import AccountName from "../AccountName";
-import Comment from "../icons/Comment";
+import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";

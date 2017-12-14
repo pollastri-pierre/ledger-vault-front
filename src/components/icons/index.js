@@ -1,27 +1,24 @@
 //@flow
 import React from "react";
-import People from "./People";
 import PeopleThin from "./thin/People";
-import ValidateBadge from "./ValidateBadge";
-import Rates from "./Rates";
+import ValidateBadge from "./full/ValidateBadge";
 import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import Trash from "./thin/Trash";
 import Home from "./full/Home";
 import Plus from "./full/Plus";
 import Lines from "./full/Lines";
-import Bell from "./thin/Bell";
+import Bell from "./full/Bell";
 import Settings from "./full/Settings";
 import Share from "./full/Share";
 import Search from "./full/Search";
-import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
 import ClockThin from "./thin/Clock";
 
 import "./index.css";
 
 export function SecurityMembersIcon() {
-  return <People className="security-icon security-members-icon" />;
+  return <PeopleThin className="security-icon security-members-icon" />;
 }
 
 export function SecurityQuorumIcon() {
@@ -29,11 +26,11 @@ export function SecurityQuorumIcon() {
 }
 
 export function SecurityRateLimiterIcon() {
-  return <Rates className="security-icon security-ratelimiter-icon" />;
+  return <RatesThin className="security-icon security-ratelimiter-icon" />;
 }
 
 export function SecurityTimelockIcon() {
-  return <Hourglass className="security-icon security-timelock-icon" />;
+  return <HourglassThin className="security-icon security-timelock-icon" />;
 }
 
 export function PlugIcon(props: *) {
@@ -68,18 +65,22 @@ export function MenuNewOperationIcon(props: *) {
 }
 
 export function ActionAddAccountIcon(props: *) {
-  return <Plus className="actionbar-icon-new-account" {...props} />;
+  return (
+    <Plus className="actionbar-icon-new-account" color="#fff" {...props} />
+  );
 }
 
 export function ActionExportIcon(props: *) {
-  return <Share className="actionbar-icon-export" {...props} />;
+  return <Share className="actionbar-icon-export" color="#fff" {...props} />;
 }
 export function ActionSettingsIcon(props: *) {
-  return <Settings className="actionbar-icon-settings" {...props} />;
+  return (
+    <Settings className="actionbar-icon-settings" color="#fff" {...props} />
+  );
 }
 
 export function ActionActivityIcon(props: *) {
-  return <Bell className="actionbar-icon-activity" {...props} />;
+  return <Bell className="actionbar-icon-activity" color="#fff" {...props} />;
 }
 
 export function BigSecurityRateLimiterIcon() {

@@ -4,7 +4,7 @@ import InfoModal from "../../InfoModal";
 import ApproveLockRow from "../../ApproveLockRow";
 import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
-import ValidateBadge from "../../icons/ValidateBadge";
+import ValidateBadge from "../../icons/full/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
 import type { Account, Operation } from "../../../data/types";
 import { calculateApprovingObjectMeta } from "../../../data/approvingObject";

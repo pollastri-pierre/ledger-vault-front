@@ -1,9 +1,16 @@
 //@flow
 import React, { PureComponent } from "react";
 
-export default class ArrowDown extends PureComponent<*> {
+type Props = { color: string };
+
+export default class ArrowDown extends PureComponent<Props> {
+  static defaultProps = {
+    color: "#000"
+  };
+
   render() {
     const { color, ...props } = this.props;
+
     return (
       <svg viewBox="0 0 30 18.25" {...props}>
         <polygon

@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import ValidateBadge from "../icons/ValidateBadge";
+import ValidateBadge from "../icons/full/ValidateBadge";
 import "./index.css";
 
 class ConfirmationStatus extends Component<*> {

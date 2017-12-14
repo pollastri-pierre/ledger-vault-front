@@ -1,9 +1,22 @@
 //@flow
 import React, { PureComponent } from "react";
 
-export default class Plug extends PureComponent<*> {
+type Props = { color: string };
+
+export default class Plug extends PureComponent<Props> {
+  static defaultProps = {
+    color: "#000"
+  };
+
   render() {
-    const { fill, ...props } = this.props;
+    const { color, ...props } = this.props;
+    const style = {
+      fill: "none",
+      stroke: color,
+      strokeMiterlimit: "10",
+      strokeWidth: "2px"
+    };
+
     return (
       <svg viewBox="0 0 32 20.12" {...props}>
         <rect
@@ -12,6 +25,7 @@ export default class Plug extends PureComponent<*> {
           width="18.12"
           height="17.14"
           transform="translate(19.63 0.49) rotate(90)"
+          style={style}
         />
         <rect
           x="18.14"
@@ -19,9 +33,10 @@ export default class Plug extends PureComponent<*> {
           width="12.86"
           height="12.86"
           transform="translate(34.63 -14.51) rotate(90)"
+          style={style}
         />
         <rect
-          fill={fill}
+          fill={color}
           stroke="none"
           x="23.57"
           y="5.22"
@@ -30,7 +45,7 @@ export default class Plug extends PureComponent<*> {
           transform="translate(32.21 -16.93) rotate(90)"
         />
         <rect
-          fill={fill}
+          fill={color}
           stroke="none"
           x="23.57"
           y="10.06"
