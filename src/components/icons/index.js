@@ -106,20 +106,22 @@ export function ActionActivityIcon(props: Props) {
   return <Bell className="actionbar-icon-activity" color="#fff" {...props} />;
 }
 
-export function BigSecurityRateLimiterIcon() {
+export function BigSecurityRateLimiterIcon(props: Props) {
   return (
     <RatesThin
-      stroke="#e2e2e2"
+      color="#e2e2e2"
       className="security-icon security-ratelimiter-big-icon"
+      {...props}
     />
   );
 }
 
-export function BigSecurityAutoExpireIcon() {
+export function BigSecurityAutoExpireIcon(props: Props) {
   return (
     <ClockThin
-      stroke="#e2e2e2"
+      color="#e2e2e2"
       className="security-icon security-autoexpire-big-icon"
+      {...props}
     />
   );
 }
