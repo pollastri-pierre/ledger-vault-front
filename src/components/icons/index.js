@@ -17,69 +17,92 @@ import ClockThin from "./thin/Clock";
 
 import "./index.css";
 
-export function SecurityMembersIcon() {
-  return <PeopleThin className="security-icon security-members-icon" />;
+type Props = { color?: string };
+
+export function SecurityMembersIcon(props: Props) {
+  return (
+    <PeopleThin className="security-icon security-members-icon" {...props} />
+  );
 }
 
-export function SecurityQuorumIcon() {
-  return <ValidateBadge className="security-icon security-quorum-icon" />;
+export function SecurityQuorumIcon(props: Props) {
+  return (
+    <ValidateBadge className="security-icon security-quorum-icon" {...props} />
+  );
 }
 
-export function SecurityRateLimiterIcon() {
-  return <RatesThin className="security-icon security-ratelimiter-icon" />;
+export function SecurityRateLimiterIcon(props: Props) {
+  return (
+    <RatesThin className="security-icon security-ratelimiter-icon" {...props} />
+  );
 }
 
-export function SecurityTimelockIcon() {
-  return <HourglassThin className="security-icon security-timelock-icon" />;
+export function SecurityTimelockIcon(props: Props) {
+  return (
+    <HourglassThin
+      className="security-icon security-timelock-icon"
+      {...props}
+    />
+  );
 }
 
-export function PlugIcon(props: *) {
+export function PlugIcon(props: Props) {
   return <Plug className="plug-icon" {...props} />;
 }
 
-export function TrashIcon(props: *) {
+export function TrashIcon(props: Props) {
   return <Trash className="trash-icon" {...props} />;
 }
 
-export function BigSecurityTimeLockIcon() {
-  return <HourglassThin className="security-icon security-timelock-big-icon" />;
+export function BigSecurityTimeLockIcon(props: Props) {
+  return (
+    <HourglassThin
+      className="security-icon security-timelock-big-icon"
+      {...props}
+    />
+  );
 }
 
-export function BigSecurityMembersIcon() {
-  return <PeopleThin className="security-icon security-members-big-icon" />;
+export function BigSecurityMembersIcon(props: Props) {
+  return (
+    <PeopleThin
+      className="security-icon security-members-big-icon"
+      {...props}
+    />
+  );
 }
 
-export function MenuDashboardIcon(props: *) {
+export function MenuDashboardIcon(props: Props) {
   return <Home className="menu-icon-dashboard" {...props} />;
 }
 
-export function MenuPendingIcon(props: *) {
+export function MenuPendingIcon(props: Props) {
   return <Lines className="menu-icon-pending" {...props} />;
 }
 
-export function MenuSearchIcon(props: *) {
+export function MenuSearchIcon(props: Props) {
   return <Search className="menu-icon-search" {...props} />;
 }
-export function MenuNewOperationIcon(props: *) {
+export function MenuNewOperationIcon(props: Props) {
   return <Plus className="menu-icon-new-operation" {...props} />;
 }
 
-export function ActionAddAccountIcon(props: *) {
+export function ActionAddAccountIcon(props: Props) {
   return (
     <Plus className="actionbar-icon-new-account" color="#fff" {...props} />
   );
 }
 
-export function ActionExportIcon(props: *) {
+export function ActionExportIcon(props: Props) {
   return <Share className="actionbar-icon-export" color="#fff" {...props} />;
 }
-export function ActionSettingsIcon(props: *) {
+export function ActionSettingsIcon(props: Props) {
   return (
     <Settings className="actionbar-icon-settings" color="#fff" {...props} />
   );
 }
 
-export function ActionActivityIcon(props: *) {
+export function ActionActivityIcon(props: Props) {
   return <Bell className="actionbar-icon-activity" color="#fff" {...props} />;
 }
 
