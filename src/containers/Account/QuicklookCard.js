@@ -5,7 +5,7 @@ import type { Account } from "../../data/types";
 import { getAccountCurrencyUnit, getFiatUnit } from "../../data/currency";
 import { Select, Option } from "../../components/Select";
 import DateFormat from "../../components/DateFormat";
-import QuicklookWrap from "./QuickLookWrap";
+import Quicklook from "./QuickLook";
 import Card from "../../components/Card";
 import AccountQuery from "../../api/queries/AccountQuery";
 import TryAgain from "../../components/TryAgain";
@@ -165,7 +165,7 @@ export class QuicklookCard extends Component<Props, State> {
         <div className="dateLabel">
           From {labelDateRange[0]} to {labelDateRange[1]}
         </div>
-        <QuicklookWrap
+        <Quicklook
           accountId={accountId}
           filter={filter}
           range={range}
