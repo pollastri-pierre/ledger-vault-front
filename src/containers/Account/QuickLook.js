@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import type { Unit } from "../../data/types";
-import LineChart from "../../components/LineChart/LineChart";
+import LineChart from "../../components/LineChart";
 import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
