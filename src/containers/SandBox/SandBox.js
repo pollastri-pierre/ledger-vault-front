@@ -2,70 +2,19 @@
 // Sandbox for tests and stuff
 //
 
-import React, { Component, Fragment } from "react";
-import classNames from "classnames";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import List, { ListItem } from "material-ui/List";
 import { MenuItem } from "material-ui/Menu";
-import MUISelect from "material-ui/Select";
-import Input from "material-ui/Input";
+import SelectBubble from "../../components/SelectBubble";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
 import BlurDialog from "../../components/BlurDialog";
 import { Alert, Overscroll } from "../../components";
 import { switchLocale } from "../../redux/modules/locale";
-import ArrowDown from "../../components/icons/ArrowDown";
 
 import "./SandBox.css";
-
-const Select = ({
-  triangleLeft,
-  tickerRight,
-  iconLeft,
-  blue,
-  renderValue,
-  ...props
-}) => (
-  <MUISelect
-    {...props}
-    className={classNames({
-      "MuiSelect-disable-arrow": blue
-    })}
-    renderValue={
-      blue
-        ? value => (
-            <span style={{ color: "#27d0e2" }}>
-              <ArrowDown width={11} style={{ marginRight: 20 }} />
-              {renderValue ? renderValue(value) : value}
-            </span>
-          )
-        : null
-    }
-    MenuProps={{
-      className: classNames({
-        "MuiPopover-triangle-left": triangleLeft,
-        "MuiListItem-ticker-right": tickerRight
-      }),
-      anchorOrigin: {
-        horizontal: triangleLeft ? "left" : "right",
-        vertical: "top"
-      },
-      transformOrigin: {
-        horizontal: triangleLeft ? "left" : "right",
-        vertical: -70
-      },
-      PaperProps: {
-        style: {
-          maxHeight: 200,
-          width: 100
-        }
-      }
-    }}
-  >
-    {props.children}
-  </MUISelect>
-);
 
 const mapStateToProps = state => ({
   locale: state.locale
@@ -213,14 +162,20 @@ class SandBox extends Component {
               <Col width={12}>
                 <Paper className="block short-block">
                   <List>
-                    <ListItem style={{ color: "red" }} button>
+                    <ListItem disableRipple style={{ color: "red" }} button>
                       <span style={{ color: "black" }}>FOO</span>
                     </ListItem>
-                    <ListItem button>BAR</ListItem>
+                    <ListItem disableRipple button>
+                      BAR
+                    </ListItem>
                   </List>
                   <List className="MuiListItem-ticker-right">
-                    <ListItem button>FOO</ListItem>
-                    <ListItem button>BAR</ListItem>
+                    <ListItem disableRipple button>
+                      FOO
+                    </ListItem>
+                    <ListItem disableRipple button>
+                      BAR
+                    </ListItem>
                   </List>
                 </Paper>
               </Col>
@@ -231,34 +186,41 @@ class SandBox extends Component {
               <Col width={12}>
                 <Paper className="block tall-block">
                   <div style={{ padding: 20 }}>
-                    <Select value={1} fullWidth displayEmpty tickerRight>
+                    <SelectBubble value={1} fullWidth displayEmpty>
                       {Array(50)
                         .fill(null)
                         .map((_, i) => 1 + i)
                         .map(i => (
-                          <MenuItem key={i} value={i}>
+                          <MenuItem disableRipple key={i} value={i}>
                             {i}
                           </MenuItem>
                         ))}
-                    </Select>
+                    </SelectBubble>
 
-                    <Select
+                    <SelectBubble
                       value={1}
                       fullWidth
                       displayEmpty
                       triangleLeft
-                      blue
+                      arrowDownLeft
+                      tickerRight
+                      color="#27d0e2"
                       disableUnderline
                     >
                       {Array(50)
                         .fill(null)
                         .map((_, i) => 1 + i)
                         .map(i => (
-                          <MenuItem key={i} value={i}>
-                            {i}
+                          <MenuItem
+                            disableRipple
+                            key={i}
+                            value={i}
+                            style={{ color: "#27d0e2" }}
+                          >
+                            <span style={{ color: "black" }}>{i}</span>
                           </MenuItem>
                         ))}
-                    </Select>
+                    </SelectBubble>
                   </div>
                 </Paper>
               </Col>

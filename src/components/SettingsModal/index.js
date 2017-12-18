@@ -11,7 +11,8 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
 import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import { Select, Option } from "../Select";
+import SelectBubble from "../SelectBubble";
+import { MenuItem } from "material-ui/Menu";
 import DialogButton from "../buttons/DialogButton";
 import {
   BigSecurityTimeLockIcon,
@@ -157,7 +158,9 @@ class AccountSettingsEdit extends Component<Props, State> {
       });
     }
   };
-  onBlockchainExplorerChange = (blockchainExplorer: string) => {
+  onBlockchainExplorerChange = ({
+    target: { value: blockchainExplorer }
+  }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -165,7 +168,9 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
-  onCountervalueSourceChange = (countervalueSource: string) => {
+  onCountervalueSourceChange = ({
+    target: { value: countervalueSource }
+  }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -173,7 +178,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
-  onFiatChange = (fiat: string) => {
+  onFiatChange = ({ target: { value: fiat } }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -210,47 +215,50 @@ class AccountSettingsEdit extends Component<Props, State> {
             />
           </SettingsField>
           <SettingsField label="Blockchain Explorer">
-            <Select onChange={this.onBlockchainExplorerChange} theme="black">
+            <SelectBubble
+              value={settings.blockchainExplorer}
+              onChange={this.onBlockchainExplorerChange}
+              fullWidth
+              disableUnderline
+            >
               {settingsData.blockchainExplorers.map(({ id }) => (
-                <Option
-                  key={id}
-                  selected={settings.blockchainExplorer === id}
-                  value={id}
-                >
+                <MenuItem disableRipple key={id} value={id}>
                   {id}
-                </Option>
+                </MenuItem>
               ))}
-            </Select>
+            </SelectBubble>
           </SettingsField>
         </section>
         <section>
           <h3>Countervalue</h3>
           <SettingsField label="Source">
-            <Select onChange={this.onCountervalueSourceChange} theme="black">
+            <SelectBubble
+              value={settings.countervalueSource}
+              onChange={this.onCountervalueSourceChange}
+              fullWidth
+              disableUnderline
+            >
               {settingsData.countervalueSources.map(({ id }) => (
-                <Option
-                  key={id}
-                  selected={settings.countervalueSource === id}
-                  value={id}
-                >
+                <MenuItem disableRipple key={id} value={id}>
                   {id}
-                </Option>
+                </MenuItem>
               ))}
-            </Select>
+            </SelectBubble>
           </SettingsField>
           {countervalueSourceData ? (
             <SettingsField label="Fiat Currency">
-              <Select onChange={this.onFiatChange} theme="black">
+              <SelectBubble
+                value={settings.fiat}
+                onChange={this.onFiatChange}
+                fullWidth
+                disableUnderline
+              >
                 {countervalueSourceData.fiats.map(fiat => (
-                  <Option
-                    key={fiat}
-                    selected={settings.fiat === fiat}
-                    value={fiat}
-                  >
+                  <MenuItem disableRipple key={fiat} value={fiat}>
                     {fiat} - {FiatUnits[fiat].name}
-                  </Option>
+                  </MenuItem>
                 ))}
-              </Select>
+              </SelectBubble>
             </SettingsField>
           ) : null}
         </section>

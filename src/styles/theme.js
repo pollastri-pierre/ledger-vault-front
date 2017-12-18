@@ -19,7 +19,17 @@ const tickerActiveStyle = {
 const theme = {
   direction: "ltr",
   overrides: {
+    MuiInput: {
+      root: {
+        fontSize: 13
+      }
+    },
     MuiSelect: {
+      select: {
+        ".MuiSelect-disable-arrow &": {
+          padding: "0 0 2px 0"
+        }
+      },
       icon: {
         ".MuiSelect-disable-arrow &": {
           display: "none"
@@ -28,20 +38,21 @@ const theme = {
     },
     MuiMenuItem: {
       root: {
+        fontSize: 11,
+        fontWeight: 600,
+        opacity: 0.5,
         "&:hover": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
+          opacity: 1
         },
         "&:focus": {
           backgroundColor: "transparent",
-          "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
-          ".MuiListItem-ticker-right &:before": {
-            left: "auto",
-            right: 0
-          }
+          opacity: 1
         }
       },
       selected: {
         backgroundColor: "transparent",
+        opacity: 1,
         "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
         ".MuiListItem-ticker-right &:before": {
           left: "auto",
@@ -53,6 +64,14 @@ const theme = {
       button: {
         "&:hover": {
           backgroundColor: "transparent"
+        },
+        "&:focus": {
+          backgroundColor: "transparent",
+          "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
+          ".MuiListItem-ticker-right &:before": {
+            left: "auto",
+            right: 0
+          }
         },
         "&:before": { ...tickerBeforeStyle, left: 0 },
         "&:hover:before": tickerActiveStyle,
