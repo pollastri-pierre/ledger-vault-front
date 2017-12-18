@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import * as d3 from "d3";
-import "./QuicklookGraph.css";
+import "./LineChart.css";
 import DateFormat from "../../components/DateFormat";
 import type { Unit } from "../../data/types";
 import { formatCurrencyUnit } from "../../data/currency";
@@ -20,7 +20,7 @@ type Props = {
   currencyColor: string
 };
 
-export default class QuicklookGraph extends Component<Props, *> {
+export default class LineChart extends Component<Props, *> {
   state = {
     selected: -1,
     width: 100,
@@ -511,7 +511,7 @@ export default class QuicklookGraph extends Component<Props, *> {
     const { selected } = this.state;
     let { data, currencyUnit, currencyColor } = this.props;
     return (
-      <div className="QuicklookGraph">
+      <div className="LineChart">
         <div className="chartWrap">
           {selected !== -1 ? (
             <div

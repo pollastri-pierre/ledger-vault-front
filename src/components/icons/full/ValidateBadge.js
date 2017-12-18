@@ -3,18 +3,19 @@ import React, { PureComponent } from "react";
 
 type Props = { color: string };
 
-export default class Lines extends PureComponent<Props> {
+export default class ValidateBadge extends PureComponent<Props> {
   static defaultProps = {
     color: "#000"
   };
 
   render() {
     const { color, ...props } = this.props;
+
     return (
-      <svg viewBox="0 0 30 25.78" {...props}>
+      <svg viewBox="0 0 30 30" {...props}>
         <path
           fill={color}
-          d="M0,25.78v-4H30v4Zm0-7.25v-4H23.51v4Zm0-7.25v-4H27.83v4ZM0,4V0H21.34V4Z"
+          d="M15,0A15,15,0,1,0,30,15,15,15,0,0,0,15,0ZM12.95,22.32,5.87,15.46l2.51-2.58,4.57,4.43,8.68-8.41,2.51,2.58Z"
         />
       </svg>
     );

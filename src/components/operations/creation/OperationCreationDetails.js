@@ -5,7 +5,7 @@ import invariant from "invariant";
 import { Component } from "react";
 import connectData from "../../../restlay/connectData";
 import { PopBubble, TextField, Divider } from "../../../components";
-import ArrowDown from "../../icons/ArrowDown";
+import ArrowDown from "../../icons/full/ArrowDown";
 import CurrencyNameValue from "../../CurrencyNameValue";
 import type { Unit, Account } from "../../../data/types";
 import type { Details } from "../../NewOperationModal";

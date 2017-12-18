@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ArrowDown from "../icons/ArrowDown";
+import ArrowDown from "../icons/full/ArrowDown";
 import "../TotalBalanceFilter/TotalBalanceFilter.css";
 import PopBubble from "../utils/PopBubble.js";
 import "./index.css";

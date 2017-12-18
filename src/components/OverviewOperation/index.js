@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import ArrowDown from "../icons/ArrowDown";
+import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import CurrencyUnitValue from "../CurrencyUnitValue";
 import { countervalueForRate } from "../../data/currency";

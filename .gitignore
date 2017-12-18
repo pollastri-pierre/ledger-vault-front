@@ -29,3 +29,4 @@ yarn-error.log*
 *.orig
 
 flow-typed/
+flow-coverage

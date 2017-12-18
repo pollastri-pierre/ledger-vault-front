@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import "./index.css";
-import ArrowDown from "../icons/ArrowDown";
+import ArrowDown from "../icons/full/ArrowDown";
 
 class SecurityRow extends Component<{
   icon: React$Node | string,
