@@ -2,22 +2,70 @@
 // Sandbox for tests and stuff
 //
 
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import classNames from "classnames";
 import PropTypes from "prop-types";
-// import RaisedButton from "material-ui/RaisedButton";
-import { Link } from "react-router-dom";
 import List, { ListItem } from "material-ui/List";
-import Input, { InputLabel } from "material-ui/Input";
 import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import MUISelect from "material-ui/Select";
+import Input from "material-ui/Input";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
 import BlurDialog from "../../components/BlurDialog";
 import { Alert, Overscroll } from "../../components";
 import { switchLocale } from "../../redux/modules/locale";
+import ArrowDown from "../../components/icons/ArrowDown";
 
 import "./SandBox.css";
+
+const Select = ({
+  triangleLeft,
+  tickerRight,
+  iconLeft,
+  blue,
+  renderValue,
+  ...props
+}) => (
+  <MUISelect
+    {...props}
+    className={classNames({
+      "MuiSelect-disable-arrow": blue
+    })}
+    renderValue={
+      blue
+        ? value => (
+            <span style={{ color: "#27d0e2" }}>
+              <ArrowDown width={11} style={{ marginRight: 20 }} />
+              {renderValue ? renderValue(value) : value}
+            </span>
+          )
+        : null
+    }
+    MenuProps={{
+      className: classNames({
+        "MuiPopover-triangle-left": triangleLeft,
+        "MuiListItem-ticker-right": tickerRight
+      }),
+      anchorOrigin: {
+        horizontal: triangleLeft ? "left" : "right",
+        vertical: "top"
+      },
+      transformOrigin: {
+        horizontal: triangleLeft ? "left" : "right",
+        vertical: -70
+      },
+      PaperProps: {
+        style: {
+          maxHeight: 200,
+          width: 100
+        }
+      }
+    }}
+  >
+    {props.children}
+  </MUISelect>
+);
 
 const mapStateToProps = state => ({
   locale: state.locale
@@ -170,20 +218,10 @@ class SandBox extends Component {
                     </ListItem>
                     <ListItem button>BAR</ListItem>
                   </List>
-                  <List className="list-item-ticker-right">
+                  <List className="MuiListItem-ticker-right">
                     <ListItem button>FOO</ListItem>
                     <ListItem button>BAR</ListItem>
                   </List>
-                  <div style={{ padding: 20 }}>
-                    <Select value="" displayEmpty>
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </div>
                 </Paper>
               </Col>
             </Row>
@@ -192,10 +230,36 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block tall-block">
-                  <a data-tip="je suis un touletippe">
-                    Blouh <i className="material-icons">face</i>
-                  </a>
-                  <Link to="?operationDetail=1">operation id1</Link>
+                  <div style={{ padding: 20 }}>
+                    <Select value={1} fullWidth displayEmpty tickerRight>
+                      {Array(50)
+                        .fill(null)
+                        .map((_, i) => 1 + i)
+                        .map(i => (
+                          <MenuItem key={i} value={i}>
+                            {i}
+                          </MenuItem>
+                        ))}
+                    </Select>
+
+                    <Select
+                      value={1}
+                      fullWidth
+                      displayEmpty
+                      triangleLeft
+                      blue
+                      disableUnderline
+                    >
+                      {Array(50)
+                        .fill(null)
+                        .map((_, i) => 1 + i)
+                        .map(i => (
+                          <MenuItem key={i} value={i}>
+                            {i}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </div>
                 </Paper>
               </Col>
             </Row>

@@ -36,6 +36,7 @@ export class Option<T> extends Component<{
 }
 
 // TODO we need to have a max-height and scroll because on big select, it will go off screen (see Settings screen)
+// ^ for that, the idea will be to switch to mui under the hood. it is expected we will changes the API a bit, to embrace this change
 export class Select<T> extends Component<
   {
     onChange: (value: T) => void,
