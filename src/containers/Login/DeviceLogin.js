@@ -17,7 +17,7 @@ class DeviceLogin extends Component<{
     const t = this.context.translate;
     return (
       <div className="DeviceLogin">
-        <Plug className="dongle" fill="#e2e2e2" />
+        <Plug className="dongle" color="#e2e2e2" />
         <br />
         <div className="team">{t("login.signIn", { team })}</div>
         <div className="spacer" />

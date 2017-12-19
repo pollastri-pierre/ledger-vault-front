@@ -5,7 +5,7 @@ type Props = { color: string };
 
 export default class Share extends PureComponent<Props> {
   static defaultProps = {
-    color: "#000"
+    color: "currentColor"
   };
 
   render() {
