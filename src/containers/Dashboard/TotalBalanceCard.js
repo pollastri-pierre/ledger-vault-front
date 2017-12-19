@@ -9,8 +9,8 @@ import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
 import "./TotalBalanceCard.css";
-import SelectBubble from "../../components/SelectBubble";
 import { MenuItem } from "material-ui/Menu";
+import BlueSelect from "../../components/BlueSelect";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
@@ -33,17 +33,14 @@ class TotalBalance extends Component<{
         className="total-balance"
         title="total balance"
         titleRight={
-          <SelectBubble
+          <BlueSelect
             value={filter}
             onChange={this.onTotalBalanceFilterChange}
-            tickerRight
-            arrowDownLeft
             disableUnderline
             renderValue={key =>
               (TotalBalanceFilters.find(o => o.key === key) || {}).title
             }
             style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
-            color="#27d0e2" // FIXME inject theme color
           >
             {TotalBalanceFilters.map(({ title, key }) => (
               <MenuItem
@@ -55,7 +52,7 @@ class TotalBalance extends Component<{
                 <span style={{ color: "black" }}>{title.toUpperCase()}</span>
               </MenuItem>
             ))}
-          </SelectBubble>
+          </BlueSelect>
         }
       >
         <div className="body">

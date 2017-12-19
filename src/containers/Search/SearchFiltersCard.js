@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import Card from "../../components/Card";
-import SelectBubble from "../../components/SelectBubble";
+import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
 import AccountMenuItem from "../../components/AccountMenuItem";
 import Search from "../../components/icons/thin/Search";
@@ -56,7 +56,7 @@ class SearchFiltersCard extends Component<{
           <label>
             <h3>account</h3>
 
-            <SelectBubble
+            <Select
               value={filters.accountId}
               onChange={this.onAccountChange}
               displayEmpty
@@ -76,16 +76,17 @@ class SearchFiltersCard extends Component<{
                   account={account}
                 />
               ))}
-            </SelectBubble>
+            </Select>
           </label>
 
           <label>
             <h3>currency</h3>
-            <SelectBubble
+            <Select
               value={filters.currencyName}
               onChange={this.onCurrencyChange}
               displayEmpty
               fullWidth
+              renderValue={currencyName => currencyName || "All"}
             >
               <MenuItem disableRipple value="">
                 All
@@ -99,7 +100,7 @@ class SearchFiltersCard extends Component<{
                   {currency.name}
                 </MenuItem>
               ))}
-            </SelectBubble>
+            </Select>
           </label>
         </div>
       </Card>

@@ -11,7 +11,7 @@ import AccountsQuery from "../../api/queries/AccountsQuery";
 import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
 import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import SelectBubble from "../SelectBubble";
+import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
 import DialogButton from "../buttons/DialogButton";
 import {
@@ -215,7 +215,7 @@ class AccountSettingsEdit extends Component<Props, State> {
             />
           </SettingsField>
           <SettingsField label="Blockchain Explorer">
-            <SelectBubble
+            <Select
               value={settings.blockchainExplorer}
               onChange={this.onBlockchainExplorerChange}
               fullWidth
@@ -226,13 +226,13 @@ class AccountSettingsEdit extends Component<Props, State> {
                   {id}
                 </MenuItem>
               ))}
-            </SelectBubble>
+            </Select>
           </SettingsField>
         </section>
         <section>
           <h3>Countervalue</h3>
           <SettingsField label="Source">
-            <SelectBubble
+            <Select
               value={settings.countervalueSource}
               onChange={this.onCountervalueSourceChange}
               fullWidth
@@ -243,11 +243,11 @@ class AccountSettingsEdit extends Component<Props, State> {
                   {id}
                 </MenuItem>
               ))}
-            </SelectBubble>
+            </Select>
           </SettingsField>
           {countervalueSourceData ? (
             <SettingsField label="Fiat Currency">
-              <SelectBubble
+              <Select
                 value={settings.fiat}
                 onChange={this.onFiatChange}
                 fullWidth
@@ -258,7 +258,7 @@ class AccountSettingsEdit extends Component<Props, State> {
                     {fiat} - {FiatUnits[fiat].name}
                   </MenuItem>
                 ))}
-              </SelectBubble>
+              </Select>
             </SettingsField>
           ) : null}
         </section>

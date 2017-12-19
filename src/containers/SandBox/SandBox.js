@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import List, { ListItem } from "material-ui/List";
 import { MenuItem } from "material-ui/Menu";
-import SelectBubble from "../../components/SelectBubble";
+import Select from "material-ui/Select";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
@@ -186,7 +186,7 @@ class SandBox extends Component {
               <Col width={12}>
                 <Paper className="block tall-block">
                   <div style={{ padding: 20 }}>
-                    <SelectBubble value={1} fullWidth displayEmpty>
+                    <Select value={1} fullWidth displayEmpty>
                       {Array(50)
                         .fill(null)
                         .map((_, i) => 1 + i)
@@ -195,32 +195,7 @@ class SandBox extends Component {
                             {i}
                           </MenuItem>
                         ))}
-                    </SelectBubble>
-
-                    <SelectBubble
-                      value={1}
-                      fullWidth
-                      displayEmpty
-                      triangleLeft
-                      arrowDownLeft
-                      tickerRight
-                      color="#27d0e2"
-                      disableUnderline
-                    >
-                      {Array(50)
-                        .fill(null)
-                        .map((_, i) => 1 + i)
-                        .map(i => (
-                          <MenuItem
-                            disableRipple
-                            key={i}
-                            value={i}
-                            style={{ color: "#27d0e2" }}
-                          >
-                            <span style={{ color: "black" }}>{i}</span>
-                          </MenuItem>
-                        ))}
-                    </SelectBubble>
+                    </Select>
                   </div>
                 </Paper>
               </Col>

@@ -28,6 +28,9 @@ const theme = {
       select: {
         ".MuiSelect-disable-arrow &": {
           padding: "0 0 2px 0"
+        },
+        "&:focus": {
+          backgroundColor: "transparent"
         }
       },
       icon: {
@@ -87,6 +90,7 @@ const theme = {
     },
     MuiPopover: {
       paper: {
+        /*
         overflowX: "visible",
         overflowY: "visible",
         "& > ul": {
@@ -110,6 +114,7 @@ const theme = {
           left: 20,
           right: "auto"
         }
+        */
       }
     }
   },

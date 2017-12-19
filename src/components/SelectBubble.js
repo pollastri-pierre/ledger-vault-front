@@ -4,7 +4,6 @@ import MUISelect from "material-ui/Select";
 import ArrowDown from "./icons/full/ArrowDown";
 
 class SelectBubble extends Component<{
-  triangleLeft?: boolean,
   tickerRight?: boolean,
   arrowDownLeft?: boolean,
   color?: string,
@@ -15,7 +14,6 @@ class SelectBubble extends Component<{
 }> {
   render() {
     const {
-      triangleLeft,
       tickerRight,
       color,
       arrowDownLeft,
@@ -42,23 +40,8 @@ class SelectBubble extends Component<{
         renderValue={renderValueProps}
         MenuProps={{
           className: classNames({
-            "MuiPopover-triangle-left": triangleLeft,
             "MuiListItem-ticker-right": tickerRight
           }),
-          anchorOrigin: {
-            horizontal: triangleLeft ? "left" : "right",
-            vertical: "top"
-          },
-          transformOrigin: {
-            horizontal: triangleLeft ? "left" : "right",
-            vertical: -70
-          },
-          PaperProps: {
-            style: {
-              maxHeight: 200,
-              width: 100
-            }
-          },
           ...props.MenuProps
         }}
       >

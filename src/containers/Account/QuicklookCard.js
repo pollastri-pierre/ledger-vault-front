@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import SelectTab from "../../components/SelectTab/SelectTab";
 import type { Account } from "../../data/types";
 import { getAccountCurrencyUnit, getFiatUnit } from "../../data/currency";
-import SelectBubble from "../../components/SelectBubble";
+import BlueSelect from "../../components/BlueSelect";
 import { MenuItem } from "material-ui/Menu";
 import DateFormat from "../../components/DateFormat";
 import Quicklook from "./QuickLook";
@@ -144,14 +144,11 @@ export class QuicklookCard extends Component<Props, State> {
         className="quicklook"
         title="Quicklook"
         titleRight={
-          <SelectBubble
+          <BlueSelect
             value={quicklookFilter.key}
             onChange={this.onQuicklookFilterChange}
-            tickerRight
-            arrowDownLeft
             disableUnderline
             style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
-            color="#27d0e2" // FIXME inject theme color
           >
             {quicklookFilters.map(({ title, key }) => (
               <MenuItem
@@ -163,7 +160,7 @@ export class QuicklookCard extends Component<Props, State> {
                 <span style={{ color: "black" }}>{title.toUpperCase()}</span>
               </MenuItem>
             ))}
-          </SelectBubble>
+          </BlueSelect>
         }
       >
         <header>
