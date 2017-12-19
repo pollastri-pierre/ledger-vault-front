@@ -75,7 +75,7 @@ class SandBox extends Component {
         <BlurDialog
           title="Lipsum!"
           open={this.state.dialogOpen}
-          onRequestClose={this.hideDialog}
+          onClose={this.hideDialog}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
           quis tempus massa, sed consectetur est. Integer ultricies finibus
@@ -93,7 +93,7 @@ class SandBox extends Component {
         </BlurDialog>
         <Alert
           open={this.state.snackOpen}
-          onRequestClose={this.hideSnack}
+          onClose={this.hideSnack}
           theme="success"
           title="this is a title"
         >

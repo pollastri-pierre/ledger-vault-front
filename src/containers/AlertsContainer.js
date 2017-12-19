@@ -25,7 +25,7 @@ export function MessagesContainer(props: {
   return (
     <div>
       <Alert
-        onRequestClose={onClose}
+        onClose={onClose}
         open={alerts.visible}
         autoHideDuration={4000}
         title={alerts.title}

@@ -55,7 +55,7 @@ class ModalRoute extends Component<{
     // in such case we need to replace the history and remove the part before the modal route path
     this.context.router.history.go(move);
   };
-  onRequestClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
+  onClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
   lastMatch: ?Object;
   render() {
     const { component, render, children, ...rest } = this.props; // eslint-disable-line no-unused-vars
@@ -73,7 +73,7 @@ class ModalRoute extends Component<{
           return (
             <BlurDialog
               open={open}
-              onRequestClose={this.onRequestClose}
+              onClose={this.onClose}
               nopadding
             >
               <StaticContainer shouldUpdate={open}>{inner}</StaticContainer>

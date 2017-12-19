@@ -90,9 +90,6 @@ const theme = {
     },
     MuiPopover: {
       paper: {
-        /*
-        overflowX: "visible",
-        overflowY: "visible",
         "& > ul": {
           overflowY: "auto",
           maxHeight: "inherit"
@@ -114,7 +111,6 @@ const theme = {
           left: 20,
           right: "auto"
         }
-        */
       }
     }
   },
