@@ -3,7 +3,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { MenuList } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
-import { ListItemSecondaryAction } from "material-ui/List";
 import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
@@ -17,6 +16,9 @@ import {
 } from "../icons";
 
 const styles = {
+  root: {
+    position: "relative"
+  },
   link: {
     color: "black",
     textTransform: "uppercase"
@@ -30,8 +32,10 @@ const styles = {
     width: 9,
     marginRight: "14px"
   },
-  secondaryAction: {
-    padding: "10px 0",
+  pendingMenuBadge: {
+    position: "absolute",
+    right: 40,
+    top: 90,
     pointerEvents: "none"
   },
   h4: {
@@ -56,7 +60,12 @@ function Menu(
   const { location, classes } = props;
   const t = context.translate;
   return (
-    <div className="Menu">
+    <div className={"Menu " + classes.root}>
+      {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
+      <span className={classes.pendingMenuBadge}>
+        <PendingsMenuBadge />
+      </span>
+
       <MenuList>
         <MenuLink to="/dashboard">
           <span className={classes.link}>
@@ -75,9 +84,6 @@ function Menu(
             <MenuPendingIcon className={classes.icon} />
             {t("menu.pendingRequests")}
           </span>
-          <ListItemSecondaryAction className={classes.secondaryAction}>
-            <PendingsMenuBadge />
-          </ListItemSecondaryAction>
         </MenuLink>
         <MenuLink to="/search">
           <span className={classes.link}>
@@ -85,9 +91,11 @@ function Menu(
             {t("menu.search")}
           </span>
         </MenuLink>
-        <h4 className={classes.h4}>Accounts</h4>
-        <AccountsMenu location={location} />
       </MenuList>
+
+      <h4 className={classes.h4}>Accounts</h4>
+
+      <AccountsMenu location={location} />
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
     </div>

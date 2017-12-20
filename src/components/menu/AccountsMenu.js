@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import type { Account } from "../../data/types";
 import { withStyles } from "material-ui/styles";
+import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 import connectData from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
@@ -35,17 +36,23 @@ class AccountsMenu extends Component<{
 }> {
   render() {
     const { accounts, classes } = this.props;
-    return accounts.map(account => (
-      <MenuLink
-        color={account.currency.color}
-        key={account.id}
-        to={`/account/${account.id}`}
-        className={classes.item}
-      >
-        <span className={classes.name}>{account.name}</span>
-        <span className={classes.unit}>{account.currency.units[0].code}</span>
-      </MenuLink>
-    ));
+    return (
+      <MenuList>
+        {accounts.map(account => (
+          <MenuLink
+            color={account.currency.color}
+            key={account.id}
+            to={`/account/${account.id}`}
+            className={classes.item}
+          >
+            <span className={classes.name}>{account.name}</span>
+            <span className={classes.unit}>
+              {account.currency.units[0].code}
+            </span>
+          </MenuLink>
+        ))}
+      </MenuList>
+    );
   }
 }
 
