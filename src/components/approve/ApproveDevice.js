@@ -9,7 +9,7 @@ function ApproveDevice(props: { cancel: Function, entity: string }) {
   return (
     <div className="approve-device">
       <header>
-        <PlugIcon fill="#e2e2e2" />
+        <PlugIcon color="#e2e2e2" />
 
         <h3>Approve {entity}</h3>
       </header>
