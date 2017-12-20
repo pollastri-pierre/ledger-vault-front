@@ -42,6 +42,7 @@ class MenuLink extends Component<{
             }}
             className={classNames(classes.root, className)}
             button
+            disableRipple
             selected={!!match}
             component={Link}
             to={to}
