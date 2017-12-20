@@ -59,4 +59,37 @@ $root &&
     $root
   );
 
+if (module.hot) {
+  console.log("test");
+  module.hot.accept("./containers/App/App", () => {
+    const NextApp = require("./containers/App/App").default;
+    $root &&
+      ReactDOM.render(
+        <Provider store={store}>
+          <RestlayProvider
+            network={network}
+            connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
+          >
+            <MuiThemeProvider theme={muiTheme}>
+              <I18nProvider>
+                <div>
+                  <AlertsContainer />
+                  <BrowserRouter>
+                    <Switch>
+                      <Route path="/login" component={Login} />
+                      <Route path="/logintest" component={LoginTest} />
+                      <Route path="/logout" component={Logout} />
+                      <PrivateRoute path="/" component={NextApp} />
+                    </Switch>
+                  </BrowserRouter>
+                </div>
+              </I18nProvider>
+            </MuiThemeProvider>
+          </RestlayProvider>
+        </Provider>,
+        $root
+      );
+  });
+}
+
 registerServiceWorker();
