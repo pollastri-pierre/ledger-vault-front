@@ -19,9 +19,9 @@ type Filters = {
 };
 
 const noFilters = {
-  keywords: null,
-  accountId: null,
-  currencyName: null
+  keywords: "",
+  accountId: "",
+  currencyName: ""
 };
 
 class Search extends Component<

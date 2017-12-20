@@ -327,7 +327,7 @@ class OperationCreationDetails extends Component<Props, State> {
         <PopBubble
           open={this.state.unitMenuOpen}
           anchorEl={this.unitMenuAnchor}
-          onRequestClose={() => this.setState({ unitMenuOpen: false })}
+          onClose={() => this.setState({ unitMenuOpen: false })}
         >
           <ul className="operation-creation-unit-list">
             {account.currency.units.map((unit, index) => (
@@ -347,7 +347,7 @@ class OperationCreationDetails extends Component<Props, State> {
         <PopBubble
           open={this.state.maxMenuOpen}
           anchorEl={this.maxMenuAnchor}
-          onRequestClose={() => this.setState({ maxMenuOpen: false })}
+          onClose={() => this.setState({ maxMenuOpen: false })}
           className="operation-creation-send-max"
         >
           <a href="setMax" onClick={this.setMax}>
@@ -416,7 +416,7 @@ class OperationCreationDetails extends Component<Props, State> {
         <PopBubble
           open={this.state.feesMenuOpen}
           anchorEl={this.feesMenuAnchor}
-          onRequestClose={() => this.setState({ feesMenuOpen: false })}
+          onClose={() => this.setState({ feesMenuOpen: false })}
           className="operation-creation-fees-menu"
         >
           <ul className="operation-creation-fees-list">

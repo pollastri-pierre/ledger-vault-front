@@ -125,7 +125,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
               </span>
               <PopBubble
                 open={popover}
-                onRequestClose={this.openFrequency}
+                onClose={this.openFrequency}
                 anchorEl={this.state.anchor}
                 style={{
                   marginTop: "11px"
