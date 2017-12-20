@@ -8,7 +8,20 @@ class PendingsMenuBadge extends Component<*> {
     const { pendings } = this.props;
     const count =
       pendings.approveOperations.length + pendings.approveAccounts.length;
-    return <span className="menu-badge">{count}</span>;
+    return (
+      <span
+        style={{
+          backgroundColor: "#ea2e49", // FIXME theme
+          color: "#fff",
+          fontSize: 11,
+          fontWeight: "bold",
+          padding: "0 0.6em",
+          borderRadius: "1em"
+        }}
+      >
+        {count}
+      </span>
+    );
   }
 }
 
