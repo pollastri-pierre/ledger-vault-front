@@ -7,23 +7,10 @@ import { withStyles } from "material-ui/styles";
 const styles = {
   base: {
     width: "15px"
-  },
-  security: {
-    width: "26px",
-    height: "30px"
-  },
-  common: {
-    fill: "none",
-    strokeMiterlimit: "10",
-    strokeWidth: "2px",
-    stroke: "white"
-  },
-  grey: {
-    stroke: colors.mouse
   }
 };
 
-type Props = { color: string };
+type Props = { color: string, className?: string };
 
 class Profile extends PureComponent<Props> {
   static defaultProps = {
