@@ -72,7 +72,7 @@ function ApproveDevice(props: {
   return (
     <div className={classes.base}>
       <header>
-        <PlugIcon fill="#e2e2e2" />
+        <PlugIcon color="#e2e2e2" />
 
         <h3>Approve {entity}</h3>
       </header>

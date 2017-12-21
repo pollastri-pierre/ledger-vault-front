@@ -7,6 +7,8 @@ import connectData from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
 import { withStyles } from "material-ui/styles";
+import OperationModal from "../../components/operations/OperationModal";
+import ModalRoute from "../../components/ModalRoute";
 import type { Account, Currency } from "../../data/types";
 
 type Filters = {
@@ -16,9 +18,9 @@ type Filters = {
 };
 
 const noFilters = {
-  keywords: null,
-  accountId: null,
-  currencyName: null
+  keywords: "",
+  accountId: "",
+  currencyName: ""
 };
 
 const styles = {
@@ -70,9 +72,8 @@ class Search extends Component<
   }
 
   render() {
-    const { accounts, currencies, classes } = this.props;
+    const { accounts, currencies, classes, match } = this.props;
     const { filters, debouncedFilters } = this.state;
-    // FIXME debounce a bit the filters to send to SearchResultsCard?
     const refreshingKey =
       String(debouncedFilters.keywords) +
       " " +
@@ -91,6 +92,10 @@ class Search extends Component<
           currencies={currencies}
           filters={filters}
           onChangeFilters={this.onChangeFilters}
+        />
+        <ModalRoute
+          path={`${match.url}/operation/:operationId/:tabIndex`}
+          component={OperationModal}
         />
       </div>
     );

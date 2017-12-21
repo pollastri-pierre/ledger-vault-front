@@ -93,6 +93,18 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       }
     }
 
+    m = q && q.pathname && /^\/valid-address\/(.+)/.exec(q.pathname);
+    if (m) {
+      const { address } = q.query || {};
+      if (address) {
+        // fake mock address validation
+        const valid = address.length > 10;
+        return { valid };
+      } else {
+        throw new Error("missing address in query param");
+      }
+    }
+
     m = q && q.pathname && /^\/search\/operations$/.exec(q.pathname);
     if (m) {
       const operations = Object.keys(mockEntities.operations);

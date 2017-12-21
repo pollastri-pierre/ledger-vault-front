@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Route, withRouter } from "react-router";
 import { Link } from "react-router-dom";
@@ -57,6 +57,25 @@ const NewAccountLink = () => (
   </Link>
 );
 
+class Logo extends PureComponent<*> {
+  n = -9;
+  render() {
+    return (
+      <img
+        onClick={e => {
+          Object.assign(e.target.style, {
+            transition: "1s",
+            transform: "skew(" + 36000 * (Math.max(this.n++, 0) % 2) + "deg)"
+          });
+        }}
+        src="/img/logo.png"
+        srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
+        alt="Ledger Vault logo"
+      />
+    );
+  }
+}
+
 class ActionBar extends Component<{
   location: Object,
   classes: Object
@@ -84,12 +103,7 @@ class ActionBar extends Component<{
 
         <div className={classes.header}>
           <div className={classes.header_left}>
-            <img
-              src="/img/logo.png"
-              srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
-              className="content-header-logo"
-              alt="Ledger Vault logo"
-            />
+            <Logo />
           </div>
           <div className={classes.actions}>
             <Route path="/dashboard" component={NewAccountLink} />

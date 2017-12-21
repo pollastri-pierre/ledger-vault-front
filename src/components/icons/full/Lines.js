@@ -1,5 +1,5 @@
 //@flow
-import React from "react";
+import React, { PureComponent } from "react";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
@@ -13,24 +13,24 @@ const styles = {
   }
 };
 
-function Lines({ classes, type }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 30 25.78"
-      className={classnames(classes.common, classes[type])}
-    >
-      <title>lines_1</title>
-      <g id="Layer_2" data-name="Layer 2">
-        <g id="Solid">
-          <path
-            id="Text"
-            d="M0,25.78v-4H30v4Zm0-7.25v-4H23.51v4Zm0-7.25v-4H27.83v4ZM0,4V0H21.34V4Z"
-          />
-        </g>
-      </g>
-    </svg>
-  );
+type Props = { color: string };
+
+class Lines extends PureComponent<Props> {
+  static defaultProps = {
+    color: "currentColor"
+  };
+
+  render() {
+    const { color, classes, ...props } = this.props;
+    return (
+      <svg viewBox="0 0 30 25.78" className={classes.common} {...props}>
+        <path
+          fill={color}
+          d="M0,25.78v-4H30v4Zm0-7.25v-4H23.51v4Zm0-7.25v-4H27.83v4ZM0,4V0H21.34V4Z"
+        />
+      </svg>
+    );
+  }
 }
 
 export default withStyles(styles)(Lines);

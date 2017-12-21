@@ -8,8 +8,9 @@ import EvolutionSince, {
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import colors from "../../shared/colors";
-import { Select, Option } from "../../components/Select";
+import "./TotalBalanceCard.css";
+import { MenuItem } from "material-ui/Menu";
+import BlueSelect from "../../components/BlueSelect";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
@@ -32,27 +33,36 @@ class TotalBalance extends Component<{
   reloading: *,
   restlay: *
 }> {
+  onTotalBalanceFilterChange = (e: *) => {
+    this.props.onTotalBalanceFilterChange(e.target.value);
+  };
   render() {
-    const {
-      onTotalBalanceFilterChange,
-      filter,
-      classes,
-      totalBalance,
-      reloading
-    } = this.props;
+    const { filter, totalBalance, reloading, classes } = this.props;
     return (
       <Card
         reloading={reloading}
         title="total balance"
         className={classes.card}
         titleRight={
-          <Select onChange={onTotalBalanceFilterChange}>
-            {TotalBalanceFilters.map(({ key, title }) => (
-              <Option key={key} value={key} selected={filter === key}>
-                {title.toUpperCase()}
-              </Option>
+          <BlueSelect
+            value={filter}
+            onChange={this.onTotalBalanceFilterChange}
+            disableUnderline
+            renderValue={key =>
+              (TotalBalanceFilters.find(o => o.key === key) || {}).title}
+            style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
+          >
+            {TotalBalanceFilters.map(({ title, key }) => (
+              <MenuItem
+                style={{ color: "#27d0e2" }}
+                disableRipple
+                key={key}
+                value={key}
+              >
+                <span style={{ color: "black" }}>{title.toUpperCase()}</span>
+              </MenuItem>
             ))}
-          </Select>
+          </BlueSelect>
         }
       >
         <div className={classes.body}>

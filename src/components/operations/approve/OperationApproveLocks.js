@@ -4,7 +4,7 @@ import InfoModal from "../../InfoModal";
 import ApproveLockRow from "../../ApproveLockRow";
 import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
-import ValidateBadge from "../../icons/ValidateBadge";
+import ValidateBadge from "../../icons/full/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
 import type { Account, Operation } from "../../../data/types";
 import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
@@ -29,7 +29,14 @@ function OperationApproveLocks(props: {
       <div style={{ marginTop: "40px" }}>
         {account.security_scheme.time_lock && (
           <ApproveLockRow
-            icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
+            icon={
+              <Hourglass
+                width="25px"
+                height="25px"
+                stroke="#cccccc"
+                strokeWidth="2px"
+              />
+            }
             name="Time-lock"
             value={getTimeLock(account.security_scheme.time_lock)}
             state={
@@ -44,14 +51,7 @@ function OperationApproveLocks(props: {
 
         {account.security_scheme.rate_limiter && (
           <ApproveLockRow
-            icon={
-              <Hourglass
-                width="25px"
-                height="25px"
-                stroke="#cccccc"
-                strokeWidth="2px"
-              />
-            }
+            icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
             name="Rate Limiter"
             value={
               <RateLimiterValue

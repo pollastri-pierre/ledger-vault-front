@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import type { Unit } from "../../data/types";
-import QuicklookGraph from "./QuicklookGraph";
+import LineChart from "../../components/LineChart";
 import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
@@ -25,7 +25,7 @@ type Props = {
 
 type State = {};
 
-class QuicklookWrap extends Component<Props, State> {
+class Quicklook extends Component<Props, State> {
   render() {
     const {
       balance,
@@ -39,7 +39,7 @@ class QuicklookWrap extends Component<Props, State> {
       selectedBalance.length && (
         <div className="content">
           <div className="quickLookGraphWrap">
-            <QuicklookGraph
+            <LineChart
               dateRange={dateRange}
               data={selectedBalance}
               currencyUnit={currencyUnit}
@@ -68,7 +68,7 @@ const RenderLoading = () => (
   </div>
 );
 
-export default connectData(QuicklookWrap, {
+export default connectData(Quicklook, {
   queries: {
     balance: AccountQuicklookDataQuery
   },

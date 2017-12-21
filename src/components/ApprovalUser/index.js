@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import MemberAvatar from "../MemberAvatar";
-import ValidateBadge from "../icons/ValidateBadge";
+import ValidateBadge from "../icons/full/ValidateBadge";
 import Question from "../icons/full/Question";
 import type { Member } from "../../data/types";
 import { withStyles } from "material-ui/styles";

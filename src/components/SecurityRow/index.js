@@ -1,9 +1,9 @@
 //@flow
 import React, { Component } from "react";
-import ArrowDown from "../icons/ArrowDown";
 import classnames from "classnames";
 import colors from "../../shared/colors";
 import { withStyles } from "material-ui/styles";
+import ArrowDown from "../icons/full/ArrowDown";
 
 const styles = {
   base: {

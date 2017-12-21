@@ -2,9 +2,25 @@
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import Card from "../../components/Card";
-import { Select, Option } from "../../components/Select";
-import AccountOption from "../../components/AccountOption";
+import Select from "material-ui/Select";
+import { MenuItem } from "material-ui/Menu";
+import AccountMenuItem from "../../components/AccountMenuItem";
+import Search from "../../components/icons/thin/Search";
 import type { Currency, Account } from "../../data/types";
+
+class SearchFiltersCardHeader extends Component<*> {
+  render() {
+    return (
+      <header className="SearchFiltersCardHeader">
+        <Search width={24} height={32} color="#ccc" />
+        <div>
+          <h3>FILTERS</h3>
+          <em>Find operations</em>
+        </div>
+      </header>
+    );
+  }
+}
 
 class SearchFiltersCard extends Component<{
   filters: Object,
@@ -13,19 +29,18 @@ class SearchFiltersCard extends Component<{
   accounts: Account[]
 }> {
   onKeywordsChange = (e: SyntheticInputEvent<>) => {
-    const keywords = e.target.value;
-    this.props.onChangeFilters({ keywords });
+    this.props.onChangeFilters({ keywords: e.target.value });
   };
-  onAccountChange = (accountId: ?string) => {
-    this.props.onChangeFilters({ accountId });
+  onAccountChange = (e: SyntheticInputEvent<>) => {
+    this.props.onChangeFilters({ accountId: e.target.value || "" });
   };
-  onCurrencyChange = (currencyName: ?string) => {
-    this.props.onChangeFilters({ currencyName });
+  onCurrencyChange = (e: SyntheticInputEvent<>) => {
+    this.props.onChangeFilters({ currencyName: e.target.value || "" });
   };
   render() {
     const { accounts, filters, currencies } = this.props;
     return (
-      <Card className="search-filters">
+      <Card className="search-filters" Header={SearchFiltersCardHeader}>
         <div className="body">
           <label>
             <h3>keywords</h3>
@@ -39,16 +54,25 @@ class SearchFiltersCard extends Component<{
 
           <label>
             <h3>account</h3>
-            <Select theme="black" onChange={this.onAccountChange}>
-              <Option value={null} selected={filters.accountId === null}>
+
+            <Select
+              value={filters.accountId}
+              onChange={this.onAccountChange}
+              displayEmpty
+              fullWidth
+              renderValue={id =>
+                !id ? "All" : (accounts.find(a => a.id === id) || {}).name
+              }
+            >
+              <MenuItem disableRipple value="">
                 All
-              </Option>
+              </MenuItem>
               {accounts.map(account => (
-                <AccountOption
+                <AccountMenuItem
+                  disableRipple
                   key={account.id}
-                  account={account}
                   value={account.id}
-                  selected={account.id === filters.accountId}
+                  account={account}
                 />
               ))}
             </Select>
@@ -56,18 +80,24 @@ class SearchFiltersCard extends Component<{
 
           <label>
             <h3>currency</h3>
-            <Select theme="black" onChange={this.onCurrencyChange}>
-              <Option value={null} selected={filters.currencyName === null}>
+            <Select
+              value={filters.currencyName}
+              onChange={this.onCurrencyChange}
+              displayEmpty
+              fullWidth
+              renderValue={currencyName => currencyName || "All"}
+            >
+              <MenuItem disableRipple value="">
                 All
-              </Option>
+              </MenuItem>
               {currencies.map(currency => (
-                <Option
+                <MenuItem
+                  disableRipple
                   key={currency.name}
                   value={currency.name}
-                  selected={currency.name === filters.currencyName}
                 >
                   {currency.name}
-                </Option>
+                </MenuItem>
               ))}
             </Select>
           </label>

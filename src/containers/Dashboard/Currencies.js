@@ -2,7 +2,7 @@
 import React from "react";
 import connectData from "../../restlay/connectData";
 import { withStyles } from "material-ui/styles";
-import PieChart from "./PieChart";
+import PieChart from "../../components/PieChart";
 import { countervalueForRate } from "../../data/currency";
 import type { Account } from "../../data/types";
 import AccountsQuery from "../../api/queries/AccountsQuery";

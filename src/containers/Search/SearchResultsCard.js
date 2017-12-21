@@ -7,7 +7,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import SearchQuery from "../../api/queries/SearchQuery";
 import InfiniteScrollable from "../../components/InfiniteScrollable";
 import DataTableOperation from "../../components/DataTableOperation";
-import Overscroll from "../../components/utils/Overscroll";
 import type { Account, Operation } from "../../data/types";
 import type { Connection } from "../../restlay/ConnectionQuery";
 const columnIds = ["date", "account", "countervalue", "amount"];

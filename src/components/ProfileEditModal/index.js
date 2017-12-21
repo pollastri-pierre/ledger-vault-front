@@ -134,7 +134,8 @@ class ProfileEditModal extends Component<
               error={!this.state.first_name.isValid}
               onChange={this.updateField}
               style={{
-                fontWeight: 600
+                fontWeight: 600,
+                width: "45%"
               }}
             />
             <TextField
@@ -145,7 +146,9 @@ class ProfileEditModal extends Component<
               error={!this.state.last_name.isValid}
               onChange={this.updateField}
               style={{
-                fontWeight: 600
+                fontWeight: 600,
+                width: "46%",
+                marginLeft: "28px"
               }}
             />
             <br />

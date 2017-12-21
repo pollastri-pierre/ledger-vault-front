@@ -3,9 +3,10 @@ import React, { Component } from "react";
 import SelectTab from "../../components/SelectTab/SelectTab";
 import type { Account } from "../../data/types";
 import { getAccountCurrencyUnit, getFiatUnit } from "../../data/currency";
-import { Select, Option } from "../../components/Select";
+import BlueSelect from "../../components/BlueSelect";
+import { MenuItem } from "material-ui/Menu";
 import DateFormat from "../../components/DateFormat";
-import QuicklookWrap from "./QuickLookWrap";
+import Quicklook from "./QuickLook";
 import Card from "../../components/Card";
 import AccountQuery from "../../api/queries/AccountQuery";
 import TryAgain from "../../components/TryAgain";
@@ -71,9 +72,11 @@ export class QuicklookCard extends Component<Props, State> {
     return lastWeek;
   };
 
-  onQuicklookFilterChange = (filterTitle: string): void => {
+  onQuicklookFilterChange = (e: *): void => {
     this.setState({
-      quicklookFilter: quicklookFilters.find(elem => elem.key === filterTitle)
+      quicklookFilter: quicklookFilters.find(
+        elem => elem.key === e.target.value
+      )
     });
   };
   selectTab = (index: number): void => {
@@ -160,17 +163,23 @@ export class QuicklookCard extends Component<Props, State> {
         title="Quicklook"
         className={classes.card}
         titleRight={
-          <Select onChange={this.onQuicklookFilterChange}>
+          <BlueSelect
+            value={quicklookFilter.key}
+            onChange={this.onQuicklookFilterChange}
+            disableUnderline
+            style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
+          >
             {quicklookFilters.map(({ title, key }) => (
-              <Option
+              <MenuItem
+                disableRipple
+                style={{ color: "#27d0e2" }}
                 key={key}
                 value={key}
-                selected={quicklookFilter.key === key}
               >
-                {title.toUpperCase()}
-              </Option>
+                <span style={{ color: "black" }}>{title.toUpperCase()}</span>
+              </MenuItem>
             ))}
-          </Select>
+          </BlueSelect>
         }
       >
         <header>
@@ -184,13 +193,14 @@ export class QuicklookCard extends Component<Props, State> {
         <div className={classes.dateLabel}>
           From {labelDateRange[0]} to {labelDateRange[1]}
         </div>
-        <QuicklookWrap
+        <Quicklook
           accountId={accountId}
           filter={filter}
           range={range}
           dateRange={dateRange}
           currencyUnit={currencyUnit}
           currencyColor={account.currency.color}
+          key={accountId + range}
         />
       </Card>
     );

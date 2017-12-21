@@ -218,7 +218,8 @@ const genSecurityScheme = (): SecurityScheme => ({
   rate_limiter: {
     max_transaction: 10,
     time_slot: 300
-  }
+  },
+  auto_expire: null
 });
 
 const genTransaction = (): Transaction => ({

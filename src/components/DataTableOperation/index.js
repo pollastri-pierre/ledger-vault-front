@@ -6,7 +6,7 @@ import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import AccountName from "../AccountName";
-import Comment from "../icons/Comment";
+import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
@@ -49,7 +49,7 @@ class OperationNoteLink extends Component<{
     return (
       <span className={classes.base}>
         <Link to={`./operation/${operation.uuid}/2`} onClick={stopPropagation}>
-          <Comment />
+          <Comment color={colors.mouse} className={classes.comment} />
         </Link>
         {!note ? null : (
           <div className="tooltip-label">
@@ -89,6 +89,10 @@ const styles_note = {
     "&:hover .tooltip-label": {
       opacity: 1
     }
+  },
+  comment: {
+    width: "16px",
+    height: "12px"
   }
 };
 const OpNoteLink = withStyles(styles_note)(OperationNoteLink);

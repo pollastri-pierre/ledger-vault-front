@@ -37,7 +37,8 @@ export type SecurityScheme = {
   quorum: number,
   approvers: string[],
   time_lock?: number,
-  rate_limiter?: RateLimiter
+  rate_limiter?: RateLimiter,
+  auto_expire?: number | null
 };
 
 export type AccountSettings = {
@@ -167,4 +168,3 @@ export type Operation = OperationCommon & {
 export type OperationEntity = OperationCommon & {
   notes: NoteEntity[]
 };
-

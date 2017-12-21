@@ -4,8 +4,9 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import RaisedButton from "material-ui/RaisedButton";
-import { Link } from "react-router-dom";
+import List, { ListItem } from "material-ui/List";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
@@ -72,7 +73,7 @@ class SandBox extends Component {
         <BlurDialog
           title="Lipsum!"
           open={this.state.dialogOpen}
-          onRequestClose={this.hideDialog}
+          onClose={this.hideDialog}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum
           quis tempus massa, sed consectetur est. Integer ultricies finibus
@@ -90,7 +91,7 @@ class SandBox extends Component {
         </BlurDialog>
         <Alert
           open={this.state.snackOpen}
-          onRequestClose={this.hideSnack}
+          onClose={this.hideSnack}
           theme="success"
           title="this is a title"
         >
@@ -158,13 +159,22 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block short-block">
-                  <span
-                    data-tip="je suis un touletippe"
-                    style={{ position: "absolute" }}
-                  >
-                    Bluh
-                  </span>
-                  <br />
+                  <List>
+                    <ListItem disableRipple style={{ color: "red" }} button>
+                      <span style={{ color: "black" }}>FOO</span>
+                    </ListItem>
+                    <ListItem disableRipple button>
+                      BAR
+                    </ListItem>
+                  </List>
+                  <List className="MuiListItem-ticker-right">
+                    <ListItem disableRipple button>
+                      FOO
+                    </ListItem>
+                    <ListItem disableRipple button>
+                      BAR
+                    </ListItem>
+                  </List>
                 </Paper>
               </Col>
             </Row>
@@ -173,10 +183,18 @@ class SandBox extends Component {
             <Row>
               <Col width={12}>
                 <Paper className="block tall-block">
-                  <a data-tip="je suis un touletippe">
-                    Blouh <i className="material-icons">face</i>
-                  </a>
-                  <Link to="?operationDetail=1">operation id1</Link>
+                  <div style={{ padding: 20 }}>
+                    <Select value={1} fullWidth displayEmpty>
+                      {Array(50)
+                        .fill(null)
+                        .map((_, i) => 1 + i)
+                        .map(i => (
+                          <MenuItem disableRipple key={i} value={i}>
+                            {i}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </div>
                 </Paper>
               </Col>
             </Row>

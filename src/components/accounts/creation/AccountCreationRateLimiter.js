@@ -5,7 +5,7 @@ import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
 import InfoModal from "../../InfoModal";
 import InputTextWithUnity from "../../../components/InputTextWithUnity";
-import ArrowDown from "../../icons/ArrowDown";
+import ArrowDown from "../../icons/full/ArrowDown";
 import { addMessage } from "../../../redux/modules/alerts";
 import { withStyles } from "material-ui/styles";
 import modals from "../../../shared/modals";
@@ -135,7 +135,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
               </span>
               <PopBubble
                 open={popover}
-                onRequestClose={this.openFrequency}
+                onClose={this.openFrequency}
                 anchorEl={this.state.anchor}
               >
                 <div className="frequency-bubble">
@@ -146,11 +146,11 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                       this.changeFrequency({
                         value: 60,
                         label: "minute"
-                      })}
-                    className={`frequency-bubble-row ${rate_limiter.frequency
-                      .value === 60
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      rate_limiter.frequency.value === 60 ? "active" : ""
+                    }`}
                   >
                     minute
                   </div>
@@ -161,11 +161,11 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                       this.changeFrequency({
                         value: 3600,
                         label: "hour"
-                      })}
-                    className={`frequency-bubble-row ${rate_limiter.frequency
-                      .value === 3600
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      rate_limiter.frequency.value === 3600 ? "active" : ""
+                    }`}
                   >
                     hour
                   </div>
@@ -176,11 +176,11 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                       this.changeFrequency({
                         value: 84600,
                         label: "day"
-                      })}
-                    className={`frequency-bubble-row ${rate_limiter.frequency
-                      .value === 84600
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      rate_limiter.frequency.value === 84600 ? "active" : ""
+                    }`}
                   >
                     day
                   </div>

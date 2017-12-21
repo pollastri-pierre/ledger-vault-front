@@ -17,7 +17,6 @@ function TextField(props: Props) {
   return (
     <MUITextField
       {...props}
-      fullWidth
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" }
       }}

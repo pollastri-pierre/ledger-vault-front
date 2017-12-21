@@ -121,10 +121,11 @@ class ProfileCard extends Component<
         </span>
 
         <PopBubble
+          className="MuiPopover-triangle-left"
           style={{ marginLeft: "50px" }}
           anchorEl={this.anchorEl}
           open={bubbleOpened}
-          onRequestClose={this.onCloseBubble}
+          onClose={this.onCloseBubble}
           direction="left"
         >
           <div className="profile-bubble" onClick={this.onCloseBubble}>

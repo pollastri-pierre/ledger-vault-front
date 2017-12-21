@@ -66,17 +66,19 @@ class AccountCreationMembers extends Component<{
           </InfoModal>
         </header>
         <div className="content">
-          {members.map(member => {
-            const isChecked = approvers.indexOf(member.pub_key) > -1;
-            return (
-              <MemberRow
-                key={member.id}
-                member={member}
-                checked={isChecked}
-                onSelect={addMember}
-              />
-            );
-          })}
+          <Overscroll top={40} bottom={98}>
+            {members.map(member => {
+              const isChecked = approvers.indexOf(member.pub_key) > -1;
+              return (
+                <MemberRow
+                  key={member.id}
+                  member={member}
+                  checked={isChecked}
+                  onSelect={addMember}
+                />
+              );
+            })}
+          </Overscroll>
         </div>
         <div className="footer">
           <DialogButton

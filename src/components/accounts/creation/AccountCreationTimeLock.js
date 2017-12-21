@@ -3,7 +3,7 @@ import InfoModal from "../../InfoModal";
 import React, { Component } from "react";
 import { PopBubble, DialogButton } from "../../";
 import EnableForm from "../../../components/EnableForm";
-import ArrowDown from "../../icons/ArrowDown";
+import ArrowDown from "../../icons/full/ArrowDown";
 import { connect } from "react-redux";
 import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import { addMessage } from "../../../redux/modules/alerts";
@@ -134,7 +134,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
               </span>
               <PopBubble
                 open={popover}
-                onRequestClose={this.openFrequency}
+                onClose={this.openFrequency}
                 anchorEl={this.state.anchor}
                 style={{
                   marginTop: "11px"

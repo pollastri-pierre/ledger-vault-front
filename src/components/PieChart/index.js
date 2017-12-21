@@ -8,6 +8,7 @@ import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 import colors from "../../shared/colors";
 import type { Account } from "../../data/types";
+import "./PieChart.css";
 
 type PieChartData = {
   account: Account,

@@ -5,10 +5,6 @@ import { withStyles } from "material-ui/styles";
 import common from "../shared/common";
 import classnames from "classnames";
 
-const heightSmall = {
-  height: "161px"
-};
-
 const styles = {
   base: {
     background: "white",
@@ -34,25 +30,33 @@ const styles = {
       }
     }
   },
-  countervalue: {
-    ...heightSmall,
-    color: colors.lead
-  },
   reloading: {
     opacity: 0.5
   }
 };
 
-class Card extends Component<*> {
-  props: {
-    title: string,
-    reloading: boolean,
-    titleRight: *,
-    children: *,
-    classes: Object,
-    className: string
-  };
+class Header extends Component<{
+  title?: React$Node | string,
+  titleRight?: React$Node | string
+}> {
+  render() {
+    const { title, titleRight } = this.props;
+    return (
+      <header>
+        <h3>{title}</h3>
+        {titleRight ? <h3 className="title-right">{titleRight}</h3> : null}
+      </header>
+    );
+  }
+}
 
+class Card extends Component<{
+  Header: React$ComponentType<*>,
+  children: React$Node | string,
+  className: string,
+  reloading?: boolean,
+  classes: Object
+}> {
   render() {
     const {
       title,
@@ -64,10 +68,7 @@ class Card extends Component<*> {
     } = this.props;
     return (
       <div className={classnames(classes.base, className)}>
-        <header>
-          <h3>{title}</h3>
-          {titleRight ? <h3>{titleRight}</h3> : null}
-        </header>
+        <Header {...this.props} />
         <div className={reloading ? [classes.reloading] : ""}>{children}</div>
       </div>
     );

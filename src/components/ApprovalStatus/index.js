@@ -1,6 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
-import ValidateBadge from "../icons/ValidateBadge";
+import ValidateBadge from "../icons/full/ValidateBadge";
 import type { Member } from "../../data/types";
 import { calculateApprovingObjectMeta } from "../../data/approvingObject";
 import type {

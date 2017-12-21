@@ -5,24 +5,25 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { NavLink } from "react-router-relative-link";
 import SelectTab from "../../components/SelectTab/SelectTab";
 import FiatUnits from "../../fiat-units";
-import TextField from "material-ui/TextField";
 import connectData from "../../restlay/connectData";
 import type { RestlayEnvironment } from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
 import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
-import { Select, Option } from "../Select";
+import Select from "material-ui/Select";
+import { MenuItem } from "material-ui/Menu";
 import DialogButton from "../buttons/DialogButton";
 import {
   BigSecurityTimeLockIcon,
   BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon
+  BigSecurityRateLimiterIcon,
+  BigSecurityAutoExpireIcon
 } from "../icons";
 import BadgeSecurity from "../BadgeSecurity";
 import RateLimiterValue from "../RateLimiterValue";
 import TimeLockValue from "../TimeLockValue";
-
+import SettingsTextField from "../SettingsTextField";
 import type {
   Account,
   SecurityScheme,
@@ -38,7 +39,11 @@ class NavAccount extends Component<{
   render() {
     const { account } = this.props;
     return (
-      <NavLink className="nav-account" to={account.id}>
+      <NavLink
+        className="nav-account"
+        style={{ color: account.currency.color }}
+        to={account.id}
+      >
         <span className="name">{account.name}</span>
         <span className="currency">{account.currency.name}</span>
       </NavLink>
@@ -66,7 +71,13 @@ class SecuritySchemeView extends Component<{
 }> {
   render() {
     const {
-      securityScheme: { quorum, approvers, time_lock, rate_limiter }
+      securityScheme: {
+        quorum,
+        approvers,
+        time_lock,
+        rate_limiter,
+        auto_expire
+      }
     } = this.props;
     return (
       <div className="security-scheme">
@@ -93,6 +104,12 @@ class SecuritySchemeView extends Component<{
               />
             )
           }
+        />
+        <BadgeSecurity
+          icon={<BigSecurityAutoExpireIcon />}
+          label="Auto-expire"
+          disabled={!auto_expire}
+          value={<TimeLockValue time_lock={auto_expire} />}
         />
       </div>
     );
@@ -131,14 +148,18 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.update({ name });
   };
   onUnitIndexChange = (unitIndex: number) => {
-    this.update({
-      settings: {
-        ...this.state.settings,
-        unitIndex
-      }
-    });
+    if (unitIndex !== this.state.settings.unitIndex) {
+      this.update({
+        settings: {
+          ...this.state.settings,
+          unitIndex
+        }
+      });
+    }
   };
-  onBlockchainExplorerChange = (blockchainExplorer: string) => {
+  onBlockchainExplorerChange = ({
+    target: { value: blockchainExplorer }
+  }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -146,7 +167,9 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
-  onCountervalueSourceChange = (countervalueSource: string) => {
+  onCountervalueSourceChange = ({
+    target: { value: countervalueSource }
+  }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -154,7 +177,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
-  onFiatChange = (fiat: string) => {
+  onFiatChange = ({ target: { value: fiat } }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -175,11 +198,7 @@ class AccountSettingsEdit extends Component<Props, State> {
         <section>
           <h3>General</h3>
           <SettingsField label="Account Name">
-            <TextField
-              InputProps={{
-                style: { textAlign: "right" },
-                disableUnderline: true
-              }}
+            <SettingsTextField
               name="last_name"
               value={name}
               hasError={!name}
@@ -195,15 +214,16 @@ class AccountSettingsEdit extends Component<Props, State> {
             />
           </SettingsField>
           <SettingsField label="Blockchain Explorer">
-            <Select onChange={this.onBlockchainExplorerChange} theme="black">
+            <Select
+              value={settings.blockchainExplorer}
+              onChange={this.onBlockchainExplorerChange}
+              fullWidth
+              disableUnderline
+            >
               {settingsData.blockchainExplorers.map(({ id }) => (
-                <Option
-                  key={id}
-                  selected={settings.blockchainExplorer === id}
-                  value={id}
-                >
+                <MenuItem disableRipple key={id} value={id}>
                   {id}
-                </Option>
+                </MenuItem>
               ))}
             </Select>
           </SettingsField>
@@ -211,29 +231,31 @@ class AccountSettingsEdit extends Component<Props, State> {
         <section>
           <h3>Countervalue</h3>
           <SettingsField label="Source">
-            <Select onChange={this.onCountervalueSourceChange} theme="black">
+            <Select
+              value={settings.countervalueSource}
+              onChange={this.onCountervalueSourceChange}
+              fullWidth
+              disableUnderline
+            >
               {settingsData.countervalueSources.map(({ id }) => (
-                <Option
-                  key={id}
-                  selected={settings.countervalueSource === id}
-                  value={id}
-                >
+                <MenuItem disableRipple key={id} value={id}>
                   {id}
-                </Option>
+                </MenuItem>
               ))}
             </Select>
           </SettingsField>
           {countervalueSourceData ? (
-            <SettingsField label="Source">
-              <Select onChange={this.onFiatChange} theme="black">
+            <SettingsField label="Fiat Currency">
+              <Select
+                value={settings.fiat}
+                onChange={this.onFiatChange}
+                fullWidth
+                disableUnderline
+              >
                 {countervalueSourceData.fiats.map(fiat => (
-                  <Option
-                    key={fiat}
-                    selected={settings.fiat === fiat}
-                    value={fiat}
-                  >
+                  <MenuItem disableRipple key={fiat} value={fiat}>
                     {fiat} - {FiatUnits[fiat].name}
-                  </Option>
+                  </MenuItem>
                 ))}
               </Select>
             </SettingsField>
