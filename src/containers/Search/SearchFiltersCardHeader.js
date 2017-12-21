@@ -9,16 +9,13 @@ const styles = {
     "& > div": {
       flex: 1,
       marginLeft: 30,
+      fontSize: 11,
+      color: "#767676",
       "& > h3": {
         marginBottom: 8,
         fontSize: 11,
         fontWeight: 600,
         color: "#000"
-      },
-      "& > em": {
-        fontStyle: "normal",
-        fontSize: 11,
-        color: "#767676"
       }
     }
   }
@@ -32,7 +29,7 @@ class SearchFiltersCardHeader extends Component<*> {
         <Search width={24} height={32} color="#ccc" />
         <div>
           <h3>FILTERS</h3>
-          <em>Find operations</em>
+          <span>Find operations</span>
         </div>
       </header>
     );

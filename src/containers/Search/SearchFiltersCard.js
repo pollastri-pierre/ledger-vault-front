@@ -5,6 +5,7 @@ import { withStyles } from "material-ui/styles";
 import Card from "../../components/Card";
 import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
+import AccountName from "../../components/AccountName";
 import AccountMenuItem from "../../components/AccountMenuItem";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 import type { Currency, Account } from "../../data/types";
@@ -20,6 +21,14 @@ const styles = {
         fontSize: 10,
         color: "#767676" // FIXME theme
       }
+    }
+  },
+  menuItemCurrency: {
+    fontWeight: 400,
+    fontSize: 13,
+    color: "#27d0e2", // FIXME theme
+    "& span": {
+      color: "black"
     }
   }
 };
@@ -62,9 +71,19 @@ class SearchFiltersCard extends Component<{
               onChange={this.onAccountChange}
               displayEmpty
               fullWidth
-              renderValue={id =>
-                !id ? "All" : (accounts.find(a => a.id === id) || {}).name
-              }
+              renderValue={id => {
+                if (!id) return "All";
+                const account = accounts.find(a => a.id === id);
+                if (account) {
+                  return (
+                    <AccountName
+                      name={account.name}
+                      currency={account.currency}
+                    />
+                  );
+                }
+                return null;
+              }}
             >
               <MenuItem disableRipple value="">
                 All
@@ -89,16 +108,21 @@ class SearchFiltersCard extends Component<{
               fullWidth
               renderValue={currencyName => currencyName || "All"}
             >
-              <MenuItem disableRipple value="">
-                All
+              <MenuItem
+                className={classes.menuItemCurrency}
+                disableRipple
+                value=""
+              >
+                <span>All</span>
               </MenuItem>
               {currencies.map(currency => (
                 <MenuItem
                   disableRipple
                   key={currency.name}
                   value={currency.name}
+                  className={classes.menuItemCurrency}
                 >
-                  {currency.name}
+                  <span>{currency.name}</span>
                 </MenuItem>
               ))}
             </Select>
