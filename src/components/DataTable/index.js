@@ -8,7 +8,7 @@ const styles = {
     width: "100%",
     borderCollapse: "collapse",
     "& thead tr:before": {
-      content: '""',
+      content: "''",
       height: "26px",
       width: "0px",
       opacity: "0",
@@ -55,7 +55,7 @@ const styles = {
     color: colors.steel
   },
   amount: {
-    textAlign: "right!important",
+    textAlign: "right !important",
     fontSize: "13px",
     "& .sign-positive": {
       fontWeight: "600"
@@ -96,6 +96,7 @@ class DefaultRow<Cell> extends Component<{
 }
 
 class DataTable<Cell> extends PureComponent<{
+  classes: Object,
   columns: Array<Column<Cell>>,
   data: Array<Cell>,
   Row: React$ComponentType<{

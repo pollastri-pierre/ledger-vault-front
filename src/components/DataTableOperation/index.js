@@ -25,7 +25,7 @@ const styles = {
     padding: "0",
     "&:before": {
       background: colors.ocean,
-      content: '""',
+      content: "''",
       height: "26px",
       width: "0px",
       position: "absolute",
@@ -71,28 +71,67 @@ const styles_note = {
     position: "relative",
     marginLeft: "10px",
     verticalAlign: "sub",
-    "& .tooltip-label ": {
+    "& .tooltip-label": {
       pointerEvents: "none",
       opacity: "0",
       transition: "opacity 0.2s",
       zIndex: "100",
       position: "absolute",
       bottom: "30px",
-      left: "-150px",
+      left: "-165px",
       fontSize: "11px",
       padding: "30px",
       background: "white",
       boxShadow:
         "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
-      width: "350px"
+      width: "350px",
+      "&:after": {
+        content: "''",
+        position: "absolute",
+        bottom: -15,
+        left: "50%",
+        borderLeft: "15px solid transparent",
+        borderRight: "15px solid transparent",
+        marginLeft: -15,
+        borderTop: "white solid 15px"
+      },
+      "& .hr": {
+        width: "100%",
+        height: 1,
+        backgroundColor: "#eeeeee",
+        margin: 0,
+        marginBottom: 17
+      },
+
+      "& .tooltip-label-title": {
+        fontSize: 13,
+        margin: 0,
+        fontWeight: 600
+      },
+
+      "& .tooltip-label-name": {
+        fontSize: 11,
+        margin: 0,
+        marginTop: 10,
+        marginBottom: 19,
+        color: "#999"
+      },
+
+      "& .tooltip-label-body": {
+        fontSize: 11,
+        lineHeight: 1.82,
+        fontWeight: "normal",
+        margin: 0,
+        whiteSpace: "normal"
+      }
     },
     "&:hover .tooltip-label": {
       opacity: 1
     }
   },
   comment: {
-    width: "16px",
-    height: "12px"
+    width: 16,
+    height: 12
   }
 };
 const OpNoteLink = withStyles(styles_note)(OperationNoteLink);
