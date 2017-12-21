@@ -6,6 +6,7 @@ import SearchFiltersCard from "./SearchFiltersCard";
 import connectData from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
+import { withStyles } from "material-ui/styles";
 import type { Account, Currency } from "../../data/types";
 
 type Filters = {
@@ -18,6 +19,22 @@ const noFilters = {
   keywords: null,
   accountId: null,
   currencyName: null
+};
+
+const styles = {
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    "& > :first-child": {
+      flex: "1",
+      marginRight: "20px"
+    },
+    "& > :last-child": {
+      width: "288px"
+    }
+  }
 };
 
 class Search extends Component<
@@ -53,7 +70,7 @@ class Search extends Component<
   }
 
   render() {
-    const { accounts, currencies } = this.props;
+    const { accounts, currencies, classes } = this.props;
     const { filters, debouncedFilters } = this.state;
     // FIXME debounce a bit the filters to send to SearchResultsCard?
     const refreshingKey =
@@ -63,7 +80,7 @@ class Search extends Component<
       "_" +
       String(debouncedFilters.currencyName);
     return (
-      <div className="container-search">
+      <div className={classes.base}>
         <SearchResultsCard
           accounts={accounts}
           filters={debouncedFilters}
@@ -80,7 +97,7 @@ class Search extends Component<
   }
 }
 
-export default connectData(Search, {
+export default connectData(withStyles(styles)(Search), {
   queries: {
     accounts: AccountsQuery,
     currencies: CurrenciesQuery

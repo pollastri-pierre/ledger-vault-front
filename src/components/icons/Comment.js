@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import colors from "../../shared/colors";
 
 const style = {
@@ -15,7 +15,7 @@ function Comment({ classes }) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 30 22.38"
-      fill={colors.mouse}
+      fill={colors.argile}
       className={classes.icon}
     >
       <title>comment_1</title>
@@ -28,4 +28,4 @@ function Comment({ classes }) {
   );
 }
 
-export default injectSheet(style)(Comment);
+export default withStyles(style)(Comment);

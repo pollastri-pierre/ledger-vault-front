@@ -10,7 +10,7 @@ import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import connectData from "../../restlay/connectData";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import { mixinHoverSelected } from "../../shared/common";
 import ProfileQuery from "../../api/queries/ProfileQuery";
 
@@ -141,14 +141,14 @@ class ProfileCard extends Component<
   }
 }
 
-const RenderLoading = () => (
-  <div className="profile-card">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <div className={classes.base}>
     <CircularProgress />
   </div>
-);
+));
 
 export default withRouter(
-  connectData(injectSheet(styles)(ProfileCard), {
+  connectData(withStyles(styles)(ProfileCard), {
     RenderLoading,
     queries: {
       profile: ProfileQuery

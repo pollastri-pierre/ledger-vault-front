@@ -3,10 +3,10 @@ import React, { Component } from "react";
 import { Overscroll } from "../../";
 import { withRouter, Redirect } from "react-router";
 import connectData from "../../../restlay/connectData";
-
+import Tabs, { Tab } from "material-ui/Tabs";
+import { withStyles } from "material-ui/styles";
 import Footer from "../../approve/Footer";
 // import CircularProgress from "material-ui/CircularProgress";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import ApprovalPercentage from "../../../components/ApprovalPercentage";
 import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
@@ -17,6 +17,7 @@ import ApproversQuery from "../../../api/queries/ApproversQuery";
 import ProfileQuery from "../../../api/queries/ProfileQuery";
 import MembersQuery from "../../../api/queries/MembersQuery";
 import type { Member, Account } from "../../../data/types";
+import modals from "../../../shared/modals";
 
 type Props = {
   members: Array<Member>,
@@ -28,7 +29,22 @@ type Props = {
   aborting: Function,
   match: *
 };
+
+const styles = {
+  base: {
+    ...modals.base,
+    width: "440px",
+    height: "615px"
+  }
+};
 class AccountApprove extends Component<Props> {
+  state = {
+    value: 0
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
   render() {
     const {
       members,
@@ -37,21 +53,23 @@ class AccountApprove extends Component<Props> {
       account,
       close,
       approve,
-      aborting
+      aborting,
+      classes
     } = this.props;
+    const { value } = this.state;
 
     return (
-      <Tabs>
-        <div className="header">
+      <div className={classes.base}>
+        <header>
           <h2>Account request</h2>
-          <TabList>
-            <Tab>details</Tab>
-            <Tab>members</Tab>
-            <Tab>approvals</Tab>
-          </TabList>
-        </div>
-        <div className="content">
-          <TabPanel className="tabs_panel">
+          <Tabs value={value} onChange={this.handleChange}>
+            <Tab label="Details" disableRipple />
+            <Tab label="Members" disableRipple />
+            <Tab label="approvers" disableRipple />
+          </Tabs>
+        </header>
+        {value === 0 && (
+          <div>
             <AccountApproveDetails account={account} approvers={approvers} />
             <Footer
               close={close}
@@ -59,8 +77,10 @@ class AccountApprove extends Component<Props> {
               aborting={aborting}
               approved={account.approved.indexOf(profile.pub_key) > -1}
             />
-          </TabPanel>
-          <TabPanel className="tabs_panel">
+          </div>
+        )}
+        {value === 1 && (
+          <div>
             <Overscroll top={40} bottom={100}>
               <AccountApproveMembers members={members} account={account} />
             </Overscroll>
@@ -70,8 +90,10 @@ class AccountApprove extends Component<Props> {
               aborting={aborting}
               approved={account.approved.indexOf(profile.pub_key) > -1}
             />
-          </TabPanel>
-          <TabPanel className="tabs_panel">
+          </div>
+        )}
+        {value === 2 && (
+          <div>
             <Overscroll top={40} bottom={100}>
               <AccountApproveApprovals
                 approvers={approvers}
@@ -90,9 +112,9 @@ class AccountApprove extends Component<Props> {
                 />
               }
             />
-          </TabPanel>
-        </div>
-      </Tabs>
+          </div>
+        )}
+      </div>
     );
   }
 }
@@ -101,7 +123,7 @@ const RenderError = () => {
   return <Redirect to="/pending" />;
 };
 
-const connected = connectData(AccountApprove, {
+const connected = connectData(withStyles(styles)(AccountApprove), {
   RenderError,
   queries: {
     account: AccountQuery,

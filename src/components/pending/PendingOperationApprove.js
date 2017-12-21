@@ -1,21 +1,26 @@
 //@flow
 import React from "react";
+import { withStyles } from "material-ui/styles";
 import { Link } from "react-router-dom";
 import CurrencyAccountValue from "../CurrencyAccountValue";
+import classnames from "classnames";
 import CurrencyFiatValue from "../CurrencyFiatValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import { countervalueForRate } from "../../data/currency";
 import type { Account, Operation, Member } from "../../data/types";
+import styles from "./styles";
 
 type Props = {
   accounts: Account[],
   operations: Operation[],
   approved?: boolean,
-  user: Member
+  user: Member,
+  classes: Object
 };
+
 function PendingOperationApprove(props: Props) {
-  const { accounts, operations, approved, user } = props;
+  const { accounts, operations, approved, user, classes } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -29,10 +34,10 @@ function PendingOperationApprove(props: Props) {
   };
 
   return (
-    <div className="pending-request-list">
+    <div className={classes.base}>
       {!approved && (
         <div>
-          <p className="header dark">
+          <p className={classnames(classes.header, classes.headerBlack)}>
             {operations.length === 1 ? (
               <span>1 operation</span>
             ) : (
@@ -40,7 +45,7 @@ function PendingOperationApprove(props: Props) {
             )}
             <CurrencyFiatValue {...totalAmount} />
           </p>
-          <p className="header light">
+          <p className={classnames(classes.header, classes.headerLight)}>
             <span>pending approval</span>
             <span>TODAY, 10:45 AN</span>
           </p>
@@ -50,15 +55,17 @@ function PendingOperationApprove(props: Props) {
         const account = accounts.find(a => a.id === operation.account_id);
         return (
           <Link
-            className={`pending-request operation ${approved ? "watch" : ""}`}
+            className={classnames(classes.row, {
+              [classes.approved]: approved
+            })}
             to={`/pending/operation/${operation.uuid}`}
             key={operation.uuid}
           >
             <div>
-              <span className="request-date-creation">
+              <span className={classes.date}>
                 <DateFormat date={operation.time} />
               </span>
-              <span className="request-operation-amount crypto">
+              <span className={classes.name}>
                 {!account ? null : (
                   <CurrencyAccountValue
                     account={account}
@@ -66,7 +73,7 @@ function PendingOperationApprove(props: Props) {
                   />
                 )}
               </span>
-              <span className="request-operation-amount">
+              <span className={classnames(classes.currency, "center")}>
                 {!account ? null : (
                   <CurrencyAccountValue
                     account={account}
@@ -91,4 +98,4 @@ function PendingOperationApprove(props: Props) {
   );
 }
 
-export default PendingOperationApprove;
+export default withStyles(styles)(PendingOperationApprove);

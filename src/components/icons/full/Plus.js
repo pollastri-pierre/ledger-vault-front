@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   header: {
@@ -33,4 +33,4 @@ function Plus({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(Plus);
+export default withStyles(styles)(Plus);

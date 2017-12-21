@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import BadgeCurrency from "../../components/BadgeCurrency";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 import colors from "../../shared/colors";
 import type { Account } from "../../data/types";
@@ -307,4 +307,4 @@ class PieChart extends Component<
   }
 }
 
-export default injectSheet(styles)(PieChart);
+export default withStyles(styles)(PieChart);

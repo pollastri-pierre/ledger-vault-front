@@ -1,9 +1,16 @@
 //@flow
 import React from "react";
+import colors from "../../shared/colors";
 
 function ValidateBadge(props: *) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" {...props}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 30 30"
+      width="11px"
+      fill={colors.ocean}
+      {...props}
+    >
       <title>validate badge_1</title>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Solid">

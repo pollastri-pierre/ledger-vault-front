@@ -86,7 +86,7 @@ class EntityApprove extends Component<Props, State> {
     const { isDevice, isAborting } = this.state;
 
     return (
-      <div className="entity-approve">
+      <div>
         {!isDevice &&
           isAborting && (
             <AbortConfirmation
@@ -101,7 +101,7 @@ class EntityApprove extends Component<Props, State> {
           )}
         {!this.state.isDevice &&
           !this.state.isAborting && (
-            <div className="modal" style={{ height: "615px" }}>
+            <div style={{ height: "615px" }}>
               {entity === "account" && (
                 <AccountApprove
                   close={this.close}

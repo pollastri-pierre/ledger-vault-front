@@ -7,6 +7,8 @@ import ArrowDown from "../../icons/ArrowDown";
 import { connect } from "react-redux";
 import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import { addMessage } from "../../../redux/modules/alerts";
+import { withStyles } from "material-ui/styles";
+import modals from "../../../shared/modals";
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>
@@ -23,9 +25,15 @@ type Props = {
 type State = {
   timelock: Object,
   popover: boolean,
-  anchor?: Object
+  anchor?: Object,
+  classes: Object
 };
 
+const styles = {
+  base: {
+    ...modals.base
+  }
+};
 class AccountCreationTimeLock extends Component<Props, State> {
   constructor(props) {
     super(props);
@@ -94,11 +102,12 @@ class AccountCreationTimeLock extends Component<Props, State> {
 
   render() {
     const { timelock, popover } = this.state;
+    const { classes } = this.props;
 
     return (
-      <div className="small-modal">
+      <div className={classes.base}>
         <header>
-          <h3>Time-lock</h3>
+          <h2>Time-lock</h2>
         </header>
         <div className="content">
           <EnableForm checked={timelock.enabled} toggle={this.onToggle}>
@@ -139,11 +148,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "minutes",
                         value: 60
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      timelock.frequency.label === "minutes" ? "active" : ""
-                    }`}
+                      })}
+                    className={`frequency-bubble-row ${timelock.frequency
+                      .label === "minutes"
+                      ? "active"
+                      : ""}`}
                   >
                     minutes
                   </div>
@@ -154,11 +163,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "hours",
                         value: 3600
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      timelock.frequency.label === "hours" ? "active" : ""
-                    }`}
+                      })}
+                    className={`frequency-bubble-row ${timelock.frequency
+                      .label === "hours"
+                      ? "active"
+                      : ""}`}
                   >
                     hours
                   </div>
@@ -169,11 +178,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "days",
                         value: 84600
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      timelock.frequency.label === "days" ? "active" : ""
-                    }`}
+                      })}
+                    className={`frequency-bubble-row ${timelock.frequency
+                      .label === "days"
+                      ? "active"
+                      : ""}`}
                   >
                     days
                   </div>
@@ -200,4 +209,6 @@ class AccountCreationTimeLock extends Component<Props, State> {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(AccountCreationTimeLock);
+export default connect(undefined, mapDispatchToProps)(
+  withStyles(styles)(AccountCreationTimeLock)
+);

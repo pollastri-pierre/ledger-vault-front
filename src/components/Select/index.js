@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ArrowDown from "../icons/ArrowDown";
 import colors from "../../shared/colors";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 import PopBubble from "../utils/PopBubble.js";
 const contextTypes = {
@@ -22,7 +22,8 @@ const stylesOptions = {
       width: "0px",
       position: "absolute",
       marginTop: "-5px",
-      right: "0"
+      right: "0",
+      opacity: "0"
     },
     "&:hover:after": {
       opacity: "1",
@@ -62,15 +63,20 @@ class Option_c<T> extends Component<{
   }
 }
 
-export const Option = injectSheet(stylesOptions)(Option_c);
+export const Option = withStyles(stylesOptions)(Option_c);
 
 // TODO we need to have a max-height and scroll because on big select, it will go off screen (see Settings screen)
 const styleSelect = {
   label: {
     display: "inline-block",
-    verticalAlign: "top",
+    verticalAlign: "middle",
     color: colors.ocean,
-    marginLeft: "10px"
+    "& div": {
+      padding: "0 10px 0 10px"
+    },
+    "& div:after": {
+      display: "none"
+    }
   }
 };
 class Select_c<T> extends Component<
@@ -153,4 +159,4 @@ class Select_c<T> extends Component<
   }
 }
 
-export const Select = injectSheet(styleSelect)(Select_c);
+export const Select = withStyles(styleSelect)(Select_c);

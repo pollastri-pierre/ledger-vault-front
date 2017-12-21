@@ -6,8 +6,8 @@ import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import ModalRoute from "../ModalRoute";
-import injectSheet from "react-jss";
 import common from "../../../src/shared/common";
+import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 import colors from "../../../src/shared/colors";
 import { mixinHoverSelected } from "../../../src/shared/common";
@@ -55,8 +55,8 @@ const styles = {
   },
   menu_accounts: {
     color: "black",
-    fontSize: "13px",
-    fontWweight: "400",
+    fontSize: "11px",
+    fontWeight: "600",
     marginBottom: "20px",
     marginTop: "40px",
     marginLeft: "40px",
@@ -127,4 +127,4 @@ Menu.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default injectSheet(styles)(Menu);
+export default withStyles(styles)(Menu);

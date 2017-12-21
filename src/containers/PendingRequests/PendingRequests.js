@@ -12,8 +12,10 @@ import ProfileQuery from "../../api/queries/ProfileQuery";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import ApproversQuery from "../../api/queries/ApproversQuery";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
+import Card from "../../components/Card";
 import TryAgain from "../../components/TryAgain";
 import type { Account, Member } from "../../data/types";
+import { withStyles } from "material-ui/styles";
 import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
 
 const EntityApproveAccount = props => (
@@ -23,6 +25,22 @@ const EntityApproveOperation = props => (
   <EntityApprove entity="operation" {...props} />
 );
 
+const styles = {
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  left: {
+    width: "50%",
+    marginRight: "10px"
+  },
+  right: {
+    width: "50%",
+    marginLeft: "10px"
+  }
+};
+
 class PendingRequests extends Component<{
   accounts: Account[],
   pendingRequests: PendingRequestsQueryResponse,
@@ -30,49 +48,51 @@ class PendingRequests extends Component<{
   profile: Member
 }> {
   render() {
-    const { accounts, pendingRequests, approversAccount, profile } = this.props;
+    const {
+      accounts,
+      pendingRequests,
+      classes,
+      approversAccount,
+      profile
+    } = this.props;
 
     return (
-      <div className="pending-requests">
+      <div className={classes.base}>
         <ModalRoute path="*/account/:id" component={EntityApproveAccount} />
         <ModalRoute path="*/operation/:id" component={EntityApproveOperation} />
-        <div className="pending-left">
-          <div className="bloc">
-            <h3>Operations to approve</h3>
+        <div className={classes.left}>
+          <Card title="Operations to approve">
             <PendingOperationApprove
               operations={pendingRequests.approveOperations}
               accounts={accounts}
               user={profile}
             />
-          </div>
-          <div className="bloc">
-            <h3>Operations to watch</h3>
+          </Card>
+          <Card title="Operations to watch">
             <PendingOperationApprove
               operations={pendingRequests.watchOperations}
               approved
               user={profile}
               accounts={accounts}
             />
-          </div>
+          </Card>
         </div>
-        <div className="pending-right">
-          <div className="bloc">
-            <h3>Accounts to approve</h3>
+        <div className={classes.right}>
+          <Card title="Accounts to approve">
             <PendingAccountApprove
               accounts={pendingRequests.approveAccounts}
               approvers={approversAccount}
               user={profile}
             />
-          </div>
-          <div className="bloc">
-            <h3>Accounts to watch</h3>
+          </Card>
+          <Card title="Accounts to watch">
             <PendingAccountApprove
               accounts={pendingRequests.watchAccounts}
               approvers={approversAccount}
               user={profile}
               approved
             />
-          </div>
+          </Card>
         </div>
       </div>
     );
@@ -85,32 +105,28 @@ const RenderError = ({ error, restlay }: *) => (
   <TryAgain error={error} action={restlay.forceFetch} />
 );
 
-const RenderLoading = () => (
-  <div className="pending-requests">
-    <div className="pending-left">
-      <div className="bloc">
-        <h3>Operations to approve</h3>
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <div className={classes.base}>
+    <div className={classes.left}>
+      <Card title="Operations to approve">
         <SpinnerCard />
-      </div>
-      <div className="bloc">
-        <h3>Operations to watch</h3>
+      </Card>
+      <Card title="Operations to watch">
         <SpinnerCard />
-      </div>
+      </Card>
     </div>
-    <div className="pending-right">
-      <div className="bloc">
-        <h3>Accounts to approve</h3>
+    <div className={classes.right}>
+      <Card title="Accounts to approve">
         <SpinnerCard />
-      </div>
-      <div className="bloc">
-        <h3>Accounts to watch</h3>
+      </Card>
+      <Card title="Accounts to watch">
         <SpinnerCard />
-      </div>
+      </Card>
     </div>
   </div>
-);
+));
 
-export default connectData(PendingRequests, {
+export default connectData(withStyles(styles)(PendingRequests), {
   RenderError,
   RenderLoading,
   queries: {

@@ -1,8 +1,15 @@
+import colors from "./colors";
+
 const common = {
   list: {
     listStyleType: "none",
     margin: "0",
     padding: "0"
+  },
+  blueLink: {
+    textTransform: "uppercase",
+    textDecoration: "none",
+    color: colors.ocean
   }
 };
 

@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import People from "./People";
+import Profile from "./thin/Profile";
 import PeopleThin from "./thin/People";
 import ValidateBadge from "./ValidateBadge";
 import Rates from "./Rates";
@@ -16,40 +17,78 @@ import Share from "./full/Share";
 import Search from "./full/Search";
 import Hourglass from "./Hourglass";
 import HourglassThin from "./thin/Hourglass";
-import injectSheet from "react-jss";
 
 import colors from "../../shared/colors";
 
 export function SecurityMembersIcon() {
-  return <People />;
+  return (
+    <People
+      style={{
+        width: "15px",
+        fill: colors.mouse
+      }}
+    />
+  );
 }
 
 export function SecurityQuorumIcon() {
-  return <ValidateBadge />;
+  return (
+    <ValidateBadge
+      style={{
+        width: "12px",
+        fill: colors.mouse
+      }}
+    />
+  );
 }
 
 export function SecurityRateLimiterIcon() {
-  return <Rates />;
+  return <Rates style={{ width: "13px", fill: colors.mouse }} />;
 }
 
 export function SecurityTimelockIcon() {
-  return <Hourglass />;
+  return <Hourglass style={{ width: "12px", fill: colors.mouse }} />;
 }
 
 export function PlugIcon(props: *) {
-  return <Plug />;
+  return (
+    <Plug
+      style={{
+        width: "32px",
+        height: "20px",
+        fill: "none",
+        stroke: colors.mouse,
+        strokeWidth: "2px"
+      }}
+      {...props}
+    />
+  );
 }
 
 export function TrashIcon(props: *) {
-  return <Trash />;
+  return (
+    <Trash
+      style={{
+        width: "27px",
+        strokeWidth: "2px",
+        height: "32px",
+        fill: "none",
+        stroke: colors.mouse
+      }}
+    />
+  );
 }
 
 export function BigSecurityTimeLockIcon() {
-  return <HourglassThin />;
+  return (
+    <HourglassThin
+      style={{ width: "28px", height: "30px", stroke: colors.mouse }}
+    />
+  );
 }
 
 export function BigSecurityMembersIcon() {
-  return <PeopleThin />;
+  return <Profile security grey style={{ width: "26px", height: "30px" }} />;
 }
 
 export function MenuDashboardIcon() {
@@ -83,5 +122,10 @@ export function ActionActivityIcon() {
 }
 
 export function BigSecurityRateLimiterIcon() {
-  return <RatesThin stroke={colors.mouse} />;
+  return (
+    <RatesThin
+      stroke={colors.mouse}
+      style={{ width: "25px", height: "30px" }}
+    />
+  );
 }

@@ -1,21 +1,26 @@
 //@flow
 import React, { Component, PureComponent } from "react";
 import colors from "../../shared/colors";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
     width: "100%",
     borderCollapse: "collapse",
+    "& thead tr:before": {
+      content: '""',
+      height: "26px",
+      width: "0px",
+      opacity: "0",
+      left: "0",
+      marginTop: "6px"
+    },
     "& th": {
       textAlign: "left",
       textTransform: "uppercase",
       fontWeight: "600",
       fontSize: "10px",
-      color: colors.steel,
-      "&.amount": {
-        textAlign: "right"
-      }
+      color: colors.steel
     },
     "& tbody td": {
       borderBottom: `1px solid ${colors.argile}`,
@@ -32,7 +37,17 @@ const styles = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    maxWidth: "250px"
+    maxWidth: "250px",
+    "& .type": {
+      fontSize: "10px",
+      color: "#767676",
+      fontWeight: "600",
+      width: "36px",
+      paddingRight: "5px"
+    },
+    "& .hash": {
+      fontSize: "11px"
+    }
   },
   countervalue: {
     textAlign: "right",
@@ -40,7 +55,7 @@ const styles = {
     color: colors.steel
   },
   amount: {
-    textAlign: "right",
+    textAlign: "right!important",
     fontSize: "13px",
     "& .sign-positive": {
       fontWeight: "600"
@@ -56,7 +71,7 @@ const styles = {
     fontSize: "13px"
   },
   status: {
-    fontiSize: "11px",
+    fontSize: "11px",
     color: colors.steel
   }
 };
@@ -120,4 +135,4 @@ class DataTable<Cell> extends PureComponent<{
     );
   }
 }
-export default injectSheet(styles)(DataTable);
+export default withStyles(styles)(DataTable);

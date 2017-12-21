@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import classnames from "classnames";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
@@ -10,12 +10,12 @@ const styles = {
   }
 };
 
-function ArrowDown({ classes, type }) {
+function ArrowDown({ classes, className }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 30 18.25"
-      className={classnames(classes.common)}
+      className={classnames(classes.common, className)}
     >
       <title>dropdown</title>
       <g id="Layer_2" data-name="Layer 2">
@@ -30,4 +30,4 @@ function ArrowDown({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(ArrowDown);
+export default withStyles(styles)(ArrowDown);

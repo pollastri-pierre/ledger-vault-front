@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import connectData from "../../restlay/connectData";
+import { withStyles } from "material-ui/styles";
 import PieChart from "./PieChart";
 import { countervalueForRate } from "../../data/currency";
 import type { Account } from "../../data/types";
@@ -16,7 +17,18 @@ type AggregatedData = {
   }
 };
 
-function Currencies({ accounts }: { accounts: Array<Account> }) {
+const styles = {
+  base: {
+    minHeight: "250px"
+  }
+};
+function Currencies({
+  accounts,
+  classes
+}: {
+  accounts: Array<Account>,
+  classes: Object
+}) {
   //compute currencies from accounts balance
   const data: AggregatedData = accounts.reduce(
     (acc: AggregatedData, account) => {
@@ -46,25 +58,25 @@ function Currencies({ accounts }: { accounts: Array<Account> }) {
   }, []);
 
   return (
-    <div className="dashboard-currencies">
+    <div className={classes.base}>
       <PieChart data={pieChartData} width={140} height={140} />
     </div>
   );
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <div className="dashboard-currencies">
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <div className={classes.base}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
-);
+));
 
-const RenderLoading = () => (
-  <div className="dashboard-currencies">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <div className={classes.base}>
     <SpinnerCard />
   </div>
-);
+));
 
-export default connectData(Currencies, {
+export default connectData(withStyles(styles)(Currencies), {
   queries: {
     accounts: AccountsQuery
   },

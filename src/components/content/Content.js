@@ -3,7 +3,7 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router";
 import { SandBox, AccountView, PendingRequests } from "../../containers"; // Tests
 import Dashboard from "../../containers/Dashboard";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import Search from "../../containers/Search";
 
 const styles = {
@@ -30,4 +30,4 @@ function Content({ classes }) {
   );
 }
 
-export default injectSheet(styles)(Content);
+export default withStyles(styles)(Content);

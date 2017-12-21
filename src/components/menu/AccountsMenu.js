@@ -1,9 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import { withStyles } from "material-ui/styles";
 import type { Account } from "../../data/types";
 import connectData from "../../restlay/connectData";
-import injectSheet from "react-jss";
 import { mixinHoverSelected } from "../../../src/shared/common";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 
@@ -56,7 +56,7 @@ class AccountsMenu extends Component<{ accounts: Array<Account> }> {
   }
 }
 
-export default connectData(injectSheet(styles)(AccountsMenu), {
+export default connectData(withStyles(styles)(AccountsMenu), {
   queries: {
     accounts: AccountsQuery
   }

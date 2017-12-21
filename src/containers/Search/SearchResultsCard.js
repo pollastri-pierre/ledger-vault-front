@@ -22,7 +22,6 @@ class SearchResults extends Component<{
     const { restlay, accounts, search } = this.props;
     return (
       <Card
-        className="search-results"
         title={`${(search.edges.length || "no") +
           (search.pageInfo.hasNextPage ? "+" : "")} operation${search.edges
           .length > 1
@@ -30,19 +29,17 @@ class SearchResults extends Component<{
           : ""} found`}
       >
         <div className="body">
-          <Overscroll top={50} bottom={100}>
-            <InfiniteScrollable
-              restlay={restlay}
-              restlayVariable="search"
-              chunkSize={20}
-            >
-              <DataTableOperation
-                accounts={accounts}
-                operations={search.edges.map(e => e.node)}
-                columnIds={columnIds}
-              />
-            </InfiniteScrollable>
-          </Overscroll>
+          <InfiniteScrollable
+            restlay={restlay}
+            restlayVariable="search"
+            chunkSize={20}
+          >
+            <DataTableOperation
+              accounts={accounts}
+              operations={search.edges.map(e => e.node)}
+              columnIds={columnIds}
+            />
+          </InfiniteScrollable>
         </div>
       </Card>
     );

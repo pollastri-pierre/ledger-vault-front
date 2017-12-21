@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import classnames from "classnames";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
@@ -33,4 +33,4 @@ function Lines({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(Lines);
+export default withStyles(styles)(Lines);

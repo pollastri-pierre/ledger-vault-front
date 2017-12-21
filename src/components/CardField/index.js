@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
@@ -35,4 +35,4 @@ class CardField extends Component<{
   }
 }
 
-export default injectSheet(styles)(CardField);
+export default withStyles(styles)(CardField);

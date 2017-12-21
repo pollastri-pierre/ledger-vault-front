@@ -7,6 +7,8 @@ import InfoModal from "../../InfoModal";
 import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import ArrowDown from "../../icons/ArrowDown";
 import { addMessage } from "../../../redux/modules/alerts";
+import { withStyles } from "material-ui/styles";
+import modals from "../../../shared/modals";
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>
@@ -23,9 +25,15 @@ type Props = {
 type State = {
   rate_limiter: Object,
   popover: boolean,
-  anchor?: Object
+  anchor?: Object,
+  classes: Object
 };
 
+const styles = {
+  base: {
+    ...modals.base
+  }
+};
 class AccountCreationRateLimiter extends Component<Props, State> {
   constructor(props) {
     super(props);
@@ -96,10 +104,11 @@ class AccountCreationRateLimiter extends Component<Props, State> {
   };
   render() {
     const { rate_limiter, popover } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="small-modal">
+      <div className={classes.base}>
         <header>
-          <h3>Rate Limiter</h3>
+          <h2>Rate Limiter</h2>
         </header>
         <div className="content">
           <EnableForm checked={rate_limiter.enabled} toggle={this.onToggle}>
@@ -198,5 +207,5 @@ class AccountCreationRateLimiter extends Component<Props, State> {
   }
 }
 export default connect(undefined, mapDispatchToProps)(
-  AccountCreationRateLimiter
+  withStyles(styles)(AccountCreationRateLimiter)
 );

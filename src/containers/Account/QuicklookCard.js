@@ -11,6 +11,7 @@ import AccountQuery from "../../api/queries/AccountQuery";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
+import { withStyles } from "material-ui/styles";
 
 type Props = {
   accountId: string,
@@ -24,6 +25,24 @@ type State = {
 };
 
 type Filter = { title: string, key: string };
+
+const styles = {
+  card: {
+    width: "34.5%",
+    height: "399px"
+  },
+  dateLabel: {
+    fontSize: " 11px",
+    color: "#767676",
+    paddingTop: " 30px",
+    textAlign: " right"
+  },
+  loading: {
+    background: "white",
+    height: "403px",
+    width: "380px"
+  }
+};
 
 const quicklookFilters: Array<Filter> = [
   { title: "balance", key: "balance" },
@@ -124,7 +143,7 @@ export class QuicklookCard extends Component<Props, State> {
   tabsList = ["year", "month", "week", "day"];
 
   render() {
-    const { account, accountId } = this.props;
+    const { account, accountId, classes } = this.props;
     const { tabsIndex, labelDateRange, quicklookFilter } = this.state;
     let currencyUnit = getAccountCurrencyUnit(account);
     const filter =
@@ -138,8 +157,8 @@ export class QuicklookCard extends Component<Props, State> {
     }
     return (
       <Card
-        className="quicklook"
         title="Quicklook"
+        className={classes.card}
         titleRight={
           <Select onChange={this.onQuicklookFilterChange}>
             {quicklookFilters.map(({ title, key }) => (
@@ -162,7 +181,7 @@ export class QuicklookCard extends Component<Props, State> {
             theme="header"
           />
         </header>
-        <div className="dateLabel">
+        <div className={classes.dateLabel}>
           From {labelDateRange[0]} to {labelDateRange[1]}
         </div>
         <QuicklookWrap
@@ -178,19 +197,19 @@ export class QuicklookCard extends Component<Props, State> {
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card className="quicklook" title="Quicklook">
+const RenderError = ({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="Quicklook">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
 
-const RenderLoading = () => (
-  <Card className="quicklook" title="Quicklook">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="Quicklook">
     <SpinnerCard />
   </Card>
-);
+));
 
-export default connectData(QuicklookCard, {
+export default connectData(withStyles(styles)(QuicklookCard), {
   queries: {
     account: AccountQuery
   },

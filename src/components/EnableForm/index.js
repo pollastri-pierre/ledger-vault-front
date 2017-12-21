@@ -1,13 +1,38 @@
 //@flow
 import React, { PureComponent } from "react";
 import Checkbox from "../form/Checkbox";
+import classnames from "classnames";
+import { withStyles } from "material-ui/styles";
 
 type Props = {
   checked: boolean,
   toggle: Function,
-  children: *
+  children: *,
+  classes: Classes
 };
 
+const styles = {
+  field: {
+    outline: "none",
+    position: "relative",
+    cursor: "pointer",
+    marginBottom: "15px",
+    "& label": {
+      textTransform: "uppercase",
+      fontSize: "11px",
+      fontWeight: "600"
+    }
+  },
+  checkbox: {
+    position: "absolute",
+    right: "0",
+    top: "-7px"
+  },
+  disabled: {
+    opacity: "0.4",
+    pointerEvents: "none"
+  }
+};
 class EnableForm extends PureComponent<Props> {
   focusAndToggle = () => {
     // when we enable the form, we put the focus on the first input[type="text"]
@@ -22,18 +47,23 @@ class EnableForm extends PureComponent<Props> {
     toggle();
   };
   render() {
-    const { checked, toggle, children } = this.props;
+    const { checked, toggle, children, classes } = this.props;
     return (
-      <div className="enable-form">
-        <div className="form-field-checkbox" onClick={this.focusAndToggle}>
+      <div>
+        <div className={classes.field} onClick={this.focusAndToggle}>
           <label htmlFor="enable-field">Enable</label>
           <Checkbox
+            className={classes.checkbox}
             checked={checked}
             handleInputChange={toggle}
             labelFor="enable-field"
           />
         </div>
-        <div className={`enable-form-form ${!checked ? "disabled" : ""}`}>
+        <div
+          className={classnames(classes.field, {
+            [classes.disabled]: !checked
+          })}
+        >
           {children}
         </div>
       </div>
@@ -41,4 +71,4 @@ class EnableForm extends PureComponent<Props> {
   }
 }
 
-export default EnableForm;
+export default withStyles(styles)(EnableForm);

@@ -1,20 +1,28 @@
 //@flow
 import React, { Component } from "react";
 import ValidateBadge from "../icons/ValidateBadge";
+import { withStyles } from "material-ui/styles";
 
+const styles = {
+  base: {
+    marginLeft: "8px",
+    verticalAlign: "middle"
+  }
+};
 class ConfirmationStatus extends Component<*> {
   props: {
-    nbConfirmations: number
+    nbConfirmations: number,
+    classes: Object
   };
 
   render() {
-    const { nbConfirmations } = this.props;
+    const { nbConfirmations, classes } = this.props;
 
     if (nbConfirmations > 0) {
       return (
         <span>
           <strong>Confirmed ({nbConfirmations})</strong>
-          <ValidateBadge className="confirmed operation-status" />
+          <ValidateBadge className={classes.base} />
         </span>
       );
     }
@@ -23,4 +31,4 @@ class ConfirmationStatus extends Component<*> {
   }
 }
 
-export default ConfirmationStatus;
+export default withStyles(styles)(ConfirmationStatus);

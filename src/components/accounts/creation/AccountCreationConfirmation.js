@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import LineRow from "../../LineRow";
 
 import {
   BigSecurityTimeLockIcon,
@@ -53,28 +54,24 @@ function AccountCreationConfirmation(props: { account: Object }) {
         />
       </div>
 
-      <div className="confirmation-infos">
-        <div className="confirmation-info">
-          <span className="info-title">Name</span>
-          <span className="info-value name">
-            <AccountName name={name} currency={currency} />
-          </span>
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Currency</span>
+      <div style={{ marginTop: "50px" }}>
+        <LineRow label="account">
+          <AccountName name={name} currency={currency} />
+        </LineRow>
+        <LineRow label="Currency">
           <span className="info-value currency">{currency.units[0].name}</span>
-        </div>
-        <div className="confirmation-info">
-          <span className="info-title">Approvals to spend</span>
-          <span className="info-value">
-            {quorum} of {approvers.length} members
-          </span>
-        </div>
+        </LineRow>
+        <LineRow label="Approvals to speend">
+          {quorum} of {approvers.length} members
+        </LineRow>
       </div>
-      <InfoModal className="confirmation-explain">
-        A new account request will be created. The account will not be available
-        until all the members in your team approve the creation request.
-      </InfoModal>
+      <div style={{ marginTop: "50px" }}>
+        <InfoModal className="confirmation-explain">
+          A new account request will be created. The account will not be
+          available until all the members in your team approve the creation
+          request.
+        </InfoModal>
+      </div>
     </div>
   );
 }

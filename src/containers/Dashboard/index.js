@@ -9,7 +9,7 @@ import PendingCard from "./PendingCard";
 import Storages from "./Storages";
 import OperationModal from "../../components/operations/OperationModal";
 import ModalRoute from "../../components/ModalRoute";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
@@ -74,4 +74,4 @@ class Dashboard extends Component<
   }
 }
 
-export default injectSheet(styles)(Dashboard);
+export default withStyles(styles)(Dashboard);

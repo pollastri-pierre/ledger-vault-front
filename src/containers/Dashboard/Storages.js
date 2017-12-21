@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import AccountCard from "./AccountCard";
 import AccountsQuery from "../../api/queries/AccountsQuery";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import TryAgain from "../../components/TryAgain";
 
 const styles = {
@@ -27,11 +27,13 @@ class Storages extends Component<{ accounts: *, filter: *, classes: * }> {
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <TryAgain error={error} action={restlay.forceFetch} />
-);
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <div className={classes.base}>
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </div>
+));
 
-export default connectData(injectSheet(styles)(Storages), {
+export default connectData(withStyles(styles)(Storages), {
   queries: {
     accounts: AccountsQuery
   },

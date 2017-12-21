@@ -22,7 +22,7 @@ class EvolutionSince extends Component<{
     const { value, valueHistory, filter } = this.props;
     if (!filter) return null;
     return (
-      <CardField label={`since ${filter.title}`} className="evolution-since">
+      <CardField label={`since ${filter.title}`}>
         <DeltaChange
           before={valueHistory[filter.key]}
           after={value}

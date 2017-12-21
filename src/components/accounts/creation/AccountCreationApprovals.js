@@ -6,25 +6,34 @@ import { connect } from "react-redux";
 import { addMessage } from "../../../redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
 import type { Member } from "../../../data/types";
+import { withStyles } from "material-ui/styles";
+import modals from "../../../shared/modals";
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });
 
+const styles = {
+  base: {
+    ...modals.base
+  }
+};
 function AccountCreationApprovals(props: {
   members: Member[],
   approvals: number,
   switchInternalModal: Function,
   onAddMessage: (t: string, m: string, ty: string) => void,
-  setApprovals: (v: string) => void
+  setApprovals: (v: string) => void,
+  classes: Object
 }) {
   const {
     onAddMessage,
     switchInternalModal,
     approvals,
     setApprovals,
-    members
+    members,
+    classes
   } = props;
 
   const submit = () => {
@@ -33,16 +42,16 @@ function AccountCreationApprovals(props: {
     } else {
       onAddMessage(
         "Error",
-        "Number of approvals cannot exceed numbers of members",
+        "Number of approvals cannot exceed number of members",
         "error"
       );
     }
   };
 
   return (
-    <div className="small-modal wrapper">
+    <div className={classes.base}>
       <header>
-        <h3>Approvals</h3>
+        <h2>Approvals</h2>
       </header>
       <div className="content">
         <InputTextWithUnity
@@ -74,4 +83,6 @@ function AccountCreationApprovals(props: {
   );
 }
 
-export default connect(undefined, mapDispatchToProps)(AccountCreationApprovals);
+export default connect(undefined, mapDispatchToProps)(
+  withStyles(styles)(AccountCreationApprovals)
+);

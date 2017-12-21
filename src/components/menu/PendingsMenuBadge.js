@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "../../restlay/connectData";
 import PendingsQuery from "../../api/queries/PendingsQuery";
 import colors from "../../shared/colors";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
@@ -28,7 +28,7 @@ class PendingsMenuBadge extends Component<*> {
   }
 }
 
-export default connectData(injectSheet(styles)(PendingsMenuBadge), {
+export default connectData(withStyles(styles)(PendingsMenuBadge), {
   queries: {
     pendings: PendingsQuery
   }

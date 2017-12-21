@@ -1,7 +1,13 @@
 //@flow
 import React, { Component } from "react";
-import injectSheet from "react-jss";
+import colors from "../shared/colors";
+import { withStyles } from "material-ui/styles";
+import common from "../shared/common";
 import classnames from "classnames";
+
+const heightSmall = {
+  height: "161px"
+};
 
 const styles = {
   base: {
@@ -11,22 +17,29 @@ const styles = {
     position: "relative",
     marginBottom: "20px",
     boxSizing: "border-box",
-    "& header": {
+    "& > header": {
       display: "flex",
       flexDirection: "row",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      alignItems: "center",
+      "& > h3": {
+        textTransform: "uppercase",
+        fontSize: "11px",
+        fontWeight: "600",
+        color: "black",
+        margin: "0 0 20px",
+        "& a": {
+          ...common.blueLink
+        }
+      }
     }
   },
-  h3: {
-    textTransform: "uppercase",
-    fontSize: "11px",
-    fontWeight: "600",
-    color: "black",
-    margin: "0 0 20px"
+  countervalue: {
+    ...heightSmall,
+    color: colors.lead
   },
-  storages: {
-    width: "calc(33% - 20px)",
-    marginRight: "20px"
+  reloading: {
+    opacity: 0.5
   }
 };
 
@@ -36,7 +49,8 @@ class Card extends Component<*> {
     reloading: boolean,
     titleRight: *,
     children: *,
-    classes: Object
+    classes: Object,
+    className: string
   };
 
   render() {
@@ -46,20 +60,18 @@ class Card extends Component<*> {
       children,
       classes,
       reloading,
-      storage
+      className
     } = this.props;
     return (
-      <div
-        className={classnames(classes.base, { [classes.storages]: storage })}
-      >
+      <div className={classnames(classes.base, className)}>
         <header>
-          <h3 className={classes.h3}>{title}</h3>
-          {titleRight ? <h3 className={classes.h3}>{titleRight}</h3> : null}
+          <h3>{title}</h3>
+          {titleRight ? <h3>{titleRight}</h3> : null}
         </header>
-        <div className="bloc-content">{children}</div>
+        <div className={reloading ? [classes.reloading] : ""}>{children}</div>
       </div>
     );
   }
 }
 
-export default injectSheet(styles)(Card);
+export default withStyles(styles)(Card);

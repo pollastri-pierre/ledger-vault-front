@@ -1,7 +1,8 @@
 //@flow
 import React from "react";
 import classnames from "classnames";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
+import colors from "../../shared/colors";
 
 const styles = {
   common: {
@@ -14,7 +15,8 @@ const styles = {
     transform: "rotate(135deg)"
   }
 };
-function Arrow({ classes, type }) {
+function Arrow({ classes, type, color }) {
+  const stroke = color ? color : "#000";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +30,7 @@ function Arrow({ classes, type }) {
             <polyline
               style={{
                 fill: "none",
-                stroke: "#000",
+                stroke: stroke,
                 strokeMiterlimit: "10",
                 strokeWidth: "4px"
               }}
@@ -37,7 +39,7 @@ function Arrow({ classes, type }) {
             <line
               style={{
                 fill: "none",
-                stroke: "#000",
+                stroke: stroke,
                 strokeMiterlimit: "10",
                 strokeWidth: "4px"
               }}
@@ -53,4 +55,4 @@ function Arrow({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(Arrow);
+export default withStyles(styles)(Arrow);

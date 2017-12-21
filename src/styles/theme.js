@@ -1,5 +1,37 @@
+import colors from "../shared/colors";
 const theme = {
   direction: "ltr",
+  overrides: {
+    MuiTabs: {
+      root: {
+        position: "relative",
+        "&:after": {
+          content: '""',
+          height: "1px",
+          width: "100%",
+          background: colors.mouse,
+          display: "block",
+          position: "absolute",
+          bottom: "0px",
+          zIndex: "-1"
+        }
+      }
+    },
+    MuiTab: {
+      label: {
+        fontSize: "10px!important",
+        fontWeight: "600"
+      },
+      rootInherit: {
+        minWidth: "auto",
+        marginRight: "29px"
+      },
+      labelContainer: {
+        paddingLeft: "0!important",
+        paddingRight: "0!important"
+      }
+    }
+  },
   palette: {
     common: {
       black: "#000",
@@ -44,7 +76,7 @@ const theme = {
       "800": "#ad1457",
       "900": "#880e4f",
       A100: "#ff80ab",
-      A200: "#ff4081",
+      A200: "#27d0e2",
       A400: "#f50057",
       A700: "#c51162",
       contrastDefaultColor: "light"

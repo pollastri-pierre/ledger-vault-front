@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { withStyles } from "material-ui/styles";
 import connectData from "../../restlay/connectData";
 import CurrencyAccountValue from "../../components/CurrencyAccountValue";
 import Card from "../../components/Card";
@@ -10,15 +11,20 @@ import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import type { Account } from "../../data/types";
 
+const styles = {
+  card: {
+    height: "162px"
+  }
+};
 class AccountBalanceCard extends Component<{
   accountId: string,
   account: Account,
   reloading: boolean
 }> {
   render() {
-    const { account, reloading } = this.props;
+    const { account, reloading, classes } = this.props;
     return (
-      <Card reloading={reloading} className="balance" title="Balance">
+      <Card className={classes.card} reloading={reloading} title="Balance">
         <CardField label={<DateFormat date={new Date()} />}>
           <CurrencyAccountValue account={account} value={account.balance} />
         </CardField>
@@ -27,19 +33,19 @@ class AccountBalanceCard extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card className="balance" title="Balance">
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="Balance">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
-);
+));
 
-const RenderLoading = () => (
-  <Card className="balance" title="Balance">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="Balance">
     <SpinnerCard />
   </Card>
-);
+));
 
-export default connectData(AccountBalanceCard, {
+export default connectData(withStyles(styles)(AccountBalanceCard), {
   queries: {
     account: AccountQuery
   },

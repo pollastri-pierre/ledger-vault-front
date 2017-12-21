@@ -7,15 +7,19 @@ import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 import type { Account, Member } from "../../data/types";
+import { withStyles } from "material-ui/styles";
+import classnames from "classnames";
+import styles from "./styles";
 
 type Props = {
   accounts: Account[],
   approved?: boolean,
   approvers: Member[],
-  user: Member
+  user: Member,
+  classes: Object
 };
 function PendingAccountApprove(props: Props) {
-  const { accounts, approved, approvers, user } = props;
+  const { accounts, approved, approvers, user, classes } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
@@ -25,10 +29,10 @@ function PendingAccountApprove(props: Props) {
   );
 
   return (
-    <div className="pending-request-list">
+    <div className={classes.base}>
       {!approved && (
         <div>
-          <p className="header dark">
+          <p className={classnames(classes.header, classes.headerBlack)}>
             {accounts.length === 1 ? (
               <span>1 account</span>
             ) : (
@@ -36,7 +40,7 @@ function PendingAccountApprove(props: Props) {
             )}
             <span>{nbCurrencies}</span>
           </p>
-          <p className="header light">
+          <p className={classnames(classes.header, classes.headerLight)}>
             <span>pending approval</span>
             {nbCurrencies === 1 ? (
               <span>currency</span>
@@ -48,26 +52,26 @@ function PendingAccountApprove(props: Props) {
       )}
       {accounts.map(account => (
         <Link
-          className={`pending-request ${approved ? "watch" : ""}`}
+          className={classnames(classes.row, { [classes.approved]: approved })}
           to={`/pending/account/${account.id}`}
           key={account.id}
         >
           <div>
-            <span className="request-date-creation">
+            <span className={classes.date}>
               <DateFormat date={account.creation_time} />
             </span>
-            <span className="request-name">
+            <span className={classes.name}>
               <AccountName name={account.name} currency={account.currency} />
             </span>
           </div>
-          <div>
+          <div className={classes.status}>
             <ApprovalStatus
               approved={account.approved}
               approvers={approvers}
               nbRequired={approvers.length}
               user={user}
             />
-            <span className="request-currency">{account.currency.family}</span>
+            <span className={classes.currency}>{account.currency.family}</span>
           </div>
         </Link>
       ))}
@@ -75,4 +79,4 @@ function PendingAccountApprove(props: Props) {
   );
 }
 
-export default PendingAccountApprove;
+export default withStyles(styles)(PendingAccountApprove);

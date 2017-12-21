@@ -10,7 +10,7 @@ import Comment from "../icons/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "../../data/types";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 type Cell = {
   operation: Operation,
@@ -20,22 +20,19 @@ type Cell = {
 const stopPropagation = (e: SyntheticEvent<*>) => e.stopPropagation();
 
 const styles = {
-  table: {
-    "& thead": {
-      "tr:before": {
-        opacity: 0
-      }
-    },
-    "tr:before": {
+  tr: {
+    margin: "0",
+    padding: "0",
+    "&:before": {
       background: colors.ocean,
       content: '""',
       height: "26px",
       width: "0px",
       position: "absolute",
-      marginLeft: "-42px",
+      left: "0",
       marginTop: "6px"
     },
-    "tr:hover:before": {
+    "&:hover:before": {
       width: "5px",
       transition: "width 200ms ease"
     }
@@ -72,6 +69,8 @@ class OperationNoteLink extends Component<{
 const styles_note = {
   base: {
     position: "relative",
+    marginLeft: "10px",
+    verticalAlign: "sub",
     "& .tooltip-label ": {
       pointerEvents: "none",
       opacity: "0",
@@ -92,7 +91,7 @@ const styles_note = {
     }
   }
 };
-const OpNoteLink = injectSheet(styles_note)(OperationNoteLink);
+const OpNoteLink = withStyles(styles_note)(OperationNoteLink);
 
 class DateColumn extends Component<Cell> {
   render() {
@@ -205,20 +204,27 @@ const COLS = [
   }
 ];
 
-class Row extends Component<{
+class RowT extends Component<{
   cell: Cell,
   index: number,
   children: React$Node,
+  classes: Object,
   openOperation: (string, number) => void
 }> {
   shouldComponentUpdate({ cell }: *) {
     return this.props.cell.operation !== cell.operation;
   }
   render() {
-    const { openOperation, cell: { operation }, children } = this.props;
+    const {
+      openOperation,
+      cell: { operation },
+      children,
+      classes
+    } = this.props;
     return (
       <tr
         style={{ cursor: "pointer" }}
+        className={classes.tr}
         onClick={() => openOperation(operation.uuid, 0)}
       >
         {children}
@@ -226,6 +232,8 @@ class Row extends Component<{
     );
   }
 }
+
+const Row = withStyles(styles)(RowT);
 
 class DataTableOperation extends Component<
   {

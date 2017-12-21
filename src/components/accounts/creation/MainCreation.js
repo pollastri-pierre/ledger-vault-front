@@ -3,13 +3,15 @@ import React, { Component } from "react";
 import _ from "lodash";
 import connectData from "../../../restlay/connectData";
 import NewAccountMutation from "../../../api/mutations/NewAccountMutation";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
 import type { Currency } from "../../../data/types";
+import { withStyles } from "material-ui/styles";
+import modals from "../../../shared/modals";
+import Tabs, { Tab } from "material-ui/Tabs";
 
 type Props = {
   changeAccountName: Function,
@@ -19,10 +21,22 @@ type Props = {
   switchInternalModal: Function,
   restlay: *,
   tabsIndex: number,
-  account: *
+  account: *,
+  classes: Object
+};
+
+const styles = {
+  base: {
+    ...modals.base,
+    width: "440px",
+    height: "615px"
+  }
 };
 
 class MainCreation extends Component<Props> {
+  handleChange = (event, value) => {
+    this.props.onSelect(value);
+  };
   render() {
     const { props } = this;
     const {
@@ -32,6 +46,7 @@ class MainCreation extends Component<Props> {
       onSelect,
       tabsIndex,
       close,
+      classes,
       switchInternalModal
     } = props;
 
@@ -63,54 +78,55 @@ class MainCreation extends Component<Props> {
         )
         .then(close);
 
+    console.log(this.props);
     return (
-      <Tabs
-        className="account-creation-main wrapper"
-        selectedIndex={tabsIndex}
-        onSelect={onSelect}
-      >
-        <div>
-          <header>
-            <h2>New account</h2>
-            <TabList>
-              <Tab> 1. Currency </Tab>
-              <Tab disabled={_.isNull(account.currency)}>2. Options</Tab>
-              <Tab disabled={account.name === ""}>3. Security</Tab>
-              <Tab
-                disabled={
-                  account.approvers.length === 0 ||
-                  account.quorum === 0 ||
-                  account.quorum > account.approvers.length
-                }
-              >
-                4. Confirmation
-              </Tab>
-            </TabList>
-          </header>
-          <div className="content">
-            <TabPanel className="tabs_panel">
-              <AccountCreationCurrencies
-                currency={account.currency}
-                onSelect={selectCurrency}
-              />
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <AccountCreationOptions
-                currency={account.currency}
-                name={account.name}
-                changeName={changeAccountName}
-              />
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <AccountCreationSecurity
-                switchInternalModal={switchInternalModal}
-                account={account}
-              />
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <AccountCreationConfirmation account={account} />
-            </TabPanel>
-          </div>
+      <div className={classes.base}>
+        <header>
+          <h2>New account</h2>
+          <Tabs onChange={this.handleChange} value={tabsIndex}>
+            <Tab label="1. Currency" disableRipple />
+            <Tab
+              label="2. Options"
+              disabled={_.isNull(account.currency)}
+              disableRipple
+            />
+            <Tab
+              label="3. Security"
+              disabled={account.name === ""}
+              disableRipple
+            />
+            <Tab
+              label="4. Confirmation"
+              disabled={
+                account.approvers.length === 0 ||
+                account.quorum === 0 ||
+                account.quorum > account.approvers.length
+              }
+              disableRipple
+            />
+          </Tabs>
+        </header>
+        <div className="content">
+          {tabsIndex === 0 && (
+            <AccountCreationCurrencies
+              currency={account.currency}
+              onSelect={selectCurrency}
+            />
+          )}
+          {tabsIndex === 1 && (
+            <AccountCreationOptions
+              currency={account.currency}
+              name={account.name}
+              changeName={changeAccountName}
+            />
+          )}
+          {tabsIndex === 2 && (
+            <AccountCreationSecurity
+              switchInternalModal={switchInternalModal}
+              account={account}
+            />
+          )}
+          {tabsIndex === 3 && <AccountCreationConfirmation account={account} />}
         </div>
         <div className="footer">
           {_.includes([0, 1, 2], tabsIndex) ? (
@@ -128,9 +144,9 @@ class MainCreation extends Component<Props> {
             </DialogButton>
           )}
         </div>
-      </Tabs>
+      </div>
     );
   }
 }
 
-export default connectData(MainCreation);
+export default connectData(withStyles(styles)(MainCreation));

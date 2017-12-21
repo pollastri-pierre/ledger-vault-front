@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import type { Currency } from "../../data/types";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
@@ -29,4 +29,4 @@ class BadgeCurrency extends PureComponent<{
   }
 }
 
-export default injectSheet(styles)(BadgeCurrency);
+export default withStyles(styles)(BadgeCurrency);

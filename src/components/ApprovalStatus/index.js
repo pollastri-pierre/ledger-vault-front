@@ -38,7 +38,9 @@ class ApprovalStatus extends PureComponent<{
             <span>{approvingObjectMeta.globalEndTextRemaining}</span>
           ) : (
             <span>
-              <ValidateBadge className="confirmed" />
+              <ValidateBadge
+                style={{ verticalAlign: "middle", marginRight: "10px" }}
+              />
               Approved ({approved.length}/{approvers.length})
             </span>
           )

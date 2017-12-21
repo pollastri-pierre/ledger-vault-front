@@ -8,17 +8,21 @@ import EvolutionSince, {
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
+import colors from "../../shared/colors";
 import { Select, Option } from "../../components/Select";
 import TryAgain from "../../components/TryAgain";
 import SpinnerCard from "../../components/spinners/SpinnerCard";
 import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   body: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  card: {
+    height: "180px"
   }
 };
 class TotalBalance extends Component<{
@@ -40,6 +44,7 @@ class TotalBalance extends Component<{
       <Card
         reloading={reloading}
         title="total balance"
+        className={classes.card}
         titleRight={
           <Select onChange={onTotalBalanceFilterChange}>
             {TotalBalanceFilters.map(({ key, title }) => (
@@ -57,11 +62,13 @@ class TotalBalance extends Component<{
               value={totalBalance.value}
             />
           </CardField>
-          <EvolutionSince
-            value={totalBalance.value}
-            valueHistory={totalBalance.valueHistory}
-            filter={TotalBalanceFilters.find(f => f.key === filter)}
-          />
+          <div style={{ minWidth: "200px" }}>
+            <EvolutionSince
+              value={totalBalance.value}
+              valueHistory={totalBalance.valueHistory}
+              filter={TotalBalanceFilters.find(f => f.key === filter)}
+            />
+          </div>
           <CardField label="accounts" align="right">
             {totalBalance.accountsCount}
           </CardField>
@@ -77,19 +84,19 @@ class TotalBalance extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card className="total-balance" title="total balance">
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="total balance">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
-);
+));
 
-const RenderLoading = () => (
-  <Card className="total-balance" title="total balance">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="total balance">
     <SpinnerCard />
   </Card>
-);
+));
 
-export default connectData(injectSheet(styles)(TotalBalance), {
+export default connectData(withStyles(styles)(TotalBalance), {
   queries: {
     totalBalance: DashboardTotalBalanceQuery
   },

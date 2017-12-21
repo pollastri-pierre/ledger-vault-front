@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import classnames from "classnames";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
@@ -32,4 +32,4 @@ function Share({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(Share);
+export default withStyles(styles)(Share);

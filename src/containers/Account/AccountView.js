@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import ModalRoute from "../../components/ModalRoute";
+import { withStyles } from "material-ui/styles";
 import OperationModal from "../../components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import QuicklookCard from "./QuicklookCard";
@@ -8,6 +9,18 @@ import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
 
+const styles = {
+  flex: {
+    display: "flex"
+  },
+  left: {
+    width: "65.4%"
+  },
+  half: {
+    width: "50%",
+    marginRight: "20px"
+  }
+};
 class AccountView extends Component<
   {
     match: {
@@ -28,15 +41,19 @@ class AccountView extends Component<
   };
 
   render() {
-    const { match } = this.props;
+    const { match, classes } = this.props;
     const accountId = match.params.id;
     return (
-      <div className="account-view">
-        <div className="account-view-infos">
-          <div className="infos-left">
-            <div className="infos-left-top">
-              <AccountBalanceCard accountId={accountId} />
-              <AccountCountervalueCard accountId={accountId} />
+      <div>
+        <div className={classes.flex}>
+          <div className={classes.left}>
+            <div className={classes.flex}>
+              <div className={classes.half}>
+                <AccountBalanceCard accountId={accountId} />
+              </div>
+              <div className={classes.half}>
+                <AccountCountervalueCard accountId={accountId} />
+              </div>
             </div>
             <ReceiveFundsCard accountId={accountId} />
           </div>
@@ -52,4 +69,4 @@ class AccountView extends Component<
   }
 }
 
-export default AccountView;
+export default withStyles(styles)(AccountView);

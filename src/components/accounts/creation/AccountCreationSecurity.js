@@ -3,6 +3,7 @@ import React from "react";
 import RateLimiterValue from "../../RateLimiterValue";
 import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
+import { withStyles } from "material-ui/styles";
 import {
   SecurityMembersIcon,
   SecurityQuorumIcon,
@@ -10,13 +11,32 @@ import {
   SecurityTimelockIcon
 } from "../../icons";
 
+const styles = {
+  base: {
+    "& h4": {
+      fontSize: "11px",
+      fontWeight: "600",
+      textTransform: "uppercase",
+      marginTop: "3px",
+      marginBottom: "29px"
+    },
+    "& h5": {
+      fontSize: "10px",
+      fontWeight: "600",
+      color: "#999",
+      marginBottom: "10px",
+      textTransform: "uppercase"
+    }
+  }
+};
 function AccountCreationSecurity(props: {
   account: Object,
-  switchInternalModal: Function
+  switchInternalModal: Function,
+  classes: Object
 }) {
-  const { account, switchInternalModal } = props;
+  const { account, switchInternalModal, classes } = props;
   return (
-    <div className="account-creation-security">
+    <div className={classes.base}>
       <h4>Security Scheme</h4>
       <h5>Members</h5>
       <div className="security-members">
@@ -72,4 +92,4 @@ function AccountCreationSecurity(props: {
   );
 }
 
-export default AccountCreationSecurity;
+export default withStyles(styles)(AccountCreationSecurity);

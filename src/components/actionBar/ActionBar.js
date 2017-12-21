@@ -8,7 +8,7 @@ import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
 import colors from "../../shared/colors";
 import SettingsModal from "../SettingsModal";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 import {
   ActionAddAccountIcon,
   ActionExportIcon,
@@ -121,4 +121,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withRouter(injectSheet(styles)(ActionBar));
+export default withRouter(withStyles(styles)(ActionBar));

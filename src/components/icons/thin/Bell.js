@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import classnames from "classnames";
-import injectSheet from "react-jss";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
@@ -32,4 +32,4 @@ function Bell({ classes, type }) {
   );
 }
 
-export default injectSheet(styles)(Bell);
+export default withStyles(styles)(Bell);
