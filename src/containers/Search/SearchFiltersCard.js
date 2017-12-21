@@ -1,32 +1,35 @@
 //@flow
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
+import { withStyles } from "material-ui/styles";
 import Card from "../../components/Card";
 import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
 import AccountMenuItem from "../../components/AccountMenuItem";
-import Search from "../../components/icons/thin/Search";
+import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 import type { Currency, Account } from "../../data/types";
 
-class SearchFiltersCardHeader extends Component<*> {
-  render() {
-    return (
-      <header className="SearchFiltersCardHeader">
-        <Search width={24} height={32} color="#ccc" />
-        <div>
-          <h3>FILTERS</h3>
-          <em>Find operations</em>
-        </div>
-      </header>
-    );
+const styles = {
+  card: {
+    "& label": {
+      display: "block",
+      padding: "20px 0",
+      "& h3": {
+        textTransform: "uppercase",
+        fontWeight: 600,
+        fontSize: 10,
+        color: "#767676" // FIXME theme
+      }
+    }
   }
-}
+};
 
 class SearchFiltersCard extends Component<{
   filters: Object,
   onChangeFilters: (filters: Object) => void,
   currencies: Currency[],
-  accounts: Account[]
+  accounts: Account[],
+  classes: Object
 }> {
   onKeywordsChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ keywords: e.target.value });
@@ -38,10 +41,10 @@ class SearchFiltersCard extends Component<{
     this.props.onChangeFilters({ currencyName: e.target.value || "" });
   };
   render() {
-    const { accounts, filters, currencies } = this.props;
+    const { accounts, filters, currencies, classes } = this.props;
     return (
-      <Card className="search-filters" Header={SearchFiltersCardHeader}>
-        <div className="body">
+      <Card className={classes.card} Header={SearchFiltersCardHeader}>
+        <div>
           <label>
             <h3>keywords</h3>
             <TextField
@@ -54,7 +57,6 @@ class SearchFiltersCard extends Component<{
 
           <label>
             <h3>account</h3>
-
             <Select
               value={filters.accountId}
               onChange={this.onAccountChange}
@@ -107,4 +109,4 @@ class SearchFiltersCard extends Component<{
   }
 }
 
-export default SearchFiltersCard;
+export default withStyles(styles)(SearchFiltersCard);

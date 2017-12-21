@@ -43,6 +43,7 @@ class Search extends Component<
   {
     accounts: Account[],
     currencies: Currency[],
+    classes: Object,
     match: *,
     location: *,
     history: *

@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import colors from "../shared/colors";
 import { withStyles } from "material-ui/styles";
 import common from "../shared/common";
 import classnames from "classnames";
@@ -57,15 +56,11 @@ class Card extends Component<{
   reloading?: boolean,
   classes: Object
 }> {
+  static defaultProps = {
+    Header
+  };
   render() {
-    const {
-      title,
-      titleRight,
-      children,
-      classes,
-      reloading,
-      className
-    } = this.props;
+    const { Header, children, classes, reloading, className } = this.props;
     return (
       <div className={classnames(classes.base, className)}>
         <Header {...this.props} />
