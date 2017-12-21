@@ -9,18 +9,25 @@ const styles = {
   accountOption: {
     display: "flex",
     flexDirection: "row",
-    color: "black"
+    color: "black",
+    width: "100%"
   },
   nameContainer: {
-    flex: "1",
+    flex: 1,
     textAlign: "left",
     maxWidth: 150,
+    fontWeight: 300,
+    fontSize: 13,
     overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
     marginRight: 10
   },
-  accountUnit: {}
+  accountUnit: {
+    fontWeight: 600,
+    fontSize: 10,
+    opacity: 0.5
+  }
 };
 
 class AccountOption extends Component<{
@@ -32,9 +39,7 @@ class AccountOption extends Component<{
     return (
       <MenuItem style={{ color: account.currency.color }} {...rest}>
         <div className={classes.accountOption}>
-          <span className={classes.nameContainer}>
-            <AccountName currency={account.currency} name={account.name} />
-          </span>
+          <span className={classes.nameContainer}>{account.name}</span>
           <span className={classes.accountUnit}>
             {account.currency.units[account.settings.unitIndex].code}
           </span>
