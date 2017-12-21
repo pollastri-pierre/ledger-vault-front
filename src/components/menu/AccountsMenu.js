@@ -1,29 +1,62 @@
 //@flow
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import type { Account } from "../../data/types";
+import { withStyles } from "material-ui/styles";
+import { MenuList } from "material-ui/Menu";
+import MenuLink from "../MenuLink";
 import connectData from "../../restlay/connectData";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 
-class AccountsMenu extends Component<{ accounts: Array<Account> }> {
+const styles = {
+  item: {
+    display: "flex",
+    fontWeight: "normal",
+    paddingRight: 0
+  },
+  name: {
+    flex: 1,
+    paddingRight: 10,
+    fontSize: 13,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    color: "black"
+  },
+  unit: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: "black",
+    opacity: 0.2
+  }
+};
+
+class AccountsMenu extends Component<{
+  classes: Object,
+  accounts: Array<Account>
+}> {
   render() {
-    const { accounts } = this.props;
+    const { accounts, classes } = this.props;
     return (
-      <ul className="accounts-menu-list">
+      <MenuList>
         {accounts.map(account => (
-          <li style={{ color: account.currency.color }} key={account.id}>
-            <NavLink to={`/account/${account.id}`}>
-              <span>{account.name}</span>
-              <span className="unit">{account.currency.units[0].code}</span>
-            </NavLink>
-          </li>
+          <MenuLink
+            color={account.currency.color}
+            key={account.id}
+            to={`/account/${account.id}`}
+            className={classes.item}
+          >
+            <span className={classes.name}>{account.name}</span>
+            <span className={classes.unit}>
+              {account.currency.units[0].code}
+            </span>
+          </MenuLink>
         ))}
-      </ul>
+      </MenuList>
     );
   }
 }
 
-export default connectData(AccountsMenu, {
+export default connectData(withStyles(styles)(AccountsMenu), {
   queries: {
     accounts: AccountsQuery
   }

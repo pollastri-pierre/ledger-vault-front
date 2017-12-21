@@ -1,4 +1,7 @@
 //@flow
+
+// FIXME drop this file. we should directly import the font we need. also the global className are to be removed
+
 import React from "react";
 import PeopleThin from "./thin/People";
 import ValidateBadge from "./full/ValidateBadge";
