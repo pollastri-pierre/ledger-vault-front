@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
+import { withStyles } from "material-ui/styles";
 import {
   setTeamField,
   logout,
@@ -38,10 +39,46 @@ type Props = {
   onLogout: () => void,
   onStartAuth: () => void,
   onCloseTeamError: () => void,
-  onResetTeam: () => void
+  onResetTeam: () => void,
+  classes: Object
 };
 
-export class Login extends Component<Props> {
+const styles = {
+  base: {
+    display: "table",
+    width: "100vw",
+    height: "100vh"
+  },
+  wrapper: {
+    display: "table-cell",
+    textAlign: "center",
+    verticalAlign: "middle"
+  },
+  banner: {
+    width: "400px",
+    margin: "auto",
+    marginBottom: "20px",
+    position: "relative",
+    textAlign: "left"
+  },
+  help: {
+    width: 63,
+    cursor: "pointer",
+    marginRight: "0",
+    fontSize: 11,
+    fontWeight: "600",
+    textTransform: "uppercase",
+    opacity: "0.5",
+    transition: "opacity 0.2s ease",
+    verticalAlign: "super",
+    lineHeight: "1em",
+    position: "absolute",
+    top: "5px",
+    right: "0;"
+  }
+};
+
+class Login extends Component<Props> {
   context: {
     translate: string => string
   };
@@ -69,6 +106,7 @@ export class Login extends Component<Props> {
     const t = this.context.translate;
     let content = null;
     const { team, isCheckingTeam, teamError, teamValidated } = this.props.auth;
+    const { classes } = this.props;
 
     if (teamValidated) {
       content = <DeviceLogin team={team} onCancel={this.props.onResetTeam} />;
@@ -86,25 +124,17 @@ export class Login extends Component<Props> {
       );
     }
     return (
-      <div style={{ display: "table", width: "100vw", height: "100vh" }}>
-        <div
-          style={{
-            display: "table-cell",
-            textAlign: "center",
-            verticalAlign: "middle"
-          }}
-        >
-          <div className="Background">
-            <div className="Banner">
-              <img
-                src="img/logo-black.png"
-                srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
-                alt="Ledger Vault"
-              />
-              <div className="help">{t("login.help")}</div>
-            </div>
-            {content}
+      <div className={classes.base}>
+        <div className={classes.wrapper}>
+          <div className={classes.banner}>
+            <img
+              src="img/logo-black.png"
+              srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
+              alt="Ledger Vault"
+            />
+            <div className={classes.help}>{t("login.help")}</div>
           </div>
+          {content}
         </div>
       </div>
     );
@@ -115,4 +145,6 @@ Login.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(Login)
+);
