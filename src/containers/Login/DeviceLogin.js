@@ -93,16 +93,16 @@ class DeviceLogin extends Component<{
         <div className={classes.spacer} />
         <div className={classes.instructions}>
           <div className={classes.item}>
-            <div className="bullet">1.</div>
-            <div className="step">{t("login.stepOne")}</div>
+            <div>1.</div>
+            <div>{t("login.stepOne")}</div>
           </div>
           <div className={classes.item}>
-            <div className="bullet">2.</div>
-            <div className="step">{t("login.stepTwo")}</div>
+            <div>2.</div>
+            <div>{t("login.stepTwo")}</div>
           </div>
           <div className={classes.item}>
-            <div className="bullet">3.</div>
-            <div className="step">{t("login.stepThree")}</div>
+            <div>3.</div>
+            <div>{t("login.stepThree")}</div>
           </div>
         </div>
         <DialogButton onTouchTap={onCancel} className={classes.cancel}>
