@@ -45,6 +45,9 @@ const theme = {
         minWidth: "auto",
         marginRight: "29px"
       },
+      rootInheritDisabled: {
+        opacity: 0.2
+      },
       labelContainer: {
         paddingLeft: "0!important",
         paddingRight: "0!important"
@@ -73,7 +76,7 @@ const theme = {
     MuiMenuItem: {
       root: {
         fontSize: 11,
-        fontWeight: 600,
+        fontWeight: 600, // FIXME bad idea, this should be opt-in
         opacity: 0.5,
         "&:hover": {
           backgroundColor: "transparent",

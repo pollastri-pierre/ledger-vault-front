@@ -14,7 +14,8 @@ class Overscroll extends Component<{
   bottom: number, // how much to overflow on the bottom (opt-in)
   children: string | React$Node,
   blurSize: number,
-  padding: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
+  paddingX: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
+  paddingY: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
   pushScrollBarRight: number // how much pixel to push the scrollbar on the right
 }> {
   static defaultProps = {
@@ -22,7 +23,8 @@ class Overscroll extends Component<{
     bottom: 0,
     backgroundColor: "white",
     blurSize: 6,
-    padding: 12,
+    paddingX: 12,
+    paddingY: 12,
     pushScrollBarRight: 80
   };
 
@@ -64,25 +66,30 @@ class Overscroll extends Component<{
       bottom,
       children,
       blurSize,
-      padding,
+      paddingX,
+      paddingY,
       pushScrollBarRight
     } = this.props;
 
     const rootStyle = {
       position: "relative",
       height: "100%",
-      margin: -padding
+      marginLeft: -paddingX,
+      marginRight: -paddingX,
+      marginTop: -paddingY,
+      marginBottom: -paddingY
     };
     const copyStyle = {
       position: "absolute",
       filter: "blur(" + blurSize + "px)",
       overflow: "hidden",
       width: "100%",
-      top: `-${top - padding}px`,
-      padding: padding,
+      top: `-${top - paddingY}px`,
+      paddingLeft: paddingX,
+      paddingRight: paddingX,
       paddingTop: `${top}px `,
       paddingBottom: `${bottom}px`,
-      height: `calc(100% + ${top + bottom - 2 * padding}px)`
+      height: `calc(100% + ${top + bottom - 2 * paddingY}px)`
     };
     const innerContainerStyle = {
       position: "relative",
@@ -108,10 +115,13 @@ class Overscroll extends Component<{
       overflowY: "auto",
       height: "100%",
       background: "white", // NB used to be a prop. but if we want to customize it, we also need to customize the linear-gradient
-      padding: padding,
+      paddingLeft: paddingX,
+      paddingRight: paddingX,
+      paddingTop: paddingY,
+      paddingBottom: paddingY,
       // for hiding ugly scrollbar
       marginRight: "-" + pushScrollBarRight + "px",
-      paddingRight: pushScrollBarRight + padding + "px"
+      paddingRight: pushScrollBarRight + paddingX + "px"
     };
 
     return (

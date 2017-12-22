@@ -15,7 +15,9 @@ export type Details = {
 class NewOperationModal extends Component<
   {
     accounts: Array<Account>,
-    close: Function
+    close: Function,
+    history: *,
+    location: *
   },
   {
     tabsIndex: number,
@@ -41,7 +43,7 @@ class NewOperationModal extends Component<
     this.props.close();
   };
 
-  onSelect = (tabsIndex: number) => {
+  onTabsChange = (tabsIndex: number) => {
     this.setState({ tabsIndex });
   };
 
@@ -61,7 +63,7 @@ class NewOperationModal extends Component<
     return (
       <OperationCreation
         close={close}
-        onSelect={this.onSelect}
+        onTabsChange={this.onTabsChange}
         save={this.onSaveOperation}
         accounts={accounts}
         selectAccount={this.selectAccount}
