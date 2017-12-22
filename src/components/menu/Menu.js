@@ -41,7 +41,7 @@ const styles = {
   pendingMenuBadge: {
     position: "absolute",
     right: 40,
-    top: 90,
+    top: 95,
     pointerEvents: "none"
   },
   h4: {
@@ -66,7 +66,7 @@ function Menu(
   const { location, classes } = props;
   const t = context.translate;
   return (
-    <div className={"Menu " + classes.root}>
+    <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
       <span className={classes.pendingMenuBadge}>
         <PendingsMenuBadge />
