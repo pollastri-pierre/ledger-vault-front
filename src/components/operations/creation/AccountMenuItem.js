@@ -16,7 +16,7 @@ const styles = {
     fontSize: 13,
     height: 64,
     padding: "5px 40px",
-    "&:not(:last-child)": {
+    "&:not(:last-child) > :last-child": {
       borderBottom: "solid 1px #eee"
     }
   },

@@ -27,7 +27,7 @@ const styles = {
     paddingBottom: 20
   },
   tabs: {
-    padding: "0 40px",
+    margin: "0 40px",
     zIndex: 2
   },
   content: {
@@ -87,15 +87,11 @@ class OperationCreation extends Component<{
       case 0:
         content = (
           <Overscroll top={40} bottom={72} paddingX={0}>
-            {accounts && accounts.length > 0 ? (
-              <OperationCreationAccounts
-                accounts={accounts}
-                onSelect={selectAccount}
-                selectedAccount={selectedAccount}
-              />
-            ) : (
-              false
-            )}
+            <OperationCreationAccounts
+              accounts={accounts}
+              onSelect={selectAccount}
+              selectedAccount={selectedAccount}
+            />
           </Overscroll>
         );
         break;

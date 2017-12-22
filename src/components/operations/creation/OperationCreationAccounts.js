@@ -16,29 +16,30 @@ const styles = {
   }
 };
 
-function OperationCreationAccounts(props: {
+const OperationCreationAccounts = ({
+  accounts,
+  selectedAccount,
+  onSelect,
+  classes
+}: {
   accounts: Account[],
   selectedAccount: ?Account,
   onSelect: Account => void,
   classes: { [_: $Keys<typeof styles>]: string }
-}) {
-  const { accounts, selectedAccount, onSelect, classes } = props;
-
-  return (
-    <div>
-      <div className={classes.tabTitle}>Account to debit</div>
-      <MenuList>
-        {accounts.map(account => (
-          <AccountMenuItem
-            key={account.id}
-            onSelect={onSelect}
-            account={account}
-            selected={selectedAccount && selectedAccount.id === account.id}
-          />
-        ))}
-      </MenuList>
-    </div>
-  );
-}
+}) => (
+  <div>
+    <div className={classes.tabTitle}>Account to debit</div>
+    <MenuList>
+      {accounts.map(account => (
+        <AccountMenuItem
+          key={account.id}
+          onSelect={onSelect}
+          account={account}
+          selected={(selectedAccount && selectedAccount.id) === account.id}
+        />
+      ))}
+    </MenuList>
+  </div>
+);
 
 export default withStyles(styles)(OperationCreationAccounts);
