@@ -127,6 +127,7 @@ class OperationCreation extends Component<{
       <div className={classes.root}>
         <h2 className={classes.title}>New operation</h2>
         <Tabs
+          disableRipple
           className={classes.tabs}
           value={tabsIndex}
           onChange={this.onTabChange}

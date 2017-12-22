@@ -45,6 +45,9 @@ const theme = {
         minWidth: "auto",
         marginRight: "29px"
       },
+      rootInheritDisabled: {
+        opacity: 0.2
+      },
       labelContainer: {
         paddingLeft: "0!important",
         paddingRight: "0!important"
