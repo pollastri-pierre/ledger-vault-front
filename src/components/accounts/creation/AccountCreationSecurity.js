@@ -11,6 +11,8 @@ import {
   SecurityTimelockIcon
 } from "../../icons";
 
+import HourglassFull from "../../icons/full/Hourglass";
+
 const styles = {
   base: {
     "& h4": {
@@ -27,6 +29,10 @@ const styles = {
       marginBottom: "10px",
       textTransform: "uppercase"
     }
+  },
+  icon: {
+    fill: "#e2e2e2",
+    width: 12
   }
 };
 function AccountCreationSecurity(props: {
@@ -60,7 +66,7 @@ function AccountCreationSecurity(props: {
       </div>
       <h5>Locks</h5>
       <SecurityRow
-        icon={<SecurityTimelockIcon />}
+        icon={<HourglassFull className={classes.icon} />}
         label="Time-lock"
         onClick={() => switchInternalModal("time-lock")}
       >

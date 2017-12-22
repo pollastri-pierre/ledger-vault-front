@@ -37,6 +37,9 @@ const styles = {
     ...modals.base,
     width: "440px",
     height: "615px"
+  },
+  content: {
+    height: 330
   }
 };
 class AccountCreationMembers extends Component<{
@@ -65,7 +68,7 @@ class AccountCreationMembers extends Component<{
             approve outgoing operations from this account.
           </InfoModal>
         </header>
-        <div className="content">
+        <div className={classes.content}>
           <Overscroll top={40} bottom={98}>
             {members.map(member => {
               const isChecked = approvers.indexOf(member.pub_key) > -1;

@@ -4,14 +4,8 @@ import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
 const styles = {
-  header: {
-    width: "16px",
-    height: "16px",
-    fill: "white"
-  },
-  menu: {
-    width: "11px",
-    height: "11px"
+  common: {
+    width: 16
   }
 };
 
@@ -22,12 +16,11 @@ class Plus extends PureComponent<Props> {
     color: "currentColor"
   };
   render() {
-    const { color, type, classes, ...props } = this.props;
+    const { color, className, classes } = this.props;
     return (
       <svg
         viewBox="0 0 30 30"
-        className={classnames(classes.common, classes[type])}
-        {...props}
+        className={classnames(classes.common, className)}
       >
         <polygon
           fill={color}

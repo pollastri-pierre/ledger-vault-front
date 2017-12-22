@@ -76,7 +76,7 @@ function Approvalmember(props: {
         {isApproved ? (
           <ValidateBadge className={classes.validated} />
         ) : (
-          <Question className={classes.pending} />
+          <Question className={classes.pending} color="#cccccc" />
         )}
       </div>
 

@@ -25,9 +25,9 @@ export function SecurityMembersIcon() {
   return (
     <PeopleThin
       style={{
-        width: "15px",
-        fill: colors.mouse
+        width: "15px"
       }}
+      color={colors.mouse}
     />
   );
 }
@@ -36,19 +36,24 @@ export function SecurityQuorumIcon() {
   return (
     <ValidateBadge
       style={{
-        width: "12px",
-        fill: colors.mouse
+        width: "12px"
       }}
+      color={colors.mouse}
     />
   );
 }
 
 export function SecurityRateLimiterIcon() {
-  return <RatesThin style={{ width: "13px", fill: colors.mouse }} />;
+  return <RatesThin style={{ width: "13px" }} color={colors.mouse} />;
 }
 
 export function SecurityTimelockIcon() {
-  return <HourglassThin style={{ width: "12px", fill: colors.mouse }} />;
+  return (
+    <HourglassThin
+      style={{ width: "12px", strokeWidth: "2px" }}
+      color={colors.mouse}
+    />
+  );
 }
 
 export function PlugIcon(props: *) {
@@ -83,40 +88,21 @@ export function TrashIcon(props: *) {
 export function BigSecurityTimeLockIcon() {
   return (
     <HourglassThin
-      style={{ width: "28px", height: "30px", stroke: colors.mouse }}
+      style={{ width: "28px", height: "30px" }}
+      color={colors.mouse}
     />
   );
 }
 
 export function BigSecurityMembersIcon() {
-  return <Profile security grey style={{ width: "26px", height: "30px" }} />;
-}
-
-export function MenuNewOperationIcon(props: *) {
-  return <Plus type="menu" />;
-}
-
-export function ActionAddAccountIcon() {
-  return <Plus type="header" />;
-}
-
-export function ActionExportIcon() {
-  return <Share type="white" />;
-}
-export function ActionSettingsIcon() {
-  return <Settings type="white" />;
-}
-
-export function ActionActivityIcon() {
-  return <Bell type="white" />;
+  return (
+    <Profile style={{ width: "26px", height: "30px" }} color={colors.mouse} />
+  );
 }
 
 export function BigSecurityRateLimiterIcon(props: Props) {
   return (
-    <RatesThin
-      stroke={colors.mouse}
-      style={{ width: "25px", height: "30px" }}
-    />
+    <RatesThin color={colors.mouse} style={{ width: "25px", height: "30px" }} />
   );
 }
 export function BigSecurityAutoExpireIcon(props: Props) {

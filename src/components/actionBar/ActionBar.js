@@ -9,12 +9,10 @@ import AccountCreation from "../accounts/creation/AccountCreation";
 import colors from "../../shared/colors";
 import SettingsModal from "../SettingsModal";
 import { withStyles } from "material-ui/styles";
-import {
-  ActionAddAccountIcon,
-  ActionExportIcon,
-  ActionSettingsIcon,
-  ActionActivityIcon
-} from "../icons";
+import Plus from "../icons/full/Plus";
+import Share from "../icons/full/Share";
+import Settings from "../icons/full/Settings";
+import Bell from "../icons/full/Bell";
 
 const styles = {
   base: {
@@ -47,15 +45,20 @@ const styles = {
         opacity: "1"
       }
     }
+  },
+  icon: {
+    width: 16,
+    fill: "white",
+    marginBottom: 5
   }
 };
 
-const NewAccountLink = () => (
+const NewAccountLink = withStyles(styles)(({ classes }) => (
   <Link to="/dashboard/new-account">
-    <ActionAddAccountIcon type="white" />
+    <Plus className={classes.icon} />
     <div className="content-header-button-text">account</div>
   </Link>
-);
+));
 
 class Logo extends PureComponent<*> {
   n = -9;
@@ -108,7 +111,7 @@ class ActionBar extends Component<{
           <div className={classes.actions}>
             <Route path="/dashboard" component={NewAccountLink} />
             <Link to="/export">
-              <ActionExportIcon />
+              <Share className={classes.icon} />
               <div className="content-header-button-text">
                 {t("actionBar.export")}
               </div>
@@ -117,13 +120,13 @@ class ActionBar extends Component<{
               to={location.pathname + "/settings"}
               className="content-header-button"
             >
-              <ActionSettingsIcon />
+              <Settings className={classes.icon} />
               <div className="content-header-button-text">
                 {t("actionBar.settings")}
               </div>
             </Link>
             <Link to="/activity" className="content-header-button">
-              <ActionActivityIcon />
+              <Bell className={classes.icon} />
               <div className="content-header-button-text">
                 {t("actionBar.activity")}
               </div>
