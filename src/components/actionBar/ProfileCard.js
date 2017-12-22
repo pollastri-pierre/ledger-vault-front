@@ -13,6 +13,8 @@ import connectData from "../../restlay/connectData";
 import { withStyles } from "material-ui/styles";
 import { mixinHoverSelected } from "../../shared/common";
 import ProfileQuery from "../../api/queries/ProfileQuery";
+import { MenuList } from "material-ui/Menu";
+import MenuLink from "../MenuLink";
 
 const styles = {
   base: {
@@ -57,8 +59,16 @@ const styles = {
     bottom: "0",
     lineHeight: "1em",
     transition: "opacity .2s ease"
+  },
+  link: {
+    color: "black",
+    textTransform: "uppercase"
+  },
+  popover: {
+    paddingLeft: 0
   }
 };
+
 class ProfileCard extends Component<
   {
     profile: Member,
@@ -122,17 +132,24 @@ class ProfileCard extends Component<
 
         <PopBubble
           className="MuiPopover-triangle-left"
+          classes={{ paper: classes.popover }}
           style={{ marginLeft: "50px" }}
           anchorEl={this.anchorEl}
           open={bubbleOpened}
           onClose={this.onCloseBubble}
           direction="left"
         >
-          <div className="profile-bubble" onClick={this.onCloseBubble}>
-            <Link to={location.pathname + "/profile-edit"}>
-              {t("actionBar.editProfile")}
-            </Link>
-            <Link to="/logout">{t("actionBar.logOut")}</Link>
+          <div onClick={this.onCloseBubble}>
+            <MenuList>
+              <MenuLink to={location.pathname + "/profile-edit"}>
+                <span className={classes.link}>
+                  {t("actionBar.editProfile")}
+                </span>
+              </MenuLink>
+              <MenuLink to="/logout">
+                <span className={classes.link}>{t("actionBar.logOut")}</span>
+              </MenuLink>
+            </MenuList>
           </div>
         </PopBubble>
 
