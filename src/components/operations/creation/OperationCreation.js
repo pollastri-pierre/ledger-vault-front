@@ -1,24 +1,78 @@
+//@flow
 import React, { Component } from "react";
-import _ from "lodash";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import { DialogButton, Overscroll } from "../../";
+import { withStyles } from "material-ui/styles";
+import Tabs, { Tab } from "material-ui/Tabs";
+import DialogButton from "../../buttons/DialogButton";
+import Overscroll from "../../utils/Overscroll";
 import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
 import OperationCreationConfirmation from "./OperationCreationConfirmation";
+import type { Account } from "../../../data/types";
+import type { Details } from "../../NewOperationModal";
 
-class OperationCreation extends Component<*> {
+const styles = {
+  root: {
+    width: 445,
+    height: 612,
+    display: "flex",
+    flexDirection: "column"
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 400,
+    color: "black",
+    margin: 0,
+    padding: 40,
+    paddingBottom: 20
+  },
+  tabs: {
+    padding: "0 40px",
+    zIndex: 2
+  },
+  content: {
+    height: 520,
+    paddingTop: 40,
+    paddingBottom: 72
+  },
+  footer: {
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    width: "100%",
+    padding: "0 40px"
+  }
+};
+
+const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
+
+class OperationCreation extends Component<{
+  close: () => void,
+  tabsIndex: number,
+  save: () => void,
+  accounts: Account[],
+  onTabsChange: number => void,
+  selectedAccount: Account,
+  selectAccount: Account => void,
+  details: Details,
+  saveDetails: Object => void,
+  classes: { [_: $Keys<typeof styles>]: string }
+}> {
+  onTabChange = (e, value: number) => {
+    this.props.onTabsChange(value);
+  };
   render() {
     const {
       close,
-      onSelect,
       tabsIndex,
       save,
       accounts,
       selectedAccount,
       selectAccount,
       details,
-      saveDetails
+      saveDetails,
+      onTabsChange,
+      classes
     } = this.props;
 
     const disabledTabs = [
@@ -28,68 +82,72 @@ class OperationCreation extends Component<*> {
       !details.amount || !details.address || !details.fees // tab 3
     ];
 
-    return (
-      <Tabs
-        className="operation-creation-main modal wrapper"
-        selectedIndex={tabsIndex}
-        onSelect={onSelect}
-      >
-        <div>
-          <header>
-            <h2>New operation</h2>
-            <TabList>
-              <Tab> 1. Account </Tab>
-              <Tab disabled={disabledTabs[1]}>2. Details</Tab>
-              <Tab disabled={disabledTabs[2]}>3. Label</Tab>
-              <Tab disabled={disabledTabs[3]}>4. Confirmation</Tab>
-            </TabList>
-          </header>
-          <div className="content">
-            <TabPanel className="tabs_panel">
-              <Overscroll>
-                {accounts && accounts.length > 0 ? (
-                  <OperationCreationAccounts
-                    accounts={accounts}
-                    onSelect={selectAccount}
-                    selectedAccount={selectedAccount}
-                  />
-                ) : (
-                  false
-                )}
-              </Overscroll>
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <OperationCreationDetails
-                account={selectedAccount}
-                details={details}
-                saveDetails={saveDetails}
+    let content;
+    switch (tabsIndex) {
+      case 0:
+        content = (
+          <Overscroll top={40} bottom={72} paddingX={0}>
+            {accounts && accounts.length > 0 ? (
+              <OperationCreationAccounts
+                accounts={accounts}
+                onSelect={selectAccount}
+                selectedAccount={selectedAccount}
               />
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <Overscroll>
-                <OperationCreationLabel />
-              </Overscroll>
-            </TabPanel>
-            <TabPanel className="tabs_panel">
-              <Overscroll>
-                <OperationCreationConfirmation
-                  account={selectedAccount}
-                  details={details}
-                />
-              </Overscroll>
-            </TabPanel>
-          </div>
-        </div>
-        <div className="footer">
-          <DialogButton className="cancel" highlight onTouchTap={close}>
-            Cancel
-          </DialogButton>
-          {_.includes([0, 1, 2], tabsIndex) ? (
+            ) : (
+              false
+            )}
+          </Overscroll>
+        );
+        break;
+      case 1:
+        content = (
+          <OperationCreationDetails
+            account={selectedAccount}
+            details={details}
+            saveDetails={saveDetails}
+          />
+        );
+        break;
+      case 2:
+        content = (
+          <Overscroll top={40} bottom={72} paddingX={0}>
+            <OperationCreationLabel />
+          </Overscroll>
+        );
+        break;
+      case 3:
+        content = (
+          <Overscroll top={40} bottom={72} paddingX={0}>
+            <OperationCreationConfirmation
+              account={selectedAccount}
+              details={details}
+            />
+          </Overscroll>
+        );
+        break;
+    }
+
+    return (
+      <div className={classes.root}>
+        <h2 className={classes.title}>New operation</h2>
+        <Tabs
+          className={classes.tabs}
+          value={tabsIndex}
+          onChange={this.onTabChange}
+        >
+          {tabTitles.map((title, i) => (
+            <Tab key={i} disabled={disabledTabs[i]} label={title} />
+          ))}
+        </Tabs>
+        <div className={classes.content}>{content}</div>
+        <div className={classes.footer}>
+          <DialogButton onTouchTap={close}>Cancel</DialogButton>
+          {tabsIndex <= 2 ? (
             <DialogButton
               highlight
               right
               disabled={disabledTabs[tabsIndex + 1]}
-              onTouchTap={() => onSelect(tabsIndex + 1)}
+              onTouchTap={() => onTabsChange(tabsIndex + 1)}
             >
               Continue
             </DialogButton>
@@ -99,9 +157,9 @@ class OperationCreation extends Component<*> {
             </DialogButton>
           )}
         </div>
-      </Tabs>
+      </div>
     );
   }
 }
 
-export default OperationCreation;
+export default withStyles(styles)(OperationCreation);

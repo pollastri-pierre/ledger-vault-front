@@ -1,64 +1,44 @@
-import _ from "lodash";
-import PropTypes from "prop-types";
+//@flow
 import React from "react";
-import CurrencyAccountValue from "../../CurrencyAccountValue";
-import CurrencyUnitValue from "../../CurrencyUnitValue";
-import { countervalueForRate } from "../../../data/currency";
+import { MenuList } from "material-ui/Menu";
+import { withStyles } from "material-ui/styles";
+import AccountMenuItem from "./AccountMenuItem";
+import type { Account } from "../../../data/types";
 
-function OperationCreationAccounts(props) {
-  const { accounts, selectedAccount, onSelect } = props;
+const styles = {
+  tabTitle: {
+    padding: "0 40px",
+    marginBottom: 20,
+    fontSize: 12,
+    fontWeight: 600,
+    color: "black",
+    textTransform: "uppercase"
+  }
+};
+
+function OperationCreationAccounts(props: {
+  accounts: Account[],
+  selectedAccount: ?Account,
+  onSelect: Account => void,
+  classes: { [_: $Keys<typeof styles>]: string }
+}) {
+  const { accounts, selectedAccount, onSelect, classes } = props;
 
   return (
-    <div className="operation-creation-accounts wrapper">
-      <div className="tab-title">Account to debit</div>
-      {_.map(accounts, cur => {
-        const counterValueUnit = countervalueForRate(
-          cur.currencyRate,
-          cur.balance
-        );
-
-        return (
-          <div
-            onClick={() => onSelect(cur)}
-            role="button"
-            tabIndex="0"
-            key={cur.id}
-            className={`operation-creation-account
-            ${cur.currency.name
-              .split(" ")
-              .join("-")
-              .toLowerCase()}
-            ${selectedAccount && selectedAccount.id === cur.id
-              ? "selected"
-              : ""}`}
-          >
-            <div className="account-top">
-              <span className="account-name">{cur.name}</span>
-              <span className="account-balance">
-                <CurrencyAccountValue account={cur} value={cur.balance} />
-              </span>
-            </div>
-            <div className="account-botom">
-              <span className="account-currency">{cur.currency.name}</span>
-              <span className="account-countervalue">
-                <CurrencyUnitValue {...counterValueUnit} />
-              </span>
-            </div>
-          </div>
-        );
-      })}
+    <div>
+      <div className={classes.tabTitle}>Account to debit</div>
+      <MenuList>
+        {accounts.map(account => (
+          <AccountMenuItem
+            key={account.id}
+            onSelect={onSelect}
+            account={account}
+            selected={selectedAccount && selectedAccount.id === account.id}
+          />
+        ))}
+      </MenuList>
     </div>
   );
 }
 
-OperationCreationAccounts.defaultProps = {
-  selectedAccount: {}
-};
-
-OperationCreationAccounts.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  accounts: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedAccount: PropTypes.shape({})
-};
-
-export default OperationCreationAccounts;
+export default withStyles(styles)(OperationCreationAccounts);

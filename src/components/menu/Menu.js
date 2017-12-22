@@ -7,11 +7,7 @@ import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import ModalRoute from "../ModalRoute";
-import common from "../../../src/shared/common";
 import { withStyles } from "material-ui/styles";
-import classnames from "classnames";
-import colors from "../../../src/shared/colors";
-import { mixinHoverSelected } from "../../../src/shared/common";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";

@@ -73,7 +73,7 @@ const theme = {
     MuiMenuItem: {
       root: {
         fontSize: 11,
-        fontWeight: 600,
+        fontWeight: 600, // FIXME bad idea, this should be opt-in
         opacity: 0.5,
         "&:hover": {
           backgroundColor: "transparent",
