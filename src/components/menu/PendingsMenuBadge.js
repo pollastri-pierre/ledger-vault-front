@@ -7,7 +7,7 @@ import { withStyles } from "material-ui/styles";
 
 const styles = {
   base: {
-    background: "red",
+    background: "#ea2e49", // FIXME use theme
     position: "absolute",
     right: "0",
     top: "0",
@@ -15,7 +15,7 @@ const styles = {
     color: "white",
     padding: "0 .6em",
     borderRadius: "1em",
-    fontSize: "11px",
+    fontSize: 11,
     fontWeight: "600"
   }
 };

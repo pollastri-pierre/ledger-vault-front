@@ -1,4 +1,7 @@
 //@flow
+
+// FIXME drop this file. we should directly import the font we need. also the global className are to be removed
+
 import React from "react";
 import Profile from "./thin/Profile";
 import PeopleThin from "./thin/People";
@@ -89,17 +92,6 @@ export function BigSecurityMembersIcon() {
   return <Profile security grey style={{ width: "26px", height: "30px" }} />;
 }
 
-export function MenuDashboardIcon() {
-  return <Home type="black" />;
-}
-
-export function MenuPendingIcon() {
-  return <Lines type="black" />;
-}
-
-export function MenuSearchIcon() {
-  return <Search type="black" />;
-}
 export function MenuNewOperationIcon(props: *) {
   return <Plus type="menu" />;
 }

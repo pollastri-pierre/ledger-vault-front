@@ -1,7 +1,8 @@
 //@flow
 import React from "react";
 import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import { MenuList } from "material-ui/Menu";
+import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
@@ -12,58 +13,47 @@ import classnames from "classnames";
 import colors from "../../../src/shared/colors";
 import { mixinHoverSelected } from "../../../src/shared/common";
 
-import {
-  MenuDashboardIcon,
-  MenuPendingIcon,
-  MenuSearchIcon,
-  MenuNewOperationIcon
-} from "../icons";
+import Home from "../icons/full/Home";
+import Lines from "../icons/full/Lines";
+import Search from "../icons/full/Search";
+import Plus from "../icons/full/Plus";
 
 const styles = {
-  base: {
+  root: {
+    position: "relative",
     width: "280px",
     float: "left",
-    padding: "25px 35px 0 0",
-    "& ul": {
-      ...common.list
-    }
+    padding: "25px 35px 0 0"
   },
-  base_menu: {
-    "& li": {
-      margin: "10px 0",
-      height: "18.5px",
-      position: "relative"
-    },
-    "& a": {
-      fontWeight: "600",
-      color: "black",
-      paddingLeft: "40px",
-      display: "block",
-      textDecoration: "none",
-      textTransform: "uppercase"
-    }
-  },
-  main_menu: {
-    "& a": {
-      ...mixinHoverSelected(colors.ocean, "0"),
-      fontSize: "11px"
-    }
+  link: {
+    color: "black",
+    textTransform: "uppercase"
   },
   icon: {
+    width: 11,
     marginRight: "12px",
     verticalAlign: "baseline"
   },
-  menu_accounts: {
+  searchIcon: {
+    width: 9,
+    marginRight: "14px"
+  },
+  pendingMenuBadge: {
+    position: "absolute",
+    right: 40,
+    top: 90,
+    pointerEvents: "none"
+  },
+  h4: {
     color: "black",
-    fontSize: "11px",
-    fontWeight: "600",
-    marginBottom: "20px",
-    marginTop: "40px",
-    marginLeft: "40px",
+    fontSize: 11,
+    fontWeight: 600,
+    marginBottom: 20,
+    marginTop: 40,
+    marginLeft: 40,
     textTransform: "uppercase"
   }
 };
-
 function Menu(
   props: {
     location: Object,
@@ -76,47 +66,42 @@ function Menu(
   const { location, classes } = props;
   const t = context.translate;
   return (
-    <div className={classes.base}>
-      <ul className={classnames(classes.base_menu, classes.main_menu)}>
-        <li>
-          <NavLink to="/dashboard">
-            <span className={classes.icon}>
-              <MenuDashboardIcon />
-            </span>
-            {t("menu.dashboard")}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to={location.pathname + "/new-operation"}>
-            <span className={classes.icon}>
-              <MenuNewOperationIcon />
-            </span>
-            {t("menu.newOperation")}
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/pending">
-            <span className={classes.icon}>
-              <MenuPendingIcon />
-            </span>
-            {t("menu.pendingRequests")}
-          </NavLink>{" "}
-          <PendingsMenuBadge />
-        </li>
-        <li>
-          <NavLink to="/search">
-            <span className={classes.icon}>
-              <MenuSearchIcon />
-            </span>
-            {t("menu.search")}
-          </NavLink>
-        </li>
-      </ul>
+    <div className={"Menu " + classes.root}>
+      {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
+      <span className={classes.pendingMenuBadge}>
+        <PendingsMenuBadge />
+      </span>
 
-      <div className={classes.base_menu}>
-        <h4 className={classes.menu_accounts}>Accounts</h4>
-        <AccountsMenu location={location} />
-      </div>
+      <MenuList>
+        <MenuLink to="/dashboard">
+          <span className={classes.link}>
+            <Home className={classes.icon} />
+            {t("menu.dashboard")}
+          </span>
+        </MenuLink>
+        <MenuLink to={location.pathname + "/new-operation"}>
+          <span className={classes.link}>
+            <Plus className={classes.icon} />
+            {t("menu.newOperation")}
+          </span>
+        </MenuLink>
+        <MenuLink to="/pending">
+          <span className={classes.link}>
+            <Lines className={classes.icon} />
+            {t("menu.pendingRequests")}
+          </span>
+        </MenuLink>
+        <MenuLink to="/search">
+          <span className={classes.link}>
+            <Search className={classes.searchIcon} />
+            {t("menu.search")}
+          </span>
+        </MenuLink>
+      </MenuList>
+
+      <h4 className={classes.h4}>Accounts</h4>
+
+      <AccountsMenu location={location} />
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
     </div>

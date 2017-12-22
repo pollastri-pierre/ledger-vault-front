@@ -82,6 +82,9 @@ const theme = {
         "&:focus": {
           backgroundColor: "transparent",
           opacity: 1
+        },
+        ".MuiListItem-ticker-right &": {
+          justifyContent: "flex-end"
         }
       },
       selected: {
@@ -95,6 +98,10 @@ const theme = {
       }
     },
     MuiListItem: {
+      default: {
+        paddingTop: 2,
+        paddingBottom: 2
+      },
       button: {
         "&:hover": {
           backgroundColor: "transparent"
