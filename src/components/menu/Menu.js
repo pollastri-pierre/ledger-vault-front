@@ -52,8 +52,8 @@ const styles = {
 };
 function Menu(
   props: {
-    location: Object,
-    classes: Object
+    location: *,
+    classes: { [_: $Keys<typeof styles>]: string }
   },
   context: {
     translate: Function

@@ -127,13 +127,17 @@ class OperationCreation extends Component<{
       <div className={classes.root}>
         <h2 className={classes.title}>New operation</h2>
         <Tabs
-          disableRipple
           className={classes.tabs}
           value={tabsIndex}
           onChange={this.onTabChange}
         >
           {tabTitles.map((title, i) => (
-            <Tab key={i} disabled={disabledTabs[i]} label={title} />
+            <Tab
+              disableRipple
+              key={i}
+              disabled={disabledTabs[i]}
+              label={title}
+            />
           ))}
         </Tabs>
         <div className={classes.content}>{content}</div>

@@ -1,34 +1,21 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
 import { MenuList } from "material-ui/Menu";
-import { withStyles } from "material-ui/styles";
 import AccountMenuItem from "./AccountMenuItem";
+import ModalSubTitle from "./ModalSubTitle";
 import type { Account } from "../../../data/types";
-
-const styles = {
-  tabTitle: {
-    padding: "0 40px",
-    marginBottom: 20,
-    fontSize: 12,
-    fontWeight: 600,
-    color: "black",
-    textTransform: "uppercase"
-  }
-};
 
 const OperationCreationAccounts = ({
   accounts,
   selectedAccount,
-  onSelect,
-  classes
+  onSelect
 }: {
   accounts: Account[],
   selectedAccount: ?Account,
-  onSelect: Account => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  onSelect: Account => void
 }) => (
-  <div>
-    <div className={classes.tabTitle}>Account to debit</div>
+  <Fragment>
+    <ModalSubTitle>Account to debit</ModalSubTitle>
     <MenuList>
       {accounts.map(account => (
         <AccountMenuItem
@@ -39,7 +26,7 @@ const OperationCreationAccounts = ({
         />
       ))}
     </MenuList>
-  </div>
+  </Fragment>
 );
 
-export default withStyles(styles)(OperationCreationAccounts);
+export default OperationCreationAccounts;

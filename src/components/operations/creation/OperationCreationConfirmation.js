@@ -1,11 +1,23 @@
 //@flow
 import React from "react";
+import { withStyles } from "material-ui/styles";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
-
 import type { Account } from "../../../data/types";
+
+const styles = {
+  root: {
+    padding: "0 40px"
+  },
+  warningMsg: {
+    fontSize: "11px",
+    color: "#767676",
+    lineHeight: "1.82",
+    marginTop: "30px"
+  }
+};
 
 function OperationCreationConfirmation(props: {
   details: {
@@ -13,18 +25,19 @@ function OperationCreationConfirmation(props: {
     fees: number,
     address: string
   },
-  account: Account
+  account: Account,
+  classes: { [_: $Keys<typeof styles>]: string }
 }) {
-  const { details, account } = props;
+  const { details, account, classes } = props;
   return (
-    <div>
+    <div className={classes.root}>
       <OverviewOperation
         hash={details.address}
         amount={details.amount}
         account={account}
         rate={account.currencyRate}
       />
-      <div className="operation-list">
+      <div>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
@@ -44,15 +57,7 @@ function OperationCreationConfirmation(props: {
           />
         </LineRow>
       </div>
-      <div
-        className="operation-creation-confirmation-warning"
-        style={{
-          fontSize: "11px",
-          color: "#767676",
-          lineHeight: "1.82",
-          marginTop: "30px"
-        }}
-      >
+      <div style={classes.warningMsg}>
         A new operation request will be created. Funds will not be spent until
         the security scheme of the account is satisfied
       </div>
@@ -60,4 +65,4 @@ function OperationCreationConfirmation(props: {
   );
 }
 
-export default OperationCreationConfirmation;
+export default withStyles(styles)(OperationCreationConfirmation);
