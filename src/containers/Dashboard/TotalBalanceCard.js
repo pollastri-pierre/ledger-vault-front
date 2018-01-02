@@ -8,7 +8,6 @@ import EvolutionSince, {
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import "./TotalBalanceCard.css";
 import { MenuItem } from "material-ui/Menu";
 import BlueSelect from "../../components/BlueSelect";
 import TryAgain from "../../components/TryAgain";
