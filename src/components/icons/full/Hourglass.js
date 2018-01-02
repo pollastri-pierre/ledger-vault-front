@@ -3,17 +3,18 @@ import React, { PureComponent } from "react";
 import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 
-type Props = {
-  className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
-};
-
 const styles = {
   default: {
     width: 12,
     fill: "currentColor"
   }
 };
+
+type Props = {
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+
 class HourglassFull extends PureComponent<Props> {
   render() {
     const { classes, className } = this.props;

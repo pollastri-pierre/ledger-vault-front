@@ -14,12 +14,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
 import { withStyles } from "material-ui/styles";
 
-type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
-  accountId: string,
-  account: Account
-};
-
 type State = {
   tabsIndex: number,
   quicklookFilter: { title: string, key: string },
@@ -44,6 +38,12 @@ const styles = {
     height: "403px",
     width: "380px"
   }
+};
+
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  accountId: string,
+  account: Account
 };
 
 const quicklookFilters: Array<Filter> = [

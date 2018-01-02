@@ -15,6 +15,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(addMessage(title, content, type))
 });
 
+const styles = {
+  base: {
+    ...modals.base
+  }
+};
+
 type Props = {
   setRatelimiter: Function,
   switchInternalModal: string => void,
@@ -30,11 +36,6 @@ type State = {
   classes: Object
 };
 
-const styles = {
-  base: {
-    ...modals.base
-  }
-};
 class AccountCreationRateLimiter extends Component<Props, State> {
   constructor(props) {
     super(props);

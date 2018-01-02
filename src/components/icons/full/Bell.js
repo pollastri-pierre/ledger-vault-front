@@ -3,18 +3,19 @@ import React, { PureComponent } from "react";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
-type Props = {
-  color: string,
-  className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
-};
-
 const styles = {
   common: {
     height: "13px",
     width: "16px"
   }
 };
+
+type Props = {
+  color: string,
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+
 class Bell extends PureComponent<Props> {
   static defaultProps = {
     color: "currentColor"
