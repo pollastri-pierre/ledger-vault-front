@@ -43,6 +43,7 @@ const stylesOptions = {
 class Option_c<T> extends Component<{
   children: string | React$Node,
   value: T, // data to attach to the option that will be passed to onChange
+  classes: { [_: $Keys<typeof styles>]: string },
   selected?: boolean
 }> {
   context: {
@@ -81,6 +82,7 @@ const styleSelect = {
 };
 class Select_c<T> extends Component<
   {
+    classes: { [_: $Keys<typeof styles>]: string },
     onChange: (value: T) => void,
     children: React$Node,
     theme: "blue" | "black"

@@ -58,7 +58,8 @@ class AccountCreationCurrencies extends Component<{
   render() {
     const { props } = this;
     const { currencies, currency, onSelect, classes } = props;
-    console.log("currency prop not used yet: ", currency); // TODO migrate to use material-ui MenuList
+    // TODO migrate to use material-ui MenuList
+    console.log("currency prop not used yet: ", currency); // eslint-disable-line no-console
     return (
       <div className={classes.base}>
         {currencies.map(cur => (

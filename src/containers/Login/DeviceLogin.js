@@ -76,6 +76,7 @@ const styles = {
   }
 };
 class DeviceLogin extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   onCancel: Function,
   team: string
 }> {

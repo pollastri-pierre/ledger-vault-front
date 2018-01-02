@@ -1,3 +1,4 @@
+// @flow
 import colors from "./colors";
 
 const common = {

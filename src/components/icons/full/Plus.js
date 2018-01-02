@@ -9,7 +9,11 @@ const styles = {
   }
 };
 
-type Props = { color: string };
+type Props = {
+  color: string,
+  classes: { [_: $Keys<typeof styles>]: string },
+  className: string
+};
 
 class Plus extends PureComponent<Props> {
   static defaultProps = {

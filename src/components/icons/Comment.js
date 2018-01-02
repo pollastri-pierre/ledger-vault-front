@@ -10,7 +10,11 @@ const style = {
   }
 };
 
-function Comment({ classes }) {
+function Comment({
+  classes
+}: {
+  classes: { [_: $Keys<typeof styles>]: string }
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

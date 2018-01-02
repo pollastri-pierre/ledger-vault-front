@@ -46,11 +46,7 @@ export default class QRCodeCameraPickerBubble extends Component<
           height={11}
           color="#cccccc"
         />
-        <PopBubble
-          anchorEl={this.ref}
-          open={isOpen}
-          onClose={this.close}
-        >
+        <PopBubble anchorEl={this.ref} open={isOpen} onClose={this.close}>
           {isOpen ? <QRCodeCameraPickerContent onPick={this.onPick} /> : null}
         </PopBubble>
       </span>

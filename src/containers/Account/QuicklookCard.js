@@ -15,6 +15,7 @@ import connectData from "../../restlay/connectData";
 import { withStyles } from "material-ui/styles";
 
 type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
   accountId: string,
   account: Account
 };

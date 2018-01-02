@@ -31,7 +31,7 @@ const styles = {
 
 class AccountOption extends Component<{
   account: Account,
-  classes: *
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { account, classes, ...rest } = this.props;

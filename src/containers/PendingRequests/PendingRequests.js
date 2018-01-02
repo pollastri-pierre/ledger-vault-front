@@ -42,6 +42,7 @@ const styles = {
 };
 
 class PendingRequests extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   accounts: Account[],
   pendingRequests: PendingRequestsQueryResponse,
   approversAccount: Member[],

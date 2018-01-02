@@ -27,6 +27,7 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
+  classes: { [_: $Keys<typeof styles>]: string },
   match: *
 };
 

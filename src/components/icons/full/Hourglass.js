@@ -3,7 +3,10 @@ import React, { PureComponent } from "react";
 import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 
-type Props = { className: string };
+type Props = {
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
 
 const styles = {
   default: {

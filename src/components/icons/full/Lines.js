@@ -12,7 +12,7 @@ const styles = {
   }
 };
 
-type Props = { color: string };
+type Props = { color: string, classes: { [_: $Keys<typeof styles>]: string } };
 
 class Lines extends PureComponent<Props> {
   static defaultProps = {

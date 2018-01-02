@@ -11,6 +11,7 @@ import colors from "../../shared/colors";
 import QRCode from "../../components/QRCode";
 
 type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   accountId: string
 };

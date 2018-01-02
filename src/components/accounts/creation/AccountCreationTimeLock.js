@@ -19,6 +19,7 @@ type Props = {
   switchInternalModal: Function,
   timelock: Object,
   setTimelock: Function,
+  classes: { [_: $Keys<typeof styles>]: string },
   onAddMessage: (t: string, m: string, ty: string) => void
 };
 
@@ -148,11 +149,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "minutes",
                         value: 60
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "minutes"
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      timelock.frequency.label === "minutes" ? "active" : ""
+                    }`}
                   >
                     minutes
                   </div>
@@ -163,11 +164,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "hours",
                         value: 3600
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "hours"
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      timelock.frequency.label === "hours" ? "active" : ""
+                    }`}
                   >
                     hours
                   </div>
@@ -178,11 +179,11 @@ class AccountCreationTimeLock extends Component<Props, State> {
                       this.changeFrequency({
                         label: "days",
                         value: 84600
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "days"
-                      ? "active"
-                      : ""}`}
+                      })
+                    }
+                    className={`frequency-bubble-row ${
+                      timelock.frequency.label === "days" ? "active" : ""
+                    }`}
                   >
                     days
                   </div>

@@ -38,6 +38,7 @@ const styles = {
   }
 };
 export class TeamLogin extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   onChange: Function,
   onStartAuth: Function,
   onCloseTeamError: Function,

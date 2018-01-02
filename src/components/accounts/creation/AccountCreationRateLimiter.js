@@ -19,6 +19,7 @@ type Props = {
   setRatelimiter: Function,
   switchInternalModal: string => void,
   rate_limiter: Object,
+  classes: { [_: $Keys<typeof styles>]: string },
   onAddMessage: (t: string, m: string, ty: string) => void
 };
 

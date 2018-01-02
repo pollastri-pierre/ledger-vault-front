@@ -9,7 +9,8 @@ type Props = {
   labelFor: string,
   checked: boolean,
   handleInputChange?: (checked: boolean) => void,
-  classes: Object
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 const styles = {
   base: {

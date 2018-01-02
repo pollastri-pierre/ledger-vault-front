@@ -3,7 +3,11 @@ import React, { PureComponent } from "react";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
-type Props = { color: string, className: string };
+type Props = {
+  color: string,
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
 
 const styles = {
   common: {

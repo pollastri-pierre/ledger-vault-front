@@ -64,7 +64,7 @@ export function PlugIcon(props: *) {
   );
 }
 
-export function TrashIcon(props: *) {
+export function TrashIcon() {
   return (
     <Trash
       style={{
@@ -93,7 +93,7 @@ export function BigSecurityMembersIcon() {
   );
 }
 
-export function BigSecurityRateLimiterIcon(props: Props) {
+export function BigSecurityRateLimiterIcon() {
   return (
     <RatesThin color={colors.mouse} style={{ width: "25px", height: "30px" }} />
   );
