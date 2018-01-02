@@ -16,6 +16,7 @@ import modals from "../../shared/modals";
 
 type Props = {
   close: Function,
+  classes: Object,
   tabIndex: number,
   // injected by decorators:
   operationWithAccount: {
@@ -34,7 +35,7 @@ const styles = {
   }
 };
 
-class OperationDetails extends Component<Props> {
+class OperationDetails extends Component<Props, *> {
   contentNode: *;
   state = {
     value: 0
@@ -48,8 +49,7 @@ class OperationDetails extends Component<Props> {
     const {
       operationWithAccount: { operation, account },
       close,
-      classes,
-      tabIndex
+      classes
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;

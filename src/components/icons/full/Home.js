@@ -1,5 +1,4 @@
 //@flow
-import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 import React, { PureComponent } from "react";
 
@@ -13,7 +12,10 @@ const styles = {
   }
 };
 
-type Props = { color: string };
+type Props = {
+  color: string,
+  classes: Object
+};
 
 class Home extends PureComponent<Props> {
   static defaultProps = {

@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import AccountName from "./AccountName";
 import type { Account } from "../data/types";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";

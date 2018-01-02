@@ -9,13 +9,6 @@ import ValidateBadge from "./full/ValidateBadge";
 import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import Trash from "./thin/Trash";
-import Home from "./full/Home";
-import Plus from "./full/Plus";
-import Lines from "./full/Lines";
-import Bell from "./full/Bell";
-import Settings from "./full/Settings";
-import Share from "./full/Share";
-import Search from "./full/Search";
 import HourglassThin from "./thin/Hourglass";
 import ClockThin from "./thin/Clock";
 

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import type { Member } from "../../data/types";
 import ProfileEditModal from "../ProfileEditModal";
 import ModalRoute from "../ModalRoute";
-import { Link } from "react-router-dom";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/Progress/CircularProgress";

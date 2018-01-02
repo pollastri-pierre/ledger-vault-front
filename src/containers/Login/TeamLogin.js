@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TextField, DialogButton } from "../../components";
+import { DialogButton } from "../../components";
 import { withStyles } from "material-ui/styles";
 import Profile from "../../components/icons/thin/Profile";
 import MUITextField from "material-ui/TextField";

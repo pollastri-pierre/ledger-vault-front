@@ -5,7 +5,6 @@ import { withStyles } from "material-ui/styles";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 import connectData from "../../restlay/connectData";
-import { mixinHoverSelected } from "../../../src/shared/common";
 import AccountsQuery from "../../api/queries/AccountsQuery";
 
 const styles = {

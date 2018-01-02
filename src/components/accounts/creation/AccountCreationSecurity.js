@@ -7,8 +7,7 @@ import { withStyles } from "material-ui/styles";
 import {
   SecurityMembersIcon,
   SecurityQuorumIcon,
-  SecurityRateLimiterIcon,
-  SecurityTimelockIcon
+  SecurityRateLimiterIcon
 } from "../../icons";
 
 import HourglassFull from "../../icons/full/Hourglass";

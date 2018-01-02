@@ -2,7 +2,6 @@
 import React from "react";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
-import colors from "../../shared/colors";
 
 const styles = {
   common: {
@@ -15,7 +14,7 @@ const styles = {
     transform: "rotate(135deg)"
   }
 };
-function Arrow({ classes, type, color }) {
+function Arrow({ classes, type, color }: *) {
   const stroke = color ? color : "#000";
   return (
     <svg

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Menu, { MenuItem } from "material-ui/Menu";
 import ArrowDown from "../../icons/full/ArrowDown";
 

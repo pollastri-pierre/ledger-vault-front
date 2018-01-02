@@ -116,7 +116,6 @@ class Overscroll extends Component<{
       height: "100%",
       background: "white", // NB used to be a prop. but if we want to customize it, we also need to customize the linear-gradient
       paddingLeft: paddingX,
-      paddingRight: paddingX,
       paddingTop: paddingY,
       paddingBottom: paddingY,
       // for hiding ugly scrollbar

@@ -1,6 +1,5 @@
 //@flow
 import React, { PureComponent } from "react";
-import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
 const styles = {

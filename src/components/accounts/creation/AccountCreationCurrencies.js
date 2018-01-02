@@ -21,9 +21,8 @@ const styles = {
     opacity: "0.5",
     position: "relative",
     transition: "all 500ms ease;",
-    cursor: "pointer",
     "&:before": {
-      content: '""',
+      content: "''",
       left: "-40px",
       backgroundColor: colors.ocean,
       width: "0px",
@@ -59,6 +58,7 @@ class AccountCreationCurrencies extends Component<{
   render() {
     const { props } = this;
     const { currencies, currency, onSelect, classes } = props;
+    console.log("currency prop not used yet: ", currency); // TODO migrate to use material-ui MenuList
     return (
       <div className={classes.base}>
         {currencies.map(cur => (
