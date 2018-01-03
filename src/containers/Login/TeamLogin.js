@@ -9,30 +9,17 @@ export class TeamLogin extends Component<{
   onStartAuth: Function,
   onCloseTeamError: Function,
   isChecking: boolean,
-  team: string,
-  teamError: boolean
+  email: string,
+  error: ?Error
 }> {
   context: {
     translate: string => string
   };
-  componentDidMount() {
-    // FIXME a better way is to use a wrapping <form>, hook on onSubmit so we can catch the ENTER or any submitting other ways
-    document.addEventListener("keypress", this.confirm);
-  }
 
-  componentWillUnmount() {
-    document.removeEventListener("keypress", this.confirm);
-  }
-
-  selectTeam = () => {
-    if (this.props.team !== "" && !this.props.isChecking) {
+  onSubmit = (e: *) => {
+    e.preventDefault();
+    if (this.props.email !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
-    }
-  };
-
-  confirm = (e: *) => {
-    if (e.charCode === 13) {
-      this.selectTeam();
     }
   };
 
@@ -40,34 +27,39 @@ export class TeamLogin extends Component<{
     this.props.onCloseTeamError();
   };
 
+  onChange = (e: SyntheticEvent<*>) => {
+    this.props.onChange(e.currentTarget.value);
+  };
+
   render() {
+    const { email, error, isChecking } = this.props;
     const t = this.context.translate;
     return (
-      <div className="TeamLogin">
+      <form onSubmit={this.onSubmit} className="TeamLogin">
         <Profile className="user" color="#e2e2e2" />
         <br />
         <TextField
-          onKeyDown={this.confirm}
-          error={this.props.teamError && this.props.team !== ""}
+          error={error && email !== ""}
           style={{ width: "320px" }}
           inputProps={{ style: { textAlign: "center" } }}
-          disabled={this.props.isChecking}
-          value={this.props.team}
+          disabled={isChecking}
+          value={email}
           id="textField"
-          onChange={this.props.onChange}
+          name="email"
+          onChange={this.onChange}
           placeholder={t("login.hint")}
         />
         <br />
         <div className="instructions">{t("login.instructions")}</div>
         <DialogButton
           highlight
-          disabled={this.props.team === ""}
+          disabled={!email || isChecking}
           right
-          onTouchTap={this.selectTeam}
+          onTouchTap={this.onSubmit}
         >
           {t("common.continue")}
         </DialogButton>
-      </div>
+      </form>
     );
   }
 }

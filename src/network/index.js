@@ -1,5 +1,6 @@
 //@flow
 import fetchWithRetries from "./fetchWithRetries";
+import { getLocalStorageToken } from "../redux/modules/auth";
 
 export function NetworkError(obj: *) {
   this.name = "NetworkError";
@@ -13,7 +14,7 @@ export default function<T>(
   body: ?(Object | Array<Object>)
 ): Promise<T> {
   const headers = {
-    "X-Ledger-Auth": window.localStorage.getItem("token"),
+    "X-Ledger-Auth": getLocalStorageToken(),
     Accept: "application/json",
     "Content-Type": "application/json"
   };

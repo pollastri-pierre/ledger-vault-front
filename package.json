@@ -11,6 +11,7 @@
     "fbjs": "^0.8.16",
     "history": "^4.7.2",
     "invariant": "^2.2.2",
+    "ledgerco": "github:LedgerHQ/ledger-node-js-api#es6refactoring",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "^1.0.0-beta.24",
@@ -34,9 +35,7 @@
     "rect-crop": "0.0.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "^2.2.0",
-    "u2f-api": "0.0.9",
-    "u2f-api-polyfill": "^0.4.3"
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -56,10 +55,13 @@
     "react-test-renderer": "^16.0.0"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "build-css":
+      "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css":
+      "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
-    "start": "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
+    "start":
+      "REACT_APP_VERSION=1.2 HTTPS=true npm-run-all -p watch-css start-js",
     "build": "./scripts/build.sh",
     "test": "react-scripts test --env=jsdom",
     "coverage": "react-scripts test --env=jsdom --coverage",

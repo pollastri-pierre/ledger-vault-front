@@ -2,10 +2,10 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router";
 import { connect } from "react-redux";
-import { logoutAction } from "../../redux/modules/auth";
+import { logout } from "../../redux/modules/auth";
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logoutAction())
+  logout: () => dispatch(logout())
 });
 
 export class Logout extends Component<{

@@ -1,45 +1,40 @@
 //@flow
 import "./App/App.css";
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { registerDevice } from "../redux/modules/auth";
+import createDevice from "../device";
 import "./Login/Login.css";
 
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    register: val => dispatch(registerDevice(val))
-  };
-};
-
-class LoginTest extends Component<*, *> {
+class LoginTest extends Component<{}, { field: string }> {
   state = {
     field: ""
   };
+  device = createDevice();
 
-  onChange(event: *) {
+  onChange = (e: SyntheticEvent<*>) => {
     this.setState({
-      field: event.target.value
+      field: e.currentTarget.value
     });
-  }
+  };
+
+  onSubmit = (e: SyntheticEvent<*>) => {
+    e.preventDefault();
+    this.device.then(device => {
+      device.register(this.state.field);
+    });
+  };
 
   render() {
     return (
-      <div>
+      <form onSubmit={this.onSubmit}>
         <input
           type="text"
           value={this.state.field}
-          onChange={this.onChange.bind(this)}
+          onChange={this.onChange}
           placeholder="email address"
         />
-        <button onClick={this.props.register.bind(this, this.state.field)}>
-          register device
-        </button>
-      </div>
+        <button type="submit">register device</button>
+      </form>
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginTest);
+export default LoginTest;
