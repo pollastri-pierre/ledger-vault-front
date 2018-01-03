@@ -10,6 +10,7 @@ import type {
   Range,
   Response as Balance
 } from "../../api/queries/AccountQuicklookDataQuery";
+import { formatCurrencyUnit } from "../../data/currency";
 
 type Filter = $Keys<Balance>;
 
@@ -19,7 +20,6 @@ type Props = {
   currencyUnit: Unit,
   range: Range,
   currencyColor: string,
-  dateRange: Array<*>,
   filter: Filter
 };
 
@@ -27,23 +27,22 @@ type State = {};
 
 class Quicklook extends Component<Props, State> {
   render() {
-    const {
-      balance,
-      currencyUnit,
-      dateRange,
-      currencyColor,
-      filter
-    } = this.props;
-    const selectedBalance = balance[filter];
+    const { balance, currencyUnit, currencyColor, filter } = this.props;
+    const selectedBalance = balance[filter].map(dataPoint => [
+      dataPoint[0],
+      parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1]))
+    ]);
     return (
       selectedBalance.length && (
         <div className="content">
           <div className="quickLookGraphWrap">
             <LineChart
-              dateRange={dateRange}
+              key={filter}
               data={selectedBalance}
-              currencyUnit={currencyUnit}
-              currencyColor={currencyColor}
+              color={currencyColor}
+              formatTooltip={(amount: number): string => {
+                return `${currencyUnit.code} ${amount} `;
+              }}
             />
           </div>
         </div>

@@ -131,7 +131,6 @@ export class QuicklookCard extends Component<Props, State> {
       quicklookFilter.key === "balance" ? "balance" : "counterValueBalance";
 
     const range = this.tabsList[tabsIndex];
-    const dateRange = this.getDateRange(tabsIndex);
     // FIXME PROBABLY NEEDS TO BE FIXED
     if (quicklookFilter.key === "countervalue") {
       currencyUnit = getFiatUnit(account.settings.fiat);
@@ -169,7 +168,6 @@ export class QuicklookCard extends Component<Props, State> {
           accountId={accountId}
           filter={filter}
           range={range}
-          dateRange={dateRange}
           currencyUnit={currencyUnit}
           currencyColor={account.currency.color}
           key={accountId + range}
