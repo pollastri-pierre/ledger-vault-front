@@ -27,21 +27,28 @@ const styles = {
   },
   disabled: {
     opacity: "0.5"
+  },
+  noWidth: {
+    width: "auto"
   }
 };
 class BadgeSecurity extends PureComponent<{
   icon: string | React$Node,
   label: string,
   value: string | React$Node,
+  noWidth: boolean,
   disabled?: boolean,
   classes: Object
 }> {
   render() {
-    const { icon, label, value, disabled, classes } = this.props;
+    const { icon, label, value, disabled, noWidth, classes } = this.props;
 
     return (
       <div
-        className={classnames(classes.base, { [classes.disabled]: disabled })}
+        className={classnames(classes.base, {
+          [classes.disabled]: disabled,
+          [classes.noWidth]: noWidth
+        })}
       >
         <div className={classes.icon}>{icon}</div>
         <span className={classes.title}>{label}</span>
