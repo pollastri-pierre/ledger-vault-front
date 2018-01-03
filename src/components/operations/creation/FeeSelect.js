@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
+import { speeds } from "../../../api/queries/AccountCalculateFeeQuery";
 import type { Speed } from "../../../api/queries/AccountCalculateFeeQuery";
 
 type Fee = {
@@ -35,7 +36,13 @@ class FeePicker extends Component<{
     (this.props.fees.find(f => f.key === key) || {}).title;
 
   onChange = (e: SyntheticEvent<>) => {
-    this.props.onChange(e.target.value);
+    const { target } = e;
+    if (target instanceof HTMLInputElement) {
+      const { value } = target;
+      if (value in speeds) {
+        this.props.onChange(value);
+      }
+    }
   };
 
   render() {

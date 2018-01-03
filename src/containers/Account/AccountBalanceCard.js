@@ -19,6 +19,7 @@ const styles = {
 class AccountBalanceCard extends Component<{
   accountId: string,
   account: Account,
+  classes: { [_: $Keys<typeof styles>]: string },
   reloading: boolean
 }> {
   render() {

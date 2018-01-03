@@ -28,6 +28,7 @@ const styles = {
 };
 class Dashboard extends Component<
   {
+    classes: { [_: $Keys<typeof styles>]: string },
     match: *,
     location: *,
     history: *

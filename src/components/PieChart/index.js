@@ -55,6 +55,7 @@ class PieChart extends Component<
   {
     data: Array<PieChartData>,
     width: number,
+    classes: { [_: $Keys<typeof styles>]: string },
     height: number
   },
   { selected: number }
@@ -230,7 +231,7 @@ class PieChart extends Component<
     return (
       <div>
         <div className={classes.wrapper}>
-          <div className={classes.center}>
+          <div>
             <svg
               height="150"
               ref={c => {
@@ -272,11 +273,9 @@ class PieChart extends Component<
             {_.map(this.props.data, (data, id) => {
               return (
                 <tr
-                  className={`currency ${selected !== -1 && selected !== id
-                    ? "disable"
-                    : ""} ${selected !== -1 && selected === id
-                    ? "selected"
-                    : ""}`}
+                  className={`currency ${
+                    selected !== -1 && selected !== id ? "disable" : ""
+                  } ${selected !== -1 && selected === id ? "selected" : ""}`}
                   key={id}
                   onMouseOver={() => this.setSelected(id)}
                   onMouseOut={() => this.setSelected(-1)}

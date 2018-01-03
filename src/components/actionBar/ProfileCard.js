@@ -72,6 +72,7 @@ class ProfileCard extends Component<
   {
     profile: Member,
     history: *,
+    classes: { [_: $Keys<typeof styles>]: string },
     location: *
   },
   *

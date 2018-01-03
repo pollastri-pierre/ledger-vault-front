@@ -4,13 +4,6 @@ import Checkbox from "../form/Checkbox";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
-type Props = {
-  checked: boolean,
-  toggle: Function,
-  children: *,
-  classes: Classes
-};
-
 const styles = {
   field: {
     outline: "none",
@@ -33,6 +26,14 @@ const styles = {
     pointerEvents: "none"
   }
 };
+
+type Props = {
+  checked: boolean,
+  toggle: Function,
+  children: *,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+
 class EnableForm extends PureComponent<Props> {
   focusAndToggle = () => {
     // when we enable the form, we put the focus on the first input[type="text"]

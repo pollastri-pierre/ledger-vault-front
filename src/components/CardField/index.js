@@ -22,6 +22,7 @@ class CardField extends Component<{
   label: string | React$Node,
   children: string | React$Node,
   align?: string,
+  classes: { [_: $Keys<typeof styles>]: string },
   className?: string
 }> {
   render() {

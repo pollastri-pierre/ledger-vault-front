@@ -35,6 +35,7 @@ const Separator = withStyles(styles)(({ classes }) => (
 ));
 
 class AccountCard extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   filter: string
 }> {

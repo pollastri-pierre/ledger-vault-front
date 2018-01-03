@@ -13,6 +13,7 @@ const styles = {
 };
 class InfoModal extends PureComponent<{
   children: React$Node | string,
+  classes: { [_: $Keys<typeof styles>]: string },
   className?: string
 }> {
   render() {

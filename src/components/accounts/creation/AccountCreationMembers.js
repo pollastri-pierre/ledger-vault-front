@@ -20,17 +20,17 @@ const styleCounter = {
     marginTop: "-57px"
   }
 };
-const SelectedCounter = withStyles(
-  styleCounter
-)(({ count, classes }: { count: number, classes: Object }) => {
-  if (count === 0) {
-    return false;
+const SelectedCounter = withStyles(styleCounter)(
+  ({ count, classes }: { count: number, classes: Object }) => {
+    if (count === 0) {
+      return false;
+    }
+    if (count === 1) {
+      return <span className={classes.base}>{count} member selected</span>;
+    }
+    return <span className={classes.base}>{count} members selected</span>;
   }
-  if (count === 1) {
-    return <span className={classes.base}>{count} member selected</span>;
-  }
-  return <span className={classes.base}>{count} members selected</span>;
-});
+);
 
 const styles = {
   base: {

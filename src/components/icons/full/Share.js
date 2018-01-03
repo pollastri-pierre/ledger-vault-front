@@ -10,7 +10,11 @@ const styles = {
   }
 };
 
-type Props = { color: string, className: string };
+type Props = {
+  color: string,
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
 
 class Share extends PureComponent<Props> {
   static defaultProps = {

@@ -23,6 +23,7 @@ const styles = {
 };
 class AccountView extends Component<
   {
+    classes: { [_: $Keys<typeof styles>]: string },
     match: {
       url: string,
       params: {

@@ -78,7 +78,6 @@ class MainCreation extends Component<Props> {
         )
         .then(close);
 
-    console.log(this.props);
     return (
       <div className={classes.base}>
         <header>
