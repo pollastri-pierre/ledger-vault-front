@@ -3,7 +3,7 @@ import React from "react";
 import { withStyles } from "material-ui/styles";
 import colors from "../../shared/colors";
 
-const style = {
+const styles = {
   icon: {
     width: "16px",
     height: "12px"
@@ -32,4 +32,4 @@ function Comment({
   );
 }
 
-export default withStyles(style)(Comment);
+export default withStyles(styles)(Comment);

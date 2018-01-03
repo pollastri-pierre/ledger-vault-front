@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ArrowDown from "../icons/ArrowDown";
+import ArrowDown from "../icons/full/ArrowDown";
 import colors from "../../shared/colors";
 import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
@@ -10,7 +10,7 @@ const contextTypes = {
   onOptionClick: PropTypes.func.isRequired
 };
 
-const stylesOptions = {
+const styles = {
   base: {
     padding: "10px",
     opacity: "0.5",
@@ -64,7 +64,7 @@ class Option_c<T> extends Component<{
   }
 }
 
-export const Option = withStyles(stylesOptions)(Option_c);
+export const Option = withStyles(styles)(Option_c);
 
 // TODO we need to have a max-height and scroll because on big select, it will go off screen (see Settings screen)
 const styleSelect = {
@@ -126,7 +126,7 @@ class Select_c<T> extends Component<
   };
 
   render() {
-    const { children, theme, classes } = this.props;
+    const { children, theme } = this.props;
     const { isOpen } = this.state;
     const arrayChildren = React.Children.toArray(children);
     const selectedOption =
@@ -139,7 +139,7 @@ class Select_c<T> extends Component<
           onClick={() => this.toggle()}
         >
           <ArrowDown />
-          <span className={classes.label}>{selectedOption}</span>
+          <span>{selectedOption}</span>
         </div>
         <PopBubble
           open={isOpen}

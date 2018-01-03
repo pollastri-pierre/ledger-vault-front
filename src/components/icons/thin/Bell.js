@@ -12,13 +12,8 @@ const styles = {
     fill: "white"
   }
 };
-function Bell({
-  classes,
-  type
-}: {
-  classes: { [_: $Keys<typeof styles>]: string },
-  type: string
-}) {
+
+function Bell({ classes, type }: { classes: Object, type: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

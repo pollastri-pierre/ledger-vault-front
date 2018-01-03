@@ -32,8 +32,7 @@ type Props = {
 type State = {
   rate_limiter: Object,
   popover: boolean,
-  anchor?: Object,
-  classes: Object
+  anchor?: Object
 };
 
 class AccountCreationRateLimiter extends Component<Props, State> {

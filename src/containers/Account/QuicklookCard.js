@@ -208,8 +208,8 @@ export class QuicklookCard extends Component<Props, State> {
   }
 }
 
-const RenderError = ({ error, restlay, classes }: *) => (
-  <Card className={classes.card} title="Quicklook">
+const RenderError = ({ error, restlay }: *) => (
+  <Card title="Quicklook">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );

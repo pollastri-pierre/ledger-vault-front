@@ -40,7 +40,7 @@ type Props = {
   match: *
 };
 
-class OperationApprove extends Component<Props> {
+class OperationApprove extends Component<Props, { value: number }> {
   state = {
     value: 0
   };

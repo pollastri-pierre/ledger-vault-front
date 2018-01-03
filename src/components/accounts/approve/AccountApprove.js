@@ -39,7 +39,7 @@ type Props = {
   match: *
 };
 
-class AccountApprove extends Component<Props> {
+class AccountApprove extends Component<Props, { value: number }> {
   state = {
     value: 0
   };

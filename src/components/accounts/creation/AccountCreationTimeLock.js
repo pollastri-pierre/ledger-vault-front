@@ -32,8 +32,7 @@ type Props = {
 type State = {
   timelock: Object,
   popover: boolean,
-  anchor?: Object,
-  classes: Object
+  anchor?: Object
 };
 
 class AccountCreationTimeLock extends Component<Props, State> {

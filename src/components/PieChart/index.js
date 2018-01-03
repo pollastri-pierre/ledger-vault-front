@@ -231,7 +231,7 @@ class PieChart extends Component<
     return (
       <div>
         <div className={classes.wrapper}>
-          <div className={classes.center}>
+          <div>
             <svg
               height="150"
               ref={c => {

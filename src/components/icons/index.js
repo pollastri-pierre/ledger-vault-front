@@ -98,12 +98,11 @@ export function BigSecurityRateLimiterIcon() {
     <RatesThin color={colors.mouse} style={{ width: "25px", height: "30px" }} />
   );
 }
-export function BigSecurityAutoExpireIcon(props: Props) {
+export function BigSecurityAutoExpireIcon() {
   return (
     <ClockThin
       color={colors.mouse}
       className="security-icon security-autoexpire-big-icon"
-      {...props}
     />
   );
 }

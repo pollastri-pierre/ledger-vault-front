@@ -12,7 +12,9 @@ class UnitSelect extends Component<{
   renderValue = (index: number) => this.props.units[index].code;
 
   onChange = (e: SyntheticEvent<>) => {
-    this.props.onChange(e.target.value);
+    if (e.target instanceof HTMLInputElement) {
+      this.props.onChange(Number(e.target.value));
+    }
   };
 
   render() {

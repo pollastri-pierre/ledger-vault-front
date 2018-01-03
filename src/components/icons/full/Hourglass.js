@@ -12,7 +12,7 @@ const styles = {
 
 type Props = {
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: Object
 };
 
 class HourglassFull extends PureComponent<Props> {
