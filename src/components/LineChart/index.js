@@ -1,9 +1,78 @@
 // @flow
 import React, { Component } from "react";
+import cx from "classnames";
 import * as d3 from "d3";
+import { withStyles } from "material-ui/styles";
+
 import DateFormat from "../../components/DateFormat";
 import type { Unit } from "../../data/types";
 import { formatCurrencyUnit } from "../../data/currency";
+
+const styles = {
+  lineChart: {
+    paddingTop: 20
+  },
+  noData: {
+    pointerEvents: "none"
+  },
+  chartWrap: {
+    position: "relative",
+    svg: {
+      overflow: "visible"
+    }
+  },
+  tooltip: {
+    position: "absolute",
+    width: "auto !important",
+    height: "auto !important",
+    boxShadow:
+      "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+    zIndex: 10,
+    pointerEvents: "none",
+    backgroundColor: "currentColor",
+    padding: 15,
+    transition: "opacity 0.3s ease-out"
+  },
+  lookDown: {
+    "&:before": {
+      content: '""',
+      display: "block",
+      width: 0,
+      height: 0,
+      position: "absolute",
+      borderTop: "10px solid",
+      borderRight: "10px solid transparent !important",
+      borderLeft: "10px solid transparent !important",
+      left: 40,
+      top: "63px !important"
+    },
+    ".tooltipText span": {
+      float: "right"
+    }
+  },
+  tooltipTextWrap: {
+    position: "relative",
+    width: "100%",
+    height: "100%"
+  },
+  tooltipText: {
+    color: "white",
+    fontSize: 13,
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
+  },
+  uppercase: {
+    textTransform: "uppercase"
+  },
+  date: {
+    color: "#e2e2e2",
+    fontSize: 11
+  },
+  hide: {
+    opacity: 0,
+    zIndex: 1
+  }
+};
 
 type DataPointEnhanced = {
   date: number,
@@ -16,10 +85,11 @@ type Props = {
   data: Array<[number, number]>,
   dateRange: Array<*>,
   currencyUnit: Unit,
-  currencyColor: string
+  currencyColor: string,
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
-export default class LineChart extends Component<Props, *> {
+class LineChart extends Component<Props, *> {
   state = {
     selected: -1,
     width: 100,
@@ -67,9 +137,10 @@ export default class LineChart extends Component<Props, *> {
 
   handleTooltip = () => {
     const { selected, margin } = this.state;
+    const { classes } = this.props;
 
     const tooltipElement = d3.select(this.tooltip);
-    tooltipElement.classed("hide", selected === -1);
+    tooltipElement.classed(classes.hide, selected === -1);
     d3
       .select(this.svg)
       .selectAll(".dot")
@@ -261,6 +332,7 @@ export default class LineChart extends Component<Props, *> {
   };
 
   initPlaceholders = () => {
+    const { classes } = this.props;
     const { width, height, margin } = this.state;
 
     //init svg with d3js margin convention
@@ -336,7 +408,7 @@ export default class LineChart extends Component<Props, *> {
       .attr("fill", "#999999")
       .attr("font-size", "13px")
       .attr("opacity", 0)
-      .classed("noData", true);
+      .classed(classes.noData, true);
   };
 
   updatePlaceholders = () => {
@@ -416,7 +488,7 @@ export default class LineChart extends Component<Props, *> {
 
   displayNoData = () => {
     const { width } = this.state;
-    const { dateRange: domainX } = this.props;
+    const { dateRange: domainX, classes } = this.props;
 
     const x = d3
       .scaleTime()
@@ -425,7 +497,7 @@ export default class LineChart extends Component<Props, *> {
 
     const xAxis = this.generateFormatedXAxis(x);
 
-    d3.select(".noData").attr("opacity", 1);
+    d3.select(`.${classes.noData}`).attr("opacity", 1);
     this.drawxAxisLabel(domainX);
     d3.select(".xAxis").call(this.customXAxis, xAxis);
     d3.select(".yAxis").attr("opacity", 0);
@@ -478,12 +550,12 @@ export default class LineChart extends Component<Props, *> {
 
   componentDidUpdate(prevProps: *, prevState: *) {
     const { selected } = this.state;
-    const { dateRange, data: dataProp } = this.props;
+    const { dateRange, data: dataProp, classes } = this.props;
     if (!dataProp.length) {
       this.displayNoData();
       return;
     }
-    d3.select(".noData").attr("opacity", 0);
+    d3.select(`.${classes.noData}`).attr("opacity", 0);
     d3.select(".yAxis").attr("opacity", 1);
     d3.select(".valueline").attr("opacity", 1);
 
@@ -508,25 +580,25 @@ export default class LineChart extends Component<Props, *> {
 
   render() {
     const { selected } = this.state;
-    let { data, currencyUnit, currencyColor } = this.props;
+    let { data, currencyUnit, currencyColor, classes } = this.props;
     return (
-      <div className="LineChart">
-        <div className="chartWrap">
+      <div className={classes.lineChart}>
+        <div className={classes.chartWrap}>
           {selected !== -1 ? (
             <div
-              className="tooltip lookDown hide"
+              className={cx([classes.tooltip, classes.lookDown, classes.hide])}
               style={{ color: currencyColor }}
               ref={t => {
                 this.tooltip = t;
               }}
             >
-              <div className="tooltipTextWrap">
-                <div className="tooltipText">
-                  <div className="uppercase">
+              <div className={classes.tooltipTextWrap}>
+                <div className={classes.tooltipText}>
+                  <div className={classes.uppercase}>
                     {formatCurrencyUnit(currencyUnit, data[selected][1], true)}
                   </div>
                   <div>
-                    <span className="uppercase date">
+                    <span className={cx([classes.uppercase, classes.date])}>
                       <DateFormat format="ddd D MMM" date={data[selected][0]} />
                     </span>
                   </div>
@@ -546,3 +618,5 @@ export default class LineChart extends Component<Props, *> {
     );
   }
 }
+
+export default withStyles(styles)(LineChart);
