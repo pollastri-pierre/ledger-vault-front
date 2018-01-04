@@ -9,7 +9,7 @@ export class TeamLogin extends Component<{
   onStartAuth: Function,
   onCloseTeamError: Function,
   isChecking: boolean,
-  email: string,
+  domain: string,
   error: ?Error
 }> {
   context: {
@@ -18,7 +18,7 @@ export class TeamLogin extends Component<{
 
   onSubmit = (e: *) => {
     e.preventDefault();
-    if (this.props.email !== "" && !this.props.isChecking) {
+    if (this.props.domain !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
     }
   };
@@ -32,18 +32,18 @@ export class TeamLogin extends Component<{
   };
 
   render() {
-    const { email, error, isChecking } = this.props;
+    const { domain, error, isChecking } = this.props;
     const t = this.context.translate;
     return (
       <form onSubmit={this.onSubmit} className="TeamLogin">
         <Profile className="user" color="#e2e2e2" />
         <br />
         <TextField
-          error={error && email !== ""}
+          error={error ? domain !== "" : false}
           style={{ width: "320px" }}
           inputProps={{ style: { textAlign: "center" } }}
           disabled={isChecking}
-          value={email}
+          value={domain}
           id="textField"
           name="email"
           onChange={this.onChange}
@@ -53,7 +53,7 @@ export class TeamLogin extends Component<{
         <div className="instructions">{t("login.instructions")}</div>
         <DialogButton
           highlight
-          disabled={!email || isChecking}
+          disabled={!domain || isChecking}
           right
           onTouchTap={this.onSubmit}
         >

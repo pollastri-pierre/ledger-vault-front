@@ -6,18 +6,16 @@ export default class VaultDeviceApp {
   constructor(comm: LedgerComm) {
     this.comm = comm;
   }
-  async authenticate(email: string): Promise<string> {
+  async authenticate(
+    challenge: string
+  ): Promise<{
+    pub_key: string,
+    authentication: string
+  }> {
     console.warn(
       "NOT IMPLEMENTED. use email, exchange with server & device",
-      email
+      challenge
     );
-    throw new Error("Auth Not Implemented");
-  }
-  async register(email: string): Promise<string> {
-    console.warn(
-      "NOT IMPLEMENTED. use email, exchange with server & device",
-      email
-    );
-    throw new Error("Register Not Implemented");
+    return { pub_key: "", authentication: "" };
   }
 }

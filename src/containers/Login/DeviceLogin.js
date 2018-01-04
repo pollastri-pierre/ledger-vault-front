@@ -7,19 +7,21 @@ import translate from "../../decorators/Translate";
 
 class DeviceLogin extends Component<{
   onCancel: Function,
-  team: string
+  domain: string,
+  isChecking: boolean,
+  onRestart: () => void
 }> {
   context: {
     translate: (string, ?Object) => string
   };
   render() {
-    const { team, onCancel } = this.props;
+    const { domain, isChecking, onCancel, onRestart } = this.props;
     const t = this.context.translate;
     return (
       <div className="DeviceLogin">
         <Plug className="dongle" color="#e2e2e2" />
         <br />
-        <div className="team">{t("login.signIn", { team })}</div>
+        <div className="team">{t("login.signIn", { domain })}</div>
         <div className="spacer" />
         <div className="instructions">
           <div className="item">
@@ -36,7 +38,13 @@ class DeviceLogin extends Component<{
           </div>
         </div>
         <DialogButton onTouchTap={onCancel}>{t("common.cancel")}</DialogButton>
-        <div className="wait">{t("login.awaitingDevice")}</div>
+        {!isChecking ? (
+          <DialogButton right onTouchTap={onRestart}>
+            TRY AGAIN
+          </DialogButton>
+        ) : (
+          <div className="wait">{t("login.awaitingDevice")}</div>
+        )}
       </div>
     );
   }

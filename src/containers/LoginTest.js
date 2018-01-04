@@ -1,14 +1,12 @@
 //@flow
 import "./App/App.css";
 import React, { Component } from "react";
-import createDevice from "../device";
 import "./Login/Login.css";
 
 class LoginTest extends Component<{}, { field: string }> {
   state = {
     field: ""
   };
-  device = createDevice();
 
   onChange = (e: SyntheticEvent<*>) => {
     this.setState({
@@ -18,9 +16,7 @@ class LoginTest extends Component<{}, { field: string }> {
 
   onSubmit = (e: SyntheticEvent<*>) => {
     e.preventDefault();
-    this.device.then(device => {
-      device.register(this.state.field);
-    });
+    console.error("NOT IMPLEMENTED", e);
   };
 
   render() {

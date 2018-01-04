@@ -9,6 +9,7 @@ import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
 import { login, logout } from "../../redux/modules/auth";
 import { addMessage } from "../../redux/modules/alerts";
+import network from "../../network";
 
 import "./Login.css";
 
@@ -35,10 +36,10 @@ type Props = {
   ) => void
 };
 type State = {
-  email: string,
+  domain: string,
   isChecking: boolean,
   error: ?Error,
-  emailValidated: boolean
+  domainValidated: boolean
 };
 
 export class Login extends Component<Props, State> {
@@ -47,9 +48,9 @@ export class Login extends Component<Props, State> {
   };
 
   state = {
-    email: "",
+    domain: "",
     error: null,
-    emailValidated: false,
+    domainValidated: false,
     isChecking: false
   };
 
@@ -73,8 +74,8 @@ export class Login extends Component<Props, State> {
     }
   }
 
-  onTeamChange = (email: string) => {
-    this.setState({ email, error: null });
+  onTeamChange = (domain: string) => {
+    this.setState({ domain, error: null });
   };
 
   onStartAuth = async () => {
@@ -82,7 +83,20 @@ export class Login extends Component<Props, State> {
     this.setState({ isChecking: true });
     try {
       const device = await createDevice();
-      const token = await device.authenticate(this.state.email);
+      const { id, challenge } = await network(
+        "/authentication_challenge",
+        "GET"
+      );
+      this.setState({
+        error: null,
+        domainValidated: true
+      });
+      const { authentication, pub_key } = await device.authenticate(challenge);
+      const { token } = await network("/authenticate", "POST", {
+        pub_key,
+        authentication,
+        id
+      });
       this.setState({ isChecking: false });
       addAlertMessage("Welcome", "Hello. Welcome on Ledger Vault Application");
       onLogin(token);
@@ -90,8 +104,8 @@ export class Login extends Component<Props, State> {
       console.error(error);
       this.setState({ error, isChecking: false });
       addAlertMessage(
-        "Unknown email domain",
-        "This email domain is unkown. Contact your administrator to get more information.",
+        "Unknown domain domain",
+        "This domain domain is unkown. Contact your administrator to get more information.",
         "error"
       );
     }
@@ -102,23 +116,28 @@ export class Login extends Component<Props, State> {
   };
 
   onCancelDeviceLogin = () => {
-    this.setState({ emailValidated: false });
+    this.setState({ domainValidated: false });
   };
 
   render() {
     const { onLogout } = this.props;
-    const { email, error, emailValidated, isChecking } = this.state;
+    const { domain, error, domainValidated, isChecking } = this.state;
     const t = this.context.translate;
     let content = null;
 
-    if (emailValidated) {
+    if (domainValidated) {
       content = (
-        <DeviceLogin email={email} onCancel={this.onCancelDeviceLogin} />
+        <DeviceLogin
+          domain={domain}
+          isChecking={isChecking}
+          onCancel={this.onCancelDeviceLogin}
+          onRestart={this.onStartAuth}
+        />
       );
     } else {
       content = (
         <TeamLogin
-          email={email}
+          domain={domain}
           error={error}
           isChecking={isChecking}
           onChange={this.onTeamChange}

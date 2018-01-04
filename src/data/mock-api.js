@@ -192,7 +192,25 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     if (m) {
       return genBalance(parseInt(m[1], 10), m[3]);
     }
+
+    if (method === "POST" && uri === "/authenticate") {
+      return {
+        token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
+      };
+    }
+
     switch (uri) {
+      case "/authentication_challenge":
+        return {
+          challenge:
+            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb",
+          handles: [
+            "654f16d2cd3ca82a52dd40b402fbb2c3d981c154abd4e16bcd56362e38db6c2e",
+            "16ebae3897572bd156add68ff048d4180f9d0cd89e7159f1eda42c5521683756"
+          ],
+          id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
+        };
+
       case "/currencies":
         return denormalize(
           Object.keys(mockEntities.currencies),
