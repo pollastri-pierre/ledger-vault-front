@@ -17,7 +17,10 @@ const styles = {
     display: "flex",
     justifyContent: "space-around",
     width: "100%",
-    paddingBottom: "20px"
+    paddingBottom: "20px",
+    "&> * + *": {
+      marginLeft: 20
+    }
   },
   header: {
     borderBottom: `1px solid ${colors.argile}`
