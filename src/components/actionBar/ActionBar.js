@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
 import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";

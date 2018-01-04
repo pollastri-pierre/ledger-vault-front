@@ -2,22 +2,22 @@
 import React, { Component } from "react";
 import { Overscroll } from "../../";
 import { withRouter, Redirect } from "react-router";
-import connectData from "../../../restlay/connectData";
+import connectData from "restlay/connectData";
 import Tabs, { Tab } from "material-ui/Tabs";
 import { withStyles } from "material-ui/styles";
 import Footer from "../../approve/Footer";
 // import CircularProgress from "material-ui/CircularProgress";
-import ApprovalPercentage from "../../../components/ApprovalPercentage";
+import ApprovalPercentage from "components/ApprovalPercentage";
 import AccountApproveDetails from "./AccountApproveDetails";
 import AccountApproveMembers from "./AccountApproveMembers";
-import ModalLoading from "../../../components/ModalLoading";
+import ModalLoading from "components/ModalLoading";
 import AccountApproveApprovals from "./AccountApproveApprovals";
-import AccountQuery from "../../../api/queries/AccountQuery";
-import ApproversQuery from "../../../api/queries/ApproversQuery";
-import ProfileQuery from "../../../api/queries/ProfileQuery";
-import MembersQuery from "../../../api/queries/MembersQuery";
-import type { Member, Account } from "../../../data/types";
-import modals from "../../../shared/modals";
+import AccountQuery from "api/queries/AccountQuery";
+import ApproversQuery from "api/queries/ApproversQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+import MembersQuery from "api/queries/MembersQuery";
+import type { Member, Account } from "data/types";
+import modals from "shared/modals";
 
 const styles = {
   base: {

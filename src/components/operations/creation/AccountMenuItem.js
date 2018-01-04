@@ -4,8 +4,8 @@ import CurrencyAccountValue from "../../CurrencyAccountValue";
 import CurrencyUnitValue from "../../CurrencyUnitValue";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
-import { countervalueForRate } from "../../../data/currency";
-import type { Account } from "../../../data/types";
+import { countervalueForRate } from "data/currency";
+import type { Account } from "data/types";
 
 const styles = {
   accountItem: {

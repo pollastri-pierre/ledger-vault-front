@@ -1,3 +1,3 @@
 //@flow
-import { reducer } from "../../restlay/dataStore";
+import { reducer } from "restlay/dataStore";
 export default reducer;

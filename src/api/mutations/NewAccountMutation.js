@@ -1,8 +1,8 @@
 //@flow
-import Mutation from "../../restlay/Mutation";
-import schema from "../../data/schema";
-import type { Account } from "../../data/types";
-import { success, error } from "../../formatters/notification";
+import Mutation from "restlay/Mutation";
+import schema from "data/schema";
+import type { Account } from "data/types";
+import { success, error } from "formatters/notification";
 
 type Input = {
   // TODO define the input types here

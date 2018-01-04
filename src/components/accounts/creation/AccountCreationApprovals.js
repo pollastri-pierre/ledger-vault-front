@@ -3,11 +3,11 @@ import React from "react";
 import InfoModal from "../../InfoModal";
 import DialogButton from "../../buttons/DialogButton";
 import { connect } from "react-redux";
-import { addMessage } from "../../../redux/modules/alerts";
+import { addMessage } from "redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
-import type { Member } from "../../../data/types";
+import type { Member } from "data/types";
 import { withStyles } from "material-ui/styles";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>

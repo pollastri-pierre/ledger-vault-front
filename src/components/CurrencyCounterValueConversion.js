@@ -1,8 +1,8 @@
 //@flow
 import React, { PureComponent } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { getAccountCurrencyUnit, countervalueForRate } from "../data/currency";
-import type { Rate, Account } from "../data/types";
+import { getAccountCurrencyUnit, countervalueForRate } from "data/currency";
+import type { Rate, Account } from "data/types";
 
 class CurrencyCounterValueConversion extends PureComponent<*> {
   props: {

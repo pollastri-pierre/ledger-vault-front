@@ -1,18 +1,18 @@
 //@flow
 import React, { Component } from "react";
-import ModalLoading from "../../components/ModalLoading";
+import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
-import connectData from "../../restlay/connectData";
-import OperationWithAccountQuery from "../../api/queries/OperationWithAccountQuery";
-import ProfileQuery from "../../api/queries/ProfileQuery";
-import type { Operation, Account, Member } from "../../data/types";
+import connectData from "restlay/connectData";
+import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+import type { Operation, Account, Member } from "data/types";
 import Tabs, { Tab } from "material-ui/Tabs";
-import modals from "../../shared/modals";
+import modals from "shared/modals";
 
 type Props = {
   close: Function,

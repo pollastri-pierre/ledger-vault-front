@@ -4,7 +4,7 @@ import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
 import mockEntities, { genBalance } from "./mock-entities.js";
 import schema from "./schema";
-import type { Operation, Account } from "../data/types";
+import type { Operation, Account } from "data/types";
 
 const keywordsMatchesOperation = (
   keywords: string,

@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
-import common from "../shared/common";
+import common from "shared/common";
 import classnames from "classnames";
 
 const styles = {

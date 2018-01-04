@@ -3,7 +3,7 @@ import React from "react";
 import { DialogButton } from "../";
 import { PlugIcon } from "../icons";
 import { withStyles } from "material-ui/styles";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 
 const styles = {
   base: {

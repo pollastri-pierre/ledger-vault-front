@@ -6,13 +6,13 @@ import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 import { Switch, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import App from "./containers/App/App";
-import create from "./redux/create";
-import registerServiceWorker from "./registerServiceWorker";
-import RestlayProvider from "./restlay/RestlayProvider";
-import GlobalLoading from "./components/GlobalLoading";
-import network from "./network";
-import theme from "./styles/theme";
+import App from "containers/App/App";
+import create from "redux/create";
+import registerServiceWorker from "registerServiceWorker";
+import RestlayProvider from "restlay/RestlayProvider";
+import GlobalLoading from "components/GlobalLoading";
+import network from "network";
+import theme from "styles/theme";
 
 import {
   PrivateRoute,
@@ -21,7 +21,7 @@ import {
   Logout,
   AlertsContainer,
   I18nProvider
-} from "./containers";
+} from "containers";
 
 const muiTheme = createMuiTheme(theme);
 

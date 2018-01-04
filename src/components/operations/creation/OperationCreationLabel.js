@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import { TextField } from "../../../components";
+import { TextField } from "components";
 
 type Props = {};
 

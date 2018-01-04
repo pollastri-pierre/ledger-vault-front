@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
-import Search from "../../components/icons/thin/Search";
+import Search from "components/icons/thin/Search";
 
 const styles = {
   header: {

@@ -1,14 +1,14 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../../restlay/connectData";
-import MembersQuery from "../../../api/queries/MembersQuery";
-import ModalLoading from "../../../components/ModalLoading";
-import MemberRow from "../../../components/MemberRow";
-import InfoModal from "../../../components/InfoModal";
-import { DialogButton, Overscroll } from "../../../components";
-import type { Member } from "../../../data/types";
+import connectData from "restlay/connectData";
+import MembersQuery from "api/queries/MembersQuery";
+import ModalLoading from "components/ModalLoading";
+import MemberRow from "components/MemberRow";
+import InfoModal from "components/InfoModal";
+import { DialogButton, Overscroll } from "components";
+import type { Member } from "data/types";
 import { withStyles } from "material-ui/styles";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 
 const styleCounter = {
   base: {

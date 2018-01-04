@@ -1,14 +1,14 @@
 //@flow
 import React, { Component } from "react";
-import Card from "../../components/Card";
+import Card from "components/Card";
 import Currencies from "./Currencies";
-import { TotalBalanceFilters } from "../../components/EvolutionSince";
+import { TotalBalanceFilters } from "components/EvolutionSince";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
-import OperationModal from "../../components/operations/OperationModal";
-import ModalRoute from "../../components/ModalRoute";
+import OperationModal from "components/operations/OperationModal";
+import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
 
 const styles = {

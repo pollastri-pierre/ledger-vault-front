@@ -12,7 +12,7 @@ import {
   startAuthentication,
   reinitTeamError,
   resetTeam
-} from "../../redux/modules/auth";
+} from "redux/modules/auth";
 
 const mapStateToProps = state => ({
   auth: state.auth

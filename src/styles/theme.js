@@ -1,4 +1,4 @@
-import colors from "../shared/colors";
+import colors from "shared/colors";
 
 const tickerBeforeStyle = {
   content: "''",

@@ -1,11 +1,11 @@
 //@flow
 import React, { Component } from "react";
-import type { Account } from "../../data/types";
+import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
-import connectData from "../../restlay/connectData";
-import AccountsQuery from "../../api/queries/AccountsQuery";
+import connectData from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
 
 const styles = {
   item: {

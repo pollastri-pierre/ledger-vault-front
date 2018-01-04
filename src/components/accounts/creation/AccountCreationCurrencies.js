@@ -1,12 +1,12 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../../restlay/connectData";
-import ModalLoading from "../../../components/ModalLoading";
-import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
+import connectData from "restlay/connectData";
+import ModalLoading from "components/ModalLoading";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import classnames from "classnames";
-import type { Currency } from "../../../data/types";
+import type { Currency } from "data/types";
 import { withStyles } from "material-ui/styles";
-import colors from "../../../shared/colors";
+import colors from "shared/colors";
 
 const styles = {
   base: {

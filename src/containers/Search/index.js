@@ -3,13 +3,13 @@ import React, { Component } from "react";
 import debounce from "lodash/debounce";
 import SearchResultsCard from "./SearchResultsCard";
 import SearchFiltersCard from "./SearchFiltersCard";
-import connectData from "../../restlay/connectData";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
+import connectData from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import { withStyles } from "material-ui/styles";
-import OperationModal from "../../components/operations/OperationModal";
-import ModalRoute from "../../components/ModalRoute";
-import type { Account, Currency } from "../../data/types";
+import OperationModal from "components/operations/OperationModal";
+import ModalRoute from "components/ModalRoute";
+import type { Account, Currency } from "data/types";
 
 type Filters = {
   keywords: ?string,

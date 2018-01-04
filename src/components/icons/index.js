@@ -11,7 +11,7 @@ import Plug from "./thin/Plug";
 import HourglassThin from "./thin/Hourglass";
 import ClockThin from "./thin/Clock";
 
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 
 export function SecurityMembersIcon() {
   return (

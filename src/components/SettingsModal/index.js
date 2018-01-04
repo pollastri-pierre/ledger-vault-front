@@ -8,14 +8,14 @@ import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
 
-import SelectTab from "../../components/SelectTab/SelectTab";
-import FiatUnits from "../../fiat-units";
-import connectData from "../../restlay/connectData";
-import type { RestlayEnvironment } from "../../restlay/connectData";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
-import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import SelectTab from "components/SelectTab/SelectTab";
+import FiatUnits from "fiat-units";
+import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import SettingsDataQuery from "api/queries/SettingsDataQuery";
+import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 
 import BadgeSecurity from "../BadgeSecurity";
@@ -31,13 +31,9 @@ import {
   BigSecurityAutoExpireIcon
 } from "../icons";
 
-import type {
-  Account,
-  SecurityScheme,
-  AccountSettings
-} from "../../data/types";
+import type { Account, SecurityScheme, AccountSettings } from "data/types";
 
-import type { Response as SettingsDataQueryResponse } from "../../api/queries/SettingsDataQuery";
+import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const { REACT_APP_SECRET_CODE } = process.env;
 

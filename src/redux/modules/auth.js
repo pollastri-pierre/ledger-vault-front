@@ -1,6 +1,6 @@
 //@flow
 import "u2f-api-polyfill";
-import network from "../../network";
+import network from "network";
 
 export const SET_TEAM_FIELD = "auth/SET_TEAM_FIELD";
 export const LOGOUT = "auth/LOGOUT";

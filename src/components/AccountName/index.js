@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import BadgeCurrency from "../BadgeCurrency";
-import type { Currency } from "../../data/types";
+import type { Currency } from "data/types";
 
 // FIXME why is that not just taking Account ?
 class AccountName extends Component<{

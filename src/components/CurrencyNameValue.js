@@ -1,10 +1,10 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../restlay/connectData";
-import CurrenciesQuery from "../api/queries/CurrenciesQuery";
+import connectData from "restlay/connectData";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { inferUnit, countervalueForRate } from "../data/currency";
-import type { Currency, Rate } from "../data/types";
+import { inferUnit, countervalueForRate } from "data/currency";
+import type { Currency, Rate } from "data/types";
 
 type Props = {
   // it can be a crypto currency name or also can be a countervalue like EUR

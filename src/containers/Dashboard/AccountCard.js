@@ -1,13 +1,13 @@
 //@flow
 import React, { Component } from "react";
-import type { Account } from "../../data/types";
-import Card from "../../components/Card";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
+import type { Account } from "data/types";
+import Card from "components/Card";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "material-ui/styles";
-import BadgeCurrency from "../../components/BadgeCurrency";
+import BadgeCurrency from "components/BadgeCurrency";
 import EvolutionSince, {
   TotalBalanceFilters
-} from "../../components/EvolutionSince";
+} from "components/EvolutionSince";
 
 const styles = {
   card: {

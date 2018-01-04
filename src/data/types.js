@@ -1,5 +1,5 @@
 //@flow
-import FiatUnits from "../fiat-units";
+import FiatUnits from "fiat-units";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,

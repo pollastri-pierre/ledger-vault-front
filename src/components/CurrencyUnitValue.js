@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
-import type { Unit } from "../data/types";
-import { formatCurrencyUnit } from "../data/currency";
+import type { Unit } from "data/types";
+import { formatCurrencyUnit } from "data/currency";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.

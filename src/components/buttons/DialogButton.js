@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 

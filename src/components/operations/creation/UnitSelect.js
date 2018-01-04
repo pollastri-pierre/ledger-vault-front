@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
-import type { Unit } from "../../../data/types";
+import type { Unit } from "data/types";
 
 class UnitSelect extends Component<{
   units: Array<Unit>,

@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from "react";
-import ModalRoute from "../../components/ModalRoute";
+import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
-import OperationModal from "../../components/operations/OperationModal";
+import OperationModal from "components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";

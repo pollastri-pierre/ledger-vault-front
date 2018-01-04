@@ -2,33 +2,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { DialogButton } from "../../";
-import EnableForm from "../../../components/EnableForm";
+import EnableForm from "components/EnableForm";
 import InfoModal from "../../InfoModal";
-import InputTextWithUnity from "../../../components/InputTextWithUnity";
+import InputTextWithUnity from "components/InputTextWithUnity";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
-import { addMessage } from "../../../redux/modules/alerts";
+import { addMessage } from "redux/modules/alerts";
 import { withStyles } from "material-ui/styles";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 
 const frequencies = [
   { title: "minute", key: 60 },
   { title: "hour", key: 3600 },
-  { title: "day", key: 84600 },
+  { title: "day", key: 84600 }
 ];
 
 const mapDispatchToProps = dispatch => ({
-  onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
+  onAddMessage: (title, content, type) =>
+    dispatch(addMessage(title, content, type))
 });
 
 const styles = {
   base: {
     ...modals.base,
-    width: 440,
+    width: 440
   },
   info: {
-    margin: "20px 0px 40px 0px",
-  },
+    margin: "20px 0px 40px 0px"
+  }
 };
 
 type Props = {
@@ -36,11 +37,11 @@ type Props = {
   switchInternalModal: string => void,
   rate_limiter: Object,
   classes: { [_: $Keys<typeof styles>]: string },
-  onAddMessage: (t: string, m: string, ty: string) => void,
+  onAddMessage: (t: string, m: string, ty: string) => void
 };
 
 type State = {
-  rate_limiter: Object,
+  rate_limiter: Object
 };
 
 class AccountCreationRateLimiter extends Component<Props, State> {
@@ -48,7 +49,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     super(props);
 
     this.state = {
-      rate_limiter: props.rate_limiter,
+      rate_limiter: props.rate_limiter
     };
   }
 
@@ -72,8 +73,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
         ...this.state,
         rate_limiter: {
           ...this.state.rate_limiter,
-          value: parseInt(val, 10) || 0,
-        },
+          value: parseInt(val, 10) || 0
+        }
       });
     }
   };
@@ -83,8 +84,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
       ...this.state,
       rate_limiter: {
         ...this.state.rate_limiter,
-        enabled: !this.state.rate_limiter.enabled,
-      },
+        enabled: !this.state.rate_limiter.enabled
+      }
     });
   };
 
@@ -93,8 +94,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
       ...this.state,
       rate_limiter: {
         ...this.state.rate_limiter,
-        frequency: e.target.value,
-      },
+        frequency: e.target.value
+      }
     });
   };
 
@@ -127,18 +128,25 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 value={rate_limiter.frequency}
                 onChange={this.changeFrequency}
                 disableUnderline
-                renderValue={key => (frequencies.find(o => o.key === key) || {}).title}
+                renderValue={key =>
+                  (frequencies.find(o => o.key === key) || {}).title
+                }
               >
                 {frequencies.map(({ title, key }) => (
-                  <MenuItem disableRipple key={key} value={key} style={{ color: "#27d0e2" }}>
+                  <MenuItem
+                    disableRipple
+                    key={key}
+                    value={key}
+                    style={{ color: "#27d0e2" }}
+                  >
                     <span style={{ color: "black" }}>{title}</span>
                   </MenuItem>
                 ))}
               </Select>
             </InputTextWithUnity>
             <InfoModal className={classes.info}>
-              Rate-limiter enforces that your team does not exceed a pre-defined number of outgoing
-              transaction per interval of time.
+              Rate-limiter enforces that your team does not exceed a pre-defined
+              number of outgoing transaction per interval of time.
             </InfoModal>
           </EnableForm>
         </div>
@@ -154,5 +162,5 @@ class AccountCreationRateLimiter extends Component<Props, State> {
   }
 }
 export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(AccountCreationRateLimiter),
+  withStyles(styles)(AccountCreationRateLimiter)
 );

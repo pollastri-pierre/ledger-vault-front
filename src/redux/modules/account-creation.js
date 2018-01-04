@@ -1,7 +1,7 @@
 //@flow
 import _ from "lodash";
 import { LOGOUT } from "./auth";
-import type { Member, Currency } from "../../data/types";
+import type { Member, Currency } from "data/types";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";

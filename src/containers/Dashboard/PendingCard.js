@@ -1,19 +1,19 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import ViewAllLink from "../../components/ViewAllLink";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
-import DateFormat from "../../components/DateFormat";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import AccountName from "../../components/AccountName";
-import type { Operation, Account } from "../../data/types";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import PendingsQuery from "../../api/queries/PendingsQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import connectData from "restlay/connectData";
+import ViewAllLink from "components/ViewAllLink";
+import Card from "components/Card";
+import CardField from "components/CardField";
+import DateFormat from "components/DateFormat";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import AccountName from "components/AccountName";
+import type { Operation, Account } from "data/types";
+import AccountsQuery from "api/queries/AccountsQuery";
+import PendingsQuery from "api/queries/PendingsQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import { withStyles } from "material-ui/styles";
-import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
+import type { Response as PendingsQueryResponse } from "api/queries/PendingsQuery";
 
 const styles = {
   row: {

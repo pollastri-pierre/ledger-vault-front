@@ -1,5 +1,5 @@
 //@flow
-import Query from "../../restlay/Query";
+import Query from "restlay/Query";
 
 type Input = void;
 export type Response = {

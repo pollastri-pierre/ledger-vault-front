@@ -8,7 +8,7 @@ import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
 import OperationCreationConfirmation from "./OperationCreationConfirmation";
-import type { Account } from "../../../data/types";
+import type { Account } from "data/types";
 import type { Details } from "../../NewOperationModal";
 
 const styles = {

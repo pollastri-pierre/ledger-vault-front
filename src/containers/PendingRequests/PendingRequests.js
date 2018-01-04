@@ -1,22 +1,22 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import EntityApprove from "../../components/approve/EntityApprove";
+import connectData from "restlay/connectData";
+import EntityApprove from "components/approve/EntityApprove";
 import {
   PendingAccountApprove,
   PendingOperationApprove
-} from "../../components";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import ModalRoute from "../../components/ModalRoute";
-import ProfileQuery from "../../api/queries/ProfileQuery";
-import PendingsQuery from "../../api/queries/PendingsQuery";
-import ApproversQuery from "../../api/queries/ApproversQuery";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import Card from "../../components/Card";
-import TryAgain from "../../components/TryAgain";
-import type { Account, Member } from "../../data/types";
+} from "components";
+import AccountsQuery from "api/queries/AccountsQuery";
+import ModalRoute from "components/ModalRoute";
+import ProfileQuery from "api/queries/ProfileQuery";
+import PendingsQuery from "api/queries/PendingsQuery";
+import ApproversQuery from "api/queries/ApproversQuery";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import Card from "components/Card";
+import TryAgain from "components/TryAgain";
+import type { Account, Member } from "data/types";
 import { withStyles } from "material-ui/styles";
-import type { Response as PendingRequestsQueryResponse } from "../../api/queries/PendingsQuery";
+import type { Response as PendingRequestsQueryResponse } from "api/queries/PendingsQuery";
 
 const EntityApproveAccount = props => (
   <EntityApprove entity="account" {...props} />

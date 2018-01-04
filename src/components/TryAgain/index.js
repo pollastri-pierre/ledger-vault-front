@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import errorFormatter from "../../formatters/error";
+import errorFormatter from "formatters/error";
 
 class TryAgain extends Component<
   {
