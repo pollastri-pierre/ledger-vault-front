@@ -62,6 +62,12 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     }
   }
 
+  if (method === "POST" && uri === "/authenticate") {
+    return {
+      token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
+    };
+  }
+
   if (method === "GET") {
     let m;
     m = /^\/accounts\/([^/]+)$/.exec(uri);
@@ -191,12 +197,6 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     // FIXME ^ use `q` instead
     if (m) {
       return genBalance(parseInt(m[1], 10), m[3]);
-    }
-
-    if (method === "POST" && uri === "/authenticate") {
-      return {
-        token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
-      };
     }
 
     switch (uri) {
