@@ -39,7 +39,15 @@ class DeviceLogin extends Component<{
         </div>
         <DialogButton onTouchTap={onCancel}>{t("common.cancel")}</DialogButton>
         {!isChecking ? (
-          <DialogButton right onTouchTap={onRestart}>
+          <DialogButton
+            style={{
+              float: "none",
+              left: "auto",
+              right: 0,
+              marginRight: 40 /* THIS IS A HACK, the markup probably should be rewrite because float/br should really be avoided */
+            }}
+            onTouchTap={onRestart}
+          >
             TRY AGAIN
           </DialogButton>
         ) : (

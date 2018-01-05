@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import queryString from "query-string";
-import createDevice from "../../device";
+import formatError from "../../formatters/error";
+import createDevice, { U2F_PATH } from "../../device";
 import "../../containers/App/App.css";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
@@ -91,10 +92,31 @@ export class Login extends Component<Props, State> {
         error: null,
         domainValidated: true
       });
-      const { authentication, pub_key } = await device.authenticate(challenge);
+
+      // FIXME these come from the authentication_challenge server call?
+      const application =
+        "1e55aaa3241c6f9b630d3a53c6aa6877695fd0e0c6c7bbc0f8eed35bcb43ebe0";
+      const keyHandle = "";
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
+
+      const auth = await device.authenticate(
+        challenge,
+        application,
+        keyHandle,
+        instanceName,
+        instanceReference,
+        instanceURL,
+        agentRole
+      );
+      console.log("auth", auth);
+      const pubKeyData = await device.getPublicKey(U2F_PATH);
+      console.log("pubKeyData", pubKeyData);
       const { token } = await network("/authenticate", "POST", {
-        pub_key,
-        authentication,
+        pub_key: pubKeyData.pubKey,
+        authentication: auth.signature,
         id
       });
       this.setState({ isChecking: false });
@@ -103,11 +125,7 @@ export class Login extends Component<Props, State> {
     } catch (error) {
       console.error(error);
       this.setState({ error, isChecking: false });
-      addAlertMessage(
-        "Unknown domain domain",
-        "This domain domain is unkown. Contact your administrator to get more information.",
-        "error"
-      );
+      addAlertMessage("Failed to authenticate", formatError(error), "error");
     }
   };
 
