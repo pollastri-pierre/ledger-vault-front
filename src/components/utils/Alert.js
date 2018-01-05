@@ -4,6 +4,10 @@ import React from "react";
 import Snackbar from "material-ui/Snackbar";
 import { SnackbarContent } from "material-ui/Snackbar";
 
+import IconCheck from "../icons/Validate";
+import IconError from "../icons/Error";
+import colors from "../../shared/colors";
+
 const common = {
   padding: "30px",
   width: "380px",
@@ -35,17 +39,17 @@ const Success = withStyles(success)(Snack);
 
 function Alert(props: { children: *, open: boolean, theme: string, title: * }) {
   const { title, children, theme: themeName, ...newProps } = props;
-  let iconDiv = "";
-  let titleDiv = "";
+  let iconDiv = null;
+  let titleDiv = null;
   const theme = {};
 
   switch (themeName) {
     case "success":
-      theme.icon = "check";
+      theme.icon = <IconCheck color={colors.white} size={38} />;
       break;
 
     case "error":
-      theme.icon = "close";
+      theme.icon = <IconError color={colors.white} size={38} />;
       break;
 
     default:
@@ -55,11 +59,7 @@ function Alert(props: { children: *, open: boolean, theme: string, title: * }) {
   }
 
   if (theme.icon) {
-    iconDiv = (
-      <div style={{ fontSize: "38px", lineHeight: 0, marginRight: "30px" }}>
-        <i className="material-icons">{theme.icon}</i>
-      </div>
-    );
+    iconDiv = <div style={{ marginRight: 30 }}>{theme.icon}</div>;
   }
 
   if (title) {
