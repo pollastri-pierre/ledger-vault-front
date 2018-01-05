@@ -93,14 +93,15 @@ export class Login extends Component<Props, State> {
         domainValidated: true
       });
 
-      // FIXME these come from the authentication_challenge server call?
+      // FIXME these come from the authentication_challenge server call ?
       const application =
         "1e55aaa3241c6f9b630d3a53c6aa6877695fd0e0c6c7bbc0f8eed35bcb43ebe0";
-      const keyHandle = "";
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
+      const keyHandle =
+        "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc";
+      const instanceName = "_";
+      const instanceReference = "_";
+      const instanceURL = "_";
+      const agentRole = "_";
 
       const auth = await device.authenticate(
         challenge,
