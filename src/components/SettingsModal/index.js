@@ -35,8 +35,6 @@ import type { Account, SecurityScheme, AccountSettings } from "data/types";
 
 import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
-const { REACT_APP_SECRET_CODE } = process.env;
-
 const styles = {
   container: {
     display: "flex",
@@ -454,7 +452,7 @@ function Side({
         </div>
       </div>
       <div className={classes.sideFooter}>
-        <div>{REACT_APP_SECRET_CODE || "unversioned"}</div>
+        <div>{__VERSION__ || "unversioned"}</div>
         <a className={classes.support} href="mailto:support@ledger.fr">
           support
         </a>

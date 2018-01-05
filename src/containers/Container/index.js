@@ -10,7 +10,7 @@ import Logout from "containers/Login/Logout";
 import AlertsContainer from "containers/AlertsContainer";
 import PrivateRoute from "containers/Login/PrivateRoute";
 
-export default function Container() {
+function Container() {
   return (
     <Fragment>
       <AlertsContainer />
@@ -25,3 +25,5 @@ export default function Container() {
     </Fragment>
   );
 }
+
+export default Container;

@@ -6,16 +6,7 @@ import paths from "./paths";
 import webpackConfig from "./base";
 
 export default merge(webpackConfig, {
-  devtool: "eval",
-
-  entry: {
-    app: [
-      "webpack-dev-server/client?https://localhost:9000",
-      "webpack/hot/only-dev-server",
-      "react-hot-loader/patch",
-      ...webpackConfig.entry
-    ]
-  },
+  devtool: "cheap-module-source-map",
 
   module: {
     rules: [
@@ -30,10 +21,21 @@ export default merge(webpackConfig, {
   devServer: {
     contentBase: paths.dist,
     historyApiFallback: true,
-    //hot: true,
-    https: true,
+    hot: true,
+    // @TODO: issue with webpack-dev-server and https (lot of disconnections), wait for fix
+    // https: true,
+    publicPath: "/",
+    overlay: true,
+    host: "0.0.0.0",
     port: 9000,
-    publicPath: "/"
+    stats: {
+      colors: true,
+      chunks: false
+    },
+    disableHostCheck: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*"
+    }
   },
 
   plugins: [

@@ -9,10 +9,7 @@ import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import {
-  countervalueForRate,
-  formatCurrencyUnit
-} from "data/currency";
+import { countervalueForRate, formatCurrencyUnit } from "data/currency";
 import ModalSubTitle from "./ModalSubTitle";
 import CryptoAddressPicker from "../../CryptoAddressPicker";
 import FeeSelect from "./FeeSelect";

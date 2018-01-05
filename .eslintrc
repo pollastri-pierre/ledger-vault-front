@@ -7,6 +7,12 @@
     "es6": true,
     "jest": true
   },
+  "globals": {
+    "__VERSION__": false,
+    "__DEBUG__": false,
+    "__ENV__": false,
+    "__DEV__": false
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",

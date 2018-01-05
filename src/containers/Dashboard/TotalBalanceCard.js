@@ -2,9 +2,7 @@
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
-import EvolutionSince, {
-  TotalBalanceFilters
-} from "components/EvolutionSince";
+import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import DateFormat from "components/DateFormat";
 import Card from "components/Card";
 import CardField from "components/CardField";

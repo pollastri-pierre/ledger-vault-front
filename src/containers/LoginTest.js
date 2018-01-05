@@ -40,4 +40,5 @@ class LoginTest extends Component<*, *> {
     );
   }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(LoginTest);

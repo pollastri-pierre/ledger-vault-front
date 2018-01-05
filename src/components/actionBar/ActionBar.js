@@ -14,6 +14,10 @@ import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Bell from "../icons/full/Bell";
 
+import logo from "assets/img/logo.png";
+import logo2x from "assets/img/logo@2x.png";
+import logo3x from "assets/img/logo@3x.png";
+
 const styles = {
   base: {
     height: "200px",
@@ -71,8 +75,8 @@ class Logo extends PureComponent<*> {
             transform: "skew(" + 36000 * (Math.max(this.n++, 0) % 2) + "deg)"
           });
         }}
-        src="/img/logo.png"
-        srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
+        src={logo}
+        srcSet={`${logo2x} 2x, ${logo3x} 3x`}
         alt="Ledger Vault logo"
       />
     );

@@ -28,7 +28,7 @@ export default {
             options: {
               hash: "sha512",
               digest: "hex",
-              name: `${paths.dist}/[hash].[ext]`
+              name: "[hash].[ext]"
             }
           }
         ]
@@ -41,7 +41,7 @@ export default {
             options: {
               limit: 8192,
               minetype: "application/font-woff",
-              name: `${paths.dist}/[hash].[ext]`
+              name: "[hash].[ext]"
             }
           }
         ]
@@ -52,7 +52,7 @@ export default {
           {
             loader: "file-loader",
             options: {
-              name: `${paths.dist}/[hash].[ext]`
+              name: "[hash].[ext]"
             }
           }
         ]

@@ -5,9 +5,7 @@ import Card from "components/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "material-ui/styles";
 import BadgeCurrency from "components/BadgeCurrency";
-import EvolutionSince, {
-  TotalBalanceFilters
-} from "components/EvolutionSince";
+import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 
 const styles = {
   card: {

@@ -2,10 +2,7 @@
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import EntityApprove from "components/approve/EntityApprove";
-import {
-  PendingAccountApprove,
-  PendingOperationApprove
-} from "components";
+import { PendingAccountApprove, PendingOperationApprove } from "components";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ModalRoute from "components/ModalRoute";
 import ProfileQuery from "api/queries/ProfileQuery";
