@@ -9,7 +9,7 @@ import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
 
 import SelectTab from "components/SelectTab/SelectTab";
-import FiatUnits from "fiat-units";
+import fiatUnits from "constants/fiatUnits";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -412,7 +412,7 @@ class AccountSettingsEdit extends Component<Props, State> {
               >
                 {countervalueSourceData.fiats.map(fiat => (
                   <MenuItem disableRipple key={fiat} value={fiat}>
-                    {fiat} - {FiatUnits[fiat].name}
+                    {fiat} - {fiatUnits[fiat].name}
                   </MenuItem>
                 ))}
               </Select>
