@@ -18,6 +18,14 @@ import type { Account, Operation, Member } from "../../../data/types";
 import Tabs, { Tab } from "material-ui/Tabs";
 import modals from "../../../shared/modals";
 
+const styles = {
+  base: {
+    ...modals.base,
+    width: "440px",
+    height: "615px"
+  }
+};
+
 type Props = {
   operationWithAccount: {
     account: Account,
@@ -28,17 +36,11 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
+  classes: { [_: $Keys<typeof styles>]: string },
   match: *
 };
 
-const styles = {
-  base: {
-    ...modals.base,
-    width: "440px",
-    height: "615px"
-  }
-};
-class OperationApprove extends Component<Props> {
+class OperationApprove extends Component<Props, { value: number }> {
   state = {
     value: 0
   };

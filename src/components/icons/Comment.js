@@ -3,14 +3,18 @@ import React from "react";
 import { withStyles } from "material-ui/styles";
 import colors from "../../shared/colors";
 
-const style = {
+const styles = {
   icon: {
     width: "16px",
     height: "12px"
   }
 };
 
-function Comment({ classes }) {
+function Comment({
+  classes
+}: {
+  classes: { [_: $Keys<typeof styles>]: string }
+}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,4 +32,4 @@ function Comment({ classes }) {
   );
 }
 
-export default withStyles(style)(Comment);
+export default withStyles(styles)(Comment);

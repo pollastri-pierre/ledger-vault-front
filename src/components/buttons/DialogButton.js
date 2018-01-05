@@ -73,6 +73,8 @@ class DialogButton extends Component<*, *> {
     highlight: PropTypes.bool,
     right: PropTypes.bool,
     disabled: PropTypes.bool,
+    classes: PropTypes.object,
+    abort: PropTypes.bool,
     onTouchTap: PropTypes.func
   };
   static defaultProps = {

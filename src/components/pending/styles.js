@@ -19,7 +19,6 @@ const styles = {
   },
   headerLight: {
     fontSize: "10px",
-    color: "#000",
     fontWeight: "600",
     lineHeight: "3",
     textTransform: "uppercase",
@@ -65,7 +64,6 @@ const styles = {
   },
   status: {
     fontSize: "11px",
-    color: "#000",
     color: "#999",
     lineHeight: "2.09"
   },

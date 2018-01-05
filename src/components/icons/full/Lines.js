@@ -1,6 +1,5 @@
 //@flow
 import React, { PureComponent } from "react";
-import classnames from "classnames";
 import { withStyles } from "material-ui/styles";
 
 const styles = {
@@ -13,7 +12,7 @@ const styles = {
   }
 };
 
-type Props = { color: string };
+type Props = { color: string, classes: { [_: $Keys<typeof styles>]: string } };
 
 class Lines extends PureComponent<Props> {
   static defaultProps = {

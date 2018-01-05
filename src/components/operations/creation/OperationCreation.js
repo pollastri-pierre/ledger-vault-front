@@ -121,6 +121,7 @@ class OperationCreation extends Component<{
           </Overscroll>
         );
         break;
+      default:
     }
 
     return (

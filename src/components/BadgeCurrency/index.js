@@ -14,6 +14,7 @@ const styles = {
 };
 class BadgeCurrency extends PureComponent<{
   size: number,
+  classes: { [_: $Keys<typeof styles>]: string },
   currency: Currency
 }> {
   static defaultProps = {

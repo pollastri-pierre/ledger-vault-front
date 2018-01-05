@@ -1,4 +1,3 @@
-import colors from "./colors";
 const header = {
   marginBottom: "35px",
   "& > h2": {

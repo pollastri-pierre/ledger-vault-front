@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import AccountName from "./AccountName";
 import type { Account } from "../data/types";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
@@ -32,7 +31,7 @@ const styles = {
 
 class AccountOption extends Component<{
   account: Account,
-  classes: *
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { account, classes, ...rest } = this.props;

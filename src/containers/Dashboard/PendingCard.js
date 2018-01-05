@@ -81,6 +81,7 @@ const AccountRow = ({ account }: { account: Account }) => (
 );
 
 class PendingCard extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   pendings: PendingsQueryResponse,
   accounts: Account[],
   reloading: boolean

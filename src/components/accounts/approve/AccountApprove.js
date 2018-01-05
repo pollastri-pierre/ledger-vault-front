@@ -19,6 +19,14 @@ import MembersQuery from "../../../api/queries/MembersQuery";
 import type { Member, Account } from "../../../data/types";
 import modals from "../../../shared/modals";
 
+const styles = {
+  base: {
+    ...modals.base,
+    width: "440px",
+    height: "615px"
+  }
+};
+
 type Props = {
   members: Array<Member>,
   profile: Member,
@@ -27,17 +35,11 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
+  classes: { [_: $Keys<typeof styles>]: string },
   match: *
 };
 
-const styles = {
-  base: {
-    ...modals.base,
-    width: "440px",
-    height: "615px"
-  }
-};
-class AccountApprove extends Component<Props> {
+class AccountApprove extends Component<Props, { value: number }> {
   state = {
     value: 0
   };

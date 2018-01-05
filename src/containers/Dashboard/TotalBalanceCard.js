@@ -8,7 +8,6 @@ import EvolutionSince, {
 import DateFormat from "../../components/DateFormat";
 import Card from "../../components/Card";
 import CardField from "../../components/CardField";
-import "./TotalBalanceCard.css";
 import { MenuItem } from "material-ui/Menu";
 import BlueSelect from "../../components/BlueSelect";
 import TryAgain from "../../components/TryAgain";
@@ -27,6 +26,7 @@ const styles = {
   }
 };
 class TotalBalance extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   totalBalance: *,
   filter: string,
   onTotalBalanceFilterChange: (filter: string) => void,
@@ -49,7 +49,8 @@ class TotalBalance extends Component<{
             onChange={this.onTotalBalanceFilterChange}
             disableUnderline
             renderValue={key =>
-              (TotalBalanceFilters.find(o => o.key === key) || {}).title}
+              (TotalBalanceFilters.find(o => o.key === key) || {}).title
+            }
             style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
           >
             {TotalBalanceFilters.map(({ title, key }) => (

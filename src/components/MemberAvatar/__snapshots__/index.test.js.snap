@@ -2,7 +2,7 @@
 
 exports[`MemberAvatar renders an url 1`] = `
 <span
-  className="member-avatar"
+  className="Avatar-base-1"
 >
   <img
     alt="Profile avatar"

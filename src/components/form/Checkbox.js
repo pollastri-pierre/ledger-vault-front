@@ -5,12 +5,6 @@ import { withStyles } from "material-ui/styles";
 import colors from "../../shared/colors";
 import classnames from "classnames";
 
-type Props = {
-  labelFor: string,
-  checked: boolean,
-  handleInputChange?: (checked: boolean) => void,
-  classes: Object
-};
 const styles = {
   base: {
     width: "26px",
@@ -62,6 +56,15 @@ const styles = {
     }
   }
 };
+
+type Props = {
+  labelFor: string,
+  checked: boolean,
+  handleInputChange?: (checked: boolean) => void,
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+
 function Checkbox(props: Props) {
   const { labelFor, checked, handleInputChange, classes, className } = props;
 

@@ -2,7 +2,12 @@
 import Query from "../../restlay/Query";
 import type { Account } from "../../data/types";
 
-export type Speed = "slow" | "medium" | "fast";
+export const speeds = {
+  slow: "slow",
+  medium: "medium",
+  fast: "fast"
+};
+export type Speed = $Values<typeof speeds>;
 
 type Input = {
   account: Account,

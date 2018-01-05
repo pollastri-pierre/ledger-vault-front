@@ -24,6 +24,7 @@ const styles = {
 class ApprovalStatusWithAccountName extends Component<{
   account: Account,
   operation: Operation,
+  classes: { [_: $Keys<typeof styles>]: string },
   user: Member
 }> {
   render() {

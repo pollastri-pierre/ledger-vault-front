@@ -14,11 +14,6 @@ import SpinnerCard from "../../components/spinners/SpinnerCard";
 import connectData from "../../restlay/connectData";
 import { withStyles } from "material-ui/styles";
 
-type Props = {
-  accountId: string,
-  account: Account
-};
-
 type State = {
   tabsIndex: number,
   quicklookFilter: { title: string, key: string },
@@ -43,6 +38,12 @@ const styles = {
     height: "403px",
     width: "380px"
   }
+};
+
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  accountId: string,
+  account: Account
 };
 
 const quicklookFilters: Array<Filter> = [
@@ -207,8 +208,8 @@ export class QuicklookCard extends Component<Props, State> {
   }
 }
 
-const RenderError = ({ error, restlay, classes }: *) => (
-  <Card className={classes.card} title="Quicklook">
+const RenderError = ({ error, restlay }: *) => (
+  <Card title="Quicklook">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );

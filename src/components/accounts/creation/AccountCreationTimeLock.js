@@ -1,110 +1,109 @@
 //@flow
-import InfoModal from "../../InfoModal";
-import React, { Component } from "react";
-import { PopBubble, DialogButton } from "../../";
-import EnableForm from "../../../components/EnableForm";
-import ArrowDown from "../../icons/full/ArrowDown";
-import { connect } from "react-redux";
-import InputTextWithUnity from "../../../components/InputTextWithUnity";
-import { addMessage } from "../../../redux/modules/alerts";
-import { withStyles } from "material-ui/styles";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import BlueSelect from "../../../components/BlueSelect";
-import modals from "../../../shared/modals";
+import InfoModal from "../../InfoModal"
+import React, { Component } from "react"
+import { PopBubble, DialogButton } from "../../"
+import EnableForm from "../../../components/EnableForm"
+import ArrowDown from "../../icons/full/ArrowDown"
+import { connect } from "react-redux"
+import InputTextWithUnity from "../../../components/InputTextWithUnity"
+import { addMessage } from "../../../redux/modules/alerts"
+import { withStyles } from "material-ui/styles"
+import { MenuItem } from "material-ui/Menu"
+import Select from "material-ui/Select"
+import BlueSelect from "../../../components/BlueSelect"
+import modals from "../../../shared/modals"
 
 const mapDispatchToProps = dispatch => ({
-  onAddMessage: (title, content, type) =>
-    dispatch(addMessage(title, content, type))
-});
+  onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
+})
 
 type Props = {
   switchInternalModal: Function,
   timelock: Object,
   setTimelock: Function,
-  onAddMessage: (t: string, m: string, ty: string) => void
-};
+  classes: { [_: $Keys<typeof styles>]: string },
+  onAddMessage: (t: string, m: string, ty: string) => void,
+}
 
 type State = {
   timelock: Object,
-  classes: Object
-};
+  classes: Object,
+}
 
 const styles = {
   base: {
     ...modals.base,
-    width: 440
+    width: 440,
   },
   info: {
-    margin: "20px 0px 40px 0px"
-  }
-};
+    margin: "20px 0px 40px 0px",
+  },
+}
 
 const frequencies = [
   { title: "minutes", key: 60 },
   { title: "hours", key: 3600 },
-  { title: "days", key: 84600 }
-];
+  { title: "days", key: 84600 },
+]
 
 class AccountCreationTimeLock extends Component<Props, State> {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      timelock: props.timelock
-    };
+      timelock: props.timelock,
+    }
   }
   submit = () => {
-    const { setTimelock, switchInternalModal, onAddMessage } = this.props;
-    const { timelock } = this.state;
+    const { setTimelock, switchInternalModal, onAddMessage } = this.props
+    const { timelock } = this.state
     if (timelock.enabled && timelock.value === 0) {
-      onAddMessage("Error", "Timelock value cannot be 0", "error");
-      return false;
+      onAddMessage("Error", "Timelock value cannot be 0", "error")
+      return false
     } else {
-      console.log(this.state.timelock);
-      setTimelock(this.state.timelock);
-      switchInternalModal("main");
+      setTimelock(this.state.timelock)
+      switchInternalModal("main")
     }
-  };
+  }
 
   onChangeValue = val => {
-    const isNumber = /^[0-9\b]+$/;
+    const isNumber = /^[0-9\b]+$/
 
     if (val === "" || isNumber.test(val)) {
       this.setState({
         ...this.state,
-        timelock: { ...this.state.timelock, value: parseInt(val, 10) || 0 }
-      });
+        timelock: { ...this.state.timelock, value: parseInt(val, 10) || 0 },
+      })
     }
-  };
+  }
 
   onToggle = () => {
     this.setState({
       ...this.state,
       timelock: {
         ...this.state.timelock,
-        enabled: !this.state.timelock.enabled
-      }
-    });
-  };
+        enabled: !this.state.timelock.enabled,
+      },
+    })
+  }
 
   changeFrequency = (e: *) => {
     this.setState({
       ...this.state,
       timelock: {
         ...this.state.timelock,
-        frequency: e.target.value
-      }
-    });
-  };
+        frequency: e.target.value,
+      },
+    })
+  }
 
   cancel = () => {
-    this.props.switchInternalModal("main");
-  };
+    this.props.switchInternalModal("main")
+  }
 
   render() {
-    const { timelock } = this.state;
-    const { classes } = this.props;
+    const { timelock } = this.state
+    const { classes } = this.props
 
     return (
       <div className={classes.base}>
@@ -129,24 +128,18 @@ class AccountCreationTimeLock extends Component<Props, State> {
                 value={timelock.frequency}
                 onChange={this.changeFrequency}
                 disableUnderline
-                renderValue={key =>
-                  (frequencies.find(o => o.key === key) || {}).title}
+                renderValue={key => (frequencies.find(o => o.key === key) || {}).title}
               >
                 {frequencies.map(({ title, key }) => (
-                  <MenuItem
-                    style={{ color: "#27d0e2" }}
-                    disableRipple
-                    key={key}
-                    value={key}
-                  >
+                  <MenuItem style={{ color: "#27d0e2" }} disableRipple key={key} value={key}>
                     <span style={{ color: "black" }}>{title}</span>
                   </MenuItem>
                 ))}
               </Select>
             </InputTextWithUnity>
             <InfoModal className={classes.info}>
-              Time-lock delays each outgoing operation by a configurable length,
-              after all the required members have given their approvals.
+              Time-lock delays each outgoing operation by a configurable length, after all the
+              required members have given their approvals.
             </InfoModal>
           </EnableForm>
         </div>
@@ -158,10 +151,8 @@ class AccountCreationTimeLock extends Component<Props, State> {
           </DialogButton>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(AccountCreationTimeLock)
-);
+export default connect(undefined, mapDispatchToProps)(withStyles(styles)(AccountCreationTimeLock))

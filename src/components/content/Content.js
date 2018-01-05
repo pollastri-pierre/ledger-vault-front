@@ -15,7 +15,11 @@ const styles = {
     marginTop: "-80px"
   }
 };
-function Content({ classes }) {
+function Content({
+  classes
+}: {
+  classes: { [_: $Keys<typeof styles>]: string }
+}) {
   return (
     <div className={classes.base}>
       <Switch>

@@ -10,7 +10,11 @@ const styles = {
   }
 };
 
-type Props = { color: string };
+type Props = {
+  color: string,
+  className: string,
+  classes: { [_: $Keys<typeof styles>]: string }
+};
 
 class Search extends PureComponent<Props> {
   static defaultProps = {

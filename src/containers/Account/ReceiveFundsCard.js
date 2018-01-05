@@ -10,11 +10,6 @@ import { withStyles } from "material-ui/styles";
 import colors from "../../shared/colors";
 import QRCode from "../../components/QRCode";
 
-type Props = {
-  account: Account,
-  accountId: string
-};
-
 const styles = {
   card: {
     height: "218px",
@@ -48,6 +43,12 @@ const styles = {
     maxWidth: "482px",
     lineHeight: "1.82"
   }
+};
+
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  account: Account,
+  accountId: string
 };
 
 class ReceiveFundsCard extends Component<Props> {
