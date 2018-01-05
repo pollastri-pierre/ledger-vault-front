@@ -8,7 +8,6 @@ import PeopleThin from "./thin/People"
 import ValidateBadge from "./full/ValidateBadge"
 import RatesThin from "./thin/Rates"
 import Plug from "./thin/Plug"
-import Trash from "./thin/Trash"
 import HourglassThin from "./thin/Hourglass"
 import ClockThin from "./thin/Clock"
 

@@ -1,21 +1,29 @@
 //@flow
 import InfoModal from "../../InfoModal"
 import React, { Component } from "react"
-import { PopBubble, DialogButton } from "../../"
+import { DialogButton } from "../../"
 import EnableForm from "../../../components/EnableForm"
-import ArrowDown from "../../icons/full/ArrowDown"
 import { connect } from "react-redux"
 import InputTextWithUnity from "../../../components/InputTextWithUnity"
 import { addMessage } from "../../../redux/modules/alerts"
 import { withStyles } from "material-ui/styles"
 import { MenuItem } from "material-ui/Menu"
 import Select from "material-ui/Select"
-import BlueSelect from "../../../components/BlueSelect"
 import modals from "../../../shared/modals"
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
 })
+
+const styles = {
+  base: {
+    ...modals.base,
+    width: 440,
+  },
+  info: {
+    margin: "20px 0px 40px 0px",
+  },
+}
 
 type Props = {
   switchInternalModal: Function,
@@ -27,17 +35,6 @@ type Props = {
 
 type State = {
   timelock: Object,
-  classes: Object,
-}
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 440,
-  },
-  info: {
-    margin: "20px 0px 40px 0px",
-  },
 }
 
 const frequencies = [

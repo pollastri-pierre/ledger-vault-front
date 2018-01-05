@@ -1,23 +1,22 @@
 //@flow
-import React, { Component } from "react";
-import BadgeCurrency from "../BadgeCurrency";
-import type { Currency } from "../../data/types";
+import React, { Component } from "react"
+import BadgeCurrency from "../BadgeCurrency"
+import type { Currency } from "../../data/types"
 
 // FIXME why is that not just taking Account ?
-const a = 3
 class AccountName extends Component<{
   name: string | React$Node,
-  currency: Currency
+  currency: Currency,
 }> {
   render() {
-    const { name, currency } = this.props;
+    const { name, currency } = this.props
     return (
       <span>
         <BadgeCurrency currency={currency} />
         <span>{name}</span>
       </span>
-    );
+    )
   }
 }
 
-export default AccountName;
+export default AccountName

@@ -19,7 +19,6 @@ const styles = {
     lineHeight: "63px",
     position: "relative",
     transition: "all 500ms ease;",
-    cursor: "pointer",
     "& > .wrapper": {
       opacity: "0.5",
       transition: "all 500ms ease;",

@@ -1,13 +1,11 @@
 //@flow
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { PopBubble, DialogButton } from "../../"
+import { DialogButton } from "../../"
 import EnableForm from "../../../components/EnableForm"
 import InfoModal from "../../InfoModal"
 import InputTextWithUnity from "../../../components/InputTextWithUnity"
-import ArrowDown from "../../icons/full/ArrowDown"
 import { MenuItem } from "material-ui/Menu"
-import BlueSelect from "../../../components/BlueSelect"
 import Select from "material-ui/Select"
 import { addMessage } from "../../../redux/modules/alerts"
 import { withStyles } from "material-ui/styles"
@@ -23,6 +21,16 @@ const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
 })
 
+const styles = {
+  base: {
+    ...modals.base,
+    width: 440,
+  },
+  info: {
+    margin: "20px 0px 40px 0px",
+  },
+}
+
 type Props = {
   setRatelimiter: Function,
   switchInternalModal: string => void,
@@ -33,22 +41,12 @@ type Props = {
 
 type State = {
   rate_limiter: Object,
-  popover: boolean,
-  classes: Object,
 }
 
-const styles = {
-  base: {
-    ...modals.base,
-    width: 440,
-  },
-  info: {
-    margin: "20px 0px 40px 0px",
-  },
-}
 class AccountCreationRateLimiter extends Component<Props, State> {
   constructor(props) {
     super(props)
+
     this.state = {
       rate_limiter: props.rate_limiter,
     }
@@ -104,7 +102,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     this.props.switchInternalModal("main")
   }
   render() {
-    const { rate_limiter, popover } = this.state
+    const { rate_limiter } = this.state
     const { classes } = this.props
     return (
       <div className={classes.base}>
