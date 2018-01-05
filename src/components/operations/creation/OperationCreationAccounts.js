@@ -1,9 +1,9 @@
 //@flow
-import React, { Fragment } from "react"
-import { MenuList } from "material-ui/Menu"
-import AccountMenuItem from "./AccountMenuItem"
-import ModalSubTitle from "./ModalSubTitle"
-import type { Account } from "../../../data/types"
+import React, { Fragment } from "react";
+import { MenuList } from "material-ui/Menu";
+import AccountMenuItem from "./AccountMenuItem";
+import ModalSubTitle from "./ModalSubTitle";
+import type { Account } from "../../../data/types";
 
 const OperationCreationAccounts = ({
   accounts,
@@ -27,6 +27,6 @@ const OperationCreationAccounts = ({
       ))}
     </MenuList>
   </Fragment>
-)
+);
 
-export default OperationCreationAccounts
+export default OperationCreationAccounts;

@@ -1,12 +1,12 @@
 //@flow
-import React, { Component } from "react"
-import connectData from "../../../restlay/connectData"
-import ModalLoading from "../../../components/ModalLoading"
-import CurrenciesQuery from "../../../api/queries/CurrenciesQuery"
-import classnames from "classnames"
-import type { Currency } from "../../../data/types"
-import { withStyles } from "material-ui/styles"
-import colors from "../../../shared/colors"
+import React, { Component } from "react";
+import connectData from "../../../restlay/connectData";
+import ModalLoading from "../../../components/ModalLoading";
+import CurrenciesQuery from "../../../api/queries/CurrenciesQuery";
+import classnames from "classnames";
+import type { Currency } from "../../../data/types";
+import { withStyles } from "material-ui/styles";
+import colors from "../../../shared/colors";
 
 const styles = {
   base: {
@@ -111,14 +111,14 @@ const styles = {
       opacity: 1,
     },
   },
-}
+};
 
 const getCurrencyClassName = (name: string) => {
   return name
     .split(" ")
     .join("-")
-    .toLowerCase()
-}
+    .toLowerCase();
+};
 
 class AccountCreationCurrencies extends Component<{
   currencies: Array<Currency>,
@@ -127,10 +127,10 @@ class AccountCreationCurrencies extends Component<{
   classes: Object,
 }> {
   render() {
-    const { props } = this
-    const { currencies, currency, onSelect, classes } = props
+    const { props } = this;
+    const { currencies, currency, onSelect, classes } = props;
     // TODO migrate to use material-ui MenuList
-    console.log("currency prop not used yet: ", currency) // eslint-disable-line no-console
+    console.log("currency prop not used yet: ", currency); // eslint-disable-line no-console
 
     return (
       <div className={classes.base}>
@@ -153,7 +153,7 @@ class AccountCreationCurrencies extends Component<{
           </div>
         ))}
       </div>
-    )
+    );
   }
 }
 
@@ -162,4 +162,4 @@ export default connectData(withStyles(styles)(AccountCreationCurrencies), {
     currencies: CurrenciesQuery,
   },
   RenderLoading: ModalLoading,
-})
+});

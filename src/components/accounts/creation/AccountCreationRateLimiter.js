@@ -1,25 +1,25 @@
 //@flow
-import React, { Component } from "react"
-import { connect } from "react-redux"
-import { DialogButton } from "../../"
-import EnableForm from "../../../components/EnableForm"
-import InfoModal from "../../InfoModal"
-import InputTextWithUnity from "../../../components/InputTextWithUnity"
-import { MenuItem } from "material-ui/Menu"
-import Select from "material-ui/Select"
-import { addMessage } from "../../../redux/modules/alerts"
-import { withStyles } from "material-ui/styles"
-import modals from "../../../shared/modals"
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { DialogButton } from "../../";
+import EnableForm from "../../../components/EnableForm";
+import InfoModal from "../../InfoModal";
+import InputTextWithUnity from "../../../components/InputTextWithUnity";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
+import { addMessage } from "../../../redux/modules/alerts";
+import { withStyles } from "material-ui/styles";
+import modals from "../../../shared/modals";
 
 const frequencies = [
   { title: "minute", key: 60 },
   { title: "hour", key: 3600 },
   { title: "day", key: 84600 },
-]
+];
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
-})
+});
 
 const styles = {
   base: {
@@ -29,7 +29,7 @@ const styles = {
   info: {
     margin: "20px 0px 40px 0px",
   },
-}
+};
 
 type Props = {
   setRatelimiter: Function,
@@ -37,35 +37,35 @@ type Props = {
   rate_limiter: Object,
   classes: { [_: $Keys<typeof styles>]: string },
   onAddMessage: (t: string, m: string, ty: string) => void,
-}
+};
 
 type State = {
   rate_limiter: Object,
-}
+};
 
 class AccountCreationRateLimiter extends Component<Props, State> {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       rate_limiter: props.rate_limiter,
-    }
+    };
   }
 
   submit = () => {
-    const { setRatelimiter, switchInternalModal, onAddMessage } = this.props
-    const { rate_limiter } = this.state
+    const { setRatelimiter, switchInternalModal, onAddMessage } = this.props;
+    const { rate_limiter } = this.state;
     if (rate_limiter.enabled && rate_limiter.value === 0) {
-      onAddMessage("Error", "Rate limiter value cannot be 0", "error")
-      return false
+      onAddMessage("Error", "Rate limiter value cannot be 0", "error");
+      return false;
     } else {
-      setRatelimiter(this.state.rate_limiter)
-      switchInternalModal("main")
+      setRatelimiter(this.state.rate_limiter);
+      switchInternalModal("main");
     }
-  }
+  };
 
   onChangeValue = val => {
-    const isNumber = /^[0-9\b]+$/
+    const isNumber = /^[0-9\b]+$/;
 
     if (val === "" || isNumber.test(val)) {
       this.setState({
@@ -74,9 +74,9 @@ class AccountCreationRateLimiter extends Component<Props, State> {
           ...this.state.rate_limiter,
           value: parseInt(val, 10) || 0,
         },
-      })
+      });
     }
-  }
+  };
 
   onToggle = () => {
     this.setState({
@@ -85,8 +85,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
         ...this.state.rate_limiter,
         enabled: !this.state.rate_limiter.enabled,
       },
-    })
-  }
+    });
+  };
 
   changeFrequency = (e: *) => {
     this.setState({
@@ -95,15 +95,15 @@ class AccountCreationRateLimiter extends Component<Props, State> {
         ...this.state.rate_limiter,
         frequency: e.target.value,
       },
-    })
-  }
+    });
+  };
 
   cancel = () => {
-    this.props.switchInternalModal("main")
-  }
+    this.props.switchInternalModal("main");
+  };
   render() {
-    const { rate_limiter } = this.state
-    const { classes } = this.props
+    const { rate_limiter } = this.state;
+    const { classes } = this.props;
     return (
       <div className={classes.base}>
         <header>
@@ -150,9 +150,9 @@ class AccountCreationRateLimiter extends Component<Props, State> {
           </DialogButton>
         </div>
       </div>
-    )
+    );
   }
 }
 export default connect(undefined, mapDispatchToProps)(
   withStyles(styles)(AccountCreationRateLimiter),
-)
+);

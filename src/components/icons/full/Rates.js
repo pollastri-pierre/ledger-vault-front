@@ -1,23 +1,23 @@
 //@flow
-import classnames from "classnames"
-import React, { PureComponent } from "react"
-import { withStyles } from "material-ui/styles"
+import classnames from "classnames";
+import React, { PureComponent } from "react";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
     width: 13,
   },
-}
+};
 
 type Props = {
   color: string,
   className: string,
   classes: { [_: $Keys<typeof styles>]: string },
-}
+};
 
 class RatesFull extends PureComponent<Props> {
   render() {
-    const { classes, className } = this.props
+    const { classes, className } = this.props;
     return (
       <svg viewBox="0 0 30 28.57" className={classnames(classes.common, className)}>
         <g id="Layer_2" data-name="Layer 2">
@@ -31,8 +31,8 @@ class RatesFull extends PureComponent<Props> {
           </g>
         </g>
       </svg>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(RatesFull)
+export default withStyles(styles)(RatesFull);

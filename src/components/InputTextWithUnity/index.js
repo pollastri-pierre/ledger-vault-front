@@ -1,7 +1,7 @@
 //@flow
-import React from "react"
-import { withStyles } from "material-ui/styles"
-import classnames from "classnames"
+import React from "react";
+import { withStyles } from "material-ui/styles";
+import classnames from "classnames";
 
 const styles = {
   base: {
@@ -44,7 +44,7 @@ const styles = {
       color: "black",
     },
   },
-}
+};
 function InputTextWithUnity(props: {
   children: React$Node | string,
   field: React$Node | string,
@@ -52,14 +52,14 @@ function InputTextWithUnity(props: {
   label: React$Node | string,
   classes: Object,
 }) {
-  const { children, field, hasError, label, classes } = props
+  const { children, field, hasError, label, classes } = props;
   return (
     <div className={classnames(classes.base, { [classes.error]: hasError })}>
       <label>{label}</label>
       <div className={classes.valueLeft}>{field}</div>
       <div className={classes.unityRight}>{children}</div>
     </div>
-  )
+  );
 }
 
-export default withStyles(styles)(InputTextWithUnity)
+export default withStyles(styles)(InputTextWithUnity);

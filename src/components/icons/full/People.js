@@ -1,22 +1,22 @@
 //@flow
-import classnames from "classnames"
-import React, { PureComponent } from "react"
-import { withStyles } from "material-ui/styles"
+import classnames from "classnames";
+import React, { PureComponent } from "react";
+import { withStyles } from "material-ui/styles";
 
 const styles = {
   common: {
     width: 13,
   },
-}
+};
 
 type Props = {
   className: string,
   classes: { [_: $Keys<typeof styles>]: string },
-}
+};
 
 class PeopleFull extends PureComponent<Props> {
   render() {
-    const { classes, className } = this.props
+    const { classes, className } = this.props;
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -32,8 +32,8 @@ class PeopleFull extends PureComponent<Props> {
           </g>
         </g>
       </svg>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(PeopleFull)
+export default withStyles(styles)(PeopleFull);

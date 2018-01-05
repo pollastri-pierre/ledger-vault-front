@@ -1,13 +1,13 @@
 //@flow
-import React from "react"
-import RateLimiterValue from "../../RateLimiterValue"
-import TimeLockValue from "../../TimeLockValue"
-import SecurityRow from "../../SecurityRow"
-import ValidateBadge from "../../icons/full/ValidateBadge"
-import RatesFull from "../../icons/full/Rates"
-import { withStyles } from "material-ui/styles"
-import HourglassFull from "../../icons/full/Hourglass"
-import PeopleFull from "../../icons/full/People"
+import React from "react";
+import RateLimiterValue from "../../RateLimiterValue";
+import TimeLockValue from "../../TimeLockValue";
+import SecurityRow from "../../SecurityRow";
+import ValidateBadge from "../../icons/full/ValidateBadge";
+import RatesFull from "../../icons/full/Rates";
+import { withStyles } from "material-ui/styles";
+import HourglassFull from "../../icons/full/Hourglass";
+import PeopleFull from "../../icons/full/People";
 
 const styles = {
   base: {
@@ -30,13 +30,13 @@ const styles = {
     fill: "#e2e2e2",
     width: 13,
   },
-}
+};
 function AccountCreationSecurity(props: {
   account: Object,
   switchInternalModal: Function,
   classes: Object,
 }) {
-  const { account, switchInternalModal, classes } = props
+  const { account, switchInternalModal, classes } = props;
   return (
     <div className={classes.base}>
       <h4>Security Scheme</h4>
@@ -85,7 +85,7 @@ function AccountCreationSecurity(props: {
         )}
       </SecurityRow>
     </div>
-  )
+  );
 }
 
-export default withStyles(styles)(AccountCreationSecurity)
+export default withStyles(styles)(AccountCreationSecurity);
