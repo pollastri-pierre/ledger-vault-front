@@ -35,10 +35,13 @@ const styles = {
 };
 
 class OperationDetails extends Component<Props> {
-  contentNode: *;
-  state = {
-    value: 0
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: parseInt(props.match.params.tabIndex, 10)
+    };
+  }
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -66,8 +69,8 @@ class OperationDetails extends Component<Props> {
         </header>
         {value === 0 && <TabOverview operation={operation} account={account} />}
         {value === 1 && (
-          <div>
-            <Overscroll top={40} bottom={98}>
+          <div style={{ height: "330px" }}>
+            <Overscroll top={20} bottom={40}>
               <TabDetails operation={operation} account={account} />
             </Overscroll>
           </div>

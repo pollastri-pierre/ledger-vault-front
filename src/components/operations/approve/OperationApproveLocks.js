@@ -33,7 +33,7 @@ function OperationApproveLocks(props: {
               <Hourglass
                 width="25px"
                 height="25px"
-                stroke="#cccccc"
+                color="#cccccc"
                 strokeWidth="2px"
               />
             }
@@ -51,7 +51,7 @@ function OperationApproveLocks(props: {
 
         {account.security_scheme.rate_limiter && (
           <ApproveLockRow
-            icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
+            icon={<Rates height="30px" color="#e2e2e2" strokeWidth="2px" />}
             name="Rate Limiter"
             value={
               <RateLimiterValue

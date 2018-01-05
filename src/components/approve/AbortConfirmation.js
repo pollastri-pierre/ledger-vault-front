@@ -1,8 +1,9 @@
 //@flow
 import React from "react";
 import DialogButton from "../buttons/DialogButton";
-import { TrashIcon } from "../icons";
 import { withStyles } from "material-ui/styles";
+import Trash from "../icons/thin/Trash";
+import colors from "../../shared/colors";
 
 const styles = {
   base: {
@@ -50,7 +51,15 @@ function AbortConfirmation(props: {
   return (
     <div className={classes.base}>
       <header>
-        <TrashIcon />
+        <Trash
+          style={{
+            width: "27px",
+            strokeWidth: "2px",
+            height: "32px",
+            fill: "none",
+            color: colors.mouse
+          }}
+        />
         <h3>Abort {entity} request</h3>
       </header>
 

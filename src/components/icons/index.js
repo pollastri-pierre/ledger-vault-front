@@ -33,14 +33,7 @@ export function SecurityMembersIcon() {
 }
 
 export function SecurityQuorumIcon() {
-  return (
-    <ValidateBadge
-      style={{
-        width: "12px"
-      }}
-      color={colors.mouse}
-    />
-  );
+  return <ValidateBadge color={colors.mouse} />;
 }
 
 export function SecurityRateLimiterIcon() {
@@ -67,20 +60,6 @@ export function PlugIcon(props: *) {
         strokeWidth: "2px"
       }}
       {...props}
-    />
-  );
-}
-
-export function TrashIcon(props: *) {
-  return (
-    <Trash
-      style={{
-        width: "27px",
-        strokeWidth: "2px",
-        height: "32px",
-        fill: "none",
-        stroke: colors.mouse
-      }}
     />
   );
 }

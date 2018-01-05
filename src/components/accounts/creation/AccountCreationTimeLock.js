@@ -8,6 +8,9 @@ import { connect } from "react-redux";
 import InputTextWithUnity from "../../../components/InputTextWithUnity";
 import { addMessage } from "../../../redux/modules/alerts";
 import { withStyles } from "material-ui/styles";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
+import BlueSelect from "../../../components/BlueSelect";
 import modals from "../../../shared/modals";
 
 const mapDispatchToProps = dispatch => ({
@@ -24,24 +27,31 @@ type Props = {
 
 type State = {
   timelock: Object,
-  popover: boolean,
-  anchor?: Object,
   classes: Object
 };
 
 const styles = {
   base: {
-    ...modals.base
+    ...modals.base,
+    width: 440
+  },
+  info: {
+    margin: "20px 0px 40px 0px"
   }
 };
+
+const frequencies = [
+  { title: "minutes", key: 60 },
+  { title: "hours", key: 3600 },
+  { title: "days", key: 84600 }
+];
+
 class AccountCreationTimeLock extends Component<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
-      timelock: props.timelock,
-      popover: false,
-      anchor: document.getElementsByClassName("count")[0]
+      timelock: props.timelock
     };
   }
   submit = () => {
@@ -51,6 +61,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
       onAddMessage("Error", "Timelock value cannot be 0", "error");
       return false;
     } else {
+      console.log(this.state.timelock);
       setTimelock(this.state.timelock);
       switchInternalModal("main");
     }
@@ -77,22 +88,13 @@ class AccountCreationTimeLock extends Component<Props, State> {
     });
   };
 
-  openFrequency = () => {
-    this.setState({
-      ...this.state,
-      popover: !this.state.popover,
-      anchor: document.getElementsByClassName("arrow-down")[0]
-    });
-  };
-
-  changeFrequency = val => {
+  changeFrequency = (e: *) => {
     this.setState({
       ...this.state,
       timelock: {
         ...this.state.timelock,
-        frequency: val
-      },
-      popover: false
+        frequency: e.target.value
+      }
     });
   };
 
@@ -101,7 +103,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
   };
 
   render() {
-    const { timelock, popover } = this.state;
+    const { timelock } = this.state;
     const { classes } = this.props;
 
     return (
@@ -123,73 +125,26 @@ class AccountCreationTimeLock extends Component<Props, State> {
                 />
               }
             >
-              <span
-                className="count dropdown"
-                role="button"
-                tabIndex={0}
-                onClick={this.openFrequency}
+              <Select
+                value={timelock.frequency}
+                onChange={this.changeFrequency}
+                disableUnderline
+                renderValue={key =>
+                  (frequencies.find(o => o.key === key) || {}).title}
               >
-                {timelock.frequency.label}
-                <ArrowDown className="arrow-down" />
-              </span>
-              <PopBubble
-                open={popover}
-                onClose={this.openFrequency}
-                anchorEl={this.state.anchor}
-                style={{
-                  marginTop: "11px"
-                }}
-              >
-                <div className="frequency-bubble">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        label: "minutes",
-                        value: 60
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "minutes"
-                      ? "active"
-                      : ""}`}
+                {frequencies.map(({ title, key }) => (
+                  <MenuItem
+                    style={{ color: "#27d0e2" }}
+                    disableRipple
+                    key={key}
+                    value={key}
                   >
-                    minutes
-                  </div>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        label: "hours",
-                        value: 3600
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "hours"
-                      ? "active"
-                      : ""}`}
-                  >
-                    hours
-                  </div>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        label: "days",
-                        value: 84600
-                      })}
-                    className={`frequency-bubble-row ${timelock.frequency
-                      .label === "days"
-                      ? "active"
-                      : ""}`}
-                  >
-                    days
-                  </div>
-                </div>
-              </PopBubble>
+                    <span style={{ color: "black" }}>{title}</span>
+                  </MenuItem>
+                ))}
+              </Select>
             </InputTextWithUnity>
-            <InfoModal>
+            <InfoModal className={classes.info}>
               Time-lock delays each outgoing operation by a configurable length,
               after all the required members have given their approvals.
             </InfoModal>
@@ -197,9 +152,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
         </div>
 
         <div className="footer">
-          <DialogButton className="cancel" highlight onTouchTap={this.cancel}>
-            Cancel
-          </DialogButton>
+          <DialogButton onTouchTap={this.cancel}>Cancel</DialogButton>
           <DialogButton right highlight onTouchTap={this.submit}>
             Done
           </DialogButton>

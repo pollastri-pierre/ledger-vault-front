@@ -17,11 +17,25 @@ const styles = {
     cursor: "pointer",
     height: "63px",
     lineHeight: "63px",
-    borderBottom: "1px solid #eeeeee",
-    opacity: "0.5",
     position: "relative",
     transition: "all 500ms ease;",
     cursor: "pointer",
+    "& > .wrapper": {
+      opacity: "0.5",
+      transition: "all 500ms ease;"
+    },
+    "&:after": {
+      content: '""',
+      left: 0,
+      width: "100%",
+      position: "absolute",
+      bottom: 0,
+      height: 1,
+      background: "#eeeeee"
+    },
+    "&:last-child:after": {
+      content: "none"
+    },
     "&:before": {
       content: '""',
       left: "-40px",
@@ -34,20 +48,77 @@ const styles = {
       transform: "width 0.2s ease"
     },
     "&:hover": {
-      opacity: "1"
+      "& > .wrapper": {
+        opacity: "1"
+      }
     },
     "&:hover:before": {
       width: "5px"
     }
   },
   name: {
-    fontSize: "13px"
+    fontSize: "13px",
+    textTransform: "capitalize",
+    "&:before": {
+      content: ' ""',
+      display: "inline-block",
+      borderRadius: "8px",
+      width: "23px",
+      height: "23px",
+      verticalAlign: "middle",
+      marginRight: "20px",
+      backgroundImage: "url(/img/icon-currencies.png)",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: " 23px"
+    },
+    "&.bitcoin": {
+      "&:before": {
+        backgroundPosition: "-2.5px -23px"
+      }
+    },
+    "&.dogecoin": {
+      "&:before": {
+        backgroundPosition: "-2.5px -160px"
+      }
+    },
+    "&.dash": {
+      "&:before": {
+        backgroundPosition: "-2.5px -115.5px"
+      }
+    },
+    "&.ethereum": {
+      "&:before": {
+        backgroundPosition: "-2.5px -183.5px"
+      }
+    },
+    "&.ethereum-classic": {
+      "&:before": {
+        backgroundPosition: "-2.5px -203.5px"
+      }
+    },
+    "&.litecoin": {
+      "&:before": {
+        backgroundPosition: "-2.5px -340px"
+      }
+    }
   },
   short: {
     fontSize: "10px",
     float: "right",
     color: colors.lead
+  },
+  selected: {
+    "& > .wrapper": {
+      opacity: 1
+    }
   }
+};
+
+const getCurrencyClassName = (name: string) => {
+  return name
+    .split(" ")
+    .join("-")
+    .toLowerCase();
 };
 
 class AccountCreationCurrencies extends Component<{
@@ -67,10 +138,22 @@ class AccountCreationCurrencies extends Component<{
             role="button"
             tabIndex="0"
             key={cur.units[0].name}
-            className={classnames(classes.row)}
+            className={classnames(classes.row, {
+              [classes.selected]:
+                currency && currency.units[0].name === cur.units[0].name
+            })}
           >
-            <span className={classes.name}>{cur.units[0].name}</span>
-            <span className={classes.short}>{cur.units[0].symbol}</span>
+            <div className="wrapper">
+              <span
+                className={classnames(
+                  classes.name,
+                  getCurrencyClassName(cur.units[0].name)
+                )}
+              >
+                {cur.units[0].name}
+              </span>
+              <span className={classes.short}>{cur.units[0].symbol}</span>
+            </div>
           </div>
         ))}
       </div>

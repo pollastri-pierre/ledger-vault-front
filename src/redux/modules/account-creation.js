@@ -144,12 +144,12 @@ export const initialState: State = {
   time_lock: {
     enabled: false,
     value: 0,
-    frequency: { label: "minutes", value: 60 }
+    frequency: 60
   },
   rate_limiter: {
     enabled: false,
     value: 0,
-    frequency: { label: "day", value: 84600 }
+    frequency: 84600
   },
   internModalId: "main",
   popBubble: false,

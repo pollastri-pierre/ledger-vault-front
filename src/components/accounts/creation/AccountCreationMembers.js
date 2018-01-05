@@ -69,7 +69,7 @@ class AccountCreationMembers extends Component<{
           </InfoModal>
         </header>
         <div className={classes.content}>
-          <Overscroll top={40} bottom={98}>
+          <Overscroll top={20} bottom={98}>
             {members.map(member => {
               const isChecked = approvers.indexOf(member.pub_key) > -1;
               return (

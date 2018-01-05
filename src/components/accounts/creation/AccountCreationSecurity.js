@@ -3,15 +3,11 @@ import React from "react";
 import RateLimiterValue from "../../RateLimiterValue";
 import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
+import ValidateBadge from "../../icons/full/ValidateBadge";
+import RatesFull from "../../icons/full/Rates";
 import { withStyles } from "material-ui/styles";
-import {
-  SecurityMembersIcon,
-  SecurityQuorumIcon,
-  SecurityRateLimiterIcon,
-  SecurityTimelockIcon
-} from "../../icons";
-
 import HourglassFull from "../../icons/full/Hourglass";
+import PeopleFull from "../../icons/full/People";
 
 const styles = {
   base: {
@@ -32,7 +28,7 @@ const styles = {
   },
   icon: {
     fill: "#e2e2e2",
-    width: 12
+    width: 13
   }
 };
 function AccountCreationSecurity(props: {
@@ -47,7 +43,7 @@ function AccountCreationSecurity(props: {
       <h5>Members</h5>
       <div className="security-members">
         <SecurityRow
-          icon={<SecurityMembersIcon />}
+          icon={<PeopleFull className={classes.icon} />}
           label="Members"
           onClick={() => switchInternalModal("members")}
         >
@@ -56,7 +52,7 @@ function AccountCreationSecurity(props: {
             : "None"}
         </SecurityRow>
         <SecurityRow
-          icon={<SecurityQuorumIcon />}
+          icon={<ValidateBadge className={classes.icon} />}
           label="Approvals"
           disabled={account.approvers.length === 0}
           onClick={() => switchInternalModal("approvals")}
@@ -72,23 +68,21 @@ function AccountCreationSecurity(props: {
       >
         {account.time_lock.enabled ? (
           <TimeLockValue
-            time_lock={
-              account.time_lock.value * account.time_lock.frequency.value
-            }
+            time_lock={account.time_lock.value * account.time_lock.frequency}
           />
         ) : (
           "disabled"
         )}
       </SecurityRow>
       <SecurityRow
-        icon={<SecurityRateLimiterIcon />}
+        icon={<RatesFull className={classes.icon} />}
         label="Rate Limiter"
         onClick={() => switchInternalModal("rate-limiter")}
       >
         {account.rate_limiter.enabled ? (
           <RateLimiterValue
             max_transaction={account.rate_limiter.value}
-            time_slot={account.rate_limiter.frequency.value}
+            time_slot={account.rate_limiter.frequency}
           />
         ) : (
           "disabled"

@@ -1,3 +1,4 @@
+import colors from "../../shared/colors";
 const styles = {
   base: {
     "& a": {
@@ -31,8 +32,22 @@ const styles = {
     display: "block",
     position: "relative",
     padding: "10px 0",
+    "&:before": {
+      transition: "all 100ms ease",
+      width: 0,
+      height: 28,
+      background: colors.ocean,
+      position: "absolute",
+      content: '""',
+      left: -40,
+      top: "50%",
+      marginTop: -14
+    },
     "&:not(:last-child)": {
       borderBottom: "1px solid #eee"
+    },
+    "&:hover:before": {
+      width: 5
     }
   },
   date: {

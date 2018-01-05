@@ -2,11 +2,14 @@
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import ValidateBadge from "../icons/full/ValidateBadge";
+import colors from "../../shared/colors";
 
 const styles = {
   base: {
     marginLeft: "8px",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+    width: 11,
+    fill: colors.ocean
   }
 };
 class ConfirmationStatus extends Component<*> {

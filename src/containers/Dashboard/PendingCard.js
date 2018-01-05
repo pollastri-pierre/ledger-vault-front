@@ -37,7 +37,9 @@ const styles = {
     fontSize: "13px"
   },
   header: {
-    padding: "20px 46px"
+    padding: "20px 46px",
+    display: "flex",
+    justifyContent: "space-between"
   }
 };
 const Row_c = ({

@@ -56,6 +56,13 @@ const styles = {
   },
   right: {
     float: "right"
+  },
+  disabled: {
+    opacity: "0.6",
+    cursor: "default",
+    "&:hover:after": {
+      height: 0
+    }
   }
 };
 class DialogButton extends Component<*, *> {
@@ -110,7 +117,8 @@ class DialogButton extends Component<*, *> {
           {
             [classes.highlight]: highlight,
             [classes.right]: right,
-            [classes.abort]: abort
+            [classes.abort]: abort,
+            [classes.disabled]: this.props.disabled
           },
           className
         )}

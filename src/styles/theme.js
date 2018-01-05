@@ -43,7 +43,7 @@ const theme = {
       },
       rootInherit: {
         minWidth: "auto",
-        marginRight: "29px"
+        marginRight: "23px"
       },
       rootInheritDisabled: {
         opacity: 0.2
@@ -303,7 +303,7 @@ const theme = {
       }
     },
     text: {
-      primary: "rgba(0, 0, 0, 0.87)",
+      primary: "#d8d8d8",
       secondary: "rgba(0, 0, 0, 0.54)",
       disabled: "rgba(0, 0, 0, 0.38)",
       hint: "rgba(0, 0, 0, 0.38)",

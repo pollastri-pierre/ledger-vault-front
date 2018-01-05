@@ -16,7 +16,11 @@ const mapDispatchToProps = dispatch => ({
 
 const styles = {
   base: {
-    ...modals.base
+    ...modals.base,
+    width: 440
+  },
+  info: {
+    margin: "20px 0px 40px 0px"
   }
 };
 function AccountCreationApprovals(props: {
@@ -68,7 +72,7 @@ function AccountCreationApprovals(props: {
         >
           <span className="count">approvals from {members.length} members</span>
         </InputTextWithUnity>
-        <InfoModal>
+        <InfoModal className={classes.info}>
           Approvals define the number of required signatures from the group of
           members allowed to approve outgoing operations.
         </InfoModal>
