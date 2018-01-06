@@ -69,6 +69,9 @@ export default {
       "process.env.NODE_ENV": JSON.stringify(globals.__ENV__)
     }),
 
+    new webpack.NamedModulesPlugin(),
+    new webpack.NamedChunksPlugin(),
+
     new HtmlWebpackPlugin({
       title: "Ledger Vault",
       template: path.normalize(`${paths.src}/templates/layout.html`)

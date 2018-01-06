@@ -32,9 +32,6 @@ export default merge(webpackConfig, {
       minChunks: Infinity
     }),
 
-    new webpack.NamedModulesPlugin(),
-    new webpack.NamedChunksPlugin(),
-
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
