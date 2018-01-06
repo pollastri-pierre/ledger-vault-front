@@ -6,7 +6,7 @@ import type { Currency } from "data/types";
 // FIXME why is that not just taking Account ?
 class AccountName extends Component<{
   name: string | React$Node,
-  currency: Currency,
+  currency: Currency
 }> {
   render() {
     const { name, currency } = this.props;

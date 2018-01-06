@@ -22,88 +22,88 @@ export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
 type Timelock = {
   enabled: boolean,
   value: number,
-  frequency: number,
+  frequency: number
 };
 
 type Ratelimiter = {
   enabled: boolean,
   value: number,
-  frequency: number,
+  frequency: number
 };
 
 export function openPopBubble(anchor: ?Node) {
   return {
     type: OPEN_POPBUBBLE,
-    anchor,
+    anchor
   };
 }
 
 export function setTimelock(timelock: Timelock) {
   return {
     type: SET_TIMELOCK,
-    timelock,
+    timelock
   };
 }
 
 export function setRatelimiter(ratelimiter: Ratelimiter) {
   return {
     type: SET_RATELIMITER,
-    ratelimiter,
+    ratelimiter
   };
 }
 
 export function addMember(member: Member) {
   return {
     type: ADD_MEMBER,
-    member,
+    member
   };
 }
 
 export function setApprovals(number: number) {
   return {
     type: SET_APPROVALS,
-    number,
+    number
   };
 }
 
 export function removeMember(member: Member) {
   return {
     type: REMOVE_MEMBER,
-    member,
+    member
   };
 }
 
 export function clearState() {
   return {
-    type: CLEAR_STATE,
+    type: CLEAR_STATE
   };
 }
 
 export function changeTab(index: number) {
   return {
     type: CHANGE_TAB,
-    index,
+    index
   };
 }
 
 export function selectCurrencyItem(currency: Currency) {
   return {
     type: SELECT_CURRENCY,
-    currency,
+    currency
   };
 }
 
 export function changeAccountName(name: string) {
   return {
     type: CHANGE_ACCOUNT_NAME,
-    name,
+    name
   };
 }
 
 export function switchInternalModal(id: string) {
   return {
     type: SWITCH_INTERN_MODAL,
-    id,
+    id
   };
 }
 
@@ -125,16 +125,16 @@ export type State = {
   time_lock: {
     enabled: boolean,
     value: number,
-    frequency: Freq,
+    frequency: Freq
   },
   rate_limiter: {
     enabled: boolean,
     value: number,
-    frequency: Freq,
+    frequency: Freq
   },
   internModalId: string,
   popBubble: boolean,
-  popAnchor: ?Node,
+  popAnchor: ?Node
 };
 
 export const initialState: State = {
@@ -146,19 +146,22 @@ export const initialState: State = {
   time_lock: {
     enabled: false,
     value: 0,
-    frequency: 60,
+    frequency: 60
   },
   rate_limiter: {
     enabled: false,
     value: 0,
-    frequency: 84600,
+    frequency: 84600
   },
   internModalId: "main",
   popBubble: false,
-  popAnchor: null,
+  popAnchor: null
 };
 
-export default function reducer(state: State = initialState, action: Object): State {
+export default function reducer(
+  state: State = initialState,
+  action: Object
+): State {
   switch (action.type) {
     case CLEAR_STATE:
       return initialState;
@@ -182,13 +185,13 @@ export default function reducer(state: State = initialState, action: Object): St
       return {
         ...state,
         quorum: quorum,
-        approvers: cMembers,
+        approvers: cMembers
       };
     }
     case CHANGE_ACCOUNT_NAME:
       return {
         ...state,
-        name: action.name,
+        name: action.name
       };
     case SWITCH_INTERN_MODAL:
       return { ...state, internModalId: action.id };
@@ -198,7 +201,7 @@ export default function reducer(state: State = initialState, action: Object): St
       if (action.number === "" || isNumber.test(action.number)) {
         return {
           ...state,
-          quorum: parseInt(action.number, 10) || 0,
+          quorum: parseInt(action.number, 10) || 0
         };
       }
 
@@ -219,7 +222,7 @@ export default function reducer(state: State = initialState, action: Object): St
         return {
           ...state,
           popBubble: !state.popBubble,
-          popAnchor: action.anchor,
+          popAnchor: action.anchor
         };
       }
       return { ...state, popBubble: !state.popBubble };

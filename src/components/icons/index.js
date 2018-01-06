@@ -17,7 +17,7 @@ export function SecurityMembersIcon() {
   return (
     <PeopleThin
       style={{
-        width: "15px",
+        width: "15px"
       }}
       color={colors.mouse}
     />
@@ -33,7 +33,12 @@ export function SecurityRateLimiterIcon() {
 }
 
 export function SecurityTimelockIcon() {
-  return <HourglassThin style={{ width: "12px", strokeWidth: "2px" }} color={colors.mouse} />;
+  return (
+    <HourglassThin
+      style={{ width: "12px", strokeWidth: "2px" }}
+      color={colors.mouse}
+    />
+  );
 }
 
 export function PlugIcon(props: *) {
@@ -44,7 +49,7 @@ export function PlugIcon(props: *) {
         height: "20px",
         fill: "none",
         stroke: colors.mouse,
-        strokeWidth: "2px",
+        strokeWidth: "2px"
       }}
       {...props}
     />
@@ -52,16 +57,30 @@ export function PlugIcon(props: *) {
 }
 
 export function BigSecurityTimeLockIcon() {
-  return <HourglassThin style={{ width: "28px", height: "30px" }} color={colors.mouse} />;
+  return (
+    <HourglassThin
+      style={{ width: "28px", height: "30px" }}
+      color={colors.mouse}
+    />
+  );
 }
 
 export function BigSecurityMembersIcon() {
-  return <Profile style={{ width: "26px", height: "30px" }} color={colors.mouse} />;
+  return (
+    <Profile style={{ width: "26px", height: "30px" }} color={colors.mouse} />
+  );
 }
 
 export function BigSecurityRateLimiterIcon() {
-  return <RatesThin color={colors.mouse} style={{ width: "25px", height: "30px" }} />;
+  return (
+    <RatesThin color={colors.mouse} style={{ width: "25px", height: "30px" }} />
+  );
 }
 export function BigSecurityAutoExpireIcon() {
-  return <ClockThin color={colors.mouse} className="security-icon security-autoexpire-big-icon" />;
+  return (
+    <ClockThin
+      color={colors.mouse}
+      className="security-icon security-autoexpire-big-icon"
+    />
+  );
 }

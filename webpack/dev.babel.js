@@ -20,18 +20,18 @@ export default merge(webpackConfig, {
 
   devServer: {
     contentBase: paths.dist,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true
+    },
     hot: true,
     // @TODO: issue with webpack-dev-server and https (lot of disconnections), wait for fix
+    // https://github.com/webpack/webpack-dev-server/issues/941
     // https: true,
     publicPath: "/",
     overlay: true,
-    host: "0.0.0.0",
+    host: "localhost",
     port: 9000,
-    stats: {
-      colors: true,
-      chunks: false
-    },
+    stats: "errors-only",
     disableHostCheck: true,
     headers: {
       "Access-Control-Allow-Origin": "*"
