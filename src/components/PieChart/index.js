@@ -158,6 +158,7 @@ class PieChart extends Component<
     highlightCaptionsOnHover?: boolean,
     tooltipText?: Function,
     captionText?: Function,
+    classes: { [_: $Keys<typeof styles>]: string },
   },
   { selected: number },
 > {

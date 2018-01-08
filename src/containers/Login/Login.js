@@ -32,6 +32,8 @@ type Props = {
   onCloseTeamError: () => void,
   onResetTeam: () => void,
   classes: Object,
+  addAlertMessage: Function,
+  onLogin: Function,
 };
 
 const styles = {

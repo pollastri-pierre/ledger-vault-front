@@ -95,6 +95,7 @@ type Props = {
   formatTooltip: Function,
   noXAxisLabel?: boolean,
   showTooltip?: boolean,
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class LineChart extends Component<Props, *> {
