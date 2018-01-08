@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
-import { speeds } from "../../../api/queries/AccountCalculateFeeQuery";
-import type { Speed } from "../../../api/queries/AccountCalculateFeeQuery";
+import { speeds } from "api/queries/AccountCalculateFeeQuery";
+import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 
 type Fee = {
   key: string,

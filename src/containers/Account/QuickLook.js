@@ -1,15 +1,15 @@
 //@flow
 import React, { Component } from "react";
-import type { Unit } from "../../data/types";
-import LineChart from "../../components/LineChart";
-import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import connectData from "../../restlay/connectData";
+import type { Unit } from "data/types";
+import LineChart from "components/LineChart";
+import AccountQuicklookDataQuery from "api/queries/AccountQuicklookDataQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import connectData from "restlay/connectData";
 import type {
   Range,
   Response as Balance
-} from "../../api/queries/AccountQuicklookDataQuery";
+} from "api/queries/AccountQuicklookDataQuery";
 
 type Filter = $Keys<Balance>;
 

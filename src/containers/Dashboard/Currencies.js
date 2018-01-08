@@ -1,13 +1,13 @@
 //@flow
 import React from "react";
-import connectData from "../../restlay/connectData";
+import connectData from "restlay/connectData";
 import { withStyles } from "material-ui/styles";
-import PieChart from "../../components/PieChart";
-import { countervalueForRate } from "../../data/currency";
-import type { Account } from "../../data/types";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import PieChart from "components/PieChart";
+import { countervalueForRate } from "data/currency";
+import type { Account } from "data/types";
+import AccountsQuery from "api/queries/AccountsQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
 
 type AggregatedData = {
   [_: string]: {

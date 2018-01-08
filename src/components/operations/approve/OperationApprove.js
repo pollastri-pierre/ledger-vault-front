@@ -4,19 +4,19 @@ import Footer from "../../approve/Footer";
 import { withStyles } from "material-ui/styles";
 import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
-import ApprovalPercentage from "../../../components/ApprovalPercentage";
+import ApprovalPercentage from "components/ApprovalPercentage";
 import OperationApproveLocks from "./OperationApproveLocks";
-import ModalLoading from "../../../components/ModalLoading";
+import ModalLoading from "components/ModalLoading";
 import { withRouter, Redirect } from "react-router";
-import connectData from "../../../restlay/connectData";
-import OperationWithAccountQuery from "../../../api/queries/OperationWithAccountQuery";
-import MembersQuery from "../../../api/queries/MembersQuery";
+import connectData from "restlay/connectData";
+import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
+import MembersQuery from "api/queries/MembersQuery";
 import LocksPercentage from "../../LocksPercentage";
-import ProfileQuery from "../../../api/queries/ProfileQuery";
-import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
-import type { Account, Operation, Member } from "../../../data/types";
+import ProfileQuery from "api/queries/ProfileQuery";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
+import type { Account, Operation, Member } from "data/types";
 import Tabs, { Tab } from "material-ui/Tabs";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 
 const styles = {
   base: {

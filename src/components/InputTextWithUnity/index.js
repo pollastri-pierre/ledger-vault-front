@@ -11,7 +11,7 @@ const styles = {
       position: "absolute",
       fontSize: 13,
       top: 11,
-      left: 0,
+      left: 0
     },
     '& input[type="text"]': {
       width: "100%",
@@ -22,11 +22,11 @@ const styles = {
       fontSize: 13,
       textAlign: "right",
       borderBottom: "1px solid #cccccc",
-      marginBottom: 15,
-    },
+      marginBottom: 15
+    }
   },
   valueLeft: {
-    width: "100%",
+    width: "100%"
   },
   unityRight: {
     fontSize: 13,
@@ -41,16 +41,16 @@ const styles = {
     lineHeight: "40px",
     "& strong": {
       fontWeight: "normal",
-      color: "black",
-    },
-  },
+      color: "black"
+    }
+  }
 };
 function InputTextWithUnity(props: {
   children: React$Node | string,
   field: React$Node | string,
   hasError: boolean,
   label: React$Node | string,
-  classes: Object,
+  classes: Object
 }) {
   const { children, field, hasError, label, classes } = props;
   return (

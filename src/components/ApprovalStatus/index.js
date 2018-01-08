@@ -2,13 +2,13 @@
 import React, { PureComponent } from "react";
 import ValidateBadge from "../icons/full/ValidateBadge";
 import { withStyles } from "material-ui/styles";
-import type { Member } from "../../data/types";
-import { calculateApprovingObjectMeta } from "../../data/approvingObject";
-import colors from "../../shared/colors";
+import type { Member } from "data/types";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
+import colors from "shared/colors";
 import type {
   ApprovingObject,
   ApprovingObjectMeta
-} from "../../data/approvingObject";
+} from "data/approvingObject";
 
 const styles = {
   badge: {

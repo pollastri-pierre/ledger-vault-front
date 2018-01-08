@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import PercentageBarProgress from "../PercentageBarProgress";
-import type { Member } from "../../data/types";
+import type { Member } from "data/types";
 
 function ApprovalPercentage(props: {
   approvers: Member[],

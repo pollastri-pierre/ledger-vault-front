@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import invariant from "invariant";
 import { findDOMNode } from "react-dom";
-import type { RestlayEnvironment } from "../restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import SpinnerCard from "./spinners/SpinnerCard";
 
 const regex = /(auto|scroll)/;

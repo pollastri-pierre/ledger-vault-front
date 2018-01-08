@@ -1,6 +1,6 @@
 //@flow
 import { AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from "./auth";
-import { DATA_FETCHED, DATA_FETCHED_FAIL } from "../../restlay/dataStore";
+import { DATA_FETCHED, DATA_FETCHED_FAIL } from "restlay/dataStore";
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
 

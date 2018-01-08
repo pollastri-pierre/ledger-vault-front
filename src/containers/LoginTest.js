@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { registerDevice } from "../redux/modules/auth";
+import { registerDevice } from "redux/modules/auth";
 
 const mapStateToProps = state => ({
   auth: state.auth
@@ -40,4 +40,5 @@ class LoginTest extends Component<*, *> {
     );
   }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(LoginTest);

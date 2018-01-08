@@ -1,15 +1,15 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
+import connectData from "restlay/connectData";
 import AbortConfirmation from "./AbortConfirmation";
 import ApproveDevice from "./ApproveDevice";
 import AccountApprove from "../accounts/approve/AccountApprove";
 
-import PendingsQuery from "../../api/queries/PendingsQuery";
-import ApproveAccount from "../../api/mutations/ApproveAccountMutation";
-import AbortAccount from "../../api/mutations/AbortAccountMutation";
-import ApproveOperation from "../../api/mutations/ApproveOperationMutation";
-import AbortOperation from "../../api/mutations/AbortOperationMutation";
+import PendingsQuery from "api/queries/PendingsQuery";
+import ApproveAccount from "api/mutations/ApproveAccountMutation";
+import AbortAccount from "api/mutations/AbortAccountMutation";
+import ApproveOperation from "api/mutations/ApproveOperationMutation";
+import AbortOperation from "api/mutations/AbortOperationMutation";
 import OperationApprove from "../operations/approve/OperationApprove";
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));

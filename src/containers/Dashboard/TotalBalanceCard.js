@@ -1,18 +1,16 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import CurrencyFiatValue from "../../components/CurrencyFiatValue";
-import EvolutionSince, {
-  TotalBalanceFilters
-} from "../../components/EvolutionSince";
-import DateFormat from "../../components/DateFormat";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
+import connectData from "restlay/connectData";
+import CurrencyFiatValue from "components/CurrencyFiatValue";
+import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
+import DateFormat from "components/DateFormat";
+import Card from "components/Card";
+import CardField from "components/CardField";
 import { MenuItem } from "material-ui/Menu";
-import BlueSelect from "../../components/BlueSelect";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
+import BlueSelect from "components/BlueSelect";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import DashboardTotalBalanceQuery from "api/queries/DashboardTotalBalanceQuery";
 import { withStyles } from "material-ui/styles";
 
 const styles = {

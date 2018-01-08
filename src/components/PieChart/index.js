@@ -5,10 +5,10 @@ import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
 import cx from "classnames";
 
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import BadgeCurrency from "../../components/BadgeCurrency";
-import colors from "../../shared/colors";
-import type { Account } from "../../data/types";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import BadgeCurrency from "components/BadgeCurrency";
+import colors from "shared/colors";
+import type { Account } from "data/types";
 
 type PieChartData = {
   account: Account,

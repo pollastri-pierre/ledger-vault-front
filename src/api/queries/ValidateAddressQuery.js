@@ -1,6 +1,6 @@
 //@flow
-import Query from "../../restlay/Query";
-import type { Currency } from "../../data/types";
+import Query from "restlay/Query";
+import type { Currency } from "data/types";
 
 type Input = {
   address: string,

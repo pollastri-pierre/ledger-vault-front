@@ -1,6 +1,6 @@
 //@flow
-import Query from "../../restlay/Query";
-import type { Account } from "../../data/types";
+import Query from "restlay/Query";
+import type { Account } from "data/types";
 
 export const speeds = {
   slow: "slow",

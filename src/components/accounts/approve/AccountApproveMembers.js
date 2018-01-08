@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import find from "lodash/find";
 import MemberRow from "../../MemberRow";
 import InfoModal from "../../InfoModal";
-import type { Member, Account } from "../../../data/types";
+import type { Member, Account } from "data/types";
 
 type Props = {
   members: Array<Member>,

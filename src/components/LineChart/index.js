@@ -4,9 +4,9 @@ import cx from "classnames";
 import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
 
-import DateFormat from "../../components/DateFormat";
-import type { Unit } from "../../data/types";
-import { formatCurrencyUnit } from "../../data/currency";
+import DateFormat from "components/DateFormat";
+import type { Unit } from "data/types";
+import { formatCurrencyUnit } from "data/currency";
 
 const styles = {
   lineChart: {

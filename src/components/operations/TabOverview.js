@@ -7,7 +7,7 @@ import DateFormat from "../DateFormat";
 import ConfirmationStatus from "../ConfirmationStatus";
 import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
-import type { Operation, Account } from "../../data/types";
+import type { Operation, Account } from "data/types";
 
 function TabOverview(props: { operation: Operation, account: Account }) {
   const { operation, account } = props;

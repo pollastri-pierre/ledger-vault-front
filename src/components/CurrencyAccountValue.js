@@ -1,8 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { countervalueForRate, getAccountCurrencyUnit } from "../data/currency";
-import type { Account, Rate } from "../data/types";
+import { countervalueForRate, getAccountCurrencyUnit } from "data/currency";
+import type { Account, Rate } from "data/types";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue

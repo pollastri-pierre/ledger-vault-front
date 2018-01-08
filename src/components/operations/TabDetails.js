@@ -1,8 +1,8 @@
 //@flow
 import React, { Component, PureComponent } from "react";
-import type { Operation, Account } from "../../data/types";
+import type { Operation, Account } from "data/types";
 import { withStyles } from "material-ui/styles";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 
 const stylesList = {

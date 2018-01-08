@@ -1,8 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import PendingsQuery from "../../api/queries/PendingsQuery";
-import colors from "../../shared/colors";
+import connectData from "restlay/connectData";
+import PendingsQuery from "api/queries/PendingsQuery";
+import colors from "shared/colors";
 import { withStyles } from "material-ui/styles";
 
 const styles = {

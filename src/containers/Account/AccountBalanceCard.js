@@ -1,15 +1,15 @@
 // @flow
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
-import connectData from "../../restlay/connectData";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
-import AccountQuery from "../../api/queries/AccountQuery";
-import DateFormat from "../../components/DateFormat";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import type { Account } from "../../data/types";
+import connectData from "restlay/connectData";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Card from "components/Card";
+import CardField from "components/CardField";
+import AccountQuery from "api/queries/AccountQuery";
+import DateFormat from "components/DateFormat";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import type { Account } from "data/types";
 
 const styles = {
   card: {

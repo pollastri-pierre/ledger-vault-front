@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 
 function ValidateBadge(props: *) {
   return (

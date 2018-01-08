@@ -10,3 +10,5 @@ node_modules/jss/flow-typed
 
 [options]
 unsafe.enable_getters_and_setters=true
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=src
