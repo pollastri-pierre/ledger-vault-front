@@ -9,230 +9,230 @@ $mouse: #e2e2e2;
   height: 100% td {
     padding: 0px;
   }
-  .bullet {
-    width: 6px;
-    height: 6px;
-    margin-top: 8px;
-  }
+}
+.bullet {
+  width: 6px;
+  height: 6px;
+  margin-top: 8px;
+}
 
-  .round {
-    border-radius: 50%;
-  }
+.round {
+  border-radius: 50%;
+}
 
-  .inline {
-    display: inline-block;
-    vertical-align: top;
-  }
+.inline {
+  display: inline-block;
+  vertical-align: top;
+}
 
-  .currencyName {
-    font-size: 10px;
-    color: $steel;
-    margin-left: 10px;
-    font-weight: 600;
-  }
+.currencyName {
+  font-size: 10px;
+  color: $steel;
+  margin-left: 10px;
+  font-weight: 600;
+}
 
-  .uppercase {
-    text-transform: uppercase;
-  }
+.uppercase {
+  text-transform: uppercase;
+}
 
-  .bg-yellow {
-    background-color: $yellow;
-  }
+.bg-yellow {
+  background-color: $yellow;
+}
 
-  .bg-blue {
-    background-color: $blue;
-  }
+.bg-blue {
+  background-color: $blue;
+}
 
-  .bg-green {
-    background-color: $green;
-  }
+.bg-green {
+  background-color: $green;
+}
 
-  .bg-steel {
-    background-color: $steel;
-  }
+.bg-steel {
+  background-color: $steel;
+}
 
-  .currencyBalance {
-    font-size: 13px;
-    text-align: right;
-  }
+.currencyBalance {
+  font-size: 13px;
+  text-align: right;
+}
 
-  .currency {
-    line-height: 23px;
-    cursor: default;
-    position: relative;
-  }
+.currency {
+  line-height: 23px;
+  cursor: default;
+  position: relative;
+}
 
-  .currencyTable {
+.currencyTable {
+  width: 100%;
+  margin-top: 10px;
+  text-align: justify;
+  z-index: 1;
+}
+
+.disable {
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.hover:hover {
+  cursor: pointer;
+}
+
+.tooltip {
+  opacity: 1;
+  position: absolute;
+  width: 100px;
+  height: 70px;
+  padding: 10px;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
+  z-index: 10;
+  pointer-events: none;
+  background-color: currentColor;
+  padding: 15px;
+  //transition: opacity 0.3s ease-out;
+  .tooltipTextWrap {
     width: 100%;
-    margin-top: 10px;
-    text-align: justify;
-    z-index: 1;
-  }
-
-  .disable {
-    opacity: 0.5;
-    z-index: 1;
-  }
-
-  .hover:hover {
-    cursor: pointer;
-  }
-
-  .tooltip {
-    opacity: 1;
-    position: absolute;
-    width: 100px;
-    height: 70px;
-    padding: 10px;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04);
-    z-index: 10;
-    pointer-events: none;
-    background-color: currentColor;
-    padding: 15px;
-    //transition: opacity 0.3s ease-out;
-    .tooltipTextWrap {
-      width: 100%;
-      height: 100%;
-      .tooltipText {
-        div {
-          overflow: hidden;
-        }
-        .currencyName {
-          color: $mouse;
-          font-size: 11px;
-          display: block;
-          margin-left: 0px;
-        }
-        .percentage {
-          display: block;
-          color: white;
-          font-size: 16px;
-        }
-      }
-    }
-  }
-  .pieChart {
-    .chartTooltipWrap {
-      width: 100%;
-      text-align: center;
-      height: 140px;
-      display: flex;
-      justify-content: center;
-      .centerChart {
-        width: 140px;
-        position: relative;
-      }
-    }
-  }
-  .tooltip {
-    z-index: 100;
-  }
-  .tooltip.lookLeft {
+    height: 100%;
     .tooltipText {
-      span {
-        float: left;
+      div {
+        overflow: hidden;
+      }
+      .currencyName {
+        color: $mouse;
+        font-size: 11px;
+        display: block;
+        margin-left: 0px;
+      }
+      .percentage {
+        display: block;
+        color: white;
+        font-size: 16px;
       }
     }
   }
-
-  .tooltip.lookRight {
-    .tooltipText {
-      span {
-        float: right;
-      }
+}
+.pieChart {
+  .chartTooltipWrap {
+    width: 100%;
+    text-align: center;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    .centerChart {
+      width: 140px;
+      position: relative;
     }
   }
-
-  .tooltip.lookUp {
-    .tooltipText {
-      span {
-        float: right;
-      }
+}
+.tooltip {
+  z-index: 100;
+}
+.tooltip.lookLeft {
+  .tooltipText {
+    span {
+      float: left;
     }
   }
+}
 
-  .tooltip.lookDown {
-    .tooltipText {
-      span {
-        float: right;
-      }
+.tooltip.lookRight {
+  .tooltipText {
+    span {
+      float: right;
     }
   }
+}
 
-  .tooltip:before {
-    border-color: currentColor;
+.tooltip.lookUp {
+  .tooltipText {
+    span {
+      float: right;
+    }
   }
+}
 
-  .tooltip.lookLeft:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
-
-    border-top: 10px solid transparent !important;
-    border-bottom: 10px solid transparent !important;
-    border-right: 10px solid;
-
-    left: -10px;
-
-    top: 25px;
+.tooltip.lookDown {
+  .tooltipText {
+    span {
+      float: right;
+    }
   }
+}
 
-  .tooltip.lookRight:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
+.tooltip:before {
+  border-color: currentColor;
+}
 
-    border-top: 10px solid transparent !important;
-    border-bottom: 10px solid transparent !important;
-    border-left: 10px solid;
+.tooltip.lookLeft:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
 
-    left: 100px;
+  border-top: 10px solid transparent !important;
+  border-bottom: 10px solid transparent !important;
+  border-right: 10px solid;
 
-    top: 25px;
-  }
+  left: -10px;
 
-  .tooltip.lookDown:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
+  top: 25px;
+}
 
-    border-top: 10px solid;
-    border-right: 10px solid transparent !important;
-    border-left: 10px solid transparent !important;
+.tooltip.lookRight:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
 
-    left: 40px;
+  border-top: 10px solid transparent !important;
+  border-bottom: 10px solid transparent !important;
+  border-left: 10px solid;
 
-    top: 70px;
-  }
+  left: 100px;
 
-  .tooltip.lookUp:before {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    position: absolute;
+  top: 25px;
+}
 
-    border-bottom: 10px solid;
-    border-left: 10px solid transparent !important;
-    border-right: 10px solid transparent !important;
+.tooltip.lookDown:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
 
-    left: 40px;
+  border-top: 10px solid;
+  border-right: 10px solid transparent !important;
+  border-left: 10px solid transparent !important;
 
-    top: -10px;
-  }
+  left: 40px;
 
-  .display {
-    opacity: 1;
-  }
+  top: 70px;
+}
 
-  .hide {
-    opacity: 0;
-    z-index: 1;
-  }
+.tooltip.lookUp:before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+
+  border-bottom: 10px solid;
+  border-left: 10px solid transparent !important;
+  border-right: 10px solid transparent !important;
+
+  left: 40px;
+
+  top: -10px;
+}
+
+.display {
+  opacity: 1;
+}
+
+.hide {
+  opacity: 0;
+  z-index: 1;
 }
