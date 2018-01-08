@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import formatError from "../../formatters/error";
 import createDevice, { U2F_PATH } from "../../device";
-import "../../containers/App/App.css";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
 import { login, logout } from "../../redux/modules/auth";
