@@ -72,7 +72,7 @@ export default {
       help: "Assistance",
       instructions: "Enter your team domain to sign in.",
       hint: "Your team domain",
-      signIn: "Sign in to %{team}",
+      signIn: "Sign in to %{domain}",
       stepOne:
         "Connect your Ledger Blue to your computer using one of its USB port.",
       stepTwo:

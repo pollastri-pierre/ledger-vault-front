@@ -5,33 +5,35 @@ import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
 
 import DateFormat from "../../components/DateFormat";
-import type { Unit } from "../../data/types";
-import { formatCurrencyUnit } from "../../data/currency";
 
 const styles = {
   lineChart: {
-    paddingTop: 20
+    width: "100%",
+    height: "100%",
+    paddingTop: 20,
+    fontSize: 10,
+    fontWeight: 600,
+    fontFamily: "Open Sans",
   },
   noData: {
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   chartWrap: {
     position: "relative",
     svg: {
-      overflow: "visible"
-    }
+      overflow: "visible",
+    },
   },
   tooltip: {
     position: "absolute",
     width: "auto !important",
     height: "auto !important",
-    boxShadow:
-      "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+    boxShadow: "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
     zIndex: 10,
     pointerEvents: "none",
     backgroundColor: "currentColor",
     padding: 15,
-    transition: "opacity 0.3s ease-out"
+    transition: "opacity 0.3s ease-out",
   },
   lookDown: {
     "&:before": {
@@ -44,49 +46,55 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderLeft: "10px solid transparent !important",
       left: 40,
-      top: "63px !important"
+      top: "63px !important",
     },
     ".tooltipText span": {
-      float: "right"
-    }
+      float: "right",
+    },
   },
   tooltipTextWrap: {
     position: "relative",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   tooltipText: {
     color: "white",
     fontSize: 13,
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   uppercase: {
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   date: {
     color: "#e2e2e2",
-    fontSize: 11
+    fontSize: 11,
   },
   hide: {
     opacity: 0,
-    zIndex: 1
-  }
+    zIndex: 1,
+  },
+  xAxisLabel: {
+    textTransform: "uppercase",
+    position: "absolute",
+    bottom: 1,
+    color: "#767676",
+  },
 };
 
 type DataPointEnhanced = {
   date: number,
   value: number,
   x: number,
-  y: number
+  y: number,
 };
 
 type Props = {
   data: Array<[number, number]>,
-  dateRange: Array<*>,
-  currencyUnit: Unit,
-  currencyColor: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  color: string,
+  formatTooltip: Function,
+  noXAxisLabel?: boolean,
+  showTooltip?: boolean,
 };
 
 class LineChart extends Component<Props, *> {
@@ -95,7 +103,7 @@ class LineChart extends Component<Props, *> {
     width: 100,
     height: 100,
     transform: "",
-    margin: { top: 20, right: 0, bottom: 20, left: 65 }
+    margin: { top: 20, right: 0, bottom: 20, left: 65 },
   };
 
   tooltip: ?HTMLDivElement;
@@ -106,10 +114,6 @@ class LineChart extends Component<Props, *> {
     this.setState({ selected: index });
   };
 
-  handleMouseOver = (d: DataPointEnhanced, i: number) => {
-    this.setSelected(i);
-  };
-
   handleMouseOut = () => {
     this.setSelected(-1);
   };
@@ -117,7 +121,7 @@ class LineChart extends Component<Props, *> {
   bisectDate = d3.bisector(d => d.date).left;
 
   mousemove = () => {
-    const { data: dataProp } = this.props;
+    const { data: dataProp, showTooltip } = this.props;
     const { margin } = this.state;
     const { data, x } = this.computeData(dataProp);
     const x0 = x.invert(d3.mouse(this.svg)[0] - margin.left);
@@ -132,7 +136,7 @@ class LineChart extends Component<Props, *> {
     } else {
       final = x0 - d0[0] > d1[0] - x0 ? i : i - 1;
     }
-    this.setSelected(final);
+    showTooltip && this.setSelected(final);
   };
 
   handleTooltip = () => {
@@ -154,7 +158,7 @@ class LineChart extends Component<Props, *> {
   };
 
   drawVisibleDots = (data: DataPointEnhanced[]) => {
-    const { currencyColor } = this.props;
+    const { color } = this.props;
     const selection = d3
       .select(".visibleDots")
       .selectAll(".dot")
@@ -166,7 +170,7 @@ class LineChart extends Component<Props, *> {
       .enter()
       .append("circle")
       .attr("r", 3)
-      .attr("fill", currencyColor)
+      .attr("fill", color)
       .style("stroke", "white")
       .style("stroke-width", 2)
       .attr("opacity", 0)
@@ -177,7 +181,7 @@ class LineChart extends Component<Props, *> {
   };
 
   drawLine = (data: DataPointEnhanced[]) => {
-    const { currencyColor } = this.props;
+    const { color } = this.props;
 
     const valueline = d3
       .line()
@@ -191,13 +195,13 @@ class LineChart extends Component<Props, *> {
     selection
       .attr("class", "valueline")
       .attr("d", valueline)
-      .attr("stroke", currencyColor)
+      .attr("stroke", color)
       .attr("fill", "none")
       .attr("stroke-width", "2px")
       .attr("clip-path", "url(#clip)");
   };
 
-  drawxAxisLabel = (domainX: Array<*>) => {
+  getXAxisLabel = (domainX: [number, number]) => {
     const timeDelta = domainX[1] - domainX[0];
 
     const yearInMs = 31556952000;
@@ -206,14 +210,8 @@ class LineChart extends Component<Props, *> {
     const tickLabel =
       timeDelta >= yearInMs * 2
         ? "year"
-        : timeDelta >= monthInMs * 2
-          ? "month"
-          : timeDelta >= dayInMs ? "day" : "hour";
-    d3
-      .select(".xAxisLabel")
-      .text(tickLabel.toUpperCase())
-      .attr("fill", "#767676")
-      .attr("style", "font-weight: 600; font-family: 'Open Sans'");
+        : timeDelta >= monthInMs * 2 ? "month" : timeDelta >= dayInMs ? "day" : "hour";
+    return tickLabel.toUpperCase();
   };
 
   drawAxis = (xAxis: *, yAxis: *) => {
@@ -221,11 +219,8 @@ class LineChart extends Component<Props, *> {
     d3.select(".yAxis").call(this.customYAxis, yAxis);
   };
 
-  drawGraph = (data: Array<*>, xAxis: *, yAxis: *, x: *) => {
+  drawGraph = (data: Array<*>, xAxis: *, yAxis: *) => {
     this.drawAxis(xAxis, yAxis);
-    let domain = [];
-    if (x) domain = x.domain();
-    this.drawxAxisLabel(domain);
     this.drawLine(data);
   };
 
@@ -270,7 +265,7 @@ class LineChart extends Component<Props, *> {
       }),
       d3.max(data, function(d) {
         return d[0];
-      })
+      }),
     ];
 
     const x = d3
@@ -285,7 +280,7 @@ class LineChart extends Component<Props, *> {
       minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
         return d[1];
-      })
+      }),
     ];
 
     const y = d3
@@ -298,7 +293,6 @@ class LineChart extends Component<Props, *> {
 
   computeData = (data: Array<[number, number]>) => {
     const { width, transform, margin } = this.state;
-    const { currencyUnit } = this.props;
 
     let { x, y } = this.computeXY(data);
 
@@ -314,20 +308,19 @@ class LineChart extends Component<Props, *> {
     const yAxis = d3
       .axisRight(y)
       .ticks(3)
-      .tickSize(width + margin.left)
-      .tickFormat(value => formatCurrencyUnit(currencyUnit, value));
+      .tickSize(width + margin.left);
 
     const computedData = data.map(([date, value]) => ({
       date: date,
       value: value,
       x: x(date),
-      y: y(value)
+      y: y(value),
     }));
     return {
       data: computedData,
       xAxis: newXAxis,
       yAxis: yAxis,
-      x: x
+      x: x,
     };
   };
 
@@ -362,7 +355,7 @@ class LineChart extends Component<Props, *> {
     //init xAxisLabel placeholder
     g
       .append("text")
-      .classed("xAxisLabel", true)
+      .classed(classes.xAxisLabel, true)
       .attr("dy", 166)
       .attr("dx", -margin.left)
       .attr("fill", "#999999")
@@ -436,9 +429,7 @@ class LineChart extends Component<Props, *> {
       .attr("height", height + margin.top + margin.bottom);
 
     //update placeholder for NO DATA AVAILABLE text
-    g
-      .select(".noData")
-      .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
+    g.select(".noData").attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
   };
 
   zoomTo = (d0: number, d1: number, data: Array<[number, number]>) => {
@@ -446,10 +437,8 @@ class LineChart extends Component<Props, *> {
       const { width } = prevState;
       const { x } = this.computeXY(data);
       return {
-        transform: d3.zoomIdentity
-          .scale(width / (x(d1) - x(d0)))
-          .translate(-x(d0), 0),
-        selected: -1
+        transform: d3.zoomIdentity.scale(width / (x(d1) - x(d0))).translate(-x(d0), 0),
+        selected: -1,
       };
     });
   };
@@ -488,17 +477,16 @@ class LineChart extends Component<Props, *> {
 
   displayNoData = () => {
     const { width } = this.state;
-    const { dateRange: domainX, classes } = this.props;
+    const { data } = this.props;
 
     const x = d3
       .scaleTime()
-      .domain(domainX)
+      .domain(this.getDateRange(data))
       .range([0, width]);
 
     const xAxis = this.generateFormatedXAxis(x);
 
-    d3.select(`.${classes.noData}`).attr("opacity", 1);
-    this.drawxAxisLabel(domainX);
+    d3.select(".noData").attr("opacity", 1);
     d3.select(".xAxis").call(this.customXAxis, xAxis);
     d3.select(".yAxis").attr("opacity", 0);
     d3.select(".valueline").attr("opacity", 0);
@@ -507,14 +495,11 @@ class LineChart extends Component<Props, *> {
   componentDidMount() {
     window.addEventListener("resize", this.resize);
     const { margin } = this.state;
-    const { data, dateRange } = this.props;
+    const { data } = this.props;
     const parent = d3.select(d3.select(this.svg).node().parentNode);
-    const height = Math.round(
-      parseFloat(parent.style("height")) - margin.top - margin.bottom
-    );
-    const width = Math.round(
-      parseFloat(parent.style("width")) - margin.left - margin.right
-    );
+    const dateRange = this.getDateRange(data);
+    const height = Math.round(parseFloat(parent.style("height")) - margin.top - margin.bottom);
+    const width = Math.round(parseFloat(parent.style("width")) - margin.left - margin.right);
 
     this.setState({ height: height, width: width }, () => {
       //init placeholders
@@ -528,12 +513,11 @@ class LineChart extends Component<Props, *> {
 
   resize = () => {
     const { margin } = this.state;
-    const { data, dateRange } = this.props;
+    const { data } = this.props;
+    const dateRange = this.getDateRange(data);
     const parent = d3.select(d3.select(this.svg).node().parentNode);
-    const height =
-      parseFloat(parent.style("height")) - margin.top - margin.bottom;
-    const width =
-      parseFloat(parent.style("width")) - margin.left - margin.right;
+    const height = parseFloat(parent.style("height")) - margin.top - margin.bottom;
+    const width = parseFloat(parent.style("width")) - margin.left - margin.right;
 
     this.setState({ height: height, width: width }, () => {
       this.updatePlaceholders();
@@ -544,59 +528,79 @@ class LineChart extends Component<Props, *> {
     });
   };
 
+  updateColor = () => {
+    const { color } = this.props;
+    d3.select(".valueline").attr("stroke", color);
+    d3
+      .select(".visibleDots")
+      .selectAll(".dot")
+      .attr("fill", color);
+  };
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.resize);
   }
 
   componentDidUpdate(prevProps: *, prevState: *) {
-    const { selected } = this.state;
-    const { dateRange, data: dataProp, classes } = this.props;
-    if (!dataProp.length) {
+    const currentSelected = this.state.selected;
+    const prevSelected = prevState.selected;
+    const currentData = this.props.data;
+    const prevData = prevProps.data;
+    const prevDateRange = this.getDateRange(prevData);
+    const currentDateRange = this.getDateRange(currentData);
+    const currentColor = this.props.color;
+    const prevColor = prevProps.color;
+    if (!currentData.length) {
       this.displayNoData();
       return;
     }
-    d3.select(`.${classes.noData}`).attr("opacity", 0);
+    if (prevColor !== currentColor) {
+      this.updateColor();
+    }
+    d3.select(".noData").attr("opacity", 0);
     d3.select(".yAxis").attr("opacity", 1);
     d3.select(".valueline").attr("opacity", 1);
-
-    if (selected !== prevState.selected) {
+    if (currentSelected !== prevSelected) {
       //Hovering on tooltip
       this.handleTooltip();
     }
+
     if (
-      prevProps.dateRange[0] !== this.props.dateRange[0] ||
-      prevProps.dateRange[1] !== this.props.dateRange[1] ||
-      JSON.stringify(dataProp) !== JSON.stringify(prevProps.data)
+      prevDateRange[0] !== currentDateRange[0] ||
+      prevDateRange[1] !== currentDateRange[1] ||
+      JSON.stringify(currentData) !== JSON.stringify(prevData)
     ) {
       //dateRange in props changed. Computing new transform and resetting the state
-      this.zoomTo(dateRange[0], dateRange[1], dataProp);
+      this.zoomTo(currentDateRange[0], currentDateRange[1], currentData);
     } else if (prevState.transform !== this.state.transform) {
       //Redrawing graph
-      const { data, xAxis, yAxis, x } = this.computeData(dataProp);
+      const { data, xAxis, yAxis } = this.computeData(currentData);
       this.drawVisibleDots(data);
-      this.drawGraph(data, xAxis, yAxis, x);
+      this.drawGraph(data, xAxis, yAxis);
     }
   }
 
+  getDateRange = (data: Array<[number, number]>): [number, number] => {
+    return [data[0][0], data[data.length - 1][0]];
+  };
+
   render() {
     const { selected } = this.state;
-    let { data, currencyUnit, currencyColor, classes } = this.props;
+    let { data, classes, color, formatTooltip, noXAxisLabel } = this.props;
     return (
       <div className={classes.lineChart}>
         <div className={classes.chartWrap}>
-          {selected !== -1 ? (
+          {selected !== -1 && (
             <div
               className={cx([classes.tooltip, classes.lookDown, classes.hide])}
-              style={{ color: currencyColor }}
+              style={{ color: color }}
               ref={t => {
                 this.tooltip = t;
               }}
             >
               <div className={classes.tooltipTextWrap}>
                 <div className={classes.tooltipText}>
-                  <div className={classes.uppercase}>
-                    {formatCurrencyUnit(currencyUnit, data[selected][1], true)}
-                  </div>
+                  <div className={classes.uppercase}>{formatTooltip(data[selected][1])}</div>
                   <div>
                     <span className={cx([classes.uppercase, classes.date])}>
                       <DateFormat format="ddd D MMM" date={data[selected][0]} />
@@ -605,14 +609,15 @@ class LineChart extends Component<Props, *> {
                 </div>
               </div>
             </div>
-          ) : (
-            ""
           )}
           <svg
             ref={c => {
               this.svg = c;
             }}
           />
+          {!noXAxisLabel && (
+            <div className={classes.xAxisLabel}>{this.getXAxisLabel(this.getDateRange(data))}</div>
+          )}
         </div>
       </div>
     );

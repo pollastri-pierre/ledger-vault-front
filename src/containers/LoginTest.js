@@ -1,43 +1,46 @@
 //@flow
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { registerDevice } from "../redux/modules/auth";
+import network from "../network";
+import createDevice from "../device";
 
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    register: val => dispatch(registerDevice(val))
-  };
-};
-
-class LoginTest extends Component<*, *> {
+class LoginTest extends Component<{}, { registration: ?Object }> {
   state = {
-    field: ""
+    registration: null
   };
-
-  onChange(event: *) {
-    this.setState({
-      field: event.target.value
-    });
-  }
+  onSubmit = async (e: SyntheticEvent<*>) => {
+    e.preventDefault();
+    const device = await createDevice();
+    const application =
+      "1e55aaa3241c6f9b630d3a53c6aa6877695fd0e0c6c7bbc0f8eed35bcb43ebe0";
+    const instanceName = "_";
+    const instanceReference = "_";
+    const instanceURL = "_";
+    const agentRole = "_";
+    const { challenge } = await network(
+      "/provisioning/administrators/register",
+      "GET"
+    );
+    const registration = await device.register(
+      challenge,
+      application,
+      instanceName,
+      instanceReference,
+      instanceURL,
+      agentRole
+    );
+    this.setState({ registration });
+  };
 
   render() {
+    const { registration } = this.state;
     return (
-      <div>
-        <input
-          type="text"
-          value={this.state.field}
-          onChange={this.onChange.bind(this)}
-          placeholder="email address"
-        />
-        <button onClick={this.props.register.bind(this, this.state.field)}>
-          register device
-        </button>
-      </div>
+      <form onSubmit={this.onSubmit}>
+        <button type="submit">register device</button>
+        <pre>
+          <code>{registration && JSON.stringify(registration, null, 2)}</code>
+        </pre>
+      </form>
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(LoginTest);
+export default LoginTest;

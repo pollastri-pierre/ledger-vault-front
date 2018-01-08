@@ -16,19 +16,19 @@ const styles = {
     marginBottom: "50px",
     width: "400px",
     backgroundColor: "#ffffff",
-    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)"
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
   },
   dongle: {
     width: 32,
     height: 20,
     marginTop: 40,
-    marginBottom: 10
+    marginBottom: 10,
   },
   team: {
     width: 320,
     textSlign: "center",
     display: "inline-block",
-    fontSize: 16
+    fontSize: 16,
   },
   spacer: {
     width: 320,
@@ -36,28 +36,28 @@ const styles = {
     backgroundColor: "#eeeeee",
     display: "inline-block",
     textAlign: "center",
-    marginTop: 6
+    marginTop: 6,
   },
   instructions: {
     textAlign: "left",
     fontSize: 13,
-    paddingTop: 24
+    paddingTop: 24,
   },
   item: {
     "&:not(:first-child)": {
-      marginTop: 20
+      marginTop: 20,
     },
     "& div:nth-child(1)": {
       float: "left",
       fontSize: 18,
-      marginLeft: 45
+      marginLeft: 45,
     },
     "& div:nth-child(2)": {
       marginLeft: 77,
       marginRight: 58,
       fontSize: 13,
-      lineHeight: 1.54
-    }
+      lineHeight: 1.54,
+    },
   },
   wait: {
     color: "#cccccc",
@@ -67,30 +67,32 @@ const styles = {
     textTransform: "uppercase",
     position: "absolute",
     bottom: 40,
-    right: 40
+    right: 40,
   },
   cancel: {
     position: "absolute",
     bottom: 0,
-    left: 40
-  }
+    left: 40,
+  },
 };
 class DeviceLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   onCancel: Function,
-  team: string
+  domain: string,
+  isChecking: boolean,
+  onRestart: () => void,
 }> {
   context: {
-    translate: (string, ?Object) => string
+    translate: (string, ?Object) => string,
   };
   render() {
-    const { team, onCancel, classes } = this.props;
+    const { domain, classes, isChecking, onCancel, onRestart } = this.props;
     const t = this.context.translate;
     return (
       <div className={classes.base}>
         <Plug className={classes.dongle} color="#e2e2e2" />
         <br />
-        <div className={classes.team}>{t("login.signIn", { team })}</div>
+        <div className={classes.team}>{t("login.signIn", { domain })}</div>
         <div className={classes.spacer} />
         <div className={classes.instructions}>
           <div className={classes.item}>
@@ -106,17 +108,21 @@ class DeviceLogin extends Component<{
             <div>{t("login.stepThree")}</div>
           </div>
         </div>
-        <DialogButton onTouchTap={onCancel} className={classes.cancel}>
-          {t("common.cancel")}
-        </DialogButton>
-        <div className={classes.wait}>{t("login.awaitingDevice")}</div>
+        <DialogButton onTouchTap={onCancel}>{t("common.cancel")}</DialogButton>
+        {!isChecking ? (
+          <DialogButton className={classes.cancel} onTouchTap={onRestart}>
+            TRY AGAIN
+          </DialogButton>
+        ) : (
+          <div className={classes.wait}>{t("login.awaitingDevice")}</div>
+        )}
       </div>
     );
   }
 }
 
 DeviceLogin.contextTypes = {
-  translate: PropTypes.func.isRequired
+  translate: PropTypes.func.isRequired,
 };
 
 export default translate(withStyles(styles)(DeviceLogin));
