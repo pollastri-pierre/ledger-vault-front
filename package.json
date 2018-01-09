@@ -23,7 +23,7 @@
     "ledgerco": "github:LedgerHQ/ledger-node-js-api#tmp-no-dep-to-node-hid",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
-    "material-ui": "^1.0.0-beta.24",
+    "material-ui": "1.0.0-beta.24",
     "moment": "^2.19.1",
     "node-polyglot": "^2.2.2",
     "normalizr-gre": "^3.2.4",
