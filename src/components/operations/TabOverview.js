@@ -7,7 +7,7 @@ import DateFormat from "../DateFormat";
 import ConfirmationStatus from "../ConfirmationStatus";
 import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
-import type { Operation, Account } from "../../data/types";
+import type { Operation, Account } from "data/types";
 
 function TabOverview(props: { operation: Operation, account: Account }) {
   const { operation, account } = props;
@@ -29,7 +29,10 @@ function TabOverview(props: { operation: Operation, account: Account }) {
           <DateFormat date={operation.time} />
         </LineRow>
         <LineRow label="account">
-          <Link to={`/account/${account.id}`}>
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            to={`/account/${account.id}`}
+          >
             <AccountName name={account.name} currency={account.currency} />
           </Link>
         </LineRow>

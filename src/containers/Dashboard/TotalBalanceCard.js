@@ -1,21 +1,30 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import CurrencyFiatValue from "../../components/CurrencyFiatValue";
-import EvolutionSince, {
-  TotalBalanceFilters
-} from "../../components/EvolutionSince";
-import DateFormat from "../../components/DateFormat";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
-import "./TotalBalanceCard.css";
+import connectData from "restlay/connectData";
+import CurrencyFiatValue from "components/CurrencyFiatValue";
+import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
+import DateFormat from "components/DateFormat";
+import Card from "components/Card";
+import CardField from "components/CardField";
 import { MenuItem } from "material-ui/Menu";
-import BlueSelect from "../../components/BlueSelect";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import DashboardTotalBalanceQuery from "../../api/queries/DashboardTotalBalanceQuery";
+import BlueSelect from "components/BlueSelect";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import DashboardTotalBalanceQuery from "api/queries/DashboardTotalBalanceQuery";
+import { withStyles } from "material-ui/styles";
 
+const styles = {
+  body: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  card: {
+    height: "180px"
+  }
+};
 class TotalBalance extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   totalBalance: *,
   filter: string,
   onTotalBalanceFilterChange: (filter: string) => void,
@@ -26,12 +35,12 @@ class TotalBalance extends Component<{
     this.props.onTotalBalanceFilterChange(e.target.value);
   };
   render() {
-    const { filter, totalBalance, reloading } = this.props;
+    const { filter, totalBalance, reloading, classes } = this.props;
     return (
       <Card
         reloading={reloading}
-        className="total-balance"
         title="total balance"
+        className={classes.card}
         titleRight={
           <BlueSelect
             value={filter}
@@ -55,18 +64,20 @@ class TotalBalance extends Component<{
           </BlueSelect>
         }
       >
-        <div className="body">
+        <div className={classes.body}>
           <CardField label={<DateFormat date={totalBalance.date} />}>
             <CurrencyFiatValue
               fiat={totalBalance.currencyName}
               value={totalBalance.value}
             />
           </CardField>
-          <EvolutionSince
-            value={totalBalance.value}
-            valueHistory={totalBalance.valueHistory}
-            filter={TotalBalanceFilters.find(f => f.key === filter)}
-          />
+          <div style={{ minWidth: "200px" }}>
+            <EvolutionSince
+              value={totalBalance.value}
+              valueHistory={totalBalance.valueHistory}
+              filter={TotalBalanceFilters.find(f => f.key === filter)}
+            />
+          </div>
           <CardField label="accounts" align="right">
             {totalBalance.accountsCount}
           </CardField>
@@ -82,19 +93,19 @@ class TotalBalance extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card className="total-balance" title="total balance">
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="total balance">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
-);
+));
 
-const RenderLoading = () => (
-  <Card className="total-balance" title="total balance">
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="total balance">
     <SpinnerCard />
   </Card>
-);
+));
 
-export default connectData(TotalBalance, {
+export default connectData(withStyles(styles)(TotalBalance), {
   queries: {
     totalBalance: DashboardTotalBalanceQuery
   },

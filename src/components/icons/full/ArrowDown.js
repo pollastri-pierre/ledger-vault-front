@@ -1,23 +1,29 @@
 //@flow
 import React, { PureComponent } from "react";
+import { withStyles } from "material-ui/styles";
+import classnames from "classnames";
 
-type Props = { color: string };
+type Props = { className: string, classes: Object };
 
-export default class ArrowDown extends PureComponent<Props> {
-  static defaultProps = {
-    color: "currentColor"
-  };
+const styles = {
+  common: {
+    width: 13
+  }
+};
 
+class ArrowDown extends PureComponent<Props> {
   render() {
-    const { color, ...props } = this.props;
+    const { classes, className } = this.props;
 
     return (
-      <svg viewBox="0 0 30 18.25" {...props}>
-        <polygon
-          fill={color}
-          points="0 3.25 3.26 0 15 11.75 26.75 0 30 3.25 15 18.25 0 3.25"
-        />
+      <svg
+        viewBox="0 0 30 18.25"
+        className={classnames(classes.common, className)}
+      >
+        <polygon points="0 3.25 3.26 0 15 11.75 26.75 0 30 3.25 15 18.25 0 3.25" />
       </svg>
     );
   }
 }
+
+export default withStyles(styles)(ArrowDown);

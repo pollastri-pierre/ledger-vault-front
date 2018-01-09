@@ -1,19 +1,34 @@
 //@flow
 import React, { Component } from "react";
-import Card from "../../components/Card";
+import Card from "components/Card";
 import Currencies from "./Currencies";
-import { TotalBalanceFilters } from "../../components/EvolutionSince";
+import { TotalBalanceFilters } from "components/EvolutionSince";
 import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
-import OperationModal from "../../components/operations/OperationModal";
-import ModalRoute from "../../components/ModalRoute";
+import OperationModal from "components/operations/OperationModal";
+import ModalRoute from "components/ModalRoute";
+import { withStyles } from "material-ui/styles";
 
-import "./index.css";
-
+const styles = {
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  body: {
+    flex: "1 1",
+    marginRight: "20px",
+    minWidth: "680px"
+  },
+  aside: {
+    width: "320px"
+  }
+};
 class Dashboard extends Component<
   {
+    classes: { [_: $Keys<typeof styles>]: string },
     match: *,
     location: *,
     history: *
@@ -31,13 +46,13 @@ class Dashboard extends Component<
   };
 
   render() {
-    const { match } = this.props;
+    const { match, classes } = this.props;
     const { filter } = this.state;
     const { onTotalBalanceFilterChange } = this;
 
     return (
-      <div id="dashboard">
-        <div className="body">
+      <div className={classes.base}>
+        <div className={classes.body}>
           <TotalBalanceCard
             filter={filter}
             onTotalBalanceFilterChange={onTotalBalanceFilterChange}
@@ -45,7 +60,7 @@ class Dashboard extends Component<
           <LastOperationCard />
           <Storages filter={filter} />
         </div>
-        <div className="aside">
+        <div className={classes.aside}>
           <Card title="currencies">
             <Currencies />
           </Card>
@@ -60,4 +75,4 @@ class Dashboard extends Component<
   }
 }
 
-export default Dashboard;
+export default withStyles(styles)(Dashboard);

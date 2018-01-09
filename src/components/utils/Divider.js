@@ -1,6 +1,5 @@
 //@flow
 import React from "react";
-import "./Divider.css";
 
 function Divider(props: { className: string }) {
   return (

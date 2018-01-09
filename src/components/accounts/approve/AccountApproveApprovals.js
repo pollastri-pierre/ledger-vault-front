@@ -1,9 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import "./AccountApproveApprovals.css";
 import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
-import type { Account, Member } from "../../../data/types";
+import type { Account, Member } from "data/types";
 
 type Props = {
   account: Account,

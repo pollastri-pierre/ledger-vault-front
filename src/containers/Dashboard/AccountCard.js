@@ -1,32 +1,53 @@
 //@flow
 import React, { Component } from "react";
-import type { Account } from "../../data/types";
-import Card from "../../components/Card";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import BadgeCurrency from "../../components/BadgeCurrency";
-import EvolutionSince, {
-  TotalBalanceFilters
-} from "../../components/EvolutionSince";
+import type { Account } from "data/types";
+import Card from "components/Card";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import { withStyles } from "material-ui/styles";
+import BadgeCurrency from "components/BadgeCurrency";
+import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 
-import "./AccountCard.css";
-
-const Separator = () => <div className="separator" />;
+const styles = {
+  card: {
+    width: "calc(33% - 20px)",
+    marginRight: "20px"
+  },
+  separator: {
+    width: "100%",
+    height: "1px",
+    backgroundColor: "#eee",
+    margin: "20px 0 15px"
+  },
+  cryptocur: {
+    fontSize: "13px",
+    color: "#000",
+    marginBottom: "11px"
+  },
+  realcur: {
+    fontSize: "13px",
+    color: "#767676"
+  }
+};
+const Separator = withStyles(styles)(({ classes }) => (
+  <div className={classes.separator} />
+));
 
 class AccountCard extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   filter: string
 }> {
   render() {
-    const { account, filter } = this.props;
+    const { account, filter, classes } = this.props;
 
     const title = (
       <div>
         <BadgeCurrency currency={account.currency} />
-        <span className="uppercase currencyName">{account.name}</span>
+        <span>{account.name}</span>
       </div>
     );
     return (
-      <Card className="account-card" key={account.id} title={title}>
+      <Card key={account.id} title={title} className={classes.card}>
         <EvolutionSince
           value={account.balance}
           valueHistory={account.balance_history}
@@ -34,10 +55,10 @@ class AccountCard extends Component<{
         />
         <Separator />
         <div>
-          <div className="cryptocur">
+          <div className={classes.cryptocur}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </div>
-          <div className="realcur">
+          <div className={classes.realcur}>
             <CurrencyAccountValue
               account={account}
               value={account.balance}
@@ -50,4 +71,4 @@ class AccountCard extends Component<{
   }
 }
 
-export default AccountCard;
+export default withStyles(styles)(AccountCard);

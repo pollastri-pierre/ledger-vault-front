@@ -6,7 +6,6 @@ import AccountCreationMembers from "./AccountCreationMembers";
 import AccountCreationApprovals from "./AccountCreationApprovals";
 import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
-import "./AccountCreation.css";
 
 import {
   changeTab,
@@ -18,7 +17,7 @@ import {
   setTimelock,
   setRatelimiter,
   clearState
-} from "../../../redux/modules/account-creation";
+} from "redux/modules/account-creation";
 
 type Props = {
   onChangeAccountName: Function,

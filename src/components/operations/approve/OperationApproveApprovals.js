@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import ApprovalList from "../../ApprovalList";
-import type { Account, Operation, Member } from "../../../data/types";
+import type { Account, Operation, Member } from "data/types";
 
 function OperationApproveApprovals(props: {
   account: Account,

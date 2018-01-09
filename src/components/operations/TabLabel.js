@@ -1,18 +1,43 @@
 //@flow
 import React from "react";
-import type { Note } from "../../data/types";
+import { withStyles } from "material-ui/styles";
+import type { Note } from "data/types";
 
-function TabLabel(props: { note: Note }) {
-  const { note } = props;
+const styles = {
+  title: {
+    outline: "none",
+    fontSize: "13px",
+    color: "#000",
+    fontWeight: "600",
+    paddingBottom: "16px",
+    marginBottom: "16px",
+    borderBottom: "1px solid #eee"
+  },
+  body: {
+    outline: "none",
+    fontSize: "13px",
+    color: "#000",
+    paddingBottom: "16px",
+    marginBottom: "16px",
+    lineHeight: "20px",
+    borderBottom: "1px solid #eee"
+  },
+  author: {
+    fontSize: "11px",
+    color: "#999"
+  }
+};
+function TabLabel(props: { note: Note, classes: Object }) {
+  const { note, classes } = props;
   return (
-    <div className="operation-label">
-      <h3 className="operation-label-title">{note.title}</h3>
-      <div className="operation-label-body">{note.body}</div>
-      <div className="operation-label-author">
+    <div>
+      <h3 className={classes.title}>{note.title}</h3>
+      <div className={classes.body}>{note.body}</div>
+      <div className={classes.author}>
         Published by {note.author.first_name} {note.author.last_name}
       </div>
     </div>
   );
 }
 
-export default TabLabel;
+export default withStyles(styles)(TabLabel);

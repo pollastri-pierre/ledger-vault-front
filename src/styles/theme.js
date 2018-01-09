@@ -1,3 +1,5 @@
+import colors from "shared/colors";
+
 const tickerBeforeStyle = {
   content: "''",
   cursor: "pointer",
@@ -19,6 +21,38 @@ const tickerActiveStyle = {
 const theme = {
   direction: "ltr",
   overrides: {
+    MuiTabs: {
+      root: {
+        position: "relative",
+        "&:after": {
+          content: '""',
+          height: "1px",
+          width: "100%",
+          background: colors.mouse,
+          display: "block",
+          position: "absolute",
+          bottom: "0px",
+          zIndex: "-1"
+        }
+      }
+    },
+    MuiTab: {
+      label: {
+        fontSize: "10px!important",
+        fontWeight: "600"
+      },
+      rootInherit: {
+        minWidth: "auto",
+        marginRight: "23px"
+      },
+      rootInheritDisabled: {
+        opacity: 0.2
+      },
+      labelContainer: {
+        paddingLeft: "0!important",
+        paddingRight: "0!important"
+      }
+    },
     MuiInput: {
       root: {
         fontSize: 13
@@ -42,7 +76,7 @@ const theme = {
     MuiMenuItem: {
       root: {
         fontSize: 11,
-        fontWeight: 600,
+        fontWeight: 600, // FIXME bad idea, this should be opt-in
         opacity: 0.5,
         "&:hover": {
           backgroundColor: "transparent",
@@ -54,17 +88,17 @@ const theme = {
         },
         ".MuiListItem-ticker-right &": {
           justifyContent: "flex-end"
-        }
+        },
+          "&$selected": {
+              backgroundColor: "transparent",
+              opacity: 1,
+              "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
+              ".MuiListItem-ticker-right &:before": {
+                  left: "auto",
+                  right: 0
+              }
+          }
       },
-      selected: {
-        backgroundColor: "transparent",
-        opacity: 1,
-        "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
-        ".MuiListItem-ticker-right &:before": {
-          left: "auto",
-          right: 0
-        }
-      }
     },
     MuiListItem: {
       default: {
@@ -165,7 +199,7 @@ const theme = {
       "800": "#ad1457",
       "900": "#880e4f",
       A100: "#ff80ab",
-      A200: "#ff4081",
+      A200: "#27d0e2",
       A400: "#f50057",
       A700: "#c51162",
       contrastDefaultColor: "light"
@@ -269,7 +303,7 @@ const theme = {
       }
     },
     text: {
-      primary: "rgba(0, 0, 0, 0.87)",
+      primary: "#d8d8d8",
       secondary: "rgba(0, 0, 0, 0.54)",
       disabled: "rgba(0, 0, 0, 0.38)",
       hint: "rgba(0, 0, 0, 0.38)",

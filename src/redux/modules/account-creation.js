@@ -1,7 +1,7 @@
 //@flow
 import _ from "lodash";
 import { LOGOUT } from "./auth";
-import type { Member, Currency } from "../../data/types";
+import type { Member, Currency } from "data/types";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
@@ -21,12 +21,14 @@ export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
 
 type Timelock = {
   enabled: boolean,
-  value: Object
+  value: number,
+  frequency: number
 };
 
 type Ratelimiter = {
   enabled: boolean,
-  value: Object
+  value: number,
+  frequency: number
 };
 
 export function openPopBubble(anchor: ?Node) {
@@ -112,7 +114,7 @@ export function selectCurrency(currency: Currency) {
   };
 }
 
-type Freq = { label: string, value: number };
+type Freq = number;
 
 export type State = {
   currentTab: number,
@@ -144,12 +146,12 @@ export const initialState: State = {
   time_lock: {
     enabled: false,
     value: 0,
-    frequency: { label: "minutes", value: 60 }
+    frequency: 60
   },
   rate_limiter: {
     enabled: false,
     value: 0,
-    frequency: { label: "day", value: 84600 }
+    frequency: 84600
   },
   internModalId: "main",
   popBubble: false,

@@ -10,11 +10,9 @@ import Select from "material-ui/Select";
 import Paper from "material-ui/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
-import BlurDialog from "../../components/BlurDialog";
-import { Alert, Overscroll } from "../../components";
-import { switchLocale } from "../../redux/modules/locale";
-
-import "./SandBox.css";
+import BlurDialog from "components/BlurDialog";
+import { Alert, Overscroll } from "components";
+import { switchLocale } from "redux/modules/locale";
 
 const mapStateToProps = state => ({
   locale: state.locale

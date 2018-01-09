@@ -1,13 +1,8 @@
 // @flow
 import React, { PureComponent } from "react";
-import { TextField } from "../../../components";
+import { TextField } from "components";
 
-type Props = {
-  title: string,
-  comment: string,
-  updateTitle: Function,
-  updateComment: Function
-};
+type Props = {};
 
 const styleInput = { fontSize: "16px" };
 

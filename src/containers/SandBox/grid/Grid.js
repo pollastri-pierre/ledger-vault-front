@@ -2,8 +2,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "./Grid.css";
-
 export function Row(props: *) {
   return (
     <div className="row" {...props}>

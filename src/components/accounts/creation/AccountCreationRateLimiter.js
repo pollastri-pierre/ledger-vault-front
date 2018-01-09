@@ -1,38 +1,55 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { PopBubble, DialogButton } from "../../";
-import EnableForm from "../../../components/EnableForm";
+import { DialogButton } from "../../";
+import EnableForm from "components/EnableForm";
 import InfoModal from "../../InfoModal";
-import InputTextWithUnity from "../../../components/InputTextWithUnity";
-import ArrowDown from "../../icons/full/ArrowDown";
-import { addMessage } from "../../../redux/modules/alerts";
+import InputTextWithUnity from "components/InputTextWithUnity";
+import { MenuItem } from "material-ui/Menu";
+import Select from "material-ui/Select";
+import { addMessage } from "redux/modules/alerts";
+import { withStyles } from "material-ui/styles";
+import modals from "shared/modals";
+
+const frequencies = [
+  { title: "minute", key: 60 },
+  { title: "hour", key: 3600 },
+  { title: "day", key: 84600 }
+];
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });
 
+const styles = {
+  base: {
+    ...modals.base,
+    width: 440
+  },
+  info: {
+    margin: "20px 0px 40px 0px"
+  }
+};
+
 type Props = {
   setRatelimiter: Function,
   switchInternalModal: string => void,
   rate_limiter: Object,
+  classes: { [_: $Keys<typeof styles>]: string },
   onAddMessage: (t: string, m: string, ty: string) => void
 };
 
 type State = {
-  rate_limiter: Object,
-  popover: boolean,
-  anchor?: Object
+  rate_limiter: Object
 };
 
 class AccountCreationRateLimiter extends Component<Props, State> {
   constructor(props) {
     super(props);
+
     this.state = {
-      rate_limiter: props.rate_limiter,
-      popover: false,
-      anchor: document.getElementsByClassName("count")[0]
+      rate_limiter: props.rate_limiter
     };
   }
 
@@ -72,22 +89,13 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     });
   };
 
-  openFrequency = () => {
-    this.setState({
-      ...this.state,
-      popover: !this.state.popover,
-      anchor: document.getElementsByClassName("arrow-down")[0]
-    });
-  };
-
-  changeFrequency = val => {
+  changeFrequency = (e: *) => {
     this.setState({
       ...this.state,
       rate_limiter: {
         ...this.state.rate_limiter,
-        frequency: val
-      },
-      popover: false
+        frequency: e.target.value
+      }
     });
   };
 
@@ -95,11 +103,12 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     this.props.switchInternalModal("main");
   };
   render() {
-    const { rate_limiter, popover } = this.state;
+    const { rate_limiter } = this.state;
+    const { classes } = this.props;
     return (
-      <div className="small-modal">
+      <div className={classes.base}>
         <header>
-          <h3>Rate Limiter</h3>
+          <h2>Rate Limiter</h2>
         </header>
         <div className="content">
           <EnableForm checked={rate_limiter.enabled} toggle={this.onToggle}>
@@ -115,70 +124,27 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 />
               }
             >
-              <span
-                className="count dropdown"
-                role="button"
-                tabIndex={0}
-                onClick={this.openFrequency}
+              <Select
+                value={rate_limiter.frequency}
+                onChange={this.changeFrequency}
+                disableUnderline
+                renderValue={key =>
+                  (frequencies.find(o => o.key === key) || {}).title
+                }
               >
-                <strong>operations</strong> per {rate_limiter.frequency.label}
-                <ArrowDown className="arrow-down" />
-              </span>
-              <PopBubble
-                open={popover}
-                onClose={this.openFrequency}
-                anchorEl={this.state.anchor}
-              >
-                <div className="frequency-bubble">
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        value: 60,
-                        label: "minute"
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      rate_limiter.frequency.value === 60 ? "active" : ""
-                    }`}
+                {frequencies.map(({ title, key }) => (
+                  <MenuItem
+                    disableRipple
+                    key={key}
+                    value={key}
+                    style={{ color: "#27d0e2" }}
                   >
-                    minute
-                  </div>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        value: 3600,
-                        label: "hour"
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      rate_limiter.frequency.value === 3600 ? "active" : ""
-                    }`}
-                  >
-                    hour
-                  </div>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() =>
-                      this.changeFrequency({
-                        value: 84600,
-                        label: "day"
-                      })
-                    }
-                    className={`frequency-bubble-row ${
-                      rate_limiter.frequency.value === 84600 ? "active" : ""
-                    }`}
-                  >
-                    day
-                  </div>
-                </div>
-              </PopBubble>
+                    <span style={{ color: "black" }}>{title}</span>
+                  </MenuItem>
+                ))}
+              </Select>
             </InputTextWithUnity>
-            <InfoModal>
+            <InfoModal className={classes.info}>
               Rate-limiter enforces that your team does not exceed a pre-defined
               number of outgoing transaction per interval of time.
             </InfoModal>
@@ -186,9 +152,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
         </div>
 
         <div className="footer">
-          <DialogButton className="cancel" highlight onTouchTap={this.cancel}>
-            Cancel
-          </DialogButton>
+          <DialogButton onTouchTap={this.cancel}>Cancel</DialogButton>
           <DialogButton right highlight onTouchTap={this.submit}>
             Done
           </DialogButton>
@@ -198,5 +162,5 @@ class AccountCreationRateLimiter extends Component<Props, State> {
   }
 }
 export default connect(undefined, mapDispatchToProps)(
-  AccountCreationRateLimiter
+  withStyles(styles)(AccountCreationRateLimiter)
 );

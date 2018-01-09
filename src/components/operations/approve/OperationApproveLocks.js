@@ -6,8 +6,8 @@ import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
-import type { Account, Operation } from "../../../data/types";
-import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
+import type { Account, Operation } from "data/types";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
 
 const getTimeLock = (seconds: number) => {
   return `${Math.round(10 * (seconds / 3600)) / 10} hours delay`;
@@ -33,7 +33,7 @@ function OperationApproveLocks(props: {
               <Hourglass
                 width="25px"
                 height="25px"
-                stroke="#cccccc"
+                color="#cccccc"
                 strokeWidth="2px"
               />
             }
@@ -51,7 +51,7 @@ function OperationApproveLocks(props: {
 
         {account.security_scheme.rate_limiter && (
           <ApproveLockRow
-            icon={<Rates height="30px" stroke="#e2e2e2" strokeWidth="2px" />}
+            icon={<Rates height="30px" color="#e2e2e2" strokeWidth="2px" />}
             name="Rate Limiter"
             value={
               <RateLimiterValue

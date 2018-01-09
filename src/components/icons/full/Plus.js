@@ -1,16 +1,31 @@
 //@flow
 import React, { PureComponent } from "react";
+import classnames from "classnames";
+import { withStyles } from "material-ui/styles";
 
-type Props = { color: string };
+const styles = {
+  common: {
+    width: 16
+  }
+};
 
-export default class Plus extends PureComponent<Props> {
+type Props = {
+  color: string,
+  classes: { [_: $Keys<typeof styles>]: string },
+  className: string
+};
+
+class Plus extends PureComponent<Props> {
   static defaultProps = {
     color: "currentColor"
   };
   render() {
-    const { color, ...props } = this.props;
+    const { color, className, classes } = this.props;
     return (
-      <svg viewBox="0 0 30 30" {...props}>
+      <svg
+        viewBox="0 0 30 30"
+        className={classnames(classes.common, className)}
+      >
         <polygon
           fill={color}
           stroke="none"
@@ -20,3 +35,4 @@ export default class Plus extends PureComponent<Props> {
     );
   }
 }
+export default withStyles(styles)(Plus);

@@ -1,20 +1,31 @@
 //@flow
 import React, { PureComponent } from "react";
 import ValidateBadge from "../icons/full/ValidateBadge";
-import type { Member } from "../../data/types";
-import { calculateApprovingObjectMeta } from "../../data/approvingObject";
+import { withStyles } from "material-ui/styles";
+import type { Member } from "data/types";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
+import colors from "shared/colors";
 import type {
   ApprovingObject,
   ApprovingObjectMeta
-} from "../../data/approvingObject";
-import "./index.css";
+} from "data/approvingObject";
+
+const styles = {
+  badge: {
+    width: 11,
+    verticalAlign: "middle",
+    marginRight: 7,
+    fill: colors.ocean
+  }
+};
 
 class ApprovalStatus extends PureComponent<{
   approved: Array<string>,
   approvers: Array<*>,
   nbRequired: number,
   user: Member,
-  approvingObject?: ApprovingObject
+  approvingObject?: ApprovingObject,
+  classes: Object
 }> {
   render() {
     const {
@@ -22,7 +33,8 @@ class ApprovalStatus extends PureComponent<{
       approved,
       approvers,
       user,
-      nbRequired
+      nbRequired,
+      classes
     } = this.props;
 
     const isUserApproved =
@@ -39,7 +51,7 @@ class ApprovalStatus extends PureComponent<{
             <span>{approvingObjectMeta.globalEndTextRemaining}</span>
           ) : (
             <span>
-              <ValidateBadge className="confirmed" />
+              <ValidateBadge className={classes.badge} />
               Approved ({approved.length}/{approvers.length})
             </span>
           )
@@ -53,4 +65,4 @@ class ApprovalStatus extends PureComponent<{
   }
 }
 
-export default ApprovalStatus;
+export default withStyles(styles)(ApprovalStatus);

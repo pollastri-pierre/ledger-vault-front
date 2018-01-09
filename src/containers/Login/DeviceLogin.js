@@ -1,57 +1,120 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { DialogButton } from "../../components";
-import Plug from "../../components/icons/thin/Plug";
-import translate from "../../decorators/Translate";
+import { DialogButton } from "components";
+import Plug from "components/icons/thin/Plug";
+import translate from "decorators/Translate";
+import { withStyles } from "material-ui/styles";
 
+const styles = {
+  base: {
+    position: "relative",
+    textAlign: "center",
+    display: "inline-block",
+    height: "395px",
+    margin: "0 auto",
+    marginBottom: "50px",
+    width: "400px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
+  },
+  dongle: {
+    width: 32,
+    height: 20,
+    marginTop: 40,
+    marginBottom: 10,
+  },
+  team: {
+    width: 320,
+    textSlign: "center",
+    display: "inline-block",
+    fontSize: 16,
+  },
+  spacer: {
+    width: 320,
+    height: 1,
+    backgroundColor: "#eeeeee",
+    display: "inline-block",
+    textAlign: "center",
+    marginTop: 6,
+  },
+  instructions: {
+    textAlign: "left",
+    fontSize: 13,
+    paddingTop: 24,
+  },
+  item: {
+    "&:not(:first-child)": {
+      marginTop: 20,
+    },
+    "& div:nth-child(1)": {
+      float: "left",
+      fontSize: 18,
+      marginLeft: 45,
+    },
+    "& div:nth-child(2)": {
+      marginLeft: 77,
+      marginRight: 58,
+      fontSize: 13,
+      lineHeight: 1.54,
+    },
+  },
+  wait: {
+    color: "#cccccc",
+    textAlign: "right",
+    fontWeight: 600,
+    fontSize: 11,
+    textTransform: "uppercase",
+    position: "absolute",
+    bottom: 40,
+    right: 40,
+  },
+  cancel: {
+    position: "absolute",
+    bottom: 0,
+    left: 40,
+  },
+};
 class DeviceLogin extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   onCancel: Function,
   domain: string,
   isChecking: boolean,
-  onRestart: () => void
+  onRestart: () => void,
 }> {
   context: {
-    translate: (string, ?Object) => string
+    translate: (string, ?Object) => string,
   };
   render() {
-    const { domain, isChecking, onCancel, onRestart } = this.props;
+    const { domain, classes, isChecking, onCancel, onRestart } = this.props;
     const t = this.context.translate;
     return (
-      <div className="DeviceLogin">
-        <Plug className="dongle" color="#e2e2e2" />
+      <div className={classes.base}>
+        <Plug className={classes.dongle} color="#e2e2e2" />
         <br />
-        <div className="team">{t("login.signIn", { domain })}</div>
-        <div className="spacer" />
-        <div className="instructions">
-          <div className="item">
-            <div className="bullet">1.</div>
-            <div className="step">{t("login.stepOne")}</div>
+        <div className={classes.team}>{t("login.signIn", { domain })}</div>
+        <div className={classes.spacer} />
+        <div className={classes.instructions}>
+          <div className={classes.item}>
+            <div>1.</div>
+            <div>{t("login.stepOne")}</div>
           </div>
-          <div className="item">
-            <div className="bullet">2.</div>
-            <div className="step">{t("login.stepTwo")}</div>
+          <div className={classes.item}>
+            <div>2.</div>
+            <div>{t("login.stepTwo")}</div>
           </div>
-          <div className="item">
-            <div className="bullet">3.</div>
-            <div className="step">{t("login.stepThree")}</div>
+          <div className={classes.item}>
+            <div>3.</div>
+            <div>{t("login.stepThree")}</div>
           </div>
         </div>
         <DialogButton onTouchTap={onCancel}>{t("common.cancel")}</DialogButton>
         {!isChecking ? (
-          <DialogButton
-            style={{
-              float: "none",
-              left: "auto",
-              right: 0,
-              marginRight: 40 /* THIS IS A HACK, the markup probably should be rewrite because float/br should really be avoided */
-            }}
-            onTouchTap={onRestart}
-          >
+          <DialogButton className={classes.cancel} onTouchTap={onRestart}>
             TRY AGAIN
           </DialogButton>
         ) : (
-          <div className="wait">{t("login.awaitingDevice")}</div>
+          <div className={classes.wait}>{t("login.awaitingDevice")}</div>
         )}
       </div>
     );
@@ -59,7 +122,7 @@ class DeviceLogin extends Component<{
 }
 
 DeviceLogin.contextTypes = {
-  translate: PropTypes.func.isRequired
+  translate: PropTypes.func.isRequired,
 };
 
-export default translate(DeviceLogin);
+export default translate(withStyles(styles)(DeviceLogin));

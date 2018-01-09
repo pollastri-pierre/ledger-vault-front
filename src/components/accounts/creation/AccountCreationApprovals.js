@@ -3,28 +3,41 @@ import React from "react";
 import InfoModal from "../../InfoModal";
 import DialogButton from "../../buttons/DialogButton";
 import { connect } from "react-redux";
-import { addMessage } from "../../../redux/modules/alerts";
+import { addMessage } from "redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
-import type { Member } from "../../../data/types";
+import type { Member } from "data/types";
+import { withStyles } from "material-ui/styles";
+import modals from "shared/modals";
 
 const mapDispatchToProps = dispatch => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });
 
+const styles = {
+  base: {
+    ...modals.base,
+    width: 440
+  },
+  info: {
+    margin: "20px 0px 40px 0px"
+  }
+};
 function AccountCreationApprovals(props: {
   members: Member[],
   approvals: number,
   switchInternalModal: Function,
   onAddMessage: (t: string, m: string, ty: string) => void,
-  setApprovals: (v: string) => void
+  setApprovals: (v: string) => void,
+  classes: Object
 }) {
   const {
     onAddMessage,
     switchInternalModal,
     approvals,
     setApprovals,
-    members
+    members,
+    classes
   } = props;
 
   const submit = () => {
@@ -33,16 +46,16 @@ function AccountCreationApprovals(props: {
     } else {
       onAddMessage(
         "Error",
-        "Number of approvals cannot exceed numbers of members",
+        "Number of approvals cannot exceed number of members",
         "error"
       );
     }
   };
 
   return (
-    <div className="small-modal wrapper">
+    <div className={classes.base}>
       <header>
-        <h3>Approvals</h3>
+        <h2>Approvals</h2>
       </header>
       <div className="content">
         <InputTextWithUnity
@@ -59,7 +72,7 @@ function AccountCreationApprovals(props: {
         >
           <span className="count">approvals from {members.length} members</span>
         </InputTextWithUnity>
-        <InfoModal>
+        <InfoModal className={classes.info}>
           Approvals define the number of required signatures from the group of
           members allowed to approve outgoing operations.
         </InfoModal>
@@ -74,4 +87,6 @@ function AccountCreationApprovals(props: {
   );
 }
 
-export default connect(undefined, mapDispatchToProps)(AccountCreationApprovals);
+export default connect(undefined, mapDispatchToProps)(
+  withStyles(styles)(AccountCreationApprovals)
+);

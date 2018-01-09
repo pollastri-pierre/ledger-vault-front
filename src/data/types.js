@@ -1,11 +1,11 @@
 //@flow
-import FiatUnits from "../fiat-units";
+import fiatUnits from "constants/fiatUnits";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
-export type Fiat = $Keys<typeof FiatUnits>;
+export type Fiat = $Keys<typeof fiatUnits>;
 
 export type Rate = {
   value: number,

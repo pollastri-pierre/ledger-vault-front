@@ -5,17 +5,18 @@ import emailValidator from "email-validator";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 import rectCrop from "rect-crop";
-import connectData from "../../restlay/connectData";
-import { TextField } from "../../components";
-import DialogButton from "../../components/buttons/DialogButton";
+import connectData from "restlay/connectData";
+import { TextField } from "components";
+import DialogButton from "components/buttons/DialogButton";
 import ProfileIcon from "../icons/thin/Profile";
-import ProfileQuery from "../../api/queries/ProfileQuery";
-import SaveProfile from "../../api/mutations/SaveProfileMutation";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import ProfileQuery from "api/queries/ProfileQuery";
+import SaveProfile from "api/mutations/SaveProfileMutation";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { withStyles } from "material-ui/styles";
+import modals from "shared/modals";
+import colors from "shared/colors";
 
-import type { Member } from "../../data/types";
-
-import "./index.css";
+import type { Member } from "data/types";
 
 type Validator = (value: string) => boolean;
 
@@ -29,12 +30,49 @@ const validators: { [_: string]: Validator } = {
   picture: _ => true
 };
 
+const styles = {
+  base: {
+    ...modals.base,
+    paddingBottom: 0
+  },
+  profilePic: {
+    width: 80,
+    height: 80,
+    float: "left",
+    borderRadius: "50%",
+    backgroundColor: colors.argile,
+    "& img": {
+      width: "100%",
+      height: "100%",
+      borderRadius: "50%"
+    }
+  },
+  profileBody: {
+    marginTop: 35
+  },
+  profileForm: {
+    marginLeft: 120,
+    width: 320,
+    fontSize: 13
+  },
+  role: {
+    marginTop: 20,
+    fontSize: 11,
+    color: colors.lead
+  },
+  icon: {
+    width: 28,
+    marginTop: "30%",
+    marginLeft: "33%"
+  }
+};
 class ProfileEditModal extends Component<
   {
     profile: Member,
     restlay: *,
     history: *,
-    close: Function
+    close: Function,
+    classes: Object
   },
   *
 > {
@@ -100,15 +138,16 @@ class ProfileEditModal extends Component<
 
   render() {
     const t = this.context.translate;
+    const { classes } = this.props;
     const error =
       !this.state.first_name.isValid ||
       !this.state.last_name.isValid ||
       !this.state.email.isValid;
 
     return (
-      <div className="Profile">
+      <div className={classes.base}>
         <div className="profile-title">{t("profile.title")}</div>
-        <div className="profile-body">
+        <div className={classes.profileBody}>
           <Dropzone
             style={{
               width: "initial",
@@ -119,15 +158,15 @@ class ProfileEditModal extends Component<
             accept="image/jpeg, image/png"
             onDrop={this.onDrop}
           >
-            <div className="profile-pic">
+            <div className={classes.profilePic}>
               {this.state.picture.value ? (
                 <img src={this.state.picture.value} alt="" />
               ) : (
-                <ProfileIcon className="profile-default-icon" color="white" />
+                <ProfileIcon className={classes.icon} color="white" />
               )}
             </div>
           </Dropzone>
-          <div className="profile-form">
+          <div className={classes.profileForm}>
             <TextField
               name="first_name"
               className="profile-form-name"
@@ -162,7 +201,7 @@ class ProfileEditModal extends Component<
               hasError={!this.state.email.isValid}
               onChange={this.updateField}
             />
-            <div className="profile-role">{t("role.administrator")}</div>
+            <div className={classes.role}>{t("role.administrator")}</div>
           </div>
         </div>
         <div style={{ height: "50px" }} />
@@ -186,7 +225,7 @@ const RenderLoading = () => {
 };
 
 export default withRouter(
-  connectData(ProfileEditModal, {
+  connectData(withStyles(styles)(ProfileEditModal), {
     RenderLoading,
     queries: {
       profile: ProfileQuery

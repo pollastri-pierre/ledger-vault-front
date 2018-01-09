@@ -13,9 +13,10 @@ class CryptoAddressPicker extends Component<{
     this.props.onChange(e.currentTarget.value.trim());
   };
   render() {
-    const { id, onChange, isValid, value } = this.props;
+    const { id, onChange, isValid, value, ...props } = this.props;
     return (
       <Input
+        {...props}
         id={id}
         type="text"
         onChange={this.onChange}

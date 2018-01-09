@@ -1,34 +1,65 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import ViewAllLink from "../../components/ViewAllLink";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
-import DateFormat from "../../components/DateFormat";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import AccountName from "../../components/AccountName";
-import type { Operation, Account } from "../../data/types";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import PendingsQuery from "../../api/queries/PendingsQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import type { Response as PendingsQueryResponse } from "../../api/queries/PendingsQuery";
-import "./PendingCard.css";
+import connectData from "restlay/connectData";
+import ViewAllLink from "components/ViewAllLink";
+import Card from "components/Card";
+import CardField from "components/CardField";
+import DateFormat from "components/DateFormat";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import AccountName from "components/AccountName";
+import type { Operation, Account } from "data/types";
+import AccountsQuery from "api/queries/AccountsQuery";
+import PendingsQuery from "api/queries/PendingsQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { withStyles } from "material-ui/styles";
+import type { Response as PendingsQueryResponse } from "api/queries/PendingsQuery";
 
-const Row = ({
+const styles = {
+  row: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderBottom: "1px solid #eee",
+    padding: "10px 0",
+    "&:last-child": {
+      borderBottom: "0px"
+    }
+  },
+  date: {
+    color: " #000",
+    fontSize: " 10px",
+    fontWeight: " 600",
+    lineHeight: " 18px",
+    textTransform: " uppercase"
+  },
+  body: {
+    fontSize: "13px"
+  },
+  header: {
+    padding: "20px 46px",
+    display: "flex",
+    justifyContent: "space-between"
+  }
+};
+const Row_c = ({
   date,
-  children
+  children,
+  classes
 }: {
   date: string,
-  children: React$Node | string
+  children: React$Node | string,
+  classes: Object
 }) => (
-  <div className="pending-list-row">
-    <div className="date">
+  <div className={classes.row}>
+    <div className={classes.date}>
       <DateFormat date={date} />
     </div>
-    <div className="body">{children}</div>
+    <div className={classes.body}>{children}</div>
   </div>
 );
+
+const Row = withStyles(styles)(Row_c);
 
 const OperationRow = ({
   operation,
@@ -50,6 +81,7 @@ const AccountRow = ({ account }: { account: Account }) => (
 );
 
 class PendingCard extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
   pendings: PendingsQueryResponse,
   accounts: Account[],
   reloading: boolean
@@ -58,6 +90,7 @@ class PendingCard extends Component<{
     const {
       accounts,
       pendings: { approveOperations, approveAccounts },
+      classes,
       reloading
     } = this.props;
     const totalOperations = approveOperations.length;
@@ -70,7 +103,7 @@ class PendingCard extends Component<{
         titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
         className="pendingCard"
       >
-        <header className="pendingHeader">
+        <header className={classes.header}>
           <CardField label="operations" align="center">
             {totalOperations}
           </CardField>
@@ -110,7 +143,7 @@ const RenderLoading = () => (
   </Card>
 );
 
-export default connectData(PendingCard, {
+export default connectData(withStyles(styles)(PendingCard), {
   queries: {
     accounts: AccountsQuery,
     pendings: PendingsQuery

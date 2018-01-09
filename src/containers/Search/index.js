@@ -3,14 +3,13 @@ import React, { Component } from "react";
 import debounce from "lodash/debounce";
 import SearchResultsCard from "./SearchResultsCard";
 import SearchFiltersCard from "./SearchFiltersCard";
-import connectData from "../../restlay/connectData";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import CurrenciesQuery from "../../api/queries/CurrenciesQuery";
-import OperationModal from "../../components/operations/OperationModal";
-import ModalRoute from "../../components/ModalRoute";
-import type { Account, Currency } from "../../data/types";
-
-import "./index.css";
+import connectData from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import { withStyles } from "material-ui/styles";
+import OperationModal from "components/operations/OperationModal";
+import ModalRoute from "components/ModalRoute";
+import type { Account, Currency } from "data/types";
 
 type Filters = {
   keywords: ?string,
@@ -24,10 +23,27 @@ const noFilters = {
   currencyName: ""
 };
 
+const styles = {
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    "& > :first-child": {
+      flex: "1",
+      marginRight: "20px"
+    },
+    "& > :last-child": {
+      width: "288px"
+    }
+  }
+};
+
 class Search extends Component<
   {
     accounts: Account[],
     currencies: Currency[],
+    classes: Object,
     match: *,
     location: *,
     history: *
@@ -57,7 +73,7 @@ class Search extends Component<
   }
 
   render() {
-    const { match, accounts, currencies } = this.props;
+    const { accounts, currencies, classes, match } = this.props;
     const { filters, debouncedFilters } = this.state;
     const refreshingKey =
       String(debouncedFilters.keywords) +
@@ -66,7 +82,7 @@ class Search extends Component<
       "_" +
       String(debouncedFilters.currencyName);
     return (
-      <div className="container-search">
+      <div className={classes.base}>
         <SearchResultsCard
           accounts={accounts}
           filters={debouncedFilters}
@@ -87,7 +103,7 @@ class Search extends Component<
   }
 }
 
-export default connectData(Search, {
+export default connectData(withStyles(styles)(Search), {
   queries: {
     accounts: AccountsQuery,
     currencies: CurrenciesQuery

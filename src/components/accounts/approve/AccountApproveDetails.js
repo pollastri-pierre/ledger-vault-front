@@ -12,7 +12,7 @@ import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
-import type { Account, Member } from "../../../data/types";
+import type { Account, Member } from "data/types";
 
 function AccountApproveDetails(props: {
   account: Account,

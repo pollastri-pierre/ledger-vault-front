@@ -8,6 +8,7 @@
 
 # production
 /build
+/dist
 
 # sass
 src/**/*.css
@@ -19,13 +20,16 @@ src/**/*.css
 .env.test.local
 .env.production.local
 
+# yarn
+yarn.lock
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 .vscode
 
-# git mergetool 
+# git mergetool
 *.orig
 
 flow-typed/

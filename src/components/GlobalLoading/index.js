@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import Animated from "animated/lib/targets/react-dom";
-import "./index.css";
 
 const progress = new Animated.Value(0);
 const opacity = new Animated.Value(1);

@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import ApprovalUser from "../ApprovalUser";
-import type { Member } from "../../data/types";
+import type { Member } from "data/types";
 
 function ApprovalList(props: {
   approvers: Array<Member>,

@@ -1,21 +1,31 @@
 //@flow
 import React, { Component } from "react";
+import { withStyles } from "material-ui/styles";
 import ValidateBadge from "../icons/full/ValidateBadge";
-import "./index.css";
+import colors from "../../shared/colors";
 
+const styles = {
+  base: {
+    marginLeft: "8px",
+    verticalAlign: "middle",
+    width: 11,
+    fill: colors.ocean
+  }
+};
 class ConfirmationStatus extends Component<*> {
   props: {
-    nbConfirmations: number
+    nbConfirmations: number,
+    classes: Object
   };
 
   render() {
-    const { nbConfirmations } = this.props;
+    const { nbConfirmations, classes } = this.props;
 
     if (nbConfirmations > 0) {
       return (
         <span>
           <strong>Confirmed ({nbConfirmations})</strong>
-          <ValidateBadge className="confirmed operation-status" />
+          <ValidateBadge className={classes.base} />
         </span>
       );
     }
@@ -24,4 +34,4 @@ class ConfirmationStatus extends Component<*> {
   }
 }
 
-export default ConfirmationStatus;
+export default withStyles(styles)(ConfirmationStatus);

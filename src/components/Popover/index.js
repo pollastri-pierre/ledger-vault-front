@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import "./index.css";
 import { Transition } from "react-transition-group";
 
 const duration = 100;

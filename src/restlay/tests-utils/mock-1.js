@@ -4,7 +4,7 @@ import findIndex from "lodash/findIndex";
 import Query from "../Query";
 import ConnectionQuery from "../ConnectionQuery";
 import Mutation from "../Mutation";
-import { create } from "../../restlay/SchemaDef";
+import { create } from "restlay/SchemaDef";
 
 // TODO add a more complex schema (2-3 models, interconnected)
 // TODO some queries are cached, etc.. need to cover all possible features here

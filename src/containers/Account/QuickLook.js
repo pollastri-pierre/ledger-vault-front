@@ -1,16 +1,13 @@
 //@flow
 import React, { Component } from "react";
-import type { Unit } from "../../data/types";
-import LineChart from "../../components/LineChart";
-import AccountQuicklookDataQuery from "../../api/queries/AccountQuicklookDataQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import connectData from "../../restlay/connectData";
-import type {
-  Range,
-  Response as Balance
-} from "../../api/queries/AccountQuicklookDataQuery";
-import { formatCurrencyUnit } from "../../data/currency";
+import type { Unit } from "data/types";
+import LineChart from "components/LineChart";
+import AccountQuicklookDataQuery from "api/queries/AccountQuicklookDataQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import connectData from "restlay/connectData";
+import type { Range, Response as Balance } from "api/queries/AccountQuicklookDataQuery";
+import { formatCurrencyUnit } from "data/currency";
 
 type Filter = $Keys<Balance>;
 
@@ -20,7 +17,7 @@ type Props = {
   currencyUnit: Unit,
   range: Range,
   currencyColor: string,
-  filter: Filter
+  filter: Filter,
 };
 
 type State = {};
@@ -30,7 +27,7 @@ class Quicklook extends Component<Props, State> {
     const { balance, currencyUnit, currencyColor, filter } = this.props;
     const selectedBalance = balance[filter].map(dataPoint => [
       dataPoint[0],
-      parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1]))
+      parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1])),
     ]);
     return (
       selectedBalance.length && (
@@ -69,13 +66,13 @@ const RenderLoading = () => (
 
 export default connectData(Quicklook, {
   queries: {
-    balance: AccountQuicklookDataQuery
+    balance: AccountQuicklookDataQuery,
   },
   propsToQueryParams: (props: { accountId: string, range: Range }) => ({
     accountId: props.accountId,
-    range: props.range
+    range: props.range,
   }),
   optimisticRendering: true,
   RenderError,
-  RenderLoading
+  RenderLoading,
 });
