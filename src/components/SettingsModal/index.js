@@ -452,7 +452,6 @@ function Side({
         </div>
       </div>
       <div className={classes.sideFooter}>
-        <div>{__VERSION__ || "unversioned"}</div>
         <a className={classes.support} href="mailto:support@ledger.fr">
           support
         </a>

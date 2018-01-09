@@ -5,6 +5,8 @@
 [libs]
 flow-typed
 node_modules/jss/flow-typed
+./webpack-flow.js 
+
 
 [lints]
 
