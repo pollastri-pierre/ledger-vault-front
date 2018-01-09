@@ -8,14 +8,14 @@ import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
 
-import SelectTab from "../../components/SelectTab/SelectTab";
-import FiatUnits from "../../fiat-units";
-import connectData from "../../restlay/connectData";
-import type { RestlayEnvironment } from "../../restlay/connectData";
-import AccountsQuery from "../../api/queries/AccountsQuery";
-import SettingsDataQuery from "../../api/queries/SettingsDataQuery";
-import SaveAccountSettingsMutation from "../../api/mutations/SaveAccountSettingsMutation";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import SelectTab from "components/SelectTab/SelectTab";
+import fiatUnits from "constants/fiatUnits";
+import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import SettingsDataQuery from "api/queries/SettingsDataQuery";
+import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 
 import BadgeSecurity from "../BadgeSecurity";
@@ -31,15 +31,9 @@ import {
   BigSecurityAutoExpireIcon
 } from "../icons";
 
-import type {
-  Account,
-  SecurityScheme,
-  AccountSettings
-} from "../../data/types";
+import type { Account, SecurityScheme, AccountSettings } from "data/types";
 
-import type { Response as SettingsDataQueryResponse } from "../../api/queries/SettingsDataQuery";
-
-const { REACT_APP_SECRET_CODE } = process.env;
+import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const styles = {
   container: {
@@ -418,7 +412,7 @@ class AccountSettingsEdit extends Component<Props, State> {
               >
                 {countervalueSourceData.fiats.map(fiat => (
                   <MenuItem disableRipple key={fiat} value={fiat}>
-                    {fiat} - {FiatUnits[fiat].name}
+                    {fiat} - {fiatUnits[fiat].name}
                   </MenuItem>
                 ))}
               </Select>
@@ -458,7 +452,7 @@ function Side({
         </div>
       </div>
       <div className={classes.sideFooter}>
-        <div>{REACT_APP_SECRET_CODE || "unversioned"}</div>
+        <div>{__VERSION__ || "unversioned"}</div>
         <a className={classes.support} href="mailto:support@ledger.fr">
           support
         </a>

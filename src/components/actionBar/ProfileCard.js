@@ -2,16 +2,16 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import type { Member } from "../../data/types";
+import type { Member } from "data/types";
 import ProfileEditModal from "../ProfileEditModal";
 import ModalRoute from "../ModalRoute";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "material-ui/Progress/CircularProgress";
-import connectData from "../../restlay/connectData";
+import connectData from "restlay/connectData";
 import { withStyles } from "material-ui/styles";
-import { mixinHoverSelected } from "../../shared/common";
-import ProfileQuery from "../../api/queries/ProfileQuery";
+import { mixinHoverSelected } from "shared/common";
+import ProfileQuery from "api/queries/ProfileQuery";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 

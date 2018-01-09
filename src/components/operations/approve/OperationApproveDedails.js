@@ -6,7 +6,7 @@ import DateFormat from "../../DateFormat";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
 import ApprovalStatus from "../../ApprovalStatus";
-import type { Operation, Account, Member } from "../../../data/types";
+import type { Operation, Account, Member } from "data/types";
 
 function OperationApproveDetails(props: {
   operation: Operation,

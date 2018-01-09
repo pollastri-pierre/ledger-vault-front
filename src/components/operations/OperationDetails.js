@@ -1,18 +1,18 @@
 //@flow
 import React, { Component } from "react";
-import ModalLoading from "../../components/ModalLoading";
+import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
-import connectData from "../../restlay/connectData";
-import OperationWithAccountQuery from "../../api/queries/OperationWithAccountQuery";
-import ProfileQuery from "../../api/queries/ProfileQuery";
-import type { Operation, Account, Member } from "../../data/types";
+import connectData from "restlay/connectData";
+import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+import type { Operation, Account, Member } from "data/types";
 import Tabs, { Tab } from "material-ui/Tabs";
-import modals from "../../shared/modals";
+import modals from "shared/modals";
 
 type Props = {
   close: Function,
@@ -21,19 +21,19 @@ type Props = {
   // injected by decorators:
   operationWithAccount: {
     operation: Operation,
-    account: Account,
+    account: Account
   },
   profile: Member,
   history: *,
-  match: Object,
+  match: Object
 };
 
 const styles = {
   base: {
     ...modals.base,
     width: "440px",
-    height: "615px",
-  },
+    height: "615px"
+  }
 };
 
 class OperationDetails extends Component<Props, *> {
@@ -41,7 +41,7 @@ class OperationDetails extends Component<Props, *> {
     super(props);
 
     this.state = {
-      value: parseInt(props.match.params.tabIndex, 10) || 0,
+      value: parseInt(props.match.params.tabIndex, 10) || 0
     };
   }
 
@@ -50,7 +50,11 @@ class OperationDetails extends Component<Props, *> {
   };
 
   render() {
-    const { operationWithAccount: { operation, account }, close, classes } = this.props;
+    const {
+      operationWithAccount: { operation, account },
+      close,
+      classes
+    } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
 
@@ -91,16 +95,16 @@ class OperationDetails extends Component<Props, *> {
 }
 
 OperationDetails.contextTypes = {
-  translate: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 export default connectData(withStyles(styles)(OperationDetails), {
   RenderLoading: ModalLoading,
   queries: {
     operationWithAccount: OperationWithAccountQuery,
-    profile: ProfileQuery,
+    profile: ProfileQuery
   },
   propsToQueryParams: props => ({
-    operationId: props.match.params.operationId || "",
-  }),
+    operationId: props.match.params.operationId || ""
+  })
 });

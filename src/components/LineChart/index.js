@@ -4,7 +4,7 @@ import cx from "classnames";
 import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
 
-import DateFormat from "../../components/DateFormat";
+import DateFormat from "components/DateFormat";
 
 const styles = {
   lineChart: {

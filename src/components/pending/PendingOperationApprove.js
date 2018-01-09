@@ -7,8 +7,8 @@ import classnames from "classnames";
 import CurrencyFiatValue from "../CurrencyFiatValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
-import { countervalueForRate } from "../../data/currency";
-import type { Account, Operation, Member } from "../../data/types";
+import { countervalueForRate } from "data/currency";
+import type { Account, Operation, Member } from "data/types";
 import styles from "./styles";
 
 type Props = {

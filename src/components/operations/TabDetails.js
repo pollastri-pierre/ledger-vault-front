@@ -1,14 +1,15 @@
 //@flow
 import React, { Component, PureComponent } from "react";
-import type { Operation, Account } from "../../data/types";
+import type { Operation, Account } from "data/types";
 import { withStyles } from "material-ui/styles";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 
 const stylesList = {
   base: {
     borderCollapse: "collapse",
     width: "100%",
+    fontSize: 11,
     "& tr": {
       height: "47px",
       borderTop: `1px solid ${colors.argile}`
@@ -16,8 +17,11 @@ const stylesList = {
     "& tr:first-child": {
       border: "0"
     },
-    "& tr td:first-child": {
-      fontWeight: "600",
+    "& thead > tr td:first-child": {
+        fontWeight: 600
+    },
+    "& tbody > tr td:first-child": {
+      fontWeight: "normal",
       fontSize: "11px",
       textTransform: "uppercase"
     },
@@ -84,7 +88,6 @@ const styles = {
     fontSize: "11px",
     lineHeight: "23px",
     color: "#000",
-    fontWeight: "600",
     marginTop: "0"
   },
   hash: {

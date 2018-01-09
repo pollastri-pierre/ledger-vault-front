@@ -3,11 +3,10 @@ import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
-
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import BadgeCurrency from "../../components/BadgeCurrency";
-import colors from "../../shared/colors";
-import type { Account } from "../../data/types";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import BadgeCurrency from "components/BadgeCurrency";
+import colors from "shared/colors";
+import type { Account } from "data/types";
 import cx from "classnames";
 
 type PieChartData = {

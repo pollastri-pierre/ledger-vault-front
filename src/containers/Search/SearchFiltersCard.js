@@ -2,13 +2,13 @@
 import React, { Component } from "react";
 import TextField from "material-ui/TextField";
 import { withStyles } from "material-ui/styles";
-import Card from "../../components/Card";
+import Card from "components/Card";
 import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
-import AccountName from "../../components/AccountName";
-import AccountMenuItem from "../../components/AccountMenuItem";
+import AccountName from "components/AccountName";
+import AccountMenuItem from "components/AccountMenuItem";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
-import type { Currency, Account } from "../../data/types";
+import type { Currency, Account } from "data/types";
 
 const styles = {
   card: {

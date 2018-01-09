@@ -2,15 +2,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import queryString from "query-string";
-import formatError from "../../formatters/error";
-import createDevice, { U2F_PATH } from "../../device";
+import formatError from "formatters/error";
+import createDevice, { U2F_PATH } from "device";
 import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
-import { login, logout } from "../../redux/modules/auth";
-import { addMessage } from "../../redux/modules/alerts";
-import network from "../../network";
+import { login, logout } from "redux/modules/auth";
+import { addMessage } from "redux/modules/alerts";
+import network from "network";
 import { withStyles } from "material-ui/styles";
+
+import logoBlack from "assets/img/logo-black.png";
+import logoBlack2x from "assets/img/logo-black@2x.png";
+import logoBlack3x from "assets/img/logo-black@3x.png";
 
 const mapStateToProps = ({ auth }) => ({
   isAuthenticated: auth.isAuthenticated,
@@ -197,8 +202,8 @@ export class Login extends Component<Props, State> {
         <div className={classes.wrapper}>
           <div className={classes.banner}>
             <img
-              src="img/logo-black.png"
-              srcSet="/img/logo-black@2x.png 2x, /img/logo-black@3x.png 3x"
+              src={logoBlack}
+              srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
               alt="Ledger Vault"
             />
             <div className={classes.help}>{t("login.help")}</div>
@@ -214,4 +219,4 @@ Login.contextTypes = {
   translate: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
+export default compose(connect(mapStateToProps, mapDispatchToProps), withStyles(styles))(Login);

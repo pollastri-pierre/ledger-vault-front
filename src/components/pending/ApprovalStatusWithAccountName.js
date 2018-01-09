@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import ApprovalStatus from "../ApprovalStatus";
 import AccountName from "../AccountName";
 import { withStyles } from "material-ui/styles";
-import colors from "../../shared/colors";
-import type { Account, Operation, Member } from "../../data/types";
+import colors from "shared/colors";
+import type { Account, Operation, Member } from "data/types";
 
 const styles = {
   base: {

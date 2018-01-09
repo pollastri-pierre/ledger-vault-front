@@ -1,8 +1,8 @@
 //@flow
 import React from "react";
 import { connect } from "react-redux";
-import { Alert } from "../components";
-import { closeMessage } from "../redux/modules/alerts";
+import { Alert } from "components";
+import { closeMessage } from "redux/modules/alerts";
 
 const mapStateToProps = state => ({
   alerts: state.alerts

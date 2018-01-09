@@ -1,7 +1,7 @@
 //@flow
-import Mutation from "../../restlay/Mutation";
-import type { Account, AccountSettings } from "../../data/types";
-import { success, error } from "../../formatters/notification";
+import Mutation from "restlay/Mutation";
+import type { Account, AccountSettings } from "data/types";
+import { success, error } from "formatters/notification";
 
 type In = {
   account: Account,

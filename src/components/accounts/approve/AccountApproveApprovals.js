@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
-import type { Account, Member } from "../../../data/types";
+import type { Account, Member } from "data/types";
 
 type Props = {
   account: Account,

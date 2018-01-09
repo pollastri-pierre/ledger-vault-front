@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import fiatUnits from "../fiat-units";
+import fiatUnits from "constants/fiatUnits";
 
 type Props = {
   fiat: string,

@@ -2,27 +2,28 @@
 import InfoModal from "../../InfoModal";
 import React, { Component } from "react";
 import { DialogButton } from "../../";
-import EnableForm from "../../../components/EnableForm";
+import EnableForm from "components/EnableForm";
 import { connect } from "react-redux";
-import InputTextWithUnity from "../../../components/InputTextWithUnity";
-import { addMessage } from "../../../redux/modules/alerts";
+import InputTextWithUnity from "components/InputTextWithUnity";
+import { addMessage } from "redux/modules/alerts";
 import { withStyles } from "material-ui/styles";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 
 const mapDispatchToProps = dispatch => ({
-  onAddMessage: (title, content, type) => dispatch(addMessage(title, content, type)),
+  onAddMessage: (title, content, type) =>
+    dispatch(addMessage(title, content, type))
 });
 
 const styles = {
   base: {
     ...modals.base,
-    width: 440,
+    width: 440
   },
   info: {
-    margin: "20px 0px 40px 0px",
-  },
+    margin: "20px 0px 40px 0px"
+  }
 };
 
 type Props = {
@@ -30,17 +31,17 @@ type Props = {
   timelock: Object,
   setTimelock: Function,
   classes: { [_: $Keys<typeof styles>]: string },
-  onAddMessage: (t: string, m: string, ty: string) => void,
+  onAddMessage: (t: string, m: string, ty: string) => void
 };
 
 type State = {
-  timelock: Object,
+  timelock: Object
 };
 
 const frequencies = [
   { title: "minutes", key: 60 },
   { title: "hours", key: 3600 },
-  { title: "days", key: 84600 },
+  { title: "days", key: 84600 }
 ];
 
 class AccountCreationTimeLock extends Component<Props, State> {
@@ -48,7 +49,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
     super(props);
 
     this.state = {
-      timelock: props.timelock,
+      timelock: props.timelock
     };
   }
   submit = () => {
@@ -69,7 +70,7 @@ class AccountCreationTimeLock extends Component<Props, State> {
     if (val === "" || isNumber.test(val)) {
       this.setState({
         ...this.state,
-        timelock: { ...this.state.timelock, value: parseInt(val, 10) || 0 },
+        timelock: { ...this.state.timelock, value: parseInt(val, 10) || 0 }
       });
     }
   };
@@ -79,8 +80,8 @@ class AccountCreationTimeLock extends Component<Props, State> {
       ...this.state,
       timelock: {
         ...this.state.timelock,
-        enabled: !this.state.timelock.enabled,
-      },
+        enabled: !this.state.timelock.enabled
+      }
     });
   };
 
@@ -89,8 +90,8 @@ class AccountCreationTimeLock extends Component<Props, State> {
       ...this.state,
       timelock: {
         ...this.state.timelock,
-        frequency: e.target.value,
-      },
+        frequency: e.target.value
+      }
     });
   };
 
@@ -125,18 +126,25 @@ class AccountCreationTimeLock extends Component<Props, State> {
                 value={timelock.frequency}
                 onChange={this.changeFrequency}
                 disableUnderline
-                renderValue={key => (frequencies.find(o => o.key === key) || {}).title}
+                renderValue={key =>
+                  (frequencies.find(o => o.key === key) || {}).title
+                }
               >
                 {frequencies.map(({ title, key }) => (
-                  <MenuItem style={{ color: "#27d0e2" }} disableRipple key={key} value={key}>
+                  <MenuItem
+                    style={{ color: "#27d0e2" }}
+                    disableRipple
+                    key={key}
+                    value={key}
+                  >
                     <span style={{ color: "black" }}>{title}</span>
                   </MenuItem>
                 ))}
               </Select>
             </InputTextWithUnity>
             <InfoModal className={classes.info}>
-              Time-lock delays each outgoing operation by a configurable length, after all the
-              required members have given their approvals.
+              Time-lock delays each outgoing operation by a configurable length,
+              after all the required members have given their approvals.
             </InfoModal>
           </EnableForm>
         </div>
@@ -152,4 +160,6 @@ class AccountCreationTimeLock extends Component<Props, State> {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(withStyles(styles)(AccountCreationTimeLock));
+export default connect(undefined, mapDispatchToProps)(
+  withStyles(styles)(AccountCreationTimeLock)
+);

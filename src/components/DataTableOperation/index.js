@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
@@ -9,7 +9,7 @@ import AccountName from "../AccountName";
 import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
-import type { Operation, Account, Note } from "../../data/types";
+import type { Operation, Account, Note } from "data/types";
 import { withStyles } from "material-ui/styles";
 
 type Cell = {

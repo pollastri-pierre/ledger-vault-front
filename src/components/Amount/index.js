@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import CurrencyUnitValue from "../CurrencyUnitValue";
-import { countervalueForRate } from "../../data/currency";
-import type { Account, Rate } from "../../data/types";
+import { countervalueForRate } from "data/currency";
+import type { Account, Rate } from "data/types";
 
 class Amount extends Component<{
   account: Account,

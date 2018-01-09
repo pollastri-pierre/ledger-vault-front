@@ -1,10 +1,10 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
+import connectData from "restlay/connectData";
 import AccountCard from "./AccountCard";
-import AccountsQuery from "../../api/queries/AccountsQuery";
+import AccountsQuery from "api/queries/AccountsQuery";
 import { withStyles } from "material-ui/styles";
-import TryAgain from "../../components/TryAgain";
+import TryAgain from "components/TryAgain";
 
 const styles = {
   base: {

@@ -1,4 +1,4 @@
-import colors from "../shared/colors";
+import colors from "shared/colors";
 
 const tickerBeforeStyle = {
   content: "''",
@@ -88,17 +88,17 @@ const theme = {
         },
         ".MuiListItem-ticker-right &": {
           justifyContent: "flex-end"
-        }
+        },
+          "&$selected": {
+              backgroundColor: "transparent",
+              opacity: 1,
+              "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
+              ".MuiListItem-ticker-right &:before": {
+                  left: "auto",
+                  right: 0
+              }
+          }
       },
-      selected: {
-        backgroundColor: "transparent",
-        opacity: 1,
-        "&:before": { ...tickerBeforeStyle, ...tickerActiveStyle, left: 0 },
-        ".MuiListItem-ticker-right &:before": {
-          left: "auto",
-          right: 0
-        }
-      }
     },
     MuiListItem: {
       default: {

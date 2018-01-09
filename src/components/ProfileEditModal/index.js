@@ -5,18 +5,18 @@ import emailValidator from "email-validator";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 import rectCrop from "rect-crop";
-import connectData from "../../restlay/connectData";
-import { TextField } from "../../components";
-import DialogButton from "../../components/buttons/DialogButton";
+import connectData from "restlay/connectData";
+import { TextField } from "components";
+import DialogButton from "components/buttons/DialogButton";
 import ProfileIcon from "../icons/thin/Profile";
-import ProfileQuery from "../../api/queries/ProfileQuery";
-import SaveProfile from "../../api/mutations/SaveProfileMutation";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
+import ProfileQuery from "api/queries/ProfileQuery";
+import SaveProfile from "api/mutations/SaveProfileMutation";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import { withStyles } from "material-ui/styles";
-import modals from "../../shared/modals";
-import colors from "../../shared/colors";
+import modals from "shared/modals";
+import colors from "shared/colors";
 
-import type { Member } from "../../data/types";
+import type { Member } from "data/types";
 
 type Validator = (value: string) => boolean;
 

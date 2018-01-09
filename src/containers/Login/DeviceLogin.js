@@ -1,9 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { DialogButton } from "../../components";
-import Plug from "../../components/icons/thin/Plug";
-import translate from "../../decorators/Translate";
+import { DialogButton } from "components";
+import Plug from "components/icons/thin/Plug";
+import translate from "decorators/Translate";
 import { withStyles } from "material-ui/styles";
 
 const styles = {

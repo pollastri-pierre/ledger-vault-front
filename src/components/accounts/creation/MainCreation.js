@@ -1,16 +1,16 @@
 //@flow
 import React, { Component } from "react";
 import _ from "lodash";
-import connectData from "../../../restlay/connectData";
-import NewAccountMutation from "../../../api/mutations/NewAccountMutation";
+import connectData from "restlay/connectData";
+import NewAccountMutation from "api/mutations/NewAccountMutation";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
-import type { Currency } from "../../../data/types";
+import type { Currency } from "data/types";
 import { withStyles } from "material-ui/styles";
-import modals from "../../../shared/modals";
+import modals from "shared/modals";
 import Tabs, { Tab } from "material-ui/Tabs";
 
 type Props = {

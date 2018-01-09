@@ -6,8 +6,8 @@ import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
-import type { Account, Operation } from "../../../data/types";
-import { calculateApprovingObjectMeta } from "../../../data/approvingObject";
+import type { Account, Operation } from "data/types";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
 
 const getTimeLock = (seconds: number) => {
   return `${Math.round(10 * (seconds / 3600)) / 10} hours delay`;

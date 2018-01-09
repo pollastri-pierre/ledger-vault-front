@@ -6,13 +6,17 @@ import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
-import colors from "../../shared/colors";
+import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
 import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";
 import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Bell from "../icons/full/Bell";
+
+import logo from "assets/img/logo.png";
+import logo2x from "assets/img/logo@2x.png";
+import logo3x from "assets/img/logo@3x.png";
 
 const styles = {
   base: {
@@ -71,8 +75,8 @@ class Logo extends PureComponent<*> {
             transform: "skew(" + 36000 * (Math.max(this.n++, 0) % 2) + "deg)"
           });
         }}
-        src="/img/logo.png"
-        srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
+        src={logo}
+        srcSet={`${logo2x} 2x, ${logo3x} 3x`}
         alt="Ledger Vault logo"
       />
     );

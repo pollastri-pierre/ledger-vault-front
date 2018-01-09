@@ -5,7 +5,7 @@ import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
-import type { Account } from "../../../data/types";
+import type { Account } from "data/types";
 
 const styles = {
   root: {

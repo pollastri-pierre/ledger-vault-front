@@ -1,16 +1,16 @@
 // @flow
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
-import connectData from "../../restlay/connectData";
-import CurrencyAccountValue from "../../components/CurrencyAccountValue";
-import CurrencyCounterValueConversion from "../../components/CurrencyCounterValueConversion";
-import Card from "../../components/Card";
-import CardField from "../../components/CardField";
-import AccountQuery from "../../api/queries/AccountQuery";
-import TryAgain from "../../components/TryAgain";
-import SpinnerCard from "../../components/spinners/SpinnerCard";
-import type { Account } from "../../data/types";
-import colors from "../../shared/colors";
+import connectData from "restlay/connectData";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import CurrencyCounterValueConversion from "components/CurrencyCounterValueConversion";
+import Card from "components/Card";
+import CardField from "components/CardField";
+import AccountQuery from "api/queries/AccountQuery";
+import TryAgain from "components/TryAgain";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import type { Account } from "data/types";
+import colors from "shared/colors";
 
 const styles = {
   card: {

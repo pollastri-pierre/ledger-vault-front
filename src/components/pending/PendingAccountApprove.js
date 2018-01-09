@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
-import type { Account, Member } from "../../data/types";
+import type { Account, Member } from "data/types";
 import { withStyles } from "material-ui/styles";
 import classnames from "classnames";
 import styles from "./styles";

@@ -1,10 +1,10 @@
 //@flow
 import React, { Component } from "react";
 import OperationCreation from "./operations/creation/OperationCreation";
-import connectData from "../restlay/connectData";
-import AccountsQuery from "../api/queries/AccountsQuery";
-import ModalLoading from "../components/ModalLoading";
-import type { Account } from "../data/types";
+import connectData from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import ModalLoading from "components/ModalLoading";
+import type { Account } from "data/types";
 
 export type Details = {
   amount: ?number,

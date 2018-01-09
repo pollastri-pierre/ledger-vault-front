@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import BadgeCurrency from "../../BadgeCurrency";
-import type { Currency } from "../../../data/types";
+import type { Currency } from "data/types";
 import TextField from "material-ui/TextField";
 import { withStyles } from "material-ui/styles";
 
