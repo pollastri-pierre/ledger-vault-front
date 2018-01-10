@@ -164,9 +164,19 @@ class AccountCreationCurrencies extends Component<{
   }
 }
 
+const styleLoading = {
+  base: {
+    height: 440,
+    width: "auto"
+  }
+};
+const Loading = withStyles(styleLoading)(({ classes }) => (
+  <ModalLoading className={classes.base} />
+));
+
 export default connectData(withStyles(styles)(AccountCreationCurrencies), {
   queries: {
     currencies: CurrenciesQuery
   },
-  RenderLoading: ModalLoading
+  RenderLoading: Loading
 });
