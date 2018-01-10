@@ -1,17 +1,28 @@
 // @flow
 import React, { Component } from "react";
 import Menu, { MenuItem } from "material-ui/Menu";
+import colors from "../../../shared/colors";
+import { withStyles } from "material-ui/styles";
 import ArrowDown from "../../icons/full/ArrowDown";
 
+const styles = {
+  menu: {
+    color: colors.ocean,
+    "& span": {
+      color: "black",
+    },
+  },
+};
 class MaxSelect extends Component<
   {
-    onSetMax: () => void
+    onSetMax: () => void,
+    classes: { [_: $Keys<typeof styles>]: string },
   },
-  *
+  *,
 > {
   state = {
     open: false,
-    anchorEl: null
+    anchorEl: null,
   };
 
   handleClick = (event: SyntheticEvent<>) => {
@@ -23,19 +34,22 @@ class MaxSelect extends Component<
   };
 
   render() {
-    const { onSetMax } = this.props;
+    const { onSetMax, classes } = this.props;
     const { open, anchorEl } = this.state;
     return (
       <div>
         <div
           style={{
-            width: 28,
+            width: 23,
+            lineHeight: "14px",
             height: 28,
+            textAlign: "right",
             borderBottom: "1px solid #eee",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
+          onClick={this.handleClick}
         >
-          <ArrowDown style={{ width: 11 }} onClick={this.handleClick} />
+          <ArrowDown style={{ width: 11 }} />
         </div>
         <Menu
           className="MuiListItem-ticker-right MuiPopover-triangle-left"
@@ -43,11 +57,13 @@ class MaxSelect extends Component<
           anchorEl={anchorEl}
           onClose={this.onClose}
         >
-          <MenuItem onClick={onSetMax}>Send max</MenuItem>
+          <MenuItem className={classes.menu} disableRipple>
+            <span onClick={onSetMax}>Send max</span>
+          </MenuItem>
         </Menu>
       </div>
     );
   }
 }
 
-export default MaxSelect;
+export default withStyles(styles)(MaxSelect);

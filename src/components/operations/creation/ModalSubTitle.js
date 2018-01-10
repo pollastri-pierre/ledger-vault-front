@@ -5,18 +5,19 @@ import { withStyles } from "material-ui/styles";
 const styles = {
   title: {
     padding: "0 40px",
+    marginTop: 0,
     marginBottom: 20,
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 600,
     color: "black",
-    textTransform: "uppercase"
-  }
+    textTransform: "uppercase",
+  },
 };
 
 class ModalSubTitle extends Component<{
   children: React$Node | string,
   classes: { [_: $Keys<typeof styles>]: string },
-  noPadding: boolean
+  noPadding: boolean,
 }> {
   render() {
     const { children, classes, noPadding } = this.props;

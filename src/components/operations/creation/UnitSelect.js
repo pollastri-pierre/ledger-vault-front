@@ -2,14 +2,29 @@
 import React, { Component } from "react";
 import { MenuItem } from "material-ui/Menu";
 import Select from "material-ui/Select";
+import cx from "classnames";
 import type { Unit } from "data/types";
+import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
+import { withStyles } from "material-ui/styles";
+
+const styles = {
+  select: {
+    paddingBottom: 10,
+  },
+  menu: {
+    color: "#27d0e2",
+  },
+};
 
 class UnitSelect extends Component<{
   units: Array<Unit>,
   index: number,
-  onChange: number => void
+  onChange: number => void,
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
-  renderValue = (index: number) => this.props.units[index].code;
+  renderValue = (index: number) => {
+    return <span style={{ fontSize: 21, lineHeight: "22px" }}>{this.props.units[index].code}</span>;
+  };
 
   onChange = (e: SyntheticEvent<>) => {
     if (e.target instanceof HTMLInputElement) {
@@ -17,17 +32,22 @@ class UnitSelect extends Component<{
     }
   };
 
+  // <ArrowDown style={{ width: 11 }} />
   render() {
-    const { index, units } = this.props;
+    const { index, units, classes } = this.props;
     return (
       <Select
         value={index}
         onChange={this.onChange}
-        renderValue={this.renderValue}
+        renderValue={value => (
+          <BlueSelectRightRenderValue>{this.renderValue(value)}</BlueSelectRightRenderValue>
+        )}
+        className={cx("MuiSelect-disable-arrow")}
+        classes={{ root: classes.select }}
       >
         {units.map((unit, i) => (
-          <MenuItem disableRipple value={i} key={i}>
-            {unit.code}
+          <MenuItem disableRipple value={i} key={i} className={classes.menu}>
+            <span style={{ color: "black" }}>{unit.code}</span>
           </MenuItem>
         ))}
       </Select>
@@ -35,4 +55,4 @@ class UnitSelect extends Component<{
   }
 }
 
-export default UnitSelect;
+export default withStyles(styles)(UnitSelect);
