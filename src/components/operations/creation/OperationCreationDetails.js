@@ -77,18 +77,13 @@ class OperationCreationDetails extends Component<
 
   setAmount = (
     amount: string = this.state.amount,
-    magnitude: number = this.props.account.currency.units[this.state.unitIndex]
-      .magnitude,
+    magnitude: number = this.props.account.currency.units[this.state.unitIndex].magnitude,
     fees: number = this.state.feesAmount
   ) => {
-    const satoshis: number = Math.round(
-      (parseFloat(amount) || 0) * 10 ** magnitude
-    );
+    const satoshis: number = Math.round((parseFloat(amount) || 0) * 10 ** magnitude);
     const balance: number = this.props.account.balance;
     const max: number = balance - fees;
-    const decimals: string = amount
-      .replace(/(.*\.|.*[^.])/, "")
-      .replace(/0+$/, "");
+    const decimals: string = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
 
     this.setState(
       {
@@ -117,8 +112,7 @@ class OperationCreationDetails extends Component<
   setMax = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const magnitude = this.props.account.currency.units[this.state.unitIndex]
-      .magnitude;
+    const magnitude = this.props.account.currency.units[this.state.unitIndex].magnitude;
     const balance = this.props.account.balance;
     const fees = this.state.feesAmount;
     const amount = (balance - fees) / 10 ** magnitude;
@@ -148,14 +142,12 @@ class OperationCreationDetails extends Component<
   setFees = (fee: Speed) => {
     const { restlay, account } = this.props;
 
-    restlay
-      .fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee }))
-      .then(res => {
-        const feesAmount = res.value;
+    restlay.fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee })).then(res => {
+      const feesAmount = res.value;
 
-        this.setState({ feesAmount });
-        this.setAmount(undefined, undefined, feesAmount);
-      });
+      this.setState({ feesAmount });
+      this.setAmount(undefined, undefined, feesAmount);
+    });
   };
 
   onChangeFee = (feesSelected: Speed) => {
@@ -166,14 +158,8 @@ class OperationCreationDetails extends Component<
   validateTab = () => {
     // FIXME this should be refactored and remove. validation to be done in render() / address/amount to come via props from parent
     const details: Details = {
-      amount:
-        this.state.satoshis > 0 && this.state.amountIsValid
-          ? this.state.satoshis
-          : null,
-      address:
-        this.state.address !== "" && this.state.addressIsValid
-          ? this.state.address
-          : null,
+      amount: this.state.satoshis > 0 && this.state.amountIsValid ? this.state.satoshis : null,
+      address: this.state.address !== "" && this.state.addressIsValid ? this.state.address : null,
       fees: this.state.feesAmount
     };
 
@@ -181,17 +167,8 @@ class OperationCreationDetails extends Component<
   };
 
   getCounterValue = (sat: number, showCode: boolean = false) => {
-    const counterValue = countervalueForRate(
-      this.props.account.currencyRate,
-      sat
-    );
-    const fiat = formatCurrencyUnit(
-      counterValue.unit,
-      counterValue.value,
-      showCode,
-      false,
-      true
-    );
+    const counterValue = countervalueForRate(this.props.account.currencyRate, sat);
+    const fiat = formatCurrencyUnit(counterValue.unit, counterValue.value, showCode, false, true);
 
     return fiat;
   };
@@ -238,15 +215,9 @@ class OperationCreationDetails extends Component<
         <ModalSubTitle noPadding>Confirmation fees</ModalSubTitle>
 
         <InputFieldMerge>
-          <FeeSelect
-            value={this.state.feesSelected}
-            onChange={this.onChangeFee}
-          />
+          <FeeSelect value={this.state.feesSelected} onChange={this.onChangeFee} />
           <div style={{ flex: 1, textAlign: "right" }}>
-            <CurrencyNameValue
-              currencyName={account.currency.name}
-              value={this.state.feesAmount}
-            />
+            <CurrencyNameValue currencyName={account.currency.name} value={this.state.feesAmount} />
           </div>
         </InputFieldMerge>
 

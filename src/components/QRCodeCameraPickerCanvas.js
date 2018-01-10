@@ -66,13 +66,9 @@ export default class QRCodeCameraPickerCanvas extends Component<
       const mediaDevices = navigator.mediaDevices;
       getUserMedia = opts => mediaDevices.getUserMedia(opts);
     } else {
-      const f =
-        navigator.getUserMedia ||
-        navigator.webkitGetUserMedia ||
-        navigator.mozGetUserMedia;
+      const f = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
       if (f) {
-        getUserMedia = opts =>
-          new Promise((res, rej) => f.call(navigator, opts, res, rej));
+        getUserMedia = opts => new Promise((res, rej) => f.call(navigator, opts, res, rej));
       }
     }
 
@@ -224,12 +220,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       </div>
     ) : (
       <div style={style}>
-        <canvas
-          ref={this.onMainRef}
-          style={mainStyle}
-          width={dpr * width}
-          height={dpr * height}
-        />
+        <canvas ref={this.onMainRef} style={mainStyle} width={dpr * width} height={dpr * height} />
         <canvas
           ref={this.onSecondRef}
           style={secondStyle}

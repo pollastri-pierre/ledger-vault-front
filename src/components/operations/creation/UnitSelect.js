@@ -20,11 +20,7 @@ class UnitSelect extends Component<{
   render() {
     const { index, units } = this.props;
     return (
-      <Select
-        value={index}
-        onChange={this.onChange}
-        renderValue={this.renderValue}
-      >
+      <Select value={index} onChange={this.onChange} renderValue={this.renderValue}>
         {units.map((unit, i) => (
           <MenuItem disableRipple value={i} key={i}>
             {unit.code}
