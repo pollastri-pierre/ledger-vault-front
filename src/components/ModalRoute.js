@@ -31,15 +31,15 @@ class ModalRoute extends Component<{
   undoAllHistoryOnClickOutside?: boolean,
   component?: *,
   render?: *,
-  children?: *,
+  children?: *
 }> {
   static defaultProps = {
-    undoAllHistoryOnClickOutside: false,
+    undoAllHistoryOnClickOutside: false
   };
   static contextTypes = {
     router: PropTypes.shape({
-      history: PropTypes.object.isRequired,
-    }),
+      history: PropTypes.object.isRequired
+    })
   };
   _unmounted: boolean = false;
   componentWillUnmount() {
@@ -67,7 +67,7 @@ class ModalRoute extends Component<{
           }
           this.lastMatch = routeProps.match;
           const inner = renderInner(routeProps, this.props, {
-            close: this.close,
+            close: this.close
           });
           const open = !!routeProps.match;
           return (

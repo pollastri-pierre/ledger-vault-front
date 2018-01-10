@@ -13,27 +13,28 @@ const styles = {
     paddingTop: 20,
     fontSize: 10,
     fontWeight: 600,
-    fontFamily: "Open Sans",
+    fontFamily: "Open Sans"
   },
   noData: {
-    pointerEvents: "none",
+    pointerEvents: "none"
   },
   chartWrap: {
     position: "relative",
     svg: {
-      overflow: "visible",
-    },
+      overflow: "visible"
+    }
   },
   tooltip: {
     position: "absolute",
     width: "auto !important",
     height: "auto !important",
-    boxShadow: "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+    boxShadow:
+      "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
     zIndex: 10,
     pointerEvents: "none",
     backgroundColor: "currentColor",
     padding: 15,
-    transition: "opacity 0.3s ease-out",
+    transition: "opacity 0.3s ease-out"
   },
   lookDown: {
     "&:before": {
@@ -46,47 +47,47 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderLeft: "10px solid transparent !important",
       left: 40,
-      top: "63px !important",
+      top: "63px !important"
     },
     ".tooltipText span": {
-      float: "right",
-    },
+      float: "right"
+    }
   },
   tooltipTextWrap: {
     position: "relative",
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   tooltipText: {
     color: "white",
     fontSize: 13,
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
+    whiteSpace: "nowrap"
   },
   uppercase: {
-    textTransform: "uppercase",
+    textTransform: "uppercase"
   },
   date: {
     color: "#e2e2e2",
-    fontSize: 11,
+    fontSize: 11
   },
   hide: {
     opacity: 0,
-    zIndex: 1,
+    zIndex: 1
   },
   xAxisLabel: {
     textTransform: "uppercase",
     position: "absolute",
     bottom: 1,
-    color: "#767676",
-  },
+    color: "#767676"
+  }
 };
 
 type DataPointEnhanced = {
   date: number,
   value: number,
   x: number,
-  y: number,
+  y: number
 };
 
 type Props = {
@@ -95,7 +96,7 @@ type Props = {
   formatTooltip: Function,
   noXAxisLabel?: boolean,
   showTooltip?: boolean,
-  classes: { [_: $Keys<typeof styles>]: string },
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
 class LineChart extends Component<Props, *> {
@@ -104,7 +105,7 @@ class LineChart extends Component<Props, *> {
     width: 100,
     height: 100,
     transform: "",
-    margin: { top: 20, right: 0, bottom: 20, left: 65 },
+    margin: { top: 20, right: 0, bottom: 20, left: 65 }
   };
 
   tooltip: ?HTMLDivElement;
@@ -211,7 +212,9 @@ class LineChart extends Component<Props, *> {
     const tickLabel =
       timeDelta >= yearInMs * 2
         ? "year"
-        : timeDelta >= monthInMs * 2 ? "month" : timeDelta >= dayInMs ? "day" : "hour";
+        : timeDelta >= monthInMs * 2
+          ? "month"
+          : timeDelta >= dayInMs ? "day" : "hour";
     return tickLabel.toUpperCase();
   };
 
@@ -266,7 +269,7 @@ class LineChart extends Component<Props, *> {
       }),
       d3.max(data, function(d) {
         return d[0];
-      }),
+      })
     ];
 
     const x = d3
@@ -281,7 +284,7 @@ class LineChart extends Component<Props, *> {
       minY <= 0 ? minY : 0,
       d3.max(data, function(d) {
         return d[1];
-      }),
+      })
     ];
 
     const y = d3
@@ -315,13 +318,13 @@ class LineChart extends Component<Props, *> {
       date: date,
       value: value,
       x: x(date),
-      y: y(value),
+      y: y(value)
     }));
     return {
       data: computedData,
       xAxis: newXAxis,
       yAxis: yAxis,
-      x: x,
+      x: x
     };
   };
 
@@ -430,7 +433,9 @@ class LineChart extends Component<Props, *> {
       .attr("height", height + margin.top + margin.bottom);
 
     //update placeholder for NO DATA AVAILABLE text
-    g.select(".noData").attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
+    g
+      .select(".noData")
+      .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
   };
 
   zoomTo = (d0: number, d1: number, data: Array<[number, number]>) => {
@@ -438,8 +443,10 @@ class LineChart extends Component<Props, *> {
       const { width } = prevState;
       const { x } = this.computeXY(data);
       return {
-        transform: d3.zoomIdentity.scale(width / (x(d1) - x(d0))).translate(-x(d0), 0),
-        selected: -1,
+        transform: d3.zoomIdentity
+          .scale(width / (x(d1) - x(d0)))
+          .translate(-x(d0), 0),
+        selected: -1
       };
     });
   };
@@ -499,8 +506,12 @@ class LineChart extends Component<Props, *> {
     const { data } = this.props;
     const parent = d3.select(d3.select(this.svg).node().parentNode);
     const dateRange = this.getDateRange(data);
-    const height = Math.round(parseFloat(parent.style("height")) - margin.top - margin.bottom);
-    const width = Math.round(parseFloat(parent.style("width")) - margin.left - margin.right);
+    const height = Math.round(
+      parseFloat(parent.style("height")) - margin.top - margin.bottom
+    );
+    const width = Math.round(
+      parseFloat(parent.style("width")) - margin.left - margin.right
+    );
 
     this.setState({ height: height, width: width }, () => {
       //init placeholders
@@ -517,8 +528,10 @@ class LineChart extends Component<Props, *> {
     const { data } = this.props;
     const dateRange = this.getDateRange(data);
     const parent = d3.select(d3.select(this.svg).node().parentNode);
-    const height = parseFloat(parent.style("height")) - margin.top - margin.bottom;
-    const width = parseFloat(parent.style("width")) - margin.left - margin.right;
+    const height =
+      parseFloat(parent.style("height")) - margin.top - margin.bottom;
+    const width =
+      parseFloat(parent.style("width")) - margin.left - margin.right;
 
     this.setState({ height: height, width: width }, () => {
       this.updatePlaceholders();
@@ -601,7 +614,9 @@ class LineChart extends Component<Props, *> {
             >
               <div className={classes.tooltipTextWrap}>
                 <div className={classes.tooltipText}>
-                  <div className={classes.uppercase}>{formatTooltip(data[selected][1])}</div>
+                  <div className={classes.uppercase}>
+                    {formatTooltip(data[selected][1])}
+                  </div>
                   <div>
                     <span className={cx([classes.uppercase, classes.date])}>
                       <DateFormat format="ddd D MMM" date={data[selected][0]} />
@@ -617,7 +632,9 @@ class LineChart extends Component<Props, *> {
             }}
           />
           {!noXAxisLabel && (
-            <div className={classes.xAxisLabel}>{this.getXAxisLabel(this.getDateRange(data))}</div>
+            <div className={classes.xAxisLabel}>
+              {this.getXAxisLabel(this.getDateRange(data))}
+            </div>
           )}
         </div>
       </div>

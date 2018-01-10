@@ -22,9 +22,10 @@ class SearchResults extends Component<{
     return (
       <Card
         title={`${(search.edges.length || "no") +
-          (search.pageInfo.hasNextPage ? "+" : "")} operation${
-          search.edges.length > 1 ? "s" : ""
-        } found`}
+          (search.pageInfo.hasNextPage ? "+" : "")} operation${search.edges
+          .length > 1
+          ? "s"
+          : ""} found`}
       >
         <div className="body">
           <InfiniteScrollable

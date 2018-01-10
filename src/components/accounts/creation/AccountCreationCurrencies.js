@@ -7,6 +7,7 @@ import classnames from "classnames";
 import type { Currency } from "data/types";
 import { withStyles } from "material-ui/styles";
 import colors from "shared/colors";
+import iconsSprite from "assets/img/icon-currencies.png";
 
 const styles = {
   base: {
@@ -66,7 +67,7 @@ const styles = {
       height: "23px",
       verticalAlign: "middle",
       marginRight: "20px",
-      backgroundImage: "url(/img/icon-currencies.png)",
+      backgroundImage: `url(${iconsSprite})`,
       backgroundRepeat: "no-repeat",
       backgroundSize: " 23px"
     },

@@ -5,21 +5,25 @@ export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
 
 export type Store = {
-  visible: boolean,
+  visible: boolean
 };
 
 export function closeMessage() {
   return {
-    type: REMOVE_MESSAGE,
+    type: REMOVE_MESSAGE
   };
 }
 
-export function addMessage(title: string, content: string, messageType: string = "success") {
+export function addMessage(
+  title: string,
+  content: string,
+  messageType: string = "success"
+) {
   return {
     type: ADD_MESSAGE,
     title,
     content,
-    messageType,
+    messageType
   };
 }
 
@@ -35,7 +39,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     return {
       title: "error.error5xTitle",
       content: "error.error5xContent",
-      type: "error",
+      type: "error"
     };
   }
 
@@ -54,7 +58,8 @@ export default function reducer(state: Store = initialState, action: Object) {
     case DATA_FETCHED_FAIL: {
       const { queryOrMutation, error } = action;
       const notif =
-        queryOrMutation.getErrorNotification && queryOrMutation.getErrorNotification(error);
+        queryOrMutation.getErrorNotification &&
+        queryOrMutation.getErrorNotification(error);
       if (notif) {
         const { title, content, messageType = "error" } = notif;
         return { visible: true, title, content, type: messageType };
@@ -71,7 +76,7 @@ export default function reducer(state: Store = initialState, action: Object) {
         title: "See you soon!",
         content:
           "You have been successfully logged out. You can now safely close your web browser.",
-        type: "success",
+        type: "success"
       };
     case REMOVE_MESSAGE:
       return { ...state, visible: false };
