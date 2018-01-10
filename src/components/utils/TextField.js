@@ -11,16 +11,16 @@ type Props = {
   style?: Object,
   autofocus?: boolean,
   fullWidth?: boolean,
-  inputStyle?: Object
+  inputStyle?: Object,
 };
 function TextField(props: Props) {
   return (
     <MUITextField
       {...props}
       InputProps={{
-        style: { fontSize: "13px", paddingBottom: "5px" }
+        style: { fontSize: "13px", paddingBottom: "5px" },
+        inputProps: props.inputProps,
       }}
-      className="vlt-textfield"
     />
   );
 }
