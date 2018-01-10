@@ -32,7 +32,8 @@ class FeePicker extends Component<{
     ]
   };
 
-  renderValue = (key: string) => (this.props.fees.find(f => f.key === key) || {}).title;
+  renderValue = (key: string) =>
+    (this.props.fees.find(f => f.key === key) || {}).title;
 
   onChange = (e: SyntheticEvent<>) => {
     const { target } = e;
@@ -47,7 +48,11 @@ class FeePicker extends Component<{
   render() {
     const { value, fees } = this.props;
     return (
-      <Select value={value} onChange={this.onChange} renderValue={this.renderValue}>
+      <Select
+        value={value}
+        onChange={this.onChange}
+        renderValue={this.renderValue}
+      >
         {fees.map(fee => (
           <MenuItem disableRipple value={fee.key} key={fee.key}>
             {fee.title}

@@ -13,35 +13,44 @@ type AggregatedData = {
   [_: string]: {
     account: Account,
     balance: number,
-    counterValueBalance: number,
-  },
+    counterValueBalance: number
+  }
 };
 
 const styles = {
   base: {
-    minHeight: "250px",
-  },
+    minHeight: "250px"
+  }
 };
-function Currencies({ accounts, classes }: { accounts: Array<Account>, classes: Object }) {
+function Currencies({
+  accounts,
+  classes
+}: {
+  accounts: Array<Account>,
+  classes: Object
+}) {
   //compute currencies from accounts balance
-  const data: AggregatedData = accounts.reduce((acc: AggregatedData, account) => {
-    const currency_name = account.currency.name;
-    const balance = account.balance;
-    //check if currency already added
-    if (!acc[currency_name]) {
-      acc[currency_name] = {
-        account,
-        balance: 0,
-        counterValueBalance: 0,
-      };
-    }
-    acc[currency_name].balance += balance;
-    acc[currency_name].counterValueBalance += countervalueForRate(
-      account.currencyRateInReferenceFiat,
-      balance,
-    ).value;
-    return acc;
-  }, {});
+  const data: AggregatedData = accounts.reduce(
+    (acc: AggregatedData, account) => {
+      const currency_name = account.currency.name;
+      const balance = account.balance;
+      //check if currency already added
+      if (!acc[currency_name]) {
+        acc[currency_name] = {
+          account,
+          balance: 0,
+          counterValueBalance: 0
+        };
+      }
+      acc[currency_name].balance += balance;
+      acc[currency_name].counterValueBalance += countervalueForRate(
+        account.currencyRateInReferenceFiat,
+        balance
+      ).value;
+      return acc;
+    },
+    {}
+  );
   const pieChartData = Object.keys(data).reduce((currenciesList, c) => {
     currenciesList.push(data[c]);
     return currenciesList;
@@ -73,9 +82,9 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 
 export default connectData(withStyles(styles)(Currencies), {
   queries: {
-    accounts: AccountsQuery,
+    accounts: AccountsQuery
   },
   optimisticRendering: true,
   RenderError,
-  RenderLoading,
+  RenderLoading
 });

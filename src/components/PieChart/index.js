@@ -12,7 +12,7 @@ import cx from "classnames";
 type PieChartData = {
   account: Account,
   balance: number,
-  counterValueBalance: number,
+  counterValueBalance: number
 };
 
 const commonArrowStyle = {
@@ -20,78 +20,79 @@ const commonArrowStyle = {
   display: "block",
   width: 0,
   height: 0,
-  position: "absolute",
+  position: "absolute"
 };
 
 const styles = {
   wrapper: {
     width: "100%",
     textAlign: "center",
-    height: "140px",
+    height: "140px"
   },
   centerChart: {
     position: "absolute",
     left: "50%",
-    transform: "translateX(-50%)",
+    transform: "translateX(-50%)"
   },
   chartWrap: {
     position: "relative",
     svg: {
-      overflow: "visible",
-    },
+      overflow: "visible"
+    }
   },
   table: {
     width: "100%",
     marginTop: "10px",
-    textAlign: "justify",
+    textAlign: "justify"
   },
   disable: {
     opacity: 0.5,
-    zIndex: 1,
+    zIndex: 1
   },
   uppercase: {
-    textTransform: "uppercase",
+    textTransform: "uppercase"
   },
   currency: {
     lineHeight: "23px",
     cursor: "default",
-    position: "relative",
+    position: "relative"
   },
   currencyBalance: {
     fontSize: "13px",
-    textAlign: "right",
+    textAlign: "right"
   },
   currencyName: {
     color: colors.mouse,
     fontSize: 10,
     marginLeft: 10,
-    fontWeight: 600,
+    fontWeight: 600
   },
   currencyNameDark: {
-    color: colors.steel,
+    color: colors.steel
   },
   percentage: {
     display: "block",
     color: "white",
-    fontSize: 16,
+    fontSize: 16
   },
   tooltip: {
     opacity: 1,
     position: "absolute",
     width: 100,
     height: 70,
-    boxShadow: "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
+    boxShadow:
+      "0 0 5px 0 rgba(0, 0, 0, 0.04), 0 10px 10px 0 rgba(0, 0, 0, 0.04)",
     zIndex: 10,
     pointerEvents: "none",
     backgroundColor: "currentColor",
     padding: 15,
     "&:before": {
-      borderColor: "currentColor",
-    },
+      borderColor: "currentColor"
+    }
   },
   tooltipTextWrap: {
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   tooltipText: {
     color: "white",
@@ -99,12 +100,12 @@ const styles = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     div: {
-      overflow: "hidden",
-    },
+      overflow: "hidden"
+    }
   },
   hide: {
     opacity: 0,
-    zIndex: 1,
+    zIndex: 1
   },
   lookLeft: {
     "&:before": {
@@ -113,8 +114,8 @@ const styles = {
       borderBottom: "10px solid transparent !important",
       borderRight: "10px solid",
       left: -10,
-      top: 25,
-    },
+      top: 25
+    }
   },
   lookRight: {
     "&:before": {
@@ -123,8 +124,8 @@ const styles = {
       borderBottom: "10px solid transparent !important",
       borderLeft: "10px solid",
       left: 100,
-      top: 25,
-    },
+      top: 25
+    }
   },
   lookUp: {
     "&:before": {
@@ -133,8 +134,8 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderBottom: "10px solid",
       left: 40,
-      top: -10,
-    },
+      top: -10
+    }
   },
   lookDown: {
     "&:before": {
@@ -143,9 +144,9 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderTop: "10px solid",
       left: 40,
-      top: 70,
-    },
-  },
+      top: 70
+    }
+  }
 };
 
 class PieChart extends Component<
@@ -157,12 +158,12 @@ class PieChart extends Component<
     highlightCaptionsOnHover?: boolean,
     tooltipText?: Function,
     captionText?: Function,
-    classes: { [_: $Keys<typeof styles>]: string },
+    classes: { [_: $Keys<typeof styles>]: string }
   },
-  { selected: number },
+  { selected: number }
 > {
   state = {
-    selected: -1,
+    selected: -1
   };
 
   svg: ?Element;
@@ -215,7 +216,9 @@ class PieChart extends Component<
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
-      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(0); //Save percentage of arc
+      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(
+        0
+      ); //Save percentage of arc
     });
 
     g.attr("transform", `translate(${radius}, ${radius})`);
@@ -228,7 +231,10 @@ class PieChart extends Component<
       .attr("class", (d, i) => `arc ${"arc" + i}`)
       .append("path")
       .attr("d", d => arc(d))
-      .attr("class", (d, i) => (selected !== -1 && selected !== i ? classes.disable : ""))
+      .attr(
+        "class",
+        (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
+      )
       .style("fill", d => d.data.account.currency.color);
 
     //transparent Chart for hovering purposes
@@ -240,7 +246,10 @@ class PieChart extends Component<
       .attr("class", (d, i) => `invisibleArc ${"invisibleArc" + i}`)
       .append("path")
       .attr("d", d => invisibleArc(d))
-      .attr("class", (d, i) => (selected !== -1 && selected !== i ? classes.disable : ""))
+      .attr(
+        "class",
+        (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
+      )
       .style("opacity", 0) //make it transparent
       .on("mouseover", this.handleMouseOver)
       .on("mouseout", this.handleMouseOut);
@@ -265,13 +274,17 @@ class PieChart extends Component<
       tooltip.classed(classes.hide, selected === -1);
       if (selected !== -1) {
         const selectedArc = d3.select(".arc" + selected).data()[0].data;
-        let orientation = Math.abs(selectedArc.center[0]) > Math.abs(selectedArc.center[1]) ? 0 : 1; //getting best orientation (0 for horizontal )
+        let orientation =
+          Math.abs(selectedArc.center[0]) > Math.abs(selectedArc.center[1])
+            ? 0
+            : 1; //getting best orientation (0 for horizontal )
         let orientationDeltaX = 0;
         let orientationDeltaY = 0;
         let arrowSpacing = 20;
         if (orientation === 0 && selectedArc.center[0] <= 0) {
           //A gauche
-          orientationDeltaX = -parseFloat(tooltip.style("width")) - arrowSpacing;
+          orientationDeltaX =
+            -parseFloat(tooltip.style("width")) - arrowSpacing;
           orientationDeltaY = -parseFloat(tooltip.style("height")) / 2;
           tooltip.classed(classes.lookRight, true);
         } else if (orientation === 0 && selectedArc.center[0] > 0) {
@@ -287,12 +300,21 @@ class PieChart extends Component<
         } else if (orientation === 1 && selectedArc.center[1] < 0) {
           //En haut
           orientationDeltaX = -parseFloat(tooltip.style("width")) / 2;
-          orientationDeltaY = -parseFloat(tooltip.style("height")) - arrowSpacing;
+          orientationDeltaY =
+            -parseFloat(tooltip.style("height")) - arrowSpacing;
           tooltip.classed(classes.lookDown, true);
         }
-        tooltip.style("left", selectedArc.center[0] + svgWidth / 2 + orientationDeltaX + "px");
-        tooltip.style("top", selectedArc.center[1] + svgHeight / 2 + orientationDeltaY + "px");
-        tooltip.select(`.${classes.percentage}`).text(`${selectedArc.percentage}%`);
+        tooltip.style(
+          "left",
+          selectedArc.center[0] + svgWidth / 2 + orientationDeltaX + "px"
+        );
+        tooltip.style(
+          "top",
+          selectedArc.center[1] + svgHeight / 2 + orientationDeltaY + "px"
+        );
+        tooltip
+          .select(`.${classes.percentage}`)
+          .text(`${selectedArc.percentage}%`);
       } else {
         tooltip.classed(classes.lookLeft, false);
         tooltip.classed(classes.lookRight, false);
@@ -304,7 +326,12 @@ class PieChart extends Component<
 
   render() {
     const { selected } = this.state;
-    const { classes, showCaptions, showTooltips, highlightCaptionsOnHover } = this.props;
+    const {
+      classes,
+      showCaptions,
+      showTooltips,
+      highlightCaptionsOnHover
+    } = this.props;
     return (
       <div>
         <div className={classes.wrapper}>
@@ -319,7 +346,7 @@ class PieChart extends Component<
                 <div
                   className={cx([classes.tooltip, classes.hide])}
                   style={{
-                    color: this.props.data[selected].account.currency.color,
+                    color: this.props.data[selected].account.currency.color
                   }}
                   ref={t => {
                     this.tooltip = t;
@@ -331,7 +358,12 @@ class PieChart extends Component<
                         <span className={classes.percentage} />
                       </div>
                       <div>
-                        <span className={cx([classes.uppercase, classes.currencyName])}>
+                        <span
+                          className={cx([
+                            classes.uppercase,
+                            classes.currencyName
+                          ])}
+                        >
                           {this.props.data[selected] &&
                             this.props.data[selected].account.currency.name}
                         </span>
@@ -349,11 +381,16 @@ class PieChart extends Component<
                 return (
                   <tr
                     className={cx("currency", {
-                      disable: highlightCaptionsOnHover && selected !== -1 && selected !== id,
+                      disable:
+                        highlightCaptionsOnHover &&
+                        selected !== -1 &&
+                        selected !== id
                     })}
                     key={id}
-                    onMouseOver={() => highlightCaptionsOnHover && this.setSelected(id)}
-                    onMouseOut={() => highlightCaptionsOnHover && this.setSelected(-1)}
+                    onMouseOver={() =>
+                      highlightCaptionsOnHover && this.setSelected(id)}
+                    onMouseOut={() =>
+                      highlightCaptionsOnHover && this.setSelected(-1)}
                   >
                     <td>
                       <BadgeCurrency currency={data.account.currency} />
@@ -361,14 +398,17 @@ class PieChart extends Component<
                         className={cx(
                           classes.currencyName,
                           classes.currencyNameDark,
-                          classes.uppercase,
+                          classes.uppercase
                         )}
                       >
                         {data.account.currency.name}
                       </span>
                     </td>
                     <td className={classes.currencyBalance}>
-                      <CurrencyAccountValue account={data.account} value={data.balance} />
+                      <CurrencyAccountValue
+                        account={data.account}
+                        value={data.balance}
+                      />
                     </td>
                   </tr>
                 );

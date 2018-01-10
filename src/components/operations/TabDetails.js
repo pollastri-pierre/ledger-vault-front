@@ -18,7 +18,7 @@ const stylesList = {
       border: "0"
     },
     "& thead > tr td:first-child": {
-        fontWeight: 600
+      fontWeight: 600
     },
     "& tbody > tr td:first-child": {
       fontWeight: "normal",

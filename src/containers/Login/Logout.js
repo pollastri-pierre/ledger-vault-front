@@ -5,11 +5,11 @@ import { connect } from "react-redux";
 import { logout } from "redux/modules/auth";
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout()),
+  logout: () => dispatch(logout())
 });
 
 export class Logout extends Component<{
-  logout: Function,
+  logout: Function
 }> {
   componentWillMount() {
     this.props.logout();

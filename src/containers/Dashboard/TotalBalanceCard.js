@@ -47,8 +47,7 @@ class TotalBalance extends Component<{
             onChange={this.onTotalBalanceFilterChange}
             disableUnderline
             renderValue={key =>
-              (TotalBalanceFilters.find(o => o.key === key) || {}).title
-            }
+              (TotalBalanceFilters.find(o => o.key === key) || {}).title}
             style={{ minWidth: 120, textAlign: "right", fontSize: 11 }}
           >
             {TotalBalanceFilters.map(({ title, key }) => (
