@@ -9,7 +9,8 @@ const styles = _theme => ({
   },
   arrowDown: {
     marginRight: 10,
-    width: 11
+    width: 11,
+    fill: "#27d0e2"
   }
 });
 
