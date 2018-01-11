@@ -1,12 +1,12 @@
 // @flow
-import type LedgerCommU2F from "@ledgerhq/hw-comm-u2f";
+import type LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import invariant from "invariant";
 
 export default class VaultDeviceApp {
-  comm: LedgerCommU2F;
-  constructor(comm: LedgerCommU2F) {
-    this.comm = comm;
-    comm.setScrambleKey("v1+");
+  transport: LedgerTransportU2F;
+  constructor(transport: LedgerTransportU2F) {
+    this.transport = transport;
+    transport.setScrambleKey("v1+");
   }
 
   async register(
@@ -48,7 +48,13 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    const response = await await this.comm.send(0xe0, 0x01, 0x00, 0x00, data);
+    const response = await await this.transport.send(
+      0xe0,
+      0x01,
+      0x00,
+      0x00,
+      data
+    );
     let i = 0;
     const rfu = response.slice(i, (i += 1))[0];
     const pubKey = response.slice(i, (i += 65)).toString("hex");
@@ -107,7 +113,7 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    const response = await this.comm.send(0xe0, 0x02, 0x03, 0x00, data);
+    const response = await this.transport.send(0xe0, 0x02, 0x03, 0x00, data);
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
     const signature = response.slice(5).toString("hex");
@@ -128,7 +134,7 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
-    const response = await this.comm.send(0xe0, 0x40, 0x01, 0x00, data);
+    const response = await this.transport.send(0xe0, 0x40, 0x01, 0x00, data);
     const pubKeyLength = response.slice(0, 1)[0];
     const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
     const signature = response.slice(pubKeyLength + 1).toString("hex");
