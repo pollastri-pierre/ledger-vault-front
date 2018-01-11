@@ -20,7 +20,7 @@
     "fbjs": "^0.8.16",
     "history": "^4.7.2",
     "invariant": "^2.2.2",
-    "@ledgerhq/hw-transport-u2f": "^1.0.2",
+    "@ledgerhq/hw-transport-u2f": "^1.0.8",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "1.0.0-beta.24",
