@@ -1,6 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import SpinnerCard from "../spinners/SpinnerCard";
+import cx from "classnames";
 import { withStyles } from "material-ui/styles";
 
 const styles = {
@@ -11,11 +12,16 @@ const styles = {
   }
 };
 
-class ModalLoading extends PureComponent<*> {
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  className?: string
+};
+
+class ModalLoading extends PureComponent<Props> {
   render() {
-    const { classes } = this.props;
+    const { classes, className } = this.props;
     return (
-      <div className={classes.base}>
+      <div className={cx(classes.base, className)}>
         <SpinnerCard />
       </div>
     );
