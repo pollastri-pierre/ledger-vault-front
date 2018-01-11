@@ -1,9 +1,9 @@
 // @flow
-import LedgerCommU2F from "ledgerco/lib/LedgerCommU2F";
+import LedgerCommU2F from "@ledgerhq/hw-comm-u2f";
 import VaultDeviceApp from "./VaultDeviceApp";
 
 export default async () => {
-  const comm = await LedgerCommU2F.create_async();
+  const comm = await LedgerCommU2F.create();
   return new VaultDeviceApp(comm);
 };
 
