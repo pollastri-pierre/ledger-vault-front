@@ -43,7 +43,8 @@ const theme = {
       },
       rootInherit: {
         minWidth: "auto",
-        marginRight: "23px"
+        marginRight: "23px",
+        opacity: 0.4
       },
       rootInheritDisabled: {
         opacity: 0.2
