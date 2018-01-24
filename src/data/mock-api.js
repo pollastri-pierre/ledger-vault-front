@@ -67,6 +67,29 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
     };
   }
+  if (method === "POST" && uri === "/provisioning/seed/open_shards_channel") {
+    return {
+      shards_channel: {
+        pub_key: "shard_pub_key",
+        certificate: "shard_certificate"
+      }
+    };
+  }
+  if (method === "POST" && uri === "/provisioning/seed/shards") {
+    return {
+      success: true
+    };
+  }
+  if (method === "POST" && uri === "/provisioning/administrators/register") {
+    return {
+      token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
+    };
+  }
+  if (method === "POST" && uri === "/provisioning/administrators/commit") {
+    return {
+      success: "true"
+    };
+  }
 
   if (method === "GET") {
     let m;
@@ -200,6 +223,23 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     }
 
     switch (uri) {
+      case "/onboarding_status":
+        return {
+          status: 0
+        };
+      case "/provisioning/administrators/register":
+        return {
+          challenge: "challenge_register"
+        };
+      case "/provisioning/administrators/commit_challenge":
+        return {
+          challenge: "challenge_commit"
+        };
+      case "/provisioning/seed/shards_channel_challenge":
+        return {
+          challenge:
+            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb"
+        };
       case "/provisioning/administrators/register":
         return {
           challenge:

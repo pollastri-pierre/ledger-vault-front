@@ -20,7 +20,8 @@ class MenuLink extends Component<{
   strict?: boolean,
   classes: Object,
   className?: string,
-  children: *
+  children: *,
+  overrides?: Object
 }> {
   render() {
     const {
@@ -30,6 +31,7 @@ class MenuLink extends Component<{
       strict,
       color,
       children,
+      overrides,
       className,
       ...props
     } = this.props;
@@ -46,6 +48,7 @@ class MenuLink extends Component<{
             selected={!!match}
             component={Link}
             to={to}
+            classes={overrides}
             {...props}
           >
             {children}

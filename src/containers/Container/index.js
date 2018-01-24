@@ -7,6 +7,7 @@ import App from "containers/App/App";
 import Login from "containers/Login/Login";
 import LoginTest from "containers/LoginTest";
 import Logout from "containers/Login/Logout";
+import OnboardingContainer from "containers/Onboarding/OnboardingContainer";
 import AlertsContainer from "containers/AlertsContainer";
 import PrivateRoute from "containers/Login/PrivateRoute";
 
@@ -17,6 +18,7 @@ function Container() {
       <BrowserRouter>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/onboarding" component={OnboardingContainer} />
           <Route path="/logintest" component={LoginTest} />
           <Route path="/logout" component={Logout} />
           <PrivateRoute path="/" component={App} />

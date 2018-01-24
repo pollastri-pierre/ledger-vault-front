@@ -118,6 +118,22 @@ export class Login extends Component<Props, State> {
     this.setState({ domain, error: null });
   };
 
+  onStartOnBoardingStatus = async () => {
+    const { history } = this.props;
+    try {
+      const { status } = await network("/onboarding_status", "GET");
+      if (status === 2) {
+        this.onStartAuth();
+      } else if (status === 0) {
+        history.push("/onboarding/welcome");
+      } else {
+        history.push("/onboarding/seed/signin");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   onStartAuth = async () => {
     const { addAlertMessage, onLogin } = this.props;
     this.setState({ isChecking: true });
@@ -200,7 +216,7 @@ export class Login extends Component<Props, State> {
           isChecking={isChecking}
           onChange={this.onTeamChange}
           onLogout={onLogout}
-          onStartAuth={this.onStartAuth}
+          onStartAuth={this.onStartOnBoardingStatus}
           onCloseTeamError={this.onCloseTeamError}
         />
       );

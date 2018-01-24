@@ -71,6 +71,24 @@ export default class VaultDeviceApp {
     };
   }
 
+  fakeAuthenticate(): Promise<{
+    userPresence: *,
+    counter: *,
+    signature: string
+  }> {
+    const data = { userPresence: 5, counter: 5, signature: "string" };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(data);
+      }, 500);
+    });
+  }
+
+  async list() {
+    const descriptors = await this.transport.list();
+    console.log(descriptors);
+  }
+
   async authenticate(
     challenge: string,
     application: string,
@@ -118,6 +136,20 @@ export default class VaultDeviceApp {
     const counter = response.slice(1, 5);
     const signature = response.slice(5).toString("hex");
     return { userPresence, counter, signature };
+  }
+
+  fakeGetPublicKey(
+    path: number[]
+  ): Promise<{
+    pubKey: string,
+    signature: string
+  }> {
+    const data = { pubKey: "pub_key", signature: "signature" };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(data);
+      }, 500);
+    });
   }
 
   async getPublicKey(

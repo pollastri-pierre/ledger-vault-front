@@ -12,7 +12,7 @@ export default class Validate extends PureComponent<Props> {
   };
 
   render() {
-    const { size, color } = this.props;
+    const { size, color, ...rest } = this.props;
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -24,6 +24,7 @@ export default class Validate extends PureComponent<Props> {
           points="30.71 0.71 11.79 19.62 0.71 8.53"
           stroke={color}
           fill="none"
+          {...rest}
         />
       </svg>
     );

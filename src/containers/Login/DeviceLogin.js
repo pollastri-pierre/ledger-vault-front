@@ -64,15 +64,12 @@ const styles = {
     textAlign: "right",
     fontWeight: 600,
     fontSize: 11,
-    textTransform: "uppercase",
-    position: "absolute",
-    bottom: 40,
-    right: 40
+    textTransform: "uppercase"
   },
-  cancel: {
-    position: "absolute",
-    bottom: 0,
-    left: 40
+  footer: {
+    padding: 40,
+    display: "flex",
+    justifyContent: "space-between"
   }
 };
 class DeviceLogin extends Component<{
@@ -108,14 +105,18 @@ class DeviceLogin extends Component<{
             <div>{t("login.stepThree")}</div>
           </div>
         </div>
-        <DialogButton onTouchTap={onCancel}>{t("common.cancel")}</DialogButton>
-        {!isChecking ? (
-          <DialogButton className={classes.cancel} onTouchTap={onRestart}>
-            TRY AGAIN
+        <div className={classes.footer}>
+          <DialogButton onTouchTap={onCancel}>
+            {t("common.cancel")}
           </DialogButton>
-        ) : (
-          <div className={classes.wait}>{t("login.awaitingDevice")}</div>
-        )}
+          {!isChecking ? (
+            <DialogButton className={classes.cancel} onTouchTap={onRestart}>
+              TRY AGAIN
+            </DialogButton>
+          ) : (
+            <div className={classes.wait}>{t("login.awaitingDevice")}</div>
+          )}
+        </div>
       </div>
     );
   }
