@@ -29,7 +29,7 @@ const styles = {
   },
   selected: {
     "& > span": {
-      color: "black"
+      color: "black!important"
     }
   },
   disabled: {
@@ -73,11 +73,10 @@ class MenuLinkOnboarding extends Component<{
         disabled={!allowed}
         disableRipple
         selected={onboarding.currentStep === step}
-        className={cx({ [classes.disabled]: !allowed })}
         classes={{ root: rootCSS, selected: classes.selected }}
         onClick={this.triggerView.bind(this)}
       >
-        <span style={{ color: "black" }}>{children}</span>
+        <span style={{ color: "#767676" }}>{children}</span>
       </MenuItem>
     );
   }

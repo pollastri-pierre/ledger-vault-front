@@ -6,6 +6,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import SaveProfile from "api/mutations/SaveProfileMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import EditProfile from "components/EditProfile";
+import type { Member } from "data/types";
 
 class ProfileEditModal extends Component<
   {

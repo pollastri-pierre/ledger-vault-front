@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import React from "react";
 import { Title, Step, Awaiting } from "../../components/Onboarding";
 import { withStyles } from "material-ui/styles";
 import Plug from "../../components/icons/thin/Plug.js";
@@ -37,7 +37,7 @@ const StepDeviceGeneric = ({
   step,
   cancel
 }: {
-  classes: { [$keys<typeof styles>]: string },
+  classes: { [$Keys<typeof styles>]: string },
   title: string,
   steps: string[],
   step: number,

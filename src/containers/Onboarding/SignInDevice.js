@@ -1,3 +1,4 @@
+//@flow
 import React, { Component } from "react";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 const steps = [
@@ -6,8 +7,16 @@ const steps = [
   "Close the Vault app using the upper right square icon and disconnect the device from this computer."
 ];
 
-class SignInDevice extends Component {
-  constructor(props) {
+type Props = {
+  onFinish: Function
+};
+
+type State = {
+  step: number
+};
+
+class SignInDevice extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { step: 0 };
   }
@@ -24,7 +33,6 @@ class SignInDevice extends Component {
     }, 1500);
   }
   render() {
-    console.log(this.props);
     return (
       <StepDeviceGeneric
         steps={steps}

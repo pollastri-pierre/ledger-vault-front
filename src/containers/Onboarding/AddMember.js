@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import EditProfile from "components/EditProfile";
 import StepDevice from "./StepDevice.js";
+import type { Member } from "data/types";
 
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
@@ -9,8 +10,10 @@ const steps = [
   "Close the Vault app using the upper right square icon and disconnect the device from this computer."
 ];
 type Props = {
-  classes: { [$keys<typeof styles>]: string },
-  close: Function
+  close: Function,
+  finish: Function,
+  member: Member,
+  challenge: string
 };
 type State = {
   step: number,
@@ -18,15 +21,16 @@ type State = {
 };
 
 class AddMember extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    this.state = { step: 0 };
+    this.state = { step: 0, data: {} };
   }
-  next = data => {
+  next = (data: *) => {
     // we are editing a member, no need to register device again
     if (this.props.member) {
-      this.props.close();
       // TODO modify member in store redux and call the API too
+      this.props.editMember(data);
+      this.props.close();
     } else {
       this.setState({ step: 1, data: data });
     }
@@ -35,7 +39,7 @@ class AddMember extends Component<Props, State> {
     this.setState({ step: 0 });
   };
 
-  finish = result => {
+  finish = (result: *) => {
     this.setState({ step: 0 });
     const data = {};
     ["first_name", "last_name", "email", "picture"].forEach(key => {

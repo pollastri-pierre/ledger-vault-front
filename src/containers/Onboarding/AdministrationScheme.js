@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import { connect } from "react-redux";
 import {
@@ -13,6 +14,7 @@ import ApprovalSlider from "./ApprovalSlider.js";
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
+const mapDispatch = () => ({});
 const AdministrationScheme = ({
   number,
   total,
@@ -54,4 +56,4 @@ const AdministrationScheme = ({
   );
 };
 
-export default connect(mapStateToProps, undefined)(AdministrationScheme);
+export default connect(mapStateToProps, mapDispatch)(AdministrationScheme);

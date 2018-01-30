@@ -78,7 +78,16 @@ const styles = {
     height: 120
   }
 };
-class SignIn extends Component<> {
+
+type Props = {
+  onboarding: *,
+  classes: { [$Keys<typeof styles>]: string },
+  onNextStep: Function,
+  onGetShardChallenge: Function,
+  onToggleSignin: Function,
+  onAddSignedIn: Function
+};
+class SignIn extends Component<Props> {
   svg: ?Element;
 
   componentDidMount() {
@@ -128,10 +137,9 @@ class SignIn extends Component<> {
       .attr("d", circle.endAngle(endAngle));
 
     const percentage =
-      (2 *
-        (this.props.onboarding.signed.length /
-          this.props.onboarding.members.length)) |
-      0;
+      2 *
+      (this.props.onboarding.signed.length /
+        this.props.onboarding.members.length);
     const value = g
       .append("path")
       .attr("fill", "#27d0e2")

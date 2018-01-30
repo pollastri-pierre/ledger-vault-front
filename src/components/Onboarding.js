@@ -1,12 +1,7 @@
 //@flow
-import React, { Component } from "react";
+import React from "react";
 import { withStyles } from "material-ui/styles";
 import cx from "classnames";
-
-type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
-  children: React$Node
-};
 
 const listItem = {
   base: {
@@ -58,7 +53,7 @@ const step = {
     }
   },
   active: {
-    fontSize: 16,
+    // fontSize: 16,
     color: "black",
     "&:before": {
       content: '""',
@@ -82,7 +77,7 @@ export const Step = withStyles(
     label,
     active
   }: {
-    classes: { [$keys<typeof step>]: string },
+    classes: { [$Keys<typeof step>]: string },
     label: string,
     active: boolean,
     className?: string
@@ -126,23 +121,43 @@ const list = {
   }
 };
 
-export const List = withStyles(list)(({ children, classes }: Props) => {
-  return <ul className={classes.base}>{children}</ul>;
-});
+export const List = withStyles(
+  list
+)(
+  ({
+    children,
+    classes
+  }: {
+    children: React$Node,
+    classes: { [$Keys<typeof list>]: string }
+  }) => {
+    return <ul className={classes.base}>{children}</ul>;
+  }
+);
 
 const title = {
   base: {
     fontSize: 18,
-    letterSpacing: -0.1,
-    // fontFamily: "MuseoSans",
-    fontWeight: 500,
-    margin: "0 0 30px 0"
+    letterSpacing: -0.2,
+    fontFamily: "Museo",
+    fontWeight: "500",
+    margin: "8px 0 30px 0"
   }
 };
 
-export const Title = withStyles(title)(({ classes, children }: Props) => {
-  return <h2 className={classes.base}>{children}</h2>;
-});
+export const Title = withStyles(
+  title
+)(
+  ({
+    classes,
+    children
+  }: {
+    children: React$Node,
+    classes: { [$Keys<typeof title>]: string }
+  }) => {
+    return <h2 className={classes.base}>{children}</h2>;
+  }
+);
 
 const introduction = {
   base: {
@@ -156,75 +171,83 @@ const introduction = {
 };
 export const Introduction = withStyles(
   introduction
-)(({ classes, children }: Props) => {
-  return <p className={classes.base}>{children}</p>;
-});
-
-const menuHeading = {
-  base: {
-    fontSize: 11,
-    textTransform: "uppercase",
-    color: "black",
-    display: "block",
-    marginBottom: 10,
-    fontWeight: 600
-  }
-};
-
-export const MenuHeading = withStyles(
-  menuHeading
 )(
   ({
     classes,
-    children,
-    selected
+    children
   }: {
-    classes: { [_: $Keys<typeof menuHeading>]: string },
     children: React$Node,
-    selected: boolean
+    classes: { [$Keys<typeof introduction>]: string }
   }) => {
-    return (
-      <span
-        className={cx(classes.base, {
-          [classes.selected]: selected
-        })}
-      >
-        {children}
-      </span>
-    );
+    return <p className={classes.base}>{children}</p>;
   }
 );
 
-const menuItem = {
-  base: {
-    fontSize: 11,
-    lineHeight: 1.82,
-    color: "black"
-  }
-};
-export const MenuItem = withStyles(
-  menuItem
-)(
-  ({
-    classes,
-    children,
-    selected
-  }: {
-    classes: { [_: $Keys<typeof menuItem>]: string },
-    children: React$Node,
-    selected: boolean
-  }) => {
-    return (
-      <span
-        className={cx(classes.base, {
-          [classes.selected]: selected
-        })}
-      >
-        {children}
-      </span>
-    );
-  }
-);
+// const menuHeading = {
+//   base: {
+//     fontSize: 11,
+//     textTransform: "uppercase",
+//     color: "black",
+//     display: "block",
+//     marginBottom: 10,
+//     fontWeight: 600
+//   }
+// };
+//
+// export const MenuHeading = withStyles(
+//   menuHeading
+// )(
+//   ({
+//     classes,
+//     children,
+//     selected
+//   }: {
+//     classes: { [_: $Keys<typeof menuHeading>]: string },
+//     children: React$Node,
+//     selected: boolean
+//   }) => {
+//     return (
+//       <span
+//         className={cx(classes.base, {
+//           [classes.selected]: selected
+//         })}
+//       >
+//         {children}
+//       </span>
+//     );
+//   }
+// );
+
+// const menuItem = {
+//   base: {
+//     fontSize: 11,
+//     lineHeight: 1.82,
+//     color: "black"
+//   }
+// };
+// export const MenuItem = withStyles(
+//   menuItem
+// )(
+//   ({
+//     classes,
+//     children,
+//     selected
+//   }: {
+//     classes: { [_: $Keys<typeof menuItem>]: string },
+//     children: React$Node,
+//     selected: boolean
+//   }) => {
+//     return (
+//       <span
+//         className={cx(classes.base, {
+//           [classes.selected]: selected
+//         })}
+//       >
+//         {children}
+//       </span>
+//     );
+//   }
+// );
 
 const subtitle = {
   base: {
@@ -232,13 +255,25 @@ const subtitle = {
     fontWeight: 600,
     display: "block",
     textTransform: "uppercase",
-    margin: "0 0 15px 0"
+    margin: "0 0 22px 0"
   }
 };
 
-export const SubTitle = withStyles(subtitle)(({ classes, children }: Props) => {
-  return <span className={classes.base}>{children}</span>;
-});
+export const SubTitle = withStyles(
+  subtitle
+)(
+  ({
+    classes,
+    children,
+    className
+  }: {
+    classes: { [$Keys<typeof subtitle>]: string },
+    children: React$Node,
+    className?: string
+  }) => {
+    return <span className={cx(classes.base, className)}>{children}</span>;
+  }
+);
 
 const toContinue = {
   base: {
@@ -248,9 +283,17 @@ const toContinue = {
 };
 export const ToContinue = withStyles(
   toContinue
-)(({ classes, children }: Props) => {
-  return <span className={classes.base}>{children}</span>;
-});
+)(
+  ({
+    classes,
+    children
+  }: {
+    classes: { [$Keys<typeof subtitle>]: string },
+    children: React$Node
+  }) => {
+    return <span className={classes.base}>{children}</span>;
+  }
+);
 
 export const Awaiting = withStyles({
   base: {

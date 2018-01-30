@@ -26,7 +26,7 @@ const Menu = ({
   nbMember,
   onboarding
 }: {
-  classes: { [$keys<typeof styles>]: string },
+  classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   nbMember: number
 }) => {

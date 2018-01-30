@@ -1,4 +1,7 @@
 //@flow
+import { type Member } from "data/types";
+import network from "network";
+
 export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
 export const SET_ONBOARDING_STATUS = "onboarding/SET_ONBOARDING_STATUS";
 export const ADD_MEMBER = "onboarding/ADD_MEMBER";
@@ -10,7 +13,6 @@ export const CHANGE_NB_REQUIRED = "onboarding/CHANGE_NB_REQUIRED";
 export const TOGGLE_MODAL_PROFILE = "onboarding/TOGGLE_MODAL_PROFILE";
 export const GOT_CHALLENGE_REGISTRATION =
   "onboarding/GOT_CHALLENGE_REGISTRATION";
-
 export const GOT_BOOTSTRAP_CHALLENGE = "onboarding/GOT_BOOTSTRAP_CHALLENGE";
 export const GOT_BOOTSTRAP_TOKEN = "onboarding/GOT_BOOTSTRAP_TOKEN";
 export const GOT_COMMIT_CHALLENGE = "onboarding/GOT_COMMIT_CHALLENGE";
@@ -22,9 +24,10 @@ export const TOGGLE_GENERATE_SEED = "onboarding/TOGGLE_GENERATE_SEED";
 export const ADD_SIGNEDIN = "onboarding/ADD_SIGNEDIN";
 export const ADD_SEED_SHARD = "onboarding/ADD_SEED_SHARD";
 export const SUCCESS_SEED_SHARDS = "onboarding/SUCCESS_SEED_SHARDS";
+export const EDIT_MEMBER = "onboarding/EDIT_MEMBER";
 
-import { type Member } from "data/types";
-import network from "network";
+type Challenge = string;
+type Channel = string;
 
 type OnboardingStatus = 0 | 1 | 2;
 
@@ -44,19 +47,38 @@ const ALL_ROUTES = [
   { label: "seed_confirmation", visited: false }
 ];
 
+export type Store = {
+  nbRequired: number,
+  members: Array<Member>,
+  currentStep: number,
+  modalProfile: boolean,
+  isLoadingChallengeRegistration: boolean,
+  challenge_registration: ?string,
+  bootstrapAuthToken: ?string,
+  bootstrapChallenge: ?string,
+  commit_challenge: ?string,
+  editMember: ?Member,
+  bootstrapId: *,
+  committed_administrators: boolean,
+  signed: Array<*>,
+  steps: Array<*>,
+  shardChallenge: ?string,
+  signInModal: boolean,
+  generateSeedModal: boolean,
+  shards_channel: ?string,
+  shards: Array<*>
+};
 const initialState: Store = {
   nbRequired: 3,
-  nbAdministor: 0,
   members: [],
   steps: [{ label: "welcome", visited: true }],
   currentStep: 0,
-  firstAuthenticator: 0,
   modalProfile: false,
-  administratorsStepComplete: false,
   isLoadingChallengeRegistration: true,
   challenge_registration: null,
   bootstrapAuthToken: null,
   bootstrapChallenge: null,
+  bootstrapId: null,
   commit_challenge: null,
   editMember: null,
   committed_administrators: false,
@@ -68,17 +90,24 @@ const initialState: Store = {
   shards: []
 };
 
-export function goToStep(step_label) {
+export function goToStep(step_label: string) {
   return {
     type: GO_TO_STEP,
     step: step_label
   };
 }
 
-export function gotShardsChannel(shards_channel: string) {
+export function gotShardsChannel(shards_channel: Channel) {
   return {
     type: GOT_SHARDS_CHANNEL,
     shards_channel
+  };
+}
+
+export function editMember(member: Member) {
+  return {
+    type: EDIT_MEMBER,
+    member
   };
 }
 
@@ -99,14 +128,14 @@ export function toggleGenerateSeed() {
   };
 }
 
-export function addSeedShard(data) {
+export function addSeedShard(data: *) {
   return {
     type: ADD_SEED_SHARD,
     data
   };
 }
-export function addSignedIn(data) {
-  return (dispatch, getState) => {
+export function addSignedIn(data: *) {
+  return (dispatch: Function, getState: Function) => {
     dispatch({
       type: ADD_SIGNEDIN,
       data
@@ -120,8 +149,8 @@ export function addSignedIn(data) {
   };
 }
 
-export function provisioningShards(data) {
-  return async dispatch => {
+export function provisioningShards(data: *) {
+  return async (dispatch: Function) => {
     dispatch(nextStep());
     await network("/provisioning/seed/shards", "POST", data);
     return dispatch({
@@ -130,8 +159,8 @@ export function provisioningShards(data) {
   };
 }
 
-export function openShardsChannel(signed: Array) {
-  return async dispatch => {
+export function openShardsChannel(signed: Array<*>) {
+  return async (dispatch: Function) => {
     const { shards_channel } = await network(
       "/provisioning/seed/open_shards_channel",
       "POST",
@@ -140,7 +169,7 @@ export function openShardsChannel(signed: Array) {
     return dispatch(gotShardsChannel(shards_channel));
   };
 }
-export function toggleModalProfile(member) {
+export function toggleModalProfile(member: Member) {
   return {
     type: TOGGLE_MODAL_PROFILE,
     member
@@ -160,15 +189,15 @@ export function gotCommitChallenge(challenge: string) {
   };
 }
 
-export function gotShardChallenge(challenge) {
+export function gotShardChallenge(challenge: Challenge) {
   return {
     type: GOT_SHARD_CHALLENGE,
     challenge
   };
 }
 
-export function commitAdministrators(data) {
-  return async dispatch => {
+export function commitAdministrators(data: *) {
+  return async (dispatch: Function) => {
     await network("/provisioning/administrators/commit", "POST", data);
     return dispatch({ type: COMMIT_ADMINISTRATORS });
   };
@@ -176,7 +205,7 @@ export function commitAdministrators(data) {
 
 export function signedMember() {}
 export function getCommitChallenge() {
-  return async dispatch => {
+  return async (dispatch: Function) => {
     const { challenge } = await network(
       "/provisioning/administrators/commit_challenge",
       "GET"
@@ -186,37 +215,38 @@ export function getCommitChallenge() {
   };
 }
 
-export function gotChallengeRegistation(challenge) {
+export function gotChallengeRegistation(challenge: Challenge) {
   return {
     type: GOT_CHALLENGE_REGISTRATION,
     challenge
   };
 }
 
-export function gotBootstrapChallenge(challenge, requestId) {
-  return {
-    type: GOT_BOOTSTRAP_CHALLENGE,
-    challenge,
-    requestId
+export function gotBootstrapToken(token: string) {
+  return (dispatch: Function) => {
+    window.localStorage.setItem("token", token);
+    dispatch({
+      type: GOT_BOOTSTRAP_TOKEN,
+      token
+    });
   };
 }
 
-export function gotBootstrapToken(token) {
-  return {
-    type: GOT_BOOTSTRAP_TOKEN,
-    token
-  };
-}
-
-export function getBootstrapToken(data) {
-  return async dispatch => {
+export function getBootstrapToken(pub_key: string, authentication: string) {
+  return async (dispatch: Function, getState: () => Object) => {
+    const { bootstrapId } = getState()["onboarding"];
+    const data = {
+      id: bootstrapId,
+      authentication: authentication,
+      pub_key: pub_key
+    };
     const { token } = await network("/authenticate", "POST", data);
     return dispatch(gotBootstrapToken(token));
   };
 }
 
 export function getShardChallenge() {
-  return async dispatch => {
+  return async (dispatch: Function) => {
     const { challenge } = await network(
       "/provisioning/seed/shards_channel_challenge",
       "GET"
@@ -226,14 +256,22 @@ export function getShardChallenge() {
 }
 
 export function getBootstrapChallenge() {
-  return async dispatch => {
-    const { challenge } = await network("/authentication_challenge", "GET");
-    return dispatch(gotBootstrapChallenge(challenge));
+  return async (dispatch: Function) => {
+    const { challenge, id } = await network("/authentication_challenge", "GET");
+    return dispatch(gotBootstrapChallenge(atob(challenge), id));
+  };
+}
+
+export function gotBootstrapChallenge(challenge: string, requestId: string) {
+  return {
+    type: GOT_BOOTSTRAP_CHALLENGE,
+    challenge,
+    requestId
   };
 }
 
 export function getChallengeRegistration() {
-  return async dispatch => {
+  return async (dispatch: Function) => {
     const { challenge } = await network(
       "/provisioning/administrators/register",
       "GET"
@@ -328,7 +366,8 @@ export default function reducer(state: Store = initialState, action: Object) {
     case GOT_BOOTSTRAP_CHALLENGE: {
       return {
         ...state,
-        bootstrapChallenge: action.challenge
+        bootstrapChallenge: action.challenge,
+        bootstrapId: action.requestId
       };
     }
     case GOT_BOOTSTRAP_TOKEN: {
@@ -379,6 +418,16 @@ export default function reducer(state: Store = initialState, action: Object) {
         ...state,
         shards: [...state.shards, action.data]
       };
+    }
+    case EDIT_MEMBER: {
+      console.log(action);
+      const index = state.members.findIndex(
+        member => member.public_key === action.member.public_key
+      );
+      if (index > -1) {
+        //
+      }
+      return state;
     }
     case SUCCESS_SEED_SHARDS: {
       return {

@@ -84,11 +84,20 @@ export default class VaultDeviceApp {
     });
   }
 
-  async list() {
-    const descriptors = await this.transport.list();
-    console.log(descriptors);
+  fakeRegister(challenge, path): Promise<*> {
+    const data = {
+      rfu: "rfu",
+      pub_key: "pub_key",
+      keyHandle: "key_handle",
+      attestationSignature: "attestattionsignature",
+      signature: "sign"
+    };
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(data);
+      }, 500);
+    });
   }
-
   async authenticate(
     challenge: string,
     application: string,
@@ -144,7 +153,7 @@ export default class VaultDeviceApp {
     pubKey: string,
     signature: string
   }> {
-    const data = { pubKey: "pub_key", signature: "signature" };
+    const data = { pub_key: "pub_key", signature: "signature" };
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(data);

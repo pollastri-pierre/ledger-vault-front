@@ -240,11 +240,6 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           challenge:
             "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb"
         };
-      case "/provisioning/administrators/register":
-        return {
-          challenge:
-            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb"
-        };
       case "/authentication_challenge":
         return {
           challenge:

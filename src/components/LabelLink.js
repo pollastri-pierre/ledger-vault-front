@@ -21,14 +21,13 @@ const styles = {
 };
 
 class LabelLink extends Component<{
-  to: string,
   className?: string,
   selected: boolean,
   classes: { [_: $Keys<typeof styles>]: string },
   label: string
 }> {
   render() {
-    const { classes, to, className, label, selected } = this.props;
+    const { classes, className, label, selected } = this.props;
     return (
       <span
         className={cx(classes.base, className, {

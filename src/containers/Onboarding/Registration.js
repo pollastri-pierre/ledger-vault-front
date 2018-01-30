@@ -1,6 +1,5 @@
 //@flow
 import { connect } from "react-redux";
-import filter from "lodash/filter";
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import BlurDialog from "components/BlurDialog";
@@ -13,10 +12,12 @@ import Footer from "./Footer";
 import {
   toggleModalProfile,
   addMember,
+  editMember,
   getChallengeRegistration
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import type { Member } from "data/types";
 
 const styles = {
   add: {
@@ -27,7 +28,7 @@ const styles = {
     fontWeight: 600,
     position: "absolute",
     cursor: "pointer",
-    top: 0,
+    top: 8,
     right: 0
   },
   plus: {
@@ -64,7 +65,7 @@ const noMembers = {
 
 const NoMembers = withStyles(
   noMembers
-)(({ classes }: { classes: { [$keys<typeof noMembers>]: string } }) => {
+)(({ classes }: { classes: { [$Keys<typeof noMembers>]: string } }) => {
   return (
     <div className={classes.base}>
       <People
@@ -102,7 +103,7 @@ const MembersList = withStyles(
     editMember
   }: {
     classes: { [$Keys<typeof membersList>]: string },
-    members: Array,
+    members: Array<Member>,
     editMember: Function
   }) => {
     return (
@@ -126,11 +127,12 @@ const mapStateToProps = state => ({
 const mapDispatch = dispatch => ({
   onToggleModalProfile: member => dispatch(toggleModalProfile(member)),
   onAddMember: data => dispatch(addMember(data)),
-  onGetChallenge: () => dispatch(getChallengeRegistration())
+  onGetChallenge: () => dispatch(getChallengeRegistration()),
+  onEditMember: member => dispatch(editMember(member))
 });
 
 type Props = {
-  classes: { [$keys<typeof styles>]: string },
+  classes: { [$Keys<typeof styles>]: string },
   onToggleModalProfile: Function,
   onAddMember: Function,
   onGetChallenge: Function,
@@ -158,7 +160,7 @@ class Registration extends Component<Props, *> {
       classes,
       onboarding,
       onToggleModalProfile,
-      onAddMember
+      onEditMember
     } = this.props;
     if (onboarding.isLoadingChallengeRegistration) {
       return <SpinnerCard />;
@@ -174,6 +176,7 @@ class Registration extends Component<Props, *> {
             close={onToggleModalProfile}
             finish={this.addMember}
             member={onboarding.editMember}
+            editMember={onEditMember}
             challenge={onboarding.challenge_registration}
           />
         </BlurDialog>

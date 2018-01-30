@@ -39,7 +39,10 @@ const styles = {
     fontSize: 13,
     lineHeight: 1.54,
     margin: 0,
-    marginBottom: 30
+    marginBottom: 22
+  },
+  toContinue: {
+    marginBottom: 15
   }
 };
 const Backup = ({
@@ -83,7 +86,7 @@ const Backup = ({
         Do not destroy your recovery sheet until it is perfectly secured in a
         Ledger Cryptosteel (double check each of the 24 words).
       </div>
-      <SubTitle>To Continue</SubTitle>
+      <SubTitle className={classes.toContinue}>To Continue</SubTitle>
       <ToContinue>
         Make sure all shared owners have backed up their recovery phrase in the
         Ledger Cryptosteel and that all paper recovery sheets are destroyed.

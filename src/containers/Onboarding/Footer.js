@@ -2,7 +2,6 @@
 import React from "react";
 import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "material-ui/styles";
-import type { Route } from "redux/modules/onboarding";
 import { connect } from "react-redux";
 import { nextStep, previousStep } from "redux/modules/onboarding";
 

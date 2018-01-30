@@ -109,7 +109,9 @@ const styles = {
 type Props = {
   classes: { [$Keys<typeof styles>]: string },
   onboarding: *,
-  onToggleGenerateSeed: Function
+  onToggleGenerateSeed: Function,
+  onProvisioningShards: Function,
+  onAddSeedShard: Function
 };
 class Provisioning extends Component<Props> {
   constructor(props) {

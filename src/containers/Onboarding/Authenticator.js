@@ -11,11 +11,17 @@ const styles = {
     width: 300,
     margin: "auto",
     textAlign: "center"
+  },
+  wrapper: {
+    height: 30,
+    width: 50,
+    margin: "auto"
   }
 };
 
 type Props = {
-  classes: { [$keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  step: number
 };
 
 type State = {
@@ -39,7 +45,7 @@ class Authenticator extends Component<Props, State> {
     );
     return (
       <div className={classes.base}>
-        <div>
+        <div className={classes.wrapper}>
           {step === 1 && (
             <Plug style={{ width: 32, marginBottom: 1 }} color="#eeeeee" />
           )}

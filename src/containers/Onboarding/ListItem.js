@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import { withStyles } from "material-ui/styles";
 
@@ -10,7 +11,15 @@ const styles = {
     fontSize: 16
   }
 };
-const ListItem = ({ children, number, classes }) => {
+const ListItem = ({
+  children,
+  number,
+  classes
+}: {
+  children: React.Node,
+  number: number,
+  classes: { [$Keys<typeof styles>]: string }
+}) => {
   return (
     <li className={classes.base}>
       <span className={classes.number}>{number}.</span>

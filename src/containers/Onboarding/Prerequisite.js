@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
@@ -39,7 +40,11 @@ const styles = {
     display: "flex"
   }
 };
-const Prerequisite = ({ classes }: { [$keys<typeof styles>]: string }) => {
+const Prerequisite = ({
+  classes
+}: {
+  classes: { [$Keys<typeof styles>]: string }
+}) => {
   return (
     <div>
       <Title>Prerequisite</Title>
@@ -49,16 +54,16 @@ const Prerequisite = ({ classes }: { [$keys<typeof styles>]: string }) => {
         spend funds and access metrics about your company.
       </Introduction>
       <div className={classes.requirements}>
-        <div className={classes.required}>
+        <div>
           <SubTitle>required</SubTitle>
           <div className={classes.flexcolumn}>
             <Requirement icon={<Box style={{ height: 29 }} />}>
-              Box of Ledger Blue devices
+              <div style={{ width: 96 }}>Box of Ledger Blue devices</div>
             </Requirement>
             <Requirement
               icon={<People color="#cccccc" style={{ height: 29 }} />}
             >
-              3+ team members
+              <div style={{ width: 93 }}>3+ team members</div>
             </Requirement>
           </div>
         </div>
@@ -66,7 +71,7 @@ const Prerequisite = ({ classes }: { [$keys<typeof styles>]: string }) => {
           <SubTitle>Not required</SubTitle>
           <div className={classes.flexcolumn}>
             <Requirement icon={<Briefcase style={{ height: 29 }} />}>
-              Ledger Vault briefcase
+              <div style={{ width: 96 }}>Ledger Vault briefcase</div>
             </Requirement>
             <Requirement
               icon={<People color="#cccccc" style={{ height: 29 }} />}

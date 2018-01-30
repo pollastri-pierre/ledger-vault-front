@@ -1,5 +1,6 @@
+//@flow
 import React, { Component } from "react";
-import createDevice, { U2F_PATH, list } from "device";
+import createDevice, { U2F_PATH, APPID_VAULT_BOOTSTRAP } from "device";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { connect } from "react-redux";
@@ -20,7 +21,8 @@ type Props = {
 };
 
 type State = {
-  step: 1
+  step: number,
+  plugged: boolean
 };
 
 const mapState = state => ({
@@ -33,7 +35,7 @@ const mapDispatch = dispatch => ({
 class Authentication extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { step: 1 };
+    this.state = { step: 1, plugged: false };
   }
 
   componentDidMount() {
@@ -55,13 +57,13 @@ class Authentication extends Component<Props, State> {
   onStart = async () => {
     const { onGetBootstrapToken } = this.props;
     const device = await createDevice();
-    const test = await list();
-    console.log(test);
-    const pubKeyData = await device.fakeGetPublicKey(U2F_PATH);
+    const { pub_key } = await device.fakeGetPublicKey(U2F_PATH);
     this.setState({ plugged: true, step: 2 });
-    const auth = await device.fakeAuthenticate();
-    const data = { pub_key: pubKeyData, authentication: auth };
-    await onGetBootstrapToken(data);
+    const auth = await device.fakeAuthenticate(
+      this.props.challenge,
+      APPID_VAULT_BOOTSTRAP
+    );
+    await onGetBootstrapToken(pub_key, auth);
     this.setState({ step: 3 });
     this.checkUnplugged();
   };

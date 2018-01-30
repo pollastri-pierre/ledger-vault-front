@@ -1,10 +1,6 @@
+//@flow
 import React, { Component } from "react";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Authenticator from "./Authenticator";
 import { withStyles } from "material-ui/styles";
 import cx from "classnames";
@@ -41,10 +37,21 @@ const mapDispatch = dispatch => ({
   onCommitAdministrators: data => dispatch(commitAdministrators(data))
 });
 
-class ConfirmationAdministrators extends Component<> {
+type Props = {
+  onGetCommitChallenge: Function,
+  onCommitAdministrators: Function,
+  onboarding: *,
+  classes: { [$Keys<typeof styles>]: string }
+};
+
+type State = {
+  step: number,
+  plugged: boolean
+};
+class ConfirmationAdministrators extends Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { step: 1 };
+    this.state = { step: 1, plugged: false };
   }
   componentDidMount() {
     const { onboarding, onGetCommitChallenge } = this.props;

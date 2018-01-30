@@ -1,11 +1,13 @@
 //@flow
 import React, { Component } from "react";
-import { Title, Step, Awaiting } from "../../components/Onboarding";
 import { withStyles } from "material-ui/styles";
-import Plug from "../../components/icons/thin/Plug.js";
 import network from "network";
-import DialogButton from "../../components/buttons/DialogButton";
-import createDevice, { U2F_PATH } from "device";
+import createDevice, {
+  U2F_PATH,
+  CONFIDENTIALITY_PATH,
+  APPID_VAULT_BOOTSTRAP,
+  VALIDATION_PATH
+} from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
 const styles = {
@@ -34,18 +36,18 @@ const styles = {
 };
 
 type Props = {
-  classes: { [$keys<typeof styles>]: string },
   title: string,
   steps: string[],
   cancel: Function,
   finish: Function,
-  challenge: string
+  challenge: string,
+  data: *
 };
 
 type State = {
   active: number
 };
-class StepDevice extends Component<Props> {
+class StepDevice extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -61,20 +63,41 @@ class StepDevice extends Component<Props> {
 
   onStart = async () => {
     const device = await createDevice();
-    const pubKeyData = await device.fakeGetPublicKey(U2F_PATH);
+    const confidentiality = await device.fakeGetPublicKey(CONFIDENTIALITY_PATH);
+    const public_key = await device.fakeGetPublicKey(U2F_PATH);
+    const validation = await device.fakeGetPublicKey(VALIDATION_PATH);
 
-    this.setState({ active: 1 });
-    const { signature } = await this.sign(pubKeyData);
-    const { challenge } = await network(
-      "/provisioning/administrators/register",
-      "POST",
-      this.props.data
+    const challenge_answer = await device.fakeRegister(
+      this.props.challenge,
+      APPID_VAULT_BOOTSTRAP
     );
-    this.setState({ active: 2 });
-    this.checkUnplugged(pubKeyData, signature);
+
+    const data = {
+      challenge_answer,
+      confidentiality_key: btoa(confidentiality["publicKey"]),
+      confidentiality_attestation: btoa(confidentiality["attestation"]),
+      validation_key: btoa(validation["publicKey"]),
+      validation_attestation: btoa(validation["attestation"]),
+      public_key: btoa(public_key),
+      first_name: this.props.data.first_name.value,
+      last_name: this.props.data.last_name.value,
+      email: this.props.data.email.value,
+      picture: this.props.data.picture.value
+    };
+
+    setTimeout(async () => {
+      this.setState({ active: 1 });
+      /* const { challenge } =  */ await network(
+        "/provisioning/administrators/register",
+        "POST",
+        data
+      );
+      this.setState({ active: 2 });
+      this.checkUnplugged();
+    }, 500);
   };
 
-  sign = pubKey => {
+  sign = () => {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve({ signature: "signature" });
@@ -93,12 +116,13 @@ class StepDevice extends Component<Props> {
     }, 500);
   };
   render() {
-    const { classes, title, steps, cancel } = this.props;
+    const { steps, cancel } = this.props;
     return (
       <StepDeviceGeneric
         step={this.state.active}
         steps={steps}
         title="Register device"
+        close={cancel}
       />
     );
   }

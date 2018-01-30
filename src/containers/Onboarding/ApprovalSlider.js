@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import cx from "classnames";
 import { withStyles } from "material-ui/styles";
@@ -56,7 +57,7 @@ const ApprovalSlider = ({
   total,
   onChange
 }: {
-  classes: { [$keys<typeof styles>]: string },
+  classes: { [$Keys<typeof styles>]: string },
   number: number,
   total: number,
   onChange: number => void

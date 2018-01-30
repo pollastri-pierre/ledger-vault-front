@@ -1,3 +1,4 @@
+//@flow
 import React from "react";
 import {
   Title,
@@ -39,7 +40,11 @@ const styles = {
     display: "flex"
   }
 };
-const PrerequisiteSeed = ({ classes }: { [$keys<typeof styles>]: string }) => {
+const PrerequisiteSeed = ({
+  classes
+}: {
+  classes: { [$Keys<typeof styles>]: string }
+}) => {
   return (
     <div>
       <Title>Prerequisite</Title>
@@ -50,11 +55,11 @@ const PrerequisiteSeed = ({ classes }: { [$keys<typeof styles>]: string }) => {
         and will not be able to access the Ledger Vault.
       </Introduction>
       <div className={classes.requirements}>
-        <div className={classes.required}>
+        <div>
           <SubTitle>required</SubTitle>
           <div className={classes.flexcolumn}>
             <Requirement icon={<Briefcase style={{ height: 29 }} />}>
-              Ledger Vault Briefcase
+              <div style={{ width: 96 }}>Ledger Vault Briefcase</div>
             </Requirement>
             <Requirement
               icon={<People color="#cccccc" style={{ height: 29 }} />}

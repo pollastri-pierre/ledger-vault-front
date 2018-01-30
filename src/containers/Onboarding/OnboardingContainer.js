@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import Footer from "./Footer";
 import cx from "classnames";
 import { withStyles } from "material-ui/styles";
 import Welcome from "./Welcome";
@@ -12,7 +11,6 @@ import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
 import ConfirmationAdministrators from "./ConfirmationAdministrators.js";
 import SignIn from "./SignIn";
-import SignInDevice from "./SignInDevice";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
 import ConfirmationGlobal from "./ConfirmationGlobal.js";
@@ -20,8 +18,6 @@ import AdministrationScheme from "./AdministrationScheme.js";
 import logoBlack from "assets/img/logo-black.png";
 import logoBlack2x from "assets/img/logo-black@2x.png";
 import logoBlack3x from "assets/img/logo-black@3x.png";
-import AddMember from "./AddMember.js";
-import ModalRoute from "../../components/ModalRoute";
 import Menu from "./Menu";
 import { connect } from "react-redux";
 import { goToStep, changeNbRequired } from "redux/modules/onboarding";

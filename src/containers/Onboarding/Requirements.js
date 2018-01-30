@@ -19,11 +19,13 @@ const requirement = {
   base: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
-    maxWidth: 93
+    justifyContent: "center",
+    maxWidth: 115
   },
   icon: {
-    marginBottom: 10
+    marginBottom: 10,
+    height: 31,
+    display: "flex"
   }
 };
 export const Requirement = withStyles(
@@ -36,7 +38,7 @@ export const Requirement = withStyles(
     ...props
   }: {
     classes: { [$Keys<typeof requirement>]: string },
-    icon: React$Component,
+    icon: React$Node,
     children: React$Node
   }) => {
     return (

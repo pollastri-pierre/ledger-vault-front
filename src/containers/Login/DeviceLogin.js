@@ -110,9 +110,7 @@ class DeviceLogin extends Component<{
             {t("common.cancel")}
           </DialogButton>
           {!isChecking ? (
-            <DialogButton className={classes.cancel} onTouchTap={onRestart}>
-              TRY AGAIN
-            </DialogButton>
+            <DialogButton onTouchTap={onRestart}>TRY AGAIN</DialogButton>
           ) : (
             <div className={classes.wait}>{t("login.awaitingDevice")}</div>
           )}
