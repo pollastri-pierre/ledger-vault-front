@@ -1,10 +1,10 @@
 // @flow
-import type LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
+import type Transport from "@ledgerhq/hw-transport";
 import invariant from "invariant";
 
 export default class VaultDeviceApp {
-  transport: LedgerTransportU2F;
-  constructor(transport: LedgerTransportU2F) {
+  transport: Transport<*>;
+  constructor(transport: Transport<*>) {
     this.transport = transport;
     transport.setScrambleKey("v1+");
   }
@@ -71,33 +71,6 @@ export default class VaultDeviceApp {
     };
   }
 
-  fakeAuthenticate(): Promise<{
-    userPresence: *,
-    counter: *,
-    signature: string
-  }> {
-    const data = { userPresence: 5, counter: 5, signature: "string" };
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(data);
-      }, 500);
-    });
-  }
-
-  fakeRegister(challenge, path): Promise<*> {
-    const data = {
-      rfu: "rfu",
-      pub_key: "pub_key",
-      keyHandle: "key_handle",
-      attestationSignature: "attestattionsignature",
-      signature: "sign"
-    };
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(data);
-      }, 500);
-    });
-  }
   async authenticate(
     challenge: string,
     application: string,
@@ -144,21 +117,52 @@ export default class VaultDeviceApp {
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
     const signature = response.slice(5).toString("hex");
-    return { userPresence, counter, signature };
+    return { userPresence, counter, signature, rawResponse: response };
   }
 
-  fakeGetPublicKey(
-    path: number[]
-  ): Promise<{
+  async generateKeyComponent(path: number[]): Promise<*> {
+    const data = Buffer.concat([
+      Buffer.from([path.length]),
+      ...path.map(derivation => {
+        const buf = Buffer.alloc(4);
+        buf.writeUInt32BE(derivation, 0);
+        return buf;
+      })
+    ]);
+    const response = await this.transport.send(0xe0, 0x44, 0x00, 0x00, data);
+    return response.toString("hex");
+  }
+
+  async openSession(
+    path: number[],
     pubKey: string,
-    signature: string
-  }> {
-    const data = { pub_key: "pub_key", signature: "signature" };
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(data);
-      }, 500);
-    });
+    attestation: string
+  ): Promise<*> {
+    const dataDerivation = Buffer.concat([
+      Buffer.from([path.length]),
+      ...path.map(derivation => {
+        const buf = Buffer.alloc(4);
+        buf.writeUInt32BE(derivation, 0);
+        return buf;
+      })
+    ]);
+
+    const pubKeyBuff = Buffer.from(pubKey, "hex");
+    const attestationBuff = Buffer.from(attestation, "hex");
+
+    const dataBuffer = Buffer.concat([
+      dataDerivation,
+      pubKeyBuff,
+      attestationBuff
+    ]);
+    const response = await this.transport.send(
+      0xe0,
+      0x42,
+      0x00,
+      0x00,
+      dataBuffer
+    );
+    return response;
   }
 
   async getPublicKey(
@@ -176,7 +180,7 @@ export default class VaultDeviceApp {
       })
     ]);
     const response = await this.transport.send(0xe0, 0x40, 0x01, 0x00, data);
-    const pubKeyLength = response.slice(0, 1)[0];
+    const pubKeyLength = response.readInt8(0);
     const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
     const signature = response.slice(pubKeyLength + 1).toString("hex");
     return { pubKey, signature };

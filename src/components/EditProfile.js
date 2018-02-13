@@ -94,12 +94,13 @@ class ProfileEditModal extends Component<
     this._unmounted = true;
   }
 
-  onDrop = (files: *) => {
+  onDrop = (files: Array<File>): mixed => {
     if (files.length) {
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = 160;
       const ctx = canvas.getContext("2d");
       const img = new Image();
+      //@$FlowFixMe
       img.src = files[0].preview;
       img.onload = () => {
         if (this._unmounted) return;

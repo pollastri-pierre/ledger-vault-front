@@ -5,7 +5,7 @@ import network from "network";
 import createDevice, {
   U2F_PATH,
   CONFIDENTIALITY_PATH,
-  APPID_VAULT_BOOTSTRAP,
+  APPID_VAULT_ADMINISTRATOR,
   VALIDATION_PATH
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
@@ -48,73 +48,60 @@ type State = {
   active: number
 };
 class StepDevice extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = { active: 0 };
   }
   componentDidMount() {
-    // make interval call to see if the blue is connected
-    // when the blue is connected, ask it to sign the challenge
-    // when signed, POST to API and close the modal
-
     this.onStart();
   }
 
   onStart = async () => {
-    const device = await createDevice();
-    const confidentiality = await device.fakeGetPublicKey(CONFIDENTIALITY_PATH);
-    const public_key = await device.fakeGetPublicKey(U2F_PATH);
-    const validation = await device.fakeGetPublicKey(VALIDATION_PATH);
+    try {
+      this.setState({ active: 0 });
+      const device = await createDevice();
+      const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
+      const public_key = await device.getPublicKey(U2F_PATH);
+      const validation = await device.getPublicKey(VALIDATION_PATH);
 
-    const challenge_answer = await device.fakeRegister(
-      this.props.challenge,
-      APPID_VAULT_BOOTSTRAP
-    );
-
-    const data = {
-      challenge_answer,
-      confidentiality_key: btoa(confidentiality["publicKey"]),
-      confidentiality_attestation: btoa(confidentiality["attestation"]),
-      validation_key: btoa(validation["publicKey"]),
-      validation_attestation: btoa(validation["attestation"]),
-      public_key: btoa(public_key),
-      first_name: this.props.data.first_name.value,
-      last_name: this.props.data.last_name.value,
-      email: this.props.data.email.value,
-      picture: this.props.data.picture.value
-    };
-
-    setTimeout(async () => {
-      this.setState({ active: 1 });
-      /* const { challenge } =  */ await network(
-        "/provisioning/administrators/register",
-        "POST",
-        data
+      const instanceName = "_";
+      const instanceReference = "_";
+      const instanceURL = "_";
+      const agentRole = "_";
+      const challenge_answer = await device.register(
+        this.props.challenge,
+        APPID_VAULT_ADMINISTRATOR,
+        instanceName,
+        instanceReference,
+        instanceURL,
+        agentRole
       );
-      this.setState({ active: 2 });
-      this.checkUnplugged();
-    }, 500);
-  };
 
-  sign = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ signature: "signature" });
-      }, 500);
-    });
-  };
+      this.setState({ active: 1 });
 
-  checkUnplugged = (pubKey, signature) => {
-    setTimeout(() => {
-      this.setState({ active: 3 });
-      const result = {
-        public_key: pubKey,
-        challenge_answer: signature
+      const data = {
+        challenge_answer,
+        confidentiality_key: confidentiality["pubKey"],
+        confidentiality_attestation: confidentiality["signature"],
+        validation_key: validation["pubKey"],
+        validation_attestation: validation["signature"],
+        pub_key: public_key,
+        first_name: this.props.data.first_name.value,
+        last_name: this.props.data.last_name.value,
+        email: this.props.data.email.value,
+        picture: this.props.data.picture.value
       };
-      this.props.finish(result);
-    }, 500);
+
+      await network("/provisioning/administrators/register", "POST", data);
+      this.setState({ active: 2 });
+      this.props.finish(data);
+    } catch (e) {
+      console.error(e);
+      this.onStart();
+    }
   };
+
   render() {
     const { steps, cancel } = this.props;
     return (
@@ -128,4 +115,5 @@ class StepDevice extends Component<Props, State> {
   }
 }
 
+export { StepDevice };
 export default withStyles(styles)(StepDevice);

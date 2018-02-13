@@ -9,6 +9,7 @@ import { Title, Introduction } from "../../components/Onboarding.js";
 import People from "../../components/icons/thin/People";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
+import { addMessage } from "redux/modules/alerts";
 import {
   toggleModalProfile,
   addMember,
@@ -128,7 +129,9 @@ const mapDispatch = dispatch => ({
   onToggleModalProfile: member => dispatch(toggleModalProfile(member)),
   onAddMember: data => dispatch(addMember(data)),
   onGetChallenge: () => dispatch(getChallengeRegistration()),
-  onEditMember: member => dispatch(editMember(member))
+  onEditMember: member => dispatch(editMember(member)),
+  onAddMessage: (title, message, type) =>
+    dispatch(addMessage(title, message, type))
 });
 
 type Props = {
@@ -136,6 +139,8 @@ type Props = {
   onToggleModalProfile: Function,
   onAddMember: Function,
   onGetChallenge: Function,
+  onEditMember: Function,
+  onAddMessage: Function,
   onboarding: *
 };
 class Registration extends Component<Props, *> {
@@ -160,6 +165,7 @@ class Registration extends Component<Props, *> {
       classes,
       onboarding,
       onToggleModalProfile,
+      onAddMessage,
       onEditMember
     } = this.props;
     if (onboarding.isLoadingChallengeRegistration) {
@@ -177,6 +183,7 @@ class Registration extends Component<Props, *> {
             finish={this.addMember}
             member={onboarding.editMember}
             editMember={onEditMember}
+            setAlert={onAddMessage}
             challenge={onboarding.challenge_registration}
           />
         </BlurDialog>
@@ -201,7 +208,7 @@ class Registration extends Component<Props, *> {
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={onboarding.members.length < 3}
+              disabled={onboarding.members.length < 1}
             >
               Continue
             </DialogButton>

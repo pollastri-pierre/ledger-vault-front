@@ -183,7 +183,7 @@ class Provisioning extends Component<Props> {
           master seed in turn, using their Ledger Blue.
         </ToContinue>
         <Footer
-          render={(onPrev, onNext) => (
+          render={() => (
             <DialogButton
               highlight
               onTouchTap={this.props.onProvisioningShards}

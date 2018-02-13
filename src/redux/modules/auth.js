@@ -3,7 +3,10 @@ export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
 
 export function getLocalStorageToken() {
-  return window.localStorage.getItem("token");
+  // avoid fail in test env
+  if (typeof window !== "undefined") {
+    return window.localStorage.getItem("token");
+  }
 }
 
 export function removeLocalStorageToken() {

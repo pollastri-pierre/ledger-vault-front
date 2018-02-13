@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import cx from "classnames";
 import BlurDialog from "components/BlurDialog";
 import { withStyles } from "material-ui/styles";
 import * as d3 from "d3";
@@ -8,10 +9,12 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
   getShardChallenge,
+  openShardsChannel,
   toggleSignin,
   addSignedIn,
   nextStep
 } from "redux/modules/onboarding";
+import { addMessage } from "redux/modules/alerts";
 import SignInDevice from "./SignInDevice";
 import Footer from "./Footer";
 import {
@@ -22,7 +25,6 @@ import {
 } from "components/Onboarding";
 
 const styles = {
-  circle: {},
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
   base: {
     "& strong": {
@@ -76,6 +78,10 @@ const styles = {
     left: 0,
     width: 120,
     height: 120
+  },
+  disabled: {
+    opacity: 0.5,
+    cursor: "default"
   }
 };
 
@@ -84,7 +90,9 @@ type Props = {
   classes: { [$Keys<typeof styles>]: string },
   onNextStep: Function,
   onGetShardChallenge: Function,
+  onOpenShardsChannel: Function,
   onToggleSignin: Function,
+  onAddMessage: (string, string, string) => Function,
   onAddSignedIn: Function
 };
 class SignIn extends Component<Props> {
@@ -96,22 +104,40 @@ class SignIn extends Component<Props> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.onboarding.shards_channel !==
-      this.props.onboarding.shards_channel
-    ) {
-      this.props.onNextStep();
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (
+  //     nextProps.onboarding.shards_channel !==
+  //     this.props.onboarding.shards_channel
+  //   ) {
+  //     this.props.onNextStep();
+  //   }
+  //
+  //   if (
+  //     nextProps.onboarding.signed.length ===
+  //     this.props.onboarding.members.length
+  //   ) {
+  //     this.openShards();
+  //   }
+  // }
 
-  componentDidUpdate(prevProps) {
+  openShards = async () => {
+    try {
+      await this.props.onOpenShardsChannel();
+    } catch (e) {
+      console.error(e);
+      this.props.onAddMessage(
+        "Error",
+        "Oups, an error occured. Please retry",
+        "error"
+      );
+    }
+  };
+
+  componentDidUpdate() {
     const $svg = this.svg;
     if (!$svg) return;
     const radius = 60;
     const boxSize = radius * 2;
-    const start = 0;
-    const end = 0.3;
     const border = 3;
     const endAngle = Math.PI * 2;
 
@@ -140,7 +166,7 @@ class SignIn extends Component<Props> {
       2 *
       (this.props.onboarding.signed.length /
         this.props.onboarding.members.length);
-    const value = g
+    g
       .append("path")
       .attr("fill", "#27d0e2")
       .attr("stroke", "none")
@@ -191,27 +217,25 @@ class SignIn extends Component<Props> {
               Ask each administrator to sign-in using their Ledger Blue devices.
             </strong>
             <div className={classes.sep} />
-            {onboarding.signed.length < onboarding.members.length ? (
-              <div>
-                <div className={classes.sign} onClick={onToggleSignin}>
-                  sign in a new member
-                </div>
-                <span className={classes.counter}>
-                  {onboarding.signed.length} signed-in,{" "}
-                  {onboarding.members.length - onboarding.signed.length}{" "}
-                  remaining
-                </span>
+            <div>
+              <div
+                className={cx(classes.sign, {
+                  [classes.disabled]:
+                    onboarding.signed.length === onboarding.members.length
+                })}
+                onClick={
+                  onboarding.signed.length === onboarding.members.length
+                    ? null
+                    : onToggleSignin
+                }
+              >
+                sign in a new member
               </div>
-            ) : (
-              <div>
-                <SpinnerCard />
-                <span
-                  style={{ fontSize: 11, float: "right", padding: "20px 40px" }}
-                >
-                  Connecting to the server
-                </span>
-              </div>
-            )}
+              <span className={classes.counter}>
+                {onboarding.signed.length} signed-in,{" "}
+                {onboarding.members.length - onboarding.signed.length} remaining
+              </span>
+            </div>
           </div>
         </div>
         <SubTitle>To continue</SubTitle>
@@ -222,18 +246,29 @@ class SignIn extends Component<Props> {
         </ToContinue>
         <Footer
           isBack={false}
-          render={(onPrev, onNext) => (
-            <DialogButton
-              highlight
-              onTouchTap={onNext}
-              disabled={
-                onboarding.signed.length < onboarding.members.length ||
-                !onboarding.shards_channel
+          render={(onPrev, onNext) => {
+            const onclick = async () => {
+              try {
+                await this.props.onOpenShardsChannel();
+                onNext();
+              } catch (e) {
+                this.props.onAddMessage(
+                  "Error",
+                  "Oups, an error occured. Please retry",
+                  "error"
+                );
               }
-            >
-              Continue
-            </DialogButton>
-          )}
+            };
+            return (
+              <DialogButton
+                highlight
+                onTouchTap={onclick}
+                disabled={onboarding.signed.length < onboarding.members.length}
+              >
+                Continue
+              </DialogButton>
+            );
+          }}
         />
       </div>
     );
@@ -246,8 +281,11 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   onGetShardChallenge: () => dispatch(getShardChallenge()),
+  onOpenShardsChannel: () => dispatch(openShardsChannel()),
   onToggleSignin: () => dispatch(toggleSignin()),
   onAddSignedIn: data => dispatch(addSignedIn(data)),
+  onAddMessage: (title, message, type) =>
+    dispatch(addMessage(title, message, type)),
   onNextStep: () => dispatch(nextStep())
 });
 

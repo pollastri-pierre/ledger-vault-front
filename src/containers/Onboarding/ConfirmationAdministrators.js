@@ -1,17 +1,18 @@
 //@flow
 import React, { Component } from "react";
+import createDevice, { APPID_VAULT_BOOTSTRAP } from "device";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Authenticator from "./Authenticator";
 import { withStyles } from "material-ui/styles";
 import cx from "classnames";
 import DialogButton from "components/buttons/DialogButton";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import createDevice, { U2F_PATH } from "device";
 import Footer from "./Footer";
 import {
   getCommitChallenge,
   commitAdministrators
 } from "redux/modules/onboarding";
+import { addMessage } from "redux/modules/alerts";
 import { connect } from "react-redux";
 
 const styles = {
@@ -34,12 +35,15 @@ const mapStateToProps = state => ({
 });
 const mapDispatch = dispatch => ({
   onGetCommitChallenge: () => dispatch(getCommitChallenge()),
-  onCommitAdministrators: data => dispatch(commitAdministrators(data))
+  onCommitAdministrators: data => dispatch(commitAdministrators(data)),
+  onAddMessage: (title, content, success) =>
+    dispatch(addMessage(title, content, success))
 });
 
 type Props = {
   onGetCommitChallenge: Function,
   onCommitAdministrators: Function,
+  onAddMessage: (string, string, string) => Function,
   onboarding: *,
   classes: { [$Keys<typeof styles>]: string }
 };
@@ -49,7 +53,7 @@ type State = {
   plugged: boolean
 };
 class ConfirmationAdministrators extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { step: 1, plugged: false };
   }
@@ -59,7 +63,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
       onGetCommitChallenge();
     }
   }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.onboarding.commit_challenge !==
       this.props.onboarding.commit_challenge
@@ -69,24 +73,33 @@ class ConfirmationAdministrators extends Component<Props, State> {
   }
 
   onStart = async () => {
-    const { onCommitAdministrators } = this.props;
-    const device = await createDevice();
-    const pubKeyData = await device.fakeGetPublicKey(U2F_PATH);
-    this.setState({ plugged: true, step: 2 });
-    const auth = await device.fakeAuthenticate();
-    const data = { pub_key: pubKeyData, authentication: auth };
-    await onCommitAdministrators(data);
-    this.setState({ step: 3 });
-    this.checkUnplugged();
-  };
+    this.setState({ step: 1 });
+    try {
+      const device = await createDevice();
 
-  checkUnplugged = () => {
-    // we need a way to check if the device is unplugged
-    setTimeout(() => {
-      this.setState({
-        plugged: false
-      });
-    }, 2000);
+      const instanceName = "_";
+      const instanceReference = "_";
+      const instanceURL = "_";
+      const agentRole = "_";
+
+      const commit_signature = await device.authenticate(
+        this.props.onboarding.commit_challenge.challenge,
+        APPID_VAULT_BOOTSTRAP,
+        this.props.onboarding.commit_challenge.handles[0],
+        instanceName,
+        instanceReference,
+        instanceURL,
+        agentRole
+      );
+
+      this.setState({ step: 2 });
+      await this.props.onCommitAdministrators(commit_signature);
+      this.setState({ step: 3 });
+    } catch (e) {
+      console.error(e);
+      this.props.onAddMessage("Error", "Oups something went wrong", "error");
+      // this.onStart();
+    }
   };
 
   render() {
@@ -127,6 +140,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
   }
 }
 
+export { ConfirmationAdministrators };
 export default connect(mapStateToProps, mapDispatch)(
   withStyles(styles)(ConfirmationAdministrators)
 );

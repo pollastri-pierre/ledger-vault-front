@@ -70,8 +70,9 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
   if (method === "POST" && uri === "/provisioning/seed/open_shards_channel") {
     return {
       shards_channel: {
-        pub_key: "shard_pub_key",
-        certificate: "shard_certificate"
+        pub_key: "04a05efcec45b19912c65b99d4cf95d9e043381469e358d12b679b6639762af450acfd4b56d05ae98a6d524cd2eb3a7cf7a0b01083eb533e1cc66eb6b9eca62120",
+        certificate:
+          "30450220032a194704e8e3632298994f4998b87fd24dc9a1e8cb05d6c05663b7aa303a2b022100f1822ee5b109420b04a13f6ba591d416daba85eafbe112847dfc23d127d1bda4"
       }
     };
   }
@@ -85,6 +86,18 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
     };
   }
+  if (method === "PUT" && uri === "/provisioning/administrators/register") {
+    return {
+      token: "3aQhFCsHhG0Bc4ohkbWa0_6exrT8UZCGDzgEkGRn7Pg"
+    };
+  }
+
+  if (method === "POST" && uri === "/provisioning/administrators/rules") {
+    return {
+      success: "true"
+    };
+  }
+
   if (method === "POST" && uri === "/provisioning/administrators/commit") {
     return {
       success: "true"
@@ -229,24 +242,37 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         };
       case "/provisioning/administrators/register":
         return {
-          challenge: "challenge_register"
+          challenge:
+            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb",
+          handles: [
+            "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc"
+          ],
+          id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
         };
       case "/provisioning/administrators/commit_challenge":
         return {
-          challenge: "challenge_commit"
+          challenge:
+            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb",
+          handles: [
+            "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc"
+          ],
+          id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
         };
       case "/provisioning/seed/shards_channel_challenge":
         return {
           challenge:
-            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb"
+            "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb",
+          handles: [
+            "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc"
+          ],
+          id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
         };
       case "/authentication_challenge":
         return {
           challenge:
             "fd4262bdc6f348832785920252b2e47df85dd1abb90882ae74460c16be7948bb",
           handles: [
-            "654f16d2cd3ca82a52dd40b402fbb2c3d981c154abd4e16bcd56362e38db6c2e",
-            "16ebae3897572bd156add68ff048d4180f9d0cd89e7159f1eda42c5521683756"
+            "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc"
           ],
           id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
         };

@@ -15,7 +15,7 @@ class AddUser extends PureComponent<Props> {
     color: "#cccccc"
   };
   render() {
-    const { color, classes, className } = this.props;
+    const { classes, className } = this.props;
     return (
       <svg
         viewBox="0 0 31 25.2"

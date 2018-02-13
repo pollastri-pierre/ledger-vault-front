@@ -12,6 +12,8 @@ const steps = [
 type Props = {
   close: Function,
   finish: Function,
+  setAlert: Function,
+  editMember: Function,
   member: Member,
   challenge: string
 };
@@ -29,8 +31,24 @@ class AddMember extends Component<Props, State> {
     // we are editing a member, no need to register device again
     if (this.props.member) {
       // TODO modify member in store redux and call the API too
-      this.props.editMember(data);
-      this.props.close();
+      const newMember = {
+        ...this.props.member,
+        email: data.email.value,
+        first_name: data.first_name.value,
+        last_name: data.last_name.value,
+        picture: data.picture.value
+      };
+      const { setAlert } = this.props;
+      const promise = this.props.editMember(newMember);
+      // we have to return the promise so the dialogbutton will be able to be display in disable mode while pending
+      promise
+        .then(() => {
+          this.props.close();
+        })
+        .catch(() => {
+          setAlert("Error", "Oups something went wrong. Please retry", "error");
+        });
+      return promise;
     } else {
       this.setState({ step: 1, data: data });
     }
@@ -47,7 +65,7 @@ class AddMember extends Component<Props, State> {
       data[key] = value;
     });
     data["role"] = "Administrator";
-    data["public_key"] = result.public_key;
+    data["pub_key"] = result.pub_key;
     data["challenge_answer"] = result.challenge_answer;
     this.props.finish(data);
   };

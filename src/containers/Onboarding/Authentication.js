@@ -10,6 +10,7 @@ import {
   getBootstrapChallenge,
   getBootstrapToken
 } from "redux/modules/onboarding";
+import { addMessage } from "redux/modules/alerts";
 
 import Authenticator from "./Authenticator.js";
 
@@ -17,7 +18,8 @@ type Props = {
   onboarding: *,
   onGetBootstrapChallenge: Function,
   onGetBootstrapToken: Function,
-  onPostChallenge: Function
+  onPostChallenge: Function,
+  onAddMessage: Function
 };
 
 type State = {
@@ -30,10 +32,12 @@ const mapState = state => ({
 });
 const mapDispatch = dispatch => ({
   onGetBootstrapChallenge: () => dispatch(getBootstrapChallenge()),
-  onGetBootstrapToken: data => dispatch(getBootstrapToken(data))
+  onAddMessage: (title, content, success) =>
+    dispatch(addMessage(title, content, success)),
+  onGetBootstrapToken: (k, auth) => dispatch(getBootstrapToken(k, auth))
 });
 class Authentication extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = { step: 1, plugged: false };
   }
@@ -45,7 +49,7 @@ class Authentication extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.onboarding.bootstrapChallenge !==
       this.props.onboarding.bootstrapChallenge
@@ -55,26 +59,35 @@ class Authentication extends Component<Props, State> {
   }
 
   onStart = async () => {
+    this.setState({ step: 1 });
     const { onGetBootstrapToken } = this.props;
-    const device = await createDevice();
-    const { pub_key } = await device.fakeGetPublicKey(U2F_PATH);
-    this.setState({ plugged: true, step: 2 });
-    const auth = await device.fakeAuthenticate(
-      this.props.challenge,
-      APPID_VAULT_BOOTSTRAP
-    );
-    await onGetBootstrapToken(pub_key, auth);
-    this.setState({ step: 3 });
-    this.checkUnplugged();
-  };
+    try {
+      const device = await createDevice();
+      const { pubKey } = await device.getPublicKey(U2F_PATH);
+      // TODO FIXME not sure what these will be
+      //
+      const instanceName = "_";
+      const instanceReference = "_";
+      const instanceURL = "_";
+      const agentRole = "_";
 
-  checkUnplugged = () => {
-    // we need a way to check if the device is unplugged
-    setTimeout(() => {
-      this.setState({
-        plugged: false
-      });
-    }, 2000);
+      const sign = await await device.authenticate(
+        this.props.onboarding.bootstrapChallenge.challenge,
+        APPID_VAULT_BOOTSTRAP,
+        this.props.onboarding.bootstrapChallenge.handles[0],
+        instanceName,
+        instanceReference,
+        instanceURL,
+        agentRole
+      );
+      this.setState({ plugged: true, step: 2 });
+      await onGetBootstrapToken(pubKey, sign.rawResponse);
+      this.setState({ step: 3 });
+    } catch (e) {
+      console.error(e.metaData);
+      this.props.onAddMessage("Error", "Oups something went wrong", "error");
+      // this.onStart();
+    }
   };
 
   // TODO: continue button should be disabled until the redux store contains a bootstrapAuthToken AND the device is unplugged
@@ -87,9 +100,9 @@ class Authentication extends Component<Props, State> {
       <div>
         <Title>Authentication</Title>
         <Introduction>
-          {" "}
-          The configuration of your team's Ledger is restricted. Please connect
-          your one-time authenticator to continue.{" "}
+          {
+            " The configuration of your team's Ledger is restricted. Please connect your one-time authenticator to continue."
+          }
         </Introduction>
         <div style={{ marginTop: 70 }}>
           <Authenticator step={this.state.step} />
@@ -99,7 +112,7 @@ class Authentication extends Component<Props, State> {
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={!(onboarding.bootstrapAuthToken && !this.state.plugged)}
+              disabled={!onboarding.bootstrapAuthToken}
             >
               Continue
             </DialogButton>
@@ -109,5 +122,8 @@ class Authentication extends Component<Props, State> {
     );
   }
 }
+
+// useful for test
+export { Authentication };
 
 export default connect(mapState, mapDispatch)(Authentication);

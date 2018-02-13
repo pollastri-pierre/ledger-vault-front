@@ -120,7 +120,7 @@ class DialogButton extends Component<*, *> {
             [classes.highlight]: highlight,
             [classes.right]: right,
             [classes.abort]: abort,
-            [classes.disabled]: this.props.disabled
+            [classes.disabled]: this.props.disabled || this.state.pending
           },
           className
         )}

@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { MenuItem } from "material-ui/Menu";
-import cx from "classnames";
 import { withStyles } from "material-ui/styles";
 import { connect } from "react-redux";
 import { goToStep } from "redux/modules/onboarding.js";

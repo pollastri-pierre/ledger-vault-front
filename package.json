@@ -13,14 +13,16 @@
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
+    "@ledgerhq/hw-transport-u2f": "^2.1.2",
     "animated": "^0.2.1",
     "classnames": "^2.2.5",
     "d3": "^4.11.0",
     "email-validator": "^1.1.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "fbjs": "^0.8.16",
     "history": "^4.7.2",
     "invariant": "^2.2.2",
-    "@ledgerhq/hw-transport-u2f": "^2.0.5",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "1.0.0-beta.24",
@@ -45,8 +47,7 @@
     "rect-crop": "0.0.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
-    "redux-thunk": "^2.2.0",
-    "whatwg-fetch": "^2.0.3"
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
