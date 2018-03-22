@@ -121,8 +121,8 @@ export class Login extends Component<Props, State> {
   onStartOnBoardingStatus = async () => {
     const { history } = this.props;
     try {
-      const { status } = await network("/onboarding_status", "GET");
-      if (status === 2) {
+      // const { status } = await network("/onboarding_status", "GET");
+      if (true) {
         this.onStartAuth();
       } else if (status === 0) {
         history.push("/onboarding/welcome");
@@ -139,8 +139,8 @@ export class Login extends Component<Props, State> {
     this.setState({ isChecking: true });
     try {
       const device = await createDevice();
-      const { id, challenge } = await network(
-        "/authentication_challenge",
+      const { challenge, key_handle } = await network(
+        "/hsm/session/admin/partition/challenge",
         "GET"
       );
       this.setState({
@@ -154,25 +154,27 @@ export class Login extends Component<Props, State> {
       const keyHandle =
         "6a40f6615e6f43d11a6d60d8dd0fde75a898834a202f49b758c0c36a1a24d026e70e4a1501d2d7aa14aff55cfca5779cc07be75f6281f58cce1c08e568042edc";
       // TODO FIXME not sure what these will be
-      const instanceName = "_";
-      const instanceReference = "_";
-      const instanceURL = "_";
-      const agentRole = "_";
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
 
       const auth = await device.authenticate(
-        challenge,
+        Buffer.from(challenge),
         application,
-        keyHandle,
+        Buffer.from(keyHandle, "hex"),
         instanceName,
         instanceReference,
         instanceURL,
         agentRole
       );
       const pubKeyData = await device.getPublicKey(U2F_PATH);
-      const { token } = await network("/authenticate", "POST", {
+      console.log(pubKeyData);
+      const {
+        token
+      } = await network("/hsm/authentication/bootstrap/authenticate", "POST", {
         pub_key: pubKeyData.pubKey,
-        authentication: auth.signature,
-        id
+        authentication: auth.signature
       });
       this.setState({ isChecking: false });
       addAlertMessage("Welcome", "Hello. Welcome on Ledger Vault Application");

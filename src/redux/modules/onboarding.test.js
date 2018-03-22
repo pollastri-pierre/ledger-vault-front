@@ -166,9 +166,15 @@ test("setAdminScheme should call the API with right paremets", async () => {
 test("provisioningShards should call the API with right parameters and dispatch SUCCESS_SEED_SHARDS", async () => {
   const dispatch = jest.fn();
   const thunk = provisioningShards({ data: true });
-  await thunk(dispatch);
+  const getState = () => ({
+    onboarding: {
+      shards: ["test"]
+    }
+  });
+
+  await thunk(dispatch, getState);
   expect(network).toHaveBeenCalledWith("/provisioning/seed/shards", "POST", {
-    data: true
+    shards: ["test"]
   });
 
   expect(dispatch).toHaveBeenCalledWith({ type: SUCCESS_SEED_SHARDS });

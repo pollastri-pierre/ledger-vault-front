@@ -6,6 +6,10 @@ import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+
+import { listCurrencies } from "@ledgerhq/currencies";
+const allCurrencies = listCurrencies();
 
 const styles = {
   item: {
@@ -38,19 +42,28 @@ class AccountsMenu extends Component<{
     const { accounts, classes } = this.props;
     return (
       <MenuList>
-        {accounts.map(account => (
-          <MenuLink
-            color={account.currency.color}
-            key={account.id}
-            to={`/account/${account.id}`}
-            className={classes.item}
-          >
-            <span className={classes.name}>{account.name}</span>
-            <span className={classes.unit}>
-              {account.currency.units[0].code}
-            </span>
-          </MenuLink>
-        ))}
+        {accounts.map(account => {
+          const curr = allCurrencies.find(
+            c => c.scheme === account.currency.name
+          ) || {
+            color: ""
+          };
+          const unit = account.currency.units.reduce(
+            (prev, current) =>
+              prev.magnitude > current.magnitude ? prev : current
+          );
+          return (
+            <MenuLink
+              color={curr.color}
+              key={account.id}
+              to={`/account/${account.id}`}
+              className={classes.item}
+            >
+              <span className={classes.name}>{account.name}</span>
+              <span className={classes.unit}>{unit.code}</span>
+            </MenuLink>
+          );
+        })}
       </MenuList>
     );
   }
@@ -58,6 +71,7 @@ class AccountsMenu extends Component<{
 
 export default connectData(withStyles(styles)(AccountsMenu), {
   queries: {
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
+    currencies: CurrenciesQuery
   }
 });

@@ -13,8 +13,10 @@
     "test": "NODE_ENV=test jest"
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-u2f": "^2.1.2",
+    "@ledgerhq/currencies": "^4.2.0",
+    "@ledgerhq/hw-transport-u2f": "^4.6.0",
     "animated": "^0.2.1",
+    "axios": "^0.18.0",
     "classnames": "^2.2.5",
     "d3": "^4.11.0",
     "email-validator": "^1.1.1",

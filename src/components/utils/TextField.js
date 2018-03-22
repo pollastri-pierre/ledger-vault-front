@@ -11,15 +11,16 @@ type Props = {
   style?: Object,
   autofocus?: boolean,
   fullWidth?: boolean,
-  inputStyle?: Object,
+  inputStyle?: Object
 };
 function TextField(props: Props) {
+  const { inputProps, ...rest } = props;
   return (
     <MUITextField
-      {...props}
+      {...rest}
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" },
-        inputProps: props.inputProps,
+        inputProps: props.inputProps
       }}
     />
   );

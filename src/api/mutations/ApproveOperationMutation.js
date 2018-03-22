@@ -11,15 +11,15 @@ type In = {
 type Res = Operation;
 
 export default class ApproveOperationMutation extends Mutation<In, Res> {
-  uri = `/operations/${this.props.operationId}`;
-  method = "PUT";
+  uri = `/operations/${this.props.operationId}/approve`;
+  method = "POST";
   responseSchema = schema.Operation;
 
   getSuccessNotification() {
-    return success("operation request", "created");
+    return success("operation request", "approved");
   }
 
   getErrorNotification(e: Error) {
-    return error("operation request", "created", e);
+    return error("operation request", "approved", e);
   }
 }

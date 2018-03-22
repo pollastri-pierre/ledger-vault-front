@@ -34,8 +34,8 @@ class ApprovalStatusWithAccountName extends Component<{
         <span className={classes.status}>
           <ApprovalStatus
             approvingObject={operation}
-            approved={operation.approved}
-            approvers={account.security_scheme.approvers}
+            approved={operation.approvals}
+            approvers={account.members}
             nbRequired={account.security_scheme.quorum}
             user={user}
           />

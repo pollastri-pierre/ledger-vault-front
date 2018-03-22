@@ -21,7 +21,7 @@ function fetchWithRetries(
 ): Promise<any> {
   const { fetchTimeout, retryDelays, ...init } = initWithRetries || {};
   const _fetchTimeout = fetchTimeout != null ? fetchTimeout : DEFAULT_TIMEOUT;
-  const _retryDelays = retryDelays != null ? retryDelays : DEFAULT_RETRIES;
+  const _retryDelays = null;
 
   let requestsAttempted = 0;
   let requestStartTime = 0;

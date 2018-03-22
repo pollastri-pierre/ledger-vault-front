@@ -61,7 +61,7 @@ class OperationApprove extends Component<Props, { value: number }> {
     } = this.props;
 
     const approvers = [];
-    account.security_scheme.approvers.forEach(approver => {
+    account.members.forEach(approver => {
       const member = members.find(m => m.pub_key === approver);
       if (member) {
         approvers.push(member);
@@ -70,10 +70,31 @@ class OperationApprove extends Component<Props, { value: number }> {
 
     const quorum = account.security_scheme.quorum;
     const isUnactive =
-      operation.approved.length < account.security_scheme.quorum;
+      operation.approvals.length < account.security_scheme.quorum;
     const approvingObjectMeta = calculateApprovingObjectMeta(operation);
 
     const { value } = this.state;
+
+    const hasApproved = (approvers, profile) =>
+      approvers.find(approver => approver.person.pub_key === profile.pub_key);
+
+    const GenericFooter = ({ percentage }: { percentage?: boolean }) => (
+      <Footer
+        close={close}
+        approve={() => approve(operation)}
+        aborting={aborting}
+        approved={hasApproved(operation.approvals, profile)}
+        percentage={
+          percentage && (
+            <ApprovalPercentage
+              approvers={approvers}
+              approved={operation.approvals}
+              nbRequired={quorum}
+            />
+          )
+        }
+      />
+    );
     return (
       <div className={classes.base}>
         <header>
@@ -91,12 +112,7 @@ class OperationApprove extends Component<Props, { value: number }> {
               account={account}
               profile={profile}
             />
-            <Footer
-              close={close}
-              approve={approve}
-              aborting={aborting}
-              approved={operation.approved.indexOf(profile.pub_key) > -1}
-            />
+            <GenericFooter />
           </div>
         )}
         {value === 1 && (
@@ -106,19 +122,7 @@ class OperationApprove extends Component<Props, { value: number }> {
               operation={operation}
               account={account}
             />
-            <Footer
-              close={close}
-              approve={approve}
-              aborting={aborting}
-              approved={operation.approved.indexOf(profile.pub_key) > -1}
-              percentage={
-                <ApprovalPercentage
-                  approvers={approvers}
-                  approved={operation.approved}
-                  nbRequired={quorum}
-                />
-              }
-            />
+            <GenericFooter percentage />
           </div>
         )}
         {value === 2 && (
@@ -126,9 +130,9 @@ class OperationApprove extends Component<Props, { value: number }> {
             <OperationApproveLocks operation={operation} account={account} />
             <Footer
               close={close}
-              approve={approve}
+              approve={() => approve(operation)}
               aborting={aborting}
-              approved={operation.approved.indexOf(profile.pub_key) > -1}
+              approved={hasApproved(operation.approvals, profile)}
               percentage={
                 isUnactive || !approvingObjectMeta ? (
                   <LocksPercentage />

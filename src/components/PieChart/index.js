@@ -8,6 +8,8 @@ import BadgeCurrency from "components/BadgeCurrency";
 import colors from "shared/colors";
 import type { Account } from "data/types";
 import cx from "classnames";
+import { listCurrencies } from "@ledgerhq/currencies";
+const allCurrencies = listCurrencies();
 
 type PieChartData = {
   account: Account,
@@ -235,7 +237,12 @@ class PieChart extends Component<
         "class",
         (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
       )
-      .style("fill", d => d.data.account.currency.color);
+      .style("fill", d => {
+        const curr = allCurrencies.find(
+          c => c.scheme === d.data.account.currency.name
+        ) || { color: "" };
+        return curr.color;
+      });
 
     //transparent Chart for hovering purposes
     g
@@ -332,6 +339,13 @@ class PieChart extends Component<
       showTooltips,
       highlightCaptionsOnHover
     } = this.props;
+
+    let curr = { color: "black" };
+    if (selected !== -1) {
+      curr = allCurrencies.find(
+        c => c.scheme === this.props.data[selected].account.currency.name
+      ) || { color: "black" };
+    }
     return (
       <div>
         <div className={classes.wrapper}>
@@ -345,9 +359,7 @@ class PieChart extends Component<
               showTooltips && (
                 <div
                   className={cx([classes.tooltip, classes.hide])}
-                  style={{
-                    color: this.props.data[selected].account.currency.color
-                  }}
+                  style={curr}
                   ref={t => {
                     this.tooltip = t;
                   }}

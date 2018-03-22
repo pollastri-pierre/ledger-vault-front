@@ -102,6 +102,7 @@ class AddMember extends Component<Props, State> {
           title="Register device"
           close={this.props.close}
           finish={this.finish}
+          registerKeyHandle={this.props.registerKeyHandle}
           cancel={this.prev}
           data={this.state.data}
           challenge={this.props.challenge}

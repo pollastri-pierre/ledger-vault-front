@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import createDevice, { U2F_PATH, APPID_VAULT_BOOTSTRAP } from "device";
+import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
@@ -10,11 +10,12 @@ const steps = [
 
 type Challenge = {
   challenge: string,
-  handles: string[]
+  key_handle: *
 };
 type Props = {
   onFinish: Function,
-  challenge: Challenge
+  challenge: Challenge,
+  keyHandles: Object
 };
 
 type State = {
@@ -34,23 +35,29 @@ class SignInDevice extends Component<Props, State> {
     this.setState({ step: 0 });
     try {
       const device = await createDevice();
-      const pub_key = await device.getPublicKey(U2F_PATH);
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       this.setState({ step: 1 });
-      const instanceName = "_";
-      const instanceReference = "_";
-      const instanceURL = "_";
-      const agentRole = "_";
+
+      const keyHandle = this.props.keyHandles[pubKey];
+      const challenge = this.props.challenge.challenge;
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
+
+      console.log(challenge, keyHandle);
+
       const authentication = await device.authenticate(
-        this.props.challenge.challenge,
-        APPID_VAULT_BOOTSTRAP,
-        this.props.challenge.handles[0],
+        Buffer.from(challenge, "base64"),
+        APPID_VAULT_ADMINISTRATOR,
+        keyHandle,
         instanceName,
         instanceReference,
         instanceURL,
         agentRole
       );
       this.setState({ step: 2 });
-      this.props.onFinish(pub_key, authentication);
+      this.props.onFinish(pubKey, authentication);
     } catch (e) {
       console.error(e);
       // this.start();

@@ -176,7 +176,7 @@ class SignIn extends Component<Props> {
 
   signIn = (pubKey: string, signature: string) => {
     this.props.onToggleSignin();
-    this.props.onAddSignedIn({ pub_key: pubKey, authentication: signature });
+    this.props.onAddSignedIn(pubKey, signature);
   };
 
   render() {
@@ -190,6 +190,7 @@ class SignIn extends Component<Props> {
         <BlurDialog open={onboarding.signInModal} onClose={onToggleSignin}>
           <SignInDevice
             challenge={onboarding.shardChallenge}
+            keyHandles={onboarding.key_handles}
             onFinish={this.signIn}
           />
         </BlurDialog>
@@ -247,22 +248,10 @@ class SignIn extends Component<Props> {
         <Footer
           isBack={false}
           render={(onPrev, onNext) => {
-            const onclick = async () => {
-              try {
-                await this.props.onOpenShardsChannel();
-                onNext();
-              } catch (e) {
-                this.props.onAddMessage(
-                  "Error",
-                  "Oups, an error occured. Please retry",
-                  "error"
-                );
-              }
-            };
             return (
               <DialogButton
                 highlight
-                onTouchTap={onclick}
+                onTouchTap={onNext}
                 disabled={onboarding.signed.length < onboarding.members.length}
               >
                 Continue
@@ -283,7 +272,7 @@ const mapDispatch = dispatch => ({
   onGetShardChallenge: () => dispatch(getShardChallenge()),
   onOpenShardsChannel: () => dispatch(openShardsChannel()),
   onToggleSignin: () => dispatch(toggleSignin()),
-  onAddSignedIn: data => dispatch(addSignedIn(data)),
+  onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type)),
   onNextStep: () => dispatch(nextStep())

@@ -14,6 +14,7 @@ import {
   toggleModalProfile,
   addMember,
   editMember,
+  registerKeyHandle,
   getChallengeRegistration
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
@@ -130,6 +131,8 @@ const mapDispatch = dispatch => ({
   onAddMember: data => dispatch(addMember(data)),
   onGetChallenge: () => dispatch(getChallengeRegistration()),
   onEditMember: member => dispatch(editMember(member)),
+  onRegisterKeyHandle: (key, handle) =>
+    dispatch(registerKeyHandle(key, handle)),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
@@ -140,6 +143,7 @@ type Props = {
   onAddMember: Function,
   onGetChallenge: Function,
   onEditMember: Function,
+  onRegisterKeyHandle: Function,
   onAddMessage: Function,
   onboarding: *
 };
@@ -166,7 +170,8 @@ class Registration extends Component<Props, *> {
       onboarding,
       onToggleModalProfile,
       onAddMessage,
-      onEditMember
+      onEditMember,
+      onRegisterKeyHandle
     } = this.props;
     if (onboarding.isLoadingChallengeRegistration) {
       return <SpinnerCard />;
@@ -182,6 +187,7 @@ class Registration extends Component<Props, *> {
             close={onToggleModalProfile}
             finish={this.addMember}
             member={onboarding.editMember}
+            registerKeyHandle={onRegisterKeyHandle}
             editMember={onEditMember}
             setAlert={onAddMessage}
             challenge={onboarding.challenge_registration}

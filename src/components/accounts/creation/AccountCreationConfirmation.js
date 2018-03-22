@@ -36,9 +36,7 @@ function AccountCreationConfirmation(props: { account: Object }) {
           label="Time-lock"
           disabled={!time_lock.enabled}
           value={
-            <TimeLockValue
-              time_lock={time_lock.value * time_lock.frequency.value}
-            />
+            <TimeLockValue time_lock={time_lock.value * time_lock.frequency} />
           }
         />
         <BadgeSecurity
@@ -59,7 +57,7 @@ function AccountCreationConfirmation(props: { account: Object }) {
           <AccountName name={name} currency={currency} />
         </LineRow>
         <LineRow label="Currency">
-          <span className="info-value currency">{currency.units[0].name}</span>
+          <span className="info-value currency">{currency.units[1].name}</span>
         </LineRow>
         <LineRow label="Approvals to speend">
           {quorum} of {approvers.length} members

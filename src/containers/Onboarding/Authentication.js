@@ -63,27 +63,33 @@ class Authentication extends Component<Props, State> {
     const { onGetBootstrapToken } = this.props;
     try {
       const device = await createDevice();
-      const { pubKey } = await device.getPublicKey(U2F_PATH);
-      // TODO FIXME not sure what these will be
-      //
-      const instanceName = "_";
-      const instanceReference = "_";
-      const instanceURL = "_";
-      const agentRole = "_";
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+      // // TODO FIXME not sure what these will be
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
+
+      const { bootstrapChallenge } = this.props.onboarding;
+
+      const challenge = bootstrapChallenge.challenge;
+      // const keyHandle = bootstrapChallenge.key_handle[pubKey.toUpperCase()];
+      const keyHandle = bootstrapChallenge.key_handle.key_handle;
 
       const sign = await await device.authenticate(
-        this.props.onboarding.bootstrapChallenge.challenge,
+        Buffer.from(challenge, "base64"),
         APPID_VAULT_BOOTSTRAP,
-        this.props.onboarding.bootstrapChallenge.handles[0],
+        Buffer.from(keyHandle, "base64"),
         instanceName,
         instanceReference,
         instanceURL,
         agentRole
       );
       this.setState({ plugged: true, step: 2 });
-      await onGetBootstrapToken(pubKey, sign.rawResponse);
+      await onGetBootstrapToken(pubKey, sign);
       this.setState({ step: 3 });
     } catch (e) {
+      console.error(e);
       console.error(e.metaData);
       this.props.onAddMessage("Error", "Oups something went wrong", "error");
       // this.onStart();

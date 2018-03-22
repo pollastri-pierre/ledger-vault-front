@@ -41,6 +41,7 @@ type Props = {
   cancel: Function,
   finish: Function,
   challenge: string,
+  registerKeyHandle: Function,
   data: *
 };
 
@@ -61,16 +62,14 @@ class StepDevice extends Component<Props, State> {
     try {
       this.setState({ active: 0 });
       const device = await createDevice();
-      const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
-      const public_key = await device.getPublicKey(U2F_PATH);
-      const validation = await device.getPublicKey(VALIDATION_PATH);
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
 
-      const instanceName = "_";
-      const instanceReference = "_";
-      const instanceURL = "_";
-      const agentRole = "_";
-      const challenge_answer = await device.register(
-        this.props.challenge,
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
+      const u2f_register = await device.register(
+        Buffer.from(this.props.challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR,
         instanceName,
         instanceReference,
@@ -78,27 +77,36 @@ class StepDevice extends Component<Props, State> {
         agentRole
       );
 
+      const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
+      const validation = await device.getPublicKey(VALIDATION_PATH);
+
       this.setState({ active: 1 });
 
       const data = {
-        challenge_answer,
-        confidentiality_key: confidentiality["pubKey"],
-        confidentiality_attestation: confidentiality["signature"],
-        validation_key: validation["pubKey"],
-        validation_attestation: validation["signature"],
-        pub_key: public_key,
+        u2f_register: u2f_register.rawResponse,
+        pub_key: pubKey,
+        validation: {
+          public_key: validation.pubKey,
+          attestation: validation.signature.toString("hex")
+        },
+        confidentiality: {
+          public_key: confidentiality.pubKey,
+          attestation: confidentiality.signature.toString("hex")
+        },
         first_name: this.props.data.first_name.value,
         last_name: this.props.data.last_name.value,
         email: this.props.data.email.value,
         picture: this.props.data.picture.value
       };
 
-      await network("/provisioning/administrators/register", "POST", data);
+      this.props.registerKeyHandle(pubKey, u2f_register.keyHandle);
+
+      await network("/hsm/admin/register", "POST", data);
       this.setState({ active: 2 });
       this.props.finish(data);
     } catch (e) {
       console.error(e);
-      this.onStart();
+      // this.onStart();
     }
   };
 

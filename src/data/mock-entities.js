@@ -1,4 +1,3 @@
-//@flow
 import type {
   AccountEntity,
   CurrencyEntity,
@@ -138,8 +137,9 @@ const genMember = (fields: *): MemberEntity => ({
 
 const members = {
   mock_0: genMember({
-    id: "mock_0",
-    pub_key: "hash",
+    id: 5,
+    pub_key:
+      "jxniljj6d2qocyhjl8go86f851s8ygtmxh7337f49g3die3ule3z6lho59ru75bj2aqcwv5j8ysqea04a9w2dpihxo8ni0d03k08",
     last_name: "Getto",
     first_name: "David",
     role: "Administrator",

@@ -1,4 +1,3 @@
-//@flow
 import URL from "url";
 import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
@@ -34,15 +33,15 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
         throw new Error("Account Not Found");
       }
     }
-    switch (uri) {
-      case "/organization/account":
-        return denormalize(
-          Object.keys(mockEntities.accounts["0"]),
-          [schema.Account],
-          mockEntities
-        );
-      default:
-    }
+    // switch (uri) {
+    //   case "/organization/account":
+    //     return denormalize(
+    //       Object.keys(mockEntities.accounts["0"]),
+    //       [schema.Account],
+    //       mockEntities
+    //     );
+    //   default:
+    // }
   }
 
   if (method === "DELETE") {
@@ -70,7 +69,8 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
   if (method === "POST" && uri === "/provisioning/seed/open_shards_channel") {
     return {
       shards_channel: {
-        pub_key: "04a05efcec45b19912c65b99d4cf95d9e043381469e358d12b679b6639762af450acfd4b56d05ae98a6d524cd2eb3a7cf7a0b01083eb533e1cc66eb6b9eca62120",
+        pub_key:
+          "04a05efcec45b19912c65b99d4cf95d9e043381469e358d12b679b6639762af450acfd4b56d05ae98a6d524cd2eb3a7cf7a0b01083eb533e1cc66eb6b9eca62120",
         certificate:
           "30450220032a194704e8e3632298994f4998b87fd24dc9a1e8cb05d6c05663b7aa303a2b022100f1822ee5b109420b04a13f6ba591d416daba85eafbe112847dfc23d127d1bda4"
       }
@@ -106,15 +106,15 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
 
   if (method === "GET") {
     let m;
-    m = /^\/accounts\/([^/]+)$/.exec(uri);
-    if (m) {
-      const account = mockEntities.accounts[m[1]];
-      if (account) {
-        return denormalize(account.id, schema.Account, mockEntities);
-      } else {
-        throw new Error("Account Not Found");
-      }
-    }
+    // m = /^\/accounts\/([^/]+)$/.exec(uri);
+    // if (m) {
+    //   const account = mockEntities.accounts[m[1]];
+    //   if (account) {
+    //     return denormalize(account.id, schema.Account, mockEntities);
+    //   } else {
+    //     throw new Error("Account Not Found");
+    //   }
+    // }
     m = /^\/operations\/([^/]+)\/with-account/.exec(uri);
     if (m) {
       const operationEntity = mockEntities.operations[m[1]];
@@ -236,9 +236,15 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
     }
 
     switch (uri) {
+      case "/nonce": {
+        return {
+          nonce:
+            "1a9c58ea13b6b5a34c63f42658fd807c0a00b11a670b8b5b2d2d2cb5f1294f9d"
+        };
+      }
       case "/onboarding_status":
         return {
-          status: 0
+          status: 2
         };
       case "/provisioning/administrators/register":
         return {
@@ -277,18 +283,18 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           id: "64696675-350d-43b0-a2de-0cdc5882ba6c"
         };
 
-      case "/currencies":
-        return denormalize(
-          Object.keys(mockEntities.currencies),
-          [schema.Currency],
-          mockEntities
-        );
-      case "/organization/members/me":
-        return denormalize(
-          Object.keys(mockEntities.members)[0],
-          schema.Member,
-          mockEntities
-        );
+      // case "/currencies":
+      //   return denormalize(
+      //     Object.keys(mockEntities.currencies),
+      //     [schema.Currency],
+      //     mockEntities
+      //   );
+      // case "/organization/members/me":
+      //   return denormalize(
+      //     Object.keys(mockEntities.members)[0],
+      //     schema.Member,
+      //     mockEntities
+      //   );
       case "/organization/members":
         return denormalize(
           Object.keys(mockEntities.members),
@@ -301,28 +307,35 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           [schema.Member],
           mockEntities
         );
-      case "/accounts":
-        return denormalize(
-          Object.keys(mockEntities.accounts),
-          [schema.Account],
-          mockEntities
-        );
-      case "/pendings":
-        return denormalize(
-          {
-            approveOperations: Object.keys(mockEntities.operations).slice(0, 3),
-            watchOperations: Object.keys(mockEntities.operations).slice(4, 7),
-            approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
-            watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
-          },
-          {
-            approveOperations: [schema.Operation],
-            watchOperations: [schema.Operation],
-            approveAccounts: [schema.Account],
-            watchAccounts: [schema.Account]
-          },
-          mockEntities
-        );
+      // // case "/accounts":
+      // //   console.log(
+      // //     denormalize(
+      // //       Object.keys(mockEntities.accounts),
+      // //       [schema.Account],
+      // //       mockEntities
+      // //     )
+      // //   );
+      // return denormalize(
+      //   Object.keys(mockEntities.accounts),
+      //   [schema.Account],
+      //   mockEntities
+      // );
+      // case "/pendings":
+      //   return denormalize(
+      //     {
+      //       approveOperations: Object.keys(mockEntities.operations).slice(0, 3),
+      //       watchOperations: Object.keys(mockEntities.operations).slice(4, 7),
+      //       approveAccounts: Object.keys(mockEntities.accounts).slice(0, 2),
+      //       watchAccounts: Object.keys(mockEntities.accounts).slice(2, 4)
+      //     },
+      //     {
+      //       approveOperations: [schema.Operation],
+      //       watchOperations: [schema.Operation],
+      //       approveAccounts: [schema.Account],
+      //       watchAccounts: [schema.Account]
+      //     },
+      //     mockEntities
+      //   );
       case "/dashboard/total-balance":
         return {
           currencyName: "EUR",
@@ -338,6 +351,12 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           membersCount: 8
         };
       case "/dashboard/last-operations":
+        console.log(Object.keys(mockEntities.operations).slice(0, 6));
+        return denormalize(
+          Object.keys(mockEntities.operations).slice(0, 6),
+          [schema.Operation],
+          mockEntities
+        );
         return denormalize(
           Object.keys(mockEntities.operations).slice(0, 6),
           [schema.Operation],

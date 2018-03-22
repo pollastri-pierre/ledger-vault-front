@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import ModalLoading from "components/ModalLoading";
@@ -39,7 +40,7 @@ const styles = {
     height: "615px"
   },
   content: {
-    height: 330
+    height: 350
   }
 };
 class AccountCreationMembers extends Component<{
@@ -69,7 +70,7 @@ class AccountCreationMembers extends Component<{
           </InfoModal>
         </header>
         <div className={classes.content}>
-          <Overscroll top={20} bottom={98}>
+          <Overscroll top={20} bottom={0}>
             {members.map(member => {
               const isChecked = approvers.indexOf(member.pub_key) > -1;
               return (
@@ -97,8 +98,14 @@ class AccountCreationMembers extends Component<{
   }
 }
 
+const RenderError = ({ error, restlay }: *) => (
+  <div style={{ width: 440, height: 615 }}>
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </div>
+);
 export default connectData(withStyles(styles)(AccountCreationMembers), {
   RenderLoading: ModalLoading,
+  RenderError,
   queries: {
     members: MembersQuery
   }

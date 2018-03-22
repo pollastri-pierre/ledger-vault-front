@@ -11,7 +11,7 @@ type Input = {
 type Response = Account; // the account that has been created
 
 export default class NewAccountMutation extends Mutation<Input, Response> {
-  uri = "/organization/account";
+  uri = "/accounts";
   method = "POST";
 
   responseSchema = schema.Member;

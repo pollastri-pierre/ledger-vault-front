@@ -6,6 +6,9 @@ import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
 import { countervalueForRate } from "data/currency";
 import type { Account } from "data/types";
+import { listCurrencies } from "@ledgerhq/currencies";
+
+const allCurrencies = listCurrencies();
 
 const styles = {
   accountItem: {
@@ -56,6 +59,11 @@ class AccountMenuItem extends PureComponent<{
 
   render() {
     const { account, selected, classes } = this.props;
+    const curr = allCurrencies.find(
+      c => c.scheme === account.currency.name
+    ) || {
+      color: "black"
+    };
     const counterValueUnit = countervalueForRate(
       account.currencyRate,
       account.balance
@@ -63,7 +71,7 @@ class AccountMenuItem extends PureComponent<{
     return (
       <MenuItem
         className={classes.accountItem}
-        style={{ color: account.currency.color }}
+        style={{ color: curr.color }}
         button
         disableRipple
         selected={selected}

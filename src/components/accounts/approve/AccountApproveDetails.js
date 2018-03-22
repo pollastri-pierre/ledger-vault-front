@@ -19,8 +19,10 @@ function AccountApproveDetails(props: {
   approvers: Member[]
 }) {
   const { account, approvers } = props;
-  const { security_scheme, currency, approved } = account;
-  const percentage = Math.round(100 * (approved.length / approvers.length));
+  const { security_scheme, currency } = account;
+  const percentage = Math.round(
+    100 * (account.approvals.length / approvers.length)
+  );
   return (
     <div>
       <div
@@ -34,7 +36,7 @@ function AccountApproveDetails(props: {
         <BadgeSecurity
           icon={<BigSecurityMembersIcon />}
           label="Members"
-          value={`${security_scheme.approvers.length} selected`}
+          value={`${account.members.length} selected`}
         />
         <BadgeSecurity
           icon={<BigSecurityTimeLockIcon />}
@@ -45,12 +47,21 @@ function AccountApproveDetails(props: {
         <BadgeSecurity
           icon={<BigSecurityRateLimiterIcon />}
           label="Rate Limiter"
-          disabled={!security_scheme.rate_limiter}
+          disabled={
+            !security_scheme.rate_limiter ||
+            !security_scheme.rate_limiter.max_transaction
+          }
           value={
             security_scheme.rate_limiter && (
               <RateLimiterValue
-                max_transaction={security_scheme.rate_limiter.max_transaction}
-                time_slot={security_scheme.rate_limiter.time_slot}
+                max_transaction={
+                  security_scheme.rate_limiter &&
+                  security_scheme.rate_limiter.max_transaction
+                }
+                time_slot={
+                  security_scheme.rate_limiter &&
+                  security_scheme.rate_limiter.time_slot
+                }
               />
             )
           }
@@ -73,10 +84,10 @@ function AccountApproveDetails(props: {
           <AccountName name={account.name} currency={currency} />
         </LineRow>
         <LineRow label="currency">
-          <span className="info-value currency">{currency.units[0].name}</span>
+          <span className="info-value currency">{currency.units[1].name}</span>
         </LineRow>
         <LineRow label="Approvals to spend">
-          {security_scheme.quorum} of {security_scheme.approvers.length} members
+          {security_scheme.quorum} of {account.members.length} members
         </LineRow>
       </div>
     </div>

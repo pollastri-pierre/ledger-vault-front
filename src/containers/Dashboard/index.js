@@ -1,4 +1,6 @@
 //@flow
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import connectData from "restlay/connectData";
 import React, { Component } from "react";
 import Card from "components/Card";
 import Currencies from "./Currencies";
@@ -75,4 +77,8 @@ class Dashboard extends Component<
   }
 }
 
-export default withStyles(styles)(Dashboard);
+export default connectData(withStyles(styles)(Dashboard), {
+  queries: {
+    currencies: CurrenciesQuery
+  }
+});

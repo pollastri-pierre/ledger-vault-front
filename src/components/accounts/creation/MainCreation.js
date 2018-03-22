@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import _ from "lodash";
 import connectData from "restlay/connectData";
 import NewAccountMutation from "api/mutations/NewAccountMutation";
+import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
@@ -69,14 +70,38 @@ class MainCreation extends Component<Props> {
         isNextDisabled = true;
     }
 
-    const save = () =>
-      props.restlay
-        .commitMutation(
-          new NewAccountMutation({
-            put_data_here: 42
-          })
-        )
-        .then(close);
+    const save = () => {
+      const { account } = this.props;
+      const approvers = account.approvers.map(pubKey => {
+        return { pub_key: pubKey };
+      });
+      const securityScheme = Object.assign(
+        {
+          quorum: account.quorum
+        },
+        account.time_lock.enabled && {
+          time_lock: account.time_lock.value * account.time_lock.frequency
+        },
+        account.rate_limiter.enabled && {
+          rate_limiter: {
+            max_transaction: account.rate_limiter.value,
+            time_slot: account.rate_limiter.frequency
+          }
+        }
+      );
+
+      const data = {
+        name: account.name,
+        currency: account.currency.name,
+        security_scheme: securityScheme,
+        members: approvers
+      };
+
+      return props.restlay
+        .commitMutation(new NewAccountMutation(data))
+        .then(close)
+        .then(props.restlay.fetchQuery(new PendingAccountsQuery()));
+    };
 
     return (
       <div className={classes.base}>

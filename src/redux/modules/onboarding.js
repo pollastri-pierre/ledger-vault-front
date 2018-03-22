@@ -24,6 +24,8 @@ export const ADD_SIGNEDIN = "onboarding/ADD_SIGNEDIN";
 export const ADD_SEED_SHARD = "onboarding/ADD_SEED_SHARD";
 export const SUCCESS_SEED_SHARDS = "onboarding/SUCCESS_SEED_SHARDS";
 export const EDIT_MEMBER = "onboarding/EDIT_MEMBER";
+export const LOCK_PARTITION = "onboarding/LOCK_PARTITION";
+export const REGISTER_KEYHANDLE = "onboarding/REGISTER_KEYHANDLE";
 
 type Challenge = {
   challenge: string,
@@ -69,8 +71,11 @@ export type Store = {
   signInModal: boolean,
   generateSeedModal: boolean,
   shards_channel: ?string,
-  shards: Array<*>
+  shards: Array<*>,
+  partition_locked: boolean,
+  key_handles: Object
 };
+
 const initialState: Store = {
   nbRequired: 3,
   members: [],
@@ -89,7 +94,9 @@ const initialState: Store = {
   signInModal: false,
   generateSeedModal: false,
   shards_channel: null,
-  shards: []
+  shards: [],
+  partition_locked: false,
+  key_handles: {}
 };
 
 export function goToStep(step_label: string) {
@@ -99,11 +106,19 @@ export function goToStep(step_label: string) {
   };
 }
 
+export function registerKeyHandle(pubKey: string, keyHandle: string) {
+  return {
+    type: REGISTER_KEYHANDLE,
+    pubKey,
+    keyHandle
+  };
+}
+
 export function setAdminScheme() {
   return async (dispatch: Function, getState: () => Object) => {
     const { nbRequired } = getState()["onboarding"];
-    return await network("/provisioning/administrators/rules", "POST", {
-      quorum: nbRequired
+    return await network("/hsm/admins/commit", "POST", {
+      quorum: parseInt(nbRequired, 10)
     });
   };
 }
@@ -112,6 +127,16 @@ export function gotShardsChannel(shards_channel: Channel) {
   return {
     type: GOT_SHARDS_CHANNEL,
     shards_channel
+  };
+}
+
+export function getShardsChannel() {
+  return async dispatch => {
+    const shards = await network("/hsm/partition/provisioning/start", "POST", {
+      count_shards: 3
+    });
+
+    dispatch(gotShardsChannel(shards));
   };
 }
 
@@ -153,8 +178,15 @@ export function addSeedShard(data: *) {
     data
   };
 }
-export function addSignedIn(data: *) {
-  return (dispatch: Function) => {
+
+export function addSignedIn(pub_key: string, signature: *) {
+  return async (dispatch: Function) => {
+    const data = {
+      pub_key: pub_key.toUpperCase(),
+      authentication: signature.rawResponse
+    };
+
+    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
     dispatch({
       type: ADD_SIGNEDIN,
       data
@@ -166,23 +198,15 @@ export function provisioningShards() {
   return async (dispatch: Function, getState: Function) => {
     const { shards } = getState()["onboarding"];
     dispatch(nextStep());
-    await network("/provisioning/seed/shards", "POST", { shards: shards });
+    await network("/hsm/partition/provisioning/commit", "POST", {
+      fragments: shards
+    });
     return dispatch({
       type: SUCCESS_SEED_SHARDS
     });
   };
 }
 
-export function openShardsChannel() {
-  return async (dispatch: Function, getState: Function) => {
-    const { signed } = getState()["onboarding"];
-    return await network("/provisioning/seed/open_shards_channel", "POST", {
-      signed: signed
-    }).then(data => {
-      dispatch(gotShardsChannel(data.shards_channel));
-    });
-  };
-}
 export function toggleModalProfile(member: Member) {
   return {
     type: TOGGLE_MODAL_PROFILE,
@@ -210,21 +234,11 @@ export function gotShardChallenge(challenge: Challenge) {
   };
 }
 
-export function commitAdministrators(commit_signature: *) {
-  return async (dispatch: Function) => {
-    await network("/provisioning/administrators/commit", "POST", {
-      commit_signature
-    });
-
-    return dispatch({ type: COMMIT_ADMINISTRATORS });
-  };
-}
-
 export function signedMember() {}
 export function getCommitChallenge() {
   return async (dispatch: Function) => {
     const challenge = await network(
-      "/provisioning/administrators/commit_challenge",
+      "/hsm/confirmation/partition/challenge",
       "GET"
     );
 
@@ -239,37 +253,52 @@ export function gotChallengeRegistation(challenge: Challenge) {
   };
 }
 
-export function gotBootstrapToken(token: string) {
+export function gotBootstrapToken(result: *) {
   return (dispatch: Function) => {
-    window.localStorage.setItem("token", token);
     dispatch({
       type: GOT_BOOTSTRAP_TOKEN,
-      token
+      result
     });
   };
 }
 
-export function getBootstrapToken(pub_key: string, authentication: string) {
-  return async (dispatch: Function, getState: () => Object) => {
-    const { bootstrapChallenge } = getState()["onboarding"];
+export function getBootstrapToken(pub_key: string, signature: string) {
+  return async (dispatch: Function => Object) => {
     const data = {
-      id: bootstrapChallenge.id,
-      authentication: authentication,
-      pub_key: pub_key
+      pub_key: pub_key.toUpperCase(),
+      authentication: signature.rawResponse
     };
-    const { token } = await network("/authenticate", "POST", data);
-    try {
-      return dispatch(gotBootstrapToken(token));
-    } catch (e) {
-      return e;
-    }
+    const result = await network(
+      "/hsm/authentication/bootstrap/authenticate",
+      "POST",
+      data
+    );
+    return dispatch(gotBootstrapToken(result));
+  };
+}
+
+export function lockPartition() {
+  return {
+    type: LOCK_PARTITION
+  };
+}
+
+export function commitAdministrators(pub_key: string, signature: string) {
+  return async (dispatch: Function => Object) => {
+    const data = {
+      pub_key: pub_key.toUpperCase(),
+      authentication: signature.rawResponse
+    };
+    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
+    await network("/hsm/partition/lock", "POST");
+    return dispatch(lockPartition());
   };
 }
 
 export function getShardChallenge() {
   return async (dispatch: Function) => {
     const challenge = await network(
-      "/provisioning/seed/shards_channel_challenge",
+      "/hsm/session/admin/partition/challenge",
       "GET"
     );
     return dispatch(gotShardChallenge(challenge));
@@ -278,7 +307,10 @@ export function getShardChallenge() {
 
 export function getBootstrapChallenge() {
   return async (dispatch: Function) => {
-    const challengeObject = await network("/authentication_challenge", "GET");
+    const challengeObject = await network(
+      "/hsm/authentication/bootstrap/challenge",
+      "GET"
+    );
     return dispatch(gotBootstrapChallenge(challengeObject));
   };
 }
@@ -293,7 +325,7 @@ export function gotBootstrapChallenge(challenge: Challenge) {
 export function getChallengeRegistration() {
   return async (dispatch: Function) => {
     const { challenge } = await network(
-      "/provisioning/administrators/register",
+      "/hsm/admins/register/challenge",
       "GET"
     );
     return dispatch(gotChallengeRegistation(challenge));
@@ -392,7 +424,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     case GOT_BOOTSTRAP_TOKEN: {
       return {
         ...state,
-        bootstrapAuthToken: action.token
+        bootstrapAuthToken: action.result
       };
     }
     case GOT_CHALLENGE_REGISTRATION: {
@@ -400,6 +432,15 @@ export default function reducer(state: Store = initialState, action: Object) {
         ...state,
         challenge_registration: action.challenge,
         isLoadingChallengeRegistration: false
+      };
+    }
+    case REGISTER_KEYHANDLE: {
+      return {
+        ...state,
+        key_handles: {
+          ...state.key_handles,
+          ...{ [action.pubKey]: action.keyHandle }
+        }
       };
     }
     case GOT_SHARD_CHALLENGE: {
@@ -428,7 +469,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     }
     case ADD_SIGNEDIN: {
       const index = state.signed.findIndex(
-        member => member.pub_key.pubKey === action.data.pub_key.pubKey
+        member => member.pub_key === action.data.pub_key
       );
 
       if (index > -1) {
@@ -466,6 +507,12 @@ export default function reducer(state: Store = initialState, action: Object) {
       }
 
       return state;
+    }
+    case LOCK_PARTITION: {
+      return {
+        ...state,
+        partition_locked: true
+      };
     }
     case SUCCESS_SEED_SHARDS: {
       return {

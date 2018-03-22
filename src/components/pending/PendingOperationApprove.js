@@ -25,10 +25,15 @@ function PendingOperationApprove(props: Props) {
     return <p>There are no operations to approve</p>;
   }
 
+  // const firstAccount = accounts.find(id => operations[0].account_id);
+  const firstAccount = accounts[0];
+
   let totalAmount = {
-    fiat: operations[0].rate.fiat,
+    fiat: firstAccount.currencyRate.fiat,
     value: operations.reduce(
-      (sum, op) => countervalueForRate(op.rate, op.amount).value + sum,
+      (sum, op) =>
+        countervalueForRate(firstAccount.currencyRate, op.price.amount).value +
+        sum,
       0
     )
   };
@@ -58,8 +63,8 @@ function PendingOperationApprove(props: Props) {
             className={classnames(classes.row, {
               [classes.approved]: approved
             })}
-            to={`/pending/operation/${operation.uuid}`}
-            key={operation.uuid}
+            to={`/pending/operation/${operation.id}`}
+            key={operation.id}
           >
             <div>
               <span className={classes.date}>
@@ -69,7 +74,7 @@ function PendingOperationApprove(props: Props) {
                 {!account ? null : (
                   <CurrencyAccountValue
                     account={account}
-                    value={operation.amount}
+                    value={operation.price.amount}
                   />
                 )}
               </span>
@@ -77,8 +82,8 @@ function PendingOperationApprove(props: Props) {
                 {!account ? null : (
                   <CurrencyAccountValue
                     account={account}
-                    value={operation.amount}
-                    rate={operation.rate}
+                    value={operation.price.amount}
+                    rate={account.rate}
                     countervalue
                   />
                 )}

@@ -11,8 +11,8 @@ type Input = {
 type Response = Account;
 
 export default class ApproveAccountMutation extends Mutation<Input, Response> {
-  uri = `/accounts/${this.props.accountId}`;
-  method = "PUT";
+  uri = `/accounts/${this.props.accountId}/approve`;
+  method = "POST";
   responseSchema = schema.Account;
 
   getSuccessNotification() {

@@ -36,7 +36,6 @@ export default function<T>(
         )
         .then(e => Promise.reject(e));
     }
-    console.error(response);
     return response.json();
   });
 }

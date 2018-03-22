@@ -13,7 +13,7 @@ type Response = {
 
 // Fetch a single operation and its associated account
 export default class OperationWithAccountQuery extends Query<Input, Response> {
-  uri = `/operations/${this.props.operationId}/with-account`;
+  uri = `/operations/${this.props.operationId}/account`;
   responseSchema = {
     operation: schema.Operation,
     account: schema.Account

@@ -4,7 +4,7 @@ import { withStyles } from "material-ui/styles";
 import colors from "../../../shared/colors";
 import connectData from "restlay/connectData";
 import { TextField } from "components";
-import CurrencyNameValue from "../../CurrencyNameValue";
+import CurrencyAccountValue from "../../CurrencyAccountValue";
 import type { Account } from "data/types";
 import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
@@ -26,15 +26,15 @@ type State = {
   address: string,
   addressIsValid: boolean,
   feesSelected: Speed,
-  feesAmount: number,
+  feesAmount: number
 };
 
 const styles = {
   root: {
-    padding: "0 40px",
+    padding: "0 40px"
   },
   unitSelect: {
-    fontSize: 22,
+    fontSize: 22
   },
   countervalue: {
     display: "flex",
@@ -43,15 +43,15 @@ const styles = {
     lineHeight: 2.42,
     fontSize: 22,
     color: colors.lead,
-    marginBottom: 25,
+    marginBottom: 25
   },
   feesFiat: {
     marginTop: 18,
     textAlign: "right",
     color: colors.steel,
     fontWeight: 600,
-    fontSize: 11,
-  },
+    fontSize: 11
+  }
 };
 
 const InputFieldMerge = ({ children }: *) => (
@@ -60,7 +60,7 @@ const InputFieldMerge = ({ children }: *) => (
       display: "flex",
       flexDirection: "row",
       alignItems: "flex-end",
-      width: "100%",
+      width: "100%"
     }}
   >
     {children}
@@ -74,15 +74,15 @@ class OperationCreationDetails extends Component<
     details: Details,
     classes: { [_: $Keys<typeof styles>]: string },
     // from connectData
-    restlay: *,
+    restlay: *
   },
-  State,
+  State
 > {
   constructor(props) {
     super(props);
     const { account } = this.props;
     this.state = {
-      unitIndex: account.settings.unitIndex,
+      unitIndex: 0,
       maxMenuOpen: false,
       amount: "",
       amountIsValid: true,
@@ -90,28 +90,33 @@ class OperationCreationDetails extends Component<
       address: "",
       addressIsValid: true,
       feesSelected: "medium",
-      feesAmount: 0,
+      feesAmount: 0
     };
     this.setFees("medium");
   }
 
   setAmount = (
     amount: string = this.state.amount,
-    magnitude: number = this.props.account.currency.units[this.state.unitIndex].magnitude,
-    fees: number = this.state.feesAmount,
+    magnitude: number = this.props.account.currency.units[this.state.unitIndex]
+      .magnitude,
+    fees: number = this.state.feesAmount
   ) => {
-    const satoshis: number = Math.round((parseFloat(amount) || 0) * 10 ** magnitude);
+    const satoshis: number = Math.round(
+      (parseFloat(amount) || 0) * 10 ** magnitude
+    );
     const balance: number = this.props.account.balance;
     const max: number = balance - fees;
-    const decimals: string = amount.replace(/(.*\.|.*[^.])/, "").replace(/0+$/, "");
+    const decimals: string = amount
+      .replace(/(.*\.|.*[^.])/, "")
+      .replace(/0+$/, "");
 
     this.setState(
       {
         amount,
         amountIsValid: satoshis <= max && decimals.length <= magnitude,
-        satoshis: satoshis,
+        satoshis: satoshis
       },
-      this.validateTab,
+      this.validateTab
     );
   };
 
@@ -132,7 +137,8 @@ class OperationCreationDetails extends Component<
   setMax = (e: SyntheticEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const magnitude = this.props.account.currency.units[this.state.unitIndex].magnitude;
+    const magnitude = this.props.account.currency.units[this.state.unitIndex]
+      .magnitude;
     const balance = this.props.account.balance;
     const fees = this.state.feesAmount;
     const amount = (balance - fees) / 10 ** magnitude;
@@ -153,7 +159,7 @@ class OperationCreationDetails extends Component<
         .then(r => {
           if (address === this.state.address) {
             // still on same address
-            this.setState({ addressIsValid: r.valid }, this.validateTab);
+            this.setState({ addressIsValid: r.is_valid }, this.validateTab);
           }
         });
     }
@@ -162,12 +168,14 @@ class OperationCreationDetails extends Component<
   setFees = (fee: Speed) => {
     const { restlay, account } = this.props;
 
-    restlay.fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee })).then(res => {
-      const feesAmount = res.value;
+    restlay
+      .fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee }))
+      .then(res => {
+        const feesAmount = res.fees;
 
-      this.setState({ feesAmount });
-      this.setAmount(undefined, undefined, feesAmount);
-    });
+        this.setState({ feesAmount });
+        this.setAmount(undefined, undefined, feesAmount);
+      });
   };
 
   onChangeFee = (feesSelected: Speed) => {
@@ -178,17 +186,32 @@ class OperationCreationDetails extends Component<
   validateTab = () => {
     // FIXME this should be refactored and remove. validation to be done in render() / address/amount to come via props from parent
     const details: Details = {
-      amount: this.state.satoshis > 0 && this.state.amountIsValid ? this.state.satoshis : null,
-      address: this.state.address !== "" && this.state.addressIsValid ? this.state.address : null,
-      fees: this.state.feesAmount,
+      amount:
+        this.state.satoshis > 0 && this.state.amountIsValid
+          ? this.state.satoshis
+          : null,
+      address:
+        this.state.address !== "" && this.state.addressIsValid
+          ? this.state.address
+          : null,
+      fees: this.state.feesAmount
     };
 
     this.props.saveDetails(details);
   };
 
   getCounterValue = (sat: number, showCode: boolean = false) => {
-    const counterValue = countervalueForRate(this.props.account.currencyRate, sat);
-    const fiat = formatCurrencyUnit(counterValue.unit, counterValue.value, showCode, false, true);
+    const counterValue = countervalueForRate(
+      this.props.account.currencyRate,
+      sat
+    );
+    const fiat = formatCurrencyUnit(
+      counterValue.unit,
+      counterValue.value,
+      showCode,
+      false,
+      true
+    );
 
     return fiat;
   };
@@ -237,20 +260,28 @@ class OperationCreationDetails extends Component<
         <ModalSubTitle noPadding>Confirmation fees</ModalSubTitle>
 
         <InputFieldMerge>
-          <FeeSelect value={this.state.feesSelected} onChange={this.onChangeFee} />
+          <FeeSelect
+            value={this.state.feesSelected}
+            onChange={this.onChangeFee}
+          />
           <div
             style={{
               flex: 1,
               textAlign: "right",
               paddingBottom: 20,
-              borderBottom: "1px solid #eeeeee",
+              borderBottom: "1px solid #eeeeee"
             }}
           >
-            <CurrencyNameValue currencyName={account.currency.name} value={this.state.feesAmount} />
+            <CurrencyAccountValue
+              account={account}
+              value={this.state.feesAmount}
+            />
           </div>
         </InputFieldMerge>
 
-        <div className={classes.feesFiat}>{this.getCounterValue(this.state.feesAmount, true)}</div>
+        <div className={classes.feesFiat}>
+          {this.getCounterValue(this.state.feesAmount, true)}
+        </div>
       </div>
     );
   }

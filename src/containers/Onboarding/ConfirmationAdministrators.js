@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import createDevice, { APPID_VAULT_BOOTSTRAP } from "device";
+import createDevice, { APPID_VAULT_BOOTSTRAP, U2F_PATH } from "device";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Authenticator from "./Authenticator";
 import { withStyles } from "material-ui/styles";
@@ -35,7 +35,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatch = dispatch => ({
   onGetCommitChallenge: () => dispatch(getCommitChallenge()),
-  onCommitAdministrators: data => dispatch(commitAdministrators(data)),
+  onCommitAdministrators: (key, signature) =>
+    dispatch(commitAdministrators(key, signature)),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success))
 });
@@ -76,16 +77,20 @@ class ConfirmationAdministrators extends Component<Props, State> {
     this.setState({ step: 1 });
     try {
       const device = await createDevice();
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+      const instanceName = "";
+      const instanceReference = "";
+      const instanceURL = "";
+      const agentRole = "";
 
-      const instanceName = "_";
-      const instanceReference = "_";
-      const instanceURL = "_";
-      const agentRole = "_";
+      const keyHandle = this.props.onboarding.commit_challenge.key_handle
+        .key_handle;
+      const challenge = this.props.onboarding.commit_challenge.challenge;
 
       const commit_signature = await device.authenticate(
-        this.props.onboarding.commit_challenge.challenge,
+        Buffer.from(challenge, "base64"),
         APPID_VAULT_BOOTSTRAP,
-        this.props.onboarding.commit_challenge.handles[0],
+        Buffer.from(keyHandle, "base64"),
         instanceName,
         instanceReference,
         instanceURL,
@@ -93,7 +98,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
       );
 
       this.setState({ step: 2 });
-      await this.props.onCommitAdministrators(commit_signature);
+      await this.props.onCommitAdministrators(pubKey, commit_signature);
       this.setState({ step: 3 });
     } catch (e) {
       console.error(e);
@@ -117,11 +122,16 @@ class ConfirmationAdministrators extends Component<Props, State> {
         </Introduction>
         <div className={classes.flex}>
           <SubTitle>Team members</SubTitle>
-          <span className={classes.value}>6 registerered administrators</span>
+          <span className={classes.value}>
+            {onboarding.members.length} registerered administrators
+          </span>
         </div>
         <div className={cx(classes.flex, classes.second)}>
           <SubTitle>Administration scheme</SubTitle>
-          <span className={classes.value}>Require 4 members out of 6</span>
+          <span className={classes.value}>
+            Require {onboarding.nbRequired} members out of{" "}
+            {onboarding.members.length}
+          </span>
         </div>
         <Authenticator step={this.state.step} />
         <Footer
@@ -129,7 +139,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
             <DialogButton
               highlight
               onTouchTap={() => onNext()}
-              disabled={!onboarding.committed_administrators}
+              disabled={!onboarding.partition_locked}
             >
               Continue
             </DialogButton>

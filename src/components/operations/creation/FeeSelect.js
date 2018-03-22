@@ -10,51 +10,52 @@ import { withStyles } from "material-ui/styles";
 
 type Fee = {
   key: string,
-  title: string,
+  title: string
 };
 
 const styles = {
   select: {
-    paddingBottom: 13,
+    paddingBottom: 13
   },
   menu: {
-    color: "#27d0e2",
-  },
+    color: "#27d0e2"
+  }
 };
 
 class FeePicker extends Component<{
   fees: Array<Fee>,
   value: Speed,
   onChange: Speed => void,
-  classes: { [_: $Keys<typeof styles>]: string },
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   static defaultProps = {
     fees: [
       {
         key: "slow",
-        title: "Slow (1 hour)",
+        title: "Slow (1 hour)"
       },
       {
         key: "medium",
-        title: "Medium (30 minutes)",
+        title: "Medium (30 minutes)"
       },
       {
         key: "fast",
-        title: "Fast (10 minutes)",
-      },
-    ],
+        title: "Fast (10 minutes)"
+      }
+    ]
   };
 
-  renderValue = (key: string) => (this.props.fees.find(f => f.key === key) || {}).title;
+  renderValue = (key: string) =>
+    (this.props.fees.find(f => f.key === key) || {}).title;
 
-  onChange = (e: SyntheticEvent<>) => {
+  onChange = (e: *) => {
     const { target } = e;
-    if (target instanceof HTMLInputElement) {
-      const { value } = target;
-      if (value in speeds) {
-        this.props.onChange(value);
-      }
+    // if (target instanceof HTMLInputElement) {
+    const { value } = target;
+    if (value in speeds) {
+      this.props.onChange(value);
     }
+    // }
   };
 
   render() {
@@ -66,11 +67,18 @@ class FeePicker extends Component<{
         className={cx("MuiSelect-disable-arrow")}
         classes={{ root: classes.select }}
         renderValue={value => (
-          <BlueSelectRightRenderValue>{this.renderValue(value)}</BlueSelectRightRenderValue>
+          <BlueSelectRightRenderValue>
+            {this.renderValue(value)}
+          </BlueSelectRightRenderValue>
         )}
       >
         {fees.map(fee => (
-          <MenuItem disableRipple value={fee.key} key={fee.key} className={classes.menu}>
+          <MenuItem
+            disableRipple
+            value={fee.key}
+            key={fee.key}
+            className={classes.menu}
+          >
             <span style={{ color: "black" }}>{fee.title}</span>
           </MenuItem>
         ))}

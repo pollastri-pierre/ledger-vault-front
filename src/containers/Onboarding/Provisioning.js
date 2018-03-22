@@ -1,5 +1,6 @@
 //@flow
 import BlurDialog from "components/BlurDialog";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import { connect } from "react-redux";
@@ -18,6 +19,7 @@ import Footer from "./Footer";
 import {
   toggleGenerateSeed,
   addSeedShard,
+  getShardsChannel,
   provisioningShards
 } from "redux/modules/onboarding";
 
@@ -110,6 +112,7 @@ type Props = {
   classes: { [$Keys<typeof styles>]: string },
   onboarding: *,
   onToggleGenerateSeed: Function,
+  onGetShardsChannel: Function,
   onProvisioningShards: Function,
   onAddSeedShard: Function
 };
@@ -122,8 +125,18 @@ class Provisioning extends Component<Props> {
     this.props.onAddSeedShard(data);
   };
 
+  componentDidMount() {
+    const { onboarding, onGetShardsChannel } = this.props;
+    if (!onboarding.shards_channel) {
+      this.props.onGetShardsChannel();
+    }
+  }
+
   render() {
     const { classes, onboarding, onToggleGenerateSeed } = this.props;
+    if (!onboarding.shards_channel) {
+      return <SpinnerCard />;
+    }
     return (
       <div>
         <Title>Provisioning</Title>
@@ -205,6 +218,7 @@ const mapProps = state => ({
 const mapDispatch = dispatch => ({
   onToggleGenerateSeed: () => dispatch(toggleGenerateSeed()),
   onAddSeedShard: data => dispatch(addSeedShard(data)),
+  onGetShardsChannel: () => dispatch(getShardsChannel()),
   onProvisioningShards: () => dispatch(provisioningShards())
 });
 

@@ -14,13 +14,13 @@ function OperationApproveDetails(props: {
   profile: Member
 }) {
   const { operation, account, profile } = props;
-  const { rate } = operation;
+  const rate = account.currencyRate;
 
   return (
     <div>
       <OverviewOperation
-        hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
-        amount={operation.amount}
+        hash={operation.tx_hash}
+        amount={operation.price.amount}
         account={account}
         rate={rate}
       />
@@ -28,8 +28,8 @@ function OperationApproveDetails(props: {
         <LineRow label="status">
           <ApprovalStatus
             approvingObject={operation}
-            approved={operation.approved}
-            approvers={account.security_scheme.approvers}
+            approved={operation.approvals}
+            approvers={account.members}
             nbRequired={account.security_scheme.quorum}
             user={profile}
           />
@@ -41,12 +41,12 @@ function OperationApproveDetails(props: {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="Confirmation fees">
-          <Amount account={account} value={operation.fees} rate={rate} />
+          <Amount account={account} value={operation.fees.amount} rate={rate} />
         </LineRow>
         <LineRow label="Total Spent">
           <Amount
             account={account}
-            value={operation.amount}
+            value={operation.price.amount}
             rate={rate}
             strong
           />

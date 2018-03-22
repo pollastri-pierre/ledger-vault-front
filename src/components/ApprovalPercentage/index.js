@@ -1,11 +1,11 @@
 //@flow
 import React from "react";
 import PercentageBarProgress from "../PercentageBarProgress";
-import type { Member } from "data/types";
+import type { Member, Approval } from "data/types";
 
 function ApprovalPercentage(props: {
   approvers: Member[],
-  approved: string[],
+  approved: Approval[],
   nbRequired?: number
 }) {
   const { approved, approvers, nbRequired } = props;
@@ -16,7 +16,7 @@ function ApprovalPercentage(props: {
 
   const label = (
     <p>
-      {approved.length} collected, {approvers.length - nbTotal} remaining
+      {approved.length} collected, {nbTotal - approved.length} remaining
       <span> ({100 * percentage}%)</span>
     </p>
   );

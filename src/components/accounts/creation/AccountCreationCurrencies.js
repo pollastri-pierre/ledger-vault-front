@@ -142,20 +142,19 @@ class AccountCreationCurrencies extends Component<{
             tabIndex="0"
             key={cur.units[0].name}
             className={classnames(classes.row, {
-              [classes.selected]:
-                currency && currency.units[0].name === cur.units[0].name
+              [classes.selected]: currency && currency.name === cur.name
             })}
           >
             <div className="wrapper">
               <span
                 className={classnames(
                   classes.name,
-                  getCurrencyClassName(cur.units[0].name)
+                  getCurrencyClassName(cur.name)
                 )}
               >
-                {cur.units[0].name}
+                {cur.name}
               </span>
-              <span className={classes.short}>{cur.units[0].symbol}</span>
+              <span className={classes.short}>{cur.units[1].symbol}</span>
             </div>
           </div>
         ))}

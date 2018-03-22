@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import { Overscroll } from "../../";
 import { withRouter, Redirect } from "react-router";
 import connectData from "restlay/connectData";
 import Tabs, { Tab } from "material-ui/Tabs";
@@ -13,7 +12,6 @@ import AccountApproveMembers from "./AccountApproveMembers";
 import ModalLoading from "components/ModalLoading";
 import AccountApproveApprovals from "./AccountApproveApprovals";
 import AccountQuery from "api/queries/AccountQuery";
-import ApproversQuery from "api/queries/ApproversQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
 import type { Member, Account } from "data/types";
@@ -49,9 +47,8 @@ class AccountApprove extends Component<Props, { value: number }> {
   };
   render() {
     const {
-      members,
       profile,
-      approvers,
+      members,
       account,
       close,
       approve,
@@ -59,6 +56,26 @@ class AccountApprove extends Component<Props, { value: number }> {
       classes
     } = this.props;
     const { value } = this.state;
+
+    const hasApproved = (approvers, profile) =>
+      approvers.find(approver => approver.person.pub_key === profile.pub_key);
+
+    const GenericFooter = ({ percentage }: { percentage?: boolean }) => (
+      <Footer
+        close={close}
+        approve={() => approve(account)}
+        aborting={aborting}
+        approved={hasApproved(account.approvals, profile)}
+        percentage={
+          percentage && (
+            <ApprovalPercentage
+              approvers={members}
+              approved={account.approvals}
+            />
+          )
+        }
+      />
+    );
 
     return (
       <div className={classes.base}>
@@ -72,48 +89,23 @@ class AccountApprove extends Component<Props, { value: number }> {
         </header>
         {value === 0 && (
           <div>
-            <AccountApproveDetails account={account} approvers={approvers} />
-            <Footer
-              close={close}
-              approve={approve}
-              aborting={aborting}
-              approved={account.approved.indexOf(profile.pub_key) > -1}
-            />
+            <AccountApproveDetails account={account} approvers={members} />
+            <GenericFooter />
           </div>
         )}
         {value === 1 && (
           <div>
-            <Overscroll top={20} bottom={100}>
-              <AccountApproveMembers members={members} account={account} />
-            </Overscroll>
-            <Footer
-              close={close}
-              approve={approve}
-              aborting={aborting}
-              approved={account.approved.indexOf(profile.pub_key) > -1}
-            />
+            <AccountApproveMembers members={account.members} />
+            <GenericFooter />
           </div>
         )}
         {value === 2 && (
           <div>
-            <Overscroll top={20} bottom={100}>
-              <AccountApproveApprovals
-                approvers={approvers}
-                account={account}
-              />
-            </Overscroll>
-            <Footer
-              close={close}
-              approve={approve}
-              aborting={aborting}
-              approved={account.approved.indexOf(profile.pub_key) > -1}
-              percentage={
-                <ApprovalPercentage
-                  approvers={approvers}
-                  approved={account.approved}
-                />
-              }
+            <AccountApproveApprovals
+              members={members}
+              approvers={account.approvals}
             />
+            <GenericFooter percentage />
           </div>
         )}
       </div>
@@ -130,7 +122,6 @@ const connected = connectData(withStyles(styles)(AccountApprove), {
   queries: {
     account: AccountQuery,
     members: MembersQuery,
-    approvers: ApproversQuery,
     profile: ProfileQuery
   },
   propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),

@@ -66,7 +66,7 @@ function PendingAccountApprove(props: Props) {
           </div>
           <div className={classes.status}>
             <ApprovalStatus
-              approved={account.approved}
+              approved={account.approvals || []}
               approvers={approvers}
               nbRequired={approvers.length}
               user={user}

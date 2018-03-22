@@ -18,7 +18,8 @@ function OperationApproveLocks(props: {
   account: Account
 }) {
   const { operation, account } = props;
-  const isUnactive = operation.approved.length < account.security_scheme.quorum;
+  const isUnactive =
+    operation.approvals.length < account.security_scheme.quorum;
   const approvingObjectMeta = calculateApprovingObjectMeta(operation);
   return (
     <div>
@@ -27,27 +28,28 @@ function OperationApproveLocks(props: {
         account{"'"}s members and locks have completed
       </InfoModal>
       <div style={{ marginTop: "40px" }}>
-        {account.security_scheme.time_lock && (
-          <ApproveLockRow
-            icon={
-              <Hourglass
-                width="25px"
-                height="25px"
-                color="#cccccc"
-                strokeWidth="2px"
-              />
-            }
-            name="Time-lock"
-            value={getTimeLock(account.security_scheme.time_lock)}
-            state={
-              (approvingObjectMeta &&
-                approvingObjectMeta.timeLockRemaining) || (
-                <ValidateBadge className="confirmed" />
-              )
-            }
-            unactive={isUnactive}
-          />
-        )}
+        {account.security_scheme.time_lock &&
+          account.security_scheme.time_lock > 0 && (
+            <ApproveLockRow
+              icon={
+                <Hourglass
+                  width="25px"
+                  height="25px"
+                  color="#cccccc"
+                  strokeWidth="2px"
+                />
+              }
+              name="Time-lock"
+              value={getTimeLock(account.security_scheme.time_lock || 0)}
+              state={
+                (approvingObjectMeta &&
+                  approvingObjectMeta.timeLockRemaining) || (
+                  <ValidateBadge className="confirmed" />
+                )
+              }
+              unactive={isUnactive}
+            />
+          )}
 
         {account.security_scheme.rate_limiter && (
           <ApproveLockRow

@@ -5,23 +5,27 @@ import { withStyles } from "material-ui/styles";
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
+  updateTitle: Function,
+  updateNote: Function,
+  title: string,
+  note: string
 };
-
-const styleInput = { fontSize: "16px" };
-const styleLabel = { fontSize: "16px", fontWeight: 600 };
 
 const styles = {
   base: {
-    padding: "0 40px",
+    padding: "0 40px"
   },
   label: {
-    marginBottom: 20,
-  },
+    marginBottom: 20
+  }
 };
 
 class OperationCreationLabel extends PureComponent<Props> {
-  update = (ev: SyntheticEvent<HTMLInputElement>) => {
-    console.warn("NOT IMPLEMENTED", ev.currentTarget.value);
+  updateTitle = (ev: SyntheticEvent<HTMLInputElement>) => {
+    this.props.updateTitle(ev.currentTarget.value);
+  };
+  updateNote = (ev: SyntheticEvent<HTMLInputElement>) => {
+    this.props.updateNote(ev.currentTarget.value);
   };
 
   render() {
@@ -32,15 +36,15 @@ class OperationCreationLabel extends PureComponent<Props> {
         <TextField
           classes={{ root: classes.label }}
           fullWidth
+          value={this.props.title}
           placeholder="Title"
-          inputProps={{ style: styleLabel }}
-          onChange={this.update}
+          onChange={this.updateTitle}
         />
         <TextField
           placeholder="Add a comment"
-          inputProps={{ style: styleInput }}
+          value={this.props.note}
           fullWidth
-          onChange={this.update}
+          onChange={this.updateNote}
         />
       </div>
     );

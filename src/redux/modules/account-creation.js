@@ -53,6 +53,7 @@ export function setRatelimiter(ratelimiter: Ratelimiter) {
 }
 
 export function addMember(member: Member) {
+  console.log(member);
   return {
     type: ADD_MEMBER,
     member

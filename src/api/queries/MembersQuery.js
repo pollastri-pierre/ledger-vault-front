@@ -8,6 +8,7 @@ type Response = Member[];
 
 // fetch all organization members
 export default class MembersQuery extends Query<Input, Response> {
-  uri = "/organization/members";
+  uri = "/people";
   responseSchema = [schema.Member];
+  cacheMaxAge = 60;
 }

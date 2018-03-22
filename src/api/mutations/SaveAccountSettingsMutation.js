@@ -2,18 +2,17 @@
 import Mutation from "restlay/Mutation";
 import type { Account, AccountSettings } from "data/types";
 import { success, error } from "formatters/notification";
+import schema from "data/schema";
 
-type In = {
-  account: Account,
-  name: string,
-  settings: AccountSettings
-};
+type In = AccountSettings;
 
 type Res = Account;
 
 export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
-  method = "POST";
+  method = "PUT";
   uri = `/accounts/${this.props.account.id}/settings`;
+
+  responseSchema = schema.Account;
 
   getSuccessNotification() {
     return success("account settings", "saved");
@@ -24,7 +23,7 @@ export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   }
 
   getBody() {
-    const { account: { id }, name, settings } = this.props;
-    return { id, name, settings };
+    const { account, ...rest } = this.props;
+    return { ...rest };
   }
 }

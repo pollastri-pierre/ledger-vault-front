@@ -32,6 +32,11 @@ function Footer(props: {
         <DialogButton highlight className="cancel" onTouchTap={close}>
           Close
         </DialogButton>
+        <div style={{ float: "right" }}>
+          <DialogButton abort onTouchTap={aborting} className={classes.abort}>
+            Abort
+          </DialogButton>
+        </div>
       </div>
     );
   }
