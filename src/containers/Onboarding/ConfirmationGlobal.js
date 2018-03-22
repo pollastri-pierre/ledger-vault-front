@@ -74,12 +74,14 @@ const ConfirmationGlobal = ({
               <div style={{ marginBottom: 12 }}>
                 <People color="#cccccc" style={{ height: 29 }} />
               </div>
-              6 team members
+              {onboarding.members.length} team members
             </div>
             <div className={classes.info}>
               <div style={{ marginBottom: 12 }}>
                 <Lock />
-              </div>4/6 administration scheme
+              </div>
+              {onboarding.nbRequired}/{onboarding.members.length} administration
+              scheme
             </div>
           </div>
         </div>

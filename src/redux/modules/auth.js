@@ -1,6 +1,7 @@
 //@flow
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
+import network from "network";
 
 export function getLocalStorageToken() {
   // avoid fail in test env
@@ -19,6 +20,7 @@ export function setTokenToLocalStorage(token: string) {
 
 export function logout() {
   removeLocalStorageToken();
+  network("/authentications/authenticate", "DELETE");
   return { type: LOGOUT };
 }
 

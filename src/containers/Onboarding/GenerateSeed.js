@@ -33,13 +33,9 @@ class GenerateSeed extends Component<Props, State> {
     this.start();
   }
   start = async () => {
-    // def provision_hsm(api, gate_session_token, shards):
-    // logger.info("Open provisioning channel")
-    // headers = dict([("X-LedgerDriver-AuthToken", gate_session_token)])
     // response = post(api, "/hsm/partition/provisioning/start", headers=headers, json=dict(shards_count=3)).json()
     // ephemeral_public_key = unhexlify(response["ephemeral_public_key"])
     // certificate = b64decode(response["ephemeral_certificate"])
-    // # Let's fill it up!
     // fragments = []
     // for shard in shards:
     //     fragment = dict()
@@ -62,16 +58,36 @@ class GenerateSeed extends Component<Props, State> {
       const public_key = await device.getPublicKey(CONFIDENTIALITY_PATH);
 
       this.setState({ step: 1 });
-      await device.openSession(
+
+      console.log("EPHEMERAL CERTIFICATE");
+      console.log(certificate);
+
+      console.log("EPHEMERAL PUBLIC KEY");
+      console.log(ephemeral_public_key);
+
+      console.log("CONFIDENTIALITY PATH");
+      console.log(CONFIDENTIALITY_PATH);
+
+      const r = await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(certificate, "base64")
       );
+
+      console.log("RESPONSE OPEN SESSION ");
+      console.log(r);
+
+      console.log("KEY MATERIAL PATH");
+      console.log(KEY_MATERIAL_PATH);
+
       const blob = await device.generateKeyComponent(KEY_MATERIAL_PATH);
+      console.log("RESPONSE BLOB");
+      console.log(blob);
+      console.log(blob.toString("hex"));
 
       const shard = {
-        blob: blob.toString("base64"),
-        certificate: public_key["signature"].toString("base64"),
+        blob: blob.toString("hex"),
+        certificate: public_key["signature"].toString("hex"),
         ephemeral_public_key: public_key["pubKey"]
       };
       this.setState({ step: 2 });

@@ -99,6 +99,8 @@ class StepDevice extends Component<Props, State> {
         picture: this.props.data.picture.value
       };
 
+      console.log({ [pubKey]: u2f_register.keyHandle.toString("hex") });
+
       this.props.registerKeyHandle(pubKey, u2f_register.keyHandle);
 
       await network("/hsm/admin/register", "POST", data);

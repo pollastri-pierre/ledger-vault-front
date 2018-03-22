@@ -137,8 +137,7 @@ export default class VaultDeviceApp {
       })
     ]);
     const response = await this.transport.send(0xe0, 0x44, 0x00, 0x00, data);
-    // console.log(response);
-    return response;
+    return response.slice(0, response.length - 2);
   }
 
   async openSession(
@@ -231,7 +230,6 @@ export default class VaultDeviceApp {
 
     const data = Buffer.concat([paths, LengthOperation, operation]);
     // we first send an APDU with the operation length and the first chunk
-    console.log(data);
     await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
 
     // // then we send the others chunks
@@ -271,7 +269,7 @@ export default class VaultDeviceApp {
     const response = await this.transport.send(0xe0, 0x40, curve, 0x00, data);
     const pubKeyLength = response.readInt8(0);
     const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
-    const signature = response.slice(pubKeyLength + 1);
+    const signature = response.slice(pubKeyLength + 1, response.length - 2);
     return { pubKey, signature };
   }
 }
