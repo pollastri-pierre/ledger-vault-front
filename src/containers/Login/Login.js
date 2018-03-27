@@ -186,7 +186,7 @@ export class Login extends Component<Props, State> {
       );
 
       const { token } = await network("/authentications/authenticate", "POST", {
-        pub_key: pubKey,
+        pub_key: pubKey.toUpperCase(),
         authentication: auth.rawResponse
       });
       this.setState({ isChecking: false });
@@ -217,7 +217,7 @@ export class Login extends Component<Props, State> {
     if (true || domainValidated) {
       content = (
         <DeviceLogin
-          domain="ledger vault"
+          domain="Pied Piper"
           isChecking={isChecking}
           onCancel={this.onCancelDeviceLogin}
           onRestart={this.onStartAuth}

@@ -3,7 +3,7 @@ import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import VaultDeviceApp from "./VaultDeviceApp";
 
 export default async (): Promise<VaultDeviceApp> => {
-  const transport = await LedgerTransportU2F.create(30000, 30000);
+  const transport = await LedgerTransportU2F.create(300000, 300000);
   transport.debug = true;
   return new VaultDeviceApp(transport);
 };
