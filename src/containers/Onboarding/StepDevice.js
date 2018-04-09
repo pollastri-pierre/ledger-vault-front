@@ -85,6 +85,7 @@ class StepDevice extends Component<Props, State> {
       const data = {
         u2f_register: u2f_register.rawResponse,
         pub_key: pubKey,
+        key_handle: u2f_register.keyHandle.toString("hex"),
         validation: {
           public_key: validation.pubKey,
           attestation: validation.signature.toString("hex")
@@ -99,11 +100,9 @@ class StepDevice extends Component<Props, State> {
         picture: this.props.data.picture.value
       };
 
-      console.log({ [pubKey]: u2f_register.keyHandle.toString("hex") });
-
       this.props.registerKeyHandle(pubKey, u2f_register.keyHandle);
 
-      await network("/hsm/admin/register", "POST", data);
+      await network("/onboarding/authenticate", "POST", data);
       this.setState({ active: 2 });
       this.props.finish(data);
     } catch (e) {

@@ -114,14 +114,14 @@ export function registerKeyHandle(pubKey: string, keyHandle: string) {
   };
 }
 
-export function setAdminScheme() {
-  return async (dispatch: Function, getState: () => Object) => {
-    const { nbRequired } = getState()["onboarding"];
-    return await network("/hsm/admins/commit", "POST", {
-      quorum: parseInt(nbRequired, 10)
-    });
-  };
-}
+// export function setAdminScheme() {
+//   return async (dispatch: Function, getState: () => Object) => {
+//     const { nbRequired } = getState()["onboarding"];
+//     return await network("/hsm/admins/commit", "POST", {
+//       quorum: parseInt(nbRequired, 10)
+//     });
+//   };
+// }
 
 export function gotShardsChannel(shards_channel: Channel) {
   return {
@@ -132,9 +132,7 @@ export function gotShardsChannel(shards_channel: Channel) {
 
 export function getShardsChannel() {
   return async dispatch => {
-    const shards = await network("/hsm/partition/provisioning/start", "POST", {
-      count_shards: 3
-    });
+    const shards = await network("/onboarding/challenge", "GET");
 
     dispatch(gotShardsChannel(shards));
   };
@@ -160,6 +158,15 @@ export function nextStep() {
     type: NEXT_STEP
   };
 }
+
+export function nextState(data) {
+  return async (dispatch: Function) => {
+    const dataToSend = data || {};
+    return await network("/onboarding/next", "POST", dataToSend).then(() => {
+      dispatch(nextStep());
+    });
+  };
+}
 export function toggleSignin() {
   return {
     type: TOGGLE_SIGNIN
@@ -173,9 +180,12 @@ export function toggleGenerateSeed() {
 }
 
 export function addSeedShard(data: *) {
-  return {
-    type: ADD_SEED_SHARD,
-    data
+  return async (dispatch: Function) => {
+    await network("/onboarding/authenticate", "POST", data);
+    dispatch({
+      type: ADD_SEED_SHARD,
+      data
+    });
   };
 }
 
@@ -186,7 +196,7 @@ export function addSignedIn(pub_key: string, signature: *) {
       authentication: signature.rawResponse
     };
 
-    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
+    await network("/onboarding/authenticate", "POST", data);
     dispatch({
       type: ADD_SIGNEDIN,
       data
@@ -194,18 +204,18 @@ export function addSignedIn(pub_key: string, signature: *) {
   };
 }
 
-export function provisioningShards() {
-  return async (dispatch: Function, getState: Function) => {
-    const { shards } = getState()["onboarding"];
-    dispatch(nextStep());
-    await network("/hsm/partition/provisioning/commit", "POST", {
-      fragments: shards
-    });
-    return dispatch({
-      type: SUCCESS_SEED_SHARDS
-    });
-  };
-}
+// export function provisioningShards() {
+//   return async (dispatch: Function, getState: Function) => {
+//     const { shards } = getState()["onboarding"];
+//     dispatch(nextStep());
+//     await network("/onboarding/authenticate", "POST", {
+//       fragments: shards
+//     });
+//     return dispatch({
+//       type: SUCCESS_SEED_SHARDS
+//     });
+//   };
+// }
 
 export function toggleModalProfile(member: Member) {
   return {
@@ -237,10 +247,7 @@ export function gotShardChallenge(challenge: Challenge) {
 export function signedMember() {}
 export function getCommitChallenge() {
   return async (dispatch: Function) => {
-    const challenge = await network(
-      "/hsm/confirmation/partition/challenge",
-      "GET"
-    );
+    const challenge = await network("/onboarding/challenge", "GET");
 
     return dispatch(gotCommitChallenge(challenge));
   };
@@ -268,11 +275,7 @@ export function getBootstrapToken(pub_key: string, signature: string) {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
     };
-    const result = await network(
-      "/hsm/authentication/bootstrap/authenticate",
-      "POST",
-      data
-    );
+    const result = await network("/onboarding/authenticate", "POST", data);
     return dispatch(gotBootstrapToken(result));
   };
 }
@@ -289,28 +292,21 @@ export function commitAdministrators(pub_key: string, signature: string) {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
     };
-    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
-    await network("/hsm/partition/lock", "POST");
+    await network("/onboarding/authenticate", "POST", data);
     return dispatch(lockPartition());
   };
 }
 
 export function getShardChallenge() {
   return async (dispatch: Function) => {
-    const challenge = await network(
-      "/hsm/session/admin/partition/challenge",
-      "GET"
-    );
+    const challenge = await network("/onboarding/challenge", "GET");
     return dispatch(gotShardChallenge(challenge));
   };
 }
 
 export function getBootstrapChallenge() {
   return async (dispatch: Function) => {
-    const challengeObject = await network(
-      "/hsm/authentication/bootstrap/challenge",
-      "GET"
-    );
+    const challengeObject = await network("/onboarding/challenge", "GET");
     return dispatch(gotBootstrapChallenge(challengeObject));
   };
 }
@@ -324,10 +320,7 @@ export function gotBootstrapChallenge(challenge: Challenge) {
 
 export function getChallengeRegistration() {
   return async (dispatch: Function) => {
-    const { challenge } = await network(
-      "/hsm/admins/register/challenge",
-      "GET"
-    );
+    const { challenge } = await network("/onboarding/challenge", "GET");
     return dispatch(gotChallengeRegistation(challenge));
   };
 }

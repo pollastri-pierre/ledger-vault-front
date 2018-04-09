@@ -28,6 +28,7 @@ const Welcome = () => (
     </ToContinue>
     <Footer
       isBack={false}
+      nextState
       render={(onPrev, onNext) => (
         <DialogButton highlight onTouchTap={onNext}>
           Continue

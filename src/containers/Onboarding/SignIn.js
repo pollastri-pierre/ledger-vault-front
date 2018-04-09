@@ -247,6 +247,7 @@ class SignIn extends Component<Props> {
         </ToContinue>
         <Footer
           isBack={false}
+          nextState
           render={(onPrev, onNext) => {
             return (
               <DialogButton

@@ -114,6 +114,7 @@ class Authentication extends Component<Props, State> {
           <Authenticator step={this.state.step} />
         </div>
         <Footer
+          nextState
           render={(onPrev, onNext) => (
             <DialogButton
               highlight

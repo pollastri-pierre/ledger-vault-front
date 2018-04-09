@@ -3,11 +3,12 @@ import React from "react";
 import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "material-ui/styles";
 import { connect } from "react-redux";
-import { nextStep, previousStep } from "redux/modules/onboarding";
+import { nextStep, previousStep, nextState } from "redux/modules/onboarding";
 
 const mapDispatchToProps = dispatch => {
   return {
     onNext: () => dispatch(nextStep()),
+    onNextState: data => dispatch(nextState(data)),
     onPrev: () => dispatch(previousStep())
   };
 };
@@ -29,21 +30,25 @@ const styles = {
 const Footer = ({
   classes,
   onNext,
+  onNextState,
+  nextState = false,
   onPrev,
   isBack = true,
   render
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onNext: Function,
+  onNextState: Function,
   onPrev: Function,
   isBack: boolean,
+  nextState: boolean,
   render: Function
 }) => {
   return (
     <div className={classes.base}>
       {isBack && <DialogButton onTouchTap={onPrev}>back</DialogButton>}
       <div />
-      {render(onPrev, onNext)}
+      {nextState ? render(onPrev, onNextState) : render(onPrev, onNext)}
     </div>
   );
 };

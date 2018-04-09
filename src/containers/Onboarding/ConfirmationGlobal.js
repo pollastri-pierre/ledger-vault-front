@@ -51,47 +51,43 @@ const ConfirmationGlobal = ({
   return (
     <div>
       <Title>Confirmation</Title>
-      {onboarding.successSeedShards ? (
-        <div>
-          <div className={classes.base}>
-            <div>
-              <div className={classes.icon}>
-                <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
-              </div>
+      <div>
+        <div className={classes.base}>
+          <div>
+            <div className={classes.icon}>
+              <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
             </div>
-            <strong>Your team’s Ledger Vault is now configured.</strong>
-            <p>Team members are now able to sign-in.</p>
           </div>
-          <div className={classes.sep} />
-          <div className={classes.sumary}>
-            <div className={classes.info}>
-              <div style={{ marginBottom: 12 }}>
-                <People color="#cccccc" style={{ height: 29 }} />
-              </div>
-              3 shared owners
+          <strong>Your team’s Ledger Vault is now configured.</strong>
+          <p>Team members are now able to sign-in.</p>
+        </div>
+        <div className={classes.sep} />
+        <div className={classes.sumary}>
+          <div className={classes.info}>
+            <div style={{ marginBottom: 12 }}>
+              <People color="#cccccc" style={{ height: 29 }} />
             </div>
-            <div className={classes.info}>
-              <div style={{ marginBottom: 12 }}>
-                <People color="#cccccc" style={{ height: 29 }} />
-              </div>
-              {onboarding.members.length} team members
+            3 shared owners
+          </div>
+          <div className={classes.info}>
+            <div style={{ marginBottom: 12 }}>
+              <People color="#cccccc" style={{ height: 29 }} />
             </div>
-            <div className={classes.info}>
-              <div style={{ marginBottom: 12 }}>
-                <Lock />
-              </div>
-              {onboarding.nbRequired}/{onboarding.members.length} administration
-              scheme
+            {onboarding.members.length} team members
+          </div>
+          <div className={classes.info}>
+            <div style={{ marginBottom: 12 }}>
+              <Lock />
             </div>
+            {onboarding.nbRequired}/{onboarding.members.length} administration
+            scheme
           </div>
         </div>
-      ) : (
-        <SpinnerCard />
-      )}
+      </div>
       <Footer
         isBack={false}
         render={(onPrev, onNext) => (
-          <DialogButton highlight onTouchTap={onNext}>
+          <DialogButton highlight onTouchTap={() => false}>
             Continue
           </DialogButton>
         )}

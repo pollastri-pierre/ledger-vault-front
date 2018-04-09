@@ -135,6 +135,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
         </div>
         <Authenticator step={this.state.step} />
         <Footer
+          nextState
           render={(onPrev, onNext) => (
             <DialogButton
               highlight

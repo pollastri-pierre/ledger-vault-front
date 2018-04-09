@@ -210,6 +210,7 @@ class Registration extends Component<Props, *> {
           />
         )}
         <Footer
+          nextState
           render={(onPrev, onNext) => (
             <DialogButton
               highlight
