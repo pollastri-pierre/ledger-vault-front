@@ -9,9 +9,6 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Member } from "data/types";
 import { withStyles } from "material-ui/styles";
-import openSocket from "socket.io-client";
-import { addMessage } from "redux/modules/alerts";
-import { connect } from "react-redux";
 
 const EntityApproveAccount = props => (
     <EntityApprove entity="account" {...props} />
@@ -39,33 +36,10 @@ const styles = {
     }
 };
 
-const mapDispatchToProps = dispatch => ({
-    onAddMessage: (title, content, type) =>
-        dispatch(addMessage(title, content, type))
-});
-
 class PendingRequests extends Component<{
     classes: { [_: $Keys<typeof styles>]: string },
-    profile: Member,
-    onAddMessage: (t: string, m: string, ty: string) => void
+    profile: Member
 }> {
-    constructor(props) {
-        super(props);
-
-        var { onAddMessage } = this.props;
-
-        var socket = openSocket.connect("https://localhost:3033");
-
-        var myAuthToken = "admin1";
-        socket.on("connect", function() {
-            socket.emit("authenticate", { token: myAuthToken });
-        });
-        socket.on("admin", function(message) {
-            console.log(message);
-            onAddMessage("INFO", message, "success");
-        });
-    }
-
     render() {
         const { classes, profile } = this.props;
         return (
@@ -92,11 +66,9 @@ class PendingRequests extends Component<{
 export { PendingRequests as PendingRequestNotDecorated };
 const RenderLoading = () => <SpinnerCard />;
 
-export default connectData(
-    connect(undefined, mapDispatchToProps)(withStyles(styles)(PendingRequests)),
-    {
-        queries: {
-            profile: ProfileQuery
-        }
+export default connectData(withStyles(styles)(PendingRequests), {
+    RenderLoading,
+    queries: {
+        profile: ProfileQuery
     }
-);
+});

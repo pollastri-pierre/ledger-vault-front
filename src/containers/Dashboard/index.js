@@ -12,9 +12,6 @@ import Storages from "./Storages";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
-import openSocket from "socket.io-client";
-import { addMessage } from "redux/modules/alerts";
-import { connect } from "react-redux";
 
 const styles = {
     base: {
@@ -31,44 +28,20 @@ const styles = {
         width: "320px"
     }
 };
-
-const mapDispatchToProps = dispatch => ({
-    onAddMessage: (title, content, type) =>
-        dispatch(addMessage(title, content, type))
-});
-
 class Dashboard extends Component<
     {
         classes: { [_: $Keys<typeof styles>]: string },
         match: *,
         location: *,
-        history: *,
-        onAddMessage: (t: string, m: string, ty: string) => void
+        history: *
     },
     {
         filter: string
     }
 > {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            filter: TotalBalanceFilters[0].key
-        };
-
-        var { onAddMessage } = this.props;
-
-        var socket = openSocket.connect("https://localhost:3033");
-
-        var myAuthToken = "admin1";
-        socket.on("connect", function() {
-            socket.emit("authenticate", { token: myAuthToken });
-        });
-        socket.on("admin", function(message) {
-            console.log(message);
-            onAddMessage("INFO", message, "success");
-        });
-    }
+    state = {
+        filter: TotalBalanceFilters[0].key
+    };
 
     onTotalBalanceFilterChange = (filter: string) => {
         this.setState({ filter });
@@ -104,11 +77,8 @@ class Dashboard extends Component<
     }
 }
 
-export default connectData(
-    connect(undefined, mapDispatchToProps)(withStyles(styles)(Dashboard)),
-    {
-        queries: {
-            currencies: CurrenciesQuery
-        }
+export default connectData(withStyles(styles)(Dashboard), {
+    queries: {
+        currencies: CurrenciesQuery
     }
-);
+});
