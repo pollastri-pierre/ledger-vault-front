@@ -57,9 +57,7 @@ class ActivityCard extends Component<
     {
         activities: ActivityCommon[],
         loading: boolean,
-        history: *,
-        classes: { [_: $Keys<typeof styles>]: string },
-        location: *
+        classes: { [_: $Keys<typeof styles>]: string }
     },
     *
 > {
@@ -93,7 +91,7 @@ class ActivityCard extends Component<
     };
 
     render() {
-        const { profile, location, classes, activities, loading } = this.props;
+        const { profile, classes, activities, loading } = this.props;
         const { bubbleOpened } = this.state;
         const t = this.context.translate;
         const unseenActivityCount = activities
