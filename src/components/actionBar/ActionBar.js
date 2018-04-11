@@ -19,8 +19,6 @@ import Plus from "../icons/full/Plus";
 import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Bell from "../icons/full/Bell";
-import openSocket from "socket.io-client";
-import { normalize } from "normalizr-gre";
 
 import logo from "assets/img/logo.png";
 import logo2x from "assets/img/logo@2x.png";
@@ -96,23 +94,8 @@ class Logo extends PureComponent<*> {
 
 class ActionBar extends Component<{
     location: Object,
-    classes: Object,
-    onNewActivity: Function
+    classes: Object
 }> {
-    constructor(props) {
-        super(props);
-        const socket = openSocket.connect("https://localhost:3033");
-        const myAuthToken = "admin1";
-
-        socket.on("connect", function() {
-            socket.emit("authenticate", { token: myAuthToken });
-        });
-        socket.on("admin", function(activity) {
-            props.onNewActivity(activity);
-            console.log(activity);
-        });
-    }
-
     static contextTypes = {
         translate: PropTypes.func.isRequired
     };
@@ -163,24 +146,4 @@ class ActionBar extends Component<{
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    onNewActivity: activity => {
-        const queryOrMutation = new ActivityQuery();
-        const data = [activity];
-        const result = normalize(
-            data,
-            queryOrMutation.getResponseSchema() || {}
-        );
-
-        dispatch({
-            type: DATA_FETCHED,
-            result,
-            queryOrMutation
-        });
-        return data;
-    }
-});
-
-export default connect(undefined, mapDispatchToProps)(
-    withRouter(withStyles(styles)(ActionBar))
-);
+export default withRouter(withStyles(styles)(ActionBar));
