@@ -4,7 +4,6 @@ import VaultDeviceApp from "./VaultDeviceApp";
 
 export default async (): Promise<VaultDeviceApp> => {
   const transport = await LedgerTransportU2F.create(300000, 300000);
-  transport.debug = true;
   return new VaultDeviceApp(transport);
 };
 

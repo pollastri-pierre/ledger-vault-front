@@ -11,7 +11,6 @@ import DialogButton from "components/buttons/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider.js";
-import network from "network";
 
 const mapStateToProps = state => ({
   onboarding: state.onboarding

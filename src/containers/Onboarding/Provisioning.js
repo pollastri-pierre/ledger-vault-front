@@ -127,7 +127,7 @@ class Provisioning extends Component<Props> {
   componentDidMount() {
     const { onboarding, onGetShardsChannel } = this.props;
     if (!onboarding.shards_channel) {
-      this.props.onGetShardsChannel();
+      onGetShardsChannel();
     }
   }
 

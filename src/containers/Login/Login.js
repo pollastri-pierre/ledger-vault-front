@@ -6,7 +6,7 @@ import { compose } from "redux";
 import queryString from "query-string";
 import formatError from "formatters/error";
 import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
-import TeamLogin from "./TeamLogin";
+// import TeamLogin from "./TeamLogin";
 import DeviceLogin from "./DeviceLogin";
 import { login, logout } from "redux/modules/auth";
 import { addMessage } from "redux/modules/alerts";
@@ -106,7 +106,7 @@ export class Login extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.onStartAuth();
+    this.onStartOnBoardingStatus();
   }
 
   componentWillUpdate(nextProps: Props) {
@@ -126,8 +126,8 @@ export class Login extends Component<Props, State> {
   onStartOnBoardingStatus = async () => {
     const { history } = this.props;
     try {
-      // const { status } = await network("/onboarding_status", "GET");
-      if (true) {
+      const { step } = await network("/onboarding/state", "GET");
+      if (step === 1) {
         this.onStartAuth();
       } else if (status === 0) {
         history.push("/onboarding/welcome");
@@ -143,8 +143,7 @@ export class Login extends Component<Props, State> {
     const { addAlertMessage, onLogin } = this.props;
     this.setState({ isChecking: true });
     try {
-      console.log(this.props.onboarding);
-      const device = await createDevice();
+      const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const { challenge } = await network(
         `/hsm/session/users/challenge`,
@@ -208,34 +207,32 @@ export class Login extends Component<Props, State> {
   };
 
   render() {
-    const { onLogout } = this.props;
-    const { domain, error, domainValidated, isChecking } = this.state;
+    // const { onLogout } = this.props;
+    // const { domain, error, domainValidated, isChecking } = this.state;
+    const { isChecking } = this.state;
     const t = this.context.translate;
     let content = null;
     const { classes } = this.props;
 
-    if (true || domainValidated) {
-      content = (
-        <DeviceLogin
-          domain="Pied Piper"
-          isChecking={isChecking}
-          onCancel={this.onCancelDeviceLogin}
-          onRestart={this.onStartAuth}
-        />
-      );
-    } else {
-      content = (
-        <TeamLogin
-          domain={domain}
-          error={error}
-          isChecking={isChecking}
-          onChange={this.onTeamChange}
-          onLogout={onLogout}
-          onStartAuth={this.onStartOnBoardingStatus}
-          onCloseTeamError={this.onCloseTeamError}
-        />
-      );
-    }
+    content = (
+      <DeviceLogin
+        domain="Pied Piper"
+        isChecking={isChecking}
+        onCancel={this.onCancelDeviceLogin}
+        onRestart={this.onStartAuth}
+      />
+    );
+    // content = (
+    //   <TeamLogin
+    //     domain={domain}
+    //     error={error}
+    //     isChecking={isChecking}
+    //     onChange={this.onTeamChange}
+    //     onLogout={onLogout}
+    //     onStartAuth={this.onStartOnBoardingStatus}
+    //     onCloseTeamError={this.onCloseTeamError}
+    //   />
+    // );
     return (
       <div className={classes.base}>
         <div className={classes.wrapper}>

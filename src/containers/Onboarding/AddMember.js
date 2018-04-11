@@ -15,7 +15,8 @@ type Props = {
   setAlert: Function,
   editMember: Function,
   member: Member,
-  challenge: string
+  challenge: string,
+  registerKeyHandle: Function
 };
 type State = {
   step: number,

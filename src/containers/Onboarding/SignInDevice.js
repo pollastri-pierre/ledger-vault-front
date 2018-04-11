@@ -45,8 +45,6 @@ class SignInDevice extends Component<Props, State> {
       const instanceURL = "";
       const agentRole = "";
 
-      console.log(challenge, keyHandle);
-
       const authentication = await device.authenticate(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR,
@@ -60,7 +58,7 @@ class SignInDevice extends Component<Props, State> {
       this.props.onFinish(pubKey, authentication);
     } catch (e) {
       console.error(e);
-      // this.start();
+      this.start();
     }
   };
   render() {

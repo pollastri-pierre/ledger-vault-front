@@ -22,7 +22,8 @@ export default class VaultDeviceApp {
     rfu: number,
     keyHandle: string,
     attestationSignature: string,
-    signature: string
+    signature: string,
+    rawResponse: string
   }> {
     invariant(
       challenge.length === 32,
@@ -80,12 +81,12 @@ export default class VaultDeviceApp {
     instanceName: string,
     instanceReference: string,
     instanceURL: string,
-    agentRole: string,
-    keyHandleInHex: boolean
+    agentRole: string
   ): Promise<{
     userPresence: *,
     counter: *,
-    signature: string
+    signature: string,
+    rawResponse: string
   }> {
     invariant(
       challenge.length === 32,
@@ -114,7 +115,6 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    console.log(data);
     const response = await this.transport.send(0xe0, 0x02, 0x00, 0x00, data);
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
@@ -215,7 +215,7 @@ export default class VaultDeviceApp {
     return await this.validateVaultOperation(VALIDATION_PATH, operation);
   }
   async validateVaultOperation(path: number[], operation: Buffer) {
-    let offset = 64;
+    // let offset = 64;
     const paths = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {

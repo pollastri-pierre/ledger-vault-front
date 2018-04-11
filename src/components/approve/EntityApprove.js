@@ -45,7 +45,7 @@ class EntityApprove extends Component<Props, State> {
 
   approving = async accountOrOperation => {
     const { restlay, entity } = this.props;
-    const { id } = this.props.match.params;
+    // const { id } = this.props.match.params;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
     // TODO: replace delay by device API call
 

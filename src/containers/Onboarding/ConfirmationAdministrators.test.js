@@ -30,7 +30,8 @@ const props = {
   onCommitAdministrators: jest.fn(),
   onAddMessage: jest.fn(),
   onboarding: {
-    commit_challenge: null
+    commit_challenge: null,
+    members: []
   },
   classes: {}
 };
@@ -60,22 +61,25 @@ test("should call the device and API with the right parameters", async () => {
     ...props,
     onboarding: {
       ...props.onboarding,
-      commit_challenge: { challenge: "challenge", handles: ["handle1"] }
+      commit_challenge: {
+        challenge: "challenge",
+        key_handle: { key_handle: "handle1" }
+      }
     }
   };
   const MyComponent = shallow(<ConfirmationAdministrators {...sProps} />);
   await MyComponent.instance().onStart();
   expect(mockAuthenticate).toHaveBeenCalledWith(
-    "challenge",
+    Buffer.from("challenge", "base64"),
     APPID_VAULT_BOOTSTRAP,
-    "handle1",
-    "_",
-    "_",
-    "_",
-    "_"
+    Buffer.from("handle1", "base64"),
+    "",
+    "",
+    "",
+    ""
   );
 
-  expect(sProps.onCommitAdministrators).toHaveBeenCalledWith({
+  expect(sProps.onCommitAdministrators).toHaveBeenCalledWith("pubKey", {
     counter: 0,
     rawResponse: "raw",
     signature: "signature",

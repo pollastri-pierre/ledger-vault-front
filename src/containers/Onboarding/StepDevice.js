@@ -61,7 +61,7 @@ class StepDevice extends Component<Props, State> {
   onStart = async () => {
     try {
       this.setState({ active: 0 });
-      const device = await createDevice();
+      const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
 
       const instanceName = "";
@@ -107,7 +107,7 @@ class StepDevice extends Component<Props, State> {
       this.props.finish(data);
     } catch (e) {
       console.error(e);
-      // this.onStart();
+      this.onStart();
     }
   };
 

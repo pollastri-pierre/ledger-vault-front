@@ -28,8 +28,8 @@ Enzyme.configure({ adapter: new Adapter() });
 const props = {
   onFinish: jest.fn(),
   shards_channel: {
-    pub_key: "shards_pub_key",
-    certificate: "shards_certificate"
+    ephemeral_public_key: "shards_pub_key",
+    ephemeral_certificate: "shards_certificate"
   }
 };
 
@@ -40,15 +40,15 @@ test("onStart should call device and API with right parameters", async () => {
 
   expect(mockOpenSession).toHaveBeenCalledWith(
     CONFIDENTIALITY_PATH,
-    "shards_pub_key",
-    "shards_certificate"
+    Buffer.from("shards_pub_key", "hex"),
+    Buffer.from("shards_certificate", "base64")
   );
 
   expect(mockGenerateKeyComponent).toHaveBeenCalledWith(KEY_MATERIAL_PATH);
 
   expect(props.onFinish).toHaveBeenCalledWith({
-    pub_key: "pubKey",
+    ephemeral_public_key: "pubKey",
     certificate: "signature",
-    seedShard: "seedShard"
+    blob: "seedShard"
   });
 });

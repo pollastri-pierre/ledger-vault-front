@@ -3,7 +3,8 @@ export const mockRegister = jest.fn().mockReturnValue({
   pubKey: "pubKey",
   keyHandle: ["handle1"],
   attestationSignature: "attestationSignature",
-  signature: "signature"
+  signature: "signature",
+  rawResponse: "raw"
 });
 export const mockAuthenticate = jest.fn().mockReturnValue({
   userPresence: "userPresence",

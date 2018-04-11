@@ -3,16 +3,11 @@ import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
 import mockEntities, { genBalance } from "./mock-entities.js";
 import schema from "./schema";
-import type { Operation, Account } from "data/types";
 
-const keywordsMatchesOperation = (
-  keywords: string,
-  op: Operation,
-  acc: Account
-): boolean =>
+const keywordsMatchesOperation = (keywords, op, acc) =>
   !keywords || keywords.split(/\s+/).every(w => acc.name.includes(w));
 
-const mockSync = (uri: string, method: string, body: ?Object) => {
+const mockSync = (uri, method, body) => {
   const q = URL.parse(uri, true);
   if (method === "POST") {
     let m;
@@ -21,7 +16,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
       const account = mockEntities.accounts[m[1]];
       if (!body) throw new Error("invalid body");
       if (account) {
-        const accountObj: Account = denormalize(
+        const accountObj = denormalize(
           account.id,
           schema.Account,
           mockEntities
@@ -351,12 +346,6 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
           membersCount: 8
         };
       case "/dashboard/last-operations":
-        console.log(Object.keys(mockEntities.operations).slice(0, 6));
-        return denormalize(
-          Object.keys(mockEntities.operations).slice(0, 6),
-          [schema.Operation],
-          mockEntities
-        );
         return denormalize(
           Object.keys(mockEntities.operations).slice(0, 6),
           [schema.Operation],
@@ -387,7 +376,7 @@ const mockSync = (uri: string, method: string, body: ?Object) => {
 
 const delay = ms => new Promise(success => setTimeout(success, ms));
 
-export default (uri: string, init: *): ?Promise<*> => {
+export default (uri, init) => {
   const method = typeof init.method === "string" ? init.method : "GET";
   const body = typeof init.body === "string" ? JSON.parse(init.body) : null;
   const mockRes = mockSync(uri, method, body);

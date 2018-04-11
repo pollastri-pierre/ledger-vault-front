@@ -1,4 +1,4 @@
-import { APPID_VAULT_BOOTSTRAP, U2F_PATH } from "device";
+import { APPID_VAULT_ADMINISTRATOR, U2F_PATH } from "device";
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
   create: jest.fn()
@@ -25,31 +25,29 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const props = {
   onFinish: jest.fn(),
-  challenge: { challenge: "challenge", handles: ["handle1"] }
+  keyHandles: { pubKey: "handle1" },
+  challenge: { challenge: "challenge", key_handle: { pubKey: "handle1" } }
 };
 
 test("onStart should call device and API with right parameters", async () => {
   const MyComponent = shallow(<SignInDevice {...props} />);
   await MyComponent.instance().start();
-  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH);
+  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
 
   expect(mockAuthenticate).toHaveBeenCalledWith(
-    "challenge",
-    APPID_VAULT_BOOTSTRAP,
+    Buffer.from("challenge", "base64"),
+    APPID_VAULT_ADMINISTRATOR,
     "handle1",
-    "_",
-    "_",
-    "_",
-    "_"
+    "",
+    "",
+    "",
+    ""
   );
 
-  expect(props.onFinish).toHaveBeenCalledWith(
-    { pubKey: "pubKey", signature: "signature" },
-    {
-      rawResponse: "raw",
-      counter: 0,
-      userPresence: "userPresence",
-      signature: "signature"
-    }
-  );
+  expect(props.onFinish).toHaveBeenCalledWith("pubKey", {
+    rawResponse: "raw",
+    counter: 0,
+    userPresence: "userPresence",
+    signature: "signature"
+  });
 });

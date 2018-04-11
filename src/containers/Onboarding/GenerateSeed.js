@@ -10,12 +10,12 @@ const steps = [
 ];
 
 type Channel = {
-  pub_key: string,
-  certificate: string
+  ephemeral_public_key: string,
+  ephemeral_certificate: string
 };
 type Shard = {
-  pub_key: string,
-  seedShard: string,
+  ephemeral_public_key: string,
+  blob: string,
   certificate: string
 };
 type Props = {
@@ -35,7 +35,7 @@ class GenerateSeed extends Component<Props, State> {
   start = async () => {
     try {
       this.setState({ step: 0 });
-      const device = await createDevice();
+      const device = await await createDevice();
 
       const ephemeral_public_key = this.props.shards_channel[
         "ephemeral_public_key"
@@ -45,7 +45,7 @@ class GenerateSeed extends Component<Props, State> {
 
       this.setState({ step: 1 });
 
-      const r = await device.openSession(
+      await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(certificate, "base64")

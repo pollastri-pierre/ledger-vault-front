@@ -4,11 +4,13 @@
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
-export type Fiat = {
-  id: number,
-  name: string,
-  type: string
-};
+// export type Fiat = {
+//   id: number,
+//   name: string,
+//   type: string
+// };
+
+export type Fiat = string;
 
 export type Rate = {
   value: number,
@@ -48,10 +50,11 @@ export type SecurityScheme = {
 };
 
 export type AccountSettings = {
+  id: number,
   fiat: Fiat,
-  unit_index: number,
-  countervalueSource: string,
-  blockchainExplorer: string
+  currency_unit: Unit,
+  unitIndex: number,
+  blockchain_explorer: string
 };
 
 type MemberCommon = {

@@ -9,7 +9,6 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
   getShardChallenge,
-  openShardsChannel,
   toggleSignin,
   addSignedIn,
   nextStep
@@ -103,35 +102,6 @@ class SignIn extends Component<Props> {
       this.props.onGetShardChallenge();
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (
-  //     nextProps.onboarding.shards_channel !==
-  //     this.props.onboarding.shards_channel
-  //   ) {
-  //     this.props.onNextStep();
-  //   }
-  //
-  //   if (
-  //     nextProps.onboarding.signed.length ===
-  //     this.props.onboarding.members.length
-  //   ) {
-  //     this.openShards();
-  //   }
-  // }
-
-  openShards = async () => {
-    try {
-      await this.props.onOpenShardsChannel();
-    } catch (e) {
-      console.error(e);
-      this.props.onAddMessage(
-        "Error",
-        "Oups, an error occured. Please retry",
-        "error"
-      );
-    }
-  };
 
   componentDidUpdate() {
     const $svg = this.svg;
@@ -271,7 +241,6 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   onGetShardChallenge: () => dispatch(getShardChallenge()),
-  onOpenShardsChannel: () => dispatch(openShardsChannel()),
   onToggleSignin: () => dispatch(toggleSignin()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>

@@ -6,7 +6,6 @@ import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People.js";
 import Lock from "components/icons/thin/Lock";
 import DialogButton from "components/buttons/DialogButton";
-import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import Footer from "./Footer";
 
@@ -86,7 +85,7 @@ const ConfirmationGlobal = ({
       </div>
       <Footer
         isBack={false}
-        render={(onPrev, onNext) => (
+        render={() => (
           <DialogButton highlight onTouchTap={() => false}>
             Continue
           </DialogButton>
