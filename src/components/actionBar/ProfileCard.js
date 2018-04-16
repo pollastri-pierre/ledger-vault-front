@@ -73,7 +73,8 @@ class ProfileCard extends Component<
     profile: Member,
     history: *,
     classes: { [_: $Keys<typeof styles>]: string },
-    location: *
+    location: *,
+    match: *
   },
   *
 > {
@@ -103,9 +104,10 @@ class ProfileCard extends Component<
   };
 
   render() {
-    const { profile, location, classes } = this.props;
+    const { profile, match, location, classes } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
+    console.log(match);
     return (
       <span>
         <span
@@ -146,7 +148,7 @@ class ProfileCard extends Component<
                   {t("actionBar.editProfile")}
                 </span>
               </MenuLink>
-              <MenuLink to="/logout">
+              <MenuLink to={`/${match.params.orga_name}/logout`}>
                 <span className={classes.link}>{t("actionBar.logOut")}</span>
               </MenuLink>
             </MenuList>
@@ -165,11 +167,9 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </div>
 ));
 
-export default withRouter(
-  connectData(withStyles(styles)(ProfileCard), {
-    RenderLoading,
-    queries: {
-      profile: ProfileQuery
-    }
-  })
-);
+export default connectData(withStyles(styles)(ProfileCard), {
+  RenderLoading,
+  queries: {
+    profile: ProfileQuery
+  }
+});

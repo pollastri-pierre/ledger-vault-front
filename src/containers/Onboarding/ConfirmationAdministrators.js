@@ -103,7 +103,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
     } catch (e) {
       console.error(e);
       this.props.onAddMessage("Error", "Oups something went wrong", "error");
-      // this.onStart();
+      this.onStart();
     }
   };
 

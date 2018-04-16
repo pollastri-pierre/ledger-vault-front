@@ -8,7 +8,7 @@ import type { Connection } from "./ConnectionQuery";
 import { merge } from "./ImmutableUtils";
 import isEqual from "lodash/isEqual";
 import type RestlayProvider from "./RestlayProvider";
-
+import { logout } from "redux/modules/auth";
 export const DATA_FETCHED = "@@restlay/DATA_FETCHED";
 export const DATA_FETCHED_FAIL = "@@restlay/DATA_FETCHED_FAIL";
 
@@ -216,6 +216,12 @@ export const executeQueryOrMutation =
           queryOrMutation,
           cacheKey
         });
+        const shouldLogout =
+          error.status &&
+          error.status === queryOrMutation.logoutUserIfStatusCode;
+        if (shouldLogout) {
+          dispatch(logout());
+        }
         throw error;
       });
 

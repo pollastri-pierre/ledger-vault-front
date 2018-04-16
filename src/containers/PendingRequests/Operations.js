@@ -17,7 +17,8 @@ type Props = {
   operationsPending: Operation[],
   operationsQueued: Operation[],
   accounts: Account[],
-  user: Member
+  user: Member,
+  match: *
 };
 class ApproveWatchOperations extends Component<Props> {
   render() {

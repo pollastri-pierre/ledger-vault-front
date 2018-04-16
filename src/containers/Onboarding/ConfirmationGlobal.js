@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import { withRouter } from "react-router";
 import { Title } from "components/Onboarding";
 import { withStyles } from "material-ui/styles";
 import Validate from "components/icons/Validate";
@@ -42,11 +43,16 @@ const styles = {
 };
 const ConfirmationGlobal = ({
   classes,
-  onboarding
+  onboarding,
+  match,
+  history
 }: {
   classes: { [$Keys<typeof styles>]: string },
+  match: *,
+  history: *,
   onboarding: *
 }) => {
+  console.log(match);
   return (
     <div>
       <Title>Confirmation</Title>
@@ -86,7 +92,10 @@ const ConfirmationGlobal = ({
       <Footer
         isBack={false}
         render={() => (
-          <DialogButton highlight onTouchTap={() => false}>
+          <DialogButton
+            highlight
+            onTouchTap={() => history.push(`/${match.params.orga_name}`)}
+          >
             Continue
           </DialogButton>
         )}

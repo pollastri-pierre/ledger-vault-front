@@ -42,17 +42,6 @@ export default function reducer(
   switch (action.type) {
     case LOGOUT:
       return { isAuthenticated: false };
-    case "DATA_FETCHED_FAIL": {
-      const shouldLogout =
-        action.error.status &&
-        action.error.status === action.queryOrMutation.logoutUserIfStatusCode;
-      if (shouldLogout) {
-        removeLocalStorageToken();
-        return { isAuthenticated: false };
-      } else {
-        return state;
-      }
-    }
     case LOGIN:
       return { isAuthenticated: true };
     default:

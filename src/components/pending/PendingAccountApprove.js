@@ -8,6 +8,7 @@ import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 import type { Account, Member } from "data/types";
 import { withStyles } from "material-ui/styles";
+import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";
 
@@ -16,10 +17,11 @@ type Props = {
   approved?: boolean,
   approvers: Member[],
   user: Member,
+  match: *,
   classes: Object
 };
 function PendingAccountApprove(props: Props) {
-  const { accounts, approved, approvers, user, classes } = props;
+  const { accounts, approved, approvers, user, classes, match } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
@@ -53,7 +55,7 @@ function PendingAccountApprove(props: Props) {
       {accounts.map(account => (
         <Link
           className={classnames(classes.row, { [classes.approved]: approved })}
-          to={`/pending/account/${account.id}`}
+          to={`${match.url}/account/${account.id}`}
           key={account.id}
         >
           <div>
@@ -79,4 +81,4 @@ function PendingAccountApprove(props: Props) {
   );
 }
 
-export default withStyles(styles)(PendingAccountApprove);
+export default withStyles(styles)(withRouter(PendingAccountApprove));

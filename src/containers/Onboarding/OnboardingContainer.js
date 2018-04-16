@@ -86,7 +86,9 @@ const styles = {
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   onboarding: *,
-  changeNbRequired: Function
+  changeNbRequired: Function,
+  match: *,
+  history: *
 };
 
 type State = {
@@ -96,7 +98,13 @@ type State = {
 
 class OnboardingContainer extends Component<Props, State> {
   render() {
-    const { classes, onboarding, changeNbRequired } = this.props;
+    const {
+      classes,
+      onboarding,
+      changeNbRequired,
+      match,
+      history
+    } = this.props;
     return (
       <div className={cx("App", classes.wrapper)}>
         <div className={classes.base}>
@@ -130,7 +138,9 @@ class OnboardingContainer extends Component<Props, State> {
             {onboarding.currentStep === 9 && <ConfigurationSeed />}
             {onboarding.currentStep === 10 && <Backup />}
             {onboarding.currentStep === 11 && <Provisionning />}
-            {onboarding.currentStep === 12 && <ConfirmationGlobal />}
+            {onboarding.currentStep === 12 && (
+              <ConfirmationGlobal history={history} match={match} />
+            )}
           </div>
         </div>
       </div>

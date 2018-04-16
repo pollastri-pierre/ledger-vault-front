@@ -2,7 +2,6 @@
 import { type Member } from "data/types";
 import network from "network";
 export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
-export const SET_ONBOARDING_STATUS = "onboarding/SET_ONBOARDING_STATUS";
 export const ADD_MEMBER = "onboarding/ADD_MEMBER";
 export const GO_TO_NEXT = "onboarding/GO_TO_NEXT";
 export const NEXT_STEP = "onboarding/NEXT_STEP";
@@ -299,13 +298,6 @@ export function getChallengeRegistration() {
   };
 }
 
-export function setOnboardingStatus(status: OnboardingStatus) {
-  return {
-    type: SET_ONBOARDING_STATUS,
-    status: status
-  };
-}
-
 export function addMember(member: Member) {
   return {
     type: ADD_MEMBER,
@@ -329,9 +321,6 @@ export function viewRoute(currentRoute: string) {
 
 export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
-    case SET_ONBOARDING_STATUS: {
-      return { ...state, status: action.status };
-    }
     case ADD_MEMBER: {
       return { ...state, members: [...state.members, action.member] };
     }

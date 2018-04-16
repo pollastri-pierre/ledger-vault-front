@@ -10,7 +10,7 @@ import RestlayProvider from "restlay/RestlayProvider";
 import GlobalLoading from "components/GlobalLoading";
 import network from "network";
 import theme from "styles/theme";
-import Container from "containers/Container";
+import OrganizationAppRouter from "containers/OrganizationAppRouter";
 import I18nProvider from "containers/I18nProvider";
 import jss from "jss";
 import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
@@ -54,11 +54,11 @@ const render = Component => {
     );
 };
 
-render(Container);
+render(OrganizationAppRouter);
 
 if (module.hot) {
-  module.hot.accept("containers/Container", () => {
-    const nextContainer = require("containers/Container").default;
+  module.hot.accept("containers/OrganizationAppRouter", () => {
+    const nextContainer = require("containers/OrganizationAppRouter").default;
     render(nextContainer);
   });
 }

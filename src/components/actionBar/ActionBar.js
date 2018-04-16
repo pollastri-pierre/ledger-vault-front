@@ -1,7 +1,7 @@
 //@flow
 import React, { Component, PureComponent } from "react";
 import PropTypes from "prop-types";
-import { Route, withRouter } from "react-router";
+import { Route } from "react-router";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ModalRoute from "../ModalRoute";
@@ -58,7 +58,7 @@ const styles = {
 };
 
 const NewAccountLink = withStyles(styles)(({ classes }) => (
-  <Link to="/dashboard/new-account">
+  <Link to={`dashboard/new-account`}>
     <Plus className={classes.icon} />
     <div className="content-header-button-text">account</div>
   </Link>
@@ -85,6 +85,7 @@ class Logo extends PureComponent<*> {
 
 class ActionBar extends Component<{
   location: Object,
+  match: *,
   classes: Object
 }> {
   static contextTypes = {
@@ -94,13 +95,14 @@ class ActionBar extends Component<{
     translate: string => string
   };
   render() {
-    const { location, classes } = this.props;
+    const { location, classes, match } = this.props;
     // FIXME introduce a component for i18n
     const t = this.context.translate;
+    console.log(match);
 
     return (
       <div className={classes.base}>
-        <ProfileCard />
+        <ProfileCard location={location} match={match} />
         <ModalRoute path="*/new-account" component={AccountCreation} />
         <ModalRoute
           path="*/settings"
@@ -113,7 +115,10 @@ class ActionBar extends Component<{
             <Logo />
           </div>
           <div className={classes.actions}>
-            <Route path="/dashboard" component={NewAccountLink} />
+            <Route
+              path={`${match.url}/dashboard`}
+              render={() => <NewAccountLink />}
+            />
             <Link to="/export">
               <Share className={classes.icon} />
               <div className="content-header-button-text">
@@ -142,4 +147,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withRouter(withStyles(styles)(ActionBar));
+export default withStyles(styles)(ActionBar);
