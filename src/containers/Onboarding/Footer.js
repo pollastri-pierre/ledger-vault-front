@@ -46,7 +46,6 @@ const Footer = ({
 }) => {
   return (
     <div className={classes.base}>
-      {isBack && <DialogButton onTouchTap={onPrev}>back</DialogButton>}
       <div />
       {nextState ? render(onPrev, onNextState) : render(onPrev, onNext)}
     </div>

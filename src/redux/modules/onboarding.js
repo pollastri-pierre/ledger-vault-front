@@ -1,5 +1,6 @@
 //@flow
 import { type Member } from "data/types";
+import { addMessage } from "redux/modules/alerts";
 import network from "network";
 export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
 export const ADD_MEMBER = "onboarding/ADD_MEMBER";
@@ -179,17 +180,26 @@ export function addSeedShard(data: *) {
 }
 
 export function addSignedIn(pub_key: string, signature: *) {
-  return async (dispatch: Function) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
-    };
+  return async (dispatch: Function, getState: Function) => {
+    const { signed } = getState()["onboarding"];
+    const index = signed.findIndex(member => member.pub_key === pub_key);
 
-    await network("/onboarding/authenticate", "POST", data);
-    dispatch({
-      type: ADD_SIGNEDIN,
-      data
-    });
+    if (index > -1) {
+      return dispatch(
+        addMessage("Error", "This device has already been authenticated")
+      );
+    } else {
+      const data = {
+        pub_key: pub_key.toUpperCase(),
+        authentication: signature.rawResponse
+      };
+
+      await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ADD_SIGNEDIN,
+        data
+      });
+    }
   };
 }
 
@@ -298,13 +308,6 @@ export function getChallengeRegistration() {
   };
 }
 
-export function addMember(member: Member) {
-  return {
-    type: ADD_MEMBER,
-    member: member
-  };
-}
-
 export function changeNbRequired(nb: number) {
   return {
     type: CHANGE_NB_REQUIRED,
@@ -319,10 +322,36 @@ export function viewRoute(currentRoute: string) {
   };
 }
 
+export function addMember(data: Member) {
+  return async (dispatch: Function, getState: Function) => {
+    const { members } = getState()["onboarding"];
+    const findIndex = members.findIndex(
+      member => member.pub_key === data.pub_key
+    );
+    if (findIndex > -1) {
+      dispatch(addMessage("Error", "Device already registered", "error"));
+      throw "Already registered";
+    } else {
+      await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ADD_MEMBER,
+        member: data
+      });
+    }
+  };
+}
+
 export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
     case ADD_MEMBER: {
-      return { ...state, members: [...state.members, action.member] };
+      return {
+        ...state,
+        members: [...state.members, action.member],
+        key_handles: {
+          ...state.key_handles,
+          ...{ [action.member.pub_key]: action.member.key_handle }
+        }
+      };
     }
     case CHANGE_NB_REQUIRED: {
       if (action.nb > 0 && action.nb <= state.members.length) {

@@ -48,7 +48,7 @@ class SignInDevice extends Component<Props, State> {
       const authentication = await device.authenticate(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR,
-        keyHandle,
+        Buffer.from(keyHandle, "hex"),
         instanceName,
         instanceReference,
         instanceURL,

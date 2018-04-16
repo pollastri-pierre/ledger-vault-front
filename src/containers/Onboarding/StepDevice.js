@@ -41,7 +41,6 @@ type Props = {
   cancel: Function,
   finish: Function,
   challenge: string,
-  registerKeyHandle: Function,
   data: *
 };
 
@@ -99,11 +98,8 @@ class StepDevice extends Component<Props, State> {
         email: this.props.data.email.value,
         picture: this.props.data.picture.value
       };
-
-      this.props.registerKeyHandle(pubKey, u2f_register.keyHandle);
-
-      await network("/onboarding/authenticate", "POST", data);
       this.setState({ active: 2 });
+
       this.props.finish(data);
     } catch (e) {
       console.error(e);
