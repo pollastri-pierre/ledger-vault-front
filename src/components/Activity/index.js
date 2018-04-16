@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import type { Activities } from "data/types";
@@ -86,13 +87,19 @@ const hourDateFormat = {
 
 class Activity extends Component<
     {
-        data: ActivityCommon[]
+        data: ActivityCommon[],
+        onRef: Function
     },
     *
 > {
     getSeenClass = seen => {
         return seen ? "seen" : "";
     };
+
+    componentDidMount() {
+        this.props.onRef(ReactDOM.findDOMNode(this));
+    }
+
     render() {
         const { data, classes } = this.props;
 
@@ -130,7 +137,8 @@ class Activity extends Component<
                         this.getSeenClass(data.seen)
                     )}
                 >
-                    {data.activity.message}
+                    {data.log.id}
+                    {data.log.message}
                 </span>
             </div>
         );

@@ -188,7 +188,7 @@ export type OperationEntity = OperationCommon & {
 };
 
 export type ActivityCommon = {
-    activity: {
+    log: {
         author: MemberCommon,
         log_name: string,
         message: string,
@@ -197,5 +197,6 @@ export type ActivityCommon = {
     },
     id: number,
     seen: boolean,
+    show: boolean,
     created_on: Date
 };

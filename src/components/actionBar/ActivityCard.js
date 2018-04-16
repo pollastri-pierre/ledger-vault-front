@@ -1,10 +1,14 @@
 //@flow
+import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
+import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import type { Activities } from "data/types";
+import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { DATA_FETCHED } from "restlay/dataStore";
 import ActivityList from "../ActivityList";
@@ -28,7 +32,6 @@ const styles = {
     },
     popover: {
         width: 380,
-        maxHeight: 490,
         paddingRight: 40,
         paddingLeft: 40,
         paddingBottom: 30,
@@ -70,17 +73,17 @@ class ActivityCard extends Component<
     };
 
     componentDidMount() {
-        console.log("mounted");
         const socket = openSocket.connect("https://localhost:3033");
-        const myAuthToken = "admin1";
+        const myAuthToken = getLocalStorageToken();
         let self = this;
         socket.on("connect", function() {
             socket.emit("authenticate", { token: myAuthToken });
         });
         socket.on("admin", function(activity) {
-            console.log(self.props);
             //FIXME why is it fired twice ??
             if (self.props.onNewActivity) {
+                console.log("receiver notification");
+                console.log(activity);
                 self.props.onNewActivity(activity);
             }
         });
@@ -110,6 +113,17 @@ class ActivityCard extends Component<
             bubbleOpened: !this.state.bubbleOpened
         });
     };
+    markAsSeenRequest = async logs_id => {
+        const { restlay } = this.props;
+        await restlay.commitMutation(new MarkActivityAsReadMutation(logs_id));
+        await restlay.fetchQuery(new ActivityQuery());
+    };
+
+    clearAllRequest = async logs_id => {
+        const { restlay } = this.props;
+        await restlay.commitMutation(new ClearActivityMutation(logs_id));
+        await restlay.fetchQuery(new ActivityQuery());
+    };
 
     render() {
         const { profile, classes, activities, loading } = this.props;
@@ -121,6 +135,10 @@ class ActivityCard extends Component<
                   0
               )
             : 0;
+        activities &&
+            activities.sort((a, b) => {
+                return new Date(b.created_on) - new Date(a.created_on);
+            });
         return (
             <span className={classes.clickable}>
                 <div
@@ -150,6 +168,8 @@ class ActivityCard extends Component<
                             <ActivityList
                                 activities={activities}
                                 unseenActivityCount={unseenActivityCount}
+                                markAsSeenRequest={this.markAsSeenRequest}
+                                clearAllRequest={this.clearAllRequest}
                             />
                         )}
                         {loading && <CircularProgress />}
