@@ -20,7 +20,6 @@ const OrganizationAppRouter = () => {
           <Route
             path="/:orga_name"
             render={({ match, history, location }) => {
-              console.log(match);
               return (
                 <Fragment>
                   <Switch>

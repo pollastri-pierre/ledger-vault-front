@@ -20,7 +20,6 @@ import reducer, {
   CHANGE_NB_REQUIRED,
   ADD_SEED_SHARD,
   PREV_STEP,
-  SET_ONBOARDING_STATUS,
   previousStep,
   nextStep,
   goToStep,
@@ -35,7 +34,6 @@ import reducer, {
   toggleGenerateSeed,
   addSeedShard,
   viewRoute,
-  setOnboardingStatus,
   gotBootstrapToken,
   getCommitChallenge
 } from "redux/modules/onboarding";
@@ -113,10 +111,18 @@ test("toggleModalProfile should send TOGGLE_MODAL_PROFILE and the member", () =>
   });
 });
 
-test("addMember should send ADD_MEMBER and the member", () => {
-  expect(addMember({ data: true })).toEqual({
+test("addMember should send ADD_MEMBER and the member", async () => {
+  const dispatch = jest.fn();
+  const getState = () => ({ onboarding: { members: [] } });
+  const thunk = addMember({ pub_key: "test" });
+  await thunk(dispatch, getState);
+
+  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
+    pub_key: "test"
+  });
+  expect(dispatch).toHaveBeenCalledWith({
     type: ADD_MEMBER,
-    member: { data: true }
+    member: { pub_key: "test" }
   });
 });
 
@@ -137,13 +143,6 @@ test("viewRoute should send VIEW_ROUTE and the route", () => {
   expect(viewRoute({ data: true })).toEqual({
     type: VIEW_ROUTE,
     route: { data: true }
-  });
-});
-
-test("setOnboardingStatus should send SET_ONBOARDING_STATUS and the status", () => {
-  expect(setOnboardingStatus(2)).toEqual({
-    type: SET_ONBOARDING_STATUS,
-    status: 2
   });
 });
 

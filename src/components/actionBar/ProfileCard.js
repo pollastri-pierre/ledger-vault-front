@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import type { Member } from "data/types";
 import ProfileEditModal from "../ProfileEditModal";
@@ -107,7 +106,6 @@ class ProfileCard extends Component<
     const { profile, match, location, classes } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
-    console.log(match);
     return (
       <span>
         <span

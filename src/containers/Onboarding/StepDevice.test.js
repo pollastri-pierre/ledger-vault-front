@@ -9,9 +9,6 @@ jest.mock("@ledgerhq/hw-transport-u2f", () => ({
   create: jest.fn()
 }));
 
-import network from "network";
-jest.mock("network", () => jest.fn());
-
 beforeEach(() => {
   VaultDeviceApp.mockClear();
   mockGetPublicKey.mockClear();
@@ -60,9 +57,7 @@ test("onStart should call device and API with right parameters", async () => {
     ""
   );
 
-  expect(props.registerKeyHandle).toHaveBeenCalledWith("pubKey", ["handle1"]);
-
-  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
+  expect(props.finish).toHaveBeenCalledWith({
     confidentiality: { attestation: "signature", public_key: "pubKey" },
     email: "email",
     first_name: "first_name",

@@ -35,8 +35,6 @@ type Challenge = {
 
 type Channel = string;
 
-type OnboardingStatus = 0 | 1 | 2;
-
 const ALL_ROUTES = [
   { label: "welcome", visited: true, milestone: true },
   { label: "authentication", visited: false, milestone: true },

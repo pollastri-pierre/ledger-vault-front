@@ -64,6 +64,7 @@ function AccountCreationSecurity(props: {
       <SecurityRow
         icon={<HourglassFull className={classes.icon} />}
         label="Time-lock"
+        disabled
         onClick={() => switchInternalModal("time-lock")}
       >
         {account.time_lock.enabled ? (
@@ -77,6 +78,7 @@ function AccountCreationSecurity(props: {
       <SecurityRow
         icon={<RatesFull className={classes.icon} />}
         label="Rate Limiter"
+        disabled
         onClick={() => switchInternalModal("rate-limiter")}
       >
         {account.rate_limiter.enabled ? (

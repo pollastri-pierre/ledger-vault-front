@@ -44,7 +44,11 @@ class PendingRequests extends Component<{
     const { classes, profile } = this.props;
     return (
       <div className={classes.base}>
-        <ModalRoute path="*/account/:id" component={EntityApproveAccount} />
+        <ModalRoute
+          path="*/account/:id"
+          component={EntityApproveAccount}
+          test={{ test: 2 }}
+        />
         <ModalRoute path="*/operation/:id" component={EntityApproveOperation} />
         <div className={classes.left}>
           <Operations user={profile} />

@@ -37,7 +37,7 @@ test("onStart should call device and API with right parameters", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    "handle1",
+    Buffer.from("handle1", "hex"),
     "",
     "",
     "",

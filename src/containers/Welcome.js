@@ -45,6 +45,21 @@ const styles = {
     width: 28,
     height: 32
   },
+  help: {
+    width: 63,
+    cursor: "pointer",
+    marginRight: "0",
+    fontSize: 11,
+    fontWeight: "600",
+    textTransform: "uppercase",
+    opacity: "0.5",
+    transition: "opacity 0.2s ease",
+    verticalAlign: "super",
+    lineHeight: "1em",
+    position: "absolute",
+    top: "5px",
+    right: "0;"
+  },
   submit: {
     position: "absolute",
     right: 0,

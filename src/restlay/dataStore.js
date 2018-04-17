@@ -208,6 +208,13 @@ export const executeQueryOrMutation =
           queryOrMutation instanceof Query ||
           queryOrMutation instanceof ConnectionQuery
         ) {
+          const shouldLogout =
+            error.status &&
+            queryOrMutation.logoutUserIfStatusCode &&
+            error.status === queryOrMutation.logoutUserIfStatusCode;
+          if (shouldLogout) {
+            dispatch(logout());
+          }
           ctx.removePendingQuery(queryOrMutation);
         }
         dispatch({
@@ -216,12 +223,6 @@ export const executeQueryOrMutation =
           queryOrMutation,
           cacheKey
         });
-        const shouldLogout =
-          error.status &&
-          error.status === queryOrMutation.logoutUserIfStatusCode;
-        if (shouldLogout) {
-          dispatch(logout());
-        }
         throw error;
       });
 

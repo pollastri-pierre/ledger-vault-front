@@ -1,6 +1,5 @@
 //@flow
 import React from "react";
-import { withRouter } from "react-router";
 import { Title } from "components/Onboarding";
 import { withStyles } from "material-ui/styles";
 import Validate from "components/icons/Validate";
@@ -52,7 +51,6 @@ const ConfirmationGlobal = ({
   history: *,
   onboarding: *
 }) => {
-  console.log(match);
   return (
     <div>
       <Title>Confirmation</Title>

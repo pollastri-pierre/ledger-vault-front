@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import DialogButton from "components/buttons/DialogButton";
+// import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "material-ui/styles";
 import { connect } from "react-redux";
 import { nextStep, previousStep, nextState } from "redux/modules/onboarding";
@@ -33,7 +33,7 @@ const Footer = ({
   onNextState,
   nextState = false,
   onPrev,
-  isBack = true,
+  // isBack = true,
   render
 }: {
   classes: { [$Keys<typeof styles>]: string },

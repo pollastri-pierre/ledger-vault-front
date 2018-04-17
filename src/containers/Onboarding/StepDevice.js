@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
-import network from "network";
 import createDevice, {
   U2F_PATH,
   CONFIDENTIALITY_PATH,
