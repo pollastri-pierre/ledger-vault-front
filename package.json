@@ -10,7 +10,8 @@
     "postinstall": "flow-typed install -s",
     "prettier": "prettier --write \"{src,webpack,test}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
-    "test": "NODE_ENV=test jest --watch"
+    "test": "NODE_ENV=test jest",
+    "testDev": "NODE_ENV=test jest --watch"
   },
   "dependencies": {
     "@ledgerhq/currencies": "^4.2.0",
