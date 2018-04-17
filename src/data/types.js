@@ -188,9 +188,9 @@ export type OperationEntity = OperationCommon & {
 };
 
 export type ActivityCommon = {
-    log: {
+    business_action: {
         author: MemberCommon,
-        log_name: string,
+        business_action_name: string,
         message: string,
         target_id: number,
         target_type: string

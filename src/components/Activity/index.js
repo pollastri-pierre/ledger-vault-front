@@ -137,8 +137,8 @@ class Activity extends Component<
                         this.getSeenClass(data.seen)
                     )}
                 >
-                    {data.log.id}
-                    {data.log.message}
+                    {data.business_action.id}
+                    {data.business_action.message}
                 </span>
             </div>
         );

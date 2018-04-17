@@ -113,15 +113,19 @@ class ActivityCard extends Component<
             bubbleOpened: !this.state.bubbleOpened
         });
     };
-    markAsSeenRequest = async logs_id => {
+    markAsSeenRequest = async business_action_ids => {
         const { restlay } = this.props;
-        await restlay.commitMutation(new MarkActivityAsReadMutation(logs_id));
+        await restlay.commitMutation(
+            new MarkActivityAsReadMutation(business_action_ids)
+        );
         await restlay.fetchQuery(new ActivityQuery());
     };
 
-    clearAllRequest = async logs_id => {
+    clearAllRequest = async business_action_ids => {
         const { restlay } = this.props;
-        await restlay.commitMutation(new ClearActivityMutation(logs_id));
+        await restlay.commitMutation(
+            new ClearActivityMutation(business_action_ids)
+        );
         await restlay.fetchQuery(new ActivityQuery());
     };
 

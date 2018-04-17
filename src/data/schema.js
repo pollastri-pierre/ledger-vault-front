@@ -19,7 +19,7 @@ const Account = create("accounts", {
 const Activity = create(
     "activities",
     {
-        log: {
+        business_action: {
             author: Member
         }
     },

@@ -123,14 +123,15 @@ class ActivityList extends Component<
         const actualTop = this.firstElem.getBoundingClientRect().top - 146;
         const height = this.firstElem.getBoundingClientRect().height;
         const nb_diff = Math.abs(Math.floor(actualTop / height));
-        let logs_id = [];
+        let business_action_ids = [];
         for (let i = nb_diff; i < activities.length && i < nb_diff + 5; i++) {
-            if (!activities[i].seen) logs_id.push(activities[i].log.id);
+            if (!activities[i].seen)
+                business_action_ids.push(activities[i].business_action.id);
         }
-        this.cancelAndMakeRequestMarkAsSeen(logs_id);
+        this.cancelAndMakeRequestMarkAsSeen(business_action_ids);
     };
 
-    cancelAndMakeRequestMarkAsSeen = logs_id => {
+    cancelAndMakeRequestMarkAsSeen = business_action_ids => {
         const { markAsSeenRequest } = this.props;
 
         this.setState(prevState => {
@@ -140,9 +141,10 @@ class ActivityList extends Component<
             }
             let timer = this.timeout(3000);
             timer.promise.then(() => {
-                if (logs_id.length) markAsSeenRequest(logs_id);
+                if (business_action_ids.length)
+                    markAsSeenRequest(business_action_ids);
                 console.log("marking : ");
-                console.log(logs_id);
+                console.log(business_action_ids);
             });
             return { timer: timer };
         });
@@ -150,20 +152,22 @@ class ActivityList extends Component<
 
     markAllAsRead = () => {
         const { activities, markAsSeenRequest } = this.props;
-        let logs_id = [];
+        let business_action_ids = [];
         activities.forEach(activity => {
-            if (!activity.seen) logs_id.push(activity.log.id);
+            if (!activity.seen)
+                business_action_ids.push(activity.business_action.id);
         });
-        markAsSeenRequest(logs_id);
+        markAsSeenRequest(business_action_ids);
     };
 
     clearAll = () => {
         const { activities, clearAllRequest } = this.props;
-        let logs_id = [];
+        let business_action_ids = [];
         activities.forEach(activity => {
-            if (activity.show) logs_id.push(activity.log.id);
+            if (activity.show)
+                business_action_ids.push(activity.business_action.id);
         });
-        clearAllRequest(logs_id);
+        clearAllRequest(business_action_ids);
     };
 
     timeout = ms => {
