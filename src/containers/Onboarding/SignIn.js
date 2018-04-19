@@ -134,7 +134,8 @@ class SignIn extends Component<Props> {
 
     const percentage =
       2 *
-      (this.props.onboarding.signed.length / this.props.onboarding.nbRequired);
+      (this.props.onboarding.signed.length /
+        this.props.onboarding.members.length);
     g
       .append("path")
       .attr("fill", "#27d0e2")
@@ -177,7 +178,7 @@ class SignIn extends Component<Props> {
                 className={classes.svg}
               />
               <strong>
-                {onboarding.signed.length}/{onboarding.nbRequired}
+                {onboarding.signed.length}/{onboarding.members.length}
               </strong>
               <span>members present</span>
             </div>
@@ -191,10 +192,10 @@ class SignIn extends Component<Props> {
               <div
                 className={cx(classes.sign, {
                   [classes.disabled]:
-                    onboarding.signed.length === onboarding.nbRequired
+                    onboarding.signed.length === onboarding.members.length
                 })}
                 onClick={
-                  onboarding.signed.length === onboarding.nbRequired
+                  onboarding.signed.length === onboarding.members.length
                     ? null
                     : onToggleSignin
                 }
@@ -203,7 +204,7 @@ class SignIn extends Component<Props> {
               </div>
               <span className={classes.counter}>
                 {onboarding.signed.length} signed-in,{" "}
-                {onboarding.nbRequired - onboarding.signed.length} remaining
+                {onboarding.members.length - onboarding.signed.length} remaining
               </span>
             </div>
           </div>
@@ -222,7 +223,7 @@ class SignIn extends Component<Props> {
               <DialogButton
                 highlight
                 onTouchTap={onNext}
-                disabled={onboarding.signed.length < onboarding.nbRequired}
+                disabled={onboarding.signed.length < onboarding.members.length}
               >
                 Continue
               </DialogButton>

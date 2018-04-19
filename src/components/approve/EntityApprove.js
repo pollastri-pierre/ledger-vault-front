@@ -120,7 +120,7 @@ class EntityApprove extends Component<Props, State> {
     } else {
       try {
         await restlay.commitMutation(
-          new AbortOperationMutation({ operationId: 10 })
+          new AbortOperationMutation({ operationId: id })
         );
         await restlay.fetchQuery(new PendingOperationsQuery());
         this.close();
