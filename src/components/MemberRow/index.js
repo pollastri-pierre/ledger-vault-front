@@ -53,11 +53,19 @@ const styles = {
     position: "absolute",
     right: "0",
     top: "10px"
+  },
+  editable: {
+    color: "#767676",
+    fontSize: 11,
+    position: "absolute",
+    right: 0,
+    top: 27
   }
 };
 class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
   checked?: boolean,
+  editable?: boolean,
   member: Member,
   classes: Object
 }> {
@@ -67,11 +75,13 @@ class MemberRow extends Component<{
   };
 
   render() {
-    const { member, onSelect, checked, classes } = this.props;
+    const { member, onSelect, checked, classes, editable } = this.props;
 
     return (
       <div
-        className={classnames(classes.base, { [classes.notSelect]: !onSelect })}
+        className={classnames(classes.base, {
+          [classes.notSelect]: !onSelect && !editable
+        })}
         onClick={this.onClick}
       >
         <MemberAvatar url={member.picture} className={classes.avatar} />
@@ -81,14 +91,16 @@ class MemberRow extends Component<{
         <p className={classes.role}>
           <MemberRole member={member} />
         </p>
-        {onSelect && (
-          <Checkbox
-            checked={checked}
-            className={classes.checkbox}
-            labelFor={member.id}
-            handleInputChange={this.onClick}
-          />
-        )}
+        {editable && <span className={classes.editable}>Click to edit</span>}
+        {onSelect &&
+          !editable && (
+            <Checkbox
+              checked={checked}
+              className={classes.checkbox}
+              labelFor={member.id}
+              handleInputChange={this.onClick}
+            />
+          )}
       </div>
     );
   }

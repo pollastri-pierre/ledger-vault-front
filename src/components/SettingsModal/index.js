@@ -9,15 +9,15 @@ import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
 
 import SelectTab from "components/SelectTab/SelectTab";
-import fiatUnits from "constants/fiatUnits";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import SettingsDataQuery from "api/queries/SettingsDataQuery";
+import FiatCurrenciesQuery from "api/queries/FiatCurrenciesQuery";
 import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
+import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
-
+import { listCurrencies } from "@ledgerhq/currencies";
 import BadgeSecurity from "../BadgeSecurity";
 import RateLimiterValue from "../RateLimiterValue";
 import TimeLockValue from "../TimeLockValue";
@@ -31,9 +31,11 @@ import {
   BigSecurityAutoExpireIcon
 } from "../icons";
 
-import type { Account, SecurityScheme, AccountSettings } from "data/types";
+import type { Account, AccountSettings } from "data/types";
 
-import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
+// import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
+
+const allCurrencies = listCurrencies();
 
 const styles = {
   container: {
@@ -72,6 +74,7 @@ const styles = {
   content: {
     flexGrow: 1,
     padding: 40,
+    paddingBottom: 0,
     overflowY: "auto",
     "&> * + *": {
       marginTop: 40
@@ -79,7 +82,7 @@ const styles = {
   },
   contentSections: {
     "&> * + *": {
-      marginTop: 30
+      marginTop: 20
     }
   },
   footer: {
@@ -207,27 +210,22 @@ class SettingsField extends Component<{
 }
 
 class SecuritySchemeView extends Component<{
-  securityScheme: SecurityScheme,
+  account: Account,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const {
-      securityScheme: {
-        quorum,
-        approvers,
-        time_lock,
-        rate_limiter,
-        auto_expire
-      },
-      classes
-    } = this.props;
+      security_scheme: { quorum, time_lock, rate_limiter, auto_expire },
+      members
+    } = this.props.account;
+    const { classes } = this.props;
     return (
       <div className={classes.securitySchemeView}>
         <BadgeSecurity
           noWidth
           icon={<BigSecurityMembersIcon />}
           label="Members"
-          value={`${approvers.length} of ${quorum}`}
+          value={`${members.length} of ${quorum}`}
         />
         <BadgeSecurity
           noWidth
@@ -263,17 +261,18 @@ class SecuritySchemeView extends Component<{
 }
 
 type Props = {
-  settingsData: SettingsDataQueryResponse,
-  account: Account,
+  settingsData: AccountSettings,
+  account: *,
   restlay: RestlayEnvironment,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
+  fiats: *
 };
 type State = {
   name: string,
-  settings: AccountSettings
+  settings: *
 };
 class AccountSettingsEdit extends Component<Props, State> {
-  constructor({ account }: Props) {
+  constructor({ account }: *) {
     super();
     const { name, settings } = account;
     this.state = {
@@ -282,27 +281,39 @@ class AccountSettingsEdit extends Component<Props, State> {
     };
   }
   debouncedCommit = debounce(() => {
-    const { props: { restlay, account }, state } = this;
-    const m = new SaveAccountSettingsMutation({ ...state, account });
+    const { props: { restlay, account }, state: { settings } } = this;
+    const m = new SaveAccountSettingsMutation({
+      account,
+      currency_unit: settings.currency_unit["id"],
+      fiat: settings.fiat.id || settings.fiat
+    });
     restlay.commitMutation(m);
-  }, 300);
+  }, 1000);
+
+  debouncedCommitName = debounce(() => {
+    const { props: { restlay, account }, state: { name } } = this;
+    const m = new EditAccountNameMutation({ name, account });
+    restlay.commitMutation(m);
+  }, 2000);
   update = (update: $Shape<State>) => {
     this.setState(update);
     this.debouncedCommit();
   };
+  updateName = (name: string) => {
+    this.setState({ name: name });
+    this.debouncedCommitName();
+  };
   onAccountNameChange = (e: SyntheticInputEvent<>) => {
     const name = e.target.value;
-    this.update({ name });
+    this.updateName(name);
   };
   onUnitIndexChange = (unitIndex: number) => {
-    if (unitIndex !== this.state.settings.unitIndex) {
-      this.update({
-        settings: {
-          ...this.state.settings,
-          unitIndex
-        }
-      });
-    }
+    this.update({
+      settings: {
+        ...this.state.settings,
+        currency_unit: this.props.account.currency.units[unitIndex]
+      }
+    });
   };
   onBlockchainExplorerChange = ({
     target: { value: blockchainExplorer }
@@ -314,17 +325,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
-  onCountervalueSourceChange = ({
-    target: { value: countervalueSource }
-  }: *) => {
-    this.update({
-      settings: {
-        ...this.state.settings,
-        countervalueSource
-      }
-    });
-  };
-  onFiatChange = ({ target: { value: fiat } }: *) => {
+  onFiatCurrencyChange = ({ target: { value: fiat } }: *) => {
     this.update({
       settings: {
         ...this.state.settings,
@@ -333,18 +334,18 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   render() {
-    const { account, settingsData, classes } = this.props;
+    const { account, classes, fiats } = this.props;
     const { name, settings } = this.state;
-    const countervalueSourceData = settingsData.countervalueSources.find(
-      c => c.id === settings.countervalueSource
+    const unit_index = account.currency.units.findIndex(
+      unit => unit.id === settings.currency_unit.id
     );
+
+    const fiat = settings.fiat.id || settings.fiat;
+
     return (
       <div className={classes.contentSections}>
         <div className={classes.capsTitle}>{"Security scheme"}</div>
-        <SecuritySchemeView
-          securityScheme={account.security_scheme}
-          classes={classes}
-        />
+        <SecuritySchemeView account={account} classes={classes} />
 
         <div className={classes.capsTitle}>{"General"}</div>
         <div className={classes.settingsFields}>
@@ -361,7 +362,7 @@ class AccountSettingsEdit extends Component<Props, State> {
             <SelectTab
               tabs={account.currency.units.map(elem => elem.name)}
               onChange={this.onUnitIndexChange}
-              selected={settings.unitIndex}
+              selected={unit_index}
               theme="inline"
             />
           </SettingsField>
@@ -372,12 +373,12 @@ class AccountSettingsEdit extends Component<Props, State> {
             classes={classes}
           >
             <Select
-              value={settings.blockchainExplorer}
+              value={settings.blockchain_explorer}
               onChange={this.onBlockchainExplorerChange}
               fullWidth
               disableUnderline
             >
-              {settingsData.blockchainExplorers.map(({ id }) => (
+              {[{ id: "blockchain.info" }].map(({ id }) => (
                 <MenuItem disableRipple key={id} value={id}>
                   {id}
                 </MenuItem>
@@ -385,40 +386,21 @@ class AccountSettingsEdit extends Component<Props, State> {
             </Select>
           </SettingsField>
         </div>
-
         <div className={classes.capsTitle}>{"Countervalue"}</div>
-        <div className={classes.settingsFields}>
-          <SettingsField botPadded label="Source" classes={classes}>
-            <Select
-              value={settings.countervalueSource}
-              onChange={this.onCountervalueSourceChange}
-              fullWidth
-              disableUnderline
-            >
-              {settingsData.countervalueSources.map(({ id }) => (
-                <MenuItem disableRipple key={id} value={id}>
-                  {id}
-                </MenuItem>
-              ))}
-            </Select>
-          </SettingsField>
-          {countervalueSourceData ? (
-            <SettingsField topPadded label="Fiat Currency" classes={classes}>
-              <Select
-                value={settings.fiat}
-                onChange={this.onFiatChange}
-                fullWidth
-                disableUnderline
-              >
-                {countervalueSourceData.fiats.map(fiat => (
-                  <MenuItem disableRipple key={fiat} value={fiat}>
-                    {fiat} - {fiatUnits[fiat].name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </SettingsField>
-          ) : null}
-        </div>
+        <SettingsField label="Fiat currency" classes={classes}>
+          <Select
+            value={fiat}
+            onChange={this.onFiatCurrencyChange}
+            fullWidth
+            disableUnderline
+          >
+            {fiats.map(({ id, name }) => (
+              <MenuItem disableRipple key={id} value={id}>
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </SettingsField>
       </div>
     );
   }
@@ -436,19 +418,28 @@ function Side({
       <div className={classes.sideGrow}>
         <div className={classes.capsTitle}>{"Accounts"}</div>
         <div className={classes.sideItems}>
-          {accounts.map(account => (
-            <NavLink
-              key={account.id}
-              style={{ color: account.currency.color }}
-              className={classes.sideItem}
-              to={account.id}
-            >
-              <div className={classes.sideItemAccountName}>{account.name}</div>
-              <div className={classes.sideItemCurrencyName}>
-                {account.currency.name}
-              </div>
-            </NavLink>
-          ))}
+          {accounts.map(account => {
+            const curr = allCurrencies.find(
+              c => c.scheme === account.currency.name
+            ) || {
+              color: ""
+            };
+            return (
+              <NavLink
+                key={account.id}
+                style={{ color: curr.color }}
+                className={classes.sideItem}
+                to={String(account.id)}
+              >
+                <div className={classes.sideItemAccountName}>
+                  {account.name}
+                </div>
+                <div className={classes.sideItemCurrencyName}>
+                  {account.currency.name}
+                </div>
+              </NavLink>
+            );
+          })}
         </div>
       </div>
       <div className={classes.sideFooter}>
@@ -461,14 +452,14 @@ function Side({
 }
 
 class SettingsModal extends Component<{
-  settingsData: SettingsDataQueryResponse,
-  accounts: Account[],
+  accounts: *,
+  fiats: *,
   restlay: RestlayEnvironment,
   close: Function,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { settingsData, accounts, restlay, close, classes } = this.props;
+    const { accounts, restlay, close, classes, fiats } = this.props;
     return (
       <div className={classes.container}>
         <Side classes={classes} accounts={accounts} />
@@ -481,16 +472,16 @@ class SettingsModal extends Component<{
                   path="*/settings/:id"
                   render={props => {
                     const account = accounts.find(
-                      a => a.id === props.match.params.id
+                      a => a.id === parseInt(props.match.params.id, 10)
                     );
                     return account ? (
                       <AccountSettingsEdit
-                        {...props}
                         classes={classes}
-                        settingsData={settingsData}
+                        settingsData={account.settings}
                         key={account.id}
                         account={account}
                         restlay={restlay}
+                        fiats={fiats}
                       />
                     ) : null;
                   }}
@@ -526,7 +517,7 @@ export default withStyles(styles)(
   connectData(SettingsModal, {
     RenderLoading,
     queries: {
-      settingsData: SettingsDataQuery,
+      fiats: FiatCurrenciesQuery,
       accounts: AccountsQuery
     }
   })

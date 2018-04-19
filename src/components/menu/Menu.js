@@ -53,13 +53,14 @@ const styles = {
 function Menu(
   props: {
     location: *,
+    match: *,
     classes: { [_: $Keys<typeof styles>]: string }
   },
   context: {
     translate: Function
   }
 ) {
-  const { location, classes } = props;
+  const { location, classes, match } = props;
   const t = context.translate;
   return (
     <div className={classes.root}>
@@ -69,25 +70,25 @@ function Menu(
       </span>
 
       <MenuList>
-        <MenuLink to="/dashboard">
+        <MenuLink to={`${match.url}/dashboard`}>
           <span className={classes.link}>
             <Home className={classes.icon} />
             {t("menu.dashboard")}
           </span>
         </MenuLink>
-        <MenuLink to={location.pathname + "/new-operation"}>
+        <MenuLink to={`${match.url}/new-operation`}>
           <span className={classes.link}>
             <Plus className={classes.icon} />
             {t("menu.newOperation")}
           </span>
         </MenuLink>
-        <MenuLink to="/pending">
+        <MenuLink to={`${match.url}/pending`}>
           <span className={classes.link}>
             <Lines className={classes.icon} />
             {t("menu.pendingRequests")}
           </span>
         </MenuLink>
-        <MenuLink to="/search">
+        <MenuLink to={`${match.url}/search`}>
           <span className={classes.link}>
             <Search className={classes.searchIcon} />
             {t("menu.search")}

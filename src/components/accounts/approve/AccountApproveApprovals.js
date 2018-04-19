@@ -2,27 +2,29 @@
 import React, { Component } from "react";
 import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
-import type { Account, Member } from "data/types";
+import type { Member, Approval } from "data/types";
+import { Overscroll } from "../../";
 
 type Props = {
-  account: Account,
-  approvers: Array<Member>
+  members: Member[],
+  approvers: Approval[]
 };
 
 class AccountApproveApprovals extends Component<Props> {
   render() {
-    const { approved } = this.props.account;
-    const { approvers } = this.props;
+    const { members, approvers } = this.props;
 
     return (
-      <div className="account-creation-members">
+      <div>
         <InfoModal>
           The account will be available when the following members in your team
           approve the creation request.
         </InfoModal>
 
-        <div style={{ marginTop: "40px" }}>
-          <ApprovalList approvers={approvers} approved={approved} />
+        <div style={{ marginTop: "40px", height: 200 }}>
+          <Overscroll top={20} bottom={100}>
+            <ApprovalList approvers={members} approved={approvers || []} />
+          </Overscroll>
         </div>
       </div>
     );

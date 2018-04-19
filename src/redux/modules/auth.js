@@ -1,9 +1,13 @@
 //@flow
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
+import network from "network";
 
 export function getLocalStorageToken() {
-  return window.localStorage.getItem("token");
+  // avoid fail in test env
+  if (typeof window !== "undefined") {
+    return window.localStorage.getItem("token");
+  }
 }
 
 export function removeLocalStorageToken() {
@@ -16,6 +20,7 @@ export function setTokenToLocalStorage(token: string) {
 
 export function logout() {
   removeLocalStorageToken();
+  network("/authentications/authenticate", "DELETE");
   return { type: LOGOUT };
 }
 
@@ -37,17 +42,6 @@ export default function reducer(
   switch (action.type) {
     case LOGOUT:
       return { isAuthenticated: false };
-    case "DATA_FETCHED_FAIL": {
-      const shouldLogout =
-        action.error.status &&
-        action.error.status === action.queryOrMutation.logoutUserIfStatusCode;
-      if (shouldLogout) {
-        removeLocalStorageToken();
-        return { isAuthenticated: false };
-      } else {
-        return state;
-      }
-    }
     case LOGIN:
       return { isAuthenticated: true };
     default:

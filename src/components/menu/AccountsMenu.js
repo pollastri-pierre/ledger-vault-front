@@ -2,10 +2,15 @@
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
+import { withRouter } from "react-router";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+
+import { listCurrencies } from "@ledgerhq/currencies";
+const allCurrencies = listCurrencies();
 
 const styles = {
   item: {
@@ -32,32 +37,45 @@ const styles = {
 
 class AccountsMenu extends Component<{
   classes: Object,
-  accounts: Array<Account>
+  accounts: Array<Account>,
+  match: *
 }> {
   render() {
-    const { accounts, classes } = this.props;
+    const { accounts, classes, match } = this.props;
     return (
       <MenuList>
-        {accounts.map(account => (
-          <MenuLink
-            color={account.currency.color}
-            key={account.id}
-            to={`/account/${account.id}`}
-            className={classes.item}
-          >
-            <span className={classes.name}>{account.name}</span>
-            <span className={classes.unit}>
-              {account.currency.units[0].code}
-            </span>
-          </MenuLink>
-        ))}
+        {accounts.map(account => {
+          const curr = allCurrencies.find(
+            c => c.scheme === account.currency.name
+          ) || {
+            color: ""
+          };
+          const unit = account.currency.units.reduce(
+            (prev, current) =>
+              prev.magnitude > current.magnitude ? prev : current
+          );
+          return (
+            <MenuLink
+              color={curr.color}
+              key={account.id}
+              to={`${match.url}/account/${account.id}`}
+              className={classes.item}
+            >
+              <span className={classes.name}>{account.name}</span>
+              <span className={classes.unit}>{unit.code}</span>
+            </MenuLink>
+          );
+        })}
       </MenuList>
     );
   }
 }
 
-export default connectData(withStyles(styles)(AccountsMenu), {
-  queries: {
-    accounts: AccountsQuery
-  }
-});
+export default withRouter(
+  connectData(withStyles(styles)(AccountsMenu), {
+    queries: {
+      accounts: AccountsQuery,
+      currencies: CurrenciesQuery
+    }
+  })
+);

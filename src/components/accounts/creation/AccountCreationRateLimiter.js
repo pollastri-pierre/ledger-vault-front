@@ -129,7 +129,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 onChange={this.changeFrequency}
                 disableUnderline
                 renderValue={key =>
-                  (frequencies.find(o => o.key === key) || {}).title}
+                  "per " + (frequencies.find(o => o.key === key) || {}).title}
               >
                 {frequencies.map(({ title, key }) => (
                   <MenuItem

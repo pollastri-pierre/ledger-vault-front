@@ -10,6 +10,7 @@ const Group = create("groups", {
 });
 
 const Currency = create("currencies", {}, "name");
+const Fiat = create("fiats");
 
 const Account = create("accounts", {
   currency: Currency
@@ -24,7 +25,7 @@ const Operation = create(
       }
     ]
   },
-  "uuid"
+  "id"
 );
 
 const Balance = create("balance");
@@ -35,5 +36,6 @@ export default {
   Currency,
   Account,
   Operation,
+  Fiat,
   Balance
 };

@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import connectData from "restlay/connectData";
-import NewAccountMutation from "api/mutations/NewAccountMutation";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
@@ -17,7 +16,6 @@ type Props = {
   changeAccountName: Function,
   selectCurrency: (cur: Currency) => void,
   onSelect: Function,
-  close: Function,
   switchInternalModal: Function,
   restlay: *,
   tabsIndex: number,
@@ -45,7 +43,6 @@ class MainCreation extends Component<Props> {
       selectCurrency,
       onSelect,
       tabsIndex,
-      close,
       classes,
       switchInternalModal
     } = props;
@@ -69,14 +66,9 @@ class MainCreation extends Component<Props> {
         isNextDisabled = true;
     }
 
-    const save = () =>
-      props.restlay
-        .commitMutation(
-          new NewAccountMutation({
-            put_data_here: 42
-          })
-        )
-        .then(close);
+    const save = () => {
+      switchInternalModal("device");
+    };
 
     return (
       <div className={classes.base}>

@@ -19,7 +19,7 @@ type Response = {
 
 // e.g. /calculate-fee/bitcoin/slow
 const uri = ({ account, speed }: Input) =>
-  `/calculate-fee/${account.currency.name}/${speed}`;
+  `/fees/${account.currency.name}/${speed}`;
 
 // Calculate the fee for a given account (in the account currency)
 // (used when creating a new operation)

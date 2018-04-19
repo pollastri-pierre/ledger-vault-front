@@ -1,10 +1,10 @@
 //@flow
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
-import { SandBox, AccountView, PendingRequests } from "../../containers"; // Tests
-import Dashboard from "../../containers/Dashboard";
+import { AccountView, PendingRequests } from "../../containers"; // Tests
+import Dashboard from "containers/Dashboard";
 import { withStyles } from "material-ui/styles";
-import Search from "../../containers/Search";
+import Search from "containers/Search";
 
 const styles = {
   base: {
@@ -16,19 +16,29 @@ const styles = {
   }
 };
 function Content({
-  classes
+  classes,
+  match
 }: {
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
+  match: *
 }) {
   return (
     <div className={classes.base}>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/dashboard" />} />
-        <Route path="/sandbox" component={SandBox} />
-        <Route path="/pending" component={PendingRequests} />
-        <Route path="/search" component={Search} />
-        <Route path="/account/:id" component={AccountView} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route path={`${match.url}/pending`} component={PendingRequests} />
+        <Route path={`${match.url}/search`} component={Search} />
+        <Route path={`${match.url}/account/:id`} component={AccountView} />
+        <Route
+          path={`${match.url}/dashboard`}
+          render={() => {
+            return <Dashboard match={match} />;
+          }}
+        />
+        <Route
+          exact
+          path={`${match.url}`}
+          render={() => <Redirect to={`${match.url}/dashboard`} />}
+        />
       </Switch>
     </div>
   );

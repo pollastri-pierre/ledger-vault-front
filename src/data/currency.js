@@ -7,8 +7,9 @@ import type { Account, Currency, Unit, Rate } from "./types";
 type UnitValue = { value: number, unit: Unit };
 
 export function getAccountCurrencyUnit(account: Account): Unit {
-  const unitIndex: number = account.settings ? account.settings.unitIndex : -1;
-  return account.currency.units[unitIndex] || account.currency.units[0];
+  // const unitIndex: number = account.settings ? account.settings.unit_index : -1;
+  return account.settings.currency_unit;
+  // return account.currency.units[unitIndex] || account.currency.units[0];
 }
 
 export function getCurrency(

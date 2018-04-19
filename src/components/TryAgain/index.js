@@ -1,11 +1,33 @@
 //@flow
 import React, { Component } from "react";
 import errorFormatter from "formatters/error";
+import cx from "classnames";
+import { withStyles } from "material-ui/styles";
 
+const styles = {
+  base: {
+    display: "block",
+    textAlign: "center",
+    fontSize: 14,
+    padding: 40,
+    cursor: "pointer",
+    "& strong": {
+      fontSize: "1.4em"
+    },
+    "& p.error": {
+      opacity: 0.5,
+      fontSize: "0.8em"
+    }
+  },
+  pending: {
+    opacity: 0.5
+  }
+};
 class TryAgain extends Component<
   {
     action: () => Promise<*> | *,
-    error: Error
+    error: Error,
+    classes: { [$Keys<typeof styles>]: string }
   },
   { pending: boolean }
 > {
@@ -31,10 +53,10 @@ class TryAgain extends Component<
   };
   render() {
     const { pending } = this.state;
-    const { error } = this.props;
+    const { error, classes } = this.props;
     return (
       <div
-        className={["TryAgain", pending ? "pending" : ""].join(" ")}
+        className={cx(classes.base, { [classes.pending]: pending })}
         onClick={this.onclick}
       >
         <p>An error occured.</p>
@@ -45,4 +67,4 @@ class TryAgain extends Component<
   }
 }
 
-export default TryAgain;
+export default withStyles(styles)(TryAgain);

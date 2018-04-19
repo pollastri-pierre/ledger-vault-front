@@ -2,7 +2,7 @@
 import React, { PureComponent } from "react";
 import ValidateBadge from "../icons/full/ValidateBadge";
 import { withStyles } from "material-ui/styles";
-import type { Member } from "data/types";
+import type { Member, Approval } from "data/types";
 import { calculateApprovingObjectMeta } from "data/approvingObject";
 import colors from "shared/colors";
 import type {
@@ -20,8 +20,8 @@ const styles = {
 };
 
 class ApprovalStatus extends PureComponent<{
-  approved: Array<string>,
-  approvers: Array<*>,
+  approved: Approval[],
+  approvers: Member[],
   nbRequired: number,
   user: Member,
   approvingObject?: ApprovingObject,
@@ -38,8 +38,8 @@ class ApprovalStatus extends PureComponent<{
     } = this.props;
 
     const isUserApproved =
-      approved.indexOf(user.pub_key) > -1 ||
-      approvers.length === approved.length;
+      approved.filter(approval => approval.person.pub_key === user.pub_key)
+        .length > 0;
 
     const approvingObjectMeta: ?ApprovingObjectMeta =
       approvingObject && calculateApprovingObjectMeta(approvingObject);

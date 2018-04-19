@@ -92,8 +92,8 @@ class TotalBalance extends Component<{
   }
 }
 
-const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
-  <Card className={classes.card} title="total balance">
+const RenderError = withStyles(styles)(({ error, restlay }: *) => (
+  <Card title="total balance">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 ));

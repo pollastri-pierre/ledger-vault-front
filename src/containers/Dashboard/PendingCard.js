@@ -6,10 +6,11 @@ import Card from "components/Card";
 import CardField from "components/CardField";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import AccountName from "components/AccountName";
 import type { Operation, Account } from "data/types";
+import AccountName from "components/AccountName";
+import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import PendingsQuery from "api/queries/PendingsQuery";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { withStyles } from "material-ui/styles";
@@ -70,7 +71,7 @@ const OperationRow = ({
 }) =>
   account ? (
     <Row date={operation.time}>
-      <CurrencyAccountValue account={account} value={operation.amount} />
+      <CurrencyAccountValue account={account} value={operation.price.amount} />
     </Row>
   ) : null;
 
@@ -84,23 +85,32 @@ class PendingCard extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   pendings: PendingsQueryResponse,
   accounts: Account[],
+  allAccounts: Account[],
+  match: *,
+  operations: Operation[],
   reloading: boolean
 }> {
   render() {
     const {
       accounts,
-      pendings: { approveOperations, approveAccounts },
+      operations,
       classes,
+      allAccounts,
+      match,
       reloading
     } = this.props;
-    const totalOperations = approveOperations.length;
-    const totalAccounts = approveAccounts.length;
+    const totalOperations = operations.length;
+    const totalAccounts = accounts.length;
     const total = totalOperations + totalAccounts;
     return (
       <Card
         reloading={reloading}
         title="pending"
-        titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
+        titleRight={
+          <ViewAllLink to={`/${match.params.orga_name}/pending`}>
+            VIEW ALL ({total})
+          </ViewAllLink>
+        }
         className="pendingCard"
       >
         <header className={classes.header}>
@@ -112,16 +122,16 @@ class PendingCard extends Component<{
           </CardField>
         </header>
         <div className="pending-list">
-          {approveOperations
+          {operations
             .map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
                 operation={operation}
-                account={accounts.find(a => a.id === operation.account_id)}
+                account={allAccounts.find(a => a.id === operation.account_id)}
               />
             ))
             .concat(
-              approveAccounts.map((account, i) => (
+              accounts.map((account, i) => (
                 <AccountRow key={"ac_" + i} account={account} />
               ))
             )}
@@ -145,8 +155,9 @@ const RenderLoading = () => (
 
 export default connectData(withStyles(styles)(PendingCard), {
   queries: {
-    accounts: AccountsQuery,
-    pendings: PendingsQuery
+    accounts: PendingAccountsQuery,
+    allAccounts: AccountsQuery,
+    operations: PendingOperationsQuery
   },
   optimisticRendering: true,
   RenderError,

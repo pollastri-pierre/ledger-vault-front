@@ -1,15 +1,24 @@
 //@flow
-import fiatUnits from "constants/fiatUnits";
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
 
-export type Fiat = $Keys<typeof fiatUnits>;
+// export type Fiat = {
+//   id: number,
+//   name: string,
+//   type: string
+// };
+
+export type Fiat = string;
 
 export type Rate = {
   value: number,
   fiat: Fiat
+};
+
+type Price = {
+  amount: number
 };
 
 export type Unit = {
@@ -35,38 +44,17 @@ export type RateLimiter = {
 
 export type SecurityScheme = {
   quorum: number,
-  approvers: string[],
   time_lock?: number,
   rate_limiter?: RateLimiter,
   auto_expire?: number | null
 };
 
 export type AccountSettings = {
+  id: number,
   fiat: Fiat,
+  currency_unit: Unit,
   unitIndex: number,
-  countervalueSource: string,
-  blockchainExplorer: string
-};
-
-type AccountCommon = {
-  id: string,
-  name: string,
-  currencyRate: Rate,
-  currencyRateInReferenceFiat: Rate,
-  settings: AccountSettings,
-  security_scheme: SecurityScheme,
-  balance: number,
-  creation_time: string,
-  receive_address: string,
-  balance_history: { [_: string]: number },
-  approved: string[]
-};
-export type Account = AccountCommon & {
-  currency: Currency
-};
-
-export type AccountEntity = AccountCommon & {
-  currency: string
+  blockchain_explorer: string
 };
 
 type MemberCommon = {
@@ -83,6 +71,36 @@ type MemberCommon = {
 };
 export type MemberEntity = MemberCommon;
 export type Member = MemberCommon;
+
+export type Approval = {
+  created_on: Date,
+  person: Member,
+  type: "APPROVE" | "ABORT"
+};
+
+type AccountCommon = {
+  id: number,
+  name: string,
+  currencyRate: Rate,
+  rate: Rate,
+  currencyRate: Rate,
+  currencyRateInReferenceFiat: Rate,
+  members: Member[],
+  settings: AccountSettings,
+  security_scheme: SecurityScheme,
+  balance: number,
+  creation_time: string,
+  receive_address: string,
+  balance_history: { [_: string]: number },
+  approvals: Approval[]
+};
+export type Account = AccountCommon & {
+  currency: Currency
+};
+
+export type AccountEntity = AccountCommon & {
+  currency: string
+};
 
 type GroupCommon = {
   id: string,
@@ -113,7 +131,7 @@ export type TransactionInput = {
   value: number,
   previous_tx_hash?: string,
   previous_tx_output_index?: number,
-  address?: string,
+  address: string,
   signature_script?: string,
   coinbase?: string,
   sequence?: number
@@ -122,7 +140,7 @@ export type TransactionInput = {
 export type TransactionOutput = {
   index: number,
   value: number,
-  address?: string,
+  address: string,
   script?: string
 };
 
@@ -142,25 +160,28 @@ export type Trust = {
 };
 
 type OperationCommon = {
-  uuid: string,
+  id: number,
   currency_name: string,
   currency_family: string,
   trust: Trust,
   confirmations: number,
   time: string,
+  price: Price,
+  fees: Price,
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
   endOfRateLimiterTime: ?string,
   type: string,
   amount: number,
   rate: Rate,
-  fees: number,
   account_id: string,
   approved: string[],
   senders: string[],
   recipients: string[],
   transaction: Transaction,
-  exploreURL: ?string
+  exploreURL: ?string,
+  approvals: Approval[],
+  tx_hash: ?string
 };
 export type Operation = OperationCommon & {
   notes: Note[]

@@ -56,7 +56,11 @@ class OperationCreation extends Component<{
   selectAccount: Account => void,
   details: Details,
   saveDetails: Object => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
+  updateTitle: string => void,
+  updateNote: string => void,
+  title: string,
+  note: string
 }> {
   onTabChange = (e, value: number) => {
     this.props.onTabsChange(value);
@@ -71,6 +75,10 @@ class OperationCreation extends Component<{
       selectAccount,
       details,
       saveDetails,
+      title,
+      note,
+      updateNote,
+      updateTitle,
       onTabsChange,
       classes
     } = this.props;
@@ -107,7 +115,12 @@ class OperationCreation extends Component<{
       case 2:
         content = (
           <Overscroll top={40} bottom={72} paddingX={0}>
-            <OperationCreationLabel />
+            <OperationCreationLabel
+              title={title}
+              note={note}
+              updateTitle={updateTitle}
+              updateNote={updateNote}
+            />
           </Overscroll>
         );
         break;

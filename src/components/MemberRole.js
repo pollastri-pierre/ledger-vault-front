@@ -5,7 +5,7 @@ import type { Member } from "data/types";
 class MemberRole extends Component<{ member: Member }> {
   render() {
     const { member } = this.props;
-    return member.role;
+    return member.role || "Administrator";
   }
 }
 

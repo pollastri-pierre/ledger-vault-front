@@ -48,7 +48,7 @@ class OperationNoteLink extends Component<{
     const note: ?Note = operation.notes.length > 0 ? operation.notes[0] : null;
     return (
       <span className={classes.base}>
-        <Link to={`./operation/${operation.uuid}/2`} onClick={stopPropagation}>
+        <Link to={`./operation/${operation.id}/2`} onClick={stopPropagation}>
           <Comment color={colors.mouse} className={classes.comment} />
         </Link>
         {!note ? null : (
@@ -252,7 +252,7 @@ class RowT extends Component<{
   index: number,
   children: React$Node,
   classes: Object,
-  openOperation: (string, number) => void
+  openOperation: (number, number) => void
 }> {
   shouldComponentUpdate({ cell }: *) {
     return this.props.cell.operation !== cell.operation;
@@ -268,7 +268,7 @@ class RowT extends Component<{
       <tr
         style={{ cursor: "pointer" }}
         className={classes.tr}
-        onClick={() => openOperation(operation.uuid, 0)}
+        onClick={() => openOperation(operation.id, 0)}
       >
         {children}
       </tr>
@@ -292,8 +292,8 @@ class DataTableOperation extends Component<
     columns: COLS.filter(c => this.props.columnIds.includes(c.className))
   };
 
-  openOperation = (uuid: string, n: number = 0) => {
-    this.props.history.push(`${this.props.match.url}/operation/${uuid}/${n}`);
+  openOperation = (id: string, n: number = 0) => {
+    this.props.history.push(`${this.props.match.url}/operation/${id}/${n}`);
   };
 
   renderRow = (props: *) => (

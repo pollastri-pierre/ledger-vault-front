@@ -1,22 +1,30 @@
 //@flow
 import React from "react";
 import ApprovalUser from "../ApprovalUser";
-import type { Member } from "data/types";
+import type { Member, Approval } from "data/types";
 
-function ApprovalList(props: {
-  approvers: Array<Member>,
-  approved: Array<string>
-}) {
+function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
   const { approved, approvers } = props;
+
+  const list = approvers
+    .map(member => {
+      const data: Object = member;
+
+      const isApproved = !!approved.find(
+        approver => approver.person.pub_key === member.pub_key
+      );
+      data["approved"] = isApproved;
+      return data;
+    })
+    .sort((a, b) => b.approved - a.approved);
   return (
     <div>
-      {approvers.map(member => {
-        const isApproved = approved.indexOf(member.pub_key) > -1;
+      {list.map(member => {
         return (
           <ApprovalUser
             key={member.pub_key}
             member={member}
-            isApproved={isApproved}
+            isApproved={member.approved}
           />
         );
       })}

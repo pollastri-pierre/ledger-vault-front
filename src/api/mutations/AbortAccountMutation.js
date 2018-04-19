@@ -4,14 +4,14 @@ import type { Store } from "restlay/dataStore";
 import { success, error } from "formatters/notification";
 
 type Input = {
-  accountId: string
+  accountId: number
 };
 
 type Response = void; // FIXME what response?
 
 export default class AbortAccountMutation extends Mutation<Input, Response> {
-  method = "DELETE";
-  uri = `/accounts/${this.props.accountId}`;
+  method = "POST";
+  uri = `/accounts/${this.props.accountId}/abort`;
 
   getSuccessNotification() {
     return success("account request", "aborted");

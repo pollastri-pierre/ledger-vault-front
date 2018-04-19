@@ -1,4 +1,6 @@
 //@flow
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import connectData from "restlay/connectData";
 import React, { Component } from "react";
 import Card from "components/Card";
 import Currencies from "./Currencies";
@@ -29,9 +31,7 @@ const styles = {
 class Dashboard extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
-    match: *,
-    location: *,
-    history: *
+    match: *
   },
   {
     filter: string
@@ -64,7 +64,7 @@ class Dashboard extends Component<
           <Card title="currencies">
             <Currencies />
           </Card>
-          <PendingCard />
+          <PendingCard match={match} />
         </div>
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
@@ -75,4 +75,8 @@ class Dashboard extends Component<
   }
 }
 
-export default withStyles(styles)(Dashboard);
+export default connectData(withStyles(styles)(Dashboard), {
+  queries: {
+    currencies: CurrenciesQuery
+  }
+});

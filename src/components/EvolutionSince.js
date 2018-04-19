@@ -1,7 +1,7 @@
 //@flow
-import React, { Component } from "react";
-import DeltaChange from "./DeltaChange";
-import CardField from "./CardField";
+import { /* React, */ Component } from "react";
+// import DeltaChange from "./DeltaChange";
+// import CardField from "./CardField";
 
 export type FilterKey = string;
 export type Filter = { title: string, key: FilterKey };
@@ -19,18 +19,20 @@ class EvolutionSince extends Component<{
   filter: ?Filter
 }> {
   render() {
-    const { value, valueHistory, filter } = this.props;
-    if (!filter) return null;
-    return (
-      <CardField label={`since ${filter.title}`}>
-        <DeltaChange
-          before={valueHistory[filter.key]}
-          after={value}
-          showArrow
-        />
-      </CardField>
-    );
+    return false;
   }
+  //   const { value, valueHistory, filter } = this.props;
+  //   if (!filter) return null;
+  //   return (
+  //     <CardField label={`since ${filter.title}`}>
+  //       <DeltaChange
+  //         before={valueHistory[filter.key]}
+  //         after={value}
+  //         showArrow
+  //       />
+  //     </CardField>
+  //   );
+  // }
 }
 
 export default EvolutionSince;

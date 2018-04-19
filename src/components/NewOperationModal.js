@@ -1,9 +1,12 @@
 //@flow
 import React, { Component } from "react";
 import OperationCreation from "./operations/creation/OperationCreation";
+import NewOperationMutation from "api/mutations/NewOperationMutation";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ModalLoading from "components/ModalLoading";
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { Account } from "data/types";
 
 export type Details = {
@@ -15,6 +18,7 @@ export type Details = {
 class NewOperationModal extends Component<
   {
     accounts: Array<Account>,
+    restlay: RestlayEnvironment,
     close: Function,
     history: *,
     location: *
@@ -22,7 +26,9 @@ class NewOperationModal extends Component<
   {
     tabsIndex: number,
     selectedAccount: ?Account,
-    details: Details
+    details: Details,
+    note: string,
+    title: string
   }
 > {
   state = {
@@ -32,15 +38,9 @@ class NewOperationModal extends Component<
       amount: null,
       fees: null,
       address: null
-    }
-  };
-
-  onSaveOperation = () => {
-    console.warn(
-      "TODO: this.props.restlay.commitUpdate(new SaveOperationMutation({...}))"
-    );
-
-    this.props.close();
+    },
+    note: "",
+    title: ""
   };
 
   onTabsChange = (tabsIndex: number) => {
@@ -54,20 +54,66 @@ class NewOperationModal extends Component<
     });
   };
 
+  updateNote = (val: string) => {
+    this.setState({
+      note: val
+    });
+  };
+  updateTitle = (val: string) => {
+    this.setState({
+      title: val
+    });
+  };
+
   saveDetails = (details: Details) => {
     this.setState({ details });
   };
 
+  save = () => {
+    if (
+      this.state.details.fees &&
+      this.state.details.address &&
+      this.state.details.amount &&
+      this.state.selectedAccount
+    ) {
+      const data = {
+        operation: {
+          fees_amount: this.state.details.fees,
+          price_amount: this.state.details.amount,
+          tx_hash: this.state.details.address,
+          note: {
+            title: this.state.title,
+            content: this.state.note
+          }
+        },
+        accountId: this.state.selectedAccount.id
+      };
+
+      return this.props.restlay
+        .commitMutation(new NewOperationMutation(data))
+        .then(() => {
+          this.props.restlay.fetchQuery(new PendingOperationsQuery());
+          this.props.close();
+        })
+        .catch(this.props.close);
+    }
+  };
+
   render() {
     const { accounts, close } = this.props;
+
     return (
       <OperationCreation
         close={close}
         onTabsChange={this.onTabsChange}
-        save={this.onSaveOperation}
+        save={this.save}
         accounts={accounts}
         selectAccount={this.selectAccount}
         saveDetails={this.saveDetails}
+        note={this.state.note}
+        title={this.state.title}
+        updateTitle={this.updateTitle}
+        updateNote={this.updateNote}
         {...this.state}
       />
     );

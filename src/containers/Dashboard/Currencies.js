@@ -18,9 +18,7 @@ type AggregatedData = {
 };
 
 const styles = {
-  base: {
-    minHeight: "250px"
-  }
+  base: {}
 };
 function Currencies({
   accounts,
