@@ -1,7 +1,7 @@
 //@flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
-import { success, error } from "formatters/notification";
+import { error } from "formatters/notification";
 import type { ActivityCommon } from "data/types";
 
 type Input = {

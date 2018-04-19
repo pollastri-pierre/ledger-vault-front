@@ -101,10 +101,9 @@ class ActivityList extends Component<
         timer: null
     };
     componentDidMount() {
-        const { list } = this;
-        if (list) list.addEventListener("scroll", this.onScroll);
-
-        this.timeout(500).promise.then(this.markVisibleActivitiesAsSeen);
+        //const { list } = this;
+        //if (list) list.addEventListener("scroll", this.onScroll);
+        //this.timeout(500).promise.then(this.markVisibleActivitiesAsSeen);
     }
 
     componentWillUnmount() {
@@ -217,12 +216,12 @@ class ActivityList extends Component<
                                         activity.show && (
                                             <Activity
                                                 data={activity}
-                                                onRef={elem => {
+                                                /*onRef={elem => {
                                                     if (id == 0) {
                                                         this.firstElem = elem;
                                                         this.firstElemInitialTopPos = elem.getBoundingClientRect().top;
                                                     }
-                                                }}
+                                                }}*/
                                                 key={activity.id}
                                             />
                                         )

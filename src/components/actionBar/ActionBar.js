@@ -1,13 +1,8 @@
 //flow
-import React, { Component, PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router";
-import ActivityQuery from "api/queries/ActivityQuery";
-import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { newActivity } from "redux/modules/activity";
-import ConnectionQuery from "restlay/ConnectionQuery";
-import { DATA_FETCHED } from "restlay/dataStore";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
@@ -18,7 +13,6 @@ import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";
 import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
-import Bell from "../icons/full/Bell";
 
 const styles = {
     base: {

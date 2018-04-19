@@ -1,16 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
-import type { Activities } from "data/types";
 import colors from "shared/colors";
 import { hexToRgbA } from "shared/colors";
-import ActivityList from "../ActivityList";
 import DateFormat from "../DateFormat";
-import Bell from "../icons/full/Bell";
-import ModalRoute from "../ModalRoute";
-import PopBubble from "../utils/PopBubble";
 import { withStyles } from "material-ui/styles";
 import type { ActivityCommon } from "data/types";
 import classnames from "classnames";
@@ -88,7 +81,7 @@ const hourDateFormat = {
 class Activity extends Component<
     {
         data: ActivityCommon[],
-        onRef: Function
+        classes: Object
     },
     *
 > {
@@ -97,7 +90,7 @@ class Activity extends Component<
     };
 
     componentDidMount() {
-        this.props.onRef(ReactDOM.findDOMNode(this));
+        //this.props.onRef(ReactDOM.findDOMNode(this));
     }
 
     render() {

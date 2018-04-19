@@ -2,21 +2,16 @@
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import type { Activities } from "data/types";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { DATA_FETCHED } from "restlay/dataStore";
 import ActivityList from "../ActivityList";
 import Bell from "../icons/full/Bell";
-import ModalRoute from "../ModalRoute";
 import PopBubble from "../utils/PopBubble";
 import { withStyles } from "material-ui/styles";
-import { mixinHoverSelected } from "shared/common";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import colors from "shared/colors";
 import { normalize } from "normalizr-gre";
@@ -82,8 +77,6 @@ class ActivityCard extends Component<
         socket.on("admin", function(activity) {
             //FIXME why is it fired twice ??
             if (self.props.onNewActivity) {
-                console.log("receiver notification");
-                console.log(activity);
                 self.props.onNewActivity(activity);
             }
         });
@@ -130,7 +123,7 @@ class ActivityCard extends Component<
     };
 
     render() {
-        const { profile, classes, activities, loading } = this.props;
+        const { classes, activities, loading } = this.props;
         const { bubbleOpened } = this.state;
         const t = this.context.translate;
         const unseenActivityCount = activities
