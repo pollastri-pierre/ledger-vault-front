@@ -86,6 +86,7 @@ class PendingCard extends Component<{
   pendings: PendingsQueryResponse,
   accounts: Account[],
   allAccounts: Account[],
+  match: *,
   operations: Operation[],
   reloading: boolean
 }> {
@@ -95,6 +96,7 @@ class PendingCard extends Component<{
       operations,
       classes,
       allAccounts,
+      match,
       reloading
     } = this.props;
     const totalOperations = operations.length;
@@ -104,7 +106,11 @@ class PendingCard extends Component<{
       <Card
         reloading={reloading}
         title="pending"
-        titleRight={<ViewAllLink to="/pending">VIEW ALL ({total})</ViewAllLink>}
+        titleRight={
+          <ViewAllLink to={`/${match.params.orga_name}/pending`}>
+            VIEW ALL ({total})
+          </ViewAllLink>
+        }
         className="pendingCard"
       >
         <header className={classes.header}>

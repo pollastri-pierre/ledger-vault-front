@@ -66,7 +66,7 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.nbRequired < 3}
+              disabled={onboarding.nbRequired < 2}
             >
               Continue
             </DialogButton>

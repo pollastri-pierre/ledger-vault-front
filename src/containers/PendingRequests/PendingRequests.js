@@ -46,8 +46,9 @@ class PendingRequests extends Component<{
       <div className={classes.base}>
         <ModalRoute
           path="*/account/:id"
-          component={EntityApproveAccount}
-          test={{ test: 2 }}
+          render={({ match, history }) => (
+            <EntityApproveAccount match={match} history={history} />
+          )}
         />
         <ModalRoute path="*/operation/:id" component={EntityApproveOperation} />
         <div className={classes.left}>

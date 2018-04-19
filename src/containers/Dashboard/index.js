@@ -31,9 +31,7 @@ const styles = {
 class Dashboard extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
-    match: *,
-    location: *,
-    history: *
+    match: *
   },
   {
     filter: string
@@ -66,7 +64,7 @@ class Dashboard extends Component<
           <Card title="currencies">
             <Currencies />
           </Card>
-          <PendingCard />
+          <PendingCard match={match} />
         </div>
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}

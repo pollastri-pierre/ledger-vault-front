@@ -28,7 +28,12 @@ function Content({
         <Route path={`${match.url}/pending`} component={PendingRequests} />
         <Route path={`${match.url}/search`} component={Search} />
         <Route path={`${match.url}/account/:id`} component={AccountView} />
-        <Route path={`${match.url}/dashboard`} component={Dashboard} />
+        <Route
+          path={`${match.url}/dashboard`}
+          render={() => {
+            return <Dashboard match={match} />;
+          }}
+        />
         <Route
           exact
           path={`${match.url}`}

@@ -5,7 +5,9 @@ import type { Account } from "data/types";
 import { success, error } from "formatters/notification";
 
 type Input = {
-  accountId: string
+  accountId: string,
+  approval: string,
+  public_key: string
 };
 
 type Response = Account;
@@ -21,5 +23,10 @@ export default class ApproveAccountMutation extends Mutation<Input, Response> {
 
   getErrorNotification(e: Error) {
     return error("account request", "approved", e);
+  }
+
+  getBody() {
+    const { public_key, approval } = this.props;
+    return { public_key, approval };
   }
 }

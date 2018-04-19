@@ -20,8 +20,6 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import OperationApprove from "../operations/approve/OperationApprove";
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 type Props = {
   history: *,
   match: *,
@@ -61,32 +59,17 @@ class EntityApprove extends Component<Props, State> {
     const { restlay, entity } = this.props;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
 
-    const operation = this.props.account.hsm_operation["operation"];
+    const operation = accountOrOperation.hsm_operations;
 
     try {
-      // for approver in pick_approvers(admins):
-      //   logger.debug("Approver picked {}".format(approver))
-      //   pub_key = utils.pub_key(approver)
-      //   operation = operations[pub_key]
-      //   if operation != None:
-      //       ephemeral_public_key = unhexlify(operation["ephemeral_public_key"])
-      //       certificate_attestation = b64decode(operation["certificate_attestation"])
-      //       data = b64decode(operation["data"])
-      //
-      //       approver.vault_open_session(approver.CONFIDENTIALITY_PATH, ephemeral_public_key,
-      //                                   certificate_attestation)
-      //       approval = b64encode(approver.vault_validate_operation(approver.VALIDATION_PATH, data))
-      //       logger.debug("APPROVE {} with {}".format(pub_key, hexlify(b64decode(approval))))
-      //       response = put(self.api, "/hsm/wallet/{}".format(account_id), headers=headers,
-      //                      json=dict(public_key=pub_key, approval=approval))
-
       const device = await createDevice();
-      const { pubKey } = await device.getPublicKey(U2F_PATH);
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const channel = operation[pubKey.toUpperCase()];
       const ephemeral_public_key = channel["ephemeral_public_key"];
       const certificate_attestation = channel["certificate_attestation"];
 
       this.setState({ step: 1 });
+
       await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
@@ -94,25 +77,24 @@ class EntityApprove extends Component<Props, State> {
       );
       const approval = await device.validateVaultOperation(
         VALIDATION_PATH,
-        Buffer.from(operation, "base64")
+        Buffer.from(channel["data"], "base64")
       );
 
       if (entity === "account") {
         await restlay.commitMutation(
           new ApproveAccountMutation({
             accountId: accountOrOperation.id,
-            approval: approval
+            approval: approval.toString("base64"),
+            public_key: pubKey.toUpperCase()
           })
         );
-        await restlay.fetchQuery(new PendingAccountsQuery());
       } else if (entity === "operation") {
         await restlay.commitMutation(
           new ApproveOperationMutation({
             operationId: accountOrOperation.id,
-            approval: approval
+            approval: approval.toString("hex")
           })
         );
-        await restlay.fetchQuery(new PendingOperationsQuery());
       }
       this.close();
     } catch (e) {
@@ -121,24 +103,31 @@ class EntityApprove extends Component<Props, State> {
     }
   };
 
-  abort = () => {
-    const { restlay, entity } = this.props;
-    const { id } = this.props.match.params;
+  abort = async () => {
+    const { restlay, entity, match } = this.props;
+    // const { id } = this.props.match.params;
     // TODO: replace delay by device API call
+    const id = parseInt(match.params.id, 10);
     if (entity === "account") {
-      return delay(500)
-        .then(() => restlay.commitMutation(new AbortAccount({ accountId: id })))
-        .then(() => restlay.fetchQuery(new PendingAccountsQuery()))
-        .then(this.close);
+      try {
+        await restlay.commitMutation(new AbortAccount({ accountId: id }));
+        await restlay.fetchQuery(new PendingAccountsQuery());
+        this.close();
+      } catch (e) {
+        this.close();
+        console.error(e);
+      }
     } else {
-      return delay(500)
-        .then(() =>
-          restlay.commitMutation(
-            new AbortOperationMutation({ operationId: id })
-          )
-        )
-        .then(() => restlay.fetchQuery(new PendingOperationsQuery()))
-        .then(this.close);
+      try {
+        await restlay.commitMutation(
+          new AbortOperationMutation({ operationId: 10 })
+        );
+        await restlay.fetchQuery(new PendingOperationsQuery());
+        this.close();
+      } catch (e) {
+        this.close();
+        console.error(e);
+      }
     }
   };
 

@@ -163,7 +163,6 @@ export default class VaultDeviceApp {
     return response;
   }
   async validateVaultOperation(path: number[], operation: Buffer) {
-    // let offset = 64;
     const paths = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
@@ -172,11 +171,13 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
+    const length = Buffer.alloc(2);
+    length.writeUInt16BE(operation.length, 0);
 
-    const data = Buffer.concat([paths, operation]);
+    const data = Buffer.concat([paths, length, operation]);
     const response = await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
 
-    return response;
+    return response.slice(0, response.length - 2);
   }
 
   async getPublicKey(
