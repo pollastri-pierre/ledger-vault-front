@@ -16,7 +16,8 @@ function PopBubble(props: {
     style?: Object,
     children?: React$Node,
     open: boolean,
-    direction?: *
+    direction?: *,
+    directiontransform?: string
 }) {
     const horizontal = props.direction ? props.direction : "right";
     const transformHorizontal = props.directiontransform

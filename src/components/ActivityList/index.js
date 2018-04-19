@@ -1,6 +1,3 @@
-import CircularProgress from "material-ui/Progress/CircularProgress";
-import connectData from "restlay/connectData";
-import ActivityQuery from "api/queries/ActivityQuery";
 import { withStyles } from "material-ui/styles";
 import type { ActivityCommon } from "data/types";
 import React, { Component } from "react";
@@ -91,7 +88,8 @@ class ActivityList extends Component<
         activities: ActivityCommon[],
         unseenActivityCount: number,
         markAsSeenRequest: Function,
-        clearAllRequest: Function
+        clearAllRequest: Function,
+        classes: Object
     },
     *
 > {
@@ -135,15 +133,12 @@ class ActivityList extends Component<
 
         this.setState(prevState => {
             if (prevState.timer) {
-                console.log("canceling");
                 prevState.timer.cancel();
             }
             let timer = this.timeout(3000);
             timer.promise.then(() => {
                 if (business_action_ids.length)
                     markAsSeenRequest(business_action_ids);
-                console.log("marking : ");
-                console.log(business_action_ids);
             });
             return { timer: timer };
         });
@@ -172,7 +167,7 @@ class ActivityList extends Component<
     timeout = ms => {
         var timeout, promise;
 
-        promise = new Promise(function(resolve, reject) {
+        promise = new Promise(function(resolve) {
             timeout = setTimeout(function() {
                 resolve("timeout done");
             }, ms);
@@ -187,12 +182,7 @@ class ActivityList extends Component<
     };
 
     render() {
-        const {
-            activities,
-            classes,
-            unseenActivityCount,
-            onVisible
-        } = this.props;
+        const { activities, classes, unseenActivityCount } = this.props;
         return (
             <div>
                 <div className={classes.newActivities}>
