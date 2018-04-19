@@ -5,9 +5,6 @@ import { withStyles } from "material-ui/styles";
 import { withRouter } from "react-router";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
-import connectData from "restlay/connectData";
-import AccountsQuery from "api/queries/AccountsQuery";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 
 import { listCurrencies } from "@ledgerhq/currencies";
 const allCurrencies = listCurrencies();
@@ -71,11 +68,4 @@ class AccountsMenu extends Component<{
   }
 }
 
-export default withRouter(
-  connectData(withStyles(styles)(AccountsMenu), {
-    queries: {
-      accounts: AccountsQuery,
-      currencies: CurrenciesQuery
-    }
-  })
-);
+export default withRouter(withStyles(styles)(AccountsMenu));

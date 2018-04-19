@@ -25,6 +25,9 @@ class PendingsMenuBadge extends Component<*> {
   render() {
     const { accounts, operations, classes } = this.props;
     const count = accounts.length + operations.length;
+    if (count === 0) {
+      return false;
+    }
     return <span className={classes.base}>{count}</span>;
   }
 }
