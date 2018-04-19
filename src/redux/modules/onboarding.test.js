@@ -20,27 +20,25 @@ import reducer, {
   CHANGE_NB_REQUIRED,
   ADD_SEED_SHARD,
   PREV_STEP,
-  SET_ONBOARDING_STATUS,
   previousStep,
-  setAdminScheme,
   nextStep,
   goToStep,
   gotShardsChannel,
   addMember,
   gotCommitChallenge,
   toggleModalProfile,
-  openShardsChannel,
+  nextState,
   changeNbRequired,
   gotBootstrapChallenge,
   toggleSignin,
   toggleGenerateSeed,
   addSeedShard,
   viewRoute,
-  setOnboardingStatus,
   gotBootstrapToken,
-  getCommitChallenge,
-  provisioningShards
+  getCommitChallenge
 } from "redux/modules/onboarding";
+
+beforeEach(() => {});
 
 test("goToStep should send GO_TO_STEP and the step label", () => {
   expect(goToStep("label")).toEqual({
@@ -80,8 +78,27 @@ test("toggleGenerateSeed should send TOGGLE_GENERATE_SEED", () => {
   });
 });
 
-test("addSeedShard should send ADD_SEED_SHARD and the data", () => {
-  expect(addSeedShard({ data: true })).toEqual({
+test("nextState should send NEXT_STEP and call the API", async () => {
+  const dispatch = jest.fn();
+  const thunk = nextState({ data: 2 });
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/next", "POST", { data: 2 });
+
+  expect(dispatch).toHaveBeenCalledWith({
+    type: NEXT_STEP
+  });
+});
+
+test("addSeedShard should send ADD_SEED_SHARD and the data", async () => {
+  const dispatch = jest.fn();
+  const thunk = addSeedShard({ data: true });
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
+    data: true
+  });
+
+  expect(dispatch).toHaveBeenCalledWith({
     type: ADD_SEED_SHARD,
     data: { data: true }
   });
@@ -94,10 +111,18 @@ test("toggleModalProfile should send TOGGLE_MODAL_PROFILE and the member", () =>
   });
 });
 
-test("addMember should send ADD_MEMBER and the member", () => {
-  expect(addMember({ data: true })).toEqual({
+test("addMember should send ADD_MEMBER and the member", async () => {
+  const dispatch = jest.fn();
+  const getState = () => ({ onboarding: { members: [] } });
+  const thunk = addMember({ pub_key: "test" });
+  await thunk(dispatch, getState);
+
+  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
+    pub_key: "test"
+  });
+  expect(dispatch).toHaveBeenCalledWith({
     type: ADD_MEMBER,
-    member: { data: true }
+    member: { pub_key: "test" }
   });
 });
 
@@ -121,13 +146,6 @@ test("viewRoute should send VIEW_ROUTE and the route", () => {
   });
 });
 
-test("setOnboardingStatus should send SET_ONBOARDING_STATUS and the status", () => {
-  expect(setOnboardingStatus(2)).toEqual({
-    type: SET_ONBOARDING_STATUS,
-    status: 2
-  });
-});
-
 test("gotCommitChallenge should send GOT_COMMIT_CHALLENGE and the challenge", () => {
   expect(gotCommitChallenge({ data: true })).toEqual({
     type: GOT_COMMIT_CHALLENGE,
@@ -140,10 +158,7 @@ test("getCommitChallenge should call the API then GOT_COMMIT_CHALLENGE", async (
   const dispatch = jest.fn();
   const thunk = getCommitChallenge();
   await thunk(dispatch);
-  expect(network).toHaveBeenCalledWith(
-    "/provisioning/administrators/commit_challenge",
-    "GET"
-  );
+  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
 
   expect(dispatch).toHaveBeenCalledWith({
     type: GOT_COMMIT_CHALLENGE,
@@ -151,75 +166,10 @@ test("getCommitChallenge should call the API then GOT_COMMIT_CHALLENGE", async (
   });
 });
 
-test("setAdminScheme should call the API with right paremets", async () => {
-  const dispatch = jest.fn();
-  const thunk = setAdminScheme();
-  const getState = () => ({ onboarding: { nbRequired: 3 } });
-  await thunk(dispatch, getState);
-  expect(network).toHaveBeenCalledWith(
-    "/provisioning/administrators/rules",
-    "POST",
-    { quorum: 3 }
-  );
-});
-
-test("provisioningShards should call the API with right parameters and dispatch SUCCESS_SEED_SHARDS", async () => {
-  const dispatch = jest.fn();
-  const thunk = provisioningShards({ data: true });
-  const getState = () => ({
-    onboarding: {
-      shards: ["test"]
-    }
-  });
-
-  await thunk(dispatch, getState);
-  expect(network).toHaveBeenCalledWith("/provisioning/seed/shards", "POST", {
-    shards: ["test"]
-  });
-
-  expect(dispatch).toHaveBeenCalledWith({ type: SUCCESS_SEED_SHARDS });
-});
-
-test("openShardsChannel should call the API and dispatch GOT_SHARDS_CHANNEL", async () => {
-  network.mockImplementation(() => {
-    return new Promise(resolve => resolve({ shards_channel: "shards" }));
-  });
-  const dispatch = jest.fn();
-  const thunk = openShardsChannel();
-  const getState = () => ({ onboarding: { signed: ["1"] } });
-  await thunk(dispatch, getState);
-  expect(network).toHaveBeenCalledWith(
-    "/provisioning/seed/open_shards_channel",
-    "POST",
-    {
-      signed: ["1"]
-    }
-  );
-
-  expect(dispatch).toHaveBeenCalledWith({
-    type: GOT_SHARDS_CHANNEL,
-    shards_channel: "shards"
-  });
-});
-
-test("gotBootstrapToken should store in localStorage and dispatch GOT_BOOTSTRAP_TOKEN", () => {
-  global.window = {
-    localStorage: {
-      setItem: jest.fn()
-    }
-  };
-  const dispatch = jest.fn();
-  const thunk = gotBootstrapToken("token");
-
-  thunk(dispatch);
-  expect(global.window.localStorage.setItem).toHaveBeenCalledWith(
-    "token",
-    "token"
-  );
-
-  expect(dispatch).toHaveBeenCalledWith({
+test("gotBootstrapToken dispatch GOT_BOOTSTRAP_TOKEN", () => {
+  expect(gotBootstrapToken("token")).toEqual({
     type: GOT_BOOTSTRAP_TOKEN,
-    token: "token"
+    result: "token"
   });
 });
 
@@ -290,14 +240,14 @@ test("when ADD_SIGNEDIN reducer should add the signed", () => {
 });
 
 test("when ADD_SIGNEDIN reducer should not add to signed if already", () => {
-  const state = { signed: [{ pub_key: { pubKey: "a" } }] };
+  const state = { signed: [{ pub_key: "a" }] };
   expect(
     reducer(state, {
       type: ADD_SIGNEDIN,
-      data: { pub_key: { pubKey: "a" } }
+      data: { pub_key: "a" }
     })
   ).toEqual({
-    signed: [{ pub_key: { pubKey: "a" } }]
+    signed: [{ pub_key: "a" }]
   });
 });
 
@@ -313,7 +263,7 @@ test("when GOT_BOOTSTRAP_CHALLENGE reducer should set bootstrapChallenge", () =>
 test("when GOT_BOOTSTRAP_TOKEN reducer should set bootstrapAuthToken", () => {
   const state = { bootstrapAuthToken: null };
   expect(
-    reducer(state, { type: GOT_BOOTSTRAP_TOKEN, token: "token" })
+    reducer(state, { type: GOT_BOOTSTRAP_TOKEN, result: "token" })
   ).toEqual({
     bootstrapAuthToken: "token"
   });

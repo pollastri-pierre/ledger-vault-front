@@ -9,7 +9,6 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
   getShardChallenge,
-  openShardsChannel,
   toggleSignin,
   addSignedIn,
   nextStep
@@ -104,35 +103,6 @@ class SignIn extends Component<Props> {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (
-  //     nextProps.onboarding.shards_channel !==
-  //     this.props.onboarding.shards_channel
-  //   ) {
-  //     this.props.onNextStep();
-  //   }
-  //
-  //   if (
-  //     nextProps.onboarding.signed.length ===
-  //     this.props.onboarding.members.length
-  //   ) {
-  //     this.openShards();
-  //   }
-  // }
-
-  openShards = async () => {
-    try {
-      await this.props.onOpenShardsChannel();
-    } catch (e) {
-      console.error(e);
-      this.props.onAddMessage(
-        "Error",
-        "Oups, an error occured. Please retry",
-        "error"
-      );
-    }
-  };
-
   componentDidUpdate() {
     const $svg = this.svg;
     if (!$svg) return;
@@ -164,8 +134,7 @@ class SignIn extends Component<Props> {
 
     const percentage =
       2 *
-      (this.props.onboarding.signed.length /
-        this.props.onboarding.members.length);
+      (this.props.onboarding.signed.length / this.props.onboarding.nbRequired);
     g
       .append("path")
       .attr("fill", "#27d0e2")
@@ -208,7 +177,7 @@ class SignIn extends Component<Props> {
                 className={classes.svg}
               />
               <strong>
-                {onboarding.signed.length}/{onboarding.members.length}
+                {onboarding.signed.length}/{onboarding.nbRequired}
               </strong>
               <span>members present</span>
             </div>
@@ -222,10 +191,10 @@ class SignIn extends Component<Props> {
               <div
                 className={cx(classes.sign, {
                   [classes.disabled]:
-                    onboarding.signed.length === onboarding.members.length
+                    onboarding.signed.length === onboarding.nbRequired
                 })}
                 onClick={
-                  onboarding.signed.length === onboarding.members.length
+                  onboarding.signed.length === onboarding.nbRequired
                     ? null
                     : onToggleSignin
                 }
@@ -234,7 +203,7 @@ class SignIn extends Component<Props> {
               </div>
               <span className={classes.counter}>
                 {onboarding.signed.length} signed-in,{" "}
-                {onboarding.members.length - onboarding.signed.length} remaining
+                {onboarding.nbRequired - onboarding.signed.length} remaining
               </span>
             </div>
           </div>
@@ -247,12 +216,13 @@ class SignIn extends Component<Props> {
         </ToContinue>
         <Footer
           isBack={false}
+          nextState
           render={(onPrev, onNext) => {
             return (
               <DialogButton
                 highlight
                 onTouchTap={onNext}
-                disabled={onboarding.signed.length < onboarding.members.length}
+                disabled={onboarding.signed.length < onboarding.nbRequired}
               >
                 Continue
               </DialogButton>
@@ -270,7 +240,6 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   onGetShardChallenge: () => dispatch(getShardChallenge()),
-  onOpenShardsChannel: () => dispatch(openShardsChannel()),
   onToggleSignin: () => dispatch(toggleSignin()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>

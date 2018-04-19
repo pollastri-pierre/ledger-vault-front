@@ -1,16 +1,6 @@
-import type {
-  AccountEntity,
-  CurrencyEntity,
-  NoteEntity,
-  GroupEntity,
-  MemberEntity,
-  OperationEntity,
-  SecurityScheme,
-  Transaction
-} from "./types";
 import moment from "moment";
 
-const mockCurrencies: CurrencyEntity[] = [
+const mockCurrencies = [
   {
     name: "bitcoin",
     family: "Bitcoin",
@@ -103,7 +93,7 @@ const mockCurrencies: CurrencyEntity[] = [
   }
 ];
 
-const genNote = (i: number): NoteEntity => ({
+const genNote = i => ({
   id: "" + i,
   title: "Note " + i,
   body:
@@ -129,7 +119,7 @@ const genU2F = () =>
     .map(() => Math.floor(Math.random() * 16).toString(16))
     .join("");
 
-const genMember = (fields: *): MemberEntity => ({
+const genMember = fields => ({
   pub_key: genPubKey(),
   u2f_device: genU2F(),
   ...fields
@@ -207,7 +197,7 @@ const members = {
   })
 };
 
-const genSecurityScheme = (): SecurityScheme => ({
+const genSecurityScheme = () => ({
   quorum: 2,
   approvers: Object.keys(members)
     .slice(0, 2)
@@ -222,7 +212,7 @@ const genSecurityScheme = (): SecurityScheme => ({
   auto_expire: null
 });
 
-const genTransaction = (): Transaction => ({
+const genTransaction = () => ({
   version: "?",
   hash: "e46a1467e7cb83b737791b7ae1e351b7941cba51cfd01973981ab55e6f20f2be",
   lock_time: new Date().toUTCString(),
@@ -310,7 +300,7 @@ const genTransaction = (): Transaction => ({
   ]
 });
 
-const accounts: { [_: string]: AccountEntity } = {
+const accounts = {
   "0": {
     id: "0",
     name: "cold storage",
@@ -475,7 +465,7 @@ const defaultGenOperation = {
     "https://blockchain.info/address/17SkEw2md5avVNyYgj6RiXuQKNwkXaxFyQ"
 };
 
-const genOperation = (opts: *): OperationEntity => {
+const genOperation = opts => {
   const {
     uuid,
     time,
@@ -525,12 +515,12 @@ const genOperation = (opts: *): OperationEntity => {
   };
 };
 
-const currencies: { [_: string]: CurrencyEntity } = {};
+const currencies = {};
 mockCurrencies.forEach(c => {
   currencies[c.name] = c;
 });
 
-const groups: { [_: string]: GroupEntity } = {
+const groups = {
   "0": {
     id: "0",
     name: "First Group",
@@ -543,7 +533,7 @@ const groups: { [_: string]: GroupEntity } = {
   }
 };
 
-const operations: { [_: string]: OperationEntity } = {
+const operations = {
   "1": genOperation({
     uuid: "1",
     amount: 100000000,
@@ -703,10 +693,7 @@ const timeTable = {
   day: dayInMs * 1
 };
 
-export const genBalance = (
-  accountId: number,
-  range: $Keys<typeof timeTable>
-) => {
+export const genBalance = (accountId, range) => {
   let balance = [];
   const begin_t = new Date().getTime() - timeTable[range]; //account creation date
   const final_t = new Date().getTime(); //Now

@@ -9,9 +9,6 @@ jest.mock("@ledgerhq/hw-transport-u2f", () => ({
   create: jest.fn()
 }));
 
-import network from "network";
-jest.mock("network", () => jest.fn());
-
 beforeEach(() => {
   VaultDeviceApp.mockClear();
   mockGetPublicKey.mockClear();
@@ -40,47 +37,35 @@ const props = {
     last_name: { value: "last_name" },
     email: { value: "email" },
     picture: { value: null }
-  }
+  },
+  registerKeyHandle: jest.fn()
 };
 
 test("onStart should call device and API with right parameters", async () => {
   const MyComponent = shallow(<StepDevice {...props} />);
   await MyComponent.instance().onStart();
-  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH);
+  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
   expect(mockGetPublicKey).toHaveBeenCalledWith(VALIDATION_PATH);
 
-  const challenge_answer = {
-    rfu: "rfu",
-    pubKey: "pubKey",
-    keyHandle: ["handle1"],
-    attestationSignature: "attestationSignature",
-    signature: "signature"
-  };
-
   expect(mockRegister).toHaveBeenCalledWith(
-    "challenge",
+    Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    "_",
-    "_",
-    "_",
-    "_"
+    "",
+    "",
+    "",
+    ""
   );
 
-  expect(network).toHaveBeenCalledWith(
-    "/provisioning/administrators/register",
-    "POST",
-    {
-      challenge_answer: challenge_answer,
-      confidentiality_attestation: "signature",
-      confidentiality_key: "pubKey",
-      validation_key: "pubKey",
-      validation_attestation: "signature",
-      email: "email",
-      first_name: "first_name",
-      last_name: "last_name",
-      picture: null,
-      pub_key: { pubKey: "pubKey", signature: "signature" }
-    }
-  );
+  expect(props.finish).toHaveBeenCalledWith({
+    confidentiality: { attestation: "signature", public_key: "pubKey" },
+    email: "email",
+    first_name: "first_name",
+    key_handle: "handle1",
+    last_name: "last_name",
+    picture: null,
+    pub_key: "pubKey",
+    u2f_register: "raw",
+    validation: { attestation: "signature", public_key: "pubKey" }
+  });
 });

@@ -1,8 +1,6 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
 import invariant from "invariant";
-import { VALIDATION_PATH } from "device";
-import type { Operation, Account } from "data/types";
 
 export default class VaultDeviceApp {
   transport: Transport<*>;
@@ -22,7 +20,8 @@ export default class VaultDeviceApp {
     rfu: number,
     keyHandle: string,
     attestationSignature: string,
-    signature: string
+    signature: string,
+    rawResponse: string
   }> {
     invariant(
       challenge.length === 32,
@@ -80,12 +79,12 @@ export default class VaultDeviceApp {
     instanceName: string,
     instanceReference: string,
     instanceURL: string,
-    agentRole: string,
-    keyHandleInHex: boolean
+    agentRole: string
   ): Promise<{
     userPresence: *,
     counter: *,
-    signature: string
+    signature: string,
+    rawResponse: string
   }> {
     invariant(
       challenge.length === 32,
@@ -114,7 +113,6 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    console.log(data);
     const response = await this.transport.send(0xe0, 0x02, 0x00, 0x00, data);
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
@@ -137,8 +135,7 @@ export default class VaultDeviceApp {
       })
     ]);
     const response = await this.transport.send(0xe0, 0x44, 0x00, 0x00, data);
-    // console.log(response);
-    return response;
+    return response.slice(0, response.length - 2);
   }
 
   async openSession(
@@ -165,58 +162,7 @@ export default class VaultDeviceApp {
     );
     return response;
   }
-
-  async approveOperation(
-    operation: Operation,
-    account: Account,
-    nonce: string
-  ): Promise<{
-    nonce: string
-  }> {
-    //TODO use Transaction object to create a useful summary
-    const TxSummary = "From x yo y";
-
-    const data = Buffer.concat([
-      Buffer.from([0x01]), // version
-      Buffer.from(nonce),
-      Buffer.from([0x02]), // operation type=operation
-      Buffer.from([TxSummary.length]),
-      Buffer.from(TxSummary),
-      Buffer.from([operation.transaction.outputs[0].address.length]),
-      Buffer.from(operation.transaction.outputs[0].address || ""),
-      Buffer.from([account.name.length]),
-      Buffer.from(account.name),
-      Buffer.from([1]), // fees ammount
-      Buffer.from([operation.fees.amount]),
-      Buffer.from([1]), // amount length
-      Buffer.from([operation.price.amount])
-    ]);
-
-    return await this.validateVaultOperation(VALIDATION_PATH, data);
-  }
-
-  async approveAccount(account: Account, nonce: string): Promise<*> {
-    const Timelock = Buffer.alloc(4);
-    Timelock.writeUInt32BE(3, 0);
-
-    const operation = Buffer.concat([
-      Buffer.from([0x01]), // version
-      Buffer.from(nonce, "hex"), // nonce
-      Buffer.from([0x01]), // operation type = account
-      Buffer.from([account.members.length]),
-      Buffer.from([account.security_scheme.quorum]),
-      Timelock,
-      Buffer.from([0x00]),
-      Buffer.from([account.name.length]),
-      Buffer.from(account.name),
-      Buffer.from([account.currency.family.length]),
-      Buffer.from(account.currency.family)
-    ]);
-
-    return await this.validateVaultOperation(VALIDATION_PATH, operation);
-  }
   async validateVaultOperation(path: number[], operation: Buffer) {
-    let offset = 64;
     const paths = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
@@ -225,28 +171,13 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
+    const length = Buffer.alloc(2);
+    length.writeUInt16BE(operation.length, 0);
 
-    const LengthOperation = Buffer.alloc(2);
-    LengthOperation.writeInt16BE(operation.length, 0);
+    const data = Buffer.concat([paths, length, operation]);
+    const response = await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
 
-    const data = Buffer.concat([paths, LengthOperation, operation]);
-    // we first send an APDU with the operation length and the first chunk
-    console.log(data);
-    await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
-
-    // // then we send the others chunks
-    // let response;
-    // while (offset < operation.length) {
-    //   const remaining = operation.length - offset;
-    //   const chunkSize = remaining < 64 ? remaining : 64;
-    //   const chunk = Buffer.alloc(chunkSize);
-    //   operation.copy(chunk, 0, offset, offset + chunkSize);
-    //   offset += chunkSize;
-    //   console.log(chunk);
-    //   response = await this.transport.send(0xe0, 0x45, 0x80, 0x00, chunk);
-    // }
-
-    // return response;
+    return response.slice(0, response.length - 2);
   }
 
   async getPublicKey(
@@ -271,7 +202,7 @@ export default class VaultDeviceApp {
     const response = await this.transport.send(0xe0, 0x40, curve, 0x00, data);
     const pubKeyLength = response.readInt8(0);
     const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
-    const signature = response.slice(pubKeyLength + 1);
+    const signature = response.slice(pubKeyLength + 1, response.length - 2);
     return { pubKey, signature };
   }
 }

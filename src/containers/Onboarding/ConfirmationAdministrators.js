@@ -103,7 +103,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
     } catch (e) {
       console.error(e);
       this.props.onAddMessage("Error", "Oups something went wrong", "error");
-      // this.onStart();
+      this.onStart();
     }
   };
 
@@ -135,6 +135,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
         </div>
         <Authenticator step={this.state.step} />
         <Footer
+          nextState
           render={(onPrev, onNext) => (
             <DialogButton
               highlight

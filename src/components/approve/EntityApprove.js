@@ -2,9 +2,13 @@
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import AbortConfirmation from "./AbortConfirmation";
-import ApproveDevice from "./ApproveDevice";
 import AccountApprove from "../accounts/approve/AccountApprove";
-import createDevice, { CONFIDENTIALITY_PATH } from "device";
+import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
+import createDevice, {
+  U2F_PATH,
+  VALIDATION_PATH,
+  CONFIDENTIALITY_PATH
+} from "device";
 
 // import ApproveAccount from "api/mutations/ApproveAccountMutation";
 // import NonceQuery from "api/queries/NonceQuery";
@@ -16,28 +20,36 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import OperationApprove from "../operations/approve/OperationApprove";
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 type Props = {
   history: *,
   match: *,
   restlay: *,
-  entity: string
+  entity: string,
+  account: *
 };
 
 type State = {
   isDevice: boolean,
-  isAborting: boolean
+  isAborting: boolean,
+  step: number
 };
 class EntityApprove extends Component<Props, State> {
   state: State = {
     isDevice: false,
-    isAborting: false
+    isAborting: false,
+    step: 0
   };
 
   close = () => {
     this.props.history.goBack();
   };
+
+  title = entity => `Approve ${entity}`;
+  steps = entity => [
+    "Connect your Ledger Blue to your computer using one of its USB port.",
+    "Power on your device and unlock it by entering your 4 to 8 digit personal PIN code.",
+    `Open the Vault app on the dashboard. When displayed, approve the ${entity} request on the device.`
+  ];
 
   aborting = () => {
     this.setState({ isAborting: !this.state.isAborting });
@@ -45,76 +57,83 @@ class EntityApprove extends Component<Props, State> {
 
   approving = async accountOrOperation => {
     const { restlay, entity } = this.props;
-    const { id } = this.props.match.params;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
-    // TODO: replace delay by device API call
 
+    const operation = accountOrOperation.hsm_operations;
+
+    try {
+      const device = await createDevice();
+      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+      const channel = operation[pubKey.toUpperCase()];
+      const ephemeral_public_key = channel["ephemeral_public_key"];
+      const certificate_attestation = channel["certificate_attestation"];
+
+      this.setState({ step: 1 });
+
+      await device.openSession(
+        CONFIDENTIALITY_PATH,
+        Buffer.from(ephemeral_public_key, "hex"),
+        Buffer.from(certificate_attestation, "base64")
+      );
+      const approval = await device.validateVaultOperation(
+        VALIDATION_PATH,
+        Buffer.from(channel["data"], "base64")
+      );
+
+      if (entity === "account") {
+        await restlay.commitMutation(
+          new ApproveAccountMutation({
+            accountId: accountOrOperation.id,
+            approval: approval.toString("base64"),
+            public_key: pubKey.toUpperCase()
+          })
+        );
+      } else if (entity === "operation") {
+        await restlay.commitMutation(
+          new ApproveOperationMutation({
+            operationId: accountOrOperation.id,
+            approval: approval.toString("hex")
+          })
+        );
+      }
+      this.close();
+    } catch (e) {
+      console.error(e);
+      this.close();
+    }
+  };
+
+  abort = async () => {
+    const { restlay, entity, match } = this.props;
+    // const { id } = this.props.match.params;
+    // TODO: replace delay by device API call
+    const id = parseInt(match.params.id, 10);
     if (entity === "account") {
       try {
-        // const { nonce } = await restlay.fetchQuery(new NonceQuery());
-        // console.log(nonce);
-        const device = await createDevice();
-        /* const { pubKey, signature } =  */ await device.getPublicKey(
-          CONFIDENTIALITY_PATH
-        );
-        // await device.openSession(CONFIDENTIALITY_PATH, pubKey, signature);
-        // await device.approveAccount(accountOrOperation, nonce);
-        // POST to /API
-        //
-        await restlay.commitMutation(
-          new ApproveAccountMutation({ accountId: accountOrOperation.id })
-        );
+        await restlay.commitMutation(new AbortAccount({ accountId: id }));
         await restlay.fetchQuery(new PendingAccountsQuery());
         this.close();
       } catch (e) {
+        this.close();
         console.error(e);
       }
     } else {
       try {
-        // const { nonce } = await restlay.fetchQuery(new NonceQuery());
-        // console.log(nonce);
-        const device = await createDevice();
-        /* const { pubKey, signature } =  */
-        await device.getPublicKey(CONFIDENTIALITY_PATH);
-        // await device.openSession(CONFIDENTIALITY_PATH, pubKey, signature);
-        // await device.approveAccount(accountOrOperation, nonce);
-        // POST to /API
-        //
         await restlay.commitMutation(
-          new ApproveOperationMutation({ operationId: accountOrOperation.id })
+          new AbortOperationMutation({ operationId: 10 })
         );
         await restlay.fetchQuery(new PendingOperationsQuery());
         this.close();
       } catch (e) {
+        this.close();
         console.error(e);
       }
-    }
-  };
-
-  abort = () => {
-    const { restlay, entity } = this.props;
-    const { id } = this.props.match.params;
-    // TODO: replace delay by device API call
-    if (entity === "account") {
-      return delay(500)
-        .then(() => restlay.commitMutation(new AbortAccount({ accountId: id })))
-        .then(() => restlay.fetchQuery(new PendingAccountsQuery()))
-        .then(this.close);
-    } else {
-      return delay(500)
-        .then(() =>
-          restlay.commitMutation(
-            new AbortOperationMutation({ operationId: id })
-          )
-        )
-        .then(() => restlay.fetchQuery(new PendingOperationsQuery()))
-        .then(this.close);
     }
   };
 
   render() {
     const { entity } = this.props;
-    const { isDevice, isAborting } = this.state;
+    const { isDevice, step, isAborting } = this.state;
 
     return (
       <div>
@@ -128,7 +147,12 @@ class EntityApprove extends Component<Props, State> {
           )}
         {this.state.isDevice &&
           !this.state.isAborting && (
-            <ApproveDevice entity={entity} cancel={this.approving} />
+            <StepDeviceGeneric
+              title={this.title(entity)}
+              steps={this.steps(entity)}
+              cancel={this.approving}
+              step={step}
+            />
           )}
         {!this.state.isDevice &&
           !this.state.isAborting && (

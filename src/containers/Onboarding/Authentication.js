@@ -92,7 +92,7 @@ class Authentication extends Component<Props, State> {
       console.error(e);
       console.error(e.metaData);
       this.props.onAddMessage("Error", "Oups something went wrong", "error");
-      // this.onStart();
+      this.onStart();
     }
   };
 
@@ -114,6 +114,7 @@ class Authentication extends Component<Props, State> {
           <Authenticator step={this.state.step} />
         </div>
         <Footer
+          nextState
           render={(onPrev, onNext) => (
             <DialogButton
               highlight

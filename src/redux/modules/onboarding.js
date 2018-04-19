@@ -1,8 +1,8 @@
 //@flow
 import { type Member } from "data/types";
+import { addMessage } from "redux/modules/alerts";
 import network from "network";
 export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
-export const SET_ONBOARDING_STATUS = "onboarding/SET_ONBOARDING_STATUS";
 export const ADD_MEMBER = "onboarding/ADD_MEMBER";
 export const GO_TO_NEXT = "onboarding/GO_TO_NEXT";
 export const NEXT_STEP = "onboarding/NEXT_STEP";
@@ -34,8 +34,6 @@ type Challenge = {
 };
 
 type Channel = string;
-
-type OnboardingStatus = 0 | 1 | 2;
 
 const ALL_ROUTES = [
   { label: "welcome", visited: true, milestone: true },
@@ -114,15 +112,6 @@ export function registerKeyHandle(pubKey: string, keyHandle: string) {
   };
 }
 
-export function setAdminScheme() {
-  return async (dispatch: Function, getState: () => Object) => {
-    const { nbRequired } = getState()["onboarding"];
-    return await network("/hsm/admins/commit", "POST", {
-      quorum: parseInt(nbRequired, 10)
-    });
-  };
-}
-
 export function gotShardsChannel(shards_channel: Channel) {
   return {
     type: GOT_SHARDS_CHANNEL,
@@ -131,10 +120,8 @@ export function gotShardsChannel(shards_channel: Channel) {
 }
 
 export function getShardsChannel() {
-  return async dispatch => {
-    const shards = await network("/hsm/partition/provisioning/start", "POST", {
-      count_shards: 3
-    });
+  return async (dispatch: Function) => {
+    const shards = await network("/onboarding/challenge", "GET");
 
     dispatch(gotShardsChannel(shards));
   };
@@ -160,6 +147,14 @@ export function nextStep() {
     type: NEXT_STEP
   };
 }
+
+export function nextState(data: *) {
+  return async (dispatch: Function) => {
+    const dataToSend = data || {};
+    await network("/onboarding/next", "POST", dataToSend);
+    dispatch(nextStep());
+  };
+}
 export function toggleSignin() {
   return {
     type: TOGGLE_SIGNIN
@@ -173,37 +168,36 @@ export function toggleGenerateSeed() {
 }
 
 export function addSeedShard(data: *) {
-  return {
-    type: ADD_SEED_SHARD,
-    data
-  };
-}
-
-export function addSignedIn(pub_key: string, signature: *) {
   return async (dispatch: Function) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
-    };
-
-    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
-    dispatch({
-      type: ADD_SIGNEDIN,
+    await network("/onboarding/authenticate", "POST", data);
+    return dispatch({
+      type: ADD_SEED_SHARD,
       data
     });
   };
 }
 
-export function provisioningShards() {
+export function addSignedIn(pub_key: string, signature: *) {
   return async (dispatch: Function, getState: Function) => {
-    const { shards } = getState()["onboarding"];
-    dispatch(nextStep());
-    await network("/hsm/partition/provisioning/commit", "POST", {
-      fragments: shards
-    });
-    return dispatch({
-      type: SUCCESS_SEED_SHARDS
-    });
+    const { signed } = getState()["onboarding"];
+    const index = signed.findIndex(member => member.pub_key === pub_key);
+
+    if (index > -1) {
+      return dispatch(
+        addMessage("Error", "This device has already been authenticated")
+      );
+    } else {
+      const data = {
+        pub_key: pub_key.toUpperCase(),
+        authentication: signature.rawResponse
+      };
+
+      await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ADD_SIGNEDIN,
+        data
+      });
+    }
   };
 }
 
@@ -234,13 +228,9 @@ export function gotShardChallenge(challenge: Challenge) {
   };
 }
 
-export function signedMember() {}
 export function getCommitChallenge() {
   return async (dispatch: Function) => {
-    const challenge = await network(
-      "/hsm/confirmation/partition/challenge",
-      "GET"
-    );
+    const challenge = await network("/onboarding/challenge", "GET");
 
     return dispatch(gotCommitChallenge(challenge));
   };
@@ -254,25 +244,19 @@ export function gotChallengeRegistation(challenge: Challenge) {
 }
 
 export function gotBootstrapToken(result: *) {
-  return (dispatch: Function) => {
-    dispatch({
-      type: GOT_BOOTSTRAP_TOKEN,
-      result
-    });
+  return {
+    type: GOT_BOOTSTRAP_TOKEN,
+    result
   };
 }
 
-export function getBootstrapToken(pub_key: string, signature: string) {
-  return async (dispatch: Function => Object) => {
+export function getBootstrapToken(pub_key: string, signature: Object) {
+  return async (dispatch: Function) => {
     const data = {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
     };
-    const result = await network(
-      "/hsm/authentication/bootstrap/authenticate",
-      "POST",
-      data
-    );
+    const result = await network("/onboarding/authenticate", "POST", data);
     return dispatch(gotBootstrapToken(result));
   };
 }
@@ -283,34 +267,27 @@ export function lockPartition() {
   };
 }
 
-export function commitAdministrators(pub_key: string, signature: string) {
-  return async (dispatch: Function => Object) => {
+export function commitAdministrators(pub_key: string, signature: Object) {
+  return async (dispatch: Function) => {
     const data = {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
     };
-    await network("/hsm/authentication/bootstrap/authenticate", "POST", data);
-    await network("/hsm/partition/lock", "POST");
+    await network("/onboarding/authenticate", "POST", data);
     return dispatch(lockPartition());
   };
 }
 
 export function getShardChallenge() {
   return async (dispatch: Function) => {
-    const challenge = await network(
-      "/hsm/session/admin/partition/challenge",
-      "GET"
-    );
+    const challenge = await network("/onboarding/challenge", "GET");
     return dispatch(gotShardChallenge(challenge));
   };
 }
 
 export function getBootstrapChallenge() {
   return async (dispatch: Function) => {
-    const challengeObject = await network(
-      "/hsm/authentication/bootstrap/challenge",
-      "GET"
-    );
+    const challengeObject = await network("/onboarding/challenge", "GET");
     return dispatch(gotBootstrapChallenge(challengeObject));
   };
 }
@@ -324,25 +301,8 @@ export function gotBootstrapChallenge(challenge: Challenge) {
 
 export function getChallengeRegistration() {
   return async (dispatch: Function) => {
-    const { challenge } = await network(
-      "/hsm/admins/register/challenge",
-      "GET"
-    );
+    const { challenge } = await network("/onboarding/challenge", "GET");
     return dispatch(gotChallengeRegistation(challenge));
-  };
-}
-
-export function setOnboardingStatus(status: OnboardingStatus) {
-  return {
-    type: SET_ONBOARDING_STATUS,
-    status: status
-  };
-}
-
-export function addMember(member: Member) {
-  return {
-    type: ADD_MEMBER,
-    member: member
   };
 }
 
@@ -360,13 +320,36 @@ export function viewRoute(currentRoute: string) {
   };
 }
 
+export function addMember(data: Member) {
+  return async (dispatch: Function, getState: Function) => {
+    const { members } = getState()["onboarding"];
+    const findIndex = members.findIndex(
+      member => member.pub_key === data.pub_key
+    );
+    if (findIndex > -1) {
+      dispatch(addMessage("Error", "Device already registered", "error"));
+      throw "Already registered";
+    } else {
+      await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ADD_MEMBER,
+        member: data
+      });
+    }
+  };
+}
+
 export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
-    case SET_ONBOARDING_STATUS: {
-      return { ...state, status: action.status };
-    }
     case ADD_MEMBER: {
-      return { ...state, members: [...state.members, action.member] };
+      return {
+        ...state,
+        members: [...state.members, action.member],
+        key_handles: {
+          ...state.key_handles,
+          ...{ [action.member.pub_key]: action.member.key_handle }
+        }
+      };
     }
     case CHANGE_NB_REQUIRED: {
       if (action.nb > 0 && action.nb <= state.members.length) {

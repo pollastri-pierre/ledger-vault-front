@@ -31,9 +31,9 @@ import {
   BigSecurityAutoExpireIcon
 } from "../icons";
 
-import type { Account, AccountSettings, Fiat } from "data/types";
+import type { Account, AccountSettings } from "data/types";
 
-import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
+// import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const allCurrencies = listCurrencies();
 
@@ -261,18 +261,18 @@ class SecuritySchemeView extends Component<{
 }
 
 type Props = {
-  settingsData: SettingsDataQueryResponse,
-  account: Account,
+  settingsData: AccountSettings,
+  account: *,
   restlay: RestlayEnvironment,
   classes: { [_: $Keys<typeof styles>]: string },
-  fiats: Fiat[]
+  fiats: *
 };
 type State = {
   name: string,
-  settings: AccountSettings
+  settings: *
 };
 class AccountSettingsEdit extends Component<Props, State> {
-  constructor({ account }: Props) {
+  constructor({ account }: *) {
     super();
     const { name, settings } = account;
     this.state = {
@@ -334,7 +334,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   render() {
-    const { account, settingsData, classes, fiats } = this.props;
+    const { account, classes, fiats } = this.props;
     const { name, settings } = this.state;
     const unit_index = account.currency.units.findIndex(
       unit => unit.id === settings.currency_unit.id
@@ -452,15 +452,14 @@ function Side({
 }
 
 class SettingsModal extends Component<{
-  accounts: Account[],
-  fiats: Fiat[],
+  accounts: *,
+  fiats: *,
   restlay: RestlayEnvironment,
   close: Function,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { accounts, restlay, close, classes, fiats } = this.props;
-    console.log(fiats);
     return (
       <div className={classes.container}>
         <Side classes={classes} accounts={accounts} />
@@ -477,7 +476,6 @@ class SettingsModal extends Component<{
                     );
                     return account ? (
                       <AccountSettingsEdit
-                        {...props}
                         classes={classes}
                         settingsData={account.settings}
                         key={account.id}

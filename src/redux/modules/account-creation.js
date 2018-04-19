@@ -18,6 +18,7 @@ export const CLEAR_STATE = "account-creation/CLEAR_STATE";
 export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
+const MAX_ACCOUNT_NAME_LENGTH = 20;
 
 type Timelock = {
   enabled: boolean,
@@ -53,7 +54,6 @@ export function setRatelimiter(ratelimiter: Ratelimiter) {
 }
 
 export function addMember(member: Member) {
-  console.log(member);
   return {
     type: ADD_MEMBER,
     member
@@ -95,10 +95,12 @@ export function selectCurrencyItem(currency: Currency) {
 }
 
 export function changeAccountName(name: string) {
-  return {
-    type: CHANGE_ACCOUNT_NAME,
-    name
-  };
+  if (name.length < MAX_ACCOUNT_NAME_LENGTH) {
+    return {
+      type: CHANGE_ACCOUNT_NAME,
+      name
+    };
+  }
 }
 
 export function switchInternalModal(id: string) {

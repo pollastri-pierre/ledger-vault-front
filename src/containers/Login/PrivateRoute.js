@@ -10,21 +10,23 @@ const mapStateToProps = state => ({
 const PrivateRoute = ({
   component: Component,
   isAuthenticated,
+  match,
   ...rest
 }: {
   component: React$ComponentType<*>,
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
+  match: *
 }) => (
   <Route
     {...rest}
     render={(props: *) => {
       return isAuthenticated ? (
-        <Component {...props} />
+        <Component {...props} match={match} />
       ) : (
         <Redirect
-          to={
-            "/login?redirectTo=" + encodeURIComponent(props.location.pathname)
-          }
+          to={`${match.url}/login?redirectTo=${encodeURIComponent(
+            props.location.pathname
+          )}`}
         />
       );
     }}

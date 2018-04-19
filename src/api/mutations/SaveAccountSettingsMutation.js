@@ -1,10 +1,10 @@
 //@flow
 import Mutation from "restlay/Mutation";
-import type { Account, AccountSettings } from "data/types";
+import type { Account, Unit, Fiat } from "data/types";
 import { success, error } from "formatters/notification";
 import schema from "data/schema";
 
-type In = AccountSettings;
+type In = { account: Account, currency_unit: Unit, fiat: Fiat };
 
 type Res = Account;
 
@@ -23,7 +23,7 @@ export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   }
 
   getBody() {
-    const { account, ...rest } = this.props;
+    const { account, ...rest } = this.props; //eslint-disable-line no-unused-vars
     return { ...rest };
   }
 }

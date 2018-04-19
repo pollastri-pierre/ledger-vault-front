@@ -26,7 +26,7 @@ class ApproveWatchOperations extends Component<Props> {
       accounts,
       approvers,
       operationsPending,
-      operationsQueued,
+      // operationsQueued,
       user
     } = this.props;
 

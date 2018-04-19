@@ -4,9 +4,10 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import Card from "components/Card";
-import { PendingAccountApprove, PendingOperationApprove } from "components";
+import { PendingAccountApprove } from "components";
 import TryAgain from "components/TryAgain";
 import type { Member, Account } from "data/types";
 
@@ -76,6 +77,7 @@ export default connectData(ApproveWatchAccounts, {
   queries: {
     approvers: MembersQuery,
     accounts: PendingAccountsQuery,
-    currencies: CurrenciesQuery
+    currencies: CurrenciesQuery,
+    organization: OrganizationQuery
   }
 });

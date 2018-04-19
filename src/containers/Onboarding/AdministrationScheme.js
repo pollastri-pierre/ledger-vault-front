@@ -8,7 +8,6 @@ import {
   ToContinue
 } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
-import { setAdminScheme } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider.js";
@@ -17,7 +16,6 @@ const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 const mapDispatch = dispatch => ({
-  onSetAdminScheme: () => dispatch(setAdminScheme()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
@@ -26,13 +24,11 @@ const AdministrationScheme = ({
   total,
   onChange,
   onboarding,
-  onSetAdminScheme,
   onAddMessage
 }: {
   number: number,
   total: number,
   onChange: Function,
-  onSetAdminScheme: Function,
   onAddMessage: Function,
   onboarding: Object
 }) => {
@@ -52,11 +48,12 @@ const AdministrationScheme = ({
         number of administrators in your team.
       </ToContinue>
       <Footer
+        nextState
         render={(onPrev, onNext) => {
           const onclick = async () => {
             try {
-              await onSetAdminScheme();
-              onNext();
+              // TODO handle admin in backend
+              onNext({ quorum: parseInt(number, 10) });
             } catch (e) {
               onAddMessage(
                 "Error",
@@ -69,7 +66,7 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.nbRequired < 3}
+              disabled={onboarding.nbRequired < 2}
             >
               Continue
             </DialogButton>

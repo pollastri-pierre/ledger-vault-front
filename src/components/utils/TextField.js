@@ -14,7 +14,7 @@ type Props = {
   inputStyle?: Object
 };
 function TextField(props: Props) {
-  const { inputProps, ...rest } = props;
+  const { inputProps, ...rest } = props; // eslint-disable-line
   return (
     <MUITextField
       {...rest}

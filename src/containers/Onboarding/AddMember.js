@@ -59,15 +59,7 @@ class AddMember extends Component<Props, State> {
 
   finish = (result: *) => {
     this.setState({ step: 0 });
-    const data = {};
-    ["first_name", "last_name", "email", "picture"].forEach(key => {
-      const value = this.state.data[key].value;
-      data[key] = value;
-    });
-    data["role"] = "Administrator";
-    data["pub_key"] = result.pub_key;
-    data["challenge_answer"] = result.challenge_answer;
-    this.props.finish(data);
+    this.props.finish(result);
   };
 
   render() {
@@ -102,7 +94,6 @@ class AddMember extends Component<Props, State> {
           title="Register device"
           close={this.props.close}
           finish={this.finish}
-          registerKeyHandle={this.props.registerKeyHandle}
           cancel={this.prev}
           data={this.state.data}
           challenge={this.props.challenge}

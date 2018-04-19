@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
-import network from "network";
 import createDevice, {
   U2F_PATH,
   CONFIDENTIALITY_PATH,
@@ -41,7 +40,6 @@ type Props = {
   cancel: Function,
   finish: Function,
   challenge: string,
-  registerKeyHandle: Function,
   data: *
 };
 
@@ -61,7 +59,7 @@ class StepDevice extends Component<Props, State> {
   onStart = async () => {
     try {
       this.setState({ active: 0 });
-      const device = await createDevice();
+      const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
 
       const instanceName = "";
@@ -85,6 +83,7 @@ class StepDevice extends Component<Props, State> {
       const data = {
         u2f_register: u2f_register.rawResponse,
         pub_key: pubKey,
+        key_handle: u2f_register.keyHandle.toString("hex"),
         validation: {
           public_key: validation.pubKey,
           attestation: validation.signature.toString("hex")
@@ -98,15 +97,12 @@ class StepDevice extends Component<Props, State> {
         email: this.props.data.email.value,
         picture: this.props.data.picture.value
       };
-
-      this.props.registerKeyHandle(pubKey, u2f_register.keyHandle);
-
-      await network("/hsm/admin/register", "POST", data);
       this.setState({ active: 2 });
+
       this.props.finish(data);
     } catch (e) {
       console.error(e);
-      // this.onStart();
+      this.onStart();
     }
   };
 

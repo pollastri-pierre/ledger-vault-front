@@ -1,9 +1,9 @@
-//@flow
-import ActivityQuery from "api/queries/ActivityQuery";
+//flow
 import React, { Component, PureComponent } from "react";
 import PropTypes from "prop-types";
+import { Route } from "react-router";
+import ActivityQuery from "api/queries/ActivityQuery";
 import { connect } from "react-redux";
-import { Route, withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { newActivity } from "redux/modules/activity";
 import ConnectionQuery from "restlay/ConnectionQuery";
@@ -19,10 +19,6 @@ import Plus from "../icons/full/Plus";
 import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Bell from "../icons/full/Bell";
-
-import logo from "assets/img/logo.png";
-import logo2x from "assets/img/logo@2x.png";
-import logo3x from "assets/img/logo@3x.png";
 
 const styles = {
     base: {
@@ -64,33 +60,11 @@ const styles = {
 };
 
 const NewAccountLink = withStyles(styles)(({ classes }) => (
-    <Link to="/dashboard/new-account">
+    <Link to="dashboard/new-account">
         <Plus className={classes.icon} />
         <div className="content-header-button-text">account</div>
     </Link>
 ));
-
-class Logo extends PureComponent<*> {
-    n = -9;
-    render() {
-        return (
-            <img
-                onClick={e => {
-                    Object.assign(e.target.style, {
-                        transition: "1s",
-                        transform:
-                            "skew(" +
-                            36000 * (Math.max(this.n++, 0) % 2) +
-                            "deg)"
-                    });
-                }}
-                src={logo}
-                srcSet={`${logo2x} 2x, ${logo3x} 3x`}
-                alt="Ledger Vault logo"
-            />
-        );
-    }
-}
 
 class ActionBar extends Component<{
     location: Object,
@@ -118,9 +92,6 @@ class ActionBar extends Component<{
                 />
 
                 <div className={classes.header}>
-                    <div className={classes.header_left}>
-                        <Logo />
-                    </div>
                     <div className={classes.actions}>
                         <Route path="/dashboard" component={NewAccountLink} />
                         <Link to="/export">
@@ -146,4 +117,4 @@ class ActionBar extends Component<{
     }
 }
 
-export default withRouter(withStyles(styles)(ActionBar));
+export default withStyles(styles)(ActionBar);

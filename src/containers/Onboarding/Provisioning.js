@@ -19,8 +19,7 @@ import Footer from "./Footer";
 import {
   toggleGenerateSeed,
   addSeedShard,
-  getShardsChannel,
-  provisioningShards
+  getShardsChannel
 } from "redux/modules/onboarding";
 
 const status = {
@@ -128,7 +127,7 @@ class Provisioning extends Component<Props> {
   componentDidMount() {
     const { onboarding, onGetShardsChannel } = this.props;
     if (!onboarding.shards_channel) {
-      this.props.onGetShardsChannel();
+      onGetShardsChannel();
     }
   }
 
@@ -196,10 +195,11 @@ class Provisioning extends Component<Props> {
           master seed in turn, using their Ledger Blue.
         </ToContinue>
         <Footer
-          render={() => (
+          nextState
+          render={(onPrev, onNext) => (
             <DialogButton
               highlight
-              onTouchTap={this.props.onProvisioningShards}
+              onTouchTap={onNext}
               disabled={onboarding.shards.length < 3}
             >
               Continue
@@ -218,8 +218,7 @@ const mapProps = state => ({
 const mapDispatch = dispatch => ({
   onToggleGenerateSeed: () => dispatch(toggleGenerateSeed()),
   onAddSeedShard: data => dispatch(addSeedShard(data)),
-  onGetShardsChannel: () => dispatch(getShardsChannel()),
-  onProvisioningShards: () => dispatch(provisioningShards())
+  onGetShardsChannel: () => dispatch(getShardsChannel())
 });
 
 export default connect(mapProps, mapDispatch)(withStyles(styles)(Provisioning));

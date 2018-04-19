@@ -124,7 +124,7 @@ test("onStart method", async () => {
       ...onboarding,
       bootstrapChallenge: {
         challenge: "challenge",
-        handles: ["handle1"]
+        key_handle: { key_handle: "handle1" }
       }
     },
     onAddMessage: jest.fn(),
@@ -134,17 +134,22 @@ test("onStart method", async () => {
   const MyComponent = shallow(<Authentication {...props} />);
   await MyComponent.instance().onStart();
   expect(VaultDeviceApp).toHaveBeenCalledTimes(1);
-  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH);
+  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
   expect(mockAuthenticate).toHaveBeenCalledWith(
-    "challenge",
+    Buffer.from("challenge", "base64"),
     APPID_VAULT_BOOTSTRAP,
-    "handle1",
-    "_",
-    "_",
-    "_",
-    "_"
+    Buffer.from("handle1", "base64"),
+    "",
+    "",
+    "",
+    ""
   );
-  expect(props.onGetBootstrapToken).toHaveBeenCalledWith("pubKey", "raw");
+  expect(props.onGetBootstrapToken).toHaveBeenCalledWith("pubKey", {
+    userPresence: "userPresence",
+    counter: 0,
+    signature: "signature",
+    rawResponse: "raw"
+  });
 });
 
 test("Footer should be continuable if bootstrapAuthToken exists", () => {

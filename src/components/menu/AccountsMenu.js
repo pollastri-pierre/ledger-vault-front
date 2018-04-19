@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
+import { withRouter } from "react-router";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
 import connectData from "restlay/connectData";
@@ -36,10 +37,11 @@ const styles = {
 
 class AccountsMenu extends Component<{
   classes: Object,
-  accounts: Array<Account>
+  accounts: Array<Account>,
+  match: *
 }> {
   render() {
-    const { accounts, classes } = this.props;
+    const { accounts, classes, match } = this.props;
     return (
       <MenuList>
         {accounts.map(account => {
@@ -56,7 +58,7 @@ class AccountsMenu extends Component<{
             <MenuLink
               color={curr.color}
               key={account.id}
-              to={`/account/${account.id}`}
+              to={`${match.url}/account/${account.id}`}
               className={classes.item}
             >
               <span className={classes.name}>{account.name}</span>
@@ -69,9 +71,11 @@ class AccountsMenu extends Component<{
   }
 }
 
-export default connectData(withStyles(styles)(AccountsMenu), {
-  queries: {
-    accounts: AccountsQuery,
-    currencies: CurrenciesQuery
-  }
-});
+export default withRouter(
+  connectData(withStyles(styles)(AccountsMenu), {
+    queries: {
+      accounts: AccountsQuery,
+      currencies: CurrenciesQuery
+    }
+  })
+);

@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import { /* React, */ Component } from "react";
 // import DeltaChange from "./DeltaChange";
 // import CardField from "./CardField";
 

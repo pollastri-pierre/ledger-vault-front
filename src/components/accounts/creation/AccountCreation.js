@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import MainCreation from "./MainCreation";
 import AccountCreationMembers from "./AccountCreationMembers";
 import AccountCreationApprovals from "./AccountCreationApprovals";
+import DeviceAuthenticate from "./DeviceAuthenticate";
 import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
 
@@ -108,6 +109,15 @@ class AccountCreation extends Component<Props> {
               onSelect={onChangeTabAccount}
               close={this.close}
               switchInternalModal={onSwitchInternalModal}
+            />
+          </div>
+        )}
+        {account.internModalId === "device" && (
+          <div id="account-creation" className="modal">
+            <DeviceAuthenticate
+              account={account}
+              cancel={() => onSwitchInternalModal("main")}
+              close={this.close}
             />
           </div>
         )}

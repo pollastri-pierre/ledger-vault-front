@@ -80,7 +80,6 @@ class OperationCreationDetails extends Component<
 > {
   constructor(props) {
     super(props);
-    const { account } = this.props;
     this.state = {
       unitIndex: 0,
       maxMenuOpen: false,

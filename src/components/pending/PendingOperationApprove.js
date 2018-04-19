@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import classnames from "classnames";
 import CurrencyFiatValue from "../CurrencyFiatValue";
+import { withRouter } from "react-router";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import { countervalueForRate } from "data/currency";
@@ -16,11 +17,12 @@ type Props = {
   operations: Operation[],
   approved?: boolean,
   user: Member,
-  classes: Object
+  classes: Object,
+  match: *
 };
 
 function PendingOperationApprove(props: Props) {
-  const { accounts, operations, approved, user, classes } = props;
+  const { accounts, operations, approved, user, classes, match } = props;
   if (operations.length === 0) {
     return <p>There are no operations to approve</p>;
   }
@@ -63,7 +65,7 @@ function PendingOperationApprove(props: Props) {
             className={classnames(classes.row, {
               [classes.approved]: approved
             })}
-            to={`/pending/operation/${operation.id}`}
+            to={`${match.url}/operation/${operation.id}`}
             key={operation.id}
           >
             <div>
@@ -103,4 +105,4 @@ function PendingOperationApprove(props: Props) {
   );
 }
 
-export default withStyles(styles)(PendingOperationApprove);
+export default withStyles(styles)(withRouter(PendingOperationApprove));
