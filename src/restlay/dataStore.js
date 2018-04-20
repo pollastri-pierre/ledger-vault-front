@@ -223,7 +223,6 @@ export const executeQueryOrMutation =
                     if (shouldLogout) {
                         dispatch(logout());
                     }
-
                     ctx.removePendingQuery(queryOrMutation);
                 }
                 dispatch({
@@ -234,6 +233,13 @@ export const executeQueryOrMutation =
                 });
                 throw error;
             });
+
+        if (
+            queryOrMutation instanceof Query ||
+            queryOrMutation instanceof ConnectionQuery
+        ) {
+            ctx.setPendingQuery(queryOrMutation, promise);
+        }
         return promise;
     };
 

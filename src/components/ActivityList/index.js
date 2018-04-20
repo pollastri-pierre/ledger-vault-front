@@ -201,7 +201,7 @@ class ActivityList extends Component<
                                     this.list = elem;
                                 }}
                             >
-                                {activities.map((activity, id) => {
+                                {activities.map(activity => {
                                     return (
                                         activity.show && (
                                             <Activity

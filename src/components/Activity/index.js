@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import colors from "shared/colors";
 import { hexToRgbA } from "shared/colors";
 import DateFormat from "../DateFormat";

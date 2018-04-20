@@ -5,7 +5,6 @@ import alerts from "./alerts";
 import accountCreation from "./account-creation";
 import data from "./data";
 import onboarding from "./onboarding";
-import activity from "./activity";
 
 const reducers = {
     locale,
@@ -13,8 +12,7 @@ const reducers = {
     alerts,
     accountCreation,
     onboarding,
-    data,
-    activity
+    data
 };
 
 export default reducers;
