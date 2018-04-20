@@ -1,3 +1,4 @@
+//@flow
 import { withStyles } from "material-ui/styles";
 import type { ActivityCommon } from "data/types";
 import React, { Component } from "react";
