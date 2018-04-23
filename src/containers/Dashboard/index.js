@@ -61,10 +61,10 @@ class Dashboard extends Component<
     return (
       <div className={classes.base}>
         <div className={classes.body}>
-          <TotalBalanceCard
-            filter={filter}
-            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
-          />
+          {/* <TotalBalanceCard */}
+          {/*   filter={filter} */}
+          {/*   onTotalBalanceFilterChange={onTotalBalanceFilterChange} */}
+          {/* /> */}
           <LastOperationCard />
           <Storages filter={filter} />
         </div>

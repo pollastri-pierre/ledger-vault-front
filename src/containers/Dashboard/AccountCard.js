@@ -19,9 +19,8 @@ const styles = {
     margin: "20px 0 15px"
   },
   cryptocur: {
-    fontSize: "13px",
-    color: "#000",
-    marginBottom: "11px"
+    fontSize: "14px",
+    color: "#000"
   },
   realcur: {
     fontSize: "13px",
@@ -53,18 +52,18 @@ class AccountCard extends Component<{
           valueHistory={account.balance_history}
           filter={TotalBalanceFilters.find(f => f.key === filter)}
         />
-        <Separator />
+        {/* <Separator /> */}
         <div>
           <div className={classes.cryptocur}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </div>
-          <div className={classes.realcur}>
-            <CurrencyAccountValue
-              account={account}
-              value={account.balance}
-              countervalue={true}
-            />
-          </div>
+          {/* <div className={classes.realcur}> */}
+          {/*   <CurrencyAccountValue */}
+          {/*     account={account} */}
+          {/*     value={account.balance} */}
+          {/*     countervalue={true} */}
+          {/*   /> */}
+          {/* </div> */}
         </div>
       </Card>
     );

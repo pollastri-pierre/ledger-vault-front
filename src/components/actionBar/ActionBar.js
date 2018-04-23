@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router";
 import { Link } from "react-router-dom";
@@ -13,6 +13,9 @@ import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";
 import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
+import logo from "assets/img/logo.png";
+import logo2x from "assets/img/logo@2x.png";
+import logo3x from "assets/img/logo@3x.png";
 
 const styles = {
   base: {
@@ -24,6 +27,13 @@ const styles = {
   header: {
     marginLeft: "280px",
     padding: "54px 38px 0 0"
+  },
+  logo: {
+    width: 100,
+    overflow: "hidden",
+    "& > img": {
+      transform: "translateX(-32px)"
+    }
   },
   header_left: {
     float: "left"
@@ -60,6 +70,17 @@ const NewAccountLink = withStyles(styles)(({ classes }) => (
   </Link>
 ));
 
+class Logo extends PureComponent<*> {
+  render() {
+    return (
+      <img
+        src={logo}
+        srcSet={`${logo2x} 2x, ${logo3x} 3x`}
+        alt="Ledger Vault logo"
+      />
+    );
+  }
+}
 class ActionBar extends Component<{
   location: Object,
   match: Object,
@@ -78,7 +99,7 @@ class ActionBar extends Component<{
 
     return (
       <div className={classes.base}>
-        <ProfileCard />
+        <ProfileCard match={match} />
         <ModalRoute path="*/new-account" component={AccountCreation} />
         <ModalRoute
           path="*/settings"
@@ -86,7 +107,11 @@ class ActionBar extends Component<{
           undoAllHistoryOnClickOutside
         />
         <div className={classes.header}>
-          <div className={classes.header_left} />
+          <div className={classes.header_left}>
+            <div className={classes.logo}>
+              <Logo />
+            </div>
+          </div>
           <div className={classes.actions}>
             <Route
               path={`${match.url}/dashboard`}

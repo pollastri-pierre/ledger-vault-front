@@ -28,9 +28,9 @@ function AccountApproveDetails(props: {
       <div
         style={{
           textAlign: "center",
-          marginBottom: "40px",
-          display: "flex",
-          flexDirection: "row"
+          marginBottom: "40px"
+          // display: "flex",
+          // flexDirection: "row"
         }}
       >
         <BadgeSecurity

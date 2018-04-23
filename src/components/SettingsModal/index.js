@@ -19,16 +19,16 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 import { listCurrencies } from "@ledgerhq/currencies";
 import BadgeSecurity from "../BadgeSecurity";
-import RateLimiterValue from "../RateLimiterValue";
-import TimeLockValue from "../TimeLockValue";
+// import RateLimiterValue from "../RateLimiterValue";
+// import TimeLockValue from "../TimeLockValue";
 import SettingsTextField from "../SettingsTextField";
 import colors from "../../shared/colors";
 
 import {
-  BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon,
-  BigSecurityAutoExpireIcon
+  // BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon
+  // BigSecurityRateLimiterIcon,
+  // BigSecurityAutoExpireIcon
 } from "../icons";
 
 import type { Account, AccountSettings } from "data/types";
@@ -148,13 +148,6 @@ const styles = {
       marginTop: 10
     }
   },
-  support: {
-    display: "block",
-    fontWeight: 600,
-    color: colors.steel,
-    textTransform: "uppercase",
-    textDecoration: "none"
-  },
   securitySchemeView: {
     display: "flex",
     alignItems: "flex-start",
@@ -225,7 +218,7 @@ class SecuritySchemeView extends Component<{
           noWidth
           icon={<BigSecurityMembersIcon />}
           label="Members"
-          value={`${members.length} of ${quorum}`}
+          value={`${quorum} of ${members.length}`}
         />
         {/* <BadgeSecurity */}
         {/*   noWidth */}
@@ -442,11 +435,7 @@ function Side({
           })}
         </div>
       </div>
-      <div className={classes.sideFooter}>
-        <a className={classes.support} href="mailto:support@ledger.fr">
-          support
-        </a>
-      </div>
+      <div className={classes.sideFooter} />
     </div>
   );
 }

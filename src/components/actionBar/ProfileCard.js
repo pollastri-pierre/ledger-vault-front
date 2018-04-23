@@ -141,11 +141,6 @@ class ProfileCard extends Component<
         >
           <div onClick={this.onCloseBubble}>
             <MenuList>
-              <MenuLink to={location.pathname + "/profile-edit"}>
-                <span className={classes.link}>
-                  {t("actionBar.editProfile")}
-                </span>
-              </MenuLink>
               <MenuLink to={`/${match.params.orga_name}/logout`}>
                 <span className={classes.link}>{t("actionBar.logOut")}</span>
               </MenuLink>

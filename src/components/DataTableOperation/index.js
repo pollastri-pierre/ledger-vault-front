@@ -235,11 +235,11 @@ const COLS = [
     title: "status",
     Cell: StatusColumn
   },
-  {
-    className: "countervalue",
-    title: "",
-    Cell: CountervalueColumn
-  },
+  // {
+  //   className: "countervalue",
+  //   title: "",
+  //   Cell: CountervalueColumn
+  // },
   {
     className: "amount",
     title: "amount",
