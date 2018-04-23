@@ -21,11 +21,7 @@ class LastOperationCard extends Component<*> {
   render() {
     const { accounts, operations, reloading } = this.props;
     return (
-      <Card
-        reloading={reloading}
-        title="last operations"
-        titleRight={<ViewAllLink to="/search" />}
-      >
+      <Card reloading={reloading} title="last operations">
         <DataTableOperation
           columnIds={columnIds}
           operations={operations}
@@ -37,13 +33,13 @@ class LastOperationCard extends Component<*> {
 }
 
 const RenderError = ({ restlay, error }: *) => (
-  <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+  <Card title="last operations">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
 
 const RenderLoading = () => (
-  <Card title="last operations" titleRight={<ViewAllLink to="/search" />}>
+  <Card title="last operations">
     <SpinnerCard />
   </Card>
 );
