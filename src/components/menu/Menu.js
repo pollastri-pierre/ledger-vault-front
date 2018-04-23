@@ -15,7 +15,7 @@ import { withStyles } from "material-ui/styles";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";
-import Search from "../icons/full/Search";
+// import Search from "../icons/full/Search";
 import Plus from "../icons/full/Plus";
 
 const styles = {
@@ -96,17 +96,20 @@ function Menu(
             {t("menu.pendingRequests")}
           </span>
         </MenuLink>
-        <MenuLink to={`${match.url}/search`}>
-          <span className={classes.link}>
-            <Search className={classes.searchIcon} />
-            {t("menu.search")}
-          </span>
-        </MenuLink>
+        {/* <MenuLink to={`${match.url}/search`}> */}
+        {/*   <span className={classes.link}> */}
+        {/*     <Search className={classes.searchIcon} /> */}
+        {/*     {t("menu.search")} */}
+        {/*   </span> */}
+        {/* </MenuLink> */}
       </MenuList>
 
-      <h4 className={classes.h4}>Accounts</h4>
-
-      <AccountsMenu location={location} accounts={accounts} />
+      {accounts.length > 0 && (
+        <div>
+          <h4 className={classes.h4}>Accounts</h4>
+          <AccountsMenu location={location} accounts={accounts} />
+        </div>
+      )}
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
     </div>

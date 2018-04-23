@@ -215,7 +215,7 @@ class SecuritySchemeView extends Component<{
 }> {
   render() {
     const {
-      security_scheme: { quorum, time_lock, rate_limiter, auto_expire },
+      security_scheme: { quorum /* time_lock, rate_limiter, auto_expire */ },
       members
     } = this.props.account;
     const { classes } = this.props;
@@ -227,34 +227,34 @@ class SecuritySchemeView extends Component<{
           label="Members"
           value={`${members.length} of ${quorum}`}
         />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityTimeLockIcon />}
-          label="Time-lock"
-          disabled={!time_lock}
-          value={<TimeLockValue time_lock={time_lock} />}
-        />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityRateLimiterIcon />}
-          label="Rate Limiter"
-          disabled={!rate_limiter}
-          value={
-            rate_limiter && (
-              <RateLimiterValue
-                max_transaction={rate_limiter.max_transaction}
-                time_slot={rate_limiter.time_slot}
-              />
-            )
-          }
-        />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityAutoExpireIcon />}
-          label="Auto-expire"
-          disabled={!auto_expire}
-          value={<TimeLockValue time_lock={auto_expire} />}
-        />
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityTimeLockIcon />} */}
+        {/*   label="Time-lock" */}
+        {/*   disabled={!time_lock} */}
+        {/*   value={<TimeLockValue time_lock={time_lock} />} */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityRateLimiterIcon />} */}
+        {/*   label="Rate Limiter" */}
+        {/*   disabled={!rate_limiter} */}
+        {/*   value={ */}
+        {/*     rate_limiter && ( */}
+        {/*       <RateLimiterValue */}
+        {/*         max_transaction={rate_limiter.max_transaction} */}
+        {/*         time_slot={rate_limiter.time_slot} */}
+        {/*       /> */}
+        {/*     ) */}
+        {/*   } */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityAutoExpireIcon />} */}
+        {/*   label="Auto-expire" */}
+        {/*   disabled={!auto_expire} */}
+        {/*   value={<TimeLockValue time_lock={auto_expire} />} */}
+        {/* /> */}
       </div>
     );
   }
@@ -386,21 +386,21 @@ class AccountSettingsEdit extends Component<Props, State> {
             </Select>
           </SettingsField>
         </div>
-        <div className={classes.capsTitle}>{"Countervalue"}</div>
-        <SettingsField label="Fiat currency" classes={classes}>
-          <Select
-            value={fiat}
-            onChange={this.onFiatCurrencyChange}
-            fullWidth
-            disableUnderline
-          >
-            {fiats.map(({ id, name }) => (
-              <MenuItem disableRipple key={id} value={id}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </SettingsField>
+        {/* <div className={classes.capsTitle}>{"Countervalue"}</div> */}
+        {/* <SettingsField label="Fiat currency" classes={classes}> */}
+        {/*   <Select */}
+        {/*     value={fiat} */}
+        {/*     onChange={this.onFiatCurrencyChange} */}
+        {/*     fullWidth */}
+        {/*     disableUnderline */}
+        {/*   > */}
+        {/*     {fiats.map(({ id, name }) => ( */}
+        {/*       <MenuItem disableRipple key={id} value={id}> */}
+        {/*         {name} */}
+        {/*       </MenuItem> */}
+        {/*     ))} */}
+        {/*   </Select> */}
+        {/* </SettingsField> */}
       </div>
     );
   }

@@ -35,11 +35,7 @@ const Menu = ({
       <MenuLinkOnboarding step={0} allowed={onboarding.currentStep < 2} heading>
         <span style={{ textTransform: "uppercase" }}>welcome</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        step={1}
-        allowed={!onboarding.bootstrapAuthToken}
-        heading
-      >
+      <MenuLinkOnboarding step={1} allowed={false} heading>
         <span style={{ textTransform: "uppercase" }}>authentication</span>
       </MenuLinkOnboarding>
       <div style={{ marginTop: 10, marginBottom: 7 }}>
@@ -48,44 +44,19 @@ const Menu = ({
           selected={[2, 3, 4, 5, 6].indexOf(onboarding.currentStep) > -1}
         />
       </div>
-      <MenuLinkOnboarding
-        step={2}
-        allowed={
-          onboarding.currentStep > 2 && !onboarding.committed_administrators
-        }
-      >
+      <MenuLinkOnboarding step={2} allowed={false}>
         <span>Prerequisite</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        step={3}
-        allowed={
-          onboarding.currentStep > 3 && !onboarding.committed_administrators
-        }
-      >
+      <MenuLinkOnboarding step={3} allowed={false}>
         <span>Configuration</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        step={4}
-        allowed={
-          onboarding.currentStep > 4 && !onboarding.committed_administrators
-        }
-      >
+      <MenuLinkOnboarding step={4} allowed={false}>
         <span>Registration ({nbMember})</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        step={5}
-        allowed={
-          onboarding.currentStep > 5 && !onboarding.committed_administrators
-        }
-      >
+      <MenuLinkOnboarding step={5} allowed={false}>
         <span>Administration scheme</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        step={6}
-        allowed={
-          onboarding.currentStep > 6 && !onboarding.committed_administrators
-        }
-      >
+      <MenuLinkOnboarding step={6} allowed={false}>
         <span>Confirmation</span>
       </MenuLinkOnboarding>
       <div style={{ marginTop: 20 }}>

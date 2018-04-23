@@ -84,7 +84,7 @@ class AccountApprove extends Component<Props, { value: number }> {
           <Tabs value={value} onChange={this.handleChange}>
             <Tab label="Details" disableRipple />
             <Tab label="Members" disableRipple />
-            <Tab label="approvers" disableRipple />
+            <Tab label="approvals" disableRipple />
           </Tabs>
         </header>
         {value === 0 && (

@@ -38,34 +38,34 @@ function AccountApproveDetails(props: {
           label="Members"
           value={`${account.members.length} selected`}
         />
-        <BadgeSecurity
-          icon={<BigSecurityTimeLockIcon />}
-          label="Time-lock"
-          disabled={!security_scheme.time_lock}
-          value={<TimeLockValue time_lock={security_scheme.time_lock} />}
-        />
-        <BadgeSecurity
-          icon={<BigSecurityRateLimiterIcon />}
-          label="Rate Limiter"
-          disabled={
-            !security_scheme.rate_limiter ||
-            !security_scheme.rate_limiter.max_transaction
-          }
-          value={
-            security_scheme.rate_limiter && (
-              <RateLimiterValue
-                max_transaction={
-                  security_scheme.rate_limiter &&
-                  security_scheme.rate_limiter.max_transaction
-                }
-                time_slot={
-                  security_scheme.rate_limiter &&
-                  security_scheme.rate_limiter.time_slot
-                }
-              />
-            )
-          }
-        />
+        {/* <BadgeSecurity */}
+        {/*   icon={<BigSecurityTimeLockIcon />} */}
+        {/*   label="Time-lock" */}
+        {/*   disabled={!security_scheme.time_lock} */}
+        {/*   value={<TimeLockValue time_lock={security_scheme.time_lock} />} */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   icon={<BigSecurityRateLimiterIcon />} */}
+        {/*   label="Rate Limiter" */}
+        {/*   disabled={ */}
+        {/*     !security_scheme.rate_limiter || */}
+        {/*     !security_scheme.rate_limiter.max_transaction */}
+        {/*   } */}
+        {/*   value={ */}
+        {/*     security_scheme.rate_limiter && ( */}
+        {/*       <RateLimiterValue */}
+        {/*         max_transaction={ */}
+        {/*           security_scheme.rate_limiter && */}
+        {/*           security_scheme.rate_limiter.max_transaction */}
+        {/*         } */}
+        {/*         time_slot={ */}
+        {/*           security_scheme.rate_limiter && */}
+        {/*           security_scheme.rate_limiter.time_slot */}
+        {/*         } */}
+        {/*       /> */}
+        {/*     ) */}
+        {/*   } */}
+        {/* /> */}
       </div>
       <div>
         <LineRow label="status">
