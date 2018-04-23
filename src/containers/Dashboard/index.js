@@ -14,69 +14,69 @@ import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
 
 const styles = {
-  base: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap"
-  },
-  body: {
-    flex: "1 1",
-    marginRight: "20px",
-    minWidth: "680px"
-  },
-  aside: {
-    width: "320px"
-  }
+    base: {
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    body: {
+        flex: "1 1",
+        marginRight: "20px",
+        minWidth: "680px"
+    },
+    aside: {
+        width: "320px"
+    }
 };
 class Dashboard extends Component<
-  {
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  {
-    filter: string
-  }
+    {
+        classes: { [_: $Keys<typeof styles>]: string },
+        match: *
+    },
+    {
+        filter: string
+    }
 > {
-  state = {
-    filter: TotalBalanceFilters[0].key
-  };
+    state = {
+        filter: TotalBalanceFilters[0].key
+    };
 
-  onTotalBalanceFilterChange = (filter: string) => {
-    this.setState({ filter });
-  };
+    onTotalBalanceFilterChange = (filter: string) => {
+        this.setState({ filter });
+    };
 
-  render() {
-    const { match, classes } = this.props;
-    const { filter } = this.state;
-    const { onTotalBalanceFilterChange } = this;
+    render() {
+        const { match, classes } = this.props;
+        const { filter } = this.state;
+        const { onTotalBalanceFilterChange } = this;
 
-    return (
-      <div className={classes.base}>
-        <div className={classes.body}>
-          <TotalBalanceCard
-            filter={filter}
-            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
-          />
-          <LastOperationCard />
-          <Storages filter={filter} />
-        </div>
-        <div className={classes.aside}>
-          <Card title="currencies">
-            <Currencies />
-          </Card>
-          <PendingCard match={match} />
-        </div>
-        <ModalRoute
-          path={`${match.url}/operation/:operationId/:tabIndex`}
-          component={OperationModal}
-        />
-      </div>
-    );
-  }
+        return (
+            <div className={classes.base}>
+                <div className={classes.body}>
+                    <TotalBalanceCard
+                        filter={filter}
+                        onTotalBalanceFilterChange={onTotalBalanceFilterChange}
+                    />
+                    <LastOperationCard />
+                    <Storages filter={filter} />
+                </div>
+                <div className={classes.aside}>
+                    <Card title="currencies">
+                        <Currencies />
+                    </Card>
+                    <PendingCard match={match} />
+                </div>
+                <ModalRoute
+                    path={`${match.url}/operation/:operationId/:tabIndex`}
+                    component={OperationModal}
+                />
+            </div>
+        );
+    }
 }
 
 export default connectData(withStyles(styles)(Dashboard), {
-  queries: {
-    currencies: CurrenciesQuery
-  }
+    queries: {
+        currencies: CurrenciesQuery
+    }
 });

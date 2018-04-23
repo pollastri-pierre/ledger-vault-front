@@ -7,12 +7,12 @@ import data from "./data";
 import onboarding from "./onboarding";
 
 const reducers = {
-  locale,
-  auth,
-  alerts,
-  accountCreation,
-  onboarding,
-  data
+    locale,
+    auth,
+    alerts,
+    accountCreation,
+    onboarding,
+    data
 };
 
 export default reducers;
