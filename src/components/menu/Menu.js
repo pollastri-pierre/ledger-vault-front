@@ -1,5 +1,9 @@
 //@flow
 import React from "react";
+import AccountsQuery from "api/queries/AccountsQuery";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
 import PropTypes from "prop-types";
 import { MenuList } from "material-ui/Menu";
 import MenuLink from "../MenuLink";
@@ -54,13 +58,14 @@ function Menu(
   props: {
     location: *,
     match: *,
-    classes: { [_: $Keys<typeof styles>]: string }
+    classes: { [_: $Keys<typeof styles>]: string },
+    accounts: Array<Account>
   },
   context: {
     translate: Function
   }
 ) {
-  const { location, classes, match } = props;
+  const { location, classes, accounts, match } = props;
   const t = context.translate;
   return (
     <div className={classes.root}>
@@ -76,7 +81,10 @@ function Menu(
             {t("menu.dashboard")}
           </span>
         </MenuLink>
-        <MenuLink to={`${match.url}/new-operation`}>
+        <MenuLink
+          to={`${match.url}/new-operation`}
+          disabled={accounts.length === 0}
+        >
           <span className={classes.link}>
             <Plus className={classes.icon} />
             {t("menu.newOperation")}
@@ -98,7 +106,7 @@ function Menu(
 
       <h4 className={classes.h4}>Accounts</h4>
 
-      <AccountsMenu location={location} />
+      <AccountsMenu location={location} accounts={accounts} />
 
       <ModalRoute path="*/new-operation" component={NewOperationModal} />
     </div>
@@ -109,4 +117,14 @@ Menu.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Menu);
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <div className={classes.root} />
+));
+
+export default connectData(withStyles(styles)(Menu), {
+  RenderLoading: RenderLoading,
+  queries: {
+    accounts: AccountsQuery,
+    currencies: CurrenciesQuery
+  }
+});

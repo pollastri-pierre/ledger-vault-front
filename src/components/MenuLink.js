@@ -10,6 +10,9 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     paddingLeft: 40
+  },
+  disabled: {
+    opacity: 0.2
   }
 };
 
@@ -18,6 +21,7 @@ class MenuLink extends Component<{
   to: string,
   exact?: boolean,
   strict?: boolean,
+  disabled?: boolean,
   classes: Object,
   className?: string,
   children: *,
@@ -32,6 +36,7 @@ class MenuLink extends Component<{
       color,
       children,
       overrides,
+      disabled,
       className,
       ...props
     } = this.props;
@@ -42,8 +47,11 @@ class MenuLink extends Component<{
             style={{
               color: color || "#27d0e2" //default FIXME from theme
             }}
-            className={classNames(classes.root, className)}
+            className={classNames(classes.root, className, {
+              [classes.disabled]: disabled
+            })}
             button
+            disabled={disabled}
             disableRipple
             selected={!!match}
             component={Link}

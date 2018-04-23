@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import AccountsQuery from "api/queries/AccountsQuery";
+import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import connectData from "restlay/connectData";
 import AbortConfirmation from "./AbortConfirmation";
 import AccountApprove from "../accounts/approve/AccountApprove";
@@ -16,7 +18,6 @@ import ApproveAccountMutation from "api/mutations/ApproveAccountMutation";
 import AbortAccount from "api/mutations/AbortAccountMutation";
 import ApproveOperationMutation from "api/mutations/ApproveOperationMutation";
 import AbortOperationMutation from "api/mutations/AbortOperationMutation";
-import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import OperationApprove from "../operations/approve/OperationApprove";
 
@@ -88,6 +89,8 @@ class EntityApprove extends Component<Props, State> {
             public_key: pubKey.toUpperCase()
           })
         );
+        await restlay.fetchQuery(new AccountsQuery());
+        await restlay.fetchQuery(new PendingAccountsQuery());
       } else if (entity === "operation") {
         await restlay.commitMutation(
           new ApproveOperationMutation({
