@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import DashboardLastOperationsQuery from "api/queries/DashboardLastOperationsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import ViewAllLink from "components/ViewAllLink";
+// import ViewAllLink from "components/ViewAllLink";
 import TryAgain from "components/TryAgain";
 import Card from "components/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
