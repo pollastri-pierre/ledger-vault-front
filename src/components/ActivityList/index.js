@@ -90,7 +90,7 @@ class ActivityList extends Component<
         unseenActivityCount: number,
         markAsSeenRequest: Function,
         clearAllRequest: Function,
-        classes: Object
+        classes: { [_: $Keys<typeof styles>]: string }
     },
     *
 > {

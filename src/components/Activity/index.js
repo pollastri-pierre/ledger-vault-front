@@ -80,7 +80,7 @@ const hourDateFormat = {
 class Activity extends Component<
     {
         data: ActivityCommon[],
-        classes: Object
+        classes: { [_: $Keys<typeof styles>]: string }
     },
     *
 > {
