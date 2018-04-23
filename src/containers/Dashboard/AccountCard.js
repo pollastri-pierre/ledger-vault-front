@@ -27,9 +27,9 @@ const styles = {
     color: "#767676"
   }
 };
-const Separator = withStyles(styles)(({ classes }) => (
-  <div className={classes.separator} />
-));
+// const Separator = withStyles(styles)(({ classes }) => (
+//   <div className={classes.separator} />
+// ));
 
 class AccountCard extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },

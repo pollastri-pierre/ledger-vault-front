@@ -40,8 +40,10 @@ const DashboardPlaceholder = ({
 }) => (
   <div className={classes.base}>
     <Card title="No account">
-      You don't have any account yet. In order to start sending and receiving
-      transactions, you need to create an account.{" "}
+      <span>
+        You don{"'"}t have any account yet. In order to start sending and
+        receiving transactions, you need to create an account.
+      </span>
       <strong>Then this account will need to be approved by the quorum.</strong>
       <Link to={`dashboard/new-account`} className={classes.link}>
         <Plus className={classes.icon} />

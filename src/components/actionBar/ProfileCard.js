@@ -103,7 +103,7 @@ class ProfileCard extends Component<
   };
 
   render() {
-    const { profile, match, location, classes } = this.props;
+    const { profile, match, classes } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
     return (

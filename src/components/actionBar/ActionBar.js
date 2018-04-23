@@ -11,7 +11,7 @@ import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
 import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";
-import Share from "../icons/full/Share";
+// import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import logo from "assets/img/logo.png";
 import logo2x from "assets/img/logo@2x.png";

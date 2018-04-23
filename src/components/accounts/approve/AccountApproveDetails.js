@@ -1,13 +1,13 @@
 //@flow
 import React from "react";
 import {
-  BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon
+  // BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon
+  // BigSecurityRateLimiterIcon
 } from "../../icons";
 
-import RateLimiterValue from "../../RateLimiterValue";
-import TimeLockValue from "../../TimeLockValue";
+// import RateLimiterValue from "../../RateLimiterValue";
+// import TimeLockValue from "../../TimeLockValue";
 import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";

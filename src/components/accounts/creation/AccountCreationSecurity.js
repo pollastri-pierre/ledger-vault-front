@@ -1,12 +1,12 @@
 //@flow
 import React from "react";
-import RateLimiterValue from "../../RateLimiterValue";
-import TimeLockValue from "../../TimeLockValue";
+// import RateLimiterValue from "../../RateLimiterValue";
+// import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
-import RatesFull from "../../icons/full/Rates";
+// import RatesFull from "../../icons/full/Rates";
 import { withStyles } from "material-ui/styles";
-import HourglassFull from "../../icons/full/Hourglass";
+// import HourglassFull from "../../icons/full/Hourglass";
 import PeopleFull from "../../icons/full/People";
 
 const styles = {

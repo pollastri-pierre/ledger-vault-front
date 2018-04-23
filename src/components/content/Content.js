@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router";
 import { AccountView, PendingRequests } from "../../containers"; // Tests
 import Dashboard from "containers/Dashboard";
 import { withStyles } from "material-ui/styles";
-import Search from "containers/Search";
+// import Search from "containers/Search";
 
 const styles = {
   base: {

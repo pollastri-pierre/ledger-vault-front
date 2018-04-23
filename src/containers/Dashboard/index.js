@@ -8,7 +8,7 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import Card from "components/Card";
 import Currencies from "./Currencies";
 import { TotalBalanceFilters } from "components/EvolutionSince";
-import TotalBalanceCard from "./TotalBalanceCard";
+// import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
@@ -52,7 +52,7 @@ class Dashboard extends Component<
   render() {
     const { match, classes, accounts } = this.props;
     const { filter } = this.state;
-    const { onTotalBalanceFilterChange } = this;
+    // const { onTotalBalanceFilterChange } = this;
 
     // TODO handle the case where accounts exist but no transaction
     if (accounts.length === 0) {
