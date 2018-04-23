@@ -61,7 +61,7 @@ const NewAccountLink = withStyles(styles)(({ classes }) => (
 ));
 
 class ActionBar extends Component<{
-    location: { [_: $Keys<typeof styles>]: string },
+    location: Object,
     classes: { [_: $Keys<typeof styles>]: string }
 }> {
     static contextTypes = {
