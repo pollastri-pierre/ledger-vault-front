@@ -13,6 +13,7 @@ import { withStyles } from "material-ui/styles";
 import Plus from "../icons/full/Plus";
 // import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
+import Question from "../icons/full/Question";
 import logo from "assets/img/logo.png";
 import logo2x from "assets/img/logo@2x.png";
 import logo3x from "assets/img/logo@3x.png";
@@ -133,6 +134,10 @@ class ActionBar extends Component<{
               </div>
             </Link>
             <ActivityCard />
+            <a href="#">
+              <Question className={classes.icon} />
+              <div className="content-header-button-text">Help</div>
+            </a>
           </div>
         </div>
       </div>

@@ -94,11 +94,13 @@ class ActivityList extends Component<
   },
   *
 > {
-  firstElem = null;
+  firstElem: * = null;
   firstElemInitialTopPos = 0;
   state = {
     timer: null
   };
+  list: ?HTMLDivElement;
+
   componentDidMount() {
     //const { list } = this;
     //if (list) list.addEventListener("scroll", this.onScroll);
@@ -116,17 +118,18 @@ class ActivityList extends Component<
 
   markVisibleActivitiesAsSeen = () => {
     const { activities } = this.props;
-    if (!this.firstElem) return;
 
-    const actualTop = this.firstElem.getBoundingClientRect().top - 146;
-    const height = this.firstElem.getBoundingClientRect().height;
-    const nb_diff = Math.abs(Math.floor(actualTop / height));
-    let business_action_ids = [];
-    for (let i = nb_diff; i < activities.length && i < nb_diff + 5; i++) {
-      if (!activities[i].seen)
-        business_action_ids.push(activities[i].business_action.id);
+    if (this.firstElem) {
+      const actualTop = this.firstElem.getBoundingClientRect().top - 146;
+      const height = this.firstElem.getBoundingClientRect().height;
+      const nb_diff = Math.abs(Math.floor(actualTop / height));
+      let business_action_ids = [];
+      for (let i = nb_diff; i < activities.length && i < nb_diff + 5; i++) {
+        if (!activities[i].seen)
+          business_action_ids.push(activities[i].business_action.id);
+      }
+      this.cancelAndMakeRequestMarkAsSeen(business_action_ids);
     }
-    this.cancelAndMakeRequestMarkAsSeen(business_action_ids);
   };
 
   cancelAndMakeRequestMarkAsSeen = business_action_ids => {
