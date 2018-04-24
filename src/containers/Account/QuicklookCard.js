@@ -47,8 +47,8 @@ type Props = {
 };
 
 const quicklookFilters: Array<Filter> = [
-  { title: "balance", key: "balance" },
-  { title: "countervalue", key: "countervalue" }
+  { title: "balance", key: "balance" }
+  // { title: "countervalue", key: "countervalue" }
 ];
 
 export class QuicklookCard extends Component<Props, State> {

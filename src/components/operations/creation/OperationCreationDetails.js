@@ -239,12 +239,14 @@ class OperationCreationDetails extends Component<
           <MaxSelect onSetMax={this.setMax} />
         </InputFieldMerge>
 
-        <div className={classes.countervalue}>
-          <div>{this.props.account.currencyRate.fiat}</div>
-          <div>{this.getCounterValue(this.state.satoshis)}</div>
-        </div>
+        {/* <div className={classes.countervalue}> */}
+        {/*   <div>{this.props.account.currencyRate.fiat}</div> */}
+        {/*   <div>{this.getCounterValue(this.state.satoshis)}</div> */}
+        {/* </div> */}
 
-        <ModalSubTitle noPadding>Address to credit</ModalSubTitle>
+        <div style={{ marginTop: 40 }}>
+          <ModalSubTitle noPadding>Address to credit</ModalSubTitle>
+        </div>
 
         <CryptoAddressPicker
           id="address"
@@ -257,7 +259,6 @@ class OperationCreationDetails extends Component<
         />
 
         <ModalSubTitle noPadding>Confirmation fees</ModalSubTitle>
-
         <InputFieldMerge>
           <FeeSelect
             value={this.state.feesSelected}
