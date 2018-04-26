@@ -3,22 +3,22 @@ import React from "react";
 import LineRow from "../../LineRow";
 
 import {
-  BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon
+  // BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon
+  // BigSecurityRateLimiterIcon
 } from "../../icons";
 import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
 import InfoModal from "../../InfoModal";
-import RateLimiterValue from "../../RateLimiterValue";
-import TimeLockValue from "../../TimeLockValue";
+// import RateLimiterValue from "../../RateLimiterValue";
+// import TimeLockValue from "../../TimeLockValue";
 
 function AccountCreationConfirmation(props: { account: Object }) {
   const {
     name,
     approvers,
-    rate_limiter,
-    time_lock,
+    // rate_limiter,
+    // time_lock,
     currency,
     quorum
   } = props.account;
@@ -31,25 +31,25 @@ function AccountCreationConfirmation(props: { account: Object }) {
           label="Members"
           value={`${approvers.length} selected`}
         />
-        <BadgeSecurity
-          icon={<BigSecurityTimeLockIcon />}
-          label="Time-lock"
-          disabled={!time_lock.enabled}
-          value={
-            <TimeLockValue time_lock={time_lock.value * time_lock.frequency} />
-          }
-        />
-        <BadgeSecurity
-          icon={<BigSecurityRateLimiterIcon />}
-          label="Rate Limiter"
-          disabled={!rate_limiter.enabled}
-          value={
-            <RateLimiterValue
-              max_transaction={rate_limiter.value}
-              time_slot={rate_limiter.frequency.value}
-            />
-          }
-        />
+        {/* <BadgeSecurity */}
+        {/*   icon={<BigSecurityTimeLockIcon />} */}
+        {/*   label="Time-lock" */}
+        {/*   disabled={!time_lock.enabled} */}
+        {/*   value={ */}
+        {/*     <TimeLockValue time_lock={time_lock.value * time_lock.frequency} /> */}
+        {/*   } */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   icon={<BigSecurityRateLimiterIcon />} */}
+        {/*   label="Rate Limiter" */}
+        {/*   disabled={!rate_limiter.enabled} */}
+        {/*   value={ */}
+        {/*     <RateLimiterValue */}
+        {/*       max_transaction={rate_limiter.value} */}
+        {/*       time_slot={rate_limiter.frequency.value} */}
+        {/*     /> */}
+        {/*   } */}
+        {/* /> */}
       </div>
 
       <div style={{ marginTop: "50px" }}>

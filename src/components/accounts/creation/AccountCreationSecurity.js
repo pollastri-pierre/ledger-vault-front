@@ -1,12 +1,12 @@
 //@flow
 import React from "react";
-import RateLimiterValue from "../../RateLimiterValue";
-import TimeLockValue from "../../TimeLockValue";
+// import RateLimiterValue from "../../RateLimiterValue";
+// import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
-import RatesFull from "../../icons/full/Rates";
+// import RatesFull from "../../icons/full/Rates";
 import { withStyles } from "material-ui/styles";
-import HourglassFull from "../../icons/full/Hourglass";
+// import HourglassFull from "../../icons/full/Hourglass";
 import PeopleFull from "../../icons/full/People";
 
 const styles = {
@@ -60,36 +60,36 @@ function AccountCreationSecurity(props: {
           {account.quorum > 0 ? `${account.quorum} required` : "None"}
         </SecurityRow>
       </div>
-      <h5>Locks</h5>
-      <SecurityRow
-        icon={<HourglassFull className={classes.icon} />}
-        label="Time-lock"
-        disabled
-        onClick={() => switchInternalModal("time-lock")}
-      >
-        {account.time_lock.enabled ? (
-          <TimeLockValue
-            time_lock={account.time_lock.value * account.time_lock.frequency}
-          />
-        ) : (
-          "disabled"
-        )}
-      </SecurityRow>
-      <SecurityRow
-        icon={<RatesFull className={classes.icon} />}
-        label="Rate Limiter"
-        disabled
-        onClick={() => switchInternalModal("rate-limiter")}
-      >
-        {account.rate_limiter.enabled ? (
-          <RateLimiterValue
-            max_transaction={account.rate_limiter.value}
-            time_slot={account.rate_limiter.frequency}
-          />
-        ) : (
-          "disabled"
-        )}
-      </SecurityRow>
+      {/* <h5>Locks</h5> */}
+      {/* <SecurityRow */}
+      {/*   icon={<HourglassFull className={classes.icon} />} */}
+      {/*   label="Time-lock" */}
+      {/*   disabled */}
+      {/*   onClick={() => switchInternalModal("time-lock")} */}
+      {/* > */}
+      {/*   {account.time_lock.enabled ? ( */}
+      {/*     <TimeLockValue */}
+      {/*       time_lock={account.time_lock.value * account.time_lock.frequency} */}
+      {/*     /> */}
+      {/*   ) : ( */}
+      {/*     "disabled" */}
+      {/*   )} */}
+      {/* </SecurityRow> */}
+      {/* <SecurityRow */}
+      {/*   icon={<RatesFull className={classes.icon} />} */}
+      {/*   label="Rate Limiter" */}
+      {/*   disabled */}
+      {/*   onClick={() => switchInternalModal("rate-limiter")} */}
+      {/* > */}
+      {/*   {account.rate_limiter.enabled ? ( */}
+      {/*     <RateLimiterValue */}
+      {/*       max_transaction={account.rate_limiter.value} */}
+      {/*       time_slot={account.rate_limiter.frequency} */}
+      {/*     /> */}
+      {/*   ) : ( */}
+      {/*     "disabled" */}
+      {/*   )} */}
+      {/* </SecurityRow> */}
     </div>
   );
 }

@@ -199,20 +199,20 @@ class AmountColumn extends Component<Cell> {
   }
 }
 
-class CountervalueColumn extends Component<Cell> {
-  render() {
-    const { operation, account } = this.props;
-    return account ? (
-      <CurrencyAccountValue
-        account={account}
-        rate={operation.rate}
-        value={operation.amount}
-        alwaysShowSign
-        countervalue
-      />
-    ) : null;
-  }
-}
+// class CountervalueColumn extends Component<Cell> {
+//   render() {
+//     const { operation, account } = this.props;
+//     return account ? (
+//       <CurrencyAccountValue
+//         account={account}
+//         rate={operation.rate}
+//         value={operation.amount}
+//         alwaysShowSign
+//         countervalue
+//       />
+//     ) : null;
+//   }
+// }
 
 const COLS = [
   {
@@ -235,11 +235,11 @@ const COLS = [
     title: "status",
     Cell: StatusColumn
   },
-  {
-    className: "countervalue",
-    title: "",
-    Cell: CountervalueColumn
-  },
+  // {
+  //   className: "countervalue",
+  //   title: "",
+  //   Cell: CountervalueColumn
+  // },
   {
     className: "amount",
     title: "amount",

@@ -1,10 +1,10 @@
 //@flow
 import React, { PureComponent } from "react";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
-import CurrencyUnitValue from "../../CurrencyUnitValue";
+// import CurrencyUnitValue from "../../CurrencyUnitValue";
 import { MenuItem } from "material-ui/Menu";
 import { withStyles } from "material-ui/styles";
-import { countervalueForRate } from "data/currency";
+// import { countervalueForRate } from "data/currency";
 import type { Account } from "data/types";
 import { listCurrencies } from "@ledgerhq/currencies";
 
@@ -64,10 +64,10 @@ class AccountMenuItem extends PureComponent<{
     ) || {
       color: "black"
     };
-    const counterValueUnit = countervalueForRate(
-      account.currencyRate,
-      account.balance
-    );
+    // const counterValueUnit = countervalueForRate(
+    //   account.currencyRate,
+    //   account.balance
+    // );
     return (
       <MenuItem
         className={classes.accountItem}
@@ -88,9 +88,9 @@ class AccountMenuItem extends PureComponent<{
           <span className={classes.accountCurrency}>
             {account.currency.name}
           </span>
-          <span className={classes.accountCountervalue}>
-            <CurrencyUnitValue {...counterValueUnit} />
-          </span>
+          {/* <span className={classes.accountCountervalue}> */}
+          {/*   <CurrencyUnitValue {...counterValueUnit} /> */}
+          {/* </span> */}
         </div>
       </MenuItem>
     );

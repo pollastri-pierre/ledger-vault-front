@@ -87,14 +87,16 @@ export class Welcome extends Component<
     isChecking: false
   };
 
-  onSubmit = async () => {
+  onSubmit = async (e: *) => {
+    e.preventDefault();
+    e.stopPropagation();
     const { domain, isChecking } = this.state;
     const { history } = this.props;
 
     if (domain !== "" && !isChecking) {
       this.setState({ isChecking: true });
       try {
-        await network(`/${domain}/_health`, "GET");
+        await network(`/${domain}/organization/exists`, "GET");
         this.setState({ isChecking: false });
         history.push(`/${domain}`);
       } catch (e) {

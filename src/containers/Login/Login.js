@@ -114,7 +114,7 @@ export class Login extends Component<Props, State> {
   checkDomain = async () => {
     const { history, addAlertMessage } = this.props;
     try {
-      await network(`/_health`, "GET");
+      await network(`/organization/exists`, "GET");
       this.setState({ domainValidated: true });
     } catch (e) {
       this.setState({ domainValidated: false });

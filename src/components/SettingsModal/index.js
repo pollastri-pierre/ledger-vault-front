@@ -19,16 +19,16 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 import { listCurrencies } from "@ledgerhq/currencies";
 import BadgeSecurity from "../BadgeSecurity";
-import RateLimiterValue from "../RateLimiterValue";
-import TimeLockValue from "../TimeLockValue";
+// import RateLimiterValue from "../RateLimiterValue";
+// import TimeLockValue from "../TimeLockValue";
 import SettingsTextField from "../SettingsTextField";
 import colors from "../../shared/colors";
 
 import {
-  BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon,
-  BigSecurityRateLimiterIcon,
-  BigSecurityAutoExpireIcon
+  // BigSecurityTimeLockIcon,
+  BigSecurityMembersIcon
+  // BigSecurityRateLimiterIcon,
+  // BigSecurityAutoExpireIcon
 } from "../icons";
 
 import type { Account, AccountSettings } from "data/types";
@@ -148,13 +148,6 @@ const styles = {
       marginTop: 10
     }
   },
-  support: {
-    display: "block",
-    fontWeight: 600,
-    color: colors.steel,
-    textTransform: "uppercase",
-    textDecoration: "none"
-  },
   securitySchemeView: {
     display: "flex",
     alignItems: "flex-start",
@@ -215,7 +208,7 @@ class SecuritySchemeView extends Component<{
 }> {
   render() {
     const {
-      security_scheme: { quorum, time_lock, rate_limiter, auto_expire },
+      security_scheme: { quorum /* time_lock, rate_limiter, auto_expire */ },
       members
     } = this.props.account;
     const { classes } = this.props;
@@ -225,36 +218,36 @@ class SecuritySchemeView extends Component<{
           noWidth
           icon={<BigSecurityMembersIcon />}
           label="Members"
-          value={`${members.length} of ${quorum}`}
+          value={`${quorum} of ${members.length}`}
         />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityTimeLockIcon />}
-          label="Time-lock"
-          disabled={!time_lock}
-          value={<TimeLockValue time_lock={time_lock} />}
-        />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityRateLimiterIcon />}
-          label="Rate Limiter"
-          disabled={!rate_limiter}
-          value={
-            rate_limiter && (
-              <RateLimiterValue
-                max_transaction={rate_limiter.max_transaction}
-                time_slot={rate_limiter.time_slot}
-              />
-            )
-          }
-        />
-        <BadgeSecurity
-          noWidth
-          icon={<BigSecurityAutoExpireIcon />}
-          label="Auto-expire"
-          disabled={!auto_expire}
-          value={<TimeLockValue time_lock={auto_expire} />}
-        />
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityTimeLockIcon />} */}
+        {/*   label="Time-lock" */}
+        {/*   disabled={!time_lock} */}
+        {/*   value={<TimeLockValue time_lock={time_lock} />} */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityRateLimiterIcon />} */}
+        {/*   label="Rate Limiter" */}
+        {/*   disabled={!rate_limiter} */}
+        {/*   value={ */}
+        {/*     rate_limiter && ( */}
+        {/*       <RateLimiterValue */}
+        {/*         max_transaction={rate_limiter.max_transaction} */}
+        {/*         time_slot={rate_limiter.time_slot} */}
+        {/*       /> */}
+        {/*     ) */}
+        {/*   } */}
+        {/* /> */}
+        {/* <BadgeSecurity */}
+        {/*   noWidth */}
+        {/*   icon={<BigSecurityAutoExpireIcon />} */}
+        {/*   label="Auto-expire" */}
+        {/*   disabled={!auto_expire} */}
+        {/*   value={<TimeLockValue time_lock={auto_expire} />} */}
+        {/* /> */}
       </div>
     );
   }
@@ -334,13 +327,13 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   render() {
-    const { account, classes, fiats } = this.props;
+    const { account, classes /* fiats  */ } = this.props;
     const { name, settings } = this.state;
     const unit_index = account.currency.units.findIndex(
       unit => unit.id === settings.currency_unit.id
     );
 
-    const fiat = settings.fiat.id || settings.fiat;
+    // const fiat = settings.fiat.id || settings.fiat;
 
     return (
       <div className={classes.contentSections}>
@@ -386,21 +379,21 @@ class AccountSettingsEdit extends Component<Props, State> {
             </Select>
           </SettingsField>
         </div>
-        <div className={classes.capsTitle}>{"Countervalue"}</div>
-        <SettingsField label="Fiat currency" classes={classes}>
-          <Select
-            value={fiat}
-            onChange={this.onFiatCurrencyChange}
-            fullWidth
-            disableUnderline
-          >
-            {fiats.map(({ id, name }) => (
-              <MenuItem disableRipple key={id} value={id}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </SettingsField>
+        {/* <div className={classes.capsTitle}>{"Countervalue"}</div> */}
+        {/* <SettingsField label="Fiat currency" classes={classes}> */}
+        {/*   <Select */}
+        {/*     value={fiat} */}
+        {/*     onChange={this.onFiatCurrencyChange} */}
+        {/*     fullWidth */}
+        {/*     disableUnderline */}
+        {/*   > */}
+        {/*     {fiats.map(({ id, name }) => ( */}
+        {/*       <MenuItem disableRipple key={id} value={id}> */}
+        {/*         {name} */}
+        {/*       </MenuItem> */}
+        {/*     ))} */}
+        {/*   </Select> */}
+        {/* </SettingsField> */}
       </div>
     );
   }
@@ -442,11 +435,7 @@ function Side({
           })}
         </div>
       </div>
-      <div className={classes.sideFooter}>
-        <a className={classes.support} href="mailto:support@ledger.fr">
-          support
-        </a>
-      </div>
+      <div className={classes.sideFooter} />
     </div>
   );
 }

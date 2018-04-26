@@ -7,7 +7,7 @@ import ReceiveFundsCard from "./ReceiveFundsCard";
 import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
-import AccountCountervalueCard from "./AccountCountervalueCard";
+// import AccountCountervalueCard from "./AccountCountervalueCard";
 
 const styles = {
   flex: {
@@ -17,7 +17,7 @@ const styles = {
     width: "65.4%"
   },
   half: {
-    width: "50%",
+    width: "100%",
     marginRight: "20px"
   }
 };
@@ -52,9 +52,9 @@ class AccountView extends Component<
               <div className={classes.half}>
                 <AccountBalanceCard accountId={accountId} />
               </div>
-              <div className={classes.half}>
-                <AccountCountervalueCard accountId={accountId} />
-              </div>
+              {/* <div className={classes.half}> */}
+              {/*   <AccountCountervalueCard accountId={accountId} /> */}
+              {/* </div> */}
             </div>
             <ReceiveFundsCard accountId={accountId} />
           </div>

@@ -103,7 +103,7 @@ class ProfileCard extends Component<
   };
 
   render() {
-    const { profile, match, location, classes } = this.props;
+    const { profile, match, classes } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
     return (
@@ -141,11 +141,6 @@ class ProfileCard extends Component<
         >
           <div onClick={this.onCloseBubble}>
             <MenuList>
-              <MenuLink to={location.pathname + "/profile-edit"}>
-                <span className={classes.link}>
-                  {t("actionBar.editProfile")}
-                </span>
-              </MenuLink>
               <MenuLink to={`/${match.params.orga_name}/logout`}>
                 <span className={classes.link}>{t("actionBar.logOut")}</span>
               </MenuLink>
