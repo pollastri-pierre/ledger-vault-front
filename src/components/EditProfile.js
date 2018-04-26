@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import emailValidator from "email-validator";
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 import rectCrop from "rect-crop";
 import { TextField } from "components";
 import DialogButton from "components/buttons/DialogButton";
