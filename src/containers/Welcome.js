@@ -96,7 +96,7 @@ export class Welcome extends Component<
     if (domain !== "" && !isChecking) {
       this.setState({ isChecking: true });
       try {
-        await network(`/${domain}/_health`, "GET");
+        await network(`/${domain}/organization/exists`, "GET");
         this.setState({ isChecking: false });
         history.push(`/${domain}`);
       } catch (e) {
