@@ -141,16 +141,17 @@ class ProfileEditModal extends Component<
       <div className={classes.base}>
         <div>{title}</div>
         <div className={classes.profileBody}>
-          <Dropzone
-            style={{
-              width: "initial",
-              height: "initial",
-              border: "none",
-              cursor: "pointer"
-            }}
-            accept="image/jpeg, image/png"
-            onDrop={this.onDrop}
-          >
+          {/* <Dropzone */}
+          {/*   style={{ */}
+          {/*     width: "initial", */}
+          {/*     height: "initial", */}
+          {/*     border: "none", */}
+          {/*     cursor: "pointer" */}
+          {/*   }} */}
+          {/*   accept="image/jpeg, image/png" */}
+          {/*   onDrop={this.onDrop} */}
+          {/* > */}
+          <div>
             <div className={classes.profilePic}>
               {this.state.picture.value ? (
                 <img src={this.state.picture.value} alt="" />
@@ -158,7 +159,8 @@ class ProfileEditModal extends Component<
                 <ProfileIcon className={classes.icon} color="white" />
               )}
             </div>
-          </Dropzone>
+          </div>
+          {/* </Dropzone> */}
           <div className={classes.profileForm}>
             <TextField
               name="first_name"
