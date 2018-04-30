@@ -1,12 +1,16 @@
 //@flow
 import { connect } from "react-redux";
+import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import React, { Component } from "react";
 import MainCreation from "./MainCreation";
 import AccountCreationMembers from "./AccountCreationMembers";
 import AccountCreationApprovals from "./AccountCreationApprovals";
-import DeviceAuthenticate from "./DeviceAuthenticate";
+import DeviceAuthenticate from "components/DeviceAuthenticate";
 import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
+import NewAccountMutation from "api/mutations/NewAccountMutation";
+import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 
 import {
   changeTab,
@@ -25,6 +29,7 @@ type Props = {
   onSelectCurrency: Function,
   onChangeTabAccount: Function,
   onSwitchInternalModal: Function,
+  restlay: RestlayEnvironment,
   onGet: Function,
   onChangeAccountName: Function,
   onAddMember: Function,
@@ -44,6 +49,41 @@ class AccountCreation extends Component<Props> {
 
   close = () => {
     this.props.history.goBack();
+  };
+
+  createAccount = () => {
+    const { restlay } = this.props;
+    const account = this.props.accountCreation;
+    const approvers = account.approvers.map(pubKey => {
+      return { pub_key: pubKey };
+    });
+
+    const securityScheme = Object.assign(
+      {
+        quorum: account.quorum
+      },
+      account.time_lock.enabled && {
+        time_lock: account.time_lock.value * account.time_lock.frequency
+      },
+      account.rate_limiter.enabled && {
+        rate_limiter: {
+          max_transaction: account.rate_limiter.value,
+          time_slot: account.rate_limiter.frequency
+        }
+      }
+    );
+
+    const data = {
+      name: account.name,
+      currency: account.currency.name,
+      security_scheme: securityScheme,
+      members: approvers
+    };
+
+    return restlay
+      .commitMutation(new NewAccountMutation(data))
+      .then(this.close)
+      .then(() => restlay.fetchQuery(new PendingAccountsQuery()));
   };
 
   render() {
@@ -115,8 +155,8 @@ class AccountCreation extends Component<Props> {
         {account.internModalId === "device" && (
           <div id="account-creation" className="modal">
             <DeviceAuthenticate
-              account={account}
               cancel={() => onSwitchInternalModal("main")}
+              callback={this.createAccount}
               close={this.close}
             />
           </div>
@@ -142,4 +182,6 @@ const mapDispatchToProps = dispatch => ({
   onClearState: () => dispatch(clearState())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountCreation);
+export default connectData(
+  connect(mapStateToProps, mapDispatchToProps)(AccountCreation)
+);

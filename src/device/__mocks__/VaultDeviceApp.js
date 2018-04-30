@@ -6,12 +6,12 @@ export const mockRegister = jest.fn().mockReturnValue({
   signature: "signature",
   rawResponse: "raw"
 });
-export const mockAuthenticate = jest.fn().mockReturnValue({
+export const mockAuthenticate = jest.fn().mockImplementation(() => ({
   userPresence: "userPresence",
   counter: 0,
   signature: "signature",
   rawResponse: "raw"
-});
+}));
 export const mockGetPublicKey = jest.fn().mockReturnValue({
   pubKey: "pubKey",
   signature: "signature"

@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import DeviceAuthenticate from "components/DeviceAuthenticate";
 import OperationCreation from "./operations/creation/OperationCreation";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -27,11 +28,13 @@ class NewOperationModal extends Component<
     tabsIndex: number,
     selectedAccount: ?Account,
     details: Details,
+    device: boolean,
     note: string,
     title: string
   }
 > {
   state = {
+    device: false,
     tabsIndex: 0,
     selectedAccount: null,
     details: {
@@ -70,6 +73,10 @@ class NewOperationModal extends Component<
   };
 
   save = () => {
+    this.setState({ device: !this.state.device });
+  };
+
+  createOperation = () => {
     if (
       this.state.details.fees &&
       this.state.details.address &&
@@ -101,7 +108,17 @@ class NewOperationModal extends Component<
 
   render() {
     const { accounts, close } = this.props;
+    const { device } = this.state;
 
+    if (device) {
+      return (
+        <DeviceAuthenticate
+          cancel={this.save}
+          callback={this.createOperation}
+          close={this.props.close}
+        />
+      );
+    }
     return (
       <OperationCreation
         close={close}

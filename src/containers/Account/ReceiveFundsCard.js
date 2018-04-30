@@ -1,10 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
 import Card from "components/Card";
-import AccountQuery from "api/queries/AccountQuery";
-import TryAgain from "components/TryAgain";
-import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
 import colors from "shared/colors";
@@ -47,8 +43,7 @@ const styles = {
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
-  account: Account,
-  accountId: string
+  account: Account
 };
 
 class ReceiveFundsCard extends Component<Props> {
@@ -76,26 +71,12 @@ class ReceiveFundsCard extends Component<Props> {
   }
 }
 
-const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
-  <div className={classes.card}>
-    <Card title="Receive funds">
-      <TryAgain error={error} action={restlay.forceFetch} />
-    </Card>
-  </div>
-));
-
-const RenderLoading = withStyles(styles)(({ classes }) => (
-  <Card className={classes.card} title="Receive funds">
-    <SpinnerCard />
-  </Card>
-));
-
-export default connectData(withStyles(styles)(ReceiveFundsCard), {
-  queries: {
-    account: AccountQuery
-  },
-  propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  optimisticRendering: true,
-  RenderError,
-  RenderLoading
-});
+export default withStyles(styles)(ReceiveFundsCard);
+//   queries: {
+//     account: AccountQuery
+//   },
+//   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
+//   optimisticRendering: true,
+//   RenderError,
+//   RenderLoading
+// });

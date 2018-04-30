@@ -1,7 +1,13 @@
 // @flow
+import AccountQuery from "api/queries/AccountQuery";
+import Card from "components/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
 import QuicklookCard from "./QuicklookCard";
@@ -24,6 +30,7 @@ const styles = {
 class AccountView extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
+    account: Account,
     match: {
       url: string,
       params: {
@@ -42,7 +49,7 @@ class AccountView extends Component<
   };
 
   render() {
-    const { match, classes } = this.props;
+    const { match, classes, account } = this.props;
     const accountId = match.params.id;
     return (
       <div>
@@ -50,13 +57,13 @@ class AccountView extends Component<
           <div className={classes.left}>
             <div className={classes.flex}>
               <div className={classes.half}>
-                <AccountBalanceCard accountId={accountId} />
+                <AccountBalanceCard account={account} />
               </div>
               {/* <div className={classes.half}> */}
               {/*   <AccountCountervalueCard accountId={accountId} /> */}
               {/* </div> */}
             </div>
-            <ReceiveFundsCard accountId={accountId} />
+            <ReceiveFundsCard account={account} />
           </div>
           <QuicklookCard accountId={accountId} key={accountId} />
         </div>
@@ -70,4 +77,26 @@ class AccountView extends Component<
   }
 }
 
-export default withStyles(styles)(AccountView);
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="Error occured">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+));
+
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="Balance">
+    <SpinnerCard />
+  </Card>
+));
+
+export default connectData(withStyles(styles)(AccountView), {
+  queries: {
+    account: AccountQuery
+  },
+  RenderError,
+  RenderLoading,
+  optimisticRendering: true,
+  propsToQueryParams: ({ match }: { match: * }) => ({
+    accountId: match.params.id
+  })
+});
