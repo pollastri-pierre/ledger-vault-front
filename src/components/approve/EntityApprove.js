@@ -5,7 +5,6 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import connectData from "restlay/connectData";
 import AbortConfirmation from "./AbortConfirmation";
 import AccountApprove from "../accounts/approve/AccountApprove";
-import type { Account, Operation } from "data/types";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import createDevice, {
   U2F_PATH,
