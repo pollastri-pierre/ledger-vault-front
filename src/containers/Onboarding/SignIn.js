@@ -209,7 +209,7 @@ class SignIn extends Component<Props> {
                 {onboarding.signed.length === 0 ? (
                   <span>Sign in</span>
                 ) : (
-                  <span>Sign in next Adminstrator</span>
+                  <span>Sign in next Administrator</span>
                 )}
               </div>
               <span className={classes.counter}>
