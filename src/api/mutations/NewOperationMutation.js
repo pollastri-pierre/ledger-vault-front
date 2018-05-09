@@ -10,14 +10,13 @@ type Note = {
 };
 // FIXME API : The API is not consistent between GET operation and POST operation
 type OperationToPOST = {
-  price_amount: number,
-  fees_amount: number,
-  tx_hash: string,
+  amount: number,
+  fee_level: string,
+  recipient: string,
   note: Note
 };
 
 type Input = {
-  accountId: number,
   operation: OperationToPOST,
   accountId: number
 };

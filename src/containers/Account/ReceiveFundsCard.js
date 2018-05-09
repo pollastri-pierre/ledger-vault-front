@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import Card from "components/Card";
-import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
 import colors from "shared/colors";
 import QRCode from "components/QRCode";

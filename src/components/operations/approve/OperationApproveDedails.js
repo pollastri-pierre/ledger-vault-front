@@ -15,7 +15,6 @@ function OperationApproveDetails(props: {
 }) {
   const { operation, account, profile } = props;
   const rate = account.currencyRate;
-  console.log(operation);
 
   return (
     <div>

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import queryString from "query-string";
 import formatError from "formatters/error";
-import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
+import createDevice, { U2F_PATH } from "device";
 import DeviceLogin from "./DeviceLogin";
 import { login, logout } from "redux/modules/auth";
 import { addMessage } from "redux/modules/alerts";

@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import OrganizationQuery from "api/queries/OrganizationQuery";
-import { withRouter, Redirect } from "react-router";
+import { withRouter /* Redirect  */ } from "react-router";
 import connectData from "restlay/connectData";
 import Tabs, { Tab } from "material-ui/Tabs";
 import { withStyles } from "material-ui/styles";
@@ -31,6 +31,7 @@ type Props = {
   profile: Member,
   approvers: Array<Member>,
   account: Account,
+  organization: *,
   close: Function,
   approve: Function,
   aborting: Function,
@@ -122,9 +123,9 @@ class AccountApprove extends Component<Props, { value: number }> {
   }
 }
 
-const RenderError = () => {
-  return <Redirect to="/pending" />;
-};
+// const RenderError = () => {
+//   return <Redirect to="/pending" />;
+// };
 
 const connected = connectData(withStyles(styles)(AccountApprove), {
   // RenderError,

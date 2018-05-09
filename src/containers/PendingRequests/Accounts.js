@@ -13,6 +13,7 @@ import type { Member, Account } from "data/types";
 
 type Props = {
   approvers: Member[],
+  organization: *,
   accounts: Account[],
   user: Member
 };

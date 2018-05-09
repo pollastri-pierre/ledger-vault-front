@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import Card from "components/Card";
 import AccountOperationsQuery from "api/queries/AccountOperationsQuery";
-import AccountQuery from "api/queries/AccountQuery";
+// import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DataTableOperation from "components/DataTableOperation";
@@ -57,9 +57,9 @@ export default connectData(AccountLastOperationsCard, {
   initialVariables: {
     operations: 20
   },
-  propsToQueryParams: ({ account }: { account: Account }) => {
-    return { accountId: account.id };
-  },
+  propsToQueryParams: ({ account }: { account: Account }) => ({
+    accountId: String(account.id)
+  }),
   RenderError,
   RenderLoading
 });

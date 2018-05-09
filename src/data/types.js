@@ -93,6 +93,7 @@ type AccountCommon = {
   receive_address: string,
   balance_history: { [_: string]: number },
   approvals: Approval[],
+  fresh_addresses: *,
   hsm_operations?: Object
 };
 export type Account = AccountCommon & {

@@ -22,16 +22,7 @@ type Props = {
   classes: Object
 };
 function PendingAccountApprove(props: Props) {
-  const {
-    accounts,
-    approved,
-    approvers,
-    user,
-    classes,
-    match,
-    number,
-    quorum
-  } = props;
+  const { accounts, approved, approvers, user, classes, match, quorum } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }

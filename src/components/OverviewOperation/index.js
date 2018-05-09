@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
-import CurrencyUnitValue from "../CurrencyUnitValue";
-import { countervalueForRate } from "data/currency";
+// import CurrencyUnitValue from "../CurrencyUnitValue";
+// import { countervalueForRate } from "data/currency";
 import colors from "shared/colors";
 import type { Rate, Account } from "data/types";
 
@@ -46,7 +46,7 @@ class OverviewOperation extends Component<{
   classes: Object
 }> {
   render() {
-    const { hash, amount, rate, account, classes } = this.props;
+    const { hash, amount, account, classes } = this.props;
     // const counterValueUnit = countervalueForRate(rate, amount);
     return (
       <div className={classes.base}>

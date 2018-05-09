@@ -10,7 +10,7 @@ import type { Account } from "data/types";
 import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
-import QuicklookCard from "./QuicklookCard";
+// import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 // import AccountCountervalueCard from "./AccountCountervalueCard";
@@ -52,7 +52,6 @@ class AccountView extends Component<
 
   render() {
     const { match, classes, account } = this.props;
-    console.log(account);
     const accountId = match.params.id;
     return (
       <div>

@@ -12,7 +12,7 @@ import type { Operation, Account } from "data/types";
 function TabOverview(props: { operation: Operation, account: Account }) {
   const { operation, account } = props;
   const { rate } = operation;
-  console.log(operation);
+
   return (
     <div>
       <OverviewOperation

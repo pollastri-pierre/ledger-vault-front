@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import cx from "classnames";
 import CurrencyAccountValue from "../CurrencyAccountValue";
-import CurrencyUnitValue from "../CurrencyUnitValue";
-import { countervalueForRate } from "data/currency";
+// import CurrencyUnitValue from "../CurrencyUnitValue";
+// import { countervalueForRate } from "data/currency";
 import type { Account, Rate } from "data/types";
 
 const styles = {
@@ -28,7 +28,7 @@ class Amount extends Component<{
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { account, value, rate, strong, classes } = this.props;
+    const { account, value, strong, classes } = this.props;
     // let finalRate = rate;
     // if (!rate) {
     //   finalRate = account.currencyRate;

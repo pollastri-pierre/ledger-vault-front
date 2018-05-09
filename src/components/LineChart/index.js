@@ -1,10 +1,8 @@
 // @flow
 import React, { Component } from "react";
-import colors from "shared/colors";
 import cx from "classnames";
 import * as d3 from "d3";
 import { withStyles } from "material-ui/styles";
-import { genBalance } from "data/mock-entities";
 
 import DateFormat from "components/DateFormat";
 
@@ -509,7 +507,6 @@ class LineChart extends Component<Props, *> {
   };
 
   componentDidMount() {
-    console.log(genBalance(13, "year"));
     window.addEventListener("resize", this.resize);
     const { margin } = this.state;
     const { data } = this.props;

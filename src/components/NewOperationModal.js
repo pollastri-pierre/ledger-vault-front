@@ -13,6 +13,7 @@ import type { Account } from "data/types";
 export type Details = {
   amount: ?number,
   fees: ?number,
+  feesSelected: string,
   address: ?string
 };
 
@@ -40,6 +41,7 @@ class NewOperationModal extends Component<
     details: {
       amount: null,
       fees: null,
+      feesSelected: "",
       address: null
     },
     note: "",
@@ -83,9 +85,9 @@ class NewOperationModal extends Component<
       this.state.details.amount &&
       this.state.selectedAccount
     ) {
-      const data = {
+      const data: * = {
         operation: {
-          fee_level: "LOW",
+          fee_level: this.state.details.feesSelected,
           amount: this.state.details.amount,
           recipient: this.state.details.address,
           note: {
