@@ -31,11 +31,13 @@ function TabLabel(props: { note: Note, classes: Object }) {
   const { note, classes } = props;
   return (
     <div>
-      <h3 className={classes.title}>{note.title}</h3>
-      <div className={classes.body}>{note.body}</div>
-      <div className={classes.author}>
-        Published by {note.author.first_name} {note.author.last_name}
-      </div>
+      <h3 className={classes.title}>{note && note.title}</h3>
+      <div className={classes.body}>{note && note.body}</div>
+      {note && (
+        <div className={classes.author}>
+          Published by {note.author.first_name} {note.author.last_name}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 //@flow
+import SpinnerCard from "components/spinners/SpinnerCard";
 import React from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
@@ -82,7 +83,7 @@ function Menu(
           </span>
         </MenuLink>
         <MenuLink
-          to={`${match.url}/new-operation`}
+          to={`${location.pathname}/new-operation`}
           disabled={accounts.length === 0}
         >
           <span className={classes.link}>
@@ -121,7 +122,9 @@ Menu.contextTypes = {
 };
 
 const RenderLoading = withStyles(styles)(({ classes }) => (
-  <div className={classes.root} />
+  <div className={classes.root} style={{ paddingTop: 100 }}>
+    <SpinnerCard />
+  </div>
 ));
 
 export default connectData(withStyles(styles)(Menu), {

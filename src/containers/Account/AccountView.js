@@ -17,7 +17,9 @@ import AccountLastOperationsCard from "./AccountLastOperationsCard";
 
 const styles = {
   flex: {
-    display: "flex"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   left: {
     width: "65.4%"
@@ -50,24 +52,19 @@ class AccountView extends Component<
 
   render() {
     const { match, classes, account } = this.props;
+    console.log(account);
     const accountId = match.params.id;
     return (
       <div>
         <div className={classes.flex}>
-          <div className={classes.left}>
-            <div className={classes.flex}>
-              <div className={classes.half}>
-                <AccountBalanceCard account={account} />
-              </div>
-              {/* <div className={classes.half}> */}
-              {/*   <AccountCountervalueCard accountId={accountId} /> */}
-              {/* </div> */}
-            </div>
-            <ReceiveFundsCard account={account} />
-          </div>
-          <QuicklookCard accountId={accountId} key={accountId} />
+          <AccountBalanceCard account={account} />
+          <ReceiveFundsCard address={account.fresh_addresses[0]} />
         </div>
-        <AccountLastOperationsCard key={accountId} accountId={accountId} />
+        {/* <div className={classes.half}> */}
+        {/*   <AccountCountervalueCard accountId={accountId} /> */}
+        {/* </div> */}
+        {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
+        <AccountLastOperationsCard key={accountId} account={account} />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}

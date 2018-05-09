@@ -9,7 +9,11 @@ import type { Account } from "data/types";
 
 const styles = {
   card: {
-    height: "162px"
+    height: 218,
+    width: "50%"
+  },
+  title: {
+    fontSize: 28
   }
 };
 class AccountBalanceCard extends Component<{
@@ -22,7 +26,9 @@ class AccountBalanceCard extends Component<{
     return (
       <Card className={classes.card} reloading={reloading} title="Balance">
         <CardField label={<DateFormat date={new Date()} />}>
-          <CurrencyAccountValue account={account} value={account.balance} />
+          <div className={classes.title}>
+            <CurrencyAccountValue account={account} value={account.balance} />
+          </div>
         </CardField>
       </Card>
     );

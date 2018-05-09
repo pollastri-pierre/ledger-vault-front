@@ -17,14 +17,16 @@ const OperationCreationAccounts = ({
   <Fragment>
     <ModalSubTitle>Account to debit</ModalSubTitle>
     <MenuList>
-      {accounts.map(account => (
-        <AccountMenuItem
-          key={account.id}
-          onSelect={onSelect}
-          account={account}
-          selected={(selectedAccount && selectedAccount.id) === account.id}
-        />
-      ))}
+      {accounts
+        .filter(account => account.balance > 0)
+        .map(account => (
+          <AccountMenuItem
+            key={account.id}
+            onSelect={onSelect}
+            account={account}
+            selected={(selectedAccount && selectedAccount.id) === account.id}
+          />
+        ))}
     </MenuList>
   </Fragment>
 );

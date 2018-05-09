@@ -8,6 +8,6 @@ type Res = Operation[];
 
 // returns the N last operations from various accounts (probably not paginated)
 export default class DashboardLastOperationsQuery extends Query<In, Res> {
-  uri = "/dashboard/last-operations";
+  uri = "/operations/submitted";
   responseSchema = [schema.Operation];
 }

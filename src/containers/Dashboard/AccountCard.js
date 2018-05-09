@@ -46,7 +46,12 @@ class AccountCard extends Component<{
       </div>
     );
     return (
-      <Card key={account.id} title={title} className={classes.card}>
+      <Card
+        key={account.id}
+        title={title}
+        className={classes.card}
+        link={`account/${account.id}`}
+      >
         <EvolutionSince
           value={account.balance}
           valueHistory={account.balance_history}

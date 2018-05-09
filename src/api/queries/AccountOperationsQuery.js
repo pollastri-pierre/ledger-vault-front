@@ -13,4 +13,10 @@ type Node = Operation;
 export default class AccountOperationsQuery extends ConnectionQuery<In, Node> {
   uri = `/accounts/${this.props.accountId}/operations`;
   nodeSchema = schema.Operation;
+
+  getPaginationURLParams(first?: number, after?: string): Object {
+    const params = {};
+    if (after !== undefined) params.cursor = after;
+    return params;
+  }
 }

@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import type { Unit } from "data/types";
+import { genBalance } from "data/mock-entities";
 import LineChart from "components/LineChart";
 import AccountQuicklookDataQuery from "api/queries/AccountQuicklookDataQuery";
 import TryAgain from "components/TryAgain";
@@ -28,10 +29,12 @@ type State = {};
 class Quicklook extends Component<Props, State> {
   render() {
     const { balance, currencyUnit, currencyColor, filter } = this.props;
+    // const balance = genBalance(13, "year");
     const selectedBalance = balance[filter].map(dataPoint => [
       dataPoint[0],
       parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1]))
     ]);
+    console.log(selectedBalance);
     return (
       selectedBalance.length && (
         <div className="content">

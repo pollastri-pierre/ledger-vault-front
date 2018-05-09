@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import { withRouter, Redirect } from "react-router";
 import connectData from "restlay/connectData";
 import Tabs, { Tab } from "material-ui/Tabs";
@@ -51,6 +52,7 @@ class AccountApprove extends Component<Props, { value: number }> {
       members,
       account,
       close,
+      organization,
       approve,
       aborting,
       classes
@@ -60,7 +62,13 @@ class AccountApprove extends Component<Props, { value: number }> {
     const hasApproved = (approvers, profile) =>
       approvers.find(approver => approver.person.pub_key === profile.pub_key);
 
-    const GenericFooter = ({ percentage }: { percentage?: boolean }) => (
+    const GenericFooter = ({
+      percentage,
+      quorum
+    }: {
+      percentage?: boolean,
+      quorum?: number
+    }) => (
       <Footer
         close={close}
         approve={() => approve(account)}
@@ -71,6 +79,7 @@ class AccountApprove extends Component<Props, { value: number }> {
             <ApprovalPercentage
               approvers={members}
               approved={account.approvals}
+              nbRequired={quorum}
             />
           )
         }
@@ -105,7 +114,7 @@ class AccountApprove extends Component<Props, { value: number }> {
               members={members}
               approvers={account.approvals}
             />
-            <GenericFooter percentage />
+            <GenericFooter percentage quorum={organization.quorum} />
           </div>
         )}
       </div>
@@ -118,10 +127,11 @@ const RenderError = () => {
 };
 
 const connected = connectData(withStyles(styles)(AccountApprove), {
-  RenderError,
+  // RenderError,
   queries: {
     account: AccountQuery,
     members: MembersQuery,
+    organization: OrganizationQuery,
     profile: ProfileQuery
   },
   propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),

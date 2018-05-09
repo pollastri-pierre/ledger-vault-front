@@ -12,7 +12,7 @@ type Props = {
 
 class AccountApproveApprovals extends Component<Props> {
   render() {
-    const { members, approvers } = this.props;
+    const { members, approvers, quorum } = this.props;
 
     return (
       <div>

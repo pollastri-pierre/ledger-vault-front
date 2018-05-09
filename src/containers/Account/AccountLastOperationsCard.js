@@ -14,7 +14,6 @@ import type { Connection } from "restlay/ConnectionQuery";
 const columnIds = ["date", "address", "status", "countervalue", "amount"];
 
 class AccountLastOperationsCard extends Component<{
-  accountId: string,
   account: Account,
   operations: Connection<Operation>,
   restlay: *
@@ -53,13 +52,14 @@ const RenderLoading = () => (
 
 export default connectData(AccountLastOperationsCard, {
   queries: {
-    account: AccountQuery,
     operations: AccountOperationsQuery
   },
   initialVariables: {
     operations: 20
   },
-  propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
+  propsToQueryParams: ({ account }: { account: Account }) => {
+    return { accountId: account.id };
+  },
   RenderError,
   RenderLoading
 });

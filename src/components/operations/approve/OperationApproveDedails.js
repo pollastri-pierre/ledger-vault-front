@@ -15,6 +15,7 @@ function OperationApproveDetails(props: {
 }) {
   const { operation, account, profile } = props;
   const rate = account.currencyRate;
+  console.log(operation);
 
   return (
     <div>
@@ -41,7 +42,7 @@ function OperationApproveDetails(props: {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="Confirmation fees">
-          <Amount account={account} value={operation.fees.amount} rate={rate} />
+          {/* <Amount account={account} value={operation.fees.amount} rate={rate} /> */}
         </LineRow>
         <LineRow label="Total Spent">
           <Amount

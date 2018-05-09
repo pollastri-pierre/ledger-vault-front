@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { withStyles } from "material-ui/styles";
 import common from "shared/common";
 import classnames from "classnames";
@@ -31,6 +32,9 @@ const styles = {
   },
   reloading: {
     opacity: 0.5
+  },
+  link: {
+    textDecoration: "none"
   }
 };
 
@@ -54,13 +58,32 @@ class Card extends Component<{
   children: React$Node | string,
   className: string,
   reloading?: boolean,
-  classes: Object
+  classes: Object,
+  link?: string
 }> {
   static defaultProps = {
     Header
   };
   render() {
-    const { Header, children, classes, reloading, className } = this.props;
+    const {
+      Header,
+      link,
+      children,
+      classes,
+      reloading,
+      className
+    } = this.props;
+    if (link) {
+      return (
+        <Link
+          to={link}
+          className={classnames(classes.base, classes.link, className)}
+        >
+          <Header {...this.props} />
+          <div className={reloading ? [classes.reloading] : ""}>{children}</div>
+        </Link>
+      );
+    }
     return (
       <div className={classnames(classes.base, className)}>
         <Header {...this.props} />

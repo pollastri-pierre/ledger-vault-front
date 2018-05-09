@@ -85,9 +85,9 @@ class NewOperationModal extends Component<
     ) {
       const data = {
         operation: {
-          fees_amount: this.state.details.fees,
-          price_amount: this.state.details.amount,
-          tx_hash: this.state.details.address,
+          fee_level: "LOW",
+          amount: this.state.details.amount,
+          recipient: this.state.details.address,
           note: {
             title: this.state.title,
             content: this.state.note

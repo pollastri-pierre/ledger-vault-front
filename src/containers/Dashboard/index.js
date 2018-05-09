@@ -1,5 +1,6 @@
 //@flow
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Account } from "data/types";
 import DashboardPlaceholder from "components/DashboardPlaceholder";
 import connectData from "restlay/connectData";
@@ -58,6 +59,7 @@ class Dashboard extends Component<
     if (accounts.length === 0) {
       return <DashboardPlaceholder type="account" />;
     }
+    const hasMoney = accounts.filter(account => account.balance > 0).length > 0;
     return (
       <div className={classes.base}>
         <div className={classes.body}>
@@ -69,13 +71,15 @@ class Dashboard extends Component<
           <Storages filter={filter} />
         </div>
         <div className={classes.aside}>
-          <Card title="currencies">
-            <Currencies />
-          </Card>
+          {hasMoney && (
+            <Card title="currencies">
+              <Currencies />
+            </Card>
+          )}
           <PendingCard match={match} />
         </div>
         <ModalRoute
-          path={`${match.url}/operation/:operationId/:tabIndex`}
+          path={`${match.url}/dashboard/operation/:operationId/:tabIndex`}
           component={OperationModal}
         />
       </div>
@@ -83,9 +87,11 @@ class Dashboard extends Component<
   }
 }
 
+const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(Dashboard), {
   queries: {
     currencies: CurrenciesQuery,
     accounts: AccountsQuery
-  }
+  },
+  RenderLoading
 });

@@ -10,39 +10,39 @@ import type { Account, Rate } from "data/types";
 const styles = {
   flat: {
     color: "#767676",
-    fontSize: 11,
+    fontSize: 11
   },
   crypto: {
     fontSize: 13,
-    color: "black",
+    color: "black"
   },
   strong: {
-    fontWeight: 600,
-  },
+    fontWeight: 600
+  }
 };
 class Amount extends Component<{
   account: Account,
   value: number,
   rate?: Rate,
   strong?: boolean,
-  classes: { [_: $Keys<typeof styles>]: string },
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { account, value, rate, strong, classes } = this.props;
-    let finalRate = rate;
-    if (!rate) {
-      finalRate = account.currencyRate;
-    }
-    let counterValueUnit;
-    if (finalRate) {
-      counterValueUnit = countervalueForRate(finalRate, value);
-    }
+    // let finalRate = rate;
+    // if (!rate) {
+    //   finalRate = account.currencyRate;
+    // }
+    // let counterValueUnit;
+    // if (finalRate) {
+    //   counterValueUnit = countervalueForRate(finalRate, value);
+    // }
     return (
       <span className={cx(classes.crypto, { [classes.strong]: strong })}>
         <CurrencyAccountValue account={account} value={value} />{" "}
-        <span className={classes.flat}>
-          <CurrencyUnitValue {...counterValueUnit} />
-        </span>
+        {/* <span className={classes.flat}> */}
+        {/*   <CurrencyUnitValue {...counterValueUnit} /> */}
+        {/* </span> */}
       </span>
     );
   }
