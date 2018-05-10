@@ -88,10 +88,10 @@ class OperationCreationDetails extends Component<
       satoshis: 0,
       address: "",
       addressIsValid: true,
-      feesSelected: "medium",
+      feesSelected: "normal",
       feesAmount: 0
     };
-    this.setFees("medium");
+    this.setFees();
   }
 
   setAmount = (
@@ -130,6 +130,7 @@ class OperationCreationDetails extends Component<
     const regex = /^(\d*\.?\d*)?$/;
     if (regex.test(value)) {
       this.setAmount(value);
+      this.setFees();
     }
   };
 
@@ -159,26 +160,40 @@ class OperationCreationDetails extends Component<
           if (address === this.state.address) {
             // still on same address
             this.setState({ addressIsValid: r.is_valid }, this.validateTab);
+            this.setFees();
           }
         });
     }
   };
 
-  setFees = (fee: Speed) => {
+  setFees = () => {
     const { restlay, account } = this.props;
 
-    restlay
-      .fetchQuery(new AccountCalculateFeeQuery({ account, speed: fee }))
-      .then(res => {
-        const feesAmount = res.fees;
+    const operation = {
+      fee_level: this.state.feesSelected,
+      amount: parseInt(this.state.amount, 10),
+      recipient: this.state.address
+    };
 
-        this.setState({ feesAmount });
-        this.setAmount(undefined, undefined, feesAmount);
-      });
+    if (operation.fee_level && operation.amount && operation.recipient) {
+      restlay
+        .fetchQuery(
+          new AccountCalculateFeeQuery({
+            accountId: account.id,
+            operation: operation
+          })
+        )
+        .then(res => {
+          const feesAmount = res.fees;
+
+          this.setState({ feesAmount });
+          this.setAmount(undefined, undefined, feesAmount);
+        });
+    }
   };
 
   onChangeFee = (feesSelected: Speed) => {
-    this.setFees(feesSelected);
+    this.setFees();
     this.setState({ feesSelected });
   };
 
@@ -280,9 +295,9 @@ class OperationCreationDetails extends Component<
           </div>
         </InputFieldMerge>
 
-        <div className={classes.feesFiat}>
-          {this.getCounterValue(this.state.feesAmount, true)}
-        </div>
+        {/* <div className={classes.feesFiat}> */}
+        {/*   {this.getCounterValue(this.state.feesAmount, true)} */}
+        {/* </div> */}
       </div>
     );
   }

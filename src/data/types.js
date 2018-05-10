@@ -184,6 +184,7 @@ type OperationCommon = {
   exploreURL: ?string,
   approvals: Approval[],
   tx_hash: ?string,
+  status: string,
   hsm_operations?: Object
 };
 export type Operation = OperationCommon & {

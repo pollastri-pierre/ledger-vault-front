@@ -6,7 +6,7 @@ import MembersQuery from "api/queries/MembersQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
-import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
+// import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
 import Card from "components/Card";
 import { PendingOperationApprove } from "components";
 import TryAgain from "components/TryAgain";
@@ -15,7 +15,7 @@ import type { Member, Account, Operation } from "data/types";
 type Props = {
   approvers: Member[],
   operationsPending: Operation[],
-  operationsQueued: Operation[],
+  // operationsQueued: Operation[],
   accounts: Account[],
   user: Member
 };
@@ -42,10 +42,11 @@ class ApproveWatchOperations extends Component<Props> {
     });
 
     // toWatch operations is the sum of operation already approved by user but not by total quorum + quued operation
-    const toWatch = operationsPending.filter(operation =>
-      operation.approvals.find(
-        approval => approval.person.pub_key === user.pub_key
-      )
+    const toWatch = operationsPending.filter(
+      operation =>
+        operation.approvals.find(
+          approval => approval.person.pub_key === user.pub_key
+        ) && operation.status === "PENDING_APPROVAL"
     );
 
     return (
@@ -93,7 +94,7 @@ export default connectData(ApproveWatchOperations, {
   queries: {
     approvers: MembersQuery,
     operationsPending: PendingOperationsQuery,
-    operationsQueued: QueuedOperationsQuery,
+    // operationsQueued: QueuedOperationsQuery,
     accounts: AccountsQuery,
     currencies: CurrenciesQuery
   }

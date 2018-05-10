@@ -41,7 +41,7 @@ class NewOperationModal extends Component<
     details: {
       amount: null,
       fees: null,
-      feesSelected: "",
+      feesSelected: "normal",
       address: null
     },
     note: "",

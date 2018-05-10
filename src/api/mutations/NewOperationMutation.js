@@ -9,11 +9,18 @@ type Note = {
   content: string
 };
 // FIXME API : The API is not consistent between GET operation and POST operation
-type OperationToPOST = {
+export const speeds = {
+  slow: "slow",
+  medium: "normal",
+  fast: "fast"
+};
+export type Speed = $Values<typeof speeds>;
+
+export type OperationToPOST = {
   amount: number,
-  fee_level: string,
+  fee_level: Speed,
   recipient: string,
-  note: Note
+  note?: Note
 };
 
 type Input = {
