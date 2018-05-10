@@ -13,7 +13,10 @@ const styles = {
     paddingTop: 20,
     fontSize: 10,
     fontWeight: 600,
-    fontFamily: "Open Sans"
+    fontFamily: "Open Sans",
+    "& .valueline": {
+      stroke: "#fcb653"
+    }
   },
   noData: {
     pointerEvents: "none"
@@ -192,7 +195,10 @@ class LineChart extends Component<Props, *> {
       })
       .y(d => d.y.toFixed(1));
 
-    const selection = d3.select(".valueline").data([data]);
+    const selection = d3
+      .select(".valueline")
+      .data([data])
+      .attr("fill", "black");
 
     selection
       .attr("class", "valueline")

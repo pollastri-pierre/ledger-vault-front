@@ -4,7 +4,7 @@ import { denormalize } from "normalizr-gre";
 
 export type Connection<T> = {
   edges: Array<{
-    cursor: string,
+    cursor: number,
     node: T
   }>,
   pageInfo: {

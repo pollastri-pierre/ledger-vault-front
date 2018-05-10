@@ -5,15 +5,15 @@ import { withStyles } from "material-ui/styles";
 import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import ApprovalPercentage from "components/ApprovalPercentage";
-import OperationApproveLocks from "./OperationApproveLocks";
+// import OperationApproveLocks from "./OperationApproveLocks";
 import ModalLoading from "components/ModalLoading";
 import { withRouter, Redirect } from "react-router";
 import connectData from "restlay/connectData";
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
 import MembersQuery from "api/queries/MembersQuery";
-import LocksPercentage from "../../LocksPercentage";
+// import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "api/queries/ProfileQuery";
-import { calculateApprovingObjectMeta } from "data/approvingObject";
+// import { calculateApprovingObjectMeta } from "data/approvingObject";
 import type { Account, Operation, Member } from "data/types";
 import Tabs, { Tab } from "material-ui/Tabs";
 import modals from "shared/modals";
@@ -69,9 +69,9 @@ class OperationApprove extends Component<Props, { value: number }> {
     });
 
     const quorum = account.security_scheme.quorum;
-    const isUnactive =
-      operation.approvals.length < account.security_scheme.quorum;
-    const approvingObjectMeta = calculateApprovingObjectMeta(operation);
+    // const isUnactive =
+    //   operation.approvals.length < account.security_scheme.quorum;
+    // const approvingObjectMeta = calculateApprovingObjectMeta(operation);
 
     const { value } = this.state;
 
@@ -102,7 +102,7 @@ class OperationApprove extends Component<Props, { value: number }> {
           <Tabs value={value} onChange={this.handleChange}>
             <Tab label="Details" disableRipple />
             <Tab label="Approvals" disableRipple />
-            <Tab label="Locks" disableRipple />
+            {/* <Tab label="Locks" disableRipple /> */}
           </Tabs>
         </header>
         {value === 0 && (
@@ -125,26 +125,26 @@ class OperationApprove extends Component<Props, { value: number }> {
             <GenericFooter percentage />
           </div>
         )}
-        {value === 2 && (
-          <div>
-            <OperationApproveLocks operation={operation} account={account} />
-            <Footer
-              close={close}
-              approve={() => approve(operation)}
-              aborting={aborting}
-              approved={hasApproved(operation.approvals, profile)}
-              percentage={
-                isUnactive || !approvingObjectMeta ? (
-                  <LocksPercentage />
-                ) : (
-                  <LocksPercentage
-                    percentage={approvingObjectMeta.globalPercentage}
-                  />
-                )
-              }
-            />
-          </div>
-        )}
+        {/* {value === 2 && ( */}
+        {/*   <div> */}
+        {/*     <OperationApproveLocks operation={operation} account={account} /> */}
+        {/*     <Footer */}
+        {/*       close={close} */}
+        {/*       approve={() => approve(operation)} */}
+        {/*       aborting={aborting} */}
+        {/*       approved={hasApproved(operation.approvals, profile)} */}
+        {/*       percentage={ */}
+        {/*         isUnactive || !approvingObjectMeta ? ( */}
+        {/*           <LocksPercentage /> */}
+        {/*         ) : ( */}
+        {/*           <LocksPercentage */}
+        {/*             percentage={approvingObjectMeta.globalPercentage} */}
+        {/*           /> */}
+        {/*         ) */}
+        {/*       } */}
+        {/*     /> */}
+        {/*   </div> */}
+        {/* )} */}
       </div>
     );
   }

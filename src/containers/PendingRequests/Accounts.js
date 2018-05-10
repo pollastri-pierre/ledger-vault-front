@@ -13,13 +13,14 @@ import type { Member, Account } from "data/types";
 
 type Props = {
   approvers: Member[],
+  organization: *,
   accounts: Account[],
   user: Member
 };
 class ApproveWatchAccounts extends Component<Props> {
   render() {
     // we need to split between account already approved by current user and the other
-    const { accounts, approvers, user } = this.props;
+    const { accounts, approvers, user, organization } = this.props;
 
     const toApprove = accounts.filter(
       account =>
@@ -41,6 +42,7 @@ class ApproveWatchAccounts extends Component<Props> {
             user={this.props.user}
             accounts={toApprove}
             approvers={approvers}
+            quorum={organization.quorum}
           />
         </Card>
         <Card title="Accounts to watch">
@@ -48,6 +50,7 @@ class ApproveWatchAccounts extends Component<Props> {
             user={this.props.user}
             accounts={toWatch}
             approvers={approvers}
+            quorum={organization.quorum}
             approved
           />
         </Card>

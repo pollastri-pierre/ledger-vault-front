@@ -12,10 +12,11 @@ import type { Operation, Account } from "data/types";
 function TabOverview(props: { operation: Operation, account: Account }) {
   const { operation, account } = props;
   const { rate } = operation;
+
   return (
     <div>
       <OverviewOperation
-        hash="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"
+        hash={operation.transaction.hash}
         amount={operation.amount}
         account={account}
         rate={rate}

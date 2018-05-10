@@ -180,11 +180,17 @@ export function addSeedShard(data: *) {
 export function addSignedIn(pub_key: string, signature: *) {
   return async (dispatch: Function, getState: Function) => {
     const { signed } = getState()["onboarding"];
-    const index = signed.findIndex(member => member.pub_key === pub_key);
+    const index = signed.findIndex(
+      member => member.pub_key === pub_key.toUpperCase()
+    );
 
     if (index > -1) {
       return dispatch(
-        addMessage("Error", "This device has already been authenticated")
+        addMessage(
+          "Error",
+          "This device has already been authenticated",
+          "error"
+        )
       );
     } else {
       const data = {

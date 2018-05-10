@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import DeviceAuthenticate from "components/DeviceAuthenticate";
 import OperationCreation from "./operations/creation/OperationCreation";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -12,6 +13,7 @@ import type { Account } from "data/types";
 export type Details = {
   amount: ?number,
   fees: ?number,
+  feesSelected: string,
   address: ?string
 };
 
@@ -27,16 +29,19 @@ class NewOperationModal extends Component<
     tabsIndex: number,
     selectedAccount: ?Account,
     details: Details,
+    device: boolean,
     note: string,
     title: string
   }
 > {
   state = {
+    device: false,
     tabsIndex: 0,
     selectedAccount: null,
     details: {
       amount: null,
       fees: null,
+      feesSelected: "",
       address: null
     },
     note: "",
@@ -70,17 +75,21 @@ class NewOperationModal extends Component<
   };
 
   save = () => {
+    this.setState({ device: !this.state.device });
+  };
+
+  createOperation = () => {
     if (
       this.state.details.fees &&
       this.state.details.address &&
       this.state.details.amount &&
       this.state.selectedAccount
     ) {
-      const data = {
+      const data: * = {
         operation: {
-          fees_amount: this.state.details.fees,
-          price_amount: this.state.details.amount,
-          tx_hash: this.state.details.address,
+          fee_level: this.state.details.feesSelected,
+          amount: this.state.details.amount,
+          recipient: this.state.details.address,
           note: {
             title: this.state.title,
             content: this.state.note
@@ -101,7 +110,17 @@ class NewOperationModal extends Component<
 
   render() {
     const { accounts, close } = this.props;
+    const { device } = this.state;
 
+    if (device) {
+      return (
+        <DeviceAuthenticate
+          cancel={this.save}
+          callback={this.createOperation}
+          close={this.props.close}
+        />
+      );
+    }
     return (
       <OperationCreation
         close={close}

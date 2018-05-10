@@ -41,7 +41,7 @@ function OperationApproveDetails(props: {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="Confirmation fees">
-          <Amount account={account} value={operation.fees.amount} rate={rate} />
+          {/* <Amount account={account} value={operation.fees.amount} rate={rate} /> */}
         </LineRow>
         <LineRow label="Total Spent">
           <Amount

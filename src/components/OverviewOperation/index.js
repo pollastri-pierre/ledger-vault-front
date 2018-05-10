@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { withStyles } from "material-ui/styles";
 import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
-import CurrencyUnitValue from "../CurrencyUnitValue";
-import { countervalueForRate } from "data/currency";
+// import CurrencyUnitValue from "../CurrencyUnitValue";
+// import { countervalueForRate } from "data/currency";
 import colors from "shared/colors";
 import type { Rate, Account } from "data/types";
 
@@ -16,12 +16,14 @@ const styles = {
     color: "black",
     letterSpacing: "-0.9px",
     fontSize: "22px",
-    margin: "0"
+    margin: 0,
+    marginBottom: 20
   },
   down: {
     fill: "#cccccc",
     width: "16px",
-    height: "16px"
+    height: "16px",
+    marginBottom: 20
   },
   fiat: {
     fontSize: "11px",
@@ -30,7 +32,10 @@ const styles = {
   },
   hash: {
     fontSize: "13px",
-    marginBottom: "30px"
+    margin: "auto",
+    marginBottom: "30px",
+    width: 290,
+    overflowWrap: "break-word"
   }
 };
 class OverviewOperation extends Component<{
@@ -41,17 +46,17 @@ class OverviewOperation extends Component<{
   classes: Object
 }> {
   render() {
-    const { hash, amount, rate, account, classes } = this.props;
-    const counterValueUnit = countervalueForRate(rate, amount);
+    const { hash, amount, account, classes } = this.props;
+    // const counterValueUnit = countervalueForRate(rate, amount);
     return (
       <div className={classes.base}>
         <div>
           <p className={classes.amount}>
             <CurrencyAccountValue account={account} value={amount} />
           </p>
-          <p className={classes.fiat}>
-            <CurrencyUnitValue {...counterValueUnit} />
-          </p>
+          {/* <p className={classes.fiat}> */}
+          {/*   <CurrencyUnitValue {...counterValueUnit} /> */}
+          {/* </p> */}
           <ArrowDown className={classes.down} />
           <p className={classes.hash}>{hash}</p>
         </div>

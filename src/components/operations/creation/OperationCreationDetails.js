@@ -193,7 +193,8 @@ class OperationCreationDetails extends Component<
         this.state.address !== "" && this.state.addressIsValid
           ? this.state.address
           : null,
-      fees: this.state.feesAmount
+      fees: this.state.feesAmount,
+      feesSelected: this.state.feesSelected
     };
 
     this.props.saveDetails(details);

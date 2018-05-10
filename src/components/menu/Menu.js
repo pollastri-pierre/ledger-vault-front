@@ -1,8 +1,10 @@
 //@flow
+import SpinnerCard from "components/spinners/SpinnerCard";
 import React from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
-import type { Account } from "data/types";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
 import PropTypes from "prop-types";
 import { MenuList } from "material-ui/Menu";
@@ -59,13 +61,14 @@ function Menu(
     location: *,
     match: *,
     classes: { [_: $Keys<typeof styles>]: string },
-    accounts: Array<Account>
+    accounts: Array<Account>,
+    pendingOperations: Array<Operation>
   },
   context: {
     translate: Function
   }
 ) {
-  const { location, classes, accounts, match } = props;
+  const { location, classes, accounts, match, pendingOperations } = props;
   const t = context.translate;
   return (
     <div className={classes.root}>
@@ -82,8 +85,8 @@ function Menu(
           </span>
         </MenuLink>
         <MenuLink
-          to={`${match.url}/new-operation`}
-          disabled={accounts.length === 0}
+          to={`${location.pathname}/new-operation`}
+          disabled={accounts.length === 0 || pendingOperations.length > 0}
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />
@@ -121,13 +124,16 @@ Menu.contextTypes = {
 };
 
 const RenderLoading = withStyles(styles)(({ classes }) => (
-  <div className={classes.root} />
+  <div className={classes.root} style={{ paddingTop: 100 }}>
+    <SpinnerCard />
+  </div>
 ));
 
 export default connectData(withStyles(styles)(Menu), {
   RenderLoading: RenderLoading,
   queries: {
     accounts: AccountsQuery,
+    pendingOperations: PendingOperationsQuery,
     currencies: CurrenciesQuery
   }
 });

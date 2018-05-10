@@ -16,12 +16,13 @@ type Props = {
   accounts: Account[],
   approved?: boolean,
   approvers: Member[],
+  quorum: Number,
   user: Member,
   match: *,
   classes: Object
 };
 function PendingAccountApprove(props: Props) {
-  const { accounts, approved, approvers, user, classes, match } = props;
+  const { accounts, approved, approvers, user, classes, match, quorum } = props;
   if (accounts.length === 0) {
     return <p>There are no accounts to approve</p>;
   }
@@ -70,7 +71,7 @@ function PendingAccountApprove(props: Props) {
             <ApprovalStatus
               approved={account.approvals || []}
               approvers={approvers}
-              nbRequired={approvers.length}
+              nbRequired={quorum}
               user={user}
             />
             <span className={classes.currency}>{account.currency.family}</span>

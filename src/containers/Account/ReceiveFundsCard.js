@@ -1,19 +1,14 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
 import Card from "components/Card";
-import AccountQuery from "api/queries/AccountQuery";
-import TryAgain from "components/TryAgain";
-import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Account } from "data/types";
 import { withStyles } from "material-ui/styles";
 import colors from "shared/colors";
 import QRCode from "components/QRCode";
 
 const styles = {
   card: {
-    height: "218px",
-    marginRight: "20px"
+    height: 218,
+    marginLeft: 20
   },
   base: {
     "& h4": {
@@ -47,23 +42,21 @@ const styles = {
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
-  account: Account,
-  accountId: string
+  address: string
 };
 
 class ReceiveFundsCard extends Component<Props> {
   render() {
-    const { account, classes } = this.props;
-    const hash = account.receive_address;
+    const { address, classes } = this.props;
     return (
       <div className={classes.base}>
         <Card title="Receive Funds" className={classes.card}>
           <div className={classes.left}>
-            <QRCode hash={hash} size={100} />
+            <QRCode hash={address} size={90} />
           </div>
           <div className={classes.right}>
             <h4>current address</h4>
-            <p className={classes.hash}>{hash}</p>
+            <p className={classes.hash}>{address}</p>
             <p className={classes.info}>
               A new address is generated when a first payment is received on the
               current address. Previous addresses remain valid and do not
@@ -76,26 +69,12 @@ class ReceiveFundsCard extends Component<Props> {
   }
 }
 
-const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
-  <div className={classes.card}>
-    <Card title="Receive funds">
-      <TryAgain error={error} action={restlay.forceFetch} />
-    </Card>
-  </div>
-));
-
-const RenderLoading = withStyles(styles)(({ classes }) => (
-  <Card className={classes.card} title="Receive funds">
-    <SpinnerCard />
-  </Card>
-));
-
-export default connectData(withStyles(styles)(ReceiveFundsCard), {
-  queries: {
-    account: AccountQuery
-  },
-  propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  optimisticRendering: true,
-  RenderError,
-  RenderLoading
-});
+export default withStyles(styles)(ReceiveFundsCard);
+//   queries: {
+//     account: AccountQuery
+//   },
+//   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
+//   optimisticRendering: true,
+//   RenderError,
+//   RenderLoading
+// });

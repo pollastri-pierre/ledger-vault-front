@@ -50,11 +50,13 @@ function PendingOperationApprove(props: Props) {
             ) : (
               <span>{operations.length} operations</span>
             )}
-            <CurrencyFiatValue {...totalAmount} />
+            <span style={{ opacity: 0 }}>
+              <CurrencyFiatValue {...totalAmount} />
+            </span>
           </p>
           <p className={classnames(classes.header, classes.headerLight)}>
             <span>pending approval</span>
-            <span>TODAY, 10:45 AN</span>
+            <span style={{ opacity: 0 }}>TODAY, 10:45 AN</span>
           </p>
         </div>
       )}
@@ -80,16 +82,16 @@ function PendingOperationApprove(props: Props) {
                   />
                 )}
               </span>
-              <span className={classnames(classes.currency, "center")}>
-                {!account ? null : (
-                  <CurrencyAccountValue
-                    account={account}
-                    value={operation.price.amount}
-                    rate={account.rate}
-                    countervalue
-                  />
-                )}
-              </span>
+              {/* <span className={classnames(classes.currency, "center")}> */}
+              {/*   {!account ? null : ( */}
+              {/*     <CurrencyAccountValue */}
+              {/*       account={account} */}
+              {/*       value={operation.price.amount} */}
+              {/*       rate={account.rate} */}
+              {/*       countervalue */}
+              {/*     /> */}
+              {/*   )} */}
+              {/* </span> */}
             </div>
             {account ? (
               <ApprovalStatusWithAccountName

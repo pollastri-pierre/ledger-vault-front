@@ -141,7 +141,10 @@ class DateColumn extends Component<Cell> {
     const { operation } = this.props;
     return (
       <span>
-        <DateFormat format="ddd D MMM, h:mmA" date={operation.time} />
+        <DateFormat
+          format="ddd D MMM, h:mmA"
+          date={new Date(operation.time).toISOString()}
+        />
         <OpNoteLink operation={operation} />
       </span>
     );
@@ -192,7 +195,7 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount}
+        value={operation.price.amount}
         alwaysShowSign
       />
     ) : null;

@@ -1,12 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
-import NewAccountMutation from "api/mutations/NewAccountMutation";
-import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import network from "network";
 import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import type { RestlayEnvironment } from "restlay/connectData";
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
   "Open the Vault app on the dashboard. When displayed, confirm the register request on the device.",
@@ -18,9 +14,8 @@ type State = {
 };
 
 type Props = {
-  account: *,
   close: Function,
-  restlay: RestlayEnvironment,
+  callback: Function,
   cancel: Function
 };
 class DeviceAuthenticate extends Component<Props, State> {
@@ -61,46 +56,11 @@ class DeviceAuthenticate extends Component<Props, State> {
         authentication: auth.rawResponse
       });
 
-      await this.createAccount();
+      await this.props.callback();
     } catch (e) {
       console.error(e);
       // this.start();
     }
-  };
-
-  createAccount = () => {
-    const { account, close, restlay } = this.props;
-
-    const approvers = account.approvers.map(pubKey => {
-      return { pub_key: pubKey };
-    });
-
-    const securityScheme = Object.assign(
-      {
-        quorum: account.quorum
-      },
-      account.time_lock.enabled && {
-        time_lock: account.time_lock.value * account.time_lock.frequency
-      },
-      account.rate_limiter.enabled && {
-        rate_limiter: {
-          max_transaction: account.rate_limiter.value,
-          time_slot: account.rate_limiter.frequency
-        }
-      }
-    );
-
-    const data = {
-      name: account.name,
-      currency: account.currency.name,
-      security_scheme: securityScheme,
-      members: approvers
-    };
-
-    return restlay
-      .commitMutation(new NewAccountMutation(data))
-      .then(close)
-      .then(() => restlay.fetchQuery(new PendingAccountsQuery()));
   };
 
   render() {
@@ -117,4 +77,4 @@ class DeviceAuthenticate extends Component<Props, State> {
   }
 }
 
-export default connectData(DeviceAuthenticate);
+export default DeviceAuthenticate;

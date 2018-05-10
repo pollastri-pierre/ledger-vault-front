@@ -5,6 +5,7 @@ import BlurDialog from "components/BlurDialog";
 import { withStyles } from "material-ui/styles";
 import * as d3 from "d3";
 import DialogButton from "components/buttons/DialogButton";
+import Plus from "components/icons/full/Plus";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
@@ -81,6 +82,10 @@ const styles = {
   disabled: {
     opacity: 0.5,
     cursor: "default"
+  },
+  icon: {
+    width: 10,
+    marginRight: 5
   }
 };
 
@@ -145,8 +150,8 @@ class SignIn extends Component<Props> {
   }
 
   signIn = (pubKey: string, signature: string) => {
-    this.props.onToggleSignin();
     this.props.onAddSignedIn(pubKey, signature);
+    this.props.onToggleSignin();
   };
 
   render() {
@@ -200,7 +205,12 @@ class SignIn extends Component<Props> {
                     : onToggleSignin
                 }
               >
-                sign in a new member
+                <Plus className={classes.icon} />
+                {onboarding.signed.length === 0 ? (
+                  <span>Sign in</span>
+                ) : (
+                  <span>Sign in next Administrator</span>
+                )}
               </div>
               <span className={classes.counter}>
                 {onboarding.signed.length} signed-in,{" "}

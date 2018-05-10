@@ -45,8 +45,8 @@ class EntityApprove extends Component<Props, State> {
     this.props.history.goBack();
   };
 
-  title = entity => `Approve ${entity}`;
-  steps = entity => [
+  title = (entity: string) => `Approve ${entity}`;
+  steps = (entity: string) => [
     "Connect your Ledger Blue to your computer using one of its USB port.",
     "Power on your device and unlock it by entering your 4 to 8 digit personal PIN code.",
     `Open the Vault app on the dashboard. When displayed, approve the ${entity} request on the device.`
@@ -56,7 +56,7 @@ class EntityApprove extends Component<Props, State> {
     this.setState({ isAborting: !this.state.isAborting });
   };
 
-  approving = async accountOrOperation => {
+  approving = async (accountOrOperation: *) => {
     const { restlay, entity } = this.props;
     this.setState({ ...this.state, isDevice: !this.state.isDevice });
 
@@ -95,9 +95,11 @@ class EntityApprove extends Component<Props, State> {
         await restlay.commitMutation(
           new ApproveOperationMutation({
             operationId: accountOrOperation.id,
-            approval: approval.toString("hex")
+            approval: approval.toString("base64"),
+            public_key: pubKey.toUpperCase()
           })
         );
+        await restlay.fetchQuery(new PendingOperationsQuery());
       }
       this.close();
     } catch (e) {
@@ -181,4 +183,5 @@ class EntityApprove extends Component<Props, State> {
   }
 }
 
+export { EntityApprove };
 export default connectData(EntityApprove);

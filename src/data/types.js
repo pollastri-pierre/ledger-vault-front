@@ -92,7 +92,9 @@ type AccountCommon = {
   creation_time: string,
   receive_address: string,
   balance_history: { [_: string]: number },
-  approvals: Approval[]
+  approvals: Approval[],
+  fresh_addresses: *,
+  hsm_operations?: Object
 };
 export type Account = AccountCommon & {
   currency: Currency
@@ -181,7 +183,8 @@ type OperationCommon = {
   transaction: Transaction,
   exploreURL: ?string,
   approvals: Approval[],
-  tx_hash: ?string
+  tx_hash: ?string,
+  hsm_operations?: Object
 };
 export type Operation = OperationCommon & {
   notes: Note[]

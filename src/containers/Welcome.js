@@ -56,9 +56,15 @@ const styles = {
     transition: "opacity 0.2s ease",
     verticalAlign: "super",
     lineHeight: "1em",
-    position: "absolute",
     top: "5px",
     right: "0;"
+  },
+  logo: {
+    width: 100,
+    overflow: "hidden",
+    "& img": {
+      transform: "translateX(-31px)"
+    }
   },
   submit: {
     position: "absolute",
@@ -130,12 +136,14 @@ export class Welcome extends Component<
           <div>Unknown organization domain name</div>
         </Alert>
         <div className={classes.banner}>
-          <img
-            src={logoBlack}
-            srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
-            alt="Ledger Vault"
-          />
-          <div className={classes.help}>{t("login.help")}</div>
+          <div className={classes.logo}>
+            <img
+              src={logoBlack}
+              srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
+              alt="Ledger Vault"
+            />
+          </div>
+          <div className={classes.help}>Support</div>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
           <Profile className={classes.icon} color="#e2e2e2" />

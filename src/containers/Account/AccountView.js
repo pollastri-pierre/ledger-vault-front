@@ -1,17 +1,25 @@
 // @flow
+import AccountQuery from "api/queries/AccountQuery";
+import Card from "components/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "material-ui/styles";
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
-import QuicklookCard from "./QuicklookCard";
+// import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 // import AccountCountervalueCard from "./AccountCountervalueCard";
 
 const styles = {
   flex: {
-    display: "flex"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   left: {
     width: "65.4%"
@@ -24,6 +32,7 @@ const styles = {
 class AccountView extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
+    account: Account,
     match: {
       url: string,
       params: {
@@ -42,25 +51,19 @@ class AccountView extends Component<
   };
 
   render() {
-    const { match, classes } = this.props;
+    const { match, classes, account } = this.props;
     const accountId = match.params.id;
     return (
       <div>
         <div className={classes.flex}>
-          <div className={classes.left}>
-            <div className={classes.flex}>
-              <div className={classes.half}>
-                <AccountBalanceCard accountId={accountId} />
-              </div>
-              {/* <div className={classes.half}> */}
-              {/*   <AccountCountervalueCard accountId={accountId} /> */}
-              {/* </div> */}
-            </div>
-            <ReceiveFundsCard accountId={accountId} />
-          </div>
-          <QuicklookCard accountId={accountId} key={accountId} />
+          <AccountBalanceCard account={account} />
+          <ReceiveFundsCard address={account.fresh_addresses[0]} />
         </div>
-        <AccountLastOperationsCard key={accountId} accountId={accountId} />
+        {/* <div className={classes.half}> */}
+        {/*   <AccountCountervalueCard accountId={accountId} /> */}
+        {/* </div> */}
+        {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
+        <AccountLastOperationsCard key={accountId} account={account} />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
@@ -70,4 +73,26 @@ class AccountView extends Component<
   }
 }
 
-export default withStyles(styles)(AccountView);
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="Error occured">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+));
+
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="Balance">
+    <SpinnerCard />
+  </Card>
+));
+
+export default connectData(withStyles(styles)(AccountView), {
+  queries: {
+    account: AccountQuery
+  },
+  RenderError,
+  RenderLoading,
+  optimisticRendering: true,
+  propsToQueryParams: ({ match }: { match: * }) => ({
+    accountId: match.params.id
+  })
+});
