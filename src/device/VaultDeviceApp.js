@@ -172,7 +172,7 @@ export default class VaultDeviceApp {
   }
 
   async validateVaultOperation(path: number[], operation: Buffer) {
-    const maxLength = 10;
+    const maxLength = 100;
     const paths = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
