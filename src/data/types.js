@@ -118,7 +118,7 @@ export type Group = GroupCommon & {
 type NoteCommon = {
   id: string,
   title: string,
-  body: string,
+  content: string,
   created_at: string
 };
 export type Note = NoteCommon & {
