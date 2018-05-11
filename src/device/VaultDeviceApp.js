@@ -7,6 +7,7 @@ export default class VaultDeviceApp {
   constructor(transport: Transport<*>) {
     this.transport = transport;
     transport.setScrambleKey("v1+");
+    transport.debug = true;
   }
 
   async register(

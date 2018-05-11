@@ -70,6 +70,7 @@ function Menu(
 ) {
   const { location, classes, accounts, match, pendingOperations } = props;
   const t = context.translate;
+  console.log(pendingOperations);
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
@@ -86,7 +87,7 @@ function Menu(
         </MenuLink>
         <MenuLink
           to={`${location.pathname}/new-operation`}
-          disabled={accounts.length === 0 || pendingOperations.length > 0}
+          disabled={accounts.length === 0}
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />

@@ -195,7 +195,8 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.price.amount}
+        value={operation.amount}
+        type={operation.type}
         alwaysShowSign
       />
     ) : null;
@@ -318,6 +319,7 @@ class DataTableOperation extends Component<
       operation,
       account: accounts.find(a => a.id === operation.account_id)
     }));
+    console.log(data);
     return data.length === 0 ? (
       <NoDataPlaceholder title="No operations." />
     ) : (
