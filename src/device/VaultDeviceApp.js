@@ -184,12 +184,15 @@ export default class VaultDeviceApp {
 
     const length = Buffer.alloc(2);
     length.writeUInt16BE(operation.length, 0);
-    const chunks = this.splits(maxLength, operation);
+    let chunks = [operation];
+
+    if (maxLength < operation.length) {
+      chunks = this.splits(maxLength, operation);
+    }
 
     const data = Buffer.concat([paths, length, chunks.shift()]);
-    await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
+    let lastResponse = await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
 
-    let lastResponse = [];
     for (let i = 0; i < chunks.length; i++) {
       lastResponse = await this.transport.send(
         0xe0,
