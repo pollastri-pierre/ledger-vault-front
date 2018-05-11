@@ -161,6 +161,8 @@ export type Trust = {
   origin: string
 };
 
+export type TransactionType = "SEND" | "RECEIVE";
+
 type OperationCommon = {
   id: number,
   currency_name: string,
@@ -173,7 +175,7 @@ type OperationCommon = {
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
   endOfRateLimiterTime: ?string,
-  type: string,
+  type: TransactionType,
   amount: number,
   rate: Rate,
   account_id: string,

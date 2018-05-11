@@ -68,9 +68,8 @@ function Menu(
     translate: Function
   }
 ) {
-  const { location, classes, accounts, match, pendingOperations } = props;
+  const { location, classes, accounts, match } = props;
   const t = context.translate;
-  console.log(pendingOperations);
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}

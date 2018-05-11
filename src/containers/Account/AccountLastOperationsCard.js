@@ -20,8 +20,6 @@ class AccountLastOperationsCard extends Component<{
 }> {
   render() {
     const { account, operations, restlay } = this.props;
-    console.log(operations);
-    console.log(account);
     return (
       <Card title="last operations">
         <InfiniteScrollable

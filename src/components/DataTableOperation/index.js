@@ -319,7 +319,6 @@ class DataTableOperation extends Component<
       operation,
       account: accounts.find(a => a.id === operation.account_id)
     }));
-    console.log(data);
     return data.length === 0 ? (
       <NoDataPlaceholder title="No operations." />
     ) : (

@@ -76,7 +76,6 @@ class EntityApprove extends Component<Props, State> {
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(certificate_attestation, "base64")
       );
-      console.log(Buffer.from(channel["data"], "base64"));
       const approval = await device.validateVaultOperation(
         VALIDATION_PATH,
         Buffer.from(channel["data"], "base64")
@@ -124,7 +123,6 @@ class EntityApprove extends Component<Props, State> {
         console.error(e);
       }
     } else {
-      console.log("test");
       try {
         await restlay.commitMutation(
           new AbortOperationMutation({ operationId: id })

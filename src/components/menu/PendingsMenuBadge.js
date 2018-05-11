@@ -24,7 +24,6 @@ const styles = {
 class PendingsMenuBadge extends Component<*> {
   render() {
     const { accounts, operations, classes } = this.props;
-    console.log(operations);
     const filtered = operations.filter(operation => {
       return operation.status === "PENDING_APPROVAL";
     });
