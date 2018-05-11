@@ -33,7 +33,7 @@ function TabLabel(props: { note: Note, classes: Object }) {
     return (
       <div>
         <h3 className={classes.title}>{note.title}</h3>
-        <div className={classes.body}>{note.body}</div>
+        <div className={classes.body}>{note.content}</div>
         <div className={classes.author}>
           Published by {note.author.first_name} {note.author.last_name}
         </div>

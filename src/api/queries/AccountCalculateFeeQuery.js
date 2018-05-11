@@ -1,29 +1,32 @@
 //@flow
-import Query from "restlay/Query";
-import type { Account } from "data/types";
-
+import Mutation from "restlay/Mutation";
+import type { OperationToPOST } from "api/mutations/NewOperationMutation";
 export const speeds = {
   slow: "slow",
-  medium: "medium",
+  normal: "normal",
   fast: "fast"
 };
 export type Speed = $Values<typeof speeds>;
 
 type Input = {
-  account: Account,
-  speed: Speed
+  operation: OperationToPOST,
+  accountId: number
 };
+
 type Response = {
   value: number
 };
 
-// e.g. /calculate-fee/bitcoin/slow
-const uri = ({ account, speed }: Input) =>
-  `/fees/${account.currency.name}/${speed}`;
-
 // Calculate the fee for a given account (in the account currency)
 // (used when creating a new operation)
-export default class AccountCalculateFeeQuery extends Query<Input, Response> {
-  uri = uri(this.props);
-  cacheMaxAge = 60;
+export default class AccountCalculateFeeQuery extends Mutation<
+  Input,
+  Response
+> {
+  method = "POST";
+  uri = `/accounts/${this.props.accountId}/operations/fees`;
+
+  getBody() {
+    return this.props.operation;
+  }
 }

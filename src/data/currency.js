@@ -56,7 +56,8 @@ export function formatCurrencyUnit(
   // TODO probably should have an option object, so it's more readable than writing (unit,value,false,true,false)
   showCode: boolean = false,
   alwaysShowSign: boolean = false,
-  showAllDigits: boolean = false
+  showAllDigits: boolean = false,
+  type: *
 ): string {
   if (typeof value !== "number") {
     throw "Not an number";
@@ -74,7 +75,9 @@ export function formatCurrencyUnit(
   );
 
   const format =
-    (alwaysShowSign && floatValue > 0 ? "+" + nonBreakableSpace : "") +
+    (alwaysShowSign && type === "RECEIVE"
+      ? "+" + nonBreakableSpace
+      : alwaysShowSign ? "-" : "") +
     (showCode ? code : "") +
     nonBreakableSpace +
     floatValue.toLocaleString("en-EN", {

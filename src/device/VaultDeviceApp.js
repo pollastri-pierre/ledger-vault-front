@@ -162,7 +162,17 @@ export default class VaultDeviceApp {
     );
     return response;
   }
+
+  splits(chunk: number, buffer: Buffer): Buffer[] {
+    const chunks = [];
+    for (let i = 0, size = chunk; i < buffer.length; i += size, size = chunk) {
+      chunks.push(buffer.slice(i, i + size));
+    }
+    return chunks;
+  }
+
   async validateVaultOperation(path: number[], operation: Buffer) {
+    const maxLength = 10;
     const paths = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
@@ -171,13 +181,26 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
+
     const length = Buffer.alloc(2);
     length.writeUInt16BE(operation.length, 0);
+    const chunks = this.splits(maxLength, operation);
 
-    const data = Buffer.concat([paths, length, operation]);
-    const response = await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
+    const data = Buffer.concat([paths, length, chunks.shift()]);
+    await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
 
-    return response.slice(0, response.length - 2);
+    let lastResponse = [];
+    for (let i = 0; i < chunks.length; i++) {
+      lastResponse = await this.transport.send(
+        0xe0,
+        0x45,
+        0x80,
+        0x00,
+        chunks[i]
+      );
+    }
+
+    return lastResponse.slice(0, lastResponse.length - 2);
   }
 
   async getPublicKey(

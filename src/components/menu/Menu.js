@@ -68,7 +68,7 @@ function Menu(
     translate: Function
   }
 ) {
-  const { location, classes, accounts, match, pendingOperations } = props;
+  const { location, classes, accounts, match } = props;
   const t = context.translate;
   return (
     <div className={classes.root}>
@@ -86,7 +86,7 @@ function Menu(
         </MenuLink>
         <MenuLink
           to={`${location.pathname}/new-operation`}
-          disabled={accounts.length === 0 || pendingOperations.length > 0}
+          disabled={accounts.length === 0}
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />

@@ -63,7 +63,7 @@ class EntityApprove extends Component<Props, State> {
     const operation = accountOrOperation.hsm_operations;
 
     try {
-      const device = await createDevice();
+      const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const channel = operation[pubKey.toUpperCase()];
       const ephemeral_public_key = channel["ephemeral_public_key"];

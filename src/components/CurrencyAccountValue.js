@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import { countervalueForRate, getAccountCurrencyUnit } from "data/currency";
-import type { Account, Rate } from "data/types";
+import type { Account, Rate, TransactionType } from "data/types";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
@@ -17,14 +17,15 @@ class CurrencyAccountValue extends Component<{
   // if true, display the countervalue instead of the actual crypto currency
   countervalue?: boolean,
   // override the rate to use (default is the account.currentRate)
-  rate?: Rate
+  rate?: Rate,
+  type?: TransactionType
 }> {
   render() {
-    const { account, countervalue, value, rate, ...rest } = this.props;
+    const { account, countervalue, value, rate, type, ...rest } = this.props;
     let unitValue = countervalue
       ? countervalueForRate(rate || account.currencyRate, value)
       : { value, unit: getAccountCurrencyUnit(account) };
-    return <CurrencyUnitValue {...rest} {...unitValue} />;
+    return <CurrencyUnitValue {...rest} {...unitValue} type={type} />;
   }
 }
 

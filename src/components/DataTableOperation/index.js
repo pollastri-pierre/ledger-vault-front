@@ -58,7 +58,7 @@ class OperationNoteLink extends Component<{
               {note.author.first_name}&nbsp;{note.author.last_name}
             </p>
             <div className="hr" />
-            <p className="tooltip-label-body">{note.body}</p>
+            <p className="tooltip-label-body">{note.content}</p>
           </div>
         )}
       </span>
@@ -195,7 +195,8 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.price.amount}
+        value={operation.amount}
+        type={operation.type}
         alwaysShowSign
       />
     ) : null;

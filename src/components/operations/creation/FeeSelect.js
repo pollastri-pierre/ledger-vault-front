@@ -35,7 +35,7 @@ class FeePicker extends Component<{
         title: "Slow (1 hour)"
       },
       {
-        key: "medium",
+        key: "normal",
         title: "Medium (30 minutes)"
       },
       {

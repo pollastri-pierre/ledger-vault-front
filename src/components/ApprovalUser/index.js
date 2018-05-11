@@ -82,7 +82,7 @@ function Approvalmember(props: {
 
       <span className={classes.name}>{slice}</span>
       {isApproved ? (
-        <span className={classes.hasApproved}>Approve</span>
+        <span className={classes.hasApproved}>Approved</span>
       ) : (
         <span className={classes.hasApproved}>Pending</span>
       )}
