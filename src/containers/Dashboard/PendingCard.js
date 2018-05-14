@@ -99,7 +99,10 @@ class PendingCard extends Component<{
       match,
       reloading
     } = this.props;
-    const totalOperations = operations.length;
+    const filtered_operations = operations.filter(
+      operation => operation.status === "PENDING_APPROVAL"
+    );
+    const totalOperations = filtered_operations.length;
     const totalAccounts = accounts.length;
     const total = totalOperations + totalAccounts;
     return (
@@ -122,7 +125,7 @@ class PendingCard extends Component<{
           </CardField>
         </header>
         <div className="pending-list">
-          {operations
+          {filtered_operations
             .map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
