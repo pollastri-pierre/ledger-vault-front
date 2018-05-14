@@ -62,14 +62,17 @@ function Menu(
     match: *,
     classes: { [_: $Keys<typeof styles>]: string },
     accounts: Array<Account>,
-    pendingOperations: Array<Operation>
+    operations: Array<Operation>
   },
   context: {
     translate: Function
   }
 ) {
-  const { location, classes, accounts, match } = props;
+  const { location, classes, accounts, operations, match } = props;
   const t = context.translate;
+  const pendingOperations = operations.filter(
+    operation => operation.status === "PENDING_APPROVAL"
+  );
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
@@ -86,7 +89,7 @@ function Menu(
         </MenuLink>
         <MenuLink
           to={`${location.pathname}/new-operation`}
-          disabled={accounts.length === 0}
+          disabled={accounts.length === 0 || pendingOperations.length > 0}
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />
@@ -133,7 +136,7 @@ export default connectData(withStyles(styles)(Menu), {
   RenderLoading: RenderLoading,
   queries: {
     accounts: AccountsQuery,
-    pendingOperations: PendingOperationsQuery,
+    operations: PendingOperationsQuery,
     currencies: CurrenciesQuery
   }
 });
