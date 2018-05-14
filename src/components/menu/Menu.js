@@ -62,15 +62,15 @@ function Menu(
     match: *,
     classes: { [_: $Keys<typeof styles>]: string },
     accounts: Array<Account>,
-    operations: Array<Operation>
+    allPendingOperations: Array<Operation>
   },
   context: {
     translate: Function
   }
 ) {
-  const { location, classes, accounts, operations, match } = props;
+  const { location, classes, accounts, allPendingOperations, match } = props;
   const t = context.translate;
-  const pendingOperations = operations.filter(
+  const pendingApprovalOperations = allPendingOperations.filter(
     operation => operation.status === "PENDING_APPROVAL"
   );
   return (
@@ -89,7 +89,9 @@ function Menu(
         </MenuLink>
         <MenuLink
           to={`${location.pathname}/new-operation`}
-          disabled={accounts.length === 0 || pendingOperations.length > 0}
+          disabled={
+            accounts.length === 0 || pendingApprovalOperations.length > 0
+          }
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />
@@ -136,7 +138,7 @@ export default connectData(withStyles(styles)(Menu), {
   RenderLoading: RenderLoading,
   queries: {
     accounts: AccountsQuery,
-    operations: PendingOperationsQuery,
+    allPendingOperations: PendingOperationsQuery,
     currencies: CurrenciesQuery
   }
 });
