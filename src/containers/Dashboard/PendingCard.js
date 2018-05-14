@@ -125,8 +125,8 @@ class PendingCard extends Component<{
           </CardField>
         </header>
         <div className="pending-list">
-          {operations
-            .map((filtered_operations, i) => (
+          {filtered_operations
+            .map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
                 operation={operation}
