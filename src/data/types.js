@@ -22,6 +22,7 @@ type Price = {
 };
 
 export type Unit = {
+  id: number,
   name: string,
   code: string,
   symbol: string,
