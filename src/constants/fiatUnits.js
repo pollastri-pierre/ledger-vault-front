@@ -1,5 +1,7 @@
+//@flow
+import type { Unit } from "data/types";
 // inspired by https://github.com/smirzaei/currency-formatter/blob/master/currencies.json
-const units = {
+const units: { [key: string]: Unit } = {
   AED: { name: "Emirati Dirham", code: "AED", symbol: "د.إ.‏", magnitude: 2 },
   AFN: { name: "Afghan Afghani", code: "AFN", symbol: "؋", magnitude: 2 },
   ALL: { name: "Albanian lek", code: "ALL", symbol: "Lek", magnitude: 2 },

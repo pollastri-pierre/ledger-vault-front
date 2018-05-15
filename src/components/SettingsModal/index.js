@@ -330,7 +330,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     const { account, classes /* fiats  */ } = this.props;
     const { name, settings } = this.state;
     const unit_index = account.currency.units.findIndex(
-      unit => unit.code === settings.currency_unit.code
+      unit => unit.id === settings.currency_unit.id
     );
 
     // const fiat = settings.fiat.id || settings.fiat;
