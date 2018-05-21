@@ -1,7 +1,9 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
+import { getPendingsOperations } from "utils/operations";
 import React from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
+import { isCreateOperationEnabled } from "utils/operations";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
@@ -70,9 +72,7 @@ function Menu(
 ) {
   const { location, classes, accounts, allPendingOperations, match } = props;
   const t = context.translate;
-  const pendingApprovalOperations = allPendingOperations.filter(
-    operation => operation.status === "PENDING_APPROVAL"
-  );
+  const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
@@ -90,7 +90,7 @@ function Menu(
         <MenuLink
           to={`${location.pathname}/new-operation`}
           disabled={
-            accounts.length === 0 || pendingApprovalOperations.length > 0
+            !isCreateOperationEnabled(accounts, pendingApprovalOperations)
           }
         >
           <span className={classes.link}>
@@ -119,7 +119,11 @@ function Menu(
         </div>
       )}
 
-      <ModalRoute path="*/new-operation" component={NewOperationModal} />
+      <ModalRoute
+        path="*/new-operation"
+        component={NewOperationModal}
+        match={match}
+      />
     </div>
   );
 }

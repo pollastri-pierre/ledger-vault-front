@@ -80,13 +80,14 @@ class OperationCreationDetails extends Component<
 > {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
       unitIndex: 0,
       maxMenuOpen: false,
-      amount: "",
+      amount: props.details.amount ? props.details.amount : "",
       amountIsValid: true,
       satoshis: 0,
-      address: "",
+      address: props.details.address ? props.details.address : "",
       addressIsValid: true,
       feesSelected: "normal",
       feesAmount: 0
@@ -176,6 +177,7 @@ class OperationCreationDetails extends Component<
     };
 
     if (operation.fee_level && operation.amount && operation.recipient) {
+      console.log("calculate fees");
       restlay
         .fetchQuery(
           new AccountCalculateFeeQuery({

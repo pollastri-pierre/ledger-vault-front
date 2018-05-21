@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import { getPendingsOperations } from "utils/operations";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import colors from "shared/colors";
 import { withStyles } from "material-ui/styles";
@@ -24,9 +25,7 @@ const styles = {
 class PendingsMenuBadge extends Component<*> {
   render() {
     const { accounts, operations, classes } = this.props;
-    const filtered = operations.filter(operation => {
-      return operation.status === "PENDING_APPROVAL";
-    });
+    const filtered = getPendingsOperations(operations);
     const count = accounts.length + filtered.length;
     if (count === 0) {
       return false;
