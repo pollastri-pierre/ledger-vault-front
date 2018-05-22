@@ -26,15 +26,22 @@ class ActivityLine extends Component<
     {
         activity: ActivityCommon,
         classes: { [_: $Keys<typeof styles>]: string },
-        match: *
+        match: *,
+        markAsSeenRequest: Function
     },
     *
 > {
     render() {
-        const { activity, classes, match } = this.props;
-
+        const { activity, classes, match, markAsSeenRequest } = this.props;
         return (
-            <div className={classnames(classes.clickable, classes.activity)}>
+            <div
+                className={classnames(classes.clickable, classes.activity)}
+                onClick={() => {
+                    if (!activity.seen) {
+                        markAsSeenRequest([activity.business_action.id]);
+                    }
+                }}
+            >
                 {ActivityFactory.build(activity, match)}
             </div>
         );

@@ -11,7 +11,6 @@ import OperationReceivedApprovalActivity from "../Activities/OperationReceivedAp
 
 class ActivityFactory extends Component<> {
     static build(activity, match) {
-        console.log(activity);
         switch (activity.business_action.business_action_name) {
             case "OPERATION_CREATED_BUSINESS_ACTION":
                 return (

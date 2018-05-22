@@ -193,7 +193,13 @@ class ActivityList extends Component<
     };
 
     render() {
-        const { activities, classes, unseenActivityCount, match } = this.props;
+        const {
+            activities,
+            classes,
+            unseenActivityCount,
+            match,
+            markAsSeenRequest
+        } = this.props;
         return (
             <div>
                 <div className={classes.newActivities}>
@@ -217,6 +223,9 @@ class ActivityList extends Component<
                                         activity.show && (
                                             <ActivityLine
                                                 match={match}
+                                                markAsSeenRequest={
+                                                    markAsSeenRequest
+                                                }
                                                 activity={activity}
                                                 /*onRef={elem => {
                                                     if (id == 0) {
