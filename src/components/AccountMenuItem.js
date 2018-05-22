@@ -36,7 +36,7 @@ class AccountOption extends Component<{
   render() {
     const { account, classes, ...rest } = this.props;
     return (
-      <MenuItem disabled style={{ color: account.currency.color }} {...rest}>
+      <MenuItem style={{ color: account.currency.color }} {...rest}>
         <div className={classes.accountOption}>
           <span className={classes.nameContainer}>{account.name}</span>
           <span className={classes.accountUnit}>
