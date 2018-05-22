@@ -9,20 +9,40 @@ import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsRea
 import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
 
 class ActivityFactory extends Component<> {
-    static build(data) {
+    static build(data, match) {
         switch (data.business_action_name) {
             case "OPERATION_CREATED_BUSINESS_ACTION":
-                return <NewOperationActivity activity={data} />;
+                return <NewOperationActivity activity={data} match={match} />;
             case "OPERATION_RECEIVED_APPROVAL_BUSINESS_ACTION":
-                return <OperationReceivedApprovalActivity activity={data} />;
+                return (
+                    <OperationReceivedApprovalActivity
+                        activity={data}
+                        match={match}
+                    />
+                );
             case "OPERATION_QUORUM_IS_REACHED_BUSINESS_ACTION":
-                return <OperationQuorumIsReachedActivity activity={data} />;
+                return (
+                    <OperationQuorumIsReachedActivity
+                        activity={data}
+                        match={match}
+                    />
+                );
             case "ACCOUNT_QUORUM_IS_REACHED_BUSINESS_ACTION":
-                return <AccountQuorumIsReachedActivity activity={data} />;
+                return (
+                    <AccountQuorumIsReachedActivity
+                        activity={data}
+                        match={match}
+                    />
+                );
             case "ACCOUNT_RECEIVED_NEW_APPROVAL_BUSINESS_ACTION":
-                return <AccountReceivedApprovalActivity activity={data} />;
+                return (
+                    <AccountReceivedApprovalActivity
+                        activity={data}
+                        match={match}
+                    />
+                );
             case "ACCOUNT_CREATED_BUSINESS_ACTION":
-                return <NewAccountActivity activity={data} />;
+                return <NewAccountActivity activity={data} match={match} />;
             default:
                 return <span>{data.message}</span>;
         }

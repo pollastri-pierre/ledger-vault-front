@@ -34,6 +34,9 @@ const styles = {
         lineHeight: "19px",
         "&.seen": {
             color: hexToRgbA(colors.black, 0.5)
+        },
+        "> a": {
+            textDecoration: "none"
         }
     },
     dateWrap: {
@@ -82,7 +85,8 @@ const hourDateFormat = {
 class Activity extends Component<
     {
         data: ActivityCommon,
-        classes: { [_: $Keys<typeof styles>]: string }
+        classes: { [_: $Keys<typeof styles>]: string },
+        match: *
     },
     *
 > {
@@ -95,7 +99,7 @@ class Activity extends Component<
     }
 
     render() {
-        const { data, classes } = this.props;
+        const { data, classes, match } = this.props;
 
         return (
             <div className={classnames(classes.clickable, classes.activity)}>
@@ -131,7 +135,7 @@ class Activity extends Component<
                         this.getSeenClass(data.seen)
                     )}
                 >
-                    {ActivityFactory.build(data.business_action)}
+                    {ActivityFactory.build(data.business_action, match)}
                 </span>
             </div>
         );
