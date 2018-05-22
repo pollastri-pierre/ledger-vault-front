@@ -17,7 +17,8 @@ const styles = {
 class NoStyleLink extends Component<
     {
         classes: { [_: $Keys<typeof styles>]: string },
-        to: string
+        to: string,
+        children: *
     },
     *
 > {

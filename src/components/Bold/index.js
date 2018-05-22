@@ -1,7 +1,6 @@
 //@flow
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
-import classnames from "classnames";
 
 const styles = {
     bold: {
@@ -16,7 +15,7 @@ class Bold extends Component<
     *
 > {
     render() {
-        const { children, classes } = this.props;
+        const { classes } = this.props;
         return <span className={classes.bold}>{children}</span>;
     }
 }

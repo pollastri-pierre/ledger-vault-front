@@ -17,7 +17,7 @@ class OperationQuorumIsReachedActivity extends Component<
     *
 > {
     render() {
-        const { activity, classes, match } = this.props;
+        const { activity, match } = this.props;
         const business_action = activity.business_action;
 
         return (
@@ -28,7 +28,7 @@ class OperationQuorumIsReachedActivity extends Component<
                     }/operation/${business_action.operation.id}/0`}
                 >
                     <Activity match={match} activity={activity}>
-                        An <Bold> operation's </Bold>
+                        An <Bold> operation&#39;s </Bold>
                         quorum have been reached in{" "}
                         <Bold>
                             {" "}

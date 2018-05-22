@@ -25,7 +25,7 @@ class NewAccountActivity extends Component<
     };
 
     render() {
-        const { activity, classes, match } = this.props;
+        const { activity, match } = this.props;
         const business_action = activity.business_action;
 
         return (
