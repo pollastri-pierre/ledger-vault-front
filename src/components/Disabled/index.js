@@ -17,7 +17,6 @@ class Disabled extends Component<{
 }> {
   render() {
     const { disabled, classes, children } = this.props;
-    console.log("DISABLED");
     return (
       <div className={classnames({ [classes.disabled]: disabled })}>
         {children}
