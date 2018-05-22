@@ -82,9 +82,9 @@ const hourDateFormat = {
     sameElse: "LT"
 };
 
-class Activity extends Component<
+class ActivityLine extends Component<
     {
-        data: ActivityCommon,
+        activity: ActivityCommon,
         classes: { [_: $Keys<typeof styles>]: string },
         match: *
     },
@@ -99,24 +99,24 @@ class Activity extends Component<
     }
 
     render() {
-        const { data, classes, match } = this.props;
+        const { activity, classes, match, children } = this.props;
 
         return (
-            <div className={classnames(classes.clickable, classes.activity)}>
+            <div>
                 <div className={classes.bulletWrap}>
-                    {!data.seen && <div className={classes.bullet} />}
+                    {!activity.seen && <div className={classes.bullet} />}
                 </div>
                 <div
                     className={classnames(
                         classes.dateWrap,
-                        this.getSeenClass(data.seen)
+                        this.getSeenClass(activity.seen)
                     )}
                 >
                     <div
                         className={classnames(classes.uppercase, classes.date)}
                     >
                         <DateFormat
-                            date={data.created_on}
+                            date={activity.created_on}
                             format={dayDateFormat}
                         />
                     </div>
@@ -124,7 +124,7 @@ class Activity extends Component<
                         className={classnames(classes.uppercase, classes.date)}
                     >
                         <DateFormat
-                            date={data.created_on}
+                            date={activity.created_on}
                             format={hourDateFormat}
                         />
                     </div>
@@ -132,14 +132,14 @@ class Activity extends Component<
                 <span
                     className={classnames(
                         classes.activityMessage,
-                        this.getSeenClass(data.seen)
+                        this.getSeenClass(activity.seen)
                     )}
                 >
-                    {ActivityFactory.build(data.business_action, match)}
+                    {children}
                 </span>
             </div>
         );
     }
 }
 
-export default withStyles(styles)(Activity);
+export default withStyles(styles)(ActivityLine);

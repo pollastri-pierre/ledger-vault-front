@@ -2,6 +2,7 @@
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 
+import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -17,19 +18,21 @@ class AccountQuorumIsReachedActivity extends Component<
 > {
     render() {
         const { activity, classes, match } = this.props;
-
+        const business_action = activity.business_action;
         return (
             <span>
                 <NoStyleLink
                     to={`/${match.params.orga_name}/account/${
-                        activity.account.id
+                        business_action.account.id
                     }`}
                 >
-                    <Bold>
-                        {activity.account.currency.toUpperCase()} account{" "}
-                        {activity.account.name}
-                    </Bold>{" "}
-                    quorum have been reached. Account is now approved.
+                    <Activity match={match} activity={activity}>
+                        <Bold>
+                            {business_action.account.currency.toUpperCase()}{" "}
+                            account {business_action.account.name}
+                        </Bold>{" "}
+                        quorum have been reached. Account is now approved.
+                    </Activity>
                 </NoStyleLink>
             </span>
         );

@@ -2,6 +2,7 @@
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 
+import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -27,19 +28,23 @@ class NewOperationActivity extends Component<
 
     render() {
         const { activity, classes, match } = this.props;
+        const business_action = activity.business_action;
         return (
             <span>
                 <NoStyleLink
                     to={`/${match.params.orga_name}/${this.getOperationLink(
-                        activity.operation
+                        business_action.operation
                     )}`}
                 >
-                    A <Bold>new operation</Bold> have been created by{" "}
-                    <Bold>
-                        {activity.author.first_name} {activity.author.last_name}
-                    </Bold>{" "}
-                    in <Bold>{activity.operation.account.name}</Bold>. Operation
-                    is now pending.
+                    <Activity match={match} activity={activity}>
+                        A <Bold>new operation</Bold> have been created by{" "}
+                        <Bold>
+                            {business_action.author.first_name}{" "}
+                            {business_action.author.last_name}
+                        </Bold>{" "}
+                        in <Bold>{business_action.operation.account.name}</Bold>.
+                        Operation is now pending.
+                    </Activity>
                 </NoStyleLink>
             </span>
         );

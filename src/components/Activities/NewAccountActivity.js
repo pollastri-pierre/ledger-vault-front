@@ -2,6 +2,7 @@
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 
+import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -25,22 +26,27 @@ class NewAccountActivity extends Component<
 
     render() {
         const { activity, classes, match } = this.props;
+        const business_action = activity.business_action;
 
         return (
             <span>
                 <NoStyleLink
                     to={`/${match.params.orga_name}/${this.getAccountLink(
-                        activity.account
+                        business_action.account
                     )}`}
                 >
-                    A{" "}
-                    <Bold>
-                        new {activity.account.currency.toUpperCase()} account
-                    </Bold>{" "}
-                    have been created by{" "}
-                    <Bold>
-                        {activity.author.first_name} {activity.author.last_name}
-                    </Bold>. Account is now pending.
+                    <Activity match={match} activity={activity}>
+                        A{" "}
+                        <Bold>
+                            new {business_action.account.currency.toUpperCase()}{" "}
+                            account
+                        </Bold>{" "}
+                        have been created by{" "}
+                        <Bold>
+                            {business_action.author.first_name}{" "}
+                            {business_action.author.last_name}
+                        </Bold>. Account is now pending.
+                    </Activity>
                 </NoStyleLink>
             </span>
         );

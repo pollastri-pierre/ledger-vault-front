@@ -2,6 +2,7 @@
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 
+import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -17,18 +18,24 @@ class OperationQuorumIsReachedActivity extends Component<
 > {
     render() {
         const { activity, classes, match } = this.props;
+        const business_action = activity.business_action;
 
         return (
             <span>
                 <NoStyleLink
                     to={`/${match.params.orga_name}/account/${
-                        activity.operation.account.id
-                    }/operation/${activity.operation.id}/0`}
+                        business_action.operation.account.id
+                    }/operation/${business_action.operation.id}/0`}
                 >
-                    An <Bold> operation's </Bold>
-                    quorum have been reached in{" "}
-                    <Bold> {activity.operation.account.name} </Bold> account.
-                    Operation is now submitted.
+                    <Activity match={match} activity={activity}>
+                        An <Bold> operation's </Bold>
+                        quorum have been reached in{" "}
+                        <Bold>
+                            {" "}
+                            {business_action.operation.account.name}{" "}
+                        </Bold>{" "}
+                        account. Operation is now submitted.
+                    </Activity>
                 </NoStyleLink>
             </span>
         );

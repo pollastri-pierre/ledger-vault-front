@@ -1,10 +1,12 @@
 //@flow
 import { withStyles } from "material-ui/styles";
-import type { ActivityCommon } from "data/types";
 import React, { Component } from "react";
-import Activity from "../Activity";
 import classnames from "classnames";
+
+import type { ActivityCommon } from "data/types";
 import colors from "shared/colors";
+
+import ActivityLine from "../ActivityLine";
 
 const styles = {
     base: {
@@ -213,9 +215,9 @@ class ActivityList extends Component<
                                 {activities.map(activity => {
                                     return (
                                         activity.show && (
-                                            <Activity
+                                            <ActivityLine
                                                 match={match}
-                                                data={activity}
+                                                activity={activity}
                                                 /*onRef={elem => {
                                                     if (id == 0) {
                                                         this.firstElem = elem;

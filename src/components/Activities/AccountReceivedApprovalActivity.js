@@ -2,6 +2,7 @@
 import { withStyles } from "material-ui/styles";
 import React, { Component } from "react";
 
+import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -25,18 +26,21 @@ class AccountReceivedApprovalActivity extends Component<
 
     render() {
         const { activity, classes, match } = this.props;
-
+        const business_action = activity.business_action;
         return (
             <span>
                 <NoStyleLink
                     to={`/${match.params.orga_name}/${this.getAccountLink(
-                        activity.account
+                        business_action.account
                     )}`}
                 >
-                    An <Bold>account</Bold> received a new approval by{" "}
-                    <Bold>
-                        {activity.author.first_name} {activity.author.last_name}
-                    </Bold>
+                    <Activity match={match} activity={activity}>
+                        An <Bold>account</Bold> received a new approval by{" "}
+                        <Bold>
+                            {business_action.author.first_name}{" "}
+                            {business_action.author.last_name}
+                        </Bold>
+                    </Activity>
                 </NoStyleLink>
             </span>
         );
