@@ -10,12 +10,13 @@ const styles = {
 
 class Bold extends Component<
     {
-        classes: { [_: $Keys<typeof styles>]: string }
+        classes: { [_: $Keys<typeof styles>]: string },
+        children: *
     },
     *
 > {
     render() {
-        const { classes } = this.props;
+        const { classes, children } = this.props;
         return <span className={classes.bold}>{children}</span>;
     }
 }

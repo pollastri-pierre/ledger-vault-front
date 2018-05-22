@@ -85,7 +85,8 @@ class ActivityLine extends Component<
     {
         activity: ActivityCommon,
         classes: { [_: $Keys<typeof styles>]: string },
-        match: *
+        match: *,
+        children: *
     },
     *
 > {
@@ -98,7 +99,7 @@ class ActivityLine extends Component<
     }
 
     render() {
-        const { activity, classes } = this.props;
+        const { activity, classes, children } = this.props;
 
         return (
             <div>
