@@ -8,7 +8,7 @@ import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
 import OperationCreationConfirmation from "./OperationCreationConfirmation";
-import type { Account } from "data/types";
+import type { Account, Operation } from "data/types";
 import type { Details } from "../../NewOperationModal";
 
 const styles = {
@@ -52,6 +52,7 @@ class OperationCreation extends Component<{
   save: () => void,
   accounts: Account[],
   onTabsChange: number => void,
+  pendingOperations: Operation[],
   selectedAccount: Account,
   selectAccount: Account => void,
   details: Details,
@@ -72,6 +73,7 @@ class OperationCreation extends Component<{
       save,
       accounts,
       selectedAccount,
+      pendingOperations,
       selectAccount,
       details,
       saveDetails,
@@ -97,6 +99,7 @@ class OperationCreation extends Component<{
           <Overscroll top={40} bottom={72} paddingX={0}>
             <OperationCreationAccounts
               accounts={accounts}
+              pendingOperations={pendingOperations}
               onSelect={selectAccount}
               selectedAccount={selectedAccount}
             />

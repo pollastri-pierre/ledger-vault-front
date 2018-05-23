@@ -14,6 +14,7 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { withStyles } from "material-ui/styles";
+import { getPendingsOperations } from "utils/operations";
 import type { Response as PendingsQueryResponse } from "api/queries/PendingsQuery";
 
 const styles = {
@@ -99,9 +100,7 @@ class PendingCard extends Component<{
       match,
       reloading
     } = this.props;
-    const filtered_operations = operations.filter(
-      operation => operation.status === "PENDING_APPROVAL"
-    );
+    const filtered_operations = getPendingsOperations(operations);
     const totalOperations = filtered_operations.length;
     const totalAccounts = accounts.length;
     const total = totalOperations + totalAccounts;

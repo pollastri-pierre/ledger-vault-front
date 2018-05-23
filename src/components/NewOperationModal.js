@@ -1,6 +1,11 @@
 //@flow
+import {
+  isCreateOperationEnabled,
+  getPendingsOperations
+} from "utils/operations";
 import React, { Component } from "react";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
+import { Redirect } from "react-router";
 import OperationCreation from "./operations/creation/OperationCreation";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -8,7 +13,7 @@ import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ModalLoading from "components/ModalLoading";
 import type { RestlayEnvironment } from "restlay/connectData";
-import type { Account } from "data/types";
+import type { Account, Operation } from "data/types";
 
 export type Details = {
   amount: ?number,
@@ -20,8 +25,10 @@ export type Details = {
 class NewOperationModal extends Component<
   {
     accounts: Array<Account>,
+    allPendingOperations: Array<Operation>,
     restlay: RestlayEnvironment,
     close: Function,
+    match: *,
     history: *,
     location: *
   },
@@ -109,9 +116,15 @@ class NewOperationModal extends Component<
   };
 
   render() {
-    const { accounts, close } = this.props;
+    const { accounts, close, allPendingOperations, match } = this.props;
     const { device } = this.state;
 
+    const pendingApprovalOperations = getPendingsOperations(
+      allPendingOperations
+    );
+    if (!isCreateOperationEnabled(accounts, pendingApprovalOperations)) {
+      return <Redirect to={match.params[0]} />;
+    }
     if (device) {
       return (
         <DeviceAuthenticate
@@ -127,6 +140,7 @@ class NewOperationModal extends Component<
         onTabsChange={this.onTabsChange}
         save={this.save}
         accounts={accounts}
+        pendingOperations={pendingApprovalOperations}
         selectAccount={this.selectAccount}
         saveDetails={this.saveDetails}
         note={this.state.note}
@@ -142,6 +156,7 @@ class NewOperationModal extends Component<
 export default connectData(NewOperationModal, {
   RenderLoading: ModalLoading,
   queries: {
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
+    allPendingOperations: PendingOperationsQuery
   }
 });
