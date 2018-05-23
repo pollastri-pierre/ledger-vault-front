@@ -10,50 +10,39 @@ import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsRea
 import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
 
 class ActivityFactory extends Component<> {
-    static build(activity, match) {
-        switch (activity.business_action.business_action_name) {
-            case "OPERATION_CREATED_BUSINESS_ACTION":
-                return (
-                    <NewOperationActivity activity={activity} match={match} />
-                );
-            case "OPERATION_RECEIVED_APPROVAL_BUSINESS_ACTION":
-                return (
-                    <OperationReceivedApprovalActivity
-                        activity={activity}
-                        match={match}
-                    />
-                );
-            case "OPERATION_QUORUM_IS_REACHED_BUSINESS_ACTION":
-                return (
-                    <OperationQuorumIsReachedActivity
-                        activity={activity}
-                        match={match}
-                    />
-                );
-            case "ACCOUNT_QUORUM_IS_REACHED_BUSINESS_ACTION":
-                return (
-                    <AccountQuorumIsReachedActivity
-                        activity={activity}
-                        match={match}
-                    />
-                );
-            case "ACCOUNT_RECEIVED_NEW_APPROVAL_BUSINESS_ACTION":
-                return (
-                    <AccountReceivedApprovalActivity
-                        activity={activity}
-                        match={match}
-                    />
-                );
-            case "ACCOUNT_CREATED_BUSINESS_ACTION":
-                return <NewAccountActivity activity={activity} match={match} />;
-            default:
-                return (
-                    <Activity match={match} activity={activity}>
-                        <span>{activity.message}</span>
-                    </Activity>
-                );
-        }
+  static build(activity, match) {
+    switch (activity.business_action.business_action_name) {
+      case "OPERATION_CREATED_BUSINESS_ACTION":
+        return <NewOperationActivity activity={activity} match={match} />;
+      case "OPERATION_RECEIVED_APPROVAL_BUSINESS_ACTION":
+        return (
+          <OperationReceivedApprovalActivity
+            activity={activity}
+            match={match}
+          />
+        );
+      case "OPERATION_QUORUM_IS_REACHED_BUSINESS_ACTION":
+        return (
+          <OperationQuorumIsReachedActivity activity={activity} match={match} />
+        );
+      case "ACCOUNT_QUORUM_IS_REACHED_BUSINESS_ACTION":
+        return (
+          <AccountQuorumIsReachedActivity activity={activity} match={match} />
+        );
+      case "ACCOUNT_RECEIVED_NEW_APPROVAL_BUSINESS_ACTION":
+        return (
+          <AccountReceivedApprovalActivity activity={activity} match={match} />
+        );
+      case "ACCOUNT_CREATED_BUSINESS_ACTION":
+        return <NewAccountActivity activity={activity} match={match} />;
+      default:
+        return (
+          <Activity match={match} activity={activity}>
+            <span>{activity.message}</span>
+          </Activity>
+        );
     }
+  }
 }
 
 export default ActivityFactory;
