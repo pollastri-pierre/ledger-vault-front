@@ -7,6 +7,7 @@ import ActivityQuery from "api/queries/ActivityQuery";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { DATA_FETCHED } from "restlay/dataStore";
 import ActivityList from "../ActivityList";
@@ -16,6 +17,7 @@ import { withStyles } from "material-ui/styles";
 import CircularProgress from "material-ui/Progress/CircularProgress";
 import colors from "shared/colors";
 import { normalize } from "normalizr-gre";
+import openSocket from "socket.io-client";
 
 const styles = {
   base: {
@@ -75,7 +77,10 @@ class ActivityCard extends Component<
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
-      socket.emit("authenticate", { token: myAuthToken });
+      socket.emit("authenticate", {
+        token: myAuthToken,
+        orga: self.props.match.params.orga_name
+      });
     });
     socket.on("admin", function(activity) {
       //FIXME why is it fired twice ??
