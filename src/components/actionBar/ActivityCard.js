@@ -63,7 +63,8 @@ class ActivityCard extends Component<
     onNewActivity?: Function,
     restlay?: RestlayEnvironment,
     loading: boolean,
-    classes: { [_: $Keys<typeof styles>]: string }
+    classes: { [_: $Keys<typeof styles>]: string },
+    match: *
   },
   *
 > {
@@ -76,7 +77,10 @@ class ActivityCard extends Component<
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
-      socket.emit("authenticate", { token: myAuthToken });
+      socket.emit("authenticate", {
+        token: myAuthToken,
+        orga: self.props.match.params.orga_name
+      });
     });
     socket.on("admin", function(activity) {
       //FIXME why is it fired twice ??
@@ -131,7 +135,7 @@ class ActivityCard extends Component<
   };
 
   render() {
-    const { classes, activities, loading } = this.props;
+    const { classes, activities, loading, match } = this.props;
     const { bubbleOpened } = this.state;
     const t = this.context.translate;
     const unseenActivityCount = activities
@@ -173,6 +177,7 @@ class ActivityCard extends Component<
                 unseenActivityCount={unseenActivityCount}
                 markAsSeenRequest={this.markAsSeenRequest}
                 clearAllRequest={this.clearAllRequest}
+                match={match}
               />
             )}
             {loading && <CircularProgress />}

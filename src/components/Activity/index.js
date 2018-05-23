@@ -1,11 +1,12 @@
 //@flow
-import React, { Component } from "react";
-import colors from "shared/colors";
-import { hexToRgbA } from "shared/colors";
-import DateFormat from "../DateFormat";
 import { withStyles } from "material-ui/styles";
-import type { ActivityCommon } from "data/types";
+import React, { Component } from "react";
 import classnames from "classnames";
+
+import type { ActivityCommon } from "data/types";
+import colors, { hexToRgbA } from "shared/colors";
+
+import DateFormat from "../DateFormat";
 
 const styles = {
   activity: {
@@ -32,6 +33,9 @@ const styles = {
     lineHeight: "19px",
     "&.seen": {
       color: hexToRgbA(colors.black, 0.5)
+    },
+    "> a": {
+      textDecoration: "none"
     }
   },
   dateWrap: {
@@ -77,10 +81,12 @@ const hourDateFormat = {
   sameElse: "LT"
 };
 
-class Activity extends Component<
+class ActivityLine extends Component<
   {
-    data: ActivityCommon,
-    classes: { [_: $Keys<typeof styles>]: string }
+    activity: ActivityCommon,
+    classes: { [_: $Keys<typeof styles>]: string },
+    match: *,
+    children: *
   },
   *
 > {
@@ -93,34 +99,37 @@ class Activity extends Component<
   }
 
   render() {
-    const { data, classes } = this.props;
+    const { activity, classes, children } = this.props;
 
     return (
-      <div className={classnames(classes.clickable, classes.activity)}>
+      <div>
         <div className={classes.bulletWrap}>
-          {!data.seen && <div className={classes.bullet} />}
+          {!activity.seen && <div className={classes.bullet} />}
         </div>
         <div
-          className={classnames(classes.dateWrap, this.getSeenClass(data.seen))}
+          className={classnames(
+            classes.dateWrap,
+            this.getSeenClass(activity.seen)
+          )}
         >
           <div className={classnames(classes.uppercase, classes.date)}>
-            <DateFormat date={data.created_on} format={dayDateFormat} />
+            <DateFormat date={activity.created_on} format={dayDateFormat} />
           </div>
           <div className={classnames(classes.uppercase, classes.date)}>
-            <DateFormat date={data.created_on} format={hourDateFormat} />
+            <DateFormat date={activity.created_on} format={hourDateFormat} />
           </div>
         </div>
         <span
           className={classnames(
             classes.activityMessage,
-            this.getSeenClass(data.seen)
+            this.getSeenClass(activity.seen)
           )}
         >
-          {data.business_action.id} {data.business_action.message}
+          {children}
         </span>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(Activity);
+export default withStyles(styles)(ActivityLine);

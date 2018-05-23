@@ -1,10 +1,12 @@
 //@flow
 import { withStyles } from "material-ui/styles";
-import type { ActivityCommon } from "data/types";
 import React, { Component } from "react";
-import Activity from "../Activity";
 import classnames from "classnames";
+
+import type { ActivityCommon } from "data/types";
 import colors from "shared/colors";
+
+import ActivityLine from "../ActivityLine";
 
 const styles = {
   base: {
@@ -90,7 +92,8 @@ class ActivityList extends Component<
     unseenActivityCount: number,
     markAsSeenRequest: Function,
     clearAllRequest: Function,
-    classes: { [_: $Keys<typeof styles>]: string }
+    classes: { [_: $Keys<typeof styles>]: string },
+    match: *
   },
   *
 > {
@@ -183,7 +186,13 @@ class ActivityList extends Component<
   };
 
   render() {
-    const { activities, classes, unseenActivityCount } = this.props;
+    const {
+      activities,
+      classes,
+      unseenActivityCount,
+      match,
+      markAsSeenRequest
+    } = this.props;
     return (
       <div>
         <div className={classes.newActivities}>
@@ -203,8 +212,10 @@ class ActivityList extends Component<
                 {activities.map(activity => {
                   return (
                     activity.show && (
-                      <Activity
-                        data={activity}
+                      <ActivityLine
+                        match={match}
+                        markAsSeenRequest={markAsSeenRequest}
+                        activity={activity}
                         /*onRef={elem => {
                                                     if (id == 0) {
                                                         this.firstElem = elem;
@@ -218,23 +229,25 @@ class ActivityList extends Component<
                 })}
               </div>
             </div>
-            <div className={classes.buttonWrap}>
-              {/* <span */}
-              {/*     className={classnames( */}
-              {/*         classes.button, */}
-              {/*         classes.clickable */}
-              {/*     )} */}
-              {/*     onClick={this.clearAll} */}
-              {/* > */}
-              {/*     CLEAR ALL */}
-              {/* </span> */}
-              <span
-                className={classnames(classes.button, classes.clickable)}
-                onClick={this.markAllAsRead}
-              >
-                MARK AS READ
-              </span>
-            </div>
+            {!!unseenActivityCount && (
+              <div className={classes.buttonWrap}>
+                {/* <span */}
+                {/*     className={classnames( */}
+                {/*         classes.button, */}
+                {/*         classes.clickable */}
+                {/*     )} */}
+                {/*     onClick={this.clearAll} */}
+                {/* > */}
+                {/*     CLEAR ALL */}
+                {/* </span> */}
+                <span
+                  className={classnames(classes.button, classes.clickable)}
+                  onClick={this.markAllAsRead}
+                >
+                  MARK AS READ
+                </span>
+              </div>
+            )}
           </div>
         )}
       </div>

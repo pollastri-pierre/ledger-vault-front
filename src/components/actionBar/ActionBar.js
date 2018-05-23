@@ -133,7 +133,7 @@ class ActionBar extends Component<{
                 {t("actionBar.settings")}
               </div>
             </Link>
-            <ActivityCard />
+            <ActivityCard match={match} />
             <a href="#">
               <Question className={classes.icon} />
               <div className="content-header-button-text">Help</div>

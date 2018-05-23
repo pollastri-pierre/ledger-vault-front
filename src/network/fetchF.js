@@ -18,5 +18,4 @@ if (process.env.NODE_ENV === "test") {
     return fetch(baseUrl + prefix + uri, options);
   };
 }
-
 export default fetchF;
