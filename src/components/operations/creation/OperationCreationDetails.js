@@ -83,10 +83,10 @@ class OperationCreationDetails extends Component<
     this.state = {
       unitIndex: 0,
       maxMenuOpen: false,
-      amount: "",
+      amount: props.details.amount ? props.details.amount : "",
       amountIsValid: true,
       satoshis: 0,
-      address: "",
+      address: props.details.address ? props.details.address : "",
       addressIsValid: true,
       feesSelected: "normal",
       feesAmount: 0
