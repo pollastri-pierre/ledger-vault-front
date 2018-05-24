@@ -73,7 +73,7 @@ class ActivityCard extends Component<
   };
 
   componentDidMount() {
-    const socket = openSocket.connect("https://localhost:3033");
+    const socket = openSocket.connect("http://localhost:3033");
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
