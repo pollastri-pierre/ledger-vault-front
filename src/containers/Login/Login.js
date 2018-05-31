@@ -1,5 +1,6 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
+import SupportLink from "components/SupportLink";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -238,7 +239,7 @@ export class Login extends Component<Props, State> {
                 alt="Ledger Vault"
               />
             </div>
-            <div className={classes.help}>Support</div>
+            <SupportLink className={classes.help} label="support" />
           </div>
           <DeviceLogin
             domain={`${match.params.orga_name}`}

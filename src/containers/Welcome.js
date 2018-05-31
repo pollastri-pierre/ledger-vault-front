@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Alert } from "components";
 import network from "network";
 import { withStyles } from "material-ui/styles";
+import SupportLink from "components/SupportLink";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
@@ -47,6 +48,7 @@ const styles = {
   },
   help: {
     width: 63,
+    textDecoration: "none",
     cursor: "pointer",
     marginRight: "0",
     fontSize: 11,
@@ -57,7 +59,10 @@ const styles = {
     verticalAlign: "super",
     lineHeight: "1em",
     top: "5px",
-    right: "0;"
+    right: "0",
+    "&:visited": {
+      color: "inherit"
+    }
   },
   logo: {
     width: 100,
@@ -143,7 +148,7 @@ export class Welcome extends Component<
               alt="Ledger Vault"
             />
           </div>
-          <div className={classes.help}>Support</div>
+          <SupportLink className={classes.help} label="support" />
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
           <Profile className={classes.icon} color="#e2e2e2" />
