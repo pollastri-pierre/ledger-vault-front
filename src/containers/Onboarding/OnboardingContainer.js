@@ -1,7 +1,9 @@
 //@flow
 import React, { Component } from "react";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import Logo from "components/Logo";
 import cx from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Welcome from "./Welcome";
 import Authentication from "./Authentication";
 import Prerequisite from "./Prerequisite";
@@ -15,19 +17,21 @@ import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
 import ConfirmationGlobal from "./ConfirmationGlobal.js";
 import AdministrationScheme from "./AdministrationScheme.js";
-import logoBlack from "assets/img/logo-black.png";
-import logoBlack2x from "assets/img/logo-black@2x.png";
-import logoBlack3x from "assets/img/logo-black@3x.png";
 import Menu from "./Menu";
 import { connect } from "react-redux";
-import { goToStep, changeNbRequired } from "redux/modules/onboarding";
+import {
+  goToStep,
+  changeNbRequired,
+  getCurrentState
+} from "redux/modules/onboarding";
 
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   goToStep: step => dispatch(goToStep(step)),
+  onGetCurrentState: () => dispatch(getCurrentState()),
   changeNbRequired: nb => dispatch(changeNbRequired(nb))
 });
 
@@ -87,6 +91,7 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   onboarding: *,
   changeNbRequired: Function,
+  onGetCurrentState: Function,
   match: *,
   history: *
 };
@@ -97,6 +102,9 @@ type State = {
 };
 
 class OnboardingContainer extends Component<Props, State> {
+  componentDidMount() {
+    this.props.onGetCurrentState();
+  }
   render() {
     const {
       classes,
@@ -105,15 +113,15 @@ class OnboardingContainer extends Component<Props, State> {
       match,
       history
     } = this.props;
+
+    if (onboarding.currentStep === null) {
+      return <SpinnerCard />;
+    }
     return (
       <div className={cx("App", classes.wrapper)}>
         <div className={classes.base}>
           <div className={classes.banner}>
-            <img
-              src={logoBlack}
-              srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
-              alt="Ledger Vault"
-            />
+            <Logo />
             <a href="#" className={classes.support}>
               support
             </a>

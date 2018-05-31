@@ -2,6 +2,7 @@
 import _ from "lodash";
 import { LOGOUT } from "./auth";
 import type { Member, Currency } from "data/types";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
@@ -110,7 +111,7 @@ export function switchInternalModal(id: string) {
   };
 }
 
-export function selectCurrency(currency: Currency) {
+export function selectCurrency(currency: CryptoCurrency) {
   return (dispatch: Function) => {
     dispatch(selectCurrencyItem(currency));
     dispatch(changeTab(1));

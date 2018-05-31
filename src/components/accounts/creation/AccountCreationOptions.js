@@ -2,8 +2,8 @@
 import React from "react";
 import BadgeCurrency from "../../BadgeCurrency";
 import type { Currency } from "data/types";
-import TextField from "material-ui/TextField";
-import { withStyles } from "material-ui/styles";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   title: {

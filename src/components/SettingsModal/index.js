@@ -4,9 +4,9 @@ import cx from "classnames";
 import debounce from "lodash/debounce";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { NavLink } from "react-router-relative-link";
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import { withStyles } from "material-ui/styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import { withStyles } from "@material-ui/core/styles";
 
 import SelectTab from "components/SelectTab/SelectTab";
 import connectData from "restlay/connectData";
@@ -17,7 +17,6 @@ import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutati
 import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
-import { listCurrencies } from "@ledgerhq/currencies";
 import BadgeSecurity from "../BadgeSecurity";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
@@ -32,10 +31,10 @@ import {
 } from "../icons";
 
 import type { Account, AccountSettings } from "data/types";
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+const allCurrencies = listCryptoCurrencies(true);
 
 // import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
-
-const allCurrencies = listCurrencies();
 
 const styles = {
   container: {
@@ -165,7 +164,7 @@ const styles = {
   },
   settingsField: {
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "baseline",
     justifyContent: "space-between"
   },
   settingsFieldTopPadded: {
@@ -275,9 +274,12 @@ class AccountSettingsEdit extends Component<Props, State> {
   }
   debouncedCommit = debounce(() => {
     const { props: { restlay, account }, state: { settings } } = this;
+    const currencyCode = settings.currency_unit["code"];
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: settings.currency_unit["id"],
+      currency_unit: account.currency.units.find(
+        unit => unit.code === currencyCode
+      ).id,
       fiat: settings.fiat.id || settings.fiat
     });
     restlay.commitMutation(m);
@@ -330,7 +332,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     const { account, classes /* fiats  */ } = this.props;
     const { name, settings } = this.state;
     const unit_index = account.currency.units.findIndex(
-      unit => unit.id === settings.currency_unit.id
+      unit => unit.code === settings.currency_unit.code
     );
 
     // const fiat = settings.fiat.id || settings.fiat;

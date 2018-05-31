@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import cx from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 // this component is wheter active or inactive depending on the route
 

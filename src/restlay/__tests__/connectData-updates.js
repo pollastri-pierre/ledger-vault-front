@@ -13,7 +13,7 @@ test("multiple update with same props trigger no re-rendering", async () => {
 
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillUpdate() {
+      componentDidUpdate() {
         ++update;
       }
       render() {

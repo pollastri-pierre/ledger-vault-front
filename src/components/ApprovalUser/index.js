@@ -4,7 +4,7 @@ import MemberAvatar from "../MemberAvatar";
 import ValidateBadge from "../icons/full/ValidateBadge";
 import Question from "../icons/full/Question";
 import type { Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 
 const styles = {

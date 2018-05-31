@@ -1,7 +1,7 @@
 //@flow
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import Plus from "../../components/icons/full/Plus";
 import AddMember from "./AddMember";
@@ -125,7 +125,7 @@ const MembersList = withStyles(
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onToggleModalProfile: member => dispatch(toggleModalProfile(member)),
   onAddMember: data => dispatch(addMember(data)),
   onGetChallenge: () => dispatch(getChallengeRegistration()),

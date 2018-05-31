@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import CounterValue from "components/CounterValue";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "../../../shared/colors";
 import connectData from "restlay/connectData";
 import { TextField } from "components";
@@ -10,7 +11,8 @@ import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import { countervalueForRate, formatCurrencyUnit } from "data/currency";
+import { countervalueForRate } from "data/currency";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
 import ModalSubTitle from "./ModalSubTitle";
 import CryptoAddressPicker from "../../CryptoAddressPicker";
 import FeeSelect from "./FeeSelect";
@@ -215,22 +217,6 @@ class OperationCreationDetails extends Component<
     this.props.saveDetails(details);
   };
 
-  getCounterValue = (sat: number, showCode: boolean = false) => {
-    const counterValue = countervalueForRate(
-      this.props.account.currencyRate,
-      sat
-    );
-    const fiat = formatCurrencyUnit(
-      counterValue.unit,
-      counterValue.value,
-      showCode,
-      false,
-      true
-    );
-
-    return fiat;
-  };
-
   render() {
     const { account, classes } = this.props;
     const { unitIndex } = this.state;
@@ -255,14 +241,17 @@ class OperationCreationDetails extends Component<
           <MaxSelect onSetMax={this.setMax} />
         </InputFieldMerge>
 
-        {/* <div className={classes.countervalue}> */}
-        {/*   <div>{this.props.account.currencyRate.fiat}</div> */}
-        {/*   <div>{this.getCounterValue(this.state.satoshis)}</div> */}
-        {/* </div> */}
-
-        <div style={{ marginTop: 40 }}>
-          <ModalSubTitle noPadding>Address to credit</ModalSubTitle>
+        <div className={classes.countervalue}>
+          <div>USD</div>
+          <div>
+            <CounterValue
+              value={this.state.satoshis}
+              from={account.currency.name}
+            />
+          </div>
         </div>
+
+        <ModalSubTitle noPadding>Address to credit</ModalSubTitle>
 
         <CryptoAddressPicker
           id="address"
@@ -271,7 +260,7 @@ class OperationCreationDetails extends Component<
           isValid={this.state.addressIsValid}
           fullWidth
           inputProps={{ style: { paddingBottom: 15 } }}
-          style={{ marginBottom: 20 }}
+          style={{ marginBottom: 15 }}
         />
 
         <ModalSubTitle noPadding>Confirmation fees</ModalSubTitle>
@@ -284,7 +273,7 @@ class OperationCreationDetails extends Component<
             style={{
               flex: 1,
               textAlign: "right",
-              paddingBottom: 20,
+              paddingBottom: 15,
               borderBottom: "1px solid #eeeeee"
             }}
           >
@@ -295,9 +284,12 @@ class OperationCreationDetails extends Component<
           </div>
         </InputFieldMerge>
 
-        {/* <div className={classes.feesFiat}> */}
-        {/*   {this.getCounterValue(this.state.feesAmount, true)} */}
-        {/* </div> */}
+        <div className={classes.feesFiat}>
+          <CounterValue
+            value={this.state.feesAmount}
+            from={account.currency.name}
+          />
+        </div>
       </div>
     );
   }

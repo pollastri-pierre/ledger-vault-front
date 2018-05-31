@@ -37,7 +37,7 @@ class ApproveWatchOperations extends Component<Props> {
         ) && operation.status === "PENDING_APPROVAL"
     );
     const enhancedToApprove = toApprove.map(operation => {
-      operation.rate = { fiat: "USD", value: 10000 };
+      // operation.rate = { fiat: "USD", value: 10000 };
       return operation;
     });
 

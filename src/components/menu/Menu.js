@@ -9,13 +9,13 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
 import PropTypes from "prop-types";
-import { MenuList } from "material-ui/Menu";
+import MenuList from "@material-ui/core/MenuList";
 import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import ModalRoute from "../ModalRoute";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";

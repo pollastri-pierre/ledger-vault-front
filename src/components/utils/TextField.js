@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import MUITextField from "material-ui/TextField";
+import MUITextField from "@material-ui/core/TextField";
 
 type Props = {
   placeholder?: string,

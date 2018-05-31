@@ -5,7 +5,7 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
@@ -13,7 +13,7 @@ import ReceiveFundsCard from "./ReceiveFundsCard";
 // import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
-// import AccountCountervalueCard from "./AccountCountervalueCard";
+import AccountCountervalueCard from "./AccountCountervalueCard";
 
 const styles = {
   flex: {
@@ -21,9 +21,7 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  left: {
-    width: "65.4%"
-  },
+  left: {},
   half: {
     width: "100%",
     marginRight: "20px"
@@ -57,11 +55,11 @@ class AccountView extends Component<
       <div>
         <div className={classes.flex}>
           <AccountBalanceCard account={account} />
+          <AccountCountervalueCard account={account} />
+        </div>
+        <div className={classes.half}>
           <ReceiveFundsCard address={account.fresh_addresses[0]} />
         </div>
-        {/* <div className={classes.half}> */}
-        {/*   <AccountCountervalueCard accountId={accountId} /> */}
-        {/* </div> */}
         {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
         <AccountLastOperationsCard key={accountId} account={account} />
         <ModalRoute

@@ -1,7 +1,7 @@
 //@flow
 import React, { Component, PureComponent } from "react";
 import colors from "shared/colors";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

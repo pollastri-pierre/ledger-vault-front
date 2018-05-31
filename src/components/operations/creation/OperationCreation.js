@@ -1,7 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
-import Tabs, { Tab } from "material-ui/Tabs";
+import { withStyles } from "@material-ui/core/styles";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import DialogButton from "../../buttons/DialogButton";
 import Overscroll from "../../utils/Overscroll";
 import OperationCreationAccounts from "./OperationCreationAccounts";
@@ -147,6 +148,7 @@ class OperationCreation extends Component<{
           className={classes.tabs}
           value={tabsIndex}
           onChange={this.onTabChange}
+          indicatorColor="primary"
         >
           {tabTitles.map((title, i) => (
             <Tab

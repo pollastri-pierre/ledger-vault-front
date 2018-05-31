@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Plug from "components/icons/thin/Plug";
 import Hand from "components/icons/thin/Hand";
 import { Step } from "components/Onboarding.js";

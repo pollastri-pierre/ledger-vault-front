@@ -7,7 +7,7 @@ class LoginTest extends Component<{}, { registration: ?Object }> {
   state = {
     registration: null
   };
-  onSubmit = async (e: SyntheticEvent<*>) => {
+  onSubmit = async (e: SyntheticInputEvent<*>) => {
     e.preventDefault();
     const device = await createDevice();
     const application =

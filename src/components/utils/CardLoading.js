@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import CircularProgress from "material-ui/Progress/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function CardLoading() {
   return (

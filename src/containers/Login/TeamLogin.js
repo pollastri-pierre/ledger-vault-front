@@ -2,9 +2,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
-import MUITextField from "material-ui/TextField";
+import MUITextField from "@material-ui/core/TextField";
 
 const styles = {
   base: {
@@ -50,7 +50,7 @@ export class TeamLogin extends Component<{
     translate: string => string
   };
 
-  onSubmit = (e: *) => {
+  onSubmit = (e: any) => {
     e.preventDefault();
     if (this.props.domain !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
@@ -61,7 +61,7 @@ export class TeamLogin extends Component<{
     this.props.onCloseTeamError();
   };
 
-  onChange = (e: SyntheticEvent<*>) => {
+  onChange = (e: any) => {
     this.props.onChange(e.currentTarget.value);
   };
 

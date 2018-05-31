@@ -6,12 +6,12 @@ import ProfileEditModal from "../ProfileEditModal";
 import ModalRoute from "../ModalRoute";
 import PopBubble from "../utils/PopBubble";
 import ProfileIcon from "../icons/thin/Profile";
-import CircularProgress from "material-ui/Progress/CircularProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import connectData from "restlay/connectData";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { mixinHoverSelected } from "shared/common";
 import ProfileQuery from "api/queries/ProfileQuery";
-import { MenuList } from "material-ui/Menu";
+import MenuList from "@material-ui/core/MenuList";
 import MenuLink from "../MenuLink";
 
 const styles = {

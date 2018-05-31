@@ -7,7 +7,7 @@ import rectCrop from "rect-crop";
 import { TextField } from "components";
 import DialogButton from "components/buttons/DialogButton";
 import ProfileIcon from "components/icons/thin/Profile";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
 
@@ -23,6 +23,15 @@ const validators: { [_: string]: Validator } = {
   last_name: validateName,
   email: validateMail,
   picture: _ => true
+};
+
+const sanitize = (object: Object): Object => {
+  return {
+    email: object.email.value,
+    first_name: object.first_name.value,
+    last_name: object.last_name.value,
+    picture: object.picture.value
+  };
 };
 
 export const styles = {
@@ -206,7 +215,9 @@ class ProfileEditModal extends Component<
           highlight
           right
           disabled={error || this.isEmpty()}
-          onTouchTap={error ? null : () => this.props.onSubmit(this.state)}
+          onTouchTap={
+            error ? null : () => this.props.onSubmit(sanitize(this.state))
+          }
         >
           {labelSubmit}
         </DialogButton>

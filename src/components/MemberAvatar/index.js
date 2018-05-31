@@ -2,7 +2,7 @@
 import React from "react";
 import People from "../icons/thin/Profile";
 import classnames from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

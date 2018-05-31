@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classNames from "classnames";
-import MUISelect from "material-ui/Select";
+import MUISelect from "@material-ui/core/Select";
 import ArrowDown from "./icons/full/ArrowDown";
 
 class SelectBubble extends Component<{

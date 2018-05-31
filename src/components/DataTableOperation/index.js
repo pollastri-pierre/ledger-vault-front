@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
 import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
@@ -10,7 +11,7 @@ import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 type Cell = {
   operation: Operation,
@@ -203,21 +204,17 @@ class AmountColumn extends Component<Cell> {
   }
 }
 
-// class CountervalueColumn extends Component<Cell> {
-//   render() {
-//     const { operation, account } = this.props;
-//     return account ? (
-//       <CurrencyAccountValue
-//         account={account}
-//         rate={operation.rate}
-//         value={operation.amount}
-//         alwaysShowSign
-//         countervalue
-//       />
-//     ) : null;
-//   }
-// }
-
+class CountervalueColumn extends Component<Cell> {
+  render() {
+    const { operation, account } = this.props;
+    if (account) {
+      return (
+        <CounterValue from={account.currency.name} value={operation.amount} />
+      );
+    }
+    return null;
+  }
+}
 const COLS = [
   {
     className: "date",
@@ -239,11 +236,11 @@ const COLS = [
     title: "status",
     Cell: StatusColumn
   },
-  // {
-  //   className: "countervalue",
-  //   title: "",
-  //   Cell: CountervalueColumn
-  // },
+  {
+    className: "countervalue",
+    title: "",
+    Cell: CountervalueColumn
+  },
   {
     className: "amount",
     title: "amount",
@@ -304,7 +301,7 @@ class DataTableOperation extends Component<
     <Row {...props} openOperation={this.openOperation} />
   );
 
-  componentWillReceiveProps(props) {
+  componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
       this.setState({
         columns: COLS.filter(c => props.columnIds.includes(c.className))

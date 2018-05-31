@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import createDevice, {
   U2F_PATH,
   CONFIDENTIALITY_PATH,
@@ -40,7 +40,12 @@ type Props = {
   cancel: Function,
   finish: Function,
   challenge: string,
-  data: *
+  data: {
+    last_name: string,
+    first_name: string,
+    email: string,
+    picture?: string
+  }
 };
 
 type State = {
@@ -49,9 +54,9 @@ type State = {
 class StepDevice extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = { active: 0 };
   }
+
   componentDidMount() {
     this.onStart();
   }
@@ -61,6 +66,9 @@ class StepDevice extends Component<Props, State> {
       this.setState({ active: 0 });
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+      const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
+      const validation = await device.getPublicKey(VALIDATION_PATH);
+      this.setState({ active: 1 });
 
       const instanceName = "";
       const instanceReference = "";
@@ -75,10 +83,7 @@ class StepDevice extends Component<Props, State> {
         agentRole
       );
 
-      const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
-      const validation = await device.getPublicKey(VALIDATION_PATH);
-
-      this.setState({ active: 1 });
+      this.setState({ active: 2 });
 
       const data = {
         u2f_register: u2f_register.rawResponse,
@@ -92,17 +97,20 @@ class StepDevice extends Component<Props, State> {
           public_key: confidentiality.pubKey,
           attestation: confidentiality.signature.toString("hex")
         },
-        first_name: this.props.data.first_name.value,
-        last_name: this.props.data.last_name.value,
-        email: this.props.data.email.value,
-        picture: this.props.data.picture.value
+        first_name: this.props.data.first_name,
+        last_name: this.props.data.last_name,
+        email: this.props.data.email,
+        picture: this.props.data.picture
       };
-      this.setState({ active: 2 });
 
       this.props.finish(data);
     } catch (e) {
       console.error(e);
-      this.onStart();
+      if (e.statusCode && e.statusCode === 27013) {
+        this.props.cancel();
+      } else {
+        this.onStart();
+      }
     }
   };
 
@@ -113,7 +121,7 @@ class StepDevice extends Component<Props, State> {
         step={this.state.active}
         steps={steps}
         title="Register device"
-        close={cancel}
+        cancel={cancel}
       />
     );
   }

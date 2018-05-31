@@ -1,7 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import ValidateBadge from "../icons/full/ValidateBadge";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import type { Member, Approval } from "data/types";
 import { calculateApprovingObjectMeta } from "data/approvingObject";
 import colors from "shared/colors";

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
 import TabOverview from "./TabOverview";
@@ -11,7 +11,8 @@ import connectData from "restlay/connectData";
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import type { Operation, Account, Member } from "data/types";
-import Tabs, { Tab } from "material-ui/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import modals from "shared/modals";
 
 type Props = {
@@ -62,7 +63,11 @@ class OperationDetails extends Component<Props, *> {
       <div className={classes.base}>
         <header>
           <h2>{"Operation's details"}</h2>
-          <Tabs value={value} onChange={this.handleChange}>
+          <Tabs
+            value={value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+          >
             <Tab label="Overview" disableRipple />
             <Tab label="Details" disableRipple />
             <Tab label="Label" disableRipple />

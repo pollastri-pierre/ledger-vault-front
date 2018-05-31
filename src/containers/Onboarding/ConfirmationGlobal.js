@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import { Title } from "components/Onboarding";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People.js";
 import Lock from "components/icons/thin/Lock";

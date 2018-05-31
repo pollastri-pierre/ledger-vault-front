@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import { Title, Step, Awaiting } from "../../components/Onboarding";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Plug from "../../components/icons/thin/Plug.js";
 import DialogButton from "../../components/buttons/DialogButton";
 

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import AccountCard from "./AccountCard";
 import AccountsQuery from "api/queries/AccountsQuery";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import TryAgain from "components/TryAgain";
 
 const styles = {

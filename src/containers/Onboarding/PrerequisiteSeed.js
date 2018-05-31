@@ -9,8 +9,8 @@ import {
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
-import { withStyles } from "material-ui/styles";
-import { Requirement } from "./Requirements";
+import { withStyles } from "@material-ui/core/styles";
+import { RequirementUnit } from "./Requirements";
 import People from "components/icons/thin/People.js";
 import Box from "components/icons/thin/Box.js";
 import Briefcase from "components/icons/thin/Briefcase.js";
@@ -58,29 +58,29 @@ const PrerequisiteSeed = ({
         <div>
           <SubTitle>required</SubTitle>
           <div className={classes.flexcolumn}>
-            <Requirement icon={<Briefcase style={{ height: 29 }} />}>
+            <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
               <div style={{ width: 96 }}>Ledger Vault Briefcase</div>
-            </Requirement>
-            <Requirement
+            </RequirementUnit>
+            <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              3 shared owners
-            </Requirement>
+              <div>3 shared owners</div>
+            </RequirementUnit>
           </div>
         </div>
         <div className={classes.notrequired}>
           <SubTitle>Not required</SubTitle>
           <div className={classes.flexcolumn}>
-            <Requirement icon={<Box style={{ height: 29 }} />}>
-              Box of Ledger Blue devices
-            </Requirement>
-            <Requirement
+            <RequirementUnit icon={<Box style={{ height: 29 }} />}>
+              <div>Box of Ledger Blue devices</div>
+            </RequirementUnit>
+            <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              Team members
-            </Requirement>
+              <div>Team members</div>
+            </RequirementUnit>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import cx from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Arrow from "../../components/icons/full/ArrowDown.js";
 
 const styles = {

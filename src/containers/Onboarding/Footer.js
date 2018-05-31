@@ -1,11 +1,11 @@
 //@flow
 import React from "react";
 // import DialogButton from "components/buttons/DialogButton";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { nextStep, previousStep, nextState } from "redux/modules/onboarding";
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: *) => {
   return {
     onNext: () => dispatch(nextStep()),
     onNextState: data => dispatch(nextState(data)),

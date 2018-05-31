@@ -8,7 +8,7 @@ import MemberRow from "components/MemberRow";
 import InfoModal from "components/InfoModal";
 import { DialogButton, Overscroll } from "components";
 import type { Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
 const styleCounter = {
@@ -18,7 +18,7 @@ const styleCounter = {
     color: "#999",
     fontWeight: "600",
     float: "right",
-    marginTop: "-57px"
+    marginTop: "-42px"
   }
 };
 const SelectedCounter = withStyles(

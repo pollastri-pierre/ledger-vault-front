@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import Footer from "../../approve/Footer";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import OperationApproveDedails from "./OperationApproveDedails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import ApprovalPercentage from "components/ApprovalPercentage";
@@ -15,7 +15,8 @@ import MembersQuery from "api/queries/MembersQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 // import { calculateApprovingObjectMeta } from "data/approvingObject";
 import type { Account, Operation, Member } from "data/types";
-import Tabs, { Tab } from "material-ui/Tabs";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import modals from "shared/modals";
 
 const styles = {
@@ -99,7 +100,11 @@ class OperationApprove extends Component<Props, { value: number }> {
       <div className={classes.base}>
         <header>
           <h2>Operation request</h2>
-          <Tabs value={value} onChange={this.handleChange}>
+          <Tabs
+            value={value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+          >
             <Tab label="Details" disableRipple />
             <Tab label="Approvals" disableRipple />
             {/* <Tab label="Locks" disableRipple /> */}

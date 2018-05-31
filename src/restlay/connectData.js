@@ -2,6 +2,7 @@
 import { connect } from "react-redux";
 import invariant from "invariant";
 import React, { Component } from "react";
+import type { ComponentType } from "react";
 import PropTypes from "prop-types";
 import shallowEqual from "fbjs/lib/shallowEqual";
 import isEqual from "lodash/isEqual";
@@ -56,7 +57,7 @@ type In<Props, A> =
   | Class<React$Component<InProps<Props, A>, any>>
   | ((props: InProps<Props, A>, ctx: any) => any);
 // prettier-ignore
-type Out<Props> = Class<React$Component<Props, any>>;
+type Out<Props> = ComponentType<Props>
 
 type ClazzProps<Props> = { ...ConnectedProps, ...Props };
 
@@ -377,7 +378,7 @@ export default function connectData<
       return p || Promise.resolve();
     }
 
-    componentWillMount() {
+    componentDidMount() {
       this.syncProps(this.props);
     }
 
@@ -385,7 +386,8 @@ export default function connectData<
       this._unmounted = true;
     }
 
-    componentWillReceiveProps(props: ClazzProps<Props>) {
+    UNSAFE_componentWillReceiveProps(props: ClazzProps<Props>) {
+      console.log("HERE");
       this.syncProps(props);
     }
 
@@ -442,5 +444,5 @@ export default function connectData<
     }
   }
 
-  return connect(mapStateToProps)(Clazz);
+  return connect(mapStateToProps, null)(Clazz);
 }

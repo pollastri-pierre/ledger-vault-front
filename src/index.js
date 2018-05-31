@@ -1,10 +1,9 @@
 //@flow
 import React from "react";
 import ReactDOM from "react-dom";
-import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { AppContainer } from "react-hot-loader";
-import injectTapEventPlugin from "react-tap-event-plugin";
 import create from "redux/create";
 import RestlayProvider from "restlay/RestlayProvider";
 import GlobalLoading from "components/GlobalLoading";
@@ -14,6 +13,7 @@ import OrganizationAppRouter from "containers/OrganizationAppRouter";
 import I18nProvider from "containers/I18nProvider";
 import jss from "jss";
 import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
+import CounterValues from "data/CounterValues";
 
 jss
   .createStyleSheet({
@@ -23,7 +23,7 @@ jss
     }
   })
   .attach();
-injectTapEventPlugin(); // Required by Material-UI
+// injectTapEventPlugin(); // Required by Material-UI
 
 const muiTheme = createMuiTheme(theme);
 
@@ -38,16 +38,18 @@ const render = Component => {
     ReactDOM.render(
       <AppContainer>
         <Provider store={store}>
-          <RestlayProvider
-            network={network}
-            connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
-          >
-            <MuiThemeProvider theme={muiTheme}>
-              <I18nProvider>
-                <Component />
-              </I18nProvider>
-            </MuiThemeProvider>
-          </RestlayProvider>
+          <CounterValues.PollingProvider>
+            <RestlayProvider
+              network={network}
+              connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
+            >
+              <MuiThemeProvider theme={muiTheme}>
+                <I18nProvider>
+                  <Component />
+                </I18nProvider>
+              </MuiThemeProvider>
+            </RestlayProvider>
+          </CounterValues.PollingProvider>
         </Provider>
       </AppContainer>,
       $root

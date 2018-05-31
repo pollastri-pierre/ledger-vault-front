@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import { MenuItem } from "material-ui/Menu";
-import { withStyles } from "material-ui/styles";
+import MenuItem from "@material-ui/core/MenuItem";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { goToStep } from "redux/modules/onboarding.js";
 
@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onGoToStep: s => dispatch(goToStep(s))
 });
 

@@ -18,7 +18,6 @@ type Props = {
   onboarding: *,
   onGetBootstrapChallenge: Function,
   onGetBootstrapToken: Function,
-  onPostChallenge: Function,
   onAddMessage: Function
 };
 
@@ -30,7 +29,7 @@ type State = {
 const mapState = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onGetBootstrapChallenge: () => dispatch(getBootstrapChallenge()),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success)),
@@ -49,7 +48,7 @@ class Authentication extends Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (
       nextProps.onboarding.bootstrapChallenge !==
       this.props.onboarding.bootstrapChallenge
@@ -76,7 +75,7 @@ class Authentication extends Component<Props, State> {
       // const keyHandle = bootstrapChallenge.key_handle[pubKey.toUpperCase()];
       const keyHandle = bootstrapChallenge.key_handle.key_handle;
 
-      const sign = await await device.authenticate(
+      const sign = await await device.authenticateBootstrap(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_BOOTSTRAP,
         Buffer.from(keyHandle, "base64"),

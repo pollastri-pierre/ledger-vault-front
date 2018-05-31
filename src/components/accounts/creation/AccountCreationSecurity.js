@@ -5,7 +5,7 @@ import React from "react";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 // import RatesFull from "../../icons/full/Rates";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 // import HourglassFull from "../../icons/full/Hourglass";
 import PeopleFull from "../../icons/full/People";
 

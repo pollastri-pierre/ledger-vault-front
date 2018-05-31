@@ -1,7 +1,9 @@
 //@flow
 import { type Member } from "data/types";
 import { addMessage } from "redux/modules/alerts";
+import type { Dispatch } from "redux";
 import network from "network";
+export const SET_CURRENT_STEP = "onboarding/SET_CURRENT_STEP";
 export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
 export const ADD_MEMBER = "onboarding/ADD_MEMBER";
 export const GO_TO_NEXT = "onboarding/GO_TO_NEXT";
@@ -36,25 +38,25 @@ type Challenge = {
 type Channel = string;
 
 const ALL_ROUTES = [
-  { label: "welcome", visited: true, milestone: true },
-  { label: "authentication", visited: false, milestone: true },
-  { label: "administrators_prerequisite", visited: false },
-  { label: "administrators_configuration", visited: false },
-  { label: "administrators_registration", visited: false },
-  { label: "administrators_scheme", visited: false },
-  { label: "administrators_confirmation", visited: false },
-  { label: "seed_signin", visited: false },
-  { label: "seed_prerequisite", visited: false },
-  { label: "seed_configuration", visited: false },
-  { label: "seed_backup", visited: false },
-  { label: "seed_provisioning", visited: false },
-  { label: "seed_confirmation", visited: false }
+  { label: "welcome", visited: true, milestone: true, step: 1 },
+  { label: "authentication", visited: false, milestone: true, step: 2 },
+  { label: "administrators_prerequisite", visited: false, step: 3 },
+  { label: "administrators_configuration", visited: false, step: 3 },
+  { label: "administrators_registration", visited: false, step: 3 },
+  { label: "administrators_scheme", visited: false, step: 3 },
+  { label: "administrators_confirmation", visited: false, step: 4 },
+  { label: "seed_signin", visited: false, step: 6 },
+  { label: "seed_prerequisite", visited: false, step: 7 },
+  { label: "seed_configuration", visited: false, step: 7 },
+  { label: "seed_backup", visited: false, step: 7 },
+  { label: "seed_provisioning", visited: false, step: 7 },
+  { label: "seed_confirmation", visited: false, step: 7 }
 ];
 
 export type Store = {
   nbRequired: number,
   members: Array<Member>,
-  currentStep: number,
+  currentStep: ?number,
   modalProfile: boolean,
   isLoadingChallengeRegistration: boolean,
   challenge_registration: ?string,
@@ -149,7 +151,7 @@ export function nextStep() {
 }
 
 export function nextState(data: *) {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const dataToSend = data || {};
     await network("/onboarding/next", "POST", dataToSend);
     dispatch(nextStep());
@@ -168,7 +170,7 @@ export function toggleGenerateSeed() {
 }
 
 export function addSeedShard(data: *) {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     await network("/onboarding/authenticate", "POST", data);
     return dispatch({
       type: ADD_SEED_SHARD,
@@ -178,7 +180,7 @@ export function addSeedShard(data: *) {
 }
 
 export function addSignedIn(pub_key: string, signature: *) {
-  return async (dispatch: Function, getState: Function) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
     const { signed } = getState()["onboarding"];
     const index = signed.findIndex(
       member => member.pub_key === pub_key.toUpperCase()
@@ -235,7 +237,7 @@ export function gotShardChallenge(challenge: Challenge) {
 }
 
 export function getCommitChallenge() {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const challenge = await network("/onboarding/challenge", "GET");
 
     return dispatch(gotCommitChallenge(challenge));
@@ -257,7 +259,7 @@ export function gotBootstrapToken(result: *) {
 }
 
 export function getBootstrapToken(pub_key: string, signature: Object) {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const data = {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
@@ -274,7 +276,7 @@ export function lockPartition() {
 }
 
 export function commitAdministrators(pub_key: string, signature: Object) {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const data = {
       pub_key: pub_key.toUpperCase(),
       authentication: signature.rawResponse
@@ -285,14 +287,14 @@ export function commitAdministrators(pub_key: string, signature: Object) {
 }
 
 export function getShardChallenge() {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const challenge = await network("/onboarding/challenge", "GET");
     return dispatch(gotShardChallenge(challenge));
   };
 }
 
 export function getBootstrapChallenge() {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const challengeObject = await network("/onboarding/challenge", "GET");
     return dispatch(gotBootstrapChallenge(challengeObject));
   };
@@ -306,7 +308,7 @@ export function gotBootstrapChallenge(challenge: Challenge) {
 }
 
 export function getChallengeRegistration() {
-  return async (dispatch: Function) => {
+  return async (dispatch: Dispatch<*>) => {
     const { challenge } = await network("/onboarding/challenge", "GET");
     return dispatch(gotChallengeRegistation(challenge));
   };
@@ -326,8 +328,18 @@ export function viewRoute(currentRoute: string) {
   };
 }
 
+export function getCurrentState() {
+  return async (dispatch: Dispatch<*>) => {
+    const { step } = await network("/onboarding/state", "GET");
+    return dispatch({
+      type: SET_CURRENT_STEP,
+      step
+    });
+  };
+}
+
 export function addMember(data: Member) {
-  return async (dispatch: Function, getState: Function) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
     const { members } = getState()["onboarding"];
     const findIndex = members.findIndex(
       member => member.pub_key === data.pub_key
@@ -367,13 +379,16 @@ export default function reducer(state: Store = initialState, action: Object) {
       return state;
     }
     case PREV_STEP: {
-      if (state.currentStep > 0) {
+      if (state.currentStep && state.currentStep > 0) {
         return { ...state, currentStep: state.currentStep - 1 };
       }
       return state;
     }
     case NEXT_STEP: {
-      if (state.currentStep < ALL_ROUTES.length - 1) {
+      if (
+        state.currentStep !== null &&
+        state.currentStep < ALL_ROUTES.length - 1
+      ) {
         return { ...state, currentStep: state.currentStep + 1 };
       }
       return state;
@@ -481,7 +496,7 @@ export default function reducer(state: Store = initialState, action: Object) {
       );
 
       if (index > -1) {
-        const newMembers = state.members.map((item, i) => {
+        const newMembers: Array<Member> = state.members.map((item, i) => {
           if (i !== index) {
             return item;
           }
@@ -507,6 +522,13 @@ export default function reducer(state: Store = initialState, action: Object) {
       return {
         ...state,
         successSeedShards: true
+      };
+    }
+    case SET_CURRENT_STEP: {
+      const step = ALL_ROUTES.findIndex(route => route.step === action.step);
+      return {
+        ...state,
+        currentStep: step
       };
     }
     default:

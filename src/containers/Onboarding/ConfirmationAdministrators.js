@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import createDevice, { APPID_VAULT_BOOTSTRAP, U2F_PATH } from "device";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Authenticator from "./Authenticator";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
 import DialogButton from "components/buttons/DialogButton";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -33,7 +33,7 @@ const styles = {
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onGetCommitChallenge: () => dispatch(getCommitChallenge()),
   onCommitAdministrators: (key, signature) =>
     dispatch(commitAdministrators(key, signature)),
@@ -64,7 +64,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
       onGetCommitChallenge();
     }
   }
-  componentWillReceiveProps(nextProps: Props) {
+  componentDidUpdate(nextProps: Props) {
     if (
       nextProps.onboarding.commit_challenge !==
       this.props.onboarding.commit_challenge
@@ -87,7 +87,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
         .key_handle;
       const challenge = this.props.onboarding.commit_challenge.challenge;
 
-      const commit_signature = await device.authenticate(
+      const commit_signature = await device.authenticateBootstrap(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_BOOTSTRAP,
         Buffer.from(keyHandle, "base64"),

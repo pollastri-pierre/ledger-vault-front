@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   title: {
@@ -10,14 +10,14 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     color: "black",
-    textTransform: "uppercase",
-  },
+    textTransform: "uppercase"
+  }
 };
 
 class ModalSubTitle extends Component<{
   children: React$Node | string,
   classes: { [_: $Keys<typeof styles>]: string },
-  noPadding: boolean,
+  noPadding: boolean
 }> {
   render() {
     const { children, classes, noPadding } = this.props;

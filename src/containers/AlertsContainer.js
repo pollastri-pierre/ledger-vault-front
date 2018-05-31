@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
   alerts: state.alerts
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onClose: () => dispatch(closeMessage())
 });
 

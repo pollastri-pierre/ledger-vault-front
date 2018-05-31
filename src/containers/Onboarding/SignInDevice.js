@@ -40,25 +40,17 @@ class SignInDevice extends Component<Props, State> {
 
       const keyHandle = this.props.keyHandles[pubKey];
       const challenge = this.props.challenge.challenge;
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
 
       const authentication = await device.authenticate(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR,
-        Buffer.from(keyHandle, "hex"),
-        instanceName,
-        instanceReference,
-        instanceURL,
-        agentRole
+        Buffer.from(keyHandle, "hex")
       );
       this.setState({ step: 2 });
       this.props.onFinish(pubKey, authentication);
     } catch (e) {
       console.error(e);
-      this.start();
+      // this.start();
     }
   };
   render() {

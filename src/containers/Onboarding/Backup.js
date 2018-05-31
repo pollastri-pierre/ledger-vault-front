@@ -9,7 +9,7 @@ import {
   SubTitle,
   ToContinue
 } from "../../components/Onboarding.js";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 

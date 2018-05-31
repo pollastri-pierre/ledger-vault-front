@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { connect } from "react-redux";
 import { logout } from "redux/modules/auth";
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   logout: () => dispatch(logout())
 });
 

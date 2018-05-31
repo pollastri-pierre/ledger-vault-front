@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import type { Unit, TransactionType } from "data/types";
-import { formatCurrencyUnit } from "data/currency";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
@@ -19,17 +19,17 @@ class CurrencyUnitValue extends PureComponent<{
     ].join(" ");
     return (
       <span
-        title={formatCurrencyUnit(unit, value, true, alwaysShowSign, true)}
+        title={formatCurrencyUnit(unit, value, {
+          showCode: true,
+          alwaysShowSign: alwaysShowSign
+        })}
         className={className}
       >
-        {formatCurrencyUnit(
-          unit,
-          value,
-          true,
-          alwaysShowSign,
-          unit.showAllDigits,
-          type
-        )}
+        {formatCurrencyUnit(unit, value, {
+          showCode: true,
+          alwaysShowSign: alwaysShowSign,
+          showAllDigits: true
+        })}
       </span>
     );
   }

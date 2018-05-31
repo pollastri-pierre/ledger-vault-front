@@ -1,35 +1,36 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-import CurrencyUnitValue from "./CurrencyUnitValue";
-import { getAccountCurrencyUnit, countervalueForRate } from "data/currency";
-import type { Rate, Account } from "data/types";
+import CounterValues from "data/CounterValues";
+import { connect } from "react-redux";
+import CurrencyFiatValue from "components/CurrencyFiatValue";
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+const allCurrencies = listCryptoCurrencies(true);
 
-class CurrencyCounterValueConversion extends PureComponent<*> {
-  props: {
-    account: Account,
-    rate?: Rate // override the rate to use (default is the currency current rate)
-  };
+const mapStateToProps = (state, ownProps) => {
+  // const currency = allCurrencies.find(curr => curr.id === ownProps.account.currency.name);
+  // const countervalue: CounterValues.reverseSelector(state, {
+  //     from: currency,
+  //     to: getFiatCurrencyByTicker("USD"),
+  //     exchange: "BITFINEX",
+  //     value: 1000000
+  //   })
+  // return {countervalue: 0}
+};
+
+// we get currency's name as props and looks for the right currency in ledgerhq currencies
+// because currently the API and ledgerHQ don't share the same
+// format for Currency
+
+type Props = {
+  countervalue: number,
+  account: *
+};
+
+class CurrencyCounterValueConversion extends PureComponent<Props> {
   render() {
-    let { account, rate } = this.props;
-    const unit = getAccountCurrencyUnit(account);
-    if (!rate) {
-      rate = account.currencyRate;
-    }
-    const one = Math.pow(10, unit.magnitude); // 1 in satoshis
-    const value =
-      // we find a value that don't make the counter value being less than 2 digits
-      // (e.g. it will never be 1 DOGE = 0.00 EUR but it will be 1'000 DOGE = 1.00 EUR)
-      one *
-      Math.pow(10, Math.max(0, 2 - Math.floor(Math.log10(rate.value * one))));
-    let toUnitValue = countervalueForRate(rate, value);
-    return (
-      <span>
-        <CurrencyUnitValue unit={unit} value={value} />
-        {" ≈ "}
-        <CurrencyUnitValue {...toUnitValue} />
-      </span>
-    );
+    return null;
   }
 }
 
-export default CurrencyCounterValueConversion;
+export default connect(mapStateToProps)(CurrencyCounterValueConversion);

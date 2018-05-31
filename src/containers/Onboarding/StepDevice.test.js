@@ -33,10 +33,10 @@ const props = {
   finish: jest.fn(),
   challenge: "challenge",
   data: {
-    first_name: { value: "first_name" },
-    last_name: { value: "last_name" },
-    email: { value: "email" },
-    picture: { value: null }
+    first_name: "first_name",
+    last_name: "last_name",
+    email: "email",
+    picture: null
   },
   registerKeyHandle: jest.fn()
 };

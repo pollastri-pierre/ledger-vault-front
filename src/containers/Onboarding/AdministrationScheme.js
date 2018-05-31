@@ -15,7 +15,7 @@ import ApprovalSlider from "./ApprovalSlider.js";
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });

@@ -1,7 +1,7 @@
 //@flow
-import React, { Component, PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Route } from "react-router";
+// import { Route } from "react-router";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
@@ -9,14 +9,12 @@ import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
 import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Plus from "../icons/full/Plus";
 // import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Question from "../icons/full/Question";
-import logo from "assets/img/logo.png";
-import logo2x from "assets/img/logo@2x.png";
-import logo3x from "assets/img/logo@3x.png";
+import Logo from "components/Logo";
 
 const styles = {
   base: {
@@ -28,13 +26,6 @@ const styles = {
   header: {
     marginLeft: "280px",
     padding: "54px 38px 0 0"
-  },
-  logo: {
-    width: 100,
-    overflow: "hidden",
-    "& > img": {
-      transform: "translateX(-32px)"
-    }
   },
   header_left: {
     float: "left"
@@ -64,24 +55,6 @@ const styles = {
   }
 };
 
-const NewAccountLink = withStyles(styles)(({ classes }) => (
-  <Link to={`dashboard/new-account`}>
-    <Plus className={classes.icon} />
-    <div>account</div>
-  </Link>
-));
-
-class Logo extends PureComponent<*> {
-  render() {
-    return (
-      <img
-        src={logo}
-        srcSet={`${logo2x} 2x, ${logo3x} 3x`}
-        alt="Ledger Vault logo"
-      />
-    );
-  }
-}
 class ActionBar extends Component<{
   location: Object,
   match: Object,
@@ -109,21 +82,13 @@ class ActionBar extends Component<{
         />
         <div className={classes.header}>
           <div className={classes.header_left}>
-            <div className={classes.logo}>
-              <Logo />
-            </div>
+            <Logo white />
           </div>
           <div className={classes.actions}>
-            <Route
-              path={`${match.url}/dashboard`}
-              render={() => <NewAccountLink />}
-            />
-            {/* <Link to="/export"> */}
-            {/*   <Share className={classes.icon} /> */}
-            {/*   <div className="content-header-button-text"> */}
-            {/*     {t("actionBar.export")} */}
-            {/*   </div> */}
-            {/* </Link> */}
+            <Link to={`${location.pathname}/new-account`}>
+              <Plus className={classes.icon} />
+              <div>account</div>
+            </Link>
             <Link
               to={location.pathname + "/settings"}
               className="content-header-button"

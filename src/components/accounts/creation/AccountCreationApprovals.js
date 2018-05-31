@@ -6,10 +6,10 @@ import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
 import type { Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });

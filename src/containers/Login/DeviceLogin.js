@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { DialogButton } from "components";
 import Plug from "components/icons/thin/Plug";
 import translate from "decorators/Translate";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

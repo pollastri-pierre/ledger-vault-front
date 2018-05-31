@@ -56,7 +56,7 @@ class Popover extends Component<
 
   state = { isVisible: false };
 
-  componentWillMount() {
+  componentDidMount() {
     document.addEventListener("click", this.clickHandle);
   }
 

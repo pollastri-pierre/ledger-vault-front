@@ -1,7 +1,8 @@
 //@flow
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import MembersQuery from "api/queries/MembersQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Account } from "data/types";
+import type { Account, Member } from "data/types";
 import DashboardPlaceholder from "components/DashboardPlaceholder";
 import connectData from "restlay/connectData";
 import React, { Component } from "react";
@@ -9,13 +10,13 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import Card from "components/Card";
 import Currencies from "./Currencies";
 import { TotalBalanceFilters } from "components/EvolutionSince";
-// import TotalBalanceCard from "./TotalBalanceCard";
+import TotalBalanceCard from "./TotalBalanceCard";
 import LastOperationCard from "./LastOperationCard";
 import PendingCard from "./PendingCard";
 import Storages from "./Storages";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {
@@ -36,7 +37,8 @@ class Dashboard extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
     match: *,
-    accounts: Array<Account>
+    accounts: Array<Account>,
+    members: Array<Member>
   },
   {
     filter: string
@@ -51,9 +53,9 @@ class Dashboard extends Component<
   };
 
   render() {
-    const { match, classes, accounts } = this.props;
+    const { match, classes, accounts, members } = this.props;
     const { filter } = this.state;
-    // const { onTotalBalanceFilterChange } = this;
+    const { onTotalBalanceFilterChange } = this;
 
     // TODO handle the case where accounts exist but no transaction
     if (accounts.length === 0) {
@@ -63,10 +65,12 @@ class Dashboard extends Component<
     return (
       <div className={classes.base}>
         <div className={classes.body}>
-          {/* <TotalBalanceCard */}
-          {/*   filter={filter} */}
-          {/*   onTotalBalanceFilterChange={onTotalBalanceFilterChange} */}
-          {/* /> */}
+          <TotalBalanceCard
+            filter={filter}
+            members={members}
+            accounts={accounts}
+            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
+          />
           <LastOperationCard />
           <Storages filter={filter} />
         </div>
@@ -91,6 +95,7 @@ const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(Dashboard), {
   queries: {
     currencies: CurrenciesQuery,
+    members: MembersQuery,
     accounts: AccountsQuery
   },
   RenderLoading

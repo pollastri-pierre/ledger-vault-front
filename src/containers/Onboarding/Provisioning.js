@@ -2,7 +2,7 @@
 import BlurDialog from "components/BlurDialog";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import ValidateBadge from "components/icons/full/ValidateBadge";
 import Profile from "components/icons/thin/Profile";
@@ -215,7 +215,7 @@ const mapProps = state => ({
   onboarding: state.onboarding
 });
 
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onToggleGenerateSeed: () => dispatch(toggleGenerateSeed()),
   onAddSeedShard: data => dispatch(addSeedShard(data)),
   onGetShardsChannel: () => dispatch(getShardsChannel())

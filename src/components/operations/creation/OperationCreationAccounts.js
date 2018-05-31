@@ -1,6 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
-import { MenuList } from "material-ui/Menu";
+import MenuList from "@material-ui/core/MenuList";
 import { hasPending } from "utils/operations";
 import AccountMenuItem from "./AccountMenuItem";
 import ModalSubTitle from "./ModalSubTitle";

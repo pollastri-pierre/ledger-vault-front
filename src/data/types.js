@@ -12,11 +12,6 @@
 
 export type Fiat = string;
 
-export type Rate = {
-  value: number,
-  fiat: Fiat
-};
-
 type Price = {
   amount: number
 };
@@ -82,10 +77,6 @@ export type Approval = {
 type AccountCommon = {
   id: number,
   name: string,
-  currencyRate: Rate,
-  rate: Rate,
-  currencyRate: Rate,
-  currencyRateInReferenceFiat: Rate,
   members: Member[],
   settings: AccountSettings,
   security_scheme: SecurityScheme,
@@ -178,7 +169,6 @@ type OperationCommon = {
   endOfRateLimiterTime: ?string,
   type: TransactionType,
   amount: number,
-  rate: Rate,
   account_id: string,
   approved: string[],
   senders: string[],
@@ -198,16 +188,40 @@ export type OperationEntity = OperationCommon & {
 };
 
 export type ActivityCommon = {
+  id: number,
+  seen: boolean,
+  show: boolean,
+  created_on: Date
+};
+
+export type ActivityGeneric = {
+  id: number,
+  seen: boolean,
+  show: boolean,
+  created_on: Date,
+  business_action: ActivityEntityAccount | ActivityEntityOperation
+};
+
+export type ActivityEntityAccount = ActivityCommon & {
   business_action: {
     id: number,
+    account: AccountEntity,
     author: MemberCommon,
     business_action_name: string,
     message: string,
     target_id: number,
     target_type: string
-  },
-  id: number,
-  seen: boolean,
-  show: boolean,
-  created_on: Date
+  }
+};
+
+export type ActivityEntityOperation = ActivityCommon & {
+  business_action: {
+    id: number,
+    operation: *,
+    author: MemberCommon,
+    business_action_name: string,
+    message: string,
+    target_id: number,
+    target_type: string
+  }
 };

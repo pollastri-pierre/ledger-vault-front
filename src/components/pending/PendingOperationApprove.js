@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import classnames from "classnames";

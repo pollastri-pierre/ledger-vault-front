@@ -1,6 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import classnames from "classnames";
 
 type Props = { className: string, classes: Object };

@@ -1,13 +1,17 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import connectData from "restlay/connectData";
 import ModalLoading from "components/ModalLoading";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import classnames from "classnames";
 import type { Currency } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import iconsSprite from "assets/img/icon-currencies.png";
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+
+const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
 
 const styles = {
   base: {
@@ -45,7 +49,7 @@ const styles = {
       position: "absolute",
       bottom: "calc(50% - 13px)",
       opacity: "1",
-      transform: "width 0.2s ease"
+      transition: "width 0.2s ease"
     },
     "&:hover": {
       "& > .wrapper": {
@@ -58,49 +62,17 @@ const styles = {
   },
   name: {
     fontSize: "13px",
-    textTransform: "capitalize",
-    "&:before": {
-      content: ' ""',
-      display: "inline-block",
-      borderRadius: "8px",
-      width: "23px",
-      height: "23px",
-      verticalAlign: "middle",
-      marginRight: "20px",
-      backgroundImage: `url(${iconsSprite})`,
-      backgroundRepeat: "no-repeat",
-      backgroundSize: " 23px"
-    },
-    "&.bitcoin": {
-      "&:before": {
-        backgroundPosition: "-2.5px -23px"
-      }
-    },
-    "&.dogecoin": {
-      "&:before": {
-        backgroundPosition: "-2.5px -160px"
-      }
-    },
-    "&.dash": {
-      "&:before": {
-        backgroundPosition: "-2.5px -115.5px"
-      }
-    },
-    "&.ethereum": {
-      "&:before": {
-        backgroundPosition: "-2.5px -183.5px"
-      }
-    },
-    "&.ethereum-classic": {
-      "&:before": {
-        backgroundPosition: "-2.5px -203.5px"
-      }
-    },
-    "&.litecoin": {
-      "&:before": {
-        backgroundPosition: "-2.5px -340px"
-      }
-    }
+    color: "black"
+  },
+  icon: {
+    width: 23,
+    height: 23,
+    display: "inline-block",
+    marginRight: 20,
+    borderRadius: 5,
+    color: "white",
+    lineHeight: "normal",
+    textAlign: "center"
   },
   short: {
     fontSize: "10px",
@@ -114,16 +86,24 @@ const styles = {
   }
 };
 
-const getCurrencyClassName = (name: string) => {
-  return name
-    .split(" ")
-    .join("-")
-    .toLowerCase();
-};
+class CurrencyIcon extends PureComponent<{
+  classe: string,
+  color: string,
+  Icon: any
+}> {
+  render() {
+    const { classe, color, Icon } = this.props;
+    return (
+      <div className={classe} style={{ background: color }}>
+        <Icon size={13} />
+      </div>
+    );
+  }
+}
 
 class AccountCreationCurrencies extends Component<{
   currencies: Array<Currency>,
-  currency: Currency, // FIXME this should just be the currency.name for a better normalization
+  currency: CryptoCurrency, // FIXME this should just be the currency.name for a better normalization
   onSelect: (cur: Currency) => void, // SAME
   classes: Object
 }> {
@@ -135,29 +115,39 @@ class AccountCreationCurrencies extends Component<{
 
     return (
       <div className={classes.base}>
-        {currencies.map(cur => (
-          <div
-            onClick={() => onSelect(cur)}
-            role="button"
-            tabIndex="0"
-            key={cur.units[0].name}
-            className={classnames(classes.row, {
-              [classes.selected]: currency && currency.name === cur.name
-            })}
-          >
-            <div className="wrapper">
-              <span
-                className={classnames(
-                  classes.name,
-                  getCurrencyClassName(cur.name)
-                )}
+        {allCurrencies
+          .filter(
+            currency =>
+              currencies.findIndex(cur => cur.name === currency.id) > -1
+          )
+          .map(cur => {
+            const Icon = getCryptoCurrencyIcon(cur);
+            return (
+              <div
+                onClick={() => onSelect(cur)}
+                role="button"
+                tabIndex="0"
+                key={cur.name}
+                className={classnames(classes.row, {
+                  [classes.selected]: currency && currency.name === cur.name
+                })}
               >
-                {cur.name}
-              </span>
-              <span className={classes.short}>{cur.units[1].symbol}</span>
-            </div>
-          </div>
-        ))}
+                <div className="wrapper">
+                  {Icon ? (
+                    <CurrencyIcon
+                      Icon={Icon}
+                      classe={classes.icon}
+                      color={cur.color}
+                    />
+                  ) : (
+                    "-"
+                  )}
+                  <span className={classes.name}>{cur.name}</span>
+                  <span className={classes.short}>{cur.ticker}</span>
+                </div>
+              </div>
+            );
+          })}
       </div>
     );
   }

@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import connectData from "restlay/connectData";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import PieChart from "components/PieChart";
 import { countervalueForRate } from "data/currency";
 import type { Account } from "data/types";

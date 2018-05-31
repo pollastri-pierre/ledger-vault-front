@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import cx from "classnames";
 import BlurDialog from "components/BlurDialog";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import * as d3 from "d3";
 import DialogButton from "components/buttons/DialogButton";
 import Plus from "components/icons/full/Plus";
@@ -201,7 +201,7 @@ class SignIn extends Component<Props> {
                 })}
                 onClick={
                   onboarding.signed.length === onboarding.members.length
-                    ? null
+                    ? onToggleSignin
                     : onToggleSignin
                 }
               >
@@ -249,7 +249,7 @@ const mapState = state => ({
   onboarding: state.onboarding
 });
 
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onGetShardChallenge: () => dispatch(getShardChallenge()),
   onToggleSignin: () => dispatch(toggleSignin()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),

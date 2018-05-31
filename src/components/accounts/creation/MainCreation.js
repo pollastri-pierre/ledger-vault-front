@@ -8,9 +8,10 @@ import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
 import type { Currency } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
-import Tabs, { Tab } from "material-ui/Tabs";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 type Props = {
   changeAccountName: Function,
@@ -74,7 +75,11 @@ class MainCreation extends Component<Props> {
       <div className={classes.base}>
         <header>
           <h2>New account</h2>
-          <Tabs onChange={this.handleChange} value={tabsIndex}>
+          <Tabs
+            onChange={this.handleChange}
+            value={tabsIndex}
+            indicatorColor="primary"
+          >
             <Tab label="1. Currency" disableRipple />
             <Tab
               label="2. Options"

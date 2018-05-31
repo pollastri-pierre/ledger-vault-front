@@ -1,15 +1,12 @@
 //@flow
 import React, { Component } from "react";
 import Card from "components/Card";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import QRCode from "components/QRCode";
 
 const styles = {
-  card: {
-    height: 218,
-    marginLeft: 20
-  },
+  card: {},
   base: {
     "& h4": {
       color: colors.lead,

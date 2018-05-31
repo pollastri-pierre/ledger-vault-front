@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Card from "components/Card";
 import CardField from "components/CardField";
@@ -9,7 +9,6 @@ import type { Account } from "data/types";
 
 const styles = {
   card: {
-    height: 218,
     width: "50%"
   },
   title: {

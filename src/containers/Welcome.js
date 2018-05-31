@@ -3,18 +3,19 @@ import React, { Component } from "react";
 import { Alert } from "components";
 import LandingLinks from "containers/LandingLinks";
 import network from "network";
+<<<<<<< HEAD
 import { withStyles } from "material-ui/styles";
 import HelpLink from "components/HelpLink";
+=======
+import { withStyles } from "@material-ui/core/styles";
+>>>>>>> wip
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
+import Logo from "components/Logo";
 
 import Profile from "components/icons/thin/Profile";
-import MUITextField from "material-ui/TextField";
-
-import logoBlack from "assets/img/logo-black.png";
-import logoBlack2x from "assets/img/logo-black@2x.png";
-import logoBlack3x from "assets/img/logo-black@3x.png";
+import MUITextField from "@material-ui/core/TextField";
 
 const styles = {
   base: {
@@ -65,13 +66,6 @@ const styles = {
       color: "inherit"
     }
   },
-  logo: {
-    width: 100,
-    overflow: "hidden",
-    "& img": {
-      transform: "translateX(-31px)"
-    }
-  },
   submit: {
     position: "absolute",
     right: 0,
@@ -118,7 +112,7 @@ export class Welcome extends Component<
     }
   };
 
-  onChange = (e: SyntheticEvent<*>) => {
+  onChange = (e: any) => {
     this.setState({ domain: e.currentTarget.value });
   };
 
@@ -142,13 +136,7 @@ export class Welcome extends Component<
           <div>Unknown organization domain name</div>
         </Alert>
         <div className={classes.banner}>
-          <div className={classes.logo}>
-            <img
-              src={logoBlack}
-              srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
-              alt="Ledger Vault"
-            />
-          </div>
+          <Logo />
           <HelpLink
             className={classes.help}
             subLink="/Content/operations/login"

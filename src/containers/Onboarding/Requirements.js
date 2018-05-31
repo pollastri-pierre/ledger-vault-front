@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import People from "../../components/icons/thin/People";
 import Plug from "../../components/icons/thin/Plug";
 import Briefcase from "components/icons/thin/Briefcase";
@@ -28,7 +28,7 @@ const requirement = {
     display: "flex"
   }
 };
-export const Requirement = withStyles(
+export const RequirementUnit = withStyles(
   requirement
 )(
   ({
@@ -55,21 +55,21 @@ const Requirements = ({
   classes: { [$Keys<typeof styles>]: string }
 }) => (
   <div className={classes.base}>
-    <Requirement icon={<Briefcase style={{ height: 29 }} />}>
-      Ledger Vault briefcase
-    </Requirement>
-    <Requirement icon={<Box style={{ height: 26 }} />}>
-      Box of Ledger Blue devices
-    </Requirement>
-    <Requirement icon={<Plug color="#cccccc" style={{ height: 20 }} />}>
-      One-time authenticator
-    </Requirement>
-    <Requirement icon={<People color="#cccccc" style={{ height: 29 }} />}>
-      3 shared owners
-    </Requirement>
-    <Requirement icon={<People style={{ height: 29 }} color="#cccccc" />}>
-      3+ team members
-    </Requirement>
+    <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
+      <div>Ledger Vault briefcase</div>
+    </RequirementUnit>
+    <RequirementUnit icon={<Box style={{ height: 26 }} />}>
+      <div>Box of Ledger Blue devices</div>
+    </RequirementUnit>
+    <RequirementUnit icon={<Plug color="#cccccc" style={{ height: 20 }} />}>
+      <div>One-time authenticator</div>
+    </RequirementUnit>
+    <RequirementUnit icon={<People color="#cccccc" style={{ height: 29 }} />}>
+      <div>3 shared owners</div>
+    </RequirementUnit>
+    <RequirementUnit icon={<People style={{ height: 29 }} color="#cccccc" />}>
+      <div>3+ team members</div>
+    </RequirementUnit>
   </div>
 );
 

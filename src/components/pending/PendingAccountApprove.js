@@ -7,7 +7,7 @@ import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 import type { Account, Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";

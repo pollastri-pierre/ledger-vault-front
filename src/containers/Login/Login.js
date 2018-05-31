@@ -12,18 +12,15 @@ import DeviceLogin from "./DeviceLogin";
 import { login, logout } from "redux/modules/auth";
 import { addMessage } from "redux/modules/alerts";
 import network from "network";
-import { withStyles } from "material-ui/styles";
-
-import logoBlack from "assets/img/logo-black.png";
-import logoBlack2x from "assets/img/logo-black@2x.png";
-import logoBlack3x from "assets/img/logo-black@3x.png";
+import { withStyles } from "@material-ui/core/styles";
+import Logo from "components/Logo";
 
 const mapStateToProps = ({ auth, onboarding }) => ({
   isAuthenticated: auth.isAuthenticated,
   onboarding: onboarding
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onLogin: token => dispatch(login(token)),
   onLogout: () => dispatch(logout()),
   addAlertMessage: (...props) => dispatch(addMessage(...props))
@@ -60,13 +57,6 @@ const styles = {
     marginBottom: "20px",
     position: "relative",
     textAlign: "left"
-  },
-  logo: {
-    width: 100,
-    overflow: "hidden",
-    "& img": {
-      transform: "translateX(-31px)"
-    }
   },
   help: {
     width: 63,
@@ -232,13 +222,7 @@ export class Login extends Component<Props, State> {
       <div className={classes.base}>
         <div className={classes.wrapper}>
           <div className={classes.banner}>
-            <div className={classes.logo}>
-              <img
-                src={logoBlack}
-                srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
-                alt="Ledger Vault"
-              />
-            </div>
+            <Logo />
             <HelpLink className={classes.help}>Support</HelpLink>
           </div>
           <DeviceLogin

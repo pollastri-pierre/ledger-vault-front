@@ -13,7 +13,7 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { getPendingsOperations } from "utils/operations";
 import type { Response as PendingsQueryResponse } from "api/queries/PendingsQuery";
 
