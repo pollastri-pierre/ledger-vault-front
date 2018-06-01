@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { Alert } from "components";
+import LandingLinks from "containers/LandingLinks";
 import network from "network";
 import { withStyles } from "material-ui/styles";
 import HelpLink from "components/HelpLink";
@@ -148,7 +149,12 @@ export class Welcome extends Component<
               alt="Ledger Vault"
             />
           </div>
-          <HelpLink className={classes.help}>Support</HelpLink>
+          <HelpLink
+            className={classes.help}
+            subLink="/Content/operations/login"
+          >
+            Support
+          </HelpLink>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
           <Profile className={classes.icon} color="#e2e2e2" />
@@ -184,6 +190,7 @@ export class Welcome extends Component<
             {t("common.continue")}
           </DialogButton>
         </form>
+        <LandingLinks />
       </div>
     );
   }
