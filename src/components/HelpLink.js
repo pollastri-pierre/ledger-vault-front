@@ -9,7 +9,11 @@ class HelpLink extends PureComponent<Props> {
   render() {
     // define support center link
     return (
-      <a href="#" className={this.props.className}>
+      <a
+        href="http://alpha.vault.ledger.fr:81"
+        className={this.props.className}
+        target="new"
+      >
         {this.props.children}
       </a>
     );

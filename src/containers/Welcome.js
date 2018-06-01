@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Alert } from "components";
 import network from "network";
 import { withStyles } from "material-ui/styles";
-import SupportLink from "components/SupportLink";
+import HelpLink from "components/HelpLink";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
@@ -148,7 +148,7 @@ export class Welcome extends Component<
               alt="Ledger Vault"
             />
           </div>
-          <SupportLink className={classes.help} label="support" />
+          <HelpLink className={classes.help}>Support</HelpLink>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
           <Profile className={classes.icon} color="#e2e2e2" />
