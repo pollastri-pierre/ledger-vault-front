@@ -3,12 +3,8 @@ import React, { Component } from "react";
 import { Alert } from "components";
 import LandingLinks from "containers/LandingLinks";
 import network from "network";
-<<<<<<< HEAD
-import { withStyles } from "material-ui/styles";
 import HelpLink from "components/HelpLink";
-=======
 import { withStyles } from "@material-ui/core/styles";
->>>>>>> wip
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
