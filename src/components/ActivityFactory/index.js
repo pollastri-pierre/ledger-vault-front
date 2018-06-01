@@ -38,7 +38,7 @@ class ActivityFactory extends Component<> {
       default:
         return (
           <Activity match={match} activity={activity}>
-            <span>{activity.message}</span>
+            <span>{activity.business_action.message}</span>
           </Activity>
         );
     }
