@@ -55,7 +55,7 @@ class LandingLinks extends PureComponent<Props> {
             href="https://www.ledger.fr/vault/contact-form/"
             className={classes.link}
           >
-            contact us more
+            contact us
           </a>
         </div>
       </div>
