@@ -76,7 +76,7 @@ class ConfirmationAdministrators extends Component<Props, State> {
   onStart = async () => {
     this.setState({ step: 1 });
     try {
-      const device = await createDevice();
+      const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const instanceName = "";
       const instanceReference = "";

@@ -31,10 +31,6 @@ class DeviceAuthenticate extends Component<Props, State> {
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       this.setState({ step: 1 });
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
       const application = APPID_VAULT_ADMINISTRATOR;
       const { challenge, key_handle } = await network(
         `/authentications/${pubKey.toUpperCase()}/challenge`,
@@ -44,11 +40,7 @@ class DeviceAuthenticate extends Component<Props, State> {
       const auth = await device.authenticate(
         Buffer.from(challenge, "base64"),
         application,
-        Buffer.from(key_handle[pubKey.toUpperCase()], "base64"),
-        instanceName,
-        instanceReference,
-        instanceURL,
-        agentRole
+        Buffer.from(key_handle[pubKey.toUpperCase()], "base64")
       );
 
       await network("/authentications/admin/authenticate", "POST", {

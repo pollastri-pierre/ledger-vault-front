@@ -387,7 +387,7 @@ export default function connectData<
     }
 
     UNSAFE_componentWillReceiveProps(props: ClazzProps<Props>) {
-      console.log("HERE");
+      // console.log("HERE");
       this.syncProps(props);
     }
 

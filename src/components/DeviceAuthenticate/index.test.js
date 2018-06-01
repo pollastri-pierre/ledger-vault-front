@@ -52,11 +52,7 @@ test("should call API and device", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    Buffer.from("key_handle", "base64"),
-    "",
-    "",
-    "",
-    ""
+    Buffer.from("key_handle", "base64")
   );
 
   expect(network).toHaveBeenCalledWith(

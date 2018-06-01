@@ -138,11 +138,7 @@ test("onStart method", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_BOOTSTRAP,
-    Buffer.from("handle1", "base64"),
-    "",
-    "",
-    "",
-    ""
+    Buffer.from("handle1", "base64")
   );
   expect(props.onGetBootstrapToken).toHaveBeenCalledWith("pubKey", {
     userPresence: "userPresence",

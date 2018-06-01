@@ -63,11 +63,6 @@ class Authentication extends Component<Props, State> {
     try {
       const device = await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-      // // TODO FIXME not sure what these will be
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
 
       const { bootstrapChallenge } = this.props.onboarding;
 
@@ -78,11 +73,7 @@ class Authentication extends Component<Props, State> {
       const sign = await await device.authenticateBootstrap(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_BOOTSTRAP,
-        Buffer.from(keyHandle, "base64"),
-        instanceName,
-        instanceReference,
-        instanceURL,
-        agentRole
+        Buffer.from(keyHandle, "base64")
       );
       this.setState({ plugged: true, step: 2 });
       await onGetBootstrapToken(pubKey, sign);

@@ -70,17 +70,9 @@ class StepDevice extends Component<Props, State> {
       const validation = await device.getPublicKey(VALIDATION_PATH);
       this.setState({ active: 1 });
 
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
       const u2f_register = await device.register(
         Buffer.from(this.props.challenge, "base64"),
-        APPID_VAULT_ADMINISTRATOR,
-        instanceName,
-        instanceReference,
-        instanceURL,
-        agentRole
+        APPID_VAULT_ADMINISTRATOR
       );
 
       this.setState({ active: 2 });

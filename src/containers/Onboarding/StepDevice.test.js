@@ -50,11 +50,7 @@ test("onStart should call device and API with right parameters", async () => {
 
   expect(mockRegister).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
-    APPID_VAULT_ADMINISTRATOR,
-    "",
-    "",
-    "",
-    ""
+    APPID_VAULT_ADMINISTRATOR
   );
 
   expect(props.finish).toHaveBeenCalledWith({
