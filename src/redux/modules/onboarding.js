@@ -386,7 +386,8 @@ export default function reducer(state: Store = initialState, action: Object) {
     }
     case NEXT_STEP: {
       if (
-        state.currentStep !== null &&
+        Number.isInteger(state.currentStep) &&
+        state.currentStep &&
         state.currentStep < ALL_ROUTES.length - 1
       ) {
         return { ...state, currentStep: state.currentStep + 1 };

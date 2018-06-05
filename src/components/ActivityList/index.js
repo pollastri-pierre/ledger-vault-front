@@ -193,7 +193,6 @@ class ActivityList extends Component<
       match,
       markAsSeenRequest
     } = this.props;
-    console.log(activities);
     return (
       <div>
         <div className={classes.newActivities}>

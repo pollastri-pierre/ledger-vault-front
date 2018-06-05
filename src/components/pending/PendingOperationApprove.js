@@ -1,14 +1,14 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
+import CounterValue from "components/CounterValue";
 import { Link } from "react-router-dom";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import classnames from "classnames";
-import CurrencyFiatValue from "../CurrencyFiatValue";
 import { withRouter } from "react-router";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
-import { countervalueForRate } from "data/currency";
 import type { Account, Operation, Member } from "data/types";
 import styles from "./styles";
 
@@ -27,19 +27,6 @@ function PendingOperationApprove(props: Props) {
     return <p>There are no operations to approve</p>;
   }
 
-  // const firstAccount = accounts.find(id => operations[0].account_id);
-  const firstAccount = accounts[0];
-
-  let totalAmount = {
-    fiat: firstAccount.currencyRate.fiat,
-    value: operations.reduce(
-      (sum, op) =>
-        countervalueForRate(firstAccount.currencyRate, op.price.amount).value +
-        sum,
-      0
-    )
-  };
-
   return (
     <div className={classes.base}>
       {!approved && (
@@ -50,8 +37,11 @@ function PendingOperationApprove(props: Props) {
             ) : (
               <span>{operations.length} operations</span>
             )}
-            <span style={{ opacity: 0 }}>
-              <CurrencyFiatValue {...totalAmount} />
+            <span>
+              <OperationsCounterValues
+                accounts={accounts}
+                operations={operations}
+              />
             </span>
           </p>
           <p className={classnames(classes.header, classes.headerLight)}>
@@ -82,16 +72,14 @@ function PendingOperationApprove(props: Props) {
                   />
                 )}
               </span>
-              {/* <span className={classnames(classes.currency, "center")}> */}
-              {/*   {!account ? null : ( */}
-              {/*     <CurrencyAccountValue */}
-              {/*       account={account} */}
-              {/*       value={operation.price.amount} */}
-              {/*       rate={account.rate} */}
-              {/*       countervalue */}
-              {/*     /> */}
-              {/*   )} */}
-              {/* </span> */}
+              <span className={classnames(classes.currency, "center")}>
+                {!account ? null : (
+                  <CounterValue
+                    value={operation.price.amount}
+                    from={account.currency.name}
+                  />
+                )}
+              </span>
             </div>
             {account ? (
               <ApprovalStatusWithAccountName

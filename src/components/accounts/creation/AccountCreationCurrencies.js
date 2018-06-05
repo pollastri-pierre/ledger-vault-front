@@ -104,7 +104,7 @@ class CurrencyIcon extends PureComponent<{
 class AccountCreationCurrencies extends Component<{
   currencies: Array<Currency>,
   currency: CryptoCurrency, // FIXME this should just be the currency.name for a better normalization
-  onSelect: (cur: Currency) => void, // SAME
+  onSelect: (cur: CryptoCurrency) => void, // SAME
   classes: Object
 }> {
   render() {

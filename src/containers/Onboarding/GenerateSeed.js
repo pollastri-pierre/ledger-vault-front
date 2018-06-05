@@ -24,6 +24,7 @@ type Props = {
 };
 
 type State = { step: number };
+
 class GenerateSeed extends Component<Props, State> {
   constructor(props: Props) {
     super(props);

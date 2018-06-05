@@ -7,6 +7,5 @@ export { default as Logout } from "./Login/Logout";
 export { default as AlertsContainer } from "./AlertsContainer";
 export { default as PendingRequests } from "./PendingRequests/PendingRequests";
 export { default as AccountView } from "./Account/AccountView";
-export { default as I18nProvider } from "./I18nProvider";
 
 // FIXME deprecated. directly import the file/folder component

@@ -21,7 +21,7 @@ test("freezeTransition=true should not render a pending step", async () => {
 
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         node = this;
       }
       render() {

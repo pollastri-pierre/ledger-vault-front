@@ -10,7 +10,7 @@ import type {
   Range,
   Response as Balance
 } from "api/queries/AccountQuicklookDataQuery";
-import { formatCurrencyUnit } from "data/currency";
+// import { formatCurrencyUnit } from "data/currency";
 
 type Filter = $Keys<Balance>;
 
@@ -29,8 +29,8 @@ class Quicklook extends Component<Props, State> {
   render() {
     const { balance, currencyUnit, currencyColor, filter } = this.props;
     const selectedBalance = balance[filter].map(dataPoint => [
-      dataPoint[0],
-      parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1]))
+      dataPoint[0]
+      // parseFloat(formatCurrencyUnit(currencyUnit, dataPoint[1]))
     ]);
     return (
       selectedBalance.length && (

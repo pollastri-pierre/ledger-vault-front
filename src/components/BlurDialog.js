@@ -26,7 +26,7 @@ function Transition(props) {
 }
 
 const styles = { paper: { maxWidth: "none" } };
-const CustomDialog = withStyles(styles)(Dialog);
+const CustomDialog = withStyles(styles)(withMobileDialog()(Dialog));
 
 class BlurDialog extends Component<{
   open: boolean

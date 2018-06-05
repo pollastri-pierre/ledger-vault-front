@@ -11,7 +11,7 @@ const mapDispatchToProps = (dispatch: *) => ({
 export class Logout extends Component<{
   logout: Function
 }> {
-  componentWillMount() {
+  componentDidMount() {
     this.props.logout();
   }
 

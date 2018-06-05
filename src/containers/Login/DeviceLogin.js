@@ -2,8 +2,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { DialogButton } from "components";
+import type { Translate } from "data/types";
 import Plug from "components/icons/thin/Plug";
-import translate from "decorators/Translate";
+import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
@@ -76,6 +77,7 @@ class DeviceLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   onCancel: Function,
   domain: string,
+  t: Translate,
   isChecking: boolean,
   onRestart: () => void
 }> {
@@ -124,4 +126,4 @@ DeviceLogin.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
-export default translate(withStyles(styles)(DeviceLogin));
+export default translate(withStyles(styles)(translate()(DeviceLogin)));

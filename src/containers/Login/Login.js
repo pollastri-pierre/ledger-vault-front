@@ -94,7 +94,7 @@ export class Login extends Component<Props, State> {
     isChecking: false
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { isAuthenticated, history, location } = this.props;
     if (isAuthenticated) {
       const { redirectTo } = queryString.parse(
@@ -121,7 +121,7 @@ export class Login extends Component<Props, State> {
     }
   };
 
-  componentWillUpdate(nextProps: Props) {
+  UNSAFE_componentWillUpdate(nextProps: Props) {
     const { history, location } = nextProps;
     if (nextProps.isAuthenticated) {
       const { redirectTo } = queryString.parse(

@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
 import CurrencyAccountValue from "../CurrencyAccountValue";
-// import CurrencyUnitValue from "../CurrencyUnitValue";
-// import { countervalueForRate } from "data/currency";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
 

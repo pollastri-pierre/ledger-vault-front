@@ -18,10 +18,6 @@ export default class VaultDeviceApp {
   async register(
     challenge: Buffer,
     application: string
-    // instanceName: string,
-    // instanceReference: string,
-    // instanceURL: string,
-    // agentRole: string
   ): Promise<{
     rfu: number,
     keyHandle: string,
@@ -171,12 +167,13 @@ export default class VaultDeviceApp {
       applicationBuf.length === 32,
       "application hex is expected to have 32 bytes"
     );
-    const maxLength = 20;
+    const maxLength = 150;
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
     const instanceURLBuf = Buffer.from(instanceUrl);
     const agentRoleBuf = Buffer.from(agentRole);
+
     // | Challenge parameter                                                               | 32
     // | Application parameter                                                             | 32
     // | Key handle length                                                                 | 1
@@ -206,18 +203,31 @@ export default class VaultDeviceApp {
     const length = Buffer.alloc(2);
     length.writeUInt16BE(bigChunk.length, 0);
 
-    let chunks = this.splits(maxLength, bigChunk);
-
     const data = Buffer.concat([
       challenge,
       applicationBuf,
       Buffer.from([keyHandle.length]),
       keyHandle,
       length,
-      chunks.shift()
+      Buffer.from([instanceNameBuf.length]),
+      instanceNameBuf,
+      Buffer.from([instanceReferenceBuf.length]),
+      instanceReferenceBuf,
+      Buffer.from([instanceURLBuf.length]),
+      instanceURLBuf,
+      Buffer.from([agentRoleBuf.length]),
+      agentRoleBuf
     ]);
 
-    let lastResponse = await this.transport.send(0xe0, 0x02, 0x00, 0x00, data);
+    let chunks = this.splits(maxLength, data);
+
+    let lastResponse = await this.transport.send(
+      0xe0,
+      0x02,
+      0x00,
+      0x00,
+      chunks.shift()
+    );
 
     for (let i = 0; i < chunks.length; i++) {
       lastResponse = await this.transport.send(

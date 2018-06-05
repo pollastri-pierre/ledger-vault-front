@@ -4,8 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
-// import CurrencyUnitValue from "../CurrencyUnitValue";
-// import { countervalueForRate } from "data/currency";
 import colors from "shared/colors";
 import type { Account } from "data/types";
 
@@ -47,7 +45,6 @@ class OverviewOperation extends Component<{
 }> {
   render() {
     const { hash, amount, account, classes } = this.props;
-    // const counterValueUnit = countervalueForRate(rate, amount);
     return (
       <div className={classes.base}>
         <div>

@@ -1,7 +1,7 @@
 //@flow
 import _ from "lodash";
 import { LOGOUT } from "./auth";
-import type { Member, Currency } from "data/types";
+import type { Member } from "data/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
@@ -88,7 +88,7 @@ export function changeTab(index: number) {
   };
 }
 
-export function selectCurrencyItem(currency: Currency) {
+export function selectCurrencyItem(currency: CryptoCurrency) {
   return {
     type: SELECT_CURRENCY,
     currency
@@ -122,7 +122,7 @@ type Freq = number;
 
 export type State = {
   currentTab: number,
-  currency: ?Currency,
+  currency: ?CryptoCurrency,
   name: string,
   approvers: Member[],
   quorum: number,

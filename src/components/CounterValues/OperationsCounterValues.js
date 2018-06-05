@@ -5,35 +5,42 @@ import React, { PureComponent } from "react";
 import CounterValues from "data/CounterValues";
 import { connect } from "react-redux";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
-import type { Account } from "data/types";
+import type { Operation, Account } from "data/types";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
-  const countervalue = ownProps.accounts.reduce((acc, account) => {
-    const currency = allCurrencies.find(
-      curr => curr.id === account.currency.name
+  const countervalue = ownProps.operations.reduce((acc, operation) => {
+    const account = ownProps.accounts.find(
+      account => account.id === operation.account_id
     );
-    return (
-      acc +
-      CounterValues.calculateSelector(state, {
-        from: currency,
-        to: getFiatCurrencyByTicker("USD"),
-        exchange: "Bitfinex",
-        value: account.balance
-      })
-    );
+    if (account) {
+      const currency = allCurrencies.find(
+        curr => curr.id === account.currency.name
+      );
+      return (
+        acc +
+        CounterValues.calculateSelector(state, {
+          from: currency,
+          to: getFiatCurrencyByTicker("USD"),
+          exchange: "Bitfinex",
+          value: operation.price.amount
+        })
+      );
+    }
+    return acc + 0;
   }, 0);
   return { countervalue };
 };
 
 type Props = {
   countervalue: number,
-  accounts: Account[]
+  accounts: Account[],
+  operations: Operation[]
 };
 
-class CounterValuesAccounts extends PureComponent<Props> {
+class CounterValuesOperations extends PureComponent<Props> {
   render() {
     const { countervalue } = this.props;
     if (!countervalue && countervalue !== 0) {
@@ -43,4 +50,4 @@ class CounterValuesAccounts extends PureComponent<Props> {
   }
 }
 
-export default connect(mapStateToProps)(CounterValuesAccounts);
+export default connect(mapStateToProps)(CounterValuesOperations);

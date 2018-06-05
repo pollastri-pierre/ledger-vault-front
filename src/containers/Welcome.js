@@ -1,12 +1,13 @@
 //@flow
 import React, { Component } from "react";
+import { translate } from "react-i18next";
 import { Alert } from "components";
 import LandingLinks from "containers/LandingLinks";
 import network from "network";
+import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import PropTypes from "prop-types";
 import { DialogButton } from "components";
 import Logo from "components/Logo";
 
@@ -75,14 +76,11 @@ const styles = {
 export class Welcome extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
-    history: *
+    history: *,
+    t: Translate
   },
   { domain: string, error: boolean, isChecking: boolean }
 > {
-  context: {
-    translate: string => string
-  };
-
   state = {
     domain: "",
     error: false,
@@ -118,8 +116,7 @@ export class Welcome extends Component<
 
   render() {
     const { domain, error, isChecking } = this.state;
-    const t = this.context.translate;
-    const { classes } = this.props;
+    const { classes, t } = this.props;
     return (
       <div className={classes.wrapper}>
         <Alert
@@ -180,8 +177,4 @@ export class Welcome extends Component<
   }
 }
 
-Welcome.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default withRouter(withStyles(styles)(Welcome));
+export default withRouter(withStyles(styles)(translate()(Welcome)));

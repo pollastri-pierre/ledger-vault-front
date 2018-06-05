@@ -2,10 +2,8 @@
 import React, { PureComponent } from "react";
 import CounterValue from "components/CounterValue";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
-// import CurrencyUnitValue from "../../CurrencyUnitValue";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
-// import { countervalueForRate } from "data/currency";
 import type { Account } from "data/types";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 const allCurrencies = listCryptoCurrencies(true);

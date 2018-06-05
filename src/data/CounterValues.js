@@ -19,7 +19,7 @@ const pairsSelector = createSelector(
       .map(currency => ({
         from: allCurrencies.find(curr => curr.id === currency.name),
         to: getFiatCurrencyByTicker("USD"),
-        exchange: "BITFINEX"
+        exchange: "Bitfinex"
       }));
   }
 );

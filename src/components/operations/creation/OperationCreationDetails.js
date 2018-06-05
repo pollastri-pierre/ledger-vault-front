@@ -11,8 +11,6 @@ import type { Details } from "../../NewOperationModal";
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import { countervalueForRate } from "data/currency";
-import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
 import ModalSubTitle from "./ModalSubTitle";
 import CryptoAddressPicker from "../../CryptoAddressPicker";
 import FeeSelect from "./FeeSelect";

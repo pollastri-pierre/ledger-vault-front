@@ -10,6 +10,8 @@
 //   type: string
 // };
 
+export type Translate = (?string, ?Object) => string;
+
 export type Fiat = string;
 
 type Price = {
@@ -20,7 +22,7 @@ export type Unit = {
   id?: number,
   name: string,
   code: string,
-  symbol: string,
+  symbol?: string,
   magnitude: number,
   showAllDigits?: boolean
 };

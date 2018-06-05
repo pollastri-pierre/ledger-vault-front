@@ -35,26 +35,16 @@ function OperationCreationConfirmation(props: {
         hash={details.address}
         amount={details.amount}
         account={account}
-        rate={account.currencyRate}
       />
       <div>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="confirmation fees">
-          <Amount
-            account={account}
-            value={details.fees}
-            rate={account.currencyRate}
-          />
+          <Amount account={account} value={details.fees} />
         </LineRow>
         <LineRow label="Total spent">
-          <Amount
-            account={account}
-            value={details.amount}
-            rate={account.currencyRate}
-            strong
-          />
+          <Amount account={account} value={details.amount} strong />
         </LineRow>
       </div>
       <div className={classes.warningMsg}>

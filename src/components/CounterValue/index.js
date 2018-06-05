@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
     countervalue: CounterValues.calculateSelector(state, {
       from: currency,
       to: getFiatCurrencyByTicker("USD"),
-      exchange: "BITFINEX",
+      exchange: "Bitfinex",
       value: ownProps.value
     })
   };

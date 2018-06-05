@@ -171,8 +171,7 @@ export const executeQueryOrMutation =
     if (queryOrMutation instanceof Mutation) {
       method = queryOrMutation.method;
       body = queryOrMutation.getBody();
-    } else if (ctx) {
-      // TODO see why ctx gets undefined randomly ( may be related to react new context API
+    } else {
       cacheKey = queryOrMutation.getCacheKey();
       const pendingPromise = ctx.getPendingQuery(queryOrMutation);
       if (pendingPromise) return pendingPromise;

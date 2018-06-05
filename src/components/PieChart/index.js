@@ -183,7 +183,7 @@ class PieChart extends Component<
     this.setSelected(-1);
   };
 
-  componentDidMount() {
+  UNSAFE_componentWillReceiveProps() {
     const { selected } = this.state;
     const { data, radius, classes } = this.props;
     const $svg = this.svg;

@@ -16,7 +16,7 @@ test("restlay.fetchQuery can be used to fetch arbitrary queries", async () => {
   let fetchQuery: ?Function;
   const Root = connectData(
     class Root extends Component<*> {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         fetchQuery = this.props.restlay.fetchQuery;
       }
       render() {

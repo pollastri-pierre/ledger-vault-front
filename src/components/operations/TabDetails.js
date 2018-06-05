@@ -63,7 +63,7 @@ class OperationListT<T: *> extends Component<{
         </thead>
         <tbody>
           {entries.map(e => (
-            <tr key={e.index}>
+            <tr key={e.address}>
               <td>{e.address}</td>
               <td>
                 <CurrencyAccountValue
