@@ -1,5 +1,7 @@
 //@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import People from "../../components/icons/thin/People";
 import Plug from "../../components/icons/thin/Plug";
@@ -50,16 +52,18 @@ export const RequirementUnit = withStyles(
   }
 );
 const Requirements = ({
-  classes
+  classes,
+  t
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  t: Translate
 }) => (
   <div className={classes.base}>
     <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
-      <div>Ledger Vault briefcase</div>
+      <div>{t("onboarding:vault_briefcase")}</div>
     </RequirementUnit>
     <RequirementUnit icon={<Box style={{ height: 26 }} />}>
-      <div>Box of Ledger Blue devices</div>
+      <div>{t("onboarding:box_blue_devices")}</div>
     </RequirementUnit>
     <RequirementUnit icon={<Plug color="#cccccc" style={{ height: 20 }} />}>
       <div>One-time authenticator</div>
@@ -68,9 +72,9 @@ const Requirements = ({
       <div>3 shared owners</div>
     </RequirementUnit>
     <RequirementUnit icon={<People style={{ height: 29 }} color="#cccccc" />}>
-      <div>3+ team members</div>
+      <div>{t("onboarding:team_members")}</div>
     </RequirementUnit>
   </div>
 );
 
-export default withStyles(styles)(Requirements);
+export default withStyles(styles)(translate()(Requirements));

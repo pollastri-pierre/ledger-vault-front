@@ -11,7 +11,6 @@ import PrerequisiteSeed from "./PrerequisiteSeed";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
-import ConfirmationAdministrators from "./ConfirmationAdministrators.js";
 import SignIn from "./SignIn";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
@@ -140,13 +139,12 @@ class OnboardingContainer extends Component<Props, State> {
                 onChange={changeNbRequired}
               />
             )}
-            {onboarding.currentStep === 6 && <ConfirmationAdministrators />}
-            {onboarding.currentStep === 7 && <SignIn />}
-            {onboarding.currentStep === 8 && <PrerequisiteSeed />}
-            {onboarding.currentStep === 9 && <ConfigurationSeed />}
-            {onboarding.currentStep === 10 && <Backup />}
-            {onboarding.currentStep === 11 && <Provisionning />}
-            {onboarding.currentStep === 12 && (
+            {onboarding.currentStep === 6 && <SignIn />}
+            {onboarding.currentStep === 7 && <PrerequisiteSeed />}
+            {onboarding.currentStep === 8 && <ConfigurationSeed />}
+            {onboarding.currentStep === 9 && <Backup />}
+            {onboarding.currentStep === 10 && <Provisionning />}
+            {onboarding.currentStep === 11 && (
               <ConfirmationGlobal history={history} match={match} />
             )}
           </div>

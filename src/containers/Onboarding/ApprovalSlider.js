@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 import cx from "classnames";
+import type { Translate } from "data/types";
+import { translate, Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Arrow from "../../components/icons/full/ArrowDown.js";
 
@@ -55,12 +57,14 @@ const ApprovalSlider = ({
   classes,
   number,
   total,
-  onChange
+  onChange,
+  t
 }: {
   classes: { [$Keys<typeof styles>]: string },
   number: number,
   total: number,
-  onChange: number => void
+  onChange: number => void,
+  t: Translate
 }) => {
   return (
     <div className={classes.base}>
@@ -86,10 +90,11 @@ const ApprovalSlider = ({
       </div>
       <div className={classes.flex}>
         <span className={classes.require} onClick={() => onChange(number - 1)}>
-          <Arrow className={classes.left} />require less
+          <Arrow className={classes.left} />
+          {t("require_more")}
         </span>
         <span className={classes.require} onClick={() => onChange(number + 1)}>
-          require more
+          {t("require_more")}
           <Arrow className={classes.right} />
         </span>
       </div>
@@ -97,4 +102,4 @@ const ApprovalSlider = ({
   );
 };
 
-export default withStyles(styles)(ApprovalSlider);
+export default withStyles(styles)(translate()(ApprovalSlider));

@@ -1,5 +1,7 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import { getPendingsOperations } from "utils/operations";
 import React from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -8,7 +10,6 @@ import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
-import PropTypes from "prop-types";
 import MenuList from "@material-ui/core/MenuList";
 import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
@@ -58,20 +59,15 @@ const styles = {
     textTransform: "uppercase"
   }
 };
-function Menu(
-  props: {
-    location: *,
-    match: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    accounts: Array<Account>,
-    allPendingOperations: Array<Operation>
-  },
-  context: {
-    translate: Function
-  }
-) {
-  const { location, classes, accounts, allPendingOperations, match } = props;
-  const t = context.translate;
+function Menu(props: {
+  location: *,
+  match: *,
+  classes: { [_: $Keys<typeof styles>]: string },
+  accounts: Array<Account>,
+  t: Translate,
+  allPendingOperations: Array<Operation>
+}) {
+  const { location, classes, accounts, allPendingOperations, match, t } = props;
   const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   return (
     <div className={classes.root}>
@@ -95,13 +91,13 @@ function Menu(
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />
-            {t("menu.newOperation")}
+            {t("menu.new_operation")}
           </span>
         </MenuLink>
         <MenuLink to={`${match.url}/pending`}>
           <span className={classes.link}>
             <Lines className={classes.icon} />
-            {t("menu.pendingRequests")}
+            {t("menu.pending_requests")}
           </span>
         </MenuLink>
         {/* <MenuLink to={`${match.url}/search`}> */}
@@ -128,17 +124,13 @@ function Menu(
   );
 }
 
-Menu.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
 const RenderLoading = withStyles(styles)(({ classes }) => (
   <div className={classes.root} style={{ paddingTop: 100 }}>
     <SpinnerCard />
   </div>
 ));
 
-export default connectData(withStyles(styles)(Menu), {
+export default connectData(withStyles(styles)(translate()(Menu)), {
   RenderLoading: RenderLoading,
   queries: {
     accounts: AccountsQuery,

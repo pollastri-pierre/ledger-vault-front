@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { DialogButton } from "components";
 import type { Translate } from "data/types";
 import Plug from "components/icons/thin/Plug";
@@ -81,12 +80,8 @@ class DeviceLogin extends Component<{
   isChecking: boolean,
   onRestart: () => void
 }> {
-  context: {
-    translate: (string, ?Object) => string
-  };
   render() {
-    const { domain, classes, isChecking, onCancel, onRestart } = this.props;
-    const t = this.context.translate;
+    const { domain, classes, isChecking, onCancel, onRestart, t } = this.props;
     return (
       <div className={classes.base}>
         <Plug className={classes.dongle} color="#e2e2e2" />
@@ -122,8 +117,4 @@ class DeviceLogin extends Component<{
   }
 }
 
-DeviceLogin.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default translate(withStyles(styles)(translate()(DeviceLogin)));
+export default withStyles(styles)(translate()(DeviceLogin));

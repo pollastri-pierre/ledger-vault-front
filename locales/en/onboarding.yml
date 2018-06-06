@@ -1,0 +1,162 @@
+menu:
+  welcome: Welcome
+  authentication: Authentication
+  administrators:
+    title: Administrators
+    prerequisite: Prerequisite
+    configuration: Configuration
+    registration: Registration
+    scheme: Administration scheme
+  master_seed:
+    title: Master seed
+    signin: Sign-in
+    prerequisite: Prerequisite
+    configuration: Configuration
+    backup: Backup
+    provisionning: Provisionning
+  confirmation: Confirmation
+requirements: requirements
+tocontinue: to continue
+required: required
+not_required: not required
+box_blue_devices: Box of Ledger Blue devices
+team_members: 3+ team member
+vault_briefcase: Ledger Vault briefcase
+shared_owners: Shared owners
+welcome:
+  title: Welcome
+  description: It looks like your team is using Ledger Vault for the first time.  Please
+    make sure you have received the Ledger Vault briefcase as well as the package
+    containing all the Ledger Blue devices for your team members.
+  to_continue: When ready, open the Ledger Vault briefcase and grab the one-time authenticator
+    device in the front pocket. It will be used to authenticate during the next step.
+administrators_prerequisite:
+  title: Prerequisite
+  description: The following steps let you add administrators to your team. Administrators
+    are privileged team members that can create accounts, spend funds and access information
+    about your wallet.
+  to_continue: Gather all the teams members that will be allowed to connect and use
+    the company’s Ledger Vault (do NOT ask shared owners to join at this moment).  Give
+    one Ledger Blue box to each team member and ask them to take possession of the
+    devices and their recovery sheets.
+administrators_configuration:
+  title: Configuration
+  step1: Open the Ledger Blue sealed box that was given to you.Grab the device and
+    its red recovery sheet.
+  step2: 'Follow this online tutorial to initialize your device:'
+  configure_device: configure my device
+  step3: Make sure to keep your recovery sheet in a safe place. Keep your device with
+    you, it will be required at the next step.
+  to_continue: Make sure all administrators have configured their Ledger Blue and
+    that all device’s recovery phrases are written down in their respective recovery
+    sheets.
+administrators_registration:
+  title: Registration
+  add_member: add team member
+  description: It is now time to add each team member to your company’s Ledger Vault.
+    New members will be set as administrators. <strong>Once added, administrators
+    cannot be removed.</strong>
+  add_member_title: add a new team member
+  at_least: At least 3 team members are required to continue
+  click_edit: Click to edit
+  modal_title_add: Add a team member
+  modal_title_edit: Edit profile
+  device_modal:
+    title: Register the member with its device
+    step1: Connect the Ledger Blue of the member you would like to add and make sure
+      it is powered on and unlocked by entering its PIN code.
+    step2: Open the Vault app on the dashboard. When displayed, confirm the registration
+      request on the device.
+    step3: Close the Vault app using the upper right square icon and disconnect the
+      device from this computer.
+administrators_scheme:
+  title: Administration scheme
+  description: This step lets you specify the administration scheme of your company.
+    It defines the number of approvals to collect from all registered administrators
+    to allow sensitive actions.
+  nb_required: Require {{count}} approval
+  nb_required_plural: Require {{count}} approvals
+  require_less: require less
+  require_more: require more
+  to_continue: Make sure to define an administration scheme that your team will be
+    able to satisfy. Ledger Vault allows you to require less approvals than the number
+    of administrators in your team.
+master_seed_signin:
+  title: Sign-in
+  description: The presence of the administrators defined in the previous scheme is
+    required to generate the master seed.
+  ask_admin: Ask each administrator to sign-in using their Ledger Blue devices.
+  sign_new: sign in a new member
+  members_present: members present
+  signed_in: signed-in
+  signin: Sign in
+  signin_next: Sign in next Administrator
+  remaining: remaning
+  to_continue: Ask each administrator to sign-in using their Ledger Blue devices.
+  device_modal:
+    title: Sign-in with your device
+    step1: Connect the Ledger Blue of the member you would like to sign-in and make
+      sure it is powered on and unlocked by entering its PIN.
+    step2: Open the Vault app on the dashboard. When displayed, confirm the sign-in
+      request on the device.
+    step3: Close the Vault app using the upper right square icon and disconnect the
+      device from this computer.
+master_seed_prerequisite:
+  title: Prerequisite
+  description: These final steps will generate your company’s master seed that is
+    shared among 3 owners. It is a critical piece of information from which all your
+    accounts will be created. <strong>Shared owners are not team members and will
+    not be able to access the Ledger Vault.</strong>
+  to_continue: Gather all 3 shared owners that will be part of the master seed provisionning.
+    Give one Ledger Blue box and one Ledger Cryptosteel to each shared owner and ask
+    them to take possession of the devices and their recovery sheets.
+master_seed_configuration:
+  title: Configuration
+  description: 'Ask shared owners to configure their Ledger Blue devices by following those steps:'
+  step1: Open the Ledger Blue sealed box that was given to you. Grab the device and its red recovery sheet.
+  step2: 'Follow this online tutorial to initialize your device:'
+  configure_device: configure my device
+  step3: Your device is now configured. Keep your recovery sheet with you, it is required
+    at the next step.
+  to_continue: Make sure all shared owners have configured their Ledger Blue and that
+    all device’s recovery phrases are written down in their respective recovery sheets.
+master_seed_backup:
+  title: Backup
+  description: To secure your company’s master seed, it is very important to backup
+    the 3 sets of 24 words of each Ledger Blue device that was configured previously.
+    <strong>Take all the Ledger Cryptosteel backups from the briefcase and ask each
+    shared owner to secure their recovery phrase.</strong>
+  step1: Grab your recovery sheet
+  step2: Setup your Ledger Cryptosteel
+  step3: Destroy your recovery sheet
+  warning_destroy: Do not destroy your recovery sheet until it is perfectly secured
+    in a Ledger Cryptosteel (double check each of the 24 words).
+  to_continue: Make sure all shared owners have secured their recovery phrase in the
+    Ledger Cryptosteel and that all paper recovery sheets are destroyed.
+master_seed_provisionning:
+  title: Provisionning
+  description: Everything is now ready to generate your company’s master seed. Ask
+    each shared owner, in turn, to generate their part of the master seed by connecting
+    their Ledger Blue.
+  step1: First owner
+  step2: Second owner
+  step3: Third owner
+  generated: Generated
+  generate_seed: generate seed
+  generating: generating seed...
+  to_continue: Make sure that each shared owners have generated their part of the
+    master seed in turn, using their Ledger Blue.
+  device_modal:
+    title: Generate the seed with your device
+    step1: Connect your Ledger Blue to this computer and make sure it is powered on
+      and unlocked by entering your personal PIN.
+    step2: Open the Vault app on the dashboard. When displayed, confirm the master
+      seed creation request on the device.
+    step3: Close the Vault app using the upper right square icon and disconnect the
+      device from this computer.
+confirmation:
+  title: Confirmation
+  description: Your team’s Ledger Vault is now configured.
+  members_can_signin: Team members are now be able to sign-in.
+  scheme: administration scheme
+

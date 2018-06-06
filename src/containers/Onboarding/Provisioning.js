@@ -1,6 +1,8 @@
 //@flow
 import BlurDialog from "components/BlurDialog";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -40,7 +42,7 @@ const status = {
     fontSize: 11
   }
 };
-const SeedStatus = withStyles(
+export const SeedStatus = withStyles(
   status
 )(
   ({
@@ -72,7 +74,7 @@ const profile = {
     width: 28
   }
 };
-const ProfileIcon = withStyles(
+export const ProfileIcon = withStyles(
   profile
 )(({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
   <div style={{ marginBottom: 10 }}>
@@ -109,6 +111,7 @@ const styles = {
 };
 type Props = {
   classes: { [$Keys<typeof styles>]: string },
+  t: Translate,
   onboarding: *,
   onToggleGenerateSeed: Function,
   onGetShardsChannel: Function,
@@ -132,13 +135,13 @@ class Provisioning extends Component<Props> {
   }
 
   render() {
-    const { classes, onboarding, onToggleGenerateSeed } = this.props;
+    const { classes, onboarding, onToggleGenerateSeed, t } = this.props;
     if (!onboarding.shards_channel) {
       return <SpinnerCard />;
     }
     return (
       <div>
-        <Title>Provisioning</Title>
+        <Title>{t("onboarding:master_seed_provisionning.title")}</Title>
         <BlurDialog
           open={onboarding.generateSeedModal}
           onClose={onToggleGenerateSeed}
@@ -146,17 +149,18 @@ class Provisioning extends Component<Props> {
           <GenerateSeed
             shards_channel={onboarding.shards_channel}
             onFinish={this.finish}
+            wraps={false}
           />
         </BlurDialog>
         <Introduction>
-          Everything is now ready to generate your company’s master seed. Ask
-          each shared owner, in turn, to generate their part of the master seed
-          by connecting their Ledger Blue.
+          {t("onboarding:master_seed_provisionning.description")}
         </Introduction>
         <div className={classes.steps}>
           <div className={classes.step}>
             <ProfileIcon />
-            <div className={classes.title}>First owner</div>
+            <div className={classes.title}>
+              {t("onboarding:master_seed_provisionning.step1")}
+            </div>
             <SeedStatus
               generated={onboarding.shards.length > 0}
               open={onToggleGenerateSeed}
@@ -169,7 +173,9 @@ class Provisioning extends Component<Props> {
             })}
           >
             <ProfileIcon />
-            <div className={classes.title}>Second owner</div>
+            <div className={classes.title}>
+              {t("onboarding:master_seed_provisionning.step2")}
+            </div>
             <SeedStatus
               generated={onboarding.shards.length > 1}
               open={onToggleGenerateSeed}
@@ -182,17 +188,18 @@ class Provisioning extends Component<Props> {
             })}
           >
             <ProfileIcon />
-            <div className={classes.title}>Third owner</div>
+            <div className={classes.title}>
+              {t("onboarding:master_seed_provisionning.step3")}
+            </div>
             <SeedStatus
               generated={onboarding.shards.length > 2}
               open={onToggleGenerateSeed}
             />
           </div>
         </div>
-        <SubTitle>To continue</SubTitle>
+        <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
         <ToContinue>
-          Make sure that each shared owners have generated their part of the
-          master seed in turn, using their Ledger Blue.
+          {t("onboarding:master_seed_provisionning.to_continue")}
         </ToContinue>
         <Footer
           nextState
@@ -202,7 +209,7 @@ class Provisioning extends Component<Props> {
               onTouchTap={onNext}
               disabled={onboarding.shards.length < 3}
             >
-              Continue
+              {t("common:continue")}
             </DialogButton>
           )}
         />
@@ -221,4 +228,6 @@ const mapDispatch = (dispatch: *) => ({
   onGetShardsChannel: () => dispatch(getShardsChannel())
 });
 
-export default connect(mapProps, mapDispatch)(withStyles(styles)(Provisioning));
+export default connect(mapProps, mapDispatch)(
+  withStyles(styles)(translate()(Provisioning))
+);

@@ -2,7 +2,6 @@
 import SpinnerCard from "components/spinners/SpinnerCard";
 import HelpLink from "components/HelpLink";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import queryString from "query-string";
@@ -83,10 +82,6 @@ type State = {
 };
 
 export class Login extends Component<Props, State> {
-  context: {
-    translate: string => string
-  };
-
   state = {
     domain: "",
     error: null,
@@ -236,10 +231,6 @@ export class Login extends Component<Props, State> {
     );
   }
 }
-
-Login.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

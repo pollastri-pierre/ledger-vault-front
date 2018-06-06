@@ -1,6 +1,7 @@
 //@flow
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 // import { Route } from "react-router";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
@@ -58,18 +59,11 @@ const styles = {
 class ActionBar extends Component<{
   location: Object,
   match: Object,
+  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
-  };
-  context: {
-    translate: string => string
-  };
   render() {
-    const { location, classes, match } = this.props;
-    // FIXME introduce a component for i18n
-    const t = this.context.translate;
+    const { location, classes, match, t } = this.props;
 
     return (
       <div className={classes.base}>
@@ -108,4 +102,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withStyles(styles)(ActionBar);
+export default withStyles(styles)(translate()(ActionBar));

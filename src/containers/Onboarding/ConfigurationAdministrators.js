@@ -1,4 +1,7 @@
+//@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import {
   Title,
   SubTitle,
@@ -10,38 +13,36 @@ import {
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
-const ConfigurationAdministrators = () => {
+const ConfigurationAdministrators = ({ t }: { t: Translate }) => {
   return (
     <div>
-      <Title>Configuration</Title>
+      <Title>{t("onboarding:administrators_configuration.title")}</Title>
       <Introduction>
-        To be able to connect and use the Vault, each administrator needs to
-        configure his/her Ledger Blue by following those 3 steps:
+        {t("onboarding:administrators_configuration.description")}
       </Introduction>
       <List>
         <ListItem number={1}>
-          Open the Ledger Blue sealed box that was given to you. Grab the device
-          and its red recovery sheet.
+          {t("onboarding:administrators_configuration.step1")}
         </ListItem>
         <ListItem number={2}>
-          Follow this online tutorial to initialize your device: <br />
-          <a href="#">configure my device</a>
+          {t("onboarding:administrators_configuration.step2")}
+          <br />
+          <a href="#">
+            {t("onboarding:administrators_configuration.configure_device")}
+          </a>
         </ListItem>
         <ListItem number={3}>
-          Make sure to keep your recovery sheet in a safe place. Keep your
-          device with you, it will be required at the next step.
+          {t("onboarding:administrators_configuration.step3")}
         </ListItem>
       </List>
-      <SubTitle>to Continue</SubTitle>
+      <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
       <ToContinue>
-        Make sure all administrators have configured their Ledger Blue and that
-        all device’s recovery phrases are written down in their respective
-        recovery sheets.
+        {t("onboarding:administrators_configuration.to_continue")}
       </ToContinue>
       <Footer
         render={(onPrev, onNext) => (
           <DialogButton highlight onTouchTap={onNext}>
-            Continue
+            {t("common:continue")}
           </DialogButton>
         )}
       />
@@ -49,4 +50,4 @@ const ConfigurationAdministrators = () => {
   );
 };
 
-export default ConfigurationAdministrators;
+export default translate()(ConfigurationAdministrators);

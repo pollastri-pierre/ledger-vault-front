@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import type { Member } from "data/types";
 import ProfileEditModal from "../ProfileEditModal";
 import ModalRoute from "../ModalRoute";
@@ -71,6 +72,7 @@ class ProfileCard extends Component<
   {
     profile: Member,
     history: *,
+    t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
     location: *,
     match: *
@@ -79,11 +81,6 @@ class ProfileCard extends Component<
 > {
   state = {
     bubbleOpened: false
-  };
-
-  // FIXME translate should be a component so i don't have to depend on context
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
   };
 
   anchorEl: *;
@@ -103,9 +100,8 @@ class ProfileCard extends Component<
   };
 
   render() {
-    const { profile, match, classes } = this.props;
+    const { profile, match, classes, t } = this.props;
     const { bubbleOpened } = this.state;
-    const t = this.context.translate;
     return (
       <span>
         <span
@@ -125,7 +121,7 @@ class ProfileCard extends Component<
               {profile.first_name} {profile.last_name}
             </div>
             <div className={classes.profile_view_profile}>
-              {t("actionBar.viewProfile")}
+              {t("actionBar.view_profile")}
             </div>
           </div>
         </span>
@@ -142,7 +138,7 @@ class ProfileCard extends Component<
           <div onClick={this.onCloseBubble}>
             <MenuList>
               <MenuLink to={`/${match.params.orga_name}/logout`}>
-                <span className={classes.link}>{t("actionBar.logOut")}</span>
+                <span className={classes.link}>{t("actionBar.logout")}</span>
               </MenuLink>
             </MenuList>
           </div>
@@ -160,7 +156,7 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </div>
 ));
 
-export default connectData(withStyles(styles)(ProfileCard), {
+export default connectData(withStyles(styles)(translate()(ProfileCard)), {
   RenderLoading,
   queries: {
     profile: ProfileQuery

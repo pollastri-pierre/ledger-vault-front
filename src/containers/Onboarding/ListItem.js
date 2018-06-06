@@ -16,7 +16,7 @@ const ListItem = ({
   number,
   classes
 }: {
-  children: React.Node,
+  children: any,
   number: number,
   classes: { [$Keys<typeof styles>]: string }
 }) => {

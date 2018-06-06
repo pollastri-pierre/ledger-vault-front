@@ -249,7 +249,10 @@ export default class VaultDeviceApp {
     };
   }
 
-  async generateKeyComponent(path: number[]): Promise<*> {
+  async generateKeyComponent(
+    path: number[],
+    isWrappingKey: boolean
+  ): Promise<*> {
     const data = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
@@ -258,7 +261,11 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
-    const response = await this.transport.send(0xe0, 0x44, 0x00, 0x00, data);
+    let p1 = 0x00;
+    if (isWrappingKey) {
+      p1 = 0x01;
+    }
+    const response = await this.transport.send(0xe0, 0x44, p1, 0x00, data);
     return response.slice(0, response.length - 2);
   }
 

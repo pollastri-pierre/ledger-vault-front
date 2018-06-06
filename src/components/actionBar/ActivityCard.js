@@ -1,12 +1,12 @@
 //@flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
-// import type { ActivityCommon } from "data/types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { DATA_FETCHED } from "restlay/dataStore";
@@ -64,6 +64,7 @@ class ActivityCard extends Component<
     onNewActivity: Function,
     restlay?: RestlayEnvironment,
     loading: boolean,
+    t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
   },
@@ -93,11 +94,6 @@ class ActivityCard extends Component<
 
   static defaultProps = {
     loading: false
-  };
-
-  // FIXME translate should be a component so i don't have to depend on context
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
   };
 
   anchorEl: *;
@@ -136,9 +132,8 @@ class ActivityCard extends Component<
   };
 
   render() {
-    const { classes, activities, loading, match } = this.props;
+    const { classes, activities, loading, match, t } = this.props;
     const { bubbleOpened } = this.state;
-    const t = this.context.translate;
     const unseenActivityCount = activities
       ? activities.reduce(
           (count, activity) => count + (!activity.seen ? 1 : 0),
@@ -189,14 +184,16 @@ class ActivityCard extends Component<
   }
 }
 
-const RenderLoading = withStyles(styles)(({ classes, match }) => (
-  <ActivityCard
-    loading={true}
-    classes={classes}
-    match={match}
-    onNewActivity={() => ({})}
-  />
-));
+const RenderLoading = withStyles(styles)(
+  translate()(({ classes, match }) => (
+    <ActivityCard
+      loading={true}
+      classes={classes}
+      match={match}
+      onNewActivity={() => ({})}
+    />
+  ))
+);
 
 const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
   onNewActivity: (activity: ActivityGeneric) => {
@@ -215,7 +212,7 @@ const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
 });
 
 export default withStyles(styles)(
-  connectData(connect(null, mapDispatchToProps)(ActivityCard), {
+  connectData(connect(null, mapDispatchToProps)(translate()(ActivityCard)), {
     RenderLoading,
     queries: {
       activities: ActivityQuery

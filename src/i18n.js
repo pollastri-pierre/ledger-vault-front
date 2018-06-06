@@ -1,10 +1,9 @@
 import i18n from "i18next";
-import translations from "assets/i18n/en/translations.json";
+import resources from "../locales";
 
 i18n.init({
-  lng: "en",
-  resources: {
-    en: { translation: translations }
-  }
+  fallbackLng: "en",
+  resources: resources,
+  debug: true
 });
 export default i18n;

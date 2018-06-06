@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import { DialogButton } from "components";
 import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
@@ -40,6 +41,7 @@ const styles = {
 export class TeamLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   onChange: Function,
+  t: Translate,
   onStartAuth: Function,
   onCloseTeamError: Function,
   isChecking: boolean,
@@ -66,9 +68,7 @@ export class TeamLogin extends Component<{
   };
 
   render() {
-    const { domain, error, isChecking } = this.props;
-    const t = this.context.translate;
-    const { classes } = this.props;
+    const { domain, classes, error, isChecking, t } = this.props;
     return (
       <form onSubmit={this.onSubmit} className={classes.base}>
         <Profile className={classes.icon} color="#e2e2e2" />
@@ -108,8 +108,4 @@ export class TeamLogin extends Component<{
   }
 }
 
-TeamLogin.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default withStyles(styles)(TeamLogin);
+export default withStyles(styles)(translate()(TeamLogin));

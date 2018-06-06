@@ -21,6 +21,13 @@ export default {
   module: {
     rules: [
       {
+        test: /locales/,
+        loader: "@alienfast/i18next-loader",
+        options: {
+          basenameAsNamespace: true
+        }
+      },
+      {
         test: /\.(jpe?g|png|gif|svg)$/i,
         use: [
           {

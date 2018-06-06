@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import cx from "classnames";
 import BlurDialog from "components/BlurDialog";
 import { withStyles } from "@material-ui/core/styles";
@@ -97,7 +99,8 @@ type Props = {
   onOpenShardsChannel: Function,
   onToggleSignin: Function,
   onAddMessage: (string, string, string) => Function,
-  onAddSignedIn: Function
+  onAddSignedIn: Function,
+  t: Translate
 };
 class SignIn extends Component<Props> {
   svg: ?Element;
@@ -155,13 +158,13 @@ class SignIn extends Component<Props> {
   };
 
   render() {
-    const { classes, onboarding, onToggleSignin } = this.props;
+    const { classes, onboarding, onToggleSignin, t } = this.props;
     if (!onboarding.shardChallenge) {
       return <SpinnerCard />;
     }
     return (
       <div className={classes.base}>
-        <Title>Sign-in</Title>
+        <Title>{"onboarding:master_seed_signin.title"}</Title>
         <BlurDialog open={onboarding.signInModal} onClose={onToggleSignin}>
           <SignInDevice
             challenge={onboarding.shardChallenge}
@@ -170,8 +173,7 @@ class SignIn extends Component<Props> {
           />
         </BlurDialog>
         <Introduction>
-          The presence of the administrators defined in the previous
-          administrator scheme is required to generate the master seed.
+          {t("onboarding:master_seed_signin.description")}
         </Introduction>
         <div className={classes.flex}>
           <div className={classes.flexWrapper}>
@@ -185,13 +187,11 @@ class SignIn extends Component<Props> {
               <strong>
                 {onboarding.signed.length}/{onboarding.members.length}
               </strong>
-              <span>members present</span>
+              <span>{t("onboarding.master_seed_signin.members.present")}</span>
             </div>
           </div>
           <div className={classes.flexWrapper}>
-            <strong>
-              Ask each administrator to sign-in using their Ledger Blue devices.
-            </strong>
+            <strong>{t("onboarding:master_seed_signin.ask_admin")}</strong>
             <div className={classes.sep} />
             <div>
               <div
@@ -207,23 +207,23 @@ class SignIn extends Component<Props> {
               >
                 <Plus className={classes.icon} />
                 {onboarding.signed.length === 0 ? (
-                  <span>Sign in</span>
+                  <span>{t("onboarding:master_seed_signin.signin")}</span>
                 ) : (
-                  <span>Sign in next Administrator</span>
+                  <span>{t("onboarding:master_seed_signin.signin_next")}</span>
                 )}
               </div>
               <span className={classes.counter}>
-                {onboarding.signed.length} signed-in,{" "}
-                {onboarding.members.length - onboarding.signed.length} remaining
+                {onboarding.signed.length}{" "}
+                {t("onboarding:master_seed_signin.signed_in")},{" "}
+                {onboarding.members.length - onboarding.signed.length}{" "}
+                {t("onboarding:master_seed_signin:remaining")}
               </span>
             </div>
           </div>
         </div>
-        <SubTitle>To continue</SubTitle>
+        <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
         <ToContinue>
-          Gather the number of administrators defined previsoulsy and make sure
-          the administration scheme is satisfied by requesting administrators to
-          sign-in.
+          {t("onboarding:master_seed_signin.to_continue")}
         </ToContinue>
         <Footer
           isBack={false}
@@ -235,7 +235,7 @@ class SignIn extends Component<Props> {
                 onTouchTap={onNext}
                 disabled={onboarding.signed.length < onboarding.members.length}
               >
-                Continue
+                {t("common:continue")}
               </DialogButton>
             );
           }}
@@ -258,4 +258,6 @@ const mapDispatch = (dispatch: *) => ({
   onNextStep: () => dispatch(nextStep())
 });
 
-export default connect(mapState, mapDispatch)(withStyles(styles)(SignIn));
+export default connect(mapState, mapDispatch)(
+  withStyles(styles)(translate()(SignIn))
+);

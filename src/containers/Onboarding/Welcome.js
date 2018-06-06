@@ -1,6 +1,8 @@
 //@flow
 import Footer from "./Footer";
 import DialogButton from "components/buttons/DialogButton";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import React from "react";
 import {
   Title,
@@ -10,32 +12,24 @@ import {
 } from "components/Onboarding";
 import Requirements from "./Requirements.js";
 
-const Welcome = () => (
+const Welcome = ({ t }: { t: Translate }) => (
   <div>
-    <Title>Welcome</Title>
-    <Introduction>
-      It looks like your team is using Ledger Vault for the first time. Please
-      make sure you have received the Ledger Vault briefcase as well as the
-      package containing all the Ledger Blue devices for your team members.
-    </Introduction>
-    <SubTitle>Requirements</SubTitle>
+    <Title>{t("onboarding:welcome.title")}</Title>
+    <Introduction>{t("onboarding:welcome.description")}</Introduction>
+    <SubTitle>{t("onboarding:requirements")}</SubTitle>
     <Requirements />
-    <SubTitle>To continue</SubTitle>
-    <ToContinue>
-      When ready, open the Ledger Vault briefcase and grab the one-time
-      authenticator device in the front pocket. It will be used to authenticate
-      during the next step.
-    </ToContinue>
+    <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
+    <ToContinue>{t("onboarding:welcome.to_continue")}</ToContinue>
     <Footer
       isBack={false}
       nextState
       render={(onPrev, onNext) => (
         <DialogButton highlight onTouchTap={onNext}>
-          Continue
+          {t("common:continue")}
         </DialogButton>
       )}
     />
   </div>
 );
 
-export default Welcome;
+export default translate()(Welcome);

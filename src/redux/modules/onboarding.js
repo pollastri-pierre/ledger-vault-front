@@ -14,16 +14,15 @@ export const CHANGE_NB_REQUIRED = "onboarding/CHANGE_NB_REQUIRED";
 export const TOGGLE_MODAL_PROFILE = "onboarding/TOGGLE_MODAL_PROFILE";
 export const GOT_CHALLENGE_REGISTRATION =
   "onboarding/GOT_CHALLENGE_REGISTRATION";
-export const GOT_BOOTSTRAP_CHALLENGE = "onboarding/GOT_BOOTSTRAP_CHALLENGE";
-export const GOT_BOOTSTRAP_TOKEN = "onboarding/GOT_BOOTSTRAP_TOKEN";
 export const GOT_COMMIT_CHALLENGE = "onboarding/GOT_COMMIT_CHALLENGE";
-export const COMMIT_ADMINISTRATORS = "onboarding/COMMIT_ADMINISTRATORS";
 export const GOT_SHARD_CHALLENGE = "onboarding/GOT_SHARD_CHALLENGE";
 export const GOT_SHARDS_CHANNEL = "onboarding/GOT_SHARD_CHANNEL";
+export const GOT_WRAPS_CHANNEL = "onboarding/GOT_WRAPS_CHANNEL";
 export const TOGGLE_SIGNIN = "onboarding/TOGGLE_SIGNIN";
 export const TOGGLE_GENERATE_SEED = "onboarding/TOGGLE_GENERATE_SEED";
 export const ADD_SIGNEDIN = "onboarding/ADD_SIGNEDIN";
 export const ADD_SEED_SHARD = "onboarding/ADD_SEED_SHARD";
+export const ADD_WRAP_SHARD = "onboarding/ADD_WRAP_SHARD";
 export const SUCCESS_SEED_SHARDS = "onboarding/SUCCESS_SEED_SHARDS";
 export const EDIT_MEMBER = "onboarding/EDIT_MEMBER";
 export const LOCK_PARTITION = "onboarding/LOCK_PARTITION";
@@ -44,13 +43,12 @@ const ALL_ROUTES = [
   { label: "administrators_configuration", visited: false, step: 3 },
   { label: "administrators_registration", visited: false, step: 3 },
   { label: "administrators_scheme", visited: false, step: 3 },
-  { label: "administrators_confirmation", visited: false, step: 4 },
-  { label: "seed_signin", visited: false, step: 6 },
-  { label: "seed_prerequisite", visited: false, step: 7 },
-  { label: "seed_configuration", visited: false, step: 7 },
-  { label: "seed_backup", visited: false, step: 7 },
-  { label: "seed_provisioning", visited: false, step: 7 },
-  { label: "seed_confirmation", visited: false, step: 7 }
+  { label: "seed_signin", visited: false, step: 5 },
+  { label: "seed_prerequisite", visited: false, step: 6 },
+  { label: "seed_configuration", visited: false, step: 6 },
+  { label: "seed_backup", visited: false, step: 6 },
+  { label: "seed_provisioning", visited: false, step: 6 },
+  { label: "seed_confirmation", visited: false, step: 6 }
 ];
 
 export type Store = {
@@ -60,18 +58,16 @@ export type Store = {
   modalProfile: boolean,
   isLoadingChallengeRegistration: boolean,
   challenge_registration: ?string,
-  bootstrapAuthToken: ?string,
-  bootstrapChallenge: ?Challenge,
-  commit_challenge: ?string,
   editMember: ?Member,
-  committed_administrators: boolean,
   signed: Array<*>,
   steps: Array<*>,
   shardChallenge: ?string,
   signInModal: boolean,
   generateSeedModal: boolean,
   shards_channel: ?string,
+  wraps_channel: ?string,
   shards: Array<*>,
+  wraps: Array<*>,
   partition_locked: boolean,
   key_handles: Object
 };
@@ -84,17 +80,15 @@ const initialState: Store = {
   modalProfile: false,
   isLoadingChallengeRegistration: true,
   challenge_registration: null,
-  bootstrapAuthToken: null,
-  bootstrapChallenge: null,
-  commit_challenge: null,
   editMember: null,
-  committed_administrators: false,
   signed: [],
   shardChallenge: null,
   signInModal: false,
   generateSeedModal: false,
   shards_channel: null,
+  wraps_channel: null,
   shards: [],
+  wraps: [],
   partition_locked: false,
   key_handles: {}
 };
@@ -121,11 +115,26 @@ export function gotShardsChannel(shards_channel: Channel) {
   };
 }
 
+export function gotWrapsChannel(wraps_channel: Channel) {
+  return {
+    type: GOT_WRAPS_CHANNEL,
+    wraps_channel
+  };
+}
+
 export function getShardsChannel() {
   return async (dispatch: Function) => {
     const shards = await network("/onboarding/challenge", "GET");
 
     dispatch(gotShardsChannel(shards));
+  };
+}
+
+export function getWrapsChannel() {
+  return async (dispatch: Function) => {
+    const wraps = await network("/onboarding/challenge", "GET");
+
+    dispatch(gotWrapsChannel(wraps));
   };
 }
 
@@ -166,6 +175,16 @@ export function toggleSignin() {
 export function toggleGenerateSeed() {
   return {
     type: TOGGLE_GENERATE_SEED
+  };
+}
+
+export function addWrapShard(data: *) {
+  return async (dispatch: Dispatch<*>) => {
+    await network("/onboarding/authenticate", "POST", data);
+    return dispatch({
+      type: ADD_WRAP_SHARD,
+      data
+    });
   };
 }
 
@@ -222,25 +241,10 @@ export function previousStep() {
   };
 }
 
-export function gotCommitChallenge(challenge: string) {
-  return {
-    type: GOT_COMMIT_CHALLENGE,
-    challenge
-  };
-}
-
 export function gotShardChallenge(challenge: Challenge) {
   return {
     type: GOT_SHARD_CHALLENGE,
     challenge
-  };
-}
-
-export function getCommitChallenge() {
-  return async (dispatch: Dispatch<*>) => {
-    const challenge = await network("/onboarding/challenge", "GET");
-
-    return dispatch(gotCommitChallenge(challenge));
   };
 }
 
@@ -251,38 +255,9 @@ export function gotChallengeRegistation(challenge: Challenge) {
   };
 }
 
-export function gotBootstrapToken(result: *) {
-  return {
-    type: GOT_BOOTSTRAP_TOKEN,
-    result
-  };
-}
-
-export function getBootstrapToken(pub_key: string, signature: Object) {
-  return async (dispatch: Dispatch<*>) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
-    };
-    const result = await network("/onboarding/authenticate", "POST", data);
-    return dispatch(gotBootstrapToken(result));
-  };
-}
-
 export function lockPartition() {
   return {
     type: LOCK_PARTITION
-  };
-}
-
-export function commitAdministrators(pub_key: string, signature: Object) {
-  return async (dispatch: Dispatch<*>) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
-    };
-    await network("/onboarding/authenticate", "POST", data);
-    return dispatch(lockPartition());
   };
 }
 
@@ -290,20 +265,6 @@ export function getShardChallenge() {
   return async (dispatch: Dispatch<*>) => {
     const challenge = await network("/onboarding/challenge", "GET");
     return dispatch(gotShardChallenge(challenge));
-  };
-}
-
-export function getBootstrapChallenge() {
-  return async (dispatch: Dispatch<*>) => {
-    const challengeObject = await network("/onboarding/challenge", "GET");
-    return dispatch(gotBootstrapChallenge(challengeObject));
-  };
-}
-
-export function gotBootstrapChallenge(challenge: Challenge) {
-  return {
-    type: GOT_BOOTSTRAP_CHALLENGE,
-    challenge
   };
 }
 
@@ -386,8 +347,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     }
     case NEXT_STEP: {
       if (
-        Number.isInteger(state.currentStep) &&
-        state.currentStep &&
+        typeof state.currentStep !== "undefined" &&
         state.currentStep < ALL_ROUTES.length - 1
       ) {
         return { ...state, currentStep: state.currentStep + 1 };
@@ -418,18 +378,6 @@ export default function reducer(state: Store = initialState, action: Object) {
       return {
         ...state,
         generateSeedModal: !state.generateSeedModal
-      };
-    }
-    case GOT_BOOTSTRAP_CHALLENGE: {
-      return {
-        ...state,
-        bootstrapChallenge: action.challenge
-      };
-    }
-    case GOT_BOOTSTRAP_TOKEN: {
-      return {
-        ...state,
-        bootstrapAuthToken: action.result
       };
     }
     case GOT_CHALLENGE_REGISTRATION: {
@@ -466,10 +414,10 @@ export default function reducer(state: Store = initialState, action: Object) {
         shards_channel: action.shards_channel
       };
     }
-    case COMMIT_ADMINISTRATORS: {
+    case GOT_WRAPS_CHANNEL: {
       return {
         ...state,
-        committed_administrators: true
+        wraps_channel: action.wraps_channel
       };
     }
     case ADD_SIGNEDIN: {
@@ -489,6 +437,12 @@ export default function reducer(state: Store = initialState, action: Object) {
       return {
         ...state,
         shards: [...state.shards, action.data]
+      };
+    }
+    case ADD_WRAP_SHARD: {
+      return {
+        ...state,
+        wraps: [...state.wraps, action.data]
       };
     }
     case EDIT_MEMBER: {

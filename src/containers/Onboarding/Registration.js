@@ -1,5 +1,7 @@
 //@flow
 import { connect } from "react-redux";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
@@ -66,25 +68,33 @@ const noMembers = {
 
 const NoMembers = withStyles(
   noMembers
-)(({ classes }: { classes: { [$Keys<typeof noMembers>]: string } }) => {
-  return (
-    <div className={classes.base}>
-      <People
-        color="#cccccc"
-        style={{
-          height: 29,
-          display: "block",
-          margin: "auto",
-          marginBottom: 21
-        }}
-      />
-      <div className={classes.label}>Add a new tem member</div>
-      <div className={classes.info}>
-        At least 3 team members are required to continue
+)(
+  ({
+    classes,
+    t
+  }: {
+    classes: { [$Keys<typeof noMembers>]: string },
+    t: Translate
+  }) => {
+    return (
+      <div className={classes.base}>
+        <People
+          color="#cccccc"
+          style={{
+            height: 29,
+            display: "block",
+            margin: "auto",
+            marginBottom: 21
+          }}
+        />
+        <div className={classes.label}>Add a new tem member</div>
+        <div className={classes.info}>
+          At least 3 team members are required to continue
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 const membersList = {
   base: {
@@ -166,14 +176,15 @@ class Registration extends Component<Props, *> {
       onboarding,
       onToggleModalProfile,
       onAddMessage,
-      onEditMember
+      onEditMember,
+      t
     } = this.props;
     if (onboarding.isLoadingChallengeRegistration) {
       return <SpinnerCard />;
     }
     return (
       <div>
-        <Title>Registration</Title>
+        <Title>{t("onboarding:administrators_registration.title")}</Title>
         <BlurDialog
           open={onboarding.modalProfile}
           onClose={onToggleModalProfile}
@@ -188,12 +199,11 @@ class Registration extends Component<Props, *> {
           />
         </BlurDialog>
         <div onClick={() => onToggleModalProfile()} className={classes.add}>
-          <Plus className={classes.plus} />Add team member
+          <Plus className={classes.plus} />
+          {t("onboarding:administrators_registration.add_member")}
         </div>
         <Introduction>
-          It is now time to add each team member to your company’s Ledger Vault.
-          New members will be set as administrators.
-          <strong> Once added, administrators cannot be removed.</strong>
+          {t("onboarding:administrators_registration.description")}
         </Introduction>
         {onboarding.members.length === 0 ? (
           <NoMembers />
@@ -211,7 +221,7 @@ class Registration extends Component<Props, *> {
               onTouchTap={onNext}
               disabled={onboarding.members.length < 3}
             >
-              Continue
+              {t("common:continue")}
             </DialogButton>
           )}
         />
@@ -221,5 +231,5 @@ class Registration extends Component<Props, *> {
 }
 
 export default connect(mapStateToProps, mapDispatch)(
-  withStyles(styles)(Registration)
+  withStyles(styles)(translate()(Registration))
 );

@@ -157,10 +157,12 @@ export class Welcome extends Component<
             id="textField"
             name="email"
             onChange={this.onChange}
-            placeholder={t("login.hint")}
+            placeholder={t("welcome:placeholder_domain")}
           />
           <br />
-          <div className={classes.instructions}>{t("login.instructions")}</div>
+          <div className={classes.instructions}>
+            {t("welcome:domain_description")}
+          </div>
           <DialogButton
             className={classes.submit}
             highlight
@@ -168,7 +170,7 @@ export class Welcome extends Component<
             right
             onTouchTap={this.onSubmit}
           >
-            {t("common.continue")}
+            {t("common:continue")}
           </DialogButton>
         </form>
         <LandingLinks />

@@ -1,13 +1,9 @@
 //@flow
 import React, { Component } from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
-const steps = [
-  "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
-  "Open the Vault app on the dashboard. When displayed, confirm the sign-in request on the device.",
-  "Close the Vault app using the upper right square icon and disconnect the device from this computer."
-];
-
 type Challenge = {
   challenge: string,
   key_handle: *
@@ -15,7 +11,8 @@ type Challenge = {
 type Props = {
   onFinish: Function,
   challenge: Challenge,
-  keyHandles: Object
+  keyHandles: Object,
+  t: Translate
 };
 
 type State = {
@@ -54,14 +51,22 @@ class SignInDevice extends Component<Props, State> {
     }
   };
   render() {
+    const { t } = this.props;
+
+    const steps = [
+      t("onboarding:master_seed_signin.device_modal.step1"),
+      t("onboarding:master_seed_signin.device_modal.step2"),
+      t("onboarding:master_seed_signin.device_modal.step3")
+    ];
+
     return (
       <StepDeviceGeneric
         steps={steps}
-        title="Sign-in with your device"
+        title={t("onboarding:master_seed_signin.device_modal.title")}
         step={this.state.step}
       />
     );
   }
 }
 export { SignInDevice };
-export default SignInDevice;
+export default translate()(SignInDevice);
