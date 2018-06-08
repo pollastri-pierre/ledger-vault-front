@@ -25,6 +25,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const props = {
   onFinish: jest.fn(),
+  t: string => string,
   keyHandles: { pubKey: "handle1" },
   challenge: { challenge: "challenge", key_handle: { pubKey: "handle1" } }
 };

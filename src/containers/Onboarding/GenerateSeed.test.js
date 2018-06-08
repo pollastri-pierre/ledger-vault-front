@@ -27,6 +27,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const props = {
   onFinish: jest.fn(),
+  wraps: true,
   shards_channel: {
     ephemeral_public_key: "shards_pub_key",
     ephemeral_certificate: "shards_certificate"
@@ -34,7 +35,7 @@ const props = {
 };
 
 test("onStart should call device and API with right parameters", async () => {
-  const MyComponent = shallow(<GenerateSeed {...props} />);
+  const MyComponent = shallow(<GenerateSeed t={string => string} {...props} />);
   await MyComponent.instance().start();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
 
@@ -44,7 +45,10 @@ test("onStart should call device and API with right parameters", async () => {
     Buffer.from("shards_certificate", "base64")
   );
 
-  expect(mockGenerateKeyComponent).toHaveBeenCalledWith(KEY_MATERIAL_PATH);
+  expect(mockGenerateKeyComponent).toHaveBeenCalledWith(
+    KEY_MATERIAL_PATH,
+    true
+  );
 
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",

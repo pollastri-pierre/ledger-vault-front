@@ -26,7 +26,6 @@ export const ADD_WRAP_SHARD = "onboarding/ADD_WRAP_SHARD";
 export const SUCCESS_SEED_SHARDS = "onboarding/SUCCESS_SEED_SHARDS";
 export const EDIT_MEMBER = "onboarding/EDIT_MEMBER";
 export const LOCK_PARTITION = "onboarding/LOCK_PARTITION";
-export const REGISTER_KEYHANDLE = "onboarding/REGISTER_KEYHANDLE";
 
 type Challenge = {
   challenge: string,
@@ -97,14 +96,6 @@ export function goToStep(step_label: string) {
   return {
     type: GO_TO_STEP,
     step: step_label
-  };
-}
-
-export function registerKeyHandle(pubKey: string, keyHandle: string) {
-  return {
-    type: REGISTER_KEYHANDLE,
-    pubKey,
-    keyHandle
   };
 }
 
@@ -348,6 +339,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     case NEXT_STEP: {
       if (
         typeof state.currentStep !== "undefined" &&
+        state.currentStep !== null &&
         state.currentStep < ALL_ROUTES.length - 1
       ) {
         return { ...state, currentStep: state.currentStep + 1 };
@@ -385,15 +377,6 @@ export default function reducer(state: Store = initialState, action: Object) {
         ...state,
         challenge_registration: action.challenge,
         isLoadingChallengeRegistration: false
-      };
-    }
-    case REGISTER_KEYHANDLE: {
-      return {
-        ...state,
-        key_handles: {
-          ...state.key_handles,
-          ...{ [action.pubKey]: action.keyHandle }
-        }
       };
     }
     case GOT_SHARD_CHALLENGE: {

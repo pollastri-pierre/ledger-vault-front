@@ -3,7 +3,6 @@ import network from "network";
 import reducer, {
   GOT_SHARDS_CHANNEL,
   ADD_SIGNEDIN,
-  COMMIT_ADMINISTRATORS,
   GOT_CHALLENGE_REGISTRATION,
   EDIT_MEMBER,
   GO_TO_STEP,
@@ -13,9 +12,6 @@ import reducer, {
   VIEW_ROUTE,
   TOGGLE_SIGNIN,
   TOGGLE_MODAL_PROFILE,
-  GOT_COMMIT_CHALLENGE,
-  GOT_BOOTSTRAP_CHALLENGE,
-  GOT_BOOTSTRAP_TOKEN,
   SUCCESS_SEED_SHARDS,
   CHANGE_NB_REQUIRED,
   ADD_SEED_SHARD,
@@ -25,17 +21,13 @@ import reducer, {
   goToStep,
   gotShardsChannel,
   addMember,
-  gotCommitChallenge,
   toggleModalProfile,
   nextState,
   changeNbRequired,
-  gotBootstrapChallenge,
   toggleSignin,
   toggleGenerateSeed,
   addSeedShard,
-  viewRoute,
-  gotBootstrapToken,
-  getCommitChallenge
+  viewRoute
 } from "redux/modules/onboarding";
 
 beforeEach(() => {});
@@ -126,12 +118,6 @@ test("addMember should send ADD_MEMBER and the member", async () => {
   });
 });
 
-test("gotBootstrapChallenge should send GOT_BOOTSTRAP_CHALLENGE and the challenge", () => {
-  expect(gotBootstrapChallenge({ data: true })).toEqual({
-    type: GOT_BOOTSTRAP_CHALLENGE,
-    challenge: { data: true }
-  });
-});
 test("changeNbRequired should send CHANGE_NB_REQUIRED and the number", () => {
   expect(changeNbRequired(2)).toEqual({
     type: CHANGE_NB_REQUIRED,
@@ -143,33 +129,6 @@ test("viewRoute should send VIEW_ROUTE and the route", () => {
   expect(viewRoute({ data: true })).toEqual({
     type: VIEW_ROUTE,
     route: { data: true }
-  });
-});
-
-test("gotCommitChallenge should send GOT_COMMIT_CHALLENGE and the challenge", () => {
-  expect(gotCommitChallenge({ data: true })).toEqual({
-    type: GOT_COMMIT_CHALLENGE,
-    challenge: { data: true }
-  });
-});
-
-test("getCommitChallenge should call the API then GOT_COMMIT_CHALLENGE", async () => {
-  network.mockImplementation(() => "challenge");
-  const dispatch = jest.fn();
-  const thunk = getCommitChallenge();
-  await thunk(dispatch);
-  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
-
-  expect(dispatch).toHaveBeenCalledWith({
-    type: GOT_COMMIT_CHALLENGE,
-    challenge: "challenge"
-  });
-});
-
-test("gotBootstrapToken dispatch GOT_BOOTSTRAP_TOKEN", () => {
-  expect(gotBootstrapToken("token")).toEqual({
-    type: GOT_BOOTSTRAP_TOKEN,
-    result: "token"
   });
 });
 
@@ -188,12 +147,6 @@ test("when SUCCESS_SEED_SHARDS reducer should set successSeedShards to true", ()
   });
 });
 
-test("when COMMIT_ADMINISTRATORS reducer should set commited_administrators to true", () => {
-  const state = { committed_administrators: false };
-  expect(reducer(state, { type: COMMIT_ADMINISTRATORS })).toEqual({
-    committed_administrators: true
-  });
-});
 test("when CHANGE_NB_REQUIRED reducer should set nbRequired", () => {
   const state = { nbRequired: 0, members: ["1", "2", "3"] };
   expect(reducer(state, { type: CHANGE_NB_REQUIRED, nb: 2 })).toEqual({
@@ -248,24 +201,6 @@ test("when ADD_SIGNEDIN reducer should not add to signed if already", () => {
     })
   ).toEqual({
     signed: [{ pub_key: "a" }]
-  });
-});
-
-test("when GOT_BOOTSTRAP_CHALLENGE reducer should set bootstrapChallenge", () => {
-  const state = { bootstrapChallenge: null };
-  expect(
-    reducer(state, { type: GOT_BOOTSTRAP_CHALLENGE, challenge: "chal" })
-  ).toEqual({
-    bootstrapChallenge: "chal"
-  });
-});
-
-test("when GOT_BOOTSTRAP_TOKEN reducer should set bootstrapAuthToken", () => {
-  const state = { bootstrapAuthToken: null };
-  expect(
-    reducer(state, { type: GOT_BOOTSTRAP_TOKEN, result: "token" })
-  ).toEqual({
-    bootstrapAuthToken: "token"
   });
 });
 

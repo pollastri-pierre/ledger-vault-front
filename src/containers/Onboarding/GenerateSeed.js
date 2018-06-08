@@ -84,3 +84,4 @@ class GenerateSeed extends Component<Props, State> {
   }
 }
 export { GenerateSeed };
+export default translate()(GenerateSeed);
