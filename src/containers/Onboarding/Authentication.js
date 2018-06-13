@@ -1,8 +1,11 @@
 //@flow
 import React, { Component } from "react";
+import Plus from "components/icons/full/Plus";
+import CircleProgress from "components/CircleProgress";
 import { withStyles } from "@material-ui/core/styles";
+import type { Translate } from "data/types";
 import cx from "classnames";
-import { SeedStatus, ProfileIcon } from "./Provisioning";
+import { translate } from "react-i18next";
 import GenerateSeed from "./GenerateSeed";
 import BlurDialog from "components/BlurDialog";
 import { Title, Introduction } from "components/Onboarding";
@@ -11,38 +14,60 @@ import { connect } from "react-redux";
 import Footer from "./Footer";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import {
-  getWrapsChannel,
-  toggleGenerateSeed,
-  addWrapShard
+  openWrappingChannel,
+  toggleDeviceModal,
+  addWrappingKey
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 
 const styles = {
-  steps: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 35
+  flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
+  disabled: {
+    opacity: 0.5,
+    cursor: "default"
+  },
+  icon: {
+    width: 10,
+    marginRight: 5
+  },
+  counter: {
+    fontSize: 11,
+    color: "#767676"
+  },
+  signin_desc: {
+    fontSize: 13,
+    marginBottom: 15
   },
   title: {
     fontSize: 13,
     fontWeight: 600,
     margin: "0 0 12px 0"
   },
-  step: {
-    paddingRight: 30,
-    paddingLeft: 25,
-    "&:first-child": {
-      paddingLeft: 0
-    },
-    transition: "all 200ms ease"
-  },
   disabled: {
     opacity: 0.2
+  },
+  flexWrapper: {
+    flex: 1
   },
   separator: {
     width: 1,
     height: 94,
     background: "#eeeeee"
+  },
+  sign: {
+    fontSize: 11,
+    color: "#27d0e2",
+    fontWeight: 600,
+    textDecoration: "none",
+    textTransform: "uppercase",
+    display: "block",
+    cursor: "pointer"
+  },
+  sep: {
+    width: 220,
+    height: 1,
+    background: "#eeeeee",
+    margin: "20px 0 20px 0"
   }
 };
 
@@ -64,9 +89,9 @@ const mapState = state => ({
   onboarding: state.onboarding
 });
 const mapDispatch = (dispatch: *) => ({
-  onGetWrapsChannel: () => dispatch(getWrapsChannel()),
-  onAddWrapShard: data => dispatch(addWrapShard(data)),
-  onToggleGenerateSeed: () => dispatch(toggleGenerateSeed()),
+  onGetWrapsChannel: () => dispatch(openWrappingChannel()),
+  onAddWrapShard: data => dispatch(addWrappingKey(data)),
+  onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success))
 });
@@ -86,73 +111,64 @@ class Authentication extends Component<Props, State> {
   };
 
   render() {
-    const { onboarding, onToggleGenerateSeed, classes } = this.props;
-    console.log(onboarding);
-    if (!onboarding.wraps_channel) {
+    const { onboarding, onToggleGenerateSeed, classes, t } = this.props;
+    if (!onboarding.wrapping.channel.ephemeral_public_key) {
       return <SpinnerCard />;
     }
-
     return (
       <div>
-        <Title>Authentication</Title>
+        <Title>{t("onboarding:wrapping_key.title")}</Title>
         <BlurDialog
-          open={onboarding.generateSeedModal}
+          open={onboarding.device_modal}
           onClose={onToggleGenerateSeed}
         >
           <GenerateSeed
-            shards_channel={onboarding.wraps_channel}
+            shards_channel={onboarding.wrapping.channel}
             onFinish={this.finish}
             wraps
           />
         </BlurDialog>
-        <Introduction>
-          {
-            " The configuration of your team's Ledger is restricted. Please connect your one-time authenticator to continue."
-          }
-        </Introduction>
-        <div className={classes.steps}>
-          <div className={classes.step}>
-            <ProfileIcon />
-            <div className={classes.title}>First owner</div>
-            <SeedStatus
-              generated={onboarding.wraps.length > 0}
-              open={onToggleGenerateSeed}
+        <Introduction>{t("onboarding:wrapping_key.description")}</Introduction>
+        <div className={classes.flex}>
+          <div style={{ marginRight: 25 }}>
+            <CircleProgress
+              nb={onboarding.wrapping.blobs.length}
+              total={3}
+              label={t("onboarding:wrapping_key.label")}
             />
           </div>
-          <div className={classes.separator} />
-          <div
-            className={cx(classes.step, {
-              [classes.disabled]: onboarding.wraps.length === 0
-            })}
-          >
-            <ProfileIcon />
-            <div className={classes.title}>Second owner</div>
-            <SeedStatus
-              generated={onboarding.wraps.length > 1}
-              open={onToggleGenerateSeed}
-            />
-          </div>
-          <div className={classes.separator} />
-          <div
-            className={cx(classes.step, {
-              [classes.disabled]: onboarding.wraps.length < 2
-            })}
-          >
-            <ProfileIcon />
-            <div className={classes.title}>Third owner</div>
-            <SeedStatus
-              generated={onboarding.wraps.length > 2}
-              open={onToggleGenerateSeed}
-            />
+          <div>
+            <div className={classes.signin_desc}>
+              {t("onboarding:wrapping_key.signin_desc")}
+            </div>
+            <div
+              className={cx(classes.sign, {
+                [classes.disabled]: onboarding.wrapping.blobs.length === 3
+              })}
+              onClick={
+                onboarding.wrapping.blobs.length === 3
+                  ? () => {}
+                  : onToggleGenerateSeed
+              }
+            >
+              <Plus className={classes.icon} />
+              {t("onboarding:wrapping_key.signin")}
+            </div>
+            <div className={classes.sep} />
+            <div className={classes.counter}>
+              {onboarding.wrapping.blobs.length}{" "}
+              {t("onboarding:wrapping_key.signed")},{" "}
+              {3 - onboarding.wrapping.blobs.length}{" "}
+              {t("onboarding:wrapping_key.remaining")}
+            </div>
           </div>
         </div>
         <Footer
-          nextState
-          render={(onPrev, onNext) => (
+          render={onNext => (
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={onboarding.wraps.length < 3}
+              disabled={onboarding.wrapping.blobs.length < 3}
             >
               Continue
             </DialogButton>
@@ -167,5 +183,5 @@ class Authentication extends Component<Props, State> {
 export { Authentication };
 
 export default connect(mapState, mapDispatch)(
-  withStyles(styles)(Authentication)
+  withStyles(styles)(translate()(Authentication))
 );

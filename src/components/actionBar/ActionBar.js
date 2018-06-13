@@ -88,7 +88,7 @@ class ActionBar extends Component<{
               className="content-header-button"
             >
               <Settings className={classes.icon} />
-              <div>{t("actionBar.settings")}</div>
+              <div>{t("actionBar:settings")}</div>
             </Link>
             <ActivityCard match={match} />
             <a href="http://alpha.vault.ledger.fr:81/">

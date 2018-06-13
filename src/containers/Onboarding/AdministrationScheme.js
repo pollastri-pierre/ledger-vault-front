@@ -49,7 +49,7 @@ const AdministrationScheme = ({
       </ToContinue>
       <Footer
         nextState
-        render={(onPrev, onNext) => {
+        render={onNext => {
           const onclick = async () => {
             try {
               onNext({ quorum: parseInt(number, 10) });
@@ -65,7 +65,7 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.nbRequired < 2}
+              disabled={onboarding.quorum < 2}
             >
               {t("common:continue")}
             </DialogButton>

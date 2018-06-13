@@ -1,0 +1,6 @@
+---
+signIn: Sign in to {{domain}}
+step1: Connect your Ledger Blue to your computer using one of its USB port.
+step2: Make sure your device is powered on, and unlock it by entering your PIN.
+step3: Open the Vault app and confirm the sign-in request when displayed.
+

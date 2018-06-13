@@ -19,9 +19,9 @@ import {
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 import {
-  toggleGenerateSeed,
-  addSeedShard,
-  getShardsChannel
+  toggleDeviceModal,
+  addMasterSeedKey,
+  openProvisionningChannel
 } from "redux/modules/onboarding";
 
 const status = {
@@ -128,26 +128,24 @@ class Provisioning extends Component<Props> {
   };
 
   componentDidMount() {
-    const { onboarding, onGetShardsChannel } = this.props;
-    if (!onboarding.shards_channel) {
-      onGetShardsChannel();
-    }
+    const { onGetShardsChannel } = this.props;
+    onGetShardsChannel();
   }
 
   render() {
     const { classes, onboarding, onToggleGenerateSeed, t } = this.props;
-    if (!onboarding.shards_channel) {
+    if (!onboarding.provisionning.channel) {
       return <SpinnerCard />;
     }
     return (
       <div>
         <Title>{t("onboarding:master_seed_provisionning.title")}</Title>
         <BlurDialog
-          open={onboarding.generateSeedModal}
+          open={onboarding.device_modal}
           onClose={onToggleGenerateSeed}
         >
           <GenerateSeed
-            shards_channel={onboarding.shards_channel}
+            shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
             wraps={false}
           />
@@ -162,14 +160,14 @@ class Provisioning extends Component<Props> {
               {t("onboarding:master_seed_provisionning.step1")}
             </div>
             <SeedStatus
-              generated={onboarding.shards.length > 0}
+              generated={onboarding.provisionning.blobs.length > 0}
               open={onToggleGenerateSeed}
             />
           </div>
           <div className={classes.separator} />
           <div
             className={cx(classes.step, {
-              [classes.disabled]: onboarding.shards.length === 0
+              [classes.disabled]: onboarding.provisionning.blobs.length === 0
             })}
           >
             <ProfileIcon />
@@ -177,14 +175,14 @@ class Provisioning extends Component<Props> {
               {t("onboarding:master_seed_provisionning.step2")}
             </div>
             <SeedStatus
-              generated={onboarding.shards.length > 1}
+              generated={onboarding.provisionning.blobs.length > 1}
               open={onToggleGenerateSeed}
             />
           </div>
           <div className={classes.separator} />
           <div
             className={cx(classes.step, {
-              [classes.disabled]: onboarding.shards.length < 2
+              [classes.disabled]: onboarding.provisionning.blobs.length < 2
             })}
           >
             <ProfileIcon />
@@ -192,7 +190,7 @@ class Provisioning extends Component<Props> {
               {t("onboarding:master_seed_provisionning.step3")}
             </div>
             <SeedStatus
-              generated={onboarding.shards.length > 2}
+              generated={onboarding.provisionning.blobs.length > 2}
               open={onToggleGenerateSeed}
             />
           </div>
@@ -203,11 +201,11 @@ class Provisioning extends Component<Props> {
         </ToContinue>
         <Footer
           nextState
-          render={(onPrev, onNext) => (
+          render={onNext => (
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={onboarding.shards.length < 3}
+              disabled={onboarding.provisionning.blobs.length < 3}
             >
               {t("common:continue")}
             </DialogButton>
@@ -223,9 +221,9 @@ const mapProps = state => ({
 });
 
 const mapDispatch = (dispatch: *) => ({
-  onToggleGenerateSeed: () => dispatch(toggleGenerateSeed()),
-  onAddSeedShard: data => dispatch(addSeedShard(data)),
-  onGetShardsChannel: () => dispatch(getShardsChannel())
+  onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
+  onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
+  onGetShardsChannel: () => dispatch(openProvisionningChannel())
 });
 
 export default connect(mapProps, mapDispatch)(

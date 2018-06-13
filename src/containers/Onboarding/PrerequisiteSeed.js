@@ -90,8 +90,7 @@ const PrerequisiteSeed = ({
         {t("onboarding:master_seed_prerequisite.to_continue")}
       </ToContinue>
       <Footer
-        isBack={false}
-        render={(onPrev, onNext) => (
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
             {t("commom:continue")}
           </DialogButton>

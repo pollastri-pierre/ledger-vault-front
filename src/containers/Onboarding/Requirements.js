@@ -1,19 +1,66 @@
 //@flow
 import React from "react";
+import colors from "shared/colors";
+import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
+import Cryptosteel from "components/icons/thin/Cryptosteel";
 import People from "../../components/icons/thin/People";
-import Plug from "../../components/icons/thin/Plug";
 import Briefcase from "components/icons/thin/Briefcase";
-import Box from "components/icons/thin/Box";
+import RecoverySheet from "components/icons/thin/RecoverySheet";
 
+const blue = {
+  base: {
+    border: "2px solid",
+    borderRadius: 2,
+    height: 25,
+    padding: 1,
+    width: 18
+  },
+  inner: {
+    border: "1px solid #cccccc",
+    borderRadius: 2,
+    background: "#f3f0f0",
+    height: "100%"
+  },
+  red: {
+    borderColor: colors.grenade
+  },
+  green: {
+    borderColor: "green"
+  },
+  orange: {
+    borderColor: "orange"
+  }
+};
+const BlueDevice = withStyles(blue)(({ classes, color }) => (
+  <div
+    className={cx(classes.base, {
+      [classes.red]: color === "red",
+      [classes.orange]: color === "orange",
+      [classes.green]: color === "green"
+    })}
+  >
+    <div
+      className={cx(classes.inner, {
+        [classes.red]: color === "red",
+        [classes.orange]: color === "orange",
+        [classes.green]: color === "green"
+      })}
+    />
+  </div>
+));
 const styles = {
   base: {
-    display: "flex",
     marginBottom: 40,
     fontSize: 11,
     lineHeight: 1.82
+  },
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 20
   }
 };
 
@@ -21,13 +68,14 @@ const requirement = {
   base: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    textAlign: "center",
     maxWidth: 115
   },
   icon: {
-    marginBottom: 10,
+    marginBottom: 2,
     height: 31,
-    display: "flex"
+    display: "flex",
+    justifyContent: "center"
   }
 };
 export const RequirementUnit = withStyles(
@@ -59,21 +107,44 @@ const Requirements = ({
   t: Translate
 }) => (
   <div className={classes.base}>
-    <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
-      <div>{t("onboarding:vault_briefcase")}</div>
-    </RequirementUnit>
-    <RequirementUnit icon={<Box style={{ height: 26 }} />}>
-      <div>{t("onboarding:box_blue_devices")}</div>
-    </RequirementUnit>
-    <RequirementUnit icon={<Plug color="#cccccc" style={{ height: 20 }} />}>
-      <div>One-time authenticator</div>
-    </RequirementUnit>
-    <RequirementUnit icon={<People color="#cccccc" style={{ height: 29 }} />}>
-      <div>3 shared owners</div>
-    </RequirementUnit>
-    <RequirementUnit icon={<People style={{ height: 29 }} color="#cccccc" />}>
-      <div>{t("onboarding:team_members")}</div>
-    </RequirementUnit>
+    <div className={classes.row}>
+      <RequirementUnit icon={<Briefcase style={{ height: 25 }} />}>
+        <div>{t("onboarding:vault_briefcase")}</div>
+      </RequirementUnit>
+      <RequirementUnit icon={<Cryptosteel style={{}} />}>
+        <div>{t("onboarding:nb_cryptosteels")}</div>
+      </RequirementUnit>
+      <RequirementUnit icon={<RecoverySheet style={{ height: 25 }} />}>
+        <div>{t("onboarding:nb_recovery_sheets")}</div>
+      </RequirementUnit>
+    </div>
+    <div className={classes.row}>
+      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+        <div>{t("onboarding:wkey_custodians")}</div>
+      </RequirementUnit>
+      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+        <div>{t("onboarding:shared_owners")}</div>
+      </RequirementUnit>
+      <RequirementUnit icon={<People style={{ height: 25 }} color="#cccccc" />}>
+        {t("onboarding:team_members")}
+      </RequirementUnit>
+    </div>
+
+    <div className={classes.row}>
+      <RequirementUnit icon={<BlueDevice color="red" style={{ height: 25 }} />}>
+        {t("onboarding:blue_red")}
+      </RequirementUnit>
+      <RequirementUnit
+        icon={<BlueDevice style={{ height: 25 }} color="orange" />}
+      >
+        <div>{t("onboarding:blue_orange")}</div>
+      </RequirementUnit>
+      <RequirementUnit
+        icon={<BlueDevice style={{ height: 25 }} color="green" />}
+      >
+        {t("onboarding:blue_green")}
+      </RequirementUnit>
+    </div>
   </div>
 );
 

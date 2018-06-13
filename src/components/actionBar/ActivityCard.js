@@ -154,7 +154,7 @@ class ActivityCard extends Component<
           <Bell className={classes.icon} />
           {!!unseenActivityCount && <div className={classes.bullet} />}
           <div className="content-header-button-text">
-            {t("actionBar.activity")}
+            {t("actionBar:activity")}
           </div>
         </div>
 

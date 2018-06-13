@@ -1,5 +1,11 @@
 menu:
   welcome: Welcome
+  wrapping_key:
+    title: Wrapping keys
+    pre: Prerequisites
+    conf: Configuration
+    back: Backup
+    sign: Sign in
   authentication: Authentication
   administrators:
     title: Administrators
@@ -13,8 +19,8 @@ menu:
     prerequisite: Prerequisite
     configuration: Configuration
     backup: Backup
-    provisionning: Provisionning
-  confirmation: Confirmation
+    provisionning: Create Master Seed
+  confirmation: Complete
 requirements: requirements
 tocontinue: to continue
 required: required
@@ -22,14 +28,27 @@ not_required: not required
 box_blue_devices: Box of Ledger Blue devices
 team_members: 3+ team member
 vault_briefcase: Ledger Vault briefcase
-shared_owners: Shared owners
+blue_red: Ledger Blue Enterprise devices (lining red)
+blue_orange: Ledger Blue Enterprise devices (orange)
+blue_green: Ledger Blue Enterprise devices (green)
+shared_owners: 3 shared owners
+nb_recovery_sheets: 6 recovery sheets
+wkey_custodians: 3 Wrapping key custodians
 welcome:
   title: Welcome
-  description: It looks like your team is using Ledger Vault for the first time.  Please
-    make sure you have received the Ledger Vault briefcase as well as the package
-    containing all the Ledger Blue devices for your team members.
-  to_continue: When ready, open the Ledger Vault briefcase and grab the one-time authenticator
-    device in the front pocket. It will be used to authenticate during the next step.
+  description: 'The Onboarding wizard will guide you through the configuration of your Ledger Vault workspace in three steps:'
+  step1: First, we'll encrypt your workspace.
+  step2: Then, we'll add Administrators.
+  step3: Finally, we'll create the master seed.
+  start: Get Started
+wrapping_key:
+  title: Sign in
+  description: Sign in to initiate and complete the encryption of your organization's partition.
+  signin_desc: Sign in each Wrapping Key Custodians one by one by using their Ledger Blue Enterprise
+  label: Wrapping Key Custodians
+  signin: SIGN IN
+  signed: signed in
+  remaining: remaining
 administrators_prerequisite:
   title: Prerequisite
   description: The following steps let you add administrators to your team. Administrators

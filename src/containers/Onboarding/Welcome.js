@@ -4,28 +4,26 @@ import DialogButton from "components/buttons/DialogButton";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React from "react";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Requirements from "./Requirements.js";
 
 const Welcome = ({ t }: { t: Translate }) => (
   <div>
     <Title>{t("onboarding:welcome.title")}</Title>
     <Introduction>{t("onboarding:welcome.description")}</Introduction>
+    <div>
+      <div>{t("onboarding:welcome.step1")}</div>
+      <div>{t("onboarding:welcome.step2")}</div>
+      <div>{t("onboarding:welcome.step3")}</div>
+    </div>
     <SubTitle>{t("onboarding:requirements")}</SubTitle>
     <Requirements />
-    <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-    <ToContinue>{t("onboarding:welcome.to_continue")}</ToContinue>
     <Footer
       isBack={false}
       nextState
-      render={(onPrev, onNext) => (
+      render={onNext => (
         <DialogButton highlight onTouchTap={onNext}>
-          {t("common:continue")}
+          {t("onboarding:welcome.start")}
         </DialogButton>
       )}
     />

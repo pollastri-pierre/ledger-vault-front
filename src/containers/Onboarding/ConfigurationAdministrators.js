@@ -40,7 +40,8 @@ const ConfigurationAdministrators = ({ t }: { t: Translate }) => {
         {t("onboarding:administrators_configuration.to_continue")}
       </ToContinue>
       <Footer
-        render={(onPrev, onNext) => (
+        nextState
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>

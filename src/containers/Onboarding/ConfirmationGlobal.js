@@ -80,23 +80,23 @@ const ConfirmationGlobal = ({
             <div style={{ marginBottom: 12 }}>
               <People color="#cccccc" style={{ height: 29 }} />
             </div>
-            {onboarding.members.length} {t("onboarding:team_members")}
+            {onboarding.registering.admins.length}{" "}
+            {t("onboarding:team_members")}
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>
               <Lock />
             </div>
-            {onboarding.nbRequired}/{onboarding.members.length}{" "}
+            {onboarding.quorum}/{onboarding.registering.admins.length}{" "}
             {t("onboarding:confirmation.scheme")}
           </div>
         </div>
       </div>
       <Footer
-        isBack={false}
         render={() => (
           <DialogButton
             highlight
-            onTouchTap={() => history.push(`/${match.params.orga_name}`)}
+            onTouchTap={() => history.push(`${match.params.orga_name}`)}
           >
             {t("common:continue")}
           </DialogButton>

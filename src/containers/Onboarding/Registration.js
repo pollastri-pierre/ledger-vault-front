@@ -13,10 +13,9 @@ import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 import { addMessage } from "redux/modules/alerts";
 import {
-  toggleModalProfile,
+  getRegistrationChallenge,
   addMember,
-  editMember,
-  getChallengeRegistration
+  toggleMemberModal
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -136,10 +135,9 @@ const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 const mapDispatch = (dispatch: *) => ({
-  onToggleModalProfile: member => dispatch(toggleModalProfile(member)),
+  onToggleModalProfile: () => dispatch(toggleMemberModal()),
   onAddMember: data => dispatch(addMember(data)),
-  onGetChallenge: () => dispatch(getChallengeRegistration()),
-  onEditMember: member => dispatch(editMember(member)),
+  onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
@@ -151,15 +149,14 @@ type Props = {
   onGetChallenge: Function,
   onEditMember: Function,
   onAddMessage: Function,
-  onboarding: *
+  onboarding: *,
+  t: Translate
 };
 class Registration extends Component<Props, *> {
   componentDidMount() {
     // make an API call to get the challenge needed to register all the new members
-    const { onboarding, onGetChallenge } = this.props;
-    if (!onboarding.challenge_registration) {
-      onGetChallenge();
-    }
+    const { onGetChallenge } = this.props;
+    onGetChallenge();
   }
 
   addMember = data => {
@@ -176,26 +173,24 @@ class Registration extends Component<Props, *> {
       onboarding,
       onToggleModalProfile,
       onAddMessage,
-      onEditMember,
       t
     } = this.props;
-    if (onboarding.isLoadingChallengeRegistration) {
+    if (!onboarding.registering || !onboarding.registering.challenge) {
       return <SpinnerCard />;
     }
     return (
       <div>
         <Title>{t("onboarding:administrators_registration.title")}</Title>
         <BlurDialog
-          open={onboarding.modalProfile}
+          open={onboarding.member_modal}
           onClose={onToggleModalProfile}
         >
           <AddMember
             close={onToggleModalProfile}
             finish={this.addMember}
             member={onboarding.editMember}
-            editMember={onEditMember}
             setAlert={onAddMessage}
-            challenge={onboarding.challenge_registration}
+            challenge={onboarding.registering.challenge}
           />
         </BlurDialog>
         <div onClick={() => onToggleModalProfile()} className={classes.add}>
@@ -205,21 +200,21 @@ class Registration extends Component<Props, *> {
         <Introduction>
           {t("onboarding:administrators_registration.description")}
         </Introduction>
-        {onboarding.members.length === 0 ? (
+        {onboarding.registering.admins.length === 0 ? (
           <NoMembers />
         ) : (
           <MembersList
-            members={onboarding.members}
+            members={onboarding.registering.admins}
             editMember={this.editMember}
           />
         )}
         <Footer
           nextState
-          render={(onPrev, onNext) => (
+          render={onNext => (
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={onboarding.members.length < 3}
+              disabled={onboarding.registering.admins.length < 3}
             >
               {t("common:continue")}
             </DialogButton>

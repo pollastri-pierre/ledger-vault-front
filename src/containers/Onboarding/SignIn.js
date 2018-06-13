@@ -11,8 +11,8 @@ import Plus from "components/icons/full/Plus";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
-  getShardChallenge,
-  toggleSignin,
+  getSigninChallenge,
+  toggleDeviceModal,
   addSignedIn,
   nextStep
 } from "redux/modules/onboarding";
@@ -106,9 +106,7 @@ class SignIn extends Component<Props> {
   svg: ?Element;
 
   componentDidMount() {
-    if (!this.props.onboarding.shardChallenge) {
-      this.props.onGetShardChallenge();
-    }
+    this.props.onGetSigninChallenge();
   }
 
   componentDidUpdate() {
@@ -142,8 +140,8 @@ class SignIn extends Component<Props> {
 
     const percentage =
       2 *
-      (this.props.onboarding.signed.length /
-        this.props.onboarding.members.length);
+      (this.props.onboarding.signin.admins.length /
+        this.props.onboarding.registering.admins.length);
     g
       .append("path")
       .attr("fill", "#27d0e2")
@@ -159,16 +157,16 @@ class SignIn extends Component<Props> {
 
   render() {
     const { classes, onboarding, onToggleSignin, t } = this.props;
-    if (!onboarding.shardChallenge) {
+    if (!onboarding.signin.challenge) {
       return <SpinnerCard />;
     }
     return (
       <div className={classes.base}>
         <Title>{"onboarding:master_seed_signin.title"}</Title>
-        <BlurDialog open={onboarding.signInModal} onClose={onToggleSignin}>
+        <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
           <SignInDevice
-            challenge={onboarding.shardChallenge}
-            keyHandles={onboarding.key_handles}
+            challenge={onboarding.signin.challenge.challenge}
+            keyHandles={onboarding.signin.challenge.key_handle}
             onFinish={this.signIn}
           />
         </BlurDialog>
@@ -185,9 +183,9 @@ class SignIn extends Component<Props> {
                 className={classes.svg}
               />
               <strong>
-                {onboarding.signed.length}/{onboarding.members.length}
+                {onboarding.signin.admins.length}/{onboarding.registering.admins.length}
               </strong>
-              <span>{t("onboarding.master_seed_signin.members.present")}</span>
+              <span>{t("onboarding:master_seed_signin.members_present")}</span>
             </div>
           </div>
           <div className={classes.flexWrapper}>
@@ -197,25 +195,28 @@ class SignIn extends Component<Props> {
               <div
                 className={cx(classes.sign, {
                   [classes.disabled]:
-                    onboarding.signed.length === onboarding.members.length
+                    onboarding.signin.admins.length ===
+                    onboarding.registering.admins.length
                 })}
                 onClick={
-                  onboarding.signed.length === onboarding.members.length
+                  onboarding.signin.admins.length ===
+                  onboarding.registering.admins.length
                     ? onToggleSignin
                     : onToggleSignin
                 }
               >
                 <Plus className={classes.icon} />
-                {onboarding.signed.length === 0 ? (
+                {onboarding.signin.admins.length === 0 ? (
                   <span>{t("onboarding:master_seed_signin.signin")}</span>
                 ) : (
                   <span>{t("onboarding:master_seed_signin.signin_next")}</span>
                 )}
               </div>
               <span className={classes.counter}>
-                {onboarding.signed.length}{" "}
+                {onboarding.signin.admins.length}{" "}
                 {t("onboarding:master_seed_signin.signed_in")},{" "}
-                {onboarding.members.length - onboarding.signed.length}{" "}
+                {onboarding.registering.admins.length -
+                  onboarding.signin.admins.length}{" "}
                 {t("onboarding:master_seed_signin:remaining")}
               </span>
             </div>
@@ -227,13 +228,15 @@ class SignIn extends Component<Props> {
         </ToContinue>
         <Footer
           isBack={false}
-          nextState
-          render={(onPrev, onNext) => {
+          render={onNext => {
             return (
               <DialogButton
                 highlight
                 onTouchTap={onNext}
-                disabled={onboarding.signed.length < onboarding.members.length}
+                disabled={
+                  onboarding.signin.admins.length <
+                  onboarding.registering.admins.length
+                }
               >
                 {t("common:continue")}
               </DialogButton>
@@ -250,8 +253,8 @@ const mapState = state => ({
 });
 
 const mapDispatch = (dispatch: *) => ({
-  onGetShardChallenge: () => dispatch(getShardChallenge()),
-  onToggleSignin: () => dispatch(toggleSignin()),
+  onGetSigninChallenge: () => dispatch(getSigninChallenge()),
+  onToggleSignin: () => dispatch(toggleDeviceModal()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type)),

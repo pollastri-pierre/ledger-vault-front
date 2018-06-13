@@ -5,6 +5,7 @@ import LabelLink from "components/LabelLink";
 import MenuLinkOnboarding from "./MenuLinkOnboarding";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
+import { isViewSelected } from "redux/modules/onboarding";
 
 const styles = {
   menu: {
@@ -36,15 +37,35 @@ const Menu = ({
 }) => {
   return (
     <div className={classes.menu}>
-      <MenuLinkOnboarding step={0} allowed={onboarding.currentStep < 2} heading>
+      <MenuLinkOnboarding
+        heading
+        selected={onboarding.state === "EMPTY_PARTITION"}
+      >
         <span style={{ textTransform: "uppercase" }}>
           {t("onboarding:menu.welcome")}
         </span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={1} allowed={false} heading>
-        <span style={{ textTransform: "uppercase" }}>
-          {t("onboarding:menu.authentication")}
-        </span>
+      <LabelLink
+        label={t("onboarding:menu.wrapping_key.title")}
+        selected={[2, 3, 4, 5, 6].indexOf(onboarding.currentStep) > -1}
+      />
+      <MenuLinkOnboarding
+        selected={onboarding.state === "WRAPPING_KEY_PREREQUISITES"}
+      >
+        <span>{t("onboarding:menu.wrapping_key.pre")}</span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding
+        selected={onboarding.state === "WRAPPING_KEY_CONFIGURATION"}
+      >
+        <span>{t("onboarding:menu.wrapping_key.conf")}</span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding selected={onboarding.state === "WRAPPING_KEY_BACKUP"}>
+        <span>{t("onboarding:menu.wrapping_key.back")}</span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding
+        selected={onboarding.state === "WRAPPING_KEY_SIGN_IN"}
+      >
+        <span>{t("onboarding:menu.wrapping_key.sign")}</span>
       </MenuLinkOnboarding>
       <div style={{ marginTop: 10, marginBottom: 7 }}>
         <LabelLink
@@ -52,19 +73,24 @@ const Menu = ({
           selected={[2, 3, 4, 5, 6].indexOf(onboarding.currentStep) > -1}
         />
       </div>
-      <MenuLinkOnboarding step={2} allowed={false}>
+      <MenuLinkOnboarding selected={isViewSelected("ADMIN_PRE", onboarding)}>
         <span>{t("onboarding:menu.administrators.prerequisite")}</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={3} allowed={false}>
+      <MenuLinkOnboarding selected={isViewSelected("ADMIN_CONF", onboarding)}>
         <span>{t("onboarding:menu.administrators.configuration")}</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={4} allowed={false}>
+      <MenuLinkOnboarding
+        selected={isViewSelected("ADMIN_REGISTER", onboarding)}
+      >
         <span>
           {t("onboarding:menu.administrators.registration")} ({nbMember})
         </span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={5} allowed={false}>
+      <MenuLinkOnboarding selected={isViewSelected("ADMIN_SCHEME", onboarding)}>
         <span>{t("onboarding:menu.administrators.scheme")}</span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding selected={isViewSelected("SEED_SIGN", onboarding)}>
+        <span>{t("onboarding:menu.master_seed.signin")}</span>
       </MenuLinkOnboarding>
       <div style={{ marginTop: 20 }}>
         <LabelLink
@@ -72,23 +98,24 @@ const Menu = ({
           selected={[7, 8, 9, 10, 11].indexOf(onboarding.currentStep) > -1}
         />
       </div>
-      <MenuLinkOnboarding step={6}>
-        <span>{t("onboarding:menu.master_seed.signin")}</span>
-      </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={7}>
+      <MenuLinkOnboarding selected={isViewSelected("SEED_PRE", onboarding)}>
         <span>{t("onboarding:menu.master_seed.prerequisite")}</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={8}>
-        <span>{t("onboarding:menu.master_seed.configuration")}</span>
+      <MenuLinkOnboarding selected={isViewSelected("SEED_CONF", onboarding)}>
+        <span>
+          {t("onboarding:menu.master_seed.configuration", onboarding)}
+        </span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={9}>
+      <MenuLinkOnboarding selected={isViewSelected("SEED_BACK", onboarding)}>
         <span>{t("onboarding:menu.master_seed.backup")}</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding step={10}>
+      <MenuLinkOnboarding selected={isViewSelected("SEED_PROV", onboarding)}>
         <span>{t("onboarding:menu.master_seed.provisionning")}</span>
       </MenuLinkOnboarding>
       <div style={{ marginTop: 5 }}>
-        <MenuLinkOnboarding step={11}>
+        <MenuLinkOnboarding
+          selected={isViewSelected("CONFIRMATION", onboarding)}
+        >
           <span style={{ textTransform: "uppercase" }}>
             {t("onboarding:menu.confirmation")}
           </span>

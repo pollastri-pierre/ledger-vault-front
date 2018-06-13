@@ -178,5 +178,3 @@ export class Welcome extends Component<
     );
   }
 }
-
-export default withRouter(withStyles(styles)(translate()(Welcome)));

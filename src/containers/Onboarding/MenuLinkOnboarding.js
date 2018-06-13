@@ -46,6 +46,7 @@ class MenuLinkOnboarding extends Component<{
   children: *,
   overrides?: Object,
   onboarding: Object,
+  selected: boolean,
   allowed: boolean,
   onGoToStep: Function,
   heading: boolean
@@ -57,7 +58,7 @@ class MenuLinkOnboarding extends Component<{
     const {
       classes,
       heading,
-      step,
+      selected,
       children,
       onboarding,
       allowed
@@ -69,9 +70,9 @@ class MenuLinkOnboarding extends Component<{
           color: "#27d0e2" //default FIXME from theme
         }}
         button
-        disabled={!allowed}
+        disabled={!selected}
         disableRipple
-        selected={onboarding.currentStep === step}
+        selected={selected}
         classes={{ root: rootCSS, selected: classes.selected }}
         onClick={this.triggerView.bind(this)}
       >

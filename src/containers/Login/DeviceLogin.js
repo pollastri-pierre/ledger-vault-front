@@ -86,30 +86,30 @@ class DeviceLogin extends Component<{
       <div className={classes.base}>
         <Plug className={classes.dongle} color="#e2e2e2" />
         <br />
-        <div className={classes.team}>{t("login.signIn", { domain })}</div>
+        <div className={classes.team}>{t("login:signIn", { domain })}</div>
         <div className={classes.spacer} />
         <div className={classes.instructions}>
           <div className={classes.item}>
             <div>1.</div>
-            <div>{t("login.stepOne")}</div>
+            <div>{t("login:step1")}</div>
           </div>
           <div className={classes.item}>
             <div>2.</div>
-            <div>{t("login.stepTwo")}</div>
+            <div>{t("login:step2")}</div>
           </div>
           <div className={classes.item}>
             <div>3.</div>
-            <div>{t("login.stepThree")}</div>
+            <div>{t("login:step3")}</div>
           </div>
         </div>
         <div className={classes.footer}>
           <DialogButton onTouchTap={onCancel}>
-            {t("common.cancel")}
+            {t("common:cancel")}
           </DialogButton>
           {!isChecking ? (
             <DialogButton onTouchTap={onRestart}>TRY AGAIN</DialogButton>
           ) : (
-            <div className={classes.wait}>{t("login.awaitingDevice")}</div>
+            <div className={classes.wait}>{t("common:awaiting_device")}</div>
           )}
         </div>
       </div>

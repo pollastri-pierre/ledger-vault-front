@@ -80,7 +80,7 @@ function Menu(props: {
         <MenuLink to={`${match.url}/dashboard`}>
           <span className={classes.link}>
             <Home className={classes.icon} />
-            {t("menu.dashboard")}
+            {t("menu:dashboard")}
           </span>
         </MenuLink>
         <MenuLink
@@ -91,13 +91,13 @@ function Menu(props: {
         >
           <span className={classes.link}>
             <Plus className={classes.icon} />
-            {t("menu.new_operation")}
+            {t("menu:new_operation")}
           </span>
         </MenuLink>
         <MenuLink to={`${match.url}/pending`}>
           <span className={classes.link}>
             <Lines className={classes.icon} />
-            {t("menu.pending_requests")}
+            {t("menu:pending_requests")}
           </span>
         </MenuLink>
         {/* <MenuLink to={`${match.url}/search`}> */}

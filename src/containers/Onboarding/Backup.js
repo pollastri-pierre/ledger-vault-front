@@ -88,7 +88,8 @@ const Backup = ({
       </SubTitle>
       <ToContinue>{t("onboarding:master_seed_backup.to_continue")}</ToContinue>
       <Footer
-        render={(onPrev, onNext) => (
+        nextState
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>

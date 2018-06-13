@@ -40,7 +40,7 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => {
         {t("onboarding:master_seed_configuration.to_continue")}
       </ToContinue>
       <Footer
-        render={(onPrev, onNext) => (
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>

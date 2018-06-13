@@ -8,6 +8,7 @@ import Welcome from "./Welcome";
 import Authentication from "./Authentication";
 import Prerequisite from "./Prerequisite";
 import PrerequisiteSeed from "./PrerequisiteSeed";
+import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
@@ -18,20 +19,16 @@ import ConfirmationGlobal from "./ConfirmationGlobal.js";
 import AdministrationScheme from "./AdministrationScheme.js";
 import Menu from "./Menu";
 import { connect } from "react-redux";
-import {
-  goToStep,
-  changeNbRequired,
-  getCurrentState
-} from "redux/modules/onboarding";
+import { isViewSelected } from "redux/modules/onboarding";
+import { getState, changeQuorum } from "redux/modules/onboarding";
 
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
-  goToStep: step => dispatch(goToStep(step)),
-  onGetCurrentState: () => dispatch(getCurrentState()),
-  changeNbRequired: nb => dispatch(changeNbRequired(nb))
+  onGetState: () => dispatch(getState()),
+  changeNbRequired: nb => dispatch(changeQuorum(nb))
 });
 
 const styles = {
@@ -91,8 +88,7 @@ type Props = {
   onboarding: *,
   changeNbRequired: Function,
   onGetCurrentState: Function,
-  match: *,
-  history: *
+  onGetState: Function
 };
 
 type State = {
@@ -102,18 +98,12 @@ type State = {
 
 class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
-    this.props.onGetCurrentState();
+    this.props.onGetState();
   }
   render() {
-    const {
-      classes,
-      onboarding,
-      changeNbRequired,
-      match,
-      history
-    } = this.props;
+    const { classes, onboarding, changeNbRequired } = this.props;
 
-    if (onboarding.currentStep === null) {
+    if (!onboarding.state) {
       return <SpinnerCard />;
     }
     return (
@@ -125,27 +115,39 @@ class OnboardingContainer extends Component<Props, State> {
               support
             </a>
           </div>
-          <Menu nbMember={onboarding.members.length} onboarding={onboarding} />
+          <Menu
+            nbMember={onboarding.registering.admins.length}
+            onboarding={onboarding}
+          />
           <div className={classes.content}>
-            {onboarding.currentStep === 0 && <Welcome />}
-            {onboarding.currentStep === 1 && <Authentication />}
-            {onboarding.currentStep === 2 && <Prerequisite />}
-            {onboarding.currentStep === 3 && <ConfigurationAdministrators />}
-            {onboarding.currentStep === 4 && <Registration />}
-            {onboarding.currentStep === 5 && (
+            {onboarding.state === "EMPTY_PARTITION" && <Welcome />}
+            {onboarding.state === "WRAPPING_KEY_PREREQUISITES" && (
+              <WrappingKeyPrerequisite />
+            )}
+            {onboarding.state === "WRAPPING_KEY_CONFIGURATION" && (
+              <ConfigurationAdministrators />
+            )}
+            {onboarding.state === "WRAPPING_KEY_BACKUP" && <Backup />}
+            {onboarding.state === "WRAPPING_KEY_SIGN_IN" && <Authentication />}
+            {isViewSelected("ADMIN_PRE", onboarding) && <Prerequisite />}
+            {isViewSelected("ADMIN_CONF", onboarding) && (
+              <ConfigurationAdministrators />
+            )}
+            {isViewSelected("ADMIN_REGISTER", onboarding) && <Registration />}
+            {isViewSelected("ADMIN_SCHEME", onboarding) && (
               <AdministrationScheme
-                number={onboarding.nbRequired}
-                total={onboarding.members.length}
                 onChange={changeNbRequired}
+                total={onboarding.registering.admins.length}
+                number={onboarding.quorum}
               />
             )}
-            {onboarding.currentStep === 6 && <SignIn />}
-            {onboarding.currentStep === 7 && <PrerequisiteSeed />}
-            {onboarding.currentStep === 8 && <ConfigurationSeed />}
-            {onboarding.currentStep === 9 && <Backup />}
-            {onboarding.currentStep === 10 && <Provisionning />}
-            {onboarding.currentStep === 11 && (
-              <ConfirmationGlobal history={history} match={match} />
+            {isViewSelected("SEED_SIGN", onboarding) && <SignIn />}
+            {isViewSelected("SEED_PRE", onboarding) && <PrerequisiteSeed />}
+            {isViewSelected("SEED_CONF", onboarding) && <ConfigurationSeed />}
+            {isViewSelected("SEED_BACK", onboarding) && <Backup />}
+            {isViewSelected("SEED_PROV", onboarding) && <Provisionning />}
+            {isViewSelected("CONFIRMATION", onboarding) && (
+              <ConfirmationGlobal />
             )}
           </div>
         </div>

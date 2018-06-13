@@ -35,13 +35,13 @@ class SignInDevice extends Component<Props, State> {
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       this.setState({ step: 1 });
 
-      const keyHandle = this.props.keyHandles[pubKey];
-      const challenge = this.props.challenge.challenge;
+      const keyHandle = this.props.keyHandles[pubKey.toUpperCase()];
+      const challenge = this.props.challenge;
 
       const authentication = await device.authenticate(
         Buffer.from(challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR,
-        Buffer.from(keyHandle, "hex")
+        Buffer.from(keyHandle, "base64")
       );
       this.setState({ step: 2 });
       this.props.onFinish(pubKey, authentication);
