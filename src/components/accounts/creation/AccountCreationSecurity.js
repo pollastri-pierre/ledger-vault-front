@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 // import RateLimiterValue from "../../RateLimiterValue";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 // import TimeLockValue from "../../TimeLockValue";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
@@ -34,30 +36,31 @@ const styles = {
 function AccountCreationSecurity(props: {
   account: Object,
   switchInternalModal: Function,
+  t: Translate,
   classes: Object
 }) {
-  const { account, switchInternalModal, classes } = props;
+  const { account, switchInternalModal, classes, t } = props;
   return (
     <div className={classes.base}>
-      <h4>Security Scheme</h4>
-      <h5>Members</h5>
+      <h4>{t("newAccount:security.title")}</h4>
+      <h5>{t("newAccount:security.members")}</h5>
       <div className="security-members">
         <SecurityRow
           icon={<PeopleFull className={classes.icon} />}
-          label="Members"
+          label={t("newAccount:security.members")}
           onClick={() => switchInternalModal("members")}
         >
           {account.approvers.length > 0
             ? `${account.approvers.length} selected`
-            : "None"}
+            : t("common:none")}
         </SecurityRow>
         <SecurityRow
           icon={<ValidateBadge className={classes.icon} />}
-          label="Approvals"
+          label={t("newAccount:security.approvals")}
           disabled={account.approvers.length === 0}
           onClick={() => switchInternalModal("approvals")}
         >
-          {account.quorum > 0 ? `${account.quorum} required` : "None"}
+          {account.quorum > 0 ? `${account.quorum} required` : t("common:none")}
         </SecurityRow>
       </div>
       {/* <h5>Locks</h5> */}
@@ -94,4 +97,4 @@ function AccountCreationSecurity(props: {
   );
 }
 
-export default withStyles(styles)(AccountCreationSecurity);
+export default withStyles(styles)(translate()(AccountCreationSecurity));

@@ -1,4 +1,6 @@
 //@flow
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import React from "react";
 import BadgeCurrency from "../../BadgeCurrency";
 import type { Currency } from "data/types";
@@ -30,20 +32,21 @@ function AccountCreationOptions(props: {
   currency: Currency,
   name: string,
   changeName: Function,
+  t: Translate,
   classes: Object
 }) {
-  const { classes } = props;
+  const { classes, t } = props;
   return (
     <div>
       <label htmlFor="name" className={classes.title}>
-        Name
+        {t("newAccount:options.name")}
       </label>
       <div className={classes.relative}>
         <BadgeCurrency currency={props.currency} className={classes.badge} />
         <TextField
           value={props.name}
           onChange={e => props.changeName(e.target.value)}
-          placeholder="Account's name"
+          placeholder={t("newAccount:options.acc_name_placeholder")}
           InputProps={{ className: classes.input }}
           fullWidth
         />
@@ -52,4 +55,4 @@ function AccountCreationOptions(props: {
   );
 }
 
-export default withStyles(styles)(AccountCreationOptions);
+export default withStyles(styles)(translate()(AccountCreationOptions));

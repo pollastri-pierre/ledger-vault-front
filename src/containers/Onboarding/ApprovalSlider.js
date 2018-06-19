@@ -2,7 +2,7 @@
 import React from "react";
 import cx from "classnames";
 import type { Translate } from "data/types";
-import { translate, Trans } from "react-i18next";
+import { translate, Interpolate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Arrow from "../../components/icons/full/ArrowDown.js";
 
@@ -69,8 +69,18 @@ const ApprovalSlider = ({
   return (
     <div className={classes.base}>
       <div className={classes.flex}>
-        <span className={classes.bold}>Require {number} approvals</span>
-        <span className={classes.out}>out of {total} administrators</span>
+        <span className={classes.bold}>
+          <Interpolate
+            i18nKey="onboarding:administrators_scheme.nb_required"
+            count={number}
+          />
+        </span>
+        <span className={classes.out}>
+          <Interpolate
+            i18nKey="onboarding:administrators_scheme.out_of"
+            total={total}
+          />
+        </span>
       </div>
       <div className={classes.bars}>
         {Array(total)
@@ -91,10 +101,10 @@ const ApprovalSlider = ({
       <div className={classes.flex}>
         <span className={classes.require} onClick={() => onChange(number - 1)}>
           <Arrow className={classes.left} />
-          {t("require_more")}
+          {t("onboarding:administrators_scheme.require_less")}
         </span>
         <span className={classes.require} onClick={() => onChange(number + 1)}>
-          {t("require_more")}
+          {t("onboarding:administrators_scheme.require_more")}
           <Arrow className={classes.right} />
         </span>
       </div>

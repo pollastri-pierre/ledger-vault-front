@@ -46,7 +46,12 @@ const OrganizationAppRouter = () => {
                         );
                       }}
                     />
-                    <Route path={`${match.url}/logout`} component={Logout} />
+                    <Route
+                      path={`${match.url}/logout`}
+                      render={() => {
+                        return <Logout match={match} />;
+                      }}
+                    />
                     <PrivateRoute
                       path={`${match.url}/`}
                       component={App}

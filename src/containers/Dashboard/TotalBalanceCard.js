@@ -3,6 +3,8 @@ import React, { Component } from "react";
 // import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import CounterValues from "components/CounterValues";
 import DateFormat from "components/DateFormat";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import Card from "components/Card";
 import type { Account, Member } from "data/types";
 import CardField from "components/CardField";
@@ -20,6 +22,7 @@ const styles = {
 };
 class TotalBalance extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
+  t: Translate,
   totalBalance: *,
   accounts: Array<Account>,
   members: Member[],
@@ -37,6 +40,7 @@ class TotalBalance extends Component<{
       // totalBalance,
       reloading,
       accounts,
+      t,
       members,
       classes
     } = this.props;
@@ -48,7 +52,7 @@ class TotalBalance extends Component<{
     return (
       <Card
         reloading={reloading}
-        title="total balance"
+        title={t("dashboard:total_balance")}
         className={classes.card}
       >
         <div className={classes.body}>
@@ -62,13 +66,13 @@ class TotalBalance extends Component<{
             {/*   filter={TotalBalanceFilters.find(f => f.key === filter)} */}
             {/* /> */}
           </div>
-          <CardField label="accounts" align="right">
+          <CardField label={t("dashboard:accounts")} align="right">
             {accounts.length}
           </CardField>
-          <CardField label="currencies" align="right">
+          <CardField label={t("dashboard:currencies")} align="right">
             {nbCurrency}
           </CardField>
-          <CardField label="members" align="right">
+          <CardField label={t("dashboard:members")} align="right">
             {members.length}
           </CardField>
         </div>
@@ -77,4 +81,4 @@ class TotalBalance extends Component<{
   }
 }
 
-export default withStyles(styles)(TotalBalance);
+export default withStyles(styles)(translate()(TotalBalance));

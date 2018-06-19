@@ -10,6 +10,7 @@ import Prerequisite from "./Prerequisite";
 import PrerequisiteSeed from "./PrerequisiteSeed";
 import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
+import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
 import SignIn from "./SignIn";
@@ -19,7 +20,6 @@ import ConfirmationGlobal from "./ConfirmationGlobal.js";
 import AdministrationScheme from "./AdministrationScheme.js";
 import Menu from "./Menu";
 import { connect } from "react-redux";
-import { isViewSelected } from "redux/modules/onboarding";
 import { getState, changeQuorum } from "redux/modules/onboarding";
 
 const mapStateToProps = state => ({
@@ -56,7 +56,6 @@ const styles = {
   base: {
     background: "white",
     width: 685,
-    height: 547,
     padding: "40px 40px 40px 0",
     boxShadow: "0 2.5px 2.5px 0 rgba(0,0,0,.04)",
     display: "flex",
@@ -85,6 +84,8 @@ const styles = {
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
+  match: *,
+  history: *,
   onboarding: *,
   changeNbRequired: Function,
   onGetCurrentState: Function,
@@ -101,7 +102,13 @@ class OnboardingContainer extends Component<Props, State> {
     this.props.onGetState();
   }
   render() {
-    const { classes, onboarding, changeNbRequired } = this.props;
+    const {
+      classes,
+      onboarding,
+      changeNbRequired,
+      match,
+      history
+    } = this.props;
 
     if (!onboarding.state) {
       return <SpinnerCard />;
@@ -120,34 +127,43 @@ class OnboardingContainer extends Component<Props, State> {
             onboarding={onboarding}
           />
           <div className={classes.content}>
+            {onboarding.state === "LOADING" && <SpinnerCard />}
             {onboarding.state === "EMPTY_PARTITION" && <Welcome />}
             {onboarding.state === "WRAPPING_KEY_PREREQUISITES" && (
               <WrappingKeyPrerequisite />
             )}
             {onboarding.state === "WRAPPING_KEY_CONFIGURATION" && (
-              <ConfigurationAdministrators />
+              <ConfigurationWrapping />
             )}
             {onboarding.state === "WRAPPING_KEY_BACKUP" && <Backup />}
             {onboarding.state === "WRAPPING_KEY_SIGN_IN" && <Authentication />}
-            {isViewSelected("ADMIN_PRE", onboarding) && <Prerequisite />}
-            {isViewSelected("ADMIN_CONF", onboarding) && (
+            {onboarding.state === "ADMINISTRATORS_PREREQUISITE" && (
+              <Prerequisite />
+            )}
+            {onboarding.state === "ADMINISTRATORS_CONFIGURATION" && (
               <ConfigurationAdministrators />
             )}
-            {isViewSelected("ADMIN_REGISTER", onboarding) && <Registration />}
-            {isViewSelected("ADMIN_SCHEME", onboarding) && (
+            {onboarding.state === "ADMINISTRATORS_REGISTRATION" && (
+              <Registration />
+            )}
+            {onboarding.state === "ADMINISTRATORS_SCHEME_CONFIGURATION" && (
               <AdministrationScheme
                 onChange={changeNbRequired}
                 total={onboarding.registering.admins.length}
                 number={onboarding.quorum}
               />
             )}
-            {isViewSelected("SEED_SIGN", onboarding) && <SignIn />}
-            {isViewSelected("SEED_PRE", onboarding) && <PrerequisiteSeed />}
-            {isViewSelected("SEED_CONF", onboarding) && <ConfigurationSeed />}
-            {isViewSelected("SEED_BACK", onboarding) && <Backup />}
-            {isViewSelected("SEED_PROV", onboarding) && <Provisionning />}
-            {isViewSelected("CONFIRMATION", onboarding) && (
-              <ConfirmationGlobal />
+            {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
+            {onboarding.state === "MASTER_SEED_PREREQUISITE" && (
+              <PrerequisiteSeed />
+            )}
+            {onboarding.state === "MASTER_SEED_CONFIGURATION" && (
+              <ConfigurationSeed />
+            )}
+            {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
+            {onboarding.state === "MASTER_SEED_GENERATION" && <Provisionning />}
+            {onboarding.state === "COMPLETE" && (
+              <ConfirmationGlobal match={match} history={history} />
             )}
           </div>
         </div>

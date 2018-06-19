@@ -3,12 +3,7 @@ import React from "react";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -43,10 +38,6 @@ const AdministrationScheme = ({
         {t("onboarding:administrators_scheme.description")}
       </Introduction>
       <ApprovalSlider number={number} total={total} onChange={onChange} />
-      <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-      <ToContinue>
-        {t("onboarding:administrators_scheme.to_continue")}
-      </ToContinue>
       <Footer
         nextState
         render={onNext => {

@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import ViewAllLink from "components/ViewAllLink";
 import Card from "components/Card";
@@ -88,6 +90,7 @@ class PendingCard extends Component<{
   accounts: Account[],
   allAccounts: Account[],
   match: *,
+  t: Translate,
   operations: Operation[],
   reloading: boolean
 }> {
@@ -96,6 +99,7 @@ class PendingCard extends Component<{
       accounts,
       operations,
       classes,
+      t,
       allAccounts,
       match,
       reloading
@@ -107,19 +111,19 @@ class PendingCard extends Component<{
     return (
       <Card
         reloading={reloading}
-        title="pending"
+        title={t("dashboard:pending")}
         titleRight={
           <ViewAllLink to={`/${match.params.orga_name}/pending`}>
-            VIEW ALL ({total})
+            {t("dashboard:view_all")} ({total})
           </ViewAllLink>
         }
         className="pendingCard"
       >
         <header className={classes.header}>
-          <CardField label="operations" align="center">
+          <CardField label={t("dashboard:operations")} align="center">
             {totalOperations}
           </CardField>
-          <CardField label="account" align="center">
+          <CardField label={t("onboarding:accounts")} align="center">
             {totalAccounts}
           </CardField>
         </header>
@@ -143,19 +147,19 @@ class PendingCard extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card title="pending" className="pendingCard">
+const RenderError = translate()(({ error, restlay, t }: *) => (
+  <Card title={t("dashboard:pending")} className="pendingCard">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
-);
+));
 
-const RenderLoading = () => (
-  <Card title="pending" className="pendingCard">
+const RenderLoading = translate()(({ t }, { t: Translate }) => (
+  <Card title={t("dashboard:pending")} className="pendingCard">
     <SpinnerCard />
   </Card>
-);
+));
 
-export default connectData(withStyles(styles)(PendingCard), {
+export default connectData(withStyles(styles)(translate()(PendingCard)), {
   queries: {
     accounts: PendingAccountsQuery,
     allAccounts: AccountsQuery,

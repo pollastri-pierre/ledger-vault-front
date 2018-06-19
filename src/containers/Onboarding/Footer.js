@@ -3,7 +3,7 @@ import React from "react";
 // import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { nextStep, nextState } from "redux/modules/onboarding";
+import { nextState } from "redux/modules/onboarding";
 
 const mapDispatchToProps = (dispatch: *) => {
   return {

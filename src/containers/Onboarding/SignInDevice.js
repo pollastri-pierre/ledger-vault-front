@@ -4,13 +4,10 @@ import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
-type Challenge = {
-  challenge: string,
-  key_handle: *
-};
+
 type Props = {
   onFinish: Function,
-  challenge: Challenge,
+  challenge: string,
   keyHandles: Object,
   t: Translate
 };

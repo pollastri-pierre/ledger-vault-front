@@ -2,19 +2,13 @@
 import React from "react";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
 import { withStyles } from "@material-ui/core/styles";
 import { RequirementUnit } from "./Requirements";
 import People from "components/icons/thin/People.js";
-import Box from "components/icons/thin/Box.js";
 import Briefcase from "components/icons/thin/Briefcase.js";
 
 const styles = {
@@ -34,7 +28,7 @@ const styles = {
       width: 1,
       height: 80,
       background: "#eeeeee",
-      left: -50,
+      left: -39,
       top: 30
     }
   },
@@ -73,22 +67,22 @@ const PrerequisiteSeed = ({
         <div className={classes.notrequired}>
           <SubTitle>{t("onboarding:not_required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<Box style={{ height: 29 }} />}>
-              <div>{t("onboarding:box_blue_devices")}</div>
-            </RequirementUnit>
+            <div style={{ marginRight: 22 }}>
+              <RequirementUnit
+                icon={<People color="#cccccc" style={{ height: 29 }} />}
+              >
+                <div>{t("onboarding:administrators")}</div>
+              </RequirementUnit>
+            </div>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              <div>{t("onboarding:team_members")}</div>
+              <div>{t("onboarding:wkey_custodians")}</div>
             </RequirementUnit>
           </div>
         </div>
       </div>
-      <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-      <ToContinue>
-        {t("onboarding:master_seed_prerequisite.to_continue")}
-      </ToContinue>
       <Footer
         render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>

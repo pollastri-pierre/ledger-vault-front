@@ -34,6 +34,13 @@ export default class VaultDeviceApp {
       applicationBuf.length === 32,
       "application hex is expected to have 32 bytes"
     );
+
+    console.log("********************");
+    console.log("register");
+    console.log(instanceName);
+    console.log(instanceReference);
+    console.log(instanceUrl);
+    console.log(agentRole);
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
     const instanceURLBuf = Buffer.from(instanceUrl);
@@ -99,55 +106,6 @@ export default class VaultDeviceApp {
     };
   }
 
-  async authenticateBootstrap(
-    challenge: Buffer,
-    application: string,
-    keyHandle: Buffer
-  ): Promise<{
-    userPresence: *,
-    counter: *,
-    signature: string,
-    rawResponse: string
-  }> {
-    invariant(
-      challenge.length === 32,
-      "challenge hex is expected to have 32 bytes"
-    );
-    const applicationBuf = Buffer.from(application, "hex");
-    invariant(
-      applicationBuf.length === 32,
-      "application hex is expected to have 32 bytes"
-    );
-    const instanceNameBuf = Buffer.from("");
-    const instanceReferenceBuf = Buffer.from("");
-    const instanceURLBuf = Buffer.from("");
-    const agentRoleBuf = Buffer.from("");
-    const data = Buffer.concat([
-      challenge,
-      applicationBuf,
-      Buffer.from([keyHandle.length]),
-      keyHandle,
-      Buffer.from([instanceNameBuf.length]),
-      instanceNameBuf,
-      Buffer.from([instanceReferenceBuf.length]),
-      instanceReferenceBuf,
-      Buffer.from([instanceURLBuf.length]),
-      instanceURLBuf,
-      Buffer.from([agentRoleBuf.length]),
-      agentRoleBuf
-    ]);
-    const response = await this.transport.send(0xe0, 0x02, 0x00, 0x00, data);
-    const userPresence = response.slice(0, 1);
-    const counter = response.slice(1, 5);
-    const signature = response.slice(5).toString("hex");
-    return {
-      userPresence,
-      counter,
-      signature,
-      rawResponse: response.toString("hex")
-    };
-  }
-
   async authenticate(
     challenge: Buffer,
     application: string,
@@ -168,6 +126,13 @@ export default class VaultDeviceApp {
       "application hex is expected to have 32 bytes"
     );
     const maxLength = 150;
+
+    console.log("********************");
+    console.log("authenticate");
+    console.log(instanceName);
+    console.log(instanceReference);
+    console.log(instanceUrl);
+    console.log(agentRole);
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
@@ -203,6 +168,8 @@ export default class VaultDeviceApp {
     const length = Buffer.alloc(2);
     length.writeUInt16BE(bigChunk.length, 0);
 
+    console.log("CHALLENGE IN HEX");
+    console.log(challenge.toString("hex"));
     const data = Buffer.concat([
       challenge,
       applicationBuf,
@@ -240,7 +207,9 @@ export default class VaultDeviceApp {
     }
     const userPresence = lastResponse.slice(0, 1);
     const counter = lastResponse.slice(1, 5);
-    const signature = lastResponse.slice(5).toString("hex");
+    const signature = lastResponse
+      .slice(5, lastResponse.length - 2)
+      .toString("hex");
     return {
       userPresence,
       counter,
@@ -335,6 +304,16 @@ export default class VaultDeviceApp {
     }
 
     return lastResponse.slice(0, lastResponse.length - 2);
+  }
+
+  async getAttestationCertificate(): Promise<{
+    pubKey: string,
+    signature: string
+  }> {
+    const response = await this.transport.send(0xe0, 0x41, 0x00, 0x00);
+    const codeHash = response.slice(0, 32).toString("hex");
+    const attestation = response.slice(32, response.length - 2);
+    return { codeHash, attestation };
   }
 
   async getPublicKey(

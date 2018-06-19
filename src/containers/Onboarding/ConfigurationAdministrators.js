@@ -4,10 +4,8 @@ import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import {
   Title,
-  SubTitle,
   List,
   ListItem,
-  ToContinue,
   Introduction
 } from "../../components/Onboarding.js";
 import DialogButton from "components/buttons/DialogButton";
@@ -35,10 +33,6 @@ const ConfigurationAdministrators = ({ t }: { t: Translate }) => {
           {t("onboarding:administrators_configuration.step3")}
         </ListItem>
       </List>
-      <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-      <ToContinue>
-        {t("onboarding:administrators_configuration.to_continue")}
-      </ToContinue>
       <Footer
         nextState
         render={onNext => (

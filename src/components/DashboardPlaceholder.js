@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import HelpLink from "components/HelpLink";
 import Plus from "components/icons/full/Plus";
 import colors from "shared/colors";
@@ -55,27 +57,31 @@ const styles = {
   }
 };
 const DashboardPlaceholder = ({
-  classes
+  classes,
+  t
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  t: Translate
 }) => (
   <div className={classes.base}>
     <div>
-      <h3>Your workspace is empty</h3>
+      <h3>{t("dashboard:empty_state.title")}</h3>
       <p>
-        <span>Click </span>
+        <span>{t("dashboard:empty_state.click")}</span>
         <Link to={`dashboard/new-account`} className={classes.link}>
           <Plus className={classes.icon} />
-          <span> Account </span>
+          <span>{t("dashboard:empty_state.account")}</span>
         </Link>
-        <span>to create your first account.</span>
+        <span>{t("dashboard:empty_state.to_create")}</span>
       </p>
       <p className={classes.needHelp}>
-        <strong>Need help?</strong>{" "}
-        <HelpLink className={classes.help}>Visit our Help Center</HelpLink>
+        <strong>{t("dashboard:empty_state.need_help")}</strong>{" "}
+        <HelpLink className={classes.help}>
+          {t("dashboard:empty_state.visit")}
+        </HelpLink>
       </p>
     </div>
   </div>
 );
 
-export default withStyles(styles)(DashboardPlaceholder);
+export default withStyles(styles)(translate()(DashboardPlaceholder));

@@ -277,9 +277,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     const currencyCode = settings.currency_unit["code"];
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: account.currency.units.find(
-        unit => unit.code === currencyCode
-      ).id,
+      currency_unit: currencyCode,
       fiat: settings.fiat.id || settings.fiat
     });
     restlay.commitMutation(m);

@@ -43,9 +43,6 @@ const styles = {
     fontWeight: 600,
     margin: "0 0 12px 0"
   },
-  disabled: {
-    opacity: 0.2
-  },
   flexWrapper: {
     flex: 1
   },
@@ -77,6 +74,7 @@ type Props = {
   onAddWrapShard: Function,
   onToggleGenerateSeed: Function,
   onAddMessage: Function,
+  t: Translate,
   classes: { [$Keys<typeof styles>]: string }
 };
 
@@ -105,14 +103,14 @@ class Authentication extends Component<Props, State> {
     const { onGetWrapsChannel } = this.props;
     onGetWrapsChannel();
   }
-  finish = data => {
+  finish = (data: any) => {
     this.props.onToggleGenerateSeed();
     this.props.onAddWrapShard(data);
   };
 
   render() {
     const { onboarding, onToggleGenerateSeed, classes, t } = this.props;
-    if (!onboarding.wrapping.channel.ephemeral_public_key) {
+    if (!onboarding.wrapping.channel) {
       return <SpinnerCard />;
     }
     return (
@@ -139,7 +137,7 @@ class Authentication extends Component<Props, State> {
           </div>
           <div>
             <div className={classes.signin_desc}>
-              {t("onboarding:wrapping_key.signin_desc")}
+              <strong> {t("onboarding:wrapping_key.signin_desc")}</strong>
             </div>
             <div
               className={cx(classes.sign, {

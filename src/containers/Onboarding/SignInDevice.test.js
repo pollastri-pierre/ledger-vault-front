@@ -26,8 +26,8 @@ Enzyme.configure({ adapter: new Adapter() });
 const props = {
   onFinish: jest.fn(),
   t: string => string,
-  keyHandles: { pubKey: "handle1" },
-  challenge: { challenge: "challenge", key_handle: { pubKey: "handle1" } }
+  keyHandles: { PUBKEY: "handle1" },
+  challenge: "challenge"
 };
 
 test("onStart should call device and API with right parameters", async () => {
@@ -38,7 +38,7 @@ test("onStart should call device and API with right parameters", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    Buffer.from("handle1", "hex")
+    Buffer.from("handle1", "base64")
   );
 
   expect(props.onFinish).toHaveBeenCalledWith("pubKey", {

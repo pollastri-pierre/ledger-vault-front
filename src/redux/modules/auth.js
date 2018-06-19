@@ -18,11 +18,15 @@ export function setTokenToLocalStorage(token: string) {
   window.localStorage.setItem("token", token);
 }
 
-export function logout() {
-  removeLocalStorageToken();
-  network("/authentications/authenticate", "DELETE");
-  return { type: LOGOUT };
-}
+export const logout = (orga: string) => {
+  return async (dispatch: Dispatch<*>) => {
+    await network(`/${orga}/authentications/logout`, "POST");
+    removeLocalStorageToken();
+    dispatch({
+      type: LOGOUT
+    });
+  };
+};
 
 export function login(token: string) {
   setTokenToLocalStorage(token);

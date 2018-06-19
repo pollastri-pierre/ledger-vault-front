@@ -65,34 +65,38 @@ const noMembers = {
   }
 };
 
-const NoMembers = withStyles(
-  noMembers
-)(
-  ({
-    classes,
-    t
-  }: {
-    classes: { [$Keys<typeof noMembers>]: string },
-    t: Translate
-  }) => {
-    return (
-      <div className={classes.base}>
-        <People
-          color="#cccccc"
-          style={{
-            height: 29,
-            display: "block",
-            margin: "auto",
-            marginBottom: 21
-          }}
-        />
-        <div className={classes.label}>Add a new tem member</div>
-        <div className={classes.info}>
-          At least 3 team members are required to continue
+const NoMembers = translate()(
+  withStyles(
+    noMembers
+  )(
+    ({
+      classes,
+      t
+    }: {
+      classes: { [$Keys<typeof noMembers>]: string },
+      t: Translate
+    }) => {
+      return (
+        <div className={classes.base}>
+          <People
+            color="#cccccc"
+            style={{
+              height: 29,
+              display: "block",
+              margin: "auto",
+              marginBottom: 21
+            }}
+          />
+          <div className={classes.label}>
+            {t("onboarding:administrators_registration.add_member_title")}
+          </div>
+          <div className={classes.info}>
+            {t("onboarding:administrators_registration.at_least")}
+          </div>
         </div>
-      </div>
-    );
-  }
+      );
+    }
+  )
 );
 
 const membersList = {
@@ -199,6 +203,11 @@ class Registration extends Component<Props, *> {
         </div>
         <Introduction>
           {t("onboarding:administrators_registration.description")}
+          <p>
+            <strong>
+              {t("onboarding:administrators_registration.description_strong")}
+            </strong>
+          </p>
         </Introduction>
         {onboarding.registering.admins.length === 0 ? (
           <NoMembers />

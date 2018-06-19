@@ -1,0 +1,14 @@
+operations:
+  approve:
+    title: Operations to approve
+    no_data: There is no operation to approve
+  watch:
+    title: Operations to watch
+    no_data: There is no operation to watch
+accounts:
+  approve:
+    title: Accounts to approve
+    no_data: There is no account to approve
+  watch:
+    title: Accounts to watch
+    no_data: There is no account to watch

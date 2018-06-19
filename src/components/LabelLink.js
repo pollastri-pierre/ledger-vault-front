@@ -13,7 +13,7 @@ const styles = {
     fontWeight: 600,
     paddingLeft: 40,
     display: "block",
-    marginBottom: 5
+    marginBottom: 15
   },
   selected: {
     color: "black"

@@ -11,29 +11,28 @@ import {
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
-const ConfigurationSeed = ({ t }: { t: Translate }) => {
+const ConfigurationWrapping = ({ t }: { t: Translate }) => {
   return (
     <div>
-      <Title>{t("onboarding:master_seed_configuration.title")}</Title>
+      <Title>{t("onboarding:wrapping_key_init.title")}</Title>
       <Introduction>
-        <strong>{t("onboarding:master_seed_configuration.description")}</strong>
+        {t("onboarding:wrapping_key_init.description")}
       </Introduction>
       <List>
         <ListItem number={1}>
-          {t("onboarding:master_seed_configuration.step1")}
+          {t("onboarding:wrapping_key_init.step1")}
         </ListItem>
         <ListItem number={2}>
-          {t("onboarding:master_seed_configuration.step2")}
+          {t("onboarding:wrapping_key_init.step2")}
           <br />
-          <a href="#">
-            {t("onboarding:master_seed_configuration.configure_device")}
-          </a>
+          <a href="#">{t("onboarding:configure_device")}</a>
         </ListItem>
         <ListItem number={3}>
-          {t("onboarding:master_seed_configuration.step3")}
+          {t("onboarding:wrapping_key_init.step3")}
         </ListItem>
       </List>
       <Footer
+        nextState
         render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
@@ -44,4 +43,4 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => {
   );
 };
 
-export default translate()(ConfigurationSeed);
+export default translate()(ConfigurationWrapping);

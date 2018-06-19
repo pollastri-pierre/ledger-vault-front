@@ -87,7 +87,6 @@ class NewOperationModal extends Component<
 
   createOperation = () => {
     if (
-      this.state.details.fees &&
       this.state.details.address &&
       this.state.details.amount &&
       this.state.selectedAccount

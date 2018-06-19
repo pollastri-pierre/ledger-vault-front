@@ -11,12 +11,11 @@ const styles = {
     // border: "3px solid #e2e2e2",
     fontSize: 11,
     textAlign: "center",
-    paddingTop: 30,
+    paddingTop: 25,
     position: "relative",
     "& > span": {
       display: "inline-block",
-      marginTop: 5,
-      width: 60
+      marginTop: 5
     },
     "& strong": {
       fontSize: 18,
@@ -35,6 +34,7 @@ const styles = {
 type Props = {
   nb: number,
   total: number,
+  classes: { [_: $Keys<typeof styles>]: string },
   label: string
 };
 

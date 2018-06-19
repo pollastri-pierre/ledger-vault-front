@@ -2,22 +2,23 @@
 import network from "network";
 import { addMessage } from "redux/modules/alerts";
 
-const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
-const ONBOARDING_PROVISIONNING_CHANNEL = "ONBOARDING_PROVISIONNING_CHANNEL";
-const ONBOARDING_REGISTERING_CHALLENGE = "ONBOARDING_REGISTERING_CHALLENGE";
-const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
-const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
-const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
-const NEXT_STEP = "NEXT_STEP";
-const ONBOARDING_STATE = "ONBOARDING_STATE";
-const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
-const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
-const ONBOARDING_ADD_ADMIN = "ONBOARDING_ADD_ADMIN";
-const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
-const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
-const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
+export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
+export const ONBOARDING_REGISTERING_CHALLENGE =
+  "ONBOARDING_REGISTERING_CHALLENGE";
+export const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
+export const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
+export const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
+export const NEXT_STEP = "NEXT_STEP";
+export const ONBOARDING_STATE = "ONBOARDING_STATE";
+export const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
+export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
+export const ONBOARDING_ADD_ADMIN = "ONBOARDING_ADD_ADMIN";
+export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
+export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
+export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
 
 export type OnboardingState =
+  | "LOADING"
   | "EMPTY_PARTITION"
   | "WRAPPING_KEY_PREREQUISITES"
   | "WRAPPING_KEY_CONFIGURATION"
@@ -38,7 +39,7 @@ type KeyHandle = { [_: string]: string };
 
 type Challenge = {
   challenge: string,
-  key_handle: ?KeyHandle
+  key_handle?: KeyHandle
 };
 
 type Channel = {
@@ -64,21 +65,21 @@ type Admin = $Shape<{
 }>;
 
 type Wrapping = {
-  channel: ?Channel,
+  channel?: Channel,
   blobs: Blob[]
 };
 type Provisionning = {
-  channel: ?Channel,
-  blobs: Blob
+  channel?: Channel,
+  admins: Blob[]
 };
 
 type Registering = {
-  challenge: ?string,
+  challenge?: string,
   admins: Admin[]
 };
 
 type Signin = {
-  challenge: ?Challenge,
+  challenge?: Challenge,
   admins: Admin[]
 };
 
@@ -94,18 +95,17 @@ export type Onboarding = {
 
 export type UIOnboarding = {
   device_modal: boolean,
-  member_modal: boolean,
-  ui_step: number
+  member_modal: boolean
 };
 
-type Store = $Shape<Onboarding & UIOnboarding>;
+type Store = Onboarding & UIOnboarding;
 
 const initialState = {
   step: 0,
-  ui_step: 0,
   device_modal: false,
   member_modal: false,
   quorum: 1,
+  state: "LOADING",
   wrapping: {
     blobs: []
   },
@@ -119,16 +119,6 @@ const initialState = {
     admins: []
   }
 };
-
-export const isViewSelected = (view: OnboardingView, state: Store): boolean => {
-  return false;
-};
-
-export function nextStep() {
-  return {
-    type: NEXT_STEP
-  };
-}
 
 export const nextState = (data: any) => {
   return async (dispatch: Dispatch<*>) => {
@@ -144,7 +134,7 @@ export const getChallenge = () => {
   return network("/onboarding/challenge", "GET");
 };
 
-export const authenticate = data => {
+export const authenticate = (data: any) => {
   return network("/onboarding/authenticate", "POST", data);
 };
 
@@ -287,10 +277,10 @@ const syncNextState = (state: Store, action, next = false) => {
   if (next) {
     actionState = action.next;
   }
-  if (actionState.state === "WRAPPING_KEY_SETUP") {
+  if (actionState.state === "WRAPPING_KEY_SIGN_IN") {
     return {
       ...state,
-      state: "WRAPPING_KEY_SETUP",
+      state: "WRAPPING_KEY_SIGN_IN",
       step: 0,
       wrapping: {
         ...state.wrapping,
@@ -317,7 +307,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
 
-  if (actionState.state === "ADMINISTRATION_SCHEME_CONFIGURATION") {
+  if (actionState.state === "ADMINISTRATORS_SCHEME_CONFIGURATION") {
     return {
       ...state,
       state: actionState.state,
@@ -328,7 +318,7 @@ const syncNextState = (state: Store, action, next = false) => {
       quorum: actionState.quorum
     };
   }
-  if (actionState.state === "ADMIN_SESSION_OPENING") {
+  if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
     return {
       ...state,
       state: actionState.state,
@@ -362,8 +352,20 @@ const syncNextState = (state: Store, action, next = false) => {
       }
     };
   }
+  if (actionState.state === "COMPLETE") {
+    return {
+      ...state,
+      state: actionState.state,
+      quorum: actionState.quorum,
+      registering: {
+        ...state.registering,
+        admins: actionState.admins
+      }
+    };
+  }
   return { ...state, state: actionState.state, step: 0 };
 };
+
 export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
     case ONBOARDING_WRAPPING_CHANNEL:

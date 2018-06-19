@@ -10,12 +10,7 @@ import ValidateBadge from "components/icons/full/ValidateBadge";
 import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
 import GenerateSeed from "./GenerateSeed";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 import {
@@ -42,31 +37,36 @@ const status = {
     fontSize: 11
   }
 };
-export const SeedStatus = withStyles(
-  status
-)(
-  ({
-    classes,
-    generated,
-    open
-  }: {
-    classes: { [$Keys<typeof status>]: string },
-    open: Function,
-    generated: boolean
-  }) => {
-    if (generated) {
+export const SeedStatus = translate()(
+  withStyles(
+    status
+  )(
+    ({
+      classes,
+      t,
+      generated,
+      open
+    }: {
+      classes: { [$Keys<typeof status>]: string },
+      open: Function,
+      t: Translate,
+      generated: boolean
+    }) => {
+      if (generated) {
+        return (
+          <div className={classes.generated}>
+            <ValidateBadge className={classes.icon} />
+            {t("onboarding:master_seed_provisionning.generated")}
+          </div>
+        );
+      }
       return (
-        <div className={classes.generated}>
-          <ValidateBadge className={classes.icon} />Generated
+        <div className={classes.base} onClick={open}>
+          {t("onboarding:master_seed_provisionning.generate_seed")}
         </div>
       );
     }
-    return (
-      <div className={classes.base} onClick={open}>
-        GENERATE SEED
-      </div>
-    );
-  }
+  )
 );
 
 const profile = {
@@ -88,12 +88,12 @@ const styles = {
     marginBottom: 35
   },
   title: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 600,
     margin: "0 0 12px 0"
   },
   step: {
-    paddingRight: 30,
+    paddingRight: 13,
     paddingLeft: 25,
     "&:first-child": {
       paddingLeft: 0
@@ -195,10 +195,6 @@ class Provisioning extends Component<Props> {
             />
           </div>
         </div>
-        <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-        <ToContinue>
-          {t("onboarding:master_seed_provisionning.to_continue")}
-        </ToContinue>
         <Footer
           nextState
           render={onNext => (

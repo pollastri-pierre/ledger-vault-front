@@ -2,16 +2,6 @@
 import React, { Component } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
-import { goToStep } from "redux/modules/onboarding.js";
-
-const mapStateToProps = state => ({
-  onboarding: state.onboarding
-});
-
-const mapDispatchToProps = (dispatch: *) => ({
-  onGoToStep: s => dispatch(goToStep(s))
-});
 
 const styles = {
   root: {
@@ -45,7 +35,7 @@ class MenuLinkOnboarding extends Component<{
   className?: string,
   children: *,
   overrides?: Object,
-  onboarding: Object,
+  color: string,
   selected: boolean,
   allowed: boolean,
   onGoToStep: Function,
@@ -55,26 +45,18 @@ class MenuLinkOnboarding extends Component<{
     this.props.onGoToStep(this.props.step);
   }
   render() {
-    const {
-      classes,
-      heading,
-      selected,
-      children,
-      onboarding,
-      allowed
-    } = this.props;
+    const { classes, heading, selected, color, children } = this.props;
     const rootCSS = heading ? classes.head : classes.root;
     return (
       <MenuItem
         style={{
-          color: "#27d0e2" //default FIXME from theme
+          color: color || "#27d0e2" //default FIXME from theme
         }}
         button
         disabled={!selected}
         disableRipple
         selected={selected}
         classes={{ root: rootCSS, selected: classes.selected }}
-        onClick={this.triggerView.bind(this)}
       >
         <span style={{ color: "#767676" }}>{children}</span>
       </MenuItem>
@@ -82,6 +64,4 @@ class MenuLinkOnboarding extends Component<{
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(MenuLinkOnboarding)
-);
+export default withStyles(styles)(MenuLinkOnboarding);

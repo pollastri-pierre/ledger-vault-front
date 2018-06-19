@@ -4,18 +4,11 @@ import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction, SubTitle } from "components/Onboarding";
 
 import { withStyles } from "@material-ui/core/styles";
-import { RequirementUnit } from "./Requirements";
+import { RequirementUnit, BlueDevice } from "./Requirements";
 import People from "components/icons/thin/People.js";
-import Box from "components/icons/thin/Box";
-import Briefcase from "components/icons/thin/Briefcase";
 
 const styles = {
   requirements: {
@@ -34,7 +27,7 @@ const styles = {
       width: 1,
       height: 80,
       background: "#eeeeee",
-      left: -50,
+      left: -30,
       top: 30
     }
   },
@@ -51,31 +44,31 @@ const Prerequisite = ({
 }) => {
   return (
     <div>
-      <Title>{t("onboarding:administrators_prerequisite.title")}</Title>
+      <Title>{t("onboarding:wrapping_key_prerequisite.title")}</Title>
       <Introduction>
-        {t("onboarding:administrators_prerequisite.description")}
+        {t("onboarding:wrapping_key_prerequisite.description")}
       </Introduction>
       <div className={classes.requirements}>
         <div>
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<Box style={{ height: 29 }} />}>
-              <div style={{ width: 96 }}>
-                {t("onboarding:box_blue_devices")}
-              </div>
+            <RequirementUnit icon={<BlueDevice color="orange" />}>
+              <div style={{ width: 96 }}>{t("onboarding:blue_orange")}</div>
             </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
             >
-              <div style={{ width: 93 }}>{t("onboarding:team_members")}</div>
+              <div style={{ width: 93 }}>{t("onboarding:wkey_custodians")}</div>
             </RequirementUnit>
           </div>
         </div>
         <div className={classes.notrequired}>
           <SubTitle>{t("onboarding:not_required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
-              <div style={{ width: 96 }}>{t("onboarding:vault_briefcase")}</div>
+            <RequirementUnit
+              icon={<People color="#cccccc" style={{ height: 29 }} />}
+            >
+              <div style={{ width: 96 }}>{t("onboarding:administrators")}</div>
             </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
@@ -86,10 +79,6 @@ const Prerequisite = ({
           </div>
         </div>
       </div>
-      <SubTitle>{t("onboarding:tocontinue")}</SubTitle>
-      <ToContinue>
-        {t("onboarding:administrators_prerequisite.to_continue")}
-      </ToContinue>
       <Footer
         render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>

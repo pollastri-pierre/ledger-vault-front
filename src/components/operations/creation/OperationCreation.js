@@ -89,8 +89,8 @@ class OperationCreation extends Component<{
     const disabledTabs = [
       false, // tab 0
       selectedAccount === null, // tab 1
-      !details.amount || !details.address || !details.fees, // tab 2
-      !details.amount || !details.address || !details.fees // tab 3
+      !details.amount || !details.address, //|| !details.fees, // tab 2
+      !details.amount || !details.address // || !details.fees // tab 3
     ];
 
     let content;

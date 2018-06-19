@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import _ from "lodash";
 import connectData from "restlay/connectData";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
@@ -17,6 +19,7 @@ type Props = {
   changeAccountName: Function,
   selectCurrency: (cur: Currency) => void,
   onSelect: Function,
+  t: Translate,
   switchInternalModal: Function,
   restlay: *,
   tabsIndex: number,
@@ -42,6 +45,7 @@ class MainCreation extends Component<Props> {
       changeAccountName,
       account,
       selectCurrency,
+      t,
       onSelect,
       tabsIndex,
       classes,
@@ -74,25 +78,25 @@ class MainCreation extends Component<Props> {
     return (
       <div className={classes.base}>
         <header>
-          <h2>New account</h2>
+          <h2>{t("newAccount:title")}</h2>
           <Tabs
             onChange={this.handleChange}
             value={tabsIndex}
             indicatorColor="primary"
           >
-            <Tab label="1. Currency" disableRipple />
+            <Tab label={`1. ${t("newAccount:currency")}`} disableRipple />
             <Tab
-              label="2. Options"
+              label={`2. ${t("newAccount:options.title")}`}
               disabled={_.isNull(account.currency)}
               disableRipple
             />
             <Tab
-              label="3. Security"
+              label={`3. ${t("newAccount:security.title")}`}
               disabled={account.name === ""}
               disableRipple
             />
             <Tab
-              label="4. Confirmation"
+              label={`4. ${t("newAccount:confirmation.title")}`}
               disabled={
                 account.approvers.length === 0 ||
                 account.quorum === 0 ||
@@ -132,11 +136,11 @@ class MainCreation extends Component<Props> {
               disabled={isNextDisabled}
               onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
             >
-              Continue
+              {t("common:continue")}
             </DialogButton>
           ) : (
             <DialogButton highlight right onTouchTap={save}>
-              Done
+              {t("common:done")}
             </DialogButton>
           )}
         </div>
@@ -145,4 +149,4 @@ class MainCreation extends Component<Props> {
   }
 }
 
-export default connectData(withStyles(styles)(MainCreation));
+export default connectData(withStyles(styles)(translate()(MainCreation)));

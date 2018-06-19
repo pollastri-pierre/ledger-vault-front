@@ -73,7 +73,7 @@ const styles = {
     textAlign: "center"
   }
 };
-export class Welcome extends Component<
+class Welcome extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
     history: *,
@@ -178,3 +178,5 @@ export class Welcome extends Component<
     );
   }
 }
+
+export default withRouter(withStyles(styles)(translate()(Welcome)));

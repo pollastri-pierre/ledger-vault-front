@@ -256,7 +256,10 @@ class RowT extends Component<{
   openOperation: (number, number) => void
 }> {
   shouldComponentUpdate({ cell }: *) {
-    return this.props.cell.operation !== cell.operation;
+    return (
+      this.props.cell.operation !== cell.operation ||
+      cell.account !== this.props.cell.operation
+    );
   }
   render() {
     const {

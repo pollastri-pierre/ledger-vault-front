@@ -33,7 +33,7 @@ class DeviceAuthenticate extends Component<Props, State> {
       this.setState({ step: 1 });
       const application = APPID_VAULT_ADMINISTRATOR;
       const { challenge, key_handle } = await network(
-        `/authentications/${pubKey.toUpperCase()}/challenge`,
+        `/authentications/${pubKey.toUpperCase()}/sensitive/challenge`,
         "GET"
       );
 
@@ -43,7 +43,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         Buffer.from(key_handle[pubKey.toUpperCase()], "base64")
       );
 
-      await network("/authentications/admin/authenticate", "POST", {
+      await network("/authentications/sensitive/authenticate", "POST", {
         pub_key: pubKey.toUpperCase(),
         authentication: auth.rawResponse
       });

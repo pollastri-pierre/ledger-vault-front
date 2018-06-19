@@ -84,7 +84,7 @@ function AccountApproveDetails(props: {
           <AccountName name={account.name} currency={currency} />
         </LineRow>
         <LineRow label="currency">
-          <span className="info-value currency">{currency.units[1].name}</span>
+          <span className="info-value currency">{currency.units[0].name}</span>
         </LineRow>
         <LineRow label="Approvals to spend">
           {security_scheme.quorum} of {account.members.length} members

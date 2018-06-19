@@ -3,6 +3,8 @@ import { withStyles } from "@material-ui/core/styles";
 import CounterValue from "components/CounterValue";
 import React, { Component } from "react";
 import CurrencyCounterValueConversion from "components/CurrencyCounterValueConversion";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import Card from "components/Card";
 import CardField from "components/CardField";
 import type { Account } from "data/types";
@@ -18,12 +20,17 @@ const styles = {
 class AccountCountervalueCard extends Component<{
   account: Account,
   reloading: boolean,
+  t: Translate,
   classes: Object
 }> {
   render() {
-    const { account, reloading, classes } = this.props;
+    const { account, reloading, classes, t } = this.props;
     return (
-      <Card className={classes.card} reloading={reloading} title="Countervalue">
+      <Card
+        className={classes.card}
+        reloading={reloading}
+        title={t("accountView:countervalue")}
+      >
         <CardField label={<CurrencyCounterValueConversion account={account} />}>
           <CounterValue value={account.balance} from={account.currency.name} />
         </CardField>
@@ -32,4 +39,4 @@ class AccountCountervalueCard extends Component<{
   }
 }
 
-export default withStyles(styles)(AccountCountervalueCard);
+export default withStyles(styles)(translate()(AccountCountervalueCard));

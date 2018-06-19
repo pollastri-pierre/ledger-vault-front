@@ -1,6 +1,8 @@
 ---
 continue: continue
 cancel: cancel
+done: done
+none: None
 back: back
 awaiting_device: awaiting device...
 

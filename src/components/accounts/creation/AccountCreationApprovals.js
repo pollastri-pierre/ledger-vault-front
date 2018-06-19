@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 import InfoModal from "../../InfoModal";
+import type { Translate } from "data/types";
+import { translate, Interpolate } from "react-i18next";
 import DialogButton from "../../buttons/DialogButton";
 import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
@@ -29,6 +31,7 @@ function AccountCreationApprovals(props: {
   switchInternalModal: Function,
   onAddMessage: (t: string, m: string, ty: string) => void,
   setApprovals: (v: string) => void,
+  t: Translate,
   classes: Object
 }) {
   const {
@@ -36,6 +39,7 @@ function AccountCreationApprovals(props: {
     switchInternalModal,
     approvals,
     setApprovals,
+    t,
     members,
     classes
   } = props;
@@ -44,22 +48,18 @@ function AccountCreationApprovals(props: {
     if (parseInt(approvals, 10) <= members.length) {
       switchInternalModal("main");
     } else {
-      onAddMessage(
-        "Error",
-        "Number of approvals cannot exceed number of members",
-        "error"
-      );
+      onAddMessage("Error", t("newAccount:errors.approvals_exceed"), "error");
     }
   };
 
   return (
     <div className={classes.base}>
       <header>
-        <h2>Approvals</h2>
+        <h2>{t("newAccount:security.approvals")}</h2>
       </header>
       <div className="content">
         <InputTextWithUnity
-          label="Amount"
+          label={t("newAccount:security.approvals_amount")}
           hasError={approvals > members.length}
           field={
             <input
@@ -70,17 +70,21 @@ function AccountCreationApprovals(props: {
             />
           }
         >
-          <span className="count">approvals from {members.length} members</span>
+          <span className="count">
+            <Interpolate
+              count={members.length}
+              i18nKey="newAccount:security.approvals_from"
+            />
+          </span>
         </InputTextWithUnity>
         <InfoModal className={classes.info}>
-          Approvals define the number of required signatures from the group of
-          members allowed to approve outgoing operations.
+          {t("newAccount:security.approvals_desc")}
         </InfoModal>
       </div>
 
       <div className="footer">
         <DialogButton right highlight onTouchTap={submit}>
-          Done
+          {t("common:done")}
         </DialogButton>
       </div>
     </div>
@@ -88,5 +92,5 @@ function AccountCreationApprovals(props: {
 }
 
 export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(AccountCreationApprovals)
+  withStyles(styles)(translate()(AccountCreationApprovals))
 );

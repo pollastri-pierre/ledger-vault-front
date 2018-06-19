@@ -33,7 +33,6 @@ const styles = {
   },
   sumary: {
     display: "flex",
-    width: 300,
     margin: "auto"
   },
   info: {
@@ -80,6 +79,12 @@ const ConfirmationGlobal = ({
             <div style={{ marginBottom: 12 }}>
               <People color="#cccccc" style={{ height: 29 }} />
             </div>
+            3 Wrapping Keys Custodians
+          </div>
+          <div className={classes.info}>
+            <div style={{ marginBottom: 12 }}>
+              <People color="#cccccc" style={{ height: 29 }} />
+            </div>
             {onboarding.registering.admins.length}{" "}
             {t("onboarding:team_members")}
           </div>
@@ -96,7 +101,9 @@ const ConfirmationGlobal = ({
         render={() => (
           <DialogButton
             highlight
-            onTouchTap={() => history.push(`${match.params.orga_name}`)}
+            onTouchTap={() => {
+              history.push(`/${match.params.orga_name}`);
+            }}
           >
             {t("common:continue")}
           </DialogButton>

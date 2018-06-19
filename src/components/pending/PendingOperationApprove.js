@@ -1,5 +1,7 @@
 //@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
 import CounterValue from "components/CounterValue";
@@ -18,13 +20,17 @@ type Props = {
   approved?: boolean,
   user: Member,
   classes: Object,
+  t: Translate,
   match: *
 };
 
 function PendingOperationApprove(props: Props) {
-  const { accounts, operations, approved, user, classes, match } = props;
+  const { accounts, operations, approved, user, classes, match, t } = props;
   if (operations.length === 0) {
-    return <p>There are no operations to approve</p>;
+    if (approved) {
+      return <p>{t("pending:operations.watch.no_data")}</p>;
+    }
+    return <p>{t("pending:operations.approve.no_data")}</p>;
   }
 
   return (
@@ -95,4 +101,6 @@ function PendingOperationApprove(props: Props) {
   );
 }
 
-export default withStyles(styles)(withRouter(PendingOperationApprove));
+export default withStyles(styles)(
+  withRouter(translate()(PendingOperationApprove))
+);
