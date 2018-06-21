@@ -44,10 +44,12 @@ class GenerateSeed extends Component<Props, State> {
 
       this.setState({ step: 1 });
 
+      console.log(certificate);
       await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
-        Buffer.from(certificate, "base64")
+        Buffer.from(certificate, "base64"),
+        0x03
       );
 
       const blob = await device.generateKeyComponent(
@@ -64,7 +66,7 @@ class GenerateSeed extends Component<Props, State> {
       this.props.onFinish(shard);
     } catch (e) {
       console.error(e);
-      this.start();
+      // this.start();
     }
   };
   render() {

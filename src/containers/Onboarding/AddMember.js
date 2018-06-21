@@ -41,10 +41,10 @@ class AddMember extends Component<Props, State> {
       // TODO modify member in store redux and call the API too
       const newMember = {
         ...this.props.member,
-        email: data.email.value,
-        first_name: data.first_name.value,
-        last_name: data.last_name.value,
-        picture: data.picture.value
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        picture: data.picture
       };
       const { setAlert } = this.props;
       const promise = this.props.editMember(newMember);

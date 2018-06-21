@@ -68,32 +68,62 @@ class StepDevice extends Component<Props, State> {
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
       const validation = await device.getPublicKey(VALIDATION_PATH);
+      const attestation = await device.getAttestationCertificate();
+
+      console.log(attestation.toString("hex"));
+
       this.setState({ active: 1 });
 
-      const u2f_register = await device.register(
+      const { u2f_register, keyHandle } = await device.register(
         Buffer.from(this.props.challenge, "base64"),
         APPID_VAULT_ADMINISTRATOR
       );
 
       this.setState({ active: 2 });
 
+      const attestationOffset = 67 + u2f_register.readInt8(66);
+
+      const u2f_register_attestation = Buffer.concat([
+        u2f_register.slice(0, attestationOffset),
+        Buffer.from([attestation.length]),
+        attestation,
+        u2f_register.slice(attestationOffset)
+      ]);
+
+      console.log("attestation", attestation);
+      console.log("u2f_register", u2f_register);
+      console.log("attestation", attestation);
+      console.log(u2f_register.length);
+      console.log(attestation.length);
+      console.log(u2f_register_attestation.length);
+
+      const validation_attestation = Buffer.concat([
+        attestation,
+        validation.signature
+      ]);
+      const confidentiality_attestation = Buffer.concat([
+        attestation,
+        confidentiality.signature
+      ]);
+
       const data = {
-        u2f_register: u2f_register.rawResponse,
+        u2f_register: u2f_register_attestation.toString("hex"),
         pub_key: pubKey,
-        key_handle: u2f_register.keyHandle.toString("hex"),
+        key_handle: keyHandle.toString("hex"),
         validation: {
           public_key: validation.pubKey,
-          attestation: validation.signature.toString("hex")
+          attestation: validation_attestation.toString("hex")
         },
         confidentiality: {
           public_key: confidentiality.pubKey,
-          attestation: confidentiality.signature.toString("hex")
+          attestation: confidentiality_attestation.toString("hex")
         },
         first_name: this.props.data.first_name,
         last_name: this.props.data.last_name,
         email: this.props.data.email,
         picture: this.props.data.picture
       };
+      console.log(data);
 
       this.props.finish(data);
     } catch (e) {

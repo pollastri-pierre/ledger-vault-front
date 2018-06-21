@@ -19,11 +19,8 @@ export default class VaultDeviceApp {
     challenge: Buffer,
     application: string
   ): Promise<{
-    rfu: number,
-    keyHandle: string,
-    attestationSignature: string,
-    signature: string,
-    rawResponse: string
+    u2f_register: Buffer,
+    keyHandle: Buffer
   }> {
     invariant(
       challenge.length === 32,
@@ -35,12 +32,6 @@ export default class VaultDeviceApp {
       "application hex is expected to have 32 bytes"
     );
 
-    console.log("********************");
-    console.log("register");
-    console.log(instanceName);
-    console.log(instanceReference);
-    console.log(instanceUrl);
-    console.log(agentRole);
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
     const instanceURLBuf = Buffer.from(instanceUrl);
@@ -94,15 +85,11 @@ export default class VaultDeviceApp {
     const pubKey = lastResponse.slice(i, (i += 65)).toString("hex");
     const keyHandleLength = lastResponse.slice(i, ++i)[0];
     const keyHandle = lastResponse.slice(i, (i += keyHandleLength));
-    const attestationSignature = lastResponse.slice(i, ++i)[0];
-    const signature = lastResponse.slice(i).toString("hex");
+    // const attestationSignature = lastResponse.slice(i, ++i)[0];
+    // const signature = lastResponse.slice(i).toString("hex");
     return {
-      rfu,
-      pubKey,
-      keyHandle,
-      attestationSignature,
-      signature,
-      rawResponse: lastResponse.toString("hex")
+      u2f_register: lastResponse.slice(0, lastResponse.length - 2),
+      keyHandle: keyHandle
     };
   }
 
@@ -127,32 +114,10 @@ export default class VaultDeviceApp {
     );
     const maxLength = 150;
 
-    console.log("********************");
-    console.log("authenticate");
-    console.log(instanceName);
-    console.log(instanceReference);
-    console.log(instanceUrl);
-    console.log(agentRole);
-
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
     const instanceURLBuf = Buffer.from(instanceUrl);
     const agentRoleBuf = Buffer.from(agentRole);
-
-    // | Challenge parameter                                                               | 32
-    // | Application parameter                                                             | 32
-    // | Key handle length                                                                 | 1
-    // | Key handle                                                                        | var
-    // | Key handle data length (big endian)                                               | 2
-    // | Instance name length                                                              | 1
-    // | Instance name                                                                     | var
-    // | Instance reference length                                                         | 1
-    // | Instance reference                                                                | var
-    // | Instance URL length                                                               | 1
-    // | Instance URL                                                                      | var
-    // | Agent role length                                                                 | 1
-    // | Agent role                                                                        | var
-    //
 
     const bigChunk = Buffer.concat([
       Buffer.from([instanceNameBuf.length]),
@@ -168,8 +133,6 @@ export default class VaultDeviceApp {
     const length = Buffer.alloc(2);
     length.writeUInt16BE(bigChunk.length, 0);
 
-    console.log("CHALLENGE IN HEX");
-    console.log(challenge.toString("hex"));
     const data = Buffer.concat([
       challenge,
       applicationBuf,
@@ -186,7 +149,10 @@ export default class VaultDeviceApp {
       agentRoleBuf
     ]);
 
-    let chunks = this.splits(maxLength, data);
+    let chunks = [data];
+    if (maxLength < data.length) {
+      chunks = this.splits(maxLength, data);
+    }
 
     let lastResponse = await this.transport.send(
       0xe0,
@@ -241,7 +207,8 @@ export default class VaultDeviceApp {
   async openSession(
     path: number[],
     pubKey: Buffer,
-    attestation: Buffer
+    attestation: Buffer,
+    scriptHash: number = 0x00
   ): Promise<*> {
     const dataDerivation = Buffer.concat([
       Buffer.from([path.length]),
@@ -252,15 +219,39 @@ export default class VaultDeviceApp {
       })
     ]);
 
-    const dataBuffer = Buffer.concat([dataDerivation, pubKey, attestation]);
-    const response = await this.transport.send(
+    const lengthAttestation = Buffer.alloc(2);
+    lengthAttestation.writeUInt16BE(attestation.length, 0);
+
+    const maxLength = 150;
+
+    const dataBuffer = Buffer.concat([
+      dataDerivation,
+      pubKey,
+      lengthAttestation,
+      attestation
+    ]);
+    let chunks = [dataBuffer];
+    if (maxLength < dataBuffer.length) {
+      chunks = this.splits(maxLength, dataBuffer);
+    }
+    let lastResponse = await this.transport.send(
       0xe0,
       0x42,
       0x00,
-      0x00,
-      dataBuffer
+      scriptHash,
+      chunks.shift()
     );
-    return response;
+
+    for (let i = 0; i < chunks.length; i++) {
+      lastResponse = await this.transport.send(
+        0xe0,
+        0x42,
+        0x80,
+        scriptHash,
+        chunks[i]
+      );
+    }
+    return lastResponse;
   }
 
   splits(chunk: number, buffer: Buffer): Buffer[] {
@@ -306,14 +297,9 @@ export default class VaultDeviceApp {
     return lastResponse.slice(0, lastResponse.length - 2);
   }
 
-  async getAttestationCertificate(): Promise<{
-    pubKey: string,
-    signature: string
-  }> {
+  async getAttestationCertificate(): Promise<Buffer> {
     const response = await this.transport.send(0xe0, 0x41, 0x00, 0x00);
-    const codeHash = response.slice(0, 32).toString("hex");
-    const attestation = response.slice(32, response.length - 2);
-    return { codeHash, attestation };
+    return response.slice(0, response.length - 2);
   }
 
   async getPublicKey(
@@ -337,7 +323,11 @@ export default class VaultDeviceApp {
     }
     const response = await this.transport.send(0xe0, 0x40, curve, 0x00, data);
     const pubKeyLength = response.readInt8(0);
-    const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
+    const pubKey = response
+      .slice(1, pubKeyLength + 1)
+      .toString("hex")
+      .toUpperCase();
+    console.log(response);
     const signature = response.slice(pubKeyLength + 1, response.length - 2);
     return { pubKey, signature };
   }

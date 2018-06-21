@@ -15,6 +15,7 @@ export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
 export const ONBOARDING_ADD_ADMIN = "ONBOARDING_ADD_ADMIN";
 export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
 export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
+export const ONBOARDING_EDIT_MEMBER = "ONBOARDING_EDIT_MEMBER";
 export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
 
 export type OnboardingState =
@@ -142,8 +143,9 @@ export const toggleDeviceModal = () => ({
   type: ONBOARDING_TOGGLE_DEVICE_MODAL
 });
 
-export const toggleMemberModal = () => ({
-  type: ONBOARDING_TOGGLE_MEMBER_MODAL
+export const toggleMemberModal = (member: any) => ({
+  type: ONBOARDING_TOGGLE_MEMBER_MODAL,
+  member
 });
 
 export const openWrappingChannel = () => {
@@ -187,12 +189,22 @@ export const addMember = (data: Admin) => {
       dispatch(addMessage("Error", "Device already registered", "error"));
       throw "Already registered";
     } else {
-      await network("/onboarding/authenticate", "POST", data);
+      const admins = await network("/onboarding/authenticate", "POST", data);
       dispatch({
         type: ONBOARDING_ADD_ADMIN,
-        admin: data
+        admins: admins
       });
     }
+  };
+};
+
+export const editMember = (data: Admin) => {
+  return async (dispatch: Dispatch<*>) => {
+    await network(`/onboarding/admins/${data.id}`, "PUT", data);
+    dispatch({
+      type: ONBOARDING_EDIT_MEMBER,
+      admin: data
+    });
   };
 };
 
@@ -329,7 +341,7 @@ const syncNextState = (state: Store, action, next = false) => {
       step: actionState.is_open ? 1 : 0,
       signin: {
         ...state.signin,
-        admins: actionState.completed_keys || [],
+        admins: actionState.completed_keys || actionState.autorizations || [],
         challenge: {
           ...state.signin.challenge,
           challenge: actionState.challenge,
@@ -402,11 +414,15 @@ export default function reducer(state: Store = initialState, action: Object) {
         ...state,
         registering: {
           ...state.registering,
-          admins: [...state.registering.admins, action.admin]
+          admins: action.admins
         }
       };
     case ONBOARDING_TOGGLE_MEMBER_MODAL:
-      return { ...state, member_modal: !state.member_modal };
+      return {
+        ...state,
+        member_modal: !state.member_modal,
+        editMember: action.member
+      };
     case ONBOARDING_CHANGE_QUORUM:
       if (action.nb > 0 && action.nb <= state.registering.admins.length) {
         return {
@@ -437,6 +453,27 @@ export default function reducer(state: Store = initialState, action: Object) {
         provisionning: {
           ...state.provisionning,
           channel: action.wrapping
+        }
+      };
+    case ONBOARDING_EDIT_MEMBER:
+      console.log(action);
+      // const indexAdmin = state.registering.admins.findIndex(
+      //   admin => admin.pub_key === action.admin.pub_key
+      // );
+      // console.log(state);
+      // console.log(indexAdmin);
+      // return state;
+      return {
+        ...state,
+        registering: {
+          ...state.registering,
+          admins: state.registering.admins.map(admin => {
+            if (admin.pub_key === action.admin.pub_key) {
+              return action.admin;
+            } else {
+              return admin;
+            }
+          })
         }
       };
     case ONBOARDING_ADD_MASTERSEED_KEY:

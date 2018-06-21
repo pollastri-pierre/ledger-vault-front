@@ -152,7 +152,6 @@ export class Login extends Component<Props, State> {
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       console.log("PUBKEY");
-      console.log(pubKey);
       const { token, key_handle } = await network(
         `/authentications/${pubKey}/challenge`,
         "GET"
@@ -165,10 +164,7 @@ export class Login extends Component<Props, State> {
       console.log("CHALLENGE AND KEYHANDLE");
       console.log(token, key_handle);
       const auth = await device.authenticate(
-        Buffer.from(
-          "2f63ed717f14534353fcf9bd5c941ae8f0f40b8f76ac7b61ddeb09aeb41c986a",
-          "hex"
-        ),
+        Buffer.from(token, "base64"),
         application,
         Buffer.from(key_handle, "hex")
       );

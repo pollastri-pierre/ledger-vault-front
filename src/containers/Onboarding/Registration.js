@@ -15,6 +15,7 @@ import { addMessage } from "redux/modules/alerts";
 import {
   getRegistrationChallenge,
   addMember,
+  editMember,
   toggleMemberModal
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
@@ -139,8 +140,9 @@ const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
 const mapDispatch = (dispatch: *) => ({
-  onToggleModalProfile: () => dispatch(toggleMemberModal()),
+  onToggleModalProfile: member => dispatch(toggleMemberModal(member)),
   onAddMember: data => dispatch(addMember(data)),
+  onEditMember: data => dispatch(editMember(data)),
   onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
@@ -176,6 +178,7 @@ class Registration extends Component<Props, *> {
       classes,
       onboarding,
       onToggleModalProfile,
+      onEditMember,
       onAddMessage,
       t
     } = this.props;
@@ -193,6 +196,7 @@ class Registration extends Component<Props, *> {
             close={onToggleModalProfile}
             finish={this.addMember}
             member={onboarding.editMember}
+            editMember={onEditMember}
             setAlert={onAddMessage}
             challenge={onboarding.registering.challenge}
           />
