@@ -3,7 +3,12 @@ import React, { Component } from "react";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import createDevice, { CONFIDENTIALITY_PATH, KEY_MATERIAL_PATH } from "device";
+import createDevice, {
+  CONFIDENTIALITY_PATH,
+  KEY_MATERIAL_PATH,
+  INIT_SESSION,
+  ACCOUNT_MANAGER_SESSION
+} from "device";
 
 type Channel = {
   ephemeral_public_key: string,
@@ -34,6 +39,7 @@ class GenerateSeed extends Component<Props, State> {
   start = async () => {
     try {
       this.setState({ step: 0 });
+      const { wraps } = this.props;
       const device = await await createDevice();
 
       const ephemeral_public_key = this.props.shards_channel[
@@ -41,15 +47,16 @@ class GenerateSeed extends Component<Props, State> {
       ];
       const certificate = this.props.shards_channel["ephemeral_certificate"];
       const public_key = await device.getPublicKey(CONFIDENTIALITY_PATH);
+      const certificate_device = await device.getAttestationCertificate();
 
       this.setState({ step: 1 });
 
-      console.log(certificate);
+      let scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
       await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(certificate, "base64"),
-        0x03
+        scriptHash
       );
 
       const blob = await device.generateKeyComponent(
@@ -59,7 +66,9 @@ class GenerateSeed extends Component<Props, State> {
 
       const shard = {
         blob: blob.toString("hex"),
-        certificate: public_key["signature"].toString("hex"),
+        certificate:
+          certificate_device.toString("hex") +
+          public_key["signature"].toString("hex"),
         ephemeral_public_key: public_key["pubKey"]
       };
       this.setState({ step: 2 });
