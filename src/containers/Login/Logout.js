@@ -9,7 +9,8 @@ const mapDispatchToProps = (dispatch: *) => ({
 });
 
 export class Logout extends Component<{
-  logout: Function
+  logout: Function,
+  match: *
 }> {
   componentDidMount() {
     this.props.logout(this.props.match.params.orga_name);

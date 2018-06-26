@@ -153,7 +153,7 @@ const RenderError = translate()(({ error, restlay, t }: *) => (
   </Card>
 ));
 
-const RenderLoading = translate()(({ t }, { t: Translate }) => (
+const RenderLoading = translate()(({ t }: { t: Translate }) => (
   <Card title={t("dashboard:pending")} className="pendingCard">
     <SpinnerCard />
   </Card>

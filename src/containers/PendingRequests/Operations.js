@@ -77,7 +77,7 @@ class ApproveWatchOperations extends Component<Props> {
   }
 }
 
-const RenderLoading = translate()(({ t }, { t: Translate }) => (
+const RenderLoading = translate()(({ t }: { t: Translate }) => (
   <div>
     <Card title={t("pending:operations.approve.title")}>
       <SpinnerCard />

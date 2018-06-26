@@ -14,7 +14,7 @@ import InfoModal from "../../InfoModal";
 // import RateLimiterValue from "../../RateLimiterValue";
 // import TimeLockValue from "../../TimeLockValue";
 
-function AccountCreationConfirmation(props: { account: Object }) {
+function AccountCreationConfirmation(props: { account: Object, t: Translate }) {
   const {
     name,
     approvers,

@@ -101,7 +101,6 @@ class ProfileCard extends Component<
 
   render() {
     const { profile, match, classes, t } = this.props;
-    console.log(match);
     const { bubbleOpened } = this.state;
     return (
       <span>

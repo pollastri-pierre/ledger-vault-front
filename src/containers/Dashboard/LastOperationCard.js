@@ -41,7 +41,7 @@ const RenderError = translate()(({ t, restlay, error }: *) => (
   </Card>
 ));
 
-const RenderLoading = translate()(({ t }, { t: Translate }) => (
+const RenderLoading = translate()(({ t }: { t: Translate }) => (
   <Card title={t("accountView:last_op.title")}>
     <SpinnerCard />
   </Card>

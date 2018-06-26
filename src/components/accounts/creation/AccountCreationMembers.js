@@ -99,7 +99,7 @@ class AccountCreationMembers extends Component<{
   }
 }
 
-const RenderError = translate()(({ error, restlay, t }: *) => (
+const RenderError = translate()(({ error, restlay }: *) => (
   <div style={{ width: 440, height: 615 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>

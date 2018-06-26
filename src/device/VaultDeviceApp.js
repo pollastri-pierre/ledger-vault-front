@@ -89,7 +89,9 @@ export default class VaultDeviceApp {
     // const signature = lastResponse.slice(i).toString("hex");
     return {
       u2f_register: lastResponse.slice(0, lastResponse.length - 2),
-      keyHandle: keyHandle
+      keyHandle: keyHandle,
+      rfu,
+      pubKey
     };
   }
 
@@ -327,7 +329,6 @@ export default class VaultDeviceApp {
       .slice(1, pubKeyLength + 1)
       .toString("hex")
       .toUpperCase();
-    console.log(response);
     const signature = response.slice(pubKeyLength + 1, response.length - 2);
     return { pubKey, signature };
   }

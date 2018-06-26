@@ -70,8 +70,6 @@ class StepDevice extends Component<Props, State> {
       const validation = await device.getPublicKey(VALIDATION_PATH);
       const attestation = await device.getAttestationCertificate();
 
-      console.log(attestation.toString("hex"));
-
       this.setState({ active: 1 });
 
       const { u2f_register, keyHandle } = await device.register(
@@ -89,13 +87,6 @@ class StepDevice extends Component<Props, State> {
         attestation,
         u2f_register.slice(attestationOffset)
       ]);
-
-      console.log("attestation", attestation);
-      console.log("u2f_register", u2f_register);
-      console.log("attestation", attestation);
-      console.log(u2f_register.length);
-      console.log(attestation.length);
-      console.log(u2f_register_attestation.length);
 
       const validation_attestation = Buffer.concat([
         attestation,
@@ -123,7 +114,6 @@ class StepDevice extends Component<Props, State> {
         email: this.props.data.email,
         picture: this.props.data.picture
       };
-      console.log(data);
 
       this.props.finish(data);
     } catch (e) {

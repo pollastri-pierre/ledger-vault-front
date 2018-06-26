@@ -26,7 +26,7 @@ const mapStateToProps = ({ auth, onboarding }) => ({
 
 const mapDispatchToProps = (dispatch: *) => ({
   onLogin: token => dispatch(login(token)),
-  onLogout: () => dispatch(logout()),
+  onLogout: arg => dispatch(logout(arg)),
   addAlertMessage: (...props) => dispatch(addMessage(...props))
 });
 
@@ -151,7 +151,6 @@ export class Login extends Component<Props, State> {
     try {
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-      console.log("PUBKEY");
       const { token, key_handle } = await network(
         `/authentications/${pubKey}/challenge`,
         "GET"
@@ -161,8 +160,6 @@ export class Login extends Component<Props, State> {
       });
 
       const application = APPID_VAULT_ADMINISTRATOR;
-      console.log("CHALLENGE AND KEYHANDLE");
-      console.log(token, key_handle);
       const auth = await device.authenticate(
         Buffer.from(token, "base64"),
         application,

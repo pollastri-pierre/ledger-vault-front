@@ -456,7 +456,6 @@ export default function reducer(state: Store = initialState, action: Object) {
         }
       };
     case ONBOARDING_EDIT_MEMBER:
-      console.log(action);
       // const indexAdmin = state.registering.admins.findIndex(
       //   admin => admin.pub_key === action.admin.pub_key
       // );
