@@ -45,7 +45,7 @@ test("should call API and device", async () => {
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
 
   expect(network).toHaveBeenCalledWith(
-    "/authentications/PUBKEY/challenge",
+    "/authentications/PUBKEY/sensitive/challenge",
     "GET"
   );
 
@@ -55,13 +55,11 @@ test("should call API and device", async () => {
     Buffer.from("key_handle", "base64")
   );
 
-  expect(network).toHaveBeenCalledWith(
-    "/authentications/admin/authenticate",
-    "POST",
-    {
-      pub_key: "PUBKEY",
-      authentication: "raw"
-    }
-  );
+  expect(
+    network
+  ).toHaveBeenCalledWith("/authentications/sensitive/authenticate", "POST", {
+    pub_key: "PUBKEY",
+    authentication: "raw"
+  });
   expect(props.callback).toHaveBeenCalled();
 });

@@ -1,4 +1,9 @@
-import { CONFIDENTIALITY_PATH, KEY_MATERIAL_PATH } from "device";
+import {
+  CONFIDENTIALITY_PATH,
+  KEY_MATERIAL_PATH,
+  INIT_SESSION,
+  ACCOUNT_MANAGER_SESSION
+} from "device";
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
   create: jest.fn()
@@ -34,7 +39,7 @@ const props = {
   }
 };
 
-test("onStart should call device and API with right parameters", async () => {
+test("onStart should call device and API with right parameters for wrapping INIT_SESSION", async () => {
   const MyComponent = shallow(<GenerateSeed t={string => string} {...props} />);
   await MyComponent.instance().start();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
@@ -42,7 +47,8 @@ test("onStart should call device and API with right parameters", async () => {
   expect(mockOpenSession).toHaveBeenCalledWith(
     CONFIDENTIALITY_PATH,
     Buffer.from("shards_pub_key", "hex"),
-    Buffer.from("shards_certificate", "base64")
+    Buffer.from("shards_certificate", "base64"),
+    INIT_SESSION
   );
 
   expect(mockGenerateKeyComponent).toHaveBeenCalledWith(
@@ -52,7 +58,34 @@ test("onStart should call device and API with right parameters", async () => {
 
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",
-    certificate: "signature",
+    certificate: "certificatesignature",
+    blob: "seedShard"
+  });
+});
+
+test("onStart should call device and API with right parameters when generating seeds ACCOUNT_MANAGER_SESSION", async () => {
+  const sProps = { ...props, wraps: false };
+  const MyComponent = shallow(
+    <GenerateSeed t={string => string} {...sProps} />
+  );
+  await MyComponent.instance().start();
+  expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
+
+  expect(mockOpenSession).toHaveBeenCalledWith(
+    CONFIDENTIALITY_PATH,
+    Buffer.from("shards_pub_key", "hex"),
+    Buffer.from("shards_certificate", "base64"),
+    ACCOUNT_MANAGER_SESSION
+  );
+
+  expect(mockGenerateKeyComponent).toHaveBeenCalledWith(
+    KEY_MATERIAL_PATH,
+    false
+  );
+
+  expect(props.onFinish).toHaveBeenCalledWith({
+    ephemeral_public_key: "pubKey",
+    certificate: "certificatesignature",
     blob: "seedShard"
   });
 });

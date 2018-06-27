@@ -143,6 +143,7 @@ test("addMember should NOT call network authenticate and dispatch ONBOARDING_ADD
 });
 
 test("addMember should call network authenticate and dispatch ONBOARDING_ADD_ADMIN", async () => {
+  network.mockImplementation(() => ({ admins: [] }));
   const data = { id: 1 };
   const dispatch = jest.fn();
   const getstate = () => ({ onboarding: { registering: { admins: [] } } });
@@ -156,7 +157,7 @@ test("addMember should call network authenticate and dispatch ONBOARDING_ADD_ADM
   );
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_ADD_ADMIN,
-    admin: data
+    admins: { admins: [] }
   });
 });
 

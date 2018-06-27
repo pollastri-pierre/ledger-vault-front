@@ -121,7 +121,7 @@ class StepDevice extends Component<Props, State> {
       if (e.statusCode && e.statusCode === 27013) {
         this.props.cancel();
       } else {
-        this.onStart();
+        // this.onStart();
       }
     }
   };
