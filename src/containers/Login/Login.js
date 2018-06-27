@@ -175,7 +175,7 @@ export class Login extends Component<Props, State> {
       addAlertMessage("Welcome", "Hello. Welcome on Ledger Vault Application");
     } catch (error) {
       console.error(error);
-      removeLocalStorageToken("token");
+      removeLocalStorageToken();
       this.setState({ error, isChecking: false });
       addAlertMessage("Failed to authenticate", formatError(error), "error");
     }

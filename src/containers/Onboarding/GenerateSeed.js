@@ -23,7 +23,8 @@ type Props = {
   shards_channel: Channel,
   wraps: boolean,
   onFinish: Shard => *,
-  t: Translate
+  t: Translate,
+  cancel: Function
 };
 
 type State = { step: number };
@@ -79,17 +80,31 @@ class GenerateSeed extends Component<Props, State> {
     }
   };
   render() {
-    const { t } = this.props;
-    const steps = [
-      t("onboarding:master_seed_provisionning.device_modal.step1"),
-      t("onboarding:master_seed_provisionning.device_modal.step2"),
-      t("onboarding:master_seed_provisionning.device_modal.step3")
-    ];
+    const { t, wraps } = this.props;
+    let steps;
+    if (wraps) {
+      steps = [
+        t("onboarding:wrapping_key.device_modal.step1"),
+        t("onboarding:wrapping_key.device_modal.step2"),
+        t("onboarding:wrapping_key.device_modal.step3")
+      ];
+    } else {
+      steps = [
+        t("onboarding:master_seed_provisionning.device_modal.step1"),
+        t("onboarding:master_seed_provisionning.device_modal.step2"),
+        t("onboarding:master_seed_provisionning.device_modal.step3")
+      ];
+    }
     return (
       <StepDeviceGeneric
         steps={steps}
-        title={t("onboarding:master_seed_provisionning.device_modal.title")}
+        title={
+          wraps
+            ? t("onboarding:wrapping_key.device_modal.title")
+            : t("onboarding:master_seed_provisionning.device_modal.title")
+        }
         step={this.state.step}
+        cancel={this.props.cancel}
       />
     );
   }

@@ -56,6 +56,7 @@ type Blob = {
 
 type Admin = $Shape<{
   uid: string,
+  id: number,
   pub_key: string,
   last_name: string,
   first_name: string,
@@ -455,26 +456,24 @@ export default function reducer(state: Store = initialState, action: Object) {
           channel: action.wrapping
         }
       };
-    case ONBOARDING_EDIT_MEMBER:
-      // const indexAdmin = state.registering.admins.findIndex(
-      //   admin => admin.pub_key === action.admin.pub_key
-      // );
-      // console.log(state);
-      // console.log(indexAdmin);
-      // return state;
+    case ONBOARDING_EDIT_MEMBER: {
+      const mapFilter = (admins: Admin[], action: *): Admin[] => {
+        return admins.map((admin: Admin): Admin => {
+          if (admin.pub_key === action.admin.pub_key) {
+            return action.admin;
+          } else {
+            return admin;
+          }
+        });
+      };
       return {
         ...state,
         registering: {
           ...state.registering,
-          admins: state.registering.admins.map(admin => {
-            if (admin.pub_key === action.admin.pub_key) {
-              return action.admin;
-            } else {
-              return admin;
-            }
-          })
+          admins: mapFilter(state.registering.admins, action)
         }
       };
+    }
     case ONBOARDING_ADD_MASTERSEED_KEY:
       return {
         ...state,

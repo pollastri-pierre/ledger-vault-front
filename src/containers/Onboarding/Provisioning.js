@@ -148,6 +148,7 @@ class Provisioning extends Component<Props> {
             shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
             wraps={false}
+            cancel={onToggleGenerateSeed}
           />
         </BlurDialog>
         <Introduction>

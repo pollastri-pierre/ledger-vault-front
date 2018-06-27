@@ -52,6 +52,14 @@ wrapping_key:
   signin: SIGN IN
   signed: signed in
   remaining: remaining
+  device_modal:
+    title: Generate the wrapping key with your device
+    step1: Connect your Ledger Blue to this computer and make sure it is powered on
+      and unlocked by entering your personal PIN.
+    step2: Open the Vault app on the dashboard. When displayed, confirm the master
+      seed creation request on the device.
+    step3: Close the Vault app using the upper right square icon and disconnect the
+      device from this computer.
 wrapping_key_prerequisite:
   title: Prerequisites
   description: In the following steps, Wrapping Key Custodians will initialize their Ledger Blue Enterprise to generate your organization's partition.

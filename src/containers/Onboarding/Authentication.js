@@ -123,6 +123,7 @@ class Authentication extends Component<Props, State> {
           <GenerateSeed
             shards_channel={onboarding.wrapping.channel}
             onFinish={this.finish}
+            cancel={onToggleGenerateSeed}
             wraps
           />
         </BlurDialog>

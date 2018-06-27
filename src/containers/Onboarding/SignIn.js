@@ -13,8 +13,7 @@ import { connect } from "react-redux";
 import {
   getSigninChallenge,
   toggleDeviceModal,
-  addSignedIn,
-  nextStep
+  addSignedIn
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import SignInDevice from "./SignInDevice";
@@ -95,6 +94,7 @@ class SignIn extends Component<Props> {
             challenge={onboarding.signin.challenge.challenge}
             keyHandles={onboarding.signin.challenge.key_handle}
             onFinish={this.signIn}
+            cancel={onToggleSignin}
           />
         </BlurDialog>
         <Introduction>
@@ -173,8 +173,7 @@ const mapDispatch = (dispatch: *) => ({
   onToggleSignin: () => dispatch(toggleDeviceModal()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type)),
-  onNextStep: () => dispatch(nextStep())
+    dispatch(addMessage(title, message, type))
 });
 
 export default connect(mapState, mapDispatch)(

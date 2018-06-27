@@ -185,12 +185,13 @@ class ActivityCard extends Component<
 }
 
 const RenderLoading = withStyles(styles)(
-  translate()(({ classes, match }) => (
+  translate()(({ classes, match, ...props }) => (
     <ActivityCard
       loading={true}
       classes={classes}
       match={match}
       onNewActivity={() => ({})}
+      {...props}
     />
   ))
 );

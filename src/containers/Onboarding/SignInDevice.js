@@ -9,6 +9,7 @@ type Props = {
   onFinish: Function,
   challenge: string,
   keyHandles: Object,
+  cancel: Function,
   t: Translate
 };
 
@@ -61,6 +62,7 @@ class SignInDevice extends Component<Props, State> {
         steps={steps}
         title={t("onboarding:master_seed_signin.device_modal.title")}
         step={this.state.step}
+        cancel={this.props.cancel}
       />
     );
   }
