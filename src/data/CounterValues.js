@@ -1,6 +1,6 @@
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
-import { currenciesSelector, accountsSelector } from "restlay/datastore";
+import { currenciesSelector, accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 const allCurrencies = listCryptoCurrencies(true);
