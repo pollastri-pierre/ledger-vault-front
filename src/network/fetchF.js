@@ -9,11 +9,11 @@ if (process.env.NODE_ENV === "test") {
   const baseUrl =
     process.env.NODE_ENV === "development"
       ? `https://localhost`
-      : `https://beta.vault.ledger.fr/gate`;
+      : `https://beta.vault.ledger.fr`;
   fetchF = (uri: string, options: Object): Promise<*> => {
     let prefix = location.pathname.split("/")[1];
     if (prefix !== "") {
-      prefix = "/" + prefix;
+      prefix = "/gate/" + prefix;
     }
     return fetch(baseUrl + prefix + uri, options);
   };
