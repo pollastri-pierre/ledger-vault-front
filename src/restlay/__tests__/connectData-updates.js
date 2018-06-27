@@ -13,7 +13,7 @@ test("multiple update with same props trigger no re-rendering", async () => {
 
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillUpdate() {
+      componentDidUpdate() {
         ++update;
       }
       render() {
@@ -79,10 +79,10 @@ test("triggering new queries don't redraw if data doesn't change", async () => {
 
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         forceFetch = this.props.restlay.forceFetch;
       }
-      componentWillUpdate() {
+      UNSAFE_componentWillUpdate() {
         ++update;
       }
       render() {

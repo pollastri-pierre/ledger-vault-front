@@ -11,15 +11,12 @@ import type { Operation, Account } from "data/types";
 
 function TabOverview(props: { operation: Operation, account: Account }) {
   const { operation, account } = props;
-  const { rate } = operation;
-
   return (
     <div>
       <OverviewOperation
         hash={operation.transaction.hash}
         amount={operation.amount}
         account={account}
-        rate={rate}
       />
       <div className="operation-list">
         <LineRow label="status">
@@ -38,15 +35,10 @@ function TabOverview(props: { operation: Operation, account: Account }) {
           </Link>
         </LineRow>
         <LineRow label="fees">
-          <Amount account={account} value={operation.fees} rate={rate} />
+          <Amount account={account} value={operation.fees} />
         </LineRow>
         <LineRow label="Total spent">
-          <Amount
-            account={account}
-            value={operation.amount}
-            rate={rate}
-            strong
-          />
+          <Amount account={account} value={operation.amount} strong />
         </LineRow>
       </div>
     </div>

@@ -1,23 +1,24 @@
 //@flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
-import type { ActivityCommon } from "data/types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { DATA_FETCHED } from "restlay/dataStore";
 import ActivityList from "../ActivityList";
 import Bell from "../icons/full/Bell";
 import PopBubble from "../utils/PopBubble";
-import { withStyles } from "material-ui/styles";
-import CircularProgress from "material-ui/Progress/CircularProgress";
+import { withStyles } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import { normalize } from "normalizr-gre";
 import openSocket from "socket.io-client";
+import type { ActivityGeneric } from "data/types";
 
 const styles = {
   base: {
@@ -59,10 +60,11 @@ const styles = {
 
 class ActivityCard extends Component<
   {
-    activities?: ActivityCommon[],
-    onNewActivity?: Function,
+    activities?: *,
+    onNewActivity: Function,
     restlay?: RestlayEnvironment,
     loading: boolean,
+    t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
   },
@@ -92,11 +94,6 @@ class ActivityCard extends Component<
 
   static defaultProps = {
     loading: false
-  };
-
-  // FIXME translate should be a component so i don't have to depend on context
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
   };
 
   anchorEl: *;
@@ -135,9 +132,8 @@ class ActivityCard extends Component<
   };
 
   render() {
-    const { classes, activities, loading, match } = this.props;
+    const { classes, activities, loading, match, t } = this.props;
     const { bubbleOpened } = this.state;
-    const t = this.context.translate;
     const unseenActivityCount = activities
       ? activities.reduce(
           (count, activity) => count + (!activity.seen ? 1 : 0),
@@ -158,7 +154,7 @@ class ActivityCard extends Component<
           <Bell className={classes.icon} />
           {!!unseenActivityCount && <div className={classes.bullet} />}
           <div className="content-header-button-text">
-            {t("actionBar.activity")}
+            {t("actionBar:activity")}
           </div>
         </div>
 
@@ -188,12 +184,20 @@ class ActivityCard extends Component<
   }
 }
 
-const RenderLoading = withStyles(styles)(({ classes }) => (
-  <ActivityCard loading={true} classes={classes} />
-));
+const RenderLoading = withStyles(styles)(
+  translate()(({ classes, match, ...props }) => (
+    <ActivityCard
+      loading={true}
+      classes={classes}
+      match={match}
+      onNewActivity={() => ({})}
+      {...props}
+    />
+  ))
+);
 
-const mapDispatchToProps = (dispatch, props) => ({
-  onNewActivity: activity => {
+const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
+  onNewActivity: (activity: ActivityGeneric) => {
     const queryOrMutation = new ActivityQuery();
     const data = [activity, ...props.activities];
     const result = normalize(data, queryOrMutation.getResponseSchema() || {});
@@ -209,7 +213,7 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 
 export default withStyles(styles)(
-  connectData(connect(undefined, mapDispatchToProps)(ActivityCard), {
+  connectData(connect(null, mapDispatchToProps)(translate()(ActivityCard)), {
     RenderLoading,
     queries: {
       activities: ActivityQuery

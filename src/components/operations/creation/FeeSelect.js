@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from "react";
-import { MenuItem } from "material-ui/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import cx from "classnames";
-import Select from "material-ui/Select";
+import Select from "@material-ui/core/Select";
 import { speeds } from "api/queries/AccountCalculateFeeQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 type Fee = {
   key: string,

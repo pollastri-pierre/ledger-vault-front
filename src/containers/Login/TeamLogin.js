@@ -1,10 +1,11 @@
 //@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import { DialogButton } from "components";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
-import MUITextField from "material-ui/TextField";
+import MUITextField from "@material-ui/core/TextField";
 
 const styles = {
   base: {
@@ -40,6 +41,7 @@ const styles = {
 export class TeamLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   onChange: Function,
+  t: Translate,
   onStartAuth: Function,
   onCloseTeamError: Function,
   isChecking: boolean,
@@ -50,7 +52,7 @@ export class TeamLogin extends Component<{
     translate: string => string
   };
 
-  onSubmit = (e: *) => {
+  onSubmit = (e: any) => {
     e.preventDefault();
     if (this.props.domain !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
@@ -61,14 +63,12 @@ export class TeamLogin extends Component<{
     this.props.onCloseTeamError();
   };
 
-  onChange = (e: SyntheticEvent<*>) => {
+  onChange = (e: any) => {
     this.props.onChange(e.currentTarget.value);
   };
 
   render() {
-    const { domain, error, isChecking } = this.props;
-    const t = this.context.translate;
-    const { classes } = this.props;
+    const { domain, classes, error, isChecking, t } = this.props;
     return (
       <form onSubmit={this.onSubmit} className={classes.base}>
         <Profile className={classes.icon} color="#e2e2e2" />
@@ -108,8 +108,4 @@ export class TeamLogin extends Component<{
   }
 }
 
-TeamLogin.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default withStyles(styles)(TeamLogin);
+export default withStyles(styles)(translate()(TeamLogin));

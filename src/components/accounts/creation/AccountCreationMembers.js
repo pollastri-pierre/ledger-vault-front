@@ -1,6 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import ModalLoading from "components/ModalLoading";
@@ -8,7 +10,7 @@ import MemberRow from "components/MemberRow";
 import InfoModal from "components/InfoModal";
 import { DialogButton, Overscroll } from "components";
 import type { Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
 const styleCounter = {
@@ -18,7 +20,7 @@ const styleCounter = {
     color: "#999",
     fontWeight: "600",
     float: "right",
-    marginTop: "-57px"
+    marginTop: "-42px"
   }
 };
 const SelectedCounter = withStyles(
@@ -48,6 +50,7 @@ class AccountCreationMembers extends Component<{
   addMember: Function,
   members: Member[],
   approvers: string[],
+  t: Translate,
   classes: Object
 }> {
   render() {
@@ -55,6 +58,7 @@ class AccountCreationMembers extends Component<{
       switchInternalModal,
       addMember,
       members,
+      t,
       approvers,
       classes
     } = this.props;
@@ -62,12 +66,9 @@ class AccountCreationMembers extends Component<{
     return (
       <div className={classes.base}>
         <header>
-          <h2>Members</h2>
+          <h2>{t("newAccount:security.members")}</h2>
           <SelectedCounter count={approvers.length} />
-          <InfoModal>
-            Members define the group of individuals that have the ability to
-            approve outgoing operations from this account.
-          </InfoModal>
+          <InfoModal>{t("newAccount:security.members_desc")}</InfoModal>
         </header>
         <div className={classes.content}>
           <Overscroll top={20} bottom={0}>
@@ -98,15 +99,19 @@ class AccountCreationMembers extends Component<{
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
+const RenderError = translate()(({ error, restlay }: *) => (
   <div style={{ width: 440, height: 615 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
-);
-export default connectData(withStyles(styles)(AccountCreationMembers), {
-  RenderLoading: ModalLoading,
-  RenderError,
-  queries: {
-    members: MembersQuery
+));
+
+export default connectData(
+  withStyles(styles)(translate()(AccountCreationMembers)),
+  {
+    RenderLoading: ModalLoading,
+    RenderError,
+    queries: {
+      members: MembersQuery
+    }
   }
-});
+);

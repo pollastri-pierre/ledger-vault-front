@@ -6,7 +6,7 @@ import SearchFiltersCard from "./SearchFiltersCard";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 import type { Account, Currency } from "data/types";

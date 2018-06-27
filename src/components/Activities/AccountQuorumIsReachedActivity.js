@@ -1,6 +1,7 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
+import type { ActivityEntityAccount } from "data/types";
 
 import Activity from "../Activity";
 import Bold from "../Bold";
@@ -10,7 +11,7 @@ const styles = {};
 
 class AccountQuorumIsReachedActivity extends Component<
   {
-    activity: ActivityCommon,
+    activity: ActivityEntityAccount,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
   },
@@ -22,9 +23,8 @@ class AccountQuorumIsReachedActivity extends Component<
     return (
       <span>
         <NoStyleLink
-          to={`/${match.params.orga_name}/account/${
-            business_action.account.id
-          }`}
+          to={`/${match.params.orga_name}/account/${business_action.account
+            .id}`}
         >
           <Activity match={match} activity={activity}>
             <Bold>

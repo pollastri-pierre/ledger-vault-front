@@ -28,7 +28,7 @@ test("forceFetch & unmount", async () => {
   let forceFetch: ?Function;
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         forceFetch = this.props.restlay.forceFetch;
       }
       render() {
@@ -54,7 +54,7 @@ test("fetchQuery & unmount", async () => {
   let fetchQuery: ?Function;
   const Animal = connectData(
     class Animal extends Component<*> {
-      componentWillMount() {
+      UNSAFE_componentWillMount() {
         fetchQuery = this.props.restlay.fetchQuery;
       }
       render() {

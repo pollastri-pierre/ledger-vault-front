@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {
@@ -16,7 +16,7 @@ const ListItem = ({
   number,
   classes
 }: {
-  children: React.Node,
+  children: any,
   number: number,
   classes: { [$Keys<typeof styles>]: string }
 }) => {

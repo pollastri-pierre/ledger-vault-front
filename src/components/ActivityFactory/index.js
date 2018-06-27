@@ -9,8 +9,8 @@ import NewOperationActivity from "../Activities/NewOperationActivity";
 import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsReachedActivity";
 import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
 
-class ActivityFactory extends Component<> {
-  static build(activity, match) {
+class ActivityFactory extends Component<*, *> {
+  static build(activity: *, match: *) {
     switch (activity.business_action.business_action_name) {
       case "OPERATION_CREATED_BUSINESS_ACTION":
         return <NewOperationActivity activity={activity} match={match} />;

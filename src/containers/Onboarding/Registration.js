@@ -1,7 +1,9 @@
 //@flow
 import { connect } from "react-redux";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import Plus from "../../components/icons/full/Plus";
 import AddMember from "./AddMember";
@@ -11,10 +13,10 @@ import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 import { addMessage } from "redux/modules/alerts";
 import {
-  toggleModalProfile,
+  getRegistrationChallenge,
   addMember,
   editMember,
-  getChallengeRegistration
+  toggleMemberModal
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -64,27 +66,39 @@ const noMembers = {
   }
 };
 
-const NoMembers = withStyles(
-  noMembers
-)(({ classes }: { classes: { [$Keys<typeof noMembers>]: string } }) => {
-  return (
-    <div className={classes.base}>
-      <People
-        color="#cccccc"
-        style={{
-          height: 29,
-          display: "block",
-          margin: "auto",
-          marginBottom: 21
-        }}
-      />
-      <div className={classes.label}>Add a new tem member</div>
-      <div className={classes.info}>
-        At least 3 team members are required to continue
-      </div>
-    </div>
-  );
-});
+const NoMembers = translate()(
+  withStyles(
+    noMembers
+  )(
+    ({
+      classes,
+      t
+    }: {
+      classes: { [$Keys<typeof noMembers>]: string },
+      t: Translate
+    }) => {
+      return (
+        <div className={classes.base}>
+          <People
+            color="#cccccc"
+            style={{
+              height: 29,
+              display: "block",
+              margin: "auto",
+              marginBottom: 21
+            }}
+          />
+          <div className={classes.label}>
+            {t("onboarding:administrators_registration.add_member_title")}
+          </div>
+          <div className={classes.info}>
+            {t("onboarding:administrators_registration.at_least")}
+          </div>
+        </div>
+      );
+    }
+  )
+);
 
 const membersList = {
   base: {
@@ -125,11 +139,11 @@ const MembersList = withStyles(
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
-  onToggleModalProfile: member => dispatch(toggleModalProfile(member)),
+const mapDispatch = (dispatch: *) => ({
+  onToggleModalProfile: member => dispatch(toggleMemberModal(member)),
   onAddMember: data => dispatch(addMember(data)),
-  onGetChallenge: () => dispatch(getChallengeRegistration()),
-  onEditMember: member => dispatch(editMember(member)),
+  onEditMember: data => dispatch(editMember(data)),
+  onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
@@ -141,15 +155,14 @@ type Props = {
   onGetChallenge: Function,
   onEditMember: Function,
   onAddMessage: Function,
-  onboarding: *
+  onboarding: *,
+  t: Translate
 };
 class Registration extends Component<Props, *> {
   componentDidMount() {
     // make an API call to get the challenge needed to register all the new members
-    const { onboarding, onGetChallenge } = this.props;
-    if (!onboarding.challenge_registration) {
-      onGetChallenge();
-    }
+    const { onGetChallenge } = this.props;
+    onGetChallenge();
   }
 
   addMember = data => {
@@ -165,17 +178,18 @@ class Registration extends Component<Props, *> {
       classes,
       onboarding,
       onToggleModalProfile,
+      onEditMember,
       onAddMessage,
-      onEditMember
+      t
     } = this.props;
-    if (onboarding.isLoadingChallengeRegistration) {
+    if (!onboarding.registering || !onboarding.registering.challenge) {
       return <SpinnerCard />;
     }
     return (
       <div>
-        <Title>Registration</Title>
+        <Title>{t("onboarding:administrators_registration.title")}</Title>
         <BlurDialog
-          open={onboarding.modalProfile}
+          open={onboarding.member_modal}
           onClose={onToggleModalProfile}
         >
           <AddMember
@@ -184,34 +198,38 @@ class Registration extends Component<Props, *> {
             member={onboarding.editMember}
             editMember={onEditMember}
             setAlert={onAddMessage}
-            challenge={onboarding.challenge_registration}
+            challenge={onboarding.registering.challenge}
           />
         </BlurDialog>
         <div onClick={() => onToggleModalProfile()} className={classes.add}>
-          <Plus className={classes.plus} />Add team member
+          <Plus className={classes.plus} />
+          {t("onboarding:administrators_registration.add_member")}
         </div>
         <Introduction>
-          It is now time to add each team member to your company’s Ledger Vault.
-          New members will be set as administrators.
-          <strong> Once added, administrators cannot be removed.</strong>
+          {t("onboarding:administrators_registration.description")}
+          <p>
+            <strong>
+              {t("onboarding:administrators_registration.description_strong")}
+            </strong>
+          </p>
         </Introduction>
-        {onboarding.members.length === 0 ? (
+        {onboarding.registering.admins.length === 0 ? (
           <NoMembers />
         ) : (
           <MembersList
-            members={onboarding.members}
+            members={onboarding.registering.admins}
             editMember={this.editMember}
           />
         )}
         <Footer
           nextState
-          render={(onPrev, onNext) => (
+          render={onNext => (
             <DialogButton
               highlight
               onTouchTap={onNext}
-              disabled={onboarding.members.length < 3}
+              disabled={onboarding.registering.admins.length < 3}
             >
-              Continue
+              {t("common:continue")}
             </DialogButton>
           )}
         />
@@ -221,5 +239,5 @@ class Registration extends Component<Props, *> {
 }
 
 export default connect(mapStateToProps, mapDispatch)(
-  withStyles(styles)(Registration)
+  withStyles(styles)(translate()(Registration))
 );

@@ -2,6 +2,11 @@
 import type Transport from "@ledgerhq/hw-transport";
 import invariant from "invariant";
 
+const instanceName = location.pathname.split("/")[1];
+const instanceReference = location.pathname.split("/")[1];
+const instanceUrl = location.origin;
+const agentRole = "Administrator";
+
 export default class VaultDeviceApp {
   transport: Transport<*>;
   constructor(transport: Transport<*>) {
@@ -12,17 +17,10 @@ export default class VaultDeviceApp {
 
   async register(
     challenge: Buffer,
-    application: string,
-    instanceName: string,
-    instanceReference: string,
-    instanceURL: string,
-    agentRole: string
+    application: string
   ): Promise<{
-    rfu: number,
-    keyHandle: string,
-    attestationSignature: string,
-    signature: string,
-    rawResponse: string
+    u2f_register: Buffer,
+    keyHandle: Buffer
   }> {
     invariant(
       challenge.length === 32,
@@ -33,13 +31,15 @@ export default class VaultDeviceApp {
       applicationBuf.length === 32,
       "application hex is expected to have 32 bytes"
     );
+
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
-    const instanceURLBuf = Buffer.from(instanceURL);
+    const instanceURLBuf = Buffer.from(instanceUrl);
     const agentRoleBuf = Buffer.from(agentRole);
-    const data = Buffer.concat([
-      challenge,
-      applicationBuf,
+
+    const maxLength = 200;
+
+    const bigChunk = Buffer.concat([
       Buffer.from([instanceNameBuf.length]),
       instanceNameBuf,
       Buffer.from([instanceReferenceBuf.length]),
@@ -49,38 +49,56 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    const response = await await this.transport.send(
+
+    const length = Buffer.alloc(2);
+    length.writeUInt16BE(bigChunk.length, 0);
+
+    let chunks = this.splits(maxLength, bigChunk);
+
+    const data = Buffer.concat([
+      challenge,
+      applicationBuf,
+      length,
+      chunks.shift()
+    ]);
+
+    let lastResponse = await await this.transport.send(
       0xe0,
       0x01,
       0x00,
       0x00,
       data
     );
+
+    for (let i = 0; i < chunks.length; i++) {
+      lastResponse = await this.transport.send(
+        0xe0,
+        0x01,
+        0x80,
+        0x00,
+        chunks[i]
+      );
+    }
+
     let i = 0;
-    const rfu = response.slice(i, (i += 1))[0];
-    const pubKey = response.slice(i, (i += 65)).toString("hex");
-    const keyHandleLength = response.slice(i, ++i)[0];
-    const keyHandle = response.slice(i, (i += keyHandleLength));
-    const attestationSignature = response.slice(i, ++i)[0];
-    const signature = response.slice(i).toString("hex");
+    const rfu = lastResponse.slice(i, (i += 1))[0];
+    const pubKey = lastResponse.slice(i, (i += 65)).toString("hex");
+    const keyHandleLength = lastResponse.slice(i, ++i)[0];
+    const keyHandle = lastResponse.slice(i, (i += keyHandleLength));
+    // const attestationSignature = lastResponse.slice(i, ++i)[0];
+    // const signature = lastResponse.slice(i).toString("hex");
     return {
+      u2f_register: lastResponse.slice(0, lastResponse.length - 2),
+      keyHandle: keyHandle,
       rfu,
-      pubKey,
-      keyHandle,
-      attestationSignature,
-      signature,
-      rawResponse: response.toString("hex")
+      pubKey
     };
   }
 
   async authenticate(
     challenge: Buffer,
     application: string,
-    keyHandle: Buffer,
-    instanceName: string,
-    instanceReference: string,
-    instanceURL: string,
-    agentRole: string
+    keyHandle: Buffer
   ): Promise<{
     userPresence: *,
     counter: *,
@@ -96,15 +114,14 @@ export default class VaultDeviceApp {
       applicationBuf.length === 32,
       "application hex is expected to have 32 bytes"
     );
+    const maxLength = 150;
+
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
-    const instanceURLBuf = Buffer.from(instanceURL);
+    const instanceURLBuf = Buffer.from(instanceUrl);
     const agentRoleBuf = Buffer.from(agentRole);
-    const data = Buffer.concat([
-      challenge,
-      applicationBuf,
-      Buffer.from([keyHandle.length]),
-      keyHandle,
+
+    const bigChunk = Buffer.concat([
       Buffer.from([instanceNameBuf.length]),
       instanceNameBuf,
       Buffer.from([instanceReferenceBuf.length]),
@@ -114,19 +131,65 @@ export default class VaultDeviceApp {
       Buffer.from([agentRoleBuf.length]),
       agentRoleBuf
     ]);
-    const response = await this.transport.send(0xe0, 0x02, 0x00, 0x00, data);
-    const userPresence = response.slice(0, 1);
-    const counter = response.slice(1, 5);
-    const signature = response.slice(5).toString("hex");
+
+    const length = Buffer.alloc(2);
+    length.writeUInt16BE(bigChunk.length, 0);
+
+    const data = Buffer.concat([
+      challenge,
+      applicationBuf,
+      Buffer.from([keyHandle.length]),
+      keyHandle,
+      length,
+      Buffer.from([instanceNameBuf.length]),
+      instanceNameBuf,
+      Buffer.from([instanceReferenceBuf.length]),
+      instanceReferenceBuf,
+      Buffer.from([instanceURLBuf.length]),
+      instanceURLBuf,
+      Buffer.from([agentRoleBuf.length]),
+      agentRoleBuf
+    ]);
+
+    let chunks = [data];
+    if (maxLength < data.length) {
+      chunks = this.splits(maxLength, data);
+    }
+
+    let lastResponse = await this.transport.send(
+      0xe0,
+      0x02,
+      0x00,
+      0x00,
+      chunks.shift()
+    );
+
+    for (let i = 0; i < chunks.length; i++) {
+      lastResponse = await this.transport.send(
+        0xe0,
+        0x02,
+        0x80,
+        0x00,
+        chunks[i]
+      );
+    }
+    const userPresence = lastResponse.slice(0, 1);
+    const counter = lastResponse.slice(1, 5);
+    const signature = lastResponse
+      .slice(5, lastResponse.length - 2)
+      .toString("hex");
     return {
       userPresence,
       counter,
       signature,
-      rawResponse: response.toString("hex")
+      rawResponse: lastResponse.toString("hex")
     };
   }
 
-  async generateKeyComponent(path: number[]): Promise<*> {
+  async generateKeyComponent(
+    path: number[],
+    isWrappingKey: boolean
+  ): Promise<*> {
     const data = Buffer.concat([
       Buffer.from([path.length]),
       ...path.map(derivation => {
@@ -135,14 +198,19 @@ export default class VaultDeviceApp {
         return buf;
       })
     ]);
-    const response = await this.transport.send(0xe0, 0x44, 0x00, 0x00, data);
+    let p1 = 0x00;
+    if (isWrappingKey) {
+      p1 = 0x01;
+    }
+    const response = await this.transport.send(0xe0, 0x44, p1, 0x00, data);
     return response.slice(0, response.length - 2);
   }
 
   async openSession(
     path: number[],
     pubKey: Buffer,
-    attestation: Buffer
+    attestation: Buffer,
+    scriptHash: number = 0x00
   ): Promise<*> {
     const dataDerivation = Buffer.concat([
       Buffer.from([path.length]),
@@ -153,15 +221,39 @@ export default class VaultDeviceApp {
       })
     ]);
 
-    const dataBuffer = Buffer.concat([dataDerivation, pubKey, attestation]);
-    const response = await this.transport.send(
+    const lengthAttestation = Buffer.alloc(2);
+    lengthAttestation.writeUInt16BE(attestation.length, 0);
+
+    const maxLength = 150;
+
+    const dataBuffer = Buffer.concat([
+      dataDerivation,
+      pubKey,
+      lengthAttestation,
+      attestation
+    ]);
+    let chunks = [dataBuffer];
+    if (maxLength < dataBuffer.length) {
+      chunks = this.splits(maxLength, dataBuffer);
+    }
+    let lastResponse = await this.transport.send(
       0xe0,
       0x42,
       0x00,
-      0x00,
-      dataBuffer
+      scriptHash,
+      chunks.shift()
     );
-    return response;
+
+    for (let i = 0; i < chunks.length; i++) {
+      lastResponse = await this.transport.send(
+        0xe0,
+        0x42,
+        0x80,
+        scriptHash,
+        chunks[i]
+      );
+    }
+    return lastResponse;
   }
 
   splits(chunk: number, buffer: Buffer): Buffer[] {
@@ -207,6 +299,11 @@ export default class VaultDeviceApp {
     return lastResponse.slice(0, lastResponse.length - 2);
   }
 
+  async getAttestationCertificate(): Promise<Buffer> {
+    const response = await this.transport.send(0xe0, 0x41, 0x00, 0x00);
+    return response.slice(0, response.length - 2);
+  }
+
   async getPublicKey(
     path: number[],
     secp256k1: boolean = true
@@ -228,7 +325,10 @@ export default class VaultDeviceApp {
     }
     const response = await this.transport.send(0xe0, 0x40, curve, 0x00, data);
     const pubKeyLength = response.readInt8(0);
-    const pubKey = response.slice(1, pubKeyLength + 1).toString("hex");
+    const pubKey = response
+      .slice(1, pubKeyLength + 1)
+      .toString("hex")
+      .toUpperCase();
     const signature = response.slice(pubKeyLength + 1, response.length - 2);
     return { pubKey, signature };
   }

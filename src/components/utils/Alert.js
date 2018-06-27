@@ -1,8 +1,8 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React from "react";
-import Snackbar from "material-ui/Snackbar";
-import { SnackbarContent } from "material-ui/Snackbar";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
 
 import IconCheck from "../icons/Validate";
 import IconError from "../icons/Error";

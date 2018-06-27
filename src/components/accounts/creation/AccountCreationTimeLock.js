@@ -6,12 +6,12 @@ import EnableForm from "components/EnableForm";
 import { connect } from "react-redux";
 import InputTextWithUnity from "components/InputTextWithUnity";
 import { addMessage } from "redux/modules/alerts";
-import { withStyles } from "material-ui/styles";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import { withStyles } from "@material-ui/core/styles";
+import { MenuItem } from "@material-ui/core/Menu";
+import Select from "@material-ui/core/Select";
 import modals from "shared/modals";
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });

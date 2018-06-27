@@ -1,63 +1,42 @@
 // @flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
+import CounterValue from "components/CounterValue";
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CurrencyCounterValueConversion from "components/CurrencyCounterValueConversion";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import Card from "components/Card";
 import CardField from "components/CardField";
-import AccountQuery from "api/queries/AccountQuery";
-import TryAgain from "components/TryAgain";
-import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Account } from "data/types";
 import colors from "shared/colors";
 
 const styles = {
   card: {
     color: colors.lead,
-    height: "161px"
+    marginLeft: 10,
+    width: "50%"
   }
 };
 class AccountCountervalueCard extends Component<{
-  accountId: string,
   account: Account,
   reloading: boolean,
+  t: Translate,
   classes: Object
 }> {
   render() {
-    const { account, reloading, classes } = this.props;
+    const { account, reloading, classes, t } = this.props;
     return (
-      <Card className={classes.card} reloading={reloading} title="Countervalue">
+      <Card
+        className={classes.card}
+        reloading={reloading}
+        title={t("accountView:countervalue")}
+      >
         <CardField label={<CurrencyCounterValueConversion account={account} />}>
-          <CurrencyAccountValue
-            account={account}
-            value={account.balance}
-            countervalue
-          />
+          <CounterValue value={account.balance} from={account.currency.name} />
         </CardField>
       </Card>
     );
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card title="Countervalue">
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </Card>
-);
-
-const RenderLoading = withStyles(styles)(({ classes }) => (
-  <Card className={classes.card} title="Countervalue">
-    <SpinnerCard />
-  </Card>
-));
-
-export default connectData(withStyles(styles)(AccountCountervalueCard), {
-  queries: {
-    account: AccountQuery
-  },
-  propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
-  optimisticRendering: true,
-  RenderError,
-  RenderLoading
-});
+export default withStyles(styles)(translate()(AccountCountervalueCard));

@@ -1,15 +1,12 @@
 //@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import Trash from "components/icons/thin/Trash.js";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "../../components/Onboarding.js";
-import { withStyles } from "material-ui/styles";
+import { Title, Introduction } from "../../components/Onboarding.js";
+import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
@@ -46,55 +43,42 @@ const styles = {
   }
 };
 const Backup = ({
-  classes
+  classes,
+  t
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  t: Translate
 }) => {
   return (
     <div>
-      <Title>Backup</Title>
-      <Introduction>
-        To secure your company’s master seed, it is very important to backup the
-        3 sets of 24 words of each Ledger Blue device that was configured
-        previously.{" "}
-        <strong>
-          Take all the Ledger Cryptosteel backups from the briefcase and ask
-          each shared owner to secure their recovery phrase.
-        </strong>
-      </Introduction>
+      <Title>{t("onboarding:backup.title")}</Title>
+      <Introduction>{t("onboarding:backup.description")}</Introduction>
       <div className={classes.steps}>
         <Step
           number="1"
           icon={<RecoverySheet style={{ height: 32, width: 22 }} />}
         >
-          Grab your recovery sheet
+          {t("onboarding:backup.step1")}
         </Step>
         <Step
           number="2"
           icon={<Cryptosteel style={{ height: 31, width: 32 }} />}
         >
-          Setup your Ledger Cryptosteel
+          {t("onboarding:backup.step2")}
         </Step>
         <Step
           number="3"
           icon={<Trash color="#cccccc" style={{ height: 28 }} />}
         >
-          Destroy your recovery sheet
+          {t("onboarding:backup.step3")}
         </Step>
       </div>
-      <div className={classes.careful}>
-        Do not destroy your recovery sheet until it is perfectly secured in a
-        Ledger Cryptosteel (double check each of the 24 words).
-      </div>
-      <SubTitle className={classes.toContinue}>To Continue</SubTitle>
-      <ToContinue>
-        Make sure all shared owners have backed up their recovery phrase in the
-        Ledger Cryptosteel and that all paper recovery sheets are destroyed.
-      </ToContinue>
+      <div className={classes.careful}>{t("onboarding:backup.warning")}</div>
       <Footer
-        render={(onPrev, onNext) => (
+        nextState
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
-            Continue
+            {t("common:continue")}
           </DialogButton>
         )}
       />
@@ -102,4 +86,4 @@ const Backup = ({
   );
 };
 
-export default withStyles(styles)(Backup);
+export default withStyles(styles)(translate()(Backup));

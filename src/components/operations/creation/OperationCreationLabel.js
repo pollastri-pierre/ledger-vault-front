@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { TextField } from "components";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
@@ -21,10 +21,10 @@ const styles = {
 };
 
 class OperationCreationLabel extends PureComponent<Props> {
-  updateTitle = (ev: SyntheticEvent<HTMLInputElement>) => {
+  updateTitle = (ev: SyntheticInputEvent<*>) => {
     this.props.updateTitle(ev.currentTarget.value);
   };
-  updateNote = (ev: SyntheticEvent<HTMLInputElement>) => {
+  updateNote = (ev: SyntheticInputEvent<*>) => {
     this.props.updateNote(ev.currentTarget.value);
   };
 

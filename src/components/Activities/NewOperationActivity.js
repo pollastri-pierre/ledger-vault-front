@@ -1,8 +1,8 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-
 import Activity from "../Activity";
+// import type { ActivityCommon } from "data/types";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
 
@@ -10,7 +10,7 @@ const styles = {};
 
 class NewOperationActivity extends Component<
   {
-    activity: ActivityCommon,
+    activity: *,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
   },

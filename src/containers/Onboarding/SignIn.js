@@ -1,28 +1,24 @@
 //@flow
 import React, { Component } from "react";
+import CircleProgress from "components/CircleProgress";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import cx from "classnames";
 import BlurDialog from "components/BlurDialog";
-import { withStyles } from "material-ui/styles";
-import * as d3 from "d3";
+import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/buttons/DialogButton";
 import Plus from "components/icons/full/Plus";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
-  getShardChallenge,
-  toggleSignin,
-  addSignedIn,
-  nextStep
+  getSigninChallenge,
+  toggleDeviceModal,
+  addSignedIn
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import SignInDevice from "./SignInDevice";
 import Footer from "./Footer";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction } from "components/Onboarding";
 
 const styles = {
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
@@ -50,34 +46,8 @@ const styles = {
     background: "#eeeeee",
     margin: "20px 0 20px 0"
   },
-  circle: {
-    width: 124,
-    height: 124,
-    borderRadius: "50%",
-    // border: "3px solid #e2e2e2",
-    fontSize: 13,
-    textAlign: "center",
-    paddingTop: 30,
-    position: "relative",
-    "& > span": {
-      display: "inline-block",
-      marginTop: 5,
-      width: 60
-    },
-    "& strong": {
-      fontSize: 18,
-      display: "block"
-    }
-  },
   flexWrapper: {
     flex: 1
-  },
-  svg: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: 120,
-    height: 120
   },
   disabled: {
     opacity: 0.5,
@@ -93,60 +63,17 @@ type Props = {
   onboarding: *,
   classes: { [$Keys<typeof styles>]: string },
   onNextStep: Function,
-  onGetShardChallenge: Function,
-  onOpenShardsChannel: Function,
+  onGetSigninChallenge: Function,
   onToggleSignin: Function,
   onAddMessage: (string, string, string) => Function,
-  onAddSignedIn: Function
+  onAddSignedIn: Function,
+  t: Translate
 };
 class SignIn extends Component<Props> {
   svg: ?Element;
 
   componentDidMount() {
-    if (!this.props.onboarding.shardChallenge) {
-      this.props.onGetShardChallenge();
-    }
-  }
-
-  componentDidUpdate() {
-    const $svg = this.svg;
-    if (!$svg) return;
-    const radius = 60;
-    const boxSize = radius * 2;
-    const border = 3;
-    const endAngle = Math.PI * 2;
-
-    const circle = d3
-      .arc()
-      .startAngle(0)
-      .innerRadius(radius)
-      .outerRadius(radius - border);
-    const svg = d3
-      .select($svg)
-      .append("svg")
-      .attr("width", boxSize)
-      .attr("height", boxSize);
-    const g = svg
-      .append("g")
-      .attr("transform", "translate(" + boxSize / 2 + "," + boxSize / 2 + ")");
-
-    g
-      .append("path")
-      .attr("fill", "#e2e2e2")
-      .attr("stroke", "none")
-      .attr("stroke-width", "3px")
-      .attr("d", circle.endAngle(endAngle));
-
-    const percentage =
-      2 *
-      (this.props.onboarding.signed.length /
-        this.props.onboarding.members.length);
-    g
-      .append("path")
-      .attr("fill", "#27d0e2")
-      .attr("stroke", "none")
-      .attr("stroke-width", 3 + "px")
-      .attr("d", circle.endAngle(Math.PI * percentage));
+    this.props.onGetSigninChallenge();
   }
 
   signIn = (pubKey: string, signature: string) => {
@@ -155,87 +82,79 @@ class SignIn extends Component<Props> {
   };
 
   render() {
-    const { classes, onboarding, onToggleSignin } = this.props;
-    if (!onboarding.shardChallenge) {
+    const { classes, onboarding, onToggleSignin, t } = this.props;
+    if (!onboarding.signin.challenge) {
       return <SpinnerCard />;
     }
     return (
       <div className={classes.base}>
-        <Title>Sign-in</Title>
-        <BlurDialog open={onboarding.signInModal} onClose={onToggleSignin}>
+        <Title>{t("onboarding:master_seed_signin.title")}</Title>
+        <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
           <SignInDevice
-            challenge={onboarding.shardChallenge}
-            keyHandles={onboarding.key_handles}
+            challenge={onboarding.signin.challenge.challenge}
+            keyHandles={onboarding.signin.challenge.key_handle}
             onFinish={this.signIn}
+            cancel={onToggleSignin}
           />
         </BlurDialog>
         <Introduction>
-          The presence of the administrators defined in the previous
-          administrator scheme is required to generate the master seed.
+          {t("onboarding:master_seed_signin.description")}
         </Introduction>
         <div className={classes.flex}>
           <div className={classes.flexWrapper}>
-            <div className={classes.circle}>
-              <svg
-                ref={c => {
-                  this.svg = c;
-                }}
-                className={classes.svg}
-              />
-              <strong>
-                {onboarding.signed.length}/{onboarding.members.length}
-              </strong>
-              <span>members present</span>
-            </div>
+            <CircleProgress
+              label={t("onboarding:master_seed_signin.members_present")}
+              nb={onboarding.signin.admins.length}
+              total={onboarding.registering.admins.length}
+            />
           </div>
           <div className={classes.flexWrapper}>
-            <strong>
-              Ask each administrator to sign-in using their Ledger Blue devices.
-            </strong>
+            <strong>{t("onboarding:master_seed_signin.ask_admin")}</strong>
             <div className={classes.sep} />
             <div>
               <div
                 className={cx(classes.sign, {
                   [classes.disabled]:
-                    onboarding.signed.length === onboarding.members.length
+                    onboarding.signin.admins.length ===
+                    onboarding.registering.admins.length
                 })}
                 onClick={
-                  onboarding.signed.length === onboarding.members.length
-                    ? null
+                  onboarding.signin.admins.length ===
+                  onboarding.registering.admins.length
+                    ? onToggleSignin
                     : onToggleSignin
                 }
               >
                 <Plus className={classes.icon} />
-                {onboarding.signed.length === 0 ? (
-                  <span>Sign in</span>
+                {onboarding.signin.admins.length === 0 ? (
+                  <span>{t("onboarding:master_seed_signin.signin")}</span>
                 ) : (
-                  <span>Sign in next Administrator</span>
+                  <span>{t("onboarding:master_seed_signin.signin_next")}</span>
                 )}
               </div>
               <span className={classes.counter}>
-                {onboarding.signed.length} signed-in,{" "}
-                {onboarding.members.length - onboarding.signed.length} remaining
+                {onboarding.signin.admins.length}{" "}
+                {t("onboarding:master_seed_signin.signed_in")},{" "}
+                {onboarding.registering.admins.length -
+                  onboarding.signin.admins.length}{" "}
+                {t("onboarding:master_seed_signin:remaining")}
               </span>
             </div>
           </div>
         </div>
-        <SubTitle>To continue</SubTitle>
-        <ToContinue>
-          Gather the number of administrators defined previsoulsy and make sure
-          the administration scheme is satisfied by requesting administrators to
-          sign-in.
-        </ToContinue>
         <Footer
           isBack={false}
-          nextState
-          render={(onPrev, onNext) => {
+          render={onNext => {
             return (
               <DialogButton
                 highlight
                 onTouchTap={onNext}
-                disabled={onboarding.signed.length < onboarding.members.length}
+                disabled={
+                  onboarding.signin.admins.length <
+                  onboarding.registering.admins.length
+                }
               >
-                Continue
+                {t("common:continue")}
               </DialogButton>
             );
           }}
@@ -249,13 +168,14 @@ const mapState = state => ({
   onboarding: state.onboarding
 });
 
-const mapDispatch = dispatch => ({
-  onGetShardChallenge: () => dispatch(getShardChallenge()),
-  onToggleSignin: () => dispatch(toggleSignin()),
+const mapDispatch = (dispatch: *) => ({
+  onGetSigninChallenge: () => dispatch(getSigninChallenge()),
+  onToggleSignin: () => dispatch(toggleDeviceModal()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
   onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type)),
-  onNextStep: () => dispatch(nextStep())
+    dispatch(addMessage(title, message, type))
 });
 
-export default connect(mapState, mapDispatch)(withStyles(styles)(SignIn));
+export default connect(mapState, mapDispatch)(
+  withStyles(styles)(translate()(SignIn))
+);

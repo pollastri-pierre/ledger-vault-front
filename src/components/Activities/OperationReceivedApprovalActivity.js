@@ -1,7 +1,7 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-
+// import type { ActivityCommon } from "data/types";
 import Activity from "../Activity";
 import Bold from "../Bold";
 import NoStyleLink from "../NoStyleLink";
@@ -10,14 +10,14 @@ const styles = {};
 
 class OperationReceivedApprovalActivity extends Component<
   {
-    activity: ActivityCommon,
+    activity: *,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
   },
   *
 > {
-  getOperationLink = (operation: *) => {
-    let link = `pending/${operation}/${operation.id}`;
+  getOperationLink = (operation: Object) => {
+    let link = `pending/operation/${operation.id}`;
     if (operation.status === "SUBMITTED") {
       link = `account/${operation.account_id}/operation/${operation.id}/0`;
     }

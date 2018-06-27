@@ -1,9 +1,10 @@
 //@flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
+import CounterValue from "components/CounterValue";
 import Card from "components/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import BadgeCurrency from "components/BadgeCurrency";
 import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 
@@ -19,7 +20,8 @@ const styles = {
     margin: "20px 0 15px"
   },
   cryptocur: {
-    fontSize: "14px",
+    fontSize: "16px",
+    marginBottom: 10,
     color: "#000"
   },
   realcur: {
@@ -62,13 +64,12 @@ class AccountCard extends Component<{
           <div className={classes.cryptocur}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </div>
-          {/* <div className={classes.realcur}> */}
-          {/*   <CurrencyAccountValue */}
-          {/*     account={account} */}
-          {/*     value={account.balance} */}
-          {/*     countervalue={true} */}
-          {/*   /> */}
-          {/* </div> */}
+          <div className={classes.realcur}>
+            <CounterValue
+              from={account.currency.name}
+              value={account.balance}
+            />
+          </div>
         </div>
       </Card>
     );

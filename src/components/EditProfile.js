@@ -1,13 +1,14 @@
 //@flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import emailValidator from "email-validator";
 // import Dropzone from "react-dropzone";
 import rectCrop from "rect-crop";
 import { TextField } from "components";
 import DialogButton from "components/buttons/DialogButton";
 import ProfileIcon from "components/icons/thin/Profile";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
 
@@ -23,6 +24,15 @@ const validators: { [_: string]: Validator } = {
   last_name: validateName,
   email: validateMail,
   picture: _ => true
+};
+
+const sanitize = (object: Object): Object => {
+  return {
+    email: object.email.value,
+    first_name: object.first_name.value,
+    last_name: object.last_name.value,
+    picture: object.picture.value
+  };
 };
 
 export const styles = {
@@ -65,6 +75,7 @@ class ProfileEditModal extends Component<
   {
     profile: Member,
     close: Function,
+    t: Translate,
     classes: Object,
     title: string,
     labelSubmit: string,
@@ -72,9 +83,6 @@ class ProfileEditModal extends Component<
   },
   *
 > {
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
-  };
   _unmounted = false;
 
   constructor(props) {
@@ -130,8 +138,7 @@ class ProfileEditModal extends Component<
   };
 
   render() {
-    const t = this.context.translate;
-    const { classes, title, labelSubmit } = this.props;
+    const { classes, title, labelSubmit, t } = this.props;
     const error =
       !this.state.first_name.isValid ||
       !this.state.last_name.isValid ||
@@ -164,7 +171,7 @@ class ProfileEditModal extends Component<
           <div className={classes.profileForm}>
             <TextField
               name="first_name"
-              placeholder={t("profile.firstName")}
+              placeholder={t("profile:firstName")}
               value={this.state.first_name.value}
               error={!this.state.first_name.isValid}
               onChange={this.updateField}
@@ -175,7 +182,7 @@ class ProfileEditModal extends Component<
             />
             <TextField
               name="last_name"
-              placeholder={t("profile.lastName")}
+              placeholder={t("profile:lastName")}
               value={this.state.last_name.value}
               error={!this.state.last_name.isValid}
               onChange={this.updateField}
@@ -189,24 +196,26 @@ class ProfileEditModal extends Component<
             <br />
             <TextField
               name="email"
-              placeholder={t("profile.mail")}
+              placeholder={t("profile:mail")}
               fullWidth
               value={this.state.email.value}
               error={!this.state.email.isValid}
               onChange={this.updateField}
             />
-            <div className={classes.role}>{t("role.administrator")}</div>
+            <div className={classes.role}>{t("common:administrator")}</div>
           </div>
         </div>
         <div style={{ height: "50px" }} />
         <DialogButton onTouchTap={this.props.close}>
-          {t("common.cancel")}
+          {t("common:cancel")}
         </DialogButton>
         <DialogButton
           highlight
           right
           disabled={error || this.isEmpty()}
-          onTouchTap={error ? null : () => this.props.onSubmit(this.state)}
+          onTouchTap={
+            error ? null : () => this.props.onSubmit(sanitize(this.state))
+          }
         >
           {labelSubmit}
         </DialogButton>
@@ -215,4 +224,4 @@ class ProfileEditModal extends Component<
   }
 }
 
-export default withStyles(styles)(ProfileEditModal);
+export default withStyles(styles)(translate()(ProfileEditModal));

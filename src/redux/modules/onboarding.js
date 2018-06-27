@@ -1,188 +1,236 @@
 //@flow
-import { type Member } from "data/types";
-import { addMessage } from "redux/modules/alerts";
 import network from "network";
-export const VIEW_ROUTE = "onboarding/VIEW_ROUTE";
-export const ADD_MEMBER = "onboarding/ADD_MEMBER";
-export const GO_TO_NEXT = "onboarding/GO_TO_NEXT";
-export const NEXT_STEP = "onboarding/NEXT_STEP";
-export const PREV_STEP = "onboarding/PREV_STEP";
-export const GO_TO_STEP = "onboarding/GO_TO_STEP";
-export const CHANGE_NB_REQUIRED = "onboarding/CHANGE_NB_REQUIRED";
-export const TOGGLE_MODAL_PROFILE = "onboarding/TOGGLE_MODAL_PROFILE";
-export const GOT_CHALLENGE_REGISTRATION =
-  "onboarding/GOT_CHALLENGE_REGISTRATION";
-export const GOT_BOOTSTRAP_CHALLENGE = "onboarding/GOT_BOOTSTRAP_CHALLENGE";
-export const GOT_BOOTSTRAP_TOKEN = "onboarding/GOT_BOOTSTRAP_TOKEN";
-export const GOT_COMMIT_CHALLENGE = "onboarding/GOT_COMMIT_CHALLENGE";
-export const COMMIT_ADMINISTRATORS = "onboarding/COMMIT_ADMINISTRATORS";
-export const GOT_SHARD_CHALLENGE = "onboarding/GOT_SHARD_CHALLENGE";
-export const GOT_SHARDS_CHANNEL = "onboarding/GOT_SHARD_CHANNEL";
-export const TOGGLE_SIGNIN = "onboarding/TOGGLE_SIGNIN";
-export const TOGGLE_GENERATE_SEED = "onboarding/TOGGLE_GENERATE_SEED";
-export const ADD_SIGNEDIN = "onboarding/ADD_SIGNEDIN";
-export const ADD_SEED_SHARD = "onboarding/ADD_SEED_SHARD";
-export const SUCCESS_SEED_SHARDS = "onboarding/SUCCESS_SEED_SHARDS";
-export const EDIT_MEMBER = "onboarding/EDIT_MEMBER";
-export const LOCK_PARTITION = "onboarding/LOCK_PARTITION";
-export const REGISTER_KEYHANDLE = "onboarding/REGISTER_KEYHANDLE";
+import { addMessage } from "redux/modules/alerts";
+
+export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
+export const ONBOARDING_REGISTERING_CHALLENGE =
+  "ONBOARDING_REGISTERING_CHALLENGE";
+export const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
+export const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
+export const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
+export const NEXT_STEP = "NEXT_STEP";
+export const ONBOARDING_STATE = "ONBOARDING_STATE";
+export const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
+export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
+export const ONBOARDING_ADD_ADMIN = "ONBOARDING_ADD_ADMIN";
+export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
+export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
+export const ONBOARDING_EDIT_MEMBER = "ONBOARDING_EDIT_MEMBER";
+export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
+
+export type OnboardingState =
+  | "LOADING"
+  | "EMPTY_PARTITION"
+  | "WRAPPING_KEY_PREREQUISITES"
+  | "WRAPPING_KEY_CONFIGURATION"
+  | "WRAPPING_KEY_BACKUP"
+  | "WRAPPING_KEY_SIGN_IN"
+  | "ADMINISTRATORS_PREREQUISITE"
+  | "ADMINISTRATORS_CONFIGURATION"
+  | "ADMINISTRATORS_REGISTRATION"
+  | "ADMINISTRATORS_SCHEME_CONFIGURATION"
+  | "ADMINISTRATORS_SIGN_IN"
+  | "MASTER_SEED_PREREQUISITE"
+  | "MASTER_SEED_CONFIGURATION"
+  | "MASTER_SEED_BACKUP"
+  | "MASTER_SEED_GENERATION"
+  | "COMPLETE";
+
+type KeyHandle = { [_: string]: string };
 
 type Challenge = {
   challenge: string,
-  handles: string[],
-  id: string
+  key_handle?: KeyHandle
 };
 
-type Channel = string;
-
-const ALL_ROUTES = [
-  { label: "welcome", visited: true, milestone: true },
-  { label: "authentication", visited: false, milestone: true },
-  { label: "administrators_prerequisite", visited: false },
-  { label: "administrators_configuration", visited: false },
-  { label: "administrators_registration", visited: false },
-  { label: "administrators_scheme", visited: false },
-  { label: "administrators_confirmation", visited: false },
-  { label: "seed_signin", visited: false },
-  { label: "seed_prerequisite", visited: false },
-  { label: "seed_configuration", visited: false },
-  { label: "seed_backup", visited: false },
-  { label: "seed_provisioning", visited: false },
-  { label: "seed_confirmation", visited: false }
-];
-
-export type Store = {
-  nbRequired: number,
-  members: Array<Member>,
-  currentStep: number,
-  modalProfile: boolean,
-  isLoadingChallengeRegistration: boolean,
-  challenge_registration: ?string,
-  bootstrapAuthToken: ?string,
-  bootstrapChallenge: ?Challenge,
-  commit_challenge: ?string,
-  editMember: ?Member,
-  committed_administrators: boolean,
-  signed: Array<*>,
-  steps: Array<*>,
-  shardChallenge: ?string,
-  signInModal: boolean,
-  generateSeedModal: boolean,
-  shards_channel: ?string,
-  shards: Array<*>,
-  partition_locked: boolean,
-  key_handles: Object
+type Channel = {
+  ephemeral_public_key: string,
+  certificate: string
 };
 
-const initialState: Store = {
-  nbRequired: 3,
-  members: [],
-  steps: [{ label: "welcome", visited: true }],
-  currentStep: 0,
-  modalProfile: false,
-  isLoadingChallengeRegistration: true,
-  challenge_registration: null,
-  bootstrapAuthToken: null,
-  bootstrapChallenge: null,
-  commit_challenge: null,
-  editMember: null,
-  committed_administrators: false,
-  signed: [],
-  shardChallenge: null,
-  signInModal: false,
-  generateSeedModal: false,
-  shards_channel: null,
-  shards: [],
-  partition_locked: false,
-  key_handles: {}
+type Blob = {
+  ephemeral_public_key: string,
+  certificate: string,
+  blob: string
 };
 
-export function goToStep(step_label: string) {
-  return {
-    type: GO_TO_STEP,
-    step: step_label
-  };
-}
+type Admin = $Shape<{
+  uid: string,
+  id: number,
+  pub_key: string,
+  last_name: string,
+  first_name: string,
+  email: string,
+  key_handle: string,
+  validation: Object,
+  u2f_register: Object
+}>;
 
-export function registerKeyHandle(pubKey: string, keyHandle: string) {
-  return {
-    type: REGISTER_KEYHANDLE,
-    pubKey,
-    keyHandle
-  };
-}
+type Wrapping = {
+  channel?: Channel,
+  blobs: Blob[]
+};
+type Provisionning = {
+  channel?: Channel,
+  admins: Blob[]
+};
 
-export function gotShardsChannel(shards_channel: Channel) {
-  return {
-    type: GOT_SHARDS_CHANNEL,
-    shards_channel
-  };
-}
+type Registering = {
+  challenge?: string,
+  admins: Admin[]
+};
 
-export function getShardsChannel() {
-  return async (dispatch: Function) => {
-    const shards = await network("/onboarding/challenge", "GET");
+type Signin = {
+  challenge?: Challenge,
+  admins: Admin[]
+};
 
-    dispatch(gotShardsChannel(shards));
-  };
-}
+export type Onboarding = {
+  step: number,
+  state: OnboardingState,
+  wrapping: Wrapping,
+  registering: Registering,
+  quorum: ?number,
+  signin: Signin,
+  provisionning: Provisionning
+};
 
-export function editMember(member: Member) {
-  return async (dispatch: Function) => {
-    return await network(
-      "/provisioning/administrators/register",
-      "PUT",
-      member
-    ).then(() => {
-      dispatch({
-        type: EDIT_MEMBER,
-        member
-      });
-    });
-  };
-}
+export type UIOnboarding = {
+  device_modal: boolean,
+  member_modal: boolean
+};
 
-export function nextStep() {
-  return {
-    type: NEXT_STEP
-  };
-}
+type Store = Onboarding & UIOnboarding;
 
-export function nextState(data: *) {
-  return async (dispatch: Function) => {
+const initialState = {
+  step: 0,
+  device_modal: false,
+  member_modal: false,
+  quorum: 1,
+  state: "LOADING",
+  wrapping: {
+    blobs: []
+  },
+  registering: {
+    admins: []
+  },
+  signin: {
+    admins: []
+  },
+  provisionning: {
+    admins: []
+  }
+};
+
+export const nextState = (data: any) => {
+  return async (dispatch: Dispatch<*>) => {
     const dataToSend = data || {};
-    await network("/onboarding/next", "POST", dataToSend);
-    dispatch(nextStep());
-  };
-}
-export function toggleSignin() {
-  return {
-    type: TOGGLE_SIGNIN
-  };
-}
-
-export function toggleGenerateSeed() {
-  return {
-    type: TOGGLE_GENERATE_SEED
-  };
-}
-
-export function addSeedShard(data: *) {
-  return async (dispatch: Function) => {
-    await network("/onboarding/authenticate", "POST", data);
-    return dispatch({
-      type: ADD_SEED_SHARD,
-      data
+    const next = await network("/onboarding/next", "POST", dataToSend);
+    dispatch({
+      type: NEXT_STEP,
+      next
     });
   };
-}
+};
+export const getChallenge = () => {
+  return network("/onboarding/challenge", "GET");
+};
 
-export function addSignedIn(pub_key: string, signature: *) {
-  return async (dispatch: Function, getState: Function) => {
-    const { signed } = getState()["onboarding"];
-    const index = signed.findIndex(
-      member => member.pub_key === pub_key.toUpperCase()
+export const authenticate = (data: any) => {
+  return network("/onboarding/authenticate", "POST", data);
+};
+
+export const toggleDeviceModal = () => ({
+  type: ONBOARDING_TOGGLE_DEVICE_MODAL
+});
+
+export const toggleMemberModal = (member: any) => ({
+  type: ONBOARDING_TOGGLE_MEMBER_MODAL,
+  member
+});
+
+export const openWrappingChannel = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const wrapping: Wrapping = await getChallenge();
+    dispatch({
+      type: ONBOARDING_WRAPPING_CHANNEL,
+      wrapping
+    });
+  };
+};
+
+export const addWrappingKey = (data: Blob) => {
+  return async (dispatch: Dispatch<*>) => {
+    const add_wrap: Wrapping = await authenticate(data);
+    dispatch({
+      type: ONBOARDING_ADD_WRAP_KEY,
+      add_wrap
+    });
+  };
+};
+
+export const getRegistrationChallenge = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const challenge = await getChallenge();
+    dispatch({
+      type: ONBOARDING_REGISTERING_CHALLENGE,
+      challenge: challenge.challenge
+    });
+  };
+};
+
+export const addMember = (data: Admin) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
+    const { registering } = getState()["onboarding"];
+    const admins = registering.admins;
+    const findIndex = admins.findIndex(
+      member => member.pub_key === data.pub_key
     );
+    if (findIndex > -1) {
+      dispatch(addMessage("Error", "Device already registered", "error"));
+      throw "Already registered";
+    } else {
+      const admins = await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ONBOARDING_ADD_ADMIN,
+        admins: admins
+      });
+    }
+  };
+};
+
+export const editMember = (data: Admin) => {
+  return async (dispatch: Dispatch<*>) => {
+    await network(`/onboarding/admins/${data.id}`, "PUT", data);
+    dispatch({
+      type: ONBOARDING_EDIT_MEMBER,
+      admin: data
+    });
+  };
+};
+
+export const changeQuorum = (nb: number) => {
+  return {
+    type: ONBOARDING_CHANGE_QUORUM,
+    nb
+  };
+};
+
+export const getSigninChallenge = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const challenge = await getChallenge();
+    dispatch({
+      type: ONBOARDING_SIGNIN_CHALLENGE,
+      challenge: challenge
+    });
+  };
+};
+
+export const addSignedIn = (pub_key: string, signature: *) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
+    const { signin } = getState()["onboarding"];
+    const admins = signin.admins;
+    const index = admins.findIndex(pkey => pkey === pub_key.toUpperCase());
 
     if (index > -1) {
       return dispatch(
@@ -200,315 +248,247 @@ export function addSignedIn(pub_key: string, signature: *) {
 
       await network("/onboarding/authenticate", "POST", data);
       dispatch({
-        type: ADD_SIGNEDIN,
+        type: ONBOARDING_ADD_SIGNEDIN,
         data
       });
     }
   };
-}
+};
 
-export function toggleModalProfile(member: Member) {
-  return {
-    type: TOGGLE_MODAL_PROFILE,
-    member
+export const openProvisionningChannel = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const wrapping: Wrapping = await getChallenge();
+    dispatch({
+      type: ONBOARDING_MASTERSEED_CHANNEL,
+      wrapping
+    });
   };
-}
+};
 
-export function previousStep() {
-  return {
-    type: PREV_STEP
+export const addMasterSeedKey = (data: Blob) => {
+  return async (dispatch: Dispatch<*>) => {
+    const add_seed = await authenticate(data);
+    dispatch({
+      type: ONBOARDING_ADD_MASTERSEED_KEY,
+      add_seed
+    });
   };
-}
+};
 
-export function gotCommitChallenge(challenge: string) {
-  return {
-    type: GOT_COMMIT_CHALLENGE,
-    challenge
+export const getState = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const state = await network("/onboarding/state", "GET");
+    dispatch({
+      type: ONBOARDING_STATE,
+      state
+    });
   };
-}
+};
 
-export function gotShardChallenge(challenge: Challenge) {
-  return {
-    type: GOT_SHARD_CHALLENGE,
-    challenge
-  };
-}
-
-export function getCommitChallenge() {
-  return async (dispatch: Function) => {
-    const challenge = await network("/onboarding/challenge", "GET");
-
-    return dispatch(gotCommitChallenge(challenge));
-  };
-}
-
-export function gotChallengeRegistation(challenge: Challenge) {
-  return {
-    type: GOT_CHALLENGE_REGISTRATION,
-    challenge
-  };
-}
-
-export function gotBootstrapToken(result: *) {
-  return {
-    type: GOT_BOOTSTRAP_TOKEN,
-    result
-  };
-}
-
-export function getBootstrapToken(pub_key: string, signature: Object) {
-  return async (dispatch: Function) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
+const syncNextState = (state: Store, action, next = false) => {
+  let actionState = action.state;
+  if (next) {
+    actionState = action.next;
+  }
+  if (actionState.state === "WRAPPING_KEY_SIGN_IN") {
+    return {
+      ...state,
+      state: "WRAPPING_KEY_SIGN_IN",
+      step: 0,
+      wrapping: {
+        ...state.wrapping,
+        channel: {
+          ephemeral_public_key: actionState.ephemeral_public_key,
+          ephemeral_certificate: actionState.ephemeral_certificate
+        },
+        blobs: actionState.admins_devices
+      }
     };
-    const result = await network("/onboarding/authenticate", "POST", data);
-    return dispatch(gotBootstrapToken(result));
-  };
-}
-
-export function lockPartition() {
-  return {
-    type: LOCK_PARTITION
-  };
-}
-
-export function commitAdministrators(pub_key: string, signature: Object) {
-  return async (dispatch: Function) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      authentication: signature.rawResponse
+  }
+  if (actionState.state === "ADMINISTRATORS_REGISTRATION") {
+    const challenge = actionState.challenge
+      ? actionState.challenge.challenge
+      : null;
+    return {
+      ...state,
+      state: actionState.state,
+      registering: {
+        ...state.registering,
+        admins: actionState.admins,
+        challenge: challenge
+      }
     };
-    await network("/onboarding/authenticate", "POST", data);
-    return dispatch(lockPartition());
-  };
-}
+  }
 
-export function getShardChallenge() {
-  return async (dispatch: Function) => {
-    const challenge = await network("/onboarding/challenge", "GET");
-    return dispatch(gotShardChallenge(challenge));
-  };
-}
-
-export function getBootstrapChallenge() {
-  return async (dispatch: Function) => {
-    const challengeObject = await network("/onboarding/challenge", "GET");
-    return dispatch(gotBootstrapChallenge(challengeObject));
-  };
-}
-
-export function gotBootstrapChallenge(challenge: Challenge) {
-  return {
-    type: GOT_BOOTSTRAP_CHALLENGE,
-    challenge
-  };
-}
-
-export function getChallengeRegistration() {
-  return async (dispatch: Function) => {
-    const { challenge } = await network("/onboarding/challenge", "GET");
-    return dispatch(gotChallengeRegistation(challenge));
-  };
-}
-
-export function changeNbRequired(nb: number) {
-  return {
-    type: CHANGE_NB_REQUIRED,
-    nb
-  };
-}
-
-export function viewRoute(currentRoute: string) {
-  return {
-    type: VIEW_ROUTE,
-    route: currentRoute
-  };
-}
-
-export function addMember(data: Member) {
-  return async (dispatch: Function, getState: Function) => {
-    const { members } = getState()["onboarding"];
-    const findIndex = members.findIndex(
-      member => member.pub_key === data.pub_key
-    );
-    if (findIndex > -1) {
-      dispatch(addMessage("Error", "Device already registered", "error"));
-      throw "Already registered";
-    } else {
-      await network("/onboarding/authenticate", "POST", data);
-      dispatch({
-        type: ADD_MEMBER,
-        member: data
-      });
-    }
-  };
-}
+  if (actionState.state === "ADMINISTRATORS_SCHEME_CONFIGURATION") {
+    return {
+      ...state,
+      state: actionState.state,
+      registering: {
+        ...state.registering,
+        admins: actionState.admins
+      },
+      quorum: actionState.quorum
+    };
+  }
+  if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
+    return {
+      ...state,
+      state: actionState.state,
+      registering: {
+        ...state.registering,
+        admins: actionState.admins
+      },
+      step: actionState.is_open ? 1 : 0,
+      signin: {
+        ...state.signin,
+        admins: actionState.completed_keys || actionState.autorizations || [],
+        challenge: {
+          ...state.signin.challenge,
+          challenge: actionState.challenge,
+          key_handle: actionState.key_handle
+        }
+      }
+    };
+  }
+  if (actionState.state === "MASTER_SEED_GENERATION") {
+    return {
+      ...state,
+      state: actionState.state,
+      provisionning: {
+        ...state.provisionning,
+        channel: {
+          ephemeral_public_key: actionState.ephemeral_public_key,
+          ephemeral_certificate: actionState.ephemeral_certificate
+        },
+        blobs: actionState.admins_devices
+      }
+    };
+  }
+  if (actionState.state === "COMPLETE") {
+    return {
+      ...state,
+      state: actionState.state,
+      quorum: actionState.quorum,
+      registering: {
+        ...state.registering,
+        admins: actionState.admins
+      }
+    };
+  }
+  return { ...state, state: actionState.state, step: 0 };
+};
 
 export default function reducer(state: Store = initialState, action: Object) {
   switch (action.type) {
-    case ADD_MEMBER: {
+    case ONBOARDING_WRAPPING_CHANNEL:
       return {
         ...state,
-        members: [...state.members, action.member],
-        key_handles: {
-          ...state.key_handles,
-          ...{ [action.member.pub_key]: action.member.key_handle }
+        step: 0,
+        wrapping: {
+          ...state.wrapping,
+          channel: action.wrapping
+        }
+      };
+    case ONBOARDING_ADD_WRAP_KEY: {
+      return {
+        ...state,
+        wrapping: {
+          ...state.wrapping,
+          blobs: action.add_wrap
         }
       };
     }
-    case CHANGE_NB_REQUIRED: {
-      if (action.nb > 0 && action.nb <= state.members.length) {
+    case ONBOARDING_REGISTERING_CHALLENGE:
+      return {
+        ...state,
+        step: 0,
+        registering: {
+          ...state.registering,
+          challenge: action.challenge
+        }
+      };
+    case ONBOARDING_TOGGLE_DEVICE_MODAL:
+      return { ...state, device_modal: !state.device_modal };
+    case ONBOARDING_ADD_ADMIN:
+      return {
+        ...state,
+        registering: {
+          ...state.registering,
+          admins: action.admins
+        }
+      };
+    case ONBOARDING_TOGGLE_MEMBER_MODAL:
+      return {
+        ...state,
+        member_modal: !state.member_modal,
+        editMember: action.member
+      };
+    case ONBOARDING_CHANGE_QUORUM:
+      if (action.nb > 0 && action.nb <= state.registering.admins.length) {
         return {
           ...state,
-          nbRequired: action.nb
+          quorum: action.nb
         };
       }
       return state;
-    }
-    case PREV_STEP: {
-      if (state.currentStep > 0) {
-        return { ...state, currentStep: state.currentStep - 1 };
-      }
-      return state;
-    }
-    case NEXT_STEP: {
-      if (state.currentStep < ALL_ROUTES.length - 1) {
-        return { ...state, currentStep: state.currentStep + 1 };
-      }
-      return state;
-    }
-    case GO_TO_STEP: {
+    case ONBOARDING_SIGNIN_CHALLENGE:
       return {
         ...state,
-        currentStep: action.step,
-        steps: [...state.steps, action.step]
+        step: 0,
+        signin: { ...state.signin, challenge: action.challenge }
       };
-    }
-    case TOGGLE_SIGNIN: {
+    case ONBOARDING_ADD_SIGNEDIN: {
       return {
         ...state,
-        signInModal: !state.signInModal
-      };
-    }
-    case TOGGLE_MODAL_PROFILE: {
-      return {
-        ...state,
-        modalProfile: !state.modalProfile,
-        editMember: action.member
-      };
-    }
-    case TOGGLE_GENERATE_SEED: {
-      return {
-        ...state,
-        generateSeedModal: !state.generateSeedModal
-      };
-    }
-    case GOT_BOOTSTRAP_CHALLENGE: {
-      return {
-        ...state,
-        bootstrapChallenge: action.challenge
-      };
-    }
-    case GOT_BOOTSTRAP_TOKEN: {
-      return {
-        ...state,
-        bootstrapAuthToken: action.result
-      };
-    }
-    case GOT_CHALLENGE_REGISTRATION: {
-      return {
-        ...state,
-        challenge_registration: action.challenge,
-        isLoadingChallengeRegistration: false
-      };
-    }
-    case REGISTER_KEYHANDLE: {
-      return {
-        ...state,
-        key_handles: {
-          ...state.key_handles,
-          ...{ [action.pubKey]: action.keyHandle }
+        signin: {
+          ...state.signin,
+          admins: [...state.signin.admins, action.data.pub_key.toUpperCase()]
         }
       };
     }
-    case GOT_SHARD_CHALLENGE: {
+    case ONBOARDING_MASTERSEED_CHANNEL:
       return {
         ...state,
-        shardChallenge: action.challenge
+        step: 0,
+        provisionning: {
+          ...state.provisionning,
+          channel: action.wrapping
+        }
       };
-    }
-    case GOT_COMMIT_CHALLENGE: {
-      return {
-        ...state,
-        commit_challenge: action.challenge
-      };
-    }
-    case GOT_SHARDS_CHANNEL: {
-      return {
-        ...state,
-        shards_channel: action.shards_channel
-      };
-    }
-    case COMMIT_ADMINISTRATORS: {
-      return {
-        ...state,
-        committed_administrators: true
-      };
-    }
-    case ADD_SIGNEDIN: {
-      const index = state.signed.findIndex(
-        member => member.pub_key === action.data.pub_key
-      );
-
-      if (index > -1) {
-        return state;
-      }
-      return {
-        ...state,
-        signed: [...state.signed, action.data]
-      };
-    }
-    case ADD_SEED_SHARD: {
-      return {
-        ...state,
-        shards: [...state.shards, action.data]
-      };
-    }
-    case EDIT_MEMBER: {
-      const index = state.members.findIndex(
-        member => member.pub_key === action.member.pub_key
-      );
-
-      if (index > -1) {
-        const newMembers = state.members.map((item, i) => {
-          if (i !== index) {
-            return item;
+    case ONBOARDING_EDIT_MEMBER: {
+      const mapFilter = (admins: Admin[], action: *): Admin[] => {
+        return admins.map((admin: Admin): Admin => {
+          if (admin.pub_key === action.admin.pub_key) {
+            return action.admin;
+          } else {
+            return admin;
           }
-
-          return {
-            ...item,
-            ...action.member
-          };
         });
-
-        return { ...state, members: newMembers };
+      };
+      return {
+        ...state,
+        registering: {
+          ...state.registering,
+          admins: mapFilter(state.registering.admins, action)
+        }
+      };
+    }
+    case ONBOARDING_ADD_MASTERSEED_KEY:
+      return {
+        ...state,
+        provisionning: {
+          ...state.provisionning,
+          blobs: action.add_seed
+        }
+      };
+    case ONBOARDING_STATE:
+      return syncNextState(state, action);
+    case NEXT_STEP:
+      if (action.next) {
+        return syncNextState(state, action, true);
       }
-
-      return state;
-    }
-    case LOCK_PARTITION: {
-      return {
-        ...state,
-        partition_locked: true
-      };
-    }
-    case SUCCESS_SEED_SHARDS: {
-      return {
-        ...state,
-        successSeedShards: true
-      };
-    }
+      return { ...state, step: state.step + 1 };
     default:
       return state;
   }

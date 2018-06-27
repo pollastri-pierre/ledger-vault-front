@@ -1,8 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
-import { MenuItem } from "material-ui/Menu";
-import { withStyles } from "material-ui/styles";
+import MenuItem from "@material-ui/core/MenuItem";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   accountOption: {
@@ -36,7 +36,12 @@ class AccountOption extends Component<{
   render() {
     const { account, classes, ...rest } = this.props;
     return (
-      <MenuItem style={{ color: account.currency.color }} {...rest}>
+      <MenuItem
+        button
+        disableRipple
+        style={{ color: account.currency.color }}
+        {...rest}
+      >
         <div className={classes.accountOption}>
           <span className={classes.nameContainer}>{account.name}</span>
           <span className={classes.accountUnit}>

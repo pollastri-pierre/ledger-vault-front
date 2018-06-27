@@ -4,7 +4,7 @@ import SelectTab from "components/SelectTab/SelectTab";
 import type { Account } from "data/types";
 import { getAccountCurrencyUnit, getFiatUnit } from "data/currency";
 import BlueSelect from "components/BlueSelect";
-import { MenuItem } from "material-ui/Menu";
+import { MenuItem } from "@material-ui/core/Menu";
 import DateFormat from "components/DateFormat";
 import Quicklook from "./QuickLook";
 import Card from "components/Card";
@@ -12,7 +12,7 @@ import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 type State = {
   tabsIndex: number,

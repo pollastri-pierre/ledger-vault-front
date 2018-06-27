@@ -25,9 +25,15 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
   );
   const Animal = connectData(
     //$FlowFixMe
-    ({ observed, restlay, animal }) => (
-      observed ? (rlay = restlay) : null, animal.name + "_" + animal.age
-    ),
+    ({
+      observed,
+      restlay,
+      animal
+    }: {
+      observed?: boolean,
+      restlay: *,
+      animal: Object
+    }) => (observed ? (rlay = restlay) : null, animal.name + "_" + animal.age),
     {
       queries: {
         animal: AnimalQuery

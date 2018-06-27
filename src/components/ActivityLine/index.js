@@ -1,9 +1,9 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import classnames from "classnames";
 
-import type { ActivityCommon } from "data/types";
+import type { ActivityGeneric } from "data/types";
 import colors from "shared/colors";
 
 import ActivityFactory from "../ActivityFactory";
@@ -23,7 +23,7 @@ const styles = {
 
 class ActivityLine extends Component<
   {
-    activity: ActivityCommon,
+    activity: ActivityGeneric,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *,
     markAsSeenRequest: Function

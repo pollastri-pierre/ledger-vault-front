@@ -1,15 +1,14 @@
 //@flow
 import React, { Component } from "react";
 import Card from "components/Card";
-import { withStyles } from "material-ui/styles";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import QRCode from "components/QRCode";
 
 const styles = {
-  card: {
-    height: 218,
-    marginLeft: 20
-  },
+  card: {},
   base: {
     "& h4": {
       color: colors.lead,
@@ -42,26 +41,23 @@ const styles = {
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
+  t: Translate,
   address: string
 };
 
 class ReceiveFundsCard extends Component<Props> {
   render() {
-    const { address, classes } = this.props;
+    const { address, classes, t } = this.props;
     return (
       <div className={classes.base}>
-        <Card title="Receive Funds" className={classes.card}>
+        <Card title={t("accountView:receive.title")} className={classes.card}>
           <div className={classes.left}>
             <QRCode hash={address} size={90} />
           </div>
           <div className={classes.right}>
-            <h4>current address</h4>
+            <h4>{t("accountView:receive.addr")}</h4>
             <p className={classes.hash}>{address}</p>
-            <p className={classes.info}>
-              A new address is generated when a first payment is received on the
-              current address. Previous addresses remain valid and do not
-              expire.
-            </p>
+            <p className={classes.info}>{t("accountView:receive.desc")}</p>
           </div>
         </Card>
       </div>
@@ -69,7 +65,7 @@ class ReceiveFundsCard extends Component<Props> {
   }
 }
 
-export default withStyles(styles)(ReceiveFundsCard);
+export default withStyles(styles)(translate()(ReceiveFundsCard));
 //   queries: {
 //     account: AccountQuery
 //   },
@@ -77,4 +73,3 @@ export default withStyles(styles)(ReceiveFundsCard);
 //   optimisticRendering: true,
 //   RenderError,
 //   RenderLoading
-// });

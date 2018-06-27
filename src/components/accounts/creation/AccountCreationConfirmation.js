@@ -1,7 +1,8 @@
 //@flow
 import React from "react";
 import LineRow from "../../LineRow";
-
+import type { Translate } from "data/types";
+import { translate, Interpolate } from "react-i18next";
 import {
   // BigSecurityTimeLockIcon,
   BigSecurityMembersIcon
@@ -13,7 +14,7 @@ import InfoModal from "../../InfoModal";
 // import RateLimiterValue from "../../RateLimiterValue";
 // import TimeLockValue from "../../TimeLockValue";
 
-function AccountCreationConfirmation(props: { account: Object }) {
+function AccountCreationConfirmation(props: { account: Object, t: Translate }) {
   const {
     name,
     approvers,
@@ -22,6 +23,8 @@ function AccountCreationConfirmation(props: { account: Object }) {
     currency,
     quorum
   } = props.account;
+
+  const { t } = props;
 
   return (
     <div>
@@ -59,19 +62,21 @@ function AccountCreationConfirmation(props: { account: Object }) {
         <LineRow label="Currency">
           <span className="info-value currency">{currency.units[1].name}</span>
         </LineRow>
-        <LineRow label="Approvals to speend">
-          {quorum} of {approvers.length} members
+        <LineRow label={t("newAccount:confirmation.approvals")}>
+          <Interpolate
+            i18nKey="newAccount:confirmation.approvals_members"
+            count={quorum}
+            total={approvers.length}
+          />
         </LineRow>
       </div>
       <div style={{ marginTop: "50px" }}>
         <InfoModal className="confirmation-explain">
-          A new account request will be created. The account will not be
-          available until all the members in your team approve the creation
-          request.
+          {t("newAccount:confirmation.desc")}
         </InfoModal>
       </div>
     </div>
   );
 }
 
-export default AccountCreationConfirmation;
+export default translate()(AccountCreationConfirmation);

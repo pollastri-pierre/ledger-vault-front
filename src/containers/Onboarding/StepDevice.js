@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import createDevice, {
   U2F_PATH,
   CONFIDENTIALITY_PATH,
@@ -40,7 +40,12 @@ type Props = {
   cancel: Function,
   finish: Function,
   challenge: string,
-  data: *
+  data: {
+    last_name: string,
+    first_name: string,
+    email: string,
+    picture?: string
+  }
 };
 
 type State = {
@@ -49,9 +54,9 @@ type State = {
 class StepDevice extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
     this.state = { active: 0 };
   }
+
   componentDidMount() {
     this.onStart();
   }
@@ -61,48 +66,63 @@ class StepDevice extends Component<Props, State> {
       this.setState({ active: 0 });
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-
-      const instanceName = "";
-      const instanceReference = "";
-      const instanceURL = "";
-      const agentRole = "";
-      const u2f_register = await device.register(
-        Buffer.from(this.props.challenge, "base64"),
-        APPID_VAULT_ADMINISTRATOR,
-        instanceName,
-        instanceReference,
-        instanceURL,
-        agentRole
-      );
-
       const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
       const validation = await device.getPublicKey(VALIDATION_PATH);
+      const attestation = await device.getAttestationCertificate();
 
       this.setState({ active: 1 });
 
+      const { u2f_register, keyHandle } = await device.register(
+        Buffer.from(this.props.challenge, "base64"),
+        APPID_VAULT_ADMINISTRATOR
+      );
+
+      this.setState({ active: 2 });
+
+      const attestationOffset = 67 + u2f_register.readInt8(66);
+
+      const u2f_register_attestation = Buffer.concat([
+        u2f_register.slice(0, attestationOffset),
+        Buffer.from([attestation.length]),
+        attestation,
+        u2f_register.slice(attestationOffset)
+      ]);
+
+      const validation_attestation = Buffer.concat([
+        attestation,
+        validation.signature
+      ]);
+      const confidentiality_attestation = Buffer.concat([
+        attestation,
+        confidentiality.signature
+      ]);
+
       const data = {
-        u2f_register: u2f_register.rawResponse,
+        u2f_register: u2f_register_attestation.toString("hex"),
         pub_key: pubKey,
-        key_handle: u2f_register.keyHandle.toString("hex"),
+        key_handle: keyHandle.toString("hex"),
         validation: {
           public_key: validation.pubKey,
-          attestation: validation.signature.toString("hex")
+          attestation: validation_attestation.toString("hex")
         },
         confidentiality: {
           public_key: confidentiality.pubKey,
-          attestation: confidentiality.signature.toString("hex")
+          attestation: confidentiality_attestation.toString("hex")
         },
-        first_name: this.props.data.first_name.value,
-        last_name: this.props.data.last_name.value,
-        email: this.props.data.email.value,
-        picture: this.props.data.picture.value
+        first_name: this.props.data.first_name,
+        last_name: this.props.data.last_name,
+        email: this.props.data.email,
+        picture: this.props.data.picture
       };
-      this.setState({ active: 2 });
 
       this.props.finish(data);
     } catch (e) {
       console.error(e);
-      this.onStart();
+      if (e.statusCode && e.statusCode === 27013) {
+        this.props.cancel();
+      } else {
+        // this.onStart();
+      }
     }
   };
 
@@ -113,7 +133,7 @@ class StepDevice extends Component<Props, State> {
         step={this.state.active}
         steps={steps}
         title="Register device"
-        close={cancel}
+        cancel={cancel}
       />
     );
   }

@@ -1,7 +1,7 @@
 //@flow
 import React from "react";
 import DialogButton from "../buttons/DialogButton";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

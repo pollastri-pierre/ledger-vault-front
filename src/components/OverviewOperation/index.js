@@ -1,12 +1,11 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
-// import CurrencyUnitValue from "../CurrencyUnitValue";
-// import { countervalueForRate } from "data/currency";
+import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
-import type { Rate, Account } from "data/types";
+import type { Account } from "data/types";
 
 const styles = {
   base: {
@@ -17,7 +16,7 @@ const styles = {
     letterSpacing: "-0.9px",
     fontSize: "22px",
     margin: 0,
-    marginBottom: 20
+    marginBottom: 10
   },
   down: {
     fill: "#cccccc",
@@ -42,21 +41,19 @@ class OverviewOperation extends Component<{
   amount: number,
   hash: string,
   account: Account,
-  rate: Rate,
   classes: Object
 }> {
   render() {
     const { hash, amount, account, classes } = this.props;
-    // const counterValueUnit = countervalueForRate(rate, amount);
     return (
       <div className={classes.base}>
         <div>
           <p className={classes.amount}>
             <CurrencyAccountValue account={account} value={amount} />
           </p>
-          {/* <p className={classes.fiat}> */}
-          {/*   <CurrencyUnitValue {...counterValueUnit} /> */}
-          {/* </p> */}
+          <p className={classes.fiat}>
+            <CounterValue value={amount} from={account.currency.name} />
+          </p>
           <ArrowDown className={classes.down} />
           <p className={classes.hash}>{hash}</p>
         </div>

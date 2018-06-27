@@ -1,7 +1,7 @@
 //@flow
 import React, { Component, PureComponent } from "react";
 import type { Operation, Account } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 
@@ -63,7 +63,7 @@ class OperationListT<T: *> extends Component<{
         </thead>
         <tbody>
           {entries.map(e => (
-            <tr key={e.index}>
+            <tr key={e.address}>
               <td>{e.address}</td>
               <td>
                 <CurrencyAccountValue

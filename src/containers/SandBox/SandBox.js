@@ -4,10 +4,10 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import List, { ListItem } from "material-ui/List";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
-import Paper from "material-ui/Paper";
+import List, { ListItem } from "@material-ui/core/List";
+import { MenuItem } from "@material-ui/core/Menu";
+import Select from "@material-ui/core/Select";
+import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import { Row, Col } from "./grid/Grid";
 import BlurDialog from "components/BlurDialog";

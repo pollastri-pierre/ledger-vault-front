@@ -12,6 +12,10 @@ export const CONFIDENTIALITY_PATH = [0x80564c54, 0x80434e46];
 export const VALIDATION_PATH = [0x80564c54, 0x8056414c];
 export const KEY_MATERIAL_PATH = [0x80564c54, 0x804b4559];
 
+export const MATCHER_SESSION = 0x01;
+export const ACCOUNT_MANAGER_SESSION = 0x02;
+export const INIT_SESSION = 0x03;
+
 export const APPID_VAULT_BOOTSTRAP =
   "1e55aaa3241c6f9b630d3a53c6aa6877695fd0e0c6c7bbc0f8eed35bcb43ebe0";
 export const APPID_VAULT_ADMINISTRATOR =

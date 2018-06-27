@@ -1,305 +1,295 @@
 jest.mock("network", () => jest.fn());
 import network from "network";
+import { ADD_MESSAGE } from "redux/modules/alerts";
 import reducer, {
-  GOT_SHARDS_CHANNEL,
-  ADD_SIGNEDIN,
-  COMMIT_ADMINISTRATORS,
-  GOT_CHALLENGE_REGISTRATION,
-  EDIT_MEMBER,
-  GO_TO_STEP,
+  ONBOARDING_WRAPPING_CHANNEL,
+  ONBOARDING_REGISTERING_CHALLENGE,
+  ONBOARDING_SIGNIN_CHALLENGE,
+  ONBOARDING_TOGGLE_DEVICE_MODAL,
+  ONBOARDING_TOGGLE_MEMBER_MODAL,
   NEXT_STEP,
-  TOGGLE_GENERATE_SEED,
-  ADD_MEMBER,
-  VIEW_ROUTE,
-  TOGGLE_SIGNIN,
-  TOGGLE_MODAL_PROFILE,
-  GOT_COMMIT_CHALLENGE,
-  GOT_BOOTSTRAP_CHALLENGE,
-  GOT_BOOTSTRAP_TOKEN,
-  SUCCESS_SEED_SHARDS,
-  CHANGE_NB_REQUIRED,
-  ADD_SEED_SHARD,
-  PREV_STEP,
-  previousStep,
-  nextStep,
-  goToStep,
-  gotShardsChannel,
-  addMember,
-  gotCommitChallenge,
-  toggleModalProfile,
+  ONBOARDING_STATE,
+  ONBOARDING_ADD_WRAP_KEY,
+  ONBOARDING_CHANGE_QUORUM,
+  ONBOARDING_ADD_ADMIN,
+  ONBOARDING_ADD_SIGNEDIN,
+  ONBOARDING_MASTERSEED_CHANNEL,
+  ONBOARDING_ADD_MASTERSEED_KEY,
+  changeQuorum,
+  toggleMemberModal,
+  toggleDeviceModal,
+  getChallenge,
+  authenticate,
   nextState,
-  changeNbRequired,
-  gotBootstrapChallenge,
-  toggleSignin,
-  toggleGenerateSeed,
-  addSeedShard,
-  viewRoute,
-  gotBootstrapToken,
-  getCommitChallenge
+  openWrappingChannel,
+  addWrappingKey,
+  getRegistrationChallenge,
+  addMember,
+  getSigninChallenge,
+  addSignedIn,
+  openProvisionningChannel,
+  addMasterSeedKey,
+  getState
 } from "redux/modules/onboarding";
 
 beforeEach(() => {});
 
-test("goToStep should send GO_TO_STEP and the step label", () => {
-  expect(goToStep("label")).toEqual({
-    type: GO_TO_STEP,
-    step: "label"
-  });
-});
-
-test("gotShardsChannel should send GOT_SHARDS_CHANNEL and channels", () => {
-  expect(gotShardsChannel("channel")).toEqual({
-    type: GOT_SHARDS_CHANNEL,
-    shards_channel: "channel"
-  });
-});
-
-test("nextStep should send NEXT_STEP", () => {
-  expect(nextStep()).toEqual({
-    type: NEXT_STEP
-  });
-});
-
-test("previousStep should send PREV_STEP", () => {
-  expect(previousStep()).toEqual({
-    type: PREV_STEP
-  });
-});
-
-test("toggleSinin should send TOGGLE_SIGNIN", () => {
-  expect(toggleSignin()).toEqual({
-    type: TOGGLE_SIGNIN
-  });
-});
-
-test("toggleGenerateSeed should send TOGGLE_GENERATE_SEED", () => {
-  expect(toggleGenerateSeed()).toEqual({
-    type: TOGGLE_GENERATE_SEED
-  });
-});
-
-test("nextState should send NEXT_STEP and call the API", async () => {
-  const dispatch = jest.fn();
-  const thunk = nextState({ data: 2 });
-  await thunk(dispatch);
-  expect(network).toHaveBeenCalledWith("/onboarding/next", "POST", { data: 2 });
-
-  expect(dispatch).toHaveBeenCalledWith({
-    type: NEXT_STEP
-  });
-});
-
-test("addSeedShard should send ADD_SEED_SHARD and the data", async () => {
-  const dispatch = jest.fn();
-  const thunk = addSeedShard({ data: true });
-
-  await thunk(dispatch);
-  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
-    data: true
-  });
-
-  expect(dispatch).toHaveBeenCalledWith({
-    type: ADD_SEED_SHARD,
-    data: { data: true }
-  });
-});
-
-test("toggleModalProfile should send TOGGLE_MODAL_PROFILE and the member", () => {
-  expect(toggleModalProfile({ data: true })).toEqual({
-    type: TOGGLE_MODAL_PROFILE,
-    member: { data: true }
-  });
-});
-
-test("addMember should send ADD_MEMBER and the member", async () => {
-  const dispatch = jest.fn();
-  const getState = () => ({ onboarding: { members: [] } });
-  const thunk = addMember({ pub_key: "test" });
-  await thunk(dispatch, getState);
-
-  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
-    pub_key: "test"
-  });
-  expect(dispatch).toHaveBeenCalledWith({
-    type: ADD_MEMBER,
-    member: { pub_key: "test" }
-  });
-});
-
-test("gotBootstrapChallenge should send GOT_BOOTSTRAP_CHALLENGE and the challenge", () => {
-  expect(gotBootstrapChallenge({ data: true })).toEqual({
-    type: GOT_BOOTSTRAP_CHALLENGE,
-    challenge: { data: true }
-  });
-});
-test("changeNbRequired should send CHANGE_NB_REQUIRED and the number", () => {
-  expect(changeNbRequired(2)).toEqual({
-    type: CHANGE_NB_REQUIRED,
+test("changeQuorum should send ONBOARDING_CHANGE_QUORUM and the step nb", () => {
+  expect(changeQuorum(2)).toEqual({
+    type: ONBOARDING_CHANGE_QUORUM,
     nb: 2
   });
 });
 
-test("viewRoute should send VIEW_ROUTE and the route", () => {
-  expect(viewRoute({ data: true })).toEqual({
-    type: VIEW_ROUTE,
-    route: { data: true }
+test("toggleDeviceModal should send ONBOARDING_TOGGLE_DEVICE_MODAL", () => {
+  expect(toggleDeviceModal()).toEqual({
+    type: ONBOARDING_TOGGLE_DEVICE_MODAL
   });
 });
 
-test("gotCommitChallenge should send GOT_COMMIT_CHALLENGE and the challenge", () => {
-  expect(gotCommitChallenge({ data: true })).toEqual({
-    type: GOT_COMMIT_CHALLENGE,
-    challenge: { data: true }
+test("toggleMemberModal should send ONBOARDING_TOGGLE_MEMBER_MODAL", () => {
+  expect(toggleMemberModal()).toEqual({
+    type: ONBOARDING_TOGGLE_MEMBER_MODAL
   });
 });
 
-test("getCommitChallenge should call the API then GOT_COMMIT_CHALLENGE", async () => {
-  network.mockImplementation(() => "challenge");
+test("getChallenge should call network", () => {
+  getChallenge();
+  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
+});
+
+test("authenticate should call network", () => {
+  const data = { test: 1 };
+  authenticate(data);
+  expect(network).toHaveBeenCalledWith(
+    "/onboarding/authenticate",
+    "POST",
+    data
+  );
+});
+
+test("nextState should call network and dispatch NEXT_STEP", async () => {
+  const data = { test: 1 };
   const dispatch = jest.fn();
-  const thunk = getCommitChallenge();
+  const thunk = nextState(data);
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/next", "POST", data);
+  expect(dispatch).toHaveBeenCalledWith({ type: NEXT_STEP });
+});
+
+test("openWrappingChannel should call network challenge and dispatch ONBOARDING_WRAPPING_CHANNEL", async () => {
+  const dispatch = jest.fn();
+  const thunk = openWrappingChannel();
+  network.mockImplementation(() => "wrapping");
+
   await thunk(dispatch);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
-
   expect(dispatch).toHaveBeenCalledWith({
-    type: GOT_COMMIT_CHALLENGE,
+    type: ONBOARDING_WRAPPING_CHANNEL,
+    wrapping: "wrapping"
+  });
+});
+
+test("addWrappingKey should call network authenticate and dispatch ONBOARDING_ADD_WRAP_KEY", async () => {
+  const data = { id: 1 };
+  const dispatch = jest.fn();
+  const thunk = addWrappingKey(data);
+  network.mockImplementation(() => "key");
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith(
+    "/onboarding/authenticate",
+    "POST",
+    data
+  );
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_ADD_WRAP_KEY,
+    add_wrap: "key"
+  });
+});
+
+test("getRegistrationChallenge should call network challenge and dispatch ONBOARDING_REGISTERING_CHALLENGE", async () => {
+  const dispatch = jest.fn();
+  const thunk = getRegistrationChallenge();
+  network.mockImplementation(() => ({ challenge: "challenge" }));
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_REGISTERING_CHALLENGE,
     challenge: "challenge"
   });
 });
 
-test("gotBootstrapToken dispatch GOT_BOOTSTRAP_TOKEN", () => {
-  expect(gotBootstrapToken("token")).toEqual({
-    type: GOT_BOOTSTRAP_TOKEN,
-    result: "token"
+test("addMember should NOT call network authenticate and dispatch ONBOARDING_ADD_ADMIN if already registered", async () => {
+  const data = { pub_key: "pubKey" };
+  const dispatch = jest.fn();
+  const getstate = () => ({
+    onboarding: { registering: { admins: [{ pub_key: "pubKey" }] } }
+  });
+  const thunk = addMember(data);
+
+  try {
+    await thunk(dispatch, getstate);
+  } catch (e) {
+    // console.error(e);
+    expect(dispatch).toHaveBeenCalledWith({
+      type: ADD_MESSAGE,
+      content: "Device already registered",
+      messageType: "error",
+      title: "Error"
+    });
+  }
+});
+
+test("addMember should call network authenticate and dispatch ONBOARDING_ADD_ADMIN", async () => {
+  network.mockImplementation(() => ({ admins: [] }));
+  const data = { id: 1 };
+  const dispatch = jest.fn();
+  const getstate = () => ({ onboarding: { registering: { admins: [] } } });
+  const thunk = addMember(data);
+
+  await thunk(dispatch, getstate);
+  expect(network).toHaveBeenCalledWith(
+    "/onboarding/authenticate",
+    "POST",
+    data
+  );
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_ADD_ADMIN,
+    admins: { admins: [] }
   });
 });
 
-// testing the reducer
-test("when SUCCESS_SEED_SHARDS reducer should set successSeedShards to true", () => {
-  const state = { successSeedShards: false };
-  expect(reducer(state, { type: SUCCESS_SEED_SHARDS })).toEqual({
-    successSeedShards: true
+test("getSigninChallenge should call network challenge and dispatch ONBOARDING_SIGNIN_CHALLENGE", async () => {
+  const dispatch = jest.fn();
+  const thunk = getSigninChallenge();
+  network.mockImplementation(() => "challenge");
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_SIGNIN_CHALLENGE,
+    challenge: "challenge"
   });
 });
 
-test("when SUCCESS_SEED_SHARDS reducer should set successSeedShards to true", () => {
-  const state = { successSeedShards: false };
-  expect(reducer(state, { type: SUCCESS_SEED_SHARDS })).toEqual({
-    successSeedShards: true
+test("addSignedin should NOT call network authenticate and dispatch ONBOARDING_ADD_SIGNEDIN if already signed", async () => {
+  const dispatch = jest.fn();
+  const getstate = () => ({
+    onboarding: { signin: { admins: ["PUBKEY"] } }
+  });
+  const thunk = addSignedIn("pubKey", "signature");
+
+  try {
+    await thunk(dispatch, getstate);
+  } catch (e) {
+    // console.error(e);
+    expect(dispatch).toHaveBeenCalledWith({
+      type: ADD_MESSAGE,
+      content: "This device has already been authenticated",
+      messageType: "error",
+      title: "Error"
+    });
+  }
+});
+
+test("addSignedIn should call network authenticate and dispatch ONBOARDING_ADD_SIGNEDIN", async () => {
+  const dispatch = jest.fn();
+  const getstate = () => ({ onboarding: { signin: { admins: [] } } });
+  const thunk = addSignedIn("pub_key", { rawResponse: "signature" });
+
+  await thunk(dispatch, getstate);
+  expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
+    pub_key: "PUB_KEY",
+    authentication: "signature"
+  });
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_ADD_SIGNEDIN,
+    data: {
+      pub_key: "PUB_KEY",
+      authentication: "signature"
+    }
   });
 });
 
-test("when COMMIT_ADMINISTRATORS reducer should set commited_administrators to true", () => {
-  const state = { committed_administrators: false };
-  expect(reducer(state, { type: COMMIT_ADMINISTRATORS })).toEqual({
-    committed_administrators: true
-  });
-});
-test("when CHANGE_NB_REQUIRED reducer should set nbRequired", () => {
-  const state = { nbRequired: 0, members: ["1", "2", "3"] };
-  expect(reducer(state, { type: CHANGE_NB_REQUIRED, nb: 2 })).toEqual({
-    nbRequired: 2,
-    members: ["1", "2", "3"]
-  });
-});
-test("when CHANGE_NB_REQUIRED reducer should not set nbRequired if it's sup to members.length", () => {
-  const state = { nbRequired: 3, members: ["1", "2", "3"] };
-  expect(reducer(state, { type: CHANGE_NB_REQUIRED, nb: 4 })).toEqual({
-    nbRequired: 3,
-    members: ["1", "2", "3"]
+test("openProvisionningChannel should call network challenge and dispatch ONBOARDING_MASTERSEED_CHANNEL", async () => {
+  const dispatch = jest.fn();
+  const thunk = openProvisionningChannel();
+  network.mockImplementation(() => "challenge");
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_MASTERSEED_CHANNEL,
+    wrapping: "challenge"
   });
 });
 
-test("when CHANGE_NB_REQUIRED reducer should not set nbRequired if it's 0", () => {
-  const state = { nbRequired: 1, members: ["1", "2", "3"] };
-  expect(reducer(state, { type: CHANGE_NB_REQUIRED, nb: 0 })).toEqual({
-    nbRequired: 1,
-    members: ["1", "2", "3"]
+test("addMasterSeedKey should call authenticate and ONBOARDING_ADD_MASTERSEED_KEY", async () => {
+  const data = { id: 1 };
+  const dispatch = jest.fn();
+  const thunk = addMasterSeedKey(data);
+  network.mockImplementation(() => "seed");
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith(
+    "/onboarding/authenticate",
+    "POST",
+    data
+  );
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_ADD_MASTERSEED_KEY,
+    add_seed: "seed"
   });
 });
 
-test("when TOGGLE_MODAL_PROFILE reducer should set modalProfile and editMember", () => {
-  const state = { modalProfile: false };
-  expect(
-    reducer(state, { type: TOGGLE_MODAL_PROFILE, member: { data: true } })
-  ).toEqual({
-    modalProfile: true,
-    editMember: { data: true }
+test("getState should call network state  and dispatch ONBOARDING_STATE", async () => {
+  const dispatch = jest.fn();
+  const thunk = getState();
+  network.mockImplementation(() => "state");
+
+  await thunk(dispatch);
+  expect(network).toHaveBeenCalledWith("/onboarding/state", "GET");
+  expect(dispatch).toHaveBeenCalledWith({
+    type: ONBOARDING_STATE,
+    state: "state"
   });
 });
 
-test("when ADD_SIGNEDIN reducer should add the signed", () => {
-  const state = { signed: [] };
-  expect(
-    reducer(state, {
-      type: ADD_SIGNEDIN,
-      data: { pub_key: "e", name: "edit" }
-    })
-  ).toEqual({
-    signed: [{ pub_key: "e", name: "edit" }]
+// reducer
+test("when ONBOARDING_TOGGLE_DEVICE_MODAL set device_modal to false/true", () => {
+  const state = { device_modal: false };
+  expect(reducer(state, { type: ONBOARDING_TOGGLE_DEVICE_MODAL })).toEqual({
+    device_modal: true
   });
 });
 
-test("when ADD_SIGNEDIN reducer should not add to signed if already", () => {
-  const state = { signed: [{ pub_key: "a" }] };
-  expect(
-    reducer(state, {
-      type: ADD_SIGNEDIN,
-      data: { pub_key: "a" }
-    })
-  ).toEqual({
-    signed: [{ pub_key: "a" }]
+test("when ONBOARDING_TOGGLE_MEMBER_MODAL set member_modal to false/true", () => {
+  const state = { member_modal: false };
+  expect(reducer(state, { type: ONBOARDING_TOGGLE_MEMBER_MODAL })).toEqual({
+    member_modal: true
   });
 });
 
-test("when GOT_BOOTSTRAP_CHALLENGE reducer should set bootstrapChallenge", () => {
-  const state = { bootstrapChallenge: null };
-  expect(
-    reducer(state, { type: GOT_BOOTSTRAP_CHALLENGE, challenge: "chal" })
-  ).toEqual({
-    bootstrapChallenge: "chal"
+test("when ONBOARDING_CHANGE_QUORUM set quorum", () => {
+  const admins = [1, 2];
+  const state = { quorum: 0, registering: { admins: admins } };
+  expect(reducer(state, { type: ONBOARDING_CHANGE_QUORUM, nb: 2 })).toEqual({
+    quorum: 2,
+    registering: {
+      admins: admins
+    }
   });
 });
 
-test("when GOT_BOOTSTRAP_TOKEN reducer should set bootstrapAuthToken", () => {
-  const state = { bootstrapAuthToken: null };
-  expect(
-    reducer(state, { type: GOT_BOOTSTRAP_TOKEN, result: "token" })
-  ).toEqual({
-    bootstrapAuthToken: "token"
-  });
-});
-
-test("when GOT_CHALLENGE_REGISTRATION reducer sould set the challenge_registration", () => {
-  const state = { challenge_registration: null };
-  expect(
-    reducer(state, { type: GOT_CHALLENGE_REGISTRATION, challenge: "cha" })
-  ).toEqual({
-    challenge_registration: "cha",
-    isLoadingChallengeRegistration: false
-  });
-});
-
-test("when TOGGLE_GENERATE_SEED reducer should set generateSeedModal to true", () => {
-  const state = { generateSeedModal: false };
-  expect(reducer(state, { type: TOGGLE_GENERATE_SEED })).toEqual({
-    generateSeedModal: true
-  });
-});
-test("when EDIT_MEMBER reducer should edit the correct member in state.members", () => {
-  const state = { members: [{ pub_key: "e" }, { pub_key: "d" }] };
-  expect(
-    reducer(state, {
-      type: EDIT_MEMBER,
-      member: { pub_key: "e", name: "edit" }
-    })
-  ).toEqual({
-    members: [{ pub_key: "e", name: "edit" }, { pub_key: "d" }]
-  });
-});
-
-test("when ADD_SEED_SHARD reducer should add the seed the shards", () => {
-  const state = { shards: ["shard1"] };
-  expect(reducer(state, { type: ADD_SEED_SHARD, data: "shard2" })).toEqual({
-    shards: ["shard1", "shard2"]
+test("when ONBOARDING_CHANGE_QUORUM do not set quorum if too large", () => {
+  const admins = [1, 2];
+  const state = { quorum: 0, registering: { admins: admins } };
+  expect(reducer(state, { type: ONBOARDING_CHANGE_QUORUM, nb: 3 })).toEqual({
+    quorum: 0,
+    registering: {
+      admins: admins
+    }
   });
 });

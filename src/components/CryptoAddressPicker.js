@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
-import Input, { InputAdornment } from "material-ui/Input";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import QRCodeCameraPickerBubble from "./QRCodeCameraPickerBubble";
 
 class CryptoAddressPicker extends Component<{
@@ -9,7 +10,7 @@ class CryptoAddressPicker extends Component<{
   isValid: boolean,
   onChange: string => void
 }> {
-  onChange = (e: SyntheticEvent<HTMLInputElement>) => {
+  onChange = (e: any) => {
     this.props.onChange(e.currentTarget.value.trim());
   };
   render() {

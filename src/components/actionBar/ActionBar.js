@@ -1,7 +1,8 @@
 //@flow
-import React, { Component, PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Route } from "react-router";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
+import React, { Component } from "react";
+// import { Route } from "react-router";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
@@ -9,14 +10,12 @@ import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
 import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Plus from "../icons/full/Plus";
 // import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Question from "../icons/full/Question";
-import logo from "assets/img/logo.png";
-import logo2x from "assets/img/logo@2x.png";
-import logo3x from "assets/img/logo@3x.png";
+import Logo from "components/Logo";
 
 const styles = {
   base: {
@@ -28,13 +27,6 @@ const styles = {
   header: {
     marginLeft: "280px",
     padding: "54px 38px 0 0"
-  },
-  logo: {
-    width: 100,
-    overflow: "hidden",
-    "& > img": {
-      transform: "translateX(-32px)"
-    }
   },
   header_left: {
     float: "left"
@@ -64,39 +56,14 @@ const styles = {
   }
 };
 
-const NewAccountLink = withStyles(styles)(({ classes }) => (
-  <Link to={`dashboard/new-account`}>
-    <Plus className={classes.icon} />
-    <div>account</div>
-  </Link>
-));
-
-class Logo extends PureComponent<*> {
-  render() {
-    return (
-      <img
-        src={logo}
-        srcSet={`${logo2x} 2x, ${logo3x} 3x`}
-        alt="Ledger Vault logo"
-      />
-    );
-  }
-}
 class ActionBar extends Component<{
   location: Object,
   match: Object,
+  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
-  static contextTypes = {
-    translate: PropTypes.func.isRequired
-  };
-  context: {
-    translate: string => string
-  };
   render() {
-    const { location, classes, match } = this.props;
-    // FIXME introduce a component for i18n
-    const t = this.context.translate;
+    const { location, classes, match, t } = this.props;
 
     return (
       <div className={classes.base}>
@@ -109,27 +76,19 @@ class ActionBar extends Component<{
         />
         <div className={classes.header}>
           <div className={classes.header_left}>
-            <div className={classes.logo}>
-              <Logo />
-            </div>
+            <Logo white />
           </div>
           <div className={classes.actions}>
-            <Route
-              path={`${match.url}/dashboard`}
-              render={() => <NewAccountLink />}
-            />
-            {/* <Link to="/export"> */}
-            {/*   <Share className={classes.icon} /> */}
-            {/*   <div className="content-header-button-text"> */}
-            {/*     {t("actionBar.export")} */}
-            {/*   </div> */}
-            {/* </Link> */}
+            <Link to={`${location.pathname}/new-account`}>
+              <Plus className={classes.icon} />
+              <div>account</div>
+            </Link>
             <Link
               to={location.pathname + "/settings"}
               className="content-header-button"
             >
               <Settings className={classes.icon} />
-              <div>{t("actionBar.settings")}</div>
+              <div>{t("actionBar:settings")}</div>
             </Link>
             <ActivityCard match={match} />
             <a href="http://alpha.vault.ledger.fr:81/">
@@ -143,4 +102,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withStyles(styles)(ActionBar);
+export default withStyles(styles)(translate()(ActionBar));

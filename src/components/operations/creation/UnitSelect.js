@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from "react";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import cx from "classnames";
 import type { Unit } from "data/types";
 import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   select: {

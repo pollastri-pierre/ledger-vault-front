@@ -1,18 +1,14 @@
 //@flow
 import React from "react";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import { Title, Introduction, SubTitle } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
-import { withStyles } from "material-ui/styles";
-import { Requirement } from "./Requirements";
+import { withStyles } from "@material-ui/core/styles";
+import { RequirementUnit } from "./Requirements";
 import People from "components/icons/thin/People.js";
-import Box from "components/icons/thin/Box.js";
 import Briefcase from "components/icons/thin/Briefcase.js";
 
 const styles = {
@@ -32,7 +28,7 @@ const styles = {
       width: 1,
       height: 80,
       background: "#eeeeee",
-      left: -50,
+      left: -39,
       top: 30
     }
   },
@@ -41,61 +37,56 @@ const styles = {
   }
 };
 const PrerequisiteSeed = ({
-  classes
+  classes,
+  t
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  t: Translate
 }) => {
   return (
     <div>
-      <Title>Prerequisite</Title>
+      <Title>{t("onboarding:master_seed_prerequisite.title")}</Title>
       <Introduction>
-        These final steps will generate your company’s master seed that is
-        shared among 3 owners. It is a critical piece of information from which
-        all your accounts will be created. Shared owners are not team members
-        and will not be able to access the Ledger Vault.
+        {t("onboarding:master_seed_prerequisite.description")}
       </Introduction>
       <div className={classes.requirements}>
         <div>
-          <SubTitle>required</SubTitle>
+          <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <Requirement icon={<Briefcase style={{ height: 29 }} />}>
-              <div style={{ width: 96 }}>Ledger Vault Briefcase</div>
-            </Requirement>
-            <Requirement
+            <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
+              <div style={{ width: 96 }}>{t("onboarding:vault_briefcase")}</div>
+            </RequirementUnit>
+            <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              3 shared owners
-            </Requirement>
+              <div>{t("onboarding:shared_owners")}</div>
+            </RequirementUnit>
           </div>
         </div>
         <div className={classes.notrequired}>
-          <SubTitle>Not required</SubTitle>
+          <SubTitle>{t("onboarding:not_required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <Requirement icon={<Box style={{ height: 29 }} />}>
-              Box of Ledger Blue devices
-            </Requirement>
-            <Requirement
+            <div style={{ marginRight: 22 }}>
+              <RequirementUnit
+                icon={<People color="#cccccc" style={{ height: 29 }} />}
+              >
+                <div>{t("onboarding:administrators")}</div>
+              </RequirementUnit>
+            </div>
+            <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              Team members
-            </Requirement>
+              <div>{t("onboarding:wkey_custodians")}</div>
+            </RequirementUnit>
           </div>
         </div>
       </div>
-      <SubTitle>To Continue</SubTitle>
-      <ToContinue>
-        Gather all 3 shared owners that will be part of the master seed
-        provisionning. Give one Ledger Blue box and one Ledger Cryptosteel to
-        each shared owner and ask them to take possession of the devices and
-        their recovery sheets.
-      </ToContinue>
       <Footer
-        isBack={false}
-        render={(onPrev, onNext) => (
+        render={onNext => (
           <DialogButton highlight onTouchTap={onNext}>
-            Continue
+            {t("commom:continue")}
           </DialogButton>
         )}
       />
@@ -103,4 +94,4 @@ const PrerequisiteSeed = ({
   );
 };
 
-export default withStyles(styles)(PrerequisiteSeed);
+export default withStyles(styles)(translate()(PrerequisiteSeed));

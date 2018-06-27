@@ -5,10 +5,10 @@ import { DialogButton } from "../../";
 import EnableForm from "components/EnableForm";
 import InfoModal from "../../InfoModal";
 import InputTextWithUnity from "components/InputTextWithUnity";
-import { MenuItem } from "material-ui/Menu";
-import Select from "material-ui/Select";
+import { MenuItem } from "@material-ui/core/Menu";
+import Select from "@material-ui/core/Select";
 import { addMessage } from "redux/modules/alerts";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
 const frequencies = [
@@ -17,7 +17,7 @@ const frequencies = [
   { title: "day", key: 84600 }
 ];
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });

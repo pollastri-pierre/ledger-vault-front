@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import classNames from "classnames";
-import Select from "material-ui/Select";
+import Select from "@material-ui/core/Select";
 import BlueSelectRenderValue from "./BlueSelectRenderValue";
 
 class BlueSelect extends Component<{

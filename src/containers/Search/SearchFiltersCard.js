@@ -1,10 +1,10 @@
 //@flow
 import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import { withStyles } from "material-ui/styles";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
 import Card from "components/Card";
 import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
+import { MenuItem } from "@material-ui/core/Menu";
 import AccountName from "components/AccountName";
 import AccountMenuItem from "components/AccountMenuItem";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
@@ -85,17 +85,19 @@ class SearchFiltersCard extends Component<{
                 return null;
               }}
             >
-              <MenuItem disableRipple value="">
-                All
-              </MenuItem>
-              {accounts.map(account => (
-                <AccountMenuItem
-                  disableRipple
-                  key={account.id}
-                  value={account.id}
-                  account={account}
-                />
-              ))}
+              <div>
+                <MenuItem disableRipple value="">
+                  All
+                </MenuItem>
+                {accounts.map(account => (
+                  <AccountMenuItem
+                    disableRipple
+                    key={account.id}
+                    value={account.id}
+                    account={account}
+                  />
+                ))}
+              </div>
             </Select>
           </label>
 
@@ -108,23 +110,25 @@ class SearchFiltersCard extends Component<{
               fullWidth
               renderValue={currencyName => currencyName || "All"}
             >
-              <MenuItem
-                className={classes.menuItemCurrency}
-                disableRipple
-                value=""
-              >
-                <span>All</span>
-              </MenuItem>
-              {currencies.map(currency => (
+              <div>
                 <MenuItem
-                  disableRipple
-                  key={currency.name}
-                  value={currency.name}
                   className={classes.menuItemCurrency}
+                  disableRipple
+                  value=""
                 >
-                  <span>{currency.name}</span>
+                  <span>All</span>
                 </MenuItem>
-              ))}
+                {currencies.map(currency => (
+                  <MenuItem
+                    disableRipple
+                    key={currency.name}
+                    value={currency.name}
+                    className={classes.menuItemCurrency}
+                  >
+                    <span>{currency.name}</span>
+                  </MenuItem>
+                ))}
+              </div>
             </Select>
           </label>
         </div>

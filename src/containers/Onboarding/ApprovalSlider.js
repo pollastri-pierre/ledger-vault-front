@@ -1,7 +1,9 @@
 //@flow
 import React from "react";
 import cx from "classnames";
-import { withStyles } from "material-ui/styles";
+import type { Translate } from "data/types";
+import { translate, Interpolate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
 import Arrow from "../../components/icons/full/ArrowDown.js";
 
 const styles = {
@@ -55,18 +57,30 @@ const ApprovalSlider = ({
   classes,
   number,
   total,
-  onChange
+  onChange,
+  t
 }: {
   classes: { [$Keys<typeof styles>]: string },
   number: number,
   total: number,
-  onChange: number => void
+  onChange: number => void,
+  t: Translate
 }) => {
   return (
     <div className={classes.base}>
       <div className={classes.flex}>
-        <span className={classes.bold}>Require {number} approvals</span>
-        <span className={classes.out}>out of {total} administrators</span>
+        <span className={classes.bold}>
+          <Interpolate
+            i18nKey="onboarding:administrators_scheme.nb_required"
+            count={number}
+          />
+        </span>
+        <span className={classes.out}>
+          <Interpolate
+            i18nKey="onboarding:administrators_scheme.out_of"
+            total={total}
+          />
+        </span>
       </div>
       <div className={classes.bars}>
         {Array(total)
@@ -86,10 +100,11 @@ const ApprovalSlider = ({
       </div>
       <div className={classes.flex}>
         <span className={classes.require} onClick={() => onChange(number - 1)}>
-          <Arrow className={classes.left} />require less
+          <Arrow className={classes.left} />
+          {t("onboarding:administrators_scheme.require_less")}
         </span>
         <span className={classes.require} onClick={() => onChange(number + 1)}>
-          require more
+          {t("onboarding:administrators_scheme.require_more")}
           <Arrow className={classes.right} />
         </span>
       </div>
@@ -97,4 +112,4 @@ const ApprovalSlider = ({
   );
 };
 
-export default withStyles(styles)(ApprovalSlider);
+export default withStyles(styles)(translate()(ApprovalSlider));

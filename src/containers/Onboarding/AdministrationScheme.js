@@ -1,12 +1,9 @@
 //@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import { connect } from "react-redux";
-import {
-  Title,
-  Introduction,
-  SubTitle,
-  ToContinue
-} from "components/Onboarding";
+import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -15,7 +12,7 @@ import ApprovalSlider from "./ApprovalSlider.js";
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
-const mapDispatch = dispatch => ({
+const mapDispatch = (dispatch: *) => ({
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
@@ -24,35 +21,28 @@ const AdministrationScheme = ({
   total,
   onChange,
   onboarding,
-  onAddMessage
+  onAddMessage,
+  t
 }: {
   number: number,
   total: number,
   onChange: Function,
   onAddMessage: Function,
-  onboarding: Object
+  onboarding: Object,
+  t: Translate
 }) => {
   return (
     <div>
-      <Title>Administration scheme</Title>
+      <Title>{t("onboarding:administrators_scheme.title")}</Title>
       <Introduction>
-        This step lets you specify the administration scheme of your company. It
-        defines the number of approvals to collect from all registered
-        administrators to allow sensitive actions.
+        {t("onboarding:administrators_scheme.description")}
       </Introduction>
       <ApprovalSlider number={number} total={total} onChange={onChange} />
-      <SubTitle>To continue</SubTitle>
-      <ToContinue>
-        Make sure to define an administration scheme that your team will be able
-        to satisfy. Ledger Vault allows you to require less approvals than the
-        number of administrators in your team.
-      </ToContinue>
       <Footer
         nextState
-        render={(onPrev, onNext) => {
+        render={onNext => {
           const onclick = async () => {
             try {
-              // TODO handle admin in backend
               onNext({ quorum: parseInt(number, 10) });
             } catch (e) {
               onAddMessage(
@@ -66,9 +56,9 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.nbRequired < 2}
+              disabled={onboarding.quorum < 2}
             >
-              Continue
+              {t("common:continue")}
             </DialogButton>
           );
         }}
@@ -77,4 +67,6 @@ const AdministrationScheme = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatch)(AdministrationScheme);
+export default connect(mapStateToProps, mapDispatch)(
+  translate()(AdministrationScheme)
+);

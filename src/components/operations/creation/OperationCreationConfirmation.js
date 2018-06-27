@@ -1,6 +1,6 @@
 //@flow
 import React from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
@@ -9,24 +9,24 @@ import type { Account } from "data/types";
 
 const styles = {
   root: {
-    padding: "0 40px",
+    padding: "0 40px"
   },
   warningMsg: {
     fontSize: 11,
     color: "#767676",
     lineHeight: 1.82,
-    marginTop: 30,
-  },
+    marginTop: 30
+  }
 };
 
 function OperationCreationConfirmation(props: {
   details: {
     amount: number,
     fees: number,
-    address: string,
+    address: string
   },
   account: Account,
-  classes: { [_: $Keys<typeof styles>]: string },
+  classes: { [_: $Keys<typeof styles>]: string }
 }) {
   const { details, account, classes } = props;
   return (
@@ -35,22 +35,21 @@ function OperationCreationConfirmation(props: {
         hash={details.address}
         amount={details.amount}
         account={account}
-        rate={account.currencyRate}
       />
       <div>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="confirmation fees">
-          <Amount account={account} value={details.fees} rate={account.currencyRate} />
+          <Amount account={account} value={details.fees} />
         </LineRow>
         <LineRow label="Total spent">
-          <Amount account={account} value={details.amount} rate={account.currencyRate} strong />
+          <Amount account={account} value={details.amount} strong />
         </LineRow>
       </div>
       <div className={classes.warningMsg}>
-        A new operation request will be created. Funds will not be spent until the security scheme
-        of the account is satisfied
+        A new operation request will be created. Funds will not be spent until
+        the security scheme of the account is satisfied
       </div>
     </div>
   );

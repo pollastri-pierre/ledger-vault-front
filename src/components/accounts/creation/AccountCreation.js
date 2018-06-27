@@ -43,7 +43,7 @@ type Props = {
 };
 
 class AccountCreation extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.props.onClearState();
   }
 
@@ -75,7 +75,7 @@ class AccountCreation extends Component<Props> {
 
     const data = {
       name: account.name,
-      currency: account.currency.name,
+      currency: account.currency.id,
       security_scheme: securityScheme,
       members: approvers
     };
@@ -170,7 +170,7 @@ const mapStateToProps = state => ({
   accountCreation: state.accountCreation
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: *) => ({
   onAddMember: m => dispatch(addMember(m)),
   onSetApprovals: n => dispatch(setApprovals(n)),
   onSetTimelock: timelock => dispatch(setTimelock(timelock)),

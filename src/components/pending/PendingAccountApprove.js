@@ -2,12 +2,14 @@
 import React from "react";
 import groupBy from "lodash/groupBy";
 import size from "lodash/size";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 import type { Account, Member } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";
@@ -18,13 +20,26 @@ type Props = {
   approvers: Member[],
   quorum: Number,
   user: Member,
+  t: Translate,
   match: *,
   classes: Object
 };
 function PendingAccountApprove(props: Props) {
-  const { accounts, approved, approvers, user, classes, match, quorum } = props;
+  const {
+    accounts,
+    approved,
+    approvers,
+    user,
+    classes,
+    match,
+    quorum,
+    t
+  } = props;
   if (accounts.length === 0) {
-    return <p>There are no accounts to approve</p>;
+    if (approved) {
+      return <p>{t("pending:accounts.watch.no_data")}</p>;
+    }
+    return <p>{t("pending:accounts.approve.no_data")}</p>;
   }
 
   const nbCurrencies = size(
@@ -82,4 +97,6 @@ function PendingAccountApprove(props: Props) {
   );
 }
 
-export default withStyles(styles)(withRouter(PendingAccountApprove));
+export default withStyles(styles)(
+  withRouter(translate()(PendingAccountApprove))
+);

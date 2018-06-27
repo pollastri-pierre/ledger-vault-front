@@ -1,9 +1,9 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import classnames from "classnames";
 
-import type { ActivityCommon } from "data/types";
+import type { ActivityGeneric } from "data/types";
 import colors from "shared/colors";
 
 import ActivityLine from "../ActivityLine";
@@ -88,7 +88,7 @@ const styles = {
 
 class ActivityList extends Component<
   {
-    activities: ActivityCommon[],
+    activities: ActivityGeneric[],
     unseenActivityCount: number,
     markAsSeenRequest: Function,
     clearAllRequest: Function,

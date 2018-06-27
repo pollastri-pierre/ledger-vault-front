@@ -19,13 +19,21 @@ type Props = {
 };
 type State = {
   step: number,
-  data: *
+  data: any
 };
 
 class AddMember extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { step: 0, data: {} };
+    this.state = {
+      step: 0,
+      data: {
+        email: props.member ? props.member.email : "",
+        first_name: props.member ? props.member.first_name : "",
+        last_name: props.member ? props.member.last_name : "",
+        picture: props.member ? props.member.picture : ""
+      }
+    };
   }
   next = (data: *) => {
     // we are editing a member, no need to register device again
@@ -33,10 +41,10 @@ class AddMember extends Component<Props, State> {
       // TODO modify member in store redux and call the API too
       const newMember = {
         ...this.props.member,
-        email: data.email.value,
-        first_name: data.first_name.value,
-        last_name: data.last_name.value,
-        picture: data.picture.value
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        picture: data.picture
       };
       const { setAlert } = this.props;
       const promise = this.props.editMember(newMember);
@@ -64,14 +72,7 @@ class AddMember extends Component<Props, State> {
 
   render() {
     let label = "Continue";
-    let profile = {
-      first_name: "",
-      last_name: "",
-      email: "",
-      picture: null
-    };
     if (this.props.member) {
-      profile = this.props.member;
       label = "save";
     }
 
@@ -81,7 +82,7 @@ class AddMember extends Component<Props, State> {
       return (
         <EditProfile
           title="Add new member"
-          profile={profile}
+          profile={this.state.data}
           onSubmit={this.next}
           close={this.props.close}
           labelSubmit={label}

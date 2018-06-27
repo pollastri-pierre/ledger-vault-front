@@ -1,13 +1,13 @@
 //@flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import { MenuList } from "material-ui/Menu";
+import MenuList from "@material-ui/core/MenuList";
 import MenuLink from "../MenuLink";
 
-import { listCurrencies } from "@ledgerhq/currencies";
-const allCurrencies = listCurrencies();
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+const allCurrencies = listCryptoCurrencies(true);
 
 const styles = {
   item: {
@@ -45,7 +45,7 @@ class AccountsMenu extends Component<{
           const curr = allCurrencies.find(
             c => c.scheme === account.currency.name
           ) || {
-            color: ""
+            color: "black"
           };
           const unit = account.currency.units.reduce(
             (prev, current) =>

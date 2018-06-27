@@ -9,6 +9,8 @@ import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import createDevice, {
   U2F_PATH,
   VALIDATION_PATH,
+  ACCOUNT_MANAGER_SESSION,
+  MATCHER_SESSION,
   CONFIDENTIALITY_PATH
 } from "device";
 
@@ -74,7 +76,8 @@ class EntityApprove extends Component<Props, State> {
       await device.openSession(
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
-        Buffer.from(certificate_attestation, "base64")
+        Buffer.from(certificate_attestation, "base64"),
+        entity === "account" ? ACCOUNT_MANAGER_SESSION : MATCHER_SESSION
       );
       const approval = await device.validateVaultOperation(
         VALIDATION_PATH,

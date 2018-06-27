@@ -1,7 +1,9 @@
 //@flow
 import React from "react";
 import { Title } from "components/Onboarding";
-import { withStyles } from "material-ui/styles";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
 import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People.js";
 import Lock from "components/icons/thin/Lock";
@@ -31,7 +33,6 @@ const styles = {
   },
   sumary: {
     display: "flex",
-    width: 300,
     margin: "auto"
   },
   info: {
@@ -44,16 +45,18 @@ const ConfirmationGlobal = ({
   classes,
   onboarding,
   match,
-  history
+  history,
+  t
 }: {
   classes: { [$Keys<typeof styles>]: string },
   match: *,
   history: *,
-  onboarding: *
+  onboarding: *,
+  t: Translate
 }) => {
   return (
     <div>
-      <Title>Confirmation</Title>
+      <Title>{t("onboarding:confirmation.title")}</Title>
       <div>
         <div className={classes.base}>
           <div>
@@ -61,8 +64,8 @@ const ConfirmationGlobal = ({
               <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
             </div>
           </div>
-          <strong>Your team’s Ledger Vault is now configured.</strong>
-          <p>Team members are now able to sign-in.</p>
+          <strong>{t("onboarding:confirmation.description")}</strong>
+          <p>{t("onboarding:confirmation.members_can_signin")}</p>
         </div>
         <div className={classes.sep} />
         <div className={classes.sumary}>
@@ -76,25 +79,33 @@ const ConfirmationGlobal = ({
             <div style={{ marginBottom: 12 }}>
               <People color="#cccccc" style={{ height: 29 }} />
             </div>
-            {onboarding.members.length} team members
+            3 Wrapping Keys Custodians
+          </div>
+          <div className={classes.info}>
+            <div style={{ marginBottom: 12 }}>
+              <People color="#cccccc" style={{ height: 29 }} />
+            </div>
+            {onboarding.registering.admins.length}{" "}
+            {t("onboarding:team_members")}
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>
               <Lock />
             </div>
-            {onboarding.nbRequired}/{onboarding.members.length} administration
-            scheme
+            {onboarding.quorum}/{onboarding.registering.admins.length}{" "}
+            {t("onboarding:confirmation.scheme")}
           </div>
         </div>
       </div>
       <Footer
-        isBack={false}
         render={() => (
           <DialogButton
             highlight
-            onTouchTap={() => history.push(`/${match.params.orga_name}`)}
+            onTouchTap={() => {
+              history.push(`/${match.params.orga_name}`);
+            }}
           >
-            Continue
+            {t("common:continue")}
           </DialogButton>
         )}
       />
@@ -107,5 +118,5 @@ const mapProps = state => ({
 });
 
 export default connect(mapProps, () => ({}))(
-  withStyles(styles)(ConfirmationGlobal)
+  withStyles(styles)(translate()(ConfirmationGlobal))
 );

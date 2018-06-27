@@ -6,7 +6,7 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import { getPendingsOperations } from "utils/operations";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import colors from "shared/colors";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

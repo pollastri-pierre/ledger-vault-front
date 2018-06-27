@@ -1,8 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
-import { countervalueForRate, getAccountCurrencyUnit } from "data/currency";
-import type { Account, Rate, TransactionType } from "data/types";
+import { getAccountCurrencyUnit } from "data/currency";
+import type { Account, TransactionType } from "data/types";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
@@ -14,17 +14,12 @@ class CurrencyAccountValue extends Component<{
   value: number,
   // always show a sign in front of the value (force a "+" to display for positives)
   alwaysShowSign?: boolean,
-  // if true, display the countervalue instead of the actual crypto currency
-  countervalue?: boolean,
   // override the rate to use (default is the account.currentRate)
-  rate?: Rate,
   type?: TransactionType
 }> {
   render() {
-    const { account, countervalue, value, rate, type, ...rest } = this.props;
-    let unitValue = countervalue
-      ? countervalueForRate(rate || account.currencyRate, value)
-      : { value, unit: getAccountCurrencyUnit(account) };
+    const { account, value, type, ...rest } = this.props;
+    let unitValue = { value, unit: getAccountCurrencyUnit(account) };
     return <CurrencyUnitValue {...rest} {...unitValue} type={type} />;
   }
 }

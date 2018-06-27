@@ -5,12 +5,11 @@
 [libs]
 flow-typed
 node_modules/jss/flow-typed
-./webpack-flow.js 
+./webpack-flow.js
 
 
 [lints]
 
 [options]
-unsafe.enable_getters_and_setters=true
 module.system.node.resolve_dirname=node_modules
 module.system.node.resolve_dirname=src

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import colors from "shared/colors";
 import classnames from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 // TODO: this probably shouldn't be a <button>, there are cases we would use a <Link> in children instead of a onTouchTap ?
 // TODO i kinda prefer "action" instead of "onTouchTap"
@@ -127,7 +127,7 @@ class DialogButton extends Component<*, *> {
         disabled={
           this.props.disabled ? this.props.disabled : this.state.pending
         }
-        onTouchTap={onTouchTap ? this.onClick : null}
+        onClick={onTouchTap ? this.onClick : null}
       >
         {this.props.children}
       </button>

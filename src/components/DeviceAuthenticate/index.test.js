@@ -45,27 +45,21 @@ test("should call API and device", async () => {
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
 
   expect(network).toHaveBeenCalledWith(
-    "/authentications/PUBKEY/challenge",
+    "/authentications/PUBKEY/sensitive/challenge",
     "GET"
   );
 
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    Buffer.from("key_handle", "base64"),
-    "",
-    "",
-    "",
-    ""
+    Buffer.from("key_handle", "base64")
   );
 
-  expect(network).toHaveBeenCalledWith(
-    "/authentications/admin/authenticate",
-    "POST",
-    {
-      pub_key: "PUBKEY",
-      authentication: "raw"
-    }
-  );
+  expect(
+    network
+  ).toHaveBeenCalledWith("/authentications/sensitive/authenticate", "POST", {
+    pub_key: "PUBKEY",
+    authentication: "raw"
+  });
   expect(props.callback).toHaveBeenCalled();
 });

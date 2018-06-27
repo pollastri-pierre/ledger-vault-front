@@ -2,7 +2,7 @@
 import React, { PureComponent } from "react";
 import SpinnerCard from "../spinners/SpinnerCard";
 import cx from "classnames";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {

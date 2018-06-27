@@ -1,16 +1,16 @@
 //@flow
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import ArrowDown from "./icons/full/ArrowDown";
 
 const styles = _theme => ({
   root: {
-    color: "black",
+    color: "black"
   },
   arrowDown: {
     marginLeft: 10,
-    width: 11,
-  },
+    width: 11
+  }
 });
 
 class BlueSelectRightRenderValue extends Component<*> {

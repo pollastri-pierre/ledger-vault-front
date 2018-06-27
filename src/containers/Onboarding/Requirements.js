@@ -1,17 +1,66 @@
 //@flow
 import React from "react";
-import { withStyles } from "material-ui/styles";
+import colors from "shared/colors";
+import cx from "classnames";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
+import Cryptosteel from "components/icons/thin/Cryptosteel";
 import People from "../../components/icons/thin/People";
-import Plug from "../../components/icons/thin/Plug";
 import Briefcase from "components/icons/thin/Briefcase";
-import Box from "components/icons/thin/Box";
+import RecoverySheet from "components/icons/thin/RecoverySheet";
 
+const blue = {
+  base: {
+    border: "2px solid",
+    borderRadius: 2,
+    height: 33,
+    padding: 1,
+    width: 25,
+    marginBottom: 5
+  },
+  inner: {
+    border: "1px solid #cccccc",
+    background: "#fbfbfb",
+    height: "100%"
+  },
+  red: {
+    borderColor: colors.blue_red
+  },
+  green: {
+    borderColor: colors.blue_green
+  },
+  orange: {
+    borderColor: colors.blue_orange
+  }
+};
+export const BlueDevice = withStyles(blue)(({ classes, color }) => (
+  <div
+    className={cx(classes.base, {
+      [classes.red]: color === "red",
+      [classes.orange]: color === "orange",
+      [classes.green]: color === "green"
+    })}
+  >
+    <div
+      className={cx(classes.inner, {
+        [classes.red]: color === "red",
+        [classes.orange]: color === "orange",
+        [classes.green]: color === "green"
+      })}
+    />
+  </div>
+));
 const styles = {
   base: {
-    display: "flex",
     marginBottom: 40,
     fontSize: 11,
     lineHeight: 1.82
+  },
+  row: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 13
   }
 };
 
@@ -19,16 +68,17 @@ const requirement = {
   base: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
-    maxWidth: 115
+    textAlign: "center",
+    maxWidth: 110
   },
   icon: {
-    marginBottom: 10,
+    marginBottom: 2,
     height: 31,
-    display: "flex"
+    display: "flex",
+    justifyContent: "center"
   }
 };
-export const Requirement = withStyles(
+export const RequirementUnit = withStyles(
   requirement
 )(
   ({
@@ -50,27 +100,52 @@ export const Requirement = withStyles(
   }
 );
 const Requirements = ({
-  classes
+  classes,
+  t
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
+  t: Translate
 }) => (
   <div className={classes.base}>
-    <Requirement icon={<Briefcase style={{ height: 29 }} />}>
-      Ledger Vault briefcase
-    </Requirement>
-    <Requirement icon={<Box style={{ height: 26 }} />}>
-      Box of Ledger Blue devices
-    </Requirement>
-    <Requirement icon={<Plug color="#cccccc" style={{ height: 20 }} />}>
-      One-time authenticator
-    </Requirement>
-    <Requirement icon={<People color="#cccccc" style={{ height: 29 }} />}>
-      3 shared owners
-    </Requirement>
-    <Requirement icon={<People style={{ height: 29 }} color="#cccccc" />}>
-      3+ team members
-    </Requirement>
+    <div className={classes.row}>
+      <RequirementUnit icon={<Briefcase style={{ height: 25 }} />}>
+        {t("onboarding:vault_briefcase")}
+      </RequirementUnit>
+      <RequirementUnit icon={<Cryptosteel style={{ marginLeft: 37 }} />}>
+        {t("onboarding:nb_cryptosteels")}
+      </RequirementUnit>
+      <RequirementUnit icon={<RecoverySheet style={{ height: 25 }} />}>
+        {t("onboarding:nb_recovery_sheets")}
+      </RequirementUnit>
+    </div>
+    <div className={classes.row}>
+      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+        {t("onboarding:wkey_custodians")}
+      </RequirementUnit>
+      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+        {t("onboarding:shared_owners")}
+      </RequirementUnit>
+      <RequirementUnit icon={<People style={{ height: 25 }} color="#cccccc" />}>
+        {t("onboarding:team_members")}
+      </RequirementUnit>
+    </div>
+
+    <div className={classes.row}>
+      <RequirementUnit icon={<BlueDevice color="red" style={{ height: 25 }} />}>
+        {t("onboarding:blue_red")}
+      </RequirementUnit>
+      <RequirementUnit
+        icon={<BlueDevice style={{ height: 25 }} color="orange" />}
+      >
+        <div>{t("onboarding:blue_orange")}</div>
+      </RequirementUnit>
+      <RequirementUnit
+        icon={<BlueDevice style={{ height: 25 }} color="green" />}
+      >
+        {t("onboarding:blue_green")}
+      </RequirementUnit>
+    </div>
   </div>
 );
 
-export default withStyles(styles)(Requirements);
+export default withStyles(styles)(translate()(Requirements));

@@ -1,8 +1,10 @@
 //@flow
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-import Dialog, { withMobileDialog } from "material-ui/Dialog";
-import Slide from "material-ui/transitions/Slide";
+import Dialog from "@material-ui/core/Dialog";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
+
+import Slide from "@material-ui/core/Slide";
 
 let blurredCache = false;
 function setBlurState(blurred: boolean) {
@@ -24,9 +26,7 @@ function Transition(props) {
 }
 
 const styles = { paper: { maxWidth: "none" } };
-const CustomDialog = withStyles(styles)(
-  withMobileDialog({ breakpoint: "xs" })(Dialog)
-);
+const CustomDialog = withStyles(styles)(withMobileDialog()(Dialog));
 
 class BlurDialog extends Component<{
   open: boolean
@@ -46,7 +46,7 @@ class BlurDialog extends Component<{
   componentWillUnmount() {
     this.setActive(false);
   }
-  componentWillReceiveProps(props: *) {
+  UNSAFE_componentWillUpdate(props: *) {
     this.setActive(props.open);
   }
   render() {
@@ -54,7 +54,7 @@ class BlurDialog extends Component<{
     return (
       <CustomDialog
         {...props}
-        transition={Transition}
+        TransitionComponent={Transition}
         transitionDuration={200}
       />
     );

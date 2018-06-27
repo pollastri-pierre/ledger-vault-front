@@ -1,20 +1,18 @@
 //@flow
 import React, { Component } from "react";
+import { translate } from "react-i18next";
 import { Alert } from "components";
 import LandingLinks from "containers/LandingLinks";
 import network from "network";
-import { withStyles } from "material-ui/styles";
+import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
+import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import PropTypes from "prop-types";
 import { DialogButton } from "components";
+import Logo from "components/Logo";
 
 import Profile from "components/icons/thin/Profile";
-import MUITextField from "material-ui/TextField";
-
-import logoBlack from "assets/img/logo-black.png";
-import logoBlack2x from "assets/img/logo-black@2x.png";
-import logoBlack3x from "assets/img/logo-black@3x.png";
+import MUITextField from "@material-ui/core/TextField";
 
 const styles = {
   base: {
@@ -65,13 +63,6 @@ const styles = {
       color: "inherit"
     }
   },
-  logo: {
-    width: 100,
-    overflow: "hidden",
-    "& img": {
-      transform: "translateX(-31px)"
-    }
-  },
   submit: {
     position: "absolute",
     right: 0,
@@ -82,17 +73,14 @@ const styles = {
     textAlign: "center"
   }
 };
-export class Welcome extends Component<
+class Welcome extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
-    history: *
+    history: *,
+    t: Translate
   },
   { domain: string, error: boolean, isChecking: boolean }
 > {
-  context: {
-    translate: string => string
-  };
-
   state = {
     domain: "",
     error: false,
@@ -118,7 +106,7 @@ export class Welcome extends Component<
     }
   };
 
-  onChange = (e: SyntheticEvent<*>) => {
+  onChange = (e: any) => {
     this.setState({ domain: e.currentTarget.value });
   };
 
@@ -128,8 +116,7 @@ export class Welcome extends Component<
 
   render() {
     const { domain, error, isChecking } = this.state;
-    const t = this.context.translate;
-    const { classes } = this.props;
+    const { classes, t } = this.props;
     return (
       <div className={classes.wrapper}>
         <Alert
@@ -142,13 +129,7 @@ export class Welcome extends Component<
           <div>Unknown organization domain name</div>
         </Alert>
         <div className={classes.banner}>
-          <div className={classes.logo}>
-            <img
-              src={logoBlack}
-              srcSet={`${logoBlack2x} 2x, ${logoBlack3x} 3x`}
-              alt="Ledger Vault"
-            />
-          </div>
+          <Logo />
           <HelpLink
             className={classes.help}
             subLink="/Content/operations/login"
@@ -176,10 +157,12 @@ export class Welcome extends Component<
             id="textField"
             name="email"
             onChange={this.onChange}
-            placeholder={t("login.hint")}
+            placeholder={t("welcome:placeholder_domain")}
           />
           <br />
-          <div className={classes.instructions}>{t("login.instructions")}</div>
+          <div className={classes.instructions}>
+            {t("welcome:domain_description")}
+          </div>
           <DialogButton
             className={classes.submit}
             highlight
@@ -187,7 +170,7 @@ export class Welcome extends Component<
             right
             onTouchTap={this.onSubmit}
           >
-            {t("common.continue")}
+            {t("common:continue")}
           </DialogButton>
         </form>
         <LandingLinks />
@@ -196,8 +179,4 @@ export class Welcome extends Component<
   }
 }
 
-Welcome.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
-
-export default withRouter(withStyles(styles)(Welcome));
+export default withRouter(withStyles(styles)(translate()(Welcome)));

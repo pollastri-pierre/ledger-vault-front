@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import ApprovalStatus from "../ApprovalStatus";
 import AccountName from "../AccountName";
-import { withStyles } from "material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import type { Account, Operation, Member } from "data/types";
 
