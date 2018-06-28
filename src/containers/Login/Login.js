@@ -6,7 +6,11 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import queryString from "query-string";
 import formatError from "formatters/error";
-import createDevice, { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
+import createDevice, {
+  U2F_TIMEOUT,
+  U2F_PATH,
+  APPID_VAULT_ADMINISTRATOR
+} from "device";
 import DeviceLogin from "./DeviceLogin";
 import {
   login,
@@ -86,6 +90,8 @@ type State = {
   domainValidated: boolean
 };
 
+let _isMounted = false;
+
 export class Login extends Component<Props, State> {
   state = {
     domain: "",
@@ -106,7 +112,12 @@ export class Login extends Component<Props, State> {
 
   componentDidMount() {
     this.checkDomain();
+    _isMounted = true;
     this.onStartOnBoardingStatus();
+  }
+
+  componentWillUnmount() {
+    _isMounted = false;
   }
 
   checkDomain = async () => {
@@ -147,38 +158,52 @@ export class Login extends Component<Props, State> {
   };
 
   onStartAuth = async () => {
-    const { addAlertMessage, onLogin } = this.props;
-    this.setState({ isChecking: true });
-    try {
-      const device = await await createDevice();
-      const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-      const { token, key_handle } = await network(
-        `/authentications/${pubKey}/challenge`,
-        "GET"
-      );
-      this.setState({
-        error: null
-      });
+    if (_isMounted) {
+      const { addAlertMessage, onLogin } = this.props;
+      this.setState({ isChecking: true });
+      try {
+        const device = await await createDevice();
+        const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+        const { token, key_handle } = await network(
+          `/authentications/${pubKey}/challenge`,
+          "GET"
+        );
+        this.setState({
+          error: null
+        });
 
-      const application = APPID_VAULT_ADMINISTRATOR;
-      const auth = await device.authenticate(
-        Buffer.from(token, "base64"),
-        application,
-        Buffer.from(key_handle, "hex")
-      );
+        const application = APPID_VAULT_ADMINISTRATOR;
+        const auth = await device.authenticate(
+          Buffer.from(token, "base64"),
+          application,
+          Buffer.from(key_handle, "hex")
+        );
 
-      setTokenToLocalStorage(token);
-      await network("/authentications/authenticate", "POST", {
-        authentication: auth.rawResponse.slice(0, auth.rawResponse.length - 4)
-      });
-      this.setState({ isChecking: false });
-      onLogin(token);
-      addAlertMessage("Welcome", "Hello. Welcome on Ledger Vault Application");
-    } catch (error) {
-      console.error(error);
-      removeLocalStorageToken();
-      this.setState({ error, isChecking: false });
-      addAlertMessage("Failed to authenticate", formatError(error), "error");
+        setTokenToLocalStorage(token);
+        await network("/authentications/authenticate", "POST", {
+          authentication: auth.rawResponse.slice(0, auth.rawResponse.length - 4)
+        });
+        this.setState({ isChecking: false });
+        onLogin(token);
+        addAlertMessage(
+          "Welcome",
+          "Hello. Welcome on Ledger Vault Application"
+        );
+      } catch (error) {
+        console.error(error);
+        if (error && error.id === U2F_TIMEOUT) {
+          // timeout we retry
+          this.onStartAuth();
+        } else {
+          removeLocalStorageToken();
+          this.setState({ error, isChecking: false });
+          addAlertMessage(
+            "Failed to authenticate",
+            formatError(error),
+            "error"
+          );
+        }
+      }
     }
   };
 
