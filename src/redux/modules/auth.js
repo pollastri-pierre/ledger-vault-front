@@ -20,7 +20,7 @@ export function setTokenToLocalStorage(token: string) {
 
 export const logout = (orga: string) => {
   return async (dispatch: Dispatch<*>) => {
-    await network(`${orga}/authentications/logout`, "POST");
+    await network(`authentications/logout`, "POST");
     removeLocalStorageToken();
     dispatch({
       type: LOGOUT
