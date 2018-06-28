@@ -98,7 +98,7 @@ class Welcome extends Component<
       try {
         const url =
           process.env.NODE_ENV === "development"
-            ? `/${domain}/organization/exists`
+            ? `${domain}/organization/exists`
             : `/gate/${domain}/organization/exists`;
         await network(url, "GET");
         this.setState({ isChecking: false });

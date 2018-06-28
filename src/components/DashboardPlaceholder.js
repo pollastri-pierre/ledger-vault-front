@@ -67,12 +67,12 @@ const DashboardPlaceholder = ({
     <div>
       <h3>{t("dashboard:empty_state.title")}</h3>
       <p>
-        <span>{t("dashboard:empty_state.click")}</span>
+        <span>{t("dashboard:empty_state.click")} </span>
         <Link to={`dashboard/new-account`} className={classes.link}>
           <Plus className={classes.icon} />
-          <span>{t("dashboard:empty_state.account")}</span>
+          <span> {t("dashboard:empty_state.account")} </span>
         </Link>
-        <span>{t("dashboard:empty_state.to_create")}</span>
+        <span> {t("dashboard:empty_state.to_create")} </span>
       </p>
       <p className={classes.needHelp}>
         <strong>{t("dashboard:empty_state.need_help")}</strong>{" "}
