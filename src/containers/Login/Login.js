@@ -115,6 +115,7 @@ export class Login extends Component<Props, State> {
       await network(`/organization/exists`, "GET");
       this.setState({ domainValidated: true });
     } catch (e) {
+      console.error(e);
       this.setState({ domainValidated: false });
       history.push("/");
       addAlertMessage("Error", "Team domain unknown", "error");
@@ -134,7 +135,7 @@ export class Login extends Component<Props, State> {
   onStartOnBoardingStatus = async () => {
     const { history, match } = this.props;
     try {
-      const { state } = await network("/onboarding/state", "GET");
+      const { state } = await network(`/onboarding/state`, "GET");
       if (state !== "COMPLETE") {
         history.push(`/${match.params.orga_name}/onboarding`);
       } else {

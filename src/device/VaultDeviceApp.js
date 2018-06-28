@@ -2,11 +2,6 @@
 import type Transport from "@ledgerhq/hw-transport";
 import invariant from "invariant";
 
-const instanceName = location.pathname.split("/")[1];
-const instanceReference = location.pathname.split("/")[1];
-const instanceUrl = location.origin;
-const agentRole = "Administrator";
-
 export default class VaultDeviceApp {
   transport: Transport<*>;
   constructor(transport: Transport<*>) {
@@ -31,6 +26,11 @@ export default class VaultDeviceApp {
       applicationBuf.length === 32,
       "application hex is expected to have 32 bytes"
     );
+
+    const instanceName = location.pathname.split("/")[1];
+    const instanceReference = location.pathname.split("/")[1];
+    const instanceUrl = location.origin;
+    const agentRole = "Administrator";
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
@@ -115,6 +115,11 @@ export default class VaultDeviceApp {
       "application hex is expected to have 32 bytes"
     );
     const maxLength = 150;
+
+    const instanceName = location.pathname.split("/")[1];
+    const instanceReference = location.pathname.split("/")[1];
+    const instanceUrl = location.origin;
+    const agentRole = "Administrator";
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
