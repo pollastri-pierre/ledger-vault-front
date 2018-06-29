@@ -28,8 +28,8 @@ class DeviceAuthenticate extends Component<Props, State> {
     step: 0
   };
   componentDidMount() {
-    this.start();
     _isMounted = true;
+    this.start();
   }
 
   componentWillUnmount() {

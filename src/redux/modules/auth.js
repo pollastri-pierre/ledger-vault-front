@@ -18,9 +18,9 @@ export function setTokenToLocalStorage(token: string) {
   window.localStorage.setItem("token", token);
 }
 
-export const logout = (orga: string) => {
+export const logout = () => {
   return async (dispatch: Dispatch<*>) => {
-    await network(`authentications/logout`, "POST");
+    await network(`/authentications/logout`, "POST");
     removeLocalStorageToken();
     dispatch({
       type: LOGOUT
