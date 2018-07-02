@@ -20,8 +20,12 @@ export function setTokenToLocalStorage(token: string) {
 
 export const logout = () => {
   return async (dispatch: Dispatch<*>) => {
-    await network(`/authentications/logout`, "POST");
-    removeLocalStorageToken();
+    try {
+      await network(`/authentications/logout`, "POST");
+      removeLocalStorageToken();
+    } catch (e) {
+      removeLocalStorageToken();
+    }
     dispatch({
       type: LOGOUT
     });
