@@ -1,11 +1,13 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
+import connectData from "restlay/connectData";
 import HelpLink from "components/HelpLink";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import queryString from "query-string";
 import formatError from "formatters/error";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
   U2F_TIMEOUT,
   U2F_PATH,
@@ -159,7 +161,7 @@ export class Login extends Component<Props, State> {
 
   onStartAuth = async () => {
     if (_isMounted) {
-      const { addAlertMessage, onLogin } = this.props;
+      const { organization, addAlertMessage, onLogin } = this.props;
       this.setState({ isChecking: true });
       try {
         const device = await await createDevice();
@@ -176,7 +178,11 @@ export class Login extends Component<Props, State> {
         const auth = await device.authenticate(
           Buffer.from(token, "base64"),
           application,
-          Buffer.from(key_handle, "hex")
+          Buffer.from(key_handle, "hex"),
+          organization.name,
+          organization.workspace,
+          organization.domain_name,
+          "Administrator"
         );
 
         setTokenToLocalStorage(token);
@@ -249,4 +255,10 @@ export class Login extends Component<Props, State> {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles)
-)(Login);
+)(
+  connectData(Login, {
+    queries: {
+      organization: OrganizationQuery
+    }
+  })
+);

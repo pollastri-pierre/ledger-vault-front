@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "restlay/connectData";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import { withStyles } from "@material-ui/core/styles";
 import createDevice, {
   U2F_PATH,
@@ -39,6 +41,7 @@ type Props = {
   title: string,
   steps: string[],
   cancel: Function,
+  organization: *,
   finish: Function,
   challenge: string,
   data: {
@@ -72,6 +75,7 @@ class StepDevice extends Component<Props, State> {
     if (_isMounted) {
       try {
         this.setState({ active: 0 });
+        const { organization } = this.props;
         const device = await await createDevice();
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
@@ -82,7 +86,11 @@ class StepDevice extends Component<Props, State> {
 
         const { u2f_register, keyHandle } = await device.register(
           Buffer.from(this.props.challenge, "base64"),
-          APPID_VAULT_ADMINISTRATOR
+          APPID_VAULT_ADMINISTRATOR,
+          organization.name,
+          organization.workspace,
+          organization.domain_name,
+          "Administrator"
         );
 
         this.setState({ active: 2 });
@@ -150,4 +158,8 @@ class StepDevice extends Component<Props, State> {
 }
 
 export { StepDevice };
-export default withStyles(styles)(StepDevice);
+export default connectData(withStyles(styles)(StepDevice), {
+  queries: {
+    organization: OrganizationQuery
+  }
+});
