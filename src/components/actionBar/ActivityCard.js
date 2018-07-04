@@ -75,7 +75,11 @@ class ActivityCard extends Component<
   };
 
   componentDidMount() {
-    const socket = openSocket.connect("/notification");
+    const url =
+      process.env.NODE_ENV !== "development"
+        ? "/notification"
+        : "http://localhost:3033";
+    const socket = openSocket.connect(url);
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
@@ -84,7 +88,7 @@ class ActivityCard extends Component<
         orga: self.props.match.params.orga_name
       });
     });
-    socket.on("admin", function(activity) {
+    socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
       //FIXME why is it fired twice ??
       if (self.props.onNewActivity) {
         self.props.onNewActivity(activity);
@@ -213,10 +217,16 @@ const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
 });
 
 export default withStyles(styles)(
-  connectData(connect(null, mapDispatchToProps)(translate()(ActivityCard)), {
-    RenderLoading,
-    queries: {
-      activities: ActivityQuery
+  connectData(
+    connect(
+      null,
+      mapDispatchToProps
+    )(translate()(ActivityCard)),
+    {
+      RenderLoading,
+      queries: {
+        activities: ActivityQuery
+      }
     }
-  })
+  )
 );
