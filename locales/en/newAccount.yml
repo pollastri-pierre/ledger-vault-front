@@ -7,6 +7,7 @@ options:
 security:
   title: security
   scheme: security scheme
+  account_members: Account members
   members: Members
   approvals: Approvals
   members_selected: members selected
