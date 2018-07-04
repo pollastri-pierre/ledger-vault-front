@@ -14,6 +14,12 @@ export type Translate = (?string, ?Object) => string;
 
 export type Fiat = string;
 
+export type Organization = {
+  name: string,
+  domain_name: string,
+  workspace: string
+};
+
 type Price = {
   amount: number
 };

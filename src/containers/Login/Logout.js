@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { logout } from "redux/modules/auth";
 
 const mapDispatchToProps = (dispatch: *) => ({
-  logout: org => dispatch(logout(org))
+  logout: () => dispatch(logout())
 });
 
 const mapStateToProps = state => ({

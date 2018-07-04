@@ -24,6 +24,7 @@ import { addMessage } from "redux/modules/alerts";
 import network from "network";
 import { withStyles } from "@material-ui/core/styles";
 import Logo from "components/Logo";
+import type { Organization } from "data/types";
 
 const mapStateToProps = ({ auth, onboarding }) => ({
   isAuthenticated: auth.isAuthenticated,
@@ -32,7 +33,7 @@ const mapStateToProps = ({ auth, onboarding }) => ({
 
 const mapDispatchToProps = (dispatch: *) => ({
   onLogin: token => dispatch(login(token)),
-  onLogout: arg => dispatch(logout(arg)),
+  onLogout: () => dispatch(logout()),
   addAlertMessage: (...props) => dispatch(addMessage(...props))
 });
 
@@ -41,6 +42,7 @@ type Props = {
   history: Object,
   match: Object,
   location: Object,
+  organization: Organization,
   onLogout: () => void,
   onStartAuth: () => void,
   onCloseTeamError: () => void,
