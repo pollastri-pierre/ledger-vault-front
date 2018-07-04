@@ -1,28 +1,28 @@
 title: New account
 currency: currency
 options:
-  title: options
+  title: name
   name: name
-  acc_name_placeholder: Account's name
+  acc_name_placeholder: Enter account name
 security:
-  title: security
-  scheme: security scheme
+  title: rules
+  scheme: Operation rules
   members: Members
   approvals: Approvals
   members_selected: members selected
-  members_desc: Members define the group of individuals that have the ability to approve outgoing operations from this account.
+  members_desc: Select the users who can create transactions in this account.
   approvals_amount: Amount
   approvals_from: approvals from {{count}} members
-  approvals_desc: Approvals define the number of required signatures from the group of members allowed to approve outgoing operations.
+  approvals_desc: Define the number of approvals required before transactions created in this account are broadcasted to the blockchain.
   selected: selected
   required: required
 confirmation:
   title: confirmation
   account: account
   currency: currency
-  approvals: approvals to spend
+  approvals: approvals
   approvals_members: '{{count}} of {{total}} members'
-  desc: A new account request will be created. The account will not be available until all the members in your team approve the creation request.
+  desc: An Account Request will be sent to the workspace Administrators. The account will be created once they approve it.
 errors:
   approvals_exceed: Number of approvals cannot exceed number of members.
 
