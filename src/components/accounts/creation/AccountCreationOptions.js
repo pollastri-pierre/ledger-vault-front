@@ -45,6 +45,7 @@ function AccountCreationOptions(props: {
         <BadgeCurrency currency={props.currency} className={classes.badge} />
         <TextField
           value={props.name}
+          autoFocus
           onChange={e => props.changeName(e.target.value)}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           InputProps={{ className: classes.input }}
