@@ -1,6 +1,6 @@
 ---
 signIn: Sign in to {{domain}}
-step1: Connect your Ledger Blue to your computer using one of its USB port.
-step2: Make sure your device is powered on, and unlock it by entering your PIN.
-step3: Open the Vault app and confirm the sign-in request when displayed.
+step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.
+step2: Enter your PIN code to unlock the device.
+step3: Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted.
 

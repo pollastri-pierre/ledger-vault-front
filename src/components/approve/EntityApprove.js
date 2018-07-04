@@ -84,6 +84,8 @@ class EntityApprove extends Component<Props, State> {
         Buffer.from(channel["data"], "base64")
       );
 
+      this.setState({ step: 2 });
+
       if (entity === "account") {
         await restlay.commitMutation(
           new ApproveAccountMutation({

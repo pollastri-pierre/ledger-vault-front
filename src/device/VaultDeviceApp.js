@@ -12,7 +12,11 @@ export default class VaultDeviceApp {
 
   async register(
     challenge: Buffer,
-    application: string
+    application: string,
+    instanceName: string,
+    instanceReference: string,
+    instanceUrl: string,
+    agentRole: string
   ): Promise<{
     u2f_register: Buffer,
     keyHandle: Buffer
@@ -27,10 +31,10 @@ export default class VaultDeviceApp {
       "application hex is expected to have 32 bytes"
     );
 
-    const instanceName = location.pathname.split("/")[1];
-    const instanceReference = location.pathname.split("/")[1];
-    const instanceUrl = location.origin;
-    const agentRole = "Administrator";
+    // const instanceName = location.pathname.split("/")[1];
+    // const instanceReference = location.pathname.split("/")[1];
+    // const instanceUrl = "vault.ledger.fr";
+    // const agentRole = "Administrator";
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
@@ -98,7 +102,11 @@ export default class VaultDeviceApp {
   async authenticate(
     challenge: Buffer,
     application: string,
-    keyHandle: Buffer
+    keyHandle: Buffer,
+    instanceName: string,
+    instanceReference: string,
+    instanceUrl: string,
+    agentRole: string
   ): Promise<{
     userPresence: *,
     counter: *,
@@ -115,11 +123,6 @@ export default class VaultDeviceApp {
       "application hex is expected to have 32 bytes"
     );
     const maxLength = 150;
-
-    const instanceName = location.pathname.split("/")[1];
-    const instanceReference = location.pathname.split("/")[1];
-    const instanceUrl = location.origin;
-    const agentRole = "Administrator";
 
     const instanceNameBuf = Buffer.from(instanceName);
     const instanceReferenceBuf = Buffer.from(instanceReference);
