@@ -8,7 +8,7 @@ import network from "network";
 import React from "react";
 import { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 // import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import DeviceAuthenticate from "./";
+import { DeviceAuthenticate } from "./";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -29,7 +29,13 @@ beforeEach(() => {
 const props = {
   close: jest.fn(),
   callback: jest.fn(),
-  cancel: jest.fn()
+  cancel: jest.fn(),
+  organization: {
+    name: "name",
+    workspace: "workspace",
+    domain_name: "domain",
+    role: "Administrator"
+  }
 };
 
 test("should call API and device", async () => {
@@ -52,7 +58,11 @@ test("should call API and device", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    Buffer.from("key_handle", "base64")
+    Buffer.from("key_handle", "base64"),
+    "name",
+    "workspace",
+    "domain",
+    "Administrator"
   );
 
   expect(

@@ -27,7 +27,13 @@ const props = {
   onFinish: jest.fn(),
   t: string => string,
   keyHandles: { PUBKEY: "handle1" },
-  challenge: "challenge"
+  challenge: "challenge",
+  organization: {
+    name: "name",
+    workspace: "workspace",
+    domain_name: "domain",
+    role: "Administrator"
+  }
 };
 
 test("onStart should call device and API with right parameters", async () => {
@@ -38,7 +44,11 @@ test("onStart should call device and API with right parameters", async () => {
   expect(mockAuthenticate).toHaveBeenCalledWith(
     Buffer.from("challenge", "base64"),
     APPID_VAULT_ADMINISTRATOR,
-    Buffer.from("handle1", "base64")
+    Buffer.from("handle1", "base64"),
+    "name",
+    "workspace",
+    "domain",
+    "Administrator"
   );
 
   expect(props.onFinish).toHaveBeenCalledWith("pubKey", {

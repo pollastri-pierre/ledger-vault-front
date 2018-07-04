@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import connectData from "restlay/connectData";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import createDevice, {
@@ -12,6 +14,7 @@ import StepDeviceGeneric from "./StepDeviceGeneric";
 type Props = {
   onFinish: Function,
   challenge: string,
+  organization: *,
   keyHandles: Object,
   cancel: Function,
   t: Translate
@@ -38,6 +41,7 @@ class SignInDevice extends Component<Props, State> {
   start = async () => {
     if (_isMounted) {
       this.setState({ step: 0 });
+      const { organization } = this.props;
       try {
         const device = await createDevice();
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
@@ -49,7 +53,11 @@ class SignInDevice extends Component<Props, State> {
         const authentication = await device.authenticate(
           Buffer.from(challenge, "base64"),
           APPID_VAULT_ADMINISTRATOR,
-          Buffer.from(keyHandle, "base64")
+          Buffer.from(keyHandle, "base64"),
+          organization.name,
+          organization.workspace,
+          organization.domain_name,
+          "Administrator"
         );
         this.setState({ step: 2 });
         this.props.onFinish(pubKey, authentication);
@@ -84,4 +92,8 @@ class SignInDevice extends Component<Props, State> {
   }
 }
 export { SignInDevice };
-export default translate()(SignInDevice);
+export default connectData(translate()(SignInDevice), {
+  queries: {
+    organization: OrganizationQuery
+  }
+});

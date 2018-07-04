@@ -214,8 +214,7 @@ export const executeQueryOrMutation =
             queryOrMutation.logoutUserIfStatusCode &&
             error.status === queryOrMutation.logoutUserIfStatusCode;
           if (shouldLogout) {
-            //TODO ugly change this
-            dispatch(logout(window.location.href.split("/")[3]));
+            dispatch(logout());
           }
           ctx.removePendingQuery(queryOrMutation);
         }
