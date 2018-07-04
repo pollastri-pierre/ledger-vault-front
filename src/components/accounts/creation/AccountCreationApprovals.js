@@ -65,6 +65,7 @@ function AccountCreationApprovals(props: {
             <input
               type="text"
               id="approval-field"
+              autoFocus
               value={approvals}
               onChange={e => setApprovals(e.target.value)}
             />
