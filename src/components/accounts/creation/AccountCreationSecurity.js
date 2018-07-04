@@ -43,7 +43,7 @@ function AccountCreationSecurity(props: {
   return (
     <div className={classes.base}>
       <h4>{t("newAccount:security.title")}</h4>
-      <h5>{t("newAccount:security.members")}</h5>
+      <h5>{t("newAccount:security.account_members")}</h5>
       <div className="security-members">
         <SecurityRow
           icon={<PeopleFull className={classes.icon} />}
