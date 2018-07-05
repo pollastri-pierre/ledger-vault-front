@@ -7,7 +7,7 @@ import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 
 import { withStyles } from "@material-ui/core/styles";
-import { RequirementUnit } from "./Requirements";
+import { RequirementUnit, BlueDevice } from "./Requirements";
 import People from "components/icons/thin/People.js";
 import Briefcase from "components/icons/thin/Briefcase.js";
 
@@ -53,8 +53,8 @@ const PrerequisiteSeed = ({
         <div>
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<Briefcase style={{ height: 29 }} />}>
-              <div style={{ width: 96 }}>{t("onboarding:vault_briefcase")}</div>
+            <RequirementUnit icon={<BlueDevice color="red" />}>
+              <div style={{ width: 96 }}>{t("onboarding:blue_red")}</div>
             </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
@@ -78,7 +78,9 @@ const PrerequisiteSeed = ({
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              <div>{t("onboarding:wkey_custodians")}</div>
+              <div>
+                {t("onboarding:master_seed_prerequisite.wkey_custodians")}
+              </div>
             </RequirementUnit>
           </div>
         </div>

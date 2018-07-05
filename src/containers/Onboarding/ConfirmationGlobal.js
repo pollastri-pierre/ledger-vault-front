@@ -86,7 +86,7 @@ const ConfirmationGlobal = ({
               <People color="#cccccc" style={{ height: 29 }} />
             </div>
             {onboarding.registering.admins.length}{" "}
-            {t("onboarding:team_members")}
+            {t("onboarding:administrators")}
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>

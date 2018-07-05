@@ -68,13 +68,17 @@ const Prerequisite = ({
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
             >
-              <div style={{ width: 96 }}>{t("onboarding:shared_owners")}</div>
+              <div style={{ width: 96 }}>
+                {t("onboarding:administrators_prerequisite.shared_owners")}
+              </div>
             </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              <div>{t("onboarding:wkey_custodians")}</div>
+              <div>
+                {t("onboarding:administrators_prerequisite.wkey_custodians")}
+              </div>
             </RequirementUnit>
           </div>
         </div>

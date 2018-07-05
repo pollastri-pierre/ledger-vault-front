@@ -11,7 +11,6 @@ const styles = {
     position: "relative",
     textAlign: "center",
     display: "inline-block",
-    height: "395px",
     margin: "0 auto",
     marginBottom: "50px",
     width: "400px",
@@ -67,7 +66,7 @@ const styles = {
     textTransform: "uppercase"
   },
   footer: {
-    padding: 40,
+    padding: "40px 40px 0",
     display: "flex",
     justifyContent: "space-between"
   }

@@ -74,7 +74,9 @@ const Prerequisite = ({
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
-              <div>{t("onboarding:shared_owners")}</div>
+              <div>
+                {t("onboarding:wrapping_key_prerequisite.shared_owners")}
+              </div>
             </RequirementUnit>
           </div>
         </div>
