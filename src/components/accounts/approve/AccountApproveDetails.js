@@ -1,5 +1,7 @@
 //@flow
 import React from "react";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import {
   // BigSecurityTimeLockIcon,
   BigSecurityMembersIcon
@@ -16,9 +18,10 @@ import type { Account, Member } from "data/types";
 
 function AccountApproveDetails(props: {
   account: Account,
+  t: Translate,
   approvers: Member[]
 }) {
-  const { account, approvers } = props;
+  const { account, t, approvers } = props;
   const { security_scheme, currency } = account;
   const percentage = Math.round(
     100 * (account.approvals.length / approvers.length)
@@ -86,7 +89,7 @@ function AccountApproveDetails(props: {
         <LineRow label="currency">
           <span className="info-value currency">{currency.units[0].name}</span>
         </LineRow>
-        <LineRow label="Approvals to spend">
+        <LineRow label={t("pendingAccount:details.approvals")}>
           {security_scheme.quorum} of {account.members.length} members
         </LineRow>
       </div>
@@ -94,4 +97,4 @@ function AccountApproveDetails(props: {
   );
 }
 
-export default AccountApproveDetails;
+export default translate()(AccountApproveDetails);

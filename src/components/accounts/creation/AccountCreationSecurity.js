@@ -42,7 +42,7 @@ function AccountCreationSecurity(props: {
   const { account, switchInternalModal, classes, t } = props;
   return (
     <div className={classes.base}>
-      <h4>{t("newAccount:security.title")}</h4>
+      <h4>{t("newAccount:security.scheme")}</h4>
       <h5>{t("newAccount:security.account_members")}</h5>
       <div className="security-members">
         <SecurityRow

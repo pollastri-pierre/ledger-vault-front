@@ -138,7 +138,7 @@ class Welcome extends Component<
             className={classes.help}
             subLink="/Content/operations/login"
           >
-            Support
+            {t("welcome:help")}
           </HelpLink>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
@@ -177,7 +177,6 @@ class Welcome extends Component<
             {t("common:continue")}
           </DialogButton>
         </form>
-        <LandingLinks />
       </div>
     );
   }

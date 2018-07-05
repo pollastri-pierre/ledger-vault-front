@@ -1,6 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import OrganizationQuery from "api/queries/OrganizationQuery";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import { withRouter /* Redirect  */ } from "react-router";
 import connectData from "restlay/connectData";
 import Tabs from "@material-ui/core/Tabs";
@@ -30,6 +32,7 @@ const styles = {
 type Props = {
   members: Array<Member>,
   profile: Member,
+  t: Translate,
   approvers: Array<Member>,
   account: Account,
   organization: *,
@@ -55,6 +58,7 @@ class AccountApprove extends Component<Props, { value: number }> {
       account,
       close,
       organization,
+      t,
       approve,
       aborting,
       classes
@@ -97,9 +101,9 @@ class AccountApprove extends Component<Props, { value: number }> {
             onChange={this.handleChange}
             indicatorColor="primary"
           >
-            <Tab label="Details" disableRipple />
-            <Tab label="Members" disableRipple />
-            <Tab label="approvals" disableRipple />
+            <Tab label={t("pendingAccount:tabs.details")} disableRipple />
+            <Tab label={t("pendingAccount:tabs.members")} disableRipple />
+            <Tab label={t("pendingAccount:tabs.status")} disableRipple />
           </Tabs>
         </header>
         {value === 0 && (
@@ -132,7 +136,7 @@ class AccountApprove extends Component<Props, { value: number }> {
 //   return <Redirect to="/pending" />;
 // };
 
-const connected = connectData(withStyles(styles)(AccountApprove), {
+const connected = connectData(withStyles(styles)(translate()(AccountApprove)), {
   // RenderError,
   queries: {
     account: AccountQuery,

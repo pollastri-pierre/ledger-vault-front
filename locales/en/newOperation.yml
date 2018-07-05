@@ -1,0 +1,10 @@
+tabs:
+  account: account
+  details: details
+  label: label
+  confirmation: confirmation
+label:
+  title_note: Label
+  add_comment: Add a comment
+confirmation:
+  desc: A Operation Request will be sent to the members of the account. This operation won't be broadcasted to the blockchain before they approve it.
