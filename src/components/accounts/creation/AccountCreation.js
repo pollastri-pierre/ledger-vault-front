@@ -51,7 +51,7 @@ class AccountCreation extends Component<Props> {
     this.props.history.goBack();
   };
 
-  createAccount = () => {
+  createAccount = entity_id => {
     const { restlay } = this.props;
     const account = this.props.accountCreation;
     const approvers = account.approvers.map(pubKey => {
@@ -74,8 +74,9 @@ class AccountCreation extends Component<Props> {
     );
 
     const data = {
+      account_id: entity_id,
       name: account.name,
-      currency: account.currency.id,
+      currency: { name: account.currency.id },
       security_scheme: securityScheme,
       members: approvers
     };
@@ -157,6 +158,7 @@ class AccountCreation extends Component<Props> {
             <DeviceAuthenticate
               cancel={() => onSwitchInternalModal("main")}
               callback={this.createAccount}
+              type="accounts"
               close={this.close}
             />
           </div>

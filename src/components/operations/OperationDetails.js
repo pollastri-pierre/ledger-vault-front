@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import TryAgain from "components/TryAgain";
 import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -103,7 +104,16 @@ OperationDetails.contextTypes = {
   translate: PropTypes.func.isRequired
 };
 
+const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
+  return (
+    <div className={classes.base}>
+      <TryAgain error={error} action={restlay.forceFetch} />
+    </div>
+  );
+});
+
 export default connectData(withStyles(styles)(OperationDetails), {
+  RenderError,
   RenderLoading: ModalLoading,
   queries: {
     operationWithAccount: OperationWithAccountQuery,

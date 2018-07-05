@@ -36,6 +36,7 @@ type Props = {
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
   callback: Function,
+  type: "operations" | "accounts",
   cancel: Function
 };
 let _isMounted = false;
@@ -56,14 +57,20 @@ class DeviceAuthenticate extends Component<Props, State> {
     if (_isMounted) {
       try {
         const device = await await createDevice();
-        const { organization } = this.props;
+        const { organization, type } = this.props;
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         this.setState({ step: 1 });
         const application = APPID_VAULT_ADMINISTRATOR;
-        const { challenge, key_handle } = await network(
-          `/authentications/${pubKey.toUpperCase()}/sensitive/challenge`,
+        const data = await network(
+          `/${type}/authentications/${pubKey.toUpperCase()}/challenge`,
           "GET"
         );
+
+        let challenge, key_handle, entity_id;
+        challenge = data["challenge"];
+        key_handle = data["key_handle"];
+        entity_id =
+          type === "accounts" ? data["account_id"] : data["operation_id"];
 
         const auth = await device.authenticate(
           Buffer.from(challenge, "base64"),
@@ -77,12 +84,22 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         this.setState({ step: 1 });
 
-        await network("/authentications/sensitive/authenticate", "POST", {
+        const response = {
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
-        });
+        };
+        if (type === "accounts") {
+          response["account_id"] = entity_id;
+        } else {
+          response["operation_id"] = entity_id;
+        }
+        await network(
+          `/${type}/authentications/authenticate`,
+          "POST",
+          response
+        );
 
-        await this.props.callback();
+        await this.props.callback(entity_id);
       } catch (e) {
         console.error(e);
         const { t } = this.props;
