@@ -161,6 +161,7 @@ class EntityApprove extends Component<Props, State> {
               title={this.title(entity)}
               steps={this.steps(entity)}
               cancel={this.approving}
+              device={step < 2}
               step={step}
             />
           )}

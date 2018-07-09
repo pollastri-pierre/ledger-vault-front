@@ -18,6 +18,8 @@ import type { Account, Operation, Member } from "data/types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import modals from "shared/modals";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 
 const styles = {
   base: {
@@ -37,6 +39,7 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
+  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string },
   match: *
 };
@@ -58,6 +61,7 @@ class OperationApprove extends Component<Props, { value: number }> {
       close,
       approve,
       classes,
+      t,
       aborting
     } = this.props;
 
@@ -105,8 +109,8 @@ class OperationApprove extends Component<Props, { value: number }> {
             onChange={this.handleChange}
             indicatorColor="primary"
           >
-            <Tab label="Details" disableRipple />
-            <Tab label="Approvals" disableRipple />
+            <Tab label={t("pendingOperation:tabs.details")} disableRipple />
+            <Tab label={t("pendingOperation:tabs.status")} disableRipple />
             {/* <Tab label="Locks" disableRipple /> */}
           </Tabs>
         </header>
@@ -160,7 +164,7 @@ const RenderError = () => {
 };
 
 export default withRouter(
-  connectData(withStyles(styles)(OperationApprove), {
+  connectData(withStyles(styles)(translate()(OperationApprove)), {
     RenderError,
     RenderLoading: ModalLoading,
     queries: {

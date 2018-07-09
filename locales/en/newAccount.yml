@@ -11,10 +11,10 @@ security:
   members: Members
   approvals: Approvals
   members_selected: members selected
-  members_desc: Select the users who can create transactions in this account.
+  members_desc: Select the users who can create operations in this account.
   approvals_amount: Amount
   approvals_from: approvals from {{count}} members
-  approvals_desc: Define the number of approvals required before transactions created in this account are broadcasted to the blockchain.
+  approvals_desc: Define the number of approvals required before operations created in this account are broadcasted to the blockchain.
   selected: selected
   required: required
 confirmation:

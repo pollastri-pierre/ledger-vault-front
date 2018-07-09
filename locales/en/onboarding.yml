@@ -60,6 +60,7 @@ wrapping_key:
 wrapping_key_prerequisite:
   title: Prerequisites
   description: In the following steps, Wrapping Key Custodians will initialize their Ledger Blue Enterprise to generate your organization's partition.
+  shared_owners: Shared-Owners
 wrapping_key_init:
   title: Initialization
   description: Follow these steps to initialize the Ledger Blue Enterprise. This device is needed to update the Ledger Vault platform.
@@ -77,6 +78,8 @@ backup:
 administrators_prerequisite:
   title: Prerequisites
   description: In the following steps, we'll add Administrators to your workspace and initialize their Ledger Blue Enterprise.
+  wkey_custodians: Wrapping Key Custodians
+  shared_owners: Shared-Owners
 administrators_configuration:
   title: Initialization
   description: Follow these steps to intialize the Ledger Blue Enterprise. This device is needed to access and use the Vault platform.
@@ -125,6 +128,7 @@ master_seed_signin:
 master_seed_prerequisite:
   title: Prerequisites
   description: In this last step, we'll generate your company's master seed, which is the private cryptographic key created from the three Shared-Owners Ledger Blue Enterprise devices.
+  wkey_custodians: Wrapping Key Custodians
 master_seed_configuration:
   title: Initialization
   description: Follow these steps to initialize the Ledger Blue Enterprise.

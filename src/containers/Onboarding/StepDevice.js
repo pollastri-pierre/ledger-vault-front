@@ -151,6 +151,7 @@ class StepDevice extends Component<Props, State> {
         step={this.state.active}
         steps={steps}
         title="Register device"
+        device={this.state.active < 2}
         cancel={cancel}
       />
     );

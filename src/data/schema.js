@@ -6,47 +6,47 @@ import { create } from "restlay/SchemaDef";
 const Member = create("members");
 
 const Group = create("groups", {
-    members: [Member]
+  members: [Member]
 });
 
 const Currency = create("currencies", {}, "name");
 const Fiat = create("fiats");
 
 const Account = create("accounts", {
-    currency: Currency
+  currency: Currency
 });
 
 const Activity = create(
-    "activities",
-    {
-        business_action: {
-            author: Member
-        }
-    },
-    "id"
+  "activities",
+  {
+    business_action: {
+      author: Member
+    }
+  },
+  "id"
 );
 
 const Operation = create(
-    "operations",
-    {
-        notes: [
-            {
-                author: Member
-            }
-        ]
-    },
-    "id"
+  "operations",
+  {
+    notes: [
+      {
+        author: Member
+      }
+    ]
+  },
+  "id"
 );
 
 const Balance = create("balance");
 
 export default {
-    Group,
-    Member,
-    Currency,
-    Account,
-    Operation,
-    Fiat,
-    Balance,
-    Activity
+  Group,
+  Member,
+  Currency,
+  Account,
+  Operation,
+  Fiat,
+  Balance,
+  Activity
 };

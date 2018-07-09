@@ -1,6 +1,8 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
@@ -15,7 +17,7 @@ const styles = {
     fontSize: 11,
     color: "#767676",
     lineHeight: 1.82,
-    marginTop: 30
+    marginTop: 15
   }
 };
 
@@ -26,9 +28,10 @@ function OperationCreationConfirmation(props: {
     address: string
   },
   account: Account,
+  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 }) {
-  const { details, account, classes } = props;
+  const { details, t, account, classes } = props;
   return (
     <div className={classes.root}>
       <OverviewOperation
@@ -48,11 +51,10 @@ function OperationCreationConfirmation(props: {
         </LineRow>
       </div>
       <div className={classes.warningMsg}>
-        A new operation request will be created. Funds will not be spent until
-        the security scheme of the account is satisfied
+        {t("newOperation:confirmation.desc")}
       </div>
     </div>
   );
 }
 
-export default withStyles(styles)(OperationCreationConfirmation);
+export default withStyles(styles)(translate()(OperationCreationConfirmation));

@@ -112,6 +112,7 @@ class GenerateSeed extends Component<Props, State> {
     return (
       <StepDeviceGeneric
         steps={steps}
+        device={this.state.step < 2}
         title={
           wraps
             ? t("onboarding:wrapping_key.device_modal.title")

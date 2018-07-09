@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import { Alert } from "components";
-import LandingLinks from "containers/LandingLinks";
 import network from "network";
 import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
@@ -138,7 +137,7 @@ class Welcome extends Component<
             className={classes.help}
             subLink="/Content/operations/login"
           >
-            Support
+            {t("welcome:help")}
           </HelpLink>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
@@ -177,7 +176,6 @@ class Welcome extends Component<
             {t("common:continue")}
           </DialogButton>
         </form>
-        <LandingLinks />
       </div>
     );
   }

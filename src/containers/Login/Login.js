@@ -1,6 +1,8 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import HelpLink from "components/HelpLink";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -39,6 +41,7 @@ const mapDispatchToProps = (dispatch: *) => ({
 
 type Props = {
   isAuthenticated: boolean,
+  t: Translate,
   history: Object,
   match: Object,
   location: Object,
@@ -226,7 +229,7 @@ export class Login extends Component<Props, State> {
 
   render() {
     const { isChecking, domainValidated } = this.state;
-    const { classes, match } = this.props;
+    const { classes, match, t } = this.props;
 
     if (!domainValidated) {
       return (
@@ -240,7 +243,7 @@ export class Login extends Component<Props, State> {
         <div className={classes.wrapper}>
           <div className={classes.banner}>
             <Logo />
-            <HelpLink className={classes.help}>Support</HelpLink>
+            <HelpLink className={classes.help}>{t("welcome:help")}</HelpLink>
           </div>
           <DeviceLogin
             domain={`${match.params.orga_name}`}
@@ -258,7 +261,7 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles)
 )(
-  connectData(Login, {
+  connectData(translate()(Login), {
     queries: {
       organization: OrganizationQuery
     }

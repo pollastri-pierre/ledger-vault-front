@@ -86,6 +86,7 @@ class SignInDevice extends Component<Props, State> {
         steps={steps}
         title={t("onboarding:master_seed_signin.device_modal.title")}
         step={this.state.step}
+        device={this.state.step < 2}
         cancel={this.props.cancel}
       />
     );

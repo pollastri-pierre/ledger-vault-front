@@ -1,6 +1,9 @@
 //@flow
 import { translate } from "react-i18next";
+import AccountsQuery from "api/queries/AccountsQuery";
 import type { Translate } from "data/types";
+import connectData from "restlay/connectData";
+import type { Account } from "data/types";
 import React, { Component } from "react";
 // import { Route } from "react-router";
 import { Link } from "react-router-dom";
@@ -60,10 +63,11 @@ class ActionBar extends Component<{
   location: Object,
   match: Object,
   t: Translate,
+  accounts: Account[],
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { location, classes, match, t } = this.props;
+    const { location, classes, accounts, match, t } = this.props;
 
     return (
       <div className={classes.base}>
@@ -83,13 +87,15 @@ class ActionBar extends Component<{
               <Plus className={classes.icon} />
               <div>account</div>
             </Link>
-            <Link
-              to={location.pathname + "/settings"}
-              className="content-header-button"
-            >
-              <Settings className={classes.icon} />
-              <div>{t("actionBar:settings")}</div>
-            </Link>
+            {accounts.length > 0 && (
+              <Link
+                to={location.pathname + "/settings"}
+                className="content-header-button"
+              >
+                <Settings className={classes.icon} />
+                <div>{t("actionBar:settings")}</div>
+              </Link>
+            )}
             <ActivityCard match={match} />
             <a href="http://alpha.vault.ledger.fr:81/">
               <Question className={classes.icon} />
@@ -102,4 +108,8 @@ class ActionBar extends Component<{
   }
 }
 
-export default withStyles(styles)(translate()(ActionBar));
+export default connectData(withStyles(styles)(translate()(ActionBar)), {
+  queries: {
+    accounts: AccountsQuery
+  }
+});

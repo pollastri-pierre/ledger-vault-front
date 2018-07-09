@@ -6,7 +6,7 @@ import schema from "data/schema";
 
 type In = { account: Account, currency_unit: Unit, fiat: Fiat };
 
-type Res = Account;
+type Res = *;
 
 export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   method = "PUT";

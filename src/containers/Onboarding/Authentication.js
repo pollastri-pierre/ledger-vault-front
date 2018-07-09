@@ -35,7 +35,7 @@ const styles = {
     color: "#767676"
   },
   signin_desc: {
-    fontSize: 13,
+    fontSize: 12,
     marginBottom: 15
   },
   title: {

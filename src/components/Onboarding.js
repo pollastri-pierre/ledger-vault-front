@@ -302,6 +302,10 @@ export const Awaiting = withStyles({
     fontSize: 11,
     textTransform: "uppercase"
   }
-})(({ classes }) => {
-  return <span className={classes.base}>awaiting device...</span>;
+})(({ classes, device }) => {
+  return (
+    <span className={classes.base}>
+      awaiting {device ? "device" : "server"}...
+    </span>
+  );
 });
