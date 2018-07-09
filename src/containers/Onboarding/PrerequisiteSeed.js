@@ -9,7 +9,6 @@ import Footer from "./Footer";
 import { withStyles } from "@material-ui/core/styles";
 import { RequirementUnit, BlueDevice } from "./Requirements";
 import People from "components/icons/thin/People.js";
-import Briefcase from "components/icons/thin/Briefcase.js";
 
 const styles = {
   requirements: {

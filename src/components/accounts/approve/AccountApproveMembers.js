@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { Overscroll } from "../../";
 import MemberRow from "../../MemberRow";
-import InfoModal from "../../InfoModal";
 import type { Member } from "data/types";
 
 type Props = {

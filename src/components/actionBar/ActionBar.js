@@ -68,7 +68,6 @@ class ActionBar extends Component<{
 }> {
   render() {
     const { location, classes, accounts, match, t } = this.props;
-    console.log(accounts);
 
     return (
       <div className={classes.base}>

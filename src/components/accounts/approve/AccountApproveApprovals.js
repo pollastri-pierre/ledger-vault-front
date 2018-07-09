@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import InfoModal from "../../InfoModal";
 import ApprovalList from "../../ApprovalList";
 import type { Member, Approval } from "data/types";
 import { Overscroll } from "../../";

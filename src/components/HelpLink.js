@@ -11,8 +11,8 @@ class HelpLink extends PureComponent<Props> {
     // define support center link
     const { subLink, className } = this.props;
     const href = subLink
-      ? `http://alpha.vault.ledger.fr:81${subLink}`
-      : "http://alpha.vault.ledger.fr:81";
+      ? `http://www.help.vault.ledger.com${subLink}`
+      : "http://www.help.vault.ledger.com";
 
     return (
       <a href={href} className={className ? className : ""} target="new">

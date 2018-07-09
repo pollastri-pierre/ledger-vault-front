@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import { Alert } from "components";
-import LandingLinks from "containers/LandingLinks";
 import network from "network";
 import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";

@@ -95,8 +95,7 @@ function fetchWithRetries(
          * Checks if another attempt should be done to send a request to the server.
          */
     function shouldRetry(attempt: number): boolean {
-      return false;
-      // return attempt <= _retryDelays.length;
+      return attempt <= _retryDelays.length;
     }
 
     sendTimedRequest();

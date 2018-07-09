@@ -180,10 +180,6 @@ export class Login extends Component<Props, State> {
         });
 
         const application = APPID_VAULT_ADMINISTRATOR;
-        console.log(token, key_handle);
-        console.log(organization.name);
-        console.log(organization.workspace);
-        console.log(organization.domain_name);
         const auth = await device.authenticate(
           Buffer.from(token, "base64"),
           application,
