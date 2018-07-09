@@ -34,6 +34,7 @@ const StepDeviceGeneric = ({
   classes,
   title,
   steps,
+  device,
   step,
   cancel
 }: {
@@ -41,6 +42,7 @@ const StepDeviceGeneric = ({
   title: string,
   steps: string[],
   step: number,
+  device: boolean,
   cancel: Function,
   finish: Function
 }) => {
@@ -64,7 +66,7 @@ const StepDeviceGeneric = ({
       </div>
       <div className={classes.footer}>
         <DialogButton onTouchTap={cancel}>Cancel</DialogButton>
-        <Awaiting />
+        <Awaiting device={device} />
       </div>
     </div>
   );

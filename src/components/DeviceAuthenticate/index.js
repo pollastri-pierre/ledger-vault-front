@@ -35,6 +35,7 @@ type Props = {
   organization: Organization,
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
+  account_id: ?number,
   callback: Function,
   type: "operations" | "accounts",
   cancel: Function
@@ -57,20 +58,22 @@ class DeviceAuthenticate extends Component<Props, State> {
     if (_isMounted) {
       try {
         const device = await await createDevice();
-        const { organization, type } = this.props;
+        const { organization, type, account_id } = this.props;
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-        this.setState({ step: 1 });
         const application = APPID_VAULT_ADMINISTRATOR;
-        const data = await network(
-          `/${type}/authentications/${pubKey.toUpperCase()}/challenge`,
-          "GET"
-        );
+        const url =
+          type === "operations" && account_id
+            ? `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`
+            : `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
+        const data = await network(url, "GET");
 
         let challenge, key_handle, entity_id;
         challenge = data["challenge"];
         key_handle = data["key_handle"];
         entity_id =
           type === "accounts" ? data["account_id"] : data["operation_id"];
+
+        this.setState({ step: 1 });
 
         const auth = await device.authenticate(
           Buffer.from(challenge, "base64"),
@@ -82,22 +85,15 @@ class DeviceAuthenticate extends Component<Props, State> {
           "Administrator"
         );
 
-        this.setState({ step: 1 });
+        this.setState({ step: 2 });
 
-        const response = {
+        // $FlowFixMe
+        await network(`/${type}/authentications/authenticate`, "POST", {
+          ...(type === "accounts" && { account_id: entity_id }),
+          ...(type === "operations" && { operation_id: entity_id }),
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
-        };
-        if (type === "accounts") {
-          response["account_id"] = entity_id;
-        } else {
-          response["operation_id"] = entity_id;
-        }
-        await network(
-          `/${type}/authentications/authenticate`,
-          "POST",
-          response
-        );
+        });
 
         await this.props.callback(entity_id);
       } catch (e) {
@@ -111,6 +107,12 @@ class DeviceAuthenticate extends Component<Props, State> {
               t("deviceAuthenticate:errors.hsm_unavailable.content"),
               "error"
             );
+          } else {
+            this.props.onAddMessage(
+              t("deviceAuthenticate:errors.unknown.title"),
+              t("deviceAuthenticate:errors.unknown.content"),
+              "error"
+            );
           }
           this.props.cancel();
         }
@@ -118,6 +120,13 @@ class DeviceAuthenticate extends Component<Props, State> {
           this.start();
         } else if (e.statusCode && e.statusCode === 27013) {
           this.props.cancel();
+        } else {
+          this.props.cancel();
+          this.props.onAddMessage(
+            t("deviceAuthenticate:errors.unknown.title"),
+            t("deviceAuthenticate:errors.unknown.content"),
+            "error"
+          );
         }
       }
     }
@@ -130,6 +139,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           title="Authenticate with device"
           cancel={this.props.cancel}
           step={this.state.step}
+          device={this.state.step < 2}
           steps={steps}
         />
       </div>

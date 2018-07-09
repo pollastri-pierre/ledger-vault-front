@@ -30,6 +30,7 @@ const props = {
   close: jest.fn(),
   callback: jest.fn(),
   cancel: jest.fn(),
+  type: "accounts",
   organization: {
     name: "name",
     workspace: "workspace",
@@ -38,12 +39,13 @@ const props = {
   }
 };
 
-test("should call API and device", async () => {
+test("authenticate for account creation should call API and device", async () => {
   network.mockImplementation(() => ({
     challenge: "challenge",
     key_handle: {
       PUBKEY: "key_handle"
-    }
+    },
+    account_id: 1
   }));
   const MyComponent = shallow(<DeviceAuthenticate {...props} />);
   await MyComponent.instance().start();
@@ -51,7 +53,48 @@ test("should call API and device", async () => {
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
 
   expect(network).toHaveBeenCalledWith(
-    "/authentications/PUBKEY/sensitive/challenge",
+    "/accounts/authentications/PUBKEY/challenge",
+    "GET"
+  );
+
+  expect(mockAuthenticate).toHaveBeenCalledWith(
+    Buffer.from("challenge", "base64"),
+    APPID_VAULT_ADMINISTRATOR,
+    Buffer.from("key_handle", "base64"),
+    "name",
+    "workspace",
+    "domain",
+    "Administrator"
+  );
+
+  expect(network).toHaveBeenCalledWith(
+    "/accounts/authentications/authenticate",
+    "POST",
+    {
+      pub_key: "PUBKEY",
+      authentication: "raw",
+      account_id: 1
+    }
+  );
+  expect(props.callback).toHaveBeenCalled();
+});
+
+test("authenticate for operation creation should call API and device", async () => {
+  network.mockImplementation(() => ({
+    challenge: "challenge",
+    key_handle: {
+      PUBKEY: "key_handle"
+    },
+    operation_id: 1
+  }));
+  const sProps = { ...props, type: "operations", account_id: 1 };
+  const MyComponent = shallow(<DeviceAuthenticate {...sProps} />);
+  await MyComponent.instance().start();
+
+  expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
+
+  expect(network).toHaveBeenCalledWith(
+    "/accounts/1/operations/authentications/PUBKEY/challenge",
     "GET"
   );
 
@@ -67,9 +110,10 @@ test("should call API and device", async () => {
 
   expect(
     network
-  ).toHaveBeenCalledWith("/authentications/sensitive/authenticate", "POST", {
+  ).toHaveBeenCalledWith("/operations/authentications/authenticate", "POST", {
     pub_key: "PUBKEY",
-    authentication: "raw"
+    authentication: "raw",
+    operation_id: 1
   });
   expect(props.callback).toHaveBeenCalled();
 });

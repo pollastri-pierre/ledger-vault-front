@@ -85,7 +85,7 @@ class NewOperationModal extends Component<
     this.setState({ device: !this.state.device });
   };
 
-  createOperation = () => {
+  createOperation = operation_id => {
     if (
       this.state.details.address &&
       this.state.details.amount &&
@@ -96,6 +96,7 @@ class NewOperationModal extends Component<
           fee_level: this.state.details.feesSelected,
           amount: this.state.details.amount,
           recipient: this.state.details.address,
+          operation_id: operation_id,
           note: {
             title: this.state.title,
             content: this.state.note
@@ -129,6 +130,10 @@ class NewOperationModal extends Component<
         <DeviceAuthenticate
           cancel={this.save}
           callback={this.createOperation}
+          type="operations"
+          account_id={
+            this.state.selectedAccount && this.state.selectedAccount.id
+          }
           close={this.props.close}
         />
       );

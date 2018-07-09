@@ -33,7 +33,6 @@ import {
 import type { Account, AccountSettings } from "data/types";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 const allCurrencies = listCryptoCurrencies(true);
-
 // import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const styles = {
@@ -274,7 +273,7 @@ class AccountSettingsEdit extends Component<Props, State> {
   }
   debouncedCommit = debounce(() => {
     const { props: { restlay, account }, state: { settings } } = this;
-    const currencyCode = settings.currency_unit["code"];
+    const currencyCode = settings.currency_unit["name"];
     const m = new SaveAccountSettingsMutation({
       account,
       currency_unit: currencyCode,
