@@ -75,6 +75,7 @@ function Checkbox(props: Props) {
         handleInputChange
           ? (e: *) => {
               e.preventDefault();
+              e.stopPropagation();
               handleInputChange(e.target.checked);
             }
           : null

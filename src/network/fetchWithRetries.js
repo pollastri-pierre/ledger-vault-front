@@ -96,7 +96,6 @@ function fetchWithRetries(
          */
     function shouldRetry(/* attempt: number */): boolean {
       return false;
-      // return attempt <= _retryDelays.length;
     }
 
     sendTimedRequest();

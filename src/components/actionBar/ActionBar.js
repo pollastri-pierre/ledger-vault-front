@@ -1,8 +1,8 @@
 //@flow
 import { translate } from "react-i18next";
-import AccountsQuery from "api/queries/AccountsQuery";
+// import AccountsQuery from "api/queries/AccountsQuery";
 import type { Translate } from "data/types";
-import connectData from "restlay/connectData";
+// import connectData from "restlay/connectData";
 import type { Account } from "data/types";
 import React, { Component } from "react";
 // import { Route } from "react-router";
@@ -108,8 +108,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default connectData(withStyles(styles)(translate()(ActionBar)), {
-  queries: {
-    accounts: AccountsQuery
-  }
-});
+export default withStyles(styles)(translate()(ActionBar));

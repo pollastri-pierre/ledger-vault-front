@@ -20,7 +20,8 @@ export type OperationToPOST = {
   amount: number,
   fee_level: Speed,
   recipient: string,
-  note?: Note
+  note?: Note,
+  operation_id: number
 };
 
 type Input = {

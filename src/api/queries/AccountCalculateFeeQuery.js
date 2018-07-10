@@ -1,6 +1,5 @@
 //@flow
 import Mutation from "restlay/Mutation";
-import type { OperationToPOST } from "api/mutations/NewOperationMutation";
 export const speeds = {
   slow: "slow",
   normal: "normal",
@@ -9,7 +8,11 @@ export const speeds = {
 export type Speed = $Values<typeof speeds>;
 
 type Input = {
-  operation: OperationToPOST,
+  operation: {
+    amount: number,
+    fee_level: Speed,
+    recipient: string
+  },
   accountId: number
 };
 

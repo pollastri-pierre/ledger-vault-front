@@ -118,10 +118,7 @@ class OnboardingContainer extends Component<Props, State> {
         <div className={classes.base}>
           <div className={classes.banner}>
             <Logo />
-            <a
-              href="http://www.help.vault.ledger.com"
-              className={classes.support}
-            >
+            <a href="http://help.vault.ledger.com" className={classes.support}>
               HELP
             </a>
           </div>

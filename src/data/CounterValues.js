@@ -25,7 +25,7 @@ const pairsSelector = createSelector(
 );
 
 const CounterValues = createCounterValues({
-  getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
+  getAPIBaseURL: () => "https://ledger-countervalue-poc.herokuapp.com",
   storeSelector: state => state.countervalues,
   pairsSelector,
   setExchangePairsAction
