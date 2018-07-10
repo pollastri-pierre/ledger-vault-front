@@ -37,7 +37,7 @@ function fetchWithRetries(
       const request = fetchF(uri, init);
       const requestTimeout = setTimeout(() => {
         isRequestAlive = false;
-        if (shouldRetry(requestsAttempted)) {
+        if (shouldRetry(/* requestsAttempted */)) {
           console.warn("fetchWithRetries: HTTP timeout, retrying.");
           retryRequest();
         } else {
@@ -60,7 +60,7 @@ function fetchWithRetries(
             if (response.status >= 200 && response.status < 300) {
               // Got a response code that indicates success, resolve the promise.
               resolve(response);
-            } else if (shouldRetry(requestsAttempted)) {
+            } else if (shouldRetry(/* requestsAttempted */)) {
               // Fetch was not successful, retrying.
               // TODO(#7595849): Only retry on transient HTTP errors.
               console.warn("fetchWithRetries: HTTP error, retrying.");
@@ -72,7 +72,7 @@ function fetchWithRetries(
         })
         .catch(error => {
           clearTimeout(requestTimeout);
-          if (shouldRetry(requestsAttempted)) {
+          if (shouldRetry(/* requestsAttempted */)) {
             retryRequest();
           } else {
             reject(error);
@@ -94,8 +94,8 @@ function fetchWithRetries(
     /**
          * Checks if another attempt should be done to send a request to the server.
          */
-    function shouldRetry(attempt: number): boolean {
-      return attempt <= _retryDelays.length;
+    function shouldRetry(/* attempt: number */): boolean {
+      return false;
     }
 
     sendTimedRequest();

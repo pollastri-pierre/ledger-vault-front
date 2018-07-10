@@ -56,15 +56,21 @@ export default function reducer(state: Store = initialState, action: Object) {
       return state;
     }
     case DATA_FETCHED_FAIL: {
-      const { queryOrMutation, error } = action;
-      const notif =
-        queryOrMutation.getErrorNotification &&
-        queryOrMutation.getErrorNotification(error);
-      if (notif) {
-        const { title, content, messageType = "error" } = notif;
-        return { visible: true, title, content, type: messageType };
-      }
-      return state;
+      const { /*  queryOrMutation */ error } = action;
+      // const notif =
+      //   queryOrMutation.getErrorNotification &&
+      //   queryOrMutation.getErrorNotification(error);
+      // console.log(error);
+      // if (notif) {
+      //   const { title, content, messageType = "error" } = notif;
+      //   return { visible: true, title, content, type: messageType };
+      // } else {
+      return {
+        visible: true,
+        title: `Error ${error.json.code}`,
+        content: error.json.message,
+        type: "error"
+      };
     }
     case ADD_MESSAGE: {
       const { title, content, messageType } = action;

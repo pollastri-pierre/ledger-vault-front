@@ -209,10 +209,11 @@ export const executeQueryOrMutation =
           queryOrMutation instanceof Query ||
           queryOrMutation instanceof ConnectionQuery
         ) {
-          const shouldLogout =
-            error.status &&
-            queryOrMutation.logoutUserIfStatusCode &&
-            error.status === queryOrMutation.logoutUserIfStatusCode;
+          // const shouldLogout =
+          //   error.status &&
+          //   queryOrMutation.logoutUserIfStatusCode &&
+          //   error.status === queryOrMutation.logoutUserIfStatusCode;
+          const shouldLogout = error.status && error.status === 403;
           if (shouldLogout) {
             dispatch(logout());
           }

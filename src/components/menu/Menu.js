@@ -4,7 +4,7 @@ import { translate } from "react-i18next";
 import type { Translate } from "data/types";
 import { getPendingsOperations } from "utils/operations";
 import React from "react";
-import AccountsQuery from "api/queries/AccountsQuery";
+// import AccountsQuery from "api/queries/AccountsQuery";
 import { isCreateOperationEnabled } from "utils/operations";
 import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -131,9 +131,8 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 ));
 
 export default connectData(withStyles(styles)(translate()(Menu)), {
-  RenderLoading: RenderLoading,
+  RenderLoading,
   queries: {
-    accounts: AccountsQuery,
     allPendingOperations: PendingOperationsQuery,
     currencies: CurrenciesQuery
   }
