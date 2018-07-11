@@ -4,7 +4,7 @@ import type { Account, Unit, Fiat } from "data/types";
 import { success, error } from "formatters/notification";
 import schema from "data/schema";
 
-type In = { account: Account, currency_unit: Unit, fiat: Fiat };
+type In = { account: Account, currency_unit: Unit };
 
 type Res = *;
 
