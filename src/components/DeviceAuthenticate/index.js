@@ -99,24 +99,14 @@ class DeviceAuthenticate extends Component<Props, State> {
       } catch (e) {
         console.error(e);
         const { t } = this.props;
-        if (e instanceof NetworkError) {
-          // HSM driver/simu not available
-          if (e.json && e.json.code && e.json.code === 500) {
-            this.props.onAddMessage(
-              t("deviceAuthenticate:errors.hsm_unavailable.title"),
-              t("deviceAuthenticate:errors.hsm_unavailable.content"),
-              "error"
-            );
-          } else {
-            this.props.onAddMessage(
-              t("deviceAuthenticate:errors.unknown.title"),
-              t("deviceAuthenticate:errors.unknown.content"),
-              "error"
-            );
-          }
+        if (e instanceof NetworkError && e.json) {
+          this.props.onAddMessage(
+            `Error ${e.json.code}`,
+            e.json.message,
+            "error"
+          );
           this.props.cancel();
-        }
-        if (e && e.id === U2F_TIMEOUT) {
+        } else if (e && e.id === U2F_TIMEOUT) {
           this.start();
         } else if (e.statusCode && e.statusCode === 27013) {
           this.props.cancel();
