@@ -27,6 +27,8 @@ export const mockGetAttestationCertificate = jest
   .mockReturnValue("certificate");
 export const mockGenerateKeyComponent = jest.fn().mockReturnValue("seedShard");
 
+export const mockValidateVaultOperation = jest.fn().mockReturnValue("approval");
+
 const mock = jest.fn().mockImplementation(() => {
   return {
     register: mockRegister,
@@ -34,6 +36,7 @@ const mock = jest.fn().mockImplementation(() => {
     getPublicKey: mockGetPublicKey,
     authenticate: mockAuthenticate,
     openSession: mockOpenSession,
+    validateVaultOperation: mockValidateVaultOperation,
     generateKeyComponent: mockGenerateKeyComponent
   };
 });
