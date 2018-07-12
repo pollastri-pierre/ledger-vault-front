@@ -29,6 +29,7 @@ export default class AccountCalculateFeeQuery extends Mutation<
   method = "POST";
   uri = `/accounts/${this.props.accountId}/operations/fees`;
 
+  showError = false;
   getBody() {
     return this.props.operation;
   }
