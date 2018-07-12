@@ -51,7 +51,7 @@ class AccountCreation extends Component<Props> {
     this.props.history.goBack();
   };
 
-  createAccount = entity_id => {
+  createAccount = (entity_id: number) => {
     const { restlay } = this.props;
     const account = this.props.accountCreation;
     const approvers = account.approvers.map(pubKey => {
@@ -184,6 +184,7 @@ const mapDispatchToProps = (dispatch: *) => ({
   onClearState: () => dispatch(clearState())
 });
 
+export { AccountCreation };
 export default connectData(
   connect(mapStateToProps, mapDispatchToProps)(AccountCreation)
 );

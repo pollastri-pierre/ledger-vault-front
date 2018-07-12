@@ -136,7 +136,13 @@ export type State = {
     value: number,
     frequency: Freq
   },
-  internModalId: string,
+  internModalId:
+    | "members"
+    | "approvals"
+    | "time-lock"
+    | "rate-limiter"
+    | "device"
+    | "main",
   popBubble: boolean,
   popAnchor: ?Node
 };
