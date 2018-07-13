@@ -25,6 +25,7 @@ import Adapter from "enzyme-adapter-react-16";
 import VaultDeviceApp, {
   mockGetPublicKey,
   mockOpenSession,
+  mockGetAttestationCertificate,
   mockGenerateKeyComponent
 } from "device/VaultDeviceApp";
 
@@ -56,9 +57,11 @@ test("onStart should call device and API with right parameters for wrapping INIT
     true
   );
 
+  const certificate =
+    "6fc65a01643a104bbed2a82dc0d87c88a353c7e438c0fb7a0796c04337a022bb04efc11ec4ece4ac5d3e16ba7740f5692480dcb8ff79537daf5a812fd53d84ab6c460f4ca1529719d1d95d6dd38a2532eedd27d339798d05a1ae2b7d9741973a2930440220";
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",
-    certificate: "certificatesignature",
+    certificate: certificate,
     blob: "seedShard"
   });
 });
@@ -70,6 +73,7 @@ test("onStart should call device and API with right parameters when generating s
   );
   await MyComponent.instance().start();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
+  expect(mockGetAttestationCertificate).toHaveBeenCalledWith();
 
   expect(mockOpenSession).toHaveBeenCalledWith(
     CONFIDENTIALITY_PATH,
@@ -83,9 +87,11 @@ test("onStart should call device and API with right parameters when generating s
     false
   );
 
+  const certificate =
+    "6fc65a01643a104bbed2a82dc0d87c88a353c7e438c0fb7a0796c04337a022bb04efc11ec4ece4ac5d3e16ba7740f5692480dcb8ff79537daf5a812fd53d84ab6c460f4ca1529719d1d95d6dd38a2532eedd27d339798d05a1ae2b7d9741973a2930440220";
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",
-    certificate: "certificatesignature",
+    certificate: certificate,
     blob: "seedShard"
   });
 });
