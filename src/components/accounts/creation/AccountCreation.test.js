@@ -1,3 +1,4 @@
+jest.mock("network");
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
@@ -9,6 +10,8 @@ import AccountCreationApprovals from "./AccountCreationApprovals";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
+import NewAccountMutation from "api/mutations/NewAccountMutation";
+import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -25,7 +28,11 @@ const props = {
   history: {
     goBack: jest.fn()
   },
-  accountCreation: initialState
+  accountCreation: initialState,
+  restlay: {
+    commitMutation: jest.fn(() => Promise.resolve("test")),
+    fetchQuery: jest.fn()
+  }
 };
 test("it sould render AccountCreationMembers", () => {
   const sProps = {
@@ -180,6 +187,36 @@ test("close method should call history goBack()", () => {
   expect(props.history.goBack).toHaveBeenCalled();
 });
 
-test("todo test for createAccount process network", () => {
-  expect(false).toBe(true);
+test("todo test for createAccount process network", async () => {
+  const sProps = {
+    ...props,
+    accountCreation: {
+      ...props.accountCreation,
+      name: "test",
+      quorum: 1,
+      currency: { id: 1 },
+      approvers: ["pubKey"]
+    }
+  };
+  const MyComponent = shallow(<AccountCreation {...sProps} />);
+  MyComponent.instance().close = jest.fn();
+  await MyComponent.instance().createAccount(1);
+  const data = {
+    account_id: 1,
+    name: "test",
+    currency: {
+      name: 1
+    },
+    security_scheme: {
+      quorum: 1
+    },
+    members: [{ pub_key: "pubKey" }]
+  };
+  expect(sProps.restlay.commitMutation).toHaveBeenCalledWith(
+    new NewAccountMutation(data)
+  );
+  expect(MyComponent.instance().close).toHaveBeenCalled();
+  expect(sProps.restlay.fetchQuery).toHaveBeenCalledWith(
+    new PendingAccountsQuery()
+  );
 });
