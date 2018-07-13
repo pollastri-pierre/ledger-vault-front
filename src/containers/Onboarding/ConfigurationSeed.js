@@ -25,7 +25,11 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => {
         <ListItem number={2}>
           {t("onboarding:master_seed_configuration.step2")}
           <br />
-          <a href="#">
+          <a
+            href="https://help.vault.ledger.com/Content/devices/ledgerblueneterprise.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {t("onboarding:master_seed_configuration.configure_device")}
           </a>
         </ListItem>

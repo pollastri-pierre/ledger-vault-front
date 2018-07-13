@@ -25,7 +25,13 @@ const ConfigurationWrapping = ({ t }: { t: Translate }) => {
         <ListItem number={2}>
           {t("onboarding:wrapping_key_init.step2")}
           <br />
-          <a href="#">{t("onboarding:configure_device")}</a>
+          <a
+            href="https://help.vault.ledger.com/Content/devices/ledgerblueneterprise.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("onboarding:configure_device")}
+          </a>
         </ListItem>
         <ListItem number={3}>
           {t("onboarding:wrapping_key_init.step3")}
