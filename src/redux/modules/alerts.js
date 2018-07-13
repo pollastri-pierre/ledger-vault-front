@@ -56,15 +56,10 @@ export default function reducer(state: Store = initialState, action: Object) {
       return state;
     }
     case DATA_FETCHED_FAIL: {
-      const { /*  queryOrMutation */ error } = action;
-      // const notif =
-      //   queryOrMutation.getErrorNotification &&
-      //   queryOrMutation.getErrorNotification(error);
-      // console.log(error);
-      // if (notif) {
-      //   const { title, content, messageType = "error" } = notif;
-      //   return { visible: true, title, content, type: messageType };
-      // } else {
+      const { queryOrMutation, error } = action;
+      if (!queryOrMutation.showError) {
+        return state;
+      }
       return {
         visible: true,
         title: `Error ${error.json.code}`,
