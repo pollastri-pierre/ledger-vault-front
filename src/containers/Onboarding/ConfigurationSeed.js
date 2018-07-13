@@ -1,5 +1,6 @@
 //@flow
 import React from "react";
+import LinkCongureDevice from "./LinkCongureDevice";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import {
@@ -25,13 +26,9 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => {
         <ListItem number={2}>
           {t("onboarding:master_seed_configuration.step2")}
           <br />
-          <a
-            href="https://help.vault.ledger.com/Content/devices/ledgerblueneterprise.htm"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t("onboarding:master_seed_configuration.configure_device")}
-          </a>
+          <LinkCongureDevice>
+            {t("onboarding:configure_device")}
+          </LinkCongureDevice>
         </ListItem>
         <ListItem number={3}>
           {t("onboarding:master_seed_configuration.step3")}

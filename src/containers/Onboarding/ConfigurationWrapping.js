@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import type { Translate } from "data/types";
+import LinkCongureDevice from "./LinkCongureDevice";
 import { translate } from "react-i18next";
 import {
   Title,
@@ -25,13 +26,9 @@ const ConfigurationWrapping = ({ t }: { t: Translate }) => {
         <ListItem number={2}>
           {t("onboarding:wrapping_key_init.step2")}
           <br />
-          <a
-            href="https://help.vault.ledger.com/Content/devices/ledgerblueneterprise.htm"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <LinkCongureDevice>
             {t("onboarding:configure_device")}
-          </a>
+          </LinkCongureDevice>
         </ListItem>
         <ListItem number={3}>
           {t("onboarding:wrapping_key_init.step3")}
