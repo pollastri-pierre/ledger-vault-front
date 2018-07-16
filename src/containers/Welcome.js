@@ -133,12 +133,7 @@ class Welcome extends Component<
         </Alert>
         <div className={classes.banner}>
           <Logo />
-          <HelpLink
-            className={classes.help}
-            subLink="/Content/operations/login"
-          >
-            {t("welcome:help")}
-          </HelpLink>
+          <HelpLink className={classes.help}>{t("welcome:help")}</HelpLink>
         </div>
         <form onSubmit={this.onSubmit} className={classes.base}>
           <Profile className={classes.icon} color="#e2e2e2" />
