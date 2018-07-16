@@ -135,7 +135,7 @@ class Welcome extends Component<
           <Logo />
           <HelpLink
             className={classes.help}
-            subLink="/Content/operations/login"
+            subLink="/Content/operations/signin.htm"
           >
             {t("welcome:help")}
           </HelpLink>
