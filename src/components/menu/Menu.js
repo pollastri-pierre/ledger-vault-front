@@ -1,59 +1,139 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { SpinnerAccounts } from '../../components';
-import AccountsMenu from './AccountsMenu';
+//@flow
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
+import { getPendingsOperations } from "utils/operations";
+import React from "react";
+// import AccountsQuery from "api/queries/AccountsQuery";
+import { isCreateOperationEnabled } from "utils/operations";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import type { Account, Operation } from "data/types";
+import connectData from "restlay/connectData";
+import MenuList from "@material-ui/core/MenuList";
+import MenuLink from "../MenuLink";
+import AccountsMenu from "./AccountsMenu";
+import PendingsMenuBadge from "./PendingsMenuBadge";
+import NewOperationModal from "../NewOperationModal";
+import ModalRoute from "../ModalRoute";
+import { withStyles } from "@material-ui/core/styles";
 
-// import translate from '../../decorators/Translate';
+import Home from "../icons/full/Home";
+import Lines from "../icons/full/Lines";
+// import Search from "../icons/full/Search";
+import Plus from "../icons/full/Plus";
 
-import './Menu.css';
-
-function Menu(props, context) {
-  const t = context.translate;
-
-  const { accounts, getAccounts, pathname } = props;
-
-  if (!accounts.accounts && !accounts.isLoadingAccounts) {
-    getAccounts();
+const styles = {
+  root: {
+    position: "relative",
+    width: "280px",
+    float: "left",
+    padding: "25px 35px 0 0"
+  },
+  link: {
+    color: "black",
+    textTransform: "uppercase"
+  },
+  icon: {
+    width: 11,
+    marginRight: "12px",
+    verticalAlign: "baseline"
+  },
+  searchIcon: {
+    width: 9,
+    marginRight: "14px"
+  },
+  pendingMenuBadge: {
+    position: "absolute",
+    right: 40,
+    top: 95,
+    pointerEvents: "none"
+  },
+  h4: {
+    color: "black",
+    fontSize: 11,
+    fontWeight: 600,
+    marginBottom: 20,
+    marginTop: 40,
+    marginLeft: 40,
+    textTransform: "uppercase"
   }
-
+};
+function Menu(props: {
+  location: *,
+  match: *,
+  classes: { [_: $Keys<typeof styles>]: string },
+  accounts: Array<Account>,
+  t: Translate,
+  allPendingOperations: Array<Operation>
+}) {
+  const { location, classes, accounts, allPendingOperations, match, t } = props;
+  const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   return (
-    <div className="Menu">
-      <ul className="main-menu">
-        <li><Link to="/" className={`${props.pathname === '/' ? 'active' : ''}`}><i className="material-icons">home</i> {t('menu.dashboard')}</Link></li>
-        <li><Link to="/new" className={`${props.pathname === '/new' ? 'active' : ''}`}><i className="material-icons">add</i> {t('menu.newOperation')}</Link></li>
-        <li><Link to="/pending" className={`${props.pathname === '/pending' ? 'active' : ''}`}><i className="material-icons">format_align_left</i> {t('menu.pendingRequests')}</Link> <span className="menu-badge">2</span></li>
-        <li><Link to="/search" className={`${props.pathname === '/search' ? 'active' : ''}`}><i className="material-icons">search</i> {t('menu.search')}</Link></li>
+    <div className={classes.root}>
+      {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
+      <span className={classes.pendingMenuBadge}>
+        <PendingsMenuBadge />
+      </span>
 
-        {/* Test page */}
-        {/* <li><Link to="/sandbox" className={`${props.pathname === '/sandbox' ? 'active' : ''}`}><i className="material-icons">beach_access</i> sandbox</Link></li> */}
-      </ul>
+      <MenuList>
+        <MenuLink to={`${match.url}/dashboard`}>
+          <span className={classes.link}>
+            <Home className={classes.icon} />
+            {t("menu:dashboard")}
+          </span>
+        </MenuLink>
+        <MenuLink
+          to={`${location.pathname}/new-operation`}
+          disabled={
+            !isCreateOperationEnabled(accounts, pendingApprovalOperations)
+          }
+        >
+          <span className={classes.link}>
+            <Plus className={classes.icon} />
+            {t("menu:new_operation")}
+          </span>
+        </MenuLink>
+        <MenuLink to={`${match.url}/pending`}>
+          <span className={classes.link}>
+            <Lines className={classes.icon} />
+            {t("menu:pending_requests")}
+          </span>
+        </MenuLink>
+        {/* <MenuLink to={`${match.url}/search`}> */}
+        {/*   <span className={classes.link}> */}
+        {/*     <Search className={classes.searchIcon} /> */}
+        {/*     {t("menu.search")} */}
+        {/*   </span> */}
+        {/* </MenuLink> */}
+      </MenuList>
 
-      <div className="menu-accounts">
-        <h4>Accounts</h4>
-        { accounts.isLoadingAccounts ?
-          <SpinnerAccounts />
-          : false
-        }
-        {accounts.accounts && accounts.accounts.length > 0 ?
-          <AccountsMenu
-            accounts={accounts.accounts}
-            pathname={pathname}
-          />
-          : false
-        }
-      </div>
+      {accounts.length > 0 && (
+        <div>
+          <h4 className={classes.h4}>Accounts</h4>
+          <AccountsMenu location={location} accounts={accounts} />
+        </div>
+      )}
+
+      <ModalRoute
+        path="*/new-operation"
+        component={NewOperationModal}
+        match={match}
+      />
     </div>
   );
 }
 
-Menu.contextTypes = {
-  translate: PropTypes.func.isRequired,
-};
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <div className={classes.root} style={{ paddingTop: 100 }}>
+    <SpinnerCard />
+  </div>
+));
 
-Menu.propTypes = {
-  accounts: PropTypes.shape({}).isRequired,
-  getAccounts: PropTypes.func.isRequired,
-};
-
-export default Menu;
+export default connectData(withStyles(styles)(translate()(Menu)), {
+  RenderLoading,
+  queries: {
+    allPendingOperations: PendingOperationsQuery,
+    currencies: CurrenciesQuery
+  }
+});

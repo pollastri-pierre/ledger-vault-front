@@ -1,34 +1,71 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Link } from 'react-router-dom';
+//@flow
+import React, { Component } from "react";
+import type { Account } from "data/types";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router";
+import MenuList from "@material-ui/core/MenuList";
+import MenuLink from "../MenuLink";
 
-function AccountsMenu(props) {
-  const { accounts } = props;
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+const allCurrencies = listCryptoCurrencies(true);
 
-  return (
-    <ul className="accounts-menu-list">
-      {_.map(accounts, account => {
-        const url = `/account/${account.id}`;
-        return (
-          <li key={account.id}>
-            <Link
-              className={`${account.currency.name} ${props.pathname.startsWith(url) ? 'active' : ''}`}
-              to={`/account/${account.id}`}
-            >
-              {account.name}
-            </Link>
-            <span className="unit">{account.currency.units[0]}</span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-AccountsMenu.propTypes = {
-  accounts: PropTypes.array.isRequired,
-  pathname: PropTypes.string.isRequired,
+const styles = {
+  item: {
+    display: "flex",
+    fontWeight: "normal",
+    paddingRight: 0
+  },
+  name: {
+    flex: 1,
+    paddingRight: 10,
+    fontSize: 13,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    color: "black"
+  },
+  unit: {
+    fontSize: 10,
+    fontWeight: 600,
+    color: "black",
+    opacity: 0.2
+  }
 };
 
-export default AccountsMenu;
+class AccountsMenu extends Component<{
+  classes: Object,
+  accounts: Array<Account>,
+  match: *
+}> {
+  render() {
+    const { accounts, classes, match } = this.props;
+    return (
+      <MenuList>
+        {accounts.map(account => {
+          const curr = allCurrencies.find(
+            c => c.scheme === account.currency.name
+          ) || {
+            color: "black"
+          };
+          const unit = account.currency.units.reduce(
+            (prev, current) =>
+              prev.magnitude > current.magnitude ? prev : current
+          );
+          return (
+            <MenuLink
+              color={curr.color}
+              key={account.id}
+              to={`${match.url}/account/${account.id}`}
+              className={classes.item}
+            >
+              <span className={classes.name}>{account.name}</span>
+              <span className={classes.unit}>{unit.code}</span>
+            </MenuLink>
+          );
+        })}
+      </MenuList>
+    );
+  }
+}
+
+export default withRouter(withStyles(styles)(AccountsMenu));

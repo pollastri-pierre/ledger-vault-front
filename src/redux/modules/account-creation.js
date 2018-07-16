@@ -1,332 +1,241 @@
-import _ from 'lodash';
-import { LOGOUT } from './auth';
+//@flow
+import _ from "lodash";
+import { LOGOUT } from "./auth";
+import type { Member } from "data/types";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
-export const OPEN_MODAL_ACCOUNT = 'account-creation/OPEN_MODAL_ACCOUNT';
-export const CLOSE_MODAL_ACCOUNT = 'account-creation/CLOSE_MODAL_ACCOUNT';
-export const CHANGE_TAB = 'account-creation/CHANGE_TAB';
-export const SELECT_CURRENCY = 'account-creation/SELECT_CURRENCY';
-export const CHANGE_ACCOUNT_NAME = 'account-creation/CHANGE_ACCOUNT_NAME';
-export const SWITCH_INTERN_MODAL = 'account-creation/SWITCH_INTERN_MODAL';
-export const ADD_MEMBER = 'account-creation/ADD_MEMBER';
-export const REMOVE_MEMBER = 'account-creation/REMOVE_MEMBER';
-export const SET_APPROVALS = 'account-creation/SET_APPROVALS';
-export const ENABLE_TIMELOCK = 'account-creation/ENABLE_TIMELOCK';
-export const CHANGE_TIMELOCK = 'account-creation/CHANGE_TIMELOCK';
-export const CHANGE_FREQUEMCY_TIMELOCK = 'account-creation/CHANGE_FREQUEMCY_TIMELOCK';
-export const CHANGE_FREQUEMCY_RATELIMITER = 'account-creation/CHANGE_FREQUEMCY_RATELIMITER';
-export const OPEN_POPBUBBLE = 'account-creation/OPEN_POPBUBBLE';
-export const ENABLE_RATELIMITER = 'account-creation/ENABLE_RATELIMITER';
-export const CHANGE_RATELIMITER = 'account-creation/CHANGE_RATELIMITER';
+export const CHANGE_TAB = "account-creation/CHANGE_TAB";
+export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
+export const CHANGE_ACCOUNT_NAME = "account-creation/CHANGE_ACCOUNT_NAME";
+export const SWITCH_INTERN_MODAL = "account-creation/SWITCH_INTERN_MODAL";
+export const ADD_MEMBER = "account-creation/ADD_MEMBER";
+export const REMOVE_MEMBER = "account-creation/REMOVE_MEMBER";
+export const SET_APPROVALS = "account-creation/SET_APPROVALS";
+export const SET_TIMELOCK = "account-creation/SET_TIMELOCK";
+export const SET_RATELIMITER = "account-creation/SET_RATELIMITER";
+export const OPEN_POPBUBBLE = "account-creation/OPEN_POPBUBBLE";
+export const CLEAR_STATE = "account-creation/CLEAR_STATE";
 
-export const SAVE_ACCOUNT_START = 'account-creation/SAVE_ACCOUNT_START';
-export const SAVED_ACCOUNT = 'account-creation/SAVED_ACCOUNT';
-export const SAVED_ACCOUNT_FAIL = 'account-creation/SAVED_ACCOUNT_FAIL';
+export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
+export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
+export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
+const MAX_ACCOUNT_NAME_LENGTH = 20;
 
+type Timelock = {
+  enabled: boolean,
+  value: number,
+  frequency: number
+};
 
-export function saveAccountStart() {
-  return {
-    type: SAVE_ACCOUNT_START,
-  };
-}
+type Ratelimiter = {
+  enabled: boolean,
+  value: number,
+  frequency: number
+};
 
-export function savedAccount() {
-  return {
-    type: SAVED_ACCOUNT,
-  };
-}
-
-export function saveAccount() {
-  return (dispatch) => {
-    dispatch(saveAccountStart());
-    setTimeout(() => {
-      dispatch(savedAccount());
-    }, 1000);
-  };
-}
-export function openPopBubble(anchor) {
+export function openPopBubble(anchor: ?Node) {
   return {
     type: OPEN_POPBUBBLE,
-    anchor,
+    anchor
   };
 }
 
-export function enableTimeLock() {
+export function setTimelock(timelock: Timelock) {
   return {
-    type: ENABLE_TIMELOCK,
+    type: SET_TIMELOCK,
+    timelock
   };
 }
 
-export function enableRatelimiter() {
+export function setRatelimiter(ratelimiter: Ratelimiter) {
   return {
-    type: ENABLE_RATELIMITER,
+    type: SET_RATELIMITER,
+    ratelimiter
   };
 }
 
-export function changeFrequency(field, frequency) {
-  if (field === 'rate-limiter') {
-    return {
-      type: CHANGE_FREQUEMCY_RATELIMITER,
-      frequency,
-    };
-  }
-
-  return {
-    type: CHANGE_FREQUEMCY_TIMELOCK,
-    frequency,
-  };
-}
-
-export function changeTimeLock(number) {
-  return {
-    type: CHANGE_TIMELOCK,
-    number,
-  };
-}
-
-export function changeRatelimiter(number) {
-  return {
-    type: CHANGE_RATELIMITER,
-    number,
-  };
-}
-
-export function addMember(member) {
+export function addMember(member: Member) {
   return {
     type: ADD_MEMBER,
-    member,
+    member
   };
 }
 
-export function setApprovals(number) {
+export function setApprovals(number: number) {
   return {
     type: SET_APPROVALS,
-    number,
+    number
   };
 }
 
-export function removeMember(member) {
+export function removeMember(member: Member) {
   return {
     type: REMOVE_MEMBER,
-    member,
+    member
   };
 }
 
-export function openModalAccount() {
+export function clearState() {
   return {
-    type: OPEN_MODAL_ACCOUNT,
+    type: CLEAR_STATE
   };
 }
 
-export function closeModalAccount() {
-  return {
-    type: CLOSE_MODAL_ACCOUNT,
-  };
-}
-
-export function changeTab(index) {
+export function changeTab(index: number) {
   return {
     type: CHANGE_TAB,
-    index,
+    index
   };
 }
 
-export function selectCurrencyItem(currency) {
+export function selectCurrencyItem(currency: CryptoCurrency) {
   return {
     type: SELECT_CURRENCY,
-    currency,
+    currency
   };
 }
 
-export function changeAccountName(name) {
-  return {
-    type: CHANGE_ACCOUNT_NAME,
-    name,
-  };
+export function changeAccountName(name: string) {
+  if (name.length < MAX_ACCOUNT_NAME_LENGTH) {
+    return {
+      type: CHANGE_ACCOUNT_NAME,
+      name
+    };
+  }
 }
 
-export function switchInternalModal(id) {
+export function switchInternalModal(id: string) {
   return {
     type: SWITCH_INTERN_MODAL,
-    id,
+    id
   };
 }
 
-export function selectCurrency(currency) {
-  return (dispatch) => {
+export function selectCurrency(currency: CryptoCurrency) {
+  return (dispatch: Function) => {
     dispatch(selectCurrencyItem(currency));
     dispatch(changeTab(1));
   };
 }
 
+type Freq = number;
 
-export const initialState = {
-  modalOpened: false,
-  currentTab: 0,
-  currency: null,
-  options: {
-    name: '',
+export type State = {
+  currentTab: number,
+  currency: ?CryptoCurrency,
+  name: string,
+  approvers: Member[],
+  quorum: number,
+  time_lock: {
+    enabled: boolean,
+    value: number,
+    frequency: Freq
   },
-  security: {
-    members: [],
-    approvals: '0',
-    timelock: {
-      enabled: false,
-      duration: '0',
-      frequency: 'hours',
-    },
-    ratelimiter: {
-      enabled: false,
-      rate: '0',
-      frequency: 'hour',
-    },
+  rate_limiter: {
+    enabled: boolean,
+    value: number,
+    frequency: Freq
   },
-  internModalId: 'main',
-  popBubble: false,
-  popAnchor: null,
+  internModalId:
+    | "members"
+    | "approvals"
+    | "time-lock"
+    | "rate-limiter"
+    | "device"
+    | "main",
+  popBubble: boolean,
+  popAnchor: ?Node
 };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case ADD_MEMBER: {
-      const cMembers = _.cloneDeep(state.security.members);
-      const find = _.find(state.security.members, { id: action.member.id });
+export const initialState: State = {
+  currentTab: 0,
+  currency: null,
+  name: "",
+  approvers: [],
+  quorum: 0,
+  time_lock: {
+    enabled: false,
+    value: 0,
+    frequency: 60
+  },
+  rate_limiter: {
+    enabled: false,
+    value: 0,
+    frequency: 84600
+  },
+  internModalId: "main",
+  popBubble: false,
+  popAnchor: null
+};
 
-      if (find) {
-        _.remove(cMembers, { id: action.member.id });
+export default function reducer(
+  state: State = initialState,
+  action: Object
+): State {
+  switch (action.type) {
+    case CLEAR_STATE:
+      return initialState;
+    case ADD_MEMBER: {
+      const cMembers = _.cloneDeep(state.approvers);
+      const index = cMembers.indexOf(action.member);
+
+      if (index > -1) {
+        cMembers.splice(index, 1);
       } else {
         cMembers.push(action.member);
       }
 
+      // reset approvals if approvers.length < approvals
+      let quorum = _.cloneDeep(state.quorum);
+
+      if (cMembers.length < quorum) {
+        quorum = 0;
+      }
+
       return {
-        ...state, security: { ...state.security, members: cMembers },
+        ...state,
+        quorum: quorum,
+        approvers: cMembers
       };
     }
     case CHANGE_ACCOUNT_NAME:
       return {
         ...state,
-        options: {
-          ...state.options,
-          name: action.name,
-        },
+        name: action.name
       };
     case SWITCH_INTERN_MODAL:
       return { ...state, internModalId: action.id };
     case SET_APPROVALS: {
       const isNumber = /^[0-9\b]+$/;
 
-      if (action.number === '' || isNumber.test(action.number)) {
+      if (action.number === "" || isNumber.test(action.number)) {
         return {
           ...state,
-          security: {
-            ...state.security,
-            approvals: action.number,
-          },
+          quorum: parseInt(action.number, 10) || 0
         };
       }
 
       return state;
     }
-    case OPEN_MODAL_ACCOUNT:
-      return { ...state, modalOpened: true };
-    case CLOSE_MODAL_ACCOUNT:
-      return initialState;
     case CHANGE_TAB:
       return { ...state, currentTab: action.index };
     case SELECT_CURRENCY:
       return { ...state, currency: action.currency };
-    case ENABLE_TIMELOCK:
-      return {
-        ...state,
-        security: {
-          ...state.security,
-          timelock: {
-            ...state.security.timelock,
-            enabled: !state.security.timelock.enabled,
-          },
-        },
-      };
-    case ENABLE_RATELIMITER:
-      return {
-        ...state,
-        security: {
-          ...state.security,
-          ratelimiter: {
-            ...state.security.ratelimiter,
-            enabled: !state.security.ratelimiter.enabled,
-          },
-        },
-      };
-    case CHANGE_TIMELOCK: {
-      const isNumber = /^[0-9\b]+$/;
-
-      if (action.number === '' || isNumber.test(action.number)) {
-        return {
-          ...state,
-          security: {
-            ...state.security,
-            timelock: {
-              ...state.security.timelock,
-              duration: action.number,
-            },
-          },
-        };
-      }
-
-      return state;
+    case SET_TIMELOCK: {
+      return { ...state, time_lock: action.timelock };
     }
-    case CHANGE_RATELIMITER: {
-      const isNumber = /^[0-9\b]+$/;
-
-      if (action.number === '' || isNumber.test(action.number)) {
-        return {
-          ...state,
-          security: {
-            ...state.security,
-            ratelimiter: {
-              ...state.security.ratelimiter,
-              rate: action.number,
-            },
-          },
-        };
-      }
-
-      return state;
-    }
-    case CHANGE_FREQUEMCY_TIMELOCK: {
-      return {
-        ...state,
-        security: {
-          ...state.security,
-          timelock: {
-            ...state.security.timelock,
-            frequency: action.frequency,
-          },
-        },
-        popBubble: false,
-      };
-    }
-    case CHANGE_FREQUEMCY_RATELIMITER: {
-      return {
-        ...state,
-        security: {
-          ...state.security,
-          ratelimiter: {
-            ...state.security.ratelimiter,
-            frequency: action.frequency,
-          },
-        },
-        popBubble: false,
-      };
+    case SET_RATELIMITER: {
+      return { ...state, rate_limiter: action.ratelimiter };
     }
     case OPEN_POPBUBBLE:
-      if (typeof action.anchor !== 'string') {
-        return { ...state, popBubble: !state.popBubble, popAnchor: action.anchor };
+      if (typeof action.anchor !== "string") {
+        return {
+          ...state,
+          popBubble: !state.popBubble,
+          popAnchor: action.anchor
+        };
       }
       return { ...state, popBubble: !state.popBubble };
-    case SAVE_ACCOUNT_START:
-      return { ...state, modalOpened: false };
-    case SAVED_ACCOUNT:
-      return initialState;
     case LOGOUT:
       return initialState;
     default:

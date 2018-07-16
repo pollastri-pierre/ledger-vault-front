@@ -1,145 +1,106 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
-import { Link } from 'react-router-dom';
-import _ from 'lodash';
-import { PopBubble, Divider, Profile } from '../../components';
-import { BlurDialog } from '../../containers';
+//@flow
+import { translate } from "react-i18next";
+// import AccountsQuery from "api/queries/AccountsQuery";
+import type { Translate } from "data/types";
+// import connectData from "restlay/connectData";
+import type { Account } from "data/types";
+import React, { Component } from "react";
+// import { Route } from "react-router";
+import { Link } from "react-router-dom";
+import ProfileCard from "./ProfileCard";
+import ActivityCard from "./ActivityCard";
+import ModalRoute from "../ModalRoute";
+import AccountCreation from "../accounts/creation/AccountCreation";
+import colors from "shared/colors";
+import SettingsModal from "../SettingsModal";
+import { withStyles } from "@material-ui/core/styles";
+import Plus from "../icons/full/Plus";
+// import Share from "../icons/full/Share";
+import Settings from "../icons/full/Settings";
+import Question from "../icons/full/Question";
+import Logo from "components/Logo";
 
-import './ActionBar.css';
-
-class ActionBar extends Component {
-  constructor(props) {
-    super(props);
-    this.openProfileMenu = this.openProfileMenu.bind(this);
-  }
-
-  openProfileMenu = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-    this.props.openCloseProfile(event.currentTarget.querySelector('.profile-pic'));
-  }
-
-  openProfileDialog = (event) => {
-    event.preventDefault();
-    this.props.openCloseProfile(this.props.profile.target);
-    this.props.openCloseEdit();
-  }
-
-  saveProfile = (profile) => {
-    this.closeProfileDialog();
-  }
-
-  render() {
-    // let profile;
-    let profileCard;
-    let profileDialog = '';
-
-    const t = this.context.translate;
-
-    const profile = this.props.profile.user;
-
-    if (!_.isEmpty(profile)) {
-      // Displayed when profile is loaded
-      // profile = this.state.profile.results[0];
-
-      profileCard = (
-        <a href="profile" className="profile-card" onClick={this.openProfileMenu} >
-          <div className="profile-pic">
-            <img src={false} alt="" />
-          </div>
-          <div className="profile-info">
-            <div className="profile-name">{`${profile.first_name} ${profile.last_name}`}</div>
-            <div className="profile-view-profile">{t('actionBar.viewProfile')}</div>
-          </div>
-        </a>
-      );
-
-      profileDialog = (
-        <BlurDialog
-          open={this.props.profile.openEdit}
-          onRequestClose={this.props.openCloseEdit}
-        >
-          <Profile
-            profile={profile}
-            close={this.props.openCloseEdit}
-            save={this.saveProfile}
-          />
-        </BlurDialog>
-      );
-    } else {
-      // Displayed while profile is loading
-      profileCard = (
-        <div className="profile-card">
-          <CircularProgress />
-        </div>
-      );
+const styles = {
+  base: {
+    height: "200px",
+    background: colors.night,
+    color: "white",
+    position: "relative"
+  },
+  header: {
+    marginLeft: "280px",
+    padding: "54px 38px 0 0"
+  },
+  header_left: {
+    float: "left"
+  },
+  actions: {
+    float: "right",
+    margin: "-7px -13px",
+    "& a, > span": {
+      display: "inline-block",
+      textDecoration: "none",
+      textTransform: "uppercase",
+      textAlign: "center",
+      fontWeight: "600",
+      fontSize: "11px",
+      color: "white",
+      margin: "0 14px",
+      opacity: ".5",
+      "&:hover": {
+        opacity: "1"
+      }
     }
+  },
+  icon: {
+    width: 16,
+    fill: "white",
+    marginBottom: 5
+  }
+};
+
+class ActionBar extends Component<{
+  location: Object,
+  match: Object,
+  t: Translate,
+  accounts: Account[],
+  classes: { [_: $Keys<typeof styles>]: string }
+}> {
+  render() {
+    const { location, classes, accounts, match, t } = this.props;
 
     return (
-      <div className="ActionBar">
-        { profileCard }
-        <PopBubble
-          open={this.props.profile.open}
-          anchorEl={this.props.profile.target}
-          onRequestClose={this.props.openCloseProfile}
-          style={{
-            marginLeft: '50px',
-          }}
-        >
-          <div className="profile-bubble">
-            <div className="profile-bubble-title">{t('actionBar.myProfile')}</div>
-            <div className="profile-bubble-role">{t('role.administrator')}</div>
-            <Divider className="profile-bubble-divider" />
-            <a href="profile" onClick={this.openProfileDialog}>{t('actionBar.editProfile')}</a>
-            <Link to="/logout">{t('actionBar.logOut')}</Link>
+      <div className={classes.base}>
+        <ProfileCard match={match} />
+        <ModalRoute path="*/new-account" component={AccountCreation} />
+        <ModalRoute
+          path="*/settings"
+          component={SettingsModal}
+          undoAllHistoryOnClickOutside
+        />
+        <div className={classes.header}>
+          <div className={classes.header_left}>
+            <Logo white />
           </div>
-        </PopBubble>
-        { profileDialog }
-        <div className="content-header">
-          <div className="content-header-left">
-            <img
-              src="/img/logo.png"
-              srcSet="/img/logo@2x.png 2x, /img/logo@3x.png 3x"
-              className="content-header-logo"
-              alt="Ledger Vault logo"
-            />
-          </div>
-          <div className="content-header-right">
-            { (this.props.pathname === '/') ?
-              <Link to="" onClick={this.props.openAccount} className="content-header-button">
-                <div className="content-header-button-icon">
-                  <i className="material-icons flipped">add</i>
-                </div>
-                <div className="content-header-button-text">account</div>
+          <div className={classes.actions}>
+            <Link to={`${location.pathname}/new-account`}>
+              <Plus className={classes.icon} />
+              <div>account</div>
+            </Link>
+            {accounts.length > 0 && (
+              <Link
+                to={location.pathname + "/settings"}
+                className="content-header-button"
+              >
+                <Settings className={classes.icon} />
+                <div>{t("actionBar:settings")}</div>
               </Link>
-              :
-              false
-            }
-            <Link to="/export" className="content-header-button">
-              <div className="content-header-button-icon">
-                <i className="material-icons flipped">reply</i>
-              </div>
-              <div className="content-header-button-text">
-                {t('actionBar.export')}
-              </div>
-            </Link>
-            <Link to="/settings" className="content-header-button">
-              <div className="content-header-button-icon">
-                <i className="material-icons">settings</i>
-              </div>
-              <div className="content-header-button-text">
-                {t('actionBar.settings')}
-              </div>
-            </Link>
-            <Link to="/activity" className="content-header-button">
-              <div className="content-header-button-icon">
-                <i className="material-icons">notifications</i>
-              </div>
-              <div className="content-header-button-text">
-                {t('actionBar.activity')}
-              </div>
-            </Link>
+            )}
+            <ActivityCard match={match} />
+            <a href="http://alpha.vault.ledger.fr:81/">
+              <Question className={classes.icon} />
+              <div>Help</div>
+            </a>
           </div>
         </div>
       </div>
@@ -147,19 +108,4 @@ class ActionBar extends Component {
   }
 }
 
-ActionBar.propTypes = {
-  profile: PropTypes.shape({
-    user: PropTypes.shape({}),
-    target: PropTypes.object,
-    open: PropTypes.bool,
-    openEdit: PropTypes.bool,
-  }).isRequired,
-  openCloseProfile: PropTypes.func.isRequired,
-  openCloseEdit: PropTypes.func.isRequired,
-};
-
-ActionBar.contextTypes = {
-  translate: PropTypes.func.isRequired,
-};
-
-export default ActionBar;
+export default withStyles(styles)(translate()(ActionBar));

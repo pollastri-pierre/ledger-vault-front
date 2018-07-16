@@ -1,17 +1,32 @@
-import React from 'react';
+// @flow
+import React, { PureComponent } from "react";
 
-function Validate(props) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 22.17" {...props} >
-      <title>validate_1</title>
-      <g id="Layer_2" data-name="Layer 2">
-        <g id="Solid">
-          <polygon id="Validate" points="0 11.09 3.26 7.83 11.09 15.68 26.74 0 30 3.26 11.09 22.17 0 11.09" />
-        </g>
-      </g>
-    </svg>
-  );
+import colors from "../../shared/colors";
+
+type Props = { size?: number, color?: string };
+
+export default class Validate extends PureComponent<Props> {
+  static defaultProps = {
+    size: 20,
+    color: colors.black
+  };
+
+  render() {
+    const { size, color, ...rest } = this.props;
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 31.41 21.03"
+        width={size}
+        height={size}
+      >
+        <polyline
+          points="30.71 0.71 11.79 19.62 0.71 8.53"
+          stroke={color}
+          fill="none"
+          {...rest}
+        />
+      </svg>
+    );
+  }
 }
-
-export default Validate;
-

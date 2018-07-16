@@ -1,0 +1,9 @@
+tabs:
+  details: details
+  members: members
+  status: status
+details:
+  approvals: approvals
+abort:
+  title: Abort account request
+  content: Do you really want to abort the account ? The request will be cancelled and the account will not be created.

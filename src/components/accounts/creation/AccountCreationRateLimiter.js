@@ -1,81 +1,165 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Checkbox from '../../form/Checkbox';
-import { PopBubble, DialogButton } from '../../';
-import ArrowDown from '../../icons/ArrowDown';
+//@flow
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { DialogButton } from "../../";
+import EnableForm from "components/EnableForm";
+import InfoModal from "../../InfoModal";
+import InputTextWithUnity from "components/InputTextWithUnity";
+import { MenuItem } from "@material-ui/core/Menu";
+import Select from "@material-ui/core/Select";
+import { addMessage } from "redux/modules/alerts";
+import { withStyles } from "@material-ui/core/styles";
+import modals from "shared/modals";
 
-function AccountCreationRateLimiter(props) {
-  const {
-    switchInternalModal,
-    ratelimiter,
-    enable,
-    popbubble,
-    openPopBubble,
-    anchor,
-    change,
-    changeFrequency,
-  } = props;
+const frequencies = [
+  { title: "minute", key: 60 },
+  { title: "hour", key: 3600 },
+  { title: "day", key: 84600 }
+];
 
-  return (
-    <div className="small-modal">
-      <header>
-        <h3>Rate Limiter</h3>
-      </header>
-      <div className="content">
-        <div className="form-field-checkbox" onClick={enable} role="button" tabIndex={0}>
-          <label htmlFor="enable-ratelimiter">Enable</label>
-          <Checkbox
-            checked={ratelimiter.enabled}
-            handleInputChange={enable}
-            labelFor="enable-ratelimiter"
-          />
-        </div>
-        <div className="form-field">
-          <input className="medium-padding" type="text" id="text-duration" value={ratelimiter.rate} onChange={e => change(e.target.value)} />
-          <label htmlFor="text-duration">Rate</label>
-          <span className="count dropdown" role="button" tabIndex={0} onClick={e => openPopBubble(e.currentTarget)}>
-            <strong>operation</strong> per {ratelimiter.frequency}
-            <ArrowDown className="arrow-down" />
-          </span>
-          <PopBubble
-            open={popbubble}
-            onRequestClose={openPopBubble}
-            anchorEl={anchor}
-            style={{
-              marginLeft: '34px',
-              marginTop: '11px',
-            }}
-          >
-            <div className="frequency-bubble">
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'minut')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'minut') ? 'active' : ''}`}>minut</div>
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'hour')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'hour') ? 'active' : ''}`}>hour</div>
-              <div role="button" tabIndex={0} onClick={() => changeFrequency('rate-limiter', 'day')} className={`frequency-bubble-row ${(ratelimiter.frequency === 'day') ? 'active' : ''}`}>day</div>
-            </div>
-          </PopBubble>
-        </div>
-        <p className="info">
-          Rate-limiter enforces that your team does not exceed a pre-defined
-          number of outgoing transaction per interval of time.
-        </p>
-      </div>
+const mapDispatchToProps = (dispatch: *) => ({
+  onAddMessage: (title, content, type) =>
+    dispatch(addMessage(title, content, type))
+});
 
-      <div className="footer">
-        <DialogButton right highlight onTouchTap={() => switchInternalModal('main')}>Done</DialogButton>
-      </div>
-    </div>
-  );
-}
-
-AccountCreationRateLimiter.propTypes = {
-  ratelimiter: PropTypes.shape({}).isRequired,
-  popbubble: PropTypes.bool.isRequired,
-  anchor: PropTypes.shape({}).isRequired,
-  switchInternalModal: PropTypes.func.isRequired,
-  enable: PropTypes.func.isRequired,
-  openPopBubble: PropTypes.func.isRequired,
-  change: PropTypes.func.isRequired,
-  changeFrequency: PropTypes.func.isRequired,
+const styles = {
+  base: {
+    ...modals.base,
+    width: 440
+  },
+  info: {
+    margin: "20px 0px 40px 0px"
+  }
 };
 
-export default AccountCreationRateLimiter;
+type Props = {
+  setRatelimiter: Function,
+  switchInternalModal: string => void,
+  rate_limiter: Object,
+  classes: { [_: $Keys<typeof styles>]: string },
+  onAddMessage: (t: string, m: string, ty: string) => void
+};
 
+type State = {
+  rate_limiter: Object
+};
+
+class AccountCreationRateLimiter extends Component<Props, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      rate_limiter: props.rate_limiter
+    };
+  }
+
+  submit = () => {
+    const { setRatelimiter, switchInternalModal, onAddMessage } = this.props;
+    const { rate_limiter } = this.state;
+    if (rate_limiter.enabled && rate_limiter.value === 0) {
+      onAddMessage("Error", "Rate limiter value cannot be 0", "error");
+      return false;
+    } else {
+      setRatelimiter(this.state.rate_limiter);
+      switchInternalModal("main");
+    }
+  };
+
+  onChangeValue = val => {
+    const isNumber = /^[0-9\b]+$/;
+
+    if (val === "" || isNumber.test(val)) {
+      this.setState({
+        ...this.state,
+        rate_limiter: {
+          ...this.state.rate_limiter,
+          value: parseInt(val, 10) || 0
+        }
+      });
+    }
+  };
+
+  onToggle = () => {
+    this.setState({
+      ...this.state,
+      rate_limiter: {
+        ...this.state.rate_limiter,
+        enabled: !this.state.rate_limiter.enabled
+      }
+    });
+  };
+
+  changeFrequency = (e: *) => {
+    this.setState({
+      ...this.state,
+      rate_limiter: {
+        ...this.state.rate_limiter,
+        frequency: e.target.value
+      }
+    });
+  };
+
+  cancel = () => {
+    this.props.switchInternalModal("main");
+  };
+  render() {
+    const { rate_limiter } = this.state;
+    const { classes } = this.props;
+    return (
+      <div className={classes.base}>
+        <header>
+          <h2>Rate Limiter</h2>
+        </header>
+        <div className="content">
+          <EnableForm checked={rate_limiter.enabled} toggle={this.onToggle}>
+            <InputTextWithUnity
+              label="Rate"
+              hasError={rate_limiter.value === 0 && rate_limiter.enabled}
+              field={
+                <input
+                  type="text"
+                  id="text-duration"
+                  value={rate_limiter.value}
+                  onChange={e => this.onChangeValue(e.target.value)}
+                />
+              }
+            >
+              <Select
+                value={rate_limiter.frequency}
+                onChange={this.changeFrequency}
+                disableUnderline
+                renderValue={key =>
+                  "per " + (frequencies.find(o => o.key === key) || {}).title}
+              >
+                {frequencies.map(({ title, key }) => (
+                  <MenuItem
+                    disableRipple
+                    key={key}
+                    value={key}
+                    style={{ color: "#27d0e2" }}
+                  >
+                    <span style={{ color: "black" }}>{title}</span>
+                  </MenuItem>
+                ))}
+              </Select>
+            </InputTextWithUnity>
+            <InfoModal className={classes.info}>
+              Rate-limiter enforces that your team does not exceed a pre-defined
+              number of outgoing transaction per interval of time.
+            </InfoModal>
+          </EnableForm>
+        </div>
+
+        <div className="footer">
+          <DialogButton onTouchTap={this.cancel}>Cancel</DialogButton>
+          <DialogButton right highlight onTouchTap={this.submit}>
+            Done
+          </DialogButton>
+        </div>
+      </div>
+    );
+  }
+}
+export default connect(undefined, mapDispatchToProps)(
+  withStyles(styles)(AccountCreationRateLimiter)
+);

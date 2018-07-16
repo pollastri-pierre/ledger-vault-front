@@ -1,27 +1,55 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Snackbar from 'material-ui/Snackbar';
+//@flow
+import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
 
-function Alert(props) {
+import IconCheck from "../icons/Validate";
+import IconError from "../icons/Error";
+import colors from "../../shared/colors";
+
+const common = {
+  padding: "30px",
+  width: "380px",
+  fontFamily: "inherit",
+  fontSize: "11px",
+  lineHeight: "1.82",
+  boxShadow: "0 10px 10px 0 rgba(0, 0, 0, 0.04)"
+};
+const error = {
+  root: {
+    background: "#ea2e49",
+    ...common
+  }
+};
+const success = {
+  root: {
+    background: "#27d0e2",
+    ...common
+  }
+};
+
+function Snack(props: { message: *, classes: Object }) {
+  const { message, classes } = props;
+  return <SnackbarContent message={message} classes={{ root: classes.root }} />;
+}
+
+const Error = withStyles(error)(Snack);
+const Success = withStyles(success)(Snack);
+
+function Alert(props: { children: *, open: boolean, theme: string, title: * }) {
   const { title, children, theme: themeName, ...newProps } = props;
-  let iconDiv = '';
-  let titleDiv = '';
+  let iconDiv = null;
+  let titleDiv = null;
   const theme = {};
-  const bodyStyle = {
-    height: 'initial',
-    lineHeight: 'initial',
-    padding: '40px',
-  };
 
   switch (themeName) {
-    case 'success':
-      theme.color = '#41ccb4';
-      theme.icon = 'check';
+    case "success":
+      theme.icon = <IconCheck color={colors.white} size={38} />;
       break;
 
-    case 'error':
-      theme.color = '#ea2e49';
-      theme.icon = 'close';
+    case "error":
+      theme.icon = <IconError color={colors.white} size={38} />;
       break;
 
     default:
@@ -30,16 +58,8 @@ function Alert(props) {
       break;
   }
 
-  if (theme.color) {
-    bodyStyle.backgroundColor = theme.color;
-  }
-
   if (theme.icon) {
-    iconDiv = (
-      <div style={{ fontSize: '38px', lineHeight: 0, marginRight: '30px' }} >
-        <i className="material-icons">{theme.icon}</i>
-      </div>
-    );
+    iconDiv = <div style={{ marginRight: 30 }}>{theme.icon}</div>;
   }
 
   if (title) {
@@ -48,8 +68,8 @@ function Alert(props) {
         className="top-message-title"
         style={{
           fontWeight: 600,
-          textTransform: 'uppercase',
-          marginBottom: '15px',
+          textTransform: "uppercase",
+          marginBottom: "10px"
         }}
       >
         {title}
@@ -58,7 +78,7 @@ function Alert(props) {
   }
 
   const content = (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: "flex" }}>
       {iconDiv}
       <div>
         {titleDiv}
@@ -68,41 +88,18 @@ function Alert(props) {
   );
 
   return (
-      <Snackbar
-        {...newProps}
-        className={`top-message ${props.className}`}
-        style={{
-          top: 0,
-          bottom: 'auto',
-          transform: props.open ? 'translate3d(-50%, 0, 0)' : 'translate3d(-50%, -100%, 0)',
-          ...props.style,
-        }}
-        bodyStyle={bodyStyle}
-        contentStyle={{
-          fontSize: '11px',
-        }}
-        message={content}
-      />
+    <Snackbar
+      {...newProps}
+      className="top-message"
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+    >
+      {themeName === "error" ? (
+        <Error message={content} />
+      ) : (
+        <Success message={content} />
+      )}
+    </Snackbar>
   );
 }
 
-Alert.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-  style: PropTypes.shape({}),
-  open: PropTypes.bool,
-  theme: PropTypes.string,
-  title: PropTypes.node,
-};
-
-Alert.defaultProps = {
-  className: '',
-  children: '',
-  style: {},
-  open: false,
-  theme: '',
-  title: '',
-};
-
 export default Alert;
-

@@ -1,122 +1,125 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { DialogButton } from '../';
-import TabDetails from './TabDetails';
-import TabOverview from './TabOverview';
-import TabLabel from './TabLabel';
-import './OperationDetails.css';
-import operationsUtils from '../../redux/utils/operation';
+//@flow
+import React, { Component } from "react";
+import TryAgain from "components/TryAgain";
+import ModalLoading from "components/ModalLoading";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { DialogButton, Overscroll } from "../";
+import TabDetails from "./TabDetails";
+import TabOverview from "./TabOverview";
+import TabLabel from "./TabLabel";
+import connectData from "restlay/connectData";
+import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+import type { Operation, Account, Member } from "data/types";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import modals from "shared/modals";
 
-class OperationDetails extends Component {
+type Props = {
+  close: Function,
+  classes: Object,
+  tabIndex: number,
+  // injected by decorators:
+  operationWithAccount: {
+    operation: Operation,
+    account: Account
+  },
+  profile: Member,
+  history: *,
+  match: Object
+};
+
+const styles = {
+  base: {
+    ...modals.base,
+    width: "440px",
+    height: "615px"
+  }
+};
+
+class OperationDetails extends Component<Props, *> {
   constructor(props) {
     super(props);
 
-    let note = { author: {} };
-
     this.state = {
-      note: note,
+      value: parseInt(props.match.params.tabIndex, 10) || 0
     };
-
-
-    this.handleChangeTitle = this.handleChangeTitle.bind(this);
   }
 
-  handleChangeTitle = (val) => {
-    const newNote = _.cloneDeep(this.state.note);
-    newNote.title = val;
-
-    this.setState({
-      note: newNote,
-    });
-  }
-
-  componentWillReceiveProps(props) {
-    const operation = operationsUtils.findOperationDetails(
-      props.operations.operationInModal,
-      props.operations.operations,
-    );
-
-    if (operation && operation.notes && operation.notes.length > 0) {
-      this.setState({
-        note: operation.notes[0],
-      });
-    }
-  }
-
-  componentWillMount() {
-    const { operations, getOperation } = this.props;
-    if (true && !operations.isLoadingOperation) {
-      getOperation(operations.operationInModal);
-    }
-  }
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
 
   render() {
-    const { operations } = this.props;
-    const { translate } = this.context;
-
-    const operation = operationsUtils.findOperationDetails(
-      operations.operationInModal,
-      operations.operations,
-    );
+    const {
+      operationWithAccount: { operation, account },
+      close,
+      classes
+    } = this.props;
+    const note = operation.notes[0];
+    const { value } = this.state;
 
     return (
-      <div>
-        {(operations.isLoadingOperation || !operation) ?
-          <div className="operation-details">
-            <div className="modal-loading">
-              <CircularProgress />
-            </div>
-            <div className="footer">
-              <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
-            </div>
-          </div>
-        :
-          <Tabs className="operation-details" defaultIndex={this.props.tabsIndex} onSelect={() => {}}>
-            <div>
-              <header>
-                <h2>{ translate('operations.detailsTitle') }</h2>
-                <TabList>
-                  <Tab>{ translate('operations.overview') }</Tab>
-                  <Tab>{ translate('operations.details') }</Tab>
-                  <Tab>{ translate('operations.label') }</Tab>
-                </TabList>
-              </header>
-              <div className="content">
-                <div className="inner">
-                  <TabPanel className='tabs_panel'>
-                    <TabOverview operation={operation} />
-                  </TabPanel>
-                  <TabPanel className='tabs_panel'>
-                    <TabDetails operation={operation} />
-                  </TabPanel>
-                  <TabPanel className='tabs_panel'>
-                    <TabLabel note={this.state.note} changeTitle={this.handleChangeTitle} />
-                  </TabPanel>
-                </div>
-              </div>
-            </div>
-            <div className="footer">
-              <DialogButton highlight right onTouchTap={this.props.close}>Done</DialogButton>
-            </div>
+      <div className={classes.base}>
+        <header>
+          <h2>{"Operation's details"}</h2>
+          <Tabs
+            value={value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+          >
+            <Tab label="Overview" disableRipple />
+            <Tab label="Details" disableRipple />
+            <Tab label="Label" disableRipple />
           </Tabs>
-        }
+        </header>
+        {value === 0 && <TabOverview operation={operation} account={account} />}
+        {value === 1 && (
+          <div style={{ height: "330px" }}>
+            <Overscroll top={20} bottom={40}>
+              <TabDetails operation={operation} account={account} />
+            </Overscroll>
+          </div>
+        )}
+        {value === 2 && <TabLabel note={note} />}
+        <div className="footer">
+          {operation.exploreURL ? (
+            <DialogButton>
+              <a target="_blank" href={operation.exploreURL}>
+                Explore
+              </a>
+            </DialogButton>
+          ) : null}
+          <DialogButton highlight right onTouchTap={close}>
+            Done
+          </DialogButton>
+        </div>
       </div>
     );
   }
 }
 
-
-OperationDetails.propTypes = {
-  close: PropTypes.func.isRequired,
-  getOperation: PropTypes.func.isRequired,
-  operations: PropTypes.shape({}).isRequired,
-};
-
 OperationDetails.contextTypes = {
-  translate: PropTypes.func.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
-export default OperationDetails;
+const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
+  return (
+    <div className={classes.base}>
+      <TryAgain error={error} action={restlay.forceFetch} />
+    </div>
+  );
+});
+
+export default connectData(withStyles(styles)(OperationDetails), {
+  RenderError,
+  RenderLoading: ModalLoading,
+  queries: {
+    operationWithAccount: OperationWithAccountQuery,
+    profile: ProfileQuery
+  },
+  propsToQueryParams: props => ({
+    operationId: props.match.params.operationId || ""
+  })
+});

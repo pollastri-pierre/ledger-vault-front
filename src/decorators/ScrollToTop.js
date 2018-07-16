@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+//@flow
+import React, { Component } from "react";
 
-export default (WrappedComponent) => {
-  class ClickToTop extends Component {
+export default (
+  WrappedComponent: React$ComponentType<*>
+): React$ComponentType<*> => {
+  class ClickToTop extends Component<*> {
     static handleEvent() {
       window.scrollTo(0, 0);
     }
@@ -17,4 +20,3 @@ export default (WrappedComponent) => {
 
   return ClickToTop;
 };
-

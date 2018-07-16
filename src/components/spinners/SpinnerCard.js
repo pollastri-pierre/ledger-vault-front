@@ -1,18 +1,35 @@
-import React from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
+// @flow
+import React, { PureComponent } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { load } from "../GlobalLoading";
 
-const SpinnerCard = () => {
-  return (
-    <CircularProgress
-      size={25}
-      style={{
-        position: 'absolute',
-        top: '52%',
-        left: '50%',
-        marginLeft: '-12.5px'
-      }}
-    />
-  );
-};
+class SpinnerCard extends PureComponent<{ disableGlobalSpinner?: boolean }> {
+  unload: ?Function;
+  componentDidMount() {
+    if (!this.props.disableGlobalSpinner) {
+      this.unload = load();
+    }
+  }
+  componentWillUnmount() {
+    if (this.unload) {
+      this.unload();
+    }
+  }
+  render() {
+    return (
+      <CircularProgress
+        size={30}
+        color="primary"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          marginLeft: "-15px",
+          marginTop: "-15px"
+        }}
+      />
+    );
+  }
+}
 
 export default SpinnerCard;

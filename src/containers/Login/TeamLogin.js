@@ -1,77 +1,111 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { TextField, DialogButton } from '../../components';
-import Profile from '../../components/icons/thin/Profile';
+//@flow
+import React, { Component } from "react";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
+import { DialogButton } from "components";
+import { withStyles } from "@material-ui/core/styles";
+import Profile from "components/icons/thin/Profile";
+import MUITextField from "@material-ui/core/TextField";
 
-export class TeamLogin extends Component {
-  constructor(props) {
-    super(props);
-
-    this.selectTeam = this.selectTeam.bind(this);
-    this.confirm = this.confirm.bind(this);
+const styles = {
+  base: {
+    position: "relative",
+    textAlign: "center",
+    display: "inline-block",
+    marginBottom: "150px",
+    height: "258px",
+    margin: "0 auto",
+    width: "400px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)"
+  },
+  instructions: {
+    fontSize: "13px",
+    paddingTop: "22px"
+  },
+  icon: {
+    marginTop: 40,
+    width: 28,
+    height: 32
+  },
+  submit: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    marginRight: 40
+  },
+  input: {
+    textAlign: "center"
   }
+};
+export class TeamLogin extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
+  onChange: Function,
+  t: Translate,
+  onStartAuth: Function,
+  onCloseTeamError: Function,
+  isChecking: boolean,
+  domain: string,
+  error: ?Error
+}> {
+  context: {
+    translate: string => string
+  };
 
-  componentDidMount() {
-    document.addEventListener('keypress', this.confirm);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keypress', this.confirm);
-  }
-
-  selectTeam() {
-    if (this.props.team !== '' && !this.props.isChecking) {
+  onSubmit = (e: any) => {
+    e.preventDefault();
+    if (this.props.domain !== "" && !this.props.isChecking) {
       this.props.onStartAuth();
     }
-  }
-
-  confirm(e) {
-    if (e.charCode === 13) {
-      this.selectTeam();
-    }
-  }
+  };
 
   handleRequestClose = () => {
     this.props.onCloseTeamError();
-  }
+  };
+
+  onChange = (e: any) => {
+    this.props.onChange(e.currentTarget.value);
+  };
 
   render() {
-    const t = this.context.translate;
+    const { domain, classes, error, isChecking, t } = this.props;
     return (
-      <div className="TeamLogin">
-        <Profile className="user" />
+      <form onSubmit={this.onSubmit} className={classes.base}>
+        <Profile className={classes.icon} color="#e2e2e2" />
         <br />
-        <TextField
-          onKeyDown={this.confirm}
-          hasError={(this.props.teamError && this.props.team !== '')}
-          style={{ width: '320px' }}
-          disabled={this.props.isChecking}
-          inputStyle={{ textAlign: 'center' }}
-          value={this.props.team}
+        <MUITextField
+          error={error ? domain !== "" : false}
+          style={{ width: "320px", marginTop: "5px" }}
+          InputProps={{
+            inputProps: {
+              style: {
+                fontSize: "13px",
+                paddingBottom: "15px",
+                textAlign: "center"
+              }
+            }
+          }}
+          disabled={isChecking}
+          value={domain}
           id="textField"
-          errorText=""
-          onChange={this.props.onChange}
-          hintStyle={{ textAlign: 'center', width: '100%' }}
-          hintText={t('login.hint')}
-        /><br />
-        <div className="instructions" >{t('login.instructions')}</div>
-        <DialogButton highlight right onTouchTap={this.selectTeam}>{t('common.continue')}</DialogButton>
-      </div>
+          name="email"
+          onChange={this.onChange}
+          placeholder={t("login.hint")}
+        />
+        <br />
+        <div className={classes.instructions}>{t("login.instructions")}</div>
+        <DialogButton
+          className={classes.submit}
+          highlight
+          disabled={!domain || isChecking}
+          right
+          onTouchTap={this.onSubmit}
+        >
+          {t("common.continue")}
+        </DialogButton>
+      </form>
     );
   }
 }
 
-TeamLogin.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  onStartAuth: PropTypes.func.isRequired,
-  onCloseTeamError: PropTypes.func.isRequired,
-  isChecking: PropTypes.bool.isRequired,
-  team: PropTypes.string.isRequired,
-  teamError: PropTypes.bool.isRequired,
-};
-
-TeamLogin.contextTypes = {
-  translate: PropTypes.func.isRequired,
-}
-
-export default TeamLogin;
+export default withStyles(styles)(translate()(TeamLogin));

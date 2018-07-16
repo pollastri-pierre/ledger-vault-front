@@ -1,79 +1,67 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import createHistory from 'history/createBrowserHistory';
-import { Switch, Route } from 'react-router';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import App from './containers/App/App';
-import create from './redux/create';
-import registerServiceWorker from './registerServiceWorker';
+//@flow
+import React from "react";
+import ReactDOM from "react-dom";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { Provider } from "react-redux";
+import { I18nextProvider } from "react-i18next";
+import { AppContainer } from "react-hot-loader";
+import create from "redux/create";
+import RestlayProvider from "restlay/RestlayProvider";
+import GlobalLoading from "components/GlobalLoading";
+import network from "network";
+import theme from "styles/theme";
+import OrganizationAppRouter from "containers/OrganizationAppRouter";
+import jss from "jss";
+import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
+import CounterValues from "data/CounterValues";
+import i18n from "./i18n";
 
-import {
-  ModalsContainer,
-  PrivateRoute,
-  Login,
-  LoginTest,
-  Logout,
-  AlertsContainer,
-  I18nProvider
-} from './containers';
+jss
+  .createStyleSheet({
+    "@font-face": {
+      "font-family": "Museo",
+      src: [`url('${MuseoWoff}') format('woff')`]
+    }
+  })
+  .attach();
+// injectTapEventPlugin(); // Required by Material-UI
 
-import { getUserInfos } from './redux/modules/auth';
+const muiTheme = createMuiTheme(theme);
 
-import './styles/index.css';
+const locale = window.localStorage.getItem("locale") || "en";
 
-// for React-Infinite
-if (window) {
-  window.React = React;
-}
+const store = create({ locale });
 
+const $root = document.getElementById("root");
 
-const muiTheme = getMuiTheme({
-  fontFamily: 'Open Sans, sans-serif',
-});
-
-const history = createHistory();
-const locale = window.localStorage.getItem('locale') || 'en';
-
-const store = create(history, { locale });
-
-// Get saved locale or fallback to english
-const token = window.localStorage.getItem('token');
-
-const render = () => {
-  ReactDOM.render(
-    // Pass the store, muiTheme and i18n to every components
-    <Provider store={store}>
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <I18nProvider>
-          <div>
-            <AlertsContainer />
-            <ModalsContainer />
-              <ConnectedRouter history={history}>
-              <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/logintest" component={LoginTest} />
-                <Route path="/logout" component={Logout} />
-                <PrivateRoute path="/" component={App} />
-              </Switch>
-            </ConnectedRouter>
-          </div>
-        </I18nProvider>
-      </MuiThemeProvider>
-    </Provider>,
-    document.getElementById('root'));
-  registerServiceWorker();
+const render = Component => {
+  $root &&
+    ReactDOM.render(
+      <AppContainer>
+        <Provider store={store}>
+          <RestlayProvider
+            network={network}
+            connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
+          >
+            <CounterValues.PollingProvider>
+              <I18nextProvider i18n={i18n}>
+                <MuiThemeProvider theme={muiTheme}>
+                  <Component />
+                </MuiThemeProvider>
+              </I18nextProvider>
+            </CounterValues.PollingProvider>
+          </RestlayProvider>
+        </Provider>
+      </AppContainer>,
+      $root
+    );
 };
 
-if (token) {
-  getUserInfos()(store.dispatch, store.getState).then(() => {
-    render();
-  }).catch(() => {
-    render();
-  });
-} else {
-  render();
-}
+render(OrganizationAppRouter);
 
+if (module.hot) {
+  module.hot.accept("containers/OrganizationAppRouter", () => {
+    const nextContainer = require("containers/OrganizationAppRouter").default;
+    render(nextContainer);
+  });
+}

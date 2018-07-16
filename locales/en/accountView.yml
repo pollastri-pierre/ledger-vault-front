@@ -1,0 +1,14 @@
+---
+balance: Balance
+countervalue: Countervalue
+receive:
+  title: Receive funds
+  addr: Current Address
+  desc: A new address is generated when a first payment is received on the current address. Previous addresses remain valid and do not expire.
+last_op:
+  title: Last operations
+  date: date
+  address: address
+  status: status
+  amount: amount
+

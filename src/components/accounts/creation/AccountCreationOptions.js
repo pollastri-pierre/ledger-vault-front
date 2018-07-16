@@ -1,40 +1,59 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+//@flow
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import React from "react";
+import BadgeCurrency from "../../BadgeCurrency";
+import type { Currency } from "data/types";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
 
-function AccountCreationOptions(props) {
-  const classe = props.currency.name.split(' ')
-    .join('-')
-    .toLowerCase();
-
+const styles = {
+  title: {
+    fontSize: 11,
+    fontWeight: 600,
+    textTransform: "uppercase",
+    marginBottom: 20,
+    display: "block"
+  },
+  relative: {
+    position: "relative"
+  },
+  badge: {
+    position: "absolute",
+    left: 0,
+    top: "29%"
+  },
+  input: {
+    paddingLeft: 20,
+    paddingBottom: 10
+  }
+};
+function AccountCreationOptions(props: {
+  currency: Currency,
+  name: string,
+  changeName: Function,
+  t: Translate,
+  classes: Object
+}) {
+  const { classes, t } = props;
   return (
-    <div className="account-creation-options">
-      <label htmlFor="name">Name</label>
-      <div className={`dot ${classe}`} />
-      <input
-        type="text"
-        name="name"
-        placeholder="Account's name"
-        value={props.options.name}
-        onChange={e => props.changeName(e.target.value)}
-      />
+    <div>
+      <label htmlFor="name" className={classes.title}>
+        {t("newAccount:options.name")}
+      </label>
+      <div className={classes.relative}>
+        <BadgeCurrency currency={props.currency} className={classes.badge} />
+        <TextField
+          value={props.name}
+          autoFocus
+          onChange={e => props.changeName(e.target.value)}
+          placeholder={t("newAccount:options.acc_name_placeholder")}
+          InputProps={{ className: classes.input }}
+          fullWidth
+        />
+      </div>
     </div>
   );
 }
 
-AccountCreationOptions.defaultProps = {
-  currency: {
-    name: '',
-  },
-};
-
-AccountCreationOptions.propTypes = {
-  currency: PropTypes.shape({
-    name: PropTypes.string,
-  }),
-  options: PropTypes.shape({
-    name: PropTypes.string,
-  }).isRequired,
-  changeName: PropTypes.func.isRequired,
-};
-
-export default AccountCreationOptions;
+export default withStyles(styles)(translate()(AccountCreationOptions));

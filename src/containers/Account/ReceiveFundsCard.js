@@ -1,61 +1,75 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Qrious from 'qrious';
-import { SpinnerCard } from '../../components';
+//@flow
+import React, { Component } from "react";
+import Card from "components/Card";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
+import colors from "shared/colors";
+import QRCode from "components/QRCode";
 
-class ReceiveFundsCard extends Component {
-  componentDidUpdate() {
-    if (this.props.data && this.props.data.hash) {
-      const { hash } = this.props.data;
-      const elm = this.canvas;
-
-      this.qr = new Qrious({
-        foreground: 'black',
-        element: elm,
-        level: 'H',
-        size: 100,
-        value: hash,
-      });
+const styles = {
+  card: {},
+  base: {
+    "& h4": {
+      color: colors.lead,
+      fontWeight: "600",
+      margin: "0",
+      padding: "0",
+      fontSize: "10px",
+      textTransform: "uppercase"
     }
+  },
+  right: {
+    marginLeft: "130px",
+    marginTop: "-2px",
+    padding: "0"
+  },
+  left: {
+    float: "left"
+  },
+  hash: {
+    fontSize: "13px",
+    wordWrap: "break-word"
+  },
+  info: {
+    color: colors.lead,
+    fontSize: "11px",
+    maxWidth: "482px",
+    lineHeight: "1.82"
   }
+};
 
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  t: Translate,
+  address: string
+};
+
+class ReceiveFundsCard extends Component<Props> {
   render() {
-    const { data, loading } = this.props;
-
+    const { address, classes, t } = this.props;
     return (
-      <div className="bloc funds">
-        <h3>Receive Funds</h3>
-        {(loading || _.isNull(data)) ?
-          <SpinnerCard />
-          :
-          <div className="bloc-content">
-            <canvas ref={(c) => { this.canvas = c; }} />
-            <div className="right">
-              <h4>current address</h4>
-              <p className="hash">{ data.hash }</p>
-              <p className="info">
-                A new address is generated when a first payment is received on the current address.
-                Previous addresses remain valid and do not expire.
-                remain valid and do not expire.
-              </p>
-            </div>
+      <div className={classes.base}>
+        <Card title={t("accountView:receive.title")} className={classes.card}>
+          <div className={classes.left}>
+            <QRCode hash={address} size={90} />
           </div>
-        }
+          <div className={classes.right}>
+            <h4>{t("accountView:receive.addr")}</h4>
+            <p className={classes.hash}>{address}</p>
+            <p className={classes.info}>{t("accountView:receive.desc")}</p>
+          </div>
+        </Card>
       </div>
     );
   }
 }
 
-ReceiveFundsCard.defaultProps = {
-  data: null,
-};
-
-ReceiveFundsCard.propTypes = {
-  data: PropTypes.shape({
-    hash: PropTypes.string,
-  }),
-  loading: PropTypes.bool.isRequired,
-};
-
-export default ReceiveFundsCard;
+export default withStyles(styles)(translate()(ReceiveFundsCard));
+//   queries: {
+//     account: AccountQuery
+//   },
+//   propsToQueryParams: ({ accountId }: { accountId: string }) => ({ accountId }),
+//   optimisticRendering: true,
+//   RenderError,
+//   RenderLoading

@@ -1,77 +1,54 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import 'open-sans-fontface/open-sans.css';
-import 'material-design-icons/iconfont/material-icons.css';
-import { withRouter } from 'react-router-dom';
-import { logout } from '../../redux/modules/auth';
-import { openCloseProfile, openCloseEdit } from '../../redux/modules/profile';
-import { openModalAccount } from '../../redux/modules/account-creation';
-import { getAccounts } from '../../redux/modules/accounts';
-import { ActionBar, Content, Menu } from '../../components';
+//@flow
+import React from "react";
+import TryAgain from "components/TryAgain";
+import connectData from "restlay/connectData";
+import type { Account } from "data/types";
+import AccountsQuery from "api/queries/AccountsQuery";
+import Content from "components/content/Content";
+import ActionBar from "components/actionBar/ActionBar";
+import { withStyles } from "@material-ui/core/styles";
+import Menu from "components/menu/Menu";
+import Card from "components/Card";
+// import { GlobalLoadingRendering } from "components/GlobalLoading";
 
-import './App.css';
-
-// Set blur status to root element on dispatch
-const mapStateToProps = state => ({
-  blurredBG: state.blurBG.blurredBG > 0,
-  profile: state.profile,
-  accounts: state.accounts,
-  routing: state.routing,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onLogout: () => dispatch(logout()),
-  onOpenCloseProfile: target => dispatch(openCloseProfile(target)),
-  onOpenCloseEdit: () => dispatch(openCloseEdit()),
-  onGetAccounts: () => dispatch(getAccounts()),
-  onOpenAccount: () => dispatch(openModalAccount()),
-});
-
-// Required by Material-UI
-injectTapEventPlugin();
-
-
-function App(props) {
+const styles = {
+  error: {
+    margin: "auto",
+    marginTop: 100,
+    width: 500
+  }
+};
+type Props = {
+  location: *,
+  match: *,
+  accounts: Account[]
+};
+function App({ location, match, accounts }: Props) {
   return (
-    <div className={`App ${props.blurredBG ? 'blurred' : ''}`}>
-      <ActionBar
-        profile={props.profile}
-        logout={props.onLogout}
-        openCloseProfile={props.onOpenCloseProfile}
-        openCloseEdit={props.onOpenCloseEdit}
-        openAccount={props.onOpenAccount}
-        pathname={props.routing.location.pathname}
-      />
+    <div className="App">
+      {/* <GlobalLoadingRendering /> */}
+      <ActionBar match={match} location={location} accounts={accounts} />
       <div className="Main">
-        <Menu
-          getAccounts={props.onGetAccounts}
-          accounts={props.accounts}
-          pathname={props.routing.location.pathname}
-        />
-        <Content />
+        <Menu location={location} match={match} accounts={accounts} />
+        <Content match={match} />
       </div>
     </div>
   );
 }
-App.defaultProps = {
-  profile: {},
-  accounts: [],
-};
 
-App.propTypes = {
-  blurredBG: PropTypes.bool.isRequired,
-  accounts: PropTypes.shape({}),
-  onLogout: PropTypes.func.isRequired,
-  onOpenCloseProfile: PropTypes.func.isRequired,
-  onGetAccounts: PropTypes.func.isRequired,
-  onOpenAccount: PropTypes.func.isRequired,
-  onOpenCloseEdit: PropTypes.func.isRequired,
-  profile: PropTypes.shape({}),
-};
+const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
+  return (
+    <div className={classes.error}>
+      <Card>
+        <TryAgain error={error} action={restlay.forceFetch} />
+      </Card>
+    </div>
+  );
+});
 
-export { App as AppNotDecorated };
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
-
+export default connectData(App, {
+  RenderError,
+  queries: {
+    accounts: AccountsQuery
+  }
+});

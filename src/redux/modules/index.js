@@ -1,27 +1,22 @@
-import blurBG from './blurBG';
-import profile from './profile';
-import locale from './locale';
-import auth from './auth';
-import alerts from './alerts';
-import operations from './operations';
-import accountsInfo from './accounts-info';
-import accounts from './accounts';
-import accountCreation from './account-creation';
-import allCurrencies from './all-currencies';
-import organization from './organization';
+//@flow
+import locale from "./locale";
+import auth from "./auth";
+import alerts from "./alerts";
+import accountCreation from "./account-creation";
+import data from "./data";
+import onboarding from "./onboarding";
+import exchanges from "./exchanges";
+import CounterValues from "data/CounterValues";
 
 const reducers = {
-  blurBG,
-  profile,
   locale,
   auth,
   alerts,
-  operations,
-  accounts,
-  accountsInfo,
   accountCreation,
-  allCurrencies,
-  organization,
+  onboarding,
+  data,
+  exchanges,
+  countervalues: CounterValues.reducer
 };
 
 export default reducers;

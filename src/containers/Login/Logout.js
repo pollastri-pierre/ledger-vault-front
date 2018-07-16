@@ -1,28 +1,33 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
-import { logoutAction } from '../../redux/modules/auth';
+//@flow
+import React, { Component } from "react";
+import { Redirect } from "react-router";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { connect } from "react-redux";
+import { logout } from "redux/modules/auth";
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logoutAction()),
+const mapDispatchToProps = (dispatch: *) => ({
+  logout: () => dispatch(logout())
 });
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
-export class Logout extends Component {
-  componentWillMount() {
+export class Logout extends Component<{
+  logout: Function,
+  auth: *,
+  match: *
+}> {
+  componentDidMount() {
     this.props.logout();
   }
 
   render() {
-    return (
-      <Redirect to={{ pathname: '/' }} />
-    );
+    if (this.props.auth.isAuthenticated) {
+      return <SpinnerCard />;
+    }
+    return <Redirect to={{ pathname: "/" }} />;
   }
 }
 
-Logout.propTypes = {
-  logout: PropTypes.func.isRequired,
-};
-export default connect(undefined, mapDispatchToProps)(Logout);
-
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

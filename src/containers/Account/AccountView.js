@@ -1,110 +1,96 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { ListOperation } from '../../components';
-import { openOperationModal } from '../../redux/modules/operations';
-import { getReceiveAddress, getBalance, getCountervalue, getOperations } from '../../redux/modules/accounts-info';
-import BalanceCard from './BalanceCard';
-import CounterValueCard from './CounterValueCard';
-import ReceiveFundsCard from './ReceiveFundsCard';
-import Quicklook from './Quicklook';
-import './Account.css';
+// @flow
+import AccountQuery from "api/queries/AccountQuery";
+import Card from "components/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import TryAgain from "components/TryAgain";
+import React, { Component } from "react";
+import ModalRoute from "components/ModalRoute";
+import { withStyles } from "@material-ui/core/styles";
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
+import OperationModal from "components/operations/OperationModal";
+import ReceiveFundsCard from "./ReceiveFundsCard";
+// import QuicklookCard from "./QuicklookCard";
+import AccountBalanceCard from "./AccountBalanceCard";
+import AccountLastOperationsCard from "./AccountLastOperationsCard";
+import AccountCountervalueCard from "./AccountCountervalueCard";
 
-const mapStateToProps = state => ({
-  accounts: state.accounts,
-  accountsInfo: state.accountsInfo,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onGetOperation: (id, index) => dispatch(openOperationModal(id, index)),
-  onGetOperations: (id, index) => dispatch(getOperations(id, index)),
-  onGetBalance: id => dispatch(getBalance(id)),
-  onGetReceiveAddress: id => dispatch(getReceiveAddress(id)),
-  onGetCountervalue: id => dispatch(getCountervalue(id)),
-});
-
-class AccountView extends Component {
-  componentWillMount() {
-    this.update(this.props);
+const styles = {
+  flex: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  left: {},
+  half: {
+    width: "100%",
+    marginRight: "20px"
   }
-
-  componentWillUpdate(nextProps) {
-    if (nextProps.match.params.id !== this.props.match.params.id) {
-      this.update(nextProps);
+};
+class AccountView extends Component<
+  {
+    classes: { [_: $Keys<typeof styles>]: string },
+    account: Account,
+    match: {
+      url: string,
+      params: {
+        id: string
+      }
     }
+  },
+  {
+    quicklookFilter: string,
+    tabsIndex: number
   }
-
-  update(props) {
-    this.props.onGetBalance(props.match.params.id);
-    this.props.onGetReceiveAddress(props.match.params.id);
-    this.props.onGetCountervalue(props.match.params.id);
-    this.props.onGetOperations(props.match.params.id, 0);
-  }
+> {
+  state = {
+    quicklookFilter: "balance",
+    tabsIndex: 0
+  };
 
   render() {
-    const {
-      balance,
-      countervalue,
-      receiveAddress,
-      operations,
-      isLoadingBalance,
-      isLoadingCounter,
-      isLoadingAddress,
-      isLoadingOperations,
-      isLoadingNextOperations,
-    } = this.props.accountsInfo;
-
+    const { match, classes, account } = this.props;
+    const accountId = match.params.id;
     return (
-      <div className="account-view">
-        <div className="account-view-infos">
-          <div className="infos-left">
-            <div className="infos-left-top">
-              <BalanceCard data={balance} loading={isLoadingBalance} />
-              <CounterValueCard data={countervalue} loading={isLoadingCounter} />
-            </div>
-            <ReceiveFundsCard data={receiveAddress} loading={isLoadingAddress} />
-          </div>
-          <Quicklook
-            operations={operations}
-            loading={isLoadingOperations || isLoadingNextOperations}
-          />
+      <div>
+        <div className={classes.flex}>
+          <AccountBalanceCard account={account} />
+          <AccountCountervalueCard account={account} />
         </div>
-        <ListOperation
-          operations={operations}
-          loading={isLoadingOperations}
-          open={this.props.onGetOperation}
+        <div className={classes.half}>
+          <ReceiveFundsCard address={account.fresh_addresses[0]} />
+        </div>
+        {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
+        <AccountLastOperationsCard key={accountId} account={account} />
+        <ModalRoute
+          path={`${match.url}/operation/:operationId/:tabIndex`}
+          component={OperationModal}
         />
       </div>
     );
   }
 }
 
-AccountView.propTypes = {
-  onGetBalance: PropTypes.func.isRequired,
-  onGetReceiveAddress: PropTypes.func.isRequired,
-  onGetCountervalue: PropTypes.func.isRequired,
-  onGetOperations: PropTypes.func.isRequired,
-  onGetOperation: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string,
-    }),
-  }).isRequired,
-  accountsInfo: PropTypes.shape({
-    balance: PropTypes.shape({}),
-    countervalue: PropTypes.shape({}),
-    receiveAddress: PropTypes.shape({}),
-    operations: PropTypes.array,
-    isLoadingCounter: PropTypes.bool.isRequired,
-    isLoadingAddress: PropTypes.bool.isRequired,
-    isLoadingBalance: PropTypes.bool.isRequired,
-    isLoadingOperations: PropTypes.bool.isRequired,
-    isLoadingNextOperations: PropTypes.bool.isRequired,
-  }).isRequired,
-};
+const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
+  <Card className={classes.card} title="Error occured">
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </Card>
+));
 
-export { AccountView as AccountViewNotDecorated };
+const RenderLoading = withStyles(styles)(({ classes }) => (
+  <Card className={classes.card} title="Balance">
+    <SpinnerCard />
+  </Card>
+));
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AccountView));
-
+export default connectData(withStyles(styles)(AccountView), {
+  queries: {
+    account: AccountQuery
+  },
+  RenderError,
+  RenderLoading,
+  optimisticRendering: true,
+  propsToQueryParams: ({ match }: { match: * }) => ({
+    accountId: match.params.id
+  })
+});

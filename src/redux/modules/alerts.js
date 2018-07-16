@@ -1,104 +1,87 @@
-import _ from 'lodash';
-import { CHECK_TEAM_ERROR, AUTHENTICATION_FAILED, LOGOUT, AUTHENTICATION_SUCCEED } from './auth';
-import { SAVED_ACCOUNT } from './account-creation';
+//@flow
+import { LOGOUT } from "./auth";
+import { DATA_FETCHED, DATA_FETCHED_FAIL } from "restlay/dataStore";
+export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
+export const ADD_MESSAGE = "messages/ADD_MESSAGE";
 
-export const REMOVE_MESSAGE = 'messages/REMOVE_MESSAGE';
+export type Store = {
+  visible: boolean
+};
 
-
-export function closeMessage(id) {
+export function closeMessage() {
   return {
-    type: REMOVE_MESSAGE,
-    id,
+    type: REMOVE_MESSAGE
   };
 }
 
-const addToTabs = (state, message) => {
-  state.alerts.push(message);
-  state.cache.push(message);
-};
+export function addMessage(
+  title: string,
+  content: string,
+  messageType: string = "success"
+) {
+  return {
+    type: ADD_MESSAGE,
+    title,
+    content,
+    messageType
+  };
+}
 
-const initialState = {
-  alerts: [],
-  cache: [],
-};
+/* important to set visible to false for minimum State instead of null because of how material ui works */
 
-export default function reducer(state = initialState, action) {
+const initialState: Store = { visible: false };
+
+export default function reducer(state: Store = initialState, action: Object) {
   const status = `${action.status}`;
 
-  if (status && status.lastIndexOf('50', 0) === 0) {
-    const copy = _.cloneDeep(state);
-    addToTabs(copy, {
-      id: action.type,
-      type: 'error',
-      title: 'error.error5xTitle',
-      content: 'error.error5xContent',
-    });
-
-    return copy;
+  // FIXME should we keep this ? This let us catch any action with a field 'status' set to 5xx ( basically for error 500/503 ) and display a generic message
+  if (status && status.lastIndexOf("50", 0) === 0) {
+    return {
+      title: "error.error5xTitle",
+      content: "error.error5xContent",
+      type: "error"
+    };
   }
 
   switch (action.type) {
-    case SAVED_ACCOUNT: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: SAVED_ACCOUNT,
-        type: 'success',
-        title: 'account.creationSuccessTitle',
-        content: 'account.creationSuccessBody',
-      });
-
-      return copy;
+    case DATA_FETCHED: {
+      const { queryOrMutation, result } = action;
+      const notif =
+        queryOrMutation.getSuccessNotification &&
+        queryOrMutation.getSuccessNotification(result.result);
+      if (notif) {
+        const { title, content, messageType = "success" } = notif;
+        return { visible: true, title, content, type: messageType };
+      }
+      return state;
     }
-    case CHECK_TEAM_ERROR: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: CHECK_TEAM_ERROR,
-        type: 'error',
-        title: 'login.wrongDomainTitle',
-        content: 'login.wrongDomainMessage',
-      });
-
-      return copy;
+    case DATA_FETCHED_FAIL: {
+      const { queryOrMutation, error } = action;
+      if (!queryOrMutation.showError) {
+        return state;
+      }
+      return {
+        visible: true,
+        title: `Error ${error.json.code}`,
+        content: error.json.message,
+        type: "error"
+      };
     }
-    case AUTHENTICATION_FAILED: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: AUTHENTICATION_FAILED,
-        type: 'error',
-        title: 'login.wrongDomainTitle',
-        content: 'login.wrongDomainMessage',
-      });
-      return copy;
+    case ADD_MESSAGE: {
+      const { title, content, messageType } = action;
+      return { visible: true, title, content, type: messageType };
     }
-    case LOGOUT: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: LOGOUT,
-        type: 'success',
-        title: 'login.logoutTitle',
-        content: 'login.logoutMessage',
-      });
-      return copy;
-    }
-    case AUTHENTICATION_SUCCEED: {
-      const copy = _.cloneDeep(state);
-      addToTabs(copy, {
-        id: AUTHENTICATION_SUCCEED,
-        type: 'success',
-        title: 'login.welcomeTitle',
-        content: 'login.welcomeMessage',
-      });
-      return copy;
-    }
-    case REMOVE_MESSAGE: {
-      const alerts = _.cloneDeep(state.alerts);
-      const index = _.findIndex(alerts, { id: action.id });
-      alerts.splice(index, 1);
-
-      return { ...state, alerts };
-    }
+    case LOGOUT:
+      return {
+        visible: true,
+        title: "See you soon!",
+        content:
+          "You have been successfully logged out. You can now safely close your web browser.",
+        type: "success"
+      };
+    case REMOVE_MESSAGE:
+      return { ...state, visible: false };
     default:
       return state;
   }
 }
-

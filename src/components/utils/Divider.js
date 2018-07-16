@@ -1,23 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+//@flow
+import React from "react";
 
-import './Divider.css';
-
-function Divider(props) {
+function Divider(props: { className: string }) {
   return (
-    <div
-      {...props}
-      className={`divider ${props.className}`}
-    />
+    <div {...props} className={`divider ${props.className}`}>
+      &nbsp;
+    </div>
   );
 }
 
-Divider.propTypes = {
-  className: PropTypes.node,
-};
-
 Divider.defaultProps = {
-  className: '',
+  className: ""
 };
 
 export default Divider;
