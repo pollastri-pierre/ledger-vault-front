@@ -81,9 +81,9 @@ class OperationCreationDetails extends Component<
   constructor(props) {
     super(props);
     this.state = {
-      unitIndex: 0,
+      unitIndex: props.details.unitIndex || 0,
       maxMenuOpen: false,
-      amount: props.details.amount ? props.details.amount : "",
+      amount: props.details.amountFormated ? props.details.amountFormated : "",
       amountIsValid: true,
       satoshis: 0,
       address: props.details.address ? props.details.address : "",
@@ -91,7 +91,7 @@ class OperationCreationDetails extends Component<
       feesSelected: "normal",
       feesAmount: 0
     };
-    this.setFees();
+    // this.setFees();
   }
 
   setAmount = (
@@ -130,7 +130,6 @@ class OperationCreationDetails extends Component<
     const regex = /^(\d*\.?\d*)?$/;
     if (regex.test(value)) {
       this.setAmount(value);
-      this.setFees();
     }
   };
 
@@ -160,41 +159,15 @@ class OperationCreationDetails extends Component<
           if (address === this.state.address) {
             // still on same address
             this.setState({ addressIsValid: r.is_valid }, this.validateTab);
-            this.setFees();
+            // this.setFees();
           }
         });
     }
   };
 
-  setFees = () => {
-    const { restlay, account } = this.props;
-
-    const operation = {
-      fee_level: this.state.feesSelected,
-      amount: parseInt(this.state.amount, 10),
-      recipient: this.state.address
-    };
-
-    if (operation.fee_level && operation.amount && operation.recipient) {
-      restlay
-        .fetchQuery(
-          new AccountCalculateFeeQuery({
-            accountId: account.id,
-            operation: operation
-          })
-        )
-        .then(res => {
-          const feesAmount = res.fees;
-
-          this.setState({ feesAmount });
-          this.setAmount(undefined, undefined, feesAmount);
-        });
-    }
-  };
-
   onChangeFee = (feesSelected: Speed) => {
-    this.setFees();
-    this.setState({ feesSelected });
+    // this.setFees();
+    this.setState({ feesSelected }, this.validateTab);
   };
 
   validateTab = () => {
@@ -209,7 +182,9 @@ class OperationCreationDetails extends Component<
           ? this.state.address
           : null,
       fees: this.state.feesAmount,
-      feesSelected: this.state.feesSelected
+      feesSelected: this.state.feesSelected,
+      unitIndex: this.state.unitIndex,
+      amountFormated: this.state.amount
     };
 
     this.props.saveDetails(details);
@@ -277,14 +252,14 @@ class OperationCreationDetails extends Component<
           >
             <CurrencyAccountValue
               account={account}
-              value={this.state.feesAmount}
+              value={this.props.estimatedFees}
             />
           </div>
         </InputFieldMerge>
 
         <div className={classes.feesFiat}>
           <CounterValue
-            value={this.state.feesAmount}
+            value={this.props.estimatedFees}
             from={account.currency.name}
           />
         </div>

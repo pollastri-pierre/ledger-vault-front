@@ -46,6 +46,7 @@ class OperationCreationLabel extends PureComponent<Props> {
           placeholder={t("newOperation:label.title_note")}
           onChange={this.updateTitle}
         />
+        <div style={{ marginTop: 10 }} />
         <TextField
           classes={{ root: classes.comment }}
           placeholder={t("newOperation:label.add_comment")}

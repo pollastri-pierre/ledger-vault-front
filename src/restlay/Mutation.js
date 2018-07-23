@@ -19,6 +19,8 @@ export default class Mutation<Input, Response> {
     this.props = props;
   }
 
+  showError = true;
+
   /*
    * Allow a mutation to define a body to send to server
    */
