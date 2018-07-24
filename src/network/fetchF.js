@@ -2,7 +2,7 @@
 let fetchF;
 import mockAPI from "data/mock-api";
 
-const baseUrl = process.env["API_BASE_URL"];
+const baseUrl = process.env["API_BASE_URL"] || "http://localhost:5000";
 if (process.env.NODE_ENV === "test") {
   fetchF = mockAPI;
 } else {
@@ -13,7 +13,6 @@ if (process.env.NODE_ENV === "test") {
     } else {
       prefix = "/" + prefix;
     }
-    console.log(baseUrl);
     return fetch(baseUrl + prefix + uri, options);
   };
 }
