@@ -10,7 +10,7 @@
 //   type: string
 // };
 
-export type Translate = (?string, ?Object) => string;
+export type Translate = (?string, ?Object) => any;
 
 export type Fiat = string;
 

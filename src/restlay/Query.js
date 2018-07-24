@@ -19,6 +19,8 @@ export default class Query<Input, Response> {
     this.props = props;
   }
 
+  showError = true;
+
   getResponseSchema() {
     return this.responseSchema;
   }

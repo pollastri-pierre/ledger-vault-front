@@ -27,11 +27,12 @@ function OperationCreationConfirmation(props: {
     fees: number,
     address: string
   },
+  estimatedFees: number,
   account: Account,
   t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 }) {
-  const { details, t, account, classes } = props;
+  const { details, t, account, classes, estimatedFees } = props;
   return (
     <div className={classes.root}>
       <OverviewOperation
@@ -44,7 +45,7 @@ function OperationCreationConfirmation(props: {
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>
         <LineRow label="confirmation fees">
-          <Amount account={account} value={details.fees} />
+          <Amount account={account} value={estimatedFees} />
         </LineRow>
         <LineRow label="Total spent">
           <Amount account={account} value={details.amount} strong />

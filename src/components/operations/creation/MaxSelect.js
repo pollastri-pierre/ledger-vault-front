@@ -58,8 +58,8 @@ class MaxSelect extends Component<
           anchorEl={anchorEl}
           onClose={this.onClose}
         >
-          <MenuItem className={classes.menu} disableRipple>
-            <span onClick={onSetMax}>Send max</span>
+          <MenuItem className={classes.menu} disableRipple onClick={onSetMax}>
+            <span>Send max</span>
           </MenuItem>
         </Menu>
       </div>

@@ -34,23 +34,33 @@ const blue = {
     borderColor: colors.blue_orange
   }
 };
-export const BlueDevice = withStyles(blue)(({ classes, color }) => (
-  <div
-    className={cx(classes.base, {
-      [classes.red]: color === "red",
-      [classes.orange]: color === "orange",
-      [classes.green]: color === "green"
-    })}
-  >
+export const BlueDevice = withStyles(
+  blue
+)(
+  ({
+    classes,
+    color
+  }: {
+    classes: { [_: $Keys<typeof blue>]: string },
+    color: string
+  }) => (
     <div
-      className={cx(classes.inner, {
+      className={cx(classes.base, {
         [classes.red]: color === "red",
         [classes.orange]: color === "orange",
         [classes.green]: color === "green"
       })}
-    />
-  </div>
-));
+    >
+      <div
+        className={cx(classes.inner, {
+          [classes.red]: color === "red",
+          [classes.orange]: color === "orange",
+          [classes.green]: color === "green"
+        })}
+      />
+    </div>
+  )
+);
 const styles = {
   base: {
     marginBottom: 40,
@@ -88,8 +98,8 @@ export const RequirementUnit = withStyles(
     ...props
   }: {
     classes: { [$Keys<typeof requirement>]: string },
-    icon: React$Node,
-    children: React$Node
+    icon: any,
+    children: any
   }) => {
     return (
       <div className={classes.base} {...props}>
@@ -131,17 +141,13 @@ const Requirements = ({
     </div>
 
     <div className={classes.row}>
-      <RequirementUnit icon={<BlueDevice color="red" style={{ height: 25 }} />}>
+      <RequirementUnit icon={<BlueDevice color="red" />}>
         {t("onboarding:blue_red")}
       </RequirementUnit>
-      <RequirementUnit
-        icon={<BlueDevice style={{ height: 25 }} color="orange" />}
-      >
+      <RequirementUnit icon={<BlueDevice color="orange" />}>
         <div>{t("onboarding:blue_orange")}</div>
       </RequirementUnit>
-      <RequirementUnit
-        icon={<BlueDevice style={{ height: 25 }} color="green" />}
-      >
+      <RequirementUnit icon={<BlueDevice color="green" />}>
         {t("onboarding:blue_green")}
       </RequirementUnit>
     </div>

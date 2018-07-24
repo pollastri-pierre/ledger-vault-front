@@ -4,7 +4,7 @@ import SelectTab from "components/SelectTab/SelectTab";
 import type { Account } from "data/types";
 import { getAccountCurrencyUnit, getFiatUnit } from "data/currency";
 import BlueSelect from "components/BlueSelect";
-import { MenuItem } from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/Menu";
 import DateFormat from "components/DateFormat";
 import Quicklook from "./QuickLook";
 import Card from "components/Card";

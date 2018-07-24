@@ -14,23 +14,28 @@ import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import type { Account, Operation, Member } from "data/types";
 import styles from "./styles";
 
+const Empty = translate()(
+  ({ approved, t }: { approved?: boolean, t: Translate }) => {
+    if (approved) {
+      return <p>{t("pending:operations.watch.no_data")}</p>;
+    }
+    return <p>{t("pending:operations.approve.no_data")}</p>;
+  }
+);
+
 type Props = {
   accounts: Account[],
   operations: Operation[],
   approved?: boolean,
   user: Member,
   classes: Object,
-  t: Translate,
   match: *
 };
 
 function PendingOperationApprove(props: Props) {
-  const { accounts, operations, approved, user, classes, match, t } = props;
+  const { accounts, operations, approved, user, classes, match } = props;
   if (operations.length === 0) {
-    if (approved) {
-      return <p>{t("pending:operations.watch.no_data")}</p>;
-    }
-    return <p>{t("pending:operations.approve.no_data")}</p>;
+    return <Empty approved={approved} />;
   }
 
   return (
@@ -101,6 +106,4 @@ function PendingOperationApprove(props: Props) {
   );
 }
 
-export default withStyles(styles)(
-  withRouter(translate()(PendingOperationApprove))
-);
+export default withStyles(styles)(withRouter(PendingOperationApprove));

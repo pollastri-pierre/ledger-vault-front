@@ -57,7 +57,10 @@ class OperationCreation extends Component<{
   selectedAccount: Account,
   selectAccount: Account => void,
   details: Details,
+  disabledTabs: Array<boolean>,
+  estimatedFees: number,
   saveDetails: Object => void,
+  setFees: Function,
   classes: { [_: $Keys<typeof styles>]: string },
   updateTitle: string => void,
   updateNote: string => void,
@@ -81,17 +84,13 @@ class OperationCreation extends Component<{
       title,
       note,
       updateNote,
+      setFees,
+      estimatedFees,
       updateTitle,
       onTabsChange,
+      disabledTabs,
       classes
     } = this.props;
-
-    const disabledTabs = [
-      false, // tab 0
-      selectedAccount === null, // tab 1
-      !details.amount || !details.address, //|| !details.fees, // tab 2
-      !details.amount || !details.address // || !details.fees // tab 3
-    ];
 
     let content;
     switch (tabsIndex) {
@@ -112,6 +111,8 @@ class OperationCreation extends Component<{
           <OperationCreationDetails
             account={selectedAccount}
             details={details}
+            setFees={setFees}
+            estimatedFees={estimatedFees}
             saveDetails={saveDetails}
           />
         );
@@ -133,6 +134,7 @@ class OperationCreation extends Component<{
           <Overscroll top={40} bottom={72} paddingX={0}>
             <OperationCreationConfirmation
               account={selectedAccount}
+              estimatedFees={estimatedFees}
               details={details}
             />
           </Overscroll>

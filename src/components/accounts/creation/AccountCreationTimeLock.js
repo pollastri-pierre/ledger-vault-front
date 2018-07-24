@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import InputTextWithUnity from "components/InputTextWithUnity";
 import { addMessage } from "redux/modules/alerts";
 import { withStyles } from "@material-ui/core/styles";
-import { MenuItem } from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/Menu";
 import Select from "@material-ui/core/Select";
 import modals from "shared/modals";
 
