@@ -172,7 +172,7 @@ export class Login extends Component<Props, State> {
         const device = await await createDevice();
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         const { token, key_handle } = await network(
-          `/authentications/${pubKey}/challenge`,
+          `/u2f/authentications/${pubKey}/challenge`,
           "GET"
         );
         this.setState({
@@ -191,7 +191,7 @@ export class Login extends Component<Props, State> {
         );
 
         setTokenToLocalStorage(token);
-        await network("/authentications/authenticate", "POST", {
+        await network("/u2f/authentications/authenticate", "POST", {
           authentication: auth.rawResponse.slice(0, auth.rawResponse.length - 4)
         });
         this.setState({ isChecking: false });

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import { withRouter /* Redirect  */ } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import connectData from "restlay/connectData";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -132,12 +132,12 @@ class AccountApprove extends Component<Props, { value: number }> {
   }
 }
 
-// const RenderError = () => {
-//   return <Redirect to="/pending" />;
-// };
+const RenderError = withRouter(({ match }) => {
+  return <Redirect to={`${match.params["0"] || ""}`} />;
+});
 
 const connected = connectData(withStyles(styles)(translate()(AccountApprove)), {
-  // RenderError,
+  RenderError,
   queries: {
     account: AccountQuery,
     members: MembersQuery,

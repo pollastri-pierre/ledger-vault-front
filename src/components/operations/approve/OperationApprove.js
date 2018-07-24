@@ -159,9 +159,9 @@ class OperationApprove extends Component<Props, { value: number }> {
   }
 }
 
-const RenderError = () => {
-  return <Redirect to="/pending" />;
-};
+const RenderError = withRouter(({ match }) => {
+  return <Redirect to={`${match.params["0"] || ""}`} />;
+});
 
 export default withRouter(
   connectData(withStyles(styles)(translate()(OperationApprove)), {
