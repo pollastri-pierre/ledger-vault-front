@@ -2,7 +2,7 @@
 let fetchF;
 import mockAPI from "data/mock-api";
 
-const baseUrl = process.env["API_BASE_URL"] || "http://localhost:5000";
+const baseUrl = process.env["API_BASE_URL"] || "https://vault.ledger.com";
 if (process.env.NODE_ENV === "test") {
   fetchF = mockAPI;
 } else {
