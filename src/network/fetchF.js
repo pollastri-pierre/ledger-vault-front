@@ -2,14 +2,10 @@
 let fetchF;
 import mockAPI from "data/mock-api";
 
+const baseUrl = process.env["API_BASE_URL"] || "https://vault.ledger.com";
 if (process.env.NODE_ENV === "test") {
   fetchF = mockAPI;
 } else {
-  const port = "5000";
-  const baseUrl =
-    process.env.NODE_ENV === "development"
-      ? `http://localhost:${port}`
-      : `https://vault.ledger.com`;
   fetchF = (uri: string, options: Object): Promise<*> => {
     let prefix = location.pathname.split("/")[1];
     if (prefix !== "" && process.env.NODE_ENV !== "development") {
