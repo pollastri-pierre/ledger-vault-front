@@ -8,7 +8,6 @@ import { TextField } from "components";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
 import type { Account } from "data/types";
 import type { Details } from "../../NewOperationModal";
-import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import ModalSubTitle from "./ModalSubTitle";
@@ -72,6 +71,7 @@ class OperationCreationDetails extends Component<
     account: Account,
     saveDetails: Function,
     details: Details,
+    estimatedFees: number,
     classes: { [_: $Keys<typeof styles>]: string },
     // from connectData
     restlay: *

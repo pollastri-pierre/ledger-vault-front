@@ -18,7 +18,6 @@ import type { Account, Operation } from "data/types";
 
 export type Details = {
   amount: ?number,
-  fees: ?number,
   feesSelected: string,
   unitIndex: number,
   amountFormated: string,
@@ -39,6 +38,7 @@ class NewOperationModal extends Component<
   {
     tabsIndex: number,
     selectedAccount: ?Account,
+    estimatedFees: number,
     details: Details,
     device: boolean,
     note: string,
@@ -84,7 +84,6 @@ class NewOperationModal extends Component<
   };
 
   saveDetails = (details: Details) => {
-    console.log(details);
     this.setState({ details }, this.setFees);
   };
 
@@ -124,11 +123,15 @@ class NewOperationModal extends Component<
 
   setFees = () => {
     const operation = {
-      fee_level: this.state.details.feesSelected,
-      amount: this.state.details.amount,
-      recipient: this.state.details.address
+      fee_level: this.state.details.feesSelected || "normal",
+      amount: this.state.details.amount || 0,
+      recipient: this.state.details.address || ""
     };
-    if (operation.fee_level && operation.amount && operation.recipient) {
+    if (
+      operation.amount > 0 &&
+      operation.recipient !== "" &&
+      this.state.selectedAccount
+    ) {
       this.props.restlay
         .fetchQuery(
           new AccountCalculateFeeQuery({
@@ -164,8 +167,6 @@ class NewOperationModal extends Component<
         !this.state.details.address ||
         this.state.estimatedFees === 0
     ];
-
-    console.log(disabledTabs);
 
     const pendingApprovalOperations = getPendingsOperations(
       allPendingOperations

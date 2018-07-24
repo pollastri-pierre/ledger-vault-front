@@ -53,7 +53,9 @@ const PrerequisiteSeed = ({
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
             <RequirementUnit icon={<BlueDevice color="red" />}>
-              <div style={{ width: 96 }}>{t("onboarding:blue_red")}</div>
+              <div style={{ width: 96 }}>
+                <span>{t("onboarding:blue_red")}</span>
+              </div>
             </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}

@@ -5,7 +5,7 @@ import { DialogButton } from "../../";
 import EnableForm from "components/EnableForm";
 import InfoModal from "../../InfoModal";
 import InputTextWithUnity from "components/InputTextWithUnity";
-import { MenuItem } from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/Menu";
 import Select from "@material-ui/core/Select";
 import { addMessage } from "redux/modules/alerts";
 import { withStyles } from "@material-ui/core/styles";
