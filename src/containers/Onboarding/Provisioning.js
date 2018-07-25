@@ -61,7 +61,10 @@ export const SeedStatus = translate()(
         );
       }
       return (
-        <div className={classes.base} onClick={open}>
+        <div
+          className={cx(classes.base, "test-onboarding-seed")}
+          onClick={open}
+        >
           {t("onboarding:master_seed_provisionning.generate_seed")}
         </div>
       );

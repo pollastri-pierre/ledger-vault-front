@@ -72,6 +72,8 @@ class GenerateSeed extends Component<Props, State> {
           this.props.wraps
         );
 
+        console.log(blob);
+
         const shard = {
           blob: blob.toString("hex"),
           certificate:

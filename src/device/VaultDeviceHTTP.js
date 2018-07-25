@@ -5,8 +5,13 @@ export const ENDPOINTS = {
   GET_PUBLIC_KEY: "/get-public-key",
   GET_ATTESTATION: "/get-attestation",
   OPEN_SESSION: "/open-session",
-  GENERATE_KEY_COMPONENT: "/generate-key-component"
+  AUTHENTICATE: "/authenticate",
+  REGISTER: "/register",
+  GENERATE_KEY_FRAGMENTS: "/generate-key-fragments"
 };
+
+const pathArrayToString = (path: number[]): string =>
+  `${path[0] & 0xfffffff}'/${path[1] & 0xfffffff}'`;
 
 export default class VaultDeviceHTTP {
   async getPublicKey(
@@ -17,15 +22,18 @@ export default class VaultDeviceHTTP {
     signature: string
   }> {
     const data = await network(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
-      path,
+      path: pathArrayToString(path),
       secp256k1
     });
-    return data;
+    return {
+      pubKey: data["pubKey"],
+      signature: Buffer.from(data["attestation"], "hex")
+    };
   }
 
   async getAttestationCertificate(): Promise<Buffer> {
-    const data = await network(ENDPOINTS.GET_ATTESTATION, "POST");
-    return data;
+    const data = await network(ENDPOINTS.GET_ATTESTATION, "GET");
+    return Buffer.from(data, "hex");
   }
 
   async generateKeyComponent(
@@ -36,11 +44,81 @@ export default class VaultDeviceHTTP {
     if (isWrappingKey) {
       p1 = 0x01;
     }
-    const data = await network(ENDPOINTS.GENERATE_KEY_COMPONENT, "POST", {
-      path,
+    const data = await network(ENDPOINTS.GENERATE_KEY_FRAGMENTS, "POST", {
+      path: pathArrayToString(path),
       goal: p1
     });
-    return data;
+    return Buffer.from(data, "hex");
+  }
+
+  async authenticate(
+    challenge: Buffer,
+    application: string,
+    keyHandle: Buffer,
+    instanceName: string,
+    instanceReference: string,
+    instanceUrl: string,
+    agentRole: string
+  ): Promise<{
+    userPresence: *,
+    counter: *,
+    signature: string,
+    rawResponse: string
+  }> {
+    const response = await network(ENDPOINTS.AUTHENTICATE, "POST", {
+      challenge: challenge.toString("hex"),
+      application,
+      key_handle: keyHandle.toString("hex"),
+      name: instanceName,
+      role: agentRole,
+      domain_name: instanceUrl,
+      workspace: instanceReference
+    });
+
+    const userPresence = response.slice(0, 1);
+    const counter = response.slice(1, 5);
+    const signature = response.slice(5, response.length - 2).toString("hex");
+    return {
+      userPresence,
+      counter,
+      signature,
+      rawResponse: response.toString("hex")
+    };
+  }
+
+  async register(
+    challenge: Buffer,
+    application: string,
+    instanceName: string,
+    instanceReference: string,
+    instanceUrl: string,
+    agentRole: string
+  ): Promise<{
+    u2f_register: Buffer,
+    keyHandle: Buffer
+  }> {
+    const data = await network(ENDPOINTS.REGISTER, "POST", {
+      challenge: challenge.toString("hex"),
+      application,
+      name: instanceName,
+      role: agentRole,
+      domain_name: instanceUrl,
+      workspace: instanceReference
+    });
+    const response = Buffer.from(data, "hex");
+    let i = 0;
+    const rfu = response.slice(i, (i += 1))[0];
+    const pubKey = response.slice(i, (i += 65)).toString("hex");
+    const keyHandleLength = response.slice(i, ++i)[0];
+    const keyHandle = response.slice(i, (i += keyHandleLength));
+    // const attestationSignature = lastResponse.slice(i, ++i)[0];
+    // const signature = lastResponse.slice(i).toString("hex");
+    return {
+      u2f_register: response.slice(0, response.length - 2),
+      keyHandle: keyHandle,
+      rfu,
+      pubKey
+    };
   }
 
   async openSession(
@@ -50,7 +128,7 @@ export default class VaultDeviceHTTP {
     scriptHash: number = 0x00
   ): Promise<*> {
     const data = await network(ENDPOINTS.OPEN_SESSION, "POST", {
-      path,
+      path: pathArrayToString(path),
       pubKey: pubKey.toString("hex"),
       attestation: attestation.toString("hex"),
       scriptHash

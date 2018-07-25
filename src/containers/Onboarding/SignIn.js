@@ -127,9 +127,13 @@ class SignIn extends Component<Props> {
               >
                 <Plus className={classes.icon} />
                 {onboarding.signin.admins.length === 0 ? (
-                  <span>{t("onboarding:master_seed_signin.signin")}</span>
+                  <span className="test-onboarding-signin">
+                    {t("onboarding:master_seed_signin.signin")}
+                  </span>
                 ) : (
-                  <span>{t("onboarding:master_seed_signin.signin_next")}</span>
+                  <span className="test-onboarding-signin">
+                    {t("onboarding:master_seed_signin.signin_next")}
+                  </span>
                 )}
               </div>
               <span className={classes.counter}>
