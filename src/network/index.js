@@ -14,10 +14,13 @@ export default function<T>(
   body: ?(Object | Array<Object>)
 ): Promise<T> {
   const headers = {
-    "X-Ledger-Auth": getLocalStorageToken(),
     Accept: "application/json",
     "Content-Type": "application/json"
   };
+  const token = getLocalStorageToken();
+  if (token) {
+    headers["X-Ledger-Auth"] = token;
+  }
   const options: Object = { headers, method };
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
