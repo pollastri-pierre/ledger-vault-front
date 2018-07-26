@@ -66,7 +66,9 @@ function PendingAccountApprove(props: Props) {
       )}
       {accounts.map(account => (
         <Link
-          className={classnames(classes.row, { [classes.approved]: approved })}
+          className={classnames(classes.row, "test-pending-account", {
+            [classes.approved]: approved
+          })}
           to={`${match.url}/account/${account.id}`}
           key={account.id}
         >

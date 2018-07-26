@@ -11,6 +11,7 @@ export function getLocalStorageToken() {
 }
 
 export function removeLocalStorageToken() {
+  console.log("HEREe");
   window.localStorage.removeItem("token");
 }
 

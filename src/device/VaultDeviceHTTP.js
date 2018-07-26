@@ -7,6 +7,7 @@ export const ENDPOINTS = {
   OPEN_SESSION: "/open-session",
   AUTHENTICATE: "/authenticate",
   REGISTER: "/register",
+  VALIDATE_VAULT_OPERATION: "/validate-vault-operation",
   GENERATE_KEY_FRAGMENTS: "/generate-key-fragments"
 };
 
@@ -134,5 +135,13 @@ export default class VaultDeviceHTTP {
       scriptHash
     });
     return data;
+  }
+
+  async validateVaultOperation(path: number[], operation: Buffer) {
+    const data = await network(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
+      path: pathArrayToString(path),
+      operation: operation.toString("hex")
+    });
+    return Buffer.from(data, "hex");
   }
 }

@@ -18,6 +18,7 @@ export default function<T>(
     "Content-Type": "application/json"
   };
   const token = getLocalStorageToken();
+  console.log(token);
   if (token) {
     headers["X-Ledger-Auth"] = token;
   }
