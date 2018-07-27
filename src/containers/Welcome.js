@@ -86,7 +86,7 @@ class Welcome extends Component<
     isChecking: false
   };
 
-  onSubmit = async (e: *) => {
+  onSubmit = async (/* e: * */) => {
     // e.preventDefault();
     // e.stopPropagation();
     const { domain, isChecking } = this.state;

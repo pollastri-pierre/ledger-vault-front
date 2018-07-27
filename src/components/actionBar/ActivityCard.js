@@ -75,25 +75,25 @@ class ActivityCard extends Component<
   };
 
   componentDidMount() {
-    // const url =
-    //   process.env.NODE_ENV !== "development"
-    //     ? "/notification"
-    //     : "http://localhost:3033";
-    // const socket = io.connect(url);
-    // const myAuthToken = getLocalStorageToken();
-    // let self = this;
-    // socket.on("connect", function() {
-    //   socket.emit("authenticate", {
-    //     token: myAuthToken,
-    //     orga: self.props.match.params.orga_name
-    //   });
-    // });
-    // socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
-    //   //FIXME why is it fired twice ??
-    //   if (self.props.onNewActivity) {
-    //     self.props.onNewActivity(activity);
-    //   }
-    // });
+    const url =
+      process.env.NODE_ENV !== "development"
+        ? "/notification"
+        : "http://localhost:3033";
+    const socket = io.connect(url);
+    const myAuthToken = getLocalStorageToken();
+    let self = this;
+    socket.on("connect", function() {
+      socket.emit("authenticate", {
+        token: myAuthToken,
+        orga: self.props.match.params.orga_name
+      });
+    });
+    socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
+      //FIXME why is it fired twice ??
+      if (self.props.onNewActivity) {
+        self.props.onNewActivity(activity);
+      }
+    });
   }
 
   static defaultProps = {

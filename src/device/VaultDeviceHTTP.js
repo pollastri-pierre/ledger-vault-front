@@ -82,8 +82,6 @@ export default class VaultDeviceHTTP {
       Buffer.from("9000", "hex")
     ]);
 
-    console.log(response);
-
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
     const signature = response.slice(5, response.length - 2).toString("hex");
