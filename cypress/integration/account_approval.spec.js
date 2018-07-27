@@ -1,10 +1,11 @@
-const orga_name = "vault16";
+const orga_name = "vault14";
 context("Account approval", () => {
   it("redirect to login", () => {
     // set the current device to device 1
     cy.request("POST", "http://localhost:5001/switch-device", {
       device_number: 1
     });
+
     // go to the vault homepage
     cy.visit("https://localhost:9000");
     cy.get("input").type(orga_name);
@@ -35,6 +36,7 @@ context("Account approval", () => {
     // login with the new user 2
     cy.get("input").type(orga_name);
     cy.contains("continue").click();
+
     // click on Pending in the menu
     cy.contains("Pending").click();
     // click on first pending account

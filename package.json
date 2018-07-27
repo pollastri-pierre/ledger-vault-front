@@ -10,6 +10,7 @@
     "postinstall": "flow-typed install -s",
     "prettier": "prettier --write \"{src,webpack,test}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
+    "starte2e": "NODE_ENV=e2e webpack-dev-server --https --config webpack/dev.babel.js",
     "test": "NODE_ENV=test jest --env=jsdom",
     "testDev": "NODE_ENV=test jest --env=jsdom --watch"
   },

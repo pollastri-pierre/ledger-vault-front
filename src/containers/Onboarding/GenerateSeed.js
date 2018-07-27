@@ -50,6 +50,7 @@ class GenerateSeed extends Component<Props, State> {
         const { wraps } = this.props;
         const device = await await createDevice();
 
+        console.log(this.props.shards_channel);
         const ephemeral_public_key = this.props.shards_channel[
           "ephemeral_public_key"
         ];
@@ -60,6 +61,8 @@ class GenerateSeed extends Component<Props, State> {
         this.setState({ step: 1 });
 
         let scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
+        console.log(ephemeral_public_key);
+        console.log(certificate);
         await device.openSession(
           CONFIDENTIALITY_PATH,
           Buffer.from(ephemeral_public_key, "hex"),

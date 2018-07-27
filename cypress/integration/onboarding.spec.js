@@ -1,4 +1,4 @@
-const orga_name = "vault16";
+const orga_name = "vault14";
 context("Onboarding", () => {
   it("redirect to onboarding", () => {
     cy.visit("https://localhost:9000");
@@ -23,6 +23,7 @@ context("Onboarding", () => {
   });
 
   it("should see Signin and click on signin", () => {
+    cy.wait(2000);
     cy.contains("SIGN IN").click();
     cy.wait(2000);
     cy.contains("SIGN IN").click();
@@ -46,9 +47,9 @@ context("Onboarding", () => {
     });
     cy.wait(1000);
     cy.contains("add administrator").click();
-    cy.get("input[name=first_name]").type("Gordon");
-    cy.get("input[name=last_name]").type("Gekko");
-    cy.get("input[name=email]").type("gordon@wallstreet.com");
+    cy.get("input[name=first_name]").type("user1");
+    cy.get("input[name=last_name]").type("user1");
+    cy.get("input[name=email]").type("user1@user.com");
     cy.contains("Continue").click();
 
     cy.wait(2000);
@@ -58,9 +59,9 @@ context("Onboarding", () => {
     cy.wait(1000);
 
     cy.contains("add administrator").click();
-    cy.get("input[name=first_name]").type("Jacques");
-    cy.get("input[name=last_name]").type("Chirac");
-    cy.get("input[name=email]").type("jc@elysee.com");
+    cy.get("input[name=first_name]").type("user2");
+    cy.get("input[name=last_name]").type("user2");
+    cy.get("input[name=email]").type("user2@ledger.fr");
     cy.contains("Continue").click();
 
     cy.wait(2000);
@@ -70,9 +71,9 @@ context("Onboarding", () => {
     cy.wait(1000);
 
     cy.contains("add administrator").click();
-    cy.get("input[name=first_name]").type("Dany");
-    cy.get("input[name=last_name]").type("Rakotopara");
-    cy.get("input[name=email]").type("dany@venddesbtc.com");
+    cy.get("input[name=first_name]").type("user3");
+    cy.get("input[name=last_name]").type("user3");
+    cy.get("input[name=email]").type("user3@ledger.fr");
     cy.contains("Continue").click();
 
     cy.wait(2000);

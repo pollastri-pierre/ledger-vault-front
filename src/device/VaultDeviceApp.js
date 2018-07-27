@@ -190,7 +190,9 @@ export default class VaultDeviceApp {
       userPresence,
       counter,
       signature,
-      rawResponse: lastResponse.toString("hex")
+      rawResponse: lastResponse
+        .slice(0, lastResponse.length - 2)
+        .toString("hex")
     };
   }
 

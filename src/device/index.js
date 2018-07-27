@@ -4,8 +4,11 @@ import VaultDeviceApp from "./VaultDeviceApp";
 import VaultDeviceHTTP from "./VaultDeviceHTTP";
 
 export default async (): Promise<VaultDeviceApp> => {
-  // const transport = await LedgerTransportU2F.create(90000000, 90000000);
-  return new VaultDeviceHTTP();
+  if (process.env.NODE_ENV === "e2e") {
+    return new VaultDeviceHTTP();
+  }
+  const transport = await LedgerTransportU2F.create(90000000, 90000000);
+  return new VaultDeviceApp(transport);
 };
 
 export const U2F_PATH = [0x80564c54, 0x80553246];

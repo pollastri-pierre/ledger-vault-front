@@ -66,7 +66,7 @@ export default class VaultDeviceHTTP {
     signature: string,
     rawResponse: string
   }> {
-    const response = await network(ENDPOINTS.AUTHENTICATE, "POST", {
+    const data = await network(ENDPOINTS.AUTHENTICATE, "POST", {
       challenge: challenge.toString("hex"),
       application,
       key_handle: keyHandle.toString("hex"),
@@ -76,6 +76,14 @@ export default class VaultDeviceHTTP {
       workspace: instanceReference
     });
 
+    // we add a fake status response because traaansport on device does it
+    const response = Buffer.concat([
+      Buffer.from(data, "hex"),
+      Buffer.from("9000", "hex")
+    ]);
+
+    console.log(response);
+
     const userPresence = response.slice(0, 1);
     const counter = response.slice(1, 5);
     const signature = response.slice(5, response.length - 2).toString("hex");
@@ -83,7 +91,7 @@ export default class VaultDeviceHTTP {
       userPresence,
       counter,
       signature,
-      rawResponse: response.toString("hex")
+      rawResponse: response.slice(0, response.length - 2).toString("hex")
     };
   }
 

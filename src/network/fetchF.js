@@ -12,7 +12,11 @@ if (process.env.NODE_ENV === "test") {
     if (Object.values(ENDPOINTS).indexOf(uri) > -1) {
       return fetch("http://localhost:5001" + uri, options);
     }
-    if (prefix !== "" && process.env.NODE_ENV !== "development") {
+    if (
+      prefix !== "" &&
+      process.env.NODE_ENV !== "development" &&
+      process.env.NODE_ENV !== "e2e"
+    ) {
       prefix = "/gate/" + prefix;
     } else {
       prefix = "/" + prefix;
