@@ -34,7 +34,7 @@ blue_red: Ledger Blue Enterprise devices
 blue_orange: Ledger Blue Enterprise devices
 blue_green: Ledger Blue Enterprise devices
 shared_owners: 3 Shared-Owners
-nb_recovery_sheets: 6 Recovery Sheets
+nb_recovery_sheets: 3+ Recovery Sheets
 wkey_custodians: 3 Wrapping Key Custodians
 administrators: Administrators
 welcome:
