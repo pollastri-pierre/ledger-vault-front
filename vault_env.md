@@ -174,4 +174,7 @@ Thanks to the device soft API, you can use the vault without any hardware device
           picture: this.props.data.picture
         };
 ```
-
+### account and operation creation
+When an user wants to create an account or an operation. A session has to be opened with hsm. this 
+happens in the component DeviceAuthenticate. 
+When the entity is created it goes to pending where it waits for approvals. The conponent reponsible for this is EntityApprove.
