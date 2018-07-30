@@ -59,7 +59,7 @@ it will create the SQL schema and create the init data AND it will register the 
 
 Please note software device are not isomorphic with hardware device yet ( it's a bug on the software impl ), meaning if you onboard with software, you won't be able to log in with a real hardware device after
 
-The device api expose a route POST /switch-device with { device_number: 1} as data to tell it which device it should use ( device_number: 1 | 2 | 3 | 4.....| 15)
+The device api expose a route `POST /switch-device` with `{ device_number: 1}` as data to tell it which device it should use ( `device_number: 1 | 2 | 3 | 4.....| 15`)
 
 ### Gate
 #### Integration tests
@@ -98,7 +98,7 @@ The next step consist in choosing the administration scheme. Device is not invol
 
 The next step is to sign in with all the administrators. You get a challenge, and sign it with all the devices. The method on the device is u2f_authenticate. If you an incorrect data, it means you didn't use the same arguments that you used during the u2f-register
 
-Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Opening a secure channel, calliing openSession et generateKeyComponent. ( you can use 3 times the same devices to make it faster )
+Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Only `scriptHash` param in `openSession` and `isWrappingKey` in `generateKeyComponent` differ, and  Opening a secure channel, calliing openSession et generateKeyComponent. ( you can use 3 times the same devices to make it faster )
 
 Once the onboarding is done you can finally login to the vault with one device. Internally, it does a u2f login between the device and the front. The HSM is not involved. The gate store the keyHandle of each devices during the onboarding and generates a challenge 
 and verify the signature. The process of the login is:
@@ -108,11 +108,11 @@ and verify the signature. The process of the login is:
 - post the signature
 
 
-Using the front without devices:
+## Using the front without devices:
 
 Thanks to the device soft API, you can use the vault without any hardware devices. Run the deviceapi as explained above. Every time you need to switch device, just call the route POST /switch-device
 
-Tips on the front:
+## Tips on the front:
 
 - all the APDU calls are made in VaultDeviceApp ( VaultDeviceHTTP for software ).
     - the transport layer responds with the status at the end of a response ( 9000 for a success ), so you need to get rid of it before sending it to HSM ( otherwise you could get bytes_overflow issue on the HSM driver)
