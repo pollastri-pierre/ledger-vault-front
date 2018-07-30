@@ -98,7 +98,7 @@ The next step consist in choosing the administration scheme. Device is not invol
 
 The next step is to sign in with all the administrators. You get a challenge, and sign it with all the devices. The method on the device is u2f_authenticate. If you an incorrect data, it means you didn't use the same arguments that you used during the u2f-register
 
-Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Only `scriptHash` param in `openSession` and `isWrappingKey` in `generateKeyComponent` differ, and  Opening a secure channel, calliing openSession et generateKeyComponent. ( you can use 3 times the same devices to make it faster )
+Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Opening a secure channel, calliing openSession et generateKeyComponent. Only `scriptHash` param in `openSession` and `isWrappingKey` in `generateKeyComponent` differ. ( you can use 3 times the same devices to make it faster )
 
 Once the onboarding is done you can finally login to the vault with one device. Internally, it does a u2f login between the device and the front. The HSM is not involved. The gate store the keyHandle of each devices during the onboarding and generates a challenge 
 and verify the signature. The process of the login is:
@@ -117,4 +117,61 @@ Thanks to the device soft API, you can use the vault without any hardware device
 - all the APDU calls are made in VaultDeviceApp ( VaultDeviceHTTP for software ).
     - the transport layer responds with the status at the end of a response ( 9000 for a success ), so you need to get rid of it before sending it to HSM ( otherwise you could get bytes_overflow issue on the HSM driver)
 - restlay is used to handle the data flow ( except on onboarding/login )
+
+### u2f_register
+`u2f_register` method on device is a bit tricky. We are limited by u2f transport. The response cannot be too long, and the response expected by the HSM is too long for it, because it must contain a certificate. Firstly, we split the data to send to the device in small chunks. But we have to do a little trick on the response also. 
+- make an APDU to get the device certificate
+- make the u2f_register
+- insert inside the u2f_register response the certificate
+```
+        const device = await await createDevice();
+        const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+        const confidentiality = await device.getPublicKey(CONFIDENTIALITY_PATH);
+        const validation = await device.getPublicKey(VALIDATION_PATH);
+        const attestation = await device.getAttestationCertificate();
+
+        const { u2f_register, keyHandle } = await device.register(
+          Buffer.from(this.props.challenge, "base64"),
+          APPID_VAULT_ADMINISTRATOR,
+          organization.name,
+          organization.workspace,
+          organization.domain_name,
+          "Administrator"
+        );
+        const attestationOffset = 67 + u2f_register.readInt8(66);
+
+        const u2f_register_attestation = Buffer.concat([
+          u2f_register.slice(0, attestationOffset),
+          Buffer.from([attestation.length]),
+          attestation,
+          u2f_register.slice(attestationOffset)
+        ]);
+
+        const validation_attestation = Buffer.concat([
+          attestation,
+          validation.signature
+        ]);
+        const confidentiality_attestation = Buffer.concat([
+          attestation,
+          confidentiality.signature
+        ]);
+
+        const data = {
+          u2f_register: u2f_register_attestation.toString("hex"),
+          pub_key: pubKey,
+          key_handle: keyHandle.toString("hex"),
+          validation: {
+            public_key: validation.pubKey,
+            attestation: validation_attestation.toString("hex")
+          },
+          confidentiality: {
+            public_key: confidentiality.pubKey,
+            attestation: confidentiality_attestation.toString("hex")
+          },
+          first_name: this.props.data.first_name,
+          last_name: this.props.data.last_name,
+          email: this.props.data.email,
+          picture: this.props.data.picture
+        };
+```
 
