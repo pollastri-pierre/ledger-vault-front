@@ -46,39 +46,42 @@ it will create the SQL schema and create the init data AND it will register the 
 
 ## Running tests:
 ### frontend:
-  npm run test
+- npm run test
 
-  To run full e2e tests you first need to run the deviceAPI on the gate:
-  Go to gate/test/integration
-  python2.7 -m virtualenv venv_integration
-  source venv_integration/bin/activate
-  pip install -r requirements
-  FLASK_RUN_PORT=5001 FLASK_APP=deviceapi.py flask run
+#### e2e tests
+- Go to gate/test/integration
+- python2.7 -m virtualenv venv_integration
+- source venv_integration/bin/activate
+- pip install -r requirements
+- FLASK_RUN_PORT=5001 FLASK_APP=deviceapi.py flask run
+-  npm run starte2e to set NODE_ENV to e2e, so the front instanciate the VaultDeviceHTTP instead of VaultDeviceApp ( http calls instead of APDU calls)
+- on the frontend, `cypress open`
 
-  npm run starte2e to set NODE_ENV to e2e, so the front instanciate the VaultDeviceHTTP instead of VaultDeviceApp ( http calls instead of APDU calls)
+Please note software device are not isomorphic with hardware device yet ( it's a bug on the software impl ), meaning if you onboard with software, you won't be able to log in with a real hardware device after
 
-  Please note software device are not isomorphic with hardware device yet ( it's a bug on the software impl ), meaning if you onboard with software, you won't be able to log in with a real hardware device after
+The device api expose a route POST /switch-device with { device_number: 1} as data to tell it which device it should use ( device_number: 1 | 2 | 3 | 4.....| 15)
 
-  The device api expose a route POST /switch-device with { device_number: 1} as data to tell it which device it should use ( device_number: 1 | 2 | 3 | 4.....| 15)
+### Gate
+#### Integration tests
+- Go to gate/test/integration
+- python2.7 -m virtualenv venv_integration
+- source venv_integration/bin/activate
+- pip install -r requirements
+- python test_onboarding --quorum 2
+- python ...other scripts
 
-- You can also run the integration tests on the gate:
-  Go to gate/test/integration
-  python2.7 -m virtualenv venv_integration
-  source venv_integration/bin/activate
-  pip install -r requirements
-  python test_onboarding --quorum 2
-  python ...other scripts
 
-- Pretty much the same to run the tests on the HSM-driver
+## Troubleshootings
 
-Troubleshootings
-
-- error invalid challenge, it could mean a lot of things, including a bad secp256k1 lib version
+### invalid ecpy version
+If you get an error during the pip install of the gate venv_integration saying ( ecpy 0.9 expect python3, you must use the .whl provided by Franck )
+### Invalid challenge
+ error invalid challenge, it could mean a lot of things, including a bad secp256k1 lib version
 install it on the gate side ( both in normal env, and venv_integration ) with
 
-SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-cache-dir --no-binary secp256k1 secp256k1
+`SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-cache-dir --no-binary secp256k1 secp256k1`
 
-Onboarding process:
+## Onboarding process:
 
 The onboarding process is quite complex.
 The first step consist in generating a wrapping key. 3 devices are used to generate some kind of key that will encrypt the partitions of the organization. ( You can use 3 times the same device to save time ).
