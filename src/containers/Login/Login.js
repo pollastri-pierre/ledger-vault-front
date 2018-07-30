@@ -192,7 +192,7 @@ export class Login extends Component<Props, State> {
 
         setTokenToLocalStorage(token);
         await network("/u2f/authentications/authenticate", "POST", {
-          authentication: auth.rawResponse.slice(0, auth.rawResponse.length - 4)
+          authentication: auth.rawResponse
         });
         this.setState({ isChecking: false });
         onLogin(token);

@@ -83,7 +83,10 @@ class ActionBar extends Component<{
             <Logo white />
           </div>
           <div className={classes.actions}>
-            <Link to={`${location.pathname}/new-account`}>
+            <Link
+              className="test-new-account"
+              to={`${location.pathname}/new-account`}
+            >
               <Plus className={classes.icon} />
               <div>account</div>
             </Link>

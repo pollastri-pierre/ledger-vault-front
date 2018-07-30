@@ -1,8 +1,12 @@
 // @flow
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import VaultDeviceApp from "./VaultDeviceApp";
+import VaultDeviceHTTP from "./VaultDeviceHTTP";
 
 export default async (): Promise<VaultDeviceApp> => {
+  if (process.env.NODE_ENV === "e2e") {
+    return new VaultDeviceHTTP();
+  }
   const transport = await LedgerTransportU2F.create(90000000, 90000000);
   return new VaultDeviceApp(transport);
 };

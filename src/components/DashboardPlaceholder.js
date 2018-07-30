@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import HelpLink from "components/HelpLink";
@@ -69,7 +70,7 @@ const DashboardPlaceholder = ({
       <p>
         <span>{t("dashboard:empty_state.click")} </span>
         <Link to={`dashboard/new-account`} className={classes.link}>
-          <Plus className={classes.icon} />
+          <Plus className={cx(classes.icon, "test-new-account-dashboard")} />
           <span> {t("dashboard:empty_state.account")} </span>
         </Link>
         <span> {t("dashboard:empty_state.to_create")} </span>
