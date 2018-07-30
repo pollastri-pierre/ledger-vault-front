@@ -7,7 +7,7 @@
     "coverage": "npm run test -- --coverage",
     "flow": "flow",
     "lint": "eslint src test webpack",
-    "postinstall": "flow-typed install -s",
+    "postinstall": "[ \"$NODE_ENV\" != production ] && flow-typed install -s || echo ''",
     "prettier": "prettier --write \"{src,webpack,test}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
     "starte2e": "NODE_ENV=e2e webpack-dev-server --https --config webpack/dev.babel.js",
