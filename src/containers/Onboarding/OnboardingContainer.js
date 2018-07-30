@@ -125,7 +125,6 @@ class OnboardingContainer extends Component<Props, State> {
   }
 
   onNewOnboardingState = onboardingState => {
-    console.log(onboardingState);
     this.props.onGetState();
   };
 
