@@ -50,7 +50,8 @@ sudo su franck
 tmux attach -d
 ```
 You will see a tab `hsm-flo`, If you stop the process and  run `ls`, you will see a lot of `counters_*` and `user_*` files. It represent the partitions. If you want to start from scratch you can delete all this files. Then launch `./run.sh`.
-Then you go the tab `hsm-cli` ( `Ctrl-b 3` ). Then launch `python 000_createUser.py --adminurl http://localhost:11112/processAdmin`
+Then you go the tab `hsm-cli` ( `Ctrl-b 3` ). 
+Then launch `python 000_createUser.py --adminurl http://localhost:11112/processAdmin`. Launch it as many times as you need users. 
 
 `hsm-flo` runs on port `11111`, and we opened a ssh tunel on `11111 -> 127.0.0.1:11111` so in your hsm-driver configuration, you need to set `127.0.0.1:11111` as your hsm endpoint. Remember that your ssh connexion must remain active. As a result when you run `ssh hsm-flo`, **don't close the tab on the terminal**.
 `11112` is the admin port. It is used by tests file, especially to create new user on the HSM ( `000_createUser.py` )
