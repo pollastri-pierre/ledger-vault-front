@@ -18,6 +18,7 @@
 - sbt "daemon/run -http.port=:8889 -admin.port=:3335"
 ### hsm-driver
 - git clone https://github.com/LedgerHQ/ledger-vault-hsm-driver
+- edit `src/main/resourcees/application.con` to set the HSM url endpoint
 - sbt run
 ### gate
 - git clone https://github.com/LedgerHQ/ledger-vault-api
@@ -32,17 +33,17 @@ We got one simu per person.
 
 ### Starting with a fresh new organization
 - Make sure the compartmentId 1 is not used on HSM simu
-- make sure `vault1` doesn't exist on HSM-driver
-- CREATE database vault1
-- ./run_debug 1 vault1
+- make sure `vault1` doesn't exist on HSM-driver. If it exists, you can `rm -rf hsm_state.db`, it removes all the partitions
+- `CREATE database vault1;`
+- `./run_debug 1 vault1`
 In another term tab on the gate ( with the venv sourced )
-- export VAULT_DB_SCHEMA=vault1
-- export VAULT_WORKSPACE=vault1
-- export VAULT_COMPARTMENT_ID=1
-- ./run_update.sh init
+- `export VAULT_DB_SCHEMA=vault1`
+- `export VAULT_WORKSPACE=vault1`
+- `export VAULT_COMPARTMENT_ID=1`
+- `./run_update.sh init`
 
-it will create the SQL schema and create the init data AND it will register the gate to the HSM-driver, it will also create the wallet pool on the daemon for this organization. If you restart the gate or the HSM-driver, you need to re-register so run
-./run_update init_register
+it will create the SQL schema and create the init data AND it will register the gate to the HSM-driver, it will also create the wallet pools on the daemon for this organization. If you restart the gate or the HSM-driver, you need to re-register so run
+`./run_update init_register`
 
 ## Running tests:
 ### frontend:
@@ -85,23 +86,20 @@ install it on the gate side ( both in normal env, and venv_integration ) with
 
 The onboarding process is quite complex.
 The first step consist in generating a wrapping key. 3 devices are used to generate some kind of key that will encrypt the partitions of the organization. ( You can use 3 times the same device to save time ).
-The HSM open a secure ECDA channel with the devices. Internally, we call 2 methods on the device. The first is openSession with the ephemeral_pub_key and ephemeral_certificate. After the openSession we do a generateKeyCompoonent.
+The HSM open a secure ECDA channel with the devices. Internally, we call 2 methods on the device. The first is openSession with the `ephemeral_pub_key` and `ephemeral_certificate`. After the `openSession` we do a `generateKeyCompoonent`.
 
 If the backend returns an error when we try to get the channel, it usually means that the compartmentId is already used.
 If the device does not respond ( u2f_timeout ) it means the certificate on the device and on the HSM don't match.
 
-The second step is registering the administrators. An challenge is signed by every devices. If we get an error to get the challenge, it means the HSM-driver has already a partition for this organization. The HSM-driver identifies the
-partition with the workspace name. To register the an admin, we perform a u2f_register on the device. Be aware that the params  you send to u2f_register ( name, workspace, domain, role) must be exactly the same you send to u2f_authenticate, otherwise
-it will not match and you won't be able to login.
+The second step is registering the administrators. One challenge is signed by every devices. If we get an error to get the challenge, it probably means the HSM-driver has already a partition for this organization, so it refuses to add aministrator on a non-blank partition. The HSM-driver identifies the partition with the workspace name. To register an admin, we perform a `u2f_register` on the device. Be aware that the params  you send to u2f_register ( name, workspace, domain, role) must be exactly the same you send to `u2f_authenticate`, otherwise it will not match and you won't be able to login.
 
 The next step consist in choosing the administration scheme. Device is not involved in this step.
 
-The next step is to sign in with all the administrators. You get a challenge, and sign it with all the devices. The method on the device is u2f_authenticate. If you an incorrect data, it means you didn't use the same arguments that you used during the u2f-register
+The next step is to sign in with all the administrators. You get a challenge, and sign it with all the devices. The method on the device is u2f_authenticate. If you an incorrect data, it means you didn't use the same arguments that you used during the u2f-register. Note  you need to sign-in with all admins ( technically only n of m admin ) because you are about to generate the master seed. Before every sensitive operations on the vault, we need to open a *compound session*.
 
-Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Opening a secure channel, calliing openSession et generateKeyComponent. Only `scriptHash` param in `openSession` and `isWrappingKey` in `generateKeyComponent` differ. ( you can use 3 times the same devices to make it faster )
+Finally, you get to generate the master seed. Technically it is the exact same process of generating the wrapping key. Opening a secure channel, calliing openSession et generateKeyComponent. Only `scriptHash` param in `openSession` and `isWrappingKey` in `generateKeyComponent` differ. ( you can use 3 times the same devices to make it faster ). Again, if the device does not responds, it's probably an issue with certificate ( between devices and HSM ).
 
-Once the onboarding is done you can finally login to the vault with one device. Internally, it does a u2f login between the device and the front. The HSM is not involved. The gate store the keyHandle of each devices during the onboarding and generates a challenge 
-and verify the signature. The process of the login is:
+Once the onboarding is done, you can finally login to the vault with one device. Internally, it does a u2f login between the device and the front. The HSM is not involved. The gate stored the keyHandle of each devices during the onboarding and generates a challenge and verify the signature. The process of the login is:
 - getting the pub_key of the device
 - ask a challenge to the gate for this pubkey
 - u2f_authenticate on the device
@@ -110,16 +108,23 @@ and verify the signature. The process of the login is:
 
 ## Using the front without devices:
 
-Thanks to the device soft API, you can use the vault without any hardware devices. Run the deviceapi as explained above. Every time you need to switch device, just call the route POST /switch-device
+Thanks to the device soft API, you can use the vault without any hardware devices. Run the deviceapi as explained above. Every time you need to switch device, just call the route `POST /switch-device` with a `device_number` value.
 
 ## Tips on the front:
 
-- all the APDU calls are made in VaultDeviceApp ( VaultDeviceHTTP for software ).
+- all the APDU calls are made in **VaultDeviceAPP** ( VaultDeviceHTTP for software ).
     - the transport layer responds with the status at the end of a response ( 9000 for a success ), so you need to get rid of it before sending it to HSM ( otherwise you could get bytes_overflow issue on the HSM driver)
 - restlay is used to handle the data flow ( except on onboarding/login )
+- material-ui is used for UI components
+- i18next for the translation. The yml files are locates in `locales` folder.
+
+### before pushing
+- `npm run lint`
+- `npm run flow`
+- `npm run test`
 
 ### u2f_register
-`u2f_register` method on device is a bit tricky. We are limited by u2f transport. The response cannot be too long, and the response expected by the HSM is too long for it, because it must contain a certificate. Firstly, we split the data to send to the device in small chunks. But we have to do a little trick on the response also. 
+`u2f_register` method on device is a bit tricky. We are limited by u2f transport. The payload and the response cannot be too long, and the response expected by the HSM is quite long, because it must contain a certificate. Firstly, we split the data to send to the device in small chunks. But we have to do a little trick on the response also. 
 - make an APDU to get the device certificate
 - make the u2f_register
 - insert inside the u2f_register response the certificate
