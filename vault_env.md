@@ -13,7 +13,7 @@
 - install redis and run it
 - install mysql and run it
 - have sbt installed
-- have python 2.7 and 3.6 installed
+- have python 2.7 and 3.7 installed
 
 ### ledger-wallet-daemon
 - git clone https://github.com/LedgerHQ/ledger-wallet-daemon
