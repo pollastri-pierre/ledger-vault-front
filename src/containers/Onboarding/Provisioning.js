@@ -3,7 +3,7 @@ import BlurDialog from "components/BlurDialog";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import ValidateBadge from "components/icons/full/ValidateBadge";
@@ -201,14 +201,19 @@ class Provisioning extends Component<Props> {
         </div>
         <Footer
           nextState
-          render={onNext => (
-            <DialogButton
-              highlight
-              onTouchTap={onNext}
-              disabled={onboarding.provisionning.blobs.length < 3}
-            >
-              {t("common:continue")}
-            </DialogButton>
+          render={(onNext, onPrevious) => (
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onNext}
+                disabled={onboarding.provisionning.blobs.length < 3}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           )}
         />
       </div>

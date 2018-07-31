@@ -33,6 +33,10 @@ const mapDispatchToProps = (dispatch: *) => ({
 });
 
 const styles = {
+  fatal_error: {
+    opacity: 0.3,
+    pointerEvents: "none"
+  },
   wrapper: {
     width: "100%",
     height: "100vh",
@@ -142,7 +146,11 @@ class OnboardingContainer extends Component<Props, State> {
     }
     return (
       <div className={cx("App", classes.wrapper)}>
-        <div className={classes.base}>
+        <div
+          className={cx(classes.base, {
+            [classes.fatal_error]: onboarding.fatal_error
+          })}
+        >
           <div className={classes.banner}>
             <Logo />
             <a href="http://help.vault.ledger.com" className={classes.support}>
@@ -178,6 +186,7 @@ class OnboardingContainer extends Component<Props, State> {
                 onChange={changeNbRequired}
                 total={onboarding.registering.admins.length}
                 number={onboarding.quorum}
+                is_editable={onboarding.is_editable}
               />
             )}
             {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}

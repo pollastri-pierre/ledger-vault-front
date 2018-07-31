@@ -1,5 +1,5 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
@@ -87,10 +87,15 @@ const PrerequisiteSeed = ({
         </div>
       </div>
       <Footer
-        render={onNext => (
-          <DialogButton highlight onTouchTap={onNext}>
-            {t("commom:continue")}
-          </DialogButton>
+        render={(onNext, onPrevious) => (
+          <Fragment>
+            <DialogButton onTouchTap={onPrevious}>
+              {t("commom:back")}
+            </DialogButton>
+            <DialogButton highlight onTouchTap={onNext}>
+              {t("commom:continue")}
+            </DialogButton>
+          </Fragment>
         )}
       />
     </div>

@@ -1,5 +1,7 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
@@ -9,6 +11,12 @@ import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
 import ApprovalSlider from "./ApprovalSlider.js";
 
+const styles = {
+  disabled: {
+    opacity: 0.3,
+    pointerEvents: "none"
+  }
+};
 const mapStateToProps = state => ({
   onboarding: state.onboarding
 });
@@ -20,6 +28,8 @@ const AdministrationScheme = ({
   number,
   total,
   onChange,
+  classes,
+  is_editable,
   onboarding,
   onAddMessage,
   t
@@ -28,19 +38,23 @@ const AdministrationScheme = ({
   total: number,
   onChange: Function,
   onAddMessage: Function,
+  classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
+  is_editable: boolean,
   t: Translate
 }) => {
   return (
     <div>
       <Title>{t("onboarding:administrators_scheme.title")}</Title>
-      <Introduction>
-        {t("onboarding:administrators_scheme.description")}
-      </Introduction>
-      <ApprovalSlider number={number} total={total} onChange={onChange} />
+      <div className={cx({ [classes.disabled]: !is_editable })}>
+        <Introduction>
+          {t("onboarding:administrators_scheme.description")}
+        </Introduction>
+        <ApprovalSlider number={number} total={total} onChange={onChange} />
+      </div>
       <Footer
         nextState
-        render={onNext => {
+        render={(onNext, onPrevious) => {
           const onclick = async () => {
             try {
               onNext({ quorum: parseInt(number, 10) });
@@ -53,13 +67,18 @@ const AdministrationScheme = ({
             }
           };
           return (
-            <DialogButton
-              highlight
-              onTouchTap={onclick}
-              disabled={onboarding.quorum < 2}
-            >
-              {t("common:continue")}
-            </DialogButton>
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onclick}
+                disabled={onboarding.quorum < 2}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           );
         }}
       />
@@ -68,5 +87,5 @@ const AdministrationScheme = ({
 };
 
 export default connect(mapStateToProps, mapDispatch)(
-  translate()(AdministrationScheme)
+  withStyles(styles)(translate()(AdministrationScheme))
 );
