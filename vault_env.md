@@ -20,7 +20,7 @@
 - sbt "daemon/run -http.port=:8889 -admin.port=:3335"
 ### hsm-driver
 - git clone https://github.com/LedgerHQ/ledger-vault-hsm-driver
-- edit `src/main/resourcees/application.con` to set the HSM url endpoint
+- edit `src/main/resources/application.conf` to set the HSM url endpoint
 - sbt run
 ### gate
 - git clone https://github.com/LedgerHQ/ledger-vault-api
@@ -132,7 +132,7 @@ Once the onboarding is done, you can finally login to the vault with one device.
 
 ## Using the front without devices:
 
-Thanks to the device soft API, you can use the vault without any hardware devices. Run the deviceapi as explained above. Every time you need to switch device, just call the route `POST /switch-device` with a `device_number` value.
+Thanks to the device soft API, you can use the vault without any hardware devices. Run the deviceapi as explained above. Every time you need to switch device, just call the route `POST /switch-device` with a `device_number` value. Run webpack with `npm run starte2e` instead of `npm start`. 
 
 ## Tips on the front:
 
