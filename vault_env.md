@@ -14,6 +14,7 @@
 - install mysql and run it
 - have sbt installed
 - have python 2.7 and 3.7 installed
+- `brew install automake pkg-config libtool libffi gmp`
 
 ### ledger-wallet-daemon
 - git clone https://github.com/LedgerHQ/ledger-wallet-daemon
