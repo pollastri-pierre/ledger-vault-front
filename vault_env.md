@@ -12,6 +12,8 @@
 - install elasticsearch and run it
 - install redis and run it
 - install mysql and run it
+- have sbt installed
+- have python 2.7 and 3.6 installed
 
 ### ledger-wallet-daemon
 - git clone https://github.com/LedgerHQ/ledger-wallet-daemon
