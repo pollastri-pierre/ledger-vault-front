@@ -110,15 +110,15 @@ This is the proper way to install it it on the gate ( both in normal env, and ve
 ## Onboarding process:
 
 The onboarding process is quite complex.
-The first step consist in generating a wrapping key. 3 devices are used to generate some kind of key that will encrypt the partitions of the organization. ( You can use 3 times the same device to save time ).
+The first step let you generate a wrapping key. 3 devices are used to generate some kind of key that will encrypt the partitions of the organization. ( You can use 3 times the same device to save time ).
 The HSM open a secure ECDA channel with the devices. Internally, we call 2 methods on the device. The first is `openSession` with the `ephemeral_pub_key` and `ephemeral_certificate`. After the `openSession` we do a `generateKeyComponent`.
 
 If the backend returns an error when we try to get the channel, it usually means that the compartmentId is already used.
 If the device does not respond ( u2f_timeout ) it means the certificate on the device and on the HSM don't match.
 
-The second step is registering the administrators. One challenge is signed by every devices. If we get an error to get the challenge, it probably means the HSM-driver has already a partition for this organization, so it refuses to add aministrator on a non-blank partition. The HSM-driver identifies the partition with the workspace name. To register an admin, we perform a `u2f_register` on the device. Be aware that the params  you send to u2f_register ( name, workspace, domain, role) must be exactly the same you send to `u2f_authenticate`, otherwise it will not match and you won't be able to login.
+In the second step you register the administrators. One challenge is signed by every devices. If we get an error to get the challenge, it probably means the HSM-driver has already a partition for this organization, so it refuses to add aministrator on a non-blank partition. The HSM-driver identifies the partition with the workspace name. To register an admin, we perform a `u2f_register` on the device. Be aware that the params  you send to u2f_register ( name, workspace, domain, role) must be exactly the same you send to `u2f_authenticate`, otherwise it will not match and you won't be able to login.
 
-The next step consist in choosing the administration scheme. Device is not involved in this step.
+The next let you the administration scheme. Device is not involved in this step. If you set a `quorum` of 2 out of 3 administrators registered, it means account will have to approved by 2 admins in order to be created.
 
 The next step is to sign in with all the administrators. You get a challenge, and sign it with all the devices. The method on the device is u2f_authenticate. If you an incorrect data, it means you didn't use the same arguments that you used during the u2f-register. Note you need to sign-in with all admins ( technically only n of m admin ) because you are about to generate the master seed. Before every sensitive operations on the vault, we need to open a *compound session*.
 
