@@ -4,7 +4,7 @@ import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import React from "react";
+import React, { Fragment } from "react";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 import Requirements from "./Requirements.js";
 
@@ -52,9 +52,12 @@ const Welcome = ({
       isBack={false}
       nextState
       render={onNext => (
-        <DialogButton highlight onTouchTap={onNext}>
-          {t("onboarding:welcome.start")}
-        </DialogButton>
+        <Fragment>
+          <div />
+          <DialogButton highlight onTouchTap={onNext}>
+            {t("onboarding:welcome.start")}
+          </DialogButton>
+        </Fragment>
       )}
     />
   </div>

@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import CircleProgress from "components/CircleProgress";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -148,18 +148,23 @@ class SignIn extends Component<Props> {
         </div>
         <Footer
           isBack={false}
-          render={onNext => {
+          render={(onNext, onPrevious) => {
             return (
-              <DialogButton
-                highlight
-                onTouchTap={onNext}
-                disabled={
-                  onboarding.signin.admins.length <
-                  onboarding.registering.admins.length
-                }
-              >
-                {t("common:continue")}
-              </DialogButton>
+              <Fragment>
+                <DialogButton onTouchTap={onPrevious}>
+                  {t("common:back")}
+                </DialogButton>
+                <DialogButton
+                  highlight
+                  onTouchTap={onNext}
+                  disabled={
+                    onboarding.signin.admins.length <
+                    onboarding.registering.admins.length
+                  }
+                >
+                  {t("common:continue")}
+                </DialogButton>
+              </Fragment>
             );
           }}
         />

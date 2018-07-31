@@ -1,8 +1,9 @@
 //@flow
 import { connect } from "react-redux";
+import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import Plus from "../../components/icons/full/Plus";
@@ -38,6 +39,10 @@ const styles = {
     width: 11,
     marginRight: 10,
     verticalAlign: "middle"
+  },
+  disabled: {
+    opacity: 0.3,
+    pointerEvents: "none"
   }
 };
 
@@ -182,6 +187,9 @@ class Registration extends Component<Props, *> {
       onAddMessage,
       t
     } = this.props;
+    if (onboarding.fatal_error) {
+      return <div />;
+    }
     if (!onboarding.registering || !onboarding.registering.challenge) {
       return <SpinnerCard />;
     }
@@ -201,36 +209,43 @@ class Registration extends Component<Props, *> {
             challenge={onboarding.registering.challenge}
           />
         </BlurDialog>
-        <div onClick={() => onToggleModalProfile()} className={classes.add}>
-          <Plus className={classes.plus} />
-          {t("onboarding:administrators_registration.add_member")}
+        <div className={cx({ [classes.disabled]: !onboarding.is_editable })}>
+          <div onClick={() => onToggleModalProfile()} className={classes.add}>
+            <Plus className={classes.plus} />
+            {t("onboarding:administrators_registration.add_member")}
+          </div>
+          <Introduction>
+            {t("onboarding:administrators_registration.description")}
+            <p>
+              <strong>
+                {t("onboarding:administrators_registration.description_strong")}
+              </strong>
+            </p>
+          </Introduction>
+          {onboarding.registering.admins.length === 0 ? (
+            <NoMembers />
+          ) : (
+            <MembersList
+              members={onboarding.registering.admins}
+              editMember={this.editMember}
+            />
+          )}
         </div>
-        <Introduction>
-          {t("onboarding:administrators_registration.description")}
-          <p>
-            <strong>
-              {t("onboarding:administrators_registration.description_strong")}
-            </strong>
-          </p>
-        </Introduction>
-        {onboarding.registering.admins.length === 0 ? (
-          <NoMembers />
-        ) : (
-          <MembersList
-            members={onboarding.registering.admins}
-            editMember={this.editMember}
-          />
-        )}
         <Footer
           nextState
-          render={onNext => (
-            <DialogButton
-              highlight
-              onTouchTap={onNext}
-              disabled={onboarding.registering.admins.length < 3}
-            >
-              {t("common:continue")}
-            </DialogButton>
+          render={(onNext, onPrevious) => (
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onNext}
+                disabled={onboarding.registering.admins.length < 3}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           )}
         />
       </div>

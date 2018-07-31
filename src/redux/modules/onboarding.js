@@ -3,12 +3,14 @@ import network from "network";
 import { addMessage } from "redux/modules/alerts";
 
 export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
+export const ONBOARDING_FATAL_ERROR = "ONBOARDING_FATAL_ERROR";
 export const ONBOARDING_REGISTERING_CHALLENGE =
   "ONBOARDING_REGISTERING_CHALLENGE";
 export const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
 export const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
 export const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
 export const NEXT_STEP = "NEXT_STEP";
+export const PREVIOUS_STEP = "PREVIOUS_STEP";
 export const ONBOARDING_STATE = "ONBOARDING_STATE";
 export const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
 export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
@@ -92,6 +94,8 @@ export type Onboarding = {
   registering: Registering,
   quorum: ?number,
   signin: Signin,
+  fatal_error: boolean,
+  is_editable: boolean,
   provisionning: Provisionning
 };
 
@@ -117,6 +121,8 @@ const initialState = {
   signin: {
     admins: []
   },
+  fatal_error: false,
+  is_editable: true,
   provisionning: {
     admins: []
   }
@@ -125,13 +131,31 @@ const initialState = {
 export const nextState = (data: any) => {
   return async (dispatch: Dispatch<*>) => {
     const dataToSend = data || {};
-    const next = await network("/onboarding/next", "POST", dataToSend);
+    try {
+      const next = await network("/onboarding/next", "POST", dataToSend);
+      dispatch({
+        type: NEXT_STEP,
+        next
+      });
+    } catch (e) {
+      if (e.json && e.json.message) {
+        dispatch(addMessage("Error", e.json.message, "error"));
+      }
+    }
+  };
+};
+
+export const previousState = (data: any) => {
+  return async (dispatch: Dispatch<*>) => {
+    const dataToSend = data || {};
+    const previous = await network("/onboarding/previous", "POST", dataToSend);
     dispatch({
-      type: NEXT_STEP,
-      next
+      type: PREVIOUS_STEP,
+      previous
     });
   };
 };
+
 export const getChallenge = () => {
   return network("/onboarding/challenge", "GET");
 };
@@ -151,11 +175,18 @@ export const toggleMemberModal = (member: any) => ({
 
 export const openWrappingChannel = () => {
   return async (dispatch: Dispatch<*>) => {
-    const wrapping: Wrapping = await getChallenge();
-    dispatch({
-      type: ONBOARDING_WRAPPING_CHANNEL,
-      wrapping
-    });
+    try {
+      const wrapping: Wrapping = await getChallenge();
+      dispatch({
+        type: ONBOARDING_WRAPPING_CHANNEL,
+        wrapping
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch({
+        type: ONBOARDING_FATAL_ERROR
+      });
+    }
   };
 };
 
@@ -171,11 +202,18 @@ export const addWrappingKey = (data: Blob) => {
 
 export const getRegistrationChallenge = () => {
   return async (dispatch: Dispatch<*>) => {
-    const challenge = await getChallenge();
-    dispatch({
-      type: ONBOARDING_REGISTERING_CHALLENGE,
-      challenge: challenge.challenge
-    });
+    try {
+      const challenge = await getChallenge();
+      dispatch({
+        type: ONBOARDING_REGISTERING_CHALLENGE,
+        challenge: challenge.challenge
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch({
+        type: ONBOARDING_FATAL_ERROR
+      });
+    }
   };
 };
 
@@ -288,10 +326,11 @@ export const getState = () => {
 const syncNextState = (state: Store, action, next = false) => {
   let actionState = action.state;
   if (next) {
-    actionState = action.next;
+    actionState = action.next || action.previous;
   }
+  let newState = { ...state, state: actionState.state, step: 0 };
   if (actionState.state === "WRAPPING_KEY_SIGN_IN") {
-    return {
+    newState = {
       ...state,
       state: "WRAPPING_KEY_SIGN_IN",
       step: 0,
@@ -309,7 +348,7 @@ const syncNextState = (state: Store, action, next = false) => {
     const challenge = actionState.challenge
       ? actionState.challenge.challenge
       : null;
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -321,7 +360,7 @@ const syncNextState = (state: Store, action, next = false) => {
   }
 
   if (actionState.state === "ADMINISTRATORS_SCHEME_CONFIGURATION") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -332,7 +371,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -352,7 +391,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "MASTER_SEED_GENERATION") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       provisionning: {
@@ -366,7 +405,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "COMPLETE") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       quorum: actionState.quorum,
@@ -376,7 +415,8 @@ const syncNextState = (state: Store, action, next = false) => {
       }
     };
   }
-  return { ...state, state: actionState.state, step: 0 };
+
+  return { ...newState, is_editable: actionState.is_editable };
 };
 
 export default function reducer(state: Store = initialState, action: Object) {
@@ -389,6 +429,11 @@ export default function reducer(state: Store = initialState, action: Object) {
           ...state.wrapping,
           channel: action.wrapping
         }
+      };
+    case ONBOARDING_FATAL_ERROR:
+      return {
+        ...state,
+        fatal_error: true
       };
     case ONBOARDING_ADD_WRAP_KEY: {
       return {
@@ -484,8 +529,9 @@ export default function reducer(state: Store = initialState, action: Object) {
       };
     case ONBOARDING_STATE:
       return syncNextState(state, action);
+    case PREVIOUS_STEP:
     case NEXT_STEP:
-      if (action.next) {
+      if (action.next || action.previous) {
         return syncNextState(state, action, true);
       }
       return { ...state, step: state.step + 1 };

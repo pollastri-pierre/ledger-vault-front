@@ -1,5 +1,5 @@
 //@flow
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Plus from "components/icons/full/Plus";
 import CircleProgress from "components/CircleProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -163,14 +163,19 @@ class Authentication extends Component<Props, State> {
           </div>
         </div>
         <Footer
-          render={onNext => (
-            <DialogButton
-              highlight
-              onTouchTap={onNext}
-              disabled={onboarding.wrapping.blobs.length < 3}
-            >
-              Continue
-            </DialogButton>
+          render={(onNext, onPrevious) => (
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onNext}
+                disabled={onboarding.wrapping.blobs.length < 3}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           )}
         />
       </div>

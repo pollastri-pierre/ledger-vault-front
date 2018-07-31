@@ -1,5 +1,5 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
 import { Title } from "components/Onboarding";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -99,14 +99,17 @@ const ConfirmationGlobal = ({
       </div>
       <Footer
         render={() => (
-          <DialogButton
-            highlight
-            onTouchTap={() => {
-              history.push(`/${match.params.orga_name}`);
-            }}
-          >
-            {t("common:continue")}
-          </DialogButton>
+          <Fragment>
+            <div />
+            <DialogButton
+              highlight
+              onTouchTap={() => {
+                history.push(`/${match.params.orga_name}`);
+              }}
+            >
+              {t("common:continue")}
+            </DialogButton>
+          </Fragment>
         )}
       />
     </div>
