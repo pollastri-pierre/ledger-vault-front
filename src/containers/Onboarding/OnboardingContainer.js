@@ -21,6 +21,7 @@ import AdministrationScheme from "./AdministrationScheme.js";
 import Menu from "./Menu";
 import { connect } from "react-redux";
 import { getState, changeQuorum } from "redux/modules/onboarding";
+import io from "socket.io-client";
 
 const mapStateToProps = state => ({
   onboarding: state.onboarding
@@ -104,7 +105,33 @@ type State = {
 class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
     this.props.onGetState();
+
+    const url =
+      process.env.NODE_ENV !== "development"
+        ? "/notification"
+        : "http://localhost:3033";
+    const socket = io.connect(
+      url,
+      { onboarding: true }
+    );
+    let self = this;
+    socket.on("connect", function() {
+      socket.emit("authenticate", {
+        token: "onboarding",
+        orga: self.props.match.params.orga_name
+      });
+    });
+    socket.on(self.props.match.params.orga_name + "/onboarding", function(
+      onboardingState
+    ) {
+      self.onNewOnboardingState(onboardingState);
+    });
   }
+
+  onNewOnboardingState = onboardingState => {
+    this.props.onGetState();
+  };
+
   render() {
     const {
       classes,
@@ -181,6 +208,7 @@ class OnboardingContainer extends Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(OnboardingContainer)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(OnboardingContainer));
