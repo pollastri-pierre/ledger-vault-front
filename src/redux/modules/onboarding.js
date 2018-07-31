@@ -95,6 +95,7 @@ export type Onboarding = {
   quorum: ?number,
   signin: Signin,
   fatal_error: boolean,
+  is_editable: boolean,
   provisionning: Provisionning
 };
 
@@ -121,6 +122,7 @@ const initialState = {
     admins: []
   },
   fatal_error: false,
+  is_editable: true,
   provisionning: {
     admins: []
   }
@@ -324,10 +326,11 @@ export const getState = () => {
 const syncNextState = (state: Store, action, next = false) => {
   let actionState = action.state;
   if (next) {
-    actionState = action.next;
+    actionState = action.next || action.previous;
   }
+  let newState = { ...state, state: actionState.state, step: 0 };
   if (actionState.state === "WRAPPING_KEY_SIGN_IN") {
-    return {
+    newState = {
       ...state,
       state: "WRAPPING_KEY_SIGN_IN",
       step: 0,
@@ -345,7 +348,7 @@ const syncNextState = (state: Store, action, next = false) => {
     const challenge = actionState.challenge
       ? actionState.challenge.challenge
       : null;
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -357,7 +360,7 @@ const syncNextState = (state: Store, action, next = false) => {
   }
 
   if (actionState.state === "ADMINISTRATORS_SCHEME_CONFIGURATION") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -368,7 +371,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       registering: {
@@ -388,7 +391,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "MASTER_SEED_GENERATION") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       provisionning: {
@@ -402,7 +405,7 @@ const syncNextState = (state: Store, action, next = false) => {
     };
   }
   if (actionState.state === "COMPLETE") {
-    return {
+    newState = {
       ...state,
       state: actionState.state,
       quorum: actionState.quorum,
@@ -412,7 +415,8 @@ const syncNextState = (state: Store, action, next = false) => {
       }
     };
   }
-  return { ...state, state: actionState.state, step: 0 };
+
+  return { ...newState, is_editable: actionState.is_editable };
 };
 
 export default function reducer(state: Store = initialState, action: Object) {
@@ -525,8 +529,9 @@ export default function reducer(state: Store = initialState, action: Object) {
       };
     case ONBOARDING_STATE:
       return syncNextState(state, action);
+    case PREVIOUS_STEP:
     case NEXT_STEP:
-      if (action.next) {
+      if (action.next || action.previous) {
         return syncNextState(state, action, true);
       }
       return { ...state, step: state.step + 1 };

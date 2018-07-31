@@ -1,5 +1,6 @@
 //@flow
 import { connect } from "react-redux";
+import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React, { Component, Fragment } from "react";
@@ -38,6 +39,10 @@ const styles = {
     width: 11,
     marginRight: 10,
     verticalAlign: "middle"
+  },
+  disabled: {
+    opacity: 0.3,
+    pointerEvents: "none"
   }
 };
 
@@ -204,26 +209,28 @@ class Registration extends Component<Props, *> {
             challenge={onboarding.registering.challenge}
           />
         </BlurDialog>
-        <div onClick={() => onToggleModalProfile()} className={classes.add}>
-          <Plus className={classes.plus} />
-          {t("onboarding:administrators_registration.add_member")}
+        <div className={cx({ [classes.disabled]: !onboarding.is_editable })}>
+          <div onClick={() => onToggleModalProfile()} className={classes.add}>
+            <Plus className={classes.plus} />
+            {t("onboarding:administrators_registration.add_member")}
+          </div>
+          <Introduction>
+            {t("onboarding:administrators_registration.description")}
+            <p>
+              <strong>
+                {t("onboarding:administrators_registration.description_strong")}
+              </strong>
+            </p>
+          </Introduction>
+          {onboarding.registering.admins.length === 0 ? (
+            <NoMembers />
+          ) : (
+            <MembersList
+              members={onboarding.registering.admins}
+              editMember={this.editMember}
+            />
+          )}
         </div>
-        <Introduction>
-          {t("onboarding:administrators_registration.description")}
-          <p>
-            <strong>
-              {t("onboarding:administrators_registration.description_strong")}
-            </strong>
-          </p>
-        </Introduction>
-        {onboarding.registering.admins.length === 0 ? (
-          <NoMembers />
-        ) : (
-          <MembersList
-            members={onboarding.registering.admins}
-            editMember={this.editMember}
-          />
-        )}
         <Footer
           nextState
           render={(onNext, onPrevious) => (

@@ -1,4 +1,4 @@
-const orga_name = "vault20";
+const orga_name = "vault6";
 context("Onboarding", () => {
   it("redirect to onboarding", () => {
     cy.visit("https://localhost:9000");
@@ -22,10 +22,22 @@ context("Onboarding", () => {
     cy.contains("continue").click();
   });
 
+  it("try go back", () => {
+    cy.contains("back").click();
+  });
+
+  it("redo continue", () => {
+    cy.contains("continue").click();
+  });
+
   it("should see Signin and click on signin", () => {
     cy.wait(2000);
     cy.contains("SIGN IN").click();
     cy.wait(2000);
+    cy.contains("back").click();
+    cy.contains("back").click();
+    cy.contains("continue").click();
+    cy.contains("continue").click();
     cy.contains("SIGN IN").click();
     cy.wait(2000);
     cy.contains("SIGN IN").click();
@@ -34,6 +46,10 @@ context("Onboarding", () => {
   });
 
   it("should see Prerequisites and click on continue", () => {
+    cy.contains("back").click();
+    cy.contains("back").click();
+    cy.contains("continue").click();
+    cy.contains("continue").click();
     cy.contains("continue").click();
   });
 
@@ -53,6 +69,8 @@ context("Onboarding", () => {
     cy.contains("Continue").click();
 
     cy.wait(2000);
+    cy.contains("back").click();
+    cy.contains("continue").click();
     cy.request("POST", "http://localhost:5001/switch-device", {
       device_number: 2
     });
@@ -82,6 +100,10 @@ context("Onboarding", () => {
   });
 
   it("should see administration scheme and click on more", () => {
+    cy.contains("back").click();
+    cy.contains("back").click();
+    cy.contains("continue").click();
+    cy.contains("continue").click();
     cy.contains("more").click();
     cy.contains("more").click();
     cy.contains("more").click();
@@ -91,6 +113,10 @@ context("Onboarding", () => {
   });
 
   it("should see signin scheme and sign with admins", () => {
+    cy.contains("back").click();
+    cy.contains("back").click();
+    cy.contains("continue").click();
+    cy.contains("continue").click();
     cy.request("POST", "http://localhost:5001/switch-device", {
       device_number: 1
     });
@@ -103,6 +129,8 @@ context("Onboarding", () => {
       device_number: 2
     });
     cy.wait(1000);
+    cy.contains("back").click();
+    cy.contains("continue").click();
 
     cy.get(".test-onboarding-signin").click();
     cy.wait(2000);

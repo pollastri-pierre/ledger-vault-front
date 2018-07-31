@@ -159,6 +159,7 @@ class OnboardingContainer extends Component<Props, State> {
                 onChange={changeNbRequired}
                 total={onboarding.registering.admins.length}
                 number={onboarding.quorum}
+                is_editable={onboarding.is_editable}
               />
             )}
             {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
