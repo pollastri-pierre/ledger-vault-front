@@ -31,6 +31,28 @@
 - we use a HSM simulator instead of a real HSM hardware, It's a java server hosted on beta server. The partition of an organization is stored in file `user_1`, `counters_1` for the compartmentId 1
 We got one simu per person.
 
+You first need a ssh tunel access to beta. For example in `~/.ssh/config`:
+```
+Host hsm-flo
+ ServerAliveInterval 300
+ ServerAliveCountMax 2
+ HostName beta.vault.ledger.fr
+ User florent
+ LocalForward 11111 127.0.0.1:11111
+```
+`ssh hsm-flo`
+
+There is a tmux session on beta. In order to launch the simu and create user you can do:
+```
+sudo su franck
+tmux attach -d
+```
+You will see a tab `hsm-flo`, If you stop the process and  run `ls`, you will see a lot of `counters_*` and `user_*` files. It represent the partitions. If you want to start from scratch you can delete all this files. Then launch `./run.sh`.
+Then you go the tab `hsm-cli` ( `Ctrl-b 3` ). Then launch `python 000_createUser.py --adminurl http://localhost:11112/processAdmin`
+
+`hsm-flo` runs on port `11111`, and we opened a ssh tunel on `11111 -> 127.0.0.1:11111` so in your hsm-driver configuration, you need to set `127.0.0.1:11111` as your hsm endpoint. Remember that your ssh connexion must remain active. As a result when you run `ssh hsm-flo`, **don't close the tab on the terminal**.
+`11112` is the admin port. It is used by tests file, especially to create new user on the HSM ( `000_createUser.py` )
+
 ### Starting with a fresh new organization
 - Make sure the compartmentId 1 is not used on HSM simu
 - make sure `vault1` doesn't exist on HSM-driver. If it exists, you can `rm -rf hsm_state.db`, it removes all the partitions
