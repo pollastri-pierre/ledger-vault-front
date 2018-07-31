@@ -1,5 +1,5 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
@@ -40,7 +40,7 @@ const AdministrationScheme = ({
       <ApprovalSlider number={number} total={total} onChange={onChange} />
       <Footer
         nextState
-        render={onNext => {
+        render={(onNext, onPrevious) => {
           const onclick = async () => {
             try {
               onNext({ quorum: parseInt(number, 10) });
@@ -53,13 +53,18 @@ const AdministrationScheme = ({
             }
           };
           return (
-            <DialogButton
-              highlight
-              onTouchTap={onclick}
-              disabled={onboarding.quorum < 2}
-            >
-              {t("common:continue")}
-            </DialogButton>
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onclick}
+                disabled={onboarding.quorum < 2}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           );
         }}
       />

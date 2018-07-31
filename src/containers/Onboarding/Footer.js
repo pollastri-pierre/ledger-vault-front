@@ -3,11 +3,12 @@ import React from "react";
 // import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { nextState } from "redux/modules/onboarding";
+import { nextState, previousState } from "redux/modules/onboarding";
 
 const mapDispatchToProps = (dispatch: *) => {
   return {
-    onNextState: data => dispatch(nextState(data))
+    onNextState: data => dispatch(nextState(data)),
+    onPreviousState: data => dispatch(previousState(data))
   };
 };
 
@@ -28,17 +29,16 @@ const styles = {
 const Footer = ({
   classes,
   onNextState,
+  onPreviousState,
   render
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onNextState: Function,
+  onPreviousState: Function,
   render: Function
 }) => {
   return (
-    <div className={classes.base}>
-      <div />
-      {render(onNextState)}
-    </div>
+    <div className={classes.base}>{render(onNextState, onPreviousState)}</div>
   );
 };
 

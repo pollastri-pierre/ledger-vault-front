@@ -1,4 +1,4 @@
-const orga_name = "vault14";
+const orga_name = "vault20";
 context("Onboarding", () => {
   it("redirect to onboarding", () => {
     cy.visit("https://localhost:9000");
@@ -30,7 +30,7 @@ context("Onboarding", () => {
     cy.wait(2000);
     cy.contains("SIGN IN").click();
     cy.wait(2000);
-    cy.contains("Continue").click();
+    cy.contains("continue").click();
   });
 
   it("should see Prerequisites and click on continue", () => {

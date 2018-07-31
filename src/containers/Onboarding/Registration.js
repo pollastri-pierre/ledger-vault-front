@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import Plus from "../../components/icons/full/Plus";
@@ -182,6 +182,9 @@ class Registration extends Component<Props, *> {
       onAddMessage,
       t
     } = this.props;
+    if (onboarding.fatal_error) {
+      return <div />;
+    }
     if (!onboarding.registering || !onboarding.registering.challenge) {
       return <SpinnerCard />;
     }
@@ -223,14 +226,19 @@ class Registration extends Component<Props, *> {
         )}
         <Footer
           nextState
-          render={onNext => (
-            <DialogButton
-              highlight
-              onTouchTap={onNext}
-              disabled={onboarding.registering.admins.length < 3}
-            >
-              {t("common:continue")}
-            </DialogButton>
+          render={(onNext, onPrevious) => (
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onNext}
+                disabled={onboarding.registering.admins.length < 3}
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
           )}
         />
       </div>

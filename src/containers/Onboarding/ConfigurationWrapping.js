@@ -1,5 +1,5 @@
 //@flow
-import React from "react";
+import React, { Fragment } from "react";
 import type { Translate } from "data/types";
 import LinkCongureDevice from "./LinkCongureDevice";
 import { translate } from "react-i18next";
@@ -36,10 +36,15 @@ const ConfigurationWrapping = ({ t }: { t: Translate }) => {
       </List>
       <Footer
         nextState
-        render={onNext => (
-          <DialogButton highlight onTouchTap={onNext}>
-            {t("common:continue")}
-          </DialogButton>
+        render={(onNext, onPrevious) => (
+          <Fragment>
+            <DialogButton onTouchTap={onPrevious}>
+              {t("common:back")}
+            </DialogButton>
+            <DialogButton highlight onTouchTap={onNext}>
+              {t("common:continue")}
+            </DialogButton>
+          </Fragment>
         )}
       />
     </div>

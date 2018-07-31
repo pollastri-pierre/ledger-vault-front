@@ -3,12 +3,14 @@ import network from "network";
 import { addMessage } from "redux/modules/alerts";
 
 export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
+export const ONBOARDING_FATAL_ERROR = "ONBOARDING_FATAL_ERROR";
 export const ONBOARDING_REGISTERING_CHALLENGE =
   "ONBOARDING_REGISTERING_CHALLENGE";
 export const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
 export const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
 export const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
 export const NEXT_STEP = "NEXT_STEP";
+export const PREVIOUS_STEP = "PREVIOUS_STEP";
 export const ONBOARDING_STATE = "ONBOARDING_STATE";
 export const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
 export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
@@ -92,6 +94,7 @@ export type Onboarding = {
   registering: Registering,
   quorum: ?number,
   signin: Signin,
+  fatal_error: boolean,
   provisionning: Provisionning
 };
 
@@ -117,6 +120,7 @@ const initialState = {
   signin: {
     admins: []
   },
+  fatal_error: false,
   provisionning: {
     admins: []
   }
@@ -125,13 +129,31 @@ const initialState = {
 export const nextState = (data: any) => {
   return async (dispatch: Dispatch<*>) => {
     const dataToSend = data || {};
-    const next = await network("/onboarding/next", "POST", dataToSend);
+    try {
+      const next = await network("/onboarding/next", "POST", dataToSend);
+      dispatch({
+        type: NEXT_STEP,
+        next
+      });
+    } catch (e) {
+      if (e.json && e.json.message) {
+        dispatch(addMessage("Error", e.json.message, "error"));
+      }
+    }
+  };
+};
+
+export const previousState = (data: any) => {
+  return async (dispatch: Dispatch<*>) => {
+    const dataToSend = data || {};
+    const previous = await network("/onboarding/previous", "POST", dataToSend);
     dispatch({
-      type: NEXT_STEP,
-      next
+      type: PREVIOUS_STEP,
+      previous
     });
   };
 };
+
 export const getChallenge = () => {
   return network("/onboarding/challenge", "GET");
 };
@@ -151,11 +173,18 @@ export const toggleMemberModal = (member: any) => ({
 
 export const openWrappingChannel = () => {
   return async (dispatch: Dispatch<*>) => {
-    const wrapping: Wrapping = await getChallenge();
-    dispatch({
-      type: ONBOARDING_WRAPPING_CHANNEL,
-      wrapping
-    });
+    try {
+      const wrapping: Wrapping = await getChallenge();
+      dispatch({
+        type: ONBOARDING_WRAPPING_CHANNEL,
+        wrapping
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch({
+        type: ONBOARDING_FATAL_ERROR
+      });
+    }
   };
 };
 
@@ -171,11 +200,18 @@ export const addWrappingKey = (data: Blob) => {
 
 export const getRegistrationChallenge = () => {
   return async (dispatch: Dispatch<*>) => {
-    const challenge = await getChallenge();
-    dispatch({
-      type: ONBOARDING_REGISTERING_CHALLENGE,
-      challenge: challenge.challenge
-    });
+    try {
+      const challenge = await getChallenge();
+      dispatch({
+        type: ONBOARDING_REGISTERING_CHALLENGE,
+        challenge: challenge.challenge
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch({
+        type: ONBOARDING_FATAL_ERROR
+      });
+    }
   };
 };
 
@@ -389,6 +425,11 @@ export default function reducer(state: Store = initialState, action: Object) {
           ...state.wrapping,
           channel: action.wrapping
         }
+      };
+    case ONBOARDING_FATAL_ERROR:
+      return {
+        ...state,
+        fatal_error: true
       };
     case ONBOARDING_ADD_WRAP_KEY: {
       return {
