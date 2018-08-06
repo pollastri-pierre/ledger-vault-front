@@ -11,7 +11,7 @@ class SupportLink extends PureComponent<Props> {
     return (
       <div>
         <a
-          href="http://alpha.vault.ledger.fr:81"
+          href="https://help.vault.ledger.com"
           target="new"
           className={className}
         >
