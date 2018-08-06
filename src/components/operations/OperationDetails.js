@@ -1,6 +1,9 @@
 //@flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
+import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
+console.log(defaultExplorers);
+
 import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -59,6 +62,7 @@ class OperationDetails extends Component<Props, *> {
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
+    console.log(account);
 
     return (
       <div className={classes.base}>
@@ -84,9 +88,18 @@ class OperationDetails extends Component<Props, *> {
         )}
         {value === 2 && <TabLabel note={note} />}
         <div className="footer">
-          {operation.exploreURL ? (
+          {account.currency &&
+          account.currency.name &&
+          operation.transaction &&
+          operation.transaction.hash &&
+          defaultExplorers[account.currency.name] ? (
             <DialogButton>
-              <a target="_blank" href={operation.exploreURL}>
+              <a
+                target="_blank"
+                href={defaultExplorers[account.currency.name](
+                  operation.transaction.hash
+                )}
+              >
                 Explore
               </a>
             </DialogButton>
