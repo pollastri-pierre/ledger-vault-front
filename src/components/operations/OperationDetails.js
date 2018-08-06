@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
-console.log(defaultExplorers);
 
 import ModalLoading from "components/ModalLoading";
 import PropTypes from "prop-types";
@@ -62,7 +61,6 @@ class OperationDetails extends Component<Props, *> {
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
-    console.log(account);
 
     return (
       <div className={classes.base}>
