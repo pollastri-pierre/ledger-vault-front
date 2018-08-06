@@ -12,9 +12,10 @@ import NewOperationMutation from "api/mutations/NewOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
 import ModalLoading from "components/ModalLoading";
 import type { RestlayEnvironment } from "restlay/connectData";
-import type { Account, Operation } from "data/types";
+import type { Account, Operation, Member } from "data/types";
 
 export type Details = {
   amount: ?number,
@@ -27,6 +28,7 @@ export type Details = {
 class NewOperationModal extends Component<
   {
     accounts: Array<Account>,
+    me: Member,
     allPendingOperations: Array<Operation>,
     restlay: RestlayEnvironment,
     close: Function,
@@ -154,7 +156,7 @@ class NewOperationModal extends Component<
   };
 
   render() {
-    const { accounts, close, allPendingOperations, match } = this.props;
+    const { me, accounts, close, allPendingOperations, match } = this.props;
     const { device } = this.state;
 
     const disabledTabs = [
@@ -191,6 +193,7 @@ class NewOperationModal extends Component<
       <OperationCreation
         close={close}
         onTabsChange={this.onTabsChange}
+        me={me}
         setFees={this.setFees}
         estimatedFees={this.state.estimatedFees}
         save={this.save}
@@ -213,6 +216,7 @@ export default connectData(NewOperationModal, {
   RenderLoading: ModalLoading,
   queries: {
     accounts: AccountsQuery,
+    me: ProfileQuery,
     allPendingOperations: PendingOperationsQuery
   }
 });

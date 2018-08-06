@@ -1,5 +1,5 @@
 //@flow
-import type { Operation, Account } from "data/types";
+import type { Operation, Account, Member } from "data/types";
 
 // operation creation is not allowed if there is no accounts obviously.
 // If there are accounts, we need at least one account with 0 pending operation
@@ -21,3 +21,10 @@ export const getPendingsOperations = (operations: Operation[]) =>
 export const hasPending = (account: Account, operations: Operation[]) =>
   operations.filter(operation => operation.account_id === account.id).length >
   0;
+
+export const isMemberOfAccount = (account: Account, me: Member) => {
+  const members = account.members.filter(
+    member => member.pub_key === me.pub_key
+  );
+  return members.length > 0;
+};

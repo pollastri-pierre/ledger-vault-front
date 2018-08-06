@@ -9,7 +9,7 @@ import OperationCreationAccounts from "./OperationCreationAccounts";
 import OperationCreationDetails from "./OperationCreationDetails";
 import OperationCreationLabel from "./OperationCreationLabel";
 import OperationCreationConfirmation from "./OperationCreationConfirmation";
-import type { Account, Operation } from "data/types";
+import type { Account, Operation, Member } from "data/types";
 import type { Details } from "../../NewOperationModal";
 
 const styles = {
@@ -62,6 +62,7 @@ class OperationCreation extends Component<{
   saveDetails: Object => void,
   setFees: Function,
   classes: { [_: $Keys<typeof styles>]: string },
+  me: Member,
   updateTitle: string => void,
   updateNote: string => void,
   title: string,
@@ -83,6 +84,7 @@ class OperationCreation extends Component<{
       saveDetails,
       title,
       note,
+      me,
       updateNote,
       setFees,
       estimatedFees,
@@ -99,6 +101,7 @@ class OperationCreation extends Component<{
           <Overscroll top={40} bottom={72} paddingX={0}>
             <OperationCreationAccounts
               accounts={accounts}
+              me={me}
               pendingOperations={pendingOperations}
               onSelect={selectAccount}
               selectedAccount={selectedAccount}

@@ -2,7 +2,6 @@
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import Dialog from "@material-ui/core/Dialog";
-import withMobileDialog from "@material-ui/core/withMobileDialog";
 
 import Slide from "@material-ui/core/Slide";
 
