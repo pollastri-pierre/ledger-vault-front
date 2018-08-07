@@ -110,7 +110,7 @@ class OnboardingContainer extends Component<Props, State> {
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
     const socket = io.connect(
       url,
-      { onboarding: true, path: path + "" }
+      { onboarding: true, path: path }
     );
     let self = this;
     socket.on("connect", function() {

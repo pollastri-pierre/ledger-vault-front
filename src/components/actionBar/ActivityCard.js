@@ -75,11 +75,12 @@ class ActivityCard extends Component<
   };
 
   componentDidMount() {
-    const url =
-      process.env.NODE_ENV !== "development"
-        ? "/notification"
-        : "http://localhost:3033";
-    const socket = io.connect(url);
+    const url = process.env["NOTIFICATION_URL"] || "/";
+    const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
+    const socket = io.connect(
+      url,
+      { path: path }
+    );
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
@@ -217,10 +218,16 @@ const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
 });
 
 export default withStyles(styles)(
-  connectData(connect(null, mapDispatchToProps)(translate()(ActivityCard)), {
-    RenderLoading,
-    queries: {
-      activities: ActivityQuery
+  connectData(
+    connect(
+      null,
+      mapDispatchToProps
+    )(translate()(ActivityCard)),
+    {
+      RenderLoading,
+      queries: {
+        activities: ActivityQuery
+      }
     }
-  })
+  )
 );
