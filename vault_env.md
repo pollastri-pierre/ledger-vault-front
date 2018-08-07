@@ -2,7 +2,7 @@
 
 ## Vault frontend:
 
-- git clone https://github.com/LedgerHQ/ledger-vault-front
+- git clone git@github.com:LedgerHQ/ledger-vault-front.git
 - npm install
 - create .env file with API_BASE_URL=http://localhost:5000 ( url of the gate )
 - npm start || npm run starte2e
@@ -13,19 +13,21 @@
 - install redis and run it
 - install mysql and run it
 - have sbt installed
-- have python 2.7 and 3.6 installed
+- have python 2.7 and 3.7 installed
+- `brew install automake pkg-config libtool libffi gmp`
 
 ### ledger-wallet-daemon
-- git clone https://github.com/LedgerHQ/ledger-wallet-daemon
+- git clone git@github.com:LedgerHQ/ledger-wallet-daemon.git
 - sbt "daemon/run -http.port=:8889 -admin.port=:3335"
 ### hsm-driver
-- git clone https://github.com/LedgerHQ/ledger-vault-hsm-driver
+- git clone git@github.com:LedgerHQ/ledger-vault-hsm-driver.git
 - edit `src/main/resources/application.conf` to set the HSM url endpoint
 - sbt run
 ### gate
-- git clone https://github.com/LedgerHQ/ledger-vault-api
+- git clone git@github.com:LedgerHQ/ledger-vault-api.git
 - python3 -m venv venv
 - source venv/bin/activate
+- `SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-cache-dir --no-binary secp256k1 secp256k1`
 - pip install -r requirements.txt
 - ./run_debug [compartementId] [workspace_name] ( ex: ./run_debug 1 vault1)
 
