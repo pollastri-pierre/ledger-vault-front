@@ -106,13 +106,11 @@ class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
     this.props.onGetState();
 
-    const url =
-      process.env.NODE_ENV !== "development"
-        ? "/notification"
-        : "http://localhost:3033";
+    const url = process.env["NOTIFICATION_URL"] || "/";
+    const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
     const socket = io.connect(
       url,
-      { onboarding: true }
+      { onboarding: true, path: path }
     );
     let self = this;
     socket.on("connect", function() {
@@ -129,7 +127,9 @@ class OnboardingContainer extends Component<Props, State> {
   }
 
   onNewOnboardingState = onboardingState => {
-    this.props.onGetState();
+    setTimeout(() => {
+      this.props.onGetState();
+    }, Math.floor(Math.random() * 1000));
   };
 
   render() {
