@@ -15,7 +15,11 @@ const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
 
 const styles = {
   base: {
-    marginTop: "-10px"
+    marginTop: "-10px",
+    maxHeight: 363,
+    overflowY: "scroll",
+    paddingRight: 20,
+    marginRight: -31
   },
   row: {
     outline: "none",

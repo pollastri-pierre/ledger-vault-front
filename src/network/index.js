@@ -11,21 +11,22 @@ NetworkError.prototype = Object.create(Error.prototype);
 export default function<T>(
   uri: string,
   method: string,
-  body: ?(Object | Array<Object>)
+  body: ?(Object | Array<Object>),
+  external: boolean = false
 ): Promise<T> {
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json"
   };
   const token = getLocalStorageToken();
-  if (token) {
+  if (token && !external) {
     headers["X-Ledger-Auth"] = token;
   }
   const options: Object = { headers, method };
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
   }
-  return fetchWithRetries(uri, options).then(response => {
+  return fetchWithRetries(uri, options, external).then(response => {
     if (response.status < 200 || response.status >= 300) {
       const baseErrorObject = {
         message: "network error",

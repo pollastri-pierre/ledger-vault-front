@@ -90,7 +90,8 @@ class OperationDetails extends Component<Props, *> {
           account.currency.name &&
           operation.transaction &&
           operation.transaction.hash &&
-          defaultExplorers[account.currency.name] ? (
+          defaultExplorers[account.currency.name] &&
+          defaultExplorers[account.currency.name]() !== null ? (
             <DialogButton>
               <a
                 target="_blank"

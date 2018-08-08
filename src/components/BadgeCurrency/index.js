@@ -25,7 +25,9 @@ class BadgeCurrency extends PureComponent<{
   };
   render() {
     const { size, currency, classes, className } = this.props;
-    const curr = allCurrencies.find(curr => curr.id === currency.id) || {
+    const curr = allCurrencies.find(
+      curr => curr.id === currency.name.toLowerCase()
+    ) || {
       color: "black"
     };
     return (

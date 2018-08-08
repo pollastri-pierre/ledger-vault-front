@@ -3,12 +3,12 @@ import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import VaultDeviceApp from "./VaultDeviceApp";
 import VaultDeviceHTTP from "./VaultDeviceHTTP";
 
-export default async (): Promise<VaultDeviceApp> => {
+export default async (scrambleKey: string = "v1+"): Promise<VaultDeviceApp> => {
   if (process.env.NODE_ENV === "e2e") {
-    return new VaultDeviceHTTP();
+    return new VaultDeviceHTTP(); // $FlowFixMe
   }
   const transport = await LedgerTransportU2F.create(90000000, 90000000);
-  return new VaultDeviceApp(transport);
+  return new VaultDeviceApp(transport, scrambleKey);
 };
 
 export const U2F_PATH = [0x80564c54, 0x80553246];

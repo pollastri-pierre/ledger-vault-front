@@ -1,0 +1,9 @@
+no_version: We didn't find any vault application version to install on your device.
+error: Oups. An error occured during the update of the application.
+retry: retry
+title: Update app
+sub_title: To update the vault application, plug in your device and check for requests requiring your approval.
+connect: Connect your device and navigate to the dashboard
+uninstall: Uninstalling your current application
+install: Installing the last version of the application
+

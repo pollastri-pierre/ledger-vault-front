@@ -109,7 +109,13 @@ class Authentication extends Component<Props, State> {
   };
 
   render() {
-    const { onboarding, onToggleGenerateSeed, classes, t } = this.props;
+    const {
+      onboarding,
+      onAddMessage,
+      onToggleGenerateSeed,
+      classes,
+      t
+    } = this.props;
     if (!onboarding.wrapping.channel) {
       return <SpinnerCard />;
     }
@@ -124,6 +130,7 @@ class Authentication extends Component<Props, State> {
             shards_channel={onboarding.wrapping.channel}
             onFinish={this.finish}
             cancel={onToggleGenerateSeed}
+            addMessage={onAddMessage}
             wraps
           />
         </BlurDialog>
