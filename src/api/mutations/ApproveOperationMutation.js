@@ -27,6 +27,6 @@ export default class ApproveOperationMutation extends Mutation<In, Res> {
 
   getBody() {
     const { public_key, approval } = this.props;
-    return { public_key, approval };
+    return { pub_key: public_key, approval };
   }
 }
