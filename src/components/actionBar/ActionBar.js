@@ -100,7 +100,7 @@ class ActionBar extends Component<{
               </Link>
             )}
             <ActivityCard match={match} />
-            <a href="http://alpha.vault.ledger.fr:81/">
+            <a href="https://help.vault.ledger.com">
               <Question className={classes.icon} />
               <div>Help</div>
             </a>
