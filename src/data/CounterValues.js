@@ -18,14 +18,13 @@ const pairsSelector = createSelector(
       )
       .map(currency => ({
         from: allCurrencies.find(curr => curr.id === currency.name),
-        to: getFiatCurrencyByTicker("USD"),
-        exchange: "Bitfinex"
+        to: getFiatCurrencyByTicker("USD")
       }));
   }
 );
 
 const CounterValues = createCounterValues({
-  getAPIBaseURL: () => "https://ledger-countervalue-poc.herokuapp.com",
+  getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
   storeSelector: state => state.countervalues,
   pairsSelector,
   setExchangePairsAction

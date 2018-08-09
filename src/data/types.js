@@ -36,6 +36,7 @@ export type Unit = {
 export type Currency = {
   name: string,
   family: string,
+  ticker: string,
   color: string,
   units: Unit[]
 };
