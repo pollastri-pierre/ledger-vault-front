@@ -18,6 +18,7 @@ import {
   addMasterSeedKey,
   openProvisionningChannel
 } from "redux/modules/onboarding";
+import { addMessage } from "redux/modules/alerts";
 
 const status = {
   base: {
@@ -119,6 +120,7 @@ type Props = {
   onToggleGenerateSeed: Function,
   onGetShardsChannel: Function,
   onProvisioningShards: Function,
+  onAddMessage: (string, string, string) => void,
   onAddSeedShard: Function
 };
 class Provisioning extends Component<Props> {
@@ -136,7 +138,13 @@ class Provisioning extends Component<Props> {
   }
 
   render() {
-    const { classes, onboarding, onToggleGenerateSeed, t } = this.props;
+    const {
+      classes,
+      onboarding,
+      onToggleGenerateSeed,
+      onAddMessage,
+      t
+    } = this.props;
     if (!onboarding.provisionning.channel) {
       return <SpinnerCard />;
     }
@@ -151,6 +159,7 @@ class Provisioning extends Component<Props> {
             shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
             wraps={false}
+            addMessage={onAddMessage}
             cancel={onToggleGenerateSeed}
           />
         </BlurDialog>
@@ -228,6 +237,7 @@ const mapProps = state => ({
 const mapDispatch = (dispatch: *) => ({
   onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
   onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
+  onAddMessage: (title, msg, type) => dispatch(addMessage(title, msg, type)),
   onGetShardsChannel: () => dispatch(openProvisionningChannel())
 });
 

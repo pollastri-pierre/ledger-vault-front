@@ -239,7 +239,7 @@ class PieChart extends Component<
       )
       .style("fill", d => {
         const curr = allCurrencies.find(
-          c => c.scheme === d.data.account.currency.name
+          c => c.id === d.data.account.currency.name
         ) || { color: "" };
         return curr.color;
       });
@@ -343,7 +343,7 @@ class PieChart extends Component<
     let curr = { color: "black" };
     if (selected !== -1) {
       curr = allCurrencies.find(
-        c => c.scheme === this.props.data[selected].account.currency.name
+        c => c.id === this.props.data[selected].account.currency.name
       ) || { color: "black" };
     }
     return (

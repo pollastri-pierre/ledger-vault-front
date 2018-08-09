@@ -22,6 +22,7 @@ type Shard = {
 };
 type Props = {
   shards_channel: Channel,
+  addMessage: (string, string, string) => void,
   wraps: boolean,
   onFinish: Shard => *,
   t: Translate,
@@ -86,9 +87,18 @@ class GenerateSeed extends Component<Props, State> {
         //timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
-        }
-        if (error && error.id === U2F_TIMEOUT) {
+        } else if (error.statusCode && error.statusCode === 27264) {
+          this.props.addMessage(
+            "Error",
+            "Incorrect data sent to the device",
+            "error"
+          );
+          this.props.cancel();
+        } else if (error && error.id === U2F_TIMEOUT) {
           this.start();
+        } else {
+          this.props.addMessage("Error", "error occured", "error");
+          this.props.cancel();
         }
       }
     }

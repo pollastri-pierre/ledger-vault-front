@@ -7,6 +7,7 @@ import AlertsContainer from "containers/AlertsContainer";
 import App from "./App/App";
 import Login from "./Login/Login";
 import Logout from "./Login/Logout";
+import UpdateApp from "components/UpdateApp";
 import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
 
@@ -17,6 +18,7 @@ const OrganizationAppRouter = () => {
 
       <BrowserRouter>
         <Switch>
+          <Route path="/update-app" component={UpdateApp} />
           <Route
             path="/:orga_name"
             render={({ match, history, location }) => {
