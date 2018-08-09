@@ -9,11 +9,13 @@ const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
   const currency = allCurrencies.find(curr => curr.id === ownProps.from);
+
   return {
     countervalue: CounterValues.calculateSelector(state, {
       from: currency,
       to: getFiatCurrencyByTicker("USD"),
-      exchange: "Bitfinex",
+      exchange:
+        currency && currency.ticker && state.exchanges.data[currency.ticker],
       value: ownProps.value
     })
   };
