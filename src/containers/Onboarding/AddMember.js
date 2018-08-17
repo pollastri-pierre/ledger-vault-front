@@ -5,9 +5,9 @@ import StepDevice from "./StepDevice.js";
 import type { Member } from "data/types";
 
 const steps = [
-  "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
-  "Open the Vault app on the dashboard. When displayed, confirm the register request on the device.",
-  "Close the Vault app using the upper right square icon and disconnect the device from this computer."
+  "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+  "Enter your PIN code to unlock the device.",
+  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted."
 ];
 type Props = {
   close: Function,
