@@ -29,6 +29,7 @@ function Footer(props: {
   if (approved) {
     return (
       <div className={classes.base}>
+        {percentage}
         <DialogButton highlight className="cancel" onTouchTap={close}>
           Close
         </DialogButton>

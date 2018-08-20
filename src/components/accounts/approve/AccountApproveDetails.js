@@ -14,18 +14,16 @@ import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
-import type { Account, Member } from "data/types";
+import type { Account } from "data/types";
 
 function AccountApproveDetails(props: {
   account: Account,
   t: Translate,
-  approvers: Member[]
+  quorum: number
 }) {
-  const { account, t, approvers } = props;
+  const { account, quorum, t } = props;
   const { security_scheme, currency } = account;
-  const percentage = Math.round(
-    100 * (account.approvals.length / approvers.length)
-  );
+  const percentage = Math.round(100 * (account.approvals.length / quorum));
   return (
     <div>
       <div

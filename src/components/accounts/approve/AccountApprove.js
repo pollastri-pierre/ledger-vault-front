@@ -43,6 +43,45 @@ type Props = {
   match: *
 };
 
+const GenericFooter = ({
+  percentage,
+  quorum,
+  close,
+  approve,
+  aborting,
+  profile,
+  members,
+  account
+}: {
+  percentage?: boolean,
+  quorum?: number,
+  close: Function,
+  approve: Function,
+  account: Account,
+  profile: Member,
+  aborting: Function
+}) => {
+  return (
+    <Footer
+      close={close}
+      approve={() => approve(account)}
+      aborting={aborting}
+      approved={hasApproved(account.approvals, profile)}
+      percentage={
+        percentage && (
+          <ApprovalPercentage
+            approved={account.approvals}
+            nbRequired={quorum}
+          />
+        )
+      }
+    />
+  );
+};
+
+const hasApproved = (approvers, profile) =>
+  approvers.find(approver => approver.person.pub_key === profile.pub_key);
+
 class AccountApprove extends Component<Props, { value: number }> {
   state = {
     value: 0
@@ -65,33 +104,6 @@ class AccountApprove extends Component<Props, { value: number }> {
     } = this.props;
     const { value } = this.state;
 
-    const hasApproved = (approvers, profile) =>
-      approvers.find(approver => approver.person.pub_key === profile.pub_key);
-
-    const GenericFooter = ({
-      percentage,
-      quorum
-    }: {
-      percentage?: boolean,
-      quorum?: number
-    }) => (
-      <Footer
-        close={close}
-        approve={() => approve(account)}
-        aborting={aborting}
-        approved={hasApproved(account.approvals, profile)}
-        percentage={
-          percentage && (
-            <ApprovalPercentage
-              approvers={members}
-              approved={account.approvals}
-              nbRequired={quorum}
-            />
-          )
-        }
-      />
-    );
-
     return (
       <div className={classes.base}>
         <header>
@@ -108,14 +120,30 @@ class AccountApprove extends Component<Props, { value: number }> {
         </header>
         {value === 0 && (
           <div>
-            <AccountApproveDetails account={account} approvers={members} />
-            <GenericFooter />
+            <AccountApproveDetails
+              account={account}
+              approvers={members}
+              quorum={organization.quorum}
+            />
+            <GenericFooter
+              profile={profile}
+              aborting={aborting}
+              account={account}
+              close={close}
+              approve={approve}
+            />
           </div>
         )}
         {value === 1 && (
           <div>
             <AccountApproveMembers members={account.members} />
-            <GenericFooter />
+            <GenericFooter
+              profile={profile}
+              aborting={aborting}
+              account={account}
+              close={close}
+              approve={approve}
+            />
           </div>
         )}
         {value === 2 && (
@@ -124,7 +152,15 @@ class AccountApprove extends Component<Props, { value: number }> {
               members={members}
               approvers={account.approvals}
             />
-            <GenericFooter percentage quorum={organization.quorum} />
+            <GenericFooter
+              percentage
+              quorum={organization.quorum}
+              profile={profile}
+              aborting={aborting}
+              account={account}
+              close={close}
+              approve={approve}
+            />
           </div>
         )}
       </div>
