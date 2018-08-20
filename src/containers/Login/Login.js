@@ -197,7 +197,7 @@ export class Login extends Component<Props, State> {
         this.setState({ isChecking: false });
         onLogin(token);
         addAlertMessage(
-          "Welcome",
+          "Hello",
           "Welcome to the Ledger Vault platform!"
         );
       } catch (error) {
