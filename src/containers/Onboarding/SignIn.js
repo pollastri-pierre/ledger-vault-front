@@ -121,7 +121,7 @@ class SignIn extends Component<Props> {
                 onClick={
                   onboarding.signin.admins.length ===
                   onboarding.registering.admins.length
-                    ? onToggleSignin
+                    ? () => false
                     : onToggleSignin
                 }
               >
