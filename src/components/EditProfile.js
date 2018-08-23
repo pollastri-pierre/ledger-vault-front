@@ -17,7 +17,10 @@ import type { Member } from "data/types";
 type Validator = (value: string) => boolean;
 
 const validateName: Validator = name =>
-  typeof name === "string" && name !== "" && name.length < 20;
+  typeof name === "string" &&
+  name !== "" &&
+  /^[\x00-\x7F]*$/.test(name) &&
+  name.length < 20;
 const validateMail: Validator = email => emailValidator.validate(email);
 
 const validators: { [_: string]: Validator } = {

@@ -147,7 +147,7 @@ export default class VaultDeviceHTTP {
   async getVersion(): Promise<{ appName: string, appVersion: string }> {
     const promise = Promise.resolve({
       appName: "Vault",
-      appVersion: "1.0.13"
+      appVersion: "1.0.15"
     });
 
     return promise;
