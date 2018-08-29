@@ -336,7 +336,7 @@ class AccountSettingsEdit extends Component<Props, State> {
 
     return (
       <div className={classes.contentSections}>
-        <div className={classes.capsTitle}>{"Security scheme"}</div>
+        <div className={classes.capsTitle}>{"Operation rules"}</div>
         <SecuritySchemeView account={account} classes={classes} />
 
         <div className={classes.capsTitle}>{"General"}</div>
