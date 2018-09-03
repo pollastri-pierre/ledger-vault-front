@@ -61,7 +61,7 @@ const AdministrationScheme = ({
             } catch (e) {
               onAddMessage(
                 "Error",
-                "Oups something went wrong. Please retry",
+                "Oops something went wrong. Please try again",
                 "error"
               );
             }
