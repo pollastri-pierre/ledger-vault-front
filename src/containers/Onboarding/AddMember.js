@@ -54,7 +54,7 @@ class AddMember extends Component<Props, State> {
           this.props.close();
         })
         .catch(() => {
-          setAlert("Error", "Oups something went wrong. Please retry", "error");
+          setAlert("Error", "Oops something went wrong. Please try again", "error");
         });
       return promise;
     } else {
