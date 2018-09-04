@@ -17,15 +17,17 @@ class CurrencyUnitValue extends PureComponent<{
       "currency-unit-value",
       "sign-" + (type === "SEND" ? "negative" : "positive")
     ].join(" ");
+    let value_with_sign = value;
+    if (type === "SEND") value_with_sign = value * -1;
     return (
       <span
-        title={formatCurrencyUnit(unit, value, {
+        title={formatCurrencyUnit(unit, value_with_sign, {
           showCode: true,
           alwaysShowSign: alwaysShowSign
         })}
         className={className}
       >
-        {formatCurrencyUnit(unit, value, {
+        {formatCurrencyUnit(unit, value_with_sign, {
           showCode: true,
           alwaysShowSign: alwaysShowSign,
           showAllDigits: true
