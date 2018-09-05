@@ -8,7 +8,7 @@ import NoStyleLink from "../NoStyleLink";
 
 const styles = {};
 
-class NewOperationActivity extends Component<
+class NewIncomingTransactionActivity extends Component<
   {
     activity: *,
     classes: { [_: $Keys<typeof styles>]: string },
@@ -35,14 +35,8 @@ class NewOperationActivity extends Component<
           )}`}
         >
           <Activity match={match} activity={activity}>
-            A <Bold>new operation request</Bold> has been created by{" "}
-            <Bold>
-              {business_action.author.first_name}{" "}
-              {business_action.author.last_name}
-            </Bold>{" "}
-            in the <Bold>{business_action.operation.account.name}</Bold>{" "}
-            account. The operation is pending to be approved by the members of
-            the account.
+            A <Bold>payment</Bold> has been received in the{" "}
+            <Bold>{business_action.account.name}</Bold> account
           </Activity>
         </NoStyleLink>
       </span>
@@ -50,4 +44,4 @@ class NewOperationActivity extends Component<
   }
 }
 
-export default withStyles(styles)(NewOperationActivity);
+export default withStyles(styles)(NewIncomingTransactionActivity);

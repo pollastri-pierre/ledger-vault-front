@@ -24,14 +24,19 @@ class OperationQuorumIsReachedActivity extends Component<
     return (
       <span>
         <NoStyleLink
-          to={`/${match.params.orga_name}/account/${business_action.operation
-            .account.id}/operation/${business_action.operation.id}/0`}
+          to={`/${match.params.orga_name}/account/${
+            business_action.operation.account.id
+          }/operation/${business_action.operation.id}/0`}
         >
           <Activity match={match} activity={activity}>
-            An <Bold> operation&#39;s </Bold>
-            quorum have been reached in{" "}
-            <Bold> {business_action.operation.account.name} </Bold> account.
-            Operation is now submitted.
+            The operation created in{" "}
+            <Bold> {business_action.operation.account.name} </Bold> has been
+            approved by{" "}
+            <Bold>
+              {business_action.operation.account.number_of_approvals} out of{" "}
+              {business_action.operation.account.number_of_approvals} members
+            </Bold>. The operation has been broadcasted to the blockchain
+            network.
           </Activity>
         </NoStyleLink>
       </span>

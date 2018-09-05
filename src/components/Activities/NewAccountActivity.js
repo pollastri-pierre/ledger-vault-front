@@ -36,15 +36,12 @@ class NewAccountActivity extends Component<
           )}`}
         >
           <Activity match={match} activity={activity}>
-            A{" "}
-            <Bold>
-              new {business_action.account.currency.toUpperCase()} account
-            </Bold>{" "}
-            have been created by{" "}
+            A <Bold>new account request</Bold> has been created by{" "}
             <Bold>
               {business_action.author.first_name}{" "}
               {business_action.author.last_name}
-            </Bold>. Account is now pending.
+            </Bold>. The account request is pending to be approved by the
+            Administrators of the workspace.
           </Activity>
         </NoStyleLink>
       </span>

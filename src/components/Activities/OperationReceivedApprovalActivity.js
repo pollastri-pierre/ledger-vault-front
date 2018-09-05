@@ -36,12 +36,13 @@ class OperationReceivedApprovalActivity extends Component<
           )}`}
         >
           <Activity match={match} activity={activity}>
-            An <Bold>operation</Bold> received a new approval by{" "}
+            The <Bold>operation request</Bold> created in the{" "}
+            <Bold>{business_action.operation.account.name}</Bold> account has
+            been approved by{" "}
             <Bold>
               {business_action.author.first_name}{" "}
               {business_action.author.last_name}
-            </Bold>{" "}
-            in <Bold>{business_action.operation.account.name}</Bold>
+            </Bold>.
           </Activity>
         </NoStyleLink>
       </span>

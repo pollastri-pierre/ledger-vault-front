@@ -106,7 +106,6 @@ class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
     this.props.onGetState();
 
-
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
     const socket = io.connect(
@@ -126,7 +125,6 @@ class OnboardingContainer extends Component<Props, State> {
       self.onNewOnboardingState(onboardingState);
     });
   }
-
 
   onNewOnboardingState = () => {
     setTimeout(() => {
@@ -210,6 +208,7 @@ class OnboardingContainer extends Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(OnboardingContainer)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(OnboardingContainer));
