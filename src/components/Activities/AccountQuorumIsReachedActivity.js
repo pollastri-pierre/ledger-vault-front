@@ -23,15 +23,18 @@ class AccountQuorumIsReachedActivity extends Component<
     return (
       <span>
         <NoStyleLink
-          to={`/${match.params.orga_name}/account/${business_action.account
-            .id}`}
+          to={`/${match.params.orga_name}/account/${
+            business_action.account.id
+          }`}
         >
           <Activity match={match} activity={activity}>
+            The <Bold>{business_action.account.name}</Bold> account request has
+            been approved by{" "}
             <Bold>
-              {business_action.account.currency.toUpperCase()} account{" "}
-              {business_action.account.name}
+              {business_action.account.number_of_approvals} out of{" "}
+              {business_action.account.number_of_approvals} Administrators.
             </Bold>{" "}
-            quorum have been reached. Account is now approved.
+            The account is now created in your workspace.
           </Activity>
         </NoStyleLink>
       </span>
