@@ -36,7 +36,7 @@ class NewIncomingTransactionActivity extends Component<
         >
           <Activity match={match} activity={activity}>
             A <Bold>payment</Bold> has been received in the{" "}
-            <Bold>{business_action.account.name}</Bold> account
+            <Bold>{business_action.operation.account.name}</Bold> account
           </Activity>
         </NoStyleLink>
       </span>
