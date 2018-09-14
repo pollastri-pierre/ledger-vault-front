@@ -18,7 +18,7 @@ function OperationApproveDetails(props: {
   return (
     <div>
       <OverviewOperation
-        hash={operation.tx_hash}
+        hash={operation.recipient}
         amount={operation.price.amount}
         account={account}
       />
