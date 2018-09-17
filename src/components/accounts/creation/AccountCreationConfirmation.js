@@ -60,7 +60,7 @@ function AccountCreationConfirmation(props: { account: Object, t: Translate }) {
           <AccountName name={name} currency={currency} />
         </LineRow>
         <LineRow label="Currency">
-          <span className="info-value currency">{currency.units[1].name}</span>
+          <span className="info-value currency">{currency.name}</span>
         </LineRow>
         <LineRow label={t("newAccount:confirmation.approvals")}>
           <Interpolate
