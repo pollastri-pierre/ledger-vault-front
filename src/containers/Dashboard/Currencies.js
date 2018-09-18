@@ -9,7 +9,11 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+import {
+  getFiatCurrencyByTicker,
+  getCryptoCurrencyById
+} from "@ledgerhq/live-common/lib/helpers/currencies";
+const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const allCurrencies = listCryptoCurrencies(true);
 
 type AggregatedData = {
@@ -36,11 +40,12 @@ const mapStateToProps = (state, ownProps) => {
       }
       acc[currency_name].balance += balance;
 
-      const cvalue = CounterValues.calculateSelector(state, {
+      const cvalue = CounterValues.calculateWithIntermediarySelector(state, {
         from: currency,
         to: getFiatCurrencyByTicker("USD"),
-        exchange:
-          currency && currency.ticker && state.exchanges.data[currency.ticker],
+        fromExchange: state.exchanges.data[currency.ticker],
+        intermediary: intermediaryCurrency,
+        toExchange: state.exchanges.data["USD"],
         value: balance
       });
 

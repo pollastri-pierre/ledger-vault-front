@@ -30,7 +30,11 @@ export default function reducer(
     case "SETTINGS_SET_PAIRS": {
       const data = {};
       action.pairs.map(pair => {
-        data[pair.from.ticker] = pair.exchange;
+        if (pair.to.ticker === "BTC") {
+          data[pair.from.ticker] = pair.exchange;
+        } else if (pair.from.ticker === "BTC" && pair.to.ticker === "USD") {
+          data["USD"] = pair.exchange;
+        }
       });
       return { ...state, pairs: action.pairs, data };
     }
