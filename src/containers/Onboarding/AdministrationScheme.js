@@ -57,7 +57,7 @@ const AdministrationScheme = ({
         render={(onNext, onPrevious) => {
           const onclick = async () => {
             try {
-              onNext({ quorum: parseInt(number, 10) });
+              return await onNext({ quorum: parseInt(number, 10) });
             } catch (e) {
               onAddMessage(
                 "Error",
