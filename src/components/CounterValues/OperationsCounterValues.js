@@ -7,7 +7,11 @@ import { connect } from "react-redux";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { Operation, Account } from "data/types";
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+import {
+  getFiatCurrencyByTicker,
+  getCryptoCurrencyById
+} from "@ledgerhq/live-common/lib/helpers/currencies";
+const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,13 +25,12 @@ const mapStateToProps = (state, ownProps) => {
       );
       return (
         acc +
-        CounterValues.calculateSelector(state, {
+        CounterValues.calculateWithIntermediarySelector(state, {
           from: currency,
           to: getFiatCurrencyByTicker("USD"),
-          exchange:
-            currency &&
-            currency.ticker &&
-            state.exchanges.data[currency.ticker],
+          fromExchange: state.exchanges.data[currency.ticker],
+          intermediary: intermediaryCurrency,
+          toExchange: state.exchanges.data["USD"],
           value: operation.price.amount
         })
       );
