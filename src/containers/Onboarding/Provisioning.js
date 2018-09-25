@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import ValidateBadge from "components/icons/full/ValidateBadge";
 import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
-import GenerateSeed from "./GenerateSeed";
+import GenerateKeyFragments from "./GenerateKeyFragments";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
@@ -117,8 +117,9 @@ type Props = {
   classes: { [$Keys<typeof styles>]: string },
   t: Translate,
   onboarding: *,
-  onToggleGenerateSeed: Function,
+  onToggleDeviceModal: Function,
   onGetShardsChannel: Function,
+  history: *,
   onProvisioningShards: Function,
   onAddMessage: (string, string, string) => void,
   onAddSeedShard: Function
@@ -128,7 +129,7 @@ class Provisioning extends Component<Props> {
     super(props);
   }
   finish = data => {
-    this.props.onToggleGenerateSeed();
+    this.props.onToggleDeviceModal();
     this.props.onAddSeedShard(data);
   };
 
@@ -141,7 +142,8 @@ class Provisioning extends Component<Props> {
     const {
       classes,
       onboarding,
-      onToggleGenerateSeed,
+      onToggleDeviceModal,
+      history,
       onAddMessage,
       t
     } = this.props;
@@ -153,14 +155,15 @@ class Provisioning extends Component<Props> {
         <Title>{t("onboarding:master_seed_provisionning.title")}</Title>
         <BlurDialog
           open={onboarding.device_modal}
-          onClose={onToggleGenerateSeed}
+          onClose={onToggleDeviceModal}
         >
-          <GenerateSeed
+          <GenerateKeyFragments
             shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
+            history={history}
             wraps={false}
             addMessage={onAddMessage}
-            cancel={onToggleGenerateSeed}
+            cancel={onToggleDeviceModal}
           />
         </BlurDialog>
         <Introduction>
@@ -174,7 +177,7 @@ class Provisioning extends Component<Props> {
             </div>
             <SeedStatus
               generated={onboarding.provisionning.blobs.length > 0}
-              open={onToggleGenerateSeed}
+              open={onToggleDeviceModal}
             />
           </div>
           <div className={classes.separator} />
@@ -189,7 +192,7 @@ class Provisioning extends Component<Props> {
             </div>
             <SeedStatus
               generated={onboarding.provisionning.blobs.length > 1}
-              open={onToggleGenerateSeed}
+              open={onToggleDeviceModal}
             />
           </div>
           <div className={classes.separator} />
@@ -204,7 +207,7 @@ class Provisioning extends Component<Props> {
             </div>
             <SeedStatus
               generated={onboarding.provisionning.blobs.length > 2}
-              open={onToggleGenerateSeed}
+              open={onToggleDeviceModal}
             />
           </div>
         </div>
@@ -235,7 +238,7 @@ const mapProps = state => ({
 });
 
 const mapDispatch = (dispatch: *) => ({
-  onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
+  onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
   onAddMessage: (title, msg, type) => dispatch(addMessage(title, msg, type)),
   onGetShardsChannel: () => dispatch(openProvisionningChannel())

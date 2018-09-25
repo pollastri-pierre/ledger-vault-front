@@ -15,7 +15,7 @@ beforeEach(() => {
   mockRegister.mockClear();
 });
 import React from "react";
-import { StepDevice } from "./StepDevice";
+import { RegisterAdmins } from "./RegisterAdmins";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -50,7 +50,7 @@ const props = {
 test("onStart should call device and API with right parameters", async () => {
   // TODO test with real bufer values for u2f_register
   // to test the certification is properly inserted in the middle
-  const MyComponent = shallow(<StepDevice {...props} />);
+  const MyComponent = shallow(<RegisterAdmins {...props} />);
   MyComponent.instance().componentDidMount(); // force mount to set _isMounted
   await MyComponent.instance().onStart();
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);

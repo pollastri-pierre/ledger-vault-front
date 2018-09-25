@@ -5,7 +5,7 @@ import Logo from "components/Logo";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Welcome from "./Welcome";
-import Authentication from "./Authentication";
+import WrappingKeys from "./WrappingKeys";
 import Prerequisite from "./Prerequisite";
 import PrerequisiteSeed from "./PrerequisiteSeed";
 import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
@@ -108,10 +108,7 @@ class OnboardingContainer extends Component<Props, State> {
 
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(
-      url,
-      { onboarding: true, path: path }
-    );
+    const socket = io.connect(url, { onboarding: true, path: path });
     let self = this;
     socket.on("connect", function() {
       socket.emit("authenticate", {
@@ -171,7 +168,9 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationWrapping />
             )}
             {onboarding.state === "WRAPPING_KEY_BACKUP" && <Backup />}
-            {onboarding.state === "WRAPPING_KEY_SIGN_IN" && <Authentication />}
+            {onboarding.state === "WRAPPING_KEY_SIGN_IN" && (
+              <WrappingKeys history={history} />
+            )}
             {onboarding.state === "ADMINISTRATORS_PREREQUISITE" && (
               <Prerequisite />
             )}
@@ -179,7 +178,7 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationAdministrators />
             )}
             {onboarding.state === "ADMINISTRATORS_REGISTRATION" && (
-              <Registration />
+              <Registration history={history} />
             )}
             {onboarding.state === "ADMINISTRATORS_SCHEME_CONFIGURATION" && (
               <AdministrationScheme
@@ -197,7 +196,9 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationSeed />
             )}
             {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
-            {onboarding.state === "MASTER_SEED_GENERATION" && <Provisionning />}
+            {onboarding.state === "MASTER_SEED_GENERATION" && (
+              <Provisionning history={history} />
+            )}
             {onboarding.state === "COMPLETE" && (
               <ConfirmationGlobal match={match} history={history} />
             )}
@@ -208,7 +209,6 @@ class OnboardingContainer extends Component<Props, State> {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(OnboardingContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(OnboardingContainer)
+);

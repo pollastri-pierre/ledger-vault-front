@@ -16,23 +16,6 @@ import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
 import createDevice from "device";
-import network from "network";
-export type DeviceInfo = {
-  targetId: string | number,
-  seVersion: string,
-  isBootloader: boolean,
-  flags: string,
-  mcuVersion: string,
-  isOSU: boolean,
-  providerName: string,
-  providerId: number,
-  fullVersion: string
-};
-type Input = {
-  fullVersion: string,
-  deviceId: string | number,
-  provider: number
-};
 
 let _isMounted = false;
 const styles = {
@@ -107,22 +90,27 @@ const Row = withStyles(
     );
   }
 );
-const PROVIDER = 5;
-const urlBuilder = (base: string) => (endpoint: string): string =>
-  `${base}/${endpoint}`;
-const MANAGER_API_BASE = "https://manager.api.live.ledger.com/api";
-const managerUrlbuilder = urlBuilder(MANAGER_API_BASE);
 export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 
-export const GET_DEVICE_VERSION: string = managerUrlbuilder(
-  "get_device_version"
-);
-export const APPLICATIONS_BY_DEVICE: string = managerUrlbuilder("get_apps");
-export const GET_APPLICATIONS: string = managerUrlbuilder("applications");
-export const GET_CURRENT_FIRMWARE: string = managerUrlbuilder(
-  "get_firmware_version"
-);
-
+const appToInstall = {
+  targetId: 0x31010004,
+  perso: "perso_11",
+  firmware:
+    process.env.NODE_ENV === "dev"
+      ? "blue/2.1.1-ee/vault3/app_latest_dev"
+      : "blue/2.1.1-ee/vault3/app_latest",
+  firmwareKey:
+    process.env.NODE_ENV === "dev"
+      ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
+      : "blue/2.1.1-ee/vault3/app_latest_key"
+};
+const appToUnInstall = {
+  targetId: 0x31010004,
+  perso: "perso_11",
+  deleteKey: "blue/2.1.1-ee/vault3/app_del_key",
+  firmware: "blue/2.1.1-ee/vault3/app_del",
+  firmwareKey: "blue/2.1.1-ee/vault3/app_del_key"
+};
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate
@@ -163,65 +151,19 @@ class UpdateApp extends Component<Props, State> {
     if (_isMounted) {
       try {
         this.setState({ error: false });
-        const deviceInfo = await this.getDeviceInfo();
-        const deviceData = await this.getDeviceVersion(
-          deviceInfo.targetId,
-          deviceInfo.providerId
-        );
-        const firmwareData = await this.getCurrentFirmware({
-          deviceId: deviceData.id,
-          fullVersion: deviceInfo.fullVersion,
-          provider: deviceInfo.providerId
-        });
-        const params = {
-          provider: deviceInfo.providerId,
-          current_se_firmware_final_version: firmwareData.id,
-          device_version: deviceData.id
-        };
-
-        const { application_versions } = await network(
-          APPLICATIONS_BY_DEVICE,
-          "POST",
-          params,
-          true
-        );
-
-        if (application_versions.length > 0) {
-          //FIXME we take the first here, assuming only one app is available for blue EE. may be not ?
-          const app = application_versions[0];
-          const appToInstall = {
-            targetId: deviceInfo.targetId,
-            perso: app.perso,
-            deleteKey: app.delete_key,
-            firmware: app.firmware,
-            firmwareKey: app.firmware_key,
-            hash: app.hash
-          };
-
-          const appToUnInstall = {
-            targetId: deviceInfo.targetId,
-            perso: app.perso,
-            deleteKey: app.delete_key,
-            firmware: app.delete,
-            firmwareKey: app.delete_key,
-            hash: app.hash
-          };
-
-          const transport = await LedgerTransportU2F.create(90000000, 90000000);
-          transport.setScrambleKey("B0L0S");
-          const url = `${BASE_SOCKET_URL}/install?${qs.stringify(
-            appToUnInstall
-          )}`;
-          await createDeviceSocket(transport, url).toPromise();
-          this.setState({ uninstalled: true });
-          const urlInstall = `${BASE_SOCKET_URL}/install?${qs.stringify(
-            appToInstall
-          )}`;
-          await createDeviceSocket(transport, urlInstall).toPromise();
-          this.setState({ installed: true });
-        } else {
-          this.setState({ no_application: true });
-        }
+        await this.getDeviceInfo();
+        const transport = await LedgerTransportU2F.create(90000000, 90000000);
+        transport.setScrambleKey("B0L0S");
+        const url = `${BASE_SOCKET_URL}/install?${qs.stringify(
+          appToUnInstall
+        )}`;
+        await createDeviceSocket(transport, url).toPromise();
+        this.setState({ uninstalled: true });
+        const urlInstall = `${BASE_SOCKET_URL}/install?${qs.stringify(
+          appToInstall
+        )}`;
+        await createDeviceSocket(transport, urlInstall).toPromise();
+        this.setState({ installed: true });
       } catch (e) {
         console.error(e);
         if (e && e.id && e.id === U2F_TIMEOUT) {
@@ -238,56 +180,12 @@ class UpdateApp extends Component<Props, State> {
     }
   };
 
-  getDeviceVersion = async (
-    targetId: string | number,
-    provider: number
-  ): Promise<*> => {
-    const body = {
-      provider,
-      target_id: targetId
-    };
-    const data = await network(GET_DEVICE_VERSION, "POST", body, true);
-    return data;
-  };
-  getCurrentFirmware = async (input: Input): Promise<*> => {
-    const body = {
-      device_version: input.deviceId,
-      version_name: input.fullVersion,
-      provider: input.provider
-    };
-    const data = await network(GET_CURRENT_FIRMWARE, "POST", body, true);
-    return data;
-  };
-  getDeviceInfo = async (): Promise<DeviceInfo> => {
+  // we don't care about the result, just want to be sure we are on the dashboard
+  getDeviceInfo = async (): Promise<boolean> => {
     const device = await createDevice("B0L0S");
-    const res = await device.getFirmwareInfo();
-    const { seVersion } = res;
-    const { targetId, mcuVersion, flags } = res;
-    const parsedVersion =
-      seVersion.match(/([0-9]+.[0-9])+(.[0-9]+)?((?!-osu)-([a-z]+))?(-osu)?/) ||
-      [];
-    const isOSU = typeof parsedVersion[5] !== "undefined";
-    const providerName = parsedVersion[4] || "";
-    const providerId = PROVIDER;
-    const isBootloader = targetId === 0x01000001;
-    const majMin = parsedVersion[1];
-    const patch = parsedVersion[2] || ".0";
-    const fullVersion = `${majMin}${patch}${providerName
-      ? `-${providerName}`
-      : ""}`;
-    const data = {
-      targetId,
-      seVersion: majMin + patch,
-      isOSU,
-      mcuVersion,
-      isBootloader,
-      providerName,
-      providerId,
-      flags,
-      fullVersion
-    };
+    await device.getFirmwareInfo();
     this.setState({ isDashboard: true });
-    return data;
+    return true;
   };
 
   render() {

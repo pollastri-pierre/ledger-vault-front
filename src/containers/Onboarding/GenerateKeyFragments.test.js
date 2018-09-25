@@ -14,17 +14,19 @@ jest.mock("network", () => jest.fn());
 beforeEach(() => {
   VaultDeviceApp.mockClear();
   mockGetPublicKey.mockClear();
+  mockGetVersion.mockClear();
   mockOpenSession.mockClear();
   mockGenerateKeyComponent.mockClear();
 });
 import React from "react";
-import { GenerateSeed } from "./GenerateSeed";
+import { GenerateKeyFragments } from "./GenerateKeyFragments";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 import VaultDeviceApp, {
   mockGetPublicKey,
   mockOpenSession,
+  mockGetVersion,
   mockGetAttestationCertificate,
   mockGenerateKeyComponent
 } from "device/VaultDeviceApp";
@@ -41,8 +43,11 @@ const props = {
 };
 
 test("onStart should call device and API with right parameters for wrapping INIT_SESSION", async () => {
-  const MyComponent = shallow(<GenerateSeed t={string => string} {...props} />);
+  const MyComponent = shallow(
+    <GenerateKeyFragments t={string => string} {...props} />
+  );
   await MyComponent.instance().start();
+  expect(mockGetVersion).toHaveBeenCalled();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
 
   expect(mockOpenSession).toHaveBeenCalledWith(
@@ -69,7 +74,7 @@ test("onStart should call device and API with right parameters for wrapping INIT
 test("onStart should call device and API with right parameters when generating seeds ACCOUNT_MANAGER_SESSION", async () => {
   const sProps = { ...props, wraps: false };
   const MyComponent = shallow(
-    <GenerateSeed t={string => string} {...sProps} />
+    <GenerateKeyFragments t={string => string} {...sProps} />
   );
   await MyComponent.instance().start();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
