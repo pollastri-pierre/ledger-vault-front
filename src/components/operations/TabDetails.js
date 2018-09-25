@@ -22,8 +22,8 @@ const stylesList = {
     },
     "& tbody > tr td:first-child": {
       fontWeight: "normal",
-      fontSize: "11px",
-      textTransform: "uppercase"
+      fontSize: "11px"
+      // textTransform: "uppercase"
     },
     "& tr td:last-child": {
       fontSize: "13px",
