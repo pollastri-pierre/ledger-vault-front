@@ -17,6 +17,9 @@ const styles = {
     height: 28
   },
   selected: {
+    "&:hover": {
+      backgroundColor: "none"
+    },
     "& > span": {
       color: "black!important"
     }

@@ -148,10 +148,7 @@ class OperationCreationDetails extends Component<
   };
 
   updateAddress = (address: string) => {
-    const {
-      restlay,
-      account: { currency }
-    } = this.props;
+    const { restlay, account: { currency } } = this.props;
     this.setState({ address, addressIsValid: false }, this.validateTab); // FIXME we might want a "pending" internal state for the component to render not a red validation but another thing
     // NB ideally we will want the CONTINUE button to wait the validation passed.
     // it means we probably need to do the validation from parent and pass-in the validation state
@@ -209,7 +206,9 @@ class OperationCreationDetails extends Component<
           <TextField
             placeholder="0"
             fullWidth
-            inputProps={{ style: { textAlign: "right", fontSize: 22 } }}
+            inputProps={{
+              style: { textAlign: "right", fontSize: 22, color: "black" }
+            }}
             value={this.state.amount}
             error={!this.state.amountIsValid}
             onChange={this.updateAmount}
@@ -234,7 +233,7 @@ class OperationCreationDetails extends Component<
           value={this.state.address}
           isValid={this.state.addressIsValid}
           fullWidth
-          inputProps={{ style: { paddingBottom: 15 } }}
+          inputProps={{ style: { paddingBottom: 15, color: "black" } }}
           style={{ marginBottom: 15 }}
         />
 

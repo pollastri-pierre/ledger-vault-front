@@ -19,7 +19,7 @@
     "@ledgerhq/currencies": "^4.12.0",
     "@ledgerhq/hw-transport-u2f": "^4.12.0",
     "@ledgerhq/live-common": "^2.34.0",
-    "@material-ui/core": "^1.0.0",
+    "@material-ui/core": "^3.1.1",
     "animated": "^0.2.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.5",

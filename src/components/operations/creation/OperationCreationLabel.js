@@ -41,6 +41,11 @@ class OperationCreationLabel extends PureComponent<Props> {
       <div className={classes.base}>
         <TextField
           classes={{ root: classes.label }}
+          inputProps={{
+            style: {
+              color: "black"
+            }
+          }}
           fullWidth
           value={this.props.title}
           placeholder={t("newOperation:label.title_note")}
@@ -49,6 +54,11 @@ class OperationCreationLabel extends PureComponent<Props> {
         <div style={{ marginTop: 10 }} />
         <TextField
           classes={{ root: classes.comment }}
+          inputProps={{
+            style: {
+              color: "black"
+            }
+          }}
           placeholder={t("newOperation:label.add_comment")}
           value={this.props.note}
           fullWidth
