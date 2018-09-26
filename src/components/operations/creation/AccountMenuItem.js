@@ -1,6 +1,7 @@
 //@flow
 import React, { PureComponent } from "react";
 import CounterValue from "components/CounterValue";
+import { getAccountTitle } from "utils/accounts";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -73,7 +74,9 @@ class AccountMenuItem extends PureComponent<{
         key={account.id}
       >
         <div className={classes.accountTop}>
-          <span className={classes.accountName}>{account.name}</span>
+          <span className={classes.accountName}>
+            {getAccountTitle(account)}
+          </span>
           <span className={classes.accountBalance}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </span>

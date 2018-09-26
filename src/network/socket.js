@@ -101,11 +101,15 @@ export const createDeviceSocket = (transport: *, url: string) =>
 
     const stackMessage = async rawMsg => {
       try {
-        const msg = JSON.parse(rawMsg);
-        if (!(msg.query in handlers)) {
+        if (typeof rawMsg === "string") {
+          const msg = JSON.parse(rawMsg);
+          if (!(msg.query in handlers)) {
+            throw new Error();
+          }
+          await handlers[msg.query](msg);
+        } else {
           throw new Error();
         }
-        await handlers[msg.query](msg);
       } catch (err) {
         console.error("ERROR", { message: err.message, stack: err.stack });
         o.error(err);

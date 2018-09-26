@@ -95,7 +95,10 @@ type AccountCommon = {
   balance_history: { [_: string]: number },
   approvals: Approval[],
   fresh_addresses: *,
-  hsm_operations?: Object
+  hsm_operations?: Object,
+  is_hsm_coin_app_updated: boolean,
+  index: number,
+  status: string
 };
 export type Account = AccountCommon & {
   currency: Currency
@@ -181,6 +184,7 @@ type OperationCommon = {
   account_id: string,
   approved: string[],
   senders: string[],
+  recipient: string[],
   recipients: string[],
   transaction: Transaction,
   exploreURL: ?string,

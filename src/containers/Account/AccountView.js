@@ -14,6 +14,7 @@ import ReceiveFundsCard from "./ReceiveFundsCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
+import AccountQuickInfo from "./AccountQuickInfo";
 
 const styles = {
   flex: {
@@ -51,8 +52,18 @@ class AccountView extends Component<
   render() {
     const { match, classes, account } = this.props;
     const accountId = match.params.id;
+    if (account.status && account.status !== "APPROVED") {
+      return (
+        <div>
+          <Card title="Account pending">The account needs to be approved.</Card>
+        </div>
+      );
+    }
     return (
       <div>
+        <div>
+          <AccountQuickInfo account={account} />
+        </div>
         <div className={classes.flex}>
           <AccountBalanceCard account={account} />
           <AccountCountervalueCard account={account} />

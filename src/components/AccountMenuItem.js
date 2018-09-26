@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import { getAccountTitle } from "utils/accounts";
 import type { Account } from "data/types";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -43,7 +44,9 @@ class AccountOption extends Component<{
         {...rest}
       >
         <div className={classes.accountOption}>
-          <span className={classes.nameContainer}>{account.name}</span>
+          <span className={classes.nameContainer}>
+            {getAccountTitle(account)}
+          </span>
           <span className={classes.accountUnit}>
             {account.currency.units[account.settings.unitIndex].code}
           </span>
