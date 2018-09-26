@@ -159,7 +159,6 @@ class AccountCreation extends Component<Props> {
               cancel={() => onSwitchInternalModal("main")}
               callback={this.createAccount}
               type="accounts"
-              close={this.close}
             />
           </div>
         )}

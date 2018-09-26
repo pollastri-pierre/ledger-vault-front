@@ -116,6 +116,7 @@ class AccountCreationCurrencies extends Component<{
     const { currencies, currency, onSelect, classes } = props;
     // TODO migrate to use material-ui MenuList
     console.log("currency prop not used yet: ", currency); // eslint-disable-line no-console
+    console.log(currencies);
 
     return (
       <div className={classes.base}>

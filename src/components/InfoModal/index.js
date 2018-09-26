@@ -5,7 +5,7 @@ import classnames from "classnames";
 
 const styles = {
   base: {
-    fontSize: "11px",
+    fontSize: "13px",
     color: "black",
     lineHeight: "1.82",
     margin: "0"

@@ -27,7 +27,7 @@ class LastOperationCard extends Component<*> {
       <Card reloading={reloading} title={t("accountView:last_op.title")}>
         <DataTableOperation
           columnIds={columnIds}
-          operations={operations}
+          operations={operations.slice(0, 5)}
           accounts={accounts}
         />
       </Card>

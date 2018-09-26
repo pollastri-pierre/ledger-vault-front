@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import { getAccountTitle } from "utils/accounts";
 import cx from "classnames";
 import debounce from "lodash/debounce";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -272,10 +273,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     };
   }
   debouncedCommit = debounce(() => {
-    const {
-      props: { restlay, account },
-      state: { settings }
-    } = this;
+    const { props: { restlay, account }, state: { settings } } = this;
     const currencyCode = settings.currency_unit["name"];
     const m = new SaveAccountSettingsMutation({
       account,
@@ -286,10 +284,7 @@ class AccountSettingsEdit extends Component<Props, State> {
   }, 1000);
 
   debouncedCommitName = debounce(() => {
-    const {
-      props: { restlay, account },
-      state: { name }
-    } = this;
+    const { props: { restlay, account }, state: { name } } = this;
     const m = new EditAccountNameMutation({ name, account });
     restlay.commitMutation(m);
   }, 2000);
@@ -425,7 +420,7 @@ function Side({
                 to={String(account.id)}
               >
                 <div className={classes.sideItemAccountName}>
-                  {account.name}
+                  {getAccountTitle(account)}
                 </div>
                 <div className={classes.sideItemCurrencyName}>
                   {account.currency.name}

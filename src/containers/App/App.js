@@ -7,9 +7,10 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import Content from "components/content/Content";
 import ActionBar from "components/actionBar/ActionBar";
 import { withStyles } from "@material-ui/core/styles";
+import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
+import UpdateAccounts from "components/UpdateAccounts";
 import Menu from "components/menu/Menu";
 import Card from "components/Card";
-// import { GlobalLoadingRendering } from "components/GlobalLoading";
 
 const styles = {
   error: {
@@ -26,11 +27,12 @@ type Props = {
 function App({ location, match, accounts }: Props) {
   return (
     <div className="App">
-      {/* <GlobalLoadingRendering /> */}
       <ActionBar match={match} location={location} accounts={accounts} />
       <div className="Main">
         <Menu location={location} match={match} accounts={accounts} />
         <Content match={match} />
+        <UpdateAccountsInfo accounts={accounts} />
+        <UpdateAccounts accounts={accounts} />
       </div>
     </div>
   );
