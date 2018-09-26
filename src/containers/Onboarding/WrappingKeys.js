@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import type { Translate } from "data/types";
 import cx from "classnames";
 import { translate } from "react-i18next";
-import GenerateSeed from "./GenerateSeed";
+import GenerateKeyFragments from "./GenerateKeyFragments";
 import BlurDialog from "components/BlurDialog";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
@@ -72,8 +72,9 @@ type Props = {
   onboarding: *,
   onGetWrapsChannel: Function,
   onAddWrapShard: Function,
-  onToggleGenerateSeed: Function,
+  onToggleDeviceModal: Function,
   onAddMessage: Function,
+  history: *,
   t: Translate,
   classes: { [$Keys<typeof styles>]: string }
 };
@@ -89,11 +90,11 @@ const mapState = state => ({
 const mapDispatch = (dispatch: *) => ({
   onGetWrapsChannel: () => dispatch(openWrappingChannel()),
   onAddWrapShard: data => dispatch(addWrappingKey(data)),
-  onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
+  onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success))
 });
-class Authentication extends Component<Props, State> {
+class WrappingKeys extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { step: 1, plugged: false };
@@ -104,7 +105,7 @@ class Authentication extends Component<Props, State> {
     onGetWrapsChannel();
   }
   finish = (data: any) => {
-    this.props.onToggleGenerateSeed();
+    this.props.onToggleDeviceModal();
     this.props.onAddWrapShard(data);
   };
 
@@ -112,7 +113,8 @@ class Authentication extends Component<Props, State> {
     const {
       onboarding,
       onAddMessage,
-      onToggleGenerateSeed,
+      history,
+      onToggleDeviceModal,
       classes,
       t
     } = this.props;
@@ -124,12 +126,13 @@ class Authentication extends Component<Props, State> {
         <Title>{t("onboarding:wrapping_key.title")}</Title>
         <BlurDialog
           open={onboarding.device_modal}
-          onClose={onToggleGenerateSeed}
+          onClose={onToggleDeviceModal}
         >
-          <GenerateSeed
+          <GenerateKeyFragments
             shards_channel={onboarding.wrapping.channel}
             onFinish={this.finish}
-            cancel={onToggleGenerateSeed}
+            cancel={onToggleDeviceModal}
+            history={history}
             addMessage={onAddMessage}
             wraps
           />
@@ -154,7 +157,7 @@ class Authentication extends Component<Props, State> {
               onClick={
                 onboarding.wrapping.blobs.length === 3
                   ? () => {}
-                  : onToggleGenerateSeed
+                  : onToggleDeviceModal
               }
             >
               <Plus className={classes.icon} />
@@ -191,8 +194,8 @@ class Authentication extends Component<Props, State> {
 }
 
 // useful for test
-export { Authentication };
+export { WrappingKeys };
 
 export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(Authentication))
+  withStyles(styles)(translate()(WrappingKeys))
 );

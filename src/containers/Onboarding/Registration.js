@@ -158,6 +158,7 @@ type Props = {
   onToggleModalProfile: Function,
   onAddMember: Function,
   onGetChallenge: Function,
+  history: *,
   onEditMember: Function,
   onAddMessage: Function,
   onboarding: *,
@@ -182,6 +183,7 @@ class Registration extends Component<Props, *> {
     const {
       classes,
       onboarding,
+      history,
       onToggleModalProfile,
       onEditMember,
       onAddMessage,
@@ -203,6 +205,7 @@ class Registration extends Component<Props, *> {
           <AddMember
             close={onToggleModalProfile}
             finish={this.addMember}
+            history={history}
             member={onboarding.editMember}
             editMember={onEditMember}
             setAlert={onAddMessage}
