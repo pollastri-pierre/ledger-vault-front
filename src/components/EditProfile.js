@@ -176,9 +176,12 @@ class ProfileEditModal extends Component<
               value={this.state.first_name.value}
               error={!this.state.first_name.isValid}
               onChange={this.updateField}
-              style={{
-                fontWeight: 600,
-                width: "45%"
+              inputProps={{
+                style: {
+                  fontWeight: 600,
+                  color: "black",
+                  width: "45%"
+                }
               }}
             />
             <TextField
@@ -187,10 +190,13 @@ class ProfileEditModal extends Component<
               value={this.state.last_name.value}
               error={!this.state.last_name.isValid}
               onChange={this.updateField}
-              style={{
-                fontWeight: 600,
-                width: "46%",
-                marginLeft: "28px"
+              inputProps={{
+                style: {
+                  fontWeight: 600,
+                  color: "black",
+                  marginRight: 20,
+                  width: "45%"
+                }
               }}
             />
             <br />
@@ -202,6 +208,12 @@ class ProfileEditModal extends Component<
               value={this.state.email.value}
               error={!this.state.email.isValid}
               onChange={this.updateField}
+              inputProps={{
+                style: {
+                  fontWeight: 600,
+                  color: "black"
+                }
+              }}
             />
             <div className={classes.role}>{t("common:administrator")}</div>
           </div>

@@ -8,6 +8,7 @@ import createDevice, {
   CONFIDENTIALITY_PATH,
   KEY_MATERIAL_PATH,
   INIT_SESSION,
+  INVALID_DATA,
   U2F_TIMEOUT,
   ACCOUNT_MANAGER_SESSION
 } from "device";
@@ -96,7 +97,7 @@ class GenerateKeyFragments extends Component<Props, State> {
         //timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
-        } else if (error.statusCode && error.statusCode === 27264) {
+        } else if (error.statusCode && error.statusCode === INVALID_DATA) {
           this.props.addMessage(
             "Error",
             "Incorrect data sent to the device",

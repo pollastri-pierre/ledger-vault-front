@@ -99,6 +99,9 @@ const theme = {
           justifyContent: "flex-end"
         },
         "&$selected": {
+          "&:hover": {
+            backgroundColor: "transparent"
+          },
           backgroundColor: "transparent",
           opacity: 1,
           "&:before": {
