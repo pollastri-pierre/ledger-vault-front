@@ -57,6 +57,19 @@ mysql> SHOW VARIABLES WHERE variable_name = 'port'; # make sure it's 3306
 - ./run_debug.sh [compartementId] [workspace_name] ( ex: ./run_debug.sh 1 vault1)
 - Expect to see `* Debugger is active!`
 
+### organization api
+- `git clone git@github.com:LedgerHQ/vault-organization-api.git`
+- You need to create a database in your mysql, see `configuration/conf.yaml:DEVELOPMENT` for the db name and user
+- `python3 -m venv venv`
+- `source venv/bin/activate`
+- `pip install -r requirements.txt`
+- `./run_prod.sh`
+
+### notification server
+- `git clone git@github.com:LedgerHQ/notification-server.git`
+- `npm install`
+- `./run_prod.sh`
+
 ### HSM Simulator
 - we use a HSM simulator instead of a real HSM hardware, It's a java server hosted on beta server. The partition of an organization is stored in file `user_1`, `counters_1` for the compartmentId 1
 We got one simu per person.
