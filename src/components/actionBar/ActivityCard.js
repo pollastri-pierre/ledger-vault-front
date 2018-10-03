@@ -92,7 +92,7 @@ class ActivityCard extends Component<
     socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
       //FIXME why is it fired twice ??
       if (self.props.onNewActivity) {
-        self.props.onNewActivity(activity);
+        self.props.restlay.fetchQuery(new ActivityQuery())
       }
     });
   }
@@ -201,28 +201,9 @@ const RenderLoading = withStyles(styles)(
   ))
 );
 
-const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
-  onNewActivity: (activity: ActivityGeneric) => {
-    const queryOrMutation = new ActivityQuery();
-    const data = [activity, ...props.activities];
-    const result = normalize(data, queryOrMutation.getResponseSchema() || {});
-
-    dispatch({
-      type: DATA_FETCHED,
-      result,
-      queryOrMutation,
-      cacheKey: queryOrMutation.getCacheKey()
-    });
-    return data;
-  }
-});
 
 export default withStyles(styles)(
-  connectData(
-    connect(
-      null,
-      mapDispatchToProps
-    )(translate()(ActivityCard)),
+  connectData((translate()(ActivityCard)),
     {
       RenderLoading,
       queries: {
