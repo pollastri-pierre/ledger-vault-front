@@ -2,34 +2,60 @@
 
 ## Vault frontend:
 
-- git clone git@github.com:LedgerHQ/ledger-vault-front.git
-- npm install
-- create .env file with API_BASE_URL=http://localhost:5000 ( url of the gate )
-- npm start || npm run starte2e
+- `git clone git@github.com:LedgerHQ/ledger-vault-front.git`
+- `npm install`
+- create .env file with `API_BASE_URL=http://localhost:5000` (url of the gate )
+- `npm start || npm run starte2e`
 
 ## Vault backend:
-### miscellaneous
+
+### Preparation
 - install elasticsearch and run it
 - install redis and run it
 - install mysql and run it
-- have sbt installed
+  - Follow [these instructions](https://trac.macports.org/wiki/howto/MySQL) if using MacPorts
+  - Make sure the option `skip-networking` is not set in your cnf files otherwise your port will be `0` instead of `3306`
+  - Using an empty password for `root` will be simpler, and since it's just for your local tests, it should be okay
+- have sbt and java 8 + jdk 1.8 installed
 - have python 2.7 and 3.7 installed
-- `brew install automake pkg-config libtool libffi gmp`
+- install automake, pkg-config, libtool, libffi, and gmp
+- When installing `gmp` make sure its libs are in `/usr/local/lib/`. If they are not, you can perform a manual installation [as described here](https://stackoverflow.com/a/29448476)
 
 ### ledger-wallet-daemon
-- git clone git@github.com:LedgerHQ/ledger-wallet-daemon.git
-- sbt "daemon/run -http.port=:8889 -admin.port=:3335"
+- `git clone git@github.com:LedgerHQ/ledger-wallet-daemon.git`
+- `cp daemon/src/main/resources/application.conf.sample daemon/src/main/resources/application.conf`
+- `sbt "daemon/run -http.port=:8889 -admin.port=:3335"`
+- If you get an error about missing objects, make sure you have the right version of java installed (java 8)
+- Expect to see `TraceId= [INFO] DaemonCacheModule$ : Synchronization finished, elapsed time: 41 milliseconds`
+
 ### hsm-driver
-- git clone git@github.com:LedgerHQ/ledger-vault-hsm-driver.git
-- edit `src/main/resources/application.conf` to set the HSM url endpoint
-- sbt run
+- `git clone git@github.com:LedgerHQ/ledger-vault-hsm-driver.git`
+- `cp src/main/resources/application.conf.dev src/main/resources/application.conf`
+- `mkdir certificate && cp src/main/resources/clientHsm.pfx certificate/`
+- You need to create users and databases on your mysql instance
+```bash
+$ mysql -u root -p
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'vault'@'localhost' IDENTIFIED BY 'vault';
+mysql> exit;
+$ mysql -u vault -p
+mysql> CREATE DATABASE hsm_driver;
+mysql> SHOW VARIABLES WHERE variable_name = 'port'; # make sure it's 3306
+```
+- `sbt run`
+- Expect to see `[INFO] Server$ : Startup complete, server ready.`
+- If `Error in custom provider, java.sql.SQLTransientConnectionException: users_db - Connection is not available, request timed out after 1003ms` then either mysql is not running, or vault user does not exist, or hsm_driver db does not exist, or the port is wrong.
+
 ### gate
-- git clone git@github.com:LedgerHQ/ledger-vault-api.git
-- python3 -m venv venv
-- source venv/bin/activate
+- `git clone git@github.com:LedgerHQ/ledger-vault-api.git`
+- `python3 -m venv venv`
+- `source venv/bin/activate`
+- Install `autoconf`
 - `SECP_BUNDLED_EXPERIMENTAL=1 pip install --no-cache-dir --no-binary secp256k1 secp256k1`
-- pip install -r requirements.txt
-- ./run_debug [compartementId] [workspace_name] ( ex: ./run_debug 1 vault1)
+- `pip install -r requirements.txt`
+- Create a new db `ledger1` for user `root` and make sure user `root` has an empty password (see configuration/vault_conf.yaml:DEVELOPMENT_WITH_DB)
+- Create a new db `vault1` for user `vault` and make sure user `vault` has password `vault` (see env.dev:VAULT_DB_*)
+- ./run_debug.sh [compartementId] [workspace_name] ( ex: ./run_debug.sh 1 vault1)
+- Expect to see `* Debugger is active!`
 
 ### HSM Simulator
 - we use a HSM simulator instead of a real HSM hardware, It's a java server hosted on beta server. The partition of an organization is stored in file `user_1`, `counters_1` for the compartmentId 1
@@ -70,7 +96,7 @@ In another term tab on the gate ( with the venv sourced )
 - `./run_update.sh init`
 
 it will create the SQL schema and create the init data AND it will register the gate to the HSM-driver, it will also create the wallet pools on the daemon for this organization. If you restart the gate or the HSM-driver, you need to re-register so run
-`./run_update init_register`
+`./run_update.sh init_register`
 
 ## Running tests:
 ### frontend:
@@ -80,7 +106,7 @@ it will create the SQL schema and create the init data AND it will register the 
 - Go to gate/test/integration
 - python2.7 -m virtualenv venv_integration
 - source venv_integration/bin/activate
-- pip install -r requirements
+- pip install -r requirements.txt
 - FLASK_RUN_PORT=5001 FLASK_APP=deviceapi.py flask run
 -  npm run starte2e to set NODE_ENV to e2e, so the front instanciate the VaultDeviceHTTP instead of VaultDeviceApp ( http calls instead of APDU calls)
 - on the frontend, `cypress open`
@@ -94,7 +120,7 @@ The device api expose a route `POST /switch-device` with `{ device_number: 1}` a
 - Go to gate/test/integration
 - python2.7 -m virtualenv venv_integration
 - source venv_integration/bin/activate
-- pip install -r requirements
+- pip install -r requirements.txt
 - python test_onboarding --quorum 2
 - python ...other scripts
 
