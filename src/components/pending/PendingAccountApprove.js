@@ -74,7 +74,7 @@ function PendingAccountApprove(props: Props) {
         >
           <div>
             <span className={classes.date}>
-              <DateFormat date={account.creation_time} />
+              <DateFormat date={account.created_on} />
             </span>
             <span className={classes.name}>
               <AccountName name={account.name} currency={account.currency} />
@@ -87,7 +87,7 @@ function PendingAccountApprove(props: Props) {
               nbRequired={quorum}
               user={user}
             />
-            <span className={classes.currency}>{account.currency.family}</span>
+            <span className={classes.currency}>{account.currency.name}</span>
           </div>
         </Link>
       ))}

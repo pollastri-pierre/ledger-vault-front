@@ -73,7 +73,7 @@ function PendingOperationApprove(props: Props) {
           >
             <div>
               <span className={classes.date}>
-                <DateFormat date={operation.time} />
+                <DateFormat date={operation.created_on} />
               </span>
               <span className={classes.name}>
                 {!account ? null : (
