@@ -20,6 +20,7 @@ class CryptoAddressPicker extends Component<{
         {...props}
         id={id}
         type="text"
+        data-test="crypto-address-picker"
         onChange={this.onChange}
         error={!isValid}
         value={value}

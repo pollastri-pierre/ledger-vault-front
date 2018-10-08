@@ -85,6 +85,7 @@ function Menu(props: {
         </MenuLink>
         <MenuLink
           to={`${location.pathname}/new-operation`}
+          data-test="new-operation"
           disabled={
             !isCreateOperationEnabled(accounts, pendingApprovalOperations)
           }

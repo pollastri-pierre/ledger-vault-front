@@ -65,6 +65,7 @@ function PendingOperationApprove(props: Props) {
         const account = accounts.find(a => a.id === operation.account_id);
         return (
           <Link
+            data-test='pending-operation'
             className={classnames(classes.row, {
               [classes.approved]: approved
             })}

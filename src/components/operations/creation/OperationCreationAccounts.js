@@ -22,7 +22,7 @@ const OperationCreationAccounts = ({
 }) => (
   <Fragment>
     <ModalSubTitle>Account to debit</ModalSubTitle>
-    <MenuList>
+    <MenuList data-test="operation-creation-accounts">
       {accounts.map(account => {
         return (
           <Disabled
