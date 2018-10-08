@@ -79,7 +79,7 @@ function AccountApproveDetails(props: {
           )}
         </LineRow>
         <LineRow label="requested">
-          <DateFormat date={account.creation_time} />
+          <DateFormat date={account.created_on} />
         </LineRow>
         <LineRow label="name">
           <AccountName name={account.name} currency={currency} />

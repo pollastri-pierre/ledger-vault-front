@@ -73,13 +73,13 @@ const OperationRow = ({
   account: ?Account
 }) =>
   account ? (
-    <Row date={operation.time}>
+    <Row date={operation.created_on}>
       <CurrencyAccountValue account={account} value={operation.price.amount} />
     </Row>
   ) : null;
 
 const AccountRow = ({ account }: { account: Account }) => (
-  <Row date={account.creation_time}>
+  <Row date={account.created_on}>
     <AccountName name={account.name} currency={account.currency} />
   </Row>
 );
