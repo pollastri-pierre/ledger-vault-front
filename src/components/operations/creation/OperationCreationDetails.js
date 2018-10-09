@@ -206,6 +206,7 @@ class OperationCreationDetails extends Component<
           <TextField
             placeholder="0"
             fullWidth
+            data-test="operation-creation-amount"
             inputProps={{
               style: { textAlign: "right", fontSize: 22, color: "black" }
             }}
