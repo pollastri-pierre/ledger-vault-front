@@ -80,8 +80,6 @@ class RegisterAdmins extends Component<Props, State> {
         const { organization, history } = this.props;
         const device = await await createDevice();
         const isUpToDate = await checkToUpdate(device, () => {
-          console.log(this.props.history);
-          console.log(history);
           history.push("/update-app");
         });
 
