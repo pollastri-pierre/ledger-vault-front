@@ -171,7 +171,6 @@ test("it sould render DeviceAuthenticate with right props", () => {
   const MyComponent = shallow(<AccountCreation {...sProps} />);
   const Device = MyComponent.find(DeviceAuthenticate);
   expect(Device.prop("type")).toBe("accounts");
-  expect(Device.prop("close")).toBe(MyComponent.instance().close);
   expect(Device.prop("callback")).toBe(MyComponent.instance().createAccount);
 });
 

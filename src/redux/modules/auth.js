@@ -1,7 +1,8 @@
 //@flow
+import type { Dispatch } from "redux";
+import network from "network";
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
-import network from "network";
 
 export function getLocalStorageToken() {
   // avoid fail in test env

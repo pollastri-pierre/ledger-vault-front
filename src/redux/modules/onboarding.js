@@ -1,6 +1,8 @@
 //@flow
+import AccountQuery from "api/queries/AccountQuery";
 import network from "network";
 import { addMessage } from "redux/modules/alerts";
+import type { Dispatch } from "redux";
 
 export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
 export const ONBOARDING_FATAL_ERROR = "ONBOARDING_FATAL_ERROR";

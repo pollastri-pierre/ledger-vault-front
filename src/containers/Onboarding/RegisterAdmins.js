@@ -77,10 +77,10 @@ class RegisterAdmins extends Component<Props, State> {
     if (_isMounted) {
       try {
         this.setState({ active: 0 });
-        const { organization } = this.props;
+        const { organization, history } = this.props;
         const device = await await createDevice();
         const isUpToDate = await checkToUpdate(device, () => {
-          this.props.history.push("/update-app");
+          history.push("/update-app");
         });
 
         if (isUpToDate) {

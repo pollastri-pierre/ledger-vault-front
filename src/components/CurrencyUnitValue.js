@@ -30,7 +30,7 @@ class CurrencyUnitValue extends PureComponent<{
         {formatCurrencyUnit(unit, value_with_sign, {
           showCode: true,
           alwaysShowSign: alwaysShowSign,
-          showAllDigits: true
+          showAllDigits: false
         })}
       </span>
     );

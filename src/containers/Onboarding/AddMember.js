@@ -99,7 +99,7 @@ class AddMember extends Component<Props, State> {
           steps={steps}
           title="Register device"
           close={this.props.close}
-          history={history}
+          history={this.props.history}
           finish={this.finish}
           cancel={this.prev}
           data={this.state.data}

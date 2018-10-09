@@ -1,5 +1,6 @@
 //@flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
+import type { Dispatch } from "redux";
 import { translate } from "react-i18next";
 import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -77,10 +78,7 @@ class ActivityCard extends Component<
   componentDidMount() {
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(
-      url,
-      { path: path }
-    );
+    const socket = io.connect(url, { path: path });
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {

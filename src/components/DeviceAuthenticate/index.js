@@ -31,7 +31,6 @@ type State = {
 };
 
 type Props = {
-  close: Function,
   organization: Organization,
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
@@ -61,10 +60,18 @@ class DeviceAuthenticate extends Component<Props, State> {
         const { organization, type, account_id } = this.props;
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         const application = APPID_VAULT_ADMINISTRATOR;
-        const url =
-          type === "operations" && account_id
-            ? `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`
-            : `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
+        let url;
+        if (type === "operations" && account_id) {
+          url = `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`;
+        } else if (type === "accounts" && account_id) {
+          url = `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
+        } else {
+          url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
+        }
+        // const url =
+        //   type === "operations" && account_id
+        //     ? `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`
+        //     : `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         const data = await network(url, "GET");
 
         let challenge, key_handle, entity_id;
@@ -88,13 +95,18 @@ class DeviceAuthenticate extends Component<Props, State> {
         this.setState({ step: 2 });
 
         // $FlowFixMe
-        await network(`/${type}/authentications/authenticate`, "POST", {
+
+        let urlPost =
+          type === "accounts" && account_id
+            ? `/${type}/${account_id}/authentications/authenticate`
+            : `/${type}/authentications/authenticate`;
+
+        await network(urlPost, "POST", {
           ...(type === "accounts" && { account_id: entity_id }),
           ...(type === "operations" && { operation_id: entity_id }),
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
         });
-
         await this.props.callback(entity_id);
       } catch (e) {
         console.error(e);

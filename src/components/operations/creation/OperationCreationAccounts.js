@@ -1,5 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
+import { isAccountOutdated } from "utils/accounts";
 import MenuList from "@material-ui/core/MenuList";
 import { hasPending, isMemberOfAccount } from "utils/operations";
 import AccountMenuItem from "./AccountMenuItem";
@@ -30,7 +31,8 @@ const OperationCreationAccounts = ({
             disabled={
               account.balance <= 0 ||
               hasPending(account, pendingOperations) ||
-              !isMemberOfAccount(account, me)
+              !isMemberOfAccount(account, me) ||
+              isAccountOutdated(account)
             }
           >
             <AccountMenuItem
