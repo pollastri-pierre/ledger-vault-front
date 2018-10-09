@@ -47,30 +47,32 @@ class AccountsMenu extends Component<{
     const { accounts, classes, match } = this.props;
     return (
       <MenuList>
-        {accounts.map(account => {
-          const curr = allCurrencies.find(
-            c => c.scheme === account.currency.name
-          ) || {
-            color: "black"
-          };
-          const unit = account.currency.units.reduce(
-            (prev, current) =>
-              prev.magnitude > current.magnitude ? prev : current
-          );
-          return (
-            <MenuLink
-              color={curr.color}
-              key={account.id}
-              to={`${match.url}/account/${account.id}`}
-              className={cx(classes.item, {
-                [classes.needUpdate]: isAccountOutdated(account)
-              })}
-            >
-              <span className={classes.name}>{getAccountTitle(account)}</span>
-              <span className={classes.unit}>{unit.code}</span>
-            </MenuLink>
-          );
-        })}
+        {accounts
+          .filter(account => account.status === "APPROVED")
+          .map(account => {
+            const curr = allCurrencies.find(
+              c => c.scheme === account.currency.name
+            ) || {
+              color: "black"
+            };
+            const unit = account.currency.units.reduce(
+              (prev, current) =>
+                prev.magnitude > current.magnitude ? prev : current
+            );
+            return (
+              <MenuLink
+                color={curr.color}
+                key={account.id}
+                to={`${match.url}/account/${account.id}`}
+                className={cx(classes.item, {
+                  [classes.needUpdate]: isAccountOutdated(account)
+                })}
+              >
+                <span className={classes.name}>{getAccountTitle(account)}</span>
+                <span className={classes.unit}>{unit.code}</span>
+              </MenuLink>
+            );
+          })}
       </MenuList>
     );
   }
