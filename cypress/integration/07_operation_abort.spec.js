@@ -29,7 +29,7 @@ context("Account approval", () => {
         device_number: 4
       })
       .then(() => {
-    // Create operation by Device 4
+        // Create operation with Device 4
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
@@ -64,7 +64,7 @@ context("Account approval", () => {
         cy.wait("@authenticate");
 
 
-         //Approve this Operation by Device 4
+        //Approve this Operation with Device 4
         cy.contains("Pending").click();
         cy
           .get("[data-test=pending-operation]")
@@ -80,7 +80,7 @@ context("Account approval", () => {
         cy.get("[data-test=logout]").click();
         cy.wait("@logout");
     });
-    // Abort the Operation by Device 5
+        // Abort the Operation by Device 5
     cy
       .request("POST", "http://localhost:5001/switch-device", {
         device_number: 5
@@ -107,6 +107,10 @@ context("Account approval", () => {
           .contains("Abort")
           .click();
         cy.wait("@abort");
+
+        cy.contains("view profile").click();
+        cy.contains("logout").click();
+        cy.wait("@logout");
       });
   });
 });

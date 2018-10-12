@@ -19,7 +19,7 @@ context("Account creation", () => {
     cy.server();
     cy.route("post", "**/authentications/**").as("authenticate");
     cy.route("post", "**/abort").as("abort");
-
+    
     cy
       .request("POST", "http://localhost:5001/switch-device", {
         device_number: 5
@@ -60,8 +60,7 @@ context("Account creation", () => {
             .get(".test-pending-account")
             .eq(0)
             .click();
-
-          // // click 2 times on abort to abort
+          // Abort the account
           cy
             .get("button")
             .contains("Abort")
@@ -71,8 +70,7 @@ context("Account creation", () => {
             .contains("Abort")
             .click();
           cy.wait("@abort");
-
-          // // logout the current user
+          // logout the current user
           cy.contains("view profile").click();
           cy.contains("logout").click();
           cy.wait("@logout");
