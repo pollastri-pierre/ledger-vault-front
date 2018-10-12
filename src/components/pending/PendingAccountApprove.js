@@ -80,6 +80,7 @@ function PendingAccountApprove(props: Props) {
               <AccountName name={account.name} currency={account.currency} />
             </span>
           </div>
+
           <div className={classes.status}>
             <ApprovalStatus
               approved={account.approvals || []}

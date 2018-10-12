@@ -18,7 +18,11 @@ const styles = {
     "& h2": {
       margin: 0
     },
+    "& ul": {
+      fontSize: 14
+    },
     "& p": {
+      fontSize: 14,
       lineHeight: "24px"
     }
   },

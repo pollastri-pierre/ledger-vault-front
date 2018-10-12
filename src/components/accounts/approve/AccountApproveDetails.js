@@ -1,7 +1,9 @@
 //@flow
 import React from "react";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
+import Amount from "components/Amount";
 import {
   // BigSecurityTimeLockIcon,
   BigSecurityMembersIcon
@@ -69,6 +71,9 @@ function AccountApproveDetails(props: {
         {/* /> */}
       </div>
       <div>
+        <LineRow label="balance">
+          <Amount account={account} value={account.balance} strong />
+        </LineRow>
         <LineRow label="status">
           {percentage === 100 ? (
             <span className="info-value status">Approved</span>

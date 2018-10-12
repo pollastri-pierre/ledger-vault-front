@@ -142,10 +142,7 @@ class DateColumn extends Component<Cell> {
     const { operation } = this.props;
     return (
       <span>
-        <DateFormat
-          format="ddd D MMM, h:mmA"
-          date={new Date(operation.time).toISOString()}
-        />
+        <DateFormat format="ddd D MMM, h:mmA" date={operation.created_on} />
         <OpNoteLink operation={operation} />
       </span>
     );
