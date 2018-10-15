@@ -2,27 +2,27 @@ const orga_name = Cypress.env("workspace");
 context("Onboarding", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
+    const polyfillUrl = Cypress.env("polyfillUrl");
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
 
-  it("should generate wrapping keys", () => {
+  it("Initialise the wrapping keys ", () => {
     cy.server();
     cy
-      .route("post", `http://localhost:5000/${orga_name}/onboarding/next`)
+      .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
       .as("next");
     cy
       .route(
         "post",
-        `http://localhost:5000/${orga_name}/onboarding/authenticate`
+        `${Cypress.env('api_server2')}/${orga_name}/onboarding/authenticate`
       )
       .as("authenticate");
     cy
-      .route("get", `http://localhost:5000/${orga_name}/onboarding/challenge`)
+      .route("get", `${Cypress.env('api_server2')}/${orga_name}/onboarding/challenge`)
       .as("challenge");
-    cy.visit("https://localhost:9000", {
+    cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -44,21 +44,21 @@ context("Onboarding", () => {
     cy.wait("@next");
     cy.wait("@challenge");
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 1
       })
       .then(() => {
         cy.contains("SIGN IN").click();
         cy.wait("@authenticate");
         cy
-          .request("POST", "http://localhost:5001/switch-device", {
+          .request("POST", Cypress.env('api_switch_device'), {
             device_number: 2
           })
           .then(() => {
             cy.contains("SIGN IN").click();
             cy.wait("@authenticate");
             cy
-              .request("POST", "http://localhost:5001/switch-device", {
+              .request("POST", Cypress.env('api_switch_device'), {
                 device_number: 3
               })
               .then(() => {
@@ -71,19 +71,19 @@ context("Onboarding", () => {
       });
   });
 
-  it("should register admins and define security scheme", () => {
+  it("Initialize admins and define security scheme", () => {
     cy.server();
     cy
-      .route("post", `http://localhost:5000/${orga_name}/onboarding/next`)
+      .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
       .as("next");
     cy
       .route(
         "post",
-        `http://localhost:5000/${orga_name}/onboarding/authenticate`
+        `${Cypress.env('api_server2')}/${orga_name}/onboarding/authenticate`
       )
       .as("authenticate");
     cy
-      .route("get", `http://localhost:5000/${orga_name}/onboarding/challenge`)
+      .route("get", `${Cypress.env('api_server2')}/${orga_name}/onboarding/challenge`)
       .as("challenge");
     cy
       .contains("continue")
@@ -97,7 +97,7 @@ context("Onboarding", () => {
     cy.wait("@next");
     cy.wait("@challenge");
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
       })
       .then(() => {
@@ -108,7 +108,7 @@ context("Onboarding", () => {
         cy.contains("Continue").click();
         cy.wait("@authenticate");
         cy
-          .request("POST", "http://localhost:5001/switch-device", {
+          .request("POST", Cypress.env('api_switch_device'), {
             device_number: 5
           })
           .then(() => {
@@ -119,7 +119,7 @@ context("Onboarding", () => {
             cy.contains("Continue").click();
             cy.wait("@authenticate");
             cy
-              .request("POST", "http://localhost:5001/switch-device", {
+              .request("POST", Cypress.env('api_switch_device'), {
                 device_number: 6
               })
               .then(() => {
@@ -141,39 +141,39 @@ context("Onboarding", () => {
       });
   });
 
-  it("should see signin scheme and sign with admins", () => {
+  it("Sign in scheme with admins", () => {
     cy.server();
     cy
-      .route("post", `http://localhost:5000/${orga_name}/onboarding/next`)
+      .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
       .as("next");
     cy
       .route(
         "post",
-        `http://localhost:5000/${orga_name}/onboarding/authenticate`
+        `${Cypress.env('api_server2')}/${orga_name}/onboarding/authenticate`
       )
       .as("authenticate");
     cy
-      .route("get", `http://localhost:5000/${orga_name}/onboarding/challenge`)
+      .route("get", `${Cypress.env('api_server2')}/${orga_name}/onboarding/challenge`)
       .as("challenge");
     cy.contains("continue").click();
     cy.wait("@next");
     cy.wait("@challenge");
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
       })
       .then(() => {
         cy.get(".test-onboarding-signin").click();
         cy.wait("@authenticate");
         cy
-          .request("POST", "http://localhost:5001/switch-device", {
+          .request("POST", Cypress.env('api_switch_device'), {
             device_number: 5
           })
           .then(() => {
             cy.get(".test-onboarding-signin").click();
             cy.wait("@authenticate");
             cy
-              .request("POST", "http://localhost:5001/switch-device", {
+              .request("POST", Cypress.env('api_switch_device'), {
                 device_number: 6
               })
               .then(() => {
@@ -192,26 +192,26 @@ context("Onboarding", () => {
       });
   });
 
-  it("should see Masterseed scheme and click on more", () => {
+  it("Initialize Master Seed scheme and login to the dashboard", () => {
     cy.server();
     cy
-      .route("post", `http://localhost:5000/${orga_name}/onboarding/next`)
+      .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
       .as("next");
     cy
       .route(
         "post",
-        `http://localhost:5000/${orga_name}/onboarding/authenticate`
+        `${Cypress.env('api_server2')}/${orga_name}/onboarding/authenticate`
       )
       .as("authenticate");
     cy
-      .route("get", `http://localhost:5000/${orga_name}/onboarding/challenge`)
+      .route("get", `${Cypress.env('api_server2')}/${orga_name}/onboarding/challenge`)
       .as("challenge");
 
     cy.contains("continue").click();
     cy.wait("@next");
     cy.wait("@challenge");
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 7
       })
       .then(() => {
@@ -222,7 +222,7 @@ context("Onboarding", () => {
 
         cy.wait("@authenticate");
         cy
-          .request("POST", "http://localhost:5001/switch-device", {
+          .request("POST", Cypress.env('api_switch_device'), {
             device_number: 8
           })
           .then(() => {
@@ -233,7 +233,7 @@ context("Onboarding", () => {
 
             cy.wait("@authenticate");
             cy
-              .request("POST", "http://localhost:5001/switch-device", {
+              .request("POST", Cypress.env('api_switch_device'), {
                 device_number: 9
               })
               .then(() => {
@@ -245,12 +245,12 @@ context("Onboarding", () => {
                 cy.contains("continue").click();
                 cy.wait("@next");
                 cy
-                  .request("POST", "http://localhost:5001/switch-device", {
+                  .request("POST", Cypress.env('api_switch_device'), {
                     device_number: 4
                   })
                   .then(() => {
                     cy.contains("continue").click();
-                    cy.wait("@next");
+                    cy.url().should('include', '/dashboard')
                   });
               });
           });

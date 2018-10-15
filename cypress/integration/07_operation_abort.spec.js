@@ -1,15 +1,15 @@
 const orga_name = Cypress.env("workspace");
-context("Account approval", () => {
+context("Operation Abort", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
+    const polyfillUrl = Cypress.env("polyfillUrl");
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
   it("redirect to login", () => {
     // go to the vault homepage
-    cy.visit("https://localhost:9000", {
+    cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -25,11 +25,11 @@ context("Account approval", () => {
     cy.route("post", "**/fees").as("fees");
 
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env("api_switch_device"), {
         device_number: 4
       })
       .then(() => {
-        // Create operation with Device 4
+    // Create operation by Device 4
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
@@ -64,7 +64,7 @@ context("Account approval", () => {
         cy.wait("@authenticate");
 
 
-        //Approve this Operation with Device 4
+         //Approve this Operation by Device 4
         cy.contains("Pending").click();
         cy
           .get("[data-test=pending-operation]")
@@ -80,9 +80,9 @@ context("Account approval", () => {
         cy.get("[data-test=logout]").click();
         cy.wait("@logout");
     });
-        // Abort the Operation by Device 5
+    // Abort the Operation by Device 5
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env("api_switch_device"), {
         device_number: 5
       })
       .then(() => {
@@ -107,7 +107,7 @@ context("Account approval", () => {
           .contains("Abort")
           .click();
         cy.wait("@abort");
-
+        // logout
         cy.contains("view profile").click();
         cy.contains("logout").click();
         cy.wait("@logout");

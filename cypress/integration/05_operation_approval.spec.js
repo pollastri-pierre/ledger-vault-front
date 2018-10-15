@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Account approval", () => {
+context("Operation approval", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
