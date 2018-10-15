@@ -2,13 +2,13 @@ const orga_name = Cypress.env("workspace");
 context("Onboarding", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
 
-  it("Initialise the wrapping keys ", () => {
+  it("should initialise the wrapping keys ", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
@@ -71,7 +71,7 @@ context("Onboarding", () => {
       });
   });
 
-  it("Initialize admins and define security scheme", () => {
+  it("should initialise admins and define security scheme", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
@@ -141,7 +141,7 @@ context("Onboarding", () => {
       });
   });
 
-  it("Sign in scheme with admins", () => {
+  it("should sign in scheme with admins", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
@@ -192,7 +192,7 @@ context("Onboarding", () => {
       });
   });
 
-  it("Initialize Master Seed scheme and login to the dashboard", () => {
+  it("should initialize Master Seed scheme and login to the dashboard", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)

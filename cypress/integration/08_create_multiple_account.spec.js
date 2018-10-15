@@ -7,7 +7,7 @@ context("Create Multi Account", () => {
       polyfill = response.body;
     });
   });
-  it("redirect to login", () => {
+  it("should create multi account", () => {
     // go to the vault homepage
     cy.visit("https://localhost:9000", {
       onBeforeLoad: win => {

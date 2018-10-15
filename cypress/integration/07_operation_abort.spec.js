@@ -2,12 +2,12 @@ const orga_name = Cypress.env("workspace");
 context("Operation Abort", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("redirect to login", () => {
+  it("should abort a operation", () => {
     // go to the vault homepage
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {

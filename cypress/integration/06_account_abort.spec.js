@@ -2,14 +2,14 @@ const orga_name = Cypress.env("workspace");
 context("Account Abort", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("redirect to login", () => {
+  it("should abort a account", () => {
     // go to vault homepage and enter orga_name
-    cy.visit("https://localhost:9000", {
+    cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -21,7 +21,7 @@ context("Account Abort", () => {
     cy.route("post", "**/abort").as("abort");
 
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 5
       })
       .then(() => {

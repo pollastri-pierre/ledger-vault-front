@@ -1,42 +1,36 @@
-const orga_name = Cypress.env("workspace");
-context("Operation Abort", () => {
-  let polyfill;
-  before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
-    cy.request(polyfillUrl).then(response => {
-      polyfill = response.body;
-    });
-  });
-  it("redirect to login", () => {
-    // go to the vault homepage
-    cy.visit(Cypress.env('api_server'), {
-      onBeforeLoad: win => {
-        win.fetch = null;
-        win.eval(polyfill);
-        win.fetch = win.unfetch;
-      }
-    });
-    cy.server();
 
-    cy.route("post", "**/authentications/**").as("authenticate");
-    cy.route("post", "**/approve").as("approve");
-    cy.route("post", "**/logout").as("logout");
-    cy.route("post", "**/abort").as("abort");
-    cy.route("post", "**/validation/**").as("validation");
-    cy.route("post", "**/fees").as("fees");
 
-    cy
-      .request("POST", Cypress.env('api_switch_device'), {
-        device_number: 4
+
+describe('Logging into the workspace', function(){
+  context('Login Page', function(){
+    beforeEach(function(){
+      const polyfillUrl = Cypress.env("polyfillUrl");
+      cy.request(polyfillUrl).then(response => {
+        polyfill = response.body;
+      });
+      cy.visit(Cypress.env('api_server'), {
+        onBeforeLoad: win => {
+          win.fetch = null;
+          win.eval(polyfill);
+          win.fetch = win.unfetch;
+        }
       })
-      .then(() => {
-    // Login to the workspace
-        cy.get("input").type(orga_name);
+      cy
+        .request("POST", Cypress.env('api_switch_device'), {
+          device_number: 4
+        })
+      cy.server();
+
+      it('Input the workspace name', function(){
+        cy.get("input").type(Cypress.env("workspace"));
         cy.contains("continue").click();
         cy.wait("@authenticate");
+      })
 
+      it('Clic', ()=> {
+      cy.get("[data-test=new-operation]").click();
+    })
 
-
-      });
+    })
   });
 });

@@ -2,12 +2,12 @@ const orga_name = Cypress.env("workspace");
 context("Account creation", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("Account creation", () => {
+  it("should create a account", () => {
     // go to vault homepage and enter orga_name
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
@@ -58,6 +58,9 @@ context("Account creation", () => {
         cy.contains("Approvals").click();
         cy.get("input").type(100);
         cy.contains("done").click();
+        cy
+          .get(".top-message-body")
+          .contains("Number of approvals cannot exceed number of members")
         cy.get("input").clear();
         cy.get("input").type(2);
         cy.contains("done").click();

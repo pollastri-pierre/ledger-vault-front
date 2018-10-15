@@ -2,12 +2,12 @@ const orga_name = Cypress.env("workspace");
 context("Account approval", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("Approve Account", () => {
+  it("should approve account", () => {
     // go to the vault homepage
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {

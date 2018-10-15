@@ -2,12 +2,12 @@ const orga_name = Cypress.env("workspace");
 context("Operation Creation", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env("polyfillUrl");
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("Create a Operation", () => {
+  it("should create a Operation", () => {
     // go to vault homepage and enter orga_name
     cy.server();
     cy.route("post", "**/validation/**").as("validation");
