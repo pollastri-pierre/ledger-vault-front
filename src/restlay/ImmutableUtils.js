@@ -18,7 +18,9 @@ export function merge(
          Typically we have too ways to get opeation. One with full data with a transaction object, and another without a transaction.
          If the endpoint with less data finishes after an endpoint with full data it can breaks the UI.
       */
-      copy[k] = Object.assign({ ...old[k] }, copy[k]);
+      if (old[k] && typeof old[k] === "object") {
+        copy[k] = Object.assign({ ...old[k] }, copy[k]);
+      }
     } else if (copy) {
       copy[k] = old[k];
     }
