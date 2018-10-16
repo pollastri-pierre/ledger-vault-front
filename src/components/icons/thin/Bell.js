@@ -1,12 +1,16 @@
-//@flow
-import React from "react";
 import classnames from "classnames";
+import React from "react";
+import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   common: {
     height: "13px",
+    verticalAlign: "middle",
     width: "16px"
+  },
+  red: {
+    fill: colors.grenade
   },
   white: {
     fill: "white"

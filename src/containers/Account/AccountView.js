@@ -1,12 +1,15 @@
 // @flow
 import AccountQuery from "api/queries/AccountQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
 import Card from "components/Card";
+import type { Translate } from "data/types";
+import { translate } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account } from "data/types";
+import type { Account, Member } from "data/types";
 import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
 import ReceiveFundsCard from "./ReceiveFundsCard";
@@ -32,6 +35,8 @@ class AccountView extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
     account: Account,
+    me: Member,
+    t: Translate,
     match: {
       url: string,
       params: {
@@ -50,19 +55,23 @@ class AccountView extends Component<
   };
 
   render() {
-    const { match, classes, account } = this.props;
+    const { match, classes, account, t, me } = this.props;
     const accountId = match.params.id;
-    if (account.status && account.status !== "APPROVED") {
+    if (
+      account.status &&
+      account.status !== "APPROVED" &&
+      account.status !== "PENDING_UPDATE"
+    ) {
       return (
         <div>
-          <Card title="Account pending">The account needs to be approved.</Card>
+          <Card title="Account pending">{t("accountView:approved")}</Card>
         </div>
       );
     }
     return (
       <div>
         <div>
-          <AccountQuickInfo account={account} />
+          <AccountQuickInfo me={me} account={account} match={match} />
         </div>
         <div className={classes.flex}>
           <AccountBalanceCard account={account} />
@@ -94,9 +103,10 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </Card>
 ));
 
-export default connectData(withStyles(styles)(AccountView), {
+export default connectData(withStyles(styles)(translate()(AccountView)), {
   queries: {
-    account: AccountQuery
+    account: AccountQuery,
+    me: ProfileQuery
   },
   RenderError,
   RenderLoading,

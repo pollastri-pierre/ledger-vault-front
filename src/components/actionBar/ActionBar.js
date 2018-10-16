@@ -73,11 +73,7 @@ class ActionBar extends Component<{
       <div className={classes.base}>
         <ProfileCard match={match} />
         <ModalRoute path="*/new-account" component={AccountCreation} />
-        <ModalRoute
-          path="*/settings"
-          component={SettingsModal}
-          undoAllHistoryOnClickOutside
-        />
+        <ModalRoute path="*/settings" component={SettingsModal} />
         <div className={classes.header}>
           <div className={classes.header_left}>
             <Logo white />

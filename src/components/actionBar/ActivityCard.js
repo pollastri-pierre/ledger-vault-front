@@ -89,8 +89,8 @@ class ActivityCard extends Component<
     });
     socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
       //FIXME why is it fired twice ??
-      if (self.props.onNewActivity) {
-        self.props.restlay.fetchQuery(new ActivityQuery())
+      if (self.props.onNewActivity && self.props.restlay) {
+        self.props.restlay.fetchQuery(new ActivityQuery());
       }
     });
   }
@@ -199,14 +199,11 @@ const RenderLoading = withStyles(styles)(
   ))
 );
 
-
 export default withStyles(styles)(
-  connectData((translate()(ActivityCard)),
-    {
-      RenderLoading,
-      queries: {
-        activities: ActivityQuery
-      }
+  connectData(translate()(ActivityCard), {
+    RenderLoading,
+    queries: {
+      activities: ActivityQuery
     }
-  )
+  })
 );

@@ -7,5 +7,6 @@ export default (data: *) =>
   createStore(
     combineReducers(reducers),
     data,
+    //$FlowFixMe
     composeWithDevTools(applyMiddleware(thunk))
   );

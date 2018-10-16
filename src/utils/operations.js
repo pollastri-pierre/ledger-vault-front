@@ -1,6 +1,6 @@
 //@flow
 import type { Operation, Account, Member } from "data/types";
-import { isAccountOutdated } from "utils/accounts";
+import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 
 // operation creation is not allowed if there is no accounts obviously.
 // If there are accounts, we need at least one account with 0 pending operation and uptodate
@@ -14,7 +14,8 @@ export const isCreateOperationEnabled = (
     account =>
       account.balance > 0 &&
       !hasPending(account, pendingOperations) &&
-      !isAccountOutdated(account)
+      !isAccountOutdated(account) &&
+      !isAccountBeingUpdated(account)
   );
   return filter.length > 0;
 };

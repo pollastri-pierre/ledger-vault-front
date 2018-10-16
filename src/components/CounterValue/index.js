@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     countervalue: CounterValues.calculateWithIntermediarySelector(state, {
       from: currency,
-      fromExchange: state.exchanges.data[currency.ticker],
+      fromExchange: currency && state.exchanges.data[currency.ticker],
       intermediary: intermediaryCurrency,
       toExchange: state.exchanges.data["USD"],
       to: getFiatCurrencyByTicker("USD"),
@@ -26,8 +26,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 // we get currency's name as props and looks for the right currency in ledgerhq currencies
-// because currently the API and ledgerHQ don't share the same
-// format for Currency
+// because currently the API and ledgerHQ don't share the same format for Currency
 
 type Props = {
   countervalue: number,

@@ -42,7 +42,8 @@ export const checkToUpdate = async (
 
 export default async (scrambleKey: string = "v1+"): Promise<VaultDeviceApp> => {
   if (process.env.NODE_ENV === "e2e") {
-    return new VaultDeviceHTTP(); //$FlowFixMe
+    //$FlowFixMe
+    return new VaultDeviceHTTP();
   }
   const transport = await LedgerTransportU2F.create(90000000, 90000000);
   return new VaultDeviceApp(transport, scrambleKey);

@@ -58,7 +58,13 @@ class ModalRoute extends Component<{
   onClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
   lastMatch: ?Object;
   render() {
-    const { component, render, children, ...rest } = this.props; // eslint-disable-line no-unused-vars
+    const {
+      component, // eslint-disable-line no-unused-vars
+      render, // eslint-disable-line no-unused-vars
+      children, // eslint-disable-line no-unused-vars
+      undoAllHistoryOnClickOutside, // eslint-disable-line no-unused-vars
+      ...rest
+    } = this.props;
     return (
       <Route {...rest}>
         {routeProps => {

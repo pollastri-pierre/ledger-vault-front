@@ -4,6 +4,7 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 import network from "network";
+import MenuItem from "@material-ui/core/MenuItem";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import AccountCreationMembers from "components/accounts/creation/AccountCreationMembers";
 import Disabled from "components/Disabled";
@@ -50,7 +51,7 @@ const styles = {
     }
   },
   left: {
-    width: 400,
+    width: 300,
     maxHeight: 433,
     overflow: "auto",
     padding: "20px 20px 20px 0",
@@ -63,6 +64,9 @@ const styles = {
     marginTop: 40,
     display: "flex",
     justifyContent: "space-between"
+  },
+  accountName: {
+    paddingLeft: 25
   }
 };
 
@@ -143,7 +147,8 @@ const row = {
     fontSize: 11
   },
   children: {
-    color: "grey"
+    color: "grey",
+    fontSize: 12
   }
 };
 const Row = withStyles(
@@ -177,7 +182,7 @@ type Props = {
   isSelectingApprovals: boolean,
   isDevice: boolean,
   isOpen: boolean,
-  quorum: boolean,
+  quorum: number,
   onToggle: Function,
   onToggleMembers: Function,
   onToggleApprovals: Function,
@@ -249,17 +254,22 @@ class UpdateAccounts extends Component<Props> {
         <BlurDialog open={isOpen} onClose={onToggle}>
           <div className={classes.base}>
             <div className={classes.left}>
-              <h3 style={{ padding: "21px 33px 12px 40px" }}>Accounts</h3>
+              <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
               <ul>
                 {getOutdatedAccounts(accounts).map(account => (
-                  <AccountMenuItem
-                    key={account.id}
-                    account={account}
-                    onSelect={() => onSelectAccount(account)}
+                  <MenuItem
+                    button
+                    disableRipple
                     selected={
                       selectedAccount && selectedAccount.id === account.id
                     }
-                  />
+                    onClick={() => onSelectAccount(account)}
+                    key={account.id}
+                  >
+                    <span className={classes.accountName}>
+                      {getAccountTitle(account)}
+                    </span>
+                  </MenuItem>
                 ))}
               </ul>
             </div>
@@ -306,7 +316,11 @@ class UpdateAccounts extends Component<Props> {
                     <DialogButton
                       highlight
                       onTouchTap={onToggleDevice}
-                      disabled={false}
+                      disabled={
+                        approvers.length === 0 ||
+                        quorum === 0 ||
+                        quorum > approvers.length
+                      }
                     >
                       Submit
                     </DialogButton>
