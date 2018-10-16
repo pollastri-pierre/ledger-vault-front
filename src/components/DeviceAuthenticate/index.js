@@ -68,6 +68,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         } else {
           url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
         }
+
         const data = await network(url, "GET");
 
         let challenge, key_handle, entity_id;
@@ -89,6 +90,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         );
 
         this.setState({ step: 2 });
+
 
         let urlPost =
           type === "accounts" && account_id

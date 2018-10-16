@@ -1,15 +1,15 @@
 const orga_name = Cypress.env("workspace");
-context("Account approval", () => {
+context("Operation approval", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("redirect to login", () => {
+  it("should approve a operation", () => {
     // go to the vault homepage
-    cy.visit("https://localhost:9000", {
+    cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -22,7 +22,7 @@ context("Account approval", () => {
     cy.route("post", "**/logout").as("logout");
     // set the current device to device 1
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
       })
       .then(() => {
@@ -53,7 +53,7 @@ context("Account approval", () => {
 
         // set the current device to device 2
         cy
-          .request("POST", "http://localhost:5001/switch-device", {
+          .request("POST", Cypress.env('api_switch_device'), {
             device_number: 5
           })
           .then(() => {

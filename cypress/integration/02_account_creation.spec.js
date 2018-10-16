@@ -2,14 +2,14 @@ const orga_name = Cypress.env("workspace");
 context("Account creation", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = "https://unpkg.com/unfetch/dist/unfetch.umd.js";
+    const polyfillUrl = Cypress.env('polyfillUrl');
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
-  it("redirect to login", () => {
+  it("should create a account", () => {
     // go to vault homepage and enter orga_name
-    cy.visit("https://localhost:9000", {
+    cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -20,7 +20,7 @@ context("Account creation", () => {
     cy.route("post", "**/authentications/**").as("authenticate");
 
     cy
-      .request("POST", "http://localhost:5001/switch-device", {
+      .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
       })
       .then(() => {
@@ -56,9 +56,15 @@ context("Account creation", () => {
           .click({ force: true });
         cy.contains("Done").click();
         cy.contains("Approvals").click();
+
+        // We should get a Error if we put 100
         cy.get("input").type(100);
         cy.contains("done").click();
+        cy
+          .get(".top-message-body")
+          .contains("Number of approvals cannot exceed number of members")
         cy.get("input").clear();
+
         cy.get("input").type(2);
         cy.contains("done").click();
 
