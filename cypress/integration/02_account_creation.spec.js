@@ -56,12 +56,15 @@ context("Account creation", () => {
           .click({ force: true });
         cy.contains("Done").click();
         cy.contains("Approvals").click();
+
+        // We should get a Error if we put 100
         cy.get("input").type(100);
         cy.contains("done").click();
         cy
           .get(".top-message-body")
           .contains("Number of approvals cannot exceed number of members")
         cy.get("input").clear();
+
         cy.get("input").type(2);
         cy.contains("done").click();
 
