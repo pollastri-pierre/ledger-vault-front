@@ -24,7 +24,7 @@ function TabOverview(props: { operation: Operation, account: Account }) {
         </LineRow>
 
         <LineRow label="send date">
-          <DateFormat date={operation.time} />
+          <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label="account">
           <Link

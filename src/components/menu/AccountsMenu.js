@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import { STATUS_UPDATE_IN_PROGRESS } from "utils/accounts";
 import { isAccountOutdated } from "utils/accounts";
 import cx from "classnames";
 import { getAccountTitle } from "utils/accounts";
@@ -19,7 +20,7 @@ const styles = {
     paddingRight: 0
   },
   needUpdate: {
-    opacity: "0.4!important"
+    opacity: "0.2!important"
   },
   name: {
     flex: 1,
@@ -38,6 +39,7 @@ const styles = {
   }
 };
 
+const VISIBLE_STATUS = ["APPROVED", "PENDING_UPDATE"];
 class AccountsMenu extends Component<{
   classes: Object,
   accounts: Array<Account>,
@@ -48,7 +50,7 @@ class AccountsMenu extends Component<{
     return (
       <MenuList>
         {accounts
-          .filter(account => account.status === "APPROVED")
+          .filter(account => VISIBLE_STATUS.indexOf(account.status) > -1)
           .map(account => {
             const curr = allCurrencies.find(
               c => c.scheme === account.currency.name
@@ -65,7 +67,9 @@ class AccountsMenu extends Component<{
                 key={account.id}
                 to={`${match.url}/account/${account.id}`}
                 className={cx(classes.item, {
-                  [classes.needUpdate]: isAccountOutdated(account)
+                  [classes.needUpdate]:
+                    isAccountOutdated(account) ||
+                    account.status === STATUS_UPDATE_IN_PROGRESS
                 })}
               >
                 <span className={classes.name}>{getAccountTitle(account)}</span>

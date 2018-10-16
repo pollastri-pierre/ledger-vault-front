@@ -16,11 +16,12 @@ import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import ModalRoute from "../ModalRoute";
+import { getVisibleAccountsInMenu } from "utils/accounts";
 import { withStyles } from "@material-ui/core/styles";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";
-// import Search from "../icons/full/Search";
+import Search from "../icons/full/Search";
 import Plus from "../icons/full/Plus";
 
 const styles = {
@@ -69,6 +70,7 @@ function Menu(props: {
 }) {
   const { location, classes, accounts, allPendingOperations, match, t } = props;
   const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
+  const visibleAccounts = getVisibleAccountsInMenu(accounts);
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
@@ -109,10 +111,10 @@ function Menu(props: {
         {/* </MenuLink> */}
       </MenuList>
 
-      {accounts.length > 0 && (
+      {visibleAccounts.length > 0 && (
         <div>
           <h4 className={classes.h4}>Accounts</h4>
-          <AccountsMenu location={location} accounts={accounts} />
+          <AccountsMenu location={location} accounts={visibleAccounts} />
         </div>
       )}
 

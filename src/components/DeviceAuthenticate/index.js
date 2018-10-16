@@ -68,10 +68,6 @@ class DeviceAuthenticate extends Component<Props, State> {
         } else {
           url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
         }
-        // const url =
-        //   type === "operations" && account_id
-        //     ? `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`
-        //     : `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         const data = await network(url, "GET");
 
         let challenge, key_handle, entity_id;
@@ -94,16 +90,14 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         this.setState({ step: 2 });
 
-        // $FlowFixMe
-
         let urlPost =
           type === "accounts" && account_id
             ? `/${type}/${account_id}/authentications/authenticate`
             : `/${type}/authentications/authenticate`;
 
         await network(urlPost, "POST", {
-          ...(type === "accounts" && { account_id: entity_id }),
-          ...(type === "operations" && { operation_id: entity_id }),
+          ...(type === "accounts" ? { account_id: entity_id } : {}),
+          ...(type === "operations" ? { operation_id: entity_id } : {}),
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
         });
