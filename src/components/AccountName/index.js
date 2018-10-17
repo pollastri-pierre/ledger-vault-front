@@ -13,7 +13,7 @@ class AccountName extends Component<{
     return (
       <span>
         <BadgeCurrency currency={currency} />
-        <span>{name}</span>
+        <span data-test="name">{name}</span>
       </span>
     );
   }
