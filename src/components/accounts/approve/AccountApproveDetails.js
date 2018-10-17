@@ -72,25 +72,34 @@ function AccountApproveDetails(props: {
       </div>
       <div>
         <LineRow label="balance">
-          <Amount account={account} value={account.balance} strong />
+          <Amount
+            account={account}
+            value={account.balance}
+            strong
+            dataTest="balance"
+          />
         </LineRow>
         <LineRow label="status">
           {percentage === 100 ? (
-            <span className="info-value status">Approved</span>
+            <span data-test="status" className="info-value status">
+              Approved
+            </span>
           ) : (
-            <span className="info-value status">
+            <span data-test="status" className="info-value status">
               Collecting approvals ({percentage}%)
             </span>
           )}
         </LineRow>
         <LineRow label="requested">
-          <DateFormat date={account.created_on} />
+          <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
         <LineRow label="name">
           <AccountName name={account.name} currency={currency} />
         </LineRow>
         <LineRow label="currency">
-          <span className="info-value currency">{currency.units[0].name}</span>
+          <span data-test="currency" className="info-value currency">
+            {currency.name}
+          </span>
         </LineRow>
         <LineRow label={t("pendingAccount:details.approvals")}>
           {security_scheme.quorum} of {account.members.length} members

@@ -65,7 +65,7 @@ function Approvalmember(props: {
 
   const name = member.first_name + " " + member.last_name;
   return (
-    <div className={classes.base}>
+    <div className={classes.base} data-test="approvalmember">
       <div className={classes.status}>
         <MemberAvatar url={member.picture} />
         {isApproved ? (
@@ -76,11 +76,20 @@ function Approvalmember(props: {
       </div>
 
       {/* <span className={classes.name}>{slice}</span> */}
-      <ExpandableText text={name} size={9} className={classes.name} />
+      <ExpandableText
+        text={name}
+        size={9}
+        className={classes.name}
+        dataTest="approvalmember-name"
+      />
       {isApproved ? (
-        <span className={classes.hasApproved}>Approved</span>
+        <span className={classes.hasApproved} data-test="approvalmember-status">
+          Approved
+        </span>
       ) : (
-        <span className={classes.hasApproved}>Pending</span>
+        <span className={classes.hasApproved} data-test="approvalmember-status">
+          Pending
+        </span>
       )}
     </div>
   );
