@@ -20,6 +20,9 @@ context("Account approval", () => {
     cy.route("post", "**/authentications/**").as("authenticate");
     cy.route("post", "**/approve").as("approve");
     cy.route("post", "**/logout").as("logout");
+    cy.route("get", "**/pending").as("pending");
+    cy.route("get", "**/dashboard").as("dashboard");
+
     // set the current device to device 1
     cy
       .request("POST", Cypress.env('api_switch_device'), {
@@ -32,12 +35,38 @@ context("Account approval", () => {
           .contains("continue")
           .click();
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("Welcome to the Ledger Vault platform!")
+          .get(".top-message-title")
+          .contains("Hello");
+
         cy.contains("Pending").click();
 
         cy
           .get(".test-pending-account")
           .eq(0)
           .click();
+
+        // We should verify thoses element before to approve:      //
+        //   * Name of the Account                                 //
+        //   * Status of the Account shuld be 0%                   //
+        //   * Currency of the account                             //
+        //   * Approvals of the Account                            //
+        //   * 3 buttons : close, abort and Approve                //
+        //   * Members tab should display the right Members        //
+        //   * Status tab should display member on pending state   //
+        
+        cy.get('.status').should('be.visible');
+        //.get(".requested").should('be.visible')
+        //cy.get('.name').should('be.visible');
+        cy.get('.currency').should('be.visible');
+        cy.get('button').contains('Approve');
+        cy.get('button').contains('Abort');
+        cy.get('button').contains('Close');
+      }
+        cy.wait("@pending");
 
         // // click on approve to approve, it will display the device modal
         cy
@@ -50,6 +79,11 @@ context("Account approval", () => {
         cy.contains("view profile").click();
         cy.contains("logout").click();
         cy.wait("@logout");
+        cy
+          .get(".top-message-body")
+          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .get(".top-message-title")
+          .contains("See you soon!");
 
         // // set the current device to device 2
         cy
@@ -76,6 +110,17 @@ context("Account approval", () => {
               .contains("Approve")
               .click();
             cy.wait("@approve");
+
+
+            // After logout we should get a message
+            cy.contains("view profile").click();
+            cy.contains("logout").click();
+            cy.wait("@logout");
+            cy
+              .get(".top-message-body")
+              .contains("You have been successfully logged out. You can now safely close your web browser.")
+              .get(".top-message-title")
+              .contains("See you soon!");
           });
       });
   });

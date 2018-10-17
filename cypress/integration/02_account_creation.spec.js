@@ -18,6 +18,7 @@ context("Account creation", () => {
     });
     cy.server();
     cy.route("post", "**/authentications/**").as("authenticate");
+    cy.route("post", "**/logout").as("logout");
 
     cy
       .request("POST", Cypress.env('api_switch_device'), {
@@ -27,6 +28,13 @@ context("Account creation", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("Welcome to the Ledger Vault platform!")
+          .get(".top-message-title")
+          .contains("Hello");
+
         cy.get(".test-new-account").click();
         cy.contains("Bitcoin Testnet").click();
         cy.get("input").type("BTC Testnet");
@@ -74,6 +82,24 @@ context("Account creation", () => {
         // click on done to create the account, it will display the authenticate with device modal
         cy.contains("done").click();
         cy.wait("@authenticate");
+
+        //We should get a Account request created message
+        cy
+          .get(".top-message-body")
+          .contains("the account request has been successfully created")
+          .get(".top-message-title")
+          .contains("account request created");
+
+        // After logout we should get a message
+        cy.contains("view profile").click();
+        cy.contains("logout").click();
+        cy.wait("@logout");
+        cy
+          .get(".top-message-body")
+          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .get(".top-message-title")
+          .contains("See you soon!");
+
       });
   });
 });

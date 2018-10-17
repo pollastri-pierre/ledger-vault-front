@@ -20,6 +20,7 @@ context("Operation approval", () => {
     cy.route("post", "**/authentications/**").as("authenticate");
     cy.route("post", "**/approve").as("approve");
     cy.route("post", "**/logout").as("logout");
+
     // set the current device to device 1
     cy
       .request("POST", Cypress.env('api_switch_device'), {
@@ -32,6 +33,13 @@ context("Operation approval", () => {
           .contains("continue")
           .click();
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("Welcome to the Ledger Vault platform!")
+          .get(".top-message-title")
+          .contains("Hello");
+
         cy.contains("Pending").click();
 
         cy
@@ -46,10 +54,23 @@ context("Operation approval", () => {
           .click();
         cy.wait("@approve");
 
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("the operation request has been successfully approved")
+          .get(".top-message-title")
+          .contains("operation request approved");
+
         // // // logout the current user
         cy.get("[data-test=view-profile]").click();
         cy.get("[data-test=logout]").click();
         cy.wait("@logout");
+        // Logout succefully message
+        cy
+          .get(".top-message-body")
+          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .get(".top-message-title")
+          .contains("See you soon!");
 
         // set the current device to device 2
         cy
@@ -63,6 +84,14 @@ context("Operation approval", () => {
               .contains("continue")
               .click();
             cy.wait("@authenticate");
+
+            //We should get a Welcome blue message
+            cy
+              .get(".top-message-body")
+              .contains("Welcome to the Ledger Vault platform!")
+              .get(".top-message-title")
+              .contains("Hello");
+
             cy.contains("Pending").click();
 
             cy
@@ -74,6 +103,13 @@ context("Operation approval", () => {
               .contains("Approve")
               .click();
             cy.wait("@approve");
+            cy
+              .get(".top-message-body")
+              .contains("the operation request has been successfully approved")
+              .get(".top-message-title")
+              .contains("operation request approved");
+
+
           });
       });
   });
