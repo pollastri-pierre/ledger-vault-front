@@ -20,7 +20,14 @@ function ApprovalPercentage(props: {
 
   const label = (
     <p>
-      {approved.length} collected, {nbTotal - approved.length} remaining
+      <span data-test="approvalpercentage-collected">
+        {approved.length}
+      </span>{" "}
+      collected,{" "}
+      <span data-test="approvalpercentage-total">
+        {nbTotal - approved.length}
+      </span>{" "}
+      remaining
       <span> ({100 * percentage}%)</span>
     </p>
   );
