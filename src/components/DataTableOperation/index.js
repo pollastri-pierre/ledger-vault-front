@@ -6,6 +6,7 @@ import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
+import OperationStatus from "components/OperationStatus";
 import AccountName from "../AccountName";
 import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
@@ -52,16 +53,18 @@ class OperationNoteLink extends Component<{
         <Link to={`./operation/${operation.id}/2`} onClick={stopPropagation}>
           <Comment color={colors.mouse} className={classes.comment} />
         </Link>
-        {!note ? null : (
-          <div className="tooltip-label">
-            <p className="tooltip-label-title">{note.title}</p>
-            <p className="tooltip-label-name">
-              {note.author.first_name}&nbsp;{note.author.last_name}
-            </p>
-            <div className="hr" />
-            <p className="tooltip-label-body">{note.content}</p>
-          </div>
-        )}
+        {note &&
+          note.title !== "" &&
+          note.content !== "" && (
+            <div className="tooltip-label">
+              <p className="tooltip-label-title">{note.title}</p>
+              <p className="tooltip-label-name">
+                {note.author.first_name}&nbsp;{note.author.last_name}
+              </p>
+              <div className="hr" />
+              <p className="tooltip-label-body">{note.content}</p>
+            </div>
+          )}
       </span>
     );
   }
@@ -143,9 +146,21 @@ class DateColumn extends Component<Cell> {
     return (
       <span>
         <DateFormat format="ddd D MMM, h:mmA" date={operation.created_on} />
-        <OpNoteLink operation={operation} />
+        {/* <OpNoteLink operation={operation} /> */}
       </span>
     );
+  }
+}
+
+class NoteColumn extends Component<Cell> {
+  render() {
+    const { operation } = this.props;
+    const note = operation.notes && operation.notes[0];
+
+    if (note && note.title && note.title !== "") {
+      return <span>{note.title}</span>;
+    }
+    return <span />;
   }
 }
 
@@ -181,9 +196,7 @@ class AddressColumn extends Component<Cell> {
 class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
-    return (
-      <span>{operation.confirmations > 0 ? "Confirmed" : "Not confirmed"}</span>
-    );
+    return <OperationStatus operation={operation} />;
   }
 }
 
@@ -193,7 +206,7 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount}
+        value={operation.amount || operation.price.amount}
         type={operation.type}
         alwaysShowSign
       />
@@ -206,7 +219,10 @@ class CountervalueColumn extends Component<Cell> {
     const { operation, account } = this.props;
     if (account) {
       return (
-        <CounterValue from={account.currency.name} value={operation.amount} />
+        <CounterValue
+          from={account.currency.name}
+          value={operation.amount || operation.price.amount}
+        />
       );
     }
     return null;
@@ -237,6 +253,11 @@ const COLS = [
     className: "countervalue",
     title: "",
     Cell: CountervalueColumn
+  },
+  {
+    className: "note",
+    title: "label",
+    Cell: NoteColumn
   },
   {
     className: "amount",
@@ -301,8 +322,13 @@ class DataTableOperation extends Component<
     <Row {...props} openOperation={this.openOperation} />
   );
 
+  componentDidMount() {
+    console.log(COLS.filter(c => this.props.columnIds.includes(c.className)));
+  }
+
   componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
+      console.log(COLS);
       this.setState({
         columns: COLS.filter(c => props.columnIds.includes(c.className))
       });
@@ -311,6 +337,7 @@ class DataTableOperation extends Component<
 
   render() {
     const { columns } = this.state;
+    console.log(columns);
     const { accounts, operations } = this.props;
     const data = operations.map(operation => ({
       operation,

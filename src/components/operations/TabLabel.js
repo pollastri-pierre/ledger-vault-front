@@ -29,7 +29,7 @@ const styles = {
 };
 function TabLabel(props: { note: Note, classes: Object }) {
   const { note, classes } = props;
-  if (note) {
+  if (note && note.title !== "" && note.content !== "") {
     return (
       <div>
         <h3 className={classes.title}>{note.title}</h3>

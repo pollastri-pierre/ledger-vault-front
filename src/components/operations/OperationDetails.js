@@ -72,7 +72,11 @@ class OperationDetails extends Component<Props, *> {
             indicatorColor="primary"
           >
             <Tab label="Overview" disableRipple />
-            <Tab label="Details" disableRipple />
+            <Tab
+              label="Details"
+              disableRipple
+              disabled={!operation.transaction}
+            />
             <Tab label="Label" disableRipple />
           </Tabs>
         </header>

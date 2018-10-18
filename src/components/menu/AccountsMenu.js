@@ -8,6 +8,7 @@ import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import MenuList from "@material-ui/core/MenuList";
+import CurrencyIndex from "components/CurrencyIndex";
 import MenuLink from "../MenuLink";
 
 import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
@@ -53,7 +54,7 @@ class AccountsMenu extends Component<{
           .filter(account => VISIBLE_STATUS.indexOf(account.status) > -1)
           .map(account => {
             const curr = allCurrencies.find(
-              c => c.scheme === account.currency.name
+              c => c.id === account.currency.name
             ) || {
               color: "black"
             };
@@ -72,8 +73,21 @@ class AccountsMenu extends Component<{
                     account.status === STATUS_UPDATE_IN_PROGRESS
                 })}
               >
-                <span className={classes.name}>{getAccountTitle(account)}</span>
-                <span className={classes.unit}>{unit.code}</span>
+                {isAccountOutdated(account) ? (
+                  <span className={classes.name}>
+                    <CurrencyIndex
+                      index={account.index}
+                      currency={account.currency.name}
+                    />
+                  </span>
+                ) : (
+                  <div>
+                    <span className={classes.name}>
+                      {getAccountTitle(account)}
+                    </span>
+                    <span className={classes.unit}>{unit.code}</span>
+                  </div>
+                )}
               </MenuLink>
             );
           })}

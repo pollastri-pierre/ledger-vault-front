@@ -48,7 +48,7 @@ class AccountOption extends Component<{
             {getAccountTitle(account)}
           </span>
           <span className={classes.accountUnit}>
-            {account.currency.units[account.settings.unitIndex].code}
+            {/* {account.currency.units[account.settings.unitIndex].code} */}
           </span>
         </div>
       </MenuItem>

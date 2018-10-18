@@ -103,12 +103,12 @@ function Menu(props: {
             {t("menu:pending_requests")}
           </span>
         </MenuLink>
-        {/* <MenuLink to={`${match.url}/search`}> */}
-        {/*   <span className={classes.link}> */}
-        {/*     <Search className={classes.searchIcon} /> */}
-        {/*     {t("menu.search")} */}
-        {/*   </span> */}
-        {/* </MenuLink> */}
+        <MenuLink to={`${match.url}/search`}>
+          <span className={classes.link}>
+            <Search className={classes.searchIcon} />
+            {t("menu:search")}
+          </span>
+        </MenuLink>
       </MenuList>
 
       {visibleAccounts.length > 0 && (

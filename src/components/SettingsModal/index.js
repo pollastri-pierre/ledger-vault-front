@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import CurrencyIndex from "components/CurrencyIndex";
 import { getAccountTitle } from "utils/accounts";
 import cx from "classnames";
 import debounce from "lodash/debounce";
@@ -423,7 +424,10 @@ function Side({
                   {getAccountTitle(account)}
                 </div>
                 <div className={classes.sideItemCurrencyName}>
-                  {account.currency.name}
+                  <CurrencyIndex
+                    currency={account.currency.name}
+                    index={account.index}
+                  />
                 </div>
               </NavLink>
             );

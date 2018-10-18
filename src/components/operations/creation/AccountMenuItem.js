@@ -1,5 +1,6 @@
 //@flow
 import React, { PureComponent } from "react";
+import CurrencyIndex from "components/CurrencyIndex";
 import CounterValue from "components/CounterValue";
 import { getAccountTitle } from "utils/accounts";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
@@ -82,9 +83,10 @@ class AccountMenuItem extends PureComponent<{
           </span>
         </div>
         <div className={classes.accountBottom}>
-          <span className={classes.accountCurrency}>
-            {account.currency.name}
-          </span>
+          <CurrencyIndex
+            currency={account.currency.name}
+            index={account.index}
+          />
           <span className={classes.accountCountervalue}>
             <CounterValue
               value={account.balance}
