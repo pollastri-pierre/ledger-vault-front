@@ -19,6 +19,7 @@ context("Account Abort", () => {
     cy.server();
     cy.route("post", "**/authentications/**").as("authenticate");
     cy.route("post", "**/abort").as("abort");
+    cy.route("post", "**/logout").as("logout");
 
     cy
       .request("POST", Cypress.env('api_switch_device'), {
@@ -28,6 +29,13 @@ context("Account Abort", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("Welcome to the Ledger Vault platform!")
+          .get(".top-message-title")
+          .contains("Hello");
+
         cy.get(".test-new-account").click();
         cy.contains("Litecoin").click();
         cy.get("input").type("LTC TEST");
@@ -70,14 +78,22 @@ context("Account Abort", () => {
             .get("button")
             .contains("Abort")
             .click();
+          cy
+            .get(".top-message-body")
+            .contains("the account request has been successfully aborted")
+            .get(".top-message-title")
+            .contains("account request aborted");
           cy.wait("@abort");
 
-          // // logout the current user
+          // After logout we should get a message
           cy.contains("view profile").click();
           cy.contains("logout").click();
           cy.wait("@logout");
-
-
+          cy
+            .get(".top-message-body")
+            .contains("You have been successfully logged out. You can now safely close your web browser.")
+            .get(".top-message-title")
+            .contains("See you soon!");
         });
     });
 });

@@ -21,7 +21,6 @@ context("Account approval", () => {
     cy.route("post", "**/approve").as("approve");
     cy.route("post", "**/logout").as("logout");
     cy.route("get", "**/pending").as("pending");
-    cy.route("get", "**/dashboard").as("dashboard");
 
     // set the current device to device 1
     cy
@@ -45,29 +44,23 @@ context("Account approval", () => {
         cy.contains("Pending").click();
 
         cy
-          //.get(".test-pending-account")
-          .get("[data-test=pending-operation]")
+          .get('.test-pending-account')
           .eq(0)
           .click();
         cy.wait("@pending");
-        // We should verify thoses element before to approve:      //
-        //   * Name of the Account                                 //
-        //   * Status of the Account shuld be 0%                   //
-        //   * Currency of the account                             //
-        //   * Approvals of the Account                            //
-        //   * 3 buttons : close, abort and Approve                //
-        //   * Members tab should display the right Members        //
-        //   * Status tab should display member on pending state   //
-        cy.get('.operation-list').eq(0).contains('status');
-        cy.get('.approval-status').contains("Collecting Approvals (0/2)");
-        cy.get("[data-test=name]").contains("BTC Testnet");
 
+        // Checking Value
+        cy.get("[data-test=balance]").contains("-");
+        cy.get("[data-test=status]").contains("Collecting approvals (0%)");
+        cy.get("[data-test=requested]").should('be.visible');
+        cy.get("[data-test=name]").contains("BTC Testnet");
+        cy.get("[data-test=currency]").contains("bitcoin_testnet");
         cy.get('button').contains('Approve').should('be.visible');
         cy.get('button').contains('Abort');
         cy.get('button').contains('Close');
         cy.wait("@pending");
 
-        // // click on approve to approve, it will display the device modal
+        // // click on approve to approve the account, it will display the device modal
         cy
           .get("button")
           .contains("Approve")
@@ -103,8 +96,8 @@ context("Account approval", () => {
               .eq(0)
               .click();
             cy.wait("@pending");
-
-            cy.get('.approval-status').contains("Collecting Approvals (0/2)");
+            // Make sure that the approval is 1/2
+            cy.get('.approval-status').contains("Collecting approvals (50%)");
 
             // // click on approve to approve, it will display the device modal
             cy

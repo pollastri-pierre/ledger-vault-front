@@ -47,6 +47,15 @@ context("Operation approval", () => {
           .eq(0)
           .click();
 
+          // Checking Value
+          cy.get('.operation-list').eq(0).contains('status');
+          cy.get('.approval-status').contains("Collecting Approvals (0/2)");
+          cy.get("[data-test=name]").contains("BTC Testnet");
+
+          cy.get('button').contains('Approve').should('be.visible');
+          cy.get('button').contains('Abort');
+          cy.get('button').contains('Close');
+
         // click on approve to approve, it will display the device modal
         cy
           .get("[data-test=dialog-button]")
@@ -98,18 +107,19 @@ context("Operation approval", () => {
               .get("[data-test=pending-operation]")
               .eq(0)
               .click();
+            cy.get('.approval-status').contains("Collecting Approvals (1/2)");
+
             cy
               .get("[data-test=dialog-button]")
               .contains("Approve")
               .click();
             cy.wait("@approve");
+
             cy
               .get(".top-message-body")
               .contains("the operation request has been successfully approved")
               .get(".top-message-title")
               .contains("operation request approved");
-
-
           });
       });
   });
