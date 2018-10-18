@@ -45,10 +45,11 @@ context("Account approval", () => {
         cy.contains("Pending").click();
 
         cy
-          .get(".test-pending-account")
+          //.get(".test-pending-account")
+          .get("[data-test=pending-operation]")
           .eq(0)
           .click();
-
+        cy.wait("@pending");
         // We should verify thoses element before to approve:      //
         //   * Name of the Account                                 //
         //   * Status of the Account shuld be 0%                   //
@@ -57,15 +58,13 @@ context("Account approval", () => {
         //   * 3 buttons : close, abort and Approve                //
         //   * Members tab should display the right Members        //
         //   * Status tab should display member on pending state   //
-        
-        cy.get('.status').should('be.visible');
-        //.get(".requested").should('be.visible')
-        //cy.get('.name').should('be.visible');
-        cy.get('.currency').should('be.visible');
-        cy.get('button').contains('Approve');
+        cy.get('.operation-list').eq(0).contains('status');
+        cy.get('.approval-status').contains("Collecting Approvals (0/2)");
+        cy.get("[data-test=name]").contains("BTC Testnet");
+
+        cy.get('button').contains('Approve').should('be.visible');
         cy.get('button').contains('Abort');
         cy.get('button').contains('Close');
-      }
         cy.wait("@pending");
 
         // // click on approve to approve, it will display the device modal
@@ -103,6 +102,9 @@ context("Account approval", () => {
               .get(".test-pending-account")
               .eq(0)
               .click();
+            cy.wait("@pending");
+
+            cy.get('.approval-status').contains("Collecting Approvals (0/2)");
 
             // // click on approve to approve, it will display the device modal
             cy
