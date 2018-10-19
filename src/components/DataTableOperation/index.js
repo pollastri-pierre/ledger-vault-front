@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
+import cx from "classnames";
 import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
@@ -37,6 +38,10 @@ const styles = {
       width: "5px",
       transition: "width 200ms ease"
     }
+  },
+  unkown: {
+    opacity: 0.4,
+    cursor: "default !important"
   }
 };
 
@@ -144,7 +149,7 @@ class DateColumn extends Component<Cell> {
       <span>
         <DateFormat
           format="ddd D MMM, h:mmA"
-          date={new Date(operation.time).toISOString()}
+          date={new Date(operation.created_on).toISOString()}
         />
         <OpNoteLink operation={operation} />
       </span>
@@ -165,6 +170,9 @@ class AddressColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     let hash = "";
+    if (operation.error) {
+      return <span className="hash">{operation.recipient}</span>;
+    }
     if (operation.type === "SEND") {
       hash = operation.senders[0];
     } else {
@@ -184,6 +192,9 @@ class AddressColumn extends Component<Cell> {
 class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
+    if (operation.error) {
+      return <span>Unkown</span>;
+    }
     return (
       <span>{operation.confirmations > 0 ? "Confirmed" : "Not confirmed"}</span>
     );
@@ -196,7 +207,7 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount}
+        value={operation.amount || (operation.price && operation.price.amount)}
         type={operation.type}
         alwaysShowSign
       />
@@ -271,8 +282,12 @@ class RowT extends Component<{
     return (
       <tr
         style={{ cursor: "pointer" }}
-        className={classes.tr}
-        onClick={() => openOperation(operation.id, 0)}
+        className={cx(classes.tr, { [classes.unkown]: operation.error })}
+        onClick={() => {
+          if (!operation.error) {
+            openOperation(operation.id, 0);
+          }
+        }}
       >
         {children}
       </tr>
