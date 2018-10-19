@@ -149,7 +149,7 @@ class DateColumn extends Component<Cell> {
       <span>
         <DateFormat
           format="ddd D MMM, h:mmA"
-          date={new Date(operation.time).toISOString()}
+          date={new Date(operation.created_on).toISOString()}
         />
         <OpNoteLink operation={operation} />
       </span>
