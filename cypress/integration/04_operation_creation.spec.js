@@ -13,6 +13,8 @@ context("Operation Creation", () => {
     cy.route("post", "**/validation/**").as("validation");
     cy.route("post", "**/authentications/**").as("authenticate");
     cy.route("post", "**/fees").as("fees");
+    cy.route("post", "**/logout").as("logout");
+
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
@@ -29,6 +31,13 @@ context("Operation Creation", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("Welcome to the Ledger Vault platform!")
+          .get(".top-message-title")
+          .contains("Hello");
+
         cy.get("[data-test=new-operation]").click();
         cy
           .get("[data-test=operation-creation-accounts] li:first")
@@ -58,6 +67,21 @@ context("Operation Creation", () => {
           .contains("Confirm")
           .click({ force: true });
         cy.wait("@authenticate");
+        //We should get a Welcome blue message
+        cy
+          .get(".top-message-body")
+          .contains("the operation request has been successfully created")
+          .get(".top-message-title")
+          .contains("operation request created");
+
+        cy.contains("view profile").click();
+        cy.contains("logout").click();
+        cy.wait("@logout");
+        cy
+          .get(".top-message-body")
+          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .get(".top-message-title")
+          .contains("See you soon!");
       });
   });
 });

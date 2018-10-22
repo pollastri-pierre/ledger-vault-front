@@ -36,7 +36,7 @@ context("Operation Abort", () => {
         cy.get("[data-test=new-operation]").click();
         cy
           .get("[data-test=operation-creation-accounts]")
-          .contains('BTC Testnet #1')
+          .contains('BTC Testnet #0')
           .click({ force: true });
 
         cy.get("[data-test=unit-select]").click();
@@ -106,11 +106,21 @@ context("Operation Abort", () => {
           .get("button")
           .contains("Abort")
           .click();
+        cy
+          .get(".top-message-body")
+          .contains("the operation request has been successfully aborted")
+          .get(".top-message-title")
+          .contains("operation request aborted");
         cy.wait("@abort");
         // logout
         cy.contains("view profile").click();
         cy.contains("logout").click();
         cy.wait("@logout");
+        cy
+          .get(".top-message-body")
+          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .get(".top-message-title")
+          .contains("See you soon!");
       });
   });
 });
