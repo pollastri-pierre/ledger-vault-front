@@ -12,7 +12,7 @@ class DateFormat extends Component<*> {
   };
   render() {
     const { date, format } = this.props;
-    return <span>{moment(date).calendar(null, format)}</span>;
+    return <span>{moment(date).format(format)}</span>;
   }
 }
 
