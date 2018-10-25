@@ -78,43 +78,47 @@ function Menu(props: {
         <PendingsMenuBadge />
       </span>
 
-      <MenuList>
-        <MenuLink to={`${match.url}/dashboard`}>
-          <span className={classes.link}>
-            <Home className={classes.icon} />
-            {t("menu:dashboard")}
-          </span>
-        </MenuLink>
-        <MenuLink
-          to={`${location.pathname}/new-operation`}
-          data-test="new-operation"
-          disabled={
-            !isCreateOperationEnabled(accounts, pendingApprovalOperations)
-          }
-        >
-          <span className={classes.link}>
-            <Plus className={classes.icon} />
-            {t("menu:new_operation")}
-          </span>
-        </MenuLink>
-        <MenuLink to={`${match.url}/pending`}>
-          <span className={classes.link}>
-            <Lines className={classes.icon} />
-            {t("menu:pending_requests")}
-          </span>
-        </MenuLink>
-        <MenuLink to={`${match.url}/search`}>
-          <span className={classes.link}>
-            <Search className={classes.searchIcon} />
-            {t("menu:search")}
-          </span>
-        </MenuLink>
-      </MenuList>
+      <div data-test="dashboard_menu">
+        <MenuList>
+          <MenuLink to={`${match.url}/dashboard`}>
+            <span className={classes.link}>
+              <Home className={classes.icon} />
+              {t("menu:dashboard")}
+            </span>
+          </MenuLink>
+          <MenuLink
+            to={`${location.pathname}/new-operation`}
+            data-test="new-operation"
+            disabled={
+              !isCreateOperationEnabled(accounts, pendingApprovalOperations)
+            }
+          >
+            <span className={classes.link}>
+              <Plus className={classes.icon} />
+              {t("menu:new_operation")}
+            </span>
+          </MenuLink>
+          <MenuLink to={`${match.url}/pending`}>
+            <span className={classes.link}>
+              <Lines className={classes.icon} />
+              {t("menu:pending_requests")}
+            </span>
+          </MenuLink>
+          <MenuLink to={`${match.url}/search`}>
+            <span className={classes.link}>
+              <Search className={classes.searchIcon} />
+              {t("menu:search")}
+            </span>
+          </MenuLink>
+        </MenuList>
+      </div>
 
       {visibleAccounts.length > 0 && (
         <div>
           <h4 className={classes.h4}>Accounts</h4>
-          <AccountsMenu location={location} accounts={visibleAccounts} />
+          <div data-test="account_menu">
+            <AccountsMenu location={location} accounts={visibleAccounts} />
+          </div>
         </div>
       )}
 

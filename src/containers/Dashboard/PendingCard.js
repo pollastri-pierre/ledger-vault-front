@@ -120,27 +120,36 @@ class PendingCard extends Component<{
         className="pendingCard"
       >
         <header className={classes.header}>
-          <CardField label={t("dashboard:operations")} align="center">
+          <CardField
+            label={t("dashboard:operations")}
+            align="center"
+            dataTest="dashboard_nb_pending_operations"
+          >
             {totalOperations}
           </CardField>
-          <CardField label={t("onboarding:accounts")} align="center">
+          <CardField
+            label={t("onboarding:accounts")}
+            align="center"
+            dataTest="dashboard_nb_pending_operations"
+          >
             {totalAccounts}
           </CardField>
         </header>
-        <div className="pending-list">
-          {filtered_operations
-            .map((operation, i) => (
+        <div className="pending-list" data-test="pending-list">
+          <div data-test="op_list">
+            {filtered_operations.map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
                 operation={operation}
                 account={allAccounts.find(a => a.id === operation.account_id)}
               />
-            ))
-            .concat(
-              accounts.map((account, i) => (
-                <AccountRow key={"ac_" + i} account={account} />
-              ))
-            )}
+            ))}
+          </div>
+          <div data-test="ac_list">
+            {accounts.map((account, i) => (
+              <AccountRow key={"ac_" + i} account={account} />
+            ))}
+          </div>
         </div>
       </Card>
     );

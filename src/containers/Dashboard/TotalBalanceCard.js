@@ -56,7 +56,10 @@ class TotalBalance extends Component<{
         className={classes.card}
       >
         <div className={classes.body}>
-          <CardField label={<DateFormat date={new Date()} />}>
+          <CardField
+            label={<DateFormat date={new Date()} />}
+            dataTest="dashboard_total_balance"
+          >
             <CounterValues accounts={accounts} />
           </CardField>
           <div style={{ minWidth: "200px" }}>
@@ -66,13 +69,25 @@ class TotalBalance extends Component<{
             {/*   filter={TotalBalanceFilters.find(f => f.key === filter)} */}
             {/* /> */}
           </div>
-          <CardField label={t("dashboard:accounts")} align="right">
+          <CardField
+            label={t("dashboard:accounts")}
+            align="right"
+            dataTest="dashboard_nb_accounts"
+          >
             {accounts.length}
           </CardField>
-          <CardField label={t("dashboard:currencies")} align="right">
+          <CardField
+            label={t("dashboard:currencies")}
+            align="right"
+            dataTest="dashboard_nb_currencies"
+          >
             {nbCurrency}
           </CardField>
-          <CardField label={t("dashboard:members")} align="right">
+          <CardField
+            label={t("dashboard:members")}
+            align="right"
+            dataTest="dashboard_nb_members"
+          >
             {members.length}
           </CardField>
         </div>
