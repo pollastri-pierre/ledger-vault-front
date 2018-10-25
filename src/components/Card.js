@@ -57,6 +57,7 @@ class Card extends Component<{
   Header: React$ComponentType<*>,
   children: React$Node | string,
   className: string,
+  dataTest: ?string,
   reloading?: boolean,
   classes: Object,
   link?: string
@@ -71,6 +72,7 @@ class Card extends Component<{
       children,
       classes,
       reloading,
+      dataTest,
       className
     } = this.props;
     if (link) {
@@ -78,6 +80,7 @@ class Card extends Component<{
         <Link
           to={link}
           className={classnames(classes.base, classes.link, className)}
+          data-test={dataTest}
         >
           <Header {...this.props} />
           <div className={reloading ? [classes.reloading] : ""}>{children}</div>
@@ -85,7 +88,7 @@ class Card extends Component<{
       );
     }
     return (
-      <div className={classnames(classes.base, className)}>
+      <div className={classnames(classes.base, className)} data-test={dataTest}>
         <Header {...this.props} />
         <div className={reloading ? [classes.reloading] : ""}>{children}</div>
       </div>

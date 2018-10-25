@@ -120,14 +120,22 @@ class PendingCard extends Component<{
         className="pendingCard"
       >
         <header className={classes.header}>
-          <CardField label={t("dashboard:operations")} align="center">
+          <CardField
+            label={t("dashboard:operations")}
+            align="center"
+            dataTest="dashboard_nb_pending_operations"
+          >
             {totalOperations}
           </CardField>
-          <CardField label={t("onboarding:accounts")} align="center">
+          <CardField
+            label={t("onboarding:accounts")}
+            align="center"
+            dataTest="dashboard_nb_pending_operations"
+          >
             {totalAccounts}
           </CardField>
         </header>
-        <div className="pending-list">
+        <div className="pending-list" data-test="pending-list">
           {filtered_operations
             .map((operation, i) => (
               <OperationRow
