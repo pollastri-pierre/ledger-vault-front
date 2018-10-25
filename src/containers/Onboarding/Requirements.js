@@ -141,14 +141,14 @@ const Requirements = ({
     </div>
 
     <div className={classes.row}>
-      <RequirementUnit icon={<BlueDevice color="red" />}>
-        {t("onboarding:blue_red")}
-      </RequirementUnit>
       <RequirementUnit icon={<BlueDevice color="orange" />}>
         <div>{t("onboarding:blue_orange")}</div>
       </RequirementUnit>
       <RequirementUnit icon={<BlueDevice color="green" />}>
         {t("onboarding:blue_green")}
+      </RequirementUnit>
+      <RequirementUnit icon={<BlueDevice color="red" />}>
+        {t("onboarding:blue_red")}
       </RequirementUnit>
     </div>
   </div>
