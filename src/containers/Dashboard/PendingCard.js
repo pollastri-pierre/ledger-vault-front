@@ -136,19 +136,20 @@ class PendingCard extends Component<{
           </CardField>
         </header>
         <div className="pending-list" data-test="pending-list">
-          {filtered_operations
-            .map((operation, i) => (
+          <div data-test="op_list">
+            {filtered_operations.map((operation, i) => (
               <OperationRow
                 key={"op_" + i}
                 operation={operation}
                 account={allAccounts.find(a => a.id === operation.account_id)}
               />
-            ))
-            .concat(
-              accounts.map((account, i) => (
-                <AccountRow key={"ac_" + i} account={account} />
-              ))
-            )}
+            ))}
+          </div>
+          <div data-test="ac_list">
+            {accounts.map((account, i) => (
+              <AccountRow key={"ac_" + i} account={account} />
+            ))}
+          </div>
         </div>
       </Card>
     );
