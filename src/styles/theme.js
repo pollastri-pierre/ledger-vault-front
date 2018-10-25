@@ -54,6 +54,11 @@ const theme = {
         paddingRight: "0!important"
       }
     },
+    MuiInputBase: {
+      root: {
+        color: "rgb(0,0,0)"
+      }
+    },
     MuiInput: {
       root: {
         fontSize: 13
@@ -147,6 +152,16 @@ const theme = {
       gutters: {
         paddingLeft: 20,
         paddingRight: 20
+      }
+    },
+    MuiPickersToolbar: {
+      toolbar: {
+        backgroundColor: "#1d2028"
+      }
+    },
+    MuiPickersDay: {
+      day: {
+        color: "#1d2028"
       }
     },
     MuiPopover: {

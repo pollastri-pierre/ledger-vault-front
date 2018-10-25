@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, Fragment } from "react";
+import CurrencyIndex from "components/CurrencyIndex";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -267,7 +268,11 @@ class UpdateAccounts extends Component<Props> {
                     key={account.id}
                   >
                     <span className={classes.accountName}>
-                      {getAccountTitle(account)}
+                      <div>TO DO</div>
+                      <CurrencyIndex
+                        currency={account.currency.name}
+                        index={account.index}
+                      />
                     </span>
                   </MenuItem>
                 ))}
@@ -279,10 +284,11 @@ class UpdateAccounts extends Component<Props> {
               {selectedAccount && (
                 <div>
                   <Row label="Account">{selectedAccount.name}</Row>
-                  <Row label="Cryptocurrency/Index">
-                    <span>
-                      {selectedAccount.currency.name} #{selectedAccount.index}
-                    </span>
+                  <Row label="Cryptocurrency / Index">
+                    <CurrencyIndex
+                      currency={selectedAccount.currency.name}
+                      index={selectedAccount.index}
+                    />
                   </Row>
                   <Row label="Balance">
                     <CurrencyAccountValue

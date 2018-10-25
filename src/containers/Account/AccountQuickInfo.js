@@ -1,6 +1,8 @@
 //@flow
 import Card from "components/Card";
 import { Link } from "react-router-dom";
+import DateFormat from "components/DateFormat";
+import CurrencyIndex from "components/CurrencyIndex";
 import {
   STATUS_UPDATE_IN_PROGRESS,
   isAccountOutdated,
@@ -19,17 +21,17 @@ import type { Account, Member } from "data/types";
 
 const row = {
   base: {
-    lineHeight: "20px"
+    lineHeight: "24px"
   },
   label: {
-    fontSize: 10,
+    fontSize: 12,
     textTransform: "uppercase",
     fontWeight: 600,
-    color: "#767676"
+    color: "#424141"
   },
   value: {
-    fontSize: 12,
-    color: "#999999"
+    fontSize: 13,
+    color: "#585858"
   }
 };
 const Row = withStyles(
@@ -41,7 +43,7 @@ const Row = withStyles(
     classes
   }: {
     label: string,
-    value: string,
+    value: *,
     classes: { [_: $Keys<typeof row>]: string }
   }) => (
     <div className={classes.base}>
@@ -91,25 +93,47 @@ type Props = {
   t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 };
+
+/* display only the currency and index if the account needs to be updated*/
+const AccountTitle = ({ account }: { account: Account }) => (
+  <div style={{ fontSize: 23 }}>
+    {isAccountOutdated(account) ? (
+      <CurrencyIndex index={account.index} currency={account.currency.name} />
+    ) : (
+      <div>{account.name}</div>
+    )}
+  </div>
+);
 class AccountQuickInfo extends Component<Props> {
   render() {
     const { account, classes, t, match, me } = this.props;
     const orga = location.pathname.split("/")[1];
     return (
-      <Card title={account.name}>
+      <Card title={<AccountTitle account={account} />}>
         <div className={classes.base}>
           <div style={{ width: 300 }}>
-            <Row label="creation date" value={account.created_on} />
             <Row
-              label="Cryptocurrency/Index"
-              value={`${account.currency.name} / #${account.index}`}
+              label={t("accountView:summary.index")}
+              value={
+                <CurrencyIndex
+                  currency={account.currency.name}
+                  index={account.index}
+                />
+              }
             />
             <Row label="Unit" value={account.settings.currency_unit.code} />
+            <Row
+              label={t("accountView:summary.date")}
+              value={<DateFormat date={account.created_on} />}
+            />
           </div>
           <div style={{ width: 300 }}>
-            <Row label="members" value={account.members.length} />
             <Row
-              label="Required of approvals"
+              label={t("accountView:summary.members")}
+              value={account.members.length}
+            />
+            <Row
+              label={t("accountView:summary.quorum")}
               value={account.security_scheme.quorum}
             />
           </div>

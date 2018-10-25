@@ -6,16 +6,14 @@ class DateFormat extends Component<*> {
   props: {
     date: Date | string,
     dataTest: ?string,
-    format: Object
+    format: string
   };
   static defaultProps = {
     format: "lll"
   };
   render() {
     const { date, format, dataTest } = this.props;
-    return (
-      <span data-test={dataTest}>{moment(date).calendar(null, format)}</span>
-    );
+    return <span data-test={dataTest}>{moment(date).format(format)}</span>;
   }
 }
 

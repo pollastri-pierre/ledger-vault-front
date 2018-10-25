@@ -5,8 +5,7 @@ export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
 export const VISIBLE_MENU_STATUS = ["APPROVED", "PENDING_UPDATE"];
 export const APPROVE = "APPROVE";
 
-export const getAccountTitle = (account: Account) =>
-  `${account.name} #${account.index}`;
+export const getAccountTitle = (account: Account) => `${account.name}`;
 
 export const getOutdatedAccounts = (accounts: Account[]) =>
   accounts.filter(a => a.is_hsm_coin_app_updated === false);

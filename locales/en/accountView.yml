@@ -13,4 +13,10 @@ last_op:
   address: address
   status: status
   amount: amount
+summary:
+  index: Cryptocurrency / Index
+  unit: unit
+  date: creation date
+  members: members
+  quorum: required approvals
 

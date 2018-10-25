@@ -55,7 +55,7 @@ class OverviewOperation extends Component<{
             <CounterValue value={amount} from={account.currency.name} />
           </p>
           <ArrowDown className={classes.down} />
-          <p className={classes.hash}>{hash}</p>
+          {hash && <p className={classes.hash}>{hash}</p>}
         </div>
       </div>
     );
