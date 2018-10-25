@@ -97,16 +97,13 @@ context("Account approval", () => {
               .click();
             cy.wait("@pending");
             // Make sure that the approval is 1/2
-            cy.get('.approval-status').contains("Collecting approvals (50%)");
-
+            cy.get("[data-test=status]").contains("Collecting approvals (50%)");
             // // click on approve to approve, it will display the device modal
             cy
               .get("button")
               .contains("Approve")
               .click();
             cy.wait("@approve");
-
-
             // After logout we should get a message
             cy.contains("view profile").click();
             cy.contains("logout").click();

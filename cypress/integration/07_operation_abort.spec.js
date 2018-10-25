@@ -29,14 +29,14 @@ context("Operation Abort", () => {
         device_number: 4
       })
       .then(() => {
-    // Create operation by Device 4
+    // Create operation by Device 4 User1
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
         cy.get("[data-test=new-operation]").click();
         cy
           .get("[data-test=operation-creation-accounts]")
-          .contains('BTC Testnet #0')
+          .contains('BTC Test #2')
           .click({ force: true });
 
         cy.get("[data-test=unit-select]").click();
@@ -63,27 +63,14 @@ context("Operation Abort", () => {
           .click({ force: true });
         cy.wait("@authenticate");
 
-
-         //Approve this Operation by Device 4
-        cy.contains("Pending").click();
-        cy
-          .get("[data-test=pending-operation]")
-          .eq(0)
-          .click();
-
-        cy
-          .get("[data-test=dialog-button]")
-          .contains("Approve")
-          .click();
-        cy.wait("@approve");
         cy.get("[data-test=view-profile]").click();
         cy.get("[data-test=logout]").click();
         cy.wait("@logout");
     });
-    // Abort the Operation by Device 5
+    // Device 5 is on read only, we should get a error
     cy
       .request("POST", Cypress.env("api_switch_device"), {
-        device_number: 5
+        device_number: 6
       })
       .then(() => {
         cy.get("input").type(orga_name);
@@ -97,6 +84,56 @@ context("Operation Abort", () => {
         cy
           .get("[data-test=pending-operation]")
           .eq(0)
+          .click({ force: true });
+        cy
+          .get("[data-test=dialog-button]")
+          .contains("Abort")
+          .click({ force: true });
+        cy
+          .get("button")
+          .contains("Abort")
+          .click({ force: true });
+        cy
+          .get(".top-message-body")
+          .contains("This person is not a member of this account")
+          .get(".top-message-title")
+          .contains("Error 205");
+        cy.wait("@abort");
+
+        cy.get("[data-test=new-operation]").click();
+        cy
+          .get("[data-test=operation-creation-accounts]")
+          .contains('BTC Testnet #1')
+          .click({ force: true });
+
+        cy.get("[data-test=unit-select]").click();
+        cy
+          .get("[data-test=unit-select-values]")
+          .eq(2)
+          .debug()
+          .click({ force: true });
+        cy
+          .get("[data-test=crypto-address-picker]")
+          .find("input")
+          .type("mwhxcyyJQCJouNUw1UG1tJP7YEb7uEki6a");
+        cy
+          .get("[data-test=operation-creation-amount]")
+          .find("input")
+          .type("5");
+
+        cy.wait("@fees");
+        cy.contains("Continue").click();
+        cy.contains("Continue").click();
+        cy
+          .get("[data-test=dialog-button]")
+          .contains("Confirm")
+          .click({ force: true });
+        cy.wait("@authenticate");
+
+        cy.contains("Pending").click();
+        cy
+          .get("[data-test=pending-operation]")
+          .eq(1)
           .click();
         cy
           .get("[data-test=dialog-button]")
@@ -121,6 +158,27 @@ context("Operation Abort", () => {
           .contains("You have been successfully logged out. You can now safely close your web browser.")
           .get(".top-message-title")
           .contains("See you soon!");
+
+        cy
+          .request("POST", Cypress.env("api_switch_device"), {
+            device_number: 4
+          })
+        cy.get("input").type(orga_name);
+        cy.contains("continue").click();
+        cy.wait("@authenticate");
+        cy.contains("Pending").click();
+        cy
+          .get("[data-test=pending-operation]")
+          .eq(0)
+          .click();
+        cy
+          .get("[data-test=dialog-button]")
+          .contains("Abort")
+          .click();
+        cy
+          .get("button")
+          .contains("Abort")
+          .click();
       });
   });
 });
