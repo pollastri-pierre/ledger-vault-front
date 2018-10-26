@@ -2,13 +2,18 @@ const orga_name = Cypress.env("workspace");
 context("Account Approval", () => {
   let polyfill;
   before(() => {
-    const polyfillUrl = Cypress.env('polyfillUrl');
+    const polyfillUrl = Cypress.env("polyfillUrl");
     cy.request(polyfillUrl).then(response => {
       polyfill = response.body;
     });
   });
   it("should approve account", () => {
+<<<<<<< HEAD:cypress/integration/Account/02_account_approval.spec.js
     cy.visit(Cypress.env('api_server'), {
+=======
+    // go to the vault homepage
+    cy.visit(Cypress.env("api_server"), {
+>>>>>>> upstream/develop:cypress/integration/03_account_approval.spec.js
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -23,7 +28,7 @@ context("Account Approval", () => {
 
     // set the current device to device 1
     cy
-      .request("POST", Cypress.env('api_switch_device'), {
+      .request("POST", Cypress.env("api_switch_device"), {
         device_number: 4
       })
       .then(() => {
@@ -43,20 +48,29 @@ context("Account Approval", () => {
         cy.contains("Pending").click();
 
         cy
-          .get('.test-pending-account')
+          .get(".test-pending-account")
           .eq(0)
           .click();
         cy.wait("@pending");
 
         // Checking Value
+<<<<<<< HEAD:cypress/integration/Account/02_account_approval.spec.js
         cy.get("[data-test=balance]").should('be.visible');
+=======
+        cy.get("[data-test=balance]").contains("BTC");
+        cy.get("[data-test=balance]").contains("USD");
+
+>>>>>>> upstream/develop:cypress/integration/03_account_approval.spec.js
         cy.get("[data-test=status]").contains("Collecting approvals (0%)");
-        cy.get("[data-test=requested]").should('be.visible');
+        cy.get("[data-test=requested]").should("be.visible");
         cy.get("[data-test=name]").contains("BTC Testnet");
         cy.get("[data-test=currency]").contains("bitcoin_testnet");
-        cy.get('button').contains('Approve').should('be.visible');
-        cy.get('button').contains('Abort');
-        cy.get('button').contains('Close');
+        cy
+          .get("button")
+          .contains("Approve")
+          .should("be.visible");
+        cy.get("button").contains("Abort");
+        cy.get("button").contains("Close");
         cy.wait("@pending");
 
         // // click on approve to approve the account, it will display the device modal
@@ -72,13 +86,15 @@ context("Account Approval", () => {
         cy.wait("@logout");
         cy
           .get(".top-message-body")
-          .contains("You have been successfully logged out. You can now safely close your web browser.")
+          .contains(
+            "You have been successfully logged out. You can now safely close your web browser."
+          )
           .get(".top-message-title")
           .contains("See you soon!");
 
         // // set the current device to device 2
         cy
-          .request("POST", Cypress.env('api_switch_device'), {
+          .request("POST", Cypress.env("api_switch_device"), {
             device_number: 5
           })
           .then(() => {
@@ -109,7 +125,9 @@ context("Account Approval", () => {
             cy.wait("@logout");
             cy
               .get(".top-message-body")
-              .contains("You have been successfully logged out. You can now safely close your web browser.")
+              .contains(
+                "You have been successfully logged out. You can now safely close your web browser."
+              )
               .get(".top-message-title")
               .contains("See you soon!");
           });
