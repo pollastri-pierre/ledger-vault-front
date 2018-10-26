@@ -32,11 +32,11 @@ it("should initialize Master Seed scheme and login to the dashboard", () => {
         win.eval(polyfill);
         win.fetch = win.unfetch;
       }
-    });
-    cy.get("input").type(orga_name);
-    cy.contains("continue").click();
-    cy.wait(1000)
+    })
     .then(() => {
+      cy.get("input").type(orga_name);
+      cy.contains("continue").click();
+      cy.wait(1000)
       cy
         .get(".test-onboarding-seed")
         .eq(0)
@@ -47,35 +47,33 @@ it("should initialize Master Seed scheme and login to the dashboard", () => {
         .request("POST", Cypress.env('api_switch_device'), {
           device_number: 8
         })
-        .then(() => {
           cy
             .get(".test-onboarding-seed")
             .eq(0)
             .click();
+      cy.wait("@authenticate");
+      cy
+        .request("POST", Cypress.env('api_switch_device'), {
+          device_number: 9
+        })
+      cy
+        .get(".test-onboarding-seed")
+        .eq(0)
+        .click();
+      cy.wait("@authenticate");
+      cy.contains("continue").click();
+      cy.contains("3 Wrapping Keys Custodians").should('be.visible');
+      cy.contains("3 shared owners").should('be.visible');
+      cy.contains("3 Administrators").should('be.visible');
+      cy.contains("2/3 administration scheme").should('be.visible');
 
-          cy.wait("@authenticate");
-          cy
-            .request("POST", Cypress.env('api_switch_device'), {
-              device_number: 9
-            })
-            .then(() => {
-              cy
-                .get(".test-onboarding-seed")
-                .eq(0)
-                .click();
-              cy.wait("@authenticate");
-              cy.contains("continue").click();
-              cy.wait("@next");
-              cy
-                .request("POST", Cypress.env('api_switch_device'), {
-                  device_number: 4
-                })
-                .then(() => {
-                  cy.contains("continue").click();
-                  cy.url().should('include', '/dashboard')
-                });
-            });
-        });
+      cy.wait("@next");
+      cy
+        .request("POST", Cypress.env('api_switch_device'), {
+          device_number: 4
+        })
+        cy.contains("continue").click();
+        cy.url().should('include', '/dashboard')
     });
-});
+  });
 });

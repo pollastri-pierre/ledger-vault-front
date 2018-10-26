@@ -21,53 +21,57 @@ context("Onboarding Part 3", () => {
     cy
       .route("get", `${Cypress.env('api_server2')}/${orga_name}/onboarding/challenge`)
       .as("challenge");
-
     cy
       .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
       })
-
       cy.visit(Cypress.env('api_server'), {
         onBeforeLoad: win => {
           win.fetch = null;
           win.eval(polyfill);
           win.fetch = win.unfetch;
         }
-      });
-      cy.get("input").type(orga_name);
-      cy.contains("continue").click();
-      cy.wait(1000)
+      })
       .then(() => {
+        cy.get("input").type(orga_name);
+        cy.contains("continue").click();
+        cy.wait(1000)
         cy.get(".test-onboarding-signin").click();
         cy.wait("@authenticate");
+
+        //Try to sign in with the same device
+        cy.get(".test-onboarding-signin").click();
+      //  cy.wait("@authenticate");
+        // Should Display Error
+        cy
+          .get(".top-message-body")
+          .contains("This device has already been authenticated")
+          .get(".top-message-title")
+          .contains("Error");
         cy
           .request("POST", Cypress.env('api_switch_device'), {
             device_number: 5
           })
-          .then(() => {
-            cy.get(".test-onboarding-signin").click();
-            cy.wait("@authenticate");
-            cy
-              .request("POST", Cypress.env('api_switch_device'), {
-                device_number: 6
-              })
-              .then(() => {
-                cy.get(".test-onboarding-signin").click();
-                cy.wait("@authenticate");
-                cy.contains("continue").click();
-                cy.wait("@next");
+        cy.get(".test-onboarding-signin").click();
+        cy.wait("@authenticate");
+        cy
+          .request("POST", Cypress.env('api_switch_device'), {
+            device_number: 6
+          })
+        cy.get(".test-onboarding-signin").click();
+        cy.wait("@authenticate");
+        cy.contains("continue").click();
+        cy.wait("@next");
 
-                cy.contains("continue").click();
-                cy.wait("@next");
+        cy.contains("continue").click();
+        cy.wait("@next");
 
-                cy.contains("continue").click();
-                cy.wait("@next");
+        cy.contains("continue").click();
+        cy.wait("@next");
 
-                cy.contains("continue").click();
-                cy.wait("@next");
-                cy.wait("@challenge");
-              });
-          });
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.wait("@challenge");
       });
   });
 });

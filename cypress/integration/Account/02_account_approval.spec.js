@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Account approval", () => {
+context("Account Approval", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -8,7 +8,6 @@ context("Account approval", () => {
     });
   });
   it("should approve account", () => {
-    // go to the vault homepage
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
@@ -50,7 +49,7 @@ context("Account approval", () => {
         cy.wait("@pending");
 
         // Checking Value
-        cy.get("[data-test=balance]").contains("-");
+        cy.get("[data-test=balance]").should('be.visible');
         cy.get("[data-test=status]").contains("Collecting approvals (0%)");
         cy.get("[data-test=requested]").should('be.visible');
         cy.get("[data-test=name]").contains("BTC Testnet");

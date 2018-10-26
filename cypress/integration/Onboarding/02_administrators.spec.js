@@ -32,52 +32,66 @@ context("Onboarding Part 2", () => {
           win.eval(polyfill);
           win.fetch = win.unfetch;
         }
-      });
-      cy.get("input").type(orga_name);
-      cy.contains("continue").click();
-      cy.wait(1000)
-
+      })
       .then(() => {
+        cy.get("input").type(orga_name);
+        cy.contains("continue").click();
+        cy.wait(1000)
+
         cy.contains("add administrator").click();
         cy.get("input[name=first_name]").type("user1");
         cy.get("input[name=last_name]").type("user1");
         cy.get("input[name=email]").type("user1@user.com");
         cy.contains("Continue").click();
         cy.wait("@authenticate");
+        //Edit the admin
+        cy.contains("Click to edit").click();
+        cy.get("input[name=email]").clear();
+        cy.get("input[name=email]").type("user1_edit@user.com");
+        cy.contains("save").click();
+        // Try to register with the same device
+        cy.contains("add administrator").click();
+        cy.get("input[name=first_name]").type("user1");
+        cy.get("input[name=last_name]").type("user1");
+        cy.get("input[name=email]").type("user1@user.com");
+        cy.contains("Continue").click();
+        //Should display a error
+        cy
+          .get(".top-message-body")
+          .contains("Device already registered")
+          .get(".top-message-title")
+          .contains("Error");
+
         cy
           .request("POST", Cypress.env('api_switch_device'), {
             device_number: 5
           })
-          .then(() => {
-            cy.contains("add administrator").click();
-            cy.get("input[name=first_name]").type("user2");
-            cy.get("input[name=last_name]").type("user2");
-            cy.get("input[name=email]").type("user2@ledger.fr");
-            cy.contains("Continue").click();
-            cy.wait("@authenticate");
-            cy
-              .request("POST", Cypress.env('api_switch_device'), {
-                device_number: 6
-              })
-              .then(() => {
-                cy.contains("add administrator").click();
-                cy.get("input[name=first_name]").type("user3");
-                cy.get("input[name=last_name]").type("user3");
-                cy.get("input[name=email]").type("user3@ledger.fr");
-                cy.contains("Continue").click();
-                cy.wait("@authenticate");
+        cy.contains("add administrator").click();
+        cy.get("input[name=first_name]").type("user2");
+        cy.get("input[name=last_name]").type("user2");
+        cy.get("input[name=email]").type("user2@ledger.fr");
+        cy.contains("Continue").click();
+        cy.wait("@authenticate");
+        cy
+          .request("POST", Cypress.env('api_switch_device'), {
+            device_number: 6
+          })
+        cy.contains("add administrator").click();
+        cy.get("input[name=first_name]").type("user3");
+        cy.get("input[name=last_name]").type("user3");
+        cy.get("input[name=email]").type("user3@ledger.fr");
+        cy.contains("Continue").click();
+        cy.wait("@authenticate");
 
-                cy.contains("continue").click();
-                cy.wait("@next");
-                cy.contains("more").click();
-                cy.contains("more").click();
-                cy.contains("more").click();
-                cy.contains("less").click();
-                cy.contains("continue").click();
-                cy.wait("@next");
-                cy.wait("@challenge");
-              });
-          });
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.contains("more").click();
+        cy.contains("more").click();
+        cy.contains("more").click();
+        cy.contains("less").click();
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.wait("@challenge");
       });
   });
 });

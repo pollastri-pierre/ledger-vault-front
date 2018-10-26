@@ -28,55 +28,52 @@ context("Onboarding Part 1", () => {
         win.fetch = win.unfetch;
       }
     });
-    cy.get("input").type(orga_name);
-    cy.contains("continue").click();
-    cy.wait(1000)
-    cy.contains("Get Started").click();
-    cy.wait("@next");
-    cy.contains("continue").click();
-    cy.wait("@next");
-    cy.contains("continue").click();
-    cy.wait("@next");
-    cy.contains("continue").click();
-    cy.wait("@next");
-    cy.wait("@challenge");
+
     cy
       .request("POST", Cypress.env('api_switch_device'), {
         device_number: 1
       })
       .then(() => {
+        cy.get("input").type(orga_name);
+        cy.contains("continue").click();
+        cy.wait(1000)
+        cy.contains("Welcome").should('be.visible');
+        cy.contains("Get Started").click();
+        cy.wait("@next");
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy.wait("@challenge");
         cy.contains("SIGN IN").click();
         cy.wait("@authenticate");
         cy
           .request("POST", Cypress.env('api_switch_device'), {
             device_number: 2
           })
-          .then(() => {
-            cy.contains("SIGN IN").click();
-            cy.wait("@authenticate");
-            cy
-              .request("POST", Cypress.env('api_switch_device'), {
-                device_number: 3
-              })
-              .then(() => {
-                cy.contains("SIGN IN").click();
-                cy.wait("@authenticate");
-                cy.contains("continue").click();
-                cy.wait("@next");
-
-                cy
-                  .contains("continue")
-                  .debug()
-                  .click();
-                cy.wait("@next");
-                cy
-                  .contains("continue")
-                  .debug()
-                  .click();
-                cy.wait("@next");
-                cy.wait("@challenge");
-            });
-        });
+        cy.contains("SIGN IN").click();
+        cy.wait("@authenticate");
+        cy
+            .request("POST", Cypress.env('api_switch_device'), {
+              device_number: 3
+        })
+        cy.contains("SIGN IN").click();
+        cy.wait("@authenticate");
+        cy.contains("continue").click();
+        cy.wait("@next");
+        cy
+          .contains("continue")
+          .debug()
+          .click();
+        cy.wait("@next");
+        cy
+          .contains("continue")
+          .debug()
+          .click();
+        cy.wait("@next");
+        cy.wait("@challenge");
     });
  });
 });
