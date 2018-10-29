@@ -8,12 +8,9 @@ context("Account Approval", () => {
     });
   });
   it("should approve account", () => {
-<<<<<<< HEAD:cypress/integration/Account/02_account_approval.spec.js
-    cy.visit(Cypress.env('api_server'), {
-=======
+
     // go to the vault homepage
     cy.visit(Cypress.env("api_server"), {
->>>>>>> upstream/develop:cypress/integration/03_account_approval.spec.js
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
@@ -54,13 +51,8 @@ context("Account Approval", () => {
         cy.wait("@pending");
 
         // Checking Value
-<<<<<<< HEAD:cypress/integration/Account/02_account_approval.spec.js
-        cy.get("[data-test=balance]").should('be.visible');
-=======
         cy.get("[data-test=balance]").contains("BTC");
         cy.get("[data-test=balance]").contains("USD");
-
->>>>>>> upstream/develop:cypress/integration/03_account_approval.spec.js
         cy.get("[data-test=status]").contains("Collecting approvals (0%)");
         cy.get("[data-test=requested]").should("be.visible");
         cy.get("[data-test=name]").contains("BTC Testnet");
@@ -111,7 +103,7 @@ context("Account Approval", () => {
               .eq(0)
               .click();
             cy.wait("@pending");
-            // Make sure that the approval is 1/2
+            // Make sure that the approval is 50%
             cy.get("[data-test=status]").contains("Collecting approvals (50%)");
             // // click on approve to approve, it will display the device modal
             cy
