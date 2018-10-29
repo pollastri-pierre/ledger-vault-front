@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Account Abort", () => {
+context("Account From Dashboard", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -7,7 +7,7 @@ context("Account Abort", () => {
       polyfill = response.body;
     });
   });
-  it("should fail with wrong device", () => {
+  it("should get all the account from the dashboard", () => {
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;

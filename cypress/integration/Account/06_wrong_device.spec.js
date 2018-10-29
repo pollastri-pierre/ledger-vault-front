@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Account Abort", () => {
+context("Use Wrong Device for Account", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
