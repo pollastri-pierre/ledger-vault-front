@@ -13,6 +13,7 @@ export const isCreateOperationEnabled = (
   const filter = accounts.filter(
     account =>
       account.balance > 0 &&
+      account.status === "APPROVED" &&
       !hasPending(account, pendingOperations) &&
       !isAccountOutdated(account) &&
       !isAccountBeingUpdated(account)
