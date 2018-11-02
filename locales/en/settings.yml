@@ -1,0 +1,5 @@
+security_scheme:
+  quorum: Required approvals
+  timelock: Time-lock
+  ratelimiter: Rate-limiter
+  autoexpire: Auto-expire
