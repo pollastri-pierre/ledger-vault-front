@@ -1,7 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import SecureChannel from "components/SecureChannel";
-import network from "network";
 import type { Account } from "data/types";
 import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
 import ModalLoading from "components/ModalLoading";
