@@ -82,7 +82,7 @@ class SignIn extends Component<Props> {
   };
 
   render() {
-    const { classes, onboarding, onToggleSignin, t } = this.props;
+    const { classes, onboarding, onAddMessage, onToggleSignin, t } = this.props;
     if (!onboarding.signin.challenge) {
       return <SpinnerCard />;
     }
@@ -92,6 +92,7 @@ class SignIn extends Component<Props> {
         <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
           <SignInDevice
             challenge={onboarding.signin.challenge.challenge}
+            onAddMessage={onAddMessage}
             keyHandles={onboarding.signin.challenge.key_handle}
             onFinish={this.signIn}
             cancel={onToggleSignin}

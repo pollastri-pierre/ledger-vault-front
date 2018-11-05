@@ -194,11 +194,19 @@ export const openWrappingChannel = () => {
 
 export const addWrappingKey = (data: Blob) => {
   return async (dispatch: Dispatch<*>) => {
-    const add_wrap: Wrapping = await authenticate(data);
-    dispatch({
-      type: ONBOARDING_ADD_WRAP_KEY,
-      add_wrap
-    });
+    try {
+      const add_wrap: Wrapping = await authenticate(data);
+      dispatch({
+        type: ONBOARDING_ADD_WRAP_KEY,
+        add_wrap
+      });
+    } catch (error) {
+      if (error.json) {
+        dispatch(
+          addMessage(`Error ${error.json.code}`, error.json.message, "error")
+        );
+      }
+    }
   };
 };
 
@@ -230,11 +238,21 @@ export const addMember = (data: Admin) => {
       dispatch(addMessage("Error", "Device already registered", "error"));
       throw "Already registered";
     } else {
-      const admins = await network("/onboarding/authenticate", "POST", data);
-      dispatch({
-        type: ONBOARDING_ADD_ADMIN,
-        admins: admins
-      });
+      try {
+        const admins = await network("/onboarding/authenticate", "POST", data);
+        dispatch({
+          type: ONBOARDING_ADD_ADMIN,
+          admins: admins
+        });
+      } catch (error) {
+        if (error && error.json) {
+          dispatch(
+            addMessage(`Error ${error.json.code}`),
+            error.json.message,
+            "error"
+          );
+        }
+      }
     }
   };
 };
@@ -307,11 +325,19 @@ export const openProvisionningChannel = () => {
 
 export const addMasterSeedKey = (data: Blob) => {
   return async (dispatch: Dispatch<*>) => {
-    const add_seed = await authenticate(data);
-    dispatch({
-      type: ONBOARDING_ADD_MASTERSEED_KEY,
-      add_seed
-    });
+    try {
+      const add_seed = await authenticate(data);
+      dispatch({
+        type: ONBOARDING_ADD_MASTERSEED_KEY,
+        add_seed
+      });
+    } catch (error) {
+      if (error.json) {
+        dispatch(
+          addMessage(`Error ${error.json.code}`, error.json.message, "error")
+        );
+      }
+    }
   };
 };
 
