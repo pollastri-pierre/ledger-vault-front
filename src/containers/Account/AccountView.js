@@ -77,9 +77,6 @@ class AccountView extends Component<
           <AccountBalanceCard account={account} />
           <AccountCountervalueCard account={account} />
         </div>
-        <div className={classes.half}>
-          <ReceiveFundsCard address={account.fresh_addresses[0]} />
-        </div>
         {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
         <AccountLastOperationsCard key={accountId} account={account} />
         <ModalRoute

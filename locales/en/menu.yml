@@ -1,5 +1,6 @@
 ---
 dashboard: dashboard
 new_operation: New operation
+receive: Receive
 pending_requests: Pending
 

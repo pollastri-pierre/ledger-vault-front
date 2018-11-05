@@ -4,12 +4,22 @@ import invariant from "invariant";
 
 export default class VaultDeviceApp {
   transport: Transport<*>;
-  constructor(transport: Transport<*>, scrambleKey: string = "v1+") {
+  constructor(
+    transport: Transport<*>,
+    scrambleKey: string = "v1+",
+    unwrap: boolean = true
+  ) {
     this.transport = transport;
-    this.transport.debug = true;
+    this.transport.debug = console.log;
     transport.setScrambleKey(scrambleKey);
+    transport.setUnwrap(unwrap);
   }
 
+  // F1 D0 00 00 00
+  async getScrambleKey(): Promise<{ scrambleKey: string }> {
+    const res = await this.transport.send(0xf1, 0xd0, 0x00, 0x00);
+    return res.slice(0, res.length - 2).toString();
+  }
   async getVersion(): Promise<{
     appName: string,
     appVersion: string
