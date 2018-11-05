@@ -181,7 +181,8 @@ export class Login extends Component<Props, State> {
             "GET"
           );
           this.setState({
-            error: null
+            error: null,
+            step: 1
           });
 
           const application = APPID_VAULT_ADMINISTRATOR;
@@ -205,7 +206,7 @@ export class Login extends Component<Props, State> {
         }
       } catch (error) {
         console.error(error);
-        if (error && error.id === U2F_TIMEOUT) {
+        if (error && error.id === U2F_TIMEOUT && this.state.step !== 1) {
           // timeout we retry
           this.onStartAuth();
         } else {

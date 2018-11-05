@@ -8,7 +8,6 @@ context("Account creation", () => {
     });
   });
   it("should create a account", () => {
-    // go to vault homepage and enter orga_name
     cy.visit(Cypress.env('api_server'), {
       onBeforeLoad: win => {
         win.fetch = null;
@@ -28,13 +27,12 @@ context("Account creation", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait("@authenticate");
-        //We should get a Welcome blue message
         cy
           .get(".top-message-body")
           .contains("Welcome to the Ledger Vault platform!")
           .get(".top-message-title")
           .contains("Hello");
-
+        // Creation of a account BTC Testnet
         cy.get(".test-new-account").click();
         cy.contains("Bitcoin Testnet").click();
         cy.get("input").type("BTC Testnet");

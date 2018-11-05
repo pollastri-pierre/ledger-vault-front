@@ -23,6 +23,7 @@ const hasMoreThanAscii = str =>
 
 const validateName: Validator = name =>
   name !== "" && name.length < 20 && !hasMoreThanAscii(name);
+
 const validateMail: Validator = email => emailValidator.validate(email);
 
 const validators: { [_: string]: Validator } = {

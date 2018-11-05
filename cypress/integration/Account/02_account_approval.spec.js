@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Account approval", () => {
+context("Account Approval", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -8,6 +8,7 @@ context("Account approval", () => {
     });
   });
   it("should approve account", () => {
+
     // go to the vault homepage
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
@@ -52,7 +53,6 @@ context("Account approval", () => {
         // Checking Value
         cy.get("[data-test=balance]").contains("BTC");
         cy.get("[data-test=balance]").contains("USD");
-
         cy.get("[data-test=status]").contains("Collecting approvals (0%)");
         cy.get("[data-test=requested]").should("be.visible");
         cy.get("[data-test=name]").contains("BTC Testnet");
@@ -103,7 +103,7 @@ context("Account approval", () => {
               .eq(0)
               .click();
             cy.wait("@pending");
-            // Make sure that the approval is 1/2
+            // Make sure that the approval is 50%
             cy.get("[data-test=status]").contains("Collecting approvals (50%)");
             // // click on approve to approve, it will display the device modal
             cy
