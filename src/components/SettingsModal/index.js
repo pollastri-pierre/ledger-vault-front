@@ -1,5 +1,7 @@
 //@flow
 import React, { Component } from "react";
+import { translate } from "react-i18next";
+import type { Translate } from "data/types";
 import CurrencyIndex from "components/CurrencyIndex";
 import { getAccountTitle } from "utils/accounts";
 import cx from "classnames";
@@ -204,6 +206,7 @@ class SettingsField extends Component<{
 
 class SecuritySchemeView extends Component<{
   account: Account,
+  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
@@ -211,13 +214,13 @@ class SecuritySchemeView extends Component<{
       security_scheme: { quorum /* time_lock, rate_limiter, auto_expire */ },
       members
     } = this.props.account;
-    const { classes } = this.props;
+    const { classes, t } = this.props;
     return (
       <div className={classes.securitySchemeView}>
         <BadgeSecurity
           noWidth
           icon={<BigSecurityMembersIcon />}
-          label="Members"
+          label={t("settings:security_scheme.quorum")}
           value={`${quorum} of ${members.length}`}
         />
         {/* <BadgeSecurity */}
@@ -255,6 +258,7 @@ class SecuritySchemeView extends Component<{
 
 type Props = {
   settingsData: AccountSettings,
+  t: Translate,
   account: *,
   restlay: RestlayEnvironment,
   classes: { [_: $Keys<typeof styles>]: string },
@@ -328,7 +332,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     });
   };
   render() {
-    const { account, classes /* fiats  */ } = this.props;
+    const { account, classes, t /* fiats  */ } = this.props;
     const { name, settings } = this.state;
     const unit_index = account.currency.units.findIndex(
       unit => unit.code === settings.currency_unit.code
@@ -339,7 +343,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     return (
       <div className={classes.contentSections}>
         <div className={classes.capsTitle}>{"Operation rules"}</div>
-        <SecuritySchemeView account={account} classes={classes} />
+        <SecuritySchemeView t={t} account={account} classes={classes} />
 
         <div className={classes.capsTitle}>{"General"}</div>
         <div className={classes.settingsFields}>
@@ -441,13 +445,14 @@ function Side({
 
 class SettingsModal extends Component<{
   accounts: *,
+  t: Translate,
   fiats: *,
   restlay: RestlayEnvironment,
   close: Function,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { accounts, restlay, close, classes, fiats } = this.props;
+    const { accounts, restlay, close, classes, t, fiats } = this.props;
     return (
       <div className={classes.container}>
         <Side classes={classes} accounts={accounts} />
@@ -465,6 +470,7 @@ class SettingsModal extends Component<{
                     return account ? (
                       <AccountSettingsEdit
                         classes={classes}
+                        t={t}
                         settingsData={account.settings}
                         key={account.id}
                         account={account}
@@ -502,7 +508,7 @@ const RenderLoading = ({
 );
 
 export default withStyles(styles)(
-  connectData(SettingsModal, {
+  connectData(translate()(SettingsModal), {
     RenderLoading,
     queries: {
       fiats: FiatCurrenciesQuery,
