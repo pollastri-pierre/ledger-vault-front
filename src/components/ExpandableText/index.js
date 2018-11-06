@@ -4,7 +4,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 type Props = {
   text: string,
-  dataTest: ?string,
+  dataTest?: string,
   className: ?string,
   size: number
 };

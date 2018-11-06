@@ -38,11 +38,11 @@ const styles = {
     "&:hover:before": {
       width: "5px",
       transition: "width 200ms ease"
-    },
-    unkown: {
-      opacity: 0.4,
-      cursor: "default !important"
     }
+  },
+  unknown: {
+    opacity: 0.4,
+    cursor: "default !important"
   }
 };
 
@@ -186,9 +186,9 @@ class AddressColumn extends Component<Cell> {
       return <span className="hash">{operation.recipient}</span>;
     }
     if (operation.type === "SEND") {
-      hash = operation.senders[0];
-    } else {
       hash = operation.recipients[0];
+    } else {
+      hash = operation.senders[0];
     }
     return (
       <span>
@@ -205,7 +205,7 @@ class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     if (operation.error) {
-      return <span>Unkown</span>;
+      return <span>unknown</span>;
     }
     return <OperationStatus operation={operation} />;
   }
@@ -300,7 +300,7 @@ class RowT extends Component<{
     return (
       <tr
         style={{ cursor: "pointer" }}
-        className={cx(classes.tr, { [classes.unkown]: operation.error })}
+        className={cx(classes.tr, { [classes.unknown]: operation.error })}
         onClick={() => {
           if (!operation.error) {
             openOperation(operation.id, 0);
