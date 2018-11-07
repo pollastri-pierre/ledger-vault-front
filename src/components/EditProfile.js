@@ -16,8 +16,14 @@ import type { Member } from "data/types";
 
 type Validator = (value: string) => boolean;
 
+const hasMoreThanAscii = str =>
+  str.split("").some(function(char) {
+    return char.charCodeAt(0) > 127;
+  });
+
 const validateName: Validator = name =>
-  typeof name === "string" && name !== "" && name.length < 20;
+  name !== "" && name.length < 20 && !hasMoreThanAscii(name);
+
 const validateMail: Validator = email => emailValidator.validate(email);
 
 const validators: { [_: string]: Validator } = {
@@ -35,6 +41,26 @@ const sanitize = (object: Object): Object => {
     picture: object.picture.value
   };
 };
+
+const errorDesc = {
+  base: {
+    position: "absolute",
+    fontSize: "11px",
+    color: "rgb(234, 46, 73)"
+  }
+};
+
+const ErrorDesc = withStyles(errorDesc)(
+  ({
+    visible,
+    children,
+    classes
+  }: {
+    visible: boolean,
+    children: *,
+    classes: { [_: $Keys<typeof errorDesc>]: string }
+  }) => (visible ? <div className={classes.base}>{children}</div> : null)
+);
 
 export const styles = {
   base: {
@@ -149,16 +175,6 @@ class ProfileEditModal extends Component<
       <div className={classes.base}>
         <div>{title}</div>
         <div className={classes.profileBody}>
-          {/* <Dropzone */}
-          {/*   style={{ */}
-          {/*     width: "initial", */}
-          {/*     height: "initial", */}
-          {/*     border: "none", */}
-          {/*     cursor: "pointer" */}
-          {/*   }} */}
-          {/*   accept="image/jpeg, image/png" */}
-          {/*   onDrop={this.onDrop} */}
-          {/* > */}
           <div>
             <div className={classes.profilePic}>
               {this.state.picture.value ? (
@@ -199,6 +215,13 @@ class ProfileEditModal extends Component<
                 }
               }}
             />
+            <ErrorDesc
+              visible={
+                !this.state.first_name.isValid || !this.state.last_name.isValid
+              }
+            >
+              Only ASCII char, 19 length max
+            </ErrorDesc>
             <br />
             <br />
             <TextField

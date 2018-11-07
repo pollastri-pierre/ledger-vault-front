@@ -13,6 +13,7 @@ import StepDeviceGeneric from "./StepDeviceGeneric";
 
 type Props = {
   onFinish: Function,
+  onAddMessage: Function,
   challenge: string,
   organization: *,
   keyHandles: Object,
@@ -50,19 +51,27 @@ class SignInDevice extends Component<Props, State> {
         const keyHandle = this.props.keyHandles[pubKey.toUpperCase()];
         const challenge = this.props.challenge;
 
-        const authentication = await device.authenticate(
-          Buffer.from(challenge, "base64"),
-          APPID_VAULT_ADMINISTRATOR,
-          Buffer.from(keyHandle, "base64"),
-          organization.name,
-          organization.workspace,
-          organization.domain_name,
-          "Administrator"
-        );
-        this.setState({ step: 2 });
-        this.props.onFinish(pubKey, authentication);
+        if (keyHandle) {
+          const authentication = await device.authenticate(
+            Buffer.from(challenge, "base64"),
+            APPID_VAULT_ADMINISTRATOR,
+            Buffer.from(keyHandle, "base64"),
+            organization.name,
+            organization.workspace,
+            organization.domain_name,
+            "Administrator"
+          );
+          this.setState({ step: 2 });
+          this.props.onFinish(pubKey, authentication);
+        } else {
+          this.props.onAddMessage(
+            "Keyhandle Not found",
+            "Are you sure to use a registered device?",
+            "error"
+          );
+          this.props.cancel();
+        }
       } catch (e) {
-        console.error(e);
         if (e.statusCode && e.statusCode === 27013) {
           this.props.cancel();
         }

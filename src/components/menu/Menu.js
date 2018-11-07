@@ -15,6 +15,8 @@ import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
+import Receive from "components/Receive";
+import IconReceive from "components/icons/Receive";
 import ModalRoute from "../ModalRoute";
 import { getVisibleAccountsInMenu } from "utils/accounts";
 import { withStyles } from "@material-ui/core/styles";
@@ -47,7 +49,7 @@ const styles = {
   pendingMenuBadge: {
     position: "absolute",
     right: 40,
-    top: 95,
+    top: 124,
     pointerEvents: "none"
   },
   h4: {
@@ -78,7 +80,7 @@ function Menu(props: {
         <PendingsMenuBadge />
       </span>
 
-      <div data-test="dashboard_menu">
+      <div data-test="dashboard-menu">
         <MenuList>
           <MenuLink to={`${match.url}/dashboard`}>
             <span className={classes.link}>
@@ -98,6 +100,15 @@ function Menu(props: {
               {t("menu:new_operation")}
             </span>
           </MenuLink>
+          <MenuLink
+            to={`${location.pathname}/receive`}
+            disabled={visibleAccounts.length === 0}
+          >
+            <span className={classes.link}>
+              <IconReceive className={classes.icon} />
+              {t("menu:receive")}
+            </span>
+          </MenuLink>
           <MenuLink to={`${match.url}/pending`}>
             <span className={classes.link}>
               <Lines className={classes.icon} />
@@ -112,7 +123,6 @@ function Menu(props: {
           </MenuLink>
         </MenuList>
       </div>
-
       {visibleAccounts.length > 0 && (
         <div>
           <h4 className={classes.h4}>Accounts</h4>
@@ -127,6 +137,7 @@ function Menu(props: {
         component={NewOperationModal}
         match={match}
       />
+      <ModalRoute path="*/receive" component={Receive} match={match} />
     </div>
   );
 }

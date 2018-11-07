@@ -1,4 +1,5 @@
 //@flow
+import cx from "classnames";
 import React, { Component } from "react";
 import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
@@ -38,6 +39,10 @@ const styles = {
       width: "5px",
       transition: "width 200ms ease"
     }
+  },
+  unknown: {
+    opacity: 0.4,
+    cursor: "default !important"
   }
 };
 
@@ -177,10 +182,13 @@ class AddressColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     let hash = "";
+    if (operation.error) {
+      return <span className="hash">{operation.recipient}</span>;
+    }
     if (operation.type === "SEND") {
-      hash = operation.senders[0];
-    } else {
       hash = operation.recipients[0];
+    } else {
+      hash = operation.senders[0];
     }
     return (
       <span>
@@ -196,6 +204,9 @@ class AddressColumn extends Component<Cell> {
 class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
+    if (operation.error) {
+      return <span>unknown</span>;
+    }
     return <OperationStatus operation={operation} />;
   }
 }
@@ -206,7 +217,7 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount || operation.price.amount}
+        value={operation.amount || (operation.price && operation.price.amount)}
         type={operation.type}
         alwaysShowSign
       />
@@ -289,8 +300,12 @@ class RowT extends Component<{
     return (
       <tr
         style={{ cursor: "pointer" }}
-        className={classes.tr}
-        onClick={() => openOperation(operation.id, 0)}
+        className={cx(classes.tr, { [classes.unknown]: operation.error })}
+        onClick={() => {
+          if (!operation.error) {
+            openOperation(operation.id, 0);
+          }
+        }}
       >
         {children}
       </tr>

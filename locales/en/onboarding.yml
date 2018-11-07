@@ -18,7 +18,7 @@ menu:
     signin: Sign in
     prerequisite: Prerequisites
     configuration: Initialization
-    backup: Back up
+    backup: Backup
     provisionning: Create master seed
   confirmation: Complete
 configure_device: configure my device

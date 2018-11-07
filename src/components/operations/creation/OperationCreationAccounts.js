@@ -24,7 +24,7 @@ const OperationCreationAccounts = ({
   <Fragment>
     <ModalSubTitle>Account to debit</ModalSubTitle>
     <MenuList data-test="operation-creation-accounts">
-      {accounts.map(account => {
+      {accounts.filter(a => a.status === "APPROVED").map(account => {
         return (
           <Disabled
             key={account.id}

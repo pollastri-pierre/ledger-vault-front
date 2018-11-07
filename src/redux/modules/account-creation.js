@@ -95,8 +95,12 @@ export function selectCurrencyItem(currency: CryptoCurrency) {
   };
 }
 
+const hasMoreThanAscii = str =>
+  str.split("").some(function(char) {
+    return char.charCodeAt(0) > 127;
+  });
 export function changeAccountName(name: string) {
-  if (name.length < MAX_ACCOUNT_NAME_LENGTH) {
+  if (name.length < MAX_ACCOUNT_NAME_LENGTH && !hasMoreThanAscii(name)) {
     return {
       type: CHANGE_ACCOUNT_NAME,
       name
