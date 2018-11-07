@@ -25,6 +25,7 @@ type Shard = {
 type Props = {
   shards_channel: Channel,
   addMessage: (string, string, string) => void,
+  toggleCancelOnDevice: Function,
   wraps: boolean,
   history: *,
   onFinish: Shard => *,
@@ -97,6 +98,7 @@ class GenerateKeyFragments extends Component<Props, State> {
         //timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
+          this.props.toggleCancelOnDevice();
         } else if (error.statusCode && error.statusCode === INVALID_DATA) {
           this.props.addMessage(
             "Error",

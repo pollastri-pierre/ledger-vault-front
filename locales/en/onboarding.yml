@@ -13,6 +13,9 @@ menu:
     configuration: Initialization
     registration: Registration
     scheme: Administration rules
+  shared_owner_registration:
+    registration: Registration
+    confirmation: Registration confirmation
   master_seed:
     title: Master seed
     signin: Sign in
@@ -114,6 +117,17 @@ administrators_scheme:
   out_of: out of {{total}}
   require_less: less
   require_more: more
+so_registration:
+  title: Registration
+  desc1: Register the Shared-Owners of your workspace.
+  desc2: Click 'Add Shared-Owner' and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.
+  description_strong: "Note: It's not possible to delete Shared-Owners once they're created."
+  add: Add shared-owner
+  add_new: add a new shared-owner
+  so_nb_required: 3 Shared-Owners are required to continue
+so_validation:
+  title: Approve registration
+  desc: Get Administrators to sign in to finalize the registration of the Shared-Owners.
 master_seed_signin:
   title: Sign in
   description: Sign in to confirm your registration.
@@ -151,7 +165,7 @@ master_seed_provisionning:
   generate_seed: Get master seed
   generating: generating seed...
   device_modal:
-    title: Generate seed
+    title: Generate Master Seed
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable. 
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard. 
     step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
@@ -160,4 +174,9 @@ confirmation:
   description: Your Ledger Vault workspace is now configured.
   members_can_signin: Administrators can now sign in.
   scheme: administration scheme
+confirmation_cancel:
+  oops: Oops! you clicked by mistake...
+  desc: It looks like you've canceled the {{entity}}.
+  mistake: You've made a mistake when registering {{entity}}.
+  security: You believe the security of your Ledger Vault might be compromised
 

@@ -1,5 +1,6 @@
 //@flow
 import BlurDialog from "components/BlurDialog";
+import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
 import FragmentKey from "containers/Onboarding/Fragment";
@@ -14,6 +15,7 @@ import Footer from "./Footer";
 import {
   toggleDeviceModal,
   addMasterSeedKey,
+  wipe,
   openProvisionningChannel
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
@@ -52,15 +54,19 @@ type Props = {
   onboarding: *,
   onToggleDeviceModal: Function,
   onGetShardsChannel: Function,
+  onWipe: Function,
   history: *,
   onProvisioningShards: Function,
   onAddMessage: (string, string, string) => void,
   onAddSeedShard: Function
 };
-class Provisioning extends Component<Props> {
-  constructor(props) {
-    super(props);
-  }
+type State = {
+  deny: boolean
+};
+class Provisioning extends Component<Props, State> {
+  state = {
+    deny: false
+  };
   finish = data => {
     this.props.onToggleDeviceModal();
     this.props.onAddSeedShard(data);
@@ -71,17 +77,33 @@ class Provisioning extends Component<Props> {
     onGetShardsChannel();
   }
 
+  toggleCancelOnDevice = () => {
+    this.setState({ deny: !this.state.deny });
+  };
+
   render() {
     const {
       classes,
       onboarding,
       onToggleDeviceModal,
       history,
+      onWipe,
       onAddMessage,
       t
     } = this.props;
     if (!onboarding.provisionning.channel) {
       return <SpinnerCard />;
+    }
+    if (this.state.deny) {
+      return (
+        <ConfirmationCancel
+          entity="Administrators"
+          step="Master Seed generation"
+          toggle={this.toggleCancelOnDevice}
+          wipe={onWipe}
+          title="Generate Master Seed"
+        />
+      );
     }
     return (
       <div>
@@ -93,6 +115,7 @@ class Provisioning extends Component<Props> {
           <GenerateKeyFragments
             shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
+            toggleCancelOnDevice={this.toggleCancelOnDevice}
             history={history}
             wraps={false}
             addMessage={onAddMessage}
@@ -148,6 +171,7 @@ const mapDispatch = (dispatch: *) => ({
   onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
   onAddMessage: (title, msg, type) => dispatch(addMessage(title, msg, type)),
+  onWipe: () => dispatch(wipe()),
   onGetShardsChannel: () => dispatch(openProvisionningChannel())
 });
 

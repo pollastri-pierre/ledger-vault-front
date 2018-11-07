@@ -1,9 +1,89 @@
 //@flow
 import React from "react";
+import People from "components/icons/thin/People";
+import Plus from "components/icons/full/Plus";
 import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
 
+const addUser = {
+  base: {
+    color: "#27d0e2",
+    textDecoration: "none",
+    textTransform: "uppercase",
+    fontSize: 11,
+    fontWeight: 600,
+    position: "absolute",
+    cursor: "pointer",
+    top: 8,
+    right: 0
+  },
+  icon: {
+    width: 11,
+    marginRight: 10,
+    verticalAlign: "middle"
+  }
+};
+export const AddUser = withStyles(addUser)(({ onClick, children, classes }) => (
+  <div onClick={onClick} className={classes.base}>
+    <Plus className={classes.icon} />
+    <span>{children}</span>
+  </div>
+));
+const noMembers = {
+  base: {
+    fontSize: 11,
+    lineHeight: 1.82,
+    textAlign: "center",
+    width: 264,
+    margin: "auto",
+    marginTop: 110
+  },
+  label: {
+    fontSize: 11,
+    fontWeight: 600,
+    margin: 0,
+    marginBottom: 5,
+    textAlign: "center",
+    textTransform: "uppercase"
+  },
+  info: {
+    fontSize: 11,
+    textAlign: "center",
+    lineHeight: 1.82,
+    margin: 0
+  }
+};
+
+export const NoMembers = withStyles(
+  noMembers
+)(
+  ({
+    classes,
+    label,
+    info
+  }: {
+    classes: { [$Keys<typeof noMembers>]: string },
+    label: *,
+    info: *
+  }) => {
+    return (
+      <div className={classes.base}>
+        <People
+          color="#cccccc"
+          style={{
+            height: 29,
+            display: "block",
+            margin: "auto",
+            marginBottom: 21
+          }}
+        />
+        <div className={classes.label}>{label}</div>
+        <div className={classes.info}>{info}</div>
+      </div>
+    );
+  }
+);
 const listItem = {
   base: {
     fontSize: 13,

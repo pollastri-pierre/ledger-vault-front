@@ -15,6 +15,7 @@ type Props = {
   onFinish: Function,
   onAddMessage: Function,
   challenge: string,
+  toggleCancelOnDevice: Function,
   organization: *,
   keyHandles: Object,
   cancel: Function,
@@ -73,6 +74,7 @@ class SignInDevice extends Component<Props, State> {
         }
       } catch (e) {
         if (e.statusCode && e.statusCode === 27013) {
+          this.props.toggleCancelOnDevice();
           this.props.cancel();
         }
         if (e && e.id === U2F_TIMEOUT) {

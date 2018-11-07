@@ -21,6 +21,7 @@ export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
 export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
 export const ONBOARDING_EDIT_MEMBER = "ONBOARDING_EDIT_MEMBER";
 export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
+export const ONBOARDING_ADD_SHARED_OWNER = "ONBOARDING_ADD_SHARED_OWNER";
 
 export type OnboardingState =
   | "LOADING"
@@ -33,10 +34,11 @@ export type OnboardingState =
   | "ADMINISTRATORS_CONFIGURATION"
   | "ADMINISTRATORS_REGISTRATION"
   | "ADMINISTRATORS_SCHEME_CONFIGURATION"
-  | "ADMINISTRATORS_SIGN_IN"
   | "MASTER_SEED_PREREQUISITE"
   | "MASTER_SEED_CONFIGURATION"
   | "MASTER_SEED_BACKUP"
+  | "SHARED_OWNER_REGISTRATION"
+  | "SHARED_OWNER_VALIDATION"
   | "MASTER_SEED_GENERATION"
   | "COMPLETE";
 
@@ -98,7 +100,8 @@ export type Onboarding = {
   signin: Signin,
   fatal_error: boolean,
   is_editable: boolean,
-  provisionning: Provisionning
+  provisionning: Provisionning,
+  sharedOwners: Array<*>
 };
 
 export type UIOnboarding = {
@@ -114,6 +117,7 @@ const initialState = {
   member_modal: false,
   quorum: 1,
   state: "LOADING",
+  sharedOwners: [],
   wrapping: {
     blobs: []
   },
@@ -164,6 +168,21 @@ export const getChallenge = () => {
 
 export const authenticate = (data: any) => {
   return network("/onboarding/authenticate", "POST", data);
+};
+
+export const addSharedOwner = (data: *) => {
+  console.log(data);
+  return async (dispatch: Dispatch<*>) => {
+    try {
+      // const sharedOwner = await authenticate(data);
+      dispatch({
+        type: ONBOARDING_ADD_SHARED_OWNER,
+        sharedOwner: data
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+    }
+  };
 };
 
 export const toggleDeviceModal = () => ({
@@ -246,11 +265,9 @@ export const addMember = (data: Admin) => {
         });
       } catch (error) {
         if (error && error.json) {
-          dispatch(
-            addMessage(`Error ${error.json.code}`),
-            error.json.message,
-            "error"
-          );
+          // dispatch(
+          //   addMessage(`Error ${error.json.code}`, error.json.message, "error")
+          // );
         }
       }
     }
@@ -351,6 +368,17 @@ export const getState = () => {
   };
 };
 
+export const wipe = () => {
+  return async (dispatch: Dispatch<*>) => {
+    await network("/onboarding/ongoing/delete", "DELETE");
+    const state = await network("/onboarding/state", "GET");
+    dispatch({
+      type: ONBOARDING_STATE,
+      state
+    });
+  };
+};
+
 const syncNextState = (state: Store, action, next = false) => {
   let actionState = action.state;
   if (next) {
@@ -398,7 +426,7 @@ const syncNextState = (state: Store, action, next = false) => {
       quorum: actionState.quorum
     };
   }
-  if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
+  if (actionState.state === "SHARED_OWNER_VALIDATION") {
     newState = {
       ...state,
       state: actionState.state,
@@ -518,6 +546,12 @@ export default function reducer(state: Store = initialState, action: Object) {
           ...state.signin,
           admins: [...state.signin.admins, action.data.pub_key.toUpperCase()]
         }
+      };
+    }
+    case ONBOARDING_ADD_SHARED_OWNER: {
+      return {
+        ...state,
+        sharedOwners: [...state.sharedOwners, action.sharedOwner]
       };
     }
     case ONBOARDING_MASTERSEED_CHANNEL:

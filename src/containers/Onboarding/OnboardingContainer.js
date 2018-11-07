@@ -9,6 +9,7 @@ import WrappingKeys from "./WrappingKeys";
 import Prerequisite from "./Prerequisite";
 import PrerequisiteSeed from "./PrerequisiteSeed";
 import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
+import SharedOwnerRegistration from "./SharedOwnerRegistration";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
@@ -156,6 +157,7 @@ class OnboardingContainer extends Component<Props, State> {
           </div>
           <Menu
             nbMember={onboarding.registering.admins.length}
+            nbSharedOwner={onboarding.sharedOwners.length}
             onboarding={onboarding}
           />
           <div className={classes.content}>
@@ -188,7 +190,6 @@ class OnboardingContainer extends Component<Props, State> {
                 is_editable={onboarding.is_editable}
               />
             )}
-            {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
             {onboarding.state === "MASTER_SEED_PREREQUISITE" && (
               <PrerequisiteSeed />
             )}
@@ -196,6 +197,10 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationSeed />
             )}
             {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
+            {onboarding.state === "SHARED_OWNER_REGISTRATION" && (
+              <SharedOwnerRegistration />
+            )}
+            {onboarding.state === "SHARED_OWNER_VALIDATION" && <SignIn />}
             {onboarding.state === "MASTER_SEED_GENERATION" && (
               <Provisionning history={history} />
             )}

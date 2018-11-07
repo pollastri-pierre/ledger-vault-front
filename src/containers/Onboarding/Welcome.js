@@ -2,6 +2,7 @@
 import Footer from "./Footer";
 import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
+import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React, { Fragment } from "react";

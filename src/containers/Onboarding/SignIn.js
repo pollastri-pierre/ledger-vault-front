@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, Fragment } from "react";
+import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import CircleProgress from "components/CircleProgress";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -12,6 +13,7 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
   getSigninChallenge,
+  wipe,
   toggleDeviceModal,
   addSignedIn
 } from "redux/modules/onboarding";
@@ -69,12 +71,22 @@ type Props = {
   onAddSignedIn: Function,
   t: Translate
 };
-class SignIn extends Component<Props> {
+type State = {
+  deny: boolean
+};
+class SignIn extends Component<Props, State> {
+  state = {
+    deny: false
+  };
   svg: ?Element;
 
   componentDidMount() {
     this.props.onGetSigninChallenge();
   }
+
+  toggleCancelOnDevice = () => {
+    this.setState({ deny: !this.state.deny });
+  };
 
   signIn = (pubKey: string, signature: string) => {
     this.props.onAddSignedIn(pubKey, signature);
@@ -82,25 +94,42 @@ class SignIn extends Component<Props> {
   };
 
   render() {
-    const { classes, onboarding, onAddMessage, onToggleSignin, t } = this.props;
+    const {
+      classes,
+      onboarding,
+      onWipe,
+      onAddMessage,
+      onToggleSignin,
+      t
+    } = this.props;
     if (!onboarding.signin.challenge) {
       return <SpinnerCard />;
     }
+    if (this.state.deny) {
+      return (
+        <ConfirmationCancel
+          entity="Shared-Owners"
+          toggle={this.toggleCancelOnDevice}
+          wipe={onWipe}
+          step="Shared-Owner registration confirmation"
+          title="Shared-Owners registration confirmation"
+        />
+      );
+    }
     return (
       <div className={classes.base}>
-        <Title>{t("onboarding:master_seed_signin.title")}</Title>
+        <Title>{t("onboarding:so_validation.title")}</Title>
         <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
           <SignInDevice
             challenge={onboarding.signin.challenge.challenge}
             onAddMessage={onAddMessage}
             keyHandles={onboarding.signin.challenge.key_handle}
+            toggleCancelOnDevice={this.toggleCancelOnDevice}
             onFinish={this.signIn}
             cancel={onToggleSignin}
           />
         </BlurDialog>
-        <Introduction>
-          {t("onboarding:master_seed_signin.description")}
-        </Introduction>
+        <Introduction>{t("onboarding:so_validation.desc")}</Introduction>
         <div className={classes.flex}>
           <div className={classes.flexWrapper}>
             <CircleProgress
@@ -182,6 +211,7 @@ const mapDispatch = (dispatch: *) => ({
   onGetSigninChallenge: () => dispatch(getSigninChallenge()),
   onToggleSignin: () => dispatch(toggleDeviceModal()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
+  onWipe: () => dispatch(wipe()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
