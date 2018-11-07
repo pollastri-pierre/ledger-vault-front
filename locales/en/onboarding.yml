@@ -5,7 +5,7 @@ menu:
     pre: Prerequisites
     conf: Initialization
     back: Backup
-    sign: Sign in
+    sign: Create Wrapping Key
   authentication: Authentication
   administrators:
     title: Administrators
@@ -27,6 +27,7 @@ tocontinue: to continue
 required: required
 not_required: not required
 box_blue_devices: Box of Ledger Blue Enterprise devices
+cryptosteels: Cryptosteels
 nb_cryptosteels: 6 Ledger Cryptosteels
 team_members: 3+ Administrators
 vault_briefcase: Ledger Vault briefcase
@@ -45,10 +46,14 @@ welcome:
   step3: Finally, we'll create the master seed.
   start: Get Started
 wrapping_key:
-  title: Sign in
-  description: Sign in to initiate and complete the encryption of your organization's partition.
+  title: Create Wrapping Key
+  description: Click Get 'Wrapping Key' and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.
   signin_desc: Sign in each Wrapping Key Custodians one by one by using their Ledger Blue Enterprise
+  step1: 1st Wrapping Key Custodian
+  step2: 2nd Wrapping Key Custodian
+  step3: 3rd Wrapping Key Custodian
   label: Wrapping Key Custodians
+  generate: Get Wrapping Key
   signin: SIGN IN
   signed: signed in
   remaining: remaining
@@ -68,8 +73,8 @@ wrapping_key_init:
   step2: Initialize the Ledger Blue Enterprise.
   step3: Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.
 backup:
-  title: Back up
-  description: Now that your Ledger Blue Enterprise is initialized, we can back up your 24-word recovery phrase in the Ledger Cryptosteel.
+  title: Backup
+  description: Back up your 24-word recovery phrase in the Ledger Cryptosteel.
   step1: Grab your Recovery Sheet
   step2: Set up your Ledger Cryptosteel
   step3: Destroy your Recovery Sheet

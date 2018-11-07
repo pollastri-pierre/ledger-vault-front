@@ -60,7 +60,7 @@ const styles = {
   },
   base: {
     background: "white",
-    width: 685,
+    width: 728,
     padding: "40px 40px 40px 0",
     boxShadow: "0 2.5px 2.5px 0 rgba(0,0,0,.04)",
     display: "flex",

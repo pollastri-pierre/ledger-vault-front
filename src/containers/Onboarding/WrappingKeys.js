@@ -1,12 +1,9 @@
 //@flow
 import React, { Component, Fragment } from "react";
-import Plus from "components/icons/full/Plus";
-import CircleProgress from "components/CircleProgress";
-import { withStyles } from "@material-ui/core/styles";
-import type { Translate } from "data/types";
-import cx from "classnames";
 import { translate } from "react-i18next";
 import GenerateKeyFragments from "./GenerateKeyFragments";
+import { withStyles } from "@material-ui/core/styles";
+import FragmentKey from "containers/Onboarding/Fragment";
 import BlurDialog from "components/BlurDialog";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
@@ -139,38 +136,18 @@ class WrappingKeys extends Component<Props, State> {
         </BlurDialog>
         <Introduction>{t("onboarding:wrapping_key.description")}</Introduction>
         <div className={classes.flex}>
-          <div style={{ marginRight: 25 }}>
-            <CircleProgress
-              nb={onboarding.wrapping.blobs.length}
-              total={3}
-              label={t("onboarding:wrapping_key.label")}
-            />
-          </div>
-          <div>
-            <div className={classes.signin_desc}>
-              <strong> {t("onboarding:wrapping_key.signin_desc")}</strong>
-            </div>
-            <div
-              className={cx(classes.sign, {
-                [classes.disabled]: onboarding.wrapping.blobs.length === 3
-              })}
-              onClick={
-                onboarding.wrapping.blobs.length === 3
-                  ? () => {}
-                  : onToggleDeviceModal
-              }
-            >
-              <Plus className={classes.icon} />
-              {t("onboarding:wrapping_key.signin")}
-            </div>
-            <div className={classes.sep} />
-            <div className={classes.counter}>
-              {onboarding.wrapping.blobs.length}{" "}
-              {t("onboarding:wrapping_key.signed")},{" "}
-              {3 - onboarding.wrapping.blobs.length}{" "}
-              {t("onboarding:wrapping_key.remaining")}
-            </div>
-          </div>
+          {Array(3)
+            .fill()
+            .map((v, i) => (
+              <FragmentKey
+                key={i}
+                disabled={onboarding.wrapping.blobs.length <= i - 1}
+                label={t(`onboarding:wrapping_key.step${i + 1}`)}
+                labelGenerate={t("onboarding:wrapping_key.generate")}
+                generate={onToggleDeviceModal}
+                generated={onboarding.wrapping.blobs.length > i}
+              />
+            ))}
         </div>
         <Footer
           render={(onNext, onPrevious) => (

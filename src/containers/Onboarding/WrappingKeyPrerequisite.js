@@ -1,5 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
+import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
@@ -60,23 +61,8 @@ const Prerequisite = ({
             >
               <div style={{ width: 93 }}>{t("onboarding:wkey_custodians")}</div>
             </RequirementUnit>
-          </div>
-        </div>
-        <div className={classes.notrequired}>
-          <SubTitle>{t("onboarding:not_required")}</SubTitle>
-          <div className={classes.flexcolumn}>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-            >
-              <div style={{ width: 96 }}>{t("onboarding:administrators")}</div>
-            </RequirementUnit>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-              style={{ width: 76 }}
-            >
-              <div>
-                {t("onboarding:wrapping_key_prerequisite.shared_owners")}
-              </div>
+            <RequirementUnit icon={<Cryptosteel style={{ marginLeft: 37 }} />}>
+              {t("onboarding:cryptosteels")}
             </RequirementUnit>
           </div>
         </div>

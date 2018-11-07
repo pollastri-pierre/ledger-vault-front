@@ -79,6 +79,7 @@ const requirement = {
     display: "flex",
     flexDirection: "column",
     textAlign: "center",
+    marginRight: 20,
     maxWidth: 110
   },
   icon: {

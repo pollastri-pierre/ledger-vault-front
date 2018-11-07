@@ -73,7 +73,7 @@ const ConfirmationGlobal = ({
             <div style={{ marginBottom: 12 }}>
               <People color="#cccccc" style={{ height: 29 }} />
             </div>
-            3 shared owners
+            3 Shared-Owners
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>

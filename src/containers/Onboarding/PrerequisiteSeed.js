@@ -1,5 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
+import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
@@ -57,31 +58,19 @@ const PrerequisiteSeed = ({
                 <span>{t("onboarding:blue_red")}</span>
               </div>
             </RequirementUnit>
+            <RequirementUnit icon={<BlueDevice color="green" />}>
+              <div style={{ width: 96 }}>
+                <span>{t("onboarding:blue_green")}</span>
+              </div>
+            </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
               style={{ width: 76 }}
             >
               <div>{t("onboarding:shared_owners")}</div>
             </RequirementUnit>
-          </div>
-        </div>
-        <div className={classes.notrequired}>
-          <SubTitle>{t("onboarding:not_required")}</SubTitle>
-          <div className={classes.flexcolumn}>
-            <div style={{ marginRight: 22 }}>
-              <RequirementUnit
-                icon={<People color="#cccccc" style={{ height: 29 }} />}
-              >
-                <div>{t("onboarding:administrators")}</div>
-              </RequirementUnit>
-            </div>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-              style={{ width: 76 }}
-            >
-              <div>
-                {t("onboarding:master_seed_prerequisite.wkey_custodians")}
-              </div>
+            <RequirementUnit icon={<Cryptosteel style={{ marginLeft: 37 }} />}>
+              {t("onboarding:cryptosteels")}
             </RequirementUnit>
           </div>
         </div>

@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
 
 const listItem = {
@@ -67,6 +68,19 @@ const step = {
     }
   }
 };
+
+const profile = {
+  base: {
+    width: 28
+  }
+};
+export const ProfileIcon = withStyles(
+  profile
+)(({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
+  <div style={{ marginBottom: 10 }}>
+    <Profile color="#cccccc" className={classes.base} />
+  </div>
+));
 
 export const Step = withStyles(
   step
@@ -182,72 +196,6 @@ export const Introduction = withStyles(
     return <p className={classes.base}>{children}</p>;
   }
 );
-
-// const menuHeading = {
-//   base: {
-//     fontSize: 11,
-//     textTransform: "uppercase",
-//     color: "black",
-//     display: "block",
-//     marginBottom: 10,
-//     fontWeight: 600
-//   }
-// };
-//
-// export const MenuHeading = withStyles(
-//   menuHeading
-// )(
-//   ({
-//     classes,
-//     children,
-//     selected
-//   }: {
-//     classes: { [_: $Keys<typeof menuHeading>]: string },
-//     children: React$Node,
-//     selected: boolean
-//   }) => {
-//     return (
-//       <span
-//         className={cx(classes.base, {
-//           [classes.selected]: selected
-//         })}
-//       >
-//         {children}
-//       </span>
-//     );
-//   }
-// );
-
-// const menuItem = {
-//   base: {
-//     fontSize: 11,
-//     lineHeight: 1.82,
-//     color: "black"
-//   }
-// };
-// export const MenuItem = withStyles(
-//   menuItem
-// )(
-//   ({
-//     classes,
-//     children,
-//     selected
-//   }: {
-//     classes: { [_: $Keys<typeof menuItem>]: string },
-//     children: React$Node,
-//     selected: boolean
-//   }) => {
-//     return (
-//       <span
-//         className={cx(classes.base, {
-//           [classes.selected]: selected
-//         })}
-//       >
-//         {children}
-//       </span>
-//     );
-//   }
-// );
 
 const subtitle = {
   base: {
