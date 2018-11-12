@@ -125,8 +125,9 @@ context("Account Abort", () => {
               // click on done to create the account, it will display the authenticate with device modal
               cy.contains("done").click();
               cy.wait("@authenticate");
-              cy.contains("Pending").click();
+              cy.wait(100);
 
+              cy.contains("Pending").click();
               cy
                 .get('.test-pending-account')
                 .eq(0)
