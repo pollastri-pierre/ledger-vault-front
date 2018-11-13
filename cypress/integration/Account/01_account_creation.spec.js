@@ -48,18 +48,6 @@ context("Account creation", () => {
           .get(".test-member-row")
           .eq(1)
           .click({ force: true });
-        cy
-          .get(".test-member-row")
-          .eq(1)
-          .click({ force: true });
-        cy
-          .get(".test-member-row")
-          .eq(1)
-          .click({ force: true });
-        cy
-          .get(".test-member-row")
-          .eq(2)
-          .click({ force: true });
         cy.contains("Done").click();
         cy.contains("Approvals").click();
 

@@ -96,8 +96,6 @@ context("Use Wrong Device for Account", () => {
               .contains("Person does not exist")
               .get(".top-message-title")
               .contains("Error 701");
-
-          //  cy.focused().dblclick();
         });
     });
 });
