@@ -109,12 +109,6 @@ const Menu = ({
       >
         <span>{t("onboarding:menu.administrators.scheme")}</span>
       </MenuLinkOnboarding>
-      {/* <MenuLinkOnboarding */}
-      {/*   selected={onboarding.state === "ADMINISTRATORS_SIGN_IN"} */}
-      {/*   color={colors.blue_green} */}
-      {/* > */}
-      {/*   <span>{t("onboarding:menu.master_seed.signin")}</span> */}
-      {/* </MenuLinkOnboarding> */}
       <div style={{ marginTop: 20 }}>
         <LabelLink
           label={t("onboarding:menu.master_seed.title")}

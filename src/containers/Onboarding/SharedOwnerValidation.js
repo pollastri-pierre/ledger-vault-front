@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, Fragment } from "react";
+import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import CircleProgress from "components/CircleProgress";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -11,13 +12,13 @@ import Plus from "components/icons/full/Plus";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
-  getSigninChallenge,
+  openAdminValidationChannel,
   wipe,
   toggleDeviceModal,
-  addSignedIn
+  addAdminValidation
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
-import SignInDevice from "./SignInDevice";
+import SharedOwnerValidationDevice from "./SharedOwnerValidationDevice";
 import Footer from "./Footer";
 import { Title, Introduction } from "components/Onboarding";
 
@@ -64,47 +65,76 @@ type Props = {
   onboarding: *,
   classes: { [$Keys<typeof styles>]: string },
   onNextStep: Function,
+  onWipe: Function,
   onGetSigninChallenge: Function,
   onToggleSignin: Function,
   onAddMessage: (string, string, string) => Function,
   onAddSignedIn: Function,
   t: Translate
 };
-class SignIn extends Component<Props> {
+type State = {
+  deny: boolean
+};
+class SharedOwnerValidation extends Component<Props, State> {
+  state = {
+    deny: false
+  };
   svg: ?Element;
 
   componentDidMount() {
-    this.props.onGetSigninChallenge();
+    this.props.onOpenAdminValidationChannel();
   }
 
+  toggleCancelOnDevice = () => {
+    this.setState({ deny: !this.state.deny });
+  };
+
   signIn = (pubKey: string, signature: string) => {
-    this.props.onAddSignedIn(pubKey, signature);
+    this.props.onAddAdminValidation(pubKey, signature);
     this.props.onToggleSignin();
   };
 
   render() {
-    const { classes, onboarding, onAddMessage, onToggleSignin, t } = this.props;
-    if (!onboarding.signin.challenge) {
+    const {
+      classes,
+      onboarding,
+      onWipe,
+      onAddMessage,
+      onToggleSignin,
+      t
+    } = this.props;
+    if (onboarding.validating_shared_owner.channels.length === 0) {
       return <SpinnerCard />;
+    }
+    if (this.state.deny) {
+      return (
+        <ConfirmationCancel
+          entity="Shared-Owners"
+          toggle={this.toggleCancelOnDevice}
+          wipe={onWipe}
+          step="Shared-Owner registration confirmation"
+          title="Shared-Owners registration confirmation"
+        />
+      );
     }
     return (
       <div className={classes.base}>
-        <Title>{t("onboarding:admin_signin.title")}</Title>
+        <Title>{t("onboarding:so_validation.title")}</Title>
         <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
-          <SignInDevice
-            challenge={onboarding.signin.challenge.challenge}
+          <SharedOwnerValidationDevice
+            channels={onboarding.validating_shared_owner.channels}
             onAddMessage={onAddMessage}
-            keyHandles={onboarding.signin.challenge.key_handle}
+            toggleCancelOnDevice={this.toggleCancelOnDevice}
             onFinish={this.signIn}
             cancel={onToggleSignin}
           />
         </BlurDialog>
-        <Introduction>{t("onboarding:admin_signin.desc")}</Introduction>
+        <Introduction>{t("onboarding:so_validation.desc")}</Introduction>
         <div className={classes.flex}>
           <div className={classes.flexWrapper}>
             <CircleProgress
               label={t("onboarding:master_seed_signin.members_present")}
-              nb={onboarding.signin.admins.length}
+              nb={onboarding.validating_shared_owner.admins.length}
               total={onboarding.registering.admins.length}
             />
           </div>
@@ -115,11 +145,11 @@ class SignIn extends Component<Props> {
               <div
                 className={cx(classes.sign, {
                   [classes.disabled]:
-                    onboarding.signin.admins.length ===
+                    onboarding.validating_shared_owner.admins.length ===
                     onboarding.registering.admins.length
                 })}
                 onClick={
-                  onboarding.signin.admins.length ===
+                  onboarding.validating_shared_owner.admins.length ===
                   onboarding.registering.admins.length
                     ? () => false
                     : onToggleSignin
@@ -137,10 +167,9 @@ class SignIn extends Component<Props> {
                 )}
               </div>
               <span className={classes.counter}>
-                {onboarding.signin.admins.length}{" "}
+                {onboarding.validating_shared_owner.admins.length}{" "}
                 {t("onboarding:master_seed_signin.signed_in")},{" "}
-                {onboarding.registering.admins.length -
-                  onboarding.signin.admins.length}{" "}
+                {onboarding.registering.admins.length}{" "}
                 {t("onboarding:master_seed_signin:remaining")}
               </span>
             </div>
@@ -158,7 +187,7 @@ class SignIn extends Component<Props> {
                   highlight
                   onTouchTap={onNext}
                   disabled={
-                    onboarding.signin.admins.length <
+                    onboarding.validating_shared_owner.admins.length <
                     onboarding.registering.admins.length
                   }
                 >
@@ -178,14 +207,14 @@ const mapState = state => ({
 });
 
 const mapDispatch = (dispatch: *) => ({
-  onGetSigninChallenge: () => dispatch(getSigninChallenge()),
+  onOpenAdminValidationChannel: () => dispatch(openAdminValidationChannel()),
   onToggleSignin: () => dispatch(toggleDeviceModal()),
-  onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
+  onAddAdminValidation: (key, sign) => dispatch(addAdminValidation(key, sign)),
   onWipe: () => dispatch(wipe()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });
 
 export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(SignIn))
+  withStyles(styles)(translate()(SharedOwnerValidation))
 );

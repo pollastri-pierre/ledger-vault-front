@@ -13,10 +13,8 @@ import People from "components/icons/thin/People.js";
 
 const styles = {
   requirements: {
-    display: "flex",
     fontSize: 11,
     lineHeight: 1.82,
-    justifyContent: "space-between",
     marginBottom: 40
   },
   notrequired: {
@@ -32,8 +30,10 @@ const styles = {
       top: 30
     }
   },
-  flexcolumn: {
-    display: "flex"
+  flexcolumn: {},
+  row: {
+    display: "flex",
+    marginTop: 20
   }
 };
 const PrerequisiteSeed = ({
@@ -53,25 +53,36 @@ const PrerequisiteSeed = ({
         <div>
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<BlueDevice color="red" />}>
-              <div style={{ width: 96 }}>
-                <span>{t("onboarding:blue_red")}</span>
-              </div>
-            </RequirementUnit>
-            <RequirementUnit icon={<BlueDevice color="green" />}>
-              <div style={{ width: 96 }}>
-                <span>{t("onboarding:blue_green")}</span>
-              </div>
-            </RequirementUnit>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-              style={{ width: 76 }}
-            >
-              <div>{t("onboarding:shared_owners")}</div>
-            </RequirementUnit>
-            <RequirementUnit icon={<Cryptosteel style={{ marginLeft: 37 }} />}>
-              {t("onboarding:cryptosteels")}
-            </RequirementUnit>
+            <div className={classes.row}>
+              <RequirementUnit
+                icon={<People color="#cccccc" style={{ height: 25 }} />}
+                style={{ width: 76 }}
+              >
+                <div>{t("onboarding:shared_owners")}</div>
+              </RequirementUnit>
+              <RequirementUnit
+                icon={<People style={{ height: 25 }} color="#cccccc" />}
+              >
+                {t("onboarding:team_members")}
+              </RequirementUnit>
+              <RequirementUnit icon={<BlueDevice color="red" />}>
+                <div style={{ width: 96 }}>
+                  <span>{t("onboarding:blue_red")}</span>
+                </div>
+              </RequirementUnit>
+            </div>
+            <div className={classes.row}>
+              <RequirementUnit icon={<BlueDevice color="green" />}>
+                <div style={{ width: 96 }}>
+                  <span>{t("onboarding:blue_green")}</span>
+                </div>
+              </RequirementUnit>
+              <RequirementUnit
+                icon={<Cryptosteel style={{ marginLeft: 37 }} />}
+              >
+                {t("onboarding:cryptosteels")}
+              </RequirementUnit>
+            </div>
           </div>
         </div>
       </div>

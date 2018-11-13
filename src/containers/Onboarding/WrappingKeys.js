@@ -1,6 +1,6 @@
 //@flow
 import React, { Component, Fragment } from "react";
-import { translate } from "react-i18next";
+import { translate, Trans } from "react-i18next";
 import GenerateKeyFragments from "./GenerateKeyFragments";
 import { withStyles } from "@material-ui/core/styles";
 import FragmentKey from "containers/Onboarding/Fragment";
@@ -134,7 +134,12 @@ class WrappingKeys extends Component<Props, State> {
             wraps
           />
         </BlurDialog>
-        <Introduction>{t("onboarding:wrapping_key.description")}</Introduction>
+        <Introduction>
+          <Trans
+            i18nKey="onboarding:wrapping_key.description"
+            components={<strong>0</strong>}
+          />
+        </Introduction>
         <div className={classes.flex}>
           {Array(3)
             .fill()

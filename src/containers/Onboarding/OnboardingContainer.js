@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -15,6 +16,7 @@ import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
 import SignIn from "./SignIn";
+import SharedOwnerValidation from "./SharedOwnerValidation";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
 import ConfirmationGlobal from "./ConfirmationGlobal.js";
@@ -151,9 +153,7 @@ class OnboardingContainer extends Component<Props, State> {
         >
           <div className={classes.banner}>
             <Logo />
-            <a href="http://help.vault.ledger.com" className={classes.support}>
-              HELP
-            </a>
+            <HelpLink className={classes.support}>HELP</HelpLink>
           </div>
           <Menu
             nbMember={onboarding.registering.admins.length}
@@ -190,6 +190,7 @@ class OnboardingContainer extends Component<Props, State> {
                 is_editable={onboarding.is_editable}
               />
             )}
+            {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
             {onboarding.state === "MASTER_SEED_PREREQUISITE" && (
               <PrerequisiteSeed />
             )}
@@ -200,7 +201,9 @@ class OnboardingContainer extends Component<Props, State> {
             {onboarding.state === "SHARED_OWNER_REGISTRATION" && (
               <SharedOwnerRegistration />
             )}
-            {onboarding.state === "SHARED_OWNER_VALIDATION" && <SignIn />}
+            {onboarding.state === "SHARED_OWNER_VALIDATION" && (
+              <SharedOwnerValidation />
+            )}
             {onboarding.state === "MASTER_SEED_GENERATION" && (
               <Provisionning history={history} />
             )}

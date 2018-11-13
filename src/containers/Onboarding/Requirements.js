@@ -80,7 +80,7 @@ const requirement = {
     flexDirection: "column",
     textAlign: "center",
     marginRight: 20,
-    maxWidth: 110
+    width: 80
   },
   icon: {
     marginBottom: 2,
@@ -133,11 +133,11 @@ const Requirements = ({
       <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
         {t("onboarding:wkey_custodians")}
       </RequirementUnit>
-      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
-        {t("onboarding:shared_owners")}
-      </RequirementUnit>
       <RequirementUnit icon={<People style={{ height: 25 }} color="#cccccc" />}>
         {t("onboarding:team_members")}
+      </RequirementUnit>
+      <RequirementUnit icon={<People color="#cccccc" style={{ height: 25 }} />}>
+        {t("onboarding:shared_owners")}
       </RequirementUnit>
     </div>
 

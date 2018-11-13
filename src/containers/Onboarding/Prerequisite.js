@@ -51,13 +51,13 @@ const Prerequisite = ({
         <div>
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<BlueDevice color="green" />}>
-              <div style={{ width: 96 }}>{t("onboarding:blue_green")}</div>
-            </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
             >
               <div style={{ width: 93 }}>{t("onboarding:team_members")}</div>
+            </RequirementUnit>
+            <RequirementUnit icon={<BlueDevice color="green" />}>
+              <div style={{ width: 96 }}>{t("onboarding:blue_green")}</div>
             </RequirementUnit>
           </div>
         </div>

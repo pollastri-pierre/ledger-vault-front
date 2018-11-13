@@ -32,7 +32,7 @@ type State = {
 
 class ConfirmationCancel extends Component<Props, State> {
   state = {
-    value: "2"
+    value: "0"
   };
   handleChange = event => {
     this.setState({ value: event.target.value });
@@ -60,6 +60,11 @@ class ConfirmationCancel extends Component<Props, State> {
             <FormControlLabel
               value="0"
               control={<Radio color="primary" />}
+              label={<Trans i18nKey="onboarding:confirmation_cancel.oops" />}
+            />
+            <FormControlLabel
+              value="1"
+              control={<Radio color="primary" />}
               label={
                 <Interpolate
                   entity={entity}
@@ -68,35 +73,30 @@ class ConfirmationCancel extends Component<Props, State> {
               }
             />
             <FormControlLabel
-              value="1"
+              value="2"
               control={<Radio color="primary" />}
               label={
                 <Trans i18nKey="onboarding:confirmation_cancel.security" />
               }
             />
-            <FormControlLabel
-              value="2"
-              control={<Radio color="primary" />}
-              label={<Trans i18nKey="onboarding:confirmation_cancel.oops" />}
-            />
           </RadioGroup>
         </FormControl>
         <div className={classes.footer}>
           {value === "0" && (
+            <DialogButton highlight onTouchTap={toggle}>
+              Go back
+            </DialogButton>
+          )}
+          {value === "1" && (
             <DialogButton
               highlight
               onTouchTap={wipe}
             >{`Register ${entity} again`}</DialogButton>
           )}
-          {value === "1" && (
-            <HelpLink>
+          {value === "2" && (
+            <HelpLink support>
               <DialogButton highlight>Contact Support</DialogButton>
             </HelpLink>
-          )}
-          {value === "2" && (
-            <DialogButton highlight onTouchTap={toggle}>
-              Go back
-            </DialogButton>
           )}
         </div>
       </div>

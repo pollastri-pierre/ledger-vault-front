@@ -14,21 +14,26 @@ import colors from "shared/colors";
 
 import type { Member } from "data/types";
 
-type Validator = (value: string) => boolean;
+type Validator = (value: string, state: *) => boolean;
 
 const hasMoreThanAscii = str =>
   str.split("").some(function(char) {
     return char.charCodeAt(0) > 127;
   });
 
-const validateName: Validator = name =>
-  name !== "" && name.length < 20 && !hasMoreThanAscii(name);
+const validateName: Validator = name => name !== "" && !hasMoreThanAscii(name);
+
+const validateLastName: Validator = (name, state) =>
+  validateName(name) && name.length + state.first_name.value.length < 19;
+
+const validateFirstName: Validator = (name, state) =>
+  validateName(name) && name.length + state.last_name.value.length < 19;
 
 const validateMail: Validator = email => emailValidator.validate(email);
 
 const validators: { [_: string]: Validator } = {
-  first_name: validateName,
-  last_name: validateName,
+  first_name: validateFirstName,
+  last_name: validateLastName,
   email: validateMail,
   picture: _ => true
 };
@@ -151,18 +156,15 @@ class ProfileEditModal extends Component<
     this.setState({
       [name]: {
         value,
-        isValid: validators[name](value)
+        isValid: validators[name](value, this.state)
       }
     });
   };
 
-  isEmpty = () => {
-    return (
-      this.state.first_name.value === "" ||
-      this.state.last_name.value === "" ||
-      this.state.email.value === ""
-    );
-  };
+  isEmpty = () =>
+    this.state.first_name.value === "" ||
+    this.state.last_name.value === "" ||
+    this.state.email.value === "";
 
   render() {
     const { classes, title, labelSubmit, t } = this.props;
@@ -202,16 +204,14 @@ class ProfileEditModal extends Component<
             />
             <TextField
               name="last_name"
-              placeholder={t("profile:lastName")}
+              placeholder="User name"
               value={this.state.last_name.value}
               error={!this.state.last_name.isValid}
               onChange={this.updateField}
               inputProps={{
                 style: {
                   fontWeight: 600,
-                  color: "black",
-                  marginRight: 20,
-                  width: "45%"
+                  color: "black"
                 }
               }}
             />

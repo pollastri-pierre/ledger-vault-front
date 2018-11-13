@@ -1,10 +1,40 @@
 //@flow
 import React from "react";
+import colors from "shared/colors";
 import People from "components/icons/thin/People";
 import Plus from "components/icons/full/Plus";
 import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
+
+const careful = {
+  base: {
+    padding: 10,
+    background: "#27d0e280",
+    marginTop: 20,
+    alignItems: "center",
+    fontWeight: "bold",
+    color: "#18909c",
+    borderRadius: 4,
+    display: "flex"
+  },
+  icon: {
+    width: 20,
+    color: "white",
+    height: 20,
+    borderRadius: "50%",
+    textAlign: "center",
+    fontWeight: "bold",
+    marginRight: 15,
+    background: colors.ocean
+  }
+};
+export const Careful = withStyles(careful)(({ children, classes }) => (
+  <div className={classes.base}>
+    <div className={classes.icon}>!</div>
+    <div> {children}</div>
+  </div>
+));
 
 const addUser = {
   base: {

@@ -8,7 +8,7 @@ import { translate } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import GenerateKeyFragments from "./GenerateKeyFragments";
+import GenerateSeedDevice from "./GenerateSeedDevice";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
@@ -112,7 +112,7 @@ class Provisioning extends Component<Props, State> {
           open={onboarding.device_modal}
           onClose={onToggleDeviceModal}
         >
-          <GenerateKeyFragments
+          <GenerateSeedDevice
             shards_channel={onboarding.provisionning.channel}
             onFinish={this.finish}
             toggleCancelOnDevice={this.toggleCancelOnDevice}

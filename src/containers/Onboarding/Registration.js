@@ -1,5 +1,6 @@
 //@flow
 import { connect } from "react-redux";
+import colors from "shared/colors";
 import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -8,7 +9,12 @@ import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import Plus from "../../components/icons/full/Plus";
 import AddMember from "./AddMember";
-import { Title, Introduction, AddUser } from "components/Onboarding.js";
+import {
+  Title,
+  Introduction,
+  AddUser,
+  Careful
+} from "components/Onboarding.js";
 import { NoMembers } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
@@ -145,11 +151,9 @@ class Registration extends Component<Props, *> {
           </AddUser>
           <Introduction>
             {t("onboarding:administrators_registration.description")}
-            <p>
-              <strong>
-                {t("onboarding:administrators_registration.description_strong")}
-              </strong>
-            </p>
+            <Careful>
+              {t("onboarding:administrators_registration.description_strong")}
+            </Careful>
           </Introduction>
           {onboarding.registering.admins.length === 0 ? (
             <NoMembers
