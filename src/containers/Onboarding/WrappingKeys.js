@@ -1,6 +1,7 @@
 //@flow
 import React, { Component, Fragment } from "react";
 import { translate, Trans } from "react-i18next";
+import type { Translate } from "data/types";
 import GenerateKeyFragments from "./GenerateKeyFragments";
 import { withStyles } from "@material-ui/core/styles";
 import FragmentKey from "containers/Onboarding/Fragment";
