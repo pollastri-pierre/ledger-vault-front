@@ -1,5 +1,4 @@
 //@flow
-import AccountQuery from "api/queries/AccountQuery";
 import network from "network";
 import { addMessage } from "redux/modules/alerts";
 import type { Dispatch } from "redux";
@@ -8,6 +7,8 @@ export const ONBOARDING_WRAPPING_CHANNEL = "ONBOARDING_WRAPPING_CHANNEL";
 export const ONBOARDING_FATAL_ERROR = "ONBOARDING_FATAL_ERROR";
 export const ONBOARDING_REGISTERING_CHALLENGE =
   "ONBOARDING_REGISTERING_CHALLENGE";
+export const ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE =
+  "ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE";
 export const ONBOARDING_SIGNIN_CHALLENGE = "ONBOARDING_SIGNIN_CHALLENGE";
 export const ONBOARDING_TOGGLE_DEVICE_MODAL = "ONBOARDING_TOGGLE_DEVICE_MODAL";
 export const ONBOARDING_TOGGLE_MEMBER_MODAL = "ONBOARDING_TOGGLE_MEMBER_MODAL";
@@ -17,10 +18,15 @@ export const ONBOARDING_STATE = "ONBOARDING_STATE";
 export const ONBOARDING_ADD_WRAP_KEY = "ONBOARDING_ADD_WRAP_KEY";
 export const ONBOARDING_CHANGE_QUORUM = "ONBOARDING_CHANGE_QUORUM";
 export const ONBOARDING_ADD_ADMIN = "ONBOARDING_ADD_ADMIN";
+export const ONBOARDING_ADMIN_VALIDATION_CHANNEL =
+  "ONBOARDING_ADD_ADMIN_VALIDATION_CHANNEL";
+export const ONBOARDING_ADD_ADMIN_VALIDATION =
+  "ONBOARDING_ADD_ADMIN_VALIDATION";
 export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
 export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
 export const ONBOARDING_EDIT_MEMBER = "ONBOARDING_EDIT_MEMBER";
 export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
+export const ONBOARDING_ADD_SHARED_OWNER = "ONBOARDING_ADD_SHARED_OWNER";
 
 export type OnboardingState =
   | "LOADING"
@@ -33,10 +39,12 @@ export type OnboardingState =
   | "ADMINISTRATORS_CONFIGURATION"
   | "ADMINISTRATORS_REGISTRATION"
   | "ADMINISTRATORS_SCHEME_CONFIGURATION"
-  | "ADMINISTRATORS_SIGN_IN"
+  // | "ADMINISTRATORS_SIGN_IN"
   | "MASTER_SEED_PREREQUISITE"
   | "MASTER_SEED_CONFIGURATION"
   | "MASTER_SEED_BACKUP"
+  | "SHARED_OWNER_REGISTRATION"
+  | "SHARED_OWNER_VALIDATION"
   | "MASTER_SEED_GENERATION"
   | "COMPLETE";
 
@@ -83,6 +91,12 @@ type Registering = {
   challenge?: string,
   admins: Admin[]
 };
+type RegisteringSO = {
+  challenge?: string,
+  sharedOwners: Admin[]
+};
+
+type AdminApproval = Array<string>;
 
 type Signin = {
   challenge?: Challenge,
@@ -94,11 +108,17 @@ export type Onboarding = {
   state: OnboardingState,
   wrapping: Wrapping,
   registering: Registering,
+  registering_shared_owner: RegisteringSO,
+  validating_shared_owner: {
+    admins: AdminApproval,
+    channels: Channel[]
+  },
   quorum: ?number,
   signin: Signin,
   fatal_error: boolean,
   is_editable: boolean,
-  provisionning: Provisionning
+  provisionning: Provisionning,
+  sharedOwners: Array<*>
 };
 
 export type UIOnboarding = {
@@ -114,11 +134,19 @@ const initialState = {
   member_modal: false,
   quorum: 1,
   state: "LOADING",
+  sharedOwners: [],
   wrapping: {
     blobs: []
   },
   registering: {
     admins: []
+  },
+  registering_shared_owner: {
+    sharedOwners: []
+  },
+  validating_shared_owner: {
+    admins: [],
+    channels: []
   },
   signin: {
     admins: []
@@ -166,6 +194,20 @@ export const authenticate = (data: any) => {
   return network("/onboarding/authenticate", "POST", data);
 };
 
+export const addSharedOwner = (data: *) => {
+  return async (dispatch: Dispatch<*>) => {
+    try {
+      const sharedOwners = await authenticate(data);
+      dispatch({
+        type: ONBOARDING_ADD_SHARED_OWNER,
+        sharedOwners
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+    }
+  };
+};
+
 export const toggleDeviceModal = () => ({
   type: ONBOARDING_TOGGLE_DEVICE_MODAL
 });
@@ -210,6 +252,22 @@ export const addWrappingKey = (data: Blob) => {
   };
 };
 
+export const getSharedOwnerRegistrationChallenge = () => {
+  return async (dispatch: Dispatch<*>) => {
+    try {
+      const challenge = await getChallenge();
+      dispatch({
+        type: ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE,
+        challenge: challenge.challenge
+      });
+    } catch (e) {
+      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch({
+        type: ONBOARDING_FATAL_ERROR
+      });
+    }
+  };
+};
 export const getRegistrationChallenge = () => {
   return async (dispatch: Dispatch<*>) => {
     try {
@@ -247,9 +305,7 @@ export const addMember = (data: Admin) => {
       } catch (error) {
         if (error && error.json) {
           dispatch(
-            addMessage(`Error ${error.json.code}`),
-            error.json.message,
-            "error"
+            addMessage(`Error ${error.json.code}`, error.json.message, "error")
           );
         }
       }
@@ -313,6 +369,30 @@ export const addSignedIn = (pub_key: string, signature: *) => {
   };
 };
 
+export const addAdminValidation = (pub_key: string, signature: *) => {
+  return async (dispatch: Dispatch<*>) => {
+    const data = {
+      pub_key: pub_key.toUpperCase(),
+      signature
+    };
+    const admins = await network("/onboarding/authenticate", "POST", data);
+    dispatch({
+      type: ONBOARDING_ADD_ADMIN_VALIDATION,
+      admins
+    });
+  };
+};
+
+export const openAdminValidationChannel = () => {
+  return async (dispatch: Dispatch<*>) => {
+    const channels: * = await getChallenge();
+    dispatch({
+      type: ONBOARDING_ADMIN_VALIDATION_CHANNEL,
+      channels
+    });
+  };
+};
+
 export const openProvisionningChannel = () => {
   return async (dispatch: Dispatch<*>) => {
     const wrapping: Wrapping = await getChallenge();
@@ -351,6 +431,17 @@ export const getState = () => {
   };
 };
 
+export const wipe = () => {
+  return async (dispatch: Dispatch<*>) => {
+    await network("/onboarding/ongoing", "DELETE");
+    const state = await network("/onboarding/state", "GET");
+    dispatch({
+      type: ONBOARDING_STATE,
+      state
+    });
+  };
+};
+
 const syncNextState = (state: Store, action, next = false) => {
   let actionState = action.state;
   if (next) {
@@ -369,6 +460,20 @@ const syncNextState = (state: Store, action, next = false) => {
           ephemeral_certificate: actionState.ephemeral_certificate
         },
         blobs: actionState.admins_devices
+      }
+    };
+  }
+  if (actionState.state === "SHARED_OWNER_REGISTRATION") {
+    const challenge = actionState.challenge
+      ? actionState.challenge.challenge
+      : null;
+    newState = {
+      ...state,
+      state: actionState.state,
+      registering_shared_owner: {
+        ...state.registering_shared_owner,
+        sharedOwners: actionState.shared_owners,
+        challenge: challenge
       }
     };
   }
@@ -398,23 +503,18 @@ const syncNextState = (state: Store, action, next = false) => {
       quorum: actionState.quorum
     };
   }
-  if (actionState.state === "ADMINISTRATORS_SIGN_IN") {
+  if (actionState.state === "SHARED_OWNER_VALIDATION") {
     newState = {
       ...state,
-      state: actionState.state,
+      state: "SHARED_OWNER_VALIDATION",
       registering: {
         ...state.registering,
         admins: actionState.admins
       },
-      step: actionState.is_open ? 1 : 0,
-      signin: {
-        ...state.signin,
-        admins: actionState.completed_keys || actionState.autorizations || [],
-        challenge: {
-          ...state.signin.challenge,
-          challenge: actionState.challenge,
-          key_handle: actionState.key_handle
-        }
+      validating_shared_owner: {
+        ...state.validating_shared_owner,
+        channels: actionState.challenge || [],
+        admins: actionState.admin_devices || actionState.admin_signatures
       }
     };
   }
@@ -428,7 +528,7 @@ const syncNextState = (state: Store, action, next = false) => {
           ephemeral_public_key: actionState.ephemeral_public_key,
           ephemeral_certificate: actionState.ephemeral_certificate
         },
-        blobs: actionState.admins_devices
+        blobs: actionState.shared_owner_devices
       }
     };
   }
@@ -481,8 +581,26 @@ export default function reducer(state: Store = initialState, action: Object) {
           challenge: action.challenge
         }
       };
+    case ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE:
+      return {
+        ...state,
+        step: 0,
+        registering_shared_owner: {
+          ...state.registering_shared_owner,
+          challenge: action.challenge
+        }
+      };
     case ONBOARDING_TOGGLE_DEVICE_MODAL:
       return { ...state, device_modal: !state.device_modal };
+    case ONBOARDING_ADD_SHARED_OWNER: {
+      return {
+        ...state,
+        registering_shared_owner: {
+          ...state.registering_shared_owner,
+          sharedOwners: action.sharedOwners
+        }
+      };
+    }
     case ONBOARDING_ADD_ADMIN:
       return {
         ...state,
@@ -511,6 +629,14 @@ export default function reducer(state: Store = initialState, action: Object) {
         step: 0,
         signin: { ...state.signin, challenge: action.challenge }
       };
+    case ONBOARDING_ADD_ADMIN_VALIDATION:
+      return {
+        ...state,
+        validating_shared_owner: {
+          ...state.validating_shared_owner,
+          admins: action.admins
+        }
+      };
     case ONBOARDING_ADD_SIGNEDIN: {
       return {
         ...state,
@@ -520,6 +646,15 @@ export default function reducer(state: Store = initialState, action: Object) {
         }
       };
     }
+    case ONBOARDING_ADMIN_VALIDATION_CHANNEL:
+      return {
+        ...state,
+        step: 0,
+        validating_shared_owner: {
+          ...state.validating_shared_owner,
+          channels: action.channels
+        }
+      };
     case ONBOARDING_MASTERSEED_CHANNEL:
       return {
         ...state,

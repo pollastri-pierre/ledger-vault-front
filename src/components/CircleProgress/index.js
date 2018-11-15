@@ -40,7 +40,7 @@ type Props = {
 
 class CircleProgress extends Component<Props> {
   svg: ?Element;
-  componentDidUpdate() {
+  update = () => {
     const { nb, total } = this.props;
     const $svg = this.svg;
     if (!$svg) return;
@@ -77,6 +77,13 @@ class CircleProgress extends Component<Props> {
       .attr("stroke", "none")
       .attr("stroke-width", 3 + "px")
       .attr("d", circle.endAngle(Math.PI * percentage));
+  };
+
+  componentDidMount() {
+    this.update();
+  }
+  componentDidUpdate() {
+    this.update();
   }
 
   render() {

@@ -1,5 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
+import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
@@ -12,10 +13,8 @@ import People from "components/icons/thin/People.js";
 
 const styles = {
   requirements: {
-    display: "flex",
     fontSize: 11,
     lineHeight: 1.82,
-    justifyContent: "space-between",
     marginBottom: 40
   },
   notrequired: {
@@ -52,33 +51,13 @@ const Prerequisite = ({
         <div>
           <SubTitle>{t("onboarding:required")}</SubTitle>
           <div className={classes.flexcolumn}>
-            <RequirementUnit icon={<BlueDevice color="green" />}>
-              <div style={{ width: 96 }}>{t("onboarding:blue_green")}</div>
-            </RequirementUnit>
             <RequirementUnit
               icon={<People color="#cccccc" style={{ height: 29 }} />}
             >
               <div style={{ width: 93 }}>{t("onboarding:team_members")}</div>
             </RequirementUnit>
-          </div>
-        </div>
-        <div className={classes.notrequired}>
-          <SubTitle>{t("onboarding:not_required")}</SubTitle>
-          <div className={classes.flexcolumn}>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-            >
-              <div style={{ width: 96 }}>
-                {t("onboarding:administrators_prerequisite.shared_owners")}
-              </div>
-            </RequirementUnit>
-            <RequirementUnit
-              icon={<People color="#cccccc" style={{ height: 29 }} />}
-              style={{ width: 76 }}
-            >
-              <div>
-                {t("onboarding:administrators_prerequisite.wkey_custodians")}
-              </div>
+            <RequirementUnit icon={<BlueDevice color="green" />}>
+              <div style={{ width: 96 }}>{t("onboarding:blue_green")}</div>
             </RequirementUnit>
           </div>
         </div>

@@ -5,14 +5,17 @@ menu:
     pre: Prerequisites
     conf: Initialization
     back: Backup
-    sign: Sign in
+    sign: Create Wrapping Key
   authentication: Authentication
   administrators:
     title: Administrators
     prerequisite: Prerequisites
     configuration: Initialization
     registration: Registration
-    scheme: Administration rules
+    scheme: Administration rule
+  shared_owner_registration:
+    registration: Registration
+    confirmation: Registration confirmation
   master_seed:
     title: Master seed
     signin: Sign in
@@ -27,6 +30,7 @@ tocontinue: to continue
 required: required
 not_required: not required
 box_blue_devices: Box of Ledger Blue Enterprise devices
+cryptosteels: Ledger Cryptosteels
 nb_cryptosteels: 6 Ledger Cryptosteels
 team_members: 3+ Administrators
 vault_briefcase: Ledger Vault briefcase
@@ -45,17 +49,21 @@ welcome:
   step3: Finally, we'll create the master seed.
   start: Get Started
 wrapping_key:
-  title: Sign in
-  description: Sign in to initiate and complete the encryption of your organization's partition.
+  title: Create Wrapping Key
+  description: Click <0>Get Wrapping Key</0> and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.
   signin_desc: Sign in each Wrapping Key Custodians one by one by using their Ledger Blue Enterprise
+  step1: 1st Wrapping Key Custodian
+  step2: 2nd Wrapping Key Custodian
+  step3: 3rd Wrapping Key Custodian
   label: Wrapping Key Custodians
+  generate: Get Wrapping Key
   signin: SIGN IN
   signed: signed in
   remaining: remaining
   device_modal:
     title: Generate Vault Wrapping Key
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.
-    step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.
+    step2: Enter your PIN code to unlock your device, then open the Vault app from the Ledger Blue Enterprise dashboard.
     step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 wrapping_key_prerequisite:
   title: Prerequisites
@@ -68,8 +76,8 @@ wrapping_key_init:
   step2: Initialize the Ledger Blue Enterprise.
   step3: Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.
 backup:
-  title: Back up
-  description: Now that your Ledger Blue Enterprise is initialized, we can back up your 24-word recovery phrase in the Ledger Cryptosteel.
+  title: Backup
+  description: Back up your 24-word recovery phrase in the Ledger Cryptosteel.
   step1: Grab your Recovery Sheet
   step2: Set up your Ledger Cryptosteel
   step3: Destroy your Recovery Sheet
@@ -91,7 +99,7 @@ administrators_registration:
   title: Registration
   add_member: add administrator
   description: Register the Administrators of your workspace. Administrators can perform sensitive actions such as creating accounts.
-  description_strong: "Note: It's not possible to delete Administrators once they're created."
+  description_strong: "It's not possible to delete Administrators once they're created."
   add_member_title: add a new administrator
   at_least: At least 3 Administrators are required to continue
   click_edit: Edit
@@ -103,12 +111,25 @@ administrators_registration:
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.   
     step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 administrators_scheme:
-  title: Administration scheme
+  title: Administration rule
   description: This step allows you to define the number of approvals you must collect from all registered Administrators to authorize sensitive actions.
   nb_required: Requires the approval of {{count}} Administrators
   out_of: out of {{total}}
   require_less: less
   require_more: more
+so_registration:
+  title: Registration
+  desc: Click <0>Add Shared-Owner</0> and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.
+  description_strong: "It's not possible to delete Shared-Owners once they're created."
+  add: Add shared-owner
+  add_new: add a new shared-owner
+  so_nb_required: 3 Shared-Owners are required to continue
+admin_signin:
+  title: Sign in
+  desc: Get Administrators to sign in
+so_validation:
+  title: Approve registration
+  desc: Get Administrators to sign in to finalize the registration of the Shared-Owners.
 master_seed_signin:
   title: Sign in
   description: Sign in to confirm your registration.
@@ -138,15 +159,15 @@ master_seed_configuration:
   step3: Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.
 master_seed_provisionning:
   title: Create master seed
-  description: To do so, click 'Get master seed' and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.
+  description: Click 'Get seed' and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.
   step1: 1st Shared-Owner
   step2: 2nd Shared-Owner
   step3: 3rd Shared-Owner
   generated: Received
-  generate_seed: Get master seed
+  generate_seed: Get seed
   generating: generating seed...
   device_modal:
-    title: Generate seed
+    title: Generate Master Seed
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable. 
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard. 
     step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
@@ -154,5 +175,10 @@ confirmation:
   title: Complete
   description: Your Ledger Vault workspace is now configured.
   members_can_signin: Administrators can now sign in.
-  scheme: administration scheme
+  scheme: administration rule
+confirmation_cancel:
+  oops: Oops! you clicked by mistake...
+  desc: It looks like you've canceled the {{entity}}.
+  mistake: You've made a mistake when registering {{entity}}.
+  security: You believe the security of your Ledger Vault might be compromised
 

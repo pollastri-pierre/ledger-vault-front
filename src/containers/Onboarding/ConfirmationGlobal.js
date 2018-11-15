@@ -1,4 +1,5 @@
 //@flow
+import colors from "shared/colors";
 import React, { Fragment } from "react";
 import { Title } from "components/Onboarding";
 import type { Translate } from "data/types";
@@ -71,19 +72,19 @@ const ConfirmationGlobal = ({
         <div className={classes.sumary}>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>
-              <People color="#cccccc" style={{ height: 29 }} />
+              <People color={colors.blue_red} style={{ height: 29 }} />
             </div>
-            3 shared owners
+            3 Shared-Owners
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>
-              <People color="#cccccc" style={{ height: 29 }} />
+              <People color={colors.blue_orange} style={{ height: 29 }} />
             </div>
             3 Wrapping Keys Custodians
           </div>
           <div className={classes.info}>
             <div style={{ marginBottom: 12 }}>
-              <People color="#cccccc" style={{ height: 29 }} />
+              <People color={colors.blue_green} style={{ height: 29 }} />
             </div>
             {onboarding.registering.admins.length}{" "}
             {t("onboarding:administrators")}

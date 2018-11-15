@@ -134,7 +134,8 @@ class AccountQuickInfo extends Component<Props> {
             />
             <Row
               label={t("accountView:summary.quorum")}
-              value={account.security_scheme.quorum}
+              value={`${account.security_scheme.quorum} out of ${account.members
+                .length}`}
             />
           </div>
           <div>

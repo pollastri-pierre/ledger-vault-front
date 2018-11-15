@@ -1,6 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -9,11 +10,13 @@ import WrappingKeys from "./WrappingKeys";
 import Prerequisite from "./Prerequisite";
 import PrerequisiteSeed from "./PrerequisiteSeed";
 import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
+import SharedOwnerRegistration from "./SharedOwnerRegistration";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
 import SignIn from "./SignIn";
+import SharedOwnerValidation from "./SharedOwnerValidation";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
 import ConfirmationGlobal from "./ConfirmationGlobal.js";
@@ -60,7 +63,7 @@ const styles = {
   },
   base: {
     background: "white",
-    width: 685,
+    width: 728,
     padding: "40px 40px 40px 0",
     boxShadow: "0 2.5px 2.5px 0 rgba(0,0,0,.04)",
     display: "flex",
@@ -150,12 +153,11 @@ class OnboardingContainer extends Component<Props, State> {
         >
           <div className={classes.banner}>
             <Logo />
-            <a href="http://help.vault.ledger.com" className={classes.support}>
-              HELP
-            </a>
+            <HelpLink className={classes.support}>HELP</HelpLink>
           </div>
           <Menu
             nbMember={onboarding.registering.admins.length}
+            nbSharedOwner={onboarding.sharedOwners.length}
             onboarding={onboarding}
           />
           <div className={classes.content}>
@@ -196,6 +198,12 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationSeed />
             )}
             {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
+            {onboarding.state === "SHARED_OWNER_REGISTRATION" && (
+              <SharedOwnerRegistration />
+            )}
+            {onboarding.state === "SHARED_OWNER_VALIDATION" && (
+              <SharedOwnerValidation />
+            )}
             {onboarding.state === "MASTER_SEED_GENERATION" && (
               <Provisionning history={history} />
             )}

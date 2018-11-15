@@ -72,7 +72,13 @@ class AddMember extends Component<Props, State> {
 
   finish = (result: *) => {
     this.setState({ step: 0 });
-    this.props.finish(result);
+    const data = {
+      first_name: this.state.data.first_name,
+      last_name: this.state.data.last_name,
+      email: this.state.data.email,
+      picture: this.state.data.picture
+    };
+    this.props.finish({ ...result, ...data });
   };
 
   render() {
@@ -102,7 +108,6 @@ class AddMember extends Component<Props, State> {
           history={this.props.history}
           finish={this.finish}
           cancel={this.prev}
-          data={this.state.data}
           challenge={this.props.challenge}
         />
       );

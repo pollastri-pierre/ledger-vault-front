@@ -13,6 +13,11 @@ import createDevice, {
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
+const defaultSteps = [
+  "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
+  "Enter your PIN code to unlock the device.",
+  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted."
+];
 const styles = {
   base: { width: 400, padding: "40px 40px 80px 40px" },
   title: { textAlign: "center" },
@@ -40,18 +45,13 @@ const styles = {
 
 type Props = {
   title: string,
-  steps: string[],
+  steps?: string[],
+  role?: string,
   history: *,
   cancel: Function,
   organization: *,
   finish: Function,
-  challenge: string,
-  data: {
-    last_name: string,
-    first_name: string,
-    email: string,
-    picture?: string
-  }
+  challenge: string
 };
 
 type State = {
@@ -99,7 +99,7 @@ class RegisterAdmins extends Component<Props, State> {
             organization.name,
             organization.workspace,
             organization.domain_name,
-            "Administrator"
+            this.props.role || "Administrator"
           );
 
           this.setState({ active: 2 });
@@ -133,11 +133,7 @@ class RegisterAdmins extends Component<Props, State> {
             confidentiality: {
               public_key: confidentiality.pubKey,
               attestation: confidentiality_attestation.toString("hex")
-            },
-            first_name: this.props.data.first_name,
-            last_name: this.props.data.last_name,
-            email: this.props.data.email,
-            picture: this.props.data.picture
+            }
           };
 
           this.props.finish(data);
@@ -159,7 +155,7 @@ class RegisterAdmins extends Component<Props, State> {
     return (
       <StepDeviceGeneric
         step={this.state.active}
-        steps={steps}
+        steps={steps || defaultSteps}
         title="Register device"
         device={this.state.active < 2}
         cancel={cancel}
