@@ -165,7 +165,11 @@ class ReceiveAddress extends Component<Props, State> {
         <ModalSubTitle>{t("receive:receive_subtitle")}</ModalSubTitle>
         {!error && (
           <div className={classes.address}>
-            <QRCode hash={account.fresh_addresses[0]} size={140} />
+            <QRCode
+              hash={`${account.currency.payment_uri_scheme}:${account
+                .fresh_addresses[0]}`}
+              size={140}
+            />
             <div className={classes.account}>
               <Interpolate
                 i18nKey="receive:receive_account"
