@@ -371,15 +371,23 @@ export const addSignedIn = (pub_key: string, signature: *) => {
 
 export const addAdminValidation = (pub_key: string, signature: *) => {
   return async (dispatch: Dispatch<*>) => {
-    const data = {
-      pub_key: pub_key.toUpperCase(),
-      signature
-    };
-    const admins = await network("/onboarding/authenticate", "POST", data);
-    dispatch({
-      type: ONBOARDING_ADD_ADMIN_VALIDATION,
-      admins
-    });
+    try {
+      const data = {
+        pub_key: pub_key.toUpperCase(),
+        signature
+      };
+      const admins = await network("/onboarding/authenticate", "POST", data);
+      dispatch({
+        type: ONBOARDING_ADD_ADMIN_VALIDATION,
+        admins
+      });
+    } catch (error) {
+      if (error.json) {
+        dispatch(
+          addMessage(`Error ${error.json.code}`, error.json.message, "error")
+        );
+      }
+    }
   };
 };
 

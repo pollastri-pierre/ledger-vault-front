@@ -48,25 +48,34 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
         const channel = this.props.channels.find(
           chan => chan.admin_uid === pubKey
         );
-        const ephemeral_public_key = channel["ephemeral_public_key"];
-        const certificate = channel["attestation_certificate"];
-        const partition_blob = channel["partition_blob"];
-        // const certificate_device = await device.getAttestationCertificate();
+        if (channel) {
+          const ephemeral_public_key = channel["ephemeral_public_key"];
+          const certificate = channel["attestation_certificate"];
+          const partition_blob = channel["partition_blob"];
+          // const certificate_device = await device.getAttestationCertificate();
 
-        await device.openSession(
-          CONFIDENTIALITY_PATH,
-          Buffer.from(ephemeral_public_key, "hex"),
-          Buffer.from(certificate, "base64"),
-          ACCOUNT_MANAGER_SESSION
-        );
+          await device.openSession(
+            CONFIDENTIALITY_PATH,
+            Buffer.from(ephemeral_public_key, "hex"),
+            Buffer.from(certificate, "base64"),
+            ACCOUNT_MANAGER_SESSION
+          );
 
-        const signature = await device.validateVaultOperation(
-          VALIDATION_PATH,
-          Buffer.from(partition_blob, "base64")
-        );
+          const signature = await device.validateVaultOperation(
+            VALIDATION_PATH,
+            Buffer.from(partition_blob, "base64")
+          );
 
-        this.setState({ step: 2 });
-        this.props.onFinish(pubKey, signature.toString("hex"));
+          this.setState({ step: 2 });
+          this.props.onFinish(pubKey, signature.toString("hex"));
+        } else {
+          this.props.cancel();
+          this.props.onAddMessage(
+            "Error",
+            "Please connect an Administrator device",
+            "error"
+          );
+        }
       } catch (e) {
         console.error(e);
         if (e.statusCode && e.statusCode === 27013) {
