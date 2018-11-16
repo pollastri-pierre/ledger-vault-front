@@ -2,10 +2,10 @@ no_version: We didn't find any vault application version to install on your devi
 error: Oups. An error occured during the update of the application.
 retry: retry
 title: Update app
-sub_title: To update the vault application, plug in your device and check for requests requiring your approval.
+sub_title: Plug in your device and click Allow on your Ledger Blue Enterprise when prompted.
 connect: Connect your device and navigate to the dashboard
-uninstall: Uninstalling your current application
-install: Installing the last version of the application
+uninstall: Uninstalling your current version of the app
+install: Installing the lastest version of the app
 provide_rule: Provide operation rules
 provide_rule_subtext: You must define the operation rules of this account before you can create new operations
 
