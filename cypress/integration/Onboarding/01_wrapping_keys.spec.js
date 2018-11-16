@@ -47,19 +47,19 @@ context("Onboarding Part 1", () => {
         cy.contains("continue").click();
         cy.wait("@next");
         cy.wait("@challenge");
-        cy.contains("SIGN IN").click();
+        cy.get(":nth-child(1) > .Component-base-191").click();
         cy.wait("@authenticate");
         cy
           .request("POST", Cypress.env('api_switch_device'), {
             device_number: 2
           })
-        cy.contains("SIGN IN").click();
+        cy.get(":nth-child(2) > .Component-base-191").click();
         cy.wait("@authenticate");
         cy
             .request("POST", Cypress.env('api_switch_device'), {
               device_number: 3
         })
-        cy.contains("SIGN IN").click();
+        cy.get(":nth-child(3) > .Component-base-191").click();
         cy.wait("@authenticate");
         cy.contains("continue").click();
         cy.wait("@next");
@@ -73,7 +73,11 @@ context("Onboarding Part 1", () => {
           .debug()
           .click();
         cy.wait("@next");
-        cy.wait("@challenge");
+        cy
+          .contains("continue")
+          .debug()
+          .click();
+        cy.wait("@next");
     });
  });
 });
