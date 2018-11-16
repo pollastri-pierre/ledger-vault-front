@@ -1,7 +1,8 @@
-title: Good news!
-accounts_updated: We have updated the following of cryptocurrencies
-unable_access: Unfortunately, you won't be able to create operations on theses accounts until you remind us of the operation rules you had defined for them.
+title: Platform up-to-date!
+accounts_updated: The Ledger Vault platform has been updated. Find out more in the
+unable_access: Before you start using the Ledger Vault, you must recreate your account(s) by providing the name and operation rules for each of them.
 when_ready: When you're ready to  provide that information, click Get Started.
+instruction: Read these instructions before you get started
 provide: Provide account operation rules
 desc: You must define the operation rules in order to create new operations on this account.
 approve: Approve the account

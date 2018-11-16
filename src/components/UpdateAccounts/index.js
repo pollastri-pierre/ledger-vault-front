@@ -36,6 +36,15 @@ import type { Account } from "data/types";
 import BlurDialog from "components/BlurDialog";
 
 const styles = {
+  accountItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "normal",
+    fontWeight: "normal",
+    fontSize: 13,
+    height: 40,
+    padding: "5px 20px"
+  },
   base: {
     width: 800,
     display: "flex",
@@ -260,6 +269,7 @@ class UpdateAccounts extends Component<Props> {
                 {getOutdatedAccounts(accounts).map(account => (
                   <MenuItem
                     button
+                    className={classes.accountItem}
                     disableRipple
                     selected={
                       selectedAccount && selectedAccount.id === account.id
