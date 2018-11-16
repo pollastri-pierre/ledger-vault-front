@@ -87,7 +87,9 @@ const Fragment = ({
   generated: boolean,
   generate: Function
 }) => (
-  <div className={cx(classes.base, { [classes.disabled]: disabled })}>
+  <div
+    className={cx(classes.base, "fragment", { [classes.disabled]: disabled })}
+  >
     <ProfileIcon />
     <div className={classes.title}>{label}</div>
     <SeedStatus label={labelGenerate} generated={generated} open={generate} />
