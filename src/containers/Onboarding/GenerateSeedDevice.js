@@ -94,7 +94,7 @@ class GenerateSeedDevice extends Component<Props, State> {
             this.props.onFinish(shard);
           } else {
             this.props.cancel();
-            this.props.onAddMessage(
+            this.props.addMessage(
               "Error",
               "Please connect a Shared-Owner device",
               "error"
