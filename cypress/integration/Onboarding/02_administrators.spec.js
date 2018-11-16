@@ -92,6 +92,7 @@ context("Onboarding Part 2", () => {
         cy.contains("continue").click();
         cy.wait("@next");
         cy.wait("@challenge");
+        
       });
   });
 });
