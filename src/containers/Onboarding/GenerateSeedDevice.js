@@ -61,36 +61,45 @@ class GenerateSeedDevice extends Component<Props, State> {
             chan => chan.shared_owner_uid === pubKey
           );
 
-          const ephemeral_public_key = channel["ephemeral_public_key"];
-          const certificate = channel["attestation_certificate"];
-          const partition_blob = channel["partition_blob"];
+          if (channel) {
+            const ephemeral_public_key = channel["ephemeral_public_key"];
+            const certificate = channel["attestation_certificate"];
+            const partition_blob = channel["partition_blob"];
 
-          this.setState({ step: 1 });
+            this.setState({ step: 1 });
 
-          await device.openSession(
-            CONFIDENTIALITY_PATH,
-            Buffer.from(ephemeral_public_key, "hex"),
-            Buffer.from(certificate, "base64"),
-            ACCOUNT_MANAGER_SESSION
-          );
+            await device.openSession(
+              CONFIDENTIALITY_PATH,
+              Buffer.from(ephemeral_public_key, "hex"),
+              Buffer.from(certificate, "base64"),
+              ACCOUNT_MANAGER_SESSION
+            );
 
-          const signature = await device.validateVaultOperation(
-            VALIDATION_PATH,
-            Buffer.from(partition_blob, "base64")
-          );
+            const signature = await device.validateVaultOperation(
+              VALIDATION_PATH,
+              Buffer.from(partition_blob, "base64")
+            );
 
-          const blob = await device.generateKeyComponent(
-            KEY_MATERIAL_PATH,
-            false
-          );
+            const blob = await device.generateKeyComponent(
+              KEY_MATERIAL_PATH,
+              false
+            );
 
-          const shard = {
-            blob: blob.toString("base64"),
-            signature: signature.toString("hex"),
-            pub_key: pubKey
-          };
-          this.setState({ step: 2 });
-          this.props.onFinish(shard);
+            const shard = {
+              blob: blob.toString("base64"),
+              signature: signature.toString("hex"),
+              pub_key: pubKey
+            };
+            this.setState({ step: 2 });
+            this.props.onFinish(shard);
+          } else {
+            this.props.cancel();
+            this.props.onAddMessage(
+              "Error",
+              "Please connect a Shared-Owner device",
+              "error"
+            );
+          }
         }
       } catch (error) {
         console.error(error);
