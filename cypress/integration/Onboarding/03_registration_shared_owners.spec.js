@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Onboarding Part 2", () => {
+context("Registration Shared Owners", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -7,7 +7,7 @@ context("Onboarding Part 2", () => {
       polyfill = response.body;
     });
   });
-  it("should initialise admins and define security scheme", () => {
+  it("should add 3 Shared Owners", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
@@ -66,20 +66,6 @@ context("Onboarding Part 2", () => {
           })
         cy.wait("@authenticate");
 
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("less").click();
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.wait("@challenge");
-        // Going to Master Seed step
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.contains("continue").click();
-        cy.wait("@next");
         cy.contains("continue").click();
         cy.wait("@next");
       });

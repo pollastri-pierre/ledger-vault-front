@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Onboarding Part 3", () => {
+context("Admin Approve the registration of the Shared Owners", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -7,7 +7,7 @@ context("Onboarding Part 3", () => {
       polyfill = response.body;
     });
   });
-  it("should sign in scheme with admins", () => {
+  it("should sign in with all the admin to approve the Shared Owners", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)
@@ -62,16 +62,6 @@ context("Onboarding Part 3", () => {
         cy.wait("@authenticate");
         cy.contains("continue").click();
         cy.wait("@next");
-
-        cy.contains("continue").click();
-        cy.wait("@next");
-
-        cy.contains("continue").click();
-        cy.wait("@next");
-
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.wait("@challenge");
       });
   });
 });

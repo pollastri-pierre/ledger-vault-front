@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Onboarding Part 1", () => {
+context("Create Wrapping Key", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -7,7 +7,7 @@ context("Onboarding Part 1", () => {
       polyfill = response.body;
     });
   });
-  it("should initialise the wrapping keys ", () => {
+  it("should initialise the 3 Wrapping Key Custodians", () => {
     cy.server();
     cy
       .route("post", `${Cypress.env('api_server2')}/${orga_name}/onboarding/next`)

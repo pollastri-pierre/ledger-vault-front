@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Onboarding Part 2", () => {
+context("Register the Administrators", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -7,7 +7,7 @@ context("Onboarding Part 2", () => {
       polyfill = response.body;
     });
   });
-  it("should initialise admins and define security scheme", () => {
+  it("should register admins and define security scheme", () => {
     cy.server();
     cy
       .route(
@@ -92,7 +92,7 @@ context("Onboarding Part 2", () => {
         cy.contains("continue").click();
         cy.wait("@next");
         cy.wait("@challenge");
-        
+
       });
   });
 });

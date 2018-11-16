@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Onboarding Part 4", () => {
+context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env('polyfillUrl');
@@ -37,35 +37,28 @@ it("should initialize Master Seed scheme and login to the dashboard", () => {
       cy.get("input").type(orga_name);
       cy.contains("continue").click();
       cy.wait(1000)
-      cy
-        .get(".test-onboarding-seed")
-        .eq(0)
-        .click();
 
+      // Get Seed 1st Shared Owner
+      cy.get(":nth-child(1) > .Component-base-191").click();
       cy.wait("@authenticate");
-      cy
-        .request("POST", Cypress.env('api_switch_device'), {
-          device_number: 8
-        })
-          cy
-            .get(".test-onboarding-seed")
-            .eq(0)
-            .click();
+    //  cy.wait("@challenge");
+
+      // Get Seed 2nd Shared Owner
+      cy.get(":nth-child(2) > .Component-base-191").click();
       cy.wait("@authenticate");
-      cy
-        .request("POST", Cypress.env('api_switch_device'), {
-          device_number: 9
-        })
-      cy
-        .get(".test-onboarding-seed")
-        .eq(0)
-        .click();
+    //  cy.wait("@challenge");
+
+      // Get Seed 3rd Shared Owner
+      cy.get(":nth-child(3) > .Component-base-191").click();
       cy.wait("@authenticate");
+    //  cy.wait("@challenge");
+
+      // Complete Onboarding
       cy.contains("continue").click();
+      cy.contains("3 Shared-Owners").should('be.visible');
       cy.contains("3 Wrapping Keys Custodians").should('be.visible');
-      cy.contains("3 shared owners").should('be.visible');
       cy.contains("3 Administrators").should('be.visible');
-      cy.contains("2/3 administration scheme").should('be.visible');
+      cy.contains("2/3 administration rule").should('be.visible');
 
       cy.wait("@next");
       cy
