@@ -1,5 +1,6 @@
 //@flow
 import React, { Component, PureComponent } from "react";
+import ExpandableText from "components/ExpandableText";
 import connectData from "restlay/connectData";
 import ModalLoading from "components/ModalLoading";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
@@ -87,6 +88,15 @@ const styles = {
     "& > .wrapper": {
       opacity: 1
     }
+  },
+  disabled: {
+    opacity: 0.5
+  },
+  issue: {
+    position: "absolute",
+    fontSize: 10,
+    bottom: -20,
+    left: 0
   }
 };
 
@@ -115,8 +125,6 @@ class AccountCreationCurrencies extends Component<{
     const { props } = this;
     const { currencies, currency, onSelect, classes } = props;
     // TODO migrate to use material-ui MenuList
-    console.log("currency prop not used yet: ", currency); // eslint-disable-line no-console
-    console.log(currencies);
 
     return (
       <div className={classes.base}>
@@ -127,14 +135,24 @@ class AccountCreationCurrencies extends Component<{
           )
           .map(cur => {
             const Icon = getCryptoCurrencyIcon(cur);
+            const currency_gate = currencies.find(curr => curr.name === cur.id);
+            console.log(currency_gate);
+            console.log(currencies);
+            console.log(cur);
             return (
               <div
-                onClick={() => onSelect(cur)}
+                onClick={() => {
+                  if (currency_gate && !currency_gate.issue_message) {
+                    onSelect(cur);
+                  }
+                }}
                 role="button"
                 tabIndex="0"
                 key={cur.name}
                 className={classnames(classes.row, {
-                  [classes.selected]: currency && currency.name === cur.name
+                  [classes.selected]: currency && currency.name === cur.name,
+                  [classes.disabled]:
+                    currency_gate && currency_gate.issue_message
                 })}
               >
                 <div className="wrapper">
@@ -150,6 +168,14 @@ class AccountCreationCurrencies extends Component<{
                   <span className={classes.name}>{cur.name}</span>
                   <span className={classes.short}>{cur.ticker}</span>
                 </div>
+                {currency_gate &&
+                  currency_gate.issue_message && (
+                    <ExpandableText
+                      className={classes.issue}
+                      size={45}
+                      text="Bitcoin Cash service has been suspended due to hard fork. Further announcements will follow."
+                    />
+                  )}
               </div>
             );
           })}
