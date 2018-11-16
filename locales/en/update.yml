@@ -6,4 +6,6 @@ sub_title: To update the vault application, plug in your device and check for re
 connect: Connect your device and navigate to the dashboard
 uninstall: Uninstalling your current application
 install: Installing the last version of the application
+provide_rule: Provide operation rules
+provide_rule_subtext: You must define the operation rules of this account before you can create new operations
 

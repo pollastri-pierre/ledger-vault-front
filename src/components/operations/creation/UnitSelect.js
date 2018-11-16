@@ -40,6 +40,7 @@ class UnitSelect extends Component<{
     return (
       <Select
         value={index}
+        data-test="unit-select"
         onChange={this.onChange}
         renderValue={value => (
           <BlueSelectRightRenderValue>
@@ -50,7 +51,13 @@ class UnitSelect extends Component<{
         classes={{ root: classes.select }}
       >
         {units.map((unit, i) => (
-          <MenuItem disableRipple value={i} key={i} className={classes.menu}>
+          <MenuItem
+            disableRipple
+            value={i}
+            key={i}
+            className={classes.menu}
+            data-test="unit-select-values"
+          >
             <span style={{ color: "black" }}>{unit.code}</span>
           </MenuItem>
         ))}

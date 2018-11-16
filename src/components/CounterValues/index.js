@@ -25,7 +25,7 @@ const mapStateToProps = (state, ownProps) => {
         acc +
         CounterValues.calculateWithIntermediarySelector(state, {
           from: currency,
-          fromExchange: state.exchanges.data[currency.ticker],
+          fromExchange: currency && state.exchanges.data[currency.ticker],
           intermediary: intermediaryCurrency,
           toExchange: state.exchanges.data["USD"],
           to: getFiatCurrencyByTicker("USD"),

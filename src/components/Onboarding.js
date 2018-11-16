@@ -1,8 +1,119 @@
 //@flow
 import React from "react";
+import colors from "shared/colors";
+import People from "components/icons/thin/People";
+import Plus from "components/icons/full/Plus";
 import { withStyles } from "@material-ui/core/styles";
+import Profile from "components/icons/thin/Profile";
 import cx from "classnames";
 
+const careful = {
+  base: {
+    padding: 10,
+    background: "#27d0e280",
+    marginTop: 20,
+    alignItems: "center",
+    fontWeight: "bold",
+    color: "#18909c",
+    borderRadius: 4,
+    display: "flex"
+  },
+  icon: {
+    width: 20,
+    color: "white",
+    height: 20,
+    borderRadius: "50%",
+    textAlign: "center",
+    fontWeight: "bold",
+    marginRight: 15,
+    background: colors.ocean
+  }
+};
+export const Careful = withStyles(careful)(({ children, classes }) => (
+  <div className={classes.base}>
+    <div className={classes.icon}>!</div>
+    <div> {children}</div>
+  </div>
+));
+
+const addUser = {
+  base: {
+    color: "#27d0e2",
+    textDecoration: "none",
+    textTransform: "uppercase",
+    fontSize: 11,
+    fontWeight: 600,
+    position: "absolute",
+    cursor: "pointer",
+    top: 8,
+    right: 0
+  },
+  icon: {
+    width: 11,
+    marginRight: 10,
+    verticalAlign: "middle"
+  }
+};
+export const AddUser = withStyles(addUser)(({ onClick, children, classes }) => (
+  <div onClick={onClick} className={classes.base}>
+    <Plus className={classes.icon} />
+    <span>{children}</span>
+  </div>
+));
+const noMembers = {
+  base: {
+    fontSize: 11,
+    lineHeight: 1.82,
+    textAlign: "center",
+    width: 264,
+    margin: "auto",
+    marginTop: 110
+  },
+  label: {
+    fontSize: 11,
+    fontWeight: 600,
+    margin: 0,
+    marginBottom: 5,
+    textAlign: "center",
+    textTransform: "uppercase"
+  },
+  info: {
+    fontSize: 11,
+    textAlign: "center",
+    lineHeight: 1.82,
+    margin: 0
+  }
+};
+
+export const NoMembers = withStyles(
+  noMembers
+)(
+  ({
+    classes,
+    label,
+    info
+  }: {
+    classes: { [$Keys<typeof noMembers>]: string },
+    label: *,
+    info: *
+  }) => {
+    return (
+      <div className={classes.base}>
+        <People
+          color="#cccccc"
+          style={{
+            height: 29,
+            display: "block",
+            margin: "auto",
+            marginBottom: 21
+          }}
+        />
+        <div className={classes.label}>{label}</div>
+        <div className={classes.info}>{info}</div>
+      </div>
+    );
+  }
+);
 const listItem = {
   base: {
     fontSize: 13,
@@ -67,6 +178,19 @@ const step = {
     }
   }
 };
+
+const profile = {
+  base: {
+    width: 28
+  }
+};
+export const ProfileIcon = withStyles(
+  profile
+)(({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
+  <div style={{ marginBottom: 10 }}>
+    <Profile color="#cccccc" className={classes.base} />
+  </div>
+));
 
 export const Step = withStyles(
   step
@@ -182,72 +306,6 @@ export const Introduction = withStyles(
     return <p className={classes.base}>{children}</p>;
   }
 );
-
-// const menuHeading = {
-//   base: {
-//     fontSize: 11,
-//     textTransform: "uppercase",
-//     color: "black",
-//     display: "block",
-//     marginBottom: 10,
-//     fontWeight: 600
-//   }
-// };
-//
-// export const MenuHeading = withStyles(
-//   menuHeading
-// )(
-//   ({
-//     classes,
-//     children,
-//     selected
-//   }: {
-//     classes: { [_: $Keys<typeof menuHeading>]: string },
-//     children: React$Node,
-//     selected: boolean
-//   }) => {
-//     return (
-//       <span
-//         className={cx(classes.base, {
-//           [classes.selected]: selected
-//         })}
-//       >
-//         {children}
-//       </span>
-//     );
-//   }
-// );
-
-// const menuItem = {
-//   base: {
-//     fontSize: 11,
-//     lineHeight: 1.82,
-//     color: "black"
-//   }
-// };
-// export const MenuItem = withStyles(
-//   menuItem
-// )(
-//   ({
-//     classes,
-//     children,
-//     selected
-//   }: {
-//     classes: { [_: $Keys<typeof menuItem>]: string },
-//     children: React$Node,
-//     selected: boolean
-//   }) => {
-//     return (
-//       <span
-//         className={cx(classes.base, {
-//           [classes.selected]: selected
-//         })}
-//       >
-//         {children}
-//       </span>
-//     );
-//   }
-// );
 
 const subtitle = {
   base: {

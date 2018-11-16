@@ -114,6 +114,7 @@ class DialogButton extends Component<*, *> {
 
     return (
       <button
+        data-test="dialog-button"
         className={classnames(
           classes.base,
           {

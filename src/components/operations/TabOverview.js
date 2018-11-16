@@ -5,6 +5,7 @@ import LineRow from "../LineRow";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
 import ConfirmationStatus from "../ConfirmationStatus";
+import OperationStatus from "components/OperationStatus";
 import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
 import type { Operation, Account } from "data/types";
@@ -14,17 +15,17 @@ function TabOverview(props: { operation: Operation, account: Account }) {
   return (
     <div>
       <OverviewOperation
-        hash={operation.transaction.hash}
-        amount={operation.amount}
+        hash={operation.transaction && operation.transaction.hash}
+        amount={operation.amount || operation.price.amount}
         account={account}
       />
       <div className="operation-list">
         <LineRow label="status">
-          <ConfirmationStatus nbConfirmations={operation.confirmations} />
+          <OperationStatus operation={operation} />
         </LineRow>
 
         <LineRow label="send date">
-          <DateFormat date={operation.time} />
+          <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label="account">
           <Link
@@ -38,7 +39,11 @@ function TabOverview(props: { operation: Operation, account: Account }) {
           <Amount account={account} value={operation.fees} />
         </LineRow>
         <LineRow label="Total spent">
-          <Amount account={account} value={operation.amount} strong />
+          <Amount
+            account={account}
+            value={operation.amount || operation.price.amount}
+            strong
+          />
         </LineRow>
       </div>
     </div>

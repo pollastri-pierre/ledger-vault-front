@@ -90,12 +90,16 @@ type AccountCommon = {
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: number,
-  creation_time: string,
+  number_of_approvals: number,
+  created_on: Date,
   receive_address: string,
   balance_history: { [_: string]: number },
   approvals: Approval[],
   fresh_addresses: *,
-  hsm_operations?: Object
+  hsm_operations?: Object,
+  is_hsm_coin_app_updated: boolean,
+  index: number,
+  status: string
 };
 export type Account = AccountCommon & {
   currency: Currency
@@ -167,10 +171,11 @@ export type TransactionType = "SEND" | "RECEIVE";
 type OperationCommon = {
   id: number,
   currency_name: string,
+  created_by: Member,
   currency_family: string,
   trust: Trust,
   confirmations: number,
-  time: string,
+  created_on: Date,
   price: Price,
   fees: Price,
   approvedTime: ?string,
@@ -181,7 +186,10 @@ type OperationCommon = {
   account_id: string,
   approved: string[],
   senders: string[],
+  recipient: string[],
   recipients: string[],
+  block_height?: number,
+  time?: Date,
   transaction: Transaction,
   exploreURL: ?string,
   approvals: Approval[],

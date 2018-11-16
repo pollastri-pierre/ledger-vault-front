@@ -4,12 +4,44 @@ import invariant from "invariant";
 
 export default class VaultDeviceApp {
   transport: Transport<*>;
-  constructor(transport: Transport<*>, scrambleKey: string = "v1+") {
+  constructor(
+    transport: Transport<*>,
+    scrambleKey: string = "v1+",
+    unwrap: boolean = true
+  ) {
     this.transport = transport;
-    this.transport.debug = true;
+    this.transport.debug = console.log;
     transport.setScrambleKey(scrambleKey);
+    transport.setUnwrap(unwrap);
   }
 
+  // F1 D0 00 00 00
+  async getScrambleKey(): Promise<{ scrambleKey: string }> {
+    const res = await this.transport.send(0xf1, 0xd0, 0x00, 0x00);
+    return res.slice(0, res.length - 2).toString();
+  }
+  async getVersion(): Promise<{
+    appName: string,
+    appVersion: string
+  }> {
+    const res = await this.transport.send(0xb0, 0x01, 0x00, 0x00);
+    // const version = res.readInt8(0);
+    const appNameLen = res.readInt8(1);
+    const appNameHex = res.slice(2, appNameLen + 2);
+    const appName = Buffer.from(appNameHex).toString();
+    const appVersionLen = res.readInt8(2 + appNameLen);
+    const appVersionHex = res.slice(
+      2 + 1 + appNameLen,
+      2 + appNameLen + appVersionLen + 1
+    );
+
+    const appVersion = Buffer.from(appVersionHex).toString();
+
+    return {
+      appName,
+      appVersion
+    };
+  }
   async getFirmwareInfo() {
     const res = await this.transport.send(0xe0, 0x01, 0x00, 0x00);
     const byteArray = [...res];

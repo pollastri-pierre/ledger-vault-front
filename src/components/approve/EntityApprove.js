@@ -1,7 +1,9 @@
 //@flow
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
+import { addMessage } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
 import AbortConfirmation from "./AbortConfirmation";
 import AccountApprove from "../accounts/approve/AccountApprove";
@@ -11,6 +13,7 @@ import createDevice, {
   VALIDATION_PATH,
   ACCOUNT_MANAGER_SESSION,
   MATCHER_SESSION,
+  INVALID_DATA,
   CONFIDENTIALITY_PATH
 } from "device";
 
@@ -27,6 +30,7 @@ type Props = {
   history: *,
   match: *,
   restlay: *,
+  onAddMessage: (string, string, string) => void,
   entity: string,
   account: *
 };
@@ -109,6 +113,13 @@ class EntityApprove extends Component<Props, State> {
       this.close();
     } catch (e) {
       console.error(e);
+      if (e.statusCode && e.statusCode === INVALID_DATA) {
+        this.props.onAddMessage(
+          "Invalid data",
+          "Invalid data sent to the device.",
+          "error"
+        );
+      }
       this.close();
     }
   };
@@ -189,5 +200,10 @@ class EntityApprove extends Component<Props, State> {
   }
 }
 
+const mapDispatch = (dispatch: *) => ({
+  onAddMessage: (title, message, type) =>
+    dispatch(addMessage(title, message, type))
+});
+
 export { EntityApprove };
-export default connectData(EntityApprove);
+export default connect(null, mapDispatch)(connectData(EntityApprove));

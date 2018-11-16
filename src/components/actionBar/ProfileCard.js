@@ -120,7 +120,10 @@ class ProfileCard extends Component<
             <div className={classes.profile_name}>
               {profile.first_name} {profile.last_name}
             </div>
-            <div className={classes.profile_view_profile}>
+            <div
+              className={classes.profile_view_profile}
+              data-test="view-profile"
+            >
               {t("actionBar:view_profile")}
             </div>
           </div>
@@ -137,7 +140,10 @@ class ProfileCard extends Component<
         >
           <div onClick={this.onCloseBubble}>
             <MenuList>
-              <MenuLink to={`/${match.params.orga_name}/logout`}>
+              <MenuLink
+                to={`/${match.params.orga_name}/logout`}
+                data-test="logout"
+              >
                 <span className={classes.link}>{t("actionBar:logout")}</span>
               </MenuLink>
             </MenuList>

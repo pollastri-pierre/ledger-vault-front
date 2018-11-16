@@ -13,14 +13,24 @@ import type { Account, Currency } from "data/types";
 
 type Filters = {
   keywords: ?string,
-  accountId: ?string,
-  currencyName: ?string
+  accounts: ?Array<string>,
+  currencyName: ?string,
+  status: ?Array<string>,
+  dateEnd: ?Date,
+  dateStart: ?Date,
+  minAmount: ?string,
+  maxAmount: ?string
 };
 
 const noFilters = {
   keywords: "",
-  accountId: "",
-  currencyName: ""
+  accounts: [],
+  currencyName: "",
+  status: [],
+  dateStart: null,
+  dateEnd: null,
+  minAmount: "",
+  maxAmount: ""
 };
 
 const styles = {
@@ -64,9 +74,14 @@ class Search extends Component<
     this.debounceOnChangeFilters(filters);
   };
 
+  onClearFilters = () => {
+    this.setState({ filters: noFilters });
+    this.debounceOnChangeFilters(noFilters);
+  };
+
   debounceOnChangeFilters = debounce((debouncedFilters: Filters) => {
     this.setState({ debouncedFilters });
-  }, 200);
+  }, 50);
 
   shouldComponentUpdate(props: *, state: *) {
     return state.filters === state.debouncedFilters;
@@ -78,7 +93,6 @@ class Search extends Component<
     const refreshingKey =
       String(debouncedFilters.keywords) +
       " " +
-      String(debouncedFilters.accountId) +
       "_" +
       String(debouncedFilters.currencyName);
     return (
@@ -93,6 +107,7 @@ class Search extends Component<
           currencies={currencies}
           filters={filters}
           onChangeFilters={this.onChangeFilters}
+          onClearFilters={this.onClearFilters}
         />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}

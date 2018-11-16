@@ -25,11 +25,13 @@ class LastOperationCard extends Component<*> {
     const { accounts, operations, reloading, t } = this.props;
     return (
       <Card reloading={reloading} title={t("accountView:last_op.title")}>
-        <DataTableOperation
-          columnIds={columnIds}
-          operations={operations}
-          accounts={accounts}
-        />
+        <div data-test="last_op_list">
+          <DataTableOperation
+            columnIds={columnIds}
+            operations={operations.slice(0, 5)}
+            accounts={accounts}
+          />
+        </div>
       </Card>
     );
   }

@@ -1,12 +1,13 @@
 //@flow
+import cx from "classnames";
 import React, { Component } from "react";
 import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
-import cx from "classnames";
 import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
 import DateFormat from "../DateFormat";
 import CurrencyAccountValue from "../CurrencyAccountValue";
+import OperationStatus from "components/OperationStatus";
 import AccountName from "../AccountName";
 import Comment from "../icons/full/Comment";
 import DataTable from "../DataTable";
@@ -39,7 +40,7 @@ const styles = {
       transition: "width 200ms ease"
     }
   },
-  unkown: {
+  unknown: {
     opacity: 0.4,
     cursor: "default !important"
   }
@@ -57,16 +58,18 @@ class OperationNoteLink extends Component<{
         <Link to={`./operation/${operation.id}/2`} onClick={stopPropagation}>
           <Comment color={colors.mouse} className={classes.comment} />
         </Link>
-        {!note ? null : (
-          <div className="tooltip-label">
-            <p className="tooltip-label-title">{note.title}</p>
-            <p className="tooltip-label-name">
-              {note.author.first_name}&nbsp;{note.author.last_name}
-            </p>
-            <div className="hr" />
-            <p className="tooltip-label-body">{note.content}</p>
-          </div>
-        )}
+        {note &&
+          note.title !== "" &&
+          note.content !== "" && (
+            <div className="tooltip-label">
+              <p className="tooltip-label-title">{note.title}</p>
+              <p className="tooltip-label-name">
+                {note.author.first_name}&nbsp;{note.author.last_name}
+              </p>
+              <div className="hr" />
+              <p className="tooltip-label-body">{note.content}</p>
+            </div>
+          )}
       </span>
     );
   }
@@ -147,10 +150,22 @@ class DateColumn extends Component<Cell> {
     const { operation } = this.props;
     return (
       <span>
-        <DateFormat date={operation.time} />
-        <OpNoteLink operation={operation} />
+        <DateFormat format="ddd D MMM, h:mmA" date={operation.created_on} />
+        {/* <OpNoteLink operation={operation} /> */}
       </span>
     );
+  }
+}
+
+class NoteColumn extends Component<Cell> {
+  render() {
+    const { operation } = this.props;
+    const note = operation.notes && operation.notes[0];
+
+    if (note && note.title && note.title !== "") {
+      return <span>{note.title}</span>;
+    }
+    return <span />;
   }
 }
 
@@ -171,9 +186,9 @@ class AddressColumn extends Component<Cell> {
       return <span className="hash">{operation.recipient}</span>;
     }
     if (operation.type === "SEND") {
-      hash = operation.senders[0];
-    } else {
       hash = operation.recipients[0];
+    } else {
+      hash = operation.senders[0];
     }
     return (
       <span>
@@ -190,11 +205,9 @@ class StatusColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
     if (operation.error) {
-      return <span>Unkown</span>;
+      return <span>unknown</span>;
     }
-    return (
-      <span>{operation.confirmations > 0 ? "Confirmed" : "Not confirmed"}</span>
-    );
+    return <OperationStatus operation={operation} />;
   }
 }
 
@@ -217,7 +230,10 @@ class CountervalueColumn extends Component<Cell> {
     const { operation, account } = this.props;
     if (account) {
       return (
-        <CounterValue from={account.currency.name} value={operation.amount} />
+        <CounterValue
+          from={account.currency.name}
+          value={operation.amount || operation.price.amount}
+        />
       );
     }
     return null;
@@ -250,6 +266,11 @@ const COLS = [
     Cell: CountervalueColumn
   },
   {
+    className: "note",
+    title: "label",
+    Cell: NoteColumn
+  },
+  {
     className: "amount",
     title: "amount",
     Cell: AmountColumn
@@ -279,7 +300,7 @@ class RowT extends Component<{
     return (
       <tr
         style={{ cursor: "pointer" }}
-        className={cx(classes.tr, { [classes.unkown]: operation.error })}
+        className={cx(classes.tr, { [classes.unknown]: operation.error })}
         onClick={() => {
           if (!operation.error) {
             openOperation(operation.id, 0);
@@ -316,8 +337,13 @@ class DataTableOperation extends Component<
     <Row {...props} openOperation={this.openOperation} />
   );
 
+  componentDidMount() {
+    console.log(COLS.filter(c => this.props.columnIds.includes(c.className)));
+  }
+
   componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
+      console.log(COLS);
       this.setState({
         columns: COLS.filter(c => props.columnIds.includes(c.className))
       });

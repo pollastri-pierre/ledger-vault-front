@@ -392,6 +392,7 @@ class PieChart extends Component<
               {_.map(this.props.data, (data, id) => {
                 return (
                   <tr
+                    data-test="currency-list"
                     className={cx("currency", {
                       disable:
                         highlightCaptionsOnHover &&

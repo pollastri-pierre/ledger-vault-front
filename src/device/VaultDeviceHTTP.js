@@ -143,6 +143,16 @@ export default class VaultDeviceHTTP {
     return data;
   }
 
+  // TODO call the device API instead to be more confidnent our code is correct regarding the apdu response handling
+  async getVersion(): Promise<{ appName: string, appVersion: string }> {
+    const promise = Promise.resolve({
+      appName: "Vault",
+      appVersion: process.env["APP_VERSION"]
+    });
+
+    return promise;
+  }
+
   async validateVaultOperation(path: number[], operation: Buffer) {
     const data = await network(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
       path: pathArrayToString(path),

@@ -2,6 +2,7 @@
 import React from "react";
 import MemberAvatar from "../MemberAvatar";
 import ValidateBadge from "../icons/full/ValidateBadge";
+import ExpandableText from "components/ExpandableText";
 import Question from "../icons/full/Question";
 import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -63,14 +64,8 @@ function Approvalmember(props: {
   const { member, isApproved, classes } = props;
 
   const name = member.first_name + " " + member.last_name;
-  let slice;
-  if (name.length > 10) {
-    slice = name.slice(0, 10) + "...";
-  } else {
-    slice = name;
-  }
   return (
-    <div className={classes.base}>
+    <div className={classes.base} data-test="approvalmember">
       <div className={classes.status}>
         <MemberAvatar url={member.picture} />
         {isApproved ? (
@@ -80,11 +75,21 @@ function Approvalmember(props: {
         )}
       </div>
 
-      <span className={classes.name}>{slice}</span>
+      {/* <span className={classes.name}>{slice}</span> */}
+      <ExpandableText
+        text={name}
+        size={9}
+        className={classes.name}
+        dataTest="approvalmember-name"
+      />
       {isApproved ? (
-        <span className={classes.hasApproved}>Approved</span>
+        <span className={classes.hasApproved} data-test="approvalmember-status">
+          Approved
+        </span>
       ) : (
-        <span className={classes.hasApproved}>Pending</span>
+        <span className={classes.hasApproved} data-test="approvalmember-status">
+          Pending
+        </span>
       )}
     </div>
   );

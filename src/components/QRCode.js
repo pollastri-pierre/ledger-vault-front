@@ -31,7 +31,7 @@ class ReceiveFundsCard extends PureComponent<Props> {
     this.qr = new Qrious({
       foreground: "black",
       element: canvas,
-      level: "H",
+      level: "L",
       size: size * pixelRatio,
       value: hash
     });

@@ -79,6 +79,7 @@ class MemberRow extends Component<{
 
     return (
       <div
+        data-test="test-member-row"
         className={classnames(classes.base, "test-member-row", {
           [classes.notSelect]: !onSelect && !editable
         })}

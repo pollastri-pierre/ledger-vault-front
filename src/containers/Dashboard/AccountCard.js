@@ -36,10 +36,11 @@ const styles = {
 class AccountCard extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
+  index: number,
   filter: string
 }> {
   render() {
-    const { account, filter, classes } = this.props;
+    const { account, filter, classes, index } = this.props;
 
     const title = (
       <div>
@@ -51,6 +52,7 @@ class AccountCard extends Component<{
       <Card
         key={account.id}
         title={title}
+        dataTest={`account_${index}`}
         className={classes.card}
         link={`account/${account.id}`}
       >

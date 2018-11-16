@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
+import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import connectData from "restlay/connectData";
@@ -72,8 +73,15 @@ class OperationDetails extends Component<Props, *> {
             indicatorColor="primary"
           >
             <Tab label="Overview" disableRipple />
-            <Tab label="Details" disableRipple />
+            <Tab
+              label="Details"
+              disableRipple
+              disabled={!operation.transaction}
+            />
             <Tab label="Label" disableRipple />
+            {operation.approvals.length > 0 && (
+              <Tab label="History" disableRipple />
+            )}
           </Tabs>
         </header>
         {value === 0 && <TabOverview operation={operation} account={account} />}
@@ -85,6 +93,7 @@ class OperationDetails extends Component<Props, *> {
           </div>
         )}
         {value === 2 && <TabLabel note={note} />}
+        {value === 3 && <TabHistory operation={operation} />}
         <div className="footer">
           {account.currency &&
           account.currency.name &&

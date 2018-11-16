@@ -1,6 +1,8 @@
 ---
 balance: Balance
 countervalue: Countervalue
+approved: The operation rules of this account have already been submitted and you now need to approve the creation of the account. Go to the *Pending* page, review the account's details, and approve it.
+approved_still_pending: You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.
 receive:
   title: Receive funds
   addr: Current Address
@@ -11,4 +13,10 @@ last_op:
   address: address
   status: status
   amount: amount
+summary:
+  index: Cryptocurrency / Index
+  unit: unit
+  date: creation date
+  members: members
+  quorum: required approvals
 

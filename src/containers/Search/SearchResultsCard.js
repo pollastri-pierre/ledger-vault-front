@@ -9,7 +9,7 @@ import InfiniteScrollable from "components/InfiniteScrollable";
 import DataTableOperation from "components/DataTableOperation";
 import type { Account, Operation } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
-const columnIds = ["date", "account", "countervalue", "amount"];
+const columnIds = ["date", "account", "status", "note", "amount"];
 
 class SearchResults extends Component<{
   filters: Object,

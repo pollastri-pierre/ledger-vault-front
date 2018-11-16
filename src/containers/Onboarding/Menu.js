@@ -27,11 +27,13 @@ const styles = {
 const Menu = ({
   classes,
   nbMember,
+  nbSharedOwner,
   t,
   onboarding
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
+  nbSharedOwner: number,
   t: Translate,
   nbMember: number
 }) => {
@@ -107,16 +109,13 @@ const Menu = ({
       >
         <span>{t("onboarding:menu.administrators.scheme")}</span>
       </MenuLinkOnboarding>
-      <MenuLinkOnboarding
-        selected={onboarding.state === "ADMINISTRATORS_SIGN_IN"}
-        color={colors.blue_green}
-      >
-        <span>{t("onboarding:menu.master_seed.signin")}</span>
-      </MenuLinkOnboarding>
       <div style={{ marginTop: 20 }}>
         <LabelLink
           label={t("onboarding:menu.master_seed.title")}
-          selected={onboarding.state.startsWith("MASTER_SEED")}
+          selected={
+            onboarding.state.startsWith("MASTER_SEED") ||
+            onboarding.state.startsWith("SHARED_OWNER")
+          }
         />
       </div>
       <MenuLinkOnboarding
@@ -138,6 +137,22 @@ const Menu = ({
         color={colors.blue_red}
       >
         <span>{t("onboarding:menu.master_seed.backup")}</span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding
+        selected={onboarding.state === "SHARED_OWNER_REGISTRATION"}
+        color={colors.blue_red}
+      >
+        <span>
+          {t("onboarding:menu.shared_owner_registration.registration")} ({nbSharedOwner})
+        </span>
+      </MenuLinkOnboarding>
+      <MenuLinkOnboarding
+        selected={onboarding.state === "SHARED_OWNER_VALIDATION"}
+        color={colors.blue_red}
+      >
+        <span>
+          {t("onboarding:menu.shared_owner_registration.confirmation")}
+        </span>
       </MenuLinkOnboarding>
       <MenuLinkOnboarding
         selected={onboarding.state === "MASTER_SEED_GENERATION"}

@@ -25,6 +25,7 @@ const styles = {
   },
   input: {
     paddingLeft: 20,
+    color: "black",
     paddingBottom: 10
   }
 };

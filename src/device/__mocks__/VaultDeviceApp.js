@@ -25,6 +25,10 @@ export const mockGetPublicKey = jest.fn().mockReturnValue({
 });
 
 export const mockOpenSession = jest.fn();
+export const mockGetVersion = jest.fn().mockReturnValue({
+  appName: "Vault",
+  appVersion: process.env["APP_VERSION"]
+});
 export const mockGetAttestationCertificate = jest
   .fn()
   .mockReturnValue(
@@ -41,6 +45,7 @@ const mock = jest.fn().mockImplementation(() => {
   return {
     register: mockRegister,
     getAttestationCertificate: mockGetAttestationCertificate,
+    getVersion: mockGetVersion,
     getPublicKey: mockGetPublicKey,
     authenticate: mockAuthenticate,
     openSession: mockOpenSession,

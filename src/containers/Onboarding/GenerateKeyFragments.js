@@ -4,9 +4,11 @@ import StepDeviceGeneric from "./StepDeviceGeneric";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import createDevice, {
+  checkToUpdate,
   CONFIDENTIALITY_PATH,
   KEY_MATERIAL_PATH,
   INIT_SESSION,
+  INVALID_DATA,
   U2F_TIMEOUT,
   ACCOUNT_MANAGER_SESSION
 } from "device";
@@ -24,6 +26,7 @@ type Props = {
   shards_channel: Channel,
   addMessage: (string, string, string) => void,
   wraps: boolean,
+  history: *,
   onFinish: Shard => *,
   t: Translate,
   cancel: Function
@@ -32,7 +35,7 @@ type Props = {
 type State = { step: number };
 
 let _isMounted = false;
-class GenerateSeed extends Component<Props, State> {
+class GenerateKeyFragments extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { step: 0 };
@@ -50,44 +53,51 @@ class GenerateSeed extends Component<Props, State> {
         this.setState({ step: 0 });
         const { wraps } = this.props;
         const device = await await createDevice();
+        const isUpToDate = await checkToUpdate(device, () => {
+          this.props.history.push("/update-app");
+        });
 
-        const ephemeral_public_key = this.props.shards_channel[
-          "ephemeral_public_key"
-        ];
-        const certificate = this.props.shards_channel["ephemeral_certificate"];
-        const public_key = await device.getPublicKey(CONFIDENTIALITY_PATH);
-        const certificate_device = await device.getAttestationCertificate();
+        if (isUpToDate) {
+          const ephemeral_public_key = this.props.shards_channel[
+            "ephemeral_public_key"
+          ];
+          const certificate = this.props.shards_channel[
+            "ephemeral_certificate"
+          ];
+          const public_key = await device.getPublicKey(CONFIDENTIALITY_PATH);
+          const certificate_device = await device.getAttestationCertificate();
 
-        this.setState({ step: 1 });
+          this.setState({ step: 1 });
 
-        let scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
-        await device.openSession(
-          CONFIDENTIALITY_PATH,
-          Buffer.from(ephemeral_public_key, "hex"),
-          Buffer.from(certificate, "base64"),
-          scriptHash
-        );
+          let scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
+          await device.openSession(
+            CONFIDENTIALITY_PATH,
+            Buffer.from(ephemeral_public_key, "hex"),
+            Buffer.from(certificate, "base64"),
+            scriptHash
+          );
 
-        const blob = await device.generateKeyComponent(
-          KEY_MATERIAL_PATH,
-          this.props.wraps
-        );
+          const blob = await device.generateKeyComponent(
+            KEY_MATERIAL_PATH,
+            this.props.wraps
+          );
 
-        const shard = {
-          blob: blob.toString("hex"),
-          certificate:
-            certificate_device.toString("hex") +
-            public_key["signature"].toString("hex"),
-          ephemeral_public_key: public_key["pubKey"]
-        };
-        this.setState({ step: 2 });
-        this.props.onFinish(shard);
+          const shard = {
+            blob: blob.toString("hex"),
+            certificate:
+              certificate_device.toString("hex") +
+              public_key["signature"].toString("hex"),
+            ephemeral_public_key: public_key["pubKey"]
+          };
+          this.setState({ step: 2 });
+          this.props.onFinish(shard);
+        }
       } catch (error) {
         console.error(error);
         //timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
-        } else if (error.statusCode && error.statusCode === 27264) {
+        } else if (error.statusCode && error.statusCode === INVALID_DATA) {
           this.props.addMessage(
             "Error",
             "Incorrect data sent to the device",
@@ -134,5 +144,5 @@ class GenerateSeed extends Component<Props, State> {
     );
   }
 }
-export { GenerateSeed };
-export default translate()(GenerateSeed);
+export { GenerateKeyFragments };
+export default translate()(GenerateKeyFragments);

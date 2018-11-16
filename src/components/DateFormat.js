@@ -5,14 +5,15 @@ import React, { Component } from "react";
 class DateFormat extends Component<*> {
   props: {
     date: Date | string,
-    format: Object
+    dataTest: ?string,
+    format: string
   };
   static defaultProps = {
     format: "lll"
   };
   render() {
-    const { date, format } = this.props;
-    return <span>{moment(date).format(format)}</span>;
+    const { date, format, dataTest } = this.props;
+    return <span data-test={dataTest}>{moment(date).format(format)}</span>;
   }
 }
 

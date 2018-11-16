@@ -23,13 +23,17 @@ const styles = {
 class Amount extends Component<{
   account: Account,
   value: number,
+  dataTest: ?string,
   strong?: boolean,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { account, value, strong, classes } = this.props;
+    const { account, value, strong, classes, dataTest } = this.props;
     return (
-      <span className={cx(classes.crypto, { [classes.strong]: strong })}>
+      <span
+        className={cx(classes.crypto, { [classes.strong]: strong })}
+        data-test={dataTest}
+      >
         <CurrencyAccountValue account={account} value={value} />{" "}
         <span className={classes.flat}>
           <CounterValue value={value} from={account.currency.name} />

@@ -33,7 +33,7 @@ function OperationApproveDetails(props: {
           />
         </LineRow>
         <LineRow label="requested">
-          <DateFormat date={operation.time} />
+          <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />
