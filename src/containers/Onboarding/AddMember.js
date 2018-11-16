@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import EditProfile from "components/EditProfile";
-import StepDevice from "./StepDevice.js";
+import RegisterAdmins from "./RegisterAdmins.js";
 import type { Member } from "data/types";
 
 const steps = [
@@ -14,6 +14,7 @@ type Props = {
   finish: Function,
   setAlert: Function,
   editMember: Function,
+  history: *,
   member: Member,
   challenge: string
 };
@@ -54,7 +55,11 @@ class AddMember extends Component<Props, State> {
           this.props.close();
         })
         .catch(() => {
-          setAlert("Error", "Oops something went wrong. Please try again", "error");
+          setAlert(
+            "Error",
+            "Oops something went wrong. Please try again",
+            "error"
+          );
         });
       return promise;
     } else {
@@ -67,7 +72,13 @@ class AddMember extends Component<Props, State> {
 
   finish = (result: *) => {
     this.setState({ step: 0 });
-    this.props.finish(result);
+    const data = {
+      first_name: this.state.data.first_name,
+      last_name: this.state.data.last_name,
+      email: this.state.data.email,
+      picture: this.state.data.picture
+    };
+    this.props.finish({ ...result, ...data });
   };
 
   render() {
@@ -90,13 +101,13 @@ class AddMember extends Component<Props, State> {
       );
     } else if (step === 1) {
       return (
-        <StepDevice
+        <RegisterAdmins
           steps={steps}
           title="Register device"
           close={this.props.close}
+          history={this.props.history}
           finish={this.finish}
           cancel={this.prev}
-          data={this.state.data}
           challenge={this.props.challenge}
         />
       );

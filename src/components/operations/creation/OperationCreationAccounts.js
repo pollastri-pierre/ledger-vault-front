@@ -1,5 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
+import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import MenuList from "@material-ui/core/MenuList";
 import { hasPending, isMemberOfAccount } from "utils/operations";
 import AccountMenuItem from "./AccountMenuItem";
@@ -22,15 +23,17 @@ const OperationCreationAccounts = ({
 }) => (
   <Fragment>
     <ModalSubTitle>Account to debit</ModalSubTitle>
-    <MenuList>
-      {accounts.map(account => {
+    <MenuList data-test="operation-creation-accounts">
+      {accounts.filter(a => a.status === "APPROVED").map(account => {
         return (
           <Disabled
             key={account.id}
             disabled={
               account.balance <= 0 ||
               hasPending(account, pendingOperations) ||
-              !isMemberOfAccount(account, me)
+              !isMemberOfAccount(account, me) ||
+              isAccountOutdated(account) ||
+              isAccountBeingUpdated(account)
             }
           >
             <AccountMenuItem

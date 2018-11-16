@@ -1,5 +1,8 @@
 //@flow
 import React, { Fragment } from "react";
+import colors from "shared/colors";
+import Bell from "components/icons/thin/Bell";
+import Warning from "components/icons/TriangleWarning";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import Trash from "components/icons/thin/Trash.js";
@@ -32,11 +35,23 @@ const styles = {
     marginBottom: 20
   },
   careful: {
-    color: "#ea2e49",
+    background: "#ea2e492b",
     fontSize: 13,
+    color: "#b14656",
     lineHeight: 1.54,
+    padding: 20,
+    paddingLeft: 52,
+    position: "relative",
+    fontWeight: "bold",
     margin: 0,
+    borderRadius: 4,
     marginBottom: 22
+  },
+  icon: {
+    position: "absolute",
+    color: colors.grenade,
+    left: 21,
+    top: 31
   },
   toContinue: {
     marginBottom: 15
@@ -73,7 +88,10 @@ const Backup = ({
           {t("onboarding:backup.step3")}
         </Step>
       </div>
-      <div className={classes.careful}>{t("onboarding:backup.warning")}</div>
+      <div className={classes.careful}>
+        <Warning className={classes.icon} width={20} height={20} />
+        {t("onboarding:backup.warning")}
+      </div>
       <Footer
         nextState
         render={(onNext, onPrevious) => (

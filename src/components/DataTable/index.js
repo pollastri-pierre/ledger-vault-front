@@ -63,12 +63,18 @@ const styles = {
   },
   date: {
     fontSize: "10px",
+    width: 140,
     fontWeight: "600",
     textTransform: "uppercase",
     whiteSpace: "nowrap"
   },
   account: {
     fontSize: "13px"
+  },
+  note: {
+    textAlign: "left",
+    fontSize: 11,
+    color: colors.steel
   },
   status: {
     fontSize: "11px",
@@ -110,6 +116,7 @@ class DataTable<Cell> extends PureComponent<{
   };
   render() {
     const { columns, data, Row, classes } = this.props;
+    console.log(columns);
     return (
       <table className={classes.base}>
         <thead>

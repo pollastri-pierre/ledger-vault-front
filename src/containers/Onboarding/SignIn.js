@@ -12,6 +12,7 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import {
   getSigninChallenge,
+  wipe,
   toggleDeviceModal,
   addSignedIn
 } from "redux/modules/onboarding";
@@ -82,24 +83,23 @@ class SignIn extends Component<Props> {
   };
 
   render() {
-    const { classes, onboarding, onToggleSignin, t } = this.props;
+    const { classes, onboarding, onAddMessage, onToggleSignin, t } = this.props;
     if (!onboarding.signin.challenge) {
       return <SpinnerCard />;
     }
     return (
       <div className={classes.base}>
-        <Title>{t("onboarding:master_seed_signin.title")}</Title>
+        <Title>{t("onboarding:admin_signin.title")}</Title>
         <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
           <SignInDevice
             challenge={onboarding.signin.challenge.challenge}
+            onAddMessage={onAddMessage}
             keyHandles={onboarding.signin.challenge.key_handle}
             onFinish={this.signIn}
             cancel={onToggleSignin}
           />
         </BlurDialog>
-        <Introduction>
-          {t("onboarding:master_seed_signin.description")}
-        </Introduction>
+        <Introduction>{t("onboarding:admin_signin.desc")}</Introduction>
         <div className={classes.flex}>
           <div className={classes.flexWrapper}>
             <CircleProgress
@@ -181,6 +181,7 @@ const mapDispatch = (dispatch: *) => ({
   onGetSigninChallenge: () => dispatch(getSigninChallenge()),
   onToggleSignin: () => dispatch(toggleDeviceModal()),
   onAddSignedIn: (key, sign) => dispatch(addSignedIn(key, sign)),
+  onWipe: () => dispatch(wipe()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type))
 });

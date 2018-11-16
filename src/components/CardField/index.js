@@ -21,16 +21,25 @@ const styles = {
 class CardField extends Component<{
   label: string | React$Node,
   children: string | React$Node,
+  dataTest: ?string,
   align?: string,
   classes: { [_: $Keys<typeof styles>]: string },
   className?: string
 }> {
   render() {
-    const { label, children, align, classes } = this.props;
+    const { label, children, align, classes, dataTest } = this.props;
     return (
-      <div className={classes.base} style={{ textAlign: align }}>
-        <div className={classes.value}>{children}</div>
-        <div className={classes.label}>{label}</div>
+      <div
+        className={classes.base}
+        style={{ textAlign: align }}
+        data-test={dataTest}
+      >
+        <div data-test="value" className={classes.value}>
+          {children}
+        </div>
+        <div data-test="label" className={classes.label}>
+          {label}
+        </div>
       </div>
     );
   }

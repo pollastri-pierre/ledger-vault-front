@@ -1,5 +1,6 @@
 //@flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
+import type { Dispatch } from "redux";
 import { translate } from "react-i18next";
 import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -77,10 +78,7 @@ class ActivityCard extends Component<
   componentDidMount() {
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(
-      url,
-      { path: path }
-    );
+    const socket = io.connect(url, { path: path });
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
@@ -91,8 +89,8 @@ class ActivityCard extends Component<
     });
     socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
       //FIXME why is it fired twice ??
-      if (self.props.onNewActivity) {
-        self.props.onNewActivity(activity);
+      if (self.props.onNewActivity && self.props.restlay) {
+        self.props.restlay.fetchQuery(new ActivityQuery());
       }
     });
   }
@@ -201,33 +199,11 @@ const RenderLoading = withStyles(styles)(
   ))
 );
 
-const mapDispatchToProps = (dispatch: Dispatch<*>, props) => ({
-  onNewActivity: (activity: ActivityGeneric) => {
-    const queryOrMutation = new ActivityQuery();
-    const data = [activity, ...props.activities];
-    const result = normalize(data, queryOrMutation.getResponseSchema() || {});
-
-    dispatch({
-      type: DATA_FETCHED,
-      result,
-      queryOrMutation,
-      cacheKey: queryOrMutation.getCacheKey()
-    });
-    return data;
-  }
-});
-
 export default withStyles(styles)(
-  connectData(
-    connect(
-      null,
-      mapDispatchToProps
-    )(translate()(ActivityCard)),
-    {
-      RenderLoading,
-      queries: {
-        activities: ActivityQuery
-      }
+  connectData(translate()(ActivityCard), {
+    RenderLoading,
+    queries: {
+      activities: ActivityQuery
     }
-  )
+  })
 );

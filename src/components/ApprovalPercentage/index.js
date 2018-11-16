@@ -4,19 +4,30 @@ import PercentageBarProgress from "../PercentageBarProgress";
 import type { Member, Approval } from "data/types";
 
 function ApprovalPercentage(props: {
-  approvers: Member[],
+  approvers?: Member[],
   approved: Approval[],
   nbRequired?: number
 }) {
   const { approved, approvers, nbRequired } = props;
-  const nbTotal =
-    typeof nbRequired === "number" ? nbRequired : approvers.length;
+  let nbTotal = 0;
+  if (nbRequired) {
+    nbTotal = nbRequired;
+  } else if (approvers) {
+    nbTotal = approvers.length;
+  }
 
   const percentage = Math.round(100 * (approved.length / nbTotal)) / 100;
 
   const label = (
     <p>
-      {approved.length} collected, {nbTotal - approved.length} remaining
+      <span data-test="approvalpercentage-collected">
+        {approved.length}
+      </span>{" "}
+      collected,{" "}
+      <span data-test="approvalpercentage-total">
+        {nbTotal - approved.length}
+      </span>{" "}
+      remaining
       <span> ({100 * percentage}%)</span>
     </p>
   );

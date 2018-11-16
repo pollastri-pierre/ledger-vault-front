@@ -145,11 +145,12 @@ class Welcome extends Component<
           <br />
           <MUITextField
             error={error ? domain !== "" : false}
-            style={{ width: "320px", marginTop: "5px" }}
+            style={{ width: "320px", marginTop: "5px", color: "black" }}
             InputProps={{
               inputProps: {
                 style: {
                   fontSize: "13px",
+                  color: "black",
                   paddingBottom: "15px",
                   textAlign: "center"
                 }

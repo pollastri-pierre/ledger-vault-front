@@ -14,6 +14,13 @@ export function merge(
         copy = { ...old };
       }
       copy[k] = patch[k];
+      /* copy all keys belonging to old that are not present in patch.
+         Typically we have too ways to get opeation. One with full data with a transaction object, and another without a transaction.
+         If the endpoint with less data finishes after an endpoint with full data it can breaks the UI.
+      */
+      if (old[k] && typeof old[k] === "object") {
+        copy[k] = Object.assign({ ...old[k] }, copy[k]);
+      }
     } else if (copy) {
       copy[k] = old[k];
     }

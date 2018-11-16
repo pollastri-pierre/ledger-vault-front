@@ -65,6 +65,7 @@ function PendingOperationApprove(props: Props) {
         const account = accounts.find(a => a.id === operation.account_id);
         return (
           <Link
+            data-test='pending-operation'
             className={classnames(classes.row, {
               [classes.approved]: approved
             })}
@@ -73,7 +74,7 @@ function PendingOperationApprove(props: Props) {
           >
             <div>
               <span className={classes.date}>
-                <DateFormat date={operation.time} />
+                <DateFormat date={operation.created_on} />
               </span>
               <span className={classes.name}>
                 {!account ? null : (

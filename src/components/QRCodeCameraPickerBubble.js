@@ -33,7 +33,9 @@ export default class QRCodeCameraPickerBubble extends Component<
   };
   onPick = (result: string) => {
     this.close();
-    this.props.onPick(result);
+    const split = result.split(":");
+    // remove the "currency:" part of "currency:hash" coming from some coins/standard
+    this.props.onPick(split[1] ? split[1] : split[0]);
   };
   render() {
     const { isOpen } = this.state;

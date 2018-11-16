@@ -185,7 +185,6 @@ class NewOperationModal extends Component<
           account_id={
             this.state.selectedAccount && this.state.selectedAccount.id
           }
-          close={this.props.close}
         />
       );
     }

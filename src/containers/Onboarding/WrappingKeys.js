@@ -1,12 +1,10 @@
 //@flow
 import React, { Component, Fragment } from "react";
-import Plus from "components/icons/full/Plus";
-import CircleProgress from "components/CircleProgress";
-import { withStyles } from "@material-ui/core/styles";
+import { translate, Trans } from "react-i18next";
 import type { Translate } from "data/types";
-import cx from "classnames";
-import { translate } from "react-i18next";
-import GenerateSeed from "./GenerateSeed";
+import GenerateKeyFragments from "./GenerateKeyFragments";
+import { withStyles } from "@material-ui/core/styles";
+import FragmentKey from "containers/Onboarding/Fragment";
 import BlurDialog from "components/BlurDialog";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
@@ -72,8 +70,9 @@ type Props = {
   onboarding: *,
   onGetWrapsChannel: Function,
   onAddWrapShard: Function,
-  onToggleGenerateSeed: Function,
+  onToggleDeviceModal: Function,
   onAddMessage: Function,
+  history: *,
   t: Translate,
   classes: { [$Keys<typeof styles>]: string }
 };
@@ -89,11 +88,11 @@ const mapState = state => ({
 const mapDispatch = (dispatch: *) => ({
   onGetWrapsChannel: () => dispatch(openWrappingChannel()),
   onAddWrapShard: data => dispatch(addWrappingKey(data)),
-  onToggleGenerateSeed: () => dispatch(toggleDeviceModal()),
+  onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success))
 });
-class Authentication extends Component<Props, State> {
+class WrappingKeys extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { step: 1, plugged: false };
@@ -104,7 +103,7 @@ class Authentication extends Component<Props, State> {
     onGetWrapsChannel();
   }
   finish = (data: any) => {
-    this.props.onToggleGenerateSeed();
+    this.props.onToggleDeviceModal();
     this.props.onAddWrapShard(data);
   };
 
@@ -112,7 +111,8 @@ class Authentication extends Component<Props, State> {
     const {
       onboarding,
       onAddMessage,
-      onToggleGenerateSeed,
+      history,
+      onToggleDeviceModal,
       classes,
       t
     } = this.props;
@@ -124,50 +124,36 @@ class Authentication extends Component<Props, State> {
         <Title>{t("onboarding:wrapping_key.title")}</Title>
         <BlurDialog
           open={onboarding.device_modal}
-          onClose={onToggleGenerateSeed}
+          onClose={onToggleDeviceModal}
         >
-          <GenerateSeed
+          <GenerateKeyFragments
             shards_channel={onboarding.wrapping.channel}
             onFinish={this.finish}
-            cancel={onToggleGenerateSeed}
+            cancel={onToggleDeviceModal}
+            history={history}
             addMessage={onAddMessage}
             wraps
           />
         </BlurDialog>
-        <Introduction>{t("onboarding:wrapping_key.description")}</Introduction>
+        <Introduction>
+          <Trans
+            i18nKey="onboarding:wrapping_key.description"
+            components={<strong>0</strong>}
+          />
+        </Introduction>
         <div className={classes.flex}>
-          <div style={{ marginRight: 25 }}>
-            <CircleProgress
-              nb={onboarding.wrapping.blobs.length}
-              total={3}
-              label={t("onboarding:wrapping_key.label")}
-            />
-          </div>
-          <div>
-            <div className={classes.signin_desc}>
-              <strong> {t("onboarding:wrapping_key.signin_desc")}</strong>
-            </div>
-            <div
-              className={cx(classes.sign, {
-                [classes.disabled]: onboarding.wrapping.blobs.length === 3
-              })}
-              onClick={
-                onboarding.wrapping.blobs.length === 3
-                  ? () => {}
-                  : onToggleGenerateSeed
-              }
-            >
-              <Plus className={classes.icon} />
-              {t("onboarding:wrapping_key.signin")}
-            </div>
-            <div className={classes.sep} />
-            <div className={classes.counter}>
-              {onboarding.wrapping.blobs.length}{" "}
-              {t("onboarding:wrapping_key.signed")},{" "}
-              {3 - onboarding.wrapping.blobs.length}{" "}
-              {t("onboarding:wrapping_key.remaining")}
-            </div>
-          </div>
+          {Array(3)
+            .fill()
+            .map((v, i) => (
+              <FragmentKey
+                key={i}
+                disabled={onboarding.wrapping.blobs.length <= i - 1}
+                label={t(`onboarding:wrapping_key.step${i + 1}`)}
+                labelGenerate={t("onboarding:wrapping_key.generate")}
+                generate={onToggleDeviceModal}
+                generated={onboarding.wrapping.blobs.length > i}
+              />
+            ))}
         </div>
         <Footer
           render={(onNext, onPrevious) => (
@@ -191,8 +177,8 @@ class Authentication extends Component<Props, State> {
 }
 
 // useful for test
-export { Authentication };
+export { WrappingKeys };
 
 export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(Authentication))
+  withStyles(styles)(translate()(WrappingKeys))
 );

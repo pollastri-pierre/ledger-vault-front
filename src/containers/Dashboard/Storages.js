@@ -19,8 +19,8 @@ class Storages extends Component<{ accounts: *, filter: *, classes: * }> {
     const { accounts, filter, classes } = this.props;
     return (
       <div className={classes.base}>
-        {accounts.map(a => (
-          <AccountCard key={a.id} account={a} filter={filter} />
+        {accounts.map((a, i) => (
+          <AccountCard index={i} key={a.id} account={a} filter={filter} />
         ))}
       </div>
     );

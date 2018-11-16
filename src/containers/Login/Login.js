@@ -12,6 +12,7 @@ import formatError from "formatters/error";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
   U2F_TIMEOUT,
+  checkToUpdate,
   U2F_PATH,
   APPID_VAULT_ADMINISTRATOR
 } from "device";
@@ -166,43 +167,46 @@ export class Login extends Component<Props, State> {
 
   onStartAuth = async () => {
     if (_isMounted) {
-      const { organization, addAlertMessage, onLogin } = this.props;
+      const { organization, addAlertMessage, onLogin, history } = this.props;
       this.setState({ isChecking: true });
       try {
         const device = await await createDevice();
-        const { pubKey } = await device.getPublicKey(U2F_PATH, false);
-        const { token, key_handle } = await network(
-          `/u2f/authentications/${pubKey}/challenge`,
-          "GET"
-        );
-        this.setState({
-          error: null
+        const isUpToDate = await checkToUpdate(device, () => {
+          history.push("/update-app");
         });
+        if (isUpToDate) {
+          const { pubKey } = await device.getPublicKey(U2F_PATH, false);
+          const { token, key_handle } = await network(
+            `/u2f/authentications/${pubKey}/challenge`,
+            "GET"
+          );
+          this.setState({
+            error: null,
+            step: 1
+          });
 
-        const application = APPID_VAULT_ADMINISTRATOR;
-        const auth = await device.authenticate(
-          Buffer.from(token, "base64"),
-          application,
-          Buffer.from(key_handle, "hex"),
-          organization.name,
-          organization.workspace,
-          organization.domain_name,
-          "Administrator"
-        );
+          const application = APPID_VAULT_ADMINISTRATOR;
+          const auth = await device.authenticate(
+            Buffer.from(token, "base64"),
+            application,
+            Buffer.from(key_handle, "hex"),
+            organization.name,
+            organization.workspace,
+            organization.domain_name,
+            "Administrator"
+          );
 
-        setTokenToLocalStorage(token);
-        await network("/u2f/authentications/authenticate", "POST", {
-          authentication: auth.rawResponse
-        });
-        this.setState({ isChecking: false });
-        onLogin(token);
-        addAlertMessage(
-          "Hello",
-          "Welcome to the Ledger Vault platform!"
-        );
+          setTokenToLocalStorage(token);
+          await network("/u2f/authentications/authenticate", "POST", {
+            authentication: auth.rawResponse
+          });
+          this.setState({ isChecking: false });
+          onLogin(token);
+          addAlertMessage("Hello", "Welcome to the Ledger Vault platform!");
+        }
       } catch (error) {
         console.error(error);
-        if (error && error.id === U2F_TIMEOUT) {
+        if (error && error.id === U2F_TIMEOUT && this.state.step !== 1) {
           // timeout we retry
           this.onStartAuth();
         } else {
