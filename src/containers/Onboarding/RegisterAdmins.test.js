@@ -104,12 +104,8 @@ test("onStart should call device and API with right parameters", async () => {
       attestation: confidentiality.toString("hex"),
       public_key: "pubKey"
     },
-    email: "email",
-    first_name: "first_name",
     key_handle:
       "1d45df520d9bb6834f0f0652456ed7a80f2d3068152329a31a07dee89f5f8525cfa7df315e83155dc39d0b5098f5313a70752c96b4c99af60b03bdc77b52f54c",
-    last_name: "last_name",
-    picture: null,
     pub_key: "pubKey",
     u2f_register: u2f_register_attestation.toString("hex"),
     validation: {
