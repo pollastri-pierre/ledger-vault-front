@@ -86,9 +86,7 @@ class MemberRow extends Component<{
         onClick={this.onClick}
       >
         <MemberAvatar url={member.picture} className={classes.avatar} />
-        <span className={classes.name}>
-          {member.first_name} {member.last_name}
-        </span>
+        <span className={classes.name}>{member.username}</span>
         <p className={classes.role}>
           <MemberRole member={member} />
         </p>

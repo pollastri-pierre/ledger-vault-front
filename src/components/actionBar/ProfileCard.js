@@ -117,9 +117,7 @@ class ProfileCard extends Component<
             )}
           </div>
           <div className={classes.profile_info}>
-            <div className={classes.profile_name}>
-              {profile.first_name} {profile.last_name}
-            </div>
+            <div className={classes.profile_name}>{profile.username}</div>
             <div
               className={classes.profile_view_profile}
               data-test="view-profile"

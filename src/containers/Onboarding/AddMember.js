@@ -30,8 +30,7 @@ class AddMember extends Component<Props, State> {
       step: 0,
       data: {
         email: props.member ? props.member.email : "",
-        first_name: props.member ? props.member.first_name : "",
-        last_name: props.member ? props.member.last_name : "",
+        username: props.member ? props.member.username : "",
         picture: props.member ? props.member.picture : ""
       }
     };
@@ -43,8 +42,7 @@ class AddMember extends Component<Props, State> {
       const newMember = {
         ...this.props.member,
         email: data.email,
-        first_name: data.first_name,
-        last_name: data.last_name,
+        username: data.username,
         picture: data.picture
       };
       const { setAlert } = this.props;
@@ -73,8 +71,7 @@ class AddMember extends Component<Props, State> {
   finish = (result: *) => {
     this.setState({ step: 0 });
     const data = {
-      first_name: this.state.data.first_name,
-      last_name: this.state.data.last_name,
+      username: this.state.data.username,
       email: this.state.data.email,
       picture: this.state.data.picture
     };

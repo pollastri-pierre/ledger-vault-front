@@ -14,7 +14,7 @@ import colors from "shared/colors";
 
 import type { Member } from "data/types";
 
-type Validator = (value: string, state: *) => boolean;
+type Validator = (value: string) => boolean;
 
 const hasMoreThanAscii = str =>
   str.split("").some(function(char) {
@@ -23,17 +23,13 @@ const hasMoreThanAscii = str =>
 
 const validateName: Validator = name => name !== "" && !hasMoreThanAscii(name);
 
-const validateLastName: Validator = (name, state) =>
-  validateName(name) && name.length + state.first_name.value.length < 19;
-
-const validateFirstName: Validator = (name, state) =>
-  validateName(name) && name.length + state.last_name.value.length < 19;
+const validateUsername: Validator = name =>
+  validateName(name) && name.length < 19;
 
 const validateMail: Validator = email => emailValidator.validate(email);
 
 const validators: { [_: string]: Validator } = {
-  first_name: validateFirstName,
-  last_name: validateLastName,
+  username: validateUsername,
   email: validateMail,
   picture: _ => true
 };
@@ -41,8 +37,7 @@ const validators: { [_: string]: Validator } = {
 const sanitize = (object: Object): Object => {
   return {
     email: object.email.value,
-    first_name: object.first_name.value,
-    last_name: object.last_name.value,
+    username: object.username.value,
     picture: object.picture.value
   };
 };
@@ -120,7 +115,7 @@ class ProfileEditModal extends Component<
   constructor(props) {
     super();
     const state = {};
-    ["first_name", "last_name", "email", "picture"].forEach(key => {
+    ["username", "email", "picture"].forEach(key => {
       const value = props.profile[key];
       state[key] = {
         value,
@@ -162,16 +157,11 @@ class ProfileEditModal extends Component<
   };
 
   isEmpty = () =>
-    this.state.first_name.value === "" ||
-    this.state.last_name.value === "" ||
-    this.state.email.value === "";
+    this.state.username.value === "" || this.state.email.value === "";
 
   render() {
     const { classes, title, labelSubmit, t } = this.props;
-    const error =
-      !this.state.first_name.isValid ||
-      !this.state.last_name.isValid ||
-      !this.state.email.isValid;
+    const error = !this.state.username.isValid || !this.state.email.isValid;
 
     return (
       <div className={classes.base}>
@@ -189,37 +179,20 @@ class ProfileEditModal extends Component<
           {/* </Dropzone> */}
           <div className={classes.profileForm}>
             <TextField
-              name="first_name"
-              placeholder={t("profile:firstName")}
-              value={this.state.first_name.value}
-              error={!this.state.first_name.isValid}
+              name="username"
+              placeholder={t("profile:username")}
+              value={this.state.username.value}
+              error={!this.state.username.isValid}
               onChange={this.updateField}
               inputProps={{
                 style: {
                   fontWeight: 600,
                   color: "black",
-                  width: "45%"
+                  width: "100%"
                 }
               }}
             />
-            <TextField
-              name="last_name"
-              placeholder="User name"
-              value={this.state.last_name.value}
-              error={!this.state.last_name.isValid}
-              onChange={this.updateField}
-              inputProps={{
-                style: {
-                  fontWeight: 600,
-                  color: "black"
-                }
-              }}
-            />
-            <ErrorDesc
-              visible={
-                !this.state.first_name.isValid || !this.state.last_name.isValid
-              }
-            >
+            <ErrorDesc visible={!this.state.username.isValid}>
               Only ASCII char, 19 length max
             </ErrorDesc>
             <br />

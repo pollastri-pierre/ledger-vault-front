@@ -34,8 +34,7 @@ const props = {
   finish: jest.fn(),
   challenge: "ynIePNFTbB0feH6S1Veq3avFGLM6LrScX9d0g4t6ElU=",
   data: {
-    first_name: "first_name",
-    last_name: "last_name",
+    username: "first_name",
     email: "email",
     picture: null
   },

@@ -63,7 +63,7 @@ function Approvalmember(props: {
 }) {
   const { member, isApproved, classes } = props;
 
-  const name = member.first_name + " " + member.last_name;
+  const name = member.username;
   return (
     <div className={classes.base} data-test="approvalmember">
       <div className={classes.status}>
