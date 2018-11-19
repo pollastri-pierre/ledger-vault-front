@@ -37,11 +37,8 @@ class NewAccountActivity extends Component<
         >
           <Activity match={match} activity={activity}>
             A <Bold>new account request</Bold> has been created by{" "}
-            <Bold>
-              {business_action.author.first_name}{" "}
-              {business_action.author.last_name}
-            </Bold>. The account request is pending to be approved by the
-            Administrators of the workspace.
+            <Bold>{business_action.author.username} </Bold>. The account request
+            is pending to be approved by the Administrators of the workspace.
           </Activity>
         </NoStyleLink>
       </span>

@@ -36,11 +36,7 @@ class AccountReceivedApprovalActivity extends Component<
         >
           <Activity match={match} activity={activity}>
             The <Bold>{business_action.account.name}</Bold> account request has
-            been approved by{" "}
-            <Bold>
-              {business_action.author.first_name}{" "}
-              {business_action.author.last_name}
-            </Bold>
+            been approved by <Bold>{business_action.author.username} </Bold>
           </Activity>
         </NoStyleLink>
       </span>

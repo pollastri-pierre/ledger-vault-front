@@ -38,11 +38,7 @@ class OperationReceivedApprovalActivity extends Component<
           <Activity match={match} activity={activity}>
             The <Bold>operation request</Bold> created in the{" "}
             <Bold>{business_action.operation.account.name}</Bold> account has
-            been approved by{" "}
-            <Bold>
-              {business_action.author.first_name}{" "}
-              {business_action.author.last_name}
-            </Bold>.
+            been approved by <Bold>{business_action.author.username} </Bold>.
           </Activity>
         </NoStyleLink>
       </span>

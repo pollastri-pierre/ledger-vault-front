@@ -63,9 +63,7 @@ class OperationNoteLink extends Component<{
           note.content !== "" && (
             <div className="tooltip-label">
               <p className="tooltip-label-title">{note.title}</p>
-              <p className="tooltip-label-name">
-                {note.author.first_name}&nbsp;{note.author.last_name}
-              </p>
+              <p className="tooltip-label-name">{note.author.username}</p>
               <div className="hr" />
               <p className="tooltip-label-body">{note.content}</p>
             </div>

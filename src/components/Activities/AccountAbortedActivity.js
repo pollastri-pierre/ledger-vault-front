@@ -24,11 +24,7 @@ class AccountAbortedActivity extends Component<
       <span>
         <Activity match={match} activity={activity}>
           The <Bold>{business_action.account.name}</Bold> account request has
-          been aborted by{" "}
-          <Bold>
-            {business_action.author.first_name}{" "}
-            {business_action.author.last_name}
-          </Bold>.
+          been aborted by <Bold>{business_action.author.username} </Bold>.
         </Activity>
       </span>
     );

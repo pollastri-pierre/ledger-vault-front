@@ -25,11 +25,7 @@ class OperationAbortedActivity extends Component<
         <Activity match={match} activity={activity}>
           The operation request created in{" "}
           <Bold>{business_action.operation.account.name}</Bold> has been aborted
-          by{" "}
-          <Bold>
-            {business_action.author.first_name}{" "}
-            {business_action.author.last_name}
-          </Bold>.
+          by <Bold>{business_action.author.username} </Bold>.
         </Activity>
       </span>
     );

@@ -65,8 +65,7 @@ export type AccountSettings = {
 type MemberCommon = {
   id: string,
   pub_key: string,
-  first_name: string,
-  last_name: string,
+  username: string,
   picture: string,
   register_date: string,
   u2f_device: string,
