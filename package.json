@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "rm -rf dist && NODE_ENV=production webpack --progress --hide-modules --config webpack/build.babel.js",
-    "buildBeta": "rm -rf dist && NODE_ENV=development webpack --progress --hide-modules --config webpack/build.babel.js",
+    "build_preprod": "rm -rf dist && NODE_ENV=preprod webpack --progress --hide-modules --config webpack/build.babel.js",
     "coverage": "npm run test -- --coverage",
     "flow": "flow",
     "cypress:open": "cypress open",

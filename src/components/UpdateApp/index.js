@@ -96,11 +96,11 @@ const appToInstall = {
   targetId: 0x31010004,
   perso: "perso_11",
   firmware:
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
       ? "blue/2.1.1-ee/vault3/app_latest_dev"
       : "blue/2.1.1-ee/vault3/app_latest",
   firmwareKey:
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
       ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
       : "blue/2.1.1-ee/vault3/app_latest_key"
 };
