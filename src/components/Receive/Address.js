@@ -1,5 +1,6 @@
 //@flow
 import React, { Component } from "react";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import network from "network";
 import createDevice, {
   CONFIDENTIALITY_PATH,
@@ -108,6 +109,7 @@ class ReceiveAddress extends Component<Props, State> {
     this.input = null;
     this.state = {
       error: false,
+      loading: false,
       verified: false
     };
   }
@@ -119,14 +121,17 @@ class ReceiveAddress extends Component<Props, State> {
     try {
       const device = await createDevice();
       const { account } = this.props;
+      this.setState({ loading: true });
       const {
         attestation_certificate,
         ephemeral_public_key,
         wallet_address
       } = await network(
-        `/accounts/${account.id}/address?derivation_path=${account.fresh_addresses[0].derivation_path}`,
+        `/accounts/${account.id}/address?derivation_path=${account
+          .fresh_addresses[0].derivation_path}`,
         "GET"
       );
+      this.setState({ loading: false });
 
       await device.openSession(
         CONFIDENTIALITY_PATH,
@@ -162,56 +167,60 @@ class ReceiveAddress extends Component<Props, State> {
   };
   render() {
     const { t, account, classes, checkAgain } = this.props;
-    const { error, verified } = this.state;
+    const { error, verified, loading } = this.state;
     return (
       <div className={classes.base}>
         <ModalSubTitle>{t("receive:receive_subtitle")}</ModalSubTitle>
-        {!error && (
-          <div className={classes.address}>
-            <QRCode
-              hash={`${account.currency.payment_uri_scheme}:${account
-                .fresh_addresses[0]}`}
-              size={140}
-            />
-            <div className={classes.account}>
-              <Interpolate
-                i18nKey="receive:receive_account"
-                name={account.name}
+        {loading && <SpinnerCard />}
+        {!error &&
+          !loading && (
+            <div className={classes.address}>
+              <QRCode
+                hash={`${account.currency.payment_uri_scheme}:${account
+                  .fresh_addresses[0]}`}
+                size={140}
               />
-            </div>
-            <input
-              type="text"
-              className={classes.hash}
-              ref={element => (this.input = element)}
-              value={account.fresh_addresses[0].address}
-              onChange={() => false}
-              onMouseDown={this.selection()}
-            />
-            {!verified && <p>{t("receive:verify_on_device")}</p>}
-            {verified && (
-              <div>
-                <div className={classes.verified}>
-                  <Interpolate
-                    i18nKey="receive:confirmed_device"
-                    name={account.name}
-                  />
-                </div>
-                <div className={classes.actions}>
-                  <div className={classes.icon} onClick={checkAgain}>
-                    <Recover size={22} />
-                    <span style={{ marginLeft: 10 }}>
-                      {t("receive:re_verify")}
-                    </span>
-                  </div>
-                  <div className={classes.icon} onClick={this.copy}>
-                    <Copy size={22} />
-                    <span style={{ marginLeft: 10 }}>{t("receive:copy")}</span>
-                  </div>
-                </div>
+              <div className={classes.account}>
+                <Interpolate
+                  i18nKey="receive:receive_account"
+                  name={account.name}
+                />
               </div>
-            )}
-          </div>
-        )}
+              <input
+                type="text"
+                className={classes.hash}
+                ref={element => (this.input = element)}
+                value={account.fresh_addresses[0].address}
+                onChange={() => false}
+                onMouseDown={this.selection()}
+              />
+              {!verified && <p>{t("receive:verify_on_device")}</p>}
+              {verified && (
+                <div>
+                  <div className={classes.verified}>
+                    <Interpolate
+                      i18nKey="receive:confirmed_device"
+                      name={account.name}
+                    />
+                  </div>
+                  <div className={classes.actions}>
+                    <div className={classes.icon} onClick={checkAgain}>
+                      <Recover size={22} />
+                      <span style={{ marginLeft: 10 }}>
+                        {t("receive:re_verify")}
+                      </span>
+                    </div>
+                    <div className={classes.icon} onClick={this.copy}>
+                      <Copy size={22} />
+                      <span style={{ marginLeft: 10 }}>
+                        {t("receive:copy")}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         {error && (
           <div className={classes.error}>
             <div className={classes.error_title}>
