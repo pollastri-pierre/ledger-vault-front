@@ -124,8 +124,7 @@ class ReceiveAddress extends Component<Props, State> {
         ephemeral_public_key,
         wallet_address
       } = await network(
-        `/accounts/${account.id}/address/${account.fresh_addresses[0]
-          .derivation_path}`,
+        `/accounts/${account.id}/address?derivation_path=${account.fresh_addresses[0].derivation_path}`,
         "GET"
       );
 
