@@ -116,7 +116,11 @@ class WrappingKeys extends Component<Props, State> {
       classes,
       t
     } = this.props;
-    if (!onboarding.wrapping.channel) {
+    if (
+      !onboarding.wrapping.channel ||
+      !onboarding.wrapping.channel.ephemeral_public_key ||
+      !onboarding.wrapping.channel.ephemeral_certificate
+    ) {
       return <SpinnerCard />;
     }
     return (
