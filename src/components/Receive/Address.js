@@ -123,7 +123,11 @@ class ReceiveAddress extends Component<Props, State> {
         attestation_certificate,
         ephemeral_public_key,
         wallet_address
-      } = await network(`/accounts/${account.id}/address`, "GET");
+      } = await network(
+        `/accounts/${account.id}/address/${account.fresh_addresses[0]
+          .derivation_path}`,
+        "GET"
+      );
 
       await device.openSession(
         CONFIDENTIALITY_PATH,
@@ -180,7 +184,7 @@ class ReceiveAddress extends Component<Props, State> {
               type="text"
               className={classes.hash}
               ref={element => (this.input = element)}
-              value={account.fresh_addresses[0]}
+              value={account.fresh_addresses[0].address}
               onChange={() => false}
               onMouseDown={this.selection()}
             />
