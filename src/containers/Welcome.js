@@ -70,6 +70,10 @@ const styles = {
   },
   input: {
     textAlign: "center"
+  },
+  version: {
+    fontSize: 11,
+    marginTop: 50
   }
 };
 class Welcome extends Component<
@@ -148,6 +152,7 @@ class Welcome extends Component<
             style={{ width: "320px", marginTop: "5px", color: "black" }}
             InputProps={{
               inputProps: {
+                autoComplete: "off",
                 style: {
                   fontSize: "13px",
                   color: "black",
@@ -177,6 +182,7 @@ class Welcome extends Component<
             {t("common:continue")}
           </DialogButton>
         </form>
+        <div className={classes.version}>Vault - v0.2</div>
       </div>
     );
   }
