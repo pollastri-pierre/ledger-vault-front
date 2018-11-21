@@ -159,8 +159,10 @@ const initialState = {
 };
 
 export const nextState = (data: any) => {
-  return async (dispatch: Dispatch<*>) => {
-    const dataToSend = data || {};
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['step']
+    let dataToSend = data || {};
+    dataToSend["current_step"] = onboarding_step
     try {
       const next = await network("/onboarding/next", "POST", dataToSend);
       dispatch({
@@ -168,6 +170,7 @@ export const nextState = (data: any) => {
         next
       });
     } catch (e) {
+      console.log(e)
       if (e.json && e.json.message) {
         dispatch(addMessage("Error", e.json.message, "error"));
       }
@@ -176,8 +179,14 @@ export const nextState = (data: any) => {
 };
 
 export const previousState = (data: any) => {
-  return async (dispatch: Dispatch<*>) => {
-    const dataToSend = data || {};
+  return async (dispatch: Dispatch<*>, getState) => {
+
+    const onboarding_step = getState()['onboarding']['state']
+    console.log("coucou")
+    let dataToSend = data || {};
+    console.log("hey")
+    dataToSend["current_step"] = onboarding_step
+    console.log("hey")
     const previous = await network("/onboarding/previous", "POST", dataToSend);
     dispatch({
       type: PREVIOUS_STEP,
@@ -187,15 +196,25 @@ export const previousState = (data: any) => {
 };
 
 export const getChallenge = () => {
-  return network("/onboarding/challenge", "GET");
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['state']
+    let dataToSend = data || {};
+    dataToSend["current_step"] = onboarding_step
+    return network("/onboarding/challenge", "POST", dataToSend);
+  };
 };
 
 export const authenticate = (data: any) => {
-  return network("/onboarding/authenticate", "POST", data);
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['state']
+    let dataToSend = data || {};
+    dataToSend["current_step"] = onboarding_step
+    return network("/onboarding/authenticate", "POST", dataToSend);
+  };
 };
 
 export const addSharedOwner = (data: *) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
       const sharedOwners = await authenticate(data);
       dispatch({
