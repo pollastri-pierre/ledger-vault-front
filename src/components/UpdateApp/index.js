@@ -157,7 +157,6 @@ class UpdateApp extends Component<Props, State> {
         const url = `${BASE_SOCKET_URL}/install?${qs.stringify(
           appToUnInstall
         )}`;
-        console.log(appToInstall);
         await createDeviceSocket(transport, url).toPromise();
         this.setState({ uninstalled: true });
         const urlInstall = `${BASE_SOCKET_URL}/install?${qs.stringify(

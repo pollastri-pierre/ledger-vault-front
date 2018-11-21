@@ -10,7 +10,6 @@ export default class VaultDeviceApp {
     unwrap: boolean = true
   ) {
     this.transport = transport;
-    this.transport.debug = console.log;
     transport.setScrambleKey(scrambleKey);
     transport.setUnwrap(unwrap);
   }

@@ -12,7 +12,6 @@ import ReceiveAccounts from "./Accounts";
 import ReceiveDevice from "./Device";
 import ReceiveAddress from "./Address";
 import { withStyles } from "@material-ui/core/styles";
-import { CONFIDENTIALITY_PATH, VALIDATION_PATH, MATCHER_SESSION } from "device";
 
 const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 

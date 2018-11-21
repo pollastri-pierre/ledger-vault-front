@@ -15,14 +15,13 @@ import connectData from "restlay/connectData";
 import cx from "classnames";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import colors from "shared/colors";
-import { getOutdatedAccounts, getAccountTitle } from "utils/accounts";
+import { getOutdatedAccounts } from "utils/accounts";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { addMessage } from "redux/modules/alerts";
 import type { Translate, Member } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
-import AccountMenuItem from "components/operations/creation/AccountMenuItem";
 import {
   toggleModal,
   toggleMembers,

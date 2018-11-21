@@ -1,7 +1,8 @@
 //@flow
 import React, { Component } from "react";
-import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
-import createDevice from "device";
+import createDevice, {
+  U2F_TIMEOUT,
+} from "device";
 
 export type App = "B0L0S" | "v1+";
 
@@ -12,7 +13,6 @@ type State = {
 
 type Props = { children: * };
 
-let intervalId;
 class DeviceInteraction extends Component<Props, State> {
   state: State = {
     app: null,
