@@ -70,8 +70,7 @@ type Admin = $Shape<{
   uid: string,
   id: number,
   pub_key: string,
-  last_name: string,
-  first_name: string,
+  user_name: string,
   email: string,
   key_handle: string,
   validation: Object,
@@ -422,10 +421,10 @@ export const openAdminValidationChannel = () => {
 
 export const openProvisionningChannel = () => {
   return async (dispatch: Dispatch<*>) => {
-    const wrapping: Wrapping = await getChallenge();
+    const channels: Wrapping = await getChallenge();
     dispatch({
       type: ONBOARDING_MASTERSEED_CHANNEL,
-      wrapping
+      channels
     });
   };
 };
@@ -551,10 +550,7 @@ const syncNextState = (state: Store, action, next = false) => {
       state: actionState.state,
       provisionning: {
         ...state.provisionning,
-        channel: {
-          ephemeral_public_key: actionState.ephemeral_public_key,
-          ephemeral_certificate: actionState.ephemeral_certificate
-        },
+        channel: actionState.challenge || [],
         blobs: actionState.shared_owner_devices
       }
     };
@@ -688,7 +684,7 @@ export default function reducer(state: Store = initialState, action: Object) {
         step: 0,
         provisionning: {
           ...state.provisionning,
-          channel: action.wrapping
+          channel: action.channels
         }
       };
     case ONBOARDING_EDIT_MEMBER: {

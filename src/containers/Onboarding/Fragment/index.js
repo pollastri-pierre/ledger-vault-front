@@ -46,7 +46,7 @@ export const SeedStatus = withStyles(
       );
     }
     return (
-      <div className={classes.base} onClick={open}>
+      <div className={cx(classes.base, "fragment")} onClick={open}>
         {label}
       </div>
     );

@@ -54,7 +54,7 @@ const Action = translate()(
       )}
       {user && (
         <ExpandableText
-          text={` ${user.first_name} ${user.last_name}`}
+          text={` ${user.username}`}
           size={15}
           className={classes.user}
         />

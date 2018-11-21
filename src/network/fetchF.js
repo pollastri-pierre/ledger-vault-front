@@ -25,6 +25,9 @@ if (process.env.NODE_ENV === "test") {
       process.env.NODE_ENV !== "e2e"
     ) {
       prefix = "/gate/" + prefix;
+    }
+    if (process.env.NODE_ENV === "preprod") {
+      prefix = "/" + prefix;
     } else {
       prefix = "/" + prefix;
     }
