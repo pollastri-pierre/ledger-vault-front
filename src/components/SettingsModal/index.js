@@ -24,7 +24,6 @@ import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
-import SettingsTextField from "../SettingsTextField";
 import colors from "../../shared/colors";
 
 import {

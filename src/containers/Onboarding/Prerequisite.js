@@ -1,6 +1,5 @@
 //@flow
 import React, { Fragment } from "react";
-import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";

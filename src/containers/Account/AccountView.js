@@ -12,7 +12,6 @@ import { withStyles } from "@material-ui/core/styles";
 import type { Account, Member } from "data/types";
 import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
-import ReceiveFundsCard from "./ReceiveFundsCard";
 // import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";

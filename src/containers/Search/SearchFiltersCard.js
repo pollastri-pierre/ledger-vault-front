@@ -9,14 +9,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "components/Card";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import Input from "@material-ui/core/Input";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import AccountOption from "components/AccountMenuItem";
-import AccountName from "components/AccountName";
-import AccountMenuItem from "components/AccountMenuItem";
 // import DateTimePicker from "material-ui-pickers/DateTimePicker";
-import DatePicker, { InlineDatePicker } from "material-ui-pickers/DatePicker";
+import DatePicker from "material-ui-pickers/DatePicker";
 // import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 import type { Currency, Account } from "data/types";

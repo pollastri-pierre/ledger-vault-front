@@ -119,9 +119,7 @@ class OnboardingContainer extends Component<Props, State> {
         orga: self.props.match.params.orga_name
       });
     });
-    socket.on(self.props.match.params.orga_name + "/onboarding", function(
-      onboardingState
-    ) {
+    socket.on(self.props.match.params.orga_name + "/onboarding", function() {
       self.onNewOnboardingState();
     });
   }

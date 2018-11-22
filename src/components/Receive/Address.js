@@ -159,7 +159,7 @@ class ReceiveAddress extends Component<Props, State> {
     this.input.select();
     document.execCommand("copy");
   };
-  selection = (e: *) => {
+  selection = () => {
     if (this.state.verified) {
       return () => {};
     }

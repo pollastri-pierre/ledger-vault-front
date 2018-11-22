@@ -50,7 +50,6 @@ const GenericFooter = ({
   approve,
   aborting,
   profile,
-  members,
   account
 }: {
   percentage?: boolean,

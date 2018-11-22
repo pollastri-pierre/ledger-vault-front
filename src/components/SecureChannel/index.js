@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import DeviceInteraction from "components/DeviceInteraction";
 import VaultDeviceApp from "device";
 import createDevice, {
-  U2F_PATH,
   U2F_TIMEOUT,
   ACCOUNT_MANAGER_SESSION,
   VALIDATION_PATH,

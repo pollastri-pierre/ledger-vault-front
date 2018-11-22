@@ -4,7 +4,6 @@ import React, { Component } from "react";
 // import type { ActivityCommon } from "data/types";
 import Activity from "../Activity";
 import Bold from "../Bold";
-import NoStyleLink from "../NoStyleLink";
 
 const styles = {};
 

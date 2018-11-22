@@ -136,9 +136,6 @@ class AccountCreationCurrencies extends Component<{
           .map(cur => {
             const Icon = getCryptoCurrencyIcon(cur);
             const currency_gate = currencies.find(curr => curr.name === cur.id);
-            console.log(currency_gate);
-            console.log(currencies);
-            console.log(cur);
             return (
               <div
                 onClick={() => {

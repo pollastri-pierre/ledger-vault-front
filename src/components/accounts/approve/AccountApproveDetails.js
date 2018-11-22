@@ -1,6 +1,5 @@
 //@flow
 import React from "react";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import Amount from "components/Amount";

@@ -1,13 +1,11 @@
 //@flow
 import { connect } from "react-redux";
-import colors from "shared/colors";
 import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
-import Plus from "../../components/icons/full/Plus";
 import AddMember from "./AddMember";
 import {
   Title,

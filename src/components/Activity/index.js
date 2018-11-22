@@ -67,20 +67,6 @@ const styles = {
   }
 };
 
-const dayDateFormat = {
-  sameDay: "[TODAY]",
-  lastDay: "[YESTERDAY]",
-  lastWeek: "ddd D MMM",
-  sameElse: "ddd D MMM"
-};
-
-const hourDateFormat = {
-  sameDay: "LT",
-  lastDay: "LT",
-  lastWeek: "LT",
-  sameElse: "LT"
-};
-
 class ActivityLine extends Component<
   {
     activity: ActivityCommon,
