@@ -101,18 +101,17 @@ type Props = {
 type State = {
   error: boolean,
   verified: boolean,
+  loading: boolean,
   error: boolean
 };
 class ReceiveAddress extends Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.input = null;
-    this.state = {
-      error: false,
-      loading: false,
-      verified: false
-    };
-  }
+  input: ?HTMLInputElement = null;
+
+  state = {
+    error: false,
+    loading: false,
+    verified: false
+  };
   componentDidMount() {
     this.verifyAddress();
   }
@@ -156,6 +155,7 @@ class ReceiveAddress extends Component<Props, State> {
   };
 
   copy = () => {
+    //@$FlowFixMe
     this.input.select();
     document.execCommand("copy");
   };

@@ -38,6 +38,8 @@ export type Currency = {
   family: string,
   ticker: string,
   color: string,
+  payment_uri_scheme: string,
+  issue_message?: string,
   units: Unit[]
 };
 export type CurrencyEntity = Currency;
@@ -194,7 +196,8 @@ type OperationCommon = {
   approvals: Approval[],
   tx_hash: ?string,
   status: string,
-  hsm_operations?: Object
+  hsm_operations?: Object,
+  error?: Object
 };
 export type Operation = OperationCommon & {
   notes: Note[]

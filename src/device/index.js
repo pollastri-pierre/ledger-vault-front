@@ -50,7 +50,7 @@ export default async (
     return new VaultDeviceHTTP();
   }
   const transport = await LedgerTransportU2F.create();
-  // transport.setExchangeTimeout(3000);
 
+  //$FlowFixMe not sure what's wrong here
   return new VaultDeviceApp(transport, scrambleKey, unwrap);
 };

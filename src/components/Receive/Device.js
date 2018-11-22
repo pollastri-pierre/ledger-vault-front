@@ -39,7 +39,7 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate
 };
-class ReceiveDevice extends Component<Props, State> {
+class ReceiveDevice extends Component<Props> {
   constructor(props) {
     super(props);
   }
