@@ -4,26 +4,18 @@ import mockAPI from "data/mock-api";
 import { ENDPOINTS } from "device/VaultDeviceHTTP";
 
 const baseUrl = process.env["API_BASE_URL"] || "https://vault.ledger.com";
+const needGatePrefix = prefix =>
+  prefix !== "" && !["development", "e2e"].includes(process.env.NODE_ENV); //WARNING includes not IE compatible but we don't care :)
+
 if (process.env.NODE_ENV === "test") {
   fetchF = mockAPI;
 } else {
-  fetchF = (
-    uri: string,
-    options: Object,
-    external: boolean = false
-  ): Promise<*> => {
-    if (external) {
-      return fetch(uri, options);
-    }
+  fetchF = (uri: string, options: Object): Promise<*> => {
     let prefix = location.pathname.split("/")[1];
     if (Object.values(ENDPOINTS).indexOf(uri) > -1) {
       return fetch("http://localhost:5001" + uri, options);
     }
-    if (
-      prefix !== "" &&
-      process.env.NODE_ENV !== "development" &&
-      process.env.NODE_ENV !== "e2e"
-    ) {
+    if (needGatePrefix(prefix)) {
       prefix = "/gate/" + prefix;
     }
     if (process.env.NODE_ENV === "preprod") {

@@ -17,8 +17,7 @@ const DEFAULT_RETRIES = [1000, 3000];
  */
 function fetchWithRetries(
   uri: string,
-  initWithRetries?: ?InitWithRetries,
-  external: boolean = false
+  initWithRetries?: ?InitWithRetries
 ): Promise<any> {
   const { fetchTimeout, retryDelays, ...init } = initWithRetries || {};
   const _fetchTimeout = fetchTimeout != null ? fetchTimeout : DEFAULT_TIMEOUT;
@@ -35,7 +34,7 @@ function fetchWithRetries(
       requestsAttempted++;
       requestStartTime = Date.now();
       let isRequestAlive = true;
-      const request = fetchF(uri, init, external);
+      const request = fetchF(uri, init);
       const requestTimeout = setTimeout(() => {
         isRequestAlive = false;
         if (shouldRetry(/* requestsAttempted */)) {
