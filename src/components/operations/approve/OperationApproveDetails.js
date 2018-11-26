@@ -18,11 +18,16 @@ function OperationApproveDetails(props: {
   return (
     <div>
       <OverviewOperation
-        hash={operation.recipient}
         amount={operation.price.amount}
         account={account}
+        operationType={operation.type}
       />
       <div className="operation-list">
+        <LineRow label="Identifier">
+          {operation.recipient && (
+            <span>{operation.recipient}</span>
+          )}
+        </LineRow>
         <LineRow label="status">
           <ApprovalStatus
             approvingObject={operation}

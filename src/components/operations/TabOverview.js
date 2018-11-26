@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import { Link } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
@@ -9,16 +10,31 @@ import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";
 import type { Operation, Account } from "data/types";
 
-function TabOverview(props: { operation: Operation, account: Account }) {
-  const { operation, account } = props;
+const styles = {
+  operationList: {
+    marginTop: "8px"
+  }
+};
+
+function TabOverview(props: {
+  operation: Operation,
+  account: Account,
+  classes: Object
+}) {
+  const { operation, account, classes } = props;
   return (
     <div>
       <OverviewOperation
-        hash={operation.transaction && operation.transaction.hash}
         amount={operation.amount || operation.price.amount}
         account={account}
+        operationType={operation.type}
       />
-      <div className="operation-list">
+      <div className={classes.operationList}>
+        <LineRow label="Identifier">
+          {operation.transaction.hash && (
+            <span>{operation.transaction.hash}</span>
+          )}
+        </LineRow>
         <LineRow label="status">
           <OperationStatus operation={operation} />
         </LineRow>
@@ -49,4 +65,4 @@ function TabOverview(props: { operation: Operation, account: Account }) {
   );
 }
 
-export default TabOverview;
+export default withStyles(styles)(TabOverview);

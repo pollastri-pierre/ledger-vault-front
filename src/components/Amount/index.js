@@ -5,16 +5,17 @@ import cx from "classnames";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
+import colors from "shared/colors";
 
 const styles = {
   flat: {
-    color: "#767676",
+    color: colors.steel,
     fontSize: 11
   },
   crypto: {
     fontSize: 13,
     marginBottom: 10,
-    color: "black"
+    color: colors.black
   },
   strong: {
     fontWeight: 600
@@ -36,7 +37,7 @@ class Amount extends Component<{
       >
         <CurrencyAccountValue account={account} value={value} />{" "}
         <span className={classes.flat}>
-          <CounterValue value={value} from={account.currency.name} />
+          (<CounterValue value={value} from={account.currency.name} />)
         </span>
       </span>
     );

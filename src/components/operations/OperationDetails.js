@@ -65,7 +65,7 @@ class OperationDetails extends Component<Props, *> {
     return (
       <div className={classes.base}>
         <header>
-          <h2>{"Operation's details"}</h2>
+          <h2>{"Operation details"}</h2>
           <Tabs
             value={value}
             onChange={this.handleChange}
