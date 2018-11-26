@@ -93,6 +93,7 @@ const styles = {
 
 type State = {
   domain: string,
+  step: number,
   isChecking: boolean,
   error: ?Error,
   domainValidated: boolean
@@ -103,6 +104,7 @@ let _isMounted = false;
 export class Login extends Component<Props, State> {
   state = {
     domain: "",
+    step: 0,
     error: null,
     domainValidated: false,
     isChecking: false

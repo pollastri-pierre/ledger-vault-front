@@ -222,7 +222,7 @@ test("openProvisionningChannel should call network challenge and dispatch ONBOAR
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "GET");
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_MASTERSEED_CHANNEL,
-    wrapping: "challenge"
+    channels: "challenge"
   });
 });
 

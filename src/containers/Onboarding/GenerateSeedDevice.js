@@ -15,9 +15,9 @@ import createDevice, {
 } from "device";
 
 type Shard = {
-  ephemeral_public_key: string,
+  signature: string,
   blob: string,
-  certificate: string
+  pub_key: string
 };
 type Props = {
   shards_channel: *,

@@ -151,7 +151,7 @@ class ProfileEditModal extends Component<
     this.setState({
       [name]: {
         value,
-        isValid: validators[name](value, this.state)
+        isValid: validators[name](value)
       }
     });
   };

@@ -15,7 +15,6 @@ import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
-import SignIn from "./SignIn";
 import SharedOwnerValidation from "./SharedOwnerValidation";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
@@ -188,7 +187,6 @@ class OnboardingContainer extends Component<Props, State> {
                 is_editable={onboarding.is_editable}
               />
             )}
-            {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
             {onboarding.state === "MASTER_SEED_PREREQUISITE" && (
               <PrerequisiteSeed />
             )}
