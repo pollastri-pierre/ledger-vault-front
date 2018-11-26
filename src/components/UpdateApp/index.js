@@ -1,6 +1,5 @@
 //@flow
-//TODO
-// this file has been done in emergency, needs to be rewrite and refactor
+//TODO this file has been done in emergency, needs to be rewrite and refactor
 import React, { Component } from "react";
 import Home from "components/icons/Home";
 import type { Translate } from "data/types";
@@ -95,14 +94,12 @@ export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 const appToInstall = {
   targetId: 0x31010004,
   perso: "perso_11",
-  firmware:
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
-      ? "blue/2.1.1-ee/vault3/app_latest_dev"
-      : "blue/2.1.1-ee/vault3/app_latest",
-  firmwareKey:
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
-      ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
-      : "blue/2.1.1-ee/vault3/app_latest_key"
+  firmware: ["development", "preprod", "beta"].includes(process.env.NODE_ENV)
+    ? "blue/2.1.1-ee/vault3/app_latest_dev"
+    : "blue/2.1.1-ee/vault3/app_latest",
+  firmwareKey: ["development", "preprod", "beta"].includes(process.env.NODE_ENV)
+    ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
+    : "blue/2.1.1-ee/vault3/app_latest_key"
 };
 const appToUnInstall = {
   targetId: 0x31010004,
