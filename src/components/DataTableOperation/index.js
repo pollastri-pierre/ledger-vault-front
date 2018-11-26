@@ -141,7 +141,7 @@ const styles_note = {
     height: 12
   }
 };
-const OpNoteLink = withStyles(styles_note)(OperationNoteLink);
+const OpNoteLink = withStyles(styles_note)(OperationNoteLink); // eslint-disable-line
 
 class DateColumn extends Component<Cell> {
   render() {
@@ -335,13 +335,8 @@ class DataTableOperation extends Component<
     <Row {...props} openOperation={this.openOperation} />
   );
 
-  componentDidMount() {
-    console.log(COLS.filter(c => this.props.columnIds.includes(c.className)));
-  }
-
   componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
-      console.log(COLS);
       this.setState({
         columns: COLS.filter(c => props.columnIds.includes(c.className))
       });

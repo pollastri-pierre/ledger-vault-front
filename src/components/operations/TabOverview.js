@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
-import ConfirmationStatus from "../ConfirmationStatus";
 import OperationStatus from "components/OperationStatus";
 import OverviewOperation from "../OverviewOperation";
 import Amount from "../Amount";

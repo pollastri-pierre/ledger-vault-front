@@ -1,5 +1,6 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
+import type Descriptor from "@ledgerhq/hw-transport";
 import invariant from "invariant";
 
 export default class VaultDeviceApp {
@@ -10,8 +11,8 @@ export default class VaultDeviceApp {
     unwrap: boolean = true
   ) {
     this.transport = transport;
-    this.transport.debug = console.log;
     transport.setScrambleKey(scrambleKey);
+    //$FlowFixMe : needs to be done in ledger-hw-transport-u2f
     transport.setUnwrap(unwrap);
   }
 

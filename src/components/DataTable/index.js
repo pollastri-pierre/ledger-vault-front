@@ -116,7 +116,6 @@ class DataTable<Cell> extends PureComponent<{
   };
   render() {
     const { columns, data, Row, classes } = this.props;
-    console.log(columns);
     return (
       <table className={classes.base}>
         <thead>

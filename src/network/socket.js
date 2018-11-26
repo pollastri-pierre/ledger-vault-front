@@ -21,12 +21,12 @@ export const createDeviceSocket = (transport: *, url: string) =>
     }
     invariant(ws, "websocket is available");
 
-    ws.onclose = event => {
+    ws.onclose = () => {
       o.next(lastMessage || "");
       o.complete();
     };
 
-    ws.onerror = event => {
+    ws.onerror = () => {
       o.error();
     };
     ws.onmessage = event => {

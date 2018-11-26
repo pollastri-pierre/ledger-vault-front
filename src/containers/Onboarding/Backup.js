@@ -1,7 +1,6 @@
 //@flow
 import React, { Fragment } from "react";
 import colors from "shared/colors";
-import Bell from "components/icons/thin/Bell";
 import Warning from "components/icons/TriangleWarning";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";

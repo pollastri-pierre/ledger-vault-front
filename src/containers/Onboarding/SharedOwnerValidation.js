@@ -67,7 +67,11 @@ type Props = {
   onNextStep: Function,
   onWipe: Function,
   onGetSigninChallenge: Function,
+  onOpenAdminValidationChannel: Function,
+  onAddAdminValidation: Function,
   onToggleSignin: Function,
+  onOpenAdminValidationChannel: () => void,
+  onAddAdminValidation: (string, string) => void,
   onAddMessage: (string, string, string) => Function,
   onAddSignedIn: Function,
   t: Translate

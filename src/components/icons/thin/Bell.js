@@ -1,3 +1,5 @@
+// @flow
+
 import classnames from "classnames";
 import React from "react";
 import colors from "shared/colors";

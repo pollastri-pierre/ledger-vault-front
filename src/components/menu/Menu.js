@@ -105,7 +105,7 @@ function Menu(props: {
             disabled={visibleAccounts.length === 0}
           >
             <span className={classes.link}>
-              <IconReceive className={classes.icon} />
+              <IconReceive size={11} className={classes.icon} />
               {t("menu:receive")}
             </span>
           </MenuLink>

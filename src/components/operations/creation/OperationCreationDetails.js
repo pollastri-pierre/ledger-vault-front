@@ -14,7 +14,6 @@ import ModalSubTitle from "./ModalSubTitle";
 import CryptoAddressPicker from "../../CryptoAddressPicker";
 import FeeSelect from "./FeeSelect";
 import UnitSelect from "./UnitSelect";
-import MaxSelect from "./MaxSelect";
 
 type State = {
   unitIndex: number,

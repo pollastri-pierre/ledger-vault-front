@@ -1,3 +1,5 @@
+//@flow
+
 import React from "react";
 
 const BlueError = ({ size }: { size: number }) => (
