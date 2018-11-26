@@ -194,13 +194,8 @@ export const previousState = (data: any) => {
   };
 };
 
-export const getChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState) => {
-    const onboarding_step = getState()['onboarding']['state']
-    let dataToSend = data || {};
-    dataToSend["current_step"] = onboarding_step
-    return network("/onboarding/challenge", "POST", dataToSend);
-  };
+export const getChallenge = async (onboarding_step) => {
+  return network("/onboarding/challenge", "POST", onboarding_step);
 };
 
 export const authenticate = (data: any) => {
@@ -236,14 +231,18 @@ export const toggleMemberModal = (member: any) => ({
 });
 
 export const openWrappingChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const wrapping: Wrapping = await getChallenge();
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step
+      const wrapping: Wrapping = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_WRAPPING_CHANNEL,
         wrapping
       });
     } catch (e) {
+      console.log(e)
       dispatch(addMessage("Error", e.json.message, "error"));
       dispatch({
         type: ONBOARDING_FATAL_ERROR
@@ -271,9 +270,12 @@ export const addWrappingKey = (data: Blob) => {
 };
 
 export const getSharedOwnerRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const challenge = await getChallenge();
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step
+      const challenge = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE,
         challenge: challenge.challenge
@@ -287,9 +289,12 @@ export const getSharedOwnerRegistrationChallenge = () => {
   };
 };
 export const getRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const challenge = await getChallenge();
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step
+      const challenge = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_REGISTERING_CHALLENGE,
         challenge: challenge.challenge
@@ -349,8 +354,11 @@ export const changeQuorum = (nb: number) => {
 };
 
 export const getSigninChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const challenge = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['state']
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step
+    const challenge = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_SIGNIN_CHALLENGE,
       challenge: challenge
@@ -410,8 +418,11 @@ export const addAdminValidation = (pub_key: string, signature: *) => {
 };
 
 export const openAdminValidationChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const channels: * = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['state']
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step
+    const channels: * = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_ADMIN_VALIDATION_CHANNEL,
       channels
@@ -420,8 +431,11 @@ export const openAdminValidationChannel = () => {
 };
 
 export const openProvisionningChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const channels: Wrapping = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState) => {
+    const onboarding_step = getState()['onboarding']['state']
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step
+    const channels: Wrapping = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_MASTERSEED_CHANNEL,
       channels
