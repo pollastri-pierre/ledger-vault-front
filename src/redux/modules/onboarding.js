@@ -199,18 +199,17 @@ export const getChallenge = async (onboarding_step) => {
 };
 
 export const authenticate = (data: any) => {
-  return async (dispatch: Dispatch<*>, getState) => {
-    const onboarding_step = getState()['onboarding']['state']
-    let dataToSend = data || {};
-    dataToSend["current_step"] = onboarding_step
-    return network("/onboarding/authenticate", "POST", dataToSend);
-  };
+    return network("/onboarding/authenticate", "POST", data);
 };
 
 export const addSharedOwner = (data: *) => {
   return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const sharedOwners = await authenticate(data);
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = data || {};
+      dataToSend["current_step"] = onboarding_step
+      console.log(dataToSend)
+      const sharedOwners = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_SHARED_OWNER,
         sharedOwners
@@ -252,14 +251,19 @@ export const openWrappingChannel = () => {
 };
 
 export const addWrappingKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const add_wrap: Wrapping = await authenticate(data);
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = data || {};
+      console.log(data)
+      dataToSend["current_step"] = onboarding_step
+      const add_wrap: Wrapping = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_WRAP_KEY,
         add_wrap
       });
     } catch (error) {
+      console.log(error)
       if (error.json) {
         dispatch(
           addMessage(`Error ${error.json.code}`, error.json.message, "error")
@@ -385,8 +389,11 @@ export const addSignedIn = (pub_key: string, signature: *) => {
         pub_key: pub_key.toUpperCase(),
         authentication: signature.rawResponse
       };
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step
 
-      await network("/onboarding/authenticate", "POST", data);
+      await network("/onboarding/authenticate", "POST", dataToSend);
       dispatch({
         type: ONBOARDING_ADD_SIGNEDIN,
         data
@@ -444,14 +451,18 @@ export const openProvisionningChannel = () => {
 };
 
 export const addMasterSeedKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState) => {
     try {
-      const add_seed = await authenticate(data);
+      const onboarding_step = getState()['onboarding']['state']
+      let dataToSend = data || {};
+      dataToSend["current_step"] = onboarding_step
+      const add_seed = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_MASTERSEED_KEY,
         add_seed
       });
     } catch (error) {
+      console.log(error)
       if (error.json) {
         dispatch(
           addMessage(`Error ${error.json.code}`, error.json.message, "error")
