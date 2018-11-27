@@ -62,7 +62,6 @@ class OperationDetails extends Component<Props, *> {
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
-
     return (
       <div className={classes.base}>
         <header>
@@ -78,7 +77,9 @@ class OperationDetails extends Component<Props, *> {
               disableRipple
               disabled={!operation.transaction}
             />
-            <Tab label="Label" disableRipple />
+            {operation.type !== "RECEIVE" && (
+              <Tab label="Label" disableRipple />
+            )}
             {operation.approvals.length > 0 && (
               <Tab label="History" disableRipple />
             )}
