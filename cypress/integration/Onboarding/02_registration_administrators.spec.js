@@ -43,17 +43,19 @@ context("Register the Administrators", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait(1000);
-
+        // First Admin
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user1");
         cy.get("input[name=email]").type("user1@user.com");
         cy.contains("Continue").click();
         cy.wait("@authenticate");
-        //Edit the admin
+
+        //Edit the First Admin
         cy.contains("Click to edit").click();
         cy.get("input[name=email]").clear();
         cy.get("input[name=email]").type("user1_edit@user.com");
         cy.contains("save").click();
+
         // Try to register with the same device
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user1");
@@ -65,7 +67,7 @@ context("Register the Administrators", () => {
           .contains("Device already registered")
           .get(".top-message-title")
           .contains("Error");
-
+        // Second Admin
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 5
         });
@@ -74,6 +76,8 @@ context("Register the Administrators", () => {
         cy.get("input[name=email]").type("user2@ledger.fr");
         cy.contains("Continue").click();
         cy.wait("@authenticate");
+
+        // Thrid Admin 
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 6
         });

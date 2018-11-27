@@ -53,13 +53,27 @@ context("Create Wrapping Key", () => {
         cy.contains("continue").click();
         cy.wait("@next");
         cy.wait("@challenge");
+        //First WPK
         cy.get(":nth-child(1) > .fragment").click();
         cy.wait("@authenticate");
+
+        // Using the same device, should display a error
+        cy.get(":nth-child(2) > .fragment").click();
+        cy
+          .get(".top-message-body")
+          .contains("Person already exists")
+          .get(".top-message-title")
+          .contains("Error");
+
+        // Second WPK
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 2
         });
         cy.get(":nth-child(2) > .fragment").click();
         cy.wait("@authenticate");
+        cy.wait(1000);
+
+        // Third WPK
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 3
         });
