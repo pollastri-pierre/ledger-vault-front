@@ -22,12 +22,12 @@ const deviceNetwork = async function<T>(
   return network(uri, method, body).catch(function(err) {
     console.error(err);
     if (err.json.status_code) {
-      throw {statusCode: err.json.status_code};
+      throw { statusCode: err.json.status_code };
     } else {
       throw err;
     }
   });
-}
+};
 
 export default class VaultDeviceHTTP {
   async getPublicKey(
@@ -169,10 +169,14 @@ export default class VaultDeviceHTTP {
   }
 
   async validateVaultOperation(path: number[], operation: Buffer) {
-    const data = await deviceNetwork(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
-      path: pathArrayToString(path),
-      operation: operation.toString("hex")
-    });
+    const data = await deviceNetwork(
+      ENDPOINTS.VALIDATE_VAULT_OPERATION,
+      "POST",
+      {
+        path: pathArrayToString(path),
+        operation: operation.toString("hex")
+      }
+    );
     return Buffer.from(data, "hex");
   }
 }
