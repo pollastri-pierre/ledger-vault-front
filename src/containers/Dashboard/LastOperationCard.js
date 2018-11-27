@@ -11,12 +11,13 @@ import Card from "components/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DataTableOperation from "components/DataTableOperation";
 import type { Operation, Account } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
 
 const columnIds = ["date", "account", "countervalue", "amount"];
 
 class LastOperationCard extends Component<*> {
   props: {
-    operations: Array<Operation>,
+    operations: Connection<Operation>,
     t: Translate,
     accounts: Array<Account>,
     reloading: boolean
@@ -28,7 +29,7 @@ class LastOperationCard extends Component<*> {
         <div data-test="last_op_list">
           <DataTableOperation
             columnIds={columnIds}
-            operations={operations.slice(0, 5)}
+            operations={operations.edges.map(e => e.node)}
             accounts={accounts}
           />
         </div>
@@ -53,6 +54,9 @@ const c = connectData(translate()(LastOperationCard), {
   queries: {
     operations: DashboardLastOperationsQuery,
     accounts: AccountsQuery
+  },
+  initialVariables: {
+    operations: 5
   },
   optimisticRendering: true,
   RenderError,
