@@ -101,9 +101,6 @@ class ActivityLine extends Component<
           <div className={classnames(classes.uppercase, classes.date)}>
             <DateFormat date={activity.created_on} />
           </div>
-          <div className={classnames(classes.uppercase, classes.date)}>
-            <DateFormat date={activity.created_on} />
-          </div>
         </div>
         <span
           className={classnames(
