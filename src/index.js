@@ -13,7 +13,6 @@ import theme from "styles/theme";
 import OrganizationAppRouter from "containers/OrganizationAppRouter";
 import jss from "jss";
 import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
-import CounterValues from "data/CounterValues";
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
 import i18n from "./i18n";
@@ -46,13 +45,11 @@ const render = Component => {
             connectDataOptDefaults={{ RenderLoading: GlobalLoading }}
           >
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              <CounterValues.PollingProvider>
-                <I18nextProvider i18n={i18n}>
-                  <MuiThemeProvider theme={muiTheme}>
-                    <Component />
-                  </MuiThemeProvider>
-                </I18nextProvider>
-              </CounterValues.PollingProvider>
+              <I18nextProvider i18n={i18n}>
+                <MuiThemeProvider theme={muiTheme}>
+                  <Component />
+                </MuiThemeProvider>
+              </I18nextProvider>
             </MuiPickersUtilsProvider>
           </RestlayProvider>
         </Provider>
