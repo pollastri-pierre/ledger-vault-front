@@ -62,7 +62,6 @@ context("Register the Administrators", () => {
         cy.get("input[name=username]").type("user2");
         cy.get("input[name=email]").type("user2@ledger.fr");
         cy.contains("Continue").click();
-        cy.wait("@authenticate");
 
         // Approve the registration
         cy.request("POST", Cypress.env("approve_cancel_device"), {

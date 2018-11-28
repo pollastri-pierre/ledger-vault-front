@@ -64,7 +64,6 @@ context("Registration Shared Owners", () => {
           approve: false
         });
         cy.contains("Add shared-owner").click();
-        cy.wait("@authenticate");
 
         // approval
         cy.request("POST", Cypress.env("approve_cancel_device"), {
