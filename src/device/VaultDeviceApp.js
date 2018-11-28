@@ -1,6 +1,6 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
-import type Descriptor from "@ledgerhq/hw-transport";
+// import type Descriptor from "@ledgerhq/hw-transport";
 import invariant from "invariant";
 
 export default class VaultDeviceApp {
