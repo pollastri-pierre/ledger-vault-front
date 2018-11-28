@@ -36,11 +36,16 @@ function OperationCreationConfirmation(props: {
   return (
     <div className={classes.root}>
       <OverviewOperation
-        hash={details.address}
         amount={details.amount}
         account={account}
+        operationType="SEND"
       />
       <div>
+        <LineRow label="Identifier">
+          {details.address && (
+            <span>{details.address}</span>
+          )}
+        </LineRow>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />
         </LineRow>

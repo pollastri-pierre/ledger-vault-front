@@ -8,6 +8,8 @@ import {
   getFiatCurrencyByTicker,
   getCryptoCurrencyById
 } from "@ledgerhq/live-common/lib/helpers/currencies";
+import type { TransactionType } from "data/types";
+
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const allCurrencies = listCryptoCurrencies(true);
 
@@ -31,16 +33,25 @@ const mapStateToProps = (state, ownProps) => {
 type Props = {
   countervalue: number,
   value: number,
-  from: string
+  from: string,
+  alwaysShowSign?: boolean,
+  type?: TransactionType
 };
 
 class CounterValue extends PureComponent<Props> {
   render() {
-    const { countervalue } = this.props;
+    const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
       return "-";
     }
-    return <CurrencyFiatValue fiat="USD" value={countervalue} />;
+    return (
+      <CurrencyFiatValue
+        fiat="USD"
+        value={countervalue}
+        alwaysShowSign={alwaysShowSign}
+        type={type}
+      />
+    );
   }
 }
 

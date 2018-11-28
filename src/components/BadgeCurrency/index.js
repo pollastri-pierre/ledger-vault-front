@@ -9,7 +9,7 @@ const allCurrencies = listCryptoCurrencies(true);
 const styles = {
   base: {
     verticalAlign: "middle",
-    marginRight: "10px",
+    marginRight: "6px",
     display: "inline-block",
     borderRadius: "50%"
   }

@@ -11,7 +11,6 @@ const header = {
 const modals = {
   base: {
     padding: "40px",
-    position: "relative",
     "& > header": header,
     "& .footer": {
       position: "absolute",
