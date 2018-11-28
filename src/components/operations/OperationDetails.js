@@ -4,7 +4,6 @@ import TryAgain from "components/TryAgain";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
 
 import ModalLoading from "components/ModalLoading";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
@@ -121,10 +120,6 @@ class OperationDetails extends Component<Props, *> {
     );
   }
 }
-
-OperationDetails.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
 
 const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
   return (
