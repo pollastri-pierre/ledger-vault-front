@@ -214,7 +214,7 @@ export const previousState = (data: any) => {
   };
 };
 
-export const getChallenge = async (onboarding_step) => {
+export const getChallenge = (onboarding_step) => {
   return network("/onboarding/challenge", "POST", onboarding_step);
 };
 
