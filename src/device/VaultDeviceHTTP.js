@@ -14,6 +14,21 @@ export const ENDPOINTS = {
 const pathArrayToString = (path: number[]): string =>
   `${path[0] & 0xfffffff}'/${path[1] & 0xfffffff}'`;
 
+const deviceNetwork = async function<T>(
+  uri: string,
+  method: string,
+  body: ?(Object | Array<Object>)
+): Promise<T> {
+  return network(uri, method, body).catch(function(err) {
+    console.error(err);
+    if (err.json.status_code) {
+      throw { statusCode: err.json.status_code };
+    } else {
+      throw err;
+    }
+  });
+};
+
 export default class VaultDeviceHTTP {
   async getPublicKey(
     path: number[],
@@ -22,7 +37,7 @@ export default class VaultDeviceHTTP {
     pubKey: string,
     signature: string
   }> {
-    const data = await network(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
+    const data = await deviceNetwork(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
       path: pathArrayToString(path),
       secp256k1
     });
@@ -33,7 +48,7 @@ export default class VaultDeviceHTTP {
   }
 
   async getAttestationCertificate(): Promise<Buffer> {
-    const data = await network(ENDPOINTS.GET_ATTESTATION, "GET");
+    const data = await deviceNetwork(ENDPOINTS.GET_ATTESTATION, "GET");
     return Buffer.from(data, "hex");
   }
 
@@ -45,7 +60,7 @@ export default class VaultDeviceHTTP {
     if (isWrappingKey) {
       p1 = 0x01;
     }
-    const data = await network(ENDPOINTS.GENERATE_KEY_FRAGMENTS, "POST", {
+    const data = await deviceNetwork(ENDPOINTS.GENERATE_KEY_FRAGMENTS, "POST", {
       path: pathArrayToString(path),
       goal: p1
     });
@@ -66,7 +81,7 @@ export default class VaultDeviceHTTP {
     signature: string,
     rawResponse: string
   }> {
-    const data = await network(ENDPOINTS.AUTHENTICATE, "POST", {
+    const data = await deviceNetwork(ENDPOINTS.AUTHENTICATE, "POST", {
       challenge: challenge.toString("hex"),
       application,
       key_handle: keyHandle.toString("hex"),
@@ -104,7 +119,7 @@ export default class VaultDeviceHTTP {
     u2f_register: Buffer,
     keyHandle: Buffer
   }> {
-    const data = await network(ENDPOINTS.REGISTER, "POST", {
+    const data = await deviceNetwork(ENDPOINTS.REGISTER, "POST", {
       challenge: challenge.toString("hex"),
       application,
       name: instanceName,
@@ -134,7 +149,7 @@ export default class VaultDeviceHTTP {
     attestation: Buffer,
     scriptHash: number = 0x00
   ): Promise<*> {
-    const data = await network(ENDPOINTS.OPEN_SESSION, "POST", {
+    const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
       path: pathArrayToString(path),
       pubKey: pubKey.toString("hex"),
       attestation: attestation.toString("hex"),
@@ -154,10 +169,14 @@ export default class VaultDeviceHTTP {
   }
 
   async validateVaultOperation(path: number[], operation: Buffer) {
-    const data = await network(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
-      path: pathArrayToString(path),
-      operation: operation.toString("hex")
-    });
+    const data = await deviceNetwork(
+      ENDPOINTS.VALIDATE_VAULT_OPERATION,
+      "POST",
+      {
+        path: pathArrayToString(path),
+        operation: operation.toString("hex")
+      }
+    );
     return Buffer.from(data, "hex");
   }
 }

@@ -5,10 +5,13 @@ import colors from "shared/colors";
 
 const styles = {
   base: {
-    width: "100%",
+    // width: "100%",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     height: "42px",
     lineHeight: "41px",
-    borderTop: `1px solid ${colors.argile}`
+    borderTop: `1px solid ${colors.lightGrey}`
   },
   title: {
     fontWeight: "600",
@@ -17,8 +20,10 @@ const styles = {
   },
   value: {
     fontSize: "13px",
-    float: "right",
-    textAlign: "right"
+    flexBasis: '50%',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    textAlign: 'end'
   }
 };
 class LineRow extends Component<{

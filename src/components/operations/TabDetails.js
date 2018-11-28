@@ -4,35 +4,30 @@ import type { Operation, Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
+import LineRow from "../LineRow";
 
 const stylesList = {
-  base: {
-    borderCollapse: "collapse",
-    width: "100%",
-    fontSize: 11,
-    "& tr": {
-      height: "47px",
-      borderTop: `1px solid ${colors.argile}`
-    },
-    "& tr:first-child": {
-      border: "0"
-    },
-    "& thead > tr td:first-child": {
-      fontWeight: 600
-    },
-    "& tbody > tr td:first-child": {
-      fontWeight: "normal",
-      fontSize: "11px"
-      // textTransform: "uppercase"
-    },
-    "& tr td:last-child": {
-      fontSize: "13px",
-      textAlign: "right"
-    },
-    "& strong": {
-      fontWeight: "600",
-      fontSize: "13px"
+  detailsContainer: {
+    marginBottom: "24px",
+    "& p": {
+      fontSize: "12px",
+      margin: "0px"
     }
+  },
+  detailsRow: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: "8px",
+    color: colors.shark
+  },
+  currencyAccountValue: {
+    textAlign: "right"
+  },
+  address: {
+    flexBasis: "80%",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   }
 };
 class OperationListT<T: *> extends Component<{
@@ -43,39 +38,34 @@ class OperationListT<T: *> extends Component<{
 }> {
   render() {
     const { account, title, entries, classes } = this.props;
-    // TODO this should not be a table. we don't want the price column to potentially take the whole space just because one cell do.
-    // TODO the address cell probably should have proper text-overflow , nowrap
     return (
-      <table className={classes.base}>
-        <thead>
-          <tr>
-            <td>{title}</td>
-            <td>
-              <strong>
-                <CurrencyAccountValue
-                  account={account}
-                  value={entries.reduce((s, e) => s + e.value, 0)}
-                  alwaysShowSign
-                />
-              </strong>
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map(e => (
-            <tr key={e.address}>
-              <td>{e.address}</td>
-              <td>
+      <div className={classes.detailsContainer}>
+        <LineRow label={title}>
+          <strong>
+            <CurrencyAccountValue
+              account={account}
+              value={entries.reduce((s, e) => s + e.value, 0)}
+              alwaysShowSign
+            />
+          </strong>
+        </LineRow>
+        {entries.map(e => (
+          <div className={classes.detailsRow} key={e.address}>
+            <p className={classes.address} key={e.address}>
+              {e.address}
+            </p>
+            {entries.length > 1 && (
+              <p className={classes.currencyAccountValue}>
                 <CurrencyAccountValue
                   account={account}
                   value={e.value}
                   alwaysShowSign
                 />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
     );
   }
 }
@@ -84,15 +74,15 @@ const OperationList = withStyles(stylesList)(OperationListT);
 
 const styles = {
   title: {
-    textTransform: "uppercase",
+    fontWeight: "600",
     fontSize: "11px",
-    lineHeight: "23px",
-    color: "#000",
+    textTransform: "uppercase",
     marginTop: "0"
   },
   hash: {
-    fontSize: "13px",
-    wordWrap: "break-word"
+    fontSize: "12px",
+    wordWrap: "break-word",
+    color: colors.shark
   }
 };
 
@@ -106,15 +96,15 @@ class TabDetails extends PureComponent<{
     const { transaction } = operation;
     return (
       <div>
-        <h4 className={classes.title}>Identifier</h4>
+        <span className={classes.title}>Identifier</span>
         <p className={classes.hash}>{transaction.hash}</p>
         <OperationList
-          title="INPUTS"
+          title="From"
           account={account}
           entries={transaction.inputs}
         />
         <OperationList
-          title="OUTPUTS"
+          title="To"
           account={account}
           entries={transaction.outputs}
         />

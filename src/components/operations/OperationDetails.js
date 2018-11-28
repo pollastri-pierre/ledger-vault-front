@@ -4,7 +4,6 @@ import TryAgain from "components/TryAgain";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
 
 import ModalLoading from "components/ModalLoading";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { DialogButton, Overscroll } from "../";
 import TabDetails from "./TabDetails";
@@ -62,11 +61,10 @@ class OperationDetails extends Component<Props, *> {
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
-
     return (
       <div className={classes.base}>
         <header>
-          <h2>{"Operation's details"}</h2>
+          <h2>{"Operation details"}</h2>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -78,7 +76,9 @@ class OperationDetails extends Component<Props, *> {
               disableRipple
               disabled={!operation.transaction}
             />
-            <Tab label="Label" disableRipple />
+            {operation.type !== "RECEIVE" && (
+              <Tab label="Label" disableRipple />
+            )}
             {operation.approvals.length > 0 && (
               <Tab label="History" disableRipple />
             )}
@@ -120,10 +120,6 @@ class OperationDetails extends Component<Props, *> {
     );
   }
 }
-
-OperationDetails.contextTypes = {
-  translate: PropTypes.func.isRequired
-};
 
 const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
   return (

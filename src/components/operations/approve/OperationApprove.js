@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Footer from "../../approve/Footer";
 import { withStyles } from "@material-ui/core/styles";
-import OperationApproveDedails from "./OperationApproveDedails";
+import OperationApproveDetails from "./OperationApproveDetails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import ApprovalPercentage from "components/ApprovalPercentage";
 // import OperationApproveLocks from "./OperationApproveLocks";
@@ -116,7 +116,7 @@ class OperationApprove extends Component<Props, { value: number }> {
         </header>
         {value === 0 && (
           <div className="tabs_panel">
-            <OperationApproveDedails
+            <OperationApproveDetails
               operation={operation}
               account={account}
               profile={profile}

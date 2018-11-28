@@ -1,0 +1,166 @@
+version: 2.1
+
+aliases:
+  - &docker_image circleci/node:8.11.3
+  - &dev_filters
+    branches:
+      ignore:
+        - release-candidate
+        - master
+  - &preprod_filters
+    branches:
+      only: release-candidate
+  - &prod_filters
+    branches:
+      only: master
+    tags:
+      only: /.*/
+
+commands:
+  dev_env_vars:
+    steps:
+      - run:
+          name: Set environment variables suited to the development version
+          command: |
+            echo "export NODE_ENV='development'" >> $BASH_ENV
+            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
+            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
+  preprod_env_vars:
+    steps:
+      - run:
+          name: Set environment variables suited to the preproduction version
+          command: |
+            echo "export NODE_ENV='preprod'" >> $BASH_ENV
+            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
+            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
+  prod_env_vars:
+    steps:
+      - run:
+          name: Set environment variables suited to the production version
+          command: |
+            echo "export NODE_ENV='production'" >> $BASH_ENV
+            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
+            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
+
+jobs:
+  run_tests:
+    description: Build project
+    parameters:
+      env_vars_cmd:
+        description: Step that sets environment variables
+        type: steps
+    docker:
+      - image: *docker_image
+    steps:
+      - checkout
+      - steps: << parameters.env_vars_cmd >>
+      - restore_cache:
+          keys:
+            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v1-{{ .Branch }}-
+            - node-v1-
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run: npm run lint
+      - run: npm run flow
+      - run: npm run test
+  build:
+    description: Build project
+    parameters:
+      env_vars_cmd:
+        description: Step that sets environment variables
+        type: steps
+    docker:
+      - image: *docker_image
+    steps:
+      - checkout
+      - steps: << parameters.env_vars_cmd >>
+      - restore_cache:
+          keys:
+            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run:
+          name: Build project
+          command: npm run build
+      - run:
+          name: Create workspace
+          command: mkdir -pv ~/workspace/${NODE_ENV}
+      - run:
+          name: Create a archive containing all the artifacts
+          command: tar -czvf ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz dist
+      - persist_to_workspace:
+          root: ~/workspace
+          paths:
+            - "*/ledger-vault-front.tar.gz"
+  publish:
+    docker:
+      - image: *docker_image
+    steps:
+      - attach_workspace:
+          at: ~/workspace
+      - store_artifacts:
+          path: ~/workspace
+          destination: artifacts
+
+workflows:
+  test_build_and_publish-development:
+    jobs:
+      - run_tests:
+          name: run_tests-dev
+          env_vars_cmd:
+            - dev_env_vars
+          filters: *dev_filters
+      - build:
+          name: build-dev
+          env_vars_cmd:
+            - dev_env_vars
+          requires:
+            - run_tests-dev
+          filters: *dev_filters
+      - publish:
+          name: publish-dev
+          requires:
+            - build-dev
+          filters: *dev_filters
+  test_build_and_publish-preprod:
+    jobs:
+      - run_tests:
+          name: run_tests-preprod
+          env_vars_cmd:
+            - preprod_env_vars
+          filters: *preprod_filters
+      - build:
+          name: build-preprod
+          env_vars_cmd:
+            - preprod_env_vars
+          requires:
+            - run_tests-preprod
+          filters: *preprod_filters
+      - publish:
+          name: publish-preprod
+          requires:
+            - build-preprod
+          filters: *preprod_filters
+  test_build_and_publish-production:
+    jobs:
+      - run_tests:
+          name: run_tests-prod
+          env_vars_cmd:
+            - prod_env_vars
+          filters: *prod_filters
+      - build:
+          name: build-prod
+          env_vars_cmd:
+            - prod_env_vars
+          requires:
+            - run_tests-prod
+          filters: *prod_filters
+      - publish:
+          name: publish-prod
+          requires:
+            - build-prod
+          filters: *prod_filters
