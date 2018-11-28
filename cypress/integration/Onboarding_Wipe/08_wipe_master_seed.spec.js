@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Admin Approve the registration of the Shared Owners", () => {
+context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -7,6 +7,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       polyfill = response.body;
     });
   });
+
   it("should create a wipe and redirect you to admin registration", () => {
     cy.server();
     cy
@@ -28,7 +29,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       )
       .as("challenge");
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 4
+      device_number: 7
     });
     cy
       .visit(Cypress.env("api_server"), {
@@ -42,37 +43,37 @@ context("Admin Approve the registration of the Shared Owners", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait(1000);
-        cy.get(".test-onboarding-signin").click();
+
+        // Get Seed 1st Shared Owner
+        cy.get(":nth-child(1) > .fragment").click();
         cy.wait("@authenticate");
 
         cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 5
+          device_number: 8
         });
-
         // Cancel on the device
         cy.request("POST", Cypress.env("approve_cancel_device"), {
           approve: false
         });
-        cy.get(".test-onboarding-signin").click();
-        cy
-          .contains("Shared-Owners registration confirmation")
-          .should("be.visible");
+
+        cy.get(":nth-child(2) > .fragment").click();
+        cy.contains("Generate Master Seed").should("be.visible")
         //  Choose the first option go back
         cy
           .contains("Oops! you clicked by mistake...")
           .click()
         cy.contains("Go back").click();
 
-        // choose to register shared owner again
+        // choose to register admin again
         cy.request("POST", Cypress.env("approve_cancel_device"), {
           approve: false
         });
-        cy.get(".test-onboarding-signin").click();
+        cy.get(":nth-child(2) > .fragment").click();
         cy
           .contains("You've made a mistake when registering ")
           .click();
-        cy.contains("Register Shared-Owners again").click();
-        //
+        cy.contains("Register Administrators again").click();
+
         cy.contains("Prerequisites").should("be.visible");
         cy.contains("continue").click();
         cy.wait("@next");

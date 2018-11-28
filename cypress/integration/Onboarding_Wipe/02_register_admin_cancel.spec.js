@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Admin Approve the registration of the Shared Owners", () => {
+context("Register the Administrators", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -7,7 +7,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       polyfill = response.body;
     });
   });
-  it("should create a wipe and redirect you to admin registration", () => {
+  it("should register admins and define security scheme with one cancel", () => {
     cy.server();
     cy
       .route(
@@ -27,6 +27,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
         `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
       )
       .as("challenge");
+
     cy.request("POST", Cypress.env("api_switch_device"), {
       device_number: 4
     });
@@ -42,42 +43,55 @@ context("Admin Approve the registration of the Shared Owners", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait(1000);
-        cy.get(".test-onboarding-signin").click();
+
+        // Register Admin 1
+        cy.contains("add administrator").click();
+        cy.get("input[name=username]").type("user1");
+        cy.get("input[name=email]").type("user1@user.com");
+        cy.contains("Continue").click();
         cy.wait("@authenticate");
 
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 5
         });
-
-        // Cancel on the device
+        // Cancel the approval
         cy.request("POST", Cypress.env("approve_cancel_device"), {
           approve: false
         });
-        cy.get(".test-onboarding-signin").click();
-        cy
-          .contains("Shared-Owners registration confirmation")
-          .should("be.visible");
-        //  Choose the first option go back
-        cy
-          .contains("Oops! you clicked by mistake...")
-          .click()
-        cy.contains("Go back").click();
+        cy.contains("add administrator").click();
+        cy.get("input[name=username]").type("user2");
+        cy.get("input[name=email]").type("user2@ledger.fr");
+        cy.contains("Continue").click();
+        cy.wait("@authenticate");
 
-        // choose to register shared owner again
+        // Approve the registration
         cy.request("POST", Cypress.env("approve_cancel_device"), {
-          approve: false
+          approve: true
         });
-        cy.get(".test-onboarding-signin").click();
-        cy
-          .contains("You've made a mistake when registering ")
-          .click();
-        cy.contains("Register Shared-Owners again").click();
-        //
-        cy.contains("Prerequisites").should("be.visible");
+        cy.contains("add administrator").click();
+        cy.get("input[name=username]").type("user2");
+        cy.get("input[name=email]").type("user2@ledger.fr");
+        cy.contains("Continue").click();
+        cy.wait("@authenticate");
+
+        cy.request("POST", Cypress.env("api_switch_device"), {
+          device_number: 6
+        });
+        cy.contains("add administrator").click();
+        cy.get("input[name=username]").type("user3");
+        cy.get("input[name=email]").type("user3@ledger.fr");
+        cy.contains("Continue").click();
+        cy.wait("@authenticate");
+
         cy.contains("continue").click();
         cy.wait("@next");
+        cy.contains("more").click();
+        cy.contains("more").click();
+        cy.contains("more").click();
+        cy.contains("less").click();
         cy.contains("continue").click();
         cy.wait("@next");
+        cy.wait("@challenge");
 
       });
   });

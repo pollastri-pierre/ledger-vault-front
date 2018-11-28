@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Create Wrapping Key", () => {
+context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -7,7 +7,8 @@ context("Create Wrapping Key", () => {
       polyfill = response.body;
     });
   });
-  it("should initialise the 3 Wrapping Key Custodians", () => {
+
+  it("should initialize Master Seed scheme and login to the dashboard", () => {
     cy.server();
     cy
       .route(
@@ -27,64 +28,54 @@ context("Create Wrapping Key", () => {
         `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
       )
       .as("challenge");
-    cy.visit(Cypress.env("api_server"), {
-      onBeforeLoad: win => {
-        win.fetch = null;
-        win.eval(polyfill);
-        win.fetch = win.unfetch;
-      }
+    cy.request("POST", Cypress.env("api_switch_device"), {
+      device_number: 7
     });
-
     cy
-      .request("POST", Cypress.env("api_switch_device"), {
-        device_number: 1
+      .visit(Cypress.env("api_server"), {
+        onBeforeLoad: win => {
+          win.fetch = null;
+          win.eval(polyfill);
+          win.fetch = win.unfetch;
+        }
       })
       .then(() => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait(1000);
-        cy.contains("Welcome").should("be.visible");
-        cy.contains("Get Started").click();
-        cy.wait("@next");
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.wait("@challenge");
+
+        // Get Seed 1st Shared Owner
         cy.get(":nth-child(1) > .fragment").click();
         cy.wait("@authenticate");
+
+        // Get Seed 2nd Shared Owner
         cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 2
+          device_number: 8
         });
         cy.get(":nth-child(2) > .fragment").click();
         cy.wait("@authenticate");
+
+
+        // Get Seed 3rd Shared Owner
         cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 3
-        });
-        // Cancel the approval
-        cy.request("POST", Cypress.env("approve_cancel_device"), {
-          approve: false
+          device_number: 9
         });
         cy.get(":nth-child(3) > .fragment").click();
         cy.wait("@authenticate");
 
-        // Do the last WPK
-        cy.get(":nth-child(3) > .fragment").click();
-        cy.wait("@authenticate");
+        // Complete Onboarding
         cy.contains("continue").click();
+        cy.contains("3 Shared-Owners").should("be.visible");
+        cy.contains("3 Wrapping Keys Custodians").should("be.visible");
+        cy.contains("3 Administrators").should("be.visible");
+        cy.contains("2/3 administration rule").should("be.visible");
+
         cy.wait("@next");
-        cy
-          .contains("continue")
-          .debug()
-          .click();
-        cy.wait("@next");
-        cy
-          .contains("continue")
-          .debug()
-          .click();
-        cy.wait("@next");
+        cy.request("POST", Cypress.env("api_switch_device"), {
+          device_number: 4
+        });
+        cy.contains("continue").click();
+        cy.url().should("include", "/dashboard");
       });
   });
 });
