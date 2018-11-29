@@ -26,18 +26,7 @@ const styles = {
     color: "white",
     borderRadius: 5,
     padding: 5,
-    background: colors.grenade,
-    "&:after": {
-      content: "A",
-      width: 0,
-      height: 0,
-      display: "inline-block",
-      borderStyle: "solid",
-      borderWidth: "10px 15px 10px 0",
-      borderColor: "transparent #dd4397 transparent transparent",
-      position: "absolute",
-      left: -15
-    }
+    background: colors.grenade
   }
 };
 
