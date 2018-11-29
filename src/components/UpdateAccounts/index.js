@@ -120,7 +120,7 @@ class UpdateAccounts extends Component<Props, State> {
     }
   }
 
-  onChangeAccountName = e => {
+  onChangeAccountName = (e: SyntheticInputEvent<>) => {
     this.setState({ accountName: e.target.value });
   };
   updateAccount = async () => {
