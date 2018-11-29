@@ -1,6 +1,13 @@
 //@flow
 import type { Account, Member } from "data/types";
 
+const ACCOUNT_MAX_LENGTH = 19;
+
+const hasMoreThanAscii = str =>
+  str.split("").some(function(char) {
+    return char.charCodeAt(0) > 127;
+  });
+
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
 export const VISIBLE_MENU_STATUS = ["APPROVED", "PENDING_UPDATE"];
 export const APPROVE = "APPROVE";
@@ -28,3 +35,6 @@ export const hasUserApprovedAccount = (account: Account, user: Member) => {
       .length > 0
   );
 };
+
+export const isValidAccountName = (name: string) =>
+  name.length < ACCOUNT_MAX_LENGTH && !hasMoreThanAscii(name);

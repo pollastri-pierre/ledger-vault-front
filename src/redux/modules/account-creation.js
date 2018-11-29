@@ -3,6 +3,7 @@ import _ from "lodash";
 import { LOGOUT } from "./auth";
 import type { Member } from "data/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import { isValidAccountName } from "utils/accounts";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
@@ -19,7 +20,6 @@ export const CLEAR_STATE = "account-creation/CLEAR_STATE";
 export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
-const MAX_ACCOUNT_NAME_LENGTH = 20;
 
 type Timelock = {
   enabled: boolean,
@@ -95,12 +95,8 @@ export function selectCurrencyItem(currency: CryptoCurrency) {
   };
 }
 
-const hasMoreThanAscii = str =>
-  str.split("").some(function(char) {
-    return char.charCodeAt(0) > 127;
-  });
 export function changeAccountName(name: string) {
-  if (name.length < MAX_ACCOUNT_NAME_LENGTH && !hasMoreThanAscii(name)) {
+  if (isValidAccountName(name)) {
     return {
       type: CHANGE_ACCOUNT_NAME,
       name
