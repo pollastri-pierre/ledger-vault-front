@@ -91,7 +91,7 @@ jobs:
           command: mkdir -pv ~/workspace/${NODE_ENV}
       - run:
           name: Create a archive containing all the artifacts
-          command: tar -czvf ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz dist
+          command: tar -czvf ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz -C dist .
       - persist_to_workspace:
           root: ~/workspace
           paths:
