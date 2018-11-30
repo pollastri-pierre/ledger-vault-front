@@ -1,15 +1,17 @@
 //@flow
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import { urls } from "utils/urls";
 
 const styles = {
   link: {
-    textDecoration: "none"
+    textDecoration: "none",
+    color: 'inherit'
   }
 };
 type Props = {
-  label: string,
+  label: React$Node,
   className: string,
   classes: { [_: $Keys<typeof styles>]: string }
 };
@@ -17,15 +19,15 @@ class SupportLink extends PureComponent<Props> {
   render() {
     const { label, classes, className } = this.props;
     return (
-      <div>
+      <Fragment>
         <a
-          href="https://help.vault.ledger.com"
+          href={urls.customer_support}
           target="new"
           className={cx(classes.link, className)}
         >
           {label}
         </a>
-      </div>
+      </Fragment>
     );
   }
 }

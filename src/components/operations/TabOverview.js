@@ -24,7 +24,7 @@ const styles = {
     justifyContent: "center",
     "&:hover $buttonCopy": {
       display: "flex",
-      backgroundColor: colors.lightGrey
+      backgroundColor: colors.cream
     }
   },
   hash: {
@@ -56,6 +56,17 @@ class TabOverview extends Component<Props, State> {
   state = {
     copied: false
   };
+  componentWillUnmount() {
+    if (this._timeout) clearTimeout(this._timeout);
+  }
+  
+  onCopy = () => {
+    this.setState({ copied: true });
+    this._timeout = setTimeout(() => this.setState({ copied: false }), 1e3);
+  };
+
+  _timeout: ?TimeoutID = null;
+
   render() {
     const { operation, account, classes } = this.props;
     const { copied } = this.state;
@@ -75,7 +86,7 @@ class TabOverview extends Component<Props, State> {
                 </span>
                 <CopyToClipboard
                   text={operation.transaction.hash}
-                  onCopy={() => this.setState({ copied: true })}
+                  onCopy={this.onCopy}
                 >
                   {copied ? (
                     <Button

@@ -5,13 +5,14 @@ device_step2: Connect it to your computer using the provided USB cable.
 device_step3: Enter your PIN code
 device_step4: Open the Vault app from the Ledger Blue Enterprise dashboard.
 receive_subtitle: receive address
-receive_account: Address for account {{name}}
-confirmed_device: The {{name}} account receive address has been confirmed on your device. Verify the receive address again when you copy and paste it.
-re_verify: re-verify
-copy: copy address
+receive_account: Address for account <1><0>{{name}}</0></1>
+confirmed_device: The {{name}} address is confirmed. Please verify the address if you copy/paste it or if you scan the QR code.
+re_verify: Re-verify
+copy: Copy address
+address_copied: Address Copied
 address_rejected: receive address rejected
 address_rejected1: You haven't confirmed that the address displayed on your Ledger Blue Enterprise device is identical to the address displayed on-screen.
 verify_on_device: Verify that the address and QR code above are identical to the address and QR code displayed on your Ledger Blue Enterprise device, then tap APPROVE.
 address_rejected2: Click retry to verify the address again or contact Support.
-retry: retry
+retry: Retry
 support: Contact Support

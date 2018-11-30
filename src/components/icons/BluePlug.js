@@ -8,8 +8,6 @@ const BluePlug = ({ size }: { size: number }) => (
     width={size}
     height={size * 2}
     viewBox="0 0 497 1024"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
   >
     <defs>
       <linearGradient
@@ -88,7 +86,7 @@ const BluePlug = ({ size }: { size: number }) => (
             id="Rectangle-2"
             stroke="#1D2027"
             strokeWidth="5"
-            fill={colors.blue_green}
+            fill={colors.ocean}
             x="484.5"
             y="90.5"
             width="10"
@@ -99,7 +97,7 @@ const BluePlug = ({ size }: { size: number }) => (
             id="Rectangle"
             stroke="#1D2027"
             strokeWidth="10"
-            fill={colors.blue_green}
+            fill={colors.ocean}
             x="5"
             y="5"
             width="482"
@@ -108,7 +106,7 @@ const BluePlug = ({ size }: { size: number }) => (
           />
           <rect
             id="Rectangle-Copy"
-            stroke={colors.blue_green}
+            stroke={colors.ocean}
             strokeWidth="4"
             fill="#FFF"
             x="62"
