@@ -5,7 +5,7 @@ const colors = {
   ocean: "#27d0e2",
   grenade: "#ea2e49",
   argile: "#eeeeee",
-  lightGrey: "#F9F9F9",
+  lightGrey: "#d8d8d8",
   shark: "#666666",
   steel: "#767676",
   lead: "#999999",
@@ -18,6 +18,7 @@ const colors = {
   blue_green: "#078e0791",
   translucentGreen: "rgba(102, 190, 84, 0.2)",
   translucentGrey: "rgba(153, 153, 153, 0.2)",
+  translucentOcean: "rgb(39, 208, 226, 0.2)"
 };
 
 function hexToRgbA(hex, a) {
