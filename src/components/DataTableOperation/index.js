@@ -174,7 +174,7 @@ class AccountColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
     return account ? (
-      <AccountName name={account.name} currency={account.currency} />
+      <AccountName name={account.name} currencyId={account.currency.name} />
     ) : null;
   }
 }

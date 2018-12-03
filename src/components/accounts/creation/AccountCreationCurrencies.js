@@ -1,14 +1,20 @@
 //@flow
 import React, { Component, PureComponent } from "react";
+import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import ModalLoading from "components/ModalLoading";
+import connectData from "restlay/connectData";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import type { Currency } from "data/types";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
-import { listCryptoCurrencies } from "utils/cryptoCurrencies";
-
-const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+// import {
+//   listCryptoCurrencies,
+// } from "utils/cryptoCurrencies";
+//
+// const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
 
 const styles = {
   base: {
@@ -113,61 +119,57 @@ class CurrencyIcon extends PureComponent<{
 
 class AccountCreationCurrencies extends Component<{
   currency: CryptoCurrency, // FIXME this should just be the currency.name for a better normalization
+  currencies: Currency[],
   onSelect: (cur: CryptoCurrency) => void, // SAME
   classes: Object
 }> {
   render() {
     const { props } = this;
-    const { currency, onSelect, classes } = props;
+    const { currency, onSelect, currencies, classes } = props;
     // TODO migrate to use material-ui MenuList
 
     return (
       <div className={classes.base}>
-        {allCurrencies
-          .map(cur => {
-            const Icon = getCryptoCurrencyIcon(cur);
-            return (
-              <div
-                onClick={() => {
-                    onSelect(cur);
-                }}
-                role="button"
-                tabIndex="0"
-                key={cur.name}
-                className={classnames(classes.row, {
-                  [classes.selected]: currency && currency.name === cur.name,
-                })}
-              >
-                <div className="wrapper">
-                  {Icon ? (
-                    <CurrencyIcon
-                      Icon={Icon}
-                      classe={classes.icon}
-                      color={cur.color}
-                    />
-                  ) : (
-                    "-"
-                  )}
-                  <span className={classes.name}>{cur.name}</span>
-                  <span className={classes.short}>{cur.ticker}</span>
-                </div>
-
+        {currencies.map(cur => {
+          const cryptoCurrency = getCryptoCurrencyById(cur.name);
+          const Icon = getCryptoCurrencyIcon(cryptoCurrency);
+          return (
+            <div
+              onClick={() => {
+                onSelect(cryptoCurrency);
+              }}
+              role="button"
+              tabIndex="0"
+              key={cur.name}
+              className={classnames(classes.row, {
+                [classes.selected]:
+                  currency && currency.name === cryptoCurrency.name
+              })}
+            >
+              <div className="wrapper">
+                {Icon ? (
+                  <CurrencyIcon
+                    Icon={Icon}
+                    classe={classes.icon}
+                    color={cryptoCurrency.color}
+                  />
+                ) : (
+                  "-"
+                )}
+                <span className={classes.name}>{cur.name}</span>
+                <span className={classes.short}>{cur.ticker}</span>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
     );
   }
 }
 
-const styleLoading = {
-  base: {
-    height: 440,
-    width: "auto"
+export default connectData(withStyles(styles)(AccountCreationCurrencies), {
+  RenderLoading: ModalLoading,
+  queries: {
+    currencies: CurrenciesQuery
   }
-};
-const Loading = withStyles(styleLoading)(({ classes }) => (
-  <ModalLoading className={classes.base} />
-));
-
-export default withStyles(styles)(AccountCreationCurrencies);
+});
