@@ -8,7 +8,7 @@ context("Create the Master Seed", () => {
     });
   });
 
-  it("should initialize Master Seed scheme and login to the dashboard", () => {
+  it("should create a wipe and redirect you to admin registration", () => {
     cy.server();
     cy
       .route(
@@ -48,55 +48,38 @@ context("Create the Master Seed", () => {
         cy.get(":nth-child(1) > .fragment").click();
         cy.wait("@authenticate");
 
-        // Try to sign with wrong device should fail
-        cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 1
-        });
-        cy.get(":nth-child(2) > .fragment").click();
-        cy
-          .get(".top-message-body")
-          .contains("Please connect a Shared-Owner device")
-          .get(".top-message-title")
-          .contains("Error");
-
-        // Get Seed 2nd Shared Owner
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 8
         });
+        // Cancel on the device
+        cy.request("POST", Cypress.env("approve_cancel_device"), {
+          approve: false
+        });
+
         cy.get(":nth-child(2) > .fragment").click();
-        cy.wait("@authenticate");
-
-
-        // Try to see with the same device
-        cy.get(":nth-child(3) > .fragment").click();
+        cy.contains("Generate Master Seed").should("be.visible")
+        //  Choose the first option go back
         cy
-          .get(".top-message-body")
-          .contains(
-            "This device has already been used to generate the master seed, please connect another one."
-          )
-          .get(".top-message-title")
-          .contains("Error");
+          .contains("Oops! you clicked by mistake...")
+          .click()
+        cy.contains("Go back").click();
 
-        // Get Seed 3rd Shared Owner
-        cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 9
+        // choose to register admin again
+        cy.request("POST", Cypress.env("approve_cancel_device"), {
+          approve: false
         });
-        cy.get(":nth-child(3) > .fragment").click();
-        cy.wait("@authenticate");
+        cy.get(":nth-child(2) > .fragment").click();
+        cy
+          .contains("You've made a mistake when registering ")
+          .click();
+        cy.contains("Register Administrators again").click();
 
-        // Complete Onboarding
+        cy.contains("Prerequisites").should("be.visible");
         cy.contains("continue").click();
-        cy.contains("3 Shared-Owners").should("be.visible");
-        cy.contains("3 Wrapping Keys Custodians").should("be.visible");
-        cy.contains("3 Administrators").should("be.visible");
-        cy.contains("2/3 administration rule").should("be.visible");
-
         cy.wait("@next");
-        cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 4
-        });
         cy.contains("continue").click();
-        cy.url().should("include", "/dashboard");
+        cy.wait("@next");
+
       });
   });
 });
