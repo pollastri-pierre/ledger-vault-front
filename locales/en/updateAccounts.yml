@@ -1,6 +1,6 @@
-title: Platform up-to-date!
-accounts_updated: The Ledger Vault platform has been updated. Find out more in the
-unable_access: Before you start using the Ledger Vault, you must recreate your account(s) by providing the name and operation rules for each of them.
+title: Action required
+accounts_updated: The Ledger Vault platform has been updated. Find out more in the <1><0>release notes</1></0>
+unable_access: Before you start using the Ledger Vault, you must re-create your account(s) by providing the name and operation rules for each of them.
 when_ready: When you're ready to  provide that information, click Get Started.
 instruction: Read these instructions before you get started
 provide: Provide account operation rules

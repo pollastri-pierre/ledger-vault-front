@@ -76,6 +76,7 @@ class ReceiveAddress extends Component<Props, State> {
       );
       this.setState({ verified: true, error: false });
     } catch (error) {
+      //TODO: create generic error component with generic title, message and contact support
       if (error.statusCode && error.statusCode === 27013) {
         this.setState({ error: true });
       }
