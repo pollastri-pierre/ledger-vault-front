@@ -60,6 +60,9 @@ context("Create the Master Seed", () => {
           .contains("Error");
 
         // Get Seed 2nd Shared Owner
+
+        //WARNING geting some issue here
+
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 8
         });

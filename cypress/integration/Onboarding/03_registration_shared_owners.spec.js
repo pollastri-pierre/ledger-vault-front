@@ -55,6 +55,14 @@ context("Registration Shared Owners", () => {
         cy.contains("Add shared-owner").click();
         cy.wait("@authenticate");
 
+        //Use the same device, Should display a error
+        cy.contains("Add shared-owner").click();
+        cy
+          .get(".top-message-body")
+          .contains("Person already exists")
+          .get(".top-message-title")
+          .contains("Error");
+
         // Shared Owner 2
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 8
