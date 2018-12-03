@@ -1,7 +1,6 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
-import { translate } from "react-i18next";
-import type { Translate } from "data/types";
+import { Trans } from "react-i18next";
 import { getPendingsOperations } from "utils/operations";
 import React from "react";
 // import AccountsQuery from "api/queries/AccountsQuery";
@@ -67,10 +66,9 @@ function Menu(props: {
   match: *,
   classes: { [_: $Keys<typeof styles>]: string },
   accounts: Array<Account>,
-  t: Translate,
   allPendingOperations: Array<Operation>
 }) {
-  const { location, classes, accounts, allPendingOperations, match, t } = props;
+  const { location, classes, accounts, allPendingOperations, match } = props;
   const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   const visibleAccounts = getVisibleAccountsInMenu(accounts);
   return (
@@ -85,7 +83,7 @@ function Menu(props: {
           <MenuLink to={`${match.url}/dashboard`}>
             <span className={classes.link}>
               <Home className={classes.icon} />
-              {t("menu:dashboard")}
+              <Trans i18nKey="menu:dashboard" />
             </span>
           </MenuLink>
           <MenuLink
@@ -97,7 +95,7 @@ function Menu(props: {
           >
             <span className={classes.link}>
               <Plus className={classes.icon} />
-              {t("menu:new_operation")}
+              <Trans i18nKey="menu:new_operation" />
             </span>
           </MenuLink>
           <MenuLink
@@ -106,19 +104,19 @@ function Menu(props: {
           >
             <span className={classes.link}>
               <IconReceive size={11} className={classes.icon} />
-              {t("menu:receive")}
+              <Trans i18nKey="menu:receive" />
             </span>
           </MenuLink>
           <MenuLink to={`${match.url}/pending`}>
             <span className={classes.link}>
               <Lines className={classes.icon} />
-              {t("menu:pending_requests")}
+              <Trans i18nKey="menu:pending_requests" />
             </span>
           </MenuLink>
           <MenuLink to={`${match.url}/search`}>
             <span className={classes.link}>
               <Search className={classes.searchIcon} />
-              {t("menu:search")}
+              <Trans i18nKey="menu:search" />
             </span>
           </MenuLink>
         </MenuList>
@@ -148,7 +146,7 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </div>
 ));
 
-export default connectData(withStyles(styles)(translate()(Menu)), {
+export default connectData(withStyles(styles)(Menu), {
   RenderLoading,
   queries: {
     allPendingOperations: PendingOperationsQuery,
