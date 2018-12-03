@@ -5,11 +5,11 @@ import SearchResultsCard from "./SearchResultsCard";
 import SearchFiltersCard from "./SearchFiltersCard";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import { withStyles } from "@material-ui/core/styles";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
-import type { Account, Currency } from "data/types";
+import { listCryptoCurrencies } from 'utils/cryptoCurrencies';
+import type { Account } from "data/types";
 
 type Filters = {
   keywords: ?string,
@@ -48,11 +48,10 @@ const styles = {
     }
   }
 };
-
+const currencies = listCryptoCurrencies(true);
 class Search extends Component<
   {
     accounts: Account[],
-    currencies: Currency[],
     classes: Object,
     match: *,
     location: *,
@@ -88,7 +87,7 @@ class Search extends Component<
   }
 
   render() {
-    const { accounts, currencies, classes, match } = this.props;
+    const { accounts, classes, match } = this.props;
     const { filters, debouncedFilters } = this.state;
     const refreshingKey =
       String(debouncedFilters.keywords) +
@@ -121,6 +120,5 @@ class Search extends Component<
 export default connectData(withStyles(styles)(Search), {
   queries: {
     accounts: AccountsQuery,
-    currencies: CurrenciesQuery
   }
 });

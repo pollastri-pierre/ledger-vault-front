@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { listCryptoCurrencies, getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { DialogButton } from "components";
 import ListItemText from "@material-ui/core/ListItemText";
 
@@ -10,12 +10,13 @@ import Card from "components/Card";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // import DateTimePicker from "material-ui-pickers/DateTimePicker";
 import DatePicker from "material-ui-pickers/DatePicker";
 // import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
-import type { Currency, Account } from "data/types";
+import type { Account } from "data/types";
 
 const allCurrencies = listCryptoCurrencies(true);
 const styles = {
@@ -60,7 +61,7 @@ class SearchFiltersCard extends Component<{
   filters: Object,
   onChangeFilters: (filters: Object) => void,
   onClearFilters: () => void,
-  currencies: Currency[],
+  currencies: CryptoCurrency[],
   accounts: Account[],
   classes: Object
 }> {
@@ -160,13 +161,7 @@ class SearchFiltersCard extends Component<{
                   key={account.id}
                   value={account.id}
                   disableRipple
-                  style={{
-                    color:
-                      (allCurrencies.find(
-                        c => c.id === account.currency.name
-                      ) || {}
-                      ).color || "black"
-                  }}
+                  style={{ color: getCryptoCurrencyById(account.currency.name).color || 'black'}}
                 >
                   <Checkbox
                     color="primary"
@@ -247,7 +242,7 @@ class SearchFiltersCard extends Component<{
                 <MenuItem
                   disableRipple
                   key={currency.name}
-                  value={currency.name}
+                  value={currency.id}
                   className={classes.menuItemCurrency}
                 >
                   <span>{currency.name}</span>

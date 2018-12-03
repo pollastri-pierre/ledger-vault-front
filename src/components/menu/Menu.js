@@ -5,7 +5,6 @@ import { getPendingsOperations } from "utils/operations";
 import React from "react";
 // import AccountsQuery from "api/queries/AccountsQuery";
 import { isCreateOperationEnabled } from "utils/operations";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
@@ -150,6 +149,5 @@ export default connectData(withStyles(styles)(Menu), {
   RenderLoading,
   queries: {
     allPendingOperations: PendingOperationsQuery,
-    currencies: CurrenciesQuery
   }
 });

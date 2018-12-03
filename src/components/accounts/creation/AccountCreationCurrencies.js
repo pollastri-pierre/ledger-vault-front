@@ -1,16 +1,12 @@
 //@flow
 import React, { Component, PureComponent } from "react";
-import ExpandableText from "components/ExpandableText";
-import connectData from "restlay/connectData";
 import ModalLoading from "components/ModalLoading";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import classnames from "classnames";
-import type { Currency } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 
 const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
 
@@ -116,40 +112,30 @@ class CurrencyIcon extends PureComponent<{
 }
 
 class AccountCreationCurrencies extends Component<{
-  currencies: Array<Currency>,
   currency: CryptoCurrency, // FIXME this should just be the currency.name for a better normalization
   onSelect: (cur: CryptoCurrency) => void, // SAME
   classes: Object
 }> {
   render() {
     const { props } = this;
-    const { currencies, currency, onSelect, classes } = props;
+    const { currency, onSelect, classes } = props;
     // TODO migrate to use material-ui MenuList
 
     return (
       <div className={classes.base}>
         {allCurrencies
-          .filter(
-            currency =>
-              currencies.findIndex(cur => cur.name === currency.id) > -1
-          )
           .map(cur => {
             const Icon = getCryptoCurrencyIcon(cur);
-            const currency_gate = currencies.find(curr => curr.name === cur.id);
             return (
               <div
                 onClick={() => {
-                  if (currency_gate && !currency_gate.issue_message) {
                     onSelect(cur);
-                  }
                 }}
                 role="button"
                 tabIndex="0"
                 key={cur.name}
                 className={classnames(classes.row, {
                   [classes.selected]: currency && currency.name === cur.name,
-                  [classes.disabled]:
-                    currency_gate && currency_gate.issue_message
                 })}
               >
                 <div className="wrapper">
@@ -165,14 +151,7 @@ class AccountCreationCurrencies extends Component<{
                   <span className={classes.name}>{cur.name}</span>
                   <span className={classes.short}>{cur.ticker}</span>
                 </div>
-                {currency_gate &&
-                  currency_gate.issue_message && (
-                    <ExpandableText
-                      className={classes.issue}
-                      size={45}
-                      text="Bitcoin Cash service has been suspended due to hard fork. Further announcements will follow."
-                    />
-                  )}
+
               </div>
             );
           })}
@@ -191,9 +170,4 @@ const Loading = withStyles(styleLoading)(({ classes }) => (
   <ModalLoading className={classes.base} />
 ));
 
-export default connectData(withStyles(styles)(AccountCreationCurrencies), {
-  queries: {
-    currencies: CurrenciesQuery
-  },
-  RenderLoading: Loading
-});
+export default withStyles(styles)(AccountCreationCurrencies);
