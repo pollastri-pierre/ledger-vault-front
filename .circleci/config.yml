@@ -2,6 +2,8 @@ version: 2.1
 
 aliases:
   - &docker_image circleci/node:8.11.3
+  - &dev_s3_bucket ledger-vault-artifacts-dev
+  - &prod_s3_bucket ledger-vault-artifacts-prod
   - &dev_filters
     branches:
       ignore:
@@ -97,11 +99,36 @@ jobs:
           paths:
             - "*/ledger-vault-front.tar.gz"
   publish:
+    description: Publish artifact on CircleCI and on S3
+    parameters:
+      # Only needed to get NODE_ENV
+      env_vars_cmd:
+        description: Step that sets environment variables
+        type: steps
+      s3_bucket:
+        description: Bucket where artifacts will be stored
+        type: string
     docker:
       - image: *docker_image
     steps:
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo apt-get -q=2 update
+            sudo apt-get -q=2 install awscli
       - attach_workspace:
           at: ~/workspace
+      - steps: << parameters.env_vars_cmd >>
+      - run:
+          name: Upload on AWS S3
+          command: |
+            s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front/${NODE_ENV}"
+            artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
+            aws s3 cp --no-progress ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
+            latest=$(mktemp)
+            echo $artifact_with_sha1 > $latest
+            aws s3 cp --no-progress $latest ${s3_path}/LATEST
+            rm -f $latest
       - store_artifacts:
           path: ~/workspace
           destination: artifacts
@@ -123,6 +150,9 @@ workflows:
           filters: *dev_filters
       - publish:
           name: publish-dev
+          env_vars_cmd:
+            - dev_env_vars
+          s3_bucket: *dev_s3_bucket
           requires:
             - build-dev
           filters: *dev_filters
@@ -142,6 +172,9 @@ workflows:
           filters: *preprod_filters
       - publish:
           name: publish-preprod
+          env_vars_cmd:
+            - dev_env_vars
+          s3_bucket: *dev_s3_bucket
           requires:
             - build-preprod
           filters: *preprod_filters
@@ -161,6 +194,9 @@ workflows:
           filters: *prod_filters
       - publish:
           name: publish-prod
+          env_vars_cmd:
+            - dev_env_vars
+          s3_bucket: *prod_s3_bucket
           requires:
             - build-prod
           filters: *prod_filters
