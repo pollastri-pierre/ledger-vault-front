@@ -66,18 +66,16 @@ const DashboardPlaceholder = ({
       <h3>{<Trans i18nKey="dashboard:empty_state.title" />}</h3>
       <p>
         <span>
-          <Trans i18nKey="dashboard:empty_state.click" />{" "}
+          <Trans i18nKey="dashboard:empty_state.click" />
         </span>
         <Link to={`dashboard/new-account`} className={classes.link}>
           <Plus className={cx(classes.icon, "test-new-account-dashboard")} />
           <span>
-            {" "}
-            <Trans i18nKey="dashboard:empty_state.account" />{" "}
+            <Trans i18nKey="dashboard:empty_state.account" />
           </span>
         </Link>
         <span>
-          {" "}
-          <Trans i18nKey="dashboard:empty_state.to_create" />{" "}
+          <Trans i18nKey="dashboard:empty_state.to_create" />
         </span>
       </p>
       <p className={classes.needHelp}>
