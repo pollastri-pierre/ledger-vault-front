@@ -173,7 +173,8 @@ class SharedOwnerValidation extends Component<Props, State> {
               <span className={classes.counter}>
                 {onboarding.validating_shared_owner.admins.length}{" "}
                 {t("onboarding:master_seed_signin.signed_in")},{" "}
-                {onboarding.registering.admins.length}{" "}
+                {onboarding.registering.admins.length -
+                  onboarding.validating_shared_owner.admins.length}{" "}
                 {t("onboarding:master_seed_signin:remaining")}
               </span>
             </div>
