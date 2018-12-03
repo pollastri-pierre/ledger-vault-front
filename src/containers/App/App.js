@@ -4,6 +4,7 @@ import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
 import type { Account } from "data/types";
 import AccountsQuery from "api/queries/AccountsQuery";
+import { translate } from "react-i18next";
 import Content from "components/content/Content";
 import ActionBar from "components/actionBar/ActionBar";
 import { withStyles } from "@material-ui/core/styles";
@@ -48,7 +49,7 @@ const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
   );
 });
 
-export default connectData(App, {
+export default connectData(translate()(App), {
   RenderError,
   queries: {
     accounts: AccountsQuery
