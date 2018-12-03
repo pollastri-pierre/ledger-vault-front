@@ -286,7 +286,7 @@ export const addWrappingKey = (data: Blob) => {
 };
 
 export const getSharedOwnerRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
     try {
       const onboarding_step = getState()['onboarding']['state'];
       let dataToSend = {};
@@ -305,7 +305,7 @@ export const getSharedOwnerRegistrationChallenge = () => {
   };
 };
 export const getRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState) => {
+  return async (dispatch: Dispatch<*>, getState: Function) => {
     try {
       const onboarding_step = getState()['onboarding']['state'];
       let dataToSend = {};
@@ -395,16 +395,17 @@ export const addSignedIn = (pub_key: string, signature: *) => {
     } else {
       const data = {
         pub_key: pub_key.toUpperCase(),
-        authentication: signature.rawResponse
+        authentication: signature.rawResponse,
+        current_step: getState()['onboarding']['state']
       };
-      const onboarding_step = getState()['onboarding']['state'];
-      let dataToSend = {};
-      dataToSend["current_step"] = onboarding_step;
 
-      await network("/onboarding/authenticate", "POST", dataToSend);
+      const {current_step, ...to_dispatch} = data
+
+      await network("/onboarding/authenticate", "POST", data);
+      //delete data['current_step']
       dispatch({
         type: ONBOARDING_ADD_SIGNEDIN,
-        data
+        data: to_dispatch
       });
     }
   };
