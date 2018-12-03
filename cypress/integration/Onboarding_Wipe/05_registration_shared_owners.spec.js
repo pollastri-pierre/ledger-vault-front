@@ -1,5 +1,5 @@
 const orga_name = Cypress.env("workspace");
-context("Register the Administrators", () => {
+context("Registration Shared Owners", () => {
   let polyfill;
   before(() => {
     const polyfillUrl = Cypress.env("polyfillUrl");
@@ -7,7 +7,7 @@ context("Register the Administrators", () => {
       polyfill = response.body;
     });
   });
-  it("should register admins and define security scheme", () => {
+  it("should add 3 Shared Owners", () => {
     cy.server();
     cy
       .route(
@@ -29,7 +29,7 @@ context("Register the Administrators", () => {
       .as("challenge");
 
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 4
+      device_number: 7
     });
     cy
       .visit(Cypress.env("api_server"), {
@@ -44,39 +44,29 @@ context("Register the Administrators", () => {
         cy.contains("continue").click();
         cy.wait(1000);
 
-        cy.contains("add administrator").click();
-        cy.get("input[name=username]").type("user1");
-        cy.get("input[name=email]").type("user1@user.com");
-        cy.contains("Continue").click();
+        cy.contains("continue").click();
+        cy.wait("@next");
+
+        // Shared Owner 1
+        cy.contains("Add shared-owner").click();
         cy.wait("@authenticate");
-      
+
+        // Shared Owner 2
         cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 5
+          device_number: 8
         });
-        cy.contains("add administrator").click();
-        cy.get("input[name=username]").type("user2");
-        cy.get("input[name=email]").type("user2@ledger.fr");
-        cy.contains("Continue").click();
+        cy.contains("Add shared-owner").click();
         cy.wait("@authenticate");
+
+        // Shared Owner 3
         cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 6
+          device_number: 9
         });
-        cy.contains("add administrator").click();
-        cy.get("input[name=username]").type("user3");
-        cy.get("input[name=email]").type("user3@ledger.fr");
-        cy.contains("Continue").click();
+        cy.contains("Add shared-owner").click();
         cy.wait("@authenticate");
 
         cy.contains("continue").click();
         cy.wait("@next");
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("more").click();
-        cy.contains("less").click();
-        cy.contains("continue").click();
-        cy.wait("@next");
-        cy.wait("@challenge");
-
       });
   });
 });
