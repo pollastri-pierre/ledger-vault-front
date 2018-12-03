@@ -398,8 +398,10 @@ export const addSignedIn = (pub_key: string, signature: *) => {
         authentication: signature.rawResponse,
         current_step: getState()['onboarding']['state']
       };
-
-      const {current_step, ...to_dispatch} = data
+      const to_dispatch = {
+        pub_key: pub_key.toUpperCase(),
+        authentication: signature.rawResponse,
+      };
 
       await network("/onboarding/authenticate", "POST", data);
       //delete data['current_step']
