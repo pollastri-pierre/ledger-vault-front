@@ -2,8 +2,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import HelpLink from "components/HelpLink";
 import Plus from "components/icons/full/Plus";
 import colors from "shared/colors";
@@ -58,31 +57,39 @@ const styles = {
   }
 };
 const DashboardPlaceholder = ({
-  classes,
-  t
+  classes
 }: {
-  classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  classes: { [$Keys<typeof styles>]: string }
 }) => (
   <div className={classes.base}>
     <div>
-      <h3>{t("dashboard:empty_state.title")}</h3>
+      <h3>{<Trans i18nKey="dashboard:empty_state.title" />}</h3>
       <p>
-        <span>{t("dashboard:empty_state.click")} </span>
+        <span>
+          <Trans i18nKey="dashboard:empty_state.click" />{" "}
+        </span>
         <Link to={`dashboard/new-account`} className={classes.link}>
           <Plus className={cx(classes.icon, "test-new-account-dashboard")} />
-          <span> {t("dashboard:empty_state.account")} </span>
+          <span>
+            {" "}
+            <Trans i18nKey="dashboard:empty_state.account" />{" "}
+          </span>
         </Link>
-        <span> {t("dashboard:empty_state.to_create")} </span>
+        <span>
+          {" "}
+          <Trans i18nKey="dashboard:empty_state.to_create" />{" "}
+        </span>
       </p>
       <p className={classes.needHelp}>
-        <strong>{t("dashboard:empty_state.need_help")}</strong>{" "}
+        <strong>
+          <Trans i18nKey="dashboard:empty_state.need_help" />
+        </strong>{" "}
         <HelpLink className={classes.help}>
-          {t("dashboard:empty_state.visit")}
+          <Trans i18nKey="dashboard:empty_state.visit" />
         </HelpLink>
       </p>
     </div>
   </div>
 );
 
-export default withStyles(styles)(translate()(DashboardPlaceholder));
+export default withStyles(styles)(DashboardPlaceholder);
