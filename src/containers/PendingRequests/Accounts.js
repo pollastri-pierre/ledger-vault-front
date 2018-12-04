@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
@@ -17,13 +16,12 @@ type Props = {
   approvers: Member[],
   organization: *,
   accounts: Account[],
-  t: Translate,
   user: Member
 };
 class ApproveWatchAccounts extends Component<Props> {
   render() {
     // we need to split between account already approved by current user and the other
-    const { accounts, approvers, user, organization, t } = this.props;
+    const { accounts, approvers, user, organization } = this.props;
 
     const toApprove = accounts.filter(
       account =>
@@ -40,7 +38,7 @@ class ApproveWatchAccounts extends Component<Props> {
 
     return (
       <div>
-        <Card title={t("pending:accounts.approve.title")}>
+        <Card title={<Trans i18nKey="pending:accounts.approve.title" />}>
           <PendingAccountApprove
             user={this.props.user}
             accounts={toApprove}
@@ -48,7 +46,7 @@ class ApproveWatchAccounts extends Component<Props> {
             quorum={organization.quorum}
           />
         </Card>
-        <Card title={t("pending:accounts.watch.title")}>
+        <Card title={<Trans i18nKey="pending:accounts.watch.title" />}>
           <PendingAccountApprove
             user={this.props.user}
             accounts={toWatch}
@@ -62,22 +60,22 @@ class ApproveWatchAccounts extends Component<Props> {
   }
 }
 
-const RenderLoading = translate()(({ t }: { t: Translate }) => (
+const RenderLoading = () => (
   <div>
-    <Card title={t("pending:accounts.approve.title")}>
+    <Card title={<Trans i18nKey="pending:accounts.approve.title" />}>
       <SpinnerCard />
     </Card>
-    <Card title={t("pending:accounts.watch.title")}>
+    <Card title={<Trans i18nKey="pending:accounts.watch.title" />}>
       <SpinnerCard />
     </Card>
   </div>
-));
+);
 const RenderError = ({ error, restlay }: *) => (
   <Card>
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
-export default connectData(translate()(ApproveWatchAccounts), {
+export default connectData(ApproveWatchAccounts, {
   RenderLoading,
   RenderError,
   queries: {
