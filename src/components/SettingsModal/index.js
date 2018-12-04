@@ -22,6 +22,7 @@ import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
 import colors from "../../shared/colors";
@@ -411,11 +412,7 @@ function Side({
         <div className={classes.capsTitle}>{"Accounts"}</div>
         <div className={classes.sideItems}>
           {accounts.map(account => {
-            const curr = allCurrencies.find(
-              c => c.scheme === account.currency.name
-            ) || {
-              color: ""
-            };
+            const curr = getCryptoCurrencyById(account.currency.name);
             return (
               <NavLink
                 key={account.id}

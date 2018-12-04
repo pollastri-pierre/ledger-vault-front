@@ -39,7 +39,7 @@ function OperationApproveDetails(props: {
           <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label="account to debit">
-          <AccountName name={account.name} currencyId={account.currency} />
+          <AccountName name={account.name} currencyId={account.currency.name} />
         </LineRow>
         {/* <LineRow label="Confirmation fees"> */}
         {/*   <Amount account={account} value={operation.fees.amount} /> */}
