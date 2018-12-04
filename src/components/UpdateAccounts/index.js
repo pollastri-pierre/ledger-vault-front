@@ -262,6 +262,7 @@ class UpdateAccounts extends Component<Props, State> {
                       disabled={
                         approvers.length === 0 ||
                         quorum === 0 ||
+                        accountName === "" ||
                         !isValidAccountName(accountName) ||
                         quorum > approvers.length
                       }
