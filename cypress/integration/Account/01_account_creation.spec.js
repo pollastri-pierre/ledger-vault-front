@@ -68,6 +68,7 @@ context("Account creation", () => {
         // click on done to create the account, it will display the authenticate with device modal
         cy.contains("done").click();
         cy.wait("@authenticate");
+        cy.wait(1000);
 
         //We should get a Account request created message
         cy
