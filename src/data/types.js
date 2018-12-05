@@ -244,3 +244,14 @@ export type ActivityEntityOperation = ActivityCommon & {
     target_type: string
   }
 };
+
+export type GateError = {
+  json: {
+    message: string,
+    name: string,
+    code: number
+  },
+  name: string,
+  message: string,
+  status: number
+};

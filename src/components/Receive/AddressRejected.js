@@ -14,7 +14,7 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string }
 };
 
-class AddressError extends PureComponent<Props, *> {
+class AddressRejected extends PureComponent<Props, *> {
   render() {
     const { classes, checkAgain } = this.props;
     return (
@@ -112,4 +112,4 @@ const styles = {
     fontSize: 12
   }
 };
-export default withStyles(styles)(AddressError);
+export default withStyles(styles)(AddressRejected);
