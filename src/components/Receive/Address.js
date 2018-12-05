@@ -6,18 +6,20 @@ import createDevice, {
   CONFIDENTIALITY_PATH,
   U2F_TIMEOUT,
   VALIDATION_PATH,
-  MATCHER_SESSION
+  MATCHER_SESSION,
+  DEVICE_REJECT_ERROR_CODE
 } from "device";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { withStyles } from "@material-ui/core/styles";
 import Copy from "components/icons/Copy";
 import Recover from "components/icons/Recover";
-import type { Account } from "data/types";
+import type { Account, GateError } from "data/types";
 import { Interpolate, Trans } from "react-i18next";
 import QRCode from "components/QRCode";
+import GenericErrorScreen from "components/GenericErrorScreen";
 import colors from "shared/colors";
 import ReceiveLayout from "./ReceiveLayout";
-import AddressError from "./AddressError";
+import AddressRejected from "./AddressRejected";
 import ShieldBox from "./ShieldBox";
 
 type Props = {
@@ -27,19 +29,21 @@ type Props = {
 };
 type State = {
   error: boolean,
+  deviceRejected: boolean,
   verified: boolean,
   loading: boolean,
-  error: boolean,
+  error: ?$Shape<GateError>,
   copied: boolean
 };
 class ReceiveAddress extends Component<Props, State> {
   input: ?HTMLInputElement = null;
 
   state = {
-    error: false,
+    error: null,
     loading: false,
     verified: false,
-    copied: false
+    copied: false,
+    deviceRejected: false
   };
   componentDidMount() {
     this.verifyAddress();
@@ -74,14 +78,17 @@ class ReceiveAddress extends Component<Props, State> {
         VALIDATION_PATH,
         Buffer.from(wallet_address, "base64")
       );
-      this.setState({ verified: true, error: false });
+      this.setState({ verified: true, error: null });
     } catch (error) {
-      //TODO: create generic error component with generic title, message and contact support
-      if (error.statusCode && error.statusCode === 27013) {
-        this.setState({ error: true });
-      }
       if (error.statusCode && error.statusCode === U2F_TIMEOUT) {
         this.verifyAddress();
+      } else if (
+        error.statusCode &&
+        error.statusCode === DEVICE_REJECT_ERROR_CODE
+      ) {
+        this.setState({ deviceRejected: true });
+      } else {
+        this.setState({ error: error, loading: false });
       }
     }
   };
@@ -95,7 +102,7 @@ class ReceiveAddress extends Component<Props, State> {
 
   render() {
     const { account, classes, checkAgain } = this.props;
-    const { error, verified, loading, copied } = this.state;
+    const { error, verified, loading, copied, deviceRejected } = this.state;
     return (
       <div className={classes.container}>
         {loading && <SpinnerCard />}
@@ -119,7 +126,9 @@ class ReceiveAddress extends Component<Props, State> {
                   </div>
                   <div className={classes.hash}>
                     {copied ? (
-                      <span><Trans i18nKey="receive:address_copied" /></span>
+                      <span>
+                        <Trans i18nKey="receive:address_copied" />
+                      </span>
                     ) : (
                       <span>{account.fresh_addresses[0].address}</span>
                     )}
@@ -169,7 +178,13 @@ class ReceiveAddress extends Component<Props, State> {
               }
             />
           )}
-        {error && <AddressError checkAgain={checkAgain} />}
+        {deviceRejected && <AddressRejected checkAgain={checkAgain} />}
+        {error && (
+          <GenericErrorScreen
+            errorMessage={error.json ? error.json.message : null}
+            standardFooter
+          />
+        )}
       </div>
     );
   }
