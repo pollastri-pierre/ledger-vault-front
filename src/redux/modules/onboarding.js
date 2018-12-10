@@ -48,7 +48,6 @@ export type OnboardingState =
   | "MASTER_SEED_GENERATION"
   | "COMPLETE";
 
-type GetState = () => Object;
 type KeyHandle = { [_: string]: string };
 
 type Challenge = {
@@ -127,6 +126,7 @@ export type UIOnboarding = {
 };
 
 type Store = Onboarding & UIOnboarding;
+type GetState = () => $Shape<{ onboarding: Store }>;
 
 const initialState = {
   step: 0,
