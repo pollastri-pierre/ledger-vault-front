@@ -1,15 +1,13 @@
 //@flow
 import React, { Component, PureComponent } from "react";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
-import ModalLoading from "components/ModalLoading";
-import connectData from "restlay/connectData";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import type { Currency } from "data/types";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
+import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+const allCurrencies = listCryptoCurrencies(true);
 // import {
 //   listCryptoCurrencies,
 // } from "utils/cryptoCurrencies";
@@ -125,57 +123,43 @@ class AccountCreationCurrencies extends Component<{
 }> {
   render() {
     const { props } = this;
-    const { currency, onSelect, currencies, classes } = props;
+    const { currency, onSelect, classes } = props;
     // TODO migrate to use material-ui MenuList
 
     return (
       <div className={classes.base}>
-        {currencies.map(cur => {
-          // use a try/catch here because if the gates add a coin that ll-common doesnt know
-          // it breaks all the UI
-          try {
-            const cryptoCurrency = getCryptoCurrencyById(cur.name);
-            const Icon = getCryptoCurrencyIcon(cryptoCurrency);
-            return (
-              <div
-                onClick={() => {
-                  onSelect(cryptoCurrency);
-                }}
-                role="button"
-                tabIndex="0"
-                key={cur.name}
-                className={classnames(classes.row, {
-                  [classes.selected]:
-                    currency && currency.name === cryptoCurrency.name
-                })}
-              >
-                <div className="wrapper">
-                  {Icon ? (
-                    <CurrencyIcon
-                      Icon={Icon}
-                      classe={classes.icon}
-                      color={cryptoCurrency.color}
-                    />
-                  ) : (
-                    "-"
-                  )}
-                  <span className={classes.name}>{cur.name}</span>
-                  <span className={classes.short}>{cur.ticker}</span>
-                </div>
+        {allCurrencies.map(cur => {
+          const Icon = getCryptoCurrencyIcon(cur);
+          return (
+            <div
+              onClick={() => {
+                onSelect(cur);
+              }}
+              role="button"
+              tabIndex="0"
+              key={cur.name}
+              className={classnames(classes.row, {
+                [classes.selected]: currency && currency.name === cur.name
+              })}
+            >
+              <div className="wrapper">
+                {Icon ? (
+                  <CurrencyIcon
+                    Icon={Icon}
+                    classe={classes.icon}
+                    color={cur.color}
+                  />
+                ) : (
+                  "-"
+                )}
+                <span className={classes.name}>{cur.name}</span>
+                <span className={classes.short}>{cur.ticker}</span>
               </div>
-            );
-          } catch (e) {
-            return false;
-          }
+            </div>
+          );
         })}
       </div>
     );
   }
 }
-
-export default connectData(withStyles(styles)(AccountCreationCurrencies), {
-  RenderLoading: ModalLoading,
-  queries: {
-    currencies: CurrenciesQuery
-  }
-});
+export default withStyles(styles)(AccountCreationCurrencies);

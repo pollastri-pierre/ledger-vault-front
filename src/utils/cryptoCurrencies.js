@@ -15,7 +15,8 @@ const supported: CryptoCurrencyIds[] = [
   "pivx",
   "vertcoin",
   "viacoin",
-  "bitcoin_testnet"
+  "bitcoin_testnet",
+  "ethereum"
 ];
 
 export const listCryptoCurrencies = memoize((withDevCrypto?: boolean) =>
