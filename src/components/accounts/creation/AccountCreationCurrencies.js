@@ -131,36 +131,42 @@ class AccountCreationCurrencies extends Component<{
     return (
       <div className={classes.base}>
         {currencies.map(cur => {
-          const cryptoCurrency = getCryptoCurrencyById(cur.name);
-          const Icon = getCryptoCurrencyIcon(cryptoCurrency);
-          return (
-            <div
-              onClick={() => {
-                onSelect(cryptoCurrency);
-              }}
-              role="button"
-              tabIndex="0"
-              key={cur.name}
-              className={classnames(classes.row, {
-                [classes.selected]:
-                  currency && currency.name === cryptoCurrency.name
-              })}
-            >
-              <div className="wrapper">
-                {Icon ? (
-                  <CurrencyIcon
-                    Icon={Icon}
-                    classe={classes.icon}
-                    color={cryptoCurrency.color}
-                  />
-                ) : (
-                  "-"
-                )}
-                <span className={classes.name}>{cur.name}</span>
-                <span className={classes.short}>{cur.ticker}</span>
+          // use a try/catch here because if the gates add a coin that ll-common doesnt know
+          // it breaks all the UI
+          try {
+            const cryptoCurrency = getCryptoCurrencyById(cur.name);
+            const Icon = getCryptoCurrencyIcon(cryptoCurrency);
+            return (
+              <div
+                onClick={() => {
+                  onSelect(cryptoCurrency);
+                }}
+                role="button"
+                tabIndex="0"
+                key={cur.name}
+                className={classnames(classes.row, {
+                  [classes.selected]:
+                    currency && currency.name === cryptoCurrency.name
+                })}
+              >
+                <div className="wrapper">
+                  {Icon ? (
+                    <CurrencyIcon
+                      Icon={Icon}
+                      classe={classes.icon}
+                      color={cryptoCurrency.color}
+                    />
+                  ) : (
+                    "-"
+                  )}
+                  <span className={classes.name}>{cur.name}</span>
+                  <span className={classes.short}>{cur.ticker}</span>
+                </div>
               </div>
-            </div>
-          );
+            );
+          } catch (e) {
+            return false;
+          }
         })}
       </div>
     );
