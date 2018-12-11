@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { listCryptoCurrencies, getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { DialogButton } from "components";
 import ListItemText from "@material-ui/core/ListItemText";
 
@@ -18,7 +18,6 @@ import DatePicker from "material-ui-pickers/DatePicker";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 import type { Account } from "data/types";
 
-const allCurrencies = listCryptoCurrencies(true);
 const styles = {
   card: {
     position: "relative",
@@ -161,7 +160,11 @@ class SearchFiltersCard extends Component<{
                   key={account.id}
                   value={account.id}
                   disableRipple
-                  style={{ color: getCryptoCurrencyById(account.currency.name).color || 'black'}}
+                  style={{
+                    color:
+                      getCryptoCurrencyById(account.currency.name).color ||
+                      "black"
+                  }}
                 >
                   <Checkbox
                     color="primary"

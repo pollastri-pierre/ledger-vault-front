@@ -35,9 +35,6 @@ import {
 } from "../icons";
 
 import type { Account, AccountSettings } from "data/types";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-const allCurrencies = listCryptoCurrencies(true);
-// import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const styles = {
   container: {
@@ -306,10 +303,11 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.updateName(name);
   };
   onUnitIndexChange = (unitIndex: number) => {
+    const curr = getCryptoCurrencyById(this.props.account.currency.name);
     this.update({
       settings: {
         ...this.state.settings,
-        currency_unit: this.props.account.currency.units[unitIndex]
+        currency_unit: curr.units[unitIndex]
       }
     });
   };
@@ -334,8 +332,12 @@ class AccountSettingsEdit extends Component<Props, State> {
   render() {
     const { account, classes, t /* fiats  */ } = this.props;
     const { name, settings } = this.state;
-    const unit_index = account.currency.units.findIndex(
-      unit => unit.code === settings.currency_unit.code
+
+    const curr = getCryptoCurrencyById(account.currency.name);
+    const units = curr.units;
+    const unit_index = units.findIndex(
+      unit =>
+        unit.code.toLowerCase() === settings.currency_unit.code.toLowerCase()
     );
 
     // const fiat = settings.fiat.id || settings.fiat;
@@ -353,7 +355,7 @@ class AccountSettingsEdit extends Component<Props, State> {
 
           <SettingsField topPadded label="Units" classes={classes}>
             <SelectTab
-              tabs={account.currency.units.map(elem => elem.name)}
+              tabs={units.map(elem => elem.name)}
               onChange={this.onUnitIndexChange}
               selected={unit_index}
               theme="inline"
