@@ -68,7 +68,7 @@ context("Account creation", () => {
         // click on done to create the account, it will display the authenticate with device modal
         cy.contains("done").click();
         cy.wait("@authenticate");
-        cy.wait(1000);
+        cy.wait(2500);
 
         //We should get a Account request created message
         cy
@@ -77,8 +77,36 @@ context("Account creation", () => {
           .get(".top-message-title")
           .contains("account request created");
 
+        // Create a account with the same name:
+        cy.get(".test-new-account").click();
+        cy.contains("Bitcoin Testnet").click();
+        cy.get("input").type("BTC Testnet");
+        cy.contains("continue").click();
+        cy.contains("Members").click();
+        cy
+          .get(".test-member-row")
+          .eq(0)
+          .click({ force: true });
+        cy
+          .get(".test-member-row")
+          .eq(1)
+          .click({ force: true });
+        cy.contains("Done").click();
+        cy.contains("Approvals").click();
+        cy.get("input").type(2);
+        cy.contains("done").click();
+        cy.contains("continue").click();
+        cy.contains("done").click();
+        cy.wait("@authenticate");
+        cy
+          .get(".top-message-body")
+          .contains("Account name already exists in this currency")
+          .get(".top-message-title")
+          .contains("Error 236");
+
+
         // After logout we should get a message
-        cy.contains("view profile").click();
+        cy.contains("view profile").click({ force: true });
         cy.contains("logout").click();
         cy.wait("@logout");
         cy
