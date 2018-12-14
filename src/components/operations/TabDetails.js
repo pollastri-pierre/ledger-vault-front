@@ -1,10 +1,13 @@
 //@flow
-import React, { Component, PureComponent } from "react";
+import React, { Component, PureComponent, Fragment } from "react";
+import cx from "classnames";
 import type { Operation, Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import type { TransactionETH } from "data/types";
 
 const stylesList = {
   detailsContainer: {
@@ -28,8 +31,36 @@ const stylesList = {
     flexBasis: "80%",
     overflow: "hidden",
     textOverflow: "ellipsis"
+  },
+  small: {
+    fontSize: 12
   }
 };
+const OperationETHDetails = withStyles(
+  stylesList
+)(
+  ({
+    transaction,
+    classes
+  }: {
+    transaction: TransactionETH,
+    classes: { [$Keys<typeof stylesList>]: string }
+  }) => {
+    return (
+      <div className={classes.detailsContainer}>
+        <LineRow label="FROM" />
+        <div className={cx(classes.detailsRow, classes.small)}>
+          {transaction.sender}
+        </div>
+        <LineRow label="To" />
+        <div className={cx(classes.detailsRow, classes.small)}>
+          {transaction.receiver}
+        </div>
+      </div>
+    );
+  }
+);
+
 class OperationListT<T: *> extends Component<{
   account: Account,
   title: string,
@@ -94,20 +125,28 @@ class TabDetails extends PureComponent<{
   render() {
     const { operation, account, classes } = this.props;
     const { transaction } = operation;
+    const cryptoCurrency = getCryptoCurrencyById(account.currency.name);
     return (
       <div>
         <span className={classes.title}>Identifier</span>
         <p className={classes.hash}>{transaction.hash}</p>
-        <OperationList
-          title="From"
-          account={account}
-          entries={transaction.inputs}
-        />
-        <OperationList
-          title="To"
-          account={account}
-          entries={transaction.outputs}
-        />
+        {cryptoCurrency.family === "bitcoin" && (
+          <Fragment>
+            <OperationList
+              title="From"
+              account={account}
+              entries={transaction.inputs}
+            />
+            <OperationList
+              title="To"
+              account={account}
+              entries={transaction.outputs}
+            />
+          </Fragment>
+        )}
+        {cryptoCurrency.family === "ethereum" && (
+          <OperationETHDetails transaction={transaction} />
+        )}
       </div>
     );
   }
