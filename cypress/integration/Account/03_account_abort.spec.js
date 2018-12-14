@@ -62,6 +62,15 @@ context("Account Abort", () => {
           cy.contains("continue").click();
           cy.contains("done").click();
           cy.wait("@authenticate");
+          cy.wait(2500);
+
+          //We should get a Account request created message
+          cy
+            .get(".top-message-body")
+            .contains("the account request has been successfully created")
+            .get(".top-message-title")
+            .contains("account request created");
+
           // Abort the account
           cy.contains("Pending").click();
           cy
@@ -82,6 +91,7 @@ context("Account Abort", () => {
             .get(".top-message-title")
             .contains("account request aborted");
           cy.wait("@abort");
+
           // After logout we should get a message
           cy.contains("view profile").click();
           cy.contains("logout").click();
@@ -125,9 +135,17 @@ context("Account Abort", () => {
               // click on done to create the account, it will display the authenticate with device modal
               cy.contains("done").click();
               cy.wait("@authenticate");
-              cy.wait(100);
+              cy.wait(2500);
+
+              //We should get a Account request created message
+              cy
+                .get(".top-message-body")
+                .contains("the account request has been successfully created")
+                .get(".top-message-title")
+                .contains("account request created");
 
               cy.contains("Pending").click();
+              cy.wait(2500);
               cy
                 .get('.test-pending-account')
                 .eq(0)
@@ -196,6 +214,8 @@ context("Account Abort", () => {
                 // click on done to create the account, it will display the authenticate with device modal
                 cy.contains("done").click();
                 cy.wait("@authenticate");
+                cy.wait(2500);
+
                 cy.contains("Pending").click();
                 cy
                   .get('.test-pending-account')
