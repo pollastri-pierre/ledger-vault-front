@@ -5,9 +5,9 @@ import colors from "shared/colors";
 
 const styles = {
   base: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     height: "42px",
     lineHeight: "41px",
     borderTop: `1px solid ${colors.cream}`
@@ -19,10 +19,10 @@ const styles = {
   },
   value: {
     fontSize: 13,
-    flexBasis: '50%',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    textAlign: 'end'
+    flexBasis: "50%",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    textAlign: "end"
   }
 };
 class LineRow extends Component<{

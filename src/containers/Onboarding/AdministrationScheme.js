@@ -86,6 +86,7 @@ const AdministrationScheme = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatch)(
-  withStyles(styles)(translate()(AdministrationScheme))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatch
+)(withStyles(styles)(translate()(AdministrationScheme)));

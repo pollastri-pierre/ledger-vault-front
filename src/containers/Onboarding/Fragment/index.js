@@ -23,9 +23,7 @@ const status = {
     fontSize: 11
   }
 };
-export const SeedStatus = withStyles(
-  status
-)(
+export const SeedStatus = withStyles(status)(
   ({
     classes,
     label,

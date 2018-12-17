@@ -73,7 +73,10 @@ class ActivityCard extends Component<
   componentDidMount() {
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(url, { path: path });
+    const socket = io.connect(
+      url,
+      { path: path }
+    );
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {

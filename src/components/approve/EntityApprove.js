@@ -206,4 +206,7 @@ const mapDispatch = (dispatch: *) => ({
 });
 
 export { EntityApprove };
-export default connect(null, mapDispatch)(connectData(EntityApprove));
+export default connect(
+  null,
+  mapDispatch
+)(connectData(EntityApprove));

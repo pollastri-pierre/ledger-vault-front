@@ -150,8 +150,7 @@ class LineChart extends Component<Props, *> {
 
     const tooltipElement = d3.select(this.tooltip);
     tooltipElement.classed(classes.hide, selected === -1);
-    d3
-      .select(this.svg)
+    d3.select(this.svg)
       .selectAll(".dot")
       .attr("opacity", (d, i) => (selected === i ? 1 : 0))
       .classed("selected", (d, i) => selected !== -1 && selected === i);
@@ -220,7 +219,9 @@ class LineChart extends Component<Props, *> {
         ? "year"
         : timeDelta >= monthInMs * 2
           ? "month"
-          : timeDelta >= dayInMs ? "day" : "hour";
+          : timeDelta >= dayInMs
+            ? "day"
+            : "hour";
     return tickLabel.toUpperCase();
   };
 
@@ -238,8 +239,7 @@ class LineChart extends Component<Props, *> {
     s.call(xAxis);
     s.select(".domain").remove();
     s.selectAll(".tick line").attr("display", "none");
-    s
-      .selectAll(".tick text")
+    s.selectAll(".tick text")
       .attr("fill", "#767676")
       .attr("style", "font-weight: 600; font-family: 'Open Sans'")
       .attr("x", 0);
@@ -248,20 +248,17 @@ class LineChart extends Component<Props, *> {
   customYAxis = (s: *, yAxis: *) => {
     s.call(yAxis);
     s.select(".domain").remove();
-    s
-      .selectAll(".tick:not(:first-of-type) line")
+    s.selectAll(".tick:not(:first-of-type) line")
       .attr("stroke", "#e8e8e8")
       .attr("stroke-dasharray", "1,2");
 
-    s
-      .selectAll(".tick text")
+    s.selectAll(".tick text")
       .attr("x", 0)
       .attr("dy", -8)
       .attr("fill", "#767676")
       .attr("style", "font-weight: 600; font-family: 'Open Sans'");
 
-    s
-      .selectAll(".tick:first-of-type line")
+    s.selectAll(".tick:first-of-type line")
       .attr("stroke", "#999999")
       .attr("stroke-dasharray", "1,2");
   };
@@ -351,20 +348,17 @@ class LineChart extends Component<Props, *> {
       .attr("width", width);
 
     //init xAxis placeholder
-    g
-      .append("g")
+    g.append("g")
       .classed("xAxis", true)
       .attr("transform", `translate(0, ${height})`);
 
     //init yAxis placeholder
-    g
-      .append("g")
+    g.append("g")
       .classed("yAxis", true)
       .attr("transform", `translate(${-margin.left}, 0)`);
 
     //init xAxisLabel placeholder
-    g
-      .append("text")
+    g.append("text")
       .classed(classes.xAxisLabel, true)
       .attr("dy", 166)
       .attr("dx", -margin.left)
@@ -376,8 +370,7 @@ class LineChart extends Component<Props, *> {
     g.append("path").classed("valueline", true);
 
     //init clipPath for zooming purposes
-    g
-      .append("clipPath")
+    g.append("clipPath")
       .attr("id", "clip")
       .append("rect")
       .attr("transform", `translate(-5, ${-(margin.top + margin.bottom) / 2})`)
@@ -385,8 +378,7 @@ class LineChart extends Component<Props, *> {
       .attr("height", height + margin.top + margin.bottom)
       .classed("cliprect", true);
 
-    g
-      .append("rect")
+    g.append("rect")
       .attr("transform", `translate(-5, ${-(margin.top + margin.bottom) / 2})`)
       .attr("width", width + 10)
       .attr("height", height + margin.top + margin.bottom)
@@ -396,14 +388,12 @@ class LineChart extends Component<Props, *> {
       .classed("hoverMap", true);
 
     //init placeholder for visible dots
-    g
-      .append("g")
+    g.append("g")
       .classed("visibleDots", true)
       .attr("clip-path", "url(#clip)");
 
     //init placeholder for NO DATA AVAILABLE text
-    g
-      .append("text")
+    g.append("text")
       .text("No data available")
       .attr("dx", -52)
       .attr("dy", -9)
@@ -432,16 +422,16 @@ class LineChart extends Component<Props, *> {
     g.select("xAxis").attr("transform", `translate(0, ${height})`);
 
     //init clipPath for zooming purposes
-    g
-      .select(".cliprect")
+    g.select(".cliprect")
       .attr("transform", `translate(0, ${-(margin.top + margin.bottom) / 2})`)
       .attr("width", width + margin.left + margin.right + 20)
       .attr("height", height + margin.top + margin.bottom);
 
     //update placeholder for NO DATA AVAILABLE text
-    g
-      .select(".noData")
-      .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")");
+    g.select(".noData").attr(
+      "transform",
+      "translate(" + width / 2 + ", " + height / 2 + ")"
+    );
   };
 
   zoomTo = (d0: number, d1: number, data: Array<[number, number]>) => {
@@ -482,8 +472,12 @@ class LineChart extends Component<Props, *> {
               : d3.timeDay(date) < date
                 ? formatHour
                 : d3.timeMonth(date) < date
-                  ? d3.timeWeek(date) < date ? formatDay : formatWeek
-                  : d3.timeYear(date) < date ? formatMonth : formatYear)(date);
+                  ? d3.timeWeek(date) < date
+                    ? formatDay
+                    : formatWeek
+                  : d3.timeYear(date) < date
+                    ? formatMonth
+                    : formatYear)(date);
       });
 
     return xAxis;
@@ -551,8 +545,7 @@ class LineChart extends Component<Props, *> {
   updateColor = () => {
     const { color } = this.props;
     d3.select(".valueline").attr("stroke", color);
-    d3
-      .select(".visibleDots")
+    d3.select(".visibleDots")
       .selectAll(".dot")
       .attr("fill", color);
   };

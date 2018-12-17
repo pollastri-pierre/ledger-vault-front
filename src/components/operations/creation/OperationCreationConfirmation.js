@@ -42,9 +42,7 @@ function OperationCreationConfirmation(props: {
       />
       <div>
         <LineRow label="Identifier">
-          {details.address && (
-            <span>{details.address}</span>
-          )}
+          {details.address && <span>{details.address}</span>}
         </LineRow>
         <LineRow label="account to debit">
           <AccountName name={account.name} currency={account.currency} />

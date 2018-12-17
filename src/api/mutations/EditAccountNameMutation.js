@@ -26,7 +26,10 @@ export default class EditAccountNameMutation extends Mutation<In, Res> {
   }
 
   getBody() {
-    const { account: { id }, name } = this.props;
+    const {
+      account: { id },
+      name
+    } = this.props;
     return { id, name };
   }
 }
