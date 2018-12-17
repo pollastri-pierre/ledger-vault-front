@@ -550,9 +550,10 @@ const syncNextState = (state: Store, action, next = false) => {
     newState = {
       ...state,
       state: "SHARED_OWNER_VALIDATION",
+      quorum: actionState.quorum,
       registering: {
         ...state.registering,
-        admins: actionState.admins
+        admins: actionState.admins || []
       },
       validating_shared_owner: {
         ...state.validating_shared_owner,

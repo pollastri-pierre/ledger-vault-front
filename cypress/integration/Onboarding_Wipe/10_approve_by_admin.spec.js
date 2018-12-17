@@ -7,7 +7,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       polyfill = response.body;
     });
   });
-  it("should sign in with all the admin to approve the Shared Owners", () => {
+  it("should sign in with the quorum to approve the Shared Owners", () => {
     cy.server();
     cy
       .route(
@@ -47,11 +47,6 @@ context("Admin Approve the registration of the Shared Owners", () => {
 
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 5
-        });
-        cy.get(".test-onboarding-signin").click();
-        cy.wait("@authenticate");
-        cy.request("POST", Cypress.env("api_switch_device"), {
-          device_number: 6
         });
         cy.get(".test-onboarding-signin").click();
         cy.wait("@authenticate");

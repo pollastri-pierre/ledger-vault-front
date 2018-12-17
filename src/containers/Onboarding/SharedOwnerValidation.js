@@ -139,7 +139,7 @@ class SharedOwnerValidation extends Component<Props, State> {
             <CircleProgress
               label={t("onboarding:master_seed_signin.members_present")}
               nb={onboarding.validating_shared_owner.admins.length}
-              total={onboarding.registering.admins.length}
+              total={onboarding.quorum}
             />
           </div>
           <div className={classes.flexWrapper}>
@@ -150,17 +150,17 @@ class SharedOwnerValidation extends Component<Props, State> {
                 className={cx(classes.sign, {
                   [classes.disabled]:
                     onboarding.validating_shared_owner.admins.length ===
-                    onboarding.registering.admins.length
+                    onboarding.quorum
                 })}
                 onClick={
                   onboarding.validating_shared_owner.admins.length ===
-                  onboarding.registering.admins.length
+                  onboarding.quorum
                     ? () => false
                     : onToggleSignin
                 }
               >
                 <Plus className={classes.icon} />
-                {onboarding.signin.admins.length === 0 ? (
+                {onboarding.validating_shared_owner.admins.length === 0 ? (
                   <span className="test-onboarding-signin">
                     {t("onboarding:master_seed_signin.signin")}
                   </span>
@@ -173,7 +173,7 @@ class SharedOwnerValidation extends Component<Props, State> {
               <span className={classes.counter}>
                 {onboarding.validating_shared_owner.admins.length}{" "}
                 {t("onboarding:master_seed_signin.signed_in")},{" "}
-                {onboarding.registering.admins.length -
+                {onboarding.quorum -
                   onboarding.validating_shared_owner.admins.length}{" "}
                 {t("onboarding:master_seed_signin:remaining")}
               </span>
@@ -193,7 +193,7 @@ class SharedOwnerValidation extends Component<Props, State> {
                   onTouchTap={onNext}
                   disabled={
                     onboarding.validating_shared_owner.admins.length <
-                    onboarding.registering.admins.length
+                    onboarding.quorum
                   }
                 >
                   {t("common:continue")}
