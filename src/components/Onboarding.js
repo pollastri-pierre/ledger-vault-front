@@ -85,9 +85,7 @@ const noMembers = {
   }
 };
 
-export const NoMembers = withStyles(
-  noMembers
-)(
+export const NoMembers = withStyles(noMembers)(
   ({
     classes,
     label,
@@ -184,17 +182,15 @@ const profile = {
     width: 28
   }
 };
-export const ProfileIcon = withStyles(
-  profile
-)(({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
-  <div style={{ marginBottom: 10 }}>
-    <Profile color="#cccccc" className={classes.base} />
-  </div>
-));
+export const ProfileIcon = withStyles(profile)(
+  ({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
+    <div style={{ marginBottom: 10 }}>
+      <Profile color="#cccccc" className={classes.base} />
+    </div>
+  )
+);
 
-export const Step = withStyles(
-  step
-)(
+export const Step = withStyles(step)(
   ({
     classes,
     className,
@@ -216,9 +212,7 @@ export const Step = withStyles(
   }
 );
 
-export const ListItem = withStyles(
-  listItem
-)(
+export const ListItem = withStyles(listItem)(
   ({
     children,
     number,
@@ -245,9 +239,7 @@ const list = {
   }
 };
 
-export const List = withStyles(
-  list
-)(
+export const List = withStyles(list)(
   ({
     children,
     classes
@@ -269,9 +261,7 @@ const title = {
   }
 };
 
-export const Title = withStyles(
-  title
-)(
+export const Title = withStyles(title)(
   ({
     classes,
     children
@@ -293,9 +283,7 @@ const introduction = {
     }
   }
 };
-export const Introduction = withStyles(
-  introduction
-)(
+export const Introduction = withStyles(introduction)(
   ({
     classes,
     children
@@ -317,9 +305,7 @@ const subtitle = {
   }
 };
 
-export const SubTitle = withStyles(
-  subtitle
-)(
+export const SubTitle = withStyles(subtitle)(
   ({
     classes,
     children,
@@ -339,9 +325,7 @@ const toContinue = {
     lineHeight: 1.82
   }
 };
-export const ToContinue = withStyles(
-  toContinue
-)(
+export const ToContinue = withStyles(toContinue)(
   ({
     classes,
     children

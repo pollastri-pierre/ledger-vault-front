@@ -153,7 +153,8 @@ class SearchFiltersCard extends Component<{
                     accountId =>
                       (accounts.find(a => a.id === accountId) || {}).name || ""
                   )
-                  .join(",")}
+                  .join(",")
+              }
             >
               {accounts.map(account => (
                 <MenuItem

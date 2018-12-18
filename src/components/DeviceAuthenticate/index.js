@@ -91,7 +91,6 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         this.setState({ step: 2 });
 
-
         let urlPost =
           type === "accounts" && account_id
             ? `/${type}/${account_id}/authentications/authenticate`
@@ -146,7 +145,10 @@ class DeviceAuthenticate extends Component<Props, State> {
 }
 
 export { DeviceAuthenticate };
-export default connect(undefined, mapDispatchToProps)(
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(
   connectData(translate()(DeviceAuthenticate), {
     queries: {
       organization: OrganizationQuery

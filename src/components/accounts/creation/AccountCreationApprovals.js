@@ -92,6 +92,7 @@ function AccountCreationApprovals(props: {
   );
 }
 
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(translate()(AccountCreationApprovals))
-);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(withStyles(styles)(translate()(AccountCreationApprovals)));

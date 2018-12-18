@@ -8,7 +8,7 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import { withStyles } from "@material-ui/core/styles";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
-import { listCryptoCurrencies } from 'utils/cryptoCurrencies';
+import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import type { Account } from "data/types";
 
 type Filters = {
@@ -119,6 +119,6 @@ class Search extends Component<
 
 export default connectData(withStyles(styles)(Search), {
   queries: {
-    accounts: AccountsQuery,
+    accounts: AccountsQuery
   }
 });

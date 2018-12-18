@@ -148,6 +148,6 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 export default connectData(withStyles(styles)(Menu), {
   RenderLoading,
   queries: {
-    allPendingOperations: PendingOperationsQuery,
+    allPendingOperations: PendingOperationsQuery
   }
 });

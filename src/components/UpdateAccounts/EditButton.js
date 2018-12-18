@@ -24,4 +24,7 @@ class EditButton extends Component<Props> {
 const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
   onOpen: () => dispatch(toggleAndSelect(ownProps.account))
 });
-export default connect(null, mapDispatchToProps)(EditButton);
+export default connect(
+  null,
+  mapDispatchToProps
+)(EditButton);

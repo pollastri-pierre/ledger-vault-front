@@ -63,16 +63,14 @@ class CircleProgress extends Component<Props> {
       .append("g")
       .attr("transform", "translate(" + boxSize / 2 + "," + boxSize / 2 + ")");
 
-    g
-      .append("path")
+    g.append("path")
       .attr("fill", "#e2e2e2")
       .attr("stroke", "none")
       .attr("stroke-width", "3px")
       .attr("d", circle.endAngle(endAngle));
 
     const percentage = 2 * (nb / total);
-    g
-      .append("path")
+    g.append("path")
       .attr("fill", "#27d0e2")
       .attr("stroke", "none")
       .attr("stroke-width", 3 + "px")

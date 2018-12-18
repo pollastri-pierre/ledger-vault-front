@@ -54,7 +54,7 @@ test("toggleMemberModal should send ONBOARDING_TOGGLE_MEMBER_MODAL", () => {
 });
 
 test("getChallenge should call network", () => {
-  const step = {"current_step" : "ADMINISTRATORS_REGISTRATION"};
+  const step = { current_step: "ADMINISTRATORS_REGISTRATION" };
   getChallenge(step);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", step);
 });
@@ -74,7 +74,7 @@ test("nextState should call network and dispatch NEXT_STEP", async () => {
   const dispatch = jest.fn();
   const thunk = nextState(data);
   const getstate = () => ({
-    onboarding: { state: 'ADMINISTRATORS_PREREQUISITE' }
+    onboarding: { state: "ADMINISTRATORS_PREREQUISITE" }
   });
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/next", "POST", data);
@@ -86,9 +86,9 @@ test("openWrappingChannel should call network challenge and dispatch ONBOARDING_
   const thunk = openWrappingChannel();
   network.mockImplementation(() => "wrapping");
   const getstate = () => ({
-    onboarding: { state: 'ADMINISTRATORS_PREREQUISITE' }
+    onboarding: { state: "ADMINISTRATORS_PREREQUISITE" }
   });
-  const data = {current_step: getstate()['onboarding']['state']};
+  const data = { current_step: getstate()["onboarding"]["state"] };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -102,14 +102,16 @@ test("addWrappingKey should call network authenticate and dispatch ONBOARDING_AD
   const dispatch = jest.fn();
   const thunk = addWrappingKey(data);
   network.mockImplementation(() => "key");
-  const getstate = () => ({ onboarding: { state: "ADMINISTRATORS_REGISTRATION" }});
-  data['current_step'] = getstate()['onboarding']['state'];
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
+  });
+  data["current_step"] = getstate()["onboarding"]["state"];
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith(
-   "/onboarding/authenticate",
-   "POST",
-   data
- );
+    "/onboarding/authenticate",
+    "POST",
+    data
+  );
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_ADD_WRAP_KEY,
     add_wrap: "key"
@@ -120,8 +122,10 @@ test("getRegistrationChallenge should call network challenge and dispatch ONBOAR
   const dispatch = jest.fn();
   const thunk = getRegistrationChallenge();
   network.mockImplementation(() => ({ challenge: "challenge" }));
-  const getstate = () => ({ onboarding: { state: "ADMINISTRATORS_REGISTRATION" }});
-  let data = {current_step: getstate()['onboarding']['state']};
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
+  });
+  let data = { current_step: getstate()["onboarding"]["state"] };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -174,9 +178,11 @@ test("getSigninChallenge should call network challenge and dispatch ONBOARDING_S
   const dispatch = jest.fn();
   const thunk = getSigninChallenge();
   network.mockImplementation(() => "challenge");
-  const getstate = () => ({ onboarding: { state: "ADMINISTRATORS_REGISTRATION" }});
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
+  });
   await thunk(dispatch, getstate);
-  let data = { current_step: getstate()['onboarding']['state'] };
+  let data = { current_step: getstate()["onboarding"]["state"] };
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_SIGNIN_CHALLENGE,
@@ -206,14 +212,16 @@ test("addSignedin should NOT call network authenticate and dispatch ONBOARDING_A
 
 test("addSignedIn should call network authenticate and dispatch ONBOARDING_ADD_SIGNEDIN", async () => {
   const dispatch = jest.fn();
-  const getstate = () => ({ onboarding: { state: 'ADMINISTRATORS_REGISTRATION', signin: { admins: [] } } });
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION", signin: { admins: [] } }
+  });
   const thunk = addSignedIn("pub_key", { rawResponse: "signature" });
 
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/authenticate", "POST", {
     pub_key: "PUB_KEY",
     authentication: "signature",
-    current_step: 'ADMINISTRATORS_REGISTRATION'
+    current_step: "ADMINISTRATORS_REGISTRATION"
   });
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_ADD_SIGNEDIN,
@@ -228,8 +236,10 @@ test("openProvisionningChannel should call network challenge and dispatch ONBOAR
   const dispatch = jest.fn();
   const thunk = openProvisionningChannel();
   network.mockImplementation(() => "challenge");
-  const getstate = () => ({ onboarding: { state: 'ADMINISTRATORS_REGISTRATION'} });
-  const data = {current_step : getstate()['onboarding']['state']};
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
+  });
+  const data = { current_step: getstate()["onboarding"]["state"] };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -244,8 +254,10 @@ test("addMasterSeedKey should call authenticate and ONBOARDING_ADD_MASTERSEED_KE
   const thunk = addMasterSeedKey(data);
   network.mockImplementation(() => "seed");
 
-  const getstate = () => ({ onboarding: { state: "ADMINISTRATORS_REGISTRATION" }});
-  data['current_step'] = getstate()['onboarding']['state'];
+  const getstate = () => ({
+    onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
+  });
+  data["current_step"] = getstate()["onboarding"]["state"];
   await thunk(dispatch, getstate);
 
   expect(network).toHaveBeenCalledWith(

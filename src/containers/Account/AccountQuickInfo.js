@@ -32,9 +32,7 @@ const row = {
     color: "#585858"
   }
 };
-const Row = withStyles(
-  row
-)(
+const Row = withStyles(row)(
   ({
     label,
     value,
@@ -132,8 +130,9 @@ class AccountQuickInfo extends Component<Props> {
             />
             <Row
               label={t("accountView:summary.quorum")}
-              value={`${account.security_scheme.quorum} out of ${account.members
-                .length}`}
+              value={`${account.security_scheme.quorum} out of ${
+                account.members.length
+              }`}
             />
           </div>
           <div>

@@ -550,9 +550,10 @@ const syncNextState = (state: Store, action, next = false) => {
     newState = {
       ...state,
       state: "SHARED_OWNER_VALIDATION",
+      quorum: actionState.quorum,
       registering: {
         ...state.registering,
-        admins: actionState.admins
+        admins: actionState.admins || []
       },
       validating_shared_owner: {
         ...state.validating_shared_owner,
@@ -706,13 +707,15 @@ export default function reducer(state: Store = initialState, action: Object) {
       };
     case ONBOARDING_EDIT_MEMBER: {
       const mapFilter = (admins: Admin[], action: *): Admin[] => {
-        return admins.map((admin: Admin): Admin => {
-          if (admin.pub_key === action.admin.pub_key) {
-            return action.admin;
-          } else {
-            return admin;
+        return admins.map(
+          (admin: Admin): Admin => {
+            if (admin.pub_key === action.admin.pub_key) {
+              return action.admin;
+            } else {
+              return admin;
+            }
           }
-        });
+        );
       };
       return {
         ...state,

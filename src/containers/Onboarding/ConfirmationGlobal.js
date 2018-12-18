@@ -121,6 +121,7 @@ const mapProps = state => ({
   onboarding: state.onboarding
 });
 
-export default connect(mapProps, () => ({}))(
-  withStyles(styles)(translate()(ConfirmationGlobal))
-);
+export default connect(
+  mapProps,
+  () => ({})
+)(withStyles(styles)(translate()(ConfirmationGlobal)));

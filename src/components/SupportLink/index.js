@@ -7,7 +7,7 @@ import { urls } from "utils/urls";
 const styles = {
   link: {
     textDecoration: "none",
-    color: 'inherit'
+    color: "inherit"
   }
 };
 type Props = {

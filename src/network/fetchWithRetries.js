@@ -27,9 +27,9 @@ function fetchWithRetries(
   let requestStartTime = 0;
   return new Promise((resolve, reject) => {
     /**
-         * Sends a request to the server that will timeout after `fetchTimeout`.
-         * If the request fails or times out a new request might be scheduled.
-         */
+     * Sends a request to the server that will timeout after `fetchTimeout`.
+     * If the request fails or times out a new request might be scheduled.
+     */
     function sendTimedRequest(): void {
       requestsAttempted++;
       requestStartTime = Date.now();
@@ -81,9 +81,9 @@ function fetchWithRetries(
     }
 
     /**
-         * Schedules another run of sendTimedRequest based on how much time has
-         * passed between the time the last request was sent and now.
-         */
+     * Schedules another run of sendTimedRequest based on how much time has
+     * passed between the time the last request was sent and now.
+     */
     function retryRequest(): void {
       const retryDelay = _retryDelays[requestsAttempted - 1];
       const retryStartTime = requestStartTime + retryDelay;
@@ -92,8 +92,8 @@ function fetchWithRetries(
     }
 
     /**
-         * Checks if another attempt should be done to send a request to the server.
-         */
+     * Checks if another attempt should be done to send a request to the server.
+     */
     function shouldRetry(/* attempt: number */): boolean {
       return false;
     }
