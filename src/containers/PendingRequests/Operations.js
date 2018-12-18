@@ -5,7 +5,6 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 // import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
 import Card from "components/Card";
@@ -96,7 +95,6 @@ export default connectData(ApproveWatchOperations, {
     approvers: MembersQuery,
     operationsPending: PendingOperationsQuery,
     // operationsQueued: QueuedOperationsQuery,
-    accounts: AccountsQuery,
-    currencies: CurrenciesQuery
+    accounts: AccountsQuery
   }
 });

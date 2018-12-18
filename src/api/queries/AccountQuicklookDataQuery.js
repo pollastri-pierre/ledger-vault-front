@@ -26,7 +26,8 @@ export type Response = {
 // that way client can choose to do linear interp between points VS stepped rendering
 
 export default class AccountQuicklookDataQuery extends Query<Input, Response> {
-  uri = `/accounts/${this.props
-    .accountId}/quicklook?by=${this.props.range.toUpperCase()}`;
+  uri = `/accounts/${
+    this.props.accountId
+  }/quicklook?by=${this.props.range.toUpperCase()}`;
   cacheMaxAge = 30;
 }

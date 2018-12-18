@@ -10,7 +10,7 @@ import OperationTypeIcon from "components/OperationTypeIcon";
 const styles = {
   base: {
     textAlign: "center",
-    marginBottom: '32px'
+    marginBottom: "32px"
   },
   amount: {
     color: "black",

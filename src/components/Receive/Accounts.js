@@ -24,7 +24,7 @@ const ReceiveAccounts = ({
       </ModalSubTitle>
     }
     content={
-      <MenuList>
+      <MenuList data-test="receive-accounts">
         {accounts.filter(a => a.status === "APPROVED").map((account, i) => {
           return (
             <AccountMenuItem

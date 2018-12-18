@@ -22,6 +22,7 @@ import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
 import colors from "../../shared/colors";
@@ -34,9 +35,6 @@ import {
 } from "../icons";
 
 import type { Account, AccountSettings } from "data/types";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-const allCurrencies = listCryptoCurrencies(true);
-// import type { Response as SettingsDataQueryResponse } from "api/queries/SettingsDataQuery";
 
 const styles = {
   container: {
@@ -277,7 +275,10 @@ class AccountSettingsEdit extends Component<Props, State> {
     };
   }
   debouncedCommit = debounce(() => {
-    const { props: { restlay, account }, state: { settings } } = this;
+    const {
+      props: { restlay, account },
+      state: { settings }
+    } = this;
     const currencyCode = settings.currency_unit["name"];
     const m = new SaveAccountSettingsMutation({
       account,
@@ -288,7 +289,10 @@ class AccountSettingsEdit extends Component<Props, State> {
   }, 1000);
 
   debouncedCommitName = debounce(() => {
-    const { props: { restlay, account }, state: { name } } = this;
+    const {
+      props: { restlay, account },
+      state: { name }
+    } = this;
     const m = new EditAccountNameMutation({ name, account });
     restlay.commitMutation(m);
   }, 2000);
@@ -305,10 +309,11 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.updateName(name);
   };
   onUnitIndexChange = (unitIndex: number) => {
+    const curr = getCryptoCurrencyById(this.props.account.currency.name);
     this.update({
       settings: {
         ...this.state.settings,
-        currency_unit: this.props.account.currency.units[unitIndex]
+        currency_unit: curr.units[unitIndex]
       }
     });
   };
@@ -333,8 +338,12 @@ class AccountSettingsEdit extends Component<Props, State> {
   render() {
     const { account, classes, t /* fiats  */ } = this.props;
     const { name, settings } = this.state;
-    const unit_index = account.currency.units.findIndex(
-      unit => unit.code === settings.currency_unit.code
+
+    const curr = getCryptoCurrencyById(account.currency.name);
+    const units = curr.units;
+    const unit_index = units.findIndex(
+      unit =>
+        unit.code.toLowerCase() === settings.currency_unit.code.toLowerCase()
     );
 
     // const fiat = settings.fiat.id || settings.fiat;
@@ -352,7 +361,7 @@ class AccountSettingsEdit extends Component<Props, State> {
 
           <SettingsField topPadded label="Units" classes={classes}>
             <SelectTab
-              tabs={account.currency.units.map(elem => elem.name)}
+              tabs={units.map(elem => elem.name)}
               onChange={this.onUnitIndexChange}
               selected={unit_index}
               theme="inline"
@@ -411,11 +420,7 @@ function Side({
         <div className={classes.capsTitle}>{"Accounts"}</div>
         <div className={classes.sideItems}>
           {accounts.map(account => {
-            const curr = allCurrencies.find(
-              c => c.scheme === account.currency.name
-            ) || {
-              color: ""
-            };
+            const curr = getCryptoCurrencyById(account.currency.name);
             return (
               <NavLink
                 key={account.id}

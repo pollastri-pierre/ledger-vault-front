@@ -108,12 +108,14 @@ test("authenticate for operation creation should call API and device", async () 
     "Administrator"
   );
 
-  expect(
-    network
-  ).toHaveBeenCalledWith("/operations/authentications/authenticate", "POST", {
-    pub_key: "PUBKEY",
-    authentication: "raw",
-    operation_id: 1
-  });
+  expect(network).toHaveBeenCalledWith(
+    "/operations/authentications/authenticate",
+    "POST",
+    {
+      pub_key: "PUBKEY",
+      authentication: "raw",
+      operation_id: 1
+    }
+  );
   expect(props.callback).toHaveBeenCalled();
 });

@@ -59,7 +59,7 @@ class TabOverview extends Component<Props, State> {
   componentWillUnmount() {
     if (this._timeout) clearTimeout(this._timeout);
   }
-  
+
   onCopy = () => {
     this.setState({ copied: true });
     this._timeout = setTimeout(() => this.setState({ copied: false }), 1e3);
@@ -124,7 +124,10 @@ class TabOverview extends Component<Props, State> {
               style={{ textDecoration: "none", color: "black" }}
               to={`/account/${account.id}`}
             >
-              <AccountName name={account.name} currency={account.currency} />
+              <AccountName
+                name={account.name}
+                currencyId={account.currency.name}
+              />
             </Link>
           </LineRow>
           <LineRow label="fees">

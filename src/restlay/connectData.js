@@ -444,5 +444,8 @@ export default function connectData<
     }
   }
 
-  return connect(mapStateToProps, null)(Clazz);
+  return connect(
+    mapStateToProps,
+    null
+  )(Clazz);
 }

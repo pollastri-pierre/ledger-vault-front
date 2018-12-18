@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { DialogButton } from "components";
 import ListItemText from "@material-ui/core/ListItemText";
 
@@ -10,14 +10,14 @@ import Card from "components/Card";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 // import DateTimePicker from "material-ui-pickers/DateTimePicker";
 import DatePicker from "material-ui-pickers/DatePicker";
 // import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
-import type { Currency, Account } from "data/types";
+import type { Account } from "data/types";
 
-const allCurrencies = listCryptoCurrencies(true);
 const styles = {
   card: {
     position: "relative",
@@ -60,7 +60,7 @@ class SearchFiltersCard extends Component<{
   filters: Object,
   onChangeFilters: (filters: Object) => void,
   onClearFilters: () => void,
-  currencies: Currency[],
+  currencies: CryptoCurrency[],
   accounts: Account[],
   classes: Object
 }> {
@@ -153,7 +153,8 @@ class SearchFiltersCard extends Component<{
                     accountId =>
                       (accounts.find(a => a.id === accountId) || {}).name || ""
                   )
-                  .join(",")}
+                  .join(",")
+              }
             >
               {accounts.map(account => (
                 <MenuItem
@@ -162,10 +163,8 @@ class SearchFiltersCard extends Component<{
                   disableRipple
                   style={{
                     color:
-                      (allCurrencies.find(
-                        c => c.id === account.currency.name
-                      ) || {}
-                      ).color || "black"
+                      getCryptoCurrencyById(account.currency.name).color ||
+                      "black"
                   }}
                 >
                   <Checkbox
@@ -247,7 +246,7 @@ class SearchFiltersCard extends Component<{
                 <MenuItem
                   disableRipple
                   key={currency.name}
-                  value={currency.name}
+                  value={currency.id}
                   className={classes.menuItemCurrency}
                 >
                   <span>{currency.name}</span>

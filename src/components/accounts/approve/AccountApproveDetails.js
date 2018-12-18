@@ -93,7 +93,7 @@ function AccountApproveDetails(props: {
           <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
         <LineRow label="name">
-          <AccountName name={account.name} currency={currency} />
+          <AccountName name={account.name} currencyId={currency.name} />
         </LineRow>
         <LineRow label="currency">
           <span data-test="currency" className="info-value currency">

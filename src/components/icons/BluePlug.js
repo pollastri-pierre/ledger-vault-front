@@ -4,11 +4,7 @@ import React from "react";
 import colors from "shared/colors";
 
 const BluePlug = ({ size }: { size: number }) => (
-  <svg
-    width={size}
-    height={size * 2}
-    viewBox="0 0 497 1024"
-  >
+  <svg width={size} height={size * 2} viewBox="0 0 497 1024">
     <defs>
       <linearGradient
         x1="49.13%"

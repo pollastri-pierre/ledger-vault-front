@@ -42,6 +42,7 @@ const Footer = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(Footer)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Footer));

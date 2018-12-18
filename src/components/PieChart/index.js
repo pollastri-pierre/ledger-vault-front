@@ -218,15 +218,14 @@ class PieChart extends Component<
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
-      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(
+      data[i].percentage = ((d.data.counterValueBalance / total) * 100).toFixed(
         0
       ); //Save percentage of arc
     });
 
     g.attr("transform", `translate(${radius}, ${radius})`);
 
-    g
-      .selectAll(".arc")
+    g.selectAll(".arc")
       .data(pie(data))
       .enter()
       .append("g")
@@ -245,8 +244,7 @@ class PieChart extends Component<
       });
 
     //transparent Chart for hovering purposes
-    g
-      .selectAll(".invisibleArc")
+    g.selectAll(".invisibleArc")
       .data(pie(data))
       .enter()
       .append("g")
@@ -271,8 +269,7 @@ class PieChart extends Component<
     const svgWidth = svg.attr("width");
     const svgHeight = svg.attr("height");
     if (showTooltips && selected !== prevSelected) {
-      d3
-        .select(this.svg)
+      d3.select(this.svg)
         .selectAll(".arc")
         .classed(classes.disable, (d, i) => selected !== -1 && selected !== i)
         .classed("selected", (d, i) => selected !== -1 && selected === i);
@@ -401,9 +398,11 @@ class PieChart extends Component<
                     })}
                     key={id}
                     onMouseOver={() =>
-                      highlightCaptionsOnHover && this.setSelected(id)}
+                      highlightCaptionsOnHover && this.setSelected(id)
+                    }
                     onMouseOut={() =>
-                      highlightCaptionsOnHover && this.setSelected(-1)}
+                      highlightCaptionsOnHover && this.setSelected(-1)
+                    }
                   >
                     <td>
                       <BadgeCurrency currency={data.account.currency} />

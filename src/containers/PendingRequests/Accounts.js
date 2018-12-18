@@ -4,7 +4,6 @@ import { Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import Card from "components/Card";
@@ -81,7 +80,6 @@ export default connectData(ApproveWatchAccounts, {
   queries: {
     approvers: MembersQuery,
     accounts: PendingAccountsQuery,
-    currencies: CurrenciesQuery,
     organization: OrganizationQuery
   }
 });

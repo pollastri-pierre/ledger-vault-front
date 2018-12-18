@@ -129,7 +129,8 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 onChange={this.changeFrequency}
                 disableUnderline
                 renderValue={key =>
-                  "per " + (frequencies.find(o => o.key === key) || {}).title}
+                  "per " + (frequencies.find(o => o.key === key) || {}).title
+                }
               >
                 {frequencies.map(({ title, key }) => (
                   <MenuItem
@@ -160,6 +161,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     );
   }
 }
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(AccountCreationRateLimiter)
-);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(withStyles(styles)(AccountCreationRateLimiter));

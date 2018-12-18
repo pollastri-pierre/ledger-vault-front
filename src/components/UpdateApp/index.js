@@ -63,9 +63,7 @@ const row = {
     right: 20
   }
 };
-const Row = withStyles(
-  row
-)(
+const Row = withStyles(row)(
   ({
     icon,
     children,

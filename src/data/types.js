@@ -160,6 +160,19 @@ export type Transaction = {
   outputs: TransactionOutput[]
 };
 
+export type TransactionETH = {
+  block: Object,
+  height: number,
+  time: string,
+  date: string,
+  gas_limit: number,
+  gas_price: number,
+  hash: string,
+  receiver: string,
+  sender: string,
+  value: number
+};
+
 export type Trust = {
   level: string,
   weight: number,
