@@ -4,6 +4,7 @@ import { getAccountTitle } from "utils/accounts";
 import type { Account } from "data/types";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   accountOption: {
@@ -36,13 +37,9 @@ class AccountOption extends Component<{
 }> {
   render() {
     const { account, classes, ...rest } = this.props;
+    const color = getCryptoCurrencyById(account.currency.name)["color"];
     return (
-      <MenuItem
-        button
-        disableRipple
-        style={{ color: account.currency.color }}
-        {...rest}
-      >
+      <MenuItem button disableRipple style={{ color: color }} {...rest}>
         <div className={classes.accountOption}>
           <span className={classes.nameContainer}>
             {getAccountTitle(account)}

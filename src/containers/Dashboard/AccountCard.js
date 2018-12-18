@@ -44,7 +44,7 @@ class AccountCard extends Component<{
 
     const title = (
       <div>
-        <BadgeCurrency currency={account.currency} />
+        <BadgeCurrency currency={account.currency.name} />
         <span>{account.name}</span>
       </div>
     );

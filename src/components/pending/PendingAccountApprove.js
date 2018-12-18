@@ -78,7 +78,10 @@ function PendingAccountApprove(props: Props) {
               <DateFormat date={account.created_on} />
             </span>
             <span className={classes.name}>
-              <AccountName name={account.name} currency={account.currency} />
+              <AccountName
+                name={account.name}
+                currencyId={account.currency.name}
+              />
             </span>
           </div>
 
