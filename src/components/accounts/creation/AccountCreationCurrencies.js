@@ -7,12 +7,8 @@ import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+
 const allCurrencies = listCryptoCurrencies(true);
-// import {
-//   listCryptoCurrencies,
-// } from "utils/cryptoCurrencies";
-//
-// const allCurrencies: Array<CryptoCurrency> = listCryptoCurrencies(true);
 
 const styles = {
   base: {
