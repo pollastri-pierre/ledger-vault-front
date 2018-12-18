@@ -148,6 +148,7 @@ const mapDispatchToProps = (dispatch: *) => ({
   onAddSharedOwner: data => dispatch(addSharedOwner(data)),
   onGetChallenge: () => dispatch(getSharedOwnerRegistrationChallenge())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(
-  translate()(SharedOwnerRegistration)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate()(SharedOwnerRegistration));

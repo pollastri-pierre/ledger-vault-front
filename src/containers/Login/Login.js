@@ -264,7 +264,10 @@ export class Login extends Component<Props, State> {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withStyles(styles)
 )(
   connectData(translate()(Login), {

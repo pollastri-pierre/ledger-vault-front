@@ -185,5 +185,8 @@ const mapDispatchToProps = (dispatch: *) => ({
 
 export { AccountCreation };
 export default connectData(
-  connect(mapStateToProps, mapDispatchToProps)(AccountCreation)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccountCreation)
 );

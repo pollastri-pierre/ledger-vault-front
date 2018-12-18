@@ -104,7 +104,7 @@ const genNote = i => ({
     1 + Math.round(20 * Math.random()),
     10
   ).toISOString(),
-  author: "mock_" + i % 5
+  author: "mock_" + (i % 5)
 });
 
 const genPubKey = () =>

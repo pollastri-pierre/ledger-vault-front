@@ -328,9 +328,10 @@ const mapDispatchToProps = (dispatch: *) => ({
 });
 
 export default connectData(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withStyles(styles)(translate()(UpdateAccounts))
-  ),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(translate()(UpdateAccounts))),
   {
     queries: {
       members: MembersQuery

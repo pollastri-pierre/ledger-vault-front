@@ -24,9 +24,7 @@ function OperationApproveDetails(props: {
       />
       <div className="operation-list">
         <LineRow label="Identifier">
-          {operation.recipient && (
-            <span>{operation.recipient}</span>
-          )}
+          {operation.recipient && <span>{operation.recipient}</span>}
         </LineRow>
         <LineRow label="status">
           <ApprovalStatus

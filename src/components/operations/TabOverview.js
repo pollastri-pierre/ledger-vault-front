@@ -59,7 +59,7 @@ class TabOverview extends Component<Props, State> {
   componentWillUnmount() {
     if (this._timeout) clearTimeout(this._timeout);
   }
-  
+
   onCopy = () => {
     this.setState({ copied: true });
     this._timeout = setTimeout(() => this.setState({ copied: false }), 1e3);
