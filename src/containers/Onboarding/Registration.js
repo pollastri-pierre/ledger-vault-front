@@ -44,9 +44,7 @@ const membersList = {
     cursor: "pointer"
   }
 };
-const MembersList = withStyles(
-  membersList
-)(
+const MembersList = withStyles(membersList)(
   ({
     classes,
     members,
@@ -189,6 +187,7 @@ class Registration extends Component<Props, *> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatch)(
-  withStyles(styles)(translate()(Registration))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatch
+)(withStyles(styles)(translate()(Registration)));

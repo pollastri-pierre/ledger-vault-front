@@ -220,6 +220,7 @@ const mapDispatch = (dispatch: *) => ({
     dispatch(addMessage(title, message, type))
 });
 
-export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(SharedOwnerValidation))
-);
+export default connect(
+  mapState,
+  mapDispatch
+)(withStyles(styles)(translate()(SharedOwnerValidation)));

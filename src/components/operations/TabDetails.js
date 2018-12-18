@@ -36,9 +36,7 @@ const stylesList = {
     fontSize: 12
   }
 };
-const OperationETHDetails = withStyles(
-  stylesList
-)(
+const OperationETHDetails = withStyles(stylesList)(
   ({
     transaction,
     classes

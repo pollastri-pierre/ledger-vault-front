@@ -17,7 +17,7 @@ const styles = {
   }
 };
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 class ReceiveDevice extends Component<Props> {
   constructor(props) {
@@ -27,7 +27,9 @@ class ReceiveDevice extends Component<Props> {
     const { classes } = this.props;
     return (
       <ReceiveLayout
-        header={<ModalSubTitle>{<Trans i18nKey="receive:device"/>}</ModalSubTitle>}
+        header={
+          <ModalSubTitle>{<Trans i18nKey="receive:device" />}</ModalSubTitle>
+        }
         content={
           <Fragment>
             <div className={classes.blue_icon}>

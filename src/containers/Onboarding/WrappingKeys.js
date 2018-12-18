@@ -183,6 +183,7 @@ class WrappingKeys extends Component<Props, State> {
 // useful for test
 export { WrappingKeys };
 
-export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(WrappingKeys))
-);
+export default connect(
+  mapState,
+  mapDispatch
+)(withStyles(styles)(translate()(WrappingKeys)));

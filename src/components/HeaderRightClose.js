@@ -9,7 +9,7 @@ const styles = {
     position: "absolute",
     top: 25,
     right: 25,
-    cursor: 'pointer'
+    cursor: "pointer"
   }
 };
 

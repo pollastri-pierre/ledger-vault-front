@@ -153,7 +153,8 @@ class SearchFiltersCard extends Component<{
                     accountId =>
                       (accounts.find(a => a.id === accountId) || {}).name || ""
                   )
-                  .join(",")}
+                  .join(",")
+              }
             >
               {accounts.map(account => (
                 <MenuItem
@@ -162,9 +163,10 @@ class SearchFiltersCard extends Component<{
                   disableRipple
                   style={{
                     color:
-                      (allCurrencies.find(
-                        c => c.id === account.currency.name
-                      ) || {}
+                      (
+                        allCurrencies.find(
+                          c => c.id === account.currency.name
+                        ) || {}
                       ).color || "black"
                   }}
                 >
