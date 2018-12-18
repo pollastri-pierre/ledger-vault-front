@@ -87,6 +87,7 @@ context("Operation Abort", () => {
           .eq(0)
           .click();
         cy.wait("@pending");
+        cy.wait(1000);
         cy
           .get("[data-test=dialog-button]")
           .contains("Abort")

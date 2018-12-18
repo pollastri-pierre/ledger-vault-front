@@ -22,7 +22,6 @@ context("Operation Creation", () => {
         win.fetch = win.unfetch;
       }
     });
-
     cy
       .request("POST", Cypress.env('api_switch_device'), {
         device_number: 4
@@ -48,20 +47,17 @@ context("Operation Creation", () => {
         cy.get("[data-test=receive-accounts]").click();
 
 
-        cy.wait(2000);
+        cy.wait(1500);
+        // Verify that the QR code and the address is displayed
+        cy.contains("Address for account BTC Testnet").should("be.visible");
+        cy.get("canvas").should("be.visible");
         cy.contains("Copy address").should("be.visible");
-        cy.wait(2000);
-        cy.contains("Copy address").click();
-        cy.contains("OK").click();
-        //Logout
-        cy.contains("view profile").click();
-        cy.contains("logout").click();
-        cy.wait("@logout");
-        cy
-          .get(".top-message-body")
-          .contains("You have been successfully logged out. You can now safely close your web browser.")
-          .get(".top-message-title")
-          .contains("See you soon!");
+        cy.wait(2500);
+        //cy.get("span").should("be.visible");
+        // Click to Verify button
+        cy.contains("Re-verify").click();
+      //  cy.contains("Copy address").click();
+      
       });
   });
 });
