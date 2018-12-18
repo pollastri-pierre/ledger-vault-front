@@ -180,10 +180,10 @@ export const executeQueryOrMutation =
     const promise = ctx
       .network(uri, method, body)
       .then(data => {
-        const result = normalize(
-          data,
-          queryOrMutation.getResponseSchema() || {}
-        );
+        let result;
+        if (queryOrMutation.getResponseSchema()) {
+          result = normalize(data, queryOrMutation.getResponseSchema() || {});
+        }
         let resetConnection = false;
         if (
           queryOrMutation instanceof Query ||
@@ -258,6 +258,9 @@ const reducers = {
     store,
     { queryOrMutation, result, cacheKey, resetConnection }
   ) => {
+    if (!queryOrMutation.getResponseSchema()) {
+      return store;
+    }
     const entities = mergeEntities(store.entities, result.entities);
     if (!cacheKey) {
       return { ...store, entities };
