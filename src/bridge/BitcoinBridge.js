@@ -4,16 +4,17 @@ import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
+import type { Input as NewOperationMutationInput } from "api/mutations/NewOperationMutation";
 import type { WalletBridge, EditProps } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 
 //convertion to the BigNumber needed
-type Transaction = {
+export type Transaction = {
   amount: number,
   recipient: string,
-  estimatedFees: *,
+  estimatedFees: ?number,
   feeLevel: Speed,
   label: string,
   note: string
@@ -36,15 +37,19 @@ const checkValidTransaction = () => {
   return Promise.resolve(true);
 };
 
-const isRecipientValid = (restlay, currency, recipient) => {
+const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
-    return restlay
-      .fetchQuery(new ValidateAddressQuery({ currency, address: recipient }))
-      .then(r => {
-        return Promise.resolve(r.is_valid);
-      });
+    try {
+      const { is_valid } = await restlay.fetchQuery(
+        new ValidateAddressQuery({ currency, address: recipient })
+      );
+      return is_valid;
+    } catch (err) {
+      // TODO: create internal logger
+      return false;
+    }
   } else {
-    return Promise.resolve(false);
+    return false;
   }
 };
 
@@ -110,7 +115,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     account: Account,
     transaction: Transaction
   ) => {
-    const data: * = {
+    const data: NewOperationMutationInput = {
       operation: {
         fee_level: transaction.feeLevel,
         amount: transaction.amount,

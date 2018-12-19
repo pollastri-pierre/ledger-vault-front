@@ -29,9 +29,8 @@ type Props = {
   selectAccount: Account => void,
   allPendingOperations: Operation[]
 };
-type State = {};
 
-class SendAccount extends PureComponent<Props, State> {
+class SendAccount extends PureComponent<Props> {
   onChangeTab = e => {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 1);

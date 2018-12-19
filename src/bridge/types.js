@@ -1,6 +1,7 @@
 // @flow
 import type { Account } from "data/types";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
 
 export type EditProps<Transaction> = {
   account: Account,
@@ -45,7 +46,7 @@ export interface WalletBridge<Transaction> {
 
   composeAndBroadcast(
     operationId: number,
-    restlay: *,
+    restlay: RestlayEnvironment,
     account: Account,
     transaction: Transaction
   ): Promise<*>;
@@ -65,7 +66,7 @@ export interface WalletBridge<Transaction> {
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
 
   isRecipientValid(
-    restlay: *,
+    restlay: RestlayEnvironment,
     currency: *,
     recipient: string
   ): Promise<boolean>;

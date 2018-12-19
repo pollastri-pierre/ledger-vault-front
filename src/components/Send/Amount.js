@@ -32,7 +32,7 @@ const styles = {
 type Props<Transaction> = {
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChangeTransaction: (*) => void,
+  onChangeTransaction: Transaction => void,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   amountIsValid: boolean
@@ -95,12 +95,10 @@ class SendAmount extends PureComponent<Props<*>, State> {
         </InputFieldMerge>
         <div className={classes.countervalue}>
           <div>USD</div>
-          <div>
-            <CounterValue
-              value={bridge.getTransactionAmount(account, transaction)}
-              from={account.currency.name}
-            />
-          </div>
+          <CounterValue
+            value={bridge.getTransactionAmount(account, transaction)}
+            from={account.currency.name}
+          />
         </div>
       </Fragment>
     );

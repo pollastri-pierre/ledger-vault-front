@@ -13,6 +13,7 @@ import colors from "shared/colors";
 import { getFees } from "components/Send/helpers";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 
 const styles = {
   fieldTitle: {
@@ -41,14 +42,14 @@ const styles = {
 type Props<Transaction> = {
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChangeTransaction: (*) => void,
-  estimatedFees: *,
+  onChangeTransaction: Transaction => void,
+  estimatedFees: ?number,
   restlay: RestlayEnvironment,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>
 };
 
-class FeesBitcoinKind extends PureComponent<Props<*>, *> {
+class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
   nonce = 0;
 
   async componentDidUpdate(prevProps: Props<*>) {
@@ -77,7 +78,7 @@ class FeesBitcoinKind extends PureComponent<Props<*>, *> {
       if (nonce !== this.nonce) return;
       if (isValid) {
         const operation = {
-          fee_level: feeLevel ? feeLevel : "normal",
+          fee_level: feeLevel || "normal",
           amount: transaction.amount || 0,
           recipient: transaction.recipient || ""
         };
@@ -112,16 +113,16 @@ class FeesBitcoinKind extends PureComponent<Props<*>, *> {
           <Trans i18nKey="send:details.fees.title" />
         </div>
         <InputFieldMerge>
-          <FeeSelect
-            value={feeLevel ? feeLevel : "normal"}
-            onChange={this.onChangeFee}
-          />
-          <div className={classes.currencyValue}>
-            <CurrencyAccountValue
-              account={account}
-              value={transaction.estimatedFees}
-            />
-          </div>
+          <FeeSelect value={feeLevel || "normal"} onChange={this.onChangeFee} />
+          {transaction.estimatedFees !== null && (
+            <div className={classes.currencyValue}>
+              <CurrencyAccountValue
+                account={account}
+                // $FlowFixMe
+                value={transaction.estimatedFees}
+              />
+            </div>
+          )}
         </InputFieldMerge>
 
         <div className={classes.feesFiat}>

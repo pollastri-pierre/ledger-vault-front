@@ -5,16 +5,17 @@ import type { WalletBridge } from "bridge/types";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import DialogButton from "components/buttons/DialogButton";
+import type { RestlayEnvironment } from "restlay/connectData";
 import SendLayout from "./SendLayout";
 import Amount from "./Amount";
 import Address from "./Address";
 
 type Props<Transaction> = {
   transaction: Transaction,
-  bridge: ?WalletBridge<Transaction>,
-  onChangeTransaction: (*) => void,
-  account: ?Account,
-  restlay: *,
+  bridge: WalletBridge<Transaction>,
+  onChangeTransaction: Transaction => void,
+  account: Account,
+  restlay: RestlayEnvironment,
   onTabChange: (SyntheticInputEvent<*>, number) => void
 };
 type State = {
@@ -52,9 +53,9 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
     try {
       const totalSpent = await bridge.getTotalSpent(account, transaction);
+      if (syncId !== this.syncId) return;
       const amountIsValid = totalSpent < account.balance;
       this.setState({ amountIsValid });
-      if (syncId !== this.syncId) return;
       const isRecipientValid = await bridge.isRecipientValid(
         restlay,
         account.currency,
@@ -81,7 +82,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
   render() {
     const { transaction, account, onChangeTransaction, bridge } = this.props;
     const { canNext, amountIsValid } = this.state;
-    const FeesField = bridge && bridge.EditFees;
+    const FeesField = bridge.EditFees;
     return (
       <SendLayout
         header={null}

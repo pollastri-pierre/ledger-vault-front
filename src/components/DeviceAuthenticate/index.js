@@ -35,7 +35,7 @@ type Props = {
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
   account_id: ?number,
-  callback: *,
+  callback: string => any,
   type: "operations" | "accounts",
   cancel: Function
 };

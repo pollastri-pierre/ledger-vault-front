@@ -12,10 +12,9 @@ import type { WalletBridge } from "bridge/types";
 import SendLayout from "./SendLayout";
 
 type Props<Transaction> = {
-  classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChangeTransaction: (*) => void,
+  onChangeTransaction: Transaction => void,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   onTabChange: (SyntheticInputEvent<*>, number) => void,
@@ -29,6 +28,9 @@ const styles = {
   },
   comment: {
     marginTop: 5
+  },
+  noteContainer: {
+    marginTop: 10
   }
 };
 class SendLabel extends PureComponent<Props<*>, State> {
@@ -60,24 +62,14 @@ class SendLabel extends PureComponent<Props<*>, State> {
           <Fragment>
             <TextField
               classes={{ root: classes.label }}
-              inputProps={{
-                style: {
-                  color: "black"
-                }
-              }}
               fullWidth
               value={label}
               placeholder={t("send:label.title")}
               onChange={this.updateLabel}
             />
-            <div style={{ marginTop: 10 }} />
+            <div className={classes.noteContainer} />
             <TextField
               classes={{ root: classes.comment }}
-              inputProps={{
-                style: {
-                  color: "black"
-                }
-              }}
               placeholder={t("send:label.note")}
               value={note}
               fullWidth

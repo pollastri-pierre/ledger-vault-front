@@ -23,7 +23,7 @@ type Props<Transaction> = {
   restlay: RestlayEnvironment,
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChangeTransaction: (*) => void,
+  onChangeTransaction: Transaction => void,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>
 };

@@ -24,7 +24,7 @@ export type OperationToPOST = {
   operation_id: number
 };
 
-type Input = {
+export type Input = {
   operation: OperationToPOST,
   accountId: number
 };

@@ -20,7 +20,6 @@ import SendLayout from "./SendLayout";
 type Props<Transaction> = {
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
-  classes: { [_: $Keys<typeof styles>]: string },
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   confirmTx: () => void,
@@ -34,7 +33,7 @@ type State = {
 const styles = {
   warningMsg: {
     fontSize: 11,
-    color: "#767676",
+    color: colors.steel,
     lineHeight: 1.82,
     marginTop: 15,
     textAlign: "center"
@@ -57,10 +56,10 @@ const styles = {
     position: "fixed",
     alignSelf: "flex-end",
     color: colors.ocean,
-    fontSize: "11px"
+    fontSize: 11
   },
   copyIcon: {
-    marginRight: "3px"
+    marginRight: 3
   }
 };
 class SendConfirmation extends PureComponent<Props<*>, State> {
@@ -71,7 +70,9 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
     this.setState({ copied: true });
     this._timeout = setTimeout(() => this.setState({ copied: false }), 1e3);
   };
-
+  componentWillUnmount() {
+    this._timeout && clearTimeout(this._timeout);
+  };
   _timeout: ?TimeoutID = null;
 
   render() {
@@ -81,6 +82,7 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
     const amount = bridge.getTransactionAmount(account, transaction);
     const recipient = bridge.getTransactionRecipient(account, transaction);
     // Big Number needed
+    // use totalSpend from bridge
     const total = amount + transaction.estimatedFees;
     return (
       <SendLayout
