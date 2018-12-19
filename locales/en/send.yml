@@ -1,0 +1,19 @@
+tabs:
+  account: account
+  details: details
+  label: label
+  confirmation: confirmation
+confirmation:
+  desc: An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.
+account:
+  title: Account to debit
+details:
+  amount:
+    title: Amount
+  address:
+    title: Address to credit
+  fees:
+    title: Confirmation Fees
+label:
+  title: Label
+  note: Add a comment

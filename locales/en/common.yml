@@ -1,5 +1,6 @@
 ---
-continue: continue
+continue: Continue
+confirm: Confirm
 cancel: cancel
 done: done
 none: None
