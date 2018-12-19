@@ -72,7 +72,7 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
   };
   componentWillUnmount() {
     this._timeout && clearTimeout(this._timeout);
-  };
+  }
   _timeout: ?TimeoutID = null;
 
   render() {
