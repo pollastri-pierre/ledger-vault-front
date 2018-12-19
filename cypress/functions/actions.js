@@ -4,11 +4,10 @@
 
  export function login(){
    const orga_name = Cypress.env("workspace");
-   cy.route("post", "**/authentications/**").as("authenticate");
    cy.visit(Cypress.env('api_server'));
+   cy.clearCookies();
    cy.get("input").type(orga_name, { delay: 40 });
    cy.contains("continue").click();
-   //cy.wait("@authenticate");
    cy
      .get(".top-message-body")
      .contains("Welcome to the Ledger Vault platform!")
@@ -39,6 +38,7 @@
    cy.route("post", "**/abort").as("abort");
    cy.route("post", "**/logout").as("logout");
    cy.route("get", "**/dashboard").as("dashboard");
+   cy.route("post", "**/authentications/**").as("authenticate");
  }
 
 
