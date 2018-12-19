@@ -92,10 +92,10 @@ export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 const appToInstall = {
   targetId: 0x31010004,
   perso: "perso_11",
-  firmware: ["development", "preprod", "beta"].includes(process.env.NODE_ENV)
+  firmware: window.config.HSM_SIMU
     ? "blue/2.1.1-ee/vault3/app_latest_dev"
     : "blue/2.1.1-ee/vault3/app_latest",
-  firmwareKey: ["development", "preprod", "beta"].includes(process.env.NODE_ENV)
+  firmwareKey: window.config.HSM_SIMU
     ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
     : "blue/2.1.1-ee/vault3/app_latest_key"
 };

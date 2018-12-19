@@ -3,7 +3,6 @@ import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import VaultDeviceApp from "./VaultDeviceApp";
 import VaultDeviceHTTP from "./VaultDeviceHTTP";
 export const CURRENT_APP_NAME = "Vault";
-export const CURRENT_APP_VERSION = process.env["APP_VERSION"];
 
 export const U2F_PATH = [0x80564c54, 0x80553246];
 export const CONFIDENTIALITY_PATH = [0x80564c54, 0x80434e46];
@@ -28,7 +27,10 @@ export const checkToUpdate = async (
   try {
     const { appName, appVersion } = await device.getVersion();
     console.warn(appVersion);
-    if (appName !== CURRENT_APP_NAME || appVersion !== CURRENT_APP_VERSION) {
+    if (
+      appName !== CURRENT_APP_NAME ||
+      appVersion !== window.config.APP_VERSION
+    ) {
       callback();
       return false;
     }

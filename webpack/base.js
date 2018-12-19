@@ -2,6 +2,7 @@ import path from "path";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import Dotenv from "dotenv-webpack";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 
 import paths from "./paths";
 import * as globals from "./globals";
@@ -70,6 +71,13 @@ export default {
 
   plugins: [
     new Dotenv(),
+    new CopyWebpackPlugin([
+      {
+        from: paths.config,
+        to: paths.dist,
+        force: true
+      }
+    ]),
     new webpack.DefinePlugin({
       ...Object.keys(globals).reduce((acc, key) => {
         acc[key] = JSON.stringify(globals[key]);
