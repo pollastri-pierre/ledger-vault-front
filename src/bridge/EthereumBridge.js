@@ -1,6 +1,8 @@
 // @flow
 import React from "react";
 import type { WalletBridge } from "./types";
+import type { Account } from "data/types";
+import type { RestlayEnvironment } from "restlay/connectData";
 
 //convertion to the BigNumber needed
 type Transaction = {
@@ -38,34 +40,41 @@ const EthereumBridge: WalletBridge<Transaction> = {
   getTotalSpent: (a, t) =>
     t.amount == 0 ? Promise.resolve(0) : Promise.resolve(t.amount),
 
-  editTransactionAmount: (account: *, t: *, amount: *) => {
+  editTransactionAmount: (account: Account, t: Transaction, amount: number) => {
     return {
       ...t,
       amount
     };
   },
 
-  getTransactionAmount: (a: *, t: *) => t.amount,
+  getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
-  editTransactionRecipient: (account: *, t: *, recipient: *) => ({
+  editTransactionRecipient: (account: Account, t: Transaction, recipient: string) => ({
     ...t,
     recipient
   }),
 
-  getTransactionRecipient: (a: *, t: *) => t.recipient,
+  getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
   getRecipientWarning: () => Promise.resolve(null),
 
-  getTransactionLabel: (a: *, t: Transaction) => t.label,
-  editTransactionLabel: (account: *, t: Transaction, label: string) => ({
+  getTransactionLabel: (a: Account, t: Transaction) => t.label,
+  editTransactionLabel: (account: Account, t: Transaction, label: string) => ({
     ...t,
     label
   }),
-  getTransactionNote: (a: *, t: Transaction) => t.note,
-  editTransactionNote : (account: *, t: Transaction, note: string) => ({
+  getTransactionNote: (a: Account, t: Transaction) => t.note,
+  editTransactionNote : (account: Account, t: Transaction, note: string) => ({
     ...t,
     note
   }),
-
+  composeAndBroadcast: (operation_id: number, restlay: RestlayEnvironment, account: Account, transaction: Transaction) => { // eslint-disable-line
+    // fill with new data obj and endpoint
+    // const data: * = {
+    //   operation: {},
+    //   accountId: account.id
+    // };
+    return Promise.resolve(true);
+  },
   EditFees,
   EditAdvancedOptions,
   checkValidTransaction,

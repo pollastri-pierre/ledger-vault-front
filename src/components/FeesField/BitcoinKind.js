@@ -41,7 +41,7 @@ const styles = {
 type Props<Transaction> = {
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChange: (*) => void,
+  onChangeTransaction: (*) => void,
   estimatedFees: *,
   restlay: RestlayEnvironment,
   transaction: Transaction,
@@ -52,7 +52,13 @@ class FeesBitcoinKind extends PureComponent<Props<*>, *> {
   nonce = 0;
 
   async componentDidUpdate(prevProps: Props<*>) {
-    const { account, transaction, restlay, onChange, bridge } = this.props;
+    const {
+      account,
+      transaction,
+      restlay,
+      onChangeTransaction,
+      bridge
+    } = this.props;
     const feesInvalidated =
       transaction.recipient !== prevProps.transaction.recipient ||
       transaction.amount !== prevProps.transaction.amount ||
@@ -82,14 +88,14 @@ class FeesBitcoinKind extends PureComponent<Props<*>, *> {
           restlay
         );
         if (nonce !== this.nonce) return;
-        onChange({ ...transaction, estimatedFees });
+        onChangeTransaction({ ...transaction, estimatedFees });
       }
     }
   }
   onChangeFee = (feesSelected: Speed) => {
-    const { bridge, account, transaction, onChange } = this.props;
+    const { bridge, account, transaction, onChangeTransaction } = this.props;
     bridge.editTransactionFeeLevel &&
-      onChange(
+      onChangeTransaction(
         bridge.editTransactionFeeLevel(account, transaction, feesSelected)
       );
   };

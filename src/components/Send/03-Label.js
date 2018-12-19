@@ -19,7 +19,7 @@ type Props<Transaction> = {
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   onTabChange: (SyntheticInputEvent<*>, number) => void,
-  t: Translate,
+  t: Translate
 };
 type State = {};
 
@@ -32,7 +32,6 @@ const styles = {
   }
 };
 class SendLabel extends PureComponent<Props<*>, State> {
-
   updateLabel = (e: SyntheticEvent<HTMLInputElement>) => {
     const { account, transaction, bridge, onChangeTransaction } = this.props;
     onChangeTransaction(
@@ -46,7 +45,7 @@ class SendLabel extends PureComponent<Props<*>, State> {
     );
   };
 
-  onChangeTab = (e) => {
+  onChangeTab = e => {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 3);
   };
@@ -87,11 +86,7 @@ class SendLabel extends PureComponent<Props<*>, State> {
           </Fragment>
         }
         footer={
-          <DialogButton
-            highlight
-            right
-            onTouchTap={this.onChangeTab}
-          >
+          <DialogButton highlight right onTouchTap={this.onChangeTab}>
             <Trans i18nKey="common:continue" />
           </DialogButton>
         }

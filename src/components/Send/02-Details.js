@@ -15,7 +15,7 @@ type Props<Transaction> = {
   onChangeTransaction: (*) => void,
   account: ?Account,
   restlay: *,
-  onTabChange: (SyntheticInputEvent<*>, number) => void,
+  onTabChange: (SyntheticInputEvent<*>, number) => void
 };
 type State = {
   canNext: boolean,
@@ -62,26 +62,24 @@ class SendDetails extends PureComponent<Props<*>, State> {
       );
       if (syncId !== this.syncId) return;
       const canNext =
-        transaction.amount > 0 && isRecipientValid && amountIsValid && transaction.estimatedFees;
+        transaction.amount > 0 &&
+        isRecipientValid &&
+        amountIsValid &&
+        transaction.estimatedFees;
       this.setState({ canNext });
     } catch (err) {
       this.setState({
         canNext: false
       });
     }
-  };
-  onChangeTab = (e) => {
+  }
+  onChangeTab = e => {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 2);
   };
 
   render() {
-    const {
-      transaction,
-      account,
-      onChangeTransaction,
-      bridge,
-    } = this.props;
+    const { transaction, account, onChangeTransaction, bridge } = this.props;
     const { canNext, amountIsValid } = this.state;
     const FeesField = bridge && bridge.EditFees;
     return (
@@ -91,13 +89,11 @@ class SendDetails extends PureComponent<Props<*>, State> {
           <div>
             <Amount {...this.props} amountIsValid={amountIsValid} />
             <Address {...this.props} />
-
             {FeesField && (
               <FeesField
                 account={account}
-                value={transaction}
-                onChange={onChangeTransaction}
-                bridge={bridge}
+                transaction={transaction}
+                onChangeTransaction={onChangeTransaction}
               />
             )}
           </div>

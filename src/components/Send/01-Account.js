@@ -19,68 +19,80 @@ import type { Account, Operation, Member } from "data/types";
 import SendLayout from "./SendLayout";
 
 const styles = {};
-  
+
 type Props = {
-  onTabChange: (number) => void,
-  classes: *,
+  onTabChange: (SyntheticInputEvent<*>, number) => void,
+  classes: { [_: $Keys<typeof styles>]: string },
   accounts: Account[],
-  selectedAccount: ?Account,
+  account: ?Account,
   me: Member,
   selectAccount: Account => void,
   allPendingOperations: Operation[]
 };
-type State = {
-
-};
+type State = {};
 
 class SendAccount extends PureComponent<Props, State> {
-  render(){
-
-    const { onTabChange, accounts, me, selectAccount, selectedAccount, allPendingOperations } = this.props;
+  onChangeTab = e => {
+    // TODO: re-evaluate this tabIndex system
+    this.props.onTabChange(e, 1);
+  };
+  render() {
+    const {
+      accounts,
+      me,
+      selectAccount,
+      account,
+      allPendingOperations
+    } = this.props;
     const pendingApprovalOperations = getPendingsOperations(
       allPendingOperations
     );
-
     return (
       <SendLayout
         header={null}
-        content={<Fragment>
-          <ModalSubTitle><Trans i18nKey="send:account.title" /></ModalSubTitle>
-          <MenuList data-test="operation-creation-accounts">
-            {accounts.filter(a => a.status === "APPROVED").map(account => {
-              return (
-                <Disabled
-                  key={account.id}
-                  disabled={
-                    account.balance <= 0 ||
-                    hasPending(account, pendingApprovalOperations) ||
-                    !isMemberOfAccount(account, me) ||
-                    isAccountOutdated(account) ||
-                    isAccountBeingUpdated(account)
-                  }
-                >
-                  <AccountMenuItem
-                    onSelect={selectAccount}
-                    account={account}
-                    selected={(selectedAccount && selectedAccount.id) === account.id}
-                  />
-                </Disabled>
-              );
-            })}
-          </MenuList>
-        </Fragment>
-      }
-        footer={<DialogButton
+        content={
+          <Fragment>
+            <ModalSubTitle>
+              <Trans i18nKey="send:account.title" />
+            </ModalSubTitle>
+            <MenuList data-test="operation-creation-accounts">
+              {accounts.filter(a => a.status === "APPROVED").map(acc => {
+                return (
+                  <Disabled
+                    key={acc.id}
+                    disabled={
+                      acc.balance <= 0 ||
+                      hasPending(acc, pendingApprovalOperations) ||
+                      !isMemberOfAccount(acc, me) ||
+                      isAccountOutdated(acc) ||
+                      isAccountBeingUpdated(acc)
+                    }
+                  >
+                    <AccountMenuItem
+                      onSelect={selectAccount}
+                      account={acc}
+                      selected={(account && account.id) === acc.id}
+                    />
+                  </Disabled>
+                );
+              })}
+            </MenuList>
+          </Fragment>
+        }
+        footer={
+          <DialogButton
             highlight
             right
-            onTouchTap={() => onTabChange(1)}
+            onTouchTap={this.onChangeTab}
+            disabled={!account}
           >
             <Trans i18nKey="common:continue" />
-          </DialogButton>}
+          </DialogButton>
+        }
       />
     );
   }
-} ;
+}
 
 export default connectData(withStyles(styles)(SendAccount), {
   queries: {

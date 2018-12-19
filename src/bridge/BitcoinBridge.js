@@ -2,7 +2,11 @@
 import React from "react";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import NewOperationMutation from "api/mutations/NewOperationMutation";
 import type { WalletBridge, EditProps } from "./types";
+import type { Account } from "data/types";
+import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 
 //convertion to the BigNumber needed
@@ -15,10 +19,14 @@ type Transaction = {
   note: string
 };
 
-const EditFees = ({ account, onChange, value }: EditProps<Transaction>) => (
+const EditFees = ({
+  account,
+  onChangeTransaction,
+  transaction
+}: EditProps<Transaction>) => (
   <FeesBitcoinKind
-    onChange={onChange}
-    transaction={value}
+    onChangeTransaction={onChangeTransaction}
+    transaction={transaction}
     account={account}
     bridge={BitcoinBridge}
   />
@@ -47,7 +55,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedFees: null,
     feeLevel: "normal",
     label: "",
-    note: "",
+    note: ""
   }),
   // convert to Big Number
   getTotalSpent: (a, t) =>
@@ -55,17 +63,17 @@ const BitcoinBridge: WalletBridge<Transaction> = {
       ? Promise.resolve(0)
       : Promise.resolve(t.amount + t.estimatedFees),
 
-  editTransactionAmount: (account: *, t: Transaction, amount: number) => {
+  editTransactionAmount: (account: Account, t: Transaction, amount: number) => {
     return {
       ...t,
       amount
     };
   },
 
-  getTransactionAmount: (a: *, t: Transaction) => t.amount,
+  getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
   editTransactionRecipient: (
-    account: *,
+    account: Account,
     t: Transaction,
     recipient: string
   ) => ({
@@ -73,25 +81,52 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     recipient
   }),
 
-  getTransactionRecipient: (a: *, t: Transaction) => t.recipient,
+  getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
   getRecipientWarning: () => Promise.resolve(null),
 
-  getTransactionFeeLevel: (a: *, t: Transaction) => t.feeLevel,
-  editTransactionFeeLevel: (account: *, t: Transaction, feeLevel: string) => ({
+  getTransactionFeeLevel: (a: Account, t: Transaction) => t.feeLevel,
+  editTransactionFeeLevel: (
+    account: Account,
+    t: Transaction,
+    feeLevel: string
+  ) => ({
     ...t,
     feeLevel
   }),
 
-  getTransactionLabel: (a: *, t: Transaction) => t.label,
-  editTransactionLabel: (account: *, t: Transaction, label: string) => ({
+  getTransactionLabel: (a: Account, t: Transaction) => t.label,
+  editTransactionLabel: (account: Account, t: Transaction, label: string) => ({
     ...t,
     label
   }),
-  getTransactionNote: (a: *, t: Transaction) => t.note,
-  editTransactionNote : (account: *, t: Transaction, note: string) => ({
+  getTransactionNote: (a: Account, t: Transaction) => t.note,
+  editTransactionNote: (account: Account, t: Transaction, note: string) => ({
     ...t,
     note
   }),
+  composeAndBroadcast: (
+    operation_id: number,
+    restlay: RestlayEnvironment,
+    account: Account,
+    transaction: Transaction
+  ) => {
+    const data: * = {
+      operation: {
+        fee_level: transaction.feeLevel,
+        amount: transaction.amount,
+        recipient: transaction.recipient,
+        operation_id: operation_id,
+        note: {
+          title: transaction.label,
+          content: transaction.note
+        }
+      },
+      accountId: account.id
+    };
+    return restlay
+      .commitMutation(new NewOperationMutation(data))
+      .then(() => restlay.fetchQuery(new PendingOperationsQuery()));
+  },
   EditFees,
   checkValidTransaction,
   isRecipientValid

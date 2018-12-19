@@ -8,8 +8,6 @@ import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import Tab from "@material-ui/core/Tab";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
-import NewOperationMutation from "api/mutations/NewOperationMutation";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { WalletBridge } from "bridge/types";
 import SendAccount from "./01-Account";
 import SendDetails from "./02-Details";
@@ -57,7 +55,7 @@ const styles = {
   }
 };
 type Props = {
-  classes: *,
+  classes: { [_: $Keys<typeof styles>]: string },
   close: () => void,
   restlay: RestlayEnvironment
 };
@@ -106,32 +104,18 @@ class Send extends Component<Props, State<*>> {
     this.setState({ device: !this.state.device });
   };
 
-  createOperation = operation_id => {
+  createOperation = async operation_id => {
     const { restlay, close } = this.props;
-    const { account, transaction } = this.state;
-    if (account && transaction) {
+    const { account, transaction, bridge } = this.state;
+    if (account && transaction && bridge) {
       if (transaction.amount && transaction.recipient) {
-        const data: * = {
-          operation: {
-            fee_level: transaction.feeLevel,
-            amount: transaction.amount,
-            recipient: transaction.recipient,
-            operation_id: operation_id,
-            note: {
-              title: transaction.label,
-              content: transaction.note
-            }
-          },
-          accountId: account.id
-        };
-
-        return restlay
-          .commitMutation(new NewOperationMutation(data))
-          .then(() => {
-            restlay.fetchQuery(new PendingOperationsQuery());
-            close();
-          })
-          .catch(close());
+        await bridge.composeAndBroadcast(
+          operation_id,
+          restlay,
+          account,
+          transaction
+        );
+        close();
       }
     }
   };
@@ -139,14 +123,24 @@ class Send extends Component<Props, State<*>> {
   render() {
     const { classes, close } = this.props;
     const { tabsIndex, account, transaction, bridge, device } = this.state;
+    // TODO: would be nice to find a more elegant solution to disable tabs
+    const disabledTabs = [
+      false, // tab 0
+      account === null, // tab 1
+      !transaction ||
+        (transaction && !transaction.amount) ||
+        (transaction && !transaction.recipient), // tab 2
+      !transaction || (transaction && !transaction.estimatedFees) // tab 3
+    ];
 
     if (device) {
-        return ( <DeviceAuthenticate
-        cancel={this.confirmTx}
-        callback={this.createOperation}
-        type="operations"
-        account_id={account && account.id}
-      />
+      return (
+        <DeviceAuthenticate
+          cancel={this.confirmTx}
+          callback={this.createOperation}
+          type="operations"
+          account_id={account && account.id}
+        />
       );
     }
     return (
@@ -160,7 +154,12 @@ class Send extends Component<Props, State<*>> {
           onChange={this.onTabChange}
         >
           {tabTitles.map((title, i) => (
-            <Tab key={i} label={title} disableRipple />
+            <Tab
+              key={i}
+              label={title}
+              disableRipple
+              disabled={disabledTabs[i]}
+            />
           ))}
         </Tabs>
         <div className={classes.content}>
@@ -168,6 +167,7 @@ class Send extends Component<Props, State<*>> {
             <SendAccount
               onTabChange={this.onTabChange}
               selectAccount={this.selectAccount}
+              account={account}
             />
           )}
           {tabsIndex === 1 && (

@@ -17,7 +17,7 @@ const styles = {
     lineHeight: 2.42,
     fontSize: 22,
     color: colors.lead,
-    marginBottom: 25
+    marginBottom: 20
   },
   unit: {
     paddingBottom: 10
