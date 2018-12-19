@@ -2,9 +2,8 @@
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
-import type { Translate } from "data/types";
+import type { Translate, Account } from "data/types";
 import { Trans } from "react-i18next";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import LineRow from "components/LineRow";

@@ -1,6 +1,5 @@
 //@flow
 import React, { Component, Fragment } from "react";
-import { isValidAccountName } from "utils/accounts";
 import CurrencyIndex from "components/CurrencyIndex";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -14,12 +13,12 @@ import AccountCreationApprovals from "components/accounts/creation/AccountCreati
 import MembersQuery from "api/queries/MembersQuery";
 import connectData from "restlay/connectData";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import { getOutdatedAccounts } from "utils/accounts";
+import { getOutdatedAccounts, isValidAccountName } from "utils/accounts";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { addMessage } from "redux/modules/alerts";
-import type { Translate, Member } from "data/types";
+import type { Translate, Member, Account } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
 import UpdateTextField from "./UpdateTextField";
 import RowSelectable from "./RowSelectable";
@@ -33,7 +32,6 @@ import {
   editQuorum,
   selectAccount
 } from "redux/modules/update-accounts";
-import type { Account } from "data/types";
 import BlurDialog from "components/BlurDialog";
 
 const styles = {

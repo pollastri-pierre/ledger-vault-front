@@ -1,14 +1,15 @@
 // @flow
 import React, { PureComponent } from "react";
-import CounterValues from "data/CounterValues";
 import { connect } from "react-redux";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
   getFiatCurrencyByTicker,
-  getCryptoCurrencyById
+  getCryptoCurrencyById,
+  listCryptoCurrencies
 } from "@ledgerhq/live-common/lib/helpers/currencies";
+
 import type { TransactionType } from "data/types";
+import CounterValues from "data/CounterValues";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const allCurrencies = listCryptoCurrencies(true);

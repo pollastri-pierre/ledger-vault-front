@@ -7,8 +7,11 @@ import DialogButton from "../buttons/DialogButton";
 import AccountMenuItem from "components/operations/creation/AccountMenuItem";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
-import { getPendingsOperations } from "utils/operations";
-import { hasPending, isMemberOfAccount } from "utils/operations";
+import {
+  hasPending,
+  isMemberOfAccount,
+  getPendingsOperations
+} from "utils/operations";
 import Disabled from "components/Disabled";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";

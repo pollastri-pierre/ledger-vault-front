@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
@@ -9,7 +8,7 @@ import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
 import InfoModal from "components/InfoModal";
 import { DialogButton, Overscroll } from "components";
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 

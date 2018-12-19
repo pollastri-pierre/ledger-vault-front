@@ -1,8 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
-import type { Translate } from "data/types";
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 import ProfileEditModal from "../ProfileEditModal";
 import ModalRoute from "../ModalRoute";
 import PopBubble from "../utils/PopBubble";

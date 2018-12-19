@@ -3,12 +3,14 @@ import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "@material-ui/core/styles";
+import cx from "classnames";
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import BadgeCurrency from "components/BadgeCurrency";
 import colors from "shared/colors";
-import type { Account } from "data/types";
-import cx from "classnames";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+
 const allCurrencies = listCryptoCurrencies(true);
 
 type PieChartData = {

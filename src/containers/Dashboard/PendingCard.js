@@ -1,6 +1,5 @@
 //@flow
 import React, { Component } from "react";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import ViewAllLink from "components/ViewAllLink";
@@ -8,7 +7,7 @@ import Card from "components/Card";
 import CardField from "components/CardField";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import type { Operation, Account } from "data/types";
+import type { Operation, Account, Translate } from "data/types";
 import AccountName from "components/AccountName";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
