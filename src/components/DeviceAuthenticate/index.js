@@ -35,7 +35,7 @@ type Props = {
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
   account_id: ?number,
-  callback: Function,
+  callback: string => any,
   type: "operations" | "accounts",
   cancel: Function
 };
@@ -102,7 +102,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
         });
-        await this.props.callback(entity_id);
+        this.props.callback(entity_id);
       } catch (e) {
         console.error(e);
         const { t } = this.props;
