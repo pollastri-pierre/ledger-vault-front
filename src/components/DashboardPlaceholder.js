@@ -33,12 +33,13 @@ const styles = {
     verticalAlign: "middle"
   },
   link: {
-    marginTop: 20,
     textDecoration: "none",
     color: colors.ocean,
     fontWeight: 600,
     fontSize: 12,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    marginLeft: 10,
+    marginRight: 10
   },
   linkLabel: {
     color: colors.ocean,
@@ -65,18 +66,14 @@ const DashboardPlaceholder = ({
     <div>
       <h3>{<Trans i18nKey="dashboard:empty_state.title" />}</h3>
       <p>
-        <span>
-          <Trans i18nKey="dashboard:empty_state.click" />
-        </span>
+        <Trans i18nKey="dashboard:empty_state.click" />
         <Link to={`dashboard/new-account`} className={classes.link}>
           <Plus className={cx(classes.icon, "test-new-account-dashboard")} />
           <span>
             <Trans i18nKey="dashboard:empty_state.account" />
           </span>
         </Link>
-        <span>
-          <Trans i18nKey="dashboard:empty_state.to_create" />
-        </span>
+        <Trans i18nKey="dashboard:empty_state.to_create" />
       </p>
       <p className={classes.needHelp}>
         <strong>
