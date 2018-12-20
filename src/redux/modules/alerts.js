@@ -45,10 +45,10 @@ export default function reducer(state: Store = initialState, action: Object) {
 
   switch (action.type) {
     case DATA_FETCHED: {
-      const { queryOrMutation, result } = action;
+      const { queryOrMutation } = action;
       const notif =
         queryOrMutation.getSuccessNotification &&
-        queryOrMutation.getSuccessNotification(result.result);
+        queryOrMutation.getSuccessNotification();
       if (notif) {
         const { title, content, messageType = "success" } = notif;
         return { visible: true, title, content, type: messageType };

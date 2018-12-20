@@ -1,5 +1,4 @@
 //@flow
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import MembersQuery from "api/queries/MembersQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Account, Member } from "data/types";
@@ -94,7 +93,6 @@ class Dashboard extends Component<
 const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(Dashboard), {
   queries: {
-    currencies: CurrenciesQuery,
     members: MembersQuery,
     accounts: AccountsQuery
   },

@@ -5,7 +5,6 @@ import { getPendingsOperations } from "utils/operations";
 import React from "react";
 // import AccountsQuery from "api/queries/AccountsQuery";
 import { isCreateOperationEnabled } from "utils/operations";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
@@ -15,6 +14,7 @@ import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import Receive from "components/Receive";
+// import Send from "components/Send";
 import IconReceive from "components/icons/Receive";
 import ModalRoute from "../ModalRoute";
 import { getVisibleAccountsInMenu } from "utils/accounts";
@@ -132,6 +132,7 @@ function Menu(props: {
 
       <ModalRoute
         path="*/new-operation"
+        // component={Send}
         component={NewOperationModal}
         match={match}
       />
@@ -149,7 +150,6 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 export default connectData(withStyles(styles)(Menu), {
   RenderLoading,
   queries: {
-    allPendingOperations: PendingOperationsQuery,
-    currencies: CurrenciesQuery
+    allPendingOperations: PendingOperationsQuery
   }
 });

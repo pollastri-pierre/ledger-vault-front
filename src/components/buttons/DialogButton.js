@@ -58,7 +58,7 @@ const styles = {
     float: "right"
   },
   disabled: {
-    opacity: "0.6",
+    opacity: "0.3",
     cursor: "default",
     "&:hover:after": {
       height: 0

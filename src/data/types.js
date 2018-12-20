@@ -106,6 +106,11 @@ export type Account = AccountCommon & {
   currency: Currency
 };
 
+export type OperationRecipientIsValid = {
+  fee_level: string,
+  amount: number,
+  recipient: string
+};
 export type AccountEntity = AccountCommon & {
   currency: string
 };

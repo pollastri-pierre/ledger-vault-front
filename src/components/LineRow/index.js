@@ -26,7 +26,7 @@ const styles = {
   }
 };
 class LineRow extends Component<{
-  label: string,
+  label: React$Node,
   children: React$Node | string,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {

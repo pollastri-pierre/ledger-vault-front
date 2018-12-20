@@ -10,9 +10,7 @@ import { withRouter } from "react-router";
 import MenuList from "@material-ui/core/MenuList";
 import CurrencyIndex from "components/CurrencyIndex";
 import MenuLink from "../MenuLink";
-
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-const allCurrencies = listCryptoCurrencies(true);
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   item: {
@@ -53,12 +51,8 @@ class AccountsMenu extends Component<{
         {accounts
           .filter(account => VISIBLE_STATUS.indexOf(account.status) > -1)
           .map(account => {
-            const curr = allCurrencies.find(
-              c => c.id === account.currency.name
-            ) || {
-              color: "black"
-            };
-            const unit = account.currency.units.reduce(
+            const curr = getCryptoCurrencyById(account.currency.name);
+            const unit = curr.units.reduce(
               (prev, current) =>
                 prev.magnitude > current.magnitude ? prev : current
             );

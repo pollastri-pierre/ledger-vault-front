@@ -162,7 +162,7 @@ export default class VaultDeviceHTTP {
   async getVersion(): Promise<{ appName: string, appVersion: string }> {
     const promise = Promise.resolve({
       appName: "Vault",
-      appVersion: process.env["APP_VERSION"] || "1.0.17"
+      appVersion: window.config.APP_VERSION
     });
 
     return promise;

@@ -41,7 +41,7 @@ class ApprovalStatusWithAccountName extends Component<{
           />
         </span>
         <span className={classes.account}>
-          <AccountName name={account.name} currency={account.currency} />
+          <AccountName name={account.name} currencyId={account.currency.name} />
         </span>
       </div>
     );
