@@ -4,58 +4,22 @@ aliases:
   - &docker_image circleci/node:8.11.3
   - &dev_s3_bucket ledger-vault-artifacts-dev
   - &prod_s3_bucket ledger-vault-artifacts-prod
-  - &dev_filters
-    branches:
-      ignore:
-        - release-candidate
-        - master
-  - &preprod_filters
-    branches:
-      only: release-candidate
+  - &common_filters
+    tags:
+      only: /.*/
   - &prod_filters
     branches:
       only: master
     tags:
       only: /.*/
 
-commands:
-  dev_env_vars:
-    steps:
-      - run:
-          name: Set environment variables suited to the development version
-          command: |
-            echo "export NODE_ENV='development'" >> $BASH_ENV
-            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
-            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
-  preprod_env_vars:
-    steps:
-      - run:
-          name: Set environment variables suited to the preproduction version
-          command: |
-            echo "export NODE_ENV='preprod'" >> $BASH_ENV
-            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
-            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
-  prod_env_vars:
-    steps:
-      - run:
-          name: Set environment variables suited to the production version
-          command: |
-            echo "export NODE_ENV='production'" >> $BASH_ENV
-            echo "export API_BASE_URL='https://vault.ledger.com'" >> $BASH_ENV
-            echo "export APP_VERSION='1.0.17'" >> $BASH_ENV
-
 jobs:
   run_tests:
     description: Build project
-    parameters:
-      env_vars_cmd:
-        description: Step that sets environment variables
-        type: steps
     docker:
       - image: *docker_image
     steps:
       - checkout
-      - steps: << parameters.env_vars_cmd >>
       - restore_cache:
           keys:
             - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -74,15 +38,10 @@ jobs:
       - run: npm run test
   build:
     description: Build project
-    parameters:
-      env_vars_cmd:
-        description: Step that sets environment variables
-        type: steps
     docker:
       - image: *docker_image
     steps:
       - checkout
-      - steps: << parameters.env_vars_cmd >>
       - restore_cache:
           keys:
             - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
@@ -91,24 +50,28 @@ jobs:
           command: npm run build
       - run:
           name: Create workspace
-          command: mkdir -pv ~/workspace/${NODE_ENV}
+          command: mkdir -pv ~/workspace
       - run:
           name: Create a archive containing all the artifacts
-          command: tar -czvf ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz -C dist .
+          command: tar -czvf ~/workspace/ledger-vault-front.tar.gz -C dist .
       - persist_to_workspace:
           root: ~/workspace
           paths:
-            - "*/ledger-vault-front.tar.gz"
+            - ledger-vault-front.tar.gz
+      - store_artifacts:
+          path: ~/workspace
+          destination: artifacts
+
   publish:
     description: Publish artifact on CircleCI and on S3
     parameters:
-      # Only needed to get NODE_ENV
-      env_vars_cmd:
-        description: Step that sets environment variables
-        type: steps
       s3_bucket:
         description: Bucket where artifacts will be stored
         type: string
+      access_key:
+        type: env_var_name
+      secret_key:
+        type: env_var_name
     docker:
       - image: *docker_image
     steps:
@@ -119,85 +82,44 @@ jobs:
             sudo apt-get -q=2 install awscli
       - attach_workspace:
           at: ~/workspace
-      - steps: << parameters.env_vars_cmd >>
+      - run:
+          name: Set up AWS credentials
+          command: |
+            eval echo 'export AWS_ACCESS_KEY_ID="${<< parameters.access_key >>}"' >> $BASH_ENV
+            eval echo 'export AWS_SECRET_ACCESS_KEY="${<< parameters.secret_key >>}"' >> $BASH_ENV
       - run:
           name: Upload on AWS S3
           command: |
-            s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front/${NODE_ENV}"
+            s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front"
             artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
-            aws s3 cp --no-progress ~/workspace/${NODE_ENV}/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
+            aws s3 cp --no-progress ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
             latest=$(mktemp)
             echo $artifact_with_sha1 > $latest
             aws s3 cp --no-progress $latest ${s3_path}/LATEST
             rm -f $latest
-      - store_artifacts:
-          path: ~/workspace
-          destination: artifacts
 
 workflows:
-  test_build_and_publish-development:
+  build_publish:
     jobs:
       - run_tests:
-          name: run_tests-dev
-          env_vars_cmd:
-            - dev_env_vars
-          filters: *dev_filters
+          filters: *common_filters
       - build:
-          name: build-dev
-          env_vars_cmd:
-            - dev_env_vars
           requires:
-            - run_tests-dev
-          filters: *dev_filters
+            - run_tests
+          filters: *common_filters
       - publish:
-          name: publish-dev
-          env_vars_cmd:
-            - dev_env_vars
+          name: publish_dev
           s3_bucket: *dev_s3_bucket
+          access_key: AWS_ACCESS_KEY_ID_DEV
+          secret_key: AWS_SECRET_ACCESS_KEY_DEV
           requires:
-            - build-dev
-          filters: *dev_filters
-  test_build_and_publish-preprod:
-    jobs:
-      - run_tests:
-          name: run_tests-preprod
-          env_vars_cmd:
-            - preprod_env_vars
-          filters: *preprod_filters
-      - build:
-          name: build-preprod
-          env_vars_cmd:
-            - preprod_env_vars
-          requires:
-            - run_tests-preprod
-          filters: *preprod_filters
+            - build
+          filters: *common_filters
       - publish:
-          name: publish-preprod
-          env_vars_cmd:
-            - dev_env_vars
-          s3_bucket: *dev_s3_bucket
-          requires:
-            - build-preprod
-          filters: *preprod_filters
-  test_build_and_publish-production:
-    jobs:
-      - run_tests:
-          name: run_tests-prod
-          env_vars_cmd:
-            - prod_env_vars
-          filters: *prod_filters
-      - build:
-          name: build-prod
-          env_vars_cmd:
-            - prod_env_vars
-          requires:
-            - run_tests-prod
-          filters: *prod_filters
-      - publish:
-          name: publish-prod
-          env_vars_cmd:
-            - dev_env_vars
+          name: publish_prod
           s3_bucket: *prod_s3_bucket
+          access_key: AWS_ACCESS_KEY_ID_PROD
+          secret_key: AWS_SECRET_ACCESS_KEY_PROD
           requires:
-            - build-prod
+            - build
           filters: *prod_filters
