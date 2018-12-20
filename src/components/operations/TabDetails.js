@@ -62,14 +62,15 @@ class OperationListT<T: *> extends Component<{
   account: Account,
   title: string,
   entries: Array<T>,
-  classes: Object
+  classes: Object,
+  dataTest: string
 }> {
   render() {
-    const { account, title, entries, classes } = this.props;
+    const { account, title, entries, classes, dataTest } = this.props;
     return (
       <div className={classes.detailsContainer}>
         <LineRow label={title}>
-          <strong>
+          <strong data-test={`${dataTest}-currency-unit`}>
             <CurrencyAccountValue
               account={account}
               value={entries.reduce((s, e) => s + e.value, 0)}
@@ -79,7 +80,7 @@ class OperationListT<T: *> extends Component<{
         </LineRow>
         {entries.map(e => (
           <div className={classes.detailsRow} key={e.address}>
-            <p className={classes.address} key={e.address}>
+            <p className={classes.address} key={e.address} data-test={dataTest}>
               {e.address}
             </p>
             {entries.length > 1 && (
@@ -125,17 +126,24 @@ class TabDetails extends PureComponent<{
     const cryptoCurrency = getCryptoCurrencyById(account.currency.name);
     return (
       <div>
-        <span className={classes.title}>Identifier</span>
+        <span
+          data-test="operation-details-identifier"
+          className={classes.title}
+        >
+          Identifier
+        </span>
         <p className={classes.hash}>{transaction.hash}</p>
         {cryptoCurrency.family === "bitcoin" && (
           <Fragment>
             <OperationList
               title="From"
+              dataTest="operation-details-from"
               account={account}
               entries={transaction.inputs}
             />
             <OperationList
               title="To"
+              dataTest="operation-details-to"
               account={account}
               entries={transaction.outputs}
             />
