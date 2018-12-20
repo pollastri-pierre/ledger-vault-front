@@ -1,13 +1,12 @@
 //@flow
 import React, { Component, PureComponent, Fragment } from "react";
 import cx from "classnames";
-import type { Operation, Account } from "data/types";
+import type { Operation, Account, TransactionETH } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
-import type { TransactionETH } from "data/types";
 
 const stylesList = {
   detailsContainer: {

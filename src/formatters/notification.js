@@ -1,6 +1,6 @@
 //@flow
 import formatError from "./error";
-import EnhancedError from "./error";
+import type EnhancedError from "./error";
 
 export const success = (resource: string, action: string) => ({
   title: `${resource} ${action}`,

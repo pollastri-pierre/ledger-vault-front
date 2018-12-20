@@ -1,15 +1,16 @@
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
-import { currenciesSelector, accountsSelector } from "restlay/dataStore";
-import { setExchangePairsAction } from "redux/modules/exchanges";
 import {
   listCryptoCurrencies,
-  getCryptoCurrencyById
+  getCryptoCurrencyById,
+  getFiatCurrencyByTicker
 } from "@ledgerhq/live-common/lib/helpers/currencies";
-const allCurrencies = listCryptoCurrencies(true);
 
+import { currenciesSelector, accountsSelector } from "restlay/dataStore";
+import { setExchangePairsAction } from "redux/modules/exchanges";
+
+const allCurrencies = listCryptoCurrencies(true);
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const pairsSelector = createSelector(
   currenciesSelector,

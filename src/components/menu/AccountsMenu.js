@@ -1,16 +1,21 @@
 //@flow
 import React, { Component } from "react";
-import { STATUS_UPDATE_IN_PROGRESS } from "utils/accounts";
-import { isAccountOutdated } from "utils/accounts";
 import cx from "classnames";
-import { getAccountTitle } from "utils/accounts";
-import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import MenuList from "@material-ui/core/MenuList";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import {
+  isAccountOutdated,
+  STATUS_UPDATE_IN_PROGRESS,
+  getAccountTitle
+} from "utils/accounts";
+
+import type { Account } from "data/types";
+
 import CurrencyIndex from "components/CurrencyIndex";
 import MenuLink from "../MenuLink";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   item: {

@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
-import type { Translate } from "data/types";
 import emailValidator from "email-validator";
 // import Dropzone from "react-dropzone";
 import rectCrop from "rect-crop";
@@ -12,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
 
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 
 type Validator = (value: string) => boolean;
 

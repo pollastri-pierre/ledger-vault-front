@@ -6,7 +6,6 @@ import type { Translate } from "data/types";
 import Trash from "components/icons/Trash";
 import Update from "components/icons/Update";
 import { translate } from "react-i18next";
-import { U2F_TIMEOUT } from "device";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -14,7 +13,7 @@ import Card from "components/Card";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
-import createDevice from "device";
+import createDevice, { U2F_TIMEOUT } from "device";
 
 let _isMounted = false;
 const styles = {

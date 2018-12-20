@@ -14,11 +14,10 @@ import MembersQuery from "api/queries/MembersQuery";
 // import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "api/queries/ProfileQuery";
 // import { calculateApprovingObjectMeta } from "data/approvingObject";
-import type { Account, Operation, Member } from "data/types";
+import type { Account, Operation, Member, Translate } from "data/types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import modals from "shared/modals";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 
 const styles = {

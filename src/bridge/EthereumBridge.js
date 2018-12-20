@@ -49,7 +49,11 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
-  editTransactionRecipient: (account: Account, t: Transaction, recipient: string) => ({
+  editTransactionRecipient: (
+    account: Account,
+    t: Transaction,
+    recipient: string
+  ) => ({
     ...t,
     recipient
   }),
@@ -63,11 +67,16 @@ const EthereumBridge: WalletBridge<Transaction> = {
     label
   }),
   getTransactionNote: (a: Account, t: Transaction) => t.note,
-  editTransactionNote : (account: Account, t: Transaction, note: string) => ({
+  editTransactionNote: (account: Account, t: Transaction, note: string) => ({
     ...t,
     note
   }),
-  composeAndBroadcast: (operation_id: number, restlay: RestlayEnvironment, account: Account, transaction: Transaction) => { // eslint-disable-line
+  composeAndBroadcast: (
+    operation_id: number,
+    restlay: RestlayEnvironment,
+    account: Account,
+    transaction: Transaction // eslint-disable-line
+  ) => {
     // fill with new data obj and endpoint
     // const data: * = {
     //   operation: {},
