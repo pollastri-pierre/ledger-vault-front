@@ -1,6 +1,7 @@
 //@flow
 
 import React from "react";
+import noop from "lodash/noop";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import classnames from "classnames";
@@ -81,7 +82,7 @@ function Checkbox(props: Props) {
           : null
       }
     >
-      <input type="checkbox" id={labelFor} checked={checked} />
+      <input type="checkbox" id={labelFor} checked={checked} onChange={noop} />
       <label htmlFor={labelFor} />
       <span />
     </div>
