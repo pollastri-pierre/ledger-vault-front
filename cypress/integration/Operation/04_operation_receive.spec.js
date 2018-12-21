@@ -1,63 +1,32 @@
-const orga_name = Cypress.env("workspace");
-context("Operation Creation", () => {
-  let polyfill;
-  before(() => {
-    const polyfillUrl = Cypress.env('polyfillUrl');
-    cy.request(polyfillUrl).then(response => {
-      polyfill = response.body;
-    });
+import {login,logout,route,switch_device,create_account,approve } from '../../functions/actions.js';
+
+describe("Tests Receive address for account", function() {
+
+  beforeEach(function () {
+    login(4);
   });
-  it("should create a Operation", () => {
-    // go to vault homepage and enter orga_name
+
+  afterEach(function () {
+    logout();
+  });
+
+
+  it("Get the receive address of a account", () => {
     cy.server();
-    cy.route("post", "**/validation/**").as("validation");
-    cy.route("post", "**/authentications/**").as("authenticate");
-    cy.route("post", "**/fees").as("fees");
-    cy.route("post", "**/logout").as("logout");
+    route();
+    cy.contains("Receive").click();
+    cy.url().should('include', '/dashboard/receive');
+    approve();
 
-    cy.visit(Cypress.env('api_server'), {
-      onBeforeLoad: win => {
-        win.fetch = null;
-        win.eval(polyfill);
-        win.fetch = win.unfetch;
-      }
+    cy.get("[data-test=receive-accounts] li:first").click();
+    cy.wait(1500);
+    // Verify that the QR code and the address is displayed
+    cy.contains("Address for account BTC Testnet").should("be.visible");
+    cy.get("canvas").should("be.visible");
+    cy.contains("Copy address").should("be.visible");
+    cy.wait(2500);
+    // Click to Verify button
+    cy.contains("Re-verify").click();
+
     });
-    cy
-      .request("POST", Cypress.env('api_switch_device'), {
-        device_number: 4
-      })
-      .then(() => {
-        cy.get("input").type(orga_name);
-        cy.contains("continue").click();
-        cy.wait("@authenticate");
-        //We should get a Welcome blue message
-        cy
-          .get(".top-message-body")
-          .contains("Welcome to the Ledger Vault platform!")
-          .get(".top-message-title")
-          .contains("Hello");
-
-
-        cy.get('[href="/ledger4/dashboard/receive"]').click();
-        cy.url().should('include', '/dashboard/receive');
-        cy.request("POST", Cypress.env("approve_cancel_device"), {
-          approve: true
-        });
-
-        cy.get("[data-test=receive-accounts]").click();
-
-
-        cy.wait(1500);
-        // Verify that the QR code and the address is displayed
-        cy.contains("Address for account BTC Testnet").should("be.visible");
-        cy.get("canvas").should("be.visible");
-        cy.contains("Copy address").should("be.visible");
-        cy.wait(2500);
-        //cy.get("span").should("be.visible");
-        // Click to Verify button
-        cy.contains("Re-verify").click();
-      //  cy.contains("Copy address").click();
-      
-      });
-  });
 });

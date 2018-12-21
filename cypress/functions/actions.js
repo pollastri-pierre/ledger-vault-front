@@ -131,3 +131,69 @@ export function approve_account(currency,name,fiat){
     .get(".top-message-title")
     .contains("account request approved");
 }
+
+
+/**
+ * Default way to create a operation.
+ */
+ export function create_operation(id,address, amount){
+  cy.get("[data-test=new-operation]").click();
+  cy
+    .get("[data-test=operation-creation-accounts] li:first")
+    .click({ force: true });
+
+  cy.get("[data-test=unit-select]").click();
+  cy
+    .get("[data-test=unit-select-values]")
+    .eq(id)
+    .debug()
+    .click({ force: true });
+  cy
+    .get("[data-test=crypto-address-picker]")
+    .find("input")
+    .type(address);
+  cy
+    .get("[data-test=operation-creation-amount]")
+    .find("input")
+    .type(amount);
+
+  cy.contains("Continue").click();
+  cy.contains("Continue").click();
+  cy
+    .get("[data-test=dialog-button]")
+    .contains("Confirm")
+    .click({ force: true });
+  cy.wait(2500);
+  cy
+    .get(".top-message-body")
+    .contains("the operation request has been successfully created")
+    .get(".top-message-title")
+    .contains("operation request created");
+}
+
+/**
+ * Default way to approve a operation.
+ */
+export function approve_operation(name){
+  cy.contains("Pending").click();
+  cy
+    .get("[data-test=pending-operation]")
+    .eq(0)
+    .click();
+  cy.get('.operation-list').eq(0).contains('status');
+  //cy.get('.approval-status').contains("Collecting Approvals (0/2)");
+  cy.get("[data-test=name]").contains(name);
+
+  cy.get('button').contains('Approve').should('be.visible');
+  cy.get('button').contains('Abort');
+  cy.get('button').contains('Close');
+  cy
+    .get("[data-test=dialog-button]")
+    .contains("Approve")
+    .click({force: true});
+  cy
+    .get(".top-message-body")
+    .contains("the operation request has been successfully approved")
+    .get(".top-message-title")
+    .contains("operation request approved");
+}

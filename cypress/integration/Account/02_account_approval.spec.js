@@ -13,7 +13,7 @@ describe("Tests Approve Account", function() {
     approve_account("bitcoin_testnet","BTC Testnet", "BTC");
   });
 
-  it("Approve a account with second member", () => {
+  it("Approve a account with second members", () => {
     cy.server();
     route();
     login(4);
