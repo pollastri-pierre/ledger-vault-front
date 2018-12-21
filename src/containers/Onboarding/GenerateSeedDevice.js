@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { translate, Trans } from "react-i18next";
 import createDevice, {
   checkToUpdate,
   CONFIDENTIALITY_PATH,
@@ -128,7 +128,11 @@ class GenerateSeedDevice extends Component<Props, State> {
     const steps = [
       t("onboarding:master_seed_provisionning.device_modal.step1"),
       t("onboarding:master_seed_provisionning.device_modal.step2"),
-      t("onboarding:master_seed_provisionning.device_modal.step3")
+      <Trans
+        key="step3"
+        i18nKey="onboarding:master_seed_provisionning.device_modal.step3"
+        components={<b>0</b>}
+      />
     ];
     return (
       <StepDeviceGeneric

@@ -60,7 +60,12 @@ class ConfirmationCancel extends Component<Props, State> {
             <FormControlLabel
               value="0"
               control={<Radio color="primary" />}
-              label={<Trans i18nKey="onboarding:confirmation_cancel.oops" />}
+              label={
+                <Trans
+                  i18nKey="onboarding:confirmation_cancel.oops"
+                  components={<b>0</b>}
+                />
+              }
             />
             <FormControlLabel
               value="1"

@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { translate, Trans } from "react-i18next";
 import createDevice, {
   U2F_PATH,
   VALIDATION_PATH,
@@ -94,7 +94,11 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
     const steps = [
       t("onboarding:master_seed_signin.device_modal.step1"),
       t("onboarding:master_seed_signin.device_modal.step2"),
-      t("onboarding:master_seed_signin.device_modal.step3")
+      <Trans
+        key="step3"
+        i18nKey="onboarding:master_seed_signin.device_modal.step3"
+        components={<b>0</b>}
+      />
     ];
 
     return (
