@@ -1,13 +1,11 @@
 //@flow
-//TODO
-// this file has been done in emergency, needs to be rewrite and refactor
+//TODO this file has been done in emergency, needs to be rewrite and refactor
 import React, { Component } from "react";
 import Home from "components/icons/Home";
 import type { Translate } from "data/types";
 import Trash from "components/icons/Trash";
 import Update from "components/icons/Update";
 import { translate } from "react-i18next";
-import { U2F_TIMEOUT } from "device";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -15,7 +13,7 @@ import Card from "components/Card";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
-import createDevice from "device";
+import createDevice, { U2F_TIMEOUT } from "device";
 
 let _isMounted = false;
 const styles = {
@@ -64,9 +62,7 @@ const row = {
     right: 20
   }
 };
-const Row = withStyles(
-  row
-)(
+const Row = withStyles(row)(
   ({
     icon,
     children,
@@ -95,14 +91,12 @@ export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 const appToInstall = {
   targetId: 0x31010004,
   perso: "perso_11",
-  firmware:
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
-      ? "blue/2.1.1-ee/vault3/app_latest_dev"
-      : "blue/2.1.1-ee/vault3/app_latest",
-  firmwareKey:
-    process.env.NODE_ENV === "development" || process.env.NODE_ENV === "preprod"
-      ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
-      : "blue/2.1.1-ee/vault3/app_latest_key"
+  firmware: window.config.HSM_SIMU
+    ? "blue/2.1.1-ee/vault3/app_latest_dev"
+    : "blue/2.1.1-ee/vault3/app_latest",
+  firmwareKey: window.config.HSM_SIMU
+    ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
+    : "blue/2.1.1-ee/vault3/app_latest_key"
 };
 const appToUnInstall = {
   targetId: 0x31010004,
@@ -157,7 +151,6 @@ class UpdateApp extends Component<Props, State> {
         const url = `${BASE_SOCKET_URL}/install?${qs.stringify(
           appToUnInstall
         )}`;
-        console.log(appToInstall);
         await createDeviceSocket(transport, url).toPromise();
         this.setState({ uninstalled: true });
         const urlInstall = `${BASE_SOCKET_URL}/install?${qs.stringify(

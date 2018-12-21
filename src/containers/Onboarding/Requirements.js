@@ -34,9 +34,7 @@ const blue = {
     borderColor: colors.blue_orange
   }
 };
-export const BlueDevice = withStyles(
-  blue
-)(
+export const BlueDevice = withStyles(blue)(
   ({
     classes,
     color
@@ -89,9 +87,7 @@ const requirement = {
     justifyContent: "center"
   }
 };
-export const RequirementUnit = withStyles(
-  requirement
-)(
+export const RequirementUnit = withStyles(requirement)(
   ({
     classes,
     icon,

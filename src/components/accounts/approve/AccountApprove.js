@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import OrganizationQuery from "api/queries/OrganizationQuery";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withRouter, Redirect } from "react-router";
 import connectData from "restlay/connectData";
@@ -18,7 +17,7 @@ import AccountApproveApprovals from "./AccountApproveApprovals";
 import AccountQuery from "api/queries/AccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
-import type { Member, Account } from "data/types";
+import type { Member, Account, Translate } from "data/types";
 import modals from "shared/modals";
 
 const styles = {
@@ -50,7 +49,6 @@ const GenericFooter = ({
   approve,
   aborting,
   profile,
-  members,
   account
 }: {
   percentage?: boolean,

@@ -1,7 +1,5 @@
 //@flow
 import React from "react";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import Amount from "components/Amount";
 import {
@@ -16,7 +14,7 @@ import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
-import type { Account } from "data/types";
+import type { Account, Translate } from "data/types";
 
 function AccountApproveDetails(props: {
   account: Account,
@@ -94,7 +92,7 @@ function AccountApproveDetails(props: {
           <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
         <LineRow label="name">
-          <AccountName name={account.name} currency={currency} />
+          <AccountName name={account.name} currencyId={currency.name} />
         </LineRow>
         <LineRow label="currency">
           <span data-test="currency" className="info-value currency">

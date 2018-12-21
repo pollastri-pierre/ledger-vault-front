@@ -1,12 +1,10 @@
 //@flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 // import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
 import Card from "components/Card";
@@ -17,7 +15,6 @@ import type { Member, Account, Operation } from "data/types";
 type Props = {
   approvers: Member[],
   operationsPending: Operation[],
-  t: Translate,
   // operationsQueued: Operation[],
   accounts: Account[],
   user: Member
@@ -29,7 +26,6 @@ class ApproveWatchOperations extends Component<Props> {
       accounts,
       approvers,
       operationsPending,
-      t,
       // operationsQueued,
       user
     } = this.props;
@@ -55,7 +51,7 @@ class ApproveWatchOperations extends Component<Props> {
 
     return (
       <div>
-        <Card title={t("pending:operations.approve.title")}>
+        <Card title={<Trans i18nKey="pending:operations.approve.title" />}>
           <PendingOperationApprove
             user={this.props.user}
             operations={enhancedToApprove}
@@ -63,7 +59,7 @@ class ApproveWatchOperations extends Component<Props> {
             approvers={approvers}
           />
         </Card>
-        <Card title={t("pending:operations.watch.title")}>
+        <Card title={<Trans i18nKey="pending:operations.watch.title" />}>
           <PendingOperationApprove
             user={this.props.user}
             operations={toWatch}
@@ -77,29 +73,28 @@ class ApproveWatchOperations extends Component<Props> {
   }
 }
 
-const RenderLoading = translate()(({ t }: { t: Translate }) => (
+const RenderLoading = () => (
   <div>
-    <Card title={t("pending:operations.approve.title")}>
+    <Card title={<Trans i18nKey="pending:operations.approve.title" />}>
       <SpinnerCard />
     </Card>
-    <Card title={t("pending:operations.watch.title")}>
+    <Card title={<Trans i18nKey="pending:operations.watch.title" />}>
       <SpinnerCard />
     </Card>
   </div>
-));
+);
 const RenderError = ({ error, restlay }: *) => (
   <Card>
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
-export default connectData(translate()(ApproveWatchOperations), {
+export default connectData(ApproveWatchOperations, {
   RenderLoading,
   RenderError,
   queries: {
     approvers: MembersQuery,
     operationsPending: PendingOperationsQuery,
     // operationsQueued: QueuedOperationsQuery,
-    accounts: AccountsQuery,
-    currencies: CurrenciesQuery
+    accounts: AccountsQuery
   }
 });

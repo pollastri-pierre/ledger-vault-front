@@ -37,4 +37,7 @@ export function MessagesContainer(props: {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MessagesContainer);

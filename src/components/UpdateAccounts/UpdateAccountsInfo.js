@@ -1,77 +1,77 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import { getOutdatedAccounts } from "utils/accounts";
 import { withStyles } from "@material-ui/core/styles";
-import type { Translate } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
 import type { Account } from "data/types";
 import { toggleModal } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
+import HeaderRightClose from "components/HeaderRightClose";
 import colors from "shared/colors";
 import WarningIcon from "components/icons/TriangleWarning";
+import ExternalLink from "components/icons/ExternalLink";
+import Circle from "components/Circle";
+import { urls } from "utils/urls";
 
-const warning = {
-  base: {
-    "& a": {
-      color: "white",
-      textDecoration: "none",
-      fontWeight: "bold"
-    },
-    background: colors.grenade,
-    borderRadius: 5,
-    color: "white",
-    lineHeight: "40px",
-    textAlign: "center"
-  },
-  icon: {
-    marginRight: 10,
-    verticalAlign: "middle"
-  }
-};
-const Warning = withStyles(
-  warning
-)(
-  ({
-    classes,
-    children
-  }: {
-    children: *,
-    classes: { [$Keys<typeof warning>]: string }
-  }) => (
-    <div className={classes.base}>
-      <WarningIcon width={20} height={20} className={classes.icon} />
-      {children}
-    </div>
-  )
-);
 const styles = {
   base: {
     width: 500,
     padding: "40px 40px 0 40px",
-    "& h2": {
-      margin: 0
-    },
-    "& ul": {
-      fontSize: 14
-    },
     "& p": {
-      fontSize: 14,
       lineHeight: "24px"
     }
+  },
+  titleContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  warningIcon: {
+    alignSelf: "center"
+  },
+  title: {
+    textTransform: "uppercase",
+    fontSize: 14,
+    fontWeight: "bold",
+    alignSelf: "center"
+  },
+  description: {
+    fontSize: 13,
+    color: colors.steel
+  },
+  infoLinkContainer: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  externalLink: {
+    alignSelf: "center",
+    display: "flex",
+    marginLeft: 5
+  },
+  infoLinkText: {
+    marginTop: 40,
+    "& a": {
+      color: "rgb(234, 46, 73, 0.7)",
+      textDecoration: "none"
+    }
+  },
+  release_notes_href: {
+    color: colors.black,
+    marginRight: 3,
+    textDecoration: "none"
   },
   footer: {
     marginTop: 40,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "flex-end"
   }
 };
 type Props = {
   accounts: Account[],
   onToggle: Function,
-  classes: { [_: $Keys<typeof styles>]: string },
-  t: Translate
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
 type State = {
@@ -96,33 +96,52 @@ class UpdateAccountsInfo extends Component<Props, State> {
 
   render() {
     const { open } = this.state;
-    const { t, classes } = this.props;
+    const { classes } = this.props;
     return (
-      <BlurDialog open={open} onClose={this.close}>
+      <BlurDialog open={open}>
         <div className={classes.base}>
-          <h2>{t("updateAccounts:title")}</h2>
-          <p>
-            {t("updateAccounts:accounts_updated")}{" "}
-            <a
-              href="https://help.vault.ledger.com/Content/whatsnew.htm"
-              target="new"
-            >
-              release notes
-            </a>
+          <HeaderRightClose close={this.close} />
+          <div className={classes.titleContainer}>
+            <Circle bg={colors.translucentGrenade} size="28px">
+              <div>
+                <WarningIcon width={16} height={16} color={colors.grenade} />
+              </div>
+            </Circle>
+            <span className={classes.title}>
+              <Trans i18nKey="updateAccounts:title" />
+            </span>
+          </div>
+          <p className={classes.description}>
+            <Trans i18nKey="updateAccounts:accounts_updated">
+              {
+                "The Ledger Vault platform has been updated. Find out more in the"
+              }
+              <a
+                href={urls.release_notes}
+                target="new"
+                className={classes.release_notes_href}
+              >
+                {"release notes"}
+              </a>
+            </Trans>
+            <ExternalLink color={colors.black} size={12} />.
           </p>
-          <p>{t("updateAccounts:unable_access")}</p>
-          <Warning>
-            <a
-              href="https://help.vault.ledger.com/Content/operations/updateaccount.htm"
-              target="new"
-            >
-              {t("updateAccounts:instruction")}
+          <p className={classes.description}>
+            <Trans i18nKey="updateAccounts:unable_access" />
+          </p>
+          <span className={classes.infoLinkText}>
+            <a href={urls.update_account_info} target="new">
+              <div className={classes.infoLinkContainer}>
+                <Trans i18nKey="updateAccounts:instruction" />
+                <div className={classes.externalLink}>
+                  <ExternalLink color="rgb(234, 46, 73, 0.7)" size={14} />
+                </div>
+              </div>
             </a>
-          </Warning>
+          </span>
           <div className={classes.footer}>
-            <DialogButton onTouchTap={this.close}>Close</DialogButton>
             <DialogButton highlight onTouchTap={this.goToUpdate}>
-              Get Started
+              <Trans i18nKey="common:get_started" />
             </DialogButton>
           </div>
         </div>
@@ -134,6 +153,7 @@ class UpdateAccountsInfo extends Component<Props, State> {
 const mapDispatchToProps = (dispatch: *) => ({
   onToggle: () => dispatch(toggleModal())
 });
-export default connect(null, mapDispatchToProps)(
-  withStyles(styles)(translate()(UpdateAccountsInfo))
-);
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(UpdateAccountsInfo));

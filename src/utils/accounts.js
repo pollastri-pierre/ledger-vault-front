@@ -1,6 +1,13 @@
 //@flow
 import type { Account, Member } from "data/types";
 
+const ACCOUNT_MAX_LENGTH = 19;
+
+const hasMoreThanAscii = str =>
+  str.split("").some(function(char) {
+    return char.charCodeAt(0) > 127;
+  });
+
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
 export const VISIBLE_MENU_STATUS = ["APPROVED", "PENDING_UPDATE"];
 export const APPROVE = "APPROVE";
@@ -19,10 +26,6 @@ export const getVisibleAccountsInMenu = (accounts: Account[]) =>
 export const isAccountBeingUpdated = (account: Account) =>
   account.status === STATUS_UPDATE_IN_PROGRESS;
 
-// name should be less than 20 char and only ascii char are allowed
-export const accountNameValidator = (name: string) =>
-  name.length < 20 && /^[\x00-\x7F]*$/.test(name);
-
 export const hasUserApprovedAccount = (account: Account, user: Member) => {
   const approvals = account.approvals.filter(
     approval => approval.type === APPROVE
@@ -32,3 +35,6 @@ export const hasUserApprovedAccount = (account: Account, user: Member) => {
       .length > 0
   );
 };
+
+export const isValidAccountName = (name: string) =>
+  name.length < ACCOUNT_MAX_LENGTH && !hasMoreThanAscii(name);

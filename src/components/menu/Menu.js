@@ -1,25 +1,26 @@
 //@flow
-import SpinnerCard from "components/spinners/SpinnerCard";
-import { translate } from "react-i18next";
-import type { Translate } from "data/types";
-import { getPendingsOperations } from "utils/operations";
+import { withStyles } from "@material-ui/core/styles";
+import { Trans } from "react-i18next";
 import React from "react";
-// import AccountsQuery from "api/queries/AccountsQuery";
-import { isCreateOperationEnabled } from "utils/operations";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
-import type { Account, Operation } from "data/types";
-import connectData from "restlay/connectData";
 import MenuList from "@material-ui/core/MenuList";
+
 import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 import NewOperationModal from "../NewOperationModal";
 import Receive from "components/Receive";
+// import Send from "components/Send";
 import IconReceive from "components/icons/Receive";
 import ModalRoute from "../ModalRoute";
 import { getVisibleAccountsInMenu } from "utils/accounts";
-import { withStyles } from "@material-ui/core/styles";
+import {
+  isCreateOperationEnabled,
+  getPendingsOperations
+} from "utils/operations";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import type { Account, Operation } from "data/types";
+import connectData from "restlay/connectData";
+import SpinnerCard from "components/spinners/SpinnerCard";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";
@@ -67,10 +68,9 @@ function Menu(props: {
   match: *,
   classes: { [_: $Keys<typeof styles>]: string },
   accounts: Array<Account>,
-  t: Translate,
   allPendingOperations: Array<Operation>
 }) {
-  const { location, classes, accounts, allPendingOperations, match, t } = props;
+  const { location, classes, accounts, allPendingOperations, match } = props;
   const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   const visibleAccounts = getVisibleAccountsInMenu(accounts);
   return (
@@ -85,7 +85,7 @@ function Menu(props: {
           <MenuLink to={`${match.url}/dashboard`}>
             <span className={classes.link}>
               <Home className={classes.icon} />
-              {t("menu:dashboard")}
+              <Trans i18nKey="menu:dashboard" />
             </span>
           </MenuLink>
           <MenuLink
@@ -97,7 +97,7 @@ function Menu(props: {
           >
             <span className={classes.link}>
               <Plus className={classes.icon} />
-              {t("menu:new_operation")}
+              <Trans i18nKey="menu:new_operation" />
             </span>
           </MenuLink>
           <MenuLink
@@ -105,20 +105,20 @@ function Menu(props: {
             disabled={visibleAccounts.length === 0}
           >
             <span className={classes.link}>
-              <IconReceive className={classes.icon} />
-              {t("menu:receive")}
+              <IconReceive size={11} className={classes.icon} />
+              <Trans i18nKey="menu:receive" />
             </span>
           </MenuLink>
           <MenuLink to={`${match.url}/pending`}>
             <span className={classes.link}>
               <Lines className={classes.icon} />
-              {t("menu:pending_requests")}
+              <Trans i18nKey="menu:pending_requests" />
             </span>
           </MenuLink>
           <MenuLink to={`${match.url}/search`}>
             <span className={classes.link}>
               <Search className={classes.searchIcon} />
-              {t("menu:search")}
+              <Trans i18nKey="menu:search" />
             </span>
           </MenuLink>
         </MenuList>
@@ -134,6 +134,7 @@ function Menu(props: {
 
       <ModalRoute
         path="*/new-operation"
+        // component={Send}
         component={NewOperationModal}
         match={match}
       />
@@ -148,10 +149,9 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </div>
 ));
 
-export default connectData(withStyles(styles)(translate()(Menu)), {
+export default connectData(withStyles(styles)(Menu), {
   RenderLoading,
   queries: {
-    allPendingOperations: PendingOperationsQuery,
-    currencies: CurrenciesQuery
+    allPendingOperations: PendingOperationsQuery
   }
 });

@@ -1,22 +1,27 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ArrowDown from "../icons/full/ArrowDown";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
-import type { Account } from "data/types";
+import type { Account, TransactionType } from "data/types";
+import OperationTypeIcon from "components/OperationTypeIcon";
 
 const styles = {
   base: {
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: "32px"
   },
   amount: {
     color: "black",
     letterSpacing: "-0.9px",
-    fontSize: "22px",
-    margin: 0,
-    marginBottom: 10
+    fontSize: "20px",
+    margin: 0
+  },
+  containerTitle: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
   down: {
     fill: "#cccccc",
@@ -27,7 +32,10 @@ const styles = {
   fiat: {
     fontSize: "11px",
     fontWeight: "600",
-    color: colors.steel
+    color: colors.steel,
+    display: "flex",
+    marginTop: "7px",
+    justifyContent: "center"
   },
   hash: {
     fontSize: "13px",
@@ -37,25 +45,43 @@ const styles = {
     overflowWrap: "break-word"
   }
 };
-class OverviewOperation extends Component<{
+
+type Props = {
   amount: number,
-  hash: string,
   account: Account,
-  classes: Object
-}> {
+  classes: Object,
+  operationType: TransactionType
+};
+class OverviewOperation extends Component<Props, *> {
   render() {
-    const { hash, amount, account, classes } = this.props;
+    const { amount, account, classes, operationType } = this.props;
+    const isReceive = operationType === "RECEIVE";
+
     return (
       <div className={classes.base}>
         <div>
-          <p className={classes.amount}>
-            <CurrencyAccountValue account={account} value={amount} />
-          </p>
+          <div className={classes.containerTitle}>
+            <OperationTypeIcon isReceive={isReceive} />
+            <div
+              className={classes.amount}
+              style={{ color: isReceive ? colors.green : colors.shark }}
+            >
+              <CurrencyAccountValue
+                account={account}
+                value={amount}
+                alwaysShowSign
+                type={operationType}
+              />
+            </div>
+          </div>
           <p className={classes.fiat}>
-            <CounterValue value={amount} from={account.currency.name} />
+            <CounterValue
+              value={amount}
+              from={account.currency.name}
+              alwaysShowSign
+              type={operationType}
+            />
           </p>
-          <ArrowDown className={classes.down} />
-          {hash && <p className={classes.hash}>{hash}</p>}
         </div>
       </div>
     );

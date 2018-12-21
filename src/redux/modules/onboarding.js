@@ -126,6 +126,7 @@ export type UIOnboarding = {
 };
 
 type Store = Onboarding & UIOnboarding;
+type GetState = () => $Shape<{ onboarding: Store }>;
 
 const initialState = {
   step: 0,
@@ -157,9 +158,31 @@ const initialState = {
   }
 };
 
-export const nextState = (data: any) => {
+export const getState: Function = () => {
   return async (dispatch: Dispatch<*>) => {
-    const dataToSend = data || {};
+    const state = await network("/onboarding/state", "GET");
+    dispatch({
+      type: ONBOARDING_STATE,
+      state
+    });
+  };
+};
+
+const handleError = (error: Object): Function => {
+  return (dispatch: Dispatch<*>) => {
+    if (error.json && error.json.name == "WRONG_ONBOARDING_STEP_EXCEPTION") {
+      dispatch(getState());
+    } else if (error.json && error.json.message) {
+      dispatch(addMessage("Error", error.json.message, "error"));
+    }
+  };
+};
+
+export const nextState = (data: any) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
+    const onboarding_step = getState()["onboarding"]["state"];
+    let dataToSend = data || {};
+    dataToSend["current_step"] = onboarding_step;
     try {
       const next = await network("/onboarding/next", "POST", dataToSend);
       dispatch({
@@ -167,26 +190,34 @@ export const nextState = (data: any) => {
         next
       });
     } catch (e) {
-      if (e.json && e.json.message) {
-        dispatch(addMessage("Error", e.json.message, "error"));
-      }
+      dispatch(handleError(e));
     }
   };
 };
 
 export const previousState = (data: any) => {
-  return async (dispatch: Dispatch<*>) => {
-    const dataToSend = data || {};
-    const previous = await network("/onboarding/previous", "POST", dataToSend);
-    dispatch({
-      type: PREVIOUS_STEP,
-      previous
-    });
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
+    const onboarding_step = getState()["onboarding"]["state"];
+    let dataToSend = data || {};
+    dataToSend["current_step"] = onboarding_step;
+    try {
+      const previous = await network(
+        "/onboarding/previous",
+        "POST",
+        dataToSend
+      );
+      dispatch({
+        type: PREVIOUS_STEP,
+        previous
+      });
+    } catch (e) {
+      dispatch(handleError(e));
+    }
   };
 };
 
-export const getChallenge = () => {
-  return network("/onboarding/challenge", "GET");
+export const getChallenge = (onboarding_step: Object) => {
+  return network("/onboarding/challenge", "POST", onboarding_step);
 };
 
 export const authenticate = (data: any) => {
@@ -194,15 +225,18 @@ export const authenticate = (data: any) => {
 };
 
 export const addSharedOwner = (data: *) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const sharedOwners = await authenticate(data);
+      const onboarding_step = getState()["onboarding"]["state"];
+      let dataToSend = data || {};
+      dataToSend["current_step"] = onboarding_step;
+      const sharedOwners = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_SHARED_OWNER,
         sharedOwners
       });
     } catch (e) {
-      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch(handleError(e));
     }
   };
 };
@@ -217,15 +251,18 @@ export const toggleMemberModal = (member: any) => ({
 });
 
 export const openWrappingChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const wrapping: Wrapping = await getChallenge();
+      const onboarding_step = getState()["onboarding"]["state"];
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step;
+      const wrapping: Wrapping = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_WRAPPING_CHANNEL,
         wrapping
       });
     } catch (e) {
-      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch(handleError(e));
       dispatch({
         type: ONBOARDING_FATAL_ERROR
       });
@@ -234,33 +271,34 @@ export const openWrappingChannel = () => {
 };
 
 export const addWrappingKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const add_wrap: Wrapping = await authenticate(data);
+      const onboarding_step = getState()["onboarding"]["state"];
+      const dataToSend = { ...data, current_step: onboarding_step };
+      const add_wrap: Wrapping = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_WRAP_KEY,
         add_wrap
       });
-    } catch (error) {
-      if (error.json) {
-        dispatch(
-          addMessage(`Error ${error.json.code}`, error.json.message, "error")
-        );
-      }
+    } catch (e) {
+      dispatch(handleError(e));
     }
   };
 };
 
 export const getSharedOwnerRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const challenge = await getChallenge();
+      const onboarding_step = getState()["onboarding"]["state"];
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step;
+      const challenge = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE,
         challenge: challenge.challenge
       });
     } catch (e) {
-      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch(handleError(e));
       dispatch({
         type: ONBOARDING_FATAL_ERROR
       });
@@ -268,15 +306,18 @@ export const getSharedOwnerRegistrationChallenge = () => {
   };
 };
 export const getRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const challenge = await getChallenge();
+      const onboarding_step = getState()["onboarding"]["state"];
+      let dataToSend = {};
+      dataToSend["current_step"] = onboarding_step;
+      const challenge = await getChallenge(dataToSend);
       dispatch({
         type: ONBOARDING_REGISTERING_CHALLENGE,
         challenge: challenge.challenge
       });
     } catch (e) {
-      dispatch(addMessage("Error", e.json.message, "error"));
+      dispatch(handleError(e));
       dispatch({
         type: ONBOARDING_FATAL_ERROR
       });
@@ -285,7 +326,7 @@ export const getRegistrationChallenge = () => {
 };
 
 export const addMember = (data: Admin) => {
-  return async (dispatch: Dispatch<*>, getState: Function) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     const { registering } = getState()["onboarding"];
     const admins = registering.admins;
     const findIndex = admins.findIndex(
@@ -301,12 +342,8 @@ export const addMember = (data: Admin) => {
           type: ONBOARDING_ADD_ADMIN,
           admins: admins
         });
-      } catch (error) {
-        if (error && error.json) {
-          dispatch(
-            addMessage(`Error ${error.json.code}`, error.json.message, "error")
-          );
-        }
+      } catch (e) {
+        dispatch(handleError(e));
       }
     }
   };
@@ -330,8 +367,11 @@ export const changeQuorum = (nb: number) => {
 };
 
 export const getSigninChallenge = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const challenge = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
+    const onboarding_step = getState()["onboarding"]["state"];
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step;
+    const challenge = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_SIGNIN_CHALLENGE,
       challenge: challenge
@@ -356,13 +396,19 @@ export const addSignedIn = (pub_key: string, signature: *) => {
     } else {
       const data = {
         pub_key: pub_key.toUpperCase(),
+        authentication: signature.rawResponse,
+        current_step: getState()["onboarding"]["state"]
+      };
+      const to_dispatch = {
+        pub_key: pub_key.toUpperCase(),
         authentication: signature.rawResponse
       };
 
       await network("/onboarding/authenticate", "POST", data);
+      //delete data['current_step']
       dispatch({
         type: ONBOARDING_ADD_SIGNEDIN,
-        data
+        data: to_dispatch
       });
     }
   };
@@ -380,19 +426,18 @@ export const addAdminValidation = (pub_key: string, signature: *) => {
         type: ONBOARDING_ADD_ADMIN_VALIDATION,
         admins
       });
-    } catch (error) {
-      if (error.json) {
-        dispatch(
-          addMessage(`Error ${error.json.code}`, error.json.message, "error")
-        );
-      }
+    } catch (e) {
+      dispatch(handleError(e));
     }
   };
 };
 
 export const openAdminValidationChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const channels: * = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
+    const onboarding_step = getState()["onboarding"]["state"];
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step;
+    const channels: * = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_ADMIN_VALIDATION_CHANNEL,
       channels
@@ -401,8 +446,11 @@ export const openAdminValidationChannel = () => {
 };
 
 export const openProvisionningChannel = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const channels: Wrapping = await getChallenge();
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
+    const onboarding_step = getState()["onboarding"]["state"];
+    let dataToSend = {};
+    dataToSend["current_step"] = onboarding_step;
+    const channels: Wrapping = await getChallenge(dataToSend);
     dispatch({
       type: ONBOARDING_MASTERSEED_CHANNEL,
       channels
@@ -411,36 +459,24 @@ export const openProvisionningChannel = () => {
 };
 
 export const addMasterSeedKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>) => {
+  return async (dispatch: Dispatch<*>, getState: GetState) => {
     try {
-      const add_seed = await authenticate(data);
+      const onboarding_step = getState()["onboarding"]["state"];
+      const dataToSend = { ...data, current_step: onboarding_step };
+      const add_seed = await authenticate(dataToSend);
       dispatch({
         type: ONBOARDING_ADD_MASTERSEED_KEY,
         add_seed
       });
-    } catch (error) {
-      if (error.json) {
-        dispatch(
-          addMessage(`Error ${error.json.code}`, error.json.message, "error")
-        );
-      }
+    } catch (e) {
+      dispatch(handleError(e));
     }
-  };
-};
-
-export const getState = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const state = await network("/onboarding/state", "GET");
-    dispatch({
-      type: ONBOARDING_STATE,
-      state
-    });
   };
 };
 
 export const wipe = () => {
   return async (dispatch: Dispatch<*>) => {
-    await network("/onboarding/ongoing", "DELETE");
+    await network("/onboarding/ongoing", "DELETE", {});
     const state = await network("/onboarding/state", "GET");
     dispatch({
       type: ONBOARDING_STATE,
@@ -514,9 +550,10 @@ const syncNextState = (state: Store, action, next = false) => {
     newState = {
       ...state,
       state: "SHARED_OWNER_VALIDATION",
+      quorum: actionState.quorum,
       registering: {
         ...state.registering,
-        admins: actionState.admins
+        admins: actionState.admins || []
       },
       validating_shared_owner: {
         ...state.validating_shared_owner,
@@ -670,13 +707,15 @@ export default function reducer(state: Store = initialState, action: Object) {
       };
     case ONBOARDING_EDIT_MEMBER: {
       const mapFilter = (admins: Admin[], action: *): Admin[] => {
-        return admins.map((admin: Admin): Admin => {
-          if (admin.pub_key === action.admin.pub_key) {
-            return action.admin;
-          } else {
-            return admin;
+        return admins.map(
+          (admin: Admin): Admin => {
+            if (admin.pub_key === action.admin.pub_key) {
+              return action.admin;
+            } else {
+              return admin;
+            }
           }
-        });
+        );
       };
       return {
         ...state,

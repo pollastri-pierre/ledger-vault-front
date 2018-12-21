@@ -1,7 +1,6 @@
 //@flow
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import HelpLink from "components/HelpLink";
 import React, { Component } from "react";
@@ -27,7 +26,7 @@ import { addMessage } from "redux/modules/alerts";
 import network from "network";
 import { withStyles } from "@material-ui/core/styles";
 import Logo from "components/Logo";
-import type { Organization } from "data/types";
+import type { Organization, Translate } from "data/types";
 
 const mapStateToProps = ({ auth, onboarding }) => ({
   isAuthenticated: auth.isAuthenticated,
@@ -93,6 +92,7 @@ const styles = {
 
 type State = {
   domain: string,
+  step: number,
   isChecking: boolean,
   error: ?Error,
   domainValidated: boolean
@@ -103,6 +103,7 @@ let _isMounted = false;
 export class Login extends Component<Props, State> {
   state = {
     domain: "",
+    step: 0,
     error: null,
     domainValidated: false,
     isChecking: false
@@ -262,7 +263,10 @@ export class Login extends Component<Props, State> {
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withStyles(styles)
 )(
   connectData(translate()(Login), {

@@ -2,14 +2,12 @@
 import React, { PureComponent } from "react";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-const allCurrencies = listCryptoCurrencies(true);
 
 const styles = {
   base: {
     verticalAlign: "middle",
-    marginRight: "10px",
+    marginRight: "6px",
     display: "inline-block",
     borderRadius: "50%"
   }
@@ -25,15 +23,10 @@ class BadgeCurrency extends PureComponent<{
   };
   render() {
     const { size, currency, classes, className } = this.props;
-    const curr = allCurrencies.find(
-      curr => curr.id === currency.name.toLowerCase()
-    ) || {
-      color: "black"
-    };
     return (
       <span
         className={classnames(classes.base, className)}
-        style={{ width: size, height: size, background: curr.color }}
+        style={{ width: size, height: size, background: currency.color }}
       />
     );
   }

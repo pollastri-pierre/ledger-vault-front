@@ -17,8 +17,8 @@ import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 import VaultDeviceApp, {
-  mockGetPublicKey,
-  mockAuthenticate
+  mockGetPublicKey, // eslint-disable-line
+  mockAuthenticate // eslint-disable-line
 } from "device/VaultDeviceApp";
 
 Enzyme.configure({ adapter: new Adapter() });

@@ -3,10 +3,9 @@ import React, { Component } from "react";
 // import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import CounterValues from "components/CounterValues";
 import DateFormat from "components/DateFormat";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import Card from "components/Card";
-import type { Account, Member } from "data/types";
+import type { Account, Member, Translate } from "data/types";
 import CardField from "components/CardField";
 import { withStyles } from "@material-ui/core/styles";
 

@@ -38,6 +38,8 @@ export type Currency = {
   family: string,
   ticker: string,
   color: string,
+  payment_uri_scheme: string,
+  issue_message?: string,
   units: Unit[]
 };
 export type CurrencyEntity = Currency;
@@ -104,6 +106,11 @@ export type Account = AccountCommon & {
   currency: Currency
 };
 
+export type OperationRecipientIsValid = {
+  fee_level: string,
+  amount: number,
+  recipient: string
+};
 export type AccountEntity = AccountCommon & {
   currency: string
 };
@@ -158,6 +165,19 @@ export type Transaction = {
   outputs: TransactionOutput[]
 };
 
+export type TransactionETH = {
+  block: Object,
+  height: number,
+  time: string,
+  date: string,
+  gas_limit: number,
+  gas_price: number,
+  hash: string,
+  receiver: string,
+  sender: string,
+  value: number
+};
+
 export type Trust = {
   level: string,
   weight: number,
@@ -194,7 +214,8 @@ type OperationCommon = {
   approvals: Approval[],
   tx_hash: ?string,
   status: string,
-  hsm_operations?: Object
+  hsm_operations?: Object,
+  error?: Object
 };
 export type Operation = OperationCommon & {
   notes: Note[]
@@ -240,4 +261,15 @@ export type ActivityEntityOperation = ActivityCommon & {
     target_id: number,
     target_type: string
   }
+};
+
+export type GateError = {
+  json: {
+    message: string,
+    name: string,
+    code: number
+  },
+  name: string,
+  message: string,
+  status: number
 };

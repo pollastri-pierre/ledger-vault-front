@@ -42,13 +42,12 @@ context("Admin Approve the registration of the Shared Owners", () => {
         cy.get("input").type(orga_name);
         cy.contains("continue").click();
         cy.wait(1000);
+        // First Admin sign in
         cy.get(".test-onboarding-signin").click();
         cy.wait("@authenticate");
 
-        //Try to sign in with the same device
+        //Try to sign in with the same device, Should Display Error
         cy.get(".test-onboarding-signin").click();
-        cy.wait("@authenticate");
-        // Should Display Error
         cy
           .get(".top-message-body")
           .contains(
@@ -56,11 +55,29 @@ context("Admin Approve the registration of the Shared Owners", () => {
           )
           .get(".top-message-title")
           .contains("Error");
+
+        // Second Admin sign in
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 5
         });
+
         cy.get(".test-onboarding-signin").click();
         cy.wait("@authenticate");
+        cy.wait(1000);
+        //Try to sign in with the WPK device
+        cy.request("POST", Cypress.env("api_switch_device"), {
+            device_number: 1
+        });
+        cy.get(".test-onboarding-signin").click();
+        cy
+          .get(".top-message-body")
+          .contains(
+            "Please connect an Administrator device"
+          )
+          .get(".top-message-title")
+          .contains("Error");
+        cy.wait(1000);
+        // Thrid Admin sign in
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 6
         });

@@ -6,3 +6,13 @@ require("whatwg-fetch");
 if (process.env.NODE_ENV === "test") {
   require("raf").polyfill(global);
 }
+
+global.config = {
+  API_BASE_URL: "http://localhost:5000",
+  HSM_SIMU: true,
+
+  // TODO looks weird, but we don't want to trigger `checkToUpdate() => false`
+  // because it trigger a window.history.push which is not supported by jsdom
+  // and makes test fail
+  APP_VERSION: undefined
+};

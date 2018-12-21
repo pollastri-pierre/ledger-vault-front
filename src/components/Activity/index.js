@@ -67,20 +67,6 @@ const styles = {
   }
 };
 
-const dayDateFormat = {
-  sameDay: "[TODAY]",
-  lastDay: "[YESTERDAY]",
-  lastWeek: "ddd D MMM",
-  sameElse: "ddd D MMM"
-};
-
-const hourDateFormat = {
-  sameDay: "LT",
-  lastDay: "LT",
-  lastWeek: "LT",
-  sameElse: "LT"
-};
-
 class ActivityLine extends Component<
   {
     activity: ActivityCommon,
@@ -112,9 +98,6 @@ class ActivityLine extends Component<
             this.getSeenClass(activity.seen)
           )}
         >
-          <div className={classnames(classes.uppercase, classes.date)}>
-            <DateFormat date={activity.created_on} />
-          </div>
           <div className={classnames(classes.uppercase, classes.date)}>
             <DateFormat date={activity.created_on} />
           </div>

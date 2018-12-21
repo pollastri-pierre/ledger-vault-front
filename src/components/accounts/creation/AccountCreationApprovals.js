@@ -1,13 +1,12 @@
 //@flow
 import React from "react";
 import InfoModal from "../../InfoModal";
-import type { Translate } from "data/types";
 import { translate, Interpolate } from "react-i18next";
 import DialogButton from "../../buttons/DialogButton";
 import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
@@ -92,6 +91,7 @@ function AccountCreationApprovals(props: {
   );
 }
 
-export default connect(undefined, mapDispatchToProps)(
-  withStyles(styles)(translate()(AccountCreationApprovals))
-);
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(withStyles(styles)(translate()(AccountCreationApprovals)));

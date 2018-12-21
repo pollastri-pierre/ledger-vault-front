@@ -14,6 +14,9 @@ import DataTable from "../DataTable";
 import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
+import Circle from "components/Circle";
+import Receive from "components/icons/Receive";
+import Send from "components/icons/Send";
 
 type Cell = {
   operation: Operation,
@@ -141,7 +144,7 @@ const styles_note = {
     height: 12
   }
 };
-const OpNoteLink = withStyles(styles_note)(OperationNoteLink);
+const OpNoteLink = withStyles(styles_note)(OperationNoteLink); // eslint-disable-line
 
 class DateColumn extends Component<Cell> {
   render() {
@@ -171,7 +174,7 @@ class AccountColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
     return account ? (
-      <AccountName name={account.name} currency={account.currency} />
+      <AccountName name={account.name} currencyId={account.currency.name} />
     ) : null;
   }
 }
@@ -179,6 +182,7 @@ class AccountColumn extends Component<Cell> {
 class AddressColumn extends Component<Cell> {
   render() {
     const { operation } = this.props;
+    const isReceive = operation.type === "RECEIVE";
     let hash = "";
     if (operation.error) {
       return <span className="hash">{operation.recipient}</span>;
@@ -189,12 +193,22 @@ class AddressColumn extends Component<Cell> {
       hash = operation.senders[0];
     }
     return (
-      <span>
-        <span className="type">
-          {operation.type === "SEND" ? "TO" : "FROM"}
-        </span>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <Circle
+          bg={isReceive ? colors.translucentGreen : colors.translucentGrey}
+          size="18px"
+        >
+          <div style={{ justifyContent: "center" }}>
+            {isReceive ? (
+              <Receive size={9} color={colors.green} />
+            ) : (
+              <Send size={9} color={colors.shark} />
+            )}
+          </div>
+        </Circle>
+
         <span className="hash">{hash}</span>
-      </span>
+      </div>
     );
   }
 }
@@ -231,6 +245,8 @@ class CountervalueColumn extends Component<Cell> {
         <CounterValue
           from={account.currency.name}
           value={operation.amount || operation.price.amount}
+          alwaysShowSign
+          type={operation.type}
         />
       );
     }
@@ -335,13 +351,8 @@ class DataTableOperation extends Component<
     <Row {...props} openOperation={this.openOperation} />
   );
 
-  componentDidMount() {
-    console.log(COLS.filter(c => this.props.columnIds.includes(c.className)));
-  }
-
   componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
-      console.log(COLS);
       this.setState({
         columns: COLS.filter(c => props.columnIds.includes(c.className))
       });

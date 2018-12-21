@@ -3,12 +3,14 @@ import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "@material-ui/core/styles";
+import cx from "classnames";
+import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import BadgeCurrency from "components/BadgeCurrency";
 import colors from "shared/colors";
-import type { Account } from "data/types";
-import cx from "classnames";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+
 const allCurrencies = listCryptoCurrencies(true);
 
 type PieChartData = {
@@ -218,15 +220,14 @@ class PieChart extends Component<
 
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
-      data[i].percentage = (d.data.counterValueBalance / total * 100).toFixed(
+      data[i].percentage = ((d.data.counterValueBalance / total) * 100).toFixed(
         0
       ); //Save percentage of arc
     });
 
     g.attr("transform", `translate(${radius}, ${radius})`);
 
-    g
-      .selectAll(".arc")
+    g.selectAll(".arc")
       .data(pie(data))
       .enter()
       .append("g")
@@ -245,8 +246,7 @@ class PieChart extends Component<
       });
 
     //transparent Chart for hovering purposes
-    g
-      .selectAll(".invisibleArc")
+    g.selectAll(".invisibleArc")
       .data(pie(data))
       .enter()
       .append("g")
@@ -271,8 +271,7 @@ class PieChart extends Component<
     const svgWidth = svg.attr("width");
     const svgHeight = svg.attr("height");
     if (showTooltips && selected !== prevSelected) {
-      d3
-        .select(this.svg)
+      d3.select(this.svg)
         .selectAll(".arc")
         .classed(classes.disable, (d, i) => selected !== -1 && selected !== i)
         .classed("selected", (d, i) => selected !== -1 && selected === i);
@@ -401,9 +400,11 @@ class PieChart extends Component<
                     })}
                     key={id}
                     onMouseOver={() =>
-                      highlightCaptionsOnHover && this.setSelected(id)}
+                      highlightCaptionsOnHover && this.setSelected(id)
+                    }
                     onMouseOut={() =>
-                      highlightCaptionsOnHover && this.setSelected(-1)}
+                      highlightCaptionsOnHover && this.setSelected(-1)
+                    }
                   >
                     <td>
                       <BadgeCurrency currency={data.account.currency} />

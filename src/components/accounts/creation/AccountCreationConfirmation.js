@@ -57,7 +57,7 @@ function AccountCreationConfirmation(props: { account: Object, t: Translate }) {
 
       <div style={{ marginTop: "50px" }}>
         <LineRow label="account">
-          <AccountName name={name} currency={currency} />
+          <AccountName name={name} currencyId={currency.id} />
         </LineRow>
         <LineRow label="Currency">
           <span className="info-value currency">{currency.name}</span>

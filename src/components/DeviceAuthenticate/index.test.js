@@ -13,8 +13,8 @@ import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 import VaultDeviceApp, {
-  mockGetPublicKey,
-  mockAuthenticate
+  mockGetPublicKey, // eslint-disable-line
+  mockAuthenticate // eslint-disable-line
 } from "device/VaultDeviceApp";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -108,12 +108,14 @@ test("authenticate for operation creation should call API and device", async () 
     "Administrator"
   );
 
-  expect(
-    network
-  ).toHaveBeenCalledWith("/operations/authentications/authenticate", "POST", {
-    pub_key: "PUBKEY",
-    authentication: "raw",
-    operation_id: 1
-  });
+  expect(network).toHaveBeenCalledWith(
+    "/operations/authentications/authenticate",
+    "POST",
+    {
+      pub_key: "PUBKEY",
+      authentication: "raw",
+      operation_id: 1
+    }
+  );
   expect(props.callback).toHaveBeenCalled();
 });

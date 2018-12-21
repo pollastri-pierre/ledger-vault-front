@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 type Props = {
   children: *,
   subLink?: string,
-  support: boolean,
+  support?: boolean,
   className?: string
 };
 class HelpLink extends PureComponent<Props> {

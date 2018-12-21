@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import Footer from "../../approve/Footer";
 import { withStyles } from "@material-ui/core/styles";
-import OperationApproveDedails from "./OperationApproveDedails";
+import OperationApproveDetails from "./OperationApproveDetails";
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import ApprovalPercentage from "components/ApprovalPercentage";
 // import OperationApproveLocks from "./OperationApproveLocks";
@@ -14,11 +14,10 @@ import MembersQuery from "api/queries/MembersQuery";
 // import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "api/queries/ProfileQuery";
 // import { calculateApprovingObjectMeta } from "data/approvingObject";
-import type { Account, Operation, Member } from "data/types";
+import type { Account, Operation, Member, Translate } from "data/types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import modals from "shared/modals";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 
 const styles = {
@@ -116,7 +115,7 @@ class OperationApprove extends Component<Props, { value: number }> {
         </header>
         {value === 0 && (
           <div className="tabs_panel">
-            <OperationApproveDedails
+            <OperationApproveDetails
               operation={operation}
               account={account}
               profile={profile}

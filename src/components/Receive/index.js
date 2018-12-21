@@ -4,24 +4,24 @@ import type { Account } from "data/types";
 import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
 import ModalLoading from "components/ModalLoading";
 import Tabs from "@material-ui/core/Tabs";
+import { withStyles } from "@material-ui/core/styles";
+import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import DialogButton from "components/buttons/DialogButton";
 import Tab from "@material-ui/core/Tab";
 import ReceiveAccounts from "./Accounts";
 import ReceiveDevice from "./Device";
 import ReceiveAddress from "./Address";
-import { withStyles } from "@material-ui/core/styles";
-import { CONFIDENTIALITY_PATH, VALIDATION_PATH, MATCHER_SESSION } from "device";
+import HeaderRightClose from "components/HeaderRightClose";
 
 const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 
 const styles = {
   root: {
     width: 445,
-    height: 612,
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    height: 612
   },
   title: {
     fontSize: 18,
@@ -36,9 +36,11 @@ const styles = {
     zIndex: 2
   },
   content: {
-    height: 400,
     overflowY: "auto",
-    paddingTop: 40
+    paddingTop: 40,
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh"
   },
   footer: {
     position: "absolute",
@@ -138,6 +140,7 @@ class Receive extends Component<Props, State> {
     return (
       <div className={classes.root}>
         <h2 className={classes.title}>Receive Address</h2>
+        <HeaderRightClose close={close} />
         <Tabs
           indicatorColor="primary"
           className={classes.tabs}
@@ -171,17 +174,12 @@ class Receive extends Component<Props, State> {
             />
           )}
         </div>
-        <div className={classes.footer}>
-          <DialogButton right onTouchTap={close}>
-            close
-          </DialogButton>
-        </div>
       </div>
     );
   }
 }
 
-export default connectData(withStyles(styles)(Receive), {
+export default connectData(withStyles(styles)(translate()(Receive)), {
   RenderLoading: ModalLoading,
   queries: {
     accounts: AccountsQuery

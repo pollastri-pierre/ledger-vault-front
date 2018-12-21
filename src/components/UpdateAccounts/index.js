@@ -12,17 +12,17 @@ import Disabled from "components/Disabled";
 import AccountCreationApprovals from "components/accounts/creation/AccountCreationApprovals";
 import MembersQuery from "api/queries/MembersQuery";
 import connectData from "restlay/connectData";
-import cx from "classnames";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import colors from "shared/colors";
-import { getOutdatedAccounts, getAccountTitle } from "utils/accounts";
+import { getOutdatedAccounts, isValidAccountName } from "utils/accounts";
 import { translate } from "react-i18next";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { addMessage } from "redux/modules/alerts";
-import type { Translate, Member } from "data/types";
+import type { Translate, Member, Account } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
-import AccountMenuItem from "components/operations/creation/AccountMenuItem";
+import UpdateTextField from "./UpdateTextField";
+import RowSelectable from "./RowSelectable";
+import Row from "./Row";
 import {
   toggleModal,
   toggleMembers,
@@ -32,7 +32,6 @@ import {
   editQuorum,
   selectAccount
 } from "redux/modules/update-accounts";
-import type { Account } from "data/types";
 import BlurDialog from "components/BlurDialog";
 
 const styles = {
@@ -80,108 +79,6 @@ const styles = {
   }
 };
 
-const rowSelectable = {
-  base: {
-    display: "flex",
-    borderBottom: `1px solid ${colors.argile}`,
-    width: 150,
-    cursor: "pointer",
-    justifyContent: "space-between",
-    lineHeight: "40px"
-  },
-  noBorder: {
-    border: 0
-  },
-  label: {
-    textTransform: "uppercase",
-    color: "black",
-    fontSize: 11,
-    fontWeight: "bold"
-  },
-  select: {
-    color: "grey",
-    fontSize: 12
-  },
-  value: {
-    color: "grey"
-  }
-};
-
-const RowSelectable = withStyles(
-  rowSelectable
-)(
-  ({
-    label,
-    classes,
-    onClick,
-    noBorder,
-    descriptionSelected,
-    value
-  }: {
-    label: string,
-    descriptionSelected: string,
-    noBorder: boolean,
-    onClick: Function,
-    value: number,
-    classes: { [_: $Keys<typeof rowSelectable>]: string }
-  }) => (
-    <div
-      className={cx(classes.base, { [classes.noBorder]: noBorder })}
-      onClick={onClick}
-    >
-      <div className={classes.label}>{label}</div>
-      {value === 0 ? (
-        <div className={classes.select}>select {" > "}</div>
-      ) : (
-        <div className={classes.value}>
-          {value} {descriptionSelected}
-        </div>
-      )}
-    </div>
-  )
-);
-const row = {
-  base: {
-    borderBottom: `1px solid ${colors.argile}`,
-    display: "flex",
-    minHeight: 40,
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  noBorder: {
-    border: 0
-  },
-  label: {
-    textTransform: "uppercase",
-    fontWeight: "bold",
-    fontSize: 11
-  },
-  children: {
-    color: "grey",
-    fontSize: 12
-  }
-};
-const Row = withStyles(
-  row
-)(
-  ({
-    classes,
-    label,
-    children,
-    noBorder
-  }: {
-    classes: { [_: $Keys<typeof row>]: string },
-    label: string,
-    children: *,
-    noBorder: boolean
-  }) => (
-    <div className={cx(classes.base, { [classes.noBorder]: noBorder })}>
-      <div className={classes.label}>{label}</div>
-      <div className={classes.children}>{children}</div>
-    </div>
-  )
-);
-
 type Props = {
   accounts: Account[],
   selectedAccount: Account,
@@ -205,7 +102,14 @@ type Props = {
   t: Translate
 };
 
-class UpdateAccounts extends Component<Props> {
+type State = {
+  accountName: string
+};
+
+class UpdateAccounts extends Component<Props, State> {
+  state: State = {
+    accountName: ""
+  };
   componentDidUpdate() {
     const { selectedAccount, accounts, onSelectAccount, isOpen } = this.props;
     const outdatedAccounts = getOutdatedAccounts(accounts);
@@ -214,6 +118,9 @@ class UpdateAccounts extends Component<Props> {
     }
   }
 
+  onChangeAccountName = (e: SyntheticInputEvent<>) => {
+    this.setState({ accountName: e.target.value });
+  };
   updateAccount = async () => {
     const { onToggle, restlay, onToggleDevice, onAddMessage } = this.props;
     const data = {
@@ -223,6 +130,9 @@ class UpdateAccounts extends Component<Props> {
       }
     };
     try {
+      await network(`/accounts/${this.props.selectedAccount.id}`, "PUT", {
+        name: this.state.accountName
+      });
       await network(
         `/accounts/${this.props.selectedAccount.id}/security-scheme`,
         "PUT",
@@ -234,7 +144,11 @@ class UpdateAccounts extends Component<Props> {
       onToggle();
     } catch (e) {
       console.error(e);
-      onAddMessage("Error", "Something went wrong.", "error");
+      if (e.json && e.json.message) {
+        onAddMessage("Error", e.json.message, "error");
+      } else {
+        onAddMessage("Error", "Something went wrong.", "error");
+      }
       onToggleDevice();
     }
   };
@@ -259,6 +173,8 @@ class UpdateAccounts extends Component<Props> {
       isSelectingApprovals,
       onSelectAccount
     } = this.props;
+
+    const { accountName } = this.state;
     return (
       <Fragment>
         <BlurDialog open={isOpen} onClose={onToggle}>
@@ -293,7 +209,16 @@ class UpdateAccounts extends Component<Props> {
               <p>{t("updateAccounts:desc")}</p>
               {selectedAccount && (
                 <div>
-                  <Row label="Account">{selectedAccount.name}</Row>
+                  <Row label="Account">
+                    <UpdateTextField
+                      name="account_name"
+                      placeholder="account name"
+                      value={accountName}
+                      onChange={this.onChangeAccountName}
+                      error={!isValidAccountName(accountName)}
+                      errorMessage="only ASCII char, 19 max length"
+                    />
+                  </Row>
                   <Row label="Cryptocurrency / Index">
                     <CurrencyIndex
                       currency={selectedAccount.currency.name}
@@ -335,6 +260,8 @@ class UpdateAccounts extends Component<Props> {
                       disabled={
                         approvers.length === 0 ||
                         quorum === 0 ||
+                        accountName === "" ||
+                        !isValidAccountName(accountName) ||
                         quorum > approvers.length
                       }
                     >
@@ -399,9 +326,10 @@ const mapDispatchToProps = (dispatch: *) => ({
 });
 
 export default connectData(
-  connect(mapStateToProps, mapDispatchToProps)(
-    withStyles(styles)(translate()(UpdateAccounts))
-  ),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(translate()(UpdateAccounts))),
   {
     queries: {
       members: MembersQuery

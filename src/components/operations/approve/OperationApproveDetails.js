@@ -18,11 +18,14 @@ function OperationApproveDetails(props: {
   return (
     <div>
       <OverviewOperation
-        hash={operation.recipient}
         amount={operation.price.amount}
         account={account}
+        operationType={operation.type}
       />
       <div className="operation-list">
+        <LineRow label="Identifier">
+          {operation.recipient && <span>{operation.recipient}</span>}
+        </LineRow>
         <LineRow label="status">
           <ApprovalStatus
             approvingObject={operation}
@@ -36,7 +39,7 @@ function OperationApproveDetails(props: {
           <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label="account to debit">
-          <AccountName name={account.name} currency={account.currency} />
+          <AccountName name={account.name} currencyId={account.currency.name} />
         </LineRow>
         {/* <LineRow label="Confirmation fees"> */}
         {/*   <Amount account={account} value={operation.fees.amount} /> */}

@@ -1,21 +1,18 @@
 //@flow
 import { connect } from "react-redux";
-import colors from "shared/colors";
 import cx from "classnames";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
-import Plus from "../../components/icons/full/Plus";
 import AddMember from "./AddMember";
 import {
   Title,
   Introduction,
   AddUser,
-  Careful
+  Careful,
+  NoMembers
 } from "components/Onboarding.js";
-import { NoMembers } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import Footer from "./Footer";
 import { addMessage } from "redux/modules/alerts";
@@ -28,7 +25,7 @@ import {
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 
 const styles = {
   disabled: {
@@ -46,9 +43,7 @@ const membersList = {
     cursor: "pointer"
   }
 };
-const MembersList = withStyles(
-  membersList
-)(
+const MembersList = withStyles(membersList)(
   ({
     classes,
     members,
@@ -191,6 +186,7 @@ class Registration extends Component<Props, *> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatch)(
-  withStyles(styles)(translate()(Registration))
-);
+export default connect(
+  mapStateToProps,
+  mapDispatch
+)(withStyles(styles)(translate()(Registration)));

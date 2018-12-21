@@ -4,20 +4,17 @@ import { Link } from "react-router-dom";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
 import {
-  STATUS_UPDATE_IN_PROGRESS,
   isAccountOutdated,
   isAccountBeingUpdated,
   hasUserApprovedAccount
 } from "utils/accounts";
-import type { Translate } from "data/types";
 import Bell from "components/icons/thin/Bell";
 import { translate } from "react-i18next";
 import colors from "shared/colors";
 import EditButton from "components/UpdateAccounts/EditButton";
-import { getAccountTitle } from "utils/accounts";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account, Member } from "data/types";
+import type { Account, Member, Translate } from "data/types";
 
 const row = {
   base: {
@@ -34,9 +31,7 @@ const row = {
     color: "#585858"
   }
 };
-const Row = withStyles(
-  row
-)(
+const Row = withStyles(row)(
   ({
     label,
     value,
@@ -106,7 +101,7 @@ const AccountTitle = ({ account }: { account: Account }) => (
 );
 class AccountQuickInfo extends Component<Props> {
   render() {
-    const { account, classes, t, match, me } = this.props;
+    const { account, classes, t, me } = this.props;
     const orga = location.pathname.split("/")[1];
     return (
       <Card title={<AccountTitle account={account} />}>
@@ -134,8 +129,9 @@ class AccountQuickInfo extends Component<Props> {
             />
             <Row
               label={t("accountView:summary.quorum")}
-              value={`${account.security_scheme.quorum} out of ${account.members
-                .length}`}
+              value={`${account.security_scheme.quorum} out of ${
+                account.members.length
+              }`}
             />
           </div>
           <div>

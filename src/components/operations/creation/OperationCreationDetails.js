@@ -14,7 +14,6 @@ import ModalSubTitle from "./ModalSubTitle";
 import CryptoAddressPicker from "../../CryptoAddressPicker";
 import FeeSelect from "./FeeSelect";
 import UnitSelect from "./UnitSelect";
-import MaxSelect from "./MaxSelect";
 
 type State = {
   unitIndex: number,
@@ -148,7 +147,10 @@ class OperationCreationDetails extends Component<
   };
 
   updateAddress = (address: string) => {
-    const { restlay, account: { currency } } = this.props;
+    const {
+      restlay,
+      account: { currency }
+    } = this.props;
     this.setState({ address, addressIsValid: false }, this.validateTab); // FIXME we might want a "pending" internal state for the component to render not a red validation but another thing
     // NB ideally we will want the CONTINUE button to wait the validation passed.
     // it means we probably need to do the validation from parent and pass-in the validation state

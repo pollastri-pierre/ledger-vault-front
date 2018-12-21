@@ -2,8 +2,7 @@
 import React from "react";
 import groupBy from "lodash/groupBy";
 import size from "lodash/size";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import DateFormat from "../DateFormat";
 import AccountName from "../AccountName";
@@ -14,14 +13,16 @@ import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";
 
-const Empty = translate()(
-  ({ t, approved }: { t: Translate, approved?: boolean }) => {
-    if (approved) {
-      return <p>{t("pending:accounts.watch.no_data")}</p>;
-    }
-    return <p>{t("pending:accounts.approve.no_data")}</p>;
-  }
-);
+const Empty = ({ approved }: { approved?: boolean }) =>
+  approved ? (
+    <p>
+      <Trans i18nKey="pending:accounts.watch.no_data" />
+    </p>
+  ) : (
+    <p>
+      <Trans i18nKey="pending:accounts.approve.no_data" />
+    </p>
+  );
 type Props = {
   accounts: Account[],
   approved?: boolean,
@@ -77,7 +78,10 @@ function PendingAccountApprove(props: Props) {
               <DateFormat date={account.created_on} />
             </span>
             <span className={classes.name}>
-              <AccountName name={account.name} currency={account.currency} />
+              <AccountName
+                name={account.name}
+                currencyId={account.currency.name}
+              />
             </span>
           </div>
 

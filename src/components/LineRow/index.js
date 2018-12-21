@@ -5,26 +5,30 @@ import colors from "shared/colors";
 
 const styles = {
   base: {
-    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
     height: "42px",
     lineHeight: "41px",
-    borderTop: `1px solid ${colors.argile}`
+    borderTop: `1px solid ${colors.cream}`
   },
   title: {
-    fontWeight: "600",
-    fontSize: "11px",
+    fontWeight: 600,
+    fontSize: 11,
     textTransform: "uppercase"
   },
   value: {
-    fontSize: "13px",
-    float: "right",
-    textAlign: "right"
+    fontSize: 13,
+    flexBasis: "50%",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    textAlign: "end"
   }
 };
 class LineRow extends Component<{
-  label: string,
+  label: React$Node,
   children: React$Node | string,
-  classes: Object
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { label, children, classes } = this.props;

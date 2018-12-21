@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
+import CounterValues from "data/CounterValues";
 import { Switch, Route } from "react-router";
 import Welcome from "./Welcome";
 import AlertsContainer from "containers/AlertsContainer";
@@ -54,12 +55,14 @@ const OrganizationAppRouter = () => {
                         return <Logout match={match} />;
                       }}
                     />
-                    <PrivateRoute
-                      path={`${match.url}/`}
-                      component={App}
-                      history={history}
-                      match={match}
-                    />
+                    <CounterValues.PollingProvider>
+                      <PrivateRoute
+                        path={`${match.url}/`}
+                        component={App}
+                        history={history}
+                        match={match}
+                      />
+                    </CounterValues.PollingProvider>
                   </Switch>
                 </Fragment>
               );

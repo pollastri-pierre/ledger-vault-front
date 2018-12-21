@@ -1,7 +1,6 @@
 //@flow
 import React from "react";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
 import CounterValue from "components/CounterValue";
@@ -14,14 +13,16 @@ import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
 import type { Account, Operation, Member } from "data/types";
 import styles from "./styles";
 
-const Empty = translate()(
-  ({ approved, t }: { approved?: boolean, t: Translate }) => {
-    if (approved) {
-      return <p>{t("pending:operations.watch.no_data")}</p>;
-    }
-    return <p>{t("pending:operations.approve.no_data")}</p>;
-  }
-);
+const Empty = ({ approved }: { approved?: boolean }) =>
+  approved ? (
+    <p>
+      <Trans i18nKey="pending:operations.watch.no_data" />
+    </p>
+  ) : (
+    <p>
+      <Trans i18nKey="pending:operations.approve.no_data" />
+    </p>
+  );
 
 type Props = {
   accounts: Account[],
@@ -65,7 +66,7 @@ function PendingOperationApprove(props: Props) {
         const account = accounts.find(a => a.id === operation.account_id);
         return (
           <Link
-            data-test='pending-operation'
+            data-test="pending-operation"
             className={classnames(classes.row, {
               [classes.approved]: approved
             })}

@@ -1,25 +1,20 @@
 //@flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
-import type { Dispatch } from "redux";
 import { translate } from "react-i18next";
 import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
-import { DATA_FETCHED } from "restlay/dataStore";
 import ActivityList from "../ActivityList";
 import Bell from "../icons/full/Bell";
 import PopBubble from "../utils/PopBubble";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
-import { normalize } from "normalizr-gre";
 import io from "socket.io-client";
-import type { ActivityGeneric } from "data/types";
 
 const styles = {
   base: {
@@ -78,7 +73,10 @@ class ActivityCard extends Component<
   componentDidMount() {
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(url, { path: path });
+    const socket = io.connect(
+      url,
+      { path: path }
+    );
     const myAuthToken = getLocalStorageToken();
     let self = this;
     socket.on("connect", function() {
@@ -87,7 +85,7 @@ class ActivityCard extends Component<
         orga: self.props.match.params.orga_name
       });
     });
-    socket.on(self.props.match.params.orga_name + "/admin", function(activity) {
+    socket.on(self.props.match.params.orga_name + "/admin", function() {
       //FIXME why is it fired twice ??
       if (self.props.onNewActivity && self.props.restlay) {
         self.props.restlay.fetchQuery(new ActivityQuery());

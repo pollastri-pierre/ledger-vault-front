@@ -1,13 +1,12 @@
 //@flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
-import type { Account } from "data/types";
+import type { Account, Translate } from "data/types";
 
 const styles = {
   root: {
@@ -36,13 +35,16 @@ function OperationCreationConfirmation(props: {
   return (
     <div className={classes.root}>
       <OverviewOperation
-        hash={details.address}
         amount={details.amount}
         account={account}
+        operationType="SEND"
       />
       <div>
+        <LineRow label="Identifier">
+          {details.address && <span>{details.address}</span>}
+        </LineRow>
         <LineRow label="account to debit">
-          <AccountName name={account.name} currency={account.currency} />
+          <AccountName name={account.name} currencyId={account.currency.name} />
         </LineRow>
         <LineRow label="confirmation fees">
           <Amount account={account} value={estimatedFees} />

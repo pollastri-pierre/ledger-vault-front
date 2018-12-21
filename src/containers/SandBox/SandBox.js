@@ -209,4 +209,7 @@ SandBox.propTypes = {
   onSwitch: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SandBox);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SandBox);

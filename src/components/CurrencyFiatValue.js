@@ -2,13 +2,15 @@
 import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import fiatUnits from "constants/fiatUnits";
+import type { TransactionType } from "data/types";
 
 type Props = {
   fiat: string,
   // it is the value to display without any digits (e.g. for EUR it is the nb of cents)
   value: number,
   // always show a sign in front of the value (force a "+" to display for positives)
-  alwaysShowSign?: boolean
+  alwaysShowSign?: boolean,
+  type?: TransactionType
 };
 
 // accepts a fiat (e.g. EUR) and a value number

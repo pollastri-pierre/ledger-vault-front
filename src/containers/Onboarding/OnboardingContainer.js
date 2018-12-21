@@ -15,7 +15,6 @@ import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationWrapping from "./ConfigurationWrapping";
 import ConfigurationSeed from "./ConfigurationSeed.js";
 import Registration from "./Registration";
-import SignIn from "./SignIn";
 import SharedOwnerValidation from "./SharedOwnerValidation";
 import Backup from "./Backup.js";
 import Provisionning from "./Provisioning.js";
@@ -111,7 +110,10 @@ class OnboardingContainer extends Component<Props, State> {
 
     const url = process.env["NOTIFICATION_URL"] || "/";
     const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
-    const socket = io.connect(url, { onboarding: true, path: path });
+    const socket = io.connect(
+      url,
+      { onboarding: true, path: path }
+    );
     let self = this;
     socket.on("connect", function() {
       socket.emit("authenticate", {
@@ -119,9 +121,7 @@ class OnboardingContainer extends Component<Props, State> {
         orga: self.props.match.params.orga_name
       });
     });
-    socket.on(self.props.match.params.orga_name + "/onboarding", function(
-      onboardingState
-    ) {
+    socket.on(self.props.match.params.orga_name + "/onboarding", function() {
       self.onNewOnboardingState();
     });
   }
@@ -190,7 +190,6 @@ class OnboardingContainer extends Component<Props, State> {
                 is_editable={onboarding.is_editable}
               />
             )}
-            {onboarding.state === "ADMINISTRATORS_SIGN_IN" && <SignIn />}
             {onboarding.state === "MASTER_SEED_PREREQUISITE" && (
               <PrerequisiteSeed />
             )}
@@ -217,6 +216,7 @@ class OnboardingContainer extends Component<Props, State> {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles)(OnboardingContainer)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(OnboardingContainer));

@@ -4,7 +4,6 @@ import connectData from "restlay/connectData";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import { getPendingsOperations } from "utils/operations";
-import CurrenciesQuery from "api/queries/CurrenciesQuery";
 import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -36,7 +35,6 @@ class PendingsMenuBadge extends Component<*> {
 
 export default connectData(withStyles(styles)(PendingsMenuBadge), {
   queries: {
-    currencies: CurrenciesQuery,
     accounts: PendingAccountsQuery,
     operations: PendingOperationsQuery
   }

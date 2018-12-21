@@ -1,15 +1,18 @@
 //@flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ValidateBadge from "../icons/full/ValidateBadge";
+import Check from "../icons/Check";
 import colors from "../../shared/colors";
 
 const styles = {
-  base: {
-    marginLeft: "8px",
-    verticalAlign: "middle",
-    width: 11,
-    fill: colors.ocean
+  text: {
+    marginLeft: "6px"
+  },
+  isConfirmed: {
+    color: colors.green
+  },
+  isUnconfirmed: {
+    color: colors.grenade
   }
 };
 class ConfirmationStatus extends Component<*> {
@@ -23,14 +26,14 @@ class ConfirmationStatus extends Component<*> {
 
     if (nbConfirmations > 0) {
       return (
-        <span>
-          <strong>Confirmed ({nbConfirmations})</strong>
-          <ValidateBadge className={classes.base} />
+        <span className={classes.isConfirmed}>
+          <Check color={colors.green} size={11} />
+          <span className={classes.text}>Confirmed ({nbConfirmations})</span>
         </span>
       );
     }
 
-    return <span>Unconfirmed</span>;
+    return <span className={classes.isUnconfirmed}>Unconfirmed</span>;
   }
 }
 

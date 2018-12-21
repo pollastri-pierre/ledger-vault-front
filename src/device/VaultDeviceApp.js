@@ -10,8 +10,8 @@ export default class VaultDeviceApp {
     unwrap: boolean = true
   ) {
     this.transport = transport;
-    this.transport.debug = console.log;
     transport.setScrambleKey(scrambleKey);
+    //$FlowFixMe : needs to be done in ledger-hw-transport-u2f
     transport.setUnwrap(unwrap);
   }
 

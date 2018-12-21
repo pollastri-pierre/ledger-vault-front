@@ -1,10 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NetworkError } from "network";
 import { translate } from "react-i18next";
-import type { Translate } from "data/types";
-import network from "network";
+import network, { NetworkError } from "network";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
@@ -13,8 +11,9 @@ import createDevice, {
   U2F_TIMEOUT
 } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import type { Organization } from "data/types";
+import type { Organization, Translate } from "data/types";
 import { addMessage } from "redux/modules/alerts";
+
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
   "Open the Vault app on the dashboard. When displayed, confirm the register request on the device.",
@@ -35,7 +34,7 @@ type Props = {
   t: Translate,
   onAddMessage: (title: string, content: string, type: string) => void,
   account_id: ?number,
-  callback: Function,
+  callback: string => any,
   type: "operations" | "accounts",
   cancel: Function
 };
@@ -91,7 +90,6 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         this.setState({ step: 2 });
 
-
         let urlPost =
           type === "accounts" && account_id
             ? `/${type}/${account_id}/authentications/authenticate`
@@ -103,7 +101,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse
         });
-        await this.props.callback(entity_id);
+        this.props.callback(entity_id);
       } catch (e) {
         console.error(e);
         const { t } = this.props;
@@ -146,7 +144,10 @@ class DeviceAuthenticate extends Component<Props, State> {
 }
 
 export { DeviceAuthenticate };
-export default connect(undefined, mapDispatchToProps)(
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(
   connectData(translate()(DeviceAuthenticate), {
     queries: {
       organization: OrganizationQuery

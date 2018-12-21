@@ -116,7 +116,11 @@ class WrappingKeys extends Component<Props, State> {
       classes,
       t
     } = this.props;
-    if (!onboarding.wrapping.channel) {
+    if (
+      !onboarding.wrapping.channel ||
+      !onboarding.wrapping.channel.ephemeral_public_key ||
+      !onboarding.wrapping.channel.ephemeral_certificate
+    ) {
       return <SpinnerCard />;
     }
     return (
@@ -179,6 +183,7 @@ class WrappingKeys extends Component<Props, State> {
 // useful for test
 export { WrappingKeys };
 
-export default connect(mapState, mapDispatch)(
-  withStyles(styles)(translate()(WrappingKeys))
-);
+export default connect(
+  mapState,
+  mapDispatch
+)(withStyles(styles)(translate()(WrappingKeys)));

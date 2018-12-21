@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
@@ -9,7 +8,7 @@ import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
 import InfoModal from "components/InfoModal";
 import { DialogButton, Overscroll } from "components";
-import type { Member } from "data/types";
+import type { Member, Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
@@ -23,17 +22,17 @@ const styleCounter = {
     marginTop: "-42px"
   }
 };
-const SelectedCounter = withStyles(
-  styleCounter
-)(({ count, classes }: { count: number, classes: Object }) => {
-  if (count === 0) {
-    return false;
+const SelectedCounter = withStyles(styleCounter)(
+  ({ count, classes }: { count: number, classes: Object }) => {
+    if (count === 0) {
+      return false;
+    }
+    if (count === 1) {
+      return <span className={classes.base}>{count} member selected</span>;
+    }
+    return <span className={classes.base}>{count} members selected</span>;
   }
-  if (count === 1) {
-    return <span className={classes.base}>{count} member selected</span>;
-  }
-  return <span className={classes.base}>{count} members selected</span>;
-});
+);
 
 const styles = {
   base: {

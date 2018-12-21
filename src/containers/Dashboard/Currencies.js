@@ -1,18 +1,20 @@
 //@flow
 import React from "react";
-import CounterValues from "data/CounterValues";
-import connectData from "restlay/connectData";
 import { connect } from "react-redux";
+import {
+  getFiatCurrencyByTicker,
+  getCryptoCurrencyById,
+  listCryptoCurrencies
+} from "@ledgerhq/live-common/lib/helpers/currencies";
+
 import PieChart from "components/PieChart";
 import type { Account } from "data/types";
 import AccountsQuery from "api/queries/AccountsQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
-import {
-  getFiatCurrencyByTicker,
-  getCryptoCurrencyById
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+import CounterValues from "data/CounterValues";
+import connectData from "restlay/connectData";
+
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const allCurrencies = listCryptoCurrencies(true);
 

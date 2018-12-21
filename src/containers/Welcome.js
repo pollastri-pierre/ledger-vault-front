@@ -1,13 +1,12 @@
 //@flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
-import { Alert } from "components";
 import network from "network";
 import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import { DialogButton } from "components";
+import { DialogButton, Alert } from "components";
 import Logo from "components/Logo";
 
 import Profile from "components/icons/thin/Profile";
@@ -70,6 +69,10 @@ const styles = {
   },
   input: {
     textAlign: "center"
+  },
+  version: {
+    fontSize: 11,
+    marginTop: 50
   }
 };
 class Welcome extends Component<
@@ -148,6 +151,7 @@ class Welcome extends Component<
             style={{ width: "320px", marginTop: "5px", color: "black" }}
             InputProps={{
               inputProps: {
+                autoComplete: "off",
                 style: {
                   fontSize: "13px",
                   color: "black",
@@ -177,6 +181,7 @@ class Welcome extends Component<
             {t("common:continue")}
           </DialogButton>
         </form>
+        <div className={classes.version}>Vault - v0.2</div>
       </div>
     );
   }

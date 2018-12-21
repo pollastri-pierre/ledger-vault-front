@@ -4,12 +4,17 @@ import { connect } from "react-redux";
 
 import Footer from "./Footer";
 import type { Translate } from "data/types";
-import { Title, Careful, Introduction } from "components/Onboarding.js";
+import {
+  Title,
+  Careful,
+  Introduction,
+  NoMembers,
+  AddUser
+} from "components/Onboarding.js";
 import { translate, Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import BlurDialog from "components/BlurDialog";
 import RegisterAdmins from "containers/Onboarding/RegisterAdmins";
-import { NoMembers, AddUser } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import {
   getSharedOwnerRegistrationChallenge,
@@ -148,6 +153,7 @@ const mapDispatchToProps = (dispatch: *) => ({
   onAddSharedOwner: data => dispatch(addSharedOwner(data)),
   onGetChallenge: () => dispatch(getSharedOwnerRegistrationChallenge())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(
-  translate()(SharedOwnerRegistration)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(translate()(SharedOwnerRegistration));
