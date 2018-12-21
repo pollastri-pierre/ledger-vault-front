@@ -64,7 +64,7 @@ wrapping_key:
     title: Generate Vault Wrapping Key
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.
     step2: Enter your PIN code to unlock your device, then open the Vault app from the Ledger Blue Enterprise dashboard.
-    step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
+    step3: Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 wrapping_key_prerequisite:
   title: Prerequisites
   description: In the following steps, Wrapping Key Custodians will initialize their Ledger Blue Enterprise to generate your organization's partition.
@@ -109,7 +109,7 @@ administrators_registration:
     title: Registration
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable. 
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.   
-    step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
+    step3: Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 administrators_scheme:
   title: Administration rule
   description: This step allows you to define the number of approvals you must collect from all registered Administrators to authorize sensitive actions.
@@ -145,7 +145,7 @@ master_seed_signin:
     title: Sign in with your device
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.    
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard. 
-    step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
+    step3: Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 master_seed_prerequisite:
   title: Prerequisites
   description: In this last step, we'll generate your company's master seed, which is the private cryptographic key created from the three Shared-Owners Ledger Blue Enterprise devices.
@@ -159,7 +159,7 @@ master_seed_configuration:
   step3: Ensure your Ledger Cryptosteel is safely secured and your Recovery Sheet is destroyed.
 master_seed_provisionning:
   title: Create master seed
-  description: Click 'Get seed' and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.
+  description: Click <0>Get seed</0> and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.
   step1: 1st Shared-Owner
   step2: 2nd Shared-Owner
   step3: 3rd Shared-Owner
@@ -170,14 +170,14 @@ master_seed_provisionning:
     title: Generate Master Seed
     step1: Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable. 
     step2: Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard. 
-    step3: Tap 'Confirm' when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
+    step3: Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.
 confirmation:
   title: Complete
   description: Your Ledger Vault workspace is now configured.
   members_can_signin: Administrators can now sign in.
   scheme: administration rule
 confirmation_cancel:
-  oops: Oops! you clicked by mistake...
+  oops: Oops! you clicked <0>Cancel</0> by mistake...
   desc: It looks like you've canceled the {{entity}}.
   mistake: You've made a mistake when registering {{entity}}.
   security: You believe the security of your Ledger Vault might be compromised
