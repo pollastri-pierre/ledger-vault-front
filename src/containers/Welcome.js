@@ -1,13 +1,12 @@
 //@flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
-import { Alert } from "components";
 import network from "network";
 import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
-import { DialogButton } from "components";
+import { DialogButton, Alert } from "components";
 import Logo from "components/Logo";
 
 import Profile from "components/icons/thin/Profile";

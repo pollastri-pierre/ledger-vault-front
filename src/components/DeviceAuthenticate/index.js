@@ -1,10 +1,8 @@
 //@flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NetworkError } from "network";
 import { translate } from "react-i18next";
-import type { Translate } from "data/types";
-import network from "network";
+import network, { NetworkError } from "network";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
@@ -13,8 +11,9 @@ import createDevice, {
   U2F_TIMEOUT
 } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import type { Organization } from "data/types";
+import type { Organization, Translate } from "data/types";
 import { addMessage } from "redux/modules/alerts";
+
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
   "Open the Vault app on the dashboard. When displayed, confirm the register request on the device.",

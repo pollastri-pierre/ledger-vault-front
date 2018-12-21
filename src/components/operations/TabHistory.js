@@ -1,11 +1,10 @@
 //@flow
 import React from "react";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import ExpandableText from "components/ExpandableText";
 import DateFormat from "components/DateFormat";
 import { withStyles } from "@material-ui/core/styles";
-import type { Operation, Member } from "data/types";
+import type { Operation, Member, Translate } from "data/types";
 
 const styles = {
   base: {

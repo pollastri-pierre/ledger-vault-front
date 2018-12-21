@@ -1,14 +1,12 @@
 //@flow
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Translate } from "data/types";
-import { translate } from "react-i18next";
-import { Trans } from "react-i18next";
+import { translate, Trans } from "react-i18next";
+
+import type { Account, Translate } from "data/types";
+import type { WalletBridge } from "bridge/types";
 import { TextField } from "components";
 import DialogButton from "components/buttons/DialogButton";
-import type { Account } from "data/types";
-import type { WalletBridge } from "bridge/types";
-
 import SendLayout from "./SendLayout";
 
 type Props<Transaction> = {

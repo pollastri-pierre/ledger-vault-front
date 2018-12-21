@@ -27,13 +27,13 @@ const styles = {
     margin: "auto 0 0 20px"
   },
   content: {
-    height: '100vh'
+    height: "100vh"
   },
   root: {
     padding: "0 40px",
-    height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-  },
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column"
+  }
 };
 export default withStyles(styles)(SendLayout);

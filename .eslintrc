@@ -17,6 +17,8 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:flowtype/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
     "prettier"
   ],
   "plugins": ["flowtype", "react"],
@@ -26,9 +28,13 @@
     "semi": ["error", "always"],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "flowtype/generic-spacing": 0,
-    "flowtype/space-after-type-colon": 0
+    "flowtype/space-after-type-colon": 0,
+    "import/no-named-as-default": 0,
   },
   "settings": {
+    "import/resolver": {
+      "babel-module": {},
+    },
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
     }

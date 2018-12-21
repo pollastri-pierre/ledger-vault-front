@@ -8,14 +8,13 @@ import {
   isAccountBeingUpdated,
   hasUserApprovedAccount
 } from "utils/accounts";
-import type { Translate } from "data/types";
 import Bell from "components/icons/thin/Bell";
 import { translate } from "react-i18next";
 import colors from "shared/colors";
 import EditButton from "components/UpdateAccounts/EditButton";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account, Member } from "data/types";
+import type { Account, Member, Translate } from "data/types";
 
 const row = {
   base: {

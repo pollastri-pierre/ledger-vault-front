@@ -2,14 +2,13 @@
 import AccountQuery from "api/queries/AccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import Card from "components/Card";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account, Member } from "data/types";
+import type { Account, Member, Translate } from "data/types";
 import connectData from "restlay/connectData";
 import OperationModal from "components/operations/OperationModal";
 // import QuicklookCard from "./QuicklookCard";

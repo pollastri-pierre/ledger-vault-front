@@ -80,7 +80,7 @@ export default {
     ]),
     new webpack.DefinePlugin({
       ...Object.keys(globals).reduce((acc, key) => {
-        acc[key] = JSON.stringify(globals[key]);
+        acc[key] = JSON.stringify(globals[key]); // eslint-disable-line
         return acc;
       }, {}),
       "process.env.NODE_ENV": JSON.stringify(globals.__ENV__)

@@ -1,9 +1,8 @@
 //@flow
 import { translate } from "react-i18next";
 // import AccountsQuery from "api/queries/AccountsQuery";
-import type { Translate } from "data/types";
 // import connectData from "restlay/connectData";
-import type { Account } from "data/types";
+import type { Account, Translate } from "data/types";
 import React, { Component } from "react";
 // import { Route } from "react-router";
 import { Link } from "react-router-dom";

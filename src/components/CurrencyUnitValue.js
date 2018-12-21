@@ -1,7 +1,8 @@
 // @flow
 import React, { PureComponent } from "react";
-import type { Unit, TransactionType } from "data/types";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import type { Unit, TransactionType } from "data/types";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.

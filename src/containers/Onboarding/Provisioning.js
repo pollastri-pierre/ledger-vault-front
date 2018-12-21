@@ -4,7 +4,7 @@ import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
 import FragmentKey from "containers/Onboarding/Fragment";
-import { translate } from "react-i18next";
+import { translate, Trans } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -123,7 +123,10 @@ class Provisioning extends Component<Props, State> {
           />
         </BlurDialog>
         <Introduction>
-          {t("onboarding:master_seed_provisionning.description")}
+          <Trans
+            i18nKey="onboarding:master_seed_provisionning.description"
+            components={<b>0</b>}
+          />
         </Introduction>
         <div className={classes.steps}>
           {Array(3)

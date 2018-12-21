@@ -1,6 +1,7 @@
 //@flow
 import React from "react";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
 import type { Unit, Account, OperationRecipientIsValid } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";

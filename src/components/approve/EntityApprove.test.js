@@ -28,9 +28,9 @@ import AccountApprove from "../accounts/approve/AccountApprove";
 import OperationApprove from "../operations/approve/OperationApprove";
 
 import VaultDeviceApp, {
-  mockOpenSession,
-  mockValidateVaultOperation,
-  mockGetPublicKey
+  mockOpenSession, // eslint-disable-line
+  mockValidateVaultOperation, // eslint-disable-line
+  mockGetPublicKey // eslint-disable-line
 } from "device/VaultDeviceApp";
 
 beforeEach(() => {

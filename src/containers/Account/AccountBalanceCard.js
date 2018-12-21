@@ -3,11 +3,10 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Card from "components/Card";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import CardField from "components/CardField";
 import DateFormat from "components/DateFormat";
-import type { Account } from "data/types";
+import type { Account, Translate } from "data/types";
 
 const styles = {
   card: {

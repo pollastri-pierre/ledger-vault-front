@@ -1,7 +1,6 @@
 //@flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
-import type { Translate } from "data/types";
 import CurrencyIndex from "components/CurrencyIndex";
 import { getAccountTitle } from "utils/accounts";
 import cx from "classnames";
@@ -34,7 +33,7 @@ import {
   // BigSecurityAutoExpireIcon
 } from "../icons";
 
-import type { Account, AccountSettings } from "data/types";
+import type { Account, AccountSettings, Translate } from "data/types";
 
 const styles = {
   container: {

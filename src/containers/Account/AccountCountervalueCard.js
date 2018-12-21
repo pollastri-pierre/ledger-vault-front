@@ -3,11 +3,10 @@ import { withStyles } from "@material-ui/core/styles";
 import CounterValue from "components/CounterValue";
 import React, { Component } from "react";
 import CurrencyCounterValueConversion from "components/CurrencyCounterValueConversion";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import Card from "components/Card";
 import CardField from "components/CardField";
-import type { Account } from "data/types";
+import type { Account, Translate } from "data/types";
 import colors from "shared/colors";
 
 const styles = {
