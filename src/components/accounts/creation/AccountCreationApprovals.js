@@ -1,5 +1,7 @@
 //@flow
 import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+
 import InfoModal from "../../InfoModal";
 import { translate, Interpolate } from "react-i18next";
 import DialogButton from "../../buttons/DialogButton";
@@ -7,7 +9,6 @@ import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
 import InputTextWithUnity from "../../InputTextWithUnity";
 import type { Member, Translate } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 
 const mapDispatchToProps = (dispatch: *) => ({
@@ -24,15 +25,19 @@ const styles = {
     margin: "20px 0px 40px 0px"
   }
 };
-function AccountCreationApprovals(props: {
-  members: Member[],
-  approvals: number,
-  switchInternalModal: Function,
-  onAddMessage: (t: string, m: string, ty: string) => void,
-  setApprovals: (v: string) => void,
+
+type Props = {
   t: Translate,
-  classes: Object
-}) {
+  classes: { [_: $Keys<typeof styles>]: string },
+  onAddMessage: (t: string, m: string, ty: string) => void,
+
+  approvals: number,
+  setApprovals: number => void,
+  members: Member[],
+  switchInternalModal: string => void
+};
+
+function AccountCreationApprovals(props: Props) {
   const {
     onAddMessage,
     switchInternalModal,

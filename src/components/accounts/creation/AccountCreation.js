@@ -1,16 +1,31 @@
 //@flow
+
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import connectData from "restlay/connectData";
+import type { MemoryHistory } from "history";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+
+import type { Member } from "data/types";
+
 import type { RestlayEnvironment } from "restlay/connectData";
-import React, { Component } from "react";
-import MainCreation from "./MainCreation";
-import AccountCreationMembers from "./AccountCreationMembers";
-import AccountCreationApprovals from "./AccountCreationApprovals";
-import DeviceAuthenticate from "components/DeviceAuthenticate";
-import AccountCreationTimeLock from "./AccountCreationTimeLock";
-import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
-import NewAccountMutation from "api/mutations/NewAccountMutation";
+import connectData from "restlay/connectData";
+
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
+import NewAccountMutation from "api/mutations/NewAccountMutation";
+
+import DeviceAuthenticate from "components/DeviceAuthenticate";
+
+import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
+import AccountCreationApprovals from "./AccountCreationApprovals";
+import AccountCreationTimeLock from "./AccountCreationTimeLock";
+import AccountCreationMembers from "./AccountCreationMembers";
+import MainCreation from "./MainCreation";
+
+import type {
+  State as AccountCreationState,
+  Ratelimiter,
+  Timelock
+} from "redux/modules/account-creation";
 
 import {
   changeTab,
@@ -25,24 +40,62 @@ import {
 } from "redux/modules/account-creation";
 
 type Props = {
-  onChangeAccountName: Function,
-  onSelectCurrency: Function,
-  onChangeTabAccount: Function,
-  onSwitchInternalModal: Function,
   restlay: RestlayEnvironment,
-  onGet: Function,
-  onChangeAccountName: Function,
-  onAddMember: Function,
-  onSetApprovals: Function,
-  onSetTimelock: Function,
-  onSetRatelimiter: Function,
-  close: Function,
-  onClearState: Function,
-  accountCreation: *,
-  history: *
+  history: MemoryHistory,
+  onChangeAccountName: string => void,
+  onSelectCurrency: CryptoCurrency => void,
+  onChangeTabAccount: number => void,
+  onSwitchInternalModal: string => void,
+  onAddMember: Member => void,
+  onSetApprovals: number => void,
+  onSetTimelock: Timelock => void,
+  onSetRatelimiter: Ratelimiter => void,
+  onClearState: () => void,
+  accountCreation: AccountCreationState
 };
 
-class AccountCreation extends Component<Props> {
+// TODO this HIGHLY need some cleaning:
+// - duplicate values
+// - passing an AccountCreationState + some keys of AccountCreationState
+//   is pointless. we should either pass the whole state OR only some keys.
+// - inconsistent naming
+export type StepProps = {
+  approvers: Member[],
+  members: Member[],
+  switchInternalModal: string => void,
+  addMember: Member => void,
+  setApprovals: number => void,
+  approvals: number,
+  timelock: Timelock,
+  setTimelock: Timelock => void,
+  rate_limiter: Ratelimiter,
+  setRatelimiter: Ratelimiter => void,
+  account: AccountCreationState,
+  changeAccountName: string => void,
+  selectCurrency: CryptoCurrency => void,
+  tabsIndex: number,
+  onSelect: number => void,
+  close: () => void,
+  cancel: () => void
+};
+
+const mapStateToProps = state => ({
+  accountCreation: state.accountCreation
+});
+
+const mapDispatchToProps = {
+  onAddMember: addMember,
+  onSetApprovals: setApprovals,
+  onSetTimelock: setTimelock,
+  onSetRatelimiter: setRatelimiter,
+  onChangeTabAccount: changeTab,
+  onSelectCurrency: selectCurrency,
+  onChangeAccountName: changeAccountName,
+  onSwitchInternalModal: switchInternalModal,
+  onClearState: clearState
+};
+
+class AccountCreation extends PureComponent<Props> {
   componentDidMount() {
     this.props.onClearState();
   }
@@ -54,24 +107,31 @@ class AccountCreation extends Component<Props> {
   createAccount = (entity_id: number) => {
     const { restlay } = this.props;
     const account = this.props.accountCreation;
+
     const approvers = account.approvers.map(pubKey => {
       return { pub_key: pubKey };
     });
 
-    const securityScheme = Object.assign(
-      {
-        quorum: account.quorum
-      },
-      account.time_lock.enabled && {
+    const securityScheme: Object = {
+      quorum: account.quorum
+    };
+
+    if (account.time_lock.enabled) {
+      Object.assign(securityScheme, {
         time_lock: account.time_lock.value * account.time_lock.frequency
-      },
-      account.rate_limiter.enabled && {
+      });
+    }
+
+    if (account.rate_limiter.enabled) {
+      Object.assign(securityScheme, {
         rate_limiter: {
           max_transaction: account.rate_limiter.value,
           time_slot: account.rate_limiter.frequency
         }
-      }
-    );
+      });
+    }
+
+    if (!account.currency) return;
 
     const data = {
       account_id: entity_id,
@@ -87,6 +147,23 @@ class AccountCreation extends Component<Props> {
       .then(() => restlay.fetchQuery(new PendingAccountsQuery()));
   };
 
+  DeviceAuthenticate = () => (
+    <DeviceAuthenticate
+      cancel={() => this.props.onSwitchInternalModal("main")}
+      callback={this.createAccount}
+      type="accounts"
+    />
+  );
+
+  stepsByModalId = {
+    members: AccountCreationMembers,
+    approvals: AccountCreationApprovals,
+    "time-lock": AccountCreationTimeLock,
+    "rate-limiter": AccountCreationRateLimiter,
+    main: MainCreation,
+    device: this.DeviceAuthenticate
+  };
+
   render() {
     const {
       onChangeAccountName,
@@ -100,90 +177,39 @@ class AccountCreation extends Component<Props> {
     } = this.props;
 
     const account = this.props.accountCreation;
-    return (
-      <div>
-        {account.internModalId === "members" && (
-          <div id="account-creation" className="modal">
-            <AccountCreationMembers
-              approvers={account.approvers}
-              switchInternalModal={onSwitchInternalModal}
-              addMember={onAddMember}
-            />
-          </div>
-        )}
-        {account.internModalId === "approvals" && (
-          <div className="modal">
-            <AccountCreationApprovals
-              setApprovals={onSetApprovals}
-              members={account.approvers}
-              approvals={account.quorum}
-              switchInternalModal={onSwitchInternalModal}
-            />
-          </div>
-        )}
-        {account.internModalId === "time-lock" && (
-          <div className="modal">
-            <AccountCreationTimeLock
-              switchInternalModal={onSwitchInternalModal}
-              timelock={account.time_lock}
-              setTimelock={onSetTimelock}
-            />
-          </div>
-        )}
-        {account.internModalId === "rate-limiter" && (
-          <div className="modal">
-            <AccountCreationRateLimiter
-              switchInternalModal={onSwitchInternalModal}
-              rate_limiter={account.rate_limiter}
-              setRatelimiter={onSetRatelimiter}
-            />
-          </div>
-        )}
+    const Step = this.stepsByModalId[account.internModalId];
 
-        {account.internModalId === "main" && (
-          <div id="account-creation" className="modal">
-            <MainCreation
-              account={account}
-              changeAccountName={onChangeAccountName}
-              selectCurrency={onSelectCurrency}
-              tabsIndex={account.currentTab}
-              onSelect={onChangeTabAccount}
-              close={this.close}
-              switchInternalModal={onSwitchInternalModal}
-            />
-          </div>
-        )}
-        {account.internModalId === "device" && (
-          <div id="account-creation" className="modal">
-            <DeviceAuthenticate
-              cancel={() => onSwitchInternalModal("main")}
-              callback={this.createAccount}
-              type="accounts"
-            />
-          </div>
-        )}
-      </div>
-    );
+    if (!Step) return null;
+
+    const stepProps: StepProps = {
+      close: this.close,
+      cancel: () => onSwitchInternalModal("main"),
+
+      // TODO why different names for same thing
+      approvers: account.approvers,
+      members: account.approvers,
+
+      tabsIndex: account.currentTab,
+      switchInternalModal: onSwitchInternalModal,
+      addMember: onAddMember,
+      setApprovals: onSetApprovals,
+      approvals: account.quorum,
+      timelock: account.time_lock,
+      setTimelock: onSetTimelock,
+      rate_limiter: account.rate_limiter,
+      setRatelimiter: onSetRatelimiter,
+      account: account,
+      changeAccountName: onChangeAccountName,
+      selectCurrency: onSelectCurrency,
+      onSelect: onChangeTabAccount
+    };
+
+    return <Step {...stepProps} />;
   }
 }
 
-const mapStateToProps = state => ({
-  accountCreation: state.accountCreation
-});
-
-const mapDispatchToProps = (dispatch: *) => ({
-  onAddMember: m => dispatch(addMember(m)),
-  onSetApprovals: n => dispatch(setApprovals(n)),
-  onSetTimelock: timelock => dispatch(setTimelock(timelock)),
-  onSetRatelimiter: ratelimiter => dispatch(setRatelimiter(ratelimiter)),
-  onChangeTabAccount: index => dispatch(changeTab(index)),
-  onSelectCurrency: c => dispatch(selectCurrency(c)),
-  onChangeAccountName: n => dispatch(changeAccountName(n)),
-  onSwitchInternalModal: n => dispatch(switchInternalModal(n)),
-  onClearState: () => dispatch(clearState())
-});
-
 export { AccountCreation };
+
 export default connectData(
   connect(
     mapStateToProps,
