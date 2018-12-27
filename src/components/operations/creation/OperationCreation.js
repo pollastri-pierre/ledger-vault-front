@@ -14,7 +14,7 @@ import type { Details } from "../../NewOperationModal";
 
 const styles = {
   root: {
-    width: 445,
+    width: 460,
     height: 612,
     display: "flex",
     flexDirection: "column"

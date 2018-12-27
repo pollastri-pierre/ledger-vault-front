@@ -37,8 +37,8 @@ const SelectedCounter = withStyles(styleCounter)(
 const styles = {
   base: {
     ...modals.base,
-    width: "440px",
-    height: "615px"
+    width: 450,
+    height: 615
   },
   content: {
     height: 350
@@ -99,7 +99,7 @@ class AccountCreationMembers extends Component<{
 }
 
 const RenderError = translate()(({ error, restlay }: *) => (
-  <div style={{ width: 440, height: 615 }}>
+  <div style={{ width: 450, height: 615 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
 ));
