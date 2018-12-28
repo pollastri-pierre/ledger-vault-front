@@ -1,27 +1,17 @@
 //@flow
+
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Operation } from "data/types";
 import { success, error } from "formatters/notification";
 
-export type Note = {
-  title: string,
-  content: string
-};
-
-// FIXME API : The API is not consistent between GET operation and POST operation
-export const speeds = {
-  slow: "slow",
-  medium: "normal",
-  fast: "fast"
-};
-
-export type Speed = $Values<typeof speeds>;
+import type { Note } from "./NewOperationMutation";
 
 export type OperationToPOST = {
   amount: number,
-  fee_level: Speed,
   recipient: string,
+  gas_price: number,
+  gas_limit: number,
   note?: Note,
   operation_id: number
 };
@@ -31,9 +21,12 @@ export type Input = {
   accountId: number
 };
 
-type Response = Operation; // the account that has been created
+type Response = Operation;
 
-export default class NewOperationMutation extends Mutation<Input, Response> {
+export default class NewEthereumOperationMutation extends Mutation<
+  Input,
+  Response
+> {
   uri = `/accounts/${this.props.accountId}/operations`;
   method = "POST";
 

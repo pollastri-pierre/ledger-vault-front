@@ -16,19 +16,6 @@ import colors from "shared/colors";
 
 import SendLayout from "./SendLayout";
 
-type Props<Transaction> = {
-  classes: { [_: $Keys<typeof styles>]: string },
-  account: Account,
-  transaction: Transaction,
-  bridge: WalletBridge<Transaction>,
-  confirmTx: () => void,
-  t: Translate
-};
-
-type State = {
-  copied: boolean
-};
-
 const styles = {
   warningMsg: {
     fontSize: 11,
@@ -61,31 +48,65 @@ const styles = {
     marginRight: 3
   }
 };
+
+type Props<Transaction> = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  account: Account,
+  transaction: Transaction,
+  bridge: WalletBridge<Transaction>,
+  confirmTx: () => void,
+  t: Translate
+};
+
+type State = {
+  copied: boolean,
+  fees: ?number,
+  totalSpent: ?number
+};
+
 class SendConfirmation extends PureComponent<Props<*>, State> {
   state = {
-    copied: false
+    copied: false,
+
+    // UI fields to display: confirmation fees + total spent
+    // we put them in state because they will potentially be async, so we
+    // await them on mount
+    fees: null,
+    totalSpent: null
   };
+
+  async componentDidMount() {
+    const { bridge, account, transaction } = this.props;
+
+    const [fees, totalSpent] = await Promise.all([
+      bridge.getFees(account, transaction),
+      bridge.getTotalSpent(account, transaction)
+    ]);
+
+    this.setState({ fees, totalSpent });
+  }
+
   onCopy = () => {
     this.setState({ copied: true });
     this._timeout = setTimeout(() => this.setState({ copied: false }), 1e3);
   };
+
   componentWillUnmount() {
     this._timeout && clearTimeout(this._timeout);
   }
+
   _timeout: ?TimeoutID = null;
 
   render() {
     const { account, bridge, transaction, classes, confirmTx } = this.props;
-    const { copied } = this.state;
+    const { copied, fees, totalSpent } = this.state;
 
     const amount = bridge.getTransactionAmount(account, transaction);
     const recipient = bridge.getTransactionRecipient(account, transaction);
-    // Big Number needed
-    // use totalSpend from bridge
-    const total = amount + transaction.estimatedFees;
+
     return (
       <SendLayout
-        header={null}
+        paddedHorizontal
         content={
           <Fragment>
             <OverviewOperation
@@ -130,10 +151,12 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
                 />
               </LineRow>
               <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
-                <Amount account={account} value={transaction.estimatedFees} />
+                {fees !== null && <Amount account={account} value={fees} />}
               </LineRow>
               <LineRow label={<Trans i18nKey="send:confirmation.total" />}>
-                <Amount account={account} value={total} strong />
+                {totalSpent !== null && (
+                  <Amount account={account} value={totalSpent} strong />
+                )}
               </LineRow>
             </div>
             <div className={classes.warningMsg}>

@@ -7,15 +7,14 @@ import connectData from "restlay/connectData";
 import CryptoAddressPicker from "components/CryptoAddressPicker";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
 const styles = {
-  fieldTitle: {
-    fontSize: 12,
-    fontWeight: 600,
-    textTransform: "uppercase"
-  },
   addressPicker: {
     margin: "15px 0"
+  },
+  paddedHorizontal: {
+    padding: "0 40px"
   }
 };
 
@@ -27,9 +26,11 @@ type Props<Transaction> = {
   transaction: Transaction,
   bridge: WalletBridge<Transaction>
 };
+
 type State = {
   isValid: boolean
 };
+
 class SendAddress extends PureComponent<Props<*>, State> {
   state = {
     isValid: true
@@ -61,18 +62,20 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const { isValid } = this.state;
     return (
       <Fragment>
-        <div className={classes.fieldTitle}>
+        <ModalSubTitle noMargin>
           <Trans i18nKey="send:details.address.title" />
+        </ModalSubTitle>
+        <div className={classes.paddedHorizontal}>
+          <CryptoAddressPicker
+            id="address"
+            onChange={this.onChange}
+            value={bridge.getTransactionRecipient(account, transaction)}
+            isValid={isValid}
+            fullWidth
+            inputProps={{ style: { paddingBottom: 15, color: "black" } }}
+            className={classes.addressPicker}
+          />
         </div>
-        <CryptoAddressPicker
-          id="address"
-          onChange={this.onChange}
-          value={bridge.getTransactionRecipient(account, transaction)}
-          isValid={isValid}
-          fullWidth
-          inputProps={{ style: { paddingBottom: 15, color: "black" } }}
-          className={classes.addressPicker}
-        />
       </Fragment>
     );
   }

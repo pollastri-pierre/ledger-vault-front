@@ -12,6 +12,8 @@ details:
     title: Address to credit
   fees:
     title: Confirmation Fees
+  gasPrice: Gas price
+  gasLimit: Gas limit
 label:
   title: Label
   note: Add a comment

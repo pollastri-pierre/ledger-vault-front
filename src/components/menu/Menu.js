@@ -7,9 +7,9 @@ import MenuList from "@material-ui/core/MenuList";
 import MenuLink from "../MenuLink";
 import AccountsMenu from "./AccountsMenu";
 import PendingsMenuBadge from "./PendingsMenuBadge";
-import NewOperationModal from "../NewOperationModal";
+// import NewOperationModal from "../NewOperationModal";
 import Receive from "components/Receive";
-// import Send from "components/Send";
+import Send from "components/Send";
 import IconReceive from "components/icons/Receive";
 import ModalRoute from "../ModalRoute";
 import { getVisibleAccountsInMenu } from "utils/accounts";
@@ -134,8 +134,8 @@ function Menu(props: {
 
       <ModalRoute
         path="*/new-operation"
-        // component={Send}
-        component={NewOperationModal}
+        component={Send}
+        // component={NewOperationModal}
         match={match}
       />
       <ModalRoute path="*/receive" component={Receive} match={match} />

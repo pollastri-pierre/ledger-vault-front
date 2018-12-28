@@ -17,11 +17,18 @@ const styles = {
 class ModalSubTitle extends Component<{
   children: React$Node | string,
   classes: { [_: $Keys<typeof styles>]: string },
-  noPadding: boolean
+  noPadding: boolean,
+  noMargin: boolean
 }> {
   render() {
-    const { children, classes, noPadding } = this.props;
-    const style = noPadding ? { padding: 0 } : null;
+    const { children, classes, noPadding, noMargin } = this.props;
+    const style = {};
+    if (noPadding) {
+      Object.assign(style, { padding: 0 });
+    }
+    if (noMargin) {
+      Object.assign(style, { margin: 0 });
+    }
     return (
       <h2 className={classes.title} style={style}>
         {children}

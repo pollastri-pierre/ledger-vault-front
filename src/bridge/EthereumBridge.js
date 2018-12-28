@@ -1,11 +1,17 @@
 // @flow
 import React from "react";
+import invariant from "invariant";
+
 import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { Input as NewEthereumOperationMutationInput } from "api/mutations/NewEthereumOperationMutation";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
+import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
 
 //convertion to the BigNumber needed
-type Transaction = {
+export type Transaction = {
   recipient: string,
   amount: number,
   gasPrice: ?number,
@@ -13,8 +19,6 @@ type Transaction = {
   label: string,
   note: string
 };
-
-const EditFees = () => <div>Edit Fees div eth bridge</div>;
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
@@ -26,19 +30,27 @@ const checkValidTransaction = () => {
   return Promise.resolve(true);
 };
 
+const getFees = (a, t) =>
+  t.gasPrice === null || t.gasPrice === undefined
+    ? Promise.resolve(0)
+    : Promise.resolve(t.gasPrice * t.gasLimit);
+
 const EthereumBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
     amount: 0,
     recipient: "",
     gasPrice: null,
-    gasLimit: 0,
+    gasLimit: 21000,
     label: "",
     note: ""
   }),
 
-  // convert to Big Number and update the computation
-  getTotalSpent: (a, t) =>
-    t.amount == 0 ? Promise.resolve(0) : Promise.resolve(t.amount),
+  getTotalSpent: async (a, t) => {
+    const fees = await getFees(a, t);
+    return t.amount == 0 ? 0 : t.amount + fees;
+  },
+
+  getFees,
 
   editTransactionAmount: (account: Account, t: Transaction, amount: number) => {
     return {
@@ -77,14 +89,29 @@ const EthereumBridge: WalletBridge<Transaction> = {
     account: Account,
     transaction: Transaction // eslint-disable-line
   ) => {
-    // fill with new data obj and endpoint
-    // const data: * = {
-    //   operation: {},
-    //   accountId: account.id
-    // };
-    return Promise.resolve(true);
+    invariant(
+      transaction.gasPrice !== null && transaction.gasPrice !== undefined,
+      "gasPrice is unset"
+    );
+    const data: NewEthereumOperationMutationInput = {
+      operation: {
+        amount: transaction.amount,
+        recipient: transaction.recipient,
+        operation_id: operation_id,
+        gas_price: transaction.gasPrice,
+        gas_limit: transaction.gasLimit,
+        note: {
+          title: transaction.label,
+          content: transaction.note
+        }
+      },
+      accountId: account.id
+    };
+    return restlay
+      .commitMutation(new NewEthereumOperationMutation(data))
+      .then(() => restlay.fetchQuery(new PendingOperationsQuery()));
   },
-  EditFees,
+  EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,
   checkValidTransaction,
   isRecipientValid

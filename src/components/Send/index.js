@@ -22,10 +22,10 @@ const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
 const styles = {
   root: {
-    width: 445,
+    width: 460,
     display: "flex",
     flexDirection: "column",
-    height: 612
+    height: 600
   },
   title: {
     fontSize: 18,
@@ -44,16 +44,10 @@ const styles = {
     paddingTop: 40,
     display: "flex",
     flexDirection: "column",
-    height: "100vh"
-  },
-  footer: {
-    position: "absolute",
-    bottom: "0",
-    left: "0",
-    width: "100%",
-    padding: "0 40px"
+    flexGrow: 1
   }
 };
+
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   close: () => void,
