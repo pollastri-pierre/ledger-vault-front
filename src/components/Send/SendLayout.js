@@ -1,39 +1,45 @@
 //@flow
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 type Props = {
-  header: React$Node,
   content: React$Node,
   footer: React$Node,
+  paddedHorizontal?: boolean,
   classes: { [_: $Keys<typeof styles>]: string }
 };
 
 class SendLayout extends PureComponent<Props, *> {
   render() {
-    const { header, content, footer, classes } = this.props;
+    const { content, footer, classes, paddedHorizontal } = this.props;
 
     return (
-      <div className={classes.root}>
-        {header && <div>{header}</div>}
-        {content && <div className={classes.content}>{content}</div>}
+      <Fragment>
+        {content && (
+          <div
+            className={`${classes.content}${
+              paddedHorizontal ? ` ${classes.paddedHorizontal}` : ""
+            }`}
+          >
+            {content}
+          </div>
+        )}
         {footer && <div className={classes.footer}>{footer}</div>}
-      </div>
+      </Fragment>
     );
   }
 }
 const styles = {
   footer: {
-    margin: "auto 0 0 20px"
+    marginTop: 40,
+    padding: "0 40px"
   },
   content: {
-    height: "100vh"
+    flexGrow: 1,
+    overflowY: "auto"
   },
-  root: {
-    padding: "0 40px",
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column"
+  paddedHorizontal: {
+    padding: "0 40px"
   }
 };
 export default withStyles(styles)(SendLayout);

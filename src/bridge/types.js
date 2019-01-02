@@ -28,6 +28,7 @@ export interface WalletBridge<Transaction> {
   ): Transaction;
 
   getTransactionRecipient(account: Account, transaction: Transaction): string;
+  getFees(account: Account, transaction: Transaction): Promise<number>;
   getTotalSpent(account: Account, transaction: Transaction): Promise<number>;
 
   editTransactionLabel(

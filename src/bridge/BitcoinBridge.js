@@ -62,7 +62,9 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     label: "",
     note: ""
   }),
-  // convert to Big Number
+
+  getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
+
   getTotalSpent: (a, t) =>
     t.amount == 0
       ? Promise.resolve(0)

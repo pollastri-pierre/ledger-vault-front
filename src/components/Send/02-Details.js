@@ -18,6 +18,7 @@ type Props<Transaction> = {
   restlay: RestlayEnvironment,
   onTabChange: (SyntheticInputEvent<*>, number) => void
 };
+
 type State = {
   canNext: boolean,
   amountIsValid: boolean
@@ -63,10 +64,11 @@ class SendDetails extends PureComponent<Props<*>, State> {
       );
       if (syncId !== this.syncId) return;
       const canNext =
-        transaction.amount > 0 &&
-        isRecipientValid &&
-        amountIsValid &&
-        transaction.estimatedFees;
+        transaction.amount > 0 && isRecipientValid && amountIsValid;
+
+      // TODO: I commented this because it's bitcoin like specific
+      //  &&
+      // transaction.estimatedFees
       this.setState({ canNext });
     } catch (err) {
       this.setState({
@@ -85,7 +87,6 @@ class SendDetails extends PureComponent<Props<*>, State> {
     const FeesField = bridge.EditFees;
     return (
       <SendLayout
-        header={null}
         content={
           <div>
             <Amount {...this.props} amountIsValid={amountIsValid} />

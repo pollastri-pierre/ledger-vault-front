@@ -55,7 +55,7 @@ class SendLabel extends PureComponent<Props<*>, State> {
     const note = bridge.getTransactionNote(account, transaction);
     return (
       <SendLayout
-        header={null}
+        paddedHorizontal
         content={
           <Fragment>
             <TextField

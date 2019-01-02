@@ -51,7 +51,6 @@ class SendAccount extends PureComponent<Props> {
     );
     return (
       <SendLayout
-        header={null}
         content={
           <Fragment>
             <ModalSubTitle>
