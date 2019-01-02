@@ -1,15 +1,18 @@
 //@flow
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { DialogButton } from "../../";
-import EnableForm from "components/EnableForm";
-import InfoModal from "../../InfoModal";
-import InputTextWithUnity from "components/InputTextWithUnity";
 import MenuItem from "@material-ui/core/Menu";
 import Select from "@material-ui/core/Select";
-import { addMessage } from "redux/modules/alerts";
 import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+
+import EnableForm from "components/EnableForm";
+import InputTextWithUnity from "components/InputTextWithUnity";
+import { addMessage } from "redux/modules/alerts";
 import modals from "shared/modals";
+import InfoModal from "../../InfoModal";
+import { DialogButton } from "../../";
+
+import type { StepProps } from "./AccountCreation";
 
 const frequencies = [
   { title: "minute", key: 60 },
@@ -32,10 +35,7 @@ const styles = {
   }
 };
 
-type Props = {
-  setRatelimiter: Function,
-  switchInternalModal: string => void,
-  rate_limiter: Object,
+type Props = StepProps & {
   classes: { [_: $Keys<typeof styles>]: string },
   onAddMessage: (t: string, m: string, ty: string) => void
 };

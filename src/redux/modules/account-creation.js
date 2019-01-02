@@ -21,13 +21,13 @@ export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
 
-type Timelock = {
+export type Timelock = {
   enabled: boolean,
   value: number,
   frequency: number
 };
 
-type Ratelimiter = {
+export type Ratelimiter = {
   enabled: boolean,
   value: number,
   frequency: number
@@ -118,24 +118,14 @@ export function selectCurrency(currency: CryptoCurrency) {
   };
 }
 
-type Freq = number;
-
 export type State = {
   currentTab: number,
   currency: ?CryptoCurrency,
   name: string,
   approvers: Member[],
   quorum: number,
-  time_lock: {
-    enabled: boolean,
-    value: number,
-    frequency: Freq
-  },
-  rate_limiter: {
-    enabled: boolean,
-    value: number,
-    frequency: Freq
-  },
+  time_lock: Timelock,
+  rate_limiter: Ratelimiter,
   internModalId:
     | "members"
     | "approvals"

@@ -87,6 +87,7 @@ class ModalRoute extends Component<{
   }
 }
 
+// $FlowFixMe
 ModalRoute.propTypes = Route.propTypes;
 
 export default ModalRoute;
