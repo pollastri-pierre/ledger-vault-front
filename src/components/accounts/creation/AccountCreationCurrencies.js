@@ -1,161 +1,63 @@
 //@flow
-import React, { Component, PureComponent } from "react";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
-import type { Currency } from "data/types";
-import classnames from "classnames";
+
+import React, { PureComponent, Fragment } from "react";
+import { Trans, translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
-import colors from "shared/colors";
-import { listCryptoCurrencies } from "utils/cryptoCurrencies";
-import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
 
-const allCurrencies = listCryptoCurrencies(true);
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState
+} from "redux/modules/account-creation";
+import SelectCurrency from "components/SelectCurrency";
+import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
-const styles = {
-  base: {
-    marginTop: "-10px",
-    maxHeight: 363,
-    overflowY: "scroll",
-    paddingRight: 20,
-    marginRight: -31
-  },
-  row: {
-    outline: "none",
-    cursor: "pointer",
-    height: "63px",
-    lineHeight: "63px",
-    position: "relative",
-    transition: "all 500ms ease;",
-    "& > .wrapper": {
-      opacity: "0.5",
-      transition: "all 500ms ease;"
-    },
-    "&:after": {
-      content: '""',
-      left: 0,
-      width: "100%",
-      position: "absolute",
-      bottom: 0,
-      height: 1,
-      background: "#eeeeee"
-    },
-    "&:last-child:after": {
-      content: "none"
-    },
-    "&:before": {
-      content: "''",
-      left: "-40px",
-      backgroundColor: colors.ocean,
-      width: "0px",
-      height: "26px",
-      position: "absolute",
-      bottom: "calc(50% - 13px)",
-      opacity: "1",
-      transition: "width 0.2s ease"
-    },
-    "&:hover": {
-      "& > .wrapper": {
-        opacity: "1"
-      }
-    },
-    "&:hover:before": {
-      width: "5px"
-    }
-  },
-  name: {
-    fontSize: "13px",
-    color: "black"
-  },
-  icon: {
-    width: 23,
-    height: 23,
-    display: "inline-block",
-    marginRight: 20,
-    borderRadius: 5,
-    color: "white",
-    lineHeight: "normal",
-    textAlign: "center"
-  },
-  short: {
-    fontSize: "10px",
-    float: "right",
-    color: colors.lead
-  },
-  selected: {
-    "& > .wrapper": {
-      opacity: 1
-    }
-  },
-  disabled: {
-    opacity: 0.5
-  },
-  issue: {
-    position: "absolute",
-    fontSize: 10,
-    bottom: -20,
-    left: 0
-  }
+const styles = {};
+
+type Props = {
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
+
+  classes: { [_: $Keys<typeof styles>]: string },
+  t: string => string
 };
 
-class CurrencyIcon extends PureComponent<{
-  classe: string,
-  color: string,
-  Icon: any
-}> {
+class AccountCreationCurrencies extends PureComponent<Props> {
+  handleChange = (item: ?SelectCurrencyItem) => {
+    const { updateAccountCreationState } = this.props;
+    const patch = {};
+    if (!item) {
+      Object.assign(patch, { currency: null, erc20token: null });
+    } else if (item.type === "currency") {
+      Object.assign(patch, {
+        currency: item.value,
+        erc20token: null,
+        currentTab: 1
+      });
+    } else {
+      Object.assign(patch, { currency: null, erc20token: item.value });
+    }
+    updateAccountCreationState(() => patch);
+  };
+
   render() {
-    const { classe, color, Icon } = this.props;
+    const { accountCreationState, t } = this.props;
+
+    const currencyOrToken =
+      accountCreationState.currency || accountCreationState.erc20token || null;
+
     return (
-      <div className={classe} style={{ background: color }}>
-        <Icon size={13} />
-      </div>
+      <Fragment>
+        <ModalSubTitle noPadding>
+          <Trans i18nKey="newAccount:currency.enterCrypto" />
+        </ModalSubTitle>
+        <SelectCurrency
+          placeholder={t("newAccount:currency.enterCrypto")}
+          value={currencyOrToken}
+          onChange={this.handleChange}
+        />
+      </Fragment>
     );
   }
 }
-
-class AccountCreationCurrencies extends Component<{
-  currency: CryptoCurrency, // FIXME this should just be the currency.name for a better normalization
-  currencies: Currency[],
-  onSelect: (cur: CryptoCurrency) => void, // SAME
-  classes: Object
-}> {
-  render() {
-    const { props } = this;
-    const { currency, onSelect, classes } = props;
-    // TODO migrate to use material-ui MenuList
-
-    return (
-      <div className={classes.base}>
-        {allCurrencies.map(cur => {
-          const Icon = getCryptoCurrencyIcon(cur);
-          return (
-            <div
-              onClick={() => {
-                onSelect(cur);
-              }}
-              role="button"
-              tabIndex="0"
-              key={cur.name}
-              className={classnames(classes.row, {
-                [classes.selected]: currency && currency.name === cur.name
-              })}
-            >
-              <div className="wrapper">
-                {Icon ? (
-                  <CurrencyIcon
-                    Icon={Icon}
-                    classe={classes.icon}
-                    color={cur.color}
-                  />
-                ) : (
-                  "-"
-                )}
-                <span className={classes.name}>{cur.name}</span>
-                <span className={classes.short}>{cur.ticker}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-}
-export default withStyles(styles)(AccountCreationCurrencies);
+export default withStyles(styles)(translate()(AccountCreationCurrencies));

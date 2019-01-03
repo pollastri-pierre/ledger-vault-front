@@ -3,7 +3,6 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import type { MemoryHistory } from "history";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { Member } from "data/types";
 
@@ -28,8 +27,8 @@ import type {
 } from "redux/modules/account-creation";
 
 import {
+  updateAccountCreationState,
   changeTab,
-  selectCurrency,
   changeAccountName,
   switchInternalModal,
   addMember,
@@ -43,7 +42,6 @@ type Props = {
   restlay: RestlayEnvironment,
   history: MemoryHistory,
   onChangeAccountName: string => void,
-  onSelectCurrency: CryptoCurrency => void,
   onChangeTabAccount: number => void,
   onSwitchInternalModal: string => void,
   onAddMember: Member => void,
@@ -51,7 +49,10 @@ type Props = {
   onSetTimelock: Timelock => void,
   onSetRatelimiter: Ratelimiter => void,
   onClearState: () => void,
-  accountCreation: AccountCreationState
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: AccountCreationState => $Shape<
+    AccountCreationState
+  >
 };
 
 // TODO this HIGHLY need some cleaning:
@@ -72,7 +73,6 @@ export type StepProps = {
   setRatelimiter: Ratelimiter => void,
   account: AccountCreationState,
   changeAccountName: string => void,
-  selectCurrency: CryptoCurrency => void,
   tabsIndex: number,
   onSelect: number => void,
   close: () => void,
@@ -80,16 +80,16 @@ export type StepProps = {
 };
 
 const mapStateToProps = state => ({
-  accountCreation: state.accountCreation
+  accountCreationState: state.accountCreation
 });
 
 const mapDispatchToProps = {
+  updateAccountCreationState,
   onAddMember: addMember,
   onSetApprovals: setApprovals,
   onSetTimelock: setTimelock,
   onSetRatelimiter: setRatelimiter,
   onChangeTabAccount: changeTab,
-  onSelectCurrency: selectCurrency,
   onChangeAccountName: changeAccountName,
   onSwitchInternalModal: switchInternalModal,
   onClearState: clearState
@@ -106,7 +106,7 @@ class AccountCreation extends PureComponent<Props> {
 
   createAccount = (entity_id: number) => {
     const { restlay } = this.props;
-    const account = this.props.accountCreation;
+    const account = this.props.accountCreationState;
 
     const approvers = account.approvers.map(pubKey => {
       return { pub_key: pubKey };
@@ -166,8 +166,10 @@ class AccountCreation extends PureComponent<Props> {
 
   render() {
     const {
+      accountCreationState,
+      updateAccountCreationState,
+
       onChangeAccountName,
-      onSelectCurrency,
       onChangeTabAccount,
       onSwitchInternalModal,
       onAddMember,
@@ -176,8 +178,7 @@ class AccountCreation extends PureComponent<Props> {
       onSetRatelimiter
     } = this.props;
 
-    const account = this.props.accountCreation;
-    const Step = this.stepsByModalId[account.internModalId];
+    const Step = this.stepsByModalId[accountCreationState.internModalId];
 
     if (!Step) return null;
 
@@ -185,22 +186,30 @@ class AccountCreation extends PureComponent<Props> {
       close: this.close,
       cancel: () => onSwitchInternalModal("main"),
 
-      // TODO why different names for same thing
-      approvers: account.approvers,
-      members: account.approvers,
+      // TODO yep, we already have `account` prop for that. but it's confusing.
+      // it's not storing an account but an account creation state. let's keep
+      // the old one for migrating smoothly
+      //
+      // basically, we only need those two. get and set.
+      accountCreationState,
+      updateAccountCreationState,
 
-      tabsIndex: account.currentTab,
+      // TODO why different names for same thing?
+      approvers: accountCreationState.approvers,
+      members: accountCreationState.approvers,
+
+      // TODO legacy stuff
+      tabsIndex: accountCreationState.currentTab,
       switchInternalModal: onSwitchInternalModal,
       addMember: onAddMember,
       setApprovals: onSetApprovals,
-      approvals: account.quorum,
-      timelock: account.time_lock,
+      approvals: accountCreationState.quorum,
+      timelock: accountCreationState.time_lock,
       setTimelock: onSetTimelock,
-      rate_limiter: account.rate_limiter,
+      rate_limiter: accountCreationState.rate_limiter,
       setRatelimiter: onSetRatelimiter,
-      account: account,
+      account: accountCreationState,
       changeAccountName: onChangeAccountName,
-      selectCurrency: onSelectCurrency,
       onSelect: onChangeTabAccount
     };
 

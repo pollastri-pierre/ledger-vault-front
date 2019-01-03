@@ -8,15 +8,22 @@ import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
-import type { Currency, Translate } from "data/types";
+import type { Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
+import type { State as AccountCreationState } from "redux/modules/account-creation";
+
 type Props = {
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: AccountCreationState => $Shape<
+    AccountCreationState
+  >,
+
+  // TODO: legacy stuff
   changeAccountName: Function,
-  selectCurrency: (cur: Currency) => void,
   onSelect: Function,
   t: Translate,
   switchInternalModal: Function,
@@ -41,9 +48,11 @@ class MainCreation extends Component<Props> {
   render() {
     const { props } = this;
     const {
+      accountCreationState,
+      updateAccountCreationState,
+
       changeAccountName,
       account,
-      selectCurrency,
       t,
       onSelect,
       tabsIndex,
@@ -83,7 +92,10 @@ class MainCreation extends Component<Props> {
             value={tabsIndex}
             indicatorColor="primary"
           >
-            <Tab label={`1. ${t("newAccount:currency")}`} disableRipple />
+            <Tab
+              label={`1. ${t("newAccount:currency.tabTitle")}`}
+              disableRipple
+            />
             <Tab
               label={`2. ${t("newAccount:options.title")}`}
               disabled={_.isNull(account.currency)}
@@ -108,8 +120,8 @@ class MainCreation extends Component<Props> {
         <div className="content">
           {tabsIndex === 0 && (
             <AccountCreationCurrencies
-              currency={account.currency}
-              onSelect={selectCurrency}
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
             />
           )}
           {tabsIndex === 1 && (

@@ -1,5 +1,7 @@
 title: New account
-currency: currency
+currency:
+  tabTitle: currency
+  enterCrypto: Enter or select a crypto asset
 options:
   title: name
   name: name

@@ -37,3 +37,7 @@ export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
 export const listERC20Tokens: () => ERC20Token[] = memoize(
   (): ERC20Token[] => sortBy(rawERC20List, "name")
 );
+
+export const isERC20Token = (v: ERC20Token | CryptoCurrency) => {
+  return "contract_address" in v;
+};

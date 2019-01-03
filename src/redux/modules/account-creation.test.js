@@ -56,13 +56,6 @@ test("changeTab sould send CHANGE_TAB and index", () => {
   });
 });
 
-test("selectCurrencyItem should send SELECT_CURRENCY and currency", () => {
-  expect(module.selectCurrencyItem({ id: 1 })).toEqual({
-    type: module.SELECT_CURRENCY,
-    currency: { id: 1 }
-  });
-});
-
 test("changeAccountName should send CHANGE_ACCOUNT_NAME and name if inferior to MAX_ACCOUNT_NAME_LENGTH", () => {
   expect(module.changeAccountName("name")).toEqual({
     type: module.CHANGE_ACCOUNT_NAME,
@@ -81,14 +74,6 @@ test("switchInternalModal should send SWITCH_INTERN_MODAL and id", () => {
     type: module.SWITCH_INTERN_MODAL,
     id: "id"
   });
-});
-
-test("selectCurrency should dispatch selectCurrencyItem and changeTab", () => {
-  const dispatch = jest.fn();
-  const thunk = module.selectCurrency({ id: 1 });
-  thunk(dispatch);
-  expect(dispatch).toHaveBeenCalledWith(module.selectCurrencyItem({ id: 1 }));
-  expect(dispatch).toHaveBeenCalledWith(module.changeTab(1));
 });
 
 // testing the reducer now
@@ -126,15 +111,6 @@ test("changeTab should update the curruntTab in state", () => {
       index: 2
     })
   ).toEqual({ ...module.initialState, currentTab: 2 });
-});
-
-test("selectCurrency should update the currency in state", () => {
-  expect(
-    accountCreation(module.initialState, {
-      type: module.SELECT_CURRENCY,
-      currency: { id: 1 }
-    })
-  ).toEqual({ ...module.initialState, currency: { id: 1 } });
 });
 
 test("setTimelock should update the time_lock in state", () => {

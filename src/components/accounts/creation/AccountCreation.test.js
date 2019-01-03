@@ -15,7 +15,6 @@ const props = {
   onSetTimelock: jest.fn(),
   onSetRatelimiter: jest.fn(),
   onChangeTabAccount: jest.fn(),
-  onSelectCurrency: jest.fn(),
   onChangeAccountName: jest.fn(),
   onSwitchInternalModal: jest.fn(),
   onClearState: jest.fn(),
