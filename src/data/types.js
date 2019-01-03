@@ -273,3 +273,12 @@ export type GateError = {
   message: string,
   status: number
 };
+
+export type ERC20Token = {
+  blockchain_name: string,
+  contract_address: string,
+  decimals: number,
+  name: string,
+  symbol: string,
+  ticker: string
+};
