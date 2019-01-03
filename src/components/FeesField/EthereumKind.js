@@ -3,12 +3,14 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
+import last from "lodash/last";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
 
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
+import InputCurrency from "components/InputCurrency";
 
 const styles = {
   root: {
@@ -84,11 +86,14 @@ class FeesFieldEthereumKind extends PureComponent<
     onChangeTransaction({ ...transaction, [field]: parseInt(value) });
   };
 
-  onGasPriceChange = this.createMutation("gasPrice");
+  onGasPriceChange = (gasPrice: number) => {
+    const { transaction, onChangeTransaction } = this.props;
+    onChangeTransaction({ ...transaction, gasPrice });
+  };
   onGasLimitChange = this.createMutation("gasLimit");
 
   render() {
-    const { classes, transaction } = this.props;
+    const { classes, transaction, account } = this.props;
     const { gasPriceStatus } = this.state;
     return (
       <div className={classes.root}>
@@ -96,14 +101,14 @@ class FeesFieldEthereumKind extends PureComponent<
           <ModalSubTitle noPadding>
             <Trans i18nKey="send:details.gasPrice" />
           </ModalSubTitle>
-          <TextField
-            disabled={gasPriceStatus === "fetching"}
+
+          <InputCurrency
+            currency={account.currency}
             placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
-            fullWidth
-            inputProps={inputProps}
-            value={transaction.gasPrice ? transaction.gasPrice.toString() : ""}
-            error={false}
             onChange={this.onGasPriceChange}
+            defaultUnit={last(account.currency.units)}
+            value={transaction.gasPrice === null ? 0 : transaction.gasPrice}
+            disabled={gasPriceStatus === "fetching"}
           />
         </div>
         <div className={classes.cell}>

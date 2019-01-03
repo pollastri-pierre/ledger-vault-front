@@ -7,19 +7,29 @@ const styles = _theme => ({
   root: {
     color: "black"
   },
-  arrowDown: {
+  arrowDownLarge: {
     marginLeft: 10,
     width: 11
+  },
+  arrowDownSmall: {
+    marginLeft: 10,
+    width: 9
   }
 });
-
+// TODO refactor ArrowDown svg to accept the size and update it in all use cases
 class BlueSelectRightRenderValue extends Component<*> {
   render() {
-    const { classes, children } = this.props;
+    const { classes, children, size } = this.props;
     return (
       <span className={classes.root}>
         {children}
-        <ArrowDown className={classes.arrowDown} />
+        <ArrowDown
+          className={
+            size && size === "small"
+              ? classes.arrowDownSmall
+              : classes.arrowDownLarge
+          }
+        />
       </span>
     );
   }
