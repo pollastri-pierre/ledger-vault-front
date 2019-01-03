@@ -26,7 +26,7 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "linebreak-style": ["error", "unix"],
     "semi": ["error", "always"],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
     "flowtype/generic-spacing": 0,
     "flowtype/space-after-type-colon": 0,
     "import/no-named-as-default": 0,

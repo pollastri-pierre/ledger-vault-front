@@ -21,7 +21,7 @@ const styles = {
     textTransform: "uppercase"
   },
   feesFiat: {
-    marginTop: 18,
+    marginTop: 10,
     textAlign: "right",
     color: colors.steel,
     fontWeight: 600,
@@ -34,7 +34,8 @@ const styles = {
     borderBottom: "1px solid #eeeeee"
   },
   container: {
-    margin: "15px 0"
+    margin: "15px 0",
+    padding: "0 40px"
   }
 };
 

@@ -14,6 +14,10 @@ const styles = {
   },
   menu: {
     color: "#27d0e2"
+  },
+  selectLarge: {
+    fontSize: 21,
+    lineHeight: "22px"
   }
 };
 
@@ -21,11 +25,13 @@ class UnitSelect extends Component<{
   units: Array<Unit>,
   index: number,
   onChange: number => void,
+  size?: string,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   renderValue = (index: number) => {
+    const { size, classes } = this.props;
     return (
-      <span style={{ fontSize: 21, lineHeight: "22px" }}>
+      <span className={size && size === "large" ? classes.selectLarge : null}>
         {this.props.units[index].code}
       </span>
     );
@@ -35,16 +41,15 @@ class UnitSelect extends Component<{
     this.props.onChange(Number(e.target.value));
   };
 
-  // <ArrowDown style={{ width: 11 }} />
   render() {
-    const { index, units, classes } = this.props;
+    const { index, units, classes, size } = this.props;
     return (
       <Select
         value={index}
         data-test="unit-select"
         onChange={this.onChange}
         renderValue={value => (
-          <BlueSelectRightRenderValue>
+          <BlueSelectRightRenderValue size={size}>
             {this.renderValue(value)}
           </BlueSelectRightRenderValue>
         )}
