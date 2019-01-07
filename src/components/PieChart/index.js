@@ -16,7 +16,9 @@ const allCurrencies = listCryptoCurrencies(true);
 type PieChartData = {
   account: Account,
   balance: number,
-  counterValueBalance: number
+  counterValueBalance: number,
+  percentage: string,
+  center: number
 };
 
 const commonArrowStyle = {
@@ -388,7 +390,7 @@ class PieChart extends Component<
         {showCaptions && (
           <table className={classes.table}>
             <tbody>
-              {_.map(this.props.data, (data, id) => {
+              {_.map(this.props.data, (data, id: number) => {
                 return (
                   <tr
                     data-test="currency-list"

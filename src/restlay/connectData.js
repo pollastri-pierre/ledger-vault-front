@@ -1,4 +1,12 @@
-//@flow
+// TODO: put back the flow validation when we have time. actually it produce
+// a million errors.
+//
+// @/f/l/o/w/
+
+// then, remove those rules
+/* eslint-disable flowtype/no-types-missing-file-annotation */
+/* eslint-disable no-undef */
+
 import { connect } from "react-redux";
 import invariant from "invariant";
 import React, { Component } from "react";

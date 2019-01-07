@@ -14,13 +14,13 @@ export const APPROVE = "APPROVE";
 
 export const getAccountTitle = (account: Account) => `${account.name}`;
 
-export const getOutdatedAccounts = (accounts: Account[]) =>
+export const getOutdatedAccounts = (accounts: Account[]): Account[] =>
   accounts.filter(a => a.is_hsm_coin_app_updated === false);
 
 export const isAccountOutdated = (account: Account) =>
   account.is_hsm_coin_app_updated === false;
 
-export const getVisibleAccountsInMenu = (accounts: Account[]) =>
+export const getVisibleAccountsInMenu = (accounts: Account[]): Account[] =>
   accounts.filter(a => VISIBLE_MENU_STATUS.indexOf(a.status) > -1);
 
 export const isAccountBeingUpdated = (account: Account) =>

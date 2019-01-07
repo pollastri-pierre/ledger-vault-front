@@ -28,6 +28,33 @@ type ERC20TokenItem = {
 export type Item = CurrencyItem | ERC20TokenItem;
 type Option = { label: string, value: Item };
 
+function getItemIcon(item: Item) {
+  return item.type === "erc20token" ? (
+    erc20TokenIcon
+  ) : (
+    <CryptoCurrencyIcon
+      currency={item.value}
+      color={item.value.color}
+      size={ICON_SIZE}
+    />
+  );
+}
+
+function getItemLabel(item: Item) {
+  return item.type === "erc20token" ? (
+    <span>
+      {`${item.value.name} - `}
+      <b>{item.value.symbol}</b>{" "}
+      <span style={styles.contract}>{`${item.value.contract_address.substr(
+        0,
+        15
+      )}...`}</span>
+    </span>
+  ) : (
+    item.value.name
+  );
+}
+
 const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({ label: item.value.name, value: item }));
 
@@ -49,7 +76,6 @@ const fullOptions = [...currenciesOptions, ...erc20TokensOptions];
 
 const fuseOptions = {
   shouldSort: true,
-  includeMatches: true,
   threshold: 0.1,
   location: 0,
   distance: 100,
@@ -65,7 +91,7 @@ const fetchOptions = (inputValue: string) =>
     window.requestAnimationFrame(() => {
       if (!inputValue) return resolve(currenciesOptions);
       const result = fuse.search(inputValue);
-      resolve(result.slice(0, 10).map(r => r.item));
+      resolve(result.slice(0, 10));
     });
   });
 
@@ -96,33 +122,10 @@ const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
 
 const GenericRow = (props: OptionProps) => {
   const { data } = props;
-  const { value: item }: { value: Item } = data;
-  const { type, value } = item;
+  const item: Item = data.value;
 
-  const icon =
-    type === "erc20token" ? (
-      erc20TokenIcon
-    ) : (
-      <CryptoCurrencyIcon
-        currency={value}
-        color={value.color}
-        size={ICON_SIZE}
-      />
-    );
-
-  const label =
-    type === "erc20token" ? (
-      <span>
-        {`${value.name} - `}
-        <b>{value.symbol}</b>{" "}
-        <span style={styles.contract}>{`${value.contract_address.substr(
-          0,
-          15
-        )}...`}</span>
-      </span>
-    ) : (
-      value.name
-    );
+  const icon = getItemIcon(item);
+  const label = getItemLabel(item);
 
   return (
     <div style={styles.genericRowContainer}>

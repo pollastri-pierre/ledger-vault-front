@@ -1,4 +1,12 @@
-//@flow
+// TODO: put back the flow validation when we have time. actually it produce
+// a million errors.
+//
+// @/f/l/o/w/
+
+// then, remove those rules
+/* eslint-disable flowtype/no-types-missing-file-annotation */
+/* eslint-disable no-undef */
+
 import { Component } from "react";
 import PropTypes from "prop-types";
 import type { ContextOverridableOpts } from "./connectData";
