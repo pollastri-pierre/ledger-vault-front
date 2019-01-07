@@ -38,6 +38,6 @@ export const listERC20Tokens: () => ERC20Token[] = memoize(
   (): ERC20Token[] => sortBy(rawERC20List, "name")
 );
 
-export const isERC20Token = (v: ERC20Token | CryptoCurrency) => {
-  return "contract_address" in v;
+export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) => {
+  return !!v && "contract_address" in v;
 };

@@ -9,10 +9,16 @@ import type {
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
 import SelectCurrency from "components/SelectCurrency";
+import InfoBox from "components/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import { isERC20Token } from "utils/cryptoCurrencies";
 
-const styles = {};
+const styles = {
+  infoBox: {
+    marginTop: 20
+  }
+};
 
 type Props = {
   accountCreationState: AccountCreationState,
@@ -41,10 +47,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
   };
 
   render() {
-    const { accountCreationState, t } = this.props;
+    const { accountCreationState, classes, t } = this.props;
 
     const currencyOrToken =
       accountCreationState.currency || accountCreationState.erc20token || null;
+
+    const displayERC20Box = isERC20Token(currencyOrToken);
 
     return (
       <Fragment>
@@ -56,6 +64,13 @@ class AccountCreationCurrencies extends PureComponent<Props> {
           value={currencyOrToken}
           onChange={this.handleChange}
         />
+        {displayERC20Box && (
+          <InfoBox type="info" className={classes.infoBox}>
+            {
+              "A new ethereum account will be created, because you don't have any."
+            }
+          </InfoBox>
+        )}
       </Fragment>
     );
   }
