@@ -18,10 +18,13 @@ const styles = {
     lineHeight: 2.42,
     fontSize: 22,
     color: colors.lead,
-    marginBottom: 20
+    marginBottom: 10
   },
   paddedHorizontal: {
     padding: "0 40px"
+  },
+  fiat: {
+    fontSize: 20
   }
 };
 
@@ -62,11 +65,13 @@ class SendAmount extends PureComponent<Props<*>> {
             data-test="operation-creation-amount"
           />
           <div className={classes.countervalue}>
-            <div>USD</div>
-            <CounterValue
-              value={bridge.getTransactionAmount(account, transaction)}
-              from={account.currency.name}
-            />
+            <div className={classes.fiat}>USD</div>
+            <div className={classes.fiat}>
+              <CounterValue
+                value={bridge.getTransactionAmount(account, transaction)}
+                from={account.currency.name}
+              />
+            </div>
           </div>
         </div>
       </Fragment>

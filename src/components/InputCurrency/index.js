@@ -40,7 +40,7 @@ const styles = {
 };
 
 const INPUT_LARGE = {
-  style: { textAlign: "right", fontSize: 22 }
+  style: { textAlign: "right", fontSize: 20 }
 };
 
 const INPUT_SMALL = {

@@ -14,9 +14,13 @@ details:
     title: Confirmation Fees
   gasPrice: Gas price
   gasLimit: Gas limit
-label:
+  totalFees: 'Max Operation Fee:'
+  totalSpent: 'Total:'
   title: Label
   note: Add a comment
+label:
+  title: Label
+  note: Note
 confirmation:
   desc: An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.
   identifier: Identifier

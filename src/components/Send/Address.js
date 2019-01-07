@@ -11,7 +11,7 @@ import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
 const styles = {
   addressPicker: {
-    margin: "15px 0"
+    margin: "0 0 15px 0"
   },
   paddedHorizontal: {
     padding: "0 40px"
@@ -62,7 +62,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const { isValid } = this.state;
     return (
       <Fragment>
-        <ModalSubTitle noMargin>
+        <ModalSubTitle>
           <Trans i18nKey="send:details.address.title" />
         </ModalSubTitle>
         <div className={classes.paddedHorizontal}>

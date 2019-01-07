@@ -6,7 +6,7 @@ const styles = {
   title: {
     padding: "0 40px",
     marginTop: 0,
-    marginBottom: 20,
+    marginBottom: 10,
     fontSize: 11,
     fontWeight: 600,
     color: "black",

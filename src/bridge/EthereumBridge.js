@@ -5,6 +5,7 @@ import invariant from "invariant";
 import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
+import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Input as NewEthereumOperationMutationInput } from "api/mutations/NewEthereumOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
@@ -22,12 +23,31 @@ export type Transaction = {
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
-const isRecipientValid = () => {
-  return Promise.resolve(true);
+const isRecipientValid = async (restlay, currency, recipient) => {
+  if (recipient) {
+    try {
+      const { is_valid } = await restlay.fetchQuery(
+        new ValidateAddressQuery({ currency, address: recipient })
+      );
+      return is_valid;
+    } catch (err) {
+      // TODO: create internal logger
+      return false;
+    }
+  } else {
+    return false;
+  }
 };
 
-const checkValidTransaction = () => {
-  return Promise.resolve(true);
+const checkValidTransaction = async (a, t, r) => {
+  const recipientIsValid = await isRecipientValid(r, a.currency, t.recipient);
+  const fees = await getFees(a, t);
+  const amountIsValid = t.amount + fees < a.balance;
+  if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 const getFees = (a, t) =>
