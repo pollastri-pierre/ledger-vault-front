@@ -74,6 +74,7 @@ export interface WalletBridge<Transaction> {
 
   checkValidTransaction(
     account: Account,
-    transaction: Transaction
+    transaction: Transaction,
+    restlay: RestlayEnvironment
   ): Promise<boolean>;
 }

@@ -7,16 +7,17 @@ import Select from "@material-ui/core/Select";
 import cx from "classnames";
 import type { Unit } from "data/types";
 import BlueSelectRightRenderValue from "components/BlueSelectRightRenderValue";
+import colors from "shared/colors";
 
 const styles = {
   select: {
     paddingBottom: 10
   },
   menu: {
-    color: "#27d0e2"
+    color: colors.ocean
   },
   selectLarge: {
-    fontSize: 21,
+    fontSize: 20,
     lineHeight: "22px"
   }
 };
@@ -37,7 +38,7 @@ class UnitSelect extends Component<{
     );
   };
 
-  onChange = (e: *) => {
+  onChange = (e: SyntheticInputEvent<*>) => {
     this.props.onChange(Number(e.target.value));
   };
 
@@ -64,7 +65,7 @@ class UnitSelect extends Component<{
             className={classes.menu}
             data-test="unit-select-values"
           >
-            <span style={{ color: "black" }}>{unit.code}</span>
+            <span style={{ color: colors.black }}>{unit.code}</span>
           </MenuItem>
         ))}
       </Select>

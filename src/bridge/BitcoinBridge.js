@@ -1,11 +1,10 @@
 // @flow
-import React from "react";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
 import type { Input as NewOperationMutationInput } from "api/mutations/NewOperationMutation";
-import type { WalletBridge, EditProps } from "./types";
+import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
@@ -20,21 +19,14 @@ export type Transaction = {
   note: string
 };
 
-const EditFees = ({
-  account,
-  onChangeTransaction,
-  transaction
-}: EditProps<Transaction>) => (
-  <FeesBitcoinKind
-    onChangeTransaction={onChangeTransaction}
-    transaction={transaction}
-    account={account}
-    bridge={BitcoinBridge}
-  />
-);
-
-const checkValidTransaction = () => {
-  return Promise.resolve(true);
+const checkValidTransaction = async (a, t, r) => {
+  const recipientIsValid = await isRecipientValid(r, a.currency, t.recipient);
+  const amountIsValid = t.amount + t.estimatedFees < a.balance;
+  if (!t.estimatedFees || !t.amount || !recipientIsValid || !amountIsValid) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -134,7 +126,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
       .commitMutation(new NewOperationMutation(data))
       .then(() => restlay.fetchQuery(new PendingOperationsQuery()));
   },
-  EditFees,
+  EditFees: FeesBitcoinKind,
   checkValidTransaction,
   isRecipientValid
 };

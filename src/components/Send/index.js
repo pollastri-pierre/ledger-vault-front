@@ -41,7 +41,7 @@ const styles = {
   },
   content: {
     overflowY: "auto",
-    paddingTop: 40,
+    paddingTop: 20,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1
