@@ -1,4 +1,3 @@
-//@flow
 import React from "react";
 import invariant from "invariant";
 import renderer from "react-test-renderer";

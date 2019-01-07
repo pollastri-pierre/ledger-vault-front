@@ -1,4 +1,8 @@
 [ignore]
+<PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/helpers/currencies/localeUtility.js.flow
+
+[untyped]
+.*/node_modules/react-select
 
 [include]
 
@@ -12,4 +16,4 @@ node_modules/jss/flow-typed
 
 [options]
 module.system.node.resolve_dirname=node_modules
-module.system.node.resolve_dirname=src
+module.system.node.resolve_dirname=./src

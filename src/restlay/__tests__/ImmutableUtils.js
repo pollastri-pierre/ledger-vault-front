@@ -1,4 +1,3 @@
-//@flow
 import { merge } from "../ImmutableUtils";
 import isEqual from "lodash/isEqual";
 

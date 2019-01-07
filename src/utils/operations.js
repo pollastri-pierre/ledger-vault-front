@@ -21,7 +21,7 @@ export const isCreateOperationEnabled = (
   return filter.length > 0;
 };
 
-export const getPendingsOperations = (operations: Operation[]) =>
+export const getPendingsOperations = (operations: Operation[]): Operation[] =>
   operations.filter(operation => operation.status === "PENDING_APPROVAL");
 
 export const hasPending = (account: Account, operations: Operation[]) =>

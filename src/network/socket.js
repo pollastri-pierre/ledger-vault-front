@@ -7,7 +7,10 @@ import { Observable } from "rxjs";
  * use Ledger WebSocket API to exchange data with the device
  * Returns an Observable of the final result
  */
-export const createDeviceSocket = (transport: *, url: string) =>
+export const createDeviceSocket = (
+  transport: *,
+  url: string
+): Observable<string> =>
   Observable.create(o => {
     let ws;
     let lastMessage: ?string;

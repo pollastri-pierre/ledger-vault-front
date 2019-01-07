@@ -109,6 +109,7 @@ class AddMember extends Component<Props, State> {
         />
       );
     }
+    return null;
   }
 }
 
