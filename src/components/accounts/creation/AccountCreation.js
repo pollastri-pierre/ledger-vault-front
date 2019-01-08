@@ -4,13 +4,16 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import type { MemoryHistory } from "history";
 
-import type { Member } from "data/types";
+import type { Member, Account } from "data/types";
+
+import { getEthAccounts } from "utils/accounts";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
 
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import NewAccountMutation from "api/mutations/NewAccountMutation";
+import ApprovedAccountsQuery from "api/queries/AccountsQuery";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 
@@ -41,6 +44,7 @@ import {
 type Props = {
   restlay: RestlayEnvironment,
   history: MemoryHistory,
+  accounts: Account[],
   onChangeAccountName: string => void,
   onChangeTabAccount: number => void,
   onSwitchInternalModal: string => void,
@@ -61,6 +65,7 @@ type Props = {
 //   is pointless. we should either pass the whole state OR only some keys.
 // - inconsistent naming
 export type StepProps = {
+  ethAccounts: Account[],
   approvers: Member[],
   members: Member[],
   switchInternalModal: string => void,
@@ -105,41 +110,65 @@ class AccountCreation extends PureComponent<Props> {
   };
 
   createAccount = (entity_id: number) => {
-    const { restlay } = this.props;
-    const account = this.props.accountCreationState;
+    const { restlay, accountCreationState } = this.props;
 
-    const approvers = account.approvers.map(pubKey => {
+    const approvers = accountCreationState.approvers.map(pubKey => {
       return { pub_key: pubKey };
     });
 
     const securityScheme: Object = {
-      quorum: account.quorum
+      quorum: accountCreationState.quorum
     };
 
-    if (account.time_lock.enabled) {
+    if (accountCreationState.time_lock.enabled) {
       Object.assign(securityScheme, {
-        time_lock: account.time_lock.value * account.time_lock.frequency
+        time_lock:
+          accountCreationState.time_lock.value *
+          accountCreationState.time_lock.frequency
       });
     }
 
-    if (account.rate_limiter.enabled) {
+    if (accountCreationState.rate_limiter.enabled) {
       Object.assign(securityScheme, {
         rate_limiter: {
-          max_transaction: account.rate_limiter.value,
-          time_slot: account.rate_limiter.frequency
+          max_transaction: accountCreationState.rate_limiter.value,
+          time_slot: accountCreationState.rate_limiter.frequency
         }
       });
     }
 
-    if (!account.currency) return;
+    if (!accountCreationState.currency && !accountCreationState.erc20token)
+      return;
 
-    const data = {
+    const data: Object = {
       account_id: entity_id,
-      name: account.name,
-      currency: { name: account.currency.id },
+      name: accountCreationState.name,
       security_scheme: securityScheme,
       members: approvers
     };
+
+    if (accountCreationState.currency) {
+      Object.assign(data, {
+        currency: { name: accountCreationState.currency.id }
+      });
+    }
+
+    if (accountCreationState.erc20token) {
+      Object.assign(data, {
+        currency: {
+          // TODO: handle ethereum_ropsten
+          name: "ethereum_ropsten"
+          // name: "ethereum"
+        },
+        erc20: {
+          ticker: accountCreationState.erc20token.ticker,
+          address: accountCreationState.erc20token.contract_address,
+          decimals: accountCreationState.erc20token.decimals,
+          signature: accountCreationState.erc20token.signature || ""
+        },
+        parent_account: accountCreationState.parent_account
+      });
+    }
 
     return restlay
       .commitMutation(new NewAccountMutation(data))
@@ -166,6 +195,7 @@ class AccountCreation extends PureComponent<Props> {
 
   render() {
     const {
+      accounts,
       accountCreationState,
       updateAccountCreationState,
 
@@ -179,6 +209,7 @@ class AccountCreation extends PureComponent<Props> {
     } = this.props;
 
     const Step = this.stepsByModalId[accountCreationState.internModalId];
+    const ethAccounts = getEthAccounts(accounts);
 
     if (!Step) return null;
 
@@ -190,9 +221,9 @@ class AccountCreation extends PureComponent<Props> {
       // it's not storing an account but an account creation state. let's keep
       // the old one for migrating smoothly
       //
-      // basically, we only need those two. get and set.
       accountCreationState,
       updateAccountCreationState,
+      ethAccounts,
 
       // TODO why different names for same thing?
       approvers: accountCreationState.approvers,
@@ -223,5 +254,10 @@ export default connectData(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AccountCreation)
+  )(AccountCreation),
+  {
+    queries: {
+      accounts: ApprovedAccountsQuery
+    }
+  }
 );

@@ -280,5 +280,6 @@ export type ERC20Token = {
   decimals: number,
   name: string,
   symbol: string,
-  ticker: string
+  ticker: string,
+  signature: string
 };

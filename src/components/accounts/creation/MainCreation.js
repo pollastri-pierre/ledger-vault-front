@@ -14,16 +14,16 @@ import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import type { State as AccountCreationState } from "redux/modules/account-creation";
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState
+} from "redux/modules/account-creation";
 
 type Props = {
   accountCreationState: AccountCreationState,
-  updateAccountCreationState: AccountCreationState => $Shape<
-    AccountCreationState
-  >,
+  updateAccountCreationState: UpdateAccountCreationState,
 
   // TODO: legacy stuff
-  changeAccountName: Function,
   onSelect: Function,
   t: Translate,
   switchInternalModal: Function,
@@ -51,7 +51,6 @@ class MainCreation extends Component<Props> {
       accountCreationState,
       updateAccountCreationState,
 
-      changeAccountName,
       account,
       t,
       onSelect,
@@ -64,10 +63,15 @@ class MainCreation extends Component<Props> {
 
     switch (tabsIndex) {
       case 0:
-        isNextDisabled = _.isNull(account.currency);
+        isNextDisabled =
+          _.isNull(account.erc20token) && _.isNull(account.currency);
         break;
       case 1:
-        isNextDisabled = account.name === "";
+        isNextDisabled = account.erc20token
+          ? account.name === "" ||
+            (!account.parent_account ||
+              (!account.parent_account.id && !account.parent_account.name))
+          : account.name === "";
         break;
       case 2:
         isNextDisabled =
@@ -98,7 +102,9 @@ class MainCreation extends Component<Props> {
             />
             <Tab
               label={`2. ${t("newAccount:options.title")}`}
-              disabled={_.isNull(account.currency)}
+              disabled={
+                _.isNull(account.currency) && _.isNull(account.erc20token)
+              }
               disableRipple
             />
             <Tab
@@ -126,9 +132,8 @@ class MainCreation extends Component<Props> {
           )}
           {tabsIndex === 1 && (
             <AccountCreationOptions
-              currency={account.currency}
-              name={account.name}
-              changeName={changeAccountName}
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
             />
           )}
           {tabsIndex === 2 && (
@@ -137,7 +142,12 @@ class MainCreation extends Component<Props> {
               account={account}
             />
           )}
-          {tabsIndex === 3 && <AccountCreationConfirmation account={account} />}
+          {tabsIndex === 3 && (
+            <AccountCreationConfirmation
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
+            />
+          )}
         </div>
         <div className="footer">
           {_.includes([0, 1, 2], tabsIndex) ? (

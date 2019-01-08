@@ -114,6 +114,8 @@ export function switchInternalModal(id: string) {
   };
 }
 
+type ParentAccount = { id: string } | { name: string };
+
 export type State = {
   // UI FIELDS (used to store the tab, and the sub modal id)
   currentTab: number,
@@ -137,6 +139,7 @@ export type State = {
 
   // -- ERC20TOKEN SPECIFIC
   erc20token: ?ERC20Token,
+  parent_account: ?ParentAccount,
 
   // TODO: is it used (except in tests)?
   popBubble: boolean,
@@ -160,6 +163,7 @@ export const initialState: State = {
 
   // -- ERC20TOKEN SPECIFIC
   erc20token: null,
+  parent_account: null,
 
   // TODO: is it used (except in tests)?
   popBubble: false,
