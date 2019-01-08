@@ -10,7 +10,8 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     color: "black",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    display: "flex"
   }
 };
 

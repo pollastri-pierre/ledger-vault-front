@@ -16,7 +16,7 @@
     "prettier": "prettier --write \"{src,webpack,test}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
     "starte2e": "NODE_ENV=e2e webpack-dev-server --https --config webpack/dev.babel.js",
-    "test": "jest --env=jsdom",
+    "test": "jest --env=jsdom --maxWorkers 2",
     "device": "node scripts/device.js",
     "testDev": "jest --env=jsdom --watch"
   },
@@ -43,6 +43,7 @@
     "d3": "^4.13.0",
     "dotenv": "^6.0.0",
     "dotenv-webpack": "^1.5.7",
+    "eip55": "^1.0.3",
     "email-validator": "^1.2.3",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

@@ -61,7 +61,7 @@ export interface WalletBridge<Transaction> {
     transaction: Transaction,
     feeLevel: Speed
   ) => Transaction;
-
+  recipientWarning?: (recipient: string) => Promise<?Error>;
   EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
