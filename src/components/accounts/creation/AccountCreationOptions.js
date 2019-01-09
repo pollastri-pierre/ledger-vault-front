@@ -1,59 +1,50 @@
 //@flow
 import { translate } from "react-i18next";
-import React from "react";
-import BadgeCurrency from "../../BadgeCurrency";
-import type { Currency, Translate } from "data/types";
-import TextField from "@material-ui/core/TextField";
+import React, { PureComponent } from "react";
+import type { Translate } from "data/types";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+import InputField from "components/InputField";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
-const styles = {
-  title: {
-    fontSize: 11,
-    fontWeight: 600,
-    textTransform: "uppercase",
-    marginBottom: 20,
-    display: "block"
-  },
-  relative: {
-    position: "relative"
-  },
-  badge: {
-    position: "absolute",
-    left: 0,
-    top: "29%"
-  },
-  input: {
-    paddingLeft: 20,
-    color: "black",
-    paddingBottom: 10
-  }
-};
-function AccountCreationOptions(props: {
-  currency: Currency,
+// NOTE: didn't delete for future wireframes that will need it
+const styles = {};
+
+type Props = {
+  currency: CryptoCurrency,
   name: string,
   changeName: Function,
   t: Translate,
-  classes: Object
-}) {
-  const { classes, t } = props;
-  return (
-    <div>
-      <label htmlFor="name" className={classes.title}>
-        {t("newAccount:options.name")}
-      </label>
-      <div className={classes.relative}>
-        <BadgeCurrency currency={props.currency} className={classes.badge} />
-        <TextField
-          value={props.name}
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+class AccountCreationOptions extends PureComponent<Props> {
+  changeAccountName = (name: string) => {
+    const { changeName } = this.props;
+    changeName(name);
+  };
+  render() {
+    const { name, currency, t } = this.props;
+    const AccountCurIcon = getCryptoCurrencyIcon(currency);
+    return (
+      <div>
+        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
+        <InputField
           autoFocus
-          onChange={e => props.changeName(e.target.value)}
+          renderLeft={
+            AccountCurIcon && (
+              <div style={{ color: currency.color }}>
+                <AccountCurIcon size={15} />
+              </div>
+            )
+          }
+          value={name}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          InputProps={{ className: classes.input }}
-          fullWidth
+          onChange={this.changeAccountName}
         />
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default withStyles(styles)(translate()(AccountCreationOptions));
