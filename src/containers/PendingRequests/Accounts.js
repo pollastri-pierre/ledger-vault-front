@@ -35,6 +35,8 @@ class ApproveWatchAccounts extends Component<Props> {
       )
     );
 
+    console.log(organization);
+
     return (
       <div>
         <Card title={<Trans i18nKey="pending:accounts.approve.title" />}>

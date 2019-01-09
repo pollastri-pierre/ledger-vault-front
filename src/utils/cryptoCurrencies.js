@@ -1,6 +1,7 @@
 // @flow
 
 import memoize from "lodash/memoize";
+import keyBy from "lodash/keyBy";
 import sortBy from "lodash/sortBy";
 import {
   listCryptoCurrencies as listCC,
@@ -50,3 +51,9 @@ export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) => {
 
 export const getCryptoCurrencyById = (id: string) =>
   id === "ethereum_ropsten" ? getCrypto("ethereum_testnet") : getCrypto(id);
+
+const erc20TokensByContractAddress = keyBy(rawERC20List, "contract_address");
+
+export const getERC20TokenByContractAddress = (
+  contractAddress: string
+): ?ERC20Token => erc20TokensByContractAddress[contractAddress] || null;

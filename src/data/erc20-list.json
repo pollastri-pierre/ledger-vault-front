@@ -4,7 +4,7 @@
     "name": "Ledger Coin",
     "symbol": "LGC",
     "blockchain_name": "ledger_coin",
-    "contract_address": "9549e8a940062615cee20c0420c98c25ffa2b214",
+    "contract_address": "0x9549e8a940062615cee20c0420c98c25ffa2b214",
     "signature":
       "30450221009bffb4baac8addf4777bf63bba27a460840a8429a9d940b7e8346e7bd8f880230220040587f3102203681cc580c5ccbe6e73741874e62e18a8945b142f70b0f616bf",
     "decimals": 2

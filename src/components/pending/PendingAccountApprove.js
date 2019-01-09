@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";
+import { getAccountCurrencyName } from "utils/accounts";
 
 const Empty = ({ approved }: { approved?: boolean }) =>
   approved ? (
@@ -65,37 +66,38 @@ function PendingAccountApprove(props: Props) {
           </p>
         </div>
       )}
-      {accounts.map(account => (
-        <Link
-          className={classnames(classes.row, "test-pending-account", {
-            [classes.approved]: approved
-          })}
-          to={`${match.url}/account/${account.id}`}
-          key={account.id}
-        >
-          <div>
-            <span className={classes.date}>
-              <DateFormat date={account.created_on} />
-            </span>
-            <span className={classes.name}>
-              <AccountName
-                name={account.name}
-                currencyId={account.currency.name}
-              />
-            </span>
-          </div>
+      {accounts.map(account => {
+        return (
+          <Link
+            className={classnames(classes.row, "test-pending-account", {
+              [classes.approved]: approved
+            })}
+            to={`${match.url}/account/${account.id}`}
+            key={account.id}
+          >
+            <div>
+              <span className={classes.date}>
+                <DateFormat date={account.created_on} />
+              </span>
+              <span className={classes.name}>
+                <AccountName account={account} />
+              </span>
+            </div>
 
-          <div className={classes.status}>
-            <ApprovalStatus
-              approved={account.approvals || []}
-              approvers={approvers}
-              nbRequired={quorum}
-              user={user}
-            />
-            <span className={classes.currency}>{account.currency.name}</span>
-          </div>
-        </Link>
-      ))}
+            <div className={classes.status}>
+              <ApprovalStatus
+                approved={account.approvals || []}
+                approvers={approvers}
+                nbRequired={quorum || 0}
+                user={user}
+              />
+              <span className={classes.currency}>
+                {getAccountCurrencyName(account)}
+              </span>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   );
 }
