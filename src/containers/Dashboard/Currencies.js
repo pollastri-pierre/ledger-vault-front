@@ -29,6 +29,7 @@ type AggregatedData = {
 const mapStateToProps = (state, ownProps) => {
   const data: AggregatedData = ownProps.accounts.reduce(
     (acc: AggregatedData, account) => {
+      console.log(account);
       const currency_name = account.currency.name;
       const currency = allCurrencies.find(curr => curr.id === currency_name);
       const balance = account.balance;

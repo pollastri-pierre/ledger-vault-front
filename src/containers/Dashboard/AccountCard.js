@@ -66,12 +66,7 @@ class AccountCard extends Component<{
           <div className={classes.cryptocur}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </div>
-          <div className={classes.realcur}>
-            <CounterValue
-              from={account.currency.name}
-              value={account.balance}
-            />
-          </div>
+          <div className={classes.realcur} />
         </div>
       </Card>
     );

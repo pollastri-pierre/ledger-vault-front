@@ -7,7 +7,7 @@ import CurrencyAccountValue from "../../CurrencyAccountValue";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account } from "data/types";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
   accountItem: {

@@ -65,7 +65,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         } else if (type === "accounts" && account_id) {
           url = `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         } else {
-          url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
+          url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge?account_type=ERC20`;
         }
 
         const data = await network(url, "GET");

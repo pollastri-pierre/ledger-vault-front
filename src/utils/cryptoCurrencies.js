@@ -2,7 +2,10 @@
 
 import memoize from "lodash/memoize";
 import sortBy from "lodash/sortBy";
-import { listCryptoCurrencies as listCC } from "@ledgerhq/live-common/lib/helpers/currencies";
+import {
+  listCryptoCurrencies as listCC,
+  getCryptoCurrencyById as getCrypto
+} from "@ledgerhq/live-common/lib/helpers/currencies";
 import type {
   CryptoCurrencyIds,
   CryptoCurrency
@@ -24,14 +27,17 @@ const supported: CryptoCurrencyIds[] = [
   "vertcoin",
   "viacoin",
   "bitcoin_testnet",
-  "ethereum"
+  "ethereum",
+  "ethereum_testnet"
 ];
 
 export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
-  (withDevCrypto?: boolean) =>
-    listCC(withDevCrypto)
+  (withDevCrypto?: boolean) => {
+    const list = listCC(withDevCrypto)
       .filter(c => supported.includes(c.id))
-      .sort((a, b) => a.name.localeCompare(b.name))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return list;
+  }
 );
 
 export const listERC20Tokens: () => ERC20Token[] = memoize(
@@ -41,3 +47,6 @@ export const listERC20Tokens: () => ERC20Token[] = memoize(
 export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) => {
   return !!v && "contract_address" in v;
 };
+
+export const getCryptoCurrencyById = (id: string) =>
+  id === "ethereum_ropsten" ? getCrypto("ethereum_testnet") : getCrypto(id);
