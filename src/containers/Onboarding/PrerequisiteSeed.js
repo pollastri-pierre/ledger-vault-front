@@ -90,10 +90,10 @@ const PrerequisiteSeed = ({
         render={(onNext, onPrevious) => (
           <Fragment>
             <DialogButton onTouchTap={onPrevious}>
-              {t("commom:back")}
+              {t("common:back")}
             </DialogButton>
             <DialogButton highlight onTouchTap={onNext}>
-              {t("commom:continue")}
+              {t("common:continue")}
             </DialogButton>
           </Fragment>
         )}
