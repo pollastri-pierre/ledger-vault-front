@@ -47,7 +47,7 @@ class SendAmount extends PureComponent<Props<*>> {
   };
 
   render() {
-    const { account, bridge, transaction, classes } = this.props;
+    const { account, bridge, transaction, classes, amountIsValid } = this.props;
     return (
       <Fragment>
         <ModalSubTitle>
@@ -61,7 +61,7 @@ class SendAmount extends PureComponent<Props<*>> {
             onChange={this.onChange}
             defaultUnit={account.settings.currency_unit}
             value={bridge.getTransactionAmount(account, transaction)}
-            error={!this.props.amountIsValid}
+            error={!amountIsValid}
             data-test="operation-creation-amount"
           />
           <div className={classes.countervalue}>
