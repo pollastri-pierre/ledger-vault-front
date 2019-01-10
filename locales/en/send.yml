@@ -27,3 +27,4 @@ confirmation:
   account: Account to Debit
   fees: Confirmation Fees
   total: Total Spent
+nonEIP55Warning: 'Auto-verification not available: carefully verify the address'

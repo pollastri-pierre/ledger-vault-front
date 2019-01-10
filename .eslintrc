@@ -11,7 +11,11 @@
     "__VERSION__": false,
     "__DEBUG__": false,
     "__ENV__": false,
-    "__DEV__": false
+    "__DEV__": false,
+    "cy": false,
+    "Cypress": false,
+    "context": false,
+    "before": false,
   },
   "extends": [
     "eslint:recommended",

@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import invariant from "invariant";
+import eip55 from "eip55";
 
 import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
@@ -22,6 +23,19 @@ export type Transaction = {
 };
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
+
+const recipientWarning = async recipient => {
+  // TODO: temp solution until centralized
+  const EIP55Error = new Error(
+    "Auto-verification not available: carefully verify the address"
+  );
+  try {
+    const isEIP55 = await eip55.verify(recipient);
+    return !isEIP55 ? EIP55Error : null;
+  } catch (error) {
+    return EIP55Error;
+  }
+};
 
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
@@ -134,7 +148,8 @@ const EthereumBridge: WalletBridge<Transaction> = {
   EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,
   checkValidTransaction,
-  isRecipientValid
+  isRecipientValid,
+  recipientWarning
 };
 
 export default EthereumBridge;

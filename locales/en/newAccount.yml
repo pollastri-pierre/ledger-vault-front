@@ -4,6 +4,7 @@ currency:
   enterCrypto: Enter or select a crypto asset
 options:
   title: name
+  parentName: Parent account name
   name: name
   acc_name_placeholder: Enter account name
 security:

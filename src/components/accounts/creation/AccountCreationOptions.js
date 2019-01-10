@@ -1,8 +1,13 @@
 //@flow
 import { translate } from "react-i18next";
 import React, { Fragment, PureComponent } from "react";
-import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+
+import InputField from "components/InputField";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import type { Translate } from "data/types";
 import type {
@@ -10,7 +15,12 @@ import type {
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
 
-import BadgeCurrency from "../../BadgeCurrency";
+const ethereumCurrency = getCryptoCurrencyById("ethereum");
+const EthereumCurIcon = getCryptoCurrencyIcon(ethereumCurrency);
+const ethereumCurIcon = (
+  <EthereumCurIcon size={15} color={ethereumCurrency.color} />
+);
+const erc20TokenIcon = <ERC20TokenIcon size={15} />;
 
 const styles = {
   title: {
@@ -22,16 +32,6 @@ const styles = {
   },
   relative: {
     position: "relative"
-  },
-  badge: {
-    position: "absolute",
-    left: 0,
-    top: "29%"
-  },
-  input: {
-    paddingLeft: 20,
-    color: "black",
-    paddingBottom: 10
   }
 };
 
@@ -54,27 +54,8 @@ class AccountCreationOptions extends PureComponent<Props> {
     updateAccountCreationState(() => ({ parent_account: { name } }));
   };
 
-  renderCurrency = () => {
-    const { classes, t, accountCreationState } = this.props;
-    const { currency } = accountCreationState;
-    if (!currency) return null;
-    return (
-      <Fragment>
-        <BadgeCurrency currency={currency} className={classes.badge} />
-        <TextField
-          value={accountCreationState.name}
-          autoFocus
-          onChange={e => this.handleChangeName(e.target.value)}
-          placeholder={t("newAccount:options.acc_name_placeholder")}
-          InputProps={{ className: classes.input }}
-          fullWidth
-        />
-      </Fragment>
-    );
-  };
-
   renderERC20Token = () => {
-    const { classes, t, accountCreationState } = this.props;
+    const { t, accountCreationState } = this.props;
     const { erc20token } = accountCreationState;
     if (!erc20token) return null;
 
@@ -84,38 +65,55 @@ class AccountCreationOptions extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <TextField
+        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
+        <InputField
           value={accountCreationState.name}
           autoFocus
-          onChange={e => this.handleChangeName(e.target.value)}
+          onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          InputProps={{ className: classes.input }}
           fullWidth
+          renderLeft={erc20TokenIcon}
         />
-        <TextField
+        <ModalSubTitle noPadding style={{ marginTop: 30 }}>
+          {t("newAccount:options.parentName")}
+        </ModalSubTitle>
+        <InputField
           value={parentAccountName}
-          autoFocus
-          onChange={e => this.handleChangeParentAccountName(e.target.value)}
+          onChange={this.handleChangeParentAccountName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          InputProps={{ className: classes.input }}
           fullWidth
+          renderLeft={ethereumCurIcon}
         />
       </Fragment>
     );
   };
 
   render() {
-    const { classes, t, accountCreationState } = this.props;
+    const { t, accountCreationState } = this.props;
+    const { currency } = accountCreationState;
+
+    if (accountCreationState.erc20token) {
+      return this.renderERC20Token();
+    }
+
+    if (!currency) return null;
+
+    const AccountCurIcon = getCryptoCurrencyIcon(currency);
     return (
-      <div>
-        <label htmlFor="name" className={classes.title}>
-          {t("newAccount:options.name")}
-        </label>
-        <div className={classes.relative}>
-          {accountCreationState.currency && this.renderCurrency()}
-          {accountCreationState.erc20token && this.renderERC20Token()}
-        </div>
-      </div>
+      <Fragment>
+        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
+        <InputField
+          value={accountCreationState.name}
+          autoFocus
+          onChange={this.handleChangeName}
+          placeholder={t("newAccount:options.acc_name_placeholder")}
+          renderLeft={
+            AccountCurIcon && (
+              <AccountCurIcon color={currency.color} size={15} />
+            )
+          }
+        />
+      </Fragment>
     );
   }
 }

@@ -98,10 +98,7 @@ class Welcome extends Component<
     if (domain !== "" && !isChecking) {
       this.setState({ isChecking: true });
       try {
-        const url =
-          process.env.NODE_ENV === "development"
-            ? `${domain}/organization/exists`
-            : `/gate/${domain}/organization/exists`;
+        const url = `${domain}/organization/exists`;
         await network(url, "GET");
         this.setState({ isChecking: false });
         history.push(`/${domain}`);

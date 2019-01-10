@@ -1,6 +1,7 @@
 {
     "viewportWidth": 1500,
     "viewportHeight": 1000,
+    "chromeWebSecurity": false,
     "env": {
       "api_server": "https://localhost:9000",
       "api_server2": "http://localhost:5000",

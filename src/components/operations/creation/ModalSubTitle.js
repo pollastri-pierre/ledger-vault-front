@@ -10,7 +10,8 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     color: "black",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    display: "flex"
   }
 };
 
@@ -18,11 +19,18 @@ class ModalSubTitle extends Component<{
   children: React$Node | string,
   classes: { [_: $Keys<typeof styles>]: string },
   noPadding: boolean,
-  noMargin: boolean
+  noMargin: boolean,
+  style?: Object
 }> {
   render() {
-    const { children, classes, noPadding, noMargin } = this.props;
-    const style = {};
+    const {
+      children,
+      classes,
+      noPadding,
+      noMargin,
+      style: _style
+    } = this.props;
+    const style = { ..._style };
     if (noPadding) {
       Object.assign(style, { padding: 0 });
     }
