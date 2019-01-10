@@ -13,7 +13,7 @@ context("Registration Shared Owners", () => {
     });
   });
 
-  it("should add 3 Shared Owners", async () => {
+  it("should add 3 Shared Owners", () => {
     cy.server();
 
     cy.route("post", `${API}/onboarding/next`).as("next");
