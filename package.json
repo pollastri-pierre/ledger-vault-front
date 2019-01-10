@@ -7,6 +7,7 @@
     "coverage": "npm run test -- --coverage",
     "flow": "flow",
     "cypress:open": "cypress open",
+    "cypress:run:onboarding_fast": "cypress run --spec 'cypress/integration/Onboarding_Fast/*' --browser chrome",
     "cypress:run:onboarding": "cypress run --spec 'cypress/integration/Onboarding/*' --browser chrome",
     "cypress:run:onboarding_wipe": "cypress run --spec 'cypress/integration/Onboarding_Wipe/*' --browser chrome",
     "cypress:run:account": "cypress run --spec 'cypress/integration/Account/*' --browser chrome",
