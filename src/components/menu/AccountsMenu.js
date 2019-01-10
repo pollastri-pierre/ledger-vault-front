@@ -57,7 +57,7 @@ class AccountsMenu extends Component<{
           const curr = getCryptoCurrencyById(account.currency.name);
           return (
             <MenuLink
-              color={curr.color}
+              color={account.account_type === "ERC20" ? "black" : curr.color}
               key={account.id}
               to={`${match.url}/account/${account.id}`}
               className={cx(classes.item, {
