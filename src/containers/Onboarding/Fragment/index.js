@@ -44,7 +44,7 @@ export const SeedStatus = withStyles(status)(
       );
     }
     return (
-      <div className={cx(classes.base, "fragment")} onClick={open}>
+      <div className={cx(classes.base, "fragment-click")} onClick={open}>
         {label}
       </div>
     );
@@ -85,7 +85,9 @@ const Fragment = ({
   generated: boolean,
   generate: Function
 }) => (
-  <div className={cx(classes.base, { [classes.disabled]: disabled })}>
+  <div
+    className={cx(classes.base, "fragment", { [classes.disabled]: disabled })}
+  >
     <ProfileIcon />
     <div className={classes.title}>{label}</div>
     <SeedStatus label={labelGenerate} generated={generated} open={generate} />
