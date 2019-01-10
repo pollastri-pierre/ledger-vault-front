@@ -36,8 +36,10 @@ type Props = {
   account_id: ?number,
   callback: string => any,
   type: "operations" | "accounts",
-  cancel: Function
+  cancel: Function,
+  gateAccountType?: string
 };
+
 let _isMounted = false;
 class DeviceAuthenticate extends Component<Props, State> {
   state = {
@@ -56,7 +58,7 @@ class DeviceAuthenticate extends Component<Props, State> {
     if (_isMounted) {
       try {
         const device = await await createDevice();
-        const { organization, type, account_id } = this.props;
+        const { organization, type, account_id, gateAccountType } = this.props;
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         const application = APPID_VAULT_ADMINISTRATOR;
         let url;
@@ -66,6 +68,15 @@ class DeviceAuthenticate extends Component<Props, State> {
           url = `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         } else {
           url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge?account_type=ERC20`;
+        }
+
+        // Gate now need the account type to be specified in the authenticate
+        // step of account creation
+        //
+        // TODO: use qs package (or similar) to build the query string in a
+        // more scalable way
+        if (gateAccountType) {
+          url += `?account_type=${gateAccountType}`;
         }
 
         const data = await network(url, "GET");
