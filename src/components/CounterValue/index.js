@@ -2,20 +2,17 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
-import {
-  getFiatCurrencyByTicker,
-  getCryptoCurrencyById,
-  listCryptoCurrencies
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import type { TransactionType } from "data/types";
 import CounterValues from "data/CounterValues";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
-const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
-  const currency = allCurrencies.find(curr => curr.id === ownProps.from);
+  const currency = getCryptoCurrencyById(ownProps.from);
   return {
     countervalue: CounterValues.calculateWithIntermediarySelector(state, {
       from: currency,

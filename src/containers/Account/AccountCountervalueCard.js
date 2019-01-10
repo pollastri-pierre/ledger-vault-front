@@ -24,6 +24,7 @@ class AccountCountervalueCard extends Component<{
 }> {
   render() {
     const { account, reloading, classes, t } = this.props;
+    console.log(account);
     return (
       <Card
         className={classes.card}

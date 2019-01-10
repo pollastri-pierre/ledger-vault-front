@@ -1,11 +1,8 @@
 //@flow
 import React from "react";
 import { connect } from "react-redux";
-import {
-  getFiatCurrencyByTicker,
-  getCryptoCurrencyById,
-  listCryptoCurrencies
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import PieChart from "components/PieChart";
 import type { Account } from "data/types";
@@ -16,7 +13,6 @@ import CounterValues from "data/CounterValues";
 import connectData from "restlay/connectData";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
-const allCurrencies = listCryptoCurrencies(true);
 
 type AggregatedData = {
   [_: string]: {
@@ -30,7 +26,7 @@ const mapStateToProps = (state, ownProps) => {
   const data: AggregatedData = ownProps.accounts.reduce(
     (acc: AggregatedData, account) => {
       const currency_name = account.currency.name;
-      const currency = allCurrencies.find(curr => curr.id === currency_name);
+      const currency = getCryptoCurrencyById(currency_name);
       const balance = account.balance;
       //check if currency already added
       if (!acc[currency_name]) {
