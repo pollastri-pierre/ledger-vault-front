@@ -67,7 +67,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         } else if (type === "accounts" && account_id) {
           url = `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         } else {
-          url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge?account_type=ERC20`;
+          url = `/accounts/authentications/${pubKey.toUpperCase()}/challenge`;
         }
 
         // Gate now need the account type to be specified in the authenticate

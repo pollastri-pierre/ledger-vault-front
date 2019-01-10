@@ -183,8 +183,12 @@ class AccountCreation extends PureComponent<Props> {
   };
 
   getGateAccountType() {
-    const { accountCreation } = this.props;
-    const { currency } = accountCreation;
+    const { accountCreationState } = this.props;
+    const { currency, erc20token } = accountCreationState;
+
+    if (erc20token) {
+      return "ERC20";
+    }
 
     if (!currency) {
       throw new Error("Cannot gate account type without currency");
