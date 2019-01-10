@@ -79,6 +79,12 @@ export type StepProps = {
   cancel: () => void
 };
 
+const GATE_ACCOUNT_TYPES_BY_CURRENCY_FAMILY = {
+  bitcoin: "Bitcoin",
+  ethereum: "Ethereum",
+  ripple: "Ripple"
+};
+
 const mapStateToProps = state => ({
   accountCreation: state.accountCreation
 });
@@ -147,11 +153,29 @@ class AccountCreation extends PureComponent<Props> {
       .then(() => restlay.fetchQuery(new PendingAccountsQuery()));
   };
 
+  getGateAccountType() {
+    const { accountCreation } = this.props;
+    const { currency } = accountCreation;
+
+    if (!currency) {
+      throw new Error("Cannot gate account type without currency");
+    }
+
+    const accountType = GATE_ACCOUNT_TYPES_BY_CURRENCY_FAMILY[currency.family];
+
+    if (!accountType) {
+      throw new Error(`Cannot get account type for family: ${currency.family}`);
+    }
+
+    return accountType;
+  }
+
   DeviceAuthenticate = () => (
     <DeviceAuthenticate
       cancel={() => this.props.onSwitchInternalModal("main")}
       callback={this.createAccount}
       type="accounts"
+      gateAccountType={this.getGateAccountType()}
     />
   );
 
