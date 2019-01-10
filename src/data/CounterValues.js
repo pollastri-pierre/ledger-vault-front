@@ -6,35 +6,24 @@ import {
   getCryptoCurrencyById
 } from "utils/cryptoCurrencies";
 
-import { currenciesSelector, accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
 
 const allCurrencies = listCryptoCurrencies(true);
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const pairsSelector = createSelector(
-  currenciesSelector,
-  accountsSelector,
-  (currencies, accounts) => {
+  () => allCurrencies,
+  currencies => {
     return [
       {
         from: intermediaryCurrency,
         to: getFiatCurrencyByTicker("USD")
       }
     ].concat(
-      currencies
-        .filter(
-          currency =>
-            accounts.findIndex(account => account.currency === currency.name) >
-              -1 &&
-            currency.name !== "bitcoin_testnet" &&
-            currency.name !== "ethereum_ropsten" &&
-            currency.name !== "bitcoin"
-        )
-        .map(currency => ({
-          from: allCurrencies.find(curr => curr.id === currency.name),
-          to: intermediaryCurrency
-        }))
+      currencies.map(c => ({
+        from: getCryptoCurrencyById(c.id),
+        to: intermediaryCurrency
+      }))
     );
   }
 );
