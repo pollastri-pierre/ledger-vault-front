@@ -8,11 +8,13 @@ const styles = {
   currency: {}
 };
 
-class CurrencyIndex extends Component<{
+type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   currency: string,
   index: number
-}> {
+};
+
+class CurrencyIndex extends Component<Props> {
   render() {
     const { currency, index, classes } = this.props;
     return (

@@ -88,6 +88,7 @@ type AccountCommon = {
   id: number,
   account_type: string,
   contract_address: string,
+  parent_id?: number,
   name: string,
   members: Member[],
   settings: AccountSettings,

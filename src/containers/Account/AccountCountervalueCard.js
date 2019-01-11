@@ -33,7 +33,11 @@ class AccountCountervalueCard extends Component<Props> {
         title={t("accountView:countervalue")}
       >
         <CardField>
-          <CounterValue value={account.balance} from={account.currency_id} />
+          <CounterValue
+            value={account.balance}
+            from={account.currency_id}
+            disableCountervalue={account.account_type === "ERC20"}
+          />
         </CardField>
       </Card>
     );

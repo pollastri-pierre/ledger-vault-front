@@ -7,6 +7,7 @@ import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
+import Amount from "components/Amount";
 import { getAccountCurrencyName } from "utils/accounts";
 import type { Account, Translate } from "data/types";
 
@@ -39,7 +40,15 @@ function AccountApproveDetails(props: Props) {
         />
       </div>
       <div>
-        <LineRow label="balance" />
+        <LineRow label="balance">
+          <Amount
+            account={account}
+            value={account.balance}
+            strong
+            dataTest="balance"
+            erc20Format={account.account_type === "ERC20"}
+          />
+        </LineRow>
         <LineRow label="status">
           {percentage === 100 ? (
             <span data-test="status" className="info-value status">

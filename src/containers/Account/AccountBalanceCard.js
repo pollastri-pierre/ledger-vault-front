@@ -16,12 +16,14 @@ const styles = {
     fontSize: 28
   }
 };
-class AccountBalanceCard extends Component<{
+type Props = {
   account: Account,
   t: Translate,
   classes: { [_: $Keys<typeof styles>]: string },
   reloading: boolean
-}> {
+};
+
+class AccountBalanceCard extends Component<Props> {
   render() {
     const { account, reloading, classes, t } = this.props;
     return (
@@ -32,7 +34,11 @@ class AccountBalanceCard extends Component<{
       >
         <CardField label={<DateFormat date={new Date()} />}>
           <div className={classes.title}>
-            <CurrencyAccountValue account={account} value={account.balance} />
+            <CurrencyAccountValue
+              account={account}
+              value={account.balance}
+              erc20Format={account.account_type === "ERC20"}
+            />
           </div>
         </CardField>
       </Card>

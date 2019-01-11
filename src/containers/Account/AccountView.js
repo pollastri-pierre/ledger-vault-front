@@ -17,6 +17,7 @@ import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
 import AccountQuickInfo from "./AccountQuickInfo";
+import SubAccounts from "./SubAccounts";
 
 const styles = {
   flex: {
@@ -68,11 +69,12 @@ class AccountView extends Component<
         <div>
           <AccountQuickInfo me={me} account={account} match={match} />
         </div>
+        {account.account_type === "Ethereum" && (
+          <SubAccounts account={account} />
+        )}
         <div className={classes.flex}>
           <AccountBalanceCard account={account} />
-          {account.account_type !== "ERC20" && (
-            <AccountCountervalueCard account={account} />
-          )}
+          <AccountCountervalueCard account={account} />
         </div>
         {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
         <AccountLastOperationsCard key={accountId} account={account} />

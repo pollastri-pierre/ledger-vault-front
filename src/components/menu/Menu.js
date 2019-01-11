@@ -127,7 +127,17 @@ function Menu(props: {
         <div>
           <h4 className={classes.h4}>Accounts</h4>
           <div data-test="account_menu">
-            <AccountsMenu location={location} accounts={visibleAccounts} />
+            <AccountsMenu
+              location={location}
+              accounts={visibleAccounts.filter(a => a.status !== "VIEW_ONLY")}
+            />
+          </div>
+          <h4 className={classes.h4}>Read-only Accounts</h4>
+          <div data-test="account_menu">
+            <AccountsMenu
+              location={location}
+              accounts={visibleAccounts.filter(a => a.status === "VIEW_ONLY")}
+            />
           </div>
         </div>
       )}
