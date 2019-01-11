@@ -56,7 +56,7 @@ class AccountsMenu extends Component<{
         {accounts
           .filter(account => VISIBLE_STATUS.indexOf(account.status) > -1)
           .map(account => {
-            const curr = getCryptoCurrencyById(account.currency.name);
+            const curr = getCryptoCurrencyById(account.currency_id);
             const unit = curr.units.reduce(
               (prev, current) =>
                 prev.magnitude > current.magnitude ? prev : current
@@ -76,7 +76,7 @@ class AccountsMenu extends Component<{
                   <span className={classes.name}>
                     <CurrencyIndex
                       index={account.index}
-                      currency={account.currency.name}
+                      currency={account.currency_id}
                     />
                   </span>
                 ) : (

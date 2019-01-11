@@ -11,6 +11,7 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import colors from "shared/colors";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   addressPicker: {
@@ -70,12 +71,13 @@ class SendAddress extends PureComponent<Props<*>, State> {
 
   async validateAddress() {
     const { account, transaction, bridge, restlay } = this.props;
+    const currency = getCryptoCurrencyById(account.currency_id);
     const recipient = bridge.getTransactionRecipient(account, transaction);
     const nonce = ++this._nonce;
     if (recipient) {
       const isValid = await bridge.isRecipientValid(
         restlay,
-        account.currency,
+        currency,
         recipient
       );
       const recipientWarning =

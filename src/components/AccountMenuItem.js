@@ -37,7 +37,7 @@ class AccountOption extends Component<{
 }> {
   render() {
     const { account, classes, ...rest } = this.props;
-    const color = getCryptoCurrencyById(account.currency.name)["color"];
+    const color = getCryptoCurrencyById(account.currency_id)["color"];
     return (
       <MenuItem button disableRipple style={{ color: color }} {...rest}>
         <div className={classes.accountOption}>

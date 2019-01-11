@@ -6,37 +6,35 @@ import {
   getFiatCurrencyByTicker
 } from "@ledgerhq/live-common/lib/helpers/currencies";
 
-import { currenciesSelector, accountsSelector } from "restlay/dataStore";
+import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
 
 const allCurrencies = listCryptoCurrencies(true);
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
-const pairsSelector = createSelector(
-  currenciesSelector,
-  accountsSelector,
-  (currencies, accounts) => {
-    return [
-      {
-        from: intermediaryCurrency,
-        to: getFiatCurrencyByTicker("USD")
-      }
-    ].concat(
-      currencies
-        .filter(
-          currency =>
-            accounts.findIndex(account => account.currency === currency.name) >
-              -1 &&
-            currency.name !== "bitcoin_testnet" &&
-            currency.name !== "bitcoin"
-        )
-        .map(currency => ({
-          from: allCurrencies.find(curr => curr.id === currency.name),
+const pairsSelector = createSelector(accountsSelector, accounts => {
+  return [
+    {
+      from: intermediaryCurrency,
+      to: getFiatCurrencyByTicker("USD")
+    }
+  ].concat(
+    allCurrencies
+      .filter(
+        currency =>
+          accounts.findIndex(account => account.currency_id === currency.id) >
+            -1 &&
+          currency.name !== "bitcoin_testnet" &&
+          currency.name !== "bitcoin"
+      )
+      .map(currency => {
+        return {
+          from: allCurrencies.find(curr => curr.id === currency.id),
           to: intermediaryCurrency
-        }))
-    );
-  }
-);
+        };
+      })
+  );
+});
 
 const CounterValues = createCounterValues({
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",

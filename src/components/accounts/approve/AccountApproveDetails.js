@@ -15,6 +15,7 @@ import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import type { Account, Translate } from "data/types";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 function AccountApproveDetails(props: {
   account: Account,
@@ -22,7 +23,8 @@ function AccountApproveDetails(props: {
   quorum: number
 }) {
   const { account, quorum, t } = props;
-  const { security_scheme, currency } = account;
+  const { security_scheme, currency_id } = account;
+  const currency = getCryptoCurrencyById(currency_id);
   const percentage = Math.round(100 * (account.approvals.length / quorum));
   return (
     <div>
@@ -92,7 +94,7 @@ function AccountApproveDetails(props: {
           <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
         <LineRow label="name">
-          <AccountName name={account.name} currencyId={currency.name} />
+          <AccountName name={account.name} currencyId={currency.id} />
         </LineRow>
         <LineRow label="currency">
           <span data-test="currency" className="info-value currency">

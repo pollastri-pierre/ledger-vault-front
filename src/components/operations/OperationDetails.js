@@ -95,16 +95,15 @@ class OperationDetails extends Component<Props, *> {
         {value === 2 && <TabLabel note={note} />}
         {value === 3 && <TabHistory operation={operation} />}
         <div className="footer">
-          {account.currency &&
-          account.currency.name &&
+          {account.currency_id &&
           operation.transaction &&
           operation.transaction.hash &&
-          defaultExplorers[account.currency.name] &&
-          defaultExplorers[account.currency.name]() !== null ? (
+          defaultExplorers[account.currency_id] &&
+          defaultExplorers[account.currency_id]() !== null ? (
             <DialogButton>
               <a
                 target="_blank"
-                href={defaultExplorers[account.currency.name](
+                href={defaultExplorers[account.currency_id](
                   operation.transaction.hash
                 )}
               >

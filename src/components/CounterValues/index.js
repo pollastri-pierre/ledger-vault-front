@@ -21,7 +21,7 @@ const mapStateToProps = (state, ownProps) => {
     .filter(account => account.balance > 0)
     .reduce((acc, account) => {
       const currency = allCurrencies.find(
-        curr => curr.id === account.currency.name
+        curr => curr.id === account.currency_id
       );
       return (
         acc +

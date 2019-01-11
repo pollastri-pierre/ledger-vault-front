@@ -13,6 +13,7 @@ import { getFees, InputFieldMerge } from "components/Send/helpers";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   fieldTitle: {
@@ -70,9 +71,10 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
         bridge.getTransactionFeeLevel &&
         bridge.getTransactionFeeLevel(account, transaction);
       const nonce = ++this.nonce;
+      const currency = getCryptoCurrencyById(account.currency_id);
       const isValid = await bridge.isRecipientValid(
         restlay,
-        account.currency,
+        currency,
         transaction.recipient
       );
       if (nonce !== this.nonce) return;
@@ -128,7 +130,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
         <div className={classes.feesFiat}>
           <CounterValue
             value={transaction.estimatedFees || 0}
-            from={account.currency.name}
+            from={account.currency_id}
           />
         </div>
       </div>

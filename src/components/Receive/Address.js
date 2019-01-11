@@ -21,6 +21,7 @@ import colors from "shared/colors";
 import ReceiveLayout from "./ReceiveLayout";
 import AddressRejected from "./AddressRejected";
 import ShieldBox from "./ShieldBox";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 type Props = {
   account: Account,
@@ -102,6 +103,7 @@ class ReceiveAddress extends Component<Props, State> {
 
   render() {
     const { account, classes, checkAgain } = this.props;
+    const currency = getCryptoCurrencyById(account.currency_id);
     const { error, verified, loading, copied, deviceRejected } = this.state;
     return (
       <div className={classes.container}>
@@ -113,9 +115,7 @@ class ReceiveAddress extends Component<Props, State> {
               content={
                 <div className={classes.address}>
                   <QRCode
-                    hash={`${account.currency.payment_uri_scheme}:${
-                      account.fresh_addresses[0]
-                    }`}
+                    hash={`${currency.scheme}:${account.fresh_addresses[0]}`}
                     size={140}
                   />
                   <div className={classes.account}>

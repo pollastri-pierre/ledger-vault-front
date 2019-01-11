@@ -12,6 +12,7 @@ import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { withStyles } from "@material-ui/core/styles";
 
 type State = {
@@ -160,6 +161,8 @@ export class QuicklookCard extends Component<Props, State> {
     if (quicklookFilter.key === "countervalue") {
       currencyUnit = getFiatUnit(account.settings.fiat);
     }
+
+    const currency = getCryptoCurrencyById(account.currency_id);
     return (
       <Card
         title="Quicklook"
@@ -200,7 +203,7 @@ export class QuicklookCard extends Component<Props, State> {
           filter={filter}
           range={range}
           currencyUnit={currencyUnit}
-          currencyColor={account.currency.color}
+          currencyColor={currency.color}
           key={accountId + range}
         />
       </Card>

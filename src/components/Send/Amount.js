@@ -9,6 +9,7 @@ import type { WalletBridge } from "bridge/types";
 import colors from "shared/colors";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import InputCurrency from "components/InputCurrency";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 const styles = {
   countervalue: {
@@ -48,6 +49,7 @@ class SendAmount extends PureComponent<Props<*>> {
 
   render() {
     const { account, bridge, transaction, classes, amountIsValid } = this.props;
+    const currency = getCryptoCurrencyById(account.currency_id);
     return (
       <Fragment>
         <ModalSubTitle>
@@ -55,7 +57,7 @@ class SendAmount extends PureComponent<Props<*>> {
         </ModalSubTitle>
         <div className={classes.paddedHorizontal}>
           <InputCurrency
-            currency={account.currency}
+            currency={currency}
             placeholder="0"
             size="large"
             onChange={this.onChange}
@@ -69,7 +71,7 @@ class SendAmount extends PureComponent<Props<*>> {
             <div className={classes.fiat}>
               <CounterValue
                 value={bridge.getTransactionAmount(account, transaction)}
-                from={account.currency.name}
+                from={account.currency_id}
               />
             </div>
           </div>

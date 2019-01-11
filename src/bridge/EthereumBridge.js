@@ -11,6 +11,7 @@ import type { Input as NewEthereumOperationMutationInput } from "api/mutations/N
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 //convertion to the BigNumber needed
 export type Transaction = {
@@ -54,7 +55,8 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 };
 
 const checkValidTransaction = async (a, t, r) => {
-  const recipientIsValid = await isRecipientValid(r, a.currency, t.recipient);
+  const currency = getCryptoCurrencyById(a.currency_id);
+  const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const fees = await getFees(a, t);
   const amountIsValid = t.amount + fees < a.balance;
   if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {

@@ -308,7 +308,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     this.updateName(name);
   };
   onUnitIndexChange = (unitIndex: number) => {
-    const curr = getCryptoCurrencyById(this.props.account.currency.name);
+    const curr = getCryptoCurrencyById(this.props.account.currency_id);
     this.update({
       settings: {
         ...this.state.settings,
@@ -338,7 +338,7 @@ class AccountSettingsEdit extends Component<Props, State> {
     const { account, classes, t /* fiats  */ } = this.props;
     const { name, settings } = this.state;
 
-    const curr = getCryptoCurrencyById(account.currency.name);
+    const curr = getCryptoCurrencyById(account.currency_id);
     const units = curr.units;
     const unit_index = units.findIndex(
       unit =>
@@ -419,7 +419,7 @@ function Side({
         <div className={classes.capsTitle}>{"Accounts"}</div>
         <div className={classes.sideItems}>
           {accounts.map(account => {
-            const curr = getCryptoCurrencyById(account.currency.name);
+            const curr = getCryptoCurrencyById(account.currency_id);
             return (
               <NavLink
                 key={account.id}
@@ -432,7 +432,7 @@ function Side({
                 </div>
                 <div className={classes.sideItemCurrencyName}>
                   <CurrencyIndex
-                    currency={account.currency.name}
+                    currency={account.currency_id}
                     index={account.index}
                   />
                 </div>
