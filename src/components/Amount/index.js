@@ -21,14 +21,17 @@ const styles = {
     fontWeight: 600
   }
 };
-class Amount extends Component<{
+
+type Props = {
   account: Account,
   value: number,
   dataTest: ?string,
   strong?: boolean,
   erc20Format?: boolean,
   classes: { [_: $Keys<typeof styles>]: string }
-}> {
+};
+
+class Amount extends Component<Props> {
   render() {
     const {
       account,
@@ -50,11 +53,11 @@ class Amount extends Component<{
           erc20Format={erc20Format}
         />{" "}
         <span className={classes.flat}>
-          (<CounterValue
+          <CounterValue
             value={value}
             from={account.currency_id}
             disableCountervalue={disableCountervalue}
-          />)
+          />
         </span>
       </span>
     );
