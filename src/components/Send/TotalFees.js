@@ -26,7 +26,7 @@ const styles = {
     color: colors.steel
   }
 };
-
+// TODO: add parent eth fee validation against balance for ERC20
 class TotalFees extends PureComponent<Props> {
   render() {
     const { account, totalFees, classes } = this.props;
@@ -40,7 +40,7 @@ class TotalFees extends PureComponent<Props> {
           {formatCurrencyUnit(account.settings.currency_unit, totalFees)}
         </span>
         <span className={classes.fiat}>
-          (<CounterValue value={totalFees} from={account.currency.name} />)
+          (<CounterValue value={totalFees} from={account.currency_id} />)
         </span>
       </div>
     );

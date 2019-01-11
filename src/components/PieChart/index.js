@@ -4,7 +4,10 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
-import { listCryptoCurrencies } from "@ledgerhq/live-common/lib/helpers/currencies";
+import {
+  listCryptoCurrencies,
+  getCryptoCurrencyById
+} from "utils/cryptoCurrencies";
 
 import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
@@ -242,7 +245,7 @@ class PieChart extends Component<
       )
       .style("fill", d => {
         const curr = allCurrencies.find(
-          c => c.id === d.data.account.currency.name
+          c => c.id === d.data.account.currency_id
         ) || { color: "" };
         return curr.color;
       });
@@ -344,7 +347,7 @@ class PieChart extends Component<
     let curr = { color: "black" };
     if (selected !== -1) {
       curr = allCurrencies.find(
-        c => c.id === this.props.data[selected].account.currency.name
+        c => c.id === this.props.data[selected].account.currency_id
       ) || { color: "black" };
     }
     return (
@@ -378,7 +381,7 @@ class PieChart extends Component<
                           ])}
                         >
                           {this.props.data[selected] &&
-                            this.props.data[selected].account.currency.name}
+                            this.props.data[selected].account.currency_id}
                         </span>
                       </div>
                     </div>
@@ -391,6 +394,9 @@ class PieChart extends Component<
           <table className={classes.table}>
             <tbody>
               {_.map(this.props.data, (data, id: number) => {
+                const currency = getCryptoCurrencyById(
+                  data.account.currency_id
+                );
                 return (
                   <tr
                     data-test="currency-list"
@@ -409,7 +415,7 @@ class PieChart extends Component<
                     }
                   >
                     <td>
-                      <BadgeCurrency currency={data.account.currency} />
+                      <BadgeCurrency currency={currency} />
                       <span
                         className={cx(
                           classes.currencyName,
@@ -417,7 +423,7 @@ class PieChart extends Component<
                           classes.uppercase
                         )}
                       >
-                        {data.account.currency.name}
+                        {data.account.currency_id}
                       </span>
                     </td>
                     <td className={classes.currencyBalance}>

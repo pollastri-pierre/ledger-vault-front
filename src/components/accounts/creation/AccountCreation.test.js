@@ -21,7 +21,8 @@ const props = {
   history: {
     goBack: jest.fn()
   },
-  accountCreation: initialState,
+  accounts: [],
+  accountCreationState: initialState,
   restlay: {
     commitMutation: jest.fn(() => Promise.resolve("test")),
     fetchQuery: jest.fn()
@@ -43,8 +44,8 @@ test("close method should call history goBack()", () => {
 test("todo test for createAccount process network", async () => {
   const sProps = {
     ...props,
-    accountCreation: {
-      ...props.accountCreation,
+    accountCreationState: {
+      ...props.accountCreationState,
       name: "test",
       quorum: 1,
       currency: { id: 1 },

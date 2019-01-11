@@ -13,6 +13,7 @@ import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
   root: {
@@ -114,6 +115,7 @@ class FeesFieldEthereumKind extends PureComponent<
 
   render() {
     const { classes, transaction, account } = this.props;
+    const currency = getCryptoCurrencyById(account.currency_id);
     const { gasPriceStatus, totalFees } = this.state;
     return (
       <Fragment>
@@ -123,10 +125,10 @@ class FeesFieldEthereumKind extends PureComponent<
               <Trans i18nKey="send:details.gasPrice" />
             </ModalSubTitle>
             <InputCurrency
-              currency={account.currency}
+              currency={currency}
               placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
               onChange={this.onGasPriceChange}
-              defaultUnit={last(account.currency.units)}
+              defaultUnit={last(currency.units)}
               value={transaction.gasPrice === null ? 0 : transaction.gasPrice}
               disabled={gasPriceStatus === "fetching"}
             />

@@ -1,7 +1,10 @@
 //@flow
 
 import type { Account, Member } from "data/types";
-import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import {
+  getERC20TokenByContractAddress,
+  getCryptoCurrencyById
+} from "utils/cryptoCurrencies";
 
 const ACCOUNT_MAX_LENGTH = 19;
 
@@ -42,7 +45,7 @@ export const isValidAccountName = (name: string) =>
   name.length < ACCOUNT_MAX_LENGTH && !hasMoreThanAscii(name);
 
 export const getEthAccounts = (accounts: Account[]): Account[] =>
-  accounts.filter(a => a.currency.name === "ethereum");
+  accounts.filter(a => a.currency_id === "ethereum");
 
 export const getAccountCurrencyName = (account: Account) => {
   if (account.account_type === "ERC20" && account.contract_address) {
@@ -53,5 +56,9 @@ export const getAccountCurrencyName = (account: Account) => {
     }
     return token.name;
   }
-  return account.currency.name;
+  const currency = getCryptoCurrencyById(account.currency_id);
+  if (!currency) {
+    return "(?)";
+  }
+  return currency.name;
 };

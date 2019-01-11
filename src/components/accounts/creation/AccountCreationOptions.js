@@ -12,15 +12,26 @@ import ERC20TokenIcon from "components/icons/ERC20Token";
 import type { Translate } from "data/types";
 import type {
   State as AccountCreationState,
-  UpdateState as UpdateAccountCreationState
+  UpdateState as UpdateAccountCreationState,
+  ParentAccount
 } from "redux/modules/account-creation";
 
 const ethereumCurrency = getCryptoCurrencyById("ethereum");
 const EthereumCurIcon = getCryptoCurrencyIcon(ethereumCurrency);
-const ethereumCurIcon = (
+const ethereumCurIcon = EthereumCurIcon ? (
   <EthereumCurIcon size={15} color={ethereumCurrency.color} />
-);
+) : null;
 const erc20TokenIcon = <ERC20TokenIcon size={15} />;
+
+const getParentAccountName = (parentAccount: ?ParentAccount): string => {
+  if (!parentAccount) return "";
+  // TODO: handle parentAccount.id, by retrieving name inside list of
+  // ethereum accounts
+  if (!parentAccount.name) return "";
+  // TODO: why is flow forcing to do this
+  if (typeof parentAccount.name !== "string") return "";
+  return parentAccount.name;
+};
 
 const styles = {
   title: {
@@ -59,9 +70,9 @@ class AccountCreationOptions extends PureComponent<Props> {
     const { erc20token } = accountCreationState;
     if (!erc20token) return null;
 
-    const parentAccountName = accountCreationState.parent_account
-      ? accountCreationState.parent_account.name || ""
-      : "";
+    const parentAccountName = getParentAccountName(
+      accountCreationState.parent_account
+    );
 
     return (
       <Fragment>
@@ -108,9 +119,9 @@ class AccountCreationOptions extends PureComponent<Props> {
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           renderLeft={
-            AccountCurIcon && (
+            AccountCurIcon ? (
               <AccountCurIcon color={currency.color} size={15} />
-            )
+            ) : null
           }
         />
       </Fragment>

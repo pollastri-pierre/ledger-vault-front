@@ -44,6 +44,12 @@
    cy.route("post", "**/authentications/**").as("authenticate");
    cy.route("post", "**/validation/**").as("validation");
    cy.route("post", "**/fees").as("fees");
+   // onboarding
+   const orga_name = Cypress.env("workspace");
+   const API = `${Cypress.env("api_server2")}/${orga_name}`;
+   cy.route("post", `${API}/onboarding/next`).as("next");
+   cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
+   cy.route("post", `${API}/onboarding/challenge`).as("challenge");
 
  }
 
@@ -52,10 +58,10 @@
   * Default way to switch device.
   */
  export function switch_device(id){
-   cy
-     .request("POST", Cypress.env('api_switch_device'), {
+   cy.request("POST", Cypress.env('api_switch_device'), {
        device_number: id
-     })
+     });
+  cy.wait(1000);
  }
 
  export function approve(){

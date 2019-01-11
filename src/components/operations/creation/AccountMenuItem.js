@@ -58,7 +58,9 @@ class AccountMenuItem extends PureComponent<{
 
   render() {
     const { account, selected, classes } = this.props;
-    const color = getCryptoCurrencyById(account.currency.name)["color"];
+    const color = getCryptoCurrencyById(account.currency_id)["color"];
+    const erc20Format = account.account_type == "ERC20" ? true : false;
+
     return (
       <MenuItem
         className={classes.accountItem}
@@ -74,18 +76,20 @@ class AccountMenuItem extends PureComponent<{
             {getAccountTitle(account)}
           </span>
           <span className={classes.accountBalance}>
-            <CurrencyAccountValue account={account} value={account.balance} />
+            <CurrencyAccountValue
+              account={account}
+              value={account.balance}
+              erc20Format={erc20Format}
+            />
           </span>
         </div>
         <div className={classes.accountBottom}>
-          <CurrencyIndex
-            currency={account.currency.name}
-            index={account.index}
-          />
+          <CurrencyIndex currency={account.currency_id} index={account.index} />
           <span className={classes.accountCountervalue}>
             <CounterValue
               value={account.balance}
-              from={account.currency.name}
+              from={account.currency_id}
+              disableCountervalue={erc20Format}
             />
           </span>
         </div>

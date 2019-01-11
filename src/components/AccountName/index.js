@@ -22,7 +22,7 @@ class AccountName extends Component<{
     const curId = currencyId
       ? currencyId
       : account
-        ? account.currency.name
+        ? account.currency_id
         : null;
 
     const cur = isERC20TokenAccount

@@ -114,7 +114,7 @@ export function switchInternalModal(id: string) {
   };
 }
 
-type ParentAccount = { id: string } | { name: string };
+export type ParentAccount = { id: string } | { name: string };
 
 export type State = {
   // UI FIELDS (used to store the tab, and the sub modal id)

@@ -11,6 +11,7 @@ import type { Input as NewEthereumOperationMutationInput } from "api/mutations/N
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 //convertion to the BigNumber needed
 export type Transaction = {
@@ -52,11 +53,17 @@ const isRecipientValid = async (restlay, currency, recipient) => {
     return false;
   }
 };
-
+// TODO: has to be either updated to include ERC20 validation or a new bridge written
 const checkValidTransaction = async (a, t, r) => {
-  const recipientIsValid = await isRecipientValid(r, a.currency, t.recipient);
+  const currency = getCryptoCurrencyById(a.currency_id);
+  const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const fees = await getFees(a, t);
-  const amountIsValid = t.amount + fees < a.balance;
+  let amountIsValid;
+  if (a.account_type == "ERC20") {
+    amountIsValid = t.amount < a.balance;
+  } else {
+    amountIsValid = t.amount + fees < a.balance;
+  }
   if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
     return false;
   } else {
@@ -69,6 +76,13 @@ const getFees = (a, t) =>
     ? Promise.resolve(0)
     : Promise.resolve(t.gasPrice * t.gasLimit);
 
+const computeTotal = (a, t, fees) => {
+  if (a.account_type == "ERC20") {
+    return t.amount;
+  } else {
+    return t.amount == 0 ? 0 : t.amount + fees;
+  }
+};
 const EthereumBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
     amount: 0,
@@ -81,7 +95,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTotalSpent: async (a, t) => {
     const fees = await getFees(a, t);
-    return t.amount == 0 ? 0 : t.amount + fees;
+    return computeTotal(a, t, fees);
   },
 
   getFees,

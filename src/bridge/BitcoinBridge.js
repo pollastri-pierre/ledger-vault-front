@@ -8,6 +8,7 @@ import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 //convertion to the BigNumber needed
 export type Transaction = {
@@ -20,7 +21,8 @@ export type Transaction = {
 };
 
 const checkValidTransaction = async (a, t, r) => {
-  const recipientIsValid = await isRecipientValid(r, a.currency, t.recipient);
+  const currency = getCryptoCurrencyById(a.currency_id);
+  const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const amountIsValid = t.amount + t.estimatedFees < a.balance;
   if (!t.estimatedFees || !t.amount || !recipientIsValid || !amountIsValid) {
     return false;
