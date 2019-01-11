@@ -60,17 +60,6 @@ function AccountApproveDetails(props: Props) {
             erc20Format={account.account_type === "ERC20"}
           />
         </LineRow>
-        <LineRow label="status">
-          {percentage === 100 ? (
-            <span data-test="status" className="info-value status">
-              Approved
-            </span>
-          ) : (
-            <span data-test="status" className="info-value status">
-              Collecting approvals ({percentage}%)
-            </span>
-          )}
-        </LineRow>
         <LineRow label="status">{status}</LineRow>
         <LineRow label="requested">
           <DateFormat date={account.created_on} dataTest="requested" />
