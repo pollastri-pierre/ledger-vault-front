@@ -63,7 +63,7 @@ export default class InfiniteScrollable extends Component<
     this.syncScrollBodyListener();
   }
 
-  unmounted = false
+  unmounted = false;
 
   unbindResizeEvent() {
     if (this.resizeBoundOnDom) {
