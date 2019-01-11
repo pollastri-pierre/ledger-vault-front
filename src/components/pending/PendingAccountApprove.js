@@ -39,9 +39,7 @@ function PendingAccountApprove(props: Props) {
     return <Empty approved={approved} />;
   }
 
-  const nbCurrencies = size(
-    groupBy(accounts, account => account.currency.family)
-  );
+  const nbCurrencies = size(groupBy(accounts, account => account.currency_id));
 
   return (
     <div className={classes.base}>
@@ -80,7 +78,7 @@ function PendingAccountApprove(props: Props) {
             <span className={classes.name}>
               <AccountName
                 name={account.name}
-                currencyId={account.currency.name}
+                currencyId={account.currency_id}
               />
             </span>
           </div>
@@ -92,7 +90,7 @@ function PendingAccountApprove(props: Props) {
               nbRequired={quorum}
               user={user}
             />
-            <span className={classes.currency}>{account.currency.name}</span>
+            <span className={classes.currency}>{account.currency_id}</span>
           </div>
         </Link>
       ))}

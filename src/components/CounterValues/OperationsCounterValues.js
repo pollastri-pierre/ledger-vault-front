@@ -23,7 +23,7 @@ const mapStateToProps = (state, ownProps) => {
     );
     if (account) {
       const currency = allCurrencies.find(
-        curr => curr.id === account.currency.name
+        curr => curr.id === account.currency_id
       );
       return (
         acc +

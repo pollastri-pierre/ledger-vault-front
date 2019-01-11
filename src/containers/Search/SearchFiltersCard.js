@@ -163,7 +163,7 @@ class SearchFiltersCard extends Component<{
                   disableRipple
                   style={{
                     color:
-                      getCryptoCurrencyById(account.currency.name).color ||
+                      getCryptoCurrencyById(account.currency_id).color ||
                       "black"
                   }}
                 >

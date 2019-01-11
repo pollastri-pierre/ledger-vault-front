@@ -126,7 +126,7 @@ class TabOverview extends Component<Props, State> {
             >
               <AccountName
                 name={account.name}
-                currencyId={account.currency.name}
+                currencyId={account.currency_id}
               />
             </Link>
           </LineRow>

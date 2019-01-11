@@ -89,7 +89,7 @@ function PendingOperationApprove(props: Props) {
                 {!account ? null : (
                   <CounterValue
                     value={operation.price.amount}
-                    from={account.currency.name}
+                    from={account.currency_id}
                   />
                 )}
               </span>

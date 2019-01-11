@@ -29,18 +29,18 @@ type AggregatedData = {
 const mapStateToProps = (state, ownProps) => {
   const data: AggregatedData = ownProps.accounts.reduce(
     (acc: AggregatedData, account) => {
-      const currency_name = account.currency.name;
-      const currency = allCurrencies.find(curr => curr.id === currency_name);
+      const currency_id = account.currency_id;
+      const currency = allCurrencies.find(curr => curr.id === currency_id);
       const balance = account.balance;
       //check if currency already added
-      if (!acc[currency_name]) {
-        acc[currency_name] = {
+      if (!acc[currency_id]) {
+        acc[currency_id] = {
           account,
           balance: 0,
           counterValueBalance: 0
         };
       }
-      acc[currency_name].balance += balance;
+      acc[currency_id].balance += balance;
 
       const cvalue = CounterValues.calculateWithIntermediarySelector(state, {
         from: currency,
@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => {
       });
 
       if (!isNaN(cvalue)) {
-        acc[currency_name].counterValueBalance += cvalue;
+        acc[currency_id].counterValueBalance += cvalue;
       }
       return acc;
     },

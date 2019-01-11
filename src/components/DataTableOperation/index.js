@@ -174,7 +174,7 @@ class AccountColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
     return account ? (
-      <AccountName name={account.name} currencyId={account.currency.name} />
+      <AccountName name={account.name} currencyId={account.currency_id} />
     ) : null;
   }
 }
@@ -243,7 +243,7 @@ class CountervalueColumn extends Component<Cell> {
     if (account) {
       return (
         <CounterValue
-          from={account.currency.name}
+          from={account.currency_id}
           value={operation.amount || operation.price.amount}
           alwaysShowSign
           type={operation.type}

@@ -31,7 +31,7 @@ class AccountCountervalueCard extends Component<{
         title={t("accountView:countervalue")}
       >
         <CardField label={<CurrencyCounterValueConversion account={account} />}>
-          <CounterValue value={account.balance} from={account.currency.name} />
+          <CounterValue value={account.balance} from={account.currency_id} />
         </CardField>
       </Card>
     );
