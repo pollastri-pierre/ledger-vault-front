@@ -123,8 +123,9 @@ export default class InfiniteScrollable extends Component<
         })
           .then(this.props.loadMore || this.loadMoreUsingRelay)
           .then(
-            () => this.setState({ loading: false }), // technically could recall checkScroll here. in second callback of setState. fork it, try it, adapt it !
+            () => !this.unmounted && this.setState({ loading: false }), // technically could recall checkScroll here. in second callback of setState. fork it, try it, adapt it !
             e => {
+              if (this.unmounted) return;
               console.warn(e);
               this.setState({ loading: false });
             }
