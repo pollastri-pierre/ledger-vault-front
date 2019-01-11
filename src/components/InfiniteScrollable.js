@@ -55,12 +55,15 @@ export default class InfiniteScrollable extends Component<
   }
 
   componentWillUnmount() {
+    this.unmounted = true;
     this.unbindResizeEvent();
   }
 
   componentDidUpdate() {
     this.syncScrollBodyListener();
   }
+
+  unmounted = false
 
   unbindResizeEvent() {
     if (this.resizeBoundOnDom) {
@@ -99,6 +102,7 @@ export default class InfiniteScrollable extends Component<
   };
 
   checkScroll = () => {
+    if (this.unmounted) return;
     if (this.state.loading) return;
     const container = this.getScrollParent();
     if (!container) return;
