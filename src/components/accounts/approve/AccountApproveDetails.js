@@ -1,4 +1,5 @@
 //@flow
+
 import React from "react";
 import { translate } from "react-i18next";
 import { BigSecurityMembersIcon } from "../../icons";
@@ -11,6 +12,8 @@ import Amount from "components/Amount";
 import { getAccountCurrencyName } from "utils/accounts";
 import type { Account, Translate } from "data/types";
 
+const membersIcon = <BigSecurityMembersIcon />;
+
 type Props = {
   account: Account,
   t: Translate,
@@ -20,24 +23,32 @@ type Props = {
 function AccountApproveDetails(props: Props) {
   const { account, quorum, t } = props;
   const { security_scheme } = account;
+
   const percentage = quorum
     ? Math.round(100 * (account.approvals.length / quorum))
     : 0;
+
+  const badgeVal = `${account.members.length} selected`;
+
+  const status =
+    percentage === 100 ? (
+      <span data-test="status" className="info-value status">
+        {"Approved"}
+      </span>
+    ) : (
+      <span data-test="status" className="info-value status">
+        {`Collecting approvals (${percentage}%)`}
+      </span>
+    );
+
+  const approvals = `${security_scheme.quorum} of ${
+    account.members.length
+  } members`;
+
   return (
     <div>
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: "40px"
-          // display: "flex",
-          // flexDirection: "row"
-        }}
-      >
-        <BadgeSecurity
-          icon={<BigSecurityMembersIcon />}
-          label="Members"
-          value={`${account.members.length} selected`}
-        />
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <BadgeSecurity icon={membersIcon} label="Members" value={badgeVal} />
       </div>
       <div>
         <LineRow label="balance">
@@ -60,6 +71,7 @@ function AccountApproveDetails(props: Props) {
             </span>
           )}
         </LineRow>
+        <LineRow label="status">{status}</LineRow>
         <LineRow label="requested">
           <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
@@ -72,7 +84,7 @@ function AccountApproveDetails(props: Props) {
           </span>
         </LineRow>
         <LineRow label={t("pendingAccount:details.approvals")}>
-          {security_scheme.quorum} of {account.members.length} members
+          {approvals}
         </LineRow>
       </div>
     </div>
