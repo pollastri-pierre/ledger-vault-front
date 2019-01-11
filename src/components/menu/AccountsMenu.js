@@ -54,7 +54,7 @@ class AccountsMenu extends Component<{
     return (
       <MenuList>
         {accounts.map(account => {
-          const curr = getCryptoCurrencyById(account.currency.name);
+          const curr = getCryptoCurrencyById(account.currency_id);
           return (
             <MenuLink
               color={curr.color}
@@ -70,7 +70,7 @@ class AccountsMenu extends Component<{
                 <span className={classes.name}>
                   <CurrencyIndex
                     index={account.index}
-                    currency={account.currency.name}
+                    currency={account.currency_id}
                   />
                 </span>
               ) : (

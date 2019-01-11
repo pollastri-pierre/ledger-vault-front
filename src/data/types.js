@@ -105,7 +105,7 @@ type AccountCommon = {
   status: string
 };
 export type Account = AccountCommon & {
-  currency: Currency
+  currency_id: string
 };
 
 export type OperationRecipientIsValid = {

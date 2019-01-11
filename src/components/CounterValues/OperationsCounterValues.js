@@ -3,11 +3,11 @@
 
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
-  getFiatCurrencyByTicker,
+  getCryptoCurrencyById,
   listCryptoCurrencies
-} from "@ledgerhq/live-common/lib/helpers/currencies";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+} from "utils/cryptoCurrencies";
 import CounterValues from "data/CounterValues";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { Operation, Account } from "data/types";
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     );
     if (account) {
       const currency = allCurrencies.find(
-        curr => curr.id === account.currency.name
+        curr => curr.id === account.currency_id
       );
       return (
         acc +

@@ -37,7 +37,7 @@ class Amount extends Component<{
       >
         <CurrencyAccountValue account={account} value={value} />{" "}
         <span className={classes.flat}>
-          (<CounterValue value={value} from={account.currency.name} />)
+          (<CounterValue value={value} from={account.currency_id} />)
         </span>
       </span>
     );

@@ -40,9 +40,7 @@ function PendingAccountApprove(props: Props) {
     return <Empty approved={approved} />;
   }
 
-  const nbCurrencies = size(
-    groupBy(accounts, account => account.currency.family)
-  );
+  const nbCurrencies = size(groupBy(accounts, account => account.currency_id));
 
   return (
     <div className={classes.base}>

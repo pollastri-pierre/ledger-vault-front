@@ -1,7 +1,7 @@
 //@flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
-// import CounterValue from "components/CounterValue";
+import CounterValue from "components/CounterValue";
 import Card from "components/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "@material-ui/core/styles";
@@ -29,22 +29,21 @@ const styles = {
     color: "#767676"
   }
 };
-// const Separator = withStyles(styles)(({ classes }) => (
-//   <div className={classes.separator} />
-// ));
 
-class AccountCard extends Component<{
+type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   index: number,
   filter: string
-}> {
+};
+
+class AccountCard extends Component<Props> {
   render() {
     const { account, filter, classes, index } = this.props;
 
     const title = (
       <div>
-        <BadgeCurrency currency={account.currency.name} />
+        <BadgeCurrency currency={account.currency_id} />
         <span>{account.name}</span>
       </div>
     );
@@ -66,7 +65,9 @@ class AccountCard extends Component<{
           <div className={classes.cryptocur}>
             <CurrencyAccountValue account={account} value={account.balance} />
           </div>
-          <div className={classes.realcur} />
+          <div className={classes.realcur}>
+            <CounterValue from={account.currency_id} value={account.balance} />
+          </div>
         </div>
       </Card>
     );

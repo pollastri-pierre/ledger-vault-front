@@ -44,7 +44,7 @@ function OperationCreationConfirmation(props: {
           {details.address && <span>{details.address}</span>}
         </LineRow>
         <LineRow label="account to debit">
-          <AccountName name={account.name} currencyId={account.currency.name} />
+          <AccountName name={account.name} currencyId={account.currency_id} />
         </LineRow>
         <LineRow label="confirmation fees">
           <Amount account={account} value={estimatedFees} />

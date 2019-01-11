@@ -10,11 +10,13 @@ import AccountName from "../../AccountName";
 import { getAccountCurrencyName } from "utils/accounts";
 import type { Account, Translate } from "data/types";
 
-function AccountApproveDetails(props: {
+type Props = {
   account: Account,
   t: Translate,
   quorum: number
-}) {
+};
+
+function AccountApproveDetails(props: Props) {
   const { account, quorum, t } = props;
   const { security_scheme } = account;
   const percentage = quorum

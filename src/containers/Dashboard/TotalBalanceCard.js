@@ -45,7 +45,7 @@ class TotalBalance extends Component<{
     } = this.props;
     // nb total of different currencies in all the accounts
     const nbCurrency = [
-      ...new Set(accounts.map(account => account.currency.name))
+      ...new Set(accounts.map(account => account.currency_id))
     ].length;
 
     return (

@@ -17,6 +17,7 @@ import HeaderRightClose from "components/HeaderRightClose";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import { getBridgeForCurrency } from "bridge";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
@@ -80,7 +81,8 @@ class Send extends Component<Props, State<*>> {
   };
 
   selectAccount = (account: Account) => {
-    const bridge = account ? getBridgeForCurrency(account.currency) : null;
+    const currency = getCryptoCurrencyById(account.currency_id);
+    const bridge = account ? getBridgeForCurrency(currency) : null;
     const transaction = bridge ? bridge.createTransaction(account) : null;
 
     this.setState({
