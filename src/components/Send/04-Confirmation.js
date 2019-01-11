@@ -67,10 +67,6 @@ type State = {
 class SendConfirmation extends PureComponent<Props<*>, State> {
   state = {
     copied: false,
-
-    // UI fields to display: confirmation fees + total spent
-    // we put them in state because they will potentially be async, so we
-    // await them on mount
     fees: null,
     totalSpent: null
   };
@@ -82,7 +78,6 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
       bridge.getFees(account, transaction),
       bridge.getTotalSpent(account, transaction)
     ]);
-
     this.setState({ fees, totalSpent });
   }
 
@@ -103,6 +98,7 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
 
     const amount = bridge.getTransactionAmount(account, transaction);
     const recipient = bridge.getTransactionRecipient(account, transaction);
+    const erc20Format = account.account_type == "ERC20" ? true : false;
 
     return (
       <SendLayout
@@ -155,7 +151,12 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
               </LineRow>
               <LineRow label={<Trans i18nKey="send:confirmation.total" />}>
                 {totalSpent !== null && (
-                  <Amount account={account} value={totalSpent} strong />
+                  <Amount
+                    account={account}
+                    value={totalSpent}
+                    strong
+                    erc20Format={erc20Format}
+                  />
                 )}
               </LineRow>
             </div>

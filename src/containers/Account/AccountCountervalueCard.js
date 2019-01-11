@@ -21,7 +21,7 @@ type Props = {
   reloading: boolean,
   t: Translate,
   classes: Object
-}
+};
 
 class AccountCountervalueCard extends Component<Props> {
   render() {

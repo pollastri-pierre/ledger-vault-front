@@ -119,9 +119,9 @@ class AccountCreationOptions extends PureComponent<Props> {
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           renderLeft={
-            AccountCurIcon && (
+            AccountCurIcon ? (
               <AccountCurIcon color={currency.color} size={15} />
-            )
+            ) : null
           }
         />
       </Fragment>

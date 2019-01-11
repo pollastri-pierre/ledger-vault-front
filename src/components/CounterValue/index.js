@@ -13,6 +13,9 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const mapStateToProps = (state, ownProps) => {
   const currency = getCryptoCurrencyById(ownProps.from);
+  if (ownProps.disableCountervalue) {
+    return {};
+  }
   return {
     countervalue: CounterValues.calculateWithIntermediarySelector(state, {
       from: currency,
@@ -29,7 +32,7 @@ const mapStateToProps = (state, ownProps) => {
 // because currently the API and ledgerHQ don't share the same format for Currency
 
 type Props = {
-  countervalue: number,
+  countervalue: ?number,
   value: number,
   from: string,
   alwaysShowSign?: boolean,
@@ -40,7 +43,7 @@ class CounterValue extends PureComponent<Props> {
   render() {
     const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return "-";
+      return "N/A";
     }
     return (
       <CurrencyFiatValue

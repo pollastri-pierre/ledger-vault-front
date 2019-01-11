@@ -7,8 +7,9 @@ type Props = {
   onChange: string => void,
   value: string,
   placeholder?: string,
-  renderLeft?: *,
-  renderRight?: *
+  renderLeft?: ?React$Node,
+  renderRight?: ?React$Node,
+  textAlign?: string
 };
 
 class InputField extends PureComponent<Props> {
@@ -24,6 +25,7 @@ class InputField extends PureComponent<Props> {
       renderLeft,
       renderRight,
       onChange: _onChange,
+      textAlign,
       ...props
     } = this.props;
     return (
@@ -32,6 +34,11 @@ class InputField extends PureComponent<Props> {
         value={value}
         placeholder={placeholder}
         onChange={this.handleChange}
+        inputProps={{
+          style: {
+            textAlign
+          }
+        }}
         InputProps={{
           startAdornment: renderLeft && (
             <InputAdornment position="start">{renderLeft}</InputAdornment>

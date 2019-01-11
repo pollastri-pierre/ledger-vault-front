@@ -10,6 +10,7 @@ import colors from "shared/colors";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import InputCurrency from "components/InputCurrency";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import AmountNoUnits from "./AmountNoUnits";
 
 const styles = {
   countervalue: {
@@ -48,7 +49,14 @@ class SendAmount extends PureComponent<Props<*>> {
   };
 
   render() {
-    const { account, bridge, transaction, classes, amountIsValid } = this.props;
+    const {
+      account,
+      bridge,
+      transaction,
+      classes,
+      amountIsValid,
+      onChangeTransaction
+    } = this.props;
     const currency = getCryptoCurrencyById(account.currency_id);
     return (
       <Fragment>
@@ -56,25 +64,37 @@ class SendAmount extends PureComponent<Props<*>> {
           <Trans i18nKey="send:details.amount.title" />
         </ModalSubTitle>
         <div className={classes.paddedHorizontal}>
-          <InputCurrency
-            currency={currency}
-            placeholder="0"
-            size="large"
-            onChange={this.onChange}
-            defaultUnit={account.settings.currency_unit}
-            value={bridge.getTransactionAmount(account, transaction)}
-            error={!amountIsValid}
-            data-test="operation-creation-amount"
-          />
-          <div className={classes.countervalue}>
-            <div className={classes.fiat}>USD</div>
-            <div className={classes.fiat}>
-              <CounterValue
+          {account.account_type == "ERC20" ? (
+            <AmountNoUnits
+              account={account}
+              bridge={bridge}
+              transaction={transaction}
+              amountIsValid={amountIsValid}
+              onChangeTransaction={onChangeTransaction}
+            />
+          ) : (
+            <Fragment>
+              <InputCurrency
+                currency={currency}
+                placeholder="0"
+                size="large"
+                onChange={this.onChange}
+                defaultUnit={account.settings.currency_unit}
                 value={bridge.getTransactionAmount(account, transaction)}
-                from={account.currency_id}
+                error={!amountIsValid}
+                data-test="operation-creation-amount"
               />
-            </div>
-          </div>
+              <div className={classes.countervalue}>
+                <div className={classes.fiat}>USD</div>
+                <div className={classes.fiat}>
+                  <CounterValue
+                    value={bridge.getTransactionAmount(account, transaction)}
+                    from={account.currency_id}
+                  />
+                </div>
+              </div>
+            </Fragment>
+          )}
         </div>
       </Fragment>
     );

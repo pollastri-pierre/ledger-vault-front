@@ -26,7 +26,7 @@ const styles = {
     color: colors.steel
   }
 };
-
+// TODO: add parent eth fee validation against balance for ERC20
 class TotalFees extends PureComponent<Props> {
   render() {
     const { account, totalFees, classes } = this.props;
