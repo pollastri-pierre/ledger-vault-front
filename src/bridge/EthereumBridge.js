@@ -17,7 +17,7 @@ import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 export type Transaction = {
   recipient: string,
   amount: number,
-  gasPrice: ?number,
+  gasPrice: number,
   gasLimit: number,
   label: string,
   note: string
@@ -87,8 +87,8 @@ const EthereumBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
     amount: 0,
     recipient: "",
-    gasPrice: null,
-    gasLimit: 21000,
+    gasPrice: 0,
+    gasLimit: 0,
     label: "",
     note: ""
   }),

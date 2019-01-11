@@ -3,17 +3,19 @@
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
-import last from "lodash/last";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
+import type { RestlayEnvironment } from "restlay/connectData";
 
+import connectData from "restlay/connectData";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getFees } from "components/Send/helpers";
 
 const styles = {
   root: {
@@ -45,13 +47,16 @@ type Props<Transaction> = {
   transaction: Transaction,
   account: Account,
   onChangeTransaction: Transaction => void,
-  bridge: WalletBridge<Transaction>
+  bridge: WalletBridge<Transaction>,
+  restlay: RestlayEnvironment
 };
 
 type GasPriceStatus = "fetching" | "loaded" | "error";
+type GasLimitStatus = "fetching" | "loaded" | "error";
 
 type State = {
   gasPriceStatus: GasPriceStatus,
+  gasLimitStatus: GasLimitStatus,
   totalFees: number
 };
 
@@ -68,11 +73,16 @@ class FeesFieldEthereumKind extends PureComponent<
     this._unmounted = true;
   }
   async componentDidUpdate(prevProps) {
+    const { transaction } = this.props;
+
     if (
-      prevProps.transaction.gasLimit !== this.props.transaction.gasLimit ||
-      prevProps.transaction.gasPrice !== this.props.transaction.gasPrice
+      prevProps.transaction.gasLimit !== transaction.gasLimit ||
+      prevProps.transaction.gasPrice !== transaction.gasPrice
     ) {
       this.loadFees();
+    }
+    if (prevProps.transaction.recipient !== transaction.recipient) {
+      this.loadGasPrice();
     }
   }
   _unmounted = false;
@@ -84,20 +94,46 @@ class FeesFieldEthereumKind extends PureComponent<
     this.setState({ totalFees });
   }
   async loadGasPrice() {
-    // TODO this is basically A MOCK, we currently don't have endpoint to fetch it
-    // we have an endpoint but no gate implementation to facilitate http call
-    await new Promise(r => setTimeout(r, 1e3));
+    const { account, transaction, bridge, restlay } = this.props;
+    const currency = getCryptoCurrencyById(account.currency_id);
+
+    const isRecipientValid = await bridge.isRecipientValid(
+      restlay,
+      currency,
+      transaction.recipient
+    );
     if (this._unmounted) return;
-    this.setState({ gasPriceStatus: "loaded" });
-    const { transaction, onChangeTransaction } = this.props;
-    if (!transaction.gasPrice) {
-      const HARDCODED_GAS_PRICE = 10000000000;
-      onChangeTransaction({ ...transaction, gasPrice: HARDCODED_GAS_PRICE });
+    if (isRecipientValid) {
+      // NOTE: both initialized with null because gate expects it for ETH
+      const operation = {
+        amount: transaction.amount || 0,
+        recipient: transaction.recipient,
+        gas_limit: null,
+        gas_price: null
+      };
+      const estimatedFees = await getFees(
+        account,
+        transaction,
+        operation,
+        restlay
+      );
+
+      if (this._unmounted) return;
+      this.setState({ gasPriceStatus: "loaded", gasLimitStatus: "loaded" });
+      const { onChangeTransaction } = this.props;
+      onChangeTransaction({
+        ...transaction,
+        gasPrice: estimatedFees.gas_price,
+        gasLimit: estimatedFees.gas_limit
+      });
+    } else {
+      return;
     }
   }
 
   state = {
     gasPriceStatus: "fetching",
+    gasLimitStatus: "fetching",
     totalFees: 0
   };
 
@@ -116,7 +152,7 @@ class FeesFieldEthereumKind extends PureComponent<
   render() {
     const { classes, transaction, account } = this.props;
     const currency = getCryptoCurrencyById(account.currency_id);
-    const { gasPriceStatus, totalFees } = this.state;
+    const { gasPriceStatus, gasLimitStatus, totalFees } = this.state;
     return (
       <Fragment>
         <div className={classes.root}>
@@ -128,7 +164,7 @@ class FeesFieldEthereumKind extends PureComponent<
               currency={currency}
               placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
               onChange={this.onGasPriceChange}
-              defaultUnit={last(currency.units)}
+              defaultUnit={currency.units[1]}
               value={transaction.gasPrice === null ? 0 : transaction.gasPrice}
               disabled={gasPriceStatus === "fetching"}
             />
@@ -138,13 +174,14 @@ class FeesFieldEthereumKind extends PureComponent<
               <Trans i18nKey="send:details.gasLimit" />
             </ModalSubTitle>
             <TextField
-              placeholder="0"
+              placeholder={gasLimitStatus === "fetching" ? "Loading..." : "0"}
               fullWidth
               inputProps={inputProps}
               value={
                 transaction.gasLimit ? transaction.gasLimit.toString() : ""
               }
               error={false}
+              disabled={gasLimitStatus === "fetching"}
               onChange={this.onGasLimitChange}
             />
           </div>
@@ -155,4 +192,4 @@ class FeesFieldEthereumKind extends PureComponent<
   }
 }
 
-export default withStyles(styles)(FeesFieldEthereumKind);
+export default withStyles(styles)(connectData(FeesFieldEthereumKind));
