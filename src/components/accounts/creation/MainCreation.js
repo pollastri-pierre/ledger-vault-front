@@ -8,7 +8,7 @@ import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
-import type { Translate } from "data/types";
+import type { Translate, Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
@@ -22,6 +22,7 @@ import type {
 type Props = {
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState,
+  ethAccounts: Account[],
 
   // TODO: legacy stuff
   onSelect: Function,
@@ -46,10 +47,10 @@ class MainCreation extends Component<Props> {
     this.props.onSelect(value);
   };
   render() {
-    const { props } = this;
     const {
       accountCreationState,
       updateAccountCreationState,
+      ethAccounts,
 
       account,
       t,
@@ -57,7 +58,7 @@ class MainCreation extends Component<Props> {
       tabsIndex,
       classes,
       switchInternalModal
-    } = props;
+    } = this.props;
 
     let isNextDisabled = false;
 
@@ -126,12 +127,14 @@ class MainCreation extends Component<Props> {
         <div className="content">
           {tabsIndex === 0 && (
             <AccountCreationCurrencies
+              ethAccounts={ethAccounts}
               accountCreationState={accountCreationState}
               updateAccountCreationState={updateAccountCreationState}
             />
           )}
           {tabsIndex === 1 && (
             <AccountCreationOptions
+              ethAccounts={ethAccounts}
               accountCreationState={accountCreationState}
               updateAccountCreationState={updateAccountCreationState}
             />

@@ -212,8 +212,6 @@ class SelectCurrency extends PureComponent<Props> {
       <Select
         async
         defaultOptions
-        autoFocus
-        openMenuOnFocus
         isClearable
         loadOptions={fetchOptions}
         components={customComponents}
