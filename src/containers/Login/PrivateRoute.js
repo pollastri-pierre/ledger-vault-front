@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import { Route, Redirect } from "react-router";
 import { connect } from "react-redux";
@@ -19,8 +19,8 @@ const PrivateRoute = ({
 }) => (
   <Route
     {...rest}
-    render={(props: *) => {
-      return isAuthenticated ? (
+    render={(props: *) =>
+      isAuthenticated ? (
         <Component {...props} match={match} />
       ) : (
         <Redirect
@@ -28,8 +28,8 @@ const PrivateRoute = ({
             props.location.pathname
           )}`}
         />
-      );
-    }}
+      )
+    }
   />
 );
 

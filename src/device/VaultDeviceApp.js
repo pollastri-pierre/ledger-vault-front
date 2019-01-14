@@ -4,6 +4,7 @@ import invariant from "invariant";
 
 export default class VaultDeviceApp {
   transport: Transport<*>;
+
   constructor(
     transport: Transport<*>,
     scrambleKey: string = "v1+",
@@ -11,7 +12,7 @@ export default class VaultDeviceApp {
   ) {
     this.transport = transport;
     transport.setScrambleKey(scrambleKey);
-    //$FlowFixMe : needs to be done in ledger-hw-transport-u2f
+    // $FlowFixMe : needs to be done in ledger-hw-transport-u2f
     transport.setUnwrap(unwrap);
   }
 
@@ -20,6 +21,7 @@ export default class VaultDeviceApp {
     const res = await this.transport.send(0xf1, 0xd0, 0x00, 0x00);
     return res.slice(0, res.length - 2).toString();
   }
+
   async getVersion(): Promise<{
     appName: string,
     appVersion: string
@@ -42,6 +44,7 @@ export default class VaultDeviceApp {
       appVersion
     };
   }
+
   async getFirmwareInfo() {
     const res = await this.transport.send(0xe0, 0x01, 0x00, 0x00);
     const byteArray = [...res];
@@ -80,6 +83,7 @@ export default class VaultDeviceApp {
 
     return { targetId, seVersion, flags, mcuVersion };
   }
+
   async register(
     challenge: Buffer,
     application: string,
@@ -127,7 +131,7 @@ export default class VaultDeviceApp {
     const length = Buffer.alloc(2);
     length.writeUInt16BE(bigChunk.length, 0);
 
-    let chunks = this.splits(maxLength, bigChunk);
+    const chunks = this.splits(maxLength, bigChunk);
 
     const data = Buffer.concat([
       challenge,
@@ -163,7 +167,7 @@ export default class VaultDeviceApp {
     // const signature = lastResponse.slice(i).toString("hex");
     return {
       u2f_register: lastResponse.slice(0, lastResponse.length - 2),
-      keyHandle: keyHandle,
+      keyHandle,
       rfu,
       pubKey
     };

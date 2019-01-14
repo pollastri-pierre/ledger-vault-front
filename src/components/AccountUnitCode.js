@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 import type { Account } from "data/types";
 import {
@@ -12,12 +12,11 @@ const AccountUnitCode = ({ account }: Props) => {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return null;
     return token.symbol;
-  } else {
-    const curr = getCryptoCurrencyById(account.currency_id);
-    const unit = curr.units.reduce(
-      (prev, current) => (prev.magnitude > current.magnitude ? prev : current)
-    );
-    return unit.code;
   }
+  const curr = getCryptoCurrencyById(account.currency_id);
+  const unit = curr.units.reduce(
+    (prev, current) => (prev.magnitude > current.magnitude ? prev : current)
+  );
+  return unit.code;
 };
 export default AccountUnitCode;

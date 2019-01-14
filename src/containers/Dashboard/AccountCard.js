@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";

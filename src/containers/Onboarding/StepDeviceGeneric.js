@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React from "react";
-import { Title, Step, Awaiting } from "../../components/Onboarding";
 import { withStyles } from "@material-ui/core/styles";
-import Plug from "../../components/icons/thin/Plug.js";
+import { Title, Step, Awaiting } from "../../components/Onboarding";
+import Plug from "../../components/icons/thin/Plug";
 import DialogButton from "../../components/buttons/DialogButton";
 
 const styles = {
@@ -43,33 +43,28 @@ const StepDeviceGeneric = ({
   steps: string[],
   step: number,
   device: boolean,
-  cancel: Function,
-  finish: Function
-}) => {
-  return (
-    <div className={classes.base}>
-      <div className={classes.title}>
-        <Plug color="#eeeeee" style={{ height: 28, marginBottom: 10 }} />
-        <Title>{title}</Title>
-      </div>
-      <div>
-        {steps.map((step_item, i) => {
-          return (
-            <Step
-              label={step_item}
-              active={i === step}
-              className={classes.step}
-              key={i}
-            />
-          );
-        })}
-      </div>
-      <div className={classes.footer}>
-        <DialogButton onTouchTap={cancel}>Cancel</DialogButton>
-        <Awaiting device={device} />
-      </div>
+  cancel: Function
+}) => (
+  <div className={classes.base}>
+    <div className={classes.title}>
+      <Plug color="#eeeeee" style={{ height: 28, marginBottom: 10 }} />
+      <Title>{title}</Title>
     </div>
-  );
-};
+    <div>
+      {steps.map((step_item, i) => (
+        <Step
+          label={step_item}
+          active={i === step}
+          className={classes.step}
+          key={i} // eslint-disable-line react/no-array-index-key
+        />
+      ))}
+    </div>
+    <div className={classes.footer}>
+      <DialogButton onTouchTap={cancel}>Cancel</DialogButton>
+      <Awaiting device={device} />
+    </div>
+  </div>
+);
 
 export default withStyles(styles)(StepDeviceGeneric);

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Operation } from "data/types";
@@ -14,7 +14,9 @@ type Res = Operation;
 
 export default class ApproveOperationMutation extends Mutation<In, Res> {
   uri = `/operations/${this.props.operationId}/approve`;
+
   method = "POST";
+
   responseSchema = schema.Operation;
 
   getSuccessNotification() {

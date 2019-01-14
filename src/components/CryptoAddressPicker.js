@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -13,6 +13,7 @@ class CryptoAddressPicker extends Component<{
   onChange = (e: any) => {
     this.props.onChange(e.currentTarget.value.trim());
   };
+
   render() {
     const { id, onChange, isValid, value, ...props } = this.props;
     return (

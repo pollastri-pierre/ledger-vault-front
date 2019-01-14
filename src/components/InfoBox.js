@@ -50,6 +50,7 @@ class InfoBox extends PureComponent<Props> {
     }
     return <div className={classes.icon}>{icon}</div>;
   };
+
   render() {
     const {
       children,

@@ -30,6 +30,7 @@ class OperationCreationLabel extends PureComponent<Props> {
   updateTitle = (ev: SyntheticInputEvent<*>) => {
     this.props.updateTitle(ev.currentTarget.value);
   };
+
   updateNote = (ev: SyntheticInputEvent<*>) => {
     this.props.updateNote(ev.currentTarget.value);
   };

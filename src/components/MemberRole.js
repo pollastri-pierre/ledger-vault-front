@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { Component } from "react";
 import type { Member } from "data/types";
 

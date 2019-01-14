@@ -1,16 +1,16 @@
-//@flow
+// @flow
 import React from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
 import CounterValue from "components/CounterValue";
 import { Link } from "react-router-dom";
-import CurrencyAccountValue from "../CurrencyAccountValue";
 import classnames from "classnames";
 import { withRouter } from "react-router";
+import type { Account, Operation, Member } from "data/types";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
-import type { Account, Operation, Member } from "data/types";
 import styles from "./styles";
 
 const Empty = ({ approved }: { approved?: boolean }) =>

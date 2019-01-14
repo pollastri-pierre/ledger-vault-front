@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-import Checkbox from "../form/Checkbox";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import Checkbox from "../form/Checkbox";
 
 const styles = {
   field: {
@@ -47,6 +47,7 @@ class EnableForm extends PureComponent<Props> {
     }
     toggle();
   };
+
   render() {
     const { checked, toggle, children, classes } = this.props;
     return (

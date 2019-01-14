@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
@@ -44,7 +44,6 @@ const styles = {
 };
 
 type Props = {
-  title: string,
   steps?: string[],
   role?: string,
   history: *,
@@ -69,6 +68,7 @@ class RegisterAdmins extends Component<Props, State> {
     _isMounted = true;
     this.onStart();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
@@ -143,7 +143,7 @@ class RegisterAdmins extends Component<Props, State> {
         if (e.statusCode && e.statusCode === 27013) {
           this.props.cancel();
         } else if (e.id && e.id === U2F_TIMEOUT) {
-          //timeout
+          // timeout
           this.onStart();
         }
       }

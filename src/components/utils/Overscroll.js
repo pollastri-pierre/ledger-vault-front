@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 
 /**
@@ -21,7 +21,6 @@ class Overscroll extends Component<{
   static defaultProps = {
     top: 0,
     bottom: 0,
-    backgroundColor: "white",
     blurSize: 6,
     paddingX: 12,
     paddingY: 12,
@@ -29,8 +28,11 @@ class Overscroll extends Component<{
   };
 
   original: ?Element;
+
   node: ?Element;
+
   copy: ?Element;
+
   raf: *;
 
   componentDidMount() {
@@ -53,9 +55,11 @@ class Overscroll extends Component<{
   onRef = (node: ?Element) => {
     this.node = node;
   };
+
   onCopyRef = (node: ?Element) => {
     this.copy = node;
   };
+
   onOriginalRef = (node: ?Element) => {
     this.original = node;
   };
@@ -81,7 +85,7 @@ class Overscroll extends Component<{
     };
     const copyStyle = {
       position: "absolute",
-      filter: "blur(" + blurSize + "px)",
+      filter: `blur(${blurSize}px)`,
       overflow: "hidden",
       width: "100%",
       top: `-${top - paddingY}px`,
@@ -119,8 +123,8 @@ class Overscroll extends Component<{
       paddingTop: paddingY,
       paddingBottom: paddingY,
       // for hiding ugly scrollbar
-      marginRight: "-" + pushScrollBarRight + "px",
-      paddingRight: pushScrollBarRight + paddingX + "px"
+      marginRight: `-${pushScrollBarRight}px`,
+      paddingRight: `${pushScrollBarRight + paddingX}px`
     };
 
     return (

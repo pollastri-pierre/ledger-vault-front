@@ -1,7 +1,7 @@
-//@flow
+// @flow
 import React from "react";
-import ApprovalUser from "../ApprovalUser";
 import type { Member, Approval } from "data/types";
+import ApprovalUser from "../ApprovalUser";
 
 function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
   const { approved, approvers } = props;
@@ -13,21 +13,19 @@ function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
       const isApproved = !!approved.find(
         approver => approver.person.pub_key === member.pub_key
       );
-      data["approved"] = isApproved;
+      data.approved = isApproved;
       return data;
     })
     .sort((a, b) => b.approved - a.approved);
   return (
     <div>
-      {list.map(member => {
-        return (
-          <ApprovalUser
-            key={member.pub_key}
-            member={member}
-            isApproved={member.approved}
-          />
-        );
-      })}
+      {list.map(member => (
+        <ApprovalUser
+          key={member.pub_key}
+          member={member}
+          isApproved={member.approved}
+        />
+      ))}
     </div>
   );
 }

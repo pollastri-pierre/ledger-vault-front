@@ -39,6 +39,7 @@ test("forceFetch & unmount", async () => {
       UNSAFE_componentWillMount() {
         forceFetch = this.props.restlay.forceFetch;
       }
+
       render() {
         return null;
       }
@@ -65,6 +66,7 @@ test("fetchQuery & unmount", async () => {
       UNSAFE_componentWillMount() {
         fetchQuery = this.props.restlay.fetchQuery;
       }
+
       render() {
         return null;
       }

@@ -1,6 +1,7 @@
-//@flow
+// @flow
 import type { Dispatch } from "redux";
 import network from "network";
+
 export const LOGOUT = "auth/LOGOUT";
 export const LOGIN = "auth/LOGIN";
 
@@ -19,18 +20,16 @@ export function setTokenToLocalStorage(token: string) {
   window.localStorage.setItem("token", token);
 }
 
-export const logout = () => {
-  return async (dispatch: Dispatch<*>) => {
-    try {
-      await network(`/authentications/logout`, "POST");
-      removeLocalStorageToken();
-    } catch (e) {
-      removeLocalStorageToken();
-    }
-    dispatch({
-      type: LOGOUT
-    });
-  };
+export const logout = () => async (dispatch: Dispatch<*>) => {
+  try {
+    await network(`/authentications/logout`, "POST");
+    removeLocalStorageToken();
+  } catch (e) {
+    removeLocalStorageToken();
+  }
+  dispatch({
+    type: LOGOUT
+  });
 };
 
 export function login(token: string) {

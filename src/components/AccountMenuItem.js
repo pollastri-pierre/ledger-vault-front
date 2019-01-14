@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { getAccountTitle } from "utils/accounts";
 import type { Account } from "data/types";
@@ -37,9 +37,9 @@ class AccountOption extends Component<{
 }> {
   render() {
     const { account, classes, ...rest } = this.props;
-    const color = getCryptoCurrencyById(account.currency_id)["color"];
+    const color = getCryptoCurrencyById(account.currency_id).color;
     return (
-      <MenuItem button disableRipple style={{ color: color }} {...rest}>
+      <MenuItem button disableRipple style={{ color }} {...rest}>
         <div className={classes.accountOption}>
           <span className={classes.nameContainer}>
             {getAccountTitle(account)}

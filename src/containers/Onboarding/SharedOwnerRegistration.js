@@ -1,8 +1,7 @@
-//@flow
+// @flow
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import Footer from "./Footer";
 import type { Translate } from "data/types";
 import {
   Title,
@@ -10,7 +9,7 @@ import {
   Introduction,
   NoMembers,
   AddUser
-} from "components/Onboarding.js";
+} from "components/Onboarding";
 import { translate, Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import BlurDialog from "components/BlurDialog";
@@ -21,6 +20,7 @@ import {
   addSharedOwner
 } from "redux/modules/onboarding";
 import type { Onboarding } from "redux/modules/onboarding";
+import Footer from "./Footer";
 
 type Props = {
   t: Translate,
@@ -43,7 +43,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
   }
 
   onToggleRegisteringModal = () => {
-    this.setState({ registering: !this.state.registering });
+    this.setState(state => ({ registering: !state.registering }));
   };
 
   add = data => {
@@ -99,7 +99,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
           )}
           {onboarding.registering_shared_owner.sharedOwners.map((so, i) => (
             <div
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               style={{
                 lineHeight: "45px",
                 borderBottom: "1px solid #eeeeee",

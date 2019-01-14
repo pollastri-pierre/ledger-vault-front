@@ -1,18 +1,18 @@
-//@flow
+// @flow
 import React from "react";
 import groupBy from "lodash/groupBy";
 import size from "lodash/size";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
-import DateFormat from "../DateFormat";
-import AccountName from "../AccountName";
-import ApprovalStatus from "../ApprovalStatus";
 import type { Account, Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
-import styles from "./styles";
 import { getAccountCurrencyName } from "utils/accounts";
+import styles from "./styles";
+import ApprovalStatus from "../ApprovalStatus";
+import AccountName from "../AccountName";
+import DateFormat from "../DateFormat";
 
 const Empty = ({ approved }: { approved?: boolean }) =>
   approved ? (

@@ -1,10 +1,13 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
+import { getState, changeQuorum } from "redux/modules/onboarding";
+import io from "socket.io-client";
 import Welcome from "./Welcome";
 import WrappingKeys from "./WrappingKeys";
 import Prerequisite from "./Prerequisite";
@@ -13,17 +16,14 @@ import WrappingKeyPrerequisite from "./WrappingKeyPrerequisite";
 import SharedOwnerRegistration from "./SharedOwnerRegistration";
 import ConfigurationAdministrators from "./ConfigurationAdministrators";
 import ConfigurationWrapping from "./ConfigurationWrapping";
-import ConfigurationSeed from "./ConfigurationSeed.js";
+import ConfigurationSeed from "./ConfigurationSeed";
 import Registration from "./Registration";
 import SharedOwnerValidation from "./SharedOwnerValidation";
-import Backup from "./Backup.js";
-import Provisionning from "./Provisioning.js";
-import ConfirmationGlobal from "./ConfirmationGlobal.js";
-import AdministrationScheme from "./AdministrationScheme.js";
+import Backup from "./Backup";
+import Provisionning from "./Provisioning";
+import ConfirmationGlobal from "./ConfirmationGlobal";
+import AdministrationScheme from "./AdministrationScheme";
 import Menu from "./Menu";
-import { connect } from "react-redux";
-import { getState, changeQuorum } from "redux/modules/onboarding";
-import io from "socket.io-client";
 
 const mapStateToProps = state => ({
   onboarding: state.onboarding
@@ -95,7 +95,6 @@ type Props = {
   history: *,
   onboarding: *,
   changeNbRequired: Function,
-  onGetCurrentState: Function,
   onGetState: Function
 };
 
@@ -108,21 +107,20 @@ class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
     this.props.onGetState();
 
-    const url = process.env["NOTIFICATION_URL"] || "/";
-    const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
+    const url = process.env.NOTIFICATION_URL || "/";
+    const path = process.env.NOTIFICATION_PATH || "/notification/socket.io";
     const socket = io.connect(
       url,
-      { onboarding: true, path: path }
+      { onboarding: true, path }
     );
-    let self = this;
-    socket.on("connect", function() {
+    socket.on("connect", () => {
       socket.emit("authenticate", {
         token: "onboarding",
-        orga: self.props.match.params.orga_name
+        orga: this.props.match.params.orga_name
       });
     });
-    socket.on(self.props.match.params.orga_name + "/onboarding", function() {
-      self.onNewOnboardingState();
+    socket.on(`${this.props.match.params.orga_name}/onboarding`, () => {
+      this.onNewOnboardingState();
     });
   }
 

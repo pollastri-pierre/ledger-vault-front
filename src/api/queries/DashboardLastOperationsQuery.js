@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Operation } from "data/types";
@@ -21,5 +21,6 @@ export default class DashboardLastOperationsQuery extends ConnectionQuery<
   Node
 > {
   uri = "/operations?status=submitted&with_daemon_info=true&batch=5";
+
   responseSchema = schema.Operation;
 }

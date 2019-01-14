@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -15,7 +15,7 @@ const styles = {
   }
 };
 function Arrow({ classes, type, color }: *) {
-  const stroke = color ? color : "#000";
+  const stroke = color || "#000";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@ function Arrow({ classes, type, color }: *) {
             <polyline
               style={{
                 fill: "none",
-                stroke: stroke,
+                stroke,
                 strokeMiterlimit: "10",
                 strokeWidth: "4px"
               }}
@@ -38,7 +38,7 @@ function Arrow({ classes, type, color }: *) {
             <line
               style={{
                 fill: "none",
-                stroke: stroke,
+                stroke,
                 strokeMiterlimit: "10",
                 strokeWidth: "4px"
               }}

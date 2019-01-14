@@ -1,10 +1,10 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
-import AccountCard from "./AccountCard";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { withStyles } from "@material-ui/core/styles";
 import TryAgain from "components/TryAgain";
+import AccountCard from "./AccountCard";
 
 const styles = {
   base: {

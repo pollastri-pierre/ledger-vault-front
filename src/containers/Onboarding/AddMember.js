@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import EditProfile from "components/EditProfile";
-import RegisterAdmins from "./RegisterAdmins.js";
 import type { Member } from "data/types";
+import RegisterAdmins from "./RegisterAdmins";
 
 const steps = [
   "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
@@ -35,6 +35,7 @@ class AddMember extends Component<Props, State> {
       }
     };
   }
+
   next = (data: *) => {
     // we are editing a member, no need to register device again
     if (this.props.member) {
@@ -60,10 +61,10 @@ class AddMember extends Component<Props, State> {
           );
         });
       return promise;
-    } else {
-      this.setState({ step: 1, data: data });
     }
+    this.setState({ step: 1, data });
   };
+
   prev = () => {
     this.setState({ step: 0 });
   };
@@ -96,7 +97,8 @@ class AddMember extends Component<Props, State> {
           labelSubmit={label}
         />
       );
-    } else if (step === 1) {
+    }
+    if (step === 1) {
       return (
         <RegisterAdmins
           steps={steps}

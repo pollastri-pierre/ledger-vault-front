@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { translate, Trans } from "react-i18next";
@@ -38,6 +38,7 @@ class SendLabel extends PureComponent<Props<*>, State> {
       bridge.editTransactionLabel(account, transaction, e.currentTarget.value)
     );
   };
+
   updateNote = (e: SyntheticEvent<HTMLInputElement>) => {
     const { account, transaction, bridge, onChangeTransaction } = this.props;
     onChangeTransaction(
@@ -49,6 +50,7 @@ class SendLabel extends PureComponent<Props<*>, State> {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 3);
   };
+
   render() {
     const { account, bridge, transaction, classes, t } = this.props;
     const label = bridge.getTransactionLabel(account, transaction);

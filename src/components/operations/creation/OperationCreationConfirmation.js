@@ -1,12 +1,12 @@
-//@flow
+// @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { translate } from "react-i18next";
+import type { Account, Translate } from "data/types";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import OverviewOperation from "../../OverviewOperation";
 import Amount from "../../Amount";
-import type { Account, Translate } from "data/types";
 
 const styles = {
   root: {

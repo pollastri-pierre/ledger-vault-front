@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-import SpinnerCard from "../spinners/SpinnerCard";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import SpinnerCard from "../spinners/SpinnerCard";
 
 const styles = {
   base: {

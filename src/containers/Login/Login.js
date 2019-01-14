@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
 import { translate } from "react-i18next";
@@ -15,10 +15,8 @@ import createDevice, {
   U2F_PATH,
   APPID_VAULT_ADMINISTRATOR
 } from "device";
-import DeviceLogin from "./DeviceLogin";
 import {
   login,
-  logout,
   setTokenToLocalStorage,
   removeLocalStorageToken
 } from "redux/modules/auth";
@@ -27,15 +25,15 @@ import network from "network";
 import { withStyles } from "@material-ui/core/styles";
 import Logo from "components/Logo";
 import type { Organization, Translate } from "data/types";
+import DeviceLogin from "./DeviceLogin";
 
 const mapStateToProps = ({ auth, onboarding }) => ({
   isAuthenticated: auth.isAuthenticated,
-  onboarding: onboarding
+  onboarding
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
   onLogin: token => dispatch(login(token)),
-  onLogout: () => dispatch(logout()),
   addAlertMessage: (...props) => dispatch(addMessage(...props))
 });
 
@@ -46,10 +44,6 @@ type Props = {
   match: Object,
   location: Object,
   organization: Organization,
-  onLogout: () => void,
-  onStartAuth: () => void,
-  onCloseTeamError: () => void,
-  onResetTeam: () => void,
   classes: Object,
   addAlertMessage: Function,
   onLogin: Function
@@ -91,10 +85,8 @@ const styles = {
 };
 
 type State = {
-  domain: string,
   step: number,
   isChecking: boolean,
-  error: ?Error,
   domainValidated: boolean
 };
 
@@ -102,9 +94,7 @@ let _isMounted = false;
 
 export class Login extends Component<Props, State> {
   state = {
-    domain: "",
     step: 0,
-    error: null,
     domainValidated: false,
     isChecking: false
   };
@@ -181,10 +171,7 @@ export class Login extends Component<Props, State> {
             `/u2f/authentications/${pubKey}/challenge`,
             "GET"
           );
-          this.setState({
-            error: null,
-            step: 1
-          });
+          this.setState({ step: 1 });
 
           const application = APPID_VAULT_ADMINISTRATOR;
           const auth = await device.authenticate(
@@ -212,7 +199,7 @@ export class Login extends Component<Props, State> {
           this.onStartAuth();
         } else {
           removeLocalStorageToken();
-          this.setState({ error, isChecking: false });
+          this.setState({ isChecking: false });
           addAlertMessage(
             "Failed to authenticate",
             formatError(error),
@@ -223,9 +210,7 @@ export class Login extends Component<Props, State> {
     }
   };
 
-  onCloseTeamError = () => {
-    this.setState({ error: null });
-  };
+  onCloseTeamError = () => {};
 
   onCancelDeviceLogin = () => {
     this.setState({ domainValidated: false });

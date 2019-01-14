@@ -5,16 +5,19 @@ import { load } from "../GlobalLoading";
 
 class SpinnerCard extends PureComponent<{ disableGlobalSpinner?: boolean }> {
   unload: ?Function;
+
   componentDidMount() {
     if (!this.props.disableGlobalSpinner) {
       this.unload = load();
     }
   }
+
   componentWillUnmount() {
     if (this.unload) {
       this.unload();
     }
   }
+
   render() {
     return (
       <CircularProgress

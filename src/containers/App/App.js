@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
@@ -39,15 +39,13 @@ function App({ location, match, accounts }: Props) {
   );
 }
 
-const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
-  return (
-    <div className={classes.error}>
-      <Card>
-        <TryAgain error={error} action={restlay.forceFetch} />
-      </Card>
-    </div>
-  );
-});
+const RenderError = withStyles(styles)(({ classes, error, restlay }) => (
+  <div className={classes.error}>
+    <Card>
+      <TryAgain error={error} action={restlay.forceFetch} />
+    </Card>
+  </div>
+));
 
 export default connectData(translate()(App), {
   RenderError,

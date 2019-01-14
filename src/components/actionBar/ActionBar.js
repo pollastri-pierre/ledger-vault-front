@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { translate } from "react-i18next";
 // import AccountsQuery from "api/queries/AccountsQuery";
 // import connectData from "restlay/connectData";
@@ -6,18 +6,18 @@ import type { Account, Translate } from "data/types";
 import React, { Component } from "react";
 // import { Route } from "react-router";
 import { Link } from "react-router-dom";
+import colors from "shared/colors";
+import { withStyles } from "@material-ui/core/styles";
+import Logo from "components/Logo";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
-import colors from "shared/colors";
 import SettingsModal from "../SettingsModal";
-import { withStyles } from "@material-ui/core/styles";
 import Plus from "../icons/full/Plus";
 // import Share from "../icons/full/Share";
 import Settings from "../icons/full/Settings";
 import Question from "../icons/full/Question";
-import Logo from "components/Logo";
 
 const styles = {
   base: {
@@ -87,7 +87,7 @@ class ActionBar extends Component<{
             </Link>
             {accounts.length > 0 && (
               <Link
-                to={location.pathname + "/settings"}
+                to={`${location.pathname}/settings`}
                 className="content-header-button"
               >
                 <Settings className={classes.icon} />

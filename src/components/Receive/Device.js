@@ -1,9 +1,11 @@
-//@flow
+// @flow
+
 import React, { Component, Fragment } from "react";
-import BluePlug from "components/icons/BluePlug";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
+
+import BluePlug from "components/icons/BluePlug";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import ReceiveLayout from "./ReceiveLayout";
 import DeviceStep from "./DeviceStep";
 
@@ -16,13 +18,12 @@ const styles = {
     justifyContent: "center"
   }
 };
+
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string }
 };
+
 class ReceiveDevice extends Component<Props> {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const { classes } = this.props;
     return (

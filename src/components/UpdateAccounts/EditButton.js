@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import { connect } from "react-redux";
@@ -6,7 +6,7 @@ import { toggleAndSelect } from "redux/modules/update-accounts";
 
 type Props = {
   children: *,
-  account: Account,
+  account: Account, // eslint-disable-line react/no-unused-prop-types
   onOpen: Function,
   className: ?string
 };

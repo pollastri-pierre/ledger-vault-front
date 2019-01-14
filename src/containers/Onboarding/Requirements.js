@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import colors from "shared/colors";
 import cx from "classnames";
@@ -6,9 +6,9 @@ import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
-import People from "../../components/icons/thin/People";
 import Briefcase from "components/icons/thin/Briefcase";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
+import People from "../../components/icons/thin/People";
 
 const blue = {
   base: {
@@ -97,14 +97,12 @@ export const RequirementUnit = withStyles(requirement)(
     classes: { [$Keys<typeof requirement>]: string },
     icon: any,
     children: any
-  }) => {
-    return (
-      <div className={classes.base} {...props}>
-        <div className={classes.icon}>{icon}</div>
-        <div>{children}</div>
-      </div>
-    );
-  }
+  }) => (
+    <div className={classes.base} {...props}>
+      <div className={classes.icon}>{icon}</div>
+      <div>{children}</div>
+    </div>
+  )
 );
 const Requirements = ({
   classes,

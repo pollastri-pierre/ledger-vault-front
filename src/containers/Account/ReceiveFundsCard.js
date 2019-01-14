@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import Card from "components/Card";
 import type { Translate } from "data/types";

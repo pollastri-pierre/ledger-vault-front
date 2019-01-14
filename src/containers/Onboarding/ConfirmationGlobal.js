@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import colors from "shared/colors";
 import React, { Fragment } from "react";
 import { Title } from "components/Onboarding";
@@ -6,7 +6,7 @@ import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Validate from "components/icons/Validate";
-import People from "components/icons/thin/People.js";
+import People from "components/icons/thin/People";
 import Lock from "components/icons/thin/Lock";
 import DialogButton from "components/buttons/DialogButton";
 import { connect } from "react-redux";
@@ -54,68 +54,66 @@ const ConfirmationGlobal = ({
   history: *,
   onboarding: *,
   t: Translate
-}) => {
-  return (
+}) => (
+  <div>
+    <Title>{t("onboarding:confirmation.title")}</Title>
     <div>
-      <Title>{t("onboarding:confirmation.title")}</Title>
-      <div>
-        <div className={classes.base}>
-          <div>
-            <div className={classes.icon}>
-              <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
-            </div>
+      <div className={classes.base}>
+        <div>
+          <div className={classes.icon}>
+            <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
           </div>
-          <strong>{t("onboarding:confirmation.description")}</strong>
-          <p>{t("onboarding:confirmation.members_can_signin")}</p>
         </div>
-        <div className={classes.sep} />
-        <div className={classes.sumary}>
-          <div className={classes.info}>
-            <div style={{ marginBottom: 12 }}>
-              <People color={colors.blue_red} style={{ height: 29 }} />
-            </div>
-            3 Shared-Owners
+        <strong>{t("onboarding:confirmation.description")}</strong>
+        <p>{t("onboarding:confirmation.members_can_signin")}</p>
+      </div>
+      <div className={classes.sep} />
+      <div className={classes.sumary}>
+        <div className={classes.info}>
+          <div style={{ marginBottom: 12 }}>
+            <People color={colors.blue_red} style={{ height: 29 }} />
           </div>
-          <div className={classes.info}>
-            <div style={{ marginBottom: 12 }}>
-              <People color={colors.blue_orange} style={{ height: 29 }} />
-            </div>
-            3 Wrapping Keys Custodians
+          3 Shared-Owners
+        </div>
+        <div className={classes.info}>
+          <div style={{ marginBottom: 12 }}>
+            <People color={colors.blue_orange} style={{ height: 29 }} />
           </div>
-          <div className={classes.info}>
-            <div style={{ marginBottom: 12 }}>
-              <People color={colors.blue_green} style={{ height: 29 }} />
-            </div>
-            {onboarding.registering.admins.length}{" "}
-            {t("onboarding:administrators")}
+          3 Wrapping Keys Custodians
+        </div>
+        <div className={classes.info}>
+          <div style={{ marginBottom: 12 }}>
+            <People color={colors.blue_green} style={{ height: 29 }} />
           </div>
-          <div className={classes.info}>
-            <div style={{ marginBottom: 12 }}>
-              <Lock />
-            </div>
-            {onboarding.quorum}/{onboarding.registering.admins.length}{" "}
-            {t("onboarding:confirmation.scheme")}
+          {onboarding.registering.admins.length}{" "}
+          {t("onboarding:administrators")}
+        </div>
+        <div className={classes.info}>
+          <div style={{ marginBottom: 12 }}>
+            <Lock />
           </div>
+          {onboarding.quorum}/{onboarding.registering.admins.length}{" "}
+          {t("onboarding:confirmation.scheme")}
         </div>
       </div>
-      <Footer
-        render={() => (
-          <Fragment>
-            <div />
-            <DialogButton
-              highlight
-              onTouchTap={() => {
-                history.push(`/${match.params.orga_name}`);
-              }}
-            >
-              {t("common:continue")}
-            </DialogButton>
-          </Fragment>
-        )}
-      />
     </div>
-  );
-};
+    <Footer
+      render={() => (
+        <Fragment>
+          <div />
+          <DialogButton
+            highlight
+            onTouchTap={() => {
+              history.push(`/${match.params.orga_name}`);
+            }}
+          >
+            {t("common:continue")}
+          </DialogButton>
+        </Fragment>
+      )}
+    />
+  </div>
+);
 
 const mapProps = state => ({
   onboarding: state.onboarding

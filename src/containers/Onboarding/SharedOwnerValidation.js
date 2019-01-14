@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component, Fragment } from "react";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import CircleProgress from "components/CircleProgress";
@@ -18,9 +18,9 @@ import {
   addAdminValidation
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
+import { Title, Introduction } from "components/Onboarding";
 import SharedOwnerValidationDevice from "./SharedOwnerValidationDevice";
 import Footer from "./Footer";
-import { Title, Introduction } from "components/Onboarding";
 
 const styles = {
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
@@ -64,16 +64,13 @@ const styles = {
 type Props = {
   onboarding: *,
   classes: { [$Keys<typeof styles>]: string },
-  onNextStep: Function,
   onWipe: Function,
-  onGetSigninChallenge: Function,
   onOpenAdminValidationChannel: Function,
   onAddAdminValidation: Function,
   onToggleSignin: Function,
   onOpenAdminValidationChannel: () => void,
   onAddAdminValidation: (string, string) => void,
   onAddMessage: (string, string, string) => Function,
-  onAddSignedIn: Function,
   t: Translate
 };
 type State = {
@@ -83,6 +80,7 @@ class SharedOwnerValidation extends Component<Props, State> {
   state = {
     deny: false
   };
+
   svg: ?Element;
 
   componentDidMount() {
@@ -90,7 +88,7 @@ class SharedOwnerValidation extends Component<Props, State> {
   }
 
   toggleCancelOnDevice = () => {
-    this.setState({ deny: !this.state.deny });
+    this.setState(state => ({ deny: !state.deny }));
   };
 
   signIn = (pubKey: string, signature: string) => {
@@ -182,25 +180,23 @@ class SharedOwnerValidation extends Component<Props, State> {
         </div>
         <Footer
           isBack={false}
-          render={(onNext, onPrevious) => {
-            return (
-              <Fragment>
-                <DialogButton onTouchTap={onPrevious}>
-                  {t("common:back")}
-                </DialogButton>
-                <DialogButton
-                  highlight
-                  onTouchTap={onNext}
-                  disabled={
-                    onboarding.validating_shared_owner.admins.length <
-                    onboarding.quorum
-                  }
-                >
-                  {t("common:continue")}
-                </DialogButton>
-              </Fragment>
-            );
-          }}
+          render={(onNext, onPrevious) => (
+            <Fragment>
+              <DialogButton onTouchTap={onPrevious}>
+                {t("common:back")}
+              </DialogButton>
+              <DialogButton
+                highlight
+                onTouchTap={onNext}
+                disabled={
+                  onboarding.validating_shared_owner.admins.length <
+                  onboarding.quorum
+                }
+              >
+                {t("common:continue")}
+              </DialogButton>
+            </Fragment>
+          )}
         />
       </div>
     );

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 import React from "react";
 import noop from "lodash/noop";
@@ -60,7 +60,7 @@ const styles = {
 
 type Props = {
   labelFor: string,
-  checked: boolean,
+  checked?: boolean,
   handleInputChange?: (checked: boolean) => void,
   className: string,
   classes: { [_: $Keys<typeof styles>]: string }

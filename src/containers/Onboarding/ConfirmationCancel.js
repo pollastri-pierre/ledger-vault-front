@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { Title, Introduction } from "components/Onboarding";
 import HelpLink from "components/HelpLink";
@@ -34,9 +34,11 @@ class ConfirmationCancel extends Component<Props, State> {
   state = {
     value: "0"
   };
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };
+
   render() {
     const { classes, step, entity, title, toggle, wipe } = this.props;
     const { value } = this.state;

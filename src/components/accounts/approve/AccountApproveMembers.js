@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import { Overscroll } from "../../";
-import MemberRow from "../../MemberRow";
 import type { Member } from "data/types";
+import { Overscroll } from "../..";
+import MemberRow from "../../MemberRow";
 
 type Props = {
   members: Array<Member>
@@ -14,9 +14,9 @@ class AccountApproveMembers extends Component<Props> {
       <div>
         <div style={{ marginTop: "40px", height: 300 }}>
           <Overscroll top={20} bottom={80}>
-            {members.map(member => {
-              return <MemberRow member={member} key={member.id} />;
-            })}
+            {members.map(member => (
+              <MemberRow member={member} key={member.id} />
+            ))}
           </Overscroll>
         </div>
       </div>

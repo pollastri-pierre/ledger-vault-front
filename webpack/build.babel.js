@@ -15,7 +15,7 @@ export default merge(webpackConfig, {
         test: /\.js$/,
         use: "happypack/loader",
         // NOTE: until we upgrade to webpack 4. eip55 library uses ES6 shorcuts and needs to be parsed
-        exclude: function(modulePath) {
+        exclude(modulePath) {
           return (
             /node_modules/.test(modulePath) &&
             !/node_modules\/eip55/.test(modulePath)

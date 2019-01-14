@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import DashboardLastOperationsQuery from "api/queries/DashboardLastOperationsQuery";
@@ -21,6 +21,7 @@ class LastOperationCard extends Component<*> {
     accounts: Array<Account>,
     reloading: boolean
   };
+
   render() {
     const { accounts, operations, reloading, t } = this.props;
     return (

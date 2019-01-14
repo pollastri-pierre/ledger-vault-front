@@ -1,15 +1,13 @@
-//@flow
+// @flow
 import React, { Component, Fragment } from "react";
 import { translate, Trans } from "react-i18next";
 import type { Translate } from "data/types";
-import GenerateKeyFragments from "./GenerateKeyFragments";
 import { withStyles } from "@material-ui/core/styles";
 import FragmentKey from "containers/Onboarding/Fragment";
 import BlurDialog from "components/BlurDialog";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { connect } from "react-redux";
-import Footer from "./Footer";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import {
   openWrappingChannel,
@@ -17,6 +15,8 @@ import {
   addWrappingKey
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
+import Footer from "./Footer";
+import GenerateKeyFragments from "./GenerateKeyFragments";
 
 const styles = {
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
@@ -77,11 +77,6 @@ type Props = {
   classes: { [$Keys<typeof styles>]: string }
 };
 
-type State = {
-  step: number,
-  plugged: boolean
-};
-
 const mapState = state => ({
   onboarding: state.onboarding
 });
@@ -92,16 +87,12 @@ const mapDispatch = (dispatch: *) => ({
   onAddMessage: (title, content, success) =>
     dispatch(addMessage(title, content, success))
 });
-class WrappingKeys extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { step: 1, plugged: false };
-  }
-
+class WrappingKeys extends Component<Props> {
   componentDidMount() {
     const { onGetWrapsChannel } = this.props;
     onGetWrapsChannel();
   }
+
   finish = (data: any) => {
     this.props.onToggleDeviceModal();
     this.props.onAddWrapShard(data);
@@ -150,7 +141,7 @@ class WrappingKeys extends Component<Props, State> {
             .fill()
             .map((v, i) => (
               <FragmentKey
-                key={i}
+                key={i} // eslint-disable-line react/no-array-index-key
                 disabled={onboarding.wrapping.blobs.length <= i - 1}
                 label={t(`onboarding:wrapping_key.step${i + 1}`)}
                 labelGenerate={t("onboarding:wrapping_key.generate")}

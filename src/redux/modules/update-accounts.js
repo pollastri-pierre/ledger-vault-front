@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import type { Account, Member } from "data/types";
 
 const TOGGLE = "UPDATE-ACCOUNTS/TOGGLE";
@@ -40,11 +40,9 @@ export const toggleApprovals = () => ({
   type: TOGGLE_APPROVALS
 });
 
-export const toggleAndSelect = (account: ?Account) => {
-  return (dispatch: Function) => {
-    dispatch(toggleModal());
-    dispatch(selectAccount(account));
-  };
+export const toggleAndSelect = (account: ?Account) => (dispatch: Function) => {
+  dispatch(toggleModal());
+  dispatch(selectAccount(account));
 };
 
 type State = {

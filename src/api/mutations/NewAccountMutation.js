@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Account } from "data/types";
@@ -12,6 +12,7 @@ type Response = Account; // the account that has been created
 
 export default class NewAccountMutation extends Mutation<Input, Response> {
   uri = "/accounts";
+
   method = "POST";
 
   responseSchema = schema.Member;

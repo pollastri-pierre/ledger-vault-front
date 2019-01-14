@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import cx from "classnames";
 import { ProfileIcon } from "components/Onboarding";

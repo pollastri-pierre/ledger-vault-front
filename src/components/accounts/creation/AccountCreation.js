@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
@@ -17,18 +17,12 @@ import ApprovedAccountsQuery from "api/queries/AccountsQuery";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 
-import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
-import AccountCreationApprovals from "./AccountCreationApprovals";
-import AccountCreationTimeLock from "./AccountCreationTimeLock";
-import AccountCreationMembers from "./AccountCreationMembers";
-import MainCreation from "./MainCreation";
-
 import type {
   State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState,
   Ratelimiter,
   Timelock
 } from "redux/modules/account-creation";
-
 import {
   updateAccountCreationState,
   changeTab,
@@ -40,6 +34,11 @@ import {
   setRatelimiter,
   clearState
 } from "redux/modules/account-creation";
+import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
+import AccountCreationApprovals from "./AccountCreationApprovals";
+import AccountCreationTimeLock from "./AccountCreationTimeLock";
+import AccountCreationMembers from "./AccountCreationMembers";
+import MainCreation from "./MainCreation";
 
 type Props = {
   restlay: RestlayEnvironment,
@@ -54,9 +53,7 @@ type Props = {
   onSetRatelimiter: Ratelimiter => void,
   onClearState: () => void,
   accountCreationState: AccountCreationState,
-  updateAccountCreationState: AccountCreationState => $Shape<
-    AccountCreationState
-  >
+  updateAccountCreationState: UpdateAccountCreationState
 };
 
 // TODO this HIGHLY need some cleaning:
@@ -118,9 +115,9 @@ class AccountCreation extends PureComponent<Props> {
   createAccount = (entity_id: number) => {
     const { restlay, accountCreationState } = this.props;
 
-    const approvers = accountCreationState.approvers.map(pubKey => {
-      return { pub_key: pubKey };
-    });
+    const approvers = accountCreationState.approvers.map(pubKey => ({
+      pub_key: pubKey
+    }));
 
     const securityScheme: Object = {
       quorum: accountCreationState.quorum

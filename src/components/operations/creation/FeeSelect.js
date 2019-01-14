@@ -5,8 +5,8 @@ import cx from "classnames";
 import Select from "@material-ui/core/Select";
 import { speeds } from "api/queries/AccountCalculateFeeQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 import { withStyles } from "@material-ui/core/styles";
+import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 
 type Fee = {
   key: string,
@@ -23,7 +23,7 @@ const styles = {
 };
 
 class FeePicker extends Component<{
-  fees: Array<Fee>,
+  fees: Fee[],
   value: Speed,
   onChange: Speed => void,
   classes: { [_: $Keys<typeof styles>]: string }

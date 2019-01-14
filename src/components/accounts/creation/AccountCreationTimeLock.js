@@ -1,7 +1,5 @@
-//@flow
-import InfoModal from "../../InfoModal";
+// @flow
 import React, { Component } from "react";
-import { DialogButton } from "../../";
 import EnableForm from "components/EnableForm";
 import { connect } from "react-redux";
 import InputTextWithUnity from "components/InputTextWithUnity";
@@ -10,6 +8,8 @@ import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/Menu";
 import Select from "@material-ui/core/Select";
 import modals from "shared/modals";
+import { DialogButton } from "../..";
+import InfoModal from "../../InfoModal";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddMessage: (title, content, type) =>
@@ -52,47 +52,44 @@ class AccountCreationTimeLock extends Component<Props, State> {
       timelock: props.timelock
     };
   }
+
   submit = () => {
     const { setTimelock, switchInternalModal, onAddMessage } = this.props;
     const { timelock } = this.state;
     if (timelock.enabled && timelock.value === 0) {
       onAddMessage("Error", "Timelock value cannot be 0", "error");
       return false;
-    } else {
-      setTimelock(this.state.timelock);
-      switchInternalModal("main");
     }
+    setTimelock(this.state.timelock);
+    switchInternalModal("main");
   };
 
   onChangeValue = val => {
     const isNumber = /^[0-9\b]+$/;
 
     if (val === "" || isNumber.test(val)) {
-      this.setState({
-        ...this.state,
-        timelock: { ...this.state.timelock, value: parseInt(val, 10) || 0 }
-      });
+      this.setState(state => ({
+        timelock: { ...state.timelock, value: parseInt(val, 10) || 0 }
+      }));
     }
   };
 
   onToggle = () => {
-    this.setState({
-      ...this.state,
+    this.setState(state => ({
       timelock: {
-        ...this.state.timelock,
-        enabled: !this.state.timelock.enabled
+        ...state.timelock,
+        enabled: !state.timelock.enabled
       }
-    });
+    }));
   };
 
   changeFrequency = (e: *) => {
-    this.setState({
-      ...this.state,
+    this.setState(state => ({
       timelock: {
-        ...this.state.timelock,
+        ...state.timelock,
         frequency: e.target.value
       }
-    });
+    }));
   };
 
   cancel = () => {

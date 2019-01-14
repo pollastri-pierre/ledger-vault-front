@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import fetchF from "./fetchF";
 
 // inspired from https://github.com/facebook/fbjs/blob/master/packages/fbjs/src/fetch/fetchWithRetries.js
@@ -43,10 +43,8 @@ function fetchWithRetries(
         } else {
           reject(
             new Error(
-              "fetchWithRetries(): Failed to get response from server, " +
-                "tried " +
-                requestsAttempted +
-                " times."
+              `${"fetchWithRetries(): Failed to get response from server, " +
+                "tried "}${requestsAttempted} times.`
             )
           );
         }

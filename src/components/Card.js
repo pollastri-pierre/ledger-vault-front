@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -65,6 +65,7 @@ class Card extends Component<{
   static defaultProps = {
     Header
   };
+
   render() {
     const {
       Header,

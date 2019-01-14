@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Operation } from "data/types";
@@ -38,13 +38,14 @@ const uri = ({
   if (dateEnd) query.end = dateEnd.toISOString();
   query.with_daemon_info = true;
   const q = queryString.stringify(query);
-  return "/operations" + (q ? "?" : "") + q;
+  return `/operations${q ? "?" : ""}${q}`;
 };
 
 // Search operations
 // This API is paginated, refer to ConnectionQuery documentation
 export default class SearchQuery extends ConnectionQuery<In, Node> {
   uri = uri(this.props);
+
   nodeSchema = schema.Operation;
 
   getPaginationURLParams(first?: number, after?: string): Object {

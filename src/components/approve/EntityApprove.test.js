@@ -1,13 +1,7 @@
-jest.mock("device/VaultDeviceApp");
-jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
-}));
-jest.mock("network", () => jest.fn());
 // import network from "network";
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-Enzyme.configure({ adapter: new Adapter() });
 import {
   CONFIDENTIALITY_PATH,
   VALIDATION_PATH,
@@ -15,8 +9,6 @@ import {
   ACCOUNT_MANAGER_SESSION,
   MATCHER_SESSION
 } from "device";
-import { EntityApprove } from "./EntityApprove";
-import AbortConfirmation from "./AbortConfirmation";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import ApproveAccountMutation from "api/mutations/ApproveAccountMutation";
@@ -24,14 +16,23 @@ import ApproveOperationMutation from "api/mutations/ApproveOperationMutation";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AbortAccount from "api/mutations/AbortAccountMutation";
 import AbortOperationMutation from "api/mutations/AbortOperationMutation";
-import AccountApprove from "../accounts/approve/AccountApprove";
-import OperationApprove from "../operations/approve/OperationApprove";
-
 import VaultDeviceApp, {
   mockOpenSession, // eslint-disable-line
   mockValidateVaultOperation, // eslint-disable-line
   mockGetPublicKey // eslint-disable-line
 } from "device/VaultDeviceApp";
+import AccountApprove from "../accounts/approve/AccountApprove";
+import OperationApprove from "../operations/approve/OperationApprove";
+
+import AbortConfirmation from "./AbortConfirmation";
+import { EntityApprove } from "./EntityApprove";
+
+jest.mock("device/VaultDeviceApp");
+jest.mock("@ledgerhq/hw-transport-u2f", () => ({
+  create: jest.fn()
+}));
+jest.mock("network", () => jest.fn());
+Enzyme.configure({ adapter: new Adapter() });
 
 beforeEach(() => {
   VaultDeviceApp.mockClear();
@@ -189,12 +190,9 @@ test("approving() should handle the approving process", async () => {
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
   expect(mockOpenSession).toHaveBeenCalledWith(
     CONFIDENTIALITY_PATH,
+    Buffer.from(operation.hsm_operations.PUBKEY.ephemeral_public_key, "hex"),
     Buffer.from(
-      operation.hsm_operations["PUBKEY"]["ephemeral_public_key"],
-      "hex"
-    ),
-    Buffer.from(
-      operation.hsm_operations["PUBKEY"]["certificate_attestation"],
+      operation.hsm_operations.PUBKEY.certificate_attestation,
       "base64"
     ),
     ACCOUNT_MANAGER_SESSION
@@ -202,7 +200,7 @@ test("approving() should handle the approving process", async () => {
 
   expect(mockValidateVaultOperation).toHaveBeenCalledWith(
     VALIDATION_PATH,
-    Buffer.from(operation.hsm_operations["PUBKEY"]["data"], "base64")
+    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64")
   );
 
   expect(props.restlay.commitMutation).toHaveBeenCalledWith(
@@ -234,12 +232,9 @@ test("approving() should handle the approving process with entity=acocunt and MA
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
   expect(mockOpenSession).toHaveBeenCalledWith(
     CONFIDENTIALITY_PATH,
+    Buffer.from(operation.hsm_operations.PUBKEY.ephemeral_public_key, "hex"),
     Buffer.from(
-      operation.hsm_operations["PUBKEY"]["ephemeral_public_key"],
-      "hex"
-    ),
-    Buffer.from(
-      operation.hsm_operations["PUBKEY"]["certificate_attestation"],
+      operation.hsm_operations.PUBKEY.certificate_attestation,
       "base64"
     ),
     MATCHER_SESSION
@@ -247,7 +242,7 @@ test("approving() should handle the approving process with entity=acocunt and MA
 
   expect(mockValidateVaultOperation).toHaveBeenCalledWith(
     VALIDATION_PATH,
-    Buffer.from(operation.hsm_operations["PUBKEY"]["data"], "base64")
+    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64")
   );
 
   expect(sProps.restlay.commitMutation).toHaveBeenCalledWith(

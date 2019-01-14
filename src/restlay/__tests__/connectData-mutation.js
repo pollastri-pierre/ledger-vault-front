@@ -40,10 +40,9 @@ test("restlay.commitMutation correctly redraw with new data", async () => {
   const Animals = connectData(
     ({ restlay, animals }) => (
       (rlay = restlay),
-      "last=" +
-        animals[animals.length - 1].name +
-        "_" +
+      `last=${animals[animals.length - 1].name}_${
         animals[animals.length - 1].age
+      }`
     ),
     {
       queries: { animals: AnimalsQuery }

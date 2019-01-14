@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import colors from "shared/colors";
 import People from "components/icons/thin/People";
@@ -94,23 +94,21 @@ export const NoMembers = withStyles(noMembers)(
     classes: { [$Keys<typeof noMembers>]: string },
     label: *,
     info: *
-  }) => {
-    return (
-      <div className={classes.base}>
-        <People
-          color="#cccccc"
-          style={{
-            height: 29,
-            display: "block",
-            margin: "auto",
-            marginBottom: 21
-          }}
-        />
-        <div className={classes.label}>{label}</div>
-        <div className={classes.info}>{info}</div>
-      </div>
-    );
-  }
+  }) => (
+    <div className={classes.base}>
+      <People
+        color="#cccccc"
+        style={{
+          height: 29,
+          display: "block",
+          margin: "auto",
+          marginBottom: 21
+        }}
+      />
+      <div className={classes.label}>{label}</div>
+      <div className={classes.info}>{info}</div>
+    </div>
+  )
 );
 const listItem = {
   base: {
@@ -201,15 +199,11 @@ export const Step = withStyles(step)(
     label: string,
     active: boolean,
     className?: string
-  }) => {
-    return (
-      <div
-        className={cx(classes.base, className, { [classes.active]: active })}
-      >
-        {label}
-      </div>
-    );
-  }
+  }) => (
+    <div className={cx(classes.base, className, { [classes.active]: active })}>
+      {label}
+    </div>
+  )
 );
 
 export const ListItem = withStyles(listItem)(
@@ -221,14 +215,12 @@ export const ListItem = withStyles(listItem)(
     children: React$Node,
     number?: number,
     classes: { [$Keys<typeof listItem>]: string }
-  }) => {
-    return (
-      <li className={classes.base}>
-        {number && <span className={classes.number}>{number}.</span>}
-        <span>{children}</span>
-      </li>
-    );
-  }
+  }) => (
+    <li className={classes.base}>
+      {number && <span className={classes.number}>{number}.</span>}
+      <span>{children}</span>
+    </li>
+  )
 );
 
 const list = {
@@ -246,9 +238,7 @@ export const List = withStyles(list)(
   }: {
     children: React$Node,
     classes: { [$Keys<typeof list>]: string }
-  }) => {
-    return <ul className={classes.base}>{children}</ul>;
-  }
+  }) => <ul className={classes.base}>{children}</ul>
 );
 
 const title = {
@@ -268,9 +258,7 @@ export const Title = withStyles(title)(
   }: {
     children: React$Node,
     classes: { [$Keys<typeof title>]: string }
-  }) => {
-    return <h2 className={classes.base}>{children}</h2>;
-  }
+  }) => <h2 className={classes.base}>{children}</h2>
 );
 
 const introduction = {
@@ -290,9 +278,7 @@ export const Introduction = withStyles(introduction)(
   }: {
     children: React$Node,
     classes: { [$Keys<typeof introduction>]: string }
-  }) => {
-    return <p className={classes.base}>{children}</p>;
-  }
+  }) => <p className={classes.base}>{children}</p>
 );
 
 const subtitle = {
@@ -314,9 +300,7 @@ export const SubTitle = withStyles(subtitle)(
     classes: { [$Keys<typeof subtitle>]: string },
     children: React$Node,
     className?: string
-  }) => {
-    return <span className={cx(classes.base, className)}>{children}</span>;
-  }
+  }) => <span className={cx(classes.base, className)}>{children}</span>
 );
 
 const toContinue = {
@@ -332,9 +316,7 @@ export const ToContinue = withStyles(toContinue)(
   }: {
     classes: { [$Keys<typeof subtitle>]: string },
     children: React$Node
-  }) => {
-    return <span className={classes.base}>{children}</span>;
-  }
+  }) => <span className={classes.base}>{children}</span>
 );
 
 export const Awaiting = withStyles({
@@ -344,10 +326,8 @@ export const Awaiting = withStyles({
     fontSize: 11,
     textTransform: "uppercase"
   }
-})(({ classes, device }) => {
-  return (
-    <span className={classes.base}>
-      awaiting {device ? "device" : "server"}...
-    </span>
-  );
-});
+})(({ classes, device }) => (
+  <span className={classes.base}>
+    awaiting {device ? "device" : "server"}...
+  </span>
+));

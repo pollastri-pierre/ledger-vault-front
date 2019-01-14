@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Account } from "data/types";
@@ -14,7 +14,9 @@ type Response = Account;
 
 export default class ApproveAccountMutation extends Mutation<Input, Response> {
   uri = `/accounts/${this.props.accountId}/approve`;
+
   method = "POST";
+
   responseSchema = schema.Account;
 
   getSuccessNotification() {

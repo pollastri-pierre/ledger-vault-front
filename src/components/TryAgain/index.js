@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import errorFormatter from "formatters/error";
 import cx from "classnames";
@@ -34,10 +34,13 @@ class TryAgain extends Component<
   state = {
     pending: false
   };
+
   _unmounted = false;
+
   componentWillUnmount() {
     this._unmounted = true;
   }
+
   onclick = (e: Event) => {
     e.preventDefault();
     const { action } = this.props;
@@ -51,6 +54,7 @@ class TryAgain extends Component<
         this.setState({ pending: false });
       });
   };
+
   render() {
     const { pending } = this.state;
     const { error, classes } = this.props;

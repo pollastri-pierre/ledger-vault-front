@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
 import { translate } from "react-i18next";

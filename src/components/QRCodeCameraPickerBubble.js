@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import Camera from "./icons/full/Camera";
 import PopBubble from "./utils/PopBubble";
@@ -21,22 +21,28 @@ export default class QRCodeCameraPickerBubble extends Component<
   state = {
     isOpen: false
   };
+
   ref: ?HTMLElement;
+
   open = () => {
     this.setState({ isOpen: true });
   };
+
   close = () => {
     this.setState({ isOpen: false });
   };
+
   onRef = (ref: ?HTMLElement) => {
     this.ref = ref;
   };
+
   onPick = (result: string) => {
     this.close();
     const split = result.split(":");
     // remove the "currency:" part of "currency:hash" coming from some coins/standard
     this.props.onPick(split[1] ? split[1] : split[0]);
   };
+
   render() {
     const { isOpen } = this.state;
     return (

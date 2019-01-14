@@ -25,7 +25,7 @@ export function mixinHoverSelected(color: string, left: string) {
       height: "26px",
       display: "block",
       position: "absolute",
-      left: left,
+      left,
       opacity: "0",
       bottom: "calc(50% - 13px)",
       transition: "opacity .2s ease"

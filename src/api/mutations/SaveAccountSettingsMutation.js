@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import type { Account, Unit } from "data/types";
 import { success, error } from "formatters/notification";
@@ -10,6 +10,7 @@ type Res = *;
 
 export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   method = "PUT";
+
   uri = `/accounts/${this.props.account.id}/settings`;
 
   responseSchema = schema.Account;
@@ -23,7 +24,7 @@ export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
   }
 
   getBody() {
-    const { account, ...rest } = this.props; //eslint-disable-line no-unused-vars
+    const { account, ...rest } = this.props; // eslint-disable-line no-unused-vars
     return { ...rest };
   }
 }

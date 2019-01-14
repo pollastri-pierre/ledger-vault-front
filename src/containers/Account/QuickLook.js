@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Unit } from "data/types";
 import LineChart from "components/LineChart";
@@ -15,10 +15,8 @@ import type {
 type Filter = $Keys<Balance>;
 
 type Props = {
-  accountId: string,
   balance: Balance,
   currencyUnit: Unit,
-  range: Range,
   currencyColor: string,
   filter: Filter
 };
@@ -40,9 +38,9 @@ class Quicklook extends Component<Props, State> {
               key={filter}
               data={selectedBalance}
               color={currencyColor}
-              formatTooltip={(amount: number): string => {
-                return `${currencyUnit.code} ${amount} `;
-              }}
+              formatTooltip={(amount: number): string =>
+                `${currencyUnit.code} ${amount} `
+              }
             />
           </div>
         </div>

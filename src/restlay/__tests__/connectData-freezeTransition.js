@@ -23,6 +23,7 @@ test("freezeTransition=true should not render a pending step", async () => {
       UNSAFE_componentWillMount() {
         node = this;
       }
+
       render() {
         renderCount++;
         return null;

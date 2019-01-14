@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { withRouter } from "react-router";
 import colors from "shared/colors";
@@ -99,7 +99,6 @@ const styles = {
 
 class RowT extends Component<{
   cell: Cell,
-  index: number,
   children: React$Node,
   classes: Object,
   classes: Object,
@@ -108,6 +107,7 @@ class RowT extends Component<{
   open = () => {
     this.props.openAccount(this.props.cell.account.id);
   };
+
   render() {
     const { children, classes } = this.props;
     return (
@@ -133,8 +133,9 @@ class DataTableAccount extends Component<Props, *> {
   state = {
     columns: COLS.filter(c => this.props.columnIds.includes(c.className))
   };
+
   openAccount = (id: string) => {
-    let orgaName = location.pathname.split("/")[1];
+    const orgaName = location.pathname.split("/")[1];
     this.props.history.push(`/${orgaName}/account/${id}`);
   };
 

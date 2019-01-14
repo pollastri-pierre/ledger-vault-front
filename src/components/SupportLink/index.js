@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";

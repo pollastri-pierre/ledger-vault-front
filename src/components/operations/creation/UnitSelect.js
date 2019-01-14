@@ -4,8 +4,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import cx from "classnames";
 import type { Unit } from "data/types";
-import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 import { withStyles } from "@material-ui/core/styles";
+import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 
 const styles = {
   select: {
@@ -22,13 +22,11 @@ class UnitSelect extends Component<{
   onChange: number => void,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
-  renderValue = (index: number) => {
-    return (
-      <span style={{ fontSize: 21, lineHeight: "22px" }}>
-        {this.props.units[index].code}
-      </span>
-    );
-  };
+  renderValue = (index: number) => (
+    <span style={{ fontSize: 21, lineHeight: "22px" }}>
+      {this.props.units[index].code}
+    </span>
+  );
 
   onChange = (e: *) => {
     this.props.onChange(Number(e.target.value));
@@ -54,7 +52,7 @@ class UnitSelect extends Component<{
           <MenuItem
             disableRipple
             value={i}
-            key={i}
+            key={i} // eslint-disable-line react/no-array-index-key
             className={classes.menu}
             data-test="unit-select-values"
           >

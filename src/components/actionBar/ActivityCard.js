@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
 import { translate } from "react-i18next";
 import type { Translate } from "data/types";
@@ -8,13 +8,13 @@ import ActivityQuery from "api/queries/ActivityQuery";
 import React, { Component } from "react";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
-import ActivityList from "../ActivityList";
-import Bell from "../icons/full/Bell";
-import PopBubble from "../utils/PopBubble";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import io from "socket.io-client";
+import PopBubble from "../utils/PopBubble";
+import Bell from "../icons/full/Bell";
+import ActivityList from "../ActivityList";
 
 const styles = {
   base: {
@@ -48,7 +48,7 @@ const styles = {
     height: 10,
     borderRadius: "50%",
     position: "absolute",
-    border: "2px solid " + colors.night,
+    border: `2px solid ${colors.night}`,
     top: 5,
     right: 11
   }
@@ -59,7 +59,7 @@ class ActivityCard extends Component<
     activities?: *,
     onNewActivity: Function,
     restlay?: RestlayEnvironment,
-    loading: boolean,
+    loading?: boolean,
     t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *
@@ -71,24 +71,23 @@ class ActivityCard extends Component<
   };
 
   componentDidMount() {
-    const url = process.env["NOTIFICATION_URL"] || "/";
-    const path = process.env["NOTIFICATION_PATH"] || "/notification/socket.io";
+    const url = process.env.NOTIFICATION_URL || "/";
+    const path = process.env.NOTIFICATION_PATH || "/notification/socket.io";
     const socket = io.connect(
       url,
-      { path: path }
+      { path }
     );
     const myAuthToken = getLocalStorageToken();
-    let self = this;
-    socket.on("connect", function() {
+    socket.on("connect", () => {
       socket.emit("authenticate", {
         token: myAuthToken,
-        orga: self.props.match.params.orga_name
+        orga: this.props.match.params.orga_name
       });
     });
-    socket.on(self.props.match.params.orga_name + "/admin", function() {
-      //FIXME why is it fired twice ??
-      if (self.props.onNewActivity && self.props.restlay) {
-        self.props.restlay.fetchQuery(new ActivityQuery());
+    socket.on(`${this.props.match.params.orga_name}/admin`, () => {
+      // FIXME why is it fired twice ??
+      if (this.props.onNewActivity && this.props.restlay) {
+        this.props.restlay.fetchQuery(new ActivityQuery());
       }
     });
   }
@@ -108,10 +107,11 @@ class ActivityCard extends Component<
   };
 
   onClickActivityCard = (/* event: * */) => {
-    this.setState({
-      bubbleOpened: !this.state.bubbleOpened
-    });
+    this.setState(state => ({
+      bubbleOpened: !state.bubbleOpened
+    }));
   };
+
   markAsSeenRequest = async business_action_ids => {
     const { restlay } = this.props;
     if (restlay) {
@@ -142,9 +142,9 @@ class ActivityCard extends Component<
         )
       : 0;
     activities &&
-      activities.sort((a, b) => {
-        return new Date(b.created_on) - new Date(a.created_on);
-      });
+      activities.sort(
+        (a, b) => new Date(b.created_on) - new Date(a.created_on)
+      );
     return (
       <span className={classes.clickable}>
         <div
@@ -188,7 +188,7 @@ class ActivityCard extends Component<
 const RenderLoading = withStyles(styles)(
   translate()(({ classes, match, ...props }) => (
     <ActivityCard
-      loading={true}
+      loading
       classes={classes}
       match={match}
       onNewActivity={() => ({})}

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import classnames from "classnames";
 import colors from "shared/colors";
@@ -8,7 +8,7 @@ type Props = {
   tabs: string[],
   onChange: Function,
   selected: number,
-  theme: "inline" | "header",
+  theme?: "inline" | "header",
   classes: Object
 };
 
@@ -56,23 +56,22 @@ class SelectTab extends Component<Props, {}> {
   static defaultProps = {
     theme: "header"
   };
+
   render() {
     const { tabs, onChange, selected, theme, classes } = this.props;
     return (
       <div className={classnames(classes.base, classes[theme])}>
-        {tabs.map((elem, i) => {
-          return (
-            <div
-              className={classnames(classes.tab, {
-                [classes.selected]: i === selected
-              })}
-              onClick={() => onChange(i)}
-              key={i}
-            >
-              {elem}
-            </div>
-          );
-        })}
+        {tabs.map((elem, i) => (
+          <div
+            className={classnames(classes.tab, {
+              [classes.selected]: i === selected
+            })}
+            onClick={() => onChange(i)}
+            key={i} // eslint-disable-line react/no-array-index-key
+          >
+            {elem}
+          </div>
+        ))}
       </div>
     );
   }

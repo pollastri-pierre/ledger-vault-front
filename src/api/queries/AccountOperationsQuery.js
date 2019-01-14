@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Operation } from "data/types";
@@ -12,6 +12,7 @@ type Node = Operation;
 // This API is paginated, refer to ConnectionQuery documentation
 export default class AccountOperationsQuery extends ConnectionQuery<In, Node> {
   uri = `/accounts/${this.props.accountId}/operations`;
+
   nodeSchema = schema.Operation;
 
   getPaginationURLParams(first?: number, after?: string): Object {

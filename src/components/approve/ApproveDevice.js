@@ -1,9 +1,9 @@
-//@flow
+// @flow
 import React from "react";
-import { DialogButton } from "../";
-import { PlugIcon } from "../icons";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
+import { DialogButton } from "..";
+import { PlugIcon } from "../icons";
 
 const styles = {
   base: {

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import connectData from "restlay/connectData";
@@ -8,16 +8,11 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import EditProfile from "components/EditProfile";
 import type { Member } from "data/types";
 
-class ProfileEditModal extends Component<
-  {
-    profile: Member,
-    restlay: *,
-    eistory: *,
-    close: Function,
-    classes: Object
-  },
-  *
-> {
+class ProfileEditModal extends Component<{
+  profile: Member,
+  restlay: *,
+  close: Function
+}> {
   save = data =>
     this.props.restlay
       .commitMutation(
@@ -43,13 +38,11 @@ class ProfileEditModal extends Component<
   }
 }
 
-const RenderLoading = () => {
-  return (
-    <div style={{ width: "520px", height: "320px" }}>
-      <SpinnerCard />
-    </div>
-  );
-};
+const RenderLoading = () => (
+  <div style={{ width: "520px", height: "320px" }}>
+    <SpinnerCard />
+  </div>
+);
 
 export default withRouter(
   connectData(ProfileEditModal, {

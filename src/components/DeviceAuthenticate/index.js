@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
@@ -45,6 +45,7 @@ class DeviceAuthenticate extends Component<Props, State> {
   state = {
     step: 0
   };
+
   componentDidMount() {
     _isMounted = true;
     this.start();
@@ -81,11 +82,10 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         const data = await network(url, "GET");
 
-        let challenge, key_handle, entity_id;
-        challenge = data["challenge"];
-        key_handle = data["key_handle"];
-        entity_id =
-          type === "accounts" ? data["account_id"] : data["operation_id"];
+        const challenge = data.challenge;
+        const key_handle = data.key_handle;
+        const entity_id =
+          type === "accounts" ? data.account_id : data.operation_id;
 
         this.setState({ step: 1 });
 
@@ -101,7 +101,7 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         this.setState({ step: 2 });
 
-        let urlPost =
+        const urlPost =
           type === "accounts" && account_id
             ? `/${type}/${account_id}/authentications/authenticate`
             : `/${type}/authentications/authenticate`;

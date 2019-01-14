@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import Animated from "animated/lib/targets/react-dom";
 
@@ -10,6 +10,7 @@ export class GlobalLoadingRendering extends Component<{}> {
     inputRange: [0, 1],
     outputRange: ["0%", "100%"]
   });
+
   render() {
     return (
       <Animated.div
@@ -43,12 +44,15 @@ export function load() {
 
 export default class GlobalLoading extends Component<*> {
   unload: Function;
+
   componentDidMount() {
     this.unload = load();
   }
+
   componentWillUnmount() {
     this.unload();
   }
+
   render() {
     return null;
   }

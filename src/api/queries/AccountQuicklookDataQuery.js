@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Query from "restlay/Query";
 
 export type Range = "year" | "month" | "week" | "day";
@@ -29,5 +29,6 @@ export default class AccountQuicklookDataQuery extends Query<Input, Response> {
   uri = `/accounts/${
     this.props.accountId
   }/quicklook?by=${this.props.range.toUpperCase()}`;
+
   cacheMaxAge = 30;
 }

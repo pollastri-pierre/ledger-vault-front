@@ -1,15 +1,15 @@
-//@flow
+// @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 
-import InfoModal from "../../InfoModal";
 import { translate, Interpolate } from "react-i18next";
-import DialogButton from "../../buttons/DialogButton";
 import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
-import InputTextWithUnity from "../../InputTextWithUnity";
 import type { Member, Translate } from "data/types";
 import modals from "shared/modals";
+import InputTextWithUnity from "../../InputTextWithUnity";
+import DialogButton from "../../buttons/DialogButton";
+import InfoModal from "../../InfoModal";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddMessage: (title, content, type) =>

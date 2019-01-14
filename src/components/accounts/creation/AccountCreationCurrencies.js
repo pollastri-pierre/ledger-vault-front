@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 import React, { PureComponent, Fragment } from "react";
 import { Trans, translate } from "react-i18next";
@@ -42,13 +42,10 @@ const styles = {
 const findParentAccountInAccounts = (
   parentAccount: ?ParentAccount,
   ethAccounts: Account[]
-) => {
-  return (
-    ethAccounts.find(a => {
-      return parentAccount && parentAccount.id && a.id === parentAccount.id;
-    }) || null
-  );
-};
+) =>
+  ethAccounts.find(
+    a => parentAccount && parentAccount.id && a.id === parentAccount.id
+  ) || null;
 
 type Props = {
   accountCreationState: AccountCreationState,

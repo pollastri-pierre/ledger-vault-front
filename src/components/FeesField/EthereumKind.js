@@ -67,6 +67,7 @@ class FeesFieldEthereumKind extends PureComponent<
   componentWillUnmount() {
     this._unmounted = true;
   }
+
   async componentDidUpdate(prevProps) {
     if (
       prevProps.transaction.gasLimit !== this.props.transaction.gasLimit ||
@@ -75,6 +76,7 @@ class FeesFieldEthereumKind extends PureComponent<
       this.loadFees();
     }
   }
+
   _unmounted = false;
 
   async loadFees() {
@@ -83,6 +85,7 @@ class FeesFieldEthereumKind extends PureComponent<
     if (this._unmounted) return;
     this.setState({ totalFees });
   }
+
   async loadGasPrice() {
     // TODO this is basically A MOCK, we currently don't have endpoint to fetch it
     // we have an endpoint but no gate implementation to facilitate http call
@@ -104,13 +107,14 @@ class FeesFieldEthereumKind extends PureComponent<
   createMutation = field => (e: SyntheticEvent<HTMLInputElement>) => {
     const { transaction, onChangeTransaction } = this.props;
     const { value } = e.currentTarget;
-    onChangeTransaction({ ...transaction, [field]: parseInt(value) });
+    onChangeTransaction({ ...transaction, [field]: parseInt(value, 10) });
   };
 
   onGasPriceChange = (gasPrice: number) => {
     const { transaction, onChangeTransaction } = this.props;
     onChangeTransaction({ ...transaction, gasPrice });
   };
+
   onGasLimitChange = this.createMutation("gasLimit");
 
   render() {

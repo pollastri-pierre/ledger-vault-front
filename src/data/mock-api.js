@@ -1,7 +1,7 @@
 import URL from "url";
 import findIndex from "lodash/findIndex";
 import { denormalize } from "normalizr-gre";
-import mockEntities, { genBalance } from "./mock-entities.js";
+import mockEntities, { genBalance } from "./mock-entities";
 import schema from "./schema";
 
 const keywordsMatchesOperation = (keywords, op, acc) =>
@@ -10,8 +10,7 @@ const keywordsMatchesOperation = (keywords, op, acc) =>
 const mockSync = (uri, method, body) => {
   const q = URL.parse(uri, true);
   if (method === "POST") {
-    let m;
-    m = /^\/accounts\/([^/]+)\/settings$/.exec(uri);
+    const m = /^\/accounts\/([^/]+)\/settings$/.exec(uri);
     if (m) {
       const account = mockEntities.accounts[m[1]];
       if (!body) throw new Error("invalid body");
@@ -24,9 +23,8 @@ const mockSync = (uri, method, body) => {
         account.name = body.name;
         account.settings = body.settings;
         return accountObj;
-      } else {
-        throw new Error("Account Not Found");
       }
+      throw new Error("Account Not Found");
     }
     // switch (uri) {
     //   case "/organization/account":
@@ -125,9 +123,8 @@ const mockSync = (uri, method, body) => {
           mockEntities
         );
         return { operation, account };
-      } else {
-        throw new Error("Operation Not Found");
       }
+      throw new Error("Operation Not Found");
     }
 
     m = q && q.pathname && /^\/valid-address\/(.+)/.exec(q.pathname);
@@ -137,19 +134,20 @@ const mockSync = (uri, method, body) => {
         // fake mock address validation
         const valid = address.length > 10;
         return { valid };
-      } else {
-        throw new Error("missing address in query param");
       }
+      throw new Error("missing address in query param");
     }
 
     m = q && q.pathname && /^\/search\/operations$/.exec(q.pathname);
     if (m) {
       const operations = Object.keys(mockEntities.operations);
+      /* eslint-disable prefer-const */
       let { keywords, currencyName, accountId, first, after } = {
         first: 50,
         after: null,
         ...q.query
       };
+      /* eslint-enable prefer-const */
       first = Math.min(first, 100); // server is free to maximize the count number
       const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
       let start = 0;
@@ -163,9 +161,9 @@ const mockSync = (uri, method, body) => {
         );
       });
       if (after !== null) {
-        const i = findIndex(opKeys, k => "C_" + k === after);
+        const i = findIndex(opKeys, k => `C_${k}` === after);
         if (i === -1) {
-          throw new Error("after cursor not found '" + after + "'");
+          throw new Error(`after cursor not found '${after}'`);
         }
         start = i + 1;
       }
@@ -181,7 +179,7 @@ const mockSync = (uri, method, body) => {
     if (m) {
       const account = mockEntities.accounts[m[1]];
       if (account) {
-        let { first, after } = { first: 50, after: null, ...q.query };
+        let { first, after } = { first: 50, after: null, ...q.query }; // eslint-disable-line prefer-const
         first = Math.min(first, 100); // server is free to maximize the count number
         const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
         let start = 0;
@@ -189,9 +187,9 @@ const mockSync = (uri, method, body) => {
           key => mockEntities.operations[key].account_id === account.id
         );
         if (after !== null) {
-          const i = findIndex(opKeys, k => "C_" + k === after);
+          const i = findIndex(opKeys, k => `C_${k}` === after);
           if (i === -1) {
-            throw new Error("after cursor not found '" + after + "'");
+            throw new Error(`after cursor not found '${after}'`);
           }
           start = i + 1;
         }
@@ -201,9 +199,8 @@ const mockSync = (uri, method, body) => {
         }));
         const hasNextPage = opKeys.length > start + first;
         return { edges, pageInfo: { hasNextPage } };
-      } else {
-        throw new Error("Account Not Found");
       }
+      throw new Error("Account Not Found");
     }
 
     m = /^\/calculate-fee\/([^/]+)\/([^/]+)$/.exec(uri);
@@ -383,12 +380,7 @@ export default (uri, init) => {
   if (mockRes) {
     return delay(300 + 800 * Math.random())
       .then(() => {
-        console.warn(
-          "mock: " + method + " " + uri,
-          body || "",
-          "\n=>",
-          mockRes
-        );
+        console.warn(`mock: ${method} ${uri}`, body || "", "\n=>", mockRes);
         // if (Math.random() < 0.3) throw new Error("MOCK_HTTP_FAILURE");
         return {
           status: 200,
@@ -396,10 +388,9 @@ export default (uri, init) => {
         };
       })
       .catch(e => {
-        console.warn("mock: " + method + " " + uri + " FAILED", e);
+        console.warn(`mock: ${method} ${uri} FAILED`, e);
         throw e;
       });
-  } else {
-    return null;
   }
+  return null;
 };

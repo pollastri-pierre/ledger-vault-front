@@ -1,10 +1,10 @@
-//@flow
+// @flow
 import React from "react";
 import cx from "classnames";
 import type { Translate } from "data/types";
 import { translate, Interpolate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
-import Arrow from "../../components/icons/full/ArrowDown.js";
+import Arrow from "../../components/icons/full/ArrowDown";
 
 const styles = {
   base: { marginBottom: 40 },
@@ -65,51 +65,49 @@ const ApprovalSlider = ({
   total: number,
   onChange: number => void,
   t: Translate
-}) => {
-  return (
-    <div className={classes.base}>
-      <div className={classes.flex}>
-        <span className={classes.bold}>
-          <Interpolate
-            i18nKey="onboarding:administrators_scheme.nb_required"
-            count={number}
-          />
-        </span>
-        <span className={classes.out}>
-          <Interpolate
-            i18nKey="onboarding:administrators_scheme.out_of"
-            total={total}
-          />
-        </span>
-      </div>
-      <div className={classes.bars}>
-        {Array(total)
-          .fill()
-          .map((o, i) => {
-            const width = `calc(${100 / total}% - 5px)`;
-            return (
-              <div
-                key={i}
-                className={cx(classes.bar, {
-                  [classes.barSelected]: i < number
-                })}
-                style={{ width: width }}
-              />
-            );
-          })}
-      </div>
-      <div className={classes.flex}>
-        <span className={classes.require} onClick={() => onChange(number - 1)}>
-          <Arrow className={classes.left} />
-          {t("onboarding:administrators_scheme.require_less")}
-        </span>
-        <span className={classes.require} onClick={() => onChange(number + 1)}>
-          {t("onboarding:administrators_scheme.require_more")}
-          <Arrow className={classes.right} />
-        </span>
-      </div>
+}) => (
+  <div className={classes.base}>
+    <div className={classes.flex}>
+      <span className={classes.bold}>
+        <Interpolate
+          i18nKey="onboarding:administrators_scheme.nb_required"
+          count={number}
+        />
+      </span>
+      <span className={classes.out}>
+        <Interpolate
+          i18nKey="onboarding:administrators_scheme.out_of"
+          total={total}
+        />
+      </span>
     </div>
-  );
-};
+    <div className={classes.bars}>
+      {Array(total)
+        .fill()
+        .map((o, i) => {
+          const width = `calc(${100 / total}% - 5px)`;
+          return (
+            <div
+              key={i} // eslint-disable-line react/no-array-index-key
+              className={cx(classes.bar, {
+                [classes.barSelected]: i < number
+              })}
+              style={{ width }}
+            />
+          );
+        })}
+    </div>
+    <div className={classes.flex}>
+      <span className={classes.require} onClick={() => onChange(number - 1)}>
+        <Arrow className={classes.left} />
+        {t("onboarding:administrators_scheme.require_less")}
+      </span>
+      <span className={classes.require} onClick={() => onChange(number + 1)}>
+        {t("onboarding:administrators_scheme.require_more")}
+        <Arrow className={classes.right} />
+      </span>
+    </div>
+  </div>
+);
 
 export default withStyles(styles)(translate()(ApprovalSlider));

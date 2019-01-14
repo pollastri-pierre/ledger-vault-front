@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import CurrencyUnitValue from "./CurrencyUnitValue";
 import fiatUnits from "constants/fiatUnits";
 import type { TransactionType } from "data/types";
+import CurrencyUnitValue from "./CurrencyUnitValue";
 
 type Props = {
   fiat: string,
@@ -18,7 +18,7 @@ type Props = {
 class CurrencyFiatValue extends Component<Props> {
   render() {
     const { fiat, value, ...rest } = this.props;
-    if (!(fiat in fiatUnits)) throw new Error("fiat '" + fiat + "' not found");
+    if (!(fiat in fiatUnits)) throw new Error(`fiat '${fiat}' not found`);
     return <CurrencyUnitValue {...rest} value={value} unit={fiatUnits[fiat]} />;
   }
 }

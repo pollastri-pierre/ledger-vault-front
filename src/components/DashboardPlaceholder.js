@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
@@ -67,7 +67,7 @@ const DashboardPlaceholder = ({
       <h3>{<Trans i18nKey="dashboard:empty_state.title" />}</h3>
       <p>
         <Trans i18nKey="dashboard:empty_state.click" />
-        <Link to={`dashboard/new-account`} className={classes.link}>
+        <Link to="dashboard/new-account" className={classes.link}>
           <Plus className={cx(classes.icon, "test-new-account-dashboard")} />
           <span>
             <Trans i18nKey="dashboard:empty_state.account" />

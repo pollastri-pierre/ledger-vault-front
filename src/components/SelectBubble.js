@@ -20,7 +20,7 @@ class SelectBubble extends Component<{
       renderValue,
       ...props
     } = this.props;
-    let renderValueProps = value => (
+    const renderValueProps = value => (
       <span style={{ color }}>
         {arrowDownLeft ? (
           <ArrowDown width={11} style={{ marginRight: 10 }} />

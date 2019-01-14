@@ -1,5 +1,5 @@
-import { merge } from "../ImmutableUtils";
 import isEqual from "lodash/isEqual";
+import { merge } from "../ImmutableUtils";
 
 test("merge do the merge work", () => {
   expect(merge({ foo: 42 }, null)).toMatchObject({ foo: 42 });

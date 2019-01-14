@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import Activity from "../Activity";

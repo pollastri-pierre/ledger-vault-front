@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Translate } from "data/types";
 import { translate, Trans } from "react-i18next";
@@ -30,10 +30,12 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
     super(props);
     this.state = { step: 1 };
   }
+
   componentDidMount() {
     _isMounted = true;
     this.start();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
@@ -49,9 +51,9 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
           chan => chan.admin_uid === pubKey
         );
         if (channel) {
-          const ephemeral_public_key = channel["ephemeral_public_key"];
-          const certificate = channel["attestation_certificate"];
-          const partition_blob = channel["partition_blob"];
+          const ephemeral_public_key = channel.ephemeral_public_key;
+          const certificate = channel.attestation_certificate;
+          const partition_blob = channel.partition_blob;
           // const certificate_device = await device.getAttestationCertificate();
 
           await device.openSession(
@@ -88,6 +90,7 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
       }
     }
   };
+
   render() {
     const { t } = this.props;
 

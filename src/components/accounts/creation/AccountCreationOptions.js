@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { translate } from "react-i18next";
 import React, { Fragment, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import classNames from "classnames";
 import Select from "@material-ui/core/Select";

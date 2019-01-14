@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import classnames from "classnames";
@@ -12,7 +12,7 @@ const styles = {
   activity: {
     paddingTop: 17,
     paddingBottom: 17,
-    borderBottom: "1px solid " + colors.argile
+    borderBottom: `1px solid ${colors.argile}`
   },
   uppercase: {
     textTransform: "uppercase"
@@ -71,17 +71,14 @@ class ActivityLine extends Component<
   {
     activity: ActivityCommon,
     classes: { [_: $Keys<typeof styles>]: string },
-    match: *,
     children: *
   },
   *
 > {
-  getSeenClass = seen => {
-    return seen ? "seen" : "";
-  };
+  getSeenClass = seen => (seen ? "seen" : "");
 
   componentDidMount() {
-    //this.props.onRef(ReactDOM.findDOMNode(this));
+    // this.props.onRef(ReactDOM.findDOMNode(this));
   }
 
   render() {

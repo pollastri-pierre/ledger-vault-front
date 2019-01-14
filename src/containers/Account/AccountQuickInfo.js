@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { connect } from "react-redux";
 import Card from "components/Card";
 import { toggleAndSelect } from "redux/modules/update-accounts";
@@ -13,12 +13,12 @@ import {
 import Bell from "components/icons/thin/Bell";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
-import { translate, Trans } from "react-i18next";
+import { Trans } from "react-i18next";
 import colors from "shared/colors";
 import EditButton from "components/UpdateAccounts/EditButton";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account, Member, Translate } from "data/types";
+import type { Account, Member } from "data/types";
 import InfoBox from "components/InfoBox";
 
 const row = {
@@ -112,12 +112,10 @@ type Props = {
   account: Account,
   onOpen: (id: number) => void,
   me: Member,
-  match: Object,
-  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string }
 };
 
-/* display only the currency and index if the account needs to be updated*/
+/* display only the currency and index if the account needs to be updated */
 const AccountTitle = ({ account }: { account: Account }) => (
   <div style={{ fontSize: 23 }}>
     {isAccountOutdated(account) ? (
@@ -163,6 +161,7 @@ class AccountQuickInfo extends Component<Props, State> {
       </Fragment>
     );
   };
+
   renderListMember = () => {
     const {
       classes: { modalMembers, modalMembersTitle },
@@ -306,10 +305,8 @@ const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
   onOpen: () => dispatch(toggleAndSelect(ownProps.account))
 });
 export default withStyles(styles)(
-  translate()(
-    connect(
-      null,
-      mapDispatchToProps
-    )(AccountQuickInfo)
-  )
+  connect(
+    null,
+    mapDispatchToProps
+  )(AccountQuickInfo)
 );

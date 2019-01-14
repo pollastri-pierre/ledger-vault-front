@@ -1,5 +1,6 @@
-//@flow
+// @flow
 import React, { Component } from "react";
+
 const className = "modal";
 
 class Modal extends Component<{

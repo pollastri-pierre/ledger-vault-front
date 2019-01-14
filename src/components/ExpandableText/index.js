@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -11,7 +11,7 @@ type Props = {
 class ExpandableText extends Component<Props> {
   render() {
     const { text, className, size, dataTest } = this.props;
-    const visibleText = text.length > size ? text.slice(0, size) + "..." : text;
+    const visibleText = text.length > size ? `${text.slice(0, size)}...` : text;
     return (
       <Tooltip title={text}>
         <span className={className} data-test={dataTest}>

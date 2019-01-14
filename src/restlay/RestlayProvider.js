@@ -9,7 +9,6 @@
 
 import { Component } from "react";
 import PropTypes from "prop-types";
-import type { ContextOverridableOpts } from "./connectData";
 import type Query from "./Query";
 import type ConnectionQuery from "./ConnectionQuery";
 
@@ -21,12 +20,12 @@ export type NetworkF = <T>(
 
 class RestlayProvider extends Component<{
   network: NetworkF,
-  connectDataOptDefaults?: ContextOverridableOpts<*>,
   children: React$Node
 }> {
   static childContextTypes = {
     restlayProvider: PropTypes.object.isRequired
   };
+
   getChildContext() {
     return { restlayProvider: this };
   }
@@ -54,7 +53,7 @@ class RestlayProvider extends Component<{
 
   network = (...props: *) => this.props.network(...props);
 
-  /////////////////
+  // ///////////////
 
   render() {
     const { children } = this.props;

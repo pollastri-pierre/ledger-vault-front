@@ -1,11 +1,11 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import CurrencyAccountValue from "../CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
 import type { Account, TransactionType } from "data/types";
 import OperationTypeIcon from "components/OperationTypeIcon";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 
 const styles = {
   base: {
@@ -56,7 +56,7 @@ class OverviewOperation extends Component<Props, *> {
   render() {
     const { amount, account, classes, operationType } = this.props;
     const isReceive = operationType === "RECEIVE";
-    const erc20Format = account.account_type == "ERC20" ? true : false;
+    const erc20Format = account.account_type === "ERC20";
     return (
       <div className={classes.base}>
         <div>

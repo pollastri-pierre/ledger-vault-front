@@ -1,12 +1,12 @@
-//@flow
+// @flow
 import React from "react";
-import MemberAvatar from "../MemberAvatar";
-import ValidateBadge from "../icons/full/ValidateBadge";
 import ExpandableText from "components/ExpandableText";
-import Question from "../icons/full/Question";
 import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
+import Question from "../icons/full/Question";
+import ValidateBadge from "../icons/full/ValidateBadge";
+import MemberAvatar from "../MemberAvatar";
 
 const styles = {
   base: {

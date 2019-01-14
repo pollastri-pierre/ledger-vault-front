@@ -1,20 +1,18 @@
-//@flow
+// @flow
 import { connect } from "react-redux";
 import cx from "classnames";
 import { translate } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
-import AddMember from "./AddMember";
 import {
   Title,
   Introduction,
   AddUser,
   Careful,
   NoMembers
-} from "components/Onboarding.js";
+} from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
-import Footer from "./Footer";
 import { addMessage } from "redux/modules/alerts";
 import {
   getRegistrationChallenge,
@@ -26,6 +24,8 @@ import {
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Member, Translate } from "data/types";
+import Footer from "./Footer";
+import AddMember from "./AddMember";
 
 const styles = {
   disabled: {
@@ -52,20 +52,18 @@ const MembersList = withStyles(membersList)(
     classes: { [$Keys<typeof membersList>]: string },
     members: Array<Member>,
     editMember: Function
-  }) => {
-    return (
-      <div className={classes.base}>
-        {members.map((member, k) => (
-          <MemberRow
-            key={k}
-            onSelect={() => editMember(member)}
-            editable
-            member={member}
-          />
-        ))}
-      </div>
-    );
-  }
+  }) => (
+    <div className={classes.base}>
+      {members.map((member, k) => (
+        <MemberRow
+          key={k} // eslint-disable-line react/no-array-index-key
+          onSelect={() => editMember(member)}
+          editable
+          member={member}
+        />
+      ))}
+    </div>
+  )
 );
 
 const mapStateToProps = state => ({
@@ -107,6 +105,7 @@ class Registration extends Component<Props, *> {
   editMember = member => {
     this.props.onToggleModalProfile(member);
   };
+
   render() {
     const {
       classes,

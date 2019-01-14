@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import { error } from "formatters/notification";
@@ -15,7 +15,9 @@ export default class MarkActivityAsReadMutation extends Mutation<
   Response
 > {
   uri = `/activity/mark_as_seen`;
+
   method = "POST";
+
   responseSchema = schema.Activity;
 
   // getSuccessNotification() {
@@ -25,6 +27,7 @@ export default class MarkActivityAsReadMutation extends Mutation<
   getErrorNotification(e: Error) {
     return error("activity request", "mark as seen", e);
   }
+
   getBody() {
     return this.props;
   }

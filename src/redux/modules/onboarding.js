@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import network from "network";
 import { addMessage } from "redux/modules/alerts";
 import type { Dispatch } from "redux";
@@ -158,87 +158,80 @@ const initialState = {
   }
 };
 
-export const getState: Function = () => {
-  return async (dispatch: Dispatch<*>) => {
-    const state = await network("/onboarding/state", "GET");
+export const getState: Function = () => async (dispatch: Dispatch<*>) => {
+  const state = await network("/onboarding/state", "GET");
+  dispatch({
+    type: ONBOARDING_STATE,
+    state
+  });
+};
+
+const handleError = (error: Object): Function => (dispatch: Dispatch<*>) => {
+  if (error.json && error.json.name === "WRONG_ONBOARDING_STEP_EXCEPTION") {
+    dispatch(getState());
+  } else if (error.json && error.json.message) {
+    dispatch(addMessage("Error", error.json.message, "error"));
+  }
+};
+
+export const nextState = (data: any) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const onboarding_step = getState().onboarding.state;
+  const dataToSend = data || {};
+  dataToSend.current_step = onboarding_step;
+  try {
+    const next = await network("/onboarding/next", "POST", dataToSend);
     dispatch({
-      type: ONBOARDING_STATE,
-      state
+      type: NEXT_STEP,
+      next
     });
-  };
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
-const handleError = (error: Object): Function => {
-  return (dispatch: Dispatch<*>) => {
-    if (error.json && error.json.name == "WRONG_ONBOARDING_STEP_EXCEPTION") {
-      dispatch(getState());
-    } else if (error.json && error.json.message) {
-      dispatch(addMessage("Error", error.json.message, "error"));
-    }
-  };
+export const previousState = (data: any) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const onboarding_step = getState().onboarding.state;
+  const dataToSend = data || {};
+  dataToSend.current_step = onboarding_step;
+  try {
+    const previous = await network("/onboarding/previous", "POST", dataToSend);
+    dispatch({
+      type: PREVIOUS_STEP,
+      previous
+    });
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
-export const nextState = (data: any) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const onboarding_step = getState()["onboarding"]["state"];
-    let dataToSend = data || {};
-    dataToSend["current_step"] = onboarding_step;
-    try {
-      const next = await network("/onboarding/next", "POST", dataToSend);
-      dispatch({
-        type: NEXT_STEP,
-        next
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-    }
-  };
-};
+export const getChallenge = (onboarding_step: Object) =>
+  network("/onboarding/challenge", "POST", onboarding_step);
 
-export const previousState = (data: any) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const onboarding_step = getState()["onboarding"]["state"];
-    let dataToSend = data || {};
-    dataToSend["current_step"] = onboarding_step;
-    try {
-      const previous = await network(
-        "/onboarding/previous",
-        "POST",
-        dataToSend
-      );
-      dispatch({
-        type: PREVIOUS_STEP,
-        previous
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-    }
-  };
-};
+export const authenticate = (data: any) =>
+  network("/onboarding/authenticate", "POST", data);
 
-export const getChallenge = (onboarding_step: Object) => {
-  return network("/onboarding/challenge", "POST", onboarding_step);
-};
-
-export const authenticate = (data: any) => {
-  return network("/onboarding/authenticate", "POST", data);
-};
-
-export const addSharedOwner = (data: *) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      let dataToSend = data || {};
-      dataToSend["current_step"] = onboarding_step;
-      const sharedOwners = await authenticate(dataToSend);
-      dispatch({
-        type: ONBOARDING_ADD_SHARED_OWNER,
-        sharedOwners
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-    }
-  };
+export const addSharedOwner = (data: *) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = data || {};
+    dataToSend.current_step = onboarding_step;
+    const sharedOwners = await authenticate(dataToSend);
+    dispatch({
+      type: ONBOARDING_ADD_SHARED_OWNER,
+      sharedOwners
+    });
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
 export const toggleDeviceModal = () => ({
@@ -250,239 +243,236 @@ export const toggleMemberModal = (member: any) => ({
   member
 });
 
-export const openWrappingChannel = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      let dataToSend = {};
-      dataToSend["current_step"] = onboarding_step;
-      const wrapping: Wrapping = await getChallenge(dataToSend);
-      dispatch({
-        type: ONBOARDING_WRAPPING_CHANNEL,
-        wrapping
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-      dispatch({
-        type: ONBOARDING_FATAL_ERROR
-      });
-    }
-  };
-};
-
-export const addWrappingKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      const dataToSend = { ...data, current_step: onboarding_step };
-      const add_wrap: Wrapping = await authenticate(dataToSend);
-      dispatch({
-        type: ONBOARDING_ADD_WRAP_KEY,
-        add_wrap
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-    }
-  };
-};
-
-export const getSharedOwnerRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      let dataToSend = {};
-      dataToSend["current_step"] = onboarding_step;
-      const challenge = await getChallenge(dataToSend);
-      dispatch({
-        type: ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE,
-        challenge: challenge.challenge
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-      dispatch({
-        type: ONBOARDING_FATAL_ERROR
-      });
-    }
-  };
-};
-export const getRegistrationChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      let dataToSend = {};
-      dataToSend["current_step"] = onboarding_step;
-      const challenge = await getChallenge(dataToSend);
-      dispatch({
-        type: ONBOARDING_REGISTERING_CHALLENGE,
-        challenge: challenge.challenge
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-      dispatch({
-        type: ONBOARDING_FATAL_ERROR
-      });
-    }
-  };
-};
-
-export const addMember = (data: Admin) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const { registering } = getState()["onboarding"];
-    const admins = registering.admins;
-    const findIndex = admins.findIndex(
-      member => member.pub_key === data.pub_key
-    );
-    if (findIndex > -1) {
-      dispatch(addMessage("Error", "Device already registered", "error"));
-      throw "Already registered";
-    } else {
-      try {
-        const admins = await network("/onboarding/authenticate", "POST", data);
-        dispatch({
-          type: ONBOARDING_ADD_ADMIN,
-          admins: admins
-        });
-      } catch (e) {
-        dispatch(handleError(e));
-      }
-    }
-  };
-};
-
-export const editMember = (data: Admin) => {
-  return async (dispatch: Dispatch<*>) => {
-    await network(`/onboarding/admins/${data.id}`, "PUT", data);
+export const openWrappingChannel = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = {};
+    dataToSend.current_step = onboarding_step;
+    const wrapping: Wrapping = await getChallenge(dataToSend);
     dispatch({
-      type: ONBOARDING_EDIT_MEMBER,
-      admin: data
+      type: ONBOARDING_WRAPPING_CHANNEL,
+      wrapping
     });
-  };
+  } catch (e) {
+    dispatch(handleError(e));
+    dispatch({
+      type: ONBOARDING_FATAL_ERROR
+    });
+  }
 };
 
-export const changeQuorum = (nb: number) => {
-  return {
-    type: ONBOARDING_CHANGE_QUORUM,
-    nb
-  };
+export const addWrappingKey = (data: Blob) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = { ...data, current_step: onboarding_step };
+    const add_wrap: Wrapping = await authenticate(dataToSend);
+    dispatch({
+      type: ONBOARDING_ADD_WRAP_KEY,
+      add_wrap
+    });
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
-export const getSigninChallenge = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const onboarding_step = getState()["onboarding"]["state"];
-    let dataToSend = {};
-    dataToSend["current_step"] = onboarding_step;
+export const getSharedOwnerRegistrationChallenge = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = {};
+    dataToSend.current_step = onboarding_step;
     const challenge = await getChallenge(dataToSend);
     dispatch({
-      type: ONBOARDING_SIGNIN_CHALLENGE,
-      challenge: challenge
+      type: ONBOARDING_SHARED_OWNER_REGISTERING_CHALLENGE,
+      challenge: challenge.challenge
     });
-  };
+  } catch (e) {
+    dispatch(handleError(e));
+    dispatch({
+      type: ONBOARDING_FATAL_ERROR
+    });
+  }
+};
+export const getRegistrationChallenge = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = {};
+    dataToSend.current_step = onboarding_step;
+    const challenge = await getChallenge(dataToSend);
+    dispatch({
+      type: ONBOARDING_REGISTERING_CHALLENGE,
+      challenge: challenge.challenge
+    });
+  } catch (e) {
+    dispatch(handleError(e));
+    dispatch({
+      type: ONBOARDING_FATAL_ERROR
+    });
+  }
 };
 
-export const addSignedIn = (pub_key: string, signature: *) => {
-  return async (dispatch: Dispatch<*>, getState: Function) => {
-    const { signin } = getState()["onboarding"];
-    const admins = signin.admins;
-    const index = admins.findIndex(pkey => pkey === pub_key.toUpperCase());
-
-    if (index > -1) {
-      return dispatch(
-        addMessage(
-          "Error",
-          "This device has already been authenticated",
-          "error"
-        )
-      );
-    } else {
-      const data = {
-        pub_key: pub_key.toUpperCase(),
-        authentication: signature.rawResponse,
-        current_step: getState()["onboarding"]["state"]
-      };
-      const to_dispatch = {
-        pub_key: pub_key.toUpperCase(),
-        authentication: signature.rawResponse
-      };
-
-      await network("/onboarding/authenticate", "POST", data);
-      //delete data['current_step']
-      dispatch({
-        type: ONBOARDING_ADD_SIGNEDIN,
-        data: to_dispatch
-      });
-    }
-  };
-};
-
-export const addAdminValidation = (pub_key: string, signature: *) => {
-  return async (dispatch: Dispatch<*>) => {
+export const addMember = (data: Admin) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const { registering } = getState().onboarding;
+  const admins = registering.admins;
+  const findIndex = admins.findIndex(member => member.pub_key === data.pub_key);
+  if (findIndex > -1) {
+    dispatch(addMessage("Error", "Device already registered", "error"));
+    throw new Error("Already registered");
+  } else {
     try {
-      const data = {
-        pub_key: pub_key.toUpperCase(),
-        signature
-      };
       const admins = await network("/onboarding/authenticate", "POST", data);
       dispatch({
-        type: ONBOARDING_ADD_ADMIN_VALIDATION,
+        type: ONBOARDING_ADD_ADMIN,
         admins
       });
     } catch (e) {
       dispatch(handleError(e));
     }
-  };
+  }
 };
 
-export const openAdminValidationChannel = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const onboarding_step = getState()["onboarding"]["state"];
-    let dataToSend = {};
-    dataToSend["current_step"] = onboarding_step;
-    const channels: * = await getChallenge(dataToSend);
+export const editMember = (data: Admin) => async (dispatch: Dispatch<*>) => {
+  await network(`/onboarding/admins/${data.id}`, "PUT", data);
+  dispatch({
+    type: ONBOARDING_EDIT_MEMBER,
+    admin: data
+  });
+};
+
+export const changeQuorum = (nb: number) => ({
+  type: ONBOARDING_CHANGE_QUORUM,
+  nb
+});
+
+export const getSigninChallenge = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const onboarding_step = getState().onboarding.state;
+  const dataToSend = {};
+  dataToSend.current_step = onboarding_step;
+  const challenge = await getChallenge(dataToSend);
+  dispatch({
+    type: ONBOARDING_SIGNIN_CHALLENGE,
+    challenge
+  });
+};
+
+export const addSignedIn = (pub_key: string, signature: *) => async (
+  dispatch: Dispatch<*>,
+  getState: Function
+) => {
+  const { signin } = getState().onboarding;
+  const admins = signin.admins;
+  const index = admins.findIndex(pkey => pkey === pub_key.toUpperCase());
+
+  if (index > -1) {
+    return dispatch(
+      addMessage("Error", "This device has already been authenticated", "error")
+    );
+  }
+  const data = {
+    pub_key: pub_key.toUpperCase(),
+    authentication: signature.rawResponse,
+    current_step: getState().onboarding.state
+  };
+  const to_dispatch = {
+    pub_key: pub_key.toUpperCase(),
+    authentication: signature.rawResponse
+  };
+
+  await network("/onboarding/authenticate", "POST", data);
+  // delete data['current_step']
+  dispatch({
+    type: ONBOARDING_ADD_SIGNEDIN,
+    data: to_dispatch
+  });
+};
+
+export const addAdminValidation = (pub_key: string, signature: *) => async (
+  dispatch: Dispatch<*>
+) => {
+  try {
+    const data = {
+      pub_key: pub_key.toUpperCase(),
+      signature
+    };
+    const admins = await network("/onboarding/authenticate", "POST", data);
     dispatch({
-      type: ONBOARDING_ADMIN_VALIDATION_CHANNEL,
-      channels
+      type: ONBOARDING_ADD_ADMIN_VALIDATION,
+      admins
     });
-  };
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
-export const openProvisionningChannel = () => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    const onboarding_step = getState()["onboarding"]["state"];
-    let dataToSend = {};
-    dataToSend["current_step"] = onboarding_step;
-    const channels: Wrapping = await getChallenge(dataToSend);
+export const openAdminValidationChannel = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const onboarding_step = getState().onboarding.state;
+  const dataToSend = {};
+  dataToSend.current_step = onboarding_step;
+  const channels: * = await getChallenge(dataToSend);
+  dispatch({
+    type: ONBOARDING_ADMIN_VALIDATION_CHANNEL,
+    channels
+  });
+};
+
+export const openProvisionningChannel = () => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  const onboarding_step = getState().onboarding.state;
+  const dataToSend = {};
+  dataToSend.current_step = onboarding_step;
+  const channels: Wrapping = await getChallenge(dataToSend);
+  dispatch({
+    type: ONBOARDING_MASTERSEED_CHANNEL,
+    channels
+  });
+};
+
+export const addMasterSeedKey = (data: Blob) => async (
+  dispatch: Dispatch<*>,
+  getState: GetState
+) => {
+  try {
+    const onboarding_step = getState().onboarding.state;
+    const dataToSend = { ...data, current_step: onboarding_step };
+    const add_seed = await authenticate(dataToSend);
     dispatch({
-      type: ONBOARDING_MASTERSEED_CHANNEL,
-      channels
+      type: ONBOARDING_ADD_MASTERSEED_KEY,
+      add_seed
     });
-  };
+  } catch (e) {
+    dispatch(handleError(e));
+  }
 };
 
-export const addMasterSeedKey = (data: Blob) => {
-  return async (dispatch: Dispatch<*>, getState: GetState) => {
-    try {
-      const onboarding_step = getState()["onboarding"]["state"];
-      const dataToSend = { ...data, current_step: onboarding_step };
-      const add_seed = await authenticate(dataToSend);
-      dispatch({
-        type: ONBOARDING_ADD_MASTERSEED_KEY,
-        add_seed
-      });
-    } catch (e) {
-      dispatch(handleError(e));
-    }
-  };
-};
-
-export const wipe = () => {
-  return async (dispatch: Dispatch<*>) => {
-    await network("/onboarding/ongoing", "DELETE", {});
-    const state = await network("/onboarding/state", "GET");
-    dispatch({
-      type: ONBOARDING_STATE,
-      state
-    });
-  };
+export const wipe = () => async (dispatch: Dispatch<*>) => {
+  await network("/onboarding/ongoing", "DELETE", {});
+  const state = await network("/onboarding/state", "GET");
+  dispatch({
+    type: ONBOARDING_STATE,
+    state
+  });
 };
 
 const syncNextState = (state: Store, action, next = false) => {
@@ -516,7 +506,7 @@ const syncNextState = (state: Store, action, next = false) => {
       registering_shared_owner: {
         ...state.registering_shared_owner,
         sharedOwners: actionState.shared_owners,
-        challenge: challenge
+        challenge
       }
     };
   }
@@ -530,7 +520,7 @@ const syncNextState = (state: Store, action, next = false) => {
       registering: {
         ...state.registering,
         admins: actionState.admins,
-        challenge: challenge
+        challenge
       }
     };
   }
@@ -706,17 +696,15 @@ export default function reducer(state: Store = initialState, action: Object) {
         }
       };
     case ONBOARDING_EDIT_MEMBER: {
-      const mapFilter = (admins: Admin[], action: *): Admin[] => {
-        return admins.map(
+      const mapFilter = (admins: Admin[], action: *): Admin[] =>
+        admins.map(
           (admin: Admin): Admin => {
             if (admin.pub_key === action.admin.pub_key) {
               return action.admin;
-            } else {
-              return admin;
             }
+            return admin;
           }
         );
-      };
       return {
         ...state,
         registering: {

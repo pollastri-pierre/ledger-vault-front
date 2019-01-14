@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
 import classNames from "classnames";
@@ -46,7 +46,7 @@ class MenuLink extends Component<{
         {({ match }) => (
           <MenuItem
             style={{
-              color: color || "#27d0e2" //default FIXME from theme
+              color: color || "#27d0e2" // default FIXME from theme
             }}
             className={classNames(classes.root, className, {
               [classes.disabled]: disabled

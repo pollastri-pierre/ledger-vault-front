@@ -1,13 +1,8 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import _ from "lodash";
 import connectData from "restlay/connectData";
-import AccountCreationCurrencies from "./AccountCreationCurrencies";
 import { translate } from "react-i18next";
-import AccountCreationOptions from "./AccountCreationOptions";
-import AccountCreationSecurity from "./AccountCreationSecurity";
-import AccountCreationConfirmation from "./AccountCreationConfirmation";
-import { DialogButton } from "../../";
 import type { Translate, Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
@@ -18,6 +13,11 @@ import type {
   State as AccountCreationState,
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
+import { DialogButton } from "../..";
+import AccountCreationConfirmation from "./AccountCreationConfirmation";
+import AccountCreationSecurity from "./AccountCreationSecurity";
+import AccountCreationOptions from "./AccountCreationOptions";
+import AccountCreationCurrencies from "./AccountCreationCurrencies";
 
 type Props = {
   accountCreationState: AccountCreationState,
@@ -28,7 +28,6 @@ type Props = {
   onSelect: Function,
   t: Translate,
   switchInternalModal: Function,
-  restlay: *,
   tabsIndex: number,
   account: *,
   classes: Object
@@ -46,6 +45,7 @@ class MainCreation extends Component<Props> {
   handleChange = (event, value) => {
     this.props.onSelect(value);
   };
+
   render() {
     const {
       accountCreationState,

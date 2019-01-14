@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Member } from "data/types";
@@ -15,7 +15,9 @@ type Response = Member;
 
 export default class SaveProfileMutation extends Mutation<Input, Response> {
   uri = "/organization/members/me";
+
   method = "PUT";
+
   responseSchema = schema.Member;
 
   getSuccessNotification() {

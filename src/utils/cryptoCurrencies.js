@@ -45,9 +45,8 @@ export const listERC20Tokens: () => ERC20Token[] = memoize(
   (): ERC20Token[] => sortBy(rawERC20List, "name")
 );
 
-export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) => {
-  return !!v && "contract_address" in v;
-};
+export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
+  !!v && "contract_address" in v;
 
 export const getCryptoCurrencyById = (id: string) =>
   id === "ethereum_ropsten" ? getCrypto("ethereum_testnet") : getCrypto(id);

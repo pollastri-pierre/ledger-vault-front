@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
@@ -15,7 +15,6 @@ type Props = {
   onFinish: Function,
   onAddMessage: Function,
   challenge: string,
-  toggleCancelOnDevice: Function,
   organization: *,
   keyHandles: Object,
   cancel: Function,
@@ -32,10 +31,12 @@ class SignInDevice extends Component<Props, State> {
     super(props);
     this.state = { step: 1 };
   }
+
   componentDidMount() {
     _isMounted = true;
     this.start();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
@@ -82,6 +83,7 @@ class SignInDevice extends Component<Props, State> {
       }
     }
   };
+
   render() {
     const { t } = this.props;
 

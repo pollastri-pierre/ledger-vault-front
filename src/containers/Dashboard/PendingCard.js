@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
@@ -16,7 +16,6 @@ import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { withStyles } from "@material-ui/core/styles";
 import { getPendingsOperations } from "utils/operations";
-import type { Response as PendingsQueryResponse } from "api/queries/PendingsQuery";
 
 const styles = {
   row: {
@@ -85,7 +84,6 @@ const AccountRow = ({ account }: { account: Account }) => (
 
 class PendingCard extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
-  pendings: PendingsQueryResponse,
   accounts: Account[],
   allAccounts: Account[],
   match: *,
@@ -138,7 +136,7 @@ class PendingCard extends Component<{
           <div data-test="op_list">
             {filtered_operations.map((operation, i) => (
               <OperationRow
-                key={"op_" + i}
+                key={`op_${i}`} // eslint-disable-line react/no-array-index-key
                 operation={operation}
                 account={allAccounts.find(a => a.id === operation.account_id)}
               />
@@ -146,7 +144,7 @@ class PendingCard extends Component<{
           </div>
           <div data-test="ac_list">
             {accounts.map((account, i) => (
-              <AccountRow key={"ac_" + i} account={account} />
+              <AccountRow key={`ac_${i}`} account={account} /> // eslint-disable-line react/no-array-index-key
             ))}
           </div>
         </div>

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import emailValidator from "email-validator";
@@ -16,9 +16,7 @@ import type { Member, Translate } from "data/types";
 type Validator = (value: string) => boolean;
 
 const hasMoreThanAscii = str =>
-  str.split("").some(function(char) {
-    return char.charCodeAt(0) > 127;
-  });
+  str.split("").some(char => char.charCodeAt(0) > 127);
 
 const validateName: Validator = name => name !== "" && !hasMoreThanAscii(name);
 
@@ -33,13 +31,11 @@ const validators: { [_: string]: Validator } = {
   picture: _ => true
 };
 
-const sanitize = (object: Object): Object => {
-  return {
-    email: object.email.value,
-    username: object.username.value,
-    picture: object.picture.value
-  };
-};
+const sanitize = (object: Object): Object => ({
+  email: object.email.value,
+  username: object.username.value,
+  picture: object.picture.value
+});
 
 const errorDesc = {
   base: {
@@ -131,10 +127,10 @@ class ProfileEditModal extends Component<
   onDrop = (files: Array<File>): mixed => {
     if (files.length) {
       const canvas = document.createElement("canvas");
-      canvas.width = canvas.height = 160;
+      canvas.width = canvas.height = 160; // eslint-disable-line no-multi-assign
       const ctx = canvas.getContext("2d");
       const img = new Image();
-      //@$FlowFixMe
+      // @$FlowFixMe
       img.src = files[0].preview;
       img.onload = () => {
         if (this._unmounted) return;

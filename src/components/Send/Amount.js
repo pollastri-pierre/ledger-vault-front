@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
@@ -64,7 +64,7 @@ class SendAmount extends PureComponent<Props<*>> {
           <Trans i18nKey="send:details.amount.title" />
         </ModalSubTitle>
         <div className={classes.paddedHorizontal}>
-          {account.account_type == "ERC20" ? (
+          {account.account_type === "ERC20" ? (
             <AmountNoUnits
               account={account}
               bridge={bridge}

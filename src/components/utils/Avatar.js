@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React from "react";
 import People from "../icons/thin/Profile";
 
-function Avatar(props: { url: ?string, width: number, height: number }) {
+function Avatar(props: { url: ?string, width?: number, height?: number }) {
   const { url, width, height, ...rest } = props;
   if (url) {
     return <img src={props.url} {...rest} alt="Profile avatar" />;

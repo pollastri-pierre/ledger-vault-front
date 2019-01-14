@@ -24,6 +24,7 @@ test("multiple update with same props trigger no re-rendering", async () => {
       componentDidUpdate() {
         ++update;
       }
+
       render() {
         return null;
       }
@@ -56,14 +57,14 @@ test("multiple queries trigger only one React update", async () => {
   let renderCount = 0;
   const All = connectData(
     ({ animals, animal }) => (
-      ++renderCount, animal.name + "_" + animals.length
+      ++renderCount, `${animal.name}_${animals.length}`
     ),
     {
       queries: {
         animals: AnimalsQuery,
         animal: AnimalQuery
       },
-      //$FlowFixMe
+      // $FlowFixMe
       propsToQueryParams: ({ animalId }) => ({ animalId })
     }
   );
@@ -90,9 +91,11 @@ test("triggering new queries don't redraw if data doesn't change", async () => {
       UNSAFE_componentWillMount() {
         forceFetch = this.props.restlay.forceFetch;
       }
+
       UNSAFE_componentWillUpdate() {
         ++update;
       }
+
       render() {
         return null;
       }

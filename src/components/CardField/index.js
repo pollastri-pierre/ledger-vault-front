@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -23,8 +23,7 @@ class CardField extends Component<{
   children: string | React$Node,
   dataTest: ?string,
   align?: string,
-  classes: { [_: $Keys<typeof styles>]: string },
-  className?: string
+  classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
     const { label, children, align, classes, dataTest } = this.props;

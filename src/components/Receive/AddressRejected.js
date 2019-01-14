@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";

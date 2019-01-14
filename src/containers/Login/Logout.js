@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { Redirect } from "react-router";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -15,8 +15,7 @@ const mapStateToProps = state => ({
 
 export class Logout extends Component<{
   logout: Function,
-  auth: *,
-  match: *
+  auth: *
 }> {
   componentDidMount() {
     this.props.logout();

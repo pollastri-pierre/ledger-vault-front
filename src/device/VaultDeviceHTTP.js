@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import network from "network";
 
 export const ENDPOINTS = {
@@ -12,17 +12,18 @@ export const ENDPOINTS = {
 };
 
 const pathArrayToString = (path: number[]): string =>
-  `${path[0] & 0xfffffff}'/${path[1] & 0xfffffff}'`;
+  `${path[0] & 0xfffffff}'/${path[1] & 0xfffffff}'`; // eslint-disable-line no-bitwise
 
 const deviceNetwork = async function<T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>)
 ): Promise<T> {
-  return network(uri, method, body).catch(function(err) {
+  return network(uri, method, body).catch(err => {
     console.error(err);
     if (err.json.status_code) {
-      throw { statusCode: err.json.status_code };
+      // TODO do we really want to throw a literal here?
+      throw { statusCode: err.json.status_code }; // eslint-disable-line no-throw-literal
     } else {
       throw err;
     }
@@ -42,8 +43,8 @@ export default class VaultDeviceHTTP {
       secp256k1
     });
     return {
-      pubKey: data["pubKey"],
-      signature: Buffer.from(data["attestation"], "hex")
+      pubKey: data.pubKey,
+      signature: Buffer.from(data.attestation, "hex")
     };
   }
 
@@ -137,7 +138,7 @@ export default class VaultDeviceHTTP {
     // const signature = lastResponse.slice(i).toString("hex");
     return {
       u2f_register: response.slice(0, response.length - 2),
-      keyHandle: keyHandle,
+      keyHandle,
       rfu,
       pubKey
     };

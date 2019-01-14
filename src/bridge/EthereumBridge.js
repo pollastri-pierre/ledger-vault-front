@@ -3,7 +3,6 @@ import React from "react";
 import invariant from "invariant";
 import eip55 from "eip55";
 
-import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
@@ -12,8 +11,9 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import type { WalletBridge } from "./types";
 
-//convertion to the BigNumber needed
+// convertion to the BigNumber needed
 export type Transaction = {
   recipient: string,
   amount: number,
@@ -59,16 +59,15 @@ const checkValidTransaction = async (a, t, r) => {
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const fees = await getFees(a, t);
   let amountIsValid;
-  if (a.account_type == "ERC20") {
+  if (a.account_type === "ERC20") {
     amountIsValid = t.amount < a.balance;
   } else {
     amountIsValid = t.amount + fees < a.balance;
   }
   if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 const getFees = (a, t) =>
@@ -77,11 +76,10 @@ const getFees = (a, t) =>
     : Promise.resolve(t.gasPrice * t.gasLimit);
 
 const computeTotal = (a, t, fees) => {
-  if (a.account_type == "ERC20") {
+  if (a.account_type === "ERC20") {
     return t.amount;
-  } else {
-    return t.amount == 0 ? 0 : t.amount + fees;
   }
+  return t.amount === 0 ? 0 : t.amount + fees;
 };
 const EthereumBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
@@ -100,12 +98,14 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getFees,
 
-  editTransactionAmount: (account: Account, t: Transaction, amount: number) => {
-    return {
-      ...t,
-      amount
-    };
-  },
+  editTransactionAmount: (
+    account: Account,
+    t: Transaction,
+    amount: number
+  ) => ({
+    ...t,
+    amount
+  }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
@@ -145,7 +145,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
       operation: {
         amount: transaction.amount,
         recipient: transaction.recipient,
-        operation_id: operation_id,
+        operation_id,
         gas_price: transaction.gasPrice,
         gas_limit: transaction.gasLimit,
         note: {

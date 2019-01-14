@@ -21,7 +21,7 @@ const mapStateToProps = (state, ownProps) => {
       from: currency,
       fromExchange: currency && state.exchanges.data[currency.ticker],
       intermediary: intermediaryCurrency,
-      toExchange: state.exchanges.data["USD"],
+      toExchange: state.exchanges.data.USD,
       to: getFiatCurrencyByTicker("USD"),
       value: ownProps.value
     })
@@ -33,8 +33,8 @@ const mapStateToProps = (state, ownProps) => {
 
 type Props = {
   countervalue: ?number,
-  value: number,
-  from: string,
+  value: number, // eslint-disable-line react/no-unused-prop-types
+  from: string, // eslint-disable-line react/no-unused-prop-types
   alwaysShowSign?: boolean,
   type?: TransactionType
 };

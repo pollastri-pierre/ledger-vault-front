@@ -1,6 +1,6 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import { Transition } from "react-transition-group";
+import { Transition } from "react-transition-group"; // eslint-disable-line import/no-extraneous-dependencies
 
 const duration = 100;
 
@@ -51,7 +51,7 @@ class Popover extends Component<
   { isVisible: boolean }
 > {
   toggle = () => {
-    this.setState({ isVisible: !this.state.isVisible });
+    this.setState(state => ({ isVisible: !state.isVisible }));
   };
 
   state = { isVisible: false };

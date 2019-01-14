@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { DialogButton } from "components";
 import type { Translate } from "data/types";

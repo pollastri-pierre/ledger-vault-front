@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import * as d3 from "d3";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -40,6 +40,7 @@ type Props = {
 
 class CircleProgress extends Component<Props> {
   svg: ?Element;
+
   update = () => {
     const { nb, total } = this.props;
     const $svg = this.svg;
@@ -61,7 +62,7 @@ class CircleProgress extends Component<Props> {
       .attr("height", boxSize);
     const g = svg
       .append("g")
-      .attr("transform", "translate(" + boxSize / 2 + "," + boxSize / 2 + ")");
+      .attr("transform", `translate(${boxSize / 2},${boxSize / 2})`);
 
     g.append("path")
       .attr("fill", "#e2e2e2")
@@ -73,13 +74,14 @@ class CircleProgress extends Component<Props> {
     g.append("path")
       .attr("fill", "#27d0e2")
       .attr("stroke", "none")
-      .attr("stroke-width", 3 + "px")
+      .attr("stroke-width", `${3}px`)
       .attr("d", circle.endAngle(Math.PI * percentage));
   };
 
   componentDidMount() {
     this.update();
   }
+
   componentDidUpdate() {
     this.update();
   }

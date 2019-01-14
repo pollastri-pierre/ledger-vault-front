@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import { error } from "formatters/notification";
@@ -12,7 +12,9 @@ type Response = ActivityCommon;
 
 export default class ClearActivityMutation extends Mutation<Input, Response> {
   uri = `/activity/clear`;
+
   method = "POST";
+
   responseSchema = schema.Activity;
 
   // getSuccessNotification() {
@@ -22,6 +24,7 @@ export default class ClearActivityMutation extends Mutation<Input, Response> {
   getErrorNotification(e: Error) {
     return error("activity request", "clear all", e);
   }
+
   getBody() {
     return this.props;
   }

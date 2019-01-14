@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import type { Unit } from "data/types";
 // inspired by https://github.com/smirzaei/currency-formatter/blob/master/currencies.json
 const units: { [key: string]: Unit } = {
@@ -208,7 +208,7 @@ const units: { [key: string]: Unit } = {
   ZMW: { name: "Zambian Kwacha", code: "ZMW", symbol: "ZK", magnitude: 2 },
   WON: { name: "WON", code: "WON", symbol: "₩", magnitude: 2 }
 };
-for (let u in units) {
+for (const u in units) {
   units[u].showAllDigits = true;
 }
 

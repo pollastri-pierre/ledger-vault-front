@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import { DialogButton } from "components";
@@ -15,8 +15,8 @@ import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 // import DateTimePicker from "material-ui-pickers/DateTimePicker";
 import DatePicker from "material-ui-pickers/DatePicker";
 // import { InlineDateTimePicker } from "material-ui-pickers/DateTimePicker";
-import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 import type { Account } from "data/types";
+import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 
 const styles = {
   card: {
@@ -67,33 +67,43 @@ class SearchFiltersCard extends Component<{
   onKeywordsChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ keywords: e.target.value });
   };
+
   onAccountChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ accountId: e.target.value || "" });
   };
+
   onCurrencyChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ currencyName: e.target.value || "" });
   };
+
   onDateStartChange = (date: Date) => {
     this.props.onChangeFilters({ dateStart: date });
   };
+
   onDateEndChange = (date: Date) => {
     this.props.onChangeFilters({ dateEnd: date });
   };
+
   onStatusChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ status: e.target.value || "" });
   };
+
   onAccountsChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ accounts: e.target.value || "" });
   };
+
   onMinAmountChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ minAmount: e.target.value || "" });
   };
+
   onMaxAmountChange = (e: SyntheticInputEvent<>) => {
     this.props.onChangeFilters({ maxAmount: e.target.value || "" });
   };
+
   onClearFilters = () => {
     this.props.onClearFilters();
   };
+
   render() {
     const { accounts, filters, currencies, classes } = this.props;
     return (

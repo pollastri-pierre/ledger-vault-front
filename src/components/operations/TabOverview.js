@@ -1,18 +1,18 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import LineRow from "../LineRow";
-import AccountName from "../AccountName";
-import DateFormat from "../DateFormat";
 import OperationStatus from "components/OperationStatus";
-import OverviewOperation from "../OverviewOperation";
-import Amount from "../Amount";
 import type { Operation, Account } from "data/types";
 import Copy from "components/icons/Copy";
 import colors from "shared/colors";
+import LineRow from "../LineRow";
+import AccountName from "../AccountName";
+import DateFormat from "../DateFormat";
+import OverviewOperation from "../OverviewOperation";
+import Amount from "../Amount";
 
 const styles = {
   operationList: {
@@ -56,6 +56,7 @@ class TabOverview extends Component<Props, State> {
   state = {
     copied: false
   };
+
   componentWillUnmount() {
     if (this._timeout) clearTimeout(this._timeout);
   }

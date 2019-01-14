@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import classnames from "classnames";
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -10,7 +10,6 @@ const styles = {
 };
 
 type Props = {
-  color: string,
   className: string,
   classes: { [_: $Keys<typeof styles>]: string }
 };

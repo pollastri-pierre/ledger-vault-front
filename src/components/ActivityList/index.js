@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import classnames from "classnames";
@@ -98,16 +98,19 @@ class ActivityList extends Component<
   *
 > {
   firstElem: * = null;
+
   firstElemInitialTopPos = 0;
+
   state = {
-    timer: null
+    timer: null // eslint-disable-line react/no-unused-state
   };
+
   list: ?HTMLDivElement;
 
   componentDidMount() {
-    //const { list } = this;
-    //if (list) list.addEventListener("scroll", this.onScroll);
-    //this.timeout(500).promise.then(this.markVisibleActivitiesAsSeen);
+    // const { list } = this;
+    // if (list) list.addEventListener("scroll", this.onScroll);
+    // this.timeout(500).promise.then(this.markVisibleActivitiesAsSeen);
   }
 
   componentWillUnmount() {
@@ -126,7 +129,7 @@ class ActivityList extends Component<
       const actualTop = this.firstElem.getBoundingClientRect().top - 146;
       const height = this.firstElem.getBoundingClientRect().height;
       const nb_diff = Math.abs(Math.floor(actualTop / height));
-      let business_action_ids = [];
+      const business_action_ids = [];
       for (let i = nb_diff; i < activities.length && i < nb_diff + 5; i++) {
         if (!activities[i].seen)
           business_action_ids.push(activities[i].business_action.id);
@@ -142,17 +145,17 @@ class ActivityList extends Component<
       if (prevState.timer) {
         prevState.timer.cancel();
       }
-      let timer = this.timeout(3000);
+      const timer = this.timeout(3000);
       timer.promise.then(() => {
         if (business_action_ids.length) markAsSeenRequest(business_action_ids);
       });
-      return { timer: timer };
+      return { timer };
     });
   };
 
   markAllAsRead = () => {
     const { activities, markAsSeenRequest } = this.props;
-    let business_action_ids = [];
+    const business_action_ids = [];
     activities.forEach(activity => {
       if (!activity.seen) business_action_ids.push(activity.business_action.id);
     });
@@ -161,7 +164,7 @@ class ActivityList extends Component<
 
   clearAll = () => {
     const { activities, clearAllRequest } = this.props;
-    let business_action_ids = [];
+    const business_action_ids = [];
     activities.forEach(activity => {
       if (activity.show) business_action_ids.push(activity.business_action.id);
     });
@@ -169,19 +172,19 @@ class ActivityList extends Component<
   };
 
   timeout = ms => {
-    var timeout, promise;
+    let timeout;
 
-    promise = new Promise(function(resolve) {
-      timeout = setTimeout(function() {
+    const promise = new Promise(resolve => {
+      timeout = setTimeout(() => {
         resolve("timeout done");
       }, ms);
     });
 
     return {
-      promise: promise,
-      cancel: function() {
+      promise,
+      cancel() {
         clearTimeout(timeout);
-      } //return a canceller as well
+      } // return a canceller as well
     };
   };
 
@@ -197,8 +200,8 @@ class ActivityList extends Component<
       <div>
         <div className={classes.newActivities}>
           {activities.length === 0 && "NO ACTIVITIES AVAILABLE"}
-          {unseenActivityCount > 1 && unseenActivityCount + " NEW ACTIVITIES"}
-          {unseenActivityCount === 1 && unseenActivityCount + " NEW ACTIVITY"}
+          {unseenActivityCount > 1 && `${unseenActivityCount} NEW ACTIVITIES`}
+          {unseenActivityCount === 1 && `${unseenActivityCount} NEW ACTIVITY`}
         </div>
         {!!activities.length && (
           <div className={classes.base}>
@@ -209,24 +212,23 @@ class ActivityList extends Component<
                   this.list = elem;
                 }}
               >
-                {activities.map(activity => {
-                  return (
+                {activities.map(
+                  activity =>
                     activity.show && (
                       <ActivityLine
                         match={match}
                         markAsSeenRequest={markAsSeenRequest}
                         activity={activity}
-                        /*onRef={elem => {
+                        /* onRef={elem => {
                                                     if (id == 0) {
                                                         this.firstElem = elem;
                                                         this.firstElemInitialTopPos = elem.getBoundingClientRect().top;
                                                     }
-                                                }}*/
+                                                }} */
                         key={activity.id}
                       />
                     )
-                  );
-                })}
+                )}
               </div>
             </div>
             {!!unseenActivityCount && (
