@@ -10,14 +10,20 @@ export type Speed = $Values<typeof speeds>;
 type Input = {
   operation: {
     amount: number,
-    fee_level: Speed,
+    fee_level?: Speed,
+    gas_limit?: ?number,
+    gas_price?: ?number,
     recipient: string
   },
   accountId: number
 };
 
 type Response = {
-  value: number
+  value: {
+    fees: number,
+    gas_limit?: ?number,
+    gas_price?: ?number
+  }
 };
 
 // Calculate the fee for a given account (in the account currency)

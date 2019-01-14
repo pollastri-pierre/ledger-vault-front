@@ -3,13 +3,13 @@ import React from "react";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
-import type { Account, OperationRecipientIsValid } from "data/types";
+import type { Account, OperationGetFees } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 export const getFees = async (
   account: Account,
   transaction: *,
-  operation: OperationRecipientIsValid,
+  operation: OperationGetFees,
   restlay: RestlayEnvironment
 ) => {
   if (operation.amount > 0 && operation.recipient !== "" && account) {
@@ -18,9 +18,13 @@ export const getFees = async (
       operation: operation
     });
     const data = await restlay.fetchQuery(query);
-    return data.fees;
+    return data;
   }
-  return 0;
+  return {
+    fees: 0,
+    gas_price: 0,
+    gas_limit: 0
+  };
 };
 
 export const InputFieldMerge = ({ children }: *) => (

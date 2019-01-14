@@ -91,7 +91,10 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
           restlay
         );
         if (nonce !== this.nonce) return;
-        onChangeTransaction({ ...transaction, estimatedFees });
+        onChangeTransaction({
+          ...transaction,
+          estimatedFees: estimatedFees.fees
+        });
       }
     }
   }
