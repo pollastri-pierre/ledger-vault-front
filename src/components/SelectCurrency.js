@@ -211,6 +211,7 @@ class SelectCurrency extends PureComponent<Props> {
     return (
       <Select
         async
+        inputId="input_crypto"
         defaultOptions
         isClearable
         loadOptions={fetchOptions}
