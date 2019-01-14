@@ -45,7 +45,6 @@ const styles = {
     padding: "5px 20px"
   },
   base: {
-    width: 800,
     display: "flex",
     "& h2, & h3": {
       margin: 0
@@ -121,8 +120,25 @@ class UpdateAccounts extends Component<Props, State> {
   onChangeAccountName = (e: SyntheticInputEvent<>) => {
     this.setState({ accountName: e.target.value });
   };
+  isSubmitDisabled = () => {
+    const { approvers, quorum } = this.props;
+    const { accountName } = this.state;
+
+    const rulesDisabled =
+      approvers.length === 0 || quorum === 0 || quorum > approvers.length;
+    const nameDisabled = accountName === "" || !isValidAccountName(accountName);
+
+    return rulesDisabled || nameDisabled;
+  };
+
   updateAccount = async () => {
-    const { onToggle, restlay, onToggleDevice, onAddMessage } = this.props;
+    const {
+      onToggle,
+      restlay,
+      onToggleDevice,
+      onAddMessage,
+      selectedAccount
+    } = this.props;
     const data = {
       members: this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
@@ -135,7 +151,7 @@ class UpdateAccounts extends Component<Props, State> {
       });
       await network(
         `/accounts/${this.props.selectedAccount.id}/security-scheme`,
-        "PUT",
+        selectedAccount.status !== "VIEW_ONLY" ? "PUT" : "POST",
         data
       );
       await restlay.fetchQuery(new AccountsQuery());
@@ -179,31 +195,34 @@ class UpdateAccounts extends Component<Props, State> {
       <Fragment>
         <BlurDialog open={isOpen} onClose={onToggle}>
           <div className={classes.base}>
-            <div className={classes.left}>
-              <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
-              <ul>
-                {getOutdatedAccounts(accounts).map(account => (
-                  <MenuItem
-                    button
-                    className={classes.accountItem}
-                    disableRipple
-                    selected={
-                      selectedAccount && selectedAccount.id === account.id
-                    }
-                    onClick={() => onSelectAccount(account)}
-                    key={account.id}
-                  >
-                    <span className={classes.accountName}>
-                      <div>TO DO</div>
-                      <CurrencyIndex
-                        currency={account.currency_id}
-                        index={account.index}
-                      />
-                    </span>
-                  </MenuItem>
-                ))}
-              </ul>
-            </div>
+            {selectedAccount &&
+              selectedAccount.status !== "VIEW_ONLY" && (
+                <div className={classes.left}>
+                  <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
+                  <ul>
+                    {getOutdatedAccounts(accounts).map(account => (
+                      <MenuItem
+                        button
+                        className={classes.accountItem}
+                        disableRipple
+                        selected={
+                          selectedAccount && selectedAccount.id === account.id
+                        }
+                        onClick={() => onSelectAccount(account)}
+                        key={account.id}
+                      >
+                        <span className={classes.accountName}>
+                          <div>TO DO</div>
+                          <CurrencyIndex
+                            currency={account.currency_id}
+                            index={account.index}
+                          />
+                        </span>
+                      </MenuItem>
+                    ))}
+                  </ul>
+                </div>
+              )}
             <div className={classes.content}>
               <h3>{t("updateAccounts:provide")}</h3>
               <p>{t("updateAccounts:desc")}</p>
@@ -257,13 +276,7 @@ class UpdateAccounts extends Component<Props, State> {
                     <DialogButton
                       highlight
                       onTouchTap={onToggleDevice}
-                      disabled={
-                        approvers.length === 0 ||
-                        quorum === 0 ||
-                        accountName === "" ||
-                        !isValidAccountName(accountName) ||
-                        quorum > approvers.length
-                      }
+                      disabled={this.isSubmitDisabled()}
                     >
                       Submit
                     </DialogButton>

@@ -24,6 +24,7 @@ summary:
 view_only_warning: This account is read-only. Transactions cannot be created before you provide Operation Rules.
 erc20_children: Children ERC20 token accounts
 no_erc20_children: No children ERC20 token on this account
+view_only_provide_rules: provide operations rules
 members_modal:
   title: Members
   toggle: See members
