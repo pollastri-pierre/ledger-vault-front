@@ -2,20 +2,20 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
-import {
-  getFiatCurrencyByTicker,
-  getCryptoCurrencyById,
-  listCryptoCurrencies
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
+
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import type { TransactionType } from "data/types";
 import CounterValues from "data/CounterValues";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
-const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
-  const currency = allCurrencies.find(curr => curr.id === ownProps.from);
+  const currency = getCryptoCurrencyById(ownProps.from);
+  if (ownProps.disableCountervalue) {
+    return {};
+  }
   return {
     countervalue: CounterValues.calculateWithIntermediarySelector(state, {
       from: currency,
@@ -32,7 +32,7 @@ const mapStateToProps = (state, ownProps) => {
 // because currently the API and ledgerHQ don't share the same format for Currency
 
 type Props = {
-  countervalue: number,
+  countervalue: ?number,
   value: number,
   from: string,
   alwaysShowSign?: boolean,
@@ -43,7 +43,7 @@ class CounterValue extends PureComponent<Props> {
   render() {
     const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return "-";
+      return "N/A";
     }
     return (
       <CurrencyFiatValue

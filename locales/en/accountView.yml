@@ -19,4 +19,12 @@ summary:
   date: creation date
   members: members
   quorum: required approvals
+  token_address: Smart contract address
+  parent_account: Parent Ethereum account
+view_only_warning: This account is read-only. Transactions cannot be created before you provide Operation Rules.
+erc20_children: Children ERC20 token accounts
+no_erc20_children: No children ERC20 token on this account
+members_modal:
+  title: Members
+  toggle: See members
 

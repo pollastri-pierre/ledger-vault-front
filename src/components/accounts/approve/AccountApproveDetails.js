@@ -1,74 +1,54 @@
 //@flow
+
 import React from "react";
 import { translate } from "react-i18next";
-import Amount from "components/Amount";
-import {
-  // BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon
-  // BigSecurityRateLimiterIcon
-} from "../../icons";
+import { BigSecurityMembersIcon } from "../../icons";
 
-// import RateLimiterValue from "../../RateLimiterValue";
-// import TimeLockValue from "../../TimeLockValue";
 import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
+import Amount from "components/Amount";
+import { getAccountCurrencyName } from "utils/accounts";
 import type { Account, Translate } from "data/types";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
 
-function AccountApproveDetails(props: {
+const membersIcon = <BigSecurityMembersIcon />;
+
+type Props = {
   account: Account,
   t: Translate,
   quorum: number
-}) {
+};
+
+function AccountApproveDetails(props: Props) {
   const { account, quorum, t } = props;
-  const { security_scheme, currency_id } = account;
-  const currency = getCryptoCurrencyById(currency_id);
-  const percentage = Math.round(100 * (account.approvals.length / quorum));
+  const { security_scheme } = account;
+
+  const percentage = quorum
+    ? Math.round(100 * (account.approvals.length / quorum))
+    : 0;
+
+  const badgeVal = `${account.members.length} selected`;
+
+  const status =
+    percentage === 100 ? (
+      <span data-test="status" className="info-value status">
+        {"Approved"}
+      </span>
+    ) : (
+      <span data-test="status" className="info-value status">
+        {`Collecting approvals (${percentage}%)`}
+      </span>
+    );
+
+  const approvals = `${security_scheme.quorum} of ${
+    account.members.length
+  } members`;
+
   return (
     <div>
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: "40px"
-          // display: "flex",
-          // flexDirection: "row"
-        }}
-      >
-        <BadgeSecurity
-          icon={<BigSecurityMembersIcon />}
-          label="Members"
-          value={`${account.members.length} selected`}
-        />
-        {/* <BadgeSecurity */}
-        {/*   icon={<BigSecurityTimeLockIcon />} */}
-        {/*   label="Time-lock" */}
-        {/*   disabled={!security_scheme.time_lock} */}
-        {/*   value={<TimeLockValue time_lock={security_scheme.time_lock} />} */}
-        {/* /> */}
-        {/* <BadgeSecurity */}
-        {/*   icon={<BigSecurityRateLimiterIcon />} */}
-        {/*   label="Rate Limiter" */}
-        {/*   disabled={ */}
-        {/*     !security_scheme.rate_limiter || */}
-        {/*     !security_scheme.rate_limiter.max_transaction */}
-        {/*   } */}
-        {/*   value={ */}
-        {/*     security_scheme.rate_limiter && ( */}
-        {/*       <RateLimiterValue */}
-        {/*         max_transaction={ */}
-        {/*           security_scheme.rate_limiter && */}
-        {/*           security_scheme.rate_limiter.max_transaction */}
-        {/*         } */}
-        {/*         time_slot={ */}
-        {/*           security_scheme.rate_limiter && */}
-        {/*           security_scheme.rate_limiter.time_slot */}
-        {/*         } */}
-        {/*       /> */}
-        {/*     ) */}
-        {/*   } */}
-        {/* /> */}
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <BadgeSecurity icon={membersIcon} label="Members" value={badgeVal} />
       </div>
       <div>
         <LineRow label="balance">
@@ -77,32 +57,23 @@ function AccountApproveDetails(props: {
             value={account.balance}
             strong
             dataTest="balance"
+            erc20Format={account.account_type === "ERC20"}
           />
         </LineRow>
-        <LineRow label="status">
-          {percentage === 100 ? (
-            <span data-test="status" className="info-value status">
-              Approved
-            </span>
-          ) : (
-            <span data-test="status" className="info-value status">
-              Collecting approvals ({percentage}%)
-            </span>
-          )}
-        </LineRow>
+        <LineRow label="status">{status}</LineRow>
         <LineRow label="requested">
           <DateFormat date={account.created_on} dataTest="requested" />
         </LineRow>
         <LineRow label="name">
-          <AccountName name={account.name} currencyId={currency.id} />
+          <AccountName account={account} />
         </LineRow>
         <LineRow label="currency">
           <span data-test="currency" className="info-value currency">
-            {currency.name}
+            {getAccountCurrencyName(account)}
           </span>
         </LineRow>
         <LineRow label={t("pendingAccount:details.approvals")}>
-          {security_scheme.quorum} of {account.members.length} members
+          {approvals}
         </LineRow>
       </div>
     </div>

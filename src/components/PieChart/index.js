@@ -7,7 +7,7 @@ import cx from "classnames";
 import {
   listCryptoCurrencies,
   getCryptoCurrencyById
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+} from "utils/cryptoCurrencies";
 
 import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";

@@ -173,9 +173,7 @@ class NoteColumn extends Component<Cell> {
 class AccountColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
-    return account ? (
-      <AccountName name={account.name} currencyId={account.currency_id} />
-    ) : null;
+    return account ? <AccountName account={account} /> : null;
   }
 }
 
@@ -230,6 +228,7 @@ class AmountColumn extends Component<Cell> {
       <CurrencyAccountValue
         account={account}
         value={operation.amount || (operation.price && operation.price.amount)}
+        erc20Format={account.account_type === "ERC20"}
         type={operation.type}
         alwaysShowSign
       />
@@ -246,6 +245,7 @@ class CountervalueColumn extends Component<Cell> {
           from={account.currency_id}
           value={operation.amount || operation.price.amount}
           alwaysShowSign
+          disableCountervalue={account.account_type === "ERC20"}
           type={operation.type}
         />
       );

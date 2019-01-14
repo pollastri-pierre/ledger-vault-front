@@ -21,7 +21,7 @@ import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
 import colors from "../../shared/colors";

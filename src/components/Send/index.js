@@ -17,7 +17,7 @@ import HeaderRightClose from "components/HeaderRightClose";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import { getBridgeForCurrency } from "bridge";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 

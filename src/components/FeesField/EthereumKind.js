@@ -13,7 +13,7 @@ import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
   root: {

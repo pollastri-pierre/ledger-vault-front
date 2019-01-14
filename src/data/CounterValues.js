@@ -1,10 +1,10 @@
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
   listCryptoCurrencies,
-  getCryptoCurrencyById,
-  getFiatCurrencyByTicker
-} from "@ledgerhq/live-common/lib/helpers/currencies";
+  getCryptoCurrencyById
+} from "utils/cryptoCurrencies";
 
 import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";

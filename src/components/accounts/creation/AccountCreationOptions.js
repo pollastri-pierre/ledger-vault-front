@@ -1,48 +1,154 @@
 //@flow
 import { translate } from "react-i18next";
-import React, { PureComponent } from "react";
-import type { Translate } from "data/types";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
+import React, { Fragment, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
-import InputField from "components/InputField";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
-// NOTE: didn't delete for future wireframes that will need it
-const styles = {};
+import InputField from "components/InputField";
+import AccountSummary from "components/AccountSummary";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import ERC20TokenIcon from "components/icons/ERC20Token";
+
+import type { Translate, Account } from "data/types";
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState,
+  ParentAccount
+} from "redux/modules/account-creation";
+
+const ethereumCurrency = getCryptoCurrencyById("ethereum");
+const EthereumCurIcon = getCryptoCurrencyIcon(ethereumCurrency);
+const ethereumCurIcon = EthereumCurIcon ? (
+  <EthereumCurIcon size={15} color={ethereumCurrency.color} />
+) : null;
+const erc20TokenIcon = <ERC20TokenIcon size={15} />;
+
+const getParentAccountName = (parentAccount: ?ParentAccount): string => {
+  if (!parentAccount) return "";
+  // TODO: handle parentAccount.id, by retrieving name inside list of
+  // ethereum accounts
+  if (!parentAccount.name) return "";
+  // TODO: why is flow forcing to do this
+  if (typeof parentAccount.name !== "string") return "";
+  return parentAccount.name;
+};
+
+const styles = {
+  title: {
+    fontSize: 11,
+    fontWeight: 600,
+    textTransform: "uppercase",
+    marginBottom: 20,
+    display: "block"
+  },
+  relative: {
+    position: "relative"
+  }
+};
 
 type Props = {
-  currency: CryptoCurrency,
-  name: string,
-  changeName: Function,
-  t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string }
+  ethAccounts: Account[],
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
+
+  classes: { [_: $Keys<typeof styles>]: string },
+  t: Translate
 };
+
 class AccountCreationOptions extends PureComponent<Props> {
-  changeAccountName = (name: string) => {
-    const { changeName } = this.props;
-    changeName(name);
+  handleChangeName = (name: string) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ name }));
   };
-  render() {
-    const { name, currency, t } = this.props;
-    const AccountCurIcon = getCryptoCurrencyIcon(currency);
+
+  handleChangeParentAccountName = (name: string) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ parent_account: { name } }));
+  };
+
+  renderParentAccountSummary = () => {
+    const { accountCreationState, ethAccounts } = this.props;
+    const { parent_account } = accountCreationState;
+    if (!parent_account || !parent_account.id) return null;
+    const account = ethAccounts.find(
+      acc => parent_account.id && acc.id === parent_account.id
+    );
+    if (!account) return null;
+    return <AccountSummary account={account} />;
+  };
+
+  renderERC20Token = () => {
+    const { t, accountCreationState } = this.props;
+    const { erc20token } = accountCreationState;
+    if (!erc20token) return null;
+
+    const { parent_account } = accountCreationState;
+
+    const parentAccountName = getParentAccountName(parent_account);
+
     return (
-      <div>
+      <Fragment>
         <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
         <InputField
+          value={accountCreationState.name}
           autoFocus
-          renderLeft={
-            AccountCurIcon && (
-              <div style={{ color: currency.color }}>
-                <AccountCurIcon size={15} />
-              </div>
-            )
-          }
-          value={name}
+          onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          onChange={this.changeAccountName}
+          fullWidth
+          renderLeft={erc20TokenIcon}
         />
-      </div>
+        {parent_account && parent_account.id ? (
+          <Fragment>
+            <ModalSubTitle noPadding style={{ marginTop: 30 }}>
+              {t("newAccount:options.selectedParent")}
+            </ModalSubTitle>
+            {this.renderParentAccountSummary()}
+          </Fragment>
+        ) : (
+          <Fragment>
+            <ModalSubTitle noPadding style={{ marginTop: 30 }}>
+              {t("newAccount:options.parentName")}
+            </ModalSubTitle>
+            <InputField
+              value={parentAccountName}
+              onChange={this.handleChangeParentAccountName}
+              placeholder={t("newAccount:options.acc_name_placeholder")}
+              fullWidth
+              renderLeft={ethereumCurIcon}
+            />
+          </Fragment>
+        )}
+      </Fragment>
+    );
+  };
+
+  render() {
+    const { t, accountCreationState } = this.props;
+    const { currency } = accountCreationState;
+
+    if (accountCreationState.erc20token) {
+      return this.renderERC20Token();
+    }
+
+    if (!currency) return null;
+
+    const AccountCurIcon = getCryptoCurrencyIcon(currency);
+    return (
+      <Fragment>
+        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
+        <InputField
+          value={accountCreationState.name}
+          autoFocus
+          onChange={this.handleChangeName}
+          placeholder={t("newAccount:options.acc_name_placeholder")}
+          renderLeft={
+            AccountCurIcon ? (
+              <AccountCurIcon color={currency.color} size={15} />
+            ) : null
+          }
+        />
+      </Fragment>
     );
   }
 }

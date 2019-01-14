@@ -3,10 +3,18 @@ import React, { Component } from "react";
 import CurrencyUnitValue from "./CurrencyUnitValue";
 import { getAccountCurrencyUnit } from "data/currency";
 import type { Account, TransactionType } from "data/types";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
-
+const getCurrencyLikeUnit = token => {
+  return {
+    code: token ? token.symbol : "",
+    symbol: "",
+    magnitude: token ? token.decimals : 0,
+    name: ""
+  };
+};
 class CurrencyAccountValue extends Component<{
   // the contextual account object
   account: Account,
@@ -15,11 +23,18 @@ class CurrencyAccountValue extends Component<{
   // always show a sign in front of the value (force a "+" to display for positives)
   alwaysShowSign?: boolean,
   // override the rate to use (default is the account.currentRate)
-  type?: TransactionType
+  type?: TransactionType,
+  erc20Format?: boolean
 }> {
   render() {
-    const { account, value, type, ...rest } = this.props;
-    let unitValue = { value, unit: getAccountCurrencyUnit(account) };
+    const { account, value, type, erc20Format, ...rest } = this.props;
+    let unitValue;
+    if (erc20Format) {
+      const token = getERC20TokenByContractAddress(account.contract_address);
+      unitValue = { value, unit: getCurrencyLikeUnit(token) };
+    } else {
+      unitValue = { value, unit: getAccountCurrencyUnit(account) };
+    }
     return <CurrencyUnitValue {...rest} {...unitValue} type={type} />;
   }
 }

@@ -7,10 +7,15 @@ import type { OptionProps } from "react-select/lib/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ERC20Token } from "data/types";
-import { listCryptoCurrencies, listERC20Tokens } from "utils/cryptoCurrencies";
+import {
+  listCryptoCurrencies,
+  listERC20Tokens,
+  isERC20Token
+} from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import Select from "components/Select";
+import colors from "shared/colors";
 
 const ROW_SIZE = 20;
 const ICON_SIZE = 16;
@@ -58,7 +63,8 @@ function getItemLabel(item: Item) {
 const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({ label: item.value.name, value: item }));
 
-const INCLUDE_DEV = process.env.NODE_ENV === "development";
+const INCLUDE_DEV =
+  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "e2e";
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
@@ -95,12 +101,32 @@ const fetchOptions = (inputValue: string) =>
     });
   });
 
+const getValueOption = (value: CryptoCurrency | ERC20Token): Option | null => {
+  if (!value) return null;
+  const isValueERC20Token = isERC20Token(value);
+  const resolved = fullOptions.find((opt: Option) => {
+    const isOptERC20Token = isERC20Token(opt.value.value);
+    if (isValueERC20Token !== isOptERC20Token) return false;
+    if (
+      isValueERC20Token &&
+      // $FlowFixMe inference fail: we are sure both are erc20
+      opt.value.value.contract_address === value.contract_address
+    )
+      return true;
+    // $FlowFixMe inference fail: we are sure both are currencies
+    if (!isValueERC20Token && opt.value.value.id === value.id) return true;
+    return false;
+  });
+  return resolved || null;
+};
+
 const styles = {
   genericRowContainer: {
     fontSize: 13,
     height: ROW_SIZE,
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    whiteSpace: "nowrap"
   },
   genericRowIcon: {
     height: ROW_SIZE,
@@ -115,6 +141,10 @@ const styles = {
     fontFamily: "monospace",
     padding: 4,
     backgroundColor: "rgba(0, 0, 0, 0.05)"
+  },
+  placeholder: {
+    fontSize: 10,
+    color: colors.shark
   }
 };
 
@@ -152,23 +182,43 @@ const customComponents = {
   SingleValue: ValueComponent
 };
 
+const customStyles = {
+  placeholder: provided => ({
+    ...provided,
+    fontSize: 10,
+    color: colors.shark
+  })
+};
+
 type Props = {
-  value: ?Item,
-  onChange: Item => void
+  value: CryptoCurrency | ERC20Token | null,
+  onChange: (?Item) => void
 };
 
 class SelectCurrency extends PureComponent<Props> {
+  handleChange = (option: ?Option) => {
+    const { onChange } = this.props;
+    if (!option) return onChange(null);
+    onChange(option.value);
+  };
+
   render() {
+    const { value } = this.props;
+
+    // find the currency OR erc20token inside all options
+    const resolvedValue = value ? getValueOption(value) : null;
+
     return (
       <Select
         async
         defaultOptions
-        autoFocus
-        openMenuOnFocus
         isClearable
         loadOptions={fetchOptions}
         components={customComponents}
+        styles={customStyles}
         {...this.props}
+        onChange={this.handleChange}
+        value={resolvedValue}
       />
     );
   }

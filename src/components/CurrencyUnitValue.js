@@ -6,12 +6,14 @@ import type { Unit, TransactionType } from "data/types";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
-class CurrencyUnitValue extends PureComponent<{
+type Props = {
   unit: Unit,
   value: number, // e.g. 10000 . for EUR it means €100.00
   type?: TransactionType,
   alwaysShowSign?: boolean // do you want to show the + before the number (N.B. minus is always displayed)
-}> {
+};
+
+class CurrencyUnitValue extends PureComponent<Props> {
   render() {
     const { unit, value, alwaysShowSign, type } = this.props;
     const className = [

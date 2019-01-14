@@ -86,6 +86,9 @@ export type Approval = {
 
 type AccountCommon = {
   id: number,
+  account_type: string,
+  contract_address: string,
+  parent_id?: number,
   name: string,
   members: Member[],
   settings: AccountSettings,
@@ -280,5 +283,6 @@ export type ERC20Token = {
   decimals: number,
   name: string,
   symbol: string,
-  ticker: string
+  ticker: string,
+  signature: string
 };

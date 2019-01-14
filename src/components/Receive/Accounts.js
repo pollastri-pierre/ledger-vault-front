@@ -25,16 +25,20 @@ const ReceiveAccounts = ({
     }
     content={
       <MenuList data-test="receive-accounts">
-        {accounts.filter(a => a.status === "APPROVED").map((account, i) => {
-          return (
-            <AccountMenuItem
-              onSelect={onSelect}
-              key={i}
-              account={account}
-              selected={(selectedAccount && selectedAccount.id) === account.id}
-            />
-          );
-        })}
+        {accounts
+          .filter(a => a.status === "APPROVED" || a.status === "VIEW_ONLY")
+          .map((account, i) => {
+            return (
+              <AccountMenuItem
+                onSelect={onSelect}
+                key={i}
+                account={account}
+                selected={
+                  (selectedAccount && selectedAccount.id) === account.id
+                }
+              />
+            );
+          })}
       </MenuList>
     }
     footer={null}

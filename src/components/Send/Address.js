@@ -11,7 +11,7 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import colors from "shared/colors";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
   addressPicker: {

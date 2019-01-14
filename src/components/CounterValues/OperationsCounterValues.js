@@ -3,12 +3,11 @@
 
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
+import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
-  getFiatCurrencyByTicker,
   getCryptoCurrencyById,
   listCryptoCurrencies
-} from "@ledgerhq/live-common/lib/helpers/currencies";
-
+} from "utils/cryptoCurrencies";
 import CounterValues from "data/CounterValues";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { Operation, Account } from "data/types";

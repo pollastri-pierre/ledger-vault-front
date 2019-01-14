@@ -56,7 +56,7 @@ class OverviewOperation extends Component<Props, *> {
   render() {
     const { amount, account, classes, operationType } = this.props;
     const isReceive = operationType === "RECEIVE";
-
+    const erc20Format = account.account_type == "ERC20" ? true : false;
     return (
       <div className={classes.base}>
         <div>
@@ -71,6 +71,7 @@ class OverviewOperation extends Component<Props, *> {
                 value={amount}
                 alwaysShowSign
                 type={operationType}
+                erc20Format={erc20Format}
               />
             </div>
           </div>
@@ -80,6 +81,7 @@ class OverviewOperation extends Component<Props, *> {
               from={account.currency_id}
               alwaysShowSign
               type={operationType}
+              disableCountervalue={erc20Format}
             />
           </p>
         </div>

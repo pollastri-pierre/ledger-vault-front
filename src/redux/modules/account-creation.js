@@ -1,12 +1,11 @@
 //@flow
 import _ from "lodash";
 import { LOGOUT } from "./auth";
-import type { Member } from "data/types";
+import type { Member, ERC20Token } from "data/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { isValidAccountName } from "utils/accounts";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
-export const SELECT_CURRENCY = "account-creation/SELECT_CURRENCY";
 export const CHANGE_ACCOUNT_NAME = "account-creation/CHANGE_ACCOUNT_NAME";
 export const SWITCH_INTERN_MODAL = "account-creation/SWITCH_INTERN_MODAL";
 export const ADD_MEMBER = "account-creation/ADD_MEMBER";
@@ -21,6 +20,8 @@ export const SAVE_ACCOUNT_START = "account-creation/SAVE_ACCOUNT_START";
 export const SAVED_ACCOUNT = "account-creation/SAVED_ACCOUNT";
 export const SAVED_ACCOUNT_FAIL = "account-creation/SAVED_ACCOUNT_FAIL";
 
+const UPDATE_ACCOUNT_CREATION_STATE = "account-creation/UPDATE_STATE";
+
 export type Timelock = {
   enabled: boolean,
   value: number,
@@ -32,6 +33,15 @@ export type Ratelimiter = {
   value: number,
   frequency: number
 };
+
+export type UpdateState = ((State) => $Shape<State>) => void;
+
+export function updateAccountCreationState(updater: State => $Shape<State>) {
+  return {
+    type: UPDATE_ACCOUNT_CREATION_STATE,
+    updater
+  };
+}
 
 export function openPopBubble(anchor: ?Node) {
   return {
@@ -88,13 +98,6 @@ export function changeTab(index: number) {
   };
 }
 
-export function selectCurrencyItem(currency: CryptoCurrency) {
-  return {
-    type: SELECT_CURRENCY,
-    currency
-  };
-}
-
 export function changeAccountName(name: string) {
   if (isValidAccountName(name)) {
     return {
@@ -111,21 +114,11 @@ export function switchInternalModal(id: string) {
   };
 }
 
-export function selectCurrency(currency: CryptoCurrency) {
-  return (dispatch: Function) => {
-    dispatch(selectCurrencyItem(currency));
-    dispatch(changeTab(1));
-  };
-}
+export type ParentAccount = { id: number } | { name: string };
 
 export type State = {
+  // UI FIELDS (used to store the tab, and the sub modal id)
   currentTab: number,
-  currency: ?CryptoCurrency,
-  name: string,
-  approvers: Member[],
-  quorum: number,
-  time_lock: Timelock,
-  rate_limiter: Ratelimiter,
   internModalId:
     | "members"
     | "approvals"
@@ -133,27 +126,46 @@ export type State = {
     | "rate-limiter"
     | "device"
     | "main",
+
+  // -- COMMON FIELDS FOR CURRENCY & ERC20
+  name: string,
+  approvers: Member[],
+  quorum: number,
+  time_lock: Timelock,
+  rate_limiter: Ratelimiter,
+
+  // -- CURRENCY SPECIFIC
+  currency: ?CryptoCurrency,
+
+  // -- ERC20TOKEN SPECIFIC
+  erc20token: ?ERC20Token,
+  parent_account: ?ParentAccount,
+
+  // TODO: is it used (except in tests)?
   popBubble: boolean,
   popAnchor: ?Node
 };
 
 export const initialState: State = {
+  // UI FIELDS (used to store the tab, and the sub modal id)
   currentTab: 0,
-  currency: null,
+  internModalId: "main",
+
+  // -- COMMON FIELDS FOR CURRENCY & ERC20
   name: "",
   approvers: [],
   quorum: 0,
-  time_lock: {
-    enabled: false,
-    value: 0,
-    frequency: 60
-  },
-  rate_limiter: {
-    enabled: false,
-    value: 0,
-    frequency: 84600
-  },
-  internModalId: "main",
+  time_lock: { enabled: false, value: 0, frequency: 60 },
+  rate_limiter: { enabled: false, value: 0, frequency: 84600 },
+
+  // -- CURRENCY SPECIFIC
+  currency: null,
+
+  // -- ERC20TOKEN SPECIFIC
+  erc20token: null,
+  parent_account: null,
+
+  // TODO: is it used (except in tests)?
   popBubble: false,
   popAnchor: null
 };
@@ -165,6 +177,11 @@ export default function reducer(
   switch (action.type) {
     case CLEAR_STATE:
       return initialState;
+    case UPDATE_ACCOUNT_CREATION_STATE:
+      return {
+        ...state,
+        ...action.updater(state)
+      };
     case ADD_MEMBER: {
       const cMembers = _.cloneDeep(state.approvers);
       const index = cMembers.indexOf(action.member);
@@ -209,8 +226,6 @@ export default function reducer(
     }
     case CHANGE_TAB:
       return { ...state, currentTab: action.index };
-    case SELECT_CURRENCY:
-      return { ...state, currency: action.currency };
     case SET_TIMELOCK: {
       return { ...state, time_lock: action.timelock };
     }

@@ -10,12 +10,14 @@ import ModalRoute from "components/ModalRoute";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account, Member, Translate } from "data/types";
 import connectData from "restlay/connectData";
+import { VISIBLE_MENU_STATUS } from "utils/accounts";
 import OperationModal from "components/operations/OperationModal";
 // import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastOperationsCard from "./AccountLastOperationsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
 import AccountQuickInfo from "./AccountQuickInfo";
+import SubAccounts from "./SubAccounts";
 
 const styles = {
   flex: {
@@ -55,11 +57,7 @@ class AccountView extends Component<
   render() {
     const { match, classes, account, t, me } = this.props;
     const accountId = match.params.id;
-    if (
-      account.status &&
-      account.status !== "APPROVED" &&
-      account.status !== "PENDING_UPDATE"
-    ) {
+    if (account.status && VISIBLE_MENU_STATUS.indexOf(account.status) === -1) {
       return (
         <div>
           <Card title="Account pending">{t("accountView:approved")}</Card>
@@ -71,6 +69,9 @@ class AccountView extends Component<
         <div>
           <AccountQuickInfo me={me} account={account} match={match} />
         </div>
+        {account.account_type === "Ethereum" && (
+          <SubAccounts account={account} />
+        )}
         <div className={classes.flex}>
           <AccountBalanceCard account={account} />
           <AccountCountervalueCard account={account} />

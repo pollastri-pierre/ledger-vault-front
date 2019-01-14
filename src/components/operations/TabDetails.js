@@ -6,7 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const stylesList = {
   detailsContainer: {

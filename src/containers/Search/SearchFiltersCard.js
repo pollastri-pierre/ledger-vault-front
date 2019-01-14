@@ -1,6 +1,6 @@
 //@flow
 import React, { Component } from "react";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import { DialogButton } from "components";
 import ListItemText from "@material-ui/core/ListItemText";
 
@@ -156,28 +156,30 @@ class SearchFiltersCard extends Component<{
                   .join(",")
               }
             >
-              {accounts.map(account => (
-                <MenuItem
-                  key={account.id}
-                  value={account.id}
-                  disableRipple
-                  style={{
-                    color:
-                      getCryptoCurrencyById(account.currency_id).color ||
-                      "black"
-                  }}
-                >
-                  <Checkbox
-                    color="primary"
-                    checked={filters.accounts.indexOf(account.id) > -1}
-                    classes={{ root: classes.checkbox }}
-                  />
-                  <ListItemText
-                    primary={account.name}
-                    classes={{ primary: classes.listItem }}
-                  />
-                </MenuItem>
-              ))}
+              {accounts.map(account => {
+                const curr = getCryptoCurrencyById(account.currency_id);
+                return (
+                  <MenuItem
+                    key={account.id}
+                    value={account.id}
+                    disableRipple
+                    style={{
+                      color:
+                        account.account_type === "ERC20" ? "black" : curr.color
+                    }}
+                  >
+                    <Checkbox
+                      color="primary"
+                      checked={filters.accounts.indexOf(account.id) > -1}
+                      classes={{ root: classes.checkbox }}
+                    />
+                    <ListItemText
+                      primary={account.name}
+                      classes={{ primary: classes.listItem }}
+                    />
+                  </MenuItem>
+                );
+              })}
             </Select>
           </label>
           <label>

@@ -8,7 +8,7 @@ import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 //convertion to the BigNumber needed
 export type Transaction = {

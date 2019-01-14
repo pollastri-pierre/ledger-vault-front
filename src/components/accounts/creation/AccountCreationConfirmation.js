@@ -1,67 +1,69 @@
 //@flow
-import React from "react";
-import LineRow from "../../LineRow";
-import type { Translate } from "data/types";
+
+import React, { Fragment } from "react";
 import { translate, Interpolate } from "react-i18next";
-import {
-  // BigSecurityTimeLockIcon,
-  BigSecurityMembersIcon
-  // BigSecurityRateLimiterIcon
-} from "../../icons";
+
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState
+} from "redux/modules/account-creation";
+
+import { BigSecurityMembersIcon } from "../../icons";
+
+import type { Translate } from "data/types";
+import LineRow from "../../LineRow";
 import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
 import InfoModal from "../../InfoModal";
-// import RateLimiterValue from "../../RateLimiterValue";
-// import TimeLockValue from "../../TimeLockValue";
 
-function AccountCreationConfirmation(props: { account: Object, t: Translate }) {
-  const {
-    name,
-    approvers,
-    // rate_limiter,
-    // time_lock,
-    currency,
-    quorum
-  } = props.account;
+type Props = {
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
 
-  const { t } = props;
+  t: Translate
+};
+
+const bigSecurityMembersIcon = <BigSecurityMembersIcon />;
+
+function AccountCreationConfirmation(props: Props) {
+  const { t, accountCreationState } = props;
+  const { currency, erc20token, approvers, quorum } = accountCreationState;
 
   return (
     <div>
       <div style={{ textAlign: "center" }}>
         <BadgeSecurity
-          icon={<BigSecurityMembersIcon />}
+          icon={bigSecurityMembersIcon}
           label="Members"
           value={`${approvers.length} selected`}
         />
-        {/* <BadgeSecurity */}
-        {/*   icon={<BigSecurityTimeLockIcon />} */}
-        {/*   label="Time-lock" */}
-        {/*   disabled={!time_lock.enabled} */}
-        {/*   value={ */}
-        {/*     <TimeLockValue time_lock={time_lock.value * time_lock.frequency} /> */}
-        {/*   } */}
-        {/* /> */}
-        {/* <BadgeSecurity */}
-        {/*   icon={<BigSecurityRateLimiterIcon />} */}
-        {/*   label="Rate Limiter" */}
-        {/*   disabled={!rate_limiter.enabled} */}
-        {/*   value={ */}
-        {/*     <RateLimiterValue */}
-        {/*       max_transaction={rate_limiter.value} */}
-        {/*       time_slot={rate_limiter.frequency.value} */}
-        {/*     /> */}
-        {/*   } */}
-        {/* /> */}
       </div>
 
       <div style={{ marginTop: "50px" }}>
-        <LineRow label="account">
-          <AccountName name={name} currencyId={currency.id} />
-        </LineRow>
-        <LineRow label="Currency">
-          <span className="info-value currency">{currency.name}</span>
-        </LineRow>
+        {currency && (
+          <LineRow label="account">
+            <AccountName
+              name={accountCreationState.name}
+              currencyId={currency.id}
+            />
+          </LineRow>
+        )}
+        {erc20token && (
+          <Fragment>
+            <LineRow label="token account">{accountCreationState.name}</LineRow>
+            {accountCreationState.parent_account &&
+              accountCreationState.parent_account.name && (
+                <LineRow label="parent account">
+                  {accountCreationState.parent_account.name}
+                </LineRow>
+              )}
+          </Fragment>
+        )}
+        {currency && (
+          <LineRow label="Currency">
+            <span className="info-value currency">{currency.name}</span>
+          </LineRow>
+        )}
         <LineRow label={t("newAccount:confirmation.approvals")}>
           <Interpolate
             i18nKey="newAccount:confirmation.approvals_members"

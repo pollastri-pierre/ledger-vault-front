@@ -3,15 +3,17 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import type { MemoryHistory } from "history";
-import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
-import type { Member } from "data/types";
+import type { Member, Account } from "data/types";
+
+import { getEthAccounts } from "utils/accounts";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
 
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import NewAccountMutation from "api/mutations/NewAccountMutation";
+import ApprovedAccountsQuery from "api/queries/AccountsQuery";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 
@@ -28,8 +30,8 @@ import type {
 } from "redux/modules/account-creation";
 
 import {
+  updateAccountCreationState,
   changeTab,
-  selectCurrency,
   changeAccountName,
   switchInternalModal,
   addMember,
@@ -42,8 +44,8 @@ import {
 type Props = {
   restlay: RestlayEnvironment,
   history: MemoryHistory,
+  accounts: Account[],
   onChangeAccountName: string => void,
-  onSelectCurrency: CryptoCurrency => void,
   onChangeTabAccount: number => void,
   onSwitchInternalModal: string => void,
   onAddMember: Member => void,
@@ -51,7 +53,10 @@ type Props = {
   onSetTimelock: Timelock => void,
   onSetRatelimiter: Ratelimiter => void,
   onClearState: () => void,
-  accountCreation: AccountCreationState
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: AccountCreationState => $Shape<
+    AccountCreationState
+  >
 };
 
 // TODO this HIGHLY need some cleaning:
@@ -60,6 +65,7 @@ type Props = {
 //   is pointless. we should either pass the whole state OR only some keys.
 // - inconsistent naming
 export type StepProps = {
+  ethAccounts: Account[],
   approvers: Member[],
   members: Member[],
   switchInternalModal: string => void,
@@ -72,7 +78,6 @@ export type StepProps = {
   setRatelimiter: Ratelimiter => void,
   account: AccountCreationState,
   changeAccountName: string => void,
-  selectCurrency: CryptoCurrency => void,
   tabsIndex: number,
   onSelect: number => void,
   close: () => void,
@@ -86,16 +91,16 @@ const GATE_ACCOUNT_TYPES_BY_CURRENCY_FAMILY = {
 };
 
 const mapStateToProps = state => ({
-  accountCreation: state.accountCreation
+  accountCreationState: state.accountCreation
 });
 
 const mapDispatchToProps = {
+  updateAccountCreationState,
   onAddMember: addMember,
   onSetApprovals: setApprovals,
   onSetTimelock: setTimelock,
   onSetRatelimiter: setRatelimiter,
   onChangeTabAccount: changeTab,
-  onSelectCurrency: selectCurrency,
   onChangeAccountName: changeAccountName,
   onSwitchInternalModal: switchInternalModal,
   onClearState: clearState
@@ -111,41 +116,70 @@ class AccountCreation extends PureComponent<Props> {
   };
 
   createAccount = (entity_id: number) => {
-    const { restlay } = this.props;
-    const account = this.props.accountCreation;
+    const { restlay, accountCreationState } = this.props;
 
-    const approvers = account.approvers.map(pubKey => {
+    const approvers = accountCreationState.approvers.map(pubKey => {
       return { pub_key: pubKey };
     });
 
     const securityScheme: Object = {
-      quorum: account.quorum
+      quorum: accountCreationState.quorum
     };
 
-    if (account.time_lock.enabled) {
+    if (accountCreationState.time_lock.enabled) {
       Object.assign(securityScheme, {
-        time_lock: account.time_lock.value * account.time_lock.frequency
+        time_lock:
+          accountCreationState.time_lock.value *
+          accountCreationState.time_lock.frequency
       });
     }
 
-    if (account.rate_limiter.enabled) {
+    if (accountCreationState.rate_limiter.enabled) {
       Object.assign(securityScheme, {
         rate_limiter: {
-          max_transaction: account.rate_limiter.value,
-          time_slot: account.rate_limiter.frequency
+          max_transaction: accountCreationState.rate_limiter.value,
+          time_slot: accountCreationState.rate_limiter.frequency
         }
       });
     }
 
-    if (!account.currency) return;
+    if (!accountCreationState.currency && !accountCreationState.erc20token)
+      return;
 
-    const data = {
+    const data: Object = {
       account_id: entity_id,
-      name: account.name,
-      currency: { name: account.currency.id },
+      name: accountCreationState.name,
       security_scheme: securityScheme,
       members: approvers
     };
+
+    if (accountCreationState.currency) {
+      Object.assign(data, {
+        currency: { name: accountCreationState.currency.id }
+      });
+
+      // HACK because ll-common "ethereum_testnet" should be "ethereum_ropsten"
+      if (data.currency.name === "ethereum_testnet") {
+        data.currency.name = "ethereum_ropsten";
+      }
+    }
+
+    if (accountCreationState.erc20token) {
+      Object.assign(data, {
+        currency: {
+          // TODO: handle ethereum_ropsten
+          name: "ethereum_ropsten"
+          // name: "ethereum"
+        },
+        erc20: {
+          ticker: accountCreationState.erc20token.ticker,
+          address: accountCreationState.erc20token.contract_address,
+          decimals: accountCreationState.erc20token.decimals,
+          signature: accountCreationState.erc20token.signature || ""
+        },
+        parent_account: accountCreationState.parent_account
+      });
+    }
 
     return restlay
       .commitMutation(new NewAccountMutation(data))
@@ -154,8 +188,12 @@ class AccountCreation extends PureComponent<Props> {
   };
 
   getGateAccountType() {
-    const { accountCreation } = this.props;
-    const { currency } = accountCreation;
+    const { accountCreationState } = this.props;
+    const { currency, erc20token } = accountCreationState;
+
+    if (erc20token) {
+      return "ERC20";
+    }
 
     if (!currency) {
       throw new Error("Cannot gate account type without currency");
@@ -190,8 +228,11 @@ class AccountCreation extends PureComponent<Props> {
 
   render() {
     const {
+      accounts,
+      accountCreationState,
+      updateAccountCreationState,
+
       onChangeAccountName,
-      onSelectCurrency,
       onChangeTabAccount,
       onSwitchInternalModal,
       onAddMember,
@@ -200,8 +241,8 @@ class AccountCreation extends PureComponent<Props> {
       onSetRatelimiter
     } = this.props;
 
-    const account = this.props.accountCreation;
-    const Step = this.stepsByModalId[account.internModalId];
+    const Step = this.stepsByModalId[accountCreationState.internModalId];
+    const ethAccounts = getEthAccounts(accounts);
 
     if (!Step) return null;
 
@@ -209,22 +250,30 @@ class AccountCreation extends PureComponent<Props> {
       close: this.close,
       cancel: () => onSwitchInternalModal("main"),
 
-      // TODO why different names for same thing
-      approvers: account.approvers,
-      members: account.approvers,
+      // TODO yep, we already have `account` prop for that. but it's confusing.
+      // it's not storing an account but an account creation state. let's keep
+      // the old one for migrating smoothly
+      //
+      accountCreationState,
+      updateAccountCreationState,
+      ethAccounts,
 
-      tabsIndex: account.currentTab,
+      // TODO why different names for same thing?
+      approvers: accountCreationState.approvers,
+      members: accountCreationState.approvers,
+
+      // TODO legacy stuff
+      tabsIndex: accountCreationState.currentTab,
       switchInternalModal: onSwitchInternalModal,
       addMember: onAddMember,
       setApprovals: onSetApprovals,
-      approvals: account.quorum,
-      timelock: account.time_lock,
+      approvals: accountCreationState.quorum,
+      timelock: accountCreationState.time_lock,
       setTimelock: onSetTimelock,
-      rate_limiter: account.rate_limiter,
+      rate_limiter: accountCreationState.rate_limiter,
       setRatelimiter: onSetRatelimiter,
-      account: account,
+      account: accountCreationState,
       changeAccountName: onChangeAccountName,
-      selectCurrency: onSelectCurrency,
       onSelect: onChangeTabAccount
     };
 
@@ -238,5 +287,10 @@ export default connectData(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(AccountCreation)
+  )(AccountCreation),
+  {
+    queries: {
+      accounts: ApprovedAccountsQuery
+    }
+  }
 );

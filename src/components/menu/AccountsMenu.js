@@ -4,7 +4,8 @@ import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import MenuList from "@material-ui/core/MenuList";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import AccountUnitCode from "components/AccountUnitCode";
 
 import {
   isAccountOutdated,
@@ -43,7 +44,6 @@ const styles = {
   }
 };
 
-const VISIBLE_STATUS = ["APPROVED", "PENDING_UPDATE"];
 class AccountsMenu extends Component<{
   classes: Object,
   accounts: Array<Account>,
@@ -53,43 +53,39 @@ class AccountsMenu extends Component<{
     const { accounts, classes, match } = this.props;
     return (
       <MenuList>
-        {accounts
-          .filter(account => VISIBLE_STATUS.indexOf(account.status) > -1)
-          .map(account => {
-            const curr = getCryptoCurrencyById(account.currency_id);
-            const unit = curr.units.reduce(
-              (prev, current) =>
-                prev.magnitude > current.magnitude ? prev : current
-            );
-            return (
-              <MenuLink
-                color={curr.color}
-                key={account.id}
-                to={`${match.url}/account/${account.id}`}
-                className={cx(classes.item, {
-                  [classes.needUpdate]:
-                    isAccountOutdated(account) ||
-                    account.status === STATUS_UPDATE_IN_PROGRESS
-                })}
-              >
-                {isAccountOutdated(account) ? (
+        {accounts.map(account => {
+          const curr = getCryptoCurrencyById(account.currency_id);
+          return (
+            <MenuLink
+              color={account.account_type === "ERC20" ? "black" : curr.color}
+              key={account.id}
+              to={`${match.url}/account/${account.id}`}
+              className={cx(classes.item, {
+                [classes.needUpdate]:
+                  isAccountOutdated(account) ||
+                  account.status === STATUS_UPDATE_IN_PROGRESS
+              })}
+            >
+              {isAccountOutdated(account) ? (
+                <span className={classes.name}>
+                  <CurrencyIndex
+                    index={account.index}
+                    currency={account.currency_id}
+                  />
+                </span>
+              ) : (
+                <div>
                   <span className={classes.name}>
-                    <CurrencyIndex
-                      index={account.index}
-                      currency={account.currency_id}
-                    />
+                    {getAccountTitle(account)}
                   </span>
-                ) : (
-                  <div>
-                    <span className={classes.name}>
-                      {getAccountTitle(account)}
-                    </span>
-                    <span className={classes.unit}>{unit.code}</span>
-                  </div>
-                )}
-              </MenuLink>
-            );
-          })}
+                  <span className={classes.unit}>
+                    <AccountUnitCode account={account} />
+                  </span>
+                </div>
+              )}
+            </MenuLink>
+          );
+        })}
       </MenuList>
     );
   }

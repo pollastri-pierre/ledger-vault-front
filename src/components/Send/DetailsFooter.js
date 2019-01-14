@@ -35,20 +35,23 @@ class DetailsFooter extends PureComponent<Props> {
   render() {
     const { account, totalSpent, canNext, onChangeTab, classes } = this.props;
 
+    const erc20Account = account.account_type == "ERC20" ? true : false;
     return (
-      <div className={classes.footerDetails}>
-        <div className={classes.totalSpent}>
-          <span>
-            <strong>
-              <Trans i18nKey="send:details.totalSpent" />{" "}
-            </strong>
-            {account.settings.currency_unit.code}{" "}
-            {formatCurrencyUnit(account.settings.currency_unit, totalSpent)}
-          </span>
-          <span className={classes.fiat}>
-            (<CounterValue value={totalSpent} from={account.currency_id} />)
-          </span>
-        </div>
+      <div className={!erc20Account ? classes.footerDetails : null}>
+        {!erc20Account && (
+          <div className={classes.totalSpent}>
+            <span>
+              <strong>
+                <Trans i18nKey="send:details.totalSpent" />{" "}
+              </strong>
+              {account.settings.currency_unit.code}{" "}
+              {formatCurrencyUnit(account.settings.currency_unit, totalSpent)}
+            </span>
+            <span className={classes.fiat}>
+              (<CounterValue value={totalSpent} from={account.currency_id} />)
+            </span>
+          </div>
+        )}
         <DialogButton
           highlight
           right

@@ -21,7 +21,7 @@ import colors from "shared/colors";
 import ReceiveLayout from "./ReceiveLayout";
 import AddressRejected from "./AddressRejected";
 import ShieldBox from "./ShieldBox";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 type Props = {
   account: Account,

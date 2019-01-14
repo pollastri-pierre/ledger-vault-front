@@ -8,6 +8,6 @@ type Response = Account[];
 
 // Fetch all accounts
 export default class AccountsQuery extends Query<Input, Response> {
-  uri = "/accounts/approved";
+  uri = "/accounts/status/APPROVED,VIEW_ONLY";
   responseSchema = [schema.Account];
 }

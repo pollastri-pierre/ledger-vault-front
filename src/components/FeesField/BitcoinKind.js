@@ -13,7 +13,7 @@ import { getFees, InputFieldMerge } from "components/Send/helpers";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
   fieldTitle: {

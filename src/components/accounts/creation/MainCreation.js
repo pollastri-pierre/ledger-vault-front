@@ -8,15 +8,23 @@ import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import { DialogButton } from "../../";
-import type { Currency, Translate } from "data/types";
+import type { Translate, Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState
+} from "redux/modules/account-creation";
+
 type Props = {
-  changeAccountName: Function,
-  selectCurrency: (cur: Currency) => void,
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
+  ethAccounts: Account[],
+
+  // TODO: legacy stuff
   onSelect: Function,
   t: Translate,
   switchInternalModal: Function,
@@ -39,26 +47,32 @@ class MainCreation extends Component<Props> {
     this.props.onSelect(value);
   };
   render() {
-    const { props } = this;
     const {
-      changeAccountName,
+      accountCreationState,
+      updateAccountCreationState,
+      ethAccounts,
+
       account,
-      selectCurrency,
       t,
       onSelect,
       tabsIndex,
       classes,
       switchInternalModal
-    } = props;
+    } = this.props;
 
     let isNextDisabled = false;
 
     switch (tabsIndex) {
       case 0:
-        isNextDisabled = _.isNull(account.currency);
+        isNextDisabled =
+          _.isNull(account.erc20token) && _.isNull(account.currency);
         break;
       case 1:
-        isNextDisabled = account.name === "";
+        isNextDisabled = account.erc20token
+          ? account.name === "" ||
+            (!account.parent_account ||
+              (!account.parent_account.id && !account.parent_account.name))
+          : account.name === "";
         break;
       case 2:
         isNextDisabled =
@@ -83,10 +97,15 @@ class MainCreation extends Component<Props> {
             value={tabsIndex}
             indicatorColor="primary"
           >
-            <Tab label={`1. ${t("newAccount:currency")}`} disableRipple />
+            <Tab
+              label={`1. ${t("newAccount:currency.tabTitle")}`}
+              disableRipple
+            />
             <Tab
               label={`2. ${t("newAccount:options.title")}`}
-              disabled={_.isNull(account.currency)}
+              disabled={
+                _.isNull(account.currency) && _.isNull(account.erc20token)
+              }
               disableRipple
             />
             <Tab
@@ -108,15 +127,16 @@ class MainCreation extends Component<Props> {
         <div className="content">
           {tabsIndex === 0 && (
             <AccountCreationCurrencies
-              currency={account.currency}
-              onSelect={selectCurrency}
+              ethAccounts={ethAccounts}
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
             />
           )}
           {tabsIndex === 1 && (
             <AccountCreationOptions
-              currency={account.currency}
-              name={account.name}
-              changeName={changeAccountName}
+              ethAccounts={ethAccounts}
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
             />
           )}
           {tabsIndex === 2 && (
@@ -125,7 +145,12 @@ class MainCreation extends Component<Props> {
               account={account}
             />
           )}
-          {tabsIndex === 3 && <AccountCreationConfirmation account={account} />}
+          {tabsIndex === 3 && (
+            <AccountCreationConfirmation
+              accountCreationState={accountCreationState}
+              updateAccountCreationState={updateAccountCreationState}
+            />
+          )}
         </div>
         <div className="footer">
           {_.includes([0, 1, 2], tabsIndex) ? (

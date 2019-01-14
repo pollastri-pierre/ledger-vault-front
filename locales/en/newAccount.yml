@@ -1,7 +1,15 @@
 title: New account
-currency: currency
+currency:
+  tabTitle: currency
+  enterCrypto: Enter or select a crypto asset
+erc20:
+  infoNewAccount: To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center.
+  selectExisting: Select an existing Ethereum account
+  createNew: Create a new read-only Ethereum account
 options:
   title: name
+  parentName: Parent account name
+  selectedParent: Selected ETH account
   name: name
   acc_name_placeholder: Enter account name
 security:

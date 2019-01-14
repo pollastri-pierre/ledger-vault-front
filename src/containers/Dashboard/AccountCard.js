@@ -29,16 +29,15 @@ const styles = {
     color: "#767676"
   }
 };
-// const Separator = withStyles(styles)(({ classes }) => (
-//   <div className={classes.separator} />
-// ));
 
-class AccountCard extends Component<{
+type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
   index: number,
   filter: string
-}> {
+};
+
+class AccountCard extends Component<Props> {
   render() {
     const { account, filter, classes, index } = this.props;
 

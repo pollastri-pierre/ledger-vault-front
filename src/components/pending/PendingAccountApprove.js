@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import styles from "./styles";
+import { getAccountCurrencyName } from "utils/accounts";
 
 const Empty = ({ approved }: { approved?: boolean }) =>
   approved ? (
@@ -76,10 +77,7 @@ function PendingAccountApprove(props: Props) {
               <DateFormat date={account.created_on} />
             </span>
             <span className={classes.name}>
-              <AccountName
-                name={account.name}
-                currencyId={account.currency_id}
-              />
+              <AccountName account={account} />
             </span>
           </div>
 
@@ -90,7 +88,9 @@ function PendingAccountApprove(props: Props) {
               nbRequired={quorum}
               user={user}
             />
-            <span className={classes.currency}>{account.currency_id}</span>
+            <span className={classes.currency}>
+              {getAccountCurrencyName(account)}
+            </span>
           </div>
         </Link>
       ))}
