@@ -1,5 +1,7 @@
 //@flow
+import { connect } from "react-redux";
 import Card from "components/Card";
+import { toggleAndSelect } from "redux/modules/update-accounts";
 import { Link } from "react-router-dom";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
@@ -108,6 +110,7 @@ const styles = {
 };
 type Props = {
   account: Account,
+  onOpen: (id: number) => void,
   me: Member,
   match: Object,
   t: Translate,
@@ -140,11 +143,16 @@ class AccountQuickInfo extends Component<Props, State> {
   renderMembersLink = () => {
     const {
       account,
+      onOpen,
       account: { members },
       classes: { toggleModalMembers }
     } = this.props;
     if (account.status === "VIEW_ONLY") {
-      return <span>provide operations rule</span>;
+      return (
+        <span onClick={onOpen}>
+          <Trans i18nKey="accountView:view_only_provide_rules" />
+        </span>
+      );
     }
     return (
       <Fragment>
@@ -294,4 +302,14 @@ class AccountQuickInfo extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(translate()(AccountQuickInfo));
+const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
+  onOpen: () => dispatch(toggleAndSelect(ownProps.account))
+});
+export default withStyles(styles)(
+  translate()(
+    connect(
+      null,
+      mapDispatchToProps
+    )(AccountQuickInfo)
+  )
+);
