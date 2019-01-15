@@ -106,32 +106,29 @@ class FeesFieldEthereumKind extends PureComponent<
       transaction.recipient
     );
     if (this._unmounted) return;
-    if (isRecipientValid) {
-      // NOTE: both initialized with null because gate expects it for ETH
-      const operation = {
-        amount: transaction.amount || 0,
-        recipient: transaction.recipient,
-        gas_limit: null,
-        gas_price: null
-      };
-      const estimatedFees = await getFees(
-        account,
-        transaction,
-        operation,
-        restlay
-      );
+    if (!isRecipientValid) return;
+    // NOTE: both initialized with null because gate expects it for ETH
+    const operation = {
+      amount: transaction.amount || 0,
+      recipient: transaction.recipient,
+      gas_limit: null,
+      gas_price: null
+    };
+    const estimatedFees = await getFees(
+      account,
+      transaction,
+      operation,
+      restlay
+    );
 
-      if (this._unmounted) return;
-      this.setState({ gasPriceStatus: "loaded", gasLimitStatus: "loaded" });
-      const { onChangeTransaction } = this.props;
-      onChangeTransaction({
-        ...transaction,
-        gasPrice: estimatedFees.gas_price,
-        gasLimit: estimatedFees.gas_limit
-      });
-    } else {
-      return;
-    }
+    if (this._unmounted) return;
+    this.setState({ gasPriceStatus: "loaded", gasLimitStatus: "loaded" });
+    const { onChangeTransaction } = this.props;
+    onChangeTransaction({
+      ...transaction,
+      gasPrice: estimatedFees.gas_price,
+      gasLimit: estimatedFees.gas_limit
+    });
   }
 
   state = {
