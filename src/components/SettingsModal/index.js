@@ -19,9 +19,9 @@ import FiatCurrenciesQuery from "api/queries/FiatCurrenciesQuery";
 import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
 import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import HeaderRightClose from "components/HeaderRightClose";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import type { Account, Translate } from "data/types";
-import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
@@ -176,6 +176,7 @@ const styles = {
   }
 };
 
+// TODO: refactor and split the file
 class SettingsField extends Component<{
   label: string,
   children: React$Node,
@@ -276,7 +277,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       props: { restlay, account },
       state: { settings }
     } = this;
-    const currencyCode = settings.currency_unit.name;
+    const currencyCode = settings.currency_unit.code;
     const m = new SaveAccountSettingsMutation({
       account,
       currency_unit: currencyCode
@@ -365,7 +366,7 @@ class AccountSettingsEdit extends Component<Props, State> {
 
           <SettingsField topPadded label="Units" classes={classes}>
             <SelectTab
-              tabs={units.map(elem => elem.name)}
+              tabs={units.map(elem => elem.code)}
               onChange={this.onUnitIndexChange}
               selected={unit_index}
               theme="inline"
@@ -448,6 +449,7 @@ class SettingsModal extends Component<{
     const { accounts, restlay, close, classes, t, fiats } = this.props;
     return (
       <div className={classes.container}>
+        <HeaderRightClose close={close} />
         <Side classes={classes} accounts={accounts} />
         <div className={classes.contentWrapper}>
           <div className={classes.content}>
@@ -478,11 +480,6 @@ class SettingsModal extends Component<{
                 />
               </Switch>
             ) : null}
-          </div>
-          <div className={classes.footer}>
-            <DialogButton highlight right onTouchTap={() => close(true)}>
-              Done
-            </DialogButton>
           </div>
         </div>
       </div>
