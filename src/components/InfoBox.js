@@ -12,6 +12,7 @@ type InfoBoxType = "info" | "warning" | "error";
 type Props = {
   className?: string,
   type: InfoBoxType,
+  Footer?: *,
   withIcon: boolean,
   children: *,
   classes: { [_: $Keys<typeof styles>]: string }
@@ -20,10 +21,22 @@ type Props = {
 const styles = {
   container: {
     fontSize: 12,
-    padding: 8,
+    flexDirection: "column",
     borderRadius: 3,
     alignItems: "center",
     display: "flex"
+  },
+  content: {
+    padding: 8,
+    display: "flex"
+  },
+  footer: {
+    background: "rgba(0,0,0,0.1)",
+    display: "flex",
+    marginTop: 11,
+    justifyContent: "flex-end",
+    padding: 5,
+    width: "100%"
   },
   icon: {
     marginRight: 10
@@ -32,9 +45,7 @@ const styles = {
     backgroundColor: hexToRgbA(colors.ocean, 0.2)
   },
   isWarning: {
-    color: "white",
-    fontWeight: "bold",
-    backgroundColor: colors.grenade
+    backgroundColor: colors.warning
   },
   isError: {
     backgroundColor: "red"
@@ -55,6 +66,7 @@ class InfoBox extends PureComponent<Props> {
     const {
       children,
       type,
+      Footer,
       withIcon,
       className,
       classes,
@@ -71,8 +83,11 @@ class InfoBox extends PureComponent<Props> {
           className
         )}
       >
-        {withIcon && this.renderIcon()}
-        <div>{children}</div>
+        <div className={classes.content}>
+          {withIcon && this.renderIcon()}
+          <div>{children}</div>
+        </div>
+        {Footer && <div className={classes.footer}>{Footer}</div>}
       </div>
     );
   }
