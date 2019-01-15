@@ -100,8 +100,7 @@ const styles = {
 class RowT extends Component<{
   cell: Cell,
   children: React$Node,
-  classes: Object,
-  classes: Object,
+  classes: { [_: $Keys<typeof styles>]: string },
   openAccount: number => void
 }> {
   open = () => {

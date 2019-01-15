@@ -4,6 +4,7 @@ import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
 import SendLayout from "./SendLayout";
 import Amount from "./Amount";
 import Address from "./Address";
@@ -14,6 +15,7 @@ type Props<Transaction> = {
   bridge: WalletBridge<Transaction>,
   onChangeTransaction: Transaction => void,
   account: Account,
+  accounts: Account[],
   restlay: RestlayEnvironment,
   onTabChange: (SyntheticInputEvent<*>, number) => void
 };
@@ -21,13 +23,15 @@ type Props<Transaction> = {
 type State = {
   canNext: boolean,
   amountIsValid: boolean,
-  totalSpent: number
+  totalSpent: number,
+  feeIsValid: boolean
 };
 
 class SendDetails extends PureComponent<Props<*>, State> {
   state = {
     canNext: false,
     amountIsValid: true,
+    feeIsValid: true,
     totalSpent: 0
   };
 
@@ -52,6 +56,19 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
   syncId = 0;
 
+  async feeIsValid() {
+    const { account, accounts, transaction, bridge } = this.props;
+    if (account.account_type === "ERC20") {
+      const parentETH = accounts.find(a => a.id === account.parent_id);
+      const feeIsValid =
+        parentETH &&
+        bridge.checkValidFee &&
+        (await bridge.checkValidFee(account, transaction, parentETH));
+      return feeIsValid;
+    }
+    return true;
+  }
+
   async resync() {
     const { account, bridge, transaction, restlay } = this.props;
     const syncId = ++this.syncId;
@@ -66,19 +83,21 @@ class SendDetails extends PureComponent<Props<*>, State> {
       if (syncId !== this.syncId) return;
       const amountIsValid = totalSpent < account.balance;
       this.setState({ amountIsValid });
-
-      const canNext = await bridge.checkValidTransaction(
+      const txIsValid = await bridge.checkValidTransaction(
         account,
         transaction,
         restlay
       );
+      const feeIsValid = await this.feeIsValid();
       if (syncId !== this.syncId) return;
       if (this._unmounted) return;
+      const canNext = txIsValid && feeIsValid;
+
       canNext
         ? this.setState({ totalSpent })
         : this.setState({ totalSpent: 0 });
 
-      this.setState({ canNext });
+      this.setState({ canNext, feeIsValid });
     } catch (err) {
       this.setState({
         canNext: false
@@ -93,7 +112,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
   render() {
     const { transaction, account, onChangeTransaction, bridge } = this.props;
-    const { canNext, amountIsValid, totalSpent } = this.state;
+    const { canNext, amountIsValid, totalSpent, feeIsValid } = this.state;
     const FeesField = bridge.EditFees;
     return (
       <SendLayout
@@ -107,6 +126,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
                 transaction={transaction}
                 onChangeTransaction={onChangeTransaction}
                 bridge={bridge}
+                feeIsValid={feeIsValid}
               />
             )}
           </div>
@@ -124,4 +144,8 @@ class SendDetails extends PureComponent<Props<*>, State> {
   }
 }
 
-export default connectData(SendDetails);
+export default connectData(SendDetails, {
+  queries: {
+    accounts: AccountsQuery
+  }
+});

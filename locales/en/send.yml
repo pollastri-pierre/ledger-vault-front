@@ -28,3 +28,4 @@ confirmation:
   fees: Confirmation Fees
   total: Total Amount
 nonEIP55Warning: 'Auto-verification not available: carefully verify the address'
+parentFeeExceeded: Max operation fee exceeds ETH parent account balance

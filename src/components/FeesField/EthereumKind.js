@@ -46,6 +46,7 @@ type Props<Transaction> = {
   classes: { [_: $Keys<typeof styles>]: string },
   transaction: Transaction,
   account: Account,
+  feeIsValid: boolean,
   onChangeTransaction: Transaction => void,
   bridge: WalletBridge<Transaction>,
   restlay: RestlayEnvironment
@@ -151,9 +152,10 @@ class FeesFieldEthereumKind extends PureComponent<
   onGasLimitChange = this.createMutation("gasLimit");
 
   render() {
-    const { classes, transaction, account } = this.props;
+    const { classes, transaction, account, feeIsValid } = this.props;
     const currency = getCryptoCurrencyById(account.currency_id);
     const { gasPriceStatus, gasLimitStatus, totalFees } = this.state;
+    // TODO: update {currency.units[1]} with something better
     return (
       <Fragment>
         <div className={classes.root}>
@@ -187,7 +189,11 @@ class FeesFieldEthereumKind extends PureComponent<
             />
           </div>
         </div>
-        <TotalFees account={account} totalFees={totalFees} />
+        <TotalFees
+          account={account}
+          totalFees={totalFees}
+          feeIsValid={feeIsValid}
+        />
       </Fragment>
     );
   }

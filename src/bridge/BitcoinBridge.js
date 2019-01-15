@@ -84,7 +84,6 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
-  getRecipientWarning: () => Promise.resolve(null),
 
   getTransactionFeeLevel: (a: Account, t: Transaction) => t.feeLevel,
   editTransactionFeeLevel: (

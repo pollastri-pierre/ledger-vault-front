@@ -62,6 +62,11 @@ export interface WalletBridge<Transaction> {
     feeLevel: Speed
   ) => Transaction;
   recipientWarning?: (recipient: string) => Promise<?Error>;
+  checkValidFee?: (
+    account: Account,
+    transaction: Transaction,
+    parentETH: Account
+  ) => Promise<boolean>;
   EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
