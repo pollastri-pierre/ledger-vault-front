@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Card from "components/Card";
 import { toggleAndSelect } from "redux/modules/update-accounts";
 import { Link } from "react-router-dom";
+import NoStyleLink from "components/NoStyleLink";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
 import {
@@ -10,16 +11,15 @@ import {
   isAccountBeingUpdated,
   hasUserApprovedAccount
 } from "utils/accounts";
-import Bell from "components/icons/thin/Bell";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
 import { Trans } from "react-i18next";
 import colors from "shared/colors";
-import EditButton from "components/UpdateAccounts/EditButton";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account, Member } from "data/types";
 import InfoBox from "components/InfoBox";
+import Button from "@material-ui/core/Button";
 
 const row = {
   base: {
@@ -58,33 +58,6 @@ const styles = {
     alignItems: "baseline",
     justifyContent: "space-between"
   },
-  update: {
-    cursor: "pointer",
-    color: colors.grenade,
-    fontSize: 12,
-    marginTop: 5,
-    fontWeight: "bold"
-  },
-  subtext: {
-    color: "black",
-    fontWeight: "normal"
-  },
-  right: {
-    position: "absolute",
-    top: 35,
-    right: 50,
-
-    background: "#ea2e492b",
-    cursor: "pointer",
-    padding: 20,
-    borderRadius: 5,
-    "& span": {
-      width: 200,
-      fontSize: 11,
-      marginTop: 5,
-      display: "block"
-    }
-  },
   modalMembers: {
     width: 400,
     padding: 20
@@ -104,8 +77,17 @@ const styles = {
     textDecoration: "underline",
     color: colors.ocean
   },
-  viewOnlyWarning: {
-    marginTop: 20
+  actionButton: {
+    background: "#ca630b",
+    fontWeight: "bold",
+    height: 20,
+    fontSize: 11
+  },
+  infobox: {
+    position: "absolute",
+    width: 300,
+    right: 50,
+    top: 50
   }
 };
 type Props = {
@@ -141,18 +123,12 @@ class AccountQuickInfo extends Component<Props, State> {
   renderMembersLink = () => {
     const {
       account,
-      onOpen,
       account: { members },
       classes: { toggleModalMembers }
     } = this.props;
-    if (account.status === "VIEW_ONLY") {
-      return (
-        <span onClick={onOpen}>
-          <Trans i18nKey="accountView:view_only_provide_rules" />
-        </span>
-      );
-    }
-    return (
+    return account.status === "VIEW_ONLY" ? (
+      <span>-</span>
+    ) : (
       <Fragment>
         <span>{members.length}</span>
         <span className={toggleModalMembers} onClick={this.toggleModalMembers}>
@@ -182,7 +158,7 @@ class AccountQuickInfo extends Component<Props, State> {
   };
 
   render() {
-    const { account, classes, me } = this.props;
+    const { account, classes, me, onOpen } = this.props;
     const { modalMembersOpen } = this.state;
     const orga = location.pathname.split("/")[1];
     return (
@@ -230,7 +206,16 @@ class AccountQuickInfo extends Component<Props, State> {
                 <InfoBox
                   type="warning"
                   withIcon
-                  className={classes.viewOnlyWarning}
+                  className={classes.infobox}
+                  Footer={
+                    <Button
+                      onClick={onOpen}
+                      variant="outlined"
+                      className={classes.actionButton}
+                    >
+                      <Trans i18nKey="accountView:view_only_provide_rules" />
+                    </Button>
+                  }
                 >
                   <Trans i18nKey="accountView:view_only_warning" />
                 </InfoBox>
@@ -253,45 +238,49 @@ class AccountQuickInfo extends Component<Props, State> {
             </div>
             <div>
               {isAccountOutdated(account) && (
-                <EditButton className={classes.update} account={account}>
-                  <div className={classes.right}>
-                    <span>
-                      <Bell type="red" />
-                      {<Trans i18nKey="update:provide_rule" />}
-                    </span>
-                    <span className={classes.subtext}>
-                      {<Trans i18nKey="update:provide_rule_subtext" />}
-                    </span>
-                  </div>
-                </EditButton>
+                <InfoBox
+                  type="warning"
+                  withIcon
+                  className={classes.infobox}
+                  Footer={
+                    <Button onClick={onOpen} className={classes.actionButton}>
+                      <Trans i18nKey="update:provide_rule" />
+                    </Button>
+                  }
+                >
+                  <Trans i18nKey="update:provide_rule_subtext" />
+                </InfoBox>
               )}
               {isAccountBeingUpdated(account) &&
                 !hasUserApprovedAccount(account, me) && (
-                  <Link to={`/${orga}/pending`} className={classes.update}>
-                    <div className={classes.right}>
-                      <span>
-                        <Bell type="red" />
-                        <Trans i18nKey="updateAccounts:approve" />
-                      </span>
-                      <span className={classes.subtext}>
-                        <Trans i18nKey="updateAccounts:desc_approve" />
-                      </span>
-                    </div>
-                  </Link>
+                  <InfoBox
+                    type="warning"
+                    withIcon
+                    className={classes.infobox}
+                    Footer={
+                      <Button
+                        href={`/${orga}/pending`}
+                        className={classes.actionButton}
+                      >
+                        <NoStyleLink to={`/${orga}/pending`}>
+                          <Trans i18nKey="updateAccounts:approve" />
+                        </NoStyleLink>
+                      </Button>
+                    }
+                  >
+                    <Trans i18nKey="updateAccounts:desc_approve" />
+                  </InfoBox>
                 )}
               {isAccountBeingUpdated(account) &&
                 hasUserApprovedAccount(account, me) && (
-                  <Link to={`/${orga}/pending`} className={classes.update}>
-                    <div className={classes.right}>
-                      <span>
-                        <Bell type="red" />
-                        <Trans i18nKey="updateAccounts:quorum" />
-                      </span>
-                      <span className={classes.subtext}>
-                        <Trans i18nKey="updateAccounts:quorum_approve" />
-                      </span>
+                  <InfoBox type="info" withIcon className={classes.infobox}>
+                    <h4>
+                      <Trans i18nKey="updateAccounts:quorum" />
+                    </h4>
+                    <div>
+                      <Trans i18nKey="updateAccounts:quorum_approve" />
                     </div>
-                  </Link>
+                  </InfoBox>
                 )}
             </div>
           </div>
