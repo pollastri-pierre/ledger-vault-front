@@ -14,15 +14,12 @@ import DialogButton from "components/buttons/DialogButton";
 import Copy from "components/icons/Copy";
 import colors from "shared/colors";
 
+import InfoModal from "components/InfoModal";
 import SendLayout from "./SendLayout";
 
 const styles = {
   warningMsg: {
-    fontSize: 11,
-    color: colors.steel,
-    lineHeight: 1.82,
-    marginTop: 15,
-    textAlign: "center"
+    marginTop: 25
   },
   recipientContainer: {
     display: "flex",
@@ -159,9 +156,9 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
                 )}
               </LineRow>
             </div>
-            <div className={classes.warningMsg}>
+            <InfoModal className={classes.warningMsg}>
               <Trans i18nKey="send:confirmation.desc" />
-            </div>
+            </InfoModal>
           </Fragment>
         }
         footer={
