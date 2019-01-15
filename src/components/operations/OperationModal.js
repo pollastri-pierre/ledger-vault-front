@@ -1,11 +1,13 @@
 // @flow
 import React, { Component } from "react";
+import type { MemoryHistory } from "history";
+import { translate } from "react-i18next";
 import OperationDetails from "./OperationDetails";
 
 type Props = {
-  history: *,
-  match: *,
-  close: *
+  history: MemoryHistory,
+  match: Object,
+  close: () => void
 };
 
 class OperationModal extends Component<Props> {
@@ -23,4 +25,4 @@ class OperationModal extends Component<Props> {
   }
 }
 
-export default OperationModal;
+export default translate()(OperationModal);

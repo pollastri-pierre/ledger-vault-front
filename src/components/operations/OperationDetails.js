@@ -1,20 +1,25 @@
 // @flow
 import React, { Component } from "react";
-import TryAgain from "components/TryAgain";
+import { Trans } from "react-i18next";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
-
-import ModalLoading from "components/ModalLoading";
 import { withStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import cx from "classnames";
+
+import connectData from "restlay/connectData";
+
+import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+
+import TryAgain from "components/TryAgain";
+import ModalLoading from "components/ModalLoading";
+import HeaderRightClose from "components/HeaderRightClose";
+import modals from "shared/modals";
+import type { Operation, Account } from "data/types";
 import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
-import connectData from "restlay/connectData";
-import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
-import ProfileQuery from "api/queries/ProfileQuery";
-import type { Operation, Account } from "data/types";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import modals from "shared/modals";
 import TabDetails from "./TabDetails";
 import { DialogButton, Overscroll } from "..";
 
@@ -35,6 +40,10 @@ const styles = {
     ...modals.base,
     width: 440,
     height: 615
+  },
+  footerContainer: {
+    display: "flex",
+    justifyContent: "flex-end"
   }
 };
 
@@ -62,23 +71,35 @@ class OperationDetails extends Component<Props, *> {
     return (
       <div className={classes.base}>
         <header>
-          <h2>Operation details</h2>
+          <h2>
+            <Trans i18nKey="operationDetails:title" />
+          </h2>
+          <HeaderRightClose close={close} />
           <Tabs
             value={value}
             onChange={this.handleChange}
             indicatorColor="primary"
           >
-            <Tab label="Overview" disableRipple />
             <Tab
-              label="Details"
+              label={<Trans i18nKey="operationDetails:tabs.overview" />}
+              disableRipple
+            />
+            <Tab
+              label={<Trans i18nKey="operationDetails:tabs.details" />}
               disableRipple
               disabled={!operation.transaction}
             />
             {operation.type !== "RECEIVE" && (
-              <Tab label="Label" disableRipple />
+              <Tab
+                label={<Trans i18nKey="operationDetails:tabs.label" />}
+                disableRipple
+              />
             )}
             {operation.approvals.length > 0 && (
-              <Tab label="History" disableRipple />
+              <Tab
+                label={<Trans i18nKey="operationDetails:tabs.history" />}
+                disableRipple
+              />
             )}
           </Tabs>
         </header>
@@ -92,7 +113,7 @@ class OperationDetails extends Component<Props, *> {
         )}
         {value === 2 && <TabLabel note={note} />}
         {value === 3 && <TabHistory operation={operation} />}
-        <div className="footer">
+        <div className={cx("footer", classes.footerContainer)}>
           {account.currency_id &&
           operation.transaction &&
           operation.transaction.hash &&
@@ -106,13 +127,10 @@ class OperationDetails extends Component<Props, *> {
                   operation.transaction.hash
                 )}
               >
-                Explore
+                <Trans i18nKey="operationDetails:explore" />
               </a>
             </DialogButton>
           ) : null}
-          <DialogButton highlight right onTouchTap={close}>
-            Done
-          </DialogButton>
         </div>
       </div>
     );

@@ -53,11 +53,11 @@ class Amount extends Component<Props> {
           erc20Format={erc20Format}
         />{" "}
         <span className={classes.flat}>
-          <CounterValue
+          (<CounterValue
             value={value}
             from={account.currency_id}
             disableCountervalue={disableCountervalue}
-          />
+          />)
         </span>
       </span>
     );

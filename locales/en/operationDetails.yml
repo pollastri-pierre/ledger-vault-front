@@ -1,0 +1,16 @@
+title: Operation details
+tabs:
+  overview: Overview
+  details: Details
+  label: Label
+  history: History
+overview:
+  identifier: Identifier
+  total: Total spent
+  fees: Fees
+  date: Sent date
+  account: Account
+  status: Status
+  copy: Copy
+  copied: Copied
+explore: Explore
