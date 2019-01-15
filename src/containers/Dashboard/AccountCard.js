@@ -40,6 +40,7 @@ type Props = {
 class AccountCard extends Component<Props> {
   render() {
     const { account, filter, classes, index } = this.props;
+    const erc20Format = account.account_type === "ERC20";
 
     const title = (
       <div>
@@ -63,10 +64,18 @@ class AccountCard extends Component<Props> {
         {/* <Separator /> */}
         <div>
           <div className={classes.cryptocur}>
-            <CurrencyAccountValue account={account} value={account.balance} />
+            <CurrencyAccountValue
+              account={account}
+              value={account.balance}
+              erc20Format={erc20Format}
+            />
           </div>
           <div className={classes.realcur}>
-            <CounterValue from={account.currency_id} value={account.balance} />
+            <CounterValue
+              from={account.currency_id}
+              value={account.balance}
+              disableCountervalue={erc20Format}
+            />
           </div>
         </div>
       </Card>

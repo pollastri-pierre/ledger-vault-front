@@ -137,10 +137,7 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
                 )}
               </LineRow>
               <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
-                <AccountName
-                  name={account.name}
-                  currencyId={account.currency_id}
-                />
+                <AccountName account={account} />
               </LineRow>
               <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
                 {fees !== null && <Amount account={account} value={fees} />}
