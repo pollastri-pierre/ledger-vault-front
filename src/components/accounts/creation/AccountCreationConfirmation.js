@@ -6,12 +6,12 @@ import { translate, Interpolate } from "react-i18next";
 import type { State as AccountCreationState } from "redux/modules/account-creation";
 
 import type { Translate } from "data/types";
+import InfoModal from "components/InfoModal";
 import { BigSecurityMembersIcon } from "../../icons";
 
 import LineRow from "../../LineRow";
 import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
-import InfoModal from "../../InfoModal";
 
 type Props = {
   accountCreationState: AccountCreationState,
@@ -67,7 +67,7 @@ function AccountCreationConfirmation(props: Props) {
           />
         </LineRow>
       </div>
-      <div style={{ marginTop: "50px" }}>
+      <div style={{ marginTop: "30px" }}>
         <InfoModal className="confirmation-explain">
           {t("newAccount:confirmation.desc")}
         </InfoModal>
