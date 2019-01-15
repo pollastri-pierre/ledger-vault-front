@@ -2,8 +2,8 @@
 import React, { Component } from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import colors from "../../../shared/colors";
 import { withStyles } from "@material-ui/core/styles";
+import colors from "../../../shared/colors";
 import ArrowDown from "../../icons/full/ArrowDown";
 
 const styles = {

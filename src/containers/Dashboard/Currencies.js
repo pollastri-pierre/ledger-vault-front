@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import { connect } from "react-redux";
 import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
@@ -28,7 +28,7 @@ const mapStateToProps = (state, ownProps) => {
       const currency_id = account.currency_id;
       const currency = getCryptoCurrencyById(currency_id);
       const balance = account.balance;
-      //check if currency already added
+      // check if currency already added
       if (!acc[currency_id]) {
         acc[currency_id] = {
           account,
@@ -43,7 +43,7 @@ const mapStateToProps = (state, ownProps) => {
         to: getFiatCurrencyByTicker("USD"),
         fromExchange: currency && state.exchanges.data[currency.ticker],
         intermediary: intermediaryCurrency,
-        toExchange: state.exchanges.data["USD"],
+        toExchange: state.exchanges.data.USD,
         value: balance
       });
 

@@ -1,8 +1,9 @@
-//@flow
+// @flow
 
 // FIXME drop this file. we should directly import the font we need. also the global className are to be removed
 
 import React from "react";
+import colors from "shared/colors";
 import Profile from "./thin/Profile";
 import PeopleThin from "./thin/People";
 import ValidateBadge from "./full/ValidateBadge";
@@ -10,8 +11,6 @@ import RatesThin from "./thin/Rates";
 import Plug from "./thin/Plug";
 import HourglassThin from "./thin/Hourglass";
 import ClockThin from "./thin/Clock";
-
-import colors from "shared/colors";
 
 export function SecurityMembersIcon() {
   return (

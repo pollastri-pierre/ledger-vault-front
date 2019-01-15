@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-import Arrow from "../icons/ArrowUp";
 import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
+import Arrow from "../icons/ArrowUp";
 
 const style = {
   base: {
@@ -25,6 +25,7 @@ class DeltaChange extends PureComponent<*> {
     showArrow?: boolean,
     classes: Object
   };
+
   render() {
     const { before, after, showArrow, classes } = this.props;
     if (!before || !after) return <span className={classes.base}>{" "}</span>;
@@ -32,8 +33,8 @@ class DeltaChange extends PureComponent<*> {
     return (
       <span className={classes.base}>
         {ratio >= 1
-          ? "+" + Math.round(10000 * (ratio - 1)) / 100 + "%"
-          : "-" + Math.round(10000 * (1 - ratio)) / 100 + "%"}
+          ? `+${Math.round(10000 * (ratio - 1)) / 100}%`
+          : `-${Math.round(10000 * (1 - ratio)) / 100}%`}
         {showArrow && ratio !== 0 ? (ratio > 0 ? arrowIncr : arrowDecr) : null}
       </span>
     );

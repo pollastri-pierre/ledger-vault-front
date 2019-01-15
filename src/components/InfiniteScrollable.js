@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import invariant from "invariant";
 import { findDOMNode } from "react-dom";
@@ -31,7 +31,6 @@ export default class InfiniteScrollable extends Component<
     children: React$Node,
     restlay: RestlayEnvironment,
     restlayVariable: string,
-    style?: Object,
     loadPixelsInAdvance?: number,
     chunkSize?: number,
     loadMore?: Function

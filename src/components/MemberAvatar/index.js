@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React from "react";
-import People from "../icons/thin/Profile";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+import People from "../icons/thin/Profile";
 
 const styles = {
   base: {
@@ -31,7 +31,7 @@ const styles = {
 };
 
 function Avatar(props: {
-  url: ?string,
+  url: string,
   width: number,
   height: number,
   className: ?string,
@@ -43,7 +43,7 @@ function Avatar(props: {
       {url ? (
         <img src={props.url} alt="Profile avatar" />
       ) : (
-        <People width={width + "px"} height={height + "px"} color="white" />
+        <People width={`${width}px`} height={`${height}px`} color="white" />
       )}
     </span>
   );

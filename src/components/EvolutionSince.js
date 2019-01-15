@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { /* React, */ Component } from "react";
 // import DeltaChange from "./DeltaChange";
 // import CardField from "./CardField";
@@ -14,9 +14,9 @@ export const TotalBalanceFilters: Filter[] = [
 
 // TODO move into components
 class EvolutionSince extends Component<{
-  value: number,
-  valueHistory: { [_: FilterKey]: number },
-  filter: ?Filter
+  // value: number,
+  valueHistory: { [_: FilterKey]: number }
+  // filter: ?Filter
 }> {
   render() {
     return false;

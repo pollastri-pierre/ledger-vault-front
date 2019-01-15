@@ -1,12 +1,12 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import MemberAvatar from "../MemberAvatar";
-import MemberRole from "../MemberRole";
-import Checkbox from "../form/Checkbox";
 import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import classnames from "classnames";
 import colors from "shared/colors";
+import Checkbox from "../form/Checkbox";
+import MemberRole from "../MemberRole";
+import MemberAvatar from "../MemberAvatar";
 
 const styles = {
   base: {

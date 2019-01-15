@@ -1,10 +1,10 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import ApprovalStatus from "../ApprovalStatus";
-import AccountName from "../AccountName";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import type { Account, Operation, Member } from "data/types";
+import AccountName from "../AccountName";
+import ApprovalStatus from "../ApprovalStatus";
 
 const styles = {
   base: {

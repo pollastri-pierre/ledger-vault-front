@@ -13,10 +13,9 @@ test("connection query works with initial query", async () => {
   const render = createRender(net.network);
   const World = connectData(
     ({ world }) =>
-      "hasNextPage=" +
-      world.pageInfo.hasNextPage +
-      " " +
-      world.edges.map(e => e.cursor + ":" + e.node.id).join("|"),
+      `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
+        .map(e => `${e.cursor}:${e.node.id}`)
+        .join("|")}`,
     {
       queries: {
         world: WorldQuery
@@ -37,16 +36,16 @@ test("connection query works with initial query", async () => {
 test("connection query pagination can be pulled once", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
-  let rlay,
-    renders = 0;
+  let rlay;
+
+  let renders = 0;
   const World = connectData(
     ({ world, restlay }) => (
       (rlay = restlay),
       renders++,
-      "hasNextPage=" +
-        world.pageInfo.hasNextPage +
-        " " +
-        world.edges.map(e => e.cursor + ":" + e.node.id).join("|")
+      `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
+        .map(e => `${e.cursor}:${e.node.id}`)
+        .join("|")}`
     ),
     {
       queries: {
@@ -82,13 +81,14 @@ test("connection query pagination can be pulled once", async () => {
 test("connection query pagination can be pulled many times", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
-  let rlay,
-    renders = 0;
+  let rlay;
+
+  let renders = 0;
   const World = connectData(
     ({ world, restlay }) => (
       (rlay = restlay),
       renders++,
-      world.pageInfo.hasNextPage + " " + world.edges.length
+      `${world.pageInfo.hasNextPage} ${world.edges.length}`
     ),
     {
       queries: {
@@ -107,7 +107,7 @@ test("connection query pagination can be pulled many times", async () => {
   expect(renders).toBe(1);
   invariant(rlay, "restlay available");
   for (let i = 1; i < 100; i++) {
-    expect(inst.toJSON()).toBe("true " + i * 10);
+    expect(inst.toJSON()).toBe(`true ${i * 10}`);
     rlay.setVariables({
       world: rlay.getVariables().world + 10
     });
@@ -129,16 +129,16 @@ test("connection query pagination can be pulled many times", async () => {
 test("connection query pages size can be reduced and result of a slice without extra query", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
-  let rlay,
-    renders = 0;
+  let rlay;
+
+  let renders = 0;
   const World = connectData(
     ({ world, restlay }) => (
       (rlay = restlay),
       renders++,
-      "hasNextPage=" +
-        world.pageInfo.hasNextPage +
-        " " +
-        world.edges.map(e => e.cursor + ":" + e.node.id).join("|")
+      `hasNextPage=${world.pageInfo.hasNextPage} ${world.edges
+        .map(e => `${e.cursor}:${e.node.id}`)
+        .join("|")}`
     ),
     {
       queries: {
@@ -172,11 +172,12 @@ test("connection query pages size can be reduced and result of a slice without e
 test("connection query pagination, triggering many times don't trigger many redraws", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
-  let rlay,
-    renders = 0;
+  let rlay;
+
+  let renders = 0;
   const World = connectData(
     ({ world, restlay }) => (
-      (rlay = restlay), renders++, "" + world.edges.length
+      (rlay = restlay), renders++, `${world.edges.length}`
     ),
     {
       queries: { world: WorldQuery },
@@ -218,11 +219,12 @@ test("connection query pagination, triggering many times don't trigger many redr
 test("when paginating a lot, server is allowed to return less result that requested but many queries will be triggered (current behavior of impl)", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
-  let rlay,
-    renders = 0;
+  let rlay;
+
+  let renders = 0;
   const World = connectData(
     ({ world, restlay }) => (
-      (rlay = restlay), renders++, "" + world.edges.length
+      (rlay = restlay), renders++, `${world.edges.length}`
     ),
     {
       queries: { world: WorldQuery },
@@ -256,7 +258,7 @@ test("unmounting a connection query will starts over", async () => {
   const render = createRender(net.network);
   let rlay;
   const World = connectData(
-    ({ world, restlay }) => ((rlay = restlay), "" + world.edges.length),
+    ({ world, restlay }) => ((rlay = restlay), `${world.edges.length}`),
     {
       queries: {
         world: WorldQuery

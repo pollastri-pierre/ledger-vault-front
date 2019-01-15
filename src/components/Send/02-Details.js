@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
@@ -30,12 +30,15 @@ class SendDetails extends PureComponent<Props<*>, State> {
     amountIsValid: true,
     totalSpent: 0
   };
+
   componentDidMount() {
     this.resync();
   }
+
   componentWillUnmount() {
     this._unmounted = true;
   }
+
   componentDidUpdate(nextProps: Props<*>) {
     if (
       nextProps.account !== this.props.account ||
@@ -44,7 +47,9 @@ class SendDetails extends PureComponent<Props<*>, State> {
       this.resync();
     }
   }
+
   _unmounted = false;
+
   syncId = 0;
 
   async resync() {
@@ -80,6 +85,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
       });
     }
   }
+
   onChangeTab = e => {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 2);

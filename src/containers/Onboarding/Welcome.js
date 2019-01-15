@@ -1,12 +1,12 @@
-//@flow
-import Footer from "./Footer";
+// @flow
 import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import React, { Fragment } from "react";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
-import Requirements from "./Requirements.js";
+import Footer from "./Footer";
+import Requirements from "./Requirements";
 
 const styles = {
   list: {

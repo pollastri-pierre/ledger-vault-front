@@ -1,6 +1,6 @@
-//@flow
-import type { Store } from "./dataStore";
+// @flow
 import { denormalize } from "normalizr-gre";
+import type { Store } from "./dataStore";
 
 export type Connection<T> = {
   edges: Array<{
@@ -16,8 +16,10 @@ export type Connection<T> = {
 // see original idea: https://github.com/LedgerHQ/ledger-vault-front/issues/30#issuecomment-346409116
 class ConnectionQuery<In, Node> {
   props: In;
+
   // define the URI to hit for the API. can also pass a template function
   uri: string;
+
   // define the Schema of the edges[*].node field in the connection object.
   nodeSchema: Object = {};
 
@@ -36,9 +38,11 @@ class ConnectionQuery<In, Node> {
   // ...Internals...
 
   size = 0;
+
   setSize(size: number) {
     this.size = size;
   }
+
   getSize() {
     return this.size;
   }

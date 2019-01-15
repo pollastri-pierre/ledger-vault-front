@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import ConfirmationStatus from "components/ConfirmationStatus";
 import type { Operation } from "data/types";

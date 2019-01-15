@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import classnames from "classnames";
@@ -12,7 +12,7 @@ const styles = {
   activity: {
     paddingTop: 17,
     paddingBottom: 17,
-    borderBottom: "1px solid " + colors.argile
+    borderBottom: `1px solid ${colors.argile}`
   },
   clickable: {
     "&:hover": {

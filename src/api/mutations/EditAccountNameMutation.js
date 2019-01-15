@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import type { Account } from "data/types";
 import { success, error } from "formatters/notification";
@@ -13,6 +13,7 @@ type Res = Account;
 
 export default class EditAccountNameMutation extends Mutation<In, Res> {
   method = "PUT";
+
   uri = `/accounts/${this.props.account.id}`;
 
   responseSchema = schema.Account;

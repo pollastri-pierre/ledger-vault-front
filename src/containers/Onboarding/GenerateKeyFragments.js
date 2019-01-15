@@ -1,6 +1,5 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import StepDeviceGeneric from "./StepDeviceGeneric";
 import type { Translate } from "data/types";
 import { translate, Trans } from "react-i18next";
 import createDevice, {
@@ -12,6 +11,7 @@ import createDevice, {
   U2F_TIMEOUT,
   ACCOUNT_MANAGER_SESSION
 } from "device";
+import StepDeviceGeneric from "./StepDeviceGeneric";
 
 type Channel = {
   ephemeral_public_key: string,
@@ -40,13 +40,16 @@ class GenerateKeyFragments extends Component<Props, State> {
     super(props);
     this.state = { step: 0 };
   }
+
   componentDidMount() {
     _isMounted = true;
     this.start();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
+
   start = async () => {
     if (_isMounted) {
       try {
@@ -58,18 +61,15 @@ class GenerateKeyFragments extends Component<Props, State> {
         });
 
         if (isUpToDate) {
-          const ephemeral_public_key = this.props.shards_channel[
-            "ephemeral_public_key"
-          ];
-          const certificate = this.props.shards_channel[
-            "ephemeral_certificate"
-          ];
+          const ephemeral_public_key = this.props.shards_channel
+            .ephemeral_public_key;
+          const certificate = this.props.shards_channel.ephemeral_certificate;
           const public_key = await device.getPublicKey(CONFIDENTIALITY_PATH);
           const certificate_device = await device.getAttestationCertificate();
 
           this.setState({ step: 1 });
 
-          let scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
+          const scriptHash = wraps ? INIT_SESSION : ACCOUNT_MANAGER_SESSION;
           await device.openSession(
             CONFIDENTIALITY_PATH,
             Buffer.from(ephemeral_public_key, "hex"),
@@ -86,15 +86,15 @@ class GenerateKeyFragments extends Component<Props, State> {
             blob: blob.toString("hex"),
             certificate:
               certificate_device.toString("hex") +
-              public_key["signature"].toString("hex"),
-            ephemeral_public_key: public_key["pubKey"]
+              public_key.signature.toString("hex"),
+            ephemeral_public_key: public_key.pubKey
           };
           this.setState({ step: 2 });
           this.props.onFinish(shard);
         }
       } catch (error) {
         console.error(error);
-        //timeout
+        // timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
         } else if (error.statusCode && error.statusCode === INVALID_DATA) {
@@ -113,6 +113,7 @@ class GenerateKeyFragments extends Component<Props, State> {
       }
     }
   };
+
   render() {
     const { t, wraps } = this.props;
     let steps;

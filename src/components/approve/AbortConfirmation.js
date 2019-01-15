@@ -1,7 +1,7 @@
-//@flow
+// @flow
 import React from "react";
-import DialogButton from "../buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
+import DialogButton from "../buttons/DialogButton";
 import Trash from "../icons/thin/Trash";
 import colors from "../../shared/colors";
 

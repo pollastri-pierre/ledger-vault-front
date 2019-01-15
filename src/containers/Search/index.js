@@ -1,8 +1,6 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import debounce from "lodash/debounce";
-import SearchResultsCard from "./SearchResultsCard";
-import SearchFiltersCard from "./SearchFiltersCard";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { withStyles } from "@material-ui/core/styles";
@@ -10,6 +8,8 @@ import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import type { Account } from "data/types";
+import SearchFiltersCard from "./SearchFiltersCard";
+import SearchResultsCard from "./SearchResultsCard";
 
 type Filters = {
   keywords: ?string,
@@ -53,9 +53,7 @@ class Search extends Component<
   {
     accounts: Account[],
     classes: Object,
-    match: *,
-    location: *,
-    history: *
+    match: *
   },
   {
     filters: Filters,
@@ -68,7 +66,7 @@ class Search extends Component<
   };
 
   onChangeFilters = (filtersPatch: $Shape<Filters>) => {
-    const filters: Filters = { ...this.state.filters, ...filtersPatch };
+    const filters: Filters = { ...this.state.filters, ...filtersPatch }; // eslint-disable-line react/no-access-state-in-setstate
     this.setState({ filters });
     this.debounceOnChangeFilters(filters);
   };
@@ -90,10 +88,8 @@ class Search extends Component<
     const { accounts, classes, match } = this.props;
     const { filters, debouncedFilters } = this.state;
     const refreshingKey =
-      String(debouncedFilters.keywords) +
-      " " +
-      "_" +
-      String(debouncedFilters.currencyName);
+      `${String(debouncedFilters.keywords)} ` +
+      `_${String(debouncedFilters.currencyName)}`;
     return (
       <div className={classes.base}>
         <SearchResultsCard

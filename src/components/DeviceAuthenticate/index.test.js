@@ -1,14 +1,7 @@
-jest.mock("device/VaultDeviceApp");
-jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
-}));
-
-jest.mock("network", () => jest.fn());
 import network from "network";
 import React from "react";
 import { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
 // import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import { DeviceAuthenticate } from "./";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -16,6 +9,14 @@ import VaultDeviceApp, {
   mockGetPublicKey, // eslint-disable-line
   mockAuthenticate // eslint-disable-line
 } from "device/VaultDeviceApp";
+import { DeviceAuthenticate } from "./index";
+
+jest.mock("device/VaultDeviceApp");
+jest.mock("@ledgerhq/hw-transport-u2f", () => ({
+  create: jest.fn()
+}));
+
+jest.mock("network", () => jest.fn());
 
 Enzyme.configure({ adapter: new Adapter() });
 jest.mock("network", () => jest.fn());

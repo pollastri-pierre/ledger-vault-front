@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
@@ -28,6 +28,7 @@ export default class NewEthereumOperationMutation extends Mutation<
   Response
 > {
   uri = `/accounts/${this.props.accountId}/operations`;
+
   method = "POST";
 
   responseSchema = schema.Operation;

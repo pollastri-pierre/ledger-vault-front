@@ -1,7 +1,7 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 
-type Props = { color: string, style?: Object };
+type Props = { color?: string, style?: Object };
 
 export default class People extends PureComponent<Props> {
   static defaultProps = {

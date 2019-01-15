@@ -1,4 +1,4 @@
-//@flow
+// @flow
 type Filter = { title: string, key: string };
 export const TotalBalanceFilters: Filter[] = [
   { title: "yesterday", key: "yesterday" },

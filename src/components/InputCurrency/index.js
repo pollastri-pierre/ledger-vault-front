@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
@@ -86,7 +86,7 @@ class InputCurrency extends PureComponent<Props, State> {
   onChange = (e: SyntheticEvent<HTMLInputElement>) => {
     const { unit } = this.state;
     const r = sanitizeValueString(unit, e.currentTarget.value);
-    const satoshiValue = parseInt(r.value);
+    const satoshiValue = parseInt(r.value, 10);
     this.props.onChange(satoshiValue);
     this.setState({ displayValue: r.display, cachedValue: satoshiValue });
   };

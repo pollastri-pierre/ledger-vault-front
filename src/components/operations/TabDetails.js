@@ -1,12 +1,12 @@
-//@flow
+// @flow
 import React, { Component, PureComponent, Fragment } from "react";
 import cx from "classnames";
 import type { Operation, Account, TransactionETH } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const stylesList = {
   detailsContainer: {
@@ -42,20 +42,18 @@ const OperationETHDetails = withStyles(stylesList)(
   }: {
     transaction: TransactionETH,
     classes: { [$Keys<typeof stylesList>]: string }
-  }) => {
-    return (
-      <div className={classes.detailsContainer}>
-        <LineRow label="FROM" />
-        <div className={cx(classes.detailsRow, classes.small)}>
-          {transaction.sender}
-        </div>
-        <LineRow label="To" />
-        <div className={cx(classes.detailsRow, classes.small)}>
-          {transaction.receiver}
-        </div>
+  }) => (
+    <div className={classes.detailsContainer}>
+      <LineRow label="FROM" />
+      <div className={cx(classes.detailsRow, classes.small)}>
+        {transaction.sender}
       </div>
-    );
-  }
+      <LineRow label="To" />
+      <div className={cx(classes.detailsRow, classes.small)}>
+        {transaction.receiver}
+      </div>
+    </div>
+  )
 );
 
 class OperationListT<T: *> extends Component<{

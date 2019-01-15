@@ -14,7 +14,7 @@ test("if a query defines cacheMaxAge, have recent cache, it should not fetch aga
   const mock = createMock();
   const net = networkFromMock(mock);
   const render = createRender(net.network);
-  const Animal = connectData(({ animal }) => animal.name + "_" + animal.age, {
+  const Animal = connectData(({ animal }) => `${animal.name}_${animal.age}`, {
     queries: {
       animal: AnimalQuery
     },
@@ -69,7 +69,7 @@ test("if a query have cacheMaxAge, but cache is too old, it should fetch again o
   const mock = createMock();
   const net = networkFromMock(mock);
   const render = createRender(net.network);
-  const Animal = connectData(({ animal }) => animal.name + "_" + animal.age, {
+  const Animal = connectData(({ animal }) => `${animal.name}_${animal.age}`, {
     queries: {
       animal: AnimalQuery
     },
@@ -101,7 +101,7 @@ test("forceFetch option always ignore the cache and trigger re-fetch", async () 
   let restlay;
   const Animal = connectData(
     props => (
-      (restlay = props.restlay), props.animal.name + "_" + props.animal.age
+      (restlay = props.restlay), `${props.animal.name}_${props.animal.age}`
     ),
     {
       queries: {

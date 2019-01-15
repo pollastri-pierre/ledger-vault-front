@@ -1,5 +1,5 @@
-//@flow
-//TODO this file has been done in emergency, needs to be rewrite and refactor
+// @flow
+// TODO this file has been done in emergency, needs to be rewrite and refactor
 import React, { Component } from "react";
 import Home from "components/icons/Home";
 import type { Translate } from "data/types";
@@ -73,18 +73,16 @@ const Row = withStyles(row)(
     children: *,
     classes: { [_: $Keys<typeof row>]: string },
     state: "None" | "Pending" | "Done"
-  }) => {
-    return (
-      <div className={classes.base}>
-        <div className={classes.icon}>{icon}</div>
-        <div>{children}</div>
-        <div className={classes.right} style={{ color: "#27d0e2" }}>
-          {state === "Done" && <Check size={22} />}
-          {state === "Pending" && <CircleProgress size={22} color="primary" />}
-        </div>
+  }) => (
+    <div className={classes.base}>
+      <div className={classes.icon}>{icon}</div>
+      <div>{children}</div>
+      <div className={classes.right} style={{ color: "#27d0e2" }}>
+        {state === "Done" && <Check size={22} />}
+        {state === "Pending" && <CircleProgress size={22} color="primary" />}
       </div>
-    );
-  }
+    </div>
+  )
 );
 export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 
@@ -110,7 +108,6 @@ type Props = {
   t: Translate
 };
 type State = {
-  applications: ?Object,
   uninstalled: boolean,
   no_application: boolean,
   error: boolean,
@@ -121,7 +118,6 @@ class UpdateApp extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      applications: null,
       uninstalled: false,
       error: false,
       installed: false,
@@ -129,6 +125,7 @@ class UpdateApp extends Component<Props, State> {
       isDashboard: false
     };
   }
+
   componentDidMount() {
     if (process.env.NODE_ENV === "e2e") {
       console.warn(
@@ -138,9 +135,11 @@ class UpdateApp extends Component<Props, State> {
     _isMounted = true;
     this.start();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
+
   start = async () => {
     if (_isMounted) {
       try {

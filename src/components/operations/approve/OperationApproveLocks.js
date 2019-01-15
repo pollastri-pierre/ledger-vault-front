@@ -1,17 +1,16 @@
-//@flow
+// @flow
 import React from "react";
+import type { Account, Operation } from "data/types";
+import { calculateApprovingObjectMeta } from "data/approvingObject";
 import InfoModal from "../../InfoModal";
 import ApproveLockRow from "../../ApproveLockRow";
 import RateLimiterValue from "../../RateLimiterValue";
 import Hourglass from "../../icons/thin/Hourglass";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 import Rates from "../../icons/thin/Rates";
-import type { Account, Operation } from "data/types";
-import { calculateApprovingObjectMeta } from "data/approvingObject";
 
-const getTimeLock = (seconds: number) => {
-  return `${Math.round(10 * (seconds / 3600)) / 10} hours delay`;
-};
+const getTimeLock = (seconds: number) =>
+  `${Math.round(10 * (seconds / 3600)) / 10} hours delay`;
 
 function OperationApproveLocks(props: {
   operation: Operation,

@@ -23,7 +23,7 @@ test("RenderError gets rendered if network fails. it receives error that is the 
   expect(inst.toJSON()).toBe("LOADING...");
   expect(net.tick()).toBe(1);
   await flushPromises();
-  expect(inst.toJSON()).toBe("notfound");
+  expect(inst.toJSON()).toBe("Error: notfound");
   inst.unmount();
 });
 
@@ -139,7 +139,7 @@ test("a thrown error can be recovered after an update", async () => {
     ({ animal }) => {
       if (animal.id === "id_max") {
         const err = new Error("sorry_max");
-        //$FlowFixMe
+        // $FlowFixMe
         err.suppressReactErrorLogging = true;
         throw err;
       }

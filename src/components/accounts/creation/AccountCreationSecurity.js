@@ -1,13 +1,13 @@
-//@flow
+// @flow
 import React from "react";
 // import RateLimiterValue from "../../RateLimiterValue";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 // import TimeLockValue from "../../TimeLockValue";
+import { withStyles } from "@material-ui/core/styles";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 // import RatesFull from "../../icons/full/Rates";
-import { withStyles } from "@material-ui/core/styles";
 // import HourglassFull from "../../icons/full/Hourglass";
 import PeopleFull from "../../icons/full/People";
 

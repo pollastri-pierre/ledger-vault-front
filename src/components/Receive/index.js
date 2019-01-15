@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
@@ -9,10 +9,10 @@ import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import Tab from "@material-ui/core/Tab";
+import HeaderRightClose from "components/HeaderRightClose";
 import ReceiveAccounts from "./Accounts";
 import ReceiveDevice from "./Device";
 import ReceiveAddress from "./Address";
-import HeaderRightClose from "components/HeaderRightClose";
 
 const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 
@@ -96,11 +96,12 @@ class Receive extends Component<Props, State> {
   checkAgain = () => {
     this.setState({ verified: false, error: false, device: false, index: 1 });
   };
+
   onSelectAccount = (selectedAccount: Account) => {
     this.setState(prev => ({
       ...prev,
       index: 1,
-      selectedAccount: selectedAccount
+      selectedAccount
     }));
   };
 
@@ -149,7 +150,7 @@ class Receive extends Component<Props, State> {
         >
           {tabTitles.map((title, i) => (
             <Tab
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               label={title}
               disabled={this.isDisabled(i)}
               disableRipple

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 // same as CounterValue but for multiple currencies
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
           from: currency,
           fromExchange: currency && state.exchanges.data[currency.ticker],
           intermediary: intermediaryCurrency,
-          toExchange: state.exchanges.data["USD"],
+          toExchange: state.exchanges.data.USD,
           to: getFiatCurrencyByTicker("USD"),
           value: account.balance
         })
@@ -33,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 
 type Props = {
   countervalue: number,
-  accounts: Account[]
+  accounts: Account[] // eslint-disable-line react/no-unused-prop-types
 };
 
 class CounterValuesAccounts extends PureComponent<Props> {

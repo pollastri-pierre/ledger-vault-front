@@ -1,6 +1,6 @@
-//@flow
-import type { Store } from "./dataStore";
+// @flow
 import { denormalize } from "normalizr-gre";
+import type { Store } from "./dataStore";
 
 // A query maps to a GET on the api, it is idempotent to fetch and can be cached
 export default class Query<Input, Response> {
@@ -8,10 +8,13 @@ export default class Query<Input, Response> {
 
   // define the URI to hit for the API. can also pass a template function
   uri: string;
+
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object> = {};
+
   // on a GET, the maximum amount of time (seconds) will be considered fresh and we don't need to refetch. we want the front app to not always refetch the data (NB maybe we could use HTTP Cache-Control but this is a simpler take on the problem)
   cacheMaxAge: number = 0;
+
   // The response HTTP Code that will trigger the user to logout automatically
   logoutUserIfStatusCode: ?number; // FIXME technically this has nothing to do in this generic library model. not sure how put it in project specific only
 

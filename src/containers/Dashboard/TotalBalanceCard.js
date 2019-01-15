@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 // import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import CounterValues from "components/CounterValues";
@@ -22,17 +22,17 @@ const styles = {
 class TotalBalance extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate,
-  totalBalance: *,
+  // totalBalance: *,
   accounts: Array<Account>,
   members: Member[],
-  filter: string,
+  // filter: string,
   onTotalBalanceFilterChange: (filter: string) => void,
-  reloading: *,
-  restlay: *
+  reloading: *
 }> {
   onTotalBalanceFilterChange = (e: *) => {
     this.props.onTotalBalanceFilterChange(e.target.value);
   };
+
   render() {
     const {
       // filter,

@@ -1,4 +1,14 @@
 import { APPID_VAULT_ADMINISTRATOR, U2F_PATH } from "device";
+import React from "react";
+import Enzyme, { shallow } from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+
+import VaultDeviceApp, {
+  mockGetPublicKey, // eslint-disable-line
+  mockAuthenticate // eslint-disable-line
+} from "device/VaultDeviceApp";
+import { SignInDevice } from "./SignInDevice";
+
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
   create: jest.fn()
@@ -11,15 +21,6 @@ beforeEach(() => {
   mockGetPublicKey.mockClear();
   mockAuthenticate.mockClear();
 });
-import React from "react";
-import { SignInDevice } from "./SignInDevice";
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-
-import VaultDeviceApp, {
-  mockGetPublicKey, // eslint-disable-line
-  mockAuthenticate // eslint-disable-line
-} from "device/VaultDeviceApp";
 
 Enzyme.configure({ adapter: new Adapter() });
 

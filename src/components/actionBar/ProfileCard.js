@@ -1,17 +1,17 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import type { Member, Translate } from "data/types";
-import ProfileEditModal from "../ProfileEditModal";
-import ModalRoute from "../ModalRoute";
-import PopBubble from "../utils/PopBubble";
-import ProfileIcon from "../icons/thin/Profile";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import connectData from "restlay/connectData";
 import { withStyles } from "@material-ui/core/styles";
 import { mixinHoverSelected } from "shared/common";
 import ProfileQuery from "api/queries/ProfileQuery";
 import MenuList from "@material-ui/core/MenuList";
+import ProfileIcon from "../icons/thin/Profile";
+import PopBubble from "../utils/PopBubble";
+import ModalRoute from "../ModalRoute";
+import ProfileEditModal from "../ProfileEditModal";
 import MenuLink from "../MenuLink";
 
 const styles = {
@@ -70,10 +70,8 @@ const styles = {
 class ProfileCard extends Component<
   {
     profile: Member,
-    history: *,
     t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
-    location: *,
     match: *
   },
   *
@@ -93,9 +91,9 @@ class ProfileCard extends Component<
   };
 
   onClickProfileCard = (/* event: * */) => {
-    this.setState({
-      bubbleOpened: !this.state.bubbleOpened
-    });
+    this.setState(state => ({
+      bubbleOpened: !state.bubbleOpened
+    }));
   };
 
   render() {

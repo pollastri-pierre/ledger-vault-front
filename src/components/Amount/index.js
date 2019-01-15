@@ -1,11 +1,11 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
-import CurrencyAccountValue from "../CurrencyAccountValue";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
+import CurrencyAccountValue from "../CurrencyAccountValue";
 
 const styles = {
   flat: {
@@ -41,7 +41,7 @@ class Amount extends Component<Props> {
       dataTest,
       erc20Format
     } = this.props;
-    const disableCountervalue = erc20Format ? true : false;
+    const disableCountervalue = !!erc20Format;
     return (
       <span
         className={cx(classes.crypto, { [classes.strong]: strong })}

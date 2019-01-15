@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
@@ -36,16 +36,21 @@ class ModalRoute extends Component<{
   static defaultProps = {
     undoAllHistoryOnClickOutside: false
   };
+
   static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired
     })
   };
+
   _unmounted: boolean = false;
+
   componentWillUnmount() {
     this._unmounted = true;
   }
+
   historyLengthOnEnter: number = 0;
+
   close = (undoAllHistory?: boolean = false) => {
     if (this._unmounted) return;
     const move = undoAllHistory
@@ -55,8 +60,11 @@ class ModalRoute extends Component<{
     // in such case we need to replace the history and remove the part before the modal route path
     this.context.router.history.go(move);
   };
+
   onClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
+
   lastMatch: ?Object;
+
   render() {
     const {
       component, // eslint-disable-line no-unused-vars

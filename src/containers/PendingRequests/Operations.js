@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { Trans } from "react-i18next";
@@ -36,10 +36,11 @@ class ApproveWatchOperations extends Component<Props> {
           approval => approval.person.pub_key === user.pub_key
         ) && operation.status === "PENDING_APPROVAL"
     );
-    const enhancedToApprove = toApprove.map(operation => {
-      // operation.rate = { fiat: "USD", value: 10000 };
-      return operation;
-    });
+    const enhancedToApprove = toApprove.map(
+      operation =>
+        // operation.rate = { fiat: "USD", value: 10000 };
+        operation
+    );
 
     // toWatch operations is the sum of operation already approved by user but not by total quorum + quued operation
     const toWatch = operationsPending.filter(

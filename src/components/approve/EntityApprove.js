@@ -1,12 +1,10 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import { addMessage } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
-import AbortConfirmation from "./AbortConfirmation";
-import AccountApprove from "../accounts/approve/AccountApprove";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import createDevice, {
   U2F_PATH,
@@ -24,6 +22,8 @@ import AbortAccount from "api/mutations/AbortAccountMutation";
 import ApproveOperationMutation from "api/mutations/ApproveOperationMutation";
 import AbortOperationMutation from "api/mutations/AbortOperationMutation";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import AccountApprove from "../accounts/approve/AccountApprove";
+import AbortConfirmation from "./AbortConfirmation";
 import OperationApprove from "../operations/approve/OperationApprove";
 
 type Props = {
@@ -31,8 +31,7 @@ type Props = {
   match: *,
   restlay: *,
   onAddMessage: (string, string, string) => void,
-  entity: string,
-  account: *
+  entity: string
 };
 
 type State = {
@@ -52,6 +51,7 @@ class EntityApprove extends Component<Props, State> {
   };
 
   title = (entity: string) => `Approve ${entity}`;
+
   steps = (entity: string) => [
     "Connect your Ledger Blue to your computer using one of its USB port.",
     "Power on your device and unlock it by entering your 4 to 8 digit personal PIN code.",
@@ -59,12 +59,12 @@ class EntityApprove extends Component<Props, State> {
   ];
 
   aborting = () => {
-    this.setState({ isAborting: !this.state.isAborting });
+    this.setState(state => ({ isAborting: !state.isAborting }));
   };
 
   approving = async (accountOrOperation: *) => {
     const { restlay, entity } = this.props;
-    this.setState({ ...this.state, isDevice: !this.state.isDevice });
+    this.setState(state => ({ isDevice: !state.isDevice }));
 
     const operation = accountOrOperation.hsm_operations;
 
@@ -72,8 +72,8 @@ class EntityApprove extends Component<Props, State> {
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const channel = operation[pubKey.toUpperCase()];
-      const ephemeral_public_key = channel["ephemeral_public_key"];
-      const certificate_attestation = channel["certificate_attestation"];
+      const ephemeral_public_key = channel.ephemeral_public_key;
+      const certificate_attestation = channel.certificate_attestation;
 
       this.setState({ step: 1 });
 
@@ -85,7 +85,7 @@ class EntityApprove extends Component<Props, State> {
       );
       const approval = await device.validateVaultOperation(
         VALIDATION_PATH,
-        Buffer.from(channel["data"], "base64")
+        Buffer.from(channel.data, "base64")
       );
 
       this.setState({ step: 2 });

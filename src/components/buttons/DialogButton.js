@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import colors from "shared/colors";
@@ -77,6 +77,7 @@ class DialogButton extends Component<*, *> {
     abort: PropTypes.bool,
     onTouchTap: PropTypes.func
   };
+
   static defaultProps = {
     className: "",
     highlight: false,
@@ -85,6 +86,7 @@ class DialogButton extends Component<*, *> {
   };
 
   state = {};
+
   _unmounted = false;
 
   onClick = () => {

@@ -1,20 +1,18 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import CurrencyUnitValue from "./CurrencyUnitValue";
 import { getAccountCurrencyUnit } from "data/currency";
 import type { Account, TransactionType } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import CurrencyUnitValue from "./CurrencyUnitValue";
 
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
-const getCurrencyLikeUnit = token => {
-  return {
-    code: token ? token.symbol : "",
-    symbol: "",
-    magnitude: token ? token.decimals : 0,
-    name: ""
-  };
-};
+const getCurrencyLikeUnit = token => ({
+  code: token ? token.symbol : "",
+  symbol: "",
+  magnitude: token ? token.decimals : 0,
+  name: ""
+});
 class CurrencyAccountValue extends Component<{
   // the contextual account object
   account: Account,

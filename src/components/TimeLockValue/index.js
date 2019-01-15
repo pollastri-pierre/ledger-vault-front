@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 
 class TimeLockValue extends PureComponent<*> {

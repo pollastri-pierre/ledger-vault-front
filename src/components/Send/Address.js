@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -45,12 +45,15 @@ const initialState = {
 };
 class SendAddress extends PureComponent<Props<*>, State> {
   state = initialState;
+
   _unmounted = false;
+
   _nonce = 0;
 
   componentDidMount() {
     this.validateAddress();
   }
+
   async componentDidUpdate(prevProps) {
     const { account, transaction, bridge } = this.props;
     const prevRecipient = prevProps.bridge.getTransactionRecipient(
@@ -65,6 +68,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
       this.validateAddress();
     }
   }
+
   componentWillUnmount() {
     this._unmounted = true;
   }

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 
 type Props = {
@@ -20,7 +20,7 @@ class HelpLink extends PureComponent<Props> {
     }
 
     return (
-      <a href={href} className={className ? className : ""} target="new">
+      <a href={href} className={className || ""} target="new">
         {this.props.children}
       </a>
     );

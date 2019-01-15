@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import type { Note } from "data/types";
@@ -39,9 +39,8 @@ function TabLabel(props: { note: Note, classes: Object }) {
         </div>
       </div>
     );
-  } else {
-    return <div>No note for this operation</div>;
   }
+  return <div>No note for this operation</div>;
 }
 
 export default withStyles(styles)(TabLabel);

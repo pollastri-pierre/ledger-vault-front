@@ -1,4 +1,4 @@
-//@flow
+// @flow
 
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -44,7 +44,6 @@ type Props<Transaction> = {
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
   onChangeTransaction: Transaction => void,
-  estimatedFees: ?number,
   restlay: RestlayEnvironment,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>
@@ -98,6 +97,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       }
     }
   }
+
   onChangeFee = (feesSelected: Speed) => {
     const { bridge, account, transaction, onChangeTransaction } = this.props;
     bridge.editTransactionFeeLevel &&

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import fiatUnits from "constants/fiatUnits";
 import type { Account, Unit } from "./types";
 

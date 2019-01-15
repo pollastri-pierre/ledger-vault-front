@@ -1,10 +1,10 @@
-//@flow
+// @flow
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
-import { AccountView, PendingRequests } from "../../containers"; // Tests
 import Dashboard from "containers/Dashboard";
 import { withStyles } from "@material-ui/core/styles";
 import Search from "containers/Search";
+import { AccountView, PendingRequests } from "../../containers"; // Tests
 
 const styles = {
   base: {
@@ -30,9 +30,7 @@ function Content({
         <Route path={`${match.url}/account/:id`} component={AccountView} />
         <Route
           path={`${match.url}/dashboard`}
-          render={() => {
-            return <Dashboard match={match} />;
-          }}
+          render={() => <Dashboard match={match} />}
         />
         <Route
           exact

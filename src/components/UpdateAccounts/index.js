@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component, Fragment } from "react";
 import CurrencyIndex from "components/CurrencyIndex";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
@@ -20,9 +20,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { addMessage } from "redux/modules/alerts";
 import type { Translate, Member, Account } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
-import UpdateTextField from "./UpdateTextField";
-import RowSelectable from "./RowSelectable";
-import Row from "./Row";
 import {
   toggleModal,
   toggleMembers,
@@ -33,6 +30,9 @@ import {
   selectAccount
 } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
+import UpdateTextField from "./UpdateTextField";
+import RowSelectable from "./RowSelectable";
+import Row from "./Row";
 
 const styles = {
   accountItem: {
@@ -109,6 +109,7 @@ class UpdateAccounts extends Component<Props, State> {
   state: State = {
     accountName: ""
   };
+
   componentDidUpdate() {
     const { selectedAccount, accounts, onSelectAccount, isOpen } = this.props;
     const outdatedAccounts = getOutdatedAccounts(accounts);
@@ -120,6 +121,7 @@ class UpdateAccounts extends Component<Props, State> {
   onChangeAccountName = (e: SyntheticInputEvent<>) => {
     this.setState({ accountName: e.target.value });
   };
+
   isSubmitDisabled = () => {
     const { approvers, quorum } = this.props;
     const { accountName } = this.state;
@@ -168,6 +170,7 @@ class UpdateAccounts extends Component<Props, State> {
       onToggleDevice();
     }
   };
+
   render() {
     const {
       accounts,

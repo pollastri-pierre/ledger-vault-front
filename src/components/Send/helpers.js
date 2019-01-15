@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 
@@ -15,7 +15,7 @@ export const getFees = async (
   if (operation.amount > 0 && operation.recipient !== "" && account) {
     const query = new AccountCalculateFeeQuery({
       accountId: account.id,
-      operation: operation
+      operation
     });
     const data = await restlay.fetchQuery(query);
     return data;

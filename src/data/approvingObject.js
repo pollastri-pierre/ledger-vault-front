@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import moment from "moment";
 
 export type ApprovingObject = {
@@ -15,7 +15,7 @@ export type ApprovingObjectMeta = {
 };
 
 function formatRemainingTimeText(futureTime: number): string {
-  return moment().to(futureTime, true) + " left";
+  return `${moment().to(futureTime, true)} left`;
 }
 
 export function calculateApprovingObjectMeta({

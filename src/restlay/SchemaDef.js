@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import * as Normalizr from "normalizr-gre";
 
 export function create(

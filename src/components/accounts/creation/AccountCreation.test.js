@@ -1,11 +1,12 @@
-jest.mock("network");
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import { AccountCreation } from "./AccountCreation";
 import { initialState } from "redux/modules/account-creation";
 import NewAccountMutation from "api/mutations/NewAccountMutation";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
+import { AccountCreation } from "./AccountCreation";
+
+jest.mock("network");
 
 Enzyme.configure({ adapter: new Adapter() });
 

@@ -12,8 +12,8 @@ import { setExchangePairsAction } from "redux/modules/exchanges";
 const allCurrencies = listCryptoCurrencies(true);
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
-const pairsSelector = createSelector(accountsSelector, accounts => {
-  return [
+const pairsSelector = createSelector(accountsSelector, accounts =>
+  [
     {
       from: intermediaryCurrency,
       to: getFiatCurrencyByTicker("USD")
@@ -27,14 +27,12 @@ const pairsSelector = createSelector(accountsSelector, accounts => {
           currency.name !== "bitcoin_testnet" &&
           currency.name !== "bitcoin"
       )
-      .map(currency => {
-        return {
-          from: allCurrencies.find(curr => curr.id === currency.id),
-          to: intermediaryCurrency
-        };
-      })
-  );
-});
+      .map(currency => ({
+        from: allCurrencies.find(curr => curr.id === currency.id),
+        to: intermediaryCurrency
+      }))
+  )
+);
 
 const CounterValues = createCounterValues({
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",

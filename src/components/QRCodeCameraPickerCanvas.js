@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import QrCode from "qrcode-reader";
 
@@ -20,6 +20,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
   state = {
     message: "Please accept Camera permission"
   };
+
   static defaultProps = {
     width: 260,
     height: 185,
@@ -29,12 +30,19 @@ export default class QRCodeCameraPickerCanvas extends Component<
     intervalCheck: 250,
     dpr: window.devicePixelRatio || 1
   };
+
   canvasMain: ?HTMLCanvasElement;
+
   ctxMain: ?CanvasRenderingContext2D;
+
   canvasSecond: ?HTMLCanvasElement;
+
   ctxSecond: ?CanvasRenderingContext2D;
+
   unsubscribes: Array<() => void> = [];
+
   unmounted = false;
+
   onMainRef = (canvasMain: ?HTMLCanvasElement) => {
     if (canvasMain === this.canvasMain) return;
     this.canvasMain = canvasMain;
@@ -42,6 +50,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       this.ctxMain = canvasMain.getContext("2d");
     }
   };
+
   onSecondRef = (canvasSecond: ?HTMLCanvasElement) => {
     if (canvasSecond === this.canvasSecond) return;
     this.canvasSecond = canvasSecond;
@@ -49,9 +58,11 @@ export default class QRCodeCameraPickerCanvas extends Component<
       this.ctxSecond = canvasSecond.getContext("2d");
     }
   };
+
   componentDidMount() {
-    let getUserMedia,
-      sum = 0;
+    let getUserMedia;
+
+    let sum = 0;
     const onkeyup = (e: *) => {
       sum += e.which;
       if (sum === 439 && this.canvasSecond) {
@@ -182,10 +193,12 @@ export default class QRCodeCameraPickerCanvas extends Component<
         });
     }
   }
+
   componentWillUnmount() {
     this.unmounted = true;
     this.unsubscribes.forEach(f => f());
   }
+
   render() {
     const { width, height, dpr } = this.props;
     const { message } = this.state;
@@ -198,7 +211,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       justifyContent: "center",
       background: "#eee",
       color: "#666",
-      fontSize: (width / 30).toFixed(0) + "px",
+      fontSize: `${(width / 30).toFixed(0)}px`,
       overflow: "hidden"
     };
     const mainStyle = {

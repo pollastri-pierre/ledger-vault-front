@@ -1,6 +1,7 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-type Props = { color: string };
+
+type Props = { color?: string };
 
 export default class ArrowUp extends PureComponent<Props> {
   static defaultProps = {

@@ -1,9 +1,9 @@
-//@flow
+// @flow
 import _ from "lodash";
-import { LOGOUT } from "./auth";
 import type { Member, ERC20Token } from "data/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 import { isValidAccountName } from "utils/accounts";
+import { LOGOUT } from "./auth";
 
 export const CHANGE_TAB = "account-creation/CHANGE_TAB";
 export const CHANGE_ACCOUNT_NAME = "account-creation/CHANGE_ACCOUNT_NAME";
@@ -119,7 +119,7 @@ export type ParentAccount = { id: number } | { name: string };
 export type State = {
   // UI FIELDS (used to store the tab, and the sub modal id)
   currentTab: number,
-  internModalId:
+  internModalId:  // eslint-disable-line flowtype/space-after-type-colon
     | "members"
     | "approvals"
     | "time-lock"
@@ -201,7 +201,7 @@ export default function reducer(
 
       return {
         ...state,
-        quorum: quorum,
+        quorum,
         approvers: cMembers
       };
     }

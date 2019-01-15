@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import type { Currency } from "@ledgerhq/live-common/lib/types";
 
 export type SetExchangePairs = (
@@ -29,11 +29,11 @@ export default function reducer(
   switch (action.type) {
     case "SETTINGS_SET_PAIRS": {
       const data = {};
-      action.pairs.map(pair => {
+      action.pairs.forEach(pair => {
         if (pair.to.ticker === "BTC") {
           data[pair.from.ticker] = pair.exchange;
         } else if (pair.from.ticker === "BTC" && pair.to.ticker === "USD") {
-          data["USD"] = pair.exchange;
+          data.USD = pair.exchange;
         }
       });
       return { ...state, pairs: action.pairs, data };

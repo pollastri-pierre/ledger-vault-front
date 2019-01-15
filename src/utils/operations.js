@@ -1,11 +1,14 @@
-//@flow
+// @flow
 import type { Operation, Account, Member } from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
+
+export const hasPending = (account: Account, operations: Operation[]) =>
+  operations.filter(operation => operation.account_id === account.id).length >
+  0;
 
 // operation creation is not allowed if there is no accounts obviously.
 // If there are accounts, we need at least one account with 0 pending operation and uptodate
 // We need at leat one account with a balance > 0, and without pending
-
 export const isCreateOperationEnabled = (
   accounts: Account[],
   pendingOperations: Operation[]
@@ -23,10 +26,6 @@ export const isCreateOperationEnabled = (
 
 export const getPendingsOperations = (operations: Operation[]): Operation[] =>
   operations.filter(operation => operation.status === "PENDING_APPROVAL");
-
-export const hasPending = (account: Account, operations: Operation[]) =>
-  operations.filter(operation => operation.account_id === account.id).length >
-  0;
 
 export const isMemberOfAccount = (account: Account, me: Member) => {
   const members = account.members.filter(

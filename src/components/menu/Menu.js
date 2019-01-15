@@ -1,17 +1,13 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 import React from "react";
 import MenuList from "@material-ui/core/MenuList";
 
-import MenuLink from "../MenuLink";
-import AccountsMenu from "./AccountsMenu";
-import PendingsMenuBadge from "./PendingsMenuBadge";
 // import NewOperationModal from "../NewOperationModal";
 import Receive from "components/Receive";
 import Send from "components/Send";
 import IconReceive from "components/icons/Receive";
-import ModalRoute from "../ModalRoute";
 import { getVisibleAccountsInMenu } from "utils/accounts";
 import {
   isCreateOperationEnabled,
@@ -21,6 +17,10 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation } from "data/types";
 import connectData from "restlay/connectData";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import ModalRoute from "../ModalRoute";
+import PendingsMenuBadge from "./PendingsMenuBadge";
+import AccountsMenu from "./AccountsMenu";
+import MenuLink from "../MenuLink";
 
 import Home from "../icons/full/Home";
 import Lines from "../icons/full/Lines";

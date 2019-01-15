@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import Popover from "@material-ui/core/Popover";
 import { withStyles } from "@material-ui/core/styles";
@@ -28,7 +28,7 @@ function PopBubble(props: {
     <Popover
       {...props}
       className={`pop-bubble ${props.className || ""}`}
-      anchorOrigin={{ horizontal: horizontal, vertical: "bottom" }}
+      anchorOrigin={{ horizontal, vertical: "bottom" }}
       transformOrigin={{
         horizontal: transformHorizontal,
         vertical: "top"

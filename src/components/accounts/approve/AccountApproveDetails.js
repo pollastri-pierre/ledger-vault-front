@@ -1,16 +1,16 @@
-//@flow
+// @flow
 
 import React from "react";
 import { translate } from "react-i18next";
+import Amount from "components/Amount";
+import { getAccountCurrencyName } from "utils/accounts";
+import type { Account, Translate } from "data/types";
 import { BigSecurityMembersIcon } from "../../icons";
 
 import BadgeSecurity from "../../BadgeSecurity";
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
-import Amount from "components/Amount";
-import { getAccountCurrencyName } from "utils/accounts";
-import type { Account, Translate } from "data/types";
 
 const membersIcon = <BigSecurityMembersIcon />;
 

@@ -4,13 +4,13 @@ import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewOperationMutation from "api/mutations/NewOperationMutation";
 import type { Input as NewOperationMutationInput } from "api/mutations/NewOperationMutation";
-import type { WalletBridge } from "./types";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import type { WalletBridge } from "./types";
 
-//convertion to the BigNumber needed
+// convertion to the BigNumber needed
 export type Transaction = {
   amount: number,
   recipient: string,
@@ -26,9 +26,8 @@ const checkValidTransaction = async (a, t, r) => {
   const amountIsValid = t.amount + t.estimatedFees < a.balance;
   if (!t.estimatedFees || !t.amount || !recipientIsValid || !amountIsValid) {
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -60,16 +59,18 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
 
   getTotalSpent: (a, t) =>
-    t.amount == 0
+    t.amount === 0
       ? Promise.resolve(0)
       : Promise.resolve(t.amount + t.estimatedFees),
 
-  editTransactionAmount: (account: Account, t: Transaction, amount: number) => {
-    return {
-      ...t,
-      amount
-    };
-  },
+  editTransactionAmount: (
+    account: Account,
+    t: Transaction,
+    amount: number
+  ) => ({
+    ...t,
+    amount
+  }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
 
@@ -116,7 +117,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
         fee_level: transaction.feeLevel,
         amount: transaction.amount,
         recipient: transaction.recipient,
-        operation_id: operation_id,
+        operation_id,
         note: {
           title: transaction.label,
           content: transaction.note

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import CurrencyIndex from "components/CurrencyIndex";
@@ -19,9 +19,10 @@ import FiatCurrenciesQuery from "api/queries/FiatCurrenciesQuery";
 import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
 import EditAccountNameMutation from "api/mutations/EditAccountNameMutation";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import type { Account, Translate } from "data/types";
 import DialogButton from "../buttons/DialogButton";
 import BadgeSecurity from "../BadgeSecurity";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 // import RateLimiterValue from "../RateLimiterValue";
 // import TimeLockValue from "../TimeLockValue";
 import colors from "../../shared/colors";
@@ -32,8 +33,6 @@ import {
   // BigSecurityRateLimiterIcon,
   // BigSecurityAutoExpireIcon
 } from "../icons";
-
-import type { Account, AccountSettings, Translate } from "data/types";
 
 const styles = {
   container: {
@@ -253,12 +252,10 @@ class SecuritySchemeView extends Component<{
 }
 
 type Props = {
-  settingsData: AccountSettings,
   t: Translate,
   account: *,
   restlay: RestlayEnvironment,
-  classes: { [_: $Keys<typeof styles>]: string },
-  fiats: *
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 type State = {
   name: string,
@@ -273,12 +270,13 @@ class AccountSettingsEdit extends Component<Props, State> {
       settings
     };
   }
+
   debouncedCommit = debounce(() => {
     const {
       props: { restlay, account },
       state: { settings }
     } = this;
-    const currencyCode = settings.currency_unit["name"];
+    const currencyCode = settings.currency_unit.name;
     const m = new SaveAccountSettingsMutation({
       account,
       currency_unit: currencyCode
@@ -295,18 +293,22 @@ class AccountSettingsEdit extends Component<Props, State> {
     const m = new EditAccountNameMutation({ name, account });
     restlay.commitMutation(m);
   }, 2000);
+
   update = (update: $Shape<State>) => {
     this.setState(update);
     this.debouncedCommit();
   };
+
   updateName = (name: string) => {
-    this.setState({ name: name });
+    this.setState({ name });
     this.debouncedCommitName();
   };
+
   onAccountNameChange = (e: SyntheticInputEvent<>) => {
     const name = e.target.value;
     this.updateName(name);
   };
+
   onUnitIndexChange = (unitIndex: number) => {
     const curr = getCryptoCurrencyById(this.props.account.currency_id);
     this.update({
@@ -316,6 +318,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
+
   onBlockchainExplorerChange = ({
     target: { value: blockchainExplorer }
   }: *) => {
@@ -326,6 +329,7 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
+
   onFiatCurrencyChange = ({ target: { value: fiat } }: *) => {
     this.update({
       settings: {
@@ -334,8 +338,9 @@ class AccountSettingsEdit extends Component<Props, State> {
       }
     });
   };
+
   render() {
-    const { account, classes, t /* fiats  */ } = this.props;
+    const { account, classes, t } = this.props;
     const { name, settings } = this.state;
 
     const curr = getCryptoCurrencyById(account.currency_id);
@@ -349,10 +354,10 @@ class AccountSettingsEdit extends Component<Props, State> {
 
     return (
       <div className={classes.contentSections}>
-        <div className={classes.capsTitle}>{"Operation rules"}</div>
+        <div className={classes.capsTitle}>Operation rules</div>
         <SecuritySchemeView t={t} account={account} classes={classes} />
 
-        <div className={classes.capsTitle}>{"General"}</div>
+        <div className={classes.capsTitle}>General</div>
         <div className={classes.settingsFields}>
           <SettingsField botPadded label="Account Name" classes={classes}>
             <span className={classes.settingsFieldLabel}>{name}</span>
@@ -386,21 +391,6 @@ class AccountSettingsEdit extends Component<Props, State> {
             </Select>
           </SettingsField>
         </div>
-        {/* <div className={classes.capsTitle}>{"Countervalue"}</div> */}
-        {/* <SettingsField label="Fiat currency" classes={classes}> */}
-        {/*   <Select */}
-        {/*     value={fiat} */}
-        {/*     onChange={this.onFiatCurrencyChange} */}
-        {/*     fullWidth */}
-        {/*     disableUnderline */}
-        {/*   > */}
-        {/*     {fiats.map(({ id, name }) => ( */}
-        {/*       <MenuItem disableRipple key={id} value={id}> */}
-        {/*         {name} */}
-        {/*       </MenuItem> */}
-        {/*     ))} */}
-        {/*   </Select> */}
-        {/* </SettingsField> */}
       </div>
     );
   }
@@ -416,7 +406,7 @@ function Side({
   return (
     <div className={classes.side}>
       <div className={classes.sideGrow}>
-        <div className={classes.capsTitle}>{"Accounts"}</div>
+        <div className={classes.capsTitle}>Accounts</div>
         <div className={classes.sideItems}>
           {accounts.map(account => {
             const curr = getCryptoCurrencyById(account.currency_id);
@@ -461,7 +451,7 @@ class SettingsModal extends Component<{
         <Side classes={classes} accounts={accounts} />
         <div className={classes.contentWrapper}>
           <div className={classes.content}>
-            <div className={classes.bigTitle}>{"Settings"}</div>
+            <div className={classes.bigTitle}>Settings</div>
             {accounts.length > 0 ? (
               <Switch>
                 <Route
@@ -484,7 +474,7 @@ class SettingsModal extends Component<{
                   }}
                 />
                 <Route
-                  render={() => <Redirect to={"settings/" + accounts[0].id} />}
+                  render={() => <Redirect to={`settings/${accounts[0].id}`} />}
                 />
               </Switch>
             ) : null}

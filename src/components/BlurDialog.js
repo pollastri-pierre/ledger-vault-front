@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
 import Dialog from "@material-ui/core/Dialog";
@@ -33,21 +33,26 @@ class BlurDialog extends Component<{
   static defaultProps = {
     open: false
   };
+
   setActive = (active: boolean) => {
     const index = actives.indexOf(this);
     if (active && index === -1) actives.push(this); // add this in actives
     if (!active && index !== -1) actives.splice(index, 1); // remove this in actives
     setBlurState(actives.length > 0);
   };
+
   componentDidMount() {
     this.setActive(this.props.open);
   }
+
   componentWillUnmount() {
     this.setActive(false);
   }
+
   UNSAFE_componentWillUpdate(props: *) {
     this.setActive(props.open);
   }
+
   render() {
     const { props } = this;
     return (

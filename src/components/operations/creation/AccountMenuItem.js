@@ -1,13 +1,13 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import CurrencyIndex from "components/CurrencyIndex";
 import CounterValue from "components/CounterValue";
 import { getAccountTitle } from "utils/accounts";
-import CurrencyAccountValue from "../../CurrencyAccountValue";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account } from "data/types";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import CurrencyAccountValue from "../../CurrencyAccountValue";
 
 const styles = {
   accountItem: {
@@ -58,13 +58,13 @@ class AccountMenuItem extends PureComponent<{
 
   render() {
     const { account, selected, classes } = this.props;
-    const color = getCryptoCurrencyById(account.currency_id)["color"];
-    const erc20Format = account.account_type == "ERC20" ? true : false;
+    const color = getCryptoCurrencyById(account.currency_id).color;
+    const erc20Format = account.account_type === "ERC20";
 
     return (
       <MenuItem
         className={classes.accountItem}
-        style={{ color: color }}
+        style={{ color }}
         button
         disableRipple
         selected={selected}

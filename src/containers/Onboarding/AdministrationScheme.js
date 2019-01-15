@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
@@ -9,7 +9,7 @@ import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
-import ApprovalSlider from "./ApprovalSlider.js";
+import ApprovalSlider from "./ApprovalSlider";
 
 const styles = {
   disabled: {
@@ -42,49 +42,47 @@ const AdministrationScheme = ({
   onboarding: Object,
   is_editable: boolean,
   t: Translate
-}) => {
-  return (
-    <div>
-      <Title>{t("onboarding:administrators_scheme.title")}</Title>
-      <div className={cx({ [classes.disabled]: !is_editable })}>
-        <Introduction>
-          {t("onboarding:administrators_scheme.description")}
-        </Introduction>
-        <ApprovalSlider number={number} total={total} onChange={onChange} />
-      </div>
-      <Footer
-        nextState
-        render={(onNext, onPrevious) => {
-          const onclick = async () => {
-            try {
-              return await onNext({ quorum: parseInt(number, 10) });
-            } catch (e) {
-              onAddMessage(
-                "Error",
-                "Oops something went wrong. Please try again",
-                "error"
-              );
-            }
-          };
-          return (
-            <Fragment>
-              <DialogButton onTouchTap={onPrevious}>
-                {t("common:back")}
-              </DialogButton>
-              <DialogButton
-                highlight
-                onTouchTap={onclick}
-                disabled={onboarding.quorum < 2}
-              >
-                {t("common:continue")}
-              </DialogButton>
-            </Fragment>
-          );
-        }}
-      />
+}) => (
+  <div>
+    <Title>{t("onboarding:administrators_scheme.title")}</Title>
+    <div className={cx({ [classes.disabled]: !is_editable })}>
+      <Introduction>
+        {t("onboarding:administrators_scheme.description")}
+      </Introduction>
+      <ApprovalSlider number={number} total={total} onChange={onChange} />
     </div>
-  );
-};
+    <Footer
+      nextState
+      render={(onNext, onPrevious) => {
+        const onclick = async () => {
+          try {
+            return await onNext({ quorum: parseInt(number, 10) });
+          } catch (e) {
+            onAddMessage(
+              "Error",
+              "Oops something went wrong. Please try again",
+              "error"
+            );
+          }
+        };
+        return (
+          <Fragment>
+            <DialogButton onTouchTap={onPrevious}>
+              {t("common:back")}
+            </DialogButton>
+            <DialogButton
+              highlight
+              onTouchTap={onclick}
+              disabled={onboarding.quorum < 2}
+            >
+              {t("common:continue")}
+            </DialogButton>
+          </Fragment>
+        );
+      }}
+    />
+  </div>
+);
 
 export default connect(
   mapStateToProps,

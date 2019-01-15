@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -13,7 +13,7 @@ const styles = {
   }
 };
 class BadgeCurrency extends PureComponent<{
-  size: number,
+  size?: number,
   classes: { [_: $Keys<typeof styles>]: string },
   currency: CryptoCurrency,
   className?: string
@@ -21,6 +21,7 @@ class BadgeCurrency extends PureComponent<{
   static defaultProps = {
     size: 6
   };
+
   render() {
     const { size, currency, classes, className } = this.props;
     return (

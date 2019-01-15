@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import ModalLoading from "components/ModalLoading";
@@ -9,15 +9,14 @@ import connectData from "restlay/connectData";
 import Tab from "@material-ui/core/Tab";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import type { WalletBridge } from "bridge/types";
+import HeaderRightClose from "components/HeaderRightClose";
+import type { RestlayEnvironment } from "restlay/connectData";
+import { getBridgeForCurrency } from "bridge";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import SendAccount from "./01-Account";
 import SendDetails from "./02-Details";
 import SendLabel from "./03-Label";
 import SendConfirmation from "./04-Confirmation";
-import HeaderRightClose from "components/HeaderRightClose";
-import type { RestlayEnvironment } from "restlay/connectData";
-
-import { getBridgeForCurrency } from "bridge";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
@@ -92,12 +91,13 @@ class Send extends Component<Props, State<*>> {
       tabsIndex: 1
     });
   };
+
   onChangeTransaction = transaction => {
     this.setState({ transaction });
   };
 
   confirmTx = () => {
-    this.setState({ device: !this.state.device });
+    this.setState(state => ({ device: !state.device }));
   };
 
   createOperation = async operation_id => {
@@ -151,7 +151,7 @@ class Send extends Component<Props, State<*>> {
         >
           {tabTitles.map((title, i) => (
             <Tab
-              key={i}
+              key={i} // eslint-disable-line react/no-array-index-key
               label={title}
               disableRipple
               disabled={disabledTabs[i]}

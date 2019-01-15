@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import fetchWithRetries from "./fetchWithRetries";
 import { getLocalStorageToken } from "../redux/modules/auth";
 

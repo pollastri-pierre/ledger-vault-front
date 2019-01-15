@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Trans } from "react-i18next";

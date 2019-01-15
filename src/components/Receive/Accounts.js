@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React from "react";
 import type { Account } from "data/types";
 import MenuList from "@material-ui/core/MenuList";
@@ -27,18 +27,14 @@ const ReceiveAccounts = ({
       <MenuList data-test="receive-accounts">
         {accounts
           .filter(a => a.status === "APPROVED" || a.status === "VIEW_ONLY")
-          .map((account, i) => {
-            return (
-              <AccountMenuItem
-                onSelect={onSelect}
-                key={i}
-                account={account}
-                selected={
-                  (selectedAccount && selectedAccount.id) === account.id
-                }
-              />
-            );
-          })}
+          .map((account, i) => (
+            <AccountMenuItem
+              onSelect={onSelect}
+              key={i} // eslint-disable-line react/no-array-index-key
+              account={account}
+              selected={(selectedAccount && selectedAccount.id) === account.id}
+            />
+          ))}
       </MenuList>
     }
     footer={null}

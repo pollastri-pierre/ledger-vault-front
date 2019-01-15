@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import classnames from "classnames";
 import colors from "shared/colors";

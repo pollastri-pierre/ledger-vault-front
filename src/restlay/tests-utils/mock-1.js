@@ -1,10 +1,10 @@
-//@flow
+// @flow
 import URL from "url";
 import findIndex from "lodash/findIndex";
+import { create } from "restlay/SchemaDef";
 import Query from "../Query";
 import ConnectionQuery from "../ConnectionQuery";
 import Mutation from "../Mutation";
-import { create } from "restlay/SchemaDef";
 
 // TODO add a more complex schema (2-3 models, interconnected)
 // TODO some queries are cached, etc.. need to cover all possible features here
@@ -18,37 +18,46 @@ const schemaAnimal = create("animals");
 
 export class WorldQuery extends ConnectionQuery<void, Animal[]> {
   uri = "/world";
+
   nodeSchema = schemaAnimal;
 }
 
 export class AnimalsQuery extends Query<void, Animal[]> {
   uri = "/animals";
+
   responseSchema = [schemaAnimal];
 }
 
 export class AnimalQuery extends Query<{ animalId: string }, Animal> {
-  uri = "/animals/" + this.props.animalId;
+  uri = `/animals/${this.props.animalId}`;
+
   responseSchema = schemaAnimal;
+
   cacheMaxAge = 2;
 }
 
 export class IncrementAgesMutation extends Mutation<void, Animal[]> {
   method = "POST";
+
   uri = "/increment-ages";
+
   responseSchema = [schemaAnimal];
 }
 
 export class AddAnimalMutation extends Mutation<{ animal: Object }, Animal> {
   method = "POST";
+
   uri = "/animals";
+
   responseSchema = schemaAnimal;
+
   getBody() {
     return this.props.animal;
   }
 }
 
 export default () => {
-  const genId = ((id: number) => () => "id_" + ++id)(0);
+  const genId = ((id: number) => () => `id_${++id}`)(0);
 
   const animals: Animal[] = [
     {
@@ -69,7 +78,7 @@ export default () => {
   const world: Animal[] = [];
   for (let i = 0; i < 1000; i++) {
     world.push({
-      id: "w_" + i,
+      id: `w_${i}`,
       age: Math.ceil(10 * (1 + Math.cos(i * 77))),
       name: Array(6)
         .fill(null)
@@ -94,14 +103,14 @@ export default () => {
       return animals;
     }
     if (method === "GET" && q.pathname === "/world") {
-      let { first, after } = { first: 30, after: null, ...q.query };
+      let { first, after } = { first: 30, after: null, ...q.query }; // eslint-disable-line prefer-const
       first = Math.min(first, 100); // server is free to maximize the count number
       const cursorPrefixToNodeId = "C_"; // the cursor can be arbitrary and not necessarily === node.id
       let start = 0;
       if (after !== null) {
-        const i = findIndex(world, a => "C_" + a.id === after);
+        const i = findIndex(world, a => `C_${a.id}` === after);
         if (i === -1) {
-          throw new Error("after cursor not found '" + after + "'");
+          throw new Error(`after cursor not found '${after}'`);
         }
         start = i + 1;
       }
@@ -113,7 +122,7 @@ export default () => {
     }
     if (method === "GET" && (m = uri.match(/^\/animals\/([^/]+)$/))) {
       const animal = animals.find(a => m && a.id === m[1]);
-      if (!animal) throw "notfound";
+      if (!animal) throw new Error("notfound");
       return animal;
     }
     if (method === "POST" && uri === "/animals") {
@@ -130,7 +139,7 @@ export default () => {
       incrementAge();
       return animals;
     }
-    throw "notfound";
+    throw new Error("notfound");
   };
   return { networkSync, incrementAge };
 };

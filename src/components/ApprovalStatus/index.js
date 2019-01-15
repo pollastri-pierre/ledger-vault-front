@@ -1,6 +1,5 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
-import ValidateBadge from "../icons/full/ValidateBadge";
 import { withStyles } from "@material-ui/core/styles";
 import type { Member, Approval } from "data/types";
 import { calculateApprovingObjectMeta } from "data/approvingObject";
@@ -9,6 +8,7 @@ import type {
   ApprovingObject,
   ApprovingObjectMeta
 } from "data/approvingObject";
+import ValidateBadge from "../icons/full/ValidateBadge";
 
 const styles = {
   badge: {
@@ -52,9 +52,7 @@ class ApprovalStatus extends PureComponent<{
           ) : (
             <span>
               <ValidateBadge className={classes.badge} />
-              Approved ({approved.length}/{nbRequired
-                ? nbRequired
-                : approvers.length})
+              Approved ({approved.length}/{nbRequired || approvers.length})
             </span>
           )
         ) : (

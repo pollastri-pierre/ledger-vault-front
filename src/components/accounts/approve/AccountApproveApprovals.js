@@ -1,8 +1,8 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import ApprovalList from "../../ApprovalList";
 import type { Member, Approval } from "data/types";
-import { Overscroll } from "../../";
+import ApprovalList from "../../ApprovalList";
+import { Overscroll } from "../..";
 
 type Props = {
   members: Member[],

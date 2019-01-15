@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import BlurDialog from "components/BlurDialog";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -8,10 +8,8 @@ import { translate, Trans } from "react-i18next";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import GenerateSeedDevice from "./GenerateSeedDevice";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
-import Footer from "./Footer";
 import {
   toggleDeviceModal,
   addMasterSeedKey,
@@ -19,6 +17,8 @@ import {
   openProvisionningChannel
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
+import Footer from "./Footer";
+import GenerateSeedDevice from "./GenerateSeedDevice";
 
 const styles = {
   steps: {
@@ -56,7 +56,6 @@ type Props = {
   onGetShardsChannel: Function,
   onWipe: Function,
   history: *,
-  onProvisioningShards: Function,
   onAddMessage: (string, string, string) => void,
   onAddSeedShard: Function
 };
@@ -67,6 +66,7 @@ class Provisioning extends Component<Props, State> {
   state = {
     deny: false
   };
+
   finish = data => {
     this.props.onToggleDeviceModal();
     this.props.onAddSeedShard(data);
@@ -78,7 +78,7 @@ class Provisioning extends Component<Props, State> {
   }
 
   toggleCancelOnDevice = () => {
-    this.setState({ deny: !this.state.deny });
+    this.setState(state => ({ deny: !state.deny }));
   };
 
   render() {
@@ -133,7 +133,7 @@ class Provisioning extends Component<Props, State> {
             .fill()
             .map((v, i) => (
               <FragmentKey
-                key={i}
+                key={i} // eslint-disable-line react/no-array-index-key
                 disabled={onboarding.provisionning.blobs.length <= i - 1}
                 label={t(`onboarding:master_seed_provisionning.step${i + 1}`)}
                 labelGenerate={t(

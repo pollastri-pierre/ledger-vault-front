@@ -1,26 +1,27 @@
-//@flow
+// @flow
 import cx from "classnames";
 import React, { Component } from "react";
 import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
 import colors from "shared/colors";
 import { Link } from "react-router-relative-link";
-import DateFormat from "../DateFormat";
-import CurrencyAccountValue from "../CurrencyAccountValue";
 import OperationStatus from "components/OperationStatus";
-import AccountName from "../AccountName";
-import Comment from "../icons/full/Comment";
-import DataTable from "../DataTable";
-import NoDataPlaceholder from "../NoDataPlaceholder";
 import type { Operation, Account, Note } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Circle from "components/Circle";
 import Receive from "components/icons/Receive";
 import Send from "components/icons/Send";
+import DateFormat from "../DateFormat";
+import CurrencyAccountValue from "../CurrencyAccountValue";
+import AccountName from "../AccountName";
+import Comment from "../icons/full/Comment";
+import DataTable from "../DataTable";
+import NoDataPlaceholder from "../NoDataPlaceholder";
 
 type Cell = {
-  operation: Operation,
-  account: ?Account
+  // TODO: eslint bug?
+  operation: Operation, // eslint-disable-line react/no-unused-prop-types
+  account: ?Account // eslint-disable-line react/no-unused-prop-types
 };
 
 const stopPropagation = (e: SyntheticEvent<*>) => e.stopPropagation();
@@ -293,7 +294,6 @@ const COLS = [
 
 class RowT extends Component<{
   cell: Cell,
-  index: number,
   children: React$Node,
   classes: Object,
   openOperation: (number, number) => void
@@ -304,6 +304,7 @@ class RowT extends Component<{
       cell.account !== this.props.cell.operation
     );
   }
+
   render() {
     const {
       openOperation,
@@ -353,9 +354,10 @@ class DataTableOperation extends Component<
 
   componentDidUpdate(props) {
     if (props.columnIds !== this.props.columnIds) {
-      this.setState({
+      const newState = {
         columns: COLS.filter(c => props.columnIds.includes(c.className))
-      });
+      };
+      this.setState(newState); // eslint-disable-line react/no-did-update-set-state
     }
   }
 

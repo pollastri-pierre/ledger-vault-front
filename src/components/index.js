@@ -1,4 +1,4 @@
-//@flow
+// @flow
 // FIXME drop this file, should directly import the component file
 
 export { default as DialogButton } from "./buttons/DialogButton";

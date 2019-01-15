@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 
 class NoDataPlaceholder extends Component<{

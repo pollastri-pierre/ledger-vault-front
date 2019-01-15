@@ -31,29 +31,18 @@ const styles = {
     marginRight: "20px"
   }
 };
-class AccountView extends Component<
-  {
-    classes: { [_: $Keys<typeof styles>]: string },
-    account: Account,
-    me: Member,
-    t: Translate,
-    match: {
-      url: string,
-      params: {
-        id: string
-      }
+class AccountView extends Component<{
+  classes: { [_: $Keys<typeof styles>]: string },
+  account: Account,
+  me: Member,
+  t: Translate,
+  match: {
+    url: string,
+    params: {
+      id: string
     }
-  },
-  {
-    quicklookFilter: string,
-    tabsIndex: number
   }
-> {
-  state = {
-    quicklookFilter: "balance",
-    tabsIndex: 0
-  };
-
+}> {
   render() {
     const { match, classes, account, t, me } = this.props;
     const accountId = match.params.id;

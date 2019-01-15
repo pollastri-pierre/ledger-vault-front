@@ -1,14 +1,14 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
-import { sanitizeValueString } from "./helpers";
 import InputField from "components/InputField";
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import { sanitizeValueString } from "./helpers";
 
 const styles = {
   container: {
@@ -29,14 +29,12 @@ type State = {
   displayValue: string
 };
 
-const getCurrencyLikeUnit = decimals => {
-  return {
-    code: "",
-    symbol: "",
-    magnitude: decimals,
-    name: ""
-  };
-};
+const getCurrencyLikeUnit = decimals => ({
+  code: "",
+  symbol: "",
+  magnitude: decimals,
+  name: ""
+});
 class AmountNoUnits extends PureComponent<Props<*>, State> {
   state = {
     token: {},
@@ -56,17 +54,18 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
       props.bridge.getTransactionAmount(props.account, props.transaction)
     );
     this.state = {
-      token: token,
+      token,
       displayValue: parseFloat(val) > 0 ? val : ""
     };
   }
+
   onChange = amount => {
     const { account, bridge, transaction } = this.props;
     const { token } = this.state;
 
     const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
     const r = sanitizeValueString(fakeUnit, amount);
-    const sanitizedValue = parseInt(r.value);
+    const sanitizedValue = parseInt(r.value, 10);
     this.props.onChangeTransaction(
       bridge.editTransactionAmount(account, transaction, sanitizedValue)
     );

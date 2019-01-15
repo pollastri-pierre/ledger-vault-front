@@ -1,6 +1,5 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import StepDeviceGeneric from "./StepDeviceGeneric";
 import type { Translate } from "data/types";
 import { translate, Trans } from "react-i18next";
 import createDevice, {
@@ -13,6 +12,7 @@ import createDevice, {
   U2F_TIMEOUT,
   ACCOUNT_MANAGER_SESSION
 } from "device";
+import StepDeviceGeneric from "./StepDeviceGeneric";
 
 type Shard = {
   signature: string,
@@ -23,7 +23,6 @@ type Props = {
   shards_channel: *,
   addMessage: (string, string, string) => void,
   toggleCancelOnDevice: Function,
-  wraps: boolean,
   history: *,
   onFinish: Shard => *,
   t: Translate,
@@ -38,13 +37,16 @@ class GenerateSeedDevice extends Component<Props, State> {
     super(props);
     this.state = { step: 0 };
   }
+
   componentDidMount() {
     _isMounted = true;
     this.start();
   }
+
   componentWillUnmount() {
     _isMounted = false;
   }
+
   start = async () => {
     if (_isMounted) {
       try {
@@ -62,9 +64,9 @@ class GenerateSeedDevice extends Component<Props, State> {
           );
 
           if (channel) {
-            const ephemeral_public_key = channel["ephemeral_public_key"];
-            const certificate = channel["attestation_certificate"];
-            const partition_blob = channel["partition_blob"];
+            const ephemeral_public_key = channel.ephemeral_public_key;
+            const certificate = channel.attestation_certificate;
+            const partition_blob = channel.partition_blob;
 
             this.setState({ step: 1 });
 
@@ -103,7 +105,7 @@ class GenerateSeedDevice extends Component<Props, State> {
         }
       } catch (error) {
         console.error(error);
-        //timeout
+        // timeout
         if (error.statusCode && error.statusCode === 27013) {
           this.props.cancel();
           this.props.toggleCancelOnDevice();
@@ -123,6 +125,7 @@ class GenerateSeedDevice extends Component<Props, State> {
       }
     }
   };
+
   render() {
     const { t } = this.props;
     const steps = [

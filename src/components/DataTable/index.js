@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component, PureComponent } from "react";
 import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
@@ -95,6 +95,7 @@ class DefaultRow<Cell> extends Component<{
   shouldComponentUpdate({ cell }: *) {
     return this.props.cell !== cell;
   }
+
   render() {
     const { index, children } = this.props;
     return <tr key={index}>{children}</tr>;
@@ -114,20 +115,24 @@ class DataTable<Cell> extends PureComponent<{
   static defaultProps = {
     Row: DefaultRow
   };
+
   render() {
     const { columns, data, Row, classes } = this.props;
     return (
       <table className={classes.base}>
         <thead>
           <tr>
+            {/* eslint-disable react/no-array-index-key */}
             {columns.map((column, i) => (
               <th key={i} className={classes[column.className]}>
                 {column.title}
               </th>
             ))}
+            {/* eslint-enable react/no-array-index-key */}
           </tr>
         </thead>
         <tbody>
+          {/* eslint-disable react/no-array-index-key */}
           {data.map((cell, y) => (
             <Row cell={cell} key={y} index={y}>
               {columns.map((column, x) => (
@@ -137,6 +142,7 @@ class DataTable<Cell> extends PureComponent<{
               ))}
             </Row>
           ))}
+          {/* eslint-enable react/no-array-index-key */}
         </tbody>
       </table>
     );

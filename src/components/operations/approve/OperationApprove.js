@@ -1,9 +1,6 @@
-//@flow
+// @flow
 import React, { Component } from "react";
-import Footer from "../../approve/Footer";
 import { withStyles } from "@material-ui/core/styles";
-import OperationApproveDetails from "./OperationApproveDetails";
-import OperationApproveApprovals from "./OperationApproveApprovals";
 import ApprovalPercentage from "components/ApprovalPercentage";
 // import OperationApproveLocks from "./OperationApproveLocks";
 import ModalLoading from "components/ModalLoading";
@@ -19,6 +16,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import modals from "shared/modals";
 import { translate } from "react-i18next";
+import OperationApproveApprovals from "./OperationApproveApprovals";
+import OperationApproveDetails from "./OperationApproveDetails";
+import Footer from "../../approve/Footer";
 
 const styles = {
   base: {
@@ -39,8 +39,7 @@ type Props = {
   approve: Function,
   aborting: Function,
   t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string },
-  match: *
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
 class OperationApprove extends Component<Props, { value: number }> {
@@ -158,9 +157,9 @@ class OperationApprove extends Component<Props, { value: number }> {
   }
 }
 
-const RenderError = withRouter(({ match }) => {
-  return <Redirect to={`${match.params["0"] || ""}`} />;
-});
+const RenderError = withRouter(({ match }) => (
+  <Redirect to={`${match.params["0"] || ""}`} />
+));
 
 export default withRouter(
   connectData(withStyles(styles)(translate()(OperationApprove)), {

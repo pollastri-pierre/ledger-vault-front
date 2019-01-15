@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import type { Store } from "./dataStore";
 
 type Notification = { title: string, content: string };
@@ -10,8 +10,10 @@ export default class Mutation<Input, Response> {
 
   // define the URI to hit for the API. can also pass a template function
   uri: string;
+
   // HTTP verb
   method: string;
+
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object>;
 

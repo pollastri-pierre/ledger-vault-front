@@ -1,4 +1,3 @@
-jest.mock("network", () => jest.fn());
 import network from "network";
 import { ADD_MESSAGE } from "redux/modules/alerts";
 import reducer, {
@@ -31,6 +30,8 @@ import reducer, {
   addMasterSeedKey,
   getState
 } from "redux/modules/onboarding";
+
+jest.mock("network", () => jest.fn());
 
 beforeEach(() => {});
 
@@ -88,7 +89,7 @@ test("openWrappingChannel should call network challenge and dispatch ONBOARDING_
   const getstate = () => ({
     onboarding: { state: "ADMINISTRATORS_PREREQUISITE" }
   });
-  const data = { current_step: getstate()["onboarding"]["state"] };
+  const data = { current_step: getstate().onboarding.state };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -98,14 +99,14 @@ test("openWrappingChannel should call network challenge and dispatch ONBOARDING_
 });
 
 test("addWrappingKey should call network authenticate and dispatch ONBOARDING_ADD_WRAP_KEY", async () => {
-  let data = { id: 1 };
+  const data = { id: 1 };
   const dispatch = jest.fn();
   const thunk = addWrappingKey(data);
   network.mockImplementation(() => "key");
   const getstate = () => ({
     onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
   });
-  data["current_step"] = getstate()["onboarding"]["state"];
+  data.current_step = getstate().onboarding.state;
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith(
     "/onboarding/authenticate",
@@ -125,7 +126,7 @@ test("getRegistrationChallenge should call network challenge and dispatch ONBOAR
   const getstate = () => ({
     onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
   });
-  let data = { current_step: getstate()["onboarding"]["state"] };
+  const data = { current_step: getstate().onboarding.state };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -182,7 +183,7 @@ test("getSigninChallenge should call network challenge and dispatch ONBOARDING_S
     onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
   });
   await thunk(dispatch, getstate);
-  let data = { current_step: getstate()["onboarding"]["state"] };
+  const data = { current_step: getstate().onboarding.state };
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
     type: ONBOARDING_SIGNIN_CHALLENGE,
@@ -239,7 +240,7 @@ test("openProvisionningChannel should call network challenge and dispatch ONBOAR
   const getstate = () => ({
     onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
   });
-  const data = { current_step: getstate()["onboarding"]["state"] };
+  const data = { current_step: getstate().onboarding.state };
   await thunk(dispatch, getstate);
   expect(network).toHaveBeenCalledWith("/onboarding/challenge", "POST", data);
   expect(dispatch).toHaveBeenCalledWith({
@@ -249,7 +250,7 @@ test("openProvisionningChannel should call network challenge and dispatch ONBOAR
 });
 
 test("addMasterSeedKey should call authenticate and ONBOARDING_ADD_MASTERSEED_KEY", async () => {
-  let data = { id: 1 };
+  const data = { id: 1 };
   const dispatch = jest.fn();
   const thunk = addMasterSeedKey(data);
   network.mockImplementation(() => "seed");
@@ -257,7 +258,7 @@ test("addMasterSeedKey should call authenticate and ONBOARDING_ADD_MASTERSEED_KE
   const getstate = () => ({
     onboarding: { state: "ADMINISTRATORS_REGISTRATION" }
   });
-  data["current_step"] = getstate()["onboarding"]["state"];
+  data.current_step = getstate().onboarding.state;
   await thunk(dispatch, getstate);
 
   expect(network).toHaveBeenCalledWith(
@@ -302,22 +303,22 @@ test("when ONBOARDING_TOGGLE_MEMBER_MODAL set member_modal to false/true", () =>
 
 test("when ONBOARDING_CHANGE_QUORUM set quorum", () => {
   const admins = [1, 2];
-  const state = { quorum: 0, registering: { admins: admins } };
+  const state = { quorum: 0, registering: { admins } };
   expect(reducer(state, { type: ONBOARDING_CHANGE_QUORUM, nb: 2 })).toEqual({
     quorum: 2,
     registering: {
-      admins: admins
+      admins
     }
   });
 });
 
 test("when ONBOARDING_CHANGE_QUORUM do not set quorum if too large", () => {
   const admins = [1, 2];
-  const state = { quorum: 0, registering: { admins: admins } };
+  const state = { quorum: 0, registering: { admins } };
   expect(reducer(state, { type: ONBOARDING_CHANGE_QUORUM, nb: 3 })).toEqual({
     quorum: 0,
     registering: {
-      admins: admins
+      admins
     }
   });
 });

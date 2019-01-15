@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import MenuItem from "@material-ui/core/Menu";
 import Select from "@material-ui/core/Select";
@@ -10,7 +10,7 @@ import InputTextWithUnity from "components/InputTextWithUnity";
 import { addMessage } from "redux/modules/alerts";
 import modals from "shared/modals";
 import InfoModal from "../../InfoModal";
-import { DialogButton } from "../../";
+import { DialogButton } from "../..";
 
 import type { StepProps } from "./AccountCreation";
 
@@ -59,49 +59,46 @@ class AccountCreationRateLimiter extends Component<Props, State> {
     if (rate_limiter.enabled && rate_limiter.value === 0) {
       onAddMessage("Error", "Rate limiter value cannot be 0", "error");
       return false;
-    } else {
-      setRatelimiter(this.state.rate_limiter);
-      switchInternalModal("main");
     }
+    setRatelimiter(this.state.rate_limiter);
+    switchInternalModal("main");
   };
 
   onChangeValue = val => {
     const isNumber = /^[0-9\b]+$/;
 
     if (val === "" || isNumber.test(val)) {
-      this.setState({
-        ...this.state,
+      this.setState(state => ({
         rate_limiter: {
-          ...this.state.rate_limiter,
+          ...state.rate_limiter,
           value: parseInt(val, 10) || 0
         }
-      });
+      }));
     }
   };
 
   onToggle = () => {
-    this.setState({
-      ...this.state,
+    this.setState(state => ({
       rate_limiter: {
-        ...this.state.rate_limiter,
-        enabled: !this.state.rate_limiter.enabled
+        ...state.rate_limiter,
+        enabled: !state.rate_limiter.enabled
       }
-    });
+    }));
   };
 
   changeFrequency = (e: *) => {
-    this.setState({
-      ...this.state,
+    this.setState(state => ({
       rate_limiter: {
-        ...this.state.rate_limiter,
+        ...state.rate_limiter,
         frequency: e.target.value
       }
-    });
+    }));
   };
 
   cancel = () => {
     this.props.switchInternalModal("main");
   };
+
   render() {
     const { rate_limiter } = this.state;
     const { classes } = this.props;
@@ -129,7 +126,7 @@ class AccountCreationRateLimiter extends Component<Props, State> {
                 onChange={this.changeFrequency}
                 disableUnderline
                 renderValue={key =>
-                  "per " + (frequencies.find(o => o.key === key) || {}).title
+                  `per ${(frequencies.find(o => o.key === key) || {}).title}`
                 }
               >
                 {frequencies.map(({ title, key }) => (

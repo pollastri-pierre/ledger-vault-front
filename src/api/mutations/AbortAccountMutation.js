@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
 import type { Store } from "restlay/dataStore";
 import { success, error } from "formatters/notification";
@@ -11,6 +11,7 @@ type Response = void; // FIXME what response?
 
 export default class AbortAccountMutation extends Mutation<Input, Response> {
   method = "POST";
+
   uri = `/accounts/${this.props.accountId}/abort`;
 
   getSuccessNotification() {

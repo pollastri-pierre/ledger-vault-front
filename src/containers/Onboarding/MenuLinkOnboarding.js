@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -35,25 +35,23 @@ const styles = {
 class MenuLinkOnboarding extends Component<{
   step: string,
   classes: Object,
-  className?: string,
   children: *,
-  overrides?: Object,
   color: string,
   selected: boolean,
-  allowed: boolean,
   onGoToStep: Function,
   heading: boolean
 }> {
   triggerView() {
     this.props.onGoToStep(this.props.step);
   }
+
   render() {
     const { classes, heading, selected, color, children } = this.props;
     const rootCSS = heading ? classes.head : classes.root;
     return (
       <MenuItem
         style={{
-          color: color || "#27d0e2" //default FIXME from theme
+          color: color || "#27d0e2" // default FIXME from theme
         }}
         button
         disabled={!selected}

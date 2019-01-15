@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { PureComponent } from "react";
 
@@ -13,7 +13,7 @@ const styles = {
 };
 
 type Props = {
-  color: string,
+  color?: string,
   classes: Object
 };
 

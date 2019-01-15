@@ -1,5 +1,6 @@
-//@flow
+// @flow
 import Mutation from "restlay/Mutation";
+
 export const speeds = {
   slow: "slow",
   normal: "normal",
@@ -33,9 +34,11 @@ export default class AccountCalculateFeeQuery extends Mutation<
   Response
 > {
   method = "POST";
+
   uri = `/accounts/${this.props.accountId}/operations/fees`;
 
   showError = false;
+
   getBody() {
     return this.props.operation;
   }

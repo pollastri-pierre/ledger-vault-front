@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import { translate } from "react-i18next";
@@ -7,18 +7,18 @@ import connectData from "restlay/connectData";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { withStyles } from "@material-ui/core/styles";
-import Footer from "../../approve/Footer";
 // import CircularProgress from "material-ui/CircularProgress";
 import ApprovalPercentage from "components/ApprovalPercentage";
-import AccountApproveDetails from "./AccountApproveDetails";
-import AccountApproveMembers from "./AccountApproveMembers";
 import ModalLoading from "components/ModalLoading";
-import AccountApproveApprovals from "./AccountApproveApprovals";
 import AccountQuery from "api/queries/AccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
 import type { Member, Account, Translate } from "data/types";
 import modals from "shared/modals";
+import AccountApproveApprovals from "./AccountApproveApprovals";
+import AccountApproveMembers from "./AccountApproveMembers";
+import AccountApproveDetails from "./AccountApproveDetails";
+import Footer from "../../approve/Footer";
 
 const styles = {
   base: {
@@ -32,14 +32,12 @@ type Props = {
   members: Array<Member>,
   profile: Member,
   t: Translate,
-  approvers: Array<Member>,
   account: Account,
   organization: *,
   close: Function,
   approve: Function,
   aborting: Function,
-  classes: { [_: $Keys<typeof styles>]: string },
-  match: *
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
 const GenericFooter = ({
@@ -58,24 +56,19 @@ const GenericFooter = ({
   account: Account,
   profile: Member,
   aborting: Function
-}) => {
-  return (
-    <Footer
-      close={close}
-      approve={() => approve(account)}
-      aborting={aborting}
-      approved={hasApproved(account.approvals, profile)}
-      percentage={
-        percentage && (
-          <ApprovalPercentage
-            approved={account.approvals}
-            nbRequired={quorum}
-          />
-        )
-      }
-    />
-  );
-};
+}) => (
+  <Footer
+    close={close}
+    approve={() => approve(account)}
+    aborting={aborting}
+    approved={hasApproved(account.approvals, profile)}
+    percentage={
+      percentage && (
+        <ApprovalPercentage approved={account.approvals} nbRequired={quorum} />
+      )
+    }
+  />
+);
 
 const hasApproved = (approvers, profile) =>
   approvers.find(approver => approver.person.pub_key === profile.pub_key);
@@ -88,6 +81,7 @@ class AccountApprove extends Component<Props, { value: number }> {
   handleChange = (event, value) => {
     this.setState({ value });
   };
+
   render() {
     const {
       profile,
@@ -166,9 +160,9 @@ class AccountApprove extends Component<Props, { value: number }> {
   }
 }
 
-const RenderError = withRouter(({ match }) => {
-  return <Redirect to={`${match.params["0"] || ""}`} />;
-});
+const RenderError = withRouter(({ match }) => (
+  <Redirect to={`${match.params["0"] || ""}`} />
+));
 
 const connected = connectData(withStyles(styles)(translate()(AccountApprove)), {
   RenderError,

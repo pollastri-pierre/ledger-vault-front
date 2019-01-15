@@ -1,9 +1,9 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import classnames from "classnames";
 
-type Props = { color: string, className?: string, classes: Object };
+type Props = { className?: string, classes: Object };
 
 const styles = {
   common: {

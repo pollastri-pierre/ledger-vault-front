@@ -61,7 +61,7 @@ class UnitSelect extends Component<{
           <MenuItem
             disableRipple
             value={i}
-            key={i}
+            key={i} // eslint-disable-line react/no-array-index-key
             className={classes.menu}
             data-test="unit-select-values"
           >

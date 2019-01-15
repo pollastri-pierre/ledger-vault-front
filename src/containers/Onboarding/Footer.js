@@ -1,16 +1,14 @@
-//@flow
+// @flow
 import React from "react";
 // import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { nextState, previousState } from "redux/modules/onboarding";
 
-const mapDispatchToProps = (dispatch: *) => {
-  return {
-    onNextState: data => dispatch(nextState(data)),
-    onPreviousState: data => dispatch(previousState(data))
-  };
-};
+const mapDispatchToProps = (dispatch: *) => ({
+  onNextState: data => dispatch(nextState(data)),
+  onPreviousState: data => dispatch(previousState(data))
+});
 
 const mapStateToProps = state => ({
   step: state.onboarding.currentStep
@@ -36,11 +34,9 @@ const Footer = ({
   onNextState: Function,
   onPreviousState: Function,
   render: Function
-}) => {
-  return (
-    <div className={classes.base}>{render(onNextState, onPreviousState)}</div>
-  );
-};
+}) => (
+  <div className={classes.base}>{render(onNextState, onPreviousState)}</div>
+);
 
 export default connect(
   mapStateToProps,

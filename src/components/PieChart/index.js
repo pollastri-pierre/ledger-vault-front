@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import _ from "lodash";
 import React, { Component } from "react";
 import * as d3 from "d3";
@@ -165,8 +165,6 @@ class PieChart extends Component<
     showCaptions?: boolean,
     showTooltips?: boolean,
     highlightCaptionsOnHover?: boolean,
-    tooltipText?: Function,
-    captionText?: Function,
     classes: { [_: $Keys<typeof styles>]: string }
   },
   { selected: number }
@@ -176,6 +174,7 @@ class PieChart extends Component<
   };
 
   svg: ?Element;
+
   tooltip: ?Element;
 
   setSelected = (index: number) => {
@@ -221,13 +220,13 @@ class PieChart extends Component<
       .sort(null)
       .value(d => d.counterValueBalance);
 
-    let total = d3.sum(data, d => d.counterValueBalance);
+    const total = d3.sum(data, d => d.counterValueBalance);
 
     pie(data).forEach((d, i) => {
-      data[i].center = arc.centroid(d); //Save center of arc for position of tooltip
+      data[i].center = arc.centroid(d); // Save center of arc for position of tooltip
       data[i].percentage = ((d.data.counterValueBalance / total) * 100).toFixed(
         0
-      ); //Save percentage of arc
+      ); // Save percentage of arc
     });
 
     g.attr("transform", `translate(${radius}, ${radius})`);
@@ -236,7 +235,7 @@ class PieChart extends Component<
       .data(pie(data))
       .enter()
       .append("g")
-      .attr("class", (d, i) => `arc ${"arc" + i}`)
+      .attr("class", (d, i) => `arc ${`arc${i}`}`)
       .append("path")
       .attr("d", d => arc(d))
       .attr(
@@ -250,19 +249,19 @@ class PieChart extends Component<
         return curr.color;
       });
 
-    //transparent Chart for hovering purposes
+    // transparent Chart for hovering purposes
     g.selectAll(".invisibleArc")
       .data(pie(data))
       .enter()
       .append("g")
-      .attr("class", (d, i) => `invisibleArc ${"invisibleArc" + i}`)
+      .attr("class", (d, i) => `invisibleArc ${`invisibleArc${i}`}`)
       .append("path")
       .attr("d", d => invisibleArc(d))
       .attr(
         "class",
         (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
       )
-      .style("opacity", 0) //make it transparent
+      .style("opacity", 0) // make it transparent
       .on("mouseover", this.handleMouseOver)
       .on("mouseout", this.handleMouseOut);
   }
@@ -281,35 +280,35 @@ class PieChart extends Component<
         .classed(classes.disable, (d, i) => selected !== -1 && selected !== i)
         .classed("selected", (d, i) => selected !== -1 && selected === i);
       const tooltip = d3.select(this.tooltip);
-      //Place tooltip
+      // Place tooltip
       tooltip.classed(classes.hide, selected === -1);
       if (selected !== -1) {
-        const selectedArc = d3.select(".arc" + selected).data()[0].data;
-        let orientation =
+        const selectedArc = d3.select(`.arc${selected}`).data()[0].data;
+        const orientation =
           Math.abs(selectedArc.center[0]) > Math.abs(selectedArc.center[1])
             ? 0
-            : 1; //getting best orientation (0 for horizontal )
+            : 1; // getting best orientation (0 for horizontal )
         let orientationDeltaX = 0;
         let orientationDeltaY = 0;
-        let arrowSpacing = 20;
+        const arrowSpacing = 20;
         if (orientation === 0 && selectedArc.center[0] <= 0) {
-          //A gauche
+          // A gauche
           orientationDeltaX =
             -parseFloat(tooltip.style("width")) - arrowSpacing;
           orientationDeltaY = -parseFloat(tooltip.style("height")) / 2;
           tooltip.classed(classes.lookRight, true);
         } else if (orientation === 0 && selectedArc.center[0] > 0) {
-          //A droite
+          // A droite
           orientationDeltaX = arrowSpacing;
           orientationDeltaY = -parseFloat(tooltip.style("height")) / 2;
           tooltip.classed(classes.lookLeft, true);
         } else if (orientation === 1 && selectedArc.center[1] > 0) {
-          //En bas
+          // En bas
           orientationDeltaX = -parseFloat(tooltip.style("width")) / 2;
           orientationDeltaY = arrowSpacing;
           tooltip.classed(classes.lookUp, true);
         } else if (orientation === 1 && selectedArc.center[1] < 0) {
-          //En haut
+          // En haut
           orientationDeltaX = -parseFloat(tooltip.style("width")) / 2;
           orientationDeltaY =
             -parseFloat(tooltip.style("height")) - arrowSpacing;
@@ -317,11 +316,11 @@ class PieChart extends Component<
         }
         tooltip.style(
           "left",
-          selectedArc.center[0] + svgWidth / 2 + orientationDeltaX + "px"
+          `${selectedArc.center[0] + svgWidth / 2 + orientationDeltaX}px`
         );
         tooltip.style(
           "top",
-          selectedArc.center[1] + svgHeight / 2 + orientationDeltaY + "px"
+          `${selectedArc.center[1] + svgHeight / 2 + orientationDeltaY}px`
         );
         tooltip
           .select(`.${classes.percentage}`)

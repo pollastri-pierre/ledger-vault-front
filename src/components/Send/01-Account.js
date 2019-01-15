@@ -1,9 +1,8 @@
-//@flow
+// @flow
 import React, { PureComponent, Fragment } from "react";
 import MenuList from "@material-ui/core/MenuList";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
-import DialogButton from "../buttons/DialogButton";
 import AccountMenuItem from "components/operations/creation/AccountMenuItem";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
@@ -18,6 +17,7 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import type { Account, Operation, Member } from "data/types";
+import DialogButton from "../buttons/DialogButton";
 
 import SendLayout from "./SendLayout";
 
@@ -38,6 +38,7 @@ class SendAccount extends PureComponent<Props> {
     // TODO: re-evaluate this tabIndex system
     this.props.onTabChange(e, 1);
   };
+
   render() {
     const {
       accounts,
@@ -57,26 +58,24 @@ class SendAccount extends PureComponent<Props> {
               <Trans i18nKey="send:account.title" />
             </ModalSubTitle>
             <MenuList data-test="operation-creation-accounts">
-              {accounts.filter(a => a.status === "APPROVED").map(acc => {
-                return (
-                  <Disabled
-                    key={acc.id}
-                    disabled={
-                      acc.balance <= 0 ||
-                      hasPending(acc, pendingApprovalOperations) ||
-                      !isMemberOfAccount(acc, me) ||
-                      isAccountOutdated(acc) ||
-                      isAccountBeingUpdated(acc)
-                    }
-                  >
-                    <AccountMenuItem
-                      onSelect={selectAccount}
-                      account={acc}
-                      selected={(account && account.id) === acc.id}
-                    />
-                  </Disabled>
-                );
-              })}
+              {accounts.filter(a => a.status === "APPROVED").map(acc => (
+                <Disabled
+                  key={acc.id}
+                  disabled={
+                    acc.balance <= 0 ||
+                    hasPending(acc, pendingApprovalOperations) ||
+                    !isMemberOfAccount(acc, me) ||
+                    isAccountOutdated(acc) ||
+                    isAccountBeingUpdated(acc)
+                  }
+                >
+                  <AccountMenuItem
+                    onSelect={selectAccount}
+                    account={acc}
+                    selected={(account && account.id) === acc.id}
+                  />
+                </Disabled>
+              ))}
             </MenuList>
           </Fragment>
         }

@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import Qrious from "qrious";
 
@@ -13,7 +13,9 @@ class ReceiveFundsCard extends PureComponent<Props> {
     size: 100,
     pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1
   };
+
   canvas: ?HTMLCanvasElement;
+
   qr: ?Qrious;
 
   componentDidMount() {

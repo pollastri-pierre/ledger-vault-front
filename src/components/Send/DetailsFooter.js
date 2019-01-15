@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
@@ -35,7 +35,7 @@ class DetailsFooter extends PureComponent<Props> {
   render() {
     const { account, totalSpent, canNext, onChangeTab, classes } = this.props;
 
-    const erc20Account = account.account_type == "ERC20" ? true : false;
+    const erc20Account = account.account_type === "ERC20";
     return (
       <div className={!erc20Account ? classes.footerDetails : null}>
         {!erc20Account && (

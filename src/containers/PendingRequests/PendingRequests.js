@@ -1,14 +1,14 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import EntityApprove from "components/approve/EntityApprove";
-import Accounts from "./Accounts";
-import Operations from "./Operations";
 import ModalRoute from "components/ModalRoute";
 import ProfileQuery from "api/queries/ProfileQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
+import Operations from "./Operations";
+import Accounts from "./Accounts";
 
 const EntityApproveAccount = props => (
   <EntityApprove entity="account" {...props} />

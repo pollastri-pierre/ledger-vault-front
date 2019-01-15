@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import network from "network";
@@ -18,10 +18,10 @@ import { Interpolate, Trans } from "react-i18next";
 import QRCode from "components/QRCode";
 import GenericErrorScreen from "components/GenericErrorScreen";
 import colors from "shared/colors";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import ReceiveLayout from "./ReceiveLayout";
 import AddressRejected from "./AddressRejected";
 import ShieldBox from "./ShieldBox";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 type Props = {
   account: Account,
@@ -46,12 +46,15 @@ class ReceiveAddress extends Component<Props, State> {
     copied: false,
     deviceRejected: false
   };
+
   componentDidMount() {
     this.verifyAddress();
   }
+
   componentWillUnmount() {
     if (this._timeout) clearTimeout(this._timeout);
   }
+
   verifyAddress = async () => {
     try {
       const device = await createDevice();
@@ -89,7 +92,7 @@ class ReceiveAddress extends Component<Props, State> {
       ) {
         this.setState({ deviceRejected: true });
       } else {
-        this.setState({ error: error, loading: false });
+        this.setState({ error, loading: false });
       }
     }
   };

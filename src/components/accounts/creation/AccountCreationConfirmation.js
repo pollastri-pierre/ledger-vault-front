@@ -1,16 +1,13 @@
-//@flow
+// @flow
 
 import React, { Fragment } from "react";
 import { translate, Interpolate } from "react-i18next";
 
-import type {
-  State as AccountCreationState,
-  UpdateState as UpdateAccountCreationState
-} from "redux/modules/account-creation";
-
-import { BigSecurityMembersIcon } from "../../icons";
+import type { State as AccountCreationState } from "redux/modules/account-creation";
 
 import type { Translate } from "data/types";
+import { BigSecurityMembersIcon } from "../../icons";
+
 import LineRow from "../../LineRow";
 import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
@@ -18,8 +15,6 @@ import InfoModal from "../../InfoModal";
 
 type Props = {
   accountCreationState: AccountCreationState,
-  updateAccountCreationState: UpdateAccountCreationState,
-
   t: Translate
 };
 

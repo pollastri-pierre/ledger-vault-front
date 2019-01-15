@@ -72,6 +72,7 @@ class FeesFieldEthereumKind extends PureComponent<
   componentWillUnmount() {
     this._unmounted = true;
   }
+
   async componentDidUpdate(prevProps) {
     const { transaction } = this.props;
 
@@ -85,6 +86,7 @@ class FeesFieldEthereumKind extends PureComponent<
       this.loadGasPrice();
     }
   }
+
   _unmounted = false;
 
   async loadFees() {
@@ -93,6 +95,7 @@ class FeesFieldEthereumKind extends PureComponent<
     if (this._unmounted) return;
     this.setState({ totalFees });
   }
+
   async loadGasPrice() {
     const { account, transaction, bridge, restlay } = this.props;
     const currency = getCryptoCurrencyById(account.currency_id);
@@ -140,13 +143,14 @@ class FeesFieldEthereumKind extends PureComponent<
   createMutation = field => (e: SyntheticEvent<HTMLInputElement>) => {
     const { transaction, onChangeTransaction } = this.props;
     const { value } = e.currentTarget;
-    onChangeTransaction({ ...transaction, [field]: parseInt(value) });
+    onChangeTransaction({ ...transaction, [field]: parseInt(value, 10) });
   };
 
   onGasPriceChange = (gasPrice: number) => {
     const { transaction, onChangeTransaction } = this.props;
     onChangeTransaction({ ...transaction, gasPrice });
   };
+
   onGasLimitChange = this.createMutation("gasLimit");
 
   render() {

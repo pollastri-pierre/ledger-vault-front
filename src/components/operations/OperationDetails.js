@@ -1,22 +1,22 @@
-//@flow
+// @flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
 
 import ModalLoading from "components/ModalLoading";
 import { withStyles } from "@material-ui/core/styles";
-import { DialogButton, Overscroll } from "../";
-import TabDetails from "./TabDetails";
 import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import connectData from "restlay/connectData";
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
-import type { Operation, Account, Member } from "data/types";
+import type { Operation, Account } from "data/types";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import modals from "shared/modals";
+import TabDetails from "./TabDetails";
+import { DialogButton, Overscroll } from "..";
 
 type Props = {
   close: Function,
@@ -27,8 +27,6 @@ type Props = {
     operation: Operation,
     account: Account
   },
-  profile: Member,
-  history: *,
   match: Object
 };
 
@@ -64,7 +62,7 @@ class OperationDetails extends Component<Props, *> {
     return (
       <div className={classes.base}>
         <header>
-          <h2>{"Operation details"}</h2>
+          <h2>Operation details</h2>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -103,6 +101,7 @@ class OperationDetails extends Component<Props, *> {
             <DialogButton>
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href={defaultExplorers[account.currency_id](
                   operation.transaction.hash
                 )}
@@ -120,13 +119,11 @@ class OperationDetails extends Component<Props, *> {
   }
 }
 
-const RenderError = withStyles(styles)(({ classes, error, restlay }) => {
-  return (
-    <div className={classes.base}>
-      <TryAgain error={error} action={restlay.forceFetch} />
-    </div>
-  );
-});
+const RenderError = withStyles(styles)(({ classes, error, restlay }) => (
+  <div className={classes.base}>
+    <TryAgain error={error} action={restlay.forceFetch} />
+  </div>
+));
 
 export default connectData(withStyles(styles)(OperationDetails), {
   RenderError,
