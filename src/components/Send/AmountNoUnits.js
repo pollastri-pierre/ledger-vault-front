@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
@@ -36,11 +36,6 @@ const getCurrencyLikeUnit = decimals => ({
   name: ""
 });
 class AmountNoUnits extends PureComponent<Props<*>, State> {
-  state = {
-    token: {},
-    displayValue: ""
-  };
-
   constructor(props) {
     super(props);
     const token = getERC20TokenByContractAddress(
@@ -76,21 +71,19 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
     const { classes, amountIsValid } = this.props;
     const { token, displayValue } = this.state;
     return (
-      <Fragment>
-        <div className={classes.container}>
-          <InputField
-            value={displayValue}
-            autoFocus
-            textAlign="right"
-            onChange={this.onChange}
-            placeholder="0"
-            fullWidth
-            data-test="operation-creation-amount"
-            error={!amountIsValid}
-            renderLeft={<div>{token && token.symbol}</div>}
-          />
-        </div>
-      </Fragment>
+      <div className={classes.container}>
+        <InputField
+          value={displayValue}
+          autoFocus
+          textAlign="right"
+          onChange={this.onChange}
+          placeholder="0"
+          fullWidth
+          data-test="operation-creation-amount"
+          error={!amountIsValid}
+          renderLeft={<div>{token && token.symbol}</div>}
+        />
+      </div>
     );
   }
 }

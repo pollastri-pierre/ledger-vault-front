@@ -69,11 +69,13 @@ const checkValidTransaction = async (a, t, r) => {
   }
   return true;
 };
-
-const getFees = (a, t) =>
-  t.gasPrice === null || t.gasPrice === undefined
-    ? Promise.resolve(0)
-    : Promise.resolve(t.gasPrice * t.gasLimit);
+// TODO: generalize parentAccount to some generic extra data param
+const checkValidFee = async (account, transaction, parentAccount) => {
+  const fees = await getFees(account, transaction);
+  const validFees = fees < parentAccount.balance;
+  return validFees;
+};
+const getFees = (a, t) => Promise.resolve(t.gasPrice * t.gasLimit);
 
 const computeTotal = (a, t, fees) => {
   if (a.account_type === "ERC20") {
@@ -119,7 +121,6 @@ const EthereumBridge: WalletBridge<Transaction> = {
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
-  getRecipientWarning: () => Promise.resolve(null),
 
   getTransactionLabel: (a: Account, t: Transaction) => t.label,
   editTransactionLabel: (account: Account, t: Transaction, label: string) => ({
@@ -163,7 +164,8 @@ const EthereumBridge: WalletBridge<Transaction> = {
   EditAdvancedOptions,
   checkValidTransaction,
   isRecipientValid,
-  recipientWarning
+  recipientWarning,
+  checkValidFee
 };
 
 export default EthereumBridge;
