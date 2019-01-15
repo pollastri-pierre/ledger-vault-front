@@ -1,11 +1,19 @@
-import {login,logout,route,switch_device,create_account,approve,cancel,approve_account,approve_operation } from '../../functions/actions.js';
+import {
+  login,
+  logout,
+  route,
+  switch_device,
+  create_account,
+  approve,
+  cancel,
+  approve_account,
+  approve_operation
+} from "../../functions/actions.js";
 
 describe("Tests Approve of a Operation", function() {
-
-  afterEach(function () {
+  afterEach(function() {
     logout();
   });
-
 
   it("Approve operation with device 4", () => {
     cy.server();
@@ -19,6 +27,5 @@ describe("Tests Approve of a Operation", function() {
     route();
     login(5);
     approve_operation("BTC Testnet");
-
   });
 });

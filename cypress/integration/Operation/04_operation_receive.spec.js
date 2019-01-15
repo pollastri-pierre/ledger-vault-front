@@ -1,21 +1,26 @@
-import {login,logout,route,switch_device,create_account,approve } from '../../functions/actions.js';
+import {
+  login,
+  logout,
+  route,
+  switch_device,
+  create_account,
+  approve
+} from "../../functions/actions.js";
 
 describe("Tests Receive address for account", function() {
-
-  beforeEach(function () {
+  beforeEach(function() {
     login(4);
   });
 
-  afterEach(function () {
+  afterEach(function() {
     logout();
   });
-
 
   it("Get the receive address of a account", () => {
     cy.server();
     route();
     cy.contains("Receive").click();
-    cy.url().should('include', '/dashboard/receive');
+    cy.url().should("include", "/dashboard/receive");
     approve();
 
     cy.get("[data-test=receive-accounts] li:first").click();
@@ -27,6 +32,5 @@ describe("Tests Receive address for account", function() {
     cy.wait(2500);
     // Click to Verify button
     cy.contains("Re-verify").click();
-
-    });
+  });
 });

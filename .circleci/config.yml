@@ -33,7 +33,7 @@ jobs:
           paths:
             - node_modules
       - run: npm run lint
-      - run: ./node_modules/.bin/prettier -l "{src,webpack,test}/**/*.{js,json}"
+      - run: ./node_modules/.bin/prettier -l "{src,webpack,test,cypress}/**/*.{js,json}"
       - run: npm run flow
       - run: npm run test
   build:
