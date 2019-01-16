@@ -1,16 +1,9 @@
 // @flow
-import { connect } from "react-redux";
 import Card from "components/Card";
-import { toggleAndSelect } from "redux/modules/update-accounts";
 import { Link } from "react-router-dom";
-import NoStyleLink from "components/NoStyleLink";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
-import {
-  isAccountOutdated,
-  isAccountBeingUpdated,
-  hasUserApprovedAccount
-} from "utils/accounts";
+import { isAccountOutdated } from "utils/accounts";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
 import { Trans } from "react-i18next";
@@ -18,8 +11,7 @@ import colors from "shared/colors";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account, Member } from "data/types";
-import InfoBox from "components/InfoBox";
-import Button from "@material-ui/core/Button";
+import AccountWarning from "./AccountWarning";
 
 const row = {
   base: {
@@ -76,23 +68,10 @@ const styles = {
     cursor: "pointer",
     textDecoration: "underline",
     color: colors.ocean
-  },
-  actionButton: {
-    background: "#ca630b",
-    fontWeight: "bold",
-    height: 20,
-    fontSize: 11
-  },
-  infobox: {
-    position: "absolute",
-    width: 300,
-    right: 50,
-    top: 50
   }
 };
 type Props = {
   account: Account,
-  onOpen: (id: number) => void,
   me: Member,
   classes: { [_: $Keys<typeof styles>]: string }
 };
@@ -158,9 +137,8 @@ class AccountQuickInfo extends Component<Props, State> {
   };
 
   render() {
-    const { account, classes, me, onOpen } = this.props;
+    const { account, classes, me } = this.props;
     const { modalMembersOpen } = this.state;
-    const orga = location.pathname.split("/")[1];
     return (
       <Fragment>
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
@@ -202,24 +180,6 @@ class AccountQuickInfo extends Component<Props, State> {
                     />
                   </Fragment>
                 )}
-              {account.status === "VIEW_ONLY" && (
-                <InfoBox
-                  type="warning"
-                  withIcon
-                  className={classes.infobox}
-                  Footer={
-                    <Button
-                      onClick={onOpen}
-                      variant="outlined"
-                      className={classes.actionButton}
-                    >
-                      <Trans i18nKey="accountView:view_only_provide_rules" />
-                    </Button>
-                  }
-                >
-                  <Trans i18nKey="accountView:view_only_warning" />
-                </InfoBox>
-              )}
             </div>
             <div style={{ width: 300 }}>
               <Row
@@ -237,51 +197,7 @@ class AccountQuickInfo extends Component<Props, State> {
               />
             </div>
             <div>
-              {isAccountOutdated(account) && (
-                <InfoBox
-                  type="warning"
-                  withIcon
-                  className={classes.infobox}
-                  Footer={
-                    <Button onClick={onOpen} className={classes.actionButton}>
-                      <Trans i18nKey="update:provide_rule" />
-                    </Button>
-                  }
-                >
-                  <Trans i18nKey="update:provide_rule_subtext" />
-                </InfoBox>
-              )}
-              {isAccountBeingUpdated(account) &&
-                !hasUserApprovedAccount(account, me) && (
-                  <InfoBox
-                    type="warning"
-                    withIcon
-                    className={classes.infobox}
-                    Footer={
-                      <Button
-                        href={`/${orga}/pending`}
-                        className={classes.actionButton}
-                      >
-                        <NoStyleLink to={`/${orga}/pending`}>
-                          <Trans i18nKey="updateAccounts:approve" />
-                        </NoStyleLink>
-                      </Button>
-                    }
-                  >
-                    <Trans i18nKey="updateAccounts:desc_approve" />
-                  </InfoBox>
-                )}
-              {isAccountBeingUpdated(account) &&
-                hasUserApprovedAccount(account, me) && (
-                  <InfoBox type="info" withIcon className={classes.infobox}>
-                    <h4>
-                      <Trans i18nKey="updateAccounts:quorum" />
-                    </h4>
-                    <div>
-                      <Trans i18nKey="updateAccounts:quorum_approve" />
-                    </div>
-                  </InfoBox>
-                )}
+              <AccountWarning account={account} me={me} />
             </div>
           </div>
         </Card>
@@ -290,12 +206,4 @@ class AccountQuickInfo extends Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
-  onOpen: () => dispatch(toggleAndSelect(ownProps.account))
-});
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(AccountQuickInfo)
-);
+export default withStyles(styles)(AccountQuickInfo);
