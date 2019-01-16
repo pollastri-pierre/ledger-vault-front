@@ -22,8 +22,14 @@ const pairsSelector = createSelector(accountsSelector, accounts =>
     allCurrencies
       .filter(
         currency =>
-          accounts.findIndex(account => account.currency_id === currency.id) >
-            -1 &&
+          accounts.findIndex(account => {
+            if (
+              account.currency_id === "ethereum_ropsten" &&
+              currency.id === "ethereum"
+            )
+              return true;
+            return account.currency_id === currency.id;
+          }) > -1 &&
           currency.name !== "bitcoin_testnet" &&
           currency.name !== "bitcoin"
       )
