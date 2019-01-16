@@ -20,19 +20,6 @@ import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
 
-type Props = {
-  accountCreationState: AccountCreationState,
-  updateAccountCreationState: UpdateAccountCreationState,
-  ethAccounts: Account[],
-
-  // TODO: legacy stuff
-  onSelect: Function,
-  t: Translate,
-  switchInternalModal: Function,
-  tabsIndex: number,
-  classes: Object
-};
-
 const styles = {
   base: {
     ...modals.base,
@@ -48,6 +35,19 @@ const contentComponents = [
   AccountCreationConfirmation
 ];
 
+type Props = {
+  accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
+  allAccounts: Account[],
+
+  // TODO: legacy stuff
+  onSelect: Function,
+  t: Translate,
+  switchInternalModal: Function,
+  tabsIndex: number,
+  classes: Object
+};
+
 class MainCreation extends Component<Props> {
   handleChange = (event, value) => {
     this.props.onSelect(value);
@@ -57,7 +57,7 @@ class MainCreation extends Component<Props> {
     const {
       accountCreationState,
       updateAccountCreationState,
-      ethAccounts,
+      allAccounts,
 
       t,
       onSelect,
@@ -97,9 +97,9 @@ class MainCreation extends Component<Props> {
     };
 
     const contentProps = {
-      ethAccounts,
       accountCreationState,
       updateAccountCreationState,
+      allAccounts,
       switchInternalModal
     };
 
