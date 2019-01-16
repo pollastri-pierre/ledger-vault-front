@@ -27,5 +27,6 @@ confirmation:
   account: Account to Debit
   fees: Confirmation Fees
   total: Total Amount
+  totalERC20Info: Excluding confirmation fees
 nonEIP55Warning: 'Auto-verification not available: carefully verify the address'
 parentFeeExceeded: Max operation fee exceeds ETH parent account balance

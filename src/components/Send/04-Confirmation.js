@@ -142,7 +142,14 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
               <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
                 {fees !== null && <Amount account={account} value={fees} />}
               </LineRow>
-              <LineRow label={<Trans i18nKey="send:confirmation.total" />}>
+              <LineRow
+                label={<Trans i18nKey="send:confirmation.total" />}
+                tooltipInfoMessage={
+                  erc20Format && (
+                    <Trans i18nKey="send:confirmation.totalERC20Info" />
+                  )
+                }
+              >
                 {totalSpent !== null && (
                   <Amount
                     account={account}
