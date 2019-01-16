@@ -13,6 +13,7 @@ import type {
   State as AccountCreationState,
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
+
 import { DialogButton } from "../..";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import AccountCreationSecurity from "./AccountCreationSecurity";
@@ -29,7 +30,6 @@ type Props = {
   t: Translate,
   switchInternalModal: Function,
   tabsIndex: number,
-  account: *,
   classes: Object
 };
 
@@ -40,6 +40,13 @@ const styles = {
     height: 615
   }
 };
+
+const contentComponents = [
+  AccountCreationCurrencies,
+  AccountCreationOptions,
+  AccountCreationSecurity,
+  AccountCreationConfirmation
+];
 
 class MainCreation extends Component<Props> {
   handleChange = (event, value) => {
@@ -52,7 +59,6 @@ class MainCreation extends Component<Props> {
       updateAccountCreationState,
       ethAccounts,
 
-      account,
       t,
       onSelect,
       tabsIndex,
@@ -65,20 +71,22 @@ class MainCreation extends Component<Props> {
     switch (tabsIndex) {
       case 0:
         isNextDisabled =
-          _.isNull(account.erc20token) && _.isNull(account.currency);
+          _.isNull(accountCreationState.erc20token) &&
+          _.isNull(accountCreationState.currency);
         break;
       case 1:
-        isNextDisabled = account.erc20token
-          ? account.name === "" ||
-            (!account.parent_account ||
-              (!account.parent_account.id && !account.parent_account.name))
-          : account.name === "";
+        isNextDisabled = accountCreationState.erc20token
+          ? accountCreationState.name === "" ||
+            (!accountCreationState.parent_account ||
+              (!accountCreationState.parent_account.id &&
+                !("name" in accountCreationState.parent_account)))
+          : accountCreationState.name === "";
         break;
       case 2:
         isNextDisabled =
-          account.approvers.length === 0 ||
-          account.quorum === 0 ||
-          account.quorum > account.approvers.length;
+          accountCreationState.approvers.length === 0 ||
+          accountCreationState.quorum === 0 ||
+          accountCreationState.quorum > accountCreationState.approvers.length;
         break;
       default:
         isNextDisabled = true;
@@ -87,6 +95,15 @@ class MainCreation extends Component<Props> {
     const save = () => {
       switchInternalModal("device");
     };
+
+    const contentProps = {
+      ethAccounts,
+      accountCreationState,
+      updateAccountCreationState,
+      switchInternalModal
+    };
+
+    const ContentComponent = contentComponents[tabsIndex];
 
     return (
       <div className={classes.base}>
@@ -104,53 +121,30 @@ class MainCreation extends Component<Props> {
             <Tab
               label={`2. ${t("newAccount:options.title")}`}
               disabled={
-                _.isNull(account.currency) && _.isNull(account.erc20token)
+                _.isNull(accountCreationState.currency) &&
+                _.isNull(accountCreationState.erc20token)
               }
               disableRipple
             />
             <Tab
               label={`3. ${t("newAccount:security.title")}`}
-              disabled={account.name === ""}
+              disabled={accountCreationState.name === ""}
               disableRipple
             />
             <Tab
               label={`4. ${t("newAccount:confirmation.title")}`}
               disabled={
-                account.approvers.length === 0 ||
-                account.quorum === 0 ||
-                account.quorum > account.approvers.length
+                accountCreationState.approvers.length === 0 ||
+                accountCreationState.quorum === 0 ||
+                accountCreationState.quorum >
+                  accountCreationState.approvers.length
               }
               disableRipple
             />
           </Tabs>
         </header>
         <div className="content">
-          {tabsIndex === 0 && (
-            <AccountCreationCurrencies
-              ethAccounts={ethAccounts}
-              accountCreationState={accountCreationState}
-              updateAccountCreationState={updateAccountCreationState}
-            />
-          )}
-          {tabsIndex === 1 && (
-            <AccountCreationOptions
-              ethAccounts={ethAccounts}
-              accountCreationState={accountCreationState}
-              updateAccountCreationState={updateAccountCreationState}
-            />
-          )}
-          {tabsIndex === 2 && (
-            <AccountCreationSecurity
-              switchInternalModal={switchInternalModal}
-              account={account}
-            />
-          )}
-          {tabsIndex === 3 && (
-            <AccountCreationConfirmation
-              accountCreationState={accountCreationState}
-              updateAccountCreationState={updateAccountCreationState}
-            />
-          )}
+          {ContentComponent ? <ContentComponent {...contentProps} /> : null}
         </div>
         <div className="footer">
           {_.includes([0, 1, 2], tabsIndex) ? (
