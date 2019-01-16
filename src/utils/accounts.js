@@ -45,6 +45,9 @@ export const isValidAccountName = (name: string) =>
 export const getEthAccounts = (accounts: Account[]): Account[] =>
   accounts.filter(a => a.account_type === "Ethereum");
 
+export const getAccountsInSettings = (accounts: Account[]): Account[] =>
+  accounts.filter(a => a.account_type !== "ERC20");
+
 export const getAccountCurrencyName = (account: Account) => {
   if (account.account_type === "ERC20" && account.contract_address) {
     const token = getERC20TokenByContractAddress(account.contract_address);

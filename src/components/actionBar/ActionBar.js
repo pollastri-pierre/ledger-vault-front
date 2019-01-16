@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
 import Logo from "components/Logo";
+import { getAccountsInSettings } from "utils/accounts";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
@@ -67,6 +68,7 @@ class ActionBar extends Component<{
 }> {
   render() {
     const { location, classes, accounts, match, t } = this.props;
+    const accountsInSettings = getAccountsInSettings(accounts);
 
     return (
       <div className={classes.base}>
@@ -85,7 +87,7 @@ class ActionBar extends Component<{
               <Plus className={classes.icon} />
               <div>account</div>
             </Link>
-            {accounts.length > 0 && (
+            {accountsInSettings.length > 0 && (
               <Link
                 to={`${location.pathname}/settings`}
                 className="content-header-button"
