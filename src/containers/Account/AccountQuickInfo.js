@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
 import { isAccountOutdated } from "utils/accounts";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
 import { Trans } from "react-i18next";
@@ -139,6 +140,12 @@ class AccountQuickInfo extends Component<Props, State> {
   render() {
     const { account, classes, me } = this.props;
     const { modalMembersOpen } = this.state;
+
+    const isERC20 = account.account_type === "ERC20";
+    const token = isERC20
+      ? getERC20TokenByContractAddress(account.contract_address)
+      : null;
+
     return (
       <Fragment>
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
@@ -147,16 +154,30 @@ class AccountQuickInfo extends Component<Props, State> {
         <Card title={<AccountTitle account={account} />}>
           <div className={classes.base}>
             <div>
+              {isERC20 ? (
+                <Row
+                  label={<Trans i18nKey="accountView:summary.token" />}
+                  value={token && token.name}
+                />
+              ) : (
+                <Row
+                  label={<Trans i18nKey="accountView:summary.index" />}
+                  value={
+                    <CurrencyIndex
+                      currency={account.currency_id}
+                      index={account.index}
+                    />
+                  }
+                />
+              )}
               <Row
-                label={<Trans i18nKey="accountView:summary.index" />}
+                label="Unit"
                 value={
-                  <CurrencyIndex
-                    currency={account.currency_id}
-                    index={account.index}
-                  />
+                  isERC20
+                    ? token && token.ticker
+                    : account.settings.currency_unit.code
                 }
               />
-              <Row label="Unit" value={account.settings.currency_unit.code} />
               <Row
                 label={<Trans i18nKey="accountView:summary.date" />}
                 value={<DateFormat date={account.created_on} />}

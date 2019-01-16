@@ -15,6 +15,7 @@ last_op:
   amount: amount
 summary:
   index: Cryptocurrency / Index
+  token: Token
   unit: unit
   date: creation date
   members: members
