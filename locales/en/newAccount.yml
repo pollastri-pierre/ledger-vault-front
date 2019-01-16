@@ -3,7 +3,7 @@ currency:
   tabTitle: currency
   enterCrypto: Enter or select a crypto asset
 erc20:
-  infoNewAccount: To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center.
+  infoNewAccount: To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center
   selectExisting: Select an existing Ethereum account
   createNew: Create a new read-only Ethereum account
 options:
@@ -34,7 +34,3 @@ confirmation:
   desc: An Account Request will be sent to the workspace Administrators. The account will be created once they approve it.
 errors:
   approvals_exceed: Number of approvals cannot exceed number of members.
-
-
-
-
