@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import { translate } from "react-i18next";
+import React, { Component, Fragment } from "react";
+import { translate, Trans } from "react-i18next";
 import CurrencyIndex from "components/CurrencyIndex";
-import { getAccountTitle } from "utils/accounts";
+import { getAccountTitle, getAccountsInSettings } from "utils/accounts";
 import cx from "classnames";
 import debounce from "lodash/debounce";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -355,10 +355,18 @@ class AccountSettingsEdit extends Component<Props, State> {
 
     return (
       <div className={classes.contentSections}>
-        <div className={classes.capsTitle}>Operation rules</div>
-        <SecuritySchemeView t={t} account={account} classes={classes} />
+        {account.status !== "VIEW_ONLY" && (
+          <Fragment>
+            <div className={classes.capsTitle}>
+              <Trans i18nKey="settings:operation_rules" />
+            </div>
+            <SecuritySchemeView t={t} account={account} classes={classes} />
+          </Fragment>
+        )}
 
-        <div className={classes.capsTitle}>General</div>
+        <div className={classes.capsTitle}>
+          <Trans i18nKey="settings:general" />
+        </div>
         <div className={classes.settingsFields}>
           <SettingsField botPadded label="Account Name" classes={classes}>
             <span className={classes.settingsFieldLabel}>{name}</span>
@@ -447,19 +455,20 @@ class SettingsModal extends Component<{
 }> {
   render() {
     const { accounts, restlay, close, classes, t, fiats } = this.props;
+    const accountsInSettings = getAccountsInSettings(accounts);
     return (
       <div className={classes.container}>
         <HeaderRightClose close={close} />
-        <Side classes={classes} accounts={accounts} />
+        <Side classes={classes} accounts={accountsInSettings} />
         <div className={classes.contentWrapper}>
           <div className={classes.content}>
             <div className={classes.bigTitle}>Settings</div>
-            {accounts.length > 0 ? (
+            {accountsInSettings.length > 0 ? (
               <Switch>
                 <Route
                   path="*/settings/:id"
                   render={props => {
-                    const account = accounts.find(
+                    const account = accountsInSettings.find(
                       a => a.id === parseInt(props.match.params.id, 10)
                     );
                     return account ? (
@@ -476,7 +485,9 @@ class SettingsModal extends Component<{
                   }}
                 />
                 <Route
-                  render={() => <Redirect to={`settings/${accounts[0].id}`} />}
+                  render={() => (
+                    <Redirect to={`settings/${accountsInSettings[0].id}`} />
+                  )}
                 />
               </Switch>
             ) : null}
