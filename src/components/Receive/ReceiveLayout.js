@@ -24,7 +24,7 @@ class ReceiveLayout extends PureComponent<Props, *> {
 }
 const styles = {
   footer: {
-    margin: "auto 0px"
+    margin: "20px 0px"
   }
 };
 export default withStyles(styles)(ReceiveLayout);
