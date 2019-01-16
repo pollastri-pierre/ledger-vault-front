@@ -160,7 +160,12 @@ class MainCreation extends Component<Props> {
               disabled={isNextDisabled}
               onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
             >
-              {t("common:continue")}
+              {!!accountCreationState.erc20token &&
+              (!accountCreationState.parent_account ||
+                !accountCreationState.parent_account.id) &&
+              tabsIndex === 0
+                ? t("accountCreation:continue_eth_creation")
+                : t("common:continue")}
             </DialogButton>
           ) : (
             <DialogButton highlight right onTouchTap={save}>
