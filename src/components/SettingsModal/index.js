@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from "react";
-import { translate } from "react-i18next";
+import { translate, Trans } from "react-i18next";
 import CurrencyIndex from "components/CurrencyIndex";
 import { getAccountTitle, getAccountsInSettings } from "utils/accounts";
 import cx from "classnames";
@@ -357,12 +357,16 @@ class AccountSettingsEdit extends Component<Props, State> {
       <div className={classes.contentSections}>
         {account.status !== "VIEW_ONLY" && (
           <Fragment>
-            <div className={classes.capsTitle}>Operation rules</div>
+            <div className={classes.capsTitle}>
+              <Trans i18nKey="settings:operation_rules" />
+            </div>
             <SecuritySchemeView t={t} account={account} classes={classes} />
           </Fragment>
         )}
 
-        <div className={classes.capsTitle}>General</div>
+        <div className={classes.capsTitle}>
+          <Trans i18nKey="settings:general" />
+        </div>
         <div className={classes.settingsFields}>
           <SettingsField botPadded label="Account Name" classes={classes}>
             <span className={classes.settingsFieldLabel}>{name}</span>

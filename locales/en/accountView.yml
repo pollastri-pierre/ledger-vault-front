@@ -16,7 +16,7 @@ last_op:
 summary:
   index: Cryptocurrency / Index
   token: Token
-  unit: unit
+  unit: Unit
   date: creation date
   members: members
   quorum: required approvals

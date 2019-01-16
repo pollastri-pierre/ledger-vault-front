@@ -13,10 +13,11 @@ import NoStyleLink from "components/NoStyleLink";
 import type { Account, Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import colors from "shared/colors";
 
 const styles = {
   actionButton: {
-    background: "#ca630b",
+    background: colors.warningButton,
     fontWeight: "bold",
     height: 20,
     fontSize: 11

@@ -171,7 +171,7 @@ class AccountQuickInfo extends Component<Props, State> {
                 />
               )}
               <Row
-                label="Unit"
+                label={<Trans i18nKey="accountView:summary.unit" />}
                 value={
                   isERC20
                     ? token && token.ticker
