@@ -4,17 +4,12 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
-import {
-  listCryptoCurrencies,
-  getCryptoCurrencyById
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import BadgeCurrency from "components/BadgeCurrency";
 import colors from "shared/colors";
-
-const allCurrencies = listCryptoCurrencies(true);
 
 type PieChartData = {
   account: Account,
@@ -243,9 +238,7 @@ class PieChart extends Component<
         (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
       )
       .style("fill", d => {
-        const curr = allCurrencies.find(
-          c => c.id === d.data.account.currency_id
-        ) || { color: "" };
+        const curr = getCryptoCurrencyById(d.data.account.currency_id);
         return curr.color;
       });
 
@@ -345,9 +338,9 @@ class PieChart extends Component<
 
     let curr = { color: "black" };
     if (selected !== -1) {
-      curr = allCurrencies.find(
-        c => c.id === this.props.data[selected].account.currency_id
-      ) || { color: "black" };
+      curr = getCryptoCurrencyById(
+        this.props.data[selected].account.currency_id
+      );
     }
     return (
       <div>
