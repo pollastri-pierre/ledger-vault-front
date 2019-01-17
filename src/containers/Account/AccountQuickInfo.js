@@ -202,21 +202,23 @@ class AccountQuickInfo extends Component<Props, State> {
                   </Fragment>
                 )}
             </div>
-            <div style={{ width: 300 }}>
-              <Row
-                label={<Trans i18nKey="accountView:summary.members" />}
-                value={this.renderMembersLink()}
-              />
-              <Row
-                label={<Trans i18nKey="accountView:summary.quorum" />}
-                value={
-                  account.status !== "VIEW_ONLY" &&
-                  `${account.security_scheme.quorum} out of ${
-                    account.members.length
-                  }`
-                }
-              />
-            </div>
+            {account.status !== "VIEW_ONLY" && (
+              <div style={{ width: 300 }}>
+                <Row
+                  label={<Trans i18nKey="accountView:summary.members" />}
+                  value={this.renderMembersLink()}
+                />
+                <Row
+                  label={<Trans i18nKey="accountView:summary.quorum" />}
+                  value={
+                    account.status !== "VIEW_ONLY" &&
+                    `${account.security_scheme.quorum} out of ${
+                      account.members.length
+                    }`
+                  }
+                />
+              </div>
+            )}
             <div>
               <AccountWarning account={account} me={me} />
             </div>

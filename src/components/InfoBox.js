@@ -45,7 +45,13 @@ const styles = {
     backgroundColor: hexToRgbA(colors.ocean, 0.2)
   },
   isWarning: {
-    backgroundColor: colors.warning
+    border: `2px solid ${hexToRgbA(colors.grenade, 0.2)}`,
+    "& .icon": {
+      color: colors.grenade
+    },
+    "& .footer": {
+      background: hexToRgbA(colors.grenade, 0.1)
+    }
   },
   isError: {
     backgroundColor: "red"
@@ -59,7 +65,7 @@ class InfoBox extends PureComponent<Props> {
     if (type === "warning") {
       icon = <Warning width={20} height={20} />;
     }
-    return <div className={classes.icon}>{icon}</div>;
+    return <div className={cx("icon", classes.icon)}>{icon}</div>;
   };
 
   render() {
@@ -87,7 +93,7 @@ class InfoBox extends PureComponent<Props> {
           {withIcon && this.renderIcon()}
           <div>{children}</div>
         </div>
-        {Footer && <div className={classes.footer}>{Footer}</div>}
+        {Footer && <div className={cx("footer", classes.footer)}>{Footer}</div>}
       </div>
     );
   }
