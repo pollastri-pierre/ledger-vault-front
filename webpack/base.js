@@ -76,6 +76,11 @@ export default {
         from: paths.config,
         to: paths.dist,
         force: true
+      },
+      {
+        from: paths.favicon,
+        to: paths.dist,
+        force: true
       }
     ]),
     new webpack.DefinePlugin({
