@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ApprovalPercentage from "components/ApprovalPercentage";
 import ModalLoading from "components/ModalLoading";
 import AccountQuery from "api/queries/AccountQuery";
+import AccountsQuery from "api/queries/AccountsQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
 import type { Member, Account, Translate } from "data/types";
@@ -33,6 +34,7 @@ type Props = {
   profile: Member,
   t: Translate,
   account: Account,
+  accounts: Account[],
   organization: *,
   close: Function,
   approve: Function,
@@ -92,10 +94,10 @@ class AccountApprove extends Component<Props, { value: number }> {
       t,
       approve,
       aborting,
-      classes
+      classes,
+      accounts
     } = this.props;
     const { value } = this.state;
-
     return (
       <div className={classes.base}>
         <header>
@@ -114,6 +116,7 @@ class AccountApprove extends Component<Props, { value: number }> {
           <div>
             <AccountApproveDetails
               account={account}
+              accounts={accounts}
               approvers={members}
               quorum={organization.quorum}
             />
@@ -168,6 +171,7 @@ const connected = connectData(withStyles(styles)(translate()(AccountApprove)), {
   RenderError,
   queries: {
     account: AccountQuery,
+    accounts: AccountsQuery,
     members: MembersQuery,
     organization: OrganizationQuery,
     profile: ProfileQuery
