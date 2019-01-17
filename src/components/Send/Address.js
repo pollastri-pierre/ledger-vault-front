@@ -84,10 +84,9 @@ class SendAddress extends PureComponent<Props<*>, State> {
         currency,
         recipient
       );
-      const recipientWarning =
-        bridge.recipientWarning && isValid
-          ? await bridge.recipientWarning(recipient)
-          : null;
+      const recipientWarning = bridge.getRecipientWarning
+        ? await bridge.getRecipientWarning(recipient)
+        : null;
 
       if (nonce !== this._nonce || this._unmounted) return;
       this.setState({ isValid, recipientWarning });
@@ -111,24 +110,23 @@ class SendAddress extends PureComponent<Props<*>, State> {
       <Fragment>
         <ModalSubTitle>
           <Trans i18nKey="send:details.address.title" />
-          {isValid &&
-            recipientWarning && (
-              <Tooltip title={recipientWarning.message} placement="top">
-                <Warning
-                  width={14}
-                  height={14}
-                  color={colors.warning}
-                  className={classes.nonEIP55warningIcon}
-                />
-              </Tooltip>
-            )}
+          {recipientWarning && (
+            <Tooltip title={recipientWarning.message} placement="top">
+              <Warning
+                width={14}
+                height={14}
+                color={colors.warning}
+                className={classes.nonEIP55warningIcon}
+              />
+            </Tooltip>
+          )}
         </ModalSubTitle>
         <div className={classes.paddedHorizontal}>
           <CryptoAddressPicker
             id="address"
             onChange={this.onChange}
             value={bridge.getTransactionRecipient(account, transaction)}
-            isValid={isValid}
+            isValid={recipientWarning ? true : isValid}
             fullWidth
             inputProps={{ style: { paddingBottom: 15, color: colors.black } }}
             className={classes.addressPicker}
