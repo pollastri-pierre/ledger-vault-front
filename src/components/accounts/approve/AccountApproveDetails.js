@@ -1,83 +1,109 @@
 // @flow
 
-import React from "react";
-import { translate } from "react-i18next";
-import Amount from "components/Amount";
-import { getAccountCurrencyName } from "utils/accounts";
-import type { Account, Translate } from "data/types";
-import { BigSecurityMembersIcon } from "../../icons";
+import React, { PureComponent } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { Trans } from "react-i18next";
 
-import BadgeSecurity from "../../BadgeSecurity";
+import { getAccountCurrencyName } from "utils/accounts";
+
+import type { Account } from "data/types";
+
+import Amount from "components/Amount";
+import User from "components/icons/User";
+import colors from "shared/colors";
+// NOTE: copy button which is a bit useless here is a temp solution until we re-size modals
+import CopyToClipboardButton from "components/CopyToClipboardButton";
+
 import DateFormat from "../../DateFormat";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 
-const membersIcon = <BigSecurityMembersIcon />;
-
 type Props = {
   account: Account,
-  t: Translate,
-  quorum: number
+  accounts: Account[],
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
-function AccountApproveDetails(props: Props) {
-  const { account, quorum, t } = props;
-  const { security_scheme } = account;
+const styles = {
+  badgeContainer: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 25
+  },
+  badgeText: {
+    margin: "0 5px 0 10px"
+  },
+  badgeValue: {
+    color: colors.lead
+  }
+};
 
-  const percentage = quorum
-    ? Math.round(100 * (account.approvals.length / quorum))
-    : 0;
+class AccountApproveDetails extends PureComponent<Props> {
+  render() {
+    const { account, classes, accounts } = this.props;
+    const { security_scheme } = account;
+    const isERC20 = account.account_type === "ERC20";
+    const parentETH = isERC20
+      ? accounts.find(a => a.id === account.parent_id)
+      : null;
 
-  const badgeVal = `${account.members.length} selected`;
+    // TODO: update wording to use Trans components
+    const badgeVal = `${account.members.length} selected`;
 
-  const status =
-    percentage === 100 ? (
-      <span data-test="status" className="info-value status">
-        {"Approved"}
-      </span>
-    ) : (
-      <span data-test="status" className="info-value status">
-        {`Collecting approvals (${percentage}%)`}
-      </span>
-    );
-
-  const approvals = `${security_scheme.quorum} of ${
-    account.members.length
-  } members`;
-
-  return (
-    <div>
-      <div style={{ textAlign: "center", marginBottom: 40 }}>
-        <BadgeSecurity icon={membersIcon} label="Members" value={badgeVal} />
-      </div>
+    const approvals = `${security_scheme.quorum} of ${
+      account.members.length
+    } members`;
+    return (
       <div>
-        <LineRow label="balance">
-          <Amount
-            account={account}
-            value={account.balance}
-            strong
-            dataTest="balance"
-            erc20Format={account.account_type === "ERC20"}
-          />
-        </LineRow>
-        <LineRow label="status">{status}</LineRow>
-        <LineRow label="requested">
-          <DateFormat date={account.created_on} dataTest="requested" />
-        </LineRow>
-        <LineRow label="name">
-          <AccountName account={account} />
-        </LineRow>
-        <LineRow label="currency">
-          <span data-test="currency" className="info-value currency">
-            {getAccountCurrencyName(account)}
+        <div className={classes.badgeContainer}>
+          <User size={16} color={colors.shark} />
+          <span className={classes.badgeText}>
+            <Trans i18nKey="pendingAccount:details.members" />
           </span>
-        </LineRow>
-        <LineRow label={t("pendingAccount:details.approvals")}>
-          {approvals}
-        </LineRow>
+          <span className={classes.badgeValue}>({badgeVal})</span>
+        </div>
+        <div>
+          <LineRow label={<Trans i18nKey="pendingAccount:details.balance" />}>
+            <Amount
+              account={account}
+              value={account.balance}
+              strong
+              dataTest="balance"
+              erc20Format={account.account_type === "ERC20"}
+            />
+          </LineRow>
+          {isERC20 && (
+            <LineRow
+              label={<Trans i18nKey="pendingAccount:details.smartContract" />}
+            >
+              <CopyToClipboardButton textToCopy={account.contract_address} />
+            </LineRow>
+          )}
+          <LineRow label={<Trans i18nKey="pendingAccount:details.date" />}>
+            <DateFormat date={account.created_on} dataTest="requested" />
+          </LineRow>
+          <LineRow label={<Trans i18nKey="pendingAccount:details.name" />}>
+            <AccountName account={account} />
+          </LineRow>
+          {parentETH && (
+            <LineRow label={<Trans i18nKey="pendingAccount:details.parent" />}>
+              <AccountName account={parentETH} />
+            </LineRow>
+          )}
+          <LineRow label={<Trans i18nKey="pendingAccount:details.currency" />}>
+            <span data-test="currency" className="info-value currency">
+              {getAccountCurrencyName(account)}
+            </span>
+          </LineRow>
+          <LineRow label={<Trans i18nKey="pendingAccount:details.approvals" />}>
+            {approvals}
+          </LineRow>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-export default translate()(AccountApproveDetails);
+export default withStyles(styles)(AccountApproveDetails);

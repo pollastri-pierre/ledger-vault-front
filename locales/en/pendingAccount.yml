@@ -4,6 +4,14 @@ tabs:
   status: status
 details:
   approvals: approvals
+  balance: Balance
+  parent: Parent
+  smartContract: Smart contract
+  name: Name
+  currency: Currency
+  date: Requested
+  members: Members
+  membersSelected: {{memberLength}}
 abort:
   title: Abort account request
   content: Do you really want to abort the account ? The request will be cancelled and the account will not be created.
