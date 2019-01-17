@@ -34,10 +34,10 @@ const styles = {
     position: "fixed",
     alignSelf: "flex-end",
     color: colors.ocean,
-    fontSize: "11px"
+    fontSize: 11
   },
   copyIcon: {
-    marginRight: "3px"
+    marginRight: 3
   }
 };
 
