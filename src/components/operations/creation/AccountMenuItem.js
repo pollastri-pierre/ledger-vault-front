@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import type { Account } from "data/types";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import colors from "shared/colors";
 import CurrencyAccountValue from "../../CurrencyAccountValue";
 
 const styles = {
@@ -23,14 +24,14 @@ const styles = {
     }
   },
   accountTop: {
-    color: "black",
+    color: colors.black,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     padding: "6px 0"
   },
   accountBottom: {
-    color: "#767676",
+    color: colors.steel,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -48,6 +49,8 @@ const styles = {
   accountCountervalue: {}
 };
 
+const DEFAULT_COLOR = colors.black;
+
 class AccountMenuItem extends PureComponent<{
   selected: boolean,
   account: Account,
@@ -58,8 +61,10 @@ class AccountMenuItem extends PureComponent<{
 
   render() {
     const { account, selected, classes } = this.props;
-    const color = getCryptoCurrencyById(account.currency_id).color;
     const erc20Format = account.account_type === "ERC20";
+    const color = erc20Format
+      ? DEFAULT_COLOR
+      : getCryptoCurrencyById(account.currency_id).color;
 
     return (
       <MenuItem

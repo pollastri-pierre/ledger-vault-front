@@ -5,7 +5,7 @@ tabs:
   label: Label
   history: History
 overview:
-  identifier: Identifier
+  identifier: Recipient address
   total: Total spent
   fees: Fees
   date: Sent date

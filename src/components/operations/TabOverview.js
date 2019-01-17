@@ -131,10 +131,7 @@ class TabOverview extends Component<Props, State> {
               style={{ textDecoration: "none", color: "black" }}
               to={`/account/${account.id}`}
             >
-              <AccountName
-                name={account.name}
-                currencyId={account.currency_id}
-              />
+              <AccountName account={account} />
             </Link>
           </LineRow>
           <LineRow label={<Trans i18nKey="operationDetails:overview.fees" />}>
