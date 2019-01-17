@@ -18,15 +18,12 @@ import colors from "shared/colors";
 const styles = {
   actionButton: {
     background: colors.warningButton,
-    fontWeight: "bold",
+    color: "black",
     height: 20,
     fontSize: 11
   },
   infobox: {
-    position: "absolute",
-    width: 300,
-    right: 50,
-    top: 50
+    width: 300
   }
 };
 

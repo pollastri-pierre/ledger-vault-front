@@ -17,7 +17,7 @@ const colors = {
   blue_red: "#ea2e497d",
   blue_green: "#078e0791",
   warning: "#ffa100",
-  warningButton: "#ca630b",
+  warningButton: "#ffc3cb",
   translucentGreen: "rgba(102, 190, 84, 0.2)",
   translucentGrey: "rgba(153, 153, 153, 0.2)",
   translucentOcean: "rgb(39, 208, 226, 0.2)",
