@@ -61,7 +61,7 @@ export interface WalletBridge<Transaction> {
     transaction: Transaction,
     feeLevel: Speed
   ) => Transaction;
-  recipientWarning?: (recipient: string) => Promise<?Error>;
+  getRecipientWarning?: (recipient: string) => Promise<?Error>;
   checkValidFee?: (
     account: Account,
     transaction: Transaction,

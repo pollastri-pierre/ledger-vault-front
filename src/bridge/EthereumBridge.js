@@ -1,7 +1,6 @@
 // @flow
 import React from "react";
 import invariant from "invariant";
-import eip55 from "eip55";
 
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -25,17 +24,19 @@ export type Transaction = {
 
 const EditAdvancedOptions = () => <div>Placeholder for Advanced Options </div>;
 
-const recipientWarning = async recipient => {
+const getRecipientWarning = async recipient => {
   // TODO: temp solution until centralized
   const EIP55Error = new Error(
     "Auto-verification not available: carefully verify the address"
   );
-  try {
-    const isEIP55 = await eip55.verify(recipient);
-    return !isEIP55 ? EIP55Error : null;
-  } catch (error) {
+  if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return null;
+  const slice = recipient.substr(2);
+  const isFullUpper = slice === slice.toUpperCase();
+  const isFullLower = slice === slice.toLowerCase();
+  if (isFullUpper || isFullLower) {
     return EIP55Error;
   }
+  return null;
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -164,7 +165,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
   EditAdvancedOptions,
   checkValidTransaction,
   isRecipientValid,
-  recipientWarning,
+  getRecipientWarning,
   checkValidFee
 };
 
