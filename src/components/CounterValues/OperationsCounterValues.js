@@ -4,16 +4,12 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
-import {
-  getCryptoCurrencyById,
-  listCryptoCurrencies
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import CounterValues from "data/CounterValues";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { Operation, Account } from "data/types";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
-const allCurrencies = listCryptoCurrencies(true);
 
 const mapStateToProps = (state, ownProps) => {
   const countervalue = ownProps.operations.reduce((acc, operation) => {
@@ -21,9 +17,7 @@ const mapStateToProps = (state, ownProps) => {
       account => account.id === operation.account_id
     );
     if (account) {
-      const currency = allCurrencies.find(
-        curr => curr.id === account.currency_id
-      );
+      const currency = getCryptoCurrencyById(account.currency_id);
       return (
         acc +
         CounterValues.calculateWithIntermediarySelector(state, {
