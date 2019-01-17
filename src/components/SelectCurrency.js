@@ -64,7 +64,9 @@ const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({ label: item.value.name, value: item }));
 
 const INCLUDE_DEV =
-  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "e2e";
+  process.env.NODE_ENV === "development" ||
+  process.env.NODE_ENV === "e2e" ||
+  window.config.SOFTWARE_DEVICE;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
