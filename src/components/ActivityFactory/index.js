@@ -46,6 +46,10 @@ class ActivityFactory extends Component<*, *> {
         return <NewAccountActivity activity={activity} match={match} />;
       case "ACCOUNT_ABORTED":
         return <AccountAbortedActivity activity={activity} match={match} />;
+      case "ACCOUNT_HAS_BEEN_ACTIVATED":
+        return <AccountHasBeenActivatedAction activity={activity} match={match} />;
+      case "ACCOUNT_SECURITY_SCHEME_HAS_BEEN_PROVIDED":
+        return <AccountSecuritySchemeHasBeenProvidedAction activity={activity} match={match} />;
       default:
         return (
           <Activity match={match} activity={activity}>
