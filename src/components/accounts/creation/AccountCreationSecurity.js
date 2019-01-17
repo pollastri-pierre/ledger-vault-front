@@ -1,14 +1,14 @@
 // @flow
+
 import React from "react";
-// import RateLimiterValue from "../../RateLimiterValue";
-import type { Translate } from "data/types";
 import { translate } from "react-i18next";
-// import TimeLockValue from "../../TimeLockValue";
 import { withStyles } from "@material-ui/core/styles";
+
+import type { State as AccountCreationState } from "redux/modules/account-creation";
+import type { Translate } from "data/types";
+
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
-// import RatesFull from "../../icons/full/Rates";
-// import HourglassFull from "../../icons/full/Hourglass";
 import PeopleFull from "../../icons/full/People";
 
 const styles = {
@@ -33,13 +33,16 @@ const styles = {
     width: 13
   }
 };
-function AccountCreationSecurity(props: {
-  account: Object,
+
+type Props = {
+  accountCreationState: AccountCreationState,
   switchInternalModal: Function,
   t: Translate,
   classes: Object
-}) {
-  const { account, switchInternalModal, classes, t } = props;
+};
+
+function AccountCreationSecurity(props: Props) {
+  const { accountCreationState, switchInternalModal, classes, t } = props;
   return (
     <div className={classes.base}>
       <h4>{t("newAccount:security.scheme")}</h4>
@@ -50,49 +53,21 @@ function AccountCreationSecurity(props: {
           label={t("newAccount:security.members")}
           onClick={() => switchInternalModal("members")}
         >
-          {account.approvers.length > 0
-            ? `${account.approvers.length} selected`
+          {accountCreationState.approvers.length > 0
+            ? `${accountCreationState.approvers.length} selected`
             : t("common:none")}
         </SecurityRow>
         <SecurityRow
           icon={<ValidateBadge className={classes.icon} />}
           label={t("newAccount:security.approvals")}
-          disabled={account.approvers.length === 0}
+          disabled={accountCreationState.approvers.length === 0}
           onClick={() => switchInternalModal("approvals")}
         >
-          {account.quorum > 0 ? `${account.quorum} required` : t("common:none")}
+          {accountCreationState.quorum > 0
+            ? `${accountCreationState.quorum} required`
+            : t("common:none")}
         </SecurityRow>
       </div>
-      {/* <h5>Locks</h5> */}
-      {/* <SecurityRow */}
-      {/*   icon={<HourglassFull className={classes.icon} />} */}
-      {/*   label="Time-lock" */}
-      {/*   disabled */}
-      {/*   onClick={() => switchInternalModal("time-lock")} */}
-      {/* > */}
-      {/*   {account.time_lock.enabled ? ( */}
-      {/*     <TimeLockValue */}
-      {/*       time_lock={account.time_lock.value * account.time_lock.frequency} */}
-      {/*     /> */}
-      {/*   ) : ( */}
-      {/*     "disabled" */}
-      {/*   )} */}
-      {/* </SecurityRow> */}
-      {/* <SecurityRow */}
-      {/*   icon={<RatesFull className={classes.icon} />} */}
-      {/*   label="Rate Limiter" */}
-      {/*   disabled */}
-      {/*   onClick={() => switchInternalModal("rate-limiter")} */}
-      {/* > */}
-      {/*   {account.rate_limiter.enabled ? ( */}
-      {/*     <RateLimiterValue */}
-      {/*       max_transaction={account.rate_limiter.value} */}
-      {/*       time_slot={account.rate_limiter.frequency} */}
-      {/*     /> */}
-      {/*   ) : ( */}
-      {/*     "disabled" */}
-      {/*   )} */}
-      {/* </SecurityRow> */}
     </div>
   );
 }

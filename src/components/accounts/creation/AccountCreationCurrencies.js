@@ -11,7 +11,7 @@ import type {
   ParentAccount
 } from "redux/modules/account-creation";
 
-import type { Account } from "data/types";
+import type { Account, ERC20Token } from "data/types";
 
 import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
@@ -44,16 +44,36 @@ const styles = {
 
 const findParentAccountInAccounts = (
   parentAccount: ?ParentAccount,
-  ethAccounts: Account[]
+  availableParentAccounts: Account[]
 ) =>
-  ethAccounts.find(
+  availableParentAccounts.find(
     a => parentAccount && parentAccount.id && a.id === parentAccount.id
   ) || null;
+
+const getAvailableParentsAccounts = (
+  allAccounts: Account[],
+  erc20token: ?ERC20Token
+) => {
+  if (!erc20token) return [];
+  const parentsIdsOfSameTokenAccounts = allAccounts
+    .filter(
+      a =>
+        a.account_type === "ERC20" &&
+        // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
+        a.contract_address === erc20token.contract_address
+    )
+    .map(a => a.parent_id);
+  return allAccounts.filter(
+    a =>
+      a.status !== "PENDING" &&
+      parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1
+  );
+};
 
 type Props = {
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState,
-  ethAccounts: Account[],
+  allAccounts: Account[],
 
   classes: { [_: $Keys<typeof styles>]: string },
   t: string => string
@@ -67,7 +87,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
   };
 
   handleChange = (item: ?SelectCurrencyItem) => {
-    const { updateAccountCreationState, ethAccounts } = this.props;
+    const { updateAccountCreationState, allAccounts } = this.props;
     const patch = {};
     if (!item) {
       Object.assign(patch, {
@@ -83,25 +103,39 @@ class AccountCreationCurrencies extends PureComponent<Props> {
         parent_account: null
       });
     } else {
+      const erc20token = item.value;
+      const availableParentAccounts = getAvailableParentsAccounts(
+        allAccounts,
+        erc20token
+      );
+
       Object.assign(patch, {
         currency: null,
-        erc20token: item.value,
-        parent_account: ethAccounts.length ? { id: ethAccounts[0].id } : null
+        erc20token,
+        parent_account: availableParentAccounts.length
+          ? { id: availableParentAccounts[0].id }
+          : null
       });
     }
     updateAccountCreationState(() => patch);
   };
 
   render() {
-    const { accountCreationState, ethAccounts, classes, t } = this.props;
+    const { accountCreationState, allAccounts, classes, t } = this.props;
 
     const currencyOrToken =
       accountCreationState.currency || accountCreationState.erc20token || null;
 
     const displayERC20Box = isERC20Token(currencyOrToken);
+
+    const availableParentAccounts = getAvailableParentsAccounts(
+      allAccounts,
+      accountCreationState.erc20token
+    );
+
     const parentAccount = findParentAccountInAccounts(
       accountCreationState.parent_account,
-      ethAccounts
+      allAccounts
     );
 
     return (
@@ -118,9 +152,9 @@ class AccountCreationCurrencies extends PureComponent<Props> {
         />
         {displayERC20Box && (
           <div className={classes.topMarged}>
-            {ethAccounts.length > 0 ? (
+            {availableParentAccounts.length > 0 ? (
               <EthAccountsRadio
-                accounts={ethAccounts}
+                accounts={availableParentAccounts}
                 account={parentAccount}
                 onChange={this.handleChooseParentAccount}
                 classes={classes}

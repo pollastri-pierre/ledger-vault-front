@@ -1,4 +1,5 @@
 // @flow
+
 import { translate } from "react-i18next";
 import React, { Fragment, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -48,7 +49,7 @@ const styles = {
 };
 
 type Props = {
-  ethAccounts: Account[],
+  allAccounts: Account[],
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState,
 
@@ -68,10 +69,10 @@ class AccountCreationOptions extends PureComponent<Props> {
   };
 
   renderParentAccountSummary = () => {
-    const { accountCreationState, ethAccounts } = this.props;
+    const { accountCreationState, allAccounts } = this.props;
     const { parent_account } = accountCreationState;
     if (!parent_account || !parent_account.id) return null;
-    const account = ethAccounts.find(
+    const account = allAccounts.find(
       acc => parent_account.id && acc.id === parent_account.id
     );
     if (!account) return null;

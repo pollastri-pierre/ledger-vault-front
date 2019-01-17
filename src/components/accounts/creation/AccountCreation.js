@@ -6,14 +6,12 @@ import type { MemoryHistory } from "history";
 
 import type { Member, Account } from "data/types";
 
-import { getEthAccounts } from "utils/accounts";
-
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
 
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import NewAccountMutation from "api/mutations/NewAccountMutation";
-import ApprovedAccountsQuery from "api/queries/AccountsQuery";
+import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 
@@ -43,7 +41,7 @@ import MainCreation from "./MainCreation";
 type Props = {
   restlay: RestlayEnvironment,
   history: MemoryHistory,
-  accounts: Account[],
+  allAccounts: Account[],
   onChangeAccountName: string => void,
   onChangeTabAccount: number => void,
   onSwitchInternalModal: string => void,
@@ -62,7 +60,6 @@ type Props = {
 //   is pointless. we should either pass the whole state OR only some keys.
 // - inconsistent naming
 export type StepProps = {
-  ethAccounts: Account[],
   approvers: Member[],
   members: Member[],
   switchInternalModal: string => void,
@@ -225,9 +222,9 @@ class AccountCreation extends PureComponent<Props> {
 
   render() {
     const {
-      accounts,
       accountCreationState,
       updateAccountCreationState,
+      allAccounts,
 
       onChangeAccountName,
       onChangeTabAccount,
@@ -239,7 +236,6 @@ class AccountCreation extends PureComponent<Props> {
     } = this.props;
 
     const Step = this.stepsByModalId[accountCreationState.internModalId];
-    const ethAccounts = getEthAccounts(accounts);
 
     if (!Step) return null;
 
@@ -247,13 +243,14 @@ class AccountCreation extends PureComponent<Props> {
       close: this.close,
       cancel: () => onSwitchInternalModal("main"),
 
-      // TODO yep, we already have `account` prop for that. but it's confusing.
-      // it's not storing an account but an account creation state. let's keep
-      // the old one for migrating smoothly
-      //
+      // get / set the redux state
       accountCreationState,
       updateAccountCreationState,
-      ethAccounts,
+
+      // give all accounts (all statuses) to child, to be able to determine
+      // potential parent accounts AND validate if they don't already have
+      // same erc20 token as children
+      allAccounts,
 
       // TODO why different names for same thing?
       approvers: accountCreationState.approvers,
@@ -287,7 +284,7 @@ export default connectData(
   )(AccountCreation),
   {
     queries: {
-      accounts: ApprovedAccountsQuery
+      allAccounts: PotentialParentAccountsQuery
     }
   }
 );
