@@ -52,6 +52,9 @@ jobs:
           name: Create workspace
           command: mkdir -pv ~/workspace
       - run:
+          name: Append commit sha in the deliverable
+          command: echo "${CIRCLE_SHA1}" > dist/version
+      - run:
           name: Create a archive containing all the artifacts
           command: tar -czvf ~/workspace/ledger-vault-front.tar.gz -C dist .
       - persist_to_workspace:
