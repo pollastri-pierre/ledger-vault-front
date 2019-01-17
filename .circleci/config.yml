@@ -93,10 +93,12 @@ jobs:
             s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front"
             artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
             aws s3 cp --no-progress ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
-            latest=$(mktemp)
-            echo $artifact_with_sha1 > $latest
-            aws s3 cp --no-progress $latest ${s3_path}/LATEST
-            rm -f $latest
+            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop" ]; then
+              latest=$(mktemp)
+              echo $artifact_with_sha1 > $latest
+              aws s3 cp --no-progress $latest ${s3_path}/LATEST
+              rm -f $latest
+            fi
 
 workflows:
   build_publish:
