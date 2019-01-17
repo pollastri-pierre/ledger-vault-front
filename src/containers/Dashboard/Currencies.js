@@ -25,6 +25,11 @@ type AggregatedData = {
 const mapStateToProps = (state, ownProps) => {
   const data: AggregatedData = ownProps.accounts.reduce(
     (acc: AggregatedData, account) => {
+      // ignore erc20 tokens
+      if (account.account_type === "ERC20") {
+        return acc;
+      }
+
       const currency_id = account.currency_id;
       const currency = getCryptoCurrencyById(currency_id);
       const balance = account.balance;
