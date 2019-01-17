@@ -1,7 +1,7 @@
 // @flow
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
-import React from "react";
+import React, { Fragment } from "react";
 import MenuList from "@material-ui/core/MenuList";
 
 // import NewOperationModal from "../NewOperationModal";
@@ -73,6 +73,10 @@ function Menu(props: {
   const { location, classes, accounts, allPendingOperations, match } = props;
   const pendingApprovalOperations = getPendingsOperations(allPendingOperations);
   const visibleAccounts = getVisibleAccountsInMenu(accounts);
+  const viewOnlyAccounts = visibleAccounts.filter(
+    a => a.status === "VIEW_ONLY"
+  );
+  const fullAccounts = visibleAccounts.filter(a => a.status !== "VIEW_ONLY");
   return (
     <div className={classes.root}>
       {/* hacky but we need the badge to leave outside the menu list so it's not focusable or with opacity */}
@@ -125,20 +129,22 @@ function Menu(props: {
       </div>
       {visibleAccounts.length > 0 && (
         <div>
-          <h4 className={classes.h4}>Accounts</h4>
-          <div data-test="account_menu">
-            <AccountsMenu
-              location={location}
-              accounts={visibleAccounts.filter(a => a.status !== "VIEW_ONLY")}
-            />
-          </div>
-          <h4 className={classes.h4}>Read-only Accounts</h4>
-          <div data-test="account_menu">
-            <AccountsMenu
-              location={location}
-              accounts={visibleAccounts.filter(a => a.status === "VIEW_ONLY")}
-            />
-          </div>
+          {fullAccounts.length > 0 && (
+            <Fragment>
+              <h4 className={classes.h4}>Accounts</h4>
+              <div data-test="account_menu">
+                <AccountsMenu location={location} accounts={fullAccounts} />
+              </div>
+            </Fragment>
+          )}
+          {viewOnlyAccounts.length > 0 && (
+            <Fragment>
+              <h4 className={classes.h4}>Read-only Accounts</h4>
+              <div data-test="account_menu">
+                <AccountsMenu location={location} accounts={viewOnlyAccounts} />
+              </div>
+            </Fragment>
+          )}
         </div>
       )}
 
