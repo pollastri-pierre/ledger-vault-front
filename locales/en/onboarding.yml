@@ -129,7 +129,7 @@ admin_signin:
   desc: Get Administrators to sign in
 so_validation:
   title: Approve registration
-  desc: Get Administrators to sign in to finalize the registration of the Shared-Owners.
+  desc: Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.
 master_seed_signin:
   title: Sign in
   description: Sign in to confirm your registration.
