@@ -153,6 +153,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
           placeholder={t("newAccount:currency.placeholder")}
           value={currencyOrToken}
           onChange={this.handleChange}
+          noOptionsMessage={({ inputValue }) => (
+            <Trans
+              i18nKey="newAccount:errors.no_currency_found"
+              values={{ inputValue }}
+            />
+          )}
         />
         {displayERC20Box && (
           <div className={classes.topMarged}>

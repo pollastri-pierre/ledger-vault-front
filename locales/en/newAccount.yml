@@ -38,3 +38,4 @@ confirmation:
   desc: An Account Request will be sent to the workspace Administrators. The account will be created once they approve it.
 errors:
   approvals_exceed: Number of approvals cannot exceed number of members.
+  no_currency_found: 'No crypto asset {{inputValue}}'
