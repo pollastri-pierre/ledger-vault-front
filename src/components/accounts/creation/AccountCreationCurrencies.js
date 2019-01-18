@@ -66,6 +66,10 @@ const getAvailableParentsAccounts = (
   return allAccounts.filter(
     a =>
       a.status !== "PENDING" &&
+      a.account_type === "Ethereum" &&
+      a.currency_id ===
+        // $FlowFixMe inference fail again. see up.
+        (erc20token.network_id === 3 ? "ethereum_ropsten" : "ethereum") &&
       parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1
   );
 };
