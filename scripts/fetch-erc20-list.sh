@@ -10,6 +10,20 @@ OUTPUT_FILE=src/data/erc20-list.json
 # exit on error
 set -e
 
+read -r -d '' LEDGER_COIN << EOM || :
+{
+  "ticker": "LGC",
+  "name": "Ledger Coin",
+  "symbol": "LGC",
+  "network_id": 3,
+  "blockchain_name": "ledger_coin",
+  "contract_address": "0x9549e8a940062615cee20c0420c98c25ffa2b214",
+  "signature":
+    "30450221009bffb4baac8addf4777bf63bba27a460840a8429a9d940b7e8346e7bd8f880230220040587f3102203681cc580c5ccbe6e73741874e62e18a8945b142f70b0f616bf",
+  "decimals": 2
+}
+EOM
+
 function main {
 
   TMP_DIR=$(mktemp -d)
@@ -28,7 +42,7 @@ function main {
       OUTPUT="$(cat "$f"), "
       SIG_FILE="$DIR_NAME/ledger_signature.json"
       if [[ -e $SIG_FILE ]]; then
-        OUTPUT=$(echo "$OUTPUT" | sed "s/}/, \"signature\": $(cat "$SIG_FILE") }/g")
+        OUTPUT=$(echo "$OUTPUT" | sed "s/}/, \"network_id\": 1, \"signature\": $(cat "$SIG_FILE") }/g")
       else
         >&2 echo "Signature not found for $f"
       fi
@@ -36,7 +50,7 @@ function main {
     done < <(find "$TMP_DIR/$DIR_TO_SCAN" -name 'common.json')
   )
 
-  echo "[${FULL::-1}]" \
+  echo "[$LEDGER_COIN, ${FULL::-1}]" \
     | ./node_modules/.bin/prettier --stdin --parser json \
     | tee "$OUTPUT_FILE"
 
