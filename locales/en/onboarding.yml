@@ -129,11 +129,11 @@ admin_signin:
   desc: Get Administrators to sign in
 so_validation:
   title: Approve registration
-  desc: Get Administrators to sign in to finalize the registration of the Shared-Owners.
+  desc: Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.
 master_seed_signin:
   title: Sign in
   description: Sign in to confirm your registration.
-  ask_admin: Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.
+  ask_admin: Sign in each Administrator one by one using their Ledger Blue Enterprise.
   sign_new: sign in a new member
   members_present: Administrators
   signed_in: signed-in
