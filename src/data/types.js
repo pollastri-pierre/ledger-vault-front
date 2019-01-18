@@ -290,7 +290,6 @@ export type ERC20Token = {
   network_id: number,
   decimals: number,
   name: string,
-  symbol: string,
   ticker: string,
   signature: string
 };

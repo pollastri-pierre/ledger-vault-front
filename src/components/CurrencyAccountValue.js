@@ -8,7 +8,7 @@ import CurrencyUnitValue from "./CurrencyUnitValue";
 // This is a "smart" component that accepts a contextual account and a value number
 // and infer the proper "unit" to use and delegate to CurrencyUnitValue
 const getCurrencyLikeUnit = token => ({
-  code: token ? token.symbol : "",
+  code: token ? token.ticker : "",
   symbol: "",
   magnitude: token ? token.decimals : 0,
   name: ""

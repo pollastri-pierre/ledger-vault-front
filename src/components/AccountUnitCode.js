@@ -11,7 +11,7 @@ const AccountUnitCode = ({ account }: Props) => {
   if (account.account_type === "ERC20") {
     const token = getERC20TokenByContractAddress(account.contract_address);
     if (!token) return null;
-    return token.symbol;
+    return token.ticker;
   }
   const curr = getCryptoCurrencyById(account.currency_id);
   const unit = curr.units.reduce(
