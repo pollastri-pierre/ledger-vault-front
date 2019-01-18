@@ -11,6 +11,8 @@ import NewAccountActivity from "../Activities/NewAccountActivity";
 import NewOperationActivity from "../Activities/NewOperationActivity";
 import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsReachedActivity";
 import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
+import AccountHasBeenActivatedActivity from "../Activities/AccountHasBeenActivatedActivity";
+import AccountSecuritySchemeHasBeenProvidedActivity from "../Activities/AccountSecuritySchemeHasBeenProvidedActivity";
 
 class ActivityFactory extends Component<*, *> {
   static build(activity: *, match: *) {
