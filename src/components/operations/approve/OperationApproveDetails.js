@@ -2,6 +2,7 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import type { Operation, Account, Member } from "data/types";
+import CopyToClipboardButton from "components/CopyToClipboardButton";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
 import DateFormat from "../../DateFormat";
@@ -25,7 +26,9 @@ function OperationApproveDetails(props: {
       />
       <div className="operation-list">
         <LineRow label={<Trans i18nKey="newOperation:details.identifier" />}>
-          {operation.recipient && <span>{operation.recipient}</span>}
+          {operation.recipient && (
+            <CopyToClipboardButton textToCopy={operation.recipient} />
+          )}
         </LineRow>
         <LineRow label={<Trans i18nKey="newOperation:details.status" />}>
           <ApprovalStatus
