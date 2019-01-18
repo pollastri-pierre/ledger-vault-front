@@ -8,9 +8,11 @@ label:
   add_comment: Add a comment
 details:
   identifier: Transaction ID
-  status: Status
   date: Requested
-  account: Account 
+  account: Account
   total: Total amount
+  gas_price: Gas price
+  gas_limit: Gas Limit
+  confirmation_fee: Confirmation Fees
 confirmation:
   desc: A Operation Request will be sent to the members of the account. This operation won't be broadcasted to the blockchain before they approve it.
