@@ -25,6 +25,11 @@ const ethereumCurIcon = EthereumCurIcon ? (
 ) : null;
 const erc20TokenIcon = <ERC20TokenIcon size={15} />;
 
+const inputProps = {
+  maxLength: 19,
+  onlyAscii: true
+};
+
 const getParentAccountName = (parentAccount: ?ParentAccount): string => {
   if (!parentAccount) return "";
   // TODO: handle parentAccount.id, by retrieving name inside list of
@@ -96,8 +101,8 @@ class AccountCreationOptions extends PureComponent<Props> {
           autoFocus
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          fullWidth
           renderLeft={erc20TokenIcon}
+          {...inputProps}
         />
         {parent_account && parent_account.id ? (
           <Fragment>
@@ -115,8 +120,8 @@ class AccountCreationOptions extends PureComponent<Props> {
               value={parentAccountName}
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
-              fullWidth
               renderLeft={ethereumCurIcon}
+              {...inputProps}
             />
           </Fragment>
         )}
@@ -142,6 +147,7 @@ class AccountCreationOptions extends PureComponent<Props> {
           value={accountCreationState.name}
           autoFocus
           onChange={this.handleChangeName}
+          {...inputProps}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           renderLeft={
             AccountCurIcon ? (

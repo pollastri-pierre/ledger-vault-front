@@ -9,13 +9,31 @@ type Props = {
   placeholder?: string,
   renderLeft?: ?React$Node,
   renderRight?: ?React$Node,
-  textAlign?: string
+  textAlign?: string,
+  maxLength?: number,
+  onlyAscii?: boolean
 };
+
+const isAscii = c => c.charCodeAt(0) <= 127;
 
 class InputField extends PureComponent<Props> {
   handleChange = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { onChange } = this.props;
-    onChange(e.target.value);
+    onChange(this.sanitize(e.target.value));
+  };
+
+  sanitize = (str: string) => {
+    const { maxLength, onlyAscii } = this.props;
+    if (onlyAscii) {
+      str = str
+        .split("")
+        .filter(isAscii)
+        .join("");
+    }
+    if (maxLength) {
+      str = str.substr(0, maxLength);
+    }
+    return str;
   };
 
   render() {
@@ -24,8 +42,10 @@ class InputField extends PureComponent<Props> {
       placeholder,
       renderLeft,
       renderRight,
-      onChange: _onChange,
       textAlign,
+      onChange: _onChange,
+      maxLength: _maxLength,
+      onlyAscii: _onlyAscii,
       ...props
     } = this.props;
     return (
