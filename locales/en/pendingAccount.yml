@@ -3,7 +3,8 @@ tabs:
   members: members
   status: status
 details:
-  approvals: approvals
+  approvals: Approvals
+  approvalsRange: '{{quorum}} out of {{memberLength}} members'
   balance: Balance
   parent: Parent
   smartContract: Smart contract
@@ -11,7 +12,7 @@ details:
   currency: Currency
   date: Requested
   members: Members
-  membersSelected: {{memberLength}}
+  selectedMembers: '{{memberLength}} selected'
 abort:
   title: Abort account request
   content: Do you really want to abort the account ? The request will be cancelled and the account will not be created.

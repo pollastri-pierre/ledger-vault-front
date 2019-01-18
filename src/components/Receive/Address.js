@@ -14,7 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Copy from "components/icons/Copy";
 import Recover from "components/icons/Recover";
 import type { Account, GateError } from "data/types";
-import { Interpolate, Trans } from "react-i18next";
+import { Trans } from "react-i18next";
 import QRCode from "components/QRCode";
 import GenericErrorScreen from "components/GenericErrorScreen";
 import colors from "shared/colors";
@@ -140,12 +140,7 @@ class ReceiveAddress extends Component<Props, State> {
                     <div>
                       <ShieldBox
                         iconColor={colors.green}
-                        text={
-                          <Interpolate
-                            i18nKey="receive:confirmed_device"
-                            name={account.name}
-                          />
-                        }
+                        text={<Trans i18nKey="receive:confirmed_device" />}
                       />
                     </div>
                   ) : (

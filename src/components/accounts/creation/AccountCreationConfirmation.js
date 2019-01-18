@@ -1,42 +1,65 @@
 // @flow
 
 import React, { Fragment } from "react";
-import { translate, Interpolate } from "react-i18next";
+import { Trans, Interpolate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
 
 import type { State as AccountCreationState } from "redux/modules/account-creation";
 
-import type { Translate } from "data/types";
 import InfoModal from "components/InfoModal";
-import { BigSecurityMembersIcon } from "../../icons";
+import User from "components/icons/User";
+import colors from "shared/colors";
 
 import LineRow from "../../LineRow";
-import BadgeSecurity from "../../BadgeSecurity";
 import AccountName from "../../AccountName";
 
 type Props = {
   accountCreationState: AccountCreationState,
-  t: Translate
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+const styles = {
+  badgeContainer: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 25
+  },
+  badgeText: {
+    margin: "0 5px 0 10px"
+  },
+  badgeValue: {
+    color: colors.lead
+  },
+  contentRows: {
+    marginTop: 50
+  },
+  infoModal: {
+    marginTop: 30
+  }
 };
 
-const bigSecurityMembersIcon = <BigSecurityMembersIcon />;
-
 function AccountCreationConfirmation(props: Props) {
-  const { t, accountCreationState } = props;
+  const { accountCreationState, classes } = props;
   const { currency, erc20token, approvers, quorum } = accountCreationState;
 
   return (
     <div>
-      <div style={{ textAlign: "center" }}>
-        <BadgeSecurity
-          icon={bigSecurityMembersIcon}
-          label="Members"
-          value={`${approvers.length} selected`}
-        />
+      <div className={classes.badgeContainer}>
+        <User size={16} color={colors.shark} />
+        <span className={classes.badgeText}>
+          <Trans i18nKey="newAccount:confirmation.members" />
+        </span>
+        <span className={classes.badgeValue}>
+          (<Trans
+            i18nKey="newAccount:confirmation.selectedMembers"
+            values={{ memberLength: approvers.length }}
+          />)
+        </span>
       </div>
-
-      <div style={{ marginTop: "50px" }}>
+      <div className={classes.contentRows}>
         {currency && (
-          <LineRow label="account">
+          <LineRow label={<Trans i18nKey="newAccount:confirmation.account" />}>
             <AccountName
               name={accountCreationState.name}
               currencyId={currency.id}
@@ -45,21 +68,29 @@ function AccountCreationConfirmation(props: Props) {
         )}
         {erc20token && (
           <Fragment>
-            <LineRow label="token account">{accountCreationState.name}</LineRow>
+            <LineRow
+              label={<Trans i18nKey="newAccount:confirmation.account" />}
+            >
+              {accountCreationState.name}
+            </LineRow>
             {accountCreationState.parent_account &&
               accountCreationState.parent_account.name && (
-                <LineRow label="parent account">
+                <LineRow
+                  label={
+                    <Trans i18nKey="newAccount:confirmation.parentAccount" />
+                  }
+                >
                   {accountCreationState.parent_account.name}
                 </LineRow>
               )}
           </Fragment>
         )}
         {currency && (
-          <LineRow label="Currency">
+          <LineRow label={<Trans i18nKey="newAccount:confirmation.currency" />}>
             <span className="info-value currency">{currency.name}</span>
           </LineRow>
         )}
-        <LineRow label={t("newAccount:confirmation.approvals")}>
+        <LineRow label={<Trans i18nKey="newAccount:confirmation.approvals" />}>
           <Interpolate
             i18nKey="newAccount:confirmation.approvals_members"
             count={quorum}
@@ -67,13 +98,13 @@ function AccountCreationConfirmation(props: Props) {
           />
         </LineRow>
       </div>
-      <div style={{ marginTop: "30px" }}>
+      <div className={classes.infoModal}>
         <InfoModal className="confirmation-explain">
-          {t("newAccount:confirmation.desc")}
+          {<Trans i18nKey="newAccount:confirmation.desc" />}
         </InfoModal>
       </div>
     </div>
   );
 }
 
-export default translate()(AccountCreationConfirmation);
+export default withStyles(styles)(AccountCreationConfirmation);

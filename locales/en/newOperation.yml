@@ -6,5 +6,11 @@ tabs:
 label:
   title_note: Label
   add_comment: Add a comment
+details:
+  identifier: Transaction ID
+  status: Status
+  date: Requested
+  account: Account 
+  total: Total amount
 confirmation:
   desc: A Operation Request will be sent to the members of the account. This operation won't be broadcasted to the blockchain before they approve it.

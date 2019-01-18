@@ -23,7 +23,7 @@ label:
   note: Note
 confirmation:
   desc: An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.
-  identifier: Identifier
+  identifier: Transaction ID
   account: Account to Debit
   fees: Confirmation Fees
   total: Total Amount
