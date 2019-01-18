@@ -23,6 +23,9 @@ class SubAccounts extends Component<Props> {
     const { accounts, account } = this.props;
     const children = accounts.filter(a => a.parent_id === account.id);
     const columns = ["date", "account", "status", "amount"];
+    if (children.length === 0) {
+      return null;
+    }
     return (
       <Card title={<Trans i18nKey="accountView:erc20_children" />}>
         {children.length > 0 ? (

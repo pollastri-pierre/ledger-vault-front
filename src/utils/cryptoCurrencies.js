@@ -11,6 +11,7 @@ import type {
   CryptoCurrencyIds,
   CryptoCurrency
 } from "@ledgerhq/live-common/lib/types";
+import { getCryptoCurrencyIcon as getIcon } from "@ledgerhq/live-common/lib/react";
 
 import type { ERC20Token } from "data/types";
 import rawERC20List from "data/erc20-list.json";
@@ -58,6 +59,11 @@ export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
 
 export const getCryptoCurrencyById = (id: string) =>
   id === "ethereum_ropsten" ? getCrypto("ethereum_testnet") : getCrypto(id);
+
+export const getCryptoCurrencyIcon = (currency: CryptoCurrency) =>
+  currency.id === "ethereum_ropsten"
+    ? getIcon({ ...currency, id: "ethereum_testnet" })
+    : getIcon(currency);
 
 const erc20TokensByContractAddress = keyBy(rawERC20List, "contract_address");
 

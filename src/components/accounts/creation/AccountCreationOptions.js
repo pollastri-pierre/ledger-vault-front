@@ -3,12 +3,14 @@
 import { translate } from "react-i18next";
 import React, { Fragment, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
 
 import InputField from "components/InputField";
 import AccountSummary from "components/AccountSummary";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import {
+  getCryptoCurrencyById,
+  getCryptoCurrencyIcon
+} from "utils/cryptoCurrencies";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import type { Translate, Account } from "data/types";
