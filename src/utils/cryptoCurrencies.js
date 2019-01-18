@@ -37,6 +37,14 @@ export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
     const list = listCC(withDevCrypto)
       .filter(c => supported.includes(c.id))
       .sort((a, b) => a.name.localeCompare(b.name));
+    // replacing ethereum_testnet by ethereum_ropsten
+    // FIXME remove this hack when ledger-live-common is up to date with right currency id for eth ropsten
+    const eth = list.find(c => c.id === "ethereum_testnet");
+    if (eth) {
+      eth.id = "ethereum_ropsten";
+      eth.name = "Ethereum Ropsten";
+      eth.scheme = "ethereum_ropsten";
+    }
     return list;
   }
 );
