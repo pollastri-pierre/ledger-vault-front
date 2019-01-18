@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import { getCryptoCurrencyIcon } from "@ledgerhq/live-common/lib/react";
+import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 type Props = {
