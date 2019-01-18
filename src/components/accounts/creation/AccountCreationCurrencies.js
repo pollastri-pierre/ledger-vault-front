@@ -141,12 +141,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
     return (
       <Fragment>
         <ModalSubTitle noPadding>
-          <Trans i18nKey="newAccount:currency.enterCrypto" />
+          <Trans i18nKey="newAccount:currency.label" />
         </ModalSubTitle>
         <SelectCurrency
           autoFocus
           openMenuOnFocus={!currencyOrToken}
-          placeholder={t("newAccount:currency.enterCrypto")}
+          placeholder={t("newAccount:currency.placeholder")}
           value={currencyOrToken}
           onChange={this.handleChange}
         />

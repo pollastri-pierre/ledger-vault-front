@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { Trans } from "react-i18next";
 import type { Operation, Account, Member } from "data/types";
 import LineRow from "../../LineRow";
 import AccountName from "../../AccountName";
@@ -23,10 +24,10 @@ function OperationApproveDetails(props: {
         operationType={operation.type}
       />
       <div className="operation-list">
-        <LineRow label="Identifier">
+        <LineRow label={<Trans i18nKey="newOperation:details.identifier" />}>
           {operation.recipient && <span>{operation.recipient}</span>}
         </LineRow>
-        <LineRow label="status">
+        <LineRow label={<Trans i18nKey="newOperation:details.status" />}>
           <ApprovalStatus
             approvingObject={operation}
             approved={operation.approvals}
@@ -35,16 +36,16 @@ function OperationApproveDetails(props: {
             user={profile}
           />
         </LineRow>
-        <LineRow label="requested">
+        <LineRow label={<Trans i18nKey="newOperation:details.date" />}>
           <DateFormat date={operation.created_on} />
         </LineRow>
-        <LineRow label="account to debit">
+        <LineRow label={<Trans i18nKey="newOperation:details.account" />}>
           <AccountName name={account.name} currencyId={account.currency_id} />
         </LineRow>
         {/* <LineRow label="Confirmation fees"> */}
         {/*   <Amount account={account} value={operation.fees.amount} /> */}
         {/* </LineRow> */}
-        <LineRow label="Total Spent">
+        <LineRow label={<Trans i18nKey="newOperation:details.total" />}>
           <Amount account={account} value={operation.price.amount} strong />
         </LineRow>
       </div>

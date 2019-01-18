@@ -5,12 +5,12 @@ tabs:
   label: Label
   history: History
 overview:
-  identifier: Recipient address
-  total: Total spent
+  identifier: Transaction ID
+  total: Total amount
   fees: Fees
   date: Sent date
   account: Account
   status: Status
   copy: Copy
   copied: Copied
-explore: Explore
+explore: View in explorer

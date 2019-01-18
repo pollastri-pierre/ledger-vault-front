@@ -49,12 +49,6 @@ class AccountApproveDetails extends PureComponent<Props> {
       ? accounts.find(a => a.id === account.parent_id)
       : null;
 
-    // TODO: update wording to use Trans components
-    const badgeVal = `${account.members.length} selected`;
-
-    const approvals = `${security_scheme.quorum} of ${
-      account.members.length
-    } members`;
     return (
       <div>
         <div className={classes.badgeContainer}>
@@ -62,7 +56,12 @@ class AccountApproveDetails extends PureComponent<Props> {
           <span className={classes.badgeText}>
             <Trans i18nKey="pendingAccount:details.members" />
           </span>
-          <span className={classes.badgeValue}>({badgeVal})</span>
+          <span className={classes.badgeValue}>
+            (<Trans
+              i18nKey="pendingAccount:details.selectedMembers"
+              values={{ memberLength: account.members.length }}
+            />)
+          </span>
         </div>
         <div>
           <LineRow label={<Trans i18nKey="pendingAccount:details.balance" />}>
@@ -98,7 +97,13 @@ class AccountApproveDetails extends PureComponent<Props> {
             </span>
           </LineRow>
           <LineRow label={<Trans i18nKey="pendingAccount:details.approvals" />}>
-            {approvals}
+            <Trans
+              i18nKey="pendingAccount:details.approvalsRange"
+              values={{
+                quorum: security_scheme.quorum,
+                memberLength: account.members.length
+              }}
+            />
           </LineRow>
         </div>
       </div>

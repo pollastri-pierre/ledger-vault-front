@@ -14,6 +14,8 @@ import type {
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
 
+import HeaderRightClose from "components/HeaderRightClose";
+
 import { DialogButton } from "../..";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import AccountCreationSecurity from "./AccountCreationSecurity";
@@ -45,7 +47,8 @@ type Props = {
   t: Translate,
   switchInternalModal: Function,
   tabsIndex: number,
-  classes: Object
+  classes: Object,
+  close: Function
 };
 
 class MainCreation extends Component<Props> {
@@ -58,7 +61,7 @@ class MainCreation extends Component<Props> {
       accountCreationState,
       updateAccountCreationState,
       allAccounts,
-
+      close,
       t,
       onSelect,
       tabsIndex,
@@ -109,6 +112,7 @@ class MainCreation extends Component<Props> {
       <div className={classes.base}>
         <header>
           <h2>{t("newAccount:title")}</h2>
+          <HeaderRightClose close={close} />
           <Tabs
             onChange={this.handleChange}
             value={tabsIndex}
