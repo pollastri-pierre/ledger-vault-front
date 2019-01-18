@@ -21,7 +21,8 @@ class AccountSecuritySchemeHasBeenProvidedActivity extends Component<
     return (
       <span>
         <Activity match={match} activity={activity}>
-          The operation rules of the <Bold>{business_action.account.name}</Bold> account have been provided.
+          The operation rules of the <Bold>{business_action.account.name}</Bold>{" "}
+          account have been provided.
         </Activity>
       </span>
     );
