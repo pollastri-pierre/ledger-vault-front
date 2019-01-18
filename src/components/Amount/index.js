@@ -28,6 +28,7 @@ type Props = {
   dataTest: ?string,
   strong?: boolean,
   erc20Format?: boolean,
+  hideCountervalue?: boolean,
   classes: { [_: $Keys<typeof styles>]: string }
 };
 
@@ -39,7 +40,8 @@ class Amount extends Component<Props> {
       strong,
       classes,
       dataTest,
-      erc20Format
+      erc20Format,
+      hideCountervalue
     } = this.props;
     const disableCountervalue = !!erc20Format;
     return (
@@ -52,13 +54,15 @@ class Amount extends Component<Props> {
           value={value}
           erc20Format={erc20Format}
         />{" "}
-        <span className={classes.flat}>
-          (<CounterValue
-            value={value}
-            from={account.currency_id}
-            disableCountervalue={disableCountervalue}
-          />)
-        </span>
+        {!hideCountervalue && (
+          <span className={classes.flat}>
+            (<CounterValue
+              value={value}
+              from={account.currency_id}
+              disableCountervalue={disableCountervalue}
+            />)
+          </span>
+        )}
       </span>
     );
   }

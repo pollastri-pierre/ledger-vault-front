@@ -38,17 +38,20 @@ function PendingOperationApprove(props: Props) {
   if (operations.length === 0) {
     return <Empty approved={approved} />;
   }
-
+  // NOTE: needs some refactor, it is very sloppy
   return (
     <div className={classes.base}>
       {!approved && (
         <div>
           <p className={classnames(classes.header, classes.headerBlack)}>
-            {operations.length === 1 ? (
-              <span>1 operation</span>
-            ) : (
-              <span>{operations.length} operations</span>
-            )}
+            <Trans
+              i18nKey={
+                operations.length === 1
+                  ? "pending:operations.approve.operation_singular"
+                  : "pending:operations.approve.operation_plural"
+              }
+              values={{ numbeOfOperations: operations.length }}
+            />
             <span>
               <OperationsCounterValues
                 accounts={accounts}
@@ -56,9 +59,10 @@ function PendingOperationApprove(props: Props) {
               />
             </span>
           </p>
-          <p className={classnames(classes.header, classes.headerLight)}>
-            <span>pending approval</span>
-            <span style={{ opacity: 0 }}>TODAY, 10:45 AN</span>
+          <p style={{ padding: 0 }} className={classnames(classes.headerLight)}>
+            <span>
+              <Trans i18nKey="pending:operations.approve.status" />
+            </span>
           </p>
         </div>
       )}
@@ -78,18 +82,20 @@ function PendingOperationApprove(props: Props) {
                 <DateFormat date={operation.created_on} />
               </span>
               <span className={classes.name}>
-                {!account ? null : (
+                {account && (
                   <CurrencyAccountValue
                     account={account}
                     value={operation.price.amount}
+                    erc20Format={account.account_type === "ERC20"}
                   />
                 )}
               </span>
               <span className={classnames(classes.currency, "center")}>
-                {!account ? null : (
+                {account && (
                   <CounterValue
                     value={operation.price.amount}
                     from={account.currency_id}
+                    disableCountervalue={account.account_type === "ERC20"}
                   />
                 )}
               </span>

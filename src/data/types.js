@@ -225,7 +225,9 @@ type OperationCommon = {
   tx_hash: ?string,
   status: string,
   hsm_operations?: Object,
-  error?: Object
+  error?: Object,
+  gas_price?: number,
+  gas_limit?: number
 };
 export type Operation = OperationCommon & {
   notes: Note[]

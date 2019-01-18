@@ -114,11 +114,7 @@ class OperationApprove extends Component<Props, { value: number }> {
         </header>
         {value === 0 && (
           <div className="tabs_panel">
-            <OperationApproveDetails
-              operation={operation}
-              account={account}
-              profile={profile}
-            />
+            <OperationApproveDetails operation={operation} account={account} />
             <GenericFooter />
           </div>
         )}
