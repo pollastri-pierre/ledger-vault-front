@@ -133,7 +133,7 @@ so_validation:
 master_seed_signin:
   title: Sign in
   description: Sign in to confirm your registration.
-  ask_admin: Sign in each Administrator one by one using their Ledger Blue Enterprise.
+  ask_admin: Get the quorum of Administrators to sign in to finalize the registration of Shared-Owners.
   sign_new: sign in a new member
   members_present: Administrators
   signed_in: signed-in
