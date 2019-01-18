@@ -48,7 +48,8 @@ function UpdateTextField(props: Props) {
     value,
     placeholder,
     error,
-    onChange
+    onChange,
+    ...otherProps
   } = props;
 
   return (
@@ -65,6 +66,7 @@ function UpdateTextField(props: Props) {
         value={value}
         error={error}
         onChange={onChange}
+        {...otherProps}
       />
       {error && <div className={classes.error}>{errorMessage}</div>}
     </div>

@@ -27,6 +27,7 @@ import {
   toggleApprovals,
   toggleMember,
   editQuorum,
+  editName,
   selectAccount
 } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
@@ -91,6 +92,7 @@ type Props = {
   quorum: number,
   onToggle: Function,
   onToggleMembers: Function,
+  onEditName: string => void,
   onToggleApprovals: Function,
   onEditQuorum: Function,
   onToggleMember: Function,
@@ -101,15 +103,7 @@ type Props = {
   t: Translate
 };
 
-type State = {
-  accountName: string
-};
-
-class UpdateAccounts extends Component<Props, State> {
-  state: State = {
-    accountName: ""
-  };
-
+class UpdateAccounts extends Component<Props> {
   componentDidUpdate() {
     const { selectedAccount, accounts, onSelectAccount, isOpen } = this.props;
     const outdatedAccounts = getOutdatedAccounts(accounts);
@@ -119,16 +113,19 @@ class UpdateAccounts extends Component<Props, State> {
   }
 
   onChangeAccountName = (e: SyntheticInputEvent<>) => {
-    this.setState({ accountName: e.target.value });
+    this.props.onEditName(e.target.value);
   };
 
   isSubmitDisabled = () => {
-    const { approvers, quorum } = this.props;
-    const { accountName } = this.state;
+    const {
+      approvers,
+      quorum,
+      selectedAccount: { name }
+    } = this.props;
 
     const rulesDisabled =
       approvers.length === 0 || quorum === 0 || quorum > approvers.length;
-    const nameDisabled = accountName === "" || !isValidAccountName(accountName);
+    const nameDisabled = name === "" || !isValidAccountName(name);
 
     return rulesDisabled || nameDisabled;
   };
@@ -142,15 +139,13 @@ class UpdateAccounts extends Component<Props, State> {
       selectedAccount
     } = this.props;
     const data = {
+      name: selectedAccount.name,
       members: this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
         quorum: this.props.quorum
       }
     };
     try {
-      await network(`/accounts/${this.props.selectedAccount.id}`, "PUT", {
-        name: this.state.accountName
-      });
       await network(
         `/accounts/${this.props.selectedAccount.id}/security-scheme`,
         selectedAccount.status !== "VIEW_ONLY" ? "PUT" : "POST",
@@ -193,7 +188,6 @@ class UpdateAccounts extends Component<Props, State> {
       onSelectAccount
     } = this.props;
 
-    const { accountName } = this.state;
     return (
       <Fragment>
         <BlurDialog open={isOpen} onClose={onToggle}>
@@ -235,9 +229,13 @@ class UpdateAccounts extends Component<Props, State> {
                     <UpdateTextField
                       name="account_name"
                       placeholder="account name"
-                      value={accountName}
+                      value={selectedAccount.name}
                       onChange={this.onChangeAccountName}
-                      error={!isValidAccountName(accountName)}
+                      disabled={
+                        selectedAccount.status === "VIEW_ONLY" &&
+                        selectedAccount.account_type === "Ethereum"
+                      }
+                      error={!isValidAccountName(selectedAccount.name)}
                       errorMessage="only ASCII char, 19 max length"
                     />
                   </Row>
@@ -332,6 +330,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch: *) => ({
   onToggle: () => dispatch(toggleModal()),
   onToggleMembers: () => dispatch(toggleMembers()),
+  onEditName: name => dispatch(editName(name)),
   onToggleMember: member => dispatch(toggleMember(member)),
   onToggleDevice: () => dispatch(toggleDevice()),
   onEditQuorum: number => dispatch(editQuorum(number)),

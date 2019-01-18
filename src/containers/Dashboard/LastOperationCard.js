@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import DashboardLastOperationsQuery from "api/queries/DashboardLastOperationsQuery";
 import { translate } from "react-i18next";
-import AccountsQuery from "api/queries/AccountsQuery";
+import AccountsDashboardQuery from "api/queries/AccountsDashboardQuery";
 // import ViewAllLink from "components/ViewAllLink";
 import TryAgain from "components/TryAgain";
 import Card from "components/Card";
@@ -53,7 +53,7 @@ const RenderLoading = translate()(({ t }: { t: Translate }) => (
 const c = connectData(translate()(LastOperationCard), {
   queries: {
     operations: DashboardLastOperationsQuery,
-    accounts: AccountsQuery
+    accounts: AccountsDashboardQuery
   },
   initialVariables: {
     operations: 5

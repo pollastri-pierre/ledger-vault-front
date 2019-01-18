@@ -8,6 +8,7 @@ const TOGGLE_APPROVALS = "UPDATE-ACCOUNTS/TOGGLE-APPROVALS";
 const TOGGLE_MEMBER = "UPDATE-ACCOUNTS/TOGGLE-MEMBER";
 const TOGGLE_DEVICE = "UPDATE-ACCOUNTS/TOGGLE-DEVICE";
 const EDIT_QUORUM = "UPDATE-ACCOUNTS/EDIT-QUORUM";
+const EDIT_NAME = "UPDATE-ACCOUNTS/EDIT_NAME";
 
 export const toggleModal = () => ({
   type: TOGGLE
@@ -34,6 +35,11 @@ export const toggleMembers = () => ({
 export const editQuorum = (quorum: string) => ({
   type: EDIT_QUORUM,
   quorum
+});
+
+export const editName = (name: string) => ({
+  type: EDIT_NAME,
+  name
 });
 
 export const toggleApprovals = () => ({
@@ -74,6 +80,12 @@ export default function reducer(state: State = initialState, action: Object) {
     }
     case SELECT_ACCOUNT: {
       return { ...initialState, account: action.account, isOpen: true };
+    }
+    case EDIT_NAME: {
+      return {
+        ...state,
+        account: { ...state.account, name: action.name }
+      };
     }
     case TOGGLE_MEMBERS: {
       return {
