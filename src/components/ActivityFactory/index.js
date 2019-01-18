@@ -11,6 +11,8 @@ import NewAccountActivity from "../Activities/NewAccountActivity";
 import NewOperationActivity from "../Activities/NewOperationActivity";
 import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsReachedActivity";
 import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
+import AccountHasBeenActivatedActivity from "../Activities/AccountHasBeenActivatedActivity";
+import AccountSecuritySchemeHasBeenProvidedActivity from "../Activities/AccountSecuritySchemeHasBeenProvidedActivity";
 
 class ActivityFactory extends Component<*, *> {
   static build(activity: *, match: *) {
@@ -46,6 +48,17 @@ class ActivityFactory extends Component<*, *> {
         return <NewAccountActivity activity={activity} match={match} />;
       case "ACCOUNT_ABORTED":
         return <AccountAbortedActivity activity={activity} match={match} />;
+      case "ACCOUNT_HAS_BEEN_ACTIVATED":
+        return (
+          <AccountHasBeenActivatedActivity activity={activity} match={match} />
+        );
+      case "ACCOUNT_SECURITY_SCHEME_HAS_BEEN_PROVIDED":
+        return (
+          <AccountSecuritySchemeHasBeenProvidedActivity
+            activity={activity}
+            match={match}
+          />
+        );
       default:
         return (
           <Activity match={match} activity={activity}>
