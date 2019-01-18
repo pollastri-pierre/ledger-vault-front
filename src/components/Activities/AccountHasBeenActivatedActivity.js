@@ -1,7 +1,6 @@
-//@flow
+// @flow
 import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-// import type { ActivityCommon } from "data/types";
 import Activity from "../Activity";
 import Bold from "../Bold";
 
