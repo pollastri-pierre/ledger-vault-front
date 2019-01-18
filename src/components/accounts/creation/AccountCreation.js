@@ -14,6 +14,7 @@ import NewAccountMutation from "api/mutations/NewAccountMutation";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
+import ModalLoading from "components/ModalLoading";
 
 import type {
   State as AccountCreationState,
@@ -286,6 +287,7 @@ export default connectData(
   {
     queries: {
       allAccounts: PotentialParentAccountsQuery
-    }
+    },
+    RenderLoading: ModalLoading
   }
 );

@@ -7,8 +7,8 @@ import SpinnerCard from "../spinners/SpinnerCard";
 const styles = {
   base: {
     background: "white",
-    width: "440px",
-    height: "615px"
+    width: 450,
+    height: 615
   }
 };
 
