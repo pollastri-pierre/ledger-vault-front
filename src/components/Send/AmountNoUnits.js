@@ -81,7 +81,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
           fullWidth
           data-test="operation-creation-amount"
           error={!amountIsValid}
-          renderLeft={<div>{token && token.symbol}</div>}
+          renderLeft={<div>{token && token.ticker}</div>}
         />
       </div>
     );

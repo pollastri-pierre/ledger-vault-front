@@ -49,7 +49,7 @@ function getItemLabel(item: Item) {
   return item.type === "erc20token" ? (
     <span>
       {`${item.value.name} - `}
-      <b>{item.value.symbol}</b>{" "}
+      <b>{item.value.ticker}</b>{" "}
       <span style={styles.contract}>{`${item.value.contract_address.substr(
         0,
         15

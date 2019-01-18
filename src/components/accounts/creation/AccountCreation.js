@@ -161,9 +161,10 @@ class AccountCreation extends PureComponent<Props> {
     if (accountCreationState.erc20token) {
       Object.assign(data, {
         currency: {
-          // TODO: handle ethereum_ropsten
-          name: "ethereum_ropsten"
-          // name: "ethereum"
+          name:
+            accountCreationState.erc20token.network_id === 3
+              ? "ethereum_ropsten"
+              : "ethereum"
         },
         erc20: {
           ticker: accountCreationState.erc20token.ticker,
