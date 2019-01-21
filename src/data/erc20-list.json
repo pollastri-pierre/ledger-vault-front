@@ -7826,7 +7826,7 @@
     "blockchain_name": "ropsten",
     "contract_address": "0xa1bacca0e12d4091ec1f92e7cae3394cc9854d3d",
     "decimals": 18,
-    "network_id": 1,
+    "network_id": 3,
     "signature":
       "30440220012139b34ab10b6b9da5f0f9f1858938e8eb4413600d719aedbe2f303d72d1b2022048ec99056bf7f5bc4828edb69f22001fb8c572ce1e01fa4e40181692cd44c802"
   },
@@ -11046,7 +11046,7 @@
     "blockchain_name": "ropsten",
     "contract_address": "0x95D7321EdCe519419ba1DbC60A89bAfbF55EAC0D",
     "decimals": 6,
-    "network_id": 1,
+    "network_id": 3,
     "signature":
       "304402203795ddd9feba8ddfef506a2c4e0969671979352779ef616e18ae19e4bb7b0fe302206dd1052525d46c9969515c440f01675f991c2b5644fe84d15daa7d1c36766f77"
   },
