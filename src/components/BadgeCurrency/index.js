@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
+import colors from "shared/colors";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
@@ -13,6 +14,11 @@ const styles = {
     "& svg": {
       verticalAlign: "text-bottom"
     }
+  },
+  placeholder: {
+    display: "inline-block",
+    background: colors.argile,
+    borderRadius: "50%"
   }
 };
 class BadgeCurrency extends PureComponent<{
@@ -29,11 +35,18 @@ class BadgeCurrency extends PureComponent<{
     const { size, currency, classes, className } = this.props;
     const IconCurrency = getCryptoCurrencyIcon(currency);
 
-    return IconCurrency ? (
+    return (
       <span className={classnames(classes.base, className)}>
-        <IconCurrency size={size} color={currency.color} />
+        {IconCurrency ? (
+          <IconCurrency size={size} color={currency.color} />
+        ) : (
+          <span
+            className={classes.placeholder}
+            style={{ width: size, height: size }}
+          />
+        )}
       </span>
-    ) : null;
+    );
   }
 }
 
