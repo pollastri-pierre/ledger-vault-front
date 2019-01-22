@@ -41,6 +41,9 @@ const getRecipientWarning = async recipient => {
 
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
+    if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return false;
+    const warning = await getRecipientWarning(recipient);
+    if (warning) return true;
     try {
       const { is_valid } = await restlay.fetchQuery(
         new ValidateAddressQuery({ currency, address: recipient })
@@ -58,7 +61,6 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 const checkValidTransaction = async (a, t, r) => {
   const currency = getCryptoCurrencyById(a.currency_id);
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
-  const warning = await getRecipientWarning(t.recipient);
   const fees = await getFees(a, t);
   let amountIsValid;
   if (a.account_type === "ERC20") {
@@ -66,12 +68,7 @@ const checkValidTransaction = async (a, t, r) => {
   } else {
     amountIsValid = t.amount + fees < a.balance;
   }
-  if (
-    !t.gasPrice ||
-    !t.amount ||
-    (!recipientIsValid && !warning) ||
-    !amountIsValid
-  ) {
+  if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
     return false;
   }
   return true;
