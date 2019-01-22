@@ -58,6 +58,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 const checkValidTransaction = async (a, t, r) => {
   const currency = getCryptoCurrencyById(a.currency_id);
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
+  const warning = await getRecipientWarning(t.recipient);
   const fees = await getFees(a, t);
   let amountIsValid;
   if (a.account_type === "ERC20") {
@@ -65,7 +66,12 @@ const checkValidTransaction = async (a, t, r) => {
   } else {
     amountIsValid = t.amount + fees < a.balance;
   }
-  if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
+  if (
+    !t.gasPrice ||
+    !t.amount ||
+    (!recipientIsValid && !warning) ||
+    !amountIsValid
+  ) {
     return false;
   }
   return true;
