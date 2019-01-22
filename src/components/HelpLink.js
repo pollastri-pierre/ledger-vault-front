@@ -20,7 +20,12 @@ class HelpLink extends PureComponent<Props> {
     }
 
     return (
-      <a href={href} className={className || ""} target="new">
+      <a
+        href={href}
+        className={className || ""}
+        target="new"
+        style={{ verticalAlign: "middle" }}
+      >
         {this.props.children}
       </a>
     );

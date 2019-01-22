@@ -1,23 +1,25 @@
 // @flow
-import InfoBox from "components/InfoBox";
 import { Trans } from "react-i18next";
 import { connect } from "react-redux";
 import React, { Component, Fragment } from "react";
+
 import { toggleAndSelect } from "redux/modules/update-accounts";
 import {
   isAccountOutdated,
   isAccountBeingUpdated,
   hasUserApprovedAccount
 } from "utils/accounts";
+import InfoBox from "components/InfoBox";
+import Text from "components/Text";
 import NoStyleLink from "components/NoStyleLink";
 import type { Account, Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 const styles = {
   actionButton: {
-    background: colors.warningButton,
+    background: opacity(colors.blue_orange, 0.5),
     color: "black",
     height: 20,
     fontSize: 11
@@ -55,7 +57,9 @@ class AccountWarning extends Component<Props> {
               </Button>
             }
           >
-            <Trans i18nKey="accountView:view_only_warning" />
+            <Text>
+              <Trans i18nKey="accountView:view_only_warning" />
+            </Text>
           </InfoBox>
         )}
         {isAccountOutdated(account) && (

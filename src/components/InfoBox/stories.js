@@ -11,15 +11,18 @@ import InfoBox from "components/InfoBox";
 import Text from "components/Text";
 
 storiesOf("Components", module).add("InfoBox", () => {
-  const withFooter = boolean("show footer", true);
   const withIcon = boolean("withIcon", true);
   const types = ["info", "warning", "error"];
   return types.map(t => (
-    <Wrapper key={t} type={t} withFooter={withFooter} withIcon={withIcon} />
+    <Wrapper key={t} type={t} withFooter={t === "info"} withIcon={withIcon} />
   ));
 });
 
-const Footer = () => <Button onClick={action("click")}>Take action</Button>;
+const Footer = () => (
+  <Button color="primary" variant="outlined" onClick={action("click")}>
+    Take action
+  </Button>
+);
 
 const Wrapper = ({ type, withFooter, ...props }) => (
   <div
