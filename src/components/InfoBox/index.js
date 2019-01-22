@@ -2,10 +2,12 @@
 
 import React, { PureComponent } from "react";
 import cx from "classnames";
-import Warning from "components/icons/TriangleWarning";
 import { withStyles } from "@material-ui/core/styles";
 
-import colors, { hexToRgbA } from "shared/colors";
+import Warning from "components/icons/TriangleWarning";
+import InfoCircle from "components/icons/InfoCircle";
+
+import colors, { opacity, darken } from "shared/colors";
 
 type InfoBoxType = "info" | "warning" | "error";
 
@@ -21,40 +23,63 @@ type Props = {
 const styles = {
   container: {
     fontSize: 12,
-    flexDirection: "column",
-    borderRadius: 3,
-    alignItems: "center",
-    display: "flex"
+    lineHeight: 1.75,
+    color: "#555",
+    borderRadius: 3
   },
   content: {
-    padding: 8,
     display: "flex"
+  },
+  inner: {
+    padding: 15
   },
   footer: {
     background: "rgba(0,0,0,0.1)",
     display: "flex",
-    marginTop: 11,
     justifyContent: "flex-end",
     padding: 5,
     width: "100%"
   },
   icon: {
-    marginRight: 10
+    flexShrink: 0,
+    lineHeight: 0,
+    paddingLeft: 20,
+    paddingTop: 15,
+    display: "flex",
+    justifyContent: "center"
   },
   isInfo: {
-    backgroundColor: hexToRgbA(colors.ocean, 0.2)
+    backgroundColor: opacity(colors.ocean, 0.05),
+    color: darken(colors.ocean, 0.3),
+    border: `2px solid ${opacity(colors.ocean, 0.2)}`,
+    "& .icon": {
+      color: colors.ocean
+    },
+    "& .footer": {
+      background: opacity(colors.ocean, 0.1)
+    }
   },
   isWarning: {
-    border: `2px solid ${hexToRgbA(colors.grenade, 0.2)}`,
+    border: `2px solid ${opacity(colors.blue_orange, 0.5)}`,
+    color: darken(colors.blue_orange, 0.5),
+    backgroundColor: opacity(colors.blue_orange, 0.05),
+    "& .icon": {
+      color: darken(colors.blue_orange, 0.2)
+    },
+    "& .footer": {
+      background: opacity(colors.blue_orange, 0.1)
+    }
+  },
+  isError: {
+    border: `2px solid ${opacity(colors.grenade, 0.2)}`,
+    color: colors.grenade,
+    backgroundColor: opacity(colors.grenade, 0.05),
     "& .icon": {
       color: colors.grenade
     },
     "& .footer": {
-      background: hexToRgbA(colors.grenade, 0.1)
+      background: opacity(colors.grenade, 0.1)
     }
-  },
-  isError: {
-    backgroundColor: "red"
   }
 };
 
@@ -62,9 +87,12 @@ class InfoBox extends PureComponent<Props> {
   renderIcon = () => {
     const { type, classes } = this.props;
     let icon;
-    if (type === "warning") {
+    if (type === "warning" || type === "error") {
       icon = <Warning width={20} height={20} />;
+    } else if (type === "info") {
+      icon = <InfoCircle size={20} />;
     }
+    if (!icon) return null;
     return <div className={cx("icon", classes.icon)}>{icon}</div>;
   };
 
@@ -91,7 +119,7 @@ class InfoBox extends PureComponent<Props> {
       >
         <div className={classes.content}>
           {withIcon && this.renderIcon()}
-          <div>{children}</div>
+          <div className={classes.inner}>{children}</div>
         </div>
         {Footer && <div className={cx("footer", classes.footer)}>{Footer}</div>}
       </div>

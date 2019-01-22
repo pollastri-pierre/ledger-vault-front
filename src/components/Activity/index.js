@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import classnames from "classnames";
 
 import type { ActivityCommon } from "data/types";
-import colors, { hexToRgbA } from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 import DateFormat from "../DateFormat";
 
@@ -32,7 +32,7 @@ const styles = {
     color: colors.black,
     lineHeight: "19px",
     "&.seen": {
-      color: hexToRgbA(colors.black, 0.5)
+      color: opacity(colors.black, 0.5)
     },
     "> a": {
       textDecoration: "none"
@@ -45,7 +45,7 @@ const styles = {
     color: colors.lead,
     fontWeight: 600,
     "&.seen": {
-      color: hexToRgbA(colors.lead, 0.5)
+      color: opacity(colors.lead, 0.5)
     }
   },
   date: {

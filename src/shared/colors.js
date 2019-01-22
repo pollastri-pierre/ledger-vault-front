@@ -1,3 +1,5 @@
+import color from "color";
+
 const colors = {
   night: "#1d2028",
   mouse: "#e2e2e2",
@@ -24,17 +26,22 @@ const colors = {
   translucentGrenade: "rgb(234, 46, 73, 0.1)"
 };
 
-function hexToRgbA(hex, a) {
-  let c;
-  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-    c = hex.substring(1).split("");
-    if (c.length === 3) {
-      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-    }
-    c = `0x${c.join("")}`;
-    return `rgba(${[(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",")},${a})`; // eslint-disable-line no-bitwise
-  }
-  throw new Error("Bad Hex");
+function opacity(c, op) {
+  return color(c)
+    .alpha(op)
+    .string();
 }
 
-export { colors as default, hexToRgbA };
+function darken(c, n) {
+  return color(c)
+    .darken(n)
+    .string();
+}
+
+function lighten(c, n) {
+  return color(c)
+    .lighten(n)
+    .string();
+}
+
+export { colors as default, opacity, darken, lighten };
