@@ -118,7 +118,9 @@ class ReceiveAddress extends Component<Props, State> {
               content={
                 <div className={classes.address}>
                   <QRCode
-                    hash={`${currency.scheme}:${account.fresh_addresses[0]}`}
+                    hash={`${currency.scheme}:${
+                      account.fresh_addresses[0].address
+                    }`}
                     size={140}
                   />
                   <div className={classes.account}>
