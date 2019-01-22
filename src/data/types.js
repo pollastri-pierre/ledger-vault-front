@@ -84,9 +84,10 @@ export type Approval = {
   type: "APPROVE" | "ABORT"
 };
 
+type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
 type AccountCommon = {
   id: number,
-  account_type: string,
+  account_type: AccountType,
   contract_address: string,
   parent_id?: number,
   name: string,

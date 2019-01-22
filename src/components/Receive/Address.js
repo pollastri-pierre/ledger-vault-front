@@ -118,9 +118,13 @@ class ReceiveAddress extends Component<Props, State> {
               content={
                 <div className={classes.address}>
                   <QRCode
-                    hash={`${currency.scheme}:${
-                      account.fresh_addresses[0].address
-                    }`}
+                    hash={
+                      account.account_type === "Bitcoin"
+                        ? `${currency.scheme}:${
+                            account.fresh_addresses[0].address
+                          }`
+                        : `${account.fresh_addresses[0].address}`
+                    }
                     size={140}
                   />
                   <div className={classes.account}>
@@ -164,8 +168,7 @@ class ReceiveAddress extends Component<Props, State> {
                     </div>
                     <CopyToClipboard
                       text={account.fresh_addresses[0].address}
-                      onCopy={this.onCopy}
-                    >
+                      onCopy={this.onCopy}>
                       <div className={classes.icon}>
                         <Copy color={colors.shark} size={16} />
                         <span className={classes.actionText}>
