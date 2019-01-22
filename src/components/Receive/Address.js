@@ -168,7 +168,8 @@ class ReceiveAddress extends Component<Props, State> {
                     </div>
                     <CopyToClipboard
                       text={account.fresh_addresses[0].address}
-                      onCopy={this.onCopy}>
+                      onCopy={this.onCopy}
+                    >
                       <div className={classes.icon}>
                         <Copy color={colors.shark} size={16} />
                         <span className={classes.actionText}>
