@@ -106,11 +106,9 @@ class FeesFieldEthereumKind extends PureComponent<
       currency,
       transaction.recipient
     );
-    const warning =
-      bridge.getRecipientWarning &&
-      (await bridge.getRecipientWarning(transaction.recipient));
+
     if (this._unmounted) return;
-    if (!isRecipientValid && !warning) return;
+    if (!isRecipientValid) return;
     // NOTE: both initialized with null because gate expects it for ETH
     const operation = {
       amount: transaction.amount || 0,
