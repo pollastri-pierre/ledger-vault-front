@@ -8,6 +8,7 @@ import { boolean } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
 
 import InfoBox from "components/InfoBox";
+import Text from "components/Text";
 
 storiesOf("Components", module).add("InfoBox", () => {
   const withFooter = boolean("show footer", true);
@@ -44,10 +45,12 @@ const Wrapper = ({ type, withFooter, ...props }) => (
       Footer={withFooter ? <Footer /> : undefined}
       {...props}
     >
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac massa
-      orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      posuere cubilia Curae; Aliquam convallis sapien magna, ac aliquet nunc
-      lacinia pulvinar.
+      <Text>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac massa
+        orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+        posuere cubilia Curae; Aliquam convallis sapien magna, ac aliquet nunc
+        lacinia pulvinar.
+      </Text>
     </InfoBox>
   </div>
 );

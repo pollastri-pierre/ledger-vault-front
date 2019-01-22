@@ -22,8 +22,6 @@ type Props = {
 
 const styles = {
   container: {
-    fontSize: 12,
-    lineHeight: 1.75,
     color: "#555",
     borderRadius: 3
   },
