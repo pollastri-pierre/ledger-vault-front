@@ -41,6 +41,9 @@ const getRecipientWarning = async recipient => {
 
 const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
+    if (!recipient.match(/^0x[0-9a-fA-F]{40}$/)) return false;
+    const warning = await getRecipientWarning(recipient);
+    if (warning) return true;
     try {
       const { is_valid } = await restlay.fetchQuery(
         new ValidateAddressQuery({ currency, address: recipient })
