@@ -4,7 +4,6 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans, translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
-import cx from "classnames";
 
 import type {
   State as AccountCreationState,
@@ -34,10 +33,6 @@ const styles = {
     display: "flex",
     alignItems: "flex-start",
     cursor: "pointer"
-  },
-  radioContainerDisabled: {
-    opacity: 0.5,
-    pointerEvents: "none"
   },
   radioContent: {
     marginTop: 15,
@@ -225,10 +220,7 @@ function EthAccountsRadio({
           </div>
         </div>
       </div>
-      <div
-        className={cx(classes.radioContainer, classes.radioContainerDisabled)}
-        onClick={onChooseNull}
-      >
+      <div className={classes.radioContainer} onClick={onChooseNull}>
         <Radio color="primary" checked={account === null} />
         <div className={classes.radioContent}>
           <Trans i18nKey="newAccount:erc20.createNew" />
