@@ -4,6 +4,7 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans, translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
+import cx from "classnames";
 
 import type {
   State as AccountCreationState,
@@ -19,9 +20,6 @@ import InfoBox from "components/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { isERC20Token } from "utils/cryptoCurrencies";
-import HelpLink from "components/HelpLink";
-import ExternalLink from "components/icons/ExternalLink";
-import colors from "shared/colors";
 
 const styles = {
   topMarged: {
@@ -32,6 +30,10 @@ const styles = {
     display: "flex",
     alignItems: "flex-start",
     cursor: "pointer"
+  },
+  radioContainerDisabled: {
+    opacity: 0.5,
+    pointerEvents: "none"
   },
   radioContent: {
     marginTop: 15,
@@ -170,11 +172,16 @@ class AccountCreationCurrencies extends PureComponent<Props> {
                 classes={classes}
               />
             ) : (
-              <InfoBox type="info">
+              <InfoBox type="warning" withIcon>
+                {
+                  "You first need to create an Ethereum account in order to create a token account"
+                }
+                {/* TODO: PUT BACK WHEN FIXED
                 <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
                 <HelpLink>
                   <ExternalLink color={colors.black} size={11} />
                 </HelpLink>
+                */}
               </InfoBox>
             )}
           </div>
@@ -217,7 +224,10 @@ function EthAccountsRadio({
           </div>
         </div>
       </div>
-      <div className={classes.radioContainer} onClick={onChooseNull}>
+      <div
+        className={cx(classes.radioContainer, classes.radioContainerDisabled)}
+        onClick={onChooseNull}
+      >
         <Radio color="primary" checked={account === null} />
         <div className={classes.radioContent}>
           <Trans i18nKey="newAccount:erc20.createNew" />

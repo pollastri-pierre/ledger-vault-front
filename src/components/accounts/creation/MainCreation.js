@@ -74,7 +74,9 @@ class MainCreation extends Component<Props> {
     switch (tabsIndex) {
       case 0:
         isNextDisabled =
-          _.isNull(accountCreationState.erc20token) &&
+          (_.isNull(accountCreationState.erc20token) ||
+            // $FlowFixMe
+            !accountCreationState.erc20token.parent_account) &&
           _.isNull(accountCreationState.currency);
         break;
       case 1:
@@ -162,7 +164,9 @@ class MainCreation extends Component<Props> {
               (!accountCreationState.parent_account ||
                 !accountCreationState.parent_account.id) &&
               tabsIndex === 0
-                ? t("accountCreation:continue_eth_creation")
+                ? // ? t("accountCreation:continue_eth_creation")
+                  // TODO: PUT BACK WHEN FIXED
+                  t("common:continue")
                 : t("common:continue")}
             </DialogButton>
           ) : (
