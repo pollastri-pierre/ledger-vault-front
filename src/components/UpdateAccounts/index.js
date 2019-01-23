@@ -249,6 +249,7 @@ class UpdateAccounts extends Component<Props> {
                     <CurrencyAccountValue
                       account={selectedAccount}
                       value={selectedAccount.balance}
+                      erc20Format={selectedAccount.account_type === "ERC20"}
                     />
                   </Row>
                   <Row label="Operation rules" noBorder>
