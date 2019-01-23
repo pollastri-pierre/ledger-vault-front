@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import type { MemoryHistory } from "history";
 
-import type { Member, Account } from "data/types";
+import type { Account } from "data/types";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
@@ -19,23 +19,13 @@ import ModalLoading from "components/ModalLoading";
 import type {
   State as AccountCreationState,
   UpdateState as UpdateAccountCreationState,
-  Ratelimiter,
-  Timelock
+  InternModalId
 } from "redux/modules/account-creation";
 import {
   updateAccountCreationState,
-  changeTab,
-  changeAccountName,
-  switchInternalModal,
-  addMember,
-  setApprovals,
-  setTimelock,
-  setRatelimiter,
   clearState
 } from "redux/modules/account-creation";
-import AccountCreationRateLimiter from "./AccountCreationRateLimiter";
 import AccountCreationApprovals from "./AccountCreationApprovals";
-import AccountCreationTimeLock from "./AccountCreationTimeLock";
 import AccountCreationMembers from "./AccountCreationMembers";
 import MainCreation from "./MainCreation";
 
@@ -43,38 +33,15 @@ type Props = {
   restlay: RestlayEnvironment,
   history: MemoryHistory,
   allAccounts: Account[],
-  onChangeAccountName: string => void,
-  onChangeTabAccount: number => void,
-  onSwitchInternalModal: string => void,
-  onAddMember: Member => void,
-  onSetApprovals: number => void,
-  onSetTimelock: Timelock => void,
-  onSetRatelimiter: Ratelimiter => void,
   onClearState: () => void,
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState
 };
 
-// TODO this HIGHLY need some cleaning:
-// - duplicate values
-// - passing an AccountCreationState + some keys of AccountCreationState
-//   is pointless. we should either pass the whole state OR only some keys.
-// - inconsistent naming
 export type StepProps = {
-  approvers: Member[],
-  members: Member[],
-  switchInternalModal: string => void,
-  addMember: Member => void,
-  setApprovals: number => void,
-  approvals: number,
-  timelock: Timelock,
-  setTimelock: Timelock => void,
-  rate_limiter: Ratelimiter,
-  setRatelimiter: Ratelimiter => void,
-  account: AccountCreationState,
-  changeAccountName: string => void,
-  tabsIndex: number,
-  onSelect: number => void,
+  switchInternalModal: InternModalId => void,
+  accountCreationState: AccountCreationState,
+  allAccounts: Account[],
   close: () => void,
   cancel: () => void
 };
@@ -91,13 +58,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   updateAccountCreationState,
-  onAddMember: addMember,
-  onSetApprovals: setApprovals,
-  onSetTimelock: setTimelock,
-  onSetRatelimiter: setRatelimiter,
-  onChangeTabAccount: changeTab,
-  onChangeAccountName: changeAccountName,
-  onSwitchInternalModal: switchInternalModal,
   onClearState: clearState
 };
 
@@ -120,23 +80,6 @@ class AccountCreation extends PureComponent<Props> {
     const securityScheme: Object = {
       quorum: accountCreationState.quorum
     };
-
-    if (accountCreationState.time_lock.enabled) {
-      Object.assign(securityScheme, {
-        time_lock:
-          accountCreationState.time_lock.value *
-          accountCreationState.time_lock.frequency
-      });
-    }
-
-    if (accountCreationState.rate_limiter.enabled) {
-      Object.assign(securityScheme, {
-        rate_limiter: {
-          max_transaction: accountCreationState.rate_limiter.value,
-          time_slot: accountCreationState.rate_limiter.frequency
-        }
-      });
-    }
 
     if (!accountCreationState.currency && !accountCreationState.erc20token)
       return;
@@ -206,7 +149,7 @@ class AccountCreation extends PureComponent<Props> {
 
   DeviceAuthenticate = () => (
     <DeviceAuthenticate
-      cancel={() => this.props.onSwitchInternalModal("main")}
+      cancel={() => this.switchInternalModal("main")}
       callback={this.createAccount}
       type="accounts"
       gateAccountType={this.getGateAccountType()}
@@ -216,25 +159,25 @@ class AccountCreation extends PureComponent<Props> {
   stepsByModalId = {
     members: AccountCreationMembers,
     approvals: AccountCreationApprovals,
-    "time-lock": AccountCreationTimeLock,
-    "rate-limiter": AccountCreationRateLimiter,
     main: MainCreation,
     device: this.DeviceAuthenticate
+  };
+
+  switchInternalModal = (id: InternModalId) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ internModalId: id }));
+  };
+
+  changeTabAccount = (index: number) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ currentTab: index }));
   };
 
   render() {
     const {
       accountCreationState,
       updateAccountCreationState,
-      allAccounts,
-
-      onChangeAccountName,
-      onChangeTabAccount,
-      onSwitchInternalModal,
-      onAddMember,
-      onSetApprovals,
-      onSetTimelock,
-      onSetRatelimiter
+      allAccounts
     } = this.props;
 
     const Step = this.stepsByModalId[accountCreationState.internModalId];
@@ -242,9 +185,6 @@ class AccountCreation extends PureComponent<Props> {
     if (!Step) return null;
 
     const stepProps: StepProps = {
-      close: this.close,
-      cancel: () => onSwitchInternalModal("main"),
-
       // get / set the redux state
       accountCreationState,
       updateAccountCreationState,
@@ -254,23 +194,11 @@ class AccountCreation extends PureComponent<Props> {
       // same erc20 token as children
       allAccounts,
 
-      // TODO why different names for same thing?
-      approvers: accountCreationState.approvers,
-      members: accountCreationState.approvers,
-
-      // TODO legacy stuff
+      // UI stuff
       tabsIndex: accountCreationState.currentTab,
-      switchInternalModal: onSwitchInternalModal,
-      addMember: onAddMember,
-      setApprovals: onSetApprovals,
-      approvals: accountCreationState.quorum,
-      timelock: accountCreationState.time_lock,
-      setTimelock: onSetTimelock,
-      rate_limiter: accountCreationState.rate_limiter,
-      setRatelimiter: onSetRatelimiter,
-      account: accountCreationState,
-      changeAccountName: onChangeAccountName,
-      onSelect: onChangeTabAccount
+      switchInternalModal: this.switchInternalModal,
+      close: this.close,
+      cancel: () => this.switchInternalModal("main")
     };
 
     return <Step {...stepProps} />;
