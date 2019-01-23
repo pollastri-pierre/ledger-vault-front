@@ -83,7 +83,9 @@ class MainCreation extends Component<Props> {
     switch (currentTab) {
       case 0:
         isNextDisabled =
-          _.isNull(accountCreationState.erc20token) &&
+          (_.isNull(accountCreationState.erc20token) ||
+            // $FlowFixMe
+            !accountCreationState.erc20token.parent_account) &&
           _.isNull(accountCreationState.currency);
         break;
       case 1:

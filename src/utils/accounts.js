@@ -40,7 +40,7 @@ export const hasUserApprovedAccount = (account: Account, user: Member) => {
 };
 
 export const isValidAccountName = (name: string) =>
-  name.length < ACCOUNT_MAX_LENGTH && !hasMoreThanAscii(name);
+  name.length <= ACCOUNT_MAX_LENGTH && !hasMoreThanAscii(name);
 
 export const getAccountsInSettings = (accounts: Account[]): Account[] =>
   accounts.filter(a => a.account_type !== "ERC20");

@@ -46,19 +46,15 @@ const membersList = {
 const MembersList = withStyles(membersList)(
   ({
     classes,
-    members,
-    editMember
+    members
   }: {
     classes: { [$Keys<typeof membersList>]: string },
-    members: Array<Member>,
-    editMember: Function
+    members: Array<Member>
   }) => (
     <div className={classes.base}>
       {members.map((member, k) => (
         <MemberRow
           key={k} // eslint-disable-line react/no-array-index-key
-          onSelect={() => editMember(member)}
-          editable
           member={member}
         />
       ))}
