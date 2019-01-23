@@ -1,5 +1,5 @@
 // @flow
-import fetchWithRetries from "./fetchWithRetries";
+import fetchF from "./fetchF";
 import { getLocalStorageToken } from "../redux/modules/auth";
 
 export function NetworkError(obj: *) {
@@ -23,7 +23,7 @@ export default function<T>(
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
   }
-  return fetchWithRetries(uri, options).then(response => {
+  return fetchF(uri, options).then(response => {
     if (response.status < 200 || response.status >= 300) {
       const baseErrorObject = {
         message: "network error",

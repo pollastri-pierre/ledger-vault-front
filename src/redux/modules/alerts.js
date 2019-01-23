@@ -63,7 +63,7 @@ export default function reducer(state: Store = initialState, action: Object) {
       }
       return {
         visible: true,
-        title: `Error ${error.json.code}`,
+        title: `Error ${error.json ? error.json.code : error.message}`,
         content: error.json.message,
         type: "error"
       };
