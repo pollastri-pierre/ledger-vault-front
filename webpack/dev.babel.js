@@ -1,18 +1,21 @@
-import HappyPack from "happypack";
+import * as threadLoader from "thread-loader";
 import webpack from "webpack";
 import merge from "webpack-merge";
 
 import paths from "./paths";
 import webpackConfig from "./base";
 
+threadLoader.warmup({}, ["babel-loader"]);
+
 export default merge(webpackConfig, {
   devtool: "cheap-module-source-map",
+  mode: "development",
 
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: "happypack/loader",
+        use: ["thread-loader", "babel-loader"],
         exclude: /node_modules/
       }
     ]
@@ -24,9 +27,6 @@ export default merge(webpackConfig, {
       disableDotRule: true
     },
     hot: true,
-    // @TODO: issue with webpack-dev-server and https (lot of disconnections), wait for fix
-    // https://github.com/webpack/webpack-dev-server/issues/941
-    // https: true,
     publicPath: "/",
     overlay: true,
     host: "localhost",
@@ -39,8 +39,6 @@ export default merge(webpackConfig, {
   },
 
   plugins: [
-    new HappyPack({ loaders: ["babel-loader"], verbose: false }),
-
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]

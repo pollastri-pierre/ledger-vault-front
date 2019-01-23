@@ -20,6 +20,7 @@ import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { isERC20Token } from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
+import Text from "components/Text";
 import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
 
@@ -170,11 +171,13 @@ class AccountCreationCurrencies extends PureComponent<Props> {
                 classes={classes}
               />
             ) : (
-              <InfoBox type="info">
-                <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
-                <HelpLink>
-                  <ExternalLink color={colors.black} size={11} />
-                </HelpLink>
+              <InfoBox withIcon type="info">
+                <Text>
+                  <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
+                  <HelpLink>
+                    <ExternalLink color={colors.ocean} size={13} />
+                  </HelpLink>
+                </Text>
               </InfoBox>
             )}
           </div>
