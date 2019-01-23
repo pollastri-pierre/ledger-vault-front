@@ -1,5 +1,6 @@
 // @flow
 import React, { Component, Fragment } from "react";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import CurrencyIndex from "components/CurrencyIndex";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -138,13 +139,18 @@ class UpdateAccounts extends Component<Props> {
       onAddMessage,
       selectedAccount
     } = this.props;
-    const data = {
+    const data: Object = {
       name: selectedAccount.name,
       members: this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
         quorum: this.props.quorum
       }
     };
+    if (selectedAccount.account_type === "ERC20") {
+      data.erc20 = getERC20TokenByContractAddress(
+        selectedAccount.contract_address
+      );
+    }
     try {
       await network(
         `/accounts/${this.props.selectedAccount.id}/security-scheme`,
