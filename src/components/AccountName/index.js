@@ -28,10 +28,10 @@ class AccountName extends Component<{
         : DEFAULT_COLOR;
 
     return (
-      <span>
+      <div>
         <BadgeCurrency currency={cur} />
         <span data-test="name">{displayName}</span>
-      </span>
+      </div>
     );
   }
 }

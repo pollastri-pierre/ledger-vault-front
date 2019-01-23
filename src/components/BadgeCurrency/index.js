@@ -9,7 +9,7 @@ import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 const styles = {
   base: {
     verticalAlign: "middle",
-    marginRight: "6px",
+    marginRight: 6,
     display: "inline-block",
     "& svg": {
       verticalAlign: "text-bottom"
@@ -40,7 +40,7 @@ class BadgeCurrency extends PureComponent<{
         {IconCurrency ? (
           <IconCurrency size={size} color={currency.color} />
         ) : (
-          <span
+          <div
             className={classes.placeholder}
             style={{ width: size, height: size }}
           />

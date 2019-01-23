@@ -72,7 +72,7 @@ function PendingAccountApprove(props: Props) {
           to={`${match.url}/account/${account.id}`}
           key={account.id}
         >
-          <div>
+          <div className={classes.dateContainer}>
             <span className={classes.date}>
               <DateFormat date={account.created_on} />
             </span>
