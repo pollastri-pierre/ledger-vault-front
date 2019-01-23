@@ -126,7 +126,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
             id="address"
             onChange={this.onChange}
             value={bridge.getTransactionRecipient(account, transaction)}
-            isValid={recipientWarning ? true : isValid}
+            isValid={isValid}
             fullWidth
             inputProps={{ style: { paddingBottom: 15, color: colors.black } }}
             className={classes.addressPicker}

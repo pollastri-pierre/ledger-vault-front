@@ -88,18 +88,27 @@ jobs:
       - run:
           name: Set up AWS credentials
           command: |
-            eval echo 'export AWS_ACCESS_KEY_ID="${<< parameters.access_key >>}"' >> $BASH_ENV
-            eval echo 'export AWS_SECRET_ACCESS_KEY="${<< parameters.secret_key >>}"' >> $BASH_ENV
+            echo 'export AWS_ACCESS_KEY_ID="${<< parameters.access_key >>}"' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY="${<< parameters.secret_key >>}"' >> $BASH_ENV
       - run:
           name: Upload on AWS S3
           command: |
             s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front"
             artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
             aws s3 cp --no-progress ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
-            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop" ]; then
+            eval echo 'export s3_path="${s3_path}"' >> $BASH_ENV
+            eval echo 'export latest_artifact="${artifact_with_sha1}"' >> $BASH_ENV
+      - run:
+          name: Update the pointer "LATEST"
+          command: |
+            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop" -o "$CIRCLE_BRANCH" = "release_candidate" ]; then
               latest=$(mktemp)
-              echo $artifact_with_sha1 > $latest
-              aws s3 cp --no-progress $latest ${s3_path}/LATEST
+              echo $latest_artifact > $latest
+              latest_pointer="latest-${CIRCLE_BRANCH}"
+              if [ "${CIRCLE_BRANCH}" = "master" ]; then
+                latest_pointer="latest"
+              fi
+              aws s3 cp --no-progress $latest ${s3_path}/${latest_pointer}
               rm -f $latest
             fi
 

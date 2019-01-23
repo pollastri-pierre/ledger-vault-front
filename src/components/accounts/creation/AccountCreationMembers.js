@@ -11,6 +11,11 @@ import { DialogButton, Overscroll } from "components";
 import type { Member, Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
+import type {
+  State as AccountCreationState,
+  UpdateState as UpdateAccountCreationState,
+  InternModalId
+} from "redux/modules/account-creation";
 
 const styleCounter = {
   base: {
@@ -46,19 +51,42 @@ const styles = {
 };
 class AccountCreationMembers extends Component<{
   switchInternalModal: Function,
-  addMember: Function,
+  accountCreationState: AccountCreationState,
+  switchInternalModal: InternModalId => void,
+  updateAccountCreationState: UpdateAccountCreationState,
   members: Member[],
-  approvers: string[],
   t: Translate,
   classes: Object
 }> {
+  addMember = (member: string) => {
+    const { updateAccountCreationState, accountCreationState } = this.props;
+
+    const approvers = accountCreationState.approvers;
+    const index = approvers.indexOf(member);
+    if (index > -1) {
+      // we remove the approver from the array
+      // we reset the quorum if number of approvers is inferior after the update
+      updateAccountCreationState(state => ({
+        approvers: [
+          ...state.approvers.slice(0, index),
+          ...state.approvers.slice(index + 1)
+        ],
+        quorum: state.approvers.length - 1 < state.quorum ? 0 : state.quorum
+      }));
+    } else {
+      // we update the approvers
+      updateAccountCreationState(state => ({
+        approvers: [...state.approvers, member]
+      }));
+    }
+  };
+
   render() {
     const {
       switchInternalModal,
-      addMember,
       members,
       t,
-      approvers,
+      accountCreationState: { approvers },
       classes
     } = this.props;
 
@@ -78,7 +106,7 @@ class AccountCreationMembers extends Component<{
                   key={member.id}
                   member={member}
                   checked={isChecked}
-                  onSelect={addMember}
+                  onSelect={this.addMember}
                 />
               );
             })}

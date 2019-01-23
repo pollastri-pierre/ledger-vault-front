@@ -106,6 +106,7 @@ class FeesFieldEthereumKind extends PureComponent<
       currency,
       transaction.recipient
     );
+
     if (this._unmounted) return;
     if (!isRecipientValid) return;
     // NOTE: both initialized with null because gate expects it for ETH

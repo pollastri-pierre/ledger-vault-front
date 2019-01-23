@@ -41,19 +41,28 @@ type Props = {
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState,
   allAccounts: Account[],
+  t: Translate,
 
   // TODO: legacy stuff
-  onSelect: Function,
-  t: Translate,
   switchInternalModal: Function,
-  tabsIndex: number,
   classes: Object,
   close: Function
 };
 
 class MainCreation extends Component<Props> {
   handleChange = (event, value) => {
-    this.props.onSelect(value);
+    this.changeTabAccount(value);
+  };
+
+  changeTabAccount = (index: number) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ currentTab: index }));
+  };
+
+  nextTab = () => {
+    this.changeTabAccount(
+      parseInt(this.props.accountCreationState.currentTab, 10) + 1
+    );
   };
 
   render() {
@@ -63,15 +72,15 @@ class MainCreation extends Component<Props> {
       allAccounts,
       close,
       t,
-      onSelect,
-      tabsIndex,
       classes,
       switchInternalModal
     } = this.props;
 
+    const { currentTab } = accountCreationState;
+
     let isNextDisabled = false;
 
-    switch (tabsIndex) {
+    switch (currentTab) {
       case 0:
         isNextDisabled =
           _.isNull(accountCreationState.erc20token) &&
@@ -106,7 +115,7 @@ class MainCreation extends Component<Props> {
       switchInternalModal
     };
 
-    const ContentComponent = contentComponents[tabsIndex];
+    const ContentComponent = contentComponents[currentTab];
 
     return (
       <div className={classes.base}>
@@ -115,7 +124,7 @@ class MainCreation extends Component<Props> {
           <HeaderRightClose close={close} />
           <Tabs
             onChange={this.handleChange}
-            value={tabsIndex}
+            value={currentTab}
             indicatorColor="primary"
           >
             <Tab
@@ -151,17 +160,17 @@ class MainCreation extends Component<Props> {
           {ContentComponent ? <ContentComponent {...contentProps} /> : null}
         </div>
         <div className="footer">
-          {_.includes([0, 1, 2], tabsIndex) ? (
+          {_.includes([0, 1, 2], currentTab) ? (
             <DialogButton
               highlight
               right
               disabled={isNextDisabled}
-              onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
+              onTouchTap={this.nextTab}
             >
               {!!accountCreationState.erc20token &&
               (!accountCreationState.parent_account ||
                 !accountCreationState.parent_account.id) &&
-              tabsIndex === 0
+              currentTab === 0
                 ? t("accountCreation:continue_eth_creation")
                 : t("common:continue")}
             </DialogButton>
