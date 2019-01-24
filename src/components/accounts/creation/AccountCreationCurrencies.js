@@ -18,7 +18,10 @@ import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
-import { isERC20Token } from "utils/cryptoCurrencies";
+import {
+  isERC20Token,
+  getCurrencyIdFromBlockchainName
+} from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
 import Text from "components/Text";
 import ExternalLink from "components/icons/ExternalLink";
@@ -70,7 +73,7 @@ const getAvailableParentsAccounts = (
       a.account_type === "Ethereum" &&
       a.currency_id ===
         // $FlowFixMe inference fail again. see up.
-        (erc20token.network_id === 3 ? "ethereum_ropsten" : "ethereum") &&
+        getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
       parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1
   );
 };
