@@ -79,7 +79,9 @@ class MainCreation extends Component<Props> {
     const { currentTab } = accountCreationState;
 
     let isNextDisabled = false;
-
+    const parentName =
+      accountCreationState.parent_account &&
+      "name" in accountCreationState.parent_account;
     switch (currentTab) {
       case 0:
         isNextDisabled =
@@ -89,6 +91,10 @@ class MainCreation extends Component<Props> {
       case 1:
         isNextDisabled = accountCreationState.erc20token
           ? accountCreationState.name === "" ||
+            (parentName &&
+              accountCreationState.name ===
+                // $FlowFixMe
+                accountCreationState.parent_account.name) ||
             (!accountCreationState.parent_account ||
               (!accountCreationState.parent_account.id &&
                 !("name" in accountCreationState.parent_account)))
