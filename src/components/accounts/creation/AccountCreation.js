@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import type { MemoryHistory } from "history";
 
-import type { Account } from "data/types";
+import type { Account, ERC20Token } from "data/types";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import connectData from "restlay/connectData";
@@ -15,6 +15,7 @@ import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQue
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import ModalLoading from "components/ModalLoading";
+import { getCurrencyIdFromBlockchainName } from "utils/cryptoCurrencies";
 
 import type {
   State as AccountCreationState,
@@ -103,18 +104,16 @@ class AccountCreation extends PureComponent<Props> {
     }
 
     if (accountCreationState.erc20token) {
+      const token: ERC20Token = accountCreationState.erc20token; // weird flow behaviour without this line
       Object.assign(data, {
         currency: {
-          name:
-            accountCreationState.erc20token.network_id === 3
-              ? "ethereum_ropsten"
-              : "ethereum"
+          name: getCurrencyIdFromBlockchainName(token.blockchain_name)
         },
         erc20: {
-          ticker: accountCreationState.erc20token.ticker,
-          address: accountCreationState.erc20token.contract_address,
-          decimals: accountCreationState.erc20token.decimals,
-          signature: accountCreationState.erc20token.signature || ""
+          ticker: token.ticker,
+          address: token.contract_address,
+          decimals: token.decimals,
+          signature: token.signature || ""
         },
         parent_account: accountCreationState.parent_account
       });

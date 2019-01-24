@@ -15,11 +15,10 @@ read -r -d '' LEDGER_COIN << EOM || :
   "ticker": "LGC",
   "name": "Ledger Coin",
   "symbol": "LGC",
-  "network_id": 3,
-  "blockchain_name": "ledger_coin",
-  "contract_address": "0x9549e8a940062615cee20c0420c98c25ffa2b214",
+  "blockchain_name": "ropsten",
+  "contract_address": "0x9549E8A940062615ceE20C0420C98c25Ffa2b214",
   "signature":
-    "30450221009bffb4baac8addf4777bf63bba27a460840a8429a9d940b7e8346e7bd8f880230220040587f3102203681cc580c5ccbe6e73741874e62e18a8945b142f70b0f616bf",
+    "3045022100a9ce69a791759f367748c3e42fe3bfbb9f16169e148c783cc43c9f3f9b5ae0e602201d9d36dc3514345b91e70e0698b134338c2539dfe13a85cfc8b0bbf7e90e654d",
   "decimals": 2
 }
 EOM
@@ -42,7 +41,7 @@ function main {
       OUTPUT="$(cat "$f"), "
       SIG_FILE="$DIR_NAME/ledger_signature.json"
       if [[ -e $SIG_FILE ]]; then
-        OUTPUT=$(echo "$OUTPUT" | sed "s/}/, \"network_id\": 1, \"signature\": $(cat "$SIG_FILE") }/g")
+        OUTPUT=$(echo "$OUTPUT" | sed "s/}/, \"signature\": $(cat "$SIG_FILE") }/g")
       else
         >&2 echo "Signature not found for $f"
       fi
