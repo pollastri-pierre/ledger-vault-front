@@ -11,7 +11,8 @@ type Props = {
 
   // style modifiers
   small?: boolean,
-  large?: boolean
+  large?: boolean,
+  uppercase?: boolean
 };
 
 const styles = {
@@ -25,18 +26,31 @@ const styles = {
   },
   small: {
     fontSize: 11
+  },
+  uppercase: {
+    textTransform: "uppercase"
   }
 };
 
 class Text extends PureComponent<Props> {
   render() {
-    const { children, classes, small, large, className } = this.props;
+    const {
+      children,
+      classes,
+      small,
+      large,
+      uppercase,
+      className,
+      ...props
+    } = this.props;
     return (
       <div
         className={cx(classes.base, className, [
           small && classes.small,
-          large && classes.large
+          large && classes.large,
+          uppercase && classes.uppercase
         ])}
+        {...props}
       >
         {children}
       </div>
