@@ -1,13 +1,16 @@
 // @flow
 import React from "react";
 import { Trans } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
-import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
-import CounterValue from "components/CounterValue";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { withRouter } from "react-router";
+import { withStyles } from "@material-ui/core/styles";
+import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
+import CounterValue from "components/CounterValue";
+import Text from "components/Text";
+
 import type { Account, Operation, Member } from "data/types";
+
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
@@ -77,20 +80,11 @@ function PendingOperationApprove(props: Props) {
             to={`${match.url}/operation/${operation.id}`}
             key={operation.id}
           >
-            <div>
+            <div className={classes.operationDetailsContainer}>
               <span className={classes.date}>
                 <DateFormat date={operation.created_on} />
               </span>
-              <span className={classes.name}>
-                {account && (
-                  <CurrencyAccountValue
-                    account={account}
-                    value={operation.price.amount}
-                    erc20Format={account.account_type === "ERC20"}
-                  />
-                )}
-              </span>
-              <span className={classnames(classes.currency, "center")}>
+              <Text small className={classes.currency}>
                 {account && (
                   <CounterValue
                     value={operation.price.amount}
@@ -98,7 +92,16 @@ function PendingOperationApprove(props: Props) {
                     disableCountervalue={account.account_type === "ERC20"}
                   />
                 )}
-              </span>
+              </Text>
+              <Text className={classes.name}>
+                {account && (
+                  <CurrencyAccountValue
+                    account={account}
+                    value={operation.price.amount}
+                    erc20Format={account.account_type === "ERC20"}
+                  />
+                )}
+              </Text>
             </div>
             {account ? (
               <ApprovalStatusWithAccountName

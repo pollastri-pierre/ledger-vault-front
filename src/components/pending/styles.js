@@ -63,9 +63,7 @@ const styles = {
     lineHeight: 2.3
   },
   name: {
-    fontSize: 13,
-    color: colors.black,
-    lineHeight: "1.77"
+    color: colors.black
   },
   status: {
     display: "flex",
@@ -76,16 +74,14 @@ const styles = {
     lineHeight: 2.09
   },
   currency: {
-    fontSize: 11,
     color: colors.lead,
     textTransform: "uppercase",
-    fontWeight: "600",
-    lineHeight: 2.09,
-    "&.center": {
-      position: "absolute",
-      left: "40%",
-      top: 12
-    }
+    fontWeight: "600"
+  },
+  operationDetailsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 };
 
