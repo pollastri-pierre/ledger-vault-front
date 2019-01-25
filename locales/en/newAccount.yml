@@ -7,6 +7,7 @@ erc20:
   infoNewAccount: To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center
   selectExisting: Select an existing Ethereum account
   createNew: Create a new read-only Ethereum account
+  matchingNameWarning: Please use different names for the ERC20 token account and the Ethereum account
 options:
   title: name
   parentName: Parent account name
