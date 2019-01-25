@@ -6,25 +6,21 @@ const styles = {
       textDecoration: "none"
     }
   },
-  headerBlack: {
-    fontSize: 22,
-    color: colors.black,
-    letterSpacing: "-.9px",
-    lineHeight: 1.5
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   header: {
-    margin: 0,
-    "& span:last-child": {
-      float: "right"
-    }
+    fontSize: 22,
+    color: colors.black,
+    lineHeight: 1.5
   },
-  headerLight: {
-    fontSize: 10,
-    fontWeight: "600",
+  subHeader: {
+    fontWeight: 600,
     lineHeight: 3,
     textTransform: "uppercase",
     color: colors.lead,
-    paddingBottom: 23,
     borderBottom: "1px solid #eee"
   },
   row: {
