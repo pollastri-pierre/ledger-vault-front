@@ -20,8 +20,7 @@ const styles = {
     fontWeight: 600,
     lineHeight: 3,
     textTransform: "uppercase",
-    color: colors.lead,
-    borderBottom: "1px solid #eee"
+    color: colors.lead
   },
   row: {
     cursor: "pointer",
