@@ -17,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
       account => account.id === operation.account_id
     );
     if (account) {
+      if (account.account_type === "ERC20") return null;
       const currency = getCryptoCurrencyById(account.currency_id);
       return (
         acc +
@@ -45,7 +46,7 @@ class CounterValuesOperations extends PureComponent<Props> {
   render() {
     const { countervalue } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return "-";
+      return "N/A";
     }
     return <CurrencyFiatValue fiat="USD" value={countervalue} />;
   }

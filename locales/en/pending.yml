@@ -2,8 +2,8 @@ operations:
   approve:
     title: Operations to approve
     no_data: There is no operation to approve
-    operation_singular: '{{numbeOfOperations}} operation'
-    operation_plural: '{{numbeOfOperations}} operations'
+    operation: '{{numberOfOperations}} operation'
+    operation_plural: '{{numberOfOperations}} operations'
     status: Pending approval
   watch:
     title: Operations to watch

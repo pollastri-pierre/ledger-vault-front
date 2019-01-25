@@ -1,13 +1,16 @@
 // @flow
-import React from "react";
-import { Trans } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
-import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
-import CounterValue from "components/CounterValue";
+import React, { Fragment } from "react";
+import { Trans, Interpolate } from "react-i18next";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { withRouter } from "react-router";
+import { withStyles } from "@material-ui/core/styles";
+import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
+import CounterValue from "components/CounterValue";
+import Text from "components/Text";
+
 import type { Account, Operation, Member } from "data/types";
+
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
@@ -38,33 +41,29 @@ function PendingOperationApprove(props: Props) {
   if (operations.length === 0) {
     return <Empty approved={approved} />;
   }
-  // NOTE: needs some refactor, it is very sloppy
   return (
     <div className={classes.base}>
       {!approved && (
-        <div>
-          <p className={classnames(classes.header, classes.headerBlack)}>
-            <Trans
-              i18nKey={
-                operations.length === 1
-                  ? "pending:operations.approve.operation_singular"
-                  : "pending:operations.approve.operation_plural"
-              }
-              values={{ numbeOfOperations: operations.length }}
-            />
-            <span>
+        <Fragment>
+          <div className={classes.headerContainer}>
+            <Text className={classes.header}>
+              <Interpolate
+                i18nKey="pending:operations.approve.operation"
+                options={{ count: operations.length }}
+                numberOfOperations={operations.length}
+              />
+            </Text>
+            <Text className={classes.header}>
               <OperationsCounterValues
                 accounts={accounts}
                 operations={operations}
               />
-            </span>
-          </p>
-          <p style={{ padding: 0 }} className={classnames(classes.headerLight)}>
-            <span>
-              <Trans i18nKey="pending:operations.approve.status" />
-            </span>
-          </p>
-        </div>
+            </Text>
+          </div>
+          <Text small className={classes.subHeader}>
+            <Trans i18nKey="pending:operations.approve.status" />
+          </Text>
+        </Fragment>
       )}
       {operations.map(operation => {
         const account = accounts.find(a => a.id === operation.account_id);
@@ -77,36 +76,36 @@ function PendingOperationApprove(props: Props) {
             to={`${match.url}/operation/${operation.id}`}
             key={operation.id}
           >
-            <div>
+            <div className={classes.operationDetailsContainer}>
               <span className={classes.date}>
                 <DateFormat date={operation.created_on} />
               </span>
-              <span className={classes.name}>
-                {account && (
-                  <CurrencyAccountValue
-                    account={account}
-                    value={operation.price.amount}
-                    erc20Format={account.account_type === "ERC20"}
-                  />
-                )}
-              </span>
-              <span className={classnames(classes.currency, "center")}>
-                {account && (
-                  <CounterValue
-                    value={operation.price.amount}
-                    from={account.currency_id}
-                    disableCountervalue={account.account_type === "ERC20"}
-                  />
-                )}
-              </span>
+              {account && (
+                <Fragment>
+                  <Text small className={classes.currency}>
+                    <CounterValue
+                      value={operation.price.amount}
+                      from={account.currency_id}
+                      disableCountervalue={account.account_type === "ERC20"}
+                    />
+                  </Text>
+                  <Text className={classes.name}>
+                    <CurrencyAccountValue
+                      account={account}
+                      value={operation.price.amount}
+                      erc20Format={account.account_type === "ERC20"}
+                    />
+                  </Text>
+                </Fragment>
+              )}
             </div>
-            {account ? (
+            {account && (
               <ApprovalStatusWithAccountName
                 user={user}
                 operation={operation}
                 account={account}
               />
-            ) : null}
+            )}
           </Link>
         );
       })}
