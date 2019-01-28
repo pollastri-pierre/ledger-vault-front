@@ -16,7 +16,6 @@ import PrivateRoute from "./Login/PrivateRoute";
 const OrganizationAppRouter = () => (
   <Fragment>
     <AlertsContainer />
-    {process.env.NODE_ENV === "e2e" && <MockDevices />}
 
     <BrowserRouter>
       <Switch>
@@ -61,6 +60,7 @@ const OrganizationAppRouter = () => (
         <Route component={Welcome} />
       </Switch>
     </BrowserRouter>
+    {process.env.NODE_ENV === "e2e" && <MockDevices />}
   </Fragment>
 );
 
