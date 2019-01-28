@@ -8,23 +8,26 @@ import { withStyles } from "@material-ui/core/styles";
 import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
 import CounterValue from "components/CounterValue";
 import Text from "components/Text";
+import LineSeparator from "components/LineSeparator";
 
 import type { Account, Operation, Member } from "data/types";
 
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import DateFormat from "../DateFormat";
 import ApprovalStatusWithAccountName from "./ApprovalStatusWithAccountName";
+import PendingEmptyState from "./PendingEmptyState";
+
 import styles from "./styles";
 
 const Empty = ({ approved }: { approved?: boolean }) =>
   approved ? (
-    <p>
-      <Trans i18nKey="pending:operations.watch.no_data" />
-    </p>
+    <PendingEmptyState
+      text={<Trans i18nKey="pending:operations.watch.no_data" />}
+    />
   ) : (
-    <p>
-      <Trans i18nKey="pending:operations.approve.no_data" />
-    </p>
+    <PendingEmptyState
+      text={<Trans i18nKey="pending:operations.approve.no_data" />}
+    />
   );
 
 type Props = {
@@ -32,7 +35,7 @@ type Props = {
   operations: Operation[],
   approved?: boolean,
   user: Member,
-  classes: Object,
+  classes: { [_: $Keys<typeof styles>]: string },
   match: *
 };
 
@@ -60,9 +63,14 @@ function PendingOperationApprove(props: Props) {
               />
             </Text>
           </div>
-          <Text small className={classes.subHeader}>
-            <Trans i18nKey="pending:operations.approve.status" />
-          </Text>
+          <div
+            className={classnames(classes.headerContainer, classes.subHeader)}
+          >
+            <Text small className={classes.subHeader}>
+              <Trans i18nKey="pending:operations.approve.status" />
+            </Text>
+          </div>
+          <LineSeparator />
         </Fragment>
       )}
       {operations.map(operation => {
