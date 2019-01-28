@@ -11,6 +11,7 @@ type Props = {
 
   // style modifiers
   small?: boolean,
+  inline?: boolean,
   large?: boolean,
   header?: boolean,
   uppercase?: boolean,
@@ -37,6 +38,9 @@ const styles = {
   },
   bold: {
     fontWeight: "bold"
+  },
+  inline: {
+    display: "inline-block"
   }
 };
 
@@ -50,6 +54,7 @@ class Text extends PureComponent<Props> {
       header,
       uppercase,
       bold,
+      inline,
       className,
       ...props
     } = this.props;
@@ -60,7 +65,8 @@ class Text extends PureComponent<Props> {
           large && classes.large,
           header && classes.header,
           bold && classes.bold,
-          uppercase && classes.uppercase
+          uppercase && classes.uppercase,
+          inline && classes.inline
         ])}
         {...props}
       >
