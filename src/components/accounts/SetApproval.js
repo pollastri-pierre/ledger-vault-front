@@ -2,12 +2,14 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
-import { translate, Interpolate } from "react-i18next";
+import { translate, Interpolate, Trans } from "react-i18next";
 import { connect } from "react-redux";
 import { addMessage } from "redux/modules/alerts";
 import type { Translate } from "data/types";
 import modals from "shared/modals";
-import InputTextWithUnity from "components/InputTextWithUnity";
+import InputField from "components/InputField";
+import Text from "components/Text";
+import colors from "shared/colors";
 import DialogButton from "components/buttons/DialogButton";
 import InfoModal from "components/InfoModal";
 
@@ -23,6 +25,10 @@ const styles = {
   },
   info: {
     margin: "20px 0px 40px 0px"
+  },
+  inputRenderRightText: {
+    whiteSpace: "nowrap",
+    color: colors.lead
   }
 };
 
@@ -33,7 +39,7 @@ type Props = {
   goBack: Function,
   quorum: number,
   approvers: string[],
-  setQuorum: number => void
+  setQuorum: string => void
 };
 
 class SetApprovals extends Component<Props> {
@@ -47,41 +53,45 @@ class SetApprovals extends Component<Props> {
   };
 
   render() {
-    const { t, setQuorum, quorum, approvers, classes } = this.props;
+    const { setQuorum, quorum, approvers, classes } = this.props;
     return (
       <div className={classes.base}>
         <header>
-          <h2>{t("newAccount:security.approvals")}</h2>
+          <Text header>
+            <Trans i18nKey="newAccount:security.approvals" />
+          </Text>
         </header>
         <div className="content">
-          <InputTextWithUnity
-            label={t("newAccount:security.approvals_amount")}
-            hasError={quorum > approvers.length}
-            field={
-              <input
-                type="text"
-                id="approval-field"
-                autoFocus
-                value={quorum}
-                onChange={e => setQuorum(e.target.value)}
-              />
+          <InputField
+            renderLeft={
+              <Text small>
+                <Trans i18nKey="newAccount:security.approvals_amount" />
+              </Text>
             }
-          >
-            <span className="count">
-              <Interpolate
-                count={approvers.length}
-                i18nKey="newAccount:security.approvals_from"
-              />
-            </span>
-          </InputTextWithUnity>
+            value={quorum.toString()}
+            autoFocus
+            textAlign="right"
+            onChange={setQuorum}
+            placeholder="0"
+            fullWidth
+            error={quorum > approvers.length}
+            renderRight={
+              <Text small className={classes.inputRenderRightText}>
+                <Interpolate
+                  count={approvers.length}
+                  i18nKey="newAccount:security.approvals_from"
+                />
+              </Text>
+            }
+          />
           <InfoModal className={classes.info}>
-            {t("newAccount:security.approvals_desc")}
+            <Trans i18nKey="newAccount:security.approvals_desc" />
           </InfoModal>
         </div>
 
         <div className="footer">
           <DialogButton right highlight onTouchTap={this.submit}>
-            {t("common:done")}
+            <Trans i18nKey="common:done" />
           </DialogButton>
         </div>
       </div>
