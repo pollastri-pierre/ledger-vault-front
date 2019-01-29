@@ -1,44 +1,45 @@
 // @flow
 import React, { Component } from "react";
 import TryAgain from "components/TryAgain";
-import { translate } from "react-i18next";
+import { Trans, Interpolate } from "react-i18next";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
-import InfoModal from "components/InfoModal";
 import { DialogButton, Overscroll } from "components";
-import type { Member, Translate } from "data/types";
+import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
+import colors from "shared/colors";
+import Text from "components/Text";
 
 const styleCounter = {
   base: {
-    textTransform: "uppercase",
-    fontSize: "10px",
-    color: "#999",
-    fontWeight: "600",
-    float: "right",
-    marginTop: "-42px"
+    color: colors.lead
   }
 };
 const SelectedCounter = withStyles(styleCounter)(
-  ({ count, classes }: { count: number, classes: Object }) => {
-    if (count === 0) {
-      return false;
-    }
-    if (count === 1) {
-      return <span className={classes.base}>{count} member selected</span>;
-    }
-    return <span className={classes.base}>{count} members selected</span>;
-  }
+  ({ count, classes }: { count: number, classes: Object }) => (
+    <Text bold small uppercase className={classes.base}>
+      <Interpolate
+        i18nKey="newAccount:security.members_selected"
+        options={{ count }}
+        nbMembersSelected={count}
+      />
+    </Text>
+  )
 );
 
 const styles = {
   base: {
     ...modals.base,
     width: 450,
-    height: 615
+    height: 615,
+    "& h2": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between"
+    }
   },
   content: {
     height: 350
@@ -49,18 +50,23 @@ class ListApprovers extends Component<{
   members: Member[],
   approvers: Member[],
   addMember: Function,
-  t: Translate,
   classes: Object
 }> {
   render() {
-    const { goBack, members, addMember, approvers, t, classes } = this.props;
+    const { goBack, members, addMember, approvers, classes } = this.props;
 
     return (
       <div className={classes.base}>
         <header>
-          <h2>{t("newAccount:security.members")}</h2>
-          <SelectedCounter count={approvers.length} />
-          <InfoModal>{t("newAccount:security.members_desc")}</InfoModal>
+          <h2>
+            <Trans i18nKey="newAccount:security.members" />
+            {approvers.length > 0 && (
+              <SelectedCounter count={approvers.length} />
+            )}
+          </h2>
+          <Text>
+            <Trans i18nKey="newAccount:security.members_desc" />
+          </Text>
         </header>
         <div className={classes.content}>
           <Overscroll top={20} bottom={0}>
@@ -79,7 +85,7 @@ class ListApprovers extends Component<{
         </div>
         <div className="footer">
           <DialogButton right highlight onTouchTap={goBack}>
-            Done
+            <Trans i18nKey="common:done" />
           </DialogButton>
         </div>
       </div>
@@ -87,13 +93,13 @@ class ListApprovers extends Component<{
   }
 }
 
-const RenderError = translate()(({ error, restlay }: *) => (
+const RenderError = ({ error, restlay }: *) => (
   <div style={{ width: 450, height: 615 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
-));
+);
 
-export default connectData(withStyles(styles)(translate()(ListApprovers)), {
+export default connectData(withStyles(styles)(ListApprovers), {
   RenderLoading: ModalLoading,
   RenderError,
   queries: {
