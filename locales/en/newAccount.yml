@@ -20,7 +20,8 @@ security:
   account_members: Account members
   members: Members
   approvals: Approvals
-  members_selected: members selected
+  members_selected: '{{nbMembersSelected}} member selected'
+  members_selected_plural: '{{nbMembersSelected}} members selected'
   members_desc: Select the users who can create operations in this account.
   approvals_amount: Amount
   approvals_from: approvals from {{count}} members

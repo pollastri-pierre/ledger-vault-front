@@ -42,6 +42,7 @@ type Props = {
 export type StepProps = {
   switchInternalModal: InternModalId => void,
   accountCreationState: AccountCreationState,
+  updateAccountCreationState: UpdateAccountCreationState,
   allAccounts: Account[],
   close: () => void,
   cancel: () => void
