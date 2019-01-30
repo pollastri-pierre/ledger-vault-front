@@ -25,8 +25,9 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     cy.get(".test-new-account").click();
+    //cy.wait(2000)
     cy.contains("Bitcoin Testnet").click();
-    cy.get("#input_crypto").type("BTC Testnet");
+    cy.get("input").type("BTC Testnet")
     cy.contains("Continue").click();
     cy.contains("Members").click();
     cy.get(".test-member-row")
@@ -48,7 +49,7 @@ describe("Tests Creation Account", function() {
     cy.contains("done").click();
     cy.contains("Continue").click();
     cy.contains("done").click();
-    cy.wait(5500);
+    cy.wait(2500);
     cy.get(".top-message-body")
       .contains("Account name already exists in this currency")
       .get(".top-message-title")
