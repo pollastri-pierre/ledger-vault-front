@@ -8,10 +8,9 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import network from "network";
 import MenuItem from "@material-ui/core/MenuItem";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
-import AccountCreationMembers from "components/accounts/creation/AccountCreationMembers";
+import ListApprovers from "components/accounts/ListApprovers";
 import Disabled from "components/Disabled";
-import AccountCreationApprovals from "components/accounts/creation/AccountCreationApprovals";
-import MembersQuery from "api/queries/MembersQuery";
+import SetApprovals from "components/accounts/SetApproval";
 import connectData from "restlay/connectData";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getOutdatedAccounts, isValidAccountName } from "utils/accounts";
@@ -85,7 +84,6 @@ type Props = {
   selectedAccount: Account,
   classes: { [_: $Keys<typeof styles>]: string },
   approvers: Member[],
-  members: Member[],
   isSelectingMembers: boolean,
   isSelectingApprovals: boolean,
   isDevice: boolean,
@@ -181,7 +179,6 @@ class UpdateAccounts extends Component<Props> {
       quorum,
       selectedAccount,
       approvers,
-      members,
       onToggle,
       onToggleMembers,
       onToggleApprovals,
@@ -295,19 +292,18 @@ class UpdateAccounts extends Component<Props> {
           </div>
         </BlurDialog>
         <BlurDialog open={isSelectingMembers} onClose={onToggleMembers}>
-          <AccountCreationMembers
-            members={members}
+          <ListApprovers
             approvers={approvers}
             addMember={onToggleMember}
-            switchInternalModal={onToggleMembers}
+            goBack={onToggleMembers}
           />
         </BlurDialog>
         <BlurDialog open={isSelectingApprovals} onClose={onToggleApprovals}>
-          <AccountCreationApprovals
-            members={approvers}
-            approvals={quorum}
-            setApprovals={onEditQuorum}
-            switchInternalModal={onToggleApprovals}
+          <SetApprovals
+            approvers={approvers}
+            quorum={quorum}
+            setQuorum={onEditQuorum}
+            goBack={onToggleApprovals}
           />
         </BlurDialog>
         <BlurDialog open={isDevice} onClose={onToggleDevice}>
@@ -351,10 +347,5 @@ export default connectData(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withStyles(styles)(translate()(UpdateAccounts))),
-  {
-    queries: {
-      members: MembersQuery
-    }
-  }
+  )(withStyles(styles)(translate()(UpdateAccounts)))
 );
