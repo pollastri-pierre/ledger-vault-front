@@ -8,7 +8,7 @@ import {
   create_account
 } from "../../functions/actions.js";
 
-describe("Tests Creation Account", function() {
+describe("Tests Eth and ETH Ropsten", function() {
   afterEach(function() {
     logout();
   });
@@ -17,8 +17,6 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     login(5)
-
-
     create_account("Ethereum Ropsten", "Ethereum Testnet");
     approve();
     approve_account("Ethereum Ropsten", "Ethereum Testnet", "𝚝ETH");
@@ -35,6 +33,7 @@ describe("Tests Creation Account", function() {
     cy.wait(1000);
     approve();
     approve_account("Ethereum Ropsten", "Ethereum Testnet", "𝚝ETH");
+    cy.wait(1000);
     approve();
     approve_account("Ethereum", "Ethereum Account2", "ETH");
   });

@@ -8,9 +8,9 @@ import {
   create_account
 } from "../../functions/actions.js";
 
-describe("Tests Creation Account", function() {
+describe("ERC20 Token Account", function() {
 
-    it("Create ERC20 token", () => {
+    it("Create/Approve ERC20 token account", () => {
       cy.server();
       route();
       login(6);
@@ -43,13 +43,14 @@ describe("Tests Creation Account", function() {
 
       approve();
       approve_account("Ledger Coin", "Ledger token", "LGC");
+      logout();
     });
 
     it("Approve with the a other member", () => {
       cy.server();
       route();
       login(4);
-      cy.wait(1000);
+      cy.wait(2000);
       approve();
       approve_account("Ledger Coin", "Ledger token", "LGC");
     });

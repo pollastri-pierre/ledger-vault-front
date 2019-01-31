@@ -9,21 +9,22 @@ import {
   create_operation
 } from "../../functions/actions.js";
 
-describe("Operation for ERC20 Token", function() {
-  it("Create a erc20 token Operation", () => {
+describe("Eth Ropsten Operation", function() {
+  it("Create a Eth Ropsten Operation", () => {
     cy.server();
     route();
     login(4);
     cy.get("[data-test=new-operation]").click();
     cy.get('[data-test=operation-creation-accounts]')
-      .contains("Ledger token")
+      .contains("Ethereum Testnet")
       .click();
     cy.get("[data-test=operation-creation-amount]")
       .find("input")
-      .type("40");
+      .type("0.3");
     cy.get("[data-test=crypto-address-picker]")
       .find("input")
       .type(Cypress.env("address_eth_rop"));
+
 
     cy.wait(6500);
     cy.contains("Continue").click();
@@ -33,10 +34,10 @@ describe("Operation for ERC20 Token", function() {
       .click({ force: true });
     cy.wait(3500);
     approve();
-    approve_operation("Ledger token");
+    approve_operation("Ethereum Testnet");
     logout();
     login(5);
     approve();
-    approve_operation("Ledger token");
+    approve_operation("Ethereum Testnet");
   });
 });

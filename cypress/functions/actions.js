@@ -138,7 +138,7 @@ export function approve_account(currency, name, fiat) {
   cy.get("button")
     .contains("Approve")
     .click();
-
+  cy.wait(1000);
   cy.get(".top-message-body")
     .contains("the account request has been successfully approved")
     .get(".top-message-title")
@@ -186,10 +186,9 @@ export function approve_operation(name) {
   cy.get("[data-test=pending-operation]")
     .eq(0)
     .click();
-  cy.get(".operation-list")
-    .eq(0)
-    .contains("status");
-  //cy.get('.approval-status').contains("Collecting Approvals (0/2)");
+  //cy.get(".operation-list")
+  //  .eq(0)
+  //  .contains("status");
   cy.get("[data-test=name]").contains(name);
 
   cy.get("button")
@@ -200,6 +199,7 @@ export function approve_operation(name) {
   cy.get("[data-test=dialog-button]")
     .contains("Approve")
     .click({ force: true });
+  cy.wait(1000);
   cy.get(".top-message-body")
     .contains("the operation request has been successfully approved")
     .get(".top-message-title")
