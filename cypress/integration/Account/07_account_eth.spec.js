@@ -21,9 +21,9 @@ describe("Tests Eth and ETH Ropsten", function() {
     approve();
     approve_account("Ethereum Ropsten", "Ethereum Testnet", "𝚝ETH");
 
-    create_account("Ethereum", "Ethereum Account2");
+    create_account("Ethereum", "Ethereum Account");
     approve();
-    approve_account("Ethereum", "Ethereum Account2", "ETH");
+    approve_account("Ethereum", "Ethereum Account", "ETH");
   });
 
   it("Approve with the a other member", () => {
@@ -35,7 +35,7 @@ describe("Tests Eth and ETH Ropsten", function() {
     approve_account("Ethereum Ropsten", "Ethereum Testnet", "𝚝ETH");
     cy.wait(1000);
     approve();
-    approve_account("Ethereum", "Ethereum Account2", "ETH");
+    approve_account("Ethereum", "Ethereum Account", "ETH");
   });
 
 });
