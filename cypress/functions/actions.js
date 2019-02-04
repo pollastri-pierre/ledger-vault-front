@@ -9,6 +9,7 @@ export function login(id) {
   switch_device(id);
   cy.get("input").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
+  cy.wait(3000);
   cy.get(".top-message-body")
     .contains("Welcome to the Ledger Vault platform!")
     .get(".top-message-title")
@@ -24,6 +25,7 @@ export function logout() {
   cy.contains("view profile").click({ force: true });
   cy.contains("logout").click();
   //cy.url().should("include", "/logout");
+  cy.wait(3000);
   cy.get(".top-message-body")
     .contains(
       "You have been successfully logged out. You can now safely close your web browser."
@@ -44,12 +46,21 @@ export function route() {
   cy.route("post", "**/authentications/**").as("authenticate");
   cy.route("post", "**/validation/**").as("validation");
   cy.route("post", "**/fees").as("fees");
+  cy.route("get", "**/accounts/pending").as("pending");
   // onboarding
   const orga_name = Cypress.env("workspace");
   const API = `${Cypress.env("api_server2")}/${orga_name}`;
   cy.route("post", `${API}/onboarding/next`).as("next");
   cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
   cy.route("post", `${API}/onboarding/challenge`).as("challenge");
+
+  const API_DEVICE = Cypress.env("api_device");
+  cy.route("post", `${API_DEVICE}/get-public-key`).as("get-public-key");
+  cy.route("get", `${API_DEVICE}/get-attestation`).as("get-attestation");
+  cy.route("post", `${API_DEVICE}/open-session`).as("open-session");
+  cy.route("post", `${API_DEVICE}/register`).as("register");
+  cy.route("post", `${API_DEVICE}/generate-key-fragments`).as("generate-key-fragments");
+  cy.route("post", `${API_DEVICE}/validate-vault-operation`).as("validate-vault-operation");
 }
 
 /**
@@ -59,7 +70,7 @@ export function switch_device(id) {
   cy.request("POST", Cypress.env("api_switch_device"), {
     device_number: id
   });
-  cy.wait(1000);
+  //cy.wait(3500);
 }
 
 export function approve() {
@@ -92,7 +103,7 @@ export function create_account(currency, name) {
   cy.get(".test-member-row")
     .eq(1)
     .click({ force: true });
-  cy.contains("Done").click();
+  cy.get("[data-test=dialog-button]").click();
   cy.contains("Approvals").click();
 
   cy.get("input").clear();
@@ -100,7 +111,8 @@ export function create_account(currency, name) {
   cy.contains("done").click();
   cy.get("[data-test=dialog-button]").click();
   cy.contains("done").click();
-  cy.wait(6500);
+  cy.wait(7500);
+
 
   //We should get a Account request created message
   cy.get(".top-message-body")
@@ -138,7 +150,7 @@ export function approve_account(currency, name, fiat) {
   cy.get("button")
     .contains("Approve")
     .click();
-  cy.wait(1000);
+  cy.wait(2500);
   cy.get(".top-message-body")
     .contains("the account request has been successfully approved")
     .get(".top-message-title")

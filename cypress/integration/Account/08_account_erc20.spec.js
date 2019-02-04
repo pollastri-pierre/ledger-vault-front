@@ -36,10 +36,10 @@ describe("ERC20 Token Account", function() {
 
       cy.get("input").clear();
       cy.get("input").type(2);
-      cy.contains("done").click();
+      cy.get("[data-test=dialog-button]").click();
       cy.get("[data-test=dialog-button]").click();
       cy.contains("done").click();
-      cy.wait(6500);
+      cy.wait(7500);
 
       approve();
       approve_account("Ledger Coin", "Ledger token", "LGC");

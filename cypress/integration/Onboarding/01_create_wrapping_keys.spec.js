@@ -1,6 +1,10 @@
 const orga_name = Cypress.env("workspace");
 const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
+const API_DEVICE = Cypress.env("api_device");
+
+import {route} from "../../functions/actions.js";
+
 
 context("Create Wrapping Key", () => {
   let polyfill;
@@ -12,10 +16,7 @@ context("Create Wrapping Key", () => {
   });
   it("should initialise the 3 Wrapping Key Custodians", () => {
     cy.server();
-
-    cy.route("post", `${API}/onboarding/next`).as("next");
-    cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
-    cy.route("post", `${API}/onboarding/challenge`).as("challenge");
+    route();
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
@@ -44,6 +45,10 @@ context("Create Wrapping Key", () => {
           .eq(0)
           .find(".fragment-click")
           .click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@open-session");
+        cy.wait("@generate-key-fragments");
         cy.wait("@authenticate");
 
         // Using the same device, should display a error
@@ -64,6 +69,11 @@ context("Create Wrapping Key", () => {
             .eq(1)
             .find(".fragment-click")
             .click();
+
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@open-session");
+          cy.wait("@generate-key-fragments");
           cy.wait("@authenticate");
           cy.wait(1000);
 
@@ -75,6 +85,10 @@ context("Create Wrapping Key", () => {
               .eq(2)
               .find(".fragment-click")
               .click();
+            cy.wait("@get-public-key");
+            cy.wait("@get-attestation");
+            cy.wait("@open-session");
+            cy.wait("@generate-key-fragments");
             cy.wait("@authenticate");
             cy.contains("Continue").click();
             cy.wait("@next");
