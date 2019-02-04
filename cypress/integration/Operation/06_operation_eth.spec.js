@@ -32,10 +32,11 @@ describe("Eth Ropsten Operation", function() {
     cy.get("[data-test=dialog-button]")
       .contains("Confirm")
       .click({ force: true });
-    cy.wait(3500);
+    cy.wait(6500);
     approve();
     approve_operation("Ethereum Testnet");
     logout();
+    cy.wait(1000);
     login(5);
     approve();
     approve_operation("Ethereum Testnet");

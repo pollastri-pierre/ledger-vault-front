@@ -15,7 +15,7 @@ describe("ERC20 Token Account", function() {
       route();
       login(6);
       cy.get(".test-new-account").click();
-      cy.wait(1500);
+      cy.wait(2000);
       cy.get("#input_crypto")
         .type("LGC", { force: true })
         .type("{enter}");

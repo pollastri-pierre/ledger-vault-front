@@ -9,6 +9,7 @@ export function login(id) {
   switch_device(id);
   cy.get("input").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
+  cy.wait(2000);
   cy.get(".top-message-body")
     .contains("Welcome to the Ledger Vault platform!")
     .get(".top-message-title")
@@ -24,6 +25,7 @@ export function logout() {
   cy.contains("view profile").click({ force: true });
   cy.contains("logout").click();
   //cy.wait("@logout");
+  cy.wait(2000);
   cy.get(".top-message-body")
     .contains(
       "You have been successfully logged out. You can now safely close your web browser."
@@ -64,6 +66,8 @@ export function route() {
   cy.route("post", `${API_DEVICE}/register`).as("register");
   cy.route("post", `${API_DEVICE}/generate-key-fragments`).as("generate-key-fragments");
   cy.route("post", `${API_DEVICE}/validate-vault-operation`).as("validate-vault-operation");
+  cy.route("post", `${API_DEVICE}/meta/store`).as("meta-store");
+
 
   // Accounts
   cy.route("post", "**/challenge?account_type=Bitcoin").as("account_Bitcoin");
@@ -205,6 +209,8 @@ export function create_operation(id, address, amount) {
  */
 export function approve_operation(name) {
   cy.contains("Pending").click();
+  cy.url().should("include", "/pending");
+  cy.wait(2000);
   cy.get("[data-test=pending-operation]")
     .eq(0)
     .click();
@@ -218,7 +224,7 @@ export function approve_operation(name) {
   cy.get("[data-test=dialog-button]")
     .contains("Approve")
     .click({ force: true });
-  cy.wait(1000);
+  cy.wait(2000);
   cy.get(".top-message-body")
     .contains("the operation request has been successfully approved")
     .get(".top-message-title")

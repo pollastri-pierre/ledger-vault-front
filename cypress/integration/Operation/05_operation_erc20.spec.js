@@ -31,10 +31,11 @@ describe("Operation for ERC20 Token", function() {
     cy.get("[data-test=dialog-button]")
       .contains("Confirm")
       .click({ force: true });
-    cy.wait(3500);
+    cy.wait(6500);
     approve();
     approve_operation("Ledger token");
     logout();
+    cy.wait(1000);
     login(5);
     approve();
     approve_operation("Ledger token");
