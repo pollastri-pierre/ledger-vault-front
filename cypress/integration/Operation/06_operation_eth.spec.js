@@ -15,7 +15,7 @@ describe("Eth Ropsten Operation", function() {
     route();
     login(4);
     cy.get("[data-test=new-operation]").click();
-    cy.get('[data-test=operation-creation-accounts]')
+    cy.get("[data-test=operation-creation-accounts]")
       .contains("Ethereum Testnet")
       .click();
     cy.get("[data-test=operation-creation-amount]")
@@ -24,7 +24,6 @@ describe("Eth Ropsten Operation", function() {
     cy.get("[data-test=crypto-address-picker]")
       .find("input")
       .type(Cypress.env("address_eth_rop"));
-
 
     cy.wait(6500);
     cy.contains("Continue").click();

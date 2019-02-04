@@ -1,6 +1,6 @@
 const orga_name = Cypress.env("workspace");
 
-import {route} from "../../functions/actions.js";
+import { route } from "../../functions/actions.js";
 
 context("Admin Approve the registration of the Shared Owners", () => {
   let polyfill;

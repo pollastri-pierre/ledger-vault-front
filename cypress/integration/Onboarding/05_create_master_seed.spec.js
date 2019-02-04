@@ -2,7 +2,7 @@ const orga_name = Cypress.env("workspace");
 const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
 
-import {route} from "../../functions/actions.js";
+import { route } from "../../functions/actions.js";
 
 context("Create the Master Seed", () => {
   let polyfill;
@@ -67,7 +67,7 @@ context("Create the Master Seed", () => {
             cy.wait("@open-session");
             cy.wait("@validate-vault-operation");
             cy.wait("@generate-key-fragments");
-            cy.wait("@authenticate");;
+            cy.wait("@authenticate");
 
             // Try to see with the same device
             cy.get(".fragment")

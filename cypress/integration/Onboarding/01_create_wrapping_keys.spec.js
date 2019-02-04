@@ -3,8 +3,7 @@ const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
 const API_DEVICE = Cypress.env("api_device");
 
-import {route} from "../../functions/actions.js";
-
+import { route } from "../../functions/actions.js";
 
 context("Create Wrapping Key", () => {
   let polyfill;

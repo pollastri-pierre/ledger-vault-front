@@ -15,7 +15,7 @@ describe("Operation for ERC20 Token", function() {
     route();
     login(4);
     cy.get("[data-test=new-operation]").click();
-    cy.get('[data-test=operation-creation-accounts]')
+    cy.get("[data-test=operation-creation-accounts]")
       .contains("Ledger token")
       .click();
     cy.get("[data-test=operation-creation-amount]")

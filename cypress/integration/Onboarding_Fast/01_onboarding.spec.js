@@ -166,23 +166,23 @@ context("Onboarding e2e", () => {
 
       // Shared Owner 2
       cy.request("POST", DEVICE, { device_number: 8 }).then(() => {
-      cy.contains("Add shared-owner").click();
-      cy.wait("@get-public-key");
-      cy.wait("@get-attestation");
-      cy.wait("@register");
-      cy.wait("@authenticate");
+        cy.contains("Add shared-owner").click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@register");
+        cy.wait("@authenticate");
 
         // Shared Owner 3
-      cy.wait(3000);
-      cy.request("POST", DEVICE, { device_number: 9 }).then(() => {
-      cy.contains("Add shared-owner").click();
-      cy.wait("@get-public-key");
-      cy.wait("@get-attestation");
-      cy.wait("@register");
-      cy.wait("@authenticate");
+        cy.wait(3000);
+        cy.request("POST", DEVICE, { device_number: 9 }).then(() => {
+          cy.contains("Add shared-owner").click();
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@register");
+          cy.wait("@authenticate");
 
-      cy.contains("Continue").click();
-      cy.wait("@next");
+          cy.contains("Continue").click();
+          cy.wait("@next");
         });
       });
     });

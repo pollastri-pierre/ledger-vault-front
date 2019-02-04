@@ -39,7 +39,7 @@ export function logout() {
  */
 export function route() {
   // workspace
-  cy.route("post","**/authentications/logout").as("logout");
+  cy.route("post", "**/authentications/logout").as("logout");
   cy.route("post", "**/abort").as("abort");
   cy.route("get", "**/dashboard").as("dashboard");
   cy.route("get", "**/pending").as("pending");
@@ -47,8 +47,8 @@ export function route() {
   cy.route("post", "**/authentications/**").as("authenticate");
   cy.route("post", "**/validation/**").as("validation");
   cy.route("post", "**/fees").as("fees");
-  cy.route("post","**/people").as("people");
-  cy.route("post","**/organization").as("organization");
+  cy.route("post", "**/people").as("people");
+  cy.route("post", "**/organization").as("organization");
   cy.route("post", "**/accounts/status/**").as("new-account");
 
   // onboarding
@@ -64,20 +64,21 @@ export function route() {
   cy.route("get", `${API_DEVICE}/get-attestation`).as("get-attestation");
   cy.route("post", `${API_DEVICE}/open-session`).as("open-session");
   cy.route("post", `${API_DEVICE}/register`).as("register");
-  cy.route("post", `${API_DEVICE}/generate-key-fragments`).as("generate-key-fragments");
-  cy.route("post", `${API_DEVICE}/validate-vault-operation`).as("validate-vault-operation");
+  cy.route("post", `${API_DEVICE}/generate-key-fragments`).as(
+    "generate-key-fragments"
+  );
+  cy.route("post", `${API_DEVICE}/validate-vault-operation`).as(
+    "validate-vault-operation"
+  );
   cy.route("post", `${API_DEVICE}/meta/store`).as("meta-store");
-
 
   // Accounts
   cy.route("post", "**/challenge?account_type=Bitcoin").as("account_Bitcoin");
   cy.route("post", "**/challenge?account_type=Ethereum").as("account_Ethereum");
   cy.route("post", "**/challenge?account_type=ERC20").as("account_ERC20");
-  cy.route("post","**/accounts").as("accounts");
+  cy.route("post", "**/accounts").as("accounts");
   cy.route("get", "**/accounts/pending").as("pending");
   cy.route("get", "**/accounts/status/APPROVED,VIEW_ONLY").as("approve_acc");
-
-
 }
 
 /**

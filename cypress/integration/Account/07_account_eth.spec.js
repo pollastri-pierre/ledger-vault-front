@@ -12,7 +12,7 @@ describe("Tests Eth and ETH Ropsten", function() {
   it("Create/Approve account Ethereum and ETH Ropsten", () => {
     cy.server();
     route();
-    login(5)
+    login(5);
     create_account("Ethereum Ropsten", "Ethereum Testnet");
     approve();
     approve_account("Ethereum Ropsten", "Ethereum Testnet", "𝚝ETH");
@@ -31,5 +31,4 @@ describe("Tests Eth and ETH Ropsten", function() {
     approve();
     approve_account("Ethereum", "Ethereum Account", "ETH");
   });
-
 });
