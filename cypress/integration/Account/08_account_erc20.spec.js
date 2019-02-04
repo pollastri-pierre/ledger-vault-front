@@ -31,14 +31,14 @@ describe("ERC20 Token Account", function() {
       cy.get(".test-member-row")
         .eq(1)
         .click({ force: true });
-      cy.contains("Done").click();
+      cy.get("[data-test=dialog-button]").click();
       cy.contains("Approvals").click();
 
       cy.get("input").clear();
       cy.get("input").type(2);
       cy.get("[data-test=dialog-button]").click();
       cy.get("[data-test=dialog-button]").click();
-      cy.contains("done").click();
+      cy.get("[data-test=dialog-button]").click();
       cy.wait(7500);
 
       approve();

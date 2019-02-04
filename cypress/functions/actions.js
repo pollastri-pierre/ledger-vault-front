@@ -9,7 +9,6 @@ export function login(id) {
   switch_device(id);
   cy.get("input").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
-  cy.wait(3000);
   cy.get(".top-message-body")
     .contains("Welcome to the Ledger Vault platform!")
     .get(".top-message-title")
@@ -24,8 +23,7 @@ export function login(id) {
 export function logout() {
   cy.contains("view profile").click({ force: true });
   cy.contains("logout").click();
-  //cy.url().should("include", "/logout");
-  cy.wait(3000);
+  //cy.wait("@logout");
   cy.get(".top-message-body")
     .contains(
       "You have been successfully logged out. You can now safely close your web browser."
@@ -38,15 +36,19 @@ export function logout() {
  * All the route
  */
 export function route() {
+  // workspace
+  cy.route("post","**/authentications/logout").as("logout");
   cy.route("post", "**/abort").as("abort");
-  cy.route("post", "**/logout").as("logout");
   cy.route("get", "**/dashboard").as("dashboard");
   cy.route("get", "**/pending").as("pending");
   cy.route("post", "**/approve").as("approve");
   cy.route("post", "**/authentications/**").as("authenticate");
   cy.route("post", "**/validation/**").as("validation");
   cy.route("post", "**/fees").as("fees");
-  cy.route("get", "**/accounts/pending").as("pending");
+  cy.route("post","**/people").as("people");
+  cy.route("post","**/organization").as("organization");
+  cy.route("post", "**/accounts/status/**").as("new-account");
+
   // onboarding
   const orga_name = Cypress.env("workspace");
   const API = `${Cypress.env("api_server2")}/${orga_name}`;
@@ -54,6 +56,7 @@ export function route() {
   cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
   cy.route("post", `${API}/onboarding/challenge`).as("challenge");
 
+  // Device
   const API_DEVICE = Cypress.env("api_device");
   cy.route("post", `${API_DEVICE}/get-public-key`).as("get-public-key");
   cy.route("get", `${API_DEVICE}/get-attestation`).as("get-attestation");
@@ -61,6 +64,16 @@ export function route() {
   cy.route("post", `${API_DEVICE}/register`).as("register");
   cy.route("post", `${API_DEVICE}/generate-key-fragments`).as("generate-key-fragments");
   cy.route("post", `${API_DEVICE}/validate-vault-operation`).as("validate-vault-operation");
+
+  // Accounts
+  cy.route("post", "**/challenge?account_type=Bitcoin").as("account_Bitcoin");
+  cy.route("post", "**/challenge?account_type=Ethereum").as("account_Ethereum");
+  cy.route("post", "**/challenge?account_type=ERC20").as("account_ERC20");
+  cy.route("post","**/accounts").as("accounts");
+  cy.route("get", "**/accounts/pending").as("pending");
+  cy.route("get", "**/accounts/status/APPROVED,VIEW_ONLY").as("approve_acc");
+
+
 }
 
 /**
@@ -70,7 +83,6 @@ export function switch_device(id) {
   cy.request("POST", Cypress.env("api_switch_device"), {
     device_number: id
   });
-  //cy.wait(3500);
 }
 
 export function approve() {
@@ -90,7 +102,6 @@ export function cancel() {
  */
 export function create_account(currency, name) {
   cy.get(".test-new-account").click();
-  cy.wait(1000);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
@@ -112,7 +123,6 @@ export function create_account(currency, name) {
   cy.get("[data-test=dialog-button]").click();
   cy.contains("done").click();
   cy.wait(7500);
-
 
   //We should get a Account request created message
   cy.get(".top-message-body")
@@ -198,9 +208,6 @@ export function approve_operation(name) {
   cy.get("[data-test=pending-operation]")
     .eq(0)
     .click();
-  //cy.get(".operation-list")
-  //  .eq(0)
-  //  .contains("status");
   cy.get("[data-test=name]").contains(name);
 
   cy.get("button")
