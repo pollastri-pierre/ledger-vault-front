@@ -89,7 +89,11 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ["value.value.name", "value.value.ticker"]
+  keys: [
+    "value.value.name",
+    "value.value.ticker",
+    "value.value.contract_address"
+  ]
 };
 
 const fuse = new Fuse(fullOptions, fuseOptions);
