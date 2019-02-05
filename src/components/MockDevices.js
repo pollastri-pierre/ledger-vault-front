@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import React, { PureComponent } from "react";
+import Checkbox from "components/form/Checkbox";
+import { logout } from "redux/modules/auth";
+import { connect } from "react-redux";
 
 import colors from "shared/colors";
 import Text from "components/Text";
@@ -19,9 +22,16 @@ const styles = {
   container: {
     background: colors.night,
     color: colors.lead,
-    borderTopLeftRadius: 3,
     padding: 3,
     display: "flex"
+  },
+  autologout: {
+    cursor: "pointer",
+    borderTopLeftRadius: 3,
+    paddingLeft: 20,
+    width: "100%",
+    color: "white",
+    background: colors.night
   },
   group: {
     display: "flex",
@@ -60,7 +70,12 @@ const devices = [
 
 class MockDevices extends PureComponent {
   state = {
-    deviceId: null
+    deviceId: null,
+    autoLogout: false
+  };
+
+  changeAutoLogout = () => {
+    this.setState(state => ({ autoLogout: !state.autoLogout }));
   };
 
   async componentDidMount() {
@@ -84,15 +99,26 @@ class MockDevices extends PureComponent {
         body: JSON.stringify({ device_number: id })
       });
       this.setState({ deviceId: id });
+      if (this.state.autoLogout) {
+        this.props.logout();
+      }
     } catch (e) {
       console.warn(e);
     }
   };
 
   render() {
-    const { deviceId } = this.state;
+    const { deviceId, autoLogout } = this.state;
     return (
       <div style={styles.root}>
+        <div style={styles.autologout} onClick={this.changeAutoLogout}>
+          <Text small uppercase inline>
+            Auto logout ?
+          </Text>
+          <div style={{ display: "inline-block", marginLeft: 20 }}>
+            <Checkbox checked={autoLogout} labelFor="autologout" />
+          </div>
+        </div>
         <div style={styles.container}>
           {devices.map(([g, color, devices]) => (
             <DeviceGroup name={g} key={g}>
@@ -145,4 +171,10 @@ function Device({ id, color, isActive, onClick }) {
   );
 }
 
-export default MockDevices;
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+export default connect(
+  null,
+  mapDispatchToProps
+)(MockDevices);

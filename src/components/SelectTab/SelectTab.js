@@ -16,7 +16,6 @@ const styles = {
   base: {
     display: "flex",
     justifyContent: "space-around",
-    width: "100%",
     paddingBottom: "20px",
     "&> * + *": {
       marginLeft: 20

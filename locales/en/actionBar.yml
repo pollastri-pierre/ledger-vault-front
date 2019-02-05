@@ -1,6 +1,5 @@
 ---
-view_profile: view profile
-logout: logout
-settings: settings
-activity: activity
-
+logout: Logout
+activity: Activity
+account: Account
+help: Help

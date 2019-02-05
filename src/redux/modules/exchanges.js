@@ -42,3 +42,14 @@ export default function reducer(
       return state;
   }
 }
+
+export const currencyExchangeSelector = (
+  state: *,
+  currency: Currency
+): ?string => {
+  // NOTE checking for null because there is a strange pair btc-to-btc generates which results in exchange - null
+  const pair = state.exchanges.pairs.find(
+    p => p.from.id === currency.id && p.exchange != null
+  );
+  return pair.exchange || null;
+};
