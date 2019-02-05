@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 
 import React, { PureComponent } from "react";
-import Checkbox from "components/form/Checkbox";
+import Switch from "@material-ui/core/Switch";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import Collapse from "@material-ui/core/Collapse";
 import { logout } from "redux/modules/auth";
 import { connect } from "react-redux";
 
@@ -17,21 +19,8 @@ const styles = {
     right: 0,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
-  },
-  container: {
     background: colors.night,
-    color: colors.lead,
-    padding: 3,
-    display: "flex"
-  },
-  autologout: {
-    cursor: "pointer",
-    borderTopLeftRadius: 3,
-    paddingLeft: 20,
-    width: "100%",
-    color: "white",
-    background: colors.night
+    color: colors.lead
   },
   group: {
     display: "flex",
@@ -59,6 +48,23 @@ const styles = {
     height: 30,
     borderRadius: "50%",
     backgroundColor: "rgba(0, 0, 0, 0.2)"
+  },
+  rowContainer: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  actionContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  autoLogout: {
+    alignSelf: "center",
+    marginLeft: 20
+  },
+  collapseIcon: {
+    alignSelf: "center",
+    marginRight: 10
   }
 };
 
@@ -71,7 +77,8 @@ const devices = [
 class MockDevices extends PureComponent {
   state = {
     deviceId: null,
-    autoLogout: false
+    autoLogout: false,
+    collapseMock: false
   };
 
   changeAutoLogout = () => {
@@ -107,33 +114,46 @@ class MockDevices extends PureComponent {
     }
   };
 
+  collapseToggle = () => {
+    this.setState(state => ({ collapseMock: !state.collapseMock }));
+  };
+
   render() {
-    const { deviceId, autoLogout } = this.state;
+    const { deviceId, autoLogout, collapseMock } = this.state;
     return (
       <div style={styles.root}>
-        <div style={styles.autologout} onClick={this.changeAutoLogout}>
-          <Text small uppercase inline>
-            Auto logout ?
-          </Text>
-          <div style={{ display: "inline-block", marginLeft: 20 }}>
-            <Checkbox checked={autoLogout} labelFor="autologout" />
+        <div style={styles.actionContainer}>
+          <div style={styles.rowContainer}>
+            <Text small uppercase style={styles.autoLogout}>
+              Auto logout ?
+            </Text>
+            <Switch
+              onChange={this.changeAutoLogout}
+              checked={autoLogout}
+              label="autologout"
+            />
+          </div>
+          <div onClick={this.collapseToggle} style={styles.collapseIcon}>
+            {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
           </div>
         </div>
-        <div style={styles.container}>
-          {devices.map(([g, color, devices]) => (
-            <DeviceGroup name={g} key={g}>
-              {devices.map(d => (
-                <Device
-                  key={d}
-                  color={color}
-                  id={d}
-                  isActive={deviceId === d}
-                  onClick={this.switchDevice}
-                />
-              ))}
-            </DeviceGroup>
-          ))}
-        </div>
+        <Collapse in={!collapseMock}>
+          <div style={styles.rowContainer}>
+            {devices.map(([g, color, devices]) => (
+              <DeviceGroup name={g} key={g}>
+                {devices.map(d => (
+                  <Device
+                    key={d}
+                    color={color}
+                    id={d}
+                    isActive={deviceId === d}
+                    onClick={this.switchDevice}
+                  />
+                ))}
+              </DeviceGroup>
+            ))}
+          </div>
+        </Collapse>
       </div>
     );
   }
