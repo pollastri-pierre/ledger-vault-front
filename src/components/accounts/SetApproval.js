@@ -11,7 +11,7 @@ import Text from "components/Text";
 import colors from "shared/colors";
 import DialogButton from "components/buttons/DialogButton";
 import { ApprovalsExceedQuorum } from "utils/errors";
-import InfoModal from "components/InfoModal";
+import InfoBox from "components/InfoBox";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddError: error => dispatch(addError(error))
@@ -20,10 +20,11 @@ const mapDispatchToProps = (dispatch: *) => ({
 const styles = {
   base: {
     ...modals.base,
-    width: 450
+    width: 450,
+    paddingBottom: 80
   },
-  info: {
-    margin: "20px 0px 40px 0px"
+  infoBox: {
+    marginTop: 20
   },
   inputRenderRightText: {
     whiteSpace: "nowrap",
@@ -82,13 +83,41 @@ class SetApprovals extends Component<Props> {
               </Text>
             }
           />
-          <InfoModal className={classes.info}>
-            <Trans i18nKey="newAccount:security.approvals_desc" />
-          </InfoModal>
+          <InfoBox type="info" withIcon className={classes.infoBox}>
+            <Text>
+              <Trans i18nKey="newAccount:security.approvals_desc" />
+            </Text>
+          </InfoBox>
+          {quorum < 2 && (
+            <InfoBox type="warning" withIcon className={classes.infoBox}>
+              <Text>
+                <Trans
+                  i18nKey="newAccount:security.approvalsMinimum"
+                  components={<b>0</b>}
+                />
+              </Text>
+            </InfoBox>
+          )}
+          {quorum > approvers.length && (
+            <InfoBox type="warning" withIcon className={classes.infoBox}>
+              <Text>
+                <Trans
+                  i18nKey="newAccount:security.approvalsMaximum"
+                  values={{ membersCount: approvers.length }}
+                  components={<b>0</b>}
+                />
+              </Text>
+            </InfoBox>
+          )}
         </div>
 
         <div className="footer">
-          <DialogButton right highlight onTouchTap={this.submit}>
+          <DialogButton
+            right
+            highlight
+            onTouchTap={this.submit}
+            disabled={quorum < 2}
+          >
             <Trans i18nKey="common:done" />
           </DialogButton>
         </div>
