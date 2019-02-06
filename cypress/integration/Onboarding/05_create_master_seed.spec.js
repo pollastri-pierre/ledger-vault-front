@@ -2,6 +2,8 @@ const orga_name = Cypress.env("workspace");
 const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
 
+import { route } from "../../functions/actions.js";
+
 context("Create the Master Seed", () => {
   let polyfill;
   before(() => {
@@ -13,9 +15,7 @@ context("Create the Master Seed", () => {
 
   it("should initialize Master Seed scheme and login to the dashboard", () => {
     cy.server();
-    cy.route("post", `${API}/onboarding/next`).as("next");
-    cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
-    cy.route("get", `${API}/onboarding/challenge`).as("challenge");
+    route();
     cy.request("POST", DEVICE, {
       device_number: 7
     }).then(() => {
@@ -35,6 +35,10 @@ context("Create the Master Seed", () => {
           .eq(0)
           .find(".fragment-click")
           .click();
+        cy.wait("@get-public-key");
+        cy.wait("@open-session");
+        cy.wait("@validate-vault-operation");
+        cy.wait("@generate-key-fragments");
         cy.wait("@authenticate");
 
         // Try to sign with wrong device should fail
@@ -59,6 +63,10 @@ context("Create the Master Seed", () => {
               .eq(1)
               .find(".fragment-click")
               .click();
+            cy.wait("@get-public-key");
+            cy.wait("@open-session");
+            cy.wait("@validate-vault-operation");
+            cy.wait("@generate-key-fragments");
             cy.wait("@authenticate");
 
             // Try to see with the same device
@@ -81,6 +89,10 @@ context("Create the Master Seed", () => {
                 .eq(2)
                 .find(".fragment-click")
                 .click();
+              cy.wait("@get-public-key");
+              cy.wait("@open-session");
+              cy.wait("@validate-vault-operation");
+              cy.wait("@generate-key-fragments");
               cy.wait("@authenticate");
 
               // Complete Onboarding
@@ -96,6 +108,8 @@ context("Create the Master Seed", () => {
                 device_number: 4
               }).then(() => {
                 cy.contains("Continue").click();
+                cy.wait("@get-public-key");
+                cy.wait("@authenticate");
                 cy.url().should("include", "/dashboard");
               });
             });

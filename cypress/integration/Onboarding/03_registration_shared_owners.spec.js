@@ -1,7 +1,9 @@
 const orga_name = Cypress.env("workspace");
-
 const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
+const API_DEVICE = Cypress.env("api_device");
+
+import { route } from "../../functions/actions.js";
 
 context("Registration Shared Owners", () => {
   let polyfill;
@@ -15,10 +17,7 @@ context("Registration Shared Owners", () => {
 
   it("should add 3 Shared Owners", () => {
     cy.server();
-
-    cy.route("post", `${API}/onboarding/next`).as("next");
-    cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
-    cy.route("get", `${API}/onboarding/challenge`).as("challenge");
+    route();
 
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
@@ -39,13 +38,20 @@ context("Registration Shared Owners", () => {
       cy.wait("@next");
       cy.contains("Continue").click();
       cy.wait("@next");
+      cy.wait("@challenge");
 
       // Shared Owner 1
       cy.contains("Add shared-owner").click();
+      cy.wait("@get-public-key");
+      cy.wait("@get-attestation");
+      cy.wait("@register");
       cy.wait("@authenticate");
 
       //Use the same device, Should display a error
       cy.contains("Add shared-owner").click();
+      cy.wait("@get-public-key");
+      cy.wait("@get-attestation");
+      cy.wait("@register");
       cy.wait("@authenticate");
       cy.get(".top-message-body")
         .contains("Person already exists")
@@ -55,11 +61,17 @@ context("Registration Shared Owners", () => {
       // Shared Owner 2
       cy.request("POST", DEVICE, { device_number: 8 }).then(() => {
         cy.contains("Add shared-owner").click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@register");
         cy.wait("@authenticate");
 
         // Shared Owner 3
         cy.request("POST", DEVICE, { device_number: 9 }).then(() => {
           cy.contains("Add shared-owner").click();
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@register");
           cy.wait("@authenticate");
 
           cy.contains("Continue").click();
