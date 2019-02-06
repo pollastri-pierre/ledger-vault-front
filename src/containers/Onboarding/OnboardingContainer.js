@@ -138,7 +138,6 @@ class OnboardingContainer extends Component<Props, State> {
       match,
       history
     } = this.props;
-
     if (!onboarding.state) {
       return <SpinnerCard />;
     }
@@ -155,7 +154,9 @@ class OnboardingContainer extends Component<Props, State> {
           </div>
           <Menu
             nbMember={onboarding.registering.admins.length}
-            nbSharedOwner={onboarding.sharedOwners.length}
+            nbSharedOwner={
+              onboarding.registering_shared_owner.sharedOwners.length
+            }
             onboarding={onboarding}
           />
           <div className={classes.content}>

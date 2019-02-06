@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { translate } from "react-i18next";
 import network, { NetworkError } from "network";
+import { GenericError } from "utils/errors";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
@@ -11,8 +12,8 @@ import createDevice, {
   U2F_TIMEOUT
 } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
-import type { Organization, Translate } from "data/types";
-import { addMessage } from "redux/modules/alerts";
+import type { Organization } from "data/types";
+import { addMessage, addError } from "redux/modules/alerts";
 
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
@@ -21,6 +22,7 @@ const steps = [
 ];
 
 const mapDispatchToProps = (dispatch: *) => ({
+  onAddError: error => dispatch(addError(error)),
   onAddMessage: (title, content, type) =>
     dispatch(addMessage(title, content, type))
 });
@@ -31,7 +33,7 @@ type State = {
 
 type Props = {
   organization: Organization,
-  t: Translate,
+  onAddError: Error => void,
   onAddMessage: (title: string, content: string, type: string) => void,
   account_id: ?number,
   callback: string => any,
@@ -115,7 +117,6 @@ class DeviceAuthenticate extends Component<Props, State> {
         this.props.callback(entity_id);
       } catch (e) {
         console.error(e);
-        const { t } = this.props;
         if (e instanceof NetworkError && e.json) {
           this.props.onAddMessage(
             `Error ${e.json.code}`,
@@ -129,11 +130,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           this.props.cancel();
         } else {
           this.props.cancel();
-          this.props.onAddMessage(
-            t("deviceAuthenticate:errors.unknown.title"),
-            t("deviceAuthenticate:errors.unknown.content"),
-            "error"
-          );
+          this.props.onAddError(new GenericError());
         }
       }
     }

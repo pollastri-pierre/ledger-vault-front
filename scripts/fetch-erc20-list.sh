@@ -16,10 +16,10 @@ read -r -d '' LEDGER_COIN << EOM || :
   "name": "Ledger Coin",
   "symbol": "LGC",
   "blockchain_name": "ropsten",
-  "contract_address": "0x9549E8A940062615ceE20C0420C98c25Ffa2b214",
+  "contract_address": "0x57e8ba2A915285f984988282aB9346c1336a4E11",
   "signature":
-    "3045022100a9ce69a791759f367748c3e42fe3bfbb9f16169e148c783cc43c9f3f9b5ae0e602201d9d36dc3514345b91e70e0698b134338c2539dfe13a85cfc8b0bbf7e90e654d",
-  "decimals": 2
+    "3044022058a64ae298165a2429d92496055e23d9add0a0f2fa8f0d890d654bf521d9f6db02207745d7924bae2399faa63ea46b00b4eea32b3bbff19e15e79f27ed9ac5b078e8",
+  "decimals": 18
 }
 EOM
 

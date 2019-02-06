@@ -1,5 +1,6 @@
 // @flow
-import SpinnerCard from "components/spinners/SpinnerCard";
+import Card from "components/Card";
+import TranslatedError from "components/TranslatedError";
 import connectData from "restlay/connectData";
 import { translate } from "react-i18next";
 import HelpLink from "components/HelpLink";
@@ -7,8 +8,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import queryString from "query-string";
-import formatError from "formatters/error";
 import OrganizationQuery from "api/queries/OrganizationQuery";
+import { UnknownDevice, UnknownDomain } from "utils/errors";
 import createDevice, {
   U2F_TIMEOUT,
   checkToUpdate,
@@ -20,12 +21,14 @@ import {
   setTokenToLocalStorage,
   removeLocalStorageToken
 } from "redux/modules/auth";
-import { addMessage } from "redux/modules/alerts";
+import { addMessage, addError } from "redux/modules/alerts";
 import network from "network";
 import { withStyles } from "@material-ui/core/styles";
 import Logo from "components/Logo";
 import type { Organization, Translate } from "data/types";
 import DeviceLogin from "./DeviceLogin";
+
+const unknownDomainError = new UnknownDomain();
 
 const mapStateToProps = ({ auth, onboarding }) => ({
   isAuthenticated: auth.isAuthenticated,
@@ -34,7 +37,8 @@ const mapStateToProps = ({ auth, onboarding }) => ({
 
 const mapDispatchToProps = (dispatch: *) => ({
   onLogin: token => dispatch(login(token)),
-  addAlertMessage: (...props) => dispatch(addMessage(...props))
+  addAlertMessage: (...props) => dispatch(addMessage(...props)),
+  addErrorMessage: (...props) => dispatch(addError(...props))
 });
 
 type Props = {
@@ -45,7 +49,8 @@ type Props = {
   location: Object,
   organization: Organization,
   classes: Object,
-  addAlertMessage: Function,
+  addAlertMessage: (string, string, ?string) => void,
+  addErrorMessage: Error => void,
   onLogin: Function
 };
 
@@ -86,8 +91,7 @@ const styles = {
 
 type State = {
   step: number,
-  isChecking: boolean,
-  domainValidated: boolean
+  isChecking: boolean
 };
 
 let _isMounted = false;
@@ -95,7 +99,6 @@ let _isMounted = false;
 export class Login extends Component<Props, State> {
   state = {
     step: 0,
-    domainValidated: false,
     isChecking: false
   };
 
@@ -110,7 +113,6 @@ export class Login extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.checkDomain();
     _isMounted = true;
     this.onStartOnBoardingStatus();
   }
@@ -118,19 +120,6 @@ export class Login extends Component<Props, State> {
   componentWillUnmount() {
     _isMounted = false;
   }
-
-  checkDomain = async () => {
-    const { history, addAlertMessage } = this.props;
-    try {
-      await network(`/organization/exists`, "GET");
-      this.setState({ domainValidated: true });
-    } catch (e) {
-      console.error(e);
-      this.setState({ domainValidated: false });
-      history.push("/");
-      addAlertMessage("Error", "Team domain unknown", "error");
-    }
-  };
 
   UNSAFE_componentWillUpdate(nextProps: Props) {
     const { history, location } = nextProps;
@@ -158,7 +147,13 @@ export class Login extends Component<Props, State> {
 
   onStartAuth = async () => {
     if (_isMounted) {
-      const { organization, addAlertMessage, onLogin, history } = this.props;
+      const {
+        organization,
+        addErrorMessage,
+        addAlertMessage,
+        onLogin,
+        history
+      } = this.props;
       this.setState({ isChecking: true });
       try {
         const device = await await createDevice();
@@ -200,34 +195,21 @@ export class Login extends Component<Props, State> {
         } else {
           removeLocalStorageToken();
           this.setState({ isChecking: false });
-          addAlertMessage(
-            "Failed to authenticate",
-            formatError(error),
-            "error"
-          );
+          const unknownDeviceError = new UnknownDevice();
+          addErrorMessage(unknownDeviceError);
         }
       }
     }
   };
 
-  onCloseTeamError = () => {};
-
   onCancelDeviceLogin = () => {
-    this.setState({ domainValidated: false });
     this.props.history.push("/");
   };
 
   render() {
-    const { isChecking, domainValidated } = this.state;
+    const { isChecking } = this.state;
     const { classes, match, t } = this.props;
 
-    if (!domainValidated) {
-      return (
-        <div className={classes.base}>
-          <SpinnerCard />
-        </div>
-      );
-    }
     return (
       <div className={classes.base}>
         <div className={classes.wrapper}>
@@ -247,6 +229,13 @@ export class Login extends Component<Props, State> {
   }
 }
 
+const RenderError = () => (
+  <div style={{ width: 400, margin: "auto", marginTop: 200 }}>
+    <Card title="Error">
+      <TranslatedError error={unknownDomainError} field="description" />
+    </Card>
+  </div>
+);
 export default compose(
   connect(
     mapStateToProps,
@@ -255,6 +244,7 @@ export default compose(
   withStyles(styles)
 )(
   connectData(translate()(Login), {
+    RenderError,
     queries: {
       organization: OrganizationQuery
     }
