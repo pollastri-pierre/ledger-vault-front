@@ -22,7 +22,6 @@ security:
   approvals: Approvals
   members_selected: '{{nbMembersSelected}} member selected'
   members_selected_plural: '{{nbMembersSelected}} members selected'
-  membersMinimum: You must select at least <0>2</0> members
   members_desc: Select the users who can create operations in this account.
   approvals_amount: Amount
   approvals_from: approvals from {{count}} members

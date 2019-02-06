@@ -23,6 +23,9 @@ const styles = {
     width: 450,
     paddingBottom: 80
   },
+  descTop: {
+    marginBottom: 20
+  },
   infoBox: {
     marginTop: 20
   },
@@ -61,6 +64,9 @@ class SetApprovals extends Component<Props> {
           </Text>
         </header>
         <div className="content">
+          <Text className={classes.descTop}>
+            <Trans i18nKey="newAccount:security.approvals_desc" />
+          </Text>
           <InputField
             renderLeft={
               <Text small>
@@ -83,21 +89,17 @@ class SetApprovals extends Component<Props> {
               </Text>
             }
           />
-          <InfoBox type="info" withIcon className={classes.infoBox}>
-            <Text>
-              <Trans i18nKey="newAccount:security.approvals_desc" />
-            </Text>
-          </InfoBox>
-          {quorum < 2 && (
-            <InfoBox type="warning" withIcon className={classes.infoBox}>
-              <Text>
-                <Trans
-                  i18nKey="newAccount:security.approvalsMinimum"
-                  components={<b>0</b>}
-                />
-              </Text>
-            </InfoBox>
-          )}
+          {quorum < 2 &&
+            quorum !== 0 && (
+              <InfoBox type="warning" withIcon className={classes.infoBox}>
+                <Text>
+                  <Trans
+                    i18nKey="newAccount:security.approvalsMinimum"
+                    components={<b>0</b>}
+                  />
+                </Text>
+              </InfoBox>
+            )}
           {quorum > approvers.length && (
             <InfoBox type="warning" withIcon className={classes.infoBox}>
               <Text>

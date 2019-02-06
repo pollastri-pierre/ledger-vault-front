@@ -11,7 +11,6 @@ import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
-import InfoBox from "components/InfoBox";
 import Text from "components/Text";
 
 const styleCounter = {
@@ -44,9 +43,6 @@ const styles = {
   },
   content: {
     height: 340
-  },
-  infoBox: {
-    marginTop: 20
   }
 };
 
@@ -88,16 +84,6 @@ class ListApprovers extends Component<{
             })}
           </Overscroll>
         </div>
-        {approvers.length < 2 && (
-          <InfoBox type="warning" withIcon className={classes.infoBox}>
-            <Text>
-              <Trans
-                i18nKey="newAccount:security.membersMinimum"
-                components={<b>0</b>}
-              />
-            </Text>
-          </InfoBox>
-        )}
         <div className="footer">
           <DialogButton
             right
