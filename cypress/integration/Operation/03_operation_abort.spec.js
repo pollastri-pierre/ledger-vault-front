@@ -19,7 +19,7 @@ describe("Tests Abort Operation", function() {
     cy.server();
     route();
     login(4);
-    create_operation(2, Cypress.env("address"), "0.001");
+    create_operation("bitcoin_testnet",2, Cypress.env("address"), "0.001");
   });
 
   it("Not a member of the account try to abort a operation", () => {

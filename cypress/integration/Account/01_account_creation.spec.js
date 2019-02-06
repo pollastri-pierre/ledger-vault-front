@@ -29,7 +29,7 @@ describe("Tests Creation Account", function() {
     cy.get("#input_crypto")
       .type("Bitcoin Testnet", { force: true })
       .type("{enter}");
-    cy.get("input").type("BTC Testnet");
+    cy.get("input[type=text]").type("BTC Testnet");
     cy.get("[data-test=dialog-button]").click();
     cy.contains("Members").click();
     cy.get(".test-member-row")
@@ -40,14 +40,14 @@ describe("Tests Creation Account", function() {
       .click({ force: true });
     cy.get("[data-test=dialog-button]").click();
     cy.contains("Approvals").click();
-    cy.get("input").type(100);
+    cy.get("input[type=text]").type(100);
     cy.get("[data-test=dialog-button]").click();
     cy.get(".top-message-body").contains(
       "Number of approvals cannot exceed number of members"
     );
-    cy.get("input").clear();
+    cy.get("input[type=text]").clear();
 
-    cy.get("input").type(2);
+    cy.get("input[type=text]").type(2);
     cy.contains("done").click();
     cy.contains("Continue").click();
     cy.get("[data-test=dialog-button]").click();

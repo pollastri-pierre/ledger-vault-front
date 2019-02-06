@@ -176,30 +176,24 @@ export function approve_account(currency, name, fiat) {
 /**
  * Default way to create a operation.
  */
-export function create_operation(id, address, amount) {
+export function create_operation(name, id, address, amount) {
   cy.get("[data-test=new-operation]").click();
-  cy.get("[data-test=operation-creation-accounts] li:first").click({
-    force: true
-  });
-
-  cy.get("[data-test=unit-select]").click();
-  cy.get("[data-test=unit-select-values]")
-    .eq(id)
-    .debug()
-    .click({ force: true });
+  cy.get("[data-test=operation-creation-accounts]")
+    .contains(name)
+    .click();
   cy.get("[data-test=crypto-address-picker]")
     .find("input")
     .type(address);
   cy.get("[data-test=operation-creation-amount]")
     .find("input")
     .type(amount);
-
+  cy.wait(6000);
   cy.contains("Continue").click();
   cy.contains("Continue").click();
   cy.get("[data-test=dialog-button]")
     .contains("Confirm")
     .click({ force: true });
-  cy.wait(2500);
+  cy.wait(6500);
   cy.get(".top-message-body")
     .contains("the operation request has been successfully created")
     .get(".top-message-title")
