@@ -50,6 +50,7 @@ class InputField extends PureComponent<Props> {
     } = this.props;
     return (
       <TextField
+        autoComplete="off"
         fullWidth
         value={value}
         placeholder={placeholder}

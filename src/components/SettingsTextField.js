@@ -22,6 +22,7 @@ function SettingsTextField(props: Props) {
 
   return (
     <TextField
+      autoComplete="off"
       InputProps={{
         disableUnderline: true,
         classes: {
