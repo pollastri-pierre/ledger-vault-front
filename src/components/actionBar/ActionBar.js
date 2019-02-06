@@ -57,7 +57,11 @@ class ActionBar extends Component<{
     return (
       <div className={classes.base}>
         <ProfileCard match={match} />
-        <ModalRoute path="*/new-account" component={AccountCreation} />
+        <ModalRoute
+          path="*/new-account"
+          component={AccountCreation}
+          disableBackdropClick
+        />
         <div className={classes.header}>
           <Logo white />
           <div className={classes.actions}>
