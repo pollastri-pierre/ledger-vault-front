@@ -6,7 +6,7 @@ UnknownDevice:
   description: "Unknown device connected. Please connect an admin device"
 UnknownDomain:
   title: Unknown team
-  description: "Team domain unkown"
+  description: "Team domain unknown"
 InvalidDataDevice:
   title: Invalid data
   description: "Invalid data sent to the device"
@@ -15,4 +15,4 @@ NoChannelForDevice:
   description: "Are you sure to use the right device?"
 ApprovalsExceedQuorum:
   title: Approvals Exceed Quorum
-  description: "Number of approvals connot exceed number of members"
+  description: "Number of approvals cannot exceed number of members"
