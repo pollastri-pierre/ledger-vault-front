@@ -1,14 +1,21 @@
 // @flow
 import React, { PureComponent } from "react";
-import CurrencyIndex from "components/CurrencyIndex";
-import CounterValue from "components/CounterValue";
-import { getAccountTitle } from "utils/accounts";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account } from "data/types";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+
+import { getAccountTitle } from "utils/accounts";
+import {
+  getCryptoCurrencyById,
+  getERC20TokenByContractAddress
+} from "utils/cryptoCurrencies";
 import colors from "shared/colors";
-import CurrencyAccountValue from "../../CurrencyAccountValue";
+
+import CurrencyIndex from "components/CurrencyIndex";
+import CounterValue from "components/CounterValue";
+import Text from "components/Text";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+
+import type { Account } from "data/types";
 
 const styles = {
   accountItem: {
@@ -65,6 +72,9 @@ class AccountMenuItem extends PureComponent<{
     const color = erc20Format
       ? DEFAULT_COLOR
       : getCryptoCurrencyById(account.currency_id).color;
+    const token = erc20Format
+      ? getERC20TokenByContractAddress(account.contract_address)
+      : null;
 
     return (
       <MenuItem
@@ -89,7 +99,14 @@ class AccountMenuItem extends PureComponent<{
           </span>
         </div>
         <div className={classes.accountBottom}>
-          <CurrencyIndex currency={account.currency_id} index={account.index} />
+          {token ? (
+            <Text>{token.name}</Text>
+          ) : (
+            <CurrencyIndex
+              currency={account.currency_id}
+              index={account.index}
+            />
+          )}
           <span className={classes.accountCountervalue}>
             <CounterValue
               value={account.balance}

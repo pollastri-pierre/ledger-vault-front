@@ -1,11 +1,18 @@
 // @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import Text from "components/Text";
+import colors from "shared/colors";
 
 const styles = {
-  base: {},
-  index: { color: "#b7b3b3" },
-  currency: {}
+  base: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  index: {
+    color: colors.lead,
+    marginLeft: 5
+  }
 };
 
 type Props = {
@@ -18,10 +25,10 @@ class CurrencyIndex extends Component<Props> {
   render() {
     const { currency, index, classes } = this.props;
     return (
-      <span className={classes.base}>
-        <span className={classes.currency}>{currency}</span>
-        <span className={classes.index}> #{index}</span>
-      </span>
+      <div className={classes.base}>
+        <Text>{currency}</Text>
+        <Text className={classes.index}> #{index}</Text>
+      </div>
     );
   }
 }
