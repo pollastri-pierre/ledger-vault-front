@@ -23,7 +23,7 @@ context("Onboarding e2e", () => {
     cy.server();
     route();
     switch_device(1);
-    cy.get("input").type(orga_name);
+    cy.get("input[type=text]").type(orga_name, { delay: 40 });
     cy.contains("Continue").click();
     cy.wait(1000);
     cy.contains("Welcome").should("be.visible");

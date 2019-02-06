@@ -20,7 +20,7 @@ describe("ERC20 Token Account", function() {
       .type("{enter}");
 
     cy.get("[data-test=dialog-button]").click();
-    cy.get("input").type("Ledger token");
+    cy.get("input[type=text]").type("Ledger token");
     cy.get("[data-test=dialog-button]").click();
 
     cy.contains("Members").click();
@@ -33,12 +33,12 @@ describe("ERC20 Token Account", function() {
     cy.get("[data-test=dialog-button]").click();
     cy.contains("Approvals").click();
 
-    cy.get("input").clear();
-    cy.get("input").type(2);
+    cy.get("input[type=text]").clear();
+    cy.get("input[type=text]").type(2);
     cy.get("[data-test=dialog-button]").click();
     cy.get("[data-test=dialog-button]").click();
     cy.get("[data-test=dialog-button]").click();
-    cy.wait(7500);
+    cy.wait(8000);
 
     approve();
     approve_account("Ledger Coin", "Ledger token", "LGC");

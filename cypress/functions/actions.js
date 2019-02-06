@@ -7,7 +7,7 @@ export function login(id) {
   cy.visit(Cypress.env("api_server"));
   cy.clearCookies();
   switch_device(id);
-  cy.get("input").type(orga_name, { delay: 40 });
+  cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
   cy.wait(2000);
   cy.get(".top-message-body")
@@ -22,8 +22,9 @@ export function login(id) {
  */
 
 export function logout() {
-  cy.contains("view profile").click({ force: true });
-  cy.contains("logout").click();
+  //cy.contains("view profile").click({ force: true });
+  cy.get("[data-test=view-profile]").click({ force: true });
+  cy.contains("Logout").click();
   //cy.wait("@logout");
   cy.wait(2000);
   cy.get(".top-message-body")
@@ -110,7 +111,7 @@ export function create_account(currency, name) {
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
-  cy.get("input").type(name);
+  cy.get("input[type=text]").type(name);
   cy.get("[data-test=dialog-button]").click();
   cy.contains("Members").click();
   cy.get(".test-member-row")
@@ -122,12 +123,12 @@ export function create_account(currency, name) {
   cy.get("[data-test=dialog-button]").click();
   cy.contains("Approvals").click();
 
-  cy.get("input").clear();
-  cy.get("input").type(2);
+  cy.get("input[type=text]").clear();
+  cy.get("input[type=text]").type(2);
   cy.contains("done").click();
   cy.get("[data-test=dialog-button]").click();
   cy.contains("done").click();
-  cy.wait(7500);
+  cy.wait(8000);
 
   //We should get a Account request created message
   cy.get(".top-message-body")
