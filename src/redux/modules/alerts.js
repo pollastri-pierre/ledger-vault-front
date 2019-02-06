@@ -4,6 +4,7 @@ import { LOGOUT } from "./auth";
 
 export const REMOVE_MESSAGE = "messages/REMOVE_MESSAGE";
 export const ADD_MESSAGE = "messages/ADD_MESSAGE";
+export const ADD_ERROR = "messages/ADD_ERROR";
 
 export type Store = {
   visible: boolean
@@ -15,6 +16,12 @@ export function closeMessage() {
   };
 }
 
+export function addError(error: Error) {
+  return {
+    type: ADD_ERROR,
+    error
+  };
+}
 export function addMessage(
   title: string,
   content: string,
@@ -67,6 +74,10 @@ export default function reducer(state: Store = initialState, action: Object) {
         content: error.json.message,
         type: "error"
       };
+    }
+    case ADD_ERROR: {
+      const { error } = action;
+      return { visible: true, error, type: "error" };
     }
     case ADD_MESSAGE: {
       const { title, content, messageType } = action;

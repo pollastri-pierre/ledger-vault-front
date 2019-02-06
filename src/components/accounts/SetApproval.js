@@ -4,18 +4,17 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { translate, Interpolate, Trans } from "react-i18next";
 import { connect } from "react-redux";
-import { addMessage } from "redux/modules/alerts";
-import type { Translate } from "data/types";
+import { addError } from "redux/modules/alerts";
 import modals from "shared/modals";
 import InputField from "components/InputField";
 import Text from "components/Text";
 import colors from "shared/colors";
 import DialogButton from "components/buttons/DialogButton";
+import { ApprovalsExceedQuorum } from "utils/errors";
 import InfoModal from "components/InfoModal";
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onAddMessage: (title, content, type) =>
-    dispatch(addMessage(title, content, type))
+  onAddError: error => dispatch(addError(error))
 });
 
 const styles = {
@@ -33,9 +32,8 @@ const styles = {
 };
 
 type Props = {
-  t: Translate,
   classes: { [_: $Keys<typeof styles>]: string },
-  onAddMessage: (t: string, m: string, ty: string) => void,
+  onAddError: Error => void,
   goBack: Function,
   quorum: number,
   approvers: string[],
@@ -44,11 +42,11 @@ type Props = {
 
 class SetApprovals extends Component<Props> {
   submit = () => {
-    const { goBack, onAddMessage, approvers, quorum, t } = this.props;
+    const { goBack, onAddError, approvers, quorum } = this.props;
     if (parseInt(quorum, 10) <= approvers.length) {
       goBack();
     } else {
-      onAddMessage("Error", t("newAccount:errors.approvals_exceed"), "error");
+      onAddError(new ApprovalsExceedQuorum());
     }
   };
 

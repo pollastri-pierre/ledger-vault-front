@@ -4,9 +4,11 @@ import { translate } from "react-i18next";
 import network from "network";
 import type { Translate } from "data/types";
 import HelpLink from "components/HelpLink";
+import { UnknownDomain } from "utils/errors";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import { DialogButton, Alert } from "components";
+import TranslatedError from "components/TranslatedError";
 import Logo from "components/Logo";
 
 import Profile from "components/icons/thin/Profile";
@@ -75,6 +77,8 @@ const styles = {
     marginTop: 50
   }
 };
+
+const unknownDomainError = new UnknownDomain();
 class Welcome extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
@@ -129,7 +133,7 @@ class Welcome extends Component<
           title="Error"
           theme="error"
         >
-          <div>Unknown organization domain name</div>
+          <TranslatedError error={unknownDomainError} field="description" />
         </Alert>
         <div className={classes.banner}>
           <Logo />
