@@ -172,7 +172,7 @@ class AccountSettings extends PureComponent<Props, State> {
                       color={colors.lightGrey}
                     />
                     <Text bold>
-                      {quorum} of {members.length}
+                      {quorum} out of {members.length}
                     </Text>
                   </div>
                 </SectionRow>

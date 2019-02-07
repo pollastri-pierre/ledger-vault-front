@@ -15,7 +15,8 @@ type Props = {
   large?: boolean,
   header?: boolean,
   uppercase?: boolean,
-  bold?: boolean
+  bold?: boolean,
+  italic?: boolean
 };
 
 const styles = {
@@ -39,6 +40,9 @@ const styles = {
   bold: {
     fontWeight: "bold"
   },
+  italic: {
+    fontStyle: "italic"
+  },
   inline: {
     display: "inline-block"
   }
@@ -54,6 +58,7 @@ class Text extends PureComponent<Props> {
       header,
       uppercase,
       bold,
+      italic,
       inline,
       className,
       ...props
@@ -65,6 +70,7 @@ class Text extends PureComponent<Props> {
           large && classes.large,
           header && classes.header,
           bold && classes.bold,
+          italic && classes.italic,
           uppercase && classes.uppercase,
           inline && classes.inline
         ])}
