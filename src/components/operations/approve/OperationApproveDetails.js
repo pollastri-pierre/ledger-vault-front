@@ -33,7 +33,7 @@ function OperationApproveDetails(props: {
           <DateFormat date={operation.created_on} />
         </LineRow>
         <LineRow label={<Trans i18nKey="newOperation:details.account" />}>
-          <AccountName name={account.name} currencyId={account.currency_id} />
+          <AccountName account={account} />
         </LineRow>
         {isETHType ? (
           <Fragment>

@@ -78,7 +78,7 @@ const OperationRow = ({
 
 const AccountRow = ({ account }: { account: Account }) => (
   <Row date={account.created_on}>
-    <AccountName name={account.name} currencyId={account.currency_id} />
+    <AccountName account={account} />
   </Row>
 );
 
