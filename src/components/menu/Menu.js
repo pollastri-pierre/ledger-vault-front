@@ -139,7 +139,12 @@ function Menu(props: {
         </div>
       )}
 
-      <ModalRoute path="*/new-operation" component={Send} match={match} />
+      <ModalRoute
+        path="*/new-operation"
+        component={Send}
+        match={match}
+        disableBackdropClick
+      />
       <ModalRoute path="*/receive" component={Receive} match={match} />
     </div>
   );
