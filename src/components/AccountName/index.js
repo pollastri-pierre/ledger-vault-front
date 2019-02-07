@@ -1,35 +1,27 @@
 // @flow
-
 import React, { Component } from "react";
-
 import type { Account } from "data/types";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
-import BadgeCurrency from "../BadgeCurrency";
-
-const DEFAULT_COLOR = { color: "black" };
+import AccountIcon from "../AccountIcon";
 
 class AccountName extends Component<{
   account?: Account,
   name?: string | React$Node,
-  currencyId?: string
+  // for account creation confirmation we don't have the account type yet,
+  // so we can't rely account_type. It's useful to tell the component we are dealing with an erc20 token or
+  // with a specific currency so it can pass it to AccountIcon
+  currencyId?: string,
+  isERC20?: boolean
 }> {
   render() {
-    const { name, currencyId, account } = this.props;
-
+    const { name, account, isERC20, currencyId } = this.props;
     const displayName = name || (account ? account.name : "[no name]");
-    const isERC20TokenAccount = account && account.account_type === "ERC20";
-
-    const curId = currencyId || (account ? account.currency_id : null);
-
-    const cur = isERC20TokenAccount
-      ? DEFAULT_COLOR
-      : curId
-        ? getCryptoCurrencyById(curId)
-        : DEFAULT_COLOR;
 
     return (
       <div>
-        <BadgeCurrency currency={cur} />
+        <AccountIcon
+          isERC20={(account && account.account_type === "ERC20") || isERC20}
+          currencyId={(account && account.currency_id) || currencyId}
+        />
         <span data-test="name">{displayName}</span>
       </div>
     );

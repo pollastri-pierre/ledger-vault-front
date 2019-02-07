@@ -43,7 +43,7 @@ class ApprovalStatusWithAccountName extends Component<{
           />
         </Text>
         <Text small className={classes.account}>
-          <AccountName name={account.name} currencyId={account.currency_id} />
+          <AccountName account={account} />
         </Text>
       </div>
     );

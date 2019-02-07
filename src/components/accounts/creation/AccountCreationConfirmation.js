@@ -61,8 +61,8 @@ function AccountCreationConfirmation(props: Props) {
         {currency && (
           <LineRow label={<Trans i18nKey="newAccount:confirmation.account" />}>
             <AccountName
-              name={accountCreationState.name}
               currencyId={currency.id}
+              name={accountCreationState.name}
             />
           </LineRow>
         )}
@@ -71,7 +71,7 @@ function AccountCreationConfirmation(props: Props) {
             <LineRow
               label={<Trans i18nKey="newAccount:confirmation.account" />}
             >
-              {accountCreationState.name}
+              <AccountName isERC20 name={accountCreationState.name} />
             </LineRow>
             {accountCreationState.parent_account &&
               accountCreationState.parent_account.name && (
