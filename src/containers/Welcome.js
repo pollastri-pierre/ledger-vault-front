@@ -148,6 +148,7 @@ class Welcome extends Component<
           <Profile className={classes.icon} color="#e2e2e2" />
           <br />
           <MUITextField
+            autoComplete="off"
             error={error ? domain !== "" : false}
             style={{ width: "320px", marginTop: "5px", color: "black" }}
             InputProps={{
