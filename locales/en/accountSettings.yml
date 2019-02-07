@@ -3,7 +3,7 @@ header: Account Settings
 general:
   title: General
   name: Account name
-  exchange: Exchange
+  exchange: Rate Provider
   units: Units
 operationRules:
   title: Operation rules
