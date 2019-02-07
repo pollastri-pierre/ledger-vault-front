@@ -26,6 +26,8 @@ security:
   approvals_amount: Amount
   approvals_from: approvals from {{count}} members
   approvals_desc: Define the number of approvals required before operations created in this account are broadcasted to the blockchain.
+  approvalsMinimum: You must select at least <0>2</0> members
+  approvalsMaximum: You can't select more than <0>{{membersCount}}</1> members
   selected: selected
   required: required
 confirmation:

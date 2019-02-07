@@ -42,9 +42,10 @@ const styles = {
     }
   },
   content: {
-    height: 350
+    height: 340
   }
 };
+
 class ListApprovers extends Component<{
   goBack: Function,
   members: Member[],
@@ -84,7 +85,12 @@ class ListApprovers extends Component<{
           </Overscroll>
         </div>
         <div className="footer">
-          <DialogButton right highlight onTouchTap={goBack}>
+          <DialogButton
+            right
+            highlight
+            onTouchTap={goBack}
+            disabled={approvers.length < 2}
+          >
             <Trans i18nKey="common:done" />
           </DialogButton>
         </div>
