@@ -13,6 +13,7 @@ import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import UpdateAccounts from "components/UpdateAccounts";
 import Menu from "components/menu/Menu";
 import Card from "components/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
 
 const styles = {
   error: {
@@ -48,7 +49,10 @@ const RenderError = withStyles(styles)(({ classes, error, restlay }) => (
   </div>
 ));
 
+const RenderLoading = () => <SpinnerCard />;
+
 export default connectData(translate()(App), {
+  RenderLoading,
   RenderError,
   queries: {
     accounts: AccountsQuery
