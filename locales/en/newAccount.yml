@@ -45,3 +45,4 @@ errors:
   no_currency_found: 'No crypto asset {{inputValue}}'
 search:
   extraERC20: <0>{{erc20Count}}</0> crypto assets and tokens available
+not_supported: Support suspended due to hard fork
