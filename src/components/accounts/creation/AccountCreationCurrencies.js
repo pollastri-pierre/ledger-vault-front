@@ -90,7 +90,11 @@ type Props = {
 class AccountCreationCurrencies extends PureComponent<Props> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
     this.props.updateAccountCreationState(() => ({
-      parent_account: parentAccount ? { id: parentAccount.id } : null
+      parent_account: parentAccount ? { id: parentAccount.id } : null,
+      approvers:
+        parentAccount && parentAccount.members.length > 0
+          ? parentAccount.members.map(m => m.pub_key)
+          : []
     }));
   };
 
@@ -120,6 +124,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: null,
         erc20token,
+        // if parent_account has operation rules, we cannot update the members so we set the members the parent's members
+        approvers:
+          availableParentAccounts.length &&
+          availableParentAccounts[0].members.length > 0
+            ? availableParentAccounts[0].members.map(m => m.pub_key)
+            : [],
         parent_account: availableParentAccounts.length
           ? { id: availableParentAccounts[0].id }
           : null
