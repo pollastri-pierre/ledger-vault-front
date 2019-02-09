@@ -1,19 +1,39 @@
 import React from "react";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
 import JssProvider from "react-jss/lib/JssProvider";
+import { I18nextProvider } from "react-i18next";
+import { ThemeProvider } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
 import { configure, addDecorator } from "@storybook/react";
+import { createStore as reduxCreateStore, combineReducers } from "redux";
 import {
   MuiThemeProvider,
   createMuiTheme,
   createGenerateClassName
 } from "@material-ui/core/styles";
 
-import theme from "styles/theme";
+import CounterValues from "data/CounterValues";
+import exchanges from "redux/modules/exchanges";
+import theme, { styledTheme } from "styles/theme";
+import i18n from "i18n";
+
+const createStore = () => {
+  return reduxCreateStore(
+    combineReducers({
+      countervalues: CounterValues.reducer,
+      exchanges
+    }),
+    {},
+    composeWithDevTools()
+  );
+};
 
 const muiTheme = createMuiTheme(theme);
 
 const req = require.context("../src", true, /.stories.js$/);
+const store = createStore();
 
 const generateClassName = (a, b) => {
   return `${b.options.classNamePrefix}-${a.key}`;
@@ -25,9 +45,15 @@ function loadStories() {
 
 addDecorator(story => (
   <JssProvider generateClassName={generateClassName}>
-    <MuiThemeProvider theme={muiTheme}>
-      <StyledContainer>{story()}</StyledContainer>
-    </MuiThemeProvider>
+    <Provider store={store}>
+      <I18nextProvider i18n={i18n}>
+        <MuiThemeProvider theme={muiTheme}>
+          <ThemeProvider theme={styledTheme}>
+            <StyledContainer>{story()}</StyledContainer>
+          </ThemeProvider>
+        </MuiThemeProvider>
+      </I18nextProvider>
+    </Provider>
   </JssProvider>
 ));
 
