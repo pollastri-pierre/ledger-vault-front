@@ -6,63 +6,12 @@ import type { OptionProps } from "react-select/lib/types";
 
 import type { Account } from "data/types";
 
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
-import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
-import ERC20TokenIcon from "components/icons/ERC20Token";
-import Select from "components/Select";
-import colors from "shared/colors";
-
-const ROW_SIZE = 20;
-const ICON_SIZE = 16;
-
-const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
+import AccountName from "components/AccountName";
+import Select from "components/base/Select";
 
 type Option = {
   label: string,
   value: Account
-};
-
-function getAccountIcon(account: Account) {
-  if (account.account_type === "ERC20") {
-    return erc20TokenIcon;
-  }
-  const currency = getCryptoCurrencyById(account.currency_id);
-  if (!currency) return null;
-  return account.account_type === "ERC20" ? (
-    erc20TokenIcon
-  ) : (
-    <CryptoCurrencyIcon
-      currency={currency}
-      color={currency.color}
-      size={ICON_SIZE}
-    />
-  );
-}
-
-function getAccountLabel(account: Account) {
-  return account.name;
-}
-
-const styles = {
-  genericRowContainer: {
-    fontSize: 13,
-    height: ROW_SIZE,
-    display: "flex",
-    alignItems: "center",
-    whiteSpace: "nowrap"
-  },
-  genericRowIcon: {
-    height: ROW_SIZE,
-    width: ROW_SIZE,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10
-  },
-  placeholder: {
-    fontSize: 10,
-    color: colors.shark
-  }
 };
 
 const GenericRow = (props: OptionProps) => {
@@ -77,15 +26,7 @@ const GenericRow = (props: OptionProps) => {
     account = account.value;
   }
 
-  const icon = getAccountIcon(account);
-  const label = getAccountLabel(account);
-
-  return (
-    <div style={styles.genericRowContainer}>
-      <div style={styles.genericRowIcon}>{icon}</div>
-      <div>{label}</div>
-    </div>
-  );
+  return <AccountName py={5} account={account} />;
 };
 
 const OptionComponent = (props: OptionProps) => (
@@ -103,14 +44,6 @@ const ValueComponent = (props: OptionProps) => (
 const customComponents = {
   Option: OptionComponent,
   SingleValue: ValueComponent
-};
-
-const customStyles = {
-  placeholder: provided => ({
-    ...provided,
-    fontSize: 10,
-    color: colors.shark
-  })
 };
 
 const buildOption = account => ({ label: account.name, value: account });
@@ -134,7 +67,6 @@ class SelectAccount extends PureComponent<Props> {
       <Select
         options={accounts.map(buildOption)}
         components={customComponents}
-        customStyles={customStyles}
         {...props}
         onChange={this.handleChange}
         value={value}

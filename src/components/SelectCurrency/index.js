@@ -16,7 +16,8 @@ import {
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import Text from "components/base/Text";
-import Select from "components/Select";
+import Box from "components/base/Box";
+import Select from "components/base/Select";
 import colors from "shared/colors";
 
 const ROW_SIZE = 20;
@@ -150,10 +151,6 @@ const styles = {
     padding: 4,
     backgroundColor: "rgba(0, 0, 0, 0.05)"
   },
-  placeholder: {
-    fontSize: 10,
-    color: colors.shark
-  },
   erc20Hint: {
     backgroundColor: colors.cream,
     textAlign: "center",
@@ -172,10 +169,10 @@ const GenericRow = (props: OptionProps) => {
   const label = getItemLabel(item);
 
   return (
-    <div style={styles.genericRowContainer}>
-      <div style={styles.genericRowIcon}>{icon}</div>
-      <div>{label}</div>
-    </div>
+    <Box horizontal align="center" flow={10} py={5}>
+      {icon}
+      <Text lineHeight={1}>{label}</Text>
+    </Box>
   );
 };
 
@@ -214,14 +211,6 @@ const customComponents = {
   Menu: MenuComponent
 };
 
-const customStyles = {
-  placeholder: provided => ({
-    ...provided,
-    fontSize: 10,
-    color: colors.shark
-  })
-};
-
 type Props = {
   value: CryptoCurrency | ERC20Token | null,
   onChange: (?Item) => void
@@ -235,10 +224,11 @@ class SelectCurrency extends PureComponent<Props> {
   };
 
   render() {
-    const { value } = this.props;
+    const { value, ...props } = this.props;
 
     // find the currency OR erc20token inside all options
     const resolvedValue = value ? getValueOption(value) : null;
+
     return (
       <Select
         async
@@ -247,8 +237,7 @@ class SelectCurrency extends PureComponent<Props> {
         isClearable
         loadOptions={fetchOptions}
         components={customComponents}
-        styles={customStyles}
-        {...this.props}
+        {...props}
         onChange={this.handleChange}
         value={resolvedValue}
       />
