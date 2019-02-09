@@ -12,7 +12,7 @@ import colors from "shared/colors";
 
 import CurrencyIndex from "components/CurrencyIndex";
 import CounterValue from "components/CounterValue";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 
 import type { Account } from "data/types";

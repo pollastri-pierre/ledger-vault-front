@@ -7,7 +7,7 @@ import InputField from "components/InputField";
 import AccountSummary from "components/AccountSummary";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import InfoBox from "components/InfoBox";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import {

@@ -15,7 +15,7 @@ import colors from "shared/colors";
 
 import type { Member } from "data/types";
 
-import Text from "components/Text";
+import Text from "components/base/Text";
 import MenuLink from "components/MenuLink";
 import PopBubble from "../utils/PopBubble";
 

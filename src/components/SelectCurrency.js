@@ -15,7 +15,7 @@ import {
 } from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import Select from "components/Select";
 import colors from "shared/colors";
 

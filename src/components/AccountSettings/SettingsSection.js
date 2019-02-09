@@ -1,7 +1,7 @@
 // @flow
 import React, { Component, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import colors from "shared/colors";
 
 type HeaderProps = {

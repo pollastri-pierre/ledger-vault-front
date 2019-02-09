@@ -539,4 +539,8 @@ const theme = {
   }
 };
 
-export default theme;
+export const styledTheme = {
+  space: []
+};
+
+export { theme as default };

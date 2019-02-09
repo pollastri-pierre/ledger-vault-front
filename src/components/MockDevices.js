@@ -8,7 +8,7 @@ import { logout } from "redux/modules/auth";
 import { connect } from "react-redux";
 
 import colors from "shared/colors";
-import Text from "components/Text";
+import Text from "components/base/Text";
 
 const API_BASE_URL = "http://localhost:5001";
 

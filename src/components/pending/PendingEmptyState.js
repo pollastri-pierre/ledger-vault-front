@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from "react";
-import Text from "components/Text";
+import Text from "components/base/Text";
 
 type Props = {
   text: React$Node,

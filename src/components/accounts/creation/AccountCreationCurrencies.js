@@ -23,7 +23,7 @@ import {
   getCurrencyIdFromBlockchainName
 } from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
 

@@ -8,7 +8,7 @@ import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
 import { urls } from "utils/urls";
 import Logo from "components/Logo";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
