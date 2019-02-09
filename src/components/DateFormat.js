@@ -2,6 +2,10 @@
 import moment from "moment";
 import React, { Component } from "react";
 
+const style = {
+  whiteSpace: "nowrap"
+};
+
 class DateFormat extends Component<*> {
   props: {
     date: Date | string,
@@ -15,7 +19,11 @@ class DateFormat extends Component<*> {
 
   render() {
     const { date, format, dataTest } = this.props;
-    return <span data-test={dataTest}>{moment(date).format(format)}</span>;
+    return (
+      <span data-test={dataTest} style={style}>
+        {moment(date).format(format)}
+      </span>
+    );
   }
 }
 

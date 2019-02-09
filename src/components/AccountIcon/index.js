@@ -1,64 +1,59 @@
 // @flow
+
 import React, { PureComponent } from "react";
+
 import colors from "shared/colors";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
 import ERC20TokenIcon from "components/icons/ERC20Token";
+import Box from "components/base/Box";
+
 import {
   getCryptoCurrencyIcon,
   getCryptoCurrencyById
 } from "utils/cryptoCurrencies";
 
-const styles = {
-  base: {
-    verticalAlign: "middle",
-    marginRight: 6,
-    display: "inline-block",
-    "& svg": {
-      verticalAlign: "text-bottom"
-    }
-  },
-  placeholder: {
-    display: "inline-block",
-    background: colors.argile,
-    borderRadius: "50%"
-  }
+const placeholderStyle = {
+  background: colors.argile,
+  borderRadius: "50%"
 };
+
 type Props = {
   size: number,
-  classes: { [_: $Keys<typeof styles>]: string },
-  className?: string,
   currencyId?: string,
   isERC20?: boolean
 };
+
 class AccountIcon extends PureComponent<Props> {
   static defaultProps = {
-    size: 20
+    size: 16
   };
 
-  renderPlaceholder = () => {
-    const { classes } = this.props;
-    return <div className={classes.placeholder} />;
+  Placeholder = () => {
+    const { size } = this.props;
+    return <div style={{ ...placeholderStyle, width: size, height: size }} />;
+  };
+
+  Inner = () => {
+    const { Placeholder } = this;
+    const { size, isERC20, currencyId } = this.props;
+    if (isERC20) return <ERC20TokenIcon size={size} />;
+    const currency = currencyId && getCryptoCurrencyById(currencyId);
+    if (!currency) return <Placeholder />;
+    const IconCurrency = currency ? getCryptoCurrencyIcon(currency) : null;
+    if (!IconCurrency) return <Placeholder />;
+    return <IconCurrency size={size} color={currency.color} />;
   };
 
   render() {
-    const { size, isERC20, classes, currencyId, className } = this.props;
-    let inner;
-    // if isERC20, straightfoward we display the erc20icon
-    if (isERC20) {
-      inner = <ERC20TokenIcon size={size} />;
-    } else {
-      const currency = currencyId && getCryptoCurrencyById(currencyId);
-      const IconCurrency = currency ? getCryptoCurrencyIcon(currency) : null;
-      inner =
-        currency && IconCurrency ? (
-          <IconCurrency size={size} color={currency.color} />
-        ) : (
-          this.renderPlaceholder()
-        );
-    }
-    return <span className={classnames(classes.base, className)}>{inner}</span>;
+    const { Inner } = this;
+    const { size } = this.props;
+
+    // TODO: put width/height in a state.style object to avoid create new ref
+    return (
+      <Box align="center" style={{ width: size, height: size }}>
+        <Inner />
+      </Box>
+    );
   }
 }
 
-export default withStyles(styles)(AccountIcon);
+export default AccountIcon;
