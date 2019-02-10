@@ -5,9 +5,11 @@ import CurrencyFiatValue from "components/CurrencyFiatValue";
 import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import colors from "shared/colors";
+import CounterValues from "data/CounterValues";
+import Text from "components/base/Text";
 
 import type { TransactionType } from "data/types";
-import CounterValues from "data/CounterValues";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
@@ -43,7 +45,7 @@ class CounterValue extends PureComponent<Props> {
   render() {
     const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return "N/A";
+      return <Text color={colors.mediumGrey}>N/A</Text>;
     }
     return (
       <CurrencyFiatValue
