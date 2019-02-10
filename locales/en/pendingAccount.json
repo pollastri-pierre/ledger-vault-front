@@ -1,0 +1,20 @@
+{
+  "abort": {
+    "content":
+      "Do you really want to abort the account ? The request will be cancelled and the account will not be created.",
+    "title": "Abort account request"
+  },
+  "details": {
+    "approvals": "Approvals",
+    "approvalsRange": "{{quorum}} out of {{memberLength}} members",
+    "balance": "Balance",
+    "currency": "Currency",
+    "date": "Requested",
+    "members": "Members",
+    "name": "Name",
+    "parent": "Parent",
+    "selectedMembers": "{{memberLength}} selected",
+    "smartContract": "Smart contract"
+  },
+  "tabs": { "details": "details", "members": "members", "status": "status" }
+}

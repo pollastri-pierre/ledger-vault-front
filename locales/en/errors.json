@@ -1,0 +1,23 @@
+{
+  "ApprovalsExceedQuorum": {
+    "description": "Number of approvals cannot exceed number of members",
+    "title": "Approvals Exceed Quorum"
+  },
+  "InvalidDataDevice": {
+    "description": "Invalid data sent to the device",
+    "title": "Invalid data"
+  },
+  "NoChannelForDevice": {
+    "description": "Are you sure to use the right device?",
+    "title": "No Channel For Device"
+  },
+  "UnknownDevice": {
+    "description": "Unknown device connected. Please connect an admin device",
+    "title": "Unknown device"
+  },
+  "UnknownDomain": {
+    "description": "Team domain unknown",
+    "title": "Unknown team"
+  },
+  "generic": { "description": "An error occured", "title": "Error" }
+}

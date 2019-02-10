@@ -1,0 +1,64 @@
+{
+  "confirmation": {
+    "account": "Account",
+    "approvals": "Required approvals",
+    "approvals_members": "{{count}} of {{total}} members",
+    "currency": "Currency",
+    "desc":
+      "An Account Request will be sent to the workspace Administrators. The account will be created once they approve it.",
+    "members": "Members",
+    "parentAccount": "Parent Ethereum account",
+    "selectedMembers": "{{memberLength}} selected",
+    "title": "confirmation"
+  },
+  "currency": {
+    "label": "Crypto asset",
+    "placeholder": "Search for a crypto asset or a token",
+    "tabTitle": "currency"
+  },
+  "erc20": {
+    "createNew": "Create a new read-only Ethereum account",
+    "infoNewAccount":
+      "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center",
+    "matchingNameWarning":
+      "Please use different names for the ERC20 token account and the Ethereum account",
+    "selectExisting": "Select an existing Ethereum account"
+  },
+  "errors": {
+    "approvals_exceed": "Number of approvals cannot exceed number of members.",
+    "no_currency_found": "No crypto asset {{inputValue}}"
+  },
+  "options": {
+    "acc_name_placeholder": "Enter account name",
+    "name": "name",
+    "parentName": "Parent account name",
+    "selectedParent": "Selected ETH account",
+    "title": "name"
+  },
+  "search": {
+    "extraERC20":
+      "\u003c0\u003e{{erc20Count}}\u003c/0\u003e crypto assets and tokens available"
+  },
+  "security": {
+    "account_members": "Account members",
+    "approvals": "Approvals",
+    "approvalsMaximum":
+      "You can't select more than \u003c0\u003e{{membersCount}}\u003c/1\u003e members",
+    "approvalsMinimum":
+      "You must select at least \u003c0\u003e2\u003c/0\u003e members",
+    "approvals_amount": "Amount",
+    "approvals_desc":
+      "Define the number of approvals required before operations created in this account are broadcasted to the blockchain.",
+    "approvals_from": "approvals from {{count}} members",
+    "members": "Members",
+    "members_desc":
+      "Select the users who can create operations in this account.",
+    "members_selected": "{{nbMembersSelected}} member selected",
+    "members_selected_plural": "{{nbMembersSelected}} members selected",
+    "required": "required",
+    "scheme": "Operation rules",
+    "selected": "selected",
+    "title": "rules"
+  },
+  "title": "New account"
+}

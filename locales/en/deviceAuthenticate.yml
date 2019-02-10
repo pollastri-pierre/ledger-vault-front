@@ -1,7 +1,0 @@
-errors:
-  hsm_unavailable:
-    title: HSM unavailable
-    content: Could not reach the HSM. Network issue.
-  unknown:
-    title: Error
-    content: An error occured.

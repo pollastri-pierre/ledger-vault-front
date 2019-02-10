@@ -1,0 +1,10 @@
+{
+  "general": "General",
+  "operation_rules": "Operation rules",
+  "security_scheme": {
+    "autoexpire": "Auto-expire",
+    "quorum": "Required approvals",
+    "ratelimiter": "Rate-limiter",
+    "timelock": "Time-lock"
+  }
+}

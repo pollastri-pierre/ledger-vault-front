@@ -1,0 +1,19 @@
+{
+  "accounts_updated":
+    "The Ledger Vault platform has been updated. Find out more in the \u003c1\u003e\u003c0\u003erelease notes\u003c/1\u003e\u003c/0\u003e",
+  "approve": "Approve the account",
+  "desc":
+    "You must define the operation rules before you can create operations in this account",
+  "desc_approve":
+    "The operation rules has been re-created. You can approve the pending request",
+  "instruction": "Read these instructions before you get started",
+  "provide": "Provide account operation rules",
+  "quorum": "Quorum not reached yet",
+  "quorum_approve":
+    "You have already approved the account request. The quorum needs to be reached before the account is fully updated.",
+  "title": "Action required",
+  "unable_access":
+    "Before you start using the Ledger Vault, you must re-create your account(s) by providing the name and operation rules for each of them.",
+  "when_ready":
+    "When you're ready to  provide that information, click Get Started."
+}
