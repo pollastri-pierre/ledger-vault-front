@@ -17,7 +17,7 @@ import {
 import CounterValues from "data/CounterValues";
 import exchanges from "redux/modules/exchanges";
 import theme, { styledTheme } from "styles/theme";
-import i18n from "i18n";
+import i18n from "./i18n";
 
 const createStore = () => {
   return reduxCreateStore(
