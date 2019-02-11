@@ -1,11 +1,11 @@
 // @flow
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 
 import OperationStatus from "components/OperationStatus";
 import CopyToClipboardButton from "components/CopyToClipboardButton";
+import Box from "components/base/Box";
 import type { Operation, Account } from "data/types";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
@@ -53,12 +53,9 @@ class TabOverview extends Component<Props> {
           <LineRow
             label={<Trans i18nKey="operationDetails:overview.account" />}
           >
-            <Link
-              style={{ textDecoration: "none", color: "black" }}
-              to={`/account/${account.id}`}
-            >
+            <Box align="flex-end">
               <AccountName account={account} />
-            </Link>
+            </Box>
           </LineRow>
           <LineRow label={<Trans i18nKey="operationDetails:overview.fees" />}>
             <Amount account={account} value={operation.fees} />
