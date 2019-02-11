@@ -39,6 +39,7 @@
     "extraERC20":
       "\u003c0\u003e{{erc20Count}}\u003c/0\u003e crypto assets and tokens available"
   },
+  "not_supported": "Support suspended due to hard fork",
   "security": {
     "account_members": "Account members",
     "approvals": "Approvals",

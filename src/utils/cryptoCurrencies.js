@@ -33,6 +33,12 @@ const supported: CryptoCurrencyIds[] = [
   "ethereum_testnet"
 ];
 
+const notSupportedCoin: CryptoCurrencyIds[] = ["komodo", "bitcoin_cash"];
+
+export const isNotSupportedCoin: CryptoCurrency => boolean = memoize(
+  (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1
+);
+
 export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
   (withDevCrypto?: boolean) => {
     const list = listCC(withDevCrypto)

@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { isNotSupportedCoin } from "utils/cryptoCurrencies";
 
 import type {
   State as AccountCreationState,
@@ -85,8 +86,10 @@ class MainCreation extends Component<Props> {
     switch (currentTab) {
       case 0:
         isNextDisabled =
-          _.isNull(accountCreationState.erc20token) &&
-          _.isNull(accountCreationState.currency);
+          (_.isNull(accountCreationState.erc20token) &&
+            _.isNull(accountCreationState.currency)) ||
+          (accountCreationState.currency &&
+            isNotSupportedCoin(accountCreationState.currency));
         break;
       case 1:
         isNextDisabled = accountCreationState.erc20token

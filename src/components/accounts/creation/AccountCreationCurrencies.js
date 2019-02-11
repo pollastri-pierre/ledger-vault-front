@@ -20,6 +20,7 @@ import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import {
   isERC20Token,
+  isNotSupportedCoin,
   getCurrencyIdFromBlockchainName
 } from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
@@ -90,7 +91,11 @@ type Props = {
 class AccountCreationCurrencies extends PureComponent<Props> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
     this.props.updateAccountCreationState(() => ({
-      parent_account: parentAccount ? { id: parentAccount.id } : null
+      parent_account: parentAccount ? { id: parentAccount.id } : null,
+      approvers:
+        parentAccount && parentAccount.members.length > 0
+          ? parentAccount.members.map(m => m.pub_key)
+          : []
     }));
   };
 
@@ -107,7 +112,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: item.value,
         erc20token: null,
-        currentTab: 1,
+        currentTab: isNotSupportedCoin(item.value) ? 0 : 1,
         parent_account: null
       });
     } else {
@@ -120,6 +125,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: null,
         erc20token,
+        // if parent_account has operation rules, we cannot update the members so we set the members the parent's members
+        approvers:
+          availableParentAccounts.length &&
+          availableParentAccounts[0].members.length > 0
+            ? availableParentAccounts[0].members.map(m => m.pub_key)
+            : [],
         parent_account: availableParentAccounts.length
           ? { id: availableParentAccounts[0].id }
           : null
@@ -164,6 +175,16 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             />
           )}
         />
+        {accountCreationState.currency &&
+          isNotSupportedCoin(accountCreationState.currency) && (
+            <div className={classes.topMarged}>
+              <InfoBox withIcon type="warning">
+                <Text>
+                  <Trans i18nKey="newAccount:not_supported" />
+                </Text>
+              </InfoBox>
+            </div>
+          )}
         {displayERC20Box && (
           <div className={classes.topMarged}>
             {availableParentAccounts.length > 0 ? (

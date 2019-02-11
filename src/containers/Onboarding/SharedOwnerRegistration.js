@@ -25,6 +25,7 @@ import Footer from "./Footer";
 type Props = {
   t: Translate,
   onboarding: Onboarding,
+  history: *,
   onAddSharedOwner: Function,
   onGetChallenge: Function
 };
@@ -52,7 +53,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
   };
 
   render() {
-    const { t, onboarding } = this.props;
+    const { t, onboarding, history } = this.props;
     const { registering } = this.state;
     if (onboarding.fatal_error) {
       return <div />;
@@ -73,6 +74,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
             cancel={this.onToggleRegisteringModal}
             challenge={onboarding.registering_shared_owner.challenge}
             finish={this.add}
+            history={history}
           />
         </BlurDialog>
         <Title>{t("onboarding:so_registration.title")}</Title>
