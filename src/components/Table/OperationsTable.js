@@ -18,6 +18,8 @@ import OperationStatus from "components/OperationStatus";
 
 import type { Account, Operation } from "data/types";
 
+import TableScroll from "./TableScroll";
+
 type Props = {
   operations: Operation[],
   onOperationClick: Operation => void,
@@ -62,10 +64,15 @@ class OperationsTable extends PureComponent<Props> {
     }
 
     return (
-      <MUITable>
-        <OperationsTableHeader withStatus={withStatus} withLabel={withLabel} />
-        <MUITableBody>{operations.map(this.Operation)}</MUITableBody>
-      </MUITable>
+      <TableScroll>
+        <MUITable>
+          <OperationsTableHeader
+            withStatus={withStatus}
+            withLabel={withLabel}
+          />
+          <MUITableBody>{operations.map(this.Operation)}</MUITableBody>
+        </MUITable>
+      </TableScroll>
     );
   }
 }

@@ -16,6 +16,8 @@ import NoDataPlaceholder from "components/NoDataPlaceholder";
 
 import type { Account } from "data/types";
 
+import TableScroll from "./TableScroll";
+
 type Props = {
   accounts: Account[],
   onAccountClick: Account => void
@@ -37,10 +39,12 @@ class AccountsTable extends PureComponent<Props> {
     }
 
     return (
-      <MUITable>
-        <AccountsTableHeader />
-        <MUITableBody>{accounts.map(this.Account)}</MUITableBody>
-      </MUITable>
+      <TableScroll>
+        <MUITable>
+          <AccountsTableHeader />
+          <MUITableBody>{accounts.map(this.Account)}</MUITableBody>
+        </MUITable>
+      </TableScroll>
     );
   }
 }
