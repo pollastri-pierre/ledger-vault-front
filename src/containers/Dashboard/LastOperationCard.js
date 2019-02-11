@@ -1,36 +1,51 @@
 // @flow
+
 import React, { Component } from "react";
+import { Trans } from "react-i18next";
+import { withRouter } from "react-router";
+
+import type { Match } from "react-router-dom";
+import type { MemoryHistory } from "history";
+
 import connectData from "restlay/connectData";
 import DashboardLastOperationsQuery from "api/queries/DashboardLastOperationsQuery";
-import { translate } from "react-i18next";
 import AccountsDashboardQuery from "api/queries/AccountsDashboardQuery";
-// import ViewAllLink from "components/ViewAllLink";
+
 import TryAgain from "components/TryAgain";
 import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import DataTableOperation from "components/DataTableOperation";
-import type { Operation, Account, Translate } from "data/types";
+import { OperationsTable } from "components/Table";
+
+import type { Operation, Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
 
-const columnIds = ["date", "account", "countervalue", "amount"];
+type Props = {
+  operations: Connection<Operation>,
+  accounts: Array<Account>,
+  reloading: boolean,
+  match: Match,
+  history: MemoryHistory
+};
 
-class LastOperationCard extends Component<*> {
-  props: {
-    operations: Connection<Operation>,
-    t: Translate,
-    accounts: Array<Account>,
-    reloading: boolean
+class LastOperationCard extends Component<Props> {
+  handleOperationClick = (operation: Operation) => {
+    const { history, match } = this.props;
+    history.push(`${match.url}/operation/${operation.id}/0`);
   };
 
   render() {
-    const { accounts, operations, reloading, t } = this.props;
+    const { accounts, operations, reloading } = this.props;
     return (
-      <Card reloading={reloading} title={t("accountView:last_op.title")}>
+      <Card
+        reloading={reloading}
+        title={<Trans i18nKey="accountView:last_op.title" />}
+      >
         <div data-test="last_op_list">
-          <DataTableOperation
-            columnIds={columnIds}
+          <OperationsTable
             operations={operations.edges.map(e => e.node)}
             accounts={accounts}
+            onOperationClick={this.handleOperationClick}
           />
         </div>
       </Card>
@@ -38,19 +53,25 @@ class LastOperationCard extends Component<*> {
   }
 }
 
-const RenderError = translate()(({ t, restlay, error }: *) => (
-  <Card title={t("accountView:last_op.title")}>
+const RenderError = ({
+  restlay,
+  error
+}: {
+  restlay: RestlayEnvironment,
+  error: Error
+}) => (
+  <Card title={<Trans i18nKey="accountView:last_op.title" />}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
-));
+);
 
-const RenderLoading = translate()(({ t }: { t: Translate }) => (
-  <Card title={t("accountView:last_op.title")}>
+const RenderLoading = () => (
+  <Card title={<Trans i18nKey="accountView:last_op.title" />}>
     <SpinnerCard />
   </Card>
-));
+);
 
-const c = connectData(translate()(LastOperationCard), {
+const c = connectData(withRouter(LastOperationCard), {
   queries: {
     operations: DashboardLastOperationsQuery,
     accounts: AccountsDashboardQuery
@@ -62,4 +83,5 @@ const c = connectData(translate()(LastOperationCard), {
   RenderError,
   RenderLoading
 });
+
 export default c;

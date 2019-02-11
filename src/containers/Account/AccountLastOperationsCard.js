@@ -1,23 +1,38 @@
 // @flow
+
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
-import Card from "components/legacy/Card";
-import AccountOperationsQuery from "api/queries/AccountOperationsQuery";
-// import AccountQuery from "api/queries/AccountQuery";
-import TryAgain from "components/TryAgain";
-import SpinnerCard from "components/spinners/SpinnerCard";
-import DataTableOperation from "components/DataTableOperation";
+import { withRouter } from "react-router";
+
+import type { Match } from "react-router-dom";
+import type { MemoryHistory } from "history";
+
 import InfiniteScrollable from "components/InfiniteScrollable";
-import type { Account, Operation } from "data/types";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { OperationsTable } from "components/Table";
+import TryAgain from "components/TryAgain";
+import Card from "components/legacy/Card";
+
+import connectData from "restlay/connectData";
+import AccountOperationsQuery from "api/queries/AccountOperationsQuery";
+
 import type { Connection } from "restlay/ConnectionQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
+import type { Account, Operation } from "data/types";
 
-const columnIds = ["date", "address", "status", "countervalue", "amount"];
-
-class AccountLastOperationsCard extends Component<{
+type Props = {
   account: Account,
   operations: Connection<Operation>,
-  restlay: *
-}> {
+  restlay: RestlayEnvironment,
+  match: Match,
+  history: MemoryHistory
+};
+
+class AccountLastOperationsCard extends Component<Props> {
+  handleOperationClick = (operation: Operation) => {
+    const { history, match } = this.props;
+    history.push(`${match.url}/operation/${operation.id}/0`);
+  };
+
   render() {
     const { account, operations, restlay } = this.props;
     return (
@@ -27,10 +42,10 @@ class AccountLastOperationsCard extends Component<{
           restlayVariable="operations"
           chunkSize={20}
         >
-          <DataTableOperation
+          <OperationsTable
             accounts={[account]}
             operations={operations.edges.map(e => e.node)}
-            columnIds={columnIds}
+            onOperationClick={this.handleOperationClick}
           />
         </InfiniteScrollable>
       </Card>
@@ -50,7 +65,7 @@ const RenderLoading = () => (
   </Card>
 );
 
-export default connectData(AccountLastOperationsCard, {
+export default connectData(withRouter(AccountLastOperationsCard), {
   queries: {
     operations: AccountOperationsQuery
   },
