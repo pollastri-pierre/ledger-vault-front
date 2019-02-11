@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import AccountsQuery from "api/queries/AccountsQuery";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import type { Account } from "data/types";
 import DataTableAccount from "components/DataTableAccount";
 

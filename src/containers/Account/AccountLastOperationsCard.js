@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import AccountOperationsQuery from "api/queries/AccountOperationsQuery";
 // import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";

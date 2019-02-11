@@ -12,7 +12,7 @@ import ActionBar from "components/actionBar/ActionBar";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import UpdateAccounts from "components/UpdateAccounts";
 import Menu from "components/menu/Menu";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 
 const styles = {

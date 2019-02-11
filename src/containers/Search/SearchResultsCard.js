@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import connectData from "restlay/connectData";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import SearchQuery from "api/queries/SearchQuery";

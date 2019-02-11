@@ -6,7 +6,7 @@ import { translate } from "react-i18next";
 import AccountsDashboardQuery from "api/queries/AccountsDashboardQuery";
 // import ViewAllLink from "components/ViewAllLink";
 import TryAgain from "components/TryAgain";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import DataTableOperation from "components/DataTableOperation";
 import type { Operation, Account, Translate } from "data/types";

@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import CounterValues from "components/CounterValues";
 import DateFormat from "components/DateFormat";
 import { translate } from "react-i18next";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import type { Account, Member, Translate } from "data/types";
 import CardField from "components/CardField";
 import { withStyles } from "@material-ui/core/styles";

@@ -9,7 +9,7 @@ import { translate } from "react-i18next";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
