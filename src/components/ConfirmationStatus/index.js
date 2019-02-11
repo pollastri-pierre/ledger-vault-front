@@ -9,10 +9,12 @@ const styles = {
     marginLeft: "6px"
   },
   isConfirmed: {
-    color: colors.green
+    color: colors.green,
+    whiteSpace: "nowrap"
   },
   isUnconfirmed: {
-    color: colors.grenade
+    color: colors.grenade,
+    whiteSpace: "nowrap"
   }
 };
 class ConfirmationStatus extends Component<*> {

@@ -28,7 +28,7 @@ class AccountName extends Component<{
     return (
       <Box horizontal align="center" flow={10} {...props}>
         <AccountIcon isERC20={isERC20} currencyId={currencyId} />
-        <Text lineHeight={1} data-test="name">
+        <Text lineHeight={1} noWrap data-test="name">
           {displayName}
         </Text>
       </Box>
