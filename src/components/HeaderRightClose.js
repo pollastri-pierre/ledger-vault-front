@@ -1,30 +1,29 @@
 // @flow
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+
+import React from "react";
+import styled from "styled-components";
+
 import Close from "components/icons/Close";
 import colors from "shared/colors";
 
-const styles = {
-  icon: {
-    position: "absolute",
-    top: 25,
-    right: 25,
-    cursor: "pointer"
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 25px;
+  cursor: pointer;
+  color: ${colors.lead};
+  line-height: 1;
+  &:hover {
+    color: ${colors.steel};
   }
-};
-
-class HeaderRightClose extends Component<{
-  classes: { [_: $Keys<typeof styles>]: string },
-  close: () => void
-}> {
-  render() {
-    const { classes, close } = this.props;
-    return (
-      <div className={classes.icon} onClick={close}>
-        <Close color={colors.lead} size={14} />
-      </div>
-    );
+  &:active {
+    color: ${colors.shark};
   }
-}
+`;
 
-export default withStyles(styles)(HeaderRightClose);
+export default ({ close }: { close: () => void }) => (
+  <Container onClick={close}>
+    <Close size={14} />
+  </Container>
+);
