@@ -1,6 +1,6 @@
 {
   "accounts_updated":
-    "The Ledger Vault platform has been updated. Find out more in the \u003c1\u003e\u003c0\u003erelease notes\u003c/1\u003e\u003c/0\u003e",
+    "The Ledger Vault platform has been updated. Find out more in the <1><0>release notes</1></0>",
   "approve": "Approve the account",
   "desc":
     "You must define the operation rules before you can create operations in this account",

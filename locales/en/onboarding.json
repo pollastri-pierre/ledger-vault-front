@@ -36,7 +36,7 @@
       "step2":
         "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
       "step3":
-        "Tap \u003c0\u003eConfirm\u003c/0\u003e when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Registration"
     },
     "modal_title_add": "Add new Administrator",
@@ -76,7 +76,7 @@
   "confirmation_cancel": {
     "desc": "It looks like you've canceled the {{entity}}.",
     "mistake": "You've made a mistake when registering {{entity}}.",
-    "oops": "Oops! you clicked \u003c0\u003eCancel\u003c/0\u003e by mistake...",
+    "oops": "Oops! you clicked <0>Cancel</0> by mistake...",
     "security":
       "You believe the security of your Ledger Vault might be compromised"
   },
@@ -100,14 +100,14 @@
   },
   "master_seed_provisionning": {
     "description":
-      "Click \u003c0\u003eGet seed\u003c/0\u003e and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
+      "Click <0>Get seed</0> and connect the Ledger Blue Enterprise of the first Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
     "device_modal": {
       "step1":
         "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
       "step2":
         "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
       "step3":
-        "Tap \u003c0\u003eConfirm\u003c/0\u003e when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Generate Master Seed"
     },
     "generate_seed": "Get seed",
@@ -128,7 +128,7 @@
       "step2":
         "Enter your PIN code to unlock your device, then open the Vault app from the ledger Blue Enterprise dashboard.",
       "step3":
-        "Tap \u003c0\u003eConfirm\u003c/0\u003e when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Sign in with your device"
     },
     "members_present": "Administrators",
@@ -182,7 +182,7 @@
     "add": "Add shared-owner",
     "add_new": "add a new shared-owner",
     "desc":
-      "Click \u003c0\u003eAdd Shared-Owner\u003c/0\u003e and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
+      "Click <0>Add Shared-Owner</0> and connect the Ledger Blue Enterprise of the Shared-Owner, and repeat this step for the remaining two Shared-Owners.",
     "description_strong":
       "It's not possible to delete Shared-Owners once they're created.",
     "so_nb_required": "3 Shared-Owners are required to continue",
@@ -208,14 +208,14 @@
   "wkey_custodians": "3 Wrapping Key Custodians",
   "wrapping_key": {
     "description":
-      "Click \u003c0\u003eGet Wrapping Key\u003c/0\u003e and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.",
+      "Click <0>Get Wrapping Key</0> and connect the Ledger Blue Enterprise of the first Wrapping Key Custodian, and repeat this step for the remaining two Wrapping Key Custodians.",
     "device_modal": {
       "step1":
         "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
       "step2":
         "Enter your PIN code to unlock your device, then open the Vault app from the Ledger Blue Enterprise dashboard.",
       "step3":
-        "Tap \u003c0\u003eConfirm\u003c/0\u003e when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
+        "Tap <0>Confirm</0> when prompted, then tap the square icon in the top right corner to close the app. Next, disconnect the device from the computer.",
       "title": "Generate Vault Wrapping Key"
     },
     "generate": "Get Wrapping Key",

@@ -37,16 +37,16 @@
   },
   "search": {
     "extraERC20":
-      "\u003c0\u003e{{erc20Count}}\u003c/0\u003e crypto assets and tokens available"
+      "<0>{{erc20Count}}</0> crypto assets and tokens available"
   },
   "not_supported": "Support suspended due to hard fork",
   "security": {
     "account_members": "Account members",
     "approvals": "Approvals",
     "approvalsMaximum":
-      "You can't select more than \u003c0\u003e{{membersCount}}\u003c/1\u003e members",
+      "You can't select more than <0>{{membersCount}}</1> members",
     "approvalsMinimum":
-      "You must select at least \u003c0\u003e2\u003c/0\u003e members",
+      "You must select at least <0>2</0> members",
     "approvals_amount": "Amount",
     "approvals_desc":
       "Define the number of approvals required before operations created in this account are broadcasted to the blockchain.",
