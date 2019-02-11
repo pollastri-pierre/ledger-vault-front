@@ -11,7 +11,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
 import HeaderRightClose from "components/HeaderRightClose";
 import { connect } from "react-redux";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
 import LineSeparator from "components/LineSeparator";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";

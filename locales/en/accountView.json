@@ -1,0 +1,39 @@
+{
+  "approved":
+    "The operation rules of this account have already been submitted and you now need to approve the creation of the account. Go to the *Pending* page, review the account's details, and approve it.",
+  "approved_still_pending":
+    "You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.",
+  "balance": "Balance",
+  "countervalue": "Countervalue",
+  "erc20NoCountervalue":
+    "There is no countervalue available for this ERC20 token",
+  "erc20_children": "Children ERC20 token accounts",
+  "last_op": {
+    "address": "address",
+    "amount": "amount",
+    "date": "date",
+    "status": "status",
+    "title": "Last operations"
+  },
+  "members_modal": { "title": "Members", "toggle": "See members" },
+  "no_erc20_children": "No children ERC20 token on this account",
+  "receive": {
+    "addr": "Current Address",
+    "desc":
+      "A new address is generated when a first payment is received on the current address. Previous addresses remain valid and do not expire.",
+    "title": "Receive funds"
+  },
+  "summary": {
+    "date": "creation date",
+    "index": "Cryptocurrency / Index",
+    "members": "members",
+    "parent_account": "Parent Ethereum account",
+    "quorum": "required approvals",
+    "token": "Token",
+    "token_address": "Smart contract address",
+    "unit": "Unit"
+  },
+  "view_only_provide_rules": "provide operations rules",
+  "view_only_warning":
+    "This account is read-only. Transactions cannot be created before you provide Operation Rules."
+}

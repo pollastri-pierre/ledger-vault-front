@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import { getAccountCurrencyName } from "utils/accounts";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import LineSeparator from "components/LineSeparator";
 import styles from "./styles";
 import ApprovalStatus from "../ApprovalStatus";

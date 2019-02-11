@@ -10,7 +10,7 @@ import {
   hasUserApprovedAccount
 } from "utils/accounts";
 import InfoBox from "components/InfoBox";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import NoStyleLink from "components/NoStyleLink";
 import type { Account, Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";

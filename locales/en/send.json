@@ -1,0 +1,33 @@
+{
+  "account": { "title": "Account to debit" },
+  "confirmation": {
+    "account": "Account to Debit",
+    "desc":
+      "An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.",
+    "fees": "Confirmation Fees",
+    "identifier": "Transaction ID",
+    "total": "Total Amount",
+    "totalERC20Info": "Excluding confirmation fees"
+  },
+  "details": {
+    "address": { "title": "Address to credit" },
+    "amount": { "title": "Amount" },
+    "fees": { "title": "Confirmation Fees" },
+    "gasLimit": "Gas limit",
+    "gasPrice": "Gas price",
+    "note": "Add a comment",
+    "title": "Label",
+    "totalFees": "Max Operation Fee:",
+    "totalSpent": "Total:"
+  },
+  "label": { "note": "Note", "title": "Label" },
+  "nonEIP55Warning":
+    "Auto-verification not available: carefully verify the address",
+  "parentFeeExceeded": "Max operation fee exceeds ETH parent account balance",
+  "tabs": {
+    "account": "account",
+    "confirmation": "confirmation",
+    "details": "details",
+    "label": "label"
+  }
+}

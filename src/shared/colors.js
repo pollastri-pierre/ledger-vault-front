@@ -8,6 +8,7 @@ const colors = {
   grenade: "#ea2e49",
   argile: "#eeeeee",
   lightGrey: "#d8d8d8",
+  mediumGrey: "#bbbbbb",
   shark: "#666666",
   steel: "#767676",
   lead: "#999999",

@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import Card from "components/Card";
 import CardField from "components/CardField";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import type { Account } from "data/types";
 
 const styles = {

@@ -7,7 +7,7 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import OperationsCounterValues from "components/CounterValues/OperationsCounterValues";
 import CounterValue from "components/CounterValue";
-import Text from "components/Text";
+import Text from "components/base/Text";
 import LineSeparator from "components/LineSeparator";
 
 import type { Account, Operation, Member } from "data/types";

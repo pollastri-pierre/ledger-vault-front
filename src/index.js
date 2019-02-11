@@ -5,11 +5,12 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { I18nextProvider } from "react-i18next";
 import { AppContainer } from "react-hot-loader";
+import { ThemeProvider } from "styled-components";
 import create from "redux/create";
 import RestlayProvider from "restlay/RestlayProvider";
 import GlobalLoading from "components/GlobalLoading";
 import network from "network";
-import theme from "styles/theme";
+import theme, { styledTheme } from "styles/theme";
 import OrganizationAppRouter from "containers/OrganizationAppRouter";
 import jss from "jss";
 import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
@@ -47,7 +48,9 @@ const render = Component => {
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <I18nextProvider i18n={i18n}>
                 <MuiThemeProvider theme={muiTheme}>
-                  <Component />
+                  <ThemeProvider theme={styledTheme}>
+                    <Component />
+                  </ThemeProvider>
                 </MuiThemeProvider>
               </I18nextProvider>
             </MuiPickersUtilsProvider>

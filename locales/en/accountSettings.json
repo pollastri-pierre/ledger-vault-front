@@ -1,0 +1,13 @@
+{
+  "general": {
+    "exchange": "Rate Provider",
+    "name": "Account name",
+    "title": "General",
+    "units": "Units"
+  },
+  "header": "Account Settings",
+  "operationRules": {
+    "approvals": "Required approvals",
+    "title": "Operation rules"
+  }
+}

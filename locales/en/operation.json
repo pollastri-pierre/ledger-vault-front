@@ -1,0 +1,9 @@
+{
+  "history": {
+    "aborted": "aborted by",
+    "approved": "approved by",
+    "confirmed": "confirmed on the blockchain",
+    "created": "created by",
+    "sent": "sent to the blockchain"
+  }
+}

@@ -8,6 +8,7 @@ import InfoCircle from "components/icons/InfoCircle";
 const styles = {
   base: {
     display: "flex",
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
     height: "42px",

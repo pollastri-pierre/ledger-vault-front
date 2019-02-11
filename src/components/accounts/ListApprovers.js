@@ -11,7 +11,7 @@ import type { Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
-import Text from "components/Text";
+import Text from "components/base/Text";
 
 const styleCounter = {
   base: {

@@ -338,7 +338,7 @@ const theme = {
       }
     },
     text: {
-      primary: "#d8d8d8",
+      primary: "#333333",
       secondary: "rgba(0, 0, 0, 0.54)",
       disabled: "rgba(0, 0, 0, 0.38)",
       hint: "rgba(0, 0, 0, 0.38)",
@@ -539,4 +539,8 @@ const theme = {
   }
 };
 
-export default theme;
+export const styledTheme = {
+  space: []
+};
+
+export { theme as default };

@@ -8,7 +8,7 @@ import { boolean } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
 
 import InfoBox from "components/InfoBox";
-import Text from "components/Text";
+import Text from "components/base/Text";
 
 storiesOf("Components", module).add("InfoBox", () => {
   const withIcon = boolean("withIcon", true);

@@ -1,7 +1,11 @@
 // @flow
 import React, { Component } from "react";
+
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import AccountIcon from "components/AccountIcon";
+
 import type { Account } from "data/types";
-import AccountIcon from "../AccountIcon";
 
 class AccountName extends Component<{
   account?: Account,
@@ -13,17 +17,21 @@ class AccountName extends Component<{
   isERC20?: boolean
 }> {
   render() {
-    const { name, account, isERC20, currencyId } = this.props;
+    const { name, account, ...props } = this.props;
+    let { isERC20, currencyId } = this.props;
+
     const displayName = name || (account ? account.name : "[no name]");
 
+    isERC20 = (account && account.account_type === "ERC20") || isERC20;
+    currencyId = (account && account.currency_id) || currencyId;
+
     return (
-      <div>
-        <AccountIcon
-          isERC20={(account && account.account_type === "ERC20") || isERC20}
-          currencyId={(account && account.currency_id) || currencyId}
-        />
-        <span data-test="name">{displayName}</span>
-      </div>
+      <Box horizontal align="center" flow={10} {...props}>
+        <AccountIcon isERC20={isERC20} currencyId={currencyId} />
+        <Text lineHeight={1} data-test="name">
+          {displayName}
+        </Text>
+      </Box>
     );
   }
 }

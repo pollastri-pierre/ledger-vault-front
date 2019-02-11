@@ -9,7 +9,7 @@ import AccountName from "components/AccountName";
 import DateFormat from "components/DateFormat";
 import AccountStatus from "components/AccountStatus";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import Text from "components/Text";
+import Text from "components/base/Text";
 
 type Cell = {
   account: Account
