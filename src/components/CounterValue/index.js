@@ -45,7 +45,11 @@ class CounterValue extends PureComponent<Props> {
   render() {
     const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return <Text color={colors.mediumGrey}>N/A</Text>;
+      return (
+        <Text inline color={colors.mediumGrey}>
+          N/A
+        </Text>
+      );
     }
     return (
       <CurrencyFiatValue

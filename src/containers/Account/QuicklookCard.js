@@ -6,7 +6,7 @@ import { getAccountCurrencyUnit, getFiatUnit } from "data/currency";
 import BlueSelect from "components/BlueSelect";
 import MenuItem from "@material-ui/core/Menu";
 import DateFormat from "components/DateFormat";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";

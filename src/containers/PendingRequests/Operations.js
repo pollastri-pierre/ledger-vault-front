@@ -7,7 +7,7 @@ import MembersQuery from "api/queries/MembersQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 // import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import { PendingOperationApprove } from "components";
 import TryAgain from "components/TryAgain";
 import type { Member, Account, Operation } from "data/types";

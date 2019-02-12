@@ -170,7 +170,10 @@ export const executeQueryOrMutation =
         count,
         shouldReset || !cache || cache.result.edges.length === 0
           ? undefined
-          : cache.result.edges[cache.result.edges.length - 1].cursor
+          : typeof cache.result.edges[cache.result.edges.length - 1].cursor ===
+            "number"
+            ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
+            : cache.result.edges[cache.result.edges.length - 1].cursor
       );
       const { pathname, query } = URL.parse(uri, true);
       uri = URL.format({

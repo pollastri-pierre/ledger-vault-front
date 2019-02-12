@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";

@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "@material-ui/core/styles";
 import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";

@@ -6,7 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";

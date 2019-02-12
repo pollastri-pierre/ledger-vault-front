@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from "react";
 
+import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
 import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
@@ -11,26 +12,39 @@ import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
 import AccountStatus from "components/AccountStatus";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import NoDataPlaceholder from "components/NoDataPlaceholder";
 
 import type { Account } from "data/types";
-import TableBase from "./base";
+
+import TableScroll from "./TableScroll";
 
 type Props = {
-  accounts: Account[]
+  accounts: Account[],
+  onAccountClick: Account => void
 };
 
 class AccountsTable extends PureComponent<Props> {
-  Account = (account: Account) => (
-    <AccountRow key={account.id} account={account} />
-  );
+  Account = (account: Account) => {
+    const { onAccountClick } = this.props;
+    return (
+      <AccountRow key={account.id} account={account} onClick={onAccountClick} />
+    );
+  };
 
   render() {
     const { accounts } = this.props;
+
+    if (!accounts.length) {
+      return <NoDataPlaceholder title="No accounts" />;
+    }
+
     return (
-      <TableBase>
-        <AccountsTableHeader />
-        <MUITableBody>{accounts.map(this.Account)}</MUITableBody>
-      </TableBase>
+      <TableScroll>
+        <MUITable>
+          <AccountsTableHeader />
+          <MUITableBody>{accounts.map(this.Account)}</MUITableBody>
+        </MUITable>
+      </TableScroll>
     );
   }
 }
@@ -53,15 +67,27 @@ class AccountsTableHeader extends PureComponent<AccountsTableHeaderProps> {
 }
 
 type AccountRowProps = {
-  account: Account
+  account: Account,
+  onClick: Account => void
 };
 
+const accountRowHover = { cursor: "pointer" };
+
 class AccountRow extends PureComponent<AccountRowProps> {
+  handleClick = () => {
+    this.props.onClick(this.props.account);
+  };
+
   render() {
-    const { account } = this.props;
+    const { account, onClick } = this.props;
 
     return (
-      <MUITableRow key={account.id}>
+      <MUITableRow
+        key={account.id}
+        hover={!!onClick}
+        style={onClick ? accountRowHover : undefined}
+        onClick={onClick ? this.handleClick : undefined}
+      >
         <MUITableCell>
           <AccountName account={account} />
         </MUITableCell>

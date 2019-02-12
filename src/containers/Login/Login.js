@@ -1,5 +1,5 @@
 // @flow
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import TranslatedError from "components/TranslatedError";
 import connectData from "restlay/connectData";
 import { translate } from "react-i18next";

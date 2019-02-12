@@ -1,7 +1,7 @@
 // @flow
 import AccountQuery from "api/queries/AccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import { translate } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import TryAgain from "components/TryAgain";

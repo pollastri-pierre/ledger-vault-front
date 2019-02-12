@@ -11,11 +11,13 @@ import colors, { opacity, darken } from "shared/colors";
 import type { Translate, Account } from "data/types";
 
 const BG_BY_STATUS = {
-  APPROVED: opacity(colors.ocean, 0.1)
+  APPROVED: opacity(colors.ocean, 0.1),
+  VIEW_ONLY: colors.cream
 };
 
 const COLOR_BY_STATUS = {
-  APPROVED: darken(colors.ocean, 0.2)
+  APPROVED: darken(colors.ocean, 0.2),
+  VIEW_ONLY: colors.steel
 };
 
 type Props = {
@@ -46,7 +48,9 @@ class AccountStatus extends PureComponent<Props> {
 
     return (
       <Box inline px={5} bg={bg} color={color} borderRadius={3}>
-        <Text small>{str}</Text>
+        <Text small uppercase>
+          {str}
+        </Text>
       </Box>
     );
   }

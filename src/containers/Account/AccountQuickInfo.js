@@ -1,5 +1,5 @@
 // @flow
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import { Link } from "react-router-dom";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";

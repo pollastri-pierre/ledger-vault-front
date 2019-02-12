@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import CounterValue from "components/CounterValue";
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import CardField from "components/CardField";
 import Text from "components/base/Text";
 import type { Account } from "data/types";

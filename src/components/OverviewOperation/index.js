@@ -75,7 +75,7 @@ class OverviewOperation extends Component<Props, *> {
               />
             </div>
           </div>
-          <p className={classes.fiat}>
+          <div className={classes.fiat}>
             <CounterValue
               value={amount}
               from={account.currency_id}
@@ -83,7 +83,7 @@ class OverviewOperation extends Component<Props, *> {
               type={operationType}
               disableCountervalue={erc20Format}
             />
-          </p>
+          </div>
         </div>
       </div>
     );

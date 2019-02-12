@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import ViewAllLink from "components/ViewAllLink";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import CardField from "components/CardField";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";

@@ -6,7 +6,7 @@ import DashboardPlaceholder from "components/DashboardPlaceholder";
 import connectData from "restlay/connectData";
 import React, { Component } from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
-import Card from "components/Card";
+import Card from "components/legacy/Card";
 import { TotalBalanceFilters } from "components/EvolutionSince";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";

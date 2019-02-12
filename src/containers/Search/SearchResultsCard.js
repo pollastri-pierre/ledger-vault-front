@@ -1,22 +1,35 @@
 // @flow
 import React, { Component } from "react";
-import connectData from "restlay/connectData";
-import Card from "components/Card";
-import TryAgain from "components/TryAgain";
-import SpinnerCard from "components/spinners/SpinnerCard";
-import SearchQuery from "api/queries/SearchQuery";
-import InfiniteScrollable from "components/InfiniteScrollable";
-import DataTableOperation from "components/DataTableOperation";
-import type { Account, Operation } from "data/types";
-import type { Connection } from "restlay/ConnectionQuery";
+import { withRouter } from "react-router";
 
-const columnIds = ["date", "account", "status", "note", "amount"];
+import type { Match } from "react-router-dom";
+import type { MemoryHistory } from "history";
+
+import SearchQuery from "api/queries/SearchQuery";
+import connectData from "restlay/connectData";
+
+import InfiniteScrollable from "components/InfiniteScrollable";
+import SpinnerCard from "components/spinners/SpinnerCard";
+import { OperationsTable } from "components/Table";
+import TryAgain from "components/TryAgain";
+import Card from "components/legacy/Card";
+
+import type { Connection } from "restlay/ConnectionQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
+import type { Account, Operation } from "data/types";
 
 class SearchResults extends Component<{
   accounts: Account[],
   search: Connection<Operation>,
-  restlay: *
+  restlay: RestlayEnvironment,
+  match: Match,
+  history: MemoryHistory
 }> {
+  handleOperationClick = (operation: Operation) => {
+    const { history, match } = this.props;
+    history.push(`${match.url}/operation/${operation.id}/0`);
+  };
+
   render() {
     const { restlay, accounts, search } = this.props;
     return (
@@ -32,10 +45,12 @@ class SearchResults extends Component<{
             restlayVariable="search"
             chunkSize={20}
           >
-            <DataTableOperation
-              accounts={accounts}
+            <OperationsTable
               operations={search.edges.map(e => e.node)}
-              columnIds={columnIds}
+              accounts={accounts}
+              onOperationClick={this.handleOperationClick}
+              withStatus
+              withLabel
             />
           </InfiniteScrollable>
         </div>
@@ -56,7 +71,7 @@ const RenderLoading = () => (
   </Card>
 );
 
-export default connectData(SearchResults, {
+export default connectData(withRouter(SearchResults), {
   queries: {
     search: SearchQuery
   },
