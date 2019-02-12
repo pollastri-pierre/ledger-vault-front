@@ -159,7 +159,6 @@ class EntityApprove extends Component<Props, State> {
   render() {
     const { entity } = this.props;
     const { isDevice, step, isAborting } = this.state;
-
     return (
       <div>
         {!isDevice &&

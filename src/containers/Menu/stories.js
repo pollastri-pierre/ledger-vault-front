@@ -3,7 +3,7 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { BrowserRouter } from "react-router-dom";
-import AccountsMenu from "components/menu/AccountsMenu";
+import AccountsMenu from "containers/Menu/AccountsMenu";
 import { genAccounts } from "data/mock-entities";
 
 const accounts = genAccounts(10, "seed");

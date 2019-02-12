@@ -16,7 +16,7 @@ import {
 import type { Account } from "data/types";
 
 import CurrencyIndex from "components/CurrencyIndex";
-import MenuLink from "../MenuLink";
+import MenuLink from "components/MenuLink";
 
 const styles = {
   item: {

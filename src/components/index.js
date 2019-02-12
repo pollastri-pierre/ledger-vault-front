@@ -2,14 +2,14 @@
 // FIXME drop this file, should directly import the component file
 
 export { default as DialogButton } from "./buttons/DialogButton";
-export { default as Menu } from "./menu/Menu";
+export { default as Menu } from "containers/Menu";
 export { default as Divider } from "./utils/Divider";
 export { default as PopBubble } from "./utils/PopBubble";
 export { default as Alert } from "./utils/Alert";
 export { default as TextField } from "./utils/TextField";
 export { default as Overscroll } from "./utils/Overscroll";
 export { default as ActionBar } from "./actionBar/ActionBar";
-export { default as Content } from "./content/Content";
+export { default as Content } from "containers/Content";
 export {
   default as AccountCreation
 } from "./accounts/creation/AccountCreation";
