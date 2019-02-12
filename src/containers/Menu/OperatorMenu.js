@@ -85,7 +85,12 @@ function OperatorMenu(props: {
         match={match}
         disableBackdropClick
       />
-      <ModalRoute path="*/receive" component={Receive} match={match} />
+      <ModalRoute
+        path="*/receive"
+        component={Receive}
+        match={match}
+        disableBackdropClick
+      />
     </Box>
   );
 }
