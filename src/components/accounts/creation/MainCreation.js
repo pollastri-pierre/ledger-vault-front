@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { isNotSupportedCoin } from "utils/cryptoCurrencies";
 
 import type {
   State as AccountCreationState,
@@ -41,19 +42,28 @@ type Props = {
   accountCreationState: AccountCreationState,
   updateAccountCreationState: UpdateAccountCreationState,
   allAccounts: Account[],
+  t: Translate,
 
   // TODO: legacy stuff
-  onSelect: Function,
-  t: Translate,
   switchInternalModal: Function,
-  tabsIndex: number,
   classes: Object,
   close: Function
 };
 
 class MainCreation extends Component<Props> {
   handleChange = (event, value) => {
-    this.props.onSelect(value);
+    this.changeTabAccount(value);
+  };
+
+  changeTabAccount = (index: number) => {
+    const { updateAccountCreationState } = this.props;
+    updateAccountCreationState(() => ({ currentTab: index }));
+  };
+
+  nextTab = () => {
+    this.changeTabAccount(
+      parseInt(this.props.accountCreationState.currentTab, 10) + 1
+    );
   };
 
   render() {
@@ -63,25 +73,31 @@ class MainCreation extends Component<Props> {
       allAccounts,
       close,
       t,
-      onSelect,
-      tabsIndex,
       classes,
       switchInternalModal
     } = this.props;
 
-    let isNextDisabled = false;
+    const { currentTab } = accountCreationState;
 
-    switch (tabsIndex) {
+    let isNextDisabled = false;
+    const parentName =
+      accountCreationState.parent_account &&
+      "name" in accountCreationState.parent_account;
+    switch (currentTab) {
       case 0:
         isNextDisabled =
-          (_.isNull(accountCreationState.erc20token) ||
-            // $FlowFixMe
-            !accountCreationState.parent_account) &&
-          _.isNull(accountCreationState.currency);
+          (_.isNull(accountCreationState.erc20token) &&
+            _.isNull(accountCreationState.currency)) ||
+          (accountCreationState.currency &&
+            isNotSupportedCoin(accountCreationState.currency));
         break;
       case 1:
         isNextDisabled = accountCreationState.erc20token
           ? accountCreationState.name === "" ||
+            (parentName &&
+              accountCreationState.name ===
+                // $FlowFixMe
+                accountCreationState.parent_account.name) ||
             (!accountCreationState.parent_account ||
               (!accountCreationState.parent_account.id &&
                 !("name" in accountCreationState.parent_account)))
@@ -108,7 +124,7 @@ class MainCreation extends Component<Props> {
       switchInternalModal
     };
 
-    const ContentComponent = contentComponents[tabsIndex];
+    const ContentComponent = contentComponents[currentTab];
 
     return (
       <div className={classes.base}>
@@ -117,7 +133,7 @@ class MainCreation extends Component<Props> {
           <HeaderRightClose close={close} />
           <Tabs
             onChange={this.handleChange}
-            value={tabsIndex}
+            value={currentTab}
             indicatorColor="primary"
           >
             <Tab
@@ -153,20 +169,18 @@ class MainCreation extends Component<Props> {
           {ContentComponent ? <ContentComponent {...contentProps} /> : null}
         </div>
         <div className="footer">
-          {_.includes([0, 1, 2], tabsIndex) ? (
+          {_.includes([0, 1, 2], currentTab) ? (
             <DialogButton
               highlight
               right
               disabled={isNextDisabled}
-              onTouchTap={() => onSelect(parseInt(tabsIndex + 1, 10))}
+              onTouchTap={this.nextTab}
             >
               {!!accountCreationState.erc20token &&
               (!accountCreationState.parent_account ||
                 !accountCreationState.parent_account.id) &&
-              tabsIndex === 0
-                ? // ? t("accountCreation:continue_eth_creation")
-                  // TODO: PUT BACK WHEN FIXED
-                  t("common:continue")
+              currentTab === 0
+                ? t("accountCreation:continue_eth_creation")
                 : t("common:continue")}
             </DialogButton>
           ) : (

@@ -25,6 +25,7 @@ class CryptoAddressPicker extends Component<{
         onChange={this.onChange}
         error={!isValid}
         value={value}
+        autoComplete="off"
         autoCorrect="off"
         autoCapitalize="off"
         endAdornment={

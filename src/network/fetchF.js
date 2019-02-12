@@ -14,6 +14,12 @@ if (process.env.NODE_ENV === "test") {
       return fetch(`http://localhost:5001${uri}`, options);
     }
     prefix = `/${prefix}`;
+    if (process.env.NODE_ENV !== "production") {
+      return (
+        mockAPI(uri, options) ||
+        fetch(window.config.API_BASE_URL + prefix + uri, options)
+      );
+    }
     return fetch(window.config.API_BASE_URL + prefix + uri, options);
   };
 }

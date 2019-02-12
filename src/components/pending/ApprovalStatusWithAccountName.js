@@ -3,21 +3,23 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
 import type { Account, Operation, Member } from "data/types";
+import Text from "components/Text";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
 
 const styles = {
   base: {
-    fontSize: "11px",
-    marginTop: "5px",
-    marginBotton: "5px"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 5,
+    marginBotton: 5
   },
   status: {
     color: colors.steel
   },
   account: {
-    color: colors.black,
-    float: "right"
+    color: colors.black
   }
 };
 
@@ -31,7 +33,7 @@ class ApprovalStatusWithAccountName extends Component<{
     const { operation, account, user, classes } = this.props;
     return (
       <div className={classes.base}>
-        <span className={classes.status}>
+        <Text small className={classes.status}>
           <ApprovalStatus
             approvingObject={operation}
             approved={operation.approvals}
@@ -39,10 +41,10 @@ class ApprovalStatusWithAccountName extends Component<{
             nbRequired={account.security_scheme.quorum}
             user={user}
           />
-        </span>
-        <span className={classes.account}>
-          <AccountName name={account.name} currencyId={account.currency_id} />
-        </span>
+        </Text>
+        <Text small className={classes.account}>
+          <AccountName account={account} />
+        </Text>
       </div>
     );
   }

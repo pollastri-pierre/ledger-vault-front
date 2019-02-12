@@ -8,7 +8,7 @@ import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import BadgeCurrency from "components/BadgeCurrency";
+import AccountIcon from "components/AccountIcon";
 import colors from "shared/colors";
 
 type PieChartData = {
@@ -385,48 +385,43 @@ class PieChart extends Component<
         {showCaptions && (
           <table className={classes.table}>
             <tbody>
-              {_.map(this.props.data, (data, id: number) => {
-                const currency = getCryptoCurrencyById(
-                  data.account.currency_id
-                );
-                return (
-                  <tr
-                    data-test="currency-list"
-                    className={cx("currency", {
-                      disable:
-                        highlightCaptionsOnHover &&
-                        selected !== -1 &&
-                        selected !== id
-                    })}
-                    key={id}
-                    onMouseOver={() =>
-                      highlightCaptionsOnHover && this.setSelected(id)
-                    }
-                    onMouseOut={() =>
-                      highlightCaptionsOnHover && this.setSelected(-1)
-                    }
-                  >
-                    <td>
-                      <BadgeCurrency currency={currency} />
-                      <span
-                        className={cx(
-                          classes.currencyName,
-                          classes.currencyNameDark,
-                          classes.uppercase
-                        )}
-                      >
-                        {data.account.currency_id}
-                      </span>
-                    </td>
-                    <td className={classes.currencyBalance}>
-                      <CurrencyAccountValue
-                        account={data.account}
-                        value={data.balance}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
+              {_.map(this.props.data, (data, id: number) => (
+                <tr
+                  data-test="currency-list"
+                  className={cx("currency", {
+                    disable:
+                      highlightCaptionsOnHover &&
+                      selected !== -1 &&
+                      selected !== id
+                  })}
+                  key={id}
+                  onMouseOver={() =>
+                    highlightCaptionsOnHover && this.setSelected(id)
+                  }
+                  onMouseOut={() =>
+                    highlightCaptionsOnHover && this.setSelected(-1)
+                  }
+                >
+                  <td>
+                    <AccountIcon account={data.account} />
+                    <span
+                      className={cx(
+                        classes.currencyName,
+                        classes.currencyNameDark,
+                        classes.uppercase
+                      )}
+                    >
+                      {data.account.currency_id}
+                    </span>
+                  </td>
+                  <td className={classes.currencyBalance}>
+                    <CurrencyAccountValue
+                      account={data.account}
+                      value={data.balance}
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

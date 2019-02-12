@@ -1,8 +1,9 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import { Alert } from "components";
 import { closeMessage } from "redux/modules/alerts";
+import TranslatedError from "components/TranslatedError";
 
 const mapStateToProps = state => ({
   alerts: state.alerts
@@ -17,23 +18,34 @@ export function MessagesContainer(props: {
     visible: boolean,
     type: string,
     title: string,
-    content: string
+    error?: Error,
+    content?: string
   },
   onClose: Function
 }) {
   const { alerts, onClose } = props;
+  const { error, visible, title, type, content } = alerts;
+  const titleComponent = error ? (
+    <TranslatedError field="title" error={error} />
+  ) : (
+    title
+  );
   return (
-    <div>
+    <Fragment>
       <Alert
         onClose={onClose}
-        open={alerts.visible}
+        open={visible}
         autoHideDuration={4000}
-        title={alerts.title}
-        theme={alerts.type}
+        title={titleComponent}
+        theme={type}
       >
-        <div>{alerts.content}</div>
+        {error ? (
+          <TranslatedError field="description" error={error} />
+        ) : (
+          <div>{content}</div>
+        )}
       </Alert>
-    </div>
+    </Fragment>
   );
 }
 

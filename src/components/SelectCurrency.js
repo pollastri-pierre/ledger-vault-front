@@ -3,6 +3,7 @@
 import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
 import { components } from "react-select";
+import { Trans } from "react-i18next";
 import type { OptionProps } from "react-select/lib/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
@@ -14,6 +15,7 @@ import {
 } from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
+import Text from "components/Text";
 import Select from "components/Select";
 import colors from "shared/colors";
 
@@ -63,10 +65,13 @@ function getItemLabel(item: Item) {
 const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({ label: item.value.name, value: item }));
 
-const INCLUDE_DEV =
-  process.env.NODE_ENV === "development" ||
-  process.env.NODE_ENV === "e2e" ||
-  window.config.SOFTWARE_DEVICE;
+// https://ledgerhq.atlassian.net/browse/LV-991
+// We now want to have testnet always
+const INCLUDE_DEV = true;
+// const INCLUDE_DEV =
+//   process.env.NODE_ENV === "development" ||
+//   process.env.NODE_ENV === "e2e" ||
+//   window.config.SOFTWARE_DEVICE;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
@@ -89,7 +94,11 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ["value.value.name", "value.value.ticker"]
+  keys: [
+    "value.value.name",
+    "value.value.ticker",
+    "value.value.contract_address"
+  ]
 };
 
 const fuse = new Fuse(fullOptions, fuseOptions);
@@ -147,6 +156,12 @@ const styles = {
   placeholder: {
     fontSize: 10,
     color: colors.shark
+  },
+  erc20Hint: {
+    backgroundColor: colors.cream,
+    textAlign: "center",
+    color: colors.steel,
+    padding: 5
   }
 };
 
@@ -178,10 +193,28 @@ const ValueComponent = (props: OptionProps) => (
     <GenericRow {...props} />
   </components.SingleValue>
 );
+const MenuComponent = (props: OptionProps) => (
+  <components.Menu {...props}>
+    {props.children}
+    {props.options === currenciesOptions &&
+      !props.hasValue && (
+        <Text small italic style={styles.erc20Hint}>
+          <Trans
+            i18nKey="newAccount:search.extraERC20"
+            values={{
+              erc20Count: erc20TokensOptions.length + currenciesOptions.length
+            }}
+            components={<b>0</b>}
+          />
+        </Text>
+      )}
+  </components.Menu>
+);
 
 const customComponents = {
   Option: OptionComponent,
-  SingleValue: ValueComponent
+  SingleValue: ValueComponent,
+  Menu: MenuComponent
 };
 
 const customStyles = {
@@ -209,7 +242,6 @@ class SelectCurrency extends PureComponent<Props> {
 
     // find the currency OR erc20token inside all options
     const resolvedValue = value ? getValueOption(value) : null;
-
     return (
       <Select
         async

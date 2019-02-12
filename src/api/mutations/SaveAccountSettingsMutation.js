@@ -1,10 +1,11 @@
 // @flow
 import Mutation from "restlay/Mutation";
-import type { Account, Unit } from "data/types";
+import type { Account } from "data/types";
 import { success, error } from "formatters/notification";
 import schema from "data/schema";
 
-type In = { account: Account, currency_unit: Unit };
+// NOTE: currency_unit should be renamed to currency_unit_code. gate seem to expect a string which is not a unit
+type In = { account: Account, currency_unit: string };
 
 type Res = *;
 

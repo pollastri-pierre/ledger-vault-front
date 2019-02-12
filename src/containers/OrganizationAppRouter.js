@@ -4,6 +4,7 @@ import CounterValues from "data/CounterValues";
 import { Switch, Route } from "react-router";
 import AlertsContainer from "containers/AlertsContainer";
 import UpdateApp from "components/UpdateApp";
+import MockDevices from "components/MockDevices";
 import Welcome from "./Welcome";
 
 import App from "./App/App";
@@ -59,6 +60,7 @@ const OrganizationAppRouter = () => (
         <Route component={Welcome} />
       </Switch>
     </BrowserRouter>
+    {process.env.NODE_ENV === "e2e" && <MockDevices />}
   </Fragment>
 );
 

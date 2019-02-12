@@ -23,6 +23,9 @@ class ConnectionQuery<In, Node> {
   // define the Schema of the edges[*].node field in the connection object.
   nodeSchema: Object = {};
 
+  // handler to eventually filter items from query results
+  filter: ?(Object) => boolean;
+
   constructor(props: In) {
     this.props = props;
   }
@@ -58,6 +61,10 @@ class ConnectionQuery<In, Node> {
     return {
       edges: [{ node: this.nodeSchema }]
     };
+  }
+
+  getFilter() {
+    return this.filter;
   }
 
   getResponse(result: Object, store: Store): Connection<Node> {

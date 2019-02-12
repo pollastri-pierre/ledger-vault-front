@@ -3,8 +3,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 import React, { Fragment } from "react";
 import MenuList from "@material-ui/core/MenuList";
+import { FaRegClock, FaHome, FaPlus, FaSearch } from "react-icons/fa";
 
-// import NewOperationModal from "../NewOperationModal";
 import Receive from "components/Receive";
 import Send from "components/Send";
 import IconReceive from "components/icons/Receive";
@@ -22,30 +22,21 @@ import PendingsMenuBadge from "./PendingsMenuBadge";
 import AccountsMenu from "./AccountsMenu";
 import MenuLink from "../MenuLink";
 
-import Home from "../icons/full/Home";
-import Lines from "../icons/full/Lines";
-import Search from "../icons/full/Search";
-import Plus from "../icons/full/Plus";
-
 const styles = {
   root: {
     position: "relative",
-    width: "280px",
+    width: 280,
     float: "left",
     padding: "25px 35px 0 0"
   },
   link: {
     color: "black",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    display: "flex",
+    alignItems: "inherit"
   },
   icon: {
-    width: 11,
-    marginRight: "12px",
-    verticalAlign: "baseline"
-  },
-  searchIcon: {
-    width: 9,
-    marginRight: "14px"
+    marginRight: 12
   },
   pendingMenuBadge: {
     position: "absolute",
@@ -88,7 +79,7 @@ function Menu(props: {
         <MenuList>
           <MenuLink to={`${match.url}/dashboard`}>
             <span className={classes.link}>
-              <Home className={classes.icon} />
+              <FaHome className={classes.icon} />
               <Trans i18nKey="menu:dashboard" />
             </span>
           </MenuLink>
@@ -100,7 +91,7 @@ function Menu(props: {
             }
           >
             <span className={classes.link}>
-              <Plus className={classes.icon} />
+              <FaPlus className={classes.icon} />
               <Trans i18nKey="menu:new_operation" />
             </span>
           </MenuLink>
@@ -115,13 +106,13 @@ function Menu(props: {
           </MenuLink>
           <MenuLink to={`${match.url}/pending`}>
             <span className={classes.link}>
-              <Lines className={classes.icon} />
+              <FaRegClock className={classes.icon} />
               <Trans i18nKey="menu:pending_requests" />
             </span>
           </MenuLink>
           <MenuLink to={`${match.url}/search`}>
             <span className={classes.link}>
-              <Search className={classes.searchIcon} />
+              <FaSearch className={classes.icon} />
               <Trans i18nKey="menu:search" />
             </span>
           </MenuLink>
@@ -151,8 +142,8 @@ function Menu(props: {
       <ModalRoute
         path="*/new-operation"
         component={Send}
-        // component={NewOperationModal}
         match={match}
+        disableBackdropClick
       />
       <ModalRoute path="*/receive" component={Receive} match={match} />
     </div>

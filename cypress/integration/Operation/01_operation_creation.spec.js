@@ -18,6 +18,6 @@ describe("Tests Creation of a Operation", function() {
   it("Create a Operation", () => {
     cy.server();
     route();
-    create_operation(1, Cypress.env("address"), "0.001");
+    create_operation("bitcoin_testnet", 1, Cypress.env("address"), "0.001");
   });
 });

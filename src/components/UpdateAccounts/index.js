@@ -8,10 +8,9 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import network from "network";
 import MenuItem from "@material-ui/core/MenuItem";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
-import AccountCreationMembers from "components/accounts/creation/AccountCreationMembers";
+import ListApprovers from "components/accounts/ListApprovers";
 import Disabled from "components/Disabled";
-import AccountCreationApprovals from "components/accounts/creation/AccountCreationApprovals";
-import MembersQuery from "api/queries/MembersQuery";
+import SetApprovals from "components/accounts/SetApproval";
 import connectData from "restlay/connectData";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { getOutdatedAccounts, isValidAccountName } from "utils/accounts";
@@ -85,7 +84,6 @@ type Props = {
   selectedAccount: Account,
   classes: { [_: $Keys<typeof styles>]: string },
   approvers: Member[],
-  members: Member[],
   isSelectingMembers: boolean,
   isSelectingApprovals: boolean,
   isDevice: boolean,
@@ -117,16 +115,26 @@ class UpdateAccounts extends Component<Props> {
     this.props.onEditName(e.target.value);
   };
 
-  isSubmitDisabled = () => {
-    const {
-      approvers,
-      quorum,
-      selectedAccount: { name }
-    } = this.props;
+  // a view only only erc20 cannot get its members modified, only the quorum can be updated
+  isSelectMembersDisabled = () => {
+    const { selectedAccount } = this.props;
+    return (
+      selectedAccount &&
+      selectedAccount.account_type === "ERC20" &&
+      selectedAccount.status === "VIEW_ONLY"
+    );
+  };
 
-    const rulesDisabled =
-      approvers.length === 0 || quorum === 0 || quorum > approvers.length;
+  isSubmitDisabled = () => {
+    const { approvers, quorum, selectedAccount } = this.props;
+
+    const { name } = selectedAccount;
+
     const nameDisabled = name === "" || !isValidAccountName(name);
+
+    const rulesDisabled = this.isSelectMembersDisabled()
+      ? quorum === 0 || quorum > selectedAccount.members.length
+      : approvers.length === 0 || quorum === 0 || quorum > approvers.length;
 
     return rulesDisabled || nameDisabled;
   };
@@ -141,7 +149,9 @@ class UpdateAccounts extends Component<Props> {
     } = this.props;
     const data: Object = {
       name: selectedAccount.name,
-      members: this.props.approvers.map(approver => ({ pub_key: approver })),
+      members: this.isSelectMembersDisabled()
+        ? selectedAccount.members.map(m => ({ pub_key: m }))
+        : this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
         quorum: this.props.quorum
       }
@@ -181,7 +191,6 @@ class UpdateAccounts extends Component<Props> {
       quorum,
       selectedAccount,
       approvers,
-      members,
       onToggle,
       onToggleMembers,
       onToggleApprovals,
@@ -255,19 +264,27 @@ class UpdateAccounts extends Component<Props> {
                     <CurrencyAccountValue
                       account={selectedAccount}
                       value={selectedAccount.balance}
+                      erc20Format={selectedAccount.account_type === "ERC20"}
                     />
                   </Row>
                   <Row label="Operation rules" noBorder>
                     <div>
-                      <RowSelectable
-                        label="members"
-                        descriptionSelected="selected"
-                        onClick={onToggleMembers}
-                        value={approvers.length}
-                      />
+                      {!this.isSelectMembersDisabled() && (
+                        <RowSelectable
+                          label="members"
+                          descriptionSelected="selected"
+                          onClick={onToggleMembers}
+                          value={approvers.length}
+                        />
+                      )}
                     </div>
                     <div>
-                      <Disabled disabled={approvers.length === 0}>
+                      <Disabled
+                        disabled={
+                          approvers.length === 0 &&
+                          !this.isSelectMembersDisabled()
+                        }
+                      >
                         <RowSelectable
                           noBorder
                           label="approvals"
@@ -294,19 +311,22 @@ class UpdateAccounts extends Component<Props> {
           </div>
         </BlurDialog>
         <BlurDialog open={isSelectingMembers} onClose={onToggleMembers}>
-          <AccountCreationMembers
-            members={members}
+          <ListApprovers
             approvers={approvers}
             addMember={onToggleMember}
-            switchInternalModal={onToggleMembers}
+            goBack={onToggleMembers}
           />
         </BlurDialog>
         <BlurDialog open={isSelectingApprovals} onClose={onToggleApprovals}>
-          <AccountCreationApprovals
-            members={approvers}
-            approvals={quorum}
-            setApprovals={onEditQuorum}
-            switchInternalModal={onToggleApprovals}
+          <SetApprovals
+            approvers={
+              this.isSelectMembersDisabled()
+                ? selectedAccount.members
+                : approvers
+            }
+            quorum={quorum}
+            setQuorum={onEditQuorum}
+            goBack={onToggleApprovals}
           />
         </BlurDialog>
         <BlurDialog open={isDevice} onClose={onToggleDevice}>
@@ -350,10 +370,5 @@ export default connectData(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(withStyles(styles)(translate()(UpdateAccounts))),
-  {
-    queries: {
-      members: MembersQuery
-    }
-  }
+  )(withStyles(styles)(translate()(UpdateAccounts)))
 );

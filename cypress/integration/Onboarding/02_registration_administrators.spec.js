@@ -1,6 +1,9 @@
 const orga_name = Cypress.env("workspace");
 const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
+const API_DEVICE = Cypress.env("api_device");
+
+import { route } from "../../functions/actions.js";
 
 context("Register the Administrators", () => {
   let polyfill;
@@ -12,9 +15,7 @@ context("Register the Administrators", () => {
   });
   it("should register admins and define security scheme", () => {
     cy.server();
-    cy.route("post", `${API}/onboarding/next`).as("next");
-    cy.route("post", `${API}/onboarding/authenticate`).as("authenticate");
-    cy.route("get", `${API}/onboarding/challenge`).as("challenge");
+    route();
 
     cy.request("POST", DEVICE, {
       device_number: 4
@@ -36,13 +37,10 @@ context("Register the Administrators", () => {
         cy.get("[role=dialog] [data-test=dialog-button]")
           .contains("Continue")
           .click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@register");
         cy.wait("@authenticate");
-
-        //Edit the First Admin
-        cy.contains("Click to edit").click();
-        cy.get("input[name=email]").clear();
-        cy.get("input[name=email]").type("user1_edit@user.com");
-        cy.contains("save").click();
 
         // Try to register with the same device
         cy.contains("add administrator").click();
@@ -51,6 +49,9 @@ context("Register the Administrators", () => {
         cy.get("[role=dialog] [data-test=dialog-button]")
           .contains("Continue")
           .click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@register");
         //Should display a error
         cy.get(".top-message-body")
           .contains("Device already registered")
@@ -66,6 +67,9 @@ context("Register the Administrators", () => {
           cy.get("[role=dialog] [data-test=dialog-button]")
             .contains("Continue")
             .click();
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@register");
           cy.wait("@authenticate");
 
           // Thrid Admin
@@ -78,6 +82,9 @@ context("Register the Administrators", () => {
             cy.get("[role=dialog] [data-test=dialog-button]")
               .contains("Continue")
               .click();
+            cy.wait("@get-public-key");
+            cy.wait("@get-attestation");
+            cy.wait("@register");
             cy.wait("@authenticate");
 
             cy.contains("Continue").click();

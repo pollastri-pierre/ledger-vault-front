@@ -1,29 +1,33 @@
 // @flow
-import React from "react";
+import React, { Fragment } from "react";
 import groupBy from "lodash/groupBy";
 import size from "lodash/size";
-import { Trans } from "react-i18next";
+import { Trans, Interpolate } from "react-i18next";
 import { Link } from "react-router-dom";
 import type { Account, Member } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 import { getAccountCurrencyName } from "utils/accounts";
+import Text from "components/Text";
+import LineSeparator from "components/LineSeparator";
 import styles from "./styles";
 import ApprovalStatus from "../ApprovalStatus";
 import AccountName from "../AccountName";
 import DateFormat from "../DateFormat";
+import PendingEmptyState from "./PendingEmptyState";
 
 const Empty = ({ approved }: { approved?: boolean }) =>
   approved ? (
-    <p>
-      <Trans i18nKey="pending:accounts.watch.no_data" />
-    </p>
+    <PendingEmptyState
+      text={<Trans i18nKey="pending:accounts.watch.no_data" />}
+    />
   ) : (
-    <p>
-      <Trans i18nKey="pending:accounts.approve.no_data" />
-    </p>
+    <PendingEmptyState
+      text={<Trans i18nKey="pending:accounts.approve.no_data" />}
+    />
   );
+
 type Props = {
   accounts: Account[],
   approved?: boolean,
@@ -31,7 +35,7 @@ type Props = {
   quorum: Number,
   user: Member,
   match: *,
-  classes: Object
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 function PendingAccountApprove(props: Props) {
   const { accounts, approved, approvers, user, classes, match, quorum } = props;
@@ -45,24 +49,30 @@ function PendingAccountApprove(props: Props) {
   return (
     <div className={classes.base}>
       {!approved && (
-        <div>
-          <p className={classnames(classes.header, classes.headerBlack)}>
-            {accounts.length === 1 ? (
-              <span>1 account</span>
-            ) : (
-              <span>{accounts.length} accounts</span>
-            )}
-            <span>{nbCurrencies}</span>
-          </p>
-          <p className={classnames(classes.header, classes.headerLight)}>
-            <span>pending approval</span>
-            {nbCurrencies === 1 ? (
-              <span>currency</span>
-            ) : (
-              <span>currencies</span>
-            )}
-          </p>
-        </div>
+        <Fragment>
+          <div className={classes.headerContainer}>
+            <Text className={classes.header}>
+              <Interpolate
+                i18nKey="pending:accounts.approve.account"
+                options={{ count: accounts.length }}
+                numberOfAccounts={accounts.length}
+              />
+            </Text>
+            <Text className={classes.header}>{nbCurrencies}</Text>
+          </div>
+          <div className={classes.headerContainer}>
+            <Text small className={classes.subHeader}>
+              <Trans i18nKey="pending:operations.approve.status" />
+            </Text>
+            <Text small className={classes.subHeader}>
+              <Interpolate
+                i18nKey="pending:accounts.approve.currency"
+                options={{ count: nbCurrencies }}
+              />
+            </Text>
+          </div>
+          <LineSeparator />
+        </Fragment>
       )}
       {accounts.map(account => (
         <Link
@@ -72,7 +82,7 @@ function PendingAccountApprove(props: Props) {
           to={`${match.url}/account/${account.id}`}
           key={account.id}
         >
-          <div>
+          <div className={classes.dateContainer}>
             <span className={classes.date}>
               <DateFormat date={account.created_on} />
             </span>
@@ -80,7 +90,6 @@ function PendingAccountApprove(props: Props) {
               <AccountName account={account} />
             </span>
           </div>
-
           <div className={classes.status}>
             <ApprovalStatus
               approved={account.approvals || []}

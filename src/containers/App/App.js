@@ -1,17 +1,19 @@
 // @flow
 import React from "react";
-import TryAgain from "components/TryAgain";
-import connectData from "restlay/connectData";
-import type { Account } from "data/types";
-import AccountsQuery from "api/queries/AccountsQuery";
 import { translate } from "react-i18next";
+import { withStyles } from "@material-ui/core/styles";
+import type { Match, Location } from "react-router-dom";
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
+import AccountsQuery from "api/queries/AccountsQuery";
+import TryAgain from "components/TryAgain";
 import Content from "components/content/Content";
 import ActionBar from "components/actionBar/ActionBar";
-import { withStyles } from "@material-ui/core/styles";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import UpdateAccounts from "components/UpdateAccounts";
 import Menu from "components/menu/Menu";
 import Card from "components/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
 
 const styles = {
   error: {
@@ -21,14 +23,14 @@ const styles = {
   }
 };
 type Props = {
-  location: *,
-  match: *,
+  location: Location,
+  match: Match,
   accounts: Account[]
 };
 function App({ location, match, accounts }: Props) {
   return (
     <div className="App">
-      <ActionBar match={match} location={location} accounts={accounts} />
+      <ActionBar match={match} location={location} />
       <div className="Main">
         <Menu location={location} match={match} accounts={accounts} />
         <Content match={match} />
@@ -47,7 +49,10 @@ const RenderError = withStyles(styles)(({ classes, error, restlay }) => (
   </div>
 ));
 
+const RenderLoading = () => <SpinnerCard />;
+
 export default connectData(translate()(App), {
+  RenderLoading,
   RenderError,
   queries: {
     accounts: AccountsQuery

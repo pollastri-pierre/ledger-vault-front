@@ -1,6 +1,7 @@
 // @flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
 import { translate } from "react-i18next";
+import { FaRegBell } from "react-icons/fa";
 import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
@@ -13,7 +14,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import io from "socket.io-client";
 import PopBubble from "../utils/PopBubble";
-import Bell from "../icons/full/Bell";
 import ActivityList from "../ActivityList";
 
 const styles = {
@@ -152,7 +152,7 @@ class ActivityCard extends Component<
           ref={this.onActivityRef}
           className={classes.base}
         >
-          <Bell className={classes.icon} />
+          <FaRegBell size={18} />
           {!!unseenActivityCount && <div className={classes.bullet} />}
           <div className="content-header-button-text">
             {t("actionBar:activity")}

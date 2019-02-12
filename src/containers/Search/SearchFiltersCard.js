@@ -112,6 +112,7 @@ class SearchFiltersCard extends Component<{
           <label>
             <h3>label</h3>
             <TextField
+              autoComplete="off"
               placeholder="Operation's label"
               value={filters.keywords}
               fullWidth

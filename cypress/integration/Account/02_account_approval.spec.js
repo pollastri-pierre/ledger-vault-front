@@ -19,7 +19,7 @@ describe("Tests Approve Account", function() {
     route();
     login(6);
     approve();
-    approve_account("bitcoin_testnet", "BTC Testnet", "BTC");
+    approve_account("Bitcoin Testnet", "BTC Testnet", "BTC");
   });
 
   it("Approve a account with second members", () => {
@@ -27,6 +27,6 @@ describe("Tests Approve Account", function() {
     route();
     login(4);
     approve();
-    approve_account("bitcoin_testnet", "BTC Testnet", "BTC");
+    approve_account("Bitcoin Testnet", "BTC Testnet", "BTC");
   });
 });

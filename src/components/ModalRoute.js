@@ -28,6 +28,7 @@ function renderInner(routeProps, { component, render, children }, extraProps) {
 }
 
 class ModalRoute extends Component<{
+  disableBackdropClick?: boolean,
   undoAllHistoryOnClickOutside?: boolean,
   component?: *,
   render?: *,
@@ -71,6 +72,7 @@ class ModalRoute extends Component<{
       render, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
       undoAllHistoryOnClickOutside, // eslint-disable-line no-unused-vars
+      disableBackdropClick,
       ...rest
     } = this.props;
     return (
@@ -85,7 +87,11 @@ class ModalRoute extends Component<{
           });
           const open = !!routeProps.match;
           return (
-            <BlurDialog open={open} onClose={this.onClose}>
+            <BlurDialog
+              open={open}
+              onClose={this.onClose}
+              disableBackdropClick={disableBackdropClick}
+            >
               <StaticContainer shouldUpdate={open}>{inner}</StaticContainer>
             </BlurDialog>
           );

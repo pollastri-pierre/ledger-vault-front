@@ -24,10 +24,13 @@ describe("Tests Creation Account", function() {
   it("Create a account with the same name should fail", () => {
     cy.server();
     route();
+
     cy.get(".test-new-account").click();
-    cy.contains("Bitcoin Testnet").click();
-    cy.get("#input_crypto").type("BTC Testnet");
-    cy.contains("Continue").click();
+    cy.get("#input_crypto")
+      .type("Bitcoin Testnet", { force: true })
+      .type("{enter}");
+    cy.get("input[type=text]").type("BTC Testnet");
+    cy.get("[data-test=dialog-button]").click();
     cy.contains("Members").click();
     cy.get(".test-member-row")
       .eq(0)
@@ -35,20 +38,20 @@ describe("Tests Creation Account", function() {
     cy.get(".test-member-row")
       .eq(1)
       .click({ force: true });
-    cy.contains("Done").click();
+    cy.get("[data-test=dialog-button]").click();
     cy.contains("Approvals").click();
-    cy.get("input").type(100);
-    cy.contains("done").click();
+    cy.get("input[type=text]").type(100);
+    cy.get("[data-test=dialog-button]").click();
     cy.get(".top-message-body").contains(
       "Number of approvals cannot exceed number of members"
     );
-    cy.get("input").clear();
+    cy.get("input[type=text]").clear();
 
-    cy.get("input").type(2);
+    cy.get("input[type=text]").type(2);
     cy.contains("done").click();
     cy.contains("Continue").click();
-    cy.contains("done").click();
-    cy.wait(5500);
+    cy.get("[data-test=dialog-button]").click();
+    cy.wait(2500);
     cy.get(".top-message-body")
       .contains("Account name already exists in this currency")
       .get(".top-message-title")
