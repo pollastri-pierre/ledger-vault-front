@@ -192,6 +192,9 @@ export const executeQueryOrMutation =
       .network(uri, method, body)
       .then(data => {
         let result;
+        if (queryOrMutation.getFilter && queryOrMutation.getFilter()) {
+          data = data.filter(queryOrMutation.getFilter());
+        }
         if (queryOrMutation.getResponseSchema()) {
           result = normalize(data, queryOrMutation.getResponseSchema() || {});
         }
