@@ -11,7 +11,8 @@ import Select from "components/base/Select";
 
 type Option = {
   label: string,
-  value: Account
+  value: string,
+  data: Account
 };
 
 const GenericRow = (props: OptionProps) => {
@@ -22,8 +23,8 @@ const GenericRow = (props: OptionProps) => {
   // render in the menu or render in the input. this line is here to
   // unify this behaviour. btw it's happening here and not in SelectCurrency
   // because (i guess) the the SelectCurrency is async (only diff..)
-  if ("label" in account && "value" in account) {
-    account = account.value;
+  if ("label" in account && "data" in account) {
+    account = account.data;
   }
 
   return <AccountName py={5} account={account} />;
@@ -46,7 +47,11 @@ const customComponents = {
   SingleValue: ValueComponent
 };
 
-const buildOption = account => ({ label: account.name, value: account });
+const buildOption = account => ({
+  label: account.name,
+  value: `${account.id}`,
+  data: account
+});
 
 type Props = {
   accounts: Account[],
@@ -58,7 +63,7 @@ class SelectAccount extends PureComponent<Props> {
   handleChange = (option: ?Option) => {
     const { onChange } = this.props;
     if (!option) return onChange(null);
-    onChange(option.value);
+    onChange(option.data);
   };
 
   render() {

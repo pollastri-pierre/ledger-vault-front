@@ -11,14 +11,20 @@ import Box from "components/base/Box";
 import colors from "shared/colors";
 
 type Option = {
-  value: *,
+  value: string,
+  data: *,
   label: string
+};
+
+export type GroupedOption = {
+  label: string,
+  options: Option[]
 };
 
 type Props = {
   async?: boolean,
   components?: Object,
-  options?: Option[]
+  options?: Option[] | GroupedOption[]
 };
 
 const styles = {

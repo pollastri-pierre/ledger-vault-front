@@ -3,10 +3,8 @@
 // import moment from "moment";
 import Prando from "prando";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
-
 import type { Account } from "data/types";
-
-import { account } from "./mock-base";
+import { account, member } from "./mock-base";
 
 const allCurrencies = listCryptoCurrencies(true);
 
@@ -18,6 +16,14 @@ const getRandomCurrency = rng => {
 const getRandomName = rng => {
   const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
   return `Account_${rng.nextString(rng.nextInt(1, 10), charset)}`;
+};
+const getRandomUserName = rng => {
+  const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+  return `User_${rng.nextString(rng.nextInt(1, 10), charset)}`;
+};
+const getRandomEmail = rng => {
+  const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+  return `User_${rng.nextString(rng.nextInt(1, 10), charset)}@ledger.fr`;
 };
 
 // TODO handle ERC20
@@ -43,6 +49,22 @@ const genAccount = rng => {
       currency_unit: currency.units[0]
     }
   };
+};
+
+const genMember = rng => ({
+  ...member,
+  id: rng.nextInt(1000, 5000),
+  username: getRandomUserName(rng),
+  email: getRandomEmail(rng)
+});
+
+export const genMembers = (number: number, seed?: string) => {
+  const rng = new Prando(seed);
+  const members = [];
+  for (let i = 0; i < number; i++) {
+    members.push(genMember(rng));
+  }
+  return members;
 };
 
 // TODO may be we want an helper to get 1 account for each available currency ?
