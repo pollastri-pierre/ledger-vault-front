@@ -68,10 +68,13 @@ export default function reducer(state: Store = initialState, action: Object) {
       if (!queryOrMutation.showError) {
         return state;
       }
+      if (process.env.NODE_ENV !== "production") {
+        console.error(error);
+      }
       return {
         visible: true,
         title: `Error ${error.json ? error.json.code : error.message}`,
-        content: error.json.message,
+        content: error.json ? error.json.message : error.message,
         type: "error"
       };
     }
