@@ -1,13 +1,14 @@
 // @flow
 import React, { Component } from "react";
+import type { Match } from "react-router-dom";
 import debounce from "lodash/debounce";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import { withStyles } from "@material-ui/core/styles";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import type { Account } from "data/types";
+import Box from "components/base/Box";
 import SearchFiltersCard from "./SearchFiltersCard";
 import SearchResultsCard from "./SearchResultsCard";
 
@@ -33,33 +34,19 @@ const noFilters = {
   maxAmount: ""
 };
 
-const styles = {
-  base: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    "& > :first-child": {
-      flex: "1",
-      marginRight: "20px"
-    },
-    "& > :last-child": {
-      width: "288px"
-    }
-  }
-};
 const currencies = listCryptoCurrencies(true);
-class Search extends Component<
-  {
-    accounts: Account[],
-    classes: Object,
-    match: *
-  },
-  {
-    filters: Filters,
-    debouncedFilters: Filters
-  }
-> {
+
+type Props = {
+  accounts: Account[],
+  match: Match
+};
+
+type State = {
+  filters: Filters,
+  debouncedFilters: Filters
+};
+
+class Search extends Component<Props, State> {
   state = {
     filters: noFilters,
     debouncedFilters: noFilters
@@ -85,13 +72,14 @@ class Search extends Component<
   }
 
   render() {
-    const { accounts, classes, match } = this.props;
+    const { accounts, match } = this.props;
     const { filters, debouncedFilters } = this.state;
     const refreshingKey =
       `${String(debouncedFilters.keywords)} ` +
       `_${String(debouncedFilters.currencyName)}`;
+
     return (
-      <div className={classes.base}>
+      <Box grow horizontal align="flex-start" flow={20}>
         <SearchResultsCard
           accounts={accounts}
           filters={debouncedFilters}
@@ -108,12 +96,12 @@ class Search extends Component<
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
         />
-      </div>
+      </Box>
     );
   }
 }
 
-export default connectData(withStyles(styles)(Search), {
+export default connectData(Search, {
   queries: {
     accounts: AccountsQuery
   }

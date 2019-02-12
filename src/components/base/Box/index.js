@@ -1,7 +1,7 @@
 // @flow
 
 import styled from "styled-components";
-import { space, color, borderRadius } from "styled-system";
+import { space, color, borderRadius, width } from "styled-system";
 
 type Props = {
   flow?: number,
@@ -21,6 +21,7 @@ const align = (props: Props) => props.align || "stretch";
 const justify = (props: Props) => props.justify || "flex-start";
 const position = (props: Props) => props.position || "static";
 const displayFlex = (props: Props) => (props.inline ? "inline-flex" : "flex");
+const flexShrink = (props: Props) => ("noShrink" in props ? 0 : 1);
 
 const flow = (props: Props) => {
   if (!("flow" in props)) return;
@@ -42,6 +43,7 @@ export default styled.div`
   display: ${displayFlex};
   flex-direction: ${flexDirection};
   flex-grow: ${flexGrow};
+  flex-shrink: ${flexShrink};
   align-items: ${align};
   justify-content: ${justify};
 
@@ -51,4 +53,5 @@ export default styled.div`
   ${color};
   ${space};
   ${flow};
+  ${width};
 `;
