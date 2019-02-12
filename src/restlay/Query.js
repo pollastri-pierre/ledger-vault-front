@@ -12,6 +12,9 @@ export default class Query<Input, Response> {
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object> = {};
 
+  // handler to eventually filter items from query results
+  filter: ?(Object) => boolean;
+
   // on a GET, the maximum amount of time (seconds) will be considered fresh and we don't need to refetch. we want the front app to not always refetch the data (NB maybe we could use HTTP Cache-Control but this is a simpler take on the problem)
   cacheMaxAge: number = 0;
 
@@ -26,6 +29,10 @@ export default class Query<Input, Response> {
 
   getResponseSchema() {
     return this.responseSchema;
+  }
+
+  getFilter() {
+    return this.filter;
   }
 
   getCacheKey(): string {
