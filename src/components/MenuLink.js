@@ -10,7 +10,8 @@ const styles = {
   root: {
     fontSize: 11,
     fontWeight: 600,
-    paddingLeft: 40
+    paddingLeft: 40,
+    paddingRight: 10
   },
   disabled: {
     opacity: 0.2

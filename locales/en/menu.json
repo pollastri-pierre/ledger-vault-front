@@ -1,7 +1,19 @@
 {
-  "dashboard": "dashboard",
-  "new_operation": "New operation",
-  "pending_requests": "Pending",
-  "receive": "Receive",
-  "search": "Search"
+  "admin": {
+    "dashboard": "Dashboard (Admin)",
+    "tasks": "Admin Tasks",
+    "operators": "Operators (Admin)",
+    "groups": "Groups (Admin)",
+    "rule": "Admin rule",
+    "accounts": "Accounts (Admin)",
+    "transactions": "Transactions (Admin)"
+  },
+  "operator": {
+    "dashboard": "Dashboard (Op)",
+    "pending": "Awaiting approval (Op)",
+    "send": "Send (Op)",
+    "receive": "Receive (Op)",
+    "transactions": "Transactions (Op)",
+    "accounts": "Accounts (Op)"
+  }
 }

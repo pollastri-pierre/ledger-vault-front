@@ -5,35 +5,41 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import { getPendingsOperations } from "utils/operations";
 import colors from "shared/colors";
-import { withStyles } from "@material-ui/core/styles";
+
+import type { Account, Operation } from "data/types";
 
 const styles = {
   base: {
-    background: "#ea2e49", // FIXME use theme
-    position: "absolute",
-    right: "0",
-    top: "0",
+    lineHeight: 0,
+    alignItems: "center",
+    width: 18,
+    height: 18,
+    display: "flex",
+    justifyContent: "center",
     backgroundColor: colors.grenade,
-    color: "white",
-    padding: "0 .6em",
+    color: colors.white,
     borderRadius: "1em",
     fontSize: 11,
     fontWeight: "600"
   }
 };
-class PendingsMenuBadge extends Component<*> {
+type Props = {
+  accounts: Account[],
+  operations: Operation[]
+};
+class PendingsMenuBadge extends Component<Props> {
   render() {
-    const { accounts, operations, classes } = this.props;
+    const { accounts, operations } = this.props;
     const filtered = getPendingsOperations(operations);
     const count = accounts.length + filtered.length;
     if (count === 0) {
       return false;
     }
-    return <span className={classes.base}>{count}</span>;
+    return <span style={styles.base}>{count}</span>;
   }
 }
 
-export default connectData(withStyles(styles)(PendingsMenuBadge), {
+export default connectData(PendingsMenuBadge, {
   queries: {
     accounts: PendingAccountsQuery,
     operations: PendingOperationsQuery
