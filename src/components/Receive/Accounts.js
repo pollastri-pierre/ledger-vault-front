@@ -1,9 +1,9 @@
 // @flow
 import React from "react";
 import type { Account } from "data/types";
-import MenuList from "@material-ui/core/MenuList";
 import { Trans } from "react-i18next";
-import AccountMenuItem from "components/operations/creation/AccountMenuItem";
+import SelectAccount from "components/SelectAccount";
+import Box from "components/base/Box";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 
 import ReceiveLayout from "./ReceiveLayout";
@@ -15,7 +15,7 @@ const ReceiveAccounts = ({
 }: {
   accounts: Account[],
   selectedAccount: ?Account,
-  onSelect: Account => void
+  onSelect: (?Account) => void
 }) => (
   <ReceiveLayout
     header={
@@ -24,18 +24,17 @@ const ReceiveAccounts = ({
       </ModalSubTitle>
     }
     content={
-      <MenuList data-test="receive-accounts">
-        {accounts
-          .filter(a => a.status === "APPROVED" || a.status === "VIEW_ONLY")
-          .map((account, i) => (
-            <AccountMenuItem
-              onSelect={onSelect}
-              key={i} // eslint-disable-line react/no-array-index-key
-              account={account}
-              selected={(selectedAccount && selectedAccount.id) === account.id}
-            />
-          ))}
-      </MenuList>
+      <Box py={20} px={40}>
+        <SelectAccount
+          accounts={accounts.filter(
+            a => a.status === "APPROVED" || a.status === "VIEW_ONLY"
+          )}
+          value={selectedAccount}
+          onChange={onSelect}
+          autoFocus
+          openMenuOnFocus
+        />
+      </Box>
     }
     footer={null}
   />

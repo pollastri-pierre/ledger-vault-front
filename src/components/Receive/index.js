@@ -97,7 +97,7 @@ class Receive extends Component<Props, State> {
     this.setState({ verified: false, error: false, device: false, index: 1 });
   };
 
-  onSelectAccount = (selectedAccount: Account) => {
+  onSelectAccount = (selectedAccount: ?Account) => {
     this.setState(prev => ({
       ...prev,
       index: 1,
