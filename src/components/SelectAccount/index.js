@@ -8,6 +8,10 @@ import type { Account } from "data/types";
 
 import AccountName from "components/AccountName";
 import Select from "components/base/Select";
+import Box from "components/base/Box";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Text from "components/base/Text";
+import colors from "shared/colors";
 
 type Option = {
   label: string,
@@ -27,7 +31,14 @@ const GenericRow = (props: OptionProps) => {
     account = account.data;
   }
 
-  return <AccountName py={5} account={account} />;
+  return (
+    <Box horizontal align="center" justify="space-between" py={5}>
+      <AccountName account={account} />
+      <Text small color={colors.mediumGrey}>
+        <CurrencyAccountValue account={account} value={account.balance} />
+      </Text>
+    </Box>
+  );
 };
 
 const OptionComponent = (props: OptionProps) => (
