@@ -146,12 +146,12 @@ class SelectInGroup extends PureComponent<Props> {
         components={customComponents}
         styles={colourStyles}
         value={resolvedValue}
-        onChange={this.handleChange}
         closeMenuOnSelect={false}
         options={groupedOptions}
         isMulti
         hideSelectedOptions={false}
         {...props}
+        onChange={this.handleChange}
       />
     );
   }
