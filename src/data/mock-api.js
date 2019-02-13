@@ -15,6 +15,13 @@ const mockSync = (uri, method) => {
           mockEntities
         );
       }
+      case "/groups-mocks": {
+        return denormalize(
+          Object.keys(mockEntities.groups),
+          [schema.Group],
+          mockEntities
+        );
+      }
       default:
     }
   }

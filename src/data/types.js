@@ -128,7 +128,10 @@ export type AccountEntity = AccountCommon & {
 
 type GroupCommon = {
   id: string,
-  name: string
+  name: string,
+  created_on: Date,
+  description?: string,
+  status: string // TODO create UNION type when different status are known
 };
 export type GroupEntity = GroupCommon & {
   members: string[]

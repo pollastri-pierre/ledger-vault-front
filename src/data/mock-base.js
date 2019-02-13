@@ -9,6 +9,15 @@ export const member = {
   username: "user1"
 };
 
+export const group = {
+  id: 1,
+  name: "group A",
+  description: "short description of the group",
+  created_on: new Date(),
+  status: "APPROVED",
+  members: []
+};
+
 export const account = {
   account_type: "Bitcoin",
   address: null,

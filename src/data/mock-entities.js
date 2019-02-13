@@ -4,7 +4,7 @@
 import Prando from "prando";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import type { Account } from "data/types";
-import { account, member } from "./mock-base";
+import { account, member, group } from "./mock-base";
 
 const allCurrencies = listCryptoCurrencies(true);
 
@@ -13,13 +13,9 @@ const getRandomCurrency = rng => {
   return allCurrencies[randomInt];
 };
 
-const getRandomName = rng => {
+const getRandomName = (rng, prefix) => {
   const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  return `Account_${rng.nextString(rng.nextInt(1, 10), charset)}`;
-};
-const getRandomUserName = rng => {
-  const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  return `User_${rng.nextString(rng.nextInt(1, 10), charset)}`;
+  return `${prefix}_${rng.nextString(rng.nextInt(1, 10), charset)}`;
 };
 const getRandomEmail = rng => {
   const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -40,7 +36,7 @@ const genAccount = rng => {
   return {
     ...account,
     id: rng.nextInt(1000, 5000),
-    name: getRandomName(rng),
+    name: getRandomName(rng, "Account"),
     balance: rng.nextInt(account.balance, account.balance + 1000),
     account_type: ACCOUNT_TYPE_BY_CRYPTO_FAMILY[currency.family],
     currency_id: currency.id,
@@ -51,17 +47,38 @@ const genAccount = rng => {
   };
 };
 
+const genGroup = seed => {
+  const rng = new Prando(seed);
+  const nbMembers = rng.nextInt(2, 10);
+  const members = genMembers(nbMembers, rng.nextString(10));
+  return {
+    ...group,
+    id: rng.nextInt(1000, 5000),
+    name: getRandomName(rng, "Group"),
+    members
+  };
+};
+
+export const genGroups = (number: number, seed: string) => {
+  const groups = [];
+  for (let i = 0; i < number; i++) {
+    const rng = new Prando(`${seed}_${i}`);
+    groups.push(genGroup(rng.nextString(10)));
+  }
+  return groups;
+};
+
 const genMember = rng => ({
   ...member,
   id: rng.nextInt(1000, 5000),
-  username: getRandomUserName(rng),
+  username: getRandomName(rng, "User"),
   email: getRandomEmail(rng)
 });
 
-export const genMembers = (number: number, seed?: string) => {
-  const rng = new Prando(seed);
+export const genMembers = (number: number, seed: string) => {
   const members = [];
   for (let i = 0; i < number; i++) {
+    const rng = new Prando(`${seed}_${i}`);
     members.push(genMember(rng));
   }
   return members;
@@ -178,8 +195,16 @@ const keysAccounts = {};
 for (let i = 0; i < randomAccounts.length; i++) {
   keysAccounts[randomAccounts[i].id] = randomAccounts[i];
 }
+//
+// turn the array into an object so restlay can understand it
+const randomGroups = genGroups(10, "seed");
+const keysGroups = {};
+for (let i = 0; i < randomGroups.length; i++) {
+  keysGroups[randomGroups[i].id] = randomGroups[i];
+}
 
 // TODO mock other entities, operations, members..etc..
 export default {
-  accounts: keysAccounts
+  accounts: keysAccounts,
+  groups: keysGroups
 };
