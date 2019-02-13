@@ -8,7 +8,7 @@ import Text from "components/base/Text";
 
 import colors, { opacity, darken } from "shared/colors";
 
-import type { Translate, Account } from "data/types";
+import type { Translate } from "data/types";
 
 const BG_BY_STATUS = {
   APPROVED: opacity(colors.ocean, 0.1),
@@ -22,29 +22,29 @@ const COLOR_BY_STATUS = {
 
 type Props = {
   t: Translate,
-  account: Account,
+  status: string,
   textOnly?: boolean
 };
 
-class AccountStatus extends PureComponent<Props> {
+class EntityStatus extends PureComponent<Props> {
   getStr = () => {
-    const { t, account } = this.props;
-    const translation = t(`accountStatus:${account.status}`);
-    if (translation !== `accountStatus:${account.status}`) {
+    const { t, status } = this.props;
+    const translation = t(`entityStatus:${status}`);
+    if (translation !== `entityStatus:${status}`) {
       // It is translated
       return translation;
     }
-    return account.status;
+    return status;
   };
 
   render() {
-    const { account, textOnly } = this.props;
+    const { status, textOnly } = this.props;
 
     const str = this.getStr();
     if (textOnly) return str;
 
-    const bg = BG_BY_STATUS[account.status] || "white";
-    const color = COLOR_BY_STATUS[account.status] || "inherit";
+    const bg = BG_BY_STATUS[status] || "white";
+    const color = COLOR_BY_STATUS[status] || "inherit";
 
     return (
       <Box inline px={5} bg={bg} color={color} borderRadius={3}>
@@ -56,4 +56,4 @@ class AccountStatus extends PureComponent<Props> {
   }
 }
 
-export default translate()(AccountStatus);
+export default translate()(EntityStatus);
