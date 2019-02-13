@@ -20,7 +20,6 @@ import Box from "components/base/Box";
 import Select from "components/base/Select";
 import colors from "shared/colors";
 
-const ROW_SIZE = 20;
 const ICON_SIZE = 16;
 
 type CurrencyItem = {
@@ -34,7 +33,7 @@ type ERC20TokenItem = {
 };
 
 export type Item = CurrencyItem | ERC20TokenItem;
-type Option = { label: string, value: Item };
+type Option = { label: string, value: string, data: Item };
 
 function getItemIcon(item: Item) {
   return item.type === "erc20token" ? (
@@ -64,7 +63,11 @@ function getItemLabel(item: Item) {
 }
 
 const buildOptions = (items: Item[]): Option[] =>
-  items.map(item => ({ label: item.value.name, value: item }));
+  items.map(item => ({
+    label: item.value.name,
+    value: `${item.type}_${item.value.name}`,
+    data: item
+  }));
 
 const INCLUDE_DEV =
   process.env.NODE_ENV === "development" ||
@@ -92,11 +95,7 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: [
-    "value.value.name",
-    "value.value.ticker",
-    "value.value.contract_address"
-  ]
+  keys: ["data.value.name", "data.value.ticker", "data.value.contract_address"]
 };
 
 const fuse = new Fuse(fullOptions, fuseOptions);
@@ -114,37 +113,22 @@ const getValueOption = (value: CryptoCurrency | ERC20Token): Option | null => {
   if (!value) return null;
   const isValueERC20Token = isERC20Token(value);
   const resolved = fullOptions.find((opt: Option) => {
-    const isOptERC20Token = isERC20Token(opt.value.value);
+    const isOptERC20Token = isERC20Token(opt.data.value);
     if (isValueERC20Token !== isOptERC20Token) return false;
     if (
       isValueERC20Token &&
       // $FlowFixMe inference fail: we are sure both are erc20
-      opt.value.value.contract_address === value.contract_address
+      opt.data.value.contract_address === value.contract_address
     )
       return true;
     // $FlowFixMe inference fail: we are sure both are currencies
-    if (!isValueERC20Token && opt.value.value.id === value.id) return true;
+    if (!isValueERC20Token && opt.data.value.id === value.id) return true;
     return false;
   });
   return resolved || null;
 };
 
 const styles = {
-  genericRowContainer: {
-    fontSize: 13,
-    height: ROW_SIZE,
-    display: "flex",
-    alignItems: "center",
-    whiteSpace: "nowrap"
-  },
-  genericRowIcon: {
-    height: ROW_SIZE,
-    width: ROW_SIZE,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginRight: 10
-  },
   contract: {
     fontSize: 10,
     fontFamily: "monospace",
@@ -163,7 +147,7 @@ const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
 
 const GenericRow = (props: OptionProps) => {
   const { data } = props;
-  const item: Item = data.value;
+  const item: Item = data.data;
 
   const icon = getItemIcon(item);
   const label = getItemLabel(item);
@@ -220,7 +204,7 @@ class SelectCurrency extends PureComponent<Props> {
   handleChange = (option: ?Option) => {
     const { onChange } = this.props;
     if (!option) return onChange(null);
-    onChange(option.value);
+    onChange(option.data);
   };
 
   render() {
