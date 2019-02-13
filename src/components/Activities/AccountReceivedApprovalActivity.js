@@ -14,9 +14,9 @@ type Props = {
 
 class AccountReceivedApprovalActivity extends Component<Props> {
   getAccountLink = (account: *) => {
-    let link = `pending/account/${account.id}`;
+    let link = `admin/pending/account/${account.id}`;
     if (account.status === "APPROVED") {
-      link = `account/${account.id}`;
+      link = `admin/account/${account.id}`;
     }
     return link;
   };
@@ -27,9 +27,12 @@ class AccountReceivedApprovalActivity extends Component<Props> {
     return (
       <Text>
         <NoStyleLink
-          to={`/${match.params.orga_name}/${this.getAccountLink(
-            business_action.account
-          )}`}
+          to={
+            match.params.orga_name &&
+            `/${match.params.orga_name}/${this.getAccountLink(
+              business_action.account
+            )}`
+          }
         >
           <Activity match={match} activity={activity}>
             <Trans

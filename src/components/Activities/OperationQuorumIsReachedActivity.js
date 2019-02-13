@@ -16,13 +16,16 @@ class OperationQuorumIsReachedActivity extends Component<Props> {
   render() {
     const { activity, match } = this.props;
     const business_action = activity.business_action;
-
+    // TODO: update links
     return (
       <Text>
         <NoStyleLink
-          to={`/${match.params.orga_name}/account/${
-            business_action.operation.account.id
-          }/operation/${business_action.operation.id}/0`}
+          to={
+            match.params.orga_name &&
+            `/${match.params.orga_name}/account/${
+              business_action.operation.account.id
+            }/operation/${business_action.operation.id}/0`
+          }
         >
           <Activity match={match} activity={activity}>
             <Trans

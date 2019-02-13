@@ -13,8 +13,9 @@ type Props = {
 
 class NewIncomingTransactionActivity extends Component<Props> {
   getOperationLink = (operation: *) => {
-    let link = `pending/operation/${operation.id}`;
+    let link = `admin/tasks`;
     if (operation.status === "SUBMITTED") {
+      // TODO: update link
       link = `account/${operation.account_id}/operation/${operation.id}/0`;
     }
     return link;
@@ -26,9 +27,12 @@ class NewIncomingTransactionActivity extends Component<Props> {
     return (
       <Text>
         <NoStyleLink
-          to={`/${match.params.orga_name}/${this.getOperationLink(
-            business_action.operation
-          )}`}
+          to={
+            match.params.orga_name &&
+            `/${match.params.orga_name}/${this.getOperationLink(
+              business_action.operation
+            )}`
+          }
         >
           <Activity match={match} activity={activity}>
             <Trans
