@@ -19,7 +19,7 @@ const styles = {
     overflow: "hidden"
   },
   inner: {
-    overflowX: "scroll"
+    overflowX: "auto"
   },
   indicator: {
     position: "absolute",
