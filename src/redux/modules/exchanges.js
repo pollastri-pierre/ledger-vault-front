@@ -51,5 +51,5 @@ export const currencyExchangeSelector = (
   const pair = state.exchanges.pairs.find(
     p => p.from.id === currency.id && p.exchange != null
   );
-  return pair.exchange || null;
+  return (pair && pair.exchange) || null;
 };
