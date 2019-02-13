@@ -14,7 +14,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import io from "socket.io-client";
 import PopBubble from "../utils/PopBubble";
-import ActivityList from "../ActivityList";
+import ActivityList from "../legacy/ActivityList";
 
 const styles = {
   base: {

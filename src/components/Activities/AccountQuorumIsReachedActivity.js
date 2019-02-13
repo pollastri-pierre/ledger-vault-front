@@ -1,45 +1,45 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
 import type { ActivityEntityAccount } from "data/types";
-
-import Activity from "../Activity";
-import Bold from "../Bold";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 import NoStyleLink from "../NoStyleLink";
 
-const styles = {};
+type Props = {
+  activity: ActivityEntityAccount,
+  match: Match
+};
 
-class AccountQuorumIsReachedActivity extends Component<
-  {
-    activity: ActivityEntityAccount,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+class AccountQuorumIsReachedActivity extends Component<Props> {
   render() {
     const { activity, match } = this.props;
     const business_action = activity.business_action;
     return (
-      <span>
+      <Text>
         <NoStyleLink
-          to={`/${match.params.orga_name}/account/${
-            business_action.account.id
-          }`}
+          to={
+            match.params.orga_name &&
+            `/${match.params.orga_name}/admin/account/${
+              business_action.account.id
+            }`
+          }
         >
           <Activity match={match} activity={activity}>
-            The <Bold>{business_action.account.name}</Bold> account request has
-            been approved by{" "}
-            <Bold>
-              {business_action.account.number_of_approvals} out of{" "}
-              {business_action.account.number_of_approvals} Administrators.
-            </Bold>{" "}
-            The account is now created in your workspace.
+            <Trans
+              i18nKey="activities:account.quorumReached"
+              values={{
+                accountName: business_action.account.name,
+                approvalNumber: business_action.account.number_of_approvals
+              }}
+              components={<b>0</b>}
+            />
           </Activity>
         </NoStyleLink>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(AccountQuorumIsReachedActivity);
+export default AccountQuorumIsReachedActivity;

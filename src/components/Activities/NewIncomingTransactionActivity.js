@@ -1,24 +1,21 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-import Activity from "../Activity";
-// import type { ActivityCommon } from "data/types";
-import Bold from "../Bold";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 import NoStyleLink from "../NoStyleLink";
 
-const styles = {};
+type Props = {
+  activity: Object,
+  match: Match
+};
 
-class NewIncomingTransactionActivity extends Component<
-  {
-    activity: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+class NewIncomingTransactionActivity extends Component<Props> {
   getOperationLink = (operation: *) => {
-    let link = `pending/operation/${operation.id}`;
+    let link = `admin/tasks`;
     if (operation.status === "SUBMITTED") {
+      // TODO: update link
       link = `account/${operation.account_id}/operation/${operation.id}/0`;
     }
     return link;
@@ -28,20 +25,28 @@ class NewIncomingTransactionActivity extends Component<
     const { activity, match } = this.props;
     const business_action = activity.business_action;
     return (
-      <span>
+      <Text>
         <NoStyleLink
-          to={`/${match.params.orga_name}/${this.getOperationLink(
-            business_action.operation
-          )}`}
+          to={
+            match.params.orga_name &&
+            `/${match.params.orga_name}/${this.getOperationLink(
+              business_action.operation
+            )}`
+          }
         >
           <Activity match={match} activity={activity}>
-            A <Bold>payment</Bold> has been received in the{" "}
-            <Bold>{business_action.operation.account.name}</Bold> account
+            <Trans
+              i18nKey="activities:account.txReceived"
+              values={{
+                accountName: business_action.operation.account.name
+              }}
+              components={<b>0</b>}
+            />
           </Activity>
         </NoStyleLink>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(NewIncomingTransactionActivity);
+export default NewIncomingTransactionActivity;

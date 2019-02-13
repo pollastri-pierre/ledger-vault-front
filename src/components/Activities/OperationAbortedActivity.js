@@ -1,34 +1,36 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-// import type { ActivityCommon } from "data/types";
-import Activity from "../Activity";
-import Bold from "../Bold";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
+import type { ActivityEntityOperation } from "data/types";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 
-const styles = {};
+type Props = {
+  activity: ActivityEntityOperation,
+  match: Match
+};
 
-class OperationAbortedActivity extends Component<
-  {
-    activity: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+class OperationAbortedActivity extends Component<Props> {
   render() {
     const { activity, match } = this.props;
     const business_action = activity.business_action;
 
     return (
-      <span>
+      <Text>
         <Activity match={match} activity={activity}>
-          The operation request created in{" "}
-          <Bold>{business_action.operation.account.name}</Bold> has been aborted
-          by <Bold>{business_action.author.username} </Bold>.
+          <Trans
+            i18nKey="activities:operation.abort"
+            values={{
+              author: business_action.author.username,
+              accountName: business_action.author.username
+            }}
+            components={<b>0</b>}
+          />
         </Activity>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(OperationAbortedActivity);
+export default OperationAbortedActivity;
