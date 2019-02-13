@@ -27,7 +27,7 @@ const styles = {
     right: 0,
     bottom: 0,
     transition: "100ms linear opacity",
-    boxShadow: "rgba(0, 0, 0, 0.2) 0px 0px 12px 5px"
+    boxShadow: "rgba(0, 0, 0, 0.07) 0px 0px 12px 5px"
   }
 };
 

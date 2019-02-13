@@ -14,7 +14,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 
 import TryAgain from "components/TryAgain";
 import ModalLoading from "components/ModalLoading";
-import HeaderRightClose from "components/HeaderRightClose";
+import { ModalClose } from "components/base/Modal";
 import modals from "shared/modals";
 import type { Operation, Account } from "data/types";
 import TabHistory from "./TabHistory";
@@ -38,7 +38,7 @@ type Props = {
 const styles = {
   base: {
     ...modals.base,
-    width: 440,
+    width: 450,
     height: 615
   },
   footerContainer: {
@@ -74,7 +74,7 @@ class OperationDetails extends Component<Props, *> {
           <h2>
             <Trans i18nKey="operationDetails:title" />
           </h2>
-          <HeaderRightClose close={close} />
+          <ModalClose onClick={close} />
           <Tabs
             value={value}
             onChange={this.handleChange}
