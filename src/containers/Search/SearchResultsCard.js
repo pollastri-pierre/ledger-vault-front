@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
@@ -9,10 +10,9 @@ import SearchQuery from "api/queries/SearchQuery";
 import connectData from "restlay/connectData";
 
 import InfiniteScrollable from "components/InfiniteScrollable";
-import SpinnerCard from "components/spinners/SpinnerCard";
 import { OperationsTable } from "components/Table";
 import TryAgain from "components/TryAgain";
-import Card from "components/legacy/Card";
+import Card, { CardTitle } from "components/base/Card";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -32,13 +32,14 @@ class SearchResults extends Component<{
 
   render() {
     const { restlay, accounts, search } = this.props;
+    const title = `${(search.edges.length || "no") +
+      (search.pageInfo.hasNextPage ? "+" : "")} operation${
+      search.edges.length > 1 ? "s" : ""
+    } found`;
+
     return (
-      <Card
-        title={`${(search.edges.length || "no") +
-          (search.pageInfo.hasNextPage ? "+" : "")} operation${
-          search.edges.length > 1 ? "s" : ""
-        } found`}
-      >
+      <Card grow>
+        <CardTitle>{title}</CardTitle>
         <div className="body">
           <InfiniteScrollable
             restlay={restlay}
@@ -60,14 +61,14 @@ class SearchResults extends Component<{
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <Card className="search-results">
+  <Card grow className="search-results">
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
 
 const RenderLoading = () => (
-  <Card className="search-results">
-    <SpinnerCard />
+  <Card p={40} align="center" grow className="search-results">
+    <CircularProgress size={25} />
   </Card>
 );
 

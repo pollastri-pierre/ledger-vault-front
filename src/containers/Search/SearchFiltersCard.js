@@ -6,7 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "components/legacy/Card";
+import Card from "components/base/Card";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -19,19 +19,6 @@ import type { Account } from "data/types";
 import SearchFiltersCardHeader from "./SearchFiltersCardHeader";
 
 const styles = {
-  card: {
-    position: "relative",
-    paddingBottom: 90,
-    "& label": {
-      display: "block",
-      padding: "5px 0",
-      "& h3": {
-        textTransform: "uppercase",
-        fontWeight: 600,
-        fontSize: 10
-      }
-    }
-  },
   menuItemCurrency: {
     fontWeight: 400,
     fontSize: 13,
@@ -107,7 +94,8 @@ class SearchFiltersCard extends Component<{
   render() {
     const { accounts, filters, currencies, classes } = this.props;
     return (
-      <Card className={classes.card} Header={SearchFiltersCardHeader}>
+      <Card width={300} noShrink>
+        <SearchFiltersCardHeader />
         <div>
           <label>
             <h3>label</h3>
