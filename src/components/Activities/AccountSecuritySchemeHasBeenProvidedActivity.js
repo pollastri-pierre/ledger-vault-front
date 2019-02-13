@@ -1,32 +1,35 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-import Activity from "../Activity";
-import Bold from "../Bold";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
+import type { ActivityEntityAccount } from "data/types";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 
-const styles = {};
+type Props = {
+  activity: ActivityEntityAccount,
+  match: Match
+};
 
-class AccountSecuritySchemeHasBeenProvidedActivity extends Component<
-  {
-    activity: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+class AccountSecuritySchemeHasBeenProvidedActivity extends Component<Props> {
   render() {
     const { activity, match } = this.props;
     const business_action = activity.business_action;
 
     return (
-      <span>
+      <Text>
         <Activity match={match} activity={activity}>
-          The operation rules of the <Bold>{business_action.account.name}</Bold>{" "}
-          account have been provided.
+          <Trans
+            i18nKey="activities:account.schemeProvided"
+            values={{
+              accountName: business_action.account.name
+            }}
+            components={<b>0</b>}
+          />
         </Activity>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(AccountSecuritySchemeHasBeenProvidedActivity);
+export default AccountSecuritySchemeHasBeenProvidedActivity;

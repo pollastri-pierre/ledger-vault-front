@@ -1,21 +1,17 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-import Activity from "../Activity";
-// import type { ActivityCommon } from "data/types";
-import Bold from "../Bold";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
+import type { ActivityEntityOperation } from "data/types";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 import NoStyleLink from "../NoStyleLink";
 
-const styles = {};
-
-class NewOperationActivity extends Component<
-  {
-    activity: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+type Props = {
+  activity: ActivityEntityOperation,
+  match: Match
+};
+class NewOperationActivity extends Component<Props> {
   getOperationLink = (operation: *) => {
     let link = `pending/operation/${operation.id}`;
     if (operation.status === "SUBMITTED") {
@@ -28,22 +24,26 @@ class NewOperationActivity extends Component<
     const { activity, match } = this.props;
     const business_action = activity.business_action;
     return (
-      <span>
+      <Text>
         <NoStyleLink
           to={`/${match.params.orga_name}/${this.getOperationLink(
             business_action.operation
           )}`}
         >
           <Activity match={match} activity={activity}>
-            A <Bold>new operation request</Bold> has been created by{" "}
-            <Bold>{business_action.author.username} </Bold> in the{" "}
-            <Bold>{business_action.operation.account.name}</Bold> account. The
-            operation is pending to be approved by the members of the account.
+            <Trans
+              i18nKey="activities:operation.requestCreated"
+              values={{
+                author: business_action.author.username,
+                accountName: business_action.operation.account.name
+              }}
+              components={<b>0</b>}
+            />
           </Activity>
         </NoStyleLink>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(NewOperationActivity);
+export default NewOperationActivity;

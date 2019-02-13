@@ -6,7 +6,7 @@ import AccountQuorumIsReachedActivity from "../Activities/AccountQuorumIsReached
 import AccountReceivedApprovalActivity from "../Activities/AccountReceivedApprovalActivity";
 import NewIncomingTransactionActivity from "../Activities/NewIncomingTransactionActivity";
 import OperationAbortedActivity from "../Activities/OperationAbortedActivity";
-import Activity from "../Activity";
+import Activity from "../legacy/Activity";
 import NewAccountActivity from "../Activities/NewAccountActivity";
 import NewOperationActivity from "../Activities/NewOperationActivity";
 import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsReachedActivity";

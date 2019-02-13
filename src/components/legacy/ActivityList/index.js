@@ -6,7 +6,7 @@ import classnames from "classnames";
 import type { ActivityGeneric } from "data/types";
 import colors from "shared/colors";
 
-import ActivityLine from "../ActivityLine";
+import ActivityLine from "components/ActivityLine";
 
 const styles = {
   base: {

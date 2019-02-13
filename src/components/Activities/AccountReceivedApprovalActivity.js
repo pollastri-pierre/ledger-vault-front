@@ -1,21 +1,18 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
 import React, { Component } from "react";
-// import type { ActivityCommon } from "data/types";
-import Activity from "../Activity";
-import Bold from "../Bold";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
+import type { ActivityEntityAccount } from "data/types";
+import Text from "components/base/Text";
+import Activity from "../legacy/Activity";
 import NoStyleLink from "../NoStyleLink";
 
-const styles = {};
+type Props = {
+  activity: ActivityEntityAccount,
+  match: Match
+};
 
-class AccountReceivedApprovalActivity extends Component<
-  {
-    activity: *,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+class AccountReceivedApprovalActivity extends Component<Props> {
   getAccountLink = (account: *) => {
     let link = `pending/account/${account.id}`;
     if (account.status === "APPROVED") {
@@ -28,20 +25,26 @@ class AccountReceivedApprovalActivity extends Component<
     const { activity, match } = this.props;
     const business_action = activity.business_action;
     return (
-      <span>
+      <Text>
         <NoStyleLink
           to={`/${match.params.orga_name}/${this.getAccountLink(
             business_action.account
           )}`}
         >
           <Activity match={match} activity={activity}>
-            The <Bold>{business_action.account.name}</Bold> account request has
-            been approved by <Bold>{business_action.author.username} </Bold>
+            <Trans
+              i18nKey="activities:account.approved"
+              values={{
+                accountName: business_action.account.name,
+                author: business_action.author.username
+              }}
+              components={<b>0</b>}
+            />
           </Activity>
         </NoStyleLink>
-      </span>
+      </Text>
     );
   }
 }
 
-export default withStyles(styles)(AccountReceivedApprovalActivity);
+export default AccountReceivedApprovalActivity;
