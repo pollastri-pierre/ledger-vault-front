@@ -9,7 +9,7 @@ import {
   isAccountBeingUpdated,
   hasUserApprovedAccount
 } from "utils/accounts";
-import InfoBox from "components/InfoBox";
+import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import NoStyleLink from "components/NoStyleLink";
 import type { Account, Member } from "data/types";
