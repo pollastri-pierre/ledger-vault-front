@@ -14,14 +14,15 @@ const styles = {
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
+  width?: number,
   className?: string
 };
 
 class ModalLoading extends PureComponent<Props> {
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, width } = this.props;
     return (
-      <div className={cx(classes.base, className)}>
+      <div className={cx(classes.base, className)} style={{ width }}>
         <SpinnerCard />
       </div>
     );

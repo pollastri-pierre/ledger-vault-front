@@ -80,6 +80,7 @@ function AccountCreationConfirmation(props: Props) {
                     <Trans i18nKey="newAccount:confirmation.parentAccount" />
                   }
                 >
+                  {/* $FlowFixMe */}
                   {accountCreationState.parent_account.name}
                 </LineRow>
               )}

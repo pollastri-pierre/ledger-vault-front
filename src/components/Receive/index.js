@@ -9,7 +9,7 @@ import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import Tab from "@material-ui/core/Tab";
-import HeaderRightClose from "components/HeaderRightClose";
+import { ModalClose } from "components/base/Modal";
 import ReceiveAccounts from "./Accounts";
 import ReceiveDevice from "./Device";
 import ReceiveAddress from "./Address";
@@ -141,7 +141,7 @@ class Receive extends Component<Props, State> {
     return (
       <div className={classes.root}>
         <h2 className={classes.title}>Receive Address</h2>
-        <HeaderRightClose close={close} />
+        <ModalClose onClick={close} />
         <Tabs
           indicatorColor="primary"
           className={classes.tabs}

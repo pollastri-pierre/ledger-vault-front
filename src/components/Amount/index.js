@@ -1,10 +1,13 @@
 // @flow
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import cx from "classnames";
+
 import type { Account } from "data/types";
-import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
+
+import CounterValue from "components/CounterValue";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 
 const styles = {
@@ -14,7 +17,6 @@ const styles = {
   },
   crypto: {
     fontSize: 13,
-    marginBottom: 10,
     color: colors.black
   },
   strong: {
@@ -38,32 +40,39 @@ class Amount extends Component<Props> {
       account,
       value,
       strong,
-      classes,
       dataTest,
       erc20Format,
       hideCountervalue
     } = this.props;
+
     const disableCountervalue = !!erc20Format;
+
     return (
-      <span
-        className={cx(classes.crypto, { [classes.strong]: strong })}
-        data-test={dataTest}
-      >
-        <CurrencyAccountValue
-          account={account}
-          value={value}
-          erc20Format={erc20Format}
-        />{" "}
+      <Box horizontal align="center" flow={5}>
+        <Text
+          color={colors.black}
+          data-test={dataTest}
+          bold={strong}
+          lineHeight={0}
+        >
+          <CurrencyAccountValue
+            account={account}
+            value={value}
+            erc20Format={erc20Format}
+          />
+        </Text>
         {!hideCountervalue && (
-          <span className={classes.flat}>
-            (<CounterValue
+          <Text small color={colors.steel} lineHeight={0}>
+            {"("}
+            <CounterValue
               value={value}
               from={account.currency_id}
               disableCountervalue={disableCountervalue}
-            />)
-          </span>
+            />
+            {")"}
+          </Text>
         )}
-      </span>
+      </Box>
     );
   }
 }

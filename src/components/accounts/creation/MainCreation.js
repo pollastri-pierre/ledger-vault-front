@@ -9,13 +9,12 @@ import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { isNotSupportedCoin } from "utils/cryptoCurrencies";
+import { ModalClose } from "components/base/Modal";
 
 import type {
   State as AccountCreationState,
   UpdateState as UpdateAccountCreationState
 } from "redux/modules/account-creation";
-
-import HeaderRightClose from "components/HeaderRightClose";
 
 import { DialogButton } from "../..";
 import AccountCreationConfirmation from "./AccountCreationConfirmation";
@@ -130,7 +129,7 @@ class MainCreation extends Component<Props> {
       <div className={classes.base}>
         <header>
           <h2>{t("newAccount:title")}</h2>
-          <HeaderRightClose close={close} />
+          <ModalClose onClick={close} />
           <Tabs
             onChange={this.handleChange}
             value={currentTab}

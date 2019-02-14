@@ -8,7 +8,7 @@ import DialogButton from "components/buttons/DialogButton";
 import type { Account } from "data/types";
 import { toggleModal } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
-import HeaderRightClose from "components/HeaderRightClose";
+import { ModalClose } from "components/base/Modal";
 import colors from "shared/colors";
 import WarningIcon from "components/icons/TriangleWarning";
 import ExternalLink from "components/icons/ExternalLink";
@@ -100,7 +100,7 @@ class UpdateAccountsInfo extends Component<Props, State> {
     return (
       <BlurDialog open={open}>
         <div className={classes.base}>
-          <HeaderRightClose close={this.close} />
+          <ModalClose onClick={this.close} />
           <div className={classes.titleContainer}>
             <Circle bg={colors.translucentGrenade} size="28px">
               <div>

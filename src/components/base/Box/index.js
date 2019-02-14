@@ -22,6 +22,13 @@ const justify = (props: Props) => props.justify || "flex-start";
 const position = (props: Props) => props.position || "static";
 const displayFlex = (props: Props) => (props.inline ? "inline-flex" : "flex");
 const flexShrink = (props: Props) => ("noShrink" in props ? 0 : 1);
+const ellipsis = (props: Props) => {
+  if (!("ellipsis" in props)) return "";
+  return `
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `;
+};
 
 const flow = (props: Props) => {
   if (!("flow" in props)) return;
@@ -54,4 +61,5 @@ export default styled.div`
   ${space};
   ${flow};
   ${width};
+  ${ellipsis};
 `;

@@ -16,6 +16,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
 import type { Member, Account, Translate } from "data/types";
 import modals from "shared/modals";
+import { ModalClose } from "components/base/Modal";
 import AccountApproveApprovals from "./AccountApproveApprovals";
 import AccountApproveMembers from "./AccountApproveMembers";
 import AccountApproveDetails from "./AccountApproveDetails";
@@ -45,7 +46,6 @@ type Props = {
 const GenericFooter = ({
   percentage,
   quorum,
-  close,
   approve,
   aborting,
   profile,
@@ -53,14 +53,12 @@ const GenericFooter = ({
 }: {
   percentage?: boolean,
   quorum?: number,
-  close: Function,
   approve: Function,
   account: Account,
   profile: Member,
   aborting: Function
 }) => (
   <Footer
-    close={close}
     approve={() => approve(account)}
     aborting={aborting}
     approved={hasApproved(account.approvals, profile)}
@@ -101,6 +99,7 @@ class AccountApprove extends Component<Props, { value: number }> {
     return (
       <div className={classes.base}>
         <header>
+          <ModalClose onClick={close} />
           <h2>Account request</h2>
           <Tabs
             value={value}

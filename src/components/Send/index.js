@@ -9,7 +9,7 @@ import connectData from "restlay/connectData";
 import Tab from "@material-ui/core/Tab";
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import type { WalletBridge } from "bridge/types";
-import HeaderRightClose from "components/HeaderRightClose";
+import { ModalClose } from "components/base/Modal";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
@@ -142,7 +142,7 @@ class Send extends Component<Props, State<*>> {
     return (
       <div className={classes.root}>
         <h2 className={classes.title}>New Operation</h2>
-        <HeaderRightClose close={close} />
+        <ModalClose onClick={close} />
         <Tabs
           indicatorColor="primary"
           className={classes.tabs}

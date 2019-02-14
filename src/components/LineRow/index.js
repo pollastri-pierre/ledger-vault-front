@@ -1,65 +1,49 @@
 // @flow
+
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 import Tooltip from "@material-ui/core/Tooltip";
+
 import colors from "shared/colors";
 import InfoCircle from "components/icons/InfoCircle";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 
-const styles = {
-  base: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: "42px",
-    lineHeight: "41px",
-    borderTop: `1px solid ${colors.cream}`
-  },
-  titleContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  title: {
-    fontWeight: 600,
-    fontSize: 11,
-    textTransform: "uppercase"
-  },
-  value: {
-    fontSize: 13,
-    flexBasis: "50%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    textAlign: "end"
-  },
-  warningIcon: {
-    marginLeft: 5
+const BoxLined = styled(Box)`
+  & + & {
+    border-top: 1px solid ${colors.argile};
   }
-};
+`;
+
 class LineRow extends Component<{
   label: React$Node,
-  children: React$Node | string,
-  classes: { [_: $Keys<typeof styles>]: string },
+  children?: React$Node | string,
   tooltipInfoMessage?: React$Node
 }> {
   render() {
-    const { label, children, classes, tooltipInfoMessage } = this.props;
+    const { label, children, tooltipInfoMessage } = this.props;
     return (
-      <div className={classes.base}>
-        <div className={classes.titleContainer}>
-          <span className={classes.title}>{label}</span>
+      <BoxLined
+        horizontal
+        align="center"
+        justify="space-between"
+        py={15}
+        flow={50}
+      >
+        <Box flow={5}>
+          <Text small uppercase bold noWrap>
+            {label}
+          </Text>
           {tooltipInfoMessage && (
             <Tooltip title={tooltipInfoMessage} placement="right">
-              <div className={classes.warningIcon}>
-                <InfoCircle size={10} color={colors.lead} />
-              </div>
+              <InfoCircle size={10} color={colors.lead} />
             </Tooltip>
           )}
-        </div>
-        <span className={classes.value}>{children}</span>
-      </div>
+        </Box>
+        {children && <Box ellipsis>{children}</Box>}
+      </BoxLined>
     );
   }
 }
 
-export default withStyles(styles)(LineRow);
+export default LineRow;

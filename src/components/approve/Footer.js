@@ -18,21 +18,17 @@ const styles = {
 
 function Footer(props: {
   approved: boolean,
-  close: Function,
   approve: Function,
   aborting: Function,
   percentage?: *,
   classes: Object
 }) {
-  const { approved, close, approve, aborting, percentage, classes } = props;
+  const { approved, approve, aborting, percentage, classes } = props;
 
   if (approved) {
     return (
       <div className={classes.base}>
         {percentage}
-        <DialogButton highlight className="cancel" onTouchTap={close}>
-          Close
-        </DialogButton>
         <div style={{ float: "right" }}>
           <DialogButton abort onTouchTap={aborting} className={classes.abort}>
             Abort
@@ -45,7 +41,6 @@ function Footer(props: {
   return (
     <div className={classes.base}>
       {percentage}
-      <DialogButton onTouchTap={close}>Close</DialogButton>
       <div style={{ float: "right" }}>
         <DialogButton abort onTouchTap={aborting} className={classes.abort}>
           Abort

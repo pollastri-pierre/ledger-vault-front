@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Route } from "react-router-dom";
-import BlurDialog from "./BlurDialog";
-import StaticContainer from "./StaticContainer";
+import Modal from "components/base/Modal";
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
 
@@ -87,13 +86,13 @@ class ModalRoute extends Component<{
           });
           const open = !!routeProps.match;
           return (
-            <BlurDialog
-              open={open}
-              onClose={this.onClose}
+            <Modal
+              isOpened={open}
               disableBackdropClick={disableBackdropClick}
+              onClose={this.close}
             >
-              <StaticContainer shouldUpdate={open}>{inner}</StaticContainer>
-            </BlurDialog>
+              {inner}
+            </Modal>
           );
         }}
       </Route>

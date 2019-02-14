@@ -9,7 +9,7 @@ import SelectTab from "components/SelectTab/SelectTab";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import SaveAccountSettingsMutation from "api/mutations/SaveAccountSettingsMutation";
-import HeaderRightClose from "components/HeaderRightClose";
+import { ModalClose } from "components/base/Modal";
 import { connect } from "react-redux";
 import Text from "components/base/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
@@ -116,7 +116,7 @@ class AccountSettings extends PureComponent<Props, State> {
       <div className={classes.root}>
         <div className={classes.settingsModalContainer}>
           <SectionHeader header={<Trans i18nKey="accountSettings:header" />} />
-          <HeaderRightClose close={close} />
+          <ModalClose onClick={close} />
           <div>
             <SectionTitle
               title={<Trans i18nKey="accountSettings:general.title" />}

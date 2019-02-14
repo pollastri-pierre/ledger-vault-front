@@ -1,0 +1,40 @@
+/* eslint-disable react/prop-types */
+
+import React from "react";
+import { storiesOf } from "@storybook/react";
+import { boolean } from "@storybook/addon-knobs";
+
+import Modal, { ModalFooterButton } from "components/base/Modal";
+import Box from "components/base/Box";
+
+const CustomFooter = () => <ModalFooterButton>Next</ModalFooterButton>;
+const CustomBreadcrumb = () => (
+  <div>
+    <div style={{ opacity: 0.5, marginBottom: 10 }}>1. Introduction</div>
+    <div style={{ fontWeight: "bold", marginBottom: 10 }}>2. Something</div>
+    <div style={{ opacity: 0.5 }}>3. Confirmation</div>
+  </div>
+);
+
+storiesOf("Components", module).add("Modal", () => (
+  <Modal
+    isOpened={boolean("isOpened", true)}
+    isLoading={boolean("isLoading", false)}
+    Footer={CustomFooter}
+    Breadcrumb={CustomBreadcrumb}
+  >
+    <Box flow={10}>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut varius
+      volutpat magna, quis sollicitudin tortor consectetur vitae. Nullam
+      vulputate arcu nec elit volutpat, sit amet porttitor neque malesuada. Sed
+      sed felis at tortor mollis tempus sed eget velit. Fusce malesuada
+      scelerisque quam, id scelerisque ante hendrerit nec. Nam vulputate lectus
+      sit amet ipsum tristique pharetra. Suspendisse luctus ex purus, eu dictum
+      nisi convallis eu. Lorem ipsum dolor sit amet, consectetur adipiscing
+      elit. Integer est libero, imperdiet eget ante nec, condimentum interdum
+      risus. Duis faucibus nisl ut convallis gravida. Pellentesque viverra
+      convallis quam et ultrices. Vestibulum ultrices leo ut erat lacinia
+      fringilla. Quisque a fermentum dui, dictum hendrerit ex.
+    </Box>
+  </Modal>
+));
