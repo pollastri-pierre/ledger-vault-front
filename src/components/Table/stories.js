@@ -4,14 +4,21 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import styled from "styled-components";
 
-import { genAccounts, genOperations, genGroups } from "data/mock-entities";
+import {
+  genMembers,
+  genAccounts,
+  genOperations,
+  genGroups
+} from "data/mock-entities";
+
 import { GroupsTable, AccountsTable, OperationsTable } from "components/Table";
 import { action } from "@storybook/addon-actions";
 import Card from "components/base/Card";
 
-const accounts = genAccounts(10);
-const operations = genOperations(25, accounts);
-const groups = genGroups(10);
+const members = genMembers(20);
+const accounts = genAccounts(10, { members });
+const operations = genOperations(25, { accounts, members });
+const groups = genGroups(10, { members });
 
 storiesOf("Components/tables", module)
   .add("AccountsTable", () => (

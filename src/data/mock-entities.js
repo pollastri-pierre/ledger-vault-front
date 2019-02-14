@@ -1,133 +1,172 @@
-// @flow
+import faker from "faker";
+import keyBy from "lodash/keyBy";
 
-// import moment from "moment";
-import Prando from "prando";
-import { listCryptoCurrencies } from "utils/cryptoCurrencies";
-import type { Account } from "data/types";
-import { account, member, group } from "./mock-base";
+import {
+  getCryptoCurrencyById,
+  listCryptoCurrencies
+} from "utils/cryptoCurrencies";
 
-const allCurrencies = listCryptoCurrencies(true);
+faker.seed(parseInt(process.env.MOCK_SEED, 10) || 1234);
 
-const getRandomCurrency = rng => {
-  const randomInt = rng.nextInt(0, allCurrencies.length - 1);
-  return allCurrencies[randomInt];
-};
+function genCurrency() {
+  return faker.random.arrayElement(listCryptoCurrencies(false));
+}
 
-const getRandomName = (rng, prefix) => {
-  const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  return `${prefix}_${rng.nextString(rng.nextInt(1, 10), charset)}`;
-};
+function genApprovals(nb = 0, { members }) {
+  const approvals = [];
+  const membersCopy = [...members];
+  for (let i = 0; i < nb; i++) {
+    if (!membersCopy.length) continue; // eslint-disable-line no-continue
+    const approval = genApproval({ members: membersCopy });
+    approvals.push(approval);
+    membersCopy.splice(membersCopy.indexOf(approval.person, 1));
+  }
+  return approvals;
+}
 
-// TODO handle ERC20
-const ACCOUNT_TYPE_BY_CRYPTO_FAMILY = {
-  ethereum: "Ethereum",
-  bitcoin: "Bitcoin",
-  ripple: "Ripple"
-};
-
-// TODO handle random security scheme
-// TODO handle ERC20
-const genAccount = rng => {
-  const currency = getRandomCurrency(rng);
+function genApproval({ members }) {
   return {
-    ...account,
-    id: rng.nextInt(1000, 5000),
-    name: getRandomName(rng, "Account"),
-    balance: rng.nextInt(account.balance, account.balance + 1000),
-    account_type: ACCOUNT_TYPE_BY_CRYPTO_FAMILY[currency.family],
+    created_on: faker.date.recent(),
+    person: faker.random.arrayElement(members),
+    type: faker.random.arrayElement(["APPROVE", "ABORT"])
+  };
+}
+
+function getUniqueRandomElements(arr, nb) {
+  const out = [];
+  const arrCopy = [...arr];
+  for (let i = 0; i < nb; i++) {
+    if (!arrCopy.length) continue; // eslint-disable-line no-continue
+    const el = faker.random.arrayElement(arrCopy);
+    out.push(el);
+    arrCopy.splice(arrCopy.indexOf(el), 1);
+  }
+  return out;
+}
+
+function genAccount({ members = [] } = {}) {
+  const currency = genCurrency();
+  const accountType = currency.family === "bitcoin" ? "Bitcoin" : "Ethereum";
+  const operators = members.filter(m => m.role === "operator");
+  const administrators = members.filter(m => m.role === "admin");
+  const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
+  const approvals = genApprovals(nbApprovalsToGenerate, {
+    members: administrators
+  });
+  const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
+  const status = approvals.find(a => a.type === "ABORT")
+    ? "ABORTED"
+    : nbApprovals >= 2
+      ? "APPROVED"
+      : "PENDING_APPROVAL";
+  return {
+    id: faker.random.number({ min: 1, max: 100000000 }),
+    index: faker.random.number({ min: 1, max: 10 }),
+    name: faker.name.findName(),
+    status,
     currency_id: currency.id,
+    account_type: accountType,
+    contract_address: null,
+    parent_id: null,
+    members: getUniqueRandomElements(operators, 3),
     settings: {
-      ...account.settings,
-      currency_unit: currency.units[0]
-    }
+      blockchain_explorer: "blockchain.info",
+      currency_unit: currency.units[0],
+      fiat: {
+        confirmation_needed: 0,
+        id: 1,
+        issue_message: null,
+        name: "Euro",
+        type: "FIAT"
+      }
+    },
+    security_scheme: { quorum: 2 },
+    balance: faker.random.number({
+      min: 0.3 * 10 ** currency.units[0].magnitude,
+      max: 7 * 10 ** currency.units[0].magnitude,
+      precision: 4
+    }),
+    fresh_addresses: [
+      { address: "1MfeDvj5AUBG4xVMrx1xPgmYdXQrzHtW5b", derivation_path: "0/2" }
+    ],
+    is_hsm_coin_app_updated: true,
+    created_on: faker.date.recent(),
+    approvals,
+
+    // TODO remove this field
+    number_of_approvals: nbApprovals,
+
+    // TODO remove this field
+    receive_address: "",
+
+    // TODO remove this field
+    balance_history: {}
   };
-};
+}
 
-const genGroup = seed => {
-  const rng = new Prando(seed);
-  const nbMembers = rng.nextInt(2, 10);
-  const members = genMembers(nbMembers, rng.nextString(10));
+function genMember() {
+  const firstName = faker.name.firstName();
+  const lastName = faker.name.lastName();
+  const email = faker.internet.email(firstName, lastName);
   return {
-    ...group,
-    id: rng.nextInt(1000, 5000),
-    name: getRandomName(rng, "Group"),
-    members
+    id: faker.random.alphaNumeric(12),
+    pub_key: `0x${faker.random.alphaNumeric(40)}`,
+    username: `${firstName} ${lastName}`,
+    picture: "",
+
+    email,
+    role: faker.random.arrayElement(["admin", "operator"]),
+
+    // TODO remove this field
+    register_date: "",
+
+    // TODO remove this field
+    u2f_device: "",
+
+    // TODO remove this field
+    groups: []
   };
-};
+}
 
-const genAdmins = (number: number, seed: string) =>
-  genMembers(number, seed, { role: "admin" });
+const genOperation = ({ account, members }) => {
+  const currency = getCryptoCurrencyById(account.currency_id);
+  const magnitude = currency.units[0].magnitude;
+  const date = faker.date.past(2);
+  const amount = faker.random.number({
+    min: 0.2 * 10 ** magnitude,
+    max: 4 * 10 ** magnitude,
+    precision: 4
+  });
+  const feesAmount = faker.random.number({ min: 1000, max: 100000 });
+  const operators = members.filter(m => m.role === "operator");
 
-export const genGroups = (number: number, seed: string) => {
-  const groups = [];
-  for (let i = 0; i < number; i++) {
-    const rng = new Prando(`${seed}_${i}`);
-    groups.push(genGroup(rng.nextString(10)));
-  }
-  return groups;
-};
+  const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
+  const approvals = genApprovals(nbApprovalsToGenerate, { members: operators });
+  const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
 
-const genMember = (rng, defaultProps) => ({
-  ...member,
-  id: rng.nextInt(1000, 5000),
-  username: getRandomName(rng, "User"),
-  ...defaultProps
-});
+  const status = approvals.find(a => a.type === "ABORT")
+    ? "ABORTED"
+    : nbApprovals >= 2
+      ? "APPROVED"
+      : "PENDING_APPROVAL";
 
-export const genMembers = (number: number, seed: string, defaultProps: *) => {
-  const members = [];
-  for (let i = 0; i < number; i++) {
-    const rng = new Prando(`${seed}_${i}`);
-    members.push(genMember(rng, defaultProps));
-  }
-  return members;
-};
-
-// TODO may be we want an helper to get 1 account for each available currency ?
-export const genAccounts = (number: number, seed?: string) => {
-  const rng = new Prando(seed);
-  const accounts = [];
-  for (let i = 0; i < number; i++) {
-    accounts.push(genAccount(rng));
-  }
-  return accounts;
-};
-
-export const genOperation = (account: Account, rng: Prando) => {
-  const currency = getRandomCurrency(rng);
-  const date = new Date();
-  const amount = rng.nextInt(100, 4444444);
-  const feesAmount = rng.nextInt(100, 5555);
   return {
-    id: rng.nextInt(0, 1000000),
+    id: faker.random.number({ min: 1, max: 1000000000 }),
+
+    // TODO remove this field
     currency_name: currency.id,
-    created_by: {
-      id: rng.nextString(10),
-      pub_key: rng.nextString(10),
-      username: rng.nextString(10),
-      picture: rng.nextString(10),
-      register_date: rng.nextString(10),
-      u2f_device: rng.nextString(10),
-      email: rng.nextString(10),
-      role: rng.nextString(10),
-      groups: []
-    },
+
+    created_by: faker.random.arrayElement(operators),
     currency_family: currency.family,
-    trust: {
-      level: rng.nextString(10),
-      weight: 1,
-      conflicts: [rng.nextString(10)],
-      origin: rng.nextString(10)
-    },
-    confirmations: rng.nextInt(0, 100),
+
+    // TODO remove this field
+    trust: { level: "", weight: 1, conflicts: [], origin: "" },
+
+    confirmations: faker.random.number(0, 1000),
     created_on: date,
-    price: {
-      amount
-    },
-    fees: {
-      amount: feesAmount
-    },
-    type: rng.nextInt(0, 1) === 0 ? "SEND" : "RECEIVE",
+    price: { amount },
+    fees: { amount: feesAmount },
+    type: faker.random.arrayElement(["SEND", "RECEIVE"]),
     amount,
     account_id: account.id,
     approved: [],
@@ -135,83 +174,86 @@ export const genOperation = (account: Account, rng: Prando) => {
     recipient: [],
     recipients: [],
     transaction: {
-      version: rng.nextString(10),
-      hash: rng.nextString(10),
-      lock_time: rng.nextString(10),
+      version: faker.random.alphaNumeric("10"),
+      hash: faker.random.alphaNumeric("10"),
+      lock_time: faker.random.alphaNumeric("10"),
       inputs: [
         {
-          index: rng.nextInt(0, 100),
-          value: rng.nextInt(300, 100000),
-          address: rng.nextString(24)
+          index: faker.random.number(1, 100),
+          value: faker.random.number(100, 10000),
+          address: faker.random.alphaNumeric("10")
         }
       ],
       outputs: [
         {
-          index: rng.nextInt(0, 50),
-          value: rng.nextInt(400, 4420420),
-          address: rng.nextString(24)
+          index: faker.random.number(1, 100),
+          value: faker.random.number(100, 10000),
+          address: faker.random.alphaNumeric("10")
         }
       ]
     },
-    approvals: [
-      {
-        created_on: date,
-        person: {
-          id: rng.nextString(10),
-          pub_key: rng.nextString(10),
-          username: rng.nextString(10),
-          picture: rng.nextString(10),
-          register_date: rng.nextString(10),
-          u2f_device: rng.nextString(10),
-          email: rng.nextString(10),
-          role: rng.nextString(10),
-          groups: [rng.nextString(10)]
-        },
-        type: "APPROVE"
-      }
-    ],
-    status: "toto"
+    approvals,
+    status
   };
 };
 
-export const genOperations = (
-  nb: number,
-  accounts: Account[],
-  rng: Prando = new Prando()
-) => {
-  const ops = [];
+function genGroup({ members }) {
+  const operators = members.filter(m => m.role === "operator");
+  const nbMembers = faker.random.number({
+    min: 1,
+    max: Math.min(operators.length, 10)
+  });
+  return {
+    id: faker.random.alphaNumeric("10"),
+    name: faker.commerce.department(),
+    created_on: faker.date.past(1),
+    description: faker.company.catchPhrase(),
+    status: "APPROVED",
+    members: getUniqueRandomElements(operators, nbMembers).map(m => m.id)
+  };
+}
+
+export function genMembers(nb = 0) {
+  const members = [];
   for (let i = 0; i < nb; i++) {
-    const randomAccount =
-      accounts[Math.round(accounts.length * Math.random()) % accounts.length];
-    ops.push(genOperation(randomAccount, rng));
+    members.push(genMember());
   }
-  return ops;
-};
-
-// turn the array into an object so restlay can understand it
-const randomAccounts = genAccounts(4);
-const keysAccounts = {};
-for (let i = 0; i < randomAccounts.length; i++) {
-  keysAccounts[randomAccounts[i].id] = randomAccounts[i];
-}
-//
-// turn the array into an object so restlay can understand it
-const randomGroups = genGroups(10, "seed");
-const keysGroups = {};
-for (let i = 0; i < randomGroups.length; i++) {
-  keysGroups[randomGroups[i].id] = randomGroups[i];
+  return members;
 }
 
-// turn the array into an object so restlay can understand it
-const randomAdmins = genAdmins(10, "seed");
-const keysAdmins = {};
-for (let i = 0; i < randomAdmins.length; i++) {
-  keysAdmins[randomAdmins[i].id] = randomAdmins[i];
+export function genAccounts(nb, { members }) {
+  const accounts = [];
+  for (let i = 0; i < nb; i++) {
+    accounts.push(genAccount({ members }));
+  }
+  return accounts;
 }
 
-// TODO mock other entities, operations, members..etc..
+export function genOperations(nb, { accounts, members }) {
+  const operations = [];
+  for (let i = 0; i < nb; i++) {
+    const account = faker.random.arrayElement(accounts);
+    operations.push(genOperation({ account, members }));
+  }
+  return operations;
+}
+
+export function genGroups(nb, { members }) {
+  const groups = [];
+  for (let i = 0; i < nb; i++) {
+    groups.push(genGroup({ members }));
+  }
+  return groups;
+}
+
+const members = genMembers(40);
+const accounts = genAccounts(10, { members });
+const operations = genOperations(100, { accounts, members });
+const groups = genGroups(4, { members });
+
 export default {
-  accounts: keysAccounts,
-  groups: keysGroups,
-  admins: keysAdmins
+  accounts: keyBy(accounts, "id"),
+  groups: keyBy(groups, "id"),
+  members: keyBy(members, "id"),
+  operations: keyBy(operations, "id")
 };

@@ -4,9 +4,10 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { BrowserRouter } from "react-router-dom";
 import AccountsMenu from "containers/Menu/AccountsMenu";
-import { genAccounts } from "data/mock-entities";
+import { genAccounts, genMembers } from "data/mock-entities";
 
-const accounts = genAccounts(10, "seed");
+const members = genMembers(40);
+const accounts = genAccounts(10, { members });
 const match = { url: "mock" };
 
 storiesOf("Components", module).add("Menu", () => (
