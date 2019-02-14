@@ -69,10 +69,13 @@ const buildOptions = (items: Item[]): Option[] =>
     data: item
   }));
 
-const INCLUDE_DEV =
-  process.env.NODE_ENV === "development" ||
-  process.env.NODE_ENV === "e2e" ||
-  window.config.SOFTWARE_DEVICE;
+// https://ledgerhq.atlassian.net/browse/LV-991
+// We now want to have testnet always
+const INCLUDE_DEV = true;
+// const INCLUDE_DEV =
+//   process.env.NODE_ENV === "development" ||
+//   process.env.NODE_ENV === "e2e" ||
+//   window.config.SOFTWARE_DEVICE;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",

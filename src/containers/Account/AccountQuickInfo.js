@@ -19,17 +19,20 @@ import AccountWarning from "./AccountWarning";
 
 const row = {
   base: {
-    lineHeight: "24px"
+    lineHeight: "24px",
+    display: "flex",
+    flexDirection: "row"
   },
   label: {
     fontSize: 12,
     textTransform: "uppercase",
     fontWeight: 600,
-    color: "#424141"
+    color: colors.shark
   },
   value: {
     fontSize: 13,
-    color: "#585858"
+    color: colors.shark,
+    marginLeft: 5
   }
 };
 const Row = withStyles(row)(
@@ -39,11 +42,11 @@ const Row = withStyles(row)(
     classes
   }: {
     label: string,
-    value: *,
+    value: React$Node,
     classes: { [_: $Keys<typeof row>]: string }
   }) => (
     <div className={classes.base}>
-      <span className={classes.label}>{label}: </span>
+      <span className={classes.label}>{label}:</span>
       <span className={classes.value}>{value}</span>
     </div>
   )
