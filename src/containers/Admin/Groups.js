@@ -2,25 +2,36 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import Text from "components/base/Text";
+import Box from "components/base/Box";
 import Card, { CardTitle } from "components/base/Card";
 import GroupsQuery from "api/queries/GroupsQuery";
 import type { Group } from "data/types";
+import ModalRoute from "components/ModalRoute";
 import GroupsTable from "components/Table/GroupsTable";
+import GroupModal from "./GroupModal";
 
 class AdminGroups extends PureComponent<*> {
   handleGroupClick = (group: Group) => {
-    console.warn(`TODO ${group.id}`);
+    const { history } = this.props;
+    history.push(`groups/${group.id}`);
   };
 
   render() {
+    const { match } = this.props;
     return (
-      <Card>
-        <CardTitle>Admin Groups</CardTitle>
-        <GroupsTable
-          groups={this.props.groups}
-          onGroupClick={this.handleGroupClick}
-        />
-      </Card>
+      <Box horizontal align="flex-start" flow={40}>
+        <Card grow>
+          <CardTitle>Admin Groups</CardTitle>
+          <GroupsTable
+            groups={this.props.groups}
+            onGroupClick={this.handleGroupClick}
+          />
+        </Card>
+        <Card width={500} noShrink>
+          <CardTitle>Search</CardTitle>
+        </Card>
+        <ModalRoute path={`${match.url}/:groupId`} component={GroupModal} />
+      </Box>
     );
   }
 }

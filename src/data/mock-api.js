@@ -31,6 +31,12 @@ const mockSync = (uri, method) => {
       }
       default:
     }
+    // GET /group-mock/:id
+    const m = /^\/group-mock\/([^/]+)$/.exec(uri);
+    if (m) {
+      const group = mockEntities.groups[m[1]];
+      return denormalize(group.id, schema.Group, mockEntities);
+    }
   }
 };
 
