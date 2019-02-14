@@ -7,7 +7,7 @@ import { storiesOf } from "@storybook/react";
 import { boolean } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
 
-import InfoBox from "components/InfoBox";
+import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 
 storiesOf("Components", module).add("InfoBox", () => {

@@ -15,7 +15,7 @@ import type { Account, ERC20Token } from "data/types";
 
 import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
-import InfoBox from "components/InfoBox";
+import InfoBox from "components/base/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import {

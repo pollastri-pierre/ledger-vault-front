@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import InfoBox from "components/InfoBox";
+import InfoBox from "components/base/InfoBox";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import {
   hasPending,

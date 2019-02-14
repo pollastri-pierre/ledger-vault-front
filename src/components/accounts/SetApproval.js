@@ -11,7 +11,7 @@ import Text from "components/base/Text";
 import colors from "shared/colors";
 import DialogButton from "components/buttons/DialogButton";
 import { ApprovalsExceedQuorum } from "utils/errors";
-import InfoBox from "components/InfoBox";
+import InfoBox from "components/base/InfoBox";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddError: error => dispatch(addError(error))
