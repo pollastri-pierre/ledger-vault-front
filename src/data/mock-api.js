@@ -22,6 +22,13 @@ const mockSync = (uri, method) => {
           mockEntities
         );
       }
+      case "/people-mocks/admin": {
+        return denormalize(
+          Object.keys(mockEntities.admins),
+          [schema.Admin],
+          mockEntities
+        );
+      }
       default:
     }
   }

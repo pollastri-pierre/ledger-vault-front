@@ -17,10 +17,6 @@ const getRandomName = (rng, prefix) => {
   const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
   return `${prefix}_${rng.nextString(rng.nextInt(1, 10), charset)}`;
 };
-const getRandomEmail = rng => {
-  const charset = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-  return `User_${rng.nextString(rng.nextInt(1, 10), charset)}@ledger.fr`;
-};
 
 // TODO handle ERC20
 const ACCOUNT_TYPE_BY_CRYPTO_FAMILY = {
@@ -59,6 +55,9 @@ const genGroup = seed => {
   };
 };
 
+const genAdmins = (number: number, seed: string) =>
+  genMembers(number, seed, { role: "admin" });
+
 export const genGroups = (number: number, seed: string) => {
   const groups = [];
   for (let i = 0; i < number; i++) {
@@ -68,18 +67,18 @@ export const genGroups = (number: number, seed: string) => {
   return groups;
 };
 
-const genMember = rng => ({
+const genMember = (rng, defaultProps) => ({
   ...member,
   id: rng.nextInt(1000, 5000),
   username: getRandomName(rng, "User"),
-  email: getRandomEmail(rng)
+  ...defaultProps
 });
 
-export const genMembers = (number: number, seed: string) => {
+export const genMembers = (number: number, seed: string, defaultProps: *) => {
   const members = [];
   for (let i = 0; i < number; i++) {
     const rng = new Prando(`${seed}_${i}`);
-    members.push(genMember(rng));
+    members.push(genMember(rng, defaultProps));
   }
   return members;
 };
@@ -203,8 +202,16 @@ for (let i = 0; i < randomGroups.length; i++) {
   keysGroups[randomGroups[i].id] = randomGroups[i];
 }
 
+// turn the array into an object so restlay can understand it
+const randomAdmins = genAdmins(10, "seed");
+const keysAdmins = {};
+for (let i = 0; i < randomAdmins.length; i++) {
+  keysAdmins[randomAdmins[i].id] = randomAdmins[i];
+}
+
 // TODO mock other entities, operations, members..etc..
 export default {
   accounts: keysAccounts,
-  groups: keysGroups
+  groups: keysGroups,
+  admins: keysAdmins
 };
