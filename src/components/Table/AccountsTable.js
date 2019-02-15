@@ -10,7 +10,7 @@ import MUITableRow from "@material-ui/core/TableRow";
 
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
-import EntityStatus from "components/EntityStatus";
+import Status from "components/Status";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -93,7 +93,7 @@ class AccountRow extends PureComponent<AccountRowProps> {
         </MUITableCell>
 
         <MUITableCell>
-          <EntityStatus status={account.status} />
+          <Status status={account.status} />
         </MUITableCell>
 
         <MUITableCell numeric>

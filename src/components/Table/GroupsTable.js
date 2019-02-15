@@ -8,7 +8,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
 
-import EntityStatus from "components/EntityStatus";
+import Status from "components/Status";
 import DateFormat from "components/DateFormat";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -93,7 +93,7 @@ class GroupRow extends PureComponent<GroupRowProps> {
         <MUITableCell>{group.name}</MUITableCell>
         <MUITableCell>{group.members.length}</MUITableCell>
         <MUITableCell>
-          <EntityStatus status={group.status} />
+          <Status status={group.status} />
         </MUITableCell>
       </MUITableRow>
     );
