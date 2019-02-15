@@ -11,12 +11,16 @@ import colors, { opacity, darken } from "shared/colors";
 import type { Translate } from "data/types";
 
 const BG_BY_STATUS = {
-  APPROVED: opacity(colors.ocean, 0.1),
+  ABORTED: opacity(colors.grenade, 0.1),
+  APPROVED: opacity(colors.green, 0.1),
+  PENDING_APPROVAL: opacity(colors.blue_orange, 0.1),
   VIEW_ONLY: colors.cream
 };
 
 const COLOR_BY_STATUS = {
-  APPROVED: darken(colors.ocean, 0.2),
+  ABORTED: colors.grenade,
+  APPROVED: darken(colors.green, 0.2),
+  PENDING_APPROVAL: darken(colors.blue_orange, 0.5),
   VIEW_ONLY: colors.steel
 };
 
@@ -26,7 +30,7 @@ type Props = {
   textOnly?: boolean
 };
 
-class EntityStatus extends PureComponent<Props> {
+class Status extends PureComponent<Props> {
   getStr = () => {
     const { t, status } = this.props;
     const translation = t(`entityStatus:${status}`);
@@ -56,4 +60,4 @@ class EntityStatus extends PureComponent<Props> {
   }
 }
 
-export default translate()(EntityStatus);
+export default translate()(Status);
