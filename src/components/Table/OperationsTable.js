@@ -145,7 +145,7 @@ class OperationRow extends PureComponent<OperationRowProps> {
           </MUITableCell>
         )}
 
-        {withLabel && <MUITableCell>{note || null}</MUITableCell>}
+        {withLabel && <MUITableCell>{note ? note.content : ""}</MUITableCell>}
 
         <MUITableCell numeric>
           <CounterValue
