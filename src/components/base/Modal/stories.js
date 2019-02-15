@@ -38,17 +38,20 @@ storiesOf("Components", module).add("Modal", () => (
         </Box>
       </ModalHeader>
       <ModalBody>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut varius
-        volutpat magna, quis sollicitudin tortor consectetur vitae. Nullam
-        vulputate arcu nec elit volutpat, sit amet porttitor neque malesuada.
-        Sed sed felis at tortor mollis tempus sed eget velit. Fusce malesuada
-        scelerisque quam, id scelerisque ante hendrerit nec. Nam vulputate
-        lectus sit amet ipsum tristique pharetra. Suspendisse luctus ex purus,
-        eu dictum nisi convallis eu. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Integer est libero, imperdiet eget ante nec,
-        condimentum interdum risus. Duis faucibus nisl ut convallis gravida.
-        Pellentesque viverra convallis quam et ultrices. Vestibulum ultrices leo
-        ut erat lacinia fringilla. Quisque a fermentum dui, dictum hendrerit ex.
+        <Box width={600}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut varius
+          volutpat magna, quis sollicitudin tortor consectetur vitae. Nullam
+          vulputate arcu nec elit volutpat, sit amet porttitor neque malesuada.
+          Sed sed felis at tortor mollis tempus sed eget velit. Fusce malesuada
+          scelerisque quam, id scelerisque ante hendrerit nec. Nam vulputate
+          lectus sit amet ipsum tristique pharetra. Suspendisse luctus ex purus,
+          eu dictum nisi convallis eu. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Integer est libero, imperdiet eget ante nec,
+          condimentum interdum risus. Duis faucibus nisl ut convallis gravida.
+          Pellentesque viverra convallis quam et ultrices. Vestibulum ultrices
+          leo ut erat lacinia fringilla. Quisque a fermentum dui, dictum
+          hendrerit ex.
+        </Box>
       </ModalBody>
     </Box>
   </Modal>

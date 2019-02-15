@@ -21,7 +21,8 @@
     "device": "node scripts/device.js",
     "testDev": "jest --env=jsdom --watch",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "publish-storybook": "bash scripts/publish-storybook.sh"
   },
   "dependencies": {
     "@alienfast/i18next-loader": "^1.0.16",
