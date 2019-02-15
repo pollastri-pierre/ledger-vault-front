@@ -79,7 +79,16 @@ class Send extends Component<Props, State<*>> {
     this.setState({ tabsIndex });
   };
 
-  selectAccount = (account: Account) => {
+  selectAccount = (account: ?Account) => {
+    if (!account) {
+      this.setState({
+        bridge: null,
+        transaction: null,
+        account: null,
+        tabsIndex: 0
+      });
+      return;
+    }
     const currency = getCryptoCurrencyById(account.currency_id);
     const bridge = account ? getBridgeForCurrency(currency) : null;
     const transaction = bridge ? bridge.createTransaction(account) : null;

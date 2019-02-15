@@ -29,7 +29,7 @@ const styles = {
     display: "flex"
   },
   inner: {
-    padding: 15
+    padding: 10
   },
   footer: {
     background: "rgba(0,0,0,0.1)",
@@ -41,35 +41,32 @@ const styles = {
   icon: {
     flexShrink: 0,
     lineHeight: 0,
-    paddingLeft: 20,
-    paddingTop: 15,
+    paddingLeft: 10,
+    paddingTop: 10,
     display: "flex",
     justifyContent: "center"
   },
   isInfo: {
     backgroundColor: opacity(colors.ocean, 0.05),
     color: darken(colors.ocean, 0.3),
-    border: `2px solid ${opacity(colors.ocean, 0.2)}`,
     "& .icon": {
-      color: colors.ocean
+      color: darken(colors.ocean, 0.3)
     },
     "& .footer": {
       background: opacity(colors.ocean, 0.1)
     }
   },
   isWarning: {
-    border: `2px solid ${opacity(colors.blue_orange, 0.5)}`,
     color: darken(colors.blue_orange, 0.5),
-    backgroundColor: opacity(colors.blue_orange, 0.05),
+    backgroundColor: opacity(colors.blue_orange, 0.1),
     "& .icon": {
-      color: darken(colors.blue_orange, 0.2)
+      color: darken(colors.blue_orange, 0.5)
     },
     "& .footer": {
       background: opacity(colors.blue_orange, 0.1)
     }
   },
   isError: {
-    border: `2px solid ${opacity(colors.grenade, 0.2)}`,
     color: colors.grenade,
     backgroundColor: opacity(colors.grenade, 0.05),
     "& .icon": {

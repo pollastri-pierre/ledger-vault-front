@@ -19,7 +19,12 @@ type Option = {
   data: Account
 };
 
-const GenericRow = (props: OptionProps) => {
+type GenericRowProps = OptionProps & {
+  withBalance?: boolean
+};
+
+const GenericRow = (props: GenericRowProps) => {
+  const { withBalance } = props;
   let { data: account } = props;
 
   // this is ridiculous, but true. react-select is either wrapping the
@@ -34,16 +39,18 @@ const GenericRow = (props: OptionProps) => {
   return (
     <Box horizontal align="center" justify="space-between" py={5}>
       <AccountName account={account} />
-      <Text small color={colors.mediumGrey}>
-        <CurrencyAccountValue account={account} value={account.balance} />
-      </Text>
+      {withBalance && (
+        <Text small color={colors.mediumGrey}>
+          <CurrencyAccountValue account={account} value={account.balance} />
+        </Text>
+      )}
     </Box>
   );
 };
 
 const OptionComponent = (props: OptionProps) => (
   <components.Option {...props}>
-    <GenericRow {...props} />
+    <GenericRow {...props} withBalance />
   </components.Option>
 );
 
