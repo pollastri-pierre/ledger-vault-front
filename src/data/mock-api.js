@@ -24,10 +24,17 @@ const mockSync = (uri, method) => {
       }
       case "/people-mocks/admin": {
         return denormalize(
-          Object.keys(mockEntities.admins),
-          [schema.Admin],
+          Object.keys(mockEntities.members),
+          [schema.Member],
           mockEntities
-        );
+        ).filter(m => m.role === "admin");
+      }
+      case "/people-mocks/operator": {
+        return denormalize(
+          Object.keys(mockEntities.members),
+          [schema.Member],
+          mockEntities
+        ).filter(m => m.role === "operator");
       }
       default:
     }
