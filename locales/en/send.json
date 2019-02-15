@@ -2,7 +2,7 @@
   "account": {
     "title": "Account to debit",
     "available_accounts":
-      "You can't create a transaction if the account has a pending transaction, or the balance is 0, or if the accounts is being updated. please fouzia help me on the wording"
+      "You can't create a transaction in this account either because:<1><0>A transaction is pending and must be processed beforehand.</0><1>The account isn't credited.</1><2>The account is being updated.</2></1>"
   },
   "confirmation": {
     "account": "Account to Debit",

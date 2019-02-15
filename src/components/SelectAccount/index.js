@@ -24,7 +24,8 @@ type GenericRowProps = OptionProps & {
 };
 
 const GenericRow = (props: GenericRowProps) => {
-  let { data: account, withBalance } = props;
+  const { withBalance } = props;
+  let { data: account } = props;
 
   // this is ridiculous, but true. react-select is either wrapping the
   // data in { label, value } object or directly passing it, depending if
