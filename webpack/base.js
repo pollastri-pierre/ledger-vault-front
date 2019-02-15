@@ -25,6 +25,7 @@ export default {
       {
         test: /locales/,
         loader: "@alienfast/i18next-loader",
+        include: path.resolve(__dirname, "../locales"),
         options: {
           basenameAsNamespace: true
         }
