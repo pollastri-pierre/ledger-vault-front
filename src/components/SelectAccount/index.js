@@ -19,8 +19,12 @@ type Option = {
   data: Account
 };
 
-const GenericRow = (props: OptionProps) => {
-  let { data: account } = props;
+type GenericRowProps = OptionProps & {
+  withBalance?: boolean
+};
+
+const GenericRow = (props: GenericRowProps) => {
+  let { data: account, withBalance } = props;
 
   // this is ridiculous, but true. react-select is either wrapping the
   // data in { label, value } object or directly passing it, depending if
@@ -34,16 +38,18 @@ const GenericRow = (props: OptionProps) => {
   return (
     <Box horizontal align="center" justify="space-between" py={5}>
       <AccountName account={account} />
-      <Text small color={colors.mediumGrey}>
-        <CurrencyAccountValue account={account} value={account.balance} />
-      </Text>
+      {withBalance && (
+        <Text small color={colors.mediumGrey}>
+          <CurrencyAccountValue account={account} value={account.balance} />
+        </Text>
+      )}
     </Box>
   );
 };
 
 const OptionComponent = (props: OptionProps) => (
   <components.Option {...props}>
-    <GenericRow {...props} />
+    <GenericRow {...props} withBalance />
   </components.Option>
 );
 
