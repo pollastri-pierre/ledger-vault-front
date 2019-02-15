@@ -58,7 +58,7 @@ const styles = {
     justifyContent: "space-between"
   },
   modalMembers: {
-    width: 400,
+    width: 500,
     padding: 20
   },
   modalMembersTitle: {

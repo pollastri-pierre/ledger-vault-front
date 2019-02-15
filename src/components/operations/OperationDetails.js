@@ -38,7 +38,7 @@ type Props = {
 const styles = {
   base: {
     ...modals.base,
-    width: 450,
+    width: 500,
     height: 615
   },
   footerContainer: {

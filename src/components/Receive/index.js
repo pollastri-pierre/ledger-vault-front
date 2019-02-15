@@ -18,7 +18,7 @@ const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 
 const styles = {
   root: {
-    width: 445,
+    width: 500,
     display: "flex",
     flexDirection: "column",
     height: 612

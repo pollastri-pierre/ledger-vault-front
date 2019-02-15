@@ -20,7 +20,7 @@ const mapDispatchToProps = (dispatch: *) => ({
 const styles = {
   base: {
     ...modals.base,
-    width: 450,
+    width: 500,
     paddingBottom: 80
   },
   descTop: {

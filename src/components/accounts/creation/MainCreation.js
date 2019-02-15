@@ -25,7 +25,7 @@ import AccountCreationCurrencies from "./AccountCreationCurrencies";
 const styles = {
   base: {
     ...modals.base,
-    width: 450,
+    width: 500,
     height: 615
   }
 };

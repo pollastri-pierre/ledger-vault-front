@@ -23,7 +23,7 @@ import Footer from "../../approve/Footer";
 const styles = {
   base: {
     ...modals.base,
-    width: 460,
+    width: 500,
     height: 615
   }
 };

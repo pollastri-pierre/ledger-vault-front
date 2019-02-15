@@ -100,7 +100,7 @@ class ListApprovers extends Component<{
 }
 
 const RenderError = ({ error, restlay }: *) => (
-  <div style={{ width: 450, height: 615 }}>
+  <div style={{ width: 500, height: 615 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
 );

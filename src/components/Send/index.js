@@ -22,7 +22,7 @@ const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
 const styles = {
   root: {
-    width: 460,
+    width: 500,
     display: "flex",
     flexDirection: "column",
     height: 600

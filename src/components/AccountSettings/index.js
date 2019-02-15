@@ -21,7 +21,7 @@ import colors from "../../shared/colors";
 
 const styles = {
   root: {
-    width: 460,
+    width: 500,
     display: "flex",
     flexDirection: "column",
     height: 600
