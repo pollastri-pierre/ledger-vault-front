@@ -39,15 +39,26 @@ const mockSync = (uri, method) => {
       default:
     }
     // GET /group-mock/:id
-    const m = /^\/group-mock\/([^/]+)$/.exec(uri);
+    let m = /^\/group-mock\/([^/]+)$/.exec(uri);
     if (m) {
       const group = mockEntities.groups[m[1]];
       return denormalize(group.id, schema.Group, mockEntities);
     }
+    // GET /group-mock/:id/accounts
+    m = /^\/group-mock\/([^/]+)\/accounts$/.exec(uri);
+    // TODO not returning all accounts but only accounts where group is in security scheme
 
-    const n = /^\/member-mock\/([^/]+)$/.exec(uri);
-    if (n) {
-      const member = mockEntities.members[n[1]];
+    if (m) {
+      return denormalize(
+        Object.keys(mockEntities.accounts),
+        [schema.Account],
+        mockEntities
+      );
+    }
+
+    m = /^\/member-mock\/([^/]+)$/.exec(uri);
+    if (m) {
+      const member = mockEntities.members[m[1]];
       return denormalize(member.id, schema.Member, mockEntities);
     }
   }

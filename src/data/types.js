@@ -131,6 +131,7 @@ type GroupCommon = {
   id: string,
   name: string,
   created_on: Date,
+  created_by: Member,
   description?: string,
   status: string // TODO create UNION type when different status are known
 };
@@ -138,7 +139,8 @@ export type GroupEntity = GroupCommon & {
   members: string[]
 };
 export type Group = GroupCommon & {
-  members: Member[]
+  members: Member[],
+  approvals: Approval[]
 };
 
 type NoteCommon = {
