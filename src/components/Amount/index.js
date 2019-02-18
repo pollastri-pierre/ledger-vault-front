@@ -53,7 +53,7 @@ class Amount extends Component<Props> {
           color={colors.black}
           data-test={dataTest}
           bold={strong}
-          lineHeight={0}
+          lineHeight={1}
         >
           <CurrencyAccountValue
             account={account}
@@ -62,7 +62,7 @@ class Amount extends Component<Props> {
           />
         </Text>
         {!hideCountervalue && (
-          <Text small color={colors.steel} lineHeight={0}>
+          <Text small color={colors.steel} lineHeight={1}>
             {"("}
             <CounterValue
               value={value}

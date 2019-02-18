@@ -1,11 +1,14 @@
 // @flow
-import React, { PureComponent } from "react";
+
+import React, { PureComponent, Fragment } from "react";
+
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import SendLayout from "./SendLayout";
+import { ModalFooter } from "components/base/Modal";
+import Box from "components/base/Box";
 import Amount from "./Amount";
 import Address from "./Address";
 import DetailsFooter from "./DetailsFooter";
@@ -115,31 +118,30 @@ class SendDetails extends PureComponent<Props<*>, State> {
     const { canNext, amountIsValid, totalSpent, feeIsValid } = this.state;
     const FeesField = bridge.EditFees;
     return (
-      <SendLayout
-        content={
-          <div>
-            <Amount {...this.props} amountIsValid={amountIsValid} />
-            <Address {...this.props} />
-            {FeesField && (
-              <FeesField
-                account={account}
-                transaction={transaction}
-                onChangeTransaction={onChangeTransaction}
-                bridge={bridge}
-                feeIsValid={feeIsValid}
-              />
-            )}
-          </div>
-        }
-        footer={
+      <Fragment>
+        <Box flow={30}>
+          <Amount {...this.props} amountIsValid={amountIsValid} />
+          <Address {...this.props} />
+          {FeesField && (
+            <FeesField
+              account={account}
+              transaction={transaction}
+              onChangeTransaction={onChangeTransaction}
+              bridge={bridge}
+              feeIsValid={feeIsValid}
+            />
+          )}
+        </Box>
+
+        <ModalFooter justify="space-between" align="flex-start">
           <DetailsFooter
             account={account}
             onChangeTab={this.onChangeTab}
             canNext={canNext}
             totalSpent={totalSpent}
           />
-        }
-      />
+        </ModalFooter>
+      </Fragment>
     );
   }
 }

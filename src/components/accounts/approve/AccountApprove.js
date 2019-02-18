@@ -1,34 +1,29 @@
 // @flow
-import React, { Component } from "react";
-import OrganizationQuery from "api/queries/OrganizationQuery";
-import { translate } from "react-i18next";
+
+import React, { Component, Fragment } from "react";
 import { withRouter, Redirect } from "react-router";
-import connectData from "restlay/connectData";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { withStyles } from "@material-ui/core/styles";
-// import CircularProgress from "material-ui/CircularProgress";
-import ApprovalPercentage from "components/ApprovalPercentage";
-import ModalLoading from "components/ModalLoading";
+
 import AccountQuery from "api/queries/AccountQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import ProfileQuery from "api/queries/ProfileQuery";
 import MembersQuery from "api/queries/MembersQuery";
+import OrganizationQuery from "api/queries/OrganizationQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
+
+import connectData from "restlay/connectData";
+import { translate } from "react-i18next";
+
+import ApprovalPercentage from "components/ApprovalPercentage";
+import ApprovalList from "components/ApprovalList";
+import ModalLoading from "components/ModalLoading";
+import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
+
 import type { Member, Account, Translate } from "data/types";
-import modals from "shared/modals";
-import { ModalClose } from "components/base/Modal";
-import AccountApproveApprovals from "./AccountApproveApprovals";
+
 import AccountApproveMembers from "./AccountApproveMembers";
 import AccountApproveDetails from "./AccountApproveDetails";
 import Footer from "../../approve/Footer";
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 500,
-    height: 615
-  }
-};
 
 type Props = {
   members: Array<Member>,
@@ -39,8 +34,11 @@ type Props = {
   organization: *,
   close: Function,
   approve: Function,
-  aborting: Function,
-  classes: { [_: $Keys<typeof styles>]: string }
+  aborting: Function
+};
+
+type State = {
+  tabIndex: number
 };
 
 const GenericFooter = ({
@@ -73,13 +71,13 @@ const GenericFooter = ({
 const hasApproved = (approvers, profile) =>
   approvers.find(approver => approver.person.pub_key === profile.pub_key);
 
-class AccountApprove extends Component<Props, { value: number }> {
+class AccountApprove extends Component<Props, State> {
   state = {
-    value: 0
+    tabIndex: 0
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleChange = (event, tabIndex) => {
+    this.setState({ tabIndex });
   };
 
   render() {
@@ -92,27 +90,32 @@ class AccountApprove extends Component<Props, { value: number }> {
       t,
       approve,
       aborting,
-      classes,
       accounts
     } = this.props;
-    const { value } = this.state;
+
+    const { tabIndex } = this.state;
+
+    const tabs = (
+      <Tabs
+        value={tabIndex}
+        onChange={this.handleChange}
+        indicatorColor="primary"
+      >
+        <Tab label={t("pendingAccount:tabs.details")} disableRipple />
+        <Tab label={t("pendingAccount:tabs.members")} disableRipple />
+        <Tab label={t("pendingAccount:tabs.status")} disableRipple />
+      </Tabs>
+    );
+
     return (
-      <div className={classes.base}>
-        <header>
-          <ModalClose onClick={close} />
-          <h2>Account request</h2>
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-          >
-            <Tab label={t("pendingAccount:tabs.details")} disableRipple />
-            <Tab label={t("pendingAccount:tabs.members")} disableRipple />
-            <Tab label={t("pendingAccount:tabs.status")} disableRipple />
-          </Tabs>
-        </header>
-        {value === 0 && (
-          <div>
+      <ModalBody height={615} onClose={close}>
+        <ModalHeader>
+          <ModalTitle>Account request</ModalTitle>
+          {tabs}
+        </ModalHeader>
+
+        {tabIndex === 0 && (
+          <Fragment>
             <AccountApproveDetails
               account={account}
               accounts={accounts}
@@ -126,10 +129,11 @@ class AccountApprove extends Component<Props, { value: number }> {
               close={close}
               approve={approve}
             />
-          </div>
+          </Fragment>
         )}
-        {value === 1 && (
-          <div>
+
+        {tabIndex === 1 && (
+          <Fragment>
             <AccountApproveMembers members={account.members} />
             <GenericFooter
               profile={profile}
@@ -138,14 +142,12 @@ class AccountApprove extends Component<Props, { value: number }> {
               close={close}
               approve={approve}
             />
-          </div>
+          </Fragment>
         )}
-        {value === 2 && (
-          <div>
-            <AccountApproveApprovals
-              members={members}
-              approvers={account.approvals}
-            />
+
+        {tabIndex === 2 && (
+          <Fragment>
+            <ApprovalList approvers={members} approved={account.approvals} />
             <GenericFooter
               percentage
               quorum={organization.quorum}
@@ -155,9 +157,9 @@ class AccountApprove extends Component<Props, { value: number }> {
               close={close}
               approve={approve}
             />
-          </div>
+          </Fragment>
         )}
-      </div>
+      </ModalBody>
     );
   }
 }
@@ -166,7 +168,7 @@ const RenderError = withRouter(({ match }) => (
   <Redirect to={`${match.params["0"] || ""}`} />
 ));
 
-const connected = connectData(withStyles(styles)(translate()(AccountApprove)), {
+const connected = connectData(translate()(AccountApprove), {
   RenderError,
   queries: {
     account: AccountQuery,

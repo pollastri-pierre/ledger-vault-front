@@ -10,10 +10,11 @@ type Props = {
   position?: "absolute" | "relative",
   align?: "center" | "flex-start" | "flex-end",
   justify?: "stretch" | "center" | "flex-start" | "flex-end",
-  inline?: boolean
+  inline?: boolean,
+  overflow?: string
 };
 
-const px = (n: number) => `${n}px`;
+export const px = (n: number) => `${n}px`;
 
 const flexDirection = (props: Props) => (props.horizontal ? "row" : "column");
 const flexGrow = (props: Props) => (props.grow ? 1 : "initial");
@@ -22,6 +23,8 @@ const justify = (props: Props) => props.justify || "flex-start";
 const position = (props: Props) => props.position || "static";
 const displayFlex = (props: Props) => (props.inline ? "inline-flex" : "flex");
 const flexShrink = (props: Props) => ("noShrink" in props ? 0 : 1);
+const overflow = (props: Props) =>
+  "overflow" in props ? props.overflow : "unset";
 const ellipsis = (props: Props) => {
   if (!("ellipsis" in props)) return "";
   return `
@@ -53,6 +56,7 @@ export default styled.div`
   flex-shrink: ${flexShrink};
   align-items: ${align};
   justify-content: ${justify};
+  overflow: ${overflow};
 
   position: ${position};
 

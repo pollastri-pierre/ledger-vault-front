@@ -1,90 +1,74 @@
 // @flow
+
 import React, { Component } from "react";
-import TryAgain from "components/TryAgain";
 import { Trans, Interpolate } from "react-i18next";
+
+import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
 import MembersQuery from "api/queries/MembersQuery";
 import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
-import { DialogButton, Overscroll } from "components";
+import { DialogButton } from "components";
 import type { Member } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
-import modals from "shared/modals";
+
 import colors from "shared/colors";
+
 import Text from "components/base/Text";
+import Box from "components/base/Box";
+import {
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalFooter
+} from "components/base/Modal";
 
-const styleCounter = {
-  base: {
-    color: colors.lead
-  }
-};
-const SelectedCounter = withStyles(styleCounter)(
-  ({ count, classes }: { count: number, classes: Object }) => (
-    <Text bold small uppercase className={classes.base}>
-      <Interpolate
-        i18nKey="newAccount:security.members_selected"
-        options={{ count }}
-        nbMembersSelected={count}
-      />
-    </Text>
-  )
+const SelectedCounter = ({ count }: { count: number }) => (
+  <Text bold small uppercase color={colors.lead}>
+    <Interpolate
+      i18nKey="newAccount:security.members_selected"
+      options={{ count }}
+      nbMembersSelected={count}
+    />
+  </Text>
 );
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 450,
-    height: 615,
-    "& h2": {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between"
-    }
-  },
-  content: {
-    height: 340
-  }
-};
 
 class ListApprovers extends Component<{
   goBack: Function,
   members: Member[],
   approvers: Member[],
-  addMember: Function,
-  classes: Object
+  addMember: Function
 }> {
   render() {
-    const { goBack, members, addMember, approvers, classes } = this.props;
+    const { goBack, members, addMember, approvers } = this.props;
 
     return (
-      <div className={classes.base}>
-        <header>
-          <h2>
-            <Trans i18nKey="newAccount:security.members" />
+      <ModalBody height={615}>
+        <ModalHeader>
+          <Box horizontal align="center" justify="space-between">
+            <ModalTitle>
+              <Trans i18nKey="newAccount:security.members" />
+            </ModalTitle>
             {approvers.length > 0 && (
               <SelectedCounter count={approvers.length} />
             )}
-          </h2>
-          <Text>
-            <Trans i18nKey="newAccount:security.members_desc" />
-          </Text>
-        </header>
-        <div className={classes.content}>
-          <Overscroll top={20} bottom={0}>
-            {members.map(member => {
-              const isChecked = approvers.indexOf(member.pub_key) > -1;
-              return (
-                <MemberRow
-                  key={member.id}
-                  member={member}
-                  checked={isChecked}
-                  onSelect={addMember}
-                />
-              );
-            })}
-          </Overscroll>
-        </div>
-        <div className="footer">
+          </Box>
+        </ModalHeader>
+
+        <Box grow overflow="auto" mx={-5} px={5}>
+          {members.map(member => {
+            const isChecked = approvers.indexOf(member.pub_key) > -1;
+            return (
+              <MemberRow
+                key={member.id}
+                member={member}
+                checked={isChecked}
+                onSelect={addMember}
+              />
+            );
+          })}
+        </Box>
+
+        <ModalFooter>
           <DialogButton
             right
             highlight
@@ -93,8 +77,8 @@ class ListApprovers extends Component<{
           >
             <Trans i18nKey="common:done" />
           </DialogButton>
-        </div>
-      </div>
+        </ModalFooter>
+      </ModalBody>
     );
   }
 }
@@ -105,7 +89,7 @@ const RenderError = ({ error, restlay }: *) => (
   </div>
 );
 
-export default connectData(withStyles(styles)(ListApprovers), {
+export default connectData(ListApprovers, {
   RenderLoading: ModalLoading,
   RenderError,
   queries: {

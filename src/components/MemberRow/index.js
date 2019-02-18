@@ -10,6 +10,7 @@ import MemberAvatar from "../MemberAvatar";
 
 const styles = {
   base: {
+    flexShrink: 0,
     borderBottom: `1px solid ${colors.argile}`,
     outline: "none",
     cursor: "pointer",

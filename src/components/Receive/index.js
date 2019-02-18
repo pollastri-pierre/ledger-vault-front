@@ -1,60 +1,29 @@
 // @flow
 import React, { Component } from "react";
-import type { Account } from "data/types";
-import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
-import ModalLoading from "components/ModalLoading";
+import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import { withStyles } from "@material-ui/core/styles";
 import { translate } from "react-i18next";
+
+import type { Account } from "data/types";
+
+import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import Tab from "@material-ui/core/Tab";
-import { ModalClose } from "components/base/Modal";
+
+import ModalLoading from "components/ModalLoading";
+import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
+
 import ReceiveAccounts from "./Accounts";
 import ReceiveDevice from "./Device";
 import ReceiveAddress from "./Address";
 
 const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 
-const styles = {
-  root: {
-    width: 500,
-    display: "flex",
-    flexDirection: "column",
-    height: 612
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 400,
-    color: "black",
-    margin: 0,
-    padding: 40,
-    paddingBottom: 20
-  },
-  tabs: {
-    margin: "0 40px",
-    zIndex: 2
-  },
-  content: {
-    overflowY: "auto",
-    paddingTop: 40,
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh"
-  },
-  footer: {
-    position: "absolute",
-    bottom: "0",
-    left: "0",
-    width: "100%",
-    padding: "0 40px"
-  }
-};
 type Props = {
   accounts: Account[],
-  close: Function,
-  classes: { [_: $Keys<typeof styles>]: string }
+  close: Function
 };
+
 type State = {
   index: number,
   device: boolean,
@@ -62,7 +31,9 @@ type State = {
   error: boolean,
   selectedAccount: ?Account
 };
+
 let _isMounted = false;
+
 class Receive extends Component<Props, State> {
   constructor(props) {
     super(props);
@@ -136,51 +107,50 @@ class Receive extends Component<Props, State> {
   };
 
   render() {
-    const { classes, accounts, close } = this.props;
+    const { accounts, close } = this.props;
     const { index, selectedAccount, verified, error } = this.state;
     return (
-      <div className={classes.root}>
-        <h2 className={classes.title}>Receive Address</h2>
-        <ModalClose onClick={close} />
-        <Tabs
-          indicatorColor="primary"
-          className={classes.tabs}
-          value={index}
-          onChange={this.onTabChange}
-        >
-          {tabTitles.map((title, i) => (
-            <Tab
-              key={i} // eslint-disable-line react/no-array-index-key
-              label={title}
-              disabled={this.isDisabled(i)}
-              disableRipple
-            />
-          ))}
-        </Tabs>
-        <div className={classes.content}>
-          {index === 0 && (
-            <ReceiveAccounts
-              accounts={accounts}
-              onSelect={this.onSelectAccount}
-              selectedAccount={selectedAccount}
-            />
-          )}
-          {index === 1 && <ReceiveDevice />}
-          {index === 2 && (
-            <ReceiveAddress
-              verified={verified}
-              error={error}
-              account={selectedAccount}
-              checkAgain={this.checkAgain}
-            />
-          )}
-        </div>
-      </div>
+      <ModalBody height={615} onClose={close}>
+        <ModalHeader>
+          <ModalTitle>Receive Address</ModalTitle>
+          <Tabs
+            indicatorColor="primary"
+            value={index}
+            onChange={this.onTabChange}
+          >
+            {tabTitles.map((title, i) => (
+              <Tab
+                key={i} // eslint-disable-line react/no-array-index-key
+                label={title}
+                disabled={this.isDisabled(i)}
+                disableRipple
+              />
+            ))}
+          </Tabs>
+        </ModalHeader>
+
+        {index === 0 && (
+          <ReceiveAccounts
+            accounts={accounts}
+            onSelect={this.onSelectAccount}
+            selectedAccount={selectedAccount}
+          />
+        )}
+        {index === 1 && <ReceiveDevice />}
+        {index === 2 && (
+          <ReceiveAddress
+            verified={verified}
+            error={error}
+            account={selectedAccount}
+            checkAgain={this.checkAgain}
+          />
+        )}
+      </ModalBody>
     );
   }
 }
 
-export default connectData(withStyles(styles)(translate()(Receive)), {
+export default connectData(translate()(Receive), {
   RenderLoading: ModalLoading,
   queries: {
     accounts: AccountsQuery

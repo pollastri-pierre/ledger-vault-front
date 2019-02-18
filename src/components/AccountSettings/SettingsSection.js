@@ -1,7 +1,10 @@
 // @flow
 import React, { Component, PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
+
 import Text from "components/base/Text";
+import Box from "components/base/Box";
+
 import colors from "shared/colors";
 
 type HeaderProps = {
@@ -47,37 +50,24 @@ const titleStyles = {
 
 type RowProps = {
   label: React$Node,
-  children: React$Node,
-  classes: { [_: $Keys<typeof rowStyles>]: string }
+  children: React$Node
 };
 
-class SectionRowComponent extends PureComponent<RowProps> {
+class SectionRow extends PureComponent<RowProps> {
   render() {
-    const { label, children, classes } = this.props;
+    const { label, children } = this.props;
     return (
-      <div className={classes.rowContainer}>
-        <Text uppercase small className={classes.label}>
+      <Box horizontal justify="space-between" py={15}>
+        <Text uppercase small color={colors.shark}>
           {label}
         </Text>
         {children}
-      </div>
+      </Box>
     );
   }
 }
 
-const rowStyles = {
-  rowContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: "15px 0"
-  },
-  label: {
-    color: colors.shark
-  }
-};
 const SectionHeader = withStyles(headerStyles)(SectionHeaderComponent);
 const SectionTitle = withStyles(titleStyles)(SectionTitleComponent);
-const SectionRow = withStyles(rowStyles)(SectionRowComponent);
 
 export { SectionHeader, SectionTitle, SectionRow };
