@@ -4,15 +4,14 @@ import schema from "data/schema";
 import type { Member } from "data/types";
 
 type Input = {
-  userRole: string
+  memberRole: string
 };
 type Response = Member[];
 
 // fetch all organization members
 export default class MembersQuery extends Query<Input, Response> {
-  // uri = this.props.userRole ? `/people/${this.props.userRole}`: "/people"
-  uri = this.props.userRole
-    ? `/people-mocks/${this.props.userRole}`
+  uri = this.props.memberRole
+    ? `/people-mocks/${this.props.memberRole}`
     : "/people";
 
   responseSchema = [schema.Member];

@@ -107,18 +107,26 @@ function genAccount({ members = [] } = {}) {
 function genMember() {
   const firstName = faker.name.firstName();
   const lastName = faker.name.lastName();
-  const email = faker.internet.email(firstName, lastName);
+  const date = faker.date.past(1);
+  const status = faker.random.arrayElement([
+    "ACTIVE",
+    "REVOKED",
+    "PENDING_APPROVAL",
+    "PENDING_INVITATION",
+    "PENDING_REVOCATION"
+  ]);
   return {
     id: faker.random.alphaNumeric(12),
     pub_key: `0x${faker.random.alphaNumeric(40)}`,
     username: `${firstName} ${lastName}`,
-    picture: "",
 
-    email,
     role: faker.random.arrayElement(["admin", "operator"]),
 
     // TODO remove this field
     register_date: "",
+
+    created_on: date,
+    status,
 
     // TODO remove this field
     u2f_device: "",

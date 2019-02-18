@@ -8,7 +8,7 @@ import GroupsQuery from "api/queries/GroupsQuery";
 import type { Group } from "data/types";
 import ModalRoute from "components/ModalRoute";
 import GroupsTable from "components/Table/GroupsTable";
-import GroupModal from "./GroupModal";
+import GroupDetails from "./GroupDetails";
 
 class AdminGroups extends PureComponent<*> {
   handleGroupClick = (group: Group) => {
@@ -30,7 +30,7 @@ class AdminGroups extends PureComponent<*> {
         <Card width={500} noShrink>
           <CardTitle>Search</CardTitle>
         </Card>
-        <ModalRoute path={`${match.url}/:groupId`} component={GroupModal} />
+        <ModalRoute path={`${match.url}/:groupId`} component={GroupDetails} />
       </Box>
     );
   }

@@ -68,10 +68,11 @@ type MemberCommon = {
   id: string,
   pub_key: string,
   username: string,
-  picture: string,
-  register_date: string,
+  picture?: string,
+  created_on: string,
+  status: string,
   u2f_device: string,
-  email: string,
+  email?: string,
   role: string,
   groups: string[]
 };
