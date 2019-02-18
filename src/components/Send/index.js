@@ -1,18 +1,20 @@
 // @flow
 import React, { Component } from "react";
-import type { Account } from "data/types";
-import ModalLoading from "components/ModalLoading";
 import Tabs from "@material-ui/core/Tabs";
-import { withStyles } from "@material-ui/core/styles";
-import { translate } from "react-i18next";
-import connectData from "restlay/connectData";
 import Tab from "@material-ui/core/Tab";
-import DeviceAuthenticate from "components/DeviceAuthenticate";
+import { translate } from "react-i18next";
+
+import type { Account } from "data/types";
+import connectData from "restlay/connectData";
 import type { WalletBridge } from "bridge/types";
-import { ModalClose } from "components/base/Modal";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+
+import DeviceAuthenticate from "components/DeviceAuthenticate";
+import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
+import ModalLoading from "components/ModalLoading";
+
 import SendAccount from "./01-Account";
 import SendDetails from "./02-Details";
 import SendLabel from "./03-Label";
@@ -20,36 +22,7 @@ import SendConfirmation from "./04-Confirmation";
 
 const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
-const styles = {
-  root: {
-    width: 460,
-    display: "flex",
-    flexDirection: "column",
-    height: 600
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 400,
-    color: "black",
-    margin: 0,
-    padding: 40,
-    paddingBottom: 20
-  },
-  tabs: {
-    margin: "0 40px",
-    zIndex: 2
-  },
-  content: {
-    overflowY: "auto",
-    paddingTop: 20,
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1
-  }
-};
-
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
   close: () => void,
   restlay: RestlayEnvironment
 };
@@ -126,7 +99,7 @@ class Send extends Component<Props, State<*>> {
   };
 
   render() {
-    const { classes, close } = this.props;
+    const { close } = this.props;
     const { tabsIndex, account, transaction, bridge, device } = this.state;
     // TODO: would be nice to find a more elegant solution to disable tabs
     const disabledTabs = [
@@ -148,66 +121,71 @@ class Send extends Component<Props, State<*>> {
         />
       );
     }
+
     return (
-      <div className={classes.root}>
-        <h2 className={classes.title}>New Operation</h2>
-        <ModalClose onClick={close} />
-        <Tabs
-          indicatorColor="primary"
-          className={classes.tabs}
-          value={tabsIndex}
-          onChange={this.onTabChange}
-        >
-          {tabTitles.map((title, i) => (
-            <Tab
-              key={i} // eslint-disable-line react/no-array-index-key
-              label={title}
-              disableRipple
-              disabled={disabledTabs[i]}
-            />
-          ))}
-        </Tabs>
-        <div className={classes.content}>
-          {tabsIndex === 0 && (
-            <SendAccount
-              onTabChange={this.onTabChange}
-              selectAccount={this.selectAccount}
-              account={account}
-            />
-          )}
-          {tabsIndex === 1 && (
-            <SendDetails
-              bridge={bridge}
-              transaction={transaction}
-              account={account}
-              onChangeTransaction={this.onChangeTransaction}
-              onTabChange={this.onTabChange}
-            />
-          )}
-          {tabsIndex === 2 && (
-            <SendLabel
-              bridge={bridge}
-              transaction={transaction}
-              account={account}
-              onChangeTransaction={this.onChangeTransaction}
-              onTabChange={this.onTabChange}
-            />
-          )}
-          {tabsIndex === 3 && (
-            <SendConfirmation
-              bridge={bridge}
-              transaction={transaction}
-              account={account}
-              onChangeTransaction={this.onChangeTransaction}
-              confirmTx={this.confirmTx}
-            />
-          )}
-        </div>
-      </div>
+      <ModalBody height={650} onClose={close}>
+        <ModalHeader>
+          <ModalTitle>New Operation</ModalTitle>
+          <Tabs
+            indicatorColor="primary"
+            value={tabsIndex}
+            onChange={this.onTabChange}
+          >
+            {tabTitles.map((title, i) => (
+              <Tab
+                key={i} // eslint-disable-line react/no-array-index-key
+                label={title}
+                disableRipple
+                disabled={disabledTabs[i]}
+              />
+            ))}
+          </Tabs>
+        </ModalHeader>
+
+        {tabsIndex === 0 && (
+          <SendAccount
+            onTabChange={this.onTabChange}
+            selectAccount={this.selectAccount}
+            account={account}
+          />
+        )}
+
+        {tabsIndex === 1 && (
+          <SendDetails
+            bridge={bridge}
+            transaction={transaction}
+            account={account}
+            onChangeTransaction={this.onChangeTransaction}
+            onTabChange={this.onTabChange}
+          />
+        )}
+
+        {tabsIndex === 2 && (
+          <SendLabel
+            bridge={bridge}
+            transaction={transaction}
+            account={account}
+            onChangeTransaction={this.onChangeTransaction}
+            onTabChange={this.onTabChange}
+          />
+        )}
+
+        {tabsIndex === 3 && (
+          <SendConfirmation
+            bridge={bridge}
+            transaction={transaction}
+            account={account}
+            onChangeTransaction={this.onChangeTransaction}
+            confirmTx={this.confirmTx}
+          />
+        )}
+      </ModalBody>
     );
   }
 }
 
-export default connectData(withStyles(styles)(translate()(Send)), {
-  RenderLoading: ModalLoading
+const RenderLoading = () => <ModalLoading height={650} />;
+
+export default connectData(translate()(Send), {
+  RenderLoading
 });

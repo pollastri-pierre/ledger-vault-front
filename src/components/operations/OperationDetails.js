@@ -2,20 +2,24 @@
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
-import { withStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
-import cx from "classnames";
 
 import connectData from "restlay/connectData";
 
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 
+import type { RestlayEnvironment } from "restlay/connectData";
+
 import TryAgain from "components/TryAgain";
 import ModalLoading from "components/ModalLoading";
-import { ModalClose } from "components/base/Modal";
-import modals from "shared/modals";
+import {
+  ModalHeader,
+  ModalTitle,
+  ModalBody,
+  ModalFooter
+} from "components/base/Modal";
 import type { Operation, Account } from "data/types";
 import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
@@ -25,7 +29,6 @@ import { DialogButton, Overscroll } from "..";
 
 type Props = {
   close: Function,
-  classes: Object,
   tabIndex: number,
   // injected by decorators:
   operationWithAccount: {
@@ -33,18 +36,6 @@ type Props = {
     account: Account
   },
   match: Object
-};
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 450,
-    height: 615
-  },
-  footerContainer: {
-    display: "flex",
-    justifyContent: "flex-end"
-  }
 };
 
 class OperationDetails extends Component<Props, *> {
@@ -63,18 +54,16 @@ class OperationDetails extends Component<Props, *> {
   render() {
     const {
       operationWithAccount: { operation, account },
-      close,
-      classes
+      close
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
     return (
-      <div className={classes.base}>
-        <header>
-          <h2>
+      <ModalBody height={700} onClose={close}>
+        <ModalHeader>
+          <ModalTitle>
             <Trans i18nKey="operationDetails:title" />
-          </h2>
-          <ModalClose onClick={close} />
+          </ModalTitle>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -102,7 +91,8 @@ class OperationDetails extends Component<Props, *> {
               />
             )}
           </Tabs>
-        </header>
+        </ModalHeader>
+
         {value === 0 && <TabOverview operation={operation} account={account} />}
         {value === 1 && (
           <div style={{ height: "330px" }}>
@@ -113,7 +103,8 @@ class OperationDetails extends Component<Props, *> {
         )}
         {value === 2 && <TabLabel note={note} />}
         {value === 3 && <TabHistory operation={operation} />}
-        <div className={cx("footer", classes.footerContainer)}>
+
+        <ModalFooter>
           {account.currency_id &&
           operation.transaction &&
           operation.transaction.hash &&
@@ -131,21 +122,29 @@ class OperationDetails extends Component<Props, *> {
               </a>
             </DialogButton>
           ) : null}
-        </div>
-      </div>
+        </ModalFooter>
+      </ModalBody>
     );
   }
 }
 
-const RenderError = withStyles(styles)(({ classes, error, restlay }) => (
-  <div className={classes.base}>
+const RenderError = ({
+  error,
+  restlay
+}: {
+  error: Error,
+  restlay: RestlayEnvironment
+}) => (
+  <div style={{ width: 500, height: 700 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
   </div>
-));
+);
 
-export default connectData(withStyles(styles)(OperationDetails), {
+const RenderLoading = () => <ModalLoading height={700} />;
+
+export default connectData(OperationDetails, {
   RenderError,
-  RenderLoading: ModalLoading,
+  RenderLoading,
   queries: {
     operationWithAccount: OperationWithAccountQuery,
     profile: ProfileQuery

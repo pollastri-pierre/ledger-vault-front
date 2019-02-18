@@ -7,7 +7,6 @@ import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/curre
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import colors from "shared/colors";
 import CounterValues from "data/CounterValues";
-import Text from "components/base/Text";
 
 import type { TransactionType } from "data/types";
 
@@ -30,6 +29,10 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
+const styles = {
+  na: { color: colors.mediumGrey }
+};
+
 // we get currency's name as props and looks for the right currency in ledgerhq currencies
 // because currently the API and ledgerHQ don't share the same format for Currency
 
@@ -45,11 +48,7 @@ class CounterValue extends PureComponent<Props> {
   render() {
     const { countervalue, alwaysShowSign, type } = this.props;
     if (!countervalue && countervalue !== 0) {
-      return (
-        <Text inline color={colors.mediumGrey}>
-          N/A
-        </Text>
-      );
+      return <span style={styles.na}>N/A</span>;
     }
     return (
       <CurrencyFiatValue

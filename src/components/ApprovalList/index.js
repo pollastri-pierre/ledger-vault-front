@@ -1,6 +1,8 @@
 // @flow
 import React from "react";
 import type { Member, Approval } from "data/types";
+
+import Box from "components/base/Box";
 import ApprovalUser from "../ApprovalUser";
 
 function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
@@ -17,8 +19,9 @@ function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
       return data;
     })
     .sort((a, b) => b.approved - a.approved);
+
   return (
-    <div>
+    <Box horizontal overflow="auto" flow={20} py={20}>
       {list.map(member => (
         <ApprovalUser
           key={member.pub_key}
@@ -26,7 +29,7 @@ function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
           isApproved={member.approved}
         />
       ))}
-    </div>
+    </Box>
   );
 }
 

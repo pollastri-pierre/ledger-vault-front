@@ -1,25 +1,27 @@
 // @flow
+
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
-import Box from "components/base/Box";
-import InfoBox from "components/base/InfoBox";
+
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import {
   hasPending,
   isMemberOfAccount,
   getPendingsOperations
 } from "utils/operations";
-// import Disabled from "components/Disabled";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import SelectAccount from "components/SelectAccount";
-import type { Account, Operation, Member } from "data/types";
-import DialogButton from "../buttons/DialogButton";
 
-import SendLayout from "./SendLayout";
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import Box from "components/base/Box";
+import { ModalFooter } from "components/base/Modal";
+import InfoBox from "components/base/InfoBox";
+import DialogButton from "components/buttons/DialogButton";
+
+import type { Account, Operation, Member } from "data/types";
 
 function isAccountAvailable(
   account: Account,
@@ -83,36 +85,32 @@ class SendAccount extends PureComponent<Props, State> {
     const { invalidAccount } = this.state;
 
     return (
-      <SendLayout
-        content={
-          <Fragment>
-            <ModalSubTitle>
-              <Trans i18nKey="send:account.title" />
-            </ModalSubTitle>
-            <Box py={20} px={40} flow={20}>
-              <SelectAccount
-                accounts={accounts}
-                value={invalidAccount || account}
-                onChange={this.handleChooseAccount}
-                autoFocus
-                openMenuOnFocus
-              />
-              {invalidAccount && (
-                <InfoBox type="warning">
-                  <Trans i18nKey="send:account.available_accounts">
-                    {"text"}
-                    <ul>
-                      <li>el-1</li>
-                      <li>el-2</li>
-                      <li>el-3</li>
-                    </ul>
-                  </Trans>
-                </InfoBox>
-              )}
-            </Box>
-          </Fragment>
-        }
-        footer={
+      <Fragment>
+        <ModalSubTitle noPadding>
+          <Trans i18nKey="send:account.title" />
+        </ModalSubTitle>
+        <Box flow={20}>
+          <SelectAccount
+            accounts={accounts}
+            value={invalidAccount || account}
+            onChange={this.handleChooseAccount}
+            autoFocus
+            openMenuOnFocus
+          />
+          {invalidAccount && (
+            <InfoBox type="warning">
+              <Trans i18nKey="send:account.available_accounts">
+                {"text"}
+                <ul>
+                  <li>el-1</li>
+                  <li>el-2</li>
+                  <li>el-3</li>
+                </ul>
+              </Trans>
+            </InfoBox>
+          )}
+        </Box>
+        <ModalFooter>
           <DialogButton
             highlight
             right
@@ -121,8 +119,8 @@ class SendAccount extends PureComponent<Props, State> {
           >
             <Trans i18nKey="common:continue" />
           </DialogButton>
-        }
-      />
+        </ModalFooter>
+      </Fragment>
     );
   }
 }

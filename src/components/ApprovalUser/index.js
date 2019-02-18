@@ -10,13 +10,13 @@ import MemberAvatar from "../MemberAvatar";
 
 const styles = {
   base: {
+    flexShrink: 0,
     borderBottom: `1px solid ${colors.argile}`,
     textAlign: "center",
     position: "relative",
     display: "inline-block",
     width: "85px",
     height: "115px",
-    margin: "15px",
     paddingBottom: "40px",
     verticalAlign: "middle"
   },
@@ -75,7 +75,6 @@ function Approvalmember(props: {
         )}
       </div>
 
-      {/* <span className={classes.name}>{slice}</span> */}
       <ExpandableText
         text={name}
         size={9}

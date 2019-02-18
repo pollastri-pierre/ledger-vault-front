@@ -4,12 +4,15 @@ import _ from "lodash";
 import connectData from "restlay/connectData";
 import { translate } from "react-i18next";
 import type { Translate, Account } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
-import modals from "shared/modals";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { isNotSupportedCoin } from "utils/cryptoCurrencies";
-import { ModalClose } from "components/base/Modal";
+import {
+  ModalFooter,
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "components/base/Modal";
 
 import type {
   State as AccountCreationState,
@@ -21,14 +24,6 @@ import AccountCreationConfirmation from "./AccountCreationConfirmation";
 import AccountCreationSecurity from "./AccountCreationSecurity";
 import AccountCreationOptions from "./AccountCreationOptions";
 import AccountCreationCurrencies from "./AccountCreationCurrencies";
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 450,
-    height: 615
-  }
-};
 
 const contentComponents = [
   AccountCreationCurrencies,
@@ -45,7 +40,6 @@ type Props = {
 
   // TODO: legacy stuff
   switchInternalModal: Function,
-  classes: Object,
   close: Function
 };
 
@@ -72,7 +66,6 @@ class MainCreation extends Component<Props> {
       allAccounts,
       close,
       t,
-      classes,
       switchInternalModal
     } = this.props;
 
@@ -126,10 +119,9 @@ class MainCreation extends Component<Props> {
     const ContentComponent = contentComponents[currentTab];
 
     return (
-      <div className={classes.base}>
-        <header>
-          <h2>{t("newAccount:title")}</h2>
-          <ModalClose onClick={close} />
+      <ModalBody height={615} onClose={close}>
+        <ModalHeader>
+          <ModalTitle>{t("newAccount:title")}</ModalTitle>
           <Tabs
             onChange={this.handleChange}
             value={currentTab}
@@ -163,11 +155,11 @@ class MainCreation extends Component<Props> {
               disableRipple
             />
           </Tabs>
-        </header>
-        <div className="content">
-          {ContentComponent ? <ContentComponent {...contentProps} /> : null}
-        </div>
-        <div className="footer">
+        </ModalHeader>
+
+        {ContentComponent ? <ContentComponent {...contentProps} /> : null}
+
+        <ModalFooter>
           {_.includes([0, 1, 2], currentTab) ? (
             <DialogButton
               highlight
@@ -187,10 +179,10 @@ class MainCreation extends Component<Props> {
               {t("common:done")}
             </DialogButton>
           )}
-        </div>
-      </div>
+        </ModalFooter>
+      </ModalBody>
     );
   }
 }
 
-export default connectData(withStyles(styles)(translate()(MainCreation)));
+export default connectData(translate()(MainCreation));

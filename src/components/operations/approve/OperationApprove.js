@@ -1,32 +1,25 @@
 // @flow
+
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import ApprovalPercentage from "components/ApprovalPercentage";
-// import OperationApproveLocks from "./OperationApproveLocks";
-import ModalLoading from "components/ModalLoading";
+import { translate } from "react-i18next";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import { withRouter, Redirect } from "react-router";
+
 import connectData from "restlay/connectData";
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
 import MembersQuery from "api/queries/MembersQuery";
-// import LocksPercentage from "../../LocksPercentage";
 import ProfileQuery from "api/queries/ProfileQuery";
-// import { calculateApprovingObjectMeta } from "data/approvingObject";
+
+import Footer from "components/approve/Footer";
+import ApprovalPercentage from "components/ApprovalPercentage";
+import ModalLoading from "components/ModalLoading";
+import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
+
 import type { Account, Operation, Member, Translate } from "data/types";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import modals from "shared/modals";
-import { translate } from "react-i18next";
+
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import OperationApproveDetails from "./OperationApproveDetails";
-import Footer from "../../approve/Footer";
-
-const styles = {
-  base: {
-    ...modals.base,
-    width: 460,
-    height: 615
-  }
-};
 
 type Props = {
   operationWithAccount: {
@@ -38,8 +31,7 @@ type Props = {
   close: Function,
   approve: Function,
   aborting: Function,
-  t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string }
+  t: Translate
 };
 
 class OperationApprove extends Component<Props, { value: number }> {
@@ -58,12 +50,14 @@ class OperationApprove extends Component<Props, { value: number }> {
       members,
       close,
       approve,
-      classes,
       t,
       aborting
     } = this.props;
 
+    const { value } = this.state;
+
     const approvers = [];
+
     account.members.forEach(approver => {
       const member = members.find(m => m.pub_key === approver);
       if (member) {
@@ -72,11 +66,6 @@ class OperationApprove extends Component<Props, { value: number }> {
     });
 
     const quorum = account.security_scheme.quorum;
-    // const isUnactive =
-    //   operation.approvals.length < account.security_scheme.quorum;
-    // const approvingObjectMeta = calculateApprovingObjectMeta(operation);
-
-    const { value } = this.state;
 
     const hasApproved = (approvers, profile) =>
       approvers.find(approver => approver.person.pub_key === profile.pub_key);
@@ -98,10 +87,11 @@ class OperationApprove extends Component<Props, { value: number }> {
         }
       />
     );
+
     return (
-      <div className={classes.base}>
-        <header>
-          <h2>Operation request</h2>
+      <ModalBody height={615}>
+        <ModalHeader>
+          <ModalTitle>Operation request</ModalTitle>
           <Tabs
             value={value}
             onChange={this.handleChange}
@@ -109,9 +99,9 @@ class OperationApprove extends Component<Props, { value: number }> {
           >
             <Tab label={t("pendingOperation:tabs.details")} disableRipple />
             <Tab label={t("pendingOperation:tabs.status")} disableRipple />
-            {/* <Tab label="Locks" disableRipple /> */}
           </Tabs>
-        </header>
+        </ModalHeader>
+
         {value === 0 && (
           <div className="tabs_panel">
             <OperationApproveDetails operation={operation} account={account} />
@@ -128,27 +118,7 @@ class OperationApprove extends Component<Props, { value: number }> {
             <GenericFooter percentage />
           </div>
         )}
-        {/* {value === 2 && ( */}
-        {/*   <div> */}
-        {/*     <OperationApproveLocks operation={operation} account={account} /> */}
-        {/*     <Footer */}
-        {/*       close={close} */}
-        {/*       approve={() => approve(operation)} */}
-        {/*       aborting={aborting} */}
-        {/*       approved={hasApproved(operation.approvals, profile)} */}
-        {/*       percentage={ */}
-        {/*         isUnactive || !approvingObjectMeta ? ( */}
-        {/*           <LocksPercentage /> */}
-        {/*         ) : ( */}
-        {/*           <LocksPercentage */}
-        {/*             percentage={approvingObjectMeta.globalPercentage} */}
-        {/*           /> */}
-        {/*         ) */}
-        {/*       } */}
-        {/*     /> */}
-        {/*   </div> */}
-        {/* )} */}
-      </div>
+      </ModalBody>
     );
   }
 }
@@ -158,7 +128,7 @@ const RenderError = withRouter(({ match }) => (
 ));
 
 export default withRouter(
-  connectData(withStyles(styles)(translate()(OperationApprove)), {
+  connectData(translate()(OperationApprove), {
     RenderError,
     RenderLoading: ModalLoading,
     queries: {

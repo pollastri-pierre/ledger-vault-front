@@ -6,7 +6,9 @@ import Easing from "animated/lib/Easing";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 
-import Box from "components/base/Box";
+import Box, { px } from "components/base/Box";
+import Text from "components/base/Text";
+import ModalClose from "./ModalClose";
 
 const modalRoot =
   document.body && document.body.appendChild(document.createElement("div"));
@@ -52,11 +54,52 @@ const ModalContent = styled(Box).attrs({
 `;
 
 export const ModalFooter = styled(Box).attrs({
+  position: "absolute",
   horizontal: true,
-  justify: "flex-end",
-  align: "flex-end",
-  px: 10
+  justify: p => p.justify || "flex-end",
+  align: p => p.align || "flex-end",
+  px: 40
+})`
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
+const ModalBodyRaw = styled(Box).attrs({
+  p: 40,
+  pb: 100
+})`
+  height: ${p => ("height" in p ? px(p.height) : "auto")};
+`;
+
+export const ModalBody = ({
+  children,
+  onClose,
+  ...props
+}: {
+  children: React$Node,
+  onClose?: () => void
+}) => (
+  <ModalBodyRaw width={500} {...props}>
+    {onClose ? <ModalClose onClick={onClose} /> : null}
+    {children}
+  </ModalBodyRaw>
+);
+
+export const ModalHeader = styled(Box).attrs({
+  mb: 30
 })``;
+
+export const ModalTitle = ({
+  children,
+  ...props
+}: {
+  children: React$Node
+}) => (
+  <Box mb={20} {...props}>
+    <Text header>{children}</Text>
+  </Box>
+);
 
 type Props = {
   isOpened: boolean,
@@ -234,5 +277,5 @@ const BODY_WRAPPER_STYLE = {
 };
 
 export { default as ModalFooterButton } from "./ModalFooterButton";
-export { default as ModalClose } from "./ModalClose";
+export { ModalClose };
 export default Modal;

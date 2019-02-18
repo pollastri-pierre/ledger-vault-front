@@ -1,42 +1,29 @@
 // @flow
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
-
 import { translate, Interpolate, Trans } from "react-i18next";
 import { connect } from "react-redux";
+
 import { addError } from "redux/modules/alerts";
-import modals from "shared/modals";
+import colors from "shared/colors";
+import { ApprovalsExceedQuorum } from "utils/errors";
+
+import InfoBox from "components/base/InfoBox";
+import DialogButton from "components/buttons/DialogButton";
 import InputField from "components/InputField";
 import Text from "components/base/Text";
-import colors from "shared/colors";
-import DialogButton from "components/buttons/DialogButton";
-import { ApprovalsExceedQuorum } from "utils/errors";
-import InfoBox from "components/base/InfoBox";
+import Box from "components/base/Box";
+import {
+  ModalBody,
+  ModalFooter,
+  ModalTitle,
+  ModalHeader
+} from "components/base/Modal";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddError: error => dispatch(addError(error))
 });
 
-const styles = {
-  base: {
-    ...modals.base,
-    width: 450,
-    paddingBottom: 80
-  },
-  descTop: {
-    marginBottom: 20
-  },
-  infoBox: {
-    marginTop: 20
-  },
-  inputRenderRightText: {
-    whiteSpace: "nowrap",
-    color: colors.lead
-  }
-};
-
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
   onAddError: Error => void,
   goBack: Function,
   quorum: number,
@@ -55,43 +42,53 @@ class SetApprovals extends Component<Props> {
   };
 
   render() {
-    const { setQuorum, quorum, approvers, classes } = this.props;
+    const { setQuorum, quorum, approvers } = this.props;
+
+    const inputLeft = (
+      <Text small>
+        <Trans i18nKey="newAccount:security.approvals_amount" />
+      </Text>
+    );
+
+    const inputRight = (
+      <Text small noWrap color={colors.lead}>
+        <Interpolate
+          count={approvers.length}
+          i18nKey="newAccount:security.approvals_from"
+        />
+      </Text>
+    );
+
     return (
-      <div className={classes.base}>
-        <header>
-          <Text header>
+      <ModalBody>
+        <ModalHeader>
+          <ModalTitle mb={0}>
             <Trans i18nKey="newAccount:security.approvals" />
-          </Text>
-        </header>
-        <div className="content">
-          <Text className={classes.descTop}>
+          </ModalTitle>
+        </ModalHeader>
+
+        <Box mb={20}>
+          <Text>
             <Trans i18nKey="newAccount:security.approvals_desc" />
           </Text>
-          <InputField
-            renderLeft={
-              <Text small>
-                <Trans i18nKey="newAccount:security.approvals_amount" />
-              </Text>
-            }
-            value={quorum.toString()}
-            autoFocus
-            textAlign="right"
-            onChange={setQuorum}
-            placeholder="0"
-            fullWidth
-            error={quorum > approvers.length}
-            renderRight={
-              <Text small className={classes.inputRenderRightText}>
-                <Interpolate
-                  count={approvers.length}
-                  i18nKey="newAccount:security.approvals_from"
-                />
-              </Text>
-            }
-          />
-          {quorum < 2 &&
-            quorum !== 0 && (
-              <InfoBox type="warning" withIcon className={classes.infoBox}>
+        </Box>
+
+        <InputField
+          renderLeft={inputLeft}
+          value={quorum.toString()}
+          autoFocus
+          textAlign="right"
+          onChange={setQuorum}
+          placeholder="0"
+          fullWidth
+          error={quorum > approvers.length}
+          renderRight={inputRight}
+        />
+
+        {quorum < 2 &&
+          quorum !== 0 && (
+            <Box mt={20}>
+              <InfoBox type="warning" withIcon>
                 <Text>
                   <Trans
                     i18nKey="newAccount:security.approvalsMinimum"
@@ -99,9 +96,12 @@ class SetApprovals extends Component<Props> {
                   />
                 </Text>
               </InfoBox>
-            )}
-          {quorum > approvers.length && (
-            <InfoBox type="warning" withIcon className={classes.infoBox}>
+            </Box>
+          )}
+
+        {quorum > approvers.length && (
+          <Box mt={20}>
+            <InfoBox type="warning" withIcon>
               <Text>
                 <Trans
                   i18nKey="newAccount:security.approvalsMaximum"
@@ -110,10 +110,10 @@ class SetApprovals extends Component<Props> {
                 />
               </Text>
             </InfoBox>
-          )}
-        </div>
+          </Box>
+        )}
 
-        <div className="footer">
+        <ModalFooter>
           <DialogButton
             right
             highlight
@@ -122,8 +122,8 @@ class SetApprovals extends Component<Props> {
           >
             <Trans i18nKey="common:done" />
           </DialogButton>
-        </div>
-      </div>
+        </ModalFooter>
+      </ModalBody>
     );
   }
 }
@@ -131,4 +131,4 @@ class SetApprovals extends Component<Props> {
 export default connect(
   undefined,
   mapDispatchToProps
-)(withStyles(styles)(translate()(SetApprovals)));
+)(translate()(SetApprovals));

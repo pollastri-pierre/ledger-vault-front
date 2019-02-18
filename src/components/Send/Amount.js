@@ -19,11 +19,7 @@ const styles = {
     justifyContent: "space-between",
     lineHeight: 2.42,
     fontSize: 22,
-    color: colors.lead,
-    marginBottom: 10
-  },
-  paddedHorizontal: {
-    padding: "0 40px"
+    color: colors.lead
   },
   fiat: {
     fontSize: 20
@@ -57,13 +53,15 @@ class SendAmount extends PureComponent<Props<*>> {
       amountIsValid,
       onChangeTransaction
     } = this.props;
+
     const currency = getCryptoCurrencyById(account.currency_id);
+
     return (
-      <Fragment>
-        <ModalSubTitle>
+      <div>
+        <ModalSubTitle noPadding>
           <Trans i18nKey="send:details.amount.title" />
         </ModalSubTitle>
-        <div className={classes.paddedHorizontal}>
+        <div>
           {account.account_type === "ERC20" ? (
             <AmountNoUnits
               account={account}
@@ -96,7 +94,7 @@ class SendAmount extends PureComponent<Props<*>> {
             </Fragment>
           )}
         </div>
-      </Fragment>
+      </div>
     );
   }
 }

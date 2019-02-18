@@ -1,26 +1,25 @@
 // @flow
+
 import React, { PureComponent } from "react";
-import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
+
+import type { Account } from "data/types";
 import connectData from "restlay/connectData";
-import FeeSelect from "components/operations/creation/FeeSelect";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
-import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
-import { getFees, InputFieldMerge } from "components/Send/helpers";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
+import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import FeeSelect from "components/operations/creation/FeeSelect";
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import CounterValue from "components/CounterValue";
+import { getFees, InputFieldMerge } from "components/Send/helpers";
+
 const styles = {
-  fieldTitle: {
-    fontSize: 12,
-    fontWeight: 600,
-    textTransform: "uppercase"
-  },
   feesFiat: {
     marginTop: 10,
     textAlign: "right",
@@ -33,10 +32,6 @@ const styles = {
     textAlign: "right",
     paddingBottom: 15,
     borderBottom: "1px solid #eeeeee"
-  },
-  container: {
-    margin: "15px 0",
-    padding: "0 40px"
   }
 };
 
@@ -113,10 +108,10 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       bridge.getTransactionFeeLevel(account, transaction);
 
     return (
-      <div className={classes.container}>
-        <div className={classes.fieldTitle}>
+      <div>
+        <ModalSubTitle noPadding>
           <Trans i18nKey="send:details.fees.title" />
-        </div>
+        </ModalSubTitle>
         <InputFieldMerge>
           <FeeSelect value={feeLevel || "normal"} onChange={this.onChangeFee} />
           {transaction.estimatedFees !== null && (

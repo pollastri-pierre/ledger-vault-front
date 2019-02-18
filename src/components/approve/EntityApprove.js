@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
@@ -181,7 +181,7 @@ class EntityApprove extends Component<Props, State> {
           )}
         {!this.state.isDevice &&
           !this.state.isAborting && (
-            <div style={{ height: "615px" }}>
+            <Fragment>
               {entity === "account" && (
                 <AccountApprove
                   close={this.close}
@@ -196,7 +196,7 @@ class EntityApprove extends Component<Props, State> {
                   aborting={this.aborting}
                 />
               )}
-            </div>
+            </Fragment>
           )}
       </div>
     );

@@ -1,5 +1,6 @@
 // @flow
-import React, { PureComponent } from "react";
+
+import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
 import { Trans } from "react-i18next";
@@ -37,7 +38,7 @@ class DetailsFooter extends PureComponent<Props> {
 
     const erc20Account = account.account_type === "ERC20";
     return (
-      <div className={!erc20Account ? classes.footerDetails : null}>
+      <Fragment>
         {!erc20Account && (
           <div className={classes.totalSpent}>
             <span>
@@ -60,7 +61,7 @@ class DetailsFooter extends PureComponent<Props> {
         >
           <Trans i18nKey="common:continue" />
         </DialogButton>
-      </div>
+      </Fragment>
     );
   }
 }

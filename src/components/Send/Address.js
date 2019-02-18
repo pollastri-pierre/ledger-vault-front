@@ -1,5 +1,6 @@
 // @flow
-import React, { PureComponent, Fragment } from "react";
+
+import React, { PureComponent } from "react";
 import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -14,12 +15,6 @@ import colors from "shared/colors";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 const styles = {
-  addressPicker: {
-    margin: "0 0 15px 0"
-  },
-  paddedHorizontal: {
-    padding: "0 40px"
-  },
   nonEIP55warningIcon: {
     marginLeft: 5,
     cursor: "pointer"
@@ -39,10 +34,12 @@ type State = {
   isValid: boolean,
   recipientWarning: ?Error
 };
+
 const initialState = {
   isValid: true,
   recipientWarning: null
 };
+
 class SendAddress extends PureComponent<Props<*>, State> {
   state = initialState;
 
@@ -107,8 +104,8 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const { account, bridge, transaction, classes } = this.props;
     const { isValid, recipientWarning } = this.state;
     return (
-      <Fragment>
-        <ModalSubTitle>
+      <div>
+        <ModalSubTitle noPadding>
           <Trans i18nKey="send:details.address.title" />
           {recipientWarning && (
             <Tooltip title={recipientWarning.message} placement="top">
@@ -121,7 +118,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
             </Tooltip>
           )}
         </ModalSubTitle>
-        <div className={classes.paddedHorizontal}>
+        <div>
           <CryptoAddressPicker
             id="address"
             onChange={this.onChange}
@@ -129,10 +126,9 @@ class SendAddress extends PureComponent<Props<*>, State> {
             isValid={isValid}
             fullWidth
             inputProps={{ style: { paddingBottom: 15, color: colors.black } }}
-            className={classes.addressPicker}
           />
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
