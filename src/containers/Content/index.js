@@ -7,7 +7,7 @@ import AdminDashboard from "containers/Admin/Dashboard";
 import AdminTasks from "containers/Admin/AdminTasks";
 import AdminOperators from "containers/Admin/Operators";
 import AdminGroups from "containers/Admin/Groups";
-import AdminRule from "containers/Admin/AdminRule";
+import Administrators from "containers/Admin/Administrators";
 import AdminAccounts from "containers/Admin/Accounts";
 import AdminTransactions from "containers/Admin/Transactions";
 
@@ -35,7 +35,7 @@ function Content({ match }: { match: Match }) {
         <Route path={`${u}/admin/tasks`} component={AdminTasks} />
         <Route path={`${u}/admin/operators`} component={AdminOperators} />
         <Route path={`${u}/admin/groups`} component={AdminGroups} />
-        <Route path={`${u}/admin/rules`} component={AdminRule} />
+        <Route path={`${u}/admin/administrators`} component={Administrators} />
         <Route path={`${u}/admin/accounts`} component={AdminAccounts} />
         <Route path={`${u}/admin/account/:id`} component={AccountView} />
         <Route path={`${u}/admin/transactions`} component={AdminTransactions} />

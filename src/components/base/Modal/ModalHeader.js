@@ -11,7 +11,7 @@ export default ({
   children
 }: {
   onClose: () => void,
-  title?: string,
+  title?: React$Node,
   children?: React$Node
 }) => (
   <Box horizontal align="center" justify="space-between" p={20}>
