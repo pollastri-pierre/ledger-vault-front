@@ -11,12 +11,7 @@ import {
   isCreateOperationEnabled
 } from "utils/operations";
 
-import {
-  FaHome,
-  FaMoneyCheck,
-  FaExchangeAlt,
-  FaHourglassHalf
-} from "react-icons/fa";
+import { FaHome, FaMoneyCheck, FaExchangeAlt } from "react-icons/fa";
 
 import Receive from "components/Receive";
 import Send from "components/Send";
@@ -44,9 +39,6 @@ function OperatorMenu(props: {
       <MenuList>
         <MenuItem to={`${match.url}/operator/dashboard`} Icon={FaHome}>
           <Trans i18nKey="menu:operator.dashboard" />
-        </MenuItem>
-        <MenuItem to={`${match.url}/operator/pending`} Icon={FaHourglassHalf}>
-          <Trans i18nKey="menu:operator.pending" />
         </MenuItem>
 
         <MenuItem
