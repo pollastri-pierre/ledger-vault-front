@@ -17,23 +17,23 @@ import type { Member } from "data/types";
 import TableScroll from "./TableScroll";
 
 type Props = {
-  users: Member[],
+  members: Member[],
   onMemberClick: Member => void
 };
 
 class MembersTable extends PureComponent<Props> {
-  Member = (user: Member) => {
+  Member = (member: Member) => {
     const { onMemberClick } = this.props;
 
-    const key = `${user.id}`;
+    const key = `${member.id}`;
 
-    return <MemberRow key={key} user={user} onClick={onMemberClick} />;
+    return <MemberRow key={key} member={member} onClick={onMemberClick} />;
   };
 
   render() {
-    const { users } = this.props;
+    const { members } = this.props;
 
-    if (!users.length) {
+    if (!members.length) {
       return <NoDataPlaceholder title="No USERS" />;
     }
 
@@ -41,7 +41,7 @@ class MembersTable extends PureComponent<Props> {
       <TableScroll>
         <MUITable>
           <MembersTableHeader />
-          <MUITableBody>{users.map(this.Member)}</MUITableBody>
+          <MUITableBody>{members.map(this.Member)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );
@@ -56,8 +56,8 @@ class MembersTableHeader extends PureComponent<MembersTableHeaderProps> {
       <MUITableHead>
         <MUITableRow>
           <MUITableCell>Date</MUITableCell>
-          <MUITableCell>Membername</MUITableCell>
-          <MUITableCell>Member ID</MUITableCell>
+          <MUITableCell>Username</MUITableCell>
+          <MUITableCell>User ID</MUITableCell>
           <MUITableCell>Status</MUITableCell>
         </MUITableRow>
       </MUITableHead>
@@ -66,33 +66,33 @@ class MembersTableHeader extends PureComponent<MembersTableHeaderProps> {
 }
 
 type MemberRowProps = {
-  user: Member,
+  member: Member,
   onClick: Member => void
 };
 
-const userRowHover = { cursor: "pointer" };
+const memberRowHover = { cursor: "pointer" };
 
 class MemberRow extends PureComponent<MemberRowProps> {
   handleClick = () => {
-    this.props.onClick(this.props.user);
+    this.props.onClick(this.props.member);
   };
 
   render() {
-    const { user, onClick } = this.props;
+    const { member, onClick } = this.props;
 
     return (
       <MUITableRow
         hover={!!onClick}
-        style={onClick ? userRowHover : undefined}
+        style={onClick ? memberRowHover : undefined}
         onClick={onClick ? this.handleClick : undefined}
       >
         <MUITableCell>
-          <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />
+          <DateFormat format="ddd D MMM, h:mmA" date={member.created_on} />
         </MUITableCell>
-        <MUITableCell>{user.username}</MUITableCell>
-        <MUITableCell>{user.id}</MUITableCell>
+        <MUITableCell>{member.username}</MUITableCell>
+        <MUITableCell>{member.id}</MUITableCell>
         <MUITableCell>
-          <Status status={user.status} />
+          <Status status={member.status} />
         </MUITableCell>
       </MUITableRow>
     );

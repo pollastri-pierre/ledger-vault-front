@@ -12,14 +12,14 @@ import MemberDetails from "containers/MemberDetails";
 
 type Props = {
   close: () => void,
-  admin: Member
+  operator: Member
 };
 
 class AdminDetails extends PureComponent<Props> {
   render() {
-    const { close, admin } = this.props;
+    const { close, operator } = this.props;
 
-    return <MemberDetails member={admin} close={close} />;
+    return <MemberDetails member={operator} close={close} />;
   }
 }
 
@@ -30,7 +30,7 @@ export default connectData(AdminDetails, {
   RenderError,
   RenderLoading,
   queries: {
-    admin: MemberQuery
+    operator: MemberQuery
   },
   propsToQueryParams: props => ({
     memberId: props.match.params.memberId || ""
