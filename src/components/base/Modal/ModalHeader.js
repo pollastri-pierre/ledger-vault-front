@@ -14,7 +14,7 @@ export default ({
   title?: React$Node,
   children?: React$Node
 }) => (
-  <Box horizontal align="center" justify="space-between" p={20}>
+  <Box horizontal align="center" justify="space-between" p={20} noShrink>
     {children && children}
     {title && (
       <Text header bold>

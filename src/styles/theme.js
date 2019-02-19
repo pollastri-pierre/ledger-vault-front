@@ -23,6 +23,7 @@ const theme = {
   overrides: {
     MuiTabs: {
       root: {
+        zIndex: 2,
         position: "relative",
         "&:after": {
           content: '""',

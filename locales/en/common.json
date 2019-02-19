@@ -15,5 +15,7 @@
   "reject": "Reject",
   "edit": "Edit",
   "approve": "Approve",
-  "revoke": "Revoke"
+  "revoke": "Revoke",
+  "reject": "Reject",
+  "remove": "Delete"
 }

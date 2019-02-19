@@ -49,9 +49,7 @@ export const ModalBreadcrumb = styled(Box).attrs({
 
 const ModalContent = styled(Box).attrs({
   grow: 1
-})`
-  overflow: hidden;
-`;
+})``;
 
 export const ModalFooter = styled(Box).attrs({
   position: "absolute",
@@ -88,7 +86,9 @@ export const ModalBody = ({
 
 export const ModalHeader = styled(Box).attrs({
   mb: 30
-})``;
+})`
+  flex-shrink: 0;
+`;
 
 export const ModalTitle = ({
   children,

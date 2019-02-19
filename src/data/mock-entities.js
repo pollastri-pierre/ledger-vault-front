@@ -211,13 +211,25 @@ function genGroup({ members }) {
     min: 1,
     max: Math.min(operators.length, 10)
   });
+  const admins = members.filter(m => m.role === "admin");
+  const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
+  const approvals = genApprovals(nbApprovalsToGenerate, {
+    members: admins
+  });
+  const status = faker.random.arrayElement([
+    "APPROVED",
+    "PENDING_APPROVAL",
+    "ABORTED"
+  ]);
   return {
     id: faker.random.alphaNumeric("10"),
     name: faker.commerce.department(),
     created_on: faker.date.past(1),
+    created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
-    status: "APPROVED",
-    members: getUniqueRandomElements(operators, nbMembers).map(m => m.id)
+    status,
+    members: getUniqueRandomElements(operators, nbMembers).map(m => m.id),
+    approvals
   };
 }
 
