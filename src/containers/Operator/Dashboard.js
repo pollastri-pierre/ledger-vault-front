@@ -1,16 +1,17 @@
 // @flow
+
 import React, { PureComponent } from "react";
-import Text from "components/base/Text";
-import Card from "components/base/Card";
+
+import Box from "components/base/Box";
+
+import PendingOperationsCard from "./PendingOperationsCard";
 
 class OperatorDashboard extends PureComponent<*> {
   render() {
     return (
-      <Card>
-        <Text uppercase large>
-          Operator Dashboard
-        </Text>
-      </Card>
+      <Box flow={20}>
+        <PendingOperationsCard />
+      </Box>
     );
   }
 }

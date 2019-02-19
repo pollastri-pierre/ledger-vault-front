@@ -1,18 +1,26 @@
 // @flow
-import React, { PureComponent } from "react";
-import Text from "components/base/Text";
-import Card from "components/base/Card";
 
-class OperatorTransactions extends PureComponent<*> {
+import React, { PureComponent } from "react";
+
+import connectData from "restlay/connectData";
+
+import Text from "components/base/Text";
+import Card, { CardLoading, CardError } from "components/base/Card";
+
+type Props = {};
+
+class OperatorTransactions extends PureComponent<Props> {
   render() {
     return (
       <Card>
-        <Text uppercase large>
-          Operator Transactions
-        </Text>
+        <Text header>transactions</Text>
       </Card>
     );
   }
 }
 
-export default OperatorTransactions;
+export default connectData(OperatorTransactions, {
+  RenderLoading: CardLoading,
+  RenderError: CardError,
+  queries: {}
+});

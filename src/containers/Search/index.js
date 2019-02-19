@@ -9,6 +9,7 @@ import ModalRoute from "components/ModalRoute";
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 import type { Account } from "data/types";
 import Box from "components/base/Box";
+import { CardError, CardLoading } from "components/base/Card";
 import SearchFiltersCard from "./SearchFiltersCard";
 import SearchResultsCard from "./SearchResultsCard";
 
@@ -102,6 +103,8 @@ class Search extends Component<Props, State> {
 }
 
 export default connectData(Search, {
+  RenderError: CardError,
+  RenderLoading: CardLoading,
   queries: {
     accounts: AccountsQuery
   }

@@ -14,6 +14,9 @@ export const CardTitle = ({ children }: { children: React$Node }) => (
   </Box>
 );
 
+export { default as CardError } from "./CardError";
+export { default as CardLoading } from "./CardLoading";
+
 export default styled(Box).attrs({
   // $FlowFixMe
   p: 40,

@@ -5,7 +5,7 @@ import type { MemoryHistory } from "history";
 import MembersQuery from "api/queries/MembersQuery";
 import connectData from "restlay/connectData";
 
-import Card, { CardTitle } from "components/base/Card";
+import Card, { CardTitle, CardError, CardLoading } from "components/base/Card";
 import MembersTable from "components/Table/MembersTable";
 import ModalRoute from "components/ModalRoute";
 import InviteMemberLink from "components/InviteMemberLink";
@@ -53,6 +53,8 @@ class Administrators extends PureComponent<Props> {
 }
 
 export default connectData(Administrators, {
+  RenderLoading: CardLoading,
+  RenderError: CardError,
   queries: {
     admins: MembersQuery
   },
