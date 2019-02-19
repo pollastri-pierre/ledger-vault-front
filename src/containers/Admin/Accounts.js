@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 
-import Box from "components/base/Box";
+import Card from "components/base/Card";
 import { AccountsTable } from "components/Table";
 
 import type { Account } from "data/types";
@@ -27,12 +27,12 @@ class AdminAccounts extends PureComponent<Props> {
     const { accounts } = this.props;
 
     return (
-      <Box mt={80}>
+      <Card>
         <AccountsTable
           accounts={accounts}
           onAccountClick={this.handleAccountClick}
         />
-      </Box>
+      </Card>
     );
   }
 }

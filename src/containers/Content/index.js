@@ -22,10 +22,12 @@ import Box from "components/base/Box";
 const styles = {
   base: {
     width: "calc(100% - 320px)",
-    margin: 0,
+    maxWidth: 1700,
+    margin: "0 auto",
     marginTop: -20
   }
 };
+
 function Content({ match }: { match: Match }) {
   const u = match.url;
   return (
