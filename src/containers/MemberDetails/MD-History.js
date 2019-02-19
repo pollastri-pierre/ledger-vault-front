@@ -9,7 +9,7 @@ class MemberDetailsHistory extends PureComponent<Props> {
   render() {
     return (
       <Box p={15}>
-        <Text>COMING...</Text>
+        <Text>FINALIZING LAYOUT</Text>
       </Box>
     );
   }

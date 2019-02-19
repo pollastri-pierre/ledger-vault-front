@@ -12,40 +12,43 @@ import InviteMemberLink from "components/InviteMemberLink";
 
 import type { Member } from "data/types";
 
-import AdminDetails from "./AdminDetails";
-import InviteAdmin from "../InviteAdmin";
+import OperatorDetails from "./OperatorDetails";
+import InviteOperator from "../InviteOperator";
 
 type Props = {
-  admins: Member[],
+  operators: Member[],
   match: Match,
   history: MemoryHistory
 };
 
 class Administrators extends PureComponent<Props> {
-  handleUserClick = (admin: Member) => {
-    this.props.history.push(`administrators/details/${admin.id}`);
+  handleMemberClick = (operator: Member) => {
+    this.props.history.push(`operators/details/${operator.id}`);
   };
 
   inviteMember = () => {
-    this.props.history.push("administrators/invite/admin");
+    this.props.history.push("operators/invite/operator");
   };
 
   render() {
-    const { admins, match } = this.props;
+    const { operators, match } = this.props;
     return (
       <Fragment>
         <Card>
-          <CardTitle>Administrators</CardTitle>
-          <InviteMemberLink onClick={this.inviteMember} member="admin" />
-          <MembersTable members={admins} onMemberClick={this.handleUserClick} />
+          <CardTitle>Operators</CardTitle>
+          <InviteMemberLink onClick={this.inviteMember} member="operator" />
+          <MembersTable
+            members={operators}
+            onMemberClick={this.handleMemberClick}
+          />
         </Card>
         <ModalRoute
-          path={`${match.url}/invite/admin`}
-          component={InviteAdmin}
+          path={`${match.url}/invite/operator`}
+          component={InviteOperator}
         />
         <ModalRoute
           path={`${match.url}/details/:memberId`}
-          component={AdminDetails}
+          component={OperatorDetails}
         />
       </Fragment>
     );
@@ -54,9 +57,9 @@ class Administrators extends PureComponent<Props> {
 
 export default connectData(Administrators, {
   queries: {
-    admins: MembersQuery
+    operators: MembersQuery
   },
   propsToQueryParams: () => ({
-    memberRole: "admin"
+    memberRole: "operator"
   })
 });
