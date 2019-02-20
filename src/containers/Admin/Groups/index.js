@@ -2,25 +2,17 @@
 
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
-
-import colors from "shared/colors";
 import connectData from "restlay/connectData";
 import GroupsQuery from "api/queries/GroupsQuery";
 import Text from "components/base/Text";
 import Card, { CardTitle, CardError, CardLoading } from "components/base/Card";
+import AddLink from "components/base/AddLink";
 import ModalRoute from "components/ModalRoute";
 import Box from "components/base/Box";
 import GroupsTable from "components/Table/GroupsTable";
 import type { Group } from "data/types";
 import GroupDetails from "./GroupDetails";
 import CreateGroup from "./CreateGroup";
-
-const AddGroupContainer = styled(Box)`
-  position: absolute;
-  right: 40px;
-  cursor: pointer;
-`;
 
 class AdminGroups extends PureComponent<*> {
   handleGroupClick = (group: Group) => {
@@ -39,11 +31,11 @@ class AdminGroups extends PureComponent<*> {
       <Box horizontal align="flex-start" flow={40}>
         <Card grow>
           <CardTitle>Admin Groups</CardTitle>
-          <AddGroupContainer onClick={this.createGroup}>
-            <Text small bold uppercase color={colors.ocean}>
+          <AddLink onClick={this.createGroup}>
+            <Text>
               <Trans i18nKey="group:create.title" />
             </Text>
-          </AddGroupContainer>
+          </AddLink>
           <GroupsTable
             groups={this.props.groups}
             onGroupClick={this.handleGroupClick}
