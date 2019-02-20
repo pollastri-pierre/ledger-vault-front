@@ -7,5 +7,10 @@
     "by": "Created by",
     "users": "users"
   },
-  "delete": "Delete Group"
+  "delete": "Delete Group",
+  "create": {
+    "title": "Create Group",
+    "members": "members",
+    "submit": "Create Group"
+  }
 }
