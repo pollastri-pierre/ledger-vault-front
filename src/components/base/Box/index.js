@@ -38,13 +38,13 @@ const flow = (props: Props) => {
   if (props.horizontal) {
     return `
       > * + * {
-        margin-left: ${px(props.flow || 0)};
+        margin-left: ${px(props.flow || 0)} !important;
       }
     `;
   }
   return `
     > * + * {
-      margin-top: ${px(props.flow || 0)};
+      margin-top: ${px(props.flow || 0)} !important;
     }
   `;
 };
