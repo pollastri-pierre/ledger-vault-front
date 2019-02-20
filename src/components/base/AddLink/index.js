@@ -2,22 +2,13 @@
 
 import React from "react";
 import styled from "styled-components";
+import Button from "@material-ui/core/Button";
 import { FaPlus } from "react-icons/fa";
-
-import Box from "components/base/Box";
-import colors from "shared/colors";
 
 const Container = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-
-  color: ${colors.ocean};
-
-  &:hover {
-    color: ${colors.mediumGrey};
-  }
+  top: 20px;
+  right: 40px;
 `;
 
 export default ({
@@ -28,9 +19,9 @@ export default ({
   children: *
 }) => (
   <Container>
-    <Box horizontal flow={7} p={20} onClick={onClick} align="center">
-      <FaPlus />
+    <Button onClick={onClick} color="primary" variant="outlined">
+      <FaPlus style={{ marginRight: 10 }} />
       {children}
-    </Box>
+    </Button>
   </Container>
 );
