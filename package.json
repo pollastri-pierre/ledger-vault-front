@@ -70,7 +70,7 @@
     "qrcode-reader": "^1.0.4",
     "qrious": "^4.0.2",
     "qs": "^6.5.2",
-    "query-string": "^5.1.1",
+    "query-string": "^6.2.0",
     "raf": "^3.4.0",
     "react": "^16.4.0",
     "react-copy-to-clipboard": "^5.0.1",
