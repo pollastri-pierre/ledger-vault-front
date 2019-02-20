@@ -23,7 +23,7 @@ const styles = {
     width: "calc(100% - 320px)",
     maxWidth: 1700,
     margin: "0 auto",
-    marginTop: -20
+    marginTop: -40
   }
 };
 
