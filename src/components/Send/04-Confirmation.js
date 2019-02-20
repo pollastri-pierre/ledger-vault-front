@@ -8,11 +8,11 @@ import LineRow from "components/LineRow";
 import AccountName from "components/AccountName";
 import OverviewOperation from "components/OverviewOperation";
 import Amount from "components/Amount";
+import { ModalFooter } from "components/base/Modal";
 import DialogButton from "components/buttons/DialogButton";
 import CopyToClipboardButton from "components/CopyToClipboardButton";
 
 import InfoModal from "components/InfoModal";
-import SendLayout from "./SendLayout";
 
 const styles = {
   warningMsg: {
@@ -58,54 +58,50 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
     const erc20Format = account.account_type === "ERC20";
 
     return (
-      <SendLayout
-        paddedHorizontal
-        content={
-          <Fragment>
-            <OverviewOperation
-              amount={amount}
-              account={account}
-              operationType="SEND"
-            />
-            <div>
-              <LineRow label={<Trans i18nKey="send:confirmation.identifier" />}>
-                {recipient && <CopyToClipboardButton textToCopy={recipient} />}
-              </LineRow>
-              <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
-                <AccountName account={account} />
-              </LineRow>
-              <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
-                {fees !== null && <Amount account={account} value={fees} />}
-              </LineRow>
-              <LineRow
-                label={<Trans i18nKey="send:confirmation.total" />}
-                tooltipInfoMessage={
-                  erc20Format && (
-                    <Trans i18nKey="send:confirmation.totalERC20Info" />
-                  )
-                }
-              >
-                {totalSpent !== null && (
-                  <Amount
-                    account={account}
-                    value={totalSpent}
-                    strong
-                    erc20Format={erc20Format}
-                  />
-                )}
-              </LineRow>
-            </div>
-            <InfoModal className={classes.warningMsg}>
-              <Trans i18nKey="send:confirmation.desc" />
-            </InfoModal>
-          </Fragment>
-        }
-        footer={
+      <Fragment>
+        <OverviewOperation
+          amount={amount}
+          account={account}
+          operationType="SEND"
+        />
+        <div>
+          <LineRow label={<Trans i18nKey="send:confirmation.identifier" />}>
+            {recipient && <CopyToClipboardButton textToCopy={recipient} />}
+          </LineRow>
+          <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
+            <AccountName account={account} />
+          </LineRow>
+          <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
+            {fees !== null && <Amount account={account} value={fees} />}
+          </LineRow>
+          <LineRow
+            label={<Trans i18nKey="send:confirmation.total" />}
+            tooltipInfoMessage={
+              erc20Format && (
+                <Trans i18nKey="send:confirmation.totalERC20Info" />
+              )
+            }
+          >
+            {totalSpent !== null && (
+              <Amount
+                account={account}
+                value={totalSpent}
+                strong
+                erc20Format={erc20Format}
+              />
+            )}
+          </LineRow>
+        </div>
+        <InfoModal className={classes.warningMsg}>
+          <Trans i18nKey="send:confirmation.desc" />
+        </InfoModal>
+
+        <ModalFooter>
           <DialogButton highlight right onTouchTap={confirmTx}>
             <Trans i18nKey="common:confirm" />
           </DialogButton>
-        }
-      />
+        </ModalFooter>
+      </Fragment>
     );
   }
 }

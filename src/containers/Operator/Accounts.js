@@ -1,9 +1,15 @@
 // @flow
-import React, { PureComponent } from "react";
-import Text from "components/base/Text";
-import Card from "components/base/Card";
 
-class OperatorAccounts extends PureComponent<*> {
+import React, { PureComponent } from "react";
+
+import connectData from "restlay/connectData";
+
+import Text from "components/base/Text";
+import Card, { CardLoading, CardError } from "components/base/Card";
+
+type Props = {};
+
+class OperatorAccounts extends PureComponent<Props> {
   render() {
     return (
       <Card>
@@ -15,4 +21,8 @@ class OperatorAccounts extends PureComponent<*> {
   }
 }
 
-export default OperatorAccounts;
+export default connectData(OperatorAccounts, {
+  RenderLoading: CardLoading,
+  RenderError: CardError,
+  queries: {}
+});

@@ -12,7 +12,6 @@ import AdminAccounts from "containers/Admin/Accounts";
 import AdminTransactions from "containers/Admin/Transactions";
 
 import OperatorDashboard from "containers/Operator/Dashboard";
-import OperatorPendingTx from "containers/Operator/Pending";
 import OperatorTransactions from "containers/Operator/Transactions";
 import OperatorAccounts from "containers/Operator/Accounts";
 import AccountView from "containers/Account/AccountView";
@@ -22,10 +21,12 @@ import Box from "components/base/Box";
 const styles = {
   base: {
     width: "calc(100% - 320px)",
-    margin: 0,
-    marginTop: -20
+    maxWidth: 1700,
+    margin: "0 auto",
+    marginTop: -40
   }
 };
+
 function Content({ match }: { match: Match }) {
   const u = match.url;
   return (
@@ -41,12 +42,12 @@ function Content({ match }: { match: Match }) {
         <Route path={`${u}/admin/transactions`} component={AdminTransactions} />
 
         <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
-        <Route path={`${u}/operator/pending`} component={OperatorPendingTx} />
         <Route
           path={`${u}/operator/transactions`}
           component={OperatorTransactions}
         />
         <Route path={`${u}/operator/accounts`} component={OperatorAccounts} />
+
         <Route
           exact
           path={`${u}`}

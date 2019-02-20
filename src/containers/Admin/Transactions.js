@@ -1,9 +1,10 @@
 // @flow
+
 import React, { PureComponent } from "react";
-import Box from "components/base/Box";
-import Search from "containers/Search";
 
 import type { Match } from "react-router-dom";
+
+import Search from "containers/Search";
 
 type Props = {
   match: Match
@@ -12,11 +13,7 @@ type Props = {
 class AdminTransactions extends PureComponent<Props> {
   render() {
     const { match } = this.props;
-    return (
-      <Box>
-        <Search match={match} />
-      </Box>
-    );
+    return <Search match={match} />;
   }
 }
 

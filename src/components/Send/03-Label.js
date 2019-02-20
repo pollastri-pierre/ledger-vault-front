@@ -7,7 +7,7 @@ import type { Account, Translate } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import { TextField } from "components";
 import DialogButton from "components/buttons/DialogButton";
-import SendLayout from "./SendLayout";
+import { ModalFooter } from "components/base/Modal";
 
 type Props<Transaction> = {
   account: Account,
@@ -56,33 +56,28 @@ class SendLabel extends PureComponent<Props<*>, State> {
     const label = bridge.getTransactionLabel(account, transaction);
     const note = bridge.getTransactionNote(account, transaction);
     return (
-      <SendLayout
-        paddedHorizontal
-        content={
-          <Fragment>
-            <TextField
-              classes={{ root: classes.label }}
-              fullWidth
-              value={label}
-              placeholder={t("send:label.title")}
-              onChange={this.updateLabel}
-            />
-            <div className={classes.noteContainer} />
-            <TextField
-              classes={{ root: classes.comment }}
-              placeholder={t("send:label.note")}
-              value={note}
-              fullWidth
-              onChange={this.updateNote}
-            />
-          </Fragment>
-        }
-        footer={
+      <Fragment>
+        <TextField
+          classes={{ root: classes.label }}
+          fullWidth
+          value={label}
+          placeholder={t("send:label.title")}
+          onChange={this.updateLabel}
+        />
+        <div className={classes.noteContainer} />
+        <TextField
+          classes={{ root: classes.comment }}
+          placeholder={t("send:label.note")}
+          value={note}
+          fullWidth
+          onChange={this.updateNote}
+        />
+        <ModalFooter>
           <DialogButton highlight right onTouchTap={this.onChangeTab}>
             <Trans i18nKey="common:continue" />
           </DialogButton>
-        }
-      />
+        </ModalFooter>
+      </Fragment>
     );
   }
 }
