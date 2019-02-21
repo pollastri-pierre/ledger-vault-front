@@ -1,5 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
+import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
+import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import { composeWithDevTools } from "redux-devtools-extension";
 import JssProvider from "react-jss/lib/JssProvider";
 import { I18nextProvider } from "react-i18next";
@@ -49,7 +51,9 @@ addDecorator(story => (
       <I18nextProvider i18n={i18n}>
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
-            <StyledContainer>{story()}</StyledContainer>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <StyledContainer>{story()}</StyledContainer>
+            </MuiPickersUtilsProvider>
           </ThemeProvider>
         </MuiThemeProvider>
       </I18nextProvider>
