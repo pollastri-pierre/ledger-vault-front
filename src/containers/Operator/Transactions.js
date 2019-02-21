@@ -1,26 +1,16 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
+import type { Match } from "react-router-dom";
 
-import connectData from "restlay/connectData";
+import SearchOperations from "components/search/SearchOperations";
 
-import Text from "components/base/Text";
-import Card, { CardLoading, CardError } from "components/base/Card";
+type Props = {
+  match: Match
+};
 
-type Props = {};
+const OperatorTransactions = ({ match }: Props) => (
+  <SearchOperations match={match} />
+);
 
-class OperatorTransactions extends PureComponent<Props> {
-  render() {
-    return (
-      <Card>
-        <Text header>transactions</Text>
-      </Card>
-    );
-  }
-}
-
-export default connectData(OperatorTransactions, {
-  RenderLoading: CardLoading,
-  RenderError: CardError,
-  queries: {}
-});
+export default OperatorTransactions;
