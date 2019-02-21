@@ -26,6 +26,7 @@ function OperationApproveDetails(props: {
       <div className="operation-list">
         <LineRow label={<Trans i18nKey="newOperation:details.identifier" />}>
           {operation.recipient && (
+            // $FlowFixMe separate problem. it is a string and type is string[]
             <CopyToClipboardButton textToCopy={operation.recipient} />
           )}
         </LineRow>

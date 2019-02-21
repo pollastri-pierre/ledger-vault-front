@@ -1,46 +1,44 @@
 // @flow
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import styled from "styled-components";
 import { Trans } from "react-i18next";
 import Copy from "components/icons/Copy";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import colors from "shared/colors";
 
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
-  textToCopy: string
+  textToCopy: string,
+  visible?: boolean
 };
 
 type State = {
   copied: boolean
 };
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    "&:hover $buttonCopy": {
-      display: "flex",
-      backgroundColor: colors.cream
+
+const ButtonContainer = styled(Box)`
+  display: ${p => (p.visible ? "flex" : "none")};
+`;
+const Container = styled(Box).attrs({
+  horizontal: true,
+  justify: "space-between"
+})`
+  align-items: center;
+  &:hover {
+    cursor: ${p => !p.visible && "pointer"};
+    ${ButtonContainer} {
+      display: ${p => !p.visible && "flex"};
     }
-  },
+  }
+`;
+const styles = {
   text: {
     overflow: "hidden",
     textOverflow: "ellipsis"
-  },
-  buttonCopy: {
-    display: "none",
-    position: "fixed",
-    alignSelf: "flex-end",
-    color: colors.ocean,
-    fontSize: 11
-  },
-  copyIcon: {
-    marginRight: 3
   }
 };
-
 class CopyToClipboardButton extends Component<Props, State> {
   state = {
     copied: false
@@ -58,36 +56,34 @@ class CopyToClipboardButton extends Component<Props, State> {
   _timeout: ?TimeoutID = null;
 
   render() {
-    const { classes, textToCopy } = this.props;
+    const { textToCopy } = this.props;
     const { copied } = this.state;
     return (
-      <div className={classes.container}>
-        <span className={classes.text}>{textToCopy}</span>
+      <Container {...this.props}>
+        <Text style={styles.text} {...this.props}>
+          {textToCopy}
+        </Text>
         <CopyToClipboard text={textToCopy} onCopy={this.onCopy}>
-          <Button
-            className={classes.buttonCopy}
-            variant="contained"
-            size="small"
-          >
-            {copied ? (
-              <span>
-                <Trans i18nKey="operationDetails:overview.copied" />
-              </span>
-            ) : (
-              <Fragment>
-                <div className={classes.copyIcon}>
+          <ButtonContainer {...this.props}>
+            <Button size="small">
+              {copied ? (
+                <Text color={colors.ocean}>
+                  <Trans i18nKey="operationDetails:overview.copied" />
+                </Text>
+              ) : (
+                <Box horizontal align="center" flow={5}>
                   <Copy color={colors.ocean} size={12} />
-                </div>
-                <span>
-                  <Trans i18nKey="operationDetails:overview.copy" />
-                </span>
-              </Fragment>
-            )}
-          </Button>
+                  <Text color={colors.ocean}>
+                    <Trans i18nKey="operationDetails:overview.copy" />
+                  </Text>
+                </Box>
+              )}
+            </Button>
+          </ButtonContainer>
         </CopyToClipboard>
-      </div>
+      </Container>
     );
   }
 }
 
-export default withStyles(styles)(CopyToClipboardButton);
+export default CopyToClipboardButton;
