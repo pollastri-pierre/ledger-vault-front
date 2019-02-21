@@ -2,6 +2,7 @@
 
 set -e
 
+rm -rf storybook-static
 npm run build-storybook
 cd storybook-static
 git init

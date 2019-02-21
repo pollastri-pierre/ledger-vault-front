@@ -6,6 +6,44 @@ import {
   listCryptoCurrencies
 } from "utils/cryptoCurrencies";
 
+const FAKE_MEMBER_NAMES = [
+  "Laura Parker",
+  "Mark Walker",
+  "Sally Wilson",
+  "Florian Schreiber",
+  "Claudia Schmitt",
+  "Sean Grey",
+  "Nicole Watkins",
+  "Andrew Williams",
+  "Allison Stowe",
+  "Aidan Fisher",
+  "Rebecca Hopper",
+  "Tyler Flynn",
+  "Kathy Sanchez",
+  "Christopher Barnes",
+  "Linda Smith",
+  "Thomas Lee",
+  "Michelle Jacobsen",
+  "John Clark",
+  "Anna Wagner",
+  "Charles Burnell"
+];
+
+const FAKE_ACCOUNT_NAMES = [
+  "Coinhy.pe",
+  "HeyBitcoin",
+  "Coinplace",
+  "John Smith",
+  "Amanda Wong"
+];
+
+const FAKE_GROUP_NAMES = [
+  "APAC Ops",
+  "EMEA Ops",
+  "America Ops",
+  "Key accounts Ops"
+];
+
 faker.seed(parseInt(process.env.MOCK_SEED, 10) || 1234);
 
 function genCurrency() {
@@ -62,7 +100,7 @@ function genAccount({ members = [] } = {}) {
   return {
     id: faker.random.number({ min: 1, max: 100000000 }),
     index: faker.random.number({ min: 1, max: 10 }),
-    name: faker.name.findName(),
+    name: faker.random.arrayElement(FAKE_ACCOUNT_NAMES),
     status,
     currency_id: currency.id,
     account_type: accountType,
@@ -105,8 +143,6 @@ function genAccount({ members = [] } = {}) {
 }
 
 function genMember() {
-  const firstName = faker.name.firstName();
-  const lastName = faker.name.lastName();
   const date = faker.date.past(1);
   const status = faker.random.arrayElement([
     "ACTIVE",
@@ -118,7 +154,7 @@ function genMember() {
   return {
     id: faker.random.alphaNumeric(12),
     pub_key: `0x${faker.random.alphaNumeric(40)}`,
-    username: `${firstName} ${lastName}`,
+    username: faker.random.arrayElement(FAKE_MEMBER_NAMES),
 
     role: faker.random.arrayElement(["admin", "operator"]),
 
@@ -223,7 +259,7 @@ function genGroup({ members }) {
   ]);
   return {
     id: faker.random.alphaNumeric("10"),
-    name: faker.commerce.department(),
+    name: faker.random.arrayElement(FAKE_GROUP_NAMES),
     created_on: faker.date.past(1),
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
