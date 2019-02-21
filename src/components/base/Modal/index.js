@@ -51,13 +51,13 @@ const ModalContent = styled(Box).attrs({
   grow: 1
 })``;
 
-export const ModalFooter = styled(Box).attrs({
+export const ModalFooter = styled(Box).attrs(p => ({
   position: "absolute",
   horizontal: true,
-  justify: p => p.justify || "flex-end",
-  align: p => p.align || "flex-end",
+  justify: p.justify || "flex-end",
+  align: p.align || "flex-end",
   px: 40
-})`
+}))`
   bottom: 0;
   left: 0;
   right: 0;
