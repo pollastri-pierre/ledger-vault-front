@@ -40,7 +40,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
   };
 
   handleRemoveAccount = (account: Account) => {
-    const EXCLUDE_ID = id => id !== account.id;
+    const EXCLUDE_ID = id => id && id.toString() !== account.id.toString();
     this.updateAccounts(accountsIds => accountsIds.filter(EXCLUDE_ID));
   };
 
@@ -51,12 +51,18 @@ class FilterFieldAccounts extends PureComponent<Props> {
     const selectedCurrency = resolveCurrency(query);
 
     const selectedAccounts = selectedAccountsIds
-      .map(accountId => accounts.find(account => account.id === accountId))
+      .map(accountId =>
+        accounts.find(
+          account => accountId && account.id.toString() === accountId.toString()
+        )
+      )
       .filter(Boolean);
 
     const filteredAccounts = accounts.filter(
       account =>
-        !selectedAccountsIds.find(id => id === account.id) &&
+        !selectedAccountsIds.find(
+          id => id && id.toString() === account.id.toString()
+        ) &&
         (!selectedCurrency || account.currency_id === selectedCurrency)
     );
 
@@ -115,7 +121,11 @@ const AccountsList = ({
   ) : null;
 
 function resolveAccounts(query: ObjectParameters) {
-  return Array.isArray(query.accounts) ? query.accounts : EMPTY_ARRAY;
+  return Array.isArray(query.accounts)
+    ? query.accounts
+    : typeof query.accounts === "string"
+      ? [query.accounts]
+      : EMPTY_ARRAY;
 }
 
 function resolveCurrency(query: ObjectParameters) {
