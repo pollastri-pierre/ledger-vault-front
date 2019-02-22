@@ -14,7 +14,7 @@ const accounts = genAccounts(10, { members });
 
 const FiltersOperationsWrapped = wrap(
   FiltersOperations,
-  `currency=${accounts[0].currency_id}`,
+  `currency=${accounts[0].currency_id}&accounts=${accounts[0].id}`,
   {
     accounts
   }
