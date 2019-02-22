@@ -13,14 +13,17 @@ import {
 import SelectCurrency from "components/SelectCurrency";
 
 import Box from "components/base/Box";
-import Text from "components/base/Text";
 
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
+import FieldTitle from "./FieldTitle";
+import { defaultFieldProps } from "../FiltersCard";
 import type { FieldProps } from "../FiltersCard";
 
 type Props = FieldProps;
 
 class FilterFieldCurrency extends PureComponent<Props> {
+  static defaultProps = defaultFieldProps;
+
   handleChange = (item: ?SelectCurrencyItem) => {
     const { updateQuery } = this.props;
     if (!item) {
@@ -45,11 +48,10 @@ class FilterFieldCurrency extends PureComponent<Props> {
   render() {
     const { query } = this.props;
     const currencyOrToken = resolveCurrencyOrToken(query);
+    const isActive = !!currencyOrToken;
     return (
       <Box flow={5}>
-        <Text small uppercase>
-          Cryptocurrency
-        </Text>
+        <FieldTitle isActive={isActive}>Cryptocurrency</FieldTitle>
         <SelectCurrency value={currencyOrToken} onChange={this.handleChange} />
       </Box>
     );

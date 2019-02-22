@@ -17,12 +17,12 @@ class FiltersCardHeader extends PureComponent<Props> {
   render() {
     const { title, subtitle } = this.props;
     return (
-      <Box horizontal align="center" flow={20}>
+      <Box horizontal align="center" flow={20} p={20} bg={colors.cream}>
         <Box noShrink>
           <FaSearch size={25} color={colors.mediumGrey} />
         </Box>
         <Box grow>
-          <Text header color={colors.lead}>
+          <Text header color={colors.shark}>
             {title}
           </Text>
           <Text small color={colors.mediumGrey}>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { PureComponent, Children, cloneElement } from "react";
 import qs from "query-string";
 
 import type { ObjectParameters, ObjectParameter } from "query-string";
@@ -15,14 +15,22 @@ export type QueryUpdater = ObjectParameters => ObjectParameters;
 
 export type FieldProps = {
   query: ObjectParameters,
-  updateQuery: (string | QueryUpdater, ?ObjectParameter) => void
+  updateQuery: (
+    string | QueryUpdater,
+    ?ObjectParameter | ?$ReadOnlyArray<ObjectParameter>
+  ) => void
+};
+
+export const defaultFieldProps = {
+  query: {},
+  updateQuery: () => {}
 };
 
 type Props = {
   title: string,
   subtitle: string,
   query: string,
-  children: FieldProps => React$Node,
+  children: React$Node,
   onChange: string => void
 };
 
@@ -44,7 +52,7 @@ class FiltersCard extends PureComponent<Props, State> {
 
   handleUpdateKey = (
     keyOrUpdater: string | QueryUpdater,
-    val: ?ObjectParameter
+    val: ?ObjectParameter | ?$ReadOnlyArray<ObjectParameter>
   ) => {
     const { onChange } = this.props;
     const { deserializedQuery } = this.state;
@@ -76,15 +84,19 @@ class FiltersCard extends PureComponent<Props, State> {
 
     const { deserializedQuery } = this.state;
 
-    const content = children({
+    const childProps = {
       query: deserializedQuery,
       updateQuery: this.handleUpdateKey
-    });
+    };
+
+    const content = Children.map(children, c => cloneElement(c, childProps));
 
     return (
-      <Card p={20} flow={30} overflow="visible" noShrink {...props}>
+      <Card p={0} overflow="visible" noShrink {...props}>
         <FiltersCardHeader title={title} subtitle={subtitle} />
-        <Box flow={20}>{content}</Box>
+        <Box px={20} py={40} flow={40}>
+          {content}
+        </Box>
         <FiltersCardFooter onClear={this.handleClear} />
       </Card>
     );

@@ -32,7 +32,8 @@ const uri = (query: In) => {
     with_daemon_info: true
   };
 
-  if (finalQuery.start) finalQuery.start = new Date(finalQuery.start).toISOString();
+  if (finalQuery.start)
+    finalQuery.start = new Date(finalQuery.start).toISOString();
   if (finalQuery.end) finalQuery.end = new Date(finalQuery.end).toISOString();
 
   const q = queryString.stringify(finalQuery);
