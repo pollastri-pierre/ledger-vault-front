@@ -17,13 +17,13 @@ export const CardTitle = ({ children }: { children: React$Node }) => (
 export { default as CardError } from "./CardError";
 export { default as CardLoading } from "./CardLoading";
 
-export default styled(Box).attrs({
+export default styled(Box).attrs(p => ({
   // $FlowFixMe
-  p: 40,
+  p: "p" in p ? p.p : 40,
   // $FlowFixMe
   position: "relative"
-})`
-  overflow-x: auto;
+}))`
+  overflow-x: ${p => p.overflow || "auto"};
   background-color: white;
   color: #555;
   box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.07);

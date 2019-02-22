@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
 import { components } from "react-select";
-import { Trans } from "react-i18next";
+import { Trans, translate } from "react-i18next";
 import type { OptionProps } from "react-select/lib/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
@@ -200,7 +200,8 @@ const customComponents = {
 
 type Props = {
   value: CryptoCurrency | ERC20Token | null,
-  onChange: (?Item) => void
+  onChange: (?Item) => void,
+  t: *
 };
 
 class SelectCurrency extends PureComponent<Props> {
@@ -211,7 +212,7 @@ class SelectCurrency extends PureComponent<Props> {
   };
 
   render() {
-    const { value, ...props } = this.props;
+    const { value, t, ...props } = this.props;
 
     // find the currency OR erc20token inside all options
     const resolvedValue = value ? getValueOption(value) : null;
@@ -220,6 +221,7 @@ class SelectCurrency extends PureComponent<Props> {
       <Select
         async
         inputId="input_crypto"
+        placeholder={t("newAccount:currency.placeholder")}
         defaultOptions
         isClearable
         loadOptions={fetchOptions}
@@ -232,4 +234,4 @@ class SelectCurrency extends PureComponent<Props> {
   }
 }
 
-export default SelectCurrency;
+export default translate()(SelectCurrency);

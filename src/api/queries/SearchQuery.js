@@ -16,28 +16,27 @@ type In = {
 };
 type Node = Operation;
 
-const uri = ({
-  keywords,
-  accounts,
-  currencyName,
-  status,
-  dateStart,
-  dateEnd,
-  minAmount,
-  maxAmount
-}: In) => {
-  const query = {};
-  if (keywords) query.label = keywords;
-  if (minAmount) query.min_amount = minAmount;
-  if (maxAmount) query.max_amount = maxAmount;
-  // if (accountId) query.account = accountId;
-  if (accounts) query.account = accounts;
-  if (status) query.status = status;
-  if (currencyName) query.currency = currencyName;
-  if (dateStart) query.start = dateStart.toISOString();
-  if (dateEnd) query.end = dateEnd.toISOString();
-  query.with_daemon_info = true;
-  const q = queryString.stringify(query);
+const uri = (query: In) => {
+  // const query = {};
+  // if (keywords) query.label = keywords;
+  // if (minAmount) query.min_amount = minAmount;
+  // if (maxAmount) query.max_amount = maxAmount;
+  // // if (accountId) query.account = accountId;
+  // if (accounts) query.account = accounts;
+  // if (status) query.status = status;
+  // if (currencyName) query.currency = currencyName;
+  // if (dateStart) query.start = dateStart.toISOString();
+  // if (dateEnd) query.end = dateEnd.toISOString();
+  const finalQuery: Object = {
+    ...query,
+    with_daemon_info: true
+  };
+
+  if (finalQuery.start)
+    finalQuery.start = new Date(finalQuery.start).toISOString();
+  if (finalQuery.end) finalQuery.end = new Date(finalQuery.end).toISOString();
+
+  const q = queryString.stringify(finalQuery);
   return `/operations${q ? "?" : ""}${q}`;
 };
 

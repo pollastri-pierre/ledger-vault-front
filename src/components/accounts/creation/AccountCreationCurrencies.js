@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from "react";
-import { Trans, translate } from "react-i18next";
+import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 
@@ -84,8 +84,7 @@ type Props = {
   updateAccountCreationState: UpdateAccountCreationState,
   allAccounts: Account[],
 
-  classes: { [_: $Keys<typeof styles>]: string },
-  t: string => string
+  classes: { [_: $Keys<typeof styles>]: string }
 };
 
 class AccountCreationCurrencies extends PureComponent<Props> {
@@ -140,7 +139,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
   };
 
   render() {
-    const { accountCreationState, allAccounts, classes, t } = this.props;
+    const { accountCreationState, allAccounts, classes } = this.props;
 
     const currencyOrToken =
       accountCreationState.currency || accountCreationState.erc20token || null;
@@ -165,7 +164,6 @@ class AccountCreationCurrencies extends PureComponent<Props> {
         <SelectCurrency
           autoFocus
           openMenuOnFocus={!currencyOrToken}
-          placeholder={t("newAccount:currency.placeholder")}
           value={currencyOrToken}
           onChange={this.handleChange}
           noOptionsMessage={({ inputValue }) => (
@@ -254,4 +252,4 @@ function EthAccountsRadio({
   );
 }
 
-export default withStyles(styles)(translate()(AccountCreationCurrencies));
+export default withStyles(styles)(AccountCreationCurrencies);

@@ -1,7 +1,7 @@
 // @flow
 
 import styled from "styled-components";
-import { space, color, borderRadius, width } from "styled-system";
+import { space, color, borderRadius, width, flex } from "styled-system";
 
 type Props = {
   flow?: number,
@@ -61,6 +61,7 @@ export default styled.div`
   position: ${position};
 
   ${borderRadius};
+  ${flex};
   ${color};
   ${space};
   ${flow};
