@@ -61,7 +61,11 @@ class SearchOperations extends PureComponent<Props, State> {
           accounts={accounts}
           onOperationClick={this.handleOperationClick}
         />
-        <FiltersOperations query={query} onChange={this.handleChangeQuery} />
+        <FiltersOperations
+          accounts={accounts}
+          query={query}
+          onChange={this.handleChangeQuery}
+        />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
           component={OperationModal}
