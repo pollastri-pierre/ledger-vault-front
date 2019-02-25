@@ -1,9 +1,11 @@
 // @flow
 
+import React from "react";
+import { Trans } from "react-i18next";
 import styled from "styled-components";
 import { color } from "styled-system";
 
-export default styled.div`
+const Text = styled.div`
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
   font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
@@ -14,3 +16,23 @@ export default styled.div`
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
 `;
+
+export default ({
+  i18nKey,
+  components,
+  values,
+  children,
+  ...props
+}: {
+  i18nKey?: string,
+  components?: React$Node,
+  children?: React$Node,
+  values?: { [string]: string | number }
+}) => {
+  const inner = i18nKey ? (
+    <Trans i18nKey={i18nKey} components={components} values={values} />
+  ) : (
+    children
+  );
+  return <Text {...props}>{inner}</Text>;
+};

@@ -100,9 +100,7 @@ class AccountSettings extends PureComponent<Props, State> {
           </ModalTitle>
         </ModalHeader>
 
-        <Text bold uppercase>
-          <Trans i18nKey="accountSettings:general.title" />
-        </Text>
+        <Text bold uppercase i18nKey="accountSettings:general.title" />
 
         <SectionRow label={<Trans i18nKey="accountSettings:general.name" />}>
           <Text bold>{account.name}</Text>
@@ -134,9 +132,11 @@ class AccountSettings extends PureComponent<Props, State> {
 
         {account.status !== "VIEW_ONLY" && (
           <Fragment>
-            <Text bold uppercase>
-              <Trans i18nKey="accountSettings:operationRules.title" />
-            </Text>
+            <Text
+              bold
+              uppercase
+              i18nKey="accountSettings:operationRules.title"
+            />
             <SectionRow
               label={
                 <Trans i18nKey="accountSettings:operationRules.approvals" />

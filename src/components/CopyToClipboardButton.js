@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
 import Copy from "components/icons/Copy";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -67,15 +66,17 @@ class CopyToClipboardButton extends Component<Props, State> {
           <ButtonContainer {...this.props}>
             <Button size="small">
               {copied ? (
-                <Text color={colors.ocean}>
-                  <Trans i18nKey="operationDetails:overview.copied" />
-                </Text>
+                <Text
+                  color={colors.ocean}
+                  i18nKey="operationDetails:overview.copied"
+                />
               ) : (
                 <Box horizontal align="center" flow={5}>
                   <Copy color={colors.ocean} size={12} />
-                  <Text color={colors.ocean}>
-                    <Trans i18nKey="operationDetails:overview.copy" />
-                  </Text>
+                  <Text
+                    color={colors.ocean}
+                    i18nKey="operationDetails:overview.copy"
+                  />
                 </Box>
               )}
             </Button>
