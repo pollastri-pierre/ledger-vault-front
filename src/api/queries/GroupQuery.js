@@ -6,6 +6,7 @@ import type { Group } from "data/types";
 type Input = {
   groupId: string
 };
+
 type Response = Group;
 
 // Fetch a specific group

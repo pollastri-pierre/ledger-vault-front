@@ -1,14 +1,27 @@
 // @flow
-import Query from "restlay/Query";
+import queryString from "query-string";
+
+import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Group } from "data/types";
 
-type Input = void;
-type Response = Group[];
+type Input = {
+  name?: string
+};
+
+type Node = Group;
+
+const uri = (query: Input) => {
+  const finalQuery: Object = {
+    ...query
+  };
+  const q = queryString.stringify(finalQuery);
+  return `/groups-mock${q ? "?" : ""}${q}`;
+};
 
 // Fetch all groups
-export default class GroupsQuery extends Query<Input, Response> {
-  uri = "/groups-mocks";
+export default class GroupsQuery extends ConnectionQuery<Input, Node> {
+  uri = uri(this.props);
 
-  responseSchema = [schema.Group];
+  nodeSchema = schema.Group;
 }

@@ -38,6 +38,16 @@ const mockSync = (uri, method) => {
       }
       default:
     }
+
+    if (/groups-mock.*/.test(uri)) {
+      return {
+        edges: mockEntities.groupsArray.map(g => ({ node: g })),
+        pageInfo: {
+          hasNextPage: false
+        }
+      };
+    }
+
     // GET /group-mock/:id
     let m = /^\/group-mock\/([^/]+)$/.exec(uri);
     if (m) {

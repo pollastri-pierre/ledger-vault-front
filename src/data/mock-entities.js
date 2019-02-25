@@ -310,6 +310,7 @@ const groups = genGroups(4, { members });
 export default {
   accounts: keyBy(accounts, "id"),
   groups: keyBy(groups, "id"),
+  groupsArray: groups,
   members: keyBy(members, "id"),
   operations: keyBy(operations, "id")
 };
