@@ -17,7 +17,7 @@ class FiltersCardHeader extends PureComponent<Props> {
   render() {
     const { title, subtitle } = this.props;
     return (
-      <Box horizontal align="center" flow={20} p={20} bg={colors.cream}>
+      <Box horizontal align="center" flow={20} p={20}>
         <Box noShrink>
           <FaSearch size={25} color={colors.mediumGrey} />
         </Box>
