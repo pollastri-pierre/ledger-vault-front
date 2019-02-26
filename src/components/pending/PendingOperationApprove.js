@@ -66,9 +66,11 @@ function PendingOperationApprove(props: Props) {
           <div
             className={classnames(classes.headerContainer, classes.subHeader)}
           >
-            <Text small className={classes.subHeader}>
-              <Trans i18nKey="pending:operations.approve.status" />
-            </Text>
+            <Text
+              small
+              className={classes.subHeader}
+              i18nKey="pending:operations.approve.status"
+            />
           </div>
           <LineSeparator />
         </Fragment>

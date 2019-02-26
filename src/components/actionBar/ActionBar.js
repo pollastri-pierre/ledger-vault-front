@@ -77,9 +77,7 @@ class ActionBar extends Component<{
             <ActivityCard match={match} />
             <a href={urls.customer_support} target="new">
               <FaQuestionCircle size={18} />
-              <Text small uppercase>
-                <Trans i18nKey="actionBar:help" />
-              </Text>
+              <Text small uppercase i18nKey="actionBar:help" />
             </a>
           </div>
         </div>

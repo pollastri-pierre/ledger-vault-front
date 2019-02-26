@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { Trans } from "react-i18next";
 
 import connectData from "restlay/connectData";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -21,13 +20,9 @@ class OperatorTransactions extends PureComponent<Props> {
 
     return (
       <Card>
-        <Text header>
-          <Trans i18nKey="operator:pendingOperations" />
-        </Text>
+        <Text header i18nKey="operator:pendingOperations" />
         {!operationsPending.length && (
-          <Text>
-            <Trans i18nKey="operator:pendingOperationsEmpty" />
-          </Text>
+          <Text i18nKey="operator:pendingOperationsEmpty" />
         )}
       </Card>
     );

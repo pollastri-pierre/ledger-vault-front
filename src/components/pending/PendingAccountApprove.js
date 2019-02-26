@@ -61,10 +61,15 @@ function PendingAccountApprove(props: Props) {
             <Text className={classes.header}>{nbCurrencies}</Text>
           </div>
           <div className={classes.headerContainer}>
+            <Text
+              small
+              className={classes.subHeader}
+              i18nKey="pending:operations.approve.status"
+            />
             <Text small className={classes.subHeader}>
-              <Trans i18nKey="pending:operations.approve.status" />
-            </Text>
-            <Text small className={classes.subHeader}>
+              {/* ------------------------------- */}
+              {/* FIXME interpolate is deprecated */}
+              {/* ------------------------------- */}
               <Interpolate
                 i18nKey="pending:accounts.approve.currency"
                 options={{ count: nbCurrencies }}

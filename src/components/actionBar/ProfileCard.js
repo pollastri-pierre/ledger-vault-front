@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import { Trans } from "react-i18next";
 import type { Match } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -119,9 +118,7 @@ class ProfileCard extends Component<Props, State> {
                 }
                 data-test="logout"
               >
-                <Text small uppercase bold>
-                  <Trans i18nKey="actionBar:logout" />
-                </Text>
+                <Text small uppercase bold i18nKey="actionBar:logout" />
               </MenuLink>
             </MenuList>
           </div>

@@ -45,9 +45,7 @@ class SetApprovals extends Component<Props> {
     const { setQuorum, quorum, approvers } = this.props;
 
     const inputLeft = (
-      <Text small>
-        <Trans i18nKey="newAccount:security.approvals_amount" />
-      </Text>
+      <Text small i18nKey="newAccount:security.approvals_amount" />
     );
 
     const inputRight = (
@@ -68,9 +66,7 @@ class SetApprovals extends Component<Props> {
         </ModalHeader>
 
         <Box mb={20}>
-          <Text>
-            <Trans i18nKey="newAccount:security.approvals_desc" />
-          </Text>
+          <Text i18nKey="newAccount:security.approvals_desc" />
         </Box>
 
         <InputField
@@ -89,12 +85,10 @@ class SetApprovals extends Component<Props> {
           quorum !== 0 && (
             <Box mt={20}>
               <InfoBox type="warning" withIcon>
-                <Text>
-                  <Trans
-                    i18nKey="newAccount:security.approvalsMinimum"
-                    components={<b>0</b>}
-                  />
-                </Text>
+                <Text
+                  i18nKey="newAccount:security.approvalsMinimum"
+                  components={<b>0</b>}
+                />
               </InfoBox>
             </Box>
           )}
@@ -102,13 +96,11 @@ class SetApprovals extends Component<Props> {
         {quorum > approvers.length && (
           <Box mt={20}>
             <InfoBox type="warning" withIcon>
-              <Text>
-                <Trans
-                  i18nKey="newAccount:security.approvalsMaximum"
-                  values={{ membersCount: approvers.length }}
-                  components={<b>0</b>}
-                />
-              </Text>
+              <Text
+                i18nKey="newAccount:security.approvalsMaximum"
+                values={{ membersCount: approvers.length }}
+                components={<b>0</b>}
+              />
             </InfoBox>
           </Box>
         )}
