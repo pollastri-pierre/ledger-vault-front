@@ -8,7 +8,6 @@ import MockDevices from "components/MockDevices";
 import Welcome from "./Welcome";
 
 import App from "./App/App";
-import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
@@ -29,7 +28,7 @@ const OrganizationAppRouter = () => (
                 <Route
                   path={`${match.url}/login`}
                   render={() => (
-                    <Login
+                    <Welcome
                       match={match}
                       location={location}
                       history={history}

@@ -24,9 +24,7 @@ const PrivateRoute = ({
         <Component {...props} match={match} />
       ) : (
         <Redirect
-          to={`${match.url}/login?redirectTo=${encodeURIComponent(
-            props.location.pathname
-          )}`}
+          to={`/?redirectTo=${encodeURIComponent(props.location.pathname)}`}
         />
       )
     }
