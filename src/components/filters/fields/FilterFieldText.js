@@ -42,16 +42,16 @@ class FilterFieldText extends PureComponent<Props> {
   }, 150);
 
   render() {
-    const { query, placeholder, title } = this.props;
+    const { query, queryKey, placeholder, title } = this.props;
 
-    const isActive = !!query.name;
+    const isActive = !!query[queryKey];
 
     return (
       <Box flow={5}>
         <FieldTitle isActive={isActive}>{title}</FieldTitle>
         <TextField
           ref={this.inputRef}
-          defaultValue={query.name || ""}
+          defaultValue={query[queryKey] || ""}
           onChange={this.handleChange}
           placeholder={placeholder}
         />

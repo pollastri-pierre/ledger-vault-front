@@ -19,7 +19,7 @@ class FilterFieldDate extends PureComponent<Props> {
 
   handleChange = (field: string, d: moment) => {
     const { updateQuery } = this.props;
-    const value = d ? d.format("YYYY-MM-DD") : null;
+    const value = d ? d.toISOString() : null;
     updateQuery(field, value);
   };
 

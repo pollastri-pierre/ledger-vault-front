@@ -17,5 +17,6 @@
   "approve": "Approve",
   "revoke": "Revoke",
   "reject": "Reject",
-  "remove": "Delete"
+  "remove": "Delete",
+  "operationStatus": "Operation status"
 }

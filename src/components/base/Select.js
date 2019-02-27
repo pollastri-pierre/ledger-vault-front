@@ -29,7 +29,7 @@ type Props = {
 
 const styles = {
   placeholder: {
-    color: colors.shark
+    color: colors.mediumGrey
   }
 };
 
