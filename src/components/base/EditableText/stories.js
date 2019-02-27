@@ -19,7 +19,7 @@ class Wrapper extends PureComponent {
     return <EditableText onChange={this.onChange} text={text} />;
   }
 }
-storiesOf("Components", module).add("EditableText", () => (
+storiesOf("other", module).add("EditableText", () => (
   <Box flow={20} width={500}>
     <EditableText text={text} loading />
     <Wrapper />

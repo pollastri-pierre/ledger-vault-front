@@ -20,7 +20,7 @@ const accounts = genAccounts(10, { members });
 const operations = genOperations(25, { accounts, members });
 const groups = genGroups(10, { members });
 
-storiesOf("Components/tables", module)
+storiesOf("tables", module)
   .add("AccountsTable", () => (
     <Wrapper>
       <AccountsTable accounts={accounts} />

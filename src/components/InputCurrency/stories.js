@@ -21,7 +21,7 @@ const INPUT_SMALL = {
   style: { textAlign: "right" }
 };
 
-storiesOf("Components", module).add("InputCurrency", () => {
+storiesOf("other", module).add("InputCurrency", () => {
   const inputTextSizeLarge: boolean = boolean("inputTextSizeLarge", true);
   const fullWidth: boolean = boolean("fullWidth", true);
   return (

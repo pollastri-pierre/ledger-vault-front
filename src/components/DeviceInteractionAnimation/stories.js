@@ -4,6 +4,4 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import Device from "components/DeviceInteractionAnimation";
 
-storiesOf("Components", module).add("DeviceInteractionAnimation", () => (
-  <Device />
-));
+storiesOf("other", module).add("DeviceInteractionAnimation", () => <Device />);

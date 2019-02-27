@@ -10,7 +10,7 @@ import { action } from "@storybook/addon-actions";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 
-storiesOf("Components", module).add("InfoBox", () => {
+storiesOf("other", module).add("InfoBox", () => {
   const withIcon = boolean("withIcon", true);
   const types = ["info", "warning", "error"];
   return types.map(t => (

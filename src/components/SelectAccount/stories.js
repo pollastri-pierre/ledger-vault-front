@@ -11,7 +11,7 @@ import SelectAccount from "components/SelectAccount";
 const members = genMembers(40);
 const accounts = genAccounts(10, { members });
 
-storiesOf("Components/selects", module).add("SelectAccount", () => (
+storiesOf("selects", module).add("SelectAccount", () => (
   <SelectAccount
     autoFocus
     openMenuOnFocus

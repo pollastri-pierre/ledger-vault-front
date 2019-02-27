@@ -12,7 +12,7 @@ const styles = {
   blue: { backgroundColor: "rgba(0, 0, 255, 0.2)" }
 };
 
-storiesOf("Components/layout", module).add("Box", () => (
+storiesOf("layout", module).add("Box", () => (
   <Box flow={10} p={10} style={styles.grey}>
     <Box horizontal flow={10}>
       <Box grow style={styles.red} p={20} flow={20}>
