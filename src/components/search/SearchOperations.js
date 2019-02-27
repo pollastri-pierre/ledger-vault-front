@@ -46,9 +46,7 @@ class SearchOperations extends PureComponent<Props, State> {
 
   handleChangeQuery = query => {
     this.setState({ query });
-    this.props.history.push({
-      search: query
-    });
+    this.props.history.push({ search: query });
   };
 
   render() {

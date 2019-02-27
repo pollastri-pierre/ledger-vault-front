@@ -9,6 +9,7 @@ import Card, { CardTitle, CardError, CardLoading } from "components/base/Card";
 import MembersTable from "components/Table/MembersTable";
 import ModalRoute from "components/ModalRoute";
 import InviteMemberLink from "components/InviteMemberLink";
+import Box from "components/base/Box";
 
 import type { Member } from "data/types";
 
@@ -35,8 +36,10 @@ class Administrators extends PureComponent<Props> {
     return (
       <Fragment>
         <Card>
-          <CardTitle>Administrators</CardTitle>
-          <InviteMemberLink onClick={this.inviteMember} member="admin" />
+          <Box horizontal align="flex-start" justify="space-between" pb={20}>
+            <CardTitle>Administrators</CardTitle>
+            <InviteMemberLink onClick={this.inviteMember} member="admin" />
+          </Box>
           <MembersTable members={admins} onMemberClick={this.handleUserClick} />
         </Card>
         <ModalRoute

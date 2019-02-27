@@ -38,6 +38,10 @@ type State = {
   deserializedQuery: ObjectParameters
 };
 
+const styles = {
+  card: { minWidth: 300 }
+};
+
 class FiltersCard extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -92,7 +96,7 @@ class FiltersCard extends PureComponent<Props, State> {
     const content = Children.map(children, c => cloneElement(c, childProps));
 
     return (
-      <Card p={0} overflow="visible" noShrink {...props}>
+      <Card p={0} overflow="visible" noShrink {...props} style={styles.card}>
         <FiltersCardHeader title={title} subtitle={subtitle} />
         <Box px={20} py={40} flow={40}>
           {content}

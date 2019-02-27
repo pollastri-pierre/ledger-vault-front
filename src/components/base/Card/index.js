@@ -19,7 +19,7 @@ export { default as CardLoading } from "./CardLoading";
 
 export default styled(Box).attrs(p => ({
   // $FlowFixMe
-  p: "p" in p ? p.p : 40,
+  p: "p" in p ? p.p : 20,
   // $FlowFixMe
   position: "relative"
 }))`

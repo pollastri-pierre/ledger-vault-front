@@ -14,6 +14,7 @@ type In = {
   minAmount: ?string,
   maxAmount: ?string
 };
+
 type Node = Operation;
 
 const uri = (query: In) => {

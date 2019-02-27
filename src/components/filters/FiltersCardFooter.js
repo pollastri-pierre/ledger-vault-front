@@ -4,8 +4,6 @@ import React, { PureComponent } from "react";
 import Button from "@material-ui/core/Button";
 import styled from "styled-components";
 
-import colors from "shared/colors";
-
 import Box from "components/base/Box";
 
 type Props = {
@@ -25,7 +23,7 @@ class FiltersCardFooter extends PureComponent<Props> {
   render() {
     const { onClear } = this.props;
     return (
-      <Box align="flex-end" p={20} bg={colors.cream}>
+      <Box align="flex-end" p={20}>
         <ClearButton onClick={onClear}>Clear filters</ClearButton>
       </Box>
     );
