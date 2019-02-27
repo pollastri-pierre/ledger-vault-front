@@ -70,7 +70,7 @@ const styles = {
 
 const devices = [
   ["Wrapping key", "orange", [1, 2, 3]],
-  ["Admin", "green", [4, 5, 6]],
+  ["Admin", "green", [4, 5, 6, 12]],
   ["Shared owner", "red", [7, 8, 9]]
 ];
 

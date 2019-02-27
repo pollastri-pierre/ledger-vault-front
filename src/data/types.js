@@ -79,6 +79,22 @@ type MemberCommon = {
 export type MemberEntity = MemberCommon;
 export type Member = MemberCommon;
 
+export type MemberInvite = {
+  id: string,
+  is_complete: boolean,
+  status: string,
+  type: string,
+  url_id: string,
+  user: {
+    id: string,
+    key_handle: ?string,
+    pub_key: ?string,
+    username: string,
+    created_on: string,
+    user_id: string
+  }
+};
+
 export type Approval = {
   created_on: Date,
   person: Member,
