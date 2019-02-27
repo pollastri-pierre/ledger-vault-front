@@ -73,7 +73,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
 
     const rows = [];
     for (let i = 0; i < number; i++) {
-      rows.push(<Dash active={dashActive === i} />);
+      rows.push(<Dash key={i} active={dashActive === i} />);
     }
     return rows;
   };
