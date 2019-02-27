@@ -3,5 +3,12 @@
   "description":
     "Share this URL with new {{memberRole}} using your preferred way of communication.",
   "generateLink": "Generate Link",
-  "updateMember": "Update Member Info"
+  "updateMember": "Update Member Info",
+  "registration": {
+    "title": "Register new {{memberRole}}",
+    "username": "Username:",
+    "workspace": "Workspace:",
+    "role": "Role:",
+    "button": "Register"
+  }
 }

@@ -12,6 +12,7 @@ import Login from "./Login/Login";
 import Logout from "./Login/Logout";
 import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
+import RegisterMember from "./RegisterMember";
 
 const OrganizationAppRouter = () => (
   <Fragment>
@@ -44,6 +45,10 @@ const OrganizationAppRouter = () => (
                 <Route
                   path={`${match.url}/logout`}
                   render={() => <Logout match={match} />}
+                />
+                <Route
+                  path={`${match.url}/register/:urlID`}
+                  component={RegisterMember}
                 />
                 <CounterValues.PollingProvider>
                   <PrivateRoute
