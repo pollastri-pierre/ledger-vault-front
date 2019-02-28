@@ -28,7 +28,7 @@ context("Registration Shared Owners", () => {
     });
 
     cy.request("POST", DEVICE, { device_number: 7 }).then(() => {
-      cy.get("input").type(orga_name);
+      cy.get("input[type=text]").type(orga_name);
       cy.contains("Continue").click();
       cy.wait(1000);
 

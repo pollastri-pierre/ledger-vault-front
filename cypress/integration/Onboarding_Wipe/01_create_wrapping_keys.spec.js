@@ -32,7 +32,7 @@ context("Create Wrapping Key", () => {
     cy.request("POST", Cypress.env("api_switch_device"), {
       device_number: 1
     }).then(() => {
-      cy.get("input").type(orga_name);
+      cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
       cy.wait(1000);
       cy.contains("Welcome").should("be.visible");
