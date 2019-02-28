@@ -2,10 +2,14 @@
 
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
+import connectData from "restlay/connectData";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import { FaUserEdit, FaLink } from "react-icons/fa";
+import type { GateError } from "data/types";
+import InviteMemberQuery from "api/queries/InviteMemberQuery";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import InputField from "components/InputField";
 import { ModalHeader, ModalTitle, ModalBody } from "components/base/Modal";
@@ -15,13 +19,15 @@ import colors from "shared/colors";
 
 type Props = {
   close: () => void,
-  memberRole: string
+  memberRole: string,
+  restlay: *
 };
 type State = {
   username: string,
   userID: string,
   loading: boolean,
-  url: string
+  url: string,
+  error: ?$Shape<GateError>
 };
 
 const styles = {
@@ -34,42 +40,62 @@ const styles = {
   }
 };
 
-class MemberDetails extends PureComponent<Props, State> {
+class InviteMember extends PureComponent<Props, State> {
   state = {
     username: "",
     userID: "",
     loading: false,
-    url: ""
+    url: "",
+    error: null
   };
 
   updateUsername = (username: string) => {
-    this.setState({ username });
+    this.setState({ username, error: null });
   };
 
   updateUserID = (userID: string) => {
-    this.setState({ userID });
+    this.setState({ userID, error: null });
   };
 
   processUserInfo = async () => {
-    const { url } = this.state;
+    const { restlay, memberRole } = this.props;
+    const { url, username, userID } = this.state;
     if (url !== "") {
       // TODO: placeholder for PUT request just to update the userinfo
       await new Promise(r => setTimeout(r, 1e3));
     } else {
       this.setState({ loading: true });
-      // TODO placeholder for POST request to generate url
-      await new Promise(r => setTimeout(r, 1e3));
-      this.setState({
-        loading: false,
-        // NOTE: url will be in the response from the gate
-        url: "www.vault.ledger/AdministratorRegistration"
+
+      const query = new InviteMemberQuery({
+        member: {
+          type: memberRole === "admin" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
+          username,
+          user_id: userID
+        }
       });
+
+      try {
+        const data = await restlay.fetchQuery(query);
+        const prefix = window.location.pathname.split("/")[1];
+        const url = `${window.location.origin}/${prefix}/register/${
+          data.url_id
+        }`;
+        this.setState({
+          loading: true,
+          url
+        });
+      } catch (error) {
+        this.setState({
+          loading: false,
+          error
+        });
+      }
     }
   };
 
   render() {
     const { close, memberRole } = this.props;
-    const { username, userID, loading, url } = this.state;
+    const { username, userID, loading, url, error } = this.state;
     return (
       <ModalBody onClose={close}>
         <ModalHeader>
@@ -101,6 +127,7 @@ class MemberDetails extends PureComponent<Props, State> {
             maxLength={20}
             error={null}
           />
+          {error && <Text color="red">{error.json.message}</Text>}
           <Box pt={10}>
             <Button
               onClick={this.processUserInfo}
@@ -150,4 +177,4 @@ class MemberDetails extends PureComponent<Props, State> {
   }
 }
 
-export default MemberDetails;
+export default connectData(InviteMember);
