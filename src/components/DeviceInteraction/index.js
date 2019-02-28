@@ -32,11 +32,13 @@ class DeviceInteraction extends PureComponent<Props, State> {
     currentActionType: this.props.interactions[0].device ? "device" : "server"
   };
 
+  _unmounted = false;
+
   static defaultProps = {
     additionnalFields: {}
   };
 
-  async componentDidMount() {
+  runInteractions = async () => {
     const { interactions, additionnalFields } = this.props;
     const responses = { ...additionnalFields };
     if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
@@ -57,6 +59,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
         responses[interactions[i].responseKey] = await interactions[i].action(
           responses
         );
+        if (this._unmounted) return;
       } catch (e) {
         console.error(e);
         this.props.onError(e);
@@ -65,6 +68,14 @@ class DeviceInteraction extends PureComponent<Props, State> {
     }
 
     this.props.onSuccess(responses);
+  };
+
+  componentDidMount() {
+    this.runInteractions();
+  }
+
+  componentWillUnmount() {
+    this._unmounted = true;
   }
 
   render() {
