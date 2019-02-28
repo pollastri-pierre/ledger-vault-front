@@ -22,11 +22,11 @@ import { addMessage, addError } from "redux/modules/alerts";
 import DeviceInteraction from "components/DeviceInteraction";
 import { login } from "redux/modules/auth";
 
-const mapDispatchToProps = (dispatch: *) => ({
-  onLogin: token => dispatch(login(token)),
-  addAlertMessage: (...props) => dispatch(addMessage(...props)),
-  addErrorMessage: (...props) => dispatch(addError(...props))
-});
+const mapDispatchToProps = {
+  login,
+  addMessage,
+  addError
+};
 
 const styles = {
   base: {
@@ -96,9 +96,9 @@ const unknownDomainError = new UnknownDomain();
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
-  onLogin: string => void,
-  addAlertMessage: (string, string, ?string) => void,
-  addErrorMessage: Error => void,
+  login: string => void,
+  addMessage: (string, string, ?string) => void,
+  addError: Error => void,
   history: *,
   t: Translate
 };
@@ -122,27 +122,20 @@ class Welcome extends Component<Props, State> {
   };
 
   onFinishLogin = (responses: LoginFlowResponse) => {
-    this.props.onLogin(responses.u2f_challenge.token);
+    this.props.login(responses.u2f_challenge.token);
     this.props.history.push(`/${responses.organization.workspace}`);
-    this.props.addAlertMessage(
-      "Hello",
-      "Welcome to the Ledger Vault platform!"
-    );
+    this.props.addMessage("Hello", "Welcome to the Ledger Vault platform!");
   };
 
   onError = (e: Error | DeviceError) => {
     this.setState({ error: true });
     // we don't want an error message if it's device reject
     if (e instanceof NetworkError && e.json) {
-      this.props.addAlertMessage(
-        `Error ${e.json.code}`,
-        e.json.message,
-        "error"
-      );
+      this.props.addMessage(`Error ${e.json.code}`, e.json.message, "error");
     } else if (e.statusCode && e.statusCode === StatusCodes.INCORRECT_DATA) {
-      this.props.addErrorMessage(new InvalidDataDevice());
+      this.props.addError(new InvalidDataDevice());
     } else if (e.statusCode !== StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
-      this.props.addErrorMessage(new GenericError());
+      this.props.addError(new GenericError());
     }
   };
 
