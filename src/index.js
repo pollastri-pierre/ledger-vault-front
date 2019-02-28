@@ -15,7 +15,7 @@ import OrganizationAppRouter from "containers/OrganizationAppRouter";
 import jss from "jss";
 import MuseoWoff from "assets/fonts/MuseoSans_500-webfont.woff";
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
-import { MuiPickersUtilsProvider } from "material-ui-pickers";
+import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
 import i18n from "./i18n";
 
 jss
