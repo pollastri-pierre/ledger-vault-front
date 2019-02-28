@@ -40,12 +40,11 @@ const mockSync = (uri, method) => {
     }
 
     if (/groups-mock.*/.test(uri)) {
-      return {
-        edges: mockEntities.groupsArray.map(g => ({ node: g })),
-        pageInfo: {
-          hasNextPage: false
-        }
-      };
+      const edges = mockEntities.groupsArray.map(key => ({
+        node: denormalize(key, schema.Group, mockEntities),
+        cursor: key
+      }));
+      return { edges, pageInfo: { hasNextPage: false } };
     }
 
     // GET /group-mock/:id
