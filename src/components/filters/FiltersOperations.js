@@ -9,6 +9,8 @@ import FiltersCard from "./FiltersCard";
 import FieldCurrency from "./fields/FilterFieldCurrency";
 import FieldAccounts from "./fields/FilterFieldAccounts";
 import FieldDate from "./fields/FilterFieldDate";
+import FieldText from "./fields/FilterFieldText";
+import FieldOperationStatuses from "./fields/FilterFieldOperationStatuses";
 
 type Props = {
   query: string,
@@ -24,6 +26,8 @@ class FiltersOperations extends PureComponent<Props> {
         <FieldCurrency />
         <FieldAccounts accounts={accounts} />
         <FieldDate />
+        <FieldText title="Label" queryKey="label" placeholder="Label" />
+        <FieldOperationStatuses />
       </FiltersCard>
     );
   }

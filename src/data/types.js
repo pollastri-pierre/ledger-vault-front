@@ -204,6 +204,8 @@ export type Trust = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
+export type OperationStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
+
 type OperationCommon = {
   id: number,
   currency_name: string,
@@ -230,7 +232,7 @@ type OperationCommon = {
   exploreURL: ?string,
   approvals: Approval[],
   tx_hash: ?string,
-  status: string,
+  status: OperationStatus,
   hsm_operations?: Object,
   error?: Object,
   gas_price?: number,
