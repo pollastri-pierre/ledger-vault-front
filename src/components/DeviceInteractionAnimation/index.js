@@ -38,7 +38,7 @@ const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
   <Box position="relative">
     {blueIcon}
     {needsUserInput && (
-      <Box position="absolute" style={{ bottom: "-8px", right: "-2px" }}>
+      <Box position="absolute" style={{ bottom: -8, right: -2 }}>
         {touchRequiredIcon}
       </Box>
     )}
