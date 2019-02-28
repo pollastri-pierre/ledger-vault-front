@@ -137,7 +137,8 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
           {this.renderDashes()}
         </Box>
         <Box position="absolute">
-          {deviceReady && !error && loader} {error && errorIcon}
+          {deviceReady && !error && loader}
+          {error && errorIcon}
         </Box>
       </Box>
     );
