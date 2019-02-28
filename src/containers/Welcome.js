@@ -141,10 +141,10 @@ class Welcome extends Component<Props, State> {
 
   onSubmit = async () => {
     const { domain, isChecking } = this.state;
-    this.setState({ error: false, errorDomain: false });
+    if (!domain || isChecking) return;
 
     if (domain !== "" && !isChecking) {
-      this.setState({ isChecking: true });
+      this.setState({ error: false, errorDomain: false, isChecking: true });
       try {
         const url = `${domain}/organization`;
         const { state } = await network(`${domain}/onboarding/state`, "GET");
