@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 
 const statuses = ["ABORTED", "APPROVED", "PENDING_APPROVAL", "VIEW_ONLY"];
 
-storiesOf("Components", module).add("Status", () => (
+storiesOf("other", module).add("Status", () => (
   <Box flow={10}>
     {statuses.map(status => (
       <Box key={status} horizontal>

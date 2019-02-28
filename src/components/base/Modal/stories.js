@@ -19,7 +19,7 @@ const CustomBreadcrumb = () => (
   </div>
 );
 
-storiesOf("Components", module).add("Modal", () => (
+storiesOf("other", module).add("Modal", () => (
   <Modal
     isOpened={boolean("isOpened", true)}
     isLoading={boolean("isLoading", false)}

@@ -1,4 +1,5 @@
 import React from "react";
+import { withOptions } from "@storybook/addon-options";
 import { Provider } from "react-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
@@ -60,6 +61,13 @@ addDecorator(story => (
     </Provider>
   </JssProvider>
 ));
+
+addDecorator(
+  withOptions({
+    name: "Ledger Vault - UI",
+    url: "https://github.com/LedgerHQ/ledger-vault-front"
+  })
+);
 
 addDecorator(withKnobs);
 

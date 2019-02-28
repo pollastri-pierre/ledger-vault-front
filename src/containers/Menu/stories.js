@@ -10,7 +10,7 @@ const members = genMembers(40);
 const accounts = genAccounts(10, { members });
 const match = { url: "mock" };
 
-storiesOf("Components", module).add("Menu", () => (
+storiesOf("other", module).add("Menu", () => (
   <BrowserRouter>
     <AccountsMenu accounts={accounts} match={match} />
   </BrowserRouter>

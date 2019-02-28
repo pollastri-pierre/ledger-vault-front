@@ -20,7 +20,7 @@ const FiltersOperationsWrapped = wrap(
   }
 );
 
-storiesOf("Components/filters", module).add("FilterOperations", () => (
+storiesOf("filters", module).add("FilterOperations", () => (
   <FiltersOperationsWrapped />
 ));
 
