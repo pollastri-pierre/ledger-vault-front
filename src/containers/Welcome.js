@@ -143,21 +143,19 @@ class Welcome extends Component<Props, State> {
     const { domain, isChecking } = this.state;
     if (!domain || isChecking) return;
 
-    if (domain !== "" && !isChecking) {
-      this.setState({ error: false, errorDomain: false, isChecking: true });
-      try {
-        const url = `${domain}/organization`;
-        const { state } = await network(`${domain}/onboarding/state`, "GET");
-        if (state !== "COMPLETE") {
-          this.setState({ onboardingToBeDone: true });
-          return;
-        }
-        const organization = await network(url, "GET");
-        this.setState({ isChecking: false, organization });
-      } catch (e) {
-        console.error(e);
-        this.setState({ errorDomain: true, isChecking: false });
+    this.setState({ error: false, errorDomain: false, isChecking: true });
+    try {
+      const url = `${domain}/organization`;
+      const { state } = await network(`${domain}/onboarding/state`, "GET");
+      if (state !== "COMPLETE") {
+        this.setState({ onboardingToBeDone: true });
+        return;
       }
+      const organization = await network(url, "GET");
+      this.setState({ isChecking: false, organization });
+    } catch (e) {
+      console.error(e);
+      this.setState({ errorDomain: true, isChecking: false });
     }
   };
 
