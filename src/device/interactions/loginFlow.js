@@ -1,21 +1,14 @@
 // @flow
 import { StatusCodes } from "@ledgerhq/hw-transport";
-import network, { retry, retryOnCondition } from "network";
-import { U2F_PATH, APPID_VAULT_ADMINISTRATOR } from "device";
-import { getPublicKey, authenticate } from "device/interface";
+import network, { retryOnCondition } from "network";
+import { APPID_VAULT_ADMINISTRATOR } from "device";
+import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
 import type { Organization } from "data/types";
 import type { DeviceError } from "utils/errors";
+import { getU2FPublicKey } from "device/interactions/common";
 
 type Flow = Interaction[];
-
-export const getU2FPublicKey: Interaction = {
-  needsUserInput: false,
-  device: true,
-  responseKey: "u2f_key",
-  action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, U2F_PATH, false))
-};
 
 export const getU2FChallenge: Interaction = {
   needsUserInput: false,
