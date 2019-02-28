@@ -54,7 +54,7 @@ class RegisterMember extends PureComponent<Props, State> {
 
   async componentDidMount() {
     const { match } = this.props;
-    const urlID = match.params.urlID;
+    const urlID = match.params.urlID || "";
     const url = `/requests/${urlID}`;
     try {
       const member = await network(url, "GET");
@@ -70,7 +70,7 @@ class RegisterMember extends PureComponent<Props, State> {
   registerMember = async () => {
     const { match, organization } = this.props;
     const { member } = this.state;
-    const urlID = match.params.urlID;
+    const urlID = match.params.urlID || "";
     const url = `/requests/registration/${urlID}/challenge`;
 
     try {
