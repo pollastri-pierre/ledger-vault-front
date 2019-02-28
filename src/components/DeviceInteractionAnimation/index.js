@@ -12,7 +12,7 @@ export type CurrentActionType = "device" | "server";
 type Props = {
   numberSteps: number,
   currentStep: ?number,
-  needsUserInput: ?boolean,
+  needsUserInput?: boolean,
   error?: boolean,
   currentActionType: CurrentActionType
 };
@@ -145,6 +145,18 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
   }
 }
 
+const CurrentActionIcon = ({
+  type,
+  needsUserInput
+}: {
+  type: CurrentActionType,
+  needsUserInput?: boolean
+}) =>
+  type === "device" ? (
+    <DeviceIcon needsUserInput={needsUserInput} />
+  ) : (
+    serverIcon
+  );
 class DeviceInteraction extends PureComponent<Props> {
   render() {
     const {
@@ -162,11 +174,10 @@ class DeviceInteraction extends PureComponent<Props> {
           currentStep={currentStep}
           error={error}
         />
-        {currentActionType === "device" ? (
-          <DeviceIcon needsUserInput={needsUserInput} />
-        ) : (
-          serverIcon
-        )}
+        <CurrentActionIcon
+          type={currentActionType}
+          needsUserInput={needsUserInput}
+        />
       </Container>
     );
   }
