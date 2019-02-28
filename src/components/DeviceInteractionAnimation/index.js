@@ -12,7 +12,7 @@ export type CurrentActionType = "device" | "server";
 type Props = {
   numberSteps: number,
   currentStep: ?number,
-  needsAction: ?boolean,
+  needsUserInput: ?boolean,
   error?: boolean,
   currentActionType: CurrentActionType
 };
@@ -34,10 +34,10 @@ const Container = styled(Box).attrs({
   background: ${colors.pearl};
 `;
 
-const DeviceIcon = ({ needsAction }: { needsAction: ?boolean }) => (
+const DeviceIcon = ({ needsUserInput }: { needsUserInput: ?boolean }) => (
   <Box position="relative">
     {blueIcon}
-    {needsAction && (
+    {needsUserInput && (
       <Box position="absolute" style={{ bottom: "-8px", right: "-2px" }}>
         {touchRequiredIcon}
       </Box>
@@ -147,7 +147,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
 class DeviceInteraction extends PureComponent<Props> {
   render() {
     const {
-      needsAction,
+      needsUserInput,
       numberSteps,
       currentStep,
       error,
@@ -162,7 +162,7 @@ class DeviceInteraction extends PureComponent<Props> {
           error={error}
         />
         {currentActionType === "device" ? (
-          <DeviceIcon needsAction={needsAction} />
+          <DeviceIcon needsUserInput={needsUserInput} />
         ) : (
           serverIcon
         )}

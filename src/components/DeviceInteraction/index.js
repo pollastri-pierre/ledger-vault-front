@@ -22,13 +22,13 @@ type Props = {
 type State = {
   currentStep: number,
   currentActionType: CurrentActionType,
-  needsAction: boolean
+  needsUserInput: boolean
 };
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
-    needsAction: false,
+    needsUserInput: false,
     currentActionType: this.props.interactions[0].device ? "device" : "server"
   };
 
@@ -50,7 +50,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
     for (let i = 0; i < interactions.length; i++) {
       try {
         this.setState({
-          needsAction: interactions[i].needsUserInput,
+          needsUserInput: interactions[i].needsUserInput,
           currentStep: i,
           currentActionType: interactions[i].device ? "device" : "server"
         });
@@ -69,12 +69,12 @@ class DeviceInteraction extends PureComponent<Props, State> {
 
   render() {
     const { interactions } = this.props;
-    const { currentStep, needsAction, currentActionType } = this.state;
+    const { currentStep, needsUserInput, currentActionType } = this.state;
     return (
       <DeviceInteractionAnimation
         numberSteps={interactions.length}
         currentStep={currentStep}
-        needsAction={needsAction}
+        needsUserInput={needsUserInput}
         currentActionType={currentActionType}
       />
     );

@@ -22,7 +22,7 @@ storiesOf("other", module).add("DeviceInteractionAnimation", () => (
         numberSteps={5}
         currentStep={4}
         currentActionType="device"
-        needsAction
+        needsUserInput
       />
     </Box>
     <Box>
@@ -31,7 +31,7 @@ storiesOf("other", module).add("DeviceInteractionAnimation", () => (
         numberSteps={5}
         currentStep={3}
         currentActionType="device"
-        needsAction
+        needsUserInput
         error
       />
     </Box>
