@@ -30,6 +30,64 @@ const deviceNetwork = async function<T>(
   });
 };
 
+export const getPublicKey = async (
+  transport: *,
+  path: number[],
+  secp256k1: boolean = true
+): Promise<{
+  pubKey: string,
+  signature: string
+}> => {
+  const data = await deviceNetwork(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
+    path: pathArrayToString(path),
+    secp256k1
+  });
+  return {
+    pubKey: data.pubKey,
+    signature: Buffer.from(data.attestation, "hex")
+  };
+};
+export const authenticate = async (
+  transport: *,
+  challenge: Buffer,
+  application: string,
+  keyHandle: Buffer,
+  instanceName: string,
+  instanceReference: string,
+  instanceUrl: string,
+  agentRole: string
+): Promise<{
+  userPresence: *,
+  counter: *,
+  signature: string,
+  rawResponse: string
+}> => {
+  const data = await deviceNetwork(ENDPOINTS.AUTHENTICATE, "POST", {
+    challenge: challenge.toString("hex"),
+    application,
+    key_handle: keyHandle.toString("hex"),
+    name: instanceName,
+    role: agentRole,
+    domain_name: instanceUrl,
+    workspace: instanceReference
+  });
+
+  // we add a fake status response because traaansport on device does it
+  const response = Buffer.concat([
+    Buffer.from(data, "hex"),
+    Buffer.from("9000", "hex")
+  ]);
+
+  const userPresence = response.slice(0, 1);
+  const counter = response.slice(1, 5);
+  const signature = response.slice(5, response.length - 2).toString("hex");
+  return {
+    userPresence,
+    counter,
+    signature,
+    rawResponse: response.slice(0, response.length - 2).toString("hex")
+  };
+};
 export default class VaultDeviceHTTP {
   async getPublicKey(
     path: number[],
