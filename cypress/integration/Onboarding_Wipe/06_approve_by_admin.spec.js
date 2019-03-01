@@ -31,7 +31,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
         win.fetch = win.unfetch;
       }
     }).then(() => {
-      cy.get("input").type(orga_name);
+      cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
       cy.wait(1000);
       cy.get(".test-onboarding-signin").click();

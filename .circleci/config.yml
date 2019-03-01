@@ -36,6 +36,18 @@ jobs:
       - run: ./node_modules/.bin/prettier -l "{src,webpack,test,cypress}/**/*.{js,json}"
       - run: npm run flow
       - run: npm run test
+  e2e_tests:
+    description: end to end testing with vault-integration
+    machine:
+      image: circleci/classic:201808-01
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run:
+          name: Setup and run E2E tests
+          command: bash ./scripts/setup-ci-e2e-tests.sh
   build:
     description: Build project
     docker:
@@ -117,9 +129,14 @@ workflows:
     jobs:
       - run_tests:
           filters: *common_filters
+      - e2e_tests:
+          filters: *common_filters
+          requires:
+            - run_tests
       - build:
           requires:
             - run_tests
+            - e2e_tests
           filters: *common_filters
       - publish:
           name: publish_dev

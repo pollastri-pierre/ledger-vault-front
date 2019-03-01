@@ -32,7 +32,7 @@ context("Create the Master Seed", () => {
         win.fetch = win.unfetch;
       }
     }).then(() => {
-      cy.get("input").type(orga_name);
+      cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
       cy.wait(1000);
 
