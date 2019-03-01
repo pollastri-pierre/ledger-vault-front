@@ -6,8 +6,8 @@ import classnames from "classnames";
 import colors from "shared/colors";
 import Checkbox from "../form/Checkbox";
 import MemberRole from "../MemberRole";
-import MemberAvatar from "../MemberAvatar";
 
+// TODO: to be refactored
 const styles = {
   base: {
     flexShrink: 0,
@@ -17,11 +17,6 @@ const styles = {
     height: "70px",
     position: "relative",
     paddingLeft: "50px",
-    "& .membrer-avatar": {
-      position: "absolute",
-      top: "21px",
-      left: "0"
-    },
     "& .slidebox": {
       float: "right",
       marginTop: "-20px"
@@ -44,11 +39,6 @@ const styles = {
     margin: "0",
     fontSize: "11px",
     color: colors.lead
-  },
-  avatar: {
-    position: "absolute",
-    top: "21px",
-    left: "0"
   },
   checkbox: {
     position: "absolute",
@@ -86,7 +76,6 @@ class MemberRow extends Component<{
         })}
         onClick={this.onClick}
       >
-        <MemberAvatar url={member.picture} className={classes.avatar} />
         <span className={classes.name}>{member.username}</span>
         <p className={classes.role}>
           <MemberRole member={member} />

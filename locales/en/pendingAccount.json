@@ -16,5 +16,9 @@
     "selectedMembers": "{{memberLength}} selected",
     "smartContract": "Smart contract"
   },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved"
+  },
   "tabs": { "details": "details", "members": "members", "status": "status" }
 }
