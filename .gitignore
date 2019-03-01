@@ -1,4 +1,5 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+/localhost.crt
+/localhost.key
 
 # dependencies
 /node_modules

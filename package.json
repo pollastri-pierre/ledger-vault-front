@@ -20,7 +20,7 @@
     "test": "jest --env=jsdom --maxWorkers 2",
     "device": "node scripts/device.js",
     "testDev": "jest --env=jsdom --watch",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 --https --ssl-cert localhost.crt --ssl-key localhost.key",
     "build-storybook": "build-storybook",
     "publish-storybook": "bash scripts/publish-storybook.sh"
   },

@@ -6,6 +6,12 @@
 - npm 5.6.0
 - docker & docker-compose
 
+Generate a self-signed certificate for `localhost`:
+
+```bash
+bash scripts/generate-self-signed-cert.sh
+```
+
 ## Install
 
 1. Install dependencies
