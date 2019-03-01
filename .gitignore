@@ -34,7 +34,6 @@ yarn-error.log*
 # git mergetool
 *.orig
 
-flow-typed/
 flow-coverage
 
 #.env file should be unique on each server the front is deployed to
