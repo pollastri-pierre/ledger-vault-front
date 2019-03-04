@@ -6,13 +6,13 @@ import MUITableRow from "@material-ui/core/TableRow";
 
 import type { Account } from "data/types";
 
-import type { TableDefault } from "../types";
+import type { TableDefinition } from "../types";
 import AccountBodyCell from "./AccountBodyCell";
 
 type AccountRowProps = {
   account: Account,
   onClick: Account => void,
-  tableDefinition: TableDefault
+  tableDefinition: TableDefinition
 };
 
 const accountRowHover = { cursor: "pointer" };

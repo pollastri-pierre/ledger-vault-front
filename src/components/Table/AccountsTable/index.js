@@ -12,15 +12,15 @@ import AccountRow from "./AccountRow";
 import { TableHeader } from "../TableBase";
 import TableScroll from "../TableScroll";
 import { accountsTableDefault } from "./tableDefinitions";
-import type { TableDefault } from "../types";
+import type { TableDefinition } from "../types";
 
 type Props = {
   accounts: Account[],
-  customTableDef?: TableDefault,
+  customTableDef?: TableDefinition,
   onAccountClick: Account => void
 };
 type State = {
-  tableDefinition: TableDefault
+  tableDefinition: TableDefinition
 };
 
 class AccountsTable extends PureComponent<Props, State> {

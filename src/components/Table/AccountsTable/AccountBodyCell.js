@@ -17,7 +17,7 @@ type CellProps = {
   account: Account,
   item: TableItem
 };
-class AccountBodyCell extends PureComponent<CellProps, *> {
+class AccountBodyCell extends PureComponent<CellProps> {
   renderCellMapper = () => {
     const { account, item } = this.props;
     switch (item.body.prop) {

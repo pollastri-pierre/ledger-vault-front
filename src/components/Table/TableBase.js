@@ -8,10 +8,10 @@ import MUITableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 
 import Text from "components/base/Text";
-import type { TableDefault, TableItem } from "./types";
+import type { TableDefinition, TableItem } from "./types";
 
 type TableHeaderProps = {
-  tableDefinition: TableDefault,
+  tableDefinition: TableDefinition,
   type: string
 };
 

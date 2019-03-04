@@ -1,6 +1,6 @@
 // @flow
 
-export type TableDefault = TableItem[];
+export type TableDefinition = TableItem[];
 
 export type TableItem = {
   header: TableHeader,
