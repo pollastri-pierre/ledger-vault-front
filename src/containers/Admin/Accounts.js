@@ -5,8 +5,9 @@ import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 
 import Card, { CardLoading, CardError } from "components/base/Card";
-import { AccountsTable } from "components/Table";
-
+import AccountsTable from "components/Table/AccountsTable";
+import Box from "components/base/Box";
+import { accountsTableCustom1 } from "components/Table/AccountsTable/tableDefinitions";
 import type { Account } from "data/types";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
@@ -30,6 +31,14 @@ class AdminAccounts extends PureComponent<Props> {
       <Card>
         <AccountsTable
           accounts={accounts}
+          onAccountClick={this.handleAccountClick}
+        />
+        <Box bg="#eee" style={{ height: 40 }} justify="center" align="center">
+          Just to illustrate 2 tables
+        </Box>
+        <AccountsTable
+          accounts={accounts}
+          customTableDef={accountsTableCustom1}
           onAccountClick={this.handleAccountClick}
         />
       </Card>
