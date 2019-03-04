@@ -28,6 +28,6 @@ const interactions = [
   }
 ];
 
-storiesOf("Components/Device", module).add("DeviceInteraction", () => (
+storiesOf("other", module).add("DeviceInteraction", () => (
   <DeviceInteraction interactions={interactions} />
 ));
