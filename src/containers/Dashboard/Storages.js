@@ -1,9 +1,12 @@
 // @flow
+
 import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import { withStyles } from "@material-ui/core/styles";
 import TryAgain from "components/TryAgain";
+import type { Account } from "data/types";
 import AccountCard from "./AccountCard";
 
 const styles = {
@@ -11,16 +14,22 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    marginRight: "-20px"
+    marginRight: -20
   }
 };
-class Storages extends Component<{ accounts: *, filter: *, classes: * }> {
+
+type Props = {
+  accounts: Account[],
+  classes: { [_: $Keys<typeof styles>]: string }
+};
+
+class Storages extends Component<Props> {
   render() {
-    const { accounts, filter, classes } = this.props;
+    const { accounts, classes } = this.props;
     return (
       <div className={classes.base}>
         {accounts.map((a, i) => (
-          <AccountCard index={i} key={a.id} account={a} filter={filter} />
+          <AccountCard index={i} key={a.id} account={a} />
         ))}
       </div>
     );
