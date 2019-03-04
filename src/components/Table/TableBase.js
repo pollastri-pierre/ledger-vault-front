@@ -23,7 +23,11 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
       <MUITableHead>
         <MUITableRow>
           {tableDefinition.map(item => (
-            <HeaderCellComponent item={item} type={type} />
+            <HeaderCellComponent
+              key={item.header.label}
+              item={item}
+              type={type}
+            />
           ))}
         </MUITableRow>
       </MUITableHead>

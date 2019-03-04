@@ -47,9 +47,6 @@ const theme = {
         marginRight: "23px",
         opacity: 0.4
       },
-      disabled: {
-        opacity: 0.2
-      },
       labelContainer: {
         paddingLeft: "0!important",
         paddingRight: "0!important"
@@ -369,6 +366,7 @@ const theme = {
     }
   },
   typography: {
+    useNextVariants: true,
     fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
     fontSize: 14,
     fontWeightLight: 300,
