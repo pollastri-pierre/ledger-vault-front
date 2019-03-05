@@ -1,46 +1,30 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import { withRouter } from "react-router";
-import q from "query-string";
+import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import GroupsQuery from "api/queries/GroupsQuery";
-import connectData from "restlay/connectData";
-
 import AddLink from "components/base/AddLink";
 import ModalRoute from "components/ModalRoute";
-import TryAgain from "components/TryAgain";
-import InfiniteScrollable from "components/InfiniteScrollable";
 import { GroupsTable } from "components/Table";
-import Card, { CardLoading, CardTitle } from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { GroupsFilters } from "components/filters";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import CreateGroup from "containers/Admin/Groups/CreateGroup";
+import SearchGroupsQuery from "api/queries/SearchGroups";
+import DataSearch from "components/DataSearch";
 
 import type { Group } from "data/types";
-import type { RestlayEnvironment } from "restlay/connectData";
-import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   match: Match,
   history: MemoryHistory
 };
 
-type State = {
-  query: string
-};
-
-class AdminGroups extends PureComponent<Props, State> {
-  state = {
-    query: location.search
-  };
-
+class AdminGroups extends PureComponent<Props> {
   handleGroupClick = (group: Group) => {
     const { history } = this.props;
     history.push(`groups/${group.id}`);
@@ -51,14 +35,8 @@ class AdminGroups extends PureComponent<Props, State> {
     history.push(`groups/new`);
   };
 
-  handleChangeQuery = query => {
-    this.setState({ query });
-    this.props.history.push({ search: query });
-  };
-
   CardHeader = () => (
-    <Box horizontal align="flex-start" justify="space-between" pb={20}>
-      <CardTitle>Groups</CardTitle>
+    <Box horizontal justify="flex-start" pb={20}>
       <AddLink onClick={this.createGroup}>
         <Text>
           <Trans i18nKey="group:create.title" />
@@ -69,16 +47,15 @@ class AdminGroups extends PureComponent<Props, State> {
 
   render() {
     const { match } = this.props;
-    const { query } = this.state;
     return (
-      <Box horizontal flow={20} align="flex-start">
-        <GroupsResult
-          query={query}
-          onGroupClick={this.handleGroupClick}
-          onCreateGroupClick={this.createGroup}
-          CardHeader={this.CardHeader}
+      <Fragment>
+        <DataSearch
+          Query={SearchGroupsQuery}
+          TableComponent={GroupsTable}
+          FilterComponent={GroupsFilters}
+          HeaderComponent={this.CardHeader}
+          onRowClick={this.handleGroupClick}
         />
-        <GroupsFilters query={query} onChange={this.handleChangeQuery} />
         <ModalRoute
           path={`${match.url}/:groupId`}
           render={(
@@ -91,61 +68,9 @@ class AdminGroups extends PureComponent<Props, State> {
             )
           }
         />
-      </Box>
+      </Fragment>
     );
   }
 }
 
-const GroupsResultComponent = ({
-  restlay,
-  groups,
-  onGroupClick,
-  CardHeader
-}: {
-  restlay: RestlayEnvironment,
-  groups: Connection<Group>,
-  onGroupClick: Group => void,
-  CardHeader: React$ComponentType<*>
-}) => (
-  <Card grow title="Groups">
-    <CardHeader />
-    <InfiniteScrollable
-      restlay={restlay}
-      restlayVariable="search"
-      chunkSize={20}
-    >
-      <GroupsTable
-        data={groups.edges.map(e => e.node)}
-        onRowClick={onGroupClick}
-      />
-    </InfiniteScrollable>
-  </Card>
-);
-
-const RenderError = ({
-  error,
-  restlay
-}: {
-  error: Error,
-  restlay: RestlayEnvironment
-}) => (
-  <Card grow className="search-results">
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </Card>
-);
-
-const RenderLoading = () => <CardLoading grow />;
-
-const GroupsResult = connectData(GroupsResultComponent, {
-  queries: {
-    groups: GroupsQuery
-  },
-  initialVariables: {
-    groups: 30
-  },
-  propsToQueryParams: ({ query }) => q.parse(query),
-  RenderError,
-  RenderLoading
-});
-
-export default withRouter(AdminGroups);
+export default AdminGroups;

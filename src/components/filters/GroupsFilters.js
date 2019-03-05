@@ -5,7 +5,7 @@ import React, { PureComponent } from "react";
 import { FiltersCard, FieldText } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 
-class FiltersGroups extends PureComponent<FieldsGroupProps> {
+class GroupsFilters extends PureComponent<FieldsGroupProps> {
   render() {
     const { ...props } = this.props;
     return (
@@ -16,4 +16,4 @@ class FiltersGroups extends PureComponent<FieldsGroupProps> {
   }
 }
 
-export default FiltersGroups;
+export default GroupsFilters;

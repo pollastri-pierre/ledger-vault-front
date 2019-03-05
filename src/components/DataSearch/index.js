@@ -22,6 +22,7 @@ import Card from "components/base/Card";
 type Props<T> = {
   TableComponent: React$ComponentType<*>,
   FilterComponent: React$ComponentType<*>,
+  HeaderComponent?: React$ComponentType<*>,
   restlay: RestlayEnvironment,
   Query: (*) => ConnectionQuery<*, *>,
   extraProps: Object,
@@ -96,10 +97,13 @@ class DataSearch extends PureComponent<Props<*>, State> {
   };
 
   handleUpdateQueryParams = (queryParams: ObjectParameters) => {
-    const { onQueryParamsChange } = this.props;
+    const { onQueryParamsChange, history } = this.props;
     this.setState({ queryParams });
     if (onQueryParamsChange) {
       onQueryParamsChange(queryParams);
+    }
+    if (history) {
+      history.push({ search: qs.stringify(queryParams) });
     }
   };
 
@@ -116,6 +120,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const {
       TableComponent,
       FilterComponent,
+      HeaderComponent,
       onRowClick,
       extraProps
     } = this.props;
@@ -145,6 +150,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     return (
       <Box horizontal flow={20} align="flex-start">
         <Card grow>
+          {HeaderComponent && <HeaderComponent />}
           {status === "loading" && <Loading />}
           {showTable && (
             <TableComponent
