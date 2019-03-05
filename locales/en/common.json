@@ -18,5 +18,6 @@
   "revoke": "Revoke",
   "reject": "Reject",
   "remove": "Delete",
-  "operationStatus": "Operation status"
+  "operationStatus": "Operation status",
+  "clickToEdit": "Click to edit"
 }
