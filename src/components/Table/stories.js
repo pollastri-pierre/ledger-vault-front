@@ -28,12 +28,12 @@ storiesOf("tables", module)
   ))
   .add("GroupsTable", () => (
     <Wrapper>
-      <GroupsTable groups={groups} onGroupClick={action("onClickGroup")} />
+      <GroupsTable data={groups} onRowClick={action("onRowClick")} />
     </Wrapper>
   ))
   .add("OperationsTable", () => (
     <Wrapper>
-      <OperationsTable accounts={accounts} operations={operations} />
+      <OperationsTable accounts={accounts} data={operations} />
     </Wrapper>
   ));
 

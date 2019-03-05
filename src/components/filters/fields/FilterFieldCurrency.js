@@ -15,28 +15,25 @@ import SelectCurrency from "components/SelectCurrency";
 import Box from "components/base/Box";
 
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
-import FieldTitle from "./FieldTitle";
-import { defaultFieldProps } from "../FiltersCard";
-import type { FieldProps } from "../FiltersCard";
+import { FieldTitle, defaultFieldProps } from "components/filters";
+import type { FieldProps } from "components/filters/types";
 
-type Props = FieldProps;
-
-class FilterFieldCurrency extends PureComponent<Props> {
+class FilterFieldCurrency extends PureComponent<FieldProps> {
   static defaultProps = defaultFieldProps;
 
   handleChange = (item: ?SelectCurrencyItem) => {
-    const { updateQuery } = this.props;
+    const { updateQueryParams } = this.props;
     if (!item) {
-      updateQuery(q => omit(q, ["currency", "contract_address"]));
+      updateQueryParams(q => omit(q, ["currency", "contract_address"]));
     } else if (item.type === "erc20token") {
-      updateQuery(q => {
+      updateQueryParams(q => {
         q = omit(q, ["currency"]);
         // $FlowFixMe flow is incapable to infer that it's an ERC20Token
         q.contract_address = item.value.contract_address;
         return q;
       });
     } else if (item.type === "currency") {
-      updateQuery(q => {
+      updateQueryParams(q => {
         q = omit(q, ["contract_address"]);
         // $FlowFixMe flow is incapable to infer that it's a currency
         q.currency = item.value.id;
@@ -46,8 +43,8 @@ class FilterFieldCurrency extends PureComponent<Props> {
   };
 
   render() {
-    const { query } = this.props;
-    const currencyOrToken = resolveCurrencyOrToken(query);
+    const { queryParams } = this.props;
+    const currencyOrToken = resolveCurrencyOrToken(queryParams);
     const isActive = !!currencyOrToken;
     return (
       <Box flow={5}>
@@ -58,18 +55,18 @@ class FilterFieldCurrency extends PureComponent<Props> {
   }
 }
 
-function resolveCurrencyOrToken(query: ObjectParameters) {
-  if (query.currency) {
-    if (typeof query.currency !== "string") return null;
+function resolveCurrencyOrToken(queryParams: ObjectParameters) {
+  if (queryParams.currency) {
+    if (typeof queryParams.currency !== "string") return null;
     let currency = null;
     try {
-      currency = getCryptoCurrencyById(query.currency) || null;
+      currency = getCryptoCurrencyById(queryParams.currency) || null;
     } catch (err) {} // eslint-disable-line no-empty
     return currency;
   }
-  if (query.contract_address) {
-    if (typeof query.contract_address !== "string") return null;
-    return getERC20TokenByContractAddress(query.contract_address) || null;
+  if (queryParams.contract_address) {
+    if (typeof queryParams.contract_address !== "string") return null;
+    return getERC20TokenByContractAddress(queryParams.contract_address) || null;
   }
   return null;
 }

@@ -73,7 +73,7 @@ const mockSync = (uri, method) => {
   }
 };
 
-const delay = ms => new Promise(success => setTimeout(success, ms));
+export const delay = ms => new Promise(success => setTimeout(success, ms));
 
 export default (uri, init) => {
   const method = typeof init.method === "string" ? init.method : "GET";

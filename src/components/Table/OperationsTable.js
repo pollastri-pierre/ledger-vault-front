@@ -21,8 +21,8 @@ import type { Account, Operation } from "data/types";
 import TableScroll from "./TableScroll";
 
 type Props = {
-  operations: Operation[],
-  onOperationClick: Operation => void,
+  data: Operation[],
+  onRowClick: Operation => void,
   accounts: Account[],
 
   // additional fields
@@ -32,7 +32,7 @@ type Props = {
 
 class OperationsTable extends PureComponent<Props> {
   Operation = (operation: Operation) => {
-    const { accounts, onOperationClick, withStatus, withLabel } = this.props;
+    const { accounts, onRowClick, withStatus, withLabel } = this.props;
 
     const account = accounts.find(
       account => account.id === operation.account_id
@@ -49,7 +49,7 @@ class OperationsTable extends PureComponent<Props> {
         key={key}
         operation={operation}
         account={account}
-        onClick={onOperationClick}
+        onClick={onRowClick}
         withStatus={withStatus}
         withLabel={withLabel}
       />
@@ -57,10 +57,10 @@ class OperationsTable extends PureComponent<Props> {
   };
 
   render() {
-    const { operations, withStatus, withLabel } = this.props;
+    const { data, withStatus, withLabel } = this.props;
 
-    if (!operations.length) {
-      return <NoDataPlaceholder title="No operations" />;
+    if (!data.length) {
+      return <NoDataPlaceholder title="No operations found." />;
     }
 
     return (
@@ -70,7 +70,7 @@ class OperationsTable extends PureComponent<Props> {
             withStatus={withStatus}
             withLabel={withLabel}
           />
-          <MUITableBody>{operations.map(this.Operation)}</MUITableBody>
+          <MUITableBody>{data.map(this.Operation)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );

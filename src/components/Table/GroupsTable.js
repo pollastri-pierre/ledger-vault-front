@@ -17,31 +17,31 @@ import type { Group } from "data/types";
 import TableScroll from "./TableScroll";
 
 type Props = {
-  groups: Group[],
-  onGroupClick: Group => void
+  data: Group[],
+  onRowClick: Group => void
 };
 
 class GroupsTable extends PureComponent<Props> {
   Group = (group: Group) => {
-    const { onGroupClick } = this.props;
+    const { onRowClick } = this.props;
 
     const key = `${group.id}`;
 
-    return <GroupRow key={key} group={group} onClick={onGroupClick} />;
+    return <GroupRow key={key} group={group} onClick={onRowClick} />;
   };
 
   render() {
-    const { groups } = this.props;
+    const { data } = this.props;
 
-    if (!groups.length) {
-      return <NoDataPlaceholder title="No groups" />;
+    if (!data.length) {
+      return <NoDataPlaceholder title="No groups found." />;
     }
 
     return (
       <TableScroll>
         <MUITable>
           <GroupsTableHeader />
-          <MUITableBody>{groups.map(this.Group)}</MUITableBody>
+          <MUITableBody>{data.map(this.Group)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );
@@ -70,7 +70,12 @@ type GroupRowProps = {
   onClick: Group => void
 };
 
-const groupRowHover = { cursor: "pointer" };
+const styles = {
+  groupRowHover: { cursor: "pointer" },
+  noWrap: {
+    whiteSpace: "nowrap"
+  }
+};
 
 class GroupRow extends PureComponent<GroupRowProps> {
   handleClick = () => {
@@ -83,14 +88,14 @@ class GroupRow extends PureComponent<GroupRowProps> {
     return (
       <MUITableRow
         hover={!!onClick}
-        style={onClick ? groupRowHover : undefined}
+        style={onClick ? styles.groupRowHover : undefined}
         onClick={onClick ? this.handleClick : undefined}
       >
         <MUITableCell>
           <DateFormat format="ddd D MMM, h:mmA" date={group.created_on} />
         </MUITableCell>
 
-        <MUITableCell>{group.name}</MUITableCell>
+        <MUITableCell style={styles.noWrap}>{group.name}</MUITableCell>
         <MUITableCell>{group.members.length}</MUITableCell>
         <MUITableCell>
           <Status status={group.status} />
