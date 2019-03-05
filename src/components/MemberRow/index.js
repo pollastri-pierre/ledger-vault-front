@@ -1,64 +1,23 @@
 // @flow
 import React, { Component } from "react";
 import type { Member } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
-import classnames from "classnames";
 import colors from "shared/colors";
+import styled from "styled-components";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Checkbox from "../form/Checkbox";
-import MemberRole from "../MemberRole";
 
-// TODO: to be refactored
-const styles = {
-  base: {
-    flexShrink: 0,
-    borderBottom: `1px solid ${colors.argile}`,
-    outline: "none",
-    cursor: "pointer",
-    height: "70px",
-    position: "relative",
-    paddingLeft: "50px",
-    "& .slidebox": {
-      float: "right",
-      marginTop: "-20px"
-    },
-    "&:last-child": {
-      border: "0"
-    }
-  },
-  notSelect: {
-    cursor: "default"
-  },
-  name: {
-    display: "inline-block",
-    marginTop: "17px",
-    marginBottom: "4px",
-    color: "black",
-    fontSize: "13px"
-  },
-  role: {
-    margin: "0",
-    fontSize: "11px",
-    color: colors.lead
-  },
-  checkbox: {
-    position: "absolute",
-    right: "0",
-    top: "10px"
-  },
-  editable: {
-    color: "#767676",
-    fontSize: 11,
-    position: "absolute",
-    right: 0,
-    top: 27
+const Container = styled(Box)`
+  border-bottom: 1px solid ${colors.argile};
+  &:last-child {
+    border: 0;
   }
-};
+`;
 class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
   checked?: boolean,
   editable?: boolean,
-  member: Member,
-  classes: Object
+  member: Member
 }> {
   onClick = () => {
     const { onSelect } = this.props;
@@ -66,33 +25,32 @@ class MemberRow extends Component<{
   };
 
   render() {
-    const { member, onSelect, checked, classes, editable } = this.props;
-
+    const { member, onSelect, checked, editable } = this.props;
     return (
-      <div
-        data-test="test-member-row"
-        className={classnames(classes.base, "test-member-row", {
-          [classes.notSelect]: !onSelect && !editable
-        })}
+      <Container
+        horizontal
+        justify="space-between"
         onClick={this.onClick}
+        p={15}
       >
-        <span className={classes.name}>{member.username}</span>
-        <p className={classes.role}>
-          <MemberRole member={member} />
-        </p>
-        {editable && <span className={classes.editable}>Click to edit</span>}
+        <Box grow>
+          <Text color={colors.black}>{member.username}</Text>
+          <Text color={colors.steel}>{member.role || "Administrator"}</Text>
+        </Box>
+        {editable && (
+          <Text small color={colors.steel} i18nKey="common:clickToEdit" />
+        )}
         {onSelect &&
           !editable && (
             <Checkbox
               checked={checked}
-              className={classes.checkbox}
               labelFor={member.id}
               handleInputChange={this.onClick}
             />
           )}
-      </div>
+      </Container>
     );
   }
 }
 
-export default withStyles(styles)(MemberRow);
+export default MemberRow;
