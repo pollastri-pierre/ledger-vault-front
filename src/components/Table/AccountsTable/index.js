@@ -3,6 +3,7 @@
 import React, { PureComponent } from "react";
 import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
+import type { ObjectParameters } from "query-string";
 
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -15,10 +16,13 @@ import { accountsTableDefault } from "./tableDefinitions";
 import type { TableDefinition } from "../types";
 
 type Props = {
-  accounts: Account[],
+  data: Account[],
   customTableDef?: TableDefinition,
-  onAccountClick: Account => void
+  onSortChange?: (string, ?string) => void,
+  queryParams?: ObjectParameters,
+  onRowClick: Account => void
 };
+
 type State = {
   tableDefinition: TableDefinition
 };
@@ -33,30 +37,35 @@ class AccountsTable extends PureComponent<Props, State> {
   }
 
   Account = (account: Account) => {
-    const { onAccountClick } = this.props;
+    const { onRowClick } = this.props;
     const { tableDefinition } = this.state;
     return (
       <AccountRow
         key={account.id}
         account={account}
-        onClick={onAccountClick}
+        onClick={onRowClick}
         tableDefinition={tableDefinition}
       />
     );
   };
 
   render() {
-    const { accounts } = this.props;
+    const { data, onSortChange, queryParams } = this.props;
     const { tableDefinition } = this.state;
-    if (!accounts.length) {
-      return <NoDataPlaceholder title="No accounts" />;
+    if (!data.length) {
+      return <NoDataPlaceholder title="No accounts found." />;
     }
 
     return (
       <TableScroll>
         <MUITable>
-          <TableHeader tableDefinition={tableDefinition} type="accounts" />
-          <MUITableBody>{accounts.map(this.Account)}</MUITableBody>
+          <TableHeader
+            tableDefinition={tableDefinition}
+            type="accounts"
+            onSortChange={onSortChange}
+            queryParams={queryParams}
+          />
+          <MUITableBody>{data.map(this.Account)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );

@@ -43,9 +43,9 @@ class LastOperationCard extends Component<Props> {
       >
         <div data-test="last_op_list">
           <OperationsTable
-            operations={operations.edges.map(e => e.node)}
+            data={operations.edges.map(e => e.node)}
             accounts={accounts}
-            onOperationClick={this.handleOperationClick}
+            onRowClick={this.handleOperationClick}
           />
         </div>
       </Card>

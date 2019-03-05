@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import type { ObjectParameters } from "query-string";
 
 import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
@@ -12,18 +13,26 @@ import type { TableDefinition, TableItem } from "./types";
 
 type TableHeaderProps = {
   tableDefinition: TableDefinition,
+  onSortChange?: (string, ?string) => void,
+  queryParams?: ObjectParameters,
   type: string
 };
 
 export class TableHeader extends PureComponent<TableHeaderProps> {
   render() {
-    const { tableDefinition, type } = this.props;
+    const { tableDefinition, type, onSortChange, queryParams } = this.props;
 
     return (
       <MUITableHead>
         <MUITableRow>
           {tableDefinition.map(item => (
-            <HeaderCellComponent item={item} type={type} />
+            <HeaderCellComponent
+              key={item.body.prop}
+              item={item}
+              type={type}
+              onSortChange={onSortChange}
+              queryParams={queryParams}
+            />
           ))}
         </MUITableRow>
       </MUITableHead>
@@ -33,51 +42,47 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
 
 type Props = {
   item: TableItem,
-  type: string
-};
-type State = {
-  order: string,
-  orderBy: string
+  type: string,
+  onSortChange?: (string, ?string) => void,
+  queryParams?: ObjectParameters
 };
 
-class HeaderCellComponent extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
+class HeaderCellComponent extends PureComponent<Props> {
+  handleChangeSort = () => {
+    const { item, type, onSortChange, queryParams } = this.props; // eslint-disable-line no-unused-vars
+    if (!onSortChange) return;
+    const { orderBy, order } = resolveSort(queryParams);
+    const newOrderBy = item.body.prop;
 
-    this.state = {
-      order: "asc",
-      orderBy: props.item.header.label
-    };
-  }
+    // cycle through orders: if first time we click, we set order ASC,
+    // then DESC, then we remove the order
+    const newOrder =
+      orderBy === newOrderBy
+        ? order
+          ? order === "asc"
+            ? "desc"
+            : null
+          : "asc"
+        : "asc";
 
-  createSortHandler = () => {
-    const { item, type } = this.props; // eslint-disable-line no-unused-vars
-    // NOTE: can be made as an accumulator of a few params to sort by
-    const orderBy = item.header.label;
-    let order = "desc";
-    // TODO: make a call with a query like `/${type}?sort=${this.state.orderBy}&order=${this.state.order}`
-
-    if (this.state.orderBy === orderBy && this.state.order === "desc") {
-      order = "asc";
-    }
-
-    this.setState({ order, orderBy });
+    onSortChange(newOrderBy, newOrder);
   };
 
   render() {
-    const { item } = this.props;
-    const { order, orderBy } = this.state;
+    const { item, queryParams } = this.props;
+    const { orderBy, order } = resolveSort(queryParams);
+
     return (
       <MUITableCell
         align={item.header.align}
-        key={item.header.label}
-        sortDirection={orderBy === item.header.label ? order : false}
+        key={item.body.prop}
+        sortDirection={orderBy === item.body.prop ? order : false}
       >
         {item.header.sortable ? (
           <TableSortLabel
-            active={item.header.sortable}
-            direction={order}
-            onClick={this.createSortHandler}
+            active={!!(order && orderBy && orderBy === item.body.prop)}
+            direction={order || "asc"}
+            onClick={this.handleChangeSort}
           >
             {item.header.label}
           </TableSortLabel>
@@ -87,4 +92,11 @@ class HeaderCellComponent extends PureComponent<Props, State> {
       </MUITableCell>
     );
   }
+}
+
+function resolveSort(queryParams: ?ObjectParameters) {
+  return {
+    orderBy: (queryParams && queryParams.orderBy) || null,
+    order: (queryParams && queryParams.order) || null
+  };
 }

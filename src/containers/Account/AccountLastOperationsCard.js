@@ -44,8 +44,8 @@ class AccountLastOperationsCard extends Component<Props> {
         >
           <OperationsTable
             accounts={[account]}
-            operations={operations.edges.map(e => e.node)}
-            onOperationClick={this.handleOperationClick}
+            data={operations.edges.map(e => e.node)}
+            onRowClick={this.handleOperationClick}
           />
         </InfiniteScrollable>
       </Card>

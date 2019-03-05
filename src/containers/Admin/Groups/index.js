@@ -19,7 +19,7 @@ import { GroupsTable } from "components/Table";
 import Card, { CardLoading, CardTitle } from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { FiltersGroups } from "components/filters";
+import { GroupsFilters } from "components/filters";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import CreateGroup from "containers/Admin/Groups/CreateGroup";
 
@@ -78,7 +78,7 @@ class AdminGroups extends PureComponent<Props, State> {
           onCreateGroupClick={this.createGroup}
           CardHeader={this.CardHeader}
         />
-        <FiltersGroups query={query} onChange={this.handleChangeQuery} />
+        <GroupsFilters query={query} onChange={this.handleChangeQuery} />
         <ModalRoute
           path={`${match.url}/:groupId`}
           render={(
@@ -115,8 +115,8 @@ const GroupsResultComponent = ({
       chunkSize={20}
     >
       <GroupsTable
-        groups={groups.edges.map(e => e.node)}
-        onGroupClick={onGroupClick}
+        data={groups.edges.map(e => e.node)}
+        onRowClick={onGroupClick}
       />
     </InfiniteScrollable>
   </Card>

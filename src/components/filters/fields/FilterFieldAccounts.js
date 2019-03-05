@@ -11,9 +11,8 @@ import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import type { Account } from "data/types";
 
-import FieldTitle from "./FieldTitle";
-import { defaultFieldProps } from "../FiltersCard";
-import type { FieldProps } from "../FiltersCard";
+import { FieldTitle, defaultFieldProps } from "components/filters";
+import type { FieldProps } from "components/filters/types";
 
 const EMPTY_ARRAY = [];
 
@@ -29,8 +28,8 @@ class FilterFieldAccounts extends PureComponent<Props> {
       $ReadOnlyArray<ObjectParameter>
     ) => $ReadOnlyArray<ObjectParameter>
   ) => {
-    const { query, updateQuery } = this.props;
-    updateQuery("accounts", updater(resolveAccounts(query)));
+    const { queryParams, updateQueryParams } = this.props;
+    updateQueryParams("accounts", updater(resolveAccounts(queryParams)));
   };
 
   handleChange = (account: ?Account) => {
@@ -45,10 +44,10 @@ class FilterFieldAccounts extends PureComponent<Props> {
   };
 
   render() {
-    const { accounts, query } = this.props;
+    const { accounts, queryParams } = this.props;
 
-    const selectedAccountsIds = resolveAccounts(query);
-    const selectedCurrency = resolveCurrency(query);
+    const selectedAccountsIds = resolveAccounts(queryParams);
+    const selectedCurrency = resolveCurrency(queryParams);
 
     const selectedAccounts = selectedAccountsIds
       .map(accountId =>
@@ -120,16 +119,16 @@ const AccountsList = ({
     </Box>
   ) : null;
 
-function resolveAccounts(query: ObjectParameters) {
-  return Array.isArray(query.accounts)
-    ? query.accounts
-    : typeof query.accounts === "string"
-      ? [query.accounts]
+function resolveAccounts(queryParams: ObjectParameters) {
+  return Array.isArray(queryParams.accounts)
+    ? queryParams.accounts
+    : typeof queryParams.accounts === "string"
+      ? [queryParams.accounts]
       : EMPTY_ARRAY;
 }
 
-function resolveCurrency(query: ObjectParameters) {
-  return typeof query.currency === "string" ? query.currency : null;
+function resolveCurrency(queryParams: ObjectParameters) {
+  return typeof queryParams.currency === "string" ? queryParams.currency : null;
 }
 
 export default FilterFieldAccounts;

@@ -41,10 +41,7 @@ class SubAccounts extends Component<Props> {
 
     return (
       <Card title={<Trans i18nKey="accountView:erc20_children" />}>
-        <AccountsTable
-          accounts={children}
-          onAccountClick={this.handleAccountClick}
-        />
+        <AccountsTable data={children} onRowClick={this.handleAccountClick} />
       </Card>
     );
   }

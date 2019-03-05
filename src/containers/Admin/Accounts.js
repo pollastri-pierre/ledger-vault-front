@@ -29,17 +29,14 @@ class AdminAccounts extends PureComponent<Props> {
 
     return (
       <Card>
-        <AccountsTable
-          accounts={accounts}
-          onAccountClick={this.handleAccountClick}
-        />
+        <AccountsTable data={accounts} onRowClick={this.handleAccountClick} />
         <Box bg="#eee" style={{ height: 40 }} justify="center" align="center">
           Just to illustrate 2 tables
         </Box>
         <AccountsTable
-          accounts={accounts}
+          data={accounts}
           customTableDef={accountsTableCustom1}
-          onAccountClick={this.handleAccountClick}
+          onRowClick={this.handleAccountClick}
         />
       </Card>
     );

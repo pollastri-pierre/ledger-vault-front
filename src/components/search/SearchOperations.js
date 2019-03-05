@@ -8,7 +8,7 @@ import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
 import AccountsQuery from "api/queries/AccountsQuery";
-import SearchQuery from "api/queries/SearchQuery";
+import SearchOperationsQuery from "api/queries/SearchOperations";
 import connectData from "restlay/connectData";
 
 import TryAgain from "components/TryAgain";
@@ -16,7 +16,7 @@ import InfiniteScrollable from "components/InfiniteScrollable";
 import { OperationsTable } from "components/Table";
 import Card, { CardError, CardLoading } from "components/base/Card";
 import Box from "components/base/Box";
-import { FiltersOperations } from "components/filters";
+import { OperationsFilters } from "components/filters";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 
@@ -59,7 +59,7 @@ class SearchOperations extends PureComponent<Props, State> {
           accounts={accounts}
           onOperationClick={this.handleOperationClick}
         />
-        <FiltersOperations
+        <OperationsFilters
           accounts={accounts}
           query={query}
           onChange={this.handleChangeQuery}
@@ -91,9 +91,9 @@ const OperationsResultComponent = ({
       chunkSize={20}
     >
       <OperationsTable
-        operations={search.edges.map(e => e.node)}
+        data={search.edges.map(e => e.node)}
         accounts={accounts}
-        onOperationClick={onOperationClick}
+        onRowClick={onOperationClick}
         withStatus
         withLabel
       />
@@ -117,7 +117,7 @@ const RenderLoading = () => <CardLoading grow />;
 
 const OperationsResult = connectData(OperationsResultComponent, {
   queries: {
-    search: SearchQuery
+    search: SearchOperationsQuery
   },
   initialVariables: {
     search: 30

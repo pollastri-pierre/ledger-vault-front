@@ -1,0 +1,208 @@
+// @flow
+
+import React, { PureComponent } from "react";
+import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import qs from "query-string";
+import omit from "lodash/omit";
+import { MdCloudDownload } from "react-icons/md";
+import type { ObjectParameters } from "query-string";
+import type { MemoryHistory } from "history";
+
+import colors from "shared/colors";
+
+import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
+import ConnectionQuery from "restlay/ConnectionQuery";
+
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import Card from "components/base/Card";
+
+type Props<T> = {
+  TableComponent: React$ComponentType<*>,
+  FilterComponent: React$ComponentType<*>,
+  restlay: RestlayEnvironment,
+  Query: (*) => ConnectionQuery<*, *>,
+  extraProps: Object,
+  onQueryParamsChange?: ObjectParameters => void,
+  onRowClick?: T => void,
+  history?: MemoryHistory
+};
+
+type Status = "initial" | "idle" | "loading" | "error";
+
+type State = {
+  status: Status,
+  queryParams: ObjectParameters,
+  response: ?Object,
+  error: ?Error
+};
+
+class DataSearch extends PureComponent<Props<*>, State> {
+  constructor(props) {
+    super(props);
+    const { history } = this.props;
+    const queryParams = history ? qs.parse(window.location.search) : {};
+
+    this.state = {
+      response: null,
+      status: "initial",
+      // $FlowFixMe
+      queryParams,
+      error: null
+    };
+  }
+
+  componentDidMount() {
+    this.fetch();
+  }
+
+  componentDidUpdate(prevProps: Props<*>, prevState: State) {
+    if (prevState.queryParams !== this.state.queryParams) {
+      this.fetch();
+    }
+  }
+
+  componentWillUnmount() {
+    this._isUnmounted = true;
+  }
+
+  _requestId = 0;
+
+  _isUnmounted = false;
+
+  fetch = async () => {
+    const { Query, restlay } = this.props;
+    const { queryParams } = this.state;
+
+    const _requestId = ++this._requestId;
+
+    this.setState({ status: "loading" });
+
+    let patch = null;
+
+    try {
+      const query = new Query(queryParams);
+      const response = await restlay.fetchQuery(query);
+      patch = { status: "idle", response, error: null };
+    } catch (error) {
+      patch = { status: "error", error };
+    } finally {
+      if (_requestId === this._requestId && !this._isUnmounted) {
+        this.setState(patch);
+      }
+    }
+  };
+
+  handleUpdateQueryParams = (queryParams: ObjectParameters) => {
+    const { onQueryParamsChange } = this.props;
+    this.setState({ queryParams });
+    if (onQueryParamsChange) {
+      onQueryParamsChange(queryParams);
+    }
+  };
+
+  handleChangeSort = (orderBy: string, order: ?string) => {
+    const { queryParams } = this.state;
+    if (!order) {
+      this.handleUpdateQueryParams(omit(queryParams, ["order", "orderBy"]));
+    } else {
+      this.handleUpdateQueryParams({ ...queryParams, orderBy, order });
+    }
+  };
+
+  render() {
+    const {
+      TableComponent,
+      FilterComponent,
+      onRowClick,
+      extraProps
+    } = this.props;
+
+    const { status, response, error, queryParams } = this.state;
+    const data = response ? response.edges.map(el => el.node) : [];
+    const isFirstQuery = this._requestId === 1;
+
+    if (status === "error") {
+      return (
+        <Card>
+          <Text>
+            Oww.. snap. Error.
+            {error && error.message}
+          </Text>
+          <button onClick={this.fetch}>retry</button>
+        </Card>
+      );
+    }
+
+    const Loading = isFirstQuery ? InitialLoading : SpinnerCircle;
+    const showTable = !(
+      isFirstQuery &&
+      (status === "initial" || status === "loading")
+    );
+
+    return (
+      <Box horizontal flow={20} align="flex-start">
+        <Card grow>
+          {status === "loading" && <Loading />}
+          {showTable && (
+            <TableComponent
+              data={data}
+              onRowClick={onRowClick}
+              queryParams={queryParams}
+              onSortChange={this.handleChangeSort}
+              {...extraProps}
+            />
+          )}
+        </Card>
+        <FilterComponent
+          noShrink
+          width={400}
+          onChange={this.handleUpdateQueryParams}
+          queryParams={queryParams}
+          nbResults={status === "idle" ? data.length : null}
+          {...extraProps}
+        />
+      </Box>
+    );
+  }
+}
+
+const styles = {
+  initialLoading: {
+    height: 250,
+    color: colors.steel
+  }
+};
+
+const SpinnerCircleContainer = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.1);
+  z-index: 1;
+`;
+
+const SpinnerCircle = () => (
+  <SpinnerCircleContainer>
+    <CircularProgress size={30} color="primary" />
+  </SpinnerCircleContainer>
+);
+
+const InitialLoading = () => (
+  <Box align="center" justify="center" style={styles.initialLoading}>
+    <SpinnerCircle />
+    <MdCloudDownload color={colors.lightGrey} size={40} />
+    <Text>Retrieving data...</Text>
+  </Box>
+);
+
+export default connectData(DataSearch);

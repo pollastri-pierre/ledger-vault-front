@@ -1,4 +1,5 @@
 import React from "react";
+import thunk from "redux-thunk";
 import { withOptions } from "@storybook/addon-options";
 import { Provider } from "react-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
@@ -10,13 +11,19 @@ import { ThemeProvider } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
 import { configure, addDecorator } from "@storybook/react";
-import { createStore as reduxCreateStore, combineReducers } from "redux";
+import {
+  createStore as reduxCreateStore,
+  combineReducers,
+  applyMiddleware
+} from "redux";
 import {
   MuiThemeProvider,
   createMuiTheme,
   createGenerateClassName
 } from "@material-ui/core/styles";
 
+import network from "network";
+import dataReducer from "redux/modules/data";
 import CounterValues from "data/CounterValues";
 import exchanges from "redux/modules/exchanges";
 import theme, { styledTheme } from "styles/theme";
@@ -26,10 +33,11 @@ const createStore = () => {
   return reduxCreateStore(
     combineReducers({
       countervalues: CounterValues.reducer,
-      exchanges
+      exchanges,
+      data: dataReducer
     }),
     {},
-    composeWithDevTools()
+    composeWithDevTools(applyMiddleware(thunk))
   );
 };
 

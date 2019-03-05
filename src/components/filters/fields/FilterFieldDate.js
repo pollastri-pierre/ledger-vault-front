@@ -7,10 +7,8 @@ import moment from "moment";
 import type { ObjectParameter } from "query-string";
 
 import Box from "components/base/Box";
-import FieldTitle from "./FieldTitle";
-
-import { defaultFieldProps } from "../FiltersCard";
-import type { FieldProps } from "../FiltersCard";
+import { FieldTitle, defaultFieldProps } from "components/filters";
+import type { FieldProps } from "components/filters";
 
 type Props = FieldProps;
 
@@ -18,9 +16,9 @@ class FilterFieldDate extends PureComponent<Props> {
   static defaultProps = defaultFieldProps;
 
   handleChange = (field: string, d: moment) => {
-    const { updateQuery } = this.props;
+    const { updateQueryParams } = this.props;
     const value = d ? d.toISOString() : null;
-    updateQuery(field, value);
+    updateQueryParams(field, value);
   };
 
   handleChangeStartDate = (d: moment) => this.handleChange("start", d);
@@ -28,10 +26,10 @@ class FilterFieldDate extends PureComponent<Props> {
   handleChangeEndDate = (d: moment) => this.handleChange("end", d);
 
   render() {
-    const { query } = this.props;
+    const { queryParams } = this.props;
 
-    const startDate = resolveDate(query.start);
-    const endDate = resolveDate(query.end);
+    const startDate = resolveDate(queryParams.start);
+    const endDate = resolveDate(queryParams.end);
     const isActive = !!startDate || !!endDate;
 
     return (

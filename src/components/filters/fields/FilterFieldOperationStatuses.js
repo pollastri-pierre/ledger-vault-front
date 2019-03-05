@@ -8,23 +8,23 @@ import Box from "components/base/Box";
 import Select from "components/base/Select";
 import type { OperationStatus } from "data/types";
 
-import FieldTitle from "./FieldTitle";
-import { defaultFieldProps } from "../FiltersCard";
-import type { FieldProps } from "../FiltersCard";
+import { FieldTitle, defaultFieldProps } from "components/filters";
+import type { FieldProps } from "components/filters";
 
-type Props = FieldProps;
-
-class FilterFieldCurrency extends PureComponent<Props> {
+class FilterFieldCurrency extends PureComponent<FieldProps> {
   static defaultProps = defaultFieldProps;
 
   handleChange = (opt: Option[]) => {
-    const { updateQuery } = this.props;
-    updateQuery("status", opt && opt.length ? opt.map(o => o.value) : null);
+    const { updateQueryParams } = this.props;
+    updateQueryParams(
+      "status",
+      opt && opt.length ? opt.map(o => o.value) : null
+    );
   };
 
   render() {
-    const { query } = this.props;
-    const operationStatuses = resolveOperationStatuses(query);
+    const { queryParams } = this.props;
+    const operationStatuses = resolveOperationStatuses(queryParams);
     const isActive = !!operationStatuses.length;
     return (
       <Box flow={5}>
@@ -42,10 +42,12 @@ function resolveOptions(arr: $ReadOnlyArray<ObjectParameter>): Option[] {
   return arr.map(s => options.find(o => o.value === s)).filter(Boolean);
 }
 
-function resolveOperationStatuses(query: ObjectParameters): Option[] {
-  if (!query.status) return [];
-  if (typeof query.status === "string") return resolveOptions([query.status]);
-  if (Array.isArray(query.status)) return resolveOptions(query.status);
+function resolveOperationStatuses(queryParams: ObjectParameters): Option[] {
+  if (!queryParams.status) return [];
+  if (typeof queryParams.status === "string")
+    return resolveOptions([queryParams.status]);
+  if (Array.isArray(queryParams.status))
+    return resolveOptions(queryParams.status);
   return [];
 }
 
