@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-// import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import CounterValues from "components/CounterValues";
 import DateFormat from "components/DateFormat";
 import { translate } from "react-i18next";
@@ -19,30 +18,18 @@ const styles = {
     height: "180px"
   }
 };
-class TotalBalance extends Component<{
+
+type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate,
-  // totalBalance: *,
   accounts: Array<Account>,
   members: Member[],
-  // filter: string,
-  onTotalBalanceFilterChange: (filter: string) => void,
   reloading: *
-}> {
-  onTotalBalanceFilterChange = (e: *) => {
-    this.props.onTotalBalanceFilterChange(e.target.value);
-  };
+};
 
+class TotalBalance extends Component<Props> {
   render() {
-    const {
-      // filter,
-      // totalBalance,
-      reloading,
-      accounts,
-      t,
-      members,
-      classes
-    } = this.props;
+    const { reloading, accounts, t, members, classes } = this.props;
     // nb total of different currencies in all the accounts
     const nbCurrency = [
       ...new Set(accounts.map(account => account.currency_id))
@@ -61,13 +48,6 @@ class TotalBalance extends Component<{
           >
             <CounterValues accounts={accounts} />
           </CardField>
-          <div style={{ minWidth: "200px" }}>
-            {/* <EvolutionSince */}
-            {/*   value={totalBalance.value} */}
-            {/*   valueHistory={totalBalance.valueHistory} */}
-            {/*   filter={TotalBalanceFilters.find(f => f.key === filter)} */}
-            {/* /> */}
-          </div>
           <CardField
             label={t("dashboard:accounts")}
             align="right"

@@ -131,14 +131,7 @@ function genAccount({ members = [] } = {}) {
     created_on: faker.date.recent(),
     approvals,
 
-    // TODO remove this field
-    number_of_approvals: nbApprovals,
-
-    // TODO remove this field
-    receive_address: "",
-
-    // TODO remove this field
-    balance_history: {}
+    number_of_approvals: nbApprovals
   };
 }
 
@@ -158,17 +151,8 @@ function genMember() {
 
     role: faker.random.arrayElement(["admin", "operator"]),
 
-    // TODO remove this field
-    register_date: "",
-
     created_on: date,
-    status,
-
-    // TODO remove this field
-    u2f_device: "",
-
-    // TODO remove this field
-    groups: []
+    status
   };
 }
 
@@ -197,14 +181,8 @@ const genOperation = ({ account, members }) => {
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),
 
-    // TODO remove this field
-    currency_name: currency.id,
-
     created_by: faker.random.arrayElement(operators),
     currency_family: currency.family,
-
-    // TODO remove this field
-    trust: { level: "", weight: 1, conflicts: [], origin: "" },
 
     confirmations: faker.random.number(0, 1000),
     created_on: date,

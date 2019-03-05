@@ -71,10 +71,8 @@ type MemberCommon = {
   picture?: string,
   created_on: string,
   status: string,
-  u2f_device: string,
   email?: string,
-  role: string,
-  groups: string[]
+  role: string
 };
 export type MemberEntity = MemberCommon;
 export type Member = MemberCommon;
@@ -114,8 +112,6 @@ type AccountCommon = {
   balance: number,
   number_of_approvals: number,
   created_on: Date,
-  receive_address: string,
-  balance_history: { [_: string]: number },
   approvals: Approval[],
   fresh_addresses: *,
   hsm_operations?: Object,
@@ -211,23 +207,14 @@ export type TransactionETH = {
   value: number
 };
 
-export type Trust = {
-  level: string,
-  weight: number,
-  conflicts: string[],
-  origin: string
-};
-
 export type TransactionType = "SEND" | "RECEIVE";
 
 export type OperationStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
 
 type OperationCommon = {
   id: number,
-  currency_name: string,
   created_by: Member,
   currency_family: string,
-  trust: Trust,
   confirmations: number,
   created_on: Date,
   price: Price,

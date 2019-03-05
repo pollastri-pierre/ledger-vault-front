@@ -7,7 +7,6 @@ import connectData from "restlay/connectData";
 import React, { Component } from "react";
 import AccountsQuery from "api/queries/AccountsQuery";
 import Card from "components/legacy/Card";
-import { TotalBalanceFilters } from "components/EvolutionSince";
 import OperationModal from "components/operations/OperationModal";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "@material-ui/core/styles";
@@ -32,29 +31,17 @@ const styles = {
     width: "320px"
   }
 };
-class Dashboard extends Component<
-  {
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *,
-    accounts: Array<Account>,
-    members: Array<Member>
-  },
-  {
-    filter: string
-  }
-> {
-  state = {
-    filter: TotalBalanceFilters[0].key
-  };
 
-  onTotalBalanceFilterChange = (filter: string) => {
-    this.setState({ filter });
-  };
+type Props = {
+  classes: { [_: $Keys<typeof styles>]: string },
+  match: *,
+  accounts: Array<Account>,
+  members: Array<Member>
+};
 
+class Dashboard extends Component<Props> {
   render() {
     const { match, classes, accounts, members } = this.props;
-    const { filter } = this.state;
-    const { onTotalBalanceFilterChange } = this;
 
     // TODO handle the case where accounts exist but no transaction
     if (accounts.length === 0) {
@@ -64,14 +51,9 @@ class Dashboard extends Component<
     return (
       <div className={classes.base}>
         <div className={classes.body}>
-          <TotalBalanceCard
-            filter={filter}
-            members={members}
-            accounts={accounts}
-            onTotalBalanceFilterChange={onTotalBalanceFilterChange}
-          />
+          <TotalBalanceCard members={members} accounts={accounts} />
           <LastOperationCard />
-          <Storages filter={filter} />
+          <Storages />
         </div>
         <div className={classes.aside}>
           {hasMoney && (
