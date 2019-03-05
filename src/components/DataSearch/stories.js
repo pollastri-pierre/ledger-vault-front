@@ -13,7 +13,7 @@ import {
   genOperations
 } from "data/mock-entities";
 
-import { delay } from "data/mock-api";
+import { delay } from "utils/promise";
 
 import RestlayProvider from "restlay/RestlayProvider";
 

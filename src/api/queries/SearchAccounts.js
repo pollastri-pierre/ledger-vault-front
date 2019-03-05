@@ -13,7 +13,7 @@ type Node = Account;
 
 const uri = (query: Input) => {
   const finalQuery: Object = { ...query };
-  const prefix = "/accounts";
+  const prefix = "/accounts-mock";
   const q = queryString.stringify(finalQuery);
   const suffix = q ? `?${q}` : "";
   return `${prefix}${suffix}`;

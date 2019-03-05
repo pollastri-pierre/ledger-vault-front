@@ -10,6 +10,7 @@ import type { ObjectParameters } from "query-string";
 import type { MemoryHistory } from "history";
 
 import colors from "shared/colors";
+import { minWait } from "utils/promise";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -85,7 +86,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     try {
       const query = new Query(queryParams);
-      const response = await restlay.fetchQuery(query);
+      const response = await minWait(restlay.fetchQuery(query), 500);
       patch = { status: "idle", response, error: null };
     } catch (error) {
       patch = { status: "error", error };
@@ -126,14 +127,14 @@ class DataSearch extends PureComponent<Props<*>, State> {
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
-    const data = response ? response.edges.map(el => el.node) : [];
+    const data = resolveData(response);
     const isFirstQuery = this._requestId === 1;
 
     if (status === "error") {
       return (
         <Card>
           <Text>
-            Oww.. snap. Error.
+            Oww.. snap. Error.<br />
             {error && error.message}
           </Text>
           <button onClick={this.fetch}>retry</button>
@@ -210,5 +211,14 @@ const InitialLoading = () => (
     <Text>Retrieving data...</Text>
   </Box>
 );
+
+function resolveData(response) {
+  try {
+    return response ? response.edges.map(el => el.node) : [];
+  } catch (err) {
+    console.warn("Request cant be parsed", err);
+    return [];
+  }
+}
 
 export default connectData(DataSearch);
