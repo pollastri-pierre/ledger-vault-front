@@ -27,7 +27,7 @@ class AdminAccounts extends PureComponent<Props> {
         Query={SearchAccountsQuery}
         TableComponent={AccountsTable}
         FilterComponent={AccountsFilters}
-        customTableDefinition={accountsTableCustom1}
+        customTableDef={accountsTableCustom1}
         onRowClick={this.handleAccountClick}
       />
     );

@@ -14,6 +14,7 @@ import { minWait } from "utils/promise";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { TableDefinition } from "components/Table/types";
 import ConnectionQuery from "restlay/ConnectionQuery";
 
 import Box from "components/base/Box";
@@ -24,6 +25,7 @@ type Props<T> = {
   TableComponent: React$ComponentType<*>,
   FilterComponent: React$ComponentType<*>,
   HeaderComponent?: React$ComponentType<*>,
+  customTableDef?: TableDefinition,
   restlay: RestlayEnvironment,
   Query: (*) => ConnectionQuery<*, *>,
   extraProps: Object,
@@ -122,6 +124,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
       TableComponent,
       FilterComponent,
       HeaderComponent,
+      customTableDef,
       onRowClick,
       extraProps
     } = this.props;
@@ -156,6 +159,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
           {showTable && (
             <TableComponent
               data={data}
+              customTableDef={customTableDef}
               onRowClick={onRowClick}
               queryParams={queryParams}
               onSortChange={this.handleChangeSort}
