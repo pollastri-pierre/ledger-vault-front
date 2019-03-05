@@ -70,6 +70,31 @@ export const getAttestationCertificate = async (): Promise<Buffer> => {
   return Buffer.from(data, "hex");
 };
 
+export const validateVaultOperation = async (
+  path: number[],
+  operation: Buffer
+) => {
+  const data = await deviceNetwork(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
+    path: pathArrayToString(path),
+    operation: operation.toString("hex")
+  });
+  return Buffer.from(data, "hex");
+};
+export const openSession = async (
+  path: number[],
+  pubKey: Buffer,
+  attestation: Buffer,
+  scriptHash: number = 0x00
+): Promise<*> => {
+  const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
+    path: pathArrayToString(path),
+    pubKey: pubKey.toString("hex"),
+    attestation: attestation.toString("hex"),
+    scriptHash
+  });
+  return data;
+};
+
 export const getPublicKey = async (
   transport: *,
   path: number[],

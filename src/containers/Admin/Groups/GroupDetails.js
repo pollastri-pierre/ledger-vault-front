@@ -81,8 +81,8 @@ class GroupModal extends PureComponent<Props, State> {
         )}
         {tabsIndex === 1 && <GroupDetailsDescription group={group} />}
         {tabsIndex === 2 && <GroupDetailsAccounts group={group} />}
-        <ModalFooter>
-          <GroupDetailsFooter group={group} selected={members} />
+        <ModalFooter justify="space-between">
+          <GroupDetailsFooter group={group} selected={members} close={close} />
         </ModalFooter>
       </ModalBody>
     );

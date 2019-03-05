@@ -33,7 +33,7 @@ class TranslatedError extends PureComponent<Props> {
     const arg: Object = Object.assign({ message: error.message }, error);
     if (error.name) {
       const translation = t(`errors:${error.name}.${field}`, arg);
-      if (translation !== `errors:${error.name}.${field}`) {
+      if (translation !== `${error.name}.${field}`) {
         // It is translated
         return translation;
       }

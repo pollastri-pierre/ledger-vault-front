@@ -1,8 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
+import DeviceInteraction from "components/DeviceInteraction";
+import { createAndApprove } from "device/interactions/approveFlow";
 import InputField from "components/InputField";
 import type { Member, Group } from "data/types";
+import GroupsQuery from "api/queries/GroupsQuery";
 import Box from "components/base/Box";
 import { Trans } from "react-i18next";
 import Text from "components/base/Text";
@@ -20,13 +24,15 @@ import {
 
 type Props = {
   operators: Member[],
+  restlay: RestlayEnvironment,
   close: () => void
 };
 
 type State = {
-  selected: Member[],
+  members: Member[],
   name: string,
-  description: string
+  description: string,
+  isCreating: boolean
 };
 
 const inputProps = {
@@ -36,18 +42,28 @@ const inputProps = {
 
 class CreateGroup extends PureComponent<Props, State> {
   state = {
-    selected: [],
+    members: [],
     name: "",
-    description: ""
+    description: "",
+    isCreating: false
   };
 
   onChange = (val: { members: Member[], groups: Group[] }) => {
-    this.setState({ selected: val.members });
+    this.setState({ members: val.members });
   };
 
   onCreate = () => {
-    console.warn("TODO create the group");
-    this.props.close();
+    this.setState({ isCreating: true });
+  };
+
+  onSuccess = () => {
+    this.setState({ isCreating: false });
+    this.props.restlay.fetchQuery(new GroupsQuery({}));
+  };
+
+  onError = error => {
+    console.error(error);
+    this.setState({ isCreating: false });
   };
 
   onChangeName = name => {
@@ -60,7 +76,13 @@ class CreateGroup extends PureComponent<Props, State> {
 
   render() {
     const { close, operators } = this.props;
-    const { selected, name, description } = this.state;
+    const { members, name, description, isCreating } = this.state;
+    const data = {
+      members: members.map(m => m.id),
+      name,
+      description
+    };
+
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
@@ -89,21 +111,32 @@ class CreateGroup extends PureComponent<Props, State> {
             <SelectGroupsUsers
               members={operators}
               groups={[]}
-              value={{ members: selected, group: [] }}
+              value={{ members, group: [] }}
               onChange={this.onChange}
             />
           </Box>
         </Box>
         <ModalFooter>
-          <DialogButton
-            highlight
-            onTouchTap={this.onCreate}
-            disabled={
-              name === "" || description === "" || selected.length === 0
-            }
-          >
-            <Trans i18nKey="group:create.submit" />
-          </DialogButton>
+          {isCreating ? (
+            <Box mb={15}>
+              <DeviceInteraction
+                interactions={createAndApprove}
+                onSuccess={this.onSuccess}
+                onError={this.onError}
+                additionnalFields={{ data, type: "CREATE_GROUP" }}
+              />
+            </Box>
+          ) : (
+            <DialogButton
+              highlight
+              onTouchTap={this.onCreate}
+              disabled={
+                name === "" || description === "" || members.length === 0
+              }
+            >
+              <Trans i18nKey="group:create.submit" />
+            </DialogButton>
+          )}
         </ModalFooter>
       </ModalBody>
     );

@@ -283,7 +283,7 @@ export function genGroups(nb, { members }) {
 const members = genMembers(40);
 const accounts = genAccounts(10, { members });
 const operations = genOperations(100, { accounts, members });
-const groups = genGroups(4, { members });
+const groups = genGroups(40, { members });
 
 export default {
   accounts: keyBy(accounts, "id"),
