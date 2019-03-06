@@ -34,7 +34,22 @@ const FAKE_ACCOUNT_NAMES = [
   "HeyBitcoin",
   "Coinplace",
   "John Smith",
-  "Amanda Wong"
+  "Amanda Wong",
+  "BlockchainPlanet",
+  "Nakchain ETH",
+  "WPNakamoto",
+  "Block.Chain",
+  "Syscoin",
+  "Limecoin",
+  "Chain2B",
+  "Crypstock",
+  "Vaultsy",
+  "BTC Venture",
+  "Cryptor",
+  "Block@ic",
+  "SFY Ltd.",
+  "Capitalsy",
+  "Central"
 ];
 
 const FAKE_GROUP_NAMES = [
