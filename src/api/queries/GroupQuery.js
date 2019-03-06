@@ -11,7 +11,7 @@ type Response = Group;
 
 // Fetch a specific group
 export default class GroupQuery extends Query<Input, Response> {
-  uri = `/group-mock/${this.props.groupId}`;
+  uri = `/groups/${this.props.groupId}`;
 
   responseSchema = schema.Group;
 }

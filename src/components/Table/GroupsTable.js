@@ -96,7 +96,7 @@ class GroupRow extends PureComponent<GroupRowProps> {
         </MUITableCell>
 
         <MUITableCell style={styles.noWrap}>{group.name}</MUITableCell>
-        <MUITableCell>{group.members.length}</MUITableCell>
+        <MUITableCell>{group.members && group.members.length}</MUITableCell>
         <MUITableCell>
           <Status status={group.status} />
         </MUITableCell>

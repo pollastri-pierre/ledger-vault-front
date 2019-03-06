@@ -2,13 +2,18 @@ import {
   getPublicKey as softGetPublicKey,
   authenticate as softAuthenticate,
   register as softRegister,
-  getAttestationCertificate as softGetAttestationCertificate
+  getAttestationCertificate as softGetAttestationCertificate,
+  validateVaultOperation as softValidateVaultOperation,
+  openSession as softOpenSession
 } from "device/VaultDeviceHTTP";
+
 import {
   getPublicKey as hardGetPublicKey,
   authenticate as hardAuthenticate,
   register as hardRegister,
-  getAttestationCertificate as hardGetAttestationCertificate
+  getAttestationCertificate as hardGetAttestationCertificate,
+  validateVaultOperation as hardValidateVaultOperation,
+  openSession as hardOpenSession
 } from "device/VaultDeviceApp";
 
 const softwareMode = () =>
@@ -26,3 +31,9 @@ export const getAttestationCertificate = () =>
   softwareMode()
     ? softGetAttestationCertificate
     : hardGetAttestationCertificate;
+
+export const openSession = () =>
+  softwareMode() ? softOpenSession : hardOpenSession;
+
+export const validateVaultOperation = () =>
+  softwareMode() ? softValidateVaultOperation : hardValidateVaultOperation;

@@ -9,12 +9,98 @@ const splits = (chunk: number, buffer: Buffer): Buffer[] => {
   }
   return chunks;
 };
+
 export const getAttestationCertificate = async (
   transport: Transport<*>
 ): Promise<Buffer> => {
   const response = await transport.send(0xe0, 0x41, 0x00, 0x00);
   return response.slice(0, response.length - 2);
 };
+
+export const validateVaultOperation = async (
+  transport: Transport<*>,
+  path: number[],
+  operation: Buffer
+) => {
+  const maxLength = 100;
+  const paths = Buffer.concat([
+    Buffer.from([path.length]),
+    ...path.map(derivation => {
+      const buf = Buffer.alloc(4);
+      buf.writeUInt32BE(derivation, 0);
+      return buf;
+    })
+  ]);
+
+  const length = Buffer.alloc(2);
+  length.writeUInt16BE(operation.length, 0);
+  let chunks = [operation];
+
+  if (maxLength < operation.length) {
+    chunks = splits(maxLength, operation);
+  }
+
+  const data = Buffer.concat([paths, length, chunks.shift()]);
+  let lastResponse = await transport.send(0xe0, 0x45, 0x00, 0x00, data);
+
+  for (let i = 0; i < chunks.length; i++) {
+    lastResponse = await transport.send(0xe0, 0x45, 0x80, 0x00, chunks[i]);
+  }
+
+  return lastResponse.slice(0, lastResponse.length - 2);
+};
+
+export const openSession = async (
+  transport: Transport<*>,
+  path: number[],
+  pubKey: Buffer,
+  attestation: Buffer,
+  scriptHash: number = 0x00
+): Promise<*> => {
+  const dataDerivation = Buffer.concat([
+    Buffer.from([path.length]),
+    ...path.map(derivation => {
+      const buf = Buffer.alloc(4);
+      buf.writeUInt32BE(derivation, 0);
+      return buf;
+    })
+  ]);
+
+  const lengthAttestation = Buffer.alloc(2);
+  lengthAttestation.writeUInt16BE(attestation.length, 0);
+
+  const maxLength = 150;
+
+  const dataBuffer = Buffer.concat([
+    dataDerivation,
+    pubKey,
+    lengthAttestation,
+    attestation
+  ]);
+  let chunks = [dataBuffer];
+  if (maxLength < dataBuffer.length) {
+    chunks = splits(maxLength, dataBuffer);
+  }
+  let lastResponse = await transport.send(
+    0xe0,
+    0x42,
+    0x00,
+    scriptHash,
+    chunks.shift()
+  );
+
+  for (let i = 0; i < chunks.length; i++) {
+    lastResponse = await transport.send(
+      0xe0,
+      0x42,
+      0x80,
+      scriptHash,
+      chunks[i]
+    );
+  }
+  return lastResponse;
+};
+
 export const register = async (
   transport: Transport<*>,
   challenge: Buffer,
@@ -362,48 +448,7 @@ export default class VaultDeviceApp {
     attestation: Buffer,
     scriptHash: number = 0x00
   ): Promise<*> {
-    const dataDerivation = Buffer.concat([
-      Buffer.from([path.length]),
-      ...path.map(derivation => {
-        const buf = Buffer.alloc(4);
-        buf.writeUInt32BE(derivation, 0);
-        return buf;
-      })
-    ]);
-
-    const lengthAttestation = Buffer.alloc(2);
-    lengthAttestation.writeUInt16BE(attestation.length, 0);
-
-    const maxLength = 150;
-
-    const dataBuffer = Buffer.concat([
-      dataDerivation,
-      pubKey,
-      lengthAttestation,
-      attestation
-    ]);
-    let chunks = [dataBuffer];
-    if (maxLength < dataBuffer.length) {
-      chunks = this.splits(maxLength, dataBuffer);
-    }
-    let lastResponse = await this.transport.send(
-      0xe0,
-      0x42,
-      0x00,
-      scriptHash,
-      chunks.shift()
-    );
-
-    for (let i = 0; i < chunks.length; i++) {
-      lastResponse = await this.transport.send(
-        0xe0,
-        0x42,
-        0x80,
-        scriptHash,
-        chunks[i]
-      );
-    }
-    return lastResponse;
+    return openSession(this.transport, path, pubKey, attestation, scriptHash);
   }
 
   splits(chunk: number, buffer: Buffer): Buffer[] {
@@ -415,38 +460,7 @@ export default class VaultDeviceApp {
   }
 
   async validateVaultOperation(path: number[], operation: Buffer) {
-    const maxLength = 100;
-    const paths = Buffer.concat([
-      Buffer.from([path.length]),
-      ...path.map(derivation => {
-        const buf = Buffer.alloc(4);
-        buf.writeUInt32BE(derivation, 0);
-        return buf;
-      })
-    ]);
-
-    const length = Buffer.alloc(2);
-    length.writeUInt16BE(operation.length, 0);
-    let chunks = [operation];
-
-    if (maxLength < operation.length) {
-      chunks = this.splits(maxLength, operation);
-    }
-
-    const data = Buffer.concat([paths, length, chunks.shift()]);
-    let lastResponse = await this.transport.send(0xe0, 0x45, 0x00, 0x00, data);
-
-    for (let i = 0; i < chunks.length; i++) {
-      lastResponse = await this.transport.send(
-        0xe0,
-        0x45,
-        0x80,
-        0x00,
-        chunks[i]
-      );
-    }
-
-    return lastResponse.slice(0, lastResponse.length - 2);
+    return validateVaultOperation(this.transport, path, operation);
   }
 
   async getAttestationCertificate(): Promise<Buffer> {
