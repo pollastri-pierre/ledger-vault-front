@@ -9,6 +9,12 @@ const splits = (chunk: number, buffer: Buffer): Buffer[] => {
   }
   return chunks;
 };
+export const getAttestationCertificate = async (
+  transport: Transport<*>
+): Promise<Buffer> => {
+  const response = await transport.send(0xe0, 0x41, 0x00, 0x00);
+  return response.slice(0, response.length - 2);
+};
 export const register = async (
   transport: Transport<*>,
   challenge: Buffer,
@@ -444,8 +450,7 @@ export default class VaultDeviceApp {
   }
 
   async getAttestationCertificate(): Promise<Buffer> {
-    const response = await this.transport.send(0xe0, 0x41, 0x00, 0x00);
-    return response.slice(0, response.length - 2);
+    return getAttestationCertificate(this.transport);
   }
 
   async getPublicKey(
