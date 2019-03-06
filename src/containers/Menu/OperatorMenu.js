@@ -60,14 +60,14 @@ function OperatorMenu(props: {
           <Trans i18nKey="menu:operator.receive" />
         </MenuItem>
 
+        <MenuItem to={`${match.url}/operator/accounts`} Icon={FaMoneyCheck}>
+          <Trans i18nKey="menu:operator.accounts" />
+        </MenuItem>
         <MenuItem
           to={`${match.url}/operator/transactions`}
           Icon={FaExchangeAlt}
         >
           <Trans i18nKey="menu:operator.transactions" />
-        </MenuItem>
-        <MenuItem to={`${match.url}/operator/accounts`} Icon={FaMoneyCheck}>
-          <Trans i18nKey="menu:operator.accounts" />
         </MenuItem>
       </MenuList>
 

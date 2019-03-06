@@ -5,15 +5,15 @@ import React, { PureComponent } from "react";
 import { FiltersCard, FieldText } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 
-class AccountsFilters extends PureComponent<FieldsGroupProps> {
+class MembersFilters extends PureComponent<FieldsGroupProps> {
   render() {
     const { ...props } = this.props;
     return (
-      <FiltersCard title="Find accounts" subtitle="Find accounts" {...props}>
+      <FiltersCard title="Find users" subtitle="Find users" {...props}>
         <FieldText title="Name" queryKey="name" placeholder="Name" />
       </FiltersCard>
     );
   }
 }
 
-export default AccountsFilters;
+export default MembersFilters;

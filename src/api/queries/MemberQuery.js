@@ -10,7 +10,7 @@ type Response = Member;
 
 // Fetch a specific group
 export default class MemberQuery extends Query<Input, Response> {
-  uri = `/member-mock/${this.props.memberId}`;
+  uri = `/people/${this.props.memberId}`;
 
   responseSchema = schema.Member;
 }

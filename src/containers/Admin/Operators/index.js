@@ -1,15 +1,18 @@
 // @flow
+
 import React, { PureComponent, Fragment } from "react";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
-import MembersQuery from "api/queries/MembersQuery";
-import connectData from "restlay/connectData";
 
-import Card, { CardTitle, CardLoading, CardError } from "components/base/Card";
-import MembersTable from "components/Table/MembersTable";
+import SearchMembersQuery from "api/queries/SearchMembers";
+
+import { CardTitle } from "components/base/Card";
+import { MembersTable } from "components/Table";
+import { MembersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
 import InviteMemberLink from "components/InviteMemberLink";
 import Box from "components/base/Box";
+import DataSearch from "components/DataSearch";
 
 import type { Member } from "data/types";
 
@@ -17,12 +20,11 @@ import OperatorDetails from "./OperatorDetails";
 import InviteOperator from "../InviteOperator";
 
 type Props = {
-  operators: Member[],
   match: Match,
   history: MemoryHistory
 };
 
-class Administrators extends PureComponent<Props> {
+class Operators extends PureComponent<Props> {
   handleMemberClick = (operator: Member) => {
     this.props.history.push(`operators/details/${operator.id}`);
   };
@@ -31,20 +33,26 @@ class Administrators extends PureComponent<Props> {
     this.props.history.push("operators/invite/operator");
   };
 
+  HeaderComponent = () => (
+    <Box horizontal align="flex-start" justify="space-between" pb={20}>
+      <CardTitle>Operators</CardTitle>
+      <InviteMemberLink onClick={this.inviteMember} member="operator" />
+    </Box>
+  );
+
   render() {
-    const { operators, match } = this.props;
+    const { match, history } = this.props;
+
     return (
       <Fragment>
-        <Card>
-          <Box horizontal align="flex-start" justify="space-between" pb={20}>
-            <CardTitle>Operators</CardTitle>
-            <InviteMemberLink onClick={this.inviteMember} member="admin" />
-          </Box>
-          <MembersTable
-            members={operators}
-            onMemberClick={this.handleMemberClick}
-          />
-        </Card>
+        <DataSearch
+          Query={SearchMembersQuery}
+          TableComponent={MembersTable}
+          FilterComponent={MembersFilters}
+          HeaderComponent={this.HeaderComponent}
+          history={history}
+          onRowClick={this.handleMemberClick}
+        />
         <ModalRoute
           path={`${match.url}/invite/operator`}
           component={InviteOperator}
@@ -58,13 +66,4 @@ class Administrators extends PureComponent<Props> {
   }
 }
 
-export default connectData(Administrators, {
-  RenderLoading: CardLoading,
-  RenderError: CardError,
-  queries: {
-    operators: MembersQuery
-  },
-  propsToQueryParams: () => ({
-    memberRole: "operator"
-  })
-});
+export default Operators;

@@ -33,11 +33,11 @@ function AdminMenu(props: { match: Match }) {
           </MenuItem>
           <PendingsMenuBadge />
         </Box>
-        <MenuItem to={`${match.url}/admin/operators`} Icon={FaUser}>
-          <Trans i18nKey="menu:admin.operators" />
-        </MenuItem>
         <MenuItem to={`${match.url}/admin/groups`} Icon={FaUsers}>
           <Trans i18nKey="menu:admin.groups" />
+        </MenuItem>
+        <MenuItem to={`${match.url}/admin/operators`} Icon={FaUser}>
+          <Trans i18nKey="menu:admin.operators" />
         </MenuItem>
         <MenuItem to={`${match.url}/admin/administrators`} Icon={FaLock}>
           <Trans i18nKey="menu:admin.administrators" />

@@ -291,5 +291,6 @@ export default {
   groups: keyBy(groups, "id"),
   groupsArray: groups,
   members: keyBy(members, "id"),
+  membersArray: members,
   operations: keyBy(operations, "id")
 };
