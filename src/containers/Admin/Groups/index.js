@@ -46,7 +46,7 @@ class AdminGroups extends PureComponent<Props> {
   );
 
   render() {
-    const { match } = this.props;
+    const { match, history } = this.props;
     return (
       <Fragment>
         <DataSearch
@@ -55,6 +55,7 @@ class AdminGroups extends PureComponent<Props> {
           FilterComponent={GroupsFilters}
           HeaderComponent={this.CardHeader}
           onRowClick={this.handleGroupClick}
+          history={history}
         />
         <ModalRoute
           path={`${match.url}/:groupId`}
