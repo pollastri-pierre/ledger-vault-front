@@ -3,7 +3,7 @@ import React, { PureComponent, Fragment } from "react";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import SearchMembersQuery from "api/queries/SearchMembers";
+import SearchAdministratorsQuery from "api/queries/SearchAdministrators";
 
 import { CardTitle } from "components/base/Card";
 import { MembersTable } from "components/Table";
@@ -45,7 +45,7 @@ class Administrators extends PureComponent<Props> {
     return (
       <Fragment>
         <DataSearch
-          Query={SearchMembersQuery}
+          Query={SearchAdministratorsQuery}
           TableComponent={MembersTable}
           FilterComponent={MembersFilters}
           HeaderComponent={this.HeaderComponent}
