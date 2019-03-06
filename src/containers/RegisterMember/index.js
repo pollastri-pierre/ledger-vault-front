@@ -8,6 +8,8 @@ import { Trans } from "react-i18next";
 import type { Match } from "react-router-dom";
 
 import OrganizationQuery from "api/queries/OrganizationQuery";
+import DeviceInteraction from "components/DeviceInteraction";
+import { registerFlow } from "device/interactions/registerFlow";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -19,19 +21,18 @@ import DialogButton from "components/buttons/DialogButton";
 import colors from "shared/colors";
 import { FaUser } from "react-icons/fa";
 
-import type { GateError, MemberInvite } from "data/types";
-
-import { getAuthentication } from "./helpers";
+import type { GateError, MemberInvite, Organization } from "data/types";
 
 type Props = {
   match: Match,
-  organization: *
+  organization: Organization
 };
 type State = {
   member: ?MemberInvite,
   loading: boolean,
-  error: ?$Shape<GateError>,
-  success: boolean
+  error: ?GateError | ?Error,
+  success: boolean,
+  isRegistering: boolean
 };
 
 const styles = {
@@ -49,7 +50,8 @@ class RegisterMember extends PureComponent<Props, State> {
     member: null,
     loading: true,
     error: null,
-    success: false
+    success: false,
+    isRegistering: false
   };
 
   async componentDidMount() {
@@ -67,24 +69,22 @@ class RegisterMember extends PureComponent<Props, State> {
     }
   }
 
-  registerMember = async () => {
-    const { match, organization } = this.props;
-    const { member } = this.state;
-    const urlID = match.params.urlID || "";
-    const url = `/requests/registration/${urlID}/challenge`;
+  registerMember = () => {
+    this.setState({ isRegistering: true });
+  };
 
-    try {
-      const { challenge } = await network(url, "POST");
-      // NOTE: call abstracted out. it will be refactored and generalized soon
-      await getAuthentication(challenge, organization, member);
-      this.setState({ success: true });
-    } catch (error) {
-      this.setState({ error });
-    }
+  onSuccess = () => {
+    this.setState({ isRegistering: false, success: true });
+  };
+
+  onError = error => {
+    this.setState({ error, isRegistering: false });
   };
 
   render() {
     const { member, loading, error, success } = this.state;
+
+    const stringError = getStringError(error);
 
     return (
       <Box justify="center" align="center" style={styles.container}>
@@ -122,13 +122,26 @@ class RegisterMember extends PureComponent<Props, State> {
                     text={member ? member.type : ""}
                   />
                 </Box>
-                {error && (
-                  <Text style={styles.error}>{error.json.message}</Text>
-                )}
+                {stringError && <Text style={styles.error}>{stringError}</Text>}
                 <ModalFooter>
-                  <DialogButton highlight onTouchTap={this.registerMember}>
-                    <Trans i18nKey="inviteMember:registration.button" />
-                  </DialogButton>
+                  {this.state.isRegistering ? (
+                    <Box mb={20}>
+                      <DeviceInteraction
+                        onSuccess={this.onSuccess}
+                        interactions={registerFlow}
+                        onError={this.onError}
+                        additionnalFields={{
+                          organization: this.props.organization,
+                          member,
+                          urlID: this.props.match.params.urlID
+                        }}
+                      />
+                    </Box>
+                  ) : (
+                    <DialogButton highlight onTouchTap={this.registerMember}>
+                      <Trans i18nKey="inviteMember:registration.button" />
+                    </DialogButton>
+                  )}
                 </ModalFooter>
               </ModalBody>
             )}
@@ -161,7 +174,6 @@ class RegisterMember extends PureComponent<Props, State> {
     );
   }
 }
-
 export default connectData(RegisterMember, {
   queries: {
     organization: OrganizationQuery
@@ -179,4 +191,8 @@ function Row(props: { label: string, text: string }) {
       <Text>{text}</Text>
     </Box>
   );
+}
+function getStringError(error: Object) {
+  if (!error || !error.json || !error.json.message) return null;
+  return error.json.message;
 }

@@ -30,6 +30,46 @@ const deviceNetwork = async function<T>(
   });
 };
 
+export const register = async (
+  transport: *,
+  challenge: Buffer,
+  application: string,
+  instanceName: string,
+  instanceReference: string,
+  instanceUrl: string,
+  agentRole: string
+): Promise<{
+  u2f_register: Buffer,
+  keyHandle: Buffer
+}> => {
+  const data = await deviceNetwork(ENDPOINTS.REGISTER, "POST", {
+    challenge: challenge.toString("hex"),
+    application,
+    name: instanceName,
+    role: agentRole,
+    domain_name: instanceUrl,
+    workspace: instanceReference
+  });
+  const response = Buffer.from(data, "hex");
+  let i = 0;
+  const rfu = response.slice(i, (i += 1))[0];
+  const pubKey = response.slice(i, (i += 65)).toString("hex");
+  const keyHandleLength = response.slice(i, ++i)[0];
+  const keyHandle = response.slice(i, (i += keyHandleLength));
+  // const attestationSignature = lastResponse.slice(i, ++i)[0];
+  // const signature = lastResponse.slice(i).toString("hex");
+  return {
+    u2f_register: response.slice(0, response.length - 2),
+    keyHandle,
+    rfu,
+    pubKey
+  };
+};
+export const getAttestationCertificate = async (): Promise<Buffer> => {
+  const data = await deviceNetwork(ENDPOINTS.GET_ATTESTATION, "GET");
+  return Buffer.from(data, "hex");
+};
+
 export const getPublicKey = async (
   transport: *,
   path: number[],

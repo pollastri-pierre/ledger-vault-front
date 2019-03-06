@@ -4,7 +4,7 @@ import { translate } from "react-i18next";
 import { StatusCodes } from "@ledgerhq/hw-transport";
 import network, { NetworkError } from "network";
 import { connect } from "react-redux";
-import type { Translate, Organization } from "data/types";
+import type { Translate, Organization, GateError } from "data/types";
 import type { DeviceError } from "utils/errors";
 import HelpLink from "components/HelpLink";
 import { UnknownDomain, GenericError, InvalidDataDevice } from "utils/errors";
@@ -127,7 +127,7 @@ class Welcome extends Component<Props, State> {
     this.props.addMessage("Hello", "Welcome to the Ledger Vault platform!");
   };
 
-  onError = (e: Error | DeviceError) => {
+  onError = (e: Error | DeviceError | GateError) => {
     this.setState({ error: true });
     // we don't want an error message if it's device reject
     if (e instanceof NetworkError && e.json) {

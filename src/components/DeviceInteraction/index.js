@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import type { CurrentActionType } from "components/DeviceInteractionAnimation";
+import type { GateError } from "data/types";
 
 export type Interaction = {
   needsUserInput?: boolean,
@@ -16,7 +17,7 @@ type Props = {
   interactions: Interaction[],
   additionnalFields: Object,
   onSuccess: Object => void,
-  onError: Error => void
+  onError: (Error | GateError) => void
 };
 
 type State = {
