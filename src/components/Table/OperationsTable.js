@@ -93,7 +93,7 @@ class OperationsTableHeader extends PureComponent<OperationsTableHeaderProps> {
           {withStatus && <MUITableCell>Status</MUITableCell>}
           {withLabel && <MUITableCell>Label</MUITableCell>}
           <MUITableCell />
-          <MUITableCell numeric>Amount</MUITableCell>
+          <MUITableCell align="right">Amount</MUITableCell>
         </MUITableRow>
       </MUITableHead>
     );
@@ -147,7 +147,7 @@ class OperationRow extends PureComponent<OperationRowProps> {
 
         {withLabel && <MUITableCell>{note ? note.content : ""}</MUITableCell>}
 
-        <MUITableCell numeric>
+        <MUITableCell align="right">
           <CounterValue
             from={account.currency_id}
             value={amount}
@@ -157,7 +157,7 @@ class OperationRow extends PureComponent<OperationRowProps> {
           />
         </MUITableCell>
 
-        <MUITableCell numeric>
+        <MUITableCell align="right">
           <Text bold={operation.type === "RECEIVE"}>
             <CurrencyAccountValue
               account={account}
