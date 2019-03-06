@@ -131,7 +131,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     const { status, response, error, queryParams } = this.state;
     const data = resolveData(response);
-    const isFirstQuery = this._requestId === 1;
+    const isFirstQuery = this._requestId <= 1;
 
     if (status === "error") {
       return (
@@ -217,8 +217,15 @@ const InitialLoading = () => (
 );
 
 function resolveData(response) {
+  if (!response) {
+    return [];
+  }
   try {
-    return response ? response.edges.map(el => el.node) : [];
+    if (Array.isArray(response)) {
+      console.warn("Response is not paginated");
+      return response;
+    }
+    return response.edges.map(el => el.node);
   } catch (err) {
     console.warn("Request cant be parsed", err);
     return [];

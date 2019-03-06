@@ -17,31 +17,31 @@ import type { Member } from "data/types";
 import TableScroll from "./TableScroll";
 
 type Props = {
-  members: Member[],
-  onMemberClick: Member => void
+  data: Member[],
+  onRowClick: Member => void
 };
 
 class MembersTable extends PureComponent<Props> {
   Member = (member: Member) => {
-    const { onMemberClick } = this.props;
+    const { onRowClick } = this.props;
 
     const key = `${member.id}`;
 
-    return <MemberRow key={key} member={member} onClick={onMemberClick} />;
+    return <MemberRow key={key} member={member} onClick={onRowClick} />;
   };
 
   render() {
-    const { members } = this.props;
+    const { data } = this.props;
 
-    if (!members.length) {
-      return <NoDataPlaceholder title="No USERS" />;
+    if (!data.length) {
+      return <NoDataPlaceholder title="No users found." />;
     }
 
     return (
       <TableScroll>
         <MUITable>
           <MembersTableHeader />
-          <MUITableBody>{members.map(this.Member)}</MUITableBody>
+          <MUITableBody>{data.map(this.Member)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );

@@ -2,14 +2,16 @@
 import React, { PureComponent, Fragment } from "react";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
-import MembersQuery from "api/queries/MembersQuery";
-import connectData from "restlay/connectData";
 
-import Card, { CardTitle, CardError, CardLoading } from "components/base/Card";
-import MembersTable from "components/Table/MembersTable";
+import SearchMembersQuery from "api/queries/SearchMembers";
+
+import { CardTitle } from "components/base/Card";
+import { MembersTable } from "components/Table";
+import { MembersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
 import InviteMemberLink from "components/InviteMemberLink";
 import Box from "components/base/Box";
+import DataSearch from "components/DataSearch";
 
 import type { Member } from "data/types";
 
@@ -17,13 +19,12 @@ import AdminDetails from "./AdminDetails";
 import InviteAdmin from "../InviteAdmin";
 
 type Props = {
-  admins: Member[],
   match: Match,
   history: MemoryHistory
 };
 
 class Administrators extends PureComponent<Props> {
-  handleUserClick = (admin: Member) => {
+  handleMemberClick = (admin: Member) => {
     this.props.history.push(`administrators/details/${admin.id}`);
   };
 
@@ -31,17 +32,26 @@ class Administrators extends PureComponent<Props> {
     this.props.history.push("administrators/invite/admin");
   };
 
+  HeaderComponent = () => (
+    <Box horizontal align="flex-start" justify="space-between" pb={20}>
+      <CardTitle>Administrators</CardTitle>
+      <InviteMemberLink onClick={this.inviteMember} member="admin" />
+    </Box>
+  );
+
   render() {
-    const { admins, match } = this.props;
+    const { match, history } = this.props;
+
     return (
       <Fragment>
-        <Card>
-          <Box horizontal align="flex-start" justify="space-between" pb={20}>
-            <CardTitle>Administrators</CardTitle>
-            <InviteMemberLink onClick={this.inviteMember} member="admin" />
-          </Box>
-          <MembersTable members={admins} onMemberClick={this.handleUserClick} />
-        </Card>
+        <DataSearch
+          Query={SearchMembersQuery}
+          TableComponent={MembersTable}
+          FilterComponent={MembersFilters}
+          HeaderComponent={this.HeaderComponent}
+          history={history}
+          onRowClick={this.handleMemberClick}
+        />
         <ModalRoute
           path={`${match.url}/invite/admin`}
           component={InviteAdmin}
@@ -55,13 +65,4 @@ class Administrators extends PureComponent<Props> {
   }
 }
 
-export default connectData(Administrators, {
-  RenderLoading: CardLoading,
-  RenderError: CardError,
-  queries: {
-    admins: MembersQuery
-  },
-  propsToQueryParams: () => ({
-    memberRole: "admin"
-  })
-});
+export default Administrators;

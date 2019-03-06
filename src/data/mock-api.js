@@ -41,6 +41,14 @@ const mockSync = (uri, method) => {
       default:
     }
 
+    if (/members-mock.*/.test(uri)) {
+      const edges = mockEntities.membersArray.map(key => ({
+        node: denormalize(key, schema.Member, mockEntities),
+        cursor: key
+      }));
+      return { edges, pageInfo: { hasNextPage: false } };
+    }
+
     if (/groups-mock.*/.test(uri)) {
       const edges = mockEntities.groupsArray.map(key => ({
         node: denormalize(key, schema.Group, mockEntities),
