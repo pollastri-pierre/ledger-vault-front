@@ -1,5 +1,7 @@
 // import URL from "url";
 import { denormalize } from "normalizr-gre";
+
+import { delay } from "utils/promise";
 import mockEntities from "./mock-entities";
 import schema from "./schema";
 
@@ -47,6 +49,14 @@ const mockSync = (uri, method) => {
       return { edges, pageInfo: { hasNextPage: false } };
     }
 
+    if (/accounts-mock.*/.test(uri)) {
+      const edges = mockEntities.accountsArray.map(key => ({
+        node: denormalize(key, schema.Account, mockEntities),
+        cursor: key
+      }));
+      return { edges, pageInfo: { hasNextPage: false } };
+    }
+
     // GET /group-mock/:id
     let m = /^\/group-mock\/([^/]+)$/.exec(uri);
     if (m) {
@@ -72,8 +82,6 @@ const mockSync = (uri, method) => {
     }
   }
 };
-
-export const delay = ms => new Promise(success => setTimeout(success, ms));
 
 export default (uri, init) => {
   const method = typeof init.method === "string" ? init.method : "GET";

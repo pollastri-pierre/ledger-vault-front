@@ -9,12 +9,12 @@ import AdminOperators from "containers/Admin/Operators";
 import AdminGroups from "containers/Admin/Groups";
 import Administrators from "containers/Admin/Administrators";
 import AdminAccounts from "containers/Admin/Accounts";
-import AdminTransactions from "containers/Admin/Transactions";
 
 import OperatorDashboard from "containers/Operator/Dashboard";
-import OperatorTransactions from "containers/Operator/Transactions";
 import OperatorAccounts from "containers/Operator/Accounts";
 import AccountView from "containers/Account/AccountView";
+
+import Operations from "containers/Operations";
 
 import Box from "components/base/Box";
 
@@ -40,13 +40,10 @@ function Content({ match }: { match: Match }) {
         <Route path={`${u}/admin/administrators`} component={Administrators} />
         <Route path={`${u}/admin/accounts`} component={AdminAccounts} />
         <Route path={`${u}/admin/account/:id`} component={AccountView} />
-        <Route path={`${u}/admin/transactions`} component={AdminTransactions} />
+        <Route path={`${u}/admin/transactions`} component={Operations} />
 
         <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
-        <Route
-          path={`${u}/operator/transactions`}
-          component={OperatorTransactions}
-        />
+        <Route path={`${u}/operator/transactions`} component={Operations} />
         <Route path={`${u}/operator/accounts`} component={OperatorAccounts} />
 
         <Route

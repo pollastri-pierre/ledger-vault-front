@@ -10,9 +10,11 @@ import type { ObjectParameters } from "query-string";
 import type { MemoryHistory } from "history";
 
 import colors from "shared/colors";
+import { minWait } from "utils/promise";
 
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
+import type { TableDefinition } from "components/Table/types";
 import ConnectionQuery from "restlay/ConnectionQuery";
 
 import Box from "components/base/Box";
@@ -22,6 +24,8 @@ import Card from "components/base/Card";
 type Props<T> = {
   TableComponent: React$ComponentType<*>,
   FilterComponent: React$ComponentType<*>,
+  HeaderComponent?: React$ComponentType<*>,
+  customTableDef?: TableDefinition,
   restlay: RestlayEnvironment,
   Query: (*) => ConnectionQuery<*, *>,
   extraProps: Object,
@@ -84,7 +88,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     try {
       const query = new Query(queryParams);
-      const response = await restlay.fetchQuery(query);
+      const response = await minWait(restlay.fetchQuery(query), 500);
       patch = { status: "idle", response, error: null };
     } catch (error) {
       patch = { status: "error", error };
@@ -96,10 +100,13 @@ class DataSearch extends PureComponent<Props<*>, State> {
   };
 
   handleUpdateQueryParams = (queryParams: ObjectParameters) => {
-    const { onQueryParamsChange } = this.props;
+    const { onQueryParamsChange, history } = this.props;
     this.setState({ queryParams });
     if (onQueryParamsChange) {
       onQueryParamsChange(queryParams);
+    }
+    if (history) {
+      history.push({ search: qs.stringify(queryParams) });
     }
   };
 
@@ -116,19 +123,21 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const {
       TableComponent,
       FilterComponent,
+      HeaderComponent,
+      customTableDef,
       onRowClick,
       extraProps
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
-    const data = response ? response.edges.map(el => el.node) : [];
+    const data = resolveData(response);
     const isFirstQuery = this._requestId === 1;
 
     if (status === "error") {
       return (
         <Card>
           <Text>
-            Oww.. snap. Error.
+            Oww.. snap. Error.<br />
             {error && error.message}
           </Text>
           <button onClick={this.fetch}>retry</button>
@@ -145,10 +154,12 @@ class DataSearch extends PureComponent<Props<*>, State> {
     return (
       <Box horizontal flow={20} align="flex-start">
         <Card grow>
+          {HeaderComponent && <HeaderComponent />}
           {status === "loading" && <Loading />}
           {showTable && (
             <TableComponent
               data={data}
+              customTableDef={customTableDef}
               onRowClick={onRowClick}
               queryParams={queryParams}
               onSortChange={this.handleChangeSort}
@@ -204,5 +215,14 @@ const InitialLoading = () => (
     <Text>Retrieving data...</Text>
   </Box>
 );
+
+function resolveData(response) {
+  try {
+    return response ? response.edges.map(el => el.node) : [];
+  } catch (err) {
+    console.warn("Request cant be parsed", err);
+    return [];
+  }
+}
 
 export default connectData(DataSearch);

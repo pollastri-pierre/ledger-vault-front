@@ -420,13 +420,6 @@ const theme = {
       lineHeight: "1.16667em",
       color: "rgba(0, 0, 0, 0.87)"
     },
-    subheading: {
-      fontSize: "1rem",
-      fontWeight: 400,
-      fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
-      lineHeight: "1.5em",
-      color: "rgba(0, 0, 0, 0.87)"
-    },
     body2: {
       fontSize: "0.875rem",
       fontWeight: 500,

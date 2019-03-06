@@ -18,7 +18,7 @@ type Props = FieldsGroupProps & {
   accounts: Account[]
 };
 
-class FiltersOperations extends PureComponent<Props> {
+class OperationsFilters extends PureComponent<Props> {
   render() {
     const { accounts, ...props } = this.props;
     return (
@@ -37,4 +37,4 @@ class FiltersOperations extends PureComponent<Props> {
   }
 }
 
-export default FiltersOperations;
+export default OperationsFilters;
