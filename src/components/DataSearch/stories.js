@@ -105,7 +105,7 @@ const mockNetwork = async url => {
       return true;
     });
   }
-  if (url.startsWith("/accounts?")) {
+  if (url.startsWith("/accounts-mock?")) {
     edges = accounts.filter(a => {
       if (
         queryParams.name &&

@@ -23,7 +23,7 @@ const groups = genGroups(10, { members });
 storiesOf("tables", module)
   .add("AccountsTable", () => (
     <Wrapper>
-      <AccountsTable accounts={accounts} />
+      <AccountsTable data={accounts} />
     </Wrapper>
   ))
   .add("GroupsTable", () => (
