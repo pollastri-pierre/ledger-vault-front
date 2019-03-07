@@ -1,5 +1,7 @@
 import { getU2FPublicKey } from "device/interactions/common";
 import { NoChannelForDevice } from "utils/errors";
+import NewRequestMutation from "api/mutations/NewRequestMutation";
+import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import { openSession, validateVaultOperation } from "device/interface";
 import {
   VALIDATION_PATH,
@@ -11,11 +13,10 @@ import network from "network";
 
 const postRequest = {
   responseKey: "request_id",
-  action: ({ data, type }) =>
-    network(`/requests`, "POST", {
-      type,
-      ...data
-    }).then(request => request.id)
+  action: ({ data, type, restlay }) =>
+    restlay
+      .commitMutation(new NewRequestMutation({ type, ...data }))
+      .then(request => request.id)
 };
 
 // FIXME should we put that in the component with a connectData() and a query and pass it
@@ -23,7 +24,7 @@ const postRequest = {
 const getSecureChannel = {
   responseKey: "secure_channel",
   action: ({ request_id }) =>
-    network(`/requests/${request_id}/challenge`, "GET")
+    network(`/requests/${request_id}/challenge`, "POST")
 };
 
 const openSessionDevice = {
@@ -61,8 +62,10 @@ const validateDevice = {
 
 const postApproval = {
   responseKey: "post",
-  action: ({ approval, request_id }) =>
-    network(`/requests/${request_id}/approve`, "POST", { approval })
+  action: ({ approval, request_id, restlay }) =>
+    restlay.commitMutation(
+      new ApproveRequestMutation({ requestId: request_id, approval })
+    )
 };
 
 export const approveFlow = [
