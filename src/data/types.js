@@ -308,3 +308,32 @@ export type ERC20Token = {
   ticker: string,
   signature: string
 };
+
+type RequestCommon = {
+  created_by: number,
+  created_on: string,
+  id: number,
+  status: string,
+  type: string,
+  approvals: RequestApproval[],
+  user?: RequestUser,
+  group?: RequestGroup
+};
+
+export type Request = RequestCommon;
+
+type RequestApproval = {
+  created_by: Member,
+  created_on: string,
+  type: string
+};
+type RequestUser = {
+  created_on: string,
+  id: number,
+  key_handle: string,
+  pub_key: string,
+  status: string,
+  user_id: string,
+  username: string
+};
+type RequestGroup = {};

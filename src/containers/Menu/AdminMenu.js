@@ -15,6 +15,7 @@ import {
 } from "react-icons/fa";
 
 import Box from "components/base/Box";
+import PendingBadge from "containers/Admin/Dashboard/PendingBadge";
 import PendingsMenuBadge from "./PendingsMenuBadge";
 
 import MenuItem from "./MenuItem";
@@ -24,9 +25,12 @@ function AdminMenu(props: { match: Match }) {
   return (
     <Box data-test="dashboard-admin-menu">
       <MenuList>
-        <MenuItem to={`${match.url}/admin/dashboard`} Icon={FaHome}>
-          <Trans i18nKey="menu:admin.dashboard" />
-        </MenuItem>
+        <Box horizontal align="center">
+          <MenuItem to={`${match.url}/admin/dashboard`} Icon={FaHome}>
+            <Trans i18nKey="menu:admin.dashboard" />
+          </MenuItem>
+          <PendingBadge />
+        </Box>
         <Box horizontal align="center">
           <MenuItem to={`${match.url}/admin/tasks`} Icon={FaList}>
             <Trans i18nKey="menu:admin.tasks" />
