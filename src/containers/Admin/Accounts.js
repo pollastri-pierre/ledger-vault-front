@@ -22,6 +22,7 @@ class AdminAccounts extends PureComponent<Props> {
   };
 
   render() {
+    const { history } = this.props;
     return (
       <DataSearch
         Query={SearchAccountsQuery}
@@ -29,6 +30,7 @@ class AdminAccounts extends PureComponent<Props> {
         FilterComponent={AccountsFilters}
         customTableDef={accountsTableCustom1}
         onRowClick={this.handleAccountClick}
+        history={history}
       />
     );
   }

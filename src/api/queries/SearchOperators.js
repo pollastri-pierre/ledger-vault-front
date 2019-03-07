@@ -14,14 +14,14 @@ type Node = Member;
 
 const uri = (query: Input) => {
   const finalQuery: Object = {
-    ...query
+    ...query,
+    role: "OPERATOR"
   };
   const q = queryString.stringify(finalQuery);
   return `/people${q ? "?" : ""}${q}`;
 };
 
-// Fetch all groups
-export default class MembersQuery extends ConnectionQuery<Input, Node> {
+export default class SearchOperatorsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
   size = 30;
