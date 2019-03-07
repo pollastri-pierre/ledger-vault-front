@@ -16,32 +16,49 @@ import {
   ModalFooter
 } from "components/base/Modal";
 
+import type { GateError, Request } from "data/types";
+
 import PendingRequestOverview from "./PendingRequestOverview";
 import PendingRequestHistory from "./PendingRequestHistory";
 import PendingRequestFooter from "./PendingRequestFooter";
 
 type Props = {
   close: () => void,
-  request: *
+  request: Request
 };
 
 type State = {
-  tabsIndex: number
+  tabsIndex: number,
+  error: ?GateError
 };
 const tabTitles = ["Overview", "History"];
 
 class PendingRequest extends PureComponent<Props, State> {
   state = {
-    tabsIndex: 0
+    tabsIndex: 0,
+    error: null
   };
 
   onTabChange = (e: SyntheticEvent<HTMLInputElement>, tabsIndex: number) => {
     this.setState({ tabsIndex });
   };
 
+  onSuccess = () => {
+    const { close } = this.props;
+    close();
+  };
+
+  onError = (error: GateError) => {
+    if (error.json) {
+      this.setState({ error });
+    } else {
+      console.warn(error);
+    }
+  };
+
   render() {
     const { close, request } = this.props;
-    const { tabsIndex } = this.state;
+    const { tabsIndex, error } = this.state;
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
@@ -61,11 +78,17 @@ class PendingRequest extends PureComponent<Props, State> {
           </Tabs>
         </ModalHeader>
         <Box>
-          {tabsIndex === 0 && <PendingRequestOverview request={request} />}
+          {tabsIndex === 0 && (
+            <PendingRequestOverview request={request} error={error} />
+          )}
           {tabsIndex === 1 && <PendingRequestHistory request={request} />}
         </Box>
         <ModalFooter justify="space-between">
-          <PendingRequestFooter requestID={request.id} onClose={close} />
+          <PendingRequestFooter
+            requestID={request.id}
+            onSuccess={this.onSuccess}
+            onError={this.onError}
+          />
         </ModalFooter>
       </ModalBody>
     );

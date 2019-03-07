@@ -5,15 +5,18 @@ import DateFormat from "components/DateFormat";
 import LineRow from "components/LineRow";
 import Box from "components/base/Box";
 
-import type { Request } from "data/types";
+import type { Request, GateError } from "data/types";
+
+import colors from "shared/colors";
 
 type Props = {
-  request: Request
+  request: Request,
+  error: ?GateError
 };
 
 class PendingRequestsOverview extends PureComponent<Props> {
   render() {
-    const { request } = this.props;
+    const { request, error } = this.props;
     const workspace = window.location.pathname.split("/")[1];
     // TODO: as a separate task refactor using the idea of InfoList for different category
     return (
@@ -34,6 +37,11 @@ class PendingRequestsOverview extends PureComponent<Props> {
           </Fragment>
         ) : (
           <Box>Another entity, not user</Box>
+        )}
+        {error && (
+          <Box align="center" justify="center" color={colors.grenade}>
+            error.json.message
+          </Box>
         )}
       </Box>
     );

@@ -6,39 +6,49 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import RequestApproveMutation from "api/mutations/RequestApproveMutation";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 import DialogButton from "components/buttons/DialogButton";
+import AbortRequestButton from "components/AbortRequestButton";
+
+import type { GateError } from "data/types";
 
 type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
-  onClose: () => void
+  onSuccess: () => void,
+  onError: (Error | GateError) => void
 };
 
 class AdminTasksFooter extends PureComponent<Props> {
-  abort = () => {
-    console.warn("TODO: revoke member");
-  };
-
   approve = async () => {
+    const { onSuccess, onError, restlay, requestID } = this.props;
     try {
       // TODO: add device interation flow part
-      await this.props.restlay.commitMutation(
+      await restlay.commitMutation(
         new RequestApproveMutation({
-          requestID: this.props.requestID
+          requestID
         })
       );
-      await this.props.restlay.fetchQuery(new PendingRequestsQuery());
-      this.props.onClose();
+      await restlay.fetchQuery(new PendingRequestsQuery());
+      onSuccess();
     } catch (error) {
-      console.warn(error);
+      onError(error);
     }
   };
 
+  onClose = async () => {
+    const { restlay, onSuccess } = this.props;
+    await restlay.fetchQuery(new PendingRequestsQuery());
+    onSuccess();
+  };
+
   render() {
+    const { requestID, onError } = this.props;
     return (
       <Fragment>
-        <DialogButton highlight onTouchTap={this.abort}>
-          <Trans i18nKey="common:revoke" />
-        </DialogButton>
+        <AbortRequestButton
+          requestID={requestID}
+          onSuccess={this.onClose}
+          onError={onError}
+        />
         <DialogButton onTouchTap={this.approve}>
           <Trans i18nKey="common:approve" />
         </DialogButton>
