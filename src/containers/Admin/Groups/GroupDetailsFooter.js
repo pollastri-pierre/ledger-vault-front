@@ -60,7 +60,7 @@ class GroupDetailsFooter extends PureComponent<Props, State> {
   };
 
   abortGroup = async () => {
-    const requestID = this.props.group.request_id;
+    const requestID = this.props.group.last_request_id;
     if (!requestID) return;
 
     try {
@@ -126,7 +126,7 @@ class GroupDetailsFooter extends PureComponent<Props, State> {
                   <DeviceInteraction
                     interactions={approveFlow}
                     additionnalFields={{
-                      request_id: group.request_id
+                      request_id: group.last_request_id
                     }}
                     onSuccess={this.onApproveSuccess}
                     onError={this.onApproveError}

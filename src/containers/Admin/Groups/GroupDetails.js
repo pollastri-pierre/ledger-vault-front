@@ -3,12 +3,13 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import GroupQuery from "api/queries/GroupQuery";
+import type { Match } from "react-router-dom";
 import MembersQuery from "api/queries/MembersQuery";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "components/base/Box";
-import Text from "components/base/Text";
 import type { Group, Member } from "data/types";
+import type { MemoryHistory } from "history";
+import GoBack from "components/GoBack";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import GroupDetailsDescription from "containers/Admin/Groups/GroupDetailsDescription";
@@ -89,11 +90,13 @@ class GroupModal extends PureComponent<Props, State> {
   }
 }
 
-const RenderError = () => (
-  <Box width={450} height={700}>
-    <Text>ERROR</Text>
-  </Box>
-);
+const RenderError = ({
+  history,
+  match
+}: {
+  history: MemoryHistory,
+  match: Match
+}) => <GoBack history={history} match={match} />;
 
 const RenderLoading = () => <ModalLoading height={700} />;
 export default connectData(GroupModal, {
