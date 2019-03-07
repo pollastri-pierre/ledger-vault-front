@@ -57,10 +57,10 @@ const styles = {
     }
   },
   isWarning: {
-    color: darken(colors.blue_orange, 0.5),
+    color: colors.light_orange,
     backgroundColor: opacity(colors.blue_orange, 0.1),
     "& .icon": {
-      color: darken(colors.blue_orange, 0.5)
+      color: colors.light_orange
     },
     "& .footer": {
       background: opacity(colors.blue_orange, 0.1)
