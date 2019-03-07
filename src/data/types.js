@@ -315,12 +315,18 @@ type RequestCommon = {
   id: number,
   status: string,
   type: string,
+  approvals: RequestApproval[],
   user?: RequestUser,
   group?: RequestGroup
 };
 
 export type Request = RequestCommon;
 
+type RequestApproval = {
+  created_by: Member,
+  created_on: string,
+  type: string
+};
 type RequestUser = {
   created_on: string,
   id: number,

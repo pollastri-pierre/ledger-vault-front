@@ -6,11 +6,12 @@ import MUITableCell from "@material-ui/core/TableCell";
 
 import Status from "components/Status";
 import DateFormat from "components/DateFormat";
+import type { Request } from "data/types";
 
 import type { TableItem } from "../types";
 
 type CellProps = {
-  request: *,
+  request: Request,
   item: TableItem
 };
 class RequestBodyCell extends PureComponent<CellProps> {
