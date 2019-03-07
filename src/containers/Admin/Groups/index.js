@@ -15,6 +15,7 @@ import { GroupsFilters } from "components/filters";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import SearchGroupsQuery from "api/queries/SearchGroups";
+import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import DataSearch from "components/DataSearch";
 
 import type { Group } from "data/types";
@@ -24,6 +25,7 @@ type Props = {
   history: MemoryHistory
 };
 
+const mutationsToListen = [ApproveRequestMutation];
 class AdminGroups extends PureComponent<Props> {
   handleGroupClick = (group: Group) => {
     const { history } = this.props;
@@ -56,6 +58,7 @@ class AdminGroups extends PureComponent<Props> {
           HeaderComponent={this.CardHeader}
           onRowClick={this.handleGroupClick}
           history={history}
+          listenMutations={mutationsToListen}
         />
         <ModalRoute
           path={`${match.url}/:groupId`}

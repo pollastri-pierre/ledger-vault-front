@@ -130,6 +130,8 @@ const mapStateToProps = (state: Object): { dataStore: Store } => ({
   dataStore: state.data
 });
 
+const _listeners = new Map();
+
 export default function connectData<
   A: {
     [key: string]: Class<Query<any, any> | ConnectionQuery<any, any>>
@@ -214,13 +216,65 @@ export default function connectData<
 
     executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
 
-    execute<Out: *>(
+    subscribeMutations = (
+      mutations: Mutation<any, any>[],
+      callback: () => void
+    ) => {
+      mutations.forEach(m => this.subscribeMutation(m, callback));
+    };
+
+    unsubscribeMutations = (
+      mutations: Mutation<any, any>[],
+      callback: () => void
+    ) => {
+      mutations.forEach(m => this.unsubscribeMutation(m, callback));
+    };
+
+    subscribeMutation = (
+      mutation: Mutation<any, any>,
+      callback: () => void
+    ) => {
+      const callbacks = _listeners.get(mutation);
+
+      if (!callbacks) {
+        _listeners.set(mutation, [callback]);
+      } else {
+        callbacks.push(callback);
+      }
+    };
+
+    unsubscribeMutation = (
+      mutation: Mutation<any, any>,
+      callback: () => void
+    ) => {
+      const callbacks = _listeners.get(mutation);
+
+      if (!callbacks) {
+        throw new Error("unkown mutation to unsubscribe");
+      }
+
+      callbacks.splice(callbacks.indexOf(callback), 1);
+      if (callbacks.length === 0) {
+        _listeners.delete(mutation);
+      }
+    };
+
+    async execute<Out: *>(
       queryOrMutation:
         | Query<any, Out>
         | Mutation<any, Out>
         | ConnectionQuery<any, any>
     ): Promise<Out> {
-      return this.props.dispatch(this.executeQueryF(queryOrMutation));
+      const res = await this.props.dispatch(
+        this.executeQueryF(queryOrMutation)
+      );
+      _listeners.forEach((callbacks, mutation) => {
+        if (queryOrMutation instanceof mutation) {
+          callbacks.forEach(c => c());
+        }
+      });
+
+      return res;
     }
 
     commitMutation = <Res>(m: Mutation<any, Res>): Promise<Res> =>
@@ -422,6 +476,8 @@ export default function connectData<
     restlay: RestlayEnvironment = {
       commitMutation: this.commitMutation,
       fetchQuery: this.fetchQuery,
+      subscribeMutations: this.subscribeMutations,
+      unsubscribeMutations: this.unsubscribeMutations,
       forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
       getVariables: this.getVariables,
       setVariables: this.setVariables

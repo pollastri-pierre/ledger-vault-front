@@ -57,8 +57,10 @@ class CreateGroup extends PureComponent<Props, State> {
   };
 
   onSuccess = () => {
+    const { restlay, close } = this.props;
     this.setState({ isCreating: false });
-    this.props.restlay.fetchQuery(new GroupsQuery({}));
+    restlay.fetchQuery(new GroupsQuery({}));
+    close();
   };
 
   onError = error => {

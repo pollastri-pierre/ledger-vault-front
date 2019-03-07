@@ -16,7 +16,7 @@ const uri = (query: Input) => {
     ...query
   };
   const q = queryString.stringify(finalQuery);
-  return `/groups-mock${q ? "?" : ""}${q}`;
+  return `/groups${q ? "?" : ""}${q}`;
 };
 
 // Fetch all groups

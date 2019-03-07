@@ -1,7 +1,8 @@
 // @flow
-
 import React, { PureComponent } from "react";
+import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
+import connectData from "restlay/connectData";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import type { CurrentActionType } from "components/DeviceInteractionAnimation";
 import type { GateError } from "data/types";
@@ -16,6 +17,7 @@ export type Interaction = {
 type Props = {
   interactions: Interaction[],
   additionnalFields: Object,
+  restlay: RestlayEnvironment,
   onSuccess: Object => void,
   onError: (Error | GateError) => void
 };
@@ -40,8 +42,8 @@ class DeviceInteraction extends PureComponent<Props, State> {
   };
 
   runInteractions = async () => {
-    const { interactions, additionnalFields } = this.props;
-    const responses = { ...additionnalFields };
+    const { interactions, additionnalFields, restlay } = this.props;
+    const responses = { ...additionnalFields, restlay };
     if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
       // $FlowFixMe
       const transport = await LedgerTransportU2F.create();
@@ -93,4 +95,4 @@ class DeviceInteraction extends PureComponent<Props, State> {
   }
 }
 
-export default DeviceInteraction;
+export default connectData(DeviceInteraction);
