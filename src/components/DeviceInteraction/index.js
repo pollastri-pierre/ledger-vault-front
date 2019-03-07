@@ -16,7 +16,7 @@ export type Interaction = {
 
 type Props = {
   interactions: Interaction[],
-  additionnalFields: Object,
+  additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
   onError: (Error | GateError) => void
@@ -38,12 +38,12 @@ class DeviceInteraction extends PureComponent<Props, State> {
   _unmounted = false;
 
   static defaultProps = {
-    additionnalFields: {}
+    additionalFields: {}
   };
 
   runInteractions = async () => {
-    const { interactions, additionnalFields, restlay } = this.props;
-    const responses = { ...additionnalFields, restlay };
+    const { interactions, additionalFields, restlay } = this.props;
+    const responses = { ...additionalFields, restlay };
     if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
       // $FlowFixMe
       const transport = await LedgerTransportU2F.create();

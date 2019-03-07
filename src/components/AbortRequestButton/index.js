@@ -11,7 +11,8 @@ type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
   onSuccess: () => void,
-  onError: Error => void
+  onError: Error => void,
+  disabled?: boolean
 };
 
 class AbortRequestButton extends PureComponent<Props> {
@@ -27,8 +28,9 @@ class AbortRequestButton extends PureComponent<Props> {
   };
 
   render() {
+    const { disabled } = this.props;
     return (
-      <DialogButton onTouchTap={this.abort}>
+      <DialogButton disabled={disabled} abort onTouchTap={this.abort}>
         <Trans i18nKey="common:abort" />
       </DialogButton>
     );

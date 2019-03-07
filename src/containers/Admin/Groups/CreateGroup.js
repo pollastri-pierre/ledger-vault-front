@@ -39,7 +39,7 @@ const inputProps = {
   maxLength: 19,
   onlyAscii: true
 };
-
+// NOTE: refactor with the new ApproveRequestButton
 class CreateGroup extends PureComponent<Props, State> {
   state = {
     members: [],
@@ -125,7 +125,7 @@ class CreateGroup extends PureComponent<Props, State> {
                 interactions={createAndApprove}
                 onSuccess={this.onSuccess}
                 onError={this.onError}
-                additionnalFields={{ data, type: "CREATE_GROUP" }}
+                additionalFields={{ data, type: "CREATE_GROUP" }}
               />
             </Box>
           ) : (

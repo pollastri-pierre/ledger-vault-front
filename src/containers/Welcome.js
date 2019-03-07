@@ -232,7 +232,7 @@ class Welcome extends Component<Props, State> {
                 onSuccess={this.onFinishLogin}
                 interactions={loginFlow}
                 onError={this.onError}
-                additionnalFields={{
+                additionalFields={{
                   organization: this.state.organization
                 }}
               />

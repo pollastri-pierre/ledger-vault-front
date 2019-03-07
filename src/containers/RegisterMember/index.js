@@ -130,7 +130,7 @@ class RegisterMember extends PureComponent<Props, State> {
                         onSuccess={this.onSuccess}
                         interactions={registerFlow}
                         onError={this.onError}
-                        additionnalFields={{
+                        additionalFields={{
                           organization: this.props.organization,
                           member,
                           urlID: this.props.match.params.urlID
