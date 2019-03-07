@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import Mutation from "restlay/Mutation";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import qs from "query-string";
@@ -31,6 +32,7 @@ type Props<T> = {
   extraProps: Object,
   onQueryParamsChange?: ObjectParameters => void,
   onRowClick?: T => void,
+  listenMutations?: Mutation<any, any>[],
   history?: MemoryHistory
 };
 
@@ -59,7 +61,12 @@ class DataSearch extends PureComponent<Props<*>, State> {
   }
 
   componentDidMount() {
+    const { listenMutations, restlay } = this.props;
+
     this.fetch();
+    if (listenMutations) {
+      restlay.subscribeMutations(listenMutations, this.fetch);
+    }
   }
 
   componentDidUpdate(prevProps: Props<*>, prevState: State) {
@@ -69,6 +76,11 @@ class DataSearch extends PureComponent<Props<*>, State> {
   }
 
   componentWillUnmount() {
+    const { listenMutations, restlay } = this.props;
+
+    if (listenMutations) {
+      restlay.unsubscribeMutations(listenMutations, this.fetch);
+    }
     this._isUnmounted = true;
   }
 
