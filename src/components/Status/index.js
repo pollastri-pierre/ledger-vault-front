@@ -13,14 +13,18 @@ import type { Translate } from "data/types";
 const BG_BY_STATUS = {
   ABORTED: opacity(colors.grenade, 0.1),
   APPROVED: opacity(colors.green, 0.1),
+  ACTIVE: opacity(colors.green, 0.1),
   PENDING_APPROVAL: opacity(colors.blue_orange, 0.1),
+  PENDING_CREATION_APPROVAL: opacity(colors.blue_orange, 0.1),
   VIEW_ONLY: colors.cream
 };
 
 const COLOR_BY_STATUS = {
   ABORTED: colors.grenade,
   APPROVED: darken(colors.green, 0.2),
+  ACTIVE: darken(colors.green, 0.2),
   PENDING_APPROVAL: darken(colors.blue_orange, 0.5),
+  PENDING_CREATION_APPROVAL: darken(colors.blue_orange, 0.5),
   VIEW_ONLY: colors.steel
 };
 

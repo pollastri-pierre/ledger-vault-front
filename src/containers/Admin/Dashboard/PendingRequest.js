@@ -12,13 +12,14 @@ import { addMessage, addError } from "redux/modules/alerts";
 import { NoChannelForDevice, GenericError } from "utils/errors";
 
 import Box from "components/base/Box";
-import { CardLoading, CardError } from "components/base/Card";
+import { CardError } from "components/base/Card";
 import {
   ModalBody,
   ModalHeader,
   ModalTitle,
   ModalFooter
 } from "components/base/Modal";
+import ModalLoading from "components/ModalLoading";
 
 import type { GateError, Request } from "data/types";
 
@@ -106,12 +107,14 @@ class PendingRequest extends PureComponent<Props, State> {
   }
 }
 
+const RenderLoading = () => <ModalLoading height={700} />;
+
 export default connect(
   null,
   mapDispatchToProps
 )(
   connectData(PendingRequest, {
-    RenderLoading: CardLoading,
+    RenderLoading,
     RenderError: CardError,
     queries: {
       request: RequestQuery
