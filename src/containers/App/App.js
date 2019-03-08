@@ -14,6 +14,7 @@ import Menu from "containers/Menu";
 import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import Box from "components/base/Box";
+import UserContextProvider from "components/UserContextProvider";
 
 const styles = {
   error: {
@@ -31,7 +32,7 @@ type Props = {
   accounts: Account[]
 };
 function App({ location, match, accounts }: Props) {
-  return (
+  let res = (
     <Box className="App">
       <ActionBar match={match} location={location} />
       <Box className="Main">
@@ -44,6 +45,8 @@ function App({ location, match, accounts }: Props) {
       </Box>
     </Box>
   );
+  res = <UserContextProvider>{res}</UserContextProvider>;
+  return res;
 }
 
 const RenderError = ({ error, restlay }: *) => (
