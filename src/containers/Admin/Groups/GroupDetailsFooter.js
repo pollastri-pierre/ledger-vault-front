@@ -80,7 +80,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
 
     return (
       <Fragment>
-        {status === "PENDING_APPROVAL" &&
+        {status.startsWith("PENDING_") &&
           !hasUserApproved && (
             <Fragment>
               <AbortRequestButton
