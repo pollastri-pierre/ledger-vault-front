@@ -12,6 +12,7 @@ import ModalRoute from "components/ModalRoute";
 import InviteMemberLink from "components/InviteMemberLink";
 import Box from "components/base/Box";
 import DataSearch from "components/DataSearch";
+import InviteMemberQuery from "api/queries/InviteMemberQuery";
 
 import type { Member } from "data/types";
 
@@ -22,6 +23,8 @@ type Props = {
   match: Match,
   history: MemoryHistory
 };
+
+const mutationsToListen = [InviteMemberQuery];
 
 class Administrators extends PureComponent<Props> {
   handleMemberClick = (admin: Member) => {
@@ -51,6 +54,7 @@ class Administrators extends PureComponent<Props> {
           HeaderComponent={this.HeaderComponent}
           history={history}
           onRowClick={this.handleMemberClick}
+          listenMutations={mutationsToListen}
         />
         <ModalRoute
           path={`${match.url}/invite/admin`}
