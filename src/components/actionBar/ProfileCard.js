@@ -1,21 +1,15 @@
 // @flow
 import React, { Component } from "react";
 import type { Match } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import MenuList from "@material-ui/core/MenuList";
 import { FaUserCircle } from "react-icons/fa";
-
-import connectData from "restlay/connectData";
-import ProfileQuery from "api/queries/ProfileQuery";
-
 import { mixinHoverSelected } from "shared/common";
 import colors from "shared/colors";
-
 import type { Member } from "data/types";
-
 import Text from "components/base/Text";
 import MenuLink from "components/MenuLink";
+import { withMe } from "components/UserContextProvider";
 import PopBubble from "../utils/PopBubble";
 
 const styles = {
@@ -50,7 +44,7 @@ const styles = {
 };
 
 type Props = {
-  profile: Member,
+  me: Member,
   classes: { [_: $Keys<typeof styles>]: string },
   match: Match
 };
@@ -79,7 +73,7 @@ class ProfileCard extends Component<Props, State> {
   };
 
   render() {
-    const { profile, match, classes } = this.props;
+    const { match, classes, me } = this.props;
     const { bubbleOpened } = this.state;
     return (
       <div>
@@ -90,7 +84,7 @@ class ProfileCard extends Component<Props, State> {
         >
           <FaUserCircle size={30} />
           <div className={classes.profile_info}>
-            <Text className={classes.userName}>{profile.username}</Text>
+            <Text className={classes.userName}>{me.username}</Text>
             <Text
               small
               uppercase
@@ -98,7 +92,7 @@ class ProfileCard extends Component<Props, State> {
               className={classes.userRole}
               data-test="view-profile"
             >
-              {profile.role || "Administrator"}
+              {me.role || "Administrator"}
             </Text>
           </div>
         </div>
@@ -128,15 +122,4 @@ class ProfileCard extends Component<Props, State> {
   }
 }
 
-const RenderLoading = withStyles(styles)(({ classes }) => (
-  <div className={classes.base}>
-    <CircularProgress />
-  </div>
-));
-
-export default connectData(withStyles(styles)(ProfileCard), {
-  RenderLoading,
-  queries: {
-    profile: ProfileQuery
-  }
-});
+export default withStyles(styles)(withMe(ProfileCard));
