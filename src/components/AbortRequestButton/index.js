@@ -6,12 +6,13 @@ import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import DialogButton from "components/buttons/DialogButton";
+import type { GateError } from "data/types";
 
 type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
   onSuccess: () => void,
-  onError: Error => void,
+  onError: (Error | GateError) => void,
   disabled?: boolean
 };
 
