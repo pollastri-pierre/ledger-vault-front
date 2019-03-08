@@ -16,6 +16,7 @@
   "edit": "Edit",
   "approve": "Approve",
   "revoke": "Revoke",
+  "abort": "Abort",
   "reject": "Reject",
   "remove": "Delete",
   "operationStatus": "Operation status",

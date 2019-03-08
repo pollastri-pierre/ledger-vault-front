@@ -2,16 +2,16 @@
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import { connect } from "react-redux";
-import network, { NetworkError } from "network";
+import { NetworkError } from "network";
 import { approveFlow } from "device/interactions/approveFlow";
 import { NoChannelForDevice, GenericError } from "utils/errors";
 import { addMessage, addError } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
 import DialogButton from "components/buttons/DialogButton";
-import DeviceInteraction from "components/DeviceInteraction";
 import ProfileQuery from "api/queries/ProfileQuery";
 import type { Group, Member, GateError } from "data/types";
-import Box from "components/base/Box";
+import AbortRequestButton from "components/AbortRequestButton";
+import ApproveRequestButton from "components/ApproveRequestButton";
 
 type Props = {
   group: Group,
@@ -20,11 +20,6 @@ type Props = {
   addMessage: (string, string, ?string) => void,
   addError: Error => void,
   me: Member
-};
-
-type State = {
-  isApproving: boolean,
-  isAborting: boolean
 };
 
 const mapDispatchToProps = {
@@ -49,51 +44,22 @@ const hasArrayChanged = (array1: Member[], array2: Member[]): boolean => {
   return i !== array1.length;
 };
 
-class GroupDetailsFooter extends PureComponent<Props, State> {
-  state = {
-    isApproving: false,
-    isAborting: false
-  };
-
+class GroupDetailsFooter extends PureComponent<Props> {
   deleteGroup = () => {
     console.warn("TODO: delete group");
   };
 
-  abortGroup = async () => {
-    const requestID = this.props.group.last_request_id;
-    if (!requestID) return;
-
-    try {
-      this.setState({ isAborting: true });
-      await network(`/requests/${requestID}/abort`, "POST");
-      this.props.close();
-    } catch (e) {
-      if (e instanceof NetworkError && e.json) {
-        this.props.addMessage(`Error ${e.json.code}`, e.json.message, "error");
-      } else {
-        this.props.addError(new GenericError());
-      }
-    } finally {
-      this.setState({ isAborting: false });
-    }
-  };
-
-  approveGroup = () => {
-    // we just toggle the render of <DeviceInteraction />
-    this.setState({ isApproving: true });
-  };
-
-  onApproveSuccess = () => {
-    this.setState({ isApproving: false });
+  onSuccess = () => {
     this.props.close();
   };
 
-  onApproveError = (e: Error | GateError) => {
-    this.setState({ isApproving: false });
+  onError = (e: Error | GateError) => {
     if (e instanceof NetworkError && e.json) {
       this.props.addMessage(`Error ${e.json.code}`, e.json.message, "error");
     } else if (e instanceof NoChannelForDevice) {
       this.props.addError(e);
+    } else {
+      this.props.addError(new GenericError());
     }
   };
 
@@ -103,7 +69,6 @@ class GroupDetailsFooter extends PureComponent<Props, State> {
 
   render() {
     const { me, group, selected } = this.props;
-    const { isApproving, isAborting } = this.state;
 
     const { status, approvals } = group;
     const hasUserApproved =
@@ -114,33 +79,19 @@ class GroupDetailsFooter extends PureComponent<Props, State> {
         {status === "PENDING_APPROVAL" &&
           !hasUserApproved && (
             <Fragment>
-              <DialogButton
-                abort
-                disabled={isApproving}
-                onTouchTap={this.abortGroup}
-              >
-                <Trans i18nKey="common:reject" />
-              </DialogButton>
-              {isApproving ? (
-                <Box mb={15}>
-                  <DeviceInteraction
-                    interactions={approveFlow}
-                    additionnalFields={{
-                      request_id: group.last_request_id
-                    }}
-                    onSuccess={this.onApproveSuccess}
-                    onError={this.onApproveError}
-                  />
-                </Box>
-              ) : (
-                <DialogButton
-                  highlight
-                  onTouchTap={this.approveGroup}
-                  disabled={isAborting}
-                >
-                  <Trans i18nKey="common:approve" />
-                </DialogButton>
-              )}
+              <AbortRequestButton
+                requestID={group.last_request_id}
+                onSuccess={this.onSuccess}
+                onError={this.onError}
+              />
+              <ApproveRequestButton
+                interactions={approveFlow}
+                onSuccess={this.onSuccess}
+                onError={this.onError}
+                additionalFields={{ request_id: group.last_request_id }}
+                disabled={false}
+                buttonLabel={<Trans i18nKey="common:approve" />}
+              />
             </Fragment>
           )}
         {status === "APPROVED" && (

@@ -3,48 +3,52 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
-import RequestApproveMutation from "api/mutations/RequestApproveMutation";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
-import DialogButton from "components/buttons/DialogButton";
+import { approveFlow } from "device/interactions/approveFlow";
+import AbortRequestButton from "components/AbortRequestButton";
+import ApproveRequestButton from "components/ApproveRequestButton";
+
+import type { GateError } from "data/types";
 
 type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
-  onClose: () => void
+  onSuccess: () => void,
+  onError: (Error | GateError) => void
 };
 
-class AdminTasksFooter extends PureComponent<Props> {
-  abort = () => {
-    console.warn("TODO: revoke member");
-  };
-
-  approve = async () => {
-    try {
-      // TODO: add device interation flow part
-      await this.props.restlay.commitMutation(
-        new RequestApproveMutation({
-          requestID: this.props.requestID
-        })
-      );
-      await this.props.restlay.fetchQuery(new PendingRequestsQuery());
-      this.props.onClose();
-    } catch (error) {
-      console.warn(error);
-    }
+class PendingRequestFooter extends PureComponent<Props> {
+  onClose = async () => {
+    const { restlay, onSuccess } = this.props;
+    await restlay.fetchQuery(new PendingRequestsQuery());
+    onSuccess();
   };
 
   render() {
+    const { requestID, onError } = this.props;
+    const data = {};
     return (
       <Fragment>
-        <DialogButton highlight onTouchTap={this.abort}>
-          <Trans i18nKey="common:revoke" />
-        </DialogButton>
-        <DialogButton onTouchTap={this.approve}>
-          <Trans i18nKey="common:approve" />
-        </DialogButton>
+        <AbortRequestButton
+          requestID={requestID}
+          onSuccess={this.onClose}
+          onError={onError}
+        />
+        <ApproveRequestButton
+          interactions={approveFlow}
+          onSuccess={this.onClose}
+          onError={onError}
+          additionalFields={{
+            data,
+            type: "APPROVE_REQUEST",
+            request_id: requestID
+          }}
+          disabled={false}
+          buttonLabel={<Trans i18nKey="common:approve" />}
+        />
       </Fragment>
     );
   }
 }
 
-export default connectData(AdminTasksFooter);
+export default connectData(PendingRequestFooter);
