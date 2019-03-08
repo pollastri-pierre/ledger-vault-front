@@ -9,7 +9,9 @@ import { addMessage, addError } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
 import DialogButton from "components/buttons/DialogButton";
 import ProfileQuery from "api/queries/ProfileQuery";
+import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 import type { Group, Member, GateError } from "data/types";
+import type { RestlayEnvironment } from "restlay/connectData";
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
@@ -19,6 +21,7 @@ type Props = {
   close: void => void,
   addMessage: (string, string, ?string) => void,
   addError: Error => void,
+  restlay: RestlayEnvironment,
   me: Member
 };
 
@@ -50,6 +53,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
   };
 
   onSuccess = () => {
+    this.props.restlay.fetchQuery(new PendingRequestsQuery());
     this.props.close();
   };
 
