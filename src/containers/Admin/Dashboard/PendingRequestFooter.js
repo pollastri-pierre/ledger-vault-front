@@ -2,6 +2,7 @@
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
+import { NetworkError } from "network";
 import type { RestlayEnvironment } from "restlay/connectData";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 import { approveFlow } from "device/interactions/approveFlow";
@@ -14,7 +15,7 @@ type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
   onSuccess: () => void,
-  onError: (Error | GateError) => void
+  onError: ?(Error | GateError | typeof NetworkError) => void
 };
 
 class PendingRequestFooter extends PureComponent<Props> {
