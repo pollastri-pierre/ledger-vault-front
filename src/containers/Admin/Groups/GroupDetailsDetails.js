@@ -22,9 +22,11 @@ class GroupDetailsDetails extends PureComponent<Props> {
         <LineRow label={<Trans i18nKey="group:details.at" />}>
           <DateFormat date={group.created_on} />
         </LineRow>
-        <LineRow label={<Trans i18nKey="group:details.by" />}>
-          <MemberName member={group.created_by} />
-        </LineRow>
+        {group.created_by && (
+          <LineRow label={<Trans i18nKey="group:details.by" />}>
+            <MemberName member={group.created_by} />
+          </LineRow>
+        )}
       </Box>
     );
   }
