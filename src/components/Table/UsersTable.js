@@ -21,13 +21,14 @@ type Props = {
   onRowClick: Member => void
 };
 
-class MembersTable extends PureComponent<Props> {
-  Member = (member: Member) => {
+// TODO update to the new table
+class UsersTable extends PureComponent<Props> {
+  User = (user: Member) => {
     const { onRowClick } = this.props;
 
-    const key = `${member.id}`;
+    const key = `${user.id}`;
 
-    return <MemberRow key={key} member={member} onClick={onRowClick} />;
+    return <UserRow key={key} user={user} onClick={onRowClick} />;
   };
 
   render() {
@@ -40,17 +41,17 @@ class MembersTable extends PureComponent<Props> {
     return (
       <TableScroll>
         <MUITable>
-          <MembersTableHeader />
-          <MUITableBody>{data.map(this.Member)}</MUITableBody>
+          <UsersTableHeader />
+          <MUITableBody>{data.map(this.User)}</MUITableBody>
         </MUITable>
       </TableScroll>
     );
   }
 }
 
-type MembersTableHeaderProps = {};
+type UsersTableHeaderProps = {};
 
-class MembersTableHeader extends PureComponent<MembersTableHeaderProps> {
+class UsersTableHeader extends PureComponent<UsersTableHeaderProps> {
   render() {
     return (
       <MUITableHead>
@@ -65,38 +66,38 @@ class MembersTableHeader extends PureComponent<MembersTableHeaderProps> {
   }
 }
 
-type MemberRowProps = {
-  member: Member,
+type UserRowProps = {
+  user: Member,
   onClick: Member => void
 };
 
-const memberRowHover = { cursor: "pointer" };
+const userRowHover = { cursor: "pointer" };
 
-class MemberRow extends PureComponent<MemberRowProps> {
+class UserRow extends PureComponent<UserRowProps> {
   handleClick = () => {
-    this.props.onClick(this.props.member);
+    this.props.onClick(this.props.user);
   };
 
   render() {
-    const { member, onClick } = this.props;
+    const { user, onClick } = this.props;
 
     return (
       <MUITableRow
         hover={!!onClick}
-        style={onClick ? memberRowHover : undefined}
+        style={onClick ? userRowHover : undefined}
         onClick={onClick ? this.handleClick : undefined}
       >
         <MUITableCell>
-          <DateFormat format="ddd D MMM, h:mmA" date={member.created_on} />
+          <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />
         </MUITableCell>
-        <MUITableCell>{member.username}</MUITableCell>
-        <MUITableCell>{member.id}</MUITableCell>
+        <MUITableCell>{user.username}</MUITableCell>
+        <MUITableCell>{user.id}</MUITableCell>
         <MUITableCell>
-          <Status status={member.status} />
+          <Status status={user.status} />
         </MUITableCell>
       </MUITableRow>
     );
   }
 }
 
-export default MembersTable;
+export default UsersTable;

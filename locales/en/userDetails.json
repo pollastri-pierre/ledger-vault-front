@@ -1,5 +1,5 @@
 {
-  "header": "Workspace {{memberRole}}",
+  "header": "Workspace {{userRole}}",
   "username": "Username",
   "role": "Role",
   "userID": "User ID",

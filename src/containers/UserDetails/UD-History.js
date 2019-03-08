@@ -5,7 +5,7 @@ import Text from "components/base/Text";
 
 type Props = {};
 
-class MemberDetailsHistory extends PureComponent<Props> {
+class UserDetailsHistory extends PureComponent<Props> {
   render() {
     return (
       <Box p={15}>
@@ -15,4 +15,4 @@ class MemberDetailsHistory extends PureComponent<Props> {
   }
 }
 
-export default MemberDetailsHistory;
+export default UserDetailsHistory;

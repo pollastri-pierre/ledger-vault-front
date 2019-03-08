@@ -7,13 +7,13 @@ import type { MemoryHistory } from "history";
 import SearchOperatorsQuery from "api/queries/SearchOperators";
 
 import { CardTitle } from "components/base/Card";
-import { MembersTable } from "components/Table";
-import { MembersFilters } from "components/filters";
+import { UsersTable } from "components/Table";
+import { UsersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
-import InviteMemberLink from "components/InviteMemberLink";
+import InviteUserLink from "components/InviteUserLink";
 import Box from "components/base/Box";
 import DataSearch from "components/DataSearch";
-import InviteMemberQuery from "api/queries/InviteMemberQuery";
+import InviteUserMutation from "api/mutations/InviteUserMutation";
 
 import type { Member } from "data/types";
 
@@ -25,20 +25,20 @@ type Props = {
   history: MemoryHistory
 };
 
-const mutationsToListen = [InviteMemberQuery];
+const mutationsToListen = [InviteUserMutation];
 class Operators extends PureComponent<Props> {
   handleMemberClick = (operator: Member) => {
     this.props.history.push(`operators/details/${operator.id}`);
   };
 
-  inviteMember = () => {
+  inviteUser = () => {
     this.props.history.push("operators/invite/operator");
   };
 
   HeaderComponent = () => (
     <Box horizontal align="flex-start" justify="space-between" pb={20}>
       <CardTitle>Operators</CardTitle>
-      <InviteMemberLink onClick={this.inviteMember} member="operator" />
+      <InviteUserLink onClick={this.inviteUser} user="operator" />
     </Box>
   );
 
@@ -49,8 +49,8 @@ class Operators extends PureComponent<Props> {
       <Fragment>
         <DataSearch
           Query={SearchOperatorsQuery}
-          TableComponent={MembersTable}
-          FilterComponent={MembersFilters}
+          TableComponent={UsersTable}
+          FilterComponent={UsersFilters}
           HeaderComponent={this.HeaderComponent}
           history={history}
           onRowClick={this.handleMemberClick}

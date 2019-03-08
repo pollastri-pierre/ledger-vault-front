@@ -7,7 +7,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import { FaUserEdit, FaLink } from "react-icons/fa";
 import type { GateError } from "data/types";
-import InviteMemberQuery from "api/queries/InviteMemberQuery";
+import InviteUserMutation from "api/mutations/InviteUserMutation";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
@@ -19,7 +19,7 @@ import colors from "shared/colors";
 
 type Props = {
   close: () => void,
-  memberRole: string,
+  userRole: string,
   restlay: *
 };
 type State = {
@@ -40,7 +40,7 @@ const styles = {
   }
 };
 
-class InviteMember extends PureComponent<Props, State> {
+class InviteUser extends PureComponent<Props, State> {
   state = {
     username: "",
     userID: "",
@@ -58,7 +58,7 @@ class InviteMember extends PureComponent<Props, State> {
   };
 
   processUserInfo = async () => {
-    const { restlay, memberRole } = this.props;
+    const { restlay, userRole } = this.props;
     const { url, username, userID } = this.state;
     if (url !== "") {
       // TODO: placeholder for PUT request just to update the userinfo
@@ -66,9 +66,9 @@ class InviteMember extends PureComponent<Props, State> {
     } else {
       this.setState({ loading: true });
 
-      const query = new InviteMemberQuery({
-        member: {
-          type: memberRole === "admin" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
+      const query = new InviteUserMutation({
+        user: {
+          type: userRole === "admin" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
           username,
           user_id: userID
         }
@@ -94,16 +94,16 @@ class InviteMember extends PureComponent<Props, State> {
   };
 
   render() {
-    const { close, memberRole } = this.props;
+    const { close, userRole } = this.props;
     const { username, userID, loading, url, error } = this.state;
     return (
       <ModalBody onClose={close}>
         <ModalHeader>
           <ModalTitle mb={0}>
             <Trans
-              i18nKey="inviteMember:inviteLink"
+              i18nKey="inviteUser:inviteLink"
               values={{
-                memberRole
+                userRole
               }}
             />
           </ModalTitle>
@@ -138,12 +138,12 @@ class InviteMember extends PureComponent<Props, State> {
               {url === "" ? (
                 <Fragment>
                   <FaLink style={styles.icon} />
-                  <Trans i18nKey="inviteMember:generateLink" />
+                  <Trans i18nKey="inviteUser:generateLink" />
                 </Fragment>
               ) : (
                 <Fragment>
                   <FaUserEdit style={styles.icon} />
-                  <Trans i18nKey="inviteMember:updateMember" />
+                  <Trans i18nKey="inviteUser:updateMember" />
                 </Fragment>
               )}
             </Button>
@@ -152,9 +152,9 @@ class InviteMember extends PureComponent<Props, State> {
             <Box flow={20}>
               <InfoBox type="info">
                 <Trans
-                  i18nKey="inviteMember:description"
+                  i18nKey="inviteUser:description"
                   values={{
-                    memberRole
+                    userRole
                   }}
                 />
               </InfoBox>
@@ -177,4 +177,4 @@ class InviteMember extends PureComponent<Props, State> {
   }
 }
 
-export default connectData(InviteMember);
+export default connectData(InviteUser);

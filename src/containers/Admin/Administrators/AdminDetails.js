@@ -8,7 +8,7 @@ import type { Member } from "data/types";
 
 import SpinnerCard from "components/spinners/SpinnerCard";
 
-import MemberDetails from "containers/MemberDetails";
+import UserDetails from "containers/UserDetails";
 
 type Props = {
   close: () => void,
@@ -19,7 +19,7 @@ class AdminDetails extends PureComponent<Props> {
   render() {
     const { close, admin } = this.props;
 
-    return <MemberDetails member={admin} close={close} />;
+    return <UserDetails user={admin} close={close} />;
   }
 }
 

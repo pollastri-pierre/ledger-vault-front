@@ -13,12 +13,12 @@ import {
   ModalFooter
 } from "components/base/Modal";
 
-import MemberDetailsOverview from "./MD-Overview";
-import MemberDetailsHistory from "./MD-History";
-import MemberDetailsFooter from "./MD-Footer";
+import UserDetailsOverview from "./UD-Overview";
+import UserDetailsHistory from "./UD-History";
+import UserDetailsFooter from "./UD-Footer";
 
 type Props = {
-  member: Member,
+  user: Member,
   close: () => void
 };
 
@@ -29,7 +29,7 @@ type State = {
 const tabTitles = ["Overview", "History"];
 
 // NOTE: can be generalized more if needed. so far details modal is identical for admins and operators
-class MemberDetails extends PureComponent<Props, State> {
+class UserDetails extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -43,7 +43,7 @@ class MemberDetails extends PureComponent<Props, State> {
   };
 
   render() {
-    const { close, member } = this.props;
+    const { close, user } = this.props;
     const { tabsIndex } = this.state;
 
     return (
@@ -51,9 +51,9 @@ class MemberDetails extends PureComponent<Props, State> {
         <ModalHeader>
           <ModalTitle>
             <Trans
-              i18nKey="memberDetails:header"
+              i18nKey="userDetails:header"
               values={{
-                memberRole: member.role
+                userRole: user.role
               }}
             />
           </ModalTitle>
@@ -72,15 +72,15 @@ class MemberDetails extends PureComponent<Props, State> {
           </Tabs>
         </ModalHeader>
         <Box>
-          {tabsIndex === 0 && <MemberDetailsOverview member={member} />}
-          {tabsIndex === 1 && <MemberDetailsHistory member={member} />}
+          {tabsIndex === 0 && <UserDetailsOverview user={user} />}
+          {tabsIndex === 1 && <UserDetailsHistory user={user} />}
         </Box>
         <ModalFooter>
-          <MemberDetailsFooter status={member.status} />
+          <UserDetailsFooter status={user.status} />
         </ModalFooter>
       </ModalBody>
     );
   }
 }
 
-export default MemberDetails;
+export default UserDetails;

@@ -2,7 +2,7 @@
 export { default as OperationsFilters } from "./OperationsFilters";
 export { default as GroupsFilters } from "./GroupsFilters";
 export { default as AccountsFilters } from "./AccountsFilters";
-export { default as MembersFilters } from "./MembersFilters";
+export { default as UsersFilters } from "./UsersFilters";
 
 // Business logic fields
 export { default as FieldText } from "./fields/FilterFieldText";

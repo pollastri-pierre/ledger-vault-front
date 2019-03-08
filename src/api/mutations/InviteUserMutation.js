@@ -9,7 +9,7 @@ export const types = {
 export type Type = $Values<typeof types>;
 
 type Input = {
-  member: {
+  user: {
     type: Type,
     username: string,
     user_id: string
@@ -18,12 +18,12 @@ type Input = {
 
 type Response = *;
 
-export default class InviteMemberQuery extends Mutation<Input, Response> {
+export default class InviteUserMutation extends Mutation<Input, Response> {
   method = "POST";
 
   uri = `/requests`;
 
   getBody() {
-    return this.props.member;
+    return this.props.user;
   }
 }
