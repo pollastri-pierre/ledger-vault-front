@@ -66,14 +66,16 @@ class GroupDetailsFooter extends PureComponent<Props> {
           !hasUserApproved && (
             <Fragment>
               <AbortRequestButton
-                requestID={group.last_request_id}
+                requestID={group.last_request && group.last_request.id}
                 onSuccess={this.onSuccess}
               />
               <ApproveRequestButton
                 interactions={approveFlow}
                 onSuccess={this.onSuccess}
                 onError={null}
-                additionalFields={{ request_id: group.last_request_id }}
+                additionalFields={{
+                  request_id: group.last_request && group.last_request.id
+                }}
                 disabled={false}
                 buttonLabel={<Trans i18nKey="common:approve" />}
               />
