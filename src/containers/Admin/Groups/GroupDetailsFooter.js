@@ -17,8 +17,7 @@ type Props = {
   group: Group,
   selected: Member[],
   close: void => void,
-  restlay: RestlayEnvironment,
-  me: Member
+  restlay: RestlayEnvironment
 };
 
 // if the group is pending the user can approve/reject the request
@@ -54,11 +53,12 @@ class GroupDetailsFooter extends PureComponent<Props> {
   };
 
   render() {
-    const { me, group, selected } = this.props;
+    const { group, selected } = this.props;
 
-    const { status, approvals } = group;
-    const hasUserApproved =
-      approvals.filter(a => a.person.id === me.id).length > 0;
+    const { status } = group;
+
+    // TODO do the logic with the `last_request` object
+    const hasUserApproved = false;
 
     return (
       <Fragment>
@@ -96,6 +96,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
   }
 }
 
+// TODO use withMe()
 export default connectData(GroupDetailsFooter, {
   queries: {
     me: ProfileQuery

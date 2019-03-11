@@ -9,6 +9,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import type { Group, Member } from "data/types";
 import type { MemoryHistory } from "history";
+import type { Connection } from "restlay/ConnectionQuery";
 import GoBack from "components/GoBack";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
@@ -25,7 +26,7 @@ import {
 
 type Props = {
   group: Group,
-  operators: Member[],
+  operators: Connection<Member>,
   close: Function
 };
 
@@ -106,8 +107,12 @@ export default connectData(GroupModal, {
     group: GroupQuery,
     operators: MembersQuery
   },
+  initialVariables: {
+    // TODO remove this when endpoint is not paginated anymore
+    operators: 30
+  },
   propsToQueryParams: props => ({
     groupId: props.match.params.groupId || "",
-    memberRole: "operator"
+    memberRole: "OPERATOR"
   })
 });
