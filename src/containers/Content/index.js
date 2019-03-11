@@ -5,9 +5,8 @@ import type { Match } from "react-router-dom";
 
 import AdminDashboard from "containers/Admin/Dashboard";
 import AdminTasks from "containers/Admin/AdminTasks";
-import AdminOperators from "containers/Admin/Operators";
 import AdminGroups from "containers/Admin/Groups";
-import Administrators from "containers/Admin/Administrators";
+import Users from "containers/Admin/Users";
 import AdminAccounts from "containers/Admin/Accounts";
 
 import OperatorDashboard from "containers/Operator/Dashboard";
@@ -35,9 +34,8 @@ function Content({ match }: { match: Match }) {
       <Switch>
         <Route path={`${u}/admin/dashboard`} component={AdminDashboard} />
         <Route path={`${u}/admin/tasks`} component={AdminTasks} />
-        <Route path={`${u}/admin/operators`} component={AdminOperators} />
         <Route path={`${u}/admin/groups`} component={AdminGroups} />
-        <Route path={`${u}/admin/administrators`} component={Administrators} />
+        <Route path={`${u}/admin/users`} component={Users} />
         <Route path={`${u}/admin/accounts`} component={AdminAccounts} />
         <Route path={`${u}/admin/account/:id`} component={AccountView} />
         <Route path={`${u}/admin/transactions`} component={Operations} />

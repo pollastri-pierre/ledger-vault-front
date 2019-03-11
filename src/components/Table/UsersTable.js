@@ -58,6 +58,7 @@ class UsersTableHeader extends PureComponent<UsersTableHeaderProps> {
         <MUITableRow>
           <MUITableCell>Date</MUITableCell>
           <MUITableCell>Username</MUITableCell>
+          <MUITableCell>Role</MUITableCell>
           <MUITableCell>User ID</MUITableCell>
           <MUITableCell>Status</MUITableCell>
         </MUITableRow>
@@ -91,6 +92,7 @@ class UserRow extends PureComponent<UserRowProps> {
           <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />
         </MUITableCell>
         <MUITableCell>{user.username}</MUITableCell>
+        <MUITableCell>{user.role}</MUITableCell>
         <MUITableCell>{user.id}</MUITableCell>
         <MUITableCell>
           <EntityStatus

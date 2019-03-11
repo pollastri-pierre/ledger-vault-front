@@ -1,4 +1,5 @@
 {
+  "header": "Users",
   "inviteLink": "Invite new {{userRole}}",
   "description":
     "Share this URL with new {{userRole}} using your preferred way of communication.",
