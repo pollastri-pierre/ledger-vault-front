@@ -81,5 +81,8 @@ export default connectData(ApproveWatchAccounts, {
     approvers: UsersQuery,
     accounts: PendingAccountsQuery,
     organization: OrganizationQuery
+  },
+  initialVariables: {
+    approvers: 30
   }
 });
