@@ -97,5 +97,8 @@ export default connectData(ApproveWatchOperations, {
     operationsPending: PendingOperationsQuery,
     // operationsQueued: QueuedOperationsQuery,
     accounts: AccountsQuery
+  },
+  initialVariables: {
+    approvers: 30
   }
 });
