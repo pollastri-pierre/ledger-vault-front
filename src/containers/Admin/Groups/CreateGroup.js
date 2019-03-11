@@ -7,7 +7,7 @@ import { createAndApprove } from "device/interactions/approveFlow";
 import type { Member, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 
 import InputField from "components/InputField";
 import Box from "components/base/Box";
@@ -15,6 +15,7 @@ import Text from "components/base/Text";
 import ModalLoading from "components/ModalLoading";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import ApproveRequestButton from "components/ApproveRequestButton";
+
 import {
   ModalHeader,
   ModalTitle,
@@ -128,13 +129,13 @@ const RenderLoading = () => <ModalLoading height={700} />;
 export default connectData(CreateGroup, {
   RenderLoading,
   queries: {
-    operators: MembersQuery
+    operators: UsersQuery
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
     operators: 30
   },
   propsToQueryParams: () => ({
-    memberRole: "OPERATOR"
+    userRole: "OPERATOR"
   })
 });

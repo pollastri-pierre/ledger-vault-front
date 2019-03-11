@@ -8,7 +8,7 @@ import { withRouter, Redirect } from "react-router";
 
 import connectData from "restlay/connectData";
 import OperationWithAccountQuery from "api/queries/OperationWithAccountQuery";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 
 import Footer from "components/approve/Footer";
@@ -26,7 +26,7 @@ type Props = {
     account: Account,
     operation: Operation
   },
-  members: Array<Member>,
+  users: Array<Member>,
   profile: Member,
   close: Function,
   approve: Function,
@@ -47,7 +47,7 @@ class OperationApprove extends Component<Props, { value: number }> {
     const {
       operationWithAccount: { account, operation },
       profile,
-      members,
+      users,
       close,
       approve,
       t,
@@ -59,9 +59,9 @@ class OperationApprove extends Component<Props, { value: number }> {
     const approvers = [];
 
     account.members.forEach(approver => {
-      const member = members.find(m => m.pub_key === approver);
-      if (member) {
-        approvers.push(member);
+      const user = users.find(u => u.pub_key === approver);
+      if (user) {
+        approvers.push(user);
       }
     });
 
@@ -111,7 +111,7 @@ class OperationApprove extends Component<Props, { value: number }> {
         {value === 1 && (
           <div>
             <OperationApproveApprovals
-              members={members}
+              members={users}
               operation={operation}
               account={account}
             />
@@ -133,7 +133,7 @@ export default withRouter(
     RenderLoading: ModalLoading,
     queries: {
       operationWithAccount: OperationWithAccountQuery,
-      members: MembersQuery,
+      users: UsersQuery,
       profile: ProfileQuery
     },
     propsToQueryParams: props => ({

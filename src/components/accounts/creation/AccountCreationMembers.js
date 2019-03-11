@@ -13,11 +13,11 @@ class AccountCreationMembers extends Component<{
   switchInternalModal: InternModalId => void,
   updateAccountCreationState: UpdateAccountCreationState
 }> {
-  addMember = (member: string) => {
+  addApprover = (approver: string) => {
     const { updateAccountCreationState, accountCreationState } = this.props;
 
     const approvers = accountCreationState.approvers;
-    const index = approvers.indexOf(member);
+    const index = approvers.indexOf(approver);
     if (index > -1) {
       // we remove the approver from the array
       // we reset the quorum if number of approvers is inferior after the update
@@ -31,7 +31,7 @@ class AccountCreationMembers extends Component<{
     } else {
       // we update the approvers
       updateAccountCreationState(state => ({
-        approvers: [...state.approvers, member]
+        approvers: [...state.approvers, approver]
       }));
     }
   };
@@ -45,7 +45,7 @@ class AccountCreationMembers extends Component<{
     return (
       <ListApprovers
         approvers={approvers}
-        addMember={this.addMember}
+        addApprover={this.addApprover}
         goBack={() => switchInternalModal("main")}
       />
     );

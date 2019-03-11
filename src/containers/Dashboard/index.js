@@ -1,5 +1,5 @@
 // @flow
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Account, Member } from "data/types";
 import DashboardPlaceholder from "components/DashboardPlaceholder";
@@ -36,12 +36,12 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   match: *,
   accounts: Array<Account>,
-  members: Array<Member>
+  users: Array<Member>
 };
 
 class Dashboard extends Component<Props> {
   render() {
-    const { match, classes, accounts, members } = this.props;
+    const { match, classes, accounts, users } = this.props;
 
     // TODO handle the case where accounts exist but no transaction
     if (accounts.length === 0) {
@@ -51,7 +51,7 @@ class Dashboard extends Component<Props> {
     return (
       <div className={classes.base}>
         <div className={classes.body}>
-          <TotalBalanceCard members={members} accounts={accounts} />
+          <TotalBalanceCard members={users} accounts={accounts} />
           <LastOperationCard />
           <Storages />
         </div>
@@ -75,7 +75,7 @@ class Dashboard extends Component<Props> {
 const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(Dashboard), {
   queries: {
-    members: MembersQuery,
+    users: UsersQuery,
     accounts: AccountsQuery
   },
   RenderLoading

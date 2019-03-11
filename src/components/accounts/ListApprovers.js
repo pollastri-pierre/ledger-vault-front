@@ -5,7 +5,7 @@ import { Trans, Interpolate } from "react-i18next";
 
 import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
 import { DialogButton } from "components";
@@ -34,12 +34,12 @@ const SelectedCounter = ({ count }: { count: number }) => (
 
 class ListApprovers extends Component<{
   goBack: Function,
-  members: Member[],
+  users: Member[],
   approvers: Member[],
-  addMember: Function
+  addApprover: Function
 }> {
   render() {
-    const { goBack, members, addMember, approvers } = this.props;
+    const { goBack, users, addApprover, approvers } = this.props;
 
     return (
       <ModalBody height={615}>
@@ -55,14 +55,14 @@ class ListApprovers extends Component<{
         </ModalHeader>
 
         <Box grow overflow="auto" mx={-5} px={5}>
-          {members.map(member => {
-            const isChecked = approvers.indexOf(member.pub_key) > -1;
+          {users.map(user => {
+            const isChecked = approvers.indexOf(user.pub_key) > -1;
             return (
               <MemberRow
-                key={member.id}
-                member={member}
+                key={user.id}
+                member={user}
                 checked={isChecked}
-                onSelect={addMember}
+                onSelect={addApprover}
               />
             );
           })}
@@ -93,6 +93,6 @@ export default connectData(ListApprovers, {
   RenderLoading: ModalLoading,
   RenderError,
   queries: {
-    members: MembersQuery
+    users: UsersQuery
   }
 });

@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import GroupQuery from "api/queries/GroupQuery";
 import type { Match } from "react-router-dom";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import type { Group, Member } from "data/types";
@@ -105,7 +105,7 @@ export default connectData(GroupModal, {
   RenderLoading,
   queries: {
     group: GroupQuery,
-    operators: MembersQuery
+    operators: UsersQuery
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
@@ -113,6 +113,6 @@ export default connectData(GroupModal, {
   },
   propsToQueryParams: props => ({
     groupId: props.match.params.groupId || "",
-    memberRole: "OPERATOR"
+    userRole: "OPERATOR"
   })
 });
