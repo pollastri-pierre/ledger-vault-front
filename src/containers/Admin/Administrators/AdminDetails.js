@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
-import MemberQuery from "api/queries/MemberQuery";
+import UserQuery from "api/queries/UserQuery";
 import Text from "components/base/Text";
 import type { Member } from "data/types";
 
@@ -30,9 +30,9 @@ export default connectData(AdminDetails, {
   RenderError,
   RenderLoading,
   queries: {
-    admin: MemberQuery
+    admin: UserQuery
   },
   propsToQueryParams: props => ({
-    memberId: props.match.params.memberId || ""
+    userID: props.match.params.userID || ""
   })
 });

@@ -61,7 +61,7 @@ class Operators extends PureComponent<Props> {
           component={InviteOperator}
         />
         <ModalRoute
-          path={`${match.url}/details/:memberId`}
+          path={`${match.url}/details/:userID`}
           component={OperatorDetails}
         />
       </Fragment>

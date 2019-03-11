@@ -61,7 +61,7 @@ class Administrators extends PureComponent<Props> {
           component={InviteAdmin}
         />
         <ModalRoute
-          path={`${match.url}/details/:memberId`}
+          path={`${match.url}/details/:userID`}
           component={AdminDetails}
         />
       </Fragment>

@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
-import MemberQuery from "api/queries/MemberQuery";
+import UserQuery from "api/queries/UserQuery";
 import Text from "components/base/Text";
 import type { Member } from "data/types";
 
@@ -15,7 +15,7 @@ type Props = {
   operator: Member
 };
 
-class AdminDetails extends PureComponent<Props> {
+class OperatorDetails extends PureComponent<Props> {
   render() {
     const { close, operator } = this.props;
 
@@ -26,13 +26,13 @@ class AdminDetails extends PureComponent<Props> {
 const RenderLoading = () => <SpinnerCard />;
 const RenderError = () => <Text>Render error todo</Text>;
 
-export default connectData(AdminDetails, {
+export default connectData(OperatorDetails, {
   RenderError,
   RenderLoading,
   queries: {
-    operator: MemberQuery
+    operator: UserQuery
   },
   propsToQueryParams: props => ({
-    memberId: props.match.params.memberId || ""
+    userID: props.match.params.userID || ""
   })
 });
