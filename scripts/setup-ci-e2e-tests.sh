@@ -40,6 +40,10 @@ function main {
 
   echo "-- VAULT_COMPARTMENT_ID: $VAULT_COMPARTMENT_ID"
 
+  # prepare clean in next step
+  echo "export VAULT_COMPARTMENT_ID=$VAULT_COMPARTMENT_ID" >> "$BASH_ENV"
+  echo "export COMPARTMENTS_ENDPOINT=$COMPARTMENTS_ENDPOINT" >> "$BASH_ENV"
+
   echo "-- starting the docker images"
   docker-compose up -d
 
@@ -60,12 +64,6 @@ function main {
   ./node_modules/.bin/cypress run \
     --reporter junit \
     --spec 'cypress/integration/Onboarding/*'
-
-  echo "-- cleaning compartment $VAULT_COMPARTMENT_ID"
-  curl \
-    -k --header "Content-Type: application/json" \
-    --request DELETE --data '{}' --cert vault-integration/hsm-circle-ci.pem \
-    "$COMPARTMENTS_ENDPOINT/$VAULT_COMPARTMENT_ID"
 }
 
 function cloneOrPull {
