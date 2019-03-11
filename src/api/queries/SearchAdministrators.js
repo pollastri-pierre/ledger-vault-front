@@ -15,7 +15,7 @@ type Node = Member;
 const uri = (query: Input) => {
   const finalQuery: Object = {
     ...query,
-    role: "ADMINISTRATOR"
+    role: "ADMIN"
   };
   const q = queryString.stringify(finalQuery);
   return `/people${q ? "?" : ""}${q}`;
