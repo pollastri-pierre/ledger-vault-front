@@ -4,19 +4,13 @@ import { Trans } from "react-i18next";
 import AddLink from "components/base/AddLink";
 import Text from "components/base/Text";
 
-export default ({
-  onClick,
-  member
-}: {
-  onClick: () => void,
-  member: string
-}) => (
+export default ({ onClick, user }: { onClick: () => void, user: string }) => (
   <AddLink onClick={onClick}>
     <Text>
       <Trans
-        i18nKey="inviteMember:inviteLink"
+        i18nKey="inviteUser:inviteLink"
         values={{
-          memberRole: member
+          userRole: user
         }}
       />
     </Text>

@@ -7,7 +7,7 @@ import Tab from "@material-ui/core/Tab";
 
 import AccountQuery from "api/queries/AccountQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 
@@ -26,7 +26,7 @@ import AccountApproveDetails from "./AccountApproveDetails";
 import Footer from "../../approve/Footer";
 
 type Props = {
-  members: Array<Member>,
+  users: Array<Member>,
   profile: Member,
   t: Translate,
   account: Account,
@@ -83,7 +83,7 @@ class AccountApprove extends Component<Props, State> {
   render() {
     const {
       profile,
-      members,
+      users,
       account,
       close,
       organization,
@@ -119,7 +119,7 @@ class AccountApprove extends Component<Props, State> {
             <AccountApproveDetails
               account={account}
               accounts={accounts}
-              approvers={members}
+              approvers={users}
               quorum={organization.quorum}
             />
             <GenericFooter
@@ -147,7 +147,7 @@ class AccountApprove extends Component<Props, State> {
 
         {tabIndex === 2 && (
           <Fragment>
-            <ApprovalList approvers={members} approved={account.approvals} />
+            <ApprovalList approvers={users} approved={account.approvals} />
             <GenericFooter
               percentage
               quorum={organization.quorum}
@@ -173,7 +173,7 @@ const connected = connectData(translate()(AccountApprove), {
   queries: {
     account: AccountQuery,
     accounts: AccountsQuery,
-    members: MembersQuery,
+    users: UsersQuery,
     organization: OrganizationQuery,
     profile: ProfileQuery
   },

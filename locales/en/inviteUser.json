@@ -1,10 +1,11 @@
 {
-  "inviteLink": "Invite new {{memberRole}}",
-  "description": "Share this URL with new {{memberRole}} using your preferred way of communication.",
+  "inviteLink": "Invite new {{userRole}}",
+  "description":
+    "Share this URL with new {{userRole}} using your preferred way of communication.",
   "generateLink": "Generate Link",
   "updateMember": "Update Member Info",
   "registration": {
-    "title": "Register new {{memberRole}}",
+    "title": "Register new {{userRole}}",
     "username": "Username:",
     "workspace": "Workspace:",
     "role": "Role:",
@@ -12,7 +13,8 @@
     "success": {
       "title": "Success",
       "subtitle": "You have successfully registered to the Ledger Vault.",
-      "description": "The Administrators of your workspace will get in touch once your registration has been approved."
+      "description":
+        "The Administrators of your workspace will get in touch once your registration has been approved."
     }
   }
 }

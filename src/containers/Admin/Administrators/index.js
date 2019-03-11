@@ -6,13 +6,13 @@ import type { MemoryHistory } from "history";
 import SearchAdministratorsQuery from "api/queries/SearchAdministrators";
 
 import { CardTitle } from "components/base/Card";
-import { MembersTable } from "components/Table";
-import { MembersFilters } from "components/filters";
+import { UsersTable } from "components/Table";
+import { UsersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
-import InviteMemberLink from "components/InviteMemberLink";
+import InviteUserLink from "components/InviteUserLink";
 import Box from "components/base/Box";
 import DataSearch from "components/DataSearch";
-import InviteMemberQuery from "api/queries/InviteMemberQuery";
+import InviteUserMutation from "api/mutations/InviteUserMutation";
 
 import type { Member } from "data/types";
 
@@ -24,21 +24,21 @@ type Props = {
   history: MemoryHistory
 };
 
-const mutationsToListen = [InviteMemberQuery];
+const mutationsToListen = [InviteUserMutation];
 
 class Administrators extends PureComponent<Props> {
-  handleMemberClick = (admin: Member) => {
+  handleUserClick = (admin: Member) => {
     this.props.history.push(`administrators/details/${admin.id}`);
   };
 
-  inviteMember = () => {
+  inviteUser = () => {
     this.props.history.push("administrators/invite/admin");
   };
 
   HeaderComponent = () => (
     <Box horizontal align="flex-start" justify="space-between" pb={20}>
       <CardTitle>Administrators</CardTitle>
-      <InviteMemberLink onClick={this.inviteMember} member="admin" />
+      <InviteUserLink onClick={this.inviteUser} user="admin" />
     </Box>
   );
 
@@ -49,11 +49,11 @@ class Administrators extends PureComponent<Props> {
       <Fragment>
         <DataSearch
           Query={SearchAdministratorsQuery}
-          TableComponent={MembersTable}
-          FilterComponent={MembersFilters}
+          TableComponent={UsersTable}
+          FilterComponent={UsersFilters}
           HeaderComponent={this.HeaderComponent}
           history={history}
-          onRowClick={this.handleMemberClick}
+          onRowClick={this.handleUserClick}
           listenMutations={mutationsToListen}
         />
         <ModalRoute
@@ -61,7 +61,7 @@ class Administrators extends PureComponent<Props> {
           component={InviteAdmin}
         />
         <ModalRoute
-          path={`${match.url}/details/:memberId`}
+          path={`${match.url}/details/:userID`}
           component={AdminDetails}
         />
       </Fragment>

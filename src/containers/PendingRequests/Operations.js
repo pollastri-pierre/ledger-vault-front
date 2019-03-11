@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
-import MembersQuery from "api/queries/MembersQuery";
+import UsersQuery from "api/queries/UsersQuery";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 // import QueuedOperationsQuery from "api/queries/QueuedOperationsQuery";
@@ -93,7 +93,7 @@ export default connectData(ApproveWatchOperations, {
   RenderLoading,
   RenderError,
   queries: {
-    approvers: MembersQuery,
+    approvers: UsersQuery,
     operationsPending: PendingOperationsQuery,
     // operationsQueued: QueuedOperationsQuery,
     accounts: AccountsQuery

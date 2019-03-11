@@ -97,9 +97,9 @@ class RegisterMember extends PureComponent<Props, State> {
                     <Text
                       header
                       bold
-                      i18nKey="inviteMember:registration.title"
+                      i18nKey="inviteUser:registration.title"
                       values={{
-                        memberRole: "Administrator"
+                        userRole: "Administrator"
                       }}
                     />
                     <FaUser />
@@ -108,17 +108,17 @@ class RegisterMember extends PureComponent<Props, State> {
                 <LineSeparator />
                 <Box flow={15} mt={15}>
                   <Row
-                    label="inviteMember:registration.username"
+                    label="inviteUser:registration.username"
                     text={member && member.user ? member.user.username : ""}
                   />
                   <Row
-                    label="inviteMember:registration.workspace"
+                    label="inviteUser:registration.workspace"
                     text={
                       member && member.user.user_id ? member.user.user_id : ""
                     }
                   />
                   <Row
-                    label="inviteMember:registration.role"
+                    label="inviteUser:registration.role"
                     text={member ? member.type : ""}
                   />
                 </Box>
@@ -139,7 +139,7 @@ class RegisterMember extends PureComponent<Props, State> {
                     </Box>
                   ) : (
                     <DialogButton highlight onTouchTap={this.registerMember}>
-                      <Trans i18nKey="inviteMember:registration.button" />
+                      <Trans i18nKey="inviteUser:registration.button" />
                     </DialogButton>
                   )}
                 </ModalFooter>
@@ -152,20 +152,17 @@ class RegisterMember extends PureComponent<Props, State> {
                   <Text
                     header
                     bold
-                    i18nKey="inviteMember:registration.success.title"
+                    i18nKey="inviteUser:registration.success.title"
                   />
                   <span role="img" aria-label="tada" aria-hidden="true">
                     🎉
                   </span>
                 </Box>
-                <Text
-                  bold
-                  i18nKey="inviteMember:registration.success.subtitle"
-                />
+                <Text bold i18nKey="inviteUser:registration.success.subtitle" />
               </ModalHeader>
               <LineSeparator />
               <Box flow={15} mt={15}>
-                <Text i18nKey="inviteMember:registration.success.description" />
+                <Text i18nKey="inviteUser:registration.success.description" />
               </Box>
             </ModalBody>
           )}

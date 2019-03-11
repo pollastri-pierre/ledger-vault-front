@@ -4,13 +4,12 @@ import schema from "data/schema";
 import type { Member } from "data/types";
 
 type Input = {
-  memberId: string
+  userID: string
 };
 type Response = Member;
 
-// Fetch a specific group
-export default class MemberQuery extends Query<Input, Response> {
-  uri = `/people/${this.props.memberId}`;
+export default class UserQuery extends Query<Input, Response> {
+  uri = `/people/${this.props.userID}`;
 
   responseSchema = schema.Member;
 }

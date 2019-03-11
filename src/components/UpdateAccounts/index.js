@@ -313,7 +313,7 @@ class UpdateAccounts extends Component<Props> {
         <BlurDialog open={isSelectingMembers} onClose={onToggleMembers}>
           <ListApprovers
             approvers={approvers}
-            addMember={onToggleMember}
+            addApprover={onToggleMember}
             goBack={onToggleMembers}
           />
         </BlurDialog>

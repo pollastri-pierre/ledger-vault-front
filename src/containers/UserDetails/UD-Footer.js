@@ -8,16 +8,16 @@ type Props = {
   status: string
 };
 
-class MemberDetailsFooter extends PureComponent<Props> {
-  editMember = () => {
+class UserDetailsFooter extends PureComponent<Props> {
+  editUser = () => {
     console.warn("TODO: edit member");
   };
 
-  revokeMember = () => {
+  revokeUser = () => {
     console.warn("TODO: revoke member");
   };
 
-  approveMember = () => {
+  approveUser = () => {
     console.warn("TODO: approve member");
   };
 
@@ -26,22 +26,22 @@ class MemberDetailsFooter extends PureComponent<Props> {
     return (
       <Box pb={10} justify="flex-end" horizontal>
         {status === "PENDING_INVITATION" && (
-          <DialogButton highlight onTouchTap={this.editMember}>
+          <DialogButton highlight onTouchTap={this.editUser}>
             <Trans i18nKey="common:edit" />
           </DialogButton>
         )}
         {(status === "PENDING_APPROVAL" || status === "PENDING_REVOCATION") && (
           <Box horizontal flow={10}>
-            <DialogButton highlight onTouchTap={this.revokeMember}>
+            <DialogButton highlight onTouchTap={this.revokeUser}>
               <Trans i18nKey="common:revoke" />
             </DialogButton>
-            <DialogButton onTouchTap={this.approveMember}>
+            <DialogButton onTouchTap={this.approveUser}>
               <Trans i18nKey="common:approve" />
             </DialogButton>
           </Box>
         )}
         {status === "ACTIVE" && (
-          <DialogButton highlight onTouchTap={this.revokeMember}>
+          <DialogButton highlight onTouchTap={this.revokeUser}>
             <Trans i18nKey="common:revoke" />
           </DialogButton>
         )}
@@ -50,4 +50,4 @@ class MemberDetailsFooter extends PureComponent<Props> {
   }
 }
 
-export default MemberDetailsFooter;
+export default UserDetailsFooter;
