@@ -145,7 +145,7 @@ type GroupCommon = {
   created_on: Date,
   created_by: Member,
   description?: string,
-  last_request_id?: number,
+  last_request?: Request,
   status: string // TODO create UNION type when different status are known
 };
 export type GroupEntity = GroupCommon & {

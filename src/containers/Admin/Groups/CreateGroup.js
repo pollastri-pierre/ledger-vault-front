@@ -4,7 +4,8 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { createAndApprove } from "device/interactions/approveFlow";
-
+import type { Member, Group } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import MembersQuery from "api/queries/MembersQuery";
 
@@ -21,10 +22,8 @@ import {
   ModalFooter
 } from "components/base/Modal";
 
-import type { Member, Group } from "data/types";
-
 type Props = {
-  operators: Member[],
+  operators: Connection<Member>,
   restlay: RestlayEnvironment,
   close: () => void
 };
@@ -74,6 +73,9 @@ class CreateGroup extends PureComponent<Props, State> {
       description
     };
 
+    // TODO need an endpoint not paginated for this
+    const listOperators = operators.edges.map(e => e.node);
+
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
@@ -100,7 +102,7 @@ class CreateGroup extends PureComponent<Props, State> {
           <Box flow={20} py={30}>
             <Text uppercase small i18nKey="group:create.members" />
             <SelectGroupsUsers
-              members={operators}
+              members={listOperators}
               groups={[]}
               value={{ members, group: [] }}
               onChange={this.onChange}
@@ -128,7 +130,11 @@ export default connectData(CreateGroup, {
   queries: {
     operators: MembersQuery
   },
+  initialVariables: {
+    // TODO remove this when endpoint is not paginated anymore
+    operators: 30
+  },
   propsToQueryParams: () => ({
-    memberRole: "operator"
+    memberRole: "OPERATOR"
   })
 });
