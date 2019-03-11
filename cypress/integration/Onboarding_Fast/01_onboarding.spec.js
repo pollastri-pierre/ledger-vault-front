@@ -266,8 +266,12 @@ context("Onboarding e2e", () => {
     // login with user1
     switch_device(4);
     cy.contains("Continue").click();
+    cy.wait(1000);
+    cy.get("input[type=text]").type(orga_name);
+    cy.contains("Continue").click();
     cy.wait("@get-public-key");
     cy.wait("@authenticate");
+    cy.wait(1000);
     cy.url().should("include", "/dashboard");
   });
 });

@@ -66,6 +66,12 @@ context("Create the Master Seed", () => {
         device_number: 4
       });
       cy.contains("continue").click();
+      cy.wait(1000);
+      cy.get("input[type=text]").type(orga_name);
+      cy.contains("Continue").click();
+      cy.wait("@get-public-key");
+      cy.wait("@authenticate");
+      cy.wait(1000);
       cy.url().should("include", "/dashboard");
     });
   });
