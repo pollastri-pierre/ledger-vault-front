@@ -1,26 +1,27 @@
 // @flow
 import React, { PureComponent } from "react";
+import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
-import DeviceInteraction from "components/DeviceInteraction";
 import { createAndApprove } from "device/interactions/approveFlow";
-import InputField from "components/InputField";
-import type { Member, Group } from "data/types";
+
 import GroupsQuery from "api/queries/GroupsQuery";
+import MembersQuery from "api/queries/MembersQuery";
+
+import InputField from "components/InputField";
 import Box from "components/base/Box";
-import { Trans } from "react-i18next";
 import Text from "components/base/Text";
 import ModalLoading from "components/ModalLoading";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
-import MembersQuery from "api/queries/MembersQuery";
-import DialogButton from "components/buttons/DialogButton";
-
+import ApproveRequestButton from "components/ApproveRequestButton";
 import {
   ModalHeader,
   ModalTitle,
   ModalBody,
   ModalFooter
 } from "components/base/Modal";
+
+import type { Member, Group } from "data/types";
 
 type Props = {
   operators: Member[],
@@ -31,8 +32,7 @@ type Props = {
 type State = {
   members: Member[],
   name: string,
-  description: string,
-  isCreating: boolean
+  description: string
 };
 
 const inputProps = {
@@ -44,28 +44,17 @@ class CreateGroup extends PureComponent<Props, State> {
   state = {
     members: [],
     name: "",
-    description: "",
-    isCreating: false
+    description: ""
   };
 
   onChange = (val: { members: Member[], groups: Group[] }) => {
     this.setState({ members: val.members });
   };
 
-  onCreate = () => {
-    this.setState({ isCreating: true });
-  };
-
   onSuccess = () => {
     const { restlay, close } = this.props;
-    this.setState({ isCreating: false });
     restlay.fetchQuery(new GroupsQuery({}));
     close();
-  };
-
-  onError = error => {
-    console.error(error);
-    this.setState({ isCreating: false });
   };
 
   onChangeName = name => {
@@ -78,7 +67,7 @@ class CreateGroup extends PureComponent<Props, State> {
 
   render() {
     const { close, operators } = this.props;
-    const { members, name, description, isCreating } = this.state;
+    const { members, name, description } = this.state;
     const data = {
       members: members.map(m => m.id),
       name,
@@ -119,26 +108,14 @@ class CreateGroup extends PureComponent<Props, State> {
           </Box>
         </Box>
         <ModalFooter>
-          {isCreating ? (
-            <Box mb={15}>
-              <DeviceInteraction
-                interactions={createAndApprove}
-                onSuccess={this.onSuccess}
-                onError={this.onError}
-                additionalFields={{ data, type: "CREATE_GROUP" }}
-              />
-            </Box>
-          ) : (
-            <DialogButton
-              highlight
-              onTouchTap={this.onCreate}
-              disabled={
-                name === "" || description === "" || members.length === 0
-              }
-            >
-              <Trans i18nKey="group:create.submit" />
-            </DialogButton>
-          )}
+          <ApproveRequestButton
+            interactions={createAndApprove}
+            onSuccess={this.onSuccess}
+            onError={null}
+            additionalFields={{ data, type: "CREATE_GROUP" }}
+            disabled={name === "" || description === "" || members.length === 0}
+            buttonLabel={<Trans i18nKey="group:create.submit" />}
+          />
         </ModalFooter>
       </ModalBody>
     );

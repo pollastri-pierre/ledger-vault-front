@@ -4,12 +4,8 @@ import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { connect } from "react-redux";
-import { NetworkError } from "network";
 
 import RequestQuery from "api/queries/RequestQuery";
-import { addMessage, addError } from "redux/modules/alerts";
-import { NoChannelForDevice, GenericError } from "utils/errors";
 
 import Box from "components/base/Box";
 import { CardError } from "components/base/Card";
@@ -21,7 +17,7 @@ import {
 } from "components/base/Modal";
 import ModalLoading from "components/ModalLoading";
 
-import type { GateError, Request } from "data/types";
+import type { Request } from "data/types";
 
 import PendingRequestOverview from "./PendingRequestOverview";
 import PendingRequestHistory from "./PendingRequestHistory";
@@ -29,18 +25,11 @@ import PendingRequestFooter from "./PendingRequestFooter";
 
 type Props = {
   close: () => void,
-  request: Request,
-  addMessage: (string, string, ?string) => void,
-  addError: Error => void
+  request: Request
 };
 
 type State = {
   tabsIndex: number
-};
-
-const mapDispatchToProps = {
-  addMessage,
-  addError
 };
 
 const tabTitles = ["Overview", "History"];
@@ -57,17 +46,6 @@ class PendingRequest extends PureComponent<Props, State> {
   onSuccess = () => {
     const { close } = this.props;
     close();
-  };
-
-  // TODO: externalize onError, maybe with a switch for different types, it is similar in other places
-  onError = (e: Error | GateError) => {
-    if (e instanceof NetworkError && e.json) {
-      this.props.addMessage(`Error ${e.json.code}`, e.json.message, "error");
-    } else if (e instanceof NoChannelForDevice) {
-      this.props.addError(e);
-    } else {
-      this.props.addError(new GenericError());
-    }
   };
 
   render() {
@@ -99,7 +77,7 @@ class PendingRequest extends PureComponent<Props, State> {
           <PendingRequestFooter
             requestID={request.id}
             onSuccess={this.onSuccess}
-            onError={this.onError}
+            onError={null}
           />
         </ModalFooter>
       </ModalBody>
@@ -109,18 +87,13 @@ class PendingRequest extends PureComponent<Props, State> {
 
 const RenderLoading = () => <ModalLoading height={700} />;
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(
-  connectData(PendingRequest, {
-    RenderLoading,
-    RenderError: CardError,
-    queries: {
-      request: RequestQuery
-    },
-    propsToQueryParams: props => ({
-      requestID: props.match.params.requestID || ""
-    })
+export default connectData(PendingRequest, {
+  RenderLoading,
+  RenderError: CardError,
+  queries: {
+    request: RequestQuery
+  },
+  propsToQueryParams: props => ({
+    requestID: props.match.params.requestID || ""
   })
-);
+});

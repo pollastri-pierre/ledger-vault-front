@@ -1,33 +1,24 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import { connect } from "react-redux";
-import { NetworkError } from "network";
-import { approveFlow } from "device/interactions/approveFlow";
-import { NoChannelForDevice, GenericError } from "utils/errors";
-import { addMessage, addError } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
-import DialogButton from "components/buttons/DialogButton";
+import { approveFlow } from "device/interactions/approveFlow";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
-import type { Group, Member, GateError } from "data/types";
-import type { RestlayEnvironment } from "restlay/connectData";
+
+import DialogButton from "components/buttons/DialogButton";
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
+
+import type { RestlayEnvironment } from "restlay/connectData";
+import type { Group, Member } from "data/types";
 
 type Props = {
   group: Group,
   selected: Member[],
   close: void => void,
-  addMessage: (string, string, ?string) => void,
-  addError: Error => void,
   restlay: RestlayEnvironment,
   me: Member
-};
-
-const mapDispatchToProps = {
-  addMessage,
-  addError
 };
 
 // if the group is pending the user can approve/reject the request
@@ -53,18 +44,9 @@ class GroupDetailsFooter extends PureComponent<Props> {
   };
 
   onSuccess = () => {
-    this.props.restlay.fetchQuery(new PendingRequestsQuery());
-    this.props.close();
-  };
-
-  onError = (e: Error | GateError) => {
-    if (e instanceof NetworkError && e.json) {
-      this.props.addMessage(`Error ${e.json.code}`, e.json.message, "error");
-    } else if (e instanceof NoChannelForDevice) {
-      this.props.addError(e);
-    } else {
-      this.props.addError(new GenericError());
-    }
+    const { restlay, close } = this.props;
+    restlay.fetchQuery(new PendingRequestsQuery());
+    close();
   };
 
   editGroup = () => {
@@ -86,12 +68,11 @@ class GroupDetailsFooter extends PureComponent<Props> {
               <AbortRequestButton
                 requestID={group.last_request_id}
                 onSuccess={this.onSuccess}
-                onError={this.onError}
               />
               <ApproveRequestButton
                 interactions={approveFlow}
                 onSuccess={this.onSuccess}
-                onError={this.onError}
+                onError={null}
                 additionalFields={{ request_id: group.last_request_id }}
                 disabled={false}
                 buttonLabel={<Trans i18nKey="common:approve" />}
@@ -113,13 +94,8 @@ class GroupDetailsFooter extends PureComponent<Props> {
   }
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(
-  connectData(GroupDetailsFooter, {
-    queries: {
-      me: ProfileQuery
-    }
-  })
-);
+export default connectData(GroupDetailsFooter, {
+  queries: {
+    me: ProfileQuery
+  }
+});
