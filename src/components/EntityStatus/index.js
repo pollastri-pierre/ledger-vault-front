@@ -19,13 +19,13 @@ class EntityStatus extends PureComponent<Props> {
       return <Status status={status} />;
     }
 
-    const waitingForAppal =
+    const isWaitingForApproval =
       !hasUserApprovedRequest(request, me) && status !== "ACTIVE";
 
     return (
       <Status
-        withWarning={waitingForAppal}
-        status={waitingForAppal ? "AWAITING_APPROVAL" : status}
+        withWarning={isWaitingForApproval}
+        status={isWaitingForApproval ? "AWAITING_APPROVAL" : status}
       />
     );
   }

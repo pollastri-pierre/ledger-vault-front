@@ -1,9 +1,7 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import connectData from "restlay/connectData";
 import { approveFlow } from "device/interactions/approveFlow";
-import ProfileQuery from "api/queries/ProfileQuery";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 
 import DialogButton from "components/buttons/DialogButton";
@@ -12,10 +10,13 @@ import ApproveRequestButton from "components/ApproveRequestButton";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Group, Member } from "data/types";
+import { withMe } from "components/UserContextProvider";
+import { hasUserApprovedRequest } from "utils/request";
 
 type Props = {
   group: Group,
   selected: Member[],
+  me: Member,
   close: void => void,
   restlay: RestlayEnvironment
 };
@@ -53,12 +54,11 @@ class GroupDetailsFooter extends PureComponent<Props> {
   };
 
   render() {
-    const { group, selected } = this.props;
+    const { group, selected, me } = this.props;
 
     const { status } = group;
-
-    // TODO do the logic with the `last_request` object
-    const hasUserApproved = false;
+    const hasUserApproved =
+      group.last_request && hasUserApprovedRequest(group.last_request, me);
 
     return (
       <Fragment>
@@ -96,9 +96,4 @@ class GroupDetailsFooter extends PureComponent<Props> {
   }
 }
 
-// TODO use withMe()
-export default connectData(GroupDetailsFooter, {
-  queries: {
-    me: ProfileQuery
-  }
-});
+export default withMe(GroupDetailsFooter);

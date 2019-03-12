@@ -6,7 +6,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 
 import CounterValue from "components/CounterValue";
 import AccountName from "components/AccountName";
-import Status from "components/Status";
+import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 
@@ -24,7 +24,12 @@ class AccountBodyCell extends PureComponent<CellProps> {
       case "name":
         return <AccountName account={account} />;
       case "status":
-        return <Status status={account.status} />;
+        return (
+          <EntityStatus
+            status={account.status}
+            request={account.last_request}
+          />
+        );
       case "countervalue":
         return (
           <CounterValue

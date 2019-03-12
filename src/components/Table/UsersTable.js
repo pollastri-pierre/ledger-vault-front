@@ -8,7 +8,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
 
-import Status from "components/Status";
+import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
@@ -93,7 +93,10 @@ class UserRow extends PureComponent<UserRowProps> {
         <MUITableCell>{user.username}</MUITableCell>
         <MUITableCell>{user.id}</MUITableCell>
         <MUITableCell>
-          <Status status={user.status} />
+          <EntityStatus
+            status={user.status}
+            request={user.last_request && user.last_request}
+          />
         </MUITableCell>
       </MUITableRow>
     );
