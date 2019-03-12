@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
+import { FaHourglassHalf } from "react-icons/fa";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -14,7 +15,8 @@ const BG_BY_STATUS = {
   ABORTED: opacity(colors.grenade, 0.1),
   APPROVED: opacity(colors.green, 0.1),
   ACTIVE: opacity(colors.green, 0.1),
-  PENDING_APPROVAL: opacity(colors.blue_orange, 0.1),
+  PENDING_APPROVAL: opacity(colors.ocean, 0.1),
+  AWAITING_APPROVAL: opacity(colors.blue_orange, 0.1),
   PENDING_CREATION_APPROVAL: opacity(colors.blue_orange, 0.1),
   PENDING_REGISTRATION: opacity(colors.blue_orange, 0.1),
   VIEW_ONLY: colors.cream
@@ -24,7 +26,8 @@ const COLOR_BY_STATUS = {
   ABORTED: colors.grenade,
   APPROVED: darken(colors.green, 0.2),
   ACTIVE: darken(colors.green, 0.2),
-  PENDING_APPROVAL: darken(colors.blue_orange, 0.5),
+  PENDING_APPROVAL: darken(colors.ocean, 0.5),
+  AWAITING_APPROVAL: darken(colors.blue_orange, 0.5),
   PENDING_CREATION_APPROVAL: darken(colors.blue_orange, 0.5),
   PENDING_REGISTRATION: darken(colors.blue_orange, 0.5),
   VIEW_ONLY: colors.steel
@@ -33,8 +36,11 @@ const COLOR_BY_STATUS = {
 type Props = {
   t: Translate,
   status: string,
-  textOnly?: boolean
+  textOnly?: boolean,
+  withWarning?: boolean
 };
+
+const iconWarning = <FaHourglassHalf size={15} />;
 
 class Status extends PureComponent<Props> {
   getStr = () => {
@@ -48,7 +54,7 @@ class Status extends PureComponent<Props> {
   };
 
   render() {
-    const { status, textOnly } = this.props;
+    const { status, textOnly, withWarning } = this.props;
 
     const str = this.getStr();
     if (textOnly) return str;
@@ -57,7 +63,17 @@ class Status extends PureComponent<Props> {
     const color = COLOR_BY_STATUS[status] || "inherit";
 
     return (
-      <Box inline px={5} bg={bg} color={color} borderRadius={3}>
+      <Box
+        flow={10}
+        horizontal
+        align="center"
+        inline
+        px={5}
+        bg={bg}
+        color={color}
+        borderRadius={3}
+      >
+        {withWarning && iconWarning}
         <Text small uppercase>
           {str}
         </Text>

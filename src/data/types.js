@@ -72,6 +72,7 @@ type MemberCommon = {
   created_on: string,
   status: string,
   email?: string,
+  last_request?: Request,
   role: string
 };
 export type MemberEntity = MemberCommon;
@@ -117,7 +118,8 @@ type AccountCommon = {
   hsm_operations?: Object,
   is_hsm_coin_app_updated: boolean,
   index: number,
-  status: string
+  status: string,
+  last_request?: Request
 };
 export type Account = AccountCommon & {
   currency_id: string
@@ -239,6 +241,7 @@ type OperationCommon = {
   status: OperationStatus,
   hsm_operations?: Object,
   error?: Object,
+  last_request?: Request,
   gas_price?: number,
   gas_limit?: number
 };

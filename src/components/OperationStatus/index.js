@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import ConfirmationStatus from "components/ConfirmationStatus";
+import EntityStatus from "components/EntityStatus";
 import type { Operation } from "data/types";
 
 class OperationStatus extends Component<*> {
@@ -15,15 +16,12 @@ class OperationStatus extends Component<*> {
       return <ConfirmationStatus nbConfirmations={operation.confirmations} />;
     }
 
-    if (operation.status === "ABORTED") {
-      return <span>ABORTED</span>;
-    }
-
-    if (operation.status === "PENDING_APPROVAL") {
-      return <span>PENDING</span>;
-    }
-
-    return null;
+    return (
+      <EntityStatus
+        status={operation.status}
+        request={operation.last_request}
+      />
+    );
   }
 }
 
