@@ -20,7 +20,11 @@ type Props = {
 };
 class AdminDashboard extends PureComponent<Props> {
   handleTaskClick = (request: Request) => {
-    this.props.history.push(`dashboard/pending-requests/${request.id}`);
+    if (request.target_type === "GROUP") {
+      this.props.history.push(`dashboard/groups/${request.target_id}`);
+    } else {
+      this.props.history.push(`dashboard/pending-requests/${request.id}`);
+    }
   };
 
   render() {
