@@ -12,7 +12,7 @@ class InviteAdmin extends PureComponent<Props> {
   render() {
     const { close } = this.props;
 
-    return <InviteUser close={close} memberRole="admin" />;
+    return <InviteUser close={close} />;
   }
 }
 

@@ -1,6 +1,8 @@
 // @flow
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
+import queryString from "query-string";
+
 import type { Member } from "data/types";
 
 type Input = {
@@ -8,13 +10,21 @@ type Input = {
 };
 type Response = Member[];
 
-const uri = (props: Input) => {
-  const prefix = "/people";
-  if (!props.userRole) {
-    return prefix;
-  }
+const uri = (query: Input) => {
+  let finalQuery = {};
 
-  return `${prefix}?role=${props.userRole}`;
+  if (query && query.userRole) {
+    finalQuery = {
+      ...query
+    };
+  } else {
+    finalQuery = {
+      ...query,
+      role: ["ADMIN", "OPERATOR"]
+    };
+  }
+  const q = queryString.stringify(finalQuery);
+  return `/people${q ? "?" : ""}${q}`;
 };
 
 //  TODO needs an endpoint not paginated for this

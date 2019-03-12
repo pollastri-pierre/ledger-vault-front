@@ -4,6 +4,10 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Radio from "@material-ui/core/Radio";
 import Button from "@material-ui/core/Button";
 import { FaUserEdit, FaLink } from "react-icons/fa";
 import type { GateError } from "data/types";
@@ -19,12 +23,12 @@ import colors from "shared/colors";
 
 type Props = {
   close: () => void,
-  userRole: string,
   restlay: *
 };
 type State = {
   username: string,
   userID: string,
+  userRole: string,
   loading: boolean,
   url: string,
   error: ?$Shape<GateError>
@@ -44,6 +48,7 @@ class InviteUser extends PureComponent<Props, State> {
   state = {
     username: "",
     userID: "",
+    userRole: "Administrator",
     loading: false,
     url: "",
     error: null
@@ -57,9 +62,13 @@ class InviteUser extends PureComponent<Props, State> {
     this.setState({ userID, error: null });
   };
 
+  updateUserRole = (event: *) => {
+    this.setState({ userRole: event.target.value });
+  };
+
   processUserInfo = async () => {
-    const { restlay, userRole } = this.props;
-    const { url, username, userID } = this.state;
+    const { restlay } = this.props;
+    const { url, username, userID, userRole } = this.state;
     if (url !== "") {
       // TODO: placeholder for PUT request just to update the userinfo
       await new Promise(r => setTimeout(r, 1e3));
@@ -68,7 +77,8 @@ class InviteUser extends PureComponent<Props, State> {
 
       const query = new InviteUserMutation({
         user: {
-          type: userRole === "admin" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
+          type:
+            userRole === "Administrator" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
           username,
           user_id: userID
         }
@@ -94,8 +104,8 @@ class InviteUser extends PureComponent<Props, State> {
   };
 
   render() {
-    const { close, userRole } = this.props;
-    const { username, userID, loading, url, error } = this.state;
+    const { close } = this.props;
+    const { username, userID, loading, url, error, userRole } = this.state;
     return (
       <ModalBody onClose={close}>
         <ModalHeader>
@@ -109,6 +119,26 @@ class InviteUser extends PureComponent<Props, State> {
           </ModalTitle>
         </ModalHeader>
         <Box flow={20}>
+          <FormControl>
+            <RadioGroup
+              aria-label="User role"
+              row
+              name="role"
+              value={userRole}
+              onChange={this.updateUserRole}
+            >
+              <FormControlLabel
+                value="Administrator"
+                control={<Radio />}
+                label="Administrator"
+              />
+              <FormControlLabel
+                value="Operator"
+                control={<Radio />}
+                label="Operator"
+              />
+            </RadioGroup>
+          </FormControl>
           <InputField
             value={username}
             label="Username"
@@ -127,6 +157,7 @@ class InviteUser extends PureComponent<Props, State> {
             maxLength={20}
             error={null}
           />
+
           {error && <Text color="red">{error.json.message}</Text>}
           <Box pt={10}>
             <Button

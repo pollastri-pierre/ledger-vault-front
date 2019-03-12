@@ -38,7 +38,7 @@ class Users extends PureComponent<Props> {
   HeaderComponent = () => (
     <Box horizontal align="flex-start" justify="space-between" pb={20}>
       <CardTitle i18nKey="inviteUser:header" />
-      <InviteUserLink onClick={this.inviteUser} user="admin" />
+      <InviteUserLink onClick={this.inviteUser} />
     </Box>
   );
 

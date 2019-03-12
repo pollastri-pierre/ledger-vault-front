@@ -1,6 +1,6 @@
 {
   "header": "Users",
-  "inviteLink": "Invite new {{userRole}}",
+  "inviteLink": "Invite new User",
   "description":
     "Share this URL with new {{userRole}} using your preferred way of communication.",
   "generateLink": "Generate Link",
