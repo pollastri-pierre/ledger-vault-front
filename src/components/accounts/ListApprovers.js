@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { Trans, Interpolate } from "react-i18next";
+import type { Connection } from "restlay/ConnectionQuery";
 
 import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
@@ -34,12 +35,14 @@ const SelectedCounter = ({ count }: { count: number }) => (
 
 class ListApprovers extends Component<{
   goBack: Function,
-  users: Member[],
+  users: Connection<Member>,
   approvers: Member[],
   addApprover: Function
 }> {
   render() {
     const { goBack, users, addApprover, approvers } = this.props;
+    // TODO need an endpoint not paginated for this
+    const paginatedUsers = users.edges.map(e => e.node);
 
     return (
       <ModalBody height={615}>
@@ -55,7 +58,7 @@ class ListApprovers extends Component<{
         </ModalHeader>
 
         <Box grow overflow="auto" mx={-5} px={5}>
-          {users.map(user => {
+          {paginatedUsers.map(user => {
             const isChecked = approvers.indexOf(user.pub_key) > -1;
             return (
               <MemberRow
@@ -94,5 +97,9 @@ export default connectData(ListApprovers, {
   RenderError,
   queries: {
     users: UsersQuery
+  },
+  initialVariables: {
+    // TODO remove this when endpoint is not paginated anymore
+    users: 30
   }
 });
