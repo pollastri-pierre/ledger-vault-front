@@ -11,6 +11,7 @@ import ActionBar from "components/actionBar/ActionBar";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import UpdateAccounts from "components/UpdateAccounts";
 import Menu from "containers/Menu";
+import Modals from "containers/Modals";
 import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import Box from "components/base/Box";
@@ -34,6 +35,7 @@ type Props = {
 function App({ location, match, accounts }: Props) {
   let res = (
     <Box className="App">
+      <Modals match={match} />
       <ActionBar match={match} location={location} />
       <Box className="Main">
         <Box style={styles.contentContainer}>

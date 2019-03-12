@@ -316,6 +316,8 @@ type RequestCommon = {
   status: string,
   type: string,
   approvals: RequestApproval[],
+  target_id: number,
+  target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
   user?: RequestUser,
   group?: RequestGroup
 };
