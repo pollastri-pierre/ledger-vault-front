@@ -52,6 +52,7 @@ jobs:
           name: Clean compartment
           command: |
             echo "Cleaning compartment $VAULT_COMPARTMENT_ID"
+            ([[ $VAULT_COMPARTMENT_ID == "" ]] || [[ $COMPARTMENTS_ENDPOINT == "" ]]) && exit 0 || true
             curl -k --header "Content-Type: application/json" --request DELETE --data '{}' --cert vault-integration/hsm-circle-ci.pem "$COMPARTMENTS_ENDPOINT/$VAULT_COMPARTMENT_ID"
           when: always
   build:
