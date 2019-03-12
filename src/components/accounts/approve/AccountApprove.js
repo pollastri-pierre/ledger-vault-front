@@ -10,6 +10,7 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import UsersQuery from "api/queries/UsersQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
+import type { Connection } from "restlay/ConnectionQuery";
 
 import connectData from "restlay/connectData";
 import { translate } from "react-i18next";
@@ -26,7 +27,7 @@ import AccountApproveDetails from "./AccountApproveDetails";
 import Footer from "../../approve/Footer";
 
 type Props = {
-  users: Array<Member>,
+  users: Connection<Member>,
   profile: Member,
   t: Translate,
   account: Account,
@@ -94,6 +95,8 @@ class AccountApprove extends Component<Props, State> {
     } = this.props;
 
     const { tabIndex } = this.state;
+    // TODO need an endpoint not paginated for this
+    const paginatedUsers = users.edges.map(e => e.node);
 
     const tabs = (
       <Tabs
@@ -119,7 +122,7 @@ class AccountApprove extends Component<Props, State> {
             <AccountApproveDetails
               account={account}
               accounts={accounts}
-              approvers={users}
+              approvers={paginatedUsers}
               quorum={organization.quorum}
             />
             <GenericFooter
@@ -147,7 +150,10 @@ class AccountApprove extends Component<Props, State> {
 
         {tabIndex === 2 && (
           <Fragment>
-            <ApprovalList approvers={users} approved={account.approvals} />
+            <ApprovalList
+              approvers={paginatedUsers}
+              approved={account.approvals}
+            />
             <GenericFooter
               percentage
               quorum={organization.quorum}
@@ -176,6 +182,10 @@ const connected = connectData(translate()(AccountApprove), {
     users: UsersQuery,
     organization: OrganizationQuery,
     profile: ProfileQuery
+  },
+  initialVariables: {
+    // TODO remove this when endpoint is not paginated anymore
+    users: 30
   },
   propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),
   RenderLoading: ModalLoading
