@@ -1,19 +1,13 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
-
-import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
-
 import AddLink from "components/base/AddLink";
-import ModalRoute from "components/ModalRoute";
 import { GroupsTable } from "components/Table";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { GroupsFilters } from "components/filters";
-import GroupDetails from "containers/Admin/Groups/GroupDetails";
-import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import SearchGroupsQuery from "api/queries/SearchGroups";
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import DataSearch from "components/DataSearch";
@@ -21,7 +15,6 @@ import DataSearch from "components/DataSearch";
 import type { Group } from "data/types";
 
 type Props = {
-  match: Match,
   history: MemoryHistory
 };
 
@@ -48,31 +41,17 @@ class AdminGroups extends PureComponent<Props> {
   );
 
   render() {
-    const { match, history } = this.props;
+    const { history } = this.props;
     return (
-      <Fragment>
-        <DataSearch
-          Query={SearchGroupsQuery}
-          TableComponent={GroupsTable}
-          FilterComponent={GroupsFilters}
-          HeaderComponent={this.CardHeader}
-          onRowClick={this.handleGroupClick}
-          history={history}
-          listenMutations={mutationsToListen}
-        />
-        <ModalRoute
-          path={`${match.url}/:groupId`}
-          render={(
-            props // looks hacky but prevent bug with <Switch> and ModalRoute with the overlay animation
-          ) =>
-            props.match.params.groupId === "new" ? (
-              <CreateGroup {...props} />
-            ) : (
-              <GroupDetails {...props} />
-            )
-          }
-        />
-      </Fragment>
+      <DataSearch
+        Query={SearchGroupsQuery}
+        TableComponent={GroupsTable}
+        FilterComponent={GroupsFilters}
+        HeaderComponent={this.CardHeader}
+        onRowClick={this.handleGroupClick}
+        history={history}
+        listenMutations={mutationsToListen}
+      />
     );
   }
 }
