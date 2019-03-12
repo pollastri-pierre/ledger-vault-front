@@ -8,10 +8,19 @@ type Input = {
 };
 type Response = Member[];
 
+const uri = (props: Input) => {
+  const prefix = "/people";
+  if (!props.userRole) {
+    return prefix;
+  }
+
+  return `${prefix}?role=${props.userRole}`;
+};
+
 //  TODO needs an endpoint not paginated for this
 //  when the endpoint exists, replace ConnectionQuery by simple Query
 export default class UsersQuery extends ConnectionQuery<Input, Response> {
-  uri = `/people?role=${this.props.userRole}`;
+  uri = uri(this.props);
 
   size = 30;
 
