@@ -93,7 +93,7 @@ class UserRow extends PureComponent<UserRowProps> {
         </MUITableCell>
         <MUITableCell>{user.username}</MUITableCell>
         <MUITableCell>{user.role}</MUITableCell>
-        <MUITableCell>{user.id}</MUITableCell>
+        <MUITableCell>{user.user_id || ""}</MUITableCell>
         <MUITableCell>
           <EntityStatus
             status={user.status}

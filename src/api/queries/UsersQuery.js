@@ -6,7 +6,7 @@ import queryString from "query-string";
 import type { Member } from "data/types";
 
 type Input = {
-  userRole: string
+  userRole?: string
 };
 type Response = Member[];
 

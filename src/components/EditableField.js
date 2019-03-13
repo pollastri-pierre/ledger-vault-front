@@ -54,7 +54,12 @@ class EditableField extends PureComponent<Props, State> {
         {!editMode ? (
           <Fragment>
             <Text>{value}</Text>
-            <FaRegEdit style={styles.cursor} onClick={this.toggleEditMode} />
+            <FaRegEdit
+              style={styles.cursor}
+              color={colors.lead}
+              size={12}
+              onClick={this.toggleEditMode}
+            />
           </Fragment>
         ) : (
           <InputField
