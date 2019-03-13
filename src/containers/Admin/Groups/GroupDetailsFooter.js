@@ -1,14 +1,11 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import { approveFlow } from "device/interactions/approveFlow";
-import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
+import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
 
-import DialogButton from "components/buttons/DialogButton";
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
-import type { RestlayEnvironment } from "restlay/connectData";
 import type { Group, Member } from "data/types";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest } from "utils/request";
@@ -17,8 +14,7 @@ type Props = {
   group: Group,
   selected: Member[],
   me: Member,
-  close: void => void,
-  restlay: RestlayEnvironment
+  close: void => void
 };
 
 // if the group is pending the user can approve/reject the request
@@ -44,13 +40,8 @@ class GroupDetailsFooter extends PureComponent<Props> {
   };
 
   onSuccess = () => {
-    const { restlay, close } = this.props;
-    restlay.fetchQuery(new PendingRequestsQuery());
+    const { close } = this.props;
     close();
-  };
-
-  editGroup = () => {
-    console.warn("TODO: edit group's members");
   };
 
   render() {
@@ -58,7 +49,9 @@ class GroupDetailsFooter extends PureComponent<Props> {
 
     const { status } = group;
     const hasUserApproved =
-      group.last_request && hasUserApprovedRequest(group.last_request, me);
+      group.last_request &&
+      group.last_request.approvals &&
+      hasUserApprovedRequest(group.last_request, me);
 
     return (
       <Fragment>
@@ -77,19 +70,43 @@ class GroupDetailsFooter extends PureComponent<Props> {
                   request_id: group.last_request && group.last_request.id
                 }}
                 disabled={false}
-                buttonLabel={<Trans i18nKey="common:approve" />}
+                buttonLabel={
+                  <Trans
+                    i18nKey={
+                      group.last_request
+                        ? `request:approve.${group.last_request.type}`
+                        : `common:approve`
+                    }
+                  />
+                }
               />
             </Fragment>
           )}
-        {status === "APPROVED" && (
-          <DialogButton abort onTouchTap={this.deleteGroup}>
-            <Trans i18nKey="common:remove" />
-          </DialogButton>
+        {status === "ACTIVE" && (
+          <ApproveRequestButton
+            interactions={createAndApprove}
+            onSuccess={this.onSuccess}
+            onError={null}
+            disabled={false}
+            additionalFields={{
+              data: { group_id: group.id },
+              type: "REVOKE_GROUP"
+            }}
+            buttonLabel={<Trans i18nKey="group:delete" />}
+          />
         )}
         {hasArrayChanged(group.members, selected) && (
-          <DialogButton highlight onTouchTap={this.editGroup}>
-            <Trans i18nKey="common:edit" />
-          </DialogButton>
+          <ApproveRequestButton
+            interactions={createAndApprove}
+            onSuccess={this.onSuccess}
+            disabled={false}
+            onError={null}
+            additionalFields={{
+              data: { group_id: group.id },
+              type: "EDIT_GROUP"
+            }}
+            buttonLabel={<Trans i18nKey="common:edit" />}
+          />
         )}
       </Fragment>
     );
