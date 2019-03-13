@@ -1,0 +1,12 @@
+{
+  "type": {
+    "CREATE_GROUP": "Create group",
+    "EDIT_GROUP": "Edit group",
+    "REVOKE_GROUP": "Revoke group"
+  },
+  "approve": {
+    "CREATE_GROUP": "Approve group creation",
+    "EDIT_GROUP": "Approve group edit",
+    "REVOKE_GROUP": "Approve group revokation"
+  }
+}

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
+import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import styled from "styled-components";
 import colors from "shared/colors";
@@ -10,7 +11,8 @@ import { MdCreate, MdCheck, MdClear } from "react-icons/md";
 type Props = {
   text: string,
   loading?: boolean,
-  onChange: string => any
+  onChange: string => any,
+  isEditDisabled?: boolean
 };
 
 type State = {
@@ -30,13 +32,15 @@ const ContainerIcon = styled(Box)`
   bottom: 0px;
   ${Container}:hover & {
     display: ${props =>
-      props.loading || props.editMode ? "none" : "inline-block"};
+      props.loading || props.editMode || props.isEditDisabled
+        ? "none"
+        : "inline-block"};
   }
 `;
 
 const iconEdit = <MdCreate size={15} />;
-const iconValidate = <MdCheck size={15} color={colors.green} />;
-const iconCancel = <MdClear size={15} color={colors.grenade} />;
+const iconValidate = <MdCheck size={25} />;
+const iconCancel = <MdClear size={25} />;
 
 const spinner = (
   <CircularProgress
@@ -52,17 +56,6 @@ const spinner = (
   />
 );
 
-const Action = styled(Box)`
-  background: ${colors.cream};
-  border-radius: 3px;
-  width: 35px;
-  height: 20px;
-  cursor: pointer;
-  &:hover {
-    background: ${colors.pearl};
-  }
-`;
-
 class EditableText extends PureComponent<Props, State> {
   state = {
     editMode: false,
@@ -70,7 +63,8 @@ class EditableText extends PureComponent<Props, State> {
   };
 
   onFocus = () => {
-    if (!this.props.loading) {
+    const { loading, isEditDisabled } = this.props;
+    if (!loading && !isEditDisabled) {
       this.setState({ editMode: true });
     }
   };
@@ -92,32 +86,48 @@ class EditableText extends PureComponent<Props, State> {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, isEditDisabled } = this.props;
     const { editMode, innerText } = this.state;
     return (
       <Container align="flex-end" loading={loading}>
         {loading && spinner}
         <TextField
-          variant="filled"
           rows={5}
+          style={{ background: colors.cream }}
           onFocus={this.onFocus}
           fullWidth
           multiline
           value={innerText}
-          disabled={loading}
+          inputProps={{ style: { padding: 20 } }}
+          disabled={loading || isEditDisabled}
           onChange={this.onChangeText}
         />
         {editMode && (
-          <Box flow={5} horizontal>
-            <Action justify="center" align="center" onClick={this.onCancel}>
+          <Box pt={5} flow={5} horizontal>
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="small"
+              onClick={this.onCancel}
+            >
               {iconCancel}
-            </Action>
-            <Action justify="center" align="center" onClick={this.onValidate}>
+            </Button>
+
+            <Button
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={this.onValidate}
+            >
               {iconValidate}
-            </Action>
+            </Button>
           </Box>
         )}
-        <ContainerIcon loading={loading} editMode={editMode}>
+        <ContainerIcon
+          loading={loading}
+          editMode={editMode}
+          isEditDisabled={isEditDisabled}
+        >
           {iconEdit}
         </ContainerIcon>
       </Container>

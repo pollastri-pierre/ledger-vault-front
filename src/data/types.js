@@ -312,6 +312,14 @@ export type ERC20Token = {
   signature: string
 };
 
+export type RequestType =
+  | "CREATE_GROUP"
+  | "EDIT_GROUP"
+  | "REVOKE_GROUP"
+  | "CREATE_ACCOUNT"
+  | "EDIT_ACCOUNT"
+  | "REVOKE_ACCOUNT";
+
 type RequestCommon = {
   created_by: number,
   created_on: string,
@@ -321,6 +329,7 @@ type RequestCommon = {
   approvals: RequestApproval[],
   target_id: number,
   target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
+  type: RequestType,
   user?: RequestUser,
   group?: RequestGroup
 };
