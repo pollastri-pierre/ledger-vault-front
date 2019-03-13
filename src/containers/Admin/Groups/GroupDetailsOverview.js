@@ -24,9 +24,14 @@ class GroupDetailsOverview extends PureComponent<Props> {
       <Box flow={20}>
         <GroupDetailsDetails group={group} />
         <Box flow={20}>
-          <Text bold>Members</Text>
+          <Box flow={5} horizontal align="center">
+            <Text bold>Members </Text>
+            {group.members.length > 0 && (
+              <Text small>({group.members.length})</Text>
+            )}
+          </Box>
           <SelectGroupsUsers
-            isDisabled={group.status !== "APPROVED"}
+            isDisabled={group.status !== "ACTIVE"}
             groups={[]}
             members={listOperators}
             value={{ members: selected, group: [] }}

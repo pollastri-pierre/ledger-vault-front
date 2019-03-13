@@ -101,7 +101,10 @@ class CreateGroup extends PureComponent<Props, State> {
             onChange={this.onChangeDescription}
           />
           <Box flow={20} py={30}>
-            <Text uppercase small i18nKey="group:create.members" />
+            <Box flow={10} horizontal align="center">
+              <Text uppercase small i18nKey="group:create.members" />
+              {members.length > 0 && <Text small>({members.length})</Text>}
+            </Box>
             <SelectGroupsUsers
               members={listOperators}
               groups={[]}
