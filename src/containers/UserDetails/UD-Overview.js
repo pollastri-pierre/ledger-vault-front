@@ -8,6 +8,7 @@ import LineRow from "components/LineRow";
 import EditableField from "components/EditableField";
 import Box from "components/base/Box";
 import CopyToClipboardButton from "components/CopyToClipboardButton";
+import UserRoleFormatter from "components/UserRoleFormatter";
 
 import { updateUserRegistrationInfo } from "containers/Admin/InviteUser/helpers";
 
@@ -64,7 +65,7 @@ class UserDetailsOverview extends PureComponent<Props> {
         </LineRow>
 
         <LineRow label={<Trans i18nKey="userDetails:role" />}>
-          {user.role}
+          <UserRoleFormatter userRole={user.role} />
         </LineRow>
         <LineRow label={<Trans i18nKey="userDetails:userID" />}>
           {isPendingRegistration ? (
