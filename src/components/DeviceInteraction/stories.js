@@ -2,32 +2,46 @@
 
 import React from "react";
 import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+
 import DeviceInteraction from "components/DeviceInteraction";
-import network from "network";
-import { getPublicKey, authenticate } from "device/interface";
-import { U2F_PATH } from "device";
+import { delay } from "utils/promise";
+
+import RestlayProvider from "restlay/RestlayProvider";
+
+const mockNetwork = async () => {};
 
 const interactions = [
   {
     needsUserInput: false,
     device: true,
-    response: "pubKey",
-    action: ({ transport }) => getPublicKey(transport, U2F_PATH)
+    responseKey: "pubKey",
+    action: async () => {
+      await delay(1e3);
+      return { pubKey: { pubKey: 5 } };
+    }
   },
   {
     needsUserInput: false,
-    response: "challenge",
-    action: ({ pubKey: { pubKey } }) =>
-      network(`/authentication/${pubKey}/challenge`)
+    responseKey: "challenge",
+    action: async () => {
+      await delay(1e3);
+      return { challenge: "abcde" };
+    }
   },
   {
     needsUserInput: true,
     device: true,
     response: "authenticate",
-    action: ({ transport, challenge }) => authenticate(transport, challenge)
+    action: () => Promise.resolve(true)
   }
 ];
 
 storiesOf("other", module).add("DeviceInteraction", () => (
-  <DeviceInteraction interactions={interactions} />
+  <RestlayProvider network={mockNetwork}>
+    <DeviceInteraction
+      interactions={interactions}
+      onSuccess={action("onSuccess")}
+    />
+  </RestlayProvider>
 ));
