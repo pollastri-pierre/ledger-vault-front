@@ -16,13 +16,13 @@ import StepBall from "./StepBall";
 
 export type ApprovalsRule = {
   quorum: number,
-  users: string[],
-  group: string | null
+  users: number[],
+  group: number | null
 };
 
 export type ApprovalsSelectedIds = {
-  groups: string[],
-  users: string[]
+  groups: number[],
+  users: number[]
 };
 
 type Props = {

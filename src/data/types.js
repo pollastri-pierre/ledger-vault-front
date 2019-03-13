@@ -65,7 +65,7 @@ export type AccountSettings = {
 };
 
 type MemberCommon = {
-  id: string,
+  id: number,
   pub_key: string,
   username: string,
   picture?: string,
@@ -142,7 +142,7 @@ export type AccountEntity = AccountCommon & {
 };
 
 type GroupCommon = {
-  id: string,
+  id: number,
   name: string,
   created_on: Date,
   created_by: Member,
