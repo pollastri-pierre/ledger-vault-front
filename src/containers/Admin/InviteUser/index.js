@@ -10,12 +10,14 @@ import InfoBox from "components/base/InfoBox";
 import { ModalHeader, ModalTitle, ModalBody } from "components/base/Modal";
 import CopyToClipboardButton from "components/CopyToClipboardButton";
 import colors from "shared/colors";
+import type { RestlayEnvironment } from "restlay/connectData";
+
 import { updateUserRegistrationInfo } from "./helpers";
 import InviteUserForm from "./InviteUserForm";
 
 type Props = {
   close: () => void,
-  restlay: *
+  restlay: RestlayEnvironment
 };
 type State = {
   loading: boolean,

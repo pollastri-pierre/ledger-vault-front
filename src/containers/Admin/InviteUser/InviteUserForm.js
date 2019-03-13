@@ -18,7 +18,7 @@ import colors from "shared/colors";
 
 type Props = {
   request_id: string,
-  processUserInfo: (string, string, string) => *,
+  processUserInfo: (string, string, string) => Promise<*>,
   t: Translate
 };
 type State = {

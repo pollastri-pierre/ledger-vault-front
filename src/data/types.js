@@ -64,23 +64,12 @@ export type AccountSettings = {
   blockchain_explorer: string
 };
 
-type LastRequest = {
-  created_by: string,
-  created_on: string,
-  id: number,
-  status: string,
-  target_id: number,
-  target_type: string,
-  type: string,
-  url_id: string
-};
 type MemberCommon = {
   id: number,
   pub_key: string,
   username: string,
   user_id?: string,
   picture?: string,
-  last_request?: LastRequest,
   created_on: string,
   status: string,
   email?: string,
@@ -332,6 +321,7 @@ type RequestCommon = {
   type: string,
   approvals: RequestApproval[],
   target_id: number,
+  url_id?: string,
   target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
   user?: RequestUser,
   group?: RequestGroup
