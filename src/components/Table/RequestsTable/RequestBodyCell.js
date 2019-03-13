@@ -7,7 +7,7 @@ import MUITableCell from "@material-ui/core/TableCell";
 import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import type { Request } from "data/types";
-
+import RequestTitle from "components/RequestTitle";
 import type { TableItem } from "../types";
 
 type CellProps = {
@@ -21,7 +21,7 @@ class RequestBodyCell extends PureComponent<CellProps> {
       case "status":
         return <EntityStatus status={request.status} request={request} />;
       case "activity":
-        return <div>{request.type}</div>;
+        return <RequestTitle type={request.type} />;
       case "date":
         return <DateFormat date={request.created_on} />;
       default:
