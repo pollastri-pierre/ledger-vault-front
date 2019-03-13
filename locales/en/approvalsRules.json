@@ -1,0 +1,12 @@
+{
+  "firstStepLabel": "Transaction is created",
+  "lastStepLabel": "Transaction is broadcasted",
+  "addApproval": "Add approval",
+  "approvalsFrom": "approvals from",
+  "approvalsFromNb": "{{nb}} user selected",
+  "approvalsFromNb_plural": "{{nb}} users selected",
+  "approvalsFromNbGroup": "{{nb}} user in group",
+  "approvalsFromNbGroup_plural": "{{nb}} users in group",
+  "selectPlaceholder": "Select group or users",
+  "invalidRule": "No users or group selected, rule will be ignored."
+}
