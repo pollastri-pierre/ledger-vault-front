@@ -13,7 +13,10 @@ import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import { getCurrencyIdFromBlockchainName } from "utils/cryptoCurrencies";
+import {
+  isNotSupportedCoin,
+  getCurrencyIdFromBlockchainName
+} from "utils/cryptoCurrencies";
 import type { ERC20Token } from "data/types";
 
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
@@ -41,8 +44,12 @@ const steps = [
     id: "name",
     name: <Trans i18nKey="accountCreation:steps.name.title" />,
     Step: AccountCreationName,
-    requirements: (payload: AccountCreationPayload) =>
-      payload.currency !== null || payload.erc20token !== null
+    requirements: (payload: AccountCreationPayload) => {
+      if (!payload.currency && !payload.erc20token) return false;
+      if (payload.currency && isNotSupportedCoin(payload.currency))
+        return false;
+      return true;
+    }
   },
   {
     id: "rules",
