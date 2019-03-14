@@ -4,13 +4,13 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import connectData from "restlay/connectData";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
-import type { CurrentActionType } from "components/DeviceInteractionAnimation";
 import type { GateError } from "data/types";
 
 export type Interaction = {
   needsUserInput?: boolean,
   device?: boolean,
   responseKey: string,
+  tooltip?: React$Node,
   action: Object => Promise<*>
 };
 
@@ -24,15 +24,13 @@ type Props = {
 
 type State = {
   currentStep: number,
-  currentActionType: CurrentActionType,
-  needsUserInput: boolean
+  interaction: Interaction
 };
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
-    needsUserInput: false,
-    currentActionType: this.props.interactions[0].device ? "device" : "server"
+    interaction: this.props.interactions[0]
   };
 
   _unmounted = false;
@@ -55,9 +53,8 @@ class DeviceInteraction extends PureComponent<Props, State> {
     for (let i = 0; i < interactions.length; i++) {
       try {
         this.setState({
-          needsUserInput: interactions[i].needsUserInput,
           currentStep: i,
-          currentActionType: interactions[i].device ? "device" : "server"
+          interaction: interactions[i]
         });
         responses[interactions[i].responseKey] = await interactions[i].action(
           responses
@@ -83,13 +80,12 @@ class DeviceInteraction extends PureComponent<Props, State> {
 
   render() {
     const { interactions } = this.props;
-    const { currentStep, needsUserInput, currentActionType } = this.state;
+    const { currentStep, interaction } = this.state;
     return (
       <DeviceInteractionAnimation
+        interaction={interaction}
         numberSteps={interactions.length}
         currentStep={currentStep}
-        needsUserInput={needsUserInput}
-        currentActionType={currentActionType}
       />
     );
   }
