@@ -4,7 +4,7 @@ import { translate } from "react-i18next";
 import emailValidator from "email-validator";
 // import Dropzone from "react-dropzone";
 import rectCrop from "rect-crop";
-import { TextField } from "components";
+import TextField from "components/utils/TextField";
 import DialogButton from "components/buttons/DialogButton";
 import ProfileIcon from "components/icons/thin/Profile";
 import { withStyles } from "@material-ui/core/styles";

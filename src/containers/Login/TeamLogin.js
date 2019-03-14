@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { translate } from "react-i18next";
 import type { Translate } from "data/types";
-import { DialogButton } from "components";
+import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
 import Profile from "components/icons/thin/Profile";
 import MUITextField from "@material-ui/core/TextField";

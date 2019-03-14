@@ -7,7 +7,7 @@ import UsersQuery from "api/queries/UsersQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import Card from "components/legacy/Card";
-import { PendingAccountApprove } from "components";
+import PendingAccountApprove from "components/pending/PendingAccountApprove";
 import TryAgain from "components/TryAgain";
 import type { Member, Account } from "data/types";
 

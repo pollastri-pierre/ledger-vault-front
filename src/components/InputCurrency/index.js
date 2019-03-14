@@ -5,7 +5,7 @@ import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies
 import type { CryptoCurrency, Unit } from "@ledgerhq/live-common/lib/types";
 
 import type { Unit as WeakUnit } from "data/types";
-import { TextField } from "components";
+import TextField from "components/utils/TextField";
 import UnitSelect from "components/UnitSelect";
 import { sanitizeValueString } from "components/Send/helpers";
 

@@ -1,7 +1,7 @@
 // @flow
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import { Alert } from "components";
+import Alert from "components/utils/Alert";
 import { closeMessage } from "redux/modules/alerts";
 import TranslatedError from "components/TranslatedError";
 

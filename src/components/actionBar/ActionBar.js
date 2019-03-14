@@ -9,10 +9,10 @@ import { withStyles } from "@material-ui/core/styles";
 import { urls } from "utils/urls";
 import Logo from "components/Logo";
 import Text from "components/base/Text";
+import AccountCreationFlow from "components/AccountCreationFlow";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
-import AccountCreation from "../accounts/creation/AccountCreation";
 
 // NOTE: more refactor to do, might be a part of general layout refactor
 const styles = {
@@ -59,7 +59,7 @@ class ActionBar extends Component<{
         <ProfileCard match={match} />
         <ModalRoute
           path="*/new-account"
-          component={AccountCreation}
+          component={AccountCreationFlow}
           disableBackdropClick
         />
         <div className={classes.header}>
