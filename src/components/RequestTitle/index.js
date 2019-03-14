@@ -8,8 +8,8 @@ import colors from "shared/colors";
 
 const ICON_SIZE = 20;
 const editIcon = <MdEdit size={ICON_SIZE} />;
-const newIcon = <MdCreateNewFolder size={ICON_SIZE} color={colors.ocean} />;
-const deleteIcon = <MdDelete size={ICON_SIZE} color={colors.grenade} />;
+const newIcon = <MdCreateNewFolder size={ICON_SIZE} color={colors.lightGrey} />;
+const deleteIcon = <MdDelete size={ICON_SIZE} color={colors.lightGrey} />;
 
 type Props = {
   type: RequestType,
