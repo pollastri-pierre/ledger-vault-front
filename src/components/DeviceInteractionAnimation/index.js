@@ -1,20 +1,21 @@
 // @flow
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
-import styled from "styled-components";
+import Text from "components/base/Text";
+import styled, { keyframes } from "styled-components";
 import colors from "shared/colors";
 import { MdComputer, MdTouchApp, MdError } from "react-icons/md";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { FaMobileAlt, FaServer } from "react-icons/fa";
+import type { Interaction } from "components/DeviceInteraction";
 
 export type CurrentActionType = "device" | "server";
 
 type Props = {
+  interaction: Interaction,
   numberSteps: number,
   currentStep: ?number,
-  needsUserInput?: boolean,
-  error?: boolean,
-  currentActionType: CurrentActionType
+  error?: boolean
 };
 
 const computerIcon = <MdComputer size={20} />;
@@ -31,6 +32,7 @@ const Container = styled(Box).attrs({
 })`
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
+  position: relative;
   background: ${colors.pearl};
 `;
 
@@ -50,6 +52,45 @@ const Dash = styled(Box)`
   height: 2px;
   background: ${p => (p.done ? colors.green : "black")};
   opacity: ${p => (p.done || p.active ? 1 : 0.1)};
+`;
+
+const bounce = keyframes`
+ from {
+    transform: translateY(-5px);
+ }
+ 50% {
+    transform: translateY(0px);
+ }
+ to {
+    transform: translateY(-5px);
+ }
+`;
+
+const Tooltip = styled(Box)`
+  -webkit-font-smoothing: antialiased;
+  animation: ${bounce} 1000ms linear infinite;
+  background: ${colors.night};
+  color: white;
+  border-radius: 5px;
+  top: 100%;
+  left: 8px;
+  z-index: 1;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  position: absolute;
+  width: 200px;
+  transition: all 1s ease;
+  &:before {
+    position: absolute;
+    top: -10px;
+    display: block;
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #1d2028 transparent;
+  }
 `;
 
 type PropsDash = {
@@ -145,7 +186,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
   }
 }
 
-const CurrentActionIcon = ({
+const LeftIcon = ({
   type,
   needsUserInput
 }: {
@@ -155,32 +196,37 @@ const CurrentActionIcon = ({
   type === "device" ? (
     <DeviceIcon needsUserInput={needsUserInput} />
   ) : (
-    serverIcon
+    computerIcon
   );
-class DeviceInteraction extends PureComponent<Props> {
+
+const RightIcon = ({ type }: { type: CurrentActionType }) =>
+  type === "device" ? computerIcon : serverIcon;
+
+class DeviceInteractionAnimation extends PureComponent<Props> {
   render() {
-    const {
-      needsUserInput,
-      numberSteps,
-      currentStep,
-      error,
-      currentActionType
-    } = this.props;
+    const { numberSteps, interaction, currentStep, error } = this.props;
+
+    const { needsUserInput, tooltip } = interaction;
+    const currentActionType = interaction.device ? "device" : "server";
+
     return (
       <Container error={error}>
-        {computerIcon}
+        <LeftIcon type={currentActionType} needsUserInput={needsUserInput} />
         <DashContainer
           number={numberSteps}
           currentStep={currentStep}
           error={error}
         />
-        <CurrentActionIcon
-          type={currentActionType}
-          needsUserInput={needsUserInput}
-        />
+        <RightIcon type={currentActionType} />
+        {tooltip && <Tooltip>{tooltip}</Tooltip>}
+        {needsUserInput && (
+          <Tooltip right>
+            <Text small i18nKey="common:approve_device" />
+          </Tooltip>
+        )}
       </Container>
     );
   }
 }
 
-export default DeviceInteraction;
+export default DeviceInteractionAnimation;

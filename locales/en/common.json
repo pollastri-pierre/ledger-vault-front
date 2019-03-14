@@ -20,5 +20,7 @@
   "reject": "Reject",
   "remove": "Delete",
   "operationStatus": "Operation status",
-  "clickToEdit": "Click to edit"
+  "clickToEdit": "Click to edit",
+  "plug_device": "Please connect your device and open the vault application.",
+  "approve_device": "Verify the operation on your device"
 }
