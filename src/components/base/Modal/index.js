@@ -160,11 +160,11 @@ class Modal extends PureComponent<Props, State> {
   }
 
   animateEnter = () => {
-    Animated.timing(this.state.animShowHide, {
-      ...animShowHide,
-      toValue: 1
-    }).start();
     window.requestAnimationFrame(() => {
+      Animated.timing(this.state.animShowHide, {
+        ...animShowHide,
+        toValue: 1
+      }).start();
       if (document.body) {
         document.body.classList.add("blurDialogOpened");
       }
@@ -172,11 +172,11 @@ class Modal extends PureComponent<Props, State> {
   };
 
   animateLeave = () => {
-    Animated.timing(this.state.animShowHide, {
-      ...animShowHide,
-      toValue: 0
-    }).start();
     window.requestAnimationFrame(() => {
+      Animated.timing(this.state.animShowHide, {
+        ...animShowHide,
+        toValue: 0
+      }).start();
       if (document.body) {
         document.body.classList.remove("blurDialogOpened");
       }
@@ -255,8 +255,7 @@ const BACKDROP_STYLE = {
   left: 0,
   right: 0,
   bottom: 0,
-  background: "rgba(0, 0, 0, 0.5)",
-  zIndex: 100
+  background: "rgba(0, 0, 0, 0.5)"
 };
 
 const CONTAINER_STYLE = {

@@ -10,8 +10,8 @@ const Text = styled.div`
   display: ${p => (p.inline ? "inline-block" : "block")};
   font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p => (p.header ? 18 : p.small ? 11 : p.large ? 16 : 13)}px;
-  font-weight: ${p => (p.bold ? "bold" : "")};
-  font-style: ${p => (p.italic ? "italic" : "")};
+  font-weight: ${p => (p.bold ? "bold" : "inherit")};
+  font-style: ${p => (p.italic ? "italic" : "inherit")};
   line-height: ${p => ("lineHeight" in p ? p.lineHeight : "1.75")};
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};

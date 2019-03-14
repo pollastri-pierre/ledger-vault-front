@@ -16,7 +16,7 @@ class ModalLoading extends PureComponent<Props> {
   render() {
     const { width, height } = this.props;
     return (
-      <div style={{ width, height, background: "white" }}>
+      <div style={{ width, height, background: "white", borderRadius: 4 }}>
         <SpinnerCard />
       </div>
     );

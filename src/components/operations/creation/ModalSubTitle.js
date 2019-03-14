@@ -8,8 +8,7 @@ const styles = {
     marginTop: 0,
     marginBottom: 10,
     fontSize: 11,
-    fontWeight: 600,
-    color: "black",
+    color: "#aaa",
     textTransform: "uppercase",
     display: "flex"
   }

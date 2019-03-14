@@ -1,45 +1,37 @@
 // @flow
 
-import React, { PureComponent } from "react";
 import styled from "styled-components";
 
-import Box from "components/base/Box";
+import { opacity } from "shared/colors";
 
-type Props = {
-  onClick: () => void,
-  color?: string,
-  children: React$Node
-};
-
-const Container = styled(Box).attrs({
-  horizontal: true,
-  px: 10,
-  align: "center",
-  justify: "center"
-})`
+export default styled.button.attrs(p => ({
+  tabIndex: p.isDisabled ? -1 : 0
+}))`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
   height: 60px;
-  box-shadow: #333 0 -4px 0 inset;
+  padding: 0 10px;
+  border: none;
+  background-color: transparent;
+  box-shadow: ${p => p.color} 0 -4px 0 inset;
   font-weight: bold;
   cursor: pointer;
   user-select: none;
+  pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
+  opacity: ${p => (p.isDisabled ? 0.5 : 1)};
+
+  color: ${p => p.color};
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: ${p => opacity(p.color, 0.05)};
   }
   &:active {
-    background-color: rgba(0, 0, 0, 0.07);
+    background-color: ${p => opacity(p.color, 0.1)};
+  }
+  &:focus {
+    outline: none;
+    background-color: ${p => opacity(p.color, 0.1)};
   }
 `;
-
-class ModalFooterButton extends PureComponent<Props> {
-  render() {
-    const { onClick, color, children } = this.props;
-    return (
-      <Container color={color} onClick={onClick}>
-        {children}
-      </Container>
-    );
-  }
-}
-
-export default ModalFooterButton;
