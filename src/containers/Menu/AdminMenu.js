@@ -9,7 +9,6 @@ import {
   FaList,
   FaUser,
   FaUsers,
-  FaLock,
   FaMoneyCheck,
   FaExchangeAlt
 } from "react-icons/fa";
@@ -40,11 +39,8 @@ function AdminMenu(props: { match: Match }) {
         <MenuItem to={`${match.url}/admin/groups`} Icon={FaUsers}>
           <Trans i18nKey="menu:admin.groups" />
         </MenuItem>
-        <MenuItem to={`${match.url}/admin/operators`} Icon={FaUser}>
-          <Trans i18nKey="menu:admin.operators" />
-        </MenuItem>
-        <MenuItem to={`${match.url}/admin/administrators`} Icon={FaLock}>
-          <Trans i18nKey="menu:admin.administrators" />
+        <MenuItem to={`${match.url}/admin/users`} Icon={FaUser}>
+          <Trans i18nKey="menu:admin.users" />
         </MenuItem>
         <MenuItem to={`${match.url}/admin/accounts`} Icon={FaMoneyCheck}>
           <Trans i18nKey="menu:admin.accounts" />

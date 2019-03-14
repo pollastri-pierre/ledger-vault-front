@@ -6,9 +6,15 @@ import styled from "styled-components";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
-export const CardTitle = ({ children }: { children: React$Node }) => (
+export const CardTitle = ({
+  children,
+  i18nKey
+}: {
+  children?: React$Node,
+  i18nKey?: string
+}) => (
   <Box mb={20}>
-    <Text small bold uppercase>
+    <Text small bold uppercase i18nKey={i18nKey}>
       {children}
     </Text>
   </Box>

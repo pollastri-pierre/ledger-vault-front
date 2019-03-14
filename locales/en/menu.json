@@ -2,9 +2,8 @@
   "admin": {
     "dashboard": "Dashboard (Admin)",
     "tasks": "Admin Tasks",
-    "operators": "Operators (Admin)",
     "groups": "Groups (Admin)",
-    "administrators": "Administrators",
+    "users": "Users",
     "accounts": "Accounts (Admin)",
     "transactions": "Transactions (Admin)"
   },

@@ -35,7 +35,8 @@ const Container = styled(Box).attrs({
 const styles = {
   text: {
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   }
 };
 class CopyToClipboardButton extends Component<Props, State> {

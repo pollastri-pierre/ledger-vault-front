@@ -7,24 +7,30 @@ import schema from "data/schema";
 import type { Member } from "data/types";
 
 type Input = {
-  name?: string
+  name?: string,
+  userRole?: string
 };
 
 type Node = Member;
 
 const uri = (query: Input) => {
-  const finalQuery: Object = {
-    ...query,
-    role: "ADMIN"
-  };
+  let finalQuery = {};
+
+  if (query && query.userRole) {
+    finalQuery = {
+      ...query
+    };
+  } else {
+    finalQuery = {
+      ...query,
+      role: ["ADMIN", "OPERATOR"]
+    };
+  }
   const q = queryString.stringify(finalQuery);
   return `/people${q ? "?" : ""}${q}`;
 };
 
-export default class SearchAdministratorsQuery extends ConnectionQuery<
-  Input,
-  Node
-> {
+export default class SearchUsersQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
   size = 30;

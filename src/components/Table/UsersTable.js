@@ -11,6 +11,7 @@ import MUITableRow from "@material-ui/core/TableRow";
 import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
+import UserRoleFormatter from "components/UserRoleFormatter";
 
 import type { Member } from "data/types";
 
@@ -58,6 +59,7 @@ class UsersTableHeader extends PureComponent<UsersTableHeaderProps> {
         <MUITableRow>
           <MUITableCell>Date</MUITableCell>
           <MUITableCell>Username</MUITableCell>
+          <MUITableCell>Role</MUITableCell>
           <MUITableCell>User ID</MUITableCell>
           <MUITableCell>Status</MUITableCell>
         </MUITableRow>
@@ -91,7 +93,10 @@ class UserRow extends PureComponent<UserRowProps> {
           <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />
         </MUITableCell>
         <MUITableCell>{user.username}</MUITableCell>
-        <MUITableCell>{user.id}</MUITableCell>
+        <MUITableCell>
+          <UserRoleFormatter userRole={user.role} />
+        </MUITableCell>
+        <MUITableCell>{user.user_id || ""}</MUITableCell>
         <MUITableCell>
           <EntityStatus
             status={user.status}

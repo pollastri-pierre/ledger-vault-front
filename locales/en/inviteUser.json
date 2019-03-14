@@ -1,7 +1,18 @@
 {
-  "inviteLink": "Invite new {{userRole}}",
+  "header": "Users",
+  "inviteLink": "Invite new User",
+  "form": {
+    "placeholderUsername": "Please type in your username",
+    "placeholderUserID": "Please type in your user ID",
+    "labelUserID": "User ID",
+    "labelUsername": "Username",
+    "radio": {
+      "admin": "Administrator",
+      "operator": "Operator"
+    }
+  },
   "description":
-    "Share this URL with new {{userRole}} using your preferred way of communication.",
+    "Share this URL with the new user in your preferred way of communication.",
   "generateLink": "Generate Link",
   "updateMember": "Update Member Info",
   "registration": {
