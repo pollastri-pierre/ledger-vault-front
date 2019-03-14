@@ -58,7 +58,11 @@ export default (props: AccountCreationStepProps) => {
           </LineRow>
         )}
         <LineRow label={<Trans i18nKey="newAccount:confirmation.approvals" />}>
-          I mean ye?
+          <Trans
+            i18nKey="accountCreation:rulesSumup"
+            count={payload.rules.length}
+            values={{ count: payload.rules.length }}
+          />
         </LineRow>
       </Box>
       <InfoBox type="info" withIcon>
