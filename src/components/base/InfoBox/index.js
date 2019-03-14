@@ -50,7 +50,7 @@ const styles = {
     backgroundColor: opacity(colors.ocean, 0.05),
     color: darken(colors.ocean, 0.3),
     "& .icon": {
-      color: darken(colors.ocean, 0.3)
+      color: opacity(darken(colors.ocean, 0.3), 0.3)
     },
     "& .footer": {
       background: opacity(colors.ocean, 0.1)
@@ -60,7 +60,7 @@ const styles = {
     color: colors.light_orange,
     backgroundColor: opacity(colors.blue_orange, 0.1),
     "& .icon": {
-      color: colors.light_orange
+      color: opacity(colors.light_orange, 0.4)
     },
     "& .footer": {
       background: opacity(colors.blue_orange, 0.1)
@@ -70,7 +70,7 @@ const styles = {
     color: colors.grenade,
     backgroundColor: opacity(colors.grenade, 0.05),
     "& .icon": {
-      color: colors.grenade
+      color: opacity(colors.grenade, 0.6)
     },
     "& .footer": {
       background: opacity(colors.grenade, 0.1)

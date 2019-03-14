@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { DialogButton } from "components";
+import DialogButton from "components/buttons/DialogButton";
 import type { Translate } from "data/types";
 import Plug from "components/icons/thin/Plug";
 import { translate } from "react-i18next";

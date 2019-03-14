@@ -20,12 +20,13 @@ import {
   ModalBody,
   ModalFooter
 } from "components/base/Modal";
+import DialogButton from "components/buttons/DialogButton";
+import Overscroll from "components/utils/Overscroll";
 import type { Operation, Account } from "data/types";
 import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import TabDetails from "./TabDetails";
-import { DialogButton, Overscroll } from "..";
 
 type Props = {
   close: Function,

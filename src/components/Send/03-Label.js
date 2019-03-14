@@ -5,7 +5,7 @@ import { translate, Trans } from "react-i18next";
 
 import type { Account, Translate } from "data/types";
 import type { WalletBridge } from "bridge/types";
-import { TextField } from "components";
+import TextField from "components/utils/TextField";
 import DialogButton from "components/buttons/DialogButton";
 import { ModalFooter } from "components/base/Modal";
 

@@ -2,7 +2,7 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import { DialogButton } from "..";
+import DialogButton from "components/buttons/DialogButton";
 import { PlugIcon } from "../icons";
 
 const styles = {

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import { TextField } from "components";
+import TextField from "components/utils/TextField";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";

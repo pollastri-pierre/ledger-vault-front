@@ -10,7 +10,8 @@ import Select from "@material-ui/core/Select";
 import Paper from "@material-ui/core/Paper";
 import { connect } from "react-redux";
 import BlurDialog from "components/BlurDialog";
-import { Alert, Overscroll } from "components";
+import Alert from "components/utils/Alert";
+import Overscroll from "components/utils/Overscroll";
 import { switchLocale } from "redux/modules/locale";
 import { Row, Col } from "./grid/Grid";
 

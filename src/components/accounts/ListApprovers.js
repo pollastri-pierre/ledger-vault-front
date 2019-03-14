@@ -9,7 +9,7 @@ import connectData from "restlay/connectData";
 import UsersQuery from "api/queries/UsersQuery";
 import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
-import { DialogButton } from "components";
+import DialogButton from "components/buttons/DialogButton";
 import type { Member } from "data/types";
 
 import colors from "shared/colors";

@@ -1,1 +1,23 @@
-{ "continue_eth_creation": "Create new Ethereum account & continue" }
+{
+  "title": "New account",
+  "steps": {
+    "chooseCurrencyOrToken": {
+      "title": "Currency"
+    },
+    "name": {
+      "title": "Name"
+    },
+    "rules": {
+      "title": "Rules"
+    },
+    "confirmation": {
+      "title": "Confirmation"
+    }
+  },
+  "continue_eth_creation": "Create new Ethereum account & continue",
+  "prevStep": "Back",
+  "nextStep": "Next",
+  "cta": "Create account",
+  "rulesSumup": "1 step",
+  "rulesSumup_plural": "{{count}} steps"
+}
