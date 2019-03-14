@@ -195,7 +195,7 @@ const Grip = SortableHandle(styled(Box).attrs({
 const StepBallContainer = styled.div`
   position: absolute;
   top: 20px;
-  left: -26px;
+  left: -21px; //yep
   display: flex;
   align-items: center;
   ${StepBall} {

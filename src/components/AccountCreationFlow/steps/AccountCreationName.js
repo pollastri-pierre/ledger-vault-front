@@ -8,11 +8,8 @@ import InputField from "components/InputField";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
-import type { Translate, Account } from "data/types";
-import type {
-  State as AccountCreationState,
-  UpdateState as UpdateAccountCreationState
-} from "redux/modules/account-creation";
+import type { Translate } from "data/types";
+import type { AccountCreationStepProps } from "../types";
 
 import ERC20RenderName from "./ERC20RenderName";
 
@@ -34,35 +31,27 @@ const styles = {
   }
 };
 
-type Props = {
-  allAccounts: Account[],
-  accountCreationState: AccountCreationState,
-  updateAccountCreationState: UpdateAccountCreationState,
+type Props = AccountCreationStepProps & {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate
 };
 
 class AccountCreationOptions extends PureComponent<Props> {
   handleChangeName = (name: string) => {
-    const { updateAccountCreationState } = this.props;
-    updateAccountCreationState(() => ({ name }));
+    const { updatePayload } = this.props;
+    updatePayload({ name });
   };
 
   render() {
-    const {
-      t,
-      accountCreationState,
-      updateAccountCreationState,
-      allAccounts
-    } = this.props;
-    const { currency } = accountCreationState;
+    const { t, payload, updatePayload, allAccounts } = this.props;
+    const { currency } = payload;
 
-    if (accountCreationState.erc20token) {
+    if (payload.erc20token) {
       return (
         <ERC20RenderName
-          accountCreationState={accountCreationState}
+          payload={payload}
           allAccounts={allAccounts}
-          updateAccountCreationState={updateAccountCreationState}
+          updatePayload={updatePayload}
         />
       );
     }
@@ -74,7 +63,7 @@ class AccountCreationOptions extends PureComponent<Props> {
       <Fragment>
         <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
         <InputField
-          value={accountCreationState.name}
+          value={payload.name}
           autoFocus
           onChange={this.handleChangeName}
           {...inputProps}

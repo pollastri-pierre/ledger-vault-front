@@ -15,20 +15,14 @@ import {
   getCryptoCurrencyIcon
 } from "utils/cryptoCurrencies";
 
-import type { Translate, Account } from "data/types";
-import type {
-  State as AccountCreationState,
-  UpdateState as UpdateAccountCreationState,
-  ParentAccount
-} from "redux/modules/account-creation";
+import type { Translate } from "data/types";
+import type { AccountCreationStepProps, ParentAccount } from "../types";
 
-type Props = {
+type Props = AccountCreationStepProps & {
   t: Translate,
-  allAccounts: Account[],
-  accountCreationState: AccountCreationState,
-  updateAccountCreationState: UpdateAccountCreationState,
   classes: { [_: $Keys<typeof styles>]: string }
 };
+
 type State = {
   accountName: string,
   parentName: string,
@@ -64,10 +58,10 @@ const getParentAccountName = (parentAccount: ?ParentAccount): string => {
 };
 
 class ERC20RenderName extends PureComponent<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
-    const { parent_account, name } = props.accountCreationState;
-    const parentAccountName = getParentAccountName(parent_account);
+    const { parentAccount, name } = props.payload;
+    const parentAccountName = getParentAccountName(parentAccount);
 
     this.state = {
       accountName: name || "",
@@ -99,53 +93,53 @@ class ERC20RenderName extends PureComponent<Props, State> {
   }
 
   handleChangeName = (name: string) => {
-    const { updateAccountCreationState } = this.props;
-    updateAccountCreationState(() => ({ name }));
+    const { updatePayload } = this.props;
+    updatePayload({ name });
     this.setState({ accountName: name });
   };
 
   handleChangeParentAccountName = (name: string) => {
-    const { updateAccountCreationState } = this.props;
-    updateAccountCreationState(() => ({ parent_account: { name } }));
+    const { updatePayload } = this.props;
+    updatePayload({ parentAccount: { name } });
     this.setState({ parentName: name });
   };
 
   renderParentAccountSummary = () => {
-    const { accountCreationState, allAccounts } = this.props;
-    const { parent_account } = accountCreationState;
-    if (!parent_account || !parent_account.id) return null;
+    const { payload, allAccounts } = this.props;
+    const { parentAccount } = payload;
+    if (!parentAccount || !parentAccount.id) return null;
     const account = allAccounts.find(
-      acc => parent_account.id && acc.id === parent_account.id
+      acc => parentAccount.id && acc.id === parentAccount.id
     );
     if (!account) return null;
     return <AccountSummary account={account} />;
   };
 
   render() {
-    const { t, accountCreationState, classes } = this.props;
-    const { erc20token } = accountCreationState;
+    const { t, payload, classes } = this.props;
+    const { erc20token } = payload;
     const { matchingNamesWarning } = this.state;
     if (!erc20token) return null;
-    const { parent_account } = accountCreationState;
+    const { parentAccount } = payload;
     const parentCurIcon =
       erc20token.blockchain_name === "foundation"
         ? ethereumCurIcon
         : ropstenCurIcon;
 
-    const parentAccountName = getParentAccountName(parent_account);
+    const parentAccountName = getParentAccountName(parentAccount);
 
     return (
       <Fragment>
         <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
         <InputField
-          value={accountCreationState.name}
+          value={payload.name}
           autoFocus
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
           renderLeft={erc20TokenIcon}
           {...inputProps}
         />
-        {parent_account && parent_account.id ? (
+        {parentAccount && parentAccount.id ? (
           <Fragment>
             <ModalSubTitle noPadding style={{ marginTop: 30 }}>
               {t("newAccount:options.selectedParent")}
@@ -175,6 +169,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
     );
   }
 }
+
 const styles = {
   infoBox: {
     marginTop: 20

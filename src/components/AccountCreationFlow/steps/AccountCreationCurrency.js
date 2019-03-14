@@ -1,15 +1,13 @@
 // @flow
 
+// ==================================================
+// DISCLAIMER: this is legacy code. to be refactored.
+// ==================================================
+
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
-
-import type {
-  State as AccountCreationState,
-  UpdateState as UpdateAccountCreationState,
-  ParentAccount
-} from "redux/modules/account-creation";
 
 import type { Account, ERC20Token } from "data/types";
 
@@ -27,6 +25,8 @@ import HelpLink from "components/HelpLink";
 import Text from "components/base/Text";
 import ExternalLink from "components/icons/ExternalLink";
 import colors from "shared/colors";
+
+import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 const styles = {
   topMarged: {
@@ -79,41 +79,36 @@ const getAvailableParentsAccounts = (
   );
 };
 
-type Props = {
-  accountCreationState: AccountCreationState,
-  updateAccountCreationState: UpdateAccountCreationState,
-  allAccounts: Account[],
-
+type Props = AccountCreationStepProps & {
   classes: { [_: $Keys<typeof styles>]: string }
 };
 
 class AccountCreationCurrencies extends PureComponent<Props> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
-    this.props.updateAccountCreationState(() => ({
-      parent_account: parentAccount ? { id: parentAccount.id } : null,
-      approvers:
-        parentAccount && parentAccount.members.length > 0
-          ? parentAccount.members.map(m => m.pub_key)
-          : []
-    }));
+    this.props.updatePayload({
+      parentAccount: parentAccount ? { id: parentAccount.id } : null
+    });
   };
 
   handleChange = (item: ?SelectCurrencyItem) => {
-    const { updateAccountCreationState, allAccounts } = this.props;
+    const { updatePayload, allAccounts, transitionTo } = this.props;
     const patch = {};
+    let onPatched = null;
     if (!item) {
       Object.assign(patch, {
         currency: null,
         erc20token: null,
-        parent_account: null
+        parentAccount: null
       });
     } else if (item.type === "currency") {
       Object.assign(patch, {
         currency: item.value,
         erc20token: null,
-        currentTab: isNotSupportedCoin(item.value) ? 0 : 1,
-        parent_account: null
+        parentAccount: null
       });
+      if (!isNotSupportedCoin(item.value)) {
+        onPatched = () => transitionTo("name");
+      }
     } else {
       const erc20token = item.value;
       const availableParentAccounts = getAvailableParentsAccounts(
@@ -124,35 +119,28 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: null,
         erc20token,
-        // if parent_account has operation rules, we cannot update the members so we set the members the parent's members
-        approvers:
-          availableParentAccounts.length &&
-          availableParentAccounts[0].members.length > 0
-            ? availableParentAccounts[0].members.map(m => m.pub_key)
-            : [],
-        parent_account: availableParentAccounts.length
+        parentAccount: availableParentAccounts.length
           ? { id: availableParentAccounts[0].id }
           : null
       });
     }
-    updateAccountCreationState(() => patch);
+    updatePayload(patch, onPatched);
   };
 
   render() {
-    const { accountCreationState, allAccounts, classes } = this.props;
+    const { payload, allAccounts, classes } = this.props;
 
-    const currencyOrToken =
-      accountCreationState.currency || accountCreationState.erc20token || null;
+    const currencyOrToken = payload.currency || payload.erc20token || null;
 
     const displayERC20Box = isERC20Token(currencyOrToken);
 
     const availableParentAccounts = getAvailableParentsAccounts(
       allAccounts,
-      accountCreationState.erc20token
+      payload.erc20token
     );
 
     const parentAccount = findParentAccountInAccounts(
-      accountCreationState.parent_account,
+      payload.parentAccount,
       allAccounts
     );
 
@@ -173,8 +161,8 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             />
           )}
         />
-        {accountCreationState.currency &&
-          isNotSupportedCoin(accountCreationState.currency) && (
+        {payload.currency &&
+          isNotSupportedCoin(payload.currency) && (
             <div className={classes.topMarged}>
               <InfoBox withIcon type="warning">
                 <Text>

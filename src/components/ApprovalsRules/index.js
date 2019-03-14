@@ -147,7 +147,7 @@ const styles = {
     maxWidth: 600
   },
   stepsLine: {
-    width: 50
+    width: 30
   },
   footer: {
     height: 40
@@ -181,7 +181,7 @@ const Bar = styled.div`
   position: absolute;
   top: 20px;
   bottom: 20px;
-  left: 50%;
+  left: 10px;
   width: 4px;
   background: #eee;
   transform: translateX(-2px);
@@ -189,7 +189,7 @@ const Bar = styled.div`
 
 const StepBallLabel = styled.div`
   position: absolute;
-  left: 15px;
+  left: 0;
   top: ${p => (p.top ? "10px" : "unset")};
   bottom: ${p => (p.bot ? "10px" : "unset")};
   color: #aaa;
@@ -199,7 +199,7 @@ const StepBallLabel = styled.div`
   > div:nth-child(2) {
     position: absolute;
     top: 0;
-    left: 35px;
+    left: 30px;
     white-space: nowrap;
   }
 `;
