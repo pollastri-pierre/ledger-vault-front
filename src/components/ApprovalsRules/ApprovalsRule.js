@@ -56,8 +56,8 @@ class ApprovalsRule extends PureComponent<Props> {
       group: justAddedUser
         ? null
         : groups.length
-          ? groups[groups.length - 1].id
-          : null,
+        ? groups[groups.length - 1].id
+        : null,
       users: justAddedGroup ? [] : users.map(u => u.id).slice(0, MAX_USERS)
     };
 

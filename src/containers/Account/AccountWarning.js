@@ -96,17 +96,16 @@ class AccountWarning extends Component<Props> {
               <Trans i18nKey="updateAccounts:desc_approve" />
             </InfoBox>
           )}
-        {isAccountBeingUpdated(account) &&
-          hasUserApprovedAccount(account, me) && (
-            <InfoBox type="info" withIcon className={classes.infobox}>
-              <h4>
-                <Trans i18nKey="updateAccounts:quorum" />
-              </h4>
-              <div>
-                <Trans i18nKey="updateAccounts:quorum_approve" />
-              </div>
-            </InfoBox>
-          )}
+        {isAccountBeingUpdated(account) && hasUserApprovedAccount(account, me) && (
+          <InfoBox type="info" withIcon className={classes.infobox}>
+            <h4>
+              <Trans i18nKey="updateAccounts:quorum" />
+            </h4>
+            <div>
+              <Trans i18nKey="updateAccounts:quorum_approve" />
+            </div>
+          </InfoBox>
+        )}
       </Fragment>
     );
   }

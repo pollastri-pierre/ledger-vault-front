@@ -177,18 +177,17 @@ const ValueComponent = (props: OptionProps) => (
 const MenuComponent = (props: OptionProps) => (
   <components.Menu {...props}>
     {props.children}
-    {props.options === currenciesOptions &&
-      !props.hasValue && (
-        <Text small italic style={styles.erc20Hint}>
-          <Trans
-            i18nKey="newAccount:search.extraERC20"
-            values={{
-              erc20Count: erc20TokensOptions.length + currenciesOptions.length
-            }}
-            components={<b>0</b>}
-          />
-        </Text>
-      )}
+    {props.options === currenciesOptions && !props.hasValue && (
+      <Text small italic style={styles.erc20Hint}>
+        <Trans
+          i18nKey="newAccount:search.extraERC20"
+          values={{
+            erc20Count: erc20TokensOptions.length + currenciesOptions.length
+          }}
+          components={<b>0</b>}
+        />
+      </Text>
+    )}
   </components.Menu>
 );
 

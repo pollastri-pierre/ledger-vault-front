@@ -55,33 +55,32 @@ class GroupDetailsFooter extends PureComponent<Props> {
 
     return (
       <Fragment>
-        {status.startsWith("PENDING_") &&
-          !hasUserApproved && (
-            <Fragment>
-              <AbortRequestButton
-                requestID={group.last_request && group.last_request.id}
-                onSuccess={this.onSuccess}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={this.onSuccess}
-                onError={null}
-                additionalFields={{
-                  request_id: group.last_request && group.last_request.id
-                }}
-                disabled={false}
-                buttonLabel={
-                  <Trans
-                    i18nKey={
-                      group.last_request
-                        ? `request:approve.${group.last_request.type}`
-                        : `common:approve`
-                    }
-                  />
-                }
-              />
-            </Fragment>
-          )}
+        {status.startsWith("PENDING_") && !hasUserApproved && (
+          <Fragment>
+            <AbortRequestButton
+              requestID={group.last_request && group.last_request.id}
+              onSuccess={this.onSuccess}
+            />
+            <ApproveRequestButton
+              interactions={approveFlow}
+              onSuccess={this.onSuccess}
+              onError={null}
+              additionalFields={{
+                request_id: group.last_request && group.last_request.id
+              }}
+              disabled={false}
+              buttonLabel={
+                <Trans
+                  i18nKey={
+                    group.last_request
+                      ? `request:approve.${group.last_request.type}`
+                      : `common:approve`
+                  }
+                />
+              }
+            />
+          </Fragment>
+        )}
         {status === "ACTIVE" && (
           <ApproveRequestButton
             interactions={createAndApprove}

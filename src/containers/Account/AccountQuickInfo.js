@@ -212,25 +212,22 @@ class AccountQuickInfo extends Component<Props, State> {
                 label={<Trans i18nKey="accountView:summary.date" />}
                 value={<DateFormat date={account.created_on} />}
               />
-              {account.account_type === "ERC20" &&
-                account.parent_id && (
-                  <Fragment>
-                    <Row
-                      label={
-                        <Trans i18nKey="accountView:summary.token_address" />
-                      }
-                      value={account.contract_address}
-                    />
-                    <Row
-                      label={
-                        <Trans i18nKey="accountView:summary.parent_account" />
-                      }
-                      value={
-                        <Link to={`${account.parent_id}`}>ETH account</Link>
-                      }
-                    />
-                  </Fragment>
-                )}
+              {account.account_type === "ERC20" && account.parent_id && (
+                <Fragment>
+                  <Row
+                    label={
+                      <Trans i18nKey="accountView:summary.token_address" />
+                    }
+                    value={account.contract_address}
+                  />
+                  <Row
+                    label={
+                      <Trans i18nKey="accountView:summary.parent_account" />
+                    }
+                    value={<Link to={`${account.parent_id}`}>ETH account</Link>}
+                  />
+                </Fragment>
+              )}
             </div>
             {account.status !== "VIEW_ONLY" && (
               <div style={{ width: 300 }}>

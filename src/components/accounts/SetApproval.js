@@ -81,17 +81,16 @@ class SetApprovals extends Component<Props> {
           renderRight={inputRight}
         />
 
-        {quorum < 2 &&
-          quorum !== 0 && (
-            <Box mt={20}>
-              <InfoBox type="warning" withIcon>
-                <Text
-                  i18nKey="newAccount:security.approvalsMinimum"
-                  components={<b>0</b>}
-                />
-              </InfoBox>
-            </Box>
-          )}
+        {quorum < 2 && quorum !== 0 && (
+          <Box mt={20}>
+            <InfoBox type="warning" withIcon>
+              <Text
+                i18nKey="newAccount:security.approvalsMinimum"
+                components={<b>0</b>}
+              />
+            </InfoBox>
+          </Box>
+        )}
 
         {quorum > approvers.length && (
           <Box mt={20}>

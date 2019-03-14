@@ -110,10 +110,9 @@ const TabHistory = ({
         action="SUBMITTED"
       />
     )}
-    {operation.block_height &&
-      operation.time && (
-        <Row classes={classes} date={operation.time} action="CONFIRMED" />
-      )}
+    {operation.block_height && operation.time && (
+      <Row classes={classes} date={operation.time} action="CONFIRMED" />
+    )}
   </div>
 );
 export default withStyles(styles)(TabHistory);

@@ -89,62 +89,61 @@ class RegisterMember extends PureComponent<Props, State> {
     return (
       <Box justify="center" align="center" style={styles.container}>
         <Card>
-          {!loading &&
-            !success && (
-              <ModalBody>
-                <ModalHeader>
-                  <Box horizontal align="center" flow={10}>
-                    <Text
-                      header
-                      bold
-                      i18nKey="inviteUser:registration.title"
-                      values={{
-                        userRole: "Administrator"
+          {!loading && !success && (
+            <ModalBody>
+              <ModalHeader>
+                <Box horizontal align="center" flow={10}>
+                  <Text
+                    header
+                    bold
+                    i18nKey="inviteUser:registration.title"
+                    values={{
+                      userRole: "Administrator"
+                    }}
+                  />
+                  <FaUser />
+                </Box>
+              </ModalHeader>
+              <LineSeparator />
+              <Box flow={15} mt={15}>
+                <Row
+                  label="inviteUser:registration.username"
+                  text={member && member.user ? member.user.username : ""}
+                />
+                <Row
+                  label="inviteUser:registration.workspace"
+                  text={
+                    member && member.user.user_id ? member.user.user_id : ""
+                  }
+                />
+                <Row
+                  label="inviteUser:registration.role"
+                  text={member ? member.type : ""}
+                />
+              </Box>
+              {stringError && <Text style={styles.error}>{stringError}</Text>}
+              <ModalFooter>
+                {this.state.isRegistering ? (
+                  <Box mb={20}>
+                    <DeviceInteraction
+                      onSuccess={this.onSuccess}
+                      interactions={registerFlow}
+                      onError={this.onError}
+                      additionalFields={{
+                        organization: this.props.organization,
+                        member,
+                        urlID: this.props.match.params.urlID
                       }}
                     />
-                    <FaUser />
                   </Box>
-                </ModalHeader>
-                <LineSeparator />
-                <Box flow={15} mt={15}>
-                  <Row
-                    label="inviteUser:registration.username"
-                    text={member && member.user ? member.user.username : ""}
-                  />
-                  <Row
-                    label="inviteUser:registration.workspace"
-                    text={
-                      member && member.user.user_id ? member.user.user_id : ""
-                    }
-                  />
-                  <Row
-                    label="inviteUser:registration.role"
-                    text={member ? member.type : ""}
-                  />
-                </Box>
-                {stringError && <Text style={styles.error}>{stringError}</Text>}
-                <ModalFooter>
-                  {this.state.isRegistering ? (
-                    <Box mb={20}>
-                      <DeviceInteraction
-                        onSuccess={this.onSuccess}
-                        interactions={registerFlow}
-                        onError={this.onError}
-                        additionalFields={{
-                          organization: this.props.organization,
-                          member,
-                          urlID: this.props.match.params.urlID
-                        }}
-                      />
-                    </Box>
-                  ) : (
-                    <DialogButton highlight onTouchTap={this.registerMember}>
-                      <Trans i18nKey="inviteUser:registration.button" />
-                    </DialogButton>
-                  )}
-                </ModalFooter>
-              </ModalBody>
-            )}
+                ) : (
+                  <DialogButton highlight onTouchTap={this.registerMember}>
+                    <Trans i18nKey="inviteUser:registration.button" />
+                  </DialogButton>
+                )}
+              </ModalFooter>
+            </ModalBody>
+          )}
           {success && (
             <ModalBody>
               <ModalHeader>

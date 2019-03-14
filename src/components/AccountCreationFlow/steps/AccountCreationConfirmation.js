@@ -39,17 +39,16 @@ export default (props: AccountCreationStepProps) => {
             >
               <AccountName isERC20 name={payload.name} />
             </LineRow>
-            {payload.parentAccount &&
-              payload.parentAccount.name && (
-                <LineRow
-                  label={
-                    <Trans i18nKey="newAccount:confirmation.parentAccount" />
-                  }
-                >
-                  {/* $FlowFixMe */}
-                  {payload.parentAccount.name}
-                </LineRow>
-              )}
+            {payload.parentAccount && payload.parentAccount.name && (
+              <LineRow
+                label={
+                  <Trans i18nKey="newAccount:confirmation.parentAccount" />
+                }
+              >
+                {/* $FlowFixMe */}
+                {payload.parentAccount.name}
+              </LineRow>
+            )}
           </Fragment>
         )}
         {currency && (

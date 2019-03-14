@@ -207,34 +207,33 @@ class UpdateAccounts extends Component<Props> {
       <Fragment>
         <BlurDialog open={isOpen} onClose={onToggle}>
           <div className={classes.base}>
-            {selectedAccount &&
-              selectedAccount.status !== "VIEW_ONLY" && (
-                <div className={classes.left}>
-                  <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
-                  <ul>
-                    {getOutdatedAccounts(accounts).map(account => (
-                      <MenuItem
-                        button
-                        className={classes.accountItem}
-                        disableRipple
-                        selected={
-                          selectedAccount && selectedAccount.id === account.id
-                        }
-                        onClick={() => onSelectAccount(account)}
-                        key={account.id}
-                      >
-                        <span className={classes.accountName}>
-                          <div>TO DO</div>
-                          <CurrencyIndex
-                            currency={account.currency_id}
-                            index={account.index}
-                          />
-                        </span>
-                      </MenuItem>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            {selectedAccount && selectedAccount.status !== "VIEW_ONLY" && (
+              <div className={classes.left}>
+                <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
+                <ul>
+                  {getOutdatedAccounts(accounts).map(account => (
+                    <MenuItem
+                      button
+                      className={classes.accountItem}
+                      disableRipple
+                      selected={
+                        selectedAccount && selectedAccount.id === account.id
+                      }
+                      onClick={() => onSelectAccount(account)}
+                      key={account.id}
+                    >
+                      <span className={classes.accountName}>
+                        <div>TO DO</div>
+                        <CurrencyIndex
+                          currency={account.currency_id}
+                          index={account.index}
+                        />
+                      </span>
+                    </MenuItem>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className={classes.content}>
               <h3>{t("updateAccounts:provide")}</h3>
               <p>{t("updateAccounts:desc")}</p>

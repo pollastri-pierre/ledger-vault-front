@@ -123,8 +123,8 @@ function resolveAccounts(queryParams: ObjectParameters) {
   return Array.isArray(queryParams.accounts)
     ? queryParams.accounts
     : typeof queryParams.accounts === "string"
-      ? [queryParams.accounts]
-      : EMPTY_ARRAY;
+    ? [queryParams.accounts]
+    : EMPTY_ARRAY;
 }
 
 function resolveCurrency(queryParams: ObjectParameters) {

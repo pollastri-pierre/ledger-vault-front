@@ -140,9 +140,8 @@ const Menu = ({
       color={colors.blue_red}
     >
       <span>
-        {t("onboarding:menu.shared_owner_registration.registration")} ({
-          nbSharedOwner
-        })
+        {t("onboarding:menu.shared_owner_registration.registration")} (
+        {nbSharedOwner})
       </span>
     </MenuLinkOnboarding>
     <MenuLinkOnboarding

@@ -14,8 +14,8 @@ const AccountUnitCode = ({ account }: Props) => {
     return token.ticker;
   }
   const curr = getCryptoCurrencyById(account.currency_id);
-  const unit = curr.units.reduce(
-    (prev, current) => (prev.magnitude > current.magnitude ? prev : current)
+  const unit = curr.units.reduce((prev, current) =>
+    prev.magnitude > current.magnitude ? prev : current
   );
   return unit.code;
 };

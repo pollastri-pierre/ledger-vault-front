@@ -21,8 +21,8 @@ const scrollparent = (node: ?Element): Element =>
   !node || node === document.body
     ? (invariant(document.body, "body is here"), document.body)
     : scroll(node)
-      ? node
-      : scrollparent(node.parentElement);
+    ? node
+    : scrollparent(node.parentElement);
 
 const resizeEventOn = (n: Element) => (n === document.body ? window : n);
 

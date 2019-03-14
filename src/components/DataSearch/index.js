@@ -149,7 +149,8 @@ class DataSearch extends PureComponent<Props<*>, State> {
       return (
         <Card>
           <Text>
-            Oww.. snap. Error.<br />
+            Oww.. snap. Error.
+            <br />
             {error && error.message}
           </Text>
           <button onClick={this.fetch}>retry</button>

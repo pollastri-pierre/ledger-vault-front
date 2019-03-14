@@ -161,43 +161,40 @@ class EntityApprove extends Component<Props, State> {
     const { isDevice, step, isAborting } = this.state;
     return (
       <div>
-        {!isDevice &&
-          isAborting && (
-            <AbortConfirmation
-              entity={entity}
-              aborting={this.aborting}
-              abort={this.abort}
-            />
-          )}
-        {this.state.isDevice &&
-          !this.state.isAborting && (
-            <StepDeviceGeneric
-              title={this.title(entity)}
-              steps={this.steps(entity)}
-              cancel={this.approving}
-              device={step < 2}
-              step={step}
-            />
-          )}
-        {!this.state.isDevice &&
-          !this.state.isAborting && (
-            <Fragment>
-              {entity === "account" && (
-                <AccountApprove
-                  close={this.close}
-                  approve={this.approving}
-                  aborting={this.aborting}
-                />
-              )}
-              {entity === "operation" && (
-                <OperationApprove
-                  close={this.close}
-                  approve={this.approving}
-                  aborting={this.aborting}
-                />
-              )}
-            </Fragment>
-          )}
+        {!isDevice && isAborting && (
+          <AbortConfirmation
+            entity={entity}
+            aborting={this.aborting}
+            abort={this.abort}
+          />
+        )}
+        {this.state.isDevice && !this.state.isAborting && (
+          <StepDeviceGeneric
+            title={this.title(entity)}
+            steps={this.steps(entity)}
+            cancel={this.approving}
+            device={step < 2}
+            step={step}
+          />
+        )}
+        {!this.state.isDevice && !this.state.isAborting && (
+          <Fragment>
+            {entity === "account" && (
+              <AccountApprove
+                close={this.close}
+                approve={this.approving}
+                aborting={this.aborting}
+              />
+            )}
+            {entity === "operation" && (
+              <OperationApprove
+                close={this.close}
+                approve={this.approving}
+                aborting={this.aborting}
+              />
+            )}
+          </Fragment>
+        )}
       </div>
     );
   }

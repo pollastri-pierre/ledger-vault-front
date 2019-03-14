@@ -107,7 +107,8 @@ class SandBox extends Component {
               <Col width={6}>
                 <Paper className="block short-block">
                   <Overscroll top={40} bottom={40} backgroundColor="white">
-                    [[ BEGIN ]]<br />
+                    [[ BEGIN ]]
+                    <br />
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Vestibulum quis tempus massa, sed consectetur est. Integer
                     ultricies finibus lobortis. In quis tincidunt mauris, ut
@@ -152,7 +153,8 @@ class SandBox extends Component {
                     Praesent et fringilla magna, et rhoncus eros. Maecenas
                     mollis lacinia laoreet. Mauris tortor ex, suscipit a mi ac,
                     fringilla blandit lorem.
-                    <br />[[ END ]]
+                    <br />
+                    [[ END ]]
                   </Overscroll>
                 </Paper>
               </Col>

@@ -216,10 +216,10 @@ class LineChart extends Component<Props, *> {
       timeDelta >= yearInMs * 2
         ? "year"
         : timeDelta >= monthInMs * 2
-          ? "month"
-          : timeDelta >= dayInMs
-            ? "day"
-            : "hour";
+        ? "month"
+        : timeDelta >= dayInMs
+        ? "day"
+        : "hour";
     return tickLabel.toUpperCase();
   };
 
@@ -457,18 +457,18 @@ class LineChart extends Component<Props, *> {
         (d3.timeSecond(date) < date
           ? formatMillisecond
           : d3.timeMinute(date) < date
-            ? formatSecond
-            : d3.timeHour(date) < date
-              ? formatMinute
-              : d3.timeDay(date) < date
-                ? formatHour
-                : d3.timeMonth(date) < date
-                  ? d3.timeWeek(date) < date
-                    ? formatDay
-                    : formatWeek
-                  : d3.timeYear(date) < date
-                    ? formatMonth
-                    : formatYear)(date)
+          ? formatSecond
+          : d3.timeHour(date) < date
+          ? formatMinute
+          : d3.timeDay(date) < date
+          ? formatHour
+          : d3.timeMonth(date) < date
+          ? d3.timeWeek(date) < date
+            ? formatDay
+            : formatWeek
+          : d3.timeYear(date) < date
+          ? formatMonth
+          : formatYear)(date)
       );
 
     return xAxis;

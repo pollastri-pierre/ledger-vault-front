@@ -110,8 +110,8 @@ function genAccount({ members = [] } = {}) {
   const status = approvals.find(a => a.type === "ABORT")
     ? "ABORTED"
     : nbApprovals >= 2
-      ? "APPROVED"
-      : "PENDING_APPROVAL";
+    ? "APPROVED"
+    : "PENDING_APPROVAL";
   return {
     id: faker.random.number({ min: 1, max: 100000000 }),
     index: faker.random.number({ min: 1, max: 10 }),
@@ -190,8 +190,8 @@ const genOperation = ({ account, members }) => {
   const status = approvals.find(a => a.type === "ABORT")
     ? "ABORTED"
     : nbApprovals >= 2
-      ? "APPROVED"
-      : "PENDING_APPROVAL";
+    ? "APPROVED"
+    : "PENDING_APPROVAL";
 
   return {
     id: faker.random.number({ min: 1, max: 1000000000 }),

@@ -161,16 +161,15 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             />
           )}
         />
-        {payload.currency &&
-          isNotSupportedCoin(payload.currency) && (
-            <div className={classes.topMarged}>
-              <InfoBox withIcon type="warning">
-                <Text>
-                  <Trans i18nKey="newAccount:not_supported" />
-                </Text>
-              </InfoBox>
-            </div>
-          )}
+        {payload.currency && isNotSupportedCoin(payload.currency) && (
+          <div className={classes.topMarged}>
+            <InfoBox withIcon type="warning">
+              <Text>
+                <Trans i18nKey="newAccount:not_supported" />
+              </Text>
+            </InfoBox>
+          </div>
+        )}
         {displayERC20Box && (
           <div className={classes.topMarged}>
             {availableParentAccounts.length > 0 ? (

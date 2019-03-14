@@ -172,8 +172,8 @@ export const executeQueryOrMutation =
           ? undefined
           : typeof cache.result.edges[cache.result.edges.length - 1].cursor ===
             "number"
-            ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
-            : cache.result.edges[cache.result.edges.length - 1].cursor
+          ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
+          : cache.result.edges[cache.result.edges.length - 1].cursor
       );
       const { pathname, query } = URL.parse(uri, true);
       uri = URL.format({

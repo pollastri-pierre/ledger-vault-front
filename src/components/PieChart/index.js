@@ -233,9 +233,8 @@ class PieChart extends Component<
       .attr("class", (d, i) => `arc ${`arc${i}`}`)
       .append("path")
       .attr("d", d => arc(d))
-      .attr(
-        "class",
-        (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
+      .attr("class", (d, i) =>
+        selected !== -1 && selected !== i ? classes.disable : ""
       )
       .style("fill", d => {
         const curr = getCryptoCurrencyById(d.data.account.currency_id);
@@ -250,9 +249,8 @@ class PieChart extends Component<
       .attr("class", (d, i) => `invisibleArc ${`invisibleArc${i}`}`)
       .append("path")
       .attr("d", d => invisibleArc(d))
-      .attr(
-        "class",
-        (d, i) => (selected !== -1 && selected !== i ? classes.disable : "")
+      .attr("class", (d, i) =>
+        selected !== -1 && selected !== i ? classes.disable : ""
       )
       .style("opacity", 0) // make it transparent
       .on("mouseover", this.handleMouseOver)
@@ -351,35 +349,34 @@ class PieChart extends Component<
                 this.svg = c;
               }}
             />
-            {selected !== -1 &&
-              showTooltips && (
-                <div
-                  className={cx([classes.tooltip, classes.hide])}
-                  style={curr}
-                  ref={t => {
-                    this.tooltip = t;
-                  }}
-                >
-                  <div className={classes.tooltipTextWrap}>
-                    <div className={classes.tooltipText}>
-                      <div>
-                        <span className={classes.percentage} />
-                      </div>
-                      <div>
-                        <span
-                          className={cx([
-                            classes.uppercase,
-                            classes.currencyName
-                          ])}
-                        >
-                          {this.props.data[selected] &&
-                            this.props.data[selected].account.currency_id}
-                        </span>
-                      </div>
+            {selected !== -1 && showTooltips && (
+              <div
+                className={cx([classes.tooltip, classes.hide])}
+                style={curr}
+                ref={t => {
+                  this.tooltip = t;
+                }}
+              >
+                <div className={classes.tooltipTextWrap}>
+                  <div className={classes.tooltipText}>
+                    <div>
+                      <span className={classes.percentage} />
+                    </div>
+                    <div>
+                      <span
+                        className={cx([
+                          classes.uppercase,
+                          classes.currencyName
+                        ])}
+                      >
+                        {this.props.data[selected] &&
+                          this.props.data[selected].account.currency_id}
+                      </span>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
           </div>
         </div>
         {showCaptions && (

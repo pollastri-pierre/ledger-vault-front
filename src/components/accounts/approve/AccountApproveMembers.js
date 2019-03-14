@@ -14,7 +14,9 @@ class AccountApproveMembers extends Component<Props> {
     const { members } = this.props;
     return (
       <Box grow overflow="scroll">
-        {members.map(member => <MemberRow member={member} key={member.id} />)}
+        {members.map(member => (
+          <MemberRow member={member} key={member.id} />
+        ))}
       </Box>
     );
   }

@@ -113,10 +113,10 @@ export class QuicklookCard extends Component<Props, State> {
       day1 === day2 && month1 === month2 && year1 === year2
         ? "day"
         : month1 === month2 && year1 === year2
-          ? "month"
-          : year1 === year2
-            ? "year"
-            : "hour";
+        ? "month"
+        : year1 === year2
+        ? "year"
+        : "hour";
 
     let res = [
       <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY h:mm" />,

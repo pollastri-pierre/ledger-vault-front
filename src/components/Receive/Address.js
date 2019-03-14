@@ -111,77 +111,76 @@ class ReceiveAddress extends Component<Props, State> {
     return (
       <div className={classes.container}>
         {loading && <SpinnerCard />}
-        {!error &&
-          !loading && (
-            <ReceiveLayout
-              header={null}
-              content={
-                <div className={classes.address}>
-                  <QRCode
-                    hash={
-                      account.account_type === "Bitcoin"
-                        ? `${currency.scheme}:${
-                            account.fresh_addresses[0].address
-                          }`
-                        : `${account.fresh_addresses[0].address}`
-                    }
-                    size={140}
-                  />
-                  <div className={classes.account}>
-                    <Trans i18nKey="receive:receive_account">
-                      {"Address for account"}
-                      <strong>{account.name}</strong>
-                    </Trans>
-                  </div>
-                  <div className={classes.hash}>
-                    {copied ? (
-                      <span>
-                        <Trans i18nKey="receive:address_copied" />
-                      </span>
-                    ) : (
-                      <span>{account.fresh_addresses[0].address}</span>
-                    )}
-                  </div>
-                  {verified ? (
-                    <div>
-                      <ShieldBox
-                        iconColor={colors.green}
-                        text={<Trans i18nKey="receive:confirmed_device" />}
-                      />
-                    </div>
+        {!error && !loading && (
+          <ReceiveLayout
+            header={null}
+            content={
+              <div className={classes.address}>
+                <QRCode
+                  hash={
+                    account.account_type === "Bitcoin"
+                      ? `${currency.scheme}:${
+                          account.fresh_addresses[0].address
+                        }`
+                      : `${account.fresh_addresses[0].address}`
+                  }
+                  size={140}
+                />
+                <div className={classes.account}>
+                  <Trans i18nKey="receive:receive_account">
+                    {"Address for account"}
+                    <strong>{account.name}</strong>
+                  </Trans>
+                </div>
+                <div className={classes.hash}>
+                  {copied ? (
+                    <span>
+                      <Trans i18nKey="receive:address_copied" />
+                    </span>
                   ) : (
-                    <ShieldBox
-                      iconColor={colors.ocean}
-                      text={<Trans i18nKey="receive:verify_on_device" />}
-                    />
+                    <span>{account.fresh_addresses[0].address}</span>
                   )}
                 </div>
-              }
-              footer={
-                verified ? (
-                  <div className={classes.actions}>
-                    <div className={classes.icon} onClick={checkAgain}>
-                      <Recover size={16} color={colors.shark} />
+                {verified ? (
+                  <div>
+                    <ShieldBox
+                      iconColor={colors.green}
+                      text={<Trans i18nKey="receive:confirmed_device" />}
+                    />
+                  </div>
+                ) : (
+                  <ShieldBox
+                    iconColor={colors.ocean}
+                    text={<Trans i18nKey="receive:verify_on_device" />}
+                  />
+                )}
+              </div>
+            }
+            footer={
+              verified ? (
+                <div className={classes.actions}>
+                  <div className={classes.icon} onClick={checkAgain}>
+                    <Recover size={16} color={colors.shark} />
+                    <span className={classes.actionText}>
+                      <Trans i18nKey="receive:re_verify" />
+                    </span>
+                  </div>
+                  <CopyToClipboard
+                    text={account.fresh_addresses[0].address}
+                    onCopy={this.onCopy}
+                  >
+                    <div className={classes.icon}>
+                      <Copy color={colors.shark} size={16} />
                       <span className={classes.actionText}>
-                        <Trans i18nKey="receive:re_verify" />
+                        <Trans i18nKey="receive:copy" />
                       </span>
                     </div>
-                    <CopyToClipboard
-                      text={account.fresh_addresses[0].address}
-                      onCopy={this.onCopy}
-                    >
-                      <div className={classes.icon}>
-                        <Copy color={colors.shark} size={16} />
-                        <span className={classes.actionText}>
-                          <Trans i18nKey="receive:copy" />
-                        </span>
-                      </div>
-                    </CopyToClipboard>
-                  </div>
-                ) : null
-              }
-            />
-          )}
+                  </CopyToClipboard>
+                </div>
+              ) : null
+            }
+          />
+        )}
         {deviceRejected && <AddressRejected checkAgain={checkAgain} />}
         {error && (
           <GenericErrorScreen

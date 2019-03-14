@@ -57,10 +57,12 @@ class AccountApproveDetails extends PureComponent<Props> {
             <Trans i18nKey="pendingAccount:details.members" />
           </span>
           <span className={classes.badgeValue}>
-            (<Trans
+            (
+            <Trans
               i18nKey="pendingAccount:details.selectedMembers"
               values={{ memberLength: account.members.length }}
-            />)
+            />
+            )
           </span>
         </div>
         <div>
