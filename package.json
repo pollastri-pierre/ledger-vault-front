@@ -105,12 +105,11 @@
     "yaml-loader": "^0.5.0"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^4.1.7",
-    "@storybook/addon-knobs": "^4.1.7",
-    "@storybook/addon-links": "^4.1.7",
-    "@storybook/addon-options": "^4.1.13",
-    "@storybook/addons": "^4.1.7",
-    "@storybook/react": "^4.1.7",
+    "@storybook/addon-actions": "5.1.0-alpha.6",
+    "@storybook/addon-knobs": "5.1.0-alpha.6",
+    "@storybook/addon-links": "5.1.0-alpha.6",
+    "@storybook/addons": "5.1.0-alpha.6",
+    "@storybook/react": "5.1.0-alpha.6",
     "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "cypress": "^3.1.3",

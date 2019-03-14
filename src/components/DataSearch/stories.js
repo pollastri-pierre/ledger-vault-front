@@ -95,7 +95,7 @@ const mockNetwork = async url => {
       return true;
     });
   }
-  if (url.startsWith("/groups-mock?")) {
+  if (url.startsWith("/groups")) {
     edges = groups.filter(g => {
       if (
         queryParams.name &&
