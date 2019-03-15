@@ -1,10 +1,13 @@
 // @flow
 
 import { translate } from "react-i18next";
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 import InputField from "components/InputField";
+import InfoBox from "components/base/InfoBox";
+import Text from "components/base/Text";
+import Box from "components/base/Box";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
@@ -60,21 +63,28 @@ class AccountCreationOptions extends PureComponent<Props> {
 
     const AccountCurIcon = getCryptoCurrencyIcon(currency);
     return (
-      <Fragment>
-        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
-        <InputField
-          value={payload.name}
-          autoFocus
-          onChange={this.handleChangeName}
-          {...inputProps}
-          placeholder={t("newAccount:options.acc_name_placeholder")}
-          renderLeft={
-            AccountCurIcon ? (
-              <AccountCurIcon color={currency.color} size={15} />
-            ) : null
-          }
-        />
-      </Fragment>
+      <Box flow={20}>
+        <Box>
+          <ModalSubTitle noPadding>
+            {t("newAccount:options.name")}
+          </ModalSubTitle>
+          <InputField
+            value={payload.name}
+            autoFocus
+            onChange={this.handleChangeName}
+            {...inputProps}
+            placeholder={t("newAccount:options.acc_name_placeholder")}
+            renderLeft={
+              AccountCurIcon ? (
+                <AccountCurIcon color={currency.color} size={15} />
+              ) : null
+            }
+          />
+        </Box>
+        <InfoBox type="info" withIcon>
+          <Text i18nKey="accountCreation:steps.name.warning" />
+        </InfoBox>
+      </Box>
     );
   }
 }

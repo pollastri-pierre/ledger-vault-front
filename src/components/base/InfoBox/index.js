@@ -23,7 +23,7 @@ type Props = {
 const styles = {
   container: {
     color: "#555",
-    borderRadius: 3,
+    borderRadius: 4,
   },
   content: {
     display: "flex",
