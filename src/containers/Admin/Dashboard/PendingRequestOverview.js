@@ -20,17 +20,21 @@ class PendingRequestsOverview extends PureComponent<Props> {
       <Box>
         {request.user ? (
           <Fragment>
-            <LineRow label={<Trans i18nKey="memberDetails:username" />}>
+            <LineRow label={<Trans i18nKey="userDetails:username" />}>
               {request.user.username}
             </LineRow>
-            <LineRow label={<Trans i18nKey="memberDetails:role" />}>
+            <LineRow label={<Trans i18nKey="userDetails:type" />}>
               {request.type}
             </LineRow>
-            <LineRow label="Workspace">{workspace}</LineRow>
-            <LineRow label="Created">
+            <LineRow label={<Trans i18nKey="userDetails:workspace" />}>
+              {workspace}
+            </LineRow>
+            <LineRow label={<Trans i18nKey="userDetails:created" />}>
               <DateFormat>{request.created_on}</DateFormat>
             </LineRow>
-            <LineRow label="Expires">COMING..</LineRow>
+            <LineRow label={<Trans i18nKey="userDetails:expires" />}>
+              COMING..
+            </LineRow>
           </Fragment>
         ) : (
           <Box>Another entity, not user</Box>

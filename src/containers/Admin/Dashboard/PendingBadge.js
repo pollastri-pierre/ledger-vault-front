@@ -2,10 +2,11 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
-import ProfileQuery from "api/queries/ProfileQuery";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Request, Member } from "data/types";
 import Box from "components/base/Box";
+import { withMe } from "components/UserContextProvider";
+import { hasUserApprovedRequest } from "utils/request";
 import colors from "shared/colors";
 
 const styles = {
@@ -26,13 +27,10 @@ class PendingBadge extends PureComponent<Props> {
     const { data, me } = this.props;
     const requests = data && data.edges.map(el => el.node);
     // NOTE: temp filter the me-related pending requests until gate gives this
-    const requestForMe =
-      requests &&
-      requests.filter(el => {
-        const found = el.approvals.find(item => item.created_by.id === me.id);
-        return !found;
-      });
-    if (!requestForMe.length) return null;
+    const myRequests = requests.filter(
+      request => !hasUserApprovedRequest(request, me),
+    );
+    if (!myRequests.length) return null;
     return (
       <Box
         align="center"
@@ -41,15 +39,14 @@ class PendingBadge extends PureComponent<Props> {
         color={colors.white}
         style={styles.base}
       >
-        {requestForMe.length}
+        {myRequests.length}
       </Box>
     );
   }
 }
 
-export default connectData(PendingBadge, {
+export default connectData(withMe(PendingBadge), {
   queries: {
     data: PendingRequestsQuery,
-    me: ProfileQuery,
   },
 });

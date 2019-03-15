@@ -317,6 +317,7 @@ export type RequestType =
   | "CREATE_GROUP"
   | "EDIT_GROUP"
   | "REVOKE_GROUP"
+  | "REVOKE_OPERATOR"
   | "CREATE_ACCOUNT"
   | "EDIT_ACCOUNT"
   | "REVOKE_ACCOUNT";

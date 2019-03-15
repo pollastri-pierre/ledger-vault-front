@@ -1,15 +1,23 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 
 import ModalRoute from "components/ModalRoute";
 import RequestsTable from "components/Table/RequestsTable";
-import Card, { CardLoading, CardError } from "components/base/Card";
+import Card, {
+  CardLoading,
+  CardError,
+  CardTitle,
+  CardDesc,
+} from "components/base/Card";
+import Box from "components/base/Box";
 import type { MemoryHistory } from "history";
 import type { Match } from "react-router-dom";
-import type { Request } from "data/types";
+import type { Request, Member } from "data/types";
+import { withMe } from "components/UserContextProvider";
+import { hasUserApprovedRequest } from "utils/request";
 
 import PendingRequest from "./PendingRequest";
 
@@ -17,6 +25,7 @@ type Props = {
   data: Object,
   match: Match,
   history: MemoryHistory,
+  me: Member,
 };
 class AdminDashboard extends PureComponent<Props> {
   handleTaskClick = (request: Request) => {
@@ -28,23 +37,40 @@ class AdminDashboard extends PureComponent<Props> {
   };
 
   render() {
-    const { data, match } = this.props;
+    const { data, match, me } = this.props;
     const requests = data.edges.map(el => el.node);
+    const myRequests = requests.filter(
+      request => !hasUserApprovedRequest(request, me),
+    );
+    const otherRequests = requests.filter(request =>
+      hasUserApprovedRequest(request, me),
+    );
+
     return (
-      <Fragment>
+      <Box flow={20}>
         <Card>
-          <RequestsTable data={requests} onRowClick={this.handleTaskClick} />
+          <CardTitle noMargin i18nKey="adminDashboard:myRequestsTitle" />
+          <CardDesc i18nKey="adminDashboard:myRequestsDesc" />
+          <RequestsTable data={myRequests} onRowClick={this.handleTaskClick} />
+        </Card>
+        <Card>
+          <CardTitle noMargin i18nKey="adminDashboard:otherRequestsTitle" />
+          <CardDesc i18nKey="adminDashboard:otherRequestsDesc" />
+          <RequestsTable
+            data={otherRequests}
+            onRowClick={this.handleTaskClick}
+          />
         </Card>
         <ModalRoute
           path={`${match.url}/pending-requests/:requestID`}
           component={PendingRequest}
         />
-      </Fragment>
+      </Box>
     );
   }
 }
 
-export default connectData(AdminDashboard, {
+export default connectData(withMe(AdminDashboard), {
   RenderLoading: CardLoading,
   RenderError: CardError,
   queries: {
