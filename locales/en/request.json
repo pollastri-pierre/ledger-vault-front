@@ -4,12 +4,12 @@
     "EDIT_GROUP": "Edit group",
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",
-    "CREATE_ADMIN": "Create Admin",
+    "CREATE_ADMIN": "Create Administrator",
     "CREATE_OPERATOR": "Create Operator"
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
-    "EDIT_GROUP": "Approve group edit",
-    "REVOKE_GROUP": "Approve group revokation"
+    "EDIT_GROUP": "Approve group edition",
+    "REVOKE_GROUP": "Approve group revocation"
   }
 }
