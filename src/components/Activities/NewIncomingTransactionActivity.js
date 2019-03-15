@@ -8,7 +8,7 @@ import NoStyleLink from "../NoStyleLink";
 
 type Props = {
   activity: Object,
-  match: Match
+  match: Match,
 };
 
 class NewIncomingTransactionActivity extends Component<Props> {
@@ -30,7 +30,7 @@ class NewIncomingTransactionActivity extends Component<Props> {
           to={
             match.params.orga_name &&
             `/${match.params.orga_name}/${this.getOperationLink(
-              business_action.operation
+              business_action.operation,
             )}`
           }
         >
@@ -38,7 +38,7 @@ class NewIncomingTransactionActivity extends Component<Props> {
             <Trans
               i18nKey="activities:account.txReceived"
               values={{
-                accountName: business_action.operation.account.name
+                accountName: business_action.operation.account.name,
               }}
               components={<b>0</b>}
             />

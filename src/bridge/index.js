@@ -7,7 +7,7 @@ import type { WalletBridge } from "./types";
 const perFamily = {
   bitcoin: BitcoinBridge,
   ethereum: EthereumBridge,
-  ripple: null
+  ripple: null,
 };
 
 export const getBridgeForCurrency = (currency: Currency): WalletBridge<*> => {

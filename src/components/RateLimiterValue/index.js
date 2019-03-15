@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 class RateLimiterValue extends PureComponent<*> {
   props: {
     max_transaction: number,
-    time_slot: number
+    time_slot: number,
   };
 
   getFrequency = (max_transaction: number, frequency: number) => {

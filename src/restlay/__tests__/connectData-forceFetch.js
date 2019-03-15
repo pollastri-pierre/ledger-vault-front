@@ -25,34 +25,34 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
     {
       queries: {
         animals: AnimalsQuery,
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       // $FlowFixMe
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const Animal = connectData(
     // $FlowFixMe
     ({
       observed,
       restlay,
-      animal
+      animal,
     }: {
       observed?: boolean,
       restlay: *,
-      animal: Object
+      animal: Object,
     }) => (observed ? (rlay = restlay) : null, `${animal.name}_${animal.age}`),
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const Animals = connectData(({ animals }) => animals.length, {
     queries: {
-      animals: AnimalsQuery
-    }
+      animals: AnimalsQuery,
+    },
   });
   const inst = renderer.create(
     render(
@@ -62,27 +62,27 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
         <Animal animalId="id_max" observed />
         <Animal animalId="id_doge" />
         <Animals />
-      </div>
-    )
+      </div>,
+    ),
   );
   expect(inst.toJSON()).toMatchObject({ children: null });
   expect(net.tick()).toBe(3);
   await flushPromises();
   expect(inst.toJSON()).toMatchObject({
-    children: ["doge_19", "max_19", "max_14", "doge_5", "2"]
+    children: ["doge_19", "max_19", "max_14", "doge_5", "2"],
   });
   m.incrementAge();
   expect(net.tick()).toBe(0);
   await flushPromises();
   expect(inst.toJSON()).toMatchObject({
-    children: ["doge_19", "max_19", "max_14", "doge_5", "2"]
+    children: ["doge_19", "max_19", "max_14", "doge_5", "2"],
   });
   invariant(rlay, "restlay available");
   rlay.forceFetch();
   expect(net.tick()).toBe(1);
   await flushPromises();
   expect(inst.toJSON()).toMatchObject({
-    children: ["doge_20", "max_20", "max_15", "doge_5", "2"]
+    children: ["doge_20", "max_20", "max_15", "doge_5", "2"],
   });
   rlay.forceFetch();
   rlay.forceFetch();
@@ -92,7 +92,7 @@ test("forceFetch will trigger a refresh of siblings that depend on same query", 
   expect(net.tick()).toBe(1);
   await flushPromises();
   expect(inst.toJSON()).toMatchObject({
-    children: ["doge_20", "max_20", "max_15", "doge_5", "2"]
+    children: ["doge_20", "max_20", "max_15", "doge_5", "2"],
   });
   inst.unmount();
 });
@@ -110,11 +110,11 @@ test("forceFetch will reload multiple queries", async () => {
     {
       queries: {
         animals: AnimalsQuery,
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       // $FlowFixMe
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
@@ -153,10 +153,10 @@ test("forceFetch reload queries even if it have a cacheMaxAge", async () => {
     ({ restlay, animal }) => ((rlay = restlay), animal.age),
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<All animalId="id_max" />));
   expect(inst.toJSON()).toBe(null);

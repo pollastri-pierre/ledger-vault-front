@@ -4,7 +4,7 @@ import {
   route,
   switch_device,
   create_account,
-  create_operation
+  create_operation,
 } from "../../functions/actions.js";
 
 describe("Tests Creation of a Operation", function() {

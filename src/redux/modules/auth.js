@@ -28,7 +28,7 @@ export const logout = () => async (dispatch: Dispatch<*>) => {
     removeLocalStorageToken();
   }
   dispatch({
-    type: LOGOUT
+    type: LOGOUT,
   });
 };
 
@@ -38,14 +38,14 @@ export function login(token: string) {
 }
 
 export type State = {
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
 };
 
 export default function reducer(
   state: State = {
-    isAuthenticated: !!getLocalStorageToken()
+    isAuthenticated: !!getLocalStorageToken(),
   },
-  action: Object
+  action: Object,
 ) {
   switch (action.type) {
     case LOGOUT:

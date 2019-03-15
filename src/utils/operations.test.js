@@ -19,7 +19,7 @@ test("should return true if there is 1 account with no pending", () => {
 test("should return true if there is 2 account with pending only in one account", () => {
   const accounts = [
     { id: 1, balance: 1, status: "APPROVED" },
-    { id: 2, balance: 2, status: "APPROVED" }
+    { id: 2, balance: 2, status: "APPROVED" },
   ];
   const operations = [{ account_id: 1 }];
   expect(isCreateOperationEnabled(accounts, operations)).toBe(true);

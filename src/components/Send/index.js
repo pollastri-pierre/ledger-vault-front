@@ -24,7 +24,7 @@ const tabTitles = ["1. Account", "2. Details", "3. Label", "4. Confirmation"];
 
 type Props = {
   close: () => void,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 
 type State<Transaction> = {
@@ -32,7 +32,7 @@ type State<Transaction> = {
   device: boolean,
   transaction: ?Transaction,
   account: ?Account,
-  bridge: ?WalletBridge<Transaction>
+  bridge: ?WalletBridge<Transaction>,
 };
 
 class Send extends Component<Props, State<*>> {
@@ -44,7 +44,7 @@ class Send extends Component<Props, State<*>> {
       account: null,
       transaction: null,
       device: false,
-      bridge: null
+      bridge: null,
     };
   }
 
@@ -58,7 +58,7 @@ class Send extends Component<Props, State<*>> {
         bridge: null,
         transaction: null,
         account: null,
-        tabsIndex: 0
+        tabsIndex: 0,
       });
       return;
     }
@@ -70,7 +70,7 @@ class Send extends Component<Props, State<*>> {
       bridge,
       transaction,
       account,
-      tabsIndex: 1
+      tabsIndex: 1,
     });
   };
 
@@ -91,7 +91,7 @@ class Send extends Component<Props, State<*>> {
           operation_id,
           restlay,
           account,
-          transaction
+          transaction,
         );
         close();
       }
@@ -108,7 +108,7 @@ class Send extends Component<Props, State<*>> {
       !transaction ||
         (transaction && !transaction.amount) ||
         (transaction && !transaction.recipient), // tab 2
-      !transaction || (transaction && !transaction.estimatedFees) // tab 3
+      !transaction || (transaction && !transaction.estimatedFees), // tab 3
     ];
 
     if (device) {
@@ -187,5 +187,5 @@ class Send extends Component<Props, State<*>> {
 const RenderLoading = () => <ModalLoading height={650} />;
 
 export default connectData(translate()(Send), {
-  RenderLoading
+  RenderLoading,
 });

@@ -6,7 +6,7 @@ import {
   create_account,
   approve_operation,
   approve,
-  create_operation
+  create_operation,
 } from "../../functions/actions.js";
 
 describe("Operation for ERC20 Token", function() {

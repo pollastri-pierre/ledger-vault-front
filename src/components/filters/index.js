@@ -10,12 +10,12 @@ export { default as FieldAccounts } from "./fields/FilterFieldAccounts";
 export { default as FieldDate } from "./fields/FilterFieldDate";
 export { default as FieldCurrency } from "./fields/FilterFieldCurrency";
 export {
-  default as FieldOperationStatuses
+  default as FieldOperationStatuses,
 } from "./fields/FilterFieldOperationStatuses";
 
 // Agnostic stuff
 export { default as FieldTitle } from "./generic/FiltersFieldTitle";
 export {
   defaultFieldProps,
-  default as FiltersCard
+  default as FiltersCard,
 } from "./generic/FiltersCard";

@@ -7,7 +7,7 @@ import RegisterAdmins from "./RegisterAdmins";
 const steps = [
   "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
   "Enter your PIN code to unlock the device.",
-  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted."
+  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted.",
 ];
 type Props = {
   close: Function,
@@ -16,11 +16,11 @@ type Props = {
   editMember: Function,
   history: *,
   member: Member,
-  challenge: string
+  challenge: string,
 };
 type State = {
   step: number,
-  data: any
+  data: any,
 };
 
 class AddMember extends Component<Props, State> {
@@ -31,8 +31,8 @@ class AddMember extends Component<Props, State> {
       data: {
         email: props.member ? props.member.email : "",
         username: props.member ? props.member.username : "",
-        picture: props.member ? props.member.picture : ""
-      }
+        picture: props.member ? props.member.picture : "",
+      },
     };
   }
 
@@ -44,7 +44,7 @@ class AddMember extends Component<Props, State> {
         ...this.props.member,
         email: data.email,
         username: data.username,
-        picture: data.picture
+        picture: data.picture,
       };
       const { setAlert } = this.props;
       const promise = this.props.editMember(newMember);
@@ -57,7 +57,7 @@ class AddMember extends Component<Props, State> {
           setAlert(
             "Error",
             "Oops something went wrong. Please try again",
-            "error"
+            "error",
           );
         });
       return promise;
@@ -74,7 +74,7 @@ class AddMember extends Component<Props, State> {
     const data = {
       username: this.state.data.username,
       email: this.state.data.email,
-      picture: this.state.data.picture
+      picture: this.state.data.picture,
     };
     this.props.finish({ ...result, ...data });
   };

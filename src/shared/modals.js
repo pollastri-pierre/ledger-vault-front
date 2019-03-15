@@ -5,8 +5,8 @@ const header = {
     letterSpacing: "-0.4px",
     fontWeight: "normal",
     margin: 0,
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 };
 const modals = {
   base: {
@@ -17,14 +17,14 @@ const modals = {
       bottom: 0,
       left: 0,
       width: "100%",
-      padding: "0 40px 0 40px"
-    }
+      padding: "0 40px 0 40px",
+    },
   },
   small: {
     padding: 38,
     position: "relative",
-    "& > header": header
-  }
+    "& > header": header,
+  },
 };
 
 export default modals;

@@ -17,59 +17,59 @@ const blue = {
     height: 33,
     padding: 1,
     width: 25,
-    marginBottom: 5
+    marginBottom: 5,
   },
   inner: {
     border: "1px solid #cccccc",
     background: "#fbfbfb",
-    height: "100%"
+    height: "100%",
   },
   red: {
-    borderColor: colors.blue_red
+    borderColor: colors.blue_red,
   },
   green: {
-    borderColor: colors.blue_green
+    borderColor: colors.blue_green,
   },
   orange: {
-    borderColor: colors.blue_orange
-  }
+    borderColor: colors.blue_orange,
+  },
 };
 export const BlueDevice = withStyles(blue)(
   ({
     classes,
-    color
+    color,
   }: {
     classes: { [_: $Keys<typeof blue>]: string },
-    color: string
+    color: string,
   }) => (
     <div
       className={cx(classes.base, {
         [classes.red]: color === "red",
         [classes.orange]: color === "orange",
-        [classes.green]: color === "green"
+        [classes.green]: color === "green",
       })}
     >
       <div
         className={cx(classes.inner, {
           [classes.red]: color === "red",
           [classes.orange]: color === "orange",
-          [classes.green]: color === "green"
+          [classes.green]: color === "green",
         })}
       />
     </div>
-  )
+  ),
 );
 const styles = {
   base: {
     marginBottom: 40,
     fontSize: 11,
-    lineHeight: 1.82
+    lineHeight: 1.82,
   },
   row: {
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: 13
-  }
+    marginBottom: 13,
+  },
 };
 
 const requirement = {
@@ -78,14 +78,14 @@ const requirement = {
     flexDirection: "column",
     textAlign: "center",
     marginRight: 20,
-    width: 80
+    width: 80,
   },
   icon: {
     marginBottom: 2,
     height: 31,
     display: "flex",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 };
 export const RequirementUnit = withStyles(requirement)(
   ({
@@ -96,20 +96,20 @@ export const RequirementUnit = withStyles(requirement)(
   }: {
     classes: { [$Keys<typeof requirement>]: string },
     icon: any,
-    children: any
+    children: any,
   }) => (
     <div className={classes.base} {...props}>
       <div className={classes.icon}>{icon}</div>
       <div>{children}</div>
     </div>
-  )
+  ),
 );
 const Requirements = ({
   classes,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 }) => (
   <div className={classes.base}>
     <div className={classes.row}>

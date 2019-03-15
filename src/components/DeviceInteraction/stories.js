@@ -19,7 +19,7 @@ const interactions = [
     action: async () => {
       await delay(1e3);
       return { pubKey: { pubKey: 5 } };
-    }
+    },
   },
   {
     needsUserInput: false,
@@ -27,14 +27,14 @@ const interactions = [
     action: async () => {
       await delay(1e3);
       return { challenge: "abcde" };
-    }
+    },
   },
   {
     needsUserInput: true,
     device: true,
     response: "authenticate",
-    action: () => Promise.resolve(true)
-  }
+    action: () => Promise.resolve(true),
+  },
 ];
 
 storiesOf("other", module).add("DeviceInteraction", () => (

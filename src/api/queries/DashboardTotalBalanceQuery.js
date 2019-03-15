@@ -11,11 +11,11 @@ type Response = {
     // we can't calculate it ourself because we need to know the rate at a given time
     yesterday: number,
     week: number,
-    month: number
+    month: number,
   },
   accountsCount: number,
   currenciesCount: number,
-  membersCount: number
+  membersCount: number,
 };
 
 // fetch all data needed for the Dashboard Total Balance card

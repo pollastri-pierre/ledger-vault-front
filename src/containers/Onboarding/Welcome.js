@@ -16,16 +16,16 @@ const styles = {
     fontSize: 13,
     marginBottom: 20,
     "& li": {
-      lineHeight: "22px"
-    }
-  }
+      lineHeight: "22px",
+    },
+  },
 };
 const Welcome = ({
   t,
-  classes
+  classes,
 }: {
   t: Translate,
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
 }) => (
   <div>
     <Title>{t("onboarding:welcome.title")}</Title>

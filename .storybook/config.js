@@ -14,12 +14,12 @@ import { configure, addDecorator, addParameters } from "@storybook/react";
 import {
   createStore as reduxCreateStore,
   combineReducers,
-  applyMiddleware
+  applyMiddleware,
 } from "redux";
 import {
   MuiThemeProvider,
   createMuiTheme,
-  createGenerateClassName
+  createGenerateClassName,
 } from "@material-ui/core/styles";
 
 import logo from "assets/img/logo-black@3x.png";
@@ -35,10 +35,10 @@ const createStore = () => {
     combineReducers({
       countervalues: CounterValues.reducer,
       exchanges,
-      data: dataReducer
+      data: dataReducer,
     }),
     {},
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk)),
   );
 };
 
@@ -77,10 +77,10 @@ addParameters({
       base: "light",
       brandTitle: "Ledger Vault UI",
       brandUrl: "https://github.com/LedgerHQ/ledger-vault-front",
-      brandImage: logo
+      brandImage: logo,
     }),
-    panelPosition: "bottom"
-  }
+    panelPosition: "bottom",
+  },
 });
 
 addDecorator(withKnobs);
@@ -92,9 +92,9 @@ const Container = ({ children, classes }) => (
 const StyledContainer = withStyles({
   container: {
     "& *": {
-      boxSizing: "border-box"
-    }
-  }
+      boxSizing: "border-box",
+    },
+  },
 })(Container);
 
 configure(loadStories, module);

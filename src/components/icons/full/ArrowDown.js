@@ -7,8 +7,8 @@ type Props = { className: string, classes: Object };
 
 const styles = {
   common: {
-    width: 13
-  }
+    width: 13,
+  },
 };
 
 class ArrowDown extends PureComponent<Props> {

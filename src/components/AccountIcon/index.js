@@ -8,23 +8,23 @@ import Box from "components/base/Box";
 
 import {
   getCryptoCurrencyIcon,
-  getCryptoCurrencyById
+  getCryptoCurrencyById,
 } from "utils/cryptoCurrencies";
 
 const placeholderStyle = {
   background: colors.argile,
-  borderRadius: "50%"
+  borderRadius: "50%",
 };
 
 type Props = {
   size: number,
   currencyId?: string,
-  isERC20?: boolean
+  isERC20?: boolean,
 };
 
 class AccountIcon extends PureComponent<Props> {
   static defaultProps = {
-    size: 16
+    size: 16,
   };
 
   Placeholder = () => {

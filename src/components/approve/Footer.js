@@ -9,11 +9,11 @@ const styles = {
     bottom: "0",
     left: "0",
     width: "100%",
-    padding: "0 40px"
+    padding: "0 40px",
   },
   abort: {
-    marginRight: "20px"
-  }
+    marginRight: "20px",
+  },
 };
 
 function Footer(props: {
@@ -21,7 +21,7 @@ function Footer(props: {
   approve: Function,
   aborting: Function,
   percentage?: *,
-  classes: Object
+  classes: Object,
 }) {
   const { approved, approve, aborting, percentage, classes } = props;
 

@@ -20,17 +20,17 @@ import UserContextProvider from "components/UserContextProvider";
 const styles = {
   error: {
     margin: "auto",
-    width: 500
+    width: 500,
   },
   contentContainer: {
     display: "flex",
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 };
 type Props = {
   location: Location,
   match: Match,
-  accounts: Account[]
+  accounts: Account[],
 };
 function App({ location, match, accounts }: Props) {
   let res = (
@@ -65,6 +65,6 @@ export default connectData(translate()(App), {
   RenderLoading,
   RenderError,
   queries: {
-    accounts: AccountsQuery
-  }
+    accounts: AccountsQuery,
+  },
 });

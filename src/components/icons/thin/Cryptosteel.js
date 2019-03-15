@@ -8,8 +8,8 @@ const styles = {
     fill: "none",
     stroke: "#cccccc",
     strokeMiterlimit: 10,
-    strokeWidth: 2
-  }
+    strokeWidth: 2,
+  },
 };
 
 type Props = { classes: Object, className?: string };

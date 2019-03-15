@@ -12,13 +12,13 @@ const styles = {
   activity: {
     paddingTop: 17,
     paddingBottom: 17,
-    borderBottom: `1px solid ${colors.argile}`
+    borderBottom: `1px solid ${colors.argile}`,
   },
   clickable: {
     "&:hover": {
-      cursor: "pointer"
-    }
-  }
+      cursor: "pointer",
+    },
+  },
 };
 
 class ActivityLine extends Component<
@@ -26,9 +26,9 @@ class ActivityLine extends Component<
     activity: ActivityGeneric,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *,
-    markAsSeenRequest: Function
+    markAsSeenRequest: Function,
   },
-  *
+  *,
 > {
   render() {
     const { activity, classes, match, markAsSeenRequest } = this.props;

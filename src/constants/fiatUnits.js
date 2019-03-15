@@ -16,7 +16,7 @@ const units: { [key: string]: Unit } = {
     name: "Bosnian Convertible Marka",
     code: "BAM",
     symbol: "КМ",
-    magnitude: 2
+    magnitude: 2,
   },
   BBD: { name: "Barbadian dollar", code: "BBD", symbol: "$", magnitude: 2 },
   BDT: { name: "Bangladeshi Taka", code: "BDT", symbol: "৳", magnitude: 0 },
@@ -40,7 +40,7 @@ const units: { [key: string]: Unit } = {
     name: "Yuan or chinese renminbi",
     code: "CNY",
     symbol: "¥",
-    magnitude: 2
+    magnitude: 2,
   },
   COP: { name: "Colombian peso", code: "COP", symbol: "$", magnitude: 2 },
   CRC: { name: "Costa Rican colón", code: "CRC", symbol: "₡", magnitude: 2 },
@@ -48,7 +48,7 @@ const units: { [key: string]: Unit } = {
     name: "Cuban convertible peso",
     code: "CUC",
     symbol: "CUC",
-    magnitude: 2
+    magnitude: 2,
   },
   CUP: { name: "Cuban peso", code: "CUP", symbol: "$MN", magnitude: 2 },
   CVE: { name: "Cape Verdean Escudo", code: "CVE", symbol: "$", magnitude: 2 },
@@ -66,7 +66,7 @@ const units: { [key: string]: Unit } = {
     name: "Falkland Island Pound",
     code: "FKP",
     symbol: "£",
-    magnitude: 2
+    magnitude: 2,
   },
   GBP: { name: "British Pound", code: "GBP", symbol: "£", magnitude: 2 },
   GEL: { name: "Georgian lari", code: "GEL", symbol: "Lari", magnitude: 2 },
@@ -133,7 +133,7 @@ const units: { [key: string]: Unit } = {
     name: "Papua New Guinean Kina",
     code: "PGK",
     symbol: "K",
-    magnitude: 2
+    magnitude: 2,
   },
   PHP: { name: "Philippine Peso", code: "PHP", symbol: "₱", magnitude: 2 },
   PKR: { name: "Pakistani Rupee", code: "PKR", symbol: "₨", magnitude: 2 },
@@ -149,7 +149,7 @@ const units: { [key: string]: Unit } = {
     name: "Solomon Islander Dollar",
     code: "SBD",
     symbol: "$",
-    magnitude: 2
+    magnitude: 2,
   },
   SCR: { name: "Seychellois Rupee", code: "SCR", symbol: "₨", magnitude: 2 },
   SDD: { name: "SDD", code: "SDD", symbol: "LSd", magnitude: 2 },
@@ -161,7 +161,7 @@ const units: { [key: string]: Unit } = {
     name: "Sierra Leonean Leone",
     code: "SLL",
     symbol: "Le",
-    magnitude: 2
+    magnitude: 2,
   },
   SOS: { name: "Somali Shilling", code: "SOS", symbol: "S", magnitude: 2 },
   SRD: { name: "Surinamese dollar", code: "SRD", symbol: "$", magnitude: 2 },
@@ -189,7 +189,7 @@ const units: { [key: string]: Unit } = {
     name: "Venezuelan bolivar",
     code: "VEF",
     symbol: "Bs. F.",
-    magnitude: 2
+    magnitude: 2,
   },
   VND: { name: "Vietnamese Dong", code: "VND", symbol: "₫", magnitude: 1 },
   VUV: { name: "Ni-Vanuatu Vatu", code: "VUV", symbol: "VT", magnitude: 0 },
@@ -199,14 +199,14 @@ const units: { [key: string]: Unit } = {
     name: "East Caribbean dollar",
     code: "XCD",
     symbol: "$",
-    magnitude: 2
+    magnitude: 2,
   },
   XOF: { name: "CFA Franc", code: "XOF", symbol: "F", magnitude: 2 },
   XPF: { name: "CFP Franc", code: "XPF", symbol: "F", magnitude: 2 },
   YER: { name: "Yemeni Rial", code: "YER", symbol: "﷼", magnitude: 2 },
   ZAR: { name: "South African Rand", code: "ZAR", symbol: "R", magnitude: 2 },
   ZMW: { name: "Zambian Kwacha", code: "ZMW", symbol: "ZK", magnitude: 2 },
-  WON: { name: "WON", code: "WON", symbol: "₩", magnitude: 2 }
+  WON: { name: "WON", code: "WON", symbol: "₩", magnitude: 2 },
 };
 for (const u in units) {
   units[u].showAllDigits = true;

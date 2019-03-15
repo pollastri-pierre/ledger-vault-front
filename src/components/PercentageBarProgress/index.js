@@ -19,28 +19,28 @@ const styles = {
         color: colors.lead,
         fontWeight: "600",
         display: "inline-block",
-        marginLeft: "10px"
-      }
-    }
+        marginLeft: "10px",
+      },
+    },
   },
   percentageBar: {
     height: "2px",
     background: colors.mouse,
-    position: "relative"
+    position: "relative",
   },
   fill: {
     height: "2px",
     position: "absolute",
     top: "0",
     left: "0",
-    background: colors.ocean
-  }
+    background: colors.ocean,
+  },
 };
 
 class PercentageBarProgress extends PureComponent<{
   percentage: number,
   label: string | React$Node,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const { percentage, label, classes } = this.props;

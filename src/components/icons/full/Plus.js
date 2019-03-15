@@ -5,19 +5,19 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   common: {
-    width: 16
-  }
+    width: 16,
+  },
 };
 
 type Props = {
   color?: string,
   classes: { [_: $Keys<typeof styles>]: string },
-  className: string
+  className: string,
 };
 
 class Plus extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

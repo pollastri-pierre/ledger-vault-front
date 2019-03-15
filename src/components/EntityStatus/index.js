@@ -9,7 +9,7 @@ import { hasUserApprovedRequest } from "utils/request";
 type Props = {
   status: string,
   request: ?Request,
-  me: Member
+  me: Member,
 };
 
 class EntityStatus extends PureComponent<Props> {

@@ -11,7 +11,7 @@ import type { Member } from "data/types";
 class ProfileEditModal extends Component<{
   profile: Member,
   restlay: *,
-  close: Function
+  close: Function,
 }> {
   save = data =>
     this.props.restlay
@@ -20,8 +20,8 @@ class ProfileEditModal extends Component<{
           first_name: data.first_name.value,
           last_name: data.last_name.value,
           email: data.email.value,
-          picture: data.picture.value
-        })
+          picture: data.picture.value,
+        }),
       )
       .then(this.props.close);
 
@@ -48,7 +48,7 @@ export default withRouter(
   connectData(ProfileEditModal, {
     RenderLoading,
     queries: {
-      profile: ProfileQuery
-    }
-  })
+      profile: ProfileQuery,
+    },
+  }),
 );

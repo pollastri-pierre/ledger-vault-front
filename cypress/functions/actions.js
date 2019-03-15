@@ -29,7 +29,7 @@ export function logout() {
   cy.wait(2000);
   cy.get(".top-message-body")
     .contains(
-      "You have been successfully logged out. You can now safely close your web browser."
+      "You have been successfully logged out. You can now safely close your web browser.",
     )
     .get(".top-message-title")
     .contains("See you soon!");
@@ -66,10 +66,10 @@ export function route() {
   cy.route("post", `${API_DEVICE}/open-session`).as("open-session");
   cy.route("post", `${API_DEVICE}/register`).as("register");
   cy.route("post", `${API_DEVICE}/generate-key-fragments`).as(
-    "generate-key-fragments"
+    "generate-key-fragments",
   );
   cy.route("post", `${API_DEVICE}/validate-vault-operation`).as(
-    "validate-vault-operation"
+    "validate-vault-operation",
   );
   cy.route("post", `${API_DEVICE}/meta/store`).as("meta-store");
 
@@ -87,19 +87,19 @@ export function route() {
  */
 export function switch_device(id) {
   cy.request("POST", Cypress.env("api_switch_device"), {
-    device_number: id
+    device_number: id,
   });
 }
 
 export function approve() {
   cy.request("POST", Cypress.env("approve_cancel_device"), {
-    approve: true
+    approve: true,
   });
 }
 
 export function cancel() {
   cy.request("POST", Cypress.env("approve_cancel_device"), {
-    approve: false
+    approve: false,
   });
 }
 

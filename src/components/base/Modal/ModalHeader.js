@@ -8,11 +8,11 @@ import Text from "components/base/Text";
 export default ({
   onClose,
   title,
-  children
+  children,
 }: {
   onClose: () => void,
   title?: React$Node,
-  children?: React$Node
+  children?: React$Node,
 }) => (
   <Box horizontal align="center" justify="space-between" p={20} noShrink>
     {children && children}

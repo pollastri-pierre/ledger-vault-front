@@ -9,18 +9,18 @@ const styles = {
     textDecoration: "none",
     "&:focus, &:hover, &:visited, &:link, &:active": {
       textDecoration: "none",
-      color: "inherit"
-    }
-  }
+      color: "inherit",
+    },
+  },
 };
 
 class NoStyleLink extends Component<
   {
     classes: { [_: $Keys<typeof styles>]: string },
     to: string,
-    children: *
+    children: *,
   },
-  *
+  *,
 > {
   render() {
     const { classes, to, children } = this.props;

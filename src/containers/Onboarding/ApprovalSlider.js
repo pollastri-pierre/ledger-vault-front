@@ -10,11 +10,11 @@ const styles = {
   base: { marginBottom: 40 },
   bold: {
     fontSize: 13,
-    fontWeight: 600
+    fontWeight: 600,
   },
   out: {
     fontSize: 12,
-    color: "#767676"
+    color: "#767676",
   },
   flex: { display: "flex", justifyContent: "space-between" },
   require: {
@@ -22,49 +22,49 @@ const styles = {
     fontSize: 11,
     textTransform: "uppercase",
     fontWeight: 600,
-    cursor: "pointer"
+    cursor: "pointer",
   },
   requireDisable: {
     opacity: 0.5,
-    cursor: "default"
+    cursor: "default",
   },
   bars: {
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   bar: {
     height: 3,
     width: 60,
     background: "#e2e2e2",
     display: "inline-block",
-    marginRight: 5
+    marginRight: 5,
   },
   barSelected: {
-    background: "#27d0e2"
+    background: "#27d0e2",
   },
   left: {
     fill: "#27d0e2",
     marginRight: 8,
-    transform: "rotate(90deg)"
+    transform: "rotate(90deg)",
   },
   right: {
     fill: "#27d0e2",
     marginLeft: 8,
-    transform: "rotate(-90deg)"
-  }
+    transform: "rotate(-90deg)",
+  },
 };
 const ApprovalSlider = ({
   classes,
   number,
   total,
   onChange,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   number: number,
   total: number,
   onChange: number => void,
-  t: Translate
+  t: Translate,
 }) => (
   <div className={classes.base}>
     <div className={classes.flex}>
@@ -90,7 +90,7 @@ const ApprovalSlider = ({
             <div
               key={i} // eslint-disable-line react/no-array-index-key
               className={cx(classes.bar, {
-                [classes.barSelected]: i < number
+                [classes.barSelected]: i < number,
               })}
               style={{ width }}
             />

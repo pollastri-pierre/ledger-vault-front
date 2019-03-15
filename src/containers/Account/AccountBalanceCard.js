@@ -10,17 +10,17 @@ import type { Account, Translate } from "data/types";
 
 const styles = {
   card: {
-    width: "50%"
+    width: "50%",
   },
   title: {
-    fontSize: 28
-  }
+    fontSize: 28,
+  },
 };
 type Props = {
   account: Account,
   t: Translate,
   classes: { [_: $Keys<typeof styles>]: string },
-  reloading: boolean
+  reloading: boolean,
 };
 
 class AccountBalanceCard extends Component<Props> {

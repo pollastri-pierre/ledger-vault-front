@@ -16,33 +16,33 @@ const styles = {
       margin: "0",
       padding: "0",
       fontSize: "10px",
-      textTransform: "uppercase"
-    }
+      textTransform: "uppercase",
+    },
   },
   right: {
     marginLeft: "130px",
     marginTop: "-2px",
-    padding: "0"
+    padding: "0",
   },
   left: {
-    float: "left"
+    float: "left",
   },
   hash: {
     fontSize: "13px",
-    wordWrap: "break-word"
+    wordWrap: "break-word",
   },
   info: {
     color: colors.lead,
     fontSize: "11px",
     maxWidth: "482px",
-    lineHeight: "1.82"
-  }
+    lineHeight: "1.82",
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate,
-  address: string
+  address: string,
 };
 
 class ReceiveFundsCard extends Component<Props> {

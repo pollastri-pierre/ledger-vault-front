@@ -24,7 +24,7 @@ context("Registration Shared Owners", () => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     });
 
     cy.request("POST", DEVICE, { device_number: 7 }).then(() => {

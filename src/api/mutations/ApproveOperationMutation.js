@@ -7,7 +7,7 @@ import { success, error } from "formatters/notification";
 type In = {
   operationId: string,
   approval: string,
-  public_key: string
+  public_key: string,
 };
 
 type Res = Operation;

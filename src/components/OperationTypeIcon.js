@@ -8,8 +8,8 @@ import Send from "./icons/Send";
 
 const styles = {
   iconPosition: {
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 };
 
 class OpTypeIcon extends Component<{ isReceive: boolean, classes: Object }> {

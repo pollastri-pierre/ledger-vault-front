@@ -14,7 +14,7 @@ import {
   toggleDeviceModal,
   addMasterSeedKey,
   wipe,
-  openProvisionningChannel
+  openProvisionningChannel,
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -24,29 +24,29 @@ const styles = {
   steps: {
     display: "flex",
     flexDirection: "row",
-    marginBottom: 35
+    marginBottom: 35,
   },
   title: {
     fontSize: 12,
     fontWeight: 600,
-    margin: "0 0 12px 0"
+    margin: "0 0 12px 0",
   },
   step: {
     paddingRight: 13,
     paddingLeft: 25,
     "&:first-child": {
-      paddingLeft: 0
+      paddingLeft: 0,
     },
-    transition: "all 200ms ease"
+    transition: "all 200ms ease",
   },
   disabled: {
-    opacity: 0.2
+    opacity: 0.2,
   },
   separator: {
     width: 1,
     height: 94,
-    background: "#eeeeee"
-  }
+    background: "#eeeeee",
+  },
 };
 type Props = {
   classes: { [$Keys<typeof styles>]: string },
@@ -57,14 +57,14 @@ type Props = {
   onWipe: Function,
   history: *,
   onAddMessage: (string, string, string) => void,
-  onAddSeedShard: Function
+  onAddSeedShard: Function,
 };
 type State = {
-  deny: boolean
+  deny: boolean,
 };
 class Provisioning extends Component<Props, State> {
   state = {
-    deny: false
+    deny: false,
   };
 
   finish = data => {
@@ -89,7 +89,7 @@ class Provisioning extends Component<Props, State> {
       history,
       onWipe,
       onAddMessage,
-      t
+      t,
     } = this.props;
     if (!onboarding.provisionning.channel) {
       return <SpinnerCard />;
@@ -137,7 +137,7 @@ class Provisioning extends Component<Props, State> {
                 disabled={onboarding.provisionning.blobs.length <= i - 1}
                 label={t(`onboarding:master_seed_provisionning.step${i + 1}`)}
                 labelGenerate={t(
-                  "onboarding:master_seed_provisionning.generate_seed"
+                  "onboarding:master_seed_provisionning.generate_seed",
                 )}
                 generate={onToggleDeviceModal}
                 generated={onboarding.provisionning.blobs.length > i}
@@ -167,7 +167,7 @@ class Provisioning extends Component<Props, State> {
 }
 
 const mapProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 
 const mapDispatch = (dispatch: *) => ({
@@ -175,10 +175,10 @@ const mapDispatch = (dispatch: *) => ({
   onAddSeedShard: data => dispatch(addMasterSeedKey(data)),
   onAddMessage: (title, msg, type) => dispatch(addMessage(title, msg, type)),
   onWipe: () => dispatch(wipe()),
-  onGetShardsChannel: () => dispatch(openProvisionningChannel())
+  onGetShardsChannel: () => dispatch(openProvisionningChannel()),
 });
 
 export default connect(
   mapProps,
-  mapDispatch
+  mapDispatch,
 )(withStyles(styles)(translate()(Provisioning)));

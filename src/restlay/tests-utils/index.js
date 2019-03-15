@@ -23,15 +23,15 @@ export function flushPromises(): Promise<any> {
 export const newStore = () =>
   createStore(
     combineReducers({
-      data: reducer
+      data: reducer,
     }),
-    applyMiddleware(thunk)
+    applyMiddleware(thunk),
   );
 
 export const createRender = (
   network: NetworkF,
   connectDataOptDefaults?: Object,
-  store?: * = newStore()
+  store?: * = newStore(),
 ) => {
   const render = (children: React$Node) => (
     <Provider store={store}>
@@ -63,12 +63,12 @@ export const defer = () => {
 // tickOne function: redeem only one pending network call and returns number of calls (0 or 1)
 // countTickWaiters function: gets the number of network call awaiting
 export const networkFromMock = (mock: {
-  networkSync: Function
+  networkSync: Function,
 }): {
   network: NetworkF,
   tick: () => number,
   tickOne: () => number,
-  countTickWaiters: () => number
+  countTickWaiters: () => number,
 } => {
   const tickDefers = [];
   const waitTick = () => {
@@ -96,6 +96,6 @@ export const networkFromMock = (mock: {
     },
     countTickWaiters: () => tickDefers.length,
     network: (uri, method, body) =>
-      waitTick().then(() => mock.networkSync(uri, method, body))
+      waitTick().then(() => mock.networkSync(uri, method, body)),
   };
 };

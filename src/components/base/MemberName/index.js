@@ -8,7 +8,7 @@ import type { Member } from "data/types";
 const userIcon = <FaUser size={10} />;
 
 class MemberName extends Component<{
-  member: Member
+  member: Member,
 }> {
   render() {
     const { member, ...props } = this.props;

@@ -23,7 +23,7 @@ export const APPID_VAULT_ADMINISTRATOR =
 
 export const checkToUpdate = async (
   device: VaultDeviceApp,
-  callback: Function
+  callback: Function,
 ): Promise<*> => {
   try {
     const { appName, appVersion } = await device.getVersion();
@@ -47,7 +47,7 @@ export const checkToUpdate = async (
 
 export default async (
   scrambleKey: string = "v1+",
-  unwrap: boolean = true
+  unwrap: boolean = true,
 ): Promise<VaultDeviceApp> => {
   if (process.env.NODE_ENV === "e2e" || window.config.SOFTWARE_DEVICE) {
     // $FlowFixMe

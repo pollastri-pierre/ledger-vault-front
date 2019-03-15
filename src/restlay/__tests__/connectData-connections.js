@@ -18,12 +18,12 @@ test("connection query works with initial query", async () => {
         .join("|")}`,
     {
       queries: {
-        world: WorldQuery
+        world: WorldQuery,
       },
       initialVariables: {
-        world: 3
-      }
-    }
+        world: 3,
+      },
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -49,13 +49,13 @@ test("connection query pagination can be pulled once", async () => {
     ),
     {
       queries: {
-        world: WorldQuery
+        world: WorldQuery,
       },
       initialVariables: {
-        world: 2
+        world: 2,
       },
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -65,7 +65,7 @@ test("connection query pagination can be pulled once", async () => {
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1");
   invariant(rlay, "restlay available");
   rlay.setVariables({
-    world: 5
+    world: 5,
   });
   expect(inst.toJSON()).toBe("hasNextPage=true C_w_0:w_0|C_w_1:w_1");
   expect(renders).toBe(1);
@@ -73,7 +73,7 @@ test("connection query pagination can be pulled once", async () => {
   await flushPromises();
   expect(renders).toBe(2);
   expect(inst.toJSON()).toBe(
-    "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4"
+    "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4",
   );
   inst.unmount();
 });
@@ -92,13 +92,13 @@ test("connection query pagination can be pulled many times", async () => {
     ),
     {
       queries: {
-        world: WorldQuery
+        world: WorldQuery,
       },
       initialVariables: {
-        world: 10
+        world: 10,
       },
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -109,7 +109,7 @@ test("connection query pagination can be pulled many times", async () => {
   for (let i = 1; i < 100; i++) {
     expect(inst.toJSON()).toBe(`true ${i * 10}`);
     rlay.setVariables({
-      world: rlay.getVariables().world + 10
+      world: rlay.getVariables().world + 10,
     });
     expect(net.tick()).toBe(1);
     await flushPromises();
@@ -117,7 +117,7 @@ test("connection query pagination can be pulled many times", async () => {
   expect(renders).toBe(100);
   expect(inst.toJSON()).toBe("false 1000");
   rlay.setVariables({
-    world: rlay.getVariables().world + 10
+    world: rlay.getVariables().world + 10,
   });
   expect(net.tick()).toBe(0);
   await flushPromises();
@@ -142,13 +142,13 @@ test("connection query pages size can be reduced and result of a slice without e
     ),
     {
       queries: {
-        world: WorldQuery
+        world: WorldQuery,
       },
       initialVariables: {
-        world: 5
+        world: 5,
       },
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -156,11 +156,11 @@ test("connection query pages size can be reduced and result of a slice without e
   await flushPromises();
   expect(renders).toBe(1);
   expect(inst.toJSON()).toBe(
-    "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4"
+    "hasNextPage=true C_w_0:w_0|C_w_1:w_1|C_w_2:w_2|C_w_3:w_3|C_w_4:w_4",
   );
   invariant(rlay, "restlay available");
   rlay.setVariables({
-    world: 2
+    world: 2,
   });
   expect(net.tick()).toBe(0);
   await flushPromises();
@@ -182,8 +182,8 @@ test("connection query pagination, triggering many times don't trigger many redr
     {
       queries: { world: WorldQuery },
       initialVariables: { world: 2 },
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -229,8 +229,8 @@ test("when paginating a lot, server is allowed to return less result that reques
     {
       queries: { world: WorldQuery },
       initialVariables: { world: 2 },
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);
@@ -261,12 +261,12 @@ test("unmounting a connection query will starts over", async () => {
     ({ world, restlay }) => ((rlay = restlay), `${world.edges.length}`),
     {
       queries: {
-        world: WorldQuery
+        world: WorldQuery,
       },
       initialVariables: {
-        world: 30
-      }
-    }
+        world: 30,
+      },
+    },
   );
   const inst = renderer.create(render(<World />));
   expect(inst.toJSON()).toBe(null);

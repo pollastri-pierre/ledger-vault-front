@@ -12,7 +12,7 @@ function Avatar(props: { url: ?string, width?: number, height?: number }) {
 
 Avatar.defaultProps = {
   width: 13.5,
-  height: 15
+  height: 15,
 };
 
 export default Avatar;

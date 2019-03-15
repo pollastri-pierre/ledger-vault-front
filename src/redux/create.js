@@ -9,5 +9,5 @@ export default (data: *) =>
     combineReducers(reducers),
     data,
     // $FlowFixMe
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk)),
   );

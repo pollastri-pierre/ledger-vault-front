@@ -10,7 +10,7 @@ import AccountUnitCode from "components/AccountUnitCode";
 import {
   isAccountOutdated,
   STATUS_UPDATE_IN_PROGRESS,
-  getAccountTitle
+  getAccountTitle,
 } from "utils/accounts";
 
 import type { Account } from "data/types";
@@ -22,10 +22,10 @@ const styles = {
   item: {
     display: "flex",
     fontWeight: "normal",
-    paddingRight: 0
+    paddingRight: 0,
   },
   needUpdate: {
-    opacity: "0.2!important"
+    opacity: "0.2!important",
   },
   name: {
     flex: 1,
@@ -34,20 +34,20 @@ const styles = {
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    color: "black"
+    color: "black",
   },
   unit: {
     fontSize: 10,
     fontWeight: 600,
     color: "black",
-    opacity: 0.2
-  }
+    opacity: 0.2,
+  },
 };
 
 class AccountsMenu extends Component<{
   classes: Object,
   accounts: Array<Account>,
-  match: *
+  match: *,
 }> {
   render() {
     const { accounts, classes, match } = this.props;
@@ -63,7 +63,7 @@ class AccountsMenu extends Component<{
               className={cx(classes.item, {
                 [classes.needUpdate]:
                   isAccountOutdated(account) ||
-                  account.status === STATUS_UPDATE_IN_PROGRESS
+                  account.status === STATUS_UPDATE_IN_PROGRESS,
               })}
             >
               {isAccountOutdated(account) ? (

@@ -15,7 +15,7 @@ import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import {
   isNotSupportedCoin,
-  getCurrencyIdFromBlockchainName
+  getCurrencyIdFromBlockchainName,
 } from "utils/cryptoCurrencies";
 import type { ERC20Token } from "data/types";
 
@@ -31,14 +31,14 @@ const initialPayload: AccountCreationPayload = {
   rules: [{ quorum: 1, group: null, users: [] }],
   currency: null,
   erc20token: null,
-  parentAccount: null
+  parentAccount: null,
 };
 
 const steps = [
   {
     id: "chooseCurrencyOrToken",
     name: <Trans i18nKey="accountCreation:steps.chooseCurrencyOrToken.title" />,
-    Step: AccountCreationCurrency
+    Step: AccountCreationCurrency,
   },
   {
     id: "name",
@@ -49,7 +49,7 @@ const steps = [
       if (payload.currency && isNotSupportedCoin(payload.currency))
         return false;
       return true;
-    }
+    },
   },
   {
     id: "rules",
@@ -64,7 +64,7 @@ const steps = [
         return !!parentAccount.name && parentAccount.name !== "";
       }
       return true;
-    }
+    },
   },
   {
     id: "confirmation",
@@ -89,14 +89,14 @@ const steps = [
           buttonLabel={<Trans i18nKey="accountCreation:cta" />}
         />
       );
-    }
-  }
+    },
+  },
 ];
 
 const title = <Trans i18nKey="accountCreation:title" />;
 
 const styles = {
-  container: { minHeight: 670 }
+  container: { minHeight: 670 },
 };
 
 const RenderLoading = () => <ModalLoading height={670} width={700} />;
@@ -119,24 +119,24 @@ export default connectData(
     queries: {
       allAccounts: PotentialParentAccountsQuery,
       users: UsersQuery,
-      groups: GroupsQuery
+      groups: GroupsQuery,
     },
     initialVariables: {
-      users: 30
-    }
-  }
+      users: 30,
+    },
+  },
 );
 
 function serializePayload(payload: AccountCreationPayload) {
   const data: Object = {
     name: payload.name,
-    rules: payload.rules
+    rules: payload.rules,
   };
   if (payload.currency) {
     Object.assign(data, {
       currency: {
-        name: payload.currency.id
-      }
+        name: payload.currency.id,
+      },
     });
     // HACK because ll-common "ethereum_testnet" should be "ethereum_ropsten"
     if (data.currency.name === "ethereum_testnet") {
@@ -147,15 +147,15 @@ function serializePayload(payload: AccountCreationPayload) {
     const token: ERC20Token = payload.erc20token;
     Object.assign(data, {
       currency: {
-        name: getCurrencyIdFromBlockchainName(token.blockchain_name)
+        name: getCurrencyIdFromBlockchainName(token.blockchain_name),
       },
       erc20: {
         ticker: token.ticker,
         address: token.contract_address,
         decimals: token.decimals,
-        signature: token.signature || ""
+        signature: token.signature || "",
       },
-      parent_account: payload.parentAccount
+      parent_account: payload.parentAccount,
     });
   }
   return data;

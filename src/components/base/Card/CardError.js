@@ -9,7 +9,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 
 type Props = {
   error: Error,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 
 export default ({ error, restlay }: Props) => (

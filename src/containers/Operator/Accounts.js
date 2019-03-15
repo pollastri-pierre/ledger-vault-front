@@ -24,5 +24,5 @@ class OperatorAccounts extends PureComponent<Props> {
 export default connectData(OperatorAccounts, {
   RenderLoading: CardLoading,
   RenderError: CardError,
-  queries: {}
+  queries: {},
 });

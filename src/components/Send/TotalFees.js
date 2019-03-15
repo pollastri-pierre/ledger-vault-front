@@ -11,7 +11,7 @@ type Props = {
   account: Account,
   totalFees: number,
   classes: { [_: $Keys<typeof styles>]: string },
-  feeIsValid: boolean
+  feeIsValid: boolean,
 };
 
 const styles = {
@@ -20,19 +20,19 @@ const styles = {
     display: "flex",
     marginTop: 20,
     justifyContent: "flex-end",
-    fontSize: 13
+    fontSize: 13,
   },
   fiat: {
     marginLeft: 5,
-    color: colors.steel
+    color: colors.steel,
   },
   feeInvalid: {
     color: colors.grenade,
     display: "flex",
     justifyContent: "flex-end",
     fontSize: 12,
-    padding: "0 40px"
-  }
+    padding: "0 40px",
+  },
 };
 class TotalFees extends PureComponent<Props> {
   render() {

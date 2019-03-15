@@ -6,7 +6,7 @@ import schema from "data/schema";
 import type { Account } from "data/types";
 
 type Input = {
-  name?: string
+  name?: string,
 };
 
 type Node = Account;

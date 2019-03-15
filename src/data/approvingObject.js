@@ -5,13 +5,13 @@ export type ApprovingObject = {
   // this is a Operation like
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
-  endOfRateLimiterTime: ?string
+  endOfRateLimiterTime: ?string,
 };
 export type ApprovingObjectMeta = {
   rateLimiterRemaining: ?string,
   timeLockRemaining: ?string,
   globalEndTextRemaining: string,
-  globalPercentage: number // progress value from 0 to 1
+  globalPercentage: number, // progress value from 0 to 1
 };
 
 function formatRemainingTimeText(futureTime: number): string {
@@ -21,7 +21,7 @@ function formatRemainingTimeText(futureTime: number): string {
 export function calculateApprovingObjectMeta({
   approvedTime,
   endOfTimeLockTime,
-  endOfRateLimiterTime
+  endOfRateLimiterTime,
 }: ApprovingObject): ?ApprovingObjectMeta {
   if (approvedTime) {
     const nowT = Date.now();
@@ -37,7 +37,7 @@ export function calculateApprovingObjectMeta({
       return {
         globalPercentage: Math.max(
           0,
-          Math.min((nowT - approvedT) / (globalEndT - approvedT), 1)
+          Math.min((nowT - approvedT) / (globalEndT - approvedT), 1),
         ),
         globalEndTextRemaining: formatRemainingTimeText(globalEndT),
         timeLockRemaining: !endOfTimeLockTime
@@ -45,7 +45,7 @@ export function calculateApprovingObjectMeta({
           : formatRemainingTimeText(endOfTimeLockTimeT),
         rateLimiterRemaining: !endOfRateLimiterTime
           ? null
-          : formatRemainingTimeText(endOfRateLimiterTimeT)
+          : formatRemainingTimeText(endOfRateLimiterTimeT),
       };
     }
   }

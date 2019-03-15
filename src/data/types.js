@@ -17,11 +17,11 @@ export type Fiat = string;
 export type Organization = {
   name: string,
   domain_name: string,
-  workspace: string
+  workspace: string,
 };
 
 type Price = {
-  amount: number
+  amount: number,
 };
 
 export type Unit = {
@@ -30,7 +30,7 @@ export type Unit = {
   code: string,
   symbol?: string,
   magnitude: number,
-  showAllDigits?: boolean
+  showAllDigits?: boolean,
 };
 
 export type Currency = {
@@ -40,20 +40,20 @@ export type Currency = {
   color: string,
   payment_uri_scheme: string,
   issue_message?: string,
-  units: Unit[]
+  units: Unit[],
 };
 export type CurrencyEntity = Currency;
 
 export type RateLimiter = {
   max_transaction: number,
-  time_slot: number
+  time_slot: number,
 };
 
 export type SecurityScheme = {
   quorum: number,
   time_lock?: number,
   rate_limiter?: RateLimiter,
-  auto_expire?: number | null
+  auto_expire?: number | null,
 };
 
 export type AccountSettings = {
@@ -61,7 +61,7 @@ export type AccountSettings = {
   fiat: Fiat,
   currency_unit: Unit,
   unitIndex: number,
-  blockchain_explorer: string
+  blockchain_explorer: string,
 };
 
 type MemberCommon = {
@@ -74,7 +74,7 @@ type MemberCommon = {
   status: string,
   email?: string,
   last_request?: Request,
-  role: string
+  role: string,
 };
 export type MemberEntity = MemberCommon;
 export type Member = MemberCommon;
@@ -91,14 +91,14 @@ export type MemberInvite = {
     pub_key: ?string,
     username: string,
     created_on: string,
-    user_id: string
-  }
+    user_id: string,
+  },
 };
 
 export type Approval = {
   created_on: Date,
   person: Member,
-  type: "APPROVE" | "ABORT"
+  type: "APPROVE" | "ABORT",
 };
 
 type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
@@ -120,15 +120,15 @@ type AccountCommon = {
   is_hsm_coin_app_updated: boolean,
   index: number,
   status: string,
-  last_request?: Request
+  last_request?: Request,
 };
 export type Account = AccountCommon & {
-  currency_id: string
+  currency_id: string,
 };
 
 export type OperationRecipientIsValid = {
   amount: number,
-  recipient: string
+  recipient: string,
 };
 
 export type OperationGetFees = {
@@ -136,10 +136,10 @@ export type OperationGetFees = {
   recipient: string,
   fee_level?: string,
   gas_limit?: ?number,
-  gas_price?: ?number
+  gas_price?: ?number,
 };
 export type AccountEntity = AccountCommon & {
-  currency: string
+  currency: string,
 };
 
 type GroupCommon = {
@@ -149,27 +149,27 @@ type GroupCommon = {
   created_by: Member,
   description?: string,
   last_request?: Request,
-  status: string // TODO create UNION type when different status are known
+  status: string, // TODO create UNION type when different status are known
 };
 export type GroupEntity = GroupCommon & {
-  members: string[]
+  members: string[],
 };
 export type Group = GroupCommon & {
   members: Member[],
-  approvals: Approval[]
+  approvals: Approval[],
 };
 
 type NoteCommon = {
   id: string,
   title: string,
   content: string,
-  created_at: string
+  created_at: string,
 };
 export type Note = NoteCommon & {
-  author: Member
+  author: Member,
 };
 export type NoteEntity = NoteCommon & {
-  author: string
+  author: string,
 };
 
 export type TransactionInput = {
@@ -180,14 +180,14 @@ export type TransactionInput = {
   address: string,
   signature_script?: string,
   coinbase?: string,
-  sequence?: number
+  sequence?: number,
 };
 
 export type TransactionOutput = {
   index: number,
   value: number,
   address: string,
-  script?: string
+  script?: string,
 };
 
 export type Transaction = {
@@ -195,7 +195,7 @@ export type Transaction = {
   hash: string,
   lock_time: string,
   inputs: TransactionInput[],
-  outputs: TransactionOutput[]
+  outputs: TransactionOutput[],
 };
 
 export type TransactionETH = {
@@ -208,7 +208,7 @@ export type TransactionETH = {
   hash: string,
   receiver: string,
   sender: string,
-  value: number
+  value: number,
 };
 
 export type TransactionType = "SEND" | "RECEIVE";
@@ -244,20 +244,20 @@ type OperationCommon = {
   error?: Object,
   last_request?: Request,
   gas_price?: number,
-  gas_limit?: number
+  gas_limit?: number,
 };
 export type Operation = OperationCommon & {
-  notes: Note[]
+  notes: Note[],
 };
 export type OperationEntity = OperationCommon & {
-  notes: NoteEntity[]
+  notes: NoteEntity[],
 };
 
 export type ActivityCommon = {
   id: number,
   seen: boolean,
   show: boolean,
-  created_on: Date
+  created_on: Date,
 };
 
 export type ActivityGeneric = {
@@ -265,7 +265,7 @@ export type ActivityGeneric = {
   seen: boolean,
   show: boolean,
   created_on: Date,
-  business_action: ActivityEntityAccount | ActivityEntityOperation
+  business_action: ActivityEntityAccount | ActivityEntityOperation,
 };
 
 export type ActivityEntityAccount = ActivityCommon & {
@@ -276,8 +276,8 @@ export type ActivityEntityAccount = ActivityCommon & {
     business_action_name: string,
     message: string,
     target_id: number,
-    target_type: string
-  }
+    target_type: string,
+  },
 };
 
 export type ActivityEntityOperation = ActivityCommon & {
@@ -288,19 +288,19 @@ export type ActivityEntityOperation = ActivityCommon & {
     business_action_name: string,
     message: string,
     target_id: number,
-    target_type: string
-  }
+    target_type: string,
+  },
 };
 
 export type GateError = {
   json: {
     message: string,
     name: string,
-    code: number
+    code: number,
   },
   name: string,
   message: string,
-  status: number
+  status: number,
 };
 
 export type ERC20Token = {
@@ -310,7 +310,7 @@ export type ERC20Token = {
   decimals: number,
   name: string,
   ticker: string,
-  signature: string
+  signature: string,
 };
 
 export type RequestType =
@@ -333,7 +333,7 @@ type RequestCommon = {
   target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
   type: RequestType,
   user?: RequestUser,
-  group?: RequestGroup
+  group?: RequestGroup,
 };
 
 export type Request = RequestCommon;
@@ -341,7 +341,7 @@ export type Request = RequestCommon;
 type RequestApproval = {
   created_by: Member,
   created_on: string,
-  type: string
+  type: string,
 };
 type RequestUser = {
   created_on: string,
@@ -350,6 +350,6 @@ type RequestUser = {
   pub_key: string,
   status: string,
   user_id: string,
-  username: string
+  username: string,
 };
 type RequestGroup = {};

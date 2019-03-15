@@ -18,18 +18,18 @@ type Props<T, P> = {
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
   additionalProps: P,
-  onClose?: () => void
+  onClose?: () => void,
 };
 
 type State<T> = {
   cursor: number,
-  payload: T
+  payload: T,
 };
 
 class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   state: State<T> = {
     cursor: 0,
-    payload: this.props.initialPayload
+    payload: this.props.initialPayload,
   };
 
   canPrev = () => this.state.cursor > 0;
@@ -50,9 +50,9 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   updatePayload = (patch: $Shape<T>, cb: ?() => void) =>
     this.setState(
       ({ payload }) => ({
-        payload: { ...payload, ...patch }
+        payload: { ...payload, ...patch },
       }),
-      cb || undefined
+      cb || undefined,
     );
 
   canTransitionTo = (stepId: string) => {
@@ -77,7 +77,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
   StepName: (MultiStepsFlowStepType<T, P>, number) => React$Node = (
     step,
-    i
+    i,
   ) => {
     const { steps } = this.props;
     const { cursor } = this.state;
@@ -125,7 +125,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       payload,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
-      ...additionalProps
+      ...additionalProps,
     };
 
     return (
@@ -178,27 +178,27 @@ const styles = {
   header: {
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,
-    userSelect: "none"
+    userSelect: "none",
   },
   footer: {
-    height: 60
+    height: 60,
   },
   content: {
-    userSelect: "none"
+    userSelect: "none",
   },
   checkOrNumber: {
-    width: 10
-  }
+    width: 10,
+  },
 };
 
 const checkSuccess = <FaCheck color={opacity(colors.green, 0.5)} />;
 
 const CheckOrNumber = ({
   isSuccess,
-  nb
+  nb,
 }: {
   isSuccess: boolean,
-  nb: number
+  nb: number,
 }) => (
   <Box justify="center" align="center" style={styles.checkOrNumber}>
     {isSuccess ? (
@@ -214,7 +214,7 @@ const CheckOrNumber = ({
 const StepName = styled(Box).attrs({
   horizontal: true,
   align: "center",
-  flow: 5
+  flow: 5,
 })`
   font-weight: ${p => (p.isActive ? "bold" : "normal")};
   color: ${p => (p.isActive ? "#555" : p.isDisabled ? "#999" : "#777")};

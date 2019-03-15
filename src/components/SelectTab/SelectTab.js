@@ -9,7 +9,7 @@ type Props = {
   onChange: Function,
   selected: number,
   theme?: "inline" | "header",
-  classes: Object
+  classes: Object,
 };
 
 const styles = {
@@ -18,11 +18,11 @@ const styles = {
     justifyContent: "space-around",
     paddingBottom: "20px",
     "&> * + *": {
-      marginLeft: 20
-    }
+      marginLeft: 20,
+    },
   },
   header: {
-    borderBottom: `1px solid ${colors.argile}`
+    borderBottom: `1px solid ${colors.argile}`,
   },
   tab: {
     opacity: "0.5",
@@ -39,21 +39,21 @@ const styles = {
       position: "absolute",
       top: "33px",
       left: "0px",
-      transition: "height 200ms ease"
-    }
+      transition: "height 200ms ease",
+    },
   },
 
   selected: {
     opacity: "1",
     "&:after": {
-      height: "2px"
-    }
-  }
+      height: "2px",
+    },
+  },
 };
 
 class SelectTab extends Component<Props, {}> {
   static defaultProps = {
-    theme: "header"
+    theme: "header",
   };
 
   render() {
@@ -63,7 +63,7 @@ class SelectTab extends Component<Props, {}> {
         {tabs.map((elem, i) => (
           <div
             className={classnames(classes.tab, {
-              [classes.selected]: i === selected
+              [classes.selected]: i === selected,
             })}
             onClick={() => onChange(i)}
             key={i} // eslint-disable-line react/no-array-index-key

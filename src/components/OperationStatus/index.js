@@ -6,7 +6,7 @@ import type { Operation } from "data/types";
 
 class OperationStatus extends Component<*> {
   props: {
-    operation: Operation
+    operation: Operation,
   };
 
   render() {

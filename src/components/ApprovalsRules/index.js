@@ -17,12 +17,12 @@ import StepBall from "./StepBall";
 export type ApprovalsRule = {
   quorum: number,
   users: number[],
-  group: number | null
+  group: number | null,
 };
 
 export type ApprovalsSelectedIds = {
   groups: number[],
-  users: number[]
+  users: number[],
 };
 
 type Props = {
@@ -35,12 +35,12 @@ type Props = {
   groups: Group[],
 
   // maximum number of rules that one can add
-  maxRules: number
+  maxRules: number,
 };
 
 class ApprovalsRules extends PureComponent<Props> {
   static defaultProps = {
-    maxRules: 4
+    maxRules: 4,
   };
 
   canAddApproval = () => {
@@ -58,10 +58,10 @@ class ApprovalsRules extends PureComponent<Props> {
 
   handleSortEnd = ({
     oldIndex,
-    newIndex
+    newIndex,
   }: {
     oldIndex: number,
-    newIndex: number
+    newIndex: number,
   }) => {
     const { rules, onChange } = this.props;
     const reordered = arrayMove([...rules], oldIndex, newIndex);
@@ -98,7 +98,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
   selectedIds: ApprovalsSelectedIds = {
     groups: [],
-    users: []
+    users: [],
   };
 
   render() {
@@ -144,23 +144,23 @@ class ApprovalsRules extends PureComponent<Props> {
 
 const styles = {
   container: {
-    maxWidth: 600
+    maxWidth: 600,
   },
   stepsLine: {
-    width: 30
+    width: 30,
   },
   footer: {
-    height: 40
-  }
+    height: 40,
+  },
 };
 
 const RulesContainer = SortableContainer(
-  ({ children }: { children: React$Node }) => <Box>{children}</Box>
+  ({ children }: { children: React$Node }) => <Box>{children}</Box>,
 );
 
 // TODO: we should have our own brand new Button component
 const AddButtonComponent = styled(Button).attrs({
-  color: "primary"
+  color: "primary",
 })`
   && {
     padding: 10px;
@@ -250,7 +250,7 @@ const collectSelectedIds = (rules: ApprovalsRule[]) => ({
       acc = [...acc, ...rule.users];
     }
     return acc;
-  }, [])
+  }, []),
 });
 
 export default ApprovalsRules;

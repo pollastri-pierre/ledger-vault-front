@@ -10,7 +10,7 @@ import {
   FaUser,
   FaUsers,
   FaMoneyCheck,
-  FaExchangeAlt
+  FaExchangeAlt,
 } from "react-icons/fa";
 
 import Box from "components/base/Box";

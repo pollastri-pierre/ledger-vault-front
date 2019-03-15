@@ -11,11 +11,11 @@ export function Row(props: *) {
 }
 
 Row.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 Row.defaultProps = {
-  children: ""
+  children: "",
 };
 
 export function Col(props: *) {
@@ -28,10 +28,10 @@ export function Col(props: *) {
 
 Col.propTypes = {
   children: PropTypes.node,
-  width: PropTypes.number
+  width: PropTypes.number,
 };
 
 Col.defaultProps = {
   children: "",
-  width: 1
+  width: 1,
 };

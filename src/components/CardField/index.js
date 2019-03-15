@@ -4,18 +4,18 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {
-    display: "inline-block"
+    display: "inline-block",
   },
   label: {
     color: "#767676",
     fontWeight: "600",
     fontSize: "10px",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   value: {
     fontSize: "22px",
-    paddingBottom: "10px"
-  }
+    paddingBottom: "10px",
+  },
 };
 
 class CardField extends Component<{
@@ -23,7 +23,7 @@ class CardField extends Component<{
   children: string | React$Node,
   dataTest: ?string,
   align?: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
   render() {
     const { label, children, align, classes, dataTest } = this.props;

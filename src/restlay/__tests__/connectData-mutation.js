@@ -6,7 +6,7 @@ import { createRender, networkFromMock, flushPromises } from "../tests-utils";
 import createMock, {
   AnimalsQuery,
   AddAnimalMutation,
-  IncrementAgesMutation
+  IncrementAgesMutation,
 } from "../tests-utils/mock-1";
 
 test("restlay.commitMutation returns a promise of the expected result", async () => {
@@ -20,9 +20,9 @@ test("restlay.commitMutation returns a promise of the expected result", async ()
     new AddAnimalMutation({
       animal: {
         name: "foo",
-        age: 42
-      }
-    })
+        age: 42,
+      },
+    }),
   );
   expect(net.tick()).toBe(1);
   await flushPromises();
@@ -45,8 +45,8 @@ test("restlay.commitMutation correctly redraw with new data", async () => {
       }`
     ),
     {
-      queries: { animals: AnimalsQuery }
-    }
+      queries: { animals: AnimalsQuery },
+    },
   );
   const inst = renderer.create(render(<Animals />));
   expect(net.tick()).toBe(1);

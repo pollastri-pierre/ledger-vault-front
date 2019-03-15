@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalTitle,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 
 import UserDetailsOverview from "./UD-Overview";
@@ -19,11 +19,11 @@ import UserDetailsFooter from "./UD-Footer";
 
 type Props = {
   user: Member,
-  close: () => void
+  close: () => void,
 };
 
 type State = {
-  tabsIndex: number
+  tabsIndex: number,
 };
 
 const tabTitles = ["Overview", "History"];
@@ -34,7 +34,7 @@ class UserDetails extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      tabsIndex: 0
+      tabsIndex: 0,
     };
   }
 
@@ -53,7 +53,7 @@ class UserDetails extends PureComponent<Props, State> {
             <Trans
               i18nKey="userDetails:header"
               values={{
-                userRole: user.role
+                userRole: user.role,
               }}
             />
           </ModalTitle>

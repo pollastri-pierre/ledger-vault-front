@@ -15,27 +15,27 @@ const styles = {
     position: "relative",
     "& > span": {
       display: "inline-block",
-      marginTop: 5
+      marginTop: 5,
     },
     "& strong": {
       fontSize: 18,
-      display: "block"
-    }
+      display: "block",
+    },
   },
   svg: {
     position: "absolute",
     top: 0,
     left: 0,
     width: 120,
-    height: 120
-  }
+    height: 120,
+  },
 };
 
 type Props = {
   nb: number,
   total: number,
   classes: { [_: $Keys<typeof styles>]: string },
-  label: string
+  label: string,
 };
 
 class CircleProgress extends Component<Props> {

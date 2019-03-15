@@ -22,8 +22,8 @@ jss
   .createStyleSheet({
     "@font-face": {
       "font-family": "Museo",
-      src: [`url('${MuseoWoff}') format('woff')`]
-    }
+      src: [`url('${MuseoWoff}') format('woff')`],
+    },
   })
   .attach();
 // injectTapEventPlugin(); // Required by Material-UI
@@ -57,7 +57,7 @@ const render = Component => {
           </RestlayProvider>
         </Provider>
       </AppContainer>,
-      $root
+      $root,
     );
 };
 

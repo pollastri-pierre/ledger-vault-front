@@ -11,7 +11,7 @@ const styles = {
     fontWeight: "600",
     paddingBottom: "16px",
     marginBottom: "16px",
-    borderBottom: "1px solid #eee"
+    borderBottom: "1px solid #eee",
   },
   body: {
     outline: "none",
@@ -20,12 +20,12 @@ const styles = {
     paddingBottom: "16px",
     marginBottom: "16px",
     lineHeight: "20px",
-    borderBottom: "1px solid #eee"
+    borderBottom: "1px solid #eee",
   },
   author: {
     fontSize: "11px",
-    color: "#999"
-  }
+    color: "#999",
+  },
 };
 function TabLabel(props: { note: Note, classes: Object }) {
   const { note, classes } = props;

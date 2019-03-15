@@ -16,7 +16,7 @@ type PieChartData = {
   balance: number,
   counterValueBalance: number,
   percentage: string,
-  center: number
+  center: number,
 };
 
 const commonArrowStyle = {
@@ -24,60 +24,60 @@ const commonArrowStyle = {
   display: "block",
   width: 0,
   height: 0,
-  position: "absolute"
+  position: "absolute",
 };
 
 const styles = {
   wrapper: {
     width: "100%",
     textAlign: "center",
-    height: "140px"
+    height: "140px",
   },
   centerChart: {
     position: "absolute",
     left: "50%",
-    transform: "translateX(-50%)"
+    transform: "translateX(-50%)",
   },
   chartWrap: {
     position: "relative",
     svg: {
-      overflow: "visible"
-    }
+      overflow: "visible",
+    },
   },
   table: {
     width: "100%",
     marginTop: "10px",
-    textAlign: "justify"
+    textAlign: "justify",
   },
   disable: {
     opacity: 0.5,
-    zIndex: 1
+    zIndex: 1,
   },
   uppercase: {
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   currency: {
     lineHeight: "23px",
     cursor: "default",
-    position: "relative"
+    position: "relative",
   },
   currencyBalance: {
     fontSize: "13px",
-    textAlign: "right"
+    textAlign: "right",
   },
   currencyName: {
     color: colors.mouse,
     fontSize: 10,
     marginLeft: 10,
-    fontWeight: 600
+    fontWeight: 600,
   },
   currencyNameDark: {
-    color: colors.steel
+    color: colors.steel,
   },
   percentage: {
     display: "block",
     color: "white",
-    fontSize: 16
+    fontSize: 16,
   },
   tooltip: {
     opacity: 1,
@@ -91,12 +91,12 @@ const styles = {
     backgroundColor: "currentColor",
     padding: 15,
     "&:before": {
-      borderColor: "currentColor"
-    }
+      borderColor: "currentColor",
+    },
   },
   tooltipTextWrap: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   tooltipText: {
     color: "white",
@@ -104,12 +104,12 @@ const styles = {
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
     div: {
-      overflow: "hidden"
-    }
+      overflow: "hidden",
+    },
   },
   hide: {
     opacity: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   lookLeft: {
     "&:before": {
@@ -118,8 +118,8 @@ const styles = {
       borderBottom: "10px solid transparent !important",
       borderRight: "10px solid",
       left: -10,
-      top: 25
-    }
+      top: 25,
+    },
   },
   lookRight: {
     "&:before": {
@@ -128,8 +128,8 @@ const styles = {
       borderBottom: "10px solid transparent !important",
       borderLeft: "10px solid",
       left: 100,
-      top: 25
-    }
+      top: 25,
+    },
   },
   lookUp: {
     "&:before": {
@@ -138,8 +138,8 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderBottom: "10px solid",
       left: 40,
-      top: -10
-    }
+      top: -10,
+    },
   },
   lookDown: {
     "&:before": {
@@ -148,9 +148,9 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderTop: "10px solid",
       left: 40,
-      top: 70
-    }
-  }
+      top: 70,
+    },
+  },
 };
 
 class PieChart extends Component<
@@ -160,12 +160,12 @@ class PieChart extends Component<
     showCaptions?: boolean,
     showTooltips?: boolean,
     highlightCaptionsOnHover?: boolean,
-    classes: { [_: $Keys<typeof styles>]: string }
+    classes: { [_: $Keys<typeof styles>]: string },
   },
-  { selected: number }
+  { selected: number },
 > {
   state = {
-    selected: -1
+    selected: -1,
   };
 
   svg: ?Element;
@@ -220,7 +220,7 @@ class PieChart extends Component<
     pie(data).forEach((d, i) => {
       data[i].center = arc.centroid(d); // Save center of arc for position of tooltip
       data[i].percentage = ((d.data.counterValueBalance / total) * 100).toFixed(
-        0
+        0,
       ); // Save percentage of arc
     });
 
@@ -234,7 +234,7 @@ class PieChart extends Component<
       .append("path")
       .attr("d", d => arc(d))
       .attr("class", (d, i) =>
-        selected !== -1 && selected !== i ? classes.disable : ""
+        selected !== -1 && selected !== i ? classes.disable : "",
       )
       .style("fill", d => {
         const curr = getCryptoCurrencyById(d.data.account.currency_id);
@@ -250,7 +250,7 @@ class PieChart extends Component<
       .append("path")
       .attr("d", d => invisibleArc(d))
       .attr("class", (d, i) =>
-        selected !== -1 && selected !== i ? classes.disable : ""
+        selected !== -1 && selected !== i ? classes.disable : "",
       )
       .style("opacity", 0) // make it transparent
       .on("mouseover", this.handleMouseOver)
@@ -307,11 +307,11 @@ class PieChart extends Component<
         }
         tooltip.style(
           "left",
-          `${selectedArc.center[0] + svgWidth / 2 + orientationDeltaX}px`
+          `${selectedArc.center[0] + svgWidth / 2 + orientationDeltaX}px`,
         );
         tooltip.style(
           "top",
-          `${selectedArc.center[1] + svgHeight / 2 + orientationDeltaY}px`
+          `${selectedArc.center[1] + svgHeight / 2 + orientationDeltaY}px`,
         );
         tooltip
           .select(`.${classes.percentage}`)
@@ -331,13 +331,13 @@ class PieChart extends Component<
       classes,
       showCaptions,
       showTooltips,
-      highlightCaptionsOnHover
+      highlightCaptionsOnHover,
     } = this.props;
 
     let curr = { color: "black" };
     if (selected !== -1) {
       curr = getCryptoCurrencyById(
-        this.props.data[selected].account.currency_id
+        this.props.data[selected].account.currency_id,
       );
     }
     return (
@@ -366,7 +366,7 @@ class PieChart extends Component<
                       <span
                         className={cx([
                           classes.uppercase,
-                          classes.currencyName
+                          classes.currencyName,
                         ])}
                       >
                         {this.props.data[selected] &&
@@ -389,7 +389,7 @@ class PieChart extends Component<
                     disable:
                       highlightCaptionsOnHover &&
                       selected !== -1 &&
-                      selected !== id
+                      selected !== id,
                   })}
                   key={id}
                   onMouseOver={() =>
@@ -405,7 +405,7 @@ class PieChart extends Component<
                       className={cx(
                         classes.currencyName,
                         classes.currencyNameDark,
-                        classes.uppercase
+                        classes.uppercase,
                       )}
                     >
                       {data.account.currency_id}

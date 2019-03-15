@@ -7,7 +7,7 @@ import {
   Title,
   List,
   ListItem,
-  Introduction
+  Introduction,
 } from "../../components/Onboarding";
 import LinkCongureDevice from "./LinkCongureDevice";
 import Footer from "./Footer";

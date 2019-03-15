@@ -6,7 +6,7 @@ import {
   delay,
   createRender,
   networkFromMock,
-  flushPromises
+  flushPromises,
 } from "../tests-utils";
 import createMock, { AnimalQuery } from "../tests-utils/mock-1";
 
@@ -16,12 +16,12 @@ test("if a query defines cacheMaxAge, have recent cache, it should not fetch aga
   const render = createRender(net.network);
   const Animal = connectData(({ animal }) => `${animal.name}_${animal.age}`, {
     queries: {
-      animal: AnimalQuery
+      animal: AnimalQuery,
     },
     propsToQueryParams: ({ animalId }) => ({ animalId }),
     RenderLoading: () => "loading",
     RenderError: () => "error",
-    optimisticRendering: true
+    optimisticRendering: true,
   });
   const inst = renderer.create(render(<Animal animalId="id_doge" />));
   expect(inst.toJSON()).toBe("loading");
@@ -44,7 +44,7 @@ test("new props where data is cached", async () => {
     RenderLoading: () => "loading",
     RenderError: ({ error }) => error.message,
     queries: { animal: AnimalQuery },
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   expect(net.tick()).toBe(1);
@@ -71,12 +71,12 @@ test("if a query have cacheMaxAge, but cache is too old, it should fetch again o
   const render = createRender(net.network);
   const Animal = connectData(({ animal }) => `${animal.name}_${animal.age}`, {
     queries: {
-      animal: AnimalQuery
+      animal: AnimalQuery,
     },
     propsToQueryParams: ({ animalId }) => ({ animalId }),
     RenderLoading: () => "loading",
     RenderError: () => "error",
-    optimisticRendering: true
+    optimisticRendering: true,
   });
   const inst = renderer.create(render(<Animal animalId="id_doge" />));
   expect(inst.toJSON()).toBe("loading");
@@ -105,13 +105,13 @@ test("forceFetch option always ignore the cache and trigger re-fetch", async () 
     ),
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       propsToQueryParams: ({ animalId }) => ({ animalId }),
       RenderLoading: () => "loading",
       RenderError: () => "error",
-      optimisticRendering: true
-    }
+      optimisticRendering: true,
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_doge" />));
   expect(inst.toJSON()).toBe("loading");

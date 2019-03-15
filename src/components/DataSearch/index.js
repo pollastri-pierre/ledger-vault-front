@@ -33,7 +33,7 @@ type Props<T> = {
   onQueryParamsChange?: ObjectParameters => void,
   onRowClick?: T => void,
   listenMutations?: Mutation<any, any>[],
-  history?: MemoryHistory
+  history?: MemoryHistory,
 };
 
 type Status = "initial" | "idle" | "loading" | "error";
@@ -42,7 +42,7 @@ type State = {
   status: Status,
   queryParams: ObjectParameters,
   response: ?Object,
-  error: ?Error
+  error: ?Error,
 };
 
 class DataSearch extends PureComponent<Props<*>, State> {
@@ -56,7 +56,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
       status: "initial",
       // $FlowFixMe
       queryParams,
-      error: null
+      error: null,
     };
   }
 
@@ -138,7 +138,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
       HeaderComponent,
       customTableDef,
       onRowClick,
-      extraProps
+      extraProps,
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
@@ -196,8 +196,8 @@ class DataSearch extends PureComponent<Props<*>, State> {
 const styles = {
   initialLoading: {
     height: 250,
-    color: colors.steel
-  }
+    color: colors.steel,
+  },
 };
 
 const SpinnerCircleContainer = styled.div`

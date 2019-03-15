@@ -8,7 +8,7 @@ class CryptoAddressPicker extends Component<{
   id: string,
   value: string,
   isValid: boolean,
-  onChange: string => any
+  onChange: string => any,
 }> {
   onChange = (e: any) => {
     this.props.onChange(e.currentTarget.value.trim());

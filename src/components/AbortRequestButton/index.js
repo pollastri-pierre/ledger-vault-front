@@ -16,16 +16,16 @@ type Props = {
   restlay: RestlayEnvironment,
   onSuccess: () => void,
   onError: ?(Error | GateError | typeof NetworkError) => void,
-  disabled?: boolean
+  disabled?: boolean,
 };
 
 type State = {
-  error: Error | GateError | typeof NetworkError | null
+  error: Error | GateError | typeof NetworkError | null,
 };
 
 class AbortRequestButton extends PureComponent<Props, State> {
   state = {
-    error: null
+    error: null,
   };
 
   abort = async () => {

@@ -13,25 +13,25 @@ const styles = {
     "& label": {
       textTransform: "uppercase",
       fontSize: "11px",
-      fontWeight: "600"
-    }
+      fontWeight: "600",
+    },
   },
   checkbox: {
     position: "absolute",
     right: "0",
-    top: "-7px"
+    top: "-7px",
   },
   disabled: {
     opacity: "0.4",
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
 };
 
 type Props = {
   checked: boolean,
   toggle: Function,
   children: *,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class EnableForm extends PureComponent<Props> {
@@ -63,7 +63,7 @@ class EnableForm extends PureComponent<Props> {
         </div>
         <div
           className={classnames(classes.field, {
-            [classes.disabled]: !checked
+            [classes.disabled]: !checked,
           })}
         >
           {children}

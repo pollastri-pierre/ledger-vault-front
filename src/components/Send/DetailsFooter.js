@@ -14,22 +14,22 @@ type Props = {
   totalSpent: number,
   canNext: boolean,
   onChangeTab: (SyntheticInputEvent<*>) => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 const styles = {
   totalSpent: {
-    fontSize: 13
+    fontSize: 13,
   },
   fiat: {
     marginLeft: 5,
-    color: colors.steel
+    color: colors.steel,
   },
   footerDetails: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 
 class DetailsFooter extends PureComponent<Props> {

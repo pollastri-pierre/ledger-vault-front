@@ -25,24 +25,24 @@ import type { GateError, MemberInvite, Organization } from "data/types";
 
 type Props = {
   match: Match,
-  organization: Organization
+  organization: Organization,
 };
 type State = {
   member: ?MemberInvite,
   loading: boolean,
   error: ?GateError | ?Error,
   success: boolean,
-  isRegistering: boolean
+  isRegistering: boolean,
 };
 
 const styles = {
   container: {
-    minHeight: "100vh"
+    minHeight: "100vh",
   },
   error: {
     color: colors.grenade,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 };
 
 class RegisterMember extends PureComponent<Props, State> {
@@ -51,7 +51,7 @@ class RegisterMember extends PureComponent<Props, State> {
     loading: true,
     error: null,
     success: false,
-    isRegistering: false
+    isRegistering: false,
   };
 
   async componentDidMount() {
@@ -62,7 +62,7 @@ class RegisterMember extends PureComponent<Props, State> {
       const member = await network(url, "GET");
       this.setState({
         member,
-        loading: false
+        loading: false,
       });
     } catch (error) {
       this.setState({ error });
@@ -98,7 +98,7 @@ class RegisterMember extends PureComponent<Props, State> {
                     bold
                     i18nKey="inviteUser:registration.title"
                     values={{
-                      userRole: "Administrator"
+                      userRole: "Administrator",
                     }}
                   />
                   <FaUser />
@@ -132,7 +132,7 @@ class RegisterMember extends PureComponent<Props, State> {
                       additionalFields={{
                         organization: this.props.organization,
                         member,
-                        urlID: this.props.match.params.urlID
+                        urlID: this.props.match.params.urlID,
                       }}
                     />
                   </Box>
@@ -172,11 +172,11 @@ class RegisterMember extends PureComponent<Props, State> {
 }
 export default connectData(RegisterMember, {
   queries: {
-    organization: OrganizationQuery
+    organization: OrganizationQuery,
   },
   propsToQueryParams: ({ match }: { match: Match }) => ({
-    urlID: match.params.urlID
-  })
+    urlID: match.params.urlID,
+  }),
 });
 
 function Row(props: { label: string, text: string }) {

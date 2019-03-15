@@ -17,7 +17,7 @@ const styles = {
     fontSize: 11,
     lineHeight: 1.82,
     justifyContent: "space-between",
-    marginBottom: 40
+    marginBottom: 40,
   },
   notrequired: {
     opacity: 0.5,
@@ -29,19 +29,19 @@ const styles = {
       height: 80,
       background: "#eeeeee",
       left: -30,
-      top: 30
-    }
+      top: 30,
+    },
   },
   flexcolumn: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 const Prerequisite = ({
   classes,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:wrapping_key_prerequisite.title")}</Title>

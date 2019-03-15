@@ -10,7 +10,7 @@ type Props = {
   value: number,
   // always show a sign in front of the value (force a "+" to display for positives)
   alwaysShowSign?: boolean,
-  type?: TransactionType
+  type?: TransactionType,
 };
 
 // accepts a fiat (e.g. EUR) and a value number

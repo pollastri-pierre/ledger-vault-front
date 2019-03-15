@@ -30,7 +30,7 @@ const styles = {
     outline: "none",
     "& a": {
       textDecoration: "none",
-      color: colors.lead
+      color: colors.lead,
     },
     "&:hover:after": {
       content: '""',
@@ -39,31 +39,31 @@ const styles = {
       width: "100%",
       height: "5px",
       marginTop: "35px",
-      position: "absolute"
-    }
+      position: "absolute",
+    },
   },
   abort: {
     color: colors.grenade,
     "&:hover:after": {
-      backgroundColor: colors.grenade
-    }
+      backgroundColor: colors.grenade,
+    },
   },
   highlight: {
     color: colors.ocean,
     "&:hover:after": {
-      backgroundColor: colors.ocean
-    }
+      backgroundColor: colors.ocean,
+    },
   },
   right: {
-    float: "right"
+    float: "right",
   },
   disabled: {
     opacity: "0.3",
     cursor: "default",
     "&:hover:after": {
-      height: 0
-    }
-  }
+      height: 0,
+    },
+  },
 };
 class DialogButton extends Component<*, *> {
   static propTypes = {
@@ -75,14 +75,14 @@ class DialogButton extends Component<*, *> {
     disabled: PropTypes.bool,
     classes: PropTypes.object,
     abort: PropTypes.bool,
-    onTouchTap: PropTypes.func
+    onTouchTap: PropTypes.func,
   };
 
   static defaultProps = {
     className: "",
     highlight: false,
     right: false,
-    onTouchTap: () => {}
+    onTouchTap: () => {},
   };
 
   state = {};
@@ -111,7 +111,7 @@ class DialogButton extends Component<*, *> {
       right,
       onTouchTap,
       classes,
-      abort
+      abort,
     } = this.props;
 
     return (
@@ -123,9 +123,9 @@ class DialogButton extends Component<*, *> {
             [classes.highlight]: highlight,
             [classes.right]: right,
             [classes.abort]: abort,
-            [classes.disabled]: this.props.disabled || this.state.pending
+            [classes.disabled]: this.props.disabled || this.state.pending,
           },
-          className
+          className,
         )}
         disabled={
           this.props.disabled ? this.props.disabled : this.state.pending

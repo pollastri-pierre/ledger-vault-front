@@ -20,14 +20,14 @@ type Props<Transaction> = {
   account: Account,
   accounts: Account[],
   restlay: RestlayEnvironment,
-  onTabChange: (SyntheticInputEvent<*>, number) => void
+  onTabChange: (SyntheticInputEvent<*>, number) => void,
 };
 
 type State = {
   canNext: boolean,
   amountIsValid: boolean,
   totalSpent: number,
-  feeIsValid: boolean
+  feeIsValid: boolean,
 };
 
 class SendDetails extends PureComponent<Props<*>, State> {
@@ -35,7 +35,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
     canNext: false,
     amountIsValid: true,
     feeIsValid: true,
-    totalSpent: 0
+    totalSpent: 0,
   };
 
   componentDidMount() {
@@ -91,7 +91,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
       const txIsValid = await bridge.checkValidTransaction(
         account,
         transaction,
-        restlay
+        restlay,
       );
       const feeIsValid = await this.feeIsValid();
       if (syncId !== this.syncId) return;
@@ -105,7 +105,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
       this.setState({ canNext, feeIsValid });
     } catch (err) {
       this.setState({
-        canNext: false
+        canNext: false,
       });
     }
   }
@@ -150,6 +150,6 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
 export default connectData(SendDetails, {
   queries: {
-    accounts: AccountsQuery
-  }
+    accounts: AccountsQuery,
+  },
 });

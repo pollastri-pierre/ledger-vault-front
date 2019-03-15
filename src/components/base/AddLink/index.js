@@ -6,10 +6,10 @@ import { FaPlus } from "react-icons/fa";
 
 export default ({
   onClick,
-  children
+  children,
 }: {
   onClick: () => void,
-  children: *
+  children: *,
 }) => (
   <Button onClick={onClick} color="primary" variant="outlined">
     <FaPlus style={{ marginRight: 10 }} />

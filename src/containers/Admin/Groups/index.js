@@ -15,7 +15,7 @@ import DataSearch from "components/DataSearch";
 import type { Group } from "data/types";
 
 type Props = {
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 const mutationsToListen = [ApproveRequestMutation];

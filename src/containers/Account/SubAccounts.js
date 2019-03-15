@@ -16,7 +16,7 @@ import type { Account } from "data/types";
 type Props = {
   accounts: Account[],
   account: Account,
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 const RenderLoading = () => (
@@ -50,6 +50,6 @@ class SubAccounts extends Component<Props> {
 export default connectData(withRouter(SubAccounts), {
   RenderLoading,
   queries: {
-    accounts: AccountsQuery
-  }
+    accounts: AccountsQuery,
+  },
 });

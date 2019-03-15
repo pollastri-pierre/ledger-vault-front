@@ -10,7 +10,7 @@ import Text from "components/base/Text";
 import Box from "components/base/Box";
 
 type Props = {
-  accounts: Account[]
+  accounts: Account[],
   // group: Group
 };
 
@@ -41,9 +41,9 @@ const RenderLoading = () => <SpinnerCard />;
 export default connectData(GroupDetailsAccounts, {
   RenderLoading,
   queries: {
-    accounts: AccountsInGroupQuery
+    accounts: AccountsInGroupQuery,
   },
   propsToQueryParams: props => ({
-    groupId: props.group.id
-  })
+    groupId: props.group.id,
+  }),
 });

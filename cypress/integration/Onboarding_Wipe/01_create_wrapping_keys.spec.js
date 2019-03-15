@@ -11,26 +11,26 @@ context("Create Wrapping Key", () => {
     cy.server();
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`,
     ).as("next");
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`,
     ).as("authenticate");
     cy.route(
       "get",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`,
     ).as("challenge");
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     });
 
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 1
+      device_number: 1,
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
@@ -48,16 +48,16 @@ context("Create Wrapping Key", () => {
       cy.get(":nth-child(1) > .fragment").click();
       cy.wait("@authenticate");
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 2
+        device_number: 2,
       });
       cy.get(":nth-child(2) > .fragment").click();
       cy.wait("@authenticate");
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 3
+        device_number: 3,
       });
       // Cancel the approval
       cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: false
+        approve: false,
       });
       cy.get(":nth-child(3) > .fragment").click();
 

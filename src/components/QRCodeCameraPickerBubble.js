@@ -6,20 +6,20 @@ import QRCodeCameraPickerContent from "./QRCodeCameraPickerContent";
 
 const styles = {
   icon: {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };
 
 export default class QRCodeCameraPickerBubble extends Component<
   {
-    onPick: string => void
+    onPick: string => void,
   },
   {
-    isOpen: boolean
-  }
+    isOpen: boolean,
+  },
 > {
   state = {
-    isOpen: false
+    isOpen: false,
   };
 
   ref: ?HTMLElement;

@@ -9,7 +9,7 @@ import OrganizationQuery from "api/queries/OrganizationQuery";
 import createDevice, {
   U2F_PATH,
   APPID_VAULT_ADMINISTRATOR,
-  U2F_TIMEOUT
+  U2F_TIMEOUT,
 } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import type { Organization } from "data/types";
@@ -18,17 +18,17 @@ import { addMessage, addError } from "redux/modules/alerts";
 const steps = [
   "Connect your Ledger Blue to this computer and make sure it is powered on and unlocked by entering your personal PIN.",
   "Open the Vault app on the dashboard. When displayed, confirm the register request on the device.",
-  "Close the Vault app using the upper right square icon and disconnect the device from this computer."
+  "Close the Vault app using the upper right square icon and disconnect the device from this computer.",
 ];
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddError: error => dispatch(addError(error)),
   onAddMessage: (title, content, type) =>
-    dispatch(addMessage(title, content, type))
+    dispatch(addMessage(title, content, type)),
 });
 
 type State = {
-  step: number
+  step: number,
 };
 
 type Props = {
@@ -39,13 +39,13 @@ type Props = {
   callback: string => any,
   type: "operations" | "accounts",
   cancel: Function,
-  gateAccountType?: string
+  gateAccountType?: string,
 };
 
 let _isMounted = false;
 class DeviceAuthenticate extends Component<Props, State> {
   state = {
-    step: 0
+    step: 0,
   };
 
   componentDidMount() {
@@ -98,7 +98,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           organization.name,
           organization.workspace,
           organization.domain_name,
-          "Administrator"
+          "Administrator",
         );
 
         this.setState({ step: 2 });
@@ -112,7 +112,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           ...(type === "accounts" ? { account_id: entity_id } : {}),
           ...(type === "operations" ? { operation_id: entity_id } : {}),
           pub_key: pubKey.toUpperCase(),
-          authentication: auth.rawResponse
+          authentication: auth.rawResponse,
         });
         this.props.callback(entity_id);
       } catch (e) {
@@ -121,7 +121,7 @@ class DeviceAuthenticate extends Component<Props, State> {
           this.props.onAddMessage(
             `Error ${e.json.code}`,
             e.json.message,
-            "error"
+            "error",
           );
           this.props.cancel();
         } else if (e && e.id === U2F_TIMEOUT) {
@@ -154,11 +154,11 @@ class DeviceAuthenticate extends Component<Props, State> {
 export { DeviceAuthenticate };
 export default connect(
   undefined,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(
   connectData(translate()(DeviceAuthenticate), {
     queries: {
-      organization: OrganizationQuery
-    }
-  })
+      organization: OrganizationQuery,
+    },
+  }),
 );

@@ -8,10 +8,10 @@ import Text from "components/base/Text";
 
 export const CardTitle = ({
   children,
-  i18nKey
+  i18nKey,
 }: {
   children?: React$Node,
-  i18nKey?: string
+  i18nKey?: string,
 }) => (
   <Box mb={20}>
     <Text small bold uppercase i18nKey={i18nKey}>
@@ -27,7 +27,7 @@ export default styled(Box).attrs(p => ({
   // $FlowFixMe
   p: "p" in p ? p.p : 20,
   // $FlowFixMe
-  position: "relative"
+  position: "relative",
 }))`
   overflow-x: ${p => p.overflow || "auto"};
   background-color: white;

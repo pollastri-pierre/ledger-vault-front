@@ -8,8 +8,8 @@ type Props = { className?: string, classes: Object };
 const styles = {
   common: {
     width: 13,
-    fill: "currentColor"
-  }
+    fill: "currentColor",
+  },
 };
 class ValidateBadge extends PureComponent<Props> {
   render() {

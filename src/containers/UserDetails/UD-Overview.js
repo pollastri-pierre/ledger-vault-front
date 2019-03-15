@@ -16,7 +16,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 
 type Props = {
   user: Member,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 
 class UserDetailsOverview extends PureComponent<Props> {
@@ -26,7 +26,7 @@ class UserDetailsOverview extends PureComponent<Props> {
       (await updateUserRegistrationInfo(
         user.last_request.id.toString(),
         user_info,
-        restlay
+        restlay,
       ));
   };
 

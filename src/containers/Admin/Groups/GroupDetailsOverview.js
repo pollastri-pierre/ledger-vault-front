@@ -12,7 +12,7 @@ type Props = {
   group: Group,
   selected: Member[],
   operators: Connection<Member>,
-  onGroupChange: ({ groups: Group[], members: Member[] }) => void
+  onGroupChange: ({ groups: Group[], members: Member[] }) => void,
 };
 
 class GroupDetailsOverview extends PureComponent<Props> {

@@ -10,7 +10,7 @@ import {
   genAccounts,
   genGroups,
   genMembers,
-  genOperations
+  genOperations,
 } from "data/mock-entities";
 
 import { delay } from "utils/promise";
@@ -26,7 +26,7 @@ import { OperationsTable, GroupsTable, AccountsTable } from "components/Table";
 import {
   OperationsFilters,
   GroupsFilters,
-  AccountsFilters
+  AccountsFilters,
 } from "components/filters";
 
 import DataSearch from "components/DataSearch";
@@ -123,20 +123,20 @@ const mockNetwork = async url => {
   await delay(1e3);
   return {
     edges: edges.map(op => ({ node: op, cursor: op.id })),
-    pageInfo: { hasNextPage: false }
+    pageInfo: { hasNextPage: false },
   };
 };
 
 const styles = {
   displayQueryParams: {
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 };
 
 function wrapComponent(ComponentToDecorate, prefix) {
   class Wrapper extends Component<*, *> {
     state = {
-      queryParams: {}
+      queryParams: {},
     };
 
     handleChangeQueryParams = queryParams => this.setState({ queryParams });

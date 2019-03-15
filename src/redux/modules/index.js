@@ -16,7 +16,7 @@ const reducers = {
   data,
   updateAccounts,
   exchanges,
-  countervalues: CounterValues.reducer
+  countervalues: CounterValues.reducer,
 };
 
 export default reducers;

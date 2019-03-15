@@ -5,7 +5,7 @@ type Props = { color?: string, style?: Object };
 
 export default class People extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {
@@ -14,7 +14,7 @@ export default class People extends PureComponent<Props> {
       fill: "none",
       stroke: color,
       strokeMiterlimit: "10",
-      strokeWidth: "2px"
+      strokeWidth: "2px",
     };
 
     return (

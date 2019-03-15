@@ -28,10 +28,10 @@ const styles = { paper: { maxWidth: "none" } };
 const CustomDialog = withStyles(styles)(Dialog);
 
 class BlurDialog extends Component<{
-  open: boolean
+  open: boolean,
 }> {
   static defaultProps = {
-    open: false
+    open: false,
   };
 
   setActive = (active: boolean) => {

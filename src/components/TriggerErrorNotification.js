@@ -10,12 +10,12 @@ import type { GateError } from "data/types";
 type Props = {
   error: Error | GateError | typeof NetworkError,
   addMessage: (string, string, ?string) => void,
-  addError: Error => void
+  addError: Error => void,
 };
 
 const mapDispatchToProps = {
   addMessage,
-  addError
+  addError,
 };
 
 class TriggerErrorNotification extends PureComponent<Props> {
@@ -45,5 +45,5 @@ class TriggerErrorNotification extends PureComponent<Props> {
 }
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TriggerErrorNotification);

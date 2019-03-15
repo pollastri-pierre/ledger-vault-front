@@ -5,8 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   textFieldInput: {
-    textAlign: "right"
-  }
+    textAlign: "right",
+  },
 });
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   name: string,
   value: string,
   hasError: boolean,
-  onChange: Function
+  onChange: Function,
 };
 
 function SettingsTextField(props: Props) {
@@ -26,8 +26,8 @@ function SettingsTextField(props: Props) {
       InputProps={{
         disableUnderline: true,
         classes: {
-          input: classes.textFieldInput
-        }
+          input: classes.textFieldInput,
+        },
       }}
       name={name}
       value={value}

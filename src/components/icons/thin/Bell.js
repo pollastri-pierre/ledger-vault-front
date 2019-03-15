@@ -9,14 +9,14 @@ const styles = {
   common: {
     height: "13px",
     verticalAlign: "middle",
-    width: "16px"
+    width: "16px",
   },
   red: {
-    fill: colors.grenade
+    fill: colors.grenade,
   },
   white: {
-    fill: "white"
-  }
+    fill: "white",
+  },
 };
 
 function Bell({ classes, type }: { classes: Object, type: string }) {

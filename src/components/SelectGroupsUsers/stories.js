@@ -12,7 +12,7 @@ const group2 = { id: 2, name: "group B", members };
 
 class Wrapper extends Component<> {
   state = {
-    selected: { groups: [], members: [] }
+    selected: { groups: [], members: [] },
   };
 
   onChange = val => {

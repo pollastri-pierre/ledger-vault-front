@@ -15,7 +15,7 @@ const TriangleWarning = ({
   ...p
 }: {
   height: number,
-  width: number
+  width: number,
 }) => (
   <svg viewBox="0 0 17 17" height={height} width={width} {...p}>
     {path}

@@ -5,13 +5,13 @@ import ArrowDown from "./icons/full/ArrowDown";
 
 const styles = _theme => ({
   root: {
-    color: "#27d0e2" // FIXME from theme
+    color: "#27d0e2", // FIXME from theme
   },
   arrowDown: {
     marginRight: 10,
     width: 11,
-    fill: "#27d0e2"
-  }
+    fill: "#27d0e2",
+  },
 });
 
 class BlueSelectRenderValue extends Component<*> {

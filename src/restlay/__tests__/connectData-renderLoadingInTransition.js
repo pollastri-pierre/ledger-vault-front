@@ -11,7 +11,7 @@ test("renderLoadingInTransition=true should render Loading in a simple transitio
     queries: { animal: AnimalQuery },
     propsToQueryParams: ({ animalId }) => ({ animalId }),
     renderLoadingInTransition: true,
-    RenderLoading: () => "loading"
+    RenderLoading: () => "loading",
   });
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();

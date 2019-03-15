@@ -3,7 +3,7 @@ import Query from "restlay/Query";
 
 type Input = *;
 type Response = {
-  nonce: string
+  nonce: string,
 };
 
 // e.g. /valid-address/bitcoin?address=1gre1noAY9HiK2qxoW8FzSdjdFBcoZ5fV

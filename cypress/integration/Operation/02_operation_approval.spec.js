@@ -7,7 +7,7 @@ import {
   approve,
   cancel,
   approve_account,
-  approve_operation
+  approve_operation,
 } from "../../functions/actions.js";
 
 describe("Tests Approve of a Operation", function() {

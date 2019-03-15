@@ -13,24 +13,24 @@ import colors from "shared/colors";
 type Option = {
   value: string,
   data: *,
-  label: string
+  label: string,
 };
 
 export type GroupedOption = {
   label: string,
-  options: Option[]
+  options: Option[],
 };
 
 type Props = {
   async?: boolean,
   components?: Object,
-  options?: Option[] | GroupedOption[]
+  options?: Option[] | GroupedOption[],
 };
 
 const styles = {
   placeholder: {
-    color: colors.mediumGrey
-  }
+    color: colors.mediumGrey,
+  },
 };
 
 const Placeholder = (props: PlaceholderProps) => (
@@ -40,14 +40,14 @@ const Placeholder = (props: PlaceholderProps) => (
 );
 
 const customComponents = {
-  Placeholder
+  Placeholder,
 };
 
 const customStyles = {
   input: styles => ({
     ...styles,
-    fontSize: 13
-  })
+    fontSize: 13,
+  }),
 };
 
 class Select extends PureComponent<Props> {

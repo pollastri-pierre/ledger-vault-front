@@ -31,7 +31,7 @@ const fakeNetwork = async url => {
   if (url === "/groups") {
     return denormalize(groups.map(g => g.id), [schema.Group], {
       members: keyBy(members, "id"),
-      groups: keyBy(groups, "id")
+      groups: keyBy(groups, "id"),
     });
   }
   if (url === "/requests") {
@@ -51,6 +51,6 @@ storiesOf("flows", module).add("Account creation", () => (
 function wrapConnection(data) {
   return {
     edges: data.map(d => ({ node: d, cursor: d.id })),
-    pageInfo: { hasNextPage: false }
+    pageInfo: { hasNextPage: false },
   };
 }

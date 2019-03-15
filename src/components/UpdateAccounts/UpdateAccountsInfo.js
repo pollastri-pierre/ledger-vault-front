@@ -20,62 +20,62 @@ const styles = {
     width: 500,
     padding: "40px 40px 0 40px",
     "& p": {
-      lineHeight: "24px"
-    }
+      lineHeight: "24px",
+    },
   },
   titleContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   warningIcon: {
-    alignSelf: "center"
+    alignSelf: "center",
   },
   title: {
     textTransform: "uppercase",
     fontSize: 14,
     fontWeight: "bold",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   description: {
     fontSize: 13,
-    color: colors.steel
+    color: colors.steel,
   },
   infoLinkContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   externalLink: {
     alignSelf: "center",
     display: "flex",
-    marginLeft: 5
+    marginLeft: 5,
   },
   infoLinkText: {
     marginTop: 40,
     "& a": {
       color: "rgb(234, 46, 73, 0.7)",
-      textDecoration: "none"
-    }
+      textDecoration: "none",
+    },
   },
   release_notes_href: {
     color: colors.black,
     marginRight: 3,
-    textDecoration: "none"
+    textDecoration: "none",
   },
   footer: {
     marginTop: 40,
     display: "flex",
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 };
 type Props = {
   accounts: Account[],
   onToggle: Function,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 type State = {
-  open: boolean
+  open: boolean,
 };
 class UpdateAccountsInfo extends Component<Props, State> {
   constructor(props: Props) {
@@ -151,9 +151,9 @@ class UpdateAccountsInfo extends Component<Props, State> {
 }
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onToggle: () => dispatch(toggleModal())
+  onToggle: () => dispatch(toggleModal()),
 });
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(UpdateAccountsInfo));

@@ -15,7 +15,7 @@ type Props = {
   requestID: string,
   restlay: RestlayEnvironment,
   onSuccess: () => void,
-  onError: ?(Error | GateError | typeof NetworkError) => void
+  onError: ?(Error | GateError | typeof NetworkError) => void,
 };
 
 class PendingRequestFooter extends PureComponent<Props> {
@@ -42,7 +42,7 @@ class PendingRequestFooter extends PureComponent<Props> {
           additionalFields={{
             data,
             type: "APPROVE_REQUEST",
-            request_id: requestID
+            request_id: requestID,
           }}
           disabled={false}
           buttonLabel={<Trans i18nKey="common:approve" />}

@@ -17,7 +17,7 @@ type Props = {
   operationsPending: Operation[],
   // operationsQueued: Operation[],
   accounts: Account[],
-  user: Member
+  user: Member,
 };
 class ApproveWatchOperations extends Component<Props> {
   render() {
@@ -27,27 +27,27 @@ class ApproveWatchOperations extends Component<Props> {
       approvers,
       operationsPending,
       // operationsQueued,
-      user
+      user,
     } = this.props;
 
     const toApprove = operationsPending.filter(
       operation =>
         !operation.approvals.find(
-          approval => approval.person.pub_key === user.pub_key
-        ) && operation.status === "PENDING_APPROVAL"
+          approval => approval.person.pub_key === user.pub_key,
+        ) && operation.status === "PENDING_APPROVAL",
     );
     const enhancedToApprove = toApprove.map(
       operation =>
         // operation.rate = { fiat: "USD", value: 10000 };
-        operation
+        operation,
     );
 
     // toWatch operations is the sum of operation already approved by user but not by total quorum + quued operation
     const toWatch = operationsPending.filter(
       operation =>
         operation.approvals.find(
-          approval => approval.person.pub_key === user.pub_key
-        ) && operation.status === "PENDING_APPROVAL"
+          approval => approval.person.pub_key === user.pub_key,
+        ) && operation.status === "PENDING_APPROVAL",
     );
 
     return (
@@ -96,9 +96,9 @@ export default connectData(ApproveWatchOperations, {
     approvers: UsersQuery,
     operationsPending: PendingOperationsQuery,
     // operationsQueued: QueuedOperationsQuery,
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
   },
   initialVariables: {
-    approvers: 30
-  }
+    approvers: 30,
+  },
 });

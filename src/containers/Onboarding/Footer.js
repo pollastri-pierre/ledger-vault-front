@@ -7,11 +7,11 @@ import { nextState, previousState } from "redux/modules/onboarding";
 
 const mapDispatchToProps = (dispatch: *) => ({
   onNextState: data => dispatch(nextState(data)),
-  onPreviousState: data => dispatch(previousState(data))
+  onPreviousState: data => dispatch(previousState(data)),
 });
 
 const mapStateToProps = state => ({
-  step: state.onboarding.currentStep
+  step: state.onboarding.currentStep,
 });
 
 const styles = {
@@ -21,24 +21,24 @@ const styles = {
     left: 0,
     width: "100%",
     display: "flex",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 const Footer = ({
   classes,
   onNextState,
   onPreviousState,
-  render
+  render,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onNextState: Function,
   onPreviousState: Function,
-  render: Function
+  render: Function,
 }) => (
   <div className={classes.base}>{render(onNextState, onPreviousState)}</div>
 );
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(Footer));

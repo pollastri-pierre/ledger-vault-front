@@ -15,7 +15,7 @@ type TableHeaderProps = {
   tableDefinition: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  type: string
+  type: string,
 };
 
 export class TableHeader extends PureComponent<TableHeaderProps> {
@@ -44,7 +44,7 @@ type Props = {
   item: TableItem,
   type: string,
   onSortChange?: (string, ?string) => void,
-  queryParams?: ObjectParameters
+  queryParams?: ObjectParameters,
 };
 
 class HeaderCellComponent extends PureComponent<Props> {
@@ -97,6 +97,6 @@ class HeaderCellComponent extends PureComponent<Props> {
 function resolveSort(queryParams: ?ObjectParameters) {
   return {
     orderBy: (queryParams && queryParams.orderBy) || null,
-    order: (queryParams && queryParams.order) || null
+    order: (queryParams && queryParams.order) || null,
   };
 }

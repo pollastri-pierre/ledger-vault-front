@@ -9,18 +9,18 @@ import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 
 const styles = {
   select: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   menu: {
-    color: "#27d0e2"
-  }
+    color: "#27d0e2",
+  },
 };
 
 class UnitSelect extends Component<{
   units: Array<Unit>,
   index: number,
   onChange: number => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
   renderValue = (index: number) => (
     <span style={{ fontSize: 21, lineHeight: "22px" }}>

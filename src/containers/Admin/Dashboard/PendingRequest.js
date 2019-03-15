@@ -13,7 +13,7 @@ import {
   ModalBody,
   ModalHeader,
   ModalTitle,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 import ModalLoading from "components/ModalLoading";
 
@@ -25,18 +25,18 @@ import PendingRequestFooter from "./PendingRequestFooter";
 
 type Props = {
   close: () => void,
-  request: Request
+  request: Request,
 };
 
 type State = {
-  tabsIndex: number
+  tabsIndex: number,
 };
 
 const tabTitles = ["Overview", "History"];
 
 class PendingRequest extends PureComponent<Props, State> {
   state = {
-    tabsIndex: 0
+    tabsIndex: 0,
   };
 
   onTabChange = (e: SyntheticEvent<HTMLInputElement>, tabsIndex: number) => {
@@ -91,9 +91,9 @@ export default connectData(PendingRequest, {
   RenderLoading,
   RenderError: CardError,
   queries: {
-    request: RequestQuery
+    request: RequestQuery,
   },
   propsToQueryParams: props => ({
-    requestID: props.match.params.requestID || ""
-  })
+    requestID: props.match.params.requestID || "",
+  }),
 });

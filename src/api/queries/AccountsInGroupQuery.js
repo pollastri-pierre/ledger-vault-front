@@ -4,7 +4,7 @@ import schema from "data/schema";
 import type { Account } from "data/types";
 
 type Input = {
-  groupId: string
+  groupId: string,
 };
 type Response = Account[];
 

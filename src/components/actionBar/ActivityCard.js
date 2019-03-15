@@ -18,11 +18,11 @@ import ActivityList from "../legacy/ActivityList";
 
 const styles = {
   base: {
-    position: "relative"
+    position: "relative",
   },
   link: {
     color: "black",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   popover: {
     width: 380,
@@ -30,17 +30,17 @@ const styles = {
     paddingLeft: 40,
     paddingBottom: 30,
     paddingTop: 40,
-    marginLeft: 30
+    marginLeft: 30,
   },
   icon: {
     height: 16,
     fill: "white",
-    marginBottom: 5
+    marginBottom: 5,
   },
   clickable: {
     "&:hover": {
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   bullet: {
     backgroundColor: colors.grenade,
@@ -50,8 +50,8 @@ const styles = {
     position: "absolute",
     border: `2px solid ${colors.night}`,
     top: 5,
-    right: 11
-  }
+    right: 11,
+  },
 };
 
 class ActivityCard extends Component<
@@ -62,12 +62,12 @@ class ActivityCard extends Component<
     loading?: boolean,
     t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
-    match: *
+    match: *,
   },
-  *
+  *,
 > {
   state = {
-    bubbleOpened: false
+    bubbleOpened: false,
   };
 
   componentDidMount() {
@@ -78,7 +78,7 @@ class ActivityCard extends Component<
     socket.on("connect", () => {
       socket.emit("authenticate", {
         token: myAuthToken,
-        orga: this.props.match.params.orga_name
+        orga: this.props.match.params.orga_name,
       });
     });
     socket.on(`${this.props.match.params.orga_name}/admin`, () => {
@@ -90,7 +90,7 @@ class ActivityCard extends Component<
   }
 
   static defaultProps = {
-    loading: false
+    loading: false,
   };
 
   anchorEl: *;
@@ -105,7 +105,7 @@ class ActivityCard extends Component<
 
   onClickActivityCard = (/* event: * */) => {
     this.setState(state => ({
-      bubbleOpened: !state.bubbleOpened
+      bubbleOpened: !state.bubbleOpened,
     }));
   };
 
@@ -113,7 +113,7 @@ class ActivityCard extends Component<
     const { restlay } = this.props;
     if (restlay) {
       await restlay.commitMutation(
-        new MarkActivityAsReadMutation(business_action_ids)
+        new MarkActivityAsReadMutation(business_action_ids),
       );
       await restlay.fetchQuery(new ActivityQuery());
     }
@@ -123,7 +123,7 @@ class ActivityCard extends Component<
     const { restlay } = this.props;
     if (restlay) {
       await restlay.commitMutation(
-        new ClearActivityMutation(business_action_ids)
+        new ClearActivityMutation(business_action_ids),
       );
       await restlay.fetchQuery(new ActivityQuery());
     }
@@ -135,12 +135,12 @@ class ActivityCard extends Component<
     const unseenActivityCount = activities
       ? activities.reduce(
           (count, activity) => count + (!activity.seen ? 1 : 0),
-          0
+          0,
         )
       : 0;
     activities &&
       activities.sort(
-        (a, b) => new Date(b.created_on) - new Date(a.created_on)
+        (a, b) => new Date(b.created_on) - new Date(a.created_on),
       );
     return (
       <span className={classes.clickable}>
@@ -191,14 +191,14 @@ const RenderLoading = withStyles(styles)(
       onNewActivity={() => ({})}
       {...props}
     />
-  ))
+  )),
 );
 
 export default withStyles(styles)(
   connectData(translate()(ActivityCard), {
     RenderLoading,
     queries: {
-      activities: ActivityQuery
-    }
-  })
+      activities: ActivityQuery,
+    },
+  }),
 );

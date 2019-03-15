@@ -8,7 +8,7 @@ import type { Member } from "data/types";
 
 type Input = {
   name?: string,
-  userRole?: string
+  userRole?: string,
 };
 
 type Node = Member;
@@ -18,12 +18,12 @@ const uri = (query: Input) => {
 
   if (query && query.userRole) {
     finalQuery = {
-      ...query
+      ...query,
     };
   } else {
     finalQuery = {
       ...query,
-      role: ["ADMIN", "OPERATOR"]
+      role: ["ADMIN", "OPERATOR"],
     };
   }
   const q = queryString.stringify(finalQuery);

@@ -16,11 +16,11 @@ import { switchLocale } from "redux/modules/locale";
 import { Row, Col } from "./grid/Grid";
 
 const mapStateToProps = state => ({
-  locale: state.locale
+  locale: state.locale,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSwitch: () => dispatch(switchLocale())
+  onSwitch: () => dispatch(switchLocale()),
 });
 
 class SandBox extends Component {
@@ -29,31 +29,31 @@ class SandBox extends Component {
 
     this.state = {
       snackOpen: false,
-      dialogOpen: false
+      dialogOpen: false,
     };
   }
 
   hideDialog = () => {
     this.setState({
-      dialogOpen: false
+      dialogOpen: false,
     });
   };
 
   showDialog = () => {
     this.setState({
-      dialogOpen: true
+      dialogOpen: true,
     });
   };
 
   showSnack = () => {
     this.setState({
-      snackOpen: true
+      snackOpen: true,
     });
   };
 
   hideSnack = () => {
     this.setState({
-      snackOpen: false
+      snackOpen: false,
     });
   };
 
@@ -209,10 +209,10 @@ class SandBox extends Component {
 }
 
 SandBox.propTypes = {
-  onSwitch: PropTypes.func.isRequired
+  onSwitch: PropTypes.func.isRequired,
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SandBox);

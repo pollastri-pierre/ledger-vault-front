@@ -11,14 +11,14 @@ type In = {
   dateEnd: ?Date,
   dateStart: ?Date,
   minAmount: ?string,
-  maxAmount: ?string
+  maxAmount: ?string,
 };
 type Node = Operation;
 
 // returns the N last operations from various accounts (probably not paginated)
 export default class DashboardLastOperationsQuery extends ConnectionQuery<
   In,
-  Node
+  Node,
 > {
   uri = "/operations?status=submitted&with_daemon_info=true&batch=5";
 

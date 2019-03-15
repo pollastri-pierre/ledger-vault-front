@@ -11,14 +11,14 @@ export default class QRCodeCameraPickerCanvas extends Component<
     cameraBorderLength: number,
     intervalCheck: number,
     dpr: number,
-    onPick: string => void
+    onPick: string => void,
   },
   {
-    message: ?string
-  }
+    message: ?string,
+  },
 > {
   state = {
-    message: "Please accept Camera permission"
+    message: "Please accept Camera permission",
   };
 
   static defaultProps = {
@@ -28,7 +28,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
     cameraBorderSize: 4,
     cameraBorderLength: 35,
     intervalCheck: 250,
-    dpr: window.devicePixelRatio || 1
+    dpr: window.devicePixelRatio || 1,
   };
 
   canvasMain: ?HTMLCanvasElement;
@@ -89,7 +89,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
 
     if (!getUserMedia) {
       this.setState({
-        message: "Incompatible browser"
+        message: "Incompatible browser",
       });
     } else {
       const qr = new QrCode();
@@ -99,7 +99,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
         }
       };
       getUserMedia({
-        video: { facingMode: "environment" }
+        video: { facingMode: "environment" },
       })
         .then(stream => {
           if (this.unmounted) return;
@@ -134,7 +134,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
                 cameraBorderSize,
                 cameraBorderLength,
                 dpr,
-                intervalCheck
+                intervalCheck,
               } = this.props;
               const cs = centerSize * dpr;
               const cbs = cameraBorderSize * dpr;
@@ -188,7 +188,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
         .catch(e => {
           if (this.unmounted) return;
           this.setState({
-            message: String(e.message || e)
+            message: String(e.message || e),
           });
         });
     }
@@ -212,7 +212,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       background: "#eee",
       color: "#666",
       fontSize: `${(width / 30).toFixed(0)}px`,
-      overflow: "hidden"
+      overflow: "hidden",
     };
     const mainStyle = {
       width,
@@ -221,7 +221,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       top: 0,
       left: 0,
       filter: "brightness(80%) blur(6px)",
-      transform: "scaleX(-1)"
+      transform: "scaleX(-1)",
     };
     const secondStyle = {
       width,
@@ -229,7 +229,7 @@ export default class QRCodeCameraPickerCanvas extends Component<
       position: "absolute",
       top: 0,
       left: 0,
-      transform: "scaleX(-1)"
+      transform: "scaleX(-1)",
     };
     return message ? (
       <div style={style}>

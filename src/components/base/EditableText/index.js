@@ -12,12 +12,12 @@ type Props = {
   text: string,
   loading?: boolean,
   onChange: string => any,
-  isEditDisabled?: boolean
+  isEditDisabled?: boolean,
 };
 
 type State = {
   editMode: boolean,
-  innerText: string
+  innerText: string,
 };
 
 const Container = styled(Box)`
@@ -51,7 +51,7 @@ const spinner = (
       left: "50%",
       top: "50%",
       marginLeft: "-10px",
-      marginTop: "-10px"
+      marginTop: "-10px",
     }}
   />
 );
@@ -59,7 +59,7 @@ const spinner = (
 class EditableText extends PureComponent<Props, State> {
   state = {
     editMode: false,
-    innerText: this.props.text
+    innerText: this.props.text,
   };
 
   onFocus = () => {
@@ -81,7 +81,7 @@ class EditableText extends PureComponent<Props, State> {
   onCancel = () => {
     this.setState({
       innerText: this.props.text,
-      editMode: false
+      editMode: false,
     });
   };
 

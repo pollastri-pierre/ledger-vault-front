@@ -8,7 +8,7 @@ import LineRow from "components/LineRow";
 import DateFormat from "components/DateFormat";
 
 type Props = {
-  group: Group
+  group: Group,
 };
 
 class GroupDetailsDetails extends PureComponent<Props> {

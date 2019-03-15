@@ -14,9 +14,9 @@ i18n.init({
   lng: "en",
   fallbackLng: "en",
   resources: {
-    en: resources
+    en: resources,
   },
-  debug: true
+  debug: true,
 });
 
 export default i18n;

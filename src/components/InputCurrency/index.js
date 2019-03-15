@@ -19,7 +19,7 @@ type Props = {
   defaultUnit: WeakUnit,
   placeholder?: string,
 
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 type State = {
@@ -27,7 +27,7 @@ type State = {
   unit: Unit,
 
   // used to refresh display value if value change from the outside
-  cachedValue: number
+  cachedValue: number,
 };
 
 const styles = {
@@ -35,21 +35,21 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-end",
-    width: "100%"
-  }
+    width: "100%",
+  },
 };
 
 const INPUT_LARGE = {
-  style: { textAlign: "right", fontSize: 20 }
+  style: { textAlign: "right", fontSize: 20 },
 };
 
 const INPUT_SMALL = {
-  style: { textAlign: "right" }
+  style: { textAlign: "right" },
 };
 
 class InputCurrency extends PureComponent<Props, State> {
   static defaultProps = {
-    size: "small"
+    size: "small",
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -57,7 +57,7 @@ class InputCurrency extends PureComponent<Props, State> {
       const val = formatCurrencyUnit(state.unit, props.value);
       return {
         displayValue: parseFloat(val) > 0 ? val : "",
-        cachedValue: props.value
+        cachedValue: props.value,
       };
     }
     return null;
@@ -70,7 +70,7 @@ class InputCurrency extends PureComponent<Props, State> {
     this.state = {
       unit: this.props.defaultUnit,
       displayValue: parseFloat(val) > 0 ? val : "",
-      cachedValue: value
+      cachedValue: value,
     };
   }
 
@@ -79,7 +79,7 @@ class InputCurrency extends PureComponent<Props, State> {
     const unit = currency.units[index];
     this.setState({
       displayValue: formatCurrencyUnit(unit, this.props.value),
-      unit
+      unit,
     });
   };
 

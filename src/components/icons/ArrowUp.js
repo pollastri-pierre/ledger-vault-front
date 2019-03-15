@@ -5,14 +5,14 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   common: {
-    width: "8px"
+    width: "8px",
   },
   up: {
-    transform: "rotate(45deg)"
+    transform: "rotate(45deg)",
   },
   down: {
-    transform: "rotate(135deg)"
-  }
+    transform: "rotate(135deg)",
+  },
 };
 function Arrow({ classes, type, color }: *) {
   const stroke = color || "#000";
@@ -31,7 +31,7 @@ function Arrow({ classes, type, color }: *) {
                 fill: "none",
                 stroke,
                 strokeMiterlimit: "10",
-                strokeWidth: "4px"
+                strokeWidth: "4px",
               }}
               points="28.9 16.57 15.16 2.83 1.41 16.57"
             />
@@ -40,7 +40,7 @@ function Arrow({ classes, type, color }: *) {
                 fill: "none",
                 stroke,
                 strokeMiterlimit: "10",
-                strokeWidth: "4px"
+                strokeWidth: "4px",
               }}
               x1="15.16"
               y1="2.83"

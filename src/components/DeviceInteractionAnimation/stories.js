@@ -15,7 +15,7 @@ const deviceInteraction = {
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 const deviceInteractionInteractive = {
   needsUserInput: true,
@@ -25,14 +25,14 @@ const deviceInteractionInteractive = {
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 const serverInteraction = {
   responseKey: "server",
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 
 storiesOf("other", module).add("DeviceInteractionAnimation", () => (

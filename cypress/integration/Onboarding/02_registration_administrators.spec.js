@@ -18,14 +18,14 @@ context("Register the Administrators", () => {
     route();
 
     cy.request("POST", DEVICE, {
-      device_number: 4
+      device_number: 4,
     }).then(() => {
       cy.visit(Cypress.env("api_server"), {
         onBeforeLoad: win => {
           win.fetch = null;
           win.eval(polyfill);
           win.fetch = win.unfetch;
-        }
+        },
       }).then(() => {
         cy.get("input[type=text]").type(orga_name);
         cy.contains("Continue").click();
@@ -59,7 +59,7 @@ context("Register the Administrators", () => {
           .contains("Error");
         // Second Admin
         cy.request("POST", DEVICE, {
-          device_number: 5
+          device_number: 5,
         }).then(() => {
           cy.contains("add administrator").click();
           cy.get("input[name=username]").type("user2");
@@ -74,7 +74,7 @@ context("Register the Administrators", () => {
 
           // Thrid Admin
           cy.request("POST", DEVICE, {
-            device_number: 6
+            device_number: 6,
           }).then(() => {
             cy.contains("add administrator").click();
             cy.get("input[name=username]").type("user3");

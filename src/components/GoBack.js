@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import type { MemoryHistory } from "history";
 
 type Props = {
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 class GoBack extends PureComponent<Props> {

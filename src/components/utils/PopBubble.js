@@ -7,8 +7,8 @@ const styles = {
   paper: {
     marginTop: 20,
     padding: 20,
-    overflow: "inherit"
-  }
+    overflow: "inherit",
+  },
 };
 
 function PopBubble(props: {
@@ -17,7 +17,7 @@ function PopBubble(props: {
   children?: React$Node,
   open: boolean,
   direction?: "left" | "center" | "right" | number,
-  directiontransform?: "left" | "center" | "right" | number
+  directiontransform?: "left" | "center" | "right" | number,
 }) {
   const horizontal = props.direction ? props.direction : "right";
   const transformHorizontal = props.directiontransform
@@ -31,7 +31,7 @@ function PopBubble(props: {
       anchorOrigin={{ horizontal, vertical: "bottom" }}
       transformOrigin={{
         horizontal: transformHorizontal,
-        vertical: "top"
+        vertical: "top",
       }}
     >
       {props.children}

@@ -5,7 +5,7 @@ import {
   switch_device,
   approve,
   approve_account,
-  create_account
+  create_account,
 } from "../../functions/actions.js";
 
 describe("Tests Eth and ETH Ropsten", function() {

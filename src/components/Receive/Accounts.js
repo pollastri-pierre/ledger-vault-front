@@ -10,11 +10,11 @@ import ReceiveLayout from "./ReceiveLayout";
 const ReceiveAccounts = ({
   accounts,
   selectedAccount,
-  onSelect
+  onSelect,
 }: {
   accounts: Account[],
   selectedAccount: ?Account,
-  onSelect: (?Account) => void
+  onSelect: (?Account) => void,
 }) => (
   <ReceiveLayout
     header={
@@ -25,7 +25,7 @@ const ReceiveAccounts = ({
     content={
       <SelectAccount
         accounts={accounts.filter(
-          a => a.status === "APPROVED" || a.status === "VIEW_ONLY"
+          a => a.status === "APPROVED" || a.status === "VIEW_ONLY",
         )}
         value={selectedAccount}
         onChange={onSelect}

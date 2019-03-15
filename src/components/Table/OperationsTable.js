@@ -27,7 +27,7 @@ type Props = {
 
   // additional fields
   withStatus?: boolean,
-  withLabel?: boolean
+  withLabel?: boolean,
 };
 
 class OperationsTable extends PureComponent<Props> {
@@ -35,7 +35,7 @@ class OperationsTable extends PureComponent<Props> {
     const { accounts, onRowClick, withStatus, withLabel } = this.props;
 
     const account = accounts.find(
-      account => account.id === operation.account_id
+      account => account.id === operation.account_id,
     );
 
     if (!account) {
@@ -79,7 +79,7 @@ class OperationsTable extends PureComponent<Props> {
 
 type OperationsTableHeaderProps = {
   withStatus?: boolean,
-  withLabel?: boolean
+  withLabel?: boolean,
 };
 
 class OperationsTableHeader extends PureComponent<OperationsTableHeaderProps> {
@@ -107,7 +107,7 @@ type OperationRowProps = {
 
   // additional fields
   withStatus?: boolean,
-  withLabel?: boolean
+  withLabel?: boolean,
 };
 
 const operationRowHover = { cursor: "pointer" };

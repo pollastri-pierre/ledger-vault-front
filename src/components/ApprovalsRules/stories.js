@@ -15,7 +15,7 @@ storiesOf("other", module).add("ApprovalsRules", () => <Wrapper />);
 
 class Wrapper extends React.Component {
   state = {
-    approvalsRules: [{ quorum: 1, users: [], group: null }]
+    approvalsRules: [{ quorum: 1, users: [], group: null }],
   };
 
   handleChangeApprovalsRules = approvalsRules => {

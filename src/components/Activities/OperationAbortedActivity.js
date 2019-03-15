@@ -8,7 +8,7 @@ import Activity from "../legacy/Activity";
 
 type Props = {
   activity: ActivityEntityOperation,
-  match: Match
+  match: Match,
 };
 
 class OperationAbortedActivity extends Component<Props> {
@@ -23,7 +23,7 @@ class OperationAbortedActivity extends Component<Props> {
             i18nKey="activities:operation.abort"
             values={{
               author: business_action.author.username,
-              accountName: business_action.author.username
+              accountName: business_action.author.username,
             }}
             components={<b>0</b>}
           />

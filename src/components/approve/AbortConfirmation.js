@@ -23,29 +23,29 @@ const styles = {
           background: "#eee",
           margin: "auto",
           marginTop: "20px",
-          marginBottom: "20px"
-        }
-      }
-    }
+          marginBottom: "20px",
+        },
+      },
+    },
   },
   content: {
     fontSize: "13px",
     lineHeight: "1.54",
     marginBottom: "20px",
     "& p": {
-      margin: "0"
-    }
+      margin: "0",
+    },
   },
   footer: {
-    marginTop: "35px"
-  }
+    marginTop: "35px",
+  },
 };
 
 function AbortConfirmation(props: {
   abort: Function,
   aborting: Function,
   entity: string,
-  classes: Object
+  classes: Object,
 }) {
   const { abort, aborting, entity, classes } = props;
   return (
@@ -57,7 +57,7 @@ function AbortConfirmation(props: {
             strokeWidth: "2px",
             height: "32px",
             fill: "none",
-            color: colors.mouse
+            color: colors.mouse,
           }}
         />
         <h3>Abort {entity} request</h3>

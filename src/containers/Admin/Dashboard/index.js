@@ -16,7 +16,7 @@ import PendingRequest from "./PendingRequest";
 type Props = {
   data: Object,
   match: Match,
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 class AdminDashboard extends PureComponent<Props> {
   handleTaskClick = (request: Request) => {
@@ -48,6 +48,6 @@ export default connectData(AdminDashboard, {
   RenderLoading: CardLoading,
   RenderError: CardError,
   queries: {
-    data: PendingRequestsQuery
-  }
+    data: PendingRequestsQuery,
+  },
 });

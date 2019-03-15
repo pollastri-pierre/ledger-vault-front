@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
   listCryptoCurrencies,
-  getCryptoCurrencyById
+  getCryptoCurrencyById,
 } from "utils/cryptoCurrencies";
 
 import { accountsSelector } from "restlay/dataStore";
@@ -18,8 +18,8 @@ const pairsSelector = createSelector(
     [
       {
         from: intermediaryCurrency,
-        to: getFiatCurrencyByTicker("USD")
-      }
+        to: getFiatCurrencyByTicker("USD"),
+      },
     ].concat(
       allCurrencies
         .filter(
@@ -33,20 +33,20 @@ const pairsSelector = createSelector(
               return account.currency_id === currency.id;
             }) > -1 &&
             currency.name !== "bitcoin_testnet" &&
-            currency.name !== "bitcoin"
+            currency.name !== "bitcoin",
         )
         .map(currency => ({
           from: allCurrencies.find(curr => curr.id === currency.id),
-          to: intermediaryCurrency
-        }))
-    )
+          to: intermediaryCurrency,
+        })),
+    ),
 );
 
 const CounterValues = createCounterValues({
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
   storeSelector: state => state.countervalues,
   pairsSelector,
-  setExchangePairsAction
+  setExchangePairsAction,
 });
 
 export default CounterValues;

@@ -10,7 +10,7 @@ type Props = {
   unit: Unit,
   value: number, // e.g. 10000 . for EUR it means €100.00
   type?: TransactionType,
-  alwaysShowSign?: boolean // do you want to show the + before the number (N.B. minus is always displayed)
+  alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
 };
 
 class CurrencyUnitValue extends PureComponent<Props> {
@@ -18,7 +18,7 @@ class CurrencyUnitValue extends PureComponent<Props> {
     const { unit, value, alwaysShowSign, type } = this.props;
     const className = [
       "currency-unit-value",
-      `sign-${type === "SEND" ? "negative" : "positive"}`
+      `sign-${type === "SEND" ? "negative" : "positive"}`,
     ].join(" ");
     let value_with_sign = value;
     if (type === "SEND") value_with_sign = value * -1;
@@ -26,14 +26,14 @@ class CurrencyUnitValue extends PureComponent<Props> {
       <span
         title={formatCurrencyUnit(unit, value_with_sign, {
           showCode: true,
-          alwaysShowSign
+          alwaysShowSign,
         })}
         className={className}
       >
         {formatCurrencyUnit(unit, value_with_sign, {
           showCode: true,
           alwaysShowSign,
-          showAllDigits: false
+          showAllDigits: false,
         })}
       </span>
     );

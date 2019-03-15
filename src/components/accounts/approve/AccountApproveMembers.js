@@ -6,7 +6,7 @@ import Box from "components/base/Box";
 import MemberRow from "../../MemberRow";
 
 type Props = {
-  members: Member[]
+  members: Member[],
 };
 
 class AccountApproveMembers extends Component<Props> {

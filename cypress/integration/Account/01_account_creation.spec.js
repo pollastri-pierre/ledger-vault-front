@@ -3,7 +3,7 @@ import {
   logout,
   route,
   switch_device,
-  create_account
+  create_account,
 } from "../../functions/actions.js";
 
 describe("Tests Creation Account", function() {
@@ -43,7 +43,7 @@ describe("Tests Creation Account", function() {
     cy.get("input[type=text]").type(100);
     cy.get("[data-test=dialog-button]").click();
     cy.get(".top-message-body").contains(
-      "Number of approvals cannot exceed number of members"
+      "Number of approvals cannot exceed number of members",
     );
     cy.get("input[type=text]").clear();
 

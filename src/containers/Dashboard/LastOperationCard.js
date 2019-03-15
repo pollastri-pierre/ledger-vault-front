@@ -25,7 +25,7 @@ type Props = {
   accounts: Array<Account>,
   reloading: boolean,
   match: Match,
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 class LastOperationCard extends Component<Props> {
@@ -55,10 +55,10 @@ class LastOperationCard extends Component<Props> {
 
 const RenderError = ({
   restlay,
-  error
+  error,
 }: {
   restlay: RestlayEnvironment,
-  error: Error
+  error: Error,
 }) => (
   <Card title={<Trans i18nKey="accountView:last_op.title" />}>
     <TryAgain error={error} action={restlay.forceFetch} />
@@ -74,14 +74,14 @@ const RenderLoading = () => (
 const c = connectData(withRouter(LastOperationCard), {
   queries: {
     operations: DashboardLastOperationsQuery,
-    accounts: AccountsDashboardQuery
+    accounts: AccountsDashboardQuery,
   },
   initialVariables: {
-    operations: 5
+    operations: 5,
   },
   optimisticRendering: true,
   RenderError,
-  RenderLoading
+  RenderLoading,
 });
 
 export default c;

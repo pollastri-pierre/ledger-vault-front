@@ -12,22 +12,22 @@ const styles = {
   base: {
     fontSize: 10,
     position: "relative",
-    paddingBottom: 44
+    paddingBottom: 44,
   },
   link: {
     color: "black",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   popover: {},
   icon: {
     width: 16,
     fill: "white",
-    marginBottom: 5
+    marginBottom: 5,
   },
   clickable: {
     "&:hover": {
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   buttonWrap: {
     width: "100%",
@@ -36,7 +36,7 @@ const styles = {
     position: "fixed",
     bottom: 0,
     backgroundColor: colors.white,
-    left: 0
+    left: 0,
   },
   button: {
     fontSize: 11,
@@ -47,8 +47,8 @@ const styles = {
     "&:hover": {
       color: colors.ocean,
       "&:before": {
-        height: 5
-      }
+        height: 5,
+      },
     },
     "&:before": {
       content: "''",
@@ -58,8 +58,8 @@ const styles = {
       display: "block",
       backgroundColor: colors.ocean,
       position: "absolute",
-      transition: "height 200ms ease"
-    }
+      transition: "height 200ms ease",
+    },
   },
   newActivities: {
     color: colors.black,
@@ -72,18 +72,18 @@ const styles = {
     width: "100%",
     backgroundColor: colors.white,
     left: 0,
-    top: 0
+    top: 0,
   },
   listWrap: {
     width: "100%",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   list: {
     paddingRight: 20,
     maxHeight: 360,
     overflow: "scroll",
-    width: "calc(100% + 20px)"
-  }
+    width: "calc(100% + 20px)",
+  },
 };
 
 class ActivityList extends Component<
@@ -93,16 +93,16 @@ class ActivityList extends Component<
     markAsSeenRequest: Function,
     clearAllRequest: Function,
     classes: { [_: $Keys<typeof styles>]: string },
-    match: *
+    match: *,
   },
-  *
+  *,
 > {
   firstElem: * = null;
 
   firstElemInitialTopPos = 0;
 
   state = {
-    timer: null // eslint-disable-line react/no-unused-state
+    timer: null, // eslint-disable-line react/no-unused-state
   };
 
   list: ?HTMLDivElement;
@@ -184,7 +184,7 @@ class ActivityList extends Component<
       promise,
       cancel() {
         clearTimeout(timeout);
-      } // return a canceller as well
+      }, // return a canceller as well
     };
   };
 
@@ -194,7 +194,7 @@ class ActivityList extends Component<
       classes,
       unseenActivityCount,
       match,
-      markAsSeenRequest
+      markAsSeenRequest,
     } = this.props;
     return (
       <div>
@@ -227,7 +227,7 @@ class ActivityList extends Component<
                                                 }} */
                         key={activity.id}
                       />
-                    )
+                    ),
                 )}
               </div>
             </div>

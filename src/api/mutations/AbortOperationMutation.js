@@ -3,7 +3,7 @@ import Mutation from "restlay/Mutation";
 import { success, error } from "formatters/notification";
 
 type Input = {
-  operationId: number
+  operationId: number,
 };
 
 type Response = void; // FIXME what should it be?

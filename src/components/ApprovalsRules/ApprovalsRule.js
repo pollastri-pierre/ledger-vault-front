@@ -17,7 +17,7 @@ import SelectGroupsUsers from "components/SelectGroupsUsers";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
-  ApprovalsSelectedIds
+  ApprovalsSelectedIds,
 } from "./index";
 import StepBall from "./StepBall";
 
@@ -29,7 +29,7 @@ type Props = {
   preventWarning: boolean,
   users: Member[],
   groups: Group[],
-  t: string => string
+  t: string => string,
 };
 
 const MAX_USERS = 20;
@@ -41,10 +41,10 @@ class ApprovalsRule extends PureComponent<Props> {
 
   handleChangeSelect = ({
     groups,
-    members: users
+    members: users,
   }: {
     groups: Group[],
-    members: Member[]
+    members: Member[],
   }) => {
     const { rule, onChange } = this.props;
 
@@ -58,7 +58,7 @@ class ApprovalsRule extends PureComponent<Props> {
         : groups.length
         ? groups[groups.length - 1].id
         : null,
-      users: justAddedGroup ? [] : users.map(u => u.id).slice(0, MAX_USERS)
+      users: justAddedGroup ? [] : users.map(u => u.id).slice(0, MAX_USERS),
     };
 
     // ensure quorum > groups length, etc.
@@ -84,7 +84,7 @@ class ApprovalsRule extends PureComponent<Props> {
       onRemove,
       parentSelectedIds,
       preventWarning,
-      t
+      t,
     } = this.props;
     const { group: ruleGroup, users: ruleUsers } = rule;
 
@@ -151,27 +151,27 @@ class ApprovalsRule extends PureComponent<Props> {
 
 const styles = {
   fixedHeight: {
-    height: 60
+    height: 60,
   },
   paddedBotForDrag: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   grip: {
-    cursor: "ns-resize"
+    cursor: "ns-resize",
   },
   nbOfUsers: {
-    alignSelf: "flex-end"
-  }
+    alignSelf: "flex-end",
+  },
 };
 
 const ErrorContainer = styled(Box).attrs({
   p: 10,
   pl: 40,
-  pt: 0
+  pt: 0,
 })``;
 
 const RuleContainer = styled(Box).attrs({
-  bg: "white"
+  bg: "white",
 })`
   border: 1px solid;
   border-color: ${p => (p.isInvalid ? colors.blue_orange : " #eee")}
@@ -183,7 +183,7 @@ const RuleContainer = styled(Box).attrs({
 const Grip = SortableHandle(styled(Box).attrs({
   align: "center",
   justify: "center",
-  noShrink: true
+  noShrink: true,
 })`
   height: 60px;
   width: 40px;
@@ -205,7 +205,7 @@ const StepBallContainer = styled.div`
 
 const RemoveContainer = styled(Box).attrs({
   align: "center",
-  justify: "center"
+  justify: "center",
 })`
   position: absolute;
   color: #ccc;
@@ -278,12 +278,12 @@ const approvalsFrom = (
 function resolveSelectValue(
   rule: ApprovalsRuleType,
   groups: Group[],
-  users: Member[]
+  users: Member[],
 ) {
   const groupInGroups = rule.group && groups.find(g => g.id === rule.group);
   return {
     groups: groupInGroups ? [groupInGroups] : [],
-    members: users.filter(u => rule.users.indexOf(u.id) !== -1)
+    members: users.filter(u => rule.users.indexOf(u.id) !== -1),
   };
 }
 

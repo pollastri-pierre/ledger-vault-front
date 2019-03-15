@@ -5,7 +5,7 @@ import fetchF from "./fetchF";
 
 export type InitWithRetries = {
   fetchTimeout?: ?number,
-  retryDelays?: ?Array<number>
+  retryDelays?: ?Array<number>,
 };
 
 const DEFAULT_TIMEOUT = 15000;
@@ -17,7 +17,7 @@ const DEFAULT_RETRIES = [1000, 3000];
  */
 function fetchWithRetries(
   uri: string,
-  initWithRetries?: ?InitWithRetries
+  initWithRetries?: ?InitWithRetries,
 ): Promise<any> {
   const { fetchTimeout, retryDelays, ...init } = initWithRetries || {};
   const _fetchTimeout = fetchTimeout != null ? fetchTimeout : DEFAULT_TIMEOUT;
@@ -44,8 +44,8 @@ function fetchWithRetries(
           reject(
             new Error(
               `${"fetchWithRetries(): Failed to get response from server, " +
-                "tried "}${requestsAttempted} times.`
-            )
+                "tried "}${requestsAttempted} times.`,
+            ),
           );
         }
       }, _fetchTimeout);

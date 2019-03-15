@@ -16,7 +16,7 @@ class Overscroll extends Component<{
   blurSize: number,
   paddingX: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
   paddingY: number, // internal padding. make sure it's a bit bigger than blurSize to avoid blur overflow glitches
-  pushScrollBarRight: number // how much pixel to push the scrollbar on the right
+  pushScrollBarRight: number, // how much pixel to push the scrollbar on the right
 }> {
   static defaultProps = {
     top: 0,
@@ -24,7 +24,7 @@ class Overscroll extends Component<{
     blurSize: 6,
     paddingX: 12,
     paddingY: 12,
-    pushScrollBarRight: 80
+    pushScrollBarRight: 80,
   };
 
   original: ?Element;
@@ -72,7 +72,7 @@ class Overscroll extends Component<{
       blurSize,
       paddingX,
       paddingY,
-      pushScrollBarRight
+      pushScrollBarRight,
     } = this.props;
 
     const rootStyle = {
@@ -81,7 +81,7 @@ class Overscroll extends Component<{
       marginLeft: -paddingX,
       marginRight: -paddingX,
       marginTop: -paddingY,
-      marginBottom: -paddingY
+      marginBottom: -paddingY,
     };
     const copyStyle = {
       position: "absolute",
@@ -93,26 +93,26 @@ class Overscroll extends Component<{
       paddingRight: paddingX,
       paddingTop: `${top}px `,
       paddingBottom: `${bottom}px`,
-      height: `calc(100% + ${top + bottom - 2 * paddingY}px)`
+      height: `calc(100% + ${top + bottom - 2 * paddingY}px)`,
     };
     const innerContainerStyle = {
       position: "relative",
       height: "100%",
-      overflow: "hidden"
+      overflow: "hidden",
     };
     const topLayerStyle = {
       position: "absolute",
       width: "100%",
       top: `-${top}px`,
       height: `${top}px`,
-      background: "linear-gradient(to top, rgba(255, 255, 255, 0.5), white)"
+      background: "linear-gradient(to top, rgba(255, 255, 255, 0.5), white)",
     };
     const bottomLayerStyle = {
       position: "absolute",
       width: "100%",
       bottom: `-${bottom}px`,
       height: `${bottom}px`,
-      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), white)"
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.5), white)",
     };
     const originalStyle = {
       position: "relative",
@@ -124,7 +124,7 @@ class Overscroll extends Component<{
       paddingBottom: paddingY,
       // for hiding ugly scrollbar
       marginRight: `-${pushScrollBarRight}px`,
-      paddingRight: `${pushScrollBarRight + paddingX}px`
+      paddingRight: `${pushScrollBarRight + paddingX}px`,
     };
 
     return (

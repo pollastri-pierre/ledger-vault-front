@@ -21,7 +21,7 @@ import type { Account, Operation } from "data/types";
 type Props = {
   history: MemoryHistory,
   match: Match,
-  accounts: Account[]
+  accounts: Account[],
 };
 
 class OperationsContainer extends PureComponent<Props> {
@@ -53,8 +53,8 @@ class OperationsContainer extends PureComponent<Props> {
 
 export default connectData(OperationsContainer, {
   queries: {
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
   },
   RenderLoading: CardLoading,
-  RenderError: CardError
+  RenderError: CardError,
 });

@@ -7,7 +7,7 @@ const SpinnerAccounts = () => (
     style={{
       position: "absolute",
       top: "50px",
-      left: "40px"
+      left: "40px",
     }}
   />
 );

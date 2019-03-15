@@ -6,7 +6,7 @@ type Props = {
   text: string,
   dataTest?: string,
   className: ?string,
-  size: number
+  size: number,
 };
 class ExpandableText extends Component<Props> {
   render() {

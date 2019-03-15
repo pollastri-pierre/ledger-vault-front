@@ -18,7 +18,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     const { updateQueryParams } = this.props;
     updateQueryParams(
       "status",
-      opt && opt.length ? opt.map(o => o.value) : null
+      opt && opt.length ? opt.map(o => o.value) : null,
     );
   };
 
@@ -53,26 +53,26 @@ function resolveOperationStatuses(queryParams: ObjectParameters): Option[] {
 
 type Option = {
   value: OperationStatus,
-  label: string
+  label: string,
 };
 
 const options: Option[] = [
   { value: "SUBMITTED", label: "Confirmed" },
   { value: "ABORTED", label: "Aborted" },
-  { value: "PENDING_APPROVAL", label: "Pending approval" }
+  { value: "PENDING_APPROVAL", label: "Pending approval" },
 ];
 
 const customStyles = {
   menuList: p => ({
     ...p,
-    fontSize: 13
-  })
+    fontSize: 13,
+  }),
 };
 
 type SelectProps = {
   value: Option[],
   onChange: (Option[]) => void,
-  t: *
+  t: *,
 };
 
 class SelectOperationStatusesComponent extends PureComponent<SelectProps> {

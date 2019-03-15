@@ -6,14 +6,14 @@ import colors from "shared/colors";
 const styles = {
   icon: {
     width: "16px",
-    height: "12px"
-  }
+    height: "12px",
+  },
 };
 
 function Comment({
-  classes
+  classes,
 }: {
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }) {
   return (
     <svg

@@ -15,7 +15,7 @@ const styles = {
   requirements: {
     fontSize: 11,
     lineHeight: 1.82,
-    marginBottom: 40
+    marginBottom: 40,
   },
   notrequired: {
     opacity: 0.5,
@@ -27,21 +27,21 @@ const styles = {
       height: 80,
       background: "#eeeeee",
       left: -39,
-      top: 30
-    }
+      top: 30,
+    },
   },
   flexcolumn: {},
   row: {
     display: "flex",
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 };
 const PrerequisiteSeed = ({
   classes,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:master_seed_prerequisite.title")}</Title>

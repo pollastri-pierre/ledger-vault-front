@@ -5,13 +5,13 @@ import Adapter from "enzyme-adapter-react-16";
 
 import VaultDeviceApp, {
   mockGetPublicKey, // eslint-disable-line
-  mockAuthenticate // eslint-disable-line
+  mockAuthenticate, // eslint-disable-line
 } from "device/VaultDeviceApp";
 import { SignInDevice } from "./SignInDevice";
 
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
+  create: jest.fn(),
 }));
 
 jest.mock("network", () => jest.fn());
@@ -33,8 +33,8 @@ const props = {
     name: "name",
     workspace: "workspace",
     domain_name: "domain",
-    role: "Administrator"
-  }
+    role: "Administrator",
+  },
 };
 
 test("onStart should call device and API with right parameters", async () => {
@@ -49,13 +49,13 @@ test("onStart should call device and API with right parameters", async () => {
     "name",
     "workspace",
     "domain",
-    "Administrator"
+    "Administrator",
   );
 
   expect(props.onFinish).toHaveBeenCalledWith("pubKey", {
     rawResponse: "raw",
     counter: 0,
     userPresence: "userPresence",
-    signature: "signature"
+    signature: "signature",
   });
 });

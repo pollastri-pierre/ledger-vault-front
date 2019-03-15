@@ -13,15 +13,15 @@ import CurrencyAccountValue from "../CurrencyAccountValue";
 const styles = {
   flat: {
     color: colors.steel,
-    fontSize: 11
+    fontSize: 11,
   },
   crypto: {
     fontSize: 13,
-    color: colors.black
+    color: colors.black,
   },
   strong: {
-    fontWeight: 600
-  }
+    fontWeight: 600,
+  },
 };
 
 type Props = {
@@ -31,7 +31,7 @@ type Props = {
   strong?: boolean,
   erc20Format?: boolean,
   hideCountervalue?: boolean,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class Amount extends Component<Props> {
@@ -42,7 +42,7 @@ class Amount extends Component<Props> {
       strong,
       dataTest,
       erc20Format,
-      hideCountervalue
+      hideCountervalue,
     } = this.props;
 
     const disableCountervalue = !!erc20Format;

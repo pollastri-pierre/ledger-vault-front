@@ -5,11 +5,11 @@ import keyBy from "lodash/keyBy";
 import sortBy from "lodash/sortBy";
 import {
   listCryptoCurrencies as listCC,
-  getCryptoCurrencyById as getCrypto
+  getCryptoCurrencyById as getCrypto,
 } from "@ledgerhq/live-common/lib/helpers/currencies";
 import type {
   CryptoCurrencyIds,
-  CryptoCurrency
+  CryptoCurrency,
 } from "@ledgerhq/live-common/lib/types";
 import { getCryptoCurrencyIcon as getIcon } from "@ledgerhq/live-common/lib/react";
 
@@ -30,13 +30,13 @@ const supported: CryptoCurrencyIds[] = [
   "viacoin",
   "bitcoin_testnet",
   "ethereum",
-  "ethereum_testnet"
+  "ethereum_testnet",
 ];
 
 const notSupportedCoin: CryptoCurrencyIds[] = ["komodo", "bitcoin_cash"];
 
 export const isNotSupportedCoin: CryptoCurrency => boolean = memoize(
-  (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1
+  (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1,
 );
 
 export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
@@ -53,11 +53,11 @@ export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
       eth.scheme = "ethereum_ropsten";
     }
     return list;
-  }
+  },
 );
 
 export const listERC20Tokens: () => ERC20Token[] = memoize(
-  (): ERC20Token[] => sortBy(rawERC20List.filter(t => !!t.signature), "name")
+  (): ERC20Token[] => sortBy(rawERC20List.filter(t => !!t.signature), "name"),
 );
 
 export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
@@ -70,7 +70,7 @@ export const getCryptoCurrencyById = (id: string) =>
 // but the gate is expecting ethereum and ethereum_ropsten
 const currencyIdByBlockchainName = {
   foundation: "ethereum",
-  ropsten: "ethereum_ropsten"
+  ropsten: "ethereum_ropsten",
 };
 export const getCurrencyIdFromBlockchainName = (blockchain: string) =>
   currencyIdByBlockchainName[blockchain]
@@ -85,5 +85,5 @@ export const getCryptoCurrencyIcon = (currency: CryptoCurrency) =>
 const erc20TokensByContractAddress = keyBy(rawERC20List, "contract_address");
 
 export const getERC20TokenByContractAddress = (
-  contractAddress: string
+  contractAddress: string,
 ): ?ERC20Token => erc20TokensByContractAddress[contractAddress] || null;

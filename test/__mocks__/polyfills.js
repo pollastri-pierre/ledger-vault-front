@@ -14,5 +14,5 @@ global.config = {
   // TODO looks weird, but we don't want to trigger `checkToUpdate() => false`
   // because it trigger a window.history.push which is not supported by jsdom
   // and makes test fail
-  APP_VERSION: undefined
+  APP_VERSION: undefined,
 };

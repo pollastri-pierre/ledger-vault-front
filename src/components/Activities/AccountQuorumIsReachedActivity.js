@@ -9,7 +9,7 @@ import NoStyleLink from "../NoStyleLink";
 
 type Props = {
   activity: ActivityEntityAccount,
-  match: Match
+  match: Match,
 };
 
 class AccountQuorumIsReachedActivity extends Component<Props> {
@@ -31,7 +31,7 @@ class AccountQuorumIsReachedActivity extends Component<Props> {
               i18nKey="activities:account.quorumReached"
               values={{
                 accountName: business_action.account.name,
-                approvalNumber: business_action.account.number_of_approvals
+                approvalNumber: business_action.account.number_of_approvals,
               }}
               components={<b>0</b>}
             />

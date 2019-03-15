@@ -24,19 +24,19 @@ import OperationApproveDetails from "./OperationApproveDetails";
 type Props = {
   operationWithAccount: {
     account: Account,
-    operation: Operation
+    operation: Operation,
   },
   users: Array<Member>,
   profile: Member,
   close: Function,
   approve: Function,
   aborting: Function,
-  t: Translate
+  t: Translate,
 };
 
 class OperationApprove extends Component<Props, { value: number }> {
   state = {
-    value: 0
+    value: 0,
   };
 
   handleChange = (event, value) => {
@@ -51,7 +51,7 @@ class OperationApprove extends Component<Props, { value: number }> {
       close,
       approve,
       t,
-      aborting
+      aborting,
     } = this.props;
 
     const { value } = this.state;
@@ -134,10 +134,10 @@ export default withRouter(
     queries: {
       operationWithAccount: OperationWithAccountQuery,
       users: UsersQuery,
-      profile: ProfileQuery
+      profile: ProfileQuery,
     },
     propsToQueryParams: props => ({
-      operationId: props.match.params.id || ""
-    })
-  })
+      operationId: props.match.params.id || "",
+    }),
+  }),
 );

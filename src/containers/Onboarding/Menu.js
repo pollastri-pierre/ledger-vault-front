@@ -20,22 +20,22 @@ const styles = {
       display: "block",
       position: "absolute",
       right: 42,
-      top: 0
-    }
-  }
+      top: 0,
+    },
+  },
 };
 const Menu = ({
   classes,
   nbMember,
   nbSharedOwner,
   t,
-  onboarding
+  onboarding,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   nbSharedOwner: number,
   t: Translate,
-  nbMember: number
+  nbMember: number,
 }) => (
   <div className={classes.menu}>
     <div style={{ marginBottom: 10 }}>

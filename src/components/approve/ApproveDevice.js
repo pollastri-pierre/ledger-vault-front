@@ -23,10 +23,10 @@ const styles = {
           background: "#eee",
           margin: "auto",
           marginTop: "20px",
-          marginBottom: "20px"
-        }
-      }
-    }
+          marginBottom: "20px",
+        },
+      },
+    },
   },
   content: {
     textAlign: "left",
@@ -40,7 +40,7 @@ const styles = {
         lineHeight: "1.54",
         position: "relative",
         paddingLeft: "30px",
-        marginBottom: "20px"
+        marginBottom: "20px",
       },
       "& li > span": {
         fontSize: "18px",
@@ -48,25 +48,25 @@ const styles = {
         lineHeight: "1.28",
         position: "absolute",
         left: "0",
-        top: "-4px"
-      }
-    }
+        top: "-4px",
+      },
+    },
   },
   footer: {
-    marginTop: "35px"
+    marginTop: "35px",
   },
   wait: {
     textTransform: "uppercase",
     fontSize: "11px",
     color: colors.ocean,
     fontWeight: "600",
-    float: "right"
-  }
+    float: "right",
+  },
 };
 function ApproveDevice(props: {
   cancel: Function,
   entity: string,
-  classes: Object
+  classes: Object,
 }) {
   const { cancel, entity, classes } = props;
   return (

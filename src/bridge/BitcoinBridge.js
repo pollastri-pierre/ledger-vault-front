@@ -17,7 +17,7 @@ export type Transaction = {
   estimatedFees: ?number,
   feeLevel: Speed,
   label: string,
-  note: string
+  note: string,
 };
 
 const checkValidTransaction = async (a, t, r) => {
@@ -34,7 +34,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
   if (recipient) {
     try {
       const { is_valid } = await restlay.fetchQuery(
-        new ValidateAddressQuery({ currency, address: recipient })
+        new ValidateAddressQuery({ currency, address: recipient }),
       );
       return is_valid;
     } catch (err) {
@@ -53,7 +53,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedFees: null,
     feeLevel: "normal",
     label: "",
-    note: ""
+    note: "",
   }),
 
   getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
@@ -66,10 +66,10 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   editTransactionAmount: (
     account: Account,
     t: Transaction,
-    amount: number
+    amount: number,
   ) => ({
     ...t,
-    amount
+    amount,
   }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
@@ -77,10 +77,10 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   editTransactionRecipient: (
     account: Account,
     t: Transaction,
-    recipient: string
+    recipient: string,
   ) => ({
     ...t,
-    recipient
+    recipient,
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
@@ -89,27 +89,27 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   editTransactionFeeLevel: (
     account: Account,
     t: Transaction,
-    feeLevel: string
+    feeLevel: string,
   ) => ({
     ...t,
-    feeLevel
+    feeLevel,
   }),
 
   getTransactionLabel: (a: Account, t: Transaction) => t.label,
   editTransactionLabel: (account: Account, t: Transaction, label: string) => ({
     ...t,
-    label
+    label,
   }),
   getTransactionNote: (a: Account, t: Transaction) => t.note,
   editTransactionNote: (account: Account, t: Transaction, note: string) => ({
     ...t,
-    note
+    note,
   }),
   composeAndBroadcast: (
     operation_id: number,
     restlay: RestlayEnvironment,
     account: Account,
-    transaction: Transaction
+    transaction: Transaction,
   ) => {
     const data: NewOperationMutationInput = {
       operation: {
@@ -119,10 +119,10 @@ const BitcoinBridge: WalletBridge<Transaction> = {
         operation_id,
         note: {
           title: transaction.label,
-          content: transaction.note
-        }
+          content: transaction.note,
+        },
       },
-      accountId: account.id
+      accountId: account.id,
     };
     return restlay
       .commitMutation(new NewOperationMutation(data))
@@ -130,7 +130,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   },
   EditFees: FeesBitcoinKind,
   checkValidTransaction,
-  isRecipientValid
+  isRecipientValid,
 };
 
 export default BitcoinBridge;

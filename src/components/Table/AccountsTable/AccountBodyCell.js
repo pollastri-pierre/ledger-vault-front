@@ -15,7 +15,7 @@ import type { TableItem } from "../types";
 
 type CellProps = {
   account: Account,
-  item: TableItem
+  item: TableItem,
 };
 class AccountBodyCell extends PureComponent<CellProps> {
   renderCellMapper = () => {

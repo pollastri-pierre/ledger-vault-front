@@ -4,7 +4,7 @@ import schema from "data/schema";
 import type { Member } from "data/types";
 
 type Input = {
-  userID: string
+  userID: string,
 };
 type Response = Member;
 

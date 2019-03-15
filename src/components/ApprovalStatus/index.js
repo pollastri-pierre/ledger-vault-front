@@ -6,7 +6,7 @@ import { calculateApprovingObjectMeta } from "data/approvingObject";
 import colors from "shared/colors";
 import type {
   ApprovingObject,
-  ApprovingObjectMeta
+  ApprovingObjectMeta,
 } from "data/approvingObject";
 import ValidateBadge from "../icons/full/ValidateBadge";
 
@@ -15,8 +15,8 @@ const styles = {
     width: 11,
     verticalAlign: "middle",
     marginRight: 7,
-    fill: colors.ocean
-  }
+    fill: colors.ocean,
+  },
 };
 
 class ApprovalStatus extends PureComponent<{
@@ -25,7 +25,7 @@ class ApprovalStatus extends PureComponent<{
   nbRequired: number,
   user: Member,
   approvingObject?: ApprovingObject,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const {
@@ -34,7 +34,7 @@ class ApprovalStatus extends PureComponent<{
       approvers,
       user,
       nbRequired,
-      classes
+      classes,
     } = this.props;
 
     const isUserApproved =

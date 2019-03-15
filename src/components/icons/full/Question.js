@@ -5,7 +5,7 @@ type Props = { color?: string };
 
 export default class Question extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

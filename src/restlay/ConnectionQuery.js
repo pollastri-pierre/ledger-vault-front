@@ -5,11 +5,11 @@ import type { Store } from "./dataStore";
 export type Connection<T> = {
   edges: Array<{
     cursor: number,
-    node: T
+    node: T,
   }>,
   pageInfo: {
-    hasNextPage: boolean
-  }
+    hasNextPage: boolean,
+  },
 };
 
 // extends Query idea to add connection concept, an API that paginates
@@ -59,7 +59,7 @@ class ConnectionQuery<In, Node> {
 
   getResponseSchema() {
     return {
-      edges: [{ node: this.nodeSchema }]
+      edges: [{ node: this.nodeSchema }],
     };
   }
 

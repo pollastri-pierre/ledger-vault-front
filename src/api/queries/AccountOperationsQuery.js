@@ -4,7 +4,7 @@ import schema from "data/schema";
 import type { Operation } from "data/types";
 
 type In = {
-  accountId: string
+  accountId: string,
 };
 type Node = Operation;
 

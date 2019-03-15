@@ -12,7 +12,7 @@ import type { TableItem } from "../types";
 
 type CellProps = {
   request: Request,
-  item: TableItem
+  item: TableItem,
 };
 class RequestBodyCell extends PureComponent<CellProps> {
   renderCellMapper = () => {

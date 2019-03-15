@@ -24,7 +24,7 @@ type Props = {
   operations: Connection<Operation>,
   restlay: RestlayEnvironment,
   match: Match,
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 class AccountLastOperationsCard extends Component<Props> {
@@ -67,14 +67,14 @@ const RenderLoading = () => (
 
 export default connectData(withRouter(AccountLastOperationsCard), {
   queries: {
-    operations: AccountOperationsQuery
+    operations: AccountOperationsQuery,
   },
   initialVariables: {
-    operations: 20
+    operations: 20,
   },
   propsToQueryParams: ({ account }: { account: Account }) => ({
-    accountId: String(account.id)
+    accountId: String(account.id),
   }),
   RenderError,
-  RenderLoading
+  RenderLoading,
 });

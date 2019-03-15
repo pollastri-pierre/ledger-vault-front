@@ -29,7 +29,7 @@ const TypographyRow = ({ children, label }) => (
         style={{
           padding: 5,
           fontSize: 10,
-          backgroundColor: "#eee"
+          backgroundColor: "#eee",
         }}
       >
         {label}

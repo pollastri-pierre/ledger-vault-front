@@ -23,8 +23,8 @@ const styles = {
     maxWidth: 1700,
     margin: "0 auto",
     marginTop: -40,
-    marginBottom: 40
-  }
+    marginBottom: 40,
+  },
 };
 
 function Content({ match }: { match: Match }) {

@@ -7,7 +7,7 @@ export type EditProps<Transaction> = {
   account: Account,
   transaction: Transaction,
   onChangeTransaction: Transaction => void,
-  bridge: WalletBridge<Transaction>
+  bridge: WalletBridge<Transaction>,
 };
 
 export interface WalletBridge<Transaction> {
@@ -16,7 +16,7 @@ export interface WalletBridge<Transaction> {
   editTransactionAmount(
     account: Account,
     transaction: Transaction,
-    amount: number
+    amount: number,
   ): Transaction;
 
   getTransactionAmount(account: Account, transaction: Transaction): number;
@@ -24,7 +24,7 @@ export interface WalletBridge<Transaction> {
   editTransactionRecipient(
     account: Account,
     transaction: Transaction,
-    recipient: string
+    recipient: string,
   ): Transaction;
 
   getTransactionRecipient(account: Account, transaction: Transaction): string;
@@ -34,14 +34,14 @@ export interface WalletBridge<Transaction> {
   editTransactionLabel(
     account: Account,
     transaction: Transaction,
-    label: string
+    label: string,
   ): Transaction;
   getTransactionLabel(account: Account, transaction: Transaction): string;
 
   editTransactionNote(
     account: Account,
     transaction: Transaction,
-    note: string
+    note: string,
   ): Transaction;
   getTransactionNote(account: Account, transaction: Transaction): string;
 
@@ -49,23 +49,23 @@ export interface WalletBridge<Transaction> {
     operationId: number,
     restlay: RestlayEnvironment,
     account: Account,
-    transaction: Transaction
+    transaction: Transaction,
   ): Promise<*>;
 
   getTransactionFeeLevel?: (
     account: Account,
-    transaction: Transaction
+    transaction: Transaction,
   ) => Speed;
   editTransactionFeeLevel?: (
     account: Account,
     transaction: Transaction,
-    feeLevel: Speed
+    feeLevel: Speed,
   ) => Transaction;
   getRecipientWarning?: (recipient: string) => Promise<?Error>;
   checkValidFee?: (
     account: Account,
     transaction: Transaction,
-    parentETH: Account
+    parentETH: Account,
   ) => Promise<boolean>;
   EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
 
@@ -74,12 +74,12 @@ export interface WalletBridge<Transaction> {
   isRecipientValid(
     restlay: RestlayEnvironment,
     currency: *,
-    recipient: string
+    recipient: string,
   ): Promise<boolean>;
 
   checkValidTransaction(
     account: Account,
     transaction: Transaction,
-    restlay: RestlayEnvironment
+    restlay: RestlayEnvironment,
   ): Promise<boolean>;
 }

@@ -8,7 +8,7 @@ export const ENDPOINTS = {
   AUTHENTICATE: "/authenticate",
   REGISTER: "/register",
   VALIDATE_VAULT_OPERATION: "/validate-vault-operation",
-  GENERATE_KEY_FRAGMENTS: "/generate-key-fragments"
+  GENERATE_KEY_FRAGMENTS: "/generate-key-fragments",
 };
 
 const pathArrayToString = (path: number[]): string =>
@@ -17,7 +17,7 @@ const pathArrayToString = (path: number[]): string =>
 const deviceNetwork = async function<T>(
   uri: string,
   method: string,
-  body: ?(Object | Array<Object>)
+  body: ?(Object | Array<Object>),
 ): Promise<T> {
   return network(uri, method, body).catch(err => {
     console.error(err);
@@ -37,10 +37,10 @@ export const register = async (
   instanceName: string,
   instanceReference: string,
   instanceUrl: string,
-  agentRole: string
+  agentRole: string,
 ): Promise<{
   u2f_register: Buffer,
-  keyHandle: Buffer
+  keyHandle: Buffer,
 }> => {
   const data = await deviceNetwork(ENDPOINTS.REGISTER, "POST", {
     challenge: challenge.toString("hex"),
@@ -48,7 +48,7 @@ export const register = async (
     name: instanceName,
     role: agentRole,
     domain_name: instanceUrl,
-    workspace: instanceReference
+    workspace: instanceReference,
   });
   const response = Buffer.from(data, "hex");
   let i = 0;
@@ -62,7 +62,7 @@ export const register = async (
     u2f_register: response.slice(0, response.length - 2),
     keyHandle,
     rfu,
-    pubKey
+    pubKey,
   };
 };
 export const getAttestationCertificate = async (): Promise<Buffer> => {
@@ -72,11 +72,11 @@ export const getAttestationCertificate = async (): Promise<Buffer> => {
 
 export const validateVaultOperation = async (
   path: number[],
-  operation: Buffer
+  operation: Buffer,
 ) => {
   const data = await deviceNetwork(ENDPOINTS.VALIDATE_VAULT_OPERATION, "POST", {
     path: pathArrayToString(path),
-    operation: operation.toString("hex")
+    operation: operation.toString("hex"),
   });
   return Buffer.from(data, "hex");
 };
@@ -84,13 +84,13 @@ export const openSession = async (
   path: number[],
   pubKey: Buffer,
   attestation: Buffer,
-  scriptHash: number = 0x00
+  scriptHash: number = 0x00,
 ): Promise<*> => {
   const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
     path: pathArrayToString(path),
     pubKey: pubKey.toString("hex"),
     attestation: attestation.toString("hex"),
-    scriptHash
+    scriptHash,
   });
   return data;
 };
@@ -98,18 +98,18 @@ export const openSession = async (
 export const getPublicKey = async (
   transport: *,
   path: number[],
-  secp256k1: boolean = true
+  secp256k1: boolean = true,
 ): Promise<{
   pubKey: string,
-  signature: string
+  signature: string,
 }> => {
   const data = await deviceNetwork(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
     path: pathArrayToString(path),
-    secp256k1
+    secp256k1,
   });
   return {
     pubKey: data.pubKey,
-    signature: Buffer.from(data.attestation, "hex")
+    signature: Buffer.from(data.attestation, "hex"),
   };
 };
 export const authenticate = async (
@@ -120,12 +120,12 @@ export const authenticate = async (
   instanceName: string,
   instanceReference: string,
   instanceUrl: string,
-  agentRole: string
+  agentRole: string,
 ): Promise<{
   userPresence: *,
   counter: *,
   signature: string,
-  rawResponse: string
+  rawResponse: string,
 }> => {
   const data = await deviceNetwork(ENDPOINTS.AUTHENTICATE, "POST", {
     challenge: challenge.toString("hex"),
@@ -134,13 +134,13 @@ export const authenticate = async (
     name: instanceName,
     role: agentRole,
     domain_name: instanceUrl,
-    workspace: instanceReference
+    workspace: instanceReference,
   });
 
   // we add a fake status response because traaansport on device does it
   const response = Buffer.concat([
     Buffer.from(data, "hex"),
-    Buffer.from("9000", "hex")
+    Buffer.from("9000", "hex"),
   ]);
 
   const userPresence = response.slice(0, 1);
@@ -150,24 +150,24 @@ export const authenticate = async (
     userPresence,
     counter,
     signature,
-    rawResponse: response.slice(0, response.length - 2).toString("hex")
+    rawResponse: response.slice(0, response.length - 2).toString("hex"),
   };
 };
 export default class VaultDeviceHTTP {
   async getPublicKey(
     path: number[],
-    secp256k1: boolean = true
+    secp256k1: boolean = true,
   ): Promise<{
     pubKey: string,
-    signature: string
+    signature: string,
   }> {
     const data = await deviceNetwork(ENDPOINTS.GET_PUBLIC_KEY, "POST", {
       path: pathArrayToString(path),
-      secp256k1
+      secp256k1,
     });
     return {
       pubKey: data.pubKey,
-      signature: Buffer.from(data.attestation, "hex")
+      signature: Buffer.from(data.attestation, "hex"),
     };
   }
 
@@ -178,7 +178,7 @@ export default class VaultDeviceHTTP {
 
   async generateKeyComponent(
     path: number[],
-    isWrappingKey: boolean
+    isWrappingKey: boolean,
   ): Promise<*> {
     let p1 = 0x00;
     if (isWrappingKey) {
@@ -186,7 +186,7 @@ export default class VaultDeviceHTTP {
     }
     const data = await deviceNetwork(ENDPOINTS.GENERATE_KEY_FRAGMENTS, "POST", {
       path: pathArrayToString(path),
-      goal: p1
+      goal: p1,
     });
     return Buffer.from(data, "hex");
   }
@@ -198,12 +198,12 @@ export default class VaultDeviceHTTP {
     instanceName: string,
     instanceReference: string,
     instanceUrl: string,
-    agentRole: string
+    agentRole: string,
   ): Promise<{
     userPresence: *,
     counter: *,
     signature: string,
-    rawResponse: string
+    rawResponse: string,
   }> {
     const data = await deviceNetwork(ENDPOINTS.AUTHENTICATE, "POST", {
       challenge: challenge.toString("hex"),
@@ -212,13 +212,13 @@ export default class VaultDeviceHTTP {
       name: instanceName,
       role: agentRole,
       domain_name: instanceUrl,
-      workspace: instanceReference
+      workspace: instanceReference,
     });
 
     // we add a fake status response because traaansport on device does it
     const response = Buffer.concat([
       Buffer.from(data, "hex"),
-      Buffer.from("9000", "hex")
+      Buffer.from("9000", "hex"),
     ]);
 
     const userPresence = response.slice(0, 1);
@@ -228,7 +228,7 @@ export default class VaultDeviceHTTP {
       userPresence,
       counter,
       signature,
-      rawResponse: response.slice(0, response.length - 2).toString("hex")
+      rawResponse: response.slice(0, response.length - 2).toString("hex"),
     };
   }
 
@@ -238,10 +238,10 @@ export default class VaultDeviceHTTP {
     instanceName: string,
     instanceReference: string,
     instanceUrl: string,
-    agentRole: string
+    agentRole: string,
   ): Promise<{
     u2f_register: Buffer,
-    keyHandle: Buffer
+    keyHandle: Buffer,
   }> {
     const data = await deviceNetwork(ENDPOINTS.REGISTER, "POST", {
       challenge: challenge.toString("hex"),
@@ -249,7 +249,7 @@ export default class VaultDeviceHTTP {
       name: instanceName,
       role: agentRole,
       domain_name: instanceUrl,
-      workspace: instanceReference
+      workspace: instanceReference,
     });
     const response = Buffer.from(data, "hex");
     let i = 0;
@@ -263,7 +263,7 @@ export default class VaultDeviceHTTP {
       u2f_register: response.slice(0, response.length - 2),
       keyHandle,
       rfu,
-      pubKey
+      pubKey,
     };
   }
 
@@ -271,13 +271,13 @@ export default class VaultDeviceHTTP {
     path: number[],
     pubKey: Buffer,
     attestation: Buffer,
-    scriptHash: number = 0x00
+    scriptHash: number = 0x00,
   ): Promise<*> {
     const data = await deviceNetwork(ENDPOINTS.OPEN_SESSION, "POST", {
       path: pathArrayToString(path),
       pubKey: pubKey.toString("hex"),
       attestation: attestation.toString("hex"),
-      scriptHash
+      scriptHash,
     });
     return data;
   }
@@ -286,7 +286,7 @@ export default class VaultDeviceHTTP {
   async getVersion(): Promise<{ appName: string, appVersion: string }> {
     const promise = Promise.resolve({
       appName: "Vault",
-      appVersion: window.config.APP_VERSION
+      appVersion: window.config.APP_VERSION,
     });
 
     return promise;
@@ -298,8 +298,8 @@ export default class VaultDeviceHTTP {
       "POST",
       {
         path: pathArrayToString(path),
-        operation: operation.toString("hex")
-      }
+        operation: operation.toString("hex"),
+      },
     );
     return Buffer.from(data, "hex");
   }

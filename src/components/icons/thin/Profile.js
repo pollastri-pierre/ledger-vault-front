@@ -5,19 +5,19 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {
-    width: "15px"
-  }
+    width: "15px",
+  },
 };
 
 type Props = {
   color?: string,
   classes: Object,
-  className?: string
+  className?: string,
 };
 
 class Profile extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {
@@ -26,7 +26,7 @@ class Profile extends PureComponent<Props> {
       fill: "none",
       stroke: color,
       strokeMiterlimit: "10",
-      strokeWidth: "2px"
+      strokeWidth: "2px",
     };
 
     return (

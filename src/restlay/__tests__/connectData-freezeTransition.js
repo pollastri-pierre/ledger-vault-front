@@ -32,8 +32,8 @@ test("freezeTransition=true should not render a pending step", async () => {
     {
       queries: { animal: AnimalQuery },
       propsToQueryParams: ({ animalId }) => ({ animalId }),
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();

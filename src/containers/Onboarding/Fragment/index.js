@@ -11,29 +11,29 @@ const status = {
     fontWeight: 600,
     color: "#27d0e2",
     textTransform: "uppercase",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   icon: {
     width: 11,
     fill: "#27d0e2",
     verticalAlign: "middle",
-    marginRight: 10
+    marginRight: 10,
   },
   generated: {
-    fontSize: 11
-  }
+    fontSize: 11,
+  },
 };
 export const SeedStatus = withStyles(status)(
   ({
     classes,
     label,
     generated,
-    open
+    open,
   }: {
     classes: { [$Keys<typeof status>]: string },
     label: string,
     open: Function,
-    generated: boolean
+    generated: boolean,
   }) => {
     if (generated) {
       return (
@@ -48,7 +48,7 @@ export const SeedStatus = withStyles(status)(
         {label}
       </div>
     );
-  }
+  },
 );
 
 const styles = {
@@ -57,18 +57,18 @@ const styles = {
     textAlign: "center",
     paddingLeft: 25,
     "&:first-child": {
-      paddingLeft: 0
+      paddingLeft: 0,
     },
-    transition: "all 200ms ease"
+    transition: "all 200ms ease",
   },
   title: {
     fontSize: 12,
     fontWeight: 600,
-    margin: "0 0 12px 0"
+    margin: "0 0 12px 0",
   },
   disabled: {
-    opacity: 0.2
-  }
+    opacity: 0.2,
+  },
 };
 const Fragment = ({
   classes,
@@ -76,14 +76,14 @@ const Fragment = ({
   disabled,
   labelGenerate,
   generated,
-  generate
+  generate,
 }: {
   label: string,
   classes: { [$Keys<typeof styles>]: string },
   disabled: boolean,
   labelGenerate: string,
   generated: boolean,
-  generate: Function
+  generate: Function,
 }) => (
   <div
     className={cx(classes.base, "fragment", { [classes.disabled]: disabled })}

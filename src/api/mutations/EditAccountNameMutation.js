@@ -6,7 +6,7 @@ import schema from "data/schema";
 
 type In = {
   account: Account,
-  name: string
+  name: string,
 };
 
 type Res = Account;
@@ -29,7 +29,7 @@ export default class EditAccountNameMutation extends Mutation<In, Res> {
   getBody() {
     const {
       account: { id },
-      name
+      name,
     } = this.props;
     return { id, name };
   }

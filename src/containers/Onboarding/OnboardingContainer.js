@@ -26,39 +26,39 @@ import AdministrationScheme from "./AdministrationScheme";
 import Menu from "./Menu";
 
 const mapStateToProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
   onGetState: () => dispatch(getState()),
-  changeNbRequired: nb => dispatch(changeQuorum(nb))
+  changeNbRequired: nb => dispatch(changeQuorum(nb)),
 });
 
 const styles = {
   fatal_error: {
     opacity: 0.3,
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   wrapper: {
     width: "100%",
     height: "100vh",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   banner: {
     position: "absolute",
     top: -52,
     width: "100%",
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   support: {
     fontSize: 11,
     fontWeight: 600,
     textTransform: "uppercase",
     textDecoration: "none",
-    color: "#767676"
+    color: "#767676",
   },
   base: {
     background: "white",
@@ -66,27 +66,27 @@ const styles = {
     padding: "40px 40px 40px 0",
     boxShadow: "0 2.5px 2.5px 0 rgba(0,0,0,.04)",
     display: "flex",
-    position: "relative"
+    position: "relative",
   },
   content: {
     position: "relative",
-    flex: 1
+    flex: 1,
   },
   link: {
     "& > span": {
       textTransform: "uppercase",
-      color: "grey"
-    }
+      color: "grey",
+    },
   },
   selected: {
     color: "red",
     "& > span": {
-      color: "black!important"
-    }
+      color: "black!important",
+    },
   },
   labelLinkMarginTop: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 };
 
 type Props = {
@@ -95,12 +95,12 @@ type Props = {
   history: *,
   onboarding: *,
   changeNbRequired: Function,
-  onGetState: Function
+  onGetState: Function,
 };
 
 type State = {
   nbAdministrator: number,
-  nbRequired: number
+  nbRequired: number,
 };
 
 class OnboardingContainer extends Component<Props, State> {
@@ -113,7 +113,7 @@ class OnboardingContainer extends Component<Props, State> {
     socket.on("connect", () => {
       socket.emit("authenticate", {
         token: "onboarding",
-        orga: this.props.match.params.orga_name
+        orga: this.props.match.params.orga_name,
       });
     });
     socket.on(`${this.props.match.params.orga_name}/onboarding`, () => {
@@ -133,7 +133,7 @@ class OnboardingContainer extends Component<Props, State> {
       onboarding,
       changeNbRequired,
       match,
-      history
+      history,
     } = this.props;
     if (!onboarding.state) {
       return <SpinnerCard />;
@@ -142,7 +142,7 @@ class OnboardingContainer extends Component<Props, State> {
       <div className={cx("App", classes.wrapper)}>
         <div
           className={cx(classes.base, {
-            [classes.fatal_error]: onboarding.fatal_error
+            [classes.fatal_error]: onboarding.fatal_error,
           })}
         >
           <div className={classes.banner}>
@@ -214,5 +214,5 @@ class OnboardingContainer extends Component<Props, State> {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(OnboardingContainer));

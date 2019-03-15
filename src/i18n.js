@@ -4,6 +4,6 @@ import resources from "../locales";
 i18n.init({
   fallbackLng: "en",
   resources,
-  debug: true
+  debug: true,
 });
 export default i18n;

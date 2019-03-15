@@ -14,7 +14,7 @@ import Footer from "./Footer";
 
 const step = {
   base: { fontSize: 11, lineHeight: 1.82, flex: 0.3 },
-  number: { fontSize: 16, marginRight: 10, verticalAlign: "bottom" }
+  number: { fontSize: 16, marginRight: 10, verticalAlign: "bottom" },
 };
 const Step = withStyles(step)(({ number, icon, children, classes }) => (
   <div className={classes.base}>
@@ -29,7 +29,7 @@ const styles = {
   steps: {
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: 20
+    marginBottom: 20,
   },
   careful: {
     background: "#ea2e492b",
@@ -42,24 +42,24 @@ const styles = {
     fontWeight: "bold",
     margin: 0,
     borderRadius: 4,
-    marginBottom: 22
+    marginBottom: 22,
   },
   icon: {
     position: "absolute",
     color: colors.grenade,
     left: 21,
-    top: 31
+    top: 31,
   },
   toContinue: {
-    marginBottom: 15
-  }
+    marginBottom: 15,
+  },
 };
 const Backup = ({
   classes,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:backup.title")}</Title>

@@ -17,26 +17,26 @@ type Props = {
   Footer?: *,
   withIcon: boolean,
   children: *,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 const styles = {
   container: {
     color: "#555",
-    borderRadius: 3
+    borderRadius: 3,
   },
   content: {
-    display: "flex"
+    display: "flex",
   },
   inner: {
-    padding: 10
+    padding: 10,
   },
   footer: {
     background: "rgba(0,0,0,0.1)",
     display: "flex",
     justifyContent: "flex-end",
     padding: 5,
-    width: "100%"
+    width: "100%",
   },
   icon: {
     flexShrink: 0,
@@ -44,38 +44,38 @@ const styles = {
     paddingLeft: 10,
     paddingTop: 10,
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   isInfo: {
     backgroundColor: opacity(colors.ocean, 0.05),
     color: darken(colors.ocean, 0.3),
     "& .icon": {
-      color: opacity(darken(colors.ocean, 0.3), 0.3)
+      color: opacity(darken(colors.ocean, 0.3), 0.3),
     },
     "& .footer": {
-      background: opacity(colors.ocean, 0.1)
-    }
+      background: opacity(colors.ocean, 0.1),
+    },
   },
   isWarning: {
     color: colors.light_orange,
     backgroundColor: opacity(colors.blue_orange, 0.1),
     "& .icon": {
-      color: opacity(colors.light_orange, 0.4)
+      color: opacity(colors.light_orange, 0.4),
     },
     "& .footer": {
-      background: opacity(colors.blue_orange, 0.1)
-    }
+      background: opacity(colors.blue_orange, 0.1),
+    },
   },
   isError: {
     color: colors.grenade,
     backgroundColor: opacity(colors.grenade, 0.05),
     "& .icon": {
-      color: opacity(colors.grenade, 0.6)
+      color: opacity(colors.grenade, 0.6),
     },
     "& .footer": {
-      background: opacity(colors.grenade, 0.1)
-    }
-  }
+      background: opacity(colors.grenade, 0.1),
+    },
+  },
 };
 
 class InfoBox extends PureComponent<Props> {
@@ -109,7 +109,7 @@ class InfoBox extends PureComponent<Props> {
           type === "info" && classes.isInfo,
           type === "warning" && classes.isWarning,
           type === "error" && classes.isError,
-          className
+          className,
         )}
       >
         <div className={classes.content}>

@@ -11,15 +11,15 @@ import colors from "shared/colors";
 
 const styles = {
   select: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   menu: {
-    color: colors.ocean
+    color: colors.ocean,
   },
   selectLarge: {
     fontSize: 20,
-    lineHeight: "22px"
-  }
+    lineHeight: "22px",
+  },
 };
 
 class UnitSelect extends Component<{
@@ -27,7 +27,7 @@ class UnitSelect extends Component<{
   index: number,
   onChange: number => void,
   size?: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
   renderValue = (index: number) => {
     const { size, classes } = this.props;

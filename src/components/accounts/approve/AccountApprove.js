@@ -35,11 +35,11 @@ type Props = {
   organization: *,
   close: Function,
   approve: Function,
-  aborting: Function
+  aborting: Function,
 };
 
 type State = {
-  tabIndex: number
+  tabIndex: number,
 };
 
 const GenericFooter = ({
@@ -48,14 +48,14 @@ const GenericFooter = ({
   approve,
   aborting,
   profile,
-  account
+  account,
 }: {
   percentage?: boolean,
   quorum?: number,
   approve: Function,
   account: Account,
   profile: Member,
-  aborting: Function
+  aborting: Function,
 }) => (
   <Footer
     approve={() => approve(account)}
@@ -74,7 +74,7 @@ const hasApproved = (approvers, profile) =>
 
 class AccountApprove extends Component<Props, State> {
   state = {
-    tabIndex: 0
+    tabIndex: 0,
   };
 
   handleChange = (event, tabIndex) => {
@@ -91,7 +91,7 @@ class AccountApprove extends Component<Props, State> {
       t,
       approve,
       aborting,
-      accounts
+      accounts,
     } = this.props;
 
     const { tabIndex } = this.state;
@@ -181,14 +181,14 @@ const connected = connectData(translate()(AccountApprove), {
     accounts: AccountsQuery,
     users: UsersQuery,
     organization: OrganizationQuery,
-    profile: ProfileQuery
+    profile: ProfileQuery,
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
-    users: 30
+    users: 30,
   },
   propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),
-  RenderLoading: ModalLoading
+  RenderLoading: ModalLoading,
 });
 
 export default withRouter(connected);

@@ -6,7 +6,7 @@ import {
   createRender,
   networkFromMock,
   flushPromises,
-  NullComponent
+  NullComponent,
 } from "../tests-utils";
 import createMock, { AnimalQuery, AnimalsQuery } from "../tests-utils/mock-1";
 
@@ -17,7 +17,7 @@ test("RenderError gets rendered if network fails. it receives error that is the 
     RenderLoading: () => "LOADING...",
     RenderError: ({ error }) => error.toString(),
     queries: { animal: AnimalQuery },
-    propsToQueryParams: () => ({ animalId: "DOES_NOT_EXIST" })
+    propsToQueryParams: () => ({ animalId: "DOES_NOT_EXIST" }),
   });
   const inst = renderer.create(render(<AnimalNotFound />));
   expect(inst.toJSON()).toBe("LOADING...");
@@ -32,7 +32,7 @@ test("RenderError is by default rendering null", async () => {
   const render = createRender(net.network);
   const AnimalNotFound = connectData(NullComponent, {
     queries: { animal: AnimalQuery },
-    propsToQueryParams: () => ({ animalId: "DOES_NOT_EXIST" })
+    propsToQueryParams: () => ({ animalId: "DOES_NOT_EXIST" }),
   });
   const inst = renderer.create(render(<AnimalNotFound />));
   expect(net.tick()).toBe(1);
@@ -55,8 +55,8 @@ test("RenderError gets rendered if an error is thrown in a child", async () => {
       RenderLoading: () => "LOADING...",
       RenderError: ({ error }) => error.message,
       queries: { animal: AnimalQuery },
-      propsToQueryParams: () => ({ animalId: "id_max" })
-    }
+      propsToQueryParams: () => ({ animalId: "id_max" }),
+    },
   );
   const inst = renderer.create(render(<AnimalNotFound />));
   expect(inst.toJSON()).toBe("LOADING...");
@@ -72,7 +72,7 @@ test("a network error can be recovered after an update", async () => {
   const Animal = connectData(({ animal }) => animal.id, {
     RenderError: () => "oops",
     queries: { animal: AnimalQuery },
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));
   net.tick();
@@ -92,7 +92,7 @@ test("a network error can be recovered after an update when many queries", async
     RenderError: () => "oops",
     queries: { animal: AnimalQuery, animals: AnimalsQuery },
     // $FlowFixMe
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));
   net.tick();
@@ -112,7 +112,7 @@ test("a network error can be forceFetched without error", async () => {
   const Animal = connectData(NullComponent, {
     RenderError: ({ restlay }) => ((rlay = restlay), "oops"),
     queries: { animal: AnimalQuery },
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   const inst = renderer.create(render(<Animal animalId="DOES_NOT_EXIST" />));
   net.tick();
@@ -148,8 +148,8 @@ test("a thrown error can be recovered after an update", async () => {
     {
       RenderError: ({ error }) => error.message,
       queries: { animal: AnimalQuery },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();

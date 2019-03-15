@@ -6,18 +6,18 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   base: {
-    position: "relative"
+    position: "relative",
   },
   textFieldInput: {
-    textAlign: "right"
+    textAlign: "right",
   },
   underline: {
     "&:before": {
-      display: "none"
+      display: "none",
     },
     "&:after": {
-      top: 34
-    }
+      top: 34,
+    },
   },
   error: {
     position: "absolute",
@@ -26,8 +26,8 @@ const styles = {
     color: "white",
     borderRadius: 5,
     padding: 5,
-    background: colors.grenade
-  }
+    background: colors.grenade,
+  },
 };
 
 type Props = {
@@ -37,7 +37,7 @@ type Props = {
   placeholder: string,
   value: string,
   error: boolean,
-  onChange: Function
+  onChange: Function,
 };
 
 function UpdateTextField(props: Props) {
@@ -59,8 +59,8 @@ function UpdateTextField(props: Props) {
         InputProps={{
           classes: {
             input: classes.textFieldInput,
-            underline: classes.underline
-          }
+            underline: classes.underline,
+          },
         }}
         name={name}
         placeholder={placeholder}

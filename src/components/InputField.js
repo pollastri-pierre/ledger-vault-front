@@ -11,7 +11,7 @@ type Props = {
   renderRight?: ?React$Node,
   textAlign?: string,
   maxLength?: number,
-  onlyAscii?: boolean
+  onlyAscii?: boolean,
 };
 
 const isAscii = c => c.charCodeAt(0) <= 127;
@@ -57,8 +57,8 @@ class InputField extends PureComponent<Props> {
         onChange={this.handleChange}
         inputProps={{
           style: {
-            textAlign
-          }
+            textAlign,
+          },
         }}
         InputProps={{
           startAdornment: renderLeft && (
@@ -66,7 +66,7 @@ class InputField extends PureComponent<Props> {
           ),
           endAdornment: renderRight && (
             <InputAdornment position="end">{renderRight}</InputAdornment>
-          )
+          ),
         }}
         {...props}
       />

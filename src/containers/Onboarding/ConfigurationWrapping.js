@@ -8,7 +8,7 @@ import {
   Title,
   List,
   ListItem,
-  Introduction
+  Introduction,
 } from "../../components/Onboarding";
 import Footer from "./Footer";
 

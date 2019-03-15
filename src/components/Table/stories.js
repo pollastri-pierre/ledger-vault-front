@@ -8,7 +8,7 @@ import {
   genMembers,
   genAccounts,
   genOperations,
-  genGroups
+  genGroups,
 } from "data/mock-entities";
 
 import { GroupsTable, AccountsTable, OperationsTable } from "components/Table";

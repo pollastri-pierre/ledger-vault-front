@@ -19,6 +19,6 @@ const UserContextProvider = ({ children, me }: { children: *, me: Member }) => (
 // TODO render loading
 export default connectData(UserContextProvider, {
   queries: {
-    me: ProfileQuery
-  }
+    me: ProfileQuery,
+  },
 });

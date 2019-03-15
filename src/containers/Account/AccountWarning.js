@@ -7,7 +7,7 @@ import { toggleAndSelect } from "redux/modules/update-accounts";
 import {
   isAccountOutdated,
   isAccountBeingUpdated,
-  hasUserApprovedAccount
+  hasUserApprovedAccount,
 } from "utils/accounts";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
@@ -22,18 +22,18 @@ const styles = {
     background: opacity(colors.blue_orange, 0.5),
     color: "black",
     height: 20,
-    fontSize: 11
+    fontSize: 11,
   },
   infobox: {
-    width: 300
-  }
+    width: 300,
+  },
 };
 
 type Props = {
   account: Account,
   onOpen: (id: number) => void,
   me: Member,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class AccountWarning extends Component<Props> {
@@ -112,11 +112,11 @@ class AccountWarning extends Component<Props> {
 }
 
 const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
-  onOpen: () => dispatch(toggleAndSelect(ownProps.account))
+  onOpen: () => dispatch(toggleAndSelect(ownProps.account)),
 });
 export default withStyles(styles)(
   connect(
     null,
-    mapDispatchToProps
-  )(AccountWarning)
+    mapDispatchToProps,
+  )(AccountWarning),
 );

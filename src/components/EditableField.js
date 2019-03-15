@@ -10,23 +10,23 @@ import colors from "shared/colors";
 
 type Props = {
   value: string,
-  onChange: string => void
+  onChange: string => void,
 };
 type State = {
   editMode: boolean,
-  localValue: string
+  localValue: string,
 };
 const styles = {
   cursor: {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };
 class EditableField extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       editMode: false,
-      localValue: props.value
+      localValue: props.value,
     };
   }
 

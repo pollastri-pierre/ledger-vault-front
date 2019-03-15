@@ -20,12 +20,12 @@ const styles = {
     color: colors.white,
     borderRadius: "1em",
     fontSize: 11,
-    fontWeight: "600"
-  }
+    fontWeight: "600",
+  },
 };
 type Props = {
   accounts: Account[],
-  operations: Operation[]
+  operations: Operation[],
 };
 class PendingsMenuBadge extends Component<Props> {
   render() {
@@ -42,6 +42,6 @@ class PendingsMenuBadge extends Component<Props> {
 export default connectData(PendingsMenuBadge, {
   queries: {
     accounts: PendingAccountsQuery,
-    operations: PendingOperationsQuery
-  }
+    operations: PendingOperationsQuery,
+  },
 });

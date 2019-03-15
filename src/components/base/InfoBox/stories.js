@@ -28,7 +28,7 @@ const Wrapper = ({ type, withFooter, ...props }) => (
   <div
     style={{
       marginBottom: 30,
-      maxWidth: 400
+      maxWidth: 400,
     }}
   >
     <div
@@ -38,7 +38,7 @@ const Wrapper = ({ type, withFooter, ...props }) => (
         fontWeight: "bold",
         fontSize: 12,
         marginBottom: 10,
-        color: "#777"
+        color: "#777",
       }}
     >
       {type}

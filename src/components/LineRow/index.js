@@ -18,7 +18,7 @@ const BoxLined = styled(Box)`
 class LineRow extends Component<{
   label: React$Node,
   children?: React$Node | string,
-  tooltipInfoMessage?: React$Node
+  tooltipInfoMessage?: React$Node,
 }> {
   render() {
     const { label, children, tooltipInfoMessage } = this.props;

@@ -17,7 +17,7 @@ import isEqual from "lodash/isEqual";
 import {
   executeQueryOrMutation,
   getPendingQueryResult,
-  queryCacheIsFresh
+  queryCacheIsFresh,
 } from "./dataStore";
 import type { Store } from "./dataStore";
 import Query from "./Query";
@@ -32,7 +32,7 @@ export type RestlayEnvironment = {|
   fetchQuery: <In, Res>(m: Query<In, Res>) => Promise<Res>,
   forceFetch: () => Promise<void>,
   setVariables: Object => Promise<void>,
-  getVariables: () => Object
+  getVariables: () => Object,
   /* IDEA
   isReloadingData: (data: Object) => boolean,
   isOptimisticData: (data: Object) => boolean
@@ -41,20 +41,20 @@ export type RestlayEnvironment = {|
 
 type ConnectedProps = {|
   dataStore: Store,
-  dispatch: Function
+  dispatch: Function,
 |};
 
 type InjectedProps = {|
   restlay: RestlayEnvironment,
-  reloading: boolean
+  reloading: boolean,
 |};
 
 type ExtractQuery = <Q>(Class<Q>) => Q;
 type ExtractQueryResult = <In, Out, O>(
-  Class<Query<In, Out> | ConnectionQuery<In, O>>
+  Class<Query<In, Out> | ConnectionQuery<In, O>>,
 ) => Out;
 type ExtractQueryIn = <In, Out>(
-  Class<Query<In, Out> | ConnectionQuery<In, Out>>
+  Class<Query<In, Out> | ConnectionQuery<In, Out>>,
 ) => In;
 
 /* eslint-enable no-use-before-define */
@@ -93,7 +93,7 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
   // allow to pass parameters to the api uri function that will be used to generate api URL.
   propsToQueryParams?: (
     props: Props,
-    vars: Object
+    vars: Object,
   ) => $Values<$ObjMap<A, ExtractQueryIn>>,
 
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
@@ -106,7 +106,7 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
   freezeTransition?: boolean,
 
   // when new data is reloading, always render again RenderLoading
-  renderLoadingInTransition?: boolean // FIXME likely want to drop this and prefer the user to use `key` prop
+  renderLoadingInTransition?: boolean, // FIXME likely want to drop this and prefer the user to use `key` prop
 };
 
 const defaultOpts = {
@@ -118,7 +118,7 @@ const defaultOpts = {
   forceFetch: false,
   optimisticRendering: false,
   freezeTransition: false,
-  renderLoadingInTransition: false
+  renderLoadingInTransition: false,
 };
 
 const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
@@ -127,16 +127,16 @@ const extractInputProps = <Props>(props: ClazzProps<Props>): Props => {
 };
 
 const mapStateToProps = (state: Object): { dataStore: Store } => ({
-  dataStore: state.data
+  dataStore: state.data,
 });
 
 const _listeners = new Map();
 
 export default function connectData<
   A: {
-    [key: string]: Class<Query<any, any> | ConnectionQuery<any, any>>
+    [key: string]: Class<Query<any, any> | ConnectionQuery<any, any>>,
   },
-  Props: Object
+  Props: Object,
 >(Decorated: In<Props, A>, opts?: Opts<Props, A>): Out<Props> {
   type APIProps = $ObjMap<A, ExtractQueryResult>;
 
@@ -152,10 +152,10 @@ export default function connectData<
     renderLoadingInTransition,
     freezeTransition,
     forceFetch,
-    initialVariables
+    initialVariables,
   } = {
     ...defaultOpts,
-    ...opts
+    ...opts,
   };
   const queriesKeys: Array<$Keys<A>> = Object.keys(queries);
 
@@ -164,20 +164,20 @@ export default function connectData<
     apiError: ?Error,
     pending: boolean,
     data: ?APIProps,
-    variables: Object
+    variables: Object,
   };
 
   const sCUStateSubset = ({ pending, variables, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
 
   class Clazz extends Component<ClazzProps<Props>, State> {
     context: {
-      restlayProvider: RestlayProvider
+      restlayProvider: RestlayProvider,
     };
 
     static displayName = displayName;
 
     static contextTypes = {
-      restlayProvider: PropTypes.object.isRequired
+      restlayProvider: PropTypes.object.isRequired,
     };
 
     state = {
@@ -187,13 +187,13 @@ export default function connectData<
       // we need to wait a potential initial sync to not render initially with previous data if optimisticRendering is not asked
       pending: false,
       data: null,
-      variables: initialVariables
+      variables: initialVariables,
     };
 
     _options = {
       ...defaultOpts,
       ...this.context.restlayProvider.props.connectDataOptDefaults,
-      ...opts
+      ...opts,
     };
 
     getOptions() {
@@ -218,21 +218,21 @@ export default function connectData<
 
     subscribeMutations = (
       mutations: Mutation<any, any>[],
-      callback: () => void
+      callback: () => void,
     ) => {
       mutations.forEach(m => this.subscribeMutation(m, callback));
     };
 
     unsubscribeMutations = (
       mutations: Mutation<any, any>[],
-      callback: () => void
+      callback: () => void,
     ) => {
       mutations.forEach(m => this.unsubscribeMutation(m, callback));
     };
 
     subscribeMutation = (
       mutation: Mutation<any, any>,
-      callback: () => void
+      callback: () => void,
     ) => {
       const callbacks = _listeners.get(mutation);
 
@@ -245,7 +245,7 @@ export default function connectData<
 
     unsubscribeMutation = (
       mutation: Mutation<any, any>,
-      callback: () => void
+      callback: () => void,
     ) => {
       const callbacks = _listeners.get(mutation);
 
@@ -263,10 +263,10 @@ export default function connectData<
       queryOrMutation:
         | Query<any, Out>
         | Mutation<any, Out>
-        | ConnectionQuery<any, any>
+        | ConnectionQuery<any, any>,
     ): Promise<Out> {
       const res = await this.props.dispatch(
-        this.executeQueryF(queryOrMutation)
+        this.executeQueryF(queryOrMutation),
       );
       _listeners.forEach((callbacks, mutation) => {
         if (queryOrMutation instanceof mutation) {
@@ -281,7 +281,7 @@ export default function connectData<
       this.execute(m);
 
     fetchQuery = <Res>(
-      query: Query<any, Res> | ConnectionQuery<any, any>
+      query: Query<any, Res> | ConnectionQuery<any, any>,
     ): Promise<Res> => this.execute(query);
 
     updateQueryInstances(apiParams: Object) {
@@ -302,7 +302,7 @@ export default function connectData<
       apiParams: Object,
       props: ClazzProps<Props>,
       state: State,
-      forceFetchMode: boolean = false
+      forceFetchMode: boolean = false,
     ): Array<Promise<*>> {
       const { restlayProvider } = this.context;
       const { dataStore } = props;
@@ -333,7 +333,7 @@ export default function connectData<
             const size = state.variables[key];
             if (typeof size !== "number") {
               throw new Error(
-                `a variable '${key}' is expected on ${displayName}`
+                `a variable '${key}' is expected on ${displayName}`,
               );
             }
             if (!needsRefresh) {
@@ -364,7 +364,7 @@ export default function connectData<
     syncProps(
       props: ClazzProps<Props>,
       statePatch: $Shape<State> = {},
-      forceFetchMode: boolean = false
+      forceFetchMode: boolean = false,
     ): Promise<*> {
       // FIXME can we simplify the code?
       const state: State = { ...this.state, ...statePatch };
@@ -372,7 +372,7 @@ export default function connectData<
 
       const apiParams = propsToQueryParams(
         extractInputProps(props),
-        state.variables
+        state.variables,
       );
       const promises = this.syncAPI(apiParams, props, state, forceFetchMode);
 
@@ -391,13 +391,13 @@ export default function connectData<
             // NB we patch with a subset of state because local state variable might be outdated
             return this.syncProps(this.props, {
               apiError: null,
-              pending: false
+              pending: false,
             });
           },
           apiError => {
             if (this._unmounted || syncId !== this.syncAPI_id) return;
             return this.setState({ apiError, pending: false });
-          }
+          },
         );
       }
 
@@ -466,7 +466,7 @@ export default function connectData<
       return (
         !shallowEqual(
           extractInputProps(this.props),
-          extractInputProps(props)
+          extractInputProps(props),
         ) || !shallowEqual(sCUStateSubset(this.state), sCUStateSubset(state))
       );
     }
@@ -480,7 +480,7 @@ export default function connectData<
       unsubscribeMutations: this.unsubscribeMutations,
       forceFetch: () => this.syncProps(this.props, {}, true).then(() => {}),
       getVariables: this.getVariables,
-      setVariables: this.setVariables
+      setVariables: this.setVariables,
     };
 
     render() {
@@ -508,6 +508,6 @@ export default function connectData<
 
   return connect(
     mapStateToProps,
-    null
+    null,
   )(Clazz);
 }

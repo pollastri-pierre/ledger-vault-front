@@ -4,13 +4,13 @@ import SpinnerCard from "../spinners/SpinnerCard";
 
 type Props = {
   width?: number,
-  height?: number
+  height?: number,
 };
 
 class ModalLoading extends PureComponent<Props> {
   static defaultProps = {
     width: 500,
-    height: 615
+    height: 615,
   };
 
   render() {

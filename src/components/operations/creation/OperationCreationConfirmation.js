@@ -10,26 +10,26 @@ import Amount from "../../Amount";
 
 const styles = {
   root: {
-    padding: "0 40px"
+    padding: "0 40px",
   },
   warningMsg: {
     fontSize: 11,
     color: "#767676",
     lineHeight: 1.82,
-    marginTop: 15
-  }
+    marginTop: 15,
+  },
 };
 
 function OperationCreationConfirmation(props: {
   details: {
     amount: number,
     fees: number,
-    address: string
+    address: string,
   },
   estimatedFees: number,
   account: Account,
   t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }) {
   const { details, t, account, classes, estimatedFees } = props;
   return (

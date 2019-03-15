@@ -11,7 +11,7 @@ type Response = Account[];
 // Fetch all accounts
 export default class PotentialParentAccountsQuery extends Query<
   Input,
-  Response
+  Response,
 > {
   uri =
     "/accounts/status/APPROVED,PENDING,PENDING_UPDATE,PENDING_UPDATE_VIEW_ONLY,VIEW_ONLY";

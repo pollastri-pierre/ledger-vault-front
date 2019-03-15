@@ -10,39 +10,39 @@ import BlueSelectRightRenderValue from "../../BlueSelectRightRenderValue";
 
 type Fee = {
   key: string,
-  title: string
+  title: string,
 };
 
 const styles = {
   select: {
-    paddingBottom: 13
+    paddingBottom: 13,
   },
   menu: {
-    color: "#27d0e2"
-  }
+    color: "#27d0e2",
+  },
 };
 
 class FeePicker extends Component<{
   fees: Fee[],
   value: Speed,
   onChange: Speed => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
   static defaultProps = {
     fees: [
       {
         key: "slow",
-        title: "Slow (1 hour)"
+        title: "Slow (1 hour)",
       },
       {
         key: "normal",
-        title: "Medium (30 minutes)"
+        title: "Medium (30 minutes)",
       },
       {
         key: "fast",
-        title: "Fast (10 minutes)"
-      }
-    ]
+        title: "Fast (10 minutes)",
+      },
+    ],
   };
 
   renderValue = (key: string) =>

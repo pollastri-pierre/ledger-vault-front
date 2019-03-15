@@ -4,10 +4,10 @@ import type { Currency } from "@ledgerhq/live-common/lib/types";
 
 type Input = {
   address: string,
-  currency: Currency
+  currency: Currency,
 };
 type Response = {
-  valid: boolean
+  valid: boolean,
 };
 
 // e.g. /valid-address/bitcoin?address=1gre1noAY9HiK2qxoW8FzSdjdFBcoZ5fV

@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 import PendingRequests from "containers/PendingRequests/PendingRequests";
 
 type Props = {
-  match: Match
+  match: Match,
 };
 
 class AdminTasks extends PureComponent<Props> {

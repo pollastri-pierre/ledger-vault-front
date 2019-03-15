@@ -25,14 +25,14 @@ const styles = {
     textAlign: "right",
     color: colors.steel,
     fontWeight: 600,
-    fontSize: 11
+    fontSize: 11,
   },
   currencyValue: {
     flex: 1,
     textAlign: "right",
     paddingBottom: 15,
-    borderBottom: "1px solid #eeeeee"
-  }
+    borderBottom: "1px solid #eeeeee",
+  },
 };
 
 type Props<Transaction> = {
@@ -41,7 +41,7 @@ type Props<Transaction> = {
   onChangeTransaction: Transaction => void,
   restlay: RestlayEnvironment,
   transaction: Transaction,
-  bridge: WalletBridge<Transaction>
+  bridge: WalletBridge<Transaction>,
 };
 
 class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
@@ -53,7 +53,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       transaction,
       restlay,
       onChangeTransaction,
-      bridge
+      bridge,
     } = this.props;
     const feesInvalidated =
       transaction.recipient !== prevProps.transaction.recipient ||
@@ -69,25 +69,25 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       const isValid = await bridge.isRecipientValid(
         restlay,
         currency,
-        transaction.recipient
+        transaction.recipient,
       );
       if (nonce !== this.nonce) return;
       if (isValid) {
         const operation = {
           fee_level: feeLevel || "normal",
           amount: transaction.amount || 0,
-          recipient: transaction.recipient || ""
+          recipient: transaction.recipient || "",
         };
         const estimatedFees = await getFees(
           account,
           transaction,
           operation,
-          restlay
+          restlay,
         );
         if (nonce !== this.nonce) return;
         onChangeTransaction({
           ...transaction,
-          estimatedFees: estimatedFees.fees
+          estimatedFees: estimatedFees.fees,
         });
       }
     }
@@ -97,7 +97,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
     const { bridge, account, transaction, onChangeTransaction } = this.props;
     bridge.editTransactionFeeLevel &&
       onChangeTransaction(
-        bridge.editTransactionFeeLevel(account, transaction, feesSelected)
+        bridge.editTransactionFeeLevel(account, transaction, feesSelected),
       );
   };
 

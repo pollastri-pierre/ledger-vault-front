@@ -8,8 +8,8 @@ import colors from "shared/colors";
 
 const styles = {
   base: {
-    borderBottom: `1px solid ${colors.argile}`
-  }
+    borderBottom: `1px solid ${colors.argile}`,
+  },
 };
 function ApprovalMember(props: { member: Member, isApproved: boolean }) {
   const { member, isApproved } = props;

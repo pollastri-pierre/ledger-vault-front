@@ -12,25 +12,25 @@ context("Create the Master Seed", () => {
     cy.server();
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`,
     ).as("next");
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`,
     ).as("authenticate");
     cy.route(
       "get",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`,
     ).as("challenge");
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 7
+      device_number: 7,
     });
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
@@ -41,11 +41,11 @@ context("Create the Master Seed", () => {
       cy.wait("@authenticate");
 
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 8
+        device_number: 8,
       });
       // Cancel on the device
       cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: false
+        approve: false,
       });
 
       cy.get(":nth-child(2) > .fragment").click();
@@ -56,7 +56,7 @@ context("Create the Master Seed", () => {
 
       // choose to register admin again
       cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: false
+        approve: false,
       });
       cy.get(":nth-child(2) > .fragment").click();
       cy.contains("You've made a mistake when registering ").click();

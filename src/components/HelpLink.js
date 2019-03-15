@@ -5,7 +5,7 @@ type Props = {
   children: *,
   subLink?: string,
   support?: boolean,
-  className?: string
+  className?: string,
 };
 class HelpLink extends PureComponent<Props> {
   render() {

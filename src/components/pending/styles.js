@@ -3,24 +3,24 @@ import colors from "../../shared/colors";
 const styles = {
   base: {
     "& a": {
-      textDecoration: "none"
-    }
+      textDecoration: "none",
+    },
   },
   headerContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   header: {
     fontSize: 22,
     color: colors.black,
-    lineHeight: 1.5
+    lineHeight: 1.5,
   },
   subHeader: {
     fontWeight: 600,
     lineHeight: 3,
     textTransform: "uppercase",
-    color: colors.lead
+    color: colors.lead,
   },
   row: {
     cursor: "pointer",
@@ -36,29 +36,29 @@ const styles = {
       content: '""',
       left: -40,
       top: "50%",
-      marginTop: -14
+      marginTop: -14,
     },
     "&:not(:last-child)": {
-      borderBottom: "1px solid #eee"
+      borderBottom: "1px solid #eee",
     },
     "&:hover:before": {
-      width: 5
-    }
+      width: 5,
+    },
   },
   dateContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   date: {
     fontSize: 10,
     color: colors.black,
     textTransform: "uppercase",
     fontWeight: "600",
-    lineHeight: 2.3
+    lineHeight: 2.3,
   },
   name: {
-    color: colors.black
+    color: colors.black,
   },
   status: {
     display: "flex",
@@ -66,18 +66,18 @@ const styles = {
     justifyContent: "space-between",
     fontSize: 11,
     color: colors.lead,
-    lineHeight: 2.09
+    lineHeight: 2.09,
   },
   currency: {
     color: colors.lead,
     textTransform: "uppercase",
-    fontWeight: "600"
+    fontWeight: "600",
   },
   operationDetailsContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 
 export default styles;

@@ -7,31 +7,31 @@ export const ADD_MESSAGE = "messages/ADD_MESSAGE";
 export const ADD_ERROR = "messages/ADD_ERROR";
 
 export type Store = {
-  visible: boolean
+  visible: boolean,
 };
 
 export function closeMessage() {
   return {
-    type: REMOVE_MESSAGE
+    type: REMOVE_MESSAGE,
   };
 }
 
 export function addError(error: Error) {
   return {
     type: ADD_ERROR,
-    error
+    error,
   };
 }
 export function addMessage(
   title: string,
   content: string,
-  messageType: string = "success"
+  messageType: string = "success",
 ) {
   return {
     type: ADD_MESSAGE,
     title,
     content,
-    messageType
+    messageType,
   };
 }
 
@@ -47,7 +47,7 @@ export default function reducer(state: Store = initialState, action: Object) {
     return {
       title: "error.error5xTitle",
       content: "error.error5xContent",
-      type: "error"
+      type: "error",
     };
   }
 
@@ -75,7 +75,7 @@ export default function reducer(state: Store = initialState, action: Object) {
         visible: true,
         title: `Error ${error.json ? error.json.code : error.message}`,
         content: error.json ? error.json.message : error.message,
-        type: "error"
+        type: "error",
       };
     }
     case ADD_ERROR: {
@@ -92,7 +92,7 @@ export default function reducer(state: Store = initialState, action: Object) {
         title: "See you soon!",
         content:
           "You have been successfully logged out. You can now safely close your web browser.",
-        type: "success"
+        type: "success",
       };
     case REMOVE_MESSAGE:
       return { ...state, visible: false };

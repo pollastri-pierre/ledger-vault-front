@@ -12,7 +12,7 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import {
   openWrappingChannel,
   toggleDeviceModal,
-  addWrappingKey
+  addWrappingKey,
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
@@ -22,32 +22,32 @@ const styles = {
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
   disabled: {
     opacity: 0.5,
-    cursor: "default"
+    cursor: "default",
   },
   icon: {
     width: 10,
-    marginRight: 5
+    marginRight: 5,
   },
   counter: {
     fontSize: 11,
-    color: "#767676"
+    color: "#767676",
   },
   signin_desc: {
     fontSize: 12,
-    marginBottom: 15
+    marginBottom: 15,
   },
   title: {
     fontSize: 13,
     fontWeight: 600,
-    margin: "0 0 12px 0"
+    margin: "0 0 12px 0",
   },
   flexWrapper: {
-    flex: 1
+    flex: 1,
   },
   separator: {
     width: 1,
     height: 94,
-    background: "#eeeeee"
+    background: "#eeeeee",
   },
   sign: {
     fontSize: 11,
@@ -56,14 +56,14 @@ const styles = {
     textDecoration: "none",
     textTransform: "uppercase",
     display: "block",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   sep: {
     width: 220,
     height: 1,
     background: "#eeeeee",
-    margin: "20px 0 20px 0"
-  }
+    margin: "20px 0 20px 0",
+  },
 };
 
 type Props = {
@@ -74,18 +74,18 @@ type Props = {
   onAddMessage: Function,
   history: *,
   t: Translate,
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
 };
 
 const mapState = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({
   onGetWrapsChannel: () => dispatch(openWrappingChannel()),
   onAddWrapShard: data => dispatch(addWrappingKey(data)),
   onToggleDeviceModal: () => dispatch(toggleDeviceModal()),
   onAddMessage: (title, content, success) =>
-    dispatch(addMessage(title, content, success))
+    dispatch(addMessage(title, content, success)),
 });
 class WrappingKeys extends Component<Props> {
   componentDidMount() {
@@ -105,7 +105,7 @@ class WrappingKeys extends Component<Props> {
       history,
       onToggleDeviceModal,
       classes,
-      t
+      t,
     } = this.props;
     if (
       !onboarding.wrapping.channel ||
@@ -176,5 +176,5 @@ export { WrappingKeys };
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(withStyles(styles)(translate()(WrappingKeys)));

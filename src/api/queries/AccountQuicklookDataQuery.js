@@ -5,7 +5,7 @@ export type Range = "year" | "month" | "week" | "day";
 type Input = {
   accountId: string,
   // this defines the time window AND the granularity of the data
-  range: Range
+  range: Range,
 };
 type DataPoint = [number, number]; // a [ timestamp, value ] tuple
 export type Response = {
@@ -13,7 +13,7 @@ export type Response = {
   // (even if there where no transaction at that time)
   // e.g. for a day range of a 1h granularity, arrays would have 25 points
   balance: DataPoint[],
-  counterValueBalance: DataPoint[]
+  counterValueBalance: DataPoint[],
 };
 
 // Fetch data for the Quicklook graph. data should be baked with all Account's operations

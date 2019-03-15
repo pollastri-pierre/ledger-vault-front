@@ -12,7 +12,7 @@ import UserDetails from "containers/UserDetails";
 
 type Props = {
   close: () => void,
-  user: Member
+  user: Member,
 };
 
 class AdminDetails extends PureComponent<Props> {
@@ -30,9 +30,9 @@ export default connectData(AdminDetails, {
   RenderError,
   RenderLoading,
   queries: {
-    user: UserQuery
+    user: UserQuery,
   },
   propsToQueryParams: props => ({
-    userID: props.match.params.userID || ""
-  })
+    userID: props.match.params.userID || "",
+  }),
 });

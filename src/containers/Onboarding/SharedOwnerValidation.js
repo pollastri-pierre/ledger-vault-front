@@ -15,7 +15,7 @@ import {
   openAdminValidationChannel,
   wipe,
   toggleDeviceModal,
-  addAdminValidation
+  addAdminValidation,
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import { Title, Introduction } from "components/Onboarding";
@@ -26,8 +26,8 @@ const styles = {
   flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
   base: {
     "& strong": {
-      fontSize: 12
-    }
+      fontSize: 12,
+    },
   },
   sign: {
     fontSize: 11,
@@ -36,29 +36,29 @@ const styles = {
     textDecoration: "none",
     textTransform: "uppercase",
     display: "block",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   counter: {
     fontSize: 11,
-    color: "#767676"
+    color: "#767676",
   },
   sep: {
     width: 220,
     height: 1,
     background: "#eeeeee",
-    margin: "20px 0 20px 0"
+    margin: "20px 0 20px 0",
   },
   flexWrapper: {
-    flex: 1
+    flex: 1,
   },
   disabled: {
     opacity: 0.5,
-    cursor: "default"
+    cursor: "default",
   },
   icon: {
     width: 10,
-    marginRight: 5
-  }
+    marginRight: 5,
+  },
 };
 
 type Props = {
@@ -71,14 +71,14 @@ type Props = {
   onOpenAdminValidationChannel: () => void,
   onAddAdminValidation: (string, string) => void,
   onAddMessage: (string, string, string) => Function,
-  t: Translate
+  t: Translate,
 };
 type State = {
-  deny: boolean
+  deny: boolean,
 };
 class SharedOwnerValidation extends Component<Props, State> {
   state = {
-    deny: false
+    deny: false,
   };
 
   svg: ?Element;
@@ -103,7 +103,7 @@ class SharedOwnerValidation extends Component<Props, State> {
       onWipe,
       onAddMessage,
       onToggleSignin,
-      t
+      t,
     } = this.props;
     if (onboarding.validating_shared_owner.channels.length === 0) {
       return <SpinnerCard />;
@@ -148,7 +148,7 @@ class SharedOwnerValidation extends Component<Props, State> {
                 className={cx(classes.sign, {
                   [classes.disabled]:
                     onboarding.validating_shared_owner.admins.length ===
-                    onboarding.quorum
+                    onboarding.quorum,
                 })}
                 onClick={
                   onboarding.validating_shared_owner.admins.length ===
@@ -204,7 +204,7 @@ class SharedOwnerValidation extends Component<Props, State> {
 }
 
 const mapState = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 
 const mapDispatch = (dispatch: *) => ({
@@ -213,10 +213,10 @@ const mapDispatch = (dispatch: *) => ({
   onAddAdminValidation: (key, sign) => dispatch(addAdminValidation(key, sign)),
   onWipe: () => dispatch(wipe()),
   onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type))
+    dispatch(addMessage(title, message, type)),
 });
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(withStyles(styles)(translate()(SharedOwnerValidation)));

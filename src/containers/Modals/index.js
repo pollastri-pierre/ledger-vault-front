@@ -6,7 +6,7 @@ import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 
 type Props = {
-  match: Match
+  match: Match,
 };
 
 class Modals extends PureComponent<Props> {
@@ -16,7 +16,7 @@ class Modals extends PureComponent<Props> {
         <ModalRoute
           path="*/groups/:groupId"
           render={(
-            props // looks hacky but prevent bug with <Switch> and ModalRoute with the overlay animation
+            props, // looks hacky but prevent bug with <Switch> and ModalRoute with the overlay animation
           ) =>
             props.match.params.groupId === "new" ? (
               <CreateGroup {...props} />

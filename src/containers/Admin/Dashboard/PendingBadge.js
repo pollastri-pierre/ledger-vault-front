@@ -14,12 +14,12 @@ const styles = {
     width: 18,
     height: 18,
     borderRadius: "50%",
-    fontSize: 11
-  }
+    fontSize: 11,
+  },
 };
 type Props = {
   data: Connection<Request>,
-  me: Member
+  me: Member,
 };
 class PendingBadge extends PureComponent<Props> {
   render() {
@@ -50,6 +50,6 @@ class PendingBadge extends PureComponent<Props> {
 export default connectData(PendingBadge, {
   queries: {
     data: PendingRequestsQuery,
-    me: ProfileQuery
-  }
+    me: ProfileQuery,
+  },
 });

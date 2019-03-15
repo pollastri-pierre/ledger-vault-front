@@ -17,7 +17,7 @@ class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
   checked?: boolean,
   editable?: boolean,
-  member: Member
+  member: Member,
 }> {
   onClick = () => {
     const { onSelect } = this.props;

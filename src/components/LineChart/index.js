@@ -15,17 +15,17 @@ const styles = {
     fontWeight: 600,
     fontFamily: "Open Sans",
     "& .valueline": {
-      stroke: "#fcb653"
-    }
+      stroke: "#fcb653",
+    },
   },
   noData: {
-    pointerEvents: "none"
+    pointerEvents: "none",
   },
   chartWrap: {
     position: "relative",
     svg: {
-      overflow: "visible"
-    }
+      overflow: "visible",
+    },
   },
   tooltip: {
     position: "absolute",
@@ -37,7 +37,7 @@ const styles = {
     pointerEvents: "none",
     backgroundColor: "currentColor",
     padding: 15,
-    transition: "opacity 0.3s ease-out"
+    transition: "opacity 0.3s ease-out",
   },
   lookDown: {
     "&:before": {
@@ -50,47 +50,47 @@ const styles = {
       borderRight: "10px solid transparent !important",
       borderLeft: "10px solid transparent !important",
       left: 40,
-      top: "63px !important"
+      top: "63px !important",
     },
     ".tooltipText span": {
-      float: "right"
-    }
+      float: "right",
+    },
   },
   tooltipTextWrap: {
     position: "relative",
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   tooltipText: {
     color: "white",
     fontSize: 13,
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   uppercase: {
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   date: {
     color: "#e2e2e2",
-    fontSize: 11
+    fontSize: 11,
   },
   hide: {
     opacity: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   xAxisLabel: {
     textTransform: "uppercase",
     position: "absolute",
     bottom: 1,
-    color: "#767676"
-  }
+    color: "#767676",
+  },
 };
 
 type DataPointEnhanced = {
   date: number,
   value: number,
   x: number,
-  y: number
+  y: number,
 };
 
 type Props = {
@@ -99,7 +99,7 @@ type Props = {
   formatTooltip: Function,
   noXAxisLabel?: boolean,
   showTooltip?: boolean,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class LineChart extends Component<Props, *> {
@@ -108,7 +108,7 @@ class LineChart extends Component<Props, *> {
     width: 100,
     height: 100,
     transform: "",
-    margin: { top: 20, right: 0, bottom: 20, left: 65 }
+    margin: { top: 20, right: 0, bottom: 20, left: 65 },
   };
 
   tooltip: ?HTMLDivElement;
@@ -305,13 +305,13 @@ class LineChart extends Component<Props, *> {
       date,
       value,
       x: x(date),
-      y: y(value)
+      y: y(value),
     }));
     return {
       data: computedData,
       xAxis: newXAxis,
       yAxis,
-      x
+      x,
     };
   };
 
@@ -414,7 +414,7 @@ class LineChart extends Component<Props, *> {
     // update placeholder for NO DATA AVAILABLE text
     g.select(".noData").attr(
       "transform",
-      `translate(${width / 2}, ${height / 2})`
+      `translate(${width / 2}, ${height / 2})`,
     );
   };
 
@@ -426,7 +426,7 @@ class LineChart extends Component<Props, *> {
         transform: d3.zoomIdentity
           .scale(width / (x(d1) - x(d0)))
           .translate(-x(d0), 0),
-        selected: -1
+        selected: -1,
       };
     });
   };
@@ -468,7 +468,7 @@ class LineChart extends Component<Props, *> {
             : formatWeek
           : d3.timeYear(date) < date
           ? formatMonth
-          : formatYear)(date)
+          : formatYear)(date),
       );
 
     return xAxis;
@@ -498,10 +498,10 @@ class LineChart extends Component<Props, *> {
     const parent = d3.select(d3.select(this.svg).node().parentNode);
     const dateRange = this.getDateRange(data);
     const height = Math.round(
-      parseFloat(parent.style("height")) - margin.top - margin.bottom
+      parseFloat(parent.style("height")) - margin.top - margin.bottom,
     );
     const width = Math.round(
-      parseFloat(parent.style("width")) - margin.left - margin.right
+      parseFloat(parent.style("width")) - margin.left - margin.right,
     );
 
     this.setState({ height, width }, () => {
@@ -586,7 +586,7 @@ class LineChart extends Component<Props, *> {
 
   getDateRange = (data: Array<[number, number]>): [number, number] => [
     data[0][0],
-    data[data.length - 1][0]
+    data[data.length - 1][0],
   ];
 
   render() {

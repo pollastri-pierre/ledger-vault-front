@@ -5,33 +5,33 @@ export const requestsTableDefault = [
     header: {
       label: "Date",
       align: "left",
-      sortable: true
+      sortable: true,
     },
     body: {
       prop: "date",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "Activity",
       align: "left",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "activity",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "Status",
       align: "left",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "status",
-      align: "left"
-    }
-  }
+      align: "left",
+    },
+  },
 ];

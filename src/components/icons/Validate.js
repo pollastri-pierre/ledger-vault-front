@@ -8,7 +8,7 @@ type Props = { size?: number, color?: string };
 export default class Validate extends PureComponent<Props> {
   static defaultProps = {
     size: 20,
-    color: colors.black
+    color: colors.black,
   };
 
   render() {

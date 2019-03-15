@@ -14,7 +14,7 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 const mapStateToProps = (state, ownProps) => {
   const countervalue = ownProps.operations.reduce((acc, operation) => {
     const account = ownProps.accounts.find(
-      account => account.id === operation.account_id
+      account => account.id === operation.account_id,
     );
     if (account) {
       if (account.account_type === "ERC20") return null;
@@ -27,7 +27,7 @@ const mapStateToProps = (state, ownProps) => {
           fromExchange: currency && state.exchanges.data[currency.ticker],
           intermediary: intermediaryCurrency,
           toExchange: state.exchanges.data.USD,
-          value: operation.price.amount
+          value: operation.price.amount,
         })
       );
     }
@@ -39,7 +39,7 @@ const mapStateToProps = (state, ownProps) => {
 type Props = {
   countervalue: number,
   accounts: Account[], // eslint-disable-line react/no-unused-prop-types
-  operations: Operation[] // eslint-disable-line react/no-unused-prop-types
+  operations: Operation[], // eslint-disable-line react/no-unused-prop-types
 };
 
 class CounterValuesOperations extends PureComponent<Props> {

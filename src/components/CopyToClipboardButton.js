@@ -10,11 +10,11 @@ import colors from "shared/colors";
 
 type Props = {
   textToCopy: string,
-  visible?: boolean
+  visible?: boolean,
 };
 
 type State = {
-  copied: boolean
+  copied: boolean,
 };
 
 const ButtonContainer = styled(Box)`
@@ -22,7 +22,7 @@ const ButtonContainer = styled(Box)`
 `;
 const Container = styled(Box).attrs({
   horizontal: true,
-  justify: "space-between"
+  justify: "space-between",
 })`
   align-items: center;
   &:hover {
@@ -36,12 +36,12 @@ const styles = {
   text: {
     overflow: "hidden",
     textOverflow: "ellipsis",
-    whiteSpace: "nowrap"
-  }
+    whiteSpace: "nowrap",
+  },
 };
 class CopyToClipboardButton extends Component<Props, State> {
   state = {
-    copied: false
+    copied: false,
   };
 
   componentWillUnmount() {

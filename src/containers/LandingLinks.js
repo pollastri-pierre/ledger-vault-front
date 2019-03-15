@@ -16,13 +16,13 @@ const styles = {
     textTransform: "uppercase",
     "& p": {
       fontWeight: 600,
-      lineHeight: "26px"
-    }
+      lineHeight: "26px",
+    },
   },
   actions: {
     display: "flex",
     marginTop: 40,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   link: {
     color: "white",
@@ -32,11 +32,11 @@ const styles = {
     fontSize: 14,
     textAlign: "center",
     background: colors.ocean,
-    display: "inline-block"
-  }
+    display: "inline-block",
+  },
 };
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class LandingLinks extends PureComponent<Props> {

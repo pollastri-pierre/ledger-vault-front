@@ -35,7 +35,7 @@ type Props = {
   quorum: Number,
   user: Member,
   match: *,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 function PendingAccountApprove(props: Props) {
   const { accounts, approved, approvers, user, classes, match, quorum } = props;
@@ -82,7 +82,7 @@ function PendingAccountApprove(props: Props) {
       {accounts.map(account => (
         <Link
           className={classnames(classes.row, "test-pending-account", {
-            [classes.approved]: approved
+            [classes.approved]: approved,
           })}
           to={`${match.url}/account/${account.id}`}
           key={account.id}

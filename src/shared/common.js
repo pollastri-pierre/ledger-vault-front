@@ -5,13 +5,13 @@ const common = {
   list: {
     listStyleType: "none",
     margin: "0",
-    padding: "0"
+    padding: "0",
   },
   blueLink: {
     textTransform: "uppercase",
     textDecoration: "none",
-    color: colors.ocean
-  }
+    color: colors.ocean,
+  },
 };
 
 export function mixinHoverSelected(color: string, left: string) {
@@ -28,17 +28,17 @@ export function mixinHoverSelected(color: string, left: string) {
       left,
       opacity: "0",
       bottom: "calc(50% - 13px)",
-      transition: "opacity .2s ease"
+      transition: "opacity .2s ease",
     },
     "&:hover": {
-      opacity: "1"
+      opacity: "1",
     },
     "&.active:before": {
-      opacity: "1"
+      opacity: "1",
     },
     "&:hover:before, &.active": {
-      opacity: "1"
-    }
+      opacity: "1",
+    },
   };
 }
 export default common;

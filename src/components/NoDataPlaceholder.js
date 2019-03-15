@@ -10,15 +10,15 @@ import imgEmptyState from "assets/img/empty-state.svg";
 
 const styles = {
   container: {
-    height: 250
+    height: 250,
   },
   image: {
-    marginRight: -30
-  }
+    marginRight: -30,
+  },
 };
 
 class NoDataPlaceholder extends Component<{
-  title: string
+  title: string,
 }> {
   render() {
     const { title } = this.props;

@@ -6,7 +6,7 @@ import schema from "data/schema";
 
 type In = {
   group: Group,
-  description: string
+  description: string,
 };
 
 type Res = Group;

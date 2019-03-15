@@ -15,7 +15,7 @@ type Props = {
   interaction: Interaction,
   numberSteps: number,
   currentStep: ?number,
-  error?: boolean
+  error?: boolean,
 };
 
 const computerIcon = <MdComputer size={20} />;
@@ -28,7 +28,7 @@ const errorIcon = <MdError size={15} color={colors.grenade} />;
 const Container = styled(Box).attrs({
   p: 20,
   horizontal: true,
-  align: "center"
+  align: "center",
 })`
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
@@ -101,23 +101,23 @@ const Tooltip = styled(Box)`
 type PropsDash = {
   number: number,
   currentStep: ?number,
-  error: ?boolean
+  error: ?boolean,
 };
 
 type StateDash = {
   intervalId: ?IntervalID,
   deviceReady: ?boolean,
-  dashActive: number
+  dashActive: number,
 };
 class DashContainer extends PureComponent<PropsDash, StateDash> {
   state = {
     intervalId: null,
     deviceReady: false,
-    dashActive: 0
+    dashActive: 0,
   };
 
   static defaultProps = {
-    number: 3
+    number: 3,
   };
 
   componentDidMount() {
@@ -129,7 +129,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
     const { currentStep } = props;
     return {
       ...state,
-      deviceReady: currentStep > 0
+      deviceReady: currentStep > 0,
     };
   }
 
@@ -153,7 +153,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
     const { dashActive } = this.state;
     const newActive = dashActive === number + 1 ? 0 : dashActive + 1;
     this.setState({
-      dashActive: newActive
+      dashActive: newActive,
     });
   }
 
@@ -168,7 +168,7 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
           active={dashActive === i}
           done={currentStep && i < currentStep}
           key={i}
-        />
+        />,
       );
     }
     return rows;
@@ -193,10 +193,10 @@ class DashContainer extends PureComponent<PropsDash, StateDash> {
 
 const LeftIcon = ({
   type,
-  needsUserInput
+  needsUserInput,
 }: {
   type: CurrentActionType,
-  needsUserInput?: boolean
+  needsUserInput?: boolean,
 }) =>
   type === "device" ? (
     <DeviceIcon needsUserInput={needsUserInput} />

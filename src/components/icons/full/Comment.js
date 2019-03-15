@@ -5,7 +5,7 @@ type Props = { color?: string, className: string };
 
 export default class Comment extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

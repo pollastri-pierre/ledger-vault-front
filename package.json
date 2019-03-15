@@ -14,7 +14,7 @@
     "cypress:run:operation": "cypress run --spec 'cypress/integration/Operation/*' --browser chrome",
     "lint": "eslint src test webpack",
     "flow-typed": "bash scripts/install-flow-typed.sh",
-    "prettier": "prettier --write \"{src,webpack,test,cypress}/**/*.{js,json}\"",
+    "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
     "starte2e": "NODE_ENV=e2e webpack-dev-server --https --config webpack/dev.babel.js",
     "test": "jest --env=jsdom --maxWorkers 2",

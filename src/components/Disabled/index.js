@@ -6,14 +6,14 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   disabled: {
     opacity: "0.4",
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
 };
 
 class Disabled extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   disabled: boolean,
-  children: *
+  children: *,
 }> {
   render() {
     const { disabled, classes, children } = this.props;

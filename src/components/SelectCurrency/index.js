@@ -11,7 +11,7 @@ import type { ERC20Token } from "data/types";
 import {
   listCryptoCurrencies,
   listERC20Tokens,
-  isERC20Token
+  isERC20Token,
 } from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
@@ -24,12 +24,12 @@ const ICON_SIZE = 16;
 
 type CurrencyItem = {
   type: "currency",
-  value: CryptoCurrency
+  value: CryptoCurrency,
 };
 
 type ERC20TokenItem = {
   type: "erc20token",
-  value: ERC20Token
+  value: ERC20Token,
 };
 
 export type Item = CurrencyItem | ERC20TokenItem;
@@ -54,7 +54,7 @@ function getItemLabel(item: Item) {
       <b>{item.value.ticker}</b>{" "}
       <span style={styles.contract}>{`${item.value.contract_address.substr(
         0,
-        15
+        15,
       )}...`}</span>
     </span>
   ) : (
@@ -66,7 +66,7 @@ const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({
     label: item.value.name,
     value: `${item.type}_${item.value.name}`,
-    data: item
+    data: item,
   }));
 
 // https://ledgerhq.atlassian.net/browse/LV-991
@@ -79,12 +79,12 @@ const INCLUDE_DEV = true;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
-  value: c
+  value: c,
 }));
 
 const erc20TokensItems = listERC20Tokens().map(t => ({
   type: "erc20token",
-  value: t
+  value: t,
 }));
 
 const currenciesOptions = buildOptions(currenciesItems);
@@ -98,7 +98,7 @@ const fuseOptions = {
   distance: 100,
   maxPatternLength: 32,
   minMatchCharLength: 1,
-  keys: ["data.value.name", "data.value.ticker", "data.value.contract_address"]
+  keys: ["data.value.name", "data.value.ticker", "data.value.contract_address"],
 };
 
 const fuse = new Fuse(fullOptions, fuseOptions);
@@ -136,14 +136,14 @@ const styles = {
     fontSize: 10,
     fontFamily: "monospace",
     padding: 4,
-    backgroundColor: "rgba(0, 0, 0, 0.05)"
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
   erc20Hint: {
     backgroundColor: colors.cream,
     textAlign: "center",
     color: colors.steel,
-    padding: 5
-  }
+    padding: 5,
+  },
 };
 
 const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
@@ -182,7 +182,7 @@ const MenuComponent = (props: OptionProps) => (
         <Trans
           i18nKey="newAccount:search.extraERC20"
           values={{
-            erc20Count: erc20TokensOptions.length + currenciesOptions.length
+            erc20Count: erc20TokensOptions.length + currenciesOptions.length,
           }}
           components={<b>0</b>}
         />
@@ -194,13 +194,13 @@ const MenuComponent = (props: OptionProps) => (
 const customComponents = {
   Option: OptionComponent,
   SingleValue: ValueComponent,
-  Menu: MenuComponent
+  Menu: MenuComponent,
 };
 
 type Props = {
   value: CryptoCurrency | ERC20Token | null,
   onChange: (?Item) => void,
-  t: *
+  t: *,
 };
 
 class SelectCurrency extends PureComponent<Props> {

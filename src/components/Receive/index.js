@@ -21,7 +21,7 @@ const tabTitles = ["1. Account", "2. Device", "3. Receive"];
 
 type Props = {
   accounts: Account[],
-  close: Function
+  close: Function,
 };
 
 type State = {
@@ -29,7 +29,7 @@ type State = {
   device: boolean,
   verified: boolean,
   error: boolean,
-  selectedAccount: ?Account
+  selectedAccount: ?Account,
 };
 
 let _isMounted = false;
@@ -42,7 +42,7 @@ class Receive extends Component<Props, State> {
       device: false,
       error: true,
       verified: false,
-      selectedAccount: null
+      selectedAccount: null,
     };
   }
 
@@ -72,7 +72,7 @@ class Receive extends Component<Props, State> {
     this.setState(prev => ({
       ...prev,
       index: 1,
-      selectedAccount
+      selectedAccount,
     }));
   };
 
@@ -153,6 +153,6 @@ class Receive extends Component<Props, State> {
 export default connectData(translate()(Receive), {
   RenderLoading: ModalLoading,
   queries: {
-    accounts: AccountsQuery
-  }
+    accounts: AccountsQuery,
+  },
 });

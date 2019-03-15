@@ -7,7 +7,7 @@ import { success, error } from "formatters/notification";
 type Input = {
   accountId: string,
   approval: string,
-  public_key: string
+  public_key: string,
 };
 
 type Response = Account;

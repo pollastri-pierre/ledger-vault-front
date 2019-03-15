@@ -12,30 +12,30 @@ import colors from "shared/colors";
 const styles = {
   container: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   iconContainer: {
     width: 40,
     height: 40,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   title: {
     fontWeight: "bold",
-    fontSize: 14
+    fontSize: 14,
   },
   desc: {
     fontSize: 10,
-    color: colors.steel
-  }
+    color: colors.steel,
+  },
 };
 
 type Props = {
   account: Account,
 
   classes: { [_: $Keys<typeof styles>]: string },
-  className?: string
+  className?: string,
 };
 
 class AccountSummary extends PureComponent<Props> {

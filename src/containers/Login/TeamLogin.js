@@ -17,26 +17,26 @@ const styles = {
     margin: "0 auto",
     width: "400px",
     backgroundColor: "#ffffff",
-    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)"
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
   },
   instructions: {
     fontSize: "13px",
-    paddingTop: "22px"
+    paddingTop: "22px",
   },
   icon: {
     marginTop: 40,
     width: 28,
-    height: 32
+    height: 32,
   },
   submit: {
     position: "absolute",
     right: 0,
     bottom: 0,
-    marginRight: 40
+    marginRight: 40,
   },
   input: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 };
 export class TeamLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
@@ -46,10 +46,10 @@ export class TeamLogin extends Component<{
   onCloseTeamError: Function,
   isChecking: boolean,
   domain: string,
-  error: ?Error
+  error: ?Error,
 }> {
   context: {
-    translate: string => string
+    translate: string => string,
   };
 
   onSubmit = (e: any) => {
@@ -82,9 +82,9 @@ export class TeamLogin extends Component<{
               style: {
                 fontSize: "13px",
                 paddingBottom: "15px",
-                textAlign: "center"
-              }
-            }
+                textAlign: "center",
+              },
+            },
           }}
           disabled={isChecking}
           value={domain}

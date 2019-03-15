@@ -15,7 +15,7 @@ context("Onboarding e2e", () => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     });
   });
 
@@ -49,7 +49,7 @@ context("Onboarding e2e", () => {
 
     // Second WPK
     cy.request("POST", DEVICE, {
-      device_number: 2
+      device_number: 2,
     }).then(() => {
       cy.get(".fragment")
         .eq(1)
@@ -64,7 +64,7 @@ context("Onboarding e2e", () => {
 
       // Third WPK
       cy.request("POST", DEVICE, {
-        device_number: 3
+        device_number: 3,
       }).then(() => {
         cy.get(".fragment")
           .eq(2)
@@ -106,7 +106,7 @@ context("Onboarding e2e", () => {
 
     // Second Admin
     cy.request("POST", DEVICE, {
-      device_number: 5
+      device_number: 5,
     }).then(() => {
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
@@ -121,7 +121,7 @@ context("Onboarding e2e", () => {
 
       // Thrid Admin
       cy.request("POST", DEVICE, {
-        device_number: 6
+        device_number: 6,
       }).then(() => {
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user3");

@@ -20,15 +20,15 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     background: colors.night,
-    color: colors.lead
+    color: colors.lead,
   },
   group: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   devices: {
-    display: "flex"
+    display: "flex",
   },
   device: {
     width: 50,
@@ -38,7 +38,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   circle: {
     display: "flex",
@@ -47,39 +47,39 @@ const styles = {
     width: 30,
     height: 30,
     borderRadius: "50%",
-    backgroundColor: "rgba(0, 0, 0, 0.2)"
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
   },
   rowContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   actionContainer: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   autoLogout: {
     alignSelf: "center",
-    marginLeft: 20
+    marginLeft: 20,
   },
   collapseIcon: {
     alignSelf: "center",
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 };
 
 const devices = [
   ["Wrapping key", "orange", [1, 2, 3]],
   ["Admin", "green", [4, 5, 6]],
   ["Shared owner", "red", [7, 8, 9]],
-  ["Operators", "blue", [11, 12, 13]]
+  ["Operators", "blue", [11, 12, 13]],
 ];
 
 class MockDevices extends PureComponent {
   state = {
     deviceId: null,
     autoLogout: false,
-    collapseMock: false
+    collapseMock: false,
   };
 
   changeAutoLogout = () => {
@@ -102,9 +102,9 @@ class MockDevices extends PureComponent {
       await fetch(`${API_BASE_URL}/switch-device`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json; charset=utf-8"
+          "Content-Type": "application/json; charset=utf-8",
         },
-        body: JSON.stringify({ device_number: id })
+        body: JSON.stringify({ device_number: id }),
       });
       this.setState({ deviceId: id });
       if (this.state.autoLogout) {
@@ -178,7 +178,7 @@ function Device({ id, color, isActive, onClick }) {
       style={{
         ...styles.device,
         backgroundColor: color,
-        opacity: isActive ? 5 : 0.5
+        opacity: isActive ? 5 : 0.5,
       }}
     >
       {isActive ? (
@@ -193,9 +193,9 @@ function Device({ id, color, isActive, onClick }) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
 });
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(MockDevices);

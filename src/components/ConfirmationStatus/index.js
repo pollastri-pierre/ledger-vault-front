@@ -6,21 +6,21 @@ import colors from "../../shared/colors";
 
 const styles = {
   text: {
-    marginLeft: "6px"
+    marginLeft: "6px",
   },
   isConfirmed: {
     color: colors.green,
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
   },
   isUnconfirmed: {
     color: colors.grenade,
-    whiteSpace: "nowrap"
-  }
+    whiteSpace: "nowrap",
+  },
 };
 class ConfirmationStatus extends Component<*> {
   props: {
     nbConfirmations: number,
-    classes: Object
+    classes: Object,
   };
 
   render() {

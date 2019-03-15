@@ -5,13 +5,13 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   common: {
-    width: 13
-  }
+    width: 13,
+  },
 };
 
 type Props = {
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class RatesFull extends PureComponent<Props> {

@@ -12,11 +12,11 @@ test("it is possible to query multiple queries", async () => {
     {
       queries: {
         animals: AnimalsQuery,
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       // $FlowFixMe
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
@@ -33,16 +33,16 @@ test("it is possible to chain 2 connectData", async () => {
     // $FlowFixMe
     connectData(({ animals, animal }) => `${animal.name}_${animals.length}`, {
       queries: {
-        animals: AnimalsQuery
-      }
+        animals: AnimalsQuery,
+      },
     }),
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       // $FlowFixMe
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);

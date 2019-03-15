@@ -8,28 +8,28 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     paddingLeft: 40,
-    height: 23
+    height: 23,
   },
   head: {
     fontSize: 11,
     fontWeight: 600,
     paddingLeft: 40,
-    height: 28
+    height: 28,
   },
   selected: {
     "&:hover": {
-      backgroundColor: "none"
+      backgroundColor: "none",
     },
     "& > span": {
-      color: "black!important"
-    }
+      color: "black!important",
+    },
   },
   disabled: {
     fontSize: 11,
     fontWeight: 600,
     paddingLeft: 40,
-    opacity: 0.2
-  }
+    opacity: 0.2,
+  },
 };
 
 class MenuLinkOnboarding extends Component<{
@@ -39,7 +39,7 @@ class MenuLinkOnboarding extends Component<{
   color: string,
   selected: boolean,
   onGoToStep: Function,
-  heading: boolean
+  heading: boolean,
 }> {
   triggerView() {
     this.props.onGoToStep(this.props.step);
@@ -51,7 +51,7 @@ class MenuLinkOnboarding extends Component<{
     return (
       <MenuItem
         style={{
-          color: color || "#27d0e2" // default FIXME from theme
+          color: color || "#27d0e2", // default FIXME from theme
         }}
         button
         disabled={!selected}

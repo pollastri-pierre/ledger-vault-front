@@ -9,9 +9,9 @@ const style = {
     fontSize: "22px",
     color: colors.lead,
     "& svg": {
-      marginLeft: "5px"
-    }
-  }
+      marginLeft: "5px",
+    },
+  },
 };
 
 const arrowIncr = <Arrow type="up" color={colors.ocean} />;
@@ -23,7 +23,7 @@ class DeltaChange extends PureComponent<*> {
     before: number,
     after: number,
     showArrow?: boolean,
-    classes: Object
+    classes: Object,
   };
 
   render() {

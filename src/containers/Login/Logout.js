@@ -6,16 +6,16 @@ import { connect } from "react-redux";
 import { logout } from "redux/modules/auth";
 
 const mapDispatchToProps = (dispatch: *) => ({
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
 });
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
 export class Logout extends Component<{
   logout: Function,
-  auth: *
+  auth: *,
 }> {
   componentDidMount() {
     this.props.logout();
@@ -31,5 +31,5 @@ export class Logout extends Component<{
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Logout);

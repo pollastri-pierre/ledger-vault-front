@@ -4,8 +4,8 @@ import Text from "components/base/Text";
 
 const styles = {
   role: {
-    textTransform: "capitalize"
-  }
+    textTransform: "capitalize",
+  },
 };
 export default ({ userRole }: { userRole: string }) => (
   <Text style={styles.role}>{userRole.toLowerCase()}</Text>

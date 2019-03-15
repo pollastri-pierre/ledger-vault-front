@@ -3,7 +3,7 @@ import keyBy from "lodash/keyBy";
 
 import {
   getCryptoCurrencyById,
-  listCryptoCurrencies
+  listCryptoCurrencies,
 } from "utils/cryptoCurrencies";
 
 const FAKE_MEMBER_NAMES = [
@@ -26,7 +26,7 @@ const FAKE_MEMBER_NAMES = [
   "Michelle Jacobsen",
   "John Clark",
   "Anna Wagner",
-  "Charles Burnell"
+  "Charles Burnell",
 ];
 
 const FAKE_ACCOUNT_NAMES = [
@@ -49,14 +49,14 @@ const FAKE_ACCOUNT_NAMES = [
   "Block@ic",
   "SFY Ltd.",
   "Capitalsy",
-  "Central"
+  "Central",
 ];
 
 const FAKE_GROUP_NAMES = [
   "APAC Ops",
   "EMEA Ops",
   "America Ops",
-  "Key accounts Ops"
+  "Key accounts Ops",
 ];
 
 faker.seed(parseInt(process.env.MOCK_SEED, 10) || 1234);
@@ -81,7 +81,7 @@ function genApproval({ members }) {
   return {
     created_on: faker.date.recent(),
     person: faker.random.arrayElement(members),
-    type: faker.random.arrayElement(["APPROVE", "ABORT"])
+    type: faker.random.arrayElement(["APPROVE", "ABORT"]),
   };
 }
 
@@ -104,7 +104,7 @@ function genAccount({ members = [] } = {}) {
   const administrators = members.filter(m => m.role === "admin");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
-    members: administrators
+    members: administrators,
   });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
   const status = approvals.find(a => a.type === "ABORT")
@@ -130,23 +130,23 @@ function genAccount({ members = [] } = {}) {
         id: 1,
         issue_message: null,
         name: "Euro",
-        type: "FIAT"
-      }
+        type: "FIAT",
+      },
     },
     security_scheme: { quorum: 2 },
     balance: faker.random.number({
       min: 0.3 * 10 ** currency.units[0].magnitude,
       max: 7 * 10 ** currency.units[0].magnitude,
-      precision: 4
+      precision: 4,
     }),
     fresh_addresses: [
-      { address: "1MfeDvj5AUBG4xVMrx1xPgmYdXQrzHtW5b", derivation_path: "0/2" }
+      { address: "1MfeDvj5AUBG4xVMrx1xPgmYdXQrzHtW5b", derivation_path: "0/2" },
     ],
     is_hsm_coin_app_updated: true,
     created_on: faker.date.recent(),
     approvals,
 
-    number_of_approvals: nbApprovals
+    number_of_approvals: nbApprovals,
   };
 }
 
@@ -157,7 +157,7 @@ function genMember() {
     "REVOKED",
     "PENDING_APPROVAL",
     "PENDING_INVITATION",
-    "PENDING_REVOCATION"
+    "PENDING_REVOCATION",
   ]);
   return {
     id: faker.random.alphaNumeric(12),
@@ -167,7 +167,7 @@ function genMember() {
     role: faker.random.arrayElement(["admin", "operator"]),
 
     created_on: date,
-    status
+    status,
   };
 }
 
@@ -178,7 +178,7 @@ const genOperation = ({ account, members }) => {
   const amount = faker.random.number({
     min: 0.2 * 10 ** magnitude,
     max: 4 * 10 ** magnitude,
-    precision: 4
+    precision: 4,
   });
   const feesAmount = faker.random.number({ min: 1000, max: 100000 });
   const operators = members.filter(m => m.role === "operator");
@@ -218,19 +218,19 @@ const genOperation = ({ account, members }) => {
         {
           index: faker.random.number(1, 100),
           value: faker.random.number(100, 10000),
-          address: faker.random.alphaNumeric("10")
-        }
+          address: faker.random.alphaNumeric("10"),
+        },
       ],
       outputs: [
         {
           index: faker.random.number(1, 100),
           value: faker.random.number(100, 10000),
-          address: faker.random.alphaNumeric("10")
-        }
-      ]
+          address: faker.random.alphaNumeric("10"),
+        },
+      ],
     },
     approvals,
-    status
+    status,
   };
 };
 
@@ -238,17 +238,17 @@ function genGroup({ members }) {
   const operators = members.filter(m => m.role === "operator");
   const nbMembers = faker.random.number({
     min: 1,
-    max: Math.min(operators.length, 10)
+    max: Math.min(operators.length, 10),
   });
   const admins = members.filter(m => m.role === "admin");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
-    members: admins
+    members: admins,
   });
   const status = faker.random.arrayElement([
     "APPROVED",
     "PENDING_APPROVAL",
-    "ABORTED"
+    "ABORTED",
   ]);
   return {
     id: faker.random.alphaNumeric("10"),
@@ -258,7 +258,7 @@ function genGroup({ members }) {
     description: faker.company.catchPhrase(),
     status,
     members: getUniqueRandomElements(operators, nbMembers).map(m => m.id),
-    approvals
+    approvals,
   };
 }
 
@@ -307,5 +307,5 @@ export default {
   groupsArray: groups,
   members: keyBy(members, "id"),
   membersArray: members,
-  operations: keyBy(operations, "id")
+  operations: keyBy(operations, "id"),
 };

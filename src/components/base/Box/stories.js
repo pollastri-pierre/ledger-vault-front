@@ -9,7 +9,7 @@ const styles = {
   grey: { backgroundColor: "rgba(0, 0, 0, 0.1)" },
   red: { backgroundColor: "rgba(255, 0, 0, 0.2)" },
   green: { backgroundColor: "rgba(0, 255, 0, 0.2)" },
-  blue: { backgroundColor: "rgba(0, 0, 255, 0.2)" }
+  blue: { backgroundColor: "rgba(0, 0, 255, 0.2)" },
 };
 
 storiesOf("layout", module).add("Box", () => (

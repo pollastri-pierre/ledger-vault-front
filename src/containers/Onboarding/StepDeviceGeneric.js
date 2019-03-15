@@ -15,8 +15,8 @@ const styles = {
     "&:before": {
       position: "absolute",
       top: 27,
-      left: 0
-    }
+      left: 0,
+    },
   },
   footer: {
     position: "absolute",
@@ -26,8 +26,8 @@ const styles = {
     left: 0,
     display: "flex",
     padding: "0 40px 0 40px",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 
 const StepDeviceGeneric = ({
@@ -36,14 +36,14 @@ const StepDeviceGeneric = ({
   steps,
   device,
   step,
-  cancel
+  cancel,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   title: string,
   steps: string[],
   step: number,
   device: boolean,
-  cancel: Function
+  cancel: Function,
 }) => (
   <div className={classes.base}>
     <div className={classes.title}>

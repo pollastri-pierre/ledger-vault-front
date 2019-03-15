@@ -15,7 +15,7 @@ const modalRoot =
 
 const animShowHide = {
   duration: 200,
-  easing: Easing.bezier(0.3, 1.0, 0.5, 0.8)
+  easing: Easing.bezier(0.3, 1.0, 0.5, 0.8),
 };
 
 const ModalDialog = styled(Box)`
@@ -41,7 +41,7 @@ export const ModalBreadcrumb = styled(Box).attrs({
   bg: "#f5f5f5",
   pb: 100,
   width: 100,
-  p: 20
+  p: 20,
 })`
   user-select: none;
   flex-shrink: 0;
@@ -49,7 +49,7 @@ export const ModalBreadcrumb = styled(Box).attrs({
 `;
 
 const ModalContent = styled(Box).attrs({
-  grow: 1
+  grow: 1,
 })``;
 
 export const ModalFooter = styled(Box).attrs(p => ({
@@ -57,7 +57,7 @@ export const ModalFooter = styled(Box).attrs(p => ({
   horizontal: true,
   justify: p.justify || "flex-end",
   align: p.align || "flex-end",
-  px: 40
+  px: 40,
 }))`
   bottom: 0;
   left: 0;
@@ -66,7 +66,7 @@ export const ModalFooter = styled(Box).attrs(p => ({
 
 const ModalBodyRaw = styled(Box).attrs({
   p: 40,
-  pb: 100
+  pb: 100,
 })`
   height: ${p => ("height" in p ? px(p.height) : "auto")};
 `;
@@ -77,7 +77,7 @@ export const ModalBody = ({
   ...props
 }: {
   children: React$Node,
-  onClose?: () => void
+  onClose?: () => void,
 }) => (
   <ModalBodyRaw width={500} {...props}>
     {onClose ? <ModalClose onClick={onClose} /> : null}
@@ -86,7 +86,7 @@ export const ModalBody = ({
 );
 
 export const ModalHeader = styled(Box).attrs({
-  mb: 30
+  mb: 30,
 })`
   flex-shrink: 0;
 `;
@@ -95,7 +95,7 @@ export const ModalTitle = ({
   children,
   ...props
 }: {
-  children: React$Node
+  children: React$Node,
 }) => (
   <Box mb={20} {...props}>
     <Text header>{children}</Text>
@@ -107,26 +107,26 @@ type Props = {
   children: React$Node,
   onHide?: () => void,
   onClose?: () => void,
-  disableBackdropClick?: boolean
+  disableBackdropClick?: boolean,
 };
 
 type State = {
   isInDOM: boolean,
-  animShowHide: Animated.Value
+  animShowHide: Animated.Value,
 };
 
 class Modal extends PureComponent<Props, State> {
   static defaultProps = {
-    centered: true
+    centered: true,
   };
 
   state = {
     isInDOM: false,
-    animShowHide: new Animated.Value(0)
+    animShowHide: new Animated.Value(0),
   };
 
   static getDerivedStateFromProps = (props: Props, state: State) => ({
-    isInDOM: state.isInDOM || props.isOpened
+    isInDOM: state.isInDOM || props.isOpened,
   });
 
   componentDidMount() {
@@ -163,7 +163,7 @@ class Modal extends PureComponent<Props, State> {
     window.requestAnimationFrame(() => {
       Animated.timing(this.state.animShowHide, {
         ...animShowHide,
-        toValue: 1
+        toValue: 1,
       }).start();
       if (document.body) {
         document.body.classList.add("blurDialogOpened");
@@ -175,7 +175,7 @@ class Modal extends PureComponent<Props, State> {
     window.requestAnimationFrame(() => {
       Animated.timing(this.state.animShowHide, {
         ...animShowHide,
-        toValue: 0
+        toValue: 0,
       }).start();
       if (document.body) {
         document.body.classList.remove("blurDialogOpened");
@@ -204,29 +204,29 @@ class Modal extends PureComponent<Props, State> {
     const backdropOpacity = animShowHide.interpolate({
       inputRange: [0, 0.7],
       outputRange: [0, 1],
-      clamp: true
+      clamp: true,
     });
 
     const backdropStyle = {
       ...BACKDROP_STYLE,
-      opacity: backdropOpacity
+      opacity: backdropOpacity,
     };
 
     const containerStyle = {
       ...CONTAINER_STYLE,
-      pointerEvents: isOpened ? "auto" : "none"
+      pointerEvents: isOpened ? "auto" : "none",
     };
 
     const scale = animShowHide.interpolate({
       inputRange: [0, 1],
       outputRange: [0.95, 1],
-      clamp: true
+      clamp: true,
     });
 
     const bodyWrapperStyle = {
       ...BODY_WRAPPER_STYLE,
       opacity: animShowHide,
-      transform: [{ scale }]
+      transform: [{ scale }],
     };
 
     const modal = (
@@ -255,14 +255,14 @@ const BACKDROP_STYLE = {
   left: 0,
   right: 0,
   bottom: 0,
-  background: "rgba(0, 0, 0, 0.5)"
+  background: "rgba(0, 0, 0, 0.5)",
 };
 
 const CONTAINER_STYLE = {
   ...BACKDROP_STYLE,
   background: "transparent",
   overflow: "auto",
-  display: "flex"
+  display: "flex",
 };
 
 const BODY_WRAPPER_STYLE = {
@@ -273,7 +273,7 @@ const BODY_WRAPPER_STYLE = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  alignItems: "center"
+  alignItems: "center",
 };
 
 export { default as ModalFooterButton } from "./ModalFooterButton";

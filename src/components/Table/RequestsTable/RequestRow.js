@@ -12,7 +12,7 @@ import RequestBodyCell from "./RequestBodyCell";
 type RequestRowProps = {
   request: Request,
   onClick: Request => void,
-  tableDefinition: TableDefinition
+  tableDefinition: TableDefinition,
 };
 
 const requestRowHover = { cursor: "pointer" };

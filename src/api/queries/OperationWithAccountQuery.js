@@ -4,11 +4,11 @@ import schema from "data/schema";
 import type { Operation, Account } from "data/types";
 
 type Input = {
-  operationId: string
+  operationId: string,
 };
 type Response = {
   operation: Operation,
-  account: Account
+  account: Account,
 };
 
 // Fetch a single operation and its associated account
@@ -17,6 +17,6 @@ export default class OperationWithAccountQuery extends Query<Input, Response> {
 
   responseSchema = {
     operation: schema.Operation,
-    account: schema.Account
+    account: schema.Account,
   };
 }

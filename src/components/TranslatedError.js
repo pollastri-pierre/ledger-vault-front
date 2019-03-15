@@ -11,12 +11,12 @@ import type { Translate } from "data/types";
 type Props = {
   error: ?Error,
   t: Translate,
-  field: "title" | "description"
+  field: "title" | "description",
 };
 
 class TranslatedError extends PureComponent<Props> {
   static defaultProps = {
-    field: "title"
+    field: "title",
   };
 
   render() {

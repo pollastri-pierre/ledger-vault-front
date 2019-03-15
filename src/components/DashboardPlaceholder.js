@@ -18,11 +18,11 @@ const styles = {
     marginBottom: "20px",
     boxSizing: "border-box",
     "& h3": {
-      marginTop: 0
+      marginTop: 0,
     },
     "& p": {
-      margin: 0
-    }
+      margin: 0,
+    },
   },
   icon: {
     width: 12,
@@ -30,7 +30,7 @@ const styles = {
     display: "inline-block",
     marginRight: 2,
     marginTop: "-3px",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
   },
   link: {
     textDecoration: "none",
@@ -39,28 +39,28 @@ const styles = {
     fontSize: 12,
     textTransform: "uppercase",
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   linkLabel: {
     color: colors.ocean,
     fontWeight: 600,
     textTransform: "uppercase",
     display: "inline-block",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
   },
   needHelp: {
     marginTop: "30px !important",
-    fontSize: 13
+    fontSize: 13,
   },
   help: {
     textDecoration: "none",
-    color: colors.ocean
-  }
+    color: colors.ocean,
+  },
 };
 const DashboardPlaceholder = ({
-  classes
+  classes,
 }: {
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
 }) => (
   <div className={classes.base}>
     <div>

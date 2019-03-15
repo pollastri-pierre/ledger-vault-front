@@ -5,18 +5,18 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   common: {
     height: "9.5px",
-    width: "11px"
+    width: "11px",
   },
   black: {
-    fill: "black"
-  }
+    fill: "black",
+  },
 };
 
 type Props = { color?: string, classes: { [_: $Keys<typeof styles>]: string } };
 
 class Lines extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

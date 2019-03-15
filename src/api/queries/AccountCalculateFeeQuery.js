@@ -4,7 +4,7 @@ import Mutation from "restlay/Mutation";
 export const speeds = {
   slow: "slow",
   normal: "normal",
-  fast: "fast"
+  fast: "fast",
 };
 export type Speed = $Values<typeof speeds>;
 
@@ -14,24 +14,24 @@ type Input = {
     fee_level?: Speed,
     gas_limit?: ?number,
     gas_price?: ?number,
-    recipient: string
+    recipient: string,
   },
-  accountId: number
+  accountId: number,
 };
 
 type Response = {
   value: {
     fees: number,
     gas_limit?: ?number,
-    gas_price?: ?number
-  }
+    gas_price?: ?number,
+  },
 };
 
 // Calculate the fee for a given account (in the account currency)
 // (used when creating a new operation)
 export default class AccountCalculateFeeQuery extends Mutation<
   Input,
-  Response
+  Response,
 > {
   method = "POST";
 

@@ -10,7 +10,7 @@ class SelectBubble extends Component<{
   renderValue?: *,
   children?: *,
   MenuProps?: *,
-  className?: *
+  className?: *,
 }> {
   render() {
     const {
@@ -33,16 +33,16 @@ class SelectBubble extends Component<{
         {...props}
         className={classNames(
           {
-            "MuiSelect-disable-arrow": arrowDownLeft
+            "MuiSelect-disable-arrow": arrowDownLeft,
           },
-          props.className
+          props.className,
         )}
         renderValue={renderValueProps}
         MenuProps={{
           className: classNames({
-            "MuiListItem-ticker-right": tickerRight
+            "MuiListItem-ticker-right": tickerRight,
           }),
-          ...props.MenuProps
+          ...props.MenuProps,
         }}
       >
         {props.children}

@@ -26,7 +26,7 @@ import { login } from "redux/modules/auth";
 const mapDispatchToProps = {
   login,
   addMessage,
-  addError
+  addError,
 };
 
 const styles = {
@@ -36,29 +36,29 @@ const styles = {
     height: 258,
     width: 400,
     backgroundColor: "#ffffff",
-    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)"
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
   },
   wrapper: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   banner: {
     width: "400px",
     display: "flex",
     justifyContent: "space-between",
-    marginBottom: 20
+    marginBottom: 20,
   },
   instructions: {
     fontSize: "13px",
-    paddingTop: "22px"
+    paddingTop: "22px",
   },
   icon: {
     marginTop: 40,
     width: 28,
-    height: 32
+    height: 32,
   },
   help: {
     width: 63,
@@ -75,22 +75,22 @@ const styles = {
     top: "5px",
     right: "0",
     "&:visited": {
-      color: "inherit"
-    }
+      color: "inherit",
+    },
   },
   submit: {
     position: "absolute",
     right: 0,
     bottom: 0,
-    marginRight: 40
+    marginRight: 40,
   },
   input: {
-    textAlign: "center"
+    textAlign: "center",
   },
   version: {
     fontSize: 11,
-    marginTop: 50
-  }
+    marginTop: 50,
+  },
 };
 
 const unknownDomainError = new UnknownDomain();
@@ -101,7 +101,7 @@ type Props = {
   addMessage: (string, string, ?string) => void,
   addError: Error => void,
   history: *,
-  t: Translate
+  t: Translate,
 };
 
 type State = {
@@ -110,7 +110,7 @@ type State = {
   errorDomain: boolean,
   organization: ?Organization,
   isChecking: boolean,
-  onboardingToBeDone: boolean
+  onboardingToBeDone: boolean,
 };
 class Welcome extends Component<Props, State> {
   state = {
@@ -119,7 +119,7 @@ class Welcome extends Component<Props, State> {
     error: false,
     errorDomain: false,
     onboardingToBeDone: false,
-    isChecking: false
+    isChecking: false,
   };
 
   onFinishLogin = (responses: LoginFlowResponse) => {
@@ -174,7 +174,7 @@ class Welcome extends Component<Props, State> {
       error,
       errorDomain,
       isChecking,
-      onboardingToBeDone
+      onboardingToBeDone,
     } = this.state;
     const { classes, t } = this.props;
     return (
@@ -212,9 +212,9 @@ class Welcome extends Component<Props, State> {
                   fontSize: "13px",
                   color: "black",
                   paddingBottom: "15px",
-                  textAlign: "center"
-                }
-              }
+                  textAlign: "center",
+                },
+              },
             }}
             disabled={isChecking}
             value={domain}
@@ -234,7 +234,7 @@ class Welcome extends Component<Props, State> {
                 interactions={loginFlow}
                 onError={this.onError}
                 additionalFields={{
-                  organization: this.state.organization
+                  organization: this.state.organization,
                 }}
               />
             </div>
@@ -258,5 +258,5 @@ class Welcome extends Component<Props, State> {
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(withStyles(styles)(translate()(Welcome))));
