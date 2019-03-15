@@ -76,7 +76,7 @@ class UserDetails extends PureComponent<Props, State> {
           {tabsIndex === 1 && <UserDetailsHistory user={user} />}
         </Box>
         <ModalFooter>
-          <UserDetailsFooter status={user.status} />
+          <UserDetailsFooter status={user.status} user={user} close={close} />
         </ModalFooter>
       </ModalBody>
     );

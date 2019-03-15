@@ -1,7 +1,11 @@
 {
   "header": "Workspace {{userRole}}",
   "username": "Username",
+  "type": "Type",
   "role": "Role",
+  "workspace": "Workspace",
+  "created": "Created",
+  "expires": "Expires",
   "userID": "User ID",
   "date": "Create date",
   "url": "Url"

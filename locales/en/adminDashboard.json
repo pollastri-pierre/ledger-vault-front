@@ -1,0 +1,6 @@
+{
+  "myRequestsTitle": "Admin tasks awaiting approval",
+  "myRequestsDesc": "Tasks that require an action from me",
+  "otherRequestsTitle": "All other admin tasks",
+  "otherRequestsDesc": "Tasks that do not require an action from me"
+}

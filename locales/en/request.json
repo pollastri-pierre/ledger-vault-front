@@ -2,7 +2,10 @@
   "type": {
     "CREATE_GROUP": "Create group",
     "EDIT_GROUP": "Edit group",
-    "REVOKE_GROUP": "Delete group"
+    "REVOKE_GROUP": "Delete group",
+    "REVOKE_USER": "Revoke user",
+    "CREATE_ADMIN": "Create Admin",
+    "CREATE_OPERATOR": "Create Operator"
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
