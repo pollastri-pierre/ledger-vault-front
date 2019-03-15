@@ -2,8 +2,8 @@
   "header": "Users",
   "inviteLink": "Invite new User",
   "form": {
-    "placeholderUsername": "Please type in your username",
-    "placeholderUserID": "Please type in your user ID",
+    "placeholderUsername": "Enter a username",
+    "placeholderUserID": "Enter the user's User ID",
     "labelUserID": "User ID",
     "labelUsername": "Username",
     "radio": {
@@ -12,9 +12,9 @@
     }
   },
   "description":
-    "Share this URL with the new user in your preferred way of communication.",
-  "generateLink": "Generate Link",
-  "updateMember": "Update Member Info",
+    "Share this URL with the new user using your organization's approved means of communication.",
+  "generateLink": "Generate link",
+  "updateMember": "Update user information",
   "registration": {
     "title": "Register new {{userRole}}",
     "username": "Username:",
@@ -23,7 +23,7 @@
     "button": "Register",
     "success": {
       "title": "Success",
-      "subtitle": "You have successfully registered to the Ledger Vault.",
+      "subtitle": "You've successfully registered to the Ledger Vault.",
       "description":
         "The Administrators of your workspace will get in touch once your registration has been approved."
     }
