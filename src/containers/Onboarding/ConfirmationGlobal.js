@@ -15,7 +15,7 @@ import Footer from "./Footer";
 const styles = {
   base: {
     textAlign: "center",
-    fontSize: 13
+    fontSize: 13,
   },
   icon: {
     width: 35,
@@ -24,36 +24,36 @@ const styles = {
     borderRadius: "50%",
     border: "3px solid #27d0e2",
     paddingTop: 5,
-    textAlign: "center"
+    textAlign: "center",
   },
   sep: {
     width: 170,
     height: 1,
     background: "#eeeeee",
-    margin: "30px auto 30px auto"
+    margin: "30px auto 30px auto",
   },
   sumary: {
     display: "flex",
-    margin: "auto"
+    margin: "auto",
   },
   info: {
     fontSize: 11,
     textAlign: "center",
-    lineHeight: 1.82
-  }
+    lineHeight: 1.82,
+  },
 };
 const ConfirmationGlobal = ({
   classes,
   onboarding,
   match,
   history,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   match: *,
   history: *,
   onboarding: *,
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:confirmation.title")}</Title>
@@ -116,10 +116,10 @@ const ConfirmationGlobal = ({
 );
 
 const mapProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 
 export default connect(
   mapProps,
-  () => ({})
+  () => ({}),
 )(withStyles(styles)(translate()(ConfirmationGlobal)));

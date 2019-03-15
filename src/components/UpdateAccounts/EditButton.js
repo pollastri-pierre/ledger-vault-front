@@ -8,7 +8,7 @@ type Props = {
   children: *,
   account: Account, // eslint-disable-line react/no-unused-prop-types
   onOpen: Function,
-  className: ?string
+  className: ?string,
 };
 class EditButton extends Component<Props> {
   render() {
@@ -22,9 +22,9 @@ class EditButton extends Component<Props> {
 }
 
 const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
-  onOpen: () => dispatch(toggleAndSelect(ownProps.account))
+  onOpen: () => dispatch(toggleAndSelect(ownProps.account)),
 });
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(EditButton);

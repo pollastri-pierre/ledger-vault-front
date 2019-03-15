@@ -8,7 +8,7 @@ class BlueSelect extends Component<{
   renderValue?: *,
   className?: *,
   MenuProps?: *,
-  children: *
+  children: *,
 }> {
   render() {
     const { renderValue, className, MenuProps, children, ...rest } = this.props;
@@ -25,22 +25,22 @@ class BlueSelect extends Component<{
           ...MenuProps,
           anchorOrigin: {
             horizontal: "left",
-            vertical: "top"
+            vertical: "top",
           },
           transformOrigin: {
             horizontal: "left",
-            vertical: "top"
+            vertical: "top",
           },
           PaperProps: {
             style: {
               maxHeight: 200,
-              width: 100
-            }
+              width: 100,
+            },
           },
           className: classNames(
             "MuiListItem-ticker-right",
-            MenuProps && MenuProps.className
-          )
+            MenuProps && MenuProps.className,
+          ),
         }}
       >
         {children}

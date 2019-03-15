@@ -13,25 +13,25 @@ const styles = {
     fontWeight: 600,
     paddingLeft: 40,
     display: "block",
-    marginBottom: 15
+    marginBottom: 15,
   },
   selected: {
-    color: "black"
-  }
+    color: "black",
+  },
 };
 
 class LabelLink extends Component<{
   className?: string,
   selected: boolean,
   classes: { [_: $Keys<typeof styles>]: string },
-  label: string
+  label: string,
 }> {
   render() {
     const { classes, className, label, selected } = this.props;
     return (
       <span
         className={cx(classes.base, className, {
-          [classes.selected]: selected
+          [classes.selected]: selected,
         })}
       >
         {label}

@@ -7,13 +7,13 @@ import { urls } from "utils/urls";
 const styles = {
   link: {
     textDecoration: "none",
-    color: "inherit"
-  }
+    color: "inherit",
+  },
 };
 type Props = {
   label: React$Node,
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 class SupportLink extends PureComponent<Props> {
   render() {

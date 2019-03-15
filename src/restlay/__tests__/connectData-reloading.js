@@ -11,10 +11,10 @@ test("reloading boolean gets injected by default during a transition", async () 
     ({ animal, reloading }) => `${animal.id}_${String(reloading)}`,
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   expect(inst.toJSON()).toBe(null);

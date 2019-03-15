@@ -5,26 +5,26 @@ export type SetExchangePairs = (
   Array<{
     from: Currency,
     to: Currency,
-    exchange: string
-  }>
+    exchange: string,
+  }>,
 ) => *;
 
 export const setExchangePairsAction: SetExchangePairs = pairs => ({
   type: "SETTINGS_SET_PAIRS",
-  pairs
+  pairs,
 });
 
 type State = {
   pairs: *,
-  data: { [_: string]: string }
+  data: { [_: string]: string },
 };
 
 export default function reducer(
   state: State = {
     pairs: [],
-    data: {}
+    data: {},
   },
-  action: Object
+  action: Object,
 ) {
   switch (action.type) {
     case "SETTINGS_SET_PAIRS": {
@@ -45,11 +45,11 @@ export default function reducer(
 
 export const currencyExchangeSelector = (
   state: *,
-  currency: Currency
+  currency: Currency,
 ): ?string => {
   // NOTE checking for null because there is a strange pair btc-to-btc generates which results in exchange - null
   const pair = state.exchanges.pairs.find(
-    p => p.from.id === currency.id && p.exchange != null
+    p => p.from.id === currency.id && p.exchange != null,
   );
   return (pair && pair.exchange) || null;
 };

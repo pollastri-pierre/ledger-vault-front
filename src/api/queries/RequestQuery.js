@@ -2,7 +2,7 @@
 import Query from "restlay/Query";
 
 type Input = {
-  requestID: string
+  requestID: string,
 };
 export type Response = *;
 

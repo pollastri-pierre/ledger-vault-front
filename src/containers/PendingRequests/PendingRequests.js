@@ -23,22 +23,22 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-around",
     "& p": {
-      margin: 0
-    }
+      margin: 0,
+    },
   },
   left: {
     width: "50%",
-    marginRight: "10px"
+    marginRight: "10px",
   },
   right: {
     width: "50%",
-    marginLeft: "10px"
-  }
+    marginLeft: "10px",
+  },
 };
 
 class PendingRequests extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
-  profile: Member
+  profile: Member,
 }> {
   render() {
     const { classes, profile } = this.props;
@@ -68,6 +68,6 @@ const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(PendingRequests), {
   RenderLoading,
   queries: {
-    profile: ProfileQuery
-  }
+    profile: ProfileQuery,
+  },
 });

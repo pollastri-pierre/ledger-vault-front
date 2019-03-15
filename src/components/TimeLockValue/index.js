@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 
 class TimeLockValue extends PureComponent<*> {
   props: {
-    time_lock: number
+    time_lock: number,
   };
 
   getDuration = (time_lock: number) => {

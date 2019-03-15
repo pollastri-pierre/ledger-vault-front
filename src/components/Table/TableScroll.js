@@ -3,11 +3,11 @@
 import React, { PureComponent, createRef } from "react";
 
 type Props = {
-  children: React$Node
+  children: React$Node,
 };
 
 type State = {
-  showScrollIndicator: boolean
+  showScrollIndicator: boolean,
 };
 
 const styles = {
@@ -16,10 +16,10 @@ const styles = {
     borderLeft: "1px solid rgb(224, 224, 224)",
     borderRight: "1px solid rgb(224, 224, 224)",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   inner: {
-    overflowX: "auto"
+    overflowX: "auto",
   },
   indicator: {
     position: "absolute",
@@ -27,13 +27,13 @@ const styles = {
     right: 0,
     bottom: 0,
     transition: "100ms linear opacity",
-    boxShadow: "rgba(0, 0, 0, 0.07) 0px 0px 12px 5px"
-  }
+    boxShadow: "rgba(0, 0, 0, 0.07) 0px 0px 12px 5px",
+  },
 };
 
 class TableScroll extends PureComponent<Props, State> {
   state = {
-    showScrollIndicator: false
+    showScrollIndicator: false,
   };
 
   componentDidMount() {
@@ -51,7 +51,7 @@ class TableScroll extends PureComponent<Props, State> {
     if (this.ref.current) {
       this.ref.current.removeEventListener(
         "scroll",
-        this.toggleScrollIndicator
+        this.toggleScrollIndicator,
       );
     }
   }
@@ -76,7 +76,7 @@ class TableScroll extends PureComponent<Props, State> {
     const { showScrollIndicator } = this.state;
     const indicatorStyle = {
       opacity: showScrollIndicator ? 1 : 0,
-      ...styles.indicator
+      ...styles.indicator,
     };
     return (
       <div style={styles.outer}>

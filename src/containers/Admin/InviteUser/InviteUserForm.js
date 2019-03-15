@@ -19,18 +19,18 @@ import colors from "shared/colors";
 type Props = {
   request_id: string,
   processUserInfo: (string, string, string) => Promise<*>,
-  t: Translate
+  t: Translate,
 };
 type State = {
   username: string,
   user_id: string,
-  userRole: string
+  userRole: string,
 };
 
 const styles = {
   icon: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 };
 
 class InviteUserForm extends PureComponent<Props, State> {
@@ -40,7 +40,7 @@ class InviteUserForm extends PureComponent<Props, State> {
     this.state = {
       username: "",
       user_id: "",
-      userRole: props.t("inviteUser:form.radio.admin")
+      userRole: props.t("inviteUser:form.radio.admin"),
     };
   }
 
@@ -99,7 +99,7 @@ class InviteUserForm extends PureComponent<Props, State> {
                 <InputAdornment position="end">
                   <FaEdit color={colors.lead} />
                 </InputAdornment>
-              )
+              ),
             }}
             error={null}
           />
@@ -115,7 +115,7 @@ class InviteUserForm extends PureComponent<Props, State> {
                 <InputAdornment position="end">
                   <FaEdit color={colors.lead} />
                 </InputAdornment>
-              )
+              ),
             }}
             error={null}
           />

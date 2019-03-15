@@ -20,23 +20,23 @@ const styles = {
   base: {
     display: "flex",
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   body: {
     flex: "1 1",
     marginRight: "20px",
-    minWidth: "680px"
+    minWidth: "680px",
   },
   aside: {
-    width: "320px"
-  }
+    width: "320px",
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   match: *,
   accounts: Array<Account>,
-  users: Array<Member>
+  users: Array<Member>,
 };
 
 class Dashboard extends Component<Props> {
@@ -76,7 +76,7 @@ const RenderLoading = () => <SpinnerCard />;
 export default connectData(withStyles(styles)(Dashboard), {
   queries: {
     users: UsersQuery,
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
   },
-  RenderLoading
+  RenderLoading,
 });

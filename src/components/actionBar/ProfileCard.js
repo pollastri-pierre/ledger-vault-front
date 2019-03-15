@@ -24,36 +24,36 @@ const styles = {
     marginBottom: 49,
     position: "absolute",
     bottom: "0",
-    opacity: "1"
+    opacity: "1",
   },
   profile_info: {
     display: "flex",
     flexDirection: "column",
-    marginLeft: 15
+    marginLeft: 15,
   },
   userName: {
-    textTransform: "capitalize"
+    textTransform: "capitalize",
   },
   userRole: {
-    color: colors.lead
+    color: colors.lead,
   },
   popover: {
     paddingLeft: 0,
-    marginLeft: 50
-  }
+    marginLeft: 50,
+  },
 };
 
 type Props = {
   me: Member,
   classes: { [_: $Keys<typeof styles>]: string },
-  match: Match
+  match: Match,
 };
 type State = {
-  bubbleOpened: boolean
+  bubbleOpened: boolean,
 };
 class ProfileCard extends Component<Props, State> {
   state = {
-    bubbleOpened: false
+    bubbleOpened: false,
   };
 
   anchorEl: *;
@@ -68,7 +68,7 @@ class ProfileCard extends Component<Props, State> {
 
   onClickProfileCard = () => {
     this.setState(state => ({
-      bubbleOpened: !state.bubbleOpened
+      bubbleOpened: !state.bubbleOpened,
     }));
   };
 

@@ -21,45 +21,45 @@ const row = {
   base: {
     lineHeight: "24px",
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   label: {
     fontSize: 12,
     textTransform: "uppercase",
     fontWeight: 600,
-    color: colors.shark
+    color: colors.shark,
   },
   value: {
     fontSize: 13,
     color: colors.shark,
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
 };
 const Row = withStyles(row)(
   ({
     label,
     value,
-    classes
+    classes,
   }: {
     label: string,
     value: React$Node,
-    classes: { [_: $Keys<typeof row>]: string }
+    classes: { [_: $Keys<typeof row>]: string },
   }) => (
     <div className={classes.base}>
       <span className={classes.label}>{label}:</span>
       <span className={classes.value}>{value}</span>
     </div>
-  )
+  ),
 );
 const styles = {
   base: {
     display: "flex",
     alignItems: "baseline",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   modalMembers: {
     width: 500,
-    padding: 20
+    padding: 20,
   },
   modalMembersTitle: {
     fontSize: 18,
@@ -67,26 +67,26 @@ const styles = {
     color: "black",
     margin: 0,
     padding: 4,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   toggleModalMembers: {
     display: "inline-block",
     marginLeft: 10,
     cursor: "pointer",
     textDecoration: "underline",
-    color: colors.ocean
+    color: colors.ocean,
   },
   settingsIcon: {
     position: "absolute",
     top: 0,
     right: 0,
-    padding: 30
-  }
+    padding: 30,
+  },
 };
 type Props = {
   account: Account,
   me: Member,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 /* display only the currency and index if the account needs to be updated */
@@ -100,11 +100,11 @@ const AccountTitle = ({ account }: { account: Account }) => (
   </div>
 );
 type State = {
-  modalMembersOpen: boolean
+  modalMembersOpen: boolean,
 };
 class AccountQuickInfo extends Component<Props, State> {
   state: State = {
-    modalMembersOpen: false
+    modalMembersOpen: false,
   };
 
   toggleModalMembers = () => {
@@ -116,7 +116,7 @@ class AccountQuickInfo extends Component<Props, State> {
     const {
       account,
       account: { members },
-      classes: { toggleModalMembers }
+      classes: { toggleModalMembers },
     } = this.props;
     return account.status === "VIEW_ONLY" ? (
       <span>-</span>
@@ -133,7 +133,7 @@ class AccountQuickInfo extends Component<Props, State> {
   renderListMember = () => {
     const {
       classes: { modalMembers, modalMembersTitle },
-      account: { members }
+      account: { members },
     } = this.props;
     return (
       <div className={modalMembers}>
@@ -212,25 +212,22 @@ class AccountQuickInfo extends Component<Props, State> {
                 label={<Trans i18nKey="accountView:summary.date" />}
                 value={<DateFormat date={account.created_on} />}
               />
-              {account.account_type === "ERC20" &&
-                account.parent_id && (
-                  <Fragment>
-                    <Row
-                      label={
-                        <Trans i18nKey="accountView:summary.token_address" />
-                      }
-                      value={account.contract_address}
-                    />
-                    <Row
-                      label={
-                        <Trans i18nKey="accountView:summary.parent_account" />
-                      }
-                      value={
-                        <Link to={`${account.parent_id}`}>ETH account</Link>
-                      }
-                    />
-                  </Fragment>
-                )}
+              {account.account_type === "ERC20" && account.parent_id && (
+                <Fragment>
+                  <Row
+                    label={
+                      <Trans i18nKey="accountView:summary.token_address" />
+                    }
+                    value={account.contract_address}
+                  />
+                  <Row
+                    label={
+                      <Trans i18nKey="accountView:summary.parent_account" />
+                    }
+                    value={<Link to={`${account.parent_id}`}>ETH account</Link>}
+                  />
+                </Fragment>
+              )}
             </div>
             {account.status !== "VIEW_ONLY" && (
               <div style={{ width: 300 }}>

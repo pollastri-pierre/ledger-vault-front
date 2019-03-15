@@ -18,7 +18,7 @@ import TableScroll from "./TableScroll";
 
 type Props = {
   data: Group[],
-  onRowClick: Group => void
+  onRowClick: Group => void,
 };
 
 class GroupsTable extends PureComponent<Props> {
@@ -67,14 +67,14 @@ class GroupsTableHeader extends PureComponent<GroupsTableHeaderProps> {
 
 type GroupRowProps = {
   group: Group,
-  onClick: Group => void
+  onClick: Group => void,
 };
 
 const styles = {
   groupRowHover: { cursor: "pointer" },
   noWrap: {
-    whiteSpace: "nowrap"
-  }
+    whiteSpace: "nowrap",
+  },
 };
 
 class GroupRow extends PureComponent<GroupRowProps> {

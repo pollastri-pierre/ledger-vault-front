@@ -9,18 +9,18 @@ import createDevice, {
   INIT_SESSION,
   INVALID_DATA,
   U2F_TIMEOUT,
-  ACCOUNT_MANAGER_SESSION
+  ACCOUNT_MANAGER_SESSION,
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
 type Channel = {
   ephemeral_public_key: string,
-  ephemeral_certificate: string
+  ephemeral_certificate: string,
 };
 type Shard = {
   ephemeral_public_key: string,
   blob: string,
-  certificate: string
+  certificate: string,
 };
 type Props = {
   shards_channel: Channel,
@@ -29,7 +29,7 @@ type Props = {
   history: *,
   onFinish: Shard => *,
   t: Translate,
-  cancel: Function
+  cancel: Function,
 };
 
 type State = { step: number };
@@ -74,12 +74,12 @@ class GenerateKeyFragments extends Component<Props, State> {
             CONFIDENTIALITY_PATH,
             Buffer.from(ephemeral_public_key, "hex"),
             Buffer.from(certificate, "base64"),
-            scriptHash
+            scriptHash,
           );
 
           const blob = await device.generateKeyComponent(
             KEY_MATERIAL_PATH,
-            this.props.wraps
+            this.props.wraps,
           );
 
           const shard = {
@@ -87,7 +87,7 @@ class GenerateKeyFragments extends Component<Props, State> {
             certificate:
               certificate_device.toString("hex") +
               public_key.signature.toString("hex"),
-            ephemeral_public_key: public_key.pubKey
+            ephemeral_public_key: public_key.pubKey,
           };
           this.setState({ step: 2 });
           this.props.onFinish(shard);
@@ -101,7 +101,7 @@ class GenerateKeyFragments extends Component<Props, State> {
           this.props.addMessage(
             "Error",
             "Incorrect data sent to the device",
-            "error"
+            "error",
           );
           this.props.cancel();
         } else if (error && error.id === U2F_TIMEOUT) {
@@ -125,7 +125,7 @@ class GenerateKeyFragments extends Component<Props, State> {
           key="step3"
           i18nKey="onboarding:wrapping_key.device_modal.step3"
           components={<b>0</b>}
-        />
+        />,
       ];
     } else {
       steps = [
@@ -135,7 +135,7 @@ class GenerateKeyFragments extends Component<Props, State> {
           key="step3"
           i18nKey="onboarding:master_seed_provisionning.device_modal.step3"
           components={<b>0</b>}
-        />
+        />,
       ];
     }
     return (

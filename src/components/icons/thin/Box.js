@@ -8,14 +8,14 @@ const styles = {
     fill: "none",
     stroke: "#cccccc",
     strokeMiterlimit: 10,
-    strokeWidth: 2
-  }
+    strokeWidth: 2,
+  },
 };
 
 type Props = { color?: string, classes: Object, className?: string };
 class Box extends PureComponent<Props> {
   static defaultProps = {
-    color: "#cccccc"
+    color: "#cccccc",
   };
 
   render() {

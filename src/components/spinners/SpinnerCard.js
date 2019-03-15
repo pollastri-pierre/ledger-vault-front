@@ -28,7 +28,7 @@ class SpinnerCard extends PureComponent<{ disableGlobalSpinner?: boolean }> {
           top: "50%",
           left: "50%",
           marginLeft: "-15px",
-          marginTop: "-15px"
+          marginTop: "-15px",
         }}
       />
     );

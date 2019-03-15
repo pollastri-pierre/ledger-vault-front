@@ -11,7 +11,7 @@ export const hasPending = (account: Account, operations: Operation[]) =>
 // We need at leat one account with a balance > 0, and without pending
 export const isCreateOperationEnabled = (
   accounts: Account[],
-  pendingOperations: Operation[]
+  pendingOperations: Operation[],
 ) => {
   const filter = accounts.filter(
     account =>
@@ -19,7 +19,7 @@ export const isCreateOperationEnabled = (
       account.status === "APPROVED" &&
       !hasPending(account, pendingOperations) &&
       !isAccountOutdated(account) &&
-      !isAccountBeingUpdated(account)
+      !isAccountBeingUpdated(account),
   );
   return filter.length > 0;
 };
@@ -29,7 +29,7 @@ export const getPendingsOperations = (operations: Operation[]): Operation[] =>
 
 export const isMemberOfAccount = (account: Account, me: Member) => {
   const members = account.members.filter(
-    member => member.pub_key === me.pub_key
+    member => member.pub_key === me.pub_key,
   );
   return members.length > 0;
 };

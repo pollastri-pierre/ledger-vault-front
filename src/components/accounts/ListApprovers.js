@@ -20,7 +20,7 @@ import {
   ModalBody,
   ModalHeader,
   ModalTitle,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 
 const SelectedCounter = ({ count }: { count: number }) => (
@@ -37,7 +37,7 @@ class ListApprovers extends Component<{
   goBack: Function,
   users: Connection<Member>,
   approvers: Member[],
-  addApprover: Function
+  addApprover: Function,
 }> {
   render() {
     const { goBack, users, addApprover, approvers } = this.props;
@@ -96,10 +96,10 @@ export default connectData(ListApprovers, {
   RenderLoading: ModalLoading,
   RenderError,
   queries: {
-    users: UsersQuery
+    users: UsersQuery,
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
-    users: 30
-  }
+    users: 30,
+  },
 });

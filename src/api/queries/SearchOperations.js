@@ -11,7 +11,7 @@ type In = {
   status?: string[],
   accounts?: string[],
   start?: string,
-  end?: string
+  end?: string,
 };
 
 type Node = Operation;
@@ -19,7 +19,7 @@ type Node = Operation;
 const uri = (query: In) => {
   const finalQuery: Object = {
     ...query,
-    with_daemon_info: true
+    with_daemon_info: true,
   };
   const q = queryString.stringify(finalQuery);
   return `/operations${q ? "?" : ""}${q}`;

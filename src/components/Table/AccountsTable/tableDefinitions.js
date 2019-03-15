@@ -5,46 +5,46 @@ export const accountsTableDefault = [
     header: {
       label: "Name",
       align: "left",
-      sortable: true
+      sortable: true,
     },
     body: {
       prop: "name",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "Status",
       align: "left",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "status",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "CounterValue",
       align: "right",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "countervalue",
-      align: "right"
-    }
+      align: "right",
+    },
   },
   {
     header: {
       label: "Balance",
       align: "right",
-      sortable: true
+      sortable: true,
     },
     body: {
       prop: "balance",
-      align: "right"
-    }
-  }
+      align: "right",
+    },
+  },
 ];
 
 // NOTE: just an example
@@ -53,33 +53,33 @@ export const accountsTableCustom1 = [
     header: {
       label: "Date",
       align: "left",
-      sortable: true
+      sortable: true,
     },
     body: {
       prop: "date",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "Status",
       align: "left",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "status",
-      align: "left"
-    }
+      align: "left",
+    },
   },
   {
     header: {
       label: "Name",
       align: "left",
-      sortable: false
+      sortable: false,
     },
     body: {
       prop: "name",
-      align: "left"
-    }
-  }
+      align: "left",
+    },
+  },
 ];

@@ -3,7 +3,7 @@ import Mutation from "restlay/Mutation";
 
 export const types = {
   admin: "CREATE_ADMIN",
-  operator: "CREATE_OPERATOR"
+  operator: "CREATE_OPERATOR",
 };
 
 export type Type = $Values<typeof types>;
@@ -12,8 +12,8 @@ type Input = {
   user: {
     type: Type,
     username: string,
-    user_id: string
-  }
+    user_id: string,
+  },
 };
 
 type Response = *;

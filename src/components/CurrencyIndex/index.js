@@ -7,18 +7,18 @@ import colors from "shared/colors";
 const styles = {
   base: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   index: {
     color: colors.lead,
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   currency: string,
-  index: number
+  index: number,
 };
 
 class CurrencyIndex extends Component<Props> {

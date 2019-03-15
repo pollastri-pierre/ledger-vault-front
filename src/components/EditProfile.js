@@ -28,39 +28,39 @@ const validateMail: Validator = email => emailValidator.validate(email);
 const validators: { [_: string]: Validator } = {
   username: validateUsername,
   email: validateMail,
-  picture: _ => true
+  picture: _ => true,
 };
 
 const sanitize = (object: Object): Object => ({
   email: object.email.value,
   username: object.username.value,
-  picture: object.picture.value
+  picture: object.picture.value,
 });
 
 const errorDesc = {
   base: {
     position: "absolute",
     fontSize: "11px",
-    color: "rgb(234, 46, 73)"
-  }
+    color: "rgb(234, 46, 73)",
+  },
 };
 
 const ErrorDesc = withStyles(errorDesc)(
   ({
     visible,
     children,
-    classes
+    classes,
   }: {
     visible: boolean,
     children: *,
-    classes: { [_: $Keys<typeof errorDesc>]: string }
-  }) => (visible ? <div className={classes.base}>{children}</div> : null)
+    classes: { [_: $Keys<typeof errorDesc>]: string },
+  }) => (visible ? <div className={classes.base}>{children}</div> : null),
 );
 
 export const styles = {
   base: {
     ...modals.base,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   profilePic: {
     width: 80,
@@ -71,27 +71,27 @@ export const styles = {
     "& img": {
       width: "100%",
       height: "100%",
-      borderRadius: "50%"
-    }
+      borderRadius: "50%",
+    },
   },
   profileBody: {
-    marginTop: 35
+    marginTop: 35,
   },
   profileForm: {
     marginLeft: 120,
     width: 320,
-    fontSize: 13
+    fontSize: 13,
   },
   role: {
     marginTop: 20,
     fontSize: 11,
-    color: colors.lead
+    color: colors.lead,
   },
   icon: {
     width: 28,
     marginTop: "30%",
-    marginLeft: "33%"
-  }
+    marginLeft: "33%",
+  },
 };
 class ProfileEditModal extends Component<
   {
@@ -101,9 +101,9 @@ class ProfileEditModal extends Component<
     classes: Object,
     title: string,
     labelSubmit: string,
-    onSubmit: Function
+    onSubmit: Function,
   },
-  *
+  *,
 > {
   _unmounted = false;
 
@@ -114,7 +114,7 @@ class ProfileEditModal extends Component<
       const value = props.profile[key];
       state[key] = {
         value,
-        isValid: true
+        isValid: true,
       };
     });
     this.state = state;
@@ -146,8 +146,8 @@ class ProfileEditModal extends Component<
     this.setState({
       [name]: {
         value,
-        isValid: validators[name](value)
-      }
+        isValid: validators[name](value),
+      },
     });
   };
 
@@ -183,8 +183,8 @@ class ProfileEditModal extends Component<
                 style: {
                   fontWeight: 600,
                   color: "black",
-                  width: "100%"
-                }
+                  width: "100%",
+                },
               }}
             />
             <ErrorDesc visible={!this.state.username.isValid}>
@@ -202,8 +202,8 @@ class ProfileEditModal extends Component<
               inputProps={{
                 style: {
                   fontWeight: 600,
-                  color: "black"
-                }
+                  color: "black",
+                },
               }}
             />
             <div className={classes.role}>{t("common:administrator")}</div>

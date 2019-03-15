@@ -13,7 +13,7 @@ import Text from "components/base/Text";
 type Props = {
   title: string,
   nbResults?: number,
-  onClear?: () => void
+  onClear?: () => void,
 };
 
 class FiltersCardHeader extends PureComponent<Props> {
@@ -42,7 +42,7 @@ class FiltersCardHeader extends PureComponent<Props> {
 }
 
 const ClearButton = styled(Button).attrs({
-  color: "secondary"
+  color: "secondary",
 })`
   && {
     padding: 10px;

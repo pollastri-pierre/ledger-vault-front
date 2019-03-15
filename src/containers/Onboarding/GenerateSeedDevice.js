@@ -10,14 +10,14 @@ import createDevice, {
   U2F_PATH,
   INVALID_DATA,
   U2F_TIMEOUT,
-  ACCOUNT_MANAGER_SESSION
+  ACCOUNT_MANAGER_SESSION,
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
 type Shard = {
   signature: string,
   blob: string,
-  pub_key: string
+  pub_key: string,
 };
 type Props = {
   shards_channel: *,
@@ -26,7 +26,7 @@ type Props = {
   history: *,
   onFinish: Shard => *,
   t: Translate,
-  cancel: Function
+  cancel: Function,
 };
 
 type State = { step: number };
@@ -60,7 +60,7 @@ class GenerateSeedDevice extends Component<Props, State> {
           const { pubKey } = await device.getPublicKey(U2F_PATH, false);
 
           const channel = this.props.shards_channel.find(
-            chan => chan.shared_owner_uid === pubKey
+            chan => chan.shared_owner_uid === pubKey,
           );
 
           if (channel) {
@@ -74,23 +74,23 @@ class GenerateSeedDevice extends Component<Props, State> {
               CONFIDENTIALITY_PATH,
               Buffer.from(ephemeral_public_key, "hex"),
               Buffer.from(certificate, "base64"),
-              ACCOUNT_MANAGER_SESSION
+              ACCOUNT_MANAGER_SESSION,
             );
 
             const signature = await device.validateVaultOperation(
               VALIDATION_PATH,
-              Buffer.from(partition_blob, "base64")
+              Buffer.from(partition_blob, "base64"),
             );
 
             const blob = await device.generateKeyComponent(
               KEY_MATERIAL_PATH,
-              false
+              false,
             );
 
             const shard = {
               blob: blob.toString("base64"),
               signature: signature.toString("hex"),
-              pub_key: pubKey
+              pub_key: pubKey,
             };
             this.setState({ step: 2 });
             this.props.onFinish(shard);
@@ -99,7 +99,7 @@ class GenerateSeedDevice extends Component<Props, State> {
             this.props.addMessage(
               "Error",
               "Please connect a Shared-Owner device",
-              "error"
+              "error",
             );
           }
         }
@@ -113,7 +113,7 @@ class GenerateSeedDevice extends Component<Props, State> {
           this.props.addMessage(
             "Error",
             "Incorrect data sent to the device",
-            "error"
+            "error",
           );
           this.props.cancel();
         } else if (error && error.id === U2F_TIMEOUT) {
@@ -135,7 +135,7 @@ class GenerateSeedDevice extends Component<Props, State> {
         key="step3"
         i18nKey="onboarding:master_seed_provisionning.device_modal.step3"
         components={<b>0</b>}
-      />
+      />,
     ];
     return (
       <StepDeviceGeneric

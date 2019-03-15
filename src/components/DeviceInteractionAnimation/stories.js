@@ -15,7 +15,7 @@ const deviceInteraction = {
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 const deviceInteractionInteractive = {
   needsUserInput: true,
@@ -25,27 +25,27 @@ const deviceInteractionInteractive = {
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 const serverInteraction = {
   responseKey: "server",
   action: async () => {
     await delay(1000);
     return Promise.resolve();
-  }
+  },
 };
 
 storiesOf("other", module).add("DeviceInteractionAnimation", () => (
-  <Box flow={80}>
-    <Box>
+  <Box flow={20}>
+    <Box align="flex-start" pb={60}>
       <Text>Initial state</Text>
       <Device interaction={deviceInteraction} numberSteps={3} />
     </Box>
-    <Box>
+    <Box align="flex-start">
       <Text>Waiting for server</Text>
       <Device numberSteps={5} currentStep={2} interaction={serverInteraction} />
     </Box>
-    <Box>
+    <Box align="flex-start" pb={60}>
       <Text>Needs user input:</Text>
       <Device
         numberSteps={5}
@@ -53,7 +53,7 @@ storiesOf("other", module).add("DeviceInteractionAnimation", () => (
         interaction={deviceInteractionInteractive}
       />
     </Box>
-    <Box>
+    <Box align="flex-start">
       <Text>Error state</Text>
       <Device
         numberSteps={5}

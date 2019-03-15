@@ -6,19 +6,19 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   common: {
     height: "11px",
-    width: "8.5px"
-  }
+    width: "8.5px",
+  },
 };
 
 type Props = {
   color?: string,
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class Search extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

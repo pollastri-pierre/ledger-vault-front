@@ -9,7 +9,7 @@ import colors from "shared/colors";
 
 type HeaderProps = {
   header: React$Node,
-  classes: { [_: $Keys<typeof headerStyles>]: string }
+  classes: { [_: $Keys<typeof headerStyles>]: string },
 };
 
 class SectionHeaderComponent extends Component<HeaderProps> {
@@ -24,13 +24,13 @@ class SectionHeaderComponent extends Component<HeaderProps> {
 }
 const headerStyles = {
   title: {
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 };
 
 type TitleProps = {
   title: React$Node,
-  classes: { [_: $Keys<typeof titleStyles>]: string }
+  classes: { [_: $Keys<typeof titleStyles>]: string },
 };
 class SectionTitleComponent extends Component<TitleProps> {
   render() {
@@ -44,13 +44,13 @@ class SectionTitleComponent extends Component<TitleProps> {
 }
 const titleStyles = {
   title: {
-    padding: "10px 0"
-  }
+    padding: "10px 0",
+  },
 };
 
 type RowProps = {
   label: React$Node,
-  children: React$Node
+  children: React$Node,
 };
 
 class SectionRow extends PureComponent<RowProps> {

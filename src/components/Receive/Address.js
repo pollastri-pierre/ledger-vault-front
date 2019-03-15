@@ -7,7 +7,7 @@ import createDevice, {
   U2F_TIMEOUT,
   VALIDATION_PATH,
   MATCHER_SESSION,
-  DEVICE_REJECT_ERROR_CODE
+  DEVICE_REJECT_ERROR_CODE,
 } from "device";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { withStyles } from "@material-ui/core/styles";
@@ -26,7 +26,7 @@ import ShieldBox from "./ShieldBox";
 type Props = {
   account: Account,
   checkAgain: void => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 type State = {
   error: boolean,
@@ -34,7 +34,7 @@ type State = {
   verified: boolean,
   loading: boolean,
   error: ?$Shape<GateError>,
-  copied: boolean
+  copied: boolean,
 };
 class ReceiveAddress extends Component<Props, State> {
   input: ?HTMLInputElement = null;
@@ -44,7 +44,7 @@ class ReceiveAddress extends Component<Props, State> {
     loading: false,
     verified: false,
     copied: false,
-    deviceRejected: false
+    deviceRejected: false,
   };
 
   componentDidMount() {
@@ -63,12 +63,12 @@ class ReceiveAddress extends Component<Props, State> {
       const {
         attestation_certificate,
         ephemeral_public_key,
-        wallet_address
+        wallet_address,
       } = await network(
         `/accounts/${account.id}/address?derivation_path=${
           account.fresh_addresses[0].derivation_path
         }`,
-        "GET"
+        "GET",
       );
       this.setState({ loading: false });
 
@@ -76,11 +76,11 @@ class ReceiveAddress extends Component<Props, State> {
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(attestation_certificate, "base64"),
-        MATCHER_SESSION
+        MATCHER_SESSION,
       );
       await device.validateVaultOperation(
         VALIDATION_PATH,
-        Buffer.from(wallet_address, "base64")
+        Buffer.from(wallet_address, "base64"),
       );
       this.setState({ verified: true, error: null });
     } catch (error) {
@@ -111,77 +111,76 @@ class ReceiveAddress extends Component<Props, State> {
     return (
       <div className={classes.container}>
         {loading && <SpinnerCard />}
-        {!error &&
-          !loading && (
-            <ReceiveLayout
-              header={null}
-              content={
-                <div className={classes.address}>
-                  <QRCode
-                    hash={
-                      account.account_type === "Bitcoin"
-                        ? `${currency.scheme}:${
-                            account.fresh_addresses[0].address
-                          }`
-                        : `${account.fresh_addresses[0].address}`
-                    }
-                    size={140}
-                  />
-                  <div className={classes.account}>
-                    <Trans i18nKey="receive:receive_account">
-                      {"Address for account"}
-                      <strong>{account.name}</strong>
-                    </Trans>
-                  </div>
-                  <div className={classes.hash}>
-                    {copied ? (
-                      <span>
-                        <Trans i18nKey="receive:address_copied" />
-                      </span>
-                    ) : (
-                      <span>{account.fresh_addresses[0].address}</span>
-                    )}
-                  </div>
-                  {verified ? (
-                    <div>
-                      <ShieldBox
-                        iconColor={colors.green}
-                        text={<Trans i18nKey="receive:confirmed_device" />}
-                      />
-                    </div>
+        {!error && !loading && (
+          <ReceiveLayout
+            header={null}
+            content={
+              <div className={classes.address}>
+                <QRCode
+                  hash={
+                    account.account_type === "Bitcoin"
+                      ? `${currency.scheme}:${
+                          account.fresh_addresses[0].address
+                        }`
+                      : `${account.fresh_addresses[0].address}`
+                  }
+                  size={140}
+                />
+                <div className={classes.account}>
+                  <Trans i18nKey="receive:receive_account">
+                    {"Address for account"}
+                    <strong>{account.name}</strong>
+                  </Trans>
+                </div>
+                <div className={classes.hash}>
+                  {copied ? (
+                    <span>
+                      <Trans i18nKey="receive:address_copied" />
+                    </span>
                   ) : (
-                    <ShieldBox
-                      iconColor={colors.ocean}
-                      text={<Trans i18nKey="receive:verify_on_device" />}
-                    />
+                    <span>{account.fresh_addresses[0].address}</span>
                   )}
                 </div>
-              }
-              footer={
-                verified ? (
-                  <div className={classes.actions}>
-                    <div className={classes.icon} onClick={checkAgain}>
-                      <Recover size={16} color={colors.shark} />
+                {verified ? (
+                  <div>
+                    <ShieldBox
+                      iconColor={colors.green}
+                      text={<Trans i18nKey="receive:confirmed_device" />}
+                    />
+                  </div>
+                ) : (
+                  <ShieldBox
+                    iconColor={colors.ocean}
+                    text={<Trans i18nKey="receive:verify_on_device" />}
+                  />
+                )}
+              </div>
+            }
+            footer={
+              verified ? (
+                <div className={classes.actions}>
+                  <div className={classes.icon} onClick={checkAgain}>
+                    <Recover size={16} color={colors.shark} />
+                    <span className={classes.actionText}>
+                      <Trans i18nKey="receive:re_verify" />
+                    </span>
+                  </div>
+                  <CopyToClipboard
+                    text={account.fresh_addresses[0].address}
+                    onCopy={this.onCopy}
+                  >
+                    <div className={classes.icon}>
+                      <Copy color={colors.shark} size={16} />
                       <span className={classes.actionText}>
-                        <Trans i18nKey="receive:re_verify" />
+                        <Trans i18nKey="receive:copy" />
                       </span>
                     </div>
-                    <CopyToClipboard
-                      text={account.fresh_addresses[0].address}
-                      onCopy={this.onCopy}
-                    >
-                      <div className={classes.icon}>
-                        <Copy color={colors.shark} size={16} />
-                        <span className={classes.actionText}>
-                          <Trans i18nKey="receive:copy" />
-                        </span>
-                      </div>
-                    </CopyToClipboard>
-                  </div>
-                ) : null
-              }
-            />
-          )}
+                  </CopyToClipboard>
+                </div>
+              ) : null
+            }
+          />
+        )}
         {deviceRejected && <AddressRejected checkAgain={checkAgain} />}
         {error && (
           <GenericErrorScreen
@@ -198,12 +197,12 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column",
-    height: "100vh"
+    height: "100vh",
   },
   address: {
     paddingLeft: 40,
     textAlign: "center",
-    paddingRight: 40
+    paddingRight: 40,
   },
   hash: {
     border: "1px dashed #d8d8d8",
@@ -213,13 +212,13 @@ const styles = {
     marginTop: 25,
     marginBottom: 20,
     borderRadius: 4,
-    fontSize: 13
+    fontSize: 13,
   },
   actions: {
     marginTop: 27,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   icon: {
     cursor: "pointer",
@@ -227,24 +226,24 @@ const styles = {
     transition: "opacity 200ms ease",
     alignItems: "center",
     "&:hover": {
-      opacity: 1
+      opacity: 1,
     },
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
   },
   account: {
     fontSize: 12,
     color: colors.shark,
-    marginTop: 15
+    marginTop: 15,
   },
   actionText: {
     marginLeft: 10,
-    fontSize: 12
+    fontSize: 12,
   },
   not_verified: {
     fontSize: 12,
-    color: colors.shark
-  }
+    color: colors.shark,
+  },
 };
 
 export default withStyles(styles)(ReceiveAddress);

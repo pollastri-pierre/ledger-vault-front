@@ -32,12 +32,12 @@ const styles = {
 
     // space all children by 20px
     "&> * + *": {
-      marginLeft: 20
-    }
+      marginLeft: 20,
+    },
   },
   cell: {
-    flex: 1
-  }
+    flex: 1,
+  },
 };
 
 const inputProps = { style: { textAlign: "right", color: "black" } };
@@ -49,7 +49,7 @@ type Props<Transaction> = {
   feeIsValid: boolean,
   onChangeTransaction: Transaction => void,
   bridge: WalletBridge<Transaction>,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 
 type GasPriceStatus = "fetching" | "loaded" | "error";
@@ -58,12 +58,12 @@ type GasLimitStatus = "fetching" | "loaded" | "error";
 type State = {
   gasPriceStatus: GasPriceStatus,
   gasLimitStatus: GasLimitStatus,
-  totalFees: number
+  totalFees: number,
 };
 
 class FeesFieldEthereumKind extends PureComponent<
   Props<EthereumTransaction>,
-  State
+  State,
 > {
   componentDidMount() {
     this.loadGasPrice();
@@ -104,7 +104,7 @@ class FeesFieldEthereumKind extends PureComponent<
     const isRecipientValid = await bridge.isRecipientValid(
       restlay,
       currency,
-      transaction.recipient
+      transaction.recipient,
     );
 
     if (this._unmounted) return;
@@ -114,13 +114,13 @@ class FeesFieldEthereumKind extends PureComponent<
       amount: transaction.amount || 0,
       recipient: transaction.recipient,
       gas_limit: null,
-      gas_price: null
+      gas_price: null,
     };
     const estimatedFees = await getFees(
       account,
       transaction,
       operation,
-      restlay
+      restlay,
     );
 
     if (this._unmounted) return;
@@ -129,14 +129,14 @@ class FeesFieldEthereumKind extends PureComponent<
     onChangeTransaction({
       ...transaction,
       gasPrice: estimatedFees.gas_price,
-      gasLimit: estimatedFees.gas_limit
+      gasLimit: estimatedFees.gas_limit,
     });
   }
 
   state = {
     gasPriceStatus: "fetching",
     gasLimitStatus: "fetching",
-    totalFees: 0
+    totalFees: 0,
   };
 
   createMutation = field => (e: SyntheticEvent<HTMLInputElement>) => {

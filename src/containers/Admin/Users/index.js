@@ -22,7 +22,7 @@ import InviteUser from "../InviteUser";
 
 type Props = {
   match: Match,
-  history: MemoryHistory
+  history: MemoryHistory,
 };
 
 const mutationsToListen = [InviteUserMutation, UpdateUserRegistrationMutation];

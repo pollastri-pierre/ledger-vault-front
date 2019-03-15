@@ -14,15 +14,15 @@ const scroll = (node: Element) =>
   regex.test(
     style(node, "overflow") +
       style(node, "overflow-y") +
-      style(node, "overflow-x")
+      style(node, "overflow-x"),
   );
 
 const scrollparent = (node: ?Element): Element =>
   !node || node === document.body
     ? (invariant(document.body, "body is here"), document.body)
     : scroll(node)
-      ? node
-      : scrollparent(node.parentElement);
+    ? node
+    : scrollparent(node.parentElement);
 
 const resizeEventOn = (n: Element) => (n === document.body ? window : n);
 
@@ -33,15 +33,15 @@ export default class InfiniteScrollable extends Component<
     restlayVariable: string,
     loadPixelsInAdvance?: number,
     chunkSize?: number,
-    loadMore?: Function
+    loadMore?: Function,
   },
   {
-    loading: boolean
-  }
+    loading: boolean,
+  },
 > {
   static defaultProps = {
     loadPixelsInAdvance: 1000,
-    chunkSize: 50
+    chunkSize: 50,
   };
 
   state = { loading: false };
@@ -96,7 +96,7 @@ export default class InfiniteScrollable extends Component<
     return restlay.setVariables({
       // FIXME getVariables() might not be appropriate here because can spam server?
       // ALSO we don't know when to ends, maybe we need more feedback in the result of setVariables?
-      [restlayVariable]: restlay.getVariables()[restlayVariable] + chunkSize
+      [restlayVariable]: restlay.getVariables()[restlayVariable] + chunkSize,
     });
   };
 
@@ -118,7 +118,7 @@ export default class InfiniteScrollable extends Component<
           scrollHeight,
           height,
           scrollTop,
-          loadPixelsInAdvance
+          loadPixelsInAdvance,
         })
           .then(this.props.loadMore || this.loadMoreUsingRelay)
           .then(
@@ -127,8 +127,8 @@ export default class InfiniteScrollable extends Component<
               if (this.unmounted) return;
               console.warn(e);
               this.setState({ loading: false });
-            }
-          )
+            },
+          ),
       );
     }
   };
@@ -140,7 +140,7 @@ export default class InfiniteScrollable extends Component<
         <div key="loading" style={{ position: "relative", height: 50 }}>
           <SpinnerCard disableGlobalSpinner />
         </div>
-      ) : null
+      ) : null,
     ];
   }
 }

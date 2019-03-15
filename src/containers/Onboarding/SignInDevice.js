@@ -7,7 +7,7 @@ import { translate, Trans } from "react-i18next";
 import createDevice, {
   U2F_PATH,
   APPID_VAULT_ADMINISTRATOR,
-  U2F_TIMEOUT
+  U2F_TIMEOUT,
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
@@ -18,11 +18,11 @@ type Props = {
   organization: *,
   keyHandles: Object,
   cancel: Function,
-  t: Translate
+  t: Translate,
 };
 
 type State = {
-  step: number
+  step: number,
 };
 
 let _isMounted = false;
@@ -61,7 +61,7 @@ class SignInDevice extends Component<Props, State> {
             organization.name,
             organization.workspace,
             organization.domain_name,
-            "Administrator"
+            "Administrator",
           );
           this.setState({ step: 2 });
           this.props.onFinish(pubKey, authentication);
@@ -69,7 +69,7 @@ class SignInDevice extends Component<Props, State> {
           this.props.onAddMessage(
             "Keyhandle Not found",
             "Are you sure to use a registered device?",
-            "error"
+            "error",
           );
           this.props.cancel();
         }
@@ -94,7 +94,7 @@ class SignInDevice extends Component<Props, State> {
         key="step3"
         i18nKey="onboarding:master_seed_signin.device_modal.step3"
         components={<b>0</b>}
-      />
+      />,
     ];
 
     return (
@@ -111,6 +111,6 @@ class SignInDevice extends Component<Props, State> {
 export { SignInDevice };
 export default connectData(translate()(SignInDevice), {
   queries: {
-    organization: OrganizationQuery
-  }
+    organization: OrganizationQuery,
+  },
 });

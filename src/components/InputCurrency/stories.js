@@ -14,11 +14,11 @@ import TextField from "components/utils/TextField";
 const currency: CryptoCurrency = getCryptoCurrencyById("bitcoin");
 
 const INPUT_LARGE = {
-  style: { textAlign: "right", fontSize: 20 }
+  style: { textAlign: "right", fontSize: 20 },
 };
 
 const INPUT_SMALL = {
-  style: { textAlign: "right" }
+  style: { textAlign: "right" },
 };
 
 storiesOf("other", module).add("InputCurrency", () => {
@@ -35,11 +35,11 @@ storiesOf("other", module).add("InputCurrency", () => {
 
 class Wrapper extends Component<
   { currency: CryptoCurrency, size: boolean, fullWidth: boolean },
-  { value: string, unit: Unit }
+  { value: string, unit: Unit },
 > {
   state = {
     value: "5",
-    unit: currency.units[0]
+    unit: currency.units[0],
   };
 
   handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -62,7 +62,7 @@ class Wrapper extends Component<
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "flex-end"
+          alignItems: "flex-end",
         }}
       >
         <UnitSelect

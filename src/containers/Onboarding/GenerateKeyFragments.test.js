@@ -2,7 +2,7 @@ import {
   CONFIDENTIALITY_PATH,
   KEY_MATERIAL_PATH,
   INIT_SESSION,
-  ACCOUNT_MANAGER_SESSION
+  ACCOUNT_MANAGER_SESSION,
 } from "device";
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
@@ -13,13 +13,13 @@ import VaultDeviceApp, {
   mockOpenSession, // eslint-disable-line
   mockGetVersion, // eslint-disable-line
   mockGetAttestationCertificate, // eslint-disable-line
-  mockGenerateKeyComponent // eslint-disable-line
+  mockGenerateKeyComponent, // eslint-disable-line
 } from "device/VaultDeviceApp";
 import { GenerateKeyFragments } from "./GenerateKeyFragments";
 
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
+  create: jest.fn(),
 }));
 
 jest.mock("network", () => jest.fn());
@@ -39,13 +39,13 @@ const props = {
   wraps: true,
   shards_channel: {
     ephemeral_public_key: "shards_pub_key",
-    ephemeral_certificate: "shards_certificate"
-  }
+    ephemeral_certificate: "shards_certificate",
+  },
 };
 
 test("onStart should call device and API with right parameters for wrapping INIT_SESSION", async () => {
   const MyComponent = shallow(
-    <GenerateKeyFragments t={string => string} {...props} />
+    <GenerateKeyFragments t={string => string} {...props} />,
   );
   await MyComponent.instance().start();
   expect(mockGetVersion).toHaveBeenCalled();
@@ -55,12 +55,12 @@ test("onStart should call device and API with right parameters for wrapping INIT
     CONFIDENTIALITY_PATH,
     Buffer.from("shards_pub_key", "hex"),
     Buffer.from("shards_certificate", "base64"),
-    INIT_SESSION
+    INIT_SESSION,
   );
 
   expect(mockGenerateKeyComponent).toHaveBeenCalledWith(
     KEY_MATERIAL_PATH,
-    true
+    true,
   );
 
   const certificate =
@@ -68,14 +68,14 @@ test("onStart should call device and API with right parameters for wrapping INIT
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",
     certificate,
-    blob: "seedShard"
+    blob: "seedShard",
   });
 });
 
 test("onStart should call device and API with right parameters when generating seeds ACCOUNT_MANAGER_SESSION", async () => {
   const sProps = { ...props, wraps: false };
   const MyComponent = shallow(
-    <GenerateKeyFragments t={string => string} {...sProps} />
+    <GenerateKeyFragments t={string => string} {...sProps} />,
   );
   await MyComponent.instance().start();
   expect(mockGetPublicKey).toHaveBeenCalledWith(CONFIDENTIALITY_PATH);
@@ -85,12 +85,12 @@ test("onStart should call device and API with right parameters when generating s
     CONFIDENTIALITY_PATH,
     Buffer.from("shards_pub_key", "hex"),
     Buffer.from("shards_certificate", "base64"),
-    ACCOUNT_MANAGER_SESSION
+    ACCOUNT_MANAGER_SESSION,
   );
 
   expect(mockGenerateKeyComponent).toHaveBeenCalledWith(
     KEY_MATERIAL_PATH,
-    false
+    false,
   );
 
   const certificate =
@@ -98,6 +98,6 @@ test("onStart should call device and API with right parameters when generating s
   expect(props.onFinish).toHaveBeenCalledWith({
     ephemeral_public_key: "pubKey",
     certificate,
-    blob: "seedShard"
+    blob: "seedShard",
   });
 });

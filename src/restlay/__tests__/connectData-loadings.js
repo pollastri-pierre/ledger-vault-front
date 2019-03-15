@@ -5,7 +5,7 @@ import {
   createRender,
   networkFromMock,
   flushPromises,
-  NullComponent
+  NullComponent,
 } from "../tests-utils";
 import createMock, { AnimalsQuery } from "../tests-utils/mock-1";
 
@@ -14,7 +14,7 @@ test("RenderLoading gets rendered before network success", async () => {
   const render = createRender(net.network);
   const Animals = connectData(NullComponent, {
     RenderLoading: () => "LOADING...",
-    queries: { animals: AnimalsQuery }
+    queries: { animals: AnimalsQuery },
   });
   const inst = renderer.create(render(<Animals />));
   expect(inst.toJSON()).toBe("LOADING...");

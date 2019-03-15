@@ -10,14 +10,14 @@ const styles = {
     position: "relative",
     paddingLeft: "50px",
     "&:last-child": {
-      border: "0"
+      border: "0",
     },
     "&:first-child": {
-      marginTop: "40px"
-    }
+      marginTop: "40px",
+    },
   },
   unactive: {
-    opacity: "0.5"
+    opacity: "0.5",
   },
   name: {
     display: "block",
@@ -25,7 +25,7 @@ const styles = {
     fontSize: "13px",
     color: "black",
     lineHeight: "1.77",
-    marginTop: "15px"
+    marginTop: "15px",
   },
   value: {
     display: "block",
@@ -33,7 +33,7 @@ const styles = {
     fontSize: "11px",
     lineHeight: "2.09",
     color: colors.steel,
-    marginBottom: "15px"
+    marginBottom: "15px",
   },
   state: {
     fontSize: "13px",
@@ -41,13 +41,13 @@ const styles = {
     lineHeight: "1.77",
     position: "absolute",
     right: "0",
-    top: "10%"
+    top: "10%",
   },
   icon: {
     position: "absolute",
     left: "0",
-    top: "10px"
-  }
+    top: "10px",
+  },
 };
 class ApproveLockRow extends PureComponent<{
   icon: string | React$Node,
@@ -55,7 +55,7 @@ class ApproveLockRow extends PureComponent<{
   value: string | React$Node,
   unactive?: boolean,
   state?: string | React$Node,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const { icon, name, value, state, unactive, classes } = this.props;

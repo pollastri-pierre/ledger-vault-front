@@ -11,39 +11,39 @@ const EDIT_QUORUM = "UPDATE-ACCOUNTS/EDIT-QUORUM";
 const EDIT_NAME = "UPDATE-ACCOUNTS/EDIT_NAME";
 
 export const toggleModal = () => ({
-  type: TOGGLE
+  type: TOGGLE,
 });
 
 export const toggleDevice = () => ({
-  type: TOGGLE_DEVICE
+  type: TOGGLE_DEVICE,
 });
 
 export const selectAccount = (account: ?Account) => ({
   type: SELECT_ACCOUNT,
-  account
+  account,
 });
 
 export const toggleMember = (member: Member) => ({
   type: TOGGLE_MEMBER,
-  member
+  member,
 });
 
 export const toggleMembers = () => ({
-  type: TOGGLE_MEMBERS
+  type: TOGGLE_MEMBERS,
 });
 
 export const editQuorum = (quorum: string) => ({
   type: EDIT_QUORUM,
-  quorum
+  quorum,
 });
 
 export const editName = (name: string) => ({
   type: EDIT_NAME,
-  name
+  name,
 });
 
 export const toggleApprovals = () => ({
-  type: TOGGLE_APPROVALS
+  type: TOGGLE_APPROVALS,
 });
 
 export const toggleAndSelect = (account: ?Account) => (dispatch: Function) => {
@@ -58,7 +58,7 @@ type State = {
   members: Member[],
   quorum: number,
   isSelectingApprovals: boolean,
-  account: ?Account
+  account: ?Account,
 };
 
 const initialState = {
@@ -68,7 +68,7 @@ const initialState = {
   isSelectingApprovals: false,
   members: [],
   quorum: 0,
-  account: null
+  account: null,
 };
 export default function reducer(state: State = initialState, action: Object) {
   switch (action.type) {
@@ -84,21 +84,21 @@ export default function reducer(state: State = initialState, action: Object) {
     case EDIT_NAME: {
       return {
         ...state,
-        account: { ...state.account, name: action.name }
+        account: { ...state.account, name: action.name },
       };
     }
     case TOGGLE_MEMBERS: {
       return {
         ...state,
         isSelectingMembers: !state.isSelectingMembers,
-        isOpen: !state.isOpen
+        isOpen: !state.isOpen,
       };
     }
     case TOGGLE_APPROVALS: {
       return {
         ...state,
         isSelectingApprovals: !state.isSelectingApprovals,
-        isOpen: !state.isOpen
+        isOpen: !state.isOpen,
       };
     }
     case EDIT_QUORUM: {
@@ -111,8 +111,8 @@ export default function reducer(state: State = initialState, action: Object) {
           ...state,
           members: [
             ...state.members.slice(0, index),
-            ...state.members.slice(index + 1, state.members.length)
-          ]
+            ...state.members.slice(index + 1, state.members.length),
+          ],
         };
       }
       return { ...state, members: [...state.members, action.member] };

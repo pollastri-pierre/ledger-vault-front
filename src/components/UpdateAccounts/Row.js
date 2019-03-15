@@ -10,31 +10,31 @@ const style = {
     display: "flex",
     minHeight: 40,
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   noBorder: {
-    border: 0
+    border: 0,
   },
   label: {
     textTransform: "uppercase",
     fontWeight: "bold",
-    fontSize: 11
+    fontSize: 11,
   },
   children: {
     color: "grey",
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 };
 const Row = ({
   classes,
   label,
   children,
-  noBorder
+  noBorder,
 }: {
   classes: { [_: $Keys<typeof style>]: string },
   label: string,
   children: *,
-  noBorder: boolean
+  noBorder: boolean,
 }) => (
   <div className={cx(classes.base, { [classes.noBorder]: noBorder })}>
     <div className={classes.label}>{label}</div>

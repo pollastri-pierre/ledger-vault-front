@@ -18,7 +18,7 @@ import Quicklook from "./QuickLook";
 type State = {
   tabsIndex: number,
   quicklookFilter: { title: string, key: string },
-  labelDateRange: React$Element<typeof DateFormat>[]
+  labelDateRange: React$Element<typeof DateFormat>[],
 };
 
 type Filter = { title: string, key: string };
@@ -26,29 +26,29 @@ type Filter = { title: string, key: string };
 const styles = {
   card: {
     width: "34.5%",
-    height: "399px"
+    height: "399px",
   },
   dateLabel: {
     fontSize: " 11px",
     color: "#767676",
     paddingTop: " 30px",
-    textAlign: " right"
+    textAlign: " right",
   },
   loading: {
     background: "white",
     height: "403px",
-    width: "380px"
-  }
+    width: "380px",
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   accountId: string,
-  account: Account
+  account: Account,
 };
 
 const quicklookFilters: Array<Filter> = [
-  { title: "balance", key: "balance" }
+  { title: "balance", key: "balance" },
   // { title: "countervalue", key: "countervalue" }
 ];
 
@@ -58,7 +58,7 @@ export class QuicklookCard extends Component<Props, State> {
     this.state = {
       tabsIndex: 0,
       quicklookFilter: quicklookFilters[0],
-      labelDateRange: this.getLabelDateRange(this.getDateRange(0))
+      labelDateRange: this.getLabelDateRange(this.getDateRange(0)),
     };
   }
 
@@ -69,7 +69,7 @@ export class QuicklookCard extends Component<Props, State> {
     const lastWeek = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate() - 7
+      today.getDate() - 7,
     );
     return lastWeek;
   };
@@ -77,15 +77,15 @@ export class QuicklookCard extends Component<Props, State> {
   onQuicklookFilterChange = (e: *): void => {
     this.setState({
       quicklookFilter: quicklookFilters.find(
-        elem => elem.key === e.target.value
-      )
+        elem => elem.key === e.target.value,
+      ),
     });
   };
 
   selectTab = (index: number): void => {
     this.setState({
       tabsIndex: index,
-      labelDateRange: this.getLabelDateRange(this.getDateRange(index))
+      labelDateRange: this.getLabelDateRange(this.getDateRange(index)),
     });
   };
 
@@ -101,7 +101,7 @@ export class QuicklookCard extends Component<Props, State> {
   };
 
   getLabelDateRange = (
-    domain: number[]
+    domain: number[],
   ): React$Element<typeof DateFormat>[] => {
     const day1 = new Date(domain[0]).getDate();
     const month1 = new Date(domain[0]).getMonth();
@@ -113,37 +113,37 @@ export class QuicklookCard extends Component<Props, State> {
       day1 === day2 && month1 === month2 && year1 === year2
         ? "day"
         : month1 === month2 && year1 === year2
-          ? "month"
-          : year1 === year2
-            ? "year"
-            : "hour";
+        ? "month"
+        : year1 === year2
+        ? "year"
+        : "hour";
 
     let res = [
       <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY h:mm" />,
-      <DateFormat key="1" date={domain[1]} format="h:mm" />
+      <DateFormat key="1" date={domain[1]} format="h:mm" />,
     ];
     if (dateRange === "day") {
       // Same day
       res = [
         <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY h:mm" />,
-        <DateFormat key="1" date={domain[1]} format="h:mm" />
+        <DateFormat key="1" date={domain[1]} format="h:mm" />,
       ];
     } else if (dateRange === "month") {
       // Same month
       res = [
         <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
-        <DateFormat key="1" date={domain[1]} format="Do, YYYY" />
+        <DateFormat key="1" date={domain[1]} format="Do, YYYY" />,
       ];
     } else if (dateRange === "year") {
       // Same year
       res = [
         <DateFormat key="0" date={domain[0]} format="MMMM Do" />,
-        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />,
       ];
     } else
       res = [
         <DateFormat key="0" date={domain[0]} format="MMMM Do, YYYY" />,
-        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />
+        <DateFormat key="1" date={domain[1]} format="MMMM Do, YYYY" />,
       ];
     return res;
   };
@@ -226,12 +226,12 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 
 export default connectData(withStyles(styles)(QuicklookCard), {
   queries: {
-    account: AccountQuery
+    account: AccountQuery,
   },
   propsToQueryParams: props => ({
-    accountId: props.accountId
+    accountId: props.accountId,
   }),
   optimisticRendering: true,
   RenderError,
-  RenderLoading
+  RenderLoading,
 });

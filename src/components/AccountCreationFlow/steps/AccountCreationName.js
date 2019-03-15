@@ -15,7 +15,7 @@ import ERC20RenderName from "./ERC20RenderName";
 
 const inputProps = {
   maxLength: 19,
-  onlyAscii: true
+  onlyAscii: true,
 };
 
 const styles = {
@@ -24,16 +24,16 @@ const styles = {
     fontWeight: 600,
     textTransform: "uppercase",
     marginBottom: 20,
-    display: "block"
+    display: "block",
   },
   relative: {
-    position: "relative"
-  }
+    position: "relative",
+  },
 };
 
 type Props = AccountCreationStepProps & {
   classes: { [_: $Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 };
 
 class AccountCreationOptions extends PureComponent<Props> {

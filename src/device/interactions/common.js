@@ -12,7 +12,7 @@ export const getU2FPublicKey: Interaction = {
   responseKey: "u2f_key",
   tooltip: <Text small i18nKey="common:plug_device" />,
   action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, U2F_PATH, false))
+    retry(() => getPublicKey()(transport, U2F_PATH, false)),
 };
 
 export const getConfidentialityPublicKey: Interaction = {
@@ -20,7 +20,7 @@ export const getConfidentialityPublicKey: Interaction = {
   device: true,
   responseKey: "confidentiality_key",
   action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, CONFIDENTIALITY_PATH))
+    retry(() => getPublicKey()(transport, CONFIDENTIALITY_PATH)),
 };
 
 export const getValidationPublicKey: Interaction = {
@@ -28,12 +28,13 @@ export const getValidationPublicKey: Interaction = {
   device: true,
   responseKey: "validation_key",
   action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, VALIDATION_PATH))
+    retry(() => getPublicKey()(transport, VALIDATION_PATH)),
 };
 
 export const getAttestation: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "attestation",
-  action: ({ transport }) => retry(() => getAttestationCertificate()(transport))
+  action: ({ transport }) =>
+    retry(() => getAttestationCertificate()(transport)),
 };

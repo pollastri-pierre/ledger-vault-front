@@ -13,24 +13,24 @@ const styles = {
     lineHeight: "55px",
     cursor: "pointer",
     "&:not(:last-child)": {
-      borderBottom: `1px solid ${colors.argile}`
-    }
+      borderBottom: `1px solid ${colors.argile}`,
+    },
   },
   disabled: {
     opacity: "0.5",
-    cursor: "initial"
+    cursor: "initial",
   },
   label: {
     fontSize: "13px",
     color: "#000000",
     paddingLeft: "10px",
-    display: "inline-block"
+    display: "inline-block",
   },
   value: {
     fontSize: "13px",
     color: colors.lead,
     marginRight: "20px",
-    float: "right"
+    float: "right",
   },
   arrow: {
     fill: "#000000",
@@ -41,8 +41,8 @@ const styles = {
     position: "absolute",
     right: "0",
     top: "50%",
-    marginTop: "-2.5px"
-  }
+    marginTop: "-2.5px",
+  },
 };
 class SecurityRow extends Component<{
   icon: React$Node | string,
@@ -50,7 +50,7 @@ class SecurityRow extends Component<{
   disabled?: boolean,
   onClick: Function,
   children: React$Node | string,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const { children, icon, label, disabled, onClick, classes } = this.props;

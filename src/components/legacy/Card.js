@@ -25,22 +25,22 @@ const styles = {
         color: "black",
         margin: "0 0 20px",
         "& a": {
-          ...common.blueLink
-        }
-      }
-    }
+          ...common.blueLink,
+        },
+      },
+    },
   },
   reloading: {
-    opacity: 0.5
+    opacity: 0.5,
   },
   link: {
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 };
 
 class Header extends Component<{
   title?: React$Node | string,
-  titleRight?: React$Node | string
+  titleRight?: React$Node | string,
 }> {
   render() {
     const { title, titleRight } = this.props;
@@ -60,10 +60,10 @@ class Card extends Component<{
   dataTest: ?string,
   reloading?: boolean,
   classes: Object,
-  link?: string
+  link?: string,
 }> {
   static defaultProps = {
-    Header
+    Header,
   };
 
   render() {
@@ -74,7 +74,7 @@ class Card extends Component<{
       classes,
       reloading,
       dataTest,
-      className
+      className,
     } = this.props;
     if (link) {
       return (

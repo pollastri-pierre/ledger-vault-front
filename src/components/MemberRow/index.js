@@ -17,7 +17,7 @@ class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
   checked?: boolean,
   editable?: boolean,
-  member: Member
+  member: Member,
 }> {
   onClick = () => {
     const { onSelect } = this.props;
@@ -40,14 +40,13 @@ class MemberRow extends Component<{
         {editable && (
           <Text small color={colors.steel} i18nKey="common:clickToEdit" />
         )}
-        {onSelect &&
-          !editable && (
-            <Checkbox
-              checked={checked}
-              labelFor={member.id}
-              handleInputChange={this.onClick}
-            />
-          )}
+        {onSelect && !editable && (
+          <Checkbox
+            checked={checked}
+            labelFor={member.id}
+            handleInputChange={this.onClick}
+          />
+        )}
       </Container>
     );
   }

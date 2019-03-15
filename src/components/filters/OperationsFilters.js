@@ -11,11 +11,11 @@ import {
   FieldAccounts,
   FieldDate,
   FieldText,
-  FieldOperationStatuses
+  FieldOperationStatuses,
 } from "components/filters";
 
 type Props = FieldsGroupProps & {
-  accounts: Account[]
+  accounts: Account[],
 };
 
 class OperationsFilters extends PureComponent<Props> {

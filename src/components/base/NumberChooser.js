@@ -10,7 +10,7 @@ type Props = {
   value: number,
   onChange: number => void,
   min: number,
-  max: number
+  max: number,
 };
 
 class NumberChooser extends PureComponent<Props> {

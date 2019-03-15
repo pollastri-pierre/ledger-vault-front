@@ -12,7 +12,7 @@ import Mutation from "../Mutation";
 type Animal = {
   id: string,
   name: string,
-  age: number
+  age: number,
 };
 const schemaAnimal = create("animals");
 
@@ -63,13 +63,13 @@ export default () => {
     {
       id: "id_max",
       name: "max",
-      age: 14
+      age: 14,
     },
     {
       id: "id_doge",
       name: "doge",
-      age: 5
-    }
+      age: 5,
+    },
   ];
   function incrementAge() {
     animals.forEach(a => a.age++);
@@ -88,11 +88,11 @@ export default () => {
               (j === 0 ? 65 : 97) +
                 26 *
                   0.5 *
-                  (1 + Math.sin(i * 987.6 + 9999.8 * Math.cos(j * 43.2)))
-            )
-          )
+                  (1 + Math.sin(i * 987.6 + 9999.8 * Math.cos(j * 43.2))),
+            ),
+          ),
         )
-        .join("")
+        .join(""),
     });
   }
 

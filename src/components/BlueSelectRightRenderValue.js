@@ -5,16 +5,16 @@ import ArrowDown from "./icons/full/ArrowDown";
 
 const styles = _theme => ({
   root: {
-    color: "black"
+    color: "black",
   },
   arrowDownLarge: {
     marginLeft: 10,
-    width: 11
+    width: 11,
   },
   arrowDownSmall: {
     marginLeft: 10,
-    width: 9
-  }
+    width: 9,
+  },
 });
 // TODO refactor ArrowDown svg to accept the size and update it in all use cases
 class BlueSelectRightRenderValue extends Component<*> {

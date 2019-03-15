@@ -10,12 +10,12 @@ const tickerBeforeStyle = {
   position: "absolute",
   bottom: "calc(50% - (26px / 2))",
   opacity: 1,
-  transition: "width 0.2s ease"
+  transition: "width 0.2s ease",
 };
 
 const tickerActiveStyle = {
   opacity: 1,
-  width: 5
+  width: 5,
 };
 
 const theme = {
@@ -33,57 +33,57 @@ const theme = {
           display: "block",
           position: "absolute",
           bottom: "0px",
-          zIndex: "-1"
-        }
-      }
+          zIndex: "-1",
+        },
+      },
     },
     MuiTab: {
       label: {
         fontSize: "10px!important",
-        fontWeight: "600"
+        fontWeight: "600",
       },
       root: {
         minWidth: "auto!important",
         marginRight: "23px",
-        opacity: 0.4
+        opacity: 0.4,
       },
       labelContainer: {
         paddingLeft: "0!important",
-        paddingRight: "0!important"
-      }
+        paddingRight: "0!important",
+      },
     },
     MuiInputBase: {
       root: {
-        color: "rgb(0,0,0)"
-      }
+        color: "rgb(0,0,0)",
+      },
     },
     MuiInput: {
       root: {
-        fontSize: 13
+        fontSize: 13,
       },
       underline: {
         "&:before": {
-          borderBottom: "1px solid rgb(238, 238, 238)"
+          borderBottom: "1px solid rgb(238, 238, 238)",
         },
         "&:after": {
-          borderBottom: "2px solid rgb(202, 198, 198)"
-        }
-      }
+          borderBottom: "2px solid rgb(202, 198, 198)",
+        },
+      },
     },
     MuiSelect: {
       select: {
         ".MuiSelect-disable-arrow &": {
-          padding: "0 0 2px 0"
+          padding: "0 0 2px 0",
         },
         "&:focus": {
-          backgroundColor: "transparent"
-        }
+          backgroundColor: "transparent",
+        },
       },
       icon: {
         ".MuiSelect-disable-arrow &": {
-          display: "none"
-        }
-      }
+          display: "none",
+        },
+      },
     },
     MuiMenuItem: {
       root: {
@@ -92,81 +92,81 @@ const theme = {
         opacity: 0.5,
         "&:hover": {
           backgroundColor: "transparent",
-          opacity: 1
+          opacity: 1,
         },
         "&:focus": {
           backgroundColor: "transparent",
-          opacity: 1
+          opacity: 1,
         },
         ".MuiListItem-ticker-right &": {
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
         },
         "&$selected": {
           "&:hover": {
-            backgroundColor: "transparent"
+            backgroundColor: "transparent",
           },
           backgroundColor: "transparent",
           opacity: 1,
           "&:before": {
             ...tickerBeforeStyle,
             ...tickerActiveStyle,
-            left: 0
+            left: 0,
           },
           ".MuiListItem-ticker-right &:before": {
             left: "auto",
-            right: 0
-          }
-        }
-      }
+            right: 0,
+          },
+        },
+      },
     },
     MuiListItem: {
       default: {
         paddingTop: 2,
-        paddingBottom: 2
+        paddingBottom: 2,
       },
       button: {
         "&:hover": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         },
         "&:focus": {
           backgroundColor: "transparent",
           "&:before": {
             ...tickerBeforeStyle,
             ...tickerActiveStyle,
-            left: 0
+            left: 0,
           },
           ".MuiListItem-ticker-right &:before": {
             left: "auto",
-            right: 0
-          }
+            right: 0,
+          },
         },
         "&:before": { ...tickerBeforeStyle, left: 0 },
         "&:hover:before": tickerActiveStyle,
         ".MuiListItem-ticker-right &:before": {
           left: "auto",
-          right: 0
-        }
+          right: 0,
+        },
       },
       gutters: {
         paddingLeft: 20,
-        paddingRight: 20
-      }
+        paddingRight: 20,
+      },
     },
     MuiPickersToolbar: {
       toolbar: {
-        backgroundColor: "#1d2028"
-      }
+        backgroundColor: "#1d2028",
+      },
     },
     MuiPickersDay: {
       day: {
-        color: "#1d2028"
-      }
+        color: "#1d2028",
+      },
     },
     MuiPopover: {
       paper: {
         "& > ul": {
           overflowY: "auto",
-          maxHeight: "inherit"
+          maxHeight: "inherit",
         },
         "&:before": {
           content: "''",
@@ -179,14 +179,14 @@ const theme = {
           border: "12px solid black",
           borderColor: "transparent transparent #ffffff #ffffff",
           transform: "rotate(-45deg)",
-          boxShadow: "2px -3px 10px 0 rgba(0, 0, 0, 0.04)"
+          boxShadow: "2px -3px 10px 0 rgba(0, 0, 0, 0.04)",
         },
         ".MuiPopover-triangle-left &:before": {
           left: 20,
-          right: "auto"
-        }
-      }
-    }
+          right: "auto",
+        },
+      },
+    },
   },
   palette: {
     common: {
@@ -200,7 +200,7 @@ const theme = {
       faintBlack: "rgba(0, 0, 0, 0.12)",
       fullWhite: "rgba(255, 255, 255, 1)",
       darkWhite: "rgba(255, 255, 255, 0.87)",
-      lightWhite: "rgba(255, 255, 255, 0.54)"
+      lightWhite: "rgba(255, 255, 255, 0.54)",
     },
     type: "light",
     primary: {
@@ -218,7 +218,7 @@ const theme = {
       A200: "#448aff",
       A400: "#2979ff",
       A700: "rgb(238, 238, 238)",
-      contrastDefaultColor: "light"
+      contrastDefaultColor: "light",
     },
     secondary: {
       "50": "#fce4ec",
@@ -235,7 +235,7 @@ const theme = {
       A200: "#27d0e2",
       A400: "#f50057",
       A700: "#c51162",
-      contrastDefaultColor: "light"
+      contrastDefaultColor: "light",
     },
     error: {
       "50": "#ffebee",
@@ -252,7 +252,7 @@ const theme = {
       A200: "#ff5252",
       A400: "#ff1744",
       A700: "#d50000",
-      contrastDefaultColor: "light"
+      contrastDefaultColor: "light",
     },
     grey: {
       "50": "#fafafa",
@@ -269,7 +269,7 @@ const theme = {
       A200: "#aaaaaa",
       A400: "red",
       A700: "#616161",
-      contrastDefaultColor: "dark"
+      contrastDefaultColor: "dark",
     },
     shades: {
       dark: {
@@ -280,28 +280,28 @@ const theme = {
           hint: "rgba(255, 255, 255, 0.5)",
           icon: "rgba(255, 255, 255, 0.5)",
           divider: "rgba(255, 255, 255, 0.12)",
-          lightDivider: "rgba(255, 255, 255, 0.075)"
+          lightDivider: "rgba(255, 255, 255, 0.075)",
         },
         input: {
           bottomLine: "rgba(255, 255, 255, 0.7)",
           helperText: "rgba(255, 255, 255, 0.7)",
           labelText: "rgba(255, 255, 255, 0.7)",
           inputText: "rgba(255, 255, 255, 1)",
-          disabled: "rgba(255, 255, 255, 0.5)"
+          disabled: "rgba(255, 255, 255, 0.5)",
         },
         action: {
           active: "rgba(255, 255, 255, 1)",
-          disabled: "rgba(255, 255, 255, 0.3)"
+          disabled: "rgba(255, 255, 255, 0.3)",
         },
         background: {
           default: "rgb(234, 46, 73)",
           paper: "#424242",
           appBar: "#212121",
-          contentFrame: "#212121"
+          contentFrame: "#212121",
         },
         line: {
-          stepper: "#bdbdbd"
-        }
+          stepper: "#bdbdbd",
+        },
       },
       light: {
         text: {
@@ -311,29 +311,29 @@ const theme = {
           hint: "rgba(0, 0, 0, 0.38)",
           icon: "rgba(0, 0, 0, 0.38)",
           divider: "rgba(0, 0, 0, 0.12)",
-          lightDivider: "rgba(0, 0, 0, 0.075)"
+          lightDivider: "rgba(0, 0, 0, 0.075)",
         },
         input: {
           bottomLine: "rgb(238, 238, 238)",
           helperText: "rgba(0, 0, 0, 0.54)",
           labelText: "rgba(0, 0, 0, 0.54)",
           inputText: "rgba(0, 0, 0, 0.87)",
-          disabled: "rgba(0, 0, 0, 0.42)"
+          disabled: "rgba(0, 0, 0, 0.42)",
         },
         action: {
           active: "rgba(0, 0, 0, 0.54)",
-          disabled: "rgba(0, 0, 0, 0.26)"
+          disabled: "rgba(0, 0, 0, 0.26)",
         },
         background: {
           default: "#fafafa",
           paper: "#fff",
           appBar: "#f5f5f5",
-          contentFrame: "#eeeeee"
+          contentFrame: "#eeeeee",
         },
         line: {
-          stepper: "#bdbdbd"
-        }
-      }
+          stepper: "#bdbdbd",
+        },
+      },
     },
     text: {
       primary: "#333333",
@@ -342,28 +342,28 @@ const theme = {
       hint: "rgba(0, 0, 0, 0.38)",
       icon: "rgba(0, 0, 0, 0.38)",
       divider: "rgba(0, 0, 0, 0.12)",
-      lightDivider: "rgba(0, 0, 0, 0.075)"
+      lightDivider: "rgba(0, 0, 0, 0.075)",
     },
     input: {
       bottomLine: "rgb(238, 238, 238)",
       helperText: "rgba(0, 0, 0, 0.54)",
       labelText: "rgba(0, 0, 0, 0.54)",
       inputText: "rgba(0, 0, 0, 0.87)",
-      disabled: "rgb(238, 238, 238)"
+      disabled: "rgb(238, 238, 238)",
     },
     action: {
       active: "rgba(0, 0, 0, 0.54)",
-      disabled: "rgba(0, 0, 0, 0.26)"
+      disabled: "rgba(0, 0, 0, 0.26)",
     },
     background: {
       default: "#fafafa",
       paper: "#fff",
       appBar: "#f5f5f5",
-      contentFrame: "#eeeeee"
+      contentFrame: "#eeeeee",
     },
     line: {
-      stepper: "#bdbdbd"
-    }
+      stepper: "#bdbdbd",
+    },
   },
   typography: {
     useNextVariants: true,
@@ -379,7 +379,7 @@ const theme = {
       letterSpacing: "-.04em",
       lineHeight: "1.14286em",
       marginLeft: "-.06em",
-      color: "rgba(0, 0, 0, 0.54)"
+      color: "rgba(0, 0, 0, 0.54)",
     },
     display3: {
       fontSize: "3.5rem",
@@ -388,7 +388,7 @@ const theme = {
       letterSpacing: "-.02em",
       lineHeight: "1.30357em",
       marginLeft: "-.04em",
-      color: "rgba(0, 0, 0, 0.54)"
+      color: "rgba(0, 0, 0, 0.54)",
     },
     display2: {
       fontSize: "2.8125rem",
@@ -396,7 +396,7 @@ const theme = {
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.06667em",
       marginLeft: "-.04em",
-      color: "rgba(0, 0, 0, 0.54)"
+      color: "rgba(0, 0, 0, 0.54)",
     },
     display1: {
       fontSize: "2.125rem",
@@ -404,60 +404,60 @@ const theme = {
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.20588em",
       marginLeft: "-.04em",
-      color: "rgba(0, 0, 0, 0.54)"
+      color: "rgba(0, 0, 0, 0.54)",
     },
     headline: {
       fontSize: "1.5rem",
       fontWeight: 400,
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.35417em",
-      color: "rgba(0, 0, 0, 0.87)"
+      color: "rgba(0, 0, 0, 0.87)",
     },
     title: {
       fontSize: "1.3125rem",
       fontWeight: 500,
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.16667em",
-      color: "rgba(0, 0, 0, 0.87)"
+      color: "rgba(0, 0, 0, 0.87)",
     },
     body2: {
       fontSize: "0.875rem",
       fontWeight: 500,
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.71429em",
-      color: "rgba(0, 0, 0, 0.87)"
+      color: "rgba(0, 0, 0, 0.87)",
     },
     body1: {
       fontSize: "0.875rem",
       fontWeight: 400,
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.46429em",
-      color: "rgba(0, 0, 0, 0.87)"
+      color: "rgba(0, 0, 0, 0.87)",
     },
     caption: {
       fontSize: "0.75rem",
       fontWeight: 400,
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
       lineHeight: "1.375em",
-      color: "rgba(0, 0, 0, 0.54)"
+      color: "rgba(0, 0, 0, 0.54)",
     },
     button: {
       fontSize: "0.875rem",
       textTransform: "uppercase",
       fontFamily: "'Open Sans', Roboto', 'Helvetica', 'Arial', sans-serif",
-      fontWeight: 500
-    }
+      fontWeight: 500,
+    },
   },
   mixins: {
     toolbar: {
       minHeight: 56,
       "@media (min-width:0px) and (orientation: landscape)": {
-        minHeight: 48
+        minHeight: 48,
       },
       "@media (min-width:600px)": {
-        minHeight: 64
-      }
-    }
+        minHeight: 64,
+      },
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],
@@ -466,8 +466,8 @@ const theme = {
       sm: 600,
       md: 960,
       lg: 1280,
-      xl: 1920
-    }
+      xl: 1920,
+    },
   },
   shadows: [
     "none",
@@ -494,14 +494,14 @@ const theme = {
     "0px 10px 13px -6px rgba(0, 0, 0, 0.04),0px 21px 33px 3px rgba(0, 0, 0, 0.04),0px 8px 40px 7px rgba(0, 0, 0, 0.04)",
     "0px 10px 14px -6px rgba(0, 0, 0, 0.04),0px 22px 35px 3px rgba(0, 0, 0, 0.04),0px 8px 42px 7px rgba(0, 0, 0, 0.04)",
     "0px 11px 14px -7px rgba(0, 0, 0, 0.04),0px 23px 36px 3px rgba(0, 0, 0, 0.04),0px 9px 44px 8px rgba(0, 0, 0, 0.04)",
-    "0px 11px 15px -7px rgba(0, 0, 0, 0.04),0px 24px 38px 3px rgba(0, 0, 0, 0.04),0px 9px 46px 8px rgba(0, 0, 0, 0.04)"
+    "0px 11px 15px -7px rgba(0, 0, 0, 0.04),0px 24px 38px 3px rgba(0, 0, 0, 0.04),0px 9px 46px 8px rgba(0, 0, 0, 0.04)",
   ],
   transitions: {
     easing: {
       easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
       easeOut: "cubic-bezier(0.0, 0, 0.2, 1)",
       easeIn: "cubic-bezier(0.4, 0, 1, 1)",
-      sharp: "cubic-bezier(0.4, 0, 0.6, 1)"
+      sharp: "cubic-bezier(0.4, 0, 0.6, 1)",
     },
     duration: {
       shortest: 150,
@@ -510,11 +510,11 @@ const theme = {
       standard: 300,
       complex: 375,
       enteringScreen: 225,
-      leavingScreen: 195
-    }
+      leavingScreen: 195,
+    },
   },
   spacing: {
-    unit: 8
+    unit: 8,
   },
   zIndex: {
     mobileStepper: 900,
@@ -527,12 +527,12 @@ const theme = {
     layer: 2000,
     popover: 2100,
     snackbar: 2900,
-    tooltip: 3000
-  }
+    tooltip: 3000,
+  },
 };
 
 export const styledTheme = {
-  space: []
+  space: [],
 };
 
 export { theme as default };

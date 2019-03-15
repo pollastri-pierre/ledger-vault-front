@@ -5,7 +5,7 @@ type Props = { color?: string };
 
 export default class ArrowUp extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {
@@ -14,7 +14,7 @@ export default class ArrowUp extends PureComponent<Props> {
       fill: "none",
       stroke: color,
       strokeMiterlimit: "10",
-      strokeWidth: "4px"
+      strokeWidth: "4px",
     };
 
     return (

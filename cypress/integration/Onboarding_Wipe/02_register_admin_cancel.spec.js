@@ -11,26 +11,26 @@ context("Register the Administrators", () => {
     cy.server();
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`,
     ).as("next");
     cy.route(
       "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`,
     ).as("authenticate");
     cy.route(
       "get",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
+      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`,
     ).as("challenge");
 
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 4
+      device_number: 4,
     });
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
       cy.contains("continue").click();
@@ -44,11 +44,11 @@ context("Register the Administrators", () => {
       cy.wait("@authenticate");
 
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 5
+        device_number: 5,
       });
       // Cancel the approval
       cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: false
+        approve: false,
       });
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
@@ -57,7 +57,7 @@ context("Register the Administrators", () => {
 
       // Approve the registration
       cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: true
+        approve: true,
       });
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
@@ -66,7 +66,7 @@ context("Register the Administrators", () => {
       cy.wait("@authenticate");
 
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 6
+        device_number: 6,
       });
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user3");

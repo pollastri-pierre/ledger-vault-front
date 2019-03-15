@@ -12,7 +12,7 @@ import type { Account } from "data/types";
 
 type Props = {
   history: MemoryHistory,
-  location: Location
+  location: Location,
 };
 
 class AdminAccounts extends PureComponent<Props> {

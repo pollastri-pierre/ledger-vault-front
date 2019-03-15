@@ -10,8 +10,8 @@ const styles = {
     fontSize: 11,
     color: "#aaa",
     textTransform: "uppercase",
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 
 class ModalSubTitle extends Component<{
@@ -19,7 +19,7 @@ class ModalSubTitle extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   noPadding: boolean,
   noMargin: boolean,
-  style?: Object
+  style?: Object,
 }> {
   render() {
     const {
@@ -27,7 +27,7 @@ class ModalSubTitle extends Component<{
       classes,
       noPadding,
       noMargin,
-      style: _style
+      style: _style,
     } = this.props;
     const style = { ..._style };
     if (noPadding) {

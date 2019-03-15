@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 class ViewAllLink extends Component<{
   to: string,
-  children?: React$Node | string
+  children?: React$Node | string,
 }> {
   static defaultProps = {
-    children: "VIEW ALL"
+    children: "VIEW ALL",
   };
 
   render() {

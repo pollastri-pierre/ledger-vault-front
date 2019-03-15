@@ -13,7 +13,7 @@ import createDevice, {
   ACCOUNT_MANAGER_SESSION,
   MATCHER_SESSION,
   INVALID_DATA,
-  CONFIDENTIALITY_PATH
+  CONFIDENTIALITY_PATH,
 } from "device";
 
 // import ApproveAccount from "api/mutations/ApproveAccountMutation";
@@ -32,19 +32,19 @@ type Props = {
   match: *,
   restlay: *,
   onAddErrorMessage: Error => void,
-  entity: string
+  entity: string,
 };
 
 type State = {
   isDevice: boolean,
   isAborting: boolean,
-  step: number
+  step: number,
 };
 class EntityApprove extends Component<Props, State> {
   state: State = {
     isDevice: false,
     isAborting: false,
-    step: 0
+    step: 0,
   };
 
   close = () => {
@@ -56,7 +56,7 @@ class EntityApprove extends Component<Props, State> {
   steps = (entity: string) => [
     "Connect your Ledger Blue to your computer using one of its USB port.",
     "Power on your device and unlock it by entering your 4 to 8 digit personal PIN code.",
-    `Open the Vault app on the dashboard. When displayed, approve the ${entity} request on the device.`
+    `Open the Vault app on the dashboard. When displayed, approve the ${entity} request on the device.`,
   ];
 
   aborting = () => {
@@ -85,11 +85,11 @@ class EntityApprove extends Component<Props, State> {
         CONFIDENTIALITY_PATH,
         Buffer.from(ephemeral_public_key, "hex"),
         Buffer.from(certificate_attestation, "base64"),
-        entity === "account" ? ACCOUNT_MANAGER_SESSION : MATCHER_SESSION
+        entity === "account" ? ACCOUNT_MANAGER_SESSION : MATCHER_SESSION,
       );
       const approval = await device.validateVaultOperation(
         VALIDATION_PATH,
-        Buffer.from(channel.data, "base64")
+        Buffer.from(channel.data, "base64"),
       );
 
       this.setState({ step: 2 });
@@ -99,8 +99,8 @@ class EntityApprove extends Component<Props, State> {
           new ApproveAccountMutation({
             accountId: accountOrOperation.id,
             approval: approval.toString("base64"),
-            public_key: pubKey.toUpperCase()
-          })
+            public_key: pubKey.toUpperCase(),
+          }),
         );
         await restlay.fetchQuery(new AccountsQuery());
         await restlay.fetchQuery(new PendingAccountsQuery());
@@ -109,8 +109,8 @@ class EntityApprove extends Component<Props, State> {
           new ApproveOperationMutation({
             operationId: accountOrOperation.id,
             approval: approval.toString("base64"),
-            public_key: pubKey.toUpperCase()
-          })
+            public_key: pubKey.toUpperCase(),
+          }),
         );
         await restlay.fetchQuery(new PendingOperationsQuery());
       }
@@ -145,7 +145,7 @@ class EntityApprove extends Component<Props, State> {
     } else {
       try {
         await restlay.commitMutation(
-          new AbortOperationMutation({ operationId: id })
+          new AbortOperationMutation({ operationId: id }),
         );
         await restlay.fetchQuery(new PendingOperationsQuery());
         this.close();
@@ -161,54 +161,51 @@ class EntityApprove extends Component<Props, State> {
     const { isDevice, step, isAborting } = this.state;
     return (
       <div>
-        {!isDevice &&
-          isAborting && (
-            <AbortConfirmation
-              entity={entity}
-              aborting={this.aborting}
-              abort={this.abort}
-            />
-          )}
-        {this.state.isDevice &&
-          !this.state.isAborting && (
-            <StepDeviceGeneric
-              title={this.title(entity)}
-              steps={this.steps(entity)}
-              cancel={this.approving}
-              device={step < 2}
-              step={step}
-            />
-          )}
-        {!this.state.isDevice &&
-          !this.state.isAborting && (
-            <Fragment>
-              {entity === "account" && (
-                <AccountApprove
-                  close={this.close}
-                  approve={this.approving}
-                  aborting={this.aborting}
-                />
-              )}
-              {entity === "operation" && (
-                <OperationApprove
-                  close={this.close}
-                  approve={this.approving}
-                  aborting={this.aborting}
-                />
-              )}
-            </Fragment>
-          )}
+        {!isDevice && isAborting && (
+          <AbortConfirmation
+            entity={entity}
+            aborting={this.aborting}
+            abort={this.abort}
+          />
+        )}
+        {this.state.isDevice && !this.state.isAborting && (
+          <StepDeviceGeneric
+            title={this.title(entity)}
+            steps={this.steps(entity)}
+            cancel={this.approving}
+            device={step < 2}
+            step={step}
+          />
+        )}
+        {!this.state.isDevice && !this.state.isAborting && (
+          <Fragment>
+            {entity === "account" && (
+              <AccountApprove
+                close={this.close}
+                approve={this.approving}
+                aborting={this.aborting}
+              />
+            )}
+            {entity === "operation" && (
+              <OperationApprove
+                close={this.close}
+                approve={this.approving}
+                aborting={this.aborting}
+              />
+            )}
+          </Fragment>
+        )}
       </div>
     );
   }
 }
 
 const mapDispatch = {
-  onAddErrorMessage: addError
+  onAddErrorMessage: addError,
 };
 
 export { EntityApprove };
 export default connect(
   null,
-  mapDispatch
+  mapDispatch,
 )(connectData(EntityApprove));

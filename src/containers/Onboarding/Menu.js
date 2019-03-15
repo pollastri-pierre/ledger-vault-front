@@ -20,22 +20,22 @@ const styles = {
       display: "block",
       position: "absolute",
       right: 42,
-      top: 0
-    }
-  }
+      top: 0,
+    },
+  },
 };
 const Menu = ({
   classes,
   nbMember,
   nbSharedOwner,
   t,
-  onboarding
+  onboarding,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   nbSharedOwner: number,
   t: Translate,
-  nbMember: number
+  nbMember: number,
 }) => (
   <div className={classes.menu}>
     <div style={{ marginBottom: 10 }}>
@@ -140,9 +140,8 @@ const Menu = ({
       color={colors.blue_red}
     >
       <span>
-        {t("onboarding:menu.shared_owner_registration.registration")} ({
-          nbSharedOwner
-        })
+        {t("onboarding:menu.shared_owner_registration.registration")} (
+        {nbSharedOwner})
       </span>
     </MenuLinkOnboarding>
     <MenuLinkOnboarding

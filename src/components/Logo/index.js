@@ -14,14 +14,14 @@ const styles = {
     width: 100,
     overflow: "hidden",
     "& img": {
-      transform: "translateX(-31px)"
-    }
-  }
+      transform: "translateX(-31px)",
+    },
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
-  white: boolean
+  white: boolean,
 };
 class Logo extends PureComponent<Props> {
   render() {

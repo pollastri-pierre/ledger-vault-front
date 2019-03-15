@@ -11,11 +11,11 @@ const styles = {
     fontSize: 11,
     fontWeight: 600,
     paddingLeft: 40,
-    paddingRight: 10
+    paddingRight: 10,
   },
   disabled: {
-    opacity: 0.2
-  }
+    opacity: 0.2,
+  },
 };
 
 class MenuLink extends Component<{
@@ -27,7 +27,7 @@ class MenuLink extends Component<{
   classes: Object,
   className?: string,
   children: *,
-  overrides?: Object
+  overrides?: Object,
 }> {
   render() {
     const {
@@ -47,10 +47,10 @@ class MenuLink extends Component<{
         {({ match }) => (
           <MenuItem
             style={{
-              color: color || "#27d0e2" // default FIXME from theme
+              color: color || "#27d0e2", // default FIXME from theme
             }}
             className={classNames(classes.root, className, {
-              [classes.disabled]: disabled
+              [classes.disabled]: disabled,
             })}
             button
             disabled={disabled}

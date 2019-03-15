@@ -13,7 +13,7 @@ const deleteIcon = <MdDelete size={ICON_SIZE} color={colors.lightGrey} />;
 
 type Props = {
   type: RequestType,
-  entityTitle?: string
+  entityTitle?: string,
 };
 
 class RequestTitle extends PureComponent<Props> {

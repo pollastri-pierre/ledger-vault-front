@@ -11,24 +11,24 @@ const style = {
     width: 150,
     cursor: "pointer",
     justifyContent: "space-between",
-    lineHeight: "40px"
+    lineHeight: "40px",
   },
   noBorder: {
-    border: 0
+    border: 0,
   },
   label: {
     textTransform: "uppercase",
     color: "black",
     fontSize: 11,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   select: {
     color: "grey",
-    fontSize: 12
+    fontSize: 12,
   },
   value: {
-    color: "grey"
-  }
+    color: "grey",
+  },
 };
 
 const RowSelectable = ({
@@ -37,14 +37,14 @@ const RowSelectable = ({
   onClick,
   noBorder,
   descriptionSelected,
-  value
+  value,
 }: {
   label: string,
   descriptionSelected: string,
   noBorder: boolean,
   onClick: Function,
   value: number,
-  classes: { [_: $Keys<typeof style>]: string }
+  classes: { [_: $Keys<typeof style>]: string },
 }) => (
   <div
     className={cx(classes.base, { [classes.noBorder]: noBorder })}

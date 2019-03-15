@@ -12,7 +12,7 @@ type MenuItemProps = {
   Icon: React$ComponentType<*>,
   disabled?: boolean,
   dataTest?: string,
-  children: React$Node
+  children: React$Node,
 };
 
 function MenuItem({ to, Icon, disabled, dataTest, children }: MenuItemProps) {

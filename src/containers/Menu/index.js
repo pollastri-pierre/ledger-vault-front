@@ -14,14 +14,14 @@ import OperatorMenu from "./OperatorMenu";
 const styles = {
   root: {
     width: 280,
-    padding: "25px 35px 0 0"
-  }
+    padding: "25px 35px 0 0",
+  },
 };
 function Menu(props: {
   location: Location,
   match: Match,
   accounts: Array<Account>,
-  allPendingOperations: Array<Operation>
+  allPendingOperations: Array<Operation>,
 }) {
   const { location, accounts, allPendingOperations, match } = props;
   // NOTE: later we can filter by role and it will point to separate file
@@ -47,6 +47,6 @@ const RenderLoading = () => (
 export default connectData(Menu, {
   RenderLoading,
   queries: {
-    allPendingOperations: PendingOperationsQuery
-  }
+    allPendingOperations: PendingOperationsQuery,
+  },
 });

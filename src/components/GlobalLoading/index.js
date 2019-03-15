@@ -8,7 +8,7 @@ const opacity = new Animated.Value(1);
 export class GlobalLoadingRendering extends Component<{}> {
   interpolatedWidth = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0%", "100%"]
+    outputRange: ["0%", "100%"],
   });
 
   render() {
@@ -30,13 +30,13 @@ export function load() {
   Animated.spring(progress, {
     toValue: 1,
     tension: 5,
-    friction: 200
+    friction: 200,
   }).start();
 
   return function unload() {
     if (--instanceCount === 0) {
       Animated.spring(opacity, {
-        toValue: 0
+        toValue: 0,
       }).start();
     }
   };

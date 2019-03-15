@@ -11,14 +11,14 @@ import type { Account } from "data/types";
 const styles = {
   card: {
     marginLeft: 10,
-    width: "50%"
-  }
+    width: "50%",
+  },
 };
 
 type Props = {
   account: Account,
   reloading: boolean,
-  classes: Object
+  classes: Object,
 };
 
 class AccountCountervalueCard extends Component<Props> {

@@ -25,13 +25,13 @@ const styles = {
   flex: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   left: {},
   half: {
     width: "100%",
-    marginRight: "20px"
-  }
+    marginRight: "20px",
+  },
 };
 class AccountView extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
@@ -40,9 +40,9 @@ class AccountView extends Component<{
   match: {
     url: string,
     params: {
-      id: string
-    }
-  }
+      id: string,
+    },
+  },
 }> {
   render() {
     const { match, classes, account, me } = this.props;
@@ -98,12 +98,12 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
 export default connectData(withStyles(styles)(AccountView), {
   queries: {
     account: AccountQuery,
-    me: ProfileQuery
+    me: ProfileQuery,
   },
   RenderError,
   RenderLoading,
   optimisticRendering: true,
   propsToQueryParams: ({ match }: { match: * }) => ({
-    accountId: match.params.id
-  })
+    accountId: match.params.id,
+  }),
 });

@@ -16,11 +16,11 @@ import {
   ModalBody,
   ModalFooter,
   ModalTitle,
-  ModalHeader
+  ModalHeader,
 } from "components/base/Modal";
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onAddError: error => dispatch(addError(error))
+  onAddError: error => dispatch(addError(error)),
 });
 
 type Props = {
@@ -28,7 +28,7 @@ type Props = {
   goBack: Function,
   quorum: number,
   approvers: string[],
-  setQuorum: string => void
+  setQuorum: string => void,
 };
 
 class SetApprovals extends Component<Props> {
@@ -81,17 +81,16 @@ class SetApprovals extends Component<Props> {
           renderRight={inputRight}
         />
 
-        {quorum < 2 &&
-          quorum !== 0 && (
-            <Box mt={20}>
-              <InfoBox type="warning" withIcon>
-                <Text
-                  i18nKey="newAccount:security.approvalsMinimum"
-                  components={<b>0</b>}
-                />
-              </InfoBox>
-            </Box>
-          )}
+        {quorum < 2 && quorum !== 0 && (
+          <Box mt={20}>
+            <InfoBox type="warning" withIcon>
+              <Text
+                i18nKey="newAccount:security.approvalsMinimum"
+                components={<b>0</b>}
+              />
+            </InfoBox>
+          </Box>
+        )}
 
         {quorum > approvers.length && (
           <Box mt={20}>
@@ -122,5 +121,5 @@ class SetApprovals extends Component<Props> {
 
 export default connect(
   undefined,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(translate()(SetApprovals));

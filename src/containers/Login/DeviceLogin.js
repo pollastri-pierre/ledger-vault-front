@@ -15,19 +15,19 @@ const styles = {
     marginBottom: "50px",
     width: "400px",
     backgroundColor: "#ffffff",
-    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)"
+    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
   },
   dongle: {
     width: 32,
     height: 20,
     marginTop: 40,
-    marginBottom: 10
+    marginBottom: 10,
   },
   team: {
     width: 320,
     textSlign: "center",
     display: "inline-block",
-    fontSize: 16
+    fontSize: 16,
   },
   spacer: {
     width: 320,
@@ -35,41 +35,41 @@ const styles = {
     backgroundColor: "#eeeeee",
     display: "inline-block",
     textAlign: "center",
-    marginTop: 6
+    marginTop: 6,
   },
   instructions: {
     textAlign: "left",
     fontSize: 13,
-    paddingTop: 24
+    paddingTop: 24,
   },
   item: {
     "&:not(:first-child)": {
-      marginTop: 20
+      marginTop: 20,
     },
     "& div:nth-child(1)": {
       float: "left",
       fontSize: 18,
-      marginLeft: 45
+      marginLeft: 45,
     },
     "& div:nth-child(2)": {
       marginLeft: 77,
       marginRight: 58,
       fontSize: 13,
-      lineHeight: 1.54
-    }
+      lineHeight: 1.54,
+    },
   },
   wait: {
     color: "#cccccc",
     textAlign: "right",
     fontWeight: 600,
     fontSize: 11,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   footer: {
     padding: "40px 40px 0",
     display: "flex",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 class DeviceLogin extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
@@ -77,7 +77,7 @@ class DeviceLogin extends Component<{
   domain: string,
   t: Translate,
   isChecking: boolean,
-  onRestart: () => void
+  onRestart: () => void,
 }> {
   render() {
     const { domain, classes, isChecking, onCancel, onRestart, t } = this.props;

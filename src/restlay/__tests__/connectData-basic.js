@@ -42,8 +42,8 @@ test("a simple query works", async () => {
   }
   const Animals = connectData(AnimalsR, {
     queries: {
-      animals: AnimalsQuery
-    }
+      animals: AnimalsQuery,
+    },
   });
   const inst = renderer.create(render(<Animals />));
   expect(inst.toJSON()).toMatchSnapshot();
@@ -69,9 +69,9 @@ test("query with props works", async () => {
   }
   const Animal = connectData(AnimalR, {
     queries: {
-      a: AnimalQuery
+      a: AnimalQuery,
     },
-    propsToQueryParams: ({ id_prop }) => ({ animalId: id_prop })
+    propsToQueryParams: ({ id_prop }) => ({ animalId: id_prop }),
   });
   const inst = renderer.create(render(<Animal id_prop="id_max" />));
   expect(inst.toJSON()).toMatchSnapshot();

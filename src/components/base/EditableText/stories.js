@@ -9,7 +9,7 @@ const text =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis tempus massa, sed consectetur est. Integer ultricies finibus ";
 class Wrapper extends PureComponent {
   state = {
-    text
+    text,
   };
 
   onChange = val => this.setState({ text: val });

@@ -11,7 +11,7 @@ const getCurrencyLikeUnit = token => ({
   code: token ? token.ticker : "",
   symbol: "",
   magnitude: token ? token.decimals : 0,
-  name: ""
+  name: "",
 });
 class CurrencyAccountValue extends Component<{
   // the contextual account object
@@ -22,7 +22,7 @@ class CurrencyAccountValue extends Component<{
   alwaysShowSign?: boolean,
   // override the rate to use (default is the account.currentRate)
   type?: TransactionType,
-  erc20Format?: boolean
+  erc20Format?: boolean,
 }> {
   render() {
     const { account, value, type, erc20Format, ...rest } = this.props;

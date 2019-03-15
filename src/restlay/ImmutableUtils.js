@@ -4,7 +4,7 @@
 export function merge(
   old: Object,
   patch: ?Object,
-  equals: (a: Object, b: Object) => boolean = (a, b) => a === b
+  equals: (a: Object, b: Object) => boolean = (a, b) => a === b,
 ): Object {
   if (!patch) return old;
   let copy;

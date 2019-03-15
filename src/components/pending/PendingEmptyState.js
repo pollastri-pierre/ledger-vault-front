@@ -5,7 +5,7 @@ import Text from "components/base/Text";
 
 type Props = {
   text: React$Node,
-  className?: string
+  className?: string,
 };
 
 class PendingEmptyState extends Component<Props> {

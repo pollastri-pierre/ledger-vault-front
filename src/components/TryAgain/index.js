@@ -12,27 +12,27 @@ const styles = {
     padding: 40,
     cursor: "pointer",
     "& strong": {
-      fontSize: "1.4em"
+      fontSize: "1.4em",
     },
     "& p.error": {
       opacity: 0.5,
-      fontSize: "0.8em"
-    }
+      fontSize: "0.8em",
+    },
   },
   pending: {
-    opacity: 0.5
-  }
+    opacity: 0.5,
+  },
 };
 class TryAgain extends Component<
   {
     action: () => Promise<*> | *,
     error: Error,
-    classes: { [$Keys<typeof styles>]: string }
+    classes: { [$Keys<typeof styles>]: string },
   },
-  { pending: boolean }
+  { pending: boolean },
 > {
   state = {
-    pending: false
+    pending: false,
   };
 
   _unmounted = false;

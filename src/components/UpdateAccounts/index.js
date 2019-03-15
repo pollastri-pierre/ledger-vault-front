@@ -28,7 +28,7 @@ import {
   toggleMember,
   editQuorum,
   editName,
-  selectAccount
+  selectAccount,
 } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
 import UpdateTextField from "./UpdateTextField";
@@ -43,40 +43,40 @@ const styles = {
     fontWeight: "normal",
     fontSize: 13,
     height: 40,
-    padding: "5px 20px"
+    padding: "5px 20px",
   },
   base: {
     display: "flex",
     "& h2, & h3": {
-      margin: 0
+      margin: 0,
     },
     "& ul": {
       margin: 0,
-      padding: 0
+      padding: 0,
     },
     "& p": {
       fontSize: 14,
-      lineHeight: "24px"
-    }
+      lineHeight: "24px",
+    },
   },
   left: {
     width: 300,
     maxHeight: 433,
     overflow: "auto",
     padding: "20px 20px 20px 0",
-    backgroundColor: "#f9f9f9"
+    backgroundColor: "#f9f9f9",
   },
   content: {
-    padding: "40px 40px 0 40px"
+    padding: "40px 40px 0 40px",
   },
   footer: {
     marginTop: 40,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   accountName: {
-    paddingLeft: 25
-  }
+    paddingLeft: 25,
+  },
 };
 
 type Props = {
@@ -99,7 +99,7 @@ type Props = {
   onSelectAccount: Function,
   onAddMessage: Function,
   restlay: RestlayEnvironment,
-  t: Translate
+  t: Translate,
 };
 
 class UpdateAccounts extends Component<Props> {
@@ -145,7 +145,7 @@ class UpdateAccounts extends Component<Props> {
       restlay,
       onToggleDevice,
       onAddMessage,
-      selectedAccount
+      selectedAccount,
     } = this.props;
     const data: Object = {
       name: selectedAccount.name,
@@ -153,19 +153,19 @@ class UpdateAccounts extends Component<Props> {
         ? selectedAccount.members.map(m => ({ pub_key: m }))
         : this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
-        quorum: this.props.quorum
-      }
+        quorum: this.props.quorum,
+      },
     };
     if (selectedAccount.account_type === "ERC20") {
       data.erc20 = getERC20TokenByContractAddress(
-        selectedAccount.contract_address
+        selectedAccount.contract_address,
       );
     }
     try {
       await network(
         `/accounts/${this.props.selectedAccount.id}/security-scheme`,
         selectedAccount.status !== "VIEW_ONLY" ? "PUT" : "POST",
-        data
+        data,
       );
       await restlay.fetchQuery(new AccountsQuery());
       await restlay.fetchQuery(new PendingAccountsQuery());
@@ -200,41 +200,40 @@ class UpdateAccounts extends Component<Props> {
       onToggleMember,
       isSelectingMembers,
       isSelectingApprovals,
-      onSelectAccount
+      onSelectAccount,
     } = this.props;
 
     return (
       <Fragment>
         <BlurDialog open={isOpen} onClose={onToggle}>
           <div className={classes.base}>
-            {selectedAccount &&
-              selectedAccount.status !== "VIEW_ONLY" && (
-                <div className={classes.left}>
-                  <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
-                  <ul>
-                    {getOutdatedAccounts(accounts).map(account => (
-                      <MenuItem
-                        button
-                        className={classes.accountItem}
-                        disableRipple
-                        selected={
-                          selectedAccount && selectedAccount.id === account.id
-                        }
-                        onClick={() => onSelectAccount(account)}
-                        key={account.id}
-                      >
-                        <span className={classes.accountName}>
-                          <div>TO DO</div>
-                          <CurrencyIndex
-                            currency={account.currency_id}
-                            index={account.index}
-                          />
-                        </span>
-                      </MenuItem>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            {selectedAccount && selectedAccount.status !== "VIEW_ONLY" && (
+              <div className={classes.left}>
+                <h3 style={{ padding: "21px 33px 20px 40px" }}>Accounts</h3>
+                <ul>
+                  {getOutdatedAccounts(accounts).map(account => (
+                    <MenuItem
+                      button
+                      className={classes.accountItem}
+                      disableRipple
+                      selected={
+                        selectedAccount && selectedAccount.id === account.id
+                      }
+                      onClick={() => onSelectAccount(account)}
+                      key={account.id}
+                    >
+                      <span className={classes.accountName}>
+                        <div>TO DO</div>
+                        <CurrencyIndex
+                          currency={account.currency_id}
+                          index={account.index}
+                        />
+                      </span>
+                    </MenuItem>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div className={classes.content}>
               <h3>{t("updateAccounts:provide")}</h3>
               <p>{t("updateAccounts:desc")}</p>
@@ -351,7 +350,7 @@ const mapStateToProps = state => ({
   quorum: state.updateAccounts.quorum,
   isDevice: state.updateAccounts.isDevice,
   isSelectingMembers: state.updateAccounts.isSelectingMembers,
-  isSelectingApprovals: state.updateAccounts.isSelectingApprovals
+  isSelectingApprovals: state.updateAccounts.isSelectingApprovals,
 });
 const mapDispatchToProps = (dispatch: *) => ({
   onToggle: () => dispatch(toggleModal()),
@@ -363,12 +362,12 @@ const mapDispatchToProps = (dispatch: *) => ({
   onToggleApprovals: () => dispatch(toggleApprovals()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type)),
-  onSelectAccount: account => dispatch(selectAccount(account))
+  onSelectAccount: account => dispatch(selectAccount(account)),
 });
 
 export default connectData(
   connect(
     mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(translate()(UpdateAccounts)))
+    mapDispatchToProps,
+  )(withStyles(styles)(translate()(UpdateAccounts))),
 );

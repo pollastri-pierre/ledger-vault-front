@@ -5,11 +5,11 @@ test("merge do the merge work", () => {
   expect(merge({ foo: 42 }, null)).toMatchObject({ foo: 42 });
   expect(merge({ foo: 42 }, { bar: 45 })).toMatchObject({
     foo: 42,
-    bar: 45
+    bar: 45,
   });
   expect(merge({ foo: 42 }, { foo: "3", bar: 45 })).toMatchObject({
     foo: "3",
-    bar: 45
+    bar: 45,
   });
 });
 

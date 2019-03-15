@@ -22,7 +22,7 @@ const styles = {
       background: colors.mouse,
       position: "absolute",
       left: "0",
-      transition: "all 100ms ease"
+      transition: "all 100ms ease",
     },
     "& label": {
       width: "26px",
@@ -42,20 +42,20 @@ const styles = {
         background: colors.mouse,
         borderRadius: "50%",
         transition: "all 100ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-        boxShadow: "0 2.5px 2.5px 0 rgba(0, 0, 0, 0.05) "
-      }
+        boxShadow: "0 2.5px 2.5px 0 rgba(0, 0, 0, 0.05) ",
+      },
     },
     "& input[type=checkbox]": {
       visibility: "hidden",
       "&:checked + label:before": {
         left: "13px",
-        background: colors.ocean
+        background: colors.ocean,
       },
       "&:checked + label + span": {
-        background: colors.ocean
-      }
-    }
-  }
+        background: colors.ocean,
+      },
+    },
+  },
 };
 
 type Props = {
@@ -63,7 +63,7 @@ type Props = {
   checked?: boolean,
   handleInputChange?: (checked: boolean) => void,
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 function Checkbox(props: Props) {
@@ -90,7 +90,7 @@ function Checkbox(props: Props) {
 }
 
 Checkbox.defaultProps = {
-  checked: false
+  checked: false,
 };
 
 export default withStyles(styles)(Checkbox);

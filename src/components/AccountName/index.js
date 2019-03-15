@@ -14,7 +14,7 @@ class AccountName extends Component<{
   // so we can't rely account_type. It's useful to tell the component we are dealing with an erc20 token or
   // with a specific currency so it can pass it to AccountIcon
   currencyId?: string,
-  isERC20?: boolean
+  isERC20?: boolean,
 }> {
   render() {
     const { name, account, ...props } = this.props;

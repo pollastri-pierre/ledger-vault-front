@@ -13,19 +13,19 @@ export type OperationToPOST = {
   gas_price: number,
   gas_limit: number,
   note?: Note,
-  operation_id: number
+  operation_id: number,
 };
 
 export type Input = {
   operation: OperationToPOST,
-  accountId: number
+  accountId: number,
 };
 
 type Response = Operation;
 
 export default class NewEthereumOperationMutation extends Mutation<
   Input,
-  Response
+  Response,
 > {
   uri = `/accounts/${this.props.accountId}/operations`;
 

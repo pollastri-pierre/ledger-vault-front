@@ -4,7 +4,7 @@ import type { Store } from "restlay/dataStore";
 import { success, error } from "formatters/notification";
 
 type Input = {
-  accountId: number
+  accountId: number,
 };
 
 type Response = void; // FIXME what response?

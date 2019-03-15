@@ -8,7 +8,7 @@ import Box from "components/base/Box";
 import type { Request } from "data/types";
 
 type Props = {
-  request: Request
+  request: Request,
 };
 
 class PendingRequestsOverview extends PureComponent<Props> {

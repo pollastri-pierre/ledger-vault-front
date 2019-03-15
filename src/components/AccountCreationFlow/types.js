@@ -14,11 +14,11 @@ export type AccountCreationPayload = {
   rules: ApprovalsRule[],
   currency: CryptoCurrency | null,
   erc20token: ERC20Token | null,
-  parentAccount: ParentAccount | null
+  parentAccount: ParentAccount | null,
 };
 
 export type AccountCreationUpdatePayload = (
-  $Shape<AccountCreationPayload>
+  $Shape<AccountCreationPayload>,
 ) => void;
 
 type GenericStepProps = StepProps<AccountCreationPayload>;
@@ -26,5 +26,5 @@ type GenericStepProps = StepProps<AccountCreationPayload>;
 export type AccountCreationStepProps = GenericStepProps & {
   allAccounts: Account[],
   users: Connection<Member>,
-  groups: Group[]
+  groups: Group[],
 };

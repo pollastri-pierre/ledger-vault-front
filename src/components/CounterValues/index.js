@@ -24,7 +24,7 @@ const mapStateToProps = (state, ownProps) => {
           intermediary: intermediaryCurrency,
           toExchange: state.exchanges.data.USD,
           to: getFiatCurrencyByTicker("USD"),
-          value: account.balance
+          value: account.balance,
         })
       );
     }, 0);
@@ -33,7 +33,7 @@ const mapStateToProps = (state, ownProps) => {
 
 type Props = {
   countervalue: number,
-  accounts: Account[] // eslint-disable-line react/no-unused-prop-types
+  accounts: Account[], // eslint-disable-line react/no-unused-prop-types
 };
 
 class CounterValuesAccounts extends PureComponent<Props> {

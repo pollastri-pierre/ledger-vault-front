@@ -8,7 +8,7 @@ export type Response = {
   approveOperations: Operation[],
   watchOperations: Operation[],
   approveAccounts: Account[],
-  watchAccounts: Account[]
+  watchAccounts: Account[],
 };
 
 // a mashup of everything we need for pending screen
@@ -19,6 +19,6 @@ export default class PendingsQuery extends Query<Input, Response> {
     approveOperations: [schema.Operation],
     watchOperations: [schema.Operation],
     approveAccounts: [schema.Account],
-    watchAccounts: [schema.Account]
+    watchAccounts: [schema.Account],
   };
 }

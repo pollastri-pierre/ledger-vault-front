@@ -6,7 +6,7 @@ import Box from "components/base/Box";
 import MemberRow from "../../MemberRow";
 
 type Props = {
-  members: Member[]
+  members: Member[],
 };
 
 class AccountApproveMembers extends Component<Props> {
@@ -14,7 +14,9 @@ class AccountApproveMembers extends Component<Props> {
     const { members } = this.props;
     return (
       <Box grow overflow="scroll">
-        {members.map(member => <MemberRow member={member} key={member.id} />)}
+        {members.map(member => (
+          <MemberRow member={member} key={member.id} />
+        ))}
       </Box>
     );
   }

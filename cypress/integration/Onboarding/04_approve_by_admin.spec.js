@@ -14,14 +14,14 @@ context("Admin Approve the registration of the Shared Owners", () => {
     cy.server();
     route();
     cy.request("POST", Cypress.env("api_switch_device"), {
-      device_number: 4
+      device_number: 4,
     });
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
       cy.contains("Continue").click();
@@ -39,14 +39,14 @@ context("Admin Approve the registration of the Shared Owners", () => {
       cy.wait("@authenticate");
       cy.get(".top-message-body")
         .contains(
-          "This admin already validated the partition, please une another one"
+          "This admin already validated the partition, please une another one",
         )
         .get(".top-message-title")
         .contains("Error");
 
       // Second Admin sign in
       cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 5
+        device_number: 5,
       });
 
       cy.get(".test-onboarding-signin").click();

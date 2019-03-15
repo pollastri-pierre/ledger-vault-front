@@ -7,7 +7,7 @@ import {
   VALIDATION_PATH,
   CONFIDENTIALITY_PATH,
   ACCOUNT_MANAGER_SESSION,
-  MATCHER_SESSION
+  MATCHER_SESSION,
 } from "device";
 import network from "network";
 
@@ -16,7 +16,7 @@ const postRequest = {
   action: ({ data, type, restlay }) =>
     restlay
       .commitMutation(new NewRequestMutation({ type, ...data }))
-      .then(request => request.id)
+      .then(request => request.id),
 };
 
 // FIXME should we put that in the component with a connectData() and a query and pass it
@@ -24,7 +24,7 @@ const postRequest = {
 const getSecureChannel = {
   responseKey: "secure_channel",
   action: ({ request_id }) =>
-    network(`/requests/${request_id}/challenge`, "POST")
+    network(`/requests/${request_id}/challenge`, "POST"),
 };
 
 const openSessionDevice = {
@@ -42,9 +42,9 @@ const openSessionDevice = {
       Buffer.from(channel.ephemeral_public_key, "hex"),
       Buffer.from(channel.certificate_attestation, "base64"),
       // TODO see if it's still correct ?
-      entity === "account" ? ACCOUNT_MANAGER_SESSION : MATCHER_SESSION
+      entity === "account" ? ACCOUNT_MANAGER_SESSION : MATCHER_SESSION,
     );
-  }
+  },
 };
 
 const validateDevice = {
@@ -55,17 +55,17 @@ const validateDevice = {
     const channel = secure_channel[pubKey];
     return validateVaultOperation(
       VALIDATION_PATH,
-      Buffer.from(channel.data, "base64")
+      Buffer.from(channel.data, "base64"),
     );
-  }
+  },
 };
 
 const postApproval = {
   responseKey: "post",
   action: ({ approval, request_id, restlay }) =>
     restlay.commitMutation(
-      new ApproveRequestMutation({ requestId: request_id, approval })
-    )
+      new ApproveRequestMutation({ requestId: request_id, approval }),
+    ),
 };
 
 export const approveFlow = [
@@ -73,7 +73,7 @@ export const approveFlow = [
   getU2FPublicKey,
   openSessionDevice,
   validateDevice,
-  postApproval
+  postApproval,
 ];
 
 export const createAndApprove = [postRequest, ...approveFlow];

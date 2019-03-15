@@ -17,14 +17,14 @@ context("Create the Master Seed", () => {
     cy.server();
     route();
     cy.request("POST", DEVICE, {
-      device_number: 7
+      device_number: 7,
     }).then(() => {
       cy.visit(Cypress.env("api_server"), {
         onBeforeLoad: win => {
           win.fetch = null;
           win.eval(polyfill);
           win.fetch = win.unfetch;
-        }
+        },
       }).then(() => {
         cy.get("input[type=text]").type(orga_name);
         cy.contains("Continue").click();
@@ -43,7 +43,7 @@ context("Create the Master Seed", () => {
 
         // Try to sign with wrong device should fail
         cy.request("POST", DEVICE, {
-          device_number: 1
+          device_number: 1,
         }).then(() => {
           cy.get(".fragment")
             .eq(1)
@@ -57,7 +57,7 @@ context("Create the Master Seed", () => {
           // Get Seed 2nd Shared Owner
 
           cy.request("POST", DEVICE, {
-            device_number: 8
+            device_number: 8,
           }).then(() => {
             cy.get(".fragment")
               .eq(1)
@@ -76,14 +76,14 @@ context("Create the Master Seed", () => {
               .click();
             cy.get(".top-message-body")
               .contains(
-                "This device has already been used to generate the master seed, please connect another one."
+                "This device has already been used to generate the master seed, please connect another one.",
               )
               .get(".top-message-title")
               .contains("Error");
 
             // Get Seed 3rd Shared Owner
             cy.request("POST", DEVICE, {
-              device_number: 9
+              device_number: 9,
             }).then(() => {
               cy.get(".fragment")
                 .eq(2)
@@ -105,7 +105,7 @@ context("Create the Master Seed", () => {
               cy.contains("2/3 administration rule").should("be.visible");
 
               cy.request("POST", DEVICE, {
-                device_number: 4
+                device_number: 4,
               }).then(() => {
                 cy.contains("Continue").click();
                 cy.wait(1000);

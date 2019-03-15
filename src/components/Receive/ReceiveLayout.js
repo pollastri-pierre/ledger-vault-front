@@ -6,7 +6,7 @@ type Props = {
   header: React$Node,
   content: React$Node,
   footer: React$Node,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class ReceiveLayout extends PureComponent<Props, *> {
@@ -24,7 +24,7 @@ class ReceiveLayout extends PureComponent<Props, *> {
 }
 const styles = {
   footer: {
-    margin: "20px 0px"
-  }
+    margin: "20px 0px",
+  },
 };
 export default withStyles(styles)(ReceiveLayout);

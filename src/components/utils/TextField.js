@@ -11,7 +11,7 @@ type Props = {
   style?: Object,
   autofocus?: boolean,
   fullWidth?: boolean,
-  inputStyle?: Object
+  inputStyle?: Object,
 };
 function TextField(props: Props) {
   const { inputProps, ...rest } = props; // eslint-disable-line
@@ -21,7 +21,7 @@ function TextField(props: Props) {
       autoComplete="off"
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" },
-        inputProps: props.inputProps
+        inputProps: props.inputProps,
       }}
     />
   );

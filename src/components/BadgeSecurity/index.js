@@ -9,28 +9,28 @@ const styles = {
     display: "inline-block",
     textAlign: "center",
     verticalAlign: "middle",
-    width: "115px"
+    width: "115px",
   },
   title: {
     display: "block",
     fontSize: "13px",
     color: "black",
-    marginBottom: "5px"
+    marginBottom: "5px",
   },
   value: {
     display: "block",
     fontSize: "11px",
-    color: colors.lead
+    color: colors.lead,
   },
   icon: {
-    marginBottom: "10px"
+    marginBottom: "10px",
   },
   disabled: {
-    opacity: "0.5"
+    opacity: "0.5",
   },
   noWidth: {
-    width: "auto"
-  }
+    width: "auto",
+  },
 };
 class BadgeSecurity extends PureComponent<{
   icon: string | React$Node,
@@ -38,7 +38,7 @@ class BadgeSecurity extends PureComponent<{
   value: string | React$Node,
   noWidth: boolean,
   disabled?: boolean,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const { icon, label, value, disabled, noWidth, classes } = this.props;
@@ -47,7 +47,7 @@ class BadgeSecurity extends PureComponent<{
       <div
         className={classnames(classes.base, {
           [classes.disabled]: disabled,
-          [classes.noWidth]: noWidth
+          [classes.noWidth]: noWidth,
         })}
       >
         <div className={classes.icon}>{icon}</div>

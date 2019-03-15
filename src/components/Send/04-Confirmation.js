@@ -16,8 +16,8 @@ import InfoModal from "components/InfoModal";
 
 const styles = {
   warningMsg: {
-    marginTop: 25
-  }
+    marginTop: 25,
+  },
 };
 
 type Props<Transaction> = {
@@ -25,18 +25,18 @@ type Props<Transaction> = {
   account: Account,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
-  confirmTx: () => void
+  confirmTx: () => void,
 };
 
 type State = {
   fees: ?number,
-  totalSpent: ?number
+  totalSpent: ?number,
 };
 
 class SendConfirmation extends PureComponent<Props<*>, State> {
   state = {
     fees: null,
-    totalSpent: null
+    totalSpent: null,
   };
 
   async componentDidMount() {
@@ -44,7 +44,7 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
 
     const [fees, totalSpent] = await Promise.all([
       bridge.getFees(account, transaction),
-      bridge.getTotalSpent(account, transaction)
+      bridge.getTotalSpent(account, transaction),
     ]);
     this.setState({ fees, totalSpent });
   }

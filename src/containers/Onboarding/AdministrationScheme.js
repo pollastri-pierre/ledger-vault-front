@@ -14,15 +14,15 @@ import ApprovalSlider from "./ApprovalSlider";
 const styles = {
   disabled: {
     opacity: 0.3,
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
 };
 const mapStateToProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({
   onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type))
+    dispatch(addMessage(title, message, type)),
 });
 const AdministrationScheme = ({
   number,
@@ -32,7 +32,7 @@ const AdministrationScheme = ({
   is_editable,
   onboarding,
   onAddMessage,
-  t
+  t,
 }: {
   number: number,
   total: number,
@@ -41,7 +41,7 @@ const AdministrationScheme = ({
   classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   is_editable: boolean,
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:administrators_scheme.title")}</Title>
@@ -61,7 +61,7 @@ const AdministrationScheme = ({
             onAddMessage(
               "Error",
               "Oops something went wrong. Please try again",
-              "error"
+              "error",
             );
           }
         };
@@ -86,5 +86,5 @@ const AdministrationScheme = ({
 
 export default connect(
   mapStateToProps,
-  mapDispatch
+  mapDispatch,
 )(withStyles(styles)(translate()(AdministrationScheme)));

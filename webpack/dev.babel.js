@@ -16,15 +16,15 @@ export default merge(webpackConfig, {
       {
         test: /\.js$/,
         use: ["thread-loader", "babel-loader"],
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
 
   devServer: {
     contentBase: paths.dist,
     historyApiFallback: {
-      disableDotRule: true
+      disableDotRule: true,
     },
     hot: true,
     publicPath: "/",
@@ -34,12 +34,12 @@ export default merge(webpackConfig, {
     stats: "errors-only",
     disableHostCheck: true,
     headers: {
-      "Access-Control-Allow-Origin": "*"
-    }
+      "Access-Control-Allow-Origin": "*",
+    },
   },
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+    new webpack.NoEmitOnErrorsPlugin(),
+  ],
 });

@@ -8,7 +8,7 @@ import {
   Careful,
   Introduction,
   NoMembers,
-  AddUser
+  AddUser,
 } from "components/Onboarding";
 import { translate, Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -17,7 +17,7 @@ import RegisterAdmins from "containers/Onboarding/RegisterAdmins";
 import DialogButton from "components/buttons/DialogButton";
 import {
   getSharedOwnerRegistrationChallenge,
-  addSharedOwner
+  addSharedOwner,
 } from "redux/modules/onboarding";
 import type { Onboarding } from "redux/modules/onboarding";
 import Footer from "./Footer";
@@ -27,15 +27,15 @@ type Props = {
   onboarding: Onboarding,
   history: *,
   onAddSharedOwner: Function,
-  onGetChallenge: Function
+  onGetChallenge: Function,
 };
 
 type State = {
-  registering: boolean
+  registering: boolean,
 };
 class SharedOwnerRegistration extends Component<Props, State> {
   state = {
-    registering: false
+    registering: false,
   };
 
   componentDidMount() {
@@ -106,7 +106,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
                 lineHeight: "45px",
                 borderBottom: "1px solid #eeeeee",
                 fontSize: 11,
-                textTransform: "uppercase"
+                textTransform: "uppercase",
               }}
             >
               <div
@@ -117,7 +117,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
                   display: "inline-block",
                   marginRight: 10,
                   borderRadius: "50%",
-                  verticalAlign: "middle"
+                  verticalAlign: "middle",
                 }}
               />
               Shared-Owner {i + 1}
@@ -148,14 +148,14 @@ class SharedOwnerRegistration extends Component<Props, State> {
 }
 
 const mapStateToProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddSharedOwner: data => dispatch(addSharedOwner(data)),
-  onGetChallenge: () => dispatch(getSharedOwnerRegistrationChallenge())
+  onGetChallenge: () => dispatch(getSharedOwnerRegistrationChallenge()),
 });
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(translate()(SharedOwnerRegistration));

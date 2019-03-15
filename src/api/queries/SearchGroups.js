@@ -6,14 +6,14 @@ import schema from "data/schema";
 import type { Group } from "data/types";
 
 type Input = {
-  name?: string
+  name?: string,
 };
 
 type Node = Group;
 
 const uri = (query: Input) => {
   const finalQuery: Object = {
-    ...query
+    ...query,
   };
   const q = queryString.stringify(finalQuery);
   return `/groups${q ? "?" : ""}${q}`;

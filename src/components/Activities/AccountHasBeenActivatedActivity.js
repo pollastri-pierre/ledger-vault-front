@@ -8,7 +8,7 @@ import Activity from "../legacy/Activity";
 
 type Props = {
   activity: ActivityEntityAccount,
-  match: Match
+  match: Match,
 };
 
 class AccountHasBeenActivatedActivity extends Component<Props> {
@@ -22,7 +22,7 @@ class AccountHasBeenActivatedActivity extends Component<Props> {
           <Trans
             i18nKey="activities:account.active"
             values={{
-              accountName: business_action.account.name
+              accountName: business_action.account.name,
             }}
             components={<b>0</b>}
           />

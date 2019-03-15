@@ -11,19 +11,19 @@ type Props = {
   t: Translate,
   updateNote: Function,
   title: string,
-  note: string
+  note: string,
 };
 
 const styles = {
   base: {
-    padding: "0 40px"
+    padding: "0 40px",
   },
   label: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   comment: {
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 };
 
 class OperationCreationLabel extends PureComponent<Props> {
@@ -44,8 +44,8 @@ class OperationCreationLabel extends PureComponent<Props> {
           classes={{ root: classes.label }}
           inputProps={{
             style: {
-              color: "black"
-            }
+              color: "black",
+            },
           }}
           fullWidth
           value={this.props.title}
@@ -57,8 +57,8 @@ class OperationCreationLabel extends PureComponent<Props> {
           classes={{ root: classes.comment }}
           inputProps={{
             style: {
-              color: "black"
-            }
+              color: "black",
+            },
           }}
           placeholder={t("newOperation:label.add_comment")}
           value={this.props.note}

@@ -17,32 +17,32 @@ import InviteUserForm from "./InviteUserForm";
 
 type Props = {
   close: () => void,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 type State = {
   loading: boolean,
   url: string,
-  request_id: string
+  request_id: string,
 };
 
 const styles = {
   copyText: {
     color: colors.steel,
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 };
 
 class InviteUser extends PureComponent<Props, State> {
   state = {
     loading: false,
     url: "",
-    request_id: ""
+    request_id: "",
   };
 
   processUserInfo = async (
     username: string,
     user_id: string,
-    userRole: string
+    userRole: string,
   ) => {
     const { restlay } = this.props;
     const { request_id } = this.state;
@@ -52,9 +52,9 @@ class InviteUser extends PureComponent<Props, State> {
           request_id,
           {
             username,
-            user_id
+            user_id,
           },
-          restlay
+          restlay,
         );
         this.props.close();
       } catch (error) {
@@ -68,8 +68,8 @@ class InviteUser extends PureComponent<Props, State> {
           type:
             userRole === "Administrator" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
           username,
-          user_id
-        }
+          user_id,
+        },
       });
 
       try {
@@ -81,11 +81,11 @@ class InviteUser extends PureComponent<Props, State> {
         this.setState({
           loading: true,
           url,
-          request_id: data.id
+          request_id: data.id,
         });
       } catch (error) {
         this.setState({
-          loading: false
+          loading: false,
         });
       }
     }

@@ -3,18 +3,18 @@ import moment from "moment";
 import React, { Component } from "react";
 
 const style = {
-  whiteSpace: "nowrap"
+  whiteSpace: "nowrap",
 };
 
 class DateFormat extends Component<*> {
   props: {
     date: Date | string,
     dataTest: ?string,
-    format?: string
+    format?: string,
   };
 
   static defaultProps = {
-    format: "lll"
+    format: "lll",
   };
 
   render() {

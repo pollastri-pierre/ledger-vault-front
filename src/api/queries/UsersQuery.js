@@ -6,7 +6,7 @@ import queryString from "query-string";
 import type { Member } from "data/types";
 
 type Input = {
-  userRole?: string
+  userRole?: string,
 };
 type Response = Member[];
 
@@ -15,12 +15,12 @@ const uri = (query: Input) => {
 
   if (query && query.userRole) {
     finalQuery = {
-      ...query
+      ...query,
     };
   } else {
     finalQuery = {
       ...query,
-      role: ["ADMIN", "OPERATOR"]
+      role: ["ADMIN", "OPERATOR"],
     };
   }
   const q = queryString.stringify(finalQuery);

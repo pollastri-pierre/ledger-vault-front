@@ -11,7 +11,7 @@ import Amount from "../../Amount";
 
 function OperationApproveDetails(props: {
   operation: Operation,
-  account: Account
+  account: Account,
 }) {
   const { operation, account } = props;
   const isETHType =

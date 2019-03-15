@@ -12,7 +12,7 @@ import type { QueryUpdater } from "../types";
 
 export const defaultFieldProps = {
   queryParams: {},
-  updateQueryParams: () => {}
+  updateQueryParams: () => {},
 };
 
 type Props = {
@@ -20,13 +20,13 @@ type Props = {
   nbResults?: number,
   queryParams: ObjectParameters,
   children: React$Node,
-  onChange: ObjectParameters => void
+  onChange: ObjectParameters => void,
 };
 
 class FiltersCard extends PureComponent<Props> {
   handleUpdateKey = (
     keyOrUpdater: string | QueryUpdater,
-    val: ?ObjectParameter | ?$ReadOnlyArray<ObjectParameter>
+    val: ?ObjectParameter | ?$ReadOnlyArray<ObjectParameter>,
   ) => {
     const { queryParams } = this.props;
     let newQueryParams;
@@ -58,7 +58,7 @@ class FiltersCard extends PureComponent<Props> {
 
     const childProps = {
       queryParams,
-      updateQueryParams: this.handleUpdateKey
+      updateQueryParams: this.handleUpdateKey,
     };
 
     const content = Children.map(children, c => cloneElement(c, childProps));

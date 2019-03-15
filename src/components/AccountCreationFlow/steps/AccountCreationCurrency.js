@@ -19,7 +19,7 @@ import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import {
   isERC20Token,
   isNotSupportedCoin,
-  getCurrencyIdFromBlockchainName
+  getCurrencyIdFromBlockchainName,
 } from "utils/cryptoCurrencies";
 import HelpLink from "components/HelpLink";
 import Text from "components/base/Text";
@@ -30,34 +30,34 @@ import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 const styles = {
   topMarged: {
-    marginTop: 20
+    marginTop: 20,
   },
   radioContainer: {
     fontSize: 12,
     display: "flex",
     alignItems: "flex-start",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   radioContent: {
     marginTop: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   parentAccountSelectContainer: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 };
 
 const findParentAccountInAccounts = (
   parentAccount: ?ParentAccount,
-  availableParentAccounts: Account[]
+  availableParentAccounts: Account[],
 ) =>
   availableParentAccounts.find(
-    a => parentAccount && parentAccount.id && a.id === parentAccount.id
+    a => parentAccount && parentAccount.id && a.id === parentAccount.id,
   ) || null;
 
 const getAvailableParentsAccounts = (
   allAccounts: Account[],
-  erc20token: ?ERC20Token
+  erc20token: ?ERC20Token,
 ) => {
   if (!erc20token) return [];
   const parentsIdsOfSameTokenAccounts = allAccounts
@@ -65,7 +65,7 @@ const getAvailableParentsAccounts = (
       a =>
         a.account_type === "ERC20" &&
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
-        a.contract_address === erc20token.contract_address
+        a.contract_address === erc20token.contract_address,
     )
     .map(a => a.parent_id);
   return allAccounts.filter(
@@ -75,18 +75,18 @@ const getAvailableParentsAccounts = (
       a.currency_id ===
         // $FlowFixMe inference fail again. see up.
         getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
-      parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1
+      parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1,
   );
 };
 
 type Props = AccountCreationStepProps & {
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class AccountCreationCurrencies extends PureComponent<Props> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
     this.props.updatePayload({
-      parentAccount: parentAccount ? { id: parentAccount.id } : null
+      parentAccount: parentAccount ? { id: parentAccount.id } : null,
     });
   };
 
@@ -98,13 +98,13 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: null,
         erc20token: null,
-        parentAccount: null
+        parentAccount: null,
       });
     } else if (item.type === "currency") {
       Object.assign(patch, {
         currency: item.value,
         erc20token: null,
-        parentAccount: null
+        parentAccount: null,
       });
       if (!isNotSupportedCoin(item.value)) {
         onPatched = () => transitionTo("name");
@@ -113,7 +113,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       const erc20token = item.value;
       const availableParentAccounts = getAvailableParentsAccounts(
         allAccounts,
-        erc20token
+        erc20token,
       );
 
       Object.assign(patch, {
@@ -121,7 +121,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
         erc20token,
         parentAccount: availableParentAccounts.length
           ? { id: availableParentAccounts[0].id }
-          : null
+          : null,
       });
     }
     updatePayload(patch, onPatched);
@@ -136,12 +136,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
 
     const availableParentAccounts = getAvailableParentsAccounts(
       allAccounts,
-      payload.erc20token
+      payload.erc20token,
     );
 
     const parentAccount = findParentAccountInAccounts(
       payload.parentAccount,
-      allAccounts
+      allAccounts,
     );
 
     return (
@@ -161,16 +161,15 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             />
           )}
         />
-        {payload.currency &&
-          isNotSupportedCoin(payload.currency) && (
-            <div className={classes.topMarged}>
-              <InfoBox withIcon type="warning">
-                <Text>
-                  <Trans i18nKey="newAccount:not_supported" />
-                </Text>
-              </InfoBox>
-            </div>
-          )}
+        {payload.currency && isNotSupportedCoin(payload.currency) && (
+          <div className={classes.topMarged}>
+            <InfoBox withIcon type="warning">
+              <Text>
+                <Trans i18nKey="newAccount:not_supported" />
+              </Text>
+            </InfoBox>
+          </div>
+        )}
         {displayERC20Box && (
           <div className={classes.topMarged}>
             {availableParentAccounts.length > 0 ? (
@@ -201,12 +200,12 @@ function EthAccountsRadio({
   onChange,
   account,
   accounts,
-  classes
+  classes,
 }: {
   accounts: Account[],
   account: ?Account,
   onChange: (?Account) => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }) {
   const onChooseNull = () => onChange(null);
   const selectFirstIfNotSet = () => {

@@ -13,21 +13,21 @@ const styles = {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 5,
-    marginBotton: 5
+    marginBotton: 5,
   },
   status: {
-    color: colors.steel
+    color: colors.steel,
   },
   account: {
-    color: colors.black
-  }
+    color: colors.black,
+  },
 };
 
 class ApprovalStatusWithAccountName extends Component<{
   account: Account,
   operation: Operation,
   classes: { [_: $Keys<typeof styles>]: string },
-  user: Member
+  user: Member,
 }> {
   render() {
     const { operation, account, user, classes } = this.props;

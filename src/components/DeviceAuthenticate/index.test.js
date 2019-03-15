@@ -7,13 +7,13 @@ import Adapter from "enzyme-adapter-react-16";
 
 import VaultDeviceApp, {
   mockGetPublicKey, // eslint-disable-line
-  mockAuthenticate // eslint-disable-line
+  mockAuthenticate, // eslint-disable-line
 } from "device/VaultDeviceApp";
 import { DeviceAuthenticate } from "./index";
 
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
+  create: jest.fn(),
 }));
 
 jest.mock("network", () => jest.fn());
@@ -36,17 +36,17 @@ const props = {
     name: "name",
     workspace: "workspace",
     domain_name: "domain",
-    role: "Administrator"
-  }
+    role: "Administrator",
+  },
 };
 
 test("authenticate for account creation should call API and device", async () => {
   network.mockImplementation(() => ({
     challenge: "challenge",
     key_handle: {
-      PUBKEY: "key_handle"
+      PUBKEY: "key_handle",
     },
-    account_id: 1
+    account_id: 1,
   }));
   const MyComponent = shallow(<DeviceAuthenticate {...props} />);
   await MyComponent.instance().start();
@@ -55,7 +55,7 @@ test("authenticate for account creation should call API and device", async () =>
 
   expect(network).toHaveBeenCalledWith(
     "/accounts/authentications/PUBKEY/challenge",
-    "GET"
+    "GET",
   );
 
   expect(mockAuthenticate).toHaveBeenCalledWith(
@@ -65,7 +65,7 @@ test("authenticate for account creation should call API and device", async () =>
     "name",
     "workspace",
     "domain",
-    "Administrator"
+    "Administrator",
   );
 
   expect(network).toHaveBeenCalledWith(
@@ -74,8 +74,8 @@ test("authenticate for account creation should call API and device", async () =>
     {
       pub_key: "PUBKEY",
       authentication: "raw",
-      account_id: 1
-    }
+      account_id: 1,
+    },
   );
   expect(props.callback).toHaveBeenCalled();
 });
@@ -84,9 +84,9 @@ test("authenticate for operation creation should call API and device", async () 
   network.mockImplementation(() => ({
     challenge: "challenge",
     key_handle: {
-      PUBKEY: "key_handle"
+      PUBKEY: "key_handle",
     },
-    operation_id: 1
+    operation_id: 1,
   }));
   const sProps = { ...props, type: "operations", account_id: 1 };
   const MyComponent = shallow(<DeviceAuthenticate {...sProps} />);
@@ -96,7 +96,7 @@ test("authenticate for operation creation should call API and device", async () 
 
   expect(network).toHaveBeenCalledWith(
     "/accounts/1/operations/authentications/PUBKEY/challenge",
-    "GET"
+    "GET",
   );
 
   expect(mockAuthenticate).toHaveBeenCalledWith(
@@ -106,7 +106,7 @@ test("authenticate for operation creation should call API and device", async () 
     "name",
     "workspace",
     "domain",
-    "Administrator"
+    "Administrator",
   );
 
   expect(network).toHaveBeenCalledWith(
@@ -115,8 +115,8 @@ test("authenticate for operation creation should call API and device", async () 
     {
       pub_key: "PUBKEY",
       authentication: "raw",
-      operation_id: 1
-    }
+      operation_id: 1,
+    },
   );
   expect(props.callback).toHaveBeenCalled();
 });

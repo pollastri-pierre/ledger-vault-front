@@ -12,8 +12,8 @@ import { sanitizeValueString } from "./helpers";
 
 const styles = {
   container: {
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 };
 
 type Props<Transaction> = {
@@ -22,35 +22,35 @@ type Props<Transaction> = {
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   amountIsValid: boolean,
-  onChangeTransaction: Transaction => void
+  onChangeTransaction: Transaction => void,
 };
 type State = {
   token: *,
-  displayValue: string
+  displayValue: string,
 };
 
 const getCurrencyLikeUnit = decimals => ({
   code: "",
   symbol: "",
   magnitude: decimals,
-  name: ""
+  name: "",
 });
 class AmountNoUnits extends PureComponent<Props<*>, State> {
   constructor(props) {
     super(props);
     const token = getERC20TokenByContractAddress(
-      this.props.account.contract_address
+      this.props.account.contract_address,
     );
 
     const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
 
     const val = formatCurrencyUnit(
       fakeUnit,
-      props.bridge.getTransactionAmount(props.account, props.transaction)
+      props.bridge.getTransactionAmount(props.account, props.transaction),
     );
     this.state = {
       token,
-      displayValue: parseFloat(val) > 0 ? val : ""
+      displayValue: parseFloat(val) > 0 ? val : "",
     };
   }
 
@@ -62,7 +62,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
     const r = sanitizeValueString(fakeUnit, amount);
     const sanitizedValue = parseInt(r.value, 10);
     this.props.onChangeTransaction(
-      bridge.editTransactionAmount(account, transaction, sanitizedValue)
+      bridge.editTransactionAmount(account, transaction, sanitizedValue),
     );
     this.setState({ displayValue: r.display });
   };

@@ -12,7 +12,7 @@ import UserBodyCell from "./UserBodyCell";
 type UserRowProps = {
   user: Member,
   onClick: Member => void,
-  tableDefinition: TableDefinition
+  tableDefinition: TableDefinition,
 };
 
 const userRowHover = { cursor: "pointer" };

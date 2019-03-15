@@ -5,5 +5,5 @@ export default {
   nodeModules: path.resolve(__dirname, "../node_modules"),
   src: path.resolve(__dirname, "../src"),
   favicon: path.resolve(__dirname, "../src/assets/img/favicon.png"),
-  config: path.resolve(__dirname, "../config")
+  config: path.resolve(__dirname, "../config"),
 };

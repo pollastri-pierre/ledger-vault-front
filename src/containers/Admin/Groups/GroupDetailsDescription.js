@@ -10,16 +10,16 @@ import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMuta
 
 type Props = {
   group: Group,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 };
 
 type State = {
-  loading: boolean
+  loading: boolean,
 };
 
 class GroupDetailsDescription extends PureComponent<Props, State> {
   state = {
-    loading: false
+    loading: false,
   };
 
   onChange = async (description: string) => {
@@ -27,7 +27,7 @@ class GroupDetailsDescription extends PureComponent<Props, State> {
     const { restlay, group } = this.props;
     try {
       await restlay.commitMutation(
-        new EditGroupDescriptionMutation({ group, description })
+        new EditGroupDescriptionMutation({ group, description }),
       );
     } finally {
       this.setState({ loading: false });

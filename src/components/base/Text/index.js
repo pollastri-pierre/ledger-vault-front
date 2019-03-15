@@ -27,7 +27,7 @@ export default ({
   i18nKey?: string,
   components?: React$Node,
   children?: React$Node,
-  values?: { [string]: string | number }
+  values?: { [string]: string | number },
 }) => {
   const inner = i18nKey ? (
     <Trans i18nKey={i18nKey} components={components} values={values} />

@@ -12,7 +12,7 @@ import ERC20TokenIcon from "components/icons/ERC20Token";
 
 import {
   getCryptoCurrencyById,
-  getCryptoCurrencyIcon
+  getCryptoCurrencyIcon,
 } from "utils/cryptoCurrencies";
 
 import type { Translate } from "data/types";
@@ -20,13 +20,13 @@ import type { AccountCreationStepProps, ParentAccount } from "../types";
 
 type Props = AccountCreationStepProps & {
   t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 type State = {
   accountName: string,
   parentName: string,
-  matchingNamesWarning: boolean
+  matchingNamesWarning: boolean,
 };
 
 const erc20TokenIcon = <ERC20TokenIcon size={15} />;
@@ -44,7 +44,7 @@ const ropstenCurIcon = RopstenCurIcon ? (
 
 const inputProps = {
   maxLength: 19,
-  onlyAscii: true
+  onlyAscii: true,
 };
 
 const getParentAccountName = (parentAccount: ?ParentAccount): string => {
@@ -66,7 +66,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
     this.state = {
       accountName: name || "",
       parentName: parentAccountName || "",
-      matchingNamesWarning: false
+      matchingNamesWarning: false,
     };
   }
 
@@ -109,7 +109,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
     const { parentAccount } = payload;
     if (!parentAccount || !parentAccount.id) return null;
     const account = allAccounts.find(
-      acc => parentAccount.id && acc.id === parentAccount.id
+      acc => parentAccount.id && acc.id === parentAccount.id,
     );
     if (!account) return null;
     return <AccountSummary account={account} />;
@@ -172,7 +172,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
 
 const styles = {
   infoBox: {
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 };
 export default withStyles(styles)(translate()(ERC20RenderName));

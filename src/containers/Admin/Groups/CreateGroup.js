@@ -20,31 +20,31 @@ import {
   ModalHeader,
   ModalTitle,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 
 type Props = {
   operators: Connection<Member>,
   restlay: RestlayEnvironment,
-  close: () => void
+  close: () => void,
 };
 
 type State = {
   members: Member[],
   name: string,
-  description: string
+  description: string,
 };
 
 const inputProps = {
   maxLength: 19,
-  onlyAscii: true
+  onlyAscii: true,
 };
 // NOTE: refactor with the new ApproveRequestButton
 class CreateGroup extends PureComponent<Props, State> {
   state = {
     members: [],
     name: "",
-    description: ""
+    description: "",
   };
 
   onChange = (val: { members: Member[], groups: Group[] }) => {
@@ -71,7 +71,7 @@ class CreateGroup extends PureComponent<Props, State> {
     const data = {
       members: members.map(m => m.id),
       name,
-      description
+      description,
     };
 
     // TODO need an endpoint not paginated for this
@@ -132,13 +132,13 @@ const RenderLoading = () => <ModalLoading height={700} />;
 export default connectData(CreateGroup, {
   RenderLoading,
   queries: {
-    operators: UsersQuery
+    operators: UsersQuery,
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
-    operators: 30
+    operators: 30,
   },
   propsToQueryParams: () => ({
-    userRole: "OPERATOR"
-  })
+    userRole: "OPERATOR",
+  }),
 });

@@ -13,33 +13,33 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    height: "100vh"
+    height: "100vh",
   },
   errorIcon: {
     justifyContent: "center",
     marginRight: 5,
     display: "flex",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   errorTitle: {
-    color: colors.grenade
+    color: colors.grenade,
   },
   titleContainer: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   messageContainer: {
     margin: "20px 10px",
-    backgroundColor: colors.cream
+    backgroundColor: colors.cream,
   },
   errorMessage: {
     fontSize: 13,
-    padding: 10
+    padding: 10,
   },
   footer: {
     marginTop: "auto",
     display: "flex",
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
   contactSupport: {
     color: colors.steel,
@@ -47,9 +47,9 @@ const styles = {
     backgroundColor: colors.cream,
     "&:hover": {
       backgroundColor: colors.pearl,
-      color: colors.ocean
-    }
-  }
+      color: colors.ocean,
+    },
+  },
 };
 
 class GenericErrorScreen extends Component<{
@@ -57,7 +57,7 @@ class GenericErrorScreen extends Component<{
   errorMessage: ?string,
   className: ?string,
   customFooter: ?React$Node,
-  standardFooter: ?boolean
+  standardFooter: ?boolean,
 }> {
   render() {
     const {
@@ -65,7 +65,7 @@ class GenericErrorScreen extends Component<{
       errorMessage,
       className,
       standardFooter,
-      customFooter
+      customFooter,
     } = this.props;
     return (
       <div className={classes.base}>

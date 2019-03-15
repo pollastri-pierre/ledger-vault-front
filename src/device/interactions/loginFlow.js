@@ -16,8 +16,8 @@ export const getU2FChallenge: Interaction = {
   action: ({ u2f_key: { pubKey }, organization }) =>
     network(
       `${organization.workspace}/u2f/authentications/${pubKey}/challenge`,
-      "GET"
-    )
+      "GET",
+    ),
 };
 
 export const u2fAuthenticate: Interaction = {
@@ -35,14 +35,14 @@ export const u2fAuthenticate: Interaction = {
           organization.name,
           organization.workspace,
           organization.domain_name,
-          "Administrator"
+          "Administrator",
         ),
       {
         shouldThrow: (e: DeviceError) =>
           e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA
-      }
-    )
+          e.statusCode === StatusCodes.INCORRECT_DATA,
+      },
+    ),
 };
 
 export const postU2FSignature: Interaction = {
@@ -52,30 +52,30 @@ export const postU2FSignature: Interaction = {
       `${organization.workspace}/u2f/authentications/authenticate`,
       "POST",
       {
-        authentication: u2f_authenticate.rawResponse
+        authentication: u2f_authenticate.rawResponse,
       },
-      token
-    )
+      token,
+    ),
 };
 
 export const loginFlow: Flow = [
   getU2FPublicKey,
   getU2FChallenge,
   u2fAuthenticate,
-  postU2FSignature
+  postU2FSignature,
 ];
 
 export type LoginFlowResponse = {
   u2f_key: {
     pubKey: string,
-    signature: string
+    signature: string,
   },
   u2f_challenge: {
     token: string,
-    key_handle: string
+    key_handle: string,
   },
   u2f_authenticate: {
-    rawResponse: string
+    rawResponse: string,
   },
-  organization: Organization
+  organization: Organization,
 };

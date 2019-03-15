@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
  */
 export const createDeviceSocket = (
   transport: *,
-  url: string
+  url: string,
 ): Observable<string> =>
   Observable.create(o => {
     let ws;
@@ -45,7 +45,7 @@ export const createDeviceSocket = (
       const msg = {
         nonce,
         response,
-        data
+        data,
       };
       const strMsg = JSON.stringify(msg);
       ws.send(strMsg);
@@ -61,7 +61,7 @@ export const createDeviceSocket = (
         send(
           nonce,
           strStatus === "9000" ? "success" : "error",
-          buffer.toString("hex")
+          buffer.toString("hex"),
         );
       },
 
@@ -87,7 +87,7 @@ export const createDeviceSocket = (
         send(
           nonce,
           strStatus === "9000" ? "success" : "error",
-          strStatus === "9000" ? "" : strStatus
+          strStatus === "9000" ? "" : strStatus,
         );
       },
 
@@ -99,7 +99,7 @@ export const createDeviceSocket = (
       error: msg => {
         console.error("ERROR", { data: msg.data });
         o.error();
-      }
+      },
     };
 
     const stackMessage = async rawMsg => {

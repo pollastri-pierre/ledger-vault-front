@@ -11,7 +11,7 @@ export type Interaction = {
   device?: boolean,
   responseKey: string,
   tooltip?: React$Node,
-  action: Object => Promise<*>
+  action: Object => Promise<*>,
 };
 
 type Props = {
@@ -19,24 +19,24 @@ type Props = {
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError) => void
+  onError: (Error | GateError) => void,
 };
 
 type State = {
   currentStep: number,
-  interaction: Interaction
+  interaction: Interaction,
 };
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
-    interaction: this.props.interactions[0]
+    interaction: this.props.interactions[0],
   };
 
   _unmounted = false;
 
   static defaultProps = {
-    additionalFields: {}
+    additionalFields: {},
   };
 
   runInteractions = async () => {
@@ -54,10 +54,10 @@ class DeviceInteraction extends PureComponent<Props, State> {
       try {
         this.setState({
           currentStep: i,
-          interaction: interactions[i]
+          interaction: interactions[i],
         });
         responses[interactions[i].responseKey] = await interactions[i].action(
-          responses
+          responses,
         );
         if (this._unmounted) return;
       } catch (e) {

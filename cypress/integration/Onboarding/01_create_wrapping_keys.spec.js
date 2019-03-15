@@ -21,10 +21,10 @@ context("Create Wrapping Key", () => {
         win.fetch = null;
         win.eval(polyfill);
         win.fetch = win.unfetch;
-      }
+      },
     }).then(() => {
       cy.request("POST", DEVICE, {
-        device_number: 1
+        device_number: 1,
       }).then(() => {
         cy.get("input[type=text]").type(orga_name, { delay: 40 });
         cy.contains("Continue").click();
@@ -62,7 +62,7 @@ context("Create Wrapping Key", () => {
 
         // Second WPK
         cy.request("POST", DEVICE, {
-          device_number: 2
+          device_number: 2,
         }).then(() => {
           cy.get(".fragment")
             .eq(1)
@@ -78,7 +78,7 @@ context("Create Wrapping Key", () => {
 
           // Third WPK
           cy.request("POST", DEVICE, {
-            device_number: 3
+            device_number: 3,
           }).then(() => {
             cy.get(".fragment")
               .eq(2)

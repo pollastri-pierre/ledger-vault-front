@@ -11,7 +11,7 @@ import Card, { CardLoading, CardError } from "components/base/Card";
 import type { Operation } from "data/types";
 
 type Props = {
-  operationsPending: Operation[]
+  operationsPending: Operation[],
 };
 
 class OperatorTransactions extends PureComponent<Props> {
@@ -33,6 +33,6 @@ export default connectData(OperatorTransactions, {
   RenderLoading: CardLoading,
   RenderError: CardError,
   queries: {
-    operationsPending: PendingOperationsQuery
-  }
+    operationsPending: PendingOperationsQuery,
+  },
 });

@@ -14,28 +14,28 @@ const mockSync = (uri, method) => {
         return denormalize(
           Object.keys(mockEntities.accounts),
           [schema.Account],
-          mockEntities
+          mockEntities,
         );
       }
       case "/groups-mocks": {
         return denormalize(
           Object.keys(mockEntities.groups),
           [schema.Group],
-          mockEntities
+          mockEntities,
         );
       }
       case "/people-mocks/admin": {
         return denormalize(
           Object.keys(mockEntities.members),
           [schema.Member],
-          mockEntities
+          mockEntities,
         ).filter(m => m.role === "admin");
       }
       case "/people-mocks/operator": {
         return denormalize(
           Object.keys(mockEntities.members),
           [schema.Member],
-          mockEntities
+          mockEntities,
         ).filter(m => m.role === "operator");
       }
       default:
@@ -44,7 +44,7 @@ const mockSync = (uri, method) => {
     if (/members-mock.*/.test(uri)) {
       const edges = mockEntities.membersArray.map(key => ({
         node: denormalize(key, schema.Member, mockEntities),
-        cursor: key
+        cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
     }
@@ -52,7 +52,7 @@ const mockSync = (uri, method) => {
     if (/groups-mock.*/.test(uri)) {
       const edges = mockEntities.groupsArray.map(key => ({
         node: denormalize(key, schema.Group, mockEntities),
-        cursor: key
+        cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
     }
@@ -60,7 +60,7 @@ const mockSync = (uri, method) => {
     if (/accounts-mock.*/.test(uri)) {
       const edges = mockEntities.accountsArray.map(key => ({
         node: denormalize(key, schema.Account, mockEntities),
-        cursor: key
+        cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
     }
@@ -79,7 +79,7 @@ const mockSync = (uri, method) => {
       return denormalize(
         Object.keys(mockEntities.accounts),
         [schema.Account],
-        mockEntities
+        mockEntities,
       );
     }
 
@@ -102,7 +102,7 @@ export default (uri, init) => {
         // if (Math.random() < 0.3) throw new Error("MOCK_HTTP_FAILURE");
         return {
           status: 200,
-          json: () => Promise.resolve(mockRes)
+          json: () => Promise.resolve(mockRes),
         };
       })
       .catch(e => {

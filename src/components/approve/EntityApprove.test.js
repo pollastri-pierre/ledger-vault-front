@@ -7,7 +7,7 @@ import {
   VALIDATION_PATH,
   U2F_PATH,
   ACCOUNT_MANAGER_SESSION,
-  MATCHER_SESSION
+  MATCHER_SESSION,
 } from "device";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -19,7 +19,7 @@ import AbortOperationMutation from "api/mutations/AbortOperationMutation";
 import VaultDeviceApp, {
   mockOpenSession, // eslint-disable-line
   mockValidateVaultOperation, // eslint-disable-line
-  mockGetPublicKey // eslint-disable-line
+  mockGetPublicKey, // eslint-disable-line
 } from "device/VaultDeviceApp";
 import AccountApprove from "../accounts/approve/AccountApprove";
 import OperationApprove from "../operations/approve/OperationApprove";
@@ -29,7 +29,7 @@ import { EntityApprove } from "./EntityApprove";
 
 jest.mock("device/VaultDeviceApp");
 jest.mock("@ledgerhq/hw-transport-u2f", () => ({
-  create: jest.fn()
+  create: jest.fn(),
 }));
 jest.mock("network", () => jest.fn());
 Enzyme.configure({ adapter: new Adapter() });
@@ -43,18 +43,18 @@ beforeEach(() => {
 
 const props = {
   history: {
-    goBack: jest.fn()
+    goBack: jest.fn(),
   },
   match: {
     params: {
-      id: 1
-    }
+      id: 1,
+    },
   },
   entity: "account",
   restlay: {
     commitMutation: jest.fn(),
-    fetchQuery: jest.fn()
-  }
+    fetchQuery: jest.fn(),
+  },
 };
 
 test("it should set the proper initial state", () => {
@@ -62,7 +62,7 @@ test("it should set the proper initial state", () => {
   expect(MyComponent.state()).toEqual({
     isDevice: false,
     isAborting: false,
-    step: 0
+    step: 0,
   });
 });
 
@@ -72,13 +72,13 @@ test("aborting() should set isAborting to !isAborting", () => {
   expect(MyComponent.state()).toEqual({
     isDevice: false,
     isAborting: true,
-    step: 0
+    step: 0,
   });
   MyComponent.instance().aborting();
   expect(MyComponent.state()).toEqual({
     isDevice: false,
     isAborting: false,
-    step: 0
+    step: 0,
   });
 });
 
@@ -101,7 +101,7 @@ test("!isDevice and isAborting should render AbortConfirmation with right props"
   expect(Abort.props()).toEqual({
     entity: "account",
     aborting: MyComponent.instance().aborting,
-    abort: MyComponent.instance().abort
+    abort: MyComponent.instance().abort,
   });
 });
 
@@ -120,7 +120,7 @@ test("isDevice and !isAborting should render StepDeviceGeneric with right props"
     steps: MyComponent.instance().steps("account"),
     cancel: MyComponent.instance().approving,
     step: 0,
-    device: true
+    device: true,
   });
 });
 test("isDevice and !isAborting should render StepDeviceGeneric with right props if entity is operation", () => {
@@ -134,7 +134,7 @@ test("isDevice and !isAborting should render StepDeviceGeneric with right props 
     steps: MyComponent.instance().steps("operation"),
     cancel: MyComponent.instance().approving,
     step: 0,
-    device: true
+    device: true,
   });
 });
 
@@ -150,7 +150,7 @@ test("!isDevice and !isAborting and entity=account should render AccountApprove 
   expect(Approve.props()).toEqual({
     close: MyComponent.instance().close,
     approve: MyComponent.instance().approving,
-    aborting: MyComponent.instance().aborting
+    aborting: MyComponent.instance().aborting,
   });
 });
 test("!isDevice and !isAborting and entity=operation should render OperationApprove", () => {
@@ -167,7 +167,7 @@ test("!isDevice and !isAborting and entity=account should render AccountApprove 
   expect(Approve.props()).toEqual({
     close: MyComponent.instance().close,
     approve: MyComponent.instance().approving,
-    aborting: MyComponent.instance().aborting
+    aborting: MyComponent.instance().aborting,
   });
 });
 
@@ -181,9 +181,9 @@ test("approving() should handle the approving process", async () => {
         ephemeral_public_key:
           "04A98E32A6839EC121D01221111316393101B50CA860E8D259D300548D4CAC4518FF8250C4B230BB5D9DF5F494F2D8F5C67AEE10EAF7EB5774EE06886A9067DDA2",
         certificate_attestation:
-          "RjBEAiA5exkM47CKTyEAKHCCk4+ifF5WLi8PgLfTLq5k1YSKagIgT4wIKm3cqr4Wm1/4RVCi15mfcKoJsPaHM/4LUQDDjEQEUY/t0nhOkOr01JyAjEewiqMOzAWMMVfOcsBmjyOkHX6C0NrX/JmRCli6P0xghFjSoB1CL6Qf8kat0nfMWj/pkUcwRQIhAPeWfqcCJMPNBEdxf/HXw7tnM4Jr9A9cDS5vmZR8epPLAiBmOL+N4Q7izgOx3CgVMCmSE97NxBaVmMYSqPyY+x3tnw=="
-      }
-    }
+          "RjBEAiA5exkM47CKTyEAKHCCk4+ifF5WLi8PgLfTLq5k1YSKagIgT4wIKm3cqr4Wm1/4RVCi15mfcKoJsPaHM/4LUQDDjEQEUY/t0nhOkOr01JyAjEewiqMOzAWMMVfOcsBmjyOkHX6C0NrX/JmRCli6P0xghFjSoB1CL6Qf8kat0nfMWj/pkUcwRQIhAPeWfqcCJMPNBEdxf/HXw7tnM4Jr9A9cDS5vmZR8epPLAiBmOL+N4Q7izgOx3CgVMCmSE97NxBaVmMYSqPyY+x3tnw==",
+      },
+    },
   };
   const MyComponent = shallow(<EntityApprove {...props} />);
   await MyComponent.instance().approving(operation);
@@ -193,22 +193,22 @@ test("approving() should handle the approving process", async () => {
     Buffer.from(operation.hsm_operations.PUBKEY.ephemeral_public_key, "hex"),
     Buffer.from(
       operation.hsm_operations.PUBKEY.certificate_attestation,
-      "base64"
+      "base64",
     ),
-    ACCOUNT_MANAGER_SESSION
+    ACCOUNT_MANAGER_SESSION,
   );
 
   expect(mockValidateVaultOperation).toHaveBeenCalledWith(
     VALIDATION_PATH,
-    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64")
+    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64"),
   );
 
   expect(props.restlay.commitMutation).toHaveBeenCalledWith(
     new ApproveAccountMutation({
       accountId: 1,
       approval: "approval",
-      public_key: "PUBKEY"
-    })
+      public_key: "PUBKEY",
+    }),
   );
 });
 
@@ -222,9 +222,9 @@ test("approving() should handle the approving process with entity=acocunt and MA
         ephemeral_public_key:
           "04A98E32A6839EC121D01221111316393101B50CA860E8D259D300548D4CAC4518FF8250C4B230BB5D9DF5F494F2D8F5C67AEE10EAF7EB5774EE06886A9067DDA2",
         certificate_attestation:
-          "RjBEAiA5exkM47CKTyEAKHCCk4+ifF5WLi8PgLfTLq5k1YSKagIgT4wIKm3cqr4Wm1/4RVCi15mfcKoJsPaHM/4LUQDDjEQEUY/t0nhOkOr01JyAjEewiqMOzAWMMVfOcsBmjyOkHX6C0NrX/JmRCli6P0xghFjSoB1CL6Qf8kat0nfMWj/pkUcwRQIhAPeWfqcCJMPNBEdxf/HXw7tnM4Jr9A9cDS5vmZR8epPLAiBmOL+N4Q7izgOx3CgVMCmSE97NxBaVmMYSqPyY+x3tnw=="
-      }
-    }
+          "RjBEAiA5exkM47CKTyEAKHCCk4+ifF5WLi8PgLfTLq5k1YSKagIgT4wIKm3cqr4Wm1/4RVCi15mfcKoJsPaHM/4LUQDDjEQEUY/t0nhOkOr01JyAjEewiqMOzAWMMVfOcsBmjyOkHX6C0NrX/JmRCli6P0xghFjSoB1CL6Qf8kat0nfMWj/pkUcwRQIhAPeWfqcCJMPNBEdxf/HXw7tnM4Jr9A9cDS5vmZR8epPLAiBmOL+N4Q7izgOx3CgVMCmSE97NxBaVmMYSqPyY+x3tnw==",
+      },
+    },
   };
   const sProps = { ...props, entity: "operation" };
   const MyComponent = shallow(<EntityApprove {...sProps} />);
@@ -235,22 +235,22 @@ test("approving() should handle the approving process with entity=acocunt and MA
     Buffer.from(operation.hsm_operations.PUBKEY.ephemeral_public_key, "hex"),
     Buffer.from(
       operation.hsm_operations.PUBKEY.certificate_attestation,
-      "base64"
+      "base64",
     ),
-    MATCHER_SESSION
+    MATCHER_SESSION,
   );
 
   expect(mockValidateVaultOperation).toHaveBeenCalledWith(
     VALIDATION_PATH,
-    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64")
+    Buffer.from(operation.hsm_operations.PUBKEY.data, "base64"),
   );
 
   expect(sProps.restlay.commitMutation).toHaveBeenCalledWith(
     new ApproveOperationMutation({
       operationId: 1,
       approval: "approval",
-      public_key: "PUBKEY"
-    })
+      public_key: "PUBKEY",
+    }),
   );
 });
 
@@ -259,11 +259,11 @@ test("abort() should handle the abort process for account", async () => {
   await MyComponent.instance().abort();
   expect(props.restlay.commitMutation).toHaveBeenCalledWith(
     new AbortAccount({
-      accountId: 1
-    })
+      accountId: 1,
+    }),
   );
   expect(props.restlay.fetchQuery).toHaveBeenCalledWith(
-    new PendingAccountsQuery()
+    new PendingAccountsQuery(),
   );
   expect(props.history.goBack).toHaveBeenCalled();
 });
@@ -274,11 +274,11 @@ test("abort() should handle the abort process for operation", async () => {
   await MyComponent.instance().abort();
   expect(props.restlay.commitMutation).toHaveBeenCalledWith(
     new AbortOperationMutation({
-      operationId: 1
-    })
+      operationId: 1,
+    }),
   );
   expect(props.restlay.fetchQuery).toHaveBeenCalledWith(
-    new PendingOperationsQuery()
+    new PendingOperationsQuery(),
   );
   expect(props.history.goBack).toHaveBeenCalled();
 });

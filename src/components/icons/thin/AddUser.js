@@ -5,8 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   common: {
-    width: 25
-  }
+    width: 25,
+  },
 };
 
 type Props = { classes: Object, className?: string };

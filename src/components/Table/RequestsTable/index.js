@@ -19,11 +19,11 @@ type Props = {
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  onRowClick: Request => void
+  onRowClick: Request => void,
 };
 
 type State = {
-  tableDefinition: TableDefinition
+  tableDefinition: TableDefinition,
 };
 
 class RequestsTable extends PureComponent<Props, State> {
@@ -31,7 +31,7 @@ class RequestsTable extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      tableDefinition: props.customTableDef || requestsTableDefault
+      tableDefinition: props.customTableDef || requestsTableDefault,
     };
   }
 

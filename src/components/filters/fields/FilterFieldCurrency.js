@@ -7,7 +7,7 @@ import type { ObjectParameters } from "query-string";
 
 import {
   getCryptoCurrencyById,
-  getERC20TokenByContractAddress
+  getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 
 import SelectCurrency from "components/SelectCurrency";

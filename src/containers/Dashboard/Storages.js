@@ -14,13 +14,13 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    marginRight: -20
-  }
+    marginRight: -20,
+  },
 };
 
 type Props = {
   accounts: Account[],
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class Storages extends Component<Props> {
@@ -44,8 +44,8 @@ const RenderError = withStyles(styles)(({ error, restlay, classes }: *) => (
 
 export default connectData(withStyles(styles)(Storages), {
   queries: {
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
   },
   optimisticRendering: true,
-  RenderError
+  RenderError,
 });

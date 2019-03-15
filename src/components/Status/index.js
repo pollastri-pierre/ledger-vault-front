@@ -20,7 +20,7 @@ const BG_BY_STATUS = {
   PENDING_CREATION_APPROVAL: opacity(colors.ocean, 0.1),
   PENDING_REVOCATION_APPROVAL: opacity(colors.ocean, 0.1),
   PENDING_REGISTRATION: opacity(colors.blue_orange, 0.1),
-  VIEW_ONLY: colors.cream
+  VIEW_ONLY: colors.cream,
 };
 
 const COLOR_BY_STATUS = {
@@ -32,14 +32,14 @@ const COLOR_BY_STATUS = {
   PENDING_CREATION_APPROVAL: darken(colors.ocean, 0.5),
   PENDING_REVOCATION_APPROVAL: darken(colors.ocean, 0.5),
   PENDING_REGISTRATION: darken(colors.blue_orange, 0.5),
-  VIEW_ONLY: colors.steel
+  VIEW_ONLY: colors.steel,
 };
 
 type Props = {
   t: Translate,
   status: string,
   textOnly?: boolean,
-  withWarning?: boolean
+  withWarning?: boolean,
 };
 
 const iconWarning = <FaHourglassHalf size={15} />;

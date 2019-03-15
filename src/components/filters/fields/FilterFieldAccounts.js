@@ -17,7 +17,7 @@ import type { FieldProps } from "components/filters/types";
 const EMPTY_ARRAY = [];
 
 type Props = FieldProps & {
-  accounts: Account[]
+  accounts: Account[],
 };
 
 class FilterFieldAccounts extends PureComponent<Props> {
@@ -25,8 +25,8 @@ class FilterFieldAccounts extends PureComponent<Props> {
 
   updateAccounts = (
     updater: (
-      $ReadOnlyArray<ObjectParameter>
-    ) => $ReadOnlyArray<ObjectParameter>
+      $ReadOnlyArray<ObjectParameter>,
+    ) => $ReadOnlyArray<ObjectParameter>,
   ) => {
     const { queryParams, updateQueryParams } = this.props;
     updateQueryParams("accounts", updater(resolveAccounts(queryParams)));
@@ -52,17 +52,18 @@ class FilterFieldAccounts extends PureComponent<Props> {
     const selectedAccounts = selectedAccountsIds
       .map(accountId =>
         accounts.find(
-          account => accountId && account.id.toString() === accountId.toString()
-        )
+          account =>
+            accountId && account.id.toString() === accountId.toString(),
+        ),
       )
       .filter(Boolean);
 
     const filteredAccounts = accounts.filter(
       account =>
         !selectedAccountsIds.find(
-          id => id && id.toString() === account.id.toString()
+          id => id && id.toString() === account.id.toString(),
         ) &&
-        (!selectedCurrency || account.currency_id === selectedCurrency)
+        (!selectedCurrency || account.currency_id === selectedCurrency),
     );
 
     const isActive = selectedAccounts.length > 0;
@@ -94,10 +95,10 @@ class FilterFieldAccounts extends PureComponent<Props> {
 
 const AccountsList = ({
   accounts,
-  onRemove
+  onRemove,
 }: {
   accounts: Account[],
-  onRemove: Account => void
+  onRemove: Account => void,
 }) =>
   accounts.length ? (
     <Box flow={5}>
@@ -123,8 +124,8 @@ function resolveAccounts(queryParams: ObjectParameters) {
   return Array.isArray(queryParams.accounts)
     ? queryParams.accounts
     : typeof queryParams.accounts === "string"
-      ? [queryParams.accounts]
-      : EMPTY_ARRAY;
+    ? [queryParams.accounts]
+    : EMPTY_ARRAY;
 }
 
 function resolveCurrency(queryParams: ObjectParameters) {

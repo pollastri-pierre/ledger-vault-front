@@ -6,8 +6,8 @@ type In = {
   request_id: string,
   user_info: {
     username?: string,
-    user_id?: string
-  }
+    user_id?: string,
+  },
 };
 
 type Res = *;

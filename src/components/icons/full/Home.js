@@ -5,21 +5,21 @@ import React, { PureComponent } from "react";
 const styles = {
   common: {
     height: "11px",
-    width: "9px"
+    width: "9px",
   },
   black: {
-    fill: "black"
-  }
+    fill: "black",
+  },
 };
 
 type Props = {
   color?: string,
-  classes: Object
+  classes: Object,
 };
 
 class Home extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

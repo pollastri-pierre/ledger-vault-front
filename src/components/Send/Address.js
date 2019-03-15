@@ -17,8 +17,8 @@ import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 const styles = {
   nonEIP55warningIcon: {
     marginLeft: 5,
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };
 
 type Props<Transaction> = {
@@ -27,17 +27,17 @@ type Props<Transaction> = {
   classes: { [_: $Keys<typeof styles>]: string },
   onChangeTransaction: Transaction => void,
   transaction: Transaction,
-  bridge: WalletBridge<Transaction>
+  bridge: WalletBridge<Transaction>,
 };
 
 type State = {
   isValid: boolean,
-  recipientWarning: ?Error
+  recipientWarning: ?Error,
 };
 
 const initialState = {
   isValid: true,
-  recipientWarning: null
+  recipientWarning: null,
 };
 
 class SendAddress extends PureComponent<Props<*>, State> {
@@ -55,11 +55,11 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const { account, transaction, bridge } = this.props;
     const prevRecipient = prevProps.bridge.getTransactionRecipient(
       prevProps.account,
-      prevProps.transaction
+      prevProps.transaction,
     );
     const currentRecipient = bridge.getTransactionRecipient(
       account,
-      transaction
+      transaction,
     );
     if (prevRecipient !== currentRecipient) {
       this.validateAddress();
@@ -79,7 +79,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
       const isValid = await bridge.isRecipientValid(
         restlay,
         currency,
-        recipient
+        recipient,
       );
       const recipientWarning = bridge.getRecipientWarning
         ? await bridge.getRecipientWarning(recipient)
@@ -96,7 +96,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
   onChange = async (recipient: string) => {
     const { onChangeTransaction, bridge, transaction, account } = this.props;
     onChangeTransaction(
-      bridge.editTransactionRecipient(account, transaction, recipient)
+      bridge.editTransactionRecipient(account, transaction, recipient),
     );
   };
 

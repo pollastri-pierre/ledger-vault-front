@@ -5,11 +5,11 @@ export type MultiStepsFlowStep<T, P> = {
   name: React$Node,
   Step: React$ComponentType<StepProps<T> & P>,
   Cta?: React$ComponentType<{ payload: T }>,
-  requirements?: T => boolean
+  requirements?: T => boolean,
 };
 
 export type StepProps<T> = {
   payload: T,
   updatePayload: ($Shape<T>, ?() => void) => void,
-  transitionTo: string => void
+  transitionTo: string => void,
 };

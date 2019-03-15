@@ -10,20 +10,20 @@ const styles = {
   menu: {
     color: colors.ocean,
     "& span": {
-      color: "black"
-    }
-  }
+      color: "black",
+    },
+  },
 };
 class MaxSelect extends Component<
   {
     onSetMax: () => void,
-    classes: { [_: $Keys<typeof styles>]: string }
+    classes: { [_: $Keys<typeof styles>]: string },
   },
-  *
+  *,
 > {
   state = {
     open: false,
-    anchorEl: null
+    anchorEl: null,
   };
 
   handleClick = (event: SyntheticEvent<>) => {
@@ -46,7 +46,7 @@ class MaxSelect extends Component<
             height: 28,
             textAlign: "right",
             borderBottom: "1px solid #eee",
-            cursor: "pointer"
+            cursor: "pointer",
           }}
           onClick={this.handleClick}
         >

@@ -6,11 +6,11 @@ import { closeMessage } from "redux/modules/alerts";
 import TranslatedError from "components/TranslatedError";
 
 const mapStateToProps = state => ({
-  alerts: state.alerts
+  alerts: state.alerts,
 });
 
 const mapDispatchToProps = (dispatch: *) => ({
-  onClose: () => dispatch(closeMessage())
+  onClose: () => dispatch(closeMessage()),
 });
 
 export function MessagesContainer(props: {
@@ -19,9 +19,9 @@ export function MessagesContainer(props: {
     type: string,
     title: string,
     error?: Error,
-    content?: string
+    content?: string,
   },
-  onClose: Function
+  onClose: Function,
 }) {
   const { alerts, onClose } = props;
   const { error, visible, title, type, content } = alerts;
@@ -51,5 +51,5 @@ export function MessagesContainer(props: {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(MessagesContainer);

@@ -23,22 +23,22 @@ type Props = {
   account: Account,
   close: Function,
   restlay: RestlayEnvironment,
-  exchange: string
+  exchange: string,
 };
 
 type State = {
   settings: {
-    currency_unit: $Shape<Unit>
-  }
+    currency_unit: $Shape<Unit>,
+  },
 };
 
 const mapStateToProps = (state: State, props: Props) => {
   const {
-    account: { currency_id }
+    account: { currency_id },
   } = props;
   const currency = getCryptoCurrencyById(currency_id);
   return {
-    exchange: currencyExchangeSelector(state, currency)
+    exchange: currencyExchangeSelector(state, currency),
   };
 };
 
@@ -47,7 +47,7 @@ class AccountSettings extends PureComponent<Props, State> {
     super();
     const { settings } = account;
     this.state = {
-      settings
+      settings,
     };
   }
 
@@ -56,20 +56,20 @@ class AccountSettings extends PureComponent<Props, State> {
     this.update({
       settings: {
         ...this.state.settings,
-        currency_unit: curr.units[unitIndex]
-      }
+        currency_unit: curr.units[unitIndex],
+      },
     });
   };
 
   debouncedCommit = debounce(() => {
     const {
       props: { restlay, account },
-      state: { settings }
+      state: { settings },
     } = this;
     const currencyCode = settings.currency_unit.code;
     const m = new SaveAccountSettingsMutation({
       account,
-      currency_unit: currencyCode
+      currency_unit: currencyCode,
     });
     restlay.commitMutation(m);
   }, 1000);
@@ -84,13 +84,13 @@ class AccountSettings extends PureComponent<Props, State> {
     const { settings } = this.state;
     const {
       security_scheme: { quorum },
-      members
+      members,
     } = this.props.account;
     const curr = getCryptoCurrencyById(account.currency_id);
     const units = curr.units;
     const unit_index = units.findIndex(
       unit =>
-        unit.code.toLowerCase() === settings.currency_unit.code.toLowerCase()
+        unit.code.toLowerCase() === settings.currency_unit.code.toLowerCase(),
     );
     return (
       <ModalBody height={615} onClose={close}>
@@ -159,6 +159,6 @@ class AccountSettings extends PureComponent<Props, State> {
 export default connectData(
   connect(
     mapStateToProps,
-    null
-  )(AccountSettings)
+    null,
+  )(AccountSettings),
 );

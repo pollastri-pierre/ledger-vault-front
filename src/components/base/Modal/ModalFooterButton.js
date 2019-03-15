@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { opacity } from "shared/colors";
 
 export default styled.button.attrs(p => ({
-  tabIndex: p.isDisabled ? -1 : 0
+  tabIndex: p.isDisabled ? -1 : 0,
 }))`
   display: flex;
   align-items: center;

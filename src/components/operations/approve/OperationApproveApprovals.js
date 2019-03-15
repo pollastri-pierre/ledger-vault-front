@@ -5,7 +5,7 @@ import ApprovalList from "../../ApprovalList";
 
 function OperationApproveApprovals(props: {
   account: Account,
-  operation: Operation
+  operation: Operation,
 }) {
   const { operation, account } = props;
 

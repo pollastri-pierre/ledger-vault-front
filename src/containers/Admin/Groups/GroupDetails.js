@@ -23,18 +23,18 @@ import {
   ModalHeader,
   ModalTitle,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 
 type Props = {
   group: Group,
   operators: Connection<Member>,
-  close: Function
+  close: Function,
 };
 
 type State = {
   tabsIndex: number,
-  members: Member[]
+  members: Member[],
 };
 
 const tabTitles = ["Overview", "Description", "Accounts"];
@@ -42,7 +42,7 @@ const tabTitles = ["Overview", "Description", "Accounts"];
 class GroupModal extends PureComponent<Props, State> {
   state: State = {
     tabsIndex: 0,
-    members: this.props.group.members
+    members: this.props.group.members,
   };
 
   onTabChange = (e, tabsIndex: number) => {
@@ -106,10 +106,10 @@ class GroupModal extends PureComponent<Props, State> {
 
 const RenderError = ({
   history,
-  match
+  match,
 }: {
   history: MemoryHistory,
-  match: Match
+  match: Match,
 }) => <GoBack history={history} match={match} />;
 
 const RenderLoading = () => <ModalLoading height={700} />;
@@ -118,14 +118,14 @@ export default connectData(GroupModal, {
   RenderLoading,
   queries: {
     group: GroupQuery,
-    operators: UsersQuery
+    operators: UsersQuery,
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
-    operators: 30
+    operators: 30,
   },
   propsToQueryParams: props => ({
     groupId: props.match.params.groupId || "",
-    userRole: "OPERATOR"
-  })
+    userRole: "OPERATOR",
+  }),
 });

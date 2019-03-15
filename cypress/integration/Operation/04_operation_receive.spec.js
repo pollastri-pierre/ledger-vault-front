@@ -4,7 +4,7 @@ import {
   route,
   switch_device,
   create_account,
-  approve
+  approve,
 } from "../../functions/actions.js";
 
 describe("Tests Receive address for account", function() {

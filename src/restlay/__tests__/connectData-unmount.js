@@ -15,7 +15,7 @@ import {
   NullComponent,
   createRender,
   networkFromMock,
-  flushPromises
+  flushPromises,
 } from "../tests-utils";
 import createMock, { AnimalQuery } from "../tests-utils/mock-1";
 
@@ -24,7 +24,7 @@ test("if component terminates earlier it should not trigger errors if there are 
   const render = createRender(net.network);
   const Animal = connectData(NullComponent, {
     queries: { animal: AnimalQuery },
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   inst.unmount();
@@ -46,8 +46,8 @@ test("forceFetch & unmount", async () => {
     },
     {
       queries: { animal: AnimalQuery },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
@@ -73,8 +73,8 @@ test("fetchQuery & unmount", async () => {
     },
     {
       queries: { animal: AnimalQuery },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();

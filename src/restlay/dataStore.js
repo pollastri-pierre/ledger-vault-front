@@ -25,16 +25,16 @@ export const DATA_FETCHED_FAIL = "@@restlay/DATA_FETCHED_FAIL";
 const DATA_CONNECTION_SPLICE = "@@restlay/DATA_CONNECTION_SPLICE";
 
 export type Entities = {
-  [_: string]: { [_: string]: Object }
+  [_: string]: { [_: string]: Object },
 };
 type Result<R> = {
   result: R,
-  time: number
+  time: number,
 };
 
 export type Store = {
   entities: Entities,
-  results: { [_: string]: Result<any> }
+  results: { [_: string]: Result<any> },
 };
 
 type DispatchF = (action: Object) => void;
@@ -42,7 +42,7 @@ type GetState = () => { data: Store };
 
 export function getPendingQueryResult<R>(
   store: Store,
-  query: Query<any, R> | ConnectionQuery<any, any>
+  query: Query<any, R> | ConnectionQuery<any, any>,
 ): ?Result<R> {
   return store.results[query.getCacheKey()];
 }
@@ -55,7 +55,7 @@ export function queryCacheIsFresh(store: Store, query: Query<*, *>): boolean {
 
 const initialState: Store = {
   entities: {},
-  results: {}
+  results: {},
 };
 
 // NB we do not preserve the entities object immutable, but only for the object entity itself
@@ -72,18 +72,18 @@ function mergeEntities(prev: Entities, patch: Entities): Entities {
 
 const emptyConnection: Connection<any> = {
   edges: [],
-  pageInfo: { hasNextPage: true }
+  pageInfo: { hasNextPage: true },
 };
 
 const accumulateConnectionEdges = <T>(
   oldConnection: ?Connection<T>,
-  connection: Connection<T>
+  connection: Connection<T>,
 ): Connection<T> => {
   if (!oldConnection) return connection;
   const pageInfo = { ...connection.pageInfo };
   if (connection.pageInfo.hasNextPage && connection.edges.length === 0) {
     console.warn(
-      "API issue: connection says hasNextPage but edges.length is 0!"
+      "API issue: connection says hasNextPage but edges.length is 0!",
     );
     pageInfo.hasNextPage = false;
   }
@@ -96,7 +96,7 @@ const accumulateConnectionEdges = <T>(
       }
       if (cursors[e.cursor]) {
         console.warn(
-          `API issue: duplicate cursor found at index ${i}: ${e.cursor}`
+          `API issue: duplicate cursor found at index ${i}: ${e.cursor}`,
         );
       }
       cursors[e.cursor] = true;
@@ -104,16 +104,16 @@ const accumulateConnectionEdges = <T>(
   }
   return {
     edges,
-    pageInfo
+    pageInfo,
   };
 };
 
 const sliceConnection = <T>(
   connection: Connection<T>,
-  length: number
+  length: number,
 ): Connection<T> => ({
   pageInfo: { hasNextPage: true },
-  edges: connection.edges.slice(0, length)
+  edges: connection.edges.slice(0, length),
 });
 
 // TODO we need to split into more functions:
@@ -127,7 +127,7 @@ export const executeQueryOrMutation =
     queryOrMutation:
       | Query<any, Out>
       | Mutation<any, Out>
-      | ConnectionQuery<any, any>
+      | ConnectionQuery<any, any>,
   ) => (dispatch: DispatchF, getState: GetState) => {
     let uri = queryOrMutation.uri;
     let cacheKey;
@@ -157,7 +157,7 @@ export const executeQueryOrMutation =
             type: DATA_CONNECTION_SPLICE,
             cacheKey,
             size,
-            queryOrMutation
+            queryOrMutation,
           });
           return cache ? sliceConnection(cache.result, size) : emptyConnection;
         });
@@ -172,13 +172,13 @@ export const executeQueryOrMutation =
           ? undefined
           : typeof cache.result.edges[cache.result.edges.length - 1].cursor ===
             "number"
-            ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
-            : cache.result.edges[cache.result.edges.length - 1].cursor
+          ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
+          : cache.result.edges[cache.result.edges.length - 1].cursor,
       );
       const { pathname, query } = URL.parse(uri, true);
       uri = URL.format({
         pathname,
-        query: { ...query, ...params }
+        query: { ...query, ...params },
       });
     }
 
@@ -221,7 +221,7 @@ export const executeQueryOrMutation =
           result,
           queryOrMutation,
           cacheKey,
-          resetConnection
+          resetConnection,
         });
         return data;
       })
@@ -244,7 +244,7 @@ export const executeQueryOrMutation =
           type: DATA_FETCHED_FAIL,
           error,
           queryOrMutation,
-          cacheKey
+          cacheKey,
         });
         throw error;
       });
@@ -269,14 +269,14 @@ const reducers = {
         ...store.results,
         [cacheKey]: {
           result: sliceConnection(store.results[cacheKey].result, size),
-          time: Date.now()
-        }
-      }
+          time: Date.now(),
+        },
+      },
     };
   },
   [DATA_FETCHED]: (
     store,
-    { queryOrMutation, result, cacheKey, resetConnection }
+    { queryOrMutation, result, cacheKey, resetConnection },
   ) => {
     if (!queryOrMutation.getResponseSchema()) {
       return store;
@@ -297,14 +297,14 @@ const reducers = {
                   // actually will need to differenciate the initial FETCH from PAGINATE
                   // also there will be some obvious DEV checks to do, like there is not supposed to be dups in cursors ...
                   store.results[cacheKey] && store.results[cacheKey].result,
-                  result.result
+                  result.result,
                 )
               : result.result,
-          time: Date.now()
-        }
-      }
+          time: Date.now(),
+        },
+      },
     };
-  }
+  },
 };
 
 export const accountsSelector = (state: { data: Store }): Account[] => {

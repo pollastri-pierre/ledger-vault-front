@@ -18,8 +18,8 @@ type AggregatedData = {
   [_: string]: {
     account: Account,
     balance: number,
-    counterValueBalance: number
-  }
+    counterValueBalance: number,
+  },
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -38,7 +38,7 @@ const mapStateToProps = (state, ownProps) => {
         acc[currency_id] = {
           account,
           balance: 0,
-          counterValueBalance: 0
+          counterValueBalance: 0,
         };
       }
       acc[currency_id].balance += balance;
@@ -49,7 +49,7 @@ const mapStateToProps = (state, ownProps) => {
         fromExchange: currency && state.exchanges.data[currency.ticker],
         intermediary: intermediaryCurrency,
         toExchange: state.exchanges.data.USD,
-        value: balance
+        value: balance,
       });
 
       if (!isNaN(cvalue)) {
@@ -57,13 +57,13 @@ const mapStateToProps = (state, ownProps) => {
       }
       return acc;
     },
-    {}
+    {},
   );
   return {
     pieChartData: Object.keys(data).reduce((currenciesList, c) => {
       currenciesList.push(data[c]);
       return currenciesList;
-    }, [])
+    }, []),
   };
 };
 function Currencies({ pieChartData }: { pieChartData: Object }) {
@@ -94,9 +94,9 @@ const RenderLoading = () => (
 
 export default connectData(connect(mapStateToProps)(Currencies), {
   queries: {
-    accounts: AccountsQuery
+    accounts: AccountsQuery,
   },
   optimisticRendering: true,
   RenderError,
-  RenderLoading
+  RenderLoading,
 });

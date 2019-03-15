@@ -15,15 +15,15 @@ import type ConnectionQuery from "./ConnectionQuery";
 export type NetworkF = <T>(
   uri: string,
   method: string,
-  body: ?(Object | Array<Object>)
+  body: ?(Object | Array<Object>),
 ) => Promise<T>;
 
 class RestlayProvider extends Component<{
   network: NetworkF,
-  children: React$Node
+  children: React$Node,
 }> {
   static childContextTypes = {
-    restlayProvider: PropTypes.object.isRequired
+    restlayProvider: PropTypes.object.isRequired,
   };
 
   getChildContext() {
@@ -35,18 +35,18 @@ class RestlayProvider extends Component<{
   _pendingQueries: { [_: string]: Promise<any> } = {};
 
   getPendingQuery = <Out>(
-    query: Query<any, Out> | ConnectionQuery<any, any>
+    query: Query<any, Out> | ConnectionQuery<any, any>,
   ): Promise<Out> => this._pendingQueries[query.getCacheKey()];
 
   setPendingQuery = <Out>(
     query: Query<any, Out> | ConnectionQuery<any, any>,
-    promise: Promise<Out>
+    promise: Promise<Out>,
   ): void => {
     this._pendingQueries[query.getCacheKey()] = promise;
   };
 
   removePendingQuery = <Out>(
-    query: Query<any, Out> | ConnectionQuery<any, any>
+    query: Query<any, Out> | ConnectionQuery<any, any>,
   ): void => {
     delete this._pendingQueries[query.getCacheKey()];
   };

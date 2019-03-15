@@ -8,28 +8,28 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "row",
-    margin: 15
+    margin: 15,
   },
   step_number: {
     fontSize: 11,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   step_desc: {
     fontSize: 13,
     color: colors.shark,
-    marginLeft: 10
+    marginLeft: 10,
   },
   step_circle: {
     paddingLeft: 10,
     justifyContent: "center",
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 
 type Props = {
   desc: React$Node,
   stepNumber: number,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 class DeviceStep extends Component<Props> {
   render() {

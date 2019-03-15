@@ -19,11 +19,11 @@ const styles = {
     justifyContent: "space-between",
     lineHeight: 2.42,
     fontSize: 22,
-    color: colors.lead
+    color: colors.lead,
   },
   fiat: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 };
 
 type Props<Transaction> = {
@@ -32,7 +32,7 @@ type Props<Transaction> = {
   onChangeTransaction: Transaction => void,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
-  amountIsValid: boolean
+  amountIsValid: boolean,
 };
 
 class SendAmount extends PureComponent<Props<*>> {
@@ -40,7 +40,7 @@ class SendAmount extends PureComponent<Props<*>> {
     const { account, onChangeTransaction, bridge, transaction } = this.props;
 
     onChangeTransaction(
-      bridge.editTransactionAmount(account, transaction, satoshiValue)
+      bridge.editTransactionAmount(account, transaction, satoshiValue),
     );
   };
 
@@ -51,7 +51,7 @@ class SendAmount extends PureComponent<Props<*>> {
       transaction,
       classes,
       amountIsValid,
-      onChangeTransaction
+      onChangeTransaction,
     } = this.props;
 
     const currency = getCryptoCurrencyById(account.currency_id);

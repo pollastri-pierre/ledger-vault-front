@@ -24,13 +24,13 @@ const mapStateToProps = (state, ownProps) => {
       intermediary: intermediaryCurrency,
       toExchange: state.exchanges.data.USD,
       to: getFiatCurrencyByTicker("USD"),
-      value: ownProps.value
-    })
+      value: ownProps.value,
+    }),
   };
 };
 
 const styles = {
-  na: { color: colors.mediumGrey }
+  na: { color: colors.mediumGrey },
 };
 
 // we get currency's name as props and looks for the right currency in ledgerhq currencies
@@ -41,7 +41,7 @@ type Props = {
   value: number, // eslint-disable-line react/no-unused-prop-types
   from: string, // eslint-disable-line react/no-unused-prop-types
   alwaysShowSign?: boolean,
-  type?: TransactionType
+  type?: TransactionType,
 };
 
 class CounterValue extends PureComponent<Props> {

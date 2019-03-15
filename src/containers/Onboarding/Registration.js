@@ -10,7 +10,7 @@ import {
   Introduction,
   AddUser,
   Careful,
-  NoMembers
+  NoMembers,
 } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { addMessage } from "redux/modules/alerts";
@@ -19,7 +19,7 @@ import {
   addMember,
   wipe,
   editMember,
-  toggleMemberModal
+  toggleMemberModal,
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -30,26 +30,26 @@ import AddMember from "./AddMember";
 const styles = {
   disabled: {
     opacity: 0.3,
-    pointerEvents: "none"
-  }
+    pointerEvents: "none",
+  },
 };
 
 const membersList = {
   base: {
     maxHeight: 272,
-    overflow: "auto"
+    overflow: "auto",
   },
   row: {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 };
 const MembersList = withStyles(membersList)(
   ({
     classes,
-    members
+    members,
   }: {
     classes: { [$Keys<typeof membersList>]: string },
-    members: Array<Member>
+    members: Array<Member>,
   }) => (
     <div className={classes.base}>
       {members.map((member, k) => (
@@ -59,11 +59,11 @@ const MembersList = withStyles(membersList)(
         />
       ))}
     </div>
-  )
+  ),
 );
 
 const mapStateToProps = state => ({
-  onboarding: state.onboarding
+  onboarding: state.onboarding,
 });
 const mapDispatch = (dispatch: *) => ({
   onToggleModalProfile: member => dispatch(toggleMemberModal(member)),
@@ -72,7 +72,7 @@ const mapDispatch = (dispatch: *) => ({
   onEditMember: data => dispatch(editMember(data)),
   onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type))
+    dispatch(addMessage(title, message, type)),
 });
 
 type Props = {
@@ -84,7 +84,7 @@ type Props = {
   onEditMember: Function,
   onAddMessage: Function,
   onboarding: *,
-  t: Translate
+  t: Translate,
 };
 class Registration extends Component<Props, *> {
   componentDidMount() {
@@ -110,7 +110,7 @@ class Registration extends Component<Props, *> {
       onToggleModalProfile,
       onEditMember,
       onAddMessage,
-      t
+      t,
     } = this.props;
     if (onboarding.fatal_error) {
       return <div />;
@@ -148,7 +148,7 @@ class Registration extends Component<Props, *> {
           {onboarding.registering.admins.length === 0 ? (
             <NoMembers
               label={t(
-                "onboarding:administrators_registration.add_member_title"
+                "onboarding:administrators_registration.add_member_title",
               )}
               info={t("onboarding:administrators_registration.at_least")}
             />
@@ -183,5 +183,5 @@ class Registration extends Component<Props, *> {
 
 export default connect(
   mapStateToProps,
-  mapDispatch
+  mapDispatch,
 )(withStyles(styles)(translate()(Registration)));

@@ -20,14 +20,14 @@ test("500 concurrent components only trigger one query and don't break", async (
   const render = createRender(net.network);
   const Animals = connectData(({ animals }) => animals.length, {
     queries: {
-      animals: AnimalsQuery
-    }
+      animals: AnimalsQuery,
+    },
   });
   const Animal = connectData(({ animal }) => animal.id, {
     queries: {
-      animal: AnimalQuery
+      animal: AnimalQuery,
     },
-    propsToQueryParams: ({ animalId }) => ({ animalId })
+    propsToQueryParams: ({ animalId }) => ({ animalId }),
   });
   let restlay;
   const Foo = connectData(props => ((restlay = props.restlay), null));
@@ -42,8 +42,8 @@ test("500 concurrent components only trigger one query and don't break", async (
         .map((_, k) => <Animal key={`max_${k}`} animalId="id_max" />),
       ...Array(400)
         .fill(null)
-        .map((_, k) => <Animal key={`doge_${k}`} animalId="id_doge" />)
-    ])
+        .map((_, k) => <Animal key={`doge_${k}`} animalId="id_doge" />),
+    ]),
   );
   invariant(restlay, "restlay is defined");
   expect(net.tick()).toBe(3);
@@ -51,7 +51,7 @@ test("500 concurrent components only trigger one query and don't break", async (
   expect(inst.toJSON()).toMatchObject([
     ...Array(50).fill("2"),
     ...Array(50).fill("id_max"),
-    ...Array(400).fill("id_doge")
+    ...Array(400).fill("id_doge"),
   ]);
   inst.unmount();
 });
@@ -64,10 +64,10 @@ test("a tree of connectData is fine and if data is cached don't have any issue",
     ({ animal, children }) => [animal.name, children],
     {
       queries: {
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const makeTree = (depth: number, key: number = 0) => (
     <Animal animalId="id_doge" key={key}>
@@ -79,7 +79,7 @@ test("a tree of connectData is fine and if data is cached don't have any issue",
   expect(net.tick()).toBe(1);
   await flushPromises();
   expect(inst.toJSON()).toMatchObject([
-    ...Array(2 ** (n + 1) - 1).fill("doge")
+    ...Array(2 ** (n + 1) - 1).fill("doge"),
   ]);
   inst.unmount();
 });

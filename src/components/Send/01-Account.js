@@ -7,7 +7,7 @@ import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import {
   hasPending,
   isMemberOfAccount,
-  getPendingsOperations
+  getPendingsOperations,
 } from "utils/operations";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -26,7 +26,7 @@ import type { Account, Operation, Member } from "data/types";
 function isAccountAvailable(
   account: Account,
   pendingApprovalOperations: Operation[],
-  me: Member
+  me: Member,
 ) {
   return (
     account.balance > 0 &&
@@ -43,19 +43,19 @@ type Props = {
   account: ?Account,
   me: Member,
   selectAccount: (?Account) => void,
-  allPendingOperations: Operation[]
+  allPendingOperations: Operation[],
 };
 
 type State = {
   // used to "capture" the account if invalid, so we can display
   // a value in the Select while sending onChange(null) to the parent
   // so it correctly disable the flow steps
-  invalidAccount: ?Account
+  invalidAccount: ?Account,
 };
 
 class SendAccount extends PureComponent<Props, State> {
   state = {
-    invalidAccount: null
+    invalidAccount: null,
   };
 
   onChangeTab = e => {
@@ -68,7 +68,7 @@ class SendAccount extends PureComponent<Props, State> {
     if (!account) return selectAccount(null);
 
     const pendingApprovalOperations = getPendingsOperations(
-      allPendingOperations
+      allPendingOperations,
     );
 
     if (!isAccountAvailable(account, pendingApprovalOperations, me)) {
@@ -129,6 +129,6 @@ export default connectData(SendAccount, {
   queries: {
     accounts: AccountsQuery,
     me: ProfileQuery,
-    allPendingOperations: PendingOperationsQuery
-  }
+    allPendingOperations: PendingOperationsQuery,
+  },
 });

@@ -46,7 +46,7 @@ const Copy = styled.div`
 
 type Props = {
   queryParams: ObjectParameters,
-  prefix: string
+  prefix: string,
 };
 
 export default ({ queryParams, prefix = "url", ...props }: Props) => {

@@ -11,7 +11,7 @@ function CardLoading() {
           top: "50%",
           left: "50%",
           marginLeft: "-20px",
-          marginTop: "-20px"
+          marginTop: "-20px",
         }}
       />
     </div>

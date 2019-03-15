@@ -13,13 +13,13 @@ export default function<T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>),
-  tokenParam: ?string
+  tokenParam: ?string,
 ): Promise<T> {
   const token = tokenParam || getLocalStorageToken();
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
-    ...(token ? { "X-Ledger-Auth": token } : {})
+    ...(token ? { "X-Ledger-Auth": token } : {}),
   };
   const options: Object = { headers, method };
   if (method !== "GET" && body) {
@@ -29,13 +29,13 @@ export default function<T>(
     if (response.status < 200 || response.status >= 300) {
       const baseErrorObject = {
         message: "network error",
-        status: response.status
+        status: response.status,
       };
       return response
         .json()
         .then(
           json => new NetworkError({ ...baseErrorObject, json }),
-          () => new NetworkError(baseErrorObject)
+          () => new NetworkError(baseErrorObject),
         )
         .then(e => Promise.reject(e));
     }
@@ -49,15 +49,15 @@ export const delay = (ms: number): Promise<void> =>
 const defaults = {
   maxRetry: 4,
   interval: 300,
-  intervalMultiplicator: 1.5
+  intervalMultiplicator: 1.5,
 };
 export function retry<A>(
   f: () => Promise<A>,
-  options?: $Shape<typeof defaults>
+  options?: $Shape<typeof defaults>,
 ): Promise<A> {
   const { maxRetry, interval, intervalMultiplicator } = {
     ...defaults,
-    ...options
+    ...options,
   };
 
   return rec(maxRetry, interval);
@@ -71,7 +71,7 @@ export function retry<A>(
     return result.catch(e => {
       console.warn("retry failed", e.message);
       return delay(interval).then(() =>
-        rec(remainingTry - 1, interval * intervalMultiplicator)
+        rec(remainingTry - 1, interval * intervalMultiplicator),
       );
     });
   }
@@ -79,12 +79,12 @@ export function retry<A>(
 
 type CancellablePollingOpts = {
   pollingInterval?: number,
-  shouldThrow?: DeviceError => boolean
+  shouldThrow?: DeviceError => boolean,
 };
 
 export function retryOnCondition(
   job: any => Promise<any>,
-  { pollingInterval = 500, shouldThrow }: CancellablePollingOpts = {}
+  { pollingInterval = 500, shouldThrow }: CancellablePollingOpts = {},
 ): Promise<any> {
   const promise = new Promise((resolve, reject) => {
     async function poll() {

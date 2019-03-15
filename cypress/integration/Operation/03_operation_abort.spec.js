@@ -5,7 +5,7 @@ import {
   switch_device,
   create_account,
   approve,
-  create_operation
+  create_operation,
 } from "../../functions/actions.js";
 
 describe("Tests Abort Operation", function() {

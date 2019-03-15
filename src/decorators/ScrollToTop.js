@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 
 export default (
-  WrappedComponent: React$ComponentType<*>
+  WrappedComponent: React$ComponentType<*>,
 ): React$ComponentType<*> => {
   class ClickToTop extends Component<*> {
     static handleEvent() {

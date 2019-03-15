@@ -15,14 +15,14 @@ import Amount from "../Amount";
 
 const styles = {
   operationList: {
-    marginTop: "8px"
-  }
+    marginTop: "8px",
+  },
 };
 
 type Props = {
   operation: Operation,
   account: Account,
-  classes: Object
+  classes: Object,
 };
 
 class TabOverview extends Component<Props> {

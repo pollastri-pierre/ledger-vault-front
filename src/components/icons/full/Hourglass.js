@@ -6,13 +6,13 @@ import classnames from "classnames";
 const styles = {
   default: {
     width: 12,
-    fill: "currentColor"
-  }
+    fill: "currentColor",
+  },
 };
 
 type Props = {
   className: string,
-  classes: Object
+  classes: Object,
 };
 
 class HourglassFull extends PureComponent<Props> {

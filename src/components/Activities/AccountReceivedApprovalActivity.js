@@ -9,7 +9,7 @@ import NoStyleLink from "../NoStyleLink";
 
 type Props = {
   activity: ActivityEntityAccount,
-  match: Match
+  match: Match,
 };
 
 class AccountReceivedApprovalActivity extends Component<Props> {
@@ -30,7 +30,7 @@ class AccountReceivedApprovalActivity extends Component<Props> {
           to={
             match.params.orga_name &&
             `/${match.params.orga_name}/${this.getAccountLink(
-              business_action.account
+              business_action.account,
             )}`
           }
         >
@@ -39,7 +39,7 @@ class AccountReceivedApprovalActivity extends Component<Props> {
               i18nKey="activities:account.approved"
               values={{
                 accountName: business_action.account.name,
-                author: business_action.author.username
+                author: business_action.author.username,
               }}
               components={<b>0</b>}
             />

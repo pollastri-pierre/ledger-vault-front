@@ -13,7 +13,7 @@ export type Interaction = {
   needsUserInput?: boolean,
   device?: boolean,
   responseKey: string,
-  action: Object => Promise<*>
+  action: Object => Promise<*>,
 };
 
 type Props = {
@@ -22,18 +22,18 @@ type Props = {
   onSuccess: Function,
   onError: ?(Error | GateError | typeof NetworkError) => void,
   disabled: boolean,
-  buttonLabel: React$Node
+  buttonLabel: React$Node,
 };
 
 type State = {
   isInProgress: boolean,
-  error: Error | GateError | typeof NetworkError | null
+  error: Error | GateError | typeof NetworkError | null,
 };
 
 class ApproveRequestButton extends PureComponent<Props, State> {
   state = {
     isInProgress: false,
-    error: null
+    error: null,
   };
 
   onCreate = () => {
@@ -53,7 +53,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       onSuccess,
       disabled,
       additionalFields,
-      buttonLabel
+      buttonLabel,
     } = this.props;
     return (
       <Fragment>

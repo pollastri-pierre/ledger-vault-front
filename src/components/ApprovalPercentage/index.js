@@ -6,7 +6,7 @@ import PercentageBarProgress from "../PercentageBarProgress";
 function ApprovalPercentage(props: {
   approvers?: Member[],
   approved: Approval[],
-  nbRequired?: number
+  nbRequired?: number,
 }) {
   const { approved, approvers, nbRequired } = props;
   let nbTotal = 0;

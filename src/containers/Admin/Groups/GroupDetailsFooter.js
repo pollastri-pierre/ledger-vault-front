@@ -14,7 +14,7 @@ type Props = {
   group: Group,
   selected: Member[],
   me: Member,
-  close: void => void
+  close: void => void,
 };
 
 // if the group is pending the user can approve/reject the request
@@ -55,33 +55,32 @@ class GroupDetailsFooter extends PureComponent<Props> {
 
     return (
       <Fragment>
-        {status.startsWith("PENDING_") &&
-          !hasUserApproved && (
-            <Fragment>
-              <AbortRequestButton
-                requestID={group.last_request && group.last_request.id}
-                onSuccess={this.onSuccess}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={this.onSuccess}
-                onError={null}
-                additionalFields={{
-                  request_id: group.last_request && group.last_request.id
-                }}
-                disabled={false}
-                buttonLabel={
-                  <Trans
-                    i18nKey={
-                      group.last_request
-                        ? `request:approve.${group.last_request.type}`
-                        : `common:approve`
-                    }
-                  />
-                }
-              />
-            </Fragment>
-          )}
+        {status.startsWith("PENDING_") && !hasUserApproved && (
+          <Fragment>
+            <AbortRequestButton
+              requestID={group.last_request && group.last_request.id}
+              onSuccess={this.onSuccess}
+            />
+            <ApproveRequestButton
+              interactions={approveFlow}
+              onSuccess={this.onSuccess}
+              onError={null}
+              additionalFields={{
+                request_id: group.last_request && group.last_request.id,
+              }}
+              disabled={false}
+              buttonLabel={
+                <Trans
+                  i18nKey={
+                    group.last_request
+                      ? `request:approve.${group.last_request.type}`
+                      : `common:approve`
+                  }
+                />
+              }
+            />
+          </Fragment>
+        )}
         {status === "ACTIVE" && (
           <ApproveRequestButton
             interactions={createAndApprove}
@@ -90,7 +89,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
             disabled={false}
             additionalFields={{
               data: { group_id: group.id },
-              type: "REVOKE_GROUP"
+              type: "REVOKE_GROUP",
             }}
             buttonLabel={<Trans i18nKey="group:delete" />}
           />
@@ -103,7 +102,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
             onError={null}
             additionalFields={{
               data: { group_id: group.id },
-              type: "EDIT_GROUP"
+              type: "EDIT_GROUP",
             }}
             buttonLabel={<Trans i18nKey="common:edit" />}
           />

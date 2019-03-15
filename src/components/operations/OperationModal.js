@@ -7,7 +7,7 @@ import OperationDetails from "./OperationDetails";
 type Props = {
   history: MemoryHistory,
   match: Object,
-  close: () => void
+  close: () => void,
 };
 
 class OperationModal extends Component<Props> {

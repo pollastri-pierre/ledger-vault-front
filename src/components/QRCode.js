@@ -5,13 +5,13 @@ import Qrious from "qrious";
 type Props = {
   hash: string,
   size: number,
-  pixelRatio: number
+  pixelRatio: number,
 };
 
 class ReceiveFundsCard extends PureComponent<Props> {
   static defaultProps = {
     size: 100,
-    pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1
+    pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1,
   };
 
   canvas: ?HTMLCanvasElement;
@@ -35,7 +35,7 @@ class ReceiveFundsCard extends PureComponent<Props> {
       element: canvas,
       level: "L",
       size: size * pixelRatio,
-      value: hash
+      value: hash,
     });
   }
 

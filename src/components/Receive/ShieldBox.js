@@ -7,22 +7,22 @@ const styles = {
   shieldContainer: {
     display: "flex",
     flexDirection: "row",
-    margin: "0 20px"
+    margin: "0 20px",
   },
   shieldText: {
     fontSize: 11,
-    textAlign: "left"
+    textAlign: "left",
   },
   shieldIcon: {
     marginRight: 10,
-    alignSelf: "center"
-  }
+    alignSelf: "center",
+  },
 };
 
 type Props = {
   iconColor: string,
   text: React$Node,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 class ShieldBox extends Component<Props> {
   render() {

@@ -14,19 +14,19 @@ const common = {
   fontFamily: "inherit",
   fontSize: "11px",
   lineHeight: "1.82",
-  boxShadow: "0 10px 10px 0 rgba(0, 0, 0, 0.04)"
+  boxShadow: "0 10px 10px 0 rgba(0, 0, 0, 0.04)",
 };
 const error = {
   root: {
     background: "#ea2e49",
-    ...common
-  }
+    ...common,
+  },
 };
 const success = {
   root: {
     background: "#27d0e2",
-    ...common
-  }
+    ...common,
+  },
 };
 
 function Snack(props: { message: *, classes: Object }) {
@@ -41,7 +41,7 @@ function Alert(props: {
   children: *,
   open: boolean,
   theme: string,
-  title: React$Node
+  title: React$Node,
 }) {
   const { title, children, theme: themeName, ...newProps } = props;
   let iconDiv = null;
@@ -74,7 +74,7 @@ function Alert(props: {
         style={{
           fontWeight: 600,
           textTransform: "uppercase",
-          marginBottom: "10px"
+          marginBottom: "10px",
         }}
       >
         {title}

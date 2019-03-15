@@ -14,7 +14,7 @@ const getTimeLock = (seconds: number) =>
 
 function OperationApproveLocks(props: {
   operation: Operation,
-  account: Account
+  account: Account,
 }) {
   const { operation, account } = props;
   const isUnactive =

@@ -7,7 +7,7 @@ import createDevice, {
   VALIDATION_PATH,
   ACCOUNT_MANAGER_SESSION,
   CONFIDENTIALITY_PATH,
-  U2F_TIMEOUT
+  U2F_TIMEOUT,
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
@@ -17,11 +17,11 @@ type Props = {
   toggleCancelOnDevice: Function,
   channels: *,
   cancel: Function,
-  t: Translate
+  t: Translate,
 };
 
 type State = {
-  step: number
+  step: number,
 };
 
 let _isMounted = false;
@@ -48,7 +48,7 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         this.setState({ step: 1 });
         const channel = this.props.channels.find(
-          chan => chan.admin_uid === pubKey
+          chan => chan.admin_uid === pubKey,
         );
         if (channel) {
           const ephemeral_public_key = channel.ephemeral_public_key;
@@ -60,12 +60,12 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
             CONFIDENTIALITY_PATH,
             Buffer.from(ephemeral_public_key, "hex"),
             Buffer.from(certificate, "base64"),
-            ACCOUNT_MANAGER_SESSION
+            ACCOUNT_MANAGER_SESSION,
           );
 
           const signature = await device.validateVaultOperation(
             VALIDATION_PATH,
-            Buffer.from(partition_blob, "base64")
+            Buffer.from(partition_blob, "base64"),
           );
 
           this.setState({ step: 2 });
@@ -75,7 +75,7 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
           this.props.onAddMessage(
             "Error",
             "Please connect an Administrator device",
-            "error"
+            "error",
           );
         }
       } catch (e) {
@@ -101,7 +101,7 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
         key="step3"
         i18nKey="onboarding:master_seed_signin.device_modal.step3"
         components={<b>0</b>}
-      />
+      />,
     ];
 
     return (

@@ -1,8 +1,7 @@
 import React from "react";
 import thunk from "redux-thunk";
-import { withOptions } from "@storybook/addon-options";
 import { Provider } from "react-redux";
-import MuiPickersUtilsProvider from "material-ui-pickers/utils/MuiPickersUtilsProvider";
+import MuiPickersUtilsProvider from "material-ui-pickers/MuiPickersUtilsProvider";
 import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import { composeWithDevTools } from "redux-devtools-extension";
 import JssProvider from "react-jss/lib/JssProvider";
@@ -10,18 +9,20 @@ import { I18nextProvider } from "react-i18next";
 import { ThemeProvider } from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
-import { configure, addDecorator } from "@storybook/react";
+import { create as createTheme } from "@storybook/theming";
+import { configure, addDecorator, addParameters } from "@storybook/react";
 import {
   createStore as reduxCreateStore,
   combineReducers,
-  applyMiddleware
+  applyMiddleware,
 } from "redux";
 import {
   MuiThemeProvider,
   createMuiTheme,
-  createGenerateClassName
+  createGenerateClassName,
 } from "@material-ui/core/styles";
 
+import logo from "assets/img/logo-black@3x.png";
 import network from "network";
 import dataReducer from "redux/modules/data";
 import CounterValues from "data/CounterValues";
@@ -34,10 +35,10 @@ const createStore = () => {
     combineReducers({
       countervalues: CounterValues.reducer,
       exchanges,
-      data: dataReducer
+      data: dataReducer,
     }),
     {},
-    composeWithDevTools(applyMiddleware(thunk))
+    composeWithDevTools(applyMiddleware(thunk)),
   );
 };
 
@@ -70,12 +71,17 @@ addDecorator(story => (
   </JssProvider>
 ));
 
-addDecorator(
-  withOptions({
-    name: "Ledger Vault - UI",
-    url: "https://github.com/LedgerHQ/ledger-vault-front"
-  })
-);
+addParameters({
+  options: {
+    theme: createTheme({
+      base: "light",
+      brandTitle: "Ledger Vault UI",
+      brandUrl: "https://github.com/LedgerHQ/ledger-vault-front",
+      brandImage: logo,
+    }),
+    panelPosition: "bottom",
+  },
+});
 
 addDecorator(withKnobs);
 
@@ -86,9 +92,9 @@ const Container = ({ children, classes }) => (
 const StyledContainer = withStyles({
   container: {
     "& *": {
-      boxSizing: "border-box"
-    }
-  }
+      boxSizing: "border-box",
+    },
+  },
 })(Container);
 
 configure(loadStories, module);

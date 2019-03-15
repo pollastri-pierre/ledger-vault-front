@@ -23,11 +23,11 @@ const account: Account = accounts[0];
 storiesOf("other", module).add("LineRow", () => <Wrapper />);
 
 type State = {
-  username: string
+  username: string,
 };
 class Wrapper extends Component<*, State> {
   state = {
-    username: account.name
+    username: account.name,
   };
 
   onEditUsername = (username: string) => {

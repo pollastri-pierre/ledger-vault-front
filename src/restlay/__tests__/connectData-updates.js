@@ -31,8 +31,8 @@ test("multiple update with same props trigger no re-rendering", async () => {
     },
     {
       queries: { animal: AnimalQuery },
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();
@@ -62,11 +62,11 @@ test("multiple queries trigger only one React update", async () => {
     {
       queries: {
         animals: AnimalsQuery,
-        animal: AnimalQuery
+        animal: AnimalQuery,
       },
       // $FlowFixMe
-      propsToQueryParams: ({ animalId }) => ({ animalId })
-    }
+      propsToQueryParams: ({ animalId }) => ({ animalId }),
+    },
   );
   const inst = renderer.create(render(<All animalId="id_doge" />));
   expect(inst.toJSON()).toBe(null);
@@ -103,8 +103,8 @@ test("triggering new queries don't redraw if data doesn't change", async () => {
     {
       queries: { animal: AnimalQuery },
       propsToQueryParams: ({ animalId }) => ({ animalId }),
-      freezeTransition: true
-    }
+      freezeTransition: true,
+    },
   );
   const inst = renderer.create(render(<Animal animalId="id_max" />));
   net.tick();

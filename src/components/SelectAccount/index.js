@@ -16,11 +16,11 @@ import colors from "shared/colors";
 type Option = {
   label: string,
   value: string,
-  data: Account
+  data: Account,
 };
 
 type GenericRowProps = OptionProps & {
-  withBalance?: boolean
+  withBalance?: boolean,
 };
 
 const GenericRow = (props: GenericRowProps) => {
@@ -62,19 +62,19 @@ const ValueComponent = (props: OptionProps) => (
 
 const customComponents = {
   Option: OptionComponent,
-  SingleValue: ValueComponent
+  SingleValue: ValueComponent,
 };
 
 const buildOption = account => ({
   label: account.name,
   value: `${account.id}`,
-  data: account
+  data: account,
 });
 
 type Props = {
   accounts: Account[],
   value: ?Account,
-  onChange: (?Account) => void
+  onChange: (?Account) => void,
 };
 
 class SelectAccount extends PureComponent<Props> {

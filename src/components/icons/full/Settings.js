@@ -5,19 +5,19 @@ import classnames from "classnames";
 
 const styles = {
   common: {
-    width: "16px"
-  }
+    width: "16px",
+  },
 };
 
 type Props = {
   color?: string,
   className: string,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class Settings extends PureComponent<Props> {
   static defaultProps = {
-    color: "currentColor"
+    color: "currentColor",
   };
 
   render() {

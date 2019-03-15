@@ -5,7 +5,7 @@ import Box from "components/base/Box";
 import DialogButton from "components/buttons/DialogButton";
 
 type Props = {
-  status: string
+  status: string,
 };
 
 class UserDetailsFooter extends PureComponent<Props> {

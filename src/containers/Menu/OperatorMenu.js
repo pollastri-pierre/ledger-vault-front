@@ -8,7 +8,7 @@ import type { Account, Operation } from "data/types";
 import { getVisibleAccountsInMenu } from "utils/accounts";
 import {
   getPendingsOperations,
-  isCreateOperationEnabled
+  isCreateOperationEnabled,
 } from "utils/operations";
 
 import { FaHome, FaMoneyCheck, FaExchangeAlt } from "react-icons/fa";
@@ -28,7 +28,7 @@ function OperatorMenu(props: {
   location: Location,
   match: Match,
   accounts: Array<Account>,
-  allPendingOperations: Array<Operation>
+  allPendingOperations: Array<Operation>,
 }) {
   const { location, accounts, allPendingOperations, match } = props;
   const visibleAccounts = getVisibleAccountsInMenu(accounts);

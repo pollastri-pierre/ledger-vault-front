@@ -12,17 +12,17 @@ const styles = {
     lineHeight: "50px",
     borderBottom: "1px solid #e2e2e2",
     "&:last-child": {
-      border: 0
-    }
+      border: 0,
+    },
   },
   date: {
     fontSize: 12,
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   user: {
     fontSize: 12,
-    fontStyle: "italic"
-  }
+    fontStyle: "italic",
+  },
 };
 
 type ActionType = "APPROVE" | "ABORT" | "CREATED" | "SUBMITTED" | "CONFIRMED";
@@ -32,12 +32,12 @@ const Action = translate()(
     action,
     t,
     user,
-    classes
+    classes,
   }: {
     action: ActionType,
     t: Translate,
     user?: Member,
-    classes: { [$Keys<typeof styles>]: string }
+    classes: { [$Keys<typeof styles>]: string },
   }) => (
     <span>
       {action === "APPROVE" && (
@@ -59,19 +59,19 @@ const Action = translate()(
         />
       )}
     </span>
-  )
+  ),
 );
 
 const Row = ({
   classes,
   date,
   action,
-  user
+  user,
 }: {
   date: Date,
   action: ActionType,
   classes: { [$Keys<typeof styles>]: string },
-  user?: Member
+  user?: Member,
 }) => (
   <div className={classes.base}>
     <span className={classes.date}>
@@ -82,10 +82,10 @@ const Row = ({
 );
 const TabHistory = ({
   operation,
-  classes
+  classes,
 }: {
   operation: Operation,
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
 }) => (
   <div>
     <Row
@@ -110,10 +110,9 @@ const TabHistory = ({
         action="SUBMITTED"
       />
     )}
-    {operation.block_height &&
-      operation.time && (
-        <Row classes={classes} date={operation.time} action="CONFIRMED" />
-      )}
+    {operation.block_height && operation.time && (
+      <Row classes={classes} date={operation.time} action="CONFIRMED" />
+    )}
   </div>
 );
 export default withStyles(styles)(TabHistory);

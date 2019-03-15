@@ -25,24 +25,24 @@ import type { GateError, MemberInvite, Organization } from "data/types";
 
 type Props = {
   match: Match,
-  organization: Organization
+  organization: Organization,
 };
 type State = {
   member: ?MemberInvite,
   loading: boolean,
   error: ?GateError | ?Error,
   success: boolean,
-  isRegistering: boolean
+  isRegistering: boolean,
 };
 
 const styles = {
   container: {
-    minHeight: "100vh"
+    minHeight: "100vh",
   },
   error: {
     color: colors.grenade,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 };
 
 class RegisterMember extends PureComponent<Props, State> {
@@ -51,7 +51,7 @@ class RegisterMember extends PureComponent<Props, State> {
     loading: true,
     error: null,
     success: false,
-    isRegistering: false
+    isRegistering: false,
   };
 
   async componentDidMount() {
@@ -62,7 +62,7 @@ class RegisterMember extends PureComponent<Props, State> {
       const member = await network(url, "GET");
       this.setState({
         member,
-        loading: false
+        loading: false,
       });
     } catch (error) {
       this.setState({ error });
@@ -89,62 +89,61 @@ class RegisterMember extends PureComponent<Props, State> {
     return (
       <Box justify="center" align="center" style={styles.container}>
         <Card>
-          {!loading &&
-            !success && (
-              <ModalBody>
-                <ModalHeader>
-                  <Box horizontal align="center" flow={10}>
-                    <Text
-                      header
-                      bold
-                      i18nKey="inviteUser:registration.title"
-                      values={{
-                        userRole: "Administrator"
+          {!loading && !success && (
+            <ModalBody>
+              <ModalHeader>
+                <Box horizontal align="center" flow={10}>
+                  <Text
+                    header
+                    bold
+                    i18nKey="inviteUser:registration.title"
+                    values={{
+                      userRole: "Administrator",
+                    }}
+                  />
+                  <FaUser />
+                </Box>
+              </ModalHeader>
+              <LineSeparator />
+              <Box flow={15} mt={15}>
+                <Row
+                  label="inviteUser:registration.username"
+                  text={member && member.user ? member.user.username : ""}
+                />
+                <Row
+                  label="inviteUser:registration.workspace"
+                  text={
+                    member && member.user.user_id ? member.user.user_id : ""
+                  }
+                />
+                <Row
+                  label="inviteUser:registration.role"
+                  text={member ? member.type : ""}
+                />
+              </Box>
+              {stringError && <Text style={styles.error}>{stringError}</Text>}
+              <ModalFooter>
+                {this.state.isRegistering ? (
+                  <Box mb={20}>
+                    <DeviceInteraction
+                      onSuccess={this.onSuccess}
+                      interactions={registerFlow}
+                      onError={this.onError}
+                      additionalFields={{
+                        organization: this.props.organization,
+                        member,
+                        urlID: this.props.match.params.urlID,
                       }}
                     />
-                    <FaUser />
                   </Box>
-                </ModalHeader>
-                <LineSeparator />
-                <Box flow={15} mt={15}>
-                  <Row
-                    label="inviteUser:registration.username"
-                    text={member && member.user ? member.user.username : ""}
-                  />
-                  <Row
-                    label="inviteUser:registration.workspace"
-                    text={
-                      member && member.user.user_id ? member.user.user_id : ""
-                    }
-                  />
-                  <Row
-                    label="inviteUser:registration.role"
-                    text={member ? member.type : ""}
-                  />
-                </Box>
-                {stringError && <Text style={styles.error}>{stringError}</Text>}
-                <ModalFooter>
-                  {this.state.isRegistering ? (
-                    <Box mb={20}>
-                      <DeviceInteraction
-                        onSuccess={this.onSuccess}
-                        interactions={registerFlow}
-                        onError={this.onError}
-                        additionalFields={{
-                          organization: this.props.organization,
-                          member,
-                          urlID: this.props.match.params.urlID
-                        }}
-                      />
-                    </Box>
-                  ) : (
-                    <DialogButton highlight onTouchTap={this.registerMember}>
-                      <Trans i18nKey="inviteUser:registration.button" />
-                    </DialogButton>
-                  )}
-                </ModalFooter>
-              </ModalBody>
-            )}
+                ) : (
+                  <DialogButton highlight onTouchTap={this.registerMember}>
+                    <Trans i18nKey="inviteUser:registration.button" />
+                  </DialogButton>
+                )}
+              </ModalFooter>
+            </ModalBody>
+          )}
           {success && (
             <ModalBody>
               <ModalHeader>
@@ -173,11 +172,11 @@ class RegisterMember extends PureComponent<Props, State> {
 }
 export default connectData(RegisterMember, {
   queries: {
-    organization: OrganizationQuery
+    organization: OrganizationQuery,
   },
   propsToQueryParams: ({ match }: { match: Match }) => ({
-    urlID: match.params.urlID
-  })
+    urlID: match.params.urlID,
+  }),
 });
 
 function Row(props: { label: string, text: string }) {

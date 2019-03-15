@@ -5,7 +5,7 @@ import { error } from "formatters/notification";
 import type { ActivityCommon } from "data/types";
 
 type Input = {
-  business_action_ids: number[]
+  business_action_ids: number[],
 };
 
 type Response = ActivityCommon;

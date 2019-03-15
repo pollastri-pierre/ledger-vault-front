@@ -15,7 +15,7 @@ type Props = {
   approvers: Member[],
   organization: *,
   accounts: Account[],
-  user: Member
+  user: Member,
 };
 class ApproveWatchAccounts extends Component<Props> {
   render() {
@@ -25,14 +25,14 @@ class ApproveWatchAccounts extends Component<Props> {
     const toApprove = accounts.filter(
       account =>
         !account.approvals.find(
-          approval => approval.person.pub_key === user.pub_key
-        )
+          approval => approval.person.pub_key === user.pub_key,
+        ),
     );
 
     const toWatch = accounts.filter(account =>
       account.approvals.find(
-        approval => approval.person.pub_key === user.pub_key
-      )
+        approval => approval.person.pub_key === user.pub_key,
+      ),
     );
 
     return (
@@ -80,9 +80,9 @@ export default connectData(ApproveWatchAccounts, {
   queries: {
     approvers: UsersQuery,
     accounts: PendingAccountsQuery,
-    organization: OrganizationQuery
+    organization: OrganizationQuery,
   },
   initialVariables: {
-    approvers: 30
-  }
+    approvers: 30,
+  },
 });

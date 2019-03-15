@@ -16,7 +16,7 @@ export function SecurityMembersIcon() {
   return (
     <PeopleThin
       style={{
-        width: "15px"
+        width: "15px",
       }}
       color={colors.mouse}
     />
@@ -48,7 +48,7 @@ export function PlugIcon(props: *) {
         height: "20px",
         fill: "none",
         stroke: colors.mouse,
-        strokeWidth: "2px"
+        strokeWidth: "2px",
       }}
       {...props}
     />

@@ -14,7 +14,7 @@ const styles = {
   requirements: {
     fontSize: 11,
     lineHeight: 1.82,
-    marginBottom: 40
+    marginBottom: 40,
   },
   notrequired: {
     opacity: 0.5,
@@ -26,19 +26,19 @@ const styles = {
       height: 80,
       background: "#eeeeee",
       left: -26,
-      top: 30
-    }
+      top: 30,
+    },
   },
   flexcolumn: {
-    display: "flex"
-  }
+    display: "flex",
+  },
 };
 const Prerequisite = ({
   classes,
-  t
+  t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 }) => (
   <div>
     <Title>{t("onboarding:administrators_prerequisite.title")}</Title>

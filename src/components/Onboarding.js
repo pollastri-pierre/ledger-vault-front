@@ -16,7 +16,7 @@ const careful = {
     fontWeight: "bold",
     color: "#18909c",
     borderRadius: 4,
-    display: "flex"
+    display: "flex",
   },
   icon: {
     width: 20,
@@ -26,8 +26,8 @@ const careful = {
     textAlign: "center",
     fontWeight: "bold",
     marginRight: 15,
-    background: colors.ocean
-  }
+    background: colors.ocean,
+  },
 };
 export const Careful = withStyles(careful)(({ children, classes }) => (
   <div className={classes.base}>
@@ -46,13 +46,13 @@ const addUser = {
     position: "absolute",
     cursor: "pointer",
     top: 8,
-    right: 0
+    right: 0,
   },
   icon: {
     width: 11,
     marginRight: 10,
-    verticalAlign: "middle"
-  }
+    verticalAlign: "middle",
+  },
 };
 export const AddUser = withStyles(addUser)(({ onClick, children, classes }) => (
   <div onClick={onClick} className={classes.base}>
@@ -67,7 +67,7 @@ const noMembers = {
     textAlign: "center",
     width: 264,
     margin: "auto",
-    marginTop: 110
+    marginTop: 110,
   },
   label: {
     fontSize: 11,
@@ -75,25 +75,25 @@ const noMembers = {
     margin: 0,
     marginBottom: 5,
     textAlign: "center",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   info: {
     fontSize: 11,
     textAlign: "center",
     lineHeight: 1.82,
-    margin: 0
-  }
+    margin: 0,
+  },
 };
 
 export const NoMembers = withStyles(noMembers)(
   ({
     classes,
     label,
-    info
+    info,
   }: {
     classes: { [$Keys<typeof noMembers>]: string },
     label: *,
-    info: *
+    info: *,
   }) => (
     <div className={classes.base}>
       <People
@@ -102,13 +102,13 @@ export const NoMembers = withStyles(noMembers)(
           height: 29,
           display: "block",
           margin: "auto",
-          marginBottom: 21
+          marginBottom: 21,
         }}
       />
       <div className={classes.label}>{label}</div>
       <div className={classes.info}>{info}</div>
     </div>
-  )
+  ),
 );
 const listItem = {
   base: {
@@ -127,26 +127,26 @@ const listItem = {
       backgroundColor: "#eeeeee",
       position: "absolute",
       content: '""',
-      bottom: 0
+      bottom: 0,
     },
     "&:first-child": {
-      paddingTop: 0
+      paddingTop: 0,
     },
     "&:last-child:after": {
-      display: "none"
+      display: "none",
     },
     "& a": {
       textDecoration: "none",
       textTransform: "uppercase",
       fontSize: 12,
       fontWeight: 600,
-      color: "#27d0e2"
-    }
+      color: "#27d0e2",
+    },
   },
   number: {
     fontSize: 16,
-    margin: "0 15px 15px 0"
-  }
+    margin: "0 15px 15px 0",
+  },
 };
 
 const step = {
@@ -156,8 +156,8 @@ const step = {
     padding: "15px 0 15px 0",
     borderBottom: "1px solid #eeeeee",
     "&:last-child": {
-      border: 0
-    }
+      border: 0,
+    },
   },
   active: {
     // fontSize: 16,
@@ -170,22 +170,22 @@ const step = {
       background: "#27d0e2",
       display: "inline-block",
       marginRight: 10,
-      verticalAlign: "middle"
-    }
-  }
+      verticalAlign: "middle",
+    },
+  },
 };
 
 const profile = {
   base: {
-    width: 28
-  }
+    width: 28,
+  },
 };
 export const ProfileIcon = withStyles(profile)(
   ({ classes }: { classes: { [$Keys<typeof profile>]: string } }) => (
     <div style={{ marginBottom: 10 }}>
       <Profile color="#cccccc" className={classes.base} />
     </div>
-  )
+  ),
 );
 
 export const Step = withStyles(step)(
@@ -193,52 +193,52 @@ export const Step = withStyles(step)(
     classes,
     className,
     label,
-    active
+    active,
   }: {
     classes: { [$Keys<typeof step>]: string },
     label: string,
     active: boolean,
-    className?: string
+    className?: string,
   }) => (
     <div className={cx(classes.base, className, { [classes.active]: active })}>
       {label}
     </div>
-  )
+  ),
 );
 
 export const ListItem = withStyles(listItem)(
   ({
     children,
     number,
-    classes
+    classes,
   }: {
     children: React$Node,
     number?: number,
-    classes: { [$Keys<typeof listItem>]: string }
+    classes: { [$Keys<typeof listItem>]: string },
   }) => (
     <li className={classes.base}>
       {number && <span className={classes.number}>{number}.</span>}
       <span>{children}</span>
     </li>
-  )
+  ),
 );
 
 const list = {
   base: {
     margin: 0,
     padding: 0,
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 };
 
 export const List = withStyles(list)(
   ({
     children,
-    classes
+    classes,
   }: {
     children: React$Node,
-    classes: { [$Keys<typeof list>]: string }
-  }) => <ul className={classes.base}>{children}</ul>
+    classes: { [$Keys<typeof list>]: string },
+  }) => <ul className={classes.base}>{children}</ul>,
 );
 
 const title = {
@@ -247,18 +247,18 @@ const title = {
     letterSpacing: -0.2,
     fontFamily: "Museo",
     fontWeight: "500",
-    margin: "8px 0 30px 0"
-  }
+    margin: "8px 0 30px 0",
+  },
 };
 
 export const Title = withStyles(title)(
   ({
     classes,
-    children
+    children,
   }: {
     children: React$Node,
-    classes: { [$Keys<typeof title>]: string }
-  }) => <h2 className={classes.base}>{children}</h2>
+    classes: { [$Keys<typeof title>]: string },
+  }) => <h2 className={classes.base}>{children}</h2>,
 );
 
 const introduction = {
@@ -267,18 +267,18 @@ const introduction = {
     lineHeight: 1.52,
     margin: "0 0 30px 0",
     "& strong": {
-      fontWeight: 600
-    }
-  }
+      fontWeight: 600,
+    },
+  },
 };
 export const Introduction = withStyles(introduction)(
   ({
     classes,
-    children
+    children,
   }: {
     children: React$Node,
-    classes: { [$Keys<typeof introduction>]: string }
-  }) => <p className={classes.base}>{children}</p>
+    classes: { [$Keys<typeof introduction>]: string },
+  }) => <p className={classes.base}>{children}</p>,
 );
 
 const subtitle = {
@@ -287,36 +287,36 @@ const subtitle = {
     fontWeight: 600,
     display: "block",
     textTransform: "uppercase",
-    margin: "0 0 22px 0"
-  }
+    margin: "0 0 22px 0",
+  },
 };
 
 export const SubTitle = withStyles(subtitle)(
   ({
     classes,
     children,
-    className
+    className,
   }: {
     classes: { [$Keys<typeof subtitle>]: string },
     children: React$Node,
-    className?: string
-  }) => <span className={cx(classes.base, className)}>{children}</span>
+    className?: string,
+  }) => <span className={cx(classes.base, className)}>{children}</span>,
 );
 
 const toContinue = {
   base: {
     fontSize: 11,
-    lineHeight: 1.82
-  }
+    lineHeight: 1.82,
+  },
 };
 export const ToContinue = withStyles(toContinue)(
   ({
     classes,
-    children
+    children,
   }: {
     classes: { [$Keys<typeof subtitle>]: string },
-    children: React$Node
-  }) => <span className={classes.base}>{children}</span>
+    children: React$Node,
+  }) => <span className={classes.base}>{children}</span>,
 );
 
 export const Awaiting = withStyles({
@@ -324,8 +324,8 @@ export const Awaiting = withStyles({
     color: "#767676",
     fontWeight: 600,
     fontSize: 11,
-    textTransform: "uppercase"
-  }
+    textTransform: "uppercase",
+  },
 })(({ classes, device }) => (
   <span className={classes.base}>
     awaiting {device ? "device" : "server"}...

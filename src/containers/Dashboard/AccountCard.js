@@ -10,29 +10,29 @@ import AccountName from "components/AccountName";
 const styles = {
   card: {
     width: "calc(33% - 20px)",
-    marginRight: "20px"
+    marginRight: "20px",
   },
   separator: {
     width: "100%",
     height: "1px",
     backgroundColor: "#eee",
-    margin: "20px 0 15px"
+    margin: "20px 0 15px",
   },
   cryptocur: {
     fontSize: "16px",
     marginBottom: 10,
-    color: "#000"
+    color: "#000",
   },
   realcur: {
     fontSize: "13px",
-    color: "#767676"
-  }
+    color: "#767676",
+  },
 };
 
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
-  index: number
+  index: number,
 };
 
 class AccountCard extends Component<Props> {

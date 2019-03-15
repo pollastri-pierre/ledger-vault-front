@@ -4,7 +4,7 @@ import {
   register as softRegister,
   getAttestationCertificate as softGetAttestationCertificate,
   validateVaultOperation as softValidateVaultOperation,
-  openSession as softOpenSession
+  openSession as softOpenSession,
 } from "device/VaultDeviceHTTP";
 
 import {
@@ -13,7 +13,7 @@ import {
   register as hardRegister,
   getAttestationCertificate as hardGetAttestationCertificate,
   validateVaultOperation as hardValidateVaultOperation,
-  openSession as hardOpenSession
+  openSession as hardOpenSession,
 } from "device/VaultDeviceApp";
 
 const softwareMode = () =>

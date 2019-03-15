@@ -13,35 +13,35 @@ const stylesList = {
     marginBottom: "24px",
     "& p": {
       fontSize: "12px",
-      margin: "0px"
-    }
+      margin: "0px",
+    },
   },
   detailsRow: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: "8px",
-    color: colors.shark
+    color: colors.shark,
   },
   currencyAccountValue: {
-    textAlign: "right"
+    textAlign: "right",
   },
   address: {
     flexBasis: "80%",
     overflow: "hidden",
-    textOverflow: "ellipsis"
+    textOverflow: "ellipsis",
   },
   small: {
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 };
 const OperationETHDetails = withStyles(stylesList)(
   ({
     transaction,
-    classes
+    classes,
   }: {
     transaction: TransactionETH,
-    classes: { [$Keys<typeof stylesList>]: string }
+    classes: { [$Keys<typeof stylesList>]: string },
   }) => (
     <div className={classes.detailsContainer}>
       <LineRow label="FROM" />
@@ -53,7 +53,7 @@ const OperationETHDetails = withStyles(stylesList)(
         {transaction.receiver}
       </div>
     </div>
-  )
+  ),
 );
 
 class OperationListT<T: *> extends Component<{
@@ -61,7 +61,7 @@ class OperationListT<T: *> extends Component<{
   title: string,
   entries: Array<T>,
   classes: Object,
-  dataTest: string
+  dataTest: string,
 }> {
   render() {
     const { account, title, entries, classes, dataTest } = this.props;
@@ -104,19 +104,19 @@ const styles = {
     fontWeight: "600",
     fontSize: "11px",
     textTransform: "uppercase",
-    marginTop: "0"
+    marginTop: "0",
   },
   hash: {
     fontSize: "12px",
     wordWrap: "break-word",
-    color: colors.shark
-  }
+    color: colors.shark,
+  },
 };
 
 class TabDetails extends PureComponent<{
   operation: Operation,
   account: Account,
-  classes: Object
+  classes: Object,
 }> {
   render() {
     const { operation, account, classes } = this.props;

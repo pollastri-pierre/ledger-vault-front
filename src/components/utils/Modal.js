@@ -5,7 +5,7 @@ const className = "modal";
 
 class Modal extends Component<{
   children: *,
-  close: Function
+  close: Function,
 }> {
   componentDidMount() {
     document.addEventListener("keydown", this.handle);

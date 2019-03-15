@@ -36,7 +36,7 @@ type Props = {
   approved?: boolean,
   user: Member,
   classes: { [_: $Keys<typeof styles>]: string },
-  match: *
+  match: *,
 };
 
 function PendingOperationApprove(props: Props) {
@@ -81,7 +81,7 @@ function PendingOperationApprove(props: Props) {
           <Link
             data-test="pending-operation"
             className={classnames(classes.row, {
-              [classes.approved]: approved
+              [classes.approved]: approved,
             })}
             to={`${match.url}/operation/${operation.id}`}
             key={operation.id}

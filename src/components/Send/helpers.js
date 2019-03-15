@@ -10,12 +10,12 @@ export const getFees = async (
   account: Account,
   transaction: *,
   operation: OperationGetFees,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 ) => {
   if (operation.amount > 0 && operation.recipient !== "" && account) {
     const query = new AccountCalculateFeeQuery({
       accountId: account.id,
-      operation
+      operation,
     });
     const data = await restlay.fetchQuery(query);
     return data;
@@ -23,7 +23,7 @@ export const getFees = async (
   return {
     fees: 0,
     gas_price: 0,
-    gas_limit: 0
+    gas_limit: 0,
   };
 };
 
@@ -33,7 +33,7 @@ export const InputFieldMerge = ({ children }: *) => (
       display: "flex",
       flexDirection: "row",
       alignItems: "flex-end",
-      width: "100%"
+      width: "100%",
     }}
   >
     {children}
@@ -43,10 +43,10 @@ export const InputFieldMerge = ({ children }: *) => (
 const numbers = "0123456789";
 export const sanitizeValueString = (
   unit: Unit,
-  valueString: string
+  valueString: string,
 ): {
   display: string,
-  value: string
+  value: string,
 } => {
   let display = "";
   let value = "";

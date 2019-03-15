@@ -16,33 +16,33 @@ type Props<Transaction> = {
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   onTabChange: (SyntheticInputEvent<*>, number) => void,
-  t: Translate
+  t: Translate,
 };
 type State = {};
 
 const styles = {
   label: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   comment: {
-    marginTop: 5
+    marginTop: 5,
   },
   noteContainer: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 };
 class SendLabel extends PureComponent<Props<*>, State> {
   updateLabel = (e: SyntheticEvent<HTMLInputElement>) => {
     const { account, transaction, bridge, onChangeTransaction } = this.props;
     onChangeTransaction(
-      bridge.editTransactionLabel(account, transaction, e.currentTarget.value)
+      bridge.editTransactionLabel(account, transaction, e.currentTarget.value),
     );
   };
 
   updateNote = (e: SyntheticEvent<HTMLInputElement>) => {
     const { account, transaction, bridge, onChangeTransaction } = this.props;
     onChangeTransaction(
-      bridge.editTransactionNote(account, transaction, e.currentTarget.value)
+      bridge.editTransactionNote(account, transaction, e.currentTarget.value),
     );
   };
 

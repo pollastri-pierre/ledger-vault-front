@@ -11,7 +11,7 @@ type Props = {
   align?: "center" | "flex-start" | "flex-end",
   justify?: "stretch" | "center" | "flex-start" | "flex-end",
   inline?: boolean,
-  overflow?: string
+  overflow?: string,
 };
 
 export const px = (n: number) => `${n}px`;

@@ -10,24 +10,24 @@ import CurrencyAccountValue from "../CurrencyAccountValue";
 const styles = {
   base: {
     textAlign: "center",
-    marginBottom: "32px"
+    marginBottom: "32px",
   },
   amount: {
     color: "black",
     letterSpacing: "-0.9px",
     fontSize: "20px",
-    margin: 0
+    margin: 0,
   },
   containerTitle: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   down: {
     fill: "#cccccc",
     width: "16px",
     height: "16px",
-    marginBottom: 20
+    marginBottom: 20,
   },
   fiat: {
     fontSize: "11px",
@@ -35,22 +35,22 @@ const styles = {
     color: colors.steel,
     display: "flex",
     marginTop: "7px",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   hash: {
     fontSize: "13px",
     margin: "auto",
     marginBottom: "30px",
     width: 290,
-    overflowWrap: "break-word"
-  }
+    overflowWrap: "break-word",
+  },
 };
 
 type Props = {
   amount: number,
   account: Account,
   classes: Object,
-  operationType: TransactionType
+  operationType: TransactionType,
 };
 class OverviewOperation extends Component<Props, *> {
   render() {

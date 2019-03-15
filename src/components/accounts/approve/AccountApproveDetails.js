@@ -21,7 +21,7 @@ import AccountName from "../../AccountName";
 type Props = {
   account: Account,
   accounts: Account[],
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 const styles = {
@@ -30,14 +30,14 @@ const styles = {
     justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 25
+    marginBottom: 25,
   },
   badgeText: {
-    margin: "0 5px 0 10px"
+    margin: "0 5px 0 10px",
   },
   badgeValue: {
-    color: colors.lead
-  }
+    color: colors.lead,
+  },
 };
 
 class AccountApproveDetails extends PureComponent<Props> {
@@ -57,10 +57,12 @@ class AccountApproveDetails extends PureComponent<Props> {
             <Trans i18nKey="pendingAccount:details.members" />
           </span>
           <span className={classes.badgeValue}>
-            (<Trans
+            (
+            <Trans
               i18nKey="pendingAccount:details.selectedMembers"
               values={{ memberLength: account.members.length }}
-            />)
+            />
+            )
           </span>
         </div>
         <div>
@@ -101,7 +103,7 @@ class AccountApproveDetails extends PureComponent<Props> {
               i18nKey="pendingAccount:details.approvalsRange"
               values={{
                 quorum: security_scheme.quorum,
-                memberLength: account.members.length
+                memberLength: account.members.length,
               }}
             />
           </LineRow>

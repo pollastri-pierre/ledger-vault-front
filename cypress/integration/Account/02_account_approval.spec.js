@@ -6,7 +6,7 @@ import {
   create_account,
   approve,
   cancel,
-  approve_account
+  approve_account,
 } from "../../functions/actions.js";
 
 afterEach(function() {

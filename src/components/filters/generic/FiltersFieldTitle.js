@@ -8,10 +8,10 @@ import Text from "components/base/Text";
 
 export default ({
   children,
-  isActive
+  isActive,
 }: {
   children: React$Node,
-  isActive: boolean
+  isActive: boolean,
 }) => (
   <Text small uppercase bold={isActive}>
     <Box horizontal align="center" flow={5}>

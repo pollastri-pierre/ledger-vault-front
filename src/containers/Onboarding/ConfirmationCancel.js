@@ -15,8 +15,8 @@ const styles = {
   footer: {
     position: "absolute",
     bottom: -40,
-    right: 0
-  }
+    right: 0,
+  },
 };
 type Props = {
   classes: { [$Keys<typeof styles>]: string },
@@ -24,15 +24,15 @@ type Props = {
   wipe: Function,
   title: string,
   entity: string,
-  step: string
+  step: string,
 };
 type State = {
-  value: "0" | "1" | "2"
+  value: "0" | "1" | "2",
 };
 
 class ConfirmationCancel extends Component<Props, State> {
   state = {
-    value: "0"
+    value: "0",
   };
 
   handleChange = event => {

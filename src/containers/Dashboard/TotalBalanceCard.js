@@ -12,11 +12,11 @@ const styles = {
   body: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   card: {
-    height: "180px"
-  }
+    height: "180px",
+  },
 };
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
   t: Translate,
   accounts: Array<Account>,
   members: Member[],
-  reloading: *
+  reloading: *,
 };
 
 class TotalBalance extends Component<Props> {
@@ -32,7 +32,7 @@ class TotalBalance extends Component<Props> {
     const { reloading, accounts, t, members, classes } = this.props;
     // nb total of different currencies in all the accounts
     const nbCurrency = [
-      ...new Set(accounts.map(account => account.currency_id))
+      ...new Set(accounts.map(account => account.currency_id)),
     ].length;
 
     return (

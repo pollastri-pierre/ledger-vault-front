@@ -11,7 +11,7 @@ import ReceiveLayout from "./ReceiveLayout";
 
 type Props = {
   checkAgain: () => void,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class AddressRejected extends PureComponent<Props, *> {
@@ -67,49 +67,49 @@ class AddressRejected extends PureComponent<Props, *> {
 
 const styles = {
   error_container: {
-    padding: "0 40px"
+    padding: "0 40px",
   },
   error_desc: {
     fontSize: 13,
-    textAlign: "center"
+    textAlign: "center",
   },
   error_title_container: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   error_title: {
     alignSelf: "center",
     fontSize: 13,
     textTransform: "uppercase",
     fontWeight: "bold",
-    color: colors.grenade
+    color: colors.grenade,
   },
   error_blue: {
     marginTop: 35,
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   actions: {
     marginTop: 27,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   icon: {
     cursor: "pointer",
     opacity: 0.5,
     transition: "opacity 200ms ease",
     "&:hover": {
-      opacity: 1
-    }
+      opacity: 1,
+    },
   },
   shieldIcon: {
     marginRight: 10,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   actionText: {
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 };
 export default withStyles(styles)(AddressRejected);

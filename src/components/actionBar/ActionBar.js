@@ -20,14 +20,14 @@ const styles = {
     height: 200,
     background: colors.night,
     color: colors.white,
-    position: "relative"
+    position: "relative",
   },
   header: {
     marginLeft: 280,
     padding: "54px 38px 0 0",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   actions: {
     "& a, > span": {
@@ -41,16 +41,16 @@ const styles = {
       margin: "0 14px",
       opacity: ".5",
       "&:hover": {
-        opacity: "1"
-      }
-    }
-  }
+        opacity: "1",
+      },
+    },
+  },
 };
 
 class ActionBar extends Component<{
   location: Location,
   match: Match,
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 }> {
   render() {
     const { location, classes, match } = this.props;

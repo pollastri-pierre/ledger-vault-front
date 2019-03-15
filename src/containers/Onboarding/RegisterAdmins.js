@@ -9,14 +9,14 @@ import createDevice, {
   U2F_TIMEOUT,
   CONFIDENTIALITY_PATH,
   APPID_VAULT_ADMINISTRATOR,
-  VALIDATION_PATH
+  VALIDATION_PATH,
 } from "device";
 import StepDeviceGeneric from "./StepDeviceGeneric";
 
 const defaultSteps = [
   "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
   "Enter your PIN code to unlock the device.",
-  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted."
+  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted.",
 ];
 const styles = {
   base: { width: 400, padding: "40px 40px 80px 40px" },
@@ -28,8 +28,8 @@ const styles = {
     "&:before": {
       position: "absolute",
       top: 27,
-      left: 0
-    }
+      left: 0,
+    },
   },
   footer: {
     position: "absolute",
@@ -39,8 +39,8 @@ const styles = {
     left: 0,
     display: "flex",
     padding: "0 40px 0 40px",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 
 type Props = {
@@ -50,11 +50,11 @@ type Props = {
   cancel: Function,
   organization: *,
   finish: Function,
-  challenge: string
+  challenge: string,
 };
 
 type State = {
-  active: number
+  active: number,
 };
 let _isMounted = false;
 
@@ -86,7 +86,7 @@ class RegisterAdmins extends Component<Props, State> {
         if (isUpToDate) {
           const { pubKey } = await device.getPublicKey(U2F_PATH, false);
           const confidentiality = await device.getPublicKey(
-            CONFIDENTIALITY_PATH
+            CONFIDENTIALITY_PATH,
           );
           const validation = await device.getPublicKey(VALIDATION_PATH);
           const attestation = await device.getAttestationCertificate();
@@ -99,7 +99,7 @@ class RegisterAdmins extends Component<Props, State> {
             organization.name,
             organization.workspace,
             organization.domain_name,
-            this.props.role || "Administrator"
+            this.props.role || "Administrator",
           );
 
           this.setState({ active: 2 });
@@ -110,16 +110,16 @@ class RegisterAdmins extends Component<Props, State> {
             u2f_register.slice(0, attestationOffset),
             Buffer.from([attestation.length]),
             attestation,
-            u2f_register.slice(attestationOffset)
+            u2f_register.slice(attestationOffset),
           ]);
 
           const validation_attestation = Buffer.concat([
             attestation,
-            validation.signature
+            validation.signature,
           ]);
           const confidentiality_attestation = Buffer.concat([
             attestation,
-            confidentiality.signature
+            confidentiality.signature,
           ]);
 
           const data = {
@@ -128,12 +128,12 @@ class RegisterAdmins extends Component<Props, State> {
             key_handle: keyHandle.toString("hex"),
             validation: {
               public_key: validation.pubKey,
-              attestation: validation_attestation.toString("hex")
+              attestation: validation_attestation.toString("hex"),
             },
             confidentiality: {
               public_key: confidentiality.pubKey,
-              attestation: confidentiality_attestation.toString("hex")
-            }
+              attestation: confidentiality_attestation.toString("hex"),
+            },
           };
 
           this.props.finish(data);
@@ -167,6 +167,6 @@ class RegisterAdmins extends Component<Props, State> {
 export { RegisterAdmins };
 export default connectData(withStyles(styles)(RegisterAdmins), {
   queries: {
-    organization: OrganizationQuery
-  }
+    organization: OrganizationQuery,
+  },
 });

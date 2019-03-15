@@ -3,7 +3,7 @@
 import type { Account, Member } from "data/types";
 import {
   getERC20TokenByContractAddress,
-  getCryptoCurrencyById
+  getCryptoCurrencyById,
 } from "utils/cryptoCurrencies";
 
 const ACCOUNT_MAX_LENGTH = 19;
@@ -31,7 +31,7 @@ export const isAccountBeingUpdated = (account: Account) =>
 
 export const hasUserApprovedAccount = (account: Account, user: Member) => {
   const approvals = account.approvals.filter(
-    approval => approval.type === APPROVE
+    approval => approval.type === APPROVE,
   );
   return (
     approvals.filter(approval => approval.person.pub_key === user.pub_key)

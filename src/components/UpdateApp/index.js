@@ -20,7 +20,7 @@ const styles = {
   base: {
     width: 550,
     margin: "auto",
-    marginTop: 125
+    marginTop: 125,
   },
   error: {},
   button: {
@@ -32,8 +32,8 @@ const styles = {
     height: 40,
     border: 0,
     fontSize: 19,
-    color: "white"
-  }
+    color: "white",
+  },
 };
 
 const row = {
@@ -44,7 +44,7 @@ const row = {
     height: 75,
     fontSize: 14,
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   icon: {
     border: "1px solid",
@@ -55,24 +55,24 @@ const row = {
     borderRadius: 5,
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   right: {
     position: "absolute",
-    right: 20
-  }
+    right: 20,
+  },
 };
 const Row = withStyles(row)(
   ({
     icon,
     children,
     classes,
-    state
+    state,
   }: {
     icon: *,
     children: *,
     classes: { [_: $Keys<typeof row>]: string },
-    state: "None" | "Pending" | "Done"
+    state: "None" | "Pending" | "Done",
   }) => (
     <div className={classes.base}>
       <div className={classes.icon}>{icon}</div>
@@ -82,7 +82,7 @@ const Row = withStyles(row)(
         {state === "Pending" && <CircleProgress size={22} color="primary" />}
       </div>
     </div>
-  )
+  ),
 );
 export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 
@@ -94,25 +94,25 @@ const appToInstall = {
     : "blue/2.1.1-ee/vault3/app_latest",
   firmwareKey: window.config.HSM_SIMU
     ? "blue/2.1.1-ee/vault3/app_latest_dev_key"
-    : "blue/2.1.1-ee/vault3/app_latest_key"
+    : "blue/2.1.1-ee/vault3/app_latest_key",
 };
 const appToUnInstall = {
   targetId: 0x31010004,
   perso: "perso_11",
   deleteKey: "blue/2.1.1-ee/vault3/app_del_key",
   firmware: "blue/2.1.1-ee/vault3/app_del",
-  firmwareKey: "blue/2.1.1-ee/vault3/app_del_key"
+  firmwareKey: "blue/2.1.1-ee/vault3/app_del_key",
 };
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
-  t: Translate
+  t: Translate,
 };
 type State = {
   uninstalled: boolean,
   no_application: boolean,
   error: boolean,
   installed: boolean,
-  isDashboard: boolean
+  isDashboard: boolean,
 };
 class UpdateApp extends Component<Props, State> {
   constructor(props) {
@@ -122,14 +122,14 @@ class UpdateApp extends Component<Props, State> {
       error: false,
       installed: false,
       no_application: false,
-      isDashboard: false
+      isDashboard: false,
     };
   }
 
   componentDidMount() {
     if (process.env.NODE_ENV === "e2e") {
       console.warn(
-        "Not possible to update in software mode, run npm start instead of starte2e"
+        "Not possible to update in software mode, run npm start instead of starte2e",
       );
     }
     _isMounted = true;
@@ -148,12 +148,12 @@ class UpdateApp extends Component<Props, State> {
         const transport = await LedgerTransportU2F.create(90000000, 90000000);
         transport.setScrambleKey("B0L0S");
         const url = `${BASE_SOCKET_URL}/install?${qs.stringify(
-          appToUnInstall
+          appToUnInstall,
         )}`;
         await createDeviceSocket(transport, url).toPromise();
         this.setState({ uninstalled: true });
         const urlInstall = `${BASE_SOCKET_URL}/install?${qs.stringify(
-          appToInstall
+          appToInstall,
         )}`;
         await createDeviceSocket(transport, urlInstall).toPromise();
         this.setState({ installed: true });
@@ -166,7 +166,7 @@ class UpdateApp extends Component<Props, State> {
             isDashboard: false,
             uninstalled: false,
             installed: false,
-            error: true
+            error: true,
           });
         }
       }
@@ -188,7 +188,7 @@ class UpdateApp extends Component<Props, State> {
       error,
       uninstalled,
       no_application,
-      installed
+      installed,
     } = this.state;
 
     let stateUninstall = "None";

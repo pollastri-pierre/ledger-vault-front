@@ -12,7 +12,7 @@ import AccountBodyCell from "./AccountBodyCell";
 type AccountRowProps = {
   account: Account,
   onClick: Account => void,
-  tableDefinition: TableDefinition
+  tableDefinition: TableDefinition,
 };
 
 const accountRowHover = { cursor: "pointer" };

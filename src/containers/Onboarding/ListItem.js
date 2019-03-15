@@ -5,20 +5,20 @@ import { withStyles } from "@material-ui/core/styles";
 const styles = {
   base: {
     fontSize: 13,
-    lineHeight: 1.54
+    lineHeight: 1.54,
   },
   number: {
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 };
 const ListItem = ({
   children,
   number,
-  classes
+  classes,
 }: {
   children: any,
   number: number,
-  classes: { [$Keys<typeof styles>]: string }
+  classes: { [$Keys<typeof styles>]: string },
 }) => (
   <li className={classes.base}>
     <span className={classes.number}>{number}.</span>

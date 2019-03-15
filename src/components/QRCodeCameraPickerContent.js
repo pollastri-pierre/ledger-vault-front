@@ -7,18 +7,18 @@ const styles = {
     width: 320,
     padding: "0 30px",
     fontSize: "11px",
-    color: "#767676"
+    color: "#767676",
   },
   title: {
     fontSize: "10px",
     fontWeight: 600,
     color: "#767676",
-    fontFamily: "Open Sans"
-  }
+    fontFamily: "Open Sans",
+  },
 };
 
 export default class QRCodeCameraPickerContent extends Component<{
-  onPick: string => void
+  onPick: string => void,
 }> {
   render() {
     const { onPick } = this.props;

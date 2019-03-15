@@ -13,36 +13,36 @@ import Text from "components/base/Text";
 const styles = {
   clickable: {
     "&:hover": {
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   activityMessage: {
     "&.seen": {
-      color: opacity(colors.black, 0.5)
+      color: opacity(colors.black, 0.5),
     },
     "> a": {
-      textDecoration: "none"
-    }
+      textDecoration: "none",
+    },
   },
   dateWrap: {
     color: colors.lead,
     fontWeight: 600,
     "&.seen": {
-      color: opacity(colors.lead, 0.5)
-    }
+      color: opacity(colors.lead, 0.5),
+    },
   },
   bullet: {
     width: 6,
     height: 6,
     backgroundColor: colors.grenade,
-    borderRadius: "50%"
-  }
+    borderRadius: "50%",
+  },
 };
 
 type Props = {
   activity: ActivityCommon,
   classes: { [_: $Keys<typeof styles>]: string },
-  children: *
+  children: *,
 };
 
 // NOTE: a lot more to refactor, did some basics because it was too ugly
@@ -59,7 +59,7 @@ class ActivityLine extends Component<Props> {
           <Box
             className={classnames(
               classes.dateWrap,
-              this.getSeenClass(activity.seen)
+              this.getSeenClass(activity.seen),
             )}
           >
             <Text uppercase small>
@@ -71,7 +71,7 @@ class ActivityLine extends Component<Props> {
           small
           className={classnames(
             classes.activityMessage,
-            this.getSeenClass(activity.seen)
+            this.getSeenClass(activity.seen),
           )}
         >
           {children}

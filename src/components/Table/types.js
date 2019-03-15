@@ -4,16 +4,16 @@ export type TableDefinition = TableItem[];
 
 export type TableItem = {
   header: TableHeader,
-  body: TableBody
+  body: TableBody,
 };
 
 type TableHeader = {
   label: string,
   align: string,
-  sortable: boolean
+  sortable: boolean,
 };
 
 type TableBody = {
   prop: string,
-  align: string
+  align: string,
 };

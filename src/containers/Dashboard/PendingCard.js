@@ -25,33 +25,33 @@ const styles = {
     borderBottom: "1px solid #eee",
     padding: "10px 0",
     "&:last-child": {
-      borderBottom: "0px"
-    }
+      borderBottom: "0px",
+    },
   },
   date: {
     color: " #000",
     fontSize: " 10px",
     fontWeight: " 600",
     lineHeight: " 18px",
-    textTransform: " uppercase"
+    textTransform: " uppercase",
   },
   body: {
-    fontSize: "13px"
+    fontSize: "13px",
   },
   header: {
     padding: "20px 46px",
     display: "flex",
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 };
 const Row_c = ({
   date,
   children,
-  classes
+  classes,
 }: {
   date: string,
   children: React$Node | string,
-  classes: Object
+  classes: Object,
 }) => (
   <div className={classes.row}>
     <div className={classes.date}>
@@ -65,10 +65,10 @@ const Row = withStyles(styles)(Row_c);
 
 const OperationRow = ({
   operation,
-  account
+  account,
 }: {
   operation: Operation,
-  account: ?Account
+  account: ?Account,
 }) =>
   account ? (
     <Row date={operation.created_on}>
@@ -89,7 +89,7 @@ class PendingCard extends Component<{
   match: *,
   t: Translate,
   operations: Operation[],
-  reloading: boolean
+  reloading: boolean,
 }> {
   render() {
     const {
@@ -99,7 +99,7 @@ class PendingCard extends Component<{
       t,
       allAccounts,
       match,
-      reloading
+      reloading,
     } = this.props;
     const filtered_operations = getPendingsOperations(operations);
     const totalOperations = filtered_operations.length;
@@ -169,9 +169,9 @@ export default connectData(withStyles(styles)(translate()(PendingCard)), {
   queries: {
     accounts: PendingAccountsQuery,
     allAccounts: AccountsQuery,
-    operations: PendingOperationsQuery
+    operations: PendingOperationsQuery,
   },
   optimisticRendering: true,
   RenderError,
-  RenderLoading
+  RenderLoading,
 });

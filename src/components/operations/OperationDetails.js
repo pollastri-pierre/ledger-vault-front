@@ -18,7 +18,7 @@ import {
   ModalHeader,
   ModalTitle,
   ModalBody,
-  ModalFooter
+  ModalFooter,
 } from "components/base/Modal";
 import DialogButton from "components/buttons/DialogButton";
 import Overscroll from "components/utils/Overscroll";
@@ -34,9 +34,9 @@ type Props = {
   // injected by decorators:
   operationWithAccount: {
     operation: Operation,
-    account: Account
+    account: Account,
   },
-  match: Object
+  match: Object,
 };
 
 class OperationDetails extends Component<Props, *> {
@@ -44,7 +44,7 @@ class OperationDetails extends Component<Props, *> {
     super(props);
 
     this.state = {
-      value: parseInt(props.match.params.tabIndex, 10) || 0
+      value: parseInt(props.match.params.tabIndex, 10) || 0,
     };
   }
 
@@ -55,7 +55,7 @@ class OperationDetails extends Component<Props, *> {
   render() {
     const {
       operationWithAccount: { operation, account },
-      close
+      close,
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
@@ -116,7 +116,7 @@ class OperationDetails extends Component<Props, *> {
                 target="_blank"
                 rel="noopener noreferrer"
                 href={defaultExplorers[account.currency_id](
-                  operation.transaction.hash
+                  operation.transaction.hash,
                 )}
               >
                 <Trans i18nKey="operationDetails:explore" />
@@ -131,10 +131,10 @@ class OperationDetails extends Component<Props, *> {
 
 const RenderError = ({
   error,
-  restlay
+  restlay,
 }: {
   error: Error,
-  restlay: RestlayEnvironment
+  restlay: RestlayEnvironment,
 }) => (
   <div style={{ width: 500, height: 700 }}>
     <TryAgain error={error} action={restlay.forceFetch} />
@@ -148,9 +148,9 @@ export default connectData(OperationDetails, {
   RenderLoading,
   queries: {
     operationWithAccount: OperationWithAccountQuery,
-    profile: ProfileQuery
+    profile: ProfileQuery,
   },
   propsToQueryParams: props => ({
-    operationId: props.match.params.operationId || ""
-  })
+    operationId: props.match.params.operationId || "",
+  }),
 });

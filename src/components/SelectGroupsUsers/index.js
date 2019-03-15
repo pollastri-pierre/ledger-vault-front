@@ -13,12 +13,12 @@ import { MdClear, MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 
 type MemberItem = {
   value: Member,
-  type: "member"
+  type: "member",
 };
 
 type GroupItem = {
   value: Group,
-  type: "group"
+  type: "group",
 };
 
 const ICON_SIZE = 15;
@@ -29,7 +29,7 @@ export type Item = MemberItem | GroupItem;
 type Option = {
   value: string,
   data: Item,
-  label: string
+  label: string,
 };
 
 type Props = {
@@ -37,9 +37,9 @@ type Props = {
   members: Member[],
   value: {
     members?: Member[],
-    groups?: Group[]
+    groups?: Group[],
   },
-  onChange: ({ members: Member[], groups: Group[] }) => void
+  onChange: ({ members: Member[], groups: Group[] }) => void,
 };
 
 const checkedIcon = <MdCheckBox size={ICON_SIZE} />;
@@ -53,7 +53,7 @@ const buildOptions = (items: Item[]): Option[] =>
   items.map(item => ({
     label: item.type === "group" ? item.value.name : item.value.username,
     value: `${item.type}_${item.value.id}`,
-    data: item
+    data: item,
   }));
 
 const OptionComponent = (props: OptionProps) => (
@@ -80,22 +80,22 @@ const MultiValueLabel = (props: OptionProps) => (
 const customComponents = {
   Option: OptionComponent,
   MultiValueLabel,
-  MultiValueRemove
+  MultiValueRemove,
 };
 
 const colourStyles = {
   option: (styles, { isSelected }) => ({
     ...styles,
     backgroundColor: isSelected ? colors.argile : styles.backgroundColor,
-    color: isSelected ? "black" : styles.color
+    color: isSelected ? "black" : styles.color,
   }),
   multiValueRemove: styles => ({
     ...styles,
     ":hover": {
       backgroundColor: colors.steel,
-      color: "white"
-    }
-  })
+      color: "white",
+    },
+  }),
 };
 class SelectInGroup extends PureComponent<Props> {
   handleChange = (option: Option[]) => {
@@ -118,26 +118,26 @@ class SelectInGroup extends PureComponent<Props> {
   render() {
     const { members, groups, value, ...props } = this.props;
     const membersOptions = buildOptions(
-      members.map(m => ({ type: "member", value: m }))
+      members.map(m => ({ type: "member", value: m })),
     );
     const groupOptions = buildOptions(
-      groups.map(g => ({ type: "group", value: g }))
+      groups.map(g => ({ type: "group", value: g })),
     );
     const resolvedGroupsValue = value.groups
       ? value.groups.map(g =>
-          groupOptions.find(gO => gO.data.value.id === g.id)
+          groupOptions.find(gO => gO.data.value.id === g.id),
         )
       : [];
     const resolvedMembersValue = value.members
       ? value.members.map(m =>
-          membersOptions.find(mO => mO.data.value.id === m.id)
+          membersOptions.find(mO => mO.data.value.id === m.id),
         )
       : [];
     const resolvedValue = [...resolvedGroupsValue, ...resolvedMembersValue];
 
     const groupedOptions: GroupedOption[] = [
       { label: "groups", options: groupOptions },
-      { label: "users", options: membersOptions }
+      { label: "users", options: membersOptions },
     ];
 
     return (

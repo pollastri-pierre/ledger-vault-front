@@ -7,7 +7,7 @@ export default merge(webpackConfig, {
   mode: "production",
 
   output: {
-    filename: "[name]-[chunkhash].js"
+    filename: "[name]-[chunkhash].js",
   },
 
   module: {
@@ -15,9 +15,9 @@ export default merge(webpackConfig, {
       {
         test: /\.js$/,
         use: ["thread-loader", "babel-loader?sourceMap"],
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
 
   optimization: {
@@ -27,10 +27,10 @@ export default merge(webpackConfig, {
         commons: {
           test: /[\\/]node_modules[\\/]/,
           name: "vendor",
-          chunks: "initial"
-        }
-      }
-    }
+          chunks: "initial",
+        },
+      },
+    },
   },
 
   plugins: [new webpack.optimize.OccurrenceOrderPlugin()],
@@ -44,6 +44,6 @@ export default merge(webpackConfig, {
     chunks: false,
     chunkModules: false,
     cached: false,
-    cachedAssets: false
-  }
+    cachedAssets: false,
+  },
 });

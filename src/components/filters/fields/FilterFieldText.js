@@ -13,7 +13,7 @@ import type { FieldProps } from "components/filters";
 type Props = FieldProps & {
   title: React$Node,
   placeholder: string,
-  queryKey: string
+  queryKey: string,
 };
 
 class FilterFieldText extends PureComponent<Props> {

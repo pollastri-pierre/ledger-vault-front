@@ -4,7 +4,7 @@ import {
   route,
   switch_device,
   create_account,
-  approve_account
+  approve_account,
 } from "../../functions/actions.js";
 
 describe("Tests Account Currency", function() {

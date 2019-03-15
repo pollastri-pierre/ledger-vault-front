@@ -9,15 +9,15 @@ const styles = {
     justifyContent: "center",
     display: "flex",
     alignSelf: "center",
-    marginRight: "6px"
-  }
+    marginRight: "6px",
+  },
 };
 
 class Circle extends Component<{
   bg: string,
   size: string,
   classes: Object,
-  children: *
+  children: *,
 }> {
   render() {
     const { bg, size, classes, children } = this.props;

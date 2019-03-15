@@ -11,16 +11,16 @@ import DeviceStep from "./DeviceStep";
 
 const styles = {
   steps: {
-    padding: "0 20px 0"
+    padding: "0 20px 0",
   },
   blue_icon: {
     display: "flex",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 };
 
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string }
+  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class ReceiveDevice extends Component<Props> {
