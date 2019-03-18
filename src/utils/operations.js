@@ -1,5 +1,5 @@
 // @flow
-import type { Operation, Account, Member } from "data/types";
+import type { Operation, Account, User } from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 
 export const hasPending = (account: Account, operations: Operation[]) =>
@@ -27,7 +27,7 @@ export const isCreateOperationEnabled = (
 export const getPendingsOperations = (operations: Operation[]): Operation[] =>
   operations.filter(operation => operation.status === "PENDING_APPROVAL");
 
-export const isMemberOfAccount = (account: Account, me: Member) => {
+export const isMemberOfAccount = (account: Account, me: User) => {
   const members = account.members.filter(
     member => member.pub_key === me.pub_key,
   );

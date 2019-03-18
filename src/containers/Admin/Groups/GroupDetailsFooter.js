@@ -6,14 +6,14 @@ import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
-import type { Group, Member } from "data/types";
+import type { Group, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest } from "utils/request";
 
 type Props = {
   group: Group,
-  selected: Member[],
-  me: Member,
+  selected: User[],
+  me: User,
   close: void => void,
 };
 
@@ -21,7 +21,7 @@ type Props = {
 // if the group is pending AND user approved it, he can do NOTHING
 // if the  group is ACTIVE he can delete the group ( it goes though quorum validation )
 
-const hasArrayChanged = (array1: Member[], array2: Member[]): boolean => {
+const hasArrayChanged = (array1: User[], array2: User[]): boolean => {
   if (array1.length !== array2.length) {
     return true;
   }

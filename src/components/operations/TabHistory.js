@@ -4,7 +4,7 @@ import { translate } from "react-i18next";
 import ExpandableText from "components/ExpandableText";
 import DateFormat from "components/DateFormat";
 import { withStyles } from "@material-ui/core/styles";
-import type { Operation, Member, Translate } from "data/types";
+import type { Operation, User, Translate } from "data/types";
 
 const styles = {
   base: {
@@ -36,7 +36,7 @@ const Action = translate()(
   }: {
     action: ActionType,
     t: Translate,
-    user?: Member,
+    user?: User,
     classes: { [$Keys<typeof styles>]: string },
   }) => (
     <span>
@@ -71,7 +71,7 @@ const Row = ({
   date: Date,
   action: ActionType,
   classes: { [$Keys<typeof styles>]: string },
-  user?: Member,
+  user?: User,
 }) => (
   <div className={classes.base}>
     <span className={classes.date}>

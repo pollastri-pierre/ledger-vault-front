@@ -3,13 +3,13 @@
 import React, { PureComponent } from "react";
 import Status from "components/Status";
 import { withMe } from "components/UserContextProvider";
-import type { Member, Request } from "data/types";
+import type { User, Request } from "data/types";
 import { hasUserApprovedRequest } from "utils/request";
 
 type Props = {
   status: string,
   request: ?Request,
-  me: Member,
+  me: User,
 };
 
 class EntityStatus extends PureComponent<Props> {

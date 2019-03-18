@@ -1,8 +1,8 @@
 // @flow
 import { Component } from "react";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
-class MemberRole extends Component<{ member: Member }> {
+class MemberRole extends Component<{ member: User }> {
   render() {
     const { member } = this.props;
     return member.role || "Administrator";

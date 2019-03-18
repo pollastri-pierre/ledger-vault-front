@@ -1,11 +1,11 @@
 // @flow
 import React from "react";
-import type { Member, Approval } from "data/types";
+import type { User, Approval } from "data/types";
 
 import Box from "components/base/Box";
 import ApprovalUser from "../ApprovalUser";
 
-function ApprovalList(props: { approvers: Member[], approved: Approval[] }) {
+function ApprovalList(props: { approvers: User[], approved: Approval[] }) {
   const { approved, approvers } = props;
 
   const list = approvers

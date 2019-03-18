@@ -21,12 +21,12 @@ import { ModalFooter } from "components/base/Modal";
 import InfoBox from "components/base/InfoBox";
 import DialogButton from "components/buttons/DialogButton";
 
-import type { Account, Operation, Member } from "data/types";
+import type { Account, Operation, User } from "data/types";
 
 function isAccountAvailable(
   account: Account,
   pendingApprovalOperations: Operation[],
-  me: Member,
+  me: User,
 ) {
   return (
     account.balance > 0 &&
@@ -41,7 +41,7 @@ type Props = {
   onTabChange: (SyntheticInputEvent<*>, number) => void,
   accounts: Account[],
   account: ?Account,
-  me: Member,
+  me: User,
   selectAccount: (?Account) => void,
   allPendingOperations: Operation[],
 };

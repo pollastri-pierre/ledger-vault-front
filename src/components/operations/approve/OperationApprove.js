@@ -16,7 +16,7 @@ import ApprovalPercentage from "components/ApprovalPercentage";
 import ModalLoading from "components/ModalLoading";
 import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
 
-import type { Account, Operation, Member, Translate } from "data/types";
+import type { Account, Operation, User, Translate } from "data/types";
 
 import OperationApproveApprovals from "./OperationApproveApprovals";
 import OperationApproveDetails from "./OperationApproveDetails";
@@ -26,8 +26,8 @@ type Props = {
     account: Account,
     operation: Operation,
   },
-  users: Array<Member>,
-  profile: Member,
+  users: Array<User>,
+  profile: User,
   close: Function,
   approve: Function,
   aborting: Function,

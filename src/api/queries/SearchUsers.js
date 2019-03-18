@@ -4,14 +4,14 @@ import queryString from "query-string";
 
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 type Input = {
   name?: string,
   userRole?: string,
 };
 
-type Node = Member;
+type Node = User;
 
 const uri = (query: Input) => {
   let finalQuery = {};

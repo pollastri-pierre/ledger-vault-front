@@ -14,7 +14,7 @@ import colors from "shared/colors";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { FaWrench } from "react-icons/fa";
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import AccountWarning from "./AccountWarning";
 
 const row = {
@@ -85,7 +85,7 @@ const styles = {
 };
 type Props = {
   account: Account,
-  me: Member,
+  me: User,
   classes: { [_: $Keys<typeof styles>]: string },
 };
 

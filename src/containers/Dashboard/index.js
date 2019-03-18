@@ -1,7 +1,7 @@
 // @flow
 import UsersQuery from "api/queries/UsersQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import DashboardPlaceholder from "components/DashboardPlaceholder";
 import connectData from "restlay/connectData";
 import React, { Component } from "react";
@@ -36,7 +36,7 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   match: *,
   accounts: Array<Account>,
-  users: Array<Member>,
+  users: Array<User>,
 };
 
 class Dashboard extends Component<Props> {

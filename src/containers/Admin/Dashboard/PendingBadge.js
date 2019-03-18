@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Request, Member } from "data/types";
+import type { Request, User } from "data/types";
 import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest } from "utils/request";
@@ -20,7 +20,7 @@ const styles = {
 };
 type Props = {
   data: Connection<Request>,
-  me: Member,
+  me: User,
 };
 class PendingBadge extends PureComponent<Props> {
   render() {

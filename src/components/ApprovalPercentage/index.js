@@ -1,10 +1,10 @@
 // @flow
 import React from "react";
-import type { Member, Approval } from "data/types";
+import type { User, Approval } from "data/types";
 import PercentageBarProgress from "../PercentageBarProgress";
 
 function ApprovalPercentage(props: {
-  approvers?: Member[],
+  approvers?: User[],
   approved: Approval[],
   nbRequired?: number,
 }) {

@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { FaPlus } from "react-icons/fa";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
 
-import type { Member, Group } from "data/types";
+import type { User, Group } from "data/types";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -31,7 +31,7 @@ type Props = {
   onChange: (ApprovalsRule[]) => void,
 
   // used to fill select
-  users: Member[],
+  users: User[],
   groups: Group[],
 
   // maximum number of rules that one can add

@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import { FaUser } from "react-icons/fa";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 const userIcon = <FaUser size={10} />;
 
 class MemberName extends Component<{
-  member: Member,
+  member: User,
 }> {
   render() {
     const { member, ...props } = this.props;

@@ -6,7 +6,7 @@ import MenuList from "@material-ui/core/MenuList";
 import { FaUserCircle } from "react-icons/fa";
 import { mixinHoverSelected } from "shared/common";
 import colors from "shared/colors";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import Text from "components/base/Text";
 import MenuLink from "components/MenuLink";
 import { withMe } from "components/UserContextProvider";
@@ -44,7 +44,7 @@ const styles = {
 };
 
 type Props = {
-  me: Member,
+  me: User,
   classes: { [_: $Keys<typeof styles>]: string },
   match: Match,
 };

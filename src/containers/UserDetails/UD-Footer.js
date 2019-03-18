@@ -8,13 +8,13 @@ import AbortRequestButton from "components/AbortRequestButton";
 import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
 import { hasUserApprovedRequest } from "utils/request";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 type Props = {
   status: string,
   close: () => void,
-  user: Member,
-  me: Member,
+  user: User,
+  me: User,
 };
 
 class UserDetailsFooter extends PureComponent<Props> {

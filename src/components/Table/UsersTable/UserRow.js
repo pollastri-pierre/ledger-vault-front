@@ -4,14 +4,14 @@ import React, { PureComponent } from "react";
 
 import MUITableRow from "@material-ui/core/TableRow";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 import type { TableDefinition } from "../types";
 import UserBodyCell from "./UserBodyCell";
 
 type UserRowProps = {
-  user: Member,
-  onClick: Member => void,
+  user: User,
+  onClick: User => void,
   tableDefinition: TableDefinition,
 };
 

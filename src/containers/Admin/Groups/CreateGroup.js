@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { createAndApprove } from "device/interactions/approveFlow";
-import type { Member, Group } from "data/types";
+import type { User, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import UsersQuery from "api/queries/UsersQuery";
@@ -24,13 +24,13 @@ import {
 } from "components/base/Modal";
 
 type Props = {
-  operators: Connection<Member>,
+  operators: Connection<User>,
   restlay: RestlayEnvironment,
   close: () => void,
 };
 
 type State = {
-  members: Member[],
+  members: User[],
   name: string,
   description: string,
 };
@@ -47,7 +47,7 @@ class CreateGroup extends PureComponent<Props, State> {
     description: "",
   };
 
-  onChange = (val: { members: Member[], groups: Group[] }) => {
+  onChange = (val: { members: User[], groups: Group[] }) => {
     this.setState({ members: val.members });
   };
 

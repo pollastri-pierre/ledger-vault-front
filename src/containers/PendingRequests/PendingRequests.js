@@ -5,7 +5,7 @@ import EntityApprove from "components/approve/EntityApprove";
 import ModalRoute from "components/ModalRoute";
 import ProfileQuery from "api/queries/ProfileQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Operations from "./Operations";
 import Accounts from "./Accounts";
@@ -38,7 +38,7 @@ const styles = {
 
 class PendingRequests extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
-  profile: Member,
+  profile: User,
 }> {
   render() {
     const { classes, profile } = this.props;

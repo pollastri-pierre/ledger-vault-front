@@ -21,14 +21,14 @@ import DialogButton from "components/buttons/DialogButton";
 import colors from "shared/colors";
 import { FaUser } from "react-icons/fa";
 
-import type { GateError, MemberInvite, Organization } from "data/types";
+import type { GateError, UserInvite, Organization } from "data/types";
 
 type Props = {
   match: Match,
   organization: Organization,
 };
 type State = {
-  member: ?MemberInvite,
+  member: ?UserInvite,
   loading: boolean,
   error: ?GateError | ?Error,
   success: boolean,

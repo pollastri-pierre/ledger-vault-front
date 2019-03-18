@@ -10,7 +10,7 @@ import CounterValue from "components/CounterValue";
 import Text from "components/base/Text";
 import LineSeparator from "components/LineSeparator";
 
-import type { Account, Operation, Member } from "data/types";
+import type { Account, Operation, User } from "data/types";
 
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import DateFormat from "../DateFormat";
@@ -34,7 +34,7 @@ type Props = {
   accounts: Account[],
   operations: Operation[],
   approved?: boolean,
-  user: Member,
+  user: User,
   classes: { [_: $Keys<typeof styles>]: string },
   match: *,
 };

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
 import DateFormat from "components/DateFormat";
@@ -15,7 +15,7 @@ import { updateUserRegistrationInfo } from "containers/Admin/InviteUser/helpers"
 import type { RestlayEnvironment } from "restlay/connectData";
 
 type Props = {
-  user: Member,
+  user: User,
   restlay: RestlayEnvironment,
 };
 

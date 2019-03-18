@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import EditProfile from "components/EditProfile";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import RegisterAdmins from "./RegisterAdmins";
 
 const steps = [
@@ -15,7 +15,7 @@ type Props = {
   setAlert: Function,
   editMember: Function,
   history: *,
-  member: Member,
+  member: User,
   challenge: string,
 };
 type State = {

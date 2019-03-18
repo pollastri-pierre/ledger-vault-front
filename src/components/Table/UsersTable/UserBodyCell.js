@@ -8,11 +8,11 @@ import EntityStatus from "components/EntityStatus";
 import DateFormat from "components/DateFormat";
 import UserRoleFormatter from "components/UserRoleFormatter";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import type { TableItem } from "../types";
 
 type CellProps = {
-  user: Member,
+  user: User,
   item: TableItem,
 };
 class UserBodyCell extends PureComponent<CellProps> {

@@ -7,7 +7,7 @@ import type { Match } from "react-router-dom";
 import UsersQuery from "api/queries/UsersQuery";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import type { Group, Member } from "data/types";
+import type { Group, User } from "data/types";
 import type { MemoryHistory } from "history";
 import type { Connection } from "restlay/ConnectionQuery";
 import Text from "components/base/Text";
@@ -28,13 +28,13 @@ import {
 
 type Props = {
   group: Group,
-  operators: Connection<Member>,
+  operators: Connection<User>,
   close: Function,
 };
 
 type State = {
   tabsIndex: number,
-  members: Member[],
+  members: User[],
 };
 
 const tabTitles = ["Overview", "Description", "Accounts"];
@@ -49,7 +49,7 @@ class GroupModal extends PureComponent<Props, State> {
     this.setState({ tabsIndex });
   };
 
-  onGroupChange = (val: { groups: Group[], members: Member[] }) => {
+  onGroupChange = (val: { groups: Group[], members: User[] }) => {
     this.setState({ members: val.members });
   };
 

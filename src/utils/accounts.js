@@ -1,6 +1,6 @@
 // @flow
 
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import {
   getERC20TokenByContractAddress,
   getCryptoCurrencyById,
@@ -29,7 +29,7 @@ export const getVisibleAccountsInMenu = (accounts: Account[]): Account[] =>
 export const isAccountBeingUpdated = (account: Account) =>
   account.status === STATUS_UPDATE_IN_PROGRESS;
 
-export const hasUserApprovedAccount = (account: Account, user: Member) => {
+export const hasUserApprovedAccount = (account: Account, user: User) => {
   const approvals = account.approvals.filter(
     approval => approval.type === APPROVE,
   );

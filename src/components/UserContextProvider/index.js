@@ -2,9 +2,9 @@
 import React from "react";
 import connectData from "restlay/connectData";
 import ProfileQuery from "api/queries/ProfileQuery";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
-export const UserContext: React$Context<?Member> = React.createContext(null);
+export const UserContext: React$Context<?User> = React.createContext(null);
 
 export const withMe = (Comp: React$ComponentType<*>) => (props: Object) => (
   <UserContext.Consumer>
@@ -12,7 +12,7 @@ export const withMe = (Comp: React$ComponentType<*>) => (props: Object) => (
   </UserContext.Consumer>
 );
 
-const UserContextProvider = ({ children, me }: { children: *, me: Member }) => (
+const UserContextProvider = ({ children, me }: { children: *, me: User }) => (
   <UserContext.Provider value={me}>{children}</UserContext.Provider>
 );
 

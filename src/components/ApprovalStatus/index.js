@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import type { Member, Approval } from "data/types";
+import type { User, Approval } from "data/types";
 import { calculateApprovingObjectMeta } from "data/approvingObject";
 import colors from "shared/colors";
 import type {
@@ -21,9 +21,9 @@ const styles = {
 
 class ApprovalStatus extends PureComponent<{
   approved: Approval[],
-  approvers: Member[],
+  approvers: User[],
   nbRequired: number,
-  user: Member,
+  user: User,
   approvingObject?: ApprovingObject,
   classes: Object,
 }> {
