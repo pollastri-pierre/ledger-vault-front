@@ -35,5 +35,5 @@ export default class SearchUsersQuery extends ConnectionQuery<Input, Node> {
 
   size = 30;
 
-  nodeSchema = schema.Member;
+  nodeSchema = schema.User;
 }

@@ -5,7 +5,7 @@ import { storiesOf } from "@storybook/react";
 import styled from "styled-components";
 
 import {
-  genMembers,
+  genUsers,
   genAccounts,
   genOperations,
   genGroups,
@@ -15,10 +15,10 @@ import { GroupsTable, AccountsTable, OperationsTable } from "components/Table";
 import { action } from "@storybook/addon-actions";
 import Card from "components/base/Card";
 
-const members = genMembers(20);
-const accounts = genAccounts(10, { members });
-const operations = genOperations(25, { accounts, members });
-const groups = genGroups(10, { members });
+const users = genUsers(20);
+const accounts = genAccounts(10, { users });
+const operations = genOperations(25, { accounts, users });
+const groups = genGroups(10, { users });
 
 storiesOf("tables", module)
   .add("AccountsTable", () => (

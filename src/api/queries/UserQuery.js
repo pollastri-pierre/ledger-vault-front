@@ -11,5 +11,5 @@ type Response = User;
 export default class UserQuery extends Query<Input, Response> {
   uri = `/people/${this.props.userID}`;
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 }

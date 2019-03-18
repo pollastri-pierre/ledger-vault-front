@@ -11,11 +11,11 @@ import schema from "data/schema";
 import Modal from "components/base/Modal";
 import AccountCreationFlow from "components/AccountCreationFlow";
 
-import { genAccounts, genMembers, genGroups } from "data/mock-entities";
+import { genAccounts, genUsers, genGroups } from "data/mock-entities";
 
-const members = genMembers(20);
-const accounts = genAccounts(10, { members });
-const groups = genGroups(3, { members });
+const users = genUsers(20);
+const accounts = genAccounts(10, { users });
+const groups = genGroups(3, { users });
 
 const fakeNetwork = async url => {
   await delay(1e3);
@@ -26,11 +26,11 @@ const fakeNetwork = async url => {
     return accounts;
   }
   if (url.startsWith("/people")) {
-    return wrapConnection(members);
+    return wrapConnection(users);
   }
   if (url === "/groups") {
     return denormalize(groups.map(g => g.id), [schema.Group], {
-      members: keyBy(members, "id"),
+      users: keyBy(users, "id"),
       groups: keyBy(groups, "id"),
     });
   }

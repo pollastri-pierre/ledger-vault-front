@@ -10,5 +10,5 @@ type Response = User[];
 export default class ApproversQuery extends Query<Input, Response> {
   uri = "/organization/approvers";
 
-  responseSchema = [schema.Member];
+  responseSchema = [schema.User];
 }

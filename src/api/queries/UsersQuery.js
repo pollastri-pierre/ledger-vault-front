@@ -34,5 +34,5 @@ export default class UsersQuery extends ConnectionQuery<Input, Response> {
 
   size = 30;
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 }

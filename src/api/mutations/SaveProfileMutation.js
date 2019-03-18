@@ -18,7 +18,7 @@ export default class SaveProfileMutation extends Mutation<Input, Response> {
 
   method = "PUT";
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 
   getSuccessNotification() {
     return success("profile", "updated");

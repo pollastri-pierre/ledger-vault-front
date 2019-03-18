@@ -11,7 +11,7 @@ type Response = User;
 export default class ProfileQuery extends Query<Input, Response> {
   uri = "/people/me";
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 
   logoutUserIfStatusCode = 403;
 }
