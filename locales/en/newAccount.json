@@ -14,7 +14,7 @@
   "currency": {
     "label": "Crypto asset",
     "placeholder": "Search for a crypto asset or a token",
-    "tabTitle": "currency"
+    "tabTitle": "Crypto asset"
   },
   "erc20": {
     "createNew": "Create a new read-only Ethereum account",
@@ -25,21 +25,21 @@
     "selectExisting": "Select an existing Ethereum account"
   },
   "errors": {
-    "approvals_exceed": "Number of approvals cannot exceed number of members.",
+    "approvals_exceed": "The number of approvals cannot exceed the number of members.",
     "no_currency_found": "No crypto asset {{inputValue}}"
   },
   "options": {
     "acc_name_placeholder": "Enter account name",
     "name": "name",
-    "parentName": "Parent account name",
-    "selectedParent": "Selected ETH account",
+    "parentName": "Parent Ethereum account name",
+    "selectedParent": "Selected Ethereum account",
     "title": "name"
   },
   "search": {
     "extraERC20":
       "<0>{{erc20Count}}</0> crypto assets and tokens available"
   },
-  "not_supported": "Support suspended due to hard fork",
+  "not_supported": "Support suspended due to a hard fork",
   "security": {
     "account_members": "Account members",
     "approvals": "Approvals",
@@ -49,7 +49,7 @@
       "You must select at least <0>2</0> members",
     "approvals_amount": "Amount",
     "approvals_desc":
-      "Define the number of approvals required before operations created in this account are broadcasted to the blockchain.",
+      "Define the number of approvals required before operations created in this account are broadcasted to the blockchain network.",
     "approvals_from": "approvals from {{count}} members",
     "members": "Members",
     "members_desc":
