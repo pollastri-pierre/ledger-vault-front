@@ -7,8 +7,12 @@ import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import { FaSort } from "react-icons/fa";
 
 import Text from "components/base/Text";
+import Box from "components/base/Box";
+import colors from "shared/colors";
+
 import type { TableDefinition, TableItem } from "./types";
 
 type TableHeaderProps = {
@@ -85,6 +89,11 @@ class HeaderCellComponent extends PureComponent<Props> {
             onClick={this.handleChangeSort}
           >
             {item.header.label}
+            {(!order || orderBy !== item.body.prop) && (
+              <Box ml={5}>
+                <FaSort color={colors.lightGrey} />
+              </Box>
+            )}
           </TableSortLabel>
         ) : (
           <Text>{item.header.label}</Text>
