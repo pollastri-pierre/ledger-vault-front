@@ -2,13 +2,13 @@
   "title": "New account",
   "steps": {
     "chooseCurrencyOrToken": {
-      "title": "Currency"
+      "title": "Crypto asset"
     },
     "name": {
       "title": "Name"
     },
     "rules": {
-      "title": "Rules"
+      "title": "Transaction rules"
     },
     "confirmation": {
       "title": "Confirmation"
