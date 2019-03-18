@@ -5,7 +5,8 @@
       "title": "Crypto asset"
     },
     "name": {
-      "title": "Name"
+      "title": "Name",
+      "warning": "Make sure you're satisfied with this account name as it can't be edited after creation."
     },
     "rules": {
       "title": "Transaction rules"
