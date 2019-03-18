@@ -9,7 +9,7 @@
     "desc":
       "An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.",
     "fees": "Confirmation Fees",
-    "identifier": "Transaction ID",
+    "identifier": "Recipient address",
     "total": "Total Amount",
     "totalERC20Info": "Excluding confirmation fees"
   },
