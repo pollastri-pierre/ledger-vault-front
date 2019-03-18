@@ -1,15 +1,15 @@
 {
   "confirmation": {
     "desc":
-      "A Operation Request will be sent to the members of the account. This operation won't be broadcasted to the blockchain before they approve it."
+      "A Operation Request will be sent to the members of the account. This operation won't be broadcasted to the blockchain network before they approve it."
   },
   "details": {
     "account": "Account",
-    "confirmation_fee": "Confirmation Fees",
-    "date": "Requested",
-    "gas_limit": "Gas Limit",
+    "confirmation_fee": "Confirmation fees",
+    "date": "Created on",
+    "gas_limit": "Gas limit",
     "gas_price": "Gas price",
-    "identifier": "Recipient",
+    "identifier": "Recipient address",
     "total": "Total amount"
   },
   "label": { "add_comment": "Add a comment", "title_note": "Label" },
