@@ -6,7 +6,7 @@
     "copy": "Copy",
     "date": "Sent date",
     "fees": "Fees",
-    "identifier": "Transaction ID",
+    "identifier": "Recipient address",
     "status": "Status",
     "total": "Total amount"
   },
