@@ -7,7 +7,7 @@
   },
   "header": "Account Settings",
   "operationRules": {
-    "approvals": "Required approvals",
-    "title": "Operation rules"
+    "approvals": "Approval workflow",
+    "title": "Transaction rules"
   }
 }
