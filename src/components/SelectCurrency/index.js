@@ -69,9 +69,8 @@ const buildOptions = (items: Item[]): Option[] =>
     data: item,
   }));
 
-// https://ledgerhq.atlassian.net/browse/LV-991
-// We now want to have testnet always
-const INCLUDE_DEV = true;
+// We now want to never have testnet 🙃 (see history)
+const INCLUDE_DEV = false;
 // const INCLUDE_DEV =
 //   process.env.NODE_ENV === "development" ||
 //   process.env.NODE_ENV === "e2e" ||
