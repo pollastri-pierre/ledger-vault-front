@@ -4,6 +4,7 @@ import type { Match } from "react-router-dom";
 import ModalRoute from "components/ModalRoute";
 import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
+import AccountCreationFlow from "components/AccountCreationFlow";
 
 type Props = {
   match: Match,
@@ -24,6 +25,11 @@ class Modals extends PureComponent<Props> {
               <GroupDetails {...props} />
             )
           }
+        />
+        <ModalRoute
+          path="*/accounts/new"
+          component={AccountCreationFlow}
+          disableBackdropClick
         />
       </Fragment>
     );

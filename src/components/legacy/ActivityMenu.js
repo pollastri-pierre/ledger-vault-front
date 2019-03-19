@@ -1,8 +1,6 @@
 // @flow
 import MarkActivityAsReadMutation from "api/mutations/MarkActivityAsReadMutation";
-import { translate } from "react-i18next";
 import { FaRegBell } from "react-icons/fa";
-import type { Translate } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ClearActivityMutation from "api/mutations/ClearActivityMutation";
 import ActivityQuery from "api/queries/ActivityQuery";
@@ -13,8 +11,8 @@ import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import io from "socket.io-client";
-import PopBubble from "../utils/PopBubble";
-import ActivityList from "../legacy/ActivityList";
+import PopBubble from "components/utils/PopBubble";
+import ActivityList from "components/legacy/ActivityList";
 
 const styles = {
   base: {
@@ -38,7 +36,13 @@ const styles = {
     marginBottom: 5,
   },
   clickable: {
+    color: "#ccc",
+    paddingLeft: 10,
+    paddingRight: 10,
+    display: "flex",
+    alignItems: "center",
     "&:hover": {
+      color: "white",
       cursor: "pointer",
     },
   },
@@ -54,13 +58,12 @@ const styles = {
   },
 };
 
-class ActivityCard extends Component<
+class ActivityMenu extends Component<
   {
     activities?: *,
     onNewActivity: Function,
     restlay?: RestlayEnvironment,
     loading?: boolean,
-    t: Translate,
     classes: { [_: $Keys<typeof styles>]: string },
     match: *,
   },
@@ -103,7 +106,7 @@ class ActivityCard extends Component<
     this.setState({ bubbleOpened: false });
   };
 
-  onClickActivityCard = (/* event: * */) => {
+  onClickActivityMenu = (/* event: * */) => {
     this.setState(state => ({
       bubbleOpened: !state.bubbleOpened,
     }));
@@ -130,7 +133,7 @@ class ActivityCard extends Component<
   };
 
   render() {
-    const { classes, activities, loading, match, t } = this.props;
+    const { classes, activities, loading, match } = this.props;
     const { bubbleOpened } = this.state;
     const unseenActivityCount = activities
       ? activities.reduce(
@@ -145,15 +148,12 @@ class ActivityCard extends Component<
     return (
       <span className={classes.clickable}>
         <div
-          onClick={this.onClickActivityCard}
+          onClick={this.onClickActivityMenu}
           ref={this.onActivityRef}
           className={classes.base}
         >
           <FaRegBell size={18} />
           {!!unseenActivityCount && <div className={classes.bullet} />}
-          <div className="content-header-button-text">
-            {t("actionBar:activity")}
-          </div>
         </div>
 
         <PopBubble
@@ -182,20 +182,18 @@ class ActivityCard extends Component<
   }
 }
 
-const RenderLoading = withStyles(styles)(
-  translate()(({ classes, match, ...props }) => (
-    <ActivityCard
-      loading
-      classes={classes}
-      match={match}
-      onNewActivity={() => ({})}
-      {...props}
-    />
-  )),
-);
+const RenderLoading = withStyles(styles)(({ classes, match, ...props }) => (
+  <ActivityMenu
+    loading
+    classes={classes}
+    match={match}
+    onNewActivity={() => ({})}
+    {...props}
+  />
+));
 
 export default withStyles(styles)(
-  connectData(translate()(ActivityCard), {
+  connectData(ActivityMenu, {
     RenderLoading,
     queries: {
       activities: ActivityQuery,
