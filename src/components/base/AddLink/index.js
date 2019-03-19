@@ -1,8 +1,8 @@
 // @flow
 
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { FaPlus } from "react-icons/fa";
+import Button from "components/base/Button";
 
 export default ({
   onClick,
@@ -11,8 +11,7 @@ export default ({
   onClick: () => void,
   children: *,
 }) => (
-  <Button onClick={onClick} color="primary" variant="outlined">
-    <FaPlus style={{ marginRight: 10 }} />
+  <Button onClick={onClick} type="submit" IconLeft={FaPlus} size="small">
     {children}
   </Button>
 );
