@@ -19,6 +19,11 @@ type Props = {
   restlay: RestlayEnvironment,
 };
 
+const inputProps = {
+  maxLength: 19,
+  onlyAscii: true,
+};
+
 class UserDetailsOverview extends PureComponent<Props> {
   updateUserInfo = async (user_info: Object) => {
     const { user, restlay } = this.props;
@@ -58,6 +63,7 @@ class UserDetailsOverview extends PureComponent<Props> {
             <EditableField
               value={user.username}
               onChange={this.updateUsername}
+              inputProps={inputProps}
             />
           ) : (
             user.username

@@ -11,6 +11,7 @@ import colors from "shared/colors";
 type Props = {
   value: string,
   onChange: string => void,
+  inputProps?: Object,
 };
 type State = {
   editMode: boolean,
@@ -48,7 +49,7 @@ class EditableField extends PureComponent<Props, State> {
 
   render() {
     const { editMode, localValue } = this.state;
-    const { value } = this.props;
+    const { value, inputProps } = this.props;
     return (
       <Box horizontal align="center" flow={10}>
         {!editMode ? (
@@ -72,6 +73,7 @@ class EditableField extends PureComponent<Props, State> {
                 onClick={this.onConfirm}
               />
             }
+            {...inputProps}
           />
         )}
       </Box>

@@ -94,6 +94,7 @@ class InviteUserForm extends PureComponent<Props, State> {
             placeholder={t("inviteUser:form.placeholderUsername")}
             fullWidth
             maxLength={19}
+            onlyAscii
             InputProps={{
               endAdornment: !!request_id && (
                 <InputAdornment position="end">
