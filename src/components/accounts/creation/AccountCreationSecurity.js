@@ -1,12 +1,12 @@
 // @flow
-
 import React from "react";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { State as AccountCreationState } from "redux/modules/account-creation";
-import type { Translate } from "data/types";
+import type { Account, Translate } from "data/types";
 
+import Disabled from "components/Disabled";
 import SecurityRow from "../../SecurityRow";
 import ValidateBadge from "../../icons/full/ValidateBadge";
 import PeopleFull from "../../icons/full/People";
@@ -37,30 +37,52 @@ const styles = {
 type Props = {
   accountCreationState: AccountCreationState,
   switchInternalModal: Function,
+  allAccounts: Account[],
   t: Translate,
   classes: Object
 };
 
 function AccountCreationSecurity(props: Props) {
-  const { accountCreationState, switchInternalModal, classes, t } = props;
+  const {
+    accountCreationState,
+    switchInternalModal,
+    classes,
+    allAccounts,
+    t
+  } = props;
+
+  const parentAccount = allAccounts.find(
+    a =>
+      accountCreationState.parent_account &&
+      accountCreationState.parent_account.id &&
+      a.id === accountCreationState.parent_account.id
+  );
+
+  // members disabled if parent account has already governance rules
+  const isMembersDisabled = parentAccount && parentAccount.members.length;
+
   return (
     <div className={classes.base}>
       <h4>{t("newAccount:security.scheme")}</h4>
       <h5>{t("newAccount:security.account_members")}</h5>
       <div className="security-members">
-        <SecurityRow
-          icon={<PeopleFull className={classes.icon} />}
-          label={t("newAccount:security.members")}
-          onClick={() => switchInternalModal("members")}
-        >
-          {accountCreationState.approvers.length > 0
-            ? `${accountCreationState.approvers.length} selected`
-            : t("common:none")}
-        </SecurityRow>
+        <Disabled disabled={isMembersDisabled}>
+          <SecurityRow
+            icon={<PeopleFull className={classes.icon} />}
+            label={t("newAccount:security.members")}
+            onClick={() => switchInternalModal("members")}
+          >
+            {accountCreationState.approvers.length > 0
+              ? `${accountCreationState.approvers.length} selected`
+              : t("common:none")}
+          </SecurityRow>
+        </Disabled>
         <SecurityRow
           icon={<ValidateBadge className={classes.icon} />}
           label={t("newAccount:security.approvals")}
-          disabled={accountCreationState.approvers.length === 0}
+          disabled={
+            !isMembersDisabled && accountCreationState.approvers.length === 0
+          }
           onClick={() => switchInternalModal("approvals")}
         >
           {accountCreationState.quorum > 0

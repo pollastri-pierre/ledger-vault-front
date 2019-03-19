@@ -1,0 +1,10 @@
+---
+header: Account Settings
+general:
+  title: General
+  name: Account name
+  exchange: Rate Provider
+  units: Units
+operationRules:
+  title: Operation rules
+  approvals: Required approvals

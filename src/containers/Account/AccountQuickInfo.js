@@ -7,26 +7,32 @@ import { isAccountOutdated } from "utils/accounts";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
+import AccountSettings from "components/AccountSettings";
+import ModalRoute from "components/ModalRoute";
 import { Trans } from "react-i18next";
 import colors from "shared/colors";
 import React, { Component, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { FaWrench } from "react-icons/fa";
 import type { Account, Member } from "data/types";
 import AccountWarning from "./AccountWarning";
 
 const row = {
   base: {
-    lineHeight: "24px"
+    lineHeight: "24px",
+    display: "flex",
+    flexDirection: "row"
   },
   label: {
     fontSize: 12,
     textTransform: "uppercase",
     fontWeight: 600,
-    color: "#424141"
+    color: colors.shark
   },
   value: {
     fontSize: 13,
-    color: "#585858"
+    color: colors.shark,
+    marginLeft: 5
   }
 };
 const Row = withStyles(row)(
@@ -36,11 +42,11 @@ const Row = withStyles(row)(
     classes
   }: {
     label: string,
-    value: *,
+    value: React$Node,
     classes: { [_: $Keys<typeof row>]: string }
   }) => (
     <div className={classes.base}>
-      <span className={classes.label}>{label}: </span>
+      <span className={classes.label}>{label}:</span>
       <span className={classes.value}>{value}</span>
     </div>
   )
@@ -69,6 +75,12 @@ const styles = {
     cursor: "pointer",
     textDecoration: "underline",
     color: colors.ocean
+  },
+  settingsIcon: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    padding: 30
   }
 };
 type Props = {
@@ -137,6 +149,10 @@ class AccountQuickInfo extends Component<Props, State> {
     );
   };
 
+  AccountSettings = props => (
+    <AccountSettings account={this.props.account} {...props} />
+  );
+
   render() {
     const { account, classes, me } = this.props;
     const { modalMembersOpen } = this.state;
@@ -145,13 +161,27 @@ class AccountQuickInfo extends Component<Props, State> {
     const token = isERC20
       ? getERC20TokenByContractAddress(account.contract_address)
       : null;
-
     return (
       <Fragment>
+        <ModalRoute
+          path="*/account-settings"
+          component={this.AccountSettings}
+        />
+
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
           {this.renderListMember()}
         </BlurDialog>
         <Card title={<AccountTitle account={account} />}>
+          {!isERC20 && (
+            <div className={classes.settingsIcon}>
+              <Link
+                to={`${location.pathname}/account-settings`}
+                className="content-header-button"
+              >
+                <FaWrench color={colors.lightGrey} />
+              </Link>
+            </div>
+          )}
           <div className={classes.base}>
             <div>
               {isERC20 ? (

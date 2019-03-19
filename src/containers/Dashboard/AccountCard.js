@@ -2,12 +2,11 @@
 import React, { Component } from "react";
 import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
-import BadgeCurrency from "components/BadgeCurrency";
 import Card from "components/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "@material-ui/core/styles";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
+import AccountName from "components/AccountName";
 
 const styles = {
   card: {
@@ -45,8 +44,7 @@ class AccountCard extends Component<Props> {
 
     const title = (
       <div>
-        <BadgeCurrency currency={getCryptoCurrencyById(account.currency_id)} />
-        <span>{account.name}</span>
+        <AccountName account={account} />
       </div>
     );
     return (

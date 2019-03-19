@@ -37,7 +37,12 @@ function Snack(props: { message: *, classes: Object }) {
 const Error = withStyles(error)(Snack);
 const Success = withStyles(success)(Snack);
 
-function Alert(props: { children: *, open: boolean, theme: string, title: * }) {
+function Alert(props: {
+  children: *,
+  open: boolean,
+  theme: string,
+  title: React$Node
+}) {
   const { title, children, theme: themeName, ...newProps } = props;
   let iconDiv = null;
   let titleDiv = null;

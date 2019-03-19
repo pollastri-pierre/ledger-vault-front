@@ -60,3 +60,17 @@ export const getAccountCurrencyName = (account: Account) => {
   }
   return currency.name;
 };
+
+/**
+ * For now we assume that we need to filter only unsupported
+ * erc20 accounts, because of airdrops.
+ *
+ * relatable: LV-1004
+ */
+export const isSupportedAccount = (account: Account) => {
+  if (account.account_type === "ERC20") {
+    const token = getERC20TokenByContractAddress(account.contract_address);
+    return !!token;
+  }
+  return true;
+};

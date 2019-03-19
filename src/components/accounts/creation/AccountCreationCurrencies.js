@@ -4,7 +4,6 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans, translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
-import cx from "classnames";
 
 import type {
   State as AccountCreationState,
@@ -19,7 +18,15 @@ import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import ModalSubTitle from "components/operations/creation/ModalSubTitle";
-import { isERC20Token } from "utils/cryptoCurrencies";
+import {
+  isERC20Token,
+  isNotSupportedCoin,
+  getCurrencyIdFromBlockchainName
+} from "utils/cryptoCurrencies";
+import HelpLink from "components/HelpLink";
+import Text from "components/Text";
+import ExternalLink from "components/icons/ExternalLink";
+import colors from "shared/colors";
 
 const styles = {
   topMarged: {
@@ -30,10 +37,6 @@ const styles = {
     display: "flex",
     alignItems: "flex-start",
     cursor: "pointer"
-  },
-  radioContainerDisabled: {
-    opacity: 0.5,
-    pointerEvents: "none"
   },
   radioContent: {
     marginTop: 15,
@@ -71,7 +74,7 @@ const getAvailableParentsAccounts = (
       a.account_type === "Ethereum" &&
       a.currency_id ===
         // $FlowFixMe inference fail again. see up.
-        (erc20token.network_id === 3 ? "ethereum_ropsten" : "ethereum") &&
+        getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
       parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1
   );
 };
@@ -88,7 +91,11 @@ type Props = {
 class AccountCreationCurrencies extends PureComponent<Props> {
   handleChooseParentAccount = (parentAccount: ?Account) => {
     this.props.updateAccountCreationState(() => ({
-      parent_account: parentAccount ? { id: parentAccount.id } : null
+      parent_account: parentAccount ? { id: parentAccount.id } : null,
+      approvers:
+        parentAccount && parentAccount.members.length > 0
+          ? parentAccount.members.map(m => m.pub_key)
+          : []
     }));
   };
 
@@ -105,7 +112,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: item.value,
         erc20token: null,
-        currentTab: 1,
+        currentTab: isNotSupportedCoin(item.value) ? 0 : 1,
         parent_account: null
       });
     } else {
@@ -118,6 +125,12 @@ class AccountCreationCurrencies extends PureComponent<Props> {
       Object.assign(patch, {
         currency: null,
         erc20token,
+        // if parent_account has operation rules, we cannot update the members so we set the members the parent's members
+        approvers:
+          availableParentAccounts.length &&
+          availableParentAccounts[0].members.length > 0
+            ? availableParentAccounts[0].members.map(m => m.pub_key)
+            : [],
         parent_account: availableParentAccounts.length
           ? { id: availableParentAccounts[0].id }
           : null
@@ -162,6 +175,16 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             />
           )}
         />
+        {accountCreationState.currency &&
+          isNotSupportedCoin(accountCreationState.currency) && (
+            <div className={classes.topMarged}>
+              <InfoBox withIcon type="warning">
+                <Text>
+                  <Trans i18nKey="newAccount:not_supported" />
+                </Text>
+              </InfoBox>
+            </div>
+          )}
         {displayERC20Box && (
           <div className={classes.topMarged}>
             {availableParentAccounts.length > 0 ? (
@@ -172,16 +195,13 @@ class AccountCreationCurrencies extends PureComponent<Props> {
                 classes={classes}
               />
             ) : (
-              <InfoBox type="warning" withIcon>
-                {
-                  "You first need to create an Ethereum account in order to create a token account"
-                }
-                {/* TODO: PUT BACK WHEN FIXED
-                <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
-                <HelpLink>
-                  <ExternalLink color={colors.black} size={11} />
-                </HelpLink>
-                */}
+              <InfoBox withIcon type="info">
+                <Text>
+                  <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
+                  <HelpLink>
+                    <ExternalLink color={colors.ocean} size={13} />
+                  </HelpLink>
+                </Text>
               </InfoBox>
             )}
           </div>
@@ -224,10 +244,7 @@ function EthAccountsRadio({
           </div>
         </div>
       </div>
-      <div
-        className={cx(classes.radioContainer, classes.radioContainerDisabled)}
-        onClick={onChooseNull}
-      >
+      <div className={classes.radioContainer} onClick={onChooseNull}>
         <Radio color="primary" checked={account === null} />
         <div className={classes.radioContent}>
           <Trans i18nKey="newAccount:erc20.createNew" />

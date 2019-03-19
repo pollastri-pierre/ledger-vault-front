@@ -33,6 +33,12 @@ const supported: CryptoCurrencyIds[] = [
   "ethereum_testnet"
 ];
 
+const notSupportedCoin: CryptoCurrencyIds[] = ["komodo", "bitcoin_cash"];
+
+export const isNotSupportedCoin: CryptoCurrency => boolean = memoize(
+  (cur: CryptoCurrency) => notSupportedCoin.indexOf(cur.id) > -1
+);
+
 export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
   (withDevCrypto?: boolean) => {
     const list = listCC(withDevCrypto)
@@ -59,6 +65,17 @@ export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
 
 export const getCryptoCurrencyById = (id: string) =>
   id === "ethereum_ropsten" ? getCrypto("ethereum_testnet") : getCrypto(id);
+
+// the John's list gives us the blockchan_name with foundation for mainet and ropstem for testnet
+// but the gate is expecting ethereum and ethereum_ropsten
+const currencyIdByBlockchainName = {
+  foundation: "ethereum",
+  ropsten: "ethereum_ropsten"
+};
+export const getCurrencyIdFromBlockchainName = (blockchain: string) =>
+  currencyIdByBlockchainName[blockchain]
+    ? currencyIdByBlockchainName[blockchain]
+    : blockchain;
 
 export const getCryptoCurrencyIcon = (currency: CryptoCurrency) =>
   currency.id === "ethereum_ropsten"

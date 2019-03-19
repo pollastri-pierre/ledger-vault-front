@@ -8,12 +8,13 @@ module.exports = {
   testEnvironment: "node",
   testURL: "http://localhost",
   transform: {
-    "^.+\\.(js|jsx|mjs)$": "babel-jest",
+    "^.+\\.(mjs)$": "./test/mock-jest-type.js",
+    "^.+\\.(js|jsx)$": "babel-jest",
     "^.+\\.css$": "<rootDir>/test/__mocks__/cssTransform.js",
     "^(?!.*\\.(js|jsx|mjs|css|json)$)":
       "<rootDir>/test/__mocks__/fileTransform.js"
   },
-  transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"],
+  transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
   moduleNameMapper: {
     "^react-native$": "react-native-web"
   },

@@ -23,8 +23,11 @@ describe("Tests Receive address for account", function() {
     cy.url().should("include", "/dashboard/receive");
     approve();
 
-    cy.get("[data-test=receive-accounts] li:first").click();
-    cy.wait(1500);
+    //cy.get("[data-test=receive-accounts] li:first").click();
+    cy.get("[data-test=receive-accounts]")
+      .contains("bitcoin_testnet")
+      .click();
+    cy.wait(4500);
     // Verify that the QR code and the address is displayed
     cy.contains("Address for account BTC Testnet").should("be.visible");
     cy.get("canvas").should("be.visible");

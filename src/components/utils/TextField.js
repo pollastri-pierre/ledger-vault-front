@@ -18,6 +18,7 @@ function TextField(props: Props) {
   return (
     <MUITextField
       {...rest}
+      autoComplete="off"
       InputProps={{
         style: { fontSize: "13px", paddingBottom: "5px" },
         inputProps: props.inputProps

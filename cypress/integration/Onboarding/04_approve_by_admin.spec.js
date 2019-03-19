@@ -1,4 +1,7 @@
 const orga_name = Cypress.env("workspace");
+
+import { route } from "../../functions/actions.js";
+
 context("Admin Approve the registration of the Shared Owners", () => {
   let polyfill;
   before(() => {
@@ -9,18 +12,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
   });
   it("should sign in with all the admin to approve the Shared Owners", () => {
     cy.server();
-    cy.route(
-      "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`
-    ).as("next");
-    cy.route(
-      "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`
-    ).as("authenticate");
-    cy.route(
-      "get",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`
-    ).as("challenge");
+    route();
     cy.request("POST", Cypress.env("api_switch_device"), {
       device_number: 4
     });
@@ -34,8 +26,12 @@ context("Admin Approve the registration of the Shared Owners", () => {
       cy.get("input").type(orga_name);
       cy.contains("Continue").click();
       cy.wait(1000);
+
       // First Admin sign in
       cy.get(".test-onboarding-signin").click();
+      cy.wait("@get-public-key");
+      cy.wait("@open-session");
+      cy.wait("@validate-vault-operation");
       cy.wait("@authenticate");
 
       //Try to sign in with the same device, Should Display Error
@@ -54,6 +50,9 @@ context("Admin Approve the registration of the Shared Owners", () => {
       });
 
       cy.get(".test-onboarding-signin").click();
+      cy.wait("@get-public-key");
+      cy.wait("@open-session");
+      cy.wait("@validate-vault-operation");
       cy.wait("@authenticate");
 
       // finish

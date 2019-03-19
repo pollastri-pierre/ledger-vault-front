@@ -1,42 +1,35 @@
 // @flow
-import { translate } from "react-i18next";
-// import AccountsQuery from "api/queries/AccountsQuery";
-// import connectData from "restlay/connectData";
-import type { Account, Translate } from "data/types";
+import { Trans } from "react-i18next";
 import React, { Component } from "react";
-// import { Route } from "react-router";
 import { Link } from "react-router-dom";
+import type { Match, Location } from "react-router-dom";
+import { FaPlus, FaQuestionCircle } from "react-icons/fa";
 import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
+import { urls } from "utils/urls";
 import Logo from "components/Logo";
-import { getAccountsInSettings } from "utils/accounts";
+import Text from "components/Text";
 import ProfileCard from "./ProfileCard";
 import ActivityCard from "./ActivityCard";
 import ModalRoute from "../ModalRoute";
 import AccountCreation from "../accounts/creation/AccountCreation";
-import SettingsModal from "../SettingsModal";
-import Plus from "../icons/full/Plus";
-// import Share from "../icons/full/Share";
-import Settings from "../icons/full/Settings";
-import Question from "../icons/full/Question";
 
+// NOTE: more refactor to do, might be a part of general layout refactor
 const styles = {
   base: {
-    height: "200px",
+    height: 200,
     background: colors.night,
-    color: "white",
+    color: colors.white,
     position: "relative"
   },
   header: {
-    marginLeft: "280px",
-    padding: "54px 38px 0 0"
-  },
-  header_left: {
-    float: "left"
+    marginLeft: 280,
+    padding: "54px 38px 0 0",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   actions: {
-    float: "right",
-    margin: "-7px -13px",
     "& a, > span": {
       display: "inline-block",
       textDecoration: "none",
@@ -51,55 +44,42 @@ const styles = {
         opacity: "1"
       }
     }
-  },
-  icon: {
-    width: 16,
-    fill: "white",
-    marginBottom: 5
   }
 };
 
 class ActionBar extends Component<{
-  location: Object,
-  match: Object,
-  t: Translate,
-  accounts: Account[],
+  location: Location,
+  match: Match,
   classes: { [_: $Keys<typeof styles>]: string }
 }> {
   render() {
-    const { location, classes, accounts, match, t } = this.props;
-    const accountsInSettings = getAccountsInSettings(accounts);
-
+    const { location, classes, match } = this.props;
     return (
       <div className={classes.base}>
         <ProfileCard match={match} />
-        <ModalRoute path="*/new-account" component={AccountCreation} />
-        <ModalRoute path="*/settings" component={SettingsModal} />
+        <ModalRoute
+          path="*/new-account"
+          component={AccountCreation}
+          disableBackdropClick
+        />
         <div className={classes.header}>
-          <div className={classes.header_left}>
-            <Logo white />
-          </div>
+          <Logo white />
           <div className={classes.actions}>
             <Link
               className="test-new-account"
               to={`${location.pathname}/new-account`}
             >
-              <Plus className={classes.icon} />
-              <div>account</div>
+              <FaPlus size={18} />
+              <div>
+                <Trans i18nKey="actionBar:account" />
+              </div>
             </Link>
-            {accountsInSettings.length > 0 && (
-              <Link
-                to={`${location.pathname}/settings`}
-                className="content-header-button"
-              >
-                <Settings className={classes.icon} />
-                <div>{t("actionBar:settings")}</div>
-              </Link>
-            )}
             <ActivityCard match={match} />
-            <a href="https://help.vault.ledger.com">
-              <Question className={classes.icon} />
-              <div>Help</div>
+            <a href={urls.customer_support} target="new">
+              <FaQuestionCircle size={18} />
+              <Text small uppercase>
+                <Trans i18nKey="actionBar:help" />
+              </Text>
             </a>
           </div>
         </div>
@@ -108,4 +88,4 @@ class ActionBar extends Component<{
   }
 }
 
-export default withStyles(styles)(translate()(ActionBar));
+export default withStyles(styles)(ActionBar);

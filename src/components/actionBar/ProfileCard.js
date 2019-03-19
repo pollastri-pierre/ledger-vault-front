@@ -1,81 +1,64 @@
 // @flow
 import React, { Component } from "react";
-import { translate } from "react-i18next";
-import type { Member, Translate } from "data/types";
+import { Trans } from "react-i18next";
+import type { Match } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import connectData from "restlay/connectData";
 import { withStyles } from "@material-ui/core/styles";
-import { mixinHoverSelected } from "shared/common";
-import ProfileQuery from "api/queries/ProfileQuery";
 import MenuList from "@material-ui/core/MenuList";
-import ProfileIcon from "../icons/thin/Profile";
+import { FaUserCircle } from "react-icons/fa";
+
+import connectData from "restlay/connectData";
+import ProfileQuery from "api/queries/ProfileQuery";
+
+import { mixinHoverSelected } from "shared/common";
+import colors from "shared/colors";
+
+import type { Member } from "data/types";
+
+import Text from "components/Text";
+import MenuLink from "components/MenuLink";
 import PopBubble from "../utils/PopBubble";
-import ModalRoute from "../ModalRoute";
-import ProfileEditModal from "../ProfileEditModal";
-import MenuLink from "../MenuLink";
 
 const styles = {
   base: {
     ...mixinHoverSelected("white", "0px"),
     cursor: "pointer",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     textDecoration: "none",
-    height: "30px",
-    width: "280px",
-    paddingLeft: "40px",
-    marginBottom: "49px",
+    paddingLeft: 40,
+    marginBottom: 49,
     position: "absolute",
     bottom: "0",
     opacity: "1"
   },
-  circle: {
-    width: "30px",
-    textAlign: "center",
-    boxSizing: "border-box",
-    paddingTop: "5px",
-    height: "30px",
-    float: "left",
-    background: "#eee",
-    borderRadius: "50%"
-  },
   profile_info: {
-    position: "relative",
-    height: "100%",
-    marginLeft: "30px",
-    paddingLeft: "20px"
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: 15
   },
-  profile_name: {
-    fontSize: "13px",
-    textTransform: "capitalize",
-    lineHeight: "1em"
+  userName: {
+    textTransform: "capitalize"
   },
-  profile_view_profile: {
-    fontSize: "11px",
-    textTransform: "uppercase",
-    opacity: ".5",
-    fontWeight: "600",
-    position: "absolute",
-    bottom: "0",
-    lineHeight: "1em",
-    transition: "opacity .2s ease"
-  },
-  link: {
-    color: "black",
-    textTransform: "uppercase"
+  userRole: {
+    color: colors.lead
   },
   popover: {
-    paddingLeft: 0
+    paddingLeft: 0,
+    marginLeft: 50
   }
 };
 
-class ProfileCard extends Component<
-  {
-    profile: Member,
-    t: Translate,
-    classes: { [_: $Keys<typeof styles>]: string },
-    match: *
-  },
-  *
-> {
+type Props = {
+  profile: Member,
+  classes: { [_: $Keys<typeof styles>]: string },
+  match: Match
+};
+type State = {
+  bubbleOpened: boolean
+};
+class ProfileCard extends Component<Props, State> {
   state = {
     bubbleOpened: false
   };
@@ -90,44 +73,39 @@ class ProfileCard extends Component<
     this.setState({ bubbleOpened: false });
   };
 
-  onClickProfileCard = (/* event: * */) => {
+  onClickProfileCard = () => {
     this.setState(state => ({
       bubbleOpened: !state.bubbleOpened
     }));
   };
 
   render() {
-    const { profile, match, classes, t } = this.props;
+    const { profile, match, classes } = this.props;
     const { bubbleOpened } = this.state;
     return (
-      <span>
-        <span
+      <div>
+        <div
           className={classes.base}
           onClick={this.onClickProfileCard}
           ref={this.onProfileRef}
         >
-          <div className={classes.circle}>
-            {profile.picture ? (
-              <img src={profile.picture} alt="" />
-            ) : (
-              <ProfileIcon />
-            )}
-          </div>
+          <FaUserCircle size={30} />
           <div className={classes.profile_info}>
-            <div className={classes.profile_name}>{profile.username}</div>
-            <div
-              className={classes.profile_view_profile}
+            <Text className={classes.userName}>{profile.username}</Text>
+            <Text
+              small
+              uppercase
+              bold
+              className={classes.userRole}
               data-test="view-profile"
             >
-              {t("actionBar:view_profile")}
-            </div>
+              {profile.role || "Administrator"}
+            </Text>
           </div>
-        </span>
-
+        </div>
         <PopBubble
           className="MuiPopover-triangle-left"
           classes={{ paper: classes.popover }}
-          style={{ marginLeft: "50px" }}
           anchorEl={this.anchorEl}
           open={bubbleOpened}
           onClose={this.onCloseBubble}
@@ -136,17 +114,19 @@ class ProfileCard extends Component<
           <div onClick={this.onCloseBubble}>
             <MenuList>
               <MenuLink
-                to={`/${match.params.orga_name}/logout`}
+                to={
+                  match.params.orga_name && `/${match.params.orga_name}/logout`
+                }
                 data-test="logout"
               >
-                <span className={classes.link}>{t("actionBar:logout")}</span>
+                <Text small uppercase bold>
+                  <Trans i18nKey="actionBar:logout" />
+                </Text>
               </MenuLink>
             </MenuList>
           </div>
         </PopBubble>
-
-        <ModalRoute path="*/profile-edit" component={ProfileEditModal} />
-      </span>
+      </div>
     );
   }
 }
@@ -157,7 +137,7 @@ const RenderLoading = withStyles(styles)(({ classes }) => (
   </div>
 ));
 
-export default connectData(withStyles(styles)(translate()(ProfileCard)), {
+export default connectData(withStyles(styles)(ProfileCard), {
   RenderLoading,
   queries: {
     profile: ProfileQuery

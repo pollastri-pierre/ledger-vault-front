@@ -23,8 +23,6 @@ jobs:
       - restore_cache:
           keys:
             - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - node-v2-{{ .Branch }}-
-            - node-v2-
       - run:
           name: Install dependencies
           command: npm install

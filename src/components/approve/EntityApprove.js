@@ -3,7 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
-import { addMessage } from "redux/modules/alerts";
+import { InvalidDataDevice, NoChannelForDevice } from "utils/errors";
+import { addError } from "redux/modules/alerts";
 import connectData from "restlay/connectData";
 import StepDeviceGeneric from "containers/Onboarding/StepDeviceGeneric";
 import createDevice, {
@@ -30,7 +31,7 @@ type Props = {
   history: *,
   match: *,
   restlay: *,
-  onAddMessage: (string, string, string) => void,
+  onAddErrorMessage: Error => void,
   entity: string
 };
 
@@ -72,6 +73,9 @@ class EntityApprove extends Component<Props, State> {
       const device = await await createDevice();
       const { pubKey } = await device.getPublicKey(U2F_PATH, false);
       const channel = operation[pubKey.toUpperCase()];
+      if (!channel) {
+        throw new NoChannelForDevice();
+      }
       const ephemeral_public_key = channel.ephemeral_public_key;
       const certificate_attestation = channel.certificate_attestation;
 
@@ -113,14 +117,14 @@ class EntityApprove extends Component<Props, State> {
       this.close();
     } catch (e) {
       console.error(e);
-      if (e.statusCode && e.statusCode === INVALID_DATA) {
-        this.props.onAddMessage(
-          "Invalid data",
-          "Invalid data sent to the device.",
-          "error"
-        );
+      if (e instanceof NoChannelForDevice) {
+        this.props.onAddErrorMessage(e);
       }
-      this.close();
+      if (e.statusCode && e.statusCode === INVALID_DATA) {
+        const error = new InvalidDataDevice();
+        this.props.onAddErrorMessage(error);
+      }
+      this.setState({ isDevice: false });
     }
   };
 
@@ -200,10 +204,9 @@ class EntityApprove extends Component<Props, State> {
   }
 }
 
-const mapDispatch = (dispatch: *) => ({
-  onAddMessage: (title, message, type) =>
-    dispatch(addMessage(title, message, type))
-});
+const mapDispatch = {
+  onAddErrorMessage: addError
+};
 
 export { EntityApprove };
 export default connect(

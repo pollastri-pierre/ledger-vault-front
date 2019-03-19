@@ -138,7 +138,6 @@ class OnboardingContainer extends Component<Props, State> {
       match,
       history
     } = this.props;
-
     if (!onboarding.state) {
       return <SpinnerCard />;
     }
@@ -155,7 +154,9 @@ class OnboardingContainer extends Component<Props, State> {
           </div>
           <Menu
             nbMember={onboarding.registering.admins.length}
-            nbSharedOwner={onboarding.sharedOwners.length}
+            nbSharedOwner={
+              onboarding.registering_shared_owner.sharedOwners.length
+            }
             onboarding={onboarding}
           />
           <div className={classes.content}>
@@ -196,7 +197,7 @@ class OnboardingContainer extends Component<Props, State> {
             )}
             {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
             {onboarding.state === "SHARED_OWNER_REGISTRATION" && (
-              <SharedOwnerRegistration />
+              <SharedOwnerRegistration history={history} />
             )}
             {onboarding.state === "SHARED_OWNER_VALIDATION" && (
               <SharedOwnerValidation />

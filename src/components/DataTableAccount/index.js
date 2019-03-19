@@ -7,7 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 import DataTable from "components/DataTable";
 import AccountName from "components/AccountName";
 import DateFormat from "components/DateFormat";
+import AccountStatus from "components/AccountStatus";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Text from "components/Text";
 
 type Cell = {
   account: Account
@@ -33,7 +35,11 @@ class AccountColumn extends Component<Cell> {
 class StatusColumn extends Component<Cell> {
   render() {
     const { account } = this.props;
-    return account.status;
+    return (
+      <Text uppercase>
+        <AccountStatus account={account} />
+      </Text>
+    );
   }
 }
 

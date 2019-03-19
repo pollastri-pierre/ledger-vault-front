@@ -6,26 +6,21 @@ const styles = {
       textDecoration: "none"
     }
   },
-  headerBlack: {
-    fontSize: "22px",
-    color: "#000",
-    letterSpacing: "-.9px",
-    lineHeight: "1.5"
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   header: {
-    margin: "0",
-    "& span:last-child": {
-      float: "right"
-    }
+    fontSize: 22,
+    color: colors.black,
+    lineHeight: 1.5
   },
-  headerLight: {
-    fontSize: "10px",
-    fontWeight: "600",
-    lineHeight: "3",
+  subHeader: {
+    fontWeight: 600,
+    lineHeight: 3,
     textTransform: "uppercase",
-    color: "#999",
-    paddingBottom: "23px",
-    borderBottom: "1px solid #eee"
+    color: colors.lead
   },
   row: {
     cursor: "pointer",
@@ -50,36 +45,38 @@ const styles = {
       width: 5
     }
   },
+  dateContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
   date: {
-    fontSize: "10px",
-    color: "#000",
+    fontSize: 10,
+    color: colors.black,
     textTransform: "uppercase",
     fontWeight: "600",
-    lineHeight: "2.3"
+    lineHeight: 2.3
   },
   name: {
-    float: "right",
-    fontSize: "13px",
-    color: "#000",
-    lineHeight: "1.77"
+    color: colors.black
   },
   status: {
-    fontSize: "11px",
-    color: "#999",
-    lineHeight: "2.09"
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    fontSize: 11,
+    color: colors.lead,
+    lineHeight: 2.09
   },
   currency: {
-    float: "right",
-    fontSize: "11px",
-    color: "#999",
+    color: colors.lead,
     textTransform: "uppercase",
-    fontWeight: "600",
-    lineHeight: "2.09",
-    "&.center": {
-      position: "absolute",
-      left: "40%",
-      top: "12px"
-    }
+    fontWeight: "600"
+  },
+  operationDetailsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 };
 

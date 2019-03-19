@@ -1,7 +1,8 @@
 ---
 balance: Balance
 countervalue: Countervalue
-approved: The operation rules of this account have already been submitted and you now need to approve the creation of the account. Go to the *Pending* page, review the account's details, and approve it.
+erc20NoCountervalue: There is no countervalue available for this ERC20 token
+approved: The operation rules of this account have already been submitted and you now need to approve the creation of the account. Go to the <0>Pending</0> page, review the account's details, and approve it.
 approved_still_pending: You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.
 receive:
   title: Receive funds
@@ -29,4 +30,3 @@ view_only_provide_rules: provide operations rules
 members_modal:
   title: Members
   toggle: See members
-
