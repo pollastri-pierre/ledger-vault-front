@@ -4,7 +4,7 @@ import CounterValues from "components/CounterValues";
 import DateFormat from "components/DateFormat";
 import { translate } from "react-i18next";
 import Card from "components/legacy/Card";
-import type { Account, Member, Translate } from "data/types";
+import type { Account, User, Translate } from "data/types";
 import CardField from "components/CardField";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -23,7 +23,7 @@ type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   t: Translate,
   accounts: Array<Account>,
-  members: Member[],
+  members: User[],
   reloading: *,
 };
 

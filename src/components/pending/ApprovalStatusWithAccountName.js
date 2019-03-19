@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import type { Account, Operation, Member } from "data/types";
+import type { Account, Operation, User } from "data/types";
 import Text from "components/base/Text";
 import AccountName from "../AccountName";
 import ApprovalStatus from "../ApprovalStatus";
@@ -27,7 +27,7 @@ class ApprovalStatusWithAccountName extends Component<{
   account: Account,
   operation: Operation,
   classes: { [_: $Keys<typeof styles>]: string },
-  user: Member,
+  user: User,
 }> {
   render() {
     const { operation, account, user, classes } = this.props;

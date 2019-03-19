@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import colors from "shared/colors";
 import styled from "styled-components";
 import Box from "components/base/Box";
@@ -17,7 +17,7 @@ class MemberRow extends Component<{
   onSelect?: (pub_key: string) => void,
   checked?: boolean,
   editable?: boolean,
-  member: Member,
+  member: User,
 }> {
   onClick = () => {
     const { onSelect } = this.props;

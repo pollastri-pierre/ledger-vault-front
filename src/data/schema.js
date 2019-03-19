@@ -3,9 +3,9 @@ import { create } from "restlay/SchemaDef";
 
 // The schema defines how entities connect to each other in the API model
 
-const Member = create("members");
+const User = create("users");
 const Group = create("groups", {
-  members: [Member],
+  members: [User],
 });
 
 const Currency = create("currencies", {}, "name");
@@ -19,7 +19,7 @@ const Activity = create(
   "activities",
   {
     business_action: {
-      author: Member,
+      author: User,
     },
   },
   "id",
@@ -30,7 +30,7 @@ const Operation = create(
   {
     notes: [
       {
-        author: Member,
+        author: User,
       },
     ],
   },
@@ -41,7 +41,7 @@ const Balance = create("balance");
 
 export default {
   Group,
-  Member,
+  User,
   Currency,
   Account,
   Operation,

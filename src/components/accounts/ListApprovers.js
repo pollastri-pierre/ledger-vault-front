@@ -10,7 +10,7 @@ import UsersQuery from "api/queries/UsersQuery";
 import ModalLoading from "components/ModalLoading";
 import MemberRow from "components/MemberRow";
 import DialogButton from "components/buttons/DialogButton";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 import colors from "shared/colors";
 
@@ -35,8 +35,8 @@ const SelectedCounter = ({ count }: { count: number }) => (
 
 class ListApprovers extends Component<{
   goBack: Function,
-  users: Connection<Member>,
-  approvers: Member[],
+  users: Connection<User>,
+  approvers: User[],
   addApprover: Function,
 }> {
   render() {

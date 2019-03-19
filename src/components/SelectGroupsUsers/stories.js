@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { Fragment, Component } from "react";
 import { storiesOf } from "@storybook/react";
-import { genMembers } from "data/mock-entities";
+import { genUsers } from "data/mock-entities";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 
-const members = genMembers(10);
+const members = genUsers(10);
 const group1 = { id: 1, name: "group A", members };
 const group2 = { id: 2, name: "group B", members };
 

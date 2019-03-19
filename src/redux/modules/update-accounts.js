@@ -1,5 +1,5 @@
 // @flow
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 
 const TOGGLE = "UPDATE-ACCOUNTS/TOGGLE";
 const SELECT_ACCOUNT = "UPDATE-ACCOUNTS/SELECT-ACCOUNT";
@@ -23,7 +23,7 @@ export const selectAccount = (account: ?Account) => ({
   account,
 });
 
-export const toggleMember = (member: Member) => ({
+export const toggleMember = (member: User) => ({
   type: TOGGLE_MEMBER,
   member,
 });
@@ -55,7 +55,7 @@ type State = {
   isOpen: boolean,
   isDevice: boolean,
   isSelectingMembers: boolean,
-  members: Member[],
+  members: User[],
   quorum: number,
   isSelectingApprovals: boolean,
   account: ?Account,

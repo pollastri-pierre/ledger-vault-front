@@ -26,24 +26,24 @@ const mockSync = (uri, method) => {
       }
       case "/people-mocks/admin": {
         return denormalize(
-          Object.keys(mockEntities.members),
-          [schema.Member],
+          Object.keys(mockEntities.users),
+          [schema.User],
           mockEntities,
         ).filter(m => m.role === "admin");
       }
       case "/people-mocks/operator": {
         return denormalize(
-          Object.keys(mockEntities.members),
-          [schema.Member],
+          Object.keys(mockEntities.users),
+          [schema.User],
           mockEntities,
         ).filter(m => m.role === "operator");
       }
       default:
     }
 
-    if (/members-mock.*/.test(uri)) {
-      const edges = mockEntities.membersArray.map(key => ({
-        node: denormalize(key, schema.Member, mockEntities),
+    if (/users-mock.*/.test(uri)) {
+      const edges = mockEntities.usersArray.map(key => ({
+        node: denormalize(key, schema.User, mockEntities),
         cursor: key,
       }));
       return { edges, pageInfo: { hasNextPage: false } };
@@ -83,10 +83,10 @@ const mockSync = (uri, method) => {
       );
     }
 
-    m = /^\/member-mock\/([^/]+)$/.exec(uri);
+    m = /^\/user-mock\/([^/]+)$/.exec(uri);
     if (m) {
-      const member = mockEntities.members[m[1]];
-      return denormalize(member.id, schema.Member, mockEntities);
+      const user = mockEntities.users[m[1]];
+      return denormalize(user.id, schema.User, mockEntities);
     }
   }
 };

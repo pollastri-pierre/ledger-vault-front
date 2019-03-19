@@ -3,16 +3,16 @@
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import type { Group, Member } from "data/types";
+import type { Group, User } from "data/types";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
 import GroupDetailsDetails from "containers/Admin/Groups/GroupDetailsDetails";
 import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   group: Group,
-  selected: Member[],
-  operators: Connection<Member>,
-  onGroupChange: ({ groups: Group[], members: Member[] }) => void,
+  selected: User[],
+  operators: Connection<User>,
+  onGroupChange: ({ groups: Group[], members: User[] }) => void,
 };
 
 class GroupDetailsOverview extends PureComponent<Props> {

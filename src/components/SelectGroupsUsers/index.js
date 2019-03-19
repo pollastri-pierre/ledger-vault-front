@@ -6,13 +6,13 @@ import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import type { OptionProps } from "react-select/lib/types";
-import type { Member, Group } from "data/types";
+import type { User, Group } from "data/types";
 import { components } from "react-select";
 import { FaUser, FaUsers } from "react-icons/fa";
 import { MdClear, MdCheckBox, MdCheckBoxOutlineBlank } from "react-icons/md";
 
 type MemberItem = {
-  value: Member,
+  value: User,
   type: "member",
 };
 
@@ -34,12 +34,12 @@ type Option = {
 
 type Props = {
   groups: Group[],
-  members: Member[],
+  members: User[],
   value: {
-    members?: Member[],
+    members?: User[],
     groups?: Group[],
   },
-  onChange: ({ members: Member[], groups: Group[] }) => void,
+  onChange: ({ members: User[], groups: Group[] }) => void,
 };
 
 const checkedIcon = <MdCheckBox size={ICON_SIZE} />;
@@ -108,7 +108,7 @@ class SelectInGroup extends PureComponent<Props> {
       .map((o: Option) => o.data.value);
 
     // $FlowFixMe : why does flow complain ?
-    const members: Member[] = option
+    const members: User[] = option
       .filter((o: Option) => o.data.type === "member")
       .map((o: Option) => o.data.value);
 

@@ -8,7 +8,7 @@ import TryAgain from "components/TryAgain";
 import React, { Component } from "react";
 import ModalRoute from "components/ModalRoute";
 import { withStyles } from "@material-ui/core/styles";
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import connectData from "restlay/connectData";
 import { VISIBLE_MENU_STATUS } from "utils/accounts";
 import OperationModal from "components/operations/OperationModal";
@@ -36,7 +36,7 @@ const styles = {
 class AccountView extends Component<{
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
-  me: Member,
+  me: User,
   match: {
     url: string,
     params: {

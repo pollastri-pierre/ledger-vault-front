@@ -23,7 +23,7 @@ import {
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import type { Member, Translate } from "data/types";
+import type { User, Translate } from "data/types";
 import Footer from "./Footer";
 import AddMember from "./AddMember";
 
@@ -49,7 +49,7 @@ const MembersList = withStyles(membersList)(
     members,
   }: {
     classes: { [$Keys<typeof membersList>]: string },
-    members: Array<Member>,
+    members: Array<User>,
   }) => (
     <div className={classes.base}>
       {members.map((member, k) => (

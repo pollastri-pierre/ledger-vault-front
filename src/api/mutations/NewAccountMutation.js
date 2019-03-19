@@ -15,7 +15,7 @@ export default class NewAccountMutation extends Mutation<Input, Response> {
 
   method = "POST";
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 
   getSuccessNotification() {
     return success("account request", "created");

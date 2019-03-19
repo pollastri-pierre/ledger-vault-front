@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import modals from "shared/modals";
 import colors from "shared/colors";
 
-import type { Member, Translate } from "data/types";
+import type { User, Translate } from "data/types";
 
 type Validator = (value: string) => boolean;
 
@@ -95,7 +95,7 @@ export const styles = {
 };
 class ProfileEditModal extends Component<
   {
-    profile: Member,
+    profile: User,
     close: Function,
     t: Translate,
     classes: Object,

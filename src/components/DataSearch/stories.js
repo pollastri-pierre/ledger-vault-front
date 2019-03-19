@@ -9,7 +9,7 @@ import { action } from "@storybook/addon-actions";
 import {
   genAccounts,
   genGroups,
-  genMembers,
+  genUsers,
   genOperations,
 } from "data/mock-entities";
 
@@ -64,10 +64,10 @@ const AccountsSearch = props => (
 
 // --------------------------------- mock data
 
-const members = genMembers(20);
-const accounts = genAccounts(10, { members });
-const operations = genOperations(25, { accounts, members });
-const groups = genGroups(4, { members });
+const users = genUsers(20);
+const accounts = genAccounts(10, { users });
+const operations = genOperations(25, { accounts, users });
+const groups = genGroups(4, { users });
 
 const OperationsSearchStory = wrapComponent(OperationsSearch, "operations");
 const GroupsSearchStory = wrapComponent(GroupsSearch, "groups");

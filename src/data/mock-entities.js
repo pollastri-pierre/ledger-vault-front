@@ -6,7 +6,7 @@ import {
   listCryptoCurrencies,
 } from "utils/cryptoCurrencies";
 
-const FAKE_MEMBER_NAMES = [
+const FAKE_USER_NAMES = [
   "Laura Parker",
   "Mark Walker",
   "Sally Wilson",
@@ -65,22 +65,22 @@ function genCurrency() {
   return faker.random.arrayElement(listCryptoCurrencies(false));
 }
 
-function genApprovals(nb = 0, { members }) {
+function genApprovals(nb = 0, { users }) {
   const approvals = [];
-  const membersCopy = [...members];
+  const usersCopy = [...users];
   for (let i = 0; i < nb; i++) {
-    if (!membersCopy.length) continue; // eslint-disable-line no-continue
-    const approval = genApproval({ members: membersCopy });
+    if (!usersCopy.length) continue; // eslint-disable-line no-continue
+    const approval = genApproval({ users: usersCopy });
     approvals.push(approval);
-    membersCopy.splice(membersCopy.indexOf(approval.person, 1));
+    usersCopy.splice(usersCopy.indexOf(approval.person, 1));
   }
   return approvals;
 }
 
-function genApproval({ members }) {
+function genApproval({ users }) {
   return {
     created_on: faker.date.recent(),
-    person: faker.random.arrayElement(members),
+    person: faker.random.arrayElement(users),
     type: faker.random.arrayElement(["APPROVE", "ABORT"]),
   };
 }
@@ -97,14 +97,14 @@ function getUniqueRandomElements(arr, nb) {
   return out;
 }
 
-function genAccount({ members = [] } = {}) {
+function genAccount({ users = [] } = {}) {
   const currency = genCurrency();
   const accountType = currency.family === "bitcoin" ? "Bitcoin" : "Ethereum";
-  const operators = members.filter(m => m.role === "operator");
-  const administrators = members.filter(m => m.role === "admin");
+  const operators = users.filter(m => m.role === "operator");
+  const administrators = users.filter(m => m.role === "admin");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
-    members: administrators,
+    users: administrators,
   });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
   const status = approvals.find(a => a.type === "ABORT")
@@ -121,7 +121,7 @@ function genAccount({ members = [] } = {}) {
     account_type: accountType,
     contract_address: null,
     parent_id: null,
-    members: getUniqueRandomElements(operators, 3),
+    users: getUniqueRandomElements(operators, 3),
     settings: {
       blockchain_explorer: "blockchain.info",
       currency_unit: currency.units[0],
@@ -150,7 +150,7 @@ function genAccount({ members = [] } = {}) {
   };
 }
 
-function genMember() {
+function genUser() {
   const date = faker.date.past(1);
   const status = faker.random.arrayElement([
     "ACTIVE",
@@ -162,7 +162,7 @@ function genMember() {
   return {
     id: faker.random.alphaNumeric(12),
     pub_key: `0x${faker.random.alphaNumeric(40)}`,
-    username: faker.random.arrayElement(FAKE_MEMBER_NAMES),
+    username: faker.random.arrayElement(FAKE_USER_NAMES),
 
     role: faker.random.arrayElement(["admin", "operator"]),
 
@@ -171,7 +171,7 @@ function genMember() {
   };
 }
 
-const genOperation = ({ account, members }) => {
+const genOperation = ({ account, users }) => {
   const currency = getCryptoCurrencyById(account.currency_id);
   const magnitude = currency.units[0].magnitude;
   const date = faker.date.past(2);
@@ -181,10 +181,10 @@ const genOperation = ({ account, members }) => {
     precision: 4,
   });
   const feesAmount = faker.random.number({ min: 1000, max: 100000 });
-  const operators = members.filter(m => m.role === "operator");
+  const operators = users.filter(m => m.role === "operator");
 
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
-  const approvals = genApprovals(nbApprovalsToGenerate, { members: operators });
+  const approvals = genApprovals(nbApprovalsToGenerate, { users: operators });
   const nbApprovals = approvals.filter(a => a.type === "APPROVE").length;
 
   const status = approvals.find(a => a.type === "ABORT")
@@ -234,16 +234,16 @@ const genOperation = ({ account, members }) => {
   };
 };
 
-function genGroup({ members }) {
-  const operators = members.filter(m => m.role === "operator");
-  const nbMembers = faker.random.number({
+function genGroup({ users }) {
+  const operators = users.filter(m => m.role === "operator");
+  const nbUsers = faker.random.number({
     min: 1,
     max: Math.min(operators.length, 10),
   });
-  const admins = members.filter(m => m.role === "admin");
+  const admins = users.filter(m => m.role === "admin");
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });
   const approvals = genApprovals(nbApprovalsToGenerate, {
-    members: admins,
+    users: admins,
   });
   const status = faker.random.arrayElement([
     "APPROVED",
@@ -257,55 +257,55 @@ function genGroup({ members }) {
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
     status,
-    members: getUniqueRandomElements(operators, nbMembers).map(m => m.id),
+    users: getUniqueRandomElements(operators, nbUsers).map(m => m.id),
     approvals,
   };
 }
 
-export function genMembers(nb = 0) {
-  const members = [];
+export function genUsers(nb = 0) {
+  const users = [];
   for (let i = 0; i < nb; i++) {
-    members.push(genMember());
+    users.push(genUser());
   }
-  return members;
+  return users;
 }
 
-export function genAccounts(nb, { members }) {
+export function genAccounts(nb, { users }) {
   const accounts = [];
   for (let i = 0; i < nb; i++) {
-    accounts.push(genAccount({ members }));
+    accounts.push(genAccount({ users }));
   }
   return accounts;
 }
 
-export function genOperations(nb, { accounts, members }) {
+export function genOperations(nb, { accounts, users }) {
   const operations = [];
   for (let i = 0; i < nb; i++) {
     const account = faker.random.arrayElement(accounts);
-    operations.push(genOperation({ account, members }));
+    operations.push(genOperation({ account, users }));
   }
   return operations;
 }
 
-export function genGroups(nb, { members }) {
+export function genGroups(nb, { users }) {
   const groups = [];
   for (let i = 0; i < nb; i++) {
-    groups.push(genGroup({ members }));
+    groups.push(genGroup({ users }));
   }
   return groups;
 }
 
-const members = genMembers(40);
-const accounts = genAccounts(10, { members });
-const operations = genOperations(100, { accounts, members });
-const groups = genGroups(40, { members });
+const users = genUsers(40);
+const accounts = genAccounts(10, { users });
+const operations = genOperations(100, { accounts, users });
+const groups = genGroups(40, { users });
 
 export default {
   accounts: keyBy(accounts, "id"),
   accountsArray: accounts,
   groups: keyBy(groups, "id"),
   groupsArray: groups,
-  members: keyBy(members, "id"),
-  membersArray: members,
+  users: keyBy(users, "id"),
+  usersArray: users,
   operations: keyBy(operations, "id"),
 };

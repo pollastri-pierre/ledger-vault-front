@@ -5,8 +5,8 @@ import React, { Component } from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { genMembers, genAccounts } from "data/mock-entities";
-import type { Account, Member } from "data/types";
+import { genUsers, genAccounts } from "data/mock-entities";
+import type { Account, User } from "data/types";
 
 import LineRow from "components/LineRow";
 import AccountName from "components/AccountName";
@@ -15,8 +15,8 @@ import DateFormat from "components/DateFormat";
 import Box from "components/base/Box";
 import EditableField from "components/EditableField";
 
-const members: Member[] = genMembers(10);
-const accounts: Account[] = genAccounts(3, { members });
+const users: User[] = genUsers(10);
+const accounts: Account[] = genAccounts(3, { users });
 
 const account: Account = accounts[0];
 

@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from "react";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import Box from "components/base/Box";
 import MemberRow from "../../MemberRow";
 
 type Props = {
-  members: Member[],
+  members: User[],
 };
 
 class AccountApproveMembers extends Component<Props> {

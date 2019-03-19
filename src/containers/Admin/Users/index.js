@@ -15,7 +15,7 @@ import DataSearch from "components/DataSearch";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 import UserDetails from "./UserDetails";
 import InviteUser from "../InviteUser";
@@ -28,7 +28,7 @@ type Props = {
 const mutationsToListen = [InviteUserMutation, UpdateUserRegistrationMutation];
 
 class Users extends PureComponent<Props> {
-  handleUserClick = (user: Member) => {
+  handleUserClick = (user: User) => {
     this.props.history.push(`users/details/${user.id}`);
   };
 

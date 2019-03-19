@@ -9,13 +9,13 @@ import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
 import Card from "components/legacy/Card";
 import PendingAccountApprove from "components/pending/PendingAccountApprove";
 import TryAgain from "components/TryAgain";
-import type { Member, Account } from "data/types";
+import type { User, Account } from "data/types";
 
 type Props = {
-  approvers: Member[],
+  approvers: User[],
   organization: *,
   accounts: Account[],
-  user: Member,
+  user: User,
 };
 class ApproveWatchAccounts extends Component<Props> {
   render() {

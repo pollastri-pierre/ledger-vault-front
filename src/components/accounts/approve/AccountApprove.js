@@ -20,15 +20,15 @@ import ApprovalList from "components/ApprovalList";
 import ModalLoading from "components/ModalLoading";
 import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";
 
-import type { Member, Account, Translate } from "data/types";
+import type { User, Account, Translate } from "data/types";
 
 import AccountApproveMembers from "./AccountApproveMembers";
 import AccountApproveDetails from "./AccountApproveDetails";
 import Footer from "../../approve/Footer";
 
 type Props = {
-  users: Connection<Member>,
-  profile: Member,
+  users: Connection<User>,
+  profile: User,
   t: Translate,
   account: Account,
   accounts: Account[],
@@ -54,7 +54,7 @@ const GenericFooter = ({
   quorum?: number,
   approve: Function,
   account: Account,
-  profile: Member,
+  profile: User,
   aborting: Function,
 }) => (
   <Footer

@@ -3,12 +3,12 @@ import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import queryString from "query-string";
 
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 type Input = {
   userRole?: string,
 };
-type Response = Member[];
+type Response = User[];
 
 const uri = (query: Input) => {
   let finalQuery = {};
@@ -34,5 +34,5 @@ export default class UsersQuery extends ConnectionQuery<Input, Response> {
 
   size = 30;
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 }

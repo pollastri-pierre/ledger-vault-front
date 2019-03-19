@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import UserQuery from "api/queries/UserQuery";
 import Text from "components/base/Text";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 
 import SpinnerCard from "components/spinners/SpinnerCard";
 
@@ -12,7 +12,7 @@ import UserDetails from "containers/UserDetails";
 
 type Props = {
   close: () => void,
-  user: Member,
+  user: User,
 };
 
 class AdminDetails extends PureComponent<Props> {

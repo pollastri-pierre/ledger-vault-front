@@ -15,7 +15,7 @@ import Card, {
 import Box from "components/base/Box";
 import type { MemoryHistory } from "history";
 import type { Match } from "react-router-dom";
-import type { Request, Member } from "data/types";
+import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest } from "utils/request";
 
@@ -25,7 +25,7 @@ type Props = {
   data: Object,
   match: Match,
   history: MemoryHistory,
-  me: Member,
+  me: User,
 };
 class AdminDashboard extends PureComponent<Props> {
   handleTaskClick = (request: Request) => {

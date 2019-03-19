@@ -4,7 +4,7 @@ import groupBy from "lodash/groupBy";
 import size from "lodash/size";
 import { Trans, Interpolate } from "react-i18next";
 import { Link } from "react-router-dom";
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import classnames from "classnames";
@@ -31,9 +31,9 @@ const Empty = ({ approved }: { approved?: boolean }) =>
 type Props = {
   accounts: Account[],
   approved?: boolean,
-  approvers: Member[],
+  approvers: User[],
   quorum: Number,
-  user: Member,
+  user: User,
   match: *,
   classes: { [_: $Keys<typeof styles>]: string },
 };

@@ -1,7 +1,7 @@
 // @flow
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import { success, error } from "formatters/notification";
 
 type Input = {
@@ -11,14 +11,14 @@ type Input = {
   picture: ?string,
 };
 
-type Response = Member;
+type Response = User;
 
 export default class SaveProfileMutation extends Mutation<Input, Response> {
   uri = "/organization/members/me";
 
   method = "PUT";
 
-  responseSchema = schema.Member;
+  responseSchema = schema.User;
 
   getSuccessNotification() {
     return success("profile", "updated");

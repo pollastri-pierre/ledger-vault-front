@@ -12,7 +12,7 @@ import {
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import NoStyleLink from "components/NoStyleLink";
-import type { Account, Member } from "data/types";
+import type { Account, User } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import colors, { opacity } from "shared/colors";
@@ -32,7 +32,7 @@ const styles = {
 type Props = {
   account: Account,
   onOpen: (id: number) => void,
-  me: Member,
+  me: User,
   classes: { [_: $Keys<typeof styles>]: string },
 };
 

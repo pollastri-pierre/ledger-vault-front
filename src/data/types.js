@@ -64,7 +64,7 @@ export type AccountSettings = {
   blockchain_explorer: string,
 };
 
-type MemberCommon = {
+type UserCommon = {
   id: number,
   pub_key: string,
   username: string,
@@ -76,10 +76,10 @@ type MemberCommon = {
   last_request?: Request,
   role: string,
 };
-export type MemberEntity = MemberCommon;
-export type Member = MemberCommon;
+export type UserEntity = UserCommon;
+export type User = UserCommon;
 
-export type MemberInvite = {
+export type UserInvite = {
   id: string,
   is_complete: boolean,
   status: string,
@@ -97,7 +97,7 @@ export type MemberInvite = {
 
 export type Approval = {
   created_on: Date,
-  person: Member,
+  person: User,
   type: "APPROVE" | "ABORT",
 };
 
@@ -108,7 +108,7 @@ type AccountCommon = {
   contract_address: string,
   parent_id?: number,
   name: string,
-  members: Member[],
+  members: User[],
   settings: AccountSettings,
   security_scheme: SecurityScheme,
   balance: number,
@@ -146,7 +146,7 @@ type GroupCommon = {
   id: number,
   name: string,
   created_on: Date,
-  created_by: Member,
+  created_by: User,
   description?: string,
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
@@ -155,7 +155,7 @@ export type GroupEntity = GroupCommon & {
   members: string[],
 };
 export type Group = GroupCommon & {
-  members: Member[],
+  members: User[],
   approvals: Approval[],
 };
 
@@ -166,7 +166,7 @@ type NoteCommon = {
   created_at: string,
 };
 export type Note = NoteCommon & {
-  author: Member,
+  author: User,
 };
 export type NoteEntity = NoteCommon & {
   author: string,
@@ -217,7 +217,7 @@ export type OperationStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
 
 type OperationCommon = {
   id: number,
-  created_by: Member,
+  created_by: User,
   currency_family: string,
   confirmations: number,
   created_on: Date,
@@ -272,7 +272,7 @@ export type ActivityEntityAccount = ActivityCommon & {
   business_action: {
     id: number,
     account: AccountEntity,
-    author: MemberCommon,
+    author: UserCommon,
     business_action_name: string,
     message: string,
     target_id: number,
@@ -284,7 +284,7 @@ export type ActivityEntityOperation = ActivityCommon & {
   business_action: {
     id: number,
     operation: *,
-    author: MemberCommon,
+    author: UserCommon,
     business_action_name: string,
     message: string,
     target_id: number,
@@ -342,7 +342,7 @@ type RequestCommon = {
 export type Request = RequestCommon;
 
 type RequestApproval = {
-  created_by: Member,
+  created_by: User,
   created_on: string,
   type: string,
 };

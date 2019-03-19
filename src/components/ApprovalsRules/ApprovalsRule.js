@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { SortableHandle, SortableElement } from "react-sortable-hoc";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
 
-import type { Member, Group } from "data/types";
+import type { User, Group } from "data/types";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
@@ -27,7 +27,7 @@ type Props = {
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
   preventWarning: boolean,
-  users: Member[],
+  users: User[],
   groups: Group[],
   t: string => string,
 };
@@ -44,7 +44,7 @@ class ApprovalsRule extends PureComponent<Props> {
     members: users,
   }: {
     groups: Group[],
-    members: Member[],
+    members: User[],
   }) => {
     const { rule, onChange } = this.props;
 
@@ -278,7 +278,7 @@ const approvalsFrom = (
 function resolveSelectValue(
   rule: ApprovalsRuleType,
   groups: Group[],
-  users: Member[],
+  users: User[],
 ) {
   const groupInGroups = rule.group && groups.find(g => g.id === rule.group);
   return {

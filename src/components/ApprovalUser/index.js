@@ -3,7 +3,7 @@ import React from "react";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { FaQuestionCircle, FaCheckCircle } from "react-icons/fa";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import colors from "shared/colors";
 
 const styles = {
@@ -11,7 +11,7 @@ const styles = {
     borderBottom: `1px solid ${colors.argile}`,
   },
 };
-function ApprovalMember(props: { member: Member, isApproved: boolean }) {
+function ApprovalMember(props: { member: User, isApproved: boolean }) {
   const { member, isApproved } = props;
 
   return (

@@ -10,14 +10,14 @@ import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import Card from "components/legacy/Card";
 import PendingOperationApprove from "components/pending/PendingOperationApprove";
 import TryAgain from "components/TryAgain";
-import type { Member, Account, Operation } from "data/types";
+import type { User, Account, Operation } from "data/types";
 
 type Props = {
-  approvers: Member[],
+  approvers: User[],
   operationsPending: Operation[],
   // operationsQueued: Operation[],
   accounts: Account[],
-  user: Member,
+  user: User,
 };
 class ApproveWatchOperations extends Component<Props> {
   render() {

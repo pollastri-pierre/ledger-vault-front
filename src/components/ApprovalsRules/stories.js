@@ -4,12 +4,12 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 
-import { genMembers, genGroups } from "data/mock-entities";
+import { genUsers, genGroups } from "data/mock-entities";
 
 import ApprovalsRules from "components/ApprovalsRules";
 
-const members = genMembers(10);
-const groups = genGroups(2, { members });
+const users = genUsers(10);
+const groups = genGroups(2, { users });
 
 storiesOf("other", module).add("ApprovalsRules", () => <Wrapper />);
 
@@ -29,7 +29,7 @@ class Wrapper extends React.Component {
       <ApprovalsRules
         rules={approvalsRules}
         onChange={this.handleChangeApprovalsRules}
-        users={members}
+        users={users}
         groups={groups}
       />
     );

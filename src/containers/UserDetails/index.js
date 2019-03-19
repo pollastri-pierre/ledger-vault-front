@@ -5,7 +5,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { Trans } from "react-i18next";
 import Box from "components/base/Box";
-import type { Member } from "data/types";
+import type { User } from "data/types";
 import {
   ModalHeader,
   ModalTitle,
@@ -18,7 +18,7 @@ import UserDetailsHistory from "./UD-History";
 import UserDetailsFooter from "./UD-Footer";
 
 type Props = {
-  user: Member,
+  user: User,
   close: () => void,
 };
 

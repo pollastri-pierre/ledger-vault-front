@@ -18,7 +18,7 @@ import { translate } from "react-i18next";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { addMessage } from "redux/modules/alerts";
-import type { Translate, Member, Account } from "data/types";
+import type { Translate, User, Account } from "data/types";
 import DialogButton from "components/buttons/DialogButton";
 import {
   toggleModal,
@@ -83,7 +83,7 @@ type Props = {
   accounts: Account[],
   selectedAccount: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  approvers: Member[],
+  approvers: User[],
   isSelectingMembers: boolean,
   isSelectingApprovals: boolean,
   isDevice: boolean,
