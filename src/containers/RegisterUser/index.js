@@ -28,7 +28,7 @@ type Props = {
   organization: Organization,
 };
 type State = {
-  member: ?UserInvite,
+  userInvite: ?UserInvite,
   loading: boolean,
   error: ?GateError | ?Error,
   success: boolean,
@@ -45,9 +45,9 @@ const styles = {
   },
 };
 
-class RegisterMember extends PureComponent<Props, State> {
+class RegisterUser extends PureComponent<Props, State> {
   state = {
-    member: null,
+    userInvite: null,
     loading: true,
     error: null,
     success: false,
@@ -59,9 +59,9 @@ class RegisterMember extends PureComponent<Props, State> {
     const urlID = match.params.urlID || "";
     const url = `/requests/${urlID}`;
     try {
-      const member = await network(url, "GET");
+      const userInvite = await network(url, "GET");
       this.setState({
-        member,
+        userInvite,
         loading: false,
       });
     } catch (error) {
@@ -69,7 +69,7 @@ class RegisterMember extends PureComponent<Props, State> {
     }
   }
 
-  registerMember = () => {
+  registerUser = () => {
     this.setState({ isRegistering: true });
   };
 
@@ -82,7 +82,7 @@ class RegisterMember extends PureComponent<Props, State> {
   };
 
   render() {
-    const { member, loading, error, success } = this.state;
+    const { userInvite, loading, error, success } = this.state;
 
     const stringError = getStringError(error);
 
@@ -108,17 +108,23 @@ class RegisterMember extends PureComponent<Props, State> {
               <Box flow={15} mt={15}>
                 <Row
                   label="inviteUser:registration.username"
-                  text={member && member.user ? member.user.username : ""}
+                  text={
+                    userInvite && userInvite.user
+                      ? userInvite.user.username
+                      : ""
+                  }
                 />
                 <Row
                   label="inviteUser:registration.workspace"
                   text={
-                    member && member.user.user_id ? member.user.user_id : ""
+                    userInvite && userInvite.user.user_id
+                      ? userInvite.user.user_id
+                      : ""
                   }
                 />
                 <Row
                   label="inviteUser:registration.role"
-                  text={member ? member.type : ""}
+                  text={userInvite ? userInvite.type : ""}
                 />
               </Box>
               {stringError && <Text style={styles.error}>{stringError}</Text>}
@@ -131,13 +137,13 @@ class RegisterMember extends PureComponent<Props, State> {
                       onError={this.onError}
                       additionalFields={{
                         organization: this.props.organization,
-                        member,
+                        member: userInvite,
                         urlID: this.props.match.params.urlID,
                       }}
                     />
                   </Box>
                 ) : (
-                  <DialogButton highlight onTouchTap={this.registerMember}>
+                  <DialogButton highlight onTouchTap={this.registerUser}>
                     <Trans i18nKey="inviteUser:registration.button" />
                   </DialogButton>
                 )}
@@ -170,7 +176,7 @@ class RegisterMember extends PureComponent<Props, State> {
     );
   }
 }
-export default connectData(RegisterMember, {
+export default connectData(RegisterUser, {
   queries: {
     organization: OrganizationQuery,
   },
