@@ -1,4 +1,4 @@
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 const tickerBeforeStyle = {
   content: "''",
@@ -533,6 +533,19 @@ const theme = {
 
 export const styledTheme = {
   space: [],
+};
+
+export const vaultLayoutConfig = {
+  TOP_BAR_HEIGHT: 60,
+  TOP_BAR_BG: colors.night,
+  TOP_BAR_LOGO_WIDTH: 80,
+  MENU_WIDTH: 250,
+  COLLAPSED_MENU_WIDTH: 60,
+  MAIN_VIEW_BG: "#efefef",
+  MAIN_VIEW_OFFSET: 0,
+  BREAKPOINT: 1280,
+  MENU_HINT_COLOR: colors.ocean,
+  MENU_HINT_COLOR_HOVER: opacity(colors.ocean, 0.3),
 };
 
 export { theme as default };
