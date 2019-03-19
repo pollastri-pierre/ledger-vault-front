@@ -1,18 +1,18 @@
 {
   "admin": {
-    "dashboard": "Dashboard (Admin)",
+    "dashboard": "Dashboard",
     "tasks": "Admin Tasks",
-    "groups": "Groups (Admin)",
+    "groups": "Groups",
     "users": "Users",
-    "accounts": "Accounts (Admin)",
-    "transactions": "Transactions (Admin)"
+    "accounts": "Accounts",
+    "transactions": "Transactions"
   },
   "operator": {
-    "dashboard": "Dashboard (Op)",
-    "pending": "Awaiting approval (Op)",
-    "send": "Send (Op)",
-    "receive": "Receive (Op)",
-    "transactions": "Transactions (Op)",
-    "accounts": "Accounts (Op)"
+    "dashboard": "Dashboard",
+    "pending": "Awaiting approval",
+    "send": "Send",
+    "receive": "Receive",
+    "transactions": "Transactions",
+    "accounts": "Accounts"
   }
 }

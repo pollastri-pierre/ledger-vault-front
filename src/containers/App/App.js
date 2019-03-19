@@ -1,58 +1,81 @@
 // @flow
-import React from "react";
-import { translate } from "react-i18next";
+import React, { Fragment } from "react";
 import type { Match, Location } from "react-router-dom";
-import type { Account } from "data/types";
+import type { MemoryHistory } from "history";
+
+import type { Account, User, Operation } from "data/types";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
+import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
-import ActionBar from "components/actionBar/ActionBar";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import UpdateAccounts from "components/UpdateAccounts";
-import Menu from "containers/Menu";
 import Modals from "containers/Modals";
 import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import Box from "components/base/Box";
-import UserContextProvider from "components/UserContextProvider";
+import UserContextProvider, { withMe } from "components/UserContextProvider";
+import VaultLayout from "components/VaultLayout";
 
-const styles = {
-  error: {
-    margin: "auto",
-    width: 500,
-  },
-  contentContainer: {
-    display: "flex",
-    flexDirection: "row",
-  },
-};
+import getMenuItems from "./getMenuItems";
+
 type Props = {
-  location: Location,
   match: Match,
+  location: Location,
+  history: MemoryHistory,
   accounts: Account[],
+  allPendingOperations: Operation[],
 };
-function App({ location, match, accounts }: Props) {
-  let res = (
-    <Box className="App">
+
+const AppWrapper = (props: Props) => (
+  <UserContextProvider>
+    <App {...props} />
+  </UserContextProvider>
+);
+
+const App = withMe((props: Props & { me: User }) => {
+  const {
+    match,
+    history,
+    accounts,
+    allPendingOperations,
+    me,
+    location,
+  } = props;
+
+  const menuItems = getMenuItems({
+    role: me.role,
+    accounts,
+    allPendingOperations,
+    match,
+    location,
+  });
+
+  const handleLogout = () => {
+    const org = match.params.orga_name || "";
+    history.push(`/${org}/logout`);
+  };
+
+  return (
+    <Fragment>
+      <VaultLayout
+        menuItems={menuItems}
+        user={me}
+        onLogout={handleLogout}
+        match={match}
+      >
+        <Content match={match} />
+      </VaultLayout>
+      <UpdateAccountsInfo accounts={accounts} />
+      <UpdateAccounts accounts={accounts} />
       <Modals match={match} />
-      <ActionBar match={match} location={location} />
-      <Box className="Main">
-        <Box style={styles.contentContainer}>
-          <Menu location={location} match={match} accounts={accounts} />
-          <Content match={match} />
-        </Box>
-        <UpdateAccountsInfo accounts={accounts} />
-        <UpdateAccounts accounts={accounts} />
-      </Box>
-    </Box>
+    </Fragment>
   );
-  res = <UserContextProvider>{res}</UserContextProvider>;
-  return res;
-}
+});
 
 const RenderError = ({ error, restlay }: *) => (
-  <Box style={styles.error} mt={100}>
+  <Box style={{ margin: "auto", width: 500 }} mt={100}>
     <Card>
       <TryAgain error={error} action={restlay.forceFetch} />
     </Card>
@@ -61,10 +84,11 @@ const RenderError = ({ error, restlay }: *) => (
 
 const RenderLoading = () => <SpinnerCard />;
 
-export default connectData(translate()(App), {
+export default connectData(AppWrapper, {
   RenderLoading,
   RenderError,
   queries: {
     accounts: AccountsQuery,
+    allPendingOperations: PendingOperationsQuery,
   },
 });
