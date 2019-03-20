@@ -5,7 +5,8 @@
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",
     "CREATE_ADMIN": "Create Administrator",
-    "CREATE_OPERATOR": "Create Operator"
+    "CREATE_OPERATOR": "Create Operator",
+    "CREATE_ACCOUNT": "Create Account"
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
