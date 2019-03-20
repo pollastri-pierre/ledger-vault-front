@@ -66,7 +66,7 @@ class Amount extends Component<Props> {
             {"("}
             <CounterValue
               value={value}
-              from={account.currency_id}
+              from={account.currency}
               disableCountervalue={disableCountervalue}
             />
             {")"}

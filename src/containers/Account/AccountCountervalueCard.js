@@ -34,7 +34,7 @@ class AccountCountervalueCard extends Component<Props> {
         <CardField>
           <CounterValue
             value={account.balance}
-            from={account.currency_id}
+            from={account.currency}
             disableCountervalue={ERC20Token}
           />
           {ERC20Token && (

@@ -62,7 +62,7 @@ class Send extends Component<Props, State<*>> {
       });
       return;
     }
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     const bridge = account ? getBridgeForCurrency(currency) : null;
     const transaction = bridge ? bridge.createTransaction(account) : null;
 

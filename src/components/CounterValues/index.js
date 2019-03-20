@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
   const countervalue = ownProps.accounts
     .filter(account => account.balance > 0 && account.account_type !== "ERC20")
     .reduce((acc, account) => {
-      const currency = getCryptoCurrencyById(account.currency_id);
+      const currency = getCryptoCurrencyById(account.currency);
       return (
         acc +
         CounterValues.calculateWithIntermediarySelector(state, {

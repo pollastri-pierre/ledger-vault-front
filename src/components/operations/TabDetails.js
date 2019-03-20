@@ -121,7 +121,7 @@ class TabDetails extends PureComponent<{
   render() {
     const { operation, account, classes } = this.props;
     const { transaction } = operation;
-    const cryptoCurrency = getCryptoCurrencyById(account.currency_id);
+    const cryptoCurrency = getCryptoCurrencyById(account.currency);
     return (
       <div>
         <span

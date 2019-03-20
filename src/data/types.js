@@ -123,7 +123,7 @@ type AccountCommon = {
   last_request?: Request,
 };
 export type Account = AccountCommon & {
-  currency_id: string,
+  currency: string,
 };
 
 export type OperationRecipientIsValid = {

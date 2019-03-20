@@ -59,7 +59,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 };
 // TODO: has to be either updated to include ERC20 validation or a new bridge written
 const checkValidTransaction = async (a, t, r) => {
-  const currency = getCryptoCurrencyById(a.currency_id);
+  const currency = getCryptoCurrencyById(a.currency);
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const fees = await getFees(a, t);
   let amountIsValid;

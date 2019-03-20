@@ -21,7 +21,7 @@ export type Transaction = {
 };
 
 const checkValidTransaction = async (a, t, r) => {
-  const currency = getCryptoCurrencyById(a.currency_id);
+  const currency = getCryptoCurrencyById(a.currency);
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
   const amountIsValid = t.amount + t.estimatedFees < a.balance;
   if (!t.estimatedFees || !t.amount || !recipientIsValid || !amountIsValid) {

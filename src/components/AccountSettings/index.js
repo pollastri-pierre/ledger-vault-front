@@ -33,10 +33,8 @@ type State = {
 };
 
 const mapStateToProps = (state: State, props: Props) => {
-  const {
-    account: { currency_id },
-  } = props;
-  const currency = getCryptoCurrencyById(currency_id);
+  const { account } = props;
+  const currency = getCryptoCurrencyById(account.currency);
   return {
     exchange: currencyExchangeSelector(state, currency),
   };
@@ -52,7 +50,7 @@ class AccountSettings extends PureComponent<Props, State> {
   }
 
   onUnitIndexChange = (unitIndex: number) => {
-    const curr = getCryptoCurrencyById(this.props.account.currency_id);
+    const curr = getCryptoCurrencyById(this.props.account.currency);
     this.update({
       settings: {
         ...this.state.settings,
@@ -86,7 +84,7 @@ class AccountSettings extends PureComponent<Props, State> {
       security_scheme: { quorum },
       members,
     } = this.props.account;
-    const curr = getCryptoCurrencyById(account.currency_id);
+    const curr = getCryptoCurrencyById(account.currency);
     const units = curr.units;
     const unit_index = units.findIndex(
       unit =>

@@ -54,7 +54,7 @@ class SendAmount extends PureComponent<Props<*>> {
       onChangeTransaction,
     } = this.props;
 
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
 
     return (
       <div>
@@ -87,7 +87,7 @@ class SendAmount extends PureComponent<Props<*>> {
                 <div className={classes.fiat}>
                   <CounterValue
                     value={bridge.getTransactionAmount(account, transaction)}
-                    from={account.currency_id}
+                    from={account.currency}
                   />
                 </div>
               </div>

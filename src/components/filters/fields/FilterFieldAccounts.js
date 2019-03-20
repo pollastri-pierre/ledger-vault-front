@@ -63,7 +63,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
         !selectedAccountsIds.find(
           id => id && id.toString() === account.id.toString(),
         ) &&
-        (!selectedCurrency || account.currency_id === selectedCurrency),
+        (!selectedCurrency || account.currency === selectedCurrency),
     );
 
     const isActive = selectedAccounts.length > 0;

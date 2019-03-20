@@ -26,11 +26,11 @@ const pairsSelector = createSelector(
           currency =>
             accounts.findIndex(account => {
               if (
-                account.currency_id === "ethereum_ropsten" &&
+                account.currency === "ethereum_ropsten" &&
                 currency.id === "ethereum"
               )
                 return true;
-              return account.currency_id === currency.id;
+              return account.currency === currency.id;
             }) > -1 &&
             currency.name !== "bitcoin_testnet" &&
             currency.name !== "bitcoin",

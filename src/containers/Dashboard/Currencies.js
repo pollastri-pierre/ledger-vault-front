@@ -30,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
         return acc;
       }
 
-      const currency_id = account.currency_id;
+      const currency_id = account.currency;
       const currency = getCryptoCurrencyById(currency_id);
       const balance = account.balance;
       // check if currency already added

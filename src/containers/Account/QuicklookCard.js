@@ -163,7 +163,7 @@ export class QuicklookCard extends Component<Props, State> {
       currencyUnit = getFiatUnit(account.settings.fiat);
     }
 
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     return (
       <Card
         title="Quicklook"

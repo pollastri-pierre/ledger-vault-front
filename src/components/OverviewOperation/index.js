@@ -78,7 +78,7 @@ class OverviewOperation extends Component<Props, *> {
           <div className={classes.fiat}>
             <CounterValue
               value={amount}
-              from={account.currency_id}
+              from={account.currency}
               alwaysShowSign
               type={operationType}
               disableCountervalue={erc20Format}

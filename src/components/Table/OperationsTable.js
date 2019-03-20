@@ -149,7 +149,7 @@ class OperationRow extends PureComponent<OperationRowProps> {
 
         <MUITableCell align="right">
           <CounterValue
-            from={account.currency_id}
+            from={account.currency}
             value={amount}
             alwaysShowSign
             disableCountervalue={account.account_type === "ERC20"}

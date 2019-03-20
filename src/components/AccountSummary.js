@@ -41,7 +41,7 @@ type Props = {
 class AccountSummary extends PureComponent<Props> {
   render() {
     const { account, className, classes } = this.props;
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     return (
       <div className={cx(className, classes.container)}>
         <div className={classes.iconContainer}>

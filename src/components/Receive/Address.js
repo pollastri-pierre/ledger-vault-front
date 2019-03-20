@@ -106,7 +106,7 @@ class ReceiveAddress extends Component<Props, State> {
 
   render() {
     const { account, classes, checkAgain } = this.props;
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     const { error, verified, loading, copied, deviceRejected } = this.state;
     return (
       <div className={classes.container}>

@@ -54,7 +54,7 @@ export const getAccountCurrencyName = (account: Account) => {
     }
     return token.name;
   }
-  const currency = getCryptoCurrencyById(account.currency_id);
+  const currency = getCryptoCurrencyById(account.currency);
   if (!currency) {
     return "(?)";
   }
