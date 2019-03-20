@@ -3,17 +3,6 @@
 export const usersTableDefault = [
   {
     header: {
-      label: "Date",
-      align: "left",
-      sortable: true,
-    },
-    body: {
-      prop: "date",
-      align: "left",
-    },
-  },
-  {
-    header: {
       label: "Username",
       align: "left",
       sortable: false,

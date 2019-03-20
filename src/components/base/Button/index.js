@@ -26,7 +26,7 @@ const COLORS_BY_TYPE = {
 };
 
 const SIZE_ICON_BY_TYPE = {
-  small: 19,
+  small: 16,
   medium: 23,
 };
 
@@ -95,6 +95,7 @@ const ButtonDecorated = styled(({ isLoading, customColor, type, ...rest }) => (
   color: getColor(p.type, p.customColor),
 }))`
   && {
+    text-transform: uppercase;
     border-radius: 3px;
     padding: ${p => PADDING_BY_SIZE[p.size]}px;
     padding-right: 10px;
