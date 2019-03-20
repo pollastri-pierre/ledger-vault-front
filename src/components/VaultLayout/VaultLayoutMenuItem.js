@@ -93,7 +93,6 @@ export default ({
         {icon}
       </Animated.div>
       <Animated.div style={labelContainerStyle}>{children}</Animated.div>
-      {notifComponent}
     </VaultLayoutMenuItem>
   );
 
@@ -105,7 +104,12 @@ export default ({
     );
   }
 
-  return menuItem;
+  return (
+    <div style={styles.relative}>
+      {menuItem}
+      {notifComponent}
+    </div>
+  );
 };
 
 const Notif = ({
@@ -188,6 +192,9 @@ const VaultLayoutIconContainer = styled.div`
 `;
 
 const styles = {
+  relative: {
+    position: "relative",
+  },
   stick: {
     position: "absolute",
     top: 0,
