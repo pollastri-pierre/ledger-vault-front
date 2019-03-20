@@ -31,9 +31,8 @@ class TotalBalance extends Component<Props> {
   render() {
     const { reloading, accounts, t, members, classes } = this.props;
     // nb total of different currencies in all the accounts
-    const nbCurrency = [
-      ...new Set(accounts.map(account => account.currency_id)),
-    ].length;
+    const nbCurrency = [...new Set(accounts.map(account => account.currency))]
+      .length;
 
     return (
       <Card

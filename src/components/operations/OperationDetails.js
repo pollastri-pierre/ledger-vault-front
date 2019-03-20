@@ -106,16 +106,16 @@ class OperationDetails extends Component<Props, *> {
         {value === 3 && <TabHistory operation={operation} />}
 
         <ModalFooter>
-          {account.currency_id &&
+          {account.currency &&
           operation.transaction &&
           operation.transaction.hash &&
-          defaultExplorers[account.currency_id] &&
-          defaultExplorers[account.currency_id]() !== null ? (
+          defaultExplorers[account.currency] &&
+          defaultExplorers[account.currency]() !== null ? (
             <DialogButton>
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href={defaultExplorers[account.currency_id](
+                href={defaultExplorers[account.currency](
                   operation.transaction.hash,
                 )}
               >

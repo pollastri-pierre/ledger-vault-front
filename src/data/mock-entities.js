@@ -72,7 +72,7 @@ function genApprovals(nb = 0, { users }) {
     if (!usersCopy.length) continue; // eslint-disable-line no-continue
     const approval = genApproval({ users: usersCopy });
     approvals.push(approval);
-    usersCopy.splice(usersCopy.indexOf(approval.person, 1));
+    usersCopy.splice(usersCopy.indexOf(approval.created_by, 1));
   }
   return approvals;
 }
@@ -80,7 +80,7 @@ function genApprovals(nb = 0, { users }) {
 function genApproval({ users }) {
   return {
     created_on: faker.date.recent(),
-    person: faker.random.arrayElement(users),
+    created_by: faker.random.arrayElement(users),
     type: faker.random.arrayElement(["APPROVE", "ABORT"]),
   };
 }
@@ -117,7 +117,7 @@ function genAccount({ users = [] } = {}) {
     index: faker.random.number({ min: 1, max: 10 }),
     name: faker.random.arrayElement(FAKE_ACCOUNT_NAMES),
     status,
-    currency_id: currency.id,
+    currency: currency.id,
     account_type: accountType,
     contract_address: null,
     parent_id: null,
@@ -172,7 +172,7 @@ function genUser() {
 }
 
 const genOperation = ({ account, users }) => {
-  const currency = getCryptoCurrencyById(account.currency_id);
+  const currency = getCryptoCurrencyById(account.currency);
   const magnitude = currency.units[0].magnitude;
   const date = faker.date.past(2);
   const amount = faker.random.number({

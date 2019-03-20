@@ -18,7 +18,7 @@ const mapStateToProps = (state, ownProps) => {
     );
     if (account) {
       if (account.account_type === "ERC20") return null;
-      const currency = getCryptoCurrencyById(account.currency_id);
+      const currency = getCryptoCurrencyById(account.currency);
       return (
         acc +
         CounterValues.calculateWithIntermediarySelector(state, {

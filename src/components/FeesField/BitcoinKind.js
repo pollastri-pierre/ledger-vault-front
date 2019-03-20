@@ -65,7 +65,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
         bridge.getTransactionFeeLevel &&
         bridge.getTransactionFeeLevel(account, transaction);
       const nonce = ++this.nonce;
-      const currency = getCryptoCurrencyById(account.currency_id);
+      const currency = getCryptoCurrencyById(account.currency);
       const isValid = await bridge.isRecipientValid(
         restlay,
         currency,
@@ -128,7 +128,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
         <div className={classes.feesFiat}>
           <CounterValue
             value={transaction.estimatedFees || 0}
-            from={account.currency_id}
+            from={account.currency}
           />
         </div>
       </div>

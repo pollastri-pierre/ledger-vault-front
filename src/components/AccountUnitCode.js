@@ -13,7 +13,7 @@ const AccountUnitCode = ({ account }: Props) => {
     if (!token) return null;
     return token.ticker;
   }
-  const curr = getCryptoCurrencyById(account.currency_id);
+  const curr = getCryptoCurrencyById(account.currency);
   const unit = curr.units.reduce((prev, current) =>
     prev.magnitude > current.magnitude ? prev : current,
   );

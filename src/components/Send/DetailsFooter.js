@@ -49,7 +49,7 @@ class DetailsFooter extends PureComponent<Props> {
               {formatCurrencyUnit(account.settings.currency_unit, totalSpent)}
             </span>
             <span className={classes.fiat}>
-              (<CounterValue value={totalSpent} from={account.currency_id} />)
+              (<CounterValue value={totalSpent} from={account.currency} />)
             </span>
           </div>
         )}

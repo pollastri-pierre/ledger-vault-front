@@ -72,7 +72,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
 
   async validateAddress() {
     const { account, transaction, bridge, restlay } = this.props;
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     const recipient = bridge.getTransactionRecipient(account, transaction);
     const nonce = ++this._nonce;
     if (recipient) {

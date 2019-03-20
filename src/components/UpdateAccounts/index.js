@@ -225,7 +225,7 @@ class UpdateAccounts extends Component<Props> {
                       <span className={classes.accountName}>
                         <div>TO DO</div>
                         <CurrencyIndex
-                          currency={account.currency_id}
+                          currency={account.currency}
                           index={account.index}
                         />
                       </span>
@@ -255,7 +255,7 @@ class UpdateAccounts extends Component<Props> {
                   </Row>
                   <Row label="Cryptocurrency / Index">
                     <CurrencyIndex
-                      currency={selectedAccount.currency_id}
+                      currency={selectedAccount.currency}
                       index={selectedAccount.index}
                     />
                   </Row>

@@ -6,6 +6,7 @@ import connectData from "restlay/connectData";
 import UsersQuery from "api/queries/UsersQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import PendingAccountsQuery from "api/queries/PendingAccountsQuery";
+import { withMe } from "components/UserContextProvider";
 import Card from "components/legacy/Card";
 import PendingAccountApprove from "components/pending/PendingAccountApprove";
 import TryAgain from "components/TryAgain";
@@ -15,23 +16,23 @@ type Props = {
   approvers: User[],
   organization: *,
   accounts: Account[],
-  user: User,
+  me: User,
 };
 class ApproveWatchAccounts extends Component<Props> {
   render() {
     // we need to split between account already approved by current user and the other
-    const { accounts, approvers, user, organization } = this.props;
+    const { accounts, approvers, me, organization } = this.props;
 
     const toApprove = accounts.filter(
       account =>
         !account.approvals.find(
-          approval => approval.person.pub_key === user.pub_key,
+          approval => approval.created_by.pub_key === me.pub_key,
         ),
     );
 
     const toWatch = accounts.filter(account =>
       account.approvals.find(
-        approval => approval.person.pub_key === user.pub_key,
+        approval => approval.created_by.pub_key === me.pub_key,
       ),
     );
 
@@ -39,7 +40,7 @@ class ApproveWatchAccounts extends Component<Props> {
       <div>
         <Card title={<Trans i18nKey="pending:accounts.approve.title" />}>
           <PendingAccountApprove
-            user={this.props.user}
+            user={me}
             accounts={toApprove}
             approvers={approvers}
             quorum={organization.quorum}
@@ -47,7 +48,7 @@ class ApproveWatchAccounts extends Component<Props> {
         </Card>
         <Card title={<Trans i18nKey="pending:accounts.watch.title" />}>
           <PendingAccountApprove
-            user={this.props.user}
+            user={me}
             accounts={toWatch}
             approvers={approvers}
             quorum={organization.quorum}
@@ -74,7 +75,7 @@ const RenderError = ({ error, restlay }: *) => (
     <TryAgain error={error} action={restlay.forceFetch} />
   </Card>
 );
-export default connectData(ApproveWatchAccounts, {
+export default connectData(withMe(ApproveWatchAccounts), {
   RenderLoading,
   RenderError,
   queries: {

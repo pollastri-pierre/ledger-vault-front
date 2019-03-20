@@ -96,11 +96,11 @@ const TabHistory = ({
     />
     {operation.approvals.map(approval => (
       <Row
-        key={approval.person.id}
+        key={approval.created_by.id}
         classes={classes}
         date={approval.created_on}
         action={approval.type}
-        user={approval.person}
+        user={approval.created_by}
       />
     ))}
     {operation.status === "SUBMITTED" && (

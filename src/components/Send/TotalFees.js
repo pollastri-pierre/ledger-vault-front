@@ -48,7 +48,7 @@ class TotalFees extends PureComponent<Props> {
             {formatCurrencyUnit(account.settings.currency_unit, totalFees)}
           </span>
           <span className={classes.fiat}>
-            (<CounterValue value={totalFees} from={account.currency_id} />)
+            (<CounterValue value={totalFees} from={account.currency} />)
           </span>
         </div>
         {!feeIsValid && (

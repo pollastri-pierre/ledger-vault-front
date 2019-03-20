@@ -93,7 +93,7 @@ type Props = {
 const AccountTitle = ({ account }: { account: Account }) => (
   <div style={{ fontSize: 23 }}>
     {isAccountOutdated(account) ? (
-      <CurrencyIndex index={account.index} currency={account.currency_id} />
+      <CurrencyIndex index={account.index} currency={account.currency} />
     ) : (
       <div>{account.name}</div>
     )}
@@ -194,7 +194,7 @@ class AccountQuickInfo extends Component<Props, State> {
                   label={<Trans i18nKey="accountView:summary.index" />}
                   value={
                     <CurrencyIndex
-                      currency={account.currency_id}
+                      currency={account.currency}
                       index={account.index}
                     />
                   }

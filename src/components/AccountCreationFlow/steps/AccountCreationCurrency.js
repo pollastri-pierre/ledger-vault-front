@@ -72,7 +72,7 @@ const getAvailableParentsAccounts = (
     a =>
       a.status !== "PENDING" &&
       a.account_type === "Ethereum" &&
-      a.currency_id ===
+      a.currency ===
         // $FlowFixMe inference fail again. see up.
         getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
       parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1,

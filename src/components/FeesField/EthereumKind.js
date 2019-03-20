@@ -99,7 +99,7 @@ class FeesFieldEthereumKind extends PureComponent<
 
   async loadGasPrice() {
     const { account, transaction, bridge, restlay } = this.props;
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
 
     const isRecipientValid = await bridge.isRecipientValid(
       restlay,
@@ -154,7 +154,7 @@ class FeesFieldEthereumKind extends PureComponent<
 
   render() {
     const { classes, transaction, account, feeIsValid } = this.props;
-    const currency = getCryptoCurrencyById(account.currency_id);
+    const currency = getCryptoCurrencyById(account.currency);
     const { gasPriceStatus, gasLimitStatus, totalFees } = this.state;
     // TODO: update {currency.units[1]} with something better
     return (

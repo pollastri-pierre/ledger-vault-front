@@ -13,7 +13,7 @@ function ApprovalList(props: { approvers: User[], approved: Approval[] }) {
       const data: Object = member;
 
       const isApproved = !!approved.find(
-        approver => approver.person.pub_key === member.pub_key,
+        approver => approver.created_by.pub_key === member.pub_key,
       );
       data.approved = isApproved;
       return data;

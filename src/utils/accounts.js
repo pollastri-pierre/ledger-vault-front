@@ -34,7 +34,7 @@ export const hasUserApprovedAccount = (account: Account, user: User) => {
     approval => approval.type === APPROVE,
   );
   return (
-    approvals.filter(approval => approval.person.pub_key === user.pub_key)
+    approvals.filter(approval => approval.created_by.pub_key === user.pub_key)
       .length > 0
   );
 };
@@ -54,7 +54,7 @@ export const getAccountCurrencyName = (account: Account) => {
     }
     return token.name;
   }
-  const currency = getCryptoCurrencyById(account.currency_id);
+  const currency = getCryptoCurrencyById(account.currency);
   if (!currency) {
     return "(?)";
   }

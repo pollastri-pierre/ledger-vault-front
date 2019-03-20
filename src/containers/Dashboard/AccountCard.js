@@ -63,7 +63,7 @@ class AccountCard extends Component<Props> {
           </div>
           <div className={classes.realcur}>
             <CounterValue
-              from={account.currency_id}
+              from={account.currency}
               value={account.balance}
               disableCountervalue={erc20Format}
             />

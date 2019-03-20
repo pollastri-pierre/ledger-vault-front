@@ -8,13 +8,7 @@ import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 
 import type { GateError } from "data/types";
-
-export type Interaction = {
-  needsUserInput?: boolean,
-  device?: boolean,
-  responseKey: string,
-  action: Object => Promise<*>,
-};
+import type { Interaction } from "components/DeviceInteraction";
 
 type Props = {
   interactions: Interaction[],

@@ -71,6 +71,7 @@ export const getAttestationCertificate = async (): Promise<Buffer> => {
 };
 
 export const validateVaultOperation = async (
+  transport: *,
   path: number[],
   operation: Buffer,
 ) => {
@@ -81,6 +82,7 @@ export const validateVaultOperation = async (
   return Buffer.from(data, "hex");
 };
 export const openSession = async (
+  transport: *,
   path: number[],
   pubKey: Buffer,
   attestation: Buffer,

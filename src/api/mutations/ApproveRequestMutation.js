@@ -5,6 +5,7 @@ import { success, error } from "formatters/notification";
 type Input = {
   requestId: number,
   approval: string,
+  pubKey: string,
 };
 
 type Response = Object; // TODO add Request type
@@ -27,6 +28,7 @@ export default class ApproveRequestMutation extends Mutation<Input, Response> {
   getBody() {
     return {
       approval: this.props.approval,
+      pub_key: this.props.pubKey,
     };
   }
 }

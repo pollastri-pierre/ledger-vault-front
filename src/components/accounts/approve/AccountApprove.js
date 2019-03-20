@@ -70,7 +70,7 @@ const GenericFooter = ({
 );
 
 const hasApproved = (approvers, profile) =>
-  approvers.find(approver => approver.person.pub_key === profile.pub_key);
+  approvers.find(approver => approver.created_by.pub_key === profile.pub_key);
 
 class AccountApprove extends Component<Props, State> {
   state = {

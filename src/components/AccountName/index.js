@@ -23,7 +23,7 @@ class AccountName extends Component<{
     const displayName = name || (account ? account.name : "[no name]");
 
     isERC20 = (account && account.account_type === "ERC20") || isERC20;
-    currencyId = (account && account.currency_id) || currencyId;
+    currencyId = (account && account.currency) || currencyId;
 
     return (
       <Box horizontal align="center" flow={10} {...props}>

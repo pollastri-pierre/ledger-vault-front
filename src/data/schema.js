@@ -11,9 +11,7 @@ const Group = create("groups", {
 const Currency = create("currencies", {}, "name");
 const Fiat = create("fiats");
 
-const Account = create("accounts", {
-  currency: Currency,
-});
+const Account = create("accounts");
 
 const Activity = create(
   "activities",

@@ -97,7 +97,7 @@ export type UserInvite = {
 
 export type Approval = {
   created_on: Date,
-  person: User,
+  created_by: User,
   type: "APPROVE" | "ABORT",
 };
 
@@ -123,7 +123,7 @@ type AccountCommon = {
   last_request?: Request,
 };
 export type Account = AccountCommon & {
-  currency_id: string,
+  currency: string,
 };
 
 export type OperationRecipientIsValid = {

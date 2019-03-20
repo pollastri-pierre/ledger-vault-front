@@ -237,7 +237,7 @@ class PieChart extends Component<
         selected !== -1 && selected !== i ? classes.disable : "",
       )
       .style("fill", d => {
-        const curr = getCryptoCurrencyById(d.data.account.currency_id);
+        const curr = getCryptoCurrencyById(d.data.account.currency);
         return curr.color;
       });
 
@@ -336,9 +336,7 @@ class PieChart extends Component<
 
     let curr = { color: "black" };
     if (selected !== -1) {
-      curr = getCryptoCurrencyById(
-        this.props.data[selected].account.currency_id,
-      );
+      curr = getCryptoCurrencyById(this.props.data[selected].account.currency);
     }
     return (
       <div>
@@ -370,7 +368,7 @@ class PieChart extends Component<
                         ])}
                       >
                         {this.props.data[selected] &&
-                          this.props.data[selected].account.currency_id}
+                          this.props.data[selected].account.currency}
                       </span>
                     </div>
                   </div>
@@ -408,7 +406,7 @@ class PieChart extends Component<
                         classes.uppercase,
                       )}
                     >
-                      {data.account.currency_id}
+                      {data.account.currency}
                     </span>
                   </td>
                   <td className={classes.currencyBalance}>
