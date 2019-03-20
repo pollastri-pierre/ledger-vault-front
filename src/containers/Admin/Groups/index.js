@@ -5,6 +5,7 @@ import { Trans } from "react-i18next";
 import type { MemoryHistory } from "history";
 import AddLink from "components/base/AddLink";
 import { GroupsTable } from "components/Table";
+import { CardTitle } from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { GroupsFilters } from "components/filters";
@@ -31,7 +32,8 @@ class AdminGroups extends PureComponent<Props> {
   };
 
   CardHeader = () => (
-    <Box horizontal justify="flex-start" pb={20}>
+    <Box horizontal align="flex-start" justify="space-between" pb={20}>
+      <CardTitle i18nKey="menu:admin.groups" />
       <AddLink onClick={this.createGroup}>
         <Text>
           <Trans i18nKey="group:create.title" />
