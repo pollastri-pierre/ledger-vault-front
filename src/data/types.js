@@ -97,7 +97,7 @@ export type UserInvite = {
 
 export type Approval = {
   created_on: Date,
-  person: User,
+  created_by: User,
   type: "APPROVE" | "ABORT",
 };
 

@@ -38,7 +38,7 @@ class ApprovalStatus extends PureComponent<{
     } = this.props;
 
     const isUserApproved =
-      approved.filter(approval => approval.person.pub_key === user.pub_key)
+      approved.filter(approval => approval.created_by.pub_key === user.pub_key)
         .length > 0;
 
     const approvingObjectMeta: ?ApprovingObjectMeta =

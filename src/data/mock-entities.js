@@ -72,7 +72,7 @@ function genApprovals(nb = 0, { users }) {
     if (!usersCopy.length) continue; // eslint-disable-line no-continue
     const approval = genApproval({ users: usersCopy });
     approvals.push(approval);
-    usersCopy.splice(usersCopy.indexOf(approval.person, 1));
+    usersCopy.splice(usersCopy.indexOf(approval.created_by, 1));
   }
   return approvals;
 }
@@ -80,7 +80,7 @@ function genApprovals(nb = 0, { users }) {
 function genApproval({ users }) {
   return {
     created_on: faker.date.recent(),
-    person: faker.random.arrayElement(users),
+    created_by: faker.random.arrayElement(users),
     type: faker.random.arrayElement(["APPROVE", "ABORT"]),
   };
 }

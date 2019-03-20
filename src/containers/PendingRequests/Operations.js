@@ -33,7 +33,7 @@ class ApproveWatchOperations extends Component<Props> {
     const toApprove = operationsPending.filter(
       operation =>
         !operation.approvals.find(
-          approval => approval.person.pub_key === user.pub_key,
+          approval => approval.created_by.pub_key === user.pub_key,
         ) && operation.status === "PENDING_APPROVAL",
     );
     const enhancedToApprove = toApprove.map(
@@ -46,7 +46,7 @@ class ApproveWatchOperations extends Component<Props> {
     const toWatch = operationsPending.filter(
       operation =>
         operation.approvals.find(
-          approval => approval.person.pub_key === user.pub_key,
+          approval => approval.created_by.pub_key === user.pub_key,
         ) && operation.status === "PENDING_APPROVAL",
     );
 
