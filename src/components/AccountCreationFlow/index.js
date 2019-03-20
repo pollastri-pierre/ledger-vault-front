@@ -75,13 +75,20 @@ const steps = [
       if (!rules.length) return false;
       return rules.every(rule => rule.group !== null || rule.users.length > 0);
     },
-    Cta: ({ payload }: { payload: AccountCreationPayload }) => {
+    Cta: ({
+      payload,
+      onClose,
+    }: {
+      payload: AccountCreationPayload,
+      onClose: Function,
+    }) => {
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
           interactions={createAndApproveAccount}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
+            onClose();
           }}
           disabled={false}
           onError={null}

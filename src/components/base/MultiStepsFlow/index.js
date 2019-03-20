@@ -165,7 +165,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           )}
           {Cta && (
             <CtaContainer>
-              <Cta payload={payload} />
+              <Cta payload={payload} onClose={onClose} />
             </CtaContainer>
           )}
         </Box>

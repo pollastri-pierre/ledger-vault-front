@@ -4,7 +4,7 @@ export type MultiStepsFlowStep<T, P> = {
   id: string,
   name: React$Node,
   Step: React$ComponentType<StepProps<T> & P>,
-  Cta?: React$ComponentType<{ payload: T }>,
+  Cta?: React$ComponentType<{ payload: T, onClose: Function }>,
   requirements?: T => boolean,
 };
 
