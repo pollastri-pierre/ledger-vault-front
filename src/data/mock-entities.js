@@ -257,7 +257,7 @@ function genGroup({ users }) {
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
     status,
-    users: getUniqueRandomElements(operators, nbUsers).map(m => m.id),
+    members: getUniqueRandomElements(operators, nbUsers).map(m => m.id),
     approvals,
   };
 }
