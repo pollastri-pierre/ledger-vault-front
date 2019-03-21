@@ -262,21 +262,33 @@ function genGroup({ users }) {
   };
 }
 
-export function genUsers(nb = 0) {
-  const users = [];
-  for (let i = 0; i < nb; i++) {
-    users.push(genUser());
-  }
-  return users;
+function genWithNoDups(genFn, uniqNames, uniqKey) {
+  return (nb, extra) => {
+    if (uniqNames.length < nb) {
+      throw new Error(`Cant generate more than ${nb} entities`);
+    }
+    const entities = [];
+    for (let i = 0; i < nb; i++) {
+      const entity = genFn(extra);
+      if (!entity[uniqKey])
+        throw new Error(`No key ${uniqKey} found in entity`);
+      if (entities.find(e => e[uniqKey] === entity[uniqKey])) {
+        i--;
+      } else {
+        entities.push(entity);
+      }
+    }
+    return entities;
+  };
 }
 
-export function genAccounts(nb, { users }) {
-  const accounts = [];
-  for (let i = 0; i < nb; i++) {
-    accounts.push(genAccount({ users }));
-  }
-  return accounts;
-}
+export const genUsers = genWithNoDups(genUser, FAKE_USER_NAMES, "username");
+export const genAccounts = genWithNoDups(
+  genAccount,
+  FAKE_ACCOUNT_NAMES,
+  "name",
+);
+export const genGroups = genWithNoDups(genGroup, FAKE_GROUP_NAMES, "name");
 
 export function genOperations(nb, { accounts, users }) {
   const operations = [];
@@ -287,18 +299,10 @@ export function genOperations(nb, { accounts, users }) {
   return operations;
 }
 
-export function genGroups(nb, { users }) {
-  const groups = [];
-  for (let i = 0; i < nb; i++) {
-    groups.push(genGroup({ users }));
-  }
-  return groups;
-}
-
-const users = genUsers(40);
-const accounts = genAccounts(10, { users });
+const users = genUsers(20);
+const accounts = genAccounts(20, { users });
 const operations = genOperations(100, { accounts, users });
-const groups = genGroups(40, { users });
+const groups = genGroups(4, { users });
 
 export default {
   accounts: keyBy(accounts, "id"),

@@ -18,7 +18,7 @@ import Card from "components/base/Card";
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
 const operations = genOperations(25, { accounts, users });
-const groups = genGroups(10, { users });
+const groups = genGroups(4, { users });
 
 storiesOf("tables", module)
   .add("AccountsTable", () => (
