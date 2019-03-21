@@ -87,6 +87,7 @@ export type UserInvite = {
   url_id: string,
   user: {
     id: string,
+    role: string,
     key_handle: ?string,
     pub_key: ?string,
     username: string,
