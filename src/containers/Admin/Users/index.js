@@ -17,7 +17,6 @@ import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistration
 
 import type { User } from "data/types";
 
-import UserDetails from "./UserDetails";
 import InviteUser from "../InviteUser";
 
 type Props = {
@@ -58,10 +57,6 @@ class Users extends PureComponent<Props> {
           listenMutations={mutationsToListen}
         />
         <ModalRoute path={`${match.url}/invite/user`} component={InviteUser} />
-        <ModalRoute
-          path={`${match.url}/details/:userID`}
-          component={UserDetails}
-        />
       </Fragment>
     );
   }

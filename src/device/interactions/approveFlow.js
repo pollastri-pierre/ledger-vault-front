@@ -6,6 +6,7 @@ import type { Interaction } from "components/DeviceInteraction";
 import { NoChannelForDevice } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
+import RequestsQuery from "api/queries/RequestsQuery";
 import {
   openSession,
   validateVaultOperation,
@@ -26,6 +27,12 @@ const postRequest: Interaction = {
     restlay
       .commitMutation(new NewRequestMutation({ type, ...data }))
       .then(request => request.id),
+};
+
+const refetchPending: Interaction = {
+  responseKey: "pending",
+  action: ({ restlay }) =>
+    restlay.fetchQuery(new RequestsQuery({ status: "PENDING_APPROVAL" })),
 };
 
 // FIXME should we put that in the component with a connectData() and a query and pass it
@@ -99,6 +106,7 @@ export const approveFlow: Interaction[] = [
   openSessionDevice,
   validateDevice,
   postApproval,
+  refetchPending,
 ];
 
 // TODO remove this when HSM and gate will be ready

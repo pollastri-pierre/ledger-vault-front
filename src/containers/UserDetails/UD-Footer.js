@@ -1,8 +1,7 @@
 // @flow
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import { withMe } from "components/UserContextProvider";
-import Box from "components/base/Box";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import AbortRequestButton from "components/AbortRequestButton";
 import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
@@ -31,10 +30,10 @@ class UserDetailsFooter extends PureComponent<Props> {
       hasUserApprovedRequest(user.last_request, me);
 
     return (
-      <Box pb={10}>
+      <Fragment>
         {(status === "PENDING_APPROVAL" || status === "PENDING_REVOCATION") &&
           !hasUserApproved && (
-            <Box horizontal flow={10}>
+            <Fragment>
               <AbortRequestButton
                 requestID={user.last_request && user.last_request.id}
                 onSuccess={this.onSuccess}
@@ -51,22 +50,25 @@ class UserDetailsFooter extends PureComponent<Props> {
                 }}
                 buttonLabel={<Trans i18nKey="common:approve" />}
               />
-            </Box>
+            </Fragment>
           )}
         {status === "ACTIVE" && (
-          <ApproveRequestButton
-            interactions={createAndApprove}
-            onSuccess={this.onSuccess}
-            onError={null}
-            disabled={false}
-            additionalFields={{
-              data: { user_id: user.id },
-              type: "REVOKE_USER",
-            }}
-            buttonLabel={<Trans i18nKey="common:revoke" />}
-          />
+          <Fragment>
+            <div />
+            <ApproveRequestButton
+              interactions={createAndApprove}
+              onSuccess={this.onSuccess}
+              onError={null}
+              disabled={false}
+              additionalFields={{
+                data: { user_id: user.id },
+                type: "REVOKE_USER",
+              }}
+              buttonLabel={<Trans i18nKey="common:revoke" />}
+            />
+          </Fragment>
         )}
-      </Box>
+      </Fragment>
     );
   }
 }
