@@ -126,6 +126,6 @@ export default connectData(GroupModal, {
   },
   propsToQueryParams: props => ({
     groupId: props.match.params.groupId || "",
-    userRole: "OPERATOR",
+    role: "OPERATOR",
   }),
 });

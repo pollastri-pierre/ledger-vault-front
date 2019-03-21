@@ -139,6 +139,6 @@ export default connectData(CreateGroup, {
     operators: 30,
   },
   propsToQueryParams: () => ({
-    userRole: "OPERATOR",
+    role: "OPERATOR",
   }),
 });
