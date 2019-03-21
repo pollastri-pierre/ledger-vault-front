@@ -2,7 +2,7 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import connectData from "restlay/connectData";
-import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
+import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
@@ -29,8 +29,11 @@ class PendingBadge extends PureComponent<Props> {
 
 export default connectData(withMe(PendingBadge), {
   queries: {
-    data: PendingRequestsQuery,
+    data: RequestsQuery,
   },
+  propsToQueryParams: () => ({
+    status: "PENDING_APPROVAL",
+  }),
 });
 
 export const NotifComponent = styled.div`

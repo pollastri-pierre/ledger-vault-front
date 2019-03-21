@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { MdCreateNewFolder, MdDelete, MdEdit } from "react-icons/md";
-import type { RequestType } from "data/types";
+import type { RequestActivityType } from "data/types";
 import colors from "shared/colors";
 
 const ICON_SIZE = 20;
@@ -12,7 +12,7 @@ const newIcon = <MdCreateNewFolder size={ICON_SIZE} color={colors.lightGrey} />;
 const deleteIcon = <MdDelete size={ICON_SIZE} color={colors.lightGrey} />;
 
 type Props = {
-  type: RequestType,
+  type: RequestActivityType,
   entityTitle?: string,
 };
 

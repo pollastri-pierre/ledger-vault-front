@@ -19,9 +19,9 @@ import ModalLoading from "components/ModalLoading";
 
 import type { Request } from "data/types";
 
-import PendingRequestOverview from "./PendingRequestOverview";
-import PendingRequestHistory from "./PendingRequestHistory";
-import PendingRequestFooter from "./PendingRequestFooter";
+import RequestOverview from "./RequestOverview";
+import RequestHistory from "./RequestHistory";
+import RequestFooter from "./RequestFooter";
 
 type Props = {
   close: () => void,
@@ -54,7 +54,7 @@ class PendingRequest extends PureComponent<Props, State> {
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
-          <ModalTitle>New User Request</ModalTitle>
+          <ModalTitle>Request Details</ModalTitle>
           <Tabs
             indicatorColor="primary"
             value={tabsIndex}
@@ -70,14 +70,14 @@ class PendingRequest extends PureComponent<Props, State> {
           </Tabs>
         </ModalHeader>
         <Box>
-          {tabsIndex === 0 && <PendingRequestOverview request={request} />}
-          {tabsIndex === 1 && <PendingRequestHistory request={request} />}
+          {tabsIndex === 0 && <RequestOverview request={request} />}
+          {tabsIndex === 1 && <RequestHistory request={request} />}
         </Box>
-        <ModalFooter justify="space-between">
-          <PendingRequestFooter
-            requestID={request.id}
+        <ModalFooter>
+          <RequestFooter
             onSuccess={this.onSuccess}
             onError={null}
+            request={request}
           />
         </ModalFooter>
       </ModalBody>

@@ -313,7 +313,13 @@ export type ERC20Token = {
   signature: string,
 };
 
-export type RequestType =
+export type RequestStatus =
+  | "ABORTED"
+  | "PENDING_APPROVAL"
+  | "PENDING_REGISTRATION"
+  | "APPROVED";
+
+export type RequestActivityType =
   | "CREATE_GROUP"
   | "EDIT_GROUP"
   | "REVOKE_GROUP"
@@ -334,7 +340,7 @@ type RequestCommon = {
   target_id: number,
   url_id?: string,
   target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
-  type: RequestType,
+  type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,
 };

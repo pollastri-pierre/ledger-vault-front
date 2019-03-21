@@ -2,9 +2,9 @@
 
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
-import PendingRequestsQuery from "api/queries/PendingRequestsQuery";
+import RequestsQuery from "api/queries/RequestsQuery";
+import type { Match } from "react-router-dom";
 
-import ModalRoute from "components/ModalRoute";
 import RequestsTable from "components/Table/RequestsTable";
 import Card, {
   CardLoading,
@@ -14,17 +14,16 @@ import Card, {
 } from "components/base/Card";
 import Box from "components/base/Box";
 import type { MemoryHistory } from "history";
-import type { Match } from "react-router-dom";
 import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
 import { hasUserApprovedRequest } from "utils/request";
-
-import PendingRequest from "./PendingRequest";
+import RequestDetails from "containers/RequestDetails";
+import ModalRoute from "components/ModalRoute";
 
 type Props = {
   data: Object,
-  match: Match,
   history: MemoryHistory,
+  match: Match,
   me: User,
 };
 class AdminDashboard extends PureComponent<Props> {
@@ -37,7 +36,7 @@ class AdminDashboard extends PureComponent<Props> {
   };
 
   render() {
-    const { data, match, me } = this.props;
+    const { data, me, match } = this.props;
     const requests = data.edges.map(el => el.node);
     const myRequests = requests.filter(
       request => !hasUserApprovedRequest(request, me),
@@ -63,7 +62,7 @@ class AdminDashboard extends PureComponent<Props> {
         </Card>
         <ModalRoute
           path={`${match.url}/pending-requests/:requestID`}
-          component={PendingRequest}
+          component={RequestDetails}
         />
       </Box>
     );
@@ -74,6 +73,9 @@ export default connectData(withMe(AdminDashboard), {
   RenderLoading: CardLoading,
   RenderError: CardError,
   queries: {
-    data: PendingRequestsQuery,
+    data: RequestsQuery,
   },
+  propsToQueryParams: () => ({
+    status: "PENDING_APPROVAL",
+  }),
 });
