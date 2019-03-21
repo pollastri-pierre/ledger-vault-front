@@ -157,6 +157,9 @@ export default connectData(
     initialVariables: {
       users: 30,
     },
+    propsToQueryParams: () => ({
+      role: "OPERATOR",
+    }),
   },
 );
 
