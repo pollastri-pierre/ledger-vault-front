@@ -20,7 +20,10 @@ import ConnectionQuery from "restlay/ConnectionQuery";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import Paginator from "components/base/Paginator";
 import Card from "components/base/Card";
+
+const DEFAULT_PAGE_SIZE = 30;
 
 type Props<T> = {
   TableComponent: React$ComponentType<*>,
@@ -34,6 +37,7 @@ type Props<T> = {
   onRowClick?: T => void,
   listenMutations?: Mutation<any, any>[],
   history?: MemoryHistory,
+  pageSize?: number,
 };
 
 type Status = "initial" | "idle" | "loading" | "error";
@@ -50,6 +54,11 @@ class DataSearch extends PureComponent<Props<*>, State> {
     super(props);
     const { history } = this.props;
     const queryParams = history ? qs.parse(window.location.search) : {};
+
+    // if no pageSize is given in the url, we provide a default one
+    if (!queryParams.pageSize) {
+      queryParams.pageSize = String(this.props.pageSize || DEFAULT_PAGE_SIZE);
+    }
 
     this.state = {
       response: null,
@@ -131,6 +140,19 @@ class DataSearch extends PureComponent<Props<*>, State> {
     }
   };
 
+  handleChangePage = (page: number) => {
+    const { queryParams } = this.state;
+    const { pageSize } = this.props;
+
+    if (!queryParams.page || parseInt(queryParams.page, 10) !== page) {
+      this.handleUpdateQueryParams({
+        ...queryParams,
+        page,
+        pageSize: pageSize || DEFAULT_PAGE_SIZE,
+      });
+    }
+  };
+
   render() {
     const {
       TableComponent,
@@ -139,6 +161,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
       customTableDef,
       onRowClick,
       extraProps,
+      pageSize,
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
@@ -170,14 +193,31 @@ class DataSearch extends PureComponent<Props<*>, State> {
           {HeaderComponent && <HeaderComponent />}
           {status === "loading" && <Loading />}
           {showTable && (
-            <TableComponent
-              data={data}
-              customTableDef={customTableDef}
-              onRowClick={onRowClick}
-              queryParams={queryParams}
-              onSortChange={this.handleChangeSort}
-              {...extraProps}
-            />
+            <Box flow={10}>
+              <TableComponent
+                data={data}
+                customTableDef={customTableDef}
+                onRowClick={onRowClick}
+                queryParams={queryParams}
+                onSortChange={this.handleChangeSort}
+                {...extraProps}
+              />
+              {response &&
+                response.pageInfo &&
+                response.pageInfo.count &&
+                response.pageInfo.count > data.length && (
+                  <Paginator
+                    page={
+                      (queryParams.page &&
+                        parseInt(queryParams.page, 10) - 1) ||
+                      0
+                    }
+                    count={response.pageInfo.count}
+                    pageSize={pageSize || DEFAULT_PAGE_SIZE}
+                    onChange={this.handleChangePage}
+                  />
+                )}
+            </Box>
           )}
         </Card>
         <FilterComponent
