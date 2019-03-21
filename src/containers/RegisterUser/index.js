@@ -23,6 +23,9 @@ import { FaUser } from "react-icons/fa";
 
 import type { GateError, UserInvite, Organization } from "data/types";
 
+import RegisterUserSuccess from "./RegisterUserSuccess";
+import { Row, getStringError } from "./helpers";
+
 type Props = {
   match: Match,
   organization: Organization,
@@ -83,12 +86,11 @@ class RegisterUser extends PureComponent<Props, State> {
 
   render() {
     const { userInvite, loading, error, success } = this.state;
-
     const stringError = getStringError(error);
 
     return (
       <Box justify="center" align="center" style={styles.container}>
-        <Card>
+        <Card overflow="visible">
           {!loading && !success && (
             <ModalBody>
               <ModalHeader>
@@ -98,7 +100,10 @@ class RegisterUser extends PureComponent<Props, State> {
                     bold
                     i18nKey="inviteUser:registration.title"
                     values={{
-                      userRole: "Administrator",
+                      userRole:
+                        userInvite && userInvite.user
+                          ? userInvite.user.role.toLowerCase()
+                          : "User",
                     }}
                   />
                   <FaUser />
@@ -150,27 +155,7 @@ class RegisterUser extends PureComponent<Props, State> {
               </ModalFooter>
             </ModalBody>
           )}
-          {success && (
-            <ModalBody>
-              <ModalHeader>
-                <Box horizontal align="center" flow={10}>
-                  <Text
-                    header
-                    bold
-                    i18nKey="inviteUser:registration.success.title"
-                  />
-                  <span role="img" aria-label="tada" aria-hidden="true">
-                    🎉
-                  </span>
-                </Box>
-                <Text bold i18nKey="inviteUser:registration.success.subtitle" />
-              </ModalHeader>
-              <LineSeparator />
-              <Box flow={15} mt={15}>
-                <Text i18nKey="inviteUser:registration.success.description" />
-              </Box>
-            </ModalBody>
-          )}
+          {success && <RegisterUserSuccess />}
         </Card>
       </Box>
     );
@@ -184,17 +169,3 @@ export default connectData(RegisterUser, {
     urlID: match.params.urlID,
   }),
 });
-
-function Row(props: { label: string, text: string }) {
-  const { label, text } = props;
-  return (
-    <Box horizontal flow={5}>
-      <Text uppercase bold i18nKey={label} />
-      <Text>{text}</Text>
-    </Box>
-  );
-}
-function getStringError(error: Object) {
-  if (!error || !error.json || !error.json.message) return null;
-  return error.json.message;
-}
