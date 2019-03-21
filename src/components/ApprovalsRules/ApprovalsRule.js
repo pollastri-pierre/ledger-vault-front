@@ -26,17 +26,28 @@ type Props = {
   onChange: ApprovalsRuleType => void,
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
-  preventWarning: boolean,
   users: User[],
   groups: Group[],
   t: string => string,
 };
 
+type State = {
+  hasBeenClosed: boolean,
+};
+
 const MAX_USERS = 20;
 
-class ApprovalsRule extends PureComponent<Props> {
+class ApprovalsRule extends PureComponent<Props, State> {
+  state = {
+    hasBeenClosed: false,
+  };
+
   handleChangeQuorum = (quorum: number) => {
     this.props.onChange({ ...this.props.rule, quorum });
+  };
+
+  handleClose = () => {
+    if (!this.state.hasBeenClosed) this.setState({ hasBeenClosed: true });
   };
 
   handleChangeSelect = ({
@@ -77,15 +88,8 @@ class ApprovalsRule extends PureComponent<Props> {
   };
 
   render() {
-    const {
-      rule,
-      users,
-      groups,
-      onRemove,
-      parentSelectedIds,
-      preventWarning,
-      t,
-    } = this.props;
+    const { rule, users, groups, onRemove, parentSelectedIds, t } = this.props;
+    const { hasBeenClosed } = this.state;
     const { group: ruleGroup, users: ruleUsers } = rule;
 
     const group = ruleGroup ? groups.find(g => g.id === ruleGroup) : null;
@@ -104,7 +108,7 @@ class ApprovalsRule extends PureComponent<Props> {
       return false;
     });
 
-    const isInvalid = !preventWarning && nbSelected === 0;
+    const isInvalid = hasBeenClosed && nbSelected === 0;
 
     return (
       <div style={styles.paddedBotForDrag}>
@@ -122,6 +126,7 @@ class ApprovalsRule extends PureComponent<Props> {
             {approvalsFrom}
             <Box grow py={10} pr={10} justify="center">
               <SelectGroupsUsers
+                onMenuClose={this.handleClose}
                 placeholder={t("approvalsRules:selectPlaceholder")}
                 autoFocus={nbSelected === 0}
                 openMenuOnFocus

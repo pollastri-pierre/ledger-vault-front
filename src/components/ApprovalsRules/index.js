@@ -91,7 +91,6 @@ class ApprovalsRules extends PureComponent<Props> {
         onChange={handleChange}
         onRemove={rules.length > 1 ? handleRemove : undefined}
         parentSelectedIds={this.selectedIds}
-        preventWarning={rules.length === 1}
       />
     );
   };
