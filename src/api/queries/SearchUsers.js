@@ -8,7 +8,7 @@ import type { User } from "data/types";
 
 type Input = {
   name?: string,
-  userRole?: string,
+  role?: string,
 };
 
 type Node = User;
@@ -16,7 +16,7 @@ type Node = User;
 const uri = (query: Input) => {
   let finalQuery = {};
 
-  if (query && query.userRole) {
+  if (query && query.role) {
     finalQuery = {
       ...query,
     };
