@@ -15,7 +15,7 @@ export default () => (
       path="*/accounts/details/:accountId"
       component={AccountDetails}
     />
-    <ModalRoute path="*/groups/new" render={CreateGroup} />
+    <ModalRoute path="*/groups/new" component={CreateGroup} />
     <ModalRoute
       path="*/accounts/new"
       component={AccountCreationFlow}
