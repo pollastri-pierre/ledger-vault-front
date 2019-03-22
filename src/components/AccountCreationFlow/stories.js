@@ -28,13 +28,13 @@ const fakeNetwork = async url => {
   if (url.startsWith("/people")) {
     return wrapConnection(users);
   }
-  if (url === "/groups") {
+  if (url.startsWith("/groups")) {
     return denormalize(groups.map(g => g.id), [schema.Group], {
       users: keyBy(users, "id"),
       groups: keyBy(groups, "id"),
     });
   }
-  if (url === "/requests") {
+  if (url.startsWith("/requests")) {
     return { id: 42 };
   }
   throw new Error("invalid url");
