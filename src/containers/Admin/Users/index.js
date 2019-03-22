@@ -14,6 +14,8 @@ import Box from "components/base/Box";
 import DataSearch from "components/DataSearch";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
+import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
+import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 
 import type { User } from "data/types";
 
@@ -24,7 +26,12 @@ type Props = {
   history: MemoryHistory,
 };
 
-const mutationsToListen = [InviteUserMutation, UpdateUserRegistrationMutation];
+const mutationsToListen = [
+  InviteUserMutation,
+  UpdateUserRegistrationMutation,
+  ApproveRequestMutation,
+  AbortRequestMutation,
+];
 
 class Users extends PureComponent<Props> {
   handleUserClick = (user: User) => {
