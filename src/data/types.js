@@ -331,6 +331,13 @@ export type RequestActivityType =
   | "EDIT_ACCOUNT"
   | "REVOKE_ACCOUNT";
 
+type RequestTargetType =
+  | "GROUP"
+  | "BITCOIN_ACCOUNT"
+  | "ETHEREUM_ACCOUNT"
+  | "OPERATION"
+  | "PERSON";
+
 type RequestCommon = {
   created_by: number,
   created_on: string,
@@ -340,7 +347,7 @@ type RequestCommon = {
   approvals: RequestApproval[],
   target_id: number,
   url_id?: string,
-  target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "PERSON",
+  target_type: RequestTargetType,
   type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,

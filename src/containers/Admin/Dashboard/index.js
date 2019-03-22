@@ -26,11 +26,16 @@ type Props = {
 class AdminDashboard extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
-      this.props.history.push(`dashboard/groups/${request.target_id}`);
+      this.props.history.push(`dashboard/groups/details/${request.target_id}`);
     } else if (request.target_type === "PERSON") {
       this.props.history.push(`dashboard/users/details/${request.target_id}`);
-    } else {
-      this.props.history.push(`dashboard/requests/${request.id}`);
+    } else if (
+      request.target_type === "BITCOIN_ACCOUNT" ||
+      request.target_type === "ETHEREUM_ACCOUNT"
+    ) {
+      this.props.history.push(
+        `dashboard/accounts/details/${request.target_id}`,
+      );
     }
   };
 
