@@ -16,27 +16,17 @@ class Modals extends PureComponent<Props> {
   render() {
     return (
       <Fragment>
-        <ModalRoute
-          path="*/groups/details/:groupId"
-          render={(
-            props, // looks hacky but prevent bug with <Switch> and ModalRoute with the overlay animation
-          ) =>
-            props.match.params.groupId === "new" ? (
-              <CreateGroup {...props} />
-            ) : (
-              <GroupDetails {...props} />
-            )
-          }
-        />
-        <ModalRoute
-          path="*/accounts/new"
-          component={AccountCreationFlow}
-          disableBackdropClick
-        />
+        <ModalRoute path="*/groups/details/:groupId" render={GroupDetails} />
         <ModalRoute path="*/users/details/:userID" component={UserDetails} />
         <ModalRoute
           path="*/accounts/details/:accountId"
           component={AccountDetails}
+        />
+        <ModalRoute path="*/groups/new" render={CreateGroup} />
+        <ModalRoute
+          path="*/accounts/new"
+          component={AccountCreationFlow}
+          disableBackdropClick
         />
       </Fragment>
     );
