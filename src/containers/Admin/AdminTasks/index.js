@@ -21,11 +21,14 @@ const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 class Users extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
-      this.props.history.push(`tasks/groups/${request.target_id}`);
+      this.props.history.push(`tasks/groups/details/${request.target_id}`);
     } else if (request.target_type === "PERSON") {
       this.props.history.push(`tasks/users/details/${request.target_id}`);
-    } else {
-      this.props.history.push(`tasks/requests/${request.id}`);
+    } else if (
+      request.target_type === "BITCOIN_ACCOUNT" ||
+      request.target_type === "ETHEREUM_ACCOUNT"
+    ) {
+      this.props.history.push(`tasks/accounts/details/${request.target_id}`);
     }
   };
 

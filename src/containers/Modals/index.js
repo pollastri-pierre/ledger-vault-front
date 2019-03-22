@@ -6,6 +6,7 @@ import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import AccountCreationFlow from "components/AccountCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
+import AccountDetails from "containers/Admin/Accounts/AccountDetails";
 
 type Props = {
   match: Match,
@@ -16,7 +17,7 @@ class Modals extends PureComponent<Props> {
     return (
       <Fragment>
         <ModalRoute
-          path="*/groups/:groupId"
+          path="*/groups/details/:groupId"
           render={(
             props, // looks hacky but prevent bug with <Switch> and ModalRoute with the overlay animation
           ) =>
@@ -32,7 +33,11 @@ class Modals extends PureComponent<Props> {
           component={AccountCreationFlow}
           disableBackdropClick
         />
-        <ModalRoute path="*/details/:userID" component={UserDetails} />
+        <ModalRoute path="*/users/details/:userID" component={UserDetails} />
+        <ModalRoute
+          path="*/accounts/details/:accountId"
+          component={AccountDetails}
+        />
       </Fragment>
     );
   }
