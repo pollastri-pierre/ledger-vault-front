@@ -23,6 +23,8 @@ type Props = {
   onChange: ObjectParameters => void,
 };
 
+const fieldsToExclude = ["page", "pageSize"];
+
 class FiltersCard extends PureComponent<Props> {
   handleUpdateKey = (
     keyOrUpdater: string | QueryUpdater,
@@ -38,11 +40,16 @@ class FiltersCard extends PureComponent<Props> {
     this.handleChange(newQueryParams);
   };
 
-  handleClear = () =>
-    this.handleChange({
-      page: this.props.queryParams.page,
-      pageSize: this.props.queryParams.pageSize,
-    });
+  handleClear = () => {
+    const patch = fieldsToExclude.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field]: this.props.queryParams[field],
+      }),
+      {},
+    );
+    this.handleChange(patch);
+  };
 
   handleChange = (newQueryParams: ObjectParameters) => {
     const { onChange, queryParams } = this.props;
@@ -86,8 +93,7 @@ function hasProps(obj) {
     if (
       Object.prototype.hasOwnProperty.call(obj, i) &&
       obj[i] &&
-      i !== "pageSize" &&
-      i !== "page"
+      fieldsToExclude.indexOf(i) === -1
     )
       return true;
   }

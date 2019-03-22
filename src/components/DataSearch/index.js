@@ -202,7 +202,8 @@ class DataSearch extends PureComponent<Props<*>, State> {
                 onSortChange={this.handleChangeSort}
                 {...extraProps}
               />
-              {response &&
+              {data.length > 0 &&
+                response &&
                 response.pageInfo &&
                 response.pageInfo.count &&
                 response.pageInfo.count > data.length && (
