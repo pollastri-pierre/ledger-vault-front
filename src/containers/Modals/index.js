@@ -9,7 +9,7 @@ import AccountDetails from "containers/Admin/Accounts/AccountDetails";
 
 export default () => (
   <Fragment>
-    <ModalRoute path="*/groups/details/:groupId" render={GroupDetails} />
+    <ModalRoute path="*/groups/details/:groupId" component={GroupDetails} />
     <ModalRoute path="*/users/details/:userID" component={UserDetails} />
     <ModalRoute
       path="*/accounts/details/:accountId"
