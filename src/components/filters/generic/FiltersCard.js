@@ -38,7 +38,11 @@ class FiltersCard extends PureComponent<Props> {
     this.handleChange(newQueryParams);
   };
 
-  handleClear = () => this.handleChange({});
+  handleClear = () =>
+    this.handleChange({
+      page: this.props.queryParams.page,
+      pageSize: this.props.queryParams.pageSize,
+    });
 
   handleChange = (newQueryParams: ObjectParameters) => {
     const { onChange, queryParams } = this.props;
@@ -79,7 +83,13 @@ class FiltersCard extends PureComponent<Props> {
 
 function hasProps(obj) {
   for (const i in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, i) && obj[i]) return true;
+    if (
+      Object.prototype.hasOwnProperty.call(obj, i) &&
+      obj[i] &&
+      i !== "pageSize" &&
+      i !== "page"
+    )
+      return true;
   }
   return false;
 }
