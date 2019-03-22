@@ -58,6 +58,7 @@ const AccountsSearch = props => (
     Query={SearchAccountsQuery}
     TableComponent={AccountsTable}
     FilterComponent={AccountsFilters}
+    pageSize={8}
     {...props}
   />
 );
@@ -106,7 +107,7 @@ const mockNetwork = async url => {
     });
   }
   if (url.startsWith("/accounts-mock?")) {
-    edges = accounts.filter(a => {
+    const filteredAccounts = accounts.filter(a => {
       if (
         queryParams.name &&
         a.name.toLowerCase().indexOf(queryParams.name.toLowerCase()) === -1
@@ -114,6 +115,16 @@ const mockNetwork = async url => {
         return false;
       return true;
     });
+
+    const page = (queryParams.page && parseInt(queryParams.page, 10) - 1) || 0;
+    const start = page * queryParams.pageSize;
+    const end = start + parseInt(queryParams.pageSize, 10);
+    edges = filteredAccounts.slice(start, end);
+
+    return {
+      edges: edges.map(op => ({ node: op, cursor: op.id })),
+      pageInfo: { hasNextPage: false, count: filteredAccounts.length },
+    };
   }
 
   if (!edges) {
