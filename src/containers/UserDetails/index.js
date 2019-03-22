@@ -3,9 +3,10 @@
 import React, { PureComponent } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { Trans } from "react-i18next";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import type { User } from "data/types";
+import RequestTitle from "components/RequestTitle";
 import {
   ModalHeader,
   ModalTitle,
@@ -50,12 +51,16 @@ class UserDetails extends PureComponent<Props, State> {
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
           <ModalTitle>
-            <Trans
-              i18nKey="userDetails:header"
-              values={{
-                userRole: user.role,
-              }}
-            />
+            <Text header bold>
+              {user.status === "ACTIVE"
+                ? user.username
+                : user.last_request && (
+                    <RequestTitle
+                      type={user.last_request.type}
+                      entityTitle={user.username}
+                    />
+                  )}
+            </Text>
           </ModalTitle>
           <Tabs
             indicatorColor="primary"
@@ -75,7 +80,7 @@ class UserDetails extends PureComponent<Props, State> {
           {tabsIndex === 0 && <UserDetailsOverview user={user} />}
           {tabsIndex === 1 && <UserDetailsHistory user={user} />}
         </Box>
-        <ModalFooter>
+        <ModalFooter justify="space-between">
           <UserDetailsFooter status={user.status} user={user} close={close} />
         </ModalFooter>
       </ModalBody>

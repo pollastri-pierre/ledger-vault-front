@@ -340,7 +340,7 @@ type RequestCommon = {
   approvals: RequestApproval[],
   target_id: number,
   url_id?: string,
-  target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "OPERATOR" | "ADMIN",
+  target_type: "GROUP" | "ACCOUNT" | "OPERATION" | "PERSON",
   type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,

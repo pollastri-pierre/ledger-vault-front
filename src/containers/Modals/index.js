@@ -5,6 +5,7 @@ import ModalRoute from "components/ModalRoute";
 import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import AccountCreationFlow from "components/AccountCreationFlow";
+import UserDetails from "containers/Admin/Users/UserDetails";
 
 type Props = {
   match: Match,
@@ -31,6 +32,7 @@ class Modals extends PureComponent<Props> {
           component={AccountCreationFlow}
           disableBackdropClick
         />
+        <ModalRoute path="*/details/:userID" component={UserDetails} />
       </Fragment>
     );
   }

@@ -6,6 +6,7 @@ import { NetworkError } from "network";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
+import RequestsQuery from "api/queries/RequestsQuery";
 import DialogButton from "components/buttons/DialogButton";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 
@@ -33,6 +34,9 @@ class AbortRequestButton extends PureComponent<Props, State> {
 
     try {
       await restlay.commitMutation(new AbortRequestMutation({ requestID }));
+      await restlay.fetchQuery(
+        new RequestsQuery({ status: "PENDING_APPROVAL" }),
+      );
       onSuccess();
     } catch (error) {
       this.setState({ error });
