@@ -10,19 +10,14 @@ import Text from "components/base/Text";
 import LineRow from "components/LineRow";
 import EntityStatus from "components/EntityStatus";
 import AccountName from "components/AccountName";
-import RequestTitle from "components/RequestTitle";
 import DateFormat from "components/DateFormat";
 import { createAndApprove, approveFlow } from "device/interactions/approveFlow";
+import EntityModalTitle from "components/EntityModalTitle";
 
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
-import {
-  ModalHeader,
-  ModalTitle,
-  ModalBody,
-  ModalFooter,
-} from "components/base/Modal";
+import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 import { withMe } from "components/UserContextProvider";
 
 import { hasUserApprovedRequest } from "utils/request";
@@ -48,18 +43,7 @@ class AccountDetails extends PureComponent<Props> {
     return (
       <ModalBody height={500} onClose={close}>
         <ModalHeader title={account.name}>
-          <ModalTitle>
-            <Text header bold>
-              {account.status === "ACTIVE"
-                ? account.name
-                : account.last_request && (
-                    <RequestTitle
-                      type={account.last_request.type}
-                      entityTitle={account.name}
-                    />
-                  )}
-            </Text>
-          </ModalTitle>
+          <EntityModalTitle entity={account} title={account.name} />
         </ModalHeader>
         <LineRow label={<Trans i18nKey="accountDetails:type" />}>
           {account.last_request && account.last_request.type}

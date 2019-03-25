@@ -10,21 +10,15 @@ import Tab from "@material-ui/core/Tab";
 import type { Group, User } from "data/types";
 import type { MemoryHistory } from "history";
 import type { Connection } from "restlay/ConnectionQuery";
-import Text from "components/base/Text";
 import GoBack from "components/GoBack";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import GroupDetailsDescription from "containers/Admin/Groups/GroupDetailsDescription";
 import GroupDetailsFooter from "containers/Admin/Groups/GroupDetailsFooter";
-import RequestTitle from "components/RequestTitle";
-
+import EntityModalTitle from "components/EntityModalTitle";
 import ModalLoading from "components/ModalLoading";
-import {
-  ModalHeader,
-  ModalTitle,
-  ModalBody,
-  ModalFooter,
-} from "components/base/Modal";
+
+import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 
 type Props = {
   group: Group,
@@ -60,18 +54,7 @@ class GroupModal extends PureComponent<Props, State> {
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader title={group.name}>
-          <ModalTitle>
-            <Text header bold>
-              {group.status === "ACTIVE"
-                ? group.name
-                : group.last_request && (
-                    <RequestTitle
-                      type={group.last_request.type}
-                      entityTitle={group.name}
-                    />
-                  )}
-            </Text>
-          </ModalTitle>
+          <EntityModalTitle title={group.name} entity={group} />
           <Tabs
             indicatorColor="primary"
             value={tabsIndex}
