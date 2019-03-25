@@ -3,7 +3,6 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
@@ -20,7 +19,6 @@ type Props = {
   restlay: RestlayEnvironment,
 };
 type State = {
-  loading: boolean,
   url: string,
   request_id: string,
 };
@@ -34,7 +32,6 @@ const styles = {
 
 class InviteUser extends PureComponent<Props, State> {
   state = {
-    loading: false,
     url: "",
     request_id: "",
   };
@@ -61,8 +58,6 @@ class InviteUser extends PureComponent<Props, State> {
         console.warn(error);
       }
     } else {
-      this.setState({ loading: true });
-
       const query = new InviteUserMutation({
         user: {
           type:
@@ -79,21 +74,18 @@ class InviteUser extends PureComponent<Props, State> {
           data.url_id
         }`;
         this.setState({
-          loading: true,
           url,
           request_id: data.id,
         });
       } catch (error) {
-        this.setState({
-          loading: false,
-        });
+        console.error(error);
       }
     }
   };
 
   render() {
     const { close } = this.props;
-    const { loading, url, request_id } = this.state;
+    const { url, request_id } = this.state;
 
     return (
       <ModalBody onClose={close}>
@@ -119,10 +111,6 @@ class InviteUser extends PureComponent<Props, State> {
                 textToCopy={url}
               />
             </Box>
-          </Box>
-        ) : loading ? (
-          <Box align="center">
-            <CircularProgress />
           </Box>
         ) : null}
       </ModalBody>
