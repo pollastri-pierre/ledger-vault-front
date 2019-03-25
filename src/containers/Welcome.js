@@ -8,20 +8,26 @@ import type { Translate, Organization, GateError } from "data/types";
 import type { DeviceError } from "utils/errors";
 import HelpLink from "components/HelpLink";
 import { UnknownDomain, GenericError, InvalidDataDevice } from "utils/errors";
-import { withStyles } from "@material-ui/core/styles";
+import type { MemoryHistory } from "history";
 import { withRouter, Redirect } from "react-router";
+import { FaUser } from "react-icons/fa";
 import DialogButton from "components/buttons/DialogButton";
 import Alert from "components/utils/Alert";
+import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
+import Card from "components/base/Card";
 import TranslatedError from "components/TranslatedError";
 import Logo from "components/Logo";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import { loginFlow } from "device/interactions/loginFlow";
 import type { LoginFlowResponse } from "device/interactions/loginFlow";
 
-import Profile from "components/icons/thin/Profile";
-import MUITextField from "@material-ui/core/TextField";
 import { addMessage, addError } from "redux/modules/alerts";
 import DeviceInteraction from "components/DeviceInteraction";
+import InputField from "components/InputField";
 import { login } from "redux/modules/auth";
+
+import colors from "shared/colors";
 
 const mapDispatchToProps = {
   login,
@@ -30,77 +36,27 @@ const mapDispatchToProps = {
 };
 
 const styles = {
-  base: {
-    position: "relative",
-    textAlign: "center",
-    height: 258,
-    width: 400,
-    backgroundColor: "#ffffff",
-    boxShadow: "0px 2.5px 2.5px 0 rgba(0, 0, 0, 0.04)",
-  },
-  wrapper: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    flexDirection: "column",
+  container: {
+    minHeight: "100vh",
   },
   banner: {
-    width: "400px",
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  instructions: {
-    fontSize: "13px",
-    paddingTop: "22px",
-  },
-  icon: {
-    marginTop: 40,
-    width: 28,
-    height: 32,
+    width: 520,
   },
   help: {
-    width: 63,
-    textDecoration: "none",
     cursor: "pointer",
-    marginRight: "0",
-    fontSize: 11,
-    fontWeight: "600",
-    textTransform: "uppercase",
     opacity: "0.5",
+    textDecoration: "none",
     transition: "opacity 0.2s ease",
-    verticalAlign: "super",
-    lineHeight: "1em",
-    top: "5px",
-    right: "0",
-    "&:visited": {
-      color: "inherit",
-    },
-  },
-  submit: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    marginRight: 40,
-  },
-  input: {
-    textAlign: "center",
-  },
-  version: {
-    fontSize: 11,
-    marginTop: 50,
   },
 };
 
 const unknownDomainError = new UnknownDomain();
 
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
   login: string => void,
   addMessage: (string, string, ?string) => void,
   addError: Error => void,
-  history: *,
+  history: MemoryHistory,
   t: Translate,
 };
 
@@ -160,12 +116,18 @@ class Welcome extends Component<Props, State> {
     }
   };
 
-  onChange = (e: any) => {
-    this.setState({ domain: e.currentTarget.value });
+  onChange = (domain: string) => {
+    this.setState({ domain });
   };
 
   onClose = () => {
     this.setState({ errorDomain: false });
+  };
+
+  onKeyPress = (e: SyntheticKeyboardEvent<Document>) => {
+    if (e.key === "Enter") {
+      this.onSubmit();
+    }
   };
 
   render() {
@@ -176,9 +138,10 @@ class Welcome extends Component<Props, State> {
       isChecking,
       onboardingToBeDone,
     } = this.state;
-    const { classes, t } = this.props;
+    const { t } = this.props;
+
     return (
-      <div className={classes.wrapper}>
+      <Box justify="center" align="center" style={styles.container}>
         {onboardingToBeDone && <Redirect to={`${domain}/onboarding`} />}
         <Alert
           onClose={this.onClose}
@@ -189,69 +152,76 @@ class Welcome extends Component<Props, State> {
         >
           <TranslatedError error={unknownDomainError} field="description" />
         </Alert>
-        <div className={classes.banner}>
+        <Box
+          horizontal
+          justify="space-between"
+          align="center"
+          mb={10}
+          style={styles.banner}
+        >
           <Logo />
           <HelpLink
-            className={classes.help}
+            style={styles.help}
             subLink="/Content/operations/signin.htm"
           >
-            {t("welcome:help")}
+            <Text small uppercase i18nKey="welcome:help" />
           </HelpLink>
-        </div>
-        <form className={classes.base}>
-          <Profile className={classes.icon} color="#e2e2e2" />
-          <br />
-          <MUITextField
-            autoComplete="off"
-            error={error ? domain !== "" : false}
-            style={{ width: "320px", marginTop: "5px", color: "black" }}
-            InputProps={{
-              inputProps: {
-                autoComplete: "off",
-                style: {
-                  fontSize: "13px",
-                  color: "black",
-                  paddingBottom: "15px",
-                  textAlign: "center",
-                },
-              },
-            }}
-            disabled={isChecking}
-            value={domain}
-            id="textField"
-            name="email"
-            onChange={this.onChange}
-            placeholder={t("welcome:placeholder_domain")}
-          />
-          <br />
-          <div className={classes.instructions}>
-            {t("welcome:domain_description")}
-          </div>
-          {this.state.organization && !this.state.error ? (
-            <div style={{ position: "absolute", bottom: 10, right: 20 }}>
-              <DeviceInteraction
-                onSuccess={this.onFinishLogin}
-                interactions={loginFlow}
-                onError={this.onError}
-                additionalFields={{
-                  organization: this.state.organization,
-                }}
-              />
-            </div>
-          ) : (
-            <DialogButton
-              className={classes.submit}
-              highlight
-              disabled={!domain || isChecking}
-              right
-              onTouchTap={this.onSubmit}
-            >
-              {t("common:continue")}
-            </DialogButton>
-          )}
-        </form>
-        <div className={classes.version}>Vault - v0.2</div>
-      </div>
+        </Box>
+        <Card overflow="visible">
+          <ModalBody>
+            <ModalHeader>
+              <Box align="center" flow={20}>
+                <FaUser color={colors.lead} size={32} />
+                <InputField
+                  value={domain}
+                  disabled={isChecking}
+                  autoFocus
+                  autoComplete="off"
+                  error={error ? domain !== "" : false}
+                  InputProps={{
+                    inputProps: {
+                      style: {
+                        textAlign: "center",
+                        paddingBottom: 20,
+                      },
+                    },
+                  }}
+                  onKeyPress={this.onKeyPress}
+                  onChange={this.onChange}
+                  placeholder={t("welcome:placeholder_domain")}
+                />
+                <Text i18nKey="welcome:domain_description" />
+              </Box>
+            </ModalHeader>
+          </ModalBody>
+          <ModalFooter>
+            {this.state.organization && !this.state.error ? (
+              <Box mb={20}>
+                <DeviceInteraction
+                  onSuccess={this.onFinishLogin}
+                  interactions={loginFlow}
+                  onError={this.onError}
+                  additionalFields={{
+                    organization: this.state.organization,
+                  }}
+                />
+              </Box>
+            ) : (
+              <DialogButton
+                highlight
+                disabled={!domain || isChecking}
+                right
+                onTouchTap={this.onSubmit}
+              >
+                <Text i18nKey="common:continue" />
+              </DialogButton>
+            )}
+          </ModalFooter>
+        </Card>
+        <Box align="center" mt={40}>
+          <Text small>Vault - v0.2</Text>
+        </Box>
+      </Box>
     );
   }
 }
@@ -259,4 +229,4 @@ class Welcome extends Component<Props, State> {
 export default connect(
   null,
   mapDispatchToProps,
-)(withRouter(withStyles(styles)(translate()(Welcome))));
+)(withRouter(translate()(Welcome)));
