@@ -23,7 +23,7 @@ const mutationsToListen = [ApproveRequestMutation];
 class AdminGroups extends PureComponent<Props> {
   handleGroupClick = (group: Group) => {
     const { history } = this.props;
-    history.push(`groups/${group.id}`);
+    history.push(`groups/details/${group.id}`);
   };
 
   createGroup = () => {
