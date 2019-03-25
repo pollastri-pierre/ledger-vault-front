@@ -64,6 +64,7 @@ export default ({
     <VaultLayoutIconContainer
       isMenuOpened={isMenuOpened}
       isMenuFloating={isMenuFloating}
+      isDisabled={item.isDisabled}
       isActive={item.isActive}
     >
       <Icon />
@@ -80,6 +81,7 @@ export default ({
 
   let menuItem = (
     <VaultLayoutMenuItem
+      isDisabled={item.isDisabled}
       isMenuOpened={isMenuOpened}
       isMenuFloating={isMenuFloating}
       isActive={item.isActive}
@@ -146,9 +148,12 @@ const Notif = ({
 const VaultLayoutMenuItem = styled.div`
   position: relative;
   height: 40px;
+  opacity: ${p => (p.isDisabled ? "0.6" : "1")};
 
   pointer-events: ${p =>
-    (p.isMenuFloating && !p.isMenuOpened) || p.isActive ? "none" : "auto"};
+    p.isDisabled || ((p.isMenuFloating && !p.isMenuOpened) || p.isActive)
+      ? "none"
+      : "auto"};
 
   font-weight: ${p => (p.isActive ? "bold" : "normal")};
 
@@ -175,7 +180,7 @@ const VaultLayoutIconContainer = styled.div`
   width: 60px;
   height: 40px;
   color: inherit;
-  pointer-events: ${p => (p.isActive ? "none" : "auto")};
+  pointer-events: ${p => (p.isDisabled || p.isActive ? "none" : "auto")};
 
   &:hover {
     cursor: ${p => (p.isMenuOpened ? "inherit" : "pointer")};

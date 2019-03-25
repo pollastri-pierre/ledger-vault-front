@@ -5,6 +5,7 @@ export type MenuItem = {
   label: React$Node,
   Icon: React$ComponentType<{}>,
   isActive?: boolean,
+  isDisabled?: boolean,
   onClick?: () => void,
   url?: string,
   NotifComponent?: React$ComponentType<{}>,
