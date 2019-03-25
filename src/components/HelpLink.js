@@ -10,7 +10,7 @@ type Props = {
 class HelpLink extends PureComponent<Props> {
   render() {
     // define support center link
-    const { subLink, className, support } = this.props;
+    const { subLink, className, support, ...props } = this.props;
     let href = subLink
       ? `http://help.vault.ledger.com${subLink}`
       : "http://help.vault.ledger.com";
@@ -25,6 +25,7 @@ class HelpLink extends PureComponent<Props> {
         className={className || ""}
         target="new"
         style={{ verticalAlign: "middle" }}
+        {...props}
       >
         {this.props.children}
       </a>
