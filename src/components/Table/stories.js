@@ -11,9 +11,16 @@ import {
   genGroups,
 } from "data/mock-entities";
 
-import { GroupsTable, AccountsTable, OperationsTable } from "components/Table";
+import {
+  GroupsTable,
+  AccountsTable,
+  OperationsTable,
+  RequestsTable,
+} from "components/Table";
 import { action } from "@storybook/addon-actions";
 import Card from "components/base/Card";
+
+import requests from "data/mock-requests.json";
 
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
@@ -34,6 +41,11 @@ storiesOf("tables", module)
   .add("OperationsTable", () => (
     <Wrapper>
       <OperationsTable accounts={accounts} data={operations} />
+    </Wrapper>
+  ))
+  .add("RequestsTable", () => (
+    <Wrapper>
+      <RequestsTable data={requests} />
     </Wrapper>
   ));
 
