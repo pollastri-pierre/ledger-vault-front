@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
 import AccountQuery from "api/queries/AccountQuery";
@@ -11,10 +11,11 @@ import LineRow from "components/LineRow";
 import EntityStatus from "components/EntityStatus";
 import AccountName from "components/AccountName";
 import DateFormat from "components/DateFormat";
-import { createAndApprove, approveFlow } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/approveFlow";
 import EntityModalTitle from "components/EntityModalTitle";
 
-import AbortRequestButton from "components/AbortRequestButton";
+import RequestActionButtons from "components/RequestActionButtons";
+
 import ApproveRequestButton from "components/ApproveRequestButton";
 
 import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
@@ -63,30 +64,11 @@ class AccountDetails extends PureComponent<Props> {
         </LineRow>
         <ModalFooter justify="space-between">
           {status.startsWith("PENDING") && !hasUserApproved && (
-            <Fragment>
-              <AbortRequestButton
-                requestID={account.last_request && account.last_request.id}
-                onSuccess={close}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={close}
-                onError={null}
-                additionalFields={{
-                  request_id: account.last_request && account.last_request.id,
-                }}
-                disabled={false}
-                buttonLabel={
-                  <Trans
-                    i18nKey={
-                      account.last_request
-                        ? `request:approve.${account.last_request.type}`
-                        : `common:approve`
-                    }
-                  />
-                }
-              />
-            </Fragment>
+            <RequestActionButtons
+              onSuccess={close}
+              onError={null}
+              entity={account}
+            />
           )}
           {status === "ACTIVE" && (
             <ApproveRequestButton
