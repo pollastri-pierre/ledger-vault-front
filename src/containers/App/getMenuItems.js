@@ -41,6 +41,7 @@ export default function getMenuItems(props: Props) {
     return setActive(location, [
       {
         key: "dashboard",
+        dataTest: "menuItem-dashboard",
         label: <Trans i18nKey="menu:admin.dashboard" />,
         url: `${match.url}/admin/dashboard`,
         Icon: FaHome,
@@ -48,30 +49,35 @@ export default function getMenuItems(props: Props) {
       },
       {
         key: "admin-tasks",
+        dataTest: "menuItem-admin-tasks",
         label: <Trans i18nKey="menu:admin.tasks" />,
         url: `${match.url}/admin/tasks`,
         Icon: FaList,
       },
       {
         key: "groups",
+        dataTest: "menuItem-groups",
         label: <Trans i18nKey="menu:admin.groups" />,
         url: `${match.url}/admin/groups`,
         Icon: FaUsers,
       },
       {
         key: "users",
+        dataTest: "menuItem-users",
         label: <Trans i18nKey="menu:admin.users" />,
         url: `${match.url}/admin/users`,
         Icon: FaUser,
       },
       {
         key: "accounts",
+        dataTest: "menuItem-accounts",
         label: <Trans i18nKey="menu:admin.accounts" />,
         url: `${match.url}/admin/accounts`,
         Icon: FaMoneyCheck,
       },
       {
         key: "transactions",
+        dataTest: "menuItem-transactions",
         label: <Trans i18nKey="menu:admin.transactions" />,
         url: `${match.url}/admin/transactions`,
         Icon: FaExchangeAlt,
@@ -86,12 +92,14 @@ export default function getMenuItems(props: Props) {
     return setActive(location, [
       {
         key: "dashboard",
+        dataTest: "menuItem-dashboard",
         label: <Trans i18nKey="menu:operator.dashboard" />,
         url: `${match.url}/operator/dashboard`,
         Icon: FaHome,
       },
       {
         key: "new-operation",
+        dataTest: "menuItem-new-operation",
         label: <Trans i18nKey="menu:operator.send" />,
         url: `${location.pathname}/new-operation`,
         Icon: SendIcon,
@@ -102,6 +110,7 @@ export default function getMenuItems(props: Props) {
       },
       {
         key: "receive",
+        dataTest: "menuItem-receive",
         label: <Trans i18nKey="menu:operator.receive" />,
         url: `${location.pathname}/receive`,
         Icon: ReceiveIcon,
@@ -109,12 +118,14 @@ export default function getMenuItems(props: Props) {
       },
       {
         key: "accounts",
+        dataTest: "menuItem-accounts",
         label: <Trans i18nKey="menu:operator.accounts" />,
         url: `${match.url}/operator/accounts`,
         Icon: FaMoneyCheck,
       },
       {
         key: "transactions",
+        dataTest: "menuItem-transactions",
         label: <Trans i18nKey="menu:operator.transactions" />,
         url: `${match.url}/operator/transactions`,
         Icon: FaExchangeAlt,

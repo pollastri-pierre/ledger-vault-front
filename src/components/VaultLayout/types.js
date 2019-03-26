@@ -8,5 +8,6 @@ export type MenuItem = {
   isDisabled?: boolean,
   onClick?: () => void,
   url?: string,
+  dataTest?: string,
   NotifComponent?: React$ComponentType<{}>,
 };

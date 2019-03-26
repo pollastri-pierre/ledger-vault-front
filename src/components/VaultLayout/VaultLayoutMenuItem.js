@@ -23,7 +23,7 @@ export default ({
   isMenuOpened,
   isMenuFloating,
 }: Props) => {
-  const { Icon, NotifComponent } = item;
+  const { Icon, NotifComponent, dataTest } = item;
 
   const iconContainerStyle = {
     ...styles.stick,
@@ -107,7 +107,7 @@ export default ({
   }
 
   return (
-    <div style={styles.relative}>
+    <div style={styles.relative} data-test={dataTest}>
       {menuItem}
       {notifComponent}
     </div>
