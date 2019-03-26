@@ -5,10 +5,9 @@ import { findDOMNode } from "react-dom";
 import TextField from "@material-ui/core/TextField";
 import debounce from "lodash/debounce";
 
-import Box from "components/base/Box";
-
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters";
+import Text from "components/base/Text";
 
 type Props = FieldProps & {
   title: React$Node,
@@ -39,21 +38,30 @@ class FilterFieldText extends PureComponent<Props> {
     updateQueryParams(queryKey, str);
   }, 150);
 
+  Collapsed = () => {
+    const { queryParams, queryKey } = this.props;
+    return <Text small>{queryParams[queryKey] || ""}</Text>;
+  };
+
   render() {
     const { queryParams, queryKey, placeholder, title } = this.props;
 
     const isActive = !!queryParams[queryKey];
 
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>{title}</FieldTitle>
+      <WrappableField
+        label={title}
+        isActive={isActive}
+        RenderCollapsed={this.Collapsed}
+      >
         <TextField
           ref={this.inputRef}
+          autoFocus
           defaultValue={queryParams[queryKey] || ""}
           onChange={this.handleChange}
           placeholder={placeholder}
         />
-      </Box>
+      </WrappableField>
     );
   }
 }

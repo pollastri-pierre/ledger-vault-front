@@ -188,48 +188,44 @@ class DataSearch extends PureComponent<Props<*>, State> {
     );
 
     return (
-      <Box horizontal flow={20} align="flex-start">
-        <Card grow>
-          {HeaderComponent && <HeaderComponent />}
-          {status === "loading" && <Loading />}
-          {showTable && (
-            <Box flow={10}>
-              <TableComponent
-                data={data}
-                customTableDef={customTableDef}
-                onRowClick={onRowClick}
-                queryParams={queryParams}
-                onSortChange={this.handleChangeSort}
-                {...extraProps}
-              />
-              {data.length > 0 &&
-                response &&
-                response.pageInfo &&
-                response.pageInfo.count &&
-                response.pageInfo.count > data.length && (
-                  <Paginator
-                    page={
-                      (queryParams.page &&
-                        parseInt(queryParams.page, 10) - 1) ||
-                      0
-                    }
-                    count={response.pageInfo.count}
-                    pageSize={pageSize || DEFAULT_PAGE_SIZE}
-                    onChange={this.handleChangePage}
-                  />
-                )}
-            </Box>
-          )}
-        </Card>
+      <Card>
+        {HeaderComponent && <HeaderComponent />}
         <FilterComponent
           noShrink
-          width={400}
           onChange={this.handleUpdateQueryParams}
           queryParams={queryParams}
           nbResults={status === "idle" ? data.length : null}
           {...extraProps}
         />
-      </Box>
+        {status === "loading" && <Loading />}
+        {showTable && (
+          <Box flow={10}>
+            <TableComponent
+              data={data}
+              customTableDef={customTableDef}
+              onRowClick={onRowClick}
+              queryParams={queryParams}
+              onSortChange={this.handleChangeSort}
+              {...extraProps}
+            />
+            {data.length > 0 &&
+              response &&
+              response.pageInfo &&
+              response.pageInfo.count &&
+              response.pageInfo.count > data.length && (
+                <Paginator
+                  page={
+                    (queryParams.page && parseInt(queryParams.page, 10) - 1) ||
+                    0
+                  }
+                  count={response.pageInfo.count}
+                  pageSize={pageSize || DEFAULT_PAGE_SIZE}
+                  onChange={this.handleChangePage}
+                />
+              )}
+          </Box>
+        )}
+      </Card>
     );
   }
 }

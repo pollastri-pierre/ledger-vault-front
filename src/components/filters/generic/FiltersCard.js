@@ -1,13 +1,14 @@
 // @flow
 
 import React, { PureComponent, Children, cloneElement } from "react";
+import styled from "styled-components";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 import isEqual from "lodash/isEqual";
 
-import Card from "components/base/Card";
+import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 
-import FiltersCardHeader from "./FiltersCardHeader";
 import type { QueryUpdater } from "../types";
 
 export const defaultFieldProps = {
@@ -72,18 +73,22 @@ class FiltersCard extends PureComponent<Props> {
       updateQueryParams: this.handleUpdateKey,
     };
 
-    const content = Children.map(children, c => cloneElement(c, childProps));
+    const filters = Children.map(children, c => cloneElement(c, childProps));
     const hasFilters = hasProps(queryParams);
+    const showNbResults = typeof nbResults === "number";
 
     return (
-      <Card overflow="visible" flow={40} noShrink {...props}>
-        <FiltersCardHeader
-          title={title}
-          nbResults={nbResults}
-          onClear={hasFilters ? this.handleClear : undefined}
-        />
-        <Box flow={40}>{content}</Box>
-      </Card>
+      <Container {...props}>
+        <Filters>{filters}</Filters>
+        <Box horizontal flow={10} color={colors.mediumGrey}>
+          <Text small>
+            {showNbResults ? `${nbResults || 0} result(s) found` : "Loading..."}
+          </Text>
+          {hasFilters && (
+            <ClearButton onClick={this.handleClear}>Clear filters</ClearButton>
+          )}
+        </Box>
+      </Container>
     );
   }
 }
@@ -99,5 +104,40 @@ function hasProps(obj) {
   }
   return false;
 }
+
+const ClearButton = styled.div`
+  color: ${opacity(colors.grenade, 0.7)};
+  cursor: pointer;
+
+  &:hover {
+    color: ${opacity(colors.grenade, 0.8)};
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: ${colors.grenade};
+  }
+`;
+
+const Filters = styled(Box).attrs({
+  horizontal: true,
+  align: "flex-start",
+  flexWrap: "wrap",
+})`
+  padding-right: 150px;
+  > * {
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  margin-bottom: -5px;
+`;
+
+const Container = styled(Box).attrs({
+  overflow: "visible",
+  position: "relative",
+  flow: 10,
+  noShrink: true,
+  pb: 20,
+})``;
 
 export default FiltersCard;

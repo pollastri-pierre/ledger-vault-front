@@ -4,11 +4,11 @@ import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
-import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Select from "components/base/Select";
 import type { OperationStatus } from "data/types";
 
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters";
 
 class FilterFieldCurrency extends PureComponent<FieldProps> {
@@ -22,18 +22,30 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     );
   };
 
+  Collapsed = () => {
+    const { queryParams } = this.props;
+    const operationStatuses = resolveOperationStatuses(queryParams);
+    return <Text small>{operationStatuses.map(s => s.label).join(", ")}</Text>;
+  };
+
   render() {
     const { queryParams } = this.props;
     const operationStatuses = resolveOperationStatuses(queryParams);
     const isActive = !!operationStatuses.length;
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>Status</FieldTitle>
+      <WrappableField
+        label="Status"
+        isActive={isActive}
+        closeOnChange={operationStatuses}
+        RenderCollapsed={this.Collapsed}
+      >
         <SelectOperationStatuses
+          autoFocus
+          openMenuOnFocus
           value={operationStatuses}
           onChange={this.handleChange}
         />
-      </Box>
+      </WrappableField>
     );
   }
 }

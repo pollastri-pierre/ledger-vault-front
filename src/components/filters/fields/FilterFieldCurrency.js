@@ -2,21 +2,28 @@
 
 import React, { PureComponent } from "react";
 import omit from "lodash/omit";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ObjectParameters } from "query-string";
 
+import type { ERC20Token } from "data/types";
 import {
   getCryptoCurrencyById,
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 
 import SelectCurrency from "components/SelectCurrency";
+import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
+import ERC20TokenIcon from "components/icons/ERC20Token";
 
+import Text from "components/base/Text";
 import Box from "components/base/Box";
 
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters/types";
+
+const erc20TokenIcon = <ERC20TokenIcon size={13} />;
 
 class FilterFieldCurrency extends PureComponent<FieldProps> {
   static defaultProps = defaultFieldProps;
@@ -42,15 +49,37 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     }
   };
 
+  Collapsed = () => {
+    const { queryParams } = this.props;
+    const currencyOrToken = resolveCurrencyOrToken(queryParams);
+    if (!currencyOrToken) return;
+
+    return (
+      <Box horizontal flow={3} align="center">
+        {getItemIcon(currencyOrToken)}
+        <Text small>{currencyOrToken.name}</Text>
+      </Box>
+    );
+  };
+
   render() {
     const { queryParams } = this.props;
     const currencyOrToken = resolveCurrencyOrToken(queryParams);
     const isActive = !!currencyOrToken;
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>Cryptocurrency</FieldTitle>
-        <SelectCurrency value={currencyOrToken} onChange={this.handleChange} />
-      </Box>
+      <WrappableField
+        label="Cryptocurrency"
+        RenderCollapsed={this.Collapsed}
+        isActive={isActive}
+        closeOnChange={currencyOrToken}
+      >
+        <SelectCurrency
+          openMenuOnFocus={!currencyOrToken}
+          autoFocus
+          value={currencyOrToken}
+          onChange={this.handleChange}
+        />
+      </WrappableField>
     );
   }
 }
@@ -69,6 +98,13 @@ function resolveCurrencyOrToken(queryParams: ObjectParameters) {
     return getERC20TokenByContractAddress(queryParams.contract_address) || null;
   }
   return null;
+}
+
+function getItemIcon(item: CryptoCurrency | ERC20Token) {
+  if ("contract_address" in item) return erc20TokenIcon;
+  // $FlowFixMe dunno how to solve this
+  const cur: CryptoCurrency = item;
+  return <CryptoCurrencyIcon currency={cur} color={cur.color} size={13} />;
 }
 
 export default FilterFieldCurrency;
