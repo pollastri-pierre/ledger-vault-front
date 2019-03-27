@@ -90,6 +90,7 @@ class InviteUserForm extends PureComponent<Props, State> {
           </FormControl>
           <InputField
             value={username}
+            dataTest="username"
             label={t("inviteUser:form.labelUsername")}
             onChange={this.updateUsername}
             placeholder={t("inviteUser:form.placeholderUsername")}
@@ -108,6 +109,7 @@ class InviteUserForm extends PureComponent<Props, State> {
           <InputField
             value={user_id}
             label={t("inviteUser:form.labelUserID")}
+            dataTest="userID"
             onChange={this.updateUserID}
             placeholder={t("inviteUser:form.placeholderUserID")}
             fullWidth
