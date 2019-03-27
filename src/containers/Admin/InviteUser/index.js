@@ -78,6 +78,7 @@ class InviteUser extends PureComponent<Props, State> {
           request_id: data.id,
         });
       } catch (error) {
+        // FIXME use internal error system to display banner etc.
         console.error(error);
       }
     }
