@@ -162,7 +162,7 @@ class Welcome extends Component<Props, State> {
           <Logo />
           <HelpLink
             style={styles.help}
-            subLink="/Content/operations/signin.htm"
+            subLink="/Content/transactions/signin.htm"
           >
             <Text small uppercase i18nKey="welcome:help" />
           </HelpLink>

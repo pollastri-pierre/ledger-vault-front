@@ -3,19 +3,23 @@ import React from "react";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
-import type { Account, OperationGetFees } from "data/types";
+import type { Account, TransactionGetFees } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 export const getFees = async (
   account: Account,
-  transaction: *,
-  operation: OperationGetFees,
+  bridgeTransaction: *,
+  transaction: TransactionGetFees,
   restlay: RestlayEnvironment,
 ) => {
-  if (operation.amount > 0 && operation.recipient !== "" && account) {
+  if (
+    bridgeTransaction.amount > 0 &&
+    bridgeTransaction.recipient !== "" &&
+    account
+  ) {
     const query = new AccountCalculateFeeQuery({
       accountId: account.id,
-      operation,
+      transaction,
     });
     const data = await restlay.fetchQuery(query);
     return data;

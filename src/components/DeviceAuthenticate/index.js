@@ -37,7 +37,7 @@ type Props = {
   onAddMessage: (title: string, content: string, type: string) => void,
   account_id: ?number,
   callback: string => any,
-  type: "operations" | "accounts",
+  type: "transactions" | "accounts",
   cancel: Function,
   gateAccountType?: string,
 };
@@ -65,8 +65,8 @@ class DeviceAuthenticate extends Component<Props, State> {
         const { pubKey } = await device.getPublicKey(U2F_PATH, false);
         const application = APPID_VAULT_ADMINISTRATOR;
         let url;
-        if (type === "operations" && account_id) {
-          url = `/accounts/${account_id}/operations/authentications/${pubKey.toUpperCase()}/challenge`;
+        if (type === "transactions" && account_id) {
+          url = `/accounts/${account_id}/transactions/authentications/${pubKey.toUpperCase()}/challenge`;
         } else if (type === "accounts" && account_id) {
           url = `/accounts/${account_id}/authentications/${pubKey.toUpperCase()}/challenge`;
         } else {
@@ -87,7 +87,7 @@ class DeviceAuthenticate extends Component<Props, State> {
         const challenge = data.challenge;
         const key_handle = data.key_handle;
         const entity_id =
-          type === "accounts" ? data.account_id : data.operation_id;
+          type === "accounts" ? data.account_id : data.transaction_id;
 
         this.setState({ step: 1 });
 
@@ -110,7 +110,7 @@ class DeviceAuthenticate extends Component<Props, State> {
 
         await network(urlPost, "POST", {
           ...(type === "accounts" ? { account_id: entity_id } : {}),
-          ...(type === "operations" ? { operation_id: entity_id } : {}),
+          ...(type === "transactions" ? { transaction_id: entity_id } : {}),
           pub_key: pubKey.toUpperCase(),
           authentication: auth.rawResponse,
         });

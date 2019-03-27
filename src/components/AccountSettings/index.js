@@ -133,11 +133,11 @@ class AccountSettings extends PureComponent<Props, State> {
             <Text
               bold
               uppercase
-              i18nKey="accountSettings:operationRules.title"
+              i18nKey="accountSettings:transactionRules.title"
             />
             <SectionRow
               label={
-                <Trans i18nKey="accountSettings:operationRules.approvals" />
+                <Trans i18nKey="accountSettings:transactionRules.approvals" />
               }
             >
               <Box horizontal align="center" flow={5}>

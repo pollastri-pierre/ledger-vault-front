@@ -1,16 +1,9 @@
-import {
-  login,
-  logout,
-  route,
-  switch_device,
-  create_account,
-  approve_account,
-} from "../../functions/actions.js";
+import { login, route, switch_device } from "../../functions/actions";
 
-describe("Negatif Test Case", function() {
-  beforeEach(function() {});
+describe("Negatif Test Case", () => {
+  beforeEach(() => {});
 
-  afterEach(function() {});
+  afterEach(() => {});
 
   it("Login with a wrong workspace name", () => {
     cy.server();

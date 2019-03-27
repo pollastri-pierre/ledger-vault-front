@@ -171,7 +171,7 @@ function genUser() {
   };
 }
 
-const genOperation = ({ account, users }) => {
+const genTransaction = ({ account, users }) => {
   const currency = getCryptoCurrencyById(account.currency);
   const magnitude = currency.units[0].magnitude;
   const date = faker.date.past(2);
@@ -290,18 +290,18 @@ export const genAccounts = genWithNoDups(
 );
 export const genGroups = genWithNoDups(genGroup, FAKE_GROUP_NAMES, "name");
 
-export function genOperations(nb, { accounts, users }) {
+export function genTransactions(nb, { accounts, users }) {
   const operations = [];
   for (let i = 0; i < nb; i++) {
     const account = faker.random.arrayElement(accounts);
-    operations.push(genOperation({ account, users }));
+    operations.push(genTransaction({ account, users }));
   }
   return operations;
 }
 
 const users = genUsers(20);
 const accounts = genAccounts(20, { users });
-const operations = genOperations(100, { accounts, users });
+const operations = genTransactions(100, { accounts, users });
 const groups = genGroups(4, { users });
 
 export default {

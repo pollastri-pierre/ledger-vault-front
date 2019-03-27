@@ -4,13 +4,13 @@ import React, { PureComponent } from "react";
 
 import Box from "components/base/Box";
 
-import PendingOperationsCard from "./PendingOperationsCard";
+import PendingTransactionsCard from "./PendingTransactionsCard";
 
 class OperatorDashboard extends PureComponent<*> {
   render() {
     return (
       <Box flow={20}>
-        <PendingOperationsCard />
+        <PendingTransactionsCard />
       </Box>
     );
   }

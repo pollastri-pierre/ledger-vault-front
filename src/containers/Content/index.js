@@ -13,7 +13,7 @@ import OperatorDashboard from "containers/Operator/Dashboard";
 import OperatorAccounts from "containers/Operator/Accounts";
 import AccountView from "containers/Account/AccountView";
 
-import Operations from "containers/Operations";
+import Transactions from "containers/Transactions";
 
 function Content({ match }: { match: Match }) {
   const u = match.url;
@@ -25,10 +25,10 @@ function Content({ match }: { match: Match }) {
       <Route path={`${u}/admin/users`} component={Users} />
       <Route path={`${u}/admin/accounts`} component={AdminAccounts} />
       <Route path={`${u}/admin/account/:id`} component={AccountView} />
-      <Route path={`${u}/admin/transactions`} component={Operations} />
+      <Route path={`${u}/admin/transactions`} component={Transactions} />
 
       <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
-      <Route path={`${u}/operator/transactions`} component={Operations} />
+      <Route path={`${u}/operator/transactions`} component={Transactions} />
       <Route path={`${u}/operator/accounts`} component={OperatorAccounts} />
 
       <Route

@@ -19,10 +19,10 @@
   "abort": "Abort",
   "reject": "Reject",
   "remove": "Delete",
-  "operationStatus": "Operation status",
+  "transactionStatus": "Transaction status",
   "requestStatus": "Request Status",
   "requestActivity": "Request Activity",
   "clickToEdit": "Click to edit",
   "plug_device": "Please connect your device and open the vault application.",
-  "approve_device": "Verify the operation on your device"
+  "approve_device": "Verify the transaction on your device"
 }

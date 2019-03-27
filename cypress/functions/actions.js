@@ -22,10 +22,10 @@ export function login(id) {
  */
 
 export function logout() {
-  //cy.contains("view profile").click({ force: true });
+  // cy.contains("view profile").click({ force: true });
   cy.get("[data-test=view-profile]").click({ force: true });
   cy.contains("Logout").click();
-  //cy.wait("@logout");
+  // cy.wait("@logout");
   cy.wait(2000);
   cy.get(".top-message-body")
     .contains(
@@ -130,7 +130,7 @@ export function create_account(currency, name) {
   cy.contains("done").click();
   cy.wait(8000);
 
-  //We should get a Account request created message
+  // We should get a Account request created message
   cy.get(".top-message-body")
     .contains("the account request has been successfully created")
     .get(".top-message-title")
@@ -150,7 +150,7 @@ export function approve_account(currency, name, fiat) {
 
   // Checking Value
   cy.get("[data-test=balance]").contains(fiat);
-  //cy.get("[data-test=balance]").contains("USD");
+  // cy.get("[data-test=balance]").contains("USD");
   cy.get("[data-test=requested]").should("be.visible");
   cy.get("[data-test=name]").contains(name);
   cy.get("[data-test=currency]").contains(currency);
@@ -174,17 +174,17 @@ export function approve_account(currency, name, fiat) {
 }
 
 /**
- * Default way to create a operation.
+ * Default way to create a transaction.
  */
-export function create_operation(name, id, address, amount) {
-  cy.get("[data-test=new-operation]").click();
-  cy.get("[data-test=operation-creation-accounts]")
+export function create_transaction(name, id, address, amount) {
+  cy.get("[data-test=new-transaction]").click();
+  cy.get("[data-test=transaction-creation-accounts]")
     .contains(name)
     .click();
   cy.get("[data-test=crypto-address-picker]")
     .find("input")
     .type(address);
-  cy.get("[data-test=operation-creation-amount]")
+  cy.get("[data-test=transaction-creation-amount]")
     .find("input")
     .type(amount);
   cy.wait(6000);
@@ -195,19 +195,19 @@ export function create_operation(name, id, address, amount) {
     .click({ force: true });
   cy.wait(6500);
   cy.get(".top-message-body")
-    .contains("the operation request has been successfully created")
+    .contains("the transaction request has been successfully created")
     .get(".top-message-title")
-    .contains("operation request created");
+    .contains("transaction request created");
 }
 
 /**
- * Default way to approve a operation.
+ * Default way to approve a transaction.
  */
-export function approve_operation(name) {
+export function approve_transaction(name) {
   cy.contains("Pending").click();
   cy.url().should("include", "/pending");
   cy.wait(2000);
-  cy.get("[data-test=pending-operation]")
+  cy.get("[data-test=pending-transaction]")
     .eq(0)
     .click();
   cy.get("[data-test=name]").contains(name);
@@ -222,7 +222,7 @@ export function approve_operation(name) {
     .click({ force: true });
   cy.wait(2000);
   cy.get(".top-message-body")
-    .contains("the operation request has been successfully approved")
+    .contains("the transaction request has been successfully approved")
     .get(".top-message-title")
-    .contains("operation request approved");
+    .contains("transaction request approved");
 }

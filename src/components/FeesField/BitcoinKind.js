@@ -13,8 +13,8 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
-import FeeSelect from "components/operations/creation/FeeSelect";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import FeeSelect from "components/transactions/creation/FeeSelect";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import { getFees, InputFieldMerge } from "components/Send/helpers";
@@ -35,13 +35,13 @@ const styles = {
   },
 };
 
-type Props<Transaction> = {
+type Props<BridgeTransaction> = {
   account: Account,
   classes: { [_: $Keys<typeof styles>]: string },
-  onChangeTransaction: Transaction => void,
+  onChangeTransaction: BridgeTransaction => void,
   restlay: RestlayEnvironment,
-  transaction: Transaction,
-  bridge: WalletBridge<Transaction>,
+  transaction: BridgeTransaction,
+  bridge: WalletBridge<BridgeTransaction>,
 };
 
 class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {

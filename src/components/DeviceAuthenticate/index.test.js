@@ -80,22 +80,22 @@ test("authenticate for account creation should call API and device", async () =>
   expect(props.callback).toHaveBeenCalled();
 });
 
-test("authenticate for operation creation should call API and device", async () => {
+test("authenticate for transaction creation should call API and device", async () => {
   network.mockImplementation(() => ({
     challenge: "challenge",
     key_handle: {
       PUBKEY: "key_handle",
     },
-    operation_id: 1,
+    transaction_id: 1,
   }));
-  const sProps = { ...props, type: "operations", account_id: 1 };
+  const sProps = { ...props, type: "transactions", account_id: 1 };
   const MyComponent = shallow(<DeviceAuthenticate {...sProps} />);
   await MyComponent.instance().start();
 
   expect(mockGetPublicKey).toHaveBeenCalledWith(U2F_PATH, false);
 
   expect(network).toHaveBeenCalledWith(
-    "/accounts/1/operations/authentications/PUBKEY/challenge",
+    "/accounts/1/transactions/authentications/PUBKEY/challenge",
     "GET",
   );
 
@@ -110,12 +110,12 @@ test("authenticate for operation creation should call API and device", async () 
   );
 
   expect(network).toHaveBeenCalledWith(
-    "/operations/authentications/authenticate",
+    "/transactions/authentications/authenticate",
     "POST",
     {
       pub_key: "PUBKEY",
       authentication: "raw",
-      operation_id: 1,
+      transaction_id: 1,
     },
   );
   expect(props.callback).toHaveBeenCalled();

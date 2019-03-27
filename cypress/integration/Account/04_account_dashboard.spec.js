@@ -1,18 +1,11 @@
-import {
-  login,
-  logout,
-  route,
-  switch_device,
-  create_account,
-  approve_account,
-} from "../../functions/actions.js";
+import { login, logout, route } from "../../functions/actions";
 
-describe("Tests Dashboard", function() {
-  beforeEach(function() {
+describe("Tests Dashboard", () => {
+  beforeEach(() => {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     logout();
   });
 
@@ -22,7 +15,7 @@ describe("Tests Dashboard", function() {
 
     cy.contains("dashboard").click();
     cy.contains("Total Balance").should("be.visible");
-    cy.contains("Last operations").should("be.visible");
+    cy.contains("Last transactions").should("be.visible");
     cy.contains("currencies").should("be.visible");
     cy.contains("pending").should("be.visible");
   });

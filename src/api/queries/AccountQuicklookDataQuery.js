@@ -16,13 +16,13 @@ export type Response = {
   counterValueBalance: DataPoint[],
 };
 
-// Fetch data for the Quicklook graph. data should be baked with all Account's operations
+// Fetch data for the Quicklook graph. data should be baked with all Account's transactions
 // We will assume that there are datapoints for Edges too.
 // e.g. asking for range="year":
 //   - the first datapoint must be [one year ago,value]
 //   - the last datapoint must be [exactly now,value]
 // thay way we can display a seamless graph AND we always have 2 points in the data
-// it is assumed that there are only datapoint when an operation happened,
+// it is assumed that there are only datapoint when an transaction happened,
 // that way client can choose to do linear interp between points VS stepped rendering
 
 export default class AccountQuicklookDataQuery extends Query<Input, Response> {
