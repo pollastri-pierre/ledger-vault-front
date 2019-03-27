@@ -4,11 +4,11 @@ import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
-import Box from "components/base/Box";
 import Select from "components/base/Select";
+import Text from "components/base/Text";
 import type { RequestActivityType, Translate } from "data/types";
 
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters";
 
 class FilterFieldRequestActivity extends PureComponent<FieldProps> {
@@ -19,18 +19,30 @@ class FilterFieldRequestActivity extends PureComponent<FieldProps> {
     updateQueryParams("type", opt && opt.length ? opt.map(o => o.value) : null);
   };
 
+  Collapsed = () => {
+    const { queryParams } = this.props;
+    const operationActivity = resolveRequestActivity(queryParams);
+    return <Text>{operationActivity.map(a => a.label).join(", ")}</Text>;
+  };
+
   render() {
     const { queryParams } = this.props;
     const operationActivity = resolveRequestActivity(queryParams);
     const isActive = !!operationActivity.length;
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>Activity</FieldTitle>
+      <WrappableField
+        label="Activity"
+        isActive={isActive}
+        RenderCollapsed={this.Collapsed}
+        closeOnChange={operationActivity}
+      >
         <SelectRequestActivity
+          autoFocus
+          openMenuOnFocus
           value={operationActivity}
           onChange={this.handleChange}
         />
-      </Box>
+      </WrappableField>
     );
   }
 }

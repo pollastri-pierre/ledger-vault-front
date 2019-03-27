@@ -21,7 +21,7 @@ export {
 } from "./fields/FilterFieldRequestActivity";
 
 // Agnostic stuff
-export { default as FieldTitle } from "./generic/FiltersFieldTitle";
+export { default as WrappableField } from "./generic/WrappableField";
 export {
   defaultFieldProps,
   default as FiltersCard,
