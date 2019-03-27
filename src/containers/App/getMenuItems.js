@@ -41,6 +41,7 @@ export default function getMenuItems(props: Props) {
     return setActive(location, [
       {
         key: "dashboard",
+        dataTest: "menuItem-dashboard",
         label: <Trans i18nKey="menu:admin.dashboard" />,
         url: `${match.url}/admin/dashboard`,
         Icon: FaHome,
