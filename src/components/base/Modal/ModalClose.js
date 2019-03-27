@@ -30,7 +30,7 @@ const Container = styled.div`
 `;
 
 export default ({ onClick }: { onClick: () => void }) => (
-  <Container onClick={onClick}>
+  <Container onClick={onClick} data-test="close">
     <IconClose size={16} />
   </Container>
 );

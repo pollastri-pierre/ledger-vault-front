@@ -25,6 +25,7 @@ type State = {
   username: string,
   user_id: string,
   userRole: string,
+  dataTest?: string,
 };
 
 const styles = {
@@ -124,6 +125,7 @@ class InviteUserForm extends PureComponent<Props, State> {
             onClick={this.processUserInfo}
             color="primary"
             variant="outlined"
+            data-test= "generateLink"
             disabled={!username || !user_id}
           >
             {request_id ? (

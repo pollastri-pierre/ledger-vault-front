@@ -21,7 +21,11 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should('include', '/admin/users')
     cy.get("[data-test=buttonCreate]").click();
+    cy.get('[type="radio"]').check('Operator');
+    cy.get("input[type=text]").eq(1).focus().type("Nicky James")
+    cy.get("input[type=text]").eq(2).focus().type("02930930393093039303903");
+    cy.get("[data-test=generateLink]").click();
+    cy.get("[data-test=close]").click();
   });
-
 
 });
