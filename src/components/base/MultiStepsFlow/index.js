@@ -17,7 +17,7 @@ type Props<T, P> = {
   Icon: React$ComponentType<*>,
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
-  additionalProps: P,
+  additionalProps?: P,
   onClose?: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
