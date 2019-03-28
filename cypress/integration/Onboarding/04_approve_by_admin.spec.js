@@ -1,6 +1,6 @@
-const orga_name = Cypress.env("workspace");
+import { route } from "../../functions/actions";
 
-import { route } from "../../functions/actions.js";
+const orga_name = Cypress.env("workspace");
 
 context("Admin Approve the registration of the Shared Owners", () => {
   let polyfill;
@@ -34,7 +34,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       cy.wait("@validate-vault-operation");
       cy.wait("@authenticate");
 
-      //Try to sign in with the same device, Should Display Error
+      // Try to sign in with the same device, Should Display Error
       cy.get(".test-onboarding-signin").click();
       cy.wait("@authenticate");
       cy.get(".top-message-body")

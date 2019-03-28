@@ -1,9 +1,7 @@
-const orga_name = Cypress.env("workspace");
-const API = `${Cypress.env("api_server2")}/${orga_name}`;
-const DEVICE = Cypress.env("api_switch_device");
-const API_DEVICE = Cypress.env("api_device");
+import { route } from "../../functions/actions";
 
-import { route } from "../../functions/actions.js";
+const orga_name = Cypress.env("workspace");
+const DEVICE = Cypress.env("api_switch_device");
 
 context("Create Wrapping Key", () => {
   let polyfill;
@@ -39,7 +37,7 @@ context("Create Wrapping Key", () => {
         cy.contains("Continue").click();
         cy.wait("@next");
         cy.wait("@challenge");
-        //First WPK
+        // First WPK
         cy.get(".fragment")
           .eq(0)
           .find(".fragment-click")

@@ -24,25 +24,27 @@ class FilterFieldRequestStatuses extends PureComponent<FieldProps> {
 
   Collapsed = () => {
     const { queryParams } = this.props;
-    const operationStatuses = resolveRequestStatuses(queryParams);
-    return <Text small>{operationStatuses.map(s => s.label).join(", ")}</Text>;
+    const transactionStatuses = resolveRequestStatuses(queryParams);
+    return (
+      <Text small>{transactionStatuses.map(s => s.label).join(", ")}</Text>
+    );
   };
 
   render() {
     const { queryParams } = this.props;
-    const operationStatuses = resolveRequestStatuses(queryParams);
-    const isActive = !!operationStatuses.length;
+    const statuses = resolveRequestStatuses(queryParams);
+    const isActive = !!statuses.length;
     return (
       <WrappableField
         label="Status"
         isActive={isActive}
-        closeOnChange={operationStatuses}
+        closeOnChange={statuses}
         RenderCollapsed={this.Collapsed}
       >
         <SelectRequestStatuses
           autoFocus
           openMenuOnFocus
-          value={operationStatuses}
+          value={statuses}
           onChange={this.handleChange}
         />
       </WrappableField>

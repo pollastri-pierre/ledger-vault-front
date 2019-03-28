@@ -21,25 +21,25 @@ class FilterFieldRequestActivity extends PureComponent<FieldProps> {
 
   Collapsed = () => {
     const { queryParams } = this.props;
-    const operationActivity = resolveRequestActivity(queryParams);
-    return <Text>{operationActivity.map(a => a.label).join(", ")}</Text>;
+    const requestActivity = resolveRequestActivity(queryParams);
+    return <Text>{requestActivity.map(a => a.label).join(", ")}</Text>;
   };
 
   render() {
     const { queryParams } = this.props;
-    const operationActivity = resolveRequestActivity(queryParams);
-    const isActive = !!operationActivity.length;
+    const requestActivity = resolveRequestActivity(queryParams);
+    const isActive = !!requestActivity.length;
     return (
       <WrappableField
         label="Activity"
         isActive={isActive}
         RenderCollapsed={this.Collapsed}
-        closeOnChange={operationActivity}
+        closeOnChange={requestActivity}
       >
         <SelectRequestActivity
           autoFocus
           openMenuOnFocus
-          value={operationActivity}
+          value={requestActivity}
           onChange={this.handleChange}
         />
       </WrappableField>

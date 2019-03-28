@@ -5,12 +5,12 @@ import AccountAbortedActivity from "../Activities/AccountAbortedActivity";
 import AccountQuorumIsReachedActivity from "../Activities/AccountQuorumIsReachedActivity";
 import AccountReceivedApprovalActivity from "../Activities/AccountReceivedApprovalActivity";
 import NewIncomingTransactionActivity from "../Activities/NewIncomingTransactionActivity";
-import OperationAbortedActivity from "../Activities/OperationAbortedActivity";
+import TransactionAbortedActivity from "../Activities/TransactionAbortedActivity";
 import Activity from "../legacy/Activity";
 import NewAccountActivity from "../Activities/NewAccountActivity";
-import NewOperationActivity from "../Activities/NewOperationActivity";
-import OperationQuorumIsReachedActivity from "../Activities/OperationQuorumIsReachedActivity";
-import OperationReceivedApprovalActivity from "../Activities/OperationReceivedApprovalActivity";
+import NewTransactionActivity from "../Activities/NewTransactionActivity";
+import TransactionQuorumIsReachedActivity from "../Activities/TransactionQuorumIsReachedActivity";
+import TransactionReceivedApprovalActivity from "../Activities/TransactionReceivedApprovalActivity";
 import AccountHasBeenActivatedActivity from "../Activities/AccountHasBeenActivatedActivity";
 import AccountSecuritySchemeHasBeenProvidedActivity from "../Activities/AccountSecuritySchemeHasBeenProvidedActivity";
 
@@ -18,20 +18,23 @@ class ActivityFactory extends Component<*, *> {
   static build(activity: *, match: *) {
     switch (activity.business_action.name) {
       case "OPERATION_CREATED":
-        return <NewOperationActivity activity={activity} match={match} />;
+        return <NewTransactionActivity activity={activity} match={match} />;
       case "OPERATION_RECEIVED_APPROVAL":
         return (
-          <OperationReceivedApprovalActivity
+          <TransactionReceivedApprovalActivity
             activity={activity}
             match={match}
           />
         );
       case "OPERATION_QUORUM_IS_REACHED":
         return (
-          <OperationQuorumIsReachedActivity activity={activity} match={match} />
+          <TransactionQuorumIsReachedActivity
+            activity={activity}
+            match={match}
+          />
         );
       case "OPERATION_ABORTED":
-        return <OperationAbortedActivity activity={activity} match={match} />;
+        return <TransactionAbortedActivity activity={activity} match={match} />;
       case "NEW_INCOMING_OPERATION":
         return (
           <NewIncomingTransactionActivity activity={activity} match={match} />

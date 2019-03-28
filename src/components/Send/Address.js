@@ -10,7 +10,7 @@ import connectData from "restlay/connectData";
 import CryptoAddressPicker from "components/CryptoAddressPicker";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import colors from "shared/colors";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 

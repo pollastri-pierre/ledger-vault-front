@@ -8,20 +8,20 @@
     "approved":
       "The <0>{{accountName}}</0> account request has been approved by <0>{{author}} </0>",
     "schemeProvided":
-      "The operation rules of the <0>{{accountName}}</0> account have been provided.",
+      "The transaction rules of the <0>{{accountName}}</0> account have been provided.",
     "requestCreated":
       "A <0>new account request</0> has been created by <0>{{author}} </0>. The account request is pending to be approved by the Administrators of the workspace.",
     "txReceived":
       "A <0>payment</0> has been received in the <0>{{accountName}}</0> account"
   },
-  "operation": {
+  "transaction": {
     "requestCreated":
-      "A <0>new operation request</0> has been created by <0>{{author}} </0> in the <0>{{accountName}}</0> account. The operation is pending to be approved by the members of the account.",
+      "A <0>new transaction request</0> has been created by <0>{{author}} </0> in the <0>{{accountName}}</0> account. The transaction is pending to be approved by the members of the account.",
     "abort":
-      "The operation request created in <0>{{accountName}}</0> has been aborted by <0>{{author}} </0>.",
+      "The transaction request created in <0>{{accountName}}</0> has been aborted by <0>{{author}} </0>.",
     "quorumReached":
-      "The operation created in <0> {{accountName}} </0> has been approved by <0> {{approvalNumber}} out of {{approvalNumber}} members </0>. The operation has been broadcasted to the blockchain network.",
+      "The transaction created in <0> {{accountName}} </0> has been approved by <0> {{approvalNumber}} out of {{approvalNumber}} members </0>. The transaction has been broadcasted to the blockchain network.",
     "approved":
-      "The <0>operation request</0> created in the <0>{{accountName}}</0> account has been approved by <0>{{author}} </0>."
+      "The <0>transaction request</0> created in the <0>{{accountName}}</0> account has been approved by <0>{{author}} </0>."
   }
 }

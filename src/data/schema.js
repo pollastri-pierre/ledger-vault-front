@@ -23,8 +23,8 @@ const Activity = create(
   "id",
 );
 
-const Operation = create(
-  "operations",
+const Transaction = create(
+  "transactions",
   {
     notes: [
       {
@@ -42,7 +42,7 @@ export default {
   User,
   Currency,
   Account,
-  Operation,
+  Transaction,
   Fiat,
   Balance,
   Activity,

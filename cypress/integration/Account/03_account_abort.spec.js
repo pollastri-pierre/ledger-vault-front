@@ -2,15 +2,14 @@ import {
   login,
   logout,
   route,
-  switch_device,
   create_account,
   approve_account,
-} from "../../functions/actions.js";
+} from "../../functions/actions";
 
-describe("Tests Abort Account", function() {
-  beforeEach(function() {});
+describe("Tests Abort Account", () => {
+  beforeEach(() => {});
 
-  afterEach(function() {
+  afterEach(() => {
     logout();
   });
 

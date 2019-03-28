@@ -2,18 +2,15 @@ import {
   login,
   logout,
   route,
-  switch_device,
-  create_account,
   approve,
-  cancel,
   approve_account,
-} from "../../functions/actions.js";
+} from "../../functions/actions";
 
-afterEach(function() {
+afterEach(() => {
   logout();
 });
 
-describe("Tests Approve Account", function() {
+describe("Tests Approve Account", () => {
   it("Approve a account with first member", () => {
     cy.server();
     route();

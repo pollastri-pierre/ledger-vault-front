@@ -1,0 +1,20 @@
+{
+  "explore": "View in explorer",
+  "overview": {
+    "account": "Account",
+    "copied": "Copied",
+    "copy": "Copy",
+    "date": "Sent date",
+    "fees": "Fees",
+    "identifier": "Recipient address",
+    "status": "Status",
+    "total": "Total amount"
+  },
+  "tabs": {
+    "details": "Details",
+    "history": "History",
+    "label": "Label",
+    "overview": "Overview"
+  },
+  "title": "Transaction details"
+}

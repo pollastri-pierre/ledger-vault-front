@@ -127,12 +127,12 @@ export type Account = AccountCommon & {
   currency: string,
 };
 
-export type OperationRecipientIsValid = {
+export type TransactionRecipientIsValid = {
   amount: number,
   recipient: string,
 };
 
-export type OperationGetFees = {
+export type TransactionGetFees = {
   amount: number,
   recipient: string,
   fee_level?: string,
@@ -173,7 +173,7 @@ export type NoteEntity = NoteCommon & {
   author: string,
 };
 
-export type TransactionInput = {
+export type RawTransactionInput = {
   index: number,
   value: number,
   previous_tx_hash?: string,
@@ -184,22 +184,22 @@ export type TransactionInput = {
   sequence?: number,
 };
 
-export type TransactionOutput = {
+export type RawTransactionOutput = {
   index: number,
   value: number,
   address: string,
   script?: string,
 };
 
-export type Transaction = {
+export type RawTransaction = {
   version: string,
   hash: string,
   lock_time: string,
-  inputs: TransactionInput[],
-  outputs: TransactionOutput[],
+  inputs: RawTransactionInput[],
+  outputs: RawTransactionOutput[],
 };
 
-export type TransactionETH = {
+export type RawTransactionETH = {
   block: Object,
   height: number,
   time: string,
@@ -214,9 +214,9 @@ export type TransactionETH = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
-export type OperationStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
+export type TransactionStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
 
-type OperationCommon = {
+type TransactionCommon = {
   id: number,
   created_by: User,
   currency_family: string,
@@ -236,21 +236,21 @@ type OperationCommon = {
   recipients: string[],
   block_height?: number,
   time?: Date,
-  transaction: Transaction,
+  transaction: RawTransaction,
   exploreURL: ?string,
   approvals: Approval[],
   tx_hash: ?string,
-  status: OperationStatus,
+  status: TransactionStatus,
   hsm_operations?: Object,
   error?: Object,
   last_request?: Request,
   gas_price?: number,
   gas_limit?: number,
 };
-export type Operation = OperationCommon & {
+export type Transaction = TransactionCommon & {
   notes: Note[],
 };
-export type OperationEntity = OperationCommon & {
+export type TransactionEntity = TransactionCommon & {
   notes: NoteEntity[],
 };
 
@@ -266,7 +266,7 @@ export type ActivityGeneric = {
   seen: boolean,
   show: boolean,
   created_on: Date,
-  business_action: ActivityEntityAccount | ActivityEntityOperation,
+  business_action: ActivityEntityAccount | ActivityEntityTransaction,
 };
 
 export type ActivityEntityAccount = ActivityCommon & {
@@ -281,10 +281,10 @@ export type ActivityEntityAccount = ActivityCommon & {
   },
 };
 
-export type ActivityEntityOperation = ActivityCommon & {
+export type ActivityEntityTransaction = ActivityCommon & {
   business_action: {
     id: number,
-    operation: *,
+    transaction: *,
     author: UserCommon,
     business_action_name: string,
     message: string,
@@ -335,7 +335,7 @@ type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
-  | "OPERATION"
+  | "TRANSACTION"
   | "PERSON";
 
 type RequestCommon = {

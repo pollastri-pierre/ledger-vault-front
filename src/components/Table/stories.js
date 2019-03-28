@@ -7,14 +7,14 @@ import styled from "styled-components";
 import {
   genUsers,
   genAccounts,
-  genOperations,
+  genTransactions,
   genGroups,
 } from "data/mock-entities";
 
 import {
   GroupsTable,
   AccountsTable,
-  OperationsTable,
+  TransactionsTable,
   RequestsTable,
 } from "components/Table";
 import { action } from "@storybook/addon-actions";
@@ -24,7 +24,7 @@ import requests from "data/mock-requests.json";
 
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
-const operations = genOperations(25, { accounts, users });
+const transactions = genTransactions(25, { accounts, users });
 const groups = genGroups(4, { users });
 
 storiesOf("tables", module)
@@ -38,9 +38,9 @@ storiesOf("tables", module)
       <GroupsTable data={groups} onRowClick={action("onRowClick")} />
     </Wrapper>
   ))
-  .add("OperationsTable", () => (
+  .add("TransactionsTable", () => (
     <Wrapper>
-      <OperationsTable accounts={accounts} data={operations} />
+      <TransactionsTable accounts={accounts} data={transactions} />
     </Wrapper>
   ))
   .add("RequestsTable", () => (

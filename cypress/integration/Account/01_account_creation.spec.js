@@ -1,17 +1,11 @@
-import {
-  login,
-  logout,
-  route,
-  switch_device,
-  create_account,
-} from "../../functions/actions.js";
+import { login, logout, route, create_account } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
-  beforeEach(function() {
+describe("Tests Creation Account", () => {
+  beforeEach(() => {
     login(4);
   });
 
-  afterEach(function() {
+  afterEach(() => {
     logout();
   });
 
