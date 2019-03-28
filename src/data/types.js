@@ -24,6 +24,8 @@ type Price = {
   amount: number,
 };
 
+export type Entity = Group | Account | User | Operation;
+
 export type Unit = {
   id?: number,
   name: string,

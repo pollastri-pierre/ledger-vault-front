@@ -5,12 +5,12 @@ import { approveFlow } from "device/interactions/approveFlow";
 import AbortRequestButton from "components/AbortRequestButton";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
-import type { Group, Account, User, Operation } from "data/types";
+import type { Entity } from "data/types";
 
 type Props = {
   onSuccess: Function,
   onError: Function,
-  entity: Group | Account | User | Operation,
+  entity: Entity,
 };
 
 class RequestActionButtons extends PureComponent<Props> {

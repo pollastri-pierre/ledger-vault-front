@@ -4,11 +4,11 @@ import Text from "components/base/Text";
 import { ModalTitle } from "components/base/Modal";
 import RequestTitle from "components/RequestTitle";
 
-import type { Group, Account, User, Operation } from "data/types";
+import type { Entity } from "data/types";
 
 type Props = {
   title: string,
-  entity: Group | Account | User | Operation,
+  entity: Entity,
 };
 
 class EntityModalTitle extends PureComponent<Props> {
