@@ -234,7 +234,7 @@ const genTransaction = ({ account, users }) => {
   };
 };
 
-function genGroup({ users }) {
+function genGroup({ users, status }) {
   const operators = users.filter(m => m.role === "operator");
   const nbUsers = faker.random.number({
     min: 1,
@@ -245,18 +245,15 @@ function genGroup({ users }) {
   const approvals = genApprovals(nbApprovalsToGenerate, {
     users: admins,
   });
-  const status = faker.random.arrayElement([
-    "APPROVED",
-    "PENDING_APPROVAL",
-    "ABORTED",
-  ]);
   return {
     id: faker.random.alphaNumeric("10"),
     name: faker.random.arrayElement(FAKE_GROUP_NAMES),
     created_on: faker.date.past(1),
     created_by: admins[faker.random.number({ min: 0, max: admins.length })],
     description: faker.company.catchPhrase(),
-    status,
+    status:
+      status ||
+      faker.random.arrayElement(["APPROVED", "PENDING_APPROVAL", "ABORTED"]),
     members: getUniqueRandomElements(operators, nbUsers).map(m => m.id),
     approvals,
   };
