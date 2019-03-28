@@ -1,9 +1,9 @@
 // @flow
 import React, { Fragment } from "react";
 import ModalRoute from "components/ModalRoute";
-import CreateGroup from "containers/Admin/Groups/CreateGroup";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import AccountCreationFlow from "components/AccountCreationFlow";
+import GroupCreationFlow from "components/GroupCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
 import AccountDetails from "containers/Admin/Accounts/AccountDetails";
 
@@ -15,7 +15,7 @@ export default () => (
       path="*/accounts/details/:accountId"
       component={AccountDetails}
     />
-    <ModalRoute path="*/groups/new" component={CreateGroup} />
+    <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
     <ModalRoute
       path="*/accounts/new"
       component={AccountCreationFlow}
