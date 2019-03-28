@@ -12,6 +12,7 @@
     "CREATE_GROUP": "Approve group creation",
     "EDIT_GROUP": "Approve group edition",
     "REVOKE_GROUP": "Approve group revocation",
-    "CREATE_ACCOUNT": "Approve account creation"
+    "CREATE_ACCOUNT": "Approve account creation",
+    "CREATE_OPERATOR": "Approve operator creation"
   }
 }
