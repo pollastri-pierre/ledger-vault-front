@@ -88,4 +88,23 @@ describe("Tests Creation Account", function() {
       .type("{enter}");
     cy.get("[data-test=dialog-button]").click();
   });
+
+  it("Create Bitcoin Account", () => {
+    cy.server();
+    route();
+    cy.get("[data-test=menuItem-accounts]").click();
+    cy.url().should('include', '/admin/accounts')
+    cy.get("[data-test=buttonCreate]").click();
+    cy.wait(1000);
+
+    cy.get("#input_crypto")
+      .type("Bitcoin Testnet", { force: true })
+      .type("{enter}");
+    cy.contains("Next").click();
+    cy.get("#input_groups_users")
+      .type("Anna", { force: true })
+      .type("{enter}");
+  });
+
+
 });

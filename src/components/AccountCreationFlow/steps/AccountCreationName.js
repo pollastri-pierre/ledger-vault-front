@@ -69,6 +69,7 @@ class AccountCreationOptions extends PureComponent<Props> {
             {t("newAccount:options.name")}
           </ModalSubTitle>
           <InputField
+            dataTest="account_name"
             value={payload.name}
             autoFocus
             onChange={this.handleChangeName}

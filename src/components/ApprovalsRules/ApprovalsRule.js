@@ -28,6 +28,7 @@ type Props = {
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
   groups: Group[],
+  dataTest?: string,
   t: string => string,
 };
 
