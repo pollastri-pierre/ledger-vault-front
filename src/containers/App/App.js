@@ -3,10 +3,10 @@ import React, { Fragment } from "react";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import type { Account, User, Operation } from "data/types";
+import type { Account, User, Transaction } from "data/types";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
@@ -25,7 +25,7 @@ type Props = {
   location: Location,
   history: MemoryHistory,
   accounts: Account[],
-  allPendingOperations: Operation[],
+  allPendingTransactions: Transaction[],
 };
 
 const AppWrapper = (props: Props) => (
@@ -39,7 +39,7 @@ const App = withMe((props: Props & { me: User }) => {
     match,
     history,
     accounts,
-    allPendingOperations,
+    allPendingTransactions,
     me,
     location,
   } = props;
@@ -47,7 +47,7 @@ const App = withMe((props: Props & { me: User }) => {
   const menuItems = getMenuItems({
     role: me.role,
     accounts,
-    allPendingOperations,
+    allPendingTransactions,
     match,
     location,
   });
@@ -89,6 +89,6 @@ export default connectData(AppWrapper, {
   RenderError,
   queries: {
     accounts: AccountsQuery,
-    allPendingOperations: PendingOperationsQuery,
+    allPendingTransactions: PendingTransactionsQuery,
   },
 });

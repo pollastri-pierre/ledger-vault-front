@@ -1,9 +1,9 @@
 // @flow
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
-import NewOperationMutation from "api/mutations/NewOperationMutation";
-import type { Input as NewOperationMutationInput } from "api/mutations/NewOperationMutation";
+import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
+import NewTransactionMutation from "api/mutations/NewTransactionMutation";
+import type { Input as NewTransactionMutationInput } from "api/mutations/NewTransactionMutation";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
@@ -106,17 +106,17 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     note,
   }),
   composeAndBroadcast: (
-    operation_id: number,
+    transaction_id: number,
     restlay: RestlayEnvironment,
     account: Account,
     transaction: Transaction,
   ) => {
-    const data: NewOperationMutationInput = {
+    const data: NewTransactionMutationInput = {
       operation: {
         fee_level: transaction.feeLevel,
         amount: transaction.amount,
         recipient: transaction.recipient,
-        operation_id,
+        transaction_id,
         note: {
           title: transaction.label,
           content: transaction.note,
@@ -125,8 +125,8 @@ const BitcoinBridge: WalletBridge<Transaction> = {
       accountId: account.id,
     };
     return restlay
-      .commitMutation(new NewOperationMutation(data))
-      .then(() => restlay.fetchQuery(new PendingOperationsQuery()));
+      .commitMutation(new NewTransactionMutation(data))
+      .then(() => restlay.fetchQuery(new PendingTransactionsQuery()));
   },
   EditFees: FeesBitcoinKind,
   checkValidTransaction,

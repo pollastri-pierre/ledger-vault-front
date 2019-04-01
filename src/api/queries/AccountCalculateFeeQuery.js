@@ -9,7 +9,7 @@ export const speeds = {
 export type Speed = $Values<typeof speeds>;
 
 type Input = {
-  operation: {
+  transaction: {
     amount: number,
     fee_level?: Speed,
     gas_limit?: ?number,
@@ -28,18 +28,18 @@ type Response = {
 };
 
 // Calculate the fee for a given account (in the account currency)
-// (used when creating a new operation)
+// (used when creating a new transaction)
 export default class AccountCalculateFeeQuery extends Mutation<
   Input,
   Response,
 > {
   method = "POST";
 
-  uri = `/accounts/${this.props.accountId}/operations/fees`;
+  uri = `/accounts/${this.props.accountId}/transactions/fees`;
 
   showError = false;
 
   getBody() {
-    return this.props.operation;
+    return this.props.transaction;
   }
 }

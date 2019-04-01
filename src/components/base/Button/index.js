@@ -199,7 +199,7 @@ class VaultButton extends PureComponent<Props, State> {
         </Container>
         {isLoading && (
           <Loader
-            color={(type && COLORS_BY_TYPE[type]) || customColor || "grey"}
+            color={(type && COLORS_BY_TYPE[type]) || "inherit"}
             size={size}
           />
         )}

@@ -1,9 +1,7 @@
-const orga_name = Cypress.env("workspace");
-const API = `${Cypress.env("api_server2")}/${orga_name}`;
-const DEVICE = Cypress.env("api_switch_device");
-const API_DEVICE = Cypress.env("api_device");
+import { route } from "../../functions/actions";
 
-import { route } from "../../functions/actions.js";
+const orga_name = Cypress.env("workspace");
+const DEVICE = Cypress.env("api_switch_device");
 
 context("Register the Administrators", () => {
   let polyfill;
@@ -52,7 +50,7 @@ context("Register the Administrators", () => {
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
         cy.wait("@register");
-        //Should display a error
+        // Should display a error
         cy.get(".top-message-body")
           .contains("Device already registered")
           .get(".top-message-title")

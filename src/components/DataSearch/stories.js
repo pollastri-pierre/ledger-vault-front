@@ -10,21 +10,25 @@ import {
   genAccounts,
   genGroups,
   genUsers,
-  genOperations,
+  genTransactions,
 } from "data/mock-entities";
 
 import { delay } from "utils/promise";
 
 import RestlayProvider from "restlay/RestlayProvider";
 
-import SearchOperationsQuery from "api/queries/SearchOperations";
+import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import SearchGroupsQuery from "api/queries/SearchGroups";
 import SearchAccountsQuery from "api/queries/SearchAccounts";
 
-import { OperationsTable, GroupsTable, AccountsTable } from "components/Table";
+import {
+  TransactionsTable,
+  GroupsTable,
+  AccountsTable,
+} from "components/Table";
 
 import {
-  OperationsFilters,
+  TransactionsFilters,
   GroupsFilters,
   AccountsFilters,
 } from "components/filters";
@@ -34,11 +38,11 @@ import DisplayQueryParams from "stories/components/DisplayQueryParams";
 
 // --------------------------------- actual components
 
-const OperationsSearch = ({ ...props }) => (
+const TransactionsSearch = ({ ...props }) => (
   <DataSearch
-    Query={SearchOperationsQuery}
-    TableComponent={OperationsTable}
-    FilterComponent={OperationsFilters}
+    Query={SearchTransactionsQuery}
+    TableComponent={TransactionsTable}
+    FilterComponent={TransactionsFilters}
     extraProps={{ accounts }}
     {...props}
   />
@@ -67,15 +71,18 @@ const AccountsSearch = props => (
 
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
-const operations = genOperations(25, { accounts, users });
+const transactions = genTransactions(25, { accounts, users });
 const groups = genGroups(4, { users });
 
-const OperationsSearchStory = wrapComponent(OperationsSearch, "operations");
+const TransactionsSearchStory = wrapComponent(
+  TransactionsSearch,
+  "transactions",
+);
 const GroupsSearchStory = wrapComponent(GroupsSearch, "groups");
 const AccountsSearchStory = wrapComponent(AccountsSearch, "accounts");
 
 storiesOf("search", module)
-  .add("Search operations", () => <OperationsSearchStory />)
+  .add("Search transactions", () => <TransactionsSearchStory />)
   .add("Search groups", () => <GroupsSearchStory />)
   .add("Search accounts", () => <AccountsSearchStory />);
 
@@ -84,13 +91,16 @@ storiesOf("search", module)
 const mockNetwork = async url => {
   const queryParams = qs.parse(url.substr(url.indexOf("?")));
   let edges;
-  if (url.startsWith("/operations?")) {
-    edges = operations.filter(op => {
-      if (queryParams.currency && queryParams.currency !== op.currency_name)
+  if (url.startsWith("/transactions?")) {
+    edges = transactions.filter(transaction => {
+      if (
+        queryParams.currency &&
+        queryParams.currency !== transaction.currency_name
+      )
         return false;
       if (
         queryParams.accounts &&
-        queryParams.accounts.indexOf(op.account_id.toString()) === -1
+        queryParams.accounts.indexOf(transaction.account_id.toString()) === -1
       )
         return false;
       return true;
@@ -122,7 +132,10 @@ const mockNetwork = async url => {
     edges = filteredAccounts.slice(start, end);
 
     return {
-      edges: edges.map(op => ({ node: op, cursor: op.id })),
+      edges: edges.map(transaction => ({
+        node: transaction,
+        cursor: transaction.id,
+      })),
       pageInfo: { hasNextPage: false, count: filteredAccounts.length },
     };
   }
@@ -133,7 +146,10 @@ const mockNetwork = async url => {
 
   await delay(1e3);
   return {
-    edges: edges.map(op => ({ node: op, cursor: op.id })),
+    edges: edges.map(transaction => ({
+      node: transaction,
+      cursor: transaction.id,
+    })),
     pageInfo: { hasNextPage: false },
   };
 };

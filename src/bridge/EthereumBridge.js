@@ -5,9 +5,9 @@ import invariant from "invariant";
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
-import type { Input as NewEthereumOperationMutationInput } from "api/mutations/NewEthereumOperationMutation";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
-import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
+import type { Input as NewEthereumTransactionMutationInput } from "api/mutations/NewEthereumTransactionMutation";
+import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
+import NewEthereumTransactionMutation from "api/mutations/NewEthereumTransactionMutation";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import type { WalletBridge } from "./types";
@@ -137,7 +137,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
     note,
   }),
   composeAndBroadcast: (
-    operation_id: number,
+    transaction_id: number,
     restlay: RestlayEnvironment,
     account: Account,
     transaction: Transaction, // eslint-disable-line
@@ -146,11 +146,11 @@ const EthereumBridge: WalletBridge<Transaction> = {
       transaction.gasPrice !== null && transaction.gasPrice !== undefined,
       "gasPrice is unset",
     );
-    const data: NewEthereumOperationMutationInput = {
+    const data: NewEthereumTransactionMutationInput = {
       operation: {
         amount: transaction.amount,
         recipient: transaction.recipient,
-        operation_id,
+        transaction_id,
         gas_price: transaction.gasPrice,
         gas_limit: transaction.gasLimit,
         note: {
@@ -161,8 +161,8 @@ const EthereumBridge: WalletBridge<Transaction> = {
       accountId: account.id,
     };
     return restlay
-      .commitMutation(new NewEthereumOperationMutation(data))
-      .then(() => restlay.fetchQuery(new PendingOperationsQuery()));
+      .commitMutation(new NewEthereumTransactionMutation(data))
+      .then(() => restlay.fetchQuery(new PendingTransactionsQuery()));
   },
   EditFees: FeesFieldEthereumKind,
   EditAdvancedOptions,

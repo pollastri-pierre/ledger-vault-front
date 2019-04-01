@@ -1,8 +1,7 @@
-const orga_name = Cypress.env("workspace");
-const API = `${Cypress.env("api_server2")}/${orga_name}`;
-const DEVICE = Cypress.env("api_switch_device");
+import { route } from "../../functions/actions";
 
-import { route } from "../../functions/actions.js";
+const orga_name = Cypress.env("workspace");
+const DEVICE = Cypress.env("api_switch_device");
 
 context("Create the Master Seed", () => {
   let polyfill;

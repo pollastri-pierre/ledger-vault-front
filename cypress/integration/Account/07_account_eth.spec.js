@@ -2,13 +2,12 @@ import {
   login,
   logout,
   route,
-  switch_device,
   approve,
   approve_account,
   create_account,
-} from "../../functions/actions.js";
+} from "../../functions/actions";
 
-describe("Tests Eth and ETH Ropsten", function() {
+describe("Tests Eth and ETH Ropsten", () => {
   it("Create/Approve account Ethereum and ETH Ropsten", () => {
     cy.server();
     route();

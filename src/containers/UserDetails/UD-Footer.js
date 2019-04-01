@@ -3,8 +3,8 @@ import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import { withMe } from "components/UserContextProvider";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import AbortRequestButton from "components/AbortRequestButton";
-import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
+import RequestActionButtons from "components/RequestActionButtons";
+import { createAndApprove } from "device/interactions/approveFlow";
 import { hasUserApprovedRequest } from "utils/request";
 
 import type { User } from "data/types";
@@ -33,24 +33,11 @@ class UserDetailsFooter extends PureComponent<Props> {
       <Fragment>
         {(status === "PENDING_APPROVAL" || status === "PENDING_REVOCATION") &&
           !hasUserApproved && (
-            <Fragment>
-              <AbortRequestButton
-                requestID={user.last_request && user.last_request.id}
-                onSuccess={this.onSuccess}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={this.onSuccess}
-                onError={null}
-                disabled={false}
-                additionalFields={{
-                  data: {},
-                  request_id: user.last_request && user.last_request.id,
-                  type: "APPROVE_REQUEST",
-                }}
-                buttonLabel={<Trans i18nKey="common:approve" />}
-              />
-            </Fragment>
+            <RequestActionButtons
+              onSuccess={this.onSuccess}
+              onError={null}
+              entity={user}
+            />
           )}
         {status === "ACTIVE" && (
           <Fragment>

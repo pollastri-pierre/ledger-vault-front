@@ -82,13 +82,13 @@ class Send extends Component<Props, State<*>> {
     this.setState(state => ({ device: !state.device }));
   };
 
-  createOperation = async operation_id => {
+  createOperation = async transaction_id => {
     const { restlay, close } = this.props;
     const { account, transaction, bridge } = this.state;
     if (account && transaction && bridge) {
       if (transaction.amount && transaction.recipient) {
         await bridge.composeAndBroadcast(
-          operation_id,
+          transaction_id,
           restlay,
           account,
           transaction,

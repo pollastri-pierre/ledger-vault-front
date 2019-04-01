@@ -9,9 +9,10 @@ import SelectAccount from "components/SelectAccount";
 import AccountName from "components/AccountName";
 
 import Box from "components/base/Box";
+import Text from "components/base/Text";
 import type { Account } from "data/types";
 
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters/types";
 
 const EMPTY_ARRAY = [];
@@ -43,6 +44,13 @@ class FilterFieldAccounts extends PureComponent<Props> {
     this.updateAccounts(accountsIds => accountsIds.filter(EXCLUDE_ID));
   };
 
+  accountsRef: ?(Account[]) = null;
+
+  Collapsed = () => {
+    if (!this.accountsRef) return null;
+    return <Text small>{this.accountsRef.map(a => a.name).join(", ")}</Text>;
+  };
+
   render() {
     const { accounts, queryParams } = this.props;
 
@@ -58,6 +66,9 @@ class FilterFieldAccounts extends PureComponent<Props> {
       )
       .filter(Boolean);
 
+    // keep ref in this for Collapsed version
+    this.accountsRef = selectedAccounts;
+
     const filteredAccounts = accounts.filter(
       account =>
         !selectedAccountsIds.find(
@@ -71,9 +82,12 @@ class FilterFieldAccounts extends PureComponent<Props> {
     if (!filteredAccounts.length && !selectedAccounts.length) return null;
 
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>Accounts</FieldTitle>
-
+      <WrappableField
+        label="Accounts"
+        isActive={isActive}
+        closeOnChange={selectedAccounts}
+        RenderCollapsed={this.Collapsed}
+      >
         <Box flow={10}>
           <AccountsList
             accounts={selectedAccounts}
@@ -81,6 +95,8 @@ class FilterFieldAccounts extends PureComponent<Props> {
           />
           {filteredAccounts.length > 0 && (
             <SelectAccount
+              openMenuOnFocus
+              autoFocus
               value={null}
               accounts={filteredAccounts}
               onChange={this.handleChange}
@@ -88,7 +104,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
             />
           )}
         </Box>
-      </Box>
+      </WrappableField>
     );
   }
 }

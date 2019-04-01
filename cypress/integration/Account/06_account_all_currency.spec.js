@@ -2,13 +2,12 @@ import {
   login,
   logout,
   route,
-  switch_device,
   create_account,
   approve_account,
-} from "../../functions/actions.js";
+} from "../../functions/actions";
 
-describe("Tests Account Currency", function() {
-  afterEach(function() {
+describe("Tests Account Currency", () => {
+  afterEach(() => {
     logout();
   });
 

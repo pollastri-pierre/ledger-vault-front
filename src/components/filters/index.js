@@ -1,5 +1,5 @@
 // High levels filters groups, used diretly inside pages
-export { default as OperationsFilters } from "./OperationsFilters";
+export { default as TransactionsFilters } from "./TransactionsFilters";
 export { default as GroupsFilters } from "./GroupsFilters";
 export { default as AccountsFilters } from "./AccountsFilters";
 export { default as UsersFilters } from "./UsersFilters";
@@ -11,8 +11,8 @@ export { default as FieldAccounts } from "./fields/FilterFieldAccounts";
 export { default as FieldDate } from "./fields/FilterFieldDate";
 export { default as FieldCurrency } from "./fields/FilterFieldCurrency";
 export {
-  default as FieldOperationStatuses,
-} from "./fields/FilterFieldOperationStatuses";
+  default as FieldTransactionStatuses,
+} from "./fields/FilterFieldTransactionStatuses";
 export {
   default as FieldRequestStatuses,
 } from "./fields/FilterFieldRequestStatuses";
@@ -21,7 +21,7 @@ export {
 } from "./fields/FilterFieldRequestActivity";
 
 // Agnostic stuff
-export { default as FieldTitle } from "./generic/FiltersFieldTitle";
+export { default as WrappableField } from "./generic/WrappableField";
 export {
   defaultFieldProps,
   default as FiltersCard,

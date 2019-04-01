@@ -7,30 +7,30 @@ import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
 import {
   hasPending,
   isMemberOfAccount,
-  getPendingsOperations,
-} from "utils/operations";
+  getPendingsTransactions,
+} from "utils/transactions";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
-import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
+import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import SelectAccount from "components/SelectAccount";
 
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import Box from "components/base/Box";
 import { ModalFooter } from "components/base/Modal";
 import InfoBox from "components/base/InfoBox";
 import DialogButton from "components/buttons/DialogButton";
 
-import type { Account, Operation, User } from "data/types";
+import type { Account, Transaction, User } from "data/types";
 
 function isAccountAvailable(
   account: Account,
-  pendingApprovalOperations: Operation[],
+  pendingApprovalTransactions: Transaction[],
   me: User,
 ) {
   return (
     account.balance > 0 &&
-    !hasPending(account, pendingApprovalOperations) &&
+    !hasPending(account, pendingApprovalTransactions) &&
     isMemberOfAccount(account, me) &&
     !isAccountOutdated(account) &&
     !isAccountBeingUpdated(account)
@@ -43,7 +43,7 @@ type Props = {
   account: ?Account,
   me: User,
   selectAccount: (?Account) => void,
-  allPendingOperations: Operation[],
+  allPendingTransactions: Transaction[],
 };
 
 type State = {
@@ -64,14 +64,14 @@ class SendAccount extends PureComponent<Props, State> {
   };
 
   handleChooseAccount = (account: ?Account) => {
-    const { selectAccount, allPendingOperations, me } = this.props;
+    const { selectAccount, allPendingTransactions, me } = this.props;
     if (!account) return selectAccount(null);
 
-    const pendingApprovalOperations = getPendingsOperations(
-      allPendingOperations,
+    const pendingApprovalTransactions = getPendingsTransactions(
+      allPendingTransactions,
     );
 
-    if (!isAccountAvailable(account, pendingApprovalOperations, me)) {
+    if (!isAccountAvailable(account, pendingApprovalTransactions, me)) {
       selectAccount(null);
       this.setState({ invalidAccount: account });
     } else {
@@ -129,6 +129,6 @@ export default connectData(SendAccount, {
   queries: {
     accounts: AccountsQuery,
     me: ProfileQuery,
-    allPendingOperations: PendingOperationsQuery,
+    allPendingTransactions: PendingTransactionsQuery,
   },
 });

@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import InputField from "components/InputField";
 import AccountSummary from "components/AccountSummary";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import ERC20TokenIcon from "components/icons/ERC20Token";

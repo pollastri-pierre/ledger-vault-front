@@ -7,7 +7,7 @@ import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
 import type { WalletBridge } from "bridge/types";
 import colors from "shared/colors";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import InputCurrency from "components/InputCurrency";
 import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 import AmountNoUnits from "./AmountNoUnits";
@@ -80,7 +80,7 @@ class SendAmount extends PureComponent<Props<*>> {
                 defaultUnit={account.settings.currency_unit}
                 value={bridge.getTransactionAmount(account, transaction)}
                 error={!amountIsValid}
-                data-test="operation-creation-amount"
+                data-test="transaction-creation-amount"
               />
               <div className={classes.countervalue}>
                 <div className={classes.fiat}>USD</div>

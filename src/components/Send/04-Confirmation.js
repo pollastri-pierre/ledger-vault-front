@@ -6,7 +6,7 @@ import type { Account } from "data/types";
 import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import AccountName from "components/AccountName";
-import OverviewOperation from "components/OverviewOperation";
+import OverviewTransaction from "components/OverviewTransaction";
 import Amount from "components/Amount";
 import { ModalFooter } from "components/base/Modal";
 import DialogButton from "components/buttons/DialogButton";
@@ -59,10 +59,10 @@ class SendConfirmation extends PureComponent<Props<*>, State> {
 
     return (
       <Fragment>
-        <OverviewOperation
+        <OverviewTransaction
           amount={amount}
           account={account}
-          operationType="SEND"
+          transactionType="SEND"
         />
         <div>
           <LineRow label={<Trans i18nKey="send:confirmation.identifier" />}>

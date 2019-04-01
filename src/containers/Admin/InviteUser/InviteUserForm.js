@@ -7,11 +7,11 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Radio from "@material-ui/core/Radio";
-import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import { FaUserEdit, FaLink, FaEdit } from "react-icons/fa";
 
+import VaultButton from "components/base/Button";
 import InputField from "components/InputField";
 import Box from "components/base/Box";
 import colors from "shared/colors";
@@ -26,12 +26,6 @@ type State = {
   user_id: string,
   userRole: string,
   dataTest?: string,
-};
-
-const styles = {
-  icon: {
-    marginRight: 10,
-  },
 };
 
 class InviteUserForm extends PureComponent<Props, State> {
@@ -57,10 +51,10 @@ class InviteUserForm extends PureComponent<Props, State> {
     this.setState({ userRole: event.target.value });
   };
 
-  processUserInfo = () => {
+  processUserInfo = async () => {
     const { processUserInfo } = this.props;
     const { userRole, username, user_id } = this.state;
-    processUserInfo(username, user_id, userRole);
+    await processUserInfo(username, user_id, userRole);
   };
 
   render() {
@@ -123,25 +117,21 @@ class InviteUserForm extends PureComponent<Props, State> {
             }}
             error={null}
           />
-          <Button
+          <VaultButton
             onClick={this.processUserInfo}
-            color="primary"
-            variant="outlined"
             data-test= "generateLink"
             disabled={!username || !user_id}
+            IconLeft={request_id ? FaUserEdit : FaLink}
+            size="small"
+            variant="outlined"
+            type="submit"
           >
             {request_id ? (
-              <Fragment>
-                <FaUserEdit style={styles.icon} />
-                <Trans i18nKey="inviteUser:updateMember" />
-              </Fragment>
+              <Trans i18nKey="inviteUser:updateMember" />
             ) : (
-              <Fragment>
-                <FaLink style={styles.icon} />
-                <Trans i18nKey="inviteUser:generateLink" />
-              </Fragment>
+              <Trans i18nKey="inviteUser:generateLink" />
             )}
-          </Button>
+          </VaultButton>
         </Box>
       </Fragment>
     );

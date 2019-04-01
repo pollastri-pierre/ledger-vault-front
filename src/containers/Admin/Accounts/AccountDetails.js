@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
 import AccountQuery from "api/queries/AccountQuery";
@@ -10,19 +10,15 @@ import Text from "components/base/Text";
 import LineRow from "components/LineRow";
 import EntityStatus from "components/EntityStatus";
 import AccountName from "components/AccountName";
-import RequestTitle from "components/RequestTitle";
 import DateFormat from "components/DateFormat";
-import { createAndApprove, approveFlow } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/approveFlow";
+import EntityModalTitle from "components/EntityModalTitle";
 
-import AbortRequestButton from "components/AbortRequestButton";
+import RequestActionButtons from "components/RequestActionButtons";
+
 import ApproveRequestButton from "components/ApproveRequestButton";
 
-import {
-  ModalHeader,
-  ModalTitle,
-  ModalBody,
-  ModalFooter,
-} from "components/base/Modal";
+import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 import { withMe } from "components/UserContextProvider";
 
 import { hasUserApprovedRequest } from "utils/request";
@@ -48,18 +44,7 @@ class AccountDetails extends PureComponent<Props> {
     return (
       <ModalBody height={500} onClose={close}>
         <ModalHeader title={account.name}>
-          <ModalTitle>
-            <Text header bold>
-              {account.status === "ACTIVE"
-                ? account.name
-                : account.last_request && (
-                    <RequestTitle
-                      type={account.last_request.type}
-                      entityTitle={account.name}
-                    />
-                  )}
-            </Text>
-          </ModalTitle>
+          <EntityModalTitle entity={account} title={account.name} />
         </ModalHeader>
         <LineRow label={<Trans i18nKey="accountDetails:type" />}>
           {account.last_request && account.last_request.type}
@@ -79,30 +64,11 @@ class AccountDetails extends PureComponent<Props> {
         </LineRow>
         <ModalFooter justify="space-between">
           {status.startsWith("PENDING") && !hasUserApproved && (
-            <Fragment>
-              <AbortRequestButton
-                requestID={account.last_request && account.last_request.id}
-                onSuccess={close}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={close}
-                onError={null}
-                additionalFields={{
-                  request_id: account.last_request && account.last_request.id,
-                }}
-                disabled={false}
-                buttonLabel={
-                  <Trans
-                    i18nKey={
-                      account.last_request
-                        ? `request:approve.${account.last_request.type}`
-                        : `common:approve`
-                    }
-                  />
-                }
-              />
-            </Fragment>
+            <RequestActionButtons
+              onSuccess={close}
+              onError={null}
+              entity={account}
+            />
           )}
           {status === "ACTIVE" && (
             <ApproveRequestButton

@@ -2,7 +2,7 @@
 import moment from "moment";
 
 export type ApprovingObject = {
-  // this is a Operation like
+  // this is a Transaction like
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
   endOfRateLimiterTime: ?string,

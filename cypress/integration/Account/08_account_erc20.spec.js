@@ -2,13 +2,11 @@ import {
   login,
   logout,
   route,
-  switch_device,
   approve,
   approve_account,
-  create_account,
-} from "../../functions/actions.js";
+} from "../../functions/actions";
 
-describe("ERC20 Token Account", function() {
+describe("ERC20 Token Account", () => {
   it("Create/Approve ERC20 token account", () => {
     cy.server();
     route();

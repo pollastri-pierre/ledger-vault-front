@@ -11,12 +11,12 @@ import { withStyles } from "@material-ui/core/styles";
 import type { Account, User } from "data/types";
 import connectData from "restlay/connectData";
 import { VISIBLE_MENU_STATUS } from "utils/accounts";
-import OperationModal from "components/operations/OperationModal";
+import TransactionModal from "components/transactions/TransactionModal";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 // import QuicklookCard from "./QuicklookCard";
 import AccountBalanceCard from "./AccountBalanceCard";
-import AccountLastOperationsCard from "./AccountLastOperationsCard";
+import AccountLastTransactionsCard from "./AccountLastTransactionsCard";
 import AccountCountervalueCard from "./AccountCountervalueCard";
 import AccountQuickInfo from "./AccountQuickInfo";
 import SubAccounts from "./SubAccounts";
@@ -73,10 +73,10 @@ class AccountView extends Component<{
           <AccountCountervalueCard account={account} />
         </div>
         {/* <QuicklookCard accountId={accountId} key={accountId} /> */}
-        <AccountLastOperationsCard key={accountId} account={account} />
+        <AccountLastTransactionsCard key={accountId} account={account} />
         <ModalRoute
           path={`${match.url}/operation/:operationId/:tabIndex`}
-          component={OperationModal}
+          component={TransactionModal}
         />
       </div>
     );

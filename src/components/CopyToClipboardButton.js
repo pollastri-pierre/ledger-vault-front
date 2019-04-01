@@ -69,14 +69,14 @@ class CopyToClipboardButton extends Component<Props, State> {
               {copied ? (
                 <Text
                   color={colors.ocean}
-                  i18nKey="operationDetails:overview.copied"
+                  i18nKey="transactionDetails:overview.copied"
                 />
               ) : (
                 <Box horizontal align="center" flow={5}>
                   <Copy color={colors.ocean} size={12} />
                   <Text
                     color={colors.ocean}
-                    i18nKey="operationDetails:overview.copy"
+                    i18nKey="transactionDetails:overview.copy"
                   />
                 </Box>
               )}
