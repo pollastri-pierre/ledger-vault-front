@@ -132,6 +132,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
       <Fragment>
         <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
         <InputField
+          dataTest="account_childname"
           value={payload.name}
           autoFocus
           onChange={this.handleChangeName}
@@ -152,6 +153,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
               {t("newAccount:options.parentName")}
             </ModalSubTitle>
             <InputField
+              dataTest="account_parentname"
               value={parentAccountName}
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
