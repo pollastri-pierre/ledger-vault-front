@@ -48,14 +48,19 @@ const titleStyles = {
 type RowProps = {
   label: React$Node,
   children: React$Node,
+  onClick: ?Function,
   classes: { [_: $Keys<typeof rowStyles>]: string }
 };
 
 class SectionRowComponent extends PureComponent<RowProps> {
   render() {
-    const { label, children, classes } = this.props;
+    const { label, children, onClick, classes } = this.props;
     return (
-      <div className={classes.rowContainer}>
+      <div
+        className={classes.rowContainer}
+        onClick={onClick}
+        style={{ cursor: onClick ? "pointer" : "default" }}
+      >
         <Text uppercase small className={classes.label}>
           {label}
         </Text>

@@ -85,6 +85,10 @@ export type Approval = {
 };
 
 type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+type ExtendedPubKey = {
+  public_key: string,
+  chain_code: string
+};
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -104,7 +108,9 @@ type AccountCommon = {
   hsm_operations?: Object,
   is_hsm_coin_app_updated: boolean,
   index: number,
-  status: string
+  status: string,
+  xpub: string,
+  extended_pub_keys: ExtendedPubKey
 };
 export type Account = AccountCommon & {
   currency_id: string
