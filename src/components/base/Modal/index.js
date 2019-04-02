@@ -10,8 +10,10 @@ import Box, { px } from "components/base/Box";
 import Text from "components/base/Text";
 import ModalClose from "./ModalClose";
 
+const modalsContainer = document.createElement("div")
+modalsContainer.classList.add('modals-container')
 const modalRoot =
-  document.body && document.body.appendChild(document.createElement("div"));
+  document.body && document.body.appendChild(modalsContainer);
 
 const animShowHide = {
   duration: 200,
