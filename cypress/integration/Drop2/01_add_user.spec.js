@@ -12,7 +12,7 @@ describe("Tests Creation Account", function() {
   });
 
   afterEach(function() {
-    //logout();
+    logout();
   });
 
   it("Invite new operator", () => {
@@ -87,6 +87,11 @@ describe("Tests Creation Account", function() {
       .type("Anna", { force: true })
       .type("{enter}");
     cy.get("[data-test=dialog-button]").click();
+    cy.wait(1500);
+    cy.get(".top-message-body")
+      .contains("the request has been successfully created")
+      .get(".top-message-title")
+      .contains("request created");
   });
 
 });

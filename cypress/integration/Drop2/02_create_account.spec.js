@@ -12,7 +12,7 @@ describe("Tests Creation Account", function() {
   });
 
   afterEach(function() {
-    //logout();
+    logout();
   });
 
   it("Create Bitcoin Account", () => {
@@ -23,14 +23,20 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
-    cy.get("#react-select-3-option-0").click();
+    cy.get("#input_crypto")
+      .type("Bitcoin", { force: true })
+      .type("{enter}");
+
     cy.get("[datatest=account_name]").type("HeyBitcoin");
     cy.contains("Next").click();
     cy.get("#input_groups_users")
       .type("APAC 1", { force: true })
       .type("{enter}");
     cy.contains("Add approval").click();
-    cy.get("#react-select-4-option-1-3").click();
+    cy.get("input#input_groups_users")
+      .eq(1)
+      .type("James Lepic", { force: true })
+      .type("{enter}");
     cy.contains("Next").click();
     cy.get('[data-test=dialog-button]').click();
     cy.wait(2500);
@@ -48,14 +54,19 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
-    cy.get("#react-select-3-option-6").click();
+    cy.get("#input_crypto")
+      .type("Ethereum", { force: true })
+      .type("{enter}");
     cy.get("[datatest=account_name]").type("MyEth");
     cy.contains("Next").click();
     cy.get("#input_groups_users")
       .type("APAC 1", { force: true })
       .type("{enter}");
     cy.contains("Add approval").click();
-    cy.get("#react-select-4-option-1-3").click();
+    cy.get("input#input_groups_users")
+      .eq(1)
+      .type("Thomas", { force: true })
+      .type("{enter}");
     cy.contains("Next").click();
     cy.get('[data-test=dialog-button]').click();
     cy.wait(2500);
@@ -86,7 +97,10 @@ describe("Tests Creation Account", function() {
       .type("APAC 1", { force: true })
       .type("{enter}");
     cy.contains("Add approval").click();
-    cy.get("#react-select-4-option-1-3").click();
+    cy.get("input#input_groups_users")
+      .eq(1)
+      .type("Anna", { force: true })
+      .type("{enter}");
     cy.contains("Next").click();
     cy.get('[data-test=dialog-button]').click();
     cy.wait(2500);
@@ -104,14 +118,19 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
-    cy.get("#react-select-3-option-0").click();
+    cy.get("#input_crypto")
+      .type("Bitcoin", { force: true })
+      .type("{enter}");
     cy.get("[datatest=account_name]").type("HeyBitcoin2");
     cy.contains("Next").click();
     cy.get("#input_groups_users")
       .type("APAC 1", { force: true })
       .type("{enter}");
     cy.contains("Add approval").click();
-    cy.get("#react-select-4-option-1-3").click();
+    cy.get("input#input_groups_users")
+      .eq(1)
+      .type("Aidan", { force: true })
+      .type("{enter}");
     cy.contains("Next").click();
     cy.get('[data-test=dialog-button]').click();
     cy.wait(2500);
