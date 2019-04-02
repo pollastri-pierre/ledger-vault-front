@@ -1,12 +1,12 @@
 // @flow
 import Query from "restlay/Query";
 import schema from "data/schema";
-import type { Operation, Account } from "data/types";
+import type { Transaction, Account } from "data/types";
 
 type Input = void;
 export type Response = {
-  approveOperations: Operation[],
-  watchOperations: Operation[],
+  approveTransactions: Transaction[],
+  watchTransactions: Transaction[],
   approveAccounts: Account[],
   watchAccounts: Account[],
 };
@@ -16,8 +16,8 @@ export default class PendingsQuery extends Query<Input, Response> {
   uri = "/pendings";
 
   responseSchema = {
-    approveOperations: [schema.Operation],
-    watchOperations: [schema.Operation],
+    approveTransactions: [schema.Transaction],
+    watchTransactions: [schema.Transaction],
     approveAccounts: [schema.Account],
     watchAccounts: [schema.Account],
   };

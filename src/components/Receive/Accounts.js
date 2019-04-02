@@ -3,7 +3,7 @@ import React from "react";
 import type { Account } from "data/types";
 import { Trans } from "react-i18next";
 import SelectAccount from "components/SelectAccount";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 
 import ReceiveLayout from "./ReceiveLayout";
 

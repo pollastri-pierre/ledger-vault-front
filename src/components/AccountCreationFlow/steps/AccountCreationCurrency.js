@@ -15,7 +15,7 @@ import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/base/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import {
   isERC20Token,
   isNotSupportedCoin,

@@ -1,6 +1,6 @@
-import { route, switch_device } from "../../functions/actions.js";
+import { route, switch_device } from "../../functions/actions";
+
 const orga_name = Cypress.env("workspace");
-const API = `${Cypress.env("api_server2")}/${orga_name}`;
 const DEVICE = Cypress.env("api_switch_device");
 
 context("Onboarding e2e", () => {
@@ -36,7 +36,7 @@ context("Onboarding e2e", () => {
     cy.contains("Continue").click();
     cy.wait("@next");
     cy.wait("@challenge");
-    //First WPK
+    // First WPK
     cy.get(".fragment")
       .eq(0)
       .find(".fragment-click")

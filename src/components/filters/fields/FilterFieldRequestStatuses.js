@@ -4,11 +4,11 @@ import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
-import Box from "components/base/Box";
 import Select from "components/base/Select";
+import Text from "components/base/Text";
 import type { RequestStatus, Translate } from "data/types";
 
-import { FieldTitle, defaultFieldProps } from "components/filters";
+import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters";
 
 class FilterFieldRequestStatuses extends PureComponent<FieldProps> {
@@ -22,18 +22,32 @@ class FilterFieldRequestStatuses extends PureComponent<FieldProps> {
     );
   };
 
+  Collapsed = () => {
+    const { queryParams } = this.props;
+    const transactionStatuses = resolveRequestStatuses(queryParams);
+    return (
+      <Text small>{transactionStatuses.map(s => s.label).join(", ")}</Text>
+    );
+  };
+
   render() {
     const { queryParams } = this.props;
-    const operationStatuses = resolveRequestStatuses(queryParams);
-    const isActive = !!operationStatuses.length;
+    const statuses = resolveRequestStatuses(queryParams);
+    const isActive = !!statuses.length;
     return (
-      <Box flow={5}>
-        <FieldTitle isActive={isActive}>Status</FieldTitle>
+      <WrappableField
+        label="Status"
+        isActive={isActive}
+        closeOnChange={statuses}
+        RenderCollapsed={this.Collapsed}
+      >
         <SelectRequestStatuses
-          value={operationStatuses}
+          autoFocus
+          openMenuOnFocus
+          value={statuses}
           onChange={this.handleChange}
         />
-      </Box>
+      </WrappableField>
     );
   }
 }

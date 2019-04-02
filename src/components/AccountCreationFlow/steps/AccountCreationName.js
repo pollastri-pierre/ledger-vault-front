@@ -8,7 +8,7 @@ import InputField from "components/InputField";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 import type { Translate } from "data/types";

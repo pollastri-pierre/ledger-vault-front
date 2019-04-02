@@ -6,7 +6,7 @@
     "units": "Units"
   },
   "header": "Account Settings",
-  "operationRules": {
+  "transactionRules": {
     "approvals": "Approval workflow",
     "title": "Transaction rules"
   }

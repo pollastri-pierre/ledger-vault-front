@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 
 import BluePlug from "components/icons/BluePlug";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import ReceiveLayout from "./ReceiveLayout";
 import DeviceStep from "./DeviceStep";
 

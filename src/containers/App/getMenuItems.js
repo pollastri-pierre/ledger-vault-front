@@ -15,13 +15,13 @@ import {
 
 import { getVisibleAccountsInMenu } from "utils/accounts";
 import {
-  getPendingsOperations,
-  isCreateOperationEnabled,
-} from "utils/operations";
+  getPendingsTransactions,
+  isCreateTransactionEnabled,
+} from "utils/transactions";
 import PendingBadge from "containers/Admin/Dashboard/PendingBadge";
 import IconSend from "components/icons/Send";
 import IconReceive from "components/icons/Receive";
-import type { Account, Operation } from "data/types";
+import type { Account, Transaction } from "data/types";
 import type { MenuItem } from "components/VaultLayout/types";
 
 const SendIcon = () => <IconSend size={11} />;
@@ -32,11 +32,11 @@ type Props = {
   match: Match,
   location: Location,
   accounts: Account[],
-  allPendingOperations: Operation[],
+  allPendingTransactions: Transaction[],
 };
 
 export default function getMenuItems(props: Props) {
-  const { match, role, accounts, allPendingOperations, location } = props;
+  const { match, role, accounts, allPendingTransactions, location } = props;
   if (role === "ADMIN") {
     return setActive(location, [
       {
@@ -86,8 +86,8 @@ export default function getMenuItems(props: Props) {
   }
   if (role === "OPERATOR") {
     const visibleAccounts = getVisibleAccountsInMenu(accounts);
-    const pendingApprovalOperations = getPendingsOperations(
-      allPendingOperations,
+    const pendingApprovalTransactions = getPendingsTransactions(
+      allPendingTransactions,
     );
     return setActive(location, [
       {
@@ -103,9 +103,9 @@ export default function getMenuItems(props: Props) {
         label: <Trans i18nKey="menu:operator.send" />,
         url: `${location.pathname}/new-operation`,
         Icon: SendIcon,
-        isDisabled: !isCreateOperationEnabled(
+        isDisabled: !isCreateTransactionEnabled(
           accounts,
-          pendingApprovalOperations,
+          pendingApprovalTransactions,
         ),
       },
       {

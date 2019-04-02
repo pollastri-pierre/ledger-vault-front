@@ -49,7 +49,7 @@
       "You must select at least <0>2</0> members",
     "approvals_amount": "Amount",
     "approvals_desc":
-      "Define the number of approvals required before operations created in this account are broadcasted to the blockchain network.",
+      "Define the number of approvals required before transactions created in this account are broadcasted to the blockchain network.",
     "approvals_from": "approvals from {{count}} members",
     "members": "Members",
     "members_desc":

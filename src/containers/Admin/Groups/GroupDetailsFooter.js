@@ -1,9 +1,9 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import { approveFlow, createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/approveFlow";
 
-import AbortRequestButton from "components/AbortRequestButton";
+import RequestActionButtons from "components/RequestActionButtons";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
 import type { Group, User } from "data/types";
@@ -56,30 +56,11 @@ class GroupDetailsFooter extends PureComponent<Props> {
     return (
       <Fragment>
         {status.startsWith("PENDING_") && !hasUserApproved && (
-          <Fragment>
-            <AbortRequestButton
-              requestID={group.last_request && group.last_request.id}
-              onSuccess={this.onSuccess}
-            />
-            <ApproveRequestButton
-              interactions={approveFlow}
-              onSuccess={this.onSuccess}
-              onError={null}
-              additionalFields={{
-                request_id: group.last_request && group.last_request.id,
-              }}
-              disabled={false}
-              buttonLabel={
-                <Trans
-                  i18nKey={
-                    group.last_request
-                      ? `request:approve.${group.last_request.type}`
-                      : `common:approve`
-                  }
-                />
-              }
-            />
-          </Fragment>
+          <RequestActionButtons
+            onSuccess={this.onSuccess}
+            onError={null}
+            entity={group}
+          />
         )}
         {status === "ACTIVE" && (
           <ApproveRequestButton

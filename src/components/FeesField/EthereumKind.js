@@ -10,7 +10,7 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import connectData from "restlay/connectData";
-import ModalSubTitle from "components/operations/creation/ModalSubTitle";
+import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";

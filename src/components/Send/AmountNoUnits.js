@@ -79,7 +79,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
           onChange={this.onChange}
           placeholder="0"
           fullWidth
-          data-test="operation-creation-amount"
+          data-test="transaction-creation-amount"
           error={!amountIsValid}
           renderLeft={<div>{token && token.ticker}</div>}
         />
