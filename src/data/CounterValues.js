@@ -1,10 +1,12 @@
+import axios from "axios";
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 import {
-  listCryptoCurrencies,
+  getFiatCurrencyByTicker,
   getCryptoCurrencyById
-} from "utils/cryptoCurrencies";
+} from "@ledgerhq/live-common/lib/currencies";
+import { listCryptoCurrencies } from "utils/cryptoCurrencies";
+import { setNetwork } from "@ledgerhq/live-common/lib/network";
 
 import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
@@ -40,7 +42,10 @@ const pairsSelector = createSelector(accountsSelector, accounts =>
   )
 );
 
+setNetwork(axios);
+
 const CounterValues = createCounterValues({
+  log: (...args) => console.log("CounterValues:", ...args), // eslint-disable-line no-console
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
   storeSelector: state => state.countervalues,
   pairsSelector,

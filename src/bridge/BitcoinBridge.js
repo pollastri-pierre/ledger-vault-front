@@ -7,7 +7,7 @@ import type { Input as NewOperationMutationInput } from "api/mutations/NewOperat
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed

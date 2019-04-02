@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
-import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 import InputField from "components/InputField";
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";

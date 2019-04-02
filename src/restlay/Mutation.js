@@ -3,6 +3,9 @@ import type { Store } from "./dataStore";
 
 type Notification = { title: string, content: string };
 
+type Deserializer<T> = any => T;
+type DeserializerMap<T> = { [_: string]: Deserializer<T> };
+
 // A mutation maps to another verb on the API and means a modification of the data.
 // it will allow us to define mutation response etc..
 export default class Mutation<Input, Response> {
@@ -16,6 +19,8 @@ export default class Mutation<Input, Response> {
 
   // the schema of the expected HTTP response. defined using normalizr-style schema.
   responseSchema: Object | Array<Object>;
+
+  deserialize: ?Deserializer<Response> | ?DeserializerMap<Response>;
 
   constructor(props: Input) {
     this.props = props;

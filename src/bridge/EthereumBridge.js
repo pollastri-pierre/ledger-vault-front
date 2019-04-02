@@ -9,7 +9,7 @@ import type { Input as NewEthereumOperationMutationInput } from "api/mutations/N
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
 import NewEthereumOperationMutation from "api/mutations/NewEthereumOperationMutation";
 import FeesFieldEthereumKind from "components/FeesField/EthereumKind";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed

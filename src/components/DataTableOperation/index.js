@@ -228,7 +228,7 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount || (operation.price && operation.price.amount)}
+        value={operation.amount}
         erc20Format={account.account_type === "ERC20"}
         type={operation.type}
         alwaysShowSign

@@ -2,6 +2,7 @@
 import Query from "restlay/Query";
 import schema from "data/schema";
 import type { Operation } from "data/types";
+import { deserializeOperation } from "api/transformations/Operation";
 
 type Input = {
   operationId: string
@@ -16,5 +17,9 @@ export default class OperationQuery extends Query<Input, Response> {
 
   responseSchema = {
     operation: schema.Operation
+  };
+
+  deserialize = {
+    operation: deserializeOperation
   };
 }

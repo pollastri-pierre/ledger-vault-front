@@ -3,6 +3,7 @@ import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Operation } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeOperation } from "api/transformations/Operation";
 
 export type Note = {
   title: string,
@@ -31,7 +32,7 @@ export type Input = {
   accountId: number
 };
 
-type Response = Operation; // the account that has been created
+type Response = Operation; // the operation that has been created
 
 export default class NewOperationMutation extends Mutation<Input, Response> {
   uri = `/accounts/${this.props.accountId}/operations`;
@@ -39,6 +40,8 @@ export default class NewOperationMutation extends Mutation<Input, Response> {
   method = "POST";
 
   responseSchema = schema.Operation;
+
+  deserialize = deserializeOperation;
 
   getSuccessNotification() {
     return success("operation request", "created");

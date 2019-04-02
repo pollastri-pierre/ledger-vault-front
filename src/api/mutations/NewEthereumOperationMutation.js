@@ -4,6 +4,7 @@ import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Operation } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeOperation } from "api/transformations/Operation";
 
 import type { Note } from "./NewOperationMutation";
 
@@ -32,6 +33,8 @@ export default class NewEthereumOperationMutation extends Mutation<
   method = "POST";
 
   responseSchema = schema.Operation;
+
+  deserialize = deserializeOperation;
 
   getSuccessNotification() {
     return success("operation request", "created");

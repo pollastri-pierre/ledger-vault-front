@@ -4,6 +4,8 @@ import schema from "data/schema";
 import type { Operation } from "data/types";
 import queryString from "query-string";
 
+import { deserializeOperation } from "api/transformations/Operation";
+
 type In = {
   keywords: ?string,
   currencyName: ?string,
@@ -47,6 +49,8 @@ export default class SearchQuery extends ConnectionQuery<In, Node> {
   uri = uri(this.props);
 
   nodeSchema = schema.Operation;
+
+  deserialize = deserializeOperation;
 
   getPaginationURLParams(first?: number, after?: string): Object {
     const params = {};

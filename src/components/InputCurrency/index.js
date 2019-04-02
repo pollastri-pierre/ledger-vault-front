@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 import type { CryptoCurrency, Unit } from "@ledgerhq/live-common/lib/types";
 
 import type { Unit as WeakUnit } from "data/types";

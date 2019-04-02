@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import Text from "components/Text";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
 import LineSeparator from "components/LineSeparator";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { Account, Unit } from "data/types";
 import { SectionTitle, SectionHeader, SectionRow } from "./SettingsSection";
 import colors from "../../shared/colors";
