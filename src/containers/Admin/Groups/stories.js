@@ -9,7 +9,7 @@ import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
 import { denormalize } from "normalizr-gre";
-import CreateGroup from "containers/Admin/Groups/CreateGroup";
+import GroupCreationFlow from "components/GroupCreationFlow";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import requests from "data/mock-requests.json";
 
@@ -43,7 +43,7 @@ const fakeNetwork = async url => {
 storiesOf("flows", module).add("Group Creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
-      <CreateGroup />
+      <GroupCreationFlow />
     </Modal>
   </RestlayProvider>
 ));

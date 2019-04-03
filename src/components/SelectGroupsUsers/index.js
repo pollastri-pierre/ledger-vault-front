@@ -98,6 +98,10 @@ const colourStyles = {
   }),
 };
 class SelectInGroup extends PureComponent<Props> {
+  static defaultProps = {
+    groups: [],
+  };
+
   handleChange = (option: Option[]) => {
     const { onChange } = this.props;
     if (!option) return onChange({ members: [], groups: [] });
