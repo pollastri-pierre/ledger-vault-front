@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
@@ -24,6 +25,7 @@ type Props<Transaction> = {
   amountIsValid: boolean,
   onChangeTransaction: Transaction => void
 };
+
 type State = {
   token: *,
   displayValue: string
@@ -35,6 +37,7 @@ const getCurrencyLikeUnit = decimals => ({
   magnitude: decimals,
   name: ""
 });
+
 class AmountNoUnits extends PureComponent<Props<*>, State> {
   constructor(props) {
     super(props);
@@ -60,7 +63,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
 
     const fakeUnit = getCurrencyLikeUnit(token ? token.decimals : 0);
     const r = sanitizeValueString(fakeUnit, amount);
-    const sanitizedValue = parseInt(r.value, 10);
+    const sanitizedValue = BigNumber(r.value);
     this.props.onChangeTransaction(
       bridge.editTransactionAmount(account, transaction, sanitizedValue)
     );

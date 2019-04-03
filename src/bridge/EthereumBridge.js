@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import invariant from "invariant";
+import { BigNumber } from "bignumber.js";
 
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -15,9 +16,9 @@ import type { WalletBridge } from "./types";
 // convertion to the BigNumber needed
 export type Transaction = {
   recipient: string,
-  amount: number,
-  gasPrice: number,
-  gasLimit: number,
+  amount: BigNumber,
+  gasPrice: BigNumber,
+  gasLimit: BigNumber,
   label: string,
   note: string
 };
@@ -64,11 +65,11 @@ const checkValidTransaction = async (a, t, r) => {
   const fees = await getFees(a, t);
   let amountIsValid;
   if (a.account_type === "ERC20") {
-    amountIsValid = t.amount < a.balance;
+    amountIsValid = t.amount.isLessThan(a.balance);
   } else {
-    amountIsValid = t.amount + fees < a.balance;
+    amountIsValid = t.amount.plus(fees).isLessThan(a.balance);
   }
-  if (!t.gasPrice || !t.amount || !recipientIsValid || !amountIsValid) {
+  if (t.gasPrice.isEqualTo(0) || t.amount.isEqualTo(0) || !recipientIsValid || !amountIsValid) {
     return false;
   }
   return true;
@@ -76,29 +77,33 @@ const checkValidTransaction = async (a, t, r) => {
 // TODO: generalize parentAccount to some generic extra data param
 const checkValidFee = async (account, transaction, parentAccount) => {
   const fees = await getFees(account, transaction);
-  const validFees = fees < parentAccount.balance;
+  const validFees = fees.isLessThan(parentAccount.balance);
   return validFees;
 };
-const getFees = (a, t) => Promise.resolve(t.gasPrice * t.gasLimit);
+
+const getFees = (a, t) => Promise.resolve(t.gasPrice.times(t.gasLimit));
 
 const computeTotal = (a, t, fees) => {
   if (a.account_type === "ERC20") {
     return t.amount;
   }
-  return t.amount === 0 ? 0 : t.amount + fees;
+  return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(fees);
 };
+
 const EthereumBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
-    amount: 0,
+    amount: BigNumber(0),
     recipient: "",
-    gasPrice: 0,
-    gasLimit: 0,
+    gasPrice: BigNumber(0),
+    gasLimit: BigNumber(0),
     label: "",
     note: ""
   }),
 
   getTotalSpent: async (a, t) => {
     const fees = await getFees(a, t);
+    console.log(`getting total spent`)
+    console.log(a, t)
     return computeTotal(a, t, fees);
   },
 
@@ -107,7 +112,7 @@ const EthereumBridge: WalletBridge<Transaction> = {
   editTransactionAmount: (
     account: Account,
     t: Transaction,
-    amount: number
+    amount: BigNumber
   ) => ({
     ...t,
     amount

@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import { BigNumber } from "bignumber.js";
 import type { Unit } from "@ledgerhq/live-common/lib/types";
 
 import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
@@ -12,18 +13,23 @@ export const getFees = async (
   operation: OperationGetFees,
   restlay: RestlayEnvironment
 ) => {
-  if (operation.amount > 0 && operation.recipient !== "" && account) {
+  if (
+    operation.amount.isGreaterThan(0) &&
+    operation.recipient !== "" &&
+    account
+  ) {
     const query = new AccountCalculateFeeQuery({
       accountId: account.id,
       operation
     });
     const data = await restlay.fetchQuery(query);
+    console.log(data)
     return data;
   }
   return {
-    fees: 0,
-    gas_price: 0,
-    gas_limit: 0
+    fees: BigNumber(0),
+    gas_price: BigNumber(0),
+    gas_limit: BigNumber(0)
   };
 };
 

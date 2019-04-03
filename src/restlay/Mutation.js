@@ -39,6 +39,10 @@ export default class Mutation<Input, Response> {
     return this.responseSchema;
   }
 
+  getDeserialize() {
+    return this.deserialize;
+  }
+
   /*
    * Allow a mutation to define the optimistic behavior
    */

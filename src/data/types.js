@@ -23,7 +23,7 @@ export type Organization = {
 };
 
 type Price = {
-  amount: number
+  amount: BigNumber
 };
 
 export type Unit = {
@@ -118,11 +118,11 @@ export type OperationRecipientIsValid = {
 };
 
 export type OperationGetFees = {
-  amount: number,
+  amount: BigNumber,
   recipient: string,
   fee_level?: string,
-  gas_limit?: ?number,
-  gas_price?: ?number
+  gas_limit?: ?BigNumber,
+  gas_price?: ?BigNumber
 };
 export type AccountEntity = AccountCommon & {
   currency: string
@@ -208,7 +208,7 @@ type OperationCommon = {
   trust: Trust,
   confirmations: number,
   created_on: Date,
-  price: Price,
+  price?: Price,
   fees: BigNumber,
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
