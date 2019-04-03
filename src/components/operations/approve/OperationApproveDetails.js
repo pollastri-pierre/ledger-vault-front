@@ -20,7 +20,7 @@ function OperationApproveDetails(props: {
   return (
     <div>
       <OverviewOperation
-        amount={operation.price.amount}
+        amount={operation.price ? operation.price.amount : BigNumber(0)}
         account={account}
         operationType={operation.type}
       />
@@ -53,13 +53,13 @@ function OperationApproveDetails(props: {
           <LineRow
             label={<Trans i18nKey="newOperation:details.confirmation_fee" />}
           >
-            <Amount account={account} value={operation.fees || BigNumber(0)} />
+            <Amount account={account} value={operation.fees} />
           </LineRow>
         )}
         <LineRow label={<Trans i18nKey="newOperation:details.total" />}>
           <Amount
             account={account}
-            value={BigNumber(operation.price.amount)}
+            value={operation.price ? operation.price.amount : BigNumber(0)}
             strong
             erc20Format={account.account_type === "ERC20"}
           />

@@ -57,7 +57,6 @@ type Props = {
 class OverviewOperation extends Component<Props, *> {
   render() {
     const { amount, account, classes, operationType } = this.props;
-    console.log(`the amount is`, amount)
     const isReceive = operationType === "RECEIVE";
     const erc20Format = account.account_type === "ERC20";
     return (

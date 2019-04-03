@@ -1,5 +1,6 @@
 // @flow
 import React, { Fragment } from "react";
+import { BigNumber } from "bignumber.js";
 import { Trans, Interpolate } from "react-i18next";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
@@ -92,7 +93,9 @@ function PendingOperationApprove(props: Props) {
                 <Fragment>
                   <Text small className={classes.currency}>
                     <CounterValue
-                      value={operation.price.amount}
+                      value={
+                        operation.price ? operation.price.amount : BigNumber(0)
+                      }
                       from={account.currency_id}
                       disableCountervalue={account.account_type === "ERC20"}
                     />
@@ -100,7 +103,9 @@ function PendingOperationApprove(props: Props) {
                   <Text className={classes.name}>
                     <CurrencyAccountValue
                       account={account}
-                      value={operation.price.amount}
+                      value={
+                        operation.price ? operation.price.amount : BigNumber(0)
+                      }
                       erc20Format={account.account_type === "ERC20"}
                     />
                   </Text>

@@ -45,6 +45,10 @@ export default class NewEthereumOperationMutation extends Mutation<
   }
 
   getBody() {
-    return this.props.operation;
+    const { operation } = this.props;
+    return {
+      ...operation,
+      amount: operation.amount.toFixed()
+    };
   }
 }

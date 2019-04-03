@@ -23,7 +23,6 @@ export const getFees = async (
       operation
     });
     const data = await restlay.fetchQuery(query);
-    console.log(data)
     return data;
   }
   return {

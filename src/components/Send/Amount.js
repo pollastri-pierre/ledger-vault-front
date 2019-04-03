@@ -41,7 +41,6 @@ type Props<Transaction> = {
 
 class SendAmount extends PureComponent<Props<*>> {
   onChange = satoshiValue => {
-    console.log(`---------------------- on change input currency`, satoshiValue)
     const { account, onChangeTransaction, bridge, transaction } = this.props;
 
     onChangeTransaction(
@@ -59,7 +58,6 @@ class SendAmount extends PureComponent<Props<*>> {
       onChangeTransaction
     } = this.props;
     const currency = getCryptoCurrencyById(account.currency_id);
-    console.log(`tx amount`, bridge.getTransactionAmount(account, transaction))
     return (
       <Fragment>
         <ModalSubTitle>

@@ -10,11 +10,14 @@ export const speeds = {
 export type Speed = $Values<typeof speeds>;
 
 type Input = {
-  amount: BigNumber,
-  fee_level?: Speed,
-  gas_limit?: ?BigNumber,
-  gas_price?: ?BigNumber,
-  recipient: string
+  accountId: number,
+  operation: {
+    amount: BigNumber,
+    fee_level?: Speed,
+    gas_limit?: ?BigNumber,
+    gas_price?: ?BigNumber,
+    recipient: string
+  }
 };
 
 type Response = {

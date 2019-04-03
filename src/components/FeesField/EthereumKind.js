@@ -170,7 +170,11 @@ class FeesFieldEthereumKind extends PureComponent<
               placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
               onChange={this.onGasPriceChange}
               defaultUnit={currency.units[1]}
-              value={transaction.gasPrice === null ? BigNumber(0) : transaction.gasPrice}
+              value={
+                transaction.gasPrice === null
+                  ? BigNumber(0)
+                  : transaction.gasPrice
+              }
               disabled={gasPriceStatus === "fetching"}
             />
           </div>

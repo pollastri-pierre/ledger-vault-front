@@ -69,7 +69,12 @@ const checkValidTransaction = async (a, t, r) => {
   } else {
     amountIsValid = t.amount.plus(fees).isLessThan(a.balance);
   }
-  if (t.gasPrice.isEqualTo(0) || t.amount.isEqualTo(0) || !recipientIsValid || !amountIsValid) {
+  if (
+    t.gasPrice.isEqualTo(0) ||
+    t.amount.isEqualTo(0) ||
+    !recipientIsValid ||
+    !amountIsValid
+  ) {
     return false;
   }
   return true;
@@ -102,8 +107,6 @@ const EthereumBridge: WalletBridge<Transaction> = {
 
   getTotalSpent: async (a, t) => {
     const fees = await getFees(a, t);
-    console.log(`getting total spent`)
-    console.log(a, t)
     return computeTotal(a, t, fees);
   },
 

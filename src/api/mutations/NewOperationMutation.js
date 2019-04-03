@@ -1,4 +1,5 @@
 // @flow
+import { BigNumber } from "bignumber.js";
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Operation } from "data/types";
@@ -20,7 +21,7 @@ export const speeds = {
 export type Speed = $Values<typeof speeds>;
 
 export type OperationToPOST = {
-  amount: number,
+  amount: BigNumber,
   fee_level: Speed,
   recipient: string,
   note?: Note,
@@ -52,6 +53,10 @@ export default class NewOperationMutation extends Mutation<Input, Response> {
   }
 
   getBody() {
-    return this.props.operation;
+    const { operation } = this.props;
+    return {
+      ...operation,
+      amount: operation.amount.toFixed()
+    };
   }
 }

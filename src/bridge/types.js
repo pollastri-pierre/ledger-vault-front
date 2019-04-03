@@ -1,4 +1,5 @@
 // @flow
+import { BigNumber } from "bignumber.js";
 import type { Account } from "data/types";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -16,10 +17,10 @@ export interface WalletBridge<Transaction> {
   editTransactionAmount(
     account: Account,
     transaction: Transaction,
-    amount: number
+    amount: BigNumber
   ): Transaction;
 
-  getTransactionAmount(account: Account, transaction: Transaction): number;
+  getTransactionAmount(account: Account, transaction: Transaction): BigNumber;
 
   editTransactionRecipient(
     account: Account,
@@ -28,8 +29,8 @@ export interface WalletBridge<Transaction> {
   ): Transaction;
 
   getTransactionRecipient(account: Account, transaction: Transaction): string;
-  getFees(account: Account, transaction: Transaction): Promise<number>;
-  getTotalSpent(account: Account, transaction: Transaction): Promise<number>;
+  getFees(account: Account, transaction: Transaction): Promise<BigNumber>;
+  getTotalSpent(account: Account, transaction: Transaction): Promise<BigNumber>;
 
   editTransactionLabel(
     account: Account,
