@@ -66,10 +66,12 @@ const BitcoinBridge: WalletBridge<Transaction> = {
 
   getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
 
-  getTotalSpent: (a, t) =>
-    t.amount.isEqualTo(0)
+  getTotalSpent: (a, t) => {
+    const estimatedFees = t.estimatedFees || BigNumber(0);
+    return t.amount.isEqualTo(0)
       ? Promise.resolve(BigNumber(0))
-      : Promise.resolve(t.amount.plus(t.estimatedFees)),
+      : Promise.resolve(t.amount.plus(estimatedFees));
+  },
 
   editTransactionAmount: (
     account: Account,
