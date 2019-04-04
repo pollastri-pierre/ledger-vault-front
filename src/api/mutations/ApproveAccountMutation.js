@@ -3,6 +3,7 @@ import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Account } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeAccount } from "api/transformations/Account";
 
 type Input = {
   accountId: string,
@@ -31,4 +32,6 @@ export default class ApproveAccountMutation extends Mutation<Input, Response> {
     const { public_key, approval } = this.props;
     return { pub_key: public_key, approval };
   }
+
+  deserialize = deserializeAccount;
 }

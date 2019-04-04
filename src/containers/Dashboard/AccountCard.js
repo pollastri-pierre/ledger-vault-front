@@ -5,7 +5,6 @@ import CounterValue from "components/CounterValue";
 import Card from "components/Card";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import { withStyles } from "@material-ui/core/styles";
-import EvolutionSince, { TotalBalanceFilters } from "components/EvolutionSince";
 import AccountName from "components/AccountName";
 
 const styles = {
@@ -33,13 +32,12 @@ const styles = {
 type Props = {
   classes: { [_: $Keys<typeof styles>]: string },
   account: Account,
-  index: number,
-  filter: string
+  index: number
 };
 
 class AccountCard extends Component<Props> {
   render() {
-    const { account, filter, classes, index } = this.props;
+    const { account, classes, index } = this.props;
     const erc20Format = account.account_type === "ERC20";
 
     const title = (
@@ -55,12 +53,6 @@ class AccountCard extends Component<Props> {
         className={classes.card}
         link={`account/${account.id}`}
       >
-        <EvolutionSince
-          value={account.balance}
-          valueHistory={account.balance_history}
-          filter={TotalBalanceFilters.find(f => f.key === filter)}
-        />
-        {/* <Separator /> */}
         <div>
           <div className={classes.cryptocur}>
             <CurrencyAccountValue

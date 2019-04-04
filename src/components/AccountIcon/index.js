@@ -4,10 +4,9 @@ import colors from "shared/colors";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import ERC20TokenIcon from "components/icons/ERC20Token";
-import {
-  getCryptoCurrencyIcon,
-  getCryptoCurrencyById
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
+import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 const styles = {
   base: {

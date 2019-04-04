@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import type { CryptoCurrency, Unit } from "@ledgerhq/live-common/lib/types";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import { storiesOf } from "@storybook/react";
 import { boolean } from "@storybook/addon-knobs";

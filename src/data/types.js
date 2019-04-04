@@ -1,5 +1,7 @@
 // @flow
 
+import type { BigNumber } from "bignumber.js";
+
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
@@ -21,7 +23,7 @@ export type Organization = {
 };
 
 type Price = {
-  amount: number
+  amount: BigNumber
 };
 
 export type Unit = {
@@ -98,7 +100,7 @@ type AccountCommon = {
   members: Member[],
   settings: AccountSettings,
   security_scheme: SecurityScheme,
-  balance: number,
+  balance: BigNumber,
   number_of_approvals: number,
   created_on: Date,
   receive_address: string,
@@ -122,11 +124,11 @@ export type OperationRecipientIsValid = {
 };
 
 export type OperationGetFees = {
-  amount: number,
+  amount: BigNumber,
   recipient: string,
   fee_level?: string,
-  gas_limit?: ?number,
-  gas_price?: ?number
+  gas_limit?: ?BigNumber,
+  gas_price?: ?BigNumber
 };
 export type AccountEntity = AccountCommon & {
   currency: string
@@ -212,13 +214,13 @@ type OperationCommon = {
   trust: Trust,
   confirmations: number,
   created_on: Date,
-  price: Price,
-  fees: Price,
+  price?: Price,
+  fees: BigNumber,
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
   endOfRateLimiterTime: ?string,
   type: TransactionType,
-  amount: number,
+  amount: BigNumber,
   account_id: string,
   approved: string[],
   senders: string[],
@@ -233,8 +235,8 @@ type OperationCommon = {
   status: string,
   hsm_operations?: Object,
   error?: Object,
-  gas_price?: number,
-  gas_limit?: number
+  gas_price?: BigNumber,
+  gas_limit?: BigNumber
 };
 export type Operation = OperationCommon & {
   notes: Note[]

@@ -2,6 +2,8 @@
 import Query from "restlay/Query";
 import schema from "data/schema";
 import type { Operation, Account } from "data/types";
+import { deserializeAccount } from "api/transformations/Account";
+import { deserializeOperation } from "api/transformations/Operation";
 
 type Input = void;
 export type Response = {
@@ -20,5 +22,12 @@ export default class PendingsQuery extends Query<Input, Response> {
     watchOperations: [schema.Operation],
     approveAccounts: [schema.Account],
     watchAccounts: [schema.Account]
+  };
+
+  deserialize = {
+    approveOperations: deserializeOperation,
+    watchOperations: deserializeOperation,
+    approveAccounts: deserializeAccount,
+    watchAccounts: deserializeAccount
   };
 }

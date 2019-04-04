@@ -60,6 +60,7 @@ class Dashboard extends Component<
     if (accounts.length === 0) {
       return <DashboardPlaceholder type="account" />;
     }
+
     const hasMoney = accounts.filter(account => account.balance > 0).length > 0;
     return (
       <div className={classes.base}>

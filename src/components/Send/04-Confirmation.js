@@ -1,5 +1,7 @@
 // @flow
+
 import React, { PureComponent, Fragment } from "react";
+import { BigNumber } from "bignumber.js";
 import { withStyles } from "@material-ui/core/styles";
 import type { WalletBridge } from "bridge/types";
 import type { Account } from "data/types";
@@ -29,8 +31,8 @@ type Props<Transaction> = {
 };
 
 type State = {
-  fees: ?number,
-  totalSpent: ?number
+  fees: ?BigNumber,
+  totalSpent: ?BigNumber
 };
 
 class SendConfirmation extends PureComponent<Props<*>, State> {

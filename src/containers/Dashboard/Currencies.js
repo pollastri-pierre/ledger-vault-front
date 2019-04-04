@@ -1,8 +1,11 @@
 // @flow
 import React from "react";
 import { connect } from "react-redux";
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import {
+  getCryptoCurrencyById,
+  getFiatCurrencyByTicker
+} from "@ledgerhq/live-common/lib/currencies";
+import { BigNumber } from "bignumber.js";
 
 import PieChart from "components/PieChart";
 import type { Account } from "data/types";
@@ -17,8 +20,8 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 type AggregatedData = {
   [_: string]: {
     account: Account,
-    balance: number,
-    counterValueBalance: number
+    balance: BigNumber,
+    counterValueBalance: BigNumber
   }
 };
 
@@ -37,11 +40,11 @@ const mapStateToProps = (state, ownProps) => {
       if (!acc[currency_id]) {
         acc[currency_id] = {
           account,
-          balance: 0,
-          counterValueBalance: 0
+          balance: BigNumber(0),
+          counterValueBalance: BigNumber(0)
         };
       }
-      acc[currency_id].balance += balance;
+      acc[currency_id].balance = acc[currency_id].balance.plus(balance);
 
       const cvalue = CounterValues.calculateWithIntermediarySelector(state, {
         from: currency,
@@ -52,13 +55,16 @@ const mapStateToProps = (state, ownProps) => {
         value: balance
       });
 
-      if (!isNaN(cvalue)) {
-        acc[currency_id].counterValueBalance += cvalue;
+      if (cvalue && !cvalue.isNaN()) {
+        acc[currency_id].counterValueBalance = acc[
+          currency_id
+        ].counterValueBalance.plus(cvalue);
       }
       return acc;
     },
     {}
   );
+
   return {
     pieChartData: Object.keys(data).reduce((currenciesList, c) => {
       currenciesList.push(data[c]);

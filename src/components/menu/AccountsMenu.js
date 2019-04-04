@@ -4,7 +4,7 @@ import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router";
 import MenuList from "@material-ui/core/MenuList";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import AccountUnitCode from "components/AccountUnitCode";
 
 import {

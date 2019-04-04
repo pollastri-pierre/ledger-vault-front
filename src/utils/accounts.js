@@ -1,10 +1,8 @@
 // @flow
 
 import type { Account, Member } from "data/types";
-import {
-  getERC20TokenByContractAddress,
-  getCryptoCurrencyById
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
 const ACCOUNT_MAX_LENGTH = 19;
 

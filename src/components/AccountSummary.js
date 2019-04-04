@@ -5,7 +5,7 @@ import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import colors from "shared/colors";
 

@@ -1,10 +1,12 @@
 // @flow
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import CurrencyFiatValue from "components/CurrencyFiatValue";
-import { getFiatCurrencyByTicker } from "@ledgerhq/live-common/lib/helpers/currencies";
 
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import CurrencyFiatValue from "components/CurrencyFiatValue";
+import {
+  getFiatCurrencyByTicker,
+  getCryptoCurrencyById
+} from "@ledgerhq/live-common/lib/currencies";
 
 import type { TransactionType } from "data/types";
 import CounterValues from "data/CounterValues";

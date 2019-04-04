@@ -2,6 +2,7 @@
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Operation } from "data/types";
+import { deserializeOperation } from "api/transformations/Operation";
 
 type In = {
   accountId: string
@@ -14,6 +15,8 @@ export default class AccountOperationsQuery extends ConnectionQuery<In, Node> {
   uri = `/accounts/${this.props.accountId}/operations`;
 
   nodeSchema = schema.Operation;
+
+  deserialize = deserializeOperation;
 
   getPaginationURLParams(first?: number, after?: string): Object {
     const params = {};

@@ -6,7 +6,7 @@ import type { OptionProps } from "react-select/lib/types";
 
 import type { Account } from "data/types";
 
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import Select from "components/Select";

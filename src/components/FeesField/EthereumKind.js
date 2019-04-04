@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from "react";
+import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -14,7 +15,7 @@ import ModalSubTitle from "components/operations/creation/ModalSubTitle";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { getFees } from "components/Send/helpers";
 
 const styles = {
@@ -58,7 +59,7 @@ type GasLimitStatus = "fetching" | "loaded" | "error";
 type State = {
   gasPriceStatus: GasPriceStatus,
   gasLimitStatus: GasLimitStatus,
-  totalFees: number
+  totalFees: BigNumber
 };
 
 class FeesFieldEthereumKind extends PureComponent<
@@ -111,7 +112,7 @@ class FeesFieldEthereumKind extends PureComponent<
     if (!isRecipientValid) return;
     // NOTE: both initialized with null because gate expects it for ETH
     const operation = {
-      amount: transaction.amount || 0,
+      amount: transaction.amount,
       recipient: transaction.recipient,
       gas_limit: null,
       gas_price: null
@@ -136,16 +137,16 @@ class FeesFieldEthereumKind extends PureComponent<
   state = {
     gasPriceStatus: "fetching",
     gasLimitStatus: "fetching",
-    totalFees: 0
+    totalFees: BigNumber(0)
   };
 
   createMutation = field => (e: SyntheticEvent<HTMLInputElement>) => {
     const { transaction, onChangeTransaction } = this.props;
     const { value } = e.currentTarget;
-    onChangeTransaction({ ...transaction, [field]: parseInt(value, 10) });
+    onChangeTransaction({ ...transaction, [field]: BigNumber(value) });
   };
 
-  onGasPriceChange = (gasPrice: number) => {
+  onGasPriceChange = (gasPrice: BigNumber) => {
     const { transaction, onChangeTransaction } = this.props;
     onChangeTransaction({ ...transaction, gasPrice });
   };
@@ -169,7 +170,11 @@ class FeesFieldEthereumKind extends PureComponent<
               placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
               onChange={this.onGasPriceChange}
               defaultUnit={currency.units[1]}
-              value={transaction.gasPrice === null ? 0 : transaction.gasPrice}
+              value={
+                transaction.gasPrice === null
+                  ? BigNumber(0)
+                  : transaction.gasPrice
+              }
               disabled={gasPriceStatus === "fetching"}
             />
           </div>

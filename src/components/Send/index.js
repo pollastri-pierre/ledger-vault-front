@@ -12,7 +12,7 @@ import type { WalletBridge } from "bridge/types";
 import HeaderRightClose from "components/HeaderRightClose";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import SendAccount from "./01-Account";
 import SendDetails from "./02-Details";
 import SendLabel from "./03-Label";
