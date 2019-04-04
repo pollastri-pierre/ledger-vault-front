@@ -124,7 +124,6 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
             <div className={classes.currencyValue}>
               <CurrencyAccountValue
                 account={account}
-                // $FlowFixMe
                 value={transaction.estimatedFees}
               />
             </div>

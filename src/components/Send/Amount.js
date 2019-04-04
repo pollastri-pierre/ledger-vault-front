@@ -73,28 +73,26 @@ class SendAmount extends PureComponent<Props<*>> {
               onChangeTransaction={onChangeTransaction}
             />
           ) : (
-            <Fragment>
-              <InputCurrency
-                currency={currency}
-                placeholder="0"
-                size="large"
-                onChange={this.onChange}
-                defaultUnit={account.settings.currency_unit}
-                value={bridge.getTransactionAmount(account, transaction)}
-                error={!amountIsValid}
-                data-test="operation-creation-amount"
-              />
-              <div className={classes.countervalue}>
-                <div className={classes.fiat}>USD</div>
-                <div className={classes.fiat}>
-                  <CounterValue
-                    value={bridge.getTransactionAmount(account, transaction)}
-                    from={account.currency_id}
-                  />
-                </div>
-              </div>
-            </Fragment>
+            <InputCurrency
+              currency={currency}
+              placeholder="0"
+              size="large"
+              onChange={this.onChange}
+              defaultUnit={account.settings.currency_unit}
+              value={bridge.getTransactionAmount(account, transaction)}
+              error={!amountIsValid}
+              data-test="operation-creation-amount"
+            />
           )}
+          <div className={classes.countervalue}>
+            <div className={classes.fiat}>USD</div>
+            <div className={classes.fiat}>
+              <CounterValue
+                value={bridge.getTransactionAmount(account, transaction)}
+                fromAccount={account}
+              />
+            </div>
+          </div>
         </div>
       </Fragment>
     );

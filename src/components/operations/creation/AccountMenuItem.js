@@ -106,11 +106,7 @@ class AccountMenuItem extends PureComponent<{
             />
           )}
           <span className={classes.accountCountervalue}>
-            <CounterValue
-              value={account.balance}
-              from={account.currency_id}
-              disableCountervalue={erc20Format}
-            />
+            <CounterValue value={account.balance} fromAccount={account} />
           </span>
         </div>
       </MenuItem>

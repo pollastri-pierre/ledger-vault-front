@@ -96,8 +96,7 @@ function PendingOperationApprove(props: Props) {
                       value={
                         operation.price ? operation.price.amount : BigNumber(0)
                       }
-                      from={account.currency_id}
-                      disableCountervalue={account.account_type === "ERC20"}
+                      fromAccount={account}
                     />
                   </Text>
                   <Text className={classes.name}>

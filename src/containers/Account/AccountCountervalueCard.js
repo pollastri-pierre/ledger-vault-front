@@ -24,7 +24,7 @@ type Props = {
 class AccountCountervalueCard extends Component<Props> {
   render() {
     const { account, reloading, classes } = this.props;
-    const ERC20Token = account.account_type === "ERC20";
+    const isERC20Token = account.account_type === "ERC20";
     return (
       <Card
         className={classes.card}
@@ -34,14 +34,15 @@ class AccountCountervalueCard extends Component<Props> {
         <CardField>
           <CounterValue
             value={account.balance}
-            from={account.currency_id}
-            disableCountervalue={ERC20Token}
+            fromAccount={account}
+            renderNA={
+              isERC20Token ? (
+                <Text>
+                  <Trans i18nKey="accountView:erc20NoCountervalue" />
+                </Text>
+              ) : null
+            }
           />
-          {ERC20Token && (
-            <Text>
-              <Trans i18nKey="accountView:erc20NoCountervalue" />
-            </Text>
-          )}
         </CardField>
       </Card>
     );
