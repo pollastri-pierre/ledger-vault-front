@@ -2,6 +2,8 @@
 import Query from "restlay/Query";
 import schema from "data/schema";
 import type { Operation, Account } from "data/types";
+import { deserializeAccount } from "api/transformations/Account";
+import { deserializeOperation } from "api/transformations/Operation";
 
 type Input = {
   operationId: string
@@ -18,5 +20,10 @@ export default class OperationWithAccountQuery extends Query<Input, Response> {
   responseSchema = {
     operation: schema.Operation,
     account: schema.Account
+  };
+
+  deserialize = {
+    account: deserializeAccount,
+    operation: deserializeOperation
   };
 }

@@ -11,7 +11,7 @@ import AccountQuery from "api/queries/AccountQuery";
 import TryAgain from "components/TryAgain";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import connectData from "restlay/connectData";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { withStyles } from "@material-ui/core/styles";
 import Quicklook from "./QuickLook";
 

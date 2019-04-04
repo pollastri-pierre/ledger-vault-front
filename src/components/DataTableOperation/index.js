@@ -1,5 +1,6 @@
 // @flow
 import cx from "classnames";
+import { BigNumber } from "bignumber.js";
 import React, { Component } from "react";
 import CounterValue from "components/CounterValue";
 import { withRouter } from "react-router";
@@ -228,7 +229,11 @@ class AmountColumn extends Component<Cell> {
     return account ? (
       <CurrencyAccountValue
         account={account}
-        value={operation.amount || (operation.price && operation.price.amount)}
+        value={
+          operation.amount.isNaN()
+            ? (operation.price && operation.price.amount) || BigNumber(0)
+            : operation.amount
+        }
         erc20Format={account.account_type === "ERC20"}
         type={operation.type}
         alwaysShowSign
