@@ -51,13 +51,19 @@ const titleStyles = {
 type RowProps = {
   label: React$Node,
   children: React$Node,
+  onClick?: Function,
 };
 
 class SectionRow extends PureComponent<RowProps> {
   render() {
-    const { label, children } = this.props;
+    const { label, children, onClick } = this.props;
     return (
-      <Box horizontal justify="space-between" py={15}>
+      <Box
+        horizontal
+        justify="space-between"
+        py={15}
+        style={{ cursor: onClick ? "pointer" : "default" }}
+      >
         <Text uppercase small color={colors.shark}>
           {label}
         </Text>

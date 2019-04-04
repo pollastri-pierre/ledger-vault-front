@@ -9,7 +9,7 @@ import type { WalletBridge } from "bridge/types";
 import colors from "shared/colors";
 import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import InputCurrency from "components/InputCurrency";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import AmountNoUnits from "./AmountNoUnits";
 
 const styles = {

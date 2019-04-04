@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent, Fragment } from "react";
+import { BigNumber } from "bignumber.js";
 
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
@@ -26,7 +27,7 @@ type Props<Transaction> = {
 type State = {
   canNext: boolean,
   amountIsValid: boolean,
-  totalSpent: number,
+  totalSpent: BigNumber,
   feeIsValid: boolean,
 };
 
@@ -35,7 +36,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
     canNext: false,
     amountIsValid: true,
     feeIsValid: true,
-    totalSpent: 0,
+    totalSpent: BigNumber(0),
   };
 
   componentDidMount() {
@@ -84,15 +85,19 @@ class SendDetails extends PureComponent<Props<*>, State> {
     try {
       const totalSpent = await bridge.getTotalSpent(account, transaction);
       if (syncId !== this.syncId) return;
+
       // NOTE: this causes inability to send max equal to balance
       // (relevant for tokens since fees are coming from the parent)
-      const amountIsValid = totalSpent < account.balance;
+      const amountIsValid = totalSpent.isLessThan(account.balance);
+
       this.setState({ amountIsValid });
+
       const txIsValid = await bridge.checkValidTransaction(
         account,
         transaction,
         restlay,
       );
+
       const feeIsValid = await this.feeIsValid();
       if (syncId !== this.syncId) return;
       if (this._unmounted) return;
@@ -100,7 +105,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
       canNext
         ? this.setState({ totalSpent })
-        : this.setState({ totalSpent: 0 });
+        : this.setState({ totalSpent: BigNumber(0) });
 
       this.setState({ canNext, feeIsValid });
     } catch (err) {

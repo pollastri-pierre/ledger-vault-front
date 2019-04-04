@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import * as d3 from "d3";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import type { Account } from "data/types";
 import CurrencyAccountValue from "components/CurrencyAccountValue";

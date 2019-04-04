@@ -1,10 +1,9 @@
 // @flow
 
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
 import type { Account } from "data/types";
-import {
-  getCryptoCurrencyById,
-  getERC20TokenByContractAddress,
-} from "utils/cryptoCurrencies";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
 type Props = { account: Account };
 const AccountUnitCode = ({ account }: Props) => {

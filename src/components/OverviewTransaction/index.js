@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { BigNumber } from "bignumber.js";
 import { withStyles } from "@material-ui/core/styles";
 import CounterValue from "components/CounterValue";
 import colors from "shared/colors";
@@ -47,11 +48,12 @@ const styles = {
 };
 
 type Props = {
-  amount: number,
+  amount: BigNumber,
   account: Account,
   classes: Object,
   transactionType: TransactionType,
 };
+
 class OverviewTransaction extends Component<Props, *> {
   render() {
     const { amount, account, classes, transactionType } = this.props;

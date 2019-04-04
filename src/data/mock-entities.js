@@ -1,10 +1,8 @@
 import faker from "faker";
 import keyBy from "lodash/keyBy";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
-import {
-  getCryptoCurrencyById,
-  listCryptoCurrencies,
-} from "utils/cryptoCurrencies";
+import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 
 const FAKE_USER_NAMES = [
   "Laura Parker",

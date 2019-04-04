@@ -125,7 +125,7 @@ jobs:
               if [ "${CIRCLE_BRANCH}" = "master" ]; then
                 latest_pointer="latest"
               fi
-              aws s3 cp --no-progress $latest ${s3_path}/${latest_pointer}
+              aws s3 cp --quiet $latest ${s3_path}/${latest_pointer}
               rm -f $latest
             fi
 
