@@ -85,11 +85,10 @@ class SendDetails extends PureComponent<Props<*>, State> {
     try {
       const totalSpent = await bridge.getTotalSpent(account, transaction);
       if (syncId !== this.syncId) return;
-
-      // NOTE: this causes inability to send max equal to balance
-      // (relevant for tokens since fees are coming from the parent)
-      const amountIsValid = totalSpent.isLessThan(account.balance);
-
+      const amountIsValid =
+        account.account_type === "ERC20"
+          ? totalSpent.isLessThanOrEqualTo(account.balance)
+          : totalSpent.isLessThan(account.balance);
       this.setState({ amountIsValid });
 
       const txIsValid = await bridge.checkValidTransaction(

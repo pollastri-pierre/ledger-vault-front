@@ -65,9 +65,9 @@ const checkValidTransaction = async (a, t, r) => {
   const fees = await getFees(a, t);
   let amountIsValid;
   if (a.account_type === "ERC20") {
-    amountIsValid = t.amount.isLessThan(a.balance);
+    amountIsValid = t.amount.isLessThanOrEqualTo(a.balance);
   } else {
-    amountIsValid = t.amount.plus(fees).isLessThan(a.balance);
+    amountIsValid = t.amount.plus(fees).isLessThanOrEqualTo(a.balance);
   }
   if (
     t.gasPrice.isEqualTo(0) ||
