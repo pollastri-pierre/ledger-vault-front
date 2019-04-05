@@ -9,6 +9,7 @@
   "delete": "Delete Group",
   "create": {
     "title": "New Group",
+    "editTitle": "Edit group",
     "name": "name",
     "name_placeholder": "Enter group name",
     "desc_placeholder": "Enter group description",
@@ -16,6 +17,7 @@
     "members": "members",
     "nb_members": "Number of members",
     "confirmation": "confirmation",
-    "submit": "Create Group"
+    "submit": "Create Group",
+    "submit_edit": "Edit Group"
   }
 }

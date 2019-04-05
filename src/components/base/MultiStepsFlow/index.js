@@ -19,6 +19,8 @@ type Props<T, P> = {
   steps: MultiStepsFlowStepType<T, P>[],
   additionalProps: P,
   onClose?: () => void,
+  initialCursor?: number,
+  isEditMode?: boolean,
 };
 
 type State<T> = {
@@ -28,7 +30,7 @@ type State<T> = {
 
 class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   state: State<T> = {
-    cursor: 0,
+    cursor: this.props.initialCursor || 0,
     payload: this.props.initialPayload,
   };
 
@@ -123,6 +125,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     const stepProps = {
       payload,
+      isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
       ...additionalProps,
@@ -165,7 +168,11 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           )}
           {Cta && (
             <CtaContainer>
-              <Cta payload={payload} onClose={onClose} />
+              <Cta
+                payload={payload}
+                onClose={onClose}
+                isEditMode={this.props.isEditMode}
+              />
             </CtaContainer>
           )}
         </Box>

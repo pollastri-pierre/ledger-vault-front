@@ -5,6 +5,7 @@ import type { User } from "data/types";
 import type { StepProps } from "components/base/MultiStepsFlow/types";
 
 export type GroupCreationPayload = {
+  id?: number,
   name: string,
   description: string,
   members: User[],
