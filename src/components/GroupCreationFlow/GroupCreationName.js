@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
 import InputField from "components/InputField";
 import Box from "components/base/Box";
+import Disabled from "components/Disabled";
 
 import type { Translate } from "data/types";
 import type { GroupCreationStepProps } from "./types";
@@ -23,17 +24,20 @@ class GroupCreationName extends PureComponent<Props> {
   };
 
   render() {
-    const { payload, t } = this.props;
+    const { payload, t, isEditMode } = this.props;
     return (
-      <Box>
-        <InputField
-          value={payload.name}
-          autoFocus
-          onChange={this.handleChangeName}
-          {...inputProps}
-          placeholder={t("group:create.name_placeholder")}
-        />
-      </Box>
+      <Disabled disabled={isEditMode}>
+        <Box>
+          <InputField
+            value={payload.name}
+            autoFocus
+            disabled={isEditMode}
+            onChange={this.handleChangeName}
+            {...inputProps}
+            placeholder={t("group:create.name_placeholder")}
+          />
+        </Box>
+      </Disabled>
     );
   }
 }
