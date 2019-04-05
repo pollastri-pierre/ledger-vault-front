@@ -11,7 +11,12 @@ import TransactionDetails from "components/transactions/TransactionModal";
 
 export default () => (
   <Fragment>
-    <ModalRoute path="*/groups/details/:groupId" component={GroupDetails} />
+    <ModalRoute
+      path="*/groups/details/:groupId/:tabIndex?"
+      undoAllHistoryOnClickOutside
+      component={GroupDetails}
+    />
+    <ModalRoute path="*/groups/edit/:groupId" component={GroupCreationFlow} />
     <ModalRoute path="*/users/details/:userID" component={UserDetails} />
     <ModalRoute
       path="*/accounts/details/:accountId"

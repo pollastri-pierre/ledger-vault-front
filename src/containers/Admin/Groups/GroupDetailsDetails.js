@@ -19,6 +19,9 @@ class GroupDetailsDetails extends PureComponent<Props> {
         <LineRow label={<Trans i18nKey="group:details.name" />}>
           {group.name}
         </LineRow>
+        <LineRow label={<Trans i18nKey="group:details.description" />}>
+          {group.description}
+        </LineRow>
         <LineRow label={<Trans i18nKey="group:details.at" />}>
           <DateFormat date={group.created_on} />
         </LineRow>

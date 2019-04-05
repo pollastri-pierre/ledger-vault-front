@@ -21,7 +21,7 @@ const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 class Users extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
-      this.props.history.push(`tasks/groups/details/${request.target_id}`);
+      this.props.history.push(`tasks/groups/details/${request.target_id}/2`);
     } else if (request.target_type === "PERSON") {
       this.props.history.push(`tasks/users/details/${request.target_id}`);
     } else if (

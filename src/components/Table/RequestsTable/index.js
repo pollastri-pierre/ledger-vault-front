@@ -51,7 +51,7 @@ class RequestsTable extends PureComponent<Props, State> {
     const { data, onSortChange, queryParams } = this.props;
     const { tableDefinition } = this.state;
     if (!data.length) {
-      return <NoDataPlaceholder title="No requests found." />;
+      return <NoDataPlaceholder title="No requests found." happy />;
     }
 
     return (

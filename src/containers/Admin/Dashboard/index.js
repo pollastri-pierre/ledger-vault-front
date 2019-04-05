@@ -26,7 +26,9 @@ type Props = {
 class AdminDashboard extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
-      this.props.history.push(`dashboard/groups/details/${request.target_id}`);
+      this.props.history.push(
+        `dashboard/groups/details/${request.target_id}/2`,
+      );
     } else if (request.target_type === "PERSON") {
       this.props.history.push(`dashboard/users/details/${request.target_id}`);
     } else if (

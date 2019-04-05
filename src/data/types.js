@@ -378,6 +378,7 @@ type RequestCommon = {
   type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,
+  edit_data?: *,
 };
 
 export type Request = RequestCommon;

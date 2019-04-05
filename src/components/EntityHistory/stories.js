@@ -7,7 +7,7 @@ import RestlayProvider from "restlay/RestlayProvider";
 import EntityHistory from "components/EntityHistory";
 
 // TODO: be able to generate this kind of history
-const mockUserHistory = [
+export const mockUserHistory = [
   {
     created_by: {
       username: "Admin 1",

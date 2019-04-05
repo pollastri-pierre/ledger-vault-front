@@ -9,6 +9,8 @@ import colors, { opacity } from "shared/colors";
 
 type Variant = "text" | "outlined" | "filled";
 
+type Size = "tiny" | "small" | "medium";
+
 type Props = {
   type?: "submit" | "cancel",
   IconLeft?: React$ComponentType<*>,
@@ -17,7 +19,7 @@ type Props = {
   children: React$Node,
   onClick: Function,
   variant: Variant,
-  size: "small" | "medium",
+  size: Size,
 };
 
 const COLORS_BY_TYPE = {
@@ -26,42 +28,42 @@ const COLORS_BY_TYPE = {
 };
 
 const SIZE_ICON_BY_TYPE = {
+  tiny: 12,
   small: 16,
   medium: 23,
 };
 
 const MIN_HEIGHT_BY_SIZE = {
+  tiny: 25,
   small: 35,
   medium: 42,
 };
 
 const FONTSIZE_BY_SIZE = {
+  tiny: 9,
   small: 11,
   medium: 13,
 };
 
 const PADDING_BY_SIZE = {
+  tiny: 2,
   small: 5,
   medium: 8,
 };
 
 const FLOW_BY_SIZE = {
+  tiny: 4,
   small: 5,
   medium: 6,
 };
 
 const LOADER_SIZE_BY_SIZE = {
+  tiny: 15,
   small: 15,
   medium: 20,
 };
 
-const Loader = ({
-  color,
-  size,
-}: {
-  color: string,
-  size: "small" | "medium",
-}) => (
+const Loader = ({ color, size }: { color: string, size: Size }) => (
   <CircularProgress
     color={color}
     size={LOADER_SIZE_BY_SIZE[size]}

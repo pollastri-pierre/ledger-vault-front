@@ -10,7 +10,7 @@ type Response = Account[];
 
 // fetch all accounts where groups is used
 export default class AccountsInGroupQuery extends Query<Input, Response> {
-  uri = `/group-mock/${this.props.groupId}/accounts`;
+  uri = `/groups/${this.props.groupId}/accounts`;
 
   responseSchema = [schema.Account];
 }

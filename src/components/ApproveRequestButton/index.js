@@ -15,6 +15,7 @@ import type { Interaction } from "components/DeviceInteraction";
 
 type Props = {
   interactions: Interaction[],
+  color?: string,
   additionalFields: Object,
   onSuccess: Function,
   onError: ?(Error | GateError | typeof NetworkError) => void,
@@ -31,6 +32,10 @@ class ApproveRequestButton extends PureComponent<Props, State> {
   state = {
     isInProgress: false,
     error: null,
+  };
+
+  static defaultProps = {
+    color: colors.ocean,
   };
 
   onCreate = () => {
@@ -50,6 +55,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       onSuccess,
       disabled,
       additionalFields,
+      color,
       buttonLabel,
     } = this.props;
     return (
@@ -66,8 +72,8 @@ class ApproveRequestButton extends PureComponent<Props, State> {
           </Box>
         ) : (
           <ModalFooterButton
-            color={colors.ocean}
             data-test="approve_button"
+            color={color}
             onClick={this.onCreate}
             isDisabled={disabled}
           >

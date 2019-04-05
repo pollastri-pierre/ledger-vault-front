@@ -7,8 +7,10 @@ import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
-import DialogButton from "components/buttons/DialogButton";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
+import { ModalFooterButton } from "components/base/Modal";
+import { FaStopCircle } from "react-icons/fa";
+import colors from "shared/colors";
 
 import type { GateError } from "data/types";
 
@@ -51,9 +53,14 @@ class AbortRequestButton extends PureComponent<Props, State> {
     return (
       <Fragment>
         {error && <TriggerErrorNotification error={error} />}
-        <DialogButton disabled={disabled} abort onTouchTap={this.abort}>
+        <ModalFooterButton
+          disabled={disabled}
+          color={colors.grenade}
+          onClick={this.abort}
+        >
+          <FaStopCircle style={{ marginRight: 10 }} />
           <Trans i18nKey="common:abort" />
-        </DialogButton>
+        </ModalFooterButton>
       </Fragment>
     );
   }
