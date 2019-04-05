@@ -1518,10 +1518,10 @@
     "@ledgerhq/errors" "^4.48.0"
     events "^3.0.0"
 
-"@ledgerhq/live-common@4.40.0":
-  version "4.40.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-4.40.0.tgz#77179b72f847d05cf9643879653a7e636b94c382"
-  integrity sha512-k5ZhGxHpJU5mjbMMunpma5g/VqqmmFdjvv0/c5wVZD+nKa3LdRk9SYgOQbarjN6GwkCOTPAKroH061SExNsMJg==
+"@ledgerhq/live-common@4.40.1":
+  version "4.40.1"
+  resolved "https://registry.yarnpkg.com/@ledgerhq/live-common/-/live-common-4.40.1.tgz#c08153be7b7770d9e5ab6f8295b63ad220e78982"
+  integrity sha512-v9v9e5KwIu984ZJXHfF3xsrIX03lZSd3YoL1n9QUFp8QMT2VT8qBPcVk9GiAflkpDm2Hx6/QFK0rJxbdVrDf+Q==
   dependencies:
     "@ledgerhq/errors" "^4.48.0"
     "@ledgerhq/hw-app-btc" "^4.48.0"
@@ -6162,7 +6162,7 @@ fbjs-css-vars@^1.0.0:
   resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
   integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
 
-fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.6:
+fbjs@^0.8.0, fbjs@^0.8.1:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -11014,13 +11014,6 @@ react-tabs@^3.0.0:
   dependencies:
     classnames "^2.2.0"
     prop-types "^15.5.0"
-
-react-tap-event-plugin@^3.0.2:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-tap-event-plugin/-/react-tap-event-plugin-3.0.3.tgz#bc5fd0ee3fd3ab5224c1c2ff6f0750204ae89802"
-  integrity sha1-vF/Q7j/Tq1IkwcL/bwdQIEromAI=
-  dependencies:
-    fbjs "^0.8.6"
 
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.4.0:
   version "16.8.6"
