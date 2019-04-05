@@ -150,7 +150,7 @@ class UpdateAccounts extends Component<Props> {
     const data: Object = {
       name: selectedAccount.name,
       members: this.isSelectMembersDisabled()
-        ? selectedAccount.members.map(m => ({ pub_key: m }))
+        ? selectedAccount.members.map(m => ({ pub_key: m.pub_key }))
         : this.props.approvers.map(approver => ({ pub_key: approver })),
       security_scheme: {
         quorum: this.props.quorum,

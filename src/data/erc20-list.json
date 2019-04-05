@@ -633,6 +633,14 @@
     "signature": "3044022014d8bba2c6937d0f3cfcf141b61b0a1f01a5256349129c821723f6e5fe3e04cc022007575173749b8e4f99e8b6710a1efd5105fb700cd859431de3f8ee00b92e7496"
   },
   {
+    "ticker": "VALOR",
+    "name": "ValorToken",
+    "blockchain_name": "foundation",
+    "contract_address": "0x297E4e5e59Ad72B1B0A2fd446929e76117be0E0a",
+    "decimals": 18,
+    "signature": "304402204c40e0bd4f0d9b06590d5e199089dcc4860d5fc946e2739bc7392b1df318a19c022002a7b4fbc48a510e470ac9cecc4a7bbb1e701094be36e03543da5a88ed9c2ae5"
+  },
+  {
     "ticker": "VLD",
     "name": "Valid",
     "blockchain_name": "foundation",
@@ -697,12 +705,36 @@
     "signature": "30450221009895f560b5030d2b42ee0025769f38fc06c795d5c3a8a76613d98ad11c48174302201aa703c6154a3b2726ad7a16f8579502776e5996b8928a6ca45796e49450a9ee"
   },
   {
+    "ticker": "UPT",
+    "name": "Universal Protocol Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6CA88Cc8D9288f5cAD825053B6A1B179B05c76fC",
+    "decimals": 18,
+    "signature": "3045022100e7bd4ffe0903e61a6864bb4e8e7407206eb47507a435daac776aad694c20e69802201e2c6532a91a191db399ddf7c654b99aeb30591a9a875b752d0964642ddfdbfe"
+  },
+  {
     "ticker": "UFR",
     "name": "Upfiring",
     "blockchain_name": "foundation",
     "contract_address": "0xEA097A2b1dB00627B2Fa17460Ad260c016016977",
     "decimals": 18,
     "signature": "30440220279130af730f975f61f4b83fadcd91eac35541f986be855cfe2100058330f5eb02204274e3f80f884360e2ec2e0c6985d0b8e48597921322cae817dbe6486a6d3c12"
+  },
+  {
+    "ticker": "UPUSD",
+    "name": "Universal US Dollar",
+    "blockchain_name": "foundation",
+    "contract_address": "0x86367c0e517622DAcdab379f2de389c3C9524345",
+    "decimals": 2,
+    "signature": "304402202ae31b6001a1305635f2090cbcfc5d4f6803b20780ff7da672bdfef25aad76e602206d86ccbe5929391eb6bd183f9f9c0058d075d18da77ccef5da386f7a628add44"
+  },
+  {
+    "ticker": "UPBTC",
+    "name": "Universal Bitcoin",
+    "blockchain_name": "foundation",
+    "contract_address": "0xc7461b398005e50BCc43c8e636378C6722E76c01",
+    "decimals": 8,
+    "signature": "304502210084b0d0ed95047098f65d1e8924dd1c694fd64b4e0f03c0ea9ad68973a166d3fe02205fe9a7e5b88aeb623454bbea77c29f58f01e6f6a4c6e7f8d9eecbde51444db7f"
   },
   {
     "ticker": "UTN-P",
@@ -1375,6 +1407,14 @@
     "contract_address": "0xdB25f211AB05b1c97D595516F45794528a807ad8",
     "decimals": 2,
     "signature": "304402201b5292f2e2c8cf8755eee7d77d90241ab5c6eec6a41f1401c9388c8b6c70a03002204bf60e8cdc0105d9245cb5938e4041b1bbfbf1c27c0b3c42fc6f68fd5c8ca07b"
+  },
+  {
+    "ticker": "STASIA",
+    "name": "Stasia",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6374Ea91693f1ECCB4F7705A1CbaD994C0B8f874",
+    "decimals": 18,
+    "signature": "3045022100df65afccc213382a8ce0cb8926ae936a9c46ac4306383be1e49e7b07bc324ed002200321a83db31657ca0d16bb422b201f8097da5c691fe26ef022ecfb62176796b4"
   },
   {
     "ticker": "STP",
@@ -4177,6 +4217,14 @@
     "signature": "3044022014e7b9785c6cdbf0f54a28b779912a483c033ea46ce051fc5d54d4f70751a1cd022059ec2daf67ad1c4b248693780930670509194a7e28f8e0e2230c6e4f016f34e1"
   },
   {
+    "ticker": "LCX",
+    "name": "LCX",
+    "blockchain_name": "foundation",
+    "contract_address": "0x037A54AaB062628C9Bbae1FDB1583c195585fe41",
+    "decimals": 18,
+    "signature": "3045022100fe04af995bf9283cd3e54ea676323d2e281ef3c71fe834216073944bbc66fd09022043078f716a3ed3ff3b9d826178578b0a5201622e372a8d7ed209f01bfa94e253"
+  },
+  {
     "ticker": "LA",
     "name": "LATOKEN",
     "blockchain_name": "foundation",
@@ -4311,6 +4359,14 @@
     "contract_address": "0x1410434b0346f5bE678d0FB554E5c7ab620f8f4a",
     "decimals": 18,
     "signature": "3045022100d9273fad9252b5a6799bd89112a1c7469f48ea7a8e69277edd1bb9d66330b2e102206aa6332a0186916e8d15be2219540904a1167cc0dbae16411b5db26773b60ba9"
+  },
+  {
+    "ticker": "KAM",
+    "name": "Kamari",
+    "blockchain_name": "foundation",
+    "contract_address": "0xF8D9fd49d0519a7B93F3Ce80c2C070f1294EAD26",
+    "decimals": 18,
+    "signature": "3045022100f145a4d011e88610c5708a03caba9ad75ad6f51b709519805ff00a2557fec44e0220158719fdfe608241b8674fd2d6817995cdff90c610c9d877f375197b5e65bd45"
   },
   {
     "ticker": "KZN",
@@ -5527,6 +5583,14 @@
     "contract_address": "0xdfC3e857c8cCEA7657E0ed98AB92e048e38deE0f",
     "decimals": 18,
     "signature": "30440220773fae1950669606820521e88f79b10a78feed6e5f7bb766e1d2972e337e98e5022066c8dfd558977e458f4313c3cc82cb18a1aeef378fdbb7a58f9658fd73605050"
+  },
+  {
+    "ticker": "FET",
+    "name": "Fetch",
+    "blockchain_name": "foundation",
+    "contract_address": "0x1D287CC25dAD7cCaF76a26bc660c5F7C8E2a05BD",
+    "decimals": 18,
+    "signature": "30450221008095c7734e4eb9c055b468fb944360173c627258cbae898897e709a6b314488f02206edff7f9fdb63fc36c8c5add6fa03f8f1f78d60e1749b21f87cd5f87c4ae8cae"
   },
   {
     "ticker": "FTT",

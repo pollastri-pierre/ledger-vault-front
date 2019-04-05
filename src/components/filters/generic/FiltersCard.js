@@ -78,7 +78,14 @@ class FiltersCard extends PureComponent<Props> {
     const showNbResults = typeof nbResults === "number";
 
     return (
-      <Container {...props}>
+      <Box
+        overflow="visible"
+        position="relative"
+        flow={10}
+        noShrink
+        pb={20}
+        {...props}
+      >
         <Filters>{filters}</Filters>
         <Box horizontal flow={10} color={colors.mediumGrey}>
           <Text small>
@@ -88,7 +95,7 @@ class FiltersCard extends PureComponent<Props> {
             <ClearButton onClick={this.handleClear}>Clear filters</ClearButton>
           )}
         </Box>
-      </Container>
+      </Box>
     );
   }
 }
@@ -131,13 +138,5 @@ const Filters = styled(Box).attrs({
   }
   margin-bottom: -5px;
 `;
-
-const Container = styled(Box).attrs({
-  overflow: "visible",
-  position: "relative",
-  flow: 10,
-  noShrink: true,
-  pb: 20,
-})``;
 
 export default FiltersCard;

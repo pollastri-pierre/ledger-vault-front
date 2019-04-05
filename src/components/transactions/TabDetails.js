@@ -4,7 +4,7 @@ import cx from "classnames";
 import type { Transaction, Account, RawTransactionETH } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import colors from "shared/colors";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
 

@@ -18,7 +18,7 @@ import { Trans } from "react-i18next";
 import QRCode from "components/QRCode";
 import GenericErrorScreen from "components/GenericErrorScreen";
 import colors from "shared/colors";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import ReceiveLayout from "./ReceiveLayout";
 import AddressRejected from "./AddressRejected";
 import ShieldBox from "./ShieldBox";

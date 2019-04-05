@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 
@@ -11,7 +12,7 @@ import colors from "shared/colors";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import FeeSelect from "components/transactions/creation/FeeSelect";
@@ -57,7 +58,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
     } = this.props;
     const feesInvalidated =
       transaction.recipient !== prevProps.transaction.recipient ||
-      transaction.amount !== prevProps.transaction.amount ||
+      !transaction.amount.isEqualTo(prevProps.transaction.amount) ||
       transaction.feeLevel !== prevProps.transaction.feeLevel;
 
     if (feesInvalidated) {
@@ -75,7 +76,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
       if (isValid) {
         const operation = {
           fee_level: feeLevel || "normal",
-          amount: transaction.amount || 0,
+          amount: transaction.amount || BigNumber(0),
           recipient: transaction.recipient || "",
         };
         const estimatedFees = await getFees(
@@ -127,7 +128,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
 
         <div className={classes.feesFiat}>
           <CounterValue
-            value={transaction.estimatedFees || 0}
+            value={transaction.estimatedFees || BigNumber(0)}
             from={account.currency}
           />
         </div>

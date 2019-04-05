@@ -12,7 +12,7 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import colors from "shared/colors";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 const styles = {
   nonEIP55warningIcon: {

@@ -2,6 +2,7 @@
 import React, { PureComponent, Fragment } from "react";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import InputField from "components/InputField";
 import AccountSummary from "components/AccountSummary";
@@ -10,10 +11,7 @@ import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
-import {
-  getCryptoCurrencyById,
-  getCryptoCurrencyIcon,
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 import type { Translate } from "data/types";
 import type { AccountCreationStepProps, ParentAccount } from "../types";
@@ -32,7 +30,7 @@ type State = {
 const erc20TokenIcon = <ERC20TokenIcon size={15} />;
 
 const ethereumCurrency = getCryptoCurrencyById("ethereum");
-const ropstenCurrency = getCryptoCurrencyById("ethereum_testnet");
+const ropstenCurrency = getCryptoCurrencyById("ethereum_ropsten");
 const EthereumCurIcon = getCryptoCurrencyIcon(ethereumCurrency);
 const RopstenCurIcon = getCryptoCurrencyIcon(ropstenCurrency);
 const ethereumCurIcon = EthereumCurIcon ? (

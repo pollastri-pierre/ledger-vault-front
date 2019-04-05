@@ -22,12 +22,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
-          command: npm install
+          command: yarn
       - save_cache:
-          key: node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+          key: node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run: npm run lint
@@ -42,7 +42,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Setup and run E2E tests
           command: bash ./scripts/setup-ci-e2e-tests.sh
@@ -61,7 +61,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
       - run:
           name: Build project
           command: npm run build
@@ -125,7 +125,7 @@ jobs:
               if [ "${CIRCLE_BRANCH}" = "master" ]; then
                 latest_pointer="latest"
               fi
-              aws s3 cp --no-progress $latest ${s3_path}/${latest_pointer}
+              aws s3 cp --quiet $latest ${s3_path}/${latest_pointer}
               rm -f $latest
             fi
 

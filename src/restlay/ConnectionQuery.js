@@ -26,6 +26,9 @@ class ConnectionQuery<In, Node> {
   // handler to eventually filter items from query results
   filter: ?(Object) => boolean;
 
+  // TODO: type this properly...
+  deserialize: any;
+
   constructor(props: In) {
     this.props = props;
   }
@@ -65,6 +68,10 @@ class ConnectionQuery<In, Node> {
 
   getFilter() {
     return this.filter;
+  }
+
+  getDeserialize() {
+    return this.deserialize;
   }
 
   getResponse(result: Object, store: Store): Connection<Node> {

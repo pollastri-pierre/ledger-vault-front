@@ -1,7 +1,11 @@
 // @flow
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
+import {
+  getTransactionExplorer,
+  getDefaultExplorerView,
+} from "@ledgerhq/live-common/lib/explorers";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 
@@ -59,6 +63,11 @@ class TransactionDetails extends Component<Props, *> {
     } = this.props;
     const note = transaction.notes[0];
     const { value } = this.state;
+    const currency = getCryptoCurrencyById(account.currency);
+    const url = getTransactionExplorer(
+      getDefaultExplorerView(currency),
+      transaction.transaction.hash,
+    );
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
@@ -111,16 +120,9 @@ class TransactionDetails extends Component<Props, *> {
           {account.currency &&
           transaction.transaction &&
           transaction.transaction.hash &&
-          defaultExplorers[account.currency] &&
-          defaultExplorers[account.currency]() !== null ? (
+          url ? (
             <DialogButton>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={defaultExplorers[account.currency](
-                  transaction.transaction.hash,
-                )}
-              >
+              <a target="_blank" rel="noopener noreferrer" href={url}>
                 <Trans i18nKey="transactionDetails:explore" />
               </a>
             </DialogButton>

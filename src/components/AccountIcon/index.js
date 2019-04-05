@@ -1,15 +1,13 @@
 // @flow
 
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import React, { PureComponent } from "react";
 
 import colors from "shared/colors";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import Box from "components/base/Box";
 
-import {
-  getCryptoCurrencyIcon,
-  getCryptoCurrencyById,
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 const placeholderStyle = {
   background: colors.argile,

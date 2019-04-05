@@ -48,10 +48,6 @@ export const ModalBreadcrumb = styled(Box).attrs({
   font-size: 11px;
 `;
 
-const ModalContent = styled(Box).attrs({
-  grow: 1,
-})``;
-
 export const ModalFooter = styled(Box).attrs(p => ({
   position: "absolute",
   horizontal: true,
@@ -236,7 +232,7 @@ class Modal extends PureComponent<Props, State> {
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>
               <ModalDialogInner onClick={this.swallowClick}>
-                <ModalContent>{children}</ModalContent>
+                <Box grow>{children}</Box>
               </ModalDialogInner>
             </ModalDialog>
           </Animated.div>

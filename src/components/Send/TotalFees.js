@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent, Fragment } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
 import { Trans } from "react-i18next";
 import CounterValue from "components/CounterValue";
 import type { Account } from "data/types";

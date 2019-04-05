@@ -4,6 +4,7 @@ import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Transaction } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeTransaction } from "api/transformations/Transaction";
 
 import type { Note } from "./NewTransactionMutation";
 
@@ -33,6 +34,8 @@ export default class NewEthereumTransactionMutation extends Mutation<
 
   responseSchema = schema.Transaction;
 
+  deserialize = deserializeTransaction;
+
   getSuccessNotification() {
     return success("operation request", "created");
   }
@@ -42,6 +45,10 @@ export default class NewEthereumTransactionMutation extends Mutation<
   }
 
   getBody() {
-    return this.props.operation;
+    const { operation } = this.props;
+    return {
+      ...operation,
+      amount: operation.amount.toFixed(),
+    };
   }
 }

@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import invariant from "invariant";
 import React, { Component } from "react";
 import type { ComponentType } from "react";
-import PropTypes from "prop-types";
 import shallowEqual from "fbjs/lib/shallowEqual";
 import isEqual from "lodash/isEqual";
 import {
@@ -23,6 +22,7 @@ import type { Store } from "./dataStore";
 import Query from "./Query";
 import ConnectionQuery from "./ConnectionQuery";
 import Mutation from "./Mutation";
+import { withRestlayContext } from "./RestlayProvider";
 import type RestlayProvider from "./RestlayProvider";
 
 /* eslint-disable no-use-before-define */
@@ -40,6 +40,7 @@ export type RestlayEnvironment = {|
 |};
 
 type ConnectedProps = {|
+  restlayProvider: RestlayProvider,
   dataStore: Store,
   dispatch: Function,
 |};
@@ -170,15 +171,7 @@ export default function connectData<
   const sCUStateSubset = ({ pending, variables, ...rest }: State) => rest; // eslint-disable-line no-unused-vars
 
   class Clazz extends Component<ClazzProps<Props>, State> {
-    context: {
-      restlayProvider: RestlayProvider,
-    };
-
     static displayName = displayName;
-
-    static contextTypes = {
-      restlayProvider: PropTypes.object.isRequired,
-    };
 
     state = {
       // this holds the componentDidCatch errors
@@ -192,7 +185,7 @@ export default function connectData<
 
     _options = {
       ...defaultOpts,
-      ...this.context.restlayProvider.props.connectDataOptDefaults,
+      ...this.props.restlayProvider.props.connectDataOptDefaults,
       ...opts,
     };
 
@@ -214,7 +207,7 @@ export default function connectData<
 
     getVariables = () => this.state.variables;
 
-    executeQueryF = executeQueryOrMutation(this.context.restlayProvider);
+    executeQueryF = executeQueryOrMutation(this.props.restlayProvider);
 
     subscribeMutations = (
       mutations: Mutation<any, any>[],
@@ -304,8 +297,7 @@ export default function connectData<
       state: State,
       forceFetchMode: boolean = false,
     ): Array<Promise<*>> {
-      const { restlayProvider } = this.context;
-      const { dataStore } = props;
+      const { dataStore, restlayProvider } = props;
       let queryUpdated = false;
       if (!isEqual(apiParams, this.apiParams) || !this.queriesInstances) {
         queryUpdated = true;
@@ -506,8 +498,10 @@ export default function connectData<
     }
   }
 
-  return connect(
-    mapStateToProps,
-    null,
-  )(Clazz);
+  return withRestlayContext(
+    connect(
+      mapStateToProps,
+      null,
+    )(Clazz),
+  );
 }

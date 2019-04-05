@@ -17,6 +17,7 @@ import {
   TransactionsTable,
   RequestsTable,
 } from "components/Table";
+
 import { action } from "@storybook/addon-actions";
 import Card from "components/base/Card";
 
@@ -26,6 +27,23 @@ const users = genUsers(20);
 const accounts = genAccounts(10, { users });
 const transactions = genTransactions(25, { accounts, users });
 const groups = genGroups(4, { users });
+
+const Page = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #efefef;
+  padding: 30px;
+  overflow-y: auto;
+`;
+
+const Wrapper = ({ children }) => (
+  <Page>
+    <Card>{children}</Card>
+  </Page>
+);
 
 storiesOf("tables", module)
   .add("AccountsTable", () => (
@@ -48,20 +66,3 @@ storiesOf("tables", module)
       <RequestsTable data={requests} />
     </Wrapper>
   ));
-
-const Page = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #efefef;
-  padding: 30px;
-  overflow-y: auto;
-`;
-
-const Wrapper = ({ children }) => (
-  <Page>
-    <Card>{children}</Card>
-  </Page>
-);
