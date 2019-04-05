@@ -7,8 +7,7 @@
 /* eslint-disable flowtype/no-types-missing-file-annotation */
 /* eslint-disable no-undef */
 
-import { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
 import type Query from "./Query";
 import type ConnectionQuery from "./ConnectionQuery";
 
@@ -18,18 +17,14 @@ export type NetworkF = <T>(
   body: ?(Object | Array<Object>),
 ) => Promise<T>;
 
+export const RestlayContext: React$Context<?RestlayProvider> = React.createContext(
+  null,
+);
+
 class RestlayProvider extends Component<{
   network: NetworkF,
   children: React$Node,
 }> {
-  static childContextTypes = {
-    restlayProvider: PropTypes.object.isRequired,
-  };
-
-  getChildContext() {
-    return { restlayProvider: this };
-  }
-
   // these are internal objects used by dataStore
 
   _pendingQueries: { [_: string]: Promise<any> } = {};
@@ -57,8 +52,16 @@ class RestlayProvider extends Component<{
 
   render() {
     const { children } = this.props;
-    return children;
+    return (
+      <RestlayContext.Provider value={this}>{children}</RestlayContext.Provider>
+    );
   }
 }
+
+export const withRestlayContext = (Comp: React$ComponentType<*>) => p => (
+  <RestlayContext.Consumer>
+    {restlayProvider => <Comp restlayProvider={restlayProvider} {...p} />}
+  </RestlayContext.Consumer>
+);
 
 export default RestlayProvider;

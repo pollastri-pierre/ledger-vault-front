@@ -1,3 +1,9 @@
+/* eslint-disable import/extensions */
+// FIXME for no reason jest can't handle normal import, so forced
+// to import like this:
+import BigNumber from "bignumber.js/bignumber.js";
+/* eslint-enable import/extensions */
+
 import faker from "faker";
 import keyBy from "lodash/keyBy";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
@@ -132,11 +138,13 @@ function genAccount({ users = [] } = {}) {
       },
     },
     security_scheme: { quorum: 2 },
-    balance: faker.random.number({
-      min: 0.3 * 10 ** currency.units[0].magnitude,
-      max: 7 * 10 ** currency.units[0].magnitude,
-      precision: 4,
-    }),
+    balance: BigNumber(
+      faker.random.number({
+        min: 0.3 * 10 ** currency.units[0].magnitude,
+        max: 7 * 10 ** currency.units[0].magnitude,
+        precision: 4,
+      }),
+    ),
     fresh_addresses: [
       { address: "1MfeDvj5AUBG4xVMrx1xPgmYdXQrzHtW5b", derivation_path: "0/2" },
     ],
@@ -173,12 +181,14 @@ const genTransaction = ({ account, users }) => {
   const currency = getCryptoCurrencyById(account.currency);
   const magnitude = currency.units[0].magnitude;
   const date = faker.date.past(2);
-  const amount = faker.random.number({
-    min: 0.2 * 10 ** magnitude,
-    max: 4 * 10 ** magnitude,
-    precision: 4,
-  });
-  const feesAmount = faker.random.number({ min: 1000, max: 100000 });
+  const amount = BigNumber(
+    faker.random.number({
+      min: 0.2 * 10 ** magnitude,
+      max: 4 * 10 ** magnitude,
+      precision: 4,
+    }),
+  );
+  const feesAmount = BigNumber(faker.random.number({ min: 1000, max: 100000 }));
   const operators = users.filter(m => m.role === "operator");
 
   const nbApprovalsToGenerate = faker.random.number({ min: 0, max: 3 });

@@ -47,7 +47,11 @@ const pairsSelector = createSelector(
 setNetwork(axios);
 
 const CounterValues = createCounterValues({
-  log: (...args) => console.log("CounterValues:", ...args), // eslint-disable-line no-console
+  log: (...args) => {
+    if (process.env.DEBUG_COUNTERVALUES) {
+      console.log("CounterValues:", ...args); // eslint-disable-line no-console
+    }
+  },
   getAPIBaseURL: () => "https://countervalues.api.live.ledger.com",
   storeSelector: state => state.countervalues,
   pairsSelector,
