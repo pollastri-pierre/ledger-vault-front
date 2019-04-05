@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
+import { BigNumber } from "bignumber.js";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import connectData from "restlay/connectData";
@@ -23,7 +24,7 @@ type Props<Transaction> = {
 type State = {
   canNext: boolean,
   amountIsValid: boolean,
-  totalSpent: number,
+  totalSpent: BigNumber,
   feeIsValid: boolean
 };
 
@@ -32,7 +33,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
     canNext: false,
     amountIsValid: true,
     feeIsValid: true,
-    totalSpent: 0
+    totalSpent: BigNumber(0)
   };
 
   componentDidMount() {
@@ -81,13 +82,17 @@ class SendDetails extends PureComponent<Props<*>, State> {
     try {
       const totalSpent = await bridge.getTotalSpent(account, transaction);
       if (syncId !== this.syncId) return;
-      const amountIsValid = totalSpent < account.balance;
+      const amountIsValid =
+        account.account_type === "ERC20"
+          ? totalSpent.isLessThanOrEqualTo(account.balance)
+          : totalSpent.isLessThan(account.balance);
       this.setState({ amountIsValid });
       const txIsValid = await bridge.checkValidTransaction(
         account,
         transaction,
         restlay
       );
+
       const feeIsValid = await this.feeIsValid();
       if (syncId !== this.syncId) return;
       if (this._unmounted) return;
@@ -95,7 +100,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
 
       canNext
         ? this.setState({ totalSpent })
-        : this.setState({ totalSpent: 0 });
+        : this.setState({ totalSpent: BigNumber(0) });
 
       this.setState({ canNext, feeIsValid });
     } catch (err) {

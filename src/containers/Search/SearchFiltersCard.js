@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { DialogButton } from "components";
 import ListItemText from "@material-ui/core/ListItemText";
 

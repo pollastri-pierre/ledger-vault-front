@@ -2,12 +2,10 @@
 import React, { PureComponent } from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import { getAccountTitle } from "utils/accounts";
-import {
-  getCryptoCurrencyById,
-  getERC20TokenByContractAddress
-} from "utils/cryptoCurrencies";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import colors from "shared/colors";
 
 import CurrencyIndex from "components/CurrencyIndex";

@@ -8,3 +8,9 @@ general:
 operationRules:
   title: Operation rules
   approvals: Required approvals
+advanced:
+  title: Advanced
+  xpub: xpub
+  copy: Copy XPUB
+  derivation_path: Derivation path
+  warning: The XPUB must be used for reporting purposes only. If receiving addresses are derived from the XPUB, incoming funds won’t be accessible from the Ledger Vault.

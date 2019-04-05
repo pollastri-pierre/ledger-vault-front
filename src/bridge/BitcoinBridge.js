@@ -1,4 +1,6 @@
 // @flow
+
+import { BigNumber } from "bignumber.js";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import PendingOperationsQuery from "api/queries/PendingOperationsQuery";
@@ -7,14 +9,14 @@ import type { Input as NewOperationMutationInput } from "api/mutations/NewOperat
 import type { Account } from "data/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed
 export type Transaction = {
-  amount: number,
+  amount: BigNumber,
   recipient: string,
-  estimatedFees: ?number,
+  estimatedFees: ?BigNumber,
   feeLevel: Speed,
   label: string,
   note: string
@@ -23,8 +25,14 @@ export type Transaction = {
 const checkValidTransaction = async (a, t, r) => {
   const currency = getCryptoCurrencyById(a.currency_id);
   const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
-  const amountIsValid = t.amount + t.estimatedFees < a.balance;
-  if (!t.estimatedFees || !t.amount || !recipientIsValid || !amountIsValid) {
+  const amountIsValid = t.amount.plus(t.estimatedFees).isLessThan(a.balance);
+  if (
+    !t.estimatedFees ||
+    t.estimatedFees.isEqualTo(0) ||
+    t.amount.isEqualTo(0) ||
+    !recipientIsValid ||
+    !amountIsValid
+  ) {
     return false;
   }
   return true;
@@ -48,7 +56,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
 
 const BitcoinBridge: WalletBridge<Transaction> = {
   createTransaction: () => ({
-    amount: 0,
+    amount: BigNumber(0),
     recipient: "",
     estimatedFees: null,
     feeLevel: "normal",
@@ -58,15 +66,17 @@ const BitcoinBridge: WalletBridge<Transaction> = {
 
   getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
 
-  getTotalSpent: (a, t) =>
-    t.amount === 0
-      ? Promise.resolve(0)
-      : Promise.resolve(t.amount + t.estimatedFees),
+  getTotalSpent: (a, t) => {
+    const estimatedFees = t.estimatedFees || BigNumber(0);
+    return t.amount.isEqualTo(0)
+      ? Promise.resolve(BigNumber(0))
+      : Promise.resolve(t.amount.plus(estimatedFees));
+  },
 
   editTransactionAmount: (
     account: Account,
     t: Transaction,
-    amount: number
+    amount: BigNumber
   ) => ({
     ...t,
     amount

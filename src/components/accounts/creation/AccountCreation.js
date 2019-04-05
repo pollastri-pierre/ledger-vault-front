@@ -97,11 +97,6 @@ class AccountCreation extends PureComponent<Props> {
       Object.assign(data, {
         currency: { name: accountCreationState.currency.id }
       });
-
-      // HACK because ll-common "ethereum_testnet" should be "ethereum_ropsten"
-      if (data.currency.name === "ethereum_testnet") {
-        data.currency.name = "ethereum_ropsten";
-      }
     }
 
     if (accountCreationState.erc20token) {

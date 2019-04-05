@@ -1,7 +1,7 @@
 version: 2.1
 
 aliases:
-  - &docker_image circleci/node:8.11.3
+  - &docker_image circleci/node:8.11.3-stretch
   - &dev_s3_bucket ledger-vault-artifacts-dev
   - &prod_s3_bucket ledger-vault-artifacts-prod
   - &common_filters
@@ -93,7 +93,7 @@ jobs:
           command: |
             s3_path="s3://<< parameters.s3_bucket >>/ledger-vault-front"
             artifact_with_sha1="ledger-vault-front_${CIRCLE_SHA1}.tar.gz"
-            aws s3 cp --no-progress ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
+            aws s3 cp --quiet ~/workspace/ledger-vault-front.tar.gz ${s3_path}/${artifact_with_sha1}
             eval echo 'export s3_path="${s3_path}"' >> $BASH_ENV
             eval echo 'export latest_artifact="${artifact_with_sha1}"' >> $BASH_ENV
       - run:
@@ -106,7 +106,7 @@ jobs:
               if [ "${CIRCLE_BRANCH}" = "master" ]; then
                 latest_pointer="latest"
               fi
-              aws s3 cp --no-progress $latest ${s3_path}/${latest_pointer}
+              aws s3 cp --quiet $latest ${s3_path}/${latest_pointer}
               rm -f $latest
             fi
 

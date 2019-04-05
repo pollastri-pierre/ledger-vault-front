@@ -1,6 +1,7 @@
 // @flow
 import { denormalize } from "normalizr-gre";
 import type { Store } from "./dataStore";
+import type { Deserializer } from "./types";
 
 // A query maps to a GET on the api, it is idempotent to fetch and can be cached
 export default class Query<Input, Response> {
@@ -14,6 +15,8 @@ export default class Query<Input, Response> {
 
   // handler to eventually filter items from query results
   filter: ?(Object) => boolean;
+
+  deserialize: ?Deserializer<any>;
 
   // on a GET, the maximum amount of time (seconds) will be considered fresh and we don't need to refetch. we want the front app to not always refetch the data (NB maybe we could use HTTP Cache-Control but this is a simpler take on the problem)
   cacheMaxAge: number = 0;
@@ -29,6 +32,10 @@ export default class Query<Input, Response> {
 
   getResponseSchema() {
     return this.responseSchema;
+  }
+
+  getDeserialize() {
+    return this.deserialize;
   }
 
   getFilter() {

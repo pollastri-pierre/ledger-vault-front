@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { BigNumber } from "bignumber.js";
 import { translate } from "react-i18next";
 import connectData from "restlay/connectData";
 import ViewAllLink from "components/ViewAllLink";
@@ -72,7 +73,10 @@ const OperationRow = ({
 }) =>
   account ? (
     <Row date={operation.created_on}>
-      <CurrencyAccountValue account={account} value={operation.price.amount} />
+      <CurrencyAccountValue
+        account={account}
+        value={operation.price ? operation.price.amount : BigNumber(0)}
+      />
     </Row>
   ) : null;
 

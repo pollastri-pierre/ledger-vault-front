@@ -1,7 +1,11 @@
 // @flow
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import { defaultExplorers } from "@ledgerhq/live-common/lib/explorers";
+import {
+  getTransactionExplorer,
+  getDefaultExplorerView
+} from "@ledgerhq/live-common/lib/explorers";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { withStyles } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
@@ -68,6 +72,11 @@ class OperationDetails extends Component<Props, *> {
     } = this.props;
     const note = operation.notes[0];
     const { value } = this.state;
+    const currency = getCryptoCurrencyById(account.currency_id);
+    const url = getTransactionExplorer(
+      getDefaultExplorerView(currency),
+      operation.transaction.hash
+    );
     return (
       <div className={classes.base}>
         <header>
@@ -117,16 +126,9 @@ class OperationDetails extends Component<Props, *> {
           {account.currency_id &&
           operation.transaction &&
           operation.transaction.hash &&
-          defaultExplorers[account.currency_id] &&
-          defaultExplorers[account.currency_id]() !== null ? (
+          url ? (
             <DialogButton>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={defaultExplorers[account.currency_id](
-                  operation.transaction.hash
-                )}
-              >
+              <a target="_blank" rel="noopener noreferrer" href={url}>
                 <Trans i18nKey="operationDetails:explore" />
               </a>
             </DialogButton>

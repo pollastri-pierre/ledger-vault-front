@@ -2,6 +2,7 @@
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Operation } from "data/types";
+import { deserializeOperation } from "api/transformations/Operation";
 
 type In = {
   keywords: ?string,
@@ -23,4 +24,6 @@ export default class DashboardLastOperationsQuery extends ConnectionQuery<
   uri = "/operations?status=submitted&with_daemon_info=true&batch=5";
 
   responseSchema = schema.Operation;
+
+  deserialize = deserializeOperation;
 }
