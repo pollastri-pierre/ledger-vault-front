@@ -17,3 +17,4 @@ node_modules/jss/flow-typed
 [options]
 module.system.node.resolve_dirname=node_modules
 module.system.node.resolve_dirname=./src
+server.max_workers=1
