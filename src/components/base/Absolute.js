@@ -9,5 +9,6 @@ export default styled.div`
 `;
 
 function position(pos) {
-  return p => (p[pos] === true ? 0 : p[pos] ? `${p[pos]}px` : "auto");
+  return p =>
+    p[pos] === true ? 0 : p[pos] === 0 ? 0 : p[pos] ? `${p[pos]}px` : "auto";
 }
