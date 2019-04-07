@@ -1,11 +1,10 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import type { ObjectParameters } from "query-string";
 
-import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
 import MUITableCell from "@material-ui/core/TableCell";
-import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
 
 import Text from "components/base/Text";
@@ -19,20 +18,76 @@ import TransactionStatus from "components/TransactionStatus";
 import type { Account, Transaction } from "data/types";
 
 import TableScroll from "./TableScroll";
+import type { TableDefinition } from "./types";
+import { Table, TableHeader } from "./TableBase";
 
 type Props = {
   data: Transaction[],
   onRowClick: Transaction => void,
   accounts: Account[],
-
-  // additional fields
-  withStatus?: boolean,
-  withLabel?: boolean,
+  customTableDef?: TableDefinition,
+  onSortChange?: (string, ?string) => void,
+  queryParams?: ObjectParameters,
 };
 
-class TransactionsTable extends PureComponent<Props> {
+type State = {
+  tableDefinition: TableDefinition,
+};
+
+const defaultDefinition = [
+  {
+    header: {
+      label: "Date",
+      align: "left",
+      sortable: true,
+    },
+    body: {
+      prop: "date",
+      align: "left",
+    },
+  },
+  {
+    header: {
+      label: "Name",
+      align: "left",
+      sortable: true,
+    },
+    body: {
+      prop: "name",
+      align: "left",
+    },
+  },
+  {
+    header: {
+      label: "",
+      align: "right",
+      sortable: false,
+    },
+    body: {
+      prop: "countervalue",
+      align: "right",
+    },
+  },
+  {
+    header: {
+      label: "Amount",
+      align: "right",
+      sortable: true,
+    },
+    body: {
+      prop: "amount",
+      align: "right",
+    },
+  },
+];
+
+class TransactionsTable extends PureComponent<Props, State> {
+  state = {
+    tableDefinition: this.props.customTableDef || defaultDefinition,
+  };
+
   Transaction = (transaction: Transaction) => {
-    const { accounts, onRowClick, withStatus, withLabel } = this.props;
+    const { accounts, onRowClick } = this.props;
 
     const account = accounts.find(
       account => account.id === transaction.account_id,
@@ -52,14 +107,13 @@ class TransactionsTable extends PureComponent<Props> {
         transaction={transaction}
         account={account}
         onClick={onRowClick}
-        withStatus={withStatus}
-        withLabel={withLabel}
       />
     );
   };
 
   render() {
-    const { data, withStatus, withLabel } = this.props;
+    const { data, onSortChange, queryParams } = this.props;
+    const { tableDefinition } = this.state;
 
     if (!data.length) {
       return <NoDataPlaceholder title="No transactions found." />;
@@ -67,37 +121,15 @@ class TransactionsTable extends PureComponent<Props> {
 
     return (
       <TableScroll>
-        <MUITable>
-          <TransactionsTableHeader
-            withStatus={withStatus}
-            withLabel={withLabel}
+        <Table>
+          <TableHeader
+            tableDefinition={tableDefinition}
+            onSortChange={onSortChange}
+            queryParams={queryParams}
           />
           <MUITableBody>{data.map(this.Transaction)}</MUITableBody>
-        </MUITable>
+        </Table>
       </TableScroll>
-    );
-  }
-}
-
-type TransactionsTableHeaderProps = {
-  withStatus?: boolean,
-  withLabel?: boolean,
-};
-
-class TransactionsTableHeader extends PureComponent<TransactionsTableHeaderProps> {
-  render() {
-    const { withStatus, withLabel } = this.props;
-    return (
-      <MUITableHead>
-        <MUITableRow>
-          <MUITableCell>Date</MUITableCell>
-          <MUITableCell>Account</MUITableCell>
-          {withStatus && <MUITableCell>Status</MUITableCell>}
-          {withLabel && <MUITableCell>Label</MUITableCell>}
-          <MUITableCell />
-          <MUITableCell align="right">Amount</MUITableCell>
-        </MUITableRow>
-      </MUITableHead>
     );
   }
 }

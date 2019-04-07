@@ -25,7 +25,7 @@ export const accountsTableDefault = [
   },
   {
     header: {
-      label: "CounterValue",
+      label: "",
       align: "right",
       sortable: false,
     },

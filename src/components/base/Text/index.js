@@ -15,6 +15,7 @@ const Text = styled.div`
   line-height: ${p => ("lineHeight" in p ? p.lineHeight : "1.75")};
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
+  user-select: ${p => (p.noSelect ? "none" : "inherit")};
 `;
 
 export default ({

@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 
-import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
 
 import type { ObjectParameters } from "query-string";
@@ -11,7 +10,7 @@ import NoDataPlaceholder from "components/NoDataPlaceholder";
 import type { User } from "data/types";
 import { usersTableDefault } from "./tableDefinitions";
 import UserRow from "./UserRow";
-import { TableHeader } from "../TableBase";
+import { Table, TableHeader } from "../TableBase";
 
 import type { TableDefinition } from "../types";
 
@@ -63,7 +62,7 @@ class UsersTable extends PureComponent<Props, State> {
 
     return (
       <TableScroll>
-        <MUITable>
+        <Table>
           <TableHeader
             tableDefinition={tableDefinition}
             type="users"
@@ -71,7 +70,7 @@ class UsersTable extends PureComponent<Props, State> {
             queryParams={queryParams}
           />
           <MUITableBody>{data.map(this.User)}</MUITableBody>
-        </MUITable>
+        </Table>
       </TableScroll>
     );
   }

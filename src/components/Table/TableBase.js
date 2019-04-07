@@ -1,30 +1,30 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import type { ObjectParameters } from "query-string";
+import styled from "styled-components";
+import MUITable from "@material-ui/core/Table";
+import type { ObjectParameters, ObjectParameter } from "query-string";
 
 import MUITableCell from "@material-ui/core/TableCell";
 import MUITableHead from "@material-ui/core/TableHead";
 import MUITableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import { FaSort } from "react-icons/fa";
 
 import Text from "components/base/Text";
-import Box from "components/base/Box";
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
+import TableSort from "./TableSort";
 
 import type { TableDefinition, TableItem } from "./types";
+import type { Direction } from "./TableSort";
 
 type TableHeaderProps = {
   tableDefinition: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
-  type: string,
 };
 
 export class TableHeader extends PureComponent<TableHeaderProps> {
   render() {
-    const { tableDefinition, type, onSortChange, queryParams } = this.props;
+    const { tableDefinition, onSortChange, queryParams } = this.props;
 
     return (
       <MUITableHead>
@@ -33,7 +33,6 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
             <HeaderCellComponent
               key={item.body.prop}
               item={item}
-              type={type}
               onSortChange={onSortChange}
               queryParams={queryParams}
             />
@@ -46,28 +45,32 @@ export class TableHeader extends PureComponent<TableHeaderProps> {
 
 type Props = {
   item: TableItem,
-  type: string,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
 };
 
 class HeaderCellComponent extends PureComponent<Props> {
   handleChangeSort = () => {
-    const { item, type, onSortChange, queryParams } = this.props; // eslint-disable-line no-unused-vars
+    const { item, onSortChange, queryParams } = this.props;
     if (!onSortChange) return;
     const { orderBy, order } = resolveSort(queryParams);
     const newOrderBy = item.body.prop;
 
     // cycle through orders: if first time we click, we set order ASC,
     // then DESC, then we remove the order
+    const cycles = {
+      desc: ["desc", "asc"],
+      asc: ["asc", "desc"],
+    };
+    const cycle = item.header.sortFirst === "desc" ? cycles.desc : cycles.asc;
     const newOrder =
       orderBy === newOrderBy
         ? order
-          ? order === "asc"
-            ? "desc"
+          ? order === cycle[0]
+            ? cycle[1]
             : null
-          : "asc"
-        : "asc";
+          : cycle[0]
+        : cycle[0];
 
     onSortChange(newOrderBy, newOrder);
   };
@@ -75,37 +78,70 @@ class HeaderCellComponent extends PureComponent<Props> {
   render() {
     const { item, queryParams } = this.props;
     const { orderBy, order } = resolveSort(queryParams);
-
+    const direction = resolveDirection(
+      orderBy === item.body.prop ? order : null,
+    );
     return (
-      <MUITableCell
-        align={item.header.align}
-        key={item.body.prop}
-        sortDirection={orderBy === item.body.prop ? order : false}
-      >
+      <HeaderCell align={item.header.align} key={item.body.prop}>
         {item.header.sortable ? (
-          <TableSortLabel
-            active={!!(order && orderBy && orderBy === item.body.prop)}
-            direction={order || "asc"}
+          <TableSort
+            align={item.header.align}
+            direction={direction}
+            label={item.header.label}
             onClick={this.handleChangeSort}
-          >
-            {item.header.label}
-            {(!order || orderBy !== item.body.prop) && (
-              <Box ml={5}>
-                <FaSort color={colors.lightGrey} />
-              </Box>
-            )}
-          </TableSortLabel>
+          />
         ) : (
           <Text>{item.header.label}</Text>
         )}
-      </MUITableCell>
+      </HeaderCell>
     );
   }
 }
+
+const HeaderCell = styled(MUITableCell)`
+  && {
+    background-color: #fafafa;
+    border-bottom-color: #f0f0f0;
+  }
+`;
+
+export const Table = styled(MUITable)`
+  && {
+    user-select: none;
+    tr td {
+      border: none;
+    }
+    tr:nth-child(even) {
+      background: #fbfbfb;
+    }
+    tr:hover {
+      background: white;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    tr:active td {
+      background: ${opacity(colors.ocean, 0.1)} !important;
+    }
+    tr:hover td {
+      background: ${opacity(colors.ocean, 0.07)};
+    }
+  }
+`;
 
 function resolveSort(queryParams: ?ObjectParameters) {
   return {
     orderBy: (queryParams && queryParams.orderBy) || null,
     order: (queryParams && queryParams.order) || null,
   };
+}
+
+function resolveDirection(
+  potentialDirection: ObjectParameter | $ReadOnlyArray<ObjectParameter>,
+): Direction {
+  return potentialDirection === "asc"
+    ? "asc"
+    : potentialDirection === "desc"
+    ? "desc"
+    : null;
 }

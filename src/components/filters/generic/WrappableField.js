@@ -137,6 +137,7 @@ const InlineLabel = styled(Box).attrs({
   border: 1px solid;
   user-select: none;
 
+  border-radius: 2px;
   border-color: ${p =>
     p.isOpened || p.isActive ? colors.lightGrey : "transparent"};
   border-bottom-color: ${p => (p.isOpened ? "white" : "")};
@@ -168,6 +169,9 @@ const Menu = styled(Box).attrs({
   width: ${MENU_WIDTH}px;
   background: white;
   border: 1px solid ${colors.lightGrey};
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
   z-index: 20;
 `;
