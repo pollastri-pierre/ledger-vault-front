@@ -45,12 +45,17 @@ const customComponents = {
   Placeholder,
 };
 
-const boxShadow = "0 2px 2px 1px rgba(0, 0, 0, 0.05)";
-
 const customStyles = {
   input: styles => ({
     ...styles,
     fontSize: 13,
+    margin: 0,
+    marginLeft: 2,
+    color: "inherit",
+  }),
+  singleValue: styles => ({
+    ...styles,
+    color: "inherit",
   }),
   indicatorSeparator: () => ({}),
   dropdownIndicator: (styles, state) => ({
@@ -63,10 +68,12 @@ const customStyles = {
   }),
   control: (styles, state) => ({
     ...styles,
-    minHeight: 42,
-    borderColor: "#dddddd !important",
+    minHeight: 40,
+    borderColor: `${
+      state.menuIsOpen ? colors.form.focus : colors.form.border
+    } !important`,
     borderRadius: 4,
-    boxShadow: state.menuIsOpen ? boxShadow : "none",
+    boxShadow: state.menuIsOpen ? colors.form.shadow.focus : "none",
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
@@ -78,19 +85,23 @@ const customStyles = {
   }),
   menu: styles => ({
     ...styles,
-    border: "1px solid #dddddd",
+    border: `1px solid ${colors.form.focus}`,
     borderTopColor: "#e5e5e5",
     borderTopStyle: "dashed",
-    boxShadow,
+    boxShadow: colors.form.shadow.focus,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
+    overflow: "hidden",
     marginTop: -1,
+    marginBottom: 0,
     paddingTop: 0,
+    paddingBottom: 0,
   }),
   menuList: styles => ({
     ...styles,
     borderTop: "none !important",
     paddingTop: 0,
+    paddingBottom: 0,
   }),
   option: (styles, state) => ({
     ...styles,

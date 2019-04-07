@@ -77,13 +77,6 @@ const options: Option[] = [
   { value: "PENDING_APPROVAL", label: "Pending approval" },
 ];
 
-const customStyles = {
-  menuList: p => ({
-    ...p,
-    fontSize: 13,
-  }),
-};
-
 type SelectProps = {
   value: Option[],
   onChange: (Option[]) => void,
@@ -101,7 +94,6 @@ class SelectTransactionStatusesComponent extends PureComponent<SelectProps> {
         options={options}
         placeholder={t("common:transactionStatus")}
         isClearable
-        styles={customStyles}
         {...props}
       />
     );

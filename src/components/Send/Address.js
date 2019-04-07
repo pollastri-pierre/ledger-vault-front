@@ -10,7 +10,7 @@ import connectData from "restlay/connectData";
 import CryptoAddressPicker from "components/CryptoAddressPicker";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import colors from "shared/colors";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
@@ -105,7 +105,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
     const { isValid, recipientWarning } = this.state;
     return (
       <div>
-        <ModalSubTitle noPadding>
+        <Label>
           <Trans i18nKey="send:details.address.title" />
           {recipientWarning && (
             <Tooltip title={recipientWarning.message} placement="top">
@@ -117,7 +117,7 @@ class SendAddress extends PureComponent<Props<*>, State> {
               />
             </Tooltip>
           )}
-        </ModalSubTitle>
+        </Label>
         <div>
           <CryptoAddressPicker
             id="address"

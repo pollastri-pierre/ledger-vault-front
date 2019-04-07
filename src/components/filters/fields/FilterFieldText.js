@@ -2,12 +2,12 @@
 
 import React, { PureComponent, createRef } from "react";
 import { findDOMNode } from "react-dom";
-import TextField from "@material-ui/core/TextField";
 import debounce from "lodash/debounce";
 
 import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters";
 import Text from "components/base/Text";
+import { InputText } from "components/base/form";
 
 type Props = FieldProps & {
   title: React$Node,
@@ -30,8 +30,7 @@ class FilterFieldText extends PureComponent<Props> {
   // $FlowFixMe WTF can't you let me create my ref
   inputRef = createRef();
 
-  handleChange = (e: SyntheticInputEvent<*>) =>
-    this.debounceUpdate(e.target.value);
+  handleChange = (v: string) => this.debounceUpdate(v);
 
   debounceUpdate = debounce((str: string) => {
     const { updateQueryParams, queryKey } = this.props;
@@ -54,7 +53,7 @@ class FilterFieldText extends PureComponent<Props> {
         isActive={isActive}
         RenderCollapsed={this.Collapsed}
       >
-        <TextField
+        <InputText
           ref={this.inputRef}
           autoFocus
           defaultValue={queryParams[queryKey] || ""}

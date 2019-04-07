@@ -4,11 +4,10 @@ import { translate } from "react-i18next";
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
-import InputField from "components/InputField";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { InputText, Label } from "components/base/form";
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 import type { Translate } from "data/types";
@@ -62,23 +61,20 @@ class AccountCreationOptions extends PureComponent<Props> {
     if (!currency) return null;
 
     const AccountCurIcon = getCryptoCurrencyIcon(currency);
+    const IconLeft = AccountCurIcon
+      ? () => <AccountCurIcon color={currency.color} size={16} />
+      : undefined;
     return (
       <Box flow={20}>
         <Box>
-          <ModalSubTitle noPadding>
-            {t("newAccount:options.name")}
-          </ModalSubTitle>
-          <InputField
+          <Label>{t("newAccount:options.name")}</Label>
+          <InputText
             value={payload.name}
             autoFocus
             onChange={this.handleChangeName}
-            {...inputProps}
             placeholder={t("newAccount:options.acc_name_placeholder")}
-            renderLeft={
-              AccountCurIcon ? (
-                <AccountCurIcon color={currency.color} size={15} />
-              ) : null
-            }
+            {...inputProps}
+            IconLeft={IconLeft}
           />
         </Box>
         <InfoBox type="info" withIcon>

@@ -7,7 +7,7 @@ import type { Account } from "data/types";
 import CounterValue from "components/CounterValue";
 import type { WalletBridge } from "bridge/types";
 import colors from "shared/colors";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import InputCurrency from "components/InputCurrency";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import AmountNoUnits from "./AmountNoUnits";
@@ -58,9 +58,9 @@ class SendAmount extends PureComponent<Props<*>> {
 
     return (
       <div>
-        <ModalSubTitle noPadding>
+        <Label>
           <Trans i18nKey="send:details.amount.title" />
-        </ModalSubTitle>
+        </Label>
         <div>
           {account.account_type === "ERC20" ? (
             <AmountNoUnits

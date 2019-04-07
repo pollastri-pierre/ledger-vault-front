@@ -1,9 +1,9 @@
 // @flow
 import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
-import InputField from "components/InputField";
 import Box from "components/base/Box";
 import Disabled from "components/Disabled";
+import { InputText, Label } from "components/base/form";
 
 import type { Translate } from "data/types";
 import type { GroupCreationStepProps } from "./types";
@@ -28,7 +28,8 @@ class GroupCreationName extends PureComponent<Props> {
     return (
       <Disabled disabled={isEditMode}>
         <Box>
-          <InputField
+          <Label>{t("group:create.name_placeholder")}</Label>
+          <InputText
             value={payload.name}
             autoFocus
             disabled={isEditMode}
