@@ -70,6 +70,10 @@ const ItemContainer = styled(Box).attrs({
     position: relative;
   }
 
+  &:active {
+    font-weight: bold;
+  }
+
   ${({ selected }) => `
     color: ${selected ? colors.ocean : "inherit"};
     font-weight: ${selected ? "bold" : "inherit"};

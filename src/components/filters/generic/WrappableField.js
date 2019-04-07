@@ -4,7 +4,7 @@ import React, { Component, createRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import styled from "styled-components";
 
-import colors from "shared/colors";
+import colors, { opacity } from "shared/colors";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -139,7 +139,11 @@ const InlineLabel = styled(Box).attrs({
 
   border-radius: 2px;
   border-color: ${p =>
-    p.isOpened || p.isActive ? colors.lightGrey : "transparent"};
+    p.isOpened
+      ? colors.lightGrey
+      : p.isActive
+      ? opacity(colors.ocean, 0.3)
+      : "transparent"};
   border-bottom-color: ${p => (p.isOpened ? "white" : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
   background-color: ${p => (p.isOpened ? "white" : "#fafafa")};

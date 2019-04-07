@@ -40,6 +40,7 @@ const defaultDefinition = [
       label: "Date",
       align: "left",
       sortable: true,
+      sortFirst: "desc",
     },
     body: {
       prop: "date",
@@ -73,6 +74,7 @@ const defaultDefinition = [
       label: "Amount",
       align: "right",
       sortable: true,
+      sortFirst: "desc",
     },
     body: {
       prop: "amount",

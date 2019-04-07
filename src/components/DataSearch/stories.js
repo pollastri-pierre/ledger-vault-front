@@ -144,7 +144,7 @@ const mockNetwork = async url => {
     throw new Error("cant find route");
   }
 
-  await delay(1e3);
+  await delay(500);
   return {
     edges: edges.map(transaction => ({
       node: transaction,

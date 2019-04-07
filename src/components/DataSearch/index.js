@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import styled from "styled-components";
 import Mutation from "restlay/Mutation";
 import qs from "query-string";
 import omit from "lodash/omit";
@@ -165,6 +166,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const { status, response, error, queryParams } = this.state;
     const data = resolveData(response);
     const isFirstQuery = this._requestId <= 1;
+    const isLoading = status === "loading";
 
     if (status === "error") {
       return (
@@ -179,11 +181,10 @@ class DataSearch extends PureComponent<Props<*>, State> {
       );
     }
 
-    const Loading = isFirstQuery ? InitialLoading : null;
-    const showTable = !(
-      isFirstQuery &&
-      (status === "initial" || status === "loading")
-    );
+    const Loading =
+      isFirstQuery || (!data.length && isLoading) ? InitialLoading : null;
+
+    const showTable = !(isFirstQuery && (status === "initial" || isLoading));
 
     const count = resolveCount(data, response);
     const page = (queryParams.page && parseInt(queryParams.page, 10) - 1) || 0;
@@ -209,9 +210,9 @@ class DataSearch extends PureComponent<Props<*>, State> {
           }
           {...extraProps}
         />
-        {status === "loading" && Loading && <Loading />}
-        {showTable && (
-          <Box flow={10}>
+        {isLoading && Loading && <Loading />}
+        {showTable && !(Loading && !isFirstQuery) && (
+          <Box position="relative">
             <TableComponent
               data={data}
               customTableDef={customTableDef}
@@ -220,6 +221,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
               onSortChange={this.handleChangeSort}
               {...extraProps}
             />
+            <LoadingCanvas show={isLoading && data.length} />
           </Box>
         )}
       </Card>
@@ -236,6 +238,18 @@ const styles = {
     borderRadius: 2,
   },
 };
+
+const LoadingCanvas = styled.div`
+  position: absolute;
+  top: 59px; // muitable header height + padding
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  pointer-events: ${p => (p.show ? "auto" : "none")};
+  background: rgba(255, 255, 255, 0.5);
+  opacity: ${p => (p.show ? 1 : 0)};
+  transition: 100ms linear opacity;
+`;
 
 const InitialLoading = () => (
   <Box align="center" justify="center" style={styles.initialLoading}>
