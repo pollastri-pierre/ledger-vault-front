@@ -36,6 +36,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     const isActive = !!transactionStatuses.length;
     return (
       <WrappableField
+        width={300}
         label="Status"
         isActive={isActive}
         closeOnChange={transactionStatuses}

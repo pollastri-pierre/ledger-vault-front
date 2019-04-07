@@ -12,11 +12,13 @@ const users = genUsers(20);
 const accounts = genAccounts(10, { users });
 
 storiesOf("selects", module).add("SelectAccount", () => (
-  <SelectAccount
-    autoFocus
-    openMenuOnFocus
-    accounts={accounts}
-    value={null}
-    onChange={action("onChange")}
-  />
+  <div style={{ width: 300 }}>
+    <SelectAccount
+      autoFocus
+      openMenuOnFocus
+      accounts={accounts}
+      value={null}
+      onChange={action("onChange")}
+    />
+  </div>
 ));

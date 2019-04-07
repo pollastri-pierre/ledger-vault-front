@@ -10,12 +10,14 @@ import SelectCurrency from "components/SelectCurrency";
 const noOptionsMessage = () => "No options";
 
 storiesOf("selects", module).add("SelectCurrency", () => (
-  <SelectCurrency
-    autoFocus
-    openMenuOnFocus
-    placeholder={text("placeholder", "Placeholder")}
-    value={null}
-    onChange={action("onChange")}
-    noOptionsMessage={noOptionsMessage}
-  />
+  <div style={{ width: 300 }}>
+    <SelectCurrency
+      autoFocus
+      openMenuOnFocus
+      placeholder={text("placeholder", "Placeholder")}
+      value={null}
+      onChange={action("onChange")}
+      noOptionsMessage={noOptionsMessage}
+    />
+  </div>
 ));

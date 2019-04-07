@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import MuiPickersUtilsProvider from "material-ui-pickers/MuiPickersUtilsProvider";
@@ -28,6 +28,7 @@ import dataReducer from "redux/modules/data";
 import CounterValues from "data/CounterValues";
 import exchanges from "redux/modules/exchanges";
 import theme, { styledTheme } from "styles/theme";
+import GlobalStyle from "components/GlobalStyle";
 import i18n from "./i18n";
 
 const createStore = () => {
@@ -62,13 +63,22 @@ addDecorator(story => (
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              <StyledContainer>{story()}</StyledContainer>
+              {story()}
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </MuiThemeProvider>
       </I18nextProvider>
     </Provider>
   </JssProvider>
+));
+
+addDecorator(withKnobs);
+
+addDecorator(storyFn => (
+  <Fragment>
+    <GlobalStyle />
+    {storyFn()}
+  </Fragment>
 ));
 
 addParameters({
@@ -82,19 +92,5 @@ addParameters({
     panelPosition: "bottom",
   },
 });
-
-addDecorator(withKnobs);
-
-const Container = ({ children, classes }) => (
-  <div className={classes.container}>{children}</div>
-);
-
-const StyledContainer = withStyles({
-  container: {
-    "& *": {
-      boxSizing: "border-box",
-    },
-  },
-})(Container);
 
 configure(loadStories, module);

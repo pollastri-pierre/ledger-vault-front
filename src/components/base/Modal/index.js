@@ -20,11 +20,6 @@ const animShowHide = {
 
 const ModalDialog = styled(Box)`
   min-height: 200px;
-
-  // FIXME should be defined globally
-  color: #525252;
-  font-size: 13px;
-  line-height: 1.75;
 `;
 
 const ModalDialogInner = styled(Box).attrs({ bg: "white" })`

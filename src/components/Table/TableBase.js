@@ -121,10 +121,13 @@ export const Table = styled(MUITable)`
       border-bottom: none;
     }
     tr:active td {
-      background: ${opacity(colors.ocean, 0.1)} !important;
+      background: ${opacity(colors.blue, 0.09)} !important;
     }
     tr:hover td {
-      background: ${opacity(colors.ocean, 0.07)};
+      background: ${opacity(colors.blue, 0.05)};
+    }
+    .MuiTableCell-body {
+      color: inherit;
     }
   }
 `;

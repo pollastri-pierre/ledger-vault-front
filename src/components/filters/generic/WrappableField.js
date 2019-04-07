@@ -4,7 +4,7 @@ import React, { Component, createRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import styled from "styled-components";
 
-import colors, { opacity } from "shared/colors";
+import colors from "shared/colors";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -15,6 +15,7 @@ type Props = {
   RenderCollapsed?: React$ComponentType<*>,
   closeOnChange: any,
   isActive: boolean,
+  width: number,
 };
 
 type State = {
@@ -27,6 +28,10 @@ const MENU_WIDTH = 400;
 const GUTTER = 50;
 
 class WrappableField extends Component<Props, State> {
+  static defaultProps = {
+    width: MENU_WIDTH,
+  };
+
   static getDerivedStateFromProps(props: Props, state: State) {
     const patch = {};
     if (state.closeOnChangeRef !== props.closeOnChange) {
@@ -71,7 +76,7 @@ class WrappableField extends Component<Props, State> {
     } = this;
     if (current) {
       const rect = current.getBoundingClientRect();
-      const inWindow = rect.x + MENU_WIDTH + GUTTER < window.innerWidth;
+      const inWindow = rect.x + this.props.width + GUTTER < window.innerWidth;
       const { pos: prevPos } = this.state;
       const pos = inWindow ? "left" : "right";
       if (pos !== prevPos) this.setState({ pos });
@@ -103,7 +108,7 @@ class WrappableField extends Component<Props, State> {
   ref: any = createRef();
 
   render() {
-    const { label, children, RenderCollapsed, isActive } = this.props;
+    const { label, children, RenderCollapsed, isActive, width } = this.props;
     const { isOpened, pos } = this.state;
     return (
       <Box position="relative" ref={this.ref}>
@@ -119,7 +124,11 @@ class WrappableField extends Component<Props, State> {
           {isActive && RenderCollapsed && <RenderCollapsed />}
           <FaCaretDown color={colors.mediumGrey} />
         </InlineLabel>
-        {isOpened && <Menu pos={pos}>{children}</Menu>}
+        {isOpened && (
+          <Menu pos={pos} width={width}>
+            {children}
+          </Menu>
+        )}
       </Box>
     );
   }
@@ -139,11 +148,7 @@ const InlineLabel = styled(Box).attrs({
 
   border-radius: 2px;
   border-color: ${p =>
-    p.isOpened
-      ? colors.lightGrey
-      : p.isActive
-      ? opacity(colors.ocean, 0.3)
-      : "transparent"};
+    p.isOpened ? "#f0f0f0" : p.isActive ? "transparent" : "transparent"};
   border-bottom-color: ${p => (p.isOpened ? "white" : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
   background-color: ${p => (p.isOpened ? "white" : "#fafafa")};
@@ -170,9 +175,9 @@ const Menu = styled(Box).attrs({
   margin-top: -1px;
   left: ${p => (p.pos === "left" ? 0 : "auto")};
   right: ${p => (p.pos === "right" ? 0 : "auto")};
-  width: ${MENU_WIDTH}px;
+  width: ${p => p.width}px;
   background: white;
-  border: 1px solid ${colors.lightGrey};
+  border: 1px solid #f0f0f0;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   border-top-right-radius: 2px;

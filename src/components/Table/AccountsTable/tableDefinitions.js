@@ -16,7 +16,7 @@ export const accountsTableDefault = [
     header: {
       label: "Status",
       align: "left",
-      sortable: false,
+      sortable: true,
     },
     body: {
       prop: "status",
@@ -39,6 +39,7 @@ export const accountsTableDefault = [
       label: "Balance",
       align: "right",
       sortable: true,
+      sortFirst: "desc",
     },
     body: {
       prop: "balance",

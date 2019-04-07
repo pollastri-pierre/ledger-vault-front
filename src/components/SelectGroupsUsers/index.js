@@ -84,11 +84,6 @@ const customComponents = {
 };
 
 const colourStyles = {
-  option: (styles, { isSelected }) => ({
-    ...styles,
-    backgroundColor: isSelected ? colors.argile : styles.backgroundColor,
-    color: isSelected ? "black" : styles.color,
-  }),
   multiValueRemove: styles => ({
     ...styles,
     ":hover": {

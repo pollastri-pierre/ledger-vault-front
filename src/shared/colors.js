@@ -17,6 +17,7 @@ const colors = {
   white: "#ffffff",
   black: "#000000",
   light_orange: "#ffa726",
+  blue: "#1ea7fd",
   blue_orange: "#ffd384",
   blue_red: "#ea2e497d",
   blue_green: "#078e0791",

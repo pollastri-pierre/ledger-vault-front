@@ -36,6 +36,7 @@ class FilterFieldRequestStatuses extends PureComponent<FieldProps> {
     const isActive = !!statuses.length;
     return (
       <WrappableField
+        width={300}
         label="Status"
         isActive={isActive}
         closeOnChange={statuses}
