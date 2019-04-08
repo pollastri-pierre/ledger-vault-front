@@ -15,7 +15,7 @@ import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/base/InfoBox";
 import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import {
   isERC20Token,
   isNotSupportedCoin,
@@ -146,9 +146,9 @@ class AccountCreationCurrencies extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <ModalSubTitle noPadding>
+        <Label>
           <Trans i18nKey="newAccount:currency.label" />
-        </ModalSubTitle>
+        </Label>
         <SelectCurrency
           autoFocus
           openMenuOnFocus={!currencyOrToken}

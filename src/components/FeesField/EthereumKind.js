@@ -11,7 +11,7 @@ import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import connectData from "restlay/connectData";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import TextField from "components/utils/TextField";
 import InputCurrency from "components/InputCurrency";
 import TotalFees from "components/Send/TotalFees";
@@ -162,9 +162,9 @@ class FeesFieldEthereumKind extends PureComponent<
       <Fragment>
         <div className={classes.root}>
           <div className={classes.cell}>
-            <ModalSubTitle noPadding>
+            <Label>
               <Trans i18nKey="send:details.gasPrice" />
-            </ModalSubTitle>
+            </Label>
             <InputCurrency
               currency={currency}
               placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
@@ -179,9 +179,9 @@ class FeesFieldEthereumKind extends PureComponent<
             />
           </div>
           <div className={classes.cell}>
-            <ModalSubTitle noPadding>
+            <Label>
               <Trans i18nKey="send:details.gasLimit" />
-            </ModalSubTitle>
+            </Label>
             <TextField
               placeholder={gasLimitStatus === "fetching" ? "Loading..." : "0"}
               fullWidth

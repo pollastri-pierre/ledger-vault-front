@@ -5,6 +5,7 @@ import { Switch, Route } from "react-router";
 import AlertsContainer from "containers/AlertsContainer";
 import UpdateApp from "components/UpdateApp";
 import MockDevices from "components/MockDevices";
+import GlobalStyle from "components/GlobalStyle";
 import Welcome from "./Welcome";
 
 import App from "./App/App";
@@ -16,6 +17,7 @@ import RegisterUser from "./RegisterUser";
 const OrganizationAppRouter = () => (
   <Fragment>
     <AlertsContainer />
+    <GlobalStyle />
 
     <BrowserRouter>
       <Switch>

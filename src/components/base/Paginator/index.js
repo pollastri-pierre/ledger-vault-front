@@ -16,20 +16,20 @@ type ItemProps = {
   item: number,
   onChange: Function,
 };
+
 class Item extends PureComponent<ItemProps> {
-  onChange = () => {
-    this.props.onChange(this.props.item);
-  };
+  onChange = () => this.props.onChange(this.props.item);
 
   render() {
     const { selected, item } = this.props;
     return (
-      <Container selected={selected} onClick={this.onChange}>
-        {item}
-      </Container>
+      <ItemContainer selected={selected} onClick={this.onChange}>
+        <span>{item}</span>
+      </ItemContainer>
     );
   }
 }
+
 class Paginator extends PureComponent<Props> {
   renderItems = () => {
     const { count, pageSize, page, onChange } = this.props;
@@ -45,26 +45,51 @@ class Paginator extends PureComponent<Props> {
 
   render() {
     return (
-      <Box horizontal align="center" flow={5}>
-        {this.renderItems()}
+      <Box horizontal>
+        <Container>{this.renderItems()}</Container>
       </Box>
     );
   }
 }
 
-const Container = styled(Box).attrs({
+const Container = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
+
+const ItemContainer = styled(Box).attrs({
   align: "center",
   justify: "center",
 })`
   width: 30px;
   height: 30px;
-  background: ${p => (p.selected ? "#efefef" : "white")};
-  color: ${colors.night};
-  cursor: ${p => (p.selected ? "default" : "pointer")};
-  border-radius: 3px;
-  border: 1px solid ${colors.argile};
-  &:hover {
-    background: ${p => (p.selected ? "#efefef" : colors.cream)};
+  position: relative;
+  user-select: none;
+
+  span {
+    position: relative;
   }
+
+  &:active {
+    font-weight: bold;
+  }
+
+  ${({ selected }) => `
+    color: ${selected ? colors.ocean : "inherit"};
+    font-weight: ${selected ? "bold" : "inherit"};
+    cursor: ${selected ? "default" : "pointer"};
+    pointer-events: ${selected ? "none" : "auto"};
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      border-radius: 2px;
+      background: ${selected ? "#fafafa" : "transparent"};
+    }
+  `}
 `;
 export default Paginator;

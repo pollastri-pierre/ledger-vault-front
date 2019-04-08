@@ -76,12 +76,18 @@ class Status extends PureComponent<Props> {
         borderRadius={3}
       >
         {withWarning && iconWarning}
-        <Text small uppercase>
+        <Text small style={styles.text}>
           {str}
         </Text>
       </Box>
     );
   }
 }
+
+const styles = {
+  text: {
+    whiteSpace: "nowrap",
+  },
+};
 
 export default translate()(Status);

@@ -2,6 +2,7 @@
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
+import { Label } from "components/base/form";
 
 import type { User } from "data/types";
 import type { GroupCreationStepProps } from "./types";
@@ -19,6 +20,7 @@ class GroupCreationMembers extends PureComponent<Props> {
     const listOperators = operators.edges.map(e => e.node);
     return (
       <Box>
+        <Label>Select group members:</Label>
         <SelectGroupsUsers
           members={listOperators}
           value={{ members: payload.members, group: [] }}

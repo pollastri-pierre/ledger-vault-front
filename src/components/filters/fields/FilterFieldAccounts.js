@@ -83,6 +83,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
 
     return (
       <WrappableField
+        width={350}
         label="Accounts"
         isActive={isActive}
         closeOnChange={selectedAccounts}

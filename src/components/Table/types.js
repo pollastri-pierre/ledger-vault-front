@@ -9,8 +9,9 @@ export type TableItem = {
 
 type TableHeader = {
   label: string,
-  align: string,
+  align: "left" | "right",
   sortable: boolean,
+  sortFirst?: "asc" | "desc",
 };
 
 type TableBody = {

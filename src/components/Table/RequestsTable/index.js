@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
 import type { ObjectParameters } from "query-string";
 
@@ -9,7 +8,7 @@ import NoDataPlaceholder from "components/NoDataPlaceholder";
 import type { Request } from "data/types";
 import RequestRow from "./RequestRow";
 
-import { TableHeader } from "../TableBase";
+import { Table, TableHeader } from "../TableBase";
 import TableScroll from "../TableScroll";
 import { requestsTableDefault } from "./tableDefinitions";
 import type { TableDefinition } from "../types";
@@ -57,7 +56,7 @@ class RequestsTable extends PureComponent<Props, State> {
 
     return (
       <TableScroll>
-        <MUITable>
+        <Table>
           <TableHeader
             tableDefinition={tableDefinition}
             type="requests"
@@ -65,7 +64,7 @@ class RequestsTable extends PureComponent<Props, State> {
             queryParams={queryParams}
           />
           <MUITableBody>{data.map(this.Request)}</MUITableBody>
-        </MUITable>
+        </Table>
       </TableScroll>
     );
   }

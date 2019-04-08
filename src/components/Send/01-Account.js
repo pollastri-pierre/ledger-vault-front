@@ -15,7 +15,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import SelectAccount from "components/SelectAccount";
 
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import Box from "components/base/Box";
 import { ModalFooter } from "components/base/Modal";
 import InfoBox from "components/base/InfoBox";
@@ -86,9 +86,9 @@ class SendAccount extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        <ModalSubTitle noPadding>
+        <Label>
           <Trans i18nKey="send:account.title" />
-        </ModalSubTitle>
+        </Label>
         <Box flow={20}>
           <SelectAccount
             accounts={accounts}
