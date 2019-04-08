@@ -10,6 +10,9 @@ export type MultiStepsFlowStep<T, P> = {
     isEditMode?: boolean,
   }>,
   requirements?: T => boolean,
+  onNext?: T => Promise<void>,
+  nextLabel?: React$Node,
+  prevLabel?: React$Node,
 };
 
 export type StepProps<T> = {
