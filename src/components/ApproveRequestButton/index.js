@@ -2,11 +2,14 @@
 
 import React, { PureComponent, Fragment } from "react";
 import { NetworkError } from "network";
-import DialogButton from "components/buttons/DialogButton";
+import { FaCheck } from "react-icons/fa";
+
 import Box from "components/base/Box";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
+import { ModalFooterButton } from "components/base/Modal";
 
+import colors from "shared/colors";
 import type { GateError } from "data/types";
 import type { Interaction } from "components/DeviceInteraction";
 
@@ -62,13 +65,14 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             />
           </Box>
         ) : (
-          <DialogButton
-            highlight
-            onTouchTap={this.onCreate}
-            disabled={disabled}
+          <ModalFooterButton
+            color={colors.ocean}
+            onClick={this.onCreate}
+            isDisabled={disabled}
           >
+            <FaCheck style={{ marginRight: 10 }} />
             {buttonLabel}
-          </DialogButton>
+          </ModalFooterButton>
         )}
       </Fragment>
     );
