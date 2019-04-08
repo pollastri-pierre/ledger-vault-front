@@ -131,4 +131,7 @@ export default connectData(SendAccount, {
     me: ProfileQuery,
     allPendingTransactions: PendingTransactionsQuery,
   },
+  initialVariables: {
+    accounts: 30,
+  },
 });

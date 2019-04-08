@@ -18,13 +18,14 @@ import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
 import VaultLayout from "components/VaultLayout";
 
+import type { Connection } from "restlay/ConnectionQuery";
 import getMenuItems from "./getMenuItems";
 
 type Props = {
   match: Match,
   location: Location,
   history: MemoryHistory,
-  accounts: Account[],
+  accounts: Connection<Account>,
   allPendingTransactions: Transaction[],
 };
 
@@ -46,7 +47,7 @@ const App = withMe((props: Props & { me: User }) => {
 
   const menuItems = getMenuItems({
     role: me.role,
-    accounts,
+    accounts: accounts.edges.map(e => e.node),
     allPendingTransactions,
     match,
     location,
@@ -67,8 +68,8 @@ const App = withMe((props: Props & { me: User }) => {
       >
         <Content match={match} />
       </VaultLayout>
-      <UpdateAccountsInfo accounts={accounts} />
-      <UpdateAccounts accounts={accounts} />
+      <UpdateAccountsInfo accounts={accounts.edges.map(e => e.node)} />
+      <UpdateAccounts accounts={accounts.edges.map(e => e.node)} />
       <Modals match={match} />
     </Fragment>
   );
@@ -90,5 +91,8 @@ export default connectData(AppWrapper, {
   queries: {
     accounts: AccountsQuery,
     allPendingTransactions: PendingTransactionsQuery,
+  },
+  initialVariables: {
+    accounts: 30,
   },
 });

@@ -55,6 +55,9 @@ export default connectData(TransactionsContainer, {
   queries: {
     accounts: AccountsQuery,
   },
+  initialVariables: {
+    accounts: 30,
+  },
   RenderLoading: CardLoading,
   RenderError: CardError,
 });

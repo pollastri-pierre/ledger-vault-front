@@ -156,4 +156,7 @@ export default connectData(SendDetails, {
   queries: {
     accounts: AccountsQuery,
   },
+  initialVariables: {
+    accounts: 30,
+  },
 });
