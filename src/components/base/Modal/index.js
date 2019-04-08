@@ -22,11 +22,6 @@ const animShowHide = {
 
 const ModalDialog = styled(Box)`
   min-height: 200px;
-
-  // FIXME should be defined globally
-  color: #525252;
-  font-size: 13px;
-  line-height: 1.75;
 `;
 
 const ModalDialogInner = styled(Box).attrs({ bg: "white" })`
@@ -49,10 +44,6 @@ export const ModalBreadcrumb = styled(Box).attrs({
   flex-shrink: 0;
   font-size: 11px;
 `;
-
-const ModalContent = styled(Box).attrs({
-  grow: 1,
-})``;
 
 export const ModalFooter = styled(Box).attrs(p => ({
   position: "absolute",
@@ -238,7 +229,7 @@ class Modal extends PureComponent<Props, State> {
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>
               <ModalDialogInner onClick={this.swallowClick}>
-                <ModalContent>{children}</ModalContent>
+                <Box grow>{children}</Box>
               </ModalDialogInner>
             </ModalDialog>
           </Animated.div>

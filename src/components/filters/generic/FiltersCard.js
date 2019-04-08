@@ -22,6 +22,7 @@ type Props = {
   queryParams: ObjectParameters,
   children: React$Node,
   onChange: ObjectParameters => void,
+  paginator: ?React$Node,
 };
 
 const fieldsToExclude = ["page", "pageSize"];
@@ -64,6 +65,7 @@ class FiltersCard extends PureComponent<Props> {
       nbResults,
       children,
       queryParams,
+      paginator,
       onChange: _onChange,
       ...props
     } = this.props;
@@ -78,20 +80,53 @@ class FiltersCard extends PureComponent<Props> {
     const showNbResults = typeof nbResults === "number";
 
     return (
-      <Container {...props}>
+      <Box
+        overflow="visible"
+        position="relative"
+        flow={10}
+        noShrink
+        pb={10}
+        {...props}
+      >
         <Filters>{filters}</Filters>
-        <Box horizontal flow={10} color={colors.mediumGrey}>
-          <Text small>
-            {showNbResults ? `${nbResults || 0} result(s) found` : "Loading..."}
-          </Text>
-          {hasFilters && (
-            <ClearButton onClick={this.handleClear}>Clear filters</ClearButton>
+        <Box
+          align="center"
+          justify="space-between"
+          horizontal
+          color={colors.mediumGrey}
+          style={styles.resultsRow}
+        >
+          <Box align="center" horizontal flow={10}>
+            {hasFilters && (
+              <ClearButton onClick={this.handleClear}>
+                <Text small>Clear filters</Text>
+              </ClearButton>
+            )}
+            <Text small noSelect>
+              {showNbResults
+                ? `${nbResults || 0} result(s) found`
+                : "Loading..."}
+            </Text>
+          </Box>
+          {paginator && (
+            <Box horizontal align="center" flow={10}>
+              <Text small noSelect>
+                Page:
+              </Text>
+              {paginator}
+            </Box>
           )}
         </Box>
-      </Container>
+      </Box>
     );
   }
 }
+
+const styles = {
+  resultsRow: {
+    height: 32,
+  },
+};
 
 function hasProps(obj) {
   for (const i in obj) {
@@ -131,13 +166,5 @@ const Filters = styled(Box).attrs({
   }
   margin-bottom: -5px;
 `;
-
-const Container = styled(Box).attrs({
-  overflow: "visible",
-  position: "relative",
-  flow: 10,
-  noShrink: true,
-  pb: 20,
-})``;
 
 export default FiltersCard;

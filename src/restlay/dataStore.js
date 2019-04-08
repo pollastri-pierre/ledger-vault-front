@@ -8,6 +8,8 @@
 /* eslint-disable no-undef */
 
 import { normalize } from "normalizr-gre";
+import isPlainObject from "lodash/isPlainObject";
+import forOwn from "lodash/forOwn";
 import URL from "url";
 import isEqual from "lodash/isEqual";
 import { logout } from "redux/modules/auth";
@@ -195,6 +197,10 @@ export const executeQueryOrMutation =
       .network(uri, method, body)
       .then(data => {
         let result;
+
+        // ability to deserialize query results
+        data = handleDeserialization(queryOrMutation, data);
+
         if (
           queryOrMutation.getFilter &&
           queryOrMutation.getFilter() &&
@@ -332,3 +338,27 @@ export const reducer = (state: * = initialState, action: Object) => {
   }
   return state;
 };
+
+function handleDeserialization(queryOrMutation, data) {
+  if (!queryOrMutation.getDeserialize || !queryOrMutation.getDeserialize()) {
+    return data;
+  }
+  const deserialize = queryOrMutation.getDeserialize();
+  if (isPlainObject(deserialize)) {
+    forOwn(deserialize, (deserialize, key) => {
+      data[key] = Array.isArray(data[key])
+        ? data[key].map(deserialize)
+        : deserialize(data[key]);
+    });
+  } else {
+    data = Array.isArray(data)
+      ? data.map(deserialize)
+      : queryOrMutation instanceof ConnectionQuery
+      ? {
+          ...data,
+          edges: data.edges.map(el => ({ ...el, node: deserialize(el.node) })),
+        }
+      : deserialize(data);
+  }
+  return data;
+}

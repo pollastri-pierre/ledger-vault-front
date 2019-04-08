@@ -185,6 +185,7 @@ const connected = connectData(translate()(AccountApprove), {
   },
   initialVariables: {
     // TODO remove this when endpoint is not paginated anymore
+    accounts: 30,
     users: 30,
   },
   propsToQueryParams: props => ({ accountId: props.match.params.id || "" }),

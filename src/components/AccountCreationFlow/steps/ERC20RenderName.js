@@ -2,18 +2,15 @@
 import React, { PureComponent, Fragment } from "react";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
-import InputField from "components/InputField";
 import AccountSummary from "components/AccountSummary";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
+import { InputText, Label } from "components/base/form";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
-import {
-  getCryptoCurrencyById,
-  getCryptoCurrencyIcon,
-} from "utils/cryptoCurrencies";
+import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
 import type { Translate } from "data/types";
 import type { AccountCreationStepProps, ParentAccount } from "../types";
@@ -29,18 +26,16 @@ type State = {
   matchingNamesWarning: boolean,
 };
 
-const erc20TokenIcon = <ERC20TokenIcon size={15} />;
-
 const ethereumCurrency = getCryptoCurrencyById("ethereum");
-const ropstenCurrency = getCryptoCurrencyById("ethereum_testnet");
-const EthereumCurIcon = getCryptoCurrencyIcon(ethereumCurrency);
-const RopstenCurIcon = getCryptoCurrencyIcon(ropstenCurrency);
-const ethereumCurIcon = EthereumCurIcon ? (
-  <EthereumCurIcon size={15} color={ethereumCurrency.color} />
-) : null;
-const ropstenCurIcon = RopstenCurIcon ? (
-  <RopstenCurIcon size={15} color={ropstenCurrency.color} />
-) : null;
+const ropstenCurrency = getCryptoCurrencyById("ethereum_ropsten");
+const EthereumCurIconSrc = getCryptoCurrencyIcon(ethereumCurrency);
+const RopstenCurIconSrc = getCryptoCurrencyIcon(ropstenCurrency);
+const EthereumCurIcon = EthereumCurIconSrc
+  ? () => <EthereumCurIconSrc size={15} color={ethereumCurrency.color} />
+  : null;
+const RopstenCurIcon = RopstenCurIconSrc
+  ? () => <RopstenCurIconSrc size={15} color={ropstenCurrency.color} />
+  : null;
 
 const inputProps = {
   maxLength: 19,
@@ -123,41 +118,37 @@ class ERC20RenderName extends PureComponent<Props, State> {
     const { parentAccount } = payload;
     const parentCurIcon =
       erc20token.blockchain_name === "foundation"
-        ? ethereumCurIcon
-        : ropstenCurIcon;
+        ? EthereumCurIcon
+        : RopstenCurIcon;
 
     const parentAccountName = getParentAccountName(parentAccount);
 
     return (
       <Fragment>
-        <ModalSubTitle noPadding>{t("newAccount:options.name")}</ModalSubTitle>
-        <InputField
-          dataTest="account_childname"
+        <Label>{t("newAccount:options.name")}</Label>
+        <InputText
           value={payload.name}
+          dataTest="account_childname"
           autoFocus
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          renderLeft={erc20TokenIcon}
+          IconLeft={ERC20TokenIcon}
           {...inputProps}
         />
         {parentAccount && parentAccount.id ? (
           <Fragment>
-            <ModalSubTitle noPadding style={{ marginTop: 30 }}>
-              {t("newAccount:options.selectedParent")}
-            </ModalSubTitle>
+            <Label mt={30}>{t("newAccount:options.selectedParent")}</Label>
             {this.renderParentAccountSummary()}
           </Fragment>
         ) : (
           <Fragment>
-            <ModalSubTitle noPadding style={{ marginTop: 30 }}>
-              {t("newAccount:options.parentName")}
-            </ModalSubTitle>
-            <InputField
-              dataTest="account_parentname"
+            <Label mt={30}>{t("newAccount:options.parentName")}</Label>
+            <InputText
               value={parentAccountName}
+              dataTest="account_parentname"
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
-              renderLeft={parentCurIcon}
+              IconLeft={parentCurIcon}
               {...inputProps}
             />
             {matchingNamesWarning && (

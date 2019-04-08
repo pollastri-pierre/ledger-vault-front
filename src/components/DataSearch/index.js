@@ -1,9 +1,8 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import Mutation from "restlay/Mutation";
 import styled from "styled-components";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Mutation from "restlay/Mutation";
 import qs from "query-string";
 import omit from "lodash/omit";
 import { MdCloudDownload } from "react-icons/md";
@@ -167,6 +166,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const { status, response, error, queryParams } = this.state;
     const data = resolveData(response);
     const isFirstQuery = this._requestId <= 1;
+    const isLoading = status === "loading";
 
     if (status === "error") {
       return (
@@ -181,11 +181,14 @@ class DataSearch extends PureComponent<Props<*>, State> {
       );
     }
 
-    const Loading = isFirstQuery ? InitialLoading : SpinnerCircle;
-    const showTable = !(
-      isFirstQuery &&
-      (status === "initial" || status === "loading")
-    );
+    const Loading =
+      isFirstQuery || (!data.length && isLoading) ? InitialLoading : null;
+
+    const showTable = !(isFirstQuery && (status === "initial" || isLoading));
+
+    const count = resolveCount(data, response);
+    const page = (queryParams.page && parseInt(queryParams.page, 10) - 1) || 0;
+    const showPaginator = count > data.length;
 
     return (
       <Card>
@@ -195,11 +198,21 @@ class DataSearch extends PureComponent<Props<*>, State> {
           onChange={this.handleUpdateQueryParams}
           queryParams={queryParams}
           nbResults={status === "idle" ? data.length : null}
+          paginator={
+            showPaginator ? (
+              <Paginator
+                page={page}
+                count={count}
+                pageSize={pageSize || DEFAULT_PAGE_SIZE}
+                onChange={this.handleChangePage}
+              />
+            ) : null
+          }
           {...extraProps}
         />
-        {status === "loading" && <Loading />}
-        {showTable && (
-          <Box flow={10}>
+        {isLoading && Loading && <Loading />}
+        {showTable && !(Loading && !isFirstQuery) && (
+          <Box position="relative">
             <TableComponent
               data={data}
               customTableDef={customTableDef}
@@ -208,21 +221,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
               onSortChange={this.handleChangeSort}
               {...extraProps}
             />
-            {data.length > 0 &&
-              response &&
-              response.pageInfo &&
-              response.pageInfo.count &&
-              response.pageInfo.count > data.length && (
-                <Paginator
-                  page={
-                    (queryParams.page && parseInt(queryParams.page, 10) - 1) ||
-                    0
-                  }
-                  count={response.pageInfo.count}
-                  pageSize={pageSize || DEFAULT_PAGE_SIZE}
-                  onChange={this.handleChangePage}
-                />
-              )}
+            <LoadingCanvas show={isLoading && data.length} />
           </Box>
         )}
       </Card>
@@ -234,35 +233,28 @@ const styles = {
   initialLoading: {
     height: 250,
     color: colors.steel,
+    background: "#fafafa",
+    border: "1px solid #f0f0f0",
+    borderRadius: 2,
   },
 };
 
-const SpinnerCircleContainer = styled.div`
+const LoadingCanvas = styled.div`
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  top: 59px; // muitable header height + padding
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  pointer-events: ${p => (p.show ? "auto" : "none")};
+  background: rgba(255, 255, 255, 0.5);
+  opacity: ${p => (p.show ? 1 : 0)};
+  transition: 100ms linear opacity;
 `;
-
-const SpinnerCircle = () => (
-  <SpinnerCircleContainer>
-    <CircularProgress size={30} color="primary" />
-  </SpinnerCircleContainer>
-);
 
 const InitialLoading = () => (
   <Box align="center" justify="center" style={styles.initialLoading}>
-    <SpinnerCircle />
-    <MdCloudDownload color={colors.lightGrey} size={40} />
-    <Text>Retrieving data...</Text>
+    <MdCloudDownload color="#aaa" size={40} />
+    <Text small>Retrieving data...</Text>
   </Box>
 );
 
@@ -280,6 +272,16 @@ function resolveData(response) {
     console.warn("Request cant be parsed", err);
     return [];
   }
+}
+
+function resolveCount(data: Array<any>, response: ?Object): number {
+  return (
+    (data.length > 0 &&
+      response &&
+      response.pageInfo &&
+      response.pageInfo.count) ||
+    0
+  );
 }
 
 export default connectData(DataSearch);

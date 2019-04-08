@@ -2,6 +2,7 @@
 import Mutation from "restlay/Mutation";
 import type { Account } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeAccount } from "api/transformations/Account";
 import schema from "data/schema";
 
 type In = {
@@ -17,6 +18,8 @@ export default class EditAccountNameMutation extends Mutation<In, Res> {
   uri = `/accounts/${this.props.account.id}`;
 
   responseSchema = schema.Account;
+
+  deserialize = deserializeAccount;
 
   getSuccessNotification() {
     return success("account'name", "saved");

@@ -143,11 +143,11 @@ class ApprovalsRule extends PureComponent<Props, State> {
           </Box>
           {!!nbSelected && <NbOfUsers nb={nbSelected} isGroup={!!group} />}
           {isInvalid && (
-            <ErrorContainer>
+            <Box p={10} pl={40} pt={0}>
               <InfoBox type="warning">
                 <Text i18nKey="approvalsRules:invalidRule" />
               </InfoBox>
-            </ErrorContainer>
+            </Box>
           )}
         </RuleContainer>
       </div>
@@ -169,12 +169,6 @@ const styles = {
     alignSelf: "flex-end",
   },
 };
-
-const ErrorContainer = styled(Box).attrs({
-  p: 10,
-  pl: 40,
-  pt: 0,
-})``;
 
 const RuleContainer = styled(Box).attrs({
   bg: "white",

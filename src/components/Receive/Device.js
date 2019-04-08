@@ -5,7 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 
 import BluePlug from "components/icons/BluePlug";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 import ReceiveLayout from "./ReceiveLayout";
 import DeviceStep from "./DeviceStep";
 
@@ -29,7 +29,9 @@ class ReceiveDevice extends Component<Props> {
     return (
       <ReceiveLayout
         header={
-          <ModalSubTitle>{<Trans i18nKey="receive:device" />}</ModalSubTitle>
+          <Label>
+            <Trans i18nKey="receive:device" />
+          </Label>
         }
         content={
           <Fragment>

@@ -1,15 +1,17 @@
 // @flow
+import { BigNumber } from "bignumber.js";
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Transaction } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeTransaction } from "api/transformations/Transaction";
 
 export type Note = {
   title: string,
   content: string,
 };
 
-// FIXME API : The API is not consistent between GET operation and POST operation
+// FIXME API : The API is not consistent between GET transaction and POST transaction
 export const speeds = {
   slow: "slow",
   medium: "normal",
@@ -19,7 +21,7 @@ export const speeds = {
 export type Speed = $Values<typeof speeds>;
 
 export type TransactionToPOST = {
-  amount: number,
+  amount: BigNumber,
   fee_level: Speed,
   recipient: string,
   note?: Note,
@@ -27,11 +29,11 @@ export type TransactionToPOST = {
 };
 
 export type Input = {
-  operation: TransactionToPOST,
+  transaction: TransactionToPOST,
   accountId: number,
 };
 
-type Response = Transaction; // the account that has been created
+type Response = Transaction; // the transaction that has been created
 
 export default class NewTransactionMutation extends Mutation<Input, Response> {
   uri = `/accounts/${this.props.accountId}/transactions`;
@@ -40,15 +42,21 @@ export default class NewTransactionMutation extends Mutation<Input, Response> {
 
   responseSchema = schema.Transaction;
 
+  deserialize = deserializeTransaction;
+
   getSuccessNotification() {
-    return success("operation request", "created");
+    return success("transaction request", "created");
   }
 
   getErrorNotification(e: Error) {
-    return error("operation request", "created", e);
+    return error("transaction request", "created", e);
   }
 
   getBody() {
-    return this.props.operation;
+    const { transaction } = this.props;
+    return {
+      ...transaction,
+      amount: transaction.amount.toFixed(),
+    };
   }
 }

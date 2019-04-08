@@ -1,5 +1,21 @@
 import color from "color";
 
+const form = {
+  border: "#e9e9e9",
+  focus: "#1ea7fd",
+  error: "#ea2e49",
+  warning: "#ffac22",
+  placeholder: "#d0d0d0",
+};
+
+const formShadows = {
+  focus: `${opacity(form.focus, 0.07)} 0 2px 5px 2px`,
+  error: `${opacity(form.error, 0.07)} 0 2px 5px 2px`,
+  warning: `${opacity(form.warning, 0.07)} 0 2px 5px 2px`,
+};
+
+form.shadow = formShadows;
+
 const colors = {
   night: "#1d2028",
   mouse: "#e2e2e2",
@@ -17,6 +33,7 @@ const colors = {
   white: "#ffffff",
   black: "#000000",
   light_orange: "#ffa726",
+  blue: "#1ea7fd",
   blue_orange: "#ffd384",
   blue_red: "#ea2e497d",
   blue_green: "#078e0791",
@@ -26,6 +43,10 @@ const colors = {
   translucentGrey: "rgba(153, 153, 153, 0.2)",
   translucentOcean: "rgb(39, 208, 226, 0.2)",
   translucentGrenade: "rgb(234, 46, 73, 0.1)",
+
+  // NEW COLORS
+  text: "#6f6f6f",
+  form,
 };
 
 function opacity(c, op) {

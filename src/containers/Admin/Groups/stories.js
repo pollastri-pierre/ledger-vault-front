@@ -9,14 +9,14 @@ import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
 import { denormalize } from "normalizr-gre";
-import CreateGroup from "containers/Admin/Groups/CreateGroup";
+import GroupCreationFlow from "components/GroupCreationFlow";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import requests from "data/mock-requests.json";
 
 import { genUsers, genGroups, genAccounts } from "data/mock-entities";
 
 const users = genUsers(20);
-const groups = genGroups(3, { users, forceStatus: "PENDING_APPROVAL" });
+const groups = genGroups(3, { users, status: "ACTIVE" });
 const accounts = genAccounts(4);
 
 const fakeNetwork = async url => {
@@ -43,7 +43,15 @@ const fakeNetwork = async url => {
 storiesOf("flows", module).add("Group Creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
-      <CreateGroup />
+      <GroupCreationFlow match={{ params: {} }} />
+    </Modal>
+  </RestlayProvider>
+));
+
+storiesOf("flows", module).add("Group Edit", () => (
+  <RestlayProvider network={fakeNetwork}>
+    <Modal isOpened>
+      <GroupCreationFlow match={{ params: { groupId: 1 } }} />
     </Modal>
   </RestlayProvider>
 ));

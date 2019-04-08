@@ -16,7 +16,7 @@ export const groupsTableDefault = [
     header: {
       label: "Status",
       align: "left",
-      sortable: false,
+      sortable: true,
     },
     body: {
       prop: "status",
@@ -26,12 +26,13 @@ export const groupsTableDefault = [
   {
     header: {
       label: "Members",
-      align: "left",
-      sortable: false,
+      align: "right",
+      sortable: true,
+      sortFirst: "desc",
     },
     body: {
       prop: "members",
-      align: "left",
+      align: "right",
     },
   },
 ];

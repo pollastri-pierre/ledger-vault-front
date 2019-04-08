@@ -143,6 +143,9 @@ const styles = {
     color: colors.steel,
     padding: 5,
   },
+  icon: {
+    marginLeft: 2,
+  },
 };
 
 const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
@@ -156,7 +159,9 @@ const GenericRow = (props: OptionProps) => {
 
   return (
     <Box horizontal align="center" flow={10} py={5}>
-      {icon}
+      <Box align="center" justify="center" ml={2}>
+        {icon}
+      </Box>
       <Text lineHeight={1}>{label}</Text>
     </Box>
   );

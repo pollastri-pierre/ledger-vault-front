@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { translate } from "react-i18next";
@@ -9,7 +10,6 @@ import connectData from "restlay/connectData";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 import { getBridgeForCurrency } from "bridge";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
 
 import DeviceAuthenticate from "components/DeviceAuthenticate";
 import { ModalBody, ModalHeader, ModalTitle } from "components/base/Modal";

@@ -85,11 +85,6 @@ const customComponents = {
 };
 
 const colourStyles = {
-  option: (styles, { isSelected }) => ({
-    ...styles,
-    backgroundColor: isSelected ? colors.argile : styles.backgroundColor,
-    color: isSelected ? "black" : styles.color,
-  }),
   multiValueRemove: styles => ({
     ...styles,
     ":hover": {
@@ -99,6 +94,10 @@ const colourStyles = {
   }),
 };
 class SelectInGroup extends PureComponent<Props> {
+  static defaultProps = {
+    groups: [],
+  };
+
   handleChange = (option: Option[]) => {
     const { onChange } = this.props;
     if (!option) return onChange({ members: [], groups: [] });

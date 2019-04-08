@@ -3,6 +3,7 @@ import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { Transaction } from "data/types";
 import { success, error } from "formatters/notification";
+import { deserializeTransaction } from "api/transformations/Transaction";
 
 type In = {
   operationId: string,
@@ -18,6 +19,8 @@ export default class ApproveTransactionMutation extends Mutation<In, Res> {
   method = "POST";
 
   responseSchema = schema.Transaction;
+
+  deserialize = deserializeTransaction;
 
   getSuccessNotification() {
     return success("operation request", "approved");

@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import type { BigNumber } from "bignumber.js";
 import { getAccountCurrencyUnit } from "data/currency";
 import type { Account, TransactionType } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
@@ -17,7 +18,7 @@ class CurrencyAccountValue extends Component<{
   // the contextual account object
   account: Account,
   // it is the value to display without any digits (for BTC it is satoshi, for EUR it is the nb of cents)
-  value: number,
+  value: BigNumber,
   // always show a sign in front of the value (force a "+" to display for positives)
   alwaysShowSign?: boolean,
   // override the rate to use (default is the account.currentRate)

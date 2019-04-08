@@ -24,8 +24,8 @@ src/**/*.css
 .env.test.local
 .env.production.local
 
-# yarn
-yarn.lock
+# horrible file
+package-lock.json
 
 npm-debug.log*
 yarn-debug.log*

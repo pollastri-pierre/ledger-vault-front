@@ -14,9 +14,10 @@ import Text from "components/base/Text";
 import Box from "components/base/Box";
 import { currencyExchangeSelector } from "redux/modules/exchanges";
 import LineSeparator from "components/LineSeparator";
-import { getCryptoCurrencyById } from "utils/cryptoCurrencies";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { Account, Unit } from "data/types";
 import { SectionRow } from "./SettingsSection";
+import XPUBDisplay from "./XPUBDisplay";
 import colors from "../../shared/colors";
 
 type Props = {
@@ -41,13 +42,9 @@ const mapStateToProps = (state: State, props: Props) => {
 };
 
 class AccountSettings extends PureComponent<Props, State> {
-  constructor({ account }: $Shape<Props>) {
-    super();
-    const { settings } = account;
-    this.state = {
-      settings,
-    };
-  }
+  state = {
+    settings: this.props.account.settings,
+  };
 
   onUnitIndexChange = (unitIndex: number) => {
     const curr = getCryptoCurrencyById(this.props.account.currency);
@@ -148,6 +145,16 @@ class AccountSettings extends PureComponent<Props, State> {
               </Box>
             </SectionRow>
           </Fragment>
+        )}
+
+        {/* ==================================================== */}
+        {/* =                 TODO: REFACTOR                   = */}
+        {/* ==================================================== */}
+        {curr.family === "bitcoin" && (
+          <XPUBDisplay
+            derivationPath={Object.keys(account.extended_pub_keys)[0]}
+            xpub={account.xpub}
+          />
         )}
       </ModalBody>
     );

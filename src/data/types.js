@@ -1,5 +1,7 @@
 // @flow
 
+import type { BigNumber } from "bignumber.js";
+
 // This contains all the flow types for the Data Model (coming from the API)
 // We have a little variation with the way client denormalize the data,
 // therefore we will have _T_Entity types to be the denormalized form of _T_
@@ -21,10 +23,10 @@ export type Organization = {
 };
 
 type Price = {
-  amount: number,
+  amount: BigNumber,
 };
 
-export type Entity = Group | Account | User | Operation;
+export type Entity = Group | Account | User | Transaction;
 
 export type Unit = {
   id?: number,
@@ -105,6 +107,10 @@ export type Approval = {
 };
 
 type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+type ExtendedPubKey = {
+  public_key: string,
+  chain_code: string,
+};
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -114,7 +120,7 @@ type AccountCommon = {
   members: User[],
   settings: AccountSettings,
   security_scheme: SecurityScheme,
-  balance: number,
+  balance: BigNumber,
   number_of_approvals: number,
   created_on: Date,
   approvals: Approval[],
@@ -124,6 +130,8 @@ type AccountCommon = {
   index: number,
   status: string,
   last_request?: Request,
+  xpub: string,
+  extended_pub_keys: ExtendedPubKey,
 };
 export type Account = AccountCommon & {
   currency: string,
@@ -135,12 +143,13 @@ export type TransactionRecipientIsValid = {
 };
 
 export type TransactionGetFees = {
-  amount: number,
+  amount: BigNumber,
   recipient: string,
   fee_level?: string,
-  gas_limit?: ?number,
-  gas_price?: ?number,
+  gas_limit?: ?BigNumber,
+  gas_price?: ?BigNumber,
 };
+
 export type AccountEntity = AccountCommon & {
   currency: string,
 };
@@ -154,9 +163,11 @@ type GroupCommon = {
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
 };
+
 export type GroupEntity = GroupCommon & {
   members: string[],
 };
+
 export type Group = GroupCommon & {
   members: User[],
   approvals: Approval[],
@@ -224,13 +235,13 @@ type TransactionCommon = {
   currency_family: string,
   confirmations: number,
   created_on: Date,
-  price: Price,
-  fees: Price,
+  price?: Price,
+  fees: BigNumber,
   approvedTime: ?string,
   endOfTimeLockTime: ?string,
   endOfRateLimiterTime: ?string,
   type: TransactionType,
-  amount: number,
+  amount: BigNumber,
   account_id: string,
   approved: string[],
   senders: string[],
@@ -246,9 +257,10 @@ type TransactionCommon = {
   hsm_operations?: Object,
   error?: Object,
   last_request?: Request,
-  gas_price?: number,
-  gas_limit?: number,
+  gas_price?: BigNumber,
+  gas_limit?: BigNumber,
 };
+
 export type Transaction = TransactionCommon & {
   notes: Note[],
 };

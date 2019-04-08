@@ -1,3 +1,5 @@
+// @flow
+
 import styled from "styled-components";
 
 export default styled.div`
@@ -9,5 +11,14 @@ export default styled.div`
 `;
 
 function position(pos) {
-  return p => (p[pos] === true ? 0 : p[pos] ? `${p[pos]}px` : "auto");
+  return p =>
+    p[pos] === true
+      ? 0
+      : p[pos] === 0
+      ? 0
+      : p[pos]
+      ? typeof p[pos] === "string"
+        ? p[pos]
+        : `${p[pos]}px`
+      : "auto";
 }

@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 
-import MUITable from "@material-ui/core/Table";
 import MUITableBody from "@material-ui/core/TableBody";
 
 import type { ObjectParameters } from "query-string";
@@ -10,7 +9,7 @@ import NoDataPlaceholder from "components/NoDataPlaceholder";
 
 import type { Group } from "data/types";
 import type { TableDefinition } from "../types";
-import { TableHeader } from "../TableBase";
+import { Table, TableHeader } from "../TableBase";
 import GroupRow from "./GroupRow";
 import { groupsTableDefault } from "./tableDefinitions";
 
@@ -59,7 +58,7 @@ class GroupsTable extends PureComponent<Props, State> {
     }
     return (
       <TableScroll>
-        <MUITable>
+        <Table>
           <TableHeader
             tableDefinition={tableDefinition}
             type="groups"
@@ -67,7 +66,7 @@ class GroupsTable extends PureComponent<Props, State> {
             queryParams={queryParams}
           />
           <MUITableBody>{data.map(this.Group)}</MUITableBody>
-        </MUITable>
+        </Table>
       </TableScroll>
     );
   }

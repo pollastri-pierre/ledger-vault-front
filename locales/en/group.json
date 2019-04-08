@@ -1,6 +1,5 @@
 {
-  "editInfo":
-    "Editing the description doesn't require the quorum validation contrary to editing the list of members",
+  "editInfo": "Editing the description doesn't require the quorum validation contrary to editing the list of members",
   "details": {
     "name": "Group name",
     "at": "Created on",
@@ -9,8 +8,16 @@
   },
   "delete": "Delete Group",
   "create": {
-    "title": "Create Group",
+    "title": "New Group",
+    "editTitle": "Edit group",
+    "name": "name",
+    "name_placeholder": "Enter group name",
+    "desc_placeholder": "Enter group description",
+    "description": "description",
     "members": "members",
-    "submit": "Create Group"
+    "nb_members": "Number of members",
+    "confirmation": "confirmation",
+    "submit": "Create Group",
+    "submit_edit": "Edit Group"
   }
 }

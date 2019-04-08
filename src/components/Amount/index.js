@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from "react";
+import { BigNumber } from "bignumber.js";
 import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
@@ -26,7 +27,7 @@ const styles = {
 
 type Props = {
   account: Account,
-  value: number,
+  value: BigNumber,
   dataTest: ?string,
   strong?: boolean,
   erc20Format?: boolean,

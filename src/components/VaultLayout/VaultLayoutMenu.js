@@ -48,7 +48,7 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
           <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating} />
         </Animated.div>
         <VaultLayoutMenuBody>
-          <VaultLayoutMenuItemsGroup>
+          <div>
             {items.map(item => (
               <VaultLayoutMenuItem
                 key={item.key}
@@ -60,7 +60,7 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
                 {item.label}
               </VaultLayoutMenuItem>
             ))}
-          </VaultLayoutMenuItemsGroup>
+          </div>
         </VaultLayoutMenuBody>
       </VaultLayoutMenu>
     );
@@ -102,8 +102,6 @@ const VaultLayoutMenuBody = styled.div`
     margin-top: 20px;
   }
 `;
-
-const VaultLayoutMenuItemsGroup = styled.div``;
 
 const VaultLayoutMenuToggle = styled.div`
   pointer-events: auto;

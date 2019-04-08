@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
-import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/helpers/currencies";
+import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
+import type { BigNumber } from "bignumber.js";
 
 import type { Unit, TransactionType } from "data/types";
 
@@ -8,7 +9,7 @@ import type { Unit, TransactionType } from "data/types";
 // this component is generic and not responsible of styles.
 type Props = {
   unit: Unit,
-  value: number, // e.g. 10000 . for EUR it means €100.00
+  value: BigNumber, // e.g. 10000 . for EUR it means €100.00
   type?: TransactionType,
   alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
 };
@@ -21,7 +22,7 @@ class CurrencyUnitValue extends PureComponent<Props> {
       `sign-${type === "SEND" ? "negative" : "positive"}`,
     ].join(" ");
     let value_with_sign = value;
-    if (type === "SEND") value_with_sign = value * -1;
+    if (type === "SEND") value_with_sign = value.multipliedBy(-1);
     return (
       <span
         title={formatCurrencyUnit(unit, value_with_sign, {

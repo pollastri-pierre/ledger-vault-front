@@ -13,9 +13,10 @@ import {
   FieldText,
   FieldTransactionStatuses,
 } from "components/filters";
+import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = FieldsGroupProps & {
-  accounts: Account[],
+  accounts: Connection<Account>,
 };
 
 class TransactionsFilters extends PureComponent<Props> {
@@ -28,7 +29,7 @@ class TransactionsFilters extends PureComponent<Props> {
         {...props}
       >
         <FieldCurrency />
-        <FieldAccounts accounts={accounts} />
+        <FieldAccounts accounts={accounts.edges.map(e => e.node)} />
         <FieldTransactionStatuses />
         <FieldDate />
         <FieldText title="Label" queryKey="label" placeholder="Label" />

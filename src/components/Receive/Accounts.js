@@ -3,7 +3,7 @@ import React from "react";
 import type { Account } from "data/types";
 import { Trans } from "react-i18next";
 import SelectAccount from "components/SelectAccount";
-import ModalSubTitle from "components/transactions/creation/ModalSubTitle";
+import { Label } from "components/base/form";
 
 import ReceiveLayout from "./ReceiveLayout";
 
@@ -17,11 +17,7 @@ const ReceiveAccounts = ({
   onSelect: (?Account) => void,
 }) => (
   <ReceiveLayout
-    header={
-      <ModalSubTitle noPadding>
-        {<Trans i18nKey="receive:account_subtitle" />}
-      </ModalSubTitle>
-    }
+    header={<Label>{<Trans i18nKey="receive:account_subtitle" />}</Label>}
     content={
       <SelectAccount
         accounts={accounts.filter(

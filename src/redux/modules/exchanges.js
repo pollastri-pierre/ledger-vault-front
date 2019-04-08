@@ -1,10 +1,10 @@
 // @flow
-import type { Currency } from "@ledgerhq/live-common/lib/types";
+import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 export type SetExchangePairs = (
   Array<{
-    from: Currency,
-    to: Currency,
+    from: CryptoCurrency,
+    to: CryptoCurrency,
     exchange: string,
   }>,
 ) => *;
@@ -45,7 +45,7 @@ export default function reducer(
 
 export const currencyExchangeSelector = (
   state: *,
-  currency: Currency,
+  currency: CryptoCurrency,
 ): ?string => {
   // NOTE checking for null because there is a strange pair btc-to-btc generates which results in exchange - null
   const pair = state.exchanges.pairs.find(

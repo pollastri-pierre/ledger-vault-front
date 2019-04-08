@@ -2,15 +2,13 @@
 
 import React, { PureComponent } from "react";
 import omit from "lodash/omit";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ObjectParameters } from "query-string";
 
 import type { ERC20Token } from "data/types";
-import {
-  getCryptoCurrencyById,
-  getERC20TokenByContractAddress,
-} from "utils/cryptoCurrencies";
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
 import SelectCurrency from "components/SelectCurrency";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";

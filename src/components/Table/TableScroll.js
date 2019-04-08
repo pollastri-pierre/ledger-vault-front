@@ -12,9 +12,8 @@ type State = {
 
 const styles = {
   outer: {
-    borderTop: "1px solid rgb(224, 224, 224)",
-    borderLeft: "1px solid rgb(224, 224, 224)",
-    borderRight: "1px solid rgb(224, 224, 224)",
+    border: "1px solid #f0f0f0",
+    borderRadius: 2,
     position: "relative",
     overflow: "hidden",
   },

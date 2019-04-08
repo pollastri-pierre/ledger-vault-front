@@ -2,8 +2,8 @@
 
 #### Requirements
 
-- Node.js 8.11.3
-- npm 5.6.0
+- Node.js (LTS or latest)
+- Yarn >= 1.5.2
 - docker & docker-compose
 
 Generate a self-signed certificate for `localhost`:
@@ -17,15 +17,15 @@ bash scripts/generate-self-signed-cert.sh
 1. Install dependencies
 
 ```
-npm install
+yarn
 ```
 
 2. Setup & run [vault-integration](https://github.com/LedgerHQ/vault-integration)
 3. Launch development server
 
 ```
-npm run start
+yarn start
 
 # or, if you want mock devices:
-npm run starte2e
+yarn starte2e
 ```
