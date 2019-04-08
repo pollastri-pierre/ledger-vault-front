@@ -98,8 +98,4 @@ export default connectData(ListApprovers, {
   queries: {
     users: UsersQuery,
   },
-  initialVariables: {
-    // TODO remove this when endpoint is not paginated anymore
-    users: 30,
-  },
 });

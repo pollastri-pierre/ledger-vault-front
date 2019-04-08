@@ -43,14 +43,14 @@ class ConnectionQuery<In, Node> {
 
   // ...Internals...
 
-  size = 0;
+  pageSize = -1;
 
   setSize(size: number) {
-    this.size = size;
+    this.pageSize = size;
   }
 
   getSize() {
-    return this.size;
+    return this.pageSize;
   }
 
   // HACK this is a memory so we know if we need to reset or not the connection (if you start a new ConnectionQuery, it will starts from scratch)

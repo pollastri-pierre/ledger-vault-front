@@ -2,13 +2,13 @@
 
 import queryString from "query-string";
 
-import Query from "restlay/Query";
+import ConnectionQuery from "restlay/ConnectionQuery";
 import type { Request } from "data/types";
 
 type Input = {
   status?: string | string[],
 };
-type Response = Request[];
+type Node = Request;
 
 const uri = (query: Input) => {
   let finalQuery = {};
@@ -27,8 +27,8 @@ const uri = (query: Input) => {
   return `/requests${q ? "?" : ""}${q}`;
 };
 
-export default class RequestsQuery extends Query<Input, Response> {
+export default class RequestsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  size = 30;
+  // responseSchema = schema.Account;
 }

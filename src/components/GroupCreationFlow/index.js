@@ -118,10 +118,6 @@ const GroupEdit = connectData(
       operators: UsersQuery,
       group: GroupQuery,
     },
-    initialVariables: {
-      // TODO remove this when endpoint is not paginated anymore
-      operators: 30,
-    },
     propsToQueryParams: props => ({
       role: "OPERATOR",
       groupId: props.groupId || "",
@@ -144,10 +140,6 @@ const GroupCreation = connectData(
     RenderLoading,
     queries: {
       operators: UsersQuery,
-    },
-    initialVariables: {
-      // TODO remove this when endpoint is not paginated anymore
-      operators: 30,
     },
     propsToQueryParams: () => ({
       role: "OPERATOR",
