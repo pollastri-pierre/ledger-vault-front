@@ -52,4 +52,7 @@ export default connectData(withRouter(SubAccounts), {
   queries: {
     accounts: AccountsQuery,
   },
+  initialVariables: {
+    accounts: 30,
+  },
 });
