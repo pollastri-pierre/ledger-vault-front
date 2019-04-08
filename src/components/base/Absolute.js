@@ -8,6 +8,15 @@ export default styled.div`
   left: ${position("left")};
   right: ${position("right")};
   bottom: ${position("bottom")};
+
+  ${p =>
+    p.center
+      ? `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `
+      : ""}
 `;
 
 function position(pos) {
