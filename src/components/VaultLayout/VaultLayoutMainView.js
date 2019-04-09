@@ -12,7 +12,8 @@ const VaultLayoutMainView = styled.div`
 
   padding: 20px;
   background-color: ${vaultLayoutConfig.MAIN_VIEW_BG};
-
+  // NOTE: to discuss which behavior we want for the content
+  // overflow: scroll;
   padding-left: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
 
   @media (max-width: ${vaultLayoutConfig.BREAKPOINT}px) {

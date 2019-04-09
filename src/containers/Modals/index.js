@@ -6,6 +6,7 @@ import AccountCreationFlow from "components/AccountCreationFlow";
 import GroupCreationFlow from "components/GroupCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
 import AccountDetails from "containers/Admin/Accounts/AccountDetails";
+import TransactionDetails from "components/transactions/TransactionModal";
 
 export default () => (
   <Fragment>
@@ -16,6 +17,10 @@ export default () => (
       component={AccountDetails}
     />
     <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
+    <ModalRoute
+      path="*/transactions/details/:transactionId/:tabIndex"
+      component={TransactionDetails}
+    />
     <ModalRoute
       path="*/accounts/new"
       component={AccountCreationFlow}

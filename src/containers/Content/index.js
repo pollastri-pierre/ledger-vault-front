@@ -2,6 +2,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router";
 import type { Match } from "react-router-dom";
+import { withMe } from "components/UserContextProvider";
 
 import AdminDashboard from "containers/Admin/Dashboard";
 import AdminTasks from "containers/Admin/AdminTasks";
@@ -15,8 +16,12 @@ import AccountView from "containers/Account/AccountView";
 
 import Transactions from "containers/Transactions";
 
-function Content({ match }: { match: Match }) {
+import type { User } from "data/types";
+
+function Content({ match, me }: { match: Match, me: User }) {
   const u = match.url;
+  const defaultUrl =
+    me.role === "OPERATOR" ? `${u}/operator/dashboard` : `${u}/admin/dashboard`;
   return (
     <Switch>
       <Route path={`${u}/admin/dashboard`} component={AdminDashboard} />
@@ -31,13 +36,9 @@ function Content({ match }: { match: Match }) {
       <Route path={`${u}/operator/transactions`} component={Transactions} />
       <Route path={`${u}/operator/accounts`} component={OperatorAccounts} />
 
-      <Route
-        exact
-        path={`${u}`}
-        render={() => <Redirect to={`${u}/admin/dashboard`} />}
-      />
+      <Route exact path={`${u}`} render={() => <Redirect to={defaultUrl} />} />
     </Switch>
   );
 }
 
-export default Content;
+export default withMe(Content);
