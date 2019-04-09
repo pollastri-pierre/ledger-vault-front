@@ -17,7 +17,7 @@ type Props<T, P> = {
   Icon: React$ComponentType<*>,
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
-  additionalProps: P,
+  additionalProps?: P,
   onClose?: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
@@ -50,14 +50,15 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   prev = () => this.setCursor(this.state.cursor - 1);
 
   next = async () => {
-    const { steps } = this.props;
+    const { steps, additionalProps } = this.props;
     const { payload, cursor } = this.state;
     const step = steps[cursor];
     const { onNext } = step;
     if (onNext) {
       try {
         this.setState(() => ({ isNextLoading: true }));
-        await onNext(payload);
+        // $FlowFixMe niark niark
+        await onNext(payload, this.updatePayload, additionalProps);
         this.setCursor(this.state.cursor + 1);
       } catch (err) {
         // FIXME handle that
