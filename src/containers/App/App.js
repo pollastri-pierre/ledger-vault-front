@@ -92,7 +92,4 @@ export default connectData(AppWrapper, {
     accounts: AccountsQuery,
     allPendingTransactions: PendingTransactionsQuery,
   },
-  initialVariables: {
-    accounts: 30,
-  },
 });

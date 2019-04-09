@@ -150,7 +150,7 @@ export const executeQueryOrMutation =
             ? size - cache.result.edges.length
             : 0
           : size;
-      if (count < 0) {
+      if (size > -1 && count < 0) {
         const cacheKey = queryOrMutation.getCacheKey();
         // $FlowFixMe
         return Promise.resolve().then(() => {
@@ -168,19 +168,13 @@ export const executeQueryOrMutation =
         // $FlowFixMe
         return Promise.resolve((cache && cache.result) || emptyConnection);
       }
-      const params = queryOrMutation.getPaginationURLParams(
-        count,
-        shouldReset || !cache || cache.result.edges.length === 0
-          ? undefined
-          : typeof cache.result.edges[cache.result.edges.length - 1].cursor ===
-            "number"
-          ? cache.result.edges[cache.result.edges.length - 1].cursor + 1
-          : cache.result.edges[cache.result.edges.length - 1].cursor,
-      );
+
       const { pathname, query } = URL.parse(uri, true);
+      const pageSize = query.pageSize || queryOrMutation.pageSize || undefined;
+
       uri = URL.format({
         pathname,
-        query: { ...query, ...params },
+        query: { ...query, pageSize },
       });
     }
 

@@ -36,7 +36,6 @@ type Props<T> = {
   onRowClick?: T => void,
   listenMutations?: Mutation<any, any>[],
   history?: MemoryHistory,
-  pageSize?: number,
 };
 
 type Status = "initial" | "idle" | "loading" | "error";
@@ -51,12 +50,16 @@ type State = {
 class DataSearch extends PureComponent<Props<*>, State> {
   constructor(props) {
     super(props);
-    const { history } = this.props;
+    const { history, Query } = this.props;
     const queryParams = history ? qs.parse(window.location.search) : {};
 
-    // if no pageSize is given in the url, we provide a default one
+    // if no pageSize is given in the url,
+    // we take the one defined in the Query ( by building a fake query to have the instance )
+    // or we give a default one as a fallback
+
     if (!queryParams.pageSize) {
-      queryParams.pageSize = String(this.props.pageSize || DEFAULT_PAGE_SIZE);
+      const fakeQuery = new Query(queryParams);
+      queryParams.pageSize = String(fakeQuery.pageSize || DEFAULT_PAGE_SIZE);
     }
 
     this.state = {
@@ -108,6 +111,9 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     try {
       const query = new Query(queryParams);
+      if (!queryParams.pageSize) {
+        queryParams.pageSize = String(query.pageSize);
+      }
       const response = await minWait(restlay.fetchQuery(query), 500);
       patch = { status: "idle", response, error: null };
     } catch (error) {
@@ -141,13 +147,11 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
   handleChangePage = (page: number) => {
     const { queryParams } = this.state;
-    const { pageSize } = this.props;
 
     if (!queryParams.page || parseInt(queryParams.page, 10) !== page) {
       this.handleUpdateQueryParams({
         ...queryParams,
         page,
-        pageSize: pageSize || DEFAULT_PAGE_SIZE,
       });
     }
   };
@@ -160,7 +164,6 @@ class DataSearch extends PureComponent<Props<*>, State> {
       customTableDef,
       onRowClick,
       extraProps,
-      pageSize,
     } = this.props;
 
     const { status, response, error, queryParams } = this.state;
@@ -197,13 +200,17 @@ class DataSearch extends PureComponent<Props<*>, State> {
           noShrink
           onChange={this.handleUpdateQueryParams}
           queryParams={queryParams}
-          nbResults={status === "idle" ? data.length : null}
+          nbResults={status === "idle" ? count : null}
           paginator={
             showPaginator ? (
               <Paginator
                 page={page}
                 count={count}
-                pageSize={pageSize || DEFAULT_PAGE_SIZE}
+                pageSize={
+                  (queryParams.pageSize &&
+                    parseInt(queryParams.pageSize, 10)) ||
+                  DEFAULT_PAGE_SIZE
+                }
                 onChange={this.handleChangePage}
               />
             ) : null

@@ -8,7 +8,7 @@ import createMock, { WorldQuery } from "../tests-utils/mock-1";
 // TODO setVariables returns a promise that ends on completion
 // TODO test using getVariables()
 
-test("connection query works with initial query", async () => {
+test.only("connection query works with initial query", async () => {
   const net = networkFromMock(createMock());
   const render = createRender(net.network);
   const World = connectData(
@@ -52,7 +52,7 @@ test("connection query pagination can be pulled once", async () => {
         world: WorldQuery,
       },
       initialVariables: {
-        world: 2,
+        world: 5,
       },
       freezeTransition: true,
     },
