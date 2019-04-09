@@ -9,6 +9,7 @@ import {
   getCryptoCurrencyById,
 } from "@ledgerhq/live-common/lib/currencies";
 
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import CounterValues from "data/CounterValues";
 import type { Account } from "data/types";
 
@@ -16,19 +17,27 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const mapStateToProps = (state, ownProps) => {
   const countervalue = ownProps.accounts
-    .filter(account => account.balance > 0 && account.account_type !== "ERC20")
+    .filter(account => account.balance.isGreaterThan(0))
     .reduce((acc, account) => {
-      const currency = getCryptoCurrencyById(account.currency);
-      return acc.plus(
-        CounterValues.calculateWithIntermediarySelector(state, {
-          from: currency,
-          fromExchange: currency && state.exchanges.data[currency.ticker],
+      try {
+        const curOrToken =
+          account.account_type === "ERC20"
+            ? getERC20TokenByContractAddress(account.contract_address)
+            : getCryptoCurrencyById(account.currency_id);
+        if (!curOrToken) return acc;
+        const cvalue = CounterValues.calculateWithIntermediarySelector(state, {
+          from: curOrToken,
+          fromExchange: curOrToken && state.exchanges.data[curOrToken.ticker],
           intermediary: intermediaryCurrency,
           toExchange: state.exchanges.data.USD,
           to: getFiatCurrencyByTicker("USD"),
           value: account.balance,
-        }),
-      );
+        });
+        return cvalue && !cvalue.isNaN() ? acc.plus(cvalue) : acc;
+      } catch (err) {
+        console.error(err);
+        return acc;
+      }
     }, BigNumber(0));
   return { countervalue };
 };

@@ -1,7 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
 import { BigNumber } from "bignumber.js";
-import { withStyles } from "@material-ui/core/styles";
 
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
@@ -11,15 +10,8 @@ import InputField from "components/InputField";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { sanitizeValueString } from "./helpers";
 
-const styles = {
-  container: {
-    marginBottom: 20,
-  },
-};
-
 type Props<Transaction> = {
   account: Account,
-  classes: { [_: $Keys<typeof styles>]: string },
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
   amountIsValid: boolean,
@@ -39,7 +31,7 @@ const getCurrencyLikeUnit = decimals => ({
 });
 
 class AmountNoUnits extends PureComponent<Props<*>, State> {
-  constructor(props) {
+  constructor(props: Props<*>) {
     super(props);
     const token = getERC20TokenByContractAddress(
       this.props.account.contract_address,
@@ -57,7 +49,7 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
     };
   }
 
-  onChange = amount => {
+  onChange = (amount: string) => {
     const { account, bridge, transaction } = this.props;
     const { token } = this.state;
 
@@ -71,24 +63,22 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
   };
 
   render() {
-    const { classes, amountIsValid } = this.props;
+    const { amountIsValid } = this.props;
     const { token, displayValue } = this.state;
     return (
-      <div className={classes.container}>
-        <InputField
-          value={displayValue}
-          autoFocus
-          textAlign="right"
-          onChange={this.onChange}
-          placeholder="0"
-          fullWidth
-          data-test="transaction-creation-amount"
-          error={!amountIsValid}
-          renderLeft={<div>{token && token.ticker}</div>}
-        />
-      </div>
+      <InputField
+        value={displayValue}
+        autoFocus
+        textAlign="right"
+        onChange={this.onChange}
+        placeholder="0"
+        fullWidth
+        data-test="transaction-creation-amount"
+        error={!amountIsValid}
+        renderLeft={<div>{token && token.ticker}</div>}
+      />
     );
   }
 }
 
-export default withStyles(styles)(AmountNoUnits);
+export default AmountNoUnits;

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Trans } from "react-i18next";
 
@@ -71,28 +71,26 @@ class SendAmount extends PureComponent<Props<*>> {
               onChangeTransaction={onChangeTransaction}
             />
           ) : (
-            <Fragment>
-              <InputCurrency
-                currency={currency}
-                placeholder="0"
-                size="large"
-                onChange={this.onChange}
-                defaultUnit={account.settings.currency_unit}
-                value={bridge.getTransactionAmount(account, transaction)}
-                error={!amountIsValid}
-                data-test="transaction-creation-amount"
-              />
-              <div className={classes.countervalue}>
-                <div className={classes.fiat}>USD</div>
-                <div className={classes.fiat}>
-                  <CounterValue
-                    value={bridge.getTransactionAmount(account, transaction)}
-                    from={account.currency}
-                  />
-                </div>
-              </div>
-            </Fragment>
+            <InputCurrency
+              currency={currency}
+              placeholder="0"
+              size="large"
+              onChange={this.onChange}
+              defaultUnit={account.settings.currency_unit}
+              value={bridge.getTransactionAmount(account, transaction)}
+              error={!amountIsValid}
+              data-test="operation-creation-amount"
+            />
           )}
+          <div className={classes.countervalue}>
+            <div className={classes.fiat}>USD</div>
+            <div className={classes.fiat}>
+              <CounterValue
+                value={bridge.getTransactionAmount(account, transaction)}
+                fromAccount={account}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
