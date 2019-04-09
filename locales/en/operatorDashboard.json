@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "header": "Tasks assigned to you"
+  },
+  "transactions": {
+    "header": "Last Transactions"
+  },
+  "statistics": {
+    "header": "My Statistics"
+  },
+  "activity": {
+    "header": "Last Activity"
+  }
+}

@@ -7,6 +7,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 
 import imgEmptyState from "assets/img/empty-state.svg";
+import imgEmptyStateHappy from "assets/img/empty-state-happy.svg";
 
 const styles = {
   container: {
@@ -23,12 +24,17 @@ const styles = {
 
 class NoDataPlaceholder extends Component<{
   title: string,
+  happy?: boolean,
 }> {
   render() {
-    const { title } = this.props;
+    const { title, happy } = this.props;
     return (
       <Box align="center" justify="center" flow={20} style={styles.container}>
-        <img src={imgEmptyState} alt="" style={styles.image} />
+        <img
+          src={happy ? imgEmptyStateHappy : imgEmptyState}
+          alt=""
+          style={styles.image}
+        />
         <Text small>{title}</Text>
       </Box>
     );

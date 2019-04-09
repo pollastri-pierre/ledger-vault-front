@@ -13,6 +13,8 @@ const Fiat = create("fiats");
 
 const Account = create("accounts");
 
+const Request = create("requests");
+
 const Activity = create(
   "activities",
   {
@@ -40,6 +42,7 @@ const Balance = create("balance");
 export default {
   Group,
   User,
+  Request,
   Currency,
   Account,
   Transaction,
