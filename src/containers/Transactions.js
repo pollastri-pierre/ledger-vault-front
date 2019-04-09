@@ -17,11 +17,12 @@ import ModalRoute from "components/ModalRoute";
 import DataSearch from "components/DataSearch";
 
 import type { Account, Transaction } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   history: MemoryHistory,
   match: Match,
-  accounts: Account[],
+  accounts: Connection<Account>,
 };
 
 class TransactionsContainer extends PureComponent<Props> {
@@ -38,7 +39,7 @@ class TransactionsContainer extends PureComponent<Props> {
           Query={SearchTransactionsQuery}
           TableComponent={TransactionsTable}
           FilterComponent={TransactionsFilters}
-          extraProps={{ accounts }}
+          extraProps={{ accounts: accounts.edges.map(e => e.node) }}
           history={history}
           onRowClick={this.handleTransactionClick}
         />

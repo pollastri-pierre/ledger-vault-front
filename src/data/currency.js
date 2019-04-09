@@ -1,13 +1,20 @@
 // @flow
+
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
 import fiatUnits from "constants/fiatUnits";
 import type { Account, Unit } from "./types";
 
 // This define utility to deal with currencies, units, countervalues
 
 export function getAccountCurrencyUnit(account: Account): Unit {
-  // const unitIndex: number = account.settings ? account.settings.unit_index : -1;
+  if (!account.settings) {
+    console.warn("account doesnt have settings. using default unit");
+    const currency = getCryptoCurrencyById(account.currency);
+    // $FlowFixMe this is compatible with Unit anyway
+    return currency.units[0];
+  }
   return account.settings.currency_unit;
-  // return account.currency.units[unitIndex] || account.currency.units[0];
 }
 
 export function getFiatUnit(fiat: string): Unit {

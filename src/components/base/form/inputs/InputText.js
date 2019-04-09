@@ -41,7 +41,7 @@ class InputText extends PureComponent<Props, State> {
   handleChange = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { onChange, maxLength, onlyAscii } = this.props;
     if (onChange) {
-      let value = e.target.value.trim();
+      let value = e.target.value;
       if (maxLength) {
         value = value.substr(0, maxLength);
       }
