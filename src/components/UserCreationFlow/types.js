@@ -6,10 +6,10 @@ export type UserCreationPayload = {
   role: string,
   username: string,
   userID: string,
+  request_id: ?string,
+  url: ?string,
 };
 
-export type UserCreationUpdatePayload = (
-  $Shape<UserCreationPayload>,
-) => void;
+export type UserCreationUpdatePayload = ($Shape<UserCreationPayload>) => void;
 
 export type UserCreationStepProps = StepProps<UserCreationPayload>;

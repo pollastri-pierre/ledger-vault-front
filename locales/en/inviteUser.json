@@ -3,17 +3,33 @@
   "inviteLink": "Invite new User",
   "steps": {
     "infos": {
-      "title": "Informations"
+      "title": "Information",
+      "nextLabel": {
+        "generateLink": "Generate Link",
+        "updateInfo": "Update Info"
+        }
     },
     "role": {
-      "title": "Role"
+      "title": "Role",
+      "label": "Choose a role for the new user",
+      "admin": {
+        "title": "Administrator",
+        "desc": "User will be able to create other users, groups, etc."
+      },
+      "operator": {
+        "title": "Operator",
+        "desc": "User will be able to create and validate transactions."
+      }
+    },
+    "confirmation": {
+      "title": "Confirmation"
     }
   },
   "form": {
+    "labelUsername": "Enter Username",
     "placeholderUsername": "Enter a username",
     "placeholderUserID": "Enter the user's User ID",
     "labelUserID": "User ID",
-    "labelUsername": "Username",
     "radio": {
       "admin": "Administrator",
       "operator": "Operator"

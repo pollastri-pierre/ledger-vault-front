@@ -10,7 +10,9 @@ import UserCreationFlow from "components/UserCreationFlow";
 
 const fakeNetwork = async url => {
   await delay(1e3);
-  console.log(url);
+  if (url === "/requests") {
+    return { url_id: "c4ab6059-45ab-485b-b1a1-665be5224358", id: 123 };
+  }
   throw new Error("invalid url");
 };
 

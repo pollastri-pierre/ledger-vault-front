@@ -19,7 +19,8 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 
 import type { User } from "data/types";
 
-import InviteUser from "../InviteUser";
+// import InviteUser from "../InviteUser";
+import UserCreationFlow from "components/UserCreationFlow";
 
 type Props = {
   match: Match,
@@ -63,7 +64,10 @@ class Users extends PureComponent<Props> {
           onRowClick={this.handleUserClick}
           listenMutations={mutationsToListen}
         />
-        <ModalRoute path={`${match.url}/invite/user`} component={InviteUser} />
+        <ModalRoute
+          path={`${match.url}/invite/user`}
+          component={UserCreationFlow}
+        />
       </Fragment>
     );
   }

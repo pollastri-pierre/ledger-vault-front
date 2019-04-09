@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import { Trans } from "react-i18next";
 
 import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
@@ -15,25 +16,31 @@ export default (props: UserCreationStepProps) => {
   const { role } = payload;
   return (
     <Box>
-      <Label>Choose a role for the new user</Label>
+      <Label>
+        <Trans i18nKey="inviteUser:steps.role.label" />
+      </Label>
       <Box pt={40} horizontal align="center" justify="center" flow={30}>
         <Choice
           isActive={role === "ADMIN"}
           onClick={() => updatePayload({ role: "ADMIN" })}
         >
-          <Text bold>Administrator</Text>
-          <Text small color={colors.mediumGrey}>
-            User will be able to create other users, groups, etc.
-          </Text>
+          <Text bold i18nKey="inviteUser:steps.role.admin.title" />
+          <Text
+            small
+            color={colors.mediumGrey}
+            i18nKey="inviteUser:steps.role.admin.desc"
+          />
         </Choice>
         <Choice
           isActive={role === "OPERATOR"}
           onClick={() => updatePayload({ role: "OPERATOR" })}
         >
-          <Text bold>Operator</Text>
-          <Text small color={colors.mediumGrey}>
-            User will be able to create and validate transactions.
-          </Text>
+          <Text bold i18nKey="inviteUser:steps.role.operator.title" />
+          <Text
+            small
+            color={colors.mediumGrey}
+            i18nKey="inviteUser:steps.role.operator.desc"
+          />
         </Choice>
       </Box>
     </Box>
