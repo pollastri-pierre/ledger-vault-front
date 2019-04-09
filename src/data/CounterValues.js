@@ -1,11 +1,15 @@
 import axios from "axios";
+import uniqBy from "lodash/uniqBy";
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
 import { createSelector } from "reselect";
 import {
   getFiatCurrencyByTicker,
   getCryptoCurrencyById
 } from "@ledgerhq/live-common/lib/currencies";
-import { listCryptoCurrencies } from "utils/cryptoCurrencies";
+import {
+  listCryptoCurrencies,
+  getERC20TokenByContractAddress
+} from "utils/cryptoCurrencies";
 import { setNetwork } from "@ledgerhq/live-common/lib/network";
 
 import { accountsSelector } from "restlay/dataStore";
@@ -20,26 +24,43 @@ const pairsSelector = createSelector(accountsSelector, accounts =>
       from: intermediaryCurrency,
       to: getFiatCurrencyByTicker("USD")
     }
-  ].concat(
-    allCurrencies
-      .filter(
-        currency =>
-          accounts.findIndex(account => {
-            if (
-              account.currency_id === "ethereum_ropsten" &&
-              currency.id === "ethereum"
-            )
-              return true;
-            return account.currency_id === currency.id;
-          }) > -1 &&
-          currency.name !== "bitcoin_testnet" &&
-          currency.name !== "bitcoin"
+  ]
+    .concat(
+      allCurrencies
+        .filter(
+          currency =>
+            accounts.findIndex(account => {
+              if (
+                account.currency_id === "ethereum_ropsten" &&
+                currency.id === "ethereum"
+              )
+                return true;
+              return account.currency_id === currency.id;
+            }) > -1 &&
+            currency.name !== "bitcoin_testnet" &&
+            currency.name !== "bitcoin"
+        )
+        .map(currency => ({
+          from: allCurrencies.find(curr => curr.id === currency.id),
+          to: intermediaryCurrency
+        }))
+    )
+    .concat(
+      uniqBy(
+        accounts
+          .filter(a => a.account_type === "ERC20")
+          .map(a => {
+            const token = getERC20TokenByContractAddress(a.contract_address);
+            if (!token) return null;
+            return {
+              from: { ticker: token.ticker },
+              to: intermediaryCurrency
+            };
+          })
+          .filter(Boolean),
+        "from.ticker"
       )
-      .map(currency => ({
-        from: allCurrencies.find(curr => curr.id === currency.id),
-        to: intermediaryCurrency
-      }))
-  )
+    )
 );
 
 setNetwork(axios);

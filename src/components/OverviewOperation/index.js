@@ -80,10 +80,9 @@ class OverviewOperation extends Component<Props, *> {
           <p className={classes.fiat}>
             <CounterValue
               value={amount}
-              from={account.currency_id}
+              fromAccount={account}
               alwaysShowSign
               type={operationType}
-              disableCountervalue={erc20Format}
             />
           </p>
         </div>

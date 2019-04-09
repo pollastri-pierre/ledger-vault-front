@@ -248,10 +248,9 @@ class CountervalueColumn extends Component<Cell> {
     if (account) {
       return (
         <CounterValue
-          from={account.currency_id}
+          fromAccount={account}
           value={operation.amount || operation.price.amount}
           alwaysShowSign
-          disableCountervalue={account.account_type === "ERC20"}
           type={operation.type}
         />
       );
