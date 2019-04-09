@@ -6,10 +6,10 @@ import {
   listCryptoCurrencies,
   getCryptoCurrencyById,
   getFiatCurrencyByTicker,
-  getERC20TokenByContractAddress,
 } from "@ledgerhq/live-common/lib/currencies";
 import { setNetwork } from "@ledgerhq/live-common/lib/network";
 
+import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
 
