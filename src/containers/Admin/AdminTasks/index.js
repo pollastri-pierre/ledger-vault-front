@@ -26,6 +26,7 @@ class Users extends PureComponent<Props> {
       this.props.history.push(`tasks/users/details/${request.target_id}`);
     } else if (
       request.target_type === "BITCOIN_ACCOUNT" ||
+      request.target_type === "ERC20_ACCOUNT" ||
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
       this.props.history.push(`tasks/accounts/details/${request.target_id}`);

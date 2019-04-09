@@ -103,9 +103,10 @@ class ERC20RenderName extends PureComponent<Props, State> {
     const { payload, allAccounts } = this.props;
     const { parentAccount } = payload;
     if (!parentAccount || !parentAccount.id) return null;
-    const account = allAccounts.find(
-      acc => parentAccount.id && acc.id === parentAccount.id,
+    const accountElement = allAccounts.edges.find(
+      el => parentAccount.id && el.node.id === parentAccount.id,
     );
+    const account = accountElement ? accountElement.node : null;
     if (!account) return null;
     return <AccountSummary account={account} />;
   };

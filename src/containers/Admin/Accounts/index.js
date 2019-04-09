@@ -13,10 +13,15 @@ import Text from "components/base/Text";
 import { CardTitle } from "components/base/Card";
 import type { Account } from "data/types";
 
+import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
+import AbortRequestMutation from "api/mutations/AbortRequestMutation";
+
 type Props = {
   history: MemoryHistory,
   location: Location,
 };
+
+const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 
 class AdminAccounts extends PureComponent<Props> {
   handleAccountClick = (account: Account) => {
@@ -48,6 +53,7 @@ class AdminAccounts extends PureComponent<Props> {
         onRowClick={this.handleAccountClick}
         HeaderComponent={this.HeaderComponent}
         history={history}
+        listenMutations={mutationsToListen}
       />
     );
   }

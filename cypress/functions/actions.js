@@ -50,7 +50,7 @@ export function route() {
   cy.route("post", "**/fees").as("fees");
   cy.route("post", "**/people").as("people");
   cy.route("post", "**/organization").as("organization");
-  cy.route("post", "**/accounts/status/**").as("new-account");
+  cy.route("post", "**/accounts?status=**").as("new-account");
 
   // onboarding
   const orga_name = Cypress.env("workspace");
@@ -79,7 +79,9 @@ export function route() {
   cy.route("post", "**/challenge?account_type=ERC20").as("account_ERC20");
   cy.route("post", "**/accounts").as("accounts");
   cy.route("get", "**/accounts/pending").as("pending");
-  cy.route("get", "**/accounts/status/APPROVED,VIEW_ONLY").as("approve_acc");
+  cy.route("get", "**/accounts?status=APPROVED&status=VIEW_ONLY").as(
+    "approve_acc",
+  );
 }
 
 /**

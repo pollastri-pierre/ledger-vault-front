@@ -349,6 +349,7 @@ type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
+  | "ERC20_ACCOUNT"
   | "TRANSACTION"
   | "PERSON";
 
