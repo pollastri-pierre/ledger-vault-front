@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
 import LineRow from "components/LineRow";
@@ -13,10 +14,30 @@ class UserCreationConfirmation extends PureComponent<UserCreationStepProps> {
     const { username, userID, role, url } = payload;
     return (
       <Box>
-        <LineRow label="Username">{username}</LineRow>
-        <LineRow label="Role">{role}</LineRow>
-        <LineRow label="UserID">{userID}</LineRow>
-        <LineRow label="Url">
+        <LineRow
+          label={
+            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.username" />
+          }
+        >
+          {username}
+        </LineRow>
+        <LineRow
+          label={
+            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.role" />
+          }
+        >
+          {role}
+        </LineRow>
+        <LineRow
+          label={
+            <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.userID" />
+          }
+        >
+          {userID}
+        </LineRow>
+        <LineRow
+          label={<Trans i18nKey="inviteUser:steps.confirmation.rowTitle.url" />}
+        >
           <CopyToClipboardButton visible textToCopy={url || ""} />
         </LineRow>
       </Box>

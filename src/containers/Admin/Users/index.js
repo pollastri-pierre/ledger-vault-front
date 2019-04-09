@@ -19,7 +19,6 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 
 import type { User } from "data/types";
 
-// import InviteUser from "../InviteUser";
 import UserCreationFlow from "components/UserCreationFlow";
 
 type Props = {

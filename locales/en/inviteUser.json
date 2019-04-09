@@ -22,22 +22,23 @@
       }
     },
     "confirmation": {
-      "title": "Confirmation"
+      "title": "Confirmation",
+      "rowTitle": {
+        "username": "Username",
+        "userID": "User ID",
+        "role": "Role",
+        "url": "Url"
+      }
     }
   },
   "form": {
     "labelUsername": "Enter Username",
     "placeholderUsername": "Enter a username",
     "placeholderUserID": "Enter the user's User ID",
-    "labelUserID": "User ID",
-    "radio": {
-      "admin": "Administrator",
-      "operator": "Operator"
-    }
+    "labelUserID": "User ID"
   },
   "description": "Share this URL with the new user using your organization's approved means of communication.",
   "generateLink": "Generate link",
-  "updateMember": "Update user information",
   "registration": {
     "title": "Register new {{userRole}}",
     "username": "Username:",
