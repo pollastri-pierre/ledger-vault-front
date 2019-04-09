@@ -5,6 +5,7 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import TryAgain from "components/TryAgain";
 import { createAndApproveAccount } from "device/interactions/approveFlow";
 import ModalLoading from "components/ModalLoading";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
@@ -16,7 +17,6 @@ import {
   isNotSupportedCoin,
   getCurrencyIdFromBlockchainName,
 } from "utils/cryptoCurrencies";
-import type { ERC20Token } from "data/types";
 
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
 import AccountCreationName from "./steps/AccountCreationName";
@@ -147,13 +147,16 @@ export default connectData(
   ),
   {
     RenderLoading,
+    RenderError: TryAgain,
     queries: {
       allAccounts: PotentialParentAccountsQuery,
       users: UsersQuery,
       groups: GroupsQuery,
     },
     propsToQueryParams: () => ({
-      role: "OPERATOR",
+      // FIXME FIXME FIXME this is a hack to actually be able to create
+      // an account, because 1rst approval group require to have admin on it
+      role: ["ADMIN", "OPERATOR"],
     }),
   },
 );
@@ -161,50 +164,29 @@ export default connectData(
 function serializePayload(payload: AccountCreationPayload) {
   const data: Object = {
     name: payload.name,
-    rules: payload.rules,
-    // old hsm
-    // the gate is actually creating in the old/current HSM so it needs the previous shape
-    // to be removed later
-    members: [
-      {
-        pub_key:
-          "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
-      },
-      {
-        pub_key:
-          "047F2ACCB0B06F77F98D37B358062CA2E17E042C48EC3D58355A52CF086BFA27C7E80B18D18283537D595DC96438CAC1943AA5DFDBF6DB079BCD68EBD3D2D32670",
-      },
-    ],
-    security_scheme: {
-      quorum: 2,
-    },
+    tx_approval_rules: payload.rules,
   };
+
   if (payload.currency) {
-    Object.assign(data, {
-      currency: {
-        name: payload.currency.id,
-      },
-    });
-    // HACK because ll-common "ethereum_testnet" should be "ethereum_ropsten"
-    if (data.currency.name === "ethereum_testnet") {
-      data.currency.name = "ethereum_ropsten";
-    }
+    Object.assign(data, { currency: { name: payload.currency.id } });
   }
+
   if (payload.erc20token) {
-    const token: ERC20Token = payload.erc20token;
+    const { erc20token: token } = payload;
+    const currencyName = getCurrencyIdFromBlockchainName(token.blockchain_name);
+    const erc20 = {
+      ticker: token.ticker,
+      address: token.contract_address,
+      decimals: token.decimals,
+      signature: token.signature || "",
+    };
     Object.assign(data, {
-      currency: {
-        name: getCurrencyIdFromBlockchainName(token.blockchain_name),
-      },
-      erc20: {
-        ticker: token.ticker,
-        address: token.contract_address,
-        decimals: token.decimals,
-        signature: token.signature || "",
-      },
+      currency: { name: currencyName },
+      erc20,
       parent_account: payload.parentAccount,
     });
   }
+
   return {
     account_type: getGateAccountType(payload),
     account_data: data,

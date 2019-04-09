@@ -1,6 +1,6 @@
 // @flow
 
-import Query from "restlay/Query";
+import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Account } from "data/types";
 import { isSupportedAccount } from "utils/accounts";
@@ -10,14 +10,14 @@ type Input = void;
 type Response = Account[];
 
 // Fetch all accounts
-export default class PotentialParentAccountsQuery extends Query<
+export default class PotentialParentAccountsQuery extends ConnectionQuery<
   Input,
   Response,
 > {
   uri =
-    "/accounts/status/APPROVED,PENDING,PENDING_UPDATE,PENDING_UPDATE_VIEW_ONLY,VIEW_ONLY";
+    "/accounts?status=APPROVED&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY";
 
-  responseSchema = [schema.Account];
+  responseSchema = schema.Account;
 
   filter = isSupportedAccount;
 

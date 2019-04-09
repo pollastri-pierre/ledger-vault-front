@@ -10,6 +10,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
 
 import type { Account, ERC20Token } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
 
 import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
@@ -49,34 +50,38 @@ const styles = {
 
 const findParentAccountInAccounts = (
   parentAccount: ?ParentAccount,
-  availableParentAccounts: Account[],
-) =>
-  availableParentAccounts.find(
-    a => parentAccount && parentAccount.id && a.id === parentAccount.id,
-  ) || null;
+  availableParentAccounts: Connection<Account>,
+) => {
+  const el = availableParentAccounts.edges.find(
+    el => parentAccount && parentAccount.id && el.node.id === parentAccount.id,
+  );
+  return el ? el.node : null;
+};
 
 const getAvailableParentsAccounts = (
-  allAccounts: Account[],
+  allAccounts: Connection<Account>,
   erc20token: ?ERC20Token,
-) => {
+): Account[] => {
   if (!erc20token) return [];
-  const parentsIdsOfSameTokenAccounts = allAccounts
+  const parentsIdsOfSameTokenAccounts = allAccounts.edges
     .filter(
-      a =>
-        a.account_type === "ERC20" &&
+      el =>
+        el.node.account_type === "ERC20" &&
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
-        a.contract_address === erc20token.contract_address,
+        el.node.contract_address === erc20token.contract_address,
     )
-    .map(a => a.parent_id);
-  return allAccounts.filter(
-    a =>
-      a.status !== "PENDING" &&
-      a.account_type === "Ethereum" &&
-      a.currency ===
-        // $FlowFixMe inference fail again. see up.
-        getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
-      parentsIdsOfSameTokenAccounts.indexOf(a.id) === -1,
-  );
+    .map(el => el.node.parent_id);
+  return allAccounts.edges
+    .filter(
+      el =>
+        el.node.status !== "PENDING" &&
+        el.node.account_type === "Ethereum" &&
+        el.node.currency ===
+          // $FlowFixMe inference fail again. see up.
+          getCurrencyIdFromBlockchainName(erc20token.blockchain_name) &&
+        parentsIdsOfSameTokenAccounts.indexOf(el.node.id) === -1,
+    )
+    .map(el => el.node);
 };
 
 type Props = AccountCreationStepProps & {

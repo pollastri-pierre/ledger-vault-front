@@ -3,6 +3,7 @@ import queryString from "query-string";
 
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
+import { deserializeAccount } from "api/transformations/Account";
 import type { Account } from "data/types";
 
 type Input = {
@@ -13,7 +14,7 @@ type Node = Account;
 
 const uri = (query: Input) => {
   const finalQuery: Object = { ...query };
-  const prefix = "/accounts-mock";
+  const prefix = "/accounts";
   const q = queryString.stringify(finalQuery);
   const suffix = q ? `?${q}` : "";
   return `${prefix}${suffix}`;
@@ -26,4 +27,6 @@ export default class AccountsQuery extends ConnectionQuery<Input, Node> {
   size = 30;
 
   nodeSchema = schema.Account;
+
+  deserialize = deserializeAccount;
 }

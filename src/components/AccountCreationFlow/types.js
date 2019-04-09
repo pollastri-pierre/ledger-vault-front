@@ -24,7 +24,7 @@ export type AccountCreationUpdatePayload = (
 type GenericStepProps = StepProps<AccountCreationPayload>;
 
 export type AccountCreationStepProps = GenericStepProps & {
-  allAccounts: Account[],
+  allAccounts: Connection<Account>,
   users: Connection<User>,
   groups: Group[],
 };
