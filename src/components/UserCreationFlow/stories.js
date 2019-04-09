@@ -2,12 +2,11 @@
 
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import RestlayProvider from "restlay/RestlayProvider";
-import { delay } from "utils/promise";
 
-import { action } from "@storybook/addon-actions";
+import { delay } from "utils/promise";
+import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
-import InviteUser from "containers/Admin/InviteUser";
+import UserCreationFlow from "components/UserCreationFlow";
 
 const fakeNetwork = async url => {
   await delay(1e3);
@@ -17,10 +16,10 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("flows", module).add("Invite user", () => (
+storiesOf("flows", module).add("User creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
-      <InviteUser close={action("close")} />
+      <UserCreationFlow />
     </Modal>
   </RestlayProvider>
 ));

@@ -10,11 +10,16 @@ export type MultiStepsFlowStep<T, P> = {
     isEditMode?: boolean,
   }>,
   requirements?: T => boolean,
+  onNext?: (T, PayloadUpdater<T>, ?P) => Promise<void>,
+  nextLabel?: React$Node,
+  prevLabel?: React$Node,
 };
+
+export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;
 
 export type StepProps<T> = {
   payload: T,
-  updatePayload: ($Shape<T>, ?() => void) => void,
+  updatePayload: PayloadUpdater<T>,
   transitionTo: string => void,
   isEditMode?: boolean,
 };

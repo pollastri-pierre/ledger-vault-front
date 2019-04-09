@@ -104,10 +104,6 @@ export default connectData(GroupModal, {
     group: GroupQuery,
     operators: UsersQuery,
   },
-  initialVariables: {
-    // TODO remove this when endpoint is not paginated anymore
-    operators: 30,
-  },
   propsToQueryParams: props => ({
     groupId: props.match.params.groupId || "",
     role: "OPERATOR",

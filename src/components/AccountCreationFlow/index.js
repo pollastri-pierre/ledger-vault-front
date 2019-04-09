@@ -7,7 +7,6 @@ import { FaMoneyCheck } from "react-icons/fa";
 import connectData from "restlay/connectData";
 import { createAndApproveAccount } from "device/interactions/approveFlow";
 import ModalLoading from "components/ModalLoading";
-import NewAccountMutation from "api/mutations/NewAccountMutation";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
@@ -141,7 +140,6 @@ export default connectData(
       title={title}
       initialPayload={initialPayload}
       steps={steps}
-      mutation={NewAccountMutation}
       additionalProps={props}
       style={styles.container}
       onClose={props.close}
@@ -153,9 +151,6 @@ export default connectData(
       allAccounts: PotentialParentAccountsQuery,
       users: UsersQuery,
       groups: GroupsQuery,
-    },
-    initialVariables: {
-      users: 30,
     },
     propsToQueryParams: () => ({
       role: "OPERATOR",

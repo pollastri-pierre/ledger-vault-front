@@ -10,7 +10,7 @@ import Box from "components/base/Box";
 import CopyToClipboardButton from "components/CopyToClipboardButton";
 import UserRoleFormatter from "components/UserRoleFormatter";
 
-import { updateUserRegistrationInfo } from "containers/Admin/InviteUser/helpers";
+import { updateUserInfo } from "components/UserCreationFlow/helpers";
 
 import type { RestlayEnvironment } from "restlay/connectData";
 
@@ -28,7 +28,7 @@ class UserDetailsOverview extends PureComponent<Props> {
   updateUserInfo = async (user_info: Object) => {
     const { user, restlay } = this.props;
     user.last_request &&
-      (await updateUserRegistrationInfo(
+      (await updateUserInfo(
         user.last_request.id.toString(),
         user_info,
         restlay,

@@ -17,7 +17,7 @@ type Props<T, P> = {
   Icon: React$ComponentType<*>,
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
-  additionalProps: P,
+  additionalProps?: P,
   onClose?: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
@@ -26,12 +26,14 @@ type Props<T, P> = {
 type State<T> = {
   cursor: number,
   payload: T,
+  isNextLoading: boolean,
 };
 
 class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
   state: State<T> = {
     cursor: this.props.initialCursor || 0,
     payload: this.props.initialPayload,
+    isNextLoading: false,
   };
 
   canPrev = () => this.state.cursor > 0;
@@ -47,7 +49,27 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
   prev = () => this.setCursor(this.state.cursor - 1);
 
-  next = () => this.setCursor(this.state.cursor + 1);
+  next = async () => {
+    const { steps, additionalProps } = this.props;
+    const { payload, cursor } = this.state;
+    const step = steps[cursor];
+    const { onNext } = step;
+    if (onNext) {
+      try {
+        this.setState(() => ({ isNextLoading: true }));
+        // $FlowFixMe niark niark
+        await onNext(payload, this.updatePayload, additionalProps);
+        this.setCursor(this.state.cursor + 1);
+      } catch (err) {
+        // FIXME handle that
+        console.error(err);
+      } finally {
+        this.setState(() => ({ isNextLoading: false }));
+      }
+    } else {
+      this.setCursor(this.state.cursor + 1);
+    }
+  };
 
   updatePayload = (patch: $Shape<T>, cb: ?() => void) =>
     this.setState(
@@ -113,7 +135,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       onClose,
       ...props
     } = this.props;
-    const { cursor, payload } = this.state;
+    const { cursor, payload, isNextLoading } = this.state;
 
     const step = steps[cursor];
     const prevStep = steps[cursor - 1] || null;
@@ -121,7 +143,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     if (!step) return null;
 
-    const { Step, Cta } = step;
+    const { Step, Cta, nextLabel, prevLabel } = step;
 
     const stepProps = {
       payload,
@@ -152,7 +174,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           {prevStep && (
             <FooterButton onClick={this.prev} left color={colors.lead}>
               <FaArrowLeft style={{ marginRight: 10 }} />
-              <Trans i18nKey="accountCreation:prevStep" />
+              {prevLabel || <Trans i18nKey="accountCreation:prevStep" />}
             </FooterButton>
           )}
           {nextStep && (
@@ -161,8 +183,9 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
               right
               isDisabled={!this.canTransitionTo(nextStep.id)}
               color={colors.ocean}
+              isLoading={isNextLoading}
             >
-              <Trans i18nKey="accountCreation:nextStep" />
+              {nextLabel || <Trans i18nKey="accountCreation:nextStep" />}
               <FaArrowRight style={{ marginLeft: 10 }} />
             </FooterButton>
           )}

@@ -1,20 +1,44 @@
 {
   "header": "Users",
   "inviteLink": "Invite new User",
-  "form": {
-    "placeholderUsername": "Enter a username",
-    "placeholderUserID": "Enter the user's User ID",
-    "labelUserID": "User ID",
-    "labelUsername": "Username",
-    "radio": {
-      "admin": "Administrator",
-      "operator": "Operator"
+  "steps": {
+    "infos": {
+      "title": "Information",
+      "nextLabel": {
+        "generateLink": "Generate Link",
+        "updateInfo": "Update Info"
+        }
+    },
+    "role": {
+      "title": "Role",
+      "label": "Choose a role for the new user",
+      "admin": {
+        "title": "Administrator",
+        "desc": "User will be able to create other users, groups, etc."
+      },
+      "operator": {
+        "title": "Operator",
+        "desc": "User will be able to create and validate transactions."
+      }
+    },
+    "confirmation": {
+      "title": "Confirmation",
+      "rowTitle": {
+        "username": "Username",
+        "userID": "User ID",
+        "role": "Role",
+        "url": "Url"
+      }
     }
   },
-  "description":
-    "Share this URL with the new user using your organization's approved means of communication.",
+  "form": {
+    "labelUsername": "Enter Username",
+    "placeholderUsername": "Enter a username",
+    "placeholderUserID": "Enter the user's User ID",
+    "labelUserID": "User ID"
+  },
+  "description": "Share this URL with the new user using your organization's approved means of communication.",
   "generateLink": "Generate link",
-  "updateMember": "Update user information",
   "registration": {
     "title": "Register new {{userRole}}",
     "username": "Username:",
@@ -24,8 +48,7 @@
     "success": {
       "title": "Success",
       "subtitle": "You've successfully registered to the Ledger Vault.",
-      "description":
-        "The Administrators of your workspace will get in touch once your registration has been approved."
+      "description": "The Administrators of your workspace will get in touch once your registration has been approved."
     }
   }
 }

@@ -62,7 +62,6 @@ const AccountsSearch = props => (
     Query={SearchAccountsQuery}
     TableComponent={AccountsTable}
     FilterComponent={AccountsFilters}
-    pageSize={8}
     {...props}
   />
 );

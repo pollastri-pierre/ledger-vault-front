@@ -322,12 +322,10 @@ export default function connectData<
                 : true));
 
           if (query instanceof ConnectionQuery) {
-            const size = state.variables[key];
-            if (typeof size !== "number") {
-              throw new Error(
-                `a variable '${key}' is expected on ${displayName}`,
-              );
+            if (state.variables[key]) {
+              query.setSize(state.variables[key]);
             }
+            const size = query.pageSize;
             if (!needsRefresh) {
               const cache = getPendingQueryResult(dataStore, query);
               needsRefresh =
@@ -337,7 +335,6 @@ export default function connectData<
                   size !== cache.result.edges.length &&
                   cache.result.pageInfo.hasNextPage);
             }
-            query.setSize(size);
           }
 
           if (needsRefresh) {
