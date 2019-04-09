@@ -45,7 +45,7 @@ export default ({
         </Box>
         <ActivityCard match={match} />
         <TopBarAction link={urls.customer_support} Icon={FaQuestionCircle} />
-        <TopBarAction Icon={FaPowerOff} onClick={onLogout} />
+        <TopBarAction data-test="logout" Icon={FaPowerOff} onClick={onLogout} />
       </VaultLayoutTopBarRight>
     </VaultLayoutTopBar>
   );
@@ -100,6 +100,7 @@ const TopBarAction = ({
   link,
   onClick,
   Icon,
+  ...props
 }: {
   link?: string,
   Icon: React$ComponentType<*>,
@@ -114,7 +115,7 @@ const TopBarAction = ({
     );
   }
   return (
-    <TopBarActionComponent onClick={onClick} link={link}>
+    <TopBarActionComponent onClick={onClick} link={link} {...props}>
       {inner}
     </TopBarActionComponent>
   );

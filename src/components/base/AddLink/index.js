@@ -15,6 +15,7 @@ export default ({
 }) => (
   <Button
     onClick={onClick}
+    data-test="buttonCreate"
     type="submit"
     variant="filled"
     IconLeft={Icon}

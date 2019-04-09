@@ -69,6 +69,7 @@ class AccountCreationOptions extends PureComponent<Props> {
         <Box>
           <Label>{t("newAccount:options.name")}</Label>
           <InputText
+            dataTest="account_name"
             value={payload.name}
             autoFocus
             onChange={this.handleChangeName}

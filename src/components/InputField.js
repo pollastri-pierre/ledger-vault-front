@@ -11,6 +11,7 @@ type Props = {
   renderRight?: ?React$Node,
   textAlign?: string,
   maxLength?: number,
+  dataTest?: string,
   onlyAscii?: boolean,
 };
 
@@ -43,6 +44,7 @@ class InputField extends PureComponent<Props> {
       renderLeft,
       renderRight,
       textAlign,
+      dataTest,
       onChange: _onChange,
       maxLength: _maxLength,
       onlyAscii: _onlyAscii,
@@ -52,6 +54,7 @@ class InputField extends PureComponent<Props> {
       <TextField
         autoComplete="off"
         fullWidth
+        inputId={dataTest}
         value={value}
         placeholder={placeholder}
         onChange={this.handleChange}
@@ -59,6 +62,7 @@ class InputField extends PureComponent<Props> {
           style: {
             textAlign,
           },
+          dataTest,
         }}
         InputProps={{
           startAdornment: renderLeft && (

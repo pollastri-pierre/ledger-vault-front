@@ -55,6 +55,7 @@ class UserDetails extends PureComponent<Props, State> {
                 key={i} // eslint-disable-line react/no-array-index-key
                 label={title}
                 disableRipple
+                data-test={`tab-${title}`}
               />
             ))}
           </Tabs>

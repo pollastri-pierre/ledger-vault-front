@@ -35,6 +35,7 @@ type Option = {
 type Props = {
   groups: Group[],
   members: User[],
+  dataTest?: string,
   value: {
     members?: User[],
     groups?: Group[],
@@ -115,7 +116,7 @@ class SelectInGroup extends PureComponent<Props> {
   };
 
   render() {
-    const { members, groups, value, ...props } = this.props;
+    const { members, groups, value, dataTest, ...props } = this.props;
     const membersOptions = buildOptions(
       members.map(m => ({ type: "member", value: m })),
     );
@@ -142,6 +143,7 @@ class SelectInGroup extends PureComponent<Props> {
     return (
       <Select
         inputId="input_groups_users"
+        data-test={dataTest}
         components={customComponents}
         styles={colourStyles}
         value={resolvedValue}

@@ -64,6 +64,7 @@ class GroupModal extends PureComponent<Props, State> {
               <Tab
                 key={i} // eslint-disable-line react/no-array-index-key
                 label={title}
+                data-test={`tab-${title}`}
                 disableRipple
               />
             ))}
