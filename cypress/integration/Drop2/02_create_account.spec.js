@@ -1,10 +1,4 @@
-import {
-  login,
-  logout,
-  route,
-  switch_device,
-  create_account,
-} from "../../functions/actions.js";
+import { login, logout, route } from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
   beforeEach(function() {
@@ -19,7 +13,7 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should('include', '/admin/accounts')
+    cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
@@ -38,7 +32,7 @@ describe("Tests Creation Account", function() {
       .type("James Lepic", { force: true })
       .type("{enter}");
     cy.contains("Next").click();
-    cy.get('[data-test=dialog-button]').click();
+    cy.get("[data-test=dialog-button]").click();
     cy.wait(2500);
     cy.get(".top-message-body")
       .contains("the request has been successfully created")
@@ -50,7 +44,7 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should('include', '/admin/accounts')
+    cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
@@ -68,7 +62,7 @@ describe("Tests Creation Account", function() {
       .type("Thomas", { force: true })
       .type("{enter}");
     cy.contains("Next").click();
-    cy.get('[data-test=dialog-button]').click();
+    cy.get("[data-test=dialog-button]").click();
     cy.wait(2500);
     cy.get(".top-message-body")
       .contains("the request has been successfully created")
@@ -80,7 +74,7 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should('include', '/admin/accounts')
+    cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(2500);
 
@@ -102,7 +96,7 @@ describe("Tests Creation Account", function() {
       .type("Anna", { force: true })
       .type("{enter}");
     cy.contains("Next").click();
-    cy.get('[data-test=dialog-button]').click();
+    cy.get("[data-test=dialog-button]").click();
     cy.wait(2500);
     cy.get(".top-message-body")
       .contains("the request has been successfully created")
@@ -114,7 +108,7 @@ describe("Tests Creation Account", function() {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should('include', '/admin/accounts')
+    cy.url().should("include", "/admin/accounts");
     cy.get("[data-test=buttonCreate]").click();
     cy.wait(1000);
 
@@ -132,12 +126,11 @@ describe("Tests Creation Account", function() {
       .type("Aidan", { force: true })
       .type("{enter}");
     cy.contains("Next").click();
-    cy.get('[data-test=dialog-button]').click();
+    cy.get("[data-test=dialog-button]").click();
     cy.wait(2500);
     cy.get(".top-message-body")
       .contains("Account name already exists in this currency")
       .get(".top-message-title")
       .contains("Error 236");
   });
-
 });

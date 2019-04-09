@@ -119,7 +119,7 @@ class InviteUserForm extends PureComponent<Props, State> {
           />
           <VaultButton
             onClick={this.processUserInfo}
-            data-test= "generateLink"
+            data-test="generateLink"
             disabled={!username || !user_id}
             IconLeft={request_id ? FaUserEdit : FaLink}
             size="small"

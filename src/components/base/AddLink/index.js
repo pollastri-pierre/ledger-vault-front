@@ -8,11 +8,9 @@ const Icon = () => <FaPlus size={12} />;
 
 export default ({
   onClick,
-  dataTest,
   children,
 }: {
   onClick: () => void,
-  dataTest?: string,
   children: *,
 }) => (
   <Button
