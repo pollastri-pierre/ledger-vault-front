@@ -22,12 +22,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn
       - save_cache:
-          key: node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: node-v2-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run: npm run lint
@@ -42,7 +42,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Setup and run E2E tests
           command: bash ./scripts/setup-ci-e2e-tests.sh
@@ -61,7 +61,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Build project
           command: npm run build
