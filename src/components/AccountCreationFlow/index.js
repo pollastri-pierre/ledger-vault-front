@@ -164,7 +164,9 @@ export default connectData(
 function serializePayload(payload: AccountCreationPayload) {
   const data: Object = {
     name: payload.name,
-    tx_approval_rules: payload.rules,
+    governance_rules: {
+      tx_approval_steps: payload.rules,
+    },
   };
 
   if (payload.currency) {
