@@ -9,7 +9,9 @@ aliases:
       only: /.*/
   - &prod_filters
     branches:
-      only: master
+      only:
+        - master
+        - release_candidate
     tags:
       only: /.*/
 
@@ -22,12 +24,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn
       - save_cache:
-          key: node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: node-v2-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run: npm run lint
@@ -42,7 +44,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Setup and run E2E tests
           command: bash ./scripts/setup-ci-e2e-tests.sh
@@ -61,7 +63,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-v2-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - node-v2-{{ checksum "yarn.lock" }}
       - run:
           name: Build project
           command: npm run build
@@ -142,7 +144,7 @@ workflows:
           requires:
             - run_tests
             - e2e_tests
-          filters: *common_filters
+          filters: *prod_filters
       - publish:
           name: publish_dev
           s3_bucket: *dev_s3_bucket
@@ -150,7 +152,7 @@ workflows:
           secret_key: AWS_SECRET_ACCESS_KEY_DEV
           requires:
             - build
-          filters: *common_filters
+          filters: *prod_filters
       - publish:
           name: publish_prod
           s3_bucket: *prod_s3_bucket
