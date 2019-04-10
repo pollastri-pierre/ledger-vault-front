@@ -9,7 +9,9 @@ aliases:
       only: /.*/
   - &prod_filters
     branches:
-      only: master
+      only:
+        - master
+        - release_candidate
     tags:
       only: /.*/
 
@@ -142,7 +144,7 @@ workflows:
           requires:
             - run_tests
             - e2e_tests
-          filters: *common_filters
+          filters: *prod_filters
       - publish:
           name: publish_dev
           s3_bucket: *dev_s3_bucket
@@ -150,7 +152,7 @@ workflows:
           secret_key: AWS_SECRET_ACCESS_KEY_DEV
           requires:
             - build
-          filters: *common_filters
+          filters: *prod_filters
       - publish:
           name: publish_prod
           s3_bucket: *prod_s3_bucket
