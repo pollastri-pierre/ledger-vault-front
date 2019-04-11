@@ -6,7 +6,7 @@ import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
 import TryAgain from "components/TryAgain";
-import { createAndApproveAccount } from "device/interactions/approveFlow";
+import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
 import ModalLoading from "components/ModalLoading";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import UsersQuery from "api/queries/UsersQuery";
@@ -84,7 +84,7 @@ const steps = [
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
-          interactions={createAndApproveAccount}
+          interactions={createAndApproveWithChallenge}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();
