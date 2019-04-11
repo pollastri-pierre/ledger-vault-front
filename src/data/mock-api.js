@@ -38,6 +38,9 @@ const mockSync = (uri, method) => {
           mockEntities,
         ).filter(m => m.role === "operator");
       }
+      case "/accounts/1/mocks/fresh_addresses": {
+        return mockEntities.freshAddresses;
+      }
       default:
     }
 

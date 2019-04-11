@@ -8,6 +8,7 @@ import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
 import AccountDetails from "containers/Accounts/AccountDetails";
 import TransactionDetails from "components/transactions/TransactionModal";
+import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
   <Fragment>
@@ -33,5 +34,6 @@ export default () => (
       component={AccountCreationFlow}
       disableBackdropClick
     />
+    <ModalRoute path="*/receive" component={ReceiveFlow} />
   </Fragment>
 );

@@ -17,6 +17,7 @@ const Account = create("accounts", {
 });
 
 const Request = create("requests");
+const FreshAddress = create("freshAddress");
 
 const HistorySlice = create(
   "HistorySlices",
@@ -60,4 +61,5 @@ export default {
   Fiat,
   Balance,
   Activity,
+  FreshAddress,
 };

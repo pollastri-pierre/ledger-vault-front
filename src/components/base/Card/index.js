@@ -46,7 +46,7 @@ export default styled(Box).attrs(p => ({
   position: "relative",
 }))`
   overflow-x: ${p => p.overflow || "unset"};
-  background-color: white;
+  background-color: ${p => p.bc || "white"};
   color: #555;
   box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.07);
 `;
