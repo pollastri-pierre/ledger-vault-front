@@ -20,6 +20,7 @@ export type Organization = {
   name: string,
   domain_name: string,
   workspace: string,
+  quorum?: number,
 };
 
 type Price = {
