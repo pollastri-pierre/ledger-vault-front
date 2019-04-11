@@ -108,10 +108,12 @@ export type Approval = {
 };
 
 type AccountType = "Ethereum" | "Bitcoin" | "ERC20";
+
 type ExtendedPubKey = {
   public_key: string,
   chain_code: string,
 };
+
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -146,7 +148,7 @@ export type TransactionRecipientIsValid = {
 export type TransactionGetFees = {
   amount: BigNumber,
   recipient: string,
-  fee_level?: string,
+  fees_level?: string,
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
 };
@@ -174,15 +176,22 @@ export type Group = GroupCommon & {
   approvals: Approval[],
 };
 
+export type TransactionCreationNote = {
+  title: string,
+  content: string,
+};
+
 type NoteCommon = {
   id: string,
   title: string,
   content: string,
   created_at: string,
 };
+
 export type Note = NoteCommon & {
   author: User,
 };
+
 export type NoteEntity = NoteCommon & {
   author: string,
 };
@@ -265,6 +274,7 @@ type TransactionCommon = {
 export type Transaction = TransactionCommon & {
   notes: Note[],
 };
+
 export type TransactionEntity = TransactionCommon & {
   notes: NoteEntity[],
 };
@@ -376,6 +386,7 @@ type RequestApproval = {
   created_on: string,
   type: string,
 };
+
 type RequestUser = {
   created_on: string,
   id: number,

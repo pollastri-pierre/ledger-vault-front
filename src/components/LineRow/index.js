@@ -30,7 +30,7 @@ class LineRow extends Component<{
         py={15}
         flow={50}
       >
-        <Box flow={5}>
+        <Box flow={5} horizontal align="center">
           <Text small uppercase bold noWrap>
             {label}
           </Text>

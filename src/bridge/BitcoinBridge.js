@@ -3,13 +3,8 @@
 import { BigNumber } from "bignumber.js";
 import ValidateAddressQuery from "api/queries/ValidateAddressQuery";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
-import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
-import NewTransactionMutation from "api/mutations/NewTransactionMutation";
-import type { Input as NewTransactionMutationInput } from "api/mutations/NewTransactionMutation";
-import type { Account } from "data/types";
-import type { RestlayEnvironment } from "restlay/connectData";
+import type { Account, TransactionCreationNote } from "data/types";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { WalletBridge } from "./types";
 
 // convertion to the BigNumber needed
@@ -19,23 +14,7 @@ export type Transaction = {
   estimatedFees: ?BigNumber,
   feeLevel: Speed,
   label: string,
-  note: string,
-};
-
-const checkValidTransaction = async (a, t, r) => {
-  const currency = getCryptoCurrencyById(a.currency);
-  const recipientIsValid = await isRecipientValid(r, currency, t.recipient);
-  const amountIsValid = t.amount.plus(t.estimatedFees).isLessThan(a.balance);
-  if (
-    !t.estimatedFees ||
-    t.estimatedFees.isEqualTo(0) ||
-    t.amount.isEqualTo(0) ||
-    !recipientIsValid ||
-    !amountIsValid
-  ) {
-    return false;
-  }
-  return true;
+  note: TransactionCreationNote,
 };
 
 const isRecipientValid = async (restlay, currency, recipient) => {
@@ -47,6 +26,7 @@ const isRecipientValid = async (restlay, currency, recipient) => {
       return is_valid;
     } catch (err) {
       // TODO: create internal logger
+      console.error(err); // eslint-disable-line no-console
       return false;
     }
   } else {
@@ -61,16 +41,17 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     estimatedFees: null,
     feeLevel: "normal",
     label: "",
-    note: "",
+    note: {
+      title: "",
+      content: "",
+    },
   }),
 
-  getFees: (a, t) => Promise.resolve(t.estimatedFees || 0),
+  getFees: (a, t) => t.estimatedFees,
 
   getTotalSpent: (a, t) => {
     const estimatedFees = t.estimatedFees || BigNumber(0);
-    return t.amount.isEqualTo(0)
-      ? Promise.resolve(BigNumber(0))
-      : Promise.resolve(t.amount.plus(estimatedFees));
+    return t.amount.isEqualTo(0) ? BigNumber(0) : t.amount.plus(estimatedFees);
   },
 
   editTransactionAmount: (
@@ -80,6 +61,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     amount,
+    estimatedFees: null,
   }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
@@ -91,6 +73,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   ) => ({
     ...t,
     recipient,
+    estimatedFees: null,
   }),
 
   getTransactionRecipient: (a: Account, t: Transaction) => t.recipient,
@@ -105,41 +88,19 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     feeLevel,
   }),
 
-  getTransactionLabel: (a: Account, t: Transaction) => t.label,
-  editTransactionLabel: (account: Account, t: Transaction, label: string) => ({
-    ...t,
-    label,
-  }),
-  getTransactionNote: (a: Account, t: Transaction) => t.note,
-  editTransactionNote: (account: Account, t: Transaction, note: string) => ({
+  getTransactionNote: (t: Transaction) => t.note,
+  editTransactionNote: (t: Transaction, note: TransactionCreationNote) => ({
     ...t,
     note,
   }),
-  composeAndBroadcast: (
-    transaction_id: number,
-    restlay: RestlayEnvironment,
-    account: Account,
-    transaction: Transaction,
-  ) => {
-    const data: NewTransactionMutationInput = {
-      transaction: {
-        fee_level: transaction.feeLevel,
-        amount: transaction.amount,
-        recipient: transaction.recipient,
-        transaction_id,
-        note: {
-          title: transaction.label,
-          content: transaction.note,
-        },
-      },
-      accountId: account.id,
-    };
-    return restlay
-      .commitMutation(new NewTransactionMutation(data))
-      .then(() => restlay.fetchQuery(new PendingTransactionsQuery()));
-  },
   EditFees: FeesBitcoinKind,
-  checkValidTransaction,
+  checkValidTransactionSyncSync: (a: Account, t: Transaction) => {
+    if (t.amount.isEqualTo(0)) return false;
+    if (!t.estimatedFees) return false;
+    if (!t.estimatedFees.isGreaterThan(0)) return false;
+    if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) return false;
+    return true;
+  },
   isRecipientValid,
 };
 

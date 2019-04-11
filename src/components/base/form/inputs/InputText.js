@@ -78,7 +78,7 @@ class InputText extends PureComponent<Props, State> {
       <Box position="relative" grow={grow}>
         <IconWrapper left={13} top={12} Icon={IconLeft} isFocused={isFocused} />
         <StyledInput
-          // this prevents chrome to autocomplete... https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
+          // not fully working. https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
           autoComplete="new-password"
           autoCorrect="off"
           autoCapitalize="off"

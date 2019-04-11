@@ -174,7 +174,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
           {prevStep && (
             <FooterButton onClick={this.prev} left color={colors.lead}>
               <FaArrowLeft style={{ marginRight: 10 }} />
-              {prevLabel || <Trans i18nKey="accountCreation:prevStep" />}
+              {prevLabel || <Trans i18nKey="multiStepsFlow:prevStep" />}
             </FooterButton>
           )}
           {nextStep && (
@@ -185,7 +185,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
               color={colors.ocean}
               isLoading={isNextLoading}
             >
-              {nextLabel || <Trans i18nKey="accountCreation:nextStep" />}
+              {nextLabel || <Trans i18nKey="multiStepsFlow:nextStep" />}
               <FaArrowRight style={{ marginLeft: 10 }} />
             </FooterButton>
           )}
