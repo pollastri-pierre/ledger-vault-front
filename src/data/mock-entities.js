@@ -101,7 +101,7 @@ function getUniqueRandomElements(arr, nb) {
   return out;
 }
 
-function genAccount({ users = [] } = {}) {
+function genAccount({ users = [] } = {}, extra = {}) {
   const currency = genCurrency();
   const accountType = currency.family === "bitcoin" ? "Bitcoin" : "Ethereum";
   const operators = users.filter(m => m.role === "operator");
@@ -153,6 +153,7 @@ function genAccount({ users = [] } = {}) {
     approvals,
 
     number_of_approvals: nbApprovals,
+    ...extra,
   };
 }
 
@@ -268,13 +269,13 @@ function genGroup({ users, status }) {
 }
 
 function genWithNoDups(genFn, uniqNames, uniqKey) {
-  return (nb, extra) => {
+  return (nb, params, extra) => {
     if (uniqNames.length < nb) {
       throw new Error(`Cant generate more than ${nb} entities`);
     }
     const entities = [];
     for (let i = 0; i < nb; i++) {
-      const entity = genFn(extra);
+      const entity = genFn(params, extra);
       if (!entity[uniqKey])
         throw new Error(`No key ${uniqKey} found in entity`);
       if (entities.find(e => e[uniqKey] === entity[uniqKey])) {
