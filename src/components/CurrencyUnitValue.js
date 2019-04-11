@@ -1,9 +1,10 @@
 // @flow
-import React, { PureComponent } from "react";
+import { PureComponent } from "react";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
+import type { Unit } from "@ledgerhq/live-common/lib/types";
 import type { BigNumber } from "bignumber.js";
 
-import type { Unit, TransactionType } from "data/types";
+import type { TransactionType } from "data/types";
 
 // This is a "dumb" component that accepts a unit object and a value number
 // this component is generic and not responsible of styles.
@@ -17,27 +18,13 @@ type Props = {
 class CurrencyUnitValue extends PureComponent<Props> {
   render() {
     const { unit, value, alwaysShowSign, type } = this.props;
-    const className = [
-      "currency-unit-value",
-      `sign-${type === "SEND" ? "negative" : "positive"}`,
-    ].join(" ");
     let value_with_sign = value;
     if (type === "SEND") value_with_sign = value.multipliedBy(-1);
-    return (
-      <span
-        title={formatCurrencyUnit(unit, value_with_sign, {
-          showCode: true,
-          alwaysShowSign,
-        })}
-        className={className}
-      >
-        {formatCurrencyUnit(unit, value_with_sign, {
-          showCode: true,
-          alwaysShowSign,
-          showAllDigits: false,
-        })}
-      </span>
-    );
+    return formatCurrencyUnit(unit, value_with_sign, {
+      showCode: true,
+      alwaysShowSign,
+      showAllDigits: false,
+    });
   }
 }
 

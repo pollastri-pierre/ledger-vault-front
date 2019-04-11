@@ -27,6 +27,8 @@ type Props = InputProps<string> & {
   align?: Alignment,
   grow?: boolean,
   inputRef?: *,
+  onFocus?: () => void,
+  onBlur?: () => void,
 };
 
 type State = {
@@ -40,9 +42,15 @@ class InputText extends PureComponent<Props, State> {
     isFocused: !!this.props.autoFocus,
   };
 
-  handleFocus = () => this.setState(() => ({ isFocused: true }));
+  handleFocus = () => {
+    this.props.onFocus && this.props.onFocus();
+    this.setState(() => ({ isFocused: true }));
+  };
 
-  handleBlur = () => this.setState(() => ({ isFocused: false }));
+  handleBlur = () => {
+    this.props.onBlur && this.props.onBlur();
+    this.setState(() => ({ isFocused: false }));
+  };
 
   handleChange = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { onChange, maxLength, onlyAscii } = this.props;

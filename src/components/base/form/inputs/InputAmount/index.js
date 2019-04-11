@@ -87,6 +87,24 @@ class InputAmount extends PureComponent<Props, State> {
     this.setState({ displayValue: r.display, cachedValue: satoshiValue });
   };
 
+  onFocus = () => {
+    const { value } = this.props;
+    if (value.isEqualTo(0)) return;
+    const { unit } = this.state;
+    this.setState({
+      displayValue: formatCurrencyUnit(unit, value, { useGrouping: false }),
+    });
+  };
+
+  onBlur = () => {
+    const { value } = this.props;
+    if (value.isEqualTo(0)) return;
+    const { unit } = this.state;
+    this.setState({
+      displayValue: formatCurrencyUnit(unit, value),
+    });
+  };
+
   render() {
     const { value, currency, hideUnit, hideCV, width, ...props } = this.props;
     const { displayValue, unit, options } = this.state;
@@ -102,6 +120,8 @@ class InputAmount extends PureComponent<Props, State> {
             inputRef={this.inputRef}
             {...props}
             onChange={this.onChange}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
           />
           {!hideCV && (
             <Box alignSelf="flex-end">

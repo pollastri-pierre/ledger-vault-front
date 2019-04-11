@@ -6,6 +6,7 @@ const form = {
   error: "#ea2e49",
   warning: "#ffac22",
   placeholder: "#d0d0d0",
+  bg: "#fafafa",
 };
 
 const formShadows = {

@@ -3,9 +3,10 @@
 import React from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
-import { color } from "styled-system";
+import { color, space } from "styled-system";
 
 const Text = styled.div`
+  ${space};
   ${color};
   display: ${p => (p.inline ? "inline-block" : "block")};
   font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
