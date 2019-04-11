@@ -7,7 +7,7 @@ import {
   getFiatCurrencyByTicker,
   getCryptoCurrencyById,
 } from "@ledgerhq/live-common/lib/currencies";
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { Transaction, Account } from "data/types";
 
@@ -23,7 +23,7 @@ const mapStateToProps = (state, ownProps) => {
       const currency = getCryptoCurrencyById(account.currency);
       return (
         acc +
-        CounterValues.calculateWithIntermediarySelector(state, {
+        counterValues.calculateWithIntermediarySelector(state, {
           from: currency,
           to: getFiatCurrencyByTicker("USD"),
           fromExchange: currency && state.exchanges.data[currency.ticker],

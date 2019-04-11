@@ -25,7 +25,7 @@ import {
 import logo from "assets/img/logo-black@3x.png";
 import network from "network";
 import dataReducer from "redux/modules/data";
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 import exchanges from "redux/modules/exchanges";
 import theme, { styledTheme } from "styles/theme";
 import GlobalStyle from "components/GlobalStyle";
@@ -34,7 +34,7 @@ import i18n from "./i18n";
 const createStore = () => {
   return reduxCreateStore(
     combineReducers({
-      countervalues: CounterValues.reducer,
+      countervalues: counterValues.reducer,
       exchanges,
       data: dataReducer,
     }),

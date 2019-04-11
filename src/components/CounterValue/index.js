@@ -11,7 +11,7 @@ import {
 import CurrencyFiatValue from "components/CurrencyFiatValue";
 import type { TransactionType, Account } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 
 type CurOrToken = {
   ticker: string,
@@ -33,7 +33,8 @@ const mapStateToProps = (state, ownProps) => {
     return {};
   }
 
-  const countervalue = CounterValues.calculateWithIntermediarySelector(state, {
+  const countervalue = counterValues.calculateWithIntermediarySelector(state, {
+    // $FlowFixMe I guarantee curOrToken is compatible with CurrencyCommon :doge:
     from: curOrToken,
     fromExchange: state.exchanges.data[curOrToken.ticker],
     intermediary: intermediaryCurrency,

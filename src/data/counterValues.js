@@ -1,3 +1,5 @@
+// @flow
+
 import axios from "axios";
 import uniqBy from "lodash/uniqBy";
 import createCounterValues from "@ledgerhq/live-common/lib/countervalues";
@@ -9,6 +11,7 @@ import {
 } from "@ledgerhq/live-common/lib/currencies";
 import { setNetwork } from "@ledgerhq/live-common/lib/network";
 
+import type { Account } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import { accountsSelector } from "restlay/dataStore";
 import { setExchangePairsAction } from "redux/modules/exchanges";
@@ -18,7 +21,7 @@ const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const pairsSelector = createSelector(
   accountsSelector,
-  accounts =>
+  (accounts: Account[]) =>
     [
       {
         from: intermediaryCurrency,
@@ -31,11 +34,11 @@ const pairsSelector = createSelector(
             currency =>
               accounts.findIndex(account => {
                 if (
-                  account.currency_id === "ethereum_ropsten" &&
+                  account.currency === "ethereum_ropsten" &&
                   currency.id === "ethereum"
                 )
                   return true;
-                return account.currency_id === currency.id;
+                return account.currency === currency.id;
               }) > -1 &&
               currency.name !== "bitcoin_testnet" &&
               currency.name !== "bitcoin",
@@ -65,6 +68,7 @@ const pairsSelector = createSelector(
 
 setNetwork(axios);
 
+// $FlowFixMe
 const CounterValues = createCounterValues({
   log: (...args) => {
     if (process.env.DEBUG_COUNTERVALUES) {
