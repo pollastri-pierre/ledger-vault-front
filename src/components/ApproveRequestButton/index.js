@@ -67,6 +67,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
         ) : (
           <ModalFooterButton
             color={colors.ocean}
+            data-test="approve_button"
             onClick={this.onCreate}
             isDisabled={disabled}
           >

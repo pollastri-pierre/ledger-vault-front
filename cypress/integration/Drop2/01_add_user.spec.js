@@ -1,4 +1,4 @@
-import { login, logout, route } from "../../functions/actions";
+import { login, logout, route, create_user, create_group } from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
   beforeEach(function() {
@@ -14,50 +14,28 @@ describe("Tests Creation Account", function() {
     route();
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.get("[data-test=buttonCreate]").click();
-    cy.get('[type="radio"]').check("Operator");
+
     // Add Anna Wagner
-    cy.get("[datatest=username]").type("Anna Wagner");
-    cy.get("[datatest=userID]").type(Cypress.env("userId1"));
-    cy.get("[data-test=generateLink]").click();
-    cy.get("[data-test=close]").click();
+    create_user("Anna Wagner", Cypress.env("userId1"), "[data-test=new_operator]");
 
     // Add Aidan Fisher
-    cy.get("[data-test=buttonCreate]").click();
-    cy.get('[type="radio"]').check("Operator");
-    cy.get("[datatest=username]").type("Aidan Fisher");
-    cy.get("[datatest=userID]").type(Cypress.env("userId2"));
-    cy.get("[data-test=generateLink]").click();
-    cy.get("[data-test=close]").click();
+    create_user("Aidan Fisher", Cypress.env("userId2"), "[data-test=new_operator]");
 
     // Thomas Lebron
-    cy.get("[data-test=buttonCreate]").click();
-    cy.get('[type="radio"]').check("Operator");
-    cy.get("[datatest=username]").type("Thomas Lebron");
-    cy.get("[datatest=userID]").type(Cypress.env("userId3"));
-    cy.get("[data-test=generateLink]").click();
-    cy.get("[data-test=close]").click();
+    create_user("Thomas Lebron", Cypress.env("userId3"), "[data-test=new_operator]");
 
     // James Lepic
-    cy.get("[data-test=buttonCreate]").click();
-    cy.get('[type="radio"]').check("Operator");
-    cy.get("[datatest=username]").type("James Lepic");
-    cy.get("[datatest=userID]").type(Cypress.env("userId4"));
-    cy.get("[data-test=generateLink]").click();
-    cy.get("[data-test=close]").click();
+    create_user("James Lepic", Cypress.env("userId4"), "[data-test=new_operator]");
+
   });
+
   it("Invite new admin", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.get("[data-test=buttonCreate]").click();
-    cy.get('[type="radio"]').check("Administrator");
     // Add John Clark
-    cy.get("[datatest=username]").type("John Clark");
-    cy.get("[datatest=userID]").type(Cypress.env("userId5"));
-    cy.get("[data-test=generateLink]").click();
-    cy.get("[data-test=close]").click();
+    create_user("John Clark", Cypress.env("userId5"), "[data-test=new_admin]");
   });
 
   it("Create Group", () => {
@@ -65,24 +43,7 @@ describe("Tests Creation Account", function() {
     route();
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.get("[data-test=buttonCreate]").click();
-    cy.wait(1000);
-    cy.get("[datatest=group-name-input]").type("APAC 1");
-    cy.get("[datatest=group-description-input]").type("Group APAC 1");
-    cy.get("#input_groups_users")
-      .type("Thomas", { force: true })
-      .type("{enter}");
-    cy.get("#input_groups_users")
-      .type("James", { force: true })
-      .type("{enter}");
-    cy.get("#input_groups_users")
-      .type("Anna", { force: true })
-      .type("{enter}");
-    cy.get("[data-test=dialog-button]").click();
-    cy.wait(1500);
-    cy.get(".top-message-body")
-      .contains("the request has been successfully created")
-      .get(".top-message-title")
-      .contains("request created");
+    create_group("APAC 1", "Group for APAC 1", "Thomas", "Anna", "James");
+    create_group("EMEA", "Group for EMEA", "Aidan", "James");
   });
 });

@@ -129,7 +129,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
         <Label>{t("newAccount:options.name")}</Label>
         <InputText
           value={payload.name}
-          dataTest="account_childname"
+          data-test="account_childname"
           autoFocus
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
@@ -146,7 +146,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
             <Label mt={30}>{t("newAccount:options.parentName")}</Label>
             <InputText
               value={parentAccountName}
-              dataTest="account_parentname"
+              data-test="account_parentname"
               onChange={this.handleChangeParentAccountName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
               IconLeft={parentCurIcon}

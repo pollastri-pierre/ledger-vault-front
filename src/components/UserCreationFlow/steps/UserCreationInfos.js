@@ -33,6 +33,7 @@ class UserCreationInfo extends PureComponent<Props> {
         <Box>
           <Label>{t("inviteUser:form.labelUsername")}</Label>
           <InputText
+            data-test="username"
             value={username}
             autoFocus
             onChange={this.handleChangeUsername}
@@ -45,6 +46,7 @@ class UserCreationInfo extends PureComponent<Props> {
         <Box>
           <Label>{t("inviteUser:form.labelUserID")}</Label>
           <InputText
+            data-test="userID"
             value={userID}
             onChange={this.handleChangeUserID}
             placeholder={t("inviteUser:form.placeholderUserID")}

@@ -105,7 +105,7 @@ export function cancel() {
 /**
  * Default way to create a account.
  */
-export function create_account(currency, name) {
+export function create_account1(currency, name) {
   cy.get(".test-new-account").click();
   cy.get("#input_crypto")
     .type(currency, { force: true })
@@ -224,4 +224,98 @@ export function approve_transaction(name) {
     .contains("the transaction request has been successfully approved")
     .get(".top-message-title")
     .contains("transaction request approved");
+}
+
+/*******************************************************************************
+***************************** DROP 2 *******************************************
+*******************************************************************************/
+
+export function create_user(username, userID, role) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.get(role).click();
+  cy.contains("Next").click();
+  cy.get("[data-test=username]").type(username);
+  cy.get("[data-test=userID]").type(userID);
+  cy.contains("Next").click();
+  cy.contains("Done").click();
+}
+
+export function create_group(groupName, description, user1, user2, user3) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(1000);
+  cy.get("[datatest=group-name-input]").type(groupName);
+  cy.get("[datatest=group-description-input]").type(description);
+  cy.get("#input_groups_users")
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.get("#input_groups_users")
+    .type(user2, { force: true })
+    .type("{enter}");
+  cy.get("#input_groups_users")
+    .type(user3, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=dialog-button]").click();
+  cy.wait(1500);
+  cy.get(".top-message-body")
+    .contains("the request has been successfully created")
+    .get(".top-message-title")
+    .contains("request created");
+}
+
+export function successfull_message() {
+  cy.get(".top-message-body")
+    .contains("the request has been successfully created")
+    .get(".top-message-title")
+    .contains("request created");
+}
+
+export function error_message(message,title) {
+  cy.get(".top-message-body")
+    .contains(message)
+    .get(".top-message-title")
+    .contains(title);
+}
+
+export function create_account(currency, name, group, user1) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(1000);
+  cy.get("#input_crypto")
+    .type(currency, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=account_name]").type(name);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(2500);
+}
+
+export function create_erc20_account(erc20, childname, parentname, group, user1) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(2000);
+  cy.get("#input_crypto")
+    .type(erc20, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=account_childname]").type(childname);
+  cy.get("[data-test=account_parentname]").type(parentname);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(2500);
 }
