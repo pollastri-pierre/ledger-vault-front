@@ -70,7 +70,6 @@ class ApprovalsRules extends PureComponent<Props> {
 
   Rule = (rule: ApprovalsRule, i: number) => {
     const { users, groups, rules, onChange } = this.props;
-    const key = getRuleKey(rule, i);
     const handleChange = newRule => {
       const newRules = [...rules];
       newRules.splice(rules.indexOf(rule), 1, newRule);
@@ -83,7 +82,7 @@ class ApprovalsRules extends PureComponent<Props> {
     };
     return (
       <Rule
-        key={key}
+        key={i}
         index={i}
         rule={rule}
         users={users}
@@ -223,13 +222,6 @@ const stepsLine = (
     </StepBallLabel>
   </Box>
 );
-
-const getRuleKey = (rule: ApprovalsRule, i: number) => {
-  const { group, quorum, users } = rule;
-  const usersIds = users.join("-");
-  const groupId = group || "null";
-  return `${quorum}_${usersIds}_${groupId}_${i}`;
-};
 
 const isRuleInvalid = (rule: ApprovalsRule) => {
   const hasQuorum = rule.quorum > 0;
