@@ -10,8 +10,8 @@ const form = {
 
 const formShadows = {
   focus: `${opacity(form.focus, 0.07)} 0 2px 5px 2px`,
-  error: `${opacity(form.error, 0.07)} 0 2px 5px 2px`,
-  warning: `${opacity(form.warning, 0.07)} 0 2px 5px 2px`,
+  error: `${opacity(form.error, 0.1)} 0 2px 5px 2px`,
+  warning: `${opacity(form.warning, 0.2)} 0 2px 5px 2px`,
 };
 
 form.shadow = formShadows;
@@ -46,6 +46,7 @@ const colors = {
 
   // NEW COLORS
   text: "#6f6f6f",
+  textLight: "#aaaaaa",
   form,
 };
 
