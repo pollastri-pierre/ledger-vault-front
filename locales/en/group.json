@@ -10,7 +10,8 @@
   "create": {
     "title": "New Group",
     "editTitle": "Edit group",
-    "name": "name",
+    "name": "Name",
+    "infos": "Informations",
     "name_placeholder": "Enter group name",
     "desc_placeholder": "Enter group description",
     "description": "description",
