@@ -1,4 +1,8 @@
 {
+  "myRequestsTitle": "Operator tasks awaiting approval",
+  "myRequestsDesc": "Tasks that require an action from me",
+  "otherRequestsTitle": "All other operator tasks",
+  "otherRequestsDesc": "Tasks that do not require an action from me",
   "tasks": {
     "header": "Tasks assigned to you"
   },
