@@ -361,7 +361,8 @@ type RequestTargetType =
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
   | "ERC20_ACCOUNT"
-  | "TRANSACTION"
+  | "BITCOIN_LIKE_TRANSACTION"
+  | "ETHEREUM_LIKE_TRANSACTION"
   | "PERSON";
 
 type RequestCommon = {
