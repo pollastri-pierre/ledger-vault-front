@@ -16,12 +16,14 @@ class GroupCreationMembers extends PureComponent<Props> {
   };
 
   render() {
-    const { payload, operators } = this.props;
+    const { payload, operators, isEditMode } = this.props;
     const listOperators = operators.edges.map(e => e.node);
     return (
       <Box>
         <Label>Select group members:</Label>
         <SelectGroupsUsers
+          autoFocus={!isEditMode}
+          openMenuOnFocus
           members={listOperators}
           value={{ members: payload.members, group: [] }}
           onChange={this.onChange}

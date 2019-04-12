@@ -15,14 +15,13 @@ import Text from "components/base/Text";
 import { FaUsers } from "react-icons/fa";
 import type { Group } from "data/types";
 
-import GroupCreationName from "./GroupCreationName";
-import GroupCreationDescription from "./GroupCreationDescription";
+import GroupCreationInfos from "./GroupCreationInfos";
 import GroupCreationMembers from "./GroupCreationMembers";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
 import type { GroupCreationPayload } from "./types";
 
 const styles = {
-  container: { minHeight: 500 },
+  container: { minHeight: 640 },
 };
 const initialPayload: GroupCreationPayload = {
   name: "",
@@ -32,15 +31,9 @@ const initialPayload: GroupCreationPayload = {
 
 const steps = [
   {
-    id: "chooseName",
-    name: <Trans i18nKey="group:create.name" />,
-    Step: GroupCreationName,
-  },
-  {
-    id: "chooseDescription",
-    name: <Trans i18nKey="group:create.description" />,
-    Step: GroupCreationDescription,
-    requirements: (payload: GroupCreationPayload) => payload.name !== "",
+    id: "infos",
+    name: <Trans i18nKey="group:create.infos" />,
+    Step: GroupCreationInfos,
   },
   {
     id: "chooseMemgers",
@@ -86,7 +79,7 @@ const steps = [
   },
 ];
 
-const RenderLoading = () => <ModalLoading height={500} width={700} />;
+const RenderLoading = () => <ModalLoading height={640} width={700} />;
 const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
   if (match.params.groupId) {
     return <GroupEdit groupId={match.params.groupId} close={close} />;
@@ -108,7 +101,7 @@ const GroupEdit = connectData(
       additionalProps={props}
       onClose={props.close}
       style={styles.container}
-      initialCursor={2}
+      initialCursor={1}
       isEditMode
     />
   ),
