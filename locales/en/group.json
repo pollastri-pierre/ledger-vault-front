@@ -1,7 +1,9 @@
 {
   "editInfo": "Editing the description doesn't require the quorum validation contrary to editing the list of members",
+  "no_accounts_yet": "There is no accounts linked to the group",
   "details": {
     "name": "Group name",
+    "description": "Group description",
     "at": "Created on",
     "by": "Created by",
     "users": "users"

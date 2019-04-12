@@ -11,7 +11,10 @@ const Group = create("groups", {
 const Currency = create("currencies", {}, "name");
 const Fiat = create("fiats");
 
-const Account = create("accounts");
+const Address = create("Address");
+const Account = create("accounts", {
+  fresh_addresses: Address,
+});
 
 const Request = create("requests");
 

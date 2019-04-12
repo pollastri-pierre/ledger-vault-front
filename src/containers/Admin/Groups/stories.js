@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import React from "react";
+import React, { Component } from "react";
+
 import { storiesOf } from "@storybook/react";
 
 import schema from "data/schema";
@@ -24,8 +25,11 @@ const fakeNetwork = async url => {
   if (url.startsWith("/people")) {
     return wrapConnection(users);
   }
-  if (url.match(/group-mock\/[^/]*\/accounts/g)) {
+  if (url.match(/groups\/[^/]*\/accounts/g)) {
     return accounts;
+  }
+  if (url.match(/groups\/[^/]*\/history/g)) {
+    return [];
   }
   if (url.startsWith("/groups")) {
     const group = denormalize(groups.map(g => g.id), [schema.Group], {
@@ -56,10 +60,33 @@ storiesOf("flows", module).add("Group Edit", () => (
   </RestlayProvider>
 ));
 
+class WithRouter extends Component {
+  state = {
+    tabIndex: 0,
+  };
+
+  history = {
+    replace: path => {
+      const split = path.split("/");
+      this.setState({ tabIndex: split[split.length - 1] });
+    },
+  };
+
+  render() {
+    return (
+      <GroupDetails
+        match={{ params: { groupId: 0, tabIndex: this.state.tabIndex } }}
+        history={this.history}
+        withoutRouter
+      />
+    );
+  }
+}
+
 storiesOf("Entity-Request modals", module).add("Group", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
-      <GroupDetails match={{ params: { groupId: 1 } }} history={[]} />
+      <WithRouter />
     </Modal>
   </RestlayProvider>
 ));

@@ -34,7 +34,7 @@ test("should return true if there is 2 account with pending only in one account"
 });
 
 test("should return false if there are 2 accounts with pendings", () => {
-  const accounts = genAccounts(2, { users });
+  const accounts = genAccounts(2, { users }, { status: "PENDING" });
   const transactions = genTransactions(2, { accounts, users });
   transactions[0].account_id = 1;
   transactions[1].account_id = 2;

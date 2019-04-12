@@ -9,7 +9,7 @@ type Input = {
   name?: string,
 };
 
-type Node = Group;
+type Node = Group[];
 
 const uri = (query: Input) => {
   const finalQuery: Object = {

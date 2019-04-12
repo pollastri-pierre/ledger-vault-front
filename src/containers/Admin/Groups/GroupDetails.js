@@ -5,85 +5,161 @@ import connectData from "restlay/connectData";
 import GroupQuery from "api/queries/GroupQuery";
 import type { Match } from "react-router-dom";
 import UsersQuery from "api/queries/UsersQuery";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { withRouter } from "react-router-dom";
 import type { Group, User } from "data/types";
 import type { MemoryHistory } from "history";
 import type { Connection } from "restlay/ConnectionQuery";
 import GoBack from "components/GoBack";
+import Button from "components/base/Button";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
-import GroupDetailsDescription from "containers/Admin/Groups/GroupDetailsDescription";
+import GroupHistory from "containers/Admin/Groups/GroupHistory";
+import colors from "shared/colors";
+import GroupEditRequest from "containers/Admin/Groups/GroupEditRequest";
 import GroupDetailsFooter from "containers/Admin/Groups/GroupDetailsFooter";
-import EntityModalTitle from "components/EntityModalTitle";
+import styled from "styled-components";
 import ModalLoading from "components/ModalLoading";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import { FaUsers } from "react-icons/fa";
 
-import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
+import { hasPendingEdit, hasPendingRequest } from "utils/entities";
+import { MdEdit } from "react-icons/md";
+import { ModalClose } from "components/base/Modal";
 
 type Props = {
+  history: MemoryHistory,
   group: Group,
   operators: Connection<User>,
   close: Function,
+  match: Match,
 };
 
-type State = {
-  tabsIndex: number,
-  members: User[],
-};
-
-const tabTitles = ["Overview", "Description", "Accounts"];
-
-class GroupModal extends PureComponent<Props, State> {
-  state: State = {
-    tabsIndex: 0,
-    members: this.props.group.members,
+class GroupModal extends PureComponent<Props> {
+  onTabChange = (tabsIndex: number) => {
+    const { history } = this.props;
+    const current = location.pathname.split("/");
+    current[current.length - 1] = `${tabsIndex}`;
+    // we use replace instead of push, because we want "prev" history close the modal
+    history.replace(`${current.join("/")}`);
   };
 
-  onTabChange = (e, tabsIndex: number) => {
-    this.setState({ tabsIndex });
+  editGroup = () => {
+    const { history, group, match } = this.props;
+    if (match.params["0"]) {
+      history.push(`${match.params["0"]}/groups/edit/${group.id}`);
+    }
   };
 
-  onGroupChange = (val: { groups: Group[], members: User[] }) => {
-    this.setState({ members: val.members });
+  EditTab: (Group, number) => React$Node = (group, tabsIndex) => {
+    return (
+      <Box horizontal align="center" flow={20}>
+        {!hasPendingRequest(group) && (
+          <Box>
+            <Button
+              size="tiny"
+              onClick={this.editGroup}
+              variant="filled"
+              IconLeft={MdEdit}
+              customColor={colors.ocean}
+            >
+              edit
+            </Button>
+          </Box>
+        )}
+        {hasPendingEdit(group) && (
+          <TabName
+            isActive={tabsIndex === 3}
+            onClick={() => this.onTabChange(3)}
+          >
+            <Text uppercase small>
+              EDIT REQUEST
+            </Text>
+          </TabName>
+        )}
+      </Box>
+    );
   };
 
   render() {
     const { close, group, operators } = this.props;
-    const { tabsIndex, members } = this.state;
+
+    const tabsIndex =
+      (this.props.match.params.tabIndex &&
+        parseInt(this.props.match.params.tabIndex, 10)) ||
+      0;
 
     return (
-      <ModalBody height={700} onClose={close}>
-        <ModalHeader title={group.name}>
-          <EntityModalTitle title={group.name} entity={group} />
-          <Tabs
-            indicatorColor="primary"
-            value={tabsIndex}
-            onChange={this.onTabChange}
-          >
-            {tabTitles.map((title, i) => (
-              <Tab
-                key={i} // eslint-disable-line react/no-array-index-key
-                label={title}
-                data-test={`tab-${title}`}
-                disableRipple
+      <Box width={700} style={{ minHeight: 600 }} position="relative">
+        <ModalClose onClick={close} />
+        <Box bg="#f5f5f5" p={40} pb={0} flow={20} style={styles.header}>
+          <Box horizontal align="center" flow={10}>
+            <FaUsers size={24} color="#ddd" />
+            <Text large color="#aaa">
+              {group.name}
+            </Text>
+          </Box>
+          <Box horizontal flow={15} justify="space-between">
+            <Box horizontal align="center">
+              <TabName
+                isActive={tabsIndex === 0}
+                onClick={() => this.onTabChange(0)}
+              >
+                <Text uppercase small>
+                  Overview
+                </Text>
+              </TabName>
+              {group.status === "ACTIVE" && (
+                <TabName
+                  isActive={tabsIndex === 1}
+                  onClick={() => this.onTabChange(1)}
+                >
+                  <Text uppercase small>
+                    Accounts
+                  </Text>
+                </TabName>
+              )}
+              <TabName
+                isActive={tabsIndex === 2}
+                onClick={() => this.onTabChange(2)}
+              >
+                <Text uppercase small>
+                  History
+                </Text>
+              </TabName>
+            </Box>
+            {this.EditTab(group, tabsIndex)}
+          </Box>
+        </Box>
+        <Box grow p={40} pb={100} style={styles.content}>
+          {tabsIndex === 0 && (
+            <GroupDetailsOverview
+              group={group}
+              operators={operators}
+              close={close}
+            />
+          )}
+          {tabsIndex === 1 && <GroupDetailsAccounts group={group} />}
+          {tabsIndex === 2 && <GroupHistory group={group} />}
+          {tabsIndex === 3 &&
+            (hasPendingEdit(group) ? (
+              <GroupEditRequest
+                group={group}
+                operators={operators}
+                close={close}
               />
+            ) : (
+              <GroupHistory group={group} />
             ))}
-          </Tabs>
-        </ModalHeader>
-        {tabsIndex === 0 && (
-          <GroupDetailsOverview
+        </Box>
+        <Box px={10} style={styles.footer}>
+          <GroupDetailsFooter
             group={group}
-            selected={members}
-            operators={operators}
-            onGroupChange={this.onGroupChange}
+            close={close}
+            tabsIndex={tabsIndex}
           />
-        )}
-        {tabsIndex === 1 && <GroupDetailsDescription group={group} />}
-        {tabsIndex === 2 && <GroupDetailsAccounts group={group} />}
-        <ModalFooter justify="space-between">
-          <GroupDetailsFooter group={group} selected={members} close={close} />
-        </ModalFooter>
-      </ModalBody>
+        </Box>
+      </Box>
     );
   }
 }
@@ -96,8 +172,23 @@ const RenderError = ({
   match: Match,
 }) => <GoBack history={history} match={match} />;
 
-const RenderLoading = () => <ModalLoading height={700} />;
-export default connectData(GroupModal, {
+const RenderLoading = () => <ModalLoading height={100} width={100} />;
+
+// useful for storybook
+const StoryProxy = ({
+  withoutRouter,
+  ...props
+}: Props & {
+  withoutRouter: boolean,
+}) => {
+  if (withoutRouter) {
+    return <GroupModal {...props} />;
+  }
+  const Comp = withRouter(p => <GroupModal {...props} {...p} />);
+  return <Comp />;
+};
+
+export default connectData(StoryProxy, {
   RenderError,
   RenderLoading,
   queries: {
@@ -109,3 +200,39 @@ export default connectData(GroupModal, {
     role: "OPERATOR",
   }),
 });
+
+const styles = {
+  header: {
+    borderTopLeftRadius: 3,
+    borderTopRightRadius: 3,
+    userSelect: "none",
+  },
+  footer: {
+    padding: 0,
+  },
+  content: {
+    userSelect: "none",
+  },
+  checkOrNumber: {
+    width: 10,
+  },
+};
+
+const TabName = styled(Box).attrs({
+  horizontal: true,
+  align: "center",
+  flow: 5,
+  p: 12,
+})`
+  background: ${p => (p.isActive ? "white" : "inherit")};
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  box-shadow: ${p => (p.isActive ? "2px -2px 3px #eceaea" : "none")};
+  font-weight: ${p => (p.isActive ? "bold" : "normal")};
+  opacity: ${p => (p.isActive ? "1" : "0.5")};
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+    color: #555;
+  }
+`;

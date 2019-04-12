@@ -169,6 +169,7 @@ function genUser() {
   return {
     id: faker.random.alphaNumeric(12),
     pub_key: `0x${faker.random.alphaNumeric(40)}`,
+    user_id: `${faker.random.alphaNumeric(16)}`,
     username: faker.random.arrayElement(FAKE_USER_NAMES),
 
     role: faker.random.arrayElement(["admin", "operator"]),

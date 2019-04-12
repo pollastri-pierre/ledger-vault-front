@@ -23,7 +23,7 @@ const styles = {
 };
 
 class NoDataPlaceholder extends Component<{
-  title: string,
+  title: React$Node,
   happy?: boolean,
 }> {
   render() {

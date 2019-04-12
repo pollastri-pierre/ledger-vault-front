@@ -1,8 +1,10 @@
 // @flow
 import React, { PureComponent } from "react";
+import { Trans } from "react-i18next";
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import NoDataPlaceholder from "components/NoDataPlaceholder";
 import AccountsInGroupQuery from "api/queries/AccountsInGroupQuery";
 import AccountName from "components/AccountName";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -17,6 +19,11 @@ type Props = {
 class GroupDetailsAccounts extends PureComponent<Props> {
   render() {
     const { accounts } = this.props;
+    if (accounts.length === 0) {
+      return (
+        <NoDataPlaceholder title={<Trans i18nKey="group:no_accounts_yet" />} />
+      );
+    }
     return (
       <Box grow style={{ overflow: "auto" }} flow={20}>
         {accounts.map(a => (
