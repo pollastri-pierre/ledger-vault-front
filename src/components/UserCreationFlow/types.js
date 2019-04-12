@@ -8,6 +8,7 @@ export type UserCreationPayload = {
   userID: string,
   request_id: ?string,
   url: ?string,
+  dataTest?: string,
 };
 
 export type UserCreationUpdatePayload = ($Shape<UserCreationPayload>) => void;

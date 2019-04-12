@@ -21,6 +21,7 @@ export default (props: UserCreationStepProps) => {
       </Label>
       <Box pt={40} horizontal align="center" justify="center" flow={30}>
         <Choice
+          data-test="new_admin"
           isActive={role === "ADMIN"}
           onClick={() => updatePayload({ role: "ADMIN" })}
         >
@@ -35,6 +36,7 @@ export default (props: UserCreationStepProps) => {
         </Choice>
         <Choice
           isActive={role === "OPERATOR"}
+          data-test="new_operator"
           onClick={() => updatePayload({ role: "OPERATOR" })}
         >
           <Box flow={10}>
