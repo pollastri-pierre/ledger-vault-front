@@ -40,10 +40,9 @@ const defaultDefinition = [
       label: "Date",
       align: "left",
       sortable: true,
-      sortFirst: "desc",
     },
     body: {
-      prop: "date",
+      prop: "created_on",
       align: "left",
     },
   },
@@ -51,7 +50,6 @@ const defaultDefinition = [
     header: {
       label: "Name",
       align: "left",
-      sortable: true,
     },
     body: {
       prop: "name",
@@ -62,7 +60,6 @@ const defaultDefinition = [
     header: {
       label: "",
       align: "right",
-      sortable: false,
     },
     body: {
       prop: "countervalue",

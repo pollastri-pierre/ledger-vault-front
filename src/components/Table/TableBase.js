@@ -76,14 +76,14 @@ class HeaderCellComponent extends PureComponent<Props> {
   };
 
   render() {
-    const { item, queryParams } = this.props;
+    const { item, queryParams, onSortChange } = this.props;
     const { orderBy, order } = resolveSort(queryParams);
     const direction = resolveDirection(
       orderBy === item.body.prop ? order : null,
     );
     return (
       <HeaderCell align={item.header.align} key={item.body.prop}>
-        {item.header.sortable ? (
+        {item.header.sortable && onSortChange ? (
           <TableSort
             align={item.header.align}
             direction={direction}

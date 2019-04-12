@@ -38,8 +38,6 @@ export const accountsTableDefault = [
     header: {
       label: "Balance",
       align: "right",
-      sortable: true,
-      sortFirst: "desc",
     },
     body: {
       prop: "balance",

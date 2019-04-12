@@ -17,12 +17,18 @@ type CellProps = {
 class RequestBodyCell extends PureComponent<CellProps> {
   renderCellMapper = () => {
     const { request, item } = this.props;
+
+    // FIXME
+    // NOT SCALABLE. we should put directly React$Component
+    // in table definition compared to add another level of
+    // mapping wich add more confusion ¯\_(ツ)_/¯
+
     switch (item.body.prop) {
       case "status":
         return <EntityStatus status={request.status} request={request} />;
       case "activity":
         return <RequestTitle type={request.type} />;
-      case "date":
+      case "created_on":
         return <DateFormat date={request.created_on} />;
       default:
         return <div>N/A</div>;
