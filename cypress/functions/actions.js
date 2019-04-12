@@ -226,9 +226,9 @@ export function approve_transaction(name) {
     .contains("transaction request approved");
 }
 
-/*******************************************************************************
-***************************** DROP 2 *******************************************
-*******************************************************************************/
+/** *****************************************************************************
+ ***************************** DROP 2 *******************************************
+ ****************************************************************************** */
 
 export function create_user(username, userID, role) {
   cy.get("[data-test=buttonCreate]").click();
@@ -269,7 +269,7 @@ export function successfull_message() {
     .contains("request created");
 }
 
-export function error_message(message,title) {
+export function error_message(message, title) {
   cy.get(".top-message-body")
     .contains(message)
     .get(".top-message-title")
@@ -297,7 +297,13 @@ export function create_account(currency, name, group, user1) {
   cy.wait(2500);
 }
 
-export function create_erc20_account(erc20, childname, parentname, group, user1) {
+export function create_erc20_account(
+  erc20,
+  childname,
+  parentname,
+  group,
+  user1,
+) {
   cy.get("[data-test=buttonCreate]").click();
   cy.wait(2000);
   cy.get("#input_crypto")
@@ -319,7 +325,6 @@ export function create_erc20_account(erc20, childname, parentname, group, user1)
   cy.get("[data-test=approve_button]").click();
   cy.wait(2500);
 }
-
 
 export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();

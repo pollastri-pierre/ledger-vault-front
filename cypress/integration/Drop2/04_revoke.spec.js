@@ -1,5 +1,10 @@
-import { login, logout, route, create_user, create_group,
-revoke_users, successfull_message } from "../../functions/actions";
+import {
+  login,
+  logout,
+  route,
+  revoke_users,
+  successfull_message,
+} from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
   beforeEach(function() {
@@ -11,11 +16,9 @@ describe("Tests Creation Account", function() {
   });
 
   it("Revoke Operator", () => {
-   cy.server();
-   route();
-   revoke_users("James Lepic");
-   successfull_message();
-
- });
-
+    cy.server();
+    route();
+    revoke_users("James Lepic");
+    successfull_message();
+  });
 });

@@ -1,6 +1,11 @@
 import {
-  login, logout, route, create_account, successfull_message,
-  error_message, create_erc20_account
+  login,
+  logout,
+  route,
+  create_account,
+  successfull_message,
+  error_message,
+  create_erc20_account,
 } from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
@@ -45,6 +50,6 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Bitcoin", "HeyBitcoin", "EMEA", "James Lepic");
-    error_message("Account name already exists in this currency","Error 236");
+    error_message("Account name already exists in this currency", "Error 236");
   });
 });

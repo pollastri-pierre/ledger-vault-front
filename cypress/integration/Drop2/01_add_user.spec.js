@@ -1,4 +1,10 @@
-import { login, logout, route, create_user, create_group } from "../../functions/actions";
+import {
+  login,
+  logout,
+  route,
+  create_user,
+  create_group,
+} from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
   beforeEach(function() {
@@ -16,17 +22,32 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/users");
 
     // Add Anna Wagner
-    create_user("Anna Wagner", Cypress.env("userId1"), "[data-test=new_operator]");
+    create_user(
+      "Anna Wagner",
+      Cypress.env("userId1"),
+      "[data-test=new_operator]",
+    );
 
     // Add Aidan Fisher
-    create_user("Aidan Fisher", Cypress.env("userId2"), "[data-test=new_operator]");
+    create_user(
+      "Aidan Fisher",
+      Cypress.env("userId2"),
+      "[data-test=new_operator]",
+    );
 
     // Thomas Lebron
-    create_user("Thomas Lebron", Cypress.env("userId3"), "[data-test=new_operator]");
+    create_user(
+      "Thomas Lebron",
+      Cypress.env("userId3"),
+      "[data-test=new_operator]",
+    );
 
     // James Lepic
-    create_user("James Lepic", Cypress.env("userId4"), "[data-test=new_operator]");
-
+    create_user(
+      "James Lepic",
+      Cypress.env("userId4"),
+      "[data-test=new_operator]",
+    );
   });
 
   it("Invite new admin", () => {
