@@ -26,5 +26,5 @@ type GenericStepProps = StepProps<AccountCreationPayload>;
 export type AccountCreationStepProps = GenericStepProps & {
   allAccounts: Connection<Account>,
   users: Connection<User>,
-  groups: Group[],
+  groups: Connection<Group>,
 };

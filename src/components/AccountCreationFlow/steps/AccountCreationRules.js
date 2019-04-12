@@ -13,7 +13,7 @@ export default (props: AccountCreationStepProps) => {
       rules={payload.rules}
       onChange={handleChangeRules}
       users={users.edges.map(u => u.node)}
-      groups={groups}
+      groups={groups.edges.map(g => g.node)}
     />
   );
 };
