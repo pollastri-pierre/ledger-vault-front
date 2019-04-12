@@ -118,11 +118,7 @@ class UpdateAccounts extends Component<Props> {
   // a view only only erc20 cannot get its members modified, only the quorum can be updated
   isSelectMembersDisabled = () => {
     const { selectedAccount } = this.props;
-    return (
-      selectedAccount &&
-      selectedAccount.account_type === "ERC20" &&
-      selectedAccount.status === "VIEW_ONLY"
-    );
+    return selectedAccount && selectedAccount.status === "VIEW_ONLY";
   };
 
   isSubmitDisabled = () => {
