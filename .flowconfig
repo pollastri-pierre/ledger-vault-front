@@ -8,6 +8,7 @@
 
 [libs]
 flow-typed
+flow-defs
 node_modules/jss/flow-typed
 ./webpack-flow.js
 
