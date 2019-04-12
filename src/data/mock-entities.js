@@ -271,7 +271,7 @@ function genGroup({ users, status }) {
 function genWithNoDups(genFn, uniqNames, uniqKey) {
   return (nb, params, extra) => {
     if (uniqNames.length < nb) {
-      throw new Error(`Cant generate more than ${nb} entities`);
+      throw new Error(`Cant generate more than ${uniqNames.length} entities`);
     }
     const entities = [];
     for (let i = 0; i < nb; i++) {

@@ -1,65 +1,37 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
+import last from "lodash/last";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
+import CurrencyAccountValue from "components/CurrencyAccountValue";
+import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
-import { Label } from "components/base/form";
-import TextField from "components/utils/TextField";
-import InputCurrency from "components/InputCurrency";
-import TotalFees from "components/Send/TotalFees";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import InfoBox from "components/base/InfoBox";
+import { Label, InputAmount } from "components/base/form";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import { getFees } from "components/Send/helpers";
-
-const styles = {
-  root: {
-    // padding because integrated inside modal
-    // TODO: use global container
-    padding: "0 40px",
-
-    // margin top because the way things are make it easier to put
-    // margin here instead of in the parent. this is semantically wrong
-    // but let's start with that..
-    marginTop: 20,
-
-    display: "flex",
-
-    // space all children by 20px
-    "&> * + *": {
-      marginLeft: 20,
-    },
-  },
-  cell: {
-    flex: 1,
-  },
-};
-
-const inputProps = { style: { textAlign: "right", color: "black" } };
+import { getFees } from "utils/transactions";
 
 type Props<Transaction> = {
-  classes: { [_: $Keys<typeof styles>]: string },
   transaction: Transaction,
   account: Account,
-  feeIsValid: boolean,
   onChangeTransaction: Transaction => void,
   bridge: WalletBridge<Transaction>,
   restlay: RestlayEnvironment,
 };
 
-type GasPriceStatus = "fetching" | "loaded" | "error";
-type GasLimitStatus = "fetching" | "loaded" | "error";
+type Status = "idle" | "fetching";
 
 type State = {
-  gasPriceStatus: GasPriceStatus,
-  gasLimitStatus: GasLimitStatus,
-  totalFees: BigNumber,
+  status: Status,
 };
 
 class FeesFieldEthereumKind extends PureComponent<
@@ -67,8 +39,10 @@ class FeesFieldEthereumKind extends PureComponent<
   State,
 > {
   componentDidMount() {
-    this.loadGasPrice();
-    this.loadFees();
+    const { transaction } = this.props;
+    if (!transaction.gasPrice || !transaction.gasLimit) {
+      this.loadGasPrice();
+    }
   }
 
   componentWillUnmount() {
@@ -77,13 +51,6 @@ class FeesFieldEthereumKind extends PureComponent<
 
   async componentDidUpdate(prevProps) {
     const { transaction } = this.props;
-
-    if (
-      prevProps.transaction.gasLimit !== transaction.gasLimit ||
-      prevProps.transaction.gasPrice !== transaction.gasPrice
-    ) {
-      this.loadFees();
-    }
     if (prevProps.transaction.recipient !== transaction.recipient) {
       this.loadGasPrice();
     }
@@ -91,118 +58,149 @@ class FeesFieldEthereumKind extends PureComponent<
 
   _unmounted = false;
 
-  async loadFees() {
-    const { account, transaction, bridge } = this.props;
-    const totalFees = await bridge.getFees(account, transaction);
-    if (this._unmounted) return;
-    this.setState({ totalFees });
-  }
-
   async loadGasPrice() {
-    const { account, transaction, bridge, restlay } = this.props;
-    const currency = getCryptoCurrencyById(account.currency);
-
-    const isRecipientValid = await bridge.isRecipientValid(
-      restlay,
-      currency,
-      transaction.recipient,
-    );
-
-    if (this._unmounted) return;
-    if (!isRecipientValid) return;
-    // NOTE: both initialized with null because gate expects it for ETH
-    const operation = {
-      amount: transaction.amount,
-      recipient: transaction.recipient,
-      gas_limit: null,
-      gas_price: null,
-    };
-    const estimatedFees = await getFees(
+    const {
       account,
       transaction,
-      operation,
+      onChangeTransaction,
+      bridge,
       restlay,
-    );
+    } = this.props;
+    this.setState({ status: "fetching" });
+    const currency = getCryptoCurrencyById(account.currency);
 
-    if (this._unmounted) return;
-    this.setState({ gasPriceStatus: "loaded", gasLimitStatus: "loaded" });
-    const { onChangeTransaction } = this.props;
-    onChangeTransaction({
-      ...transaction,
-      gasPrice: estimatedFees.gas_price,
-      gasLimit: estimatedFees.gas_limit,
-    });
+    try {
+      const isRecipientValid = await bridge.isRecipientValid(
+        restlay,
+        currency,
+        transaction.recipient,
+      );
+      if (this._unmounted) return;
+      if (!isRecipientValid) return;
+
+      const txGetFees = {
+        amount: transaction.amount,
+        recipient: transaction.recipient,
+        gas_price: transaction.gasPrice,
+        gas_limit: transaction.gasLimit,
+      };
+      const estimatedFees = await getFees(account, txGetFees, restlay);
+      if (this._unmounted) return;
+      if (!estimatedFees) return;
+
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: estimatedFees.fees,
+        gasPrice: estimatedFees.gas_price,
+        gasLimit: estimatedFees.gas_limit,
+      });
+    } catch (err) {
+      console.log(err); // eslint-disable-line no-console
+      onChangeTransaction({
+        ...transaction,
+        estimatedFees: BigNumber(0),
+        gasPrice: BigNumber(0),
+        gasLimit: BigNumber(0),
+      });
+    } finally {
+      this.setState({ status: "idle" });
+    }
   }
 
   state = {
-    gasPriceStatus: "fetching",
-    gasLimitStatus: "fetching",
-    totalFees: BigNumber(0),
+    status: "idle",
   };
 
-  createMutation = field => (e: SyntheticEvent<HTMLInputElement>) => {
+  createMutation = field => (value: string) => {
     const { transaction, onChangeTransaction } = this.props;
-    const { value } = e.currentTarget;
-    onChangeTransaction({ ...transaction, [field]: BigNumber(value) });
-  };
-
-  onGasPriceChange = (gasPrice: BigNumber) => {
-    const { transaction, onChangeTransaction } = this.props;
-    onChangeTransaction({ ...transaction, gasPrice });
+    const patch = { ...transaction, [field]: BigNumber(value) };
+    if (patch.gasPrice && patch.gasLimit) {
+      patch.estimatedFees = patch.gasPrice.times(patch.gasLimit);
+    }
+    onChangeTransaction(patch);
   };
 
   onGasLimitChange = this.createMutation("gasLimit");
 
+  onGasPriceChange = this.createMutation("gasPrice");
+
   render() {
-    const { classes, transaction, account, feeIsValid } = this.props;
+    const { transaction, account } = this.props;
+    const { status } = this.state;
+
     const currency = getCryptoCurrencyById(account.currency);
-    const { gasPriceStatus, gasLimitStatus, totalFees } = this.state;
-    // TODO: update {currency.units[1]} with something better
+
+    // this is selecting gwei. to be double checked.
+    const gasPriceUnit = currency.units[1];
+
     return (
-      <Fragment>
-        <div className={classes.root}>
-          <div className={classes.cell}>
-            <Label>
-              <Trans i18nKey="send:details.gasPrice" />
-            </Label>
-            <InputCurrency
-              currency={currency}
-              placeholder={gasPriceStatus === "fetching" ? "Loading..." : "0"}
-              onChange={this.onGasPriceChange}
-              defaultUnit={currency.units[1]}
-              value={
-                transaction.gasPrice === null
-                  ? BigNumber(0)
-                  : transaction.gasPrice
-              }
-              disabled={gasPriceStatus === "fetching"}
-            />
-          </div>
-          <div className={classes.cell}>
-            <Label>
-              <Trans i18nKey="send:details.gasLimit" />
-            </Label>
-            <TextField
-              placeholder={gasLimitStatus === "fetching" ? "Loading..." : "0"}
-              fullWidth
-              inputProps={inputProps}
-              value={
-                transaction.gasLimit ? transaction.gasLimit.toString() : ""
-              }
-              error={false}
-              disabled={gasLimitStatus === "fetching"}
-              onChange={this.onGasLimitChange}
-            />
-          </div>
-        </div>
-        <TotalFees
-          account={account}
-          totalFees={totalFees}
-          feeIsValid={feeIsValid}
-        />
-      </Fragment>
+      <Box horizontal flow={20}>
+        <Box flow={10}>
+          <Box horizontal flow={20} align="flex-start">
+            <Box width={175} noShrink>
+              <Label>
+                <Trans i18nKey="send:details.gasPrice" />
+                {` (${gasPriceUnit.code})`}
+              </Label>
+              <InputAmount
+                width={175}
+                hideUnit
+                hideCV
+                unit={gasPriceUnit}
+                currency={currency}
+                placeholder={status === "fetching" ? "Loading..." : "0"}
+                onChange={this.onGasPriceChange}
+                value={transaction.gasPrice || BigNumber(0)}
+                disabled={status === "fetching"}
+              />
+            </Box>
+            <Box width={175} noShrink>
+              <Label>
+                <Trans i18nKey="send:details.gasLimit" />
+              </Label>
+              <InputAmount
+                width={175}
+                hideUnit
+                hideCV
+                unit={last(currency.units)}
+                currency={currency}
+                placeholder={status === "fetching" ? "Loading..." : "0"}
+                onChange={this.onGasLimitChange}
+                value={transaction.gasLimit || BigNumber(0)}
+                disabled={status === "fetching"}
+              />
+            </Box>
+          </Box>
+          <InfoBox type="info">
+            Transaction confirmation will be faster with higher fees
+          </InfoBox>
+        </Box>
+        <Box grow align="flex-end">
+          <Label>
+            <Trans i18nKey="transactionCreation:steps.amount.estimatedFees" />
+          </Label>
+          <Text small uppercase>
+            {transaction.estimatedFees ? (
+              <>
+                <CurrencyAccountValue
+                  account={account}
+                  value={transaction.estimatedFees}
+                />
+                {" ("}
+                <CounterValue
+                  value={transaction.estimatedFees}
+                  from={account.currency}
+                />
+                {")"}
+              </>
+            ) : (
+              "N/A"
+            )}
+          </Text>
+        </Box>
+      </Box>
     );
   }
 }
 
-export default withStyles(styles)(connectData(FeesFieldEthereumKind));
+export default connectData(FeesFieldEthereumKind);

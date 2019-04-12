@@ -1,0 +1,26 @@
+{
+  "title": "New transaction",
+  "steps": {
+    "account": {
+      "title": "Account",
+      "desc": "Choose an account to send with"
+    },
+    "amount": {
+      "title": "Amount",
+      "amount": "Amount",
+      "recipient": "Recipient address",
+      "feesInfos": "Transaction confirmation will be faster with higher fees.",
+      "estimatedFees": "Estimated fees"
+    },
+    "note": {
+      "title": "Note",
+      "noteTitle": "Title",
+      "noteContent": "Content",
+      "noteDesc": "Notes are optional, they can be used to retrieve transactions more easily."
+    },
+    "confirmation": {
+      "title": "Confirmation"
+    }
+  },
+  "cta": "Create transaction"
+}

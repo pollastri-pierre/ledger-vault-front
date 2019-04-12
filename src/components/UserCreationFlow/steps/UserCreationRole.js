@@ -24,23 +24,27 @@ export default (props: UserCreationStepProps) => {
           isActive={role === "ADMIN"}
           onClick={() => updatePayload({ role: "ADMIN" })}
         >
-          <Text bold i18nKey="inviteUser:steps.role.admin.title" />
-          <Text
-            small
-            color={colors.mediumGrey}
-            i18nKey="inviteUser:steps.role.admin.desc"
-          />
+          <Box flow={10}>
+            <Text bold i18nKey="inviteUser:steps.role.admin.title" />
+            <Text
+              small
+              color={colors.mediumGrey}
+              i18nKey="inviteUser:steps.role.admin.desc"
+            />
+          </Box>
         </Choice>
         <Choice
           isActive={role === "OPERATOR"}
           onClick={() => updatePayload({ role: "OPERATOR" })}
         >
-          <Text bold i18nKey="inviteUser:steps.role.operator.title" />
-          <Text
-            small
-            color={colors.mediumGrey}
-            i18nKey="inviteUser:steps.role.operator.desc"
-          />
+          <Box flow={10}>
+            <Text bold i18nKey="inviteUser:steps.role.operator.title" />
+            <Text
+              small
+              color={colors.mediumGrey}
+              i18nKey="inviteUser:steps.role.operator.desc"
+            />
+          </Box>
         </Choice>
       </Box>
     </Box>

@@ -70,7 +70,8 @@ const buildOptions = (items: Item[]): Option[] =>
   }));
 
 // We now want to never have testnet 🙃 (see history)
-const INCLUDE_DEV = false;
+const INCLUDE_DEV =
+  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "e2e";
 // const INCLUDE_DEV =
 //   process.env.NODE_ENV === "development" ||
 //   process.env.NODE_ENV === "e2e" ||

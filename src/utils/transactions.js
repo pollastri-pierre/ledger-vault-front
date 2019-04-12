@@ -1,6 +1,13 @@
 // @flow
-import type { Transaction, Account, User } from "data/types";
+import type {
+  Transaction,
+  TransactionGetFees,
+  Account,
+  User,
+} from "data/types";
 import { isAccountOutdated, isAccountBeingUpdated } from "utils/accounts";
+import AccountCalculateFeeQuery from "api/queries/AccountCalculateFeeQuery";
+import type { RestlayEnvironment } from "restlay/connectData";
 
 export const hasPending = (account: Account, transactions: Transaction[]) =>
   transactions.filter(transaction => transaction.account_id === account.id)
@@ -34,4 +41,16 @@ export const isMemberOfAccount = (account: Account, me: User) => {
     member => member.pub_key === me.pub_key,
   );
   return members.length > 0;
+};
+
+export const getFees = async (
+  account: Account,
+  txGetFees: TransactionGetFees,
+  restlay: RestlayEnvironment,
+) => {
+  const query = new AccountCalculateFeeQuery({
+    accountId: account.id,
+    txGetFees,
+  });
+  return restlay.fetchQuery(query);
 };

@@ -8,6 +8,7 @@ import {
   width,
   flex,
   flexWrap,
+  alignSelf,
 } from "styled-system";
 
 type Props = {
@@ -69,6 +70,7 @@ export default styled.div`
 
   ${borderRadius};
   ${flex};
+  ${alignSelf};
   ${flexWrap};
   ${color};
   ${space};

@@ -19,5 +19,17 @@
     "description": "Team domain unknown",
     "title": "Unknown team"
   },
+  "InvalidAddress": {
+    "title": "Invalid address",
+    "description": "Address is invalid"
+  },
+  "AmountTooHigh": {
+    "title": "Amount too high",
+    "description": "The amount you entered is too high"
+  },
+  "NonEIP55Address": {
+    "title": "Auto-verification not available: carefully verify the address",
+    "description": "Auto-verification not available: carefully verify the address"
+  },
   "generic": { "description": "An error occured", "title": "Error" }
 }

@@ -1,6 +1,6 @@
 // @flow
 import { BigNumber } from "bignumber.js";
-import type { Account } from "data/types";
+import type { Account, TransactionCreationNote } from "data/types";
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 
@@ -29,29 +29,14 @@ export interface WalletBridge<Transaction> {
   ): Transaction;
 
   getTransactionRecipient(account: Account, transaction: Transaction): string;
-  getFees(account: Account, transaction: Transaction): Promise<BigNumber>;
-  getTotalSpent(account: Account, transaction: Transaction): Promise<BigNumber>;
-
-  editTransactionLabel(
-    account: Account,
-    transaction: Transaction,
-    label: string,
-  ): Transaction;
-  getTransactionLabel(account: Account, transaction: Transaction): string;
+  getFees(account: Account, transaction: Transaction): BigNumber;
+  getTotalSpent(account: Account, transaction: Transaction): BigNumber;
 
   editTransactionNote(
-    account: Account,
     transaction: Transaction,
-    note: string,
+    note: TransactionCreationNote,
   ): Transaction;
-  getTransactionNote(account: Account, transaction: Transaction): string;
-
-  composeAndBroadcast(
-    operationId: number,
-    restlay: RestlayEnvironment,
-    account: Account,
-    transaction: Transaction,
-  ): Promise<*>;
+  getTransactionNote(transaction: Transaction): TransactionCreationNote;
 
   getTransactionFeeLevel?: (
     account: Account,
@@ -63,11 +48,6 @@ export interface WalletBridge<Transaction> {
     feeLevel: Speed,
   ) => Transaction;
   getRecipientWarning?: (recipient: string) => Promise<?Error>;
-  checkValidFee?: (
-    account: Account,
-    transaction: Transaction,
-    parentETH: Account,
-  ) => Promise<boolean>;
   EditFees?: *; // React$ComponentType<EditProps<Transaction>>;
 
   EditAdvancedOptions?: *; // React$ComponentType<EditProps<Transaction>>;
@@ -78,9 +58,8 @@ export interface WalletBridge<Transaction> {
     recipient: string,
   ): Promise<boolean>;
 
-  checkValidTransaction(
+  checkValidTransactionSyncSync(
     account: Account,
     transaction: Transaction,
-    restlay: RestlayEnvironment,
-  ): Promise<boolean>;
+  ): boolean;
 }

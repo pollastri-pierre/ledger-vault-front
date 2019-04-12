@@ -1,6 +1,7 @@
 {
   "type": {
     "CREATE_GROUP": "Create group",
+    "CREATE_TRANSACTION": "Create transaction",
     "EDIT_GROUP": "Edit group",
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",

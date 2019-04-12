@@ -1,5 +1,5 @@
 // @flow
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 import locale from "./locale";
 import auth from "./auth";
 import alerts from "./alerts";
@@ -16,7 +16,7 @@ const reducers = {
   data,
   updateAccounts,
   exchanges,
-  countervalues: CounterValues.reducer,
+  countervalues: counterValues.reducer,
 };
 
 export default reducers;

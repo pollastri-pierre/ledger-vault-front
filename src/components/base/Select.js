@@ -10,7 +10,7 @@ import Text from "components/base/Text";
 import Box from "components/base/Box";
 import colors, { opacity } from "shared/colors";
 
-type Option = {
+export type Option = {
   value: string,
   data: *,
   label: string,
@@ -75,10 +75,13 @@ const customStyles = {
     ...styles,
     minHeight: 40,
     borderColor: `${
-      state.menuIsOpen ? colors.form.focus : colors.form.border
+      state.menuIsOpen || state.isFocused
+        ? colors.form.focus
+        : colors.form.border
     } !important`,
     borderRadius: 4,
-    boxShadow: state.menuIsOpen ? colors.form.shadow.focus : "none",
+    boxShadow:
+      state.menuIsOpen || state.isFocused ? colors.form.shadow.focus : "none",
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
@@ -86,7 +89,7 @@ const customStyles = {
   }),
   valueContainer: (styles, state) => ({
     ...styles,
-    padding: state.hasValue && state.isMulti ? "0 5px" : "5px 8px",
+    padding: state.hasValue && state.isMulti ? "5px 5px 4px 5px" : "5px 8px",
   }),
   menu: styles => ({
     ...styles,

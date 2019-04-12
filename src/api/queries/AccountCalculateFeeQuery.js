@@ -1,23 +1,19 @@
 // @flow
 import { BigNumber } from "bignumber.js";
 import Mutation from "restlay/Mutation";
+import type { TransactionGetFees } from "data/types";
 
 export const speeds = {
   slow: "slow",
   normal: "normal",
   fast: "fast",
 };
+
 export type Speed = $Values<typeof speeds>;
 
 type Input = {
   accountId: number,
-  transaction: {
-    amount: BigNumber,
-    fee_level?: Speed,
-    gas_limit?: ?BigNumber,
-    gas_price?: ?BigNumber,
-    recipient: string,
-  },
+  txGetFees: TransactionGetFees,
   accountId: number,
 };
 
@@ -42,19 +38,19 @@ export default class AccountCalculateFeeQuery extends Mutation<
   showError = false;
 
   getBody() {
-    const { transaction } = this.props;
+    const { txGetFees } = this.props;
     return {
-      ...this.props.transaction,
-      amount: transaction.amount.toFixed(),
-      gas_limit: transaction.gas_limit ? transaction.gas_limit.toFixed() : null,
-      gas_price: transaction.gas_price ? transaction.gas_price.toFixed() : null,
+      ...txGetFees,
+      amount: txGetFees.amount.toFixed(),
+      gas_limit: txGetFees.gas_limit ? txGetFees.gas_limit.toFixed() : null,
+      gas_price: txGetFees.gas_price ? txGetFees.gas_price.toFixed() : null,
     };
   }
 
   deserialize = res => ({
     ...res,
     fees: BigNumber(res.fees),
-    gas_price: BigNumber(res.gas_price),
-    gas_limit: BigNumber(res.gas_limit),
+    gas_price: res.gas_price ? BigNumber(res.gas_price) : null,
+    gas_limit: res.gas_limit ? BigNumber(res.gas_limit) : null,
   });
 }

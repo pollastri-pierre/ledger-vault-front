@@ -37,6 +37,13 @@ class AdminDashboard extends PureComponent<Props> {
       this.props.history.push(
         `dashboard/accounts/details/${request.target_id}`,
       );
+    } else if (
+      request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
+      request.target_type === "ETHEREUM_LIKE_TRANSACTION"
+    ) {
+      this.props.history.push(
+        `dashboard/transactions/details/${request.target_id}/0`,
+      );
     }
   };
 

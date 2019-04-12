@@ -10,7 +10,7 @@ import {
 } from "@ledgerhq/live-common/lib/currencies";
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 import type { Account } from "data/types";
 
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
@@ -25,7 +25,8 @@ const mapStateToProps = (state, ownProps) => {
             ? getERC20TokenByContractAddress(account.contract_address)
             : getCryptoCurrencyById(account.currency_id);
         if (!curOrToken) return acc;
-        const cvalue = CounterValues.calculateWithIntermediarySelector(state, {
+        const cvalue = counterValues.calculateWithIntermediarySelector(state, {
+          // $FlowFixMe I guarantee curOrToken is compatible with CurrencyCommon :doge:
           from: curOrToken,
           fromExchange: curOrToken && state.exchanges.data[curOrToken.ticker],
           intermediary: intermediaryCurrency,

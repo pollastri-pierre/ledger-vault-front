@@ -159,7 +159,7 @@ const tmp_postHSM: Interaction = {
     }),
 };
 export const createAndApprove = [postRequest, ...approveFlow];
-export const createAndApproveAccount = [
+export const createAndApproveWithChallenge = [
   tmp_getOrganization, // to be removed when HSM ready
   postRequest,
   tmp_getHSMChallenge, // to be removed when HSM ready

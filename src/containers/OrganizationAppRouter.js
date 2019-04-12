@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { BrowserRouter } from "react-router-dom";
-import CounterValues from "data/CounterValues";
+import counterValues from "data/counterValues";
 import { Switch, Route } from "react-router";
 import AlertsContainer from "containers/AlertsContainer";
 import UpdateApp from "components/UpdateApp";
@@ -13,6 +13,8 @@ import Logout from "./Login/Logout";
 import OnboardingContainer from "./Onboarding/OnboardingContainer";
 import PrivateRoute from "./Login/PrivateRoute";
 import RegisterUser from "./RegisterUser";
+
+const { PollingProvider } = counterValues;
 
 const OrganizationAppRouter = () => (
   <Fragment>
@@ -51,14 +53,14 @@ const OrganizationAppRouter = () => (
                   path={`${match.url}/register/:urlID`}
                   component={RegisterUser}
                 />
-                <CounterValues.PollingProvider>
+                <PollingProvider>
                   <PrivateRoute
                     path={`${match.url}/`}
                     component={App}
                     history={history}
                     match={match}
                   />
-                </CounterValues.PollingProvider>
+                </PollingProvider>
               </Switch>
             </Fragment>
           )}

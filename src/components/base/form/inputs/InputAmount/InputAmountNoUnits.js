@@ -5,16 +5,16 @@ import { BigNumber } from "bignumber.js";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/lib/currencies";
-import InputField from "components/InputField";
+import { InputText } from "components/base/form";
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import { sanitizeValueString } from "./helpers";
+import { sanitizeValueString } from "utils/strings";
 
 type Props<Transaction> = {
   account: Account,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
-  amountIsValid: boolean,
+  errors: Error[],
   onChangeTransaction: Transaction => void,
 };
 
@@ -63,19 +63,22 @@ class AmountNoUnits extends PureComponent<Props<*>, State> {
   };
 
   render() {
-    const { amountIsValid } = this.props;
+    const {
+      errors,
+      onChangeTransaction: _onChangeTransaction,
+      ...props
+    } = this.props;
     const { token, displayValue } = this.state;
     return (
-      <InputField
+      <InputText
         value={displayValue}
-        autoFocus
-        textAlign="right"
+        align="right"
         onChange={this.onChange}
         placeholder="0"
-        fullWidth
         data-test="transaction-creation-amount"
-        error={!amountIsValid}
+        errors={errors}
         renderLeft={<div>{token && token.ticker}</div>}
+        {...props}
       />
     );
   }

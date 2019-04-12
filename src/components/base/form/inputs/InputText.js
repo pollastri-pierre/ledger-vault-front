@@ -6,6 +6,7 @@ import styled from "styled-components";
 import colors from "shared/colors";
 
 import Absolute from "components/base/Absolute";
+import Box from "components/base/Box";
 
 import ErrorsWrapper from "components/base/form/ErrorsWrapper";
 import type { InputProps } from "components/base/form/types";
@@ -15,12 +16,19 @@ type Icon = {
   color?: string,
 };
 
+type Alignment = "left" | "right";
+
 type Props = InputProps<string> & {
   IconLeft?: React$ComponentType<Icon>,
+  label: string,
   autoFocus?: boolean,
   maxLength?: number,
   onlyAscii?: boolean,
-  label: string,
+  align?: Alignment,
+  grow?: boolean,
+  inputRef?: *,
+  onFocus?: () => void,
+  onBlur?: () => void,
 };
 
 type State = {
@@ -34,9 +42,15 @@ class InputText extends PureComponent<Props, State> {
     isFocused: !!this.props.autoFocus,
   };
 
-  handleFocus = () => this.setState(() => ({ isFocused: true }));
+  handleFocus = () => {
+    this.props.onFocus && this.props.onFocus();
+    this.setState(() => ({ isFocused: true }));
+  };
 
-  handleBlur = () => this.setState(() => ({ isFocused: false }));
+  handleBlur = () => {
+    this.props.onBlur && this.props.onBlur();
+    this.setState(() => ({ isFocused: false }));
+  };
 
   handleChange = (e: SyntheticInputEvent<HTMLInputElement>) => {
     const { onChange, maxLength, onlyAscii } = this.props;
@@ -56,18 +70,27 @@ class InputText extends PureComponent<Props, State> {
   };
 
   render() {
-    const { IconLeft, errors, warnings, ...props } = this.props;
+    const {
+      IconLeft,
+      errors,
+      warnings,
+      align,
+      grow,
+      inputRef,
+      ...props
+    } = this.props;
     const { isFocused } = this.state;
     const hasError = !!errors && !!errors.length;
     const hasWarning = !hasError && !!warnings && !!warnings.length;
     return (
-      <div style={styles.container}>
+      <Box position="relative" grow={grow}>
         <IconWrapper left={13} top={12} Icon={IconLeft} isFocused={isFocused} />
         <StyledInput
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
+          // not fully working. https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
+          autoComplete="new-password"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
           {...props}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
@@ -75,13 +98,19 @@ class InputText extends PureComponent<Props, State> {
           hasError={hasError}
           hasWarning={hasWarning}
           pl={IconLeft ? 28 : 0}
+          align={align}
+          ref={inputRef}
         />
-        <ErrorsWrapper errors={errors} />
-        <ErrorsWrapper
-          errors={hasWarning ? warnings : undefined}
-          bg={colors.form.warning}
-        />
-      </div>
+        {isFocused && (
+          <>
+            <ErrorsWrapper errors={errors} />
+            <ErrorsWrapper
+              errors={hasWarning ? warnings : undefined}
+              bg={colors.form.warning}
+            />
+          </>
+        )}
+      </Box>
     );
   }
 }
@@ -108,6 +137,7 @@ const StyledInput = styled.input`
   width: ${p => (p.width ? `${p.width}px` : "100%")};
   height: 40px;
   border-radius: 4px;
+  text-align: ${p => (p.align === "right" ? "right" : "left")};
   border: 1px solid
     ${p =>
       p.hasError
@@ -116,7 +146,6 @@ const StyledInput = styled.input`
         ? colors.form.warning
         : colors.form.border};
   padding-left: ${p => p.pl + 10}px;
-  // padding-left: 48px;
   padding-right: 10px;
 
   svg {
@@ -143,11 +172,5 @@ const StyledInput = styled.input`
     color: ${colors.form.placeholder};
   }
 `;
-
-const styles = {
-  container: {
-    position: "relative",
-  },
-};
 
 export default InputText;

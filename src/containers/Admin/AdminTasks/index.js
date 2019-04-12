@@ -30,6 +30,13 @@ class Users extends PureComponent<Props> {
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
       this.props.history.push(`tasks/accounts/details/${request.target_id}`);
+    } else if (
+      request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
+      request.target_type === "ETHEREUM_LIKE_TRANSACTION"
+    ) {
+      this.props.history.push(
+        `tasks/transactions/details/${request.target_id}/0`,
+      );
     }
   };
 

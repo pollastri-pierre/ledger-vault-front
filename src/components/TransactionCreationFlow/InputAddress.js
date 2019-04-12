@@ -2,29 +2,18 @@
 
 import React, { PureComponent } from "react";
 import type { Account } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
-import Tooltip from "@material-ui/core/Tooltip";
-import Warning from "components/icons/TriangleWarning";
-import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
-import CryptoAddressPicker from "components/CryptoAddressPicker";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
-import { Label } from "components/base/form";
-import colors from "shared/colors";
+import { InputText } from "components/base/form";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import { InvalidAddress } from "utils/errors";
 
-const styles = {
-  nonEIP55warningIcon: {
-    marginLeft: 5,
-    cursor: "pointer",
-  },
-};
+const invalidAddress = new InvalidAddress();
 
 type Props<Transaction> = {
   restlay: RestlayEnvironment,
   account: Account,
-  classes: { [_: $Keys<typeof styles>]: string },
   onChangeTransaction: Transaction => void,
   transaction: Transaction,
   bridge: WalletBridge<Transaction>,
@@ -101,36 +90,25 @@ class SendAddress extends PureComponent<Props<*>, State> {
   };
 
   render() {
-    const { account, bridge, transaction, classes } = this.props;
+    const {
+      account,
+      bridge,
+      transaction,
+      onChangeTransaction: _onChangeTransaction,
+      ...props
+    } = this.props;
     const { isValid, recipientWarning } = this.state;
     return (
-      <div>
-        <Label>
-          <Trans i18nKey="send:details.address.title" />
-          {recipientWarning && (
-            <Tooltip title={recipientWarning.message} placement="top">
-              <Warning
-                width={14}
-                height={14}
-                color={colors.warning}
-                className={classes.nonEIP55warningIcon}
-              />
-            </Tooltip>
-          )}
-        </Label>
-        <div>
-          <CryptoAddressPicker
-            id="address"
-            onChange={this.onChange}
-            value={bridge.getTransactionRecipient(account, transaction)}
-            isValid={isValid}
-            fullWidth
-            inputProps={{ style: { paddingBottom: 15, color: colors.black } }}
-          />
-        </div>
-      </div>
+      <InputText
+        id="address"
+        onChange={this.onChange}
+        value={bridge.getTransactionRecipient(account, transaction)}
+        errors={isValid ? null : [invalidAddress]}
+        warnings={recipientWarning ? [recipientWarning] : null}
+        {...props}
+      />
     );
   }
 }
 
-export default withStyles(styles)(connectData(SendAddress));
+export default connectData(SendAddress);

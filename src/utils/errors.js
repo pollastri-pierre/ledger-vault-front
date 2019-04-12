@@ -16,3 +16,8 @@ export const UnknownDevice = createCustomErrorClass("UnknownDevice");
 export type DeviceError = {
   statusCode: $Values<typeof StatusCodes>,
 };
+
+// send errors
+export const InvalidAddress = createCustomErrorClass("InvalidAddress");
+export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
+export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
