@@ -319,3 +319,16 @@ export function create_erc20_account(erc20, childname, parentname, group, user1)
   cy.get("[data-test=approve_button]").click();
   cy.wait(2500);
 }
+
+
+export function revoke_users(name) {
+  cy.get("[data-test=menuItem-users]").click();
+  cy.url().should("include", "/admin/users");
+  cy.contains(name).click();
+  cy.contains("Revoke").click();
+  cy.wait(2500);
+  login(5);
+  cy.get("[data-test=menuItem-users]").click();
+  cy.contains(name).click();
+  cy.get("[data-test=approve_button]").click();
+}
