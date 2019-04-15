@@ -15,7 +15,7 @@ import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import GroupHistory from "containers/Admin/Groups/GroupHistory";
 import colors from "shared/colors";
-import GroupEditRequest from "containers/Admin/Groups/GroupEditRequest";
+import GroupLastRequest from "containers/Admin/Groups/GroupLastRequest";
 import GroupDetailsFooter from "containers/Admin/Groups/GroupDetailsFooter";
 import styled from "styled-components";
 import ModalLoading from "components/ModalLoading";
@@ -23,7 +23,7 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { FaUsers } from "react-icons/fa";
 
-import { hasPendingEdit, hasPendingRequest } from "utils/entities";
+import { hasPendingRequest } from "utils/entities";
 import { MdEdit } from "react-icons/md";
 import { ModalClose } from "components/base/Modal";
 
@@ -54,7 +54,16 @@ class GroupModal extends PureComponent<Props> {
   EditTab: (Group, number) => React$Node = (group, tabsIndex) => {
     return (
       <Box horizontal align="center" flow={20}>
-        {!hasPendingRequest(group) && (
+        {hasPendingRequest(group) ? (
+          <TabName
+            isActive={tabsIndex === 3}
+            onClick={() => this.onTabChange(3)}
+          >
+            <Text uppercase small>
+              LAST REQUEST
+            </Text>
+          </TabName>
+        ) : (
           <Box>
             <Button
               size="tiny"
@@ -66,16 +75,6 @@ class GroupModal extends PureComponent<Props> {
               edit
             </Button>
           </Box>
-        )}
-        {hasPendingEdit(group) && (
-          <TabName
-            isActive={tabsIndex === 3}
-            onClick={() => this.onTabChange(3)}
-          >
-            <Text uppercase small>
-              EDIT REQUEST
-            </Text>
-          </TabName>
         )}
       </Box>
     );
@@ -141,16 +140,9 @@ class GroupModal extends PureComponent<Props> {
           )}
           {tabsIndex === 1 && <GroupDetailsAccounts group={group} />}
           {tabsIndex === 2 && <GroupHistory group={group} />}
-          {tabsIndex === 3 &&
-            (hasPendingEdit(group) ? (
-              <GroupEditRequest
-                group={group}
-                operators={operators}
-                close={close}
-              />
-            ) : (
-              <GroupHistory group={group} />
-            ))}
+          {tabsIndex === 3 && (
+            <GroupLastRequest group={group} operators={operators} />
+          )}
         </Box>
         <Box px={10} style={styles.footer}>
           <GroupDetailsFooter
