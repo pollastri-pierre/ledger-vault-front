@@ -378,6 +378,7 @@ type RequestCommon = {
   type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,
+  expiration_date?: Date,
   edit_data?: *,
 };
 

@@ -9,7 +9,7 @@ import InfoCircle from "components/icons/InfoCircle";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
-const BoxLined = styled(Box)`
+export const BoxLined = styled(Box).attrs({ horizontal: true })`
   & + & {
     border-top: 1px solid ${colors.argile};
   }
