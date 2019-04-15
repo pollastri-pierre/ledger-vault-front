@@ -43,6 +43,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
               onSuccess={this.onSuccess}
               color={colors.grenade}
               onError={null}
+              isRevoke
               disabled={false}
               additionalFields={{
                 data: { group_id: group.id },

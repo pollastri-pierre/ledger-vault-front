@@ -2,7 +2,7 @@
 
 import React, { PureComponent, Fragment } from "react";
 import { NetworkError } from "network";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaTrash } from "react-icons/fa";
 
 import Box from "components/base/Box";
 import DeviceInteraction from "components/DeviceInteraction";
@@ -15,6 +15,7 @@ import type { Interaction } from "components/DeviceInteraction";
 
 type Props = {
   interactions: Interaction[],
+  isRevoke?: boolean,
   color?: string,
   additionalFields: Object,
   onSuccess: Function,
@@ -55,6 +56,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       onSuccess,
       disabled,
       additionalFields,
+      isRevoke,
       color,
       buttonLabel,
     } = this.props;
@@ -77,7 +79,11 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             onClick={this.onCreate}
             isDisabled={disabled}
           >
-            <FaCheck style={{ marginRight: 10 }} />
+            {isRevoke ? (
+              <FaTrash style={{ marginRight: 10 }} />
+            ) : (
+              <FaCheck style={{ marginRight: 10 }} />
+            )}
             {buttonLabel}
           </ModalFooterButton>
         )}
