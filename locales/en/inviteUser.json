@@ -1,24 +1,24 @@
 {
   "header": "Users",
-  "inviteLink": "Invite new User",
+  "inviteLink": "Invite new user",
   "steps": {
     "infos": {
-      "title": "Information",
+      "title": "Details",
       "nextLabel": {
-        "generateLink": "Generate Link",
-        "updateInfo": "Update Info"
+        "generateLink": "Generate link",
+        "updateInfo": "Update details"
         }
     },
     "role": {
       "title": "Role",
-      "label": "Choose a role for the new user",
+      "label": "Select the role of the new user",
       "admin": {
         "title": "Administrator",
-        "desc": "User will be able to create other users, groups, etc."
+        "desc": "Administrators manage your organization's workspace"
       },
       "operator": {
         "title": "Operator",
-        "desc": "User will be able to create and validate transactions."
+        "desc": "Operators can create and/or approve transactions in accounts they've got access to"
       }
     },
     "confirmation": {
@@ -27,17 +27,17 @@
         "username": "Username",
         "userID": "User ID",
         "role": "Role",
-        "url": "Url"
+        "url": "Link"
       }
     }
   },
   "form": {
-    "labelUsername": "Enter Username",
+    "labelUsername": "Username",
     "placeholderUsername": "Enter a username",
-    "placeholderUserID": "Enter the user's User ID",
+    "placeholderUserID": "Enter the user's user ID",
     "labelUserID": "User ID"
   },
-  "description": "Share this URL with the new user using your organization's approved means of communication.",
+  "description": "Share this link with the new user using your organization's approved communication channel.",
   "generateLink": "Generate link",
   "registration": {
     "title": "Register new {{userRole}}",
@@ -48,7 +48,7 @@
     "success": {
       "title": "Success",
       "subtitle": "You've successfully registered to the Ledger Vault.",
-      "description": "The Administrators of your workspace will get in touch once your registration has been approved."
+      "description": "Administrators of your workspace will get in touch once your registration has been approved."
     }
   }
 }
