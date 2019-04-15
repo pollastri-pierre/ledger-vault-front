@@ -6,7 +6,8 @@ import type { StepProps } from "components/base/MultiStepsFlow/types";
 
 export type ReceiveFlowPayload = {
   selectedAccount: Account,
-  device: boolean,
+  isOnVaultApp: boolean,
+  isAddressVerified: boolean,
 };
 
 export type ReceiveFlowUpdatePayload = ($Shape<ReceiveFlowPayload>) => void;

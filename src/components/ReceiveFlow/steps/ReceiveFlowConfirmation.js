@@ -3,78 +3,28 @@
 import React, { PureComponent } from "react";
 
 import connectData from "restlay/connectData";
-import createDevice, {
-  CONFIDENTIALITY_PATH,
-  U2F_TIMEOUT,
-  VALIDATION_PATH,
-  MATCHER_SESSION,
-  DEVICE_REJECT_ERROR_CODE,
-} from "device";
-import network from "network";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
 import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
+import Box from "components/base/Box";
+import Card from "components/base/Card";
 
 import QRCode from "components/QRCode";
 
-import type { ReceiveFlowPayload } from "../types";
+import type { FreshAddress } from "data/types";
+import AddressNotVerified from "../AddressNotVerified";
+import AddressVerified from "../AddressVerified";
 
-type FreshAddress = {
-  address: string,
-  derivation_path: string,
-};
+import type { ReceiveFlowPayload } from "../types";
 
 type Props = {
   payload: ReceiveFlowPayload,
   fresh_addresses: FreshAddress[],
+  updatePayload: ($Shape<ReceiveFlowPayload>) => void,
 };
 class ReceiveFlowConfirmation extends PureComponent<Props> {
-  componentDidMount() {
-    // this.verifyAddress();
-  }
-
-  verifyAddress = async () => {
-    try {
-      const device = await createDevice();
-      const { payload } = this.props;
-      const { selectedAccount } = payload;
-      const {
-        attestation_certificate,
-        ephemeral_public_key,
-        wallet_address,
-      } = await network(
-        `/accounts/${selectedAccount.id}/address?derivation_path=${
-          selectedAccount.fresh_addresses[0].derivation_path
-        }`,
-        "GET",
-      );
-
-      await device.openSession(
-        CONFIDENTIALITY_PATH,
-        Buffer.from(ephemeral_public_key, "hex"),
-        Buffer.from(attestation_certificate, "base64"),
-        MATCHER_SESSION,
-      );
-      await device.validateVaultOperation(
-        VALIDATION_PATH,
-        Buffer.from(wallet_address, "base64"),
-      );
-      // this.setState({ verified: true, error: null });
-    } catch (error) {
-      if (error.statusCode && error.statusCode === U2F_TIMEOUT) {
-        this.verifyAddress();
-      } else if (
-        error.statusCode &&
-        error.statusCode === DEVICE_REJECT_ERROR_CODE
-      ) {
-        // this.setState({ deviceRejected: true });
-      } else {
-        // this.setState({ error, loading: false });
-      }
-    }
-  };
-
   render() {
-    const { payload, fresh_addresses } = this.props;
+    const { payload, fresh_addresses, updatePayload } = this.props;
     const { selectedAccount } = payload;
     const currency = getCryptoCurrencyById(selectedAccount.currency);
 
@@ -84,9 +34,24 @@ class ReceiveFlowConfirmation extends PureComponent<Props> {
         : `${fresh_addresses[0].address}`;
 
     return (
-      <div>
-        <QRCode hash={hash} size={140} />
-      </div>
+      <Card style={styles.container}>
+        <Box p={20} flow={20} align="center" justify="center">
+          <QRCode hash={hash} size={140} />
+          {payload.isAddressVerified ? (
+            <AddressVerified
+              fresh_address={fresh_addresses[0]}
+              payload={payload}
+              updatePayload={updatePayload}
+            />
+          ) : (
+            <AddressNotVerified
+              fresh_address={fresh_addresses[0]}
+              updatePayload={updatePayload}
+              payload={payload}
+            />
+          )}
+        </Box>
+      </Card>
     );
   }
 }
@@ -99,3 +64,9 @@ export default connectData(ReceiveFlowConfirmation, {
     accountId: props.payload.selectedAccount.id || "",
   }),
 });
+
+const styles = {
+  container: {
+    backgroundColor: "#fdfdfd",
+  },
+};

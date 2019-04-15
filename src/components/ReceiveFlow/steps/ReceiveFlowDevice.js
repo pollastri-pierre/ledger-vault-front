@@ -30,7 +30,7 @@ class ReceiveFlowDevice extends PureComponent<Props> {
       try {
         const device = await createDevice();
         await device.getPublicKey(U2F_PATH, false);
-        updatePayload({ device: true });
+        updatePayload({ isOnVaultApp: true });
       } catch (error) {
         console.error(error);
         if (error && error.id === U2F_TIMEOUT) {

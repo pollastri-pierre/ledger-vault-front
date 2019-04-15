@@ -2,7 +2,7 @@
 import { denormalize } from "normalizr-gre";
 
 import { delay } from "utils/promise";
-import mockEntities from "./mock-entities";
+import mockEntities, { getFreshAddresses } from "./mock-entities";
 import schema from "./schema";
 
 const mockSync = (uri, method) => {
@@ -39,7 +39,7 @@ const mockSync = (uri, method) => {
         ).filter(m => m.role === "operator");
       }
       case "/accounts/1/mocks/fresh_addresses": {
-        return mockEntities.freshAddresses;
+        return getFreshAddresses();
       }
       default:
     }

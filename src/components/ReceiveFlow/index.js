@@ -14,7 +14,8 @@ import type { ReceiveFlowPayload } from "./types";
 
 const initialPayload = {
   selectedAccount: null,
-  device: false,
+  isOnVaultApp: false,
+  isAddressVerified: false,
 };
 
 const steps = [
@@ -36,7 +37,7 @@ const steps = [
     name: "Confirmation",
     Step: ReceiveFlowConfirmation,
     requirements: (payload: ReceiveFlowPayload) => {
-      return !!payload.device;
+      return !!payload.isOnVaultApp;
     },
   },
 ];
