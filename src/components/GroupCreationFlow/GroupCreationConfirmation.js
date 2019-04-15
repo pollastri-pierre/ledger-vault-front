@@ -2,7 +2,9 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
+import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 
 import type { GroupCreationStepProps } from "./types";
 
@@ -10,18 +12,31 @@ type Props = GroupCreationStepProps & {};
 
 class GroupCreationConfirmation extends PureComponent<Props> {
   render() {
-    const { payload } = this.props;
+    const { payload, initialPayload } = this.props;
     return (
-      <Box>
-        <LineRow label={<Trans i18nKey="group:create.name" />}>
-          {payload.name}
-        </LineRow>
-        <LineRow label={<Trans i18nKey="group:create.description" />}>
-          {payload.description}
-        </LineRow>
-        <LineRow label={<Trans i18nKey="group:create.nb_members" />}>
-          {payload.members.length}
-        </LineRow>
+      <Box grow flow={20}>
+        <Box grow>
+          <LineRow label={<Trans i18nKey="group:create.name" />}>
+            {payload.name}
+          </LineRow>
+          <LineRow label={<Trans i18nKey="group:create.description" />}>
+            {payload.description}
+          </LineRow>
+          <LineRow label={<Trans i18nKey="group:create.nb_members" />}>
+            {payload.members.length}
+          </LineRow>
+        </Box>
+        {!hasEditOccured(payload, initialPayload) ? (
+          <InfoBox type="info" withIcon>
+            <Trans i18nKey="group:create.no_edit" />
+          </InfoBox>
+        ) : (
+          onlyDescriptionChanged(payload, initialPayload) && (
+            <InfoBox type="info" withIcon>
+              <Trans i18nKey="group:create.no_hsm_validation" />
+            </InfoBox>
+          )
+        )}
       </Box>
     );
   }

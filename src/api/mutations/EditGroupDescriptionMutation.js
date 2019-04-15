@@ -5,7 +5,7 @@ import { success, error } from "formatters/notification";
 import schema from "data/schema";
 
 type In = {
-  group: Group,
+  groupId: number,
   description: string,
 };
 
@@ -14,7 +14,7 @@ type Res = Group;
 export default class EditGroupDescriptionMutation extends Mutation<In, Res> {
   method = "PUT";
 
-  uri = `/groups/${this.props.group.id}`;
+  uri = `/groups/${this.props.groupId}`;
 
   responseSchema = schema.Group;
 

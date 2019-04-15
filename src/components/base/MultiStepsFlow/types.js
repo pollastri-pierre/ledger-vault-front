@@ -6,6 +6,7 @@ export type MultiStepsFlowStep<T, P> = {
   Step: React$ComponentType<StepProps<T> & P>,
   Cta?: React$ComponentType<{
     payload: T,
+    initialPayload: T,
     onClose: Function,
     isEditMode?: boolean,
   }>,
@@ -19,6 +20,7 @@ export type PayloadUpdater<T> = ($Shape<T>, ?() => void) => void;
 
 export type StepProps<T> = {
   payload: T,
+  initialPayload: T,
   updatePayload: PayloadUpdater<T>,
   transitionTo: string => void,
   isEditMode?: boolean,
