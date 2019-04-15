@@ -27,8 +27,6 @@ export const groupsTableDefault = [
     header: {
       label: "Members",
       align: "right",
-      sortable: true,
-      sortFirst: "desc",
     },
     body: {
       prop: "members",

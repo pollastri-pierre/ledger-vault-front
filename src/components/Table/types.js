@@ -10,7 +10,7 @@ export type TableItem = {
 type TableHeader = {
   label: string,
   align: "left" | "right",
-  sortable: boolean,
+  sortable?: boolean,
   sortFirst?: "asc" | "desc",
 };
 

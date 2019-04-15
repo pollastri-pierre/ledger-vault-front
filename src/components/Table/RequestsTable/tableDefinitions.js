@@ -8,7 +8,7 @@ export const requestsTableDefault = [
       sortable: true,
     },
     body: {
-      prop: "date",
+      prop: "created_on",
       align: "left",
     },
   },
@@ -27,7 +27,7 @@ export const requestsTableDefault = [
     header: {
       label: "Status",
       align: "left",
-      sortable: false,
+      sortable: true,
     },
     body: {
       prop: "status",
