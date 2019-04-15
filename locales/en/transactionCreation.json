@@ -3,20 +3,20 @@
   "steps": {
     "account": {
       "title": "Account",
-      "desc": "Choose an account to send with"
+      "desc": "Account to debit"
     },
     "amount": {
-      "title": "Amount",
+      "title": "Details",
       "amount": "Amount",
       "recipient": "Recipient address",
-      "feesInfos": "Transaction confirmation will be faster with higher fees.",
+      "feesInfos": "To have your transaction confirmed faster, select a higher fee.",
       "estimatedFees": "Estimated fees"
     },
     "note": {
-      "title": "Note",
+      "title": "Comments",
       "noteTitle": "Title",
-      "noteContent": "Content",
-      "noteDesc": "Notes are optional, they can be used to retrieve transactions more easily."
+      "noteContent": "Comments",
+      "noteDesc": "Comments are optional. They allow you to add details on the transaction."
     },
     "confirmation": {
       "title": "Confirmation"
