@@ -39,9 +39,14 @@ class RequestActionButtons extends PureComponent<Props> {
       >
         <Box flow={10} width="100%" align="center" justify="center">
           {entity.last_request && (
-            <Text small>
-              A <b>{entity.last_request.type}</b> request is pending.
-            </Text>
+            <Box horizontal flow={2}>
+              <Text
+                small
+                bold
+                i18nKey={`request:type.${entity.last_request.type}`}
+              />{" "}
+              <Text small>request is pending.</Text>
+            </Box>
           )}
           {hasUserApproved ? (
             <Box horizontal align="center" flow={10} pb={20}>

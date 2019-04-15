@@ -25,7 +25,9 @@ class GroupLastRequest extends PureComponent<Props> {
     return (
       <Box flow={20}>
         <Box>
-          <Row label="Request">{group.last_request.type}</Row>
+          <Row label="Request">
+            <Text i18nKey={`request:type.${group.last_request.type}`} />
+          </Row>
           <Row label="Expiration date">
             <DateFormat
               date={group.last_request.expiration_date || new Date()}
