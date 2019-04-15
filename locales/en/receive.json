@@ -15,6 +15,7 @@
   "receive_account": "Address for the account <1><0>{{name}}</0></1>",
   "receive_subtitle": "receive address",
   "retry": "Retry",
+  "receive_again": "Receive again",
   "verify": "Verify",
   "support": "Contact Support",
   "verify_on_device": "Verify that the address and QR code above are identical to the address and QR code displayed on your Ledger Blue Enterprise device, then tap APPROVE."

@@ -10,22 +10,24 @@ import Box from "components/base/Box";
 
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
-import type { ReceiveFlowPayload } from "../types";
+import type { ReceiveFlowStepProps } from "../types";
 
-type Props = {
-  payload: ReceiveFlowPayload,
-  updatePayload: ($Shape<ReceiveFlowPayload>) => void,
+type Props = ReceiveFlowStepProps & {
   accounts: Connection<Account>,
 };
+
 class ReceiveFlowAccounts extends PureComponent<Props> {
   onSelect = (account: ?Account) => {
     if (!account) return;
-    const { updatePayload } = this.props;
-    updatePayload({
-      selectedAccount: account,
-      isOnVaultApp: false,
-      isAddressVerified: false,
-    });
+    const { updatePayload, transitionTo } = this.props;
+    updatePayload(
+      {
+        selectedAccount: account,
+        isOnVaultApp: false,
+        isAddressVerified: false,
+      },
+      () => transitionTo("device"),
+    );
   };
 
   render() {

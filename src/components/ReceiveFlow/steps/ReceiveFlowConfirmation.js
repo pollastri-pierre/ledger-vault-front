@@ -10,18 +10,18 @@ import Box from "components/base/Box";
 import Card from "components/base/Card";
 
 import QRCode from "components/QRCode";
+import AccountName from "components/AccountName";
 
 import type { FreshAddress } from "data/types";
 import AddressNotVerified from "../AddressNotVerified";
 import AddressVerified from "../AddressVerified";
 
-import type { ReceiveFlowPayload } from "../types";
+import type { ReceiveFlowStepProps } from "../types";
 
-type Props = {
-  payload: ReceiveFlowPayload,
+type Props = ReceiveFlowStepProps & {
   fresh_addresses: FreshAddress[],
-  updatePayload: ($Shape<ReceiveFlowPayload>) => void,
 };
+
 class ReceiveFlowConfirmation extends PureComponent<Props> {
   render() {
     const { payload, fresh_addresses, updatePayload } = this.props;
@@ -35,6 +35,7 @@ class ReceiveFlowConfirmation extends PureComponent<Props> {
 
     return (
       <Card style={styles.container}>
+        <AccountName currencyId={currency.id} name={selectedAccount.name} />
         <Box p={20} flow={20} align="center" justify="center">
           <QRCode hash={hash} size={140} />
           {payload.isAddressVerified ? (

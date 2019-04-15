@@ -21,6 +21,7 @@ type Props<T, P> = {
   onClose?: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
+  transitionTo?: string => void,
 };
 
 type State<T> = {
@@ -198,6 +199,9 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
                 onClose={onClose}
                 isEditMode={this.props.isEditMode}
                 initialPayload={initialPayload}
+                transitionTo={this.transitionTo}
+                // $FlowFixMe niark niark
+                updatePayload={this.updatePayload}
               />
             </CtaContainer>
           )}

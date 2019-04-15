@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 
-import { FaPowerOff, FaUsb, FaUserSecret, FaDoorOpen } from "react-icons/fa";
+import { FaPowerOff, FaUsb, FaUserSecret, FaRegHandPointUp } from "react-icons/fa";
 
 import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
 
@@ -11,13 +11,10 @@ import Box from "components/base/Box";
 import Card from "components/base/Card";
 import Text from "components/base/Text";
 import LedgerBlue from "components/icons/LedgerBlue";
+import type { ReceiveFlowStepProps } from "../types";
 
-import type { ReceiveFlowPayload, ReceiveFlowUpdatePayload } from "../types";
+type Props = ReceiveFlowStepProps;
 
-type Props = {
-  payload: ReceiveFlowPayload,
-  updatePayload: ReceiveFlowUpdatePayload,
-};
 class ReceiveFlowDevice extends PureComponent<Props> {
   componentDidMount() {
     this.isOnVaultApp();
@@ -53,7 +50,7 @@ class ReceiveFlowDevice extends PureComponent<Props> {
             title="receive:device_step3"
             icon={<FaUserSecret />}
           />
-          <InstructionRow title="receive:device_step4" icon={<FaDoorOpen />} />
+          <InstructionRow title="receive:device_step4" icon={<FaRegHandPointUp />} />
         </Box>
       </Box>
     );

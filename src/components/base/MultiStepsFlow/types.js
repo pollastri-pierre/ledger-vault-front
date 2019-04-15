@@ -8,6 +8,8 @@ export type MultiStepsFlowStep<T, P> = {
     payload: T,
     initialPayload: T,
     onClose: Function,
+    transitionTo?: string => void,
+    updatePayload?: PayloadUpdater<T>,
     isEditMode?: boolean,
   }>,
   requirements?: T => boolean,

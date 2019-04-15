@@ -65,12 +65,17 @@ class AddressVerified extends Component<Props, State> {
           )}
         </Box>
         <Box mt={40} horizontal justify="space-between">
-          <Box jujstify="center" align="center" onClick={this.reVerify}>
+          <Box
+            jujstify="center"
+            align="center"
+            onClick={this.reVerify}
+            style={styles.actionIcon}
+          >
             <Recover size={16} color={colors.shark} />
             <Text i18nKey="receive:re_verify" />
           </Box>
           <CopyToClipboard text={fresh_address.address} onCopy={this.onCopy}>
-            <Box jujstify="center" align="center">
+            <Box jujstify="center" align="center" style={styles.actionIcon}>
               <Copy color={colors.shark} size={16} />
               <Text i18nKey="receive:copy" />
             </Box>
@@ -89,5 +94,8 @@ const styles = {
     outline: "none",
     borderRadius: 4,
     width: 350,
+  },
+  actionIcon: {
+    cursor: "pointer",
   },
 };

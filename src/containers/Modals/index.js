@@ -34,6 +34,6 @@ export default () => (
       component={AccountCreationFlow}
       disableBackdropClick
     />
-    <ModalRoute path="*/receive" component={ReceiveFlow} />
+    <ModalRoute path="*/receive" component={ReceiveFlow} disableBackdropClick />
   </Fragment>
 );

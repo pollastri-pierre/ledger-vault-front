@@ -9,7 +9,7 @@ import VaultButton from "components/base/Button";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import DeviceInteraction from "components/DeviceInteraction";
-import { FaCheck, FaHandPaper } from "react-icons/fa";
+import { FaRegEye, FaHandPaper } from "react-icons/fa";
 import InfoBox from "components/base/InfoBox";
 import colors from "shared/colors";
 
@@ -75,19 +75,23 @@ class AddressNotVerified extends Component<Props, State> {
           </Box>
         ) : (
           <Box horizontal flow={15}>
-            <InfoBox type="warning" withIcon>
+            <InfoBox
+              type="warning"
+              withIcon
+              Footer={
+                <VaultButton
+                  type="submit"
+                  variant="filled"
+                  size="small"
+                  IconLeft={FaRegEye}
+                  onClick={this.verifyInProgress}
+                >
+                  <Trans i18nKey="receive:verify" />
+                </VaultButton>
+              }
+            >
               <Text small i18nKey="receive:verify_on_device" />
             </InfoBox>
-            <Box style={{ alignSelf: "center" }}>
-              <VaultButton
-                type="submit"
-                size="small"
-                IconLeft={FaCheck}
-                onClick={this.verifyInProgress}
-              >
-                <Trans i18nKey="receive:verify" />
-              </VaultButton>
-            </Box>
           </Box>
         )}
       </Box>
