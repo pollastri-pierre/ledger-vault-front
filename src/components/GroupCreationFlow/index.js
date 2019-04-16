@@ -5,10 +5,12 @@ import connectData from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import { createAndApprove } from "device/interactions/approveFlow";
 import UsersQuery from "api/queries/UsersQuery";
+import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";
 
 import ModalLoading from "components/ModalLoading";
 import ApproveRequestButton from "components/ApproveRequestButton";
+import UpdateDescriptionButton from "components/GroupCreationFlow/UpdateDescriptionButton";
 
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -18,6 +20,7 @@ import type { Group } from "data/types";
 import GroupCreationInfos from "./GroupCreationInfos";
 import GroupCreationMembers from "./GroupCreationMembers";
 import GroupCreationConfirmation from "./GroupCreationConfirmation";
+import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 import type { GroupCreationPayload } from "./types";
 
 const styles = {
@@ -50,23 +53,35 @@ const steps = [
       payload,
       onClose,
       isEditMode,
+      initialPayload,
     }: {
       payload: GroupCreationPayload,
+      initialPayload: GroupCreationPayload,
       onClose: Function,
       isEditMode?: boolean,
     }) => {
+      // if only description changed
+      if (onlyDescriptionChanged(payload, initialPayload)) {
+        return <UpdateDescriptionButton payload={payload} onClose={onClose} />;
+      }
       const data = serializePayload(payload);
+
       return (
         <ApproveRequestButton
-          interactions={createAndApprove}
+          interactions={
+            payload.description !== initialPayload.description
+              ? [editDescriptionMutation, ...createAndApprove]
+              : createAndApprove
+          }
           onSuccess={() => {
             onClose();
           }}
-          disabled={false}
+          disabled={!hasEditOccured(payload, initialPayload)}
           onError={null}
           additionalFields={{
             type: isEditMode ? "EDIT_GROUP" : "CREATE_GROUP",
             data,
+            description: payload.description,
           }}
           buttonLabel={
             <Trans
@@ -98,10 +113,9 @@ const GroupEdit = connectData(
       }
       initialPayload={purgePayload(props.group)}
       steps={steps}
-      additionalProps={props}
+      additionalProps={{ ...props }}
       onClose={props.close}
       style={styles.container}
-      initialCursor={1}
       isEditMode
     />
   ),
@@ -153,10 +167,28 @@ function purgePayload(group: Group) {
 }
 function serializePayload(payload: GroupCreationPayload) {
   if (!payload.id)
-    return { ...payload, members: payload.members.map(m => m.id) };
+    return {
+      ...payload,
+      members: payload.members.map(m => m.id),
+      name: payload.name,
+    };
 
   return {
-    edit_data: { members: payload.members.map(m => m.id) },
+    edit_data: {
+      name: payload.name,
+      members: payload.members.map(m => m.id),
+    },
     group_id: payload.id,
   };
 }
+
+const editDescriptionMutation = {
+  responseKey: "edit_description",
+  action: ({ restlay, data, description }) =>
+    restlay.commitMutation(
+      new EditGroupDescriptionMutation({
+        groupId: data.group_id,
+        description,
+      }),
+    ),
+};

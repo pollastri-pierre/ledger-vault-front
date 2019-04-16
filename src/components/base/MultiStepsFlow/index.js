@@ -131,6 +131,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       steps,
       Icon,
       title,
+      initialPayload,
       additionalProps,
       onClose,
       ...props
@@ -147,6 +148,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     const stepProps = {
       payload,
+      initialPayload,
       isEditMode: this.props.isEditMode,
       updatePayload: this.updatePayload,
       transitionTo: this.transitionTo,
@@ -195,6 +197,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
                 payload={payload}
                 onClose={onClose}
                 isEditMode={this.props.isEditMode}
+                initialPayload={initialPayload}
               />
             </CtaContainer>
           )}

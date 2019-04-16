@@ -21,6 +21,9 @@
     "nb_members": "Number of members",
     "confirmation": "confirmation",
     "submit": "Create Group",
+    "no_hsm_validation": "You only updated the description. It doesn't requre HSM/Device validation",
+    "hsm_validation": "Name or members edition require HSM/Device validation",
+    "no_edit": "Nothing changed.",
     "submit_edit": "Edit Group"
   }
 }
