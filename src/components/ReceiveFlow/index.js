@@ -8,6 +8,9 @@ import connectData from "restlay/connectData";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import colors from "shared/colors";
 import { ModalFooterButton } from "components/base/Modal";
+import ModalLoading from "components/ModalLoading";
+import AccountsQuery from "api/queries/AccountsQuery";
+import { CardError } from "components/base/Card";
 
 import ReceiveFlowAccounts from "./steps/ReceiveFlowAccounts";
 import ReceiveFlowDevice from "./steps/ReceiveFlowDevice";
@@ -48,17 +51,16 @@ const steps = [
       updatePayload,
     }: {
       payload: ReceiveFlowPayload,
-      transitionTo: string => void,
-      updatePayload: ($Shape<ReceiveFlowPayload>) => void,
+      transitionTo?: string => void,
+      updatePayload?: ($Shape<ReceiveFlowPayload>) => void,
     }) => {
       return (
         <ModalFooterButton
           color={colors.ocean}
           isDisabled={!payload.isAddressVerified}
           onClick={() => {
-            // $FlowFixMe
-            updatePayload(initialPayload);
-            transitionTo("accounts");
+            updatePayload && updatePayload(initialPayload);
+            transitionTo && transitionTo("accounts");
           }}
         >
           <Trans i18nKey="receive:receive_again" />
@@ -74,18 +76,27 @@ const styles = {
   container: { minHeight: 670 },
 };
 
-function ReceiveFlow(props: { close: () => void }) {
-  return (
-    <MultiStepsFlow
-      Icon={FaUser}
-      title={title}
-      initialPayload={initialPayload}
-      // $FlowFixMe
-      steps={steps}
-      style={styles.container}
-      onClose={props.close}
-    />
-  );
-}
+const RenderLoading = () => <ModalLoading height={620} width={700} />;
 
-export default connectData(ReceiveFlow);
+export default connectData(
+  props => {
+    return (
+      <MultiStepsFlow
+        Icon={FaUser}
+        title={title}
+        initialPayload={initialPayload}
+        additionalProps={props}
+        steps={steps}
+        style={styles.container}
+        onClose={props.close}
+      />
+    );
+  },
+  {
+    RenderLoading,
+    RenderError: CardError,
+    queries: {
+      accounts: AccountsQuery,
+    },
+  },
+);

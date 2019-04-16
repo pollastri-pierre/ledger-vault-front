@@ -26,16 +26,19 @@ class ReceiveFlowConfirmation extends PureComponent<Props> {
   render() {
     const { payload, fresh_addresses, updatePayload } = this.props;
     const { selectedAccount } = payload;
-    const currency = getCryptoCurrencyById(selectedAccount.currency);
+    const currency =
+      selectedAccount && getCryptoCurrencyById(selectedAccount.currency);
 
     const hash =
-      selectedAccount.account_type === "Bitcoin"
+      selectedAccount && selectedAccount.account_type === "Bitcoin" && currency
         ? `${currency.scheme}:${fresh_addresses[0].address}`
         : `${fresh_addresses[0].address}`;
 
     return (
-      <Card style={styles.container}>
-        <AccountName currencyId={currency.id} name={selectedAccount.name} />
+      <Card bg="#fdfdfd">
+        {selectedAccount && currency && (
+          <AccountName currencyId={currency.id} name={selectedAccount.name} />
+        )}
         <Box p={20} flow={20} align="center" justify="center">
           <QRCode hash={hash} size={140} />
           {payload.isAddressVerified ? (
@@ -65,9 +68,3 @@ export default connectData(ReceiveFlowConfirmation, {
     accountId: props.payload.selectedAccount.id || "",
   }),
 });
-
-const styles = {
-  container: {
-    backgroundColor: "#fdfdfd",
-  },
-};

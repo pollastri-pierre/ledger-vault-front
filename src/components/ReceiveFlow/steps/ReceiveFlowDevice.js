@@ -2,7 +2,12 @@
 
 import React, { PureComponent } from "react";
 
-import { FaPowerOff, FaUsb, FaUserSecret, FaRegHandPointUp } from "react-icons/fa";
+import {
+  FaPowerOff,
+  FaUsb,
+  FaUserSecret,
+  FaRegHandPointUp,
+} from "react-icons/fa";
 
 import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
 
@@ -50,7 +55,10 @@ class ReceiveFlowDevice extends PureComponent<Props> {
             title="receive:device_step3"
             icon={<FaUserSecret />}
           />
-          <InstructionRow title="receive:device_step4" icon={<FaRegHandPointUp />} />
+          <InstructionRow
+            title="receive:device_step4"
+            icon={<FaRegHandPointUp />}
+          />
         </Box>
       </Box>
     );
@@ -59,19 +67,15 @@ class ReceiveFlowDevice extends PureComponent<Props> {
 
 export default ReceiveFlowDevice;
 
-const InstructionRow = ({
-  title,
-  icon,
-}: {
-  title: string,
-  icon: React$Node,
-}) => (
-  <Card bc="#fdfdfd">
-    <Box flow={15} horizontal>
-      <Box justify="center" align="center">
-        {icon}
+function InstructionRow({ title, icon }: { title: string, icon: React$Node }) {
+  return (
+    <Card bg="#fdfdfd">
+      <Box flow={15} horizontal>
+        <Box justify="center" align="center">
+          {icon}
+        </Box>
+        <Text color={colors.lead} i18nKey={title} />
       </Box>
-      <Text color={colors.lead} i18nKey={title} />
-    </Box>
-  </Card>
-);
+    </Card>
+  );
+}

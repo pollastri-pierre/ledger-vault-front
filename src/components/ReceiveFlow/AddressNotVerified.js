@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
+import connectData from "restlay/connectData";
 
 import { verifyAddressFlow } from "device/interactions/verifyAddressFlow";
 
@@ -14,12 +15,14 @@ import InfoBox from "components/base/InfoBox";
 import colors from "shared/colors";
 
 import type { FreshAddress } from "data/types";
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { ReceiveFlowPayload } from "./types";
 
 type Props = {
   fresh_address: FreshAddress,
   payload: ReceiveFlowPayload,
   updatePayload: ($Shape<ReceiveFlowPayload>) => void,
+  restlay: RestlayEnvironment,
 };
 
 type State = {
@@ -45,7 +48,7 @@ class AddressNotVerified extends Component<Props, State> {
   };
 
   render() {
-    const { fresh_address, payload } = this.props;
+    const { fresh_address, payload, restlay } = this.props;
     const { selectedAccount } = payload;
     const { verifificationInProgress } = this.state;
     return (
@@ -61,13 +64,14 @@ class AddressNotVerified extends Component<Props, State> {
           <FaHandPaper size={16} color={colors.grenade} />
           <Text>{fresh_address.address}</Text>
         </Box>
-        {verifificationInProgress ? (
+        {verifificationInProgress && selectedAccount ? (
           <Box align="center">
             <DeviceInteraction
               interactions={verifyAddressFlow}
               additionalFields={{
                 accountId: selectedAccount.id,
                 fresh_address,
+                restlay,
               }}
               onSuccess={this.onSuccess}
               onError={this.onError}
@@ -99,7 +103,7 @@ class AddressNotVerified extends Component<Props, State> {
   }
 }
 
-export default AddressNotVerified;
+export default connectData(AddressNotVerified);
 
 const styles = {
   hash: {

@@ -1,23 +1,24 @@
 // @flow
 import type { DeviceError } from "utils/errors";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+import GetAddressQuery from "api/queries/GetAddressQuery";
 import type { Interaction } from "components/DeviceInteraction";
 
 import { openSession, validateVaultOperation } from "device/interface";
 import { VALIDATION_PATH, CONFIDENTIALITY_PATH, MATCHER_SESSION } from "device";
-import network, { retryOnCondition, retry } from "network";
+import { retryOnCondition, retry } from "network";
 
 type Flow = Interaction[];
 
 export const getAddress: Interaction = {
   needsUserInput: false,
   responseKey: "address",
-  action: ({ accountId, fresh_address }) =>
-    network(
-      `/accounts/${accountId}/address?derivation_path=${
-        fresh_address.derivation_path
-      }`,
-      "GET",
+  action: ({ accountId, fresh_address, restlay }) =>
+    restlay.fetchQuery(
+      new GetAddressQuery({
+        accountId,
+        derivation_path: fresh_address.derivation_path,
+      }),
     ),
 };
 
