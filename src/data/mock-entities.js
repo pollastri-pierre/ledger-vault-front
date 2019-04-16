@@ -305,21 +305,11 @@ export function genTransactions(nb, { accounts, users }) {
   }
   return operations;
 }
-export function getFreshAddresses() {
-  return [
-    {
-      address: "1MfeDvj5AUBG4xVMrx1xPgmYdXQrzHtW5b",
-      derivation_path: "0/2",
-      id: 1,
-    },
-  ];
-}
 
 const users = genUsers(20);
 const accounts = genAccounts(20, { users });
 const operations = genTransactions(100, { accounts, users });
 const groups = genGroups(4, { users });
-const freshAddresses = getFreshAddresses();
 
 export default {
   accounts: keyBy(accounts, "id"),
@@ -329,5 +319,4 @@ export default {
   users: keyBy(users, "id"),
   usersArray: users,
   operations: keyBy(operations, "id"),
-  freshAddresses: keyBy(freshAddresses, "id"),
 };

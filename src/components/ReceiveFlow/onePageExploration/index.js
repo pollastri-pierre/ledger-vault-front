@@ -2,8 +2,9 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import network from "network";
 import connectData from "restlay/connectData";
+import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
+
 import { ModalFooterButton, ModalClose } from "components/base/Modal";
 
 import Text from "components/base/Text";
@@ -11,6 +12,7 @@ import Box from "components/base/Box";
 
 import colors from "shared/colors";
 
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { Account } from "data/types";
 import ReceiveFlowAccounts from "./ope-Accounts";
 import Address from "./ope-Address";
@@ -19,6 +21,7 @@ const title = "Receive Assets";
 
 type Props = {
   close: () => void,
+  restlay: RestlayEnvironment,
 };
 
 type State = {
@@ -49,17 +52,15 @@ class ReceiveFlow extends PureComponent<Props, State> {
   }
 
   fetchFreshAddresses = async () => {
+    const { restlay } = this.props;
     const { selectedAccount } = this.state;
     if (selectedAccount) {
-      try {
-        const fresh_addresses = await network(
-          `/accounts/${selectedAccount.id}/fresh_addresses`,
-          "GET",
-        );
-        this.updateState({ fresh_address: fresh_addresses[0] });
-      } catch (err) {
-        console.error(err);
-      }
+      const fresh_addresses = await restlay.fetchQuery(
+        new FreshAddressesQuery({
+          accountId: selectedAccount.id,
+        }),
+      );
+      this.updateState({ fresh_address: fresh_addresses[0] });
     }
   };
 
