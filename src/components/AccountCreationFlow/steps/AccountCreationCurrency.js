@@ -12,6 +12,7 @@ import Radio from "@material-ui/core/Radio";
 import type { Account, ERC20Token } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
+import Disabled from "components/Disabled";
 import SelectCurrency from "components/SelectCurrency";
 import SelectAccount from "components/SelectAccount";
 import InfoBox from "components/base/InfoBox";
@@ -133,7 +134,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
   };
 
   render() {
-    const { payload, allAccounts, classes } = this.props;
+    const { payload, allAccounts, isEditMode, classes } = this.props;
 
     const currencyOrToken = payload.currency || payload.erc20token || null;
 
@@ -150,13 +151,14 @@ class AccountCreationCurrencies extends PureComponent<Props> {
     );
 
     return (
-      <Fragment>
+      <Disabled disabled={isEditMode}>
         <Label>
           <Trans i18nKey="newAccount:currency.label" />
         </Label>
         <SelectCurrency
           autoFocus
           openMenuOnFocus={!currencyOrToken}
+          isDisabled={isEditMode}
           value={currencyOrToken}
           onChange={this.handleChange}
           noOptionsMessage={({ inputValue }) => (
@@ -196,7 +198,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
             )}
           </div>
         )}
-      </Fragment>
+      </Disabled>
     );
   }
 }

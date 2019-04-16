@@ -5,19 +5,25 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
 import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
 import ModalLoading from "components/ModalLoading";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
+import AccountQuery from "api/queries/AccountQuery";
 import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
+import Text from "components/base/Text";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import {
   isNotSupportedCoin,
   getCurrencyIdFromBlockchainName,
+  getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 
+import type { Account } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
 import AccountCreationName from "./steps/AccountCreationName";
 import AccountCreationRules from "./steps/AccountCreationRules";
@@ -77,9 +83,11 @@ const steps = [
     Cta: ({
       payload,
       onClose,
+      isEditMode,
     }: {
       payload: AccountCreationPayload,
       onClose: Function,
+      isEditMode?: boolean,
     }) => {
       const data = serializePayload(payload);
       return (
@@ -91,8 +99,15 @@ const steps = [
           }}
           disabled={false}
           onError={null}
-          additionalFields={{ type: "CREATE_ACCOUNT", data }}
-          buttonLabel={<Trans i18nKey="accountCreation:cta" />}
+          additionalFields={{
+            type: isEditMode ? "EDIT_ACCOUNT" : "CREATE_ACCOUNT",
+            data,
+          }}
+          buttonLabel={
+            <Trans
+              i18nKey={`accountCreation:${isEditMode ? "cta_edit" : "cta"}`}
+            />
+          }
         />
       );
     },
@@ -133,7 +148,43 @@ function getGateAccountType(payload: AccountCreationPayload) {
   return accountType;
 }
 
-export default connectData(
+// TODO see if we can get rid of some api call like potentialAccounts
+const AccountEdit = connectData(
+  props => (
+    <MultiStepsFlow
+      Icon={FaMoneyCheck}
+      title={
+        <Text>
+          <Trans i18nKey="accountCreation:edit_title" />: {props.account.name}
+        </Text>
+      }
+      steps={steps}
+      additionalProps={props}
+      style={styles.container}
+      onClose={props.close}
+      isEditMode
+      initialPayload={deserialize(props.account)}
+      initialCursor={2}
+    />
+  ),
+  {
+    RenderLoading,
+    RenderError: TryAgain,
+    queries: {
+      allAccounts: PotentialParentAccountsQuery,
+      account: AccountQuery,
+      users: UsersQuery,
+      groups: GroupsQuery,
+    },
+    propsToQueryParams: props => ({
+      // FIXME FIXME FIXME this is a hack to actually be able to create
+      // an account, because 1rst approval group require to have admin on it
+      role: ["ADMIN", "OPERATOR"],
+      accountId: props.accountId || "",
+    }),
+  },
+);
+const AccountCreation = connectData(
   props => (
     <MultiStepsFlow
       Icon={FaMoneyCheck}
@@ -161,6 +212,35 @@ export default connectData(
   },
 );
 
+const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
+  if (match.params.accountId) {
+    return <AccountEdit accountId={match.params.accountId} close={close} />;
+  }
+  return <AccountCreation close={close} />;
+};
+export default Wrapper;
+
+const deserialize: Account => AccountCreationPayload = account => {
+  if (!account.tx_approval_steps) return initialPayload;
+  return {
+    name: account.name,
+    rules: account.tx_approval_steps.map(rule => ({
+      quorum: rule.quorum,
+      group: rule.group.status === "ACTIVE" ? rule.group.id : null,
+      users:
+        rule.group.status !== "ACTIVE" ? rule.group.members.map(m => m.id) : [],
+    })),
+    currency:
+      account.account_type === "Bitcoin"
+        ? getCryptoCurrencyById(account.currency)
+        : null,
+    parentAccount: account.parent ? { id: account.parent } : null,
+    erc20token:
+      account.account_type === "ERC20"
+        ? getERC20TokenByContractAddress(account.contract_address) || null
+        : null,
+  };
+};
 function serializePayload(payload: AccountCreationPayload) {
   const data: Object = {
     name: payload.name,

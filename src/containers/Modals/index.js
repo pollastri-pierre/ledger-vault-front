@@ -23,6 +23,10 @@ export default () => (
       path="*/accounts/details/:accountId"
       component={AccountDetails}
     />
+    <ModalRoute
+      path="*/accounts/edit/:accountId"
+      component={AccountCreationFlow}
+    />
     <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
     <ModalRoute path="*/new-transaction" component={TransactionCreationFlow} />
     <ModalRoute

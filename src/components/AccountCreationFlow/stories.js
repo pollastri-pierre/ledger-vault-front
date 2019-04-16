@@ -39,13 +39,34 @@ const fakeNetwork = async url => {
   if (url.startsWith("/requests")) {
     return { id: 42 };
   }
+  if (url.startsWith("/accounts")) {
+    const acc = accounts[0];
+    acc.tx_approval_steps = [
+      {
+        quorum: 2,
+        group: denormalize(groups[0].id, schema.Group, {
+          users: keyBy(users, "id"),
+          groups: keyBy(groups, "id"),
+        }),
+      },
+    ];
+    return acc;
+  }
   throw new Error("invalid url");
 };
 
 storiesOf("flows", module).add("Account creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
-      <AccountCreationFlow />
+      <AccountCreationFlow match={{ params: {} }} />
+    </Modal>
+  </RestlayProvider>
+));
+
+storiesOf("flows", module).add("Account Edit", () => (
+  <RestlayProvider network={fakeNetwork}>
+    <Modal isOpened>
+      <AccountCreationFlow match={{ params: { accountId: 1 } }} />
     </Modal>
   </RestlayProvider>
 ));
