@@ -28,6 +28,7 @@ type Props<T> = {
   TableComponent: React$ComponentType<*>,
   FilterComponent: React$ComponentType<*>,
   HeaderComponent?: React$ComponentType<*>,
+  ActionComponent?: React$ComponentType<*>,
   customTableDef?: TableDefinition,
   restlay: RestlayEnvironment,
   Query: (*) => ConnectionQuery<*, *>,
@@ -161,6 +162,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
       TableComponent,
       FilterComponent,
       HeaderComponent,
+      ActionComponent,
       customTableDef,
       onRowClick,
       extraProps,
@@ -196,27 +198,31 @@ class DataSearch extends PureComponent<Props<*>, State> {
     return (
       <Card>
         {HeaderComponent && <HeaderComponent />}
-        <FilterComponent
-          noShrink
-          onChange={this.handleUpdateQueryParams}
-          queryParams={queryParams}
-          nbResults={status === "idle" ? count : null}
-          paginator={
-            showPaginator ? (
-              <Paginator
-                page={page}
-                count={count}
-                pageSize={
-                  (queryParams.pageSize &&
-                    parseInt(queryParams.pageSize, 10)) ||
-                  DEFAULT_PAGE_SIZE
-                }
-                onChange={this.handleChangePage}
-              />
-            ) : null
-          }
-          {...extraProps}
-        />
+        <Box horizontal justify="space-between">
+          <FilterComponent
+            noShrink
+            onChange={this.handleUpdateQueryParams}
+            queryParams={queryParams}
+            nbResults={status === "idle" ? count : null}
+            paginator={
+              showPaginator ? (
+                <Paginator
+                  page={page}
+                  count={count}
+                  pageSize={
+                    (queryParams.pageSize &&
+                      parseInt(queryParams.pageSize, 10)) ||
+                    DEFAULT_PAGE_SIZE
+                  }
+                  onChange={this.handleChangePage}
+                />
+              ) : null
+            }
+            {...extraProps}
+          />
+          {ActionComponent && <ActionComponent />}
+        </Box>
+
         {isLoading && Loading && <Loading />}
         {showTable && !(Loading && !isFirstQuery) && (
           <Box position="relative">
