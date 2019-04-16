@@ -2,7 +2,7 @@
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
 import debounce from "lodash/debounce";
-import { FaUsers, FaExchangeAlt } from "react-icons/fa";
+import { FaExchangeAlt } from "react-icons/fa";
 
 import SelectTab from "components/SelectTab/SelectTab";
 import connectData from "restlay/connectData";
@@ -77,16 +77,14 @@ class AccountSettings extends PureComponent<Props, State> {
   render() {
     const { account, close, exchange } = this.props;
     const { settings } = this.state;
-    const {
-      security_scheme: { quorum },
-      members,
-    } = this.props.account;
+
     const curr = getCryptoCurrencyById(account.currency);
     const units = curr.units;
     const unit_index = units.findIndex(
       unit =>
         unit.code.toLowerCase() === settings.currency_unit.code.toLowerCase(),
     );
+
     return (
       <ModalBody height={615} onClose={close}>
         <ModalHeader>
@@ -138,10 +136,7 @@ class AccountSettings extends PureComponent<Props, State> {
               }
             >
               <Box horizontal align="center" flow={5}>
-                <FaUsers size={13} color={colors.lightGrey} />
-                <Text bold>
-                  {quorum} out of {members.length}
-                </Text>
+                here
               </Box>
             </SectionRow>
           </Fragment>
