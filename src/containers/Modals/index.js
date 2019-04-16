@@ -6,7 +6,7 @@ import AccountCreationFlow from "components/AccountCreationFlow";
 import GroupCreationFlow from "components/GroupCreationFlow";
 import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
-import AccountDetails from "containers/Admin/Accounts/AccountDetails";
+import AccountDetails from "containers/Accounts/AccountDetails";
 import TransactionDetails from "components/transactions/TransactionModal";
 
 export default () => (

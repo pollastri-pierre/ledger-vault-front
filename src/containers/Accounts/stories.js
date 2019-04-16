@@ -6,7 +6,7 @@ import { storiesOf } from "@storybook/react";
 import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
 import Modal from "components/base/Modal";
-import AccountDetails from "containers/Admin/Accounts/AccountDetails";
+import AccountDetails from "containers/Accounts/AccountDetails";
 
 import { genAccounts } from "data/mock-entities";
 import requests from "data/mock-requests.json";
