@@ -37,8 +37,7 @@ export const processUserInfo = async (
     await updateUserInfo(payload.request_id, user_info, restlay);
   } else {
     const user = {
-      type:
-        payload.role === "Administrator" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
+      type: payload.role === "ADMIN" ? "CREATE_ADMIN" : "CREATE_OPERATOR",
       username: payload.username,
       user_id: payload.userID,
     };
