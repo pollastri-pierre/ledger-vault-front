@@ -19,7 +19,7 @@ export default (props: UserCreationStepProps) => {
       <Label>
         <Trans i18nKey="inviteUser:steps.role.label" />
       </Label>
-      <Box pt={40} horizontal align="center" justify="center" flow={30}>
+      <Box pt={80} horizontal align="center" justify="center" flow={20}>
         <Choice
           data-test="new_admin"
           isActive={role === "ADMIN"}
@@ -60,5 +60,8 @@ const Choice = styled(({ isActive, ...p }) => <ButtonBase {...p} />)`
     border: 2px solid ${p => (p.isActive ? opacity(colors.ocean, 0.4) : "#eee")};
     width: 200px;
     height: 200px;
+    padding: 20px;
+    padding-top: 30px;
+    border-radius: 4px;
   }
 `;
