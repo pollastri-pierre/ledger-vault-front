@@ -30,11 +30,6 @@ export default (props: TransactionCreationStepProps<any>) => {
 
   return (
     <Box flow={20}>
-      <Box alignSelf="flex-start">
-        <InfoBox type="info">
-          <Trans i18nKey="transactionCreation:steps.note.noteDesc" />
-        </InfoBox>
-      </Box>
       <Box>
         <Label>
           <Trans i18nKey="transactionCreation:steps.note.noteTitle" />
@@ -55,6 +50,11 @@ export default (props: TransactionCreationStepProps<any>) => {
           value={transaction.note.content}
           onChange={handleChangeContent}
         />
+      </Box>
+      <Box alignSelf="flex-start">
+        <InfoBox type="info">
+          <Trans i18nKey="transactionCreation:steps.note.noteDesc" />
+        </InfoBox>
       </Box>
     </Box>
   );
