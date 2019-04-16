@@ -84,7 +84,7 @@ class InputText extends PureComponent<Props, State> {
     const hasWarning = !hasError && !!warnings && !!warnings.length;
     return (
       <Box position="relative" grow={grow}>
-        <IconWrapper left={13} top={12} Icon={IconLeft} isFocused={isFocused} />
+        {IconLeft && <IconWrapper Icon={IconLeft} isFocused={isFocused} />}
         <StyledInput
           // not fully working. https://bugs.chromium.org/p/chromium/issues/detail?id=370363#c7
           autoComplete="new-password"
@@ -116,21 +116,15 @@ class InputText extends PureComponent<Props, State> {
 }
 
 type IconWrapperProps = {
-  top?: number,
-  left?: number,
-  Icon?: React$ComponentType<Icon>,
+  Icon: React$ComponentType<Icon>,
   isFocused: boolean,
 };
 
-const IconWrapper = ({ top, left, Icon, isFocused }: IconWrapperProps) =>
-  Icon ? (
-    <Absolute left={left} top={top}>
-      <Icon
-        size={16}
-        color={isFocused ? colors.text : colors.form.placeholder}
-      />
-    </Absolute>
-  ) : null;
+const IconWrapper = ({ Icon, isFocused }: IconWrapperProps) => (
+  <Absolute left={15} top={10}>
+    <Icon size={12} color={isFocused ? colors.text : colors.form.placeholder} />
+  </Absolute>
+);
 
 const StyledInput = styled.input`
   display: block;
