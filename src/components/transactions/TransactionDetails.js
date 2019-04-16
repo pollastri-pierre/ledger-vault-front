@@ -61,6 +61,7 @@ class TransactionDetails extends Component<Props, *> {
       transactionWithAccount: { transaction, account },
       close,
     } = this.props;
+
     const note = transaction.notes[0];
     const { value } = this.state;
     const currency = getCryptoCurrencyById(account.currency);
@@ -68,6 +69,7 @@ class TransactionDetails extends Component<Props, *> {
       getDefaultExplorerView(currency),
       transaction.transaction.hash,
     );
+
     return (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
@@ -94,12 +96,19 @@ class TransactionDetails extends Component<Props, *> {
                 disableRipple
               />
             )}
+            <div
+              style={{ background: "pink", color: "blue", fontWeight: "bold" }}
+            >
+              waiting for backend
+            </div>
+            {/*
             {transaction.approvals.length > 0 && (
               <Tab
                 label={<Trans i18nKey="transactionDetails:tabs.history" />}
                 disableRipple
               />
             )}
+            */}
           </Tabs>
         </ModalHeader>
 

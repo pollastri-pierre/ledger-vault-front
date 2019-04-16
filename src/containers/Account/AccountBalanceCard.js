@@ -1,49 +1,37 @@
 // @flow
+
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { Trans } from "react-i18next";
+
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import Card from "components/legacy/Card";
-import { translate } from "react-i18next";
+import Card from "components/base/Card";
 import CardField from "components/CardField";
 import DateFormat from "components/DateFormat";
-import type { Account, Translate } from "data/types";
+import { Label } from "components/base/form";
+import type { Account } from "data/types";
 
-const styles = {
-  card: {
-    width: "50%",
-  },
-  title: {
-    fontSize: 28,
-  },
-};
 type Props = {
   account: Account,
-  t: Translate,
-  classes: { [_: $Keys<typeof styles>]: string },
-  reloading: boolean,
 };
 
 class AccountBalanceCard extends Component<Props> {
   render() {
-    const { account, reloading, classes, t } = this.props;
+    const { account } = this.props;
     return (
-      <Card
-        className={classes.card}
-        reloading={reloading}
-        title={t("accountView:balance")}
-      >
+      <Card style={{ flex: 1 }}>
+        <Label>
+          <Trans i18nKey="accountView:balance" />
+        </Label>
         <CardField label={<DateFormat date={new Date()} />}>
-          <div className={classes.title}>
-            <CurrencyAccountValue
-              account={account}
-              value={account.balance}
-              erc20Format={account.account_type === "ERC20"}
-            />
-          </div>
+          <CurrencyAccountValue
+            account={account}
+            value={account.balance}
+            erc20Format={account.account_type === "ERC20"}
+          />
         </CardField>
       </Card>
     );
   }
 }
 
-export default withStyles(styles)(translate()(AccountBalanceCard));
+export default AccountBalanceCard;

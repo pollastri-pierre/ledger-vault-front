@@ -27,8 +27,10 @@ const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 
 class AdminAccounts extends PureComponent<Props> {
   handleAccountClick = (account: Account) => {
-    const orgaName = this.props.location.pathname.split("/")[1];
-    this.props.history.push(`/${orgaName}/admin/account/${account.id}`);
+    const { me, location } = this.props;
+    const role = me.role === "ADMIN" ? "admin" : "operator";
+    const orgaName = location.pathname.split("/")[1];
+    this.props.history.push(`/${orgaName}/${role}/account/${account.id}`);
   };
 
   createAccount = () => {

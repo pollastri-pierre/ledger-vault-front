@@ -1,36 +1,28 @@
 // @flow
-import { withStyles } from "@material-ui/core/styles";
-import CounterValue from "components/CounterValue";
+
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
-import Card from "components/legacy/Card";
+
+import CounterValue from "components/CounterValue";
+import Card from "components/base/Card";
 import CardField from "components/CardField";
 import Text from "components/base/Text";
+import { Label } from "components/base/form";
 import type { Account } from "data/types";
-
-const styles = {
-  card: {
-    marginLeft: 10,
-    width: "50%",
-  },
-};
 
 type Props = {
   account: Account,
-  reloading: boolean,
-  classes: Object,
 };
 
 class AccountCountervalueCard extends Component<Props> {
   render() {
-    const { account, reloading, classes } = this.props;
+    const { account } = this.props;
     const isERC20Token = account.account_type === "ERC20";
     return (
-      <Card
-        className={classes.card}
-        reloading={reloading}
-        title={<Trans i18nKey="accountView:countervalue" />}
-      >
+      <Card style={{ flex: 1 }}>
+        <Label>
+          <Trans i18nKey="accountView:countervalue" />
+        </Label>
         <CardField>
           <CounterValue
             value={account.balance}
@@ -49,4 +41,4 @@ class AccountCountervalueCard extends Component<Props> {
   }
 }
 
-export default withStyles(styles)(AccountCountervalueCard);
+export default AccountCountervalueCard;
