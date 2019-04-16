@@ -4,6 +4,7 @@ import React, { PureComponent, Fragment } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { FaCheck, FaPlus } from "react-icons/fa";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 import connectData from "restlay/connectData";
 import type { Approval, Organization } from "data/types";
@@ -14,7 +15,7 @@ import Text from "components/base/Text";
 import IconClose from "components/icons/Close";
 
 type Item = {
-  type: "CREATE" | "APPROVE" | "ABORT",
+  type: "CREATE" | "APPROVE" | "ABORT" | "EDIT" | "REVOKE",
   label: React$Node,
   date: string | Date,
 };
@@ -27,6 +28,8 @@ type Props = {
 
 const iconsByType = {
   CREATE: <FaPlus color={colors.ocean} />,
+  REVOKE: <MdDelete color={colors.grenade} />,
+  EDIT: <MdEdit color={colors.ocean} />,
   APPROVE: <FaCheck color={colors.green} />,
   ABORT: <IconClose size={16} color={colors.grenade} />,
 };
@@ -119,9 +122,34 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
         });
       });
     }
+    if (cur.type.startsWith("REVOKE_") && cur.status === "PENDING_APPROVAL") {
+      acc.push({
+        type: "REVOKE",
+        date: cur.created_on,
+        label: (
+          <Fragment>
+            <b>deleted by</b>
+            <span>{cur.created_by.username}</span>
+          </Fragment>
+        ),
+      });
+    }
+    if (cur.type.startsWith("EDIT_") && cur.status === "PENDING_APPROVAL") {
+      acc.push({
+        type: "EDIT",
+        date: cur.created_on,
+        label: (
+          <Fragment>
+            <b>edited by</b>
+            <span>{cur.created_by.username}</span>
+          </Fragment>
+        ),
+      });
+    }
     if (
       cur.type.startsWith("CREATE_") &&
-      cur.status === "PENDING_REGISTRATION"
+      (cur.status === "PENDING_REGISTRATION" ||
+        cur.status === "PENDING_APPROVAL")
     ) {
       acc.push({
         type: "CREATE",
