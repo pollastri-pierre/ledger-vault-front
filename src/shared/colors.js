@@ -10,6 +10,7 @@ const form = {
 };
 
 const formShadows = {
+  grey: `rgba(0, 0, 0, 0.02) 0 2px 5px 2px`,
   focus: `${opacity(form.focus, 0.07)} 0 2px 5px 2px`,
   error: `${opacity(form.error, 0.1)} 0 2px 5px 2px`,
   warning: `${opacity(form.warning, 0.2)} 0 2px 5px 2px`,

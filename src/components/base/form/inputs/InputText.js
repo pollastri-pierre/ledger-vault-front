@@ -9,6 +9,7 @@ import Absolute from "components/base/Absolute";
 import Box from "components/base/Box";
 
 import ErrorsWrapper from "components/base/form/ErrorsWrapper";
+import HintsWrapper from "components/base/form/HintsWrapper";
 import type { InputProps } from "components/base/form/types";
 
 type Icon = {
@@ -71,9 +72,11 @@ class InputText extends PureComponent<Props, State> {
 
   render() {
     const {
+      value,
       IconLeft,
       errors,
       warnings,
+      hints,
       align,
       grow,
       inputRef,
@@ -92,6 +95,7 @@ class InputText extends PureComponent<Props, State> {
           autoCapitalize="off"
           spellCheck="false"
           {...props}
+          value={value}
           onChange={this.handleChange}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
@@ -108,6 +112,7 @@ class InputText extends PureComponent<Props, State> {
               errors={hasWarning ? warnings : undefined}
               bg={colors.form.warning}
             />
+            <HintsWrapper hints={hints} value={value} />
           </>
         )}
       </Box>
