@@ -69,7 +69,7 @@ const steps = [
       return (
         <ApproveRequestButton
           interactions={
-            payload.description !== initialPayload.description
+            isEditMode && payload.description !== initialPayload.description
               ? [editDescriptionMutation, ...createAndApprove]
               : createAndApprove
           }
