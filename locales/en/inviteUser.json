@@ -7,7 +7,7 @@
       "nextLabel": {
         "generateLink": "Generate link",
         "updateInfo": "Update details"
-        }
+      }
     },
     "role": {
       "title": "Role",
@@ -18,7 +18,7 @@
       },
       "operator": {
         "title": "Operator",
-        "desc": "Operators can create and/or approve transactions in accounts they've got access to"
+        "desc": "Operators can create and/or approve transactions for accounts they have an access to"
       }
     },
     "confirmation": {

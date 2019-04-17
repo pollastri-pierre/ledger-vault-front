@@ -11,7 +11,6 @@ import DataSearch from "components/DataSearch";
 import AddLink from "components/base/AddLink";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { CardTitle } from "components/base/Card";
 import type { Account, User } from "data/types";
 
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
@@ -38,11 +37,10 @@ class AdminAccounts extends PureComponent<Props> {
     history.push(`accounts/new`);
   };
 
-  HeaderComponent = () => {
+  ActionComponent = () => {
     const { me } = this.props;
     return (
-      <Box horizontal align="flex-start" justify="space-between" pb={20}>
-        <CardTitle i18nKey="menu:admin.accounts" />
+      <Box>
         {me.role === "ADMIN" && (
           <AddLink onClick={this.createAccount}>
             <Text i18nKey="accountCreation:cta" />
@@ -60,7 +58,7 @@ class AdminAccounts extends PureComponent<Props> {
         TableComponent={AccountsTable}
         FilterComponent={AccountsFilters}
         onRowClick={this.handleAccountClick}
-        HeaderComponent={this.HeaderComponent}
+        ActionComponent={this.ActionComponent}
         history={history}
         listenMutations={mutationsToListen}
       />

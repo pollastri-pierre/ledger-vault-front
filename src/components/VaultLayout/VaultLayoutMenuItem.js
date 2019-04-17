@@ -156,7 +156,6 @@ const VaultLayoutMenuItem = styled.div`
       : "auto"};
 
   font-weight: ${p => (p.isActive ? "bold" : "normal")};
-
   &:hover {
     color: #333;
     cursor: pointer;
@@ -165,7 +164,10 @@ const VaultLayoutMenuItem = styled.div`
         ? `${vaultLayoutConfig.MENU_HINT_COLOR_HOVER} 4px 0 0 inset`
         : "none"};
   }
-
+  background-color: ${p =>
+    p.isActive && !(p.isMenuFloating && !p.isMenuOpened)
+      ? "#efefef"
+      : "inherit"};
   box-shadow: ${p =>
     p.isActive && !(p.isMenuFloating && !p.isMenuOpened)
       ? `${vaultLayoutConfig.MENU_HINT_COLOR} 4px 0 0 inset !important`
@@ -181,7 +183,10 @@ const VaultLayoutIconContainer = styled.div`
   height: 40px;
   color: inherit;
   pointer-events: ${p => (p.isDisabled || p.isActive ? "none" : "auto")};
-
+  background-color: ${p =>
+    p.isActive && (p.isMenuFloating && !p.isMenuOpened)
+      ? "#efefef"
+      : "inherit"};
   &:hover {
     cursor: ${p => (p.isMenuOpened ? "inherit" : "pointer")};
     box-shadow: ${p =>
