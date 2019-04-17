@@ -18,7 +18,7 @@ const ErrorsWrapper = ({ bg, errors }: { bg?: string, errors?: Error[] }) =>
           <Box horizontal flow={5} align="center" key={err.message}>
             <FaTimes size={10} />
             <span>
-              <TranslatedError error={err} />
+              <TranslatedError error={err} field="description" />
             </span>
           </Box>
         ))}
@@ -48,20 +48,7 @@ const StyledErrorsWrapper = styled.div`
   box-shadow: ${colors.form.shadow.error};
   position: relative;
   z-index: 1;
-  animation: 150ms ease ${enter};
-
-  &:after {
-    position: absolute;
-    top: -5px;
-    right: 8px;
-    content: "";
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 6px 6px 6px;
-    border-color: transparent transparent ${p =>
-      p.bg || colors.form.error}; transparent;
-  }
+  animation: 250ms ease ${enter};
 `;
 
 export default ErrorsWrapper;

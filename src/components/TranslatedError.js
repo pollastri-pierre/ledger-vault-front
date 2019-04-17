@@ -38,7 +38,7 @@ class TranslatedError extends PureComponent<Props> {
         return translation;
       }
     }
-    return t(`errors:generic.${field}`, arg);
+    return error.message || t(`errors:generic.${field}`, arg);
   }
 }
 
