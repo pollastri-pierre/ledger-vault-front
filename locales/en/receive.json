@@ -2,25 +2,21 @@
   "account_subtitle": "account to credit",
   "address_copied": "Address Copied",
   "address_rejected": "receive address rejected",
-  "address_rejected1":
-    "You haven't confirmed that the address displayed on your Ledger Blue Enterprise device is identical to the address displayed on-screen.",
-  "address_rejected2":
-    "Click retry to verify the address again or contact Support.",
-  "confirmed_device":
-    "The address has been verified on your device. Check this address again when you copy and paste it or scan the QR code.",
+  "address_rejected1": "You haven't confirmed that the address displayed on your Ledger Blue Enterprise device is identical to the address displayed on-screen.",
+  "address_rejected2": "Click retry to verify the address again or contact Support.",
+  "confirmed_device": "The address has been verified on your device. Check this address again when you copy and paste it or scan the QR code.",
   "copy": "Copy address",
   "device": "Connect your device",
   "device_step1": "Switch on the Ledger Blue Enterprise.",
   "device_step2": "Connect it to your computer using the provided USB cable.",
   "device_step3": "Enter your PIN code",
-  "device_step4":
-    "Open the Vault app from the Ledger Blue Enterprise dashboard.",
+  "device_step4": "Open the Vault app from the Ledger Blue Enterprise dashboard.",
   "re_verify": "Re-verify",
-  "receive_account":
-    "Address for the account <1><0>{{name}}</0></1>",
+  "receive_account": "Address for the account <1><0>{{name}}</0></1>",
   "receive_subtitle": "receive address",
   "retry": "Retry",
+  "receive_again": "Receive again",
+  "verify": "Verify",
   "support": "Contact Support",
-  "verify_on_device":
-    "Verify that the address and QR code above are identical to the address and QR code displayed on your Ledger Blue Enterprise device, then tap APPROVE."
+  "verify_on_device": "Verify that the address and QR code above are identical to the address and QR code displayed on your Ledger Blue Enterprise device, then tap APPROVE."
 }

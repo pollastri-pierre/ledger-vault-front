@@ -400,3 +400,8 @@ type RequestUser = {
   username: string,
 };
 type RequestGroup = {};
+
+export type FreshAddress = {
+  address: string,
+  derivation_path: string,
+};

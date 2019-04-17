@@ -10,7 +10,10 @@ import Box from "components/base/Box";
 import { ModalFooterButton, ModalClose } from "components/base/Modal";
 import Text from "components/base/Text";
 
-import type { MultiStepsFlowStep as MultiStepsFlowStepType } from "./types";
+import type {
+  MultiStepsFlowStep as MultiStepsFlowStepType,
+  PayloadUpdater,
+} from "./types";
 
 type Props<T, P> = {
   initialPayload: T,
@@ -18,9 +21,10 @@ type Props<T, P> = {
   title: React$Node,
   steps: MultiStepsFlowStepType<T, P>[],
   additionalProps?: P,
-  onClose?: () => void,
+  onClose: () => void,
   initialCursor?: number,
   isEditMode?: boolean,
+  transitionTo?: string => void,
 };
 
 type State<T> = {
@@ -57,7 +61,6 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     if (onNext) {
       try {
         this.setState(() => ({ isNextLoading: true }));
-        // $FlowFixMe niark niark
         await onNext(payload, this.updatePayload, additionalProps);
         this.setCursor(this.state.cursor + 1);
       } catch (err) {
@@ -71,7 +74,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     }
   };
 
-  updatePayload = (patch: $Shape<T>, cb: ?() => void) =>
+  updatePayload: PayloadUpdater<T> = (patch, cb) =>
     this.setState(
       ({ payload }) => ({
         payload: { ...payload, ...patch },
@@ -198,6 +201,8 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
                 onClose={onClose}
                 isEditMode={this.props.isEditMode}
                 initialPayload={initialPayload}
+                transitionTo={this.transitionTo}
+                updatePayload={this.updatePayload}
               />
             </CtaContainer>
           )}
