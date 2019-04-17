@@ -29,10 +29,12 @@ const fakeNetwork = async url => {
     return wrapConnection(users);
   }
   if (url.startsWith("/groups")) {
-    return denormalize(groups.map(g => g.id), [schema.Group], {
-      users: keyBy(users, "id"),
-      groups: keyBy(groups, "id"),
-    });
+    return wrapConnection(
+      denormalize(groups.map(g => g.id), [schema.Group], {
+        users: keyBy(users, "id"),
+        groups: keyBy(groups, "id"),
+      }),
+    );
   }
   if (url.startsWith("/requests")) {
     return { id: 42 };
