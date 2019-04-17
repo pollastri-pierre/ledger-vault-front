@@ -22,5 +22,5 @@ const uri = (query: Input) => {
 export default class SearchRequestsQuery extends ConnectionQuery<Input, *> {
   uri = uri(this.props);
 
-  size = 30;
+  pageSize = 30;
 }

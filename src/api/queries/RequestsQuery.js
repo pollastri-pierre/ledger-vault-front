@@ -30,5 +30,5 @@ const uri = (query: Input) => {
 export default class RequestsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  // responseSchema = schema.Account;
+  pageSize = 30;
 }

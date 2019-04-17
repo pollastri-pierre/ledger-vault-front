@@ -32,7 +32,7 @@ const uri = (query: Input) => {
 export default class UsersQuery extends ConnectionQuery<Input, Response> {
   uri = uri(this.props);
 
-  size = 30;
+  pageSize = 30;
 
   responseSchema = schema.User;
 }

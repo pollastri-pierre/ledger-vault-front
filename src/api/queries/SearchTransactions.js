@@ -31,7 +31,7 @@ export default class SearchQuery extends ConnectionQuery<In, Node> {
 
   nodeSchema = schema.Transaction;
 
-  size = 30;
+  pageSize = 30;
 
   deserialize = deserializeTransaction;
 
