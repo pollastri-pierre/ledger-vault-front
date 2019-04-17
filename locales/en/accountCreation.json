@@ -17,6 +17,8 @@
   },
   "continue_eth_creation": "Create new Ethereum account & continue",
   "cta": "Create account",
+  "cta_edit": "Edit account",
   "rulesSumup": "1 step",
-  "rulesSumup_plural": "{{count}} steps"
+  "rulesSumup_plural": "{{count}} steps",
+  "edit_title": "Edit account"
 }

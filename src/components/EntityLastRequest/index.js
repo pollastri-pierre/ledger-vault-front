@@ -2,47 +2,45 @@
 
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
-import GroupEditRequest from "containers/Admin/Groups/GroupEditRequest";
+import DiffViewer from "components/EntityLastRequest/DiffViewer";
 import DateFormat from "components/DateFormat";
 import { BoxLined } from "components/LineRow";
 import Text from "components/base/Text";
-import type { Group, User } from "data/types";
+import type { Entity } from "data/types";
 import { hasPendingEdit } from "utils/entities";
-import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
-  group: Group,
-  operators: Connection<User>,
+  entity: Entity,
+  additionalFields?: Object,
 };
 
-class GroupLastRequest extends PureComponent<Props> {
+class EntityLastRequest extends PureComponent<Props> {
   render() {
-    const { group, operators } = this.props;
-    const listOperators = operators.edges.map(e => e.node);
+    const { entity, additionalFields } = this.props;
 
-    if (!group.last_request) return null;
+    if (!entity.last_request) return null;
 
     return (
       <Box flow={20}>
         <Box>
           <Row label="Request">
-            <Text i18nKey={`request:type.${group.last_request.type}`} />
+            <Text i18nKey={`request:type.${entity.last_request.type}`} />
           </Row>
           <Row label="Expiration date">
             <DateFormat
-              date={group.last_request.expiration_date || new Date()}
+              date={entity.last_request.expiration_date || new Date()}
             />
           </Row>
         </Box>
-        {hasPendingEdit(group) && (
-          <GroupEditRequest operators={listOperators} group={group} />
+        {hasPendingEdit(entity) && (
+          <DiffViewer entity={entity} additionalFields={additionalFields} />
         )}
       </Box>
     );
   }
 }
 
-export default GroupLastRequest;
+export default EntityLastRequest;
 
 const Row = ({
   label,

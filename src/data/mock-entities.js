@@ -121,6 +121,10 @@ function genAccount({ users = [] } = {}, extra = {}) {
     index: faker.random.number({ min: 1, max: 10 }),
     name: faker.random.arrayElement(FAKE_ACCOUNT_NAMES),
     status,
+    tx_approval_steps: [
+      { quorum: 2, group: genGroup({ users }) },
+      { quorum: 1, group: genGroup({ users, status: "ACTIVE" }) },
+    ],
     currency: currency.id,
     account_type: accountType,
     contract_address: null,
