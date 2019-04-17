@@ -24,7 +24,7 @@ const uri = (query: Input) => {
 export default class AccountsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  size = 30;
+  pageSize = 30;
 
   nodeSchema = schema.Account;
 
