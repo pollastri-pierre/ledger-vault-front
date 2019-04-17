@@ -86,6 +86,7 @@ class FiltersCard extends PureComponent<Props> {
         flow={10}
         noShrink
         pb={10}
+        grow
         {...props}
       >
         <Filters>{filters}</Filters>
