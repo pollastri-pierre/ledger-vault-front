@@ -32,7 +32,9 @@ const postRequest: Interaction = {
 const refetchPending: Interaction = {
   responseKey: "pending",
   action: ({ restlay }) =>
-    restlay.fetchQuery(new RequestsQuery({ status: "PENDING_APPROVAL" })),
+    restlay.fetchQuery(
+      new RequestsQuery({ status: "PENDING_APPROVAL", pageSize: -1 }),
+    ),
 };
 
 // FIXME should we put that in the component with a connectData() and a query and pass it
