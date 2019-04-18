@@ -1,5 +1,8 @@
 {
+  "ACTIVE": "Active",
   "ABORTED": "Aborted",
   "APPROVED": "Approved",
-  "PENDING_APPROVAL": "Pending approval"
+  "AWAITING_APPROVAL": "Awaiting approval",
+  "PENDING_APPROVAL": "Pending approval",
+  "PENDING_REVOCATION": "Pending revocation"
 }

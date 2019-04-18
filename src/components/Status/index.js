@@ -19,6 +19,7 @@ const BG_BY_STATUS = {
   AWAITING_APPROVAL: opacity(colors.blue_orange, 0.1),
   PENDING_CREATION_APPROVAL: opacity(colors.ocean, 0.1),
   PENDING_REVOCATION_APPROVAL: opacity(colors.ocean, 0.1),
+  PENDING_REVOCATION: opacity(colors.ocean, 0.1),
   PENDING_REGISTRATION: opacity(colors.blue_orange, 0.1),
   VIEW_ONLY: colors.cream,
 };
@@ -31,6 +32,7 @@ const COLOR_BY_STATUS = {
   AWAITING_APPROVAL: darken(colors.blue_orange, 0.5),
   PENDING_CREATION_APPROVAL: darken(colors.ocean, 0.5),
   PENDING_REVOCATION_APPROVAL: darken(colors.ocean, 0.5),
+  PENDING_REVOCATION: darken(colors.ocean, 0.5),
   PENDING_REGISTRATION: darken(colors.blue_orange, 0.5),
   VIEW_ONLY: colors.steel,
 };
