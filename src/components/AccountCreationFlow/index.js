@@ -164,7 +164,7 @@ const AccountEdit = connectData(
       onClose={props.close}
       isEditMode
       initialPayload={deserialize(props.account)}
-      initialCursor={2}
+      initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
     />
   ),
   {
@@ -222,16 +222,25 @@ export default Wrapper;
 
 const deserialize: Account => AccountCreationPayload = account => {
   if (!account.tx_approval_steps) return initialPayload;
+  const { tx_approval_steps } = account;
+
+  const rules =
+    tx_approval_steps.length === 0
+      ? initialPayload.rules
+      : tx_approval_steps.map(rule => ({
+          quorum: rule.quorum,
+          group: rule.group.status === "ACTIVE" ? rule.group.id : null,
+          users:
+            rule.group.status !== "ACTIVE"
+              ? rule.group.members.map(m => m.id)
+              : [],
+        }));
+
   return {
     name: account.name,
-    rules: account.tx_approval_steps.map(rule => ({
-      quorum: rule.quorum,
-      group: rule.group.status === "ACTIVE" ? rule.group.id : null,
-      users:
-        rule.group.status !== "ACTIVE" ? rule.group.members.map(m => m.id) : [],
-    })),
+    rules,
     currency:
-      account.account_type === "Bitcoin"
+      account.account_type === "Bitcoin" || account.account_type === "Ethereum"
         ? getCryptoCurrencyById(account.currency)
         : null,
     parentAccount: account.parent ? { id: account.parent } : null,

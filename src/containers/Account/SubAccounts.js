@@ -9,18 +9,23 @@ import connectData from "restlay/connectData";
 
 import { AccountsTable } from "components/Table";
 import SpinnerCard from "components/spinners/SpinnerCard";
-import Card from "components/legacy/Card";
+import Card from "components/base/Card";
+import { Label } from "components/base/form";
 
+import type { Connection } from "restlay/ConnectionQuery";
 import type { Account } from "data/types";
 
 type Props = {
-  accounts: Account[],
+  accounts: Connection<Account>,
   account: Account,
   history: MemoryHistory,
 };
 
 const RenderLoading = () => (
-  <Card title={<Trans i18nKey="accountView:erc20_children" />}>
+  <Card>
+    <Label>
+      <Trans i18nKey="accountView:erc20_children" />
+    </Label>
     <SpinnerCard />
   </Card>
 );
@@ -33,14 +38,19 @@ class SubAccounts extends Component<Props> {
 
   render() {
     const { accounts, account } = this.props;
-    const children = accounts.filter(a => a.parent_id === account.id);
+    const children = accounts.edges
+      .map(a => a.node)
+      .filter(a => a.parent === account.id);
 
     if (children.length === 0) {
       return null;
     }
 
     return (
-      <Card title={<Trans i18nKey="accountView:erc20_children" />}>
+      <Card>
+        <Label>
+          <Trans i18nKey="accountView:erc20_children" />
+        </Label>
         <AccountsTable data={children} onRowClick={this.handleAccountClick} />
       </Card>
     );

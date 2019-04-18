@@ -50,6 +50,7 @@ const fakeNetwork = async url => {
         }),
       },
     ];
+    // acc.status = "VIEW_ONLY";
     return acc;
   }
   throw new Error("invalid url");
