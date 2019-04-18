@@ -15,6 +15,7 @@ import DialogButton from "components/buttons/DialogButton";
 import Alert from "components/utils/Alert";
 import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
 import Card from "components/base/Card";
+import CenteredLayout from "components/base/CenteredLayout";
 import TranslatedError from "components/TranslatedError";
 import Logo from "components/Logo";
 import Box from "components/base/Box";
@@ -36,9 +37,6 @@ const mapDispatchToProps = {
 };
 
 const styles = {
-  container: {
-    minHeight: "100vh",
-  },
   banner: {
     width: 520,
   },
@@ -141,7 +139,7 @@ class Welcome extends Component<Props, State> {
     const { t } = this.props;
 
     return (
-      <Box justify="center" align="center" style={styles.container}>
+      <CenteredLayout>
         {onboardingToBeDone && <Redirect to={`${domain}/onboarding`} />}
         <Alert
           onClose={this.onClose}
@@ -221,7 +219,7 @@ class Welcome extends Component<Props, State> {
         <Box align="center" mt={40}>
           <Text small>Vault - v0.2</Text>
         </Box>
-      </Box>
+      </CenteredLayout>
     );
   }
 }

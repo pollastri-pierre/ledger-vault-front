@@ -9,6 +9,7 @@ import {
   getConfidentialityPublicKey,
   getValidationPublicKey,
 } from "device/interactions/common";
+import RegisterUserMutation from "api/mutations/RegisterUserMutation";
 import type { Interaction } from "components/DeviceInteraction";
 import type { DeviceError } from "utils/errors";
 
@@ -92,8 +93,8 @@ export const buildResult: Interaction = {
 export const postResult: Interaction = {
   needsUserInput: false,
   responseKey: "result",
-  action: ({ urlID, build }) =>
-    network(`/requests/registration/${urlID}/authenticate`, "POST", build),
+  action: ({ urlID, build, restlay }) =>
+    restlay.commitMutation(new RegisterUserMutation({ urlID, body: build })),
 };
 
 export const registerFlow = [
