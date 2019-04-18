@@ -10,7 +10,6 @@ import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
-import UpdateAccounts from "components/UpdateAccounts";
 import Modals from "containers/Modals";
 import Card from "components/legacy/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -69,7 +68,6 @@ const App = withMe((props: Props & { me: User }) => {
         <Content match={match} />
       </VaultLayout>
       <UpdateAccountsInfo accounts={accounts.edges.map(e => e.node)} />
-      <UpdateAccounts accounts={accounts.edges.map(e => e.node)} />
       <Modals match={match} />
     </Fragment>
   );
