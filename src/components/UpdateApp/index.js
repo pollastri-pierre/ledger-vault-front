@@ -9,7 +9,8 @@ import { translate } from "react-i18next";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "components/legacy/Card";
+import Card from "components/base/Card";
+import { Label } from "components/base/form";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
@@ -209,7 +210,8 @@ class UpdateApp extends Component<Props, State> {
     if (no_application) {
       return (
         <div className={classes.base}>
-          <Card title={t("update:title")}>
+          <Card>
+            <Label>{t("update:title")}</Label>
             <div className={classes.error}>
               {t("update:no_version")}
               <button onClick={this.start} className={classes.button}>

@@ -49,7 +49,7 @@ export const ModalFooter = styled(Box).attrs(p => ({
   horizontal: true,
   justify: p.justify || "flex-end",
   align: p.align || "flex-end",
-  px: 40,
+  px: 15,
 }))`
   bottom: 0;
   left: 0;

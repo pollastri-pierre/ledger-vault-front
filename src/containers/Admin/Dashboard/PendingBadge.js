@@ -33,6 +33,7 @@ export default connectData(withMe(PendingBadge), {
   },
   propsToQueryParams: () => ({
     status: "PENDING_APPROVAL",
+    pageSize: -1,
   }),
 });
 

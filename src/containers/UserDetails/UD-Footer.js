@@ -1,11 +1,11 @@
 // @flow
+
 import React, { PureComponent, Fragment } from "react";
 import { Trans } from "react-i18next";
-import { withMe } from "components/UserContextProvider";
+
 import ApproveRequestButton from "components/ApproveRequestButton";
 import RequestActionButtons from "components/RequestActionButtons";
 import { createAndApprove } from "device/interactions/approveFlow";
-import { hasUserApprovedRequest } from "utils/request";
 
 import type { User } from "data/types";
 
@@ -13,7 +13,6 @@ type Props = {
   status: string,
   close: () => void,
   user: User,
-  me: User,
 };
 
 class UserDetailsFooter extends PureComponent<Props> {
@@ -23,22 +22,16 @@ class UserDetailsFooter extends PureComponent<Props> {
   };
 
   render() {
-    const { status, user, me } = this.props;
-    const hasUserApproved =
-      user.last_request &&
-      user.last_request.approvals &&
-      hasUserApprovedRequest(user.last_request, me);
-
+    const { status, user } = this.props;
     return (
       <Fragment>
-        {(status === "PENDING_APPROVAL" || status === "PENDING_REVOCATION") &&
-          !hasUserApproved && (
-            <RequestActionButtons
-              onSuccess={this.onSuccess}
-              onError={null}
-              entity={user}
-            />
-          )}
+        {(status === "PENDING_APPROVAL" || status === "PENDING_REVOCATION") && (
+          <RequestActionButtons
+            onSuccess={this.onSuccess}
+            onError={null}
+            entity={user}
+          />
+        )}
         {status === "ACTIVE" && (
           <Fragment>
             <div />
@@ -60,4 +53,4 @@ class UserDetailsFooter extends PureComponent<Props> {
   }
 }
 
-export default withMe(UserDetailsFooter);
+export default UserDetailsFooter;

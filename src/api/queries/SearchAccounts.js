@@ -4,6 +4,7 @@ import queryString from "query-string";
 import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import { deserializeAccount } from "api/transformations/Account";
+import { isSupportedAccount } from "utils/accounts";
 import type { Account } from "data/types";
 
 type Input = {
@@ -27,6 +28,8 @@ export default class AccountsQuery extends ConnectionQuery<Input, Node> {
   pageSize = 30;
 
   nodeSchema = schema.Account;
+
+  filter = isSupportedAccount;
 
   deserialize = deserializeAccount;
 }

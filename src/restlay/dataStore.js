@@ -187,6 +187,7 @@ export const executeQueryOrMutation =
       if (pendingPromise) return pendingPromise;
       method = "GET";
     }
+
     const promise = ctx
       .network(uri, method, body)
       .then(data => {
@@ -195,12 +196,19 @@ export const executeQueryOrMutation =
         // ability to deserialize query results
         data = handleDeserialization(queryOrMutation, data);
 
-        if (
-          queryOrMutation.getFilter &&
-          queryOrMutation.getFilter() &&
-          data.filter
-        ) {
-          data = data.filter(queryOrMutation.getFilter());
+        if (queryOrMutation.getFilter && queryOrMutation.getFilter()) {
+          const f = queryOrMutation.getFilter();
+          if (data.filter) {
+            data = data.filter(f);
+          } else if (data.edges) {
+            // NOTE FOR THE FUTURE we may want to convert "connection" results
+            // aka  { edges: [{ node: Entity }, ...], pageInfo: {} }
+            // into { entities: Entity[], pageInfo: {} }
+            //
+            // here we apply the filter in each node, which mean pageInfo
+            // may be wrong..
+            data.edges = data.edges.filter(e => f(e.node));
+          }
         }
         if (queryOrMutation.getResponseSchema()) {
           result = normalize(data, queryOrMutation.getResponseSchema() || {});
