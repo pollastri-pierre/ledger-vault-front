@@ -1,20 +1,15 @@
 // @flow
 import { Trans } from "react-i18next";
-import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import React, { Component, Fragment } from "react";
+import type { MemoryHistory } from "history";
 
-import { toggleAndSelect } from "redux/modules/update-accounts";
-import {
-  isAccountOutdated,
-  isAccountBeingUpdated,
-  hasUserApprovedAccount,
-} from "utils/accounts";
+import { isAccountOutdated } from "utils/accounts";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
-import NoStyleLink from "components/NoStyleLink";
-import type { Account, User } from "data/types";
+import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+import Button from "components/base/Button";
 import colors, { opacity } from "shared/colors";
 
 const styles = {
@@ -30,16 +25,20 @@ const styles = {
 };
 
 type Props = {
+  history: MemoryHistory,
   account: Account,
-  onOpen: (id: number) => void,
-  me: User,
   classes: { [_: $Keys<typeof styles>]: string },
 };
 
 class AccountWarning extends Component<Props> {
+  editAccount = () => {
+    const { history, account } = this.props;
+    const orgaName = location.pathname.split("/")[1];
+    history.push(`/${orgaName}/admin/accounts/edit/${account.id}`);
+  };
+
   render() {
-    const { classes, account, me, onOpen } = this.props;
-    const orga = location.pathname.split("/")[1];
+    const { classes, account } = this.props;
     return (
       <Fragment>
         {account.status === "VIEW_ONLY" && (
@@ -49,8 +48,10 @@ class AccountWarning extends Component<Props> {
             className={classes.infobox}
             Footer={
               <Button
-                onClick={onOpen}
-                variant="outlined"
+                size="small"
+                customColor="#503d1a"
+                onClick={this.editAccount}
+                variant="text"
                 className={classes.actionButton}
               >
                 <Trans i18nKey="accountView:view_only_provide_rules" />
@@ -68,7 +69,10 @@ class AccountWarning extends Component<Props> {
             withIcon
             className={classes.infobox}
             Footer={
-              <Button onClick={onOpen} className={classes.actionButton}>
+              <Button
+                onClick={this.editAccount}
+                className={classes.actionButton}
+              >
                 <Trans i18nKey="update:provide_rule" />
               </Button>
             }
@@ -76,47 +80,9 @@ class AccountWarning extends Component<Props> {
             <Trans i18nKey="update:provide_rule_subtext" />
           </InfoBox>
         )}
-        {isAccountBeingUpdated(account) &&
-          !hasUserApprovedAccount(account, me) && (
-            <InfoBox
-              type="warning"
-              withIcon
-              className={classes.infobox}
-              Footer={
-                <Button
-                  href={`/${orga}/pending`}
-                  className={classes.actionButton}
-                >
-                  <NoStyleLink to={`/${orga}/pending`}>
-                    <Trans i18nKey="updateAccounts:approve" />
-                  </NoStyleLink>
-                </Button>
-              }
-            >
-              <Trans i18nKey="updateAccounts:desc_approve" />
-            </InfoBox>
-          )}
-        {isAccountBeingUpdated(account) && hasUserApprovedAccount(account, me) && (
-          <InfoBox type="info" withIcon className={classes.infobox}>
-            <h4>
-              <Trans i18nKey="updateAccounts:quorum" />
-            </h4>
-            <div>
-              <Trans i18nKey="updateAccounts:quorum_approve" />
-            </div>
-          </InfoBox>
-        )}
       </Fragment>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch: Function, ownProps: $Shape<Props>) => ({
-  onOpen: () => dispatch(toggleAndSelect(ownProps.account)),
-});
-export default withStyles(styles)(
-  connect(
-    null,
-    mapDispatchToProps,
-  )(AccountWarning),
-);
+export default withStyles(styles)(withRouter(AccountWarning));

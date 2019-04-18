@@ -46,10 +46,19 @@ class AccountCreationOptions extends PureComponent<Props> {
   };
 
   render() {
-    const { t, payload, updatePayload, allAccounts, isEditMode } = this.props;
+    const {
+      t,
+      payload,
+      updatePayload,
+      allAccounts,
+      isEditMode,
+      account,
+    } = this.props;
     const { currency } = payload;
 
     let inner = null;
+
+    const isDisabled = isEditMode && account.status !== "VIEW_ONLY";
 
     if (payload.erc20token) {
       inner = (
@@ -73,7 +82,7 @@ class AccountCreationOptions extends PureComponent<Props> {
             <InputText
               data-test="account_name"
               value={payload.name}
-              disabled={isEditMode}
+              disabled={isDisabled}
               autoFocus
               onChange={this.handleChangeName}
               placeholder={t("newAccount:options.acc_name_placeholder")}
@@ -88,7 +97,7 @@ class AccountCreationOptions extends PureComponent<Props> {
       );
     }
 
-    return <Disabled disabled={isEditMode}>{inner}</Disabled>;
+    return <Disabled disabled={isDisabled}>{inner}</Disabled>;
   }
 }
 

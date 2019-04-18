@@ -10,6 +10,7 @@ import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import colors from "shared/colors";
 
 import Card from "components/base/Card";
+import { Label } from "components/base/form";
 import Absolute from "components/base/Absolute";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -20,7 +21,7 @@ import MemberRow from "components/MemberRow";
 import AccountSettings from "components/AccountSettings";
 import ModalRoute from "components/ModalRoute";
 import { FaWrench } from "react-icons/fa";
-import type { Account, User } from "data/types";
+import type { Account } from "data/types";
 import AccountWarning from "./AccountWarning";
 
 const Row = ({ label, value }: { label: React$Node, value: ?React$Node }) => (
@@ -34,7 +35,6 @@ const Row = ({ label, value }: { label: React$Node, value: ?React$Node }) => (
 
 type Props = {
   account: Account,
-  me: User,
 };
 
 /* display only the currency and index if the account needs to be updated */
@@ -103,7 +103,7 @@ class AccountQuickInfo extends Component<Props, State> {
   );
 
   render() {
-    const { account, me } = this.props;
+    const { account } = this.props;
     const { modalMembersOpen } = this.state;
 
     const isERC20 = account.account_type === "ERC20";
@@ -122,7 +122,10 @@ class AccountQuickInfo extends Component<Props, State> {
           {this.renderListMember()}
         </BlurDialog>
 
-        <Card title={<AccountTitle account={account} />}>
+        <Card>
+          <Label>
+            <AccountTitle account={account} />
+          </Label>
           {!isERC20 && (
             <Absolute top={0} right={0}>
               <SettingsLink
@@ -134,8 +137,8 @@ class AccountQuickInfo extends Component<Props, State> {
               </SettingsLink>
             </Absolute>
           )}
-          <div>
-            <div>
+          <Box horizontal align="center" justify="space-between">
+            <Box>
               <Row
                 label={<Trans i18nKey="accountView:summary.name" />}
                 value={account.name}
@@ -184,11 +187,9 @@ class AccountQuickInfo extends Component<Props, State> {
                   />
                 </Fragment>
               )}
-            </div>
-            <div>
-              <AccountWarning account={account} me={me} />
-            </div>
-          </div>
+            </Box>
+            <AccountWarning account={account} />
+          </Box>
         </Card>
       </Fragment>
     );

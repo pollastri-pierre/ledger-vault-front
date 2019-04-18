@@ -5,7 +5,6 @@ import auth from "./auth";
 import alerts from "./alerts";
 import data from "./data";
 import onboarding from "./onboarding";
-import updateAccounts from "./update-accounts";
 import exchanges from "./exchanges";
 
 const reducers = {
@@ -14,7 +13,6 @@ const reducers = {
   alerts,
   onboarding,
   data,
-  updateAccounts,
   exchanges,
   countervalues: counterValues.reducer,
 };

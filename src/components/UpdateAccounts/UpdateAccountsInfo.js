@@ -1,12 +1,10 @@
 // @flow
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Trans } from "react-i18next";
 import { getOutdatedAccounts } from "utils/accounts";
 import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/buttons/DialogButton";
 import type { Account } from "data/types";
-import { toggleModal } from "redux/modules/update-accounts";
 import BlurDialog from "components/BlurDialog";
 import { ModalClose } from "components/base/Modal";
 import colors from "shared/colors";
@@ -70,7 +68,6 @@ const styles = {
 };
 type Props = {
   accounts: Account[],
-  onToggle: Function,
   classes: { [_: $Keys<typeof styles>]: string },
 };
 
@@ -87,11 +84,6 @@ class UpdateAccountsInfo extends Component<Props, State> {
 
   close = () => {
     this.setState({ open: false });
-  };
-
-  goToUpdate = () => {
-    this.close();
-    this.props.onToggle();
   };
 
   render() {
@@ -140,8 +132,8 @@ class UpdateAccountsInfo extends Component<Props, State> {
             </a>
           </span>
           <div className={classes.footer}>
-            <DialogButton highlight onTouchTap={this.goToUpdate}>
-              <Trans i18nKey="common:get_started" />
+            <DialogButton highlight onTouchTap={this.close}>
+              <Trans i18nKey="common:ok" />
             </DialogButton>
           </div>
         </div>
@@ -150,10 +142,4 @@ class UpdateAccountsInfo extends Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = (dispatch: *) => ({
-  onToggle: () => dispatch(toggleModal()),
-});
-export default connect(
-  null,
-  mapDispatchToProps,
-)(withStyles(styles)(UpdateAccountsInfo));
+export default withStyles(styles)(UpdateAccountsInfo);
