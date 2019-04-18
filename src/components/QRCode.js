@@ -8,7 +8,7 @@ type Props = {
   pixelRatio: number,
 };
 
-class ReceiveFundsCard extends PureComponent<Props> {
+class QRCode extends PureComponent<Props> {
   static defaultProps = {
     size: 100,
     pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1,
@@ -51,4 +51,4 @@ class ReceiveFundsCard extends PureComponent<Props> {
   }
 }
 
-export default ReceiveFundsCard;
+export default QRCode;

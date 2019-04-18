@@ -8,11 +8,11 @@ import { VISIBLE_MENU_STATUS } from "utils/accounts";
 import AccountQuery from "api/queries/AccountQuery";
 import type { Account } from "data/types";
 
-import Card from "components/legacy/Card";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { CardLoading, CardError } from "components/base/Card";
+import { Label } from "components/base/form";
+import Card, { CardLoading, CardError } from "components/base/Card";
 
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastTransactionsCard from "./AccountLastTransactionsCard";
@@ -36,7 +36,8 @@ class AccountView extends Component<Props> {
     const accountId = match.params.id;
     if (account.status && VISIBLE_MENU_STATUS.indexOf(account.status) === -1) {
       return (
-        <Card title="Account pending">
+        <Card>
+          <Label>Account pending</Label>
           <InfoBox withIcon type="info">
             <Text>
               <Trans i18nKey="accountView:approved" components={<b>0</b>} />

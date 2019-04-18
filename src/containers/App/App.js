@@ -11,7 +11,7 @@ import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import UpdateAccountsInfo from "components/UpdateAccounts/UpdateAccountsInfo";
 import Modals from "containers/Modals";
-import Card from "components/legacy/Card";
+import Card from "components/base/Card";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
