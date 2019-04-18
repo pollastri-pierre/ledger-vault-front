@@ -1,74 +1,62 @@
 // @flow
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import errorFormatter from "formatters/error";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import NoDataPlaceholder from "components/NoDataPlaceholder";
+import CenteredLayout from "components/base/CenteredLayout";
+import Card from "components/base/Card";
+import Text from "components/base/Text";
+import Box from "components/base/Box";
+import { ModalBody } from "components/base/Modal";
 
-const styles = {
-  base: {
-    display: "block",
-    textAlign: "center",
-    fontSize: 14,
-    padding: 40,
-    cursor: "pointer",
-    "& strong": {
-      fontSize: "1.4em",
-    },
-    "& p.error": {
-      opacity: 0.5,
-      fontSize: "0.8em",
-    },
-  },
-  pending: {
-    opacity: 0.5,
-  },
+import colors from "shared/colors";
+
+type Props = {
+  action: () => Promise<*> | *,
+  error: Error,
 };
-class TryAgain extends Component<
-  {
-    action: () => Promise<*> | *,
-    error: Error,
-    classes: { [$Keys<typeof styles>]: string },
-  },
-  { pending: boolean },
-> {
-  state = {
-    pending: false,
-  };
 
-  _unmounted = false;
+function TryAgain(props: Props) {
+  const { error, action } = props;
+  const [pending, setPending] = useState(false);
+  let _unmounted = false;
 
-  componentWillUnmount() {
-    this._unmounted = true;
-  }
+  useEffect(() => {
+    return () => {
+      _unmounted = false;
+    };
+  }, []);
 
-  onclick = (e: Event) => {
+  function onclick(e: Event) {
     e.preventDefault();
-    const { action } = this.props;
-    if (this.state.pending) return;
-    this.setState({ pending: true });
+    const { action } = props;
+    if (pending) return;
+    setPending(true);
     Promise.resolve()
       .then(action)
       .catch(e => e)
       .then(() => {
-        if (this._unmounted) return;
-        this.setState({ pending: false });
+        if (_unmounted) return;
+        setPending(false);
       });
-  };
-
-  render() {
-    const { pending } = this.state;
-    const { error, classes } = this.props;
-    return (
-      <div
-        className={cx(classes.base, { [classes.pending]: pending })}
-        onClick={this.onclick}
-      >
-        <p>An error occured.</p>
-        <strong>Reload</strong>
-        <p className="error">{errorFormatter(error)}</p>
-      </div>
-    );
   }
+
+  return (
+    <CenteredLayout onClick={onclick}>
+      <Card>
+        <ModalBody>
+          <Box mb={30} align="center" color={colors.grenade}>
+            <Text bold>{errorFormatter(error)}</Text>
+          </Box>
+          <NoDataPlaceholder title="En error occured" />
+          {action && (
+            <Box mt={30} align="center" color={colors.lead}>
+              <Text style={{ cursor: "pointer" }}>Reload</Text>
+            </Box>
+          )}
+        </ModalBody>
+      </Card>
+    </CenteredLayout>
+  );
 }
 
-export default withStyles(styles)(TryAgain);
+export default TryAgain;
