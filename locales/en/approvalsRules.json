@@ -1,4 +1,6 @@
 {
+  "approval": "1 approval from",
+  "approval_plural": "{{count}} approvals from",
   "firstStepLabel": "Transaction is created",
   "lastStepLabel": "Transaction is broadcasted",
   "addApproval": "Add approval",
