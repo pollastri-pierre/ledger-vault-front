@@ -14,7 +14,7 @@ class MemberName extends Component<{
     const { member, ...props } = this.props;
 
     return (
-      <Box horizontal align="center" flow={8} {...props}>
+      <Box horizontal align="center" flow={5} {...props}>
         {userIcon}
         <Text>{member.username}</Text>
       </Box>
