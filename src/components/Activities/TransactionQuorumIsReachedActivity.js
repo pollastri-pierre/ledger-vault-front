@@ -22,7 +22,7 @@ class TransactionQuorumIsReachedActivity extends Component<Props> {
         <NoStyleLink
           to={
             match.params.orga_name &&
-            `/${match.params.orga_name}/account/${
+            `/${match.params.orga_name}/accounts/${
               business_action.transaction.account.id
             }/transaction/${business_action.transaction.id}/0`
           }

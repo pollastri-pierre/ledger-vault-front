@@ -45,8 +45,7 @@ export default styled(Box).attrs(p => ({
   // $FlowFixMe
   position: "relative",
 }))`
+  background: white;
   overflow-x: ${p => p.overflow || "unset"};
-  background-color: ${p => p.bc || "white"};
-  color: #555;
-  box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);
 `;

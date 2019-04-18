@@ -33,7 +33,7 @@ const RenderLoading = () => (
 class SubAccounts extends Component<Props> {
   handleAccountClick = (account: Account) => {
     const orgaName = location.pathname.split("/")[1];
-    this.props.history.push(`/${orgaName}/account/${account.id}`);
+    this.props.history.push(`/${orgaName}/accounts/${account.id}`);
   };
 
   render() {

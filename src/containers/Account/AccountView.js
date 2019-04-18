@@ -34,8 +34,11 @@ class AccountView extends Component<Props> {
   render() {
     const { match, account } = this.props;
     const accountId = match.params.id;
+
+    let inner = null;
+
     if (account.status && VISIBLE_MENU_STATUS.indexOf(account.status) === -1) {
-      return (
+      inner = (
         <Card>
           <Label>Account pending</Label>
           <InfoBox withIcon type="info">
@@ -45,21 +48,23 @@ class AccountView extends Component<Props> {
           </InfoBox>
         </Card>
       );
+    } else {
+      inner = (
+        <Box flow={20}>
+          <AccountQuickInfo account={account} match={match} />
+          {account.account_type === "Ethereum" && (
+            <SubAccounts account={account} />
+          )}
+          <Box horizontal flow={20}>
+            <AccountBalanceCard account={account} />
+            <AccountCountervalueCard account={account} />
+          </Box>
+          <AccountLastTransactionsCard key={accountId} account={account} />
+        </Box>
+      );
     }
 
-    return (
-      <Box flow={20}>
-        <AccountQuickInfo account={account} match={match} />
-        {account.account_type === "Ethereum" && (
-          <SubAccounts account={account} />
-        )}
-        <Box horizontal flow={20}>
-          <AccountBalanceCard account={account} />
-          <AccountCountervalueCard account={account} />
-        </Box>
-        <AccountLastTransactionsCard key={accountId} account={account} />
-      </Box>
-    );
+    return inner;
   }
 }
 

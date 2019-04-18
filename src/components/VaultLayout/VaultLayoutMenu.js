@@ -5,6 +5,8 @@ import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
+import colors from "shared/colors";
+import VaultLogo from "components/icons/Logo";
 import { vaultLayoutConfig } from "styles/theme";
 import { VaultLayoutMenuItem } from "./index";
 import type { MenuItem } from "./types";
@@ -45,7 +47,9 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
         </Animated.div>
 
         <Animated.div style={headerStyle}>
-          <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating} />
+          <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating}>
+            <VaultLogo width={100} />
+          </VaultLayoutMenuHeader>
         </Animated.div>
         <VaultLayoutMenuBody>
           <div>
@@ -69,8 +73,10 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
 const styles = {
   whiteBackground: {
+    pointerEvents: "auto",
     background: "white",
-    boxShadow: "0 5px 5px 2px rgba(0, 0, 0, 0.07)",
+    boxShadow: "-3px 2px 5px 0 rgba(0, 0, 0, 0.2)",
+    borderRight: "1px solid #f0f0f0",
     position: "fixed",
     top: 0,
     left: -20,
@@ -105,7 +111,7 @@ const VaultLayoutMenuBody = styled.div`
 
 const VaultLayoutMenuToggle = styled.div`
   pointer-events: auto;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid ${colors.form.border};
   width: 100px;
   height: 40px;
   border-radius: 40px;
@@ -122,14 +128,28 @@ const VaultLayoutMenuHeaderComponent = styled.div`
   height: ${vaultLayoutConfig.TOP_BAR_HEIGHT}px;
   width: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
   margin-left: -20px;
-  background: rgba(0, 0, 0, 0.03);
+  padding-left: 20px;
+  padding-top: 10px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 250ms linear opacity;
   opacity: ${p => (p.isOpened || !p.isFloating ? 1 : 0)};
 `;
 
-const VaultLayoutMenuHeader = ({ isOpened, isFloating }: $Shape<Props>) => (
-  <VaultLayoutMenuHeaderComponent isOpened={isOpened} isFloating={isFloating} />
+const VaultLayoutMenuHeader = ({
+  isOpened,
+  isFloating,
+  children,
+}: {
+  isOpened: boolean,
+  isFloating: boolean,
+  children: React$Node,
+}) => (
+  <VaultLayoutMenuHeaderComponent isOpened={isOpened} isFloating={isFloating}>
+    {children}
+  </VaultLayoutMenuHeaderComponent>
 );
 
 function getBgStyle(globalAnimation) {

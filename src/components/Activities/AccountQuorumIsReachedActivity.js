@@ -21,7 +21,7 @@ class AccountQuorumIsReachedActivity extends Component<Props> {
         <NoStyleLink
           to={
             match.params.orga_name &&
-            `/${match.params.orga_name}/admin/account/${
+            `/${match.params.orga_name}/admin/accounts/${
               business_action.account.id
             }`
           }

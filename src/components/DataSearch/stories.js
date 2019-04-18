@@ -57,7 +57,7 @@ const GroupsSearch = props => (
   />
 );
 
-const AccountsSearch = props => (
+export const AccountsSearch = props => (
   <DataSearch
     Query={SearchAccountsQuery}
     TableComponent={AccountsTable}
@@ -87,7 +87,7 @@ storiesOf("search", module)
 
 // --------------------------------- story helpers
 
-const mockNetwork = async url => {
+export const mockNetwork = async url => {
   const queryParams = qs.parse(url.substr(url.indexOf("?")));
   let edges;
   if (url.startsWith("/transactions?")) {

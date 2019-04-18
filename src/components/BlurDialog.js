@@ -5,19 +5,6 @@ import Dialog from "@material-ui/core/Dialog";
 
 import Slide from "@material-ui/core/Slide";
 
-let blurredCache = false;
-function setBlurState(blurred: boolean) {
-  if (typeof document === "undefined" || !document.body) return;
-  if (blurred !== blurredCache) {
-    blurredCache = blurred;
-    if (blurred) {
-      document.body.classList.add("blurDialogOpened");
-    } else {
-      document.body.classList.remove("blurDialogOpened");
-    }
-  }
-}
-
 const actives = [];
 
 function Transition(props) {
@@ -38,7 +25,6 @@ class BlurDialog extends Component<{
     const index = actives.indexOf(this);
     if (active && index === -1) actives.push(this); // add this in actives
     if (!active && index !== -1) actives.splice(index, 1); // remove this in actives
-    setBlurState(actives.length > 0);
   };
 
   componentDidMount() {

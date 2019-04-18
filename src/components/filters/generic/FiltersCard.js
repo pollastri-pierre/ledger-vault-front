@@ -100,10 +100,10 @@ class FiltersCard extends PureComponent<Props> {
           <Box align="center" horizontal flow={10}>
             {hasFilters && (
               <ClearButton onClick={this.handleClear}>
-                <Text small>Clear filters</Text>
+                <Text>Clear filters</Text>
               </ClearButton>
             )}
-            <Text small noSelect>
+            <Text noSelect>
               {showNbResults
                 ? `${nbResults || 0} result(s) found`
                 : "Loading..."}
