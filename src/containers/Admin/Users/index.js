@@ -5,7 +5,6 @@ import type { MemoryHistory } from "history";
 
 import SearchUsersQuery from "api/queries/SearchUsers";
 
-import { CardTitle } from "components/base/Card";
 import { UsersTable } from "components/Table";
 import { UsersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
@@ -42,9 +41,8 @@ class Users extends PureComponent<Props> {
     this.props.history.push("users/invite/user");
   };
 
-  HeaderComponent = () => (
-    <Box horizontal align="flex-start" justify="space-between" pb={20}>
-      <CardTitle i18nKey="inviteUser:header" />
+  ActionComponent = () => (
+    <Box>
       <InviteUserLink onClick={this.inviteUser} />
     </Box>
   );
@@ -58,7 +56,7 @@ class Users extends PureComponent<Props> {
           Query={SearchUsersQuery}
           TableComponent={UsersTable}
           FilterComponent={UsersFilters}
-          HeaderComponent={this.HeaderComponent}
+          ActionComponent={this.ActionComponent}
           history={history}
           onRowClick={this.handleUserClick}
           listenMutations={mutationsToListen}

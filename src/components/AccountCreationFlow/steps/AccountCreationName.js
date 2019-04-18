@@ -4,6 +4,7 @@ import { translate } from "react-i18next";
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
+import Disabled from "components/Disabled";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -45,44 +46,58 @@ class AccountCreationOptions extends PureComponent<Props> {
   };
 
   render() {
-    const { t, payload, updatePayload, allAccounts } = this.props;
+    const {
+      t,
+      payload,
+      updatePayload,
+      allAccounts,
+      isEditMode,
+      account,
+    } = this.props;
     const { currency } = payload;
 
+    let inner = null;
+
+    const isDisabled = isEditMode && account.status !== "VIEW_ONLY";
+
     if (payload.erc20token) {
-      return (
+      inner = (
         <ERC20RenderName
           payload={payload}
           allAccounts={allAccounts}
           updatePayload={updatePayload}
         />
       );
+    } else {
+      if (!currency) return null;
+      const AccountCurIcon = getCryptoCurrencyIcon(currency);
+      const IconLeft = AccountCurIcon
+        ? () => <AccountCurIcon color={currency.color} size={16} />
+        : undefined;
+
+      inner = (
+        <Box flow={20}>
+          <Box>
+            <Label>{t("newAccount:options.name")}</Label>
+            <InputText
+              data-test="account_name"
+              value={payload.name}
+              disabled={isDisabled}
+              autoFocus
+              onChange={this.handleChangeName}
+              placeholder={t("newAccount:options.acc_name_placeholder")}
+              {...inputProps}
+              IconLeft={IconLeft}
+            />
+          </Box>
+          <InfoBox type="info" withIcon>
+            <Text i18nKey="accountCreation:steps.name.warning" />
+          </InfoBox>
+        </Box>
+      );
     }
 
-    if (!currency) return null;
-
-    const AccountCurIcon = getCryptoCurrencyIcon(currency);
-    const IconLeft = AccountCurIcon
-      ? () => <AccountCurIcon color={currency.color} size={16} />
-      : undefined;
-    return (
-      <Box flow={20}>
-        <Box>
-          <Label>{t("newAccount:options.name")}</Label>
-          <InputText
-            data-test="account_name"
-            value={payload.name}
-            autoFocus
-            onChange={this.handleChangeName}
-            placeholder={t("newAccount:options.acc_name_placeholder")}
-            {...inputProps}
-            IconLeft={IconLeft}
-          />
-        </Box>
-        <InfoBox type="info" withIcon>
-          <Text i18nKey="accountCreation:steps.name.warning" />
-        </InfoBox>
-      </Box>
-    );
+    return <Disabled disabled={isDisabled}>{inner}</Disabled>;
   }
 }
 

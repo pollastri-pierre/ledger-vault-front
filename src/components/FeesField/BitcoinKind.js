@@ -17,10 +17,11 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import { Label } from "components/base/form";
-import FeeSelect from "components/transactions/creation/FeeSelect";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import { getFees } from "utils/transactions";
+
+import FeeSelect from "./FeeSelect";
 
 type Props<BridgeTransaction> = {
   account: Account,

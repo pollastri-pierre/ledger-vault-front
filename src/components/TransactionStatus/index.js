@@ -6,20 +6,20 @@ import type { Transaction } from "data/types";
 
 class TransactionStatus extends Component<*> {
   props: {
-    operation: Transaction,
+    transaction: Transaction,
   };
 
   render() {
-    const { operation } = this.props;
+    const { transaction } = this.props;
 
-    if (operation.status === "SUBMITTED") {
-      return <ConfirmationStatus nbConfirmations={operation.confirmations} />;
+    if (transaction.status === "SUBMITTED") {
+      return <ConfirmationStatus nbConfirmations={transaction.confirmations} />;
     }
 
     return (
       <EntityStatus
-        status={operation.status}
-        request={operation.last_request}
+        status={transaction.status}
+        request={transaction.last_request}
       />
     );
   }

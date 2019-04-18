@@ -24,6 +24,7 @@
     "title": "Receive funds"
   },
   "summary": {
+    "name": "Name",
     "date": "creation date",
     "index": "Cryptocurrency / Index",
     "members": "members",

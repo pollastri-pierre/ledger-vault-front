@@ -2,79 +2,70 @@
 
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import { Link } from "react-router-dom";
 
-import type { Match } from "react-router-dom";
+import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import InfiniteScrollable from "components/InfiniteScrollable";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import { Label } from "components/base/form";
+import Box from "components/base/Box";
 import { TransactionsTable } from "components/Table";
-import TryAgain from "components/TryAgain";
-import Card from "components/legacy/Card";
+import Card, { CardLoading, CardError } from "components/base/Card";
 
 import connectData from "restlay/connectData";
 import AccountTransactionsQuery from "api/queries/AccountTransactionsQuery";
 
 import type { Connection } from "restlay/ConnectionQuery";
-import type { RestlayEnvironment } from "restlay/connectData";
 import type { Account, Transaction } from "data/types";
 
 type Props = {
   account: Account,
-  operations: Connection<Transaction>,
-  restlay: RestlayEnvironment,
+  transactions: Connection<Transaction>,
   match: Match,
   history: MemoryHistory,
+  location: Location,
 };
 
 class AccountLastTransactionsCard extends Component<Props> {
-  handleTransactionClick = (operation: Transaction) => {
+  handleTransactionClick = (transaction: Transaction) => {
     const { history, match } = this.props;
-    history.push(`${match.url}/operation/${operation.id}/0`);
+    history.push(`${match.url}/transactions/details/${transaction.id}/0`);
   };
 
   render() {
-    const { account, operations, restlay } = this.props;
+    const { account, transactions } = this.props;
+
+    const orgaName = this.props.location.pathname.split("/")[1];
+    const seeAllURL = `/${orgaName}/operator/transactions?accounts=${
+      account.id
+    }`;
+
     return (
-      <Card title="last operations">
-        <InfiniteScrollable
-          restlay={restlay}
-          restlayVariable="operations"
-          chunkSize={20}
-        >
-          <TransactionsTable
-            accounts={[account]}
-            data={operations.edges.map(e => e.node)}
-            onRowClick={this.handleTransactionClick}
-          />
-        </InfiniteScrollable>
+      <Card>
+        <Box horizontal justify="space-between">
+          <Label>Last transactions</Label>
+          <Link to={seeAllURL}>See all</Link>
+        </Box>
+        <TransactionsTable
+          accounts={[account]}
+          data={transactions.edges.map(e => e.node)}
+          onRowClick={this.handleTransactionClick}
+        />
       </Card>
     );
   }
 }
 
-const RenderError = ({ error, restlay }: *) => (
-  <Card title="last operations">
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </Card>
-);
-
-const RenderLoading = () => (
-  <Card title="last operations">
-    <SpinnerCard />
-  </Card>
-);
-
 export default connectData(withRouter(AccountLastTransactionsCard), {
   queries: {
-    operations: AccountTransactionsQuery,
+    transactions: AccountTransactionsQuery,
   },
   initialVariables: {
-    operations: 20,
+    transactions: 20,
   },
   propsToQueryParams: ({ account }: { account: Account }) => ({
     accountId: String(account.id),
   }),
-  RenderError,
-  RenderLoading,
+  RenderError: CardError,
+  RenderLoading: CardLoading,
 });

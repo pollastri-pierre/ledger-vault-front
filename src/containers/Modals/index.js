@@ -6,8 +6,9 @@ import AccountCreationFlow from "components/AccountCreationFlow";
 import GroupCreationFlow from "components/GroupCreationFlow";
 import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
-import AccountDetails from "containers/Admin/Accounts/AccountDetails";
+import AccountDetails from "containers/Accounts/AccountDetails";
 import TransactionDetails from "components/transactions/TransactionModal";
+import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
   <Fragment>
@@ -22,6 +23,10 @@ export default () => (
       path="*/accounts/details/:accountId"
       component={AccountDetails}
     />
+    <ModalRoute
+      path="*/accounts/edit/:accountId"
+      component={AccountCreationFlow}
+    />
     <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
     <ModalRoute path="*/new-transaction" component={TransactionCreationFlow} />
     <ModalRoute
@@ -33,5 +38,6 @@ export default () => (
       component={AccountCreationFlow}
       disableBackdropClick
     />
+    <ModalRoute path="*/receive" component={ReceiveFlow} disableBackdropClick />
   </Fragment>
 );

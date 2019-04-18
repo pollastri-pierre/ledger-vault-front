@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
 
+import { withMe } from "components/UserContextProvider";
 import SearchAccountsQuery from "api/queries/SearchAccounts";
 import { AccountsFilters } from "components/filters";
 import { AccountsTable } from "components/Table";
@@ -10,8 +11,7 @@ import DataSearch from "components/DataSearch";
 import AddLink from "components/base/AddLink";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import { CardTitle } from "components/base/Card";
-import type { Account } from "data/types";
+import type { Account, User } from "data/types";
 
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
@@ -19,14 +19,17 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 type Props = {
   history: MemoryHistory,
   location: Location,
+  me: User,
 };
 
 const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 
 class AdminAccounts extends PureComponent<Props> {
   handleAccountClick = (account: Account) => {
-    const orgaName = this.props.location.pathname.split("/")[1];
-    this.props.history.push(`/${orgaName}/admin/account/${account.id}`);
+    const { me, location } = this.props;
+    const role = me.role === "ADMIN" ? "admin" : "operator";
+    const orgaName = location.pathname.split("/")[1];
+    this.props.history.push(`/${orgaName}/${role}/account/${account.id}`);
   };
 
   createAccount = () => {
@@ -34,14 +37,18 @@ class AdminAccounts extends PureComponent<Props> {
     history.push(`accounts/new`);
   };
 
-  HeaderComponent = () => (
-    <Box horizontal align="flex-start" justify="space-between" pb={20}>
-      <CardTitle i18nKey="menu:admin.accounts" />
-      <AddLink onClick={this.createAccount}>
-        <Text i18nKey="accountCreation:cta" />
-      </AddLink>
-    </Box>
-  );
+  ActionComponent = () => {
+    const { me } = this.props;
+    return (
+      <Box>
+        {me.role === "ADMIN" && (
+          <AddLink onClick={this.createAccount}>
+            <Text i18nKey="accountCreation:cta" />
+          </AddLink>
+        )}
+      </Box>
+    );
+  };
 
   render() {
     const { history } = this.props;
@@ -51,7 +58,7 @@ class AdminAccounts extends PureComponent<Props> {
         TableComponent={AccountsTable}
         FilterComponent={AccountsFilters}
         onRowClick={this.handleAccountClick}
-        HeaderComponent={this.HeaderComponent}
+        ActionComponent={this.ActionComponent}
         history={history}
         listenMutations={mutationsToListen}
       />
@@ -59,4 +66,4 @@ class AdminAccounts extends PureComponent<Props> {
   }
 }
 
-export default AdminAccounts;
+export default withMe(AdminAccounts);

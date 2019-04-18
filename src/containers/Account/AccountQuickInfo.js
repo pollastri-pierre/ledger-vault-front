@@ -1,92 +1,40 @@
 // @flow
-import Card from "components/legacy/Card";
+
+import React, { Component, Fragment } from "react";
+import styled from "styled-components";
+import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
-import DateFormat from "components/DateFormat";
-import CurrencyIndex from "components/CurrencyIndex";
+
 import { isAccountOutdated } from "utils/accounts";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
+import colors from "shared/colors";
+
+import Card from "components/base/Card";
+import { Label } from "components/base/form";
+import Absolute from "components/base/Absolute";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import DateFormat from "components/DateFormat";
+import CurrencyIndex from "components/CurrencyIndex";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
 import AccountSettings from "components/AccountSettings";
 import ModalRoute from "components/ModalRoute";
-import { Trans } from "react-i18next";
-import colors from "shared/colors";
-import React, { Component, Fragment } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import { FaWrench } from "react-icons/fa";
-import type { Account, User } from "data/types";
+import type { Account } from "data/types";
 import AccountWarning from "./AccountWarning";
 
-const row = {
-  base: {
-    lineHeight: "24px",
-    display: "flex",
-    flexDirection: "row",
-  },
-  label: {
-    fontSize: 12,
-    textTransform: "uppercase",
-    fontWeight: 600,
-    color: colors.shark,
-  },
-  value: {
-    fontSize: 13,
-    color: colors.shark,
-    marginLeft: 5,
-  },
-};
-const Row = withStyles(row)(
-  ({
-    label,
-    value,
-    classes,
-  }: {
-    label: string,
-    value: React$Node,
-    classes: { [_: $Keys<typeof row>]: string },
-  }) => (
-    <div className={classes.base}>
-      <span className={classes.label}>{label}:</span>
-      <span className={classes.value}>{value}</span>
-    </div>
-  ),
+const Row = ({ label, value }: { label: React$Node, value: ?React$Node }) => (
+  <Box horizontal flow={5}>
+    <Box>
+      <Text bold>{label}:</Text>
+    </Box>
+    {value && <Box>{value}</Box>}
+  </Box>
 );
-const styles = {
-  base: {
-    display: "flex",
-    alignItems: "baseline",
-    justifyContent: "space-between",
-  },
-  modalMembers: {
-    width: 500,
-    padding: 20,
-  },
-  modalMembersTitle: {
-    fontSize: 18,
-    fontWeight: 400,
-    color: "black",
-    margin: 0,
-    padding: 4,
-    paddingBottom: 20,
-  },
-  toggleModalMembers: {
-    display: "inline-block",
-    marginLeft: 10,
-    cursor: "pointer",
-    textDecoration: "underline",
-    color: colors.ocean,
-  },
-  settingsIcon: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-    padding: 30,
-  },
-};
+
 type Props = {
   account: Account,
-  me: User,
-  classes: { [_: $Keys<typeof styles>]: string },
 };
 
 /* display only the currency and index if the account needs to be updated */
@@ -99,9 +47,11 @@ const AccountTitle = ({ account }: { account: Account }) => (
     )}
   </div>
 );
+
 type State = {
   modalMembersOpen: boolean,
 };
+
 class AccountQuickInfo extends Component<Props, State> {
   state: State = {
     modalMembersOpen: false,
@@ -116,14 +66,13 @@ class AccountQuickInfo extends Component<Props, State> {
     const {
       account,
       account: { members },
-      classes: { toggleModalMembers },
     } = this.props;
     return account.status === "VIEW_ONLY" ? (
       <span>-</span>
     ) : (
       <Fragment>
         <span>{members.length}</span>
-        <span className={toggleModalMembers} onClick={this.toggleModalMembers}>
+        <span onClick={this.toggleModalMembers}>
           <Trans i18nKey="accountView:members_modal.toggle" />
         </span>
       </Fragment>
@@ -132,12 +81,11 @@ class AccountQuickInfo extends Component<Props, State> {
 
   renderListMember = () => {
     const {
-      classes: { modalMembers, modalMembersTitle },
       account: { members },
     } = this.props;
     return (
-      <div className={modalMembers}>
-        <div className={modalMembersTitle}>
+      <div>
+        <div>
           <Trans i18nKey="accountView:members_modal.title" />
         </div>
         <div>
@@ -149,18 +97,20 @@ class AccountQuickInfo extends Component<Props, State> {
     );
   };
 
-  AccountSettings = props => (
+  // TODO: type this labyrinth
+  AccountSettings = (props: *) => (
     <AccountSettings account={this.props.account} {...props} />
   );
 
   render() {
-    const { account, classes, me } = this.props;
+    const { account } = this.props;
     const { modalMembersOpen } = this.state;
 
     const isERC20 = account.account_type === "ERC20";
     const token = isERC20
       ? getERC20TokenByContractAddress(account.contract_address)
       : null;
+
     return (
       <Fragment>
         <ModalRoute
@@ -171,19 +121,28 @@ class AccountQuickInfo extends Component<Props, State> {
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
           {this.renderListMember()}
         </BlurDialog>
-        <Card title={<AccountTitle account={account} />}>
+
+        <Card>
+          <Label>
+            <AccountTitle account={account} />
+          </Label>
           {!isERC20 && (
-            <div className={classes.settingsIcon}>
-              <Link
+            <Absolute top={0} right={0}>
+              <SettingsLink
+                title="Settings"
                 to={`${location.pathname}/account-settings`}
                 className="content-header-button"
               >
-                <FaWrench color={colors.lightGrey} />
-              </Link>
-            </div>
+                <FaWrench />
+              </SettingsLink>
+            </Absolute>
           )}
-          <div className={classes.base}>
-            <div>
+          <Box horizontal align="center" justify="space-between">
+            <Box>
+              <Row
+                label={<Trans i18nKey="accountView:summary.name" />}
+                value={account.name}
+              />
               {isERC20 ? (
                 <Row
                   label={<Trans i18nKey="accountView:summary.token" />}
@@ -228,32 +187,26 @@ class AccountQuickInfo extends Component<Props, State> {
                   />
                 </Fragment>
               )}
-            </div>
-            {account.status !== "VIEW_ONLY" && (
-              <div style={{ width: 300 }}>
-                <Row
-                  label={<Trans i18nKey="accountView:summary.members" />}
-                  value={this.renderMembersLink()}
-                />
-                <Row
-                  label={<Trans i18nKey="accountView:summary.quorum" />}
-                  value={
-                    account.status !== "VIEW_ONLY" &&
-                    `${account.security_scheme.quorum} out of ${
-                      account.members.length
-                    }`
-                  }
-                />
-              </div>
-            )}
-            <div>
-              <AccountWarning account={account} me={me} />
-            </div>
-          </div>
+            </Box>
+            <AccountWarning account={account} />
+          </Box>
         </Card>
       </Fragment>
     );
   }
 }
 
-export default withStyles(styles)(AccountQuickInfo);
+const SettingsLink = styled(Link)`
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.mediumGrey};
+
+  &:hover {
+    color: ${colors.shark};
+  }
+`;
+
+export default AccountQuickInfo;

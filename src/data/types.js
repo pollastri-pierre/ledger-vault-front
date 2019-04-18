@@ -114,6 +114,7 @@ type ExtendedPubKey = {
   chain_code: string,
 };
 
+export type TxApprovalStep = { quorum: number, group: Group };
 type AccountCommon = {
   id: number,
   account_type: AccountType,
@@ -134,6 +135,8 @@ type AccountCommon = {
   status: string,
   last_request?: Request,
   xpub: string,
+  tx_approval_steps?: TxApprovalStep[],
+  parent: ?number,
   extended_pub_keys: ExtendedPubKey,
 };
 export type Account = AccountCommon & {
@@ -400,3 +403,8 @@ type RequestUser = {
   username: string,
 };
 type RequestGroup = {};
+
+export type FreshAddress = {
+  address: string,
+  derivation_path: string,
+};

@@ -23,7 +23,7 @@ const uri = (query: Input) => {
 export default class GroupsQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
-  size = 30;
+  pageSize = 30;
 
   nodeSchema = schema.Group;
 }

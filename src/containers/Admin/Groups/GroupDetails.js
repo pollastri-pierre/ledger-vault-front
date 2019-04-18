@@ -15,7 +15,7 @@ import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import GroupHistory from "containers/Admin/Groups/GroupHistory";
 import colors from "shared/colors";
-import GroupLastRequest from "containers/Admin/Groups/GroupLastRequest";
+import EntityLastRequest from "components/EntityLastRequest";
 import GroupDetailsFooter from "containers/Admin/Groups/GroupDetailsFooter";
 import styled from "styled-components";
 import ModalLoading from "components/ModalLoading";
@@ -141,7 +141,10 @@ class GroupModal extends PureComponent<Props> {
           {tabsIndex === 1 && <GroupDetailsAccounts group={group} />}
           {tabsIndex === 2 && <GroupHistory group={group} />}
           {tabsIndex === 3 && (
-            <GroupLastRequest group={group} operators={operators} />
+            <EntityLastRequest
+              entity={group}
+              additionalFields={{ operators: operators.edges.map(o => o.node) }}
+            />
           )}
         </Box>
         <Box px={10} style={styles.footer}>
@@ -210,7 +213,7 @@ const styles = {
   },
 };
 
-const TabName = styled(Box).attrs({
+export const TabName = styled(Box).attrs({
   horizontal: true,
   align: "center",
   flow: 5,

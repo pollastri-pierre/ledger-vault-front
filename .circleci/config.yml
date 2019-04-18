@@ -4,16 +4,6 @@ aliases:
   - &docker_image circleci/node:8.11.3-stretch
   - &dev_s3_bucket ledger-vault-artifacts-dev
   - &prod_s3_bucket ledger-vault-artifacts-prod
-  - &common_filters
-    tags:
-      only: /.*/
-  - &prod_filters
-    branches:
-      only:
-        - master
-        - release_candidate
-    tags:
-      only: /.*/
 
 jobs:
   run_tests:
@@ -120,7 +110,7 @@ jobs:
       - run:
           name: Update the pointer "LATEST"
           command: |
-            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop" -o "$CIRCLE_BRANCH" = "release_candidate" ]; then
+            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop-drop2" -o "$CIRCLE_BRANCH" = "develop" -o "$CIRCLE_BRANCH" = "release_candidate" ]; then
               latest=$(mktemp)
               echo $latest_artifact > $latest
               latest_pointer="latest-${CIRCLE_BRANCH}"
@@ -134,17 +124,14 @@ jobs:
 workflows:
   build_publish:
     jobs:
-      - run_tests:
-          filters: *common_filters
+      - run_tests
       - e2e_tests:
-          filters: *common_filters
           requires:
             - run_tests
       - build:
           requires:
             - run_tests
             - e2e_tests
-          filters: *prod_filters
       - publish:
           name: publish_dev
           s3_bucket: *dev_s3_bucket
@@ -152,7 +139,11 @@ workflows:
           secret_key: AWS_SECRET_ACCESS_KEY_DEV
           requires:
             - build
-          filters: *prod_filters
+          filters:
+            branches:
+              only:
+                - develop
+                - develop-drop2
       - publish:
           name: publish_prod
           s3_bucket: *prod_s3_bucket
@@ -160,4 +151,8 @@ workflows:
           secret_key: AWS_SECRET_ACCESS_KEY_PROD
           requires:
             - build
-          filters: *prod_filters
+          filters:
+            branches:
+              only:
+                - master
+                - release_candidate
