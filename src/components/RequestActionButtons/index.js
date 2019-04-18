@@ -35,8 +35,8 @@ class RequestActionButtons extends PureComponent<Props> {
         pt={20}
         style={{
           background: "#f5f5f5",
-          "border-bottom-left-radius": 2,
-          "border-bottom-right-radius": 2,
+          borderBottomLeftRadius: 2,
+          borderBottomRightRadius: 2,
         }}
       >
         <Box flow={10} width="100%" align="center" justify="center">
