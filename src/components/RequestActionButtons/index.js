@@ -1,6 +1,9 @@
 // @flow
+
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
+import { FaCheckCircle } from "react-icons/fa";
+
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { approveFlow } from "device/interactions/approveFlow";
@@ -9,7 +12,6 @@ import { withMe } from "components/UserContextProvider";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import { hasUserApprovedRequest } from "utils/request";
 import colors from "shared/colors";
-import { FaCheckCircle } from "react-icons/fa";
 
 import type { Entity, User } from "data/types";
 
@@ -32,6 +34,7 @@ class RequestActionButtons extends PureComponent<Props> {
 
     return (
       <Box
+        grow
         pt={20}
         style={{
           background: "#f5f5f5",
@@ -41,13 +44,9 @@ class RequestActionButtons extends PureComponent<Props> {
       >
         <Box flow={10} width="100%" align="center" justify="center">
           {entity.last_request && (
-            <Box horizontal flow={2}>
-              <Text
-                small
-                bold
-                i18nKey={`request:type.${entity.last_request.type}`}
-              />{" "}
-              <Text small>request is pending.</Text>
+            <Box horizontal flow={5}>
+              <Text bold i18nKey={`request:type.${entity.last_request.type}`} />
+              <Text>request is pending.</Text>
             </Box>
           )}
           {hasUserApproved ? (
