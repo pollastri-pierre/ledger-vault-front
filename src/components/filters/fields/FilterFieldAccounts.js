@@ -30,7 +30,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
     ) => $ReadOnlyArray<ObjectParameter>,
   ) => {
     const { queryParams, updateQueryParams } = this.props;
-    updateQueryParams("accounts", updater(resolveAccounts(queryParams)));
+    updateQueryParams("account", updater(resolveAccounts(queryParams)));
   };
 
   handleChange = (account: ?Account) => {
@@ -138,10 +138,10 @@ const AccountsList = ({
   ) : null;
 
 function resolveAccounts(queryParams: ObjectParameters) {
-  return Array.isArray(queryParams.accounts)
-    ? queryParams.accounts
-    : typeof queryParams.accounts === "string"
-    ? [queryParams.accounts]
+  return Array.isArray(queryParams.account)
+    ? queryParams.account
+    : typeof queryParams.account === "string"
+    ? [queryParams.account]
     : EMPTY_ARRAY;
 }
 
