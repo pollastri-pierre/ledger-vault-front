@@ -17,7 +17,7 @@ import StepBall from "./StepBall";
 export type ApprovalsRule = {
   quorum: number,
   users: number[],
-  group: number | null,
+  group_id: number | null,
 };
 
 export type ApprovalsSelectedIds = {
@@ -52,7 +52,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
   addEmptyRule = () => {
     const { onChange, rules } = this.props;
-    const rule = { quorum: 1, users: [], group: null };
+    const rule = { quorum: 1, users: [], group_id: null };
     onChange([...rules, rule]);
   };
 
@@ -225,14 +225,14 @@ const stepsLine = (
 
 const isRuleInvalid = (rule: ApprovalsRule) => {
   const hasQuorum = rule.quorum > 0;
-  const hasUsersOrGroup = rule.users.length > 0 || rule.group !== null;
+  const hasUsersOrGroup = rule.users.length > 0 || rule.group_id !== null;
   return !hasQuorum || !hasUsersOrGroup;
 };
 
 const collectSelectedIds = (rules: ApprovalsRule[]) => ({
   groups: rules.reduce((acc, rule) => {
-    if (rule.group) {
-      acc.push(rule.group);
+    if (rule.group_id) {
+      acc.push(rule.group_id);
     }
     return acc;
   }, []),

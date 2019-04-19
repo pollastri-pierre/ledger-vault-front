@@ -44,6 +44,8 @@ const DiffName = ({ group }: { group: Group }) => {
     group.last_request.edit_data && group.last_request.edit_data.name;
   if (!editName) return null;
 
+  if (editName === group.name) return null;
+
   return (
     <Box flow={15}>
       <Text bold>Name</Text>

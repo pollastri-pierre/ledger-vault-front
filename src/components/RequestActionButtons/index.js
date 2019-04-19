@@ -61,6 +61,7 @@ class RequestActionButtons extends PureComponent<Props> {
               width="100%"
               justify="space-between"
               px={15}
+              position="relative"
             >
               <AbortRequestButton
                 requestID={entity.last_request && entity.last_request.id}
