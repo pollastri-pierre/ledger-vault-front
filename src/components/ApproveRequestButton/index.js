@@ -4,7 +4,7 @@ import React, { PureComponent, Fragment } from "react";
 import { NetworkError } from "network";
 import { FaCheck, FaTrash } from "react-icons/fa";
 
-import Box from "components/base/Box";
+import Absolute from "components/base/Absolute";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { ModalFooterButton } from "components/base/Modal";
@@ -64,14 +64,14 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       <Fragment>
         {error && <TriggerErrorNotification error={error} />}
         {isInProgress ? (
-          <Box mb={15}>
+          <Absolute right={15} bottom={15}>
             <DeviceInteraction
               interactions={interactions}
               onSuccess={onSuccess}
               onError={this.onError}
               additionalFields={additionalFields}
             />
-          </Box>
+          </Absolute>
         ) : (
           <ModalFooterButton
             data-test="approve_button"
