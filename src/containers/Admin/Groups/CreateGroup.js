@@ -89,7 +89,6 @@ class CreateGroup extends PureComponent<Props, State> {
           <InputField
             autoFocus
             placeholder="Name"
-            dataTest="group-name-input"
             fullWidth
             value={name}
             onChange={this.onChangeName}
@@ -97,7 +96,6 @@ class CreateGroup extends PureComponent<Props, State> {
           />
           <InputField
             multiline
-            dataTest="group-description-input"
             placeholder="Description"
             fullWidth
             value={description}

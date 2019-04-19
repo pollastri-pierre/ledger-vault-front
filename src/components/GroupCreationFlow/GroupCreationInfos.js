@@ -25,6 +25,7 @@ const GroupCreationInfos = (props: Props) => {
       <Box>
         <Label>{t("group:create.name_placeholder")}</Label>
         <InputText
+          data-test="group_name"
           value={payload.name}
           autoFocus
           onChange={handleChangeName}
@@ -36,6 +37,7 @@ const GroupCreationInfos = (props: Props) => {
       <Box>
         <Label>{t("group:create.desc_placeholder")}</Label>
         <InputText
+          data-test="group_description"
           value={payload.description}
           onChange={handleChangeDesc}
           placeholder={t("group:create.desc_placeholder")}

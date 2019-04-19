@@ -30,14 +30,14 @@ class NumberChooser extends PureComponent<Props> {
           isDisabled={!this.canDecrement()}
           onClick={this.decrement}
         >
-          <FaAngleLeft />
+          <FaAngleLeft data-test="leftAngle" />
         </NumberChooserAction>
         <NumberChooserValue>{value}</NumberChooserValue>
         <NumberChooserAction
           isDisabled={!this.canIncrement()}
           onClick={this.increment}
         >
-          <FaAngleRight />
+          <FaAngleRight data-test="rightANgle" />
         </NumberChooserAction>
       </NumberChooserContainer>
     );

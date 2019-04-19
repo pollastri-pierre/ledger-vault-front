@@ -65,6 +65,6 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
     create_group("APAC 1", "Group for APAC 1", "Thomas", "Anna", "James");
-    create_group("EMEA", "Group for EMEA", "Aidan", "James");
+    create_group("EMEA", "Group for EMEA", "Aidan", "James", "Thomas");
   });
 });

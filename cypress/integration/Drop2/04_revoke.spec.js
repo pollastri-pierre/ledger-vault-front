@@ -18,7 +18,14 @@ describe("Tests Creation Account", function() {
   it("Revoke Operator", () => {
     cy.server();
     route();
-    revoke_users("James Lepic");
+    revoke_users("Aidan Fisher");
+    successfull_message();
+  });
+
+  it("Revoke Admin", () => {
+    cy.server();
+    route();
+    revoke_users("user4");
     successfull_message();
   });
 });
