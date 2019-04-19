@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { withKnobs } from "@storybook/addon-knobs";
 import { create as createTheme } from "@storybook/theming";
 import { configure, addDecorator, addParameters } from "@storybook/react";
+import { BrowserRouter } from "react-router-dom";
 import {
   createStore as reduxCreateStore,
   combineReducers,
@@ -63,7 +64,7 @@ addDecorator(story => (
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              {story()}
+              <BrowserRouter>{story()}</BrowserRouter>
             </MuiPickersUtilsProvider>
           </ThemeProvider>
         </MuiThemeProvider>
