@@ -33,7 +33,7 @@ import type { AccountCreationPayload } from "./types";
 
 const initialPayload: AccountCreationPayload = {
   name: "",
-  rules: [{ quorum: 1, group: null, users: [] }],
+  rules: [{ quorum: 1, group_id: null, users: [] }],
   currency: null,
   erc20token: null,
   parentAccount: null,
@@ -78,7 +78,9 @@ const steps = [
     requirements: (payload: AccountCreationPayload) => {
       const { rules } = payload;
       if (!rules.length) return false;
-      return rules.every(rule => rule.group !== null || rule.users.length > 0);
+      return rules.every(
+        rule => rule.group_id !== null || rule.users.length > 0,
+      );
     },
     Cta: ({
       payload,
@@ -229,7 +231,7 @@ const deserialize: Account => AccountCreationPayload = account => {
       ? initialPayload.rules
       : tx_approval_steps.map(rule => ({
           quorum: rule.quorum,
-          group: rule.group.status === "ACTIVE" ? rule.group.id : null,
+          group_id: rule.group.status === "ACTIVE" ? rule.group.id : null,
           users:
             rule.group.status !== "ACTIVE"
               ? rule.group.members.map(m => m.id)

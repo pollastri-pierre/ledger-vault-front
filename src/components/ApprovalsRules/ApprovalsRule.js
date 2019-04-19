@@ -59,12 +59,12 @@ class ApprovalsRule extends PureComponent<Props, State> {
   }) => {
     const { rule, onChange } = this.props;
 
-    const justAddedGroup = !rule.group && !!groups.length;
+    const justAddedGroup = !rule.group_id && !!groups.length;
     const justAddedUser = rule.users.length !== users.length;
 
     const newRule = {
       ...rule,
-      group: justAddedUser
+      group_id: justAddedUser
         ? null
         : groups.length
         ? groups[groups.length - 1].id
@@ -73,8 +73,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
     };
 
     // ensure quorum > groups length, etc.
-    if (newRule.group) {
-      const group = groups.find(g => g.id === newRule.group);
+    if (newRule.group_id) {
+      const group = groups.find(g => g.id === newRule.group_id);
       if (group && newRule.quorum > group.members.length) {
         newRule.quorum = group.members.length;
       }
@@ -90,7 +90,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
   render() {
     const { rule, users, groups, onRemove, parentSelectedIds, t } = this.props;
     const { hasBeenClosed } = this.state;
-    const { group: ruleGroup, users: ruleUsers } = rule;
+    const { group_id: ruleGroup, users: ruleUsers } = rule;
 
     const group = ruleGroup ? groups.find(g => g.id === ruleGroup) : null;
     const max = group ? group.members.length : ruleUsers.length || 1;
@@ -279,7 +279,8 @@ function resolveSelectValue(
   groups: Group[],
   users: User[],
 ) {
-  const groupInGroups = rule.group && groups.find(g => g.id === rule.group);
+  const groupInGroups =
+    rule.group_id && groups.find(g => g.id === rule.group_id);
   return {
     groups: groupInGroups ? [groupInGroups] : [],
     members: users.filter(u => rule.users.indexOf(u.id) !== -1),
