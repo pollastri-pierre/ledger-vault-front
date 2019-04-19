@@ -54,7 +54,7 @@ class InputField extends PureComponent<Props> {
       <TextField
         autoComplete="off"
         fullWidth
-        inputId={dataTest}
+        id={dataTest}
         value={value}
         placeholder={placeholder}
         onChange={this.handleChange}

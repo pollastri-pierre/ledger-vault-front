@@ -11,9 +11,13 @@ import { UnknownDomain, GenericError, InvalidDataDevice } from "utils/errors";
 import type { MemoryHistory } from "history";
 import { withRouter, Redirect } from "react-router";
 import { FaUser } from "react-icons/fa";
-import DialogButton from "components/buttons/DialogButton";
 import Alert from "components/utils/Alert";
-import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalFooterButton,
+} from "components/base/Modal";
 import Card from "components/base/Card";
 import CenteredLayout from "components/base/CenteredLayout";
 import TranslatedError from "components/TranslatedError";
@@ -205,14 +209,14 @@ class Welcome extends Component<Props, State> {
                 />
               </Box>
             ) : (
-              <DialogButton
-                highlight
-                disabled={!domain || isChecking}
-                right
-                onTouchTap={this.onSubmit}
+              <ModalFooterButton
+                data-test="continue_button"
+                color={colors.ocean}
+                onClick={this.onSubmit}
+                isDisabled={!domain || isChecking}
               >
                 <Text i18nKey="common:continue" />
-              </DialogButton>
+              </ModalFooterButton>
             )}
           </ModalFooter>
         </Card>
