@@ -143,7 +143,6 @@ class SelectInGroup extends PureComponent<Props> {
     return (
       <Select
         inputId="input_groups_users"
-        data-test={dataTest}
         components={customComponents}
         styles={colourStyles}
         value={resolvedValue}
