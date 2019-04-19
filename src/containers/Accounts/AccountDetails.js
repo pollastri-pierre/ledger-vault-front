@@ -3,13 +3,16 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
-import AccountQuery from "api/queries/AccountQuery";
+import { FaMoneyCheck } from "react-icons/fa";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
+
+import AccountQuery from "api/queries/AccountQuery";
 import Text from "components/base/Text";
+import { CardError } from "components/base/Card";
+import SpinnerCard from "components/spinners/SpinnerCard";
 import { createAndApprove } from "device/interactions/approveFlow";
 import Box from "components/base/Box";
-import { FaMoneyCheck } from "react-icons/fa";
 import { TabName } from "containers/Admin/Groups/GroupDetails";
 import colors from "shared/colors";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
@@ -20,7 +23,6 @@ import RequestActionButtons from "components/RequestActionButtons";
 
 import ApproveRequestButton from "components/ApproveRequestButton";
 import EntityLastRequest from "components/EntityLastRequest";
-import ModalLoading from "components/ModalLoading";
 
 import { ModalClose } from "components/base/Modal";
 import { hasPendingRequest } from "utils/entities";
@@ -167,12 +169,9 @@ class AccountDetails extends PureComponent<Props, State> {
   }
 }
 
-const RenderLoading = () => <ModalLoading height={100} width={100} />;
-const RenderError = () => <Text>Render error todo</Text>;
-
 export default connectData(AccountDetails, {
-  RenderError,
-  RenderLoading,
+  RenderError: CardError,
+  RenderLoading: SpinnerCard,
   queries: {
     account: AccountQuery,
   },

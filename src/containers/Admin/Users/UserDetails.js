@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import UserQuery from "api/queries/UserQuery";
-import Text from "components/base/Text";
+import { CardError } from "components/base/Card";
 import type { User } from "data/types";
 
 import SpinnerCard from "components/spinners/SpinnerCard";
@@ -23,12 +23,9 @@ class AdminDetails extends PureComponent<Props> {
   }
 }
 
-const RenderLoading = () => <SpinnerCard />;
-const RenderError = () => <Text>Render error todo</Text>;
-
 export default connectData(AdminDetails, {
-  RenderError,
-  RenderLoading,
+  RenderError: CardError,
+  RenderLoading: SpinnerCard,
   queries: {
     user: UserQuery,
   },
