@@ -28,7 +28,7 @@ export default () => (
       component={AccountCreationFlow}
     />
     <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
-    <ModalRoute path="*/new-transaction" component={TransactionCreationFlow} />
+    <ModalRoute path="*/send" component={TransactionCreationFlow} />
     <ModalRoute
       path="*/transactions/details/:transactionId/:tabIndex"
       component={TransactionDetails}
