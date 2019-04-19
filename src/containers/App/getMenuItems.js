@@ -101,7 +101,7 @@ export default function getMenuItems(props: Props) {
         key: "new-transaction",
         dataTest: "menuItem-new-transaction",
         label: <Trans i18nKey="menu:operator.send" />,
-        url: `${location.pathname}/new-transaction`,
+        url: `${location.pathname}/send`,
         Icon: SendIcon,
         isDisabled: !isCreateTransactionEnabled(
           accounts,
