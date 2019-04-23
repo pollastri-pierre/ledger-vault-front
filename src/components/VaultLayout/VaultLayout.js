@@ -140,14 +140,6 @@ const VaultLayoutFixedContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-
-  // define global typesettings
-  font-size: 13px;
-  line-height: 18px;
-
-  & * {
-    font: inherit;
-  }
 `;
 
 export default VaultLayout;

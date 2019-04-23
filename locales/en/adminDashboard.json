@@ -2,5 +2,6 @@
   "myRequestsTitle": "Admin tasks awaiting approval",
   "myRequestsDesc": "Tasks that require an action from me",
   "otherRequestsTitle": "All other admin tasks",
-  "otherRequestsDesc": "Tasks that do not require an action from me"
+  "otherRequestsDesc": "Tasks that do not require an action from me",
+  "warningEditAdminRules": "If you edit the quorum, all the pending requests will be blocked"
 }

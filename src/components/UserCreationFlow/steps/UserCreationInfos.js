@@ -7,6 +7,8 @@ import type { Translate } from "data/types";
 
 import { InputText, Label } from "components/base/form";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
+import InfoBox from "components/base/InfoBox";
 import type { UserCreationStepProps } from "../types";
 
 type Props = UserCreationStepProps & {
@@ -29,32 +31,39 @@ class UserCreationInfo extends PureComponent<Props> {
     const { username, userID } = payload;
 
     return (
-      <Box flow={15}>
-        <Box>
-          <Label>{t("inviteUser:form.labelUsername")}</Label>
-          <InputText
-            data-test="username"
-            value={username}
-            autoFocus
-            onChange={this.handleChangeUsername}
-            placeholder={t("inviteUser:form.placeholderUsername")}
-            fullWidth
-            maxLength={19}
-            onlyAscii
-          />
+      <Box grow>
+        <Box flow={15} grow>
+          <Box>
+            <Label>{t("inviteUser:form.labelUsername")}</Label>
+            <InputText
+              data-test="username"
+              value={username}
+              autoFocus
+              onChange={this.handleChangeUsername}
+              placeholder={t("inviteUser:form.placeholderUsername")}
+              fullWidth
+              maxLength={19}
+              onlyAscii
+            />
+          </Box>
+          <Box>
+            <Label>{t("inviteUser:form.labelUserID")}</Label>
+            <InputText
+              data-test="userID"
+              value={userID}
+              onChange={this.handleChangeUserID}
+              placeholder={t("inviteUser:form.placeholderUserID")}
+              fullWidth
+              maxLength={19}
+              onlyAscii
+            />
+          </Box>
         </Box>
-        <Box>
-          <Label>{t("inviteUser:form.labelUserID")}</Label>
-          <InputText
-            data-test="userID"
-            value={userID}
-            onChange={this.handleChangeUserID}
-            placeholder={t("inviteUser:form.placeholderUserID")}
-            fullWidth
-            maxLength={19}
-            onlyAscii
-          />
-        </Box>
+        {payload.role === "ADMIN" && (
+          <InfoBox type="warning" withIcon>
+            <Text i18nKey="inviteUser:steps.infos.warningAddAdmin" />
+          </InfoBox>
+        )}
       </Box>
     );
   }

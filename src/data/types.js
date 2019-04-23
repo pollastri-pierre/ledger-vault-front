@@ -20,6 +20,7 @@ export type Organization = {
   name: string,
   domain_name: string,
   workspace: string,
+  number_of_admins: number,
   quorum?: number,
 };
 
@@ -366,7 +367,8 @@ type RequestTargetType =
   | "ERC20_ACCOUNT"
   | "BITCOIN_LIKE_TRANSACTION"
   | "ETHEREUM_LIKE_TRANSACTION"
-  | "PERSON";
+  | "PERSON"
+  | "ORGANIZATION";
 
 type RequestCommon = {
   created_by: number,
@@ -381,6 +383,8 @@ type RequestCommon = {
   type: RequestActivityType,
   user?: RequestUser,
   group?: RequestGroup,
+  quorum?: number,
+  organization?: Organization,
   expiration_date?: Date,
   edit_data?: *,
 };
