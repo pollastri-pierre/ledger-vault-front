@@ -3,12 +3,19 @@
 import React, { PureComponent, Fragment } from "react";
 import Animated from "animated/lib/targets/react-dom";
 import Easing from "animated/lib/Easing";
-import styled from "styled-components";
 import { createPortal } from "react-dom";
 
-import Box, { px } from "components/base/Box";
-import Text from "components/base/Text";
-import ModalClose from "./ModalClose";
+import Box from "components/base/Box";
+import {
+  ModalClose,
+  ModalDialog,
+  ModalDialogInner,
+  ModalFooter,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+} from "./components";
+import type { ModalProps } from "./types";
 
 const modalsContainer = document.createElement("div");
 modalsContainer.classList.add("modals-container");
@@ -19,95 +26,12 @@ const animShowHide = {
   easing: Easing.bezier(0.3, 1.0, 0.5, 0.8),
 };
 
-const ModalDialog = styled(Box)`
-  min-height: 200px;
-`;
-
-const ModalDialogInner = styled(Box).attrs({ bg: "white" })`
-  position: relative;
-  margin-bottom: 40px;
-  margin-top: 40px;
-  border-radius: 4px;
-  flex-shrink: 0;
-  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.04),
-    0px 24px 38px 3px rgba(0, 0, 0, 0.04), 0px 9px 46px 8px rgba(0, 0, 0, 0.04);
-`;
-
-export const ModalBreadcrumb = styled(Box).attrs({
-  bg: "#f5f5f5",
-  pb: 100,
-  width: 100,
-  p: 20,
-})`
-  user-select: none;
-  flex-shrink: 0;
-  font-size: 11px;
-`;
-
-export const ModalFooter = styled(Box).attrs(p => ({
-  position: "absolute",
-  horizontal: true,
-  justify: p.justify || "flex-end",
-  align: p.align || "flex-end",
-  px: 15,
-}))`
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const ModalBodyRaw = styled(Box).attrs({
-  p: 40,
-  pb: 100,
-})`
-  height: ${p => ("height" in p ? px(p.height) : "auto")};
-`;
-
-export const ModalBody = ({
-  children,
-  onClose,
-  ...props
-}: {
-  children: React$Node,
-  onClose?: () => void,
-}) => (
-  <ModalBodyRaw width={500} {...props}>
-    {onClose ? <ModalClose onClick={onClose} /> : null}
-    {children}
-  </ModalBodyRaw>
-);
-
-export const ModalHeader = styled(Box).attrs({
-  mb: 30,
-})`
-  flex-shrink: 0;
-`;
-
-export const ModalTitle = ({
-  children,
-  ...props
-}: {
-  children: React$Node,
-}) => (
-  <Box mb={20} {...props}>
-    <Text header>{children}</Text>
-  </Box>
-);
-
-type Props = {
-  isOpened: boolean,
-  children: React$Node,
-  onHide?: () => void,
-  onClose?: () => void,
-  disableBackdropClick?: boolean,
-};
-
 type State = {
   isInDOM: boolean,
   animShowHide: Animated.Value,
 };
 
-class Modal extends PureComponent<Props, State> {
+class Modal extends PureComponent<ModalProps, State> {
   static defaultProps = {
     centered: true,
   };
@@ -117,7 +41,7 @@ class Modal extends PureComponent<Props, State> {
     animShowHide: new Animated.Value(0),
   };
 
-  static getDerivedStateFromProps = (props: Props, state: State) => ({
+  static getDerivedStateFromProps = (props: ModalProps, state: State) => ({
     isInDOM: state.isInDOM || props.isOpened,
   });
 
@@ -138,7 +62,7 @@ class Modal extends PureComponent<Props, State> {
     });
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: ModalProps) {
     const didOpened = !prevProps.isOpened && this.props.isOpened;
     const didClosed = prevProps.isOpened && !this.props.isOpened;
 
@@ -269,5 +193,6 @@ const BODY_WRAPPER_STYLE = {
 };
 
 export { default as ModalFooterButton } from "./ModalFooterButton";
-export { ModalClose };
+export { ModalClose, ModalFooter, ModalBody, ModalHeader, ModalTitle };
+export { default as ConfirmModal } from "./ConfirmModal";
 export default Modal;
