@@ -112,28 +112,31 @@ const AdminRulesCard = connectData(
   (props: AdminRulesCardProps) => {
     const { organization, onEdit, disabled, displayWarning } = props;
     return (
-      <Card height={300} width={400} flow={20}>
-        <CardTitle>Admin rules</CardTitle>
-        <Box grow align="center" justify="center">
-          <Text large>
-            {organization.quorum} approvals out of{" "}
-            {organization.number_of_admins} admins
-          </Text>
+      <Card height={300} width={400}>
+        <CardTitle noMargin>Admin rules</CardTitle>
+        <CardDesc i18nKey="adminDashboard:editAdminRules" />
+        <Box flow={20} grow>
+          <Box grow align="center" justify="center">
+            <Text large>
+              {organization.quorum} approvals out of{" "}
+              {organization.number_of_admins} admins
+            </Text>
+          </Box>
+          {displayWarning && (
+            <InfoBox type="warning">
+              <Text i18nKey="adminDashboard:warningEditAdminRules" />
+            </InfoBox>
+          )}
+          <Button
+            variant="filled"
+            type="submit"
+            IconLeft={MdEdit}
+            onClick={onEdit}
+            disabled={disabled}
+          >
+            Edit admin rules
+          </Button>
         </Box>
-        {displayWarning && (
-          <InfoBox type="warning">
-            <Text i18nKey="adminDashboard:warningEditAdminRules" />
-          </InfoBox>
-        )}
-        <Button
-          variant="filled"
-          type="submit"
-          IconLeft={MdEdit}
-          onClick={onEdit}
-          disabled={disabled}
-        >
-          Edit admin rules
-        </Button>
       </Card>
     );
   },

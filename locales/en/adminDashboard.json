@@ -3,5 +3,6 @@
   "myRequestsDesc": "Tasks that require an action from me",
   "otherRequestsTitle": "All other admin tasks",
   "otherRequestsDesc": "Tasks that do not require an action from me",
+  "editAdminRules": "Update your organization security scheme",
   "warningEditAdminRules": "If you edit the quorum, all the pending requests will be blocked"
 }
