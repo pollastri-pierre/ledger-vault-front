@@ -7,7 +7,8 @@
     "REVOKE_USER": "Revoke user",
     "CREATE_ADMIN": "Create Administrator",
     "CREATE_OPERATOR": "Create Operator",
-    "CREATE_ACCOUNT": "Create account"
+    "CREATE_ACCOUNT": "Create account",
+    "UPDATE_QUORUM": "Update quorum"
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
@@ -15,6 +16,7 @@
     "REVOKE_GROUP": "Approve group revocation",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve operator creation",
-    "REVOKE_USER": "Approve user revocation"
+    "REVOKE_USER": "Approve user revocation",
+    "UPDATE_QUORUM": "Approve quorum update"
   }
 }

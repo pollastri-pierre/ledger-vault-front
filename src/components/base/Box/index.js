@@ -6,6 +6,7 @@ import {
   color,
   borderRadius,
   width,
+  height,
   flex,
   flexWrap,
   alignSelf,
@@ -76,5 +77,6 @@ export default styled.div`
   ${space};
   ${flow};
   ${width};
+  ${height};
   ${ellipsis};
 `;

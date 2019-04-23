@@ -6,8 +6,10 @@ import AccountCreationFlow from "components/AccountCreationFlow";
 import GroupCreationFlow from "components/GroupCreationFlow";
 import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
+import OrganizationDetails from "containers/Admin/OrganizationDetails";
 import AccountDetails from "containers/Accounts/AccountDetails";
 import TransactionDetails from "components/transactions/TransactionModal";
+import EditAdminRules from "containers/Admin/Dashboard/EditAdminRules";
 import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
@@ -34,10 +36,15 @@ export default () => (
       component={TransactionDetails}
     />
     <ModalRoute
+      path="*/organization/details/:id"
+      component={OrganizationDetails}
+    />
+    <ModalRoute
       path="*/accounts/new"
       component={AccountCreationFlow}
       disableBackdropClick
     />
     <ModalRoute path="*/receive" component={ReceiveFlow} disableBackdropClick />
+    <ModalRoute path="*/admin-rules" component={EditAdminRules} />
   </Fragment>
 );
