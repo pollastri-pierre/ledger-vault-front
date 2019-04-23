@@ -7,6 +7,7 @@ import ApproveRequestButton from "components/ApproveRequestButton";
 import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import { TabName } from "containers/Admin/Groups/GroupDetails";
 import type { User } from "data/types";
@@ -93,7 +94,7 @@ class UserDetails extends PureComponent<Props, State> {
           {tabsIndex === 1 && <UserDetailsHistory user={user} />}
           {tabsIndex === 2 && <EntityLastRequest entity={user} />}
         </Box>
-        <Box px={10} style={styles.footer}>
+        <Box>
           {status !== "PENDING_REGISTRATION" && hasPendingRequest(user) && (
             <RequestActionButtons
               onSuccess={close}
@@ -102,7 +103,7 @@ class UserDetails extends PureComponent<Props, State> {
             />
           )}
           {status === "ACTIVE" && tabsIndex < 2 && !hasPendingRequest(user) && (
-            <Box style={{ width: 200 }}>
+            <Box px={15} align="flex-start">
               <ApproveRequestButton
                 interactions={createAndApprove}
                 onSuccess={close}
@@ -115,6 +116,23 @@ class UserDetails extends PureComponent<Props, State> {
                   type: "REVOKE_USER",
                 }}
                 buttonLabel={<Trans i18nKey="common:revoke" />}
+                withConfirm
+                confirmTitle={
+                  <Trans i18nKey="userDetails:revokeWarning.title" />
+                }
+                confirmLabel={
+                  <Trans i18nKey="userDetails:revokeWarning.confirm" />
+                }
+                confirmContent={
+                  <Box flow={15} align="flex-start">
+                    <Text i18nKey="userDetails:revokeWarning.content" />
+                    {user.role === "ADMIN" && (
+                      <InfoBox type="warning">
+                        <Text i18nKey="userDetails:revokeWarning.contentAdmin" />
+                      </InfoBox>
+                    )}
+                  </Box>
+                }
               />
             </Box>
           )}
@@ -131,9 +149,6 @@ const styles = {
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,
     userSelect: "none",
-  },
-  footer: {
-    padding: 0,
   },
   content: {
     userSelect: "none",

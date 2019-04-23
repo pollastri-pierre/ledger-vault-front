@@ -25,5 +25,8 @@
     "hsm_validation": "Name or members edition require HSM/Device validation",
     "no_edit": "Nothing changed.",
     "submit_edit": "Edit Group"
+  },
+  "revokeWarning": {
+    "content": "Once approved, group will be permanently removed."
   }
 }

@@ -12,6 +12,7 @@ const StyledModalFooterButton = styled.button.attrs(p => ({
   tabIndex: p.isDisabled || p.isLoading ? -1 : 0,
 }))`
   display: flex;
+  min-width: 50px;
   align-items: center;
   justify-content: center;
   font: inherit;
