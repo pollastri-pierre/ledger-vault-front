@@ -10,6 +10,7 @@ import OrganizationQuery from "api/queries/OrganizationQuery";
 import RequestQuery from "api/queries/RequestQuery";
 import connectData from "restlay/connectData";
 import ModalLoading from "components/ModalLoading";
+import Status from "components/Status";
 import { RichModalHeader } from "components/base/MultiStepsFlow";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -41,13 +42,19 @@ function OrganizationDetails({
           {request.quorum}/{request.organization.number_of_admins}
         </Text>
       </Box>
-      <RequestActionButtons
-        onSuccess={() => {
-          restlay.fetchQuery(new OrganizationQuery());
-          close();
-        }}
-        entity={{ last_request: request }}
-      />
+      {request.status !== "ABORTED" && request.status !== "APPROVED" ? (
+        <RequestActionButtons
+          onSuccess={() => {
+            restlay.fetchQuery(new OrganizationQuery());
+            close();
+          }}
+          entity={{ last_request: request }}
+        />
+      ) : (
+        <Box align="flex-end" height={35} pr={20}>
+          <Status status={request.status} />
+        </Box>
+      )}
     </Box>
   );
 }
