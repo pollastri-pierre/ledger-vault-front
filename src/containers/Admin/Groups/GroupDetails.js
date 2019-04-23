@@ -72,6 +72,7 @@ class GroupModal extends PureComponent<Props> {
                 variant="filled"
                 IconLeft={MdEdit}
                 customColor={colors.ocean}
+                data-test="group_edit_button"
               >
                 edit
               </Button>
