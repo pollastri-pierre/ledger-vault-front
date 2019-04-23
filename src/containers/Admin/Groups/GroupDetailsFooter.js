@@ -38,7 +38,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
           />
         )}
         {status === "ACTIVE" && tabsIndex < 2 && !hasPendingRequest(group) && (
-          <Box style={{ width: 200 }}>
+          <Box px={15} align="flex-start">
             <ApproveRequestButton
               interactions={createAndApprove}
               onSuccess={this.onSuccess}
