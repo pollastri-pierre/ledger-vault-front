@@ -8,5 +8,11 @@
   "expires": "Expires",
   "userID": "User ID",
   "date": "Create date",
-  "url": "Url"
+  "url": "Url",
+  "revokeWarning": {
+    "title": "Are you sure you want to revoke?",
+    "confirm": "Yes, revoke user",
+    "content": "The user will not have access to the platform anymore.",
+    "contentAdmin": "Additionally, it will block all pending requests."
+  }
 }

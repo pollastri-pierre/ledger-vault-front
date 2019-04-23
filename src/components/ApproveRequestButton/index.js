@@ -7,7 +7,7 @@ import { FaCheck, FaTrash } from "react-icons/fa";
 import Absolute from "components/base/Absolute";
 import DeviceInteraction from "components/DeviceInteraction";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
-import { ModalFooterButton } from "components/base/Modal";
+import { ModalFooterButton, ConfirmModal } from "components/base/Modal";
 
 import colors from "shared/colors";
 import type { GateError } from "data/types";
@@ -22,16 +22,25 @@ type Props = {
   onError: ?(Error | GateError | typeof NetworkError) => void,
   disabled: boolean,
   buttonLabel: React$Node,
+
+  // optional confirmation
+  withConfirm?: boolean,
+  confirmTitle?: React$Node,
+  confirmContent?: React$Node,
+  confirmLabel?: React$Node,
+  rejectLabel?: React$Node,
 };
 
 type State = {
   isInProgress: boolean,
+  isConfirmModalOpened: boolean,
   error: Error | GateError | typeof NetworkError | null,
 };
 
 class ApproveRequestButton extends PureComponent<Props, State> {
   state = {
     isInProgress: false,
+    isConfirmModalOpened: false,
     error: null,
   };
 
@@ -40,7 +49,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
   };
 
   onCreate = () => {
-    this.setState({ isInProgress: true });
+    this.setState({ isInProgress: true, isConfirmModalOpened: false });
   };
 
   onError = (err: Error | GateError) => {
@@ -49,8 +58,12 @@ class ApproveRequestButton extends PureComponent<Props, State> {
     onError && onError(err);
   };
 
+  openConfirmModal = () => this.setState({ isConfirmModalOpened: true });
+
+  closeConfirmModal = () => this.setState({ isConfirmModalOpened: false });
+
   render() {
-    const { isInProgress, error } = this.state;
+    const { isInProgress, error, isConfirmModalOpened } = this.state;
     const {
       interactions,
       onSuccess,
@@ -59,7 +72,13 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       isRevoke,
       color,
       buttonLabel,
+      withConfirm,
+      confirmContent,
+      confirmTitle,
+      confirmLabel,
+      rejectLabel,
     } = this.props;
+
     return (
       <Fragment>
         {error && <TriggerErrorNotification error={error} />}
@@ -76,7 +95,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
           <ModalFooterButton
             data-test="approve_button"
             color={color}
-            onClick={this.onCreate}
+            onClick={withConfirm ? this.openConfirmModal : this.onCreate}
             isDisabled={disabled}
           >
             {isRevoke ? (
@@ -86,6 +105,18 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             )}
             {buttonLabel}
           </ModalFooterButton>
+        )}
+        {withConfirm && confirmContent && (
+          <ConfirmModal
+            isOpened={isConfirmModalOpened}
+            onConfirm={this.onCreate}
+            onReject={this.closeConfirmModal}
+            title={confirmTitle}
+            confirmLabel={confirmLabel}
+            rejectLabel={rejectLabel}
+          >
+            {confirmContent}
+          </ConfirmModal>
         )}
       </Fragment>
     );

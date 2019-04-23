@@ -1,10 +1,11 @@
 // @flow
 import React, { PureComponent } from "react";
-import Box from "components/base/Box";
 import { Trans } from "react-i18next";
+
 import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/approveFlow";
-
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import RequestActionButtons from "components/RequestActionButtons";
 import ApproveRequestButton from "components/ApproveRequestButton";
 
@@ -50,6 +51,13 @@ class GroupDetailsFooter extends PureComponent<Props> {
                 type: "REVOKE_GROUP",
               }}
               buttonLabel={<Trans i18nKey="group:delete" />}
+              withConfirm
+              confirmLabel={<Trans i18nKey="group:delete" />}
+              confirmContent={
+                <Box flow={15} align="flex-start">
+                  <Text i18nKey="group:revokeWarning.content" />
+                </Box>
+              }
             />
           </Box>
         )}

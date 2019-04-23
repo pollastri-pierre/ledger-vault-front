@@ -22,7 +22,7 @@ class AdminDetails extends PureComponent<Props> {
   }
 }
 
-const RenderLoading = () => <ModalLoading height={100} width={100} />;
+const RenderLoading = () => <ModalLoading height={600} width={700} />;
 
 export default connectData(AdminDetails, {
   RenderError: CardError,
