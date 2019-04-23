@@ -13,7 +13,7 @@
   "approve": {
     "CREATE_GROUP": "Approve group creation",
     "EDIT_GROUP": "Approve group edition",
-    "REVOKE_GROUP": "Approve group revocation",
+    "REVOKE_GROUP": "Approve group deletion",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve operator creation",
     "REVOKE_USER": "Approve user revocation",

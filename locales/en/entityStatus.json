@@ -1,9 +1,13 @@
 {
   "ACTIVE": "Active",
   "ABORTED": "Aborted",
+  "REVOKED": "Revoked",
+  "DELETED": "Deleted",
   "APPROVED": "Approved",
   "PENDING": "Pending",
+  "CREATION_ABORTED": "Creation aborted",
   "AWAITING_APPROVAL": "Awaiting approval",
   "PENDING_APPROVAL": "Pending approval",
+  "PENDING_CREATION_APPROVAL": "Pending creation approval",
   "PENDING_REVOCATION": "Pending revocation"
 }

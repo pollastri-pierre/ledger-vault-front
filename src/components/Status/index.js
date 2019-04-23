@@ -13,6 +13,9 @@ import type { Translate } from "data/types";
 
 const BG_BY_STATUS = {
   ABORTED: opacity(colors.grenade, 0.1),
+  REVOKED: opacity(colors.grenade, 0.1),
+  DELETED: opacity(colors.grenade, 0.1),
+  CREATION_ABORTED: opacity(colors.grenade, 0.1),
   APPROVED: opacity(colors.green, 0.1),
   ACTIVE: opacity(colors.green, 0.1),
   PENDING: opacity(colors.ocean, 0.1),
@@ -27,6 +30,9 @@ const BG_BY_STATUS = {
 
 const COLOR_BY_STATUS = {
   ABORTED: colors.grenade,
+  REVOKED: colors.grenade,
+  DELETED: colors.grenade,
+  CREATION_ABORTED: colors.grenade,
   APPROVED: darken(colors.green, 0.2),
   ACTIVE: darken(colors.green, 0.2),
   PENDING: darken(colors.ocean, 0.5),

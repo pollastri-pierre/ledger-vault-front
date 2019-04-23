@@ -15,8 +15,13 @@ type Props = {
 class EntityStatus extends PureComponent<Props> {
   render() {
     const { status, me, request } = this.props;
-    if (!request || !request.approvals) {
+
+    if (!request) {
       return <Status status={status} />;
+    }
+
+    if (!request.approvals) {
+      return <Status status={remapStatus(status, request.target_type)} />;
     }
 
     const isWaitingForApproval =
@@ -29,6 +34,14 @@ class EntityStatus extends PureComponent<Props> {
       />
     );
   }
+}
+
+function remapStatus(status: string, targetType: string) {
+  // we want to display "deleted" instead of "revoked" for groups
+  if (targetType === "GROUP" && status === "REVOKED") {
+    return "DELETED";
+  }
+  return status;
 }
 
 export { EntityStatus };
