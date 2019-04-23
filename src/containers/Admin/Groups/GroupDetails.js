@@ -64,17 +64,19 @@ class GroupModal extends PureComponent<Props> {
             </Text>
           </TabName>
         ) : (
-          <Box>
-            <Button
-              size="tiny"
-              onClick={this.editGroup}
-              variant="filled"
-              IconLeft={MdEdit}
-              customColor={colors.ocean}
-            >
-              edit
-            </Button>
-          </Box>
+          group.status === "ACTIVE" && (
+            <Box>
+              <Button
+                size="tiny"
+                onClick={this.editGroup}
+                variant="filled"
+                IconLeft={MdEdit}
+                customColor={colors.ocean}
+              >
+                edit
+              </Button>
+            </Box>
+          )
         )}
       </Box>
     );

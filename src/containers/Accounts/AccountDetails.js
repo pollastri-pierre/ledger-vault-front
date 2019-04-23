@@ -71,17 +71,19 @@ class AccountDetails extends PureComponent<Props, State> {
             </Text>
           </TabName>
         ) : (
-          <Box>
-            <Button
-              size="tiny"
-              onClick={this.editAccount}
-              variant="filled"
-              IconLeft={MdEdit}
-              customColor={colors.ocean}
-            >
-              edit
-            </Button>
-          </Box>
+          account.status === "ACTIVE" && (
+            <Box>
+              <Button
+                size="tiny"
+                onClick={this.editAccount}
+                variant="filled"
+                IconLeft={MdEdit}
+                customColor={colors.ocean}
+              >
+                edit
+              </Button>
+            </Box>
+          )
         )}
       </Box>
     );
