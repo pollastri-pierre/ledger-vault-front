@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import Switch from "@material-ui/core/Switch";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import Collapse from "@material-ui/core/Collapse";
-import { logout } from "redux/modules/auth";
+import { logout, login } from "redux/modules/auth";
 import { connect } from "react-redux";
 
 import colors from "shared/colors";
@@ -108,7 +108,10 @@ class MockDevices extends PureComponent {
       });
       this.setState({ deviceId: id });
       if (this.state.autoLogout) {
-        this.props.logout();
+        await this.props.logout();
+        setTimeout(() => {
+          document.getElementsByTagName("button")[0].click();
+        }, 500);
       }
     } catch (e) {
       console.warn(e);
@@ -192,9 +195,10 @@ function Device({ id, color, isActive, onClick }) {
   );
 }
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout()),
-});
+const mapDispatchToProps = {
+  logout,
+  login,
+};
 export default connect(
   null,
   mapDispatchToProps,
