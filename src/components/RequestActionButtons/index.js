@@ -44,7 +44,7 @@ class RequestActionButtons extends PureComponent<Props> {
       >
         <Box flow={10} width="100%" align="center" justify="center">
           {entity.last_request && (
-            <Box horizontal flow={5}>
+            <Box horizontal flow={5} pb={20}>
               <Text bold i18nKey={`request:type.${entity.last_request.type}`} />
               <Text>request is pending.</Text>
             </Box>
