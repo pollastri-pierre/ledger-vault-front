@@ -37,6 +37,8 @@ class Users extends PureComponent<Props> {
       this.props.history.push(
         `tasks/transactions/details/${request.target_id}/0`,
       );
+    } else if (request.target_type === "ORGANIZATION") {
+      this.props.history.push(`tasks/organization/details/${request.id}`);
     }
   };
 
