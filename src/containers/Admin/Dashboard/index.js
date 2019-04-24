@@ -3,10 +3,10 @@
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
 import RequestsQuery from "api/queries/RequestsQuery";
-import { MdEdit } from "react-icons/md";
 import type { MemoryHistory } from "history";
 
 import RequestsTable from "components/Table/RequestsTable";
+import AdminRulesCard from "containers/Admin/Dashboard/AdminRulesCard";
 import type { Connection } from "restlay/ConnectionQuery";
 import Card, {
   CardLoading,
@@ -15,12 +15,8 @@ import Card, {
   CardDesc,
 } from "components/base/Card";
 import Box from "components/base/Box";
-import InfoBox from "components/base/InfoBox";
-import Text from "components/base/Text";
-import Button from "components/base/Button";
-import type { Request, User, Organization } from "data/types";
+import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
-import OrganizationQuery from "api/queries/OrganizationQuery";
 import { hasUserApprovedRequest } from "utils/request";
 
 type Props = {
@@ -100,54 +96,6 @@ class AdminDashboard extends PureComponent<Props> {
     );
   }
 }
-
-type AdminRulesCardProps = {
-  organization: Organization,
-  disabled: boolean,
-  displayWarning: boolean,
-  onEdit: () => void,
-};
-
-const AdminRulesCard = connectData(
-  (props: AdminRulesCardProps) => {
-    const { organization, onEdit, disabled, displayWarning } = props;
-    return (
-      <Card height={300} width={400}>
-        <CardTitle noMargin>Admin rules</CardTitle>
-        <CardDesc i18nKey="adminDashboard:editAdminRules" />
-        <Box flow={20} grow>
-          <Box grow align="center" justify="center">
-            <Text large>
-              {organization.quorum} approvals out of{" "}
-              {organization.number_of_admins} admins
-            </Text>
-          </Box>
-          {displayWarning && (
-            <InfoBox type="warning">
-              <Text i18nKey="adminDashboard:warningEditAdminRules" />
-            </InfoBox>
-          )}
-          <Button
-            variant="filled"
-            type="submit"
-            IconLeft={MdEdit}
-            onClick={onEdit}
-            disabled={disabled}
-          >
-            Edit admin rules
-          </Button>
-        </Box>
-      </Card>
-    );
-  },
-  {
-    RenderLoading: () => <CardLoading width={400} height={300} />,
-    RenderError: CardError,
-    queries: {
-      organization: OrganizationQuery,
-    },
-  },
-);
 
 export default connectData(withMe(AdminDashboard), {
   RenderLoading: CardLoading,
