@@ -2,6 +2,7 @@
 
 import React from "react";
 import { MdEdit } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
@@ -15,17 +16,19 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import Button from "components/base/Button";
-import type { Organization } from "data/types";
+import type { Organization, Request } from "data/types";
 
 type Props = {
   organization: Organization,
-  disabled: boolean,
-  displayWarning: boolean,
+  pendingRequests: Request[],
   onEdit: () => void,
 };
 
 const AdminRulesCard = (props: Props) => {
-  const { organization, onEdit, disabled, displayWarning } = props;
+  const { organization, onEdit, pendingRequests } = props;
+  const updateQuorumRequest = pendingRequests.filter(
+    r => r.type === "UPDATE_QUORUM",
+  )[0];
   return (
     <Card height={300} width={400}>
       <CardTitle noMargin>Admin rules</CardTitle>
@@ -37,7 +40,19 @@ const AdminRulesCard = (props: Props) => {
             {organization.number_of_admins} admins
           </Text>
         </Box>
-        {displayWarning && (
+        {!!updateQuorumRequest && (
+          <InfoBox type="warning">
+            <Text>
+              There is already a pending `update_quorum`{" "}
+              <Link
+                to={`dashboard/organization/details/${updateQuorumRequest.id}`}
+              >
+                request
+              </Link>{" "}
+            </Text>
+          </InfoBox>
+        )}
+        {pendingRequests.length > 0 && !updateQuorumRequest && (
           <InfoBox type="warning">
             <Text i18nKey="adminDashboard:warningEditAdminRules" />
           </InfoBox>
@@ -47,7 +62,7 @@ const AdminRulesCard = (props: Props) => {
           type="submit"
           IconLeft={MdEdit}
           onClick={onEdit}
-          disabled={disabled}
+          disabled={!!updateQuorumRequest}
         >
           Edit admin rules
         </Button>

@@ -67,9 +67,6 @@ class AdminDashboard extends PureComponent<Props> {
       hasUserApprovedRequest(request, me),
     );
 
-    const canUpdateAdminRules = requests.every(r => r.type !== "UPDATE_QUORUM");
-    const warningEditAdminRules = requests.length > 0;
-
     return (
       <Box flow={20}>
         <Box horizontal flow={20} align="flex-start">
@@ -80,8 +77,7 @@ class AdminDashboard extends PureComponent<Props> {
           </Card>
           <AdminRulesCard
             onEdit={this.handleOpenAdminRules}
-            disabled={!canUpdateAdminRules}
-            displayWarning={warningEditAdminRules}
+            pendingRequests={requests}
           />
         </Box>
         <Card>
