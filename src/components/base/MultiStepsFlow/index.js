@@ -294,7 +294,8 @@ const FooterButton = styled(ModalFooterButton)`
 
 export const CtaContainer = styled.div`
   position: absolute;
-  right: 20px;
+  padding-right: 15px;
+  right: 0;
   bottom: 0;
 `;
 

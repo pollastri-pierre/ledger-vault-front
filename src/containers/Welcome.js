@@ -198,7 +198,7 @@ class Welcome extends Component<Props, State> {
           </ModalBody>
           <ModalFooter>
             {this.state.organization && !this.state.error ? (
-              <Box mb={20}>
+              <Box mb={15}>
                 <DeviceInteraction
                   onSuccess={this.onFinishLogin}
                   interactions={loginFlow}
