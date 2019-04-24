@@ -11,8 +11,8 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import ModalLoading from "components/ModalLoading";
 import connectData from "restlay/connectData";
-import NumberChooser from "components/base/NumberChooser";
 import OrganizationQuery from "api/queries/OrganizationQuery";
+import ApprovalSlider from "containers/Onboarding/ApprovalSlider";
 import type { Organization } from "data/types";
 
 type Props = {
@@ -28,11 +28,10 @@ function EditAdminRules(props: Props) {
       <RichModalHeader title="Edit admin rules" Icon={MdEdit} />
       <Box p={20} flow={20} grow>
         <InfoBox type="info">Changing admin rule is very dangerous</InfoBox>
-        <NumberChooser
-          value={quorum}
+        <ApprovalSlider
+          number={quorum}
+          total={organization.number_of_admins}
           onChange={setQuorum}
-          // TODO organization admin #
-          max={3}
           min={2}
         />
       </Box>
