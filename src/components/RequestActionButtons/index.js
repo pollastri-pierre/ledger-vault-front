@@ -42,7 +42,7 @@ class RequestActionButtons extends PureComponent<Props> {
           borderBottomRightRadius: 2,
         }}
       >
-        <Box flow={10} width="100%" align="center" justify="center">
+        <Box flow={10} align="center" justify="center">
           {entity.last_request && (
             <Box horizontal flow={5} pb={20}>
               <Text bold i18nKey={`request:type.${entity.last_request.type}`} />
@@ -61,7 +61,6 @@ class RequestActionButtons extends PureComponent<Props> {
               width="100%"
               justify="space-between"
               px={15}
-              position="relative"
             >
               <AbortRequestButton
                 requestID={entity.last_request && entity.last_request.id}
