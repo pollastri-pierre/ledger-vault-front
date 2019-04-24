@@ -84,7 +84,6 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=approve_button]").click();
     cy.wait(1500);
     //successfull_message();
-    //cy.get("[data-test=close]").click();
   });
 
   it("Edit Group desc", () => {
@@ -163,10 +162,6 @@ describe("Tests Creation Account", function() {
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
-
-    //  cy.contains("Edit group").click();
-    //  cy.wait(1500);
-    //  cy.get("[data-test=approve_button]").click();
   });
 
   it("Delete Group", () => {
