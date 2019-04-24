@@ -57,11 +57,13 @@ const ApprovalSlider = ({
   classes,
   number,
   total,
+  min,
   onChange,
   t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   number: number,
+  min?: number,
   total: number,
   onChange: number => void,
   t: Translate,
@@ -98,11 +100,25 @@ const ApprovalSlider = ({
         })}
     </div>
     <div className={classes.flex}>
-      <span className={classes.require} onClick={() => onChange(number - 1)}>
+      <span
+        className={classes.require}
+        onClick={() => {
+          if (!min || number - 1 >= min) {
+            onChange(number - 1);
+          }
+        }}
+      >
         <Arrow className={classes.left} />
         {t("onboarding:administrators_scheme.require_less")}
       </span>
-      <span className={classes.require} onClick={() => onChange(number + 1)}>
+      <span
+        className={classes.require}
+        onClick={() => {
+          if (number + 1 <= total) {
+            onChange(number + 1);
+          }
+        }}
+      >
         {t("onboarding:administrators_scheme.require_more")}
         <Arrow className={classes.right} />
       </span>
