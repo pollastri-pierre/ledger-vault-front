@@ -15,7 +15,7 @@ class GroupDetailsDetails extends PureComponent<Props> {
   render() {
     const { group } = this.props;
     return (
-      <Box pt={20}>
+      <Box>
         <LineRow label={<Trans i18nKey="group:details.name" />}>
           {group.name}
         </LineRow>

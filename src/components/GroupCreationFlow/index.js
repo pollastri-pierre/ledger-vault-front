@@ -78,7 +78,6 @@ const steps = [
             onClose();
           }}
           disabled={!hasEditOccured(payload, initialPayload)}
-          onError={null}
           additionalFields={{
             type: isEditMode ? "EDIT_GROUP" : "CREATE_GROUP",
             data,

@@ -26,10 +26,11 @@ const loader = <CircularProgress size={15} />;
 const errorIcon = <MdError size={15} color={colors.grenade} />;
 
 const Container = styled(Box).attrs({
-  p: 20,
+  px: 20,
   horizontal: true,
   align: "center",
 })`
+  height: 60px;
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
   position: relative;

@@ -41,7 +41,6 @@ function EditAdminRules(props: Props) {
           disabled={quorum === organization.quorum}
           additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
           onSuccess={close}
-          onError={null}
           buttonLabel="Edit"
         />
       </CtaContainer>

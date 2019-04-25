@@ -18,8 +18,8 @@ type Props = {
   color?: string,
   additionalFields: Object,
   onSuccess: Function,
-  onError: ?(Error | GateError | typeof NetworkError) => void,
-  disabled: boolean,
+  onError?: (Error | GateError | typeof NetworkError) => void,
+  disabled?: boolean,
   buttonLabel: React$Node,
 
   // optional confirmation

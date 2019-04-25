@@ -100,7 +100,6 @@ const steps = [
             onClose();
           }}
           disabled={false}
-          onError={null}
           additionalFields={{
             type: isEditMode ? "EDIT_ACCOUNT" : "CREATE_ACCOUNT",
             data,

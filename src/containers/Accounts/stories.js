@@ -2,11 +2,13 @@
 
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import schema from "data/schema";
+import StoryRouter from "storybook-react-router";
+import keyBy from "lodash/keyBy";
 import { denormalize } from "normalizr-gre";
+
+import schema from "data/schema";
 import { delay } from "utils/promise";
 import RestlayProvider from "restlay/RestlayProvider";
-import keyBy from "lodash/keyBy";
 import Modal from "components/base/Modal";
 import AccountDetails from "containers/Accounts/AccountDetails";
 
@@ -26,18 +28,23 @@ const fakeNetwork = async url => {
       });
       account.tx_approval_steps[i].group = a;
     });
-    return {
+    const acc = {
       ...account,
       last_request: requests.find(r => r.type === "CREATE_ACCOUNT"),
     };
+    acc.last_request.status = "APPROVED";
+    acc.status = "ACTIVE";
+    return acc;
   }
   throw new Error("invalid url");
 };
 
-storiesOf("entities/Account", module).add("Account details", () => (
-  <RestlayProvider network={fakeNetwork}>
-    <Modal transparent isOpened>
-      <AccountDetails match={{ params: { accountId: 1 } }} history={[]} />
-    </Modal>
-  </RestlayProvider>
-));
+storiesOf("entities/Account", module)
+  .addDecorator(StoryRouter())
+  .add("Account details", () => (
+    <RestlayProvider network={fakeNetwork}>
+      <Modal transparent isOpened>
+        <AccountDetails match={{ params: { accountId: 1 } }} history={[]} />
+      </Modal>
+    </RestlayProvider>
+  ));

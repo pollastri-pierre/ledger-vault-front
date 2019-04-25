@@ -1,0 +1,10 @@
+{
+  "edit": "Edit",
+  "tabs": {
+    "overview": "Overview",
+    "operationRules": "Operation rules",
+    "history": "History",
+    "accounts": "Accounts",
+    "lastRequest": "Last request"
+  }
+}

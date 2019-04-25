@@ -69,7 +69,6 @@ const steps = [
             onClose();
           }}
           disabled={false}
-          onError={null}
           additionalFields={{ type: "CREATE_TRANSACTION", data }}
           buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
         />

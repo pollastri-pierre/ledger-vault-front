@@ -52,7 +52,9 @@ export const BreadcrumbExample = () => (
   </BreadcrumbContainer>
 );
 
-storiesOf("components/base", module).add("Breadcrumb", () => <BreadcrumbExample />);
+storiesOf("components/base", module).add("Breadcrumb", () => (
+  <BreadcrumbExample />
+));
 
 const FakeURL = withRouter(({ location }) => <div>{location.pathname}</div>);
 

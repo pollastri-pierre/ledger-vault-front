@@ -109,7 +109,6 @@ class UserDetails extends PureComponent<Props, State> {
                 interactions={createAndApprove}
                 onSuccess={close}
                 color={colors.grenade}
-                onError={null}
                 isRevoke
                 disabled={false}
                 additionalFields={{

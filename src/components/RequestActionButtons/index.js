@@ -5,6 +5,7 @@ import { Trans } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
 
 import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import { approveFlow } from "device/interactions/approveFlow";
 import AbortRequestButton from "components/AbortRequestButton";
@@ -33,60 +34,46 @@ class RequestActionButtons extends PureComponent<Props> {
       hasUserApprovedRequest(entity.last_request, me);
 
     return (
-      <Box
-        grow
-        pt={20}
-        style={{
-          background: "#f5f5f5",
-          borderBottomLeftRadius: 2,
-          borderBottomRightRadius: 2,
-        }}
-      >
-        <Box flow={10} align="center" justify="center">
-          {entity.last_request && (
-            <Box horizontal flow={5} pb={20}>
+      <Box grow pt={10} flow={20} align="center" justify="center">
+        {entity.last_request && (
+          <InfoBox withIcon type="info">
+            <Box horizontal flow={5}>
               <Text bold i18nKey={`request:type.${entity.last_request.type}`} />
               <Text>request is pending.</Text>
             </Box>
-          )}
-          {hasUserApproved ? (
-            <Box horizontal align="center" flow={10} pb={20}>
-              {checkedIcon}
-              <Text bold>You already approved the request.</Text>
-            </Box>
-          ) : (
-            <Box
-              horizontal
-              align="center"
-              width="100%"
-              justify="space-between"
-              px={15}
-            >
-              <AbortRequestButton
-                requestID={entity.last_request && entity.last_request.id}
-                onSuccess={onSuccess}
-              />
-              <ApproveRequestButton
-                interactions={approveFlow}
-                onSuccess={onSuccess}
-                onError={onError}
-                additionalFields={{
-                  request_id: entity.last_request && entity.last_request.id,
-                }}
-                disabled={false}
-                buttonLabel={
-                  <Trans
-                    i18nKey={
-                      entity.last_request
-                        ? `request:approve.${entity.last_request.type}`
-                        : `common:approve`
-                    }
-                  />
-                }
-              />
-            </Box>
-          )}
-        </Box>
+          </InfoBox>
+        )}
+        {hasUserApproved ? (
+          <Box horizontal align="center" flow={10} pb={20}>
+            {checkedIcon}
+            <Text bold>You already approved the request.</Text>
+          </Box>
+        ) : (
+          <Box horizontal align="center" width="100%" justify="space-between">
+            <AbortRequestButton
+              requestID={entity.last_request && entity.last_request.id}
+              onSuccess={onSuccess}
+            />
+            <ApproveRequestButton
+              interactions={approveFlow}
+              onSuccess={onSuccess}
+              onError={onError}
+              additionalFields={{
+                request_id: entity.last_request && entity.last_request.id,
+              }}
+              disabled={false}
+              buttonLabel={
+                <Trans
+                  i18nKey={
+                    entity.last_request
+                      ? `request:approve.${entity.last_request.type}`
+                      : `common:approve`
+                  }
+                />
+              }
+            />
+          </Box>
+        )}
       </Box>
     );
   }

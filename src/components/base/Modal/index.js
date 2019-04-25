@@ -14,6 +14,10 @@ import {
   ModalBody,
   ModalHeader,
   ModalTitle,
+  RichModalHeader,
+  RichModalFooter,
+  RichModalTabsContainer,
+  RichModalTab,
 } from "./components";
 import type { ModalProps } from "./types";
 
@@ -196,6 +200,16 @@ const BODY_WRAPPER_STYLE = {
 };
 
 export { default as ModalFooterButton } from "./ModalFooterButton";
-export { ModalClose, ModalFooter, ModalBody, ModalHeader, ModalTitle };
+export {
+  ModalClose,
+  ModalFooter,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  RichModalHeader,
+  RichModalFooter,
+  RichModalTabsContainer,
+  RichModalTab,
+};
 export { default as ConfirmModal } from "./ConfirmModal";
 export default Modal;
