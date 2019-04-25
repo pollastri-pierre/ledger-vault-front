@@ -44,13 +44,15 @@ const connectedBreadcrumbConfig = [
   },
 ];
 
-storiesOf("base", module).add("Breadcrumb", () => (
+export const BreadcrumbExample = () => (
   <BreadcrumbContainer>
     <Breadcrumb Icon={FaUsers}>Accounts</Breadcrumb>
     <Breadcrumb Icon={CurIcon}>Bitcoin 1</Breadcrumb>
     <Breadcrumb>Account settings</Breadcrumb>
   </BreadcrumbContainer>
-));
+);
+
+storiesOf("base", module).add("Breadcrumb", () => <BreadcrumbExample />);
 
 const FakeURL = withRouter(({ location }) => <div>{location.pathname}</div>);
 

@@ -7,11 +7,12 @@ import { withRouter, matchPath } from "react-router";
 
 import { Breadcrumb, BreadcrumbContainer } from "components/base/Breadcrumb";
 
-type ConfigNode<T> = [
-  string,
-  React$Node | (T => React$Node),
-  ?(ConfigNode<T>[]),
-];
+type ConfigNode<T> = {
+  path: string,
+  render: React$Node | (T => React$Node),
+  exact?: boolean,
+  children?: ConfigNode<T>[],
+};
 
 type Props<T> = {
   location: Location,
@@ -26,18 +27,25 @@ function ConnectedBreadcrumb<T>(props: Props<T>) {
   const unwrap = node => {
     const { path: _path, render, children, exact } = node;
     const path = `${prefix}${_path}`;
-    const isFn = typeof render === "function";
     const match = path ? matchPath(location.pathname, { path, exact }) : true;
-    if (!match) return null;
-    const content = isFn ? render({ match, ...additionalProps }) : render;
+    if (!match) return [];
+    const content =
+      typeof render === "function"
+        ? render({ match, ...additionalProps })
+        : render;
     let c;
-    (children || []).find(node => (c = unwrap(node)));
+    (children || []).find(node => {
+      const unwrapped = unwrap(node);
+      if (unwrapped.length) {
+        c = unwrapped;
+      }
+      return c;
+    });
     const link = match.url || path;
     return [{ key: path, content, link }, ...(c || [])];
   };
 
   const children = config
-    // $FlowFixMe flow is lost
     .reduce((acc, node) => [...acc, ...unwrap(node)], [])
     .filter(Boolean)
     .map((el, i, arr) => {

@@ -8,6 +8,7 @@ import RestlayProvider from "restlay/RestlayProvider";
 import { NotifComponent } from "containers/Admin/Dashboard/PendingBadge";
 import VaultLayout from "components/VaultLayout";
 import { AccountsSearch, mockNetwork } from "components/DataSearch/stories";
+import { BreadcrumbExample } from "components/base/Breadcrumb/stories";
 
 const fakeUser = {
   username: "User1",
@@ -80,7 +81,12 @@ class Wrapper extends React.Component {
     const { items } = this.state;
     return (
       <RestlayProvider network={mockNetwork}>
-        <VaultLayout menuItems={items} user={fakeUser} match={mockMatch}>
+        <VaultLayout
+          menuItems={items}
+          user={fakeUser}
+          match={mockMatch}
+          BreadcrumbComponent={BreadcrumbExample}
+        >
           <AccountsSearch />
         </VaultLayout>
       </RestlayProvider>
