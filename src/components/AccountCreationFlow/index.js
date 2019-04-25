@@ -91,7 +91,7 @@ const steps = [
       onClose: Function,
       isEditMode?: boolean,
     }) => {
-      const data = serializePayload(payload);
+      const data = serializePayload(payload, isEditMode);
       return (
         <ApproveRequestButton
           interactions={createAndApproveWithChallenge}
@@ -239,6 +239,7 @@ const deserialize: Account => AccountCreationPayload = account => {
         }));
 
   return {
+    id: account.id,
     name: account.name,
     rules,
     currency:
@@ -252,7 +253,10 @@ const deserialize: Account => AccountCreationPayload = account => {
         : null,
   };
 };
-function serializePayload(payload: AccountCreationPayload) {
+function serializePayload(
+  payload: AccountCreationPayload,
+  isEditMode: ?boolean,
+) {
   const data: Object = {
     name: payload.name,
     governance_rules: {
@@ -278,6 +282,13 @@ function serializePayload(payload: AccountCreationPayload) {
       erc20,
       parent_account: payload.parentAccount,
     });
+  }
+
+  if (isEditMode) {
+    return {
+      account_id: payload.id,
+      edit_data: data,
+    };
   }
 
   return {
