@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 
+import colors, { opacity } from "shared/colors";
 import { vaultLayoutConfig } from "styles/theme";
 import type { MenuItem } from "./types";
 
@@ -129,7 +130,7 @@ const Notif = ({
           inputRange: [0, 1, 2],
           outputRange: [
             vaultLayoutConfig.MENU_WIDTH - 30,
-            vaultLayoutConfig.COLLAPSED_MENU_WIDTH - 15,
+            vaultLayoutConfig.COLLAPSED_MENU_WIDTH - 10,
             vaultLayoutConfig.MENU_WIDTH - 30,
           ],
         }),
@@ -137,7 +138,7 @@ const Notif = ({
       {
         translateY: globalAnimation.interpolate({
           inputRange: [0, 1, 2],
-          outputRange: [10, 0, 10],
+          outputRange: [10, -5, 10],
         }),
       },
     ],
@@ -148,31 +149,34 @@ const Notif = ({
 const VaultLayoutMenuItem = styled.div`
   position: relative;
   height: 40px;
-  opacity: ${p => (p.isDisabled ? "0.6" : "1")};
 
-  pointer-events: ${p =>
-    p.isDisabled || ((p.isMenuFloating && !p.isMenuOpened) || p.isActive)
-      ? "none"
-      : "auto"};
+  ${({ isActive, isMenuOpened, isDisabled, isMenuFloating }) => {
+    const isInteractive =
+      !isDisabled && !isActive && (isMenuOpened || !isMenuFloating);
+    const isIcon = !isMenuOpened;
 
-  font-weight: ${p => (p.isActive ? "bold" : "normal")};
-  &:hover {
-    color: #333;
-    cursor: pointer;
-    box-shadow: ${p =>
-      (p.isMenuFloating && p.isMenuOpened) || !p.isMenuFloating
-        ? `${vaultLayoutConfig.MENU_HINT_COLOR_HOVER} 4px 0 0 inset`
-        : "none"};
-  }
-  background-color: ${p =>
-    p.isActive && !(p.isMenuFloating && !p.isMenuOpened)
-      ? "#efefef"
-      : "inherit"};
-  box-shadow: ${p =>
-    p.isActive && !(p.isMenuFloating && !p.isMenuOpened)
-      ? `${vaultLayoutConfig.MENU_HINT_COLOR} 4px 0 0 inset !important`
-      : "none"};
-  color: ${p => (p.isActive ? "#333" : "#777")};
+    const bg =
+      (!isIcon || !isMenuFloating) && isActive
+        ? opacity(colors.blue, 0.05)
+        : "inherit";
+    const color = isActive ? colors.blue : "#777";
+
+    return `
+      color: ${color};
+      background-color: ${bg};
+      opacity: ${isDisabled ? "0.6" : "1"};
+      pointer-events: ${isInteractive ? "auto" : "none"};
+
+      &:hover {
+        color: ${isActive ? colors.blue : "#333"};
+        cursor: pointer;
+      }
+
+      &:active {
+        background-color: ${isIcon ? "inherit" : "rgba(0, 0, 0, 0.02)"};
+      }
+    `;
+  }}
 `;
 
 const VaultLayoutIconContainer = styled.div`
@@ -185,20 +189,15 @@ const VaultLayoutIconContainer = styled.div`
   pointer-events: ${p => (p.isDisabled || p.isActive ? "none" : "auto")};
   background-color: ${p =>
     p.isActive && (p.isMenuFloating && !p.isMenuOpened)
-      ? "#efefef"
+      ? opacity(colors.blue, 0.05)
       : "inherit"};
   &:hover {
     cursor: ${p => (p.isMenuOpened ? "inherit" : "pointer")};
-    box-shadow: ${p =>
-      p.isMenuFloating && !p.isMenuOpened
-        ? `${vaultLayoutConfig.MENU_HINT_COLOR_HOVER} 4px 0 0 inset`
-        : "none"};
   }
-
-  box-shadow: ${p =>
-    p.isMenuFloating && p.isActive
-      ? `${vaultLayoutConfig.MENU_HINT_COLOR} 4px 0 0 inset !important`
-      : "none"};
+  &:active {
+    background-color: ${p =>
+      p.isMenuOpened ? "inherit" : "rgba(0, 0, 0, 0.02)"};
+  }
 `;
 
 const styles = {

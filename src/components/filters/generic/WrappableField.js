@@ -117,7 +117,7 @@ class WrappableField extends Component<Props, State> {
           isOpened={isOpened}
           isActive={isActive}
         >
-          <Text small>
+          <Text>
             {label}
             {isActive ? ": " : ""}
           </Text>

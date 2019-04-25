@@ -10,8 +10,8 @@ const VaultLayoutMainView = styled.div`
   z-index: 2;
   flex-grow: 1;
 
-  padding: 20px;
-  background-color: ${vaultLayoutConfig.MAIN_VIEW_BG};
+  padding: 0 20px 20px 20px;
+
   // NOTE: to discuss which behavior we want for the content
   // overflow: scroll;
   padding-left: ${vaultLayoutConfig.MENU_WIDTH + 20}px;
@@ -22,7 +22,7 @@ const VaultLayoutMainView = styled.div`
 `;
 
 const Offset = styled.div`
-  margin-top: ${-vaultLayoutConfig.MAIN_VIEW_OFFSET}px;
+  padding-top: 20px;
 `;
 
 type Props = {

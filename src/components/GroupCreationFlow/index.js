@@ -39,10 +39,11 @@ const steps = [
     Step: GroupCreationInfos,
   },
   {
-    id: "chooseMemgers",
+    id: "chooseMembers",
     name: <Trans i18nKey="group:create.members" />,
     Step: GroupCreationMembers,
-    requirements: (payload: GroupCreationPayload) => payload.description !== "",
+    requirements: (payload: GroupCreationPayload) =>
+      payload.description !== "" && payload.name !== "",
   },
   {
     id: "confirm",

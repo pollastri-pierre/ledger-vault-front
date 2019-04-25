@@ -89,7 +89,7 @@ const customStyles = {
   }),
   valueContainer: (styles, state) => ({
     ...styles,
-    padding: state.hasValue && state.isMulti ? "5px 5px 4px 5px" : "5px 8px",
+    padding: state.hasValue && state.isMulti ? "4px 5px" : "5px 8px",
   }),
   menu: styles => ({
     ...styles,

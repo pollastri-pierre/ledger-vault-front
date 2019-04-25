@@ -7,17 +7,11 @@ import { FaHome, FaList, FaUser, FaUsers } from "react-icons/fa";
 import RestlayProvider from "restlay/RestlayProvider";
 import { NotifComponent } from "containers/Admin/Dashboard/PendingBadge";
 import VaultLayout from "components/VaultLayout";
-import Box from "components/base/Box";
-import Card from "components/base/Card";
+import { AccountsSearch, mockNetwork } from "components/DataSearch/stories";
+import { BreadcrumbExample } from "components/base/Breadcrumb/stories";
 
 const fakeUser = {
   username: "User1",
-};
-
-const mockNetwork = async url => {
-  if (url === "/activity/me") {
-    return [];
-  }
 };
 
 const mockMatch = {
@@ -87,13 +81,13 @@ class Wrapper extends React.Component {
     const { items } = this.state;
     return (
       <RestlayProvider network={mockNetwork}>
-        <VaultLayout menuItems={items} user={fakeUser} match={mockMatch}>
-          <Box horizontal flow={20} align="flex-start">
-            <Card grow>
-              <div style={{ height: 400 }}>lorem ipsum</div>
-            </Card>
-            <Card width={250}>this is a card</Card>
-          </Box>
+        <VaultLayout
+          menuItems={items}
+          user={fakeUser}
+          match={mockMatch}
+          BreadcrumbComponent={BreadcrumbExample}
+        >
+          <AccountsSearch />
         </VaultLayout>
       </RestlayProvider>
     );

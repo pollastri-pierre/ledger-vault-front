@@ -27,14 +27,14 @@ function Content({ match, me }: { match: Match, me: User }) {
       <Route path={`${u}/admin/tasks`} component={AdminTasks} />
       <Route path={`${u}/admin/groups`} component={AdminGroups} />
       <Route path={`${u}/admin/users`} component={Users} />
+      <Route path={`${u}/admin/accounts/:id`} component={AccountView} />
       <Route path={`${u}/admin/accounts`} component={Accounts} />
-      <Route path={`${u}/admin/account/:id`} component={AccountView} />
       <Route path={`${u}/admin/transactions`} component={Transactions} />
 
       <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
       <Route path={`${u}/operator/transactions`} component={Transactions} />
+      <Route path={`${u}/operator/accounts/:id`} component={AccountView} />
       <Route path={`${u}/operator/accounts`} component={Accounts} />
-      <Route path={`${u}/operator/account/:id`} component={AccountView} />
 
       <Route exact path={`${u}`} render={() => <Redirect to={defaultUrl} />} />
     </Switch>

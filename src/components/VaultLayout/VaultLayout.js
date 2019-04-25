@@ -22,6 +22,7 @@ type Props = {
   user: User,
   onLogout: () => void,
   match: Match,
+  BreadcrumbComponent: React$ComponentType<*>,
 };
 
 type State = {
@@ -93,12 +94,19 @@ class VaultLayout extends Component<Props, State> {
     this.setState(({ isMenuOpened }) => ({ isMenuOpened: !isMenuOpened }));
     Animated.spring(globalAnimation, {
       toValue: isMenuOpened ? 1 : 2,
-      friction: 8,
+      friction: 10,
     }).start();
   };
 
   render() {
-    const { children, menuItems, user, onLogout, match } = this.props;
+    const {
+      children,
+      menuItems,
+      user,
+      onLogout,
+      match,
+      BreadcrumbComponent,
+    } = this.props;
     const { isMenuOpened, isMenuFloating, globalAnimation } = this.state;
 
     return (
@@ -116,9 +124,8 @@ class VaultLayout extends Component<Props, State> {
           match={match}
           user={user}
           onLogout={onLogout}
-          isMenuOpened={isMenuOpened}
-          isMenuFloating={isMenuFloating}
           globalAnimation={globalAnimation}
+          BreadcrumbComponent={BreadcrumbComponent}
         />
         <VaultLayoutMainView isMenuOpened={isMenuOpened}>
           {children}
@@ -137,9 +144,11 @@ const VaultLayoutFixedContainer = styled.div`
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  z-index: -1;
 
   display: flex;
   flex-direction: column;
+  background-color: #fafafa;
 `;
 
 export default VaultLayout;
