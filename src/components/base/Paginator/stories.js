@@ -4,7 +4,7 @@ import Paginator from "components/base/Paginator";
 import { number } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
 
-storiesOf("others", module).add("Paginator", () => {
+storiesOf("components", module).add("Paginator", () => {
   const page = number("page", 2);
   const total = number("total", 10);
   const pageSize = number("pageSize", 3);

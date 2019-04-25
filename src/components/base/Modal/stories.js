@@ -19,7 +19,7 @@ const CustomBreadcrumb = () => (
   </div>
 );
 
-storiesOf("other/modals", module)
+storiesOf("components/base/modals", module)
   .add("Modal", () => (
     <Modal
       isOpened={boolean("isOpened", true)}

@@ -17,7 +17,7 @@ const users = genUsers(10);
 const accounts = genAccounts(1, { users });
 
 const fakeNetwork = async url => {
-  await delay(1e3);
+  await delay(500);
   if (url.startsWith("/accounts")) {
     const account = accounts[0];
     account.tx_approval_steps.forEach((rule, i) => {
@@ -34,7 +34,7 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("Entity-Request modals", module).add("Account", () => (
+storiesOf("entities/Account", module).add("Account details", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
       <AccountDetails match={{ params: { accountId: 1 } }} history={[]} />

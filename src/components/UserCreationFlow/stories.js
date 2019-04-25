@@ -16,7 +16,7 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("flows", module).add("User creation", () => (
+storiesOf("entities/User", module).add("User creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal isOpened>
       <UserCreationFlow />

@@ -42,7 +42,7 @@ const fakeNetwork = async url => {
   throw new Error(`invalid url ${url}`);
 };
 
-storiesOf("flows", module).add("Transaction creation", () => (
+storiesOf("entities/Transaction", module).add("Send", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
       <TransactionCreationFlow />

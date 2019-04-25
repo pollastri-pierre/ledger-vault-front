@@ -80,10 +80,17 @@ const TransactionsSearchStory = wrapComponent(
 const GroupsSearchStory = wrapComponent(GroupsSearch, "groups");
 const AccountsSearchStory = wrapComponent(AccountsSearch, "accounts");
 
-storiesOf("search", module)
-  .add("Search transactions", () => <TransactionsSearchStory />)
-  .add("Search groups", () => <GroupsSearchStory />)
-  .add("Search accounts", () => <AccountsSearchStory />);
+storiesOf("entities/Transaction", module).add("Transactions search", () => (
+  <TransactionsSearchStory />
+));
+
+storiesOf("entities/Group", module).add("Groups search", () => (
+  <GroupsSearchStory />
+));
+
+storiesOf("entities/Account", module).add("Accounts search", () => (
+  <AccountsSearchStory />
+));
 
 // --------------------------------- story helpers
 

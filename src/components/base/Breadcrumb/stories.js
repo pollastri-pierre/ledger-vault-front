@@ -52,11 +52,11 @@ export const BreadcrumbExample = () => (
   </BreadcrumbContainer>
 );
 
-storiesOf("base", module).add("Breadcrumb", () => <BreadcrumbExample />);
+storiesOf("components/base", module).add("Breadcrumb", () => <BreadcrumbExample />);
 
 const FakeURL = withRouter(({ location }) => <div>{location.pathname}</div>);
 
-storiesOf("other", module)
+storiesOf("components", module)
   .addDecorator(StoryRouter())
   .add("ConnectedBreadcrumb", () => (
     <Box flow={40}>

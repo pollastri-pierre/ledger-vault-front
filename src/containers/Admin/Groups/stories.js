@@ -44,7 +44,7 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("flows", module).add("Group Creation", () => (
+storiesOf("entities/Group", module).add("Group creation", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: {} }} />
@@ -52,7 +52,7 @@ storiesOf("flows", module).add("Group Creation", () => (
   </RestlayProvider>
 ));
 
-storiesOf("flows", module).add("Group Edit", () => (
+storiesOf("entities/Group", module).add("Group edit", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: { groupId: 1 } }} />
@@ -83,7 +83,7 @@ class WithRouter extends Component {
   }
 }
 
-storiesOf("Entity-Request modals", module).add("Group", () => (
+storiesOf("entities/Group", module).add("Group details", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
       <WithRouter />

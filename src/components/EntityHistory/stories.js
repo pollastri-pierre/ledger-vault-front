@@ -59,7 +59,7 @@ const mockNetwork = async url => {
   throw new Error("unknown url");
 };
 
-storiesOf("Entities", module).add("EntityHistory", () => (
+storiesOf("components", module).add("EntityHistory", () => (
   <RestlayProvider network={mockNetwork}>
     <EntityHistory quorum={2} history={mockUserHistory} />
   </RestlayProvider>

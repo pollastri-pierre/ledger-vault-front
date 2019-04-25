@@ -20,7 +20,7 @@ const accounts: Account[] = genAccounts(3, { users });
 
 const account: Account = accounts[0];
 
-storiesOf("other", module).add("LineRow", () => <Wrapper />);
+storiesOf("components", module).add("LineRow", () => <Wrapper />);
 
 type State = {
   username: string,

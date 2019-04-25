@@ -10,12 +10,21 @@ import { action } from "@storybook/addon-actions";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 
-storiesOf("other", module).add("InfoBox", () => {
+storiesOf("components", module).add("InfoBox", () => {
   const withIcon = boolean("withIcon", true);
   const types = ["info", "warning", "error"];
-  return types.map(t => (
-    <Wrapper key={t} type={t} withFooter={t === "info"} withIcon={withIcon} />
-  ));
+  return (
+    <div>
+      {types.map(t => (
+        <Wrapper
+          key={t}
+          type={t}
+          withFooter={t === "info"}
+          withIcon={withIcon}
+        />
+      ))}
+    </div>
+  );
 });
 
 const Footer = () => (

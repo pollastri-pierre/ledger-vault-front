@@ -6,7 +6,7 @@ import { genUsers } from "data/mock-entities";
 import MemberName from "components/base/MemberName";
 
 const users = genUsers(2);
-storiesOf("other", module).add("MemberName", () => (
+storiesOf("components", module).add("MemberName", () => (
   <Fragment>
     {users.map(u => (
       <MemberName key={u.id} member={u} />
