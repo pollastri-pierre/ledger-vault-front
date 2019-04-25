@@ -3,6 +3,8 @@ import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import Alert from "components/utils/Alert";
 import { closeMessage } from "redux/modules/alerts";
+import Modal from "components/base/Modal";
+import BlockingReasons from "components/BlockingReasons";
 import TranslatedError from "components/TranslatedError";
 
 const mapStateToProps = state => ({
@@ -32,9 +34,12 @@ export function MessagesContainer(props: {
   );
   return (
     <Fragment>
+      <Modal isOpened={visible && type === "reason"} onClose={onClose}>
+        <BlockingReasons error={error} onClose={onClose} />
+      </Modal>
       <Alert
         onClose={onClose}
-        open={visible}
+        open={visible && type !== "reason"}
         autoHideDuration={4000}
         title={titleComponent}
         theme={type}

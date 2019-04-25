@@ -6,7 +6,6 @@ import { FaCheck, FaTrash } from "react-icons/fa";
 
 import Absolute from "components/base/Absolute";
 import DeviceInteraction from "components/DeviceInteraction";
-import TriggerErrorNotification from "components/TriggerErrorNotification";
 import { ModalFooterButton, ConfirmModal } from "components/base/Modal";
 
 import colors from "shared/colors";
@@ -34,14 +33,12 @@ type Props = {
 type State = {
   isInProgress: boolean,
   isConfirmModalOpened: boolean,
-  error: Error | GateError | typeof NetworkError | null,
 };
 
 class ApproveRequestButton extends PureComponent<Props, State> {
   state = {
     isInProgress: false,
     isConfirmModalOpened: false,
-    error: null,
   };
 
   static defaultProps = {
@@ -54,7 +51,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
 
   onError = (err: Error | GateError) => {
     const { onError } = this.props;
-    this.setState({ isInProgress: false, error: err });
+    this.setState({ isInProgress: false });
     onError && onError(err);
   };
 
@@ -63,7 +60,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
   closeConfirmModal = () => this.setState({ isConfirmModalOpened: false });
 
   render() {
-    const { isInProgress, error, isConfirmModalOpened } = this.state;
+    const { isInProgress, isConfirmModalOpened } = this.state;
     const {
       interactions,
       onSuccess,
@@ -81,7 +78,6 @@ class ApproveRequestButton extends PureComponent<Props, State> {
 
     return (
       <Fragment>
-        {error && <TriggerErrorNotification error={error} />}
         {isInProgress ? (
           <Absolute right={15} bottom={15}>
             <DeviceInteraction

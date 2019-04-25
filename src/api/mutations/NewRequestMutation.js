@@ -1,7 +1,7 @@
 // @flow
 import Mutation from "restlay/Mutation";
 // import schema from "data/schema";
-import { success, error } from "formatters/notification";
+import { error } from "formatters/notification";
 
 type Input = {
   // TODO define the input types here
@@ -16,13 +16,9 @@ export default class NewRequestMutation extends Mutation<Input, Response> {
 
   // responseSchema = schema.Member;
 
-  getSuccessNotification() {
-    return success("request", "created");
-  }
-
-  getErrorNotification(e: Error) {
+  getErrorNotification = (e: Error) => {
     return error("request", "created", e);
-  }
+  };
 
   getBody() {
     return this.props;
