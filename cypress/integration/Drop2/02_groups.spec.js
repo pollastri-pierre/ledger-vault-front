@@ -3,7 +3,7 @@ import {
   logout,
   route,
   create_group,
-  // successfull_message,
+  successfull_message,
   error_message,
 } from "../../functions/actions";
 
@@ -24,10 +24,10 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/groups");
 
     create_group("APAC", "Group for APAC 1", "Thomas", "Anna", "James");
-    // successfull_message();
+    successfull_message();
 
     create_group("EMEA", "Group for EMEA", "James", "Aidan", "Thomas");
-    // successfull_message();
+    successfull_message();
 
     create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
     error_message("Group already exists", "Error 10202");
@@ -40,6 +40,9 @@ describe("Tests Creation Account", function() {
       "James",
       "Thomas",
     );
+    successfull_message();
+    cy.wait(1500);
+
     create_group(
       "South Africa",
       "Group for South Africa",
@@ -47,7 +50,7 @@ describe("Tests Creation Account", function() {
       "James",
       "Thomas",
     );
-    // successfull_message();
+    successfull_message();
   });
 
   it("Approve Groups", () => {
@@ -61,29 +64,25 @@ describe("Tests Creation Account", function() {
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
-    // successfull_message();
+    successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("EMEA").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
-    // successfull_message();
+    successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("APAC").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
-    // successfull_message();
+    successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("South Africa").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
-    // successfull_message();
+    successfull_message();
   });
 
   it("Edit Group desc", () => {
@@ -102,7 +101,10 @@ describe("Tests Creation Account", function() {
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=update-description]").click();
-    cy.wait(1500);
+    cy.contains(
+      "You only updated the description. It doesn't requre HSM/Device validation",
+    );
+    cy.get("[data-test=close]").click();
   });
 
   it("Edit Group Name", () => {
@@ -121,7 +123,7 @@ describe("Tests Creation Account", function() {
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
+    successfull_message();
   });
 
   it("Edit Group Member", () => {
@@ -145,7 +147,7 @@ describe("Tests Creation Account", function() {
     cy.contains("Next").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
+    successfull_message();
   });
 
   it("Approve Edit Groups", () => {
@@ -161,6 +163,7 @@ describe("Tests Creation Account", function() {
     cy.contains("Edit group").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
+    successfull_message();
     cy.wait(2500);
   });
 
@@ -174,13 +177,14 @@ describe("Tests Creation Account", function() {
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
+    //add click to delete group button
+    successfull_message();
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Delete group").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(2500);
+    successfull_message();
   });
 
   it("Reject Deletion Group", () => {
@@ -193,12 +197,13 @@ describe("Tests Creation Account", function() {
     cy.contains("EMEA").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(1500);
+    //add click to delete group button
+    successfull_message();
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Delete group").click();
     cy.wait(1500);
     cy.contains("Reject").click();
-    cy.wait(2500);
+    successfull_message();
   });
 });
