@@ -17,13 +17,13 @@ export default class ApproveRequestMutation extends Mutation<Input, Response> {
 
   // responseSchema = schema.Member;
 
-  getSuccessNotification() {
+  getSuccessNotification = () => {
     return success("request", "updated");
-  }
+  };
 
-  getErrorNotification(e: Error) {
+  getErrorNotification = (e: Error) => {
     return error("request", "updated", e);
-  }
+  };
 
   getBody() {
     return {

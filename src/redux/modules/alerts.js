@@ -71,6 +71,13 @@ export default function reducer(state: Store = initialState, action: Object) {
       if (process.env.NODE_ENV !== "production") {
         console.error(error);
       }
+      if (error.json && error.json.blocking_reasons) {
+        return {
+          visible: true,
+          type: "reason",
+          error,
+        };
+      }
       return {
         visible: true,
         title: `Error ${error.json ? error.json.code : error.message}`,

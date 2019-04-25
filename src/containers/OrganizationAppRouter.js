@@ -18,55 +18,57 @@ const { PollingProvider } = counterValues;
 
 const OrganizationAppRouter = () => (
   <Fragment>
-    <AlertsContainer />
     <GlobalStyle />
 
     <BrowserRouter>
-      <Switch>
-        <Route path="/update-app" component={UpdateApp} />
-        <Route
-          path="/:orga_name"
-          render={({ match, history, location }) => (
-            <Fragment>
-              <Switch>
-                <Route
-                  path={`${match.url}/login`}
-                  render={() => (
-                    <Welcome
-                      match={match}
-                      location={location}
-                      history={history}
-                    />
-                  )}
-                />
-                <Route
-                  path={`${match.url}/onboarding`}
-                  render={() => (
-                    <OnboardingContainer match={match} history={history} />
-                  )}
-                />
-                <Route
-                  path={`${match.url}/logout`}
-                  render={() => <Logout match={match} />}
-                />
-                <Route
-                  path={`${match.url}/register/:urlID`}
-                  component={RegisterUser}
-                />
-                <PollingProvider>
-                  <PrivateRoute
-                    path={`${match.url}/`}
-                    component={App}
-                    history={history}
-                    match={match}
+      <>
+        <AlertsContainer />
+        <Switch>
+          <Route path="/update-app" component={UpdateApp} />
+          <Route
+            path="/:orga_name"
+            render={({ match, history, location }) => (
+              <Fragment>
+                <Switch>
+                  <Route
+                    path={`${match.url}/login`}
+                    render={() => (
+                      <Welcome
+                        match={match}
+                        location={location}
+                        history={history}
+                      />
+                    )}
                   />
-                </PollingProvider>
-              </Switch>
-            </Fragment>
-          )}
-        />
-        <Route component={Welcome} />
-      </Switch>
+                  <Route
+                    path={`${match.url}/onboarding`}
+                    render={() => (
+                      <OnboardingContainer match={match} history={history} />
+                    )}
+                  />
+                  <Route
+                    path={`${match.url}/logout`}
+                    render={() => <Logout match={match} />}
+                  />
+                  <Route
+                    path={`${match.url}/register/:urlID`}
+                    component={RegisterUser}
+                  />
+                  <PollingProvider>
+                    <PrivateRoute
+                      path={`${match.url}/`}
+                      component={App}
+                      history={history}
+                      match={match}
+                    />
+                  </PollingProvider>
+                </Switch>
+              </Fragment>
+            )}
+          />
+          <Route component={Welcome} />
+        </Switch>
+      </>
     </BrowserRouter>
     {process.env.NODE_ENV === "e2e" && <MockDevices />}
   </Fragment>
