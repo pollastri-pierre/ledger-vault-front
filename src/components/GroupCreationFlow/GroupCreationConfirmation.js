@@ -16,13 +16,22 @@ class GroupCreationConfirmation extends PureComponent<Props> {
     return (
       <Box grow flow={20}>
         <Box grow>
-          <LineRow label={<Trans i18nKey="group:create.name" />}>
+          <LineRow
+            data-test="group_name"
+            label={<Trans i18nKey="group:create.name" />}
+          >
             {payload.name}
           </LineRow>
-          <LineRow label={<Trans i18nKey="group:create.description" />}>
+          <LineRow
+            data-test="group_desc"
+            label={<Trans i18nKey="group:create.description" />}
+          >
             {payload.description}
           </LineRow>
-          <LineRow label={<Trans i18nKey="group:create.nb_members" />}>
+          <LineRow
+            data-test="group_member"
+            label={<Trans i18nKey="group:create.nb_members" />}
+          >
             {payload.members.length}
           </LineRow>
         </Box>

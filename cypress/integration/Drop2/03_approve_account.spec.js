@@ -48,22 +48,6 @@ describe("Tests Creation Account", function() {
     cy.get("[data-test=dialog-button]").click();
   });
 
-  it("approve group", () => {
-    cy.server();
-    route();
-    cy.url().should("include", "/admin/dashboard");
-    cy.contains("Create group").click();
-    cy.contains("APAC 1");
-    cy.get("[data-test=dialog-button]")
-      .eq(1)
-      .click();
-    cy.wait(2500);
-    cy.get(".top-message-body")
-      .contains("the request has been successfully created")
-      .get(".top-message-title")
-      .contains("request created");
-  });
-
   it("approve account", () => {
     cy.server();
     route();

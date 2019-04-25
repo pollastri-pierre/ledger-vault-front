@@ -1,10 +1,4 @@
-import {
-  login,
-  logout,
-  route,
-  create_user,
-  create_group,
-} from "../../functions/actions";
+import { login, logout, route, create_user } from "../../functions/actions";
 
 describe("Tests Creation Account", function() {
   beforeEach(function() {
@@ -57,14 +51,5 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/users");
     // Add John Clark
     create_user("John Clark", Cypress.env("userId5"), "[data-test=new_admin]");
-  });
-
-  it("Create Group", () => {
-    cy.server();
-    route();
-    cy.get("[data-test=menuItem-groups]").click();
-    cy.url().should("include", "/admin/groups");
-    create_group("APAC 1", "Group for APAC 1", "Thomas", "Anna", "James");
-    create_group("EMEA", "Group for EMEA", "Aidan", "James", "Thomas");
   });
 });
