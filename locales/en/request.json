@@ -16,6 +16,7 @@
     "REVOKE_GROUP": "Approve group deletion",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve operator creation",
+    "CREATE_ADMIN": "Approve administrator creation",
     "REVOKE_USER": "Approve user revocation",
     "UPDATE_QUORUM": "Approve quorum update"
   }

@@ -25,7 +25,7 @@ function EditAdminRules(props: Props) {
   const [quorum, setQuorum] = useState(organization.quorum || 0);
   return (
     <Box width={500} height={500}>
-      <RichModalHeader title="Edit admin rules" Icon={MdEdit} />
+      <RichModalHeader title="Edit admin rules" Icon={MdEdit} onClose={close} />
       <Box p={20} flow={20} grow>
         <InfoBox type="info">Changing admin rule is very dangerous</InfoBox>
         <ApprovalSlider

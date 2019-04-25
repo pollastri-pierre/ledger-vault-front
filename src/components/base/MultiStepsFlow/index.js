@@ -160,8 +160,8 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
 
     return (
       <Box width={700} position="relative" {...props}>
-        {onClose && <ModalClose onClick={onClose} />}
         <RichModalHeader
+          onClose={onClose}
           Icon={Icon}
           title={title}
           steps={steps}
@@ -229,6 +229,7 @@ type RichModalHeaderProps<T, P> = {
   Icon: React$ComponentType<*>,
   steps?: MultiStepsFlowStepType<T, P>[],
   renderStep?: (MultiStepsFlowStepType<T, P>, number) => React$Node,
+  onClose?: () => void,
 };
 
 export const RichModalHeader = <T, P>({
@@ -236,20 +237,24 @@ export const RichModalHeader = <T, P>({
   Icon,
   steps,
   renderStep,
+  onClose,
 }: RichModalHeaderProps<T, P>) => (
-  <Box bg="#f5f5f5" style={styles.header} p={40} flow={10}>
-    <Box horizontal align="center" flow={10}>
-      <Icon size={24} color="#ddd" />
-      <Text large color="#aaa">
-        {title}
-      </Text>
-    </Box>
-    {steps && steps.length && renderStep && (
-      <Box horizontal flow={15}>
-        {steps.map(renderStep)}
+  <>
+    {onClose && <ModalClose onClick={onClose} />}
+    <Box bg="#f5f5f5" style={styles.header} p={40} flow={10}>
+      <Box horizontal align="center" flow={10}>
+        <Icon size={24} color="#ddd" />
+        <Text large color="#aaa">
+          {title}
+        </Text>
       </Box>
-    )}
-  </Box>
+      {steps && steps.length && renderStep && (
+        <Box horizontal flow={15}>
+          {steps.map(renderStep)}
+        </Box>
+      )}
+    </Box>
+  </>
 );
 
 const checkSuccess = <FaCheck color={opacity(colors.green, 0.5)} />;
