@@ -90,6 +90,9 @@ export default {
         return acc;
       }, {}),
       "process.env.NODE_ENV": JSON.stringify(globals.__ENV__),
+      "process.env.ORGANIZATION_NAME": JSON.stringify(
+        process.env.ORGANIZATION_NAME,
+      ),
     }),
 
     new webpack.NamedModulesPlugin(),

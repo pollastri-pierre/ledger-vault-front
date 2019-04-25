@@ -72,7 +72,7 @@ type State = {
 };
 class Welcome extends Component<Props, State> {
   state = {
-    domain: process.env.NODE_ENV === "e2e" ? "ledger1" : "",
+    domain: process.env.ORGANIZATION_NAME || "",
     organization: null,
     error: false,
     errorDomain: false,

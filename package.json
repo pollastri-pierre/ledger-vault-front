@@ -17,6 +17,7 @@
     "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook,cypress}/**/*.{js,json}\"",
     "start": "NODE_ENV=development webpack-dev-server --https --config webpack/dev.babel.js",
     "starte2e": "NODE_ENV=e2e webpack-dev-server --https --config webpack/dev.babel.js",
+    "dev": "NODE_ENV=e2e ORGANIZATION_NAME=ledger1 webpack-dev-server --https --config webpack/dev.babel.js",
     "test": "jest --env=jsdom --maxWorkers 2",
     "device": "node scripts/device.js",
     "testDev": "jest --env=jsdom --watch",

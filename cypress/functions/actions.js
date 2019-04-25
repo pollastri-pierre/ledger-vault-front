@@ -9,7 +9,6 @@ export function login(id) {
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
-  cy.wait(2500);
   cy.get(".top-message-body")
     .contains("Welcome to the Ledger Vault platform!")
     .get(".top-message-title")
@@ -23,7 +22,7 @@ export function login(id) {
 
 export function logout() {
   cy.get("[data-test=logout]").click({ force: true });
-  cy.wait(2500);
+  cy.wait(1500);
   cy.get(".top-message-body")
     .contains(
       "You have been successfully logged out. You can now safely close your web browser.",
@@ -263,9 +262,9 @@ export function create_group(groupName, description, user1, user2, user3) {
 
 export function successfull_message() {
   cy.get(".top-message-body")
-    .contains("the request has been successfully created")
+    .contains("the request has been successfully updated")
     .get(".top-message-title")
-    .contains("request created");
+    .contains("request updated");
 }
 
 export function error_message(message, title) {
