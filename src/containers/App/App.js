@@ -5,6 +5,7 @@ import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
 import type { Account, User, Transaction } from "data/types";
+import colors from "shared/colors";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
@@ -18,9 +19,14 @@ import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
 import VaultLayout from "components/VaultLayout";
 import ConnectedBreadcrumb from "components/ConnectedBreadcrumb";
+import AdminIcon from "components/icons/AdminIcon";
+import OperatorIcon from "components/icons/OperatorIcon";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import getMenuItems from "./getMenuItems";
+
+const adminIcon = <AdminIcon size={16} color={colors.blue} />;
+const operatorIcon = <OperatorIcon size={16} color={colors.blue} />;
 
 type Props = {
   match: Match,
@@ -39,7 +45,14 @@ const AppWrapper = (props: Props) => (
 const breadcrumbConfig = [
   {
     path: "",
-    render: p => <Trans i18nKey={`common:role.${p.me.role}`} />,
+    render: p => (
+      <Box horizontal align="center" flow={5}>
+        {p.me.role === "ADMIN" ? adminIcon : operatorIcon}
+        <span>
+          <Trans i18nKey={`common:role.${p.me.role}`} />
+        </span>
+      </Box>
+    ),
     children: [
       { path: "*/receive", render: "Receive", exact: true },
       { path: "*/send", render: "Send", exact: true },
