@@ -177,7 +177,7 @@ describe("Tests Creation Account", function() {
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    //add click to delete group button
+    cy.get("[data-test=Confirm]").click();
     successfull_message();
     login(6);
     cy.url().should("include", "/admin/dashboard");
@@ -197,7 +197,7 @@ describe("Tests Creation Account", function() {
     cy.contains("EMEA").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    //add click to delete group button
+    cy.get("[data-test=Confirm]").click();
     successfull_message();
     login(6);
     cy.url().should("include", "/admin/dashboard");

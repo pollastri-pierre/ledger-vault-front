@@ -34,8 +34,14 @@ function ConfirmModal(props: Props) {
         {children}
       </Box>
       <ModalFooter justify="space-between">
-        <ModalFooterButton onClick={onReject}>{rejectLabel}</ModalFooterButton>
-        <ModalFooterButton color={colors.ocean} onClick={onConfirm}>
+        <ModalFooterButton data-test="Cancel" onClick={onReject}>
+          {rejectLabel}
+        </ModalFooterButton>
+        <ModalFooterButton
+          color={colors.ocean}
+          data-test="Confirm"
+          onClick={onConfirm}
+        >
           {confirmLabel}
         </ModalFooterButton>
       </ModalFooter>
