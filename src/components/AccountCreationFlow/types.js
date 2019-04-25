@@ -10,6 +10,7 @@ import type { StepProps } from "components/base/MultiStepsFlow/types";
 export type ParentAccount = { id: number } | { name: string };
 
 export type AccountCreationPayload = {
+  id?: number,
   name: string,
   rules: ApprovalsRule[],
   currency: CryptoCurrency | null,
