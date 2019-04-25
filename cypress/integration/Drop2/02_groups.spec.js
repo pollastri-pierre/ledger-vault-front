@@ -3,7 +3,7 @@ import {
   logout,
   route,
   create_group,
-  //successfull_message,
+  // successfull_message,
   error_message,
 } from "../../functions/actions";
 
@@ -24,10 +24,10 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/groups");
 
     create_group("APAC", "Group for APAC 1", "Thomas", "Anna", "James");
-    //successfull_message();
+    // successfull_message();
 
     create_group("EMEA", "Group for EMEA", "James", "Aidan", "Thomas");
-    //successfull_message();
+    // successfull_message();
 
     create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
     error_message("Group already exists", "Error 10202");
@@ -47,7 +47,7 @@ describe("Tests Creation Account", function() {
       "James",
       "Thomas",
     );
-    //successfull_message();
+    // successfull_message();
   });
 
   it("Approve Groups", () => {
@@ -62,28 +62,28 @@ describe("Tests Creation Account", function() {
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.wait(1500);
-    //successfull_message();
+    // successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("EMEA").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.wait(1500);
-    //successfull_message();
+    // successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("APAC").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.wait(1500);
-    //successfull_message();
+    // successfull_message();
     cy.get("[data-test=close]").click();
 
     cy.contains("South Africa").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     cy.wait(1500);
-    //successfull_message();
+    // successfull_message();
   });
 
   it("Edit Group desc", () => {
