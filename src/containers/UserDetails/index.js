@@ -12,6 +12,7 @@ import Text from "components/base/Text";
 import { TabName } from "containers/Admin/Groups/GroupDetails";
 import type { User } from "data/types";
 import { ModalClose } from "components/base/Modal";
+import GrowingCard from "components/base/GrowingCard";
 import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/approveFlow";
 
@@ -47,7 +48,7 @@ class UserDetails extends PureComponent<Props, State> {
     const { status } = user;
     const { tabsIndex } = this.state;
 
-    return (
+    const inner = (
       <Box width={700} style={{ minHeight: 600 }} position="relative">
         <ModalClose onClick={close} />
         <Box bg="#f5f5f5" p={40} pb={0} flow={20} style={styles.header}>
@@ -139,6 +140,8 @@ class UserDetails extends PureComponent<Props, State> {
         </Box>
       </Box>
     );
+
+    return <GrowingCard>{inner}</GrowingCard>;
   }
 }
 

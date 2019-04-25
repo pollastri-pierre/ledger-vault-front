@@ -8,9 +8,9 @@ import connectData from "restlay/connectData";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import colors from "shared/colors";
 import { ModalFooterButton } from "components/base/Modal";
-import ModalLoading from "components/ModalLoading";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 
 import ReceiveFlowAccounts from "./steps/ReceiveFlowAccounts";
 import ReceiveFlowDevice from "./steps/ReceiveFlowDevice";
@@ -76,24 +76,24 @@ const styles = {
   container: { minHeight: 670 },
 };
 
-const RenderLoading = () => <ModalLoading height={620} width={700} />;
-
 export default connectData(
   props => {
     return (
-      <MultiStepsFlow
-        Icon={FaUser}
-        title={title}
-        initialPayload={initialPayload}
-        additionalProps={props}
-        steps={steps}
-        style={styles.container}
-        onClose={props.close}
-      />
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaUser}
+          title={title}
+          initialPayload={initialPayload}
+          additionalProps={props}
+          steps={steps}
+          style={styles.container}
+          onClose={props.close}
+        />
+      </GrowingCard>
     );
   },
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     RenderError: CardError,
     queries: {
       accounts: AccountsQuery,

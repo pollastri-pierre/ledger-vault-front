@@ -58,7 +58,7 @@ const fakeNetwork = async url => {
 
 storiesOf("flows", module).add("Account creation", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <AccountCreationFlow match={{ params: {} }} />
     </Modal>
   </RestlayProvider>
@@ -66,7 +66,7 @@ storiesOf("flows", module).add("Account creation", () => (
 
 storiesOf("flows", module).add("Account Edit", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <AccountCreationFlow match={{ params: { accountId: 1 } }} />
     </Modal>
   </RestlayProvider>

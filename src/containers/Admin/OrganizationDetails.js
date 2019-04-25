@@ -9,7 +9,7 @@ import colors from "shared/colors";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import RequestQuery from "api/queries/RequestQuery";
 import connectData from "restlay/connectData";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import Status from "components/Status";
 import { RichModalHeader } from "components/base/MultiStepsFlow";
 import Box from "components/base/Box";
@@ -30,7 +30,7 @@ function OrganizationDetails({
   close: () => void,
 }) {
   invariant(request.organization, "No organization found!");
-  return (
+  const inner = (
     <Box width={500}>
       <RichModalHeader title="Edit admin rules request" Icon={MdEdit} />
       <Box py={50} align="center" justify="center" horizontal flow={10}>
@@ -57,11 +57,12 @@ function OrganizationDetails({
       )}
     </Box>
   );
+
+  return <GrowingCard>{inner}</GrowingCard>;
 }
 
-const RenderLoading = () => <ModalLoading height={100} width={100} />;
 export default connectData(OrganizationDetails, {
-  RenderLoading,
+  RenderLoading: GrowingSpinner,
   queries: {
     request: RequestQuery,
   },

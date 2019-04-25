@@ -18,7 +18,7 @@ import colors from "shared/colors";
 import EntityLastRequest from "components/EntityLastRequest";
 import GroupDetailsFooter from "containers/Admin/Groups/GroupDetailsFooter";
 import styled from "styled-components";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { FaUsers } from "react-icons/fa";
@@ -91,7 +91,7 @@ class GroupModal extends PureComponent<Props> {
         parseInt(this.props.match.params.tabIndex, 10)) ||
       0;
 
-    return (
+    const inner = (
       <Box width={700} style={{ minHeight: 600 }} position="relative">
         <ModalClose onClick={close} />
         <Box bg="#f5f5f5" p={40} pb={0} flow={20} style={styles.header}>
@@ -159,6 +159,8 @@ class GroupModal extends PureComponent<Props> {
         </Box>
       </Box>
     );
+
+    return <GrowingCard>{inner}</GrowingCard>;
   }
 }
 
@@ -169,8 +171,6 @@ const RenderError = ({
   history: MemoryHistory,
   match: Match,
 }) => <GoBack history={history} match={match} />;
-
-const RenderLoading = () => <ModalLoading height={100} width={100} />;
 
 // useful for storybook
 const StoryProxy = ({
@@ -188,7 +188,7 @@ const StoryProxy = ({
 
 export default connectData(StoryProxy, {
   RenderError,
-  RenderLoading,
+  RenderLoading: GrowingSpinner,
   queries: {
     group: GroupQuery,
     operators: UsersQuery,

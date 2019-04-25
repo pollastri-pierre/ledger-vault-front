@@ -10,7 +10,7 @@ import type { MemoryHistory } from "history";
 import AccountQuery from "api/queries/AccountQuery";
 import Text from "components/base/Text";
 import { CardError } from "components/base/Card";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import { createAndApprove } from "device/interactions/approveFlow";
 import Box from "components/base/Box";
 import { TabName } from "containers/Admin/Groups/GroupDetails";
@@ -94,7 +94,7 @@ class AccountDetails extends PureComponent<Props, State> {
     const { status } = account;
     const { tabsIndex } = this.state;
 
-    return (
+    const inner = (
       <Box width={700} style={{ minHeight: 600 }} position="relative">
         <ModalClose onClick={close} />
         <Box bg="#f5f5f5" p={40} pb={0} flow={20} style={styles.header}>
@@ -168,12 +168,14 @@ class AccountDetails extends PureComponent<Props, State> {
         </Box>
       </Box>
     );
+
+    return <GrowingCard>{inner}</GrowingCard>;
   }
 }
 
 export default connectData(AccountDetails, {
   RenderError: CardError,
-  RenderLoading: SpinnerCard,
+  RenderLoading: GrowingSpinner,
   queries: {
     account: AccountQuery,
   },

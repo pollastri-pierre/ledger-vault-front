@@ -46,7 +46,7 @@ const fakeNetwork = async url => {
 
 storiesOf("flows", module).add("Group Creation", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: {} }} />
     </Modal>
   </RestlayProvider>
@@ -54,7 +54,7 @@ storiesOf("flows", module).add("Group Creation", () => (
 
 storiesOf("flows", module).add("Group Edit", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: { groupId: 1 } }} />
     </Modal>
   </RestlayProvider>
@@ -85,7 +85,7 @@ class WithRouter extends Component {
 
 storiesOf("Entity-Request modals", module).add("Group", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <WithRouter />
     </Modal>
   </RestlayProvider>

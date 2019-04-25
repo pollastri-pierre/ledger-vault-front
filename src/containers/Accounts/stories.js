@@ -36,7 +36,7 @@ const fakeNetwork = async url => {
 
 storiesOf("Entity-Request modals", module).add("Account", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <AccountDetails match={{ params: { accountId: 1 } }} history={[]} />
     </Modal>
   </RestlayProvider>

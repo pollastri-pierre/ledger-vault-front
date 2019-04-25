@@ -5,7 +5,7 @@ import connectData from "restlay/connectData";
 import UserQuery from "api/queries/UserQuery";
 import { CardError } from "components/base/Card";
 import type { User } from "data/types";
-import ModalLoading from "components/ModalLoading";
+import { GrowingSpinner } from "components/base/GrowingCard";
 
 import UserDetails from "containers/UserDetails";
 
@@ -22,11 +22,9 @@ class AdminDetails extends PureComponent<Props> {
   }
 }
 
-const RenderLoading = () => <ModalLoading height={600} width={700} />;
-
 export default connectData(AdminDetails, {
   RenderError: CardError,
-  RenderLoading,
+  RenderLoading: GrowingSpinner,
   queries: {
     user: UserQuery,
   },

@@ -112,7 +112,7 @@ class Modal extends PureComponent<ModalProps, State> {
   };
 
   render() {
-    const { isOpened, children } = this.props;
+    const { isOpened, transparent, children } = this.props;
     const { isInDOM, animShowHide } = this.state;
 
     if (!isInDOM || !modalRoot) return null;
@@ -151,7 +151,10 @@ class Modal extends PureComponent<ModalProps, State> {
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>
-              <ModalDialogInner onClick={this.swallowClick}>
+              <ModalDialogInner
+                transparent={transparent}
+                onClick={this.swallowClick}
+              >
                 <Box grow>{children}</Box>
               </ModalDialogInner>
             </ModalDialog>

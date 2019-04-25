@@ -44,7 +44,7 @@ const fakeNetwork = async url => {
 
 storiesOf("flows", module).add("Transaction creation", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <TransactionCreationFlow />
     </Modal>
   </RestlayProvider>

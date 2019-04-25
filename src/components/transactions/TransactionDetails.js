@@ -17,7 +17,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import TryAgain from "components/TryAgain";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import {
   ModalHeader,
   ModalTitle,
@@ -70,7 +70,7 @@ class TransactionDetails extends Component<Props, *> {
       transaction.transaction.hash,
     );
 
-    return (
+    const inner = (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
           <ModalTitle>
@@ -139,6 +139,8 @@ class TransactionDetails extends Component<Props, *> {
         </ModalFooter>
       </ModalBody>
     );
+
+    return <GrowingCard>{inner}</GrowingCard>;
   }
 }
 
@@ -154,11 +156,9 @@ const RenderError = ({
   </div>
 );
 
-const RenderLoading = () => <ModalLoading height={700} />;
-
 export default connectData(TransactionDetails, {
   RenderError,
-  RenderLoading,
+  RenderLoading: GrowingSpinner,
   queries: {
     transactionWithAccount: TransactionWithAccountQuery,
     profile: ProfileQuery,
