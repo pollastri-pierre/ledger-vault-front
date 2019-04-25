@@ -5,9 +5,11 @@
   "DELETED": "Deleted",
   "APPROVED": "Approved",
   "PENDING": "Pending",
+  "VIEW_ONLY": "View only",
   "CREATION_ABORTED": "Creation aborted",
   "AWAITING_APPROVAL": "Awaiting approval",
   "PENDING_APPROVAL": "Pending approval",
   "PENDING_CREATION_APPROVAL": "Pending creation approval",
-  "PENDING_REVOCATION": "Pending revocation"
+  "PENDING_REVOCATION": "Pending revocation",
+  "PENDING_REGISTRATION": "Pending registration"
 }
