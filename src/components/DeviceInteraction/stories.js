@@ -37,7 +37,7 @@ const interactions = [
   },
 ];
 
-storiesOf("other", module).add("DeviceInteraction", () => (
+storiesOf("components", module).add("DeviceInteraction", () => (
   <RestlayProvider network={mockNetwork}>
     <DeviceInteraction
       interactions={interactions}

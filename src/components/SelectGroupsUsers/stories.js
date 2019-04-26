@@ -54,7 +54,7 @@ class Wrapper extends Component<> {
     }
   }
 }
-storiesOf("selects", module).add("SelectGroupsUsers", () => (
+storiesOf("components/form/selects", module).add("SelectGroupsUsers", () => (
   <Fragment>
     <Box p={20}>
       <Text uppercase>Groups and user</Text>

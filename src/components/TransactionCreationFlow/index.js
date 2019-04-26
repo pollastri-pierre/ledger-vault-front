@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -69,7 +69,6 @@ const steps = [
             onClose();
           }}
           disabled={false}
-          onError={null}
           additionalFields={{ type: "CREATE_TRANSACTION", data }}
           buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
         />
@@ -84,25 +83,25 @@ const styles = {
   container: { minHeight: 620 },
 };
 
-const RenderLoading = () => <ModalLoading height={620} width={700} />;
-
 export default connectData(
   props => {
     return (
-      <MultiStepsFlow
-        Icon={FaMoneyCheck}
-        title={title}
-        initialCursor={0}
-        initialPayload={initialPayload}
-        steps={steps}
-        additionalProps={props}
-        style={styles.container}
-        onClose={props.close}
-      />
+      <GrowingCard>
+        <MultiStepsFlow
+          Icon={FaMoneyCheck}
+          title={title}
+          initialCursor={0}
+          initialPayload={initialPayload}
+          steps={steps}
+          additionalProps={props}
+          style={styles.container}
+          onClose={props.close}
+        />
+      </GrowingCard>
     );
   },
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     RenderError: CardError,
     queries: {
       accounts: AccountsQuery,

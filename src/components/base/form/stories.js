@@ -38,7 +38,7 @@ const hints = [
   },
 ];
 
-storiesOf("form/InputText", module)
+storiesOf("components/form/InputText", module)
   .addDecorator(story => <div style={{ maxWidth: 400 }}>{story()}</div>)
   .add("basic", () => <InputText {...p()} />)
   .add("icon", () => <InputText {...p()} IconLeft={FaLink} />)

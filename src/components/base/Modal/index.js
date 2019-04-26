@@ -14,6 +14,10 @@ import {
   ModalBody,
   ModalHeader,
   ModalTitle,
+  RichModalHeader,
+  RichModalFooter,
+  RichModalTabsContainer,
+  RichModalTab,
 } from "./components";
 import type { ModalProps } from "./types";
 
@@ -112,7 +116,7 @@ class Modal extends PureComponent<ModalProps, State> {
   };
 
   render() {
-    const { isOpened, children } = this.props;
+    const { isOpened, transparent, children } = this.props;
     const { isInDOM, animShowHide } = this.state;
 
     if (!isInDOM || !modalRoot) return null;
@@ -151,7 +155,10 @@ class Modal extends PureComponent<ModalProps, State> {
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle}>
             <ModalDialog>
-              <ModalDialogInner onClick={this.swallowClick}>
+              <ModalDialogInner
+                transparent={transparent}
+                onClick={this.swallowClick}
+              >
                 <Box grow>{children}</Box>
               </ModalDialogInner>
             </ModalDialog>
@@ -193,6 +200,16 @@ const BODY_WRAPPER_STYLE = {
 };
 
 export { default as ModalFooterButton } from "./ModalFooterButton";
-export { ModalClose, ModalFooter, ModalBody, ModalHeader, ModalTitle };
+export {
+  ModalClose,
+  ModalFooter,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  RichModalHeader,
+  RichModalFooter,
+  RichModalTabsContainer,
+  RichModalTab,
+};
 export { default as ConfirmModal } from "./ConfirmModal";
 export default Modal;

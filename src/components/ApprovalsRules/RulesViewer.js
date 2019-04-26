@@ -66,7 +66,7 @@ const ListUsers = ({ users }: { users: User[] }) => (
     style={{ maxWidth: 350 }}
   >
     {users.map(m => (
-      <Box style={{ marginLeft: 8 }}>
+      <Box key={m.id} style={{ marginLeft: 8 }}>
         <MemberName member={m} />
       </Box>
     ))}

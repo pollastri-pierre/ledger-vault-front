@@ -3,57 +3,57 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
 import { boolean } from "@storybook/addon-knobs";
+import { FaUser } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
-import Modal, { ModalFooterButton, ConfirmModal } from "components/base/Modal";
-import ModalHeader from "components/base/Modal/ModalHeader";
-import ModalBody from "components/base/Modal/ModalBody";
+import colors from "shared/colors";
+import Modal, {
+  ConfirmModal,
+  RichModalHeader,
+  RichModalFooter,
+  RichModalTabsContainer,
+  RichModalTab,
+  ModalFooterButton,
+} from "components/base/Modal";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
+import Button from "components/base/Button";
 
-const CustomFooter = () => <ModalFooterButton>Next</ModalFooterButton>;
-const CustomBreadcrumb = () => (
-  <div>
-    <div style={{ opacity: 0.5, marginBottom: 10 }}>1. Introduction</div>
-    <div style={{ fontWeight: "bold", marginBottom: 10 }}>2. Something</div>
-    <div style={{ opacity: 0.5 }}>3. Confirmation</div>
-  </div>
-);
+storiesOf("components/base/modals", module)
+  .add("RichModal", () => (
+    <Modal isOpened={boolean("isOpened", true)}>
+      <RichModalHeader title="Banana split" Icon={FaUser}>
+        <RichModalTabsContainer>
+          <RichModalTab isActive>Overview</RichModalTab>
+          <RichModalTab>Details</RichModalTab>
+          <RichModalTab>History</RichModalTab>
+        </RichModalTabsContainer>
+        <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
+          Take action
+        </Button>
+      </RichModalHeader>
 
-storiesOf("other/modals", module)
+      <Box width={600} p={40} style={{ minHeight: 200 }}>
+        This is the modal content.
+      </Box>
+
+      <RichModalFooter>
+        <Box
+          horizontal
+          flexDirection="row-reverse"
+          align="flex-end"
+          justify="space-between"
+        >
+          <ModalFooterButton color={colors.ocean}>Do this</ModalFooterButton>
+          <ModalFooterButton color={colors.grenade}>Do that</ModalFooterButton>
+        </Box>
+      </RichModalFooter>
+    </Modal>
+  ))
   .add("Modal", () => (
-    <Modal
-      isOpened={boolean("isOpened", true)}
-      isLoading={boolean("isLoading", false)}
-      Footer={CustomFooter}
-      Breadcrumb={CustomBreadcrumb}
-    >
-      <Box flow={10}>
-        <ModalHeader>
-          <Box>
-            <Text header bold>
-              Group
-            </Text>
-            <Text uppercase small>
-              edit the members
-            </Text>
-          </Box>
-        </ModalHeader>
-        <ModalBody>
-          <Box width={600}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut varius
-            volutpat magna, quis sollicitudin tortor consectetur vitae. Nullam
-            vulputate arcu nec elit volutpat, sit amet porttitor neque
-            malesuada. Sed sed felis at tortor mollis tempus sed eget velit.
-            Fusce malesuada scelerisque quam, id scelerisque ante hendrerit nec.
-            Nam vulputate lectus sit amet ipsum tristique pharetra. Suspendisse
-            luctus ex purus, eu dictum nisi convallis eu. Lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Integer est libero, imperdiet
-            eget ante nec, condimentum interdum risus. Duis faucibus nisl ut
-            convallis gravida. Pellentesque viverra convallis quam et ultrices.
-            Vestibulum ultrices leo ut erat lacinia fringilla. Quisque a
-            fermentum dui, dictum hendrerit ex.
-          </Box>
-        </ModalBody>
+    <Modal isOpened={boolean("isOpened", true)}>
+      <Box p={40}>
+        <Text>This is a basic modal.</Text>
       </Box>
     </Modal>
   ))

@@ -30,8 +30,8 @@ const tx_approval_steps = [
   { quorum: 2, group: denormalizedGroups[2] },
   { quorum: 2, group: denormalizedGroups[1] },
 ];
-storiesOf("other", module).add("ApprovalsRules", () => <Wrapper />);
-storiesOf("other", module).add("ApprovalsRulesViewer", () => (
+storiesOf("components", module).add("ApprovalsRules", () => <Wrapper />);
+storiesOf("components", module).add("ApprovalsRulesViewer", () => (
   <RulesViewer rules={tx_approval_steps} />
 ));
 

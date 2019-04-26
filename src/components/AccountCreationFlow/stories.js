@@ -18,7 +18,7 @@ const accounts = genAccounts(10, { users });
 const groups = genGroups(3, { users });
 
 const fakeNetwork = async url => {
-  await delay(1e3);
+  await delay(500);
   if (
     url ===
     "/accounts?status=APPROVED&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY&pageSize=-1"
@@ -56,17 +56,17 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("flows", module).add("Account creation", () => (
+storiesOf("entities/Account", module).add("Account creation", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <AccountCreationFlow match={{ params: {} }} />
     </Modal>
   </RestlayProvider>
 ));
 
-storiesOf("flows", module).add("Account Edit", () => (
+storiesOf("entities/Account", module).add("Account edit", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <AccountCreationFlow match={{ params: { accountId: 1 } }} />
     </Modal>
   </RestlayProvider>

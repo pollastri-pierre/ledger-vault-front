@@ -9,7 +9,7 @@ import { RichModalHeader, CtaContainer } from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import ApprovalSlider from "containers/Onboarding/ApprovalSlider";
@@ -23,7 +23,7 @@ type Props = {
 function EditAdminRules(props: Props) {
   const { organization, close } = props;
   const [quorum, setQuorum] = useState(organization.quorum || 0);
-  return (
+  const inner = (
     <Box width={500} height={500}>
       <RichModalHeader title="Edit admin rules" Icon={MdEdit} onClose={close} />
       <Box p={20} flow={20} grow>
@@ -41,16 +41,17 @@ function EditAdminRules(props: Props) {
           disabled={quorum === organization.quorum}
           additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
           onSuccess={close}
-          onError={null}
           buttonLabel="Edit"
         />
       </CtaContainer>
     </Box>
   );
+
+  return <GrowingCard>{inner}</GrowingCard>;
 }
 
 export default connectData(EditAdminRules, {
-  RenderLoading: () => <ModalLoading height={100} width={100} />,
+  RenderLoading: GrowingSpinner,
   RenderError: CardError,
   queries: {
     organization: OrganizationQuery,

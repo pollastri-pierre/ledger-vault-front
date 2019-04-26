@@ -25,7 +25,7 @@ const TypographyRow = ({ children, label }) => (
   </div>
 );
 
-storiesOf("layout", module).add("Text", () => (
+storiesOf("components/base", module).add("Text", () => (
   <Fragment>
     <TypographyRow label="large">
       <Text large>{DUMMY_TEXT}</Text>

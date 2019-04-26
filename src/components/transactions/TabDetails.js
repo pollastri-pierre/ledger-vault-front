@@ -130,8 +130,10 @@ class TabDetails extends PureComponent<{
         >
           Identifier
         </span>
-        <p className={classes.hash}>{rawTransaction.hash}</p>
-        {cryptoCurrency.family === "bitcoin" && (
+        {rawTransaction && (
+          <p className={classes.hash}>{rawTransaction.hash}</p>
+        )}
+        {rawTransaction && cryptoCurrency.family === "bitcoin" && (
           <Fragment>
             <TransactionList
               title="From"

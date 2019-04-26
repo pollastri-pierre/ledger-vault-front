@@ -32,9 +32,9 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("Entity-Request modals", module).add("User", () => (
+storiesOf("entities/User", module).add("User details", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <UserDetails match={{ params: { userID: 1 } }} history={[]} />
     </Modal>
   </RestlayProvider>

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import styled from "styled-components";
 
 import {
   genUsers,
@@ -19,7 +18,6 @@ import {
 } from "components/Table";
 
 import { action } from "@storybook/addon-actions";
-import Card from "components/base/Card";
 
 import requests from "data/mock-requests.json";
 
@@ -28,41 +26,18 @@ const accounts = genAccounts(10, { users });
 const transactions = genTransactions(25, { accounts, users });
 const groups = genGroups(4, { users });
 
-const Page = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #efefef;
-  padding: 30px;
-  overflow-y: auto;
-`;
+storiesOf("entities/Account", module).add("Accounts table", () => (
+  <AccountsTable data={accounts} />
+));
 
-const Wrapper = ({ children }) => (
-  <Page>
-    <Card>{children}</Card>
-  </Page>
-);
+storiesOf("entities/Group", module).add("Groups table", () => (
+  <GroupsTable data={groups} onRowClick={action("onRowClick")} />
+));
 
-storiesOf("tables", module)
-  .add("AccountsTable", () => (
-    <Wrapper>
-      <AccountsTable data={accounts} />
-    </Wrapper>
-  ))
-  .add("GroupsTable", () => (
-    <Wrapper>
-      <GroupsTable data={groups} onRowClick={action("onRowClick")} />
-    </Wrapper>
-  ))
-  .add("TransactionsTable", () => (
-    <Wrapper>
-      <TransactionsTable accounts={accounts} data={transactions} />
-    </Wrapper>
-  ))
-  .add("RequestsTable", () => (
-    <Wrapper>
-      <RequestsTable data={requests} />
-    </Wrapper>
-  ));
+storiesOf("entities/Transaction", module).add("Transactions table", () => (
+  <TransactionsTable accounts={accounts} data={transactions} />
+));
+
+storiesOf("entities/Request", module).add("Requests table", () => (
+  <RequestsTable data={requests} />
+));

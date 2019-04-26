@@ -9,8 +9,8 @@ type Props = {
 
 class ModalLoading extends PureComponent<Props> {
   static defaultProps = {
-    width: 500,
-    height: 615,
+    width: 100,
+    height: 100,
   };
 
   render() {

@@ -8,7 +8,7 @@ import UsersQuery from "api/queries/UsersQuery";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";
 
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import UpdateDescriptionButton from "components/GroupCreationFlow/UpdateDescriptionButton";
 
@@ -78,7 +78,6 @@ const steps = [
             onClose();
           }}
           disabled={!hasEditOccured(payload, initialPayload)}
-          onError={null}
           additionalFields={{
             type: isEditMode ? "EDIT_GROUP" : "CREATE_GROUP",
             data,
@@ -95,7 +94,6 @@ const steps = [
   },
 ];
 
-const RenderLoading = () => <ModalLoading height={640} width={700} />;
 const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
   if (match.params.groupId) {
     return <GroupEdit groupId={match.params.groupId} close={close} />;
@@ -105,23 +103,25 @@ const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
 
 const GroupEdit = connectData(
   props => (
-    <MultiStepsFlow
-      Icon={FaUsers}
-      title={
-        <Text>
-          <Trans i18nKey="group:create.editTitle" />: {props.group.name}
-        </Text>
-      }
-      initialPayload={purgePayload(props.group)}
-      steps={steps}
-      additionalProps={{ ...props }}
-      onClose={props.close}
-      style={styles.container}
-      isEditMode
-    />
+    <GrowingCard>
+      <MultiStepsFlow
+        Icon={FaUsers}
+        title={
+          <Text>
+            <Trans i18nKey="group:create.editTitle" />: {props.group.name}
+          </Text>
+        }
+        initialPayload={purgePayload(props.group)}
+        steps={steps}
+        additionalProps={{ ...props }}
+        onClose={props.close}
+        style={styles.container}
+        isEditMode
+      />
+    </GrowingCard>
   ),
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     queries: {
       operators: UsersQuery,
       group: GroupQuery,
@@ -134,18 +134,20 @@ const GroupEdit = connectData(
 );
 const GroupCreation = connectData(
   props => (
-    <MultiStepsFlow
-      Icon={FaUsers}
-      title={<Trans i18nKey="group:create.title" />}
-      initialPayload={initialPayload}
-      steps={steps}
-      additionalProps={props}
-      onClose={props.close}
-      style={styles.container}
-    />
+    <GrowingCard>
+      <MultiStepsFlow
+        Icon={FaUsers}
+        title={<Trans i18nKey="group:create.title" />}
+        initialPayload={initialPayload}
+        steps={steps}
+        additionalProps={props}
+        onClose={props.close}
+        style={styles.container}
+      />
+    </GrowingCard>
   ),
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     queries: {
       operators: UsersQuery,
     },

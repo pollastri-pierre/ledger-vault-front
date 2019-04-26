@@ -20,7 +20,7 @@ const mockMatch = {
 
 const PendingBadge = () => <NotifComponent>5</NotifComponent>;
 
-storiesOf("layout", module).add("VaultLayout", () => <Wrapper />);
+storiesOf("components/base", module).add("VaultLayout", () => <Wrapper />);
 
 class Wrapper extends React.Component {
   constructor() {

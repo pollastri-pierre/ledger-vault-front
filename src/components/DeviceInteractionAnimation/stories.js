@@ -35,7 +35,7 @@ const serverInteraction = {
   },
 };
 
-storiesOf("other", module).add("DeviceInteractionAnimation", () => (
+storiesOf("components", module).add("DeviceInteractionAnimation", () => (
   <Box flow={20}>
     <Box align="flex-start" pb={60}>
       <Text>Initial state</Text>

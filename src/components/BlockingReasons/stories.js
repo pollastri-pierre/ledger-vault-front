@@ -34,7 +34,7 @@ const error = {
   blocking_reasons: mock,
 };
 
-storiesOf("Others", module).add("BlockingReasons", () => (
+storiesOf("components", module).add("BlockingReasons", () => (
   <Modal isOpened>
     <BlockingReasons error={error} />
   </Modal>

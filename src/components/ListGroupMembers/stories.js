@@ -9,7 +9,7 @@ import { genUsers } from "data/mock-entities";
 
 const users = genUsers(20);
 const members = users.slice(0, 5);
-storiesOf("other", module).add("ListGroupMembers", () => (
+storiesOf("components", module).add("ListGroupMembers", () => (
   <div style={{ width: 400 }}>
     <Box flow={50}>
       <Box flow={10}>

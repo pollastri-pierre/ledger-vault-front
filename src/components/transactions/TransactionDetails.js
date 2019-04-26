@@ -17,7 +17,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import TryAgain from "components/TryAgain";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import {
   ModalHeader,
   ModalTitle,
@@ -63,14 +63,17 @@ class TransactionDetails extends Component<Props, *> {
     } = this.props;
 
     const note = transaction.notes[0];
+    const { transaction: rawTransaction } = transaction;
     const { value } = this.state;
     const currency = getCryptoCurrencyById(account.currency);
-    const url = getTransactionExplorer(
-      getDefaultExplorerView(currency),
-      transaction.transaction.hash,
-    );
+    const url = rawTransaction
+      ? getTransactionExplorer(
+          getDefaultExplorerView(currency),
+          rawTransaction.hash,
+        )
+      : null;
 
-    return (
+    const inner = (
       <ModalBody height={700} onClose={close}>
         <ModalHeader>
           <ModalTitle>
@@ -126,10 +129,7 @@ class TransactionDetails extends Component<Props, *> {
         {value === 3 && <TabHistory transaction={transaction} />}
 
         <ModalFooter>
-          {account.currency &&
-          transaction.transaction &&
-          transaction.transaction.hash &&
-          url ? (
+          {url ? (
             <DialogButton>
               <a target="_blank" rel="noopener noreferrer" href={url}>
                 <Trans i18nKey="transactionDetails:explore" />
@@ -139,6 +139,8 @@ class TransactionDetails extends Component<Props, *> {
         </ModalFooter>
       </ModalBody>
     );
+
+    return <GrowingCard>{inner}</GrowingCard>;
   }
 }
 
@@ -154,11 +156,9 @@ const RenderError = ({
   </div>
 );
 
-const RenderLoading = () => <ModalLoading height={700} />;
-
 export default connectData(TransactionDetails, {
   RenderError,
-  RenderLoading,
+  RenderLoading: GrowingSpinner,
   queries: {
     transactionWithAccount: TransactionWithAccountQuery,
     profile: ProfileQuery,

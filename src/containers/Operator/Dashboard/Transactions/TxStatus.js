@@ -7,14 +7,14 @@ import Box from "components/base/Box";
 import type { Transaction } from "data/types";
 
 class TxStatus extends PureComponent<{
-  operation: Transaction,
+  transaction: Transaction,
 }> {
   render() {
-    const { operation } = this.props;
+    const { transaction } = this.props;
 
     return (
       <Box width={150} align="flex-start">
-        <TransactionStatus operation={operation} />
+        <TransactionStatus transaction={transaction} />
       </Box>
     );
   }

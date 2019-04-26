@@ -8,7 +8,7 @@ import connectData from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
 import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
-import ModalLoading from "components/ModalLoading";
+import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import AccountQuery from "api/queries/AccountQuery";
 import UsersQuery from "api/queries/UsersQuery";
@@ -100,7 +100,6 @@ const steps = [
             onClose();
           }}
           disabled={false}
-          onError={null}
           additionalFields={{
             type: isEditMode ? "EDIT_ACCOUNT" : "CREATE_ACCOUNT",
             data,
@@ -121,8 +120,6 @@ const title = <Trans i18nKey="accountCreation:title" />;
 const styles = {
   container: { minHeight: 670 },
 };
-
-const RenderLoading = () => <ModalLoading height={670} width={700} />;
 
 const GATE_ACCOUNT_TYPES_BY_CURRENCY_FAMILY = {
   bitcoin: "Bitcoin",
@@ -153,24 +150,26 @@ function getGateAccountType(payload: AccountCreationPayload) {
 // TODO see if we can get rid of some api call like potentialAccounts
 const AccountEdit = connectData(
   props => (
-    <MultiStepsFlow
-      Icon={FaMoneyCheck}
-      title={
-        <Text>
-          <Trans i18nKey="accountCreation:edit_title" />: {props.account.name}
-        </Text>
-      }
-      steps={steps}
-      additionalProps={props}
-      style={styles.container}
-      onClose={props.close}
-      isEditMode
-      initialPayload={deserialize(props.account)}
-      initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
-    />
+    <GrowingCard>
+      <MultiStepsFlow
+        Icon={FaMoneyCheck}
+        title={
+          <Text>
+            <Trans i18nKey="accountCreation:edit_title" />: {props.account.name}
+          </Text>
+        }
+        steps={steps}
+        additionalProps={props}
+        style={styles.container}
+        onClose={props.close}
+        isEditMode
+        initialPayload={deserialize(props.account)}
+        initialCursor={props.account.status === "VIEW_ONLY" ? 1 : 2}
+      />
+    </GrowingCard>
   ),
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     RenderError: TryAgain,
     queries: {
       allAccounts: PotentialParentAccountsQuery,
@@ -188,18 +187,20 @@ const AccountEdit = connectData(
 );
 const AccountCreation = connectData(
   props => (
-    <MultiStepsFlow
-      Icon={FaMoneyCheck}
-      title={title}
-      initialPayload={initialPayload}
-      steps={steps}
-      additionalProps={props}
-      style={styles.container}
-      onClose={props.close}
-    />
+    <GrowingCard>
+      <MultiStepsFlow
+        Icon={FaMoneyCheck}
+        title={title}
+        initialPayload={initialPayload}
+        steps={steps}
+        additionalProps={props}
+        style={styles.container}
+        onClose={props.close}
+      />
+    </GrowingCard>
   ),
   {
-    RenderLoading,
+    RenderLoading: GrowingSpinner,
     RenderError: TryAgain,
     queries: {
       allAccounts: PotentialParentAccountsQuery,

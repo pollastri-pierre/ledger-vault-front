@@ -34,11 +34,12 @@ const HashEllipsis = styled.div`
 `;
 
 class TxHash extends PureComponent<{
-  operation: Transaction,
+  transaction: Transaction,
 }> {
   render() {
-    const { operation } = this.props;
-    const hash = operation.transaction.hash || "N/A";
+    const { transaction } = this.props;
+    const { transaction: rawTransaction } = transaction;
+    const hash = rawTransaction ? rawTransaction.hash : "N/A";
 
     return (
       <Box color={colors.lead} grow={hash.length > 10} px={20} width={150}>

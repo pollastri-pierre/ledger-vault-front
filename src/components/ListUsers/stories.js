@@ -22,7 +22,7 @@ const unchanged = users.slice(10, 12).map(m => ({
   history: "unchanged",
 }));
 
-storiesOf("other", module).add("ListUsers", () => (
+storiesOf("components", module).add("ListUsers", () => (
   <div style={{ width: 400 }}>
     <ListUsers usersWithHistory={[...removed, ...added, ...unchanged]} />
   </div>

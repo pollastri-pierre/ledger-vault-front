@@ -17,7 +17,7 @@ const Page = styled.div`
   background-color: #eee;
 `;
 
-storiesOf("layout", module).add("Card", () => (
+storiesOf("components/base", module).add("Card", () => (
   <Page>
     <Card>
       <CardTitle>This is the card title</CardTitle>

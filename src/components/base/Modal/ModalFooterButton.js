@@ -17,7 +17,7 @@ const StyledModalFooterButton = styled.button.attrs(p => ({
   justify-content: center;
   font: inherit;
   height: 60px;
-  padding: 0 10px;
+  padding: 0 15px;
   border: none;
   background-color: transparent;
   box-shadow: ${p => p.color} 0 -4px 0 inset;

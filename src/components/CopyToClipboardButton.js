@@ -32,6 +32,7 @@ const Container = styled(Box).attrs({
     }
   }
 `;
+
 const styles = {
   text: {
     overflow: "hidden",

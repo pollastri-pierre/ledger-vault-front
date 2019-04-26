@@ -12,7 +12,7 @@ import Box from "components/base/Box";
 
 const bitcoin: CryptoCurrency = getCryptoCurrencyById("bitcoin");
 
-storiesOf("other", module).add("InputAmount", () => {
+storiesOf("components/form", module).add("InputAmount", () => {
   return <Wrapper currency={bitcoin} />;
 });
 

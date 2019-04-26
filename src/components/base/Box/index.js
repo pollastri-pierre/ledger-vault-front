@@ -9,6 +9,7 @@ import {
   height,
   flex,
   flexWrap,
+  flexDirection,
   alignSelf,
 } from "styled-system";
 
@@ -25,7 +26,7 @@ type Props = {
 
 export const px = (n: number) => `${n}px`;
 
-const flexDirection = (props: Props) => (props.horizontal ? "row" : "column");
+const direction = (props: Props) => (props.horizontal ? "row" : "column");
 const flexGrow = (props: Props) => (props.grow ? 1 : "initial");
 const align = (props: Props) => props.align || "stretch";
 const justify = (props: Props) => props.justify || "flex-start";
@@ -60,7 +61,7 @@ const flow = (props: Props) => {
 
 export default styled.div`
   display: ${displayFlex};
-  flex-direction: ${flexDirection};
+  flex-direction: ${direction};
   flex-grow: ${flexGrow};
   flex-shrink: ${flexShrink};
   align-items: ${align};
@@ -73,6 +74,7 @@ export default styled.div`
   ${flex};
   ${alignSelf};
   ${flexWrap};
+  ${flexDirection};
   ${color};
   ${space};
   ${flow};

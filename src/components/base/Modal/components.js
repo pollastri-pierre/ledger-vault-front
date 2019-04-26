@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import colors from "shared/colors";
 import Box, { px } from "components/base/Box";
@@ -12,14 +13,17 @@ export const ModalDialog = styled(Box)`
   min-height: 200px;
 `;
 
-export const ModalDialogInner = styled(Box).attrs({ bg: "white" })`
+export const boxShadow = `0px 11px 15px -7px rgba(0, 0, 0, 0.04),
+    0px 24px 38px 3px rgba(0, 0, 0, 0.04), 0px 9px 46px 8px rgba(0, 0, 0, 0.04)`;
+
+export const ModalDialogInner = styled(Box)`
+  background: ${p => (p.transparent ? "transparent" : "white")};
   position: relative;
   margin-bottom: 40px;
   margin-top: 40px;
   border-radius: 4px;
   flex-shrink: 0;
-  box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.04),
-    0px 24px 38px 3px rgba(0, 0, 0, 0.04), 0px 9px 46px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: ${p => (p.transparent ? "none" : boxShadow)};
 `;
 
 export const ModalBreadcrumb = styled(Box).attrs({
@@ -111,3 +115,85 @@ export const ModalClose = ({ onClick }: { onClick: () => void }) => (
     <IconClose size={16} />
   </ModalCloseContainer>
 );
+
+const RichModalHeaderContainer = styled.div`
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: #f5f5f5;
+  padding: 40px;
+  color: #aaa;
+`;
+
+const RichModalHeaderButt = styled.div`
+  margin-top: 20px;
+  margin-bottom: -40px;
+`;
+
+export const RichModalHeader = ({
+  title,
+  children,
+  Icon,
+  onClose,
+}: {
+  children?: React$Node,
+  title: React$Node,
+  Icon: React$ComponentType<*>,
+  onClose: () => void,
+}) => (
+  <RichModalHeaderContainer>
+    <ModalClose onClick={onClose} />
+    <Box horizontal flow={10} align="center">
+      <Icon size={24} color="#ddd" />
+      <Text large>{title}</Text>
+    </Box>
+    {children && (
+      <RichModalHeaderButt>
+        <Box horizontal align="center" justify="space-between">
+          {children}
+        </Box>
+      </RichModalHeaderButt>
+    )}
+  </RichModalHeaderContainer>
+);
+
+const RichModalFooterContainer = styled.div`
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 0 20px;
+  border-top: 1px dashed #f0f0f0;
+  min-height: 90px;
+  display: flex;
+  align-items: flex-end;
+`;
+
+export const RichModalFooter = ({ children }: { children: React$Node }) => (
+  <RichModalFooterContainer>{children}</RichModalFooterContainer>
+);
+
+export const RichModalTabsContainer = styled.div`
+  display: flex;
+
+  > * + * {
+    margin-left: 5px;
+  }
+`;
+
+export const RichModalTab = styled(({ isActive, ...props }) => (
+  <Link {...props} />
+))`
+  background: ${p => (p.isActive ? "white" : "unset")};
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 10px;
+  text-decoration: none;
+  pointer-events: ${p => (p.isActive ? "none" : "auto")};
+
+  &:hover {
+    cursor: pointer;
+    background: ${p => (p.isActive ? "white" : "rgba(0, 0, 0, 0.02)")};
+  }
+
+  &:active {
+    background: rgba(0, 0, 0, 0.03);
+  }
+`;

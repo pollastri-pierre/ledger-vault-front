@@ -9,7 +9,7 @@ import SelectCurrency from "components/SelectCurrency";
 
 const noOptionsMessage = () => "No options";
 
-storiesOf("selects", module).add("SelectCurrency", () => (
+storiesOf("components/form/selects", module).add("SelectCurrency", () => (
   <div style={{ width: 300 }}>
     <SelectCurrency
       autoFocus

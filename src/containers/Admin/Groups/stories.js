@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import React, { Component } from "react";
-
+import React from "react";
+import StoryRouter from "storybook-react-router";
 import { storiesOf } from "@storybook/react";
 
 import schema from "data/schema";
@@ -36,60 +36,42 @@ const fakeNetwork = async url => {
       users: keyBy(users, "id"),
       groups: keyBy(groups, "id"),
     })[0];
-    return {
+    const g = {
       ...group,
       last_request: requests.find(r => r.type === "CREATE_GROUP"),
     };
+    g.status = "ACTIVE";
+    g.last_request.status = "PENDING";
+    return g;
   }
   throw new Error("invalid url");
 };
 
-storiesOf("flows", module).add("Group Creation", () => (
+storiesOf("entities/Group", module).add("Group creation", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: {} }} />
     </Modal>
   </RestlayProvider>
 ));
 
-storiesOf("flows", module).add("Group Edit", () => (
+storiesOf("entities/Group", module).add("Group edit", () => (
   <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
+    <Modal transparent isOpened>
       <GroupCreationFlow match={{ params: { groupId: 1 } }} />
     </Modal>
   </RestlayProvider>
 ));
 
-class WithRouter extends Component {
-  state = {
-    tabIndex: 0,
-  };
-
-  history = {
-    replace: path => {
-      const split = path.split("/");
-      this.setState({ tabIndex: split[split.length - 1] });
-    },
-  };
-
-  render() {
-    return (
-      <GroupDetails
-        match={{ params: { groupId: 0, tabIndex: this.state.tabIndex } }}
-        history={this.history}
-        withoutRouter
-      />
-    );
-  }
-}
-
-storiesOf("Entity-Request modals", module).add("Group", () => (
-  <RestlayProvider network={fakeNetwork}>
-    <Modal isOpened>
-      <WithRouter />
-    </Modal>
-  </RestlayProvider>
-));
+storiesOf("entities/Group", module)
+  .addDecorator(StoryRouter())
+  .add("Group details", () => (
+    <RestlayProvider network={fakeNetwork}>
+      <Modal transparent isOpened>
+        <GroupDetails match={{ params: { groupId: 0 } }} />
+      </Modal>
+    </RestlayProvider>
+  ));
 
 function wrapConnection(data) {
   return {

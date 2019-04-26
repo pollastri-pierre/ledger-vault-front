@@ -11,7 +11,7 @@ import SelectAccount from "components/SelectAccount";
 const users = genUsers(20);
 const accounts = genAccounts(10, { users });
 
-storiesOf("selects", module).add("SelectAccount", () => (
+storiesOf("components/form/selects", module).add("SelectAccount", () => (
   <div style={{ width: 300 }}>
     <SelectAccount
       autoFocus

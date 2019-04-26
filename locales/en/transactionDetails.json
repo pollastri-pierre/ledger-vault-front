@@ -6,7 +6,8 @@
     "copy": "Copy",
     "date": "Sent date",
     "fees": "Fees",
-    "identifier": "Recipient address",
+    "recipient": "Recipient address",
+    "identifier": "Hash",
     "status": "Status",
     "total": "Total amount"
   },
