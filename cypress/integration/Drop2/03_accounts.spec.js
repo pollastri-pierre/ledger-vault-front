@@ -8,7 +8,7 @@ import {
   create_erc20_account,
 } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
+describe("Test Case for Account", function() {
   beforeEach(function() {
     login(4);
   });
@@ -22,7 +22,7 @@ describe("Tests Creation Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "HeyBitcoin", "APAC 1", "James Lepic");
+    create_account("Bitcoin", "HeyBitcoin", "APAC", "James Lepic");
     successfull_message();
   });
 
@@ -31,7 +31,7 @@ describe("Tests Creation Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Ethereum", "MyETH", "APAC 1", "Thomas");
+    create_account("Ethereum", "MyETH", "EMEA", "Thomas");
     successfull_message();
   });
 
@@ -40,7 +40,7 @@ describe("Tests Creation Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_erc20_account("USDC", "MyErc20", "ETH2", "APAC 1", "Anna");
+    create_erc20_account("USDC", "MyErc20", "ETH2", "South Africa", "Anna");
     successfull_message();
   });
 
@@ -51,5 +51,15 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/accounts");
     create_account("Bitcoin", "HeyBitcoin", "EMEA", "James Lepic");
     error_message("Account name already exists in this currency", "Error 236");
+  });
+
+  it("approve account", () => {
+    cy.server();
+    route();
+    cy.url().should("include", "/admin/dashboard");
+    cy.contains("Create Account").click();
+    cy.get("[data-test=dialog-button]")
+      .eq(1)
+      .click();
   });
 });

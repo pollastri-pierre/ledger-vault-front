@@ -6,7 +6,7 @@ import {
   successfull_message,
 } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
+describe("Test Revoke User", function() {
   beforeEach(function() {
     login(4);
   });
@@ -25,7 +25,7 @@ describe("Tests Creation Account", function() {
   it("Revoke Admin", () => {
     cy.server();
     route();
-    revoke_users("user4");
+    revoke_users("John Clark");
     successfull_message();
   });
 });

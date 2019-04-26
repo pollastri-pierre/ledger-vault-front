@@ -1,6 +1,6 @@
 import { login, logout, route, create_user } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
+describe("Add User as Operator and Admin", function() {
   beforeEach(function() {
     login(4);
   });

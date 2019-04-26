@@ -1,12 +1,23 @@
 import { login, route } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
+describe("Test the registration of a User", function() {
   beforeEach(function() {
     login(5);
   });
 
   afterEach(function() {
     // logout();
+  });
+
+  it("approve user", () => {
+    cy.server();
+    route();
+    cy.url().should("include", "/admin/dashboard");
+    cy.get("[data-test=menuItem-users]").click();
+    cy.url().should("include", "/admin/users");
+    cy.contains("PENDING_REGISTRATION").click();
+    cy.contains("Copy").click();
+    cy.url().type("{ctrl}V");
   });
 
   it("approve user", () => {
@@ -46,15 +57,5 @@ describe("Tests Creation Account", function() {
     );
     cy.contains("Anna Wagner");
     cy.get("[data-test=dialog-button]").click();
-  });
-
-  it("approve account", () => {
-    cy.server();
-    route();
-    cy.url().should("include", "/admin/dashboard");
-    cy.contains("Create Account").click();
-    cy.get("[data-test=dialog-button]")
-      .eq(1)
-      .click();
   });
 });
