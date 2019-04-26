@@ -5,6 +5,8 @@
     "operationRules": "Operation rules",
     "history": "History",
     "accounts": "Accounts",
-    "lastRequest": "Last request"
+    "lastRequest": "Last request",
+    "details": "Details",
+    "note": "Note"
   }
 }

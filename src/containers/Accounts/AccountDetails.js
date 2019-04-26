@@ -46,6 +46,7 @@ function AccountDetails(props: Props) {
       title={account.name}
       onClose={close}
       revokeButton={revokeButton}
+      editURL={`/accounts/edit/${account.id}`}
     >
       <AccountOverview key="overview" account={account} />
       <AccountOperationsRules key="operationRules" account={account} />

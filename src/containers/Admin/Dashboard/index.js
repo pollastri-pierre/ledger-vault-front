@@ -29,7 +29,7 @@ class AdminDashboard extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
-        `dashboard/groups/details/${request.target_id}/0`,
+        `dashboard/groups/details/${request.target_id}/overview`,
       );
     } else if (request.target_type === "PERSON") {
       this.props.history.push(`dashboard/users/details/${request.target_id}`);

@@ -40,10 +40,18 @@ class LineRow extends Component<{
             </Tooltip>
           )}
         </Box>
-        {children && <Box ellipsis>{children}</Box>}
+        {children && (
+          <Box ellipsis style={styles.value}>
+            {children}
+          </Box>
+        )}
       </BoxLined>
     );
   }
 }
+
+const styles = {
+  value: { userSelect: "text" },
+};
 
 export default LineRow;

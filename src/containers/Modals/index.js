@@ -8,14 +8,18 @@ import TransactionCreationFlow from "components/TransactionCreationFlow";
 import UserDetails from "containers/Admin/Users/UserDetails";
 import OrganizationDetails from "containers/Admin/OrganizationDetails";
 import AccountDetails from "containers/Accounts/AccountDetails";
-import TransactionDetails from "components/transactions/TransactionModal";
+import TransactionDetails from "components/transactions/TransactionDetails";
 import EditAdminRules from "containers/Admin/Dashboard/EditAdminRules";
 import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
   <Fragment>
     {/* USER */}
-    <ModalRoute transparent path="*/users/details/:userID" component={UserDetails} />
+    <ModalRoute
+      transparent
+      path="*/users/details/:userID"
+      component={UserDetails}
+    />
 
     {/* ACCOUNT */}
     <ModalRoute
@@ -37,10 +41,14 @@ export default () => (
 
     {/* GROUP */}
     <ModalRoute transparent path="*/groups/new" component={GroupCreationFlow} />
-    <ModalRoute transparent path="*/groups/edit/:groupId" component={GroupCreationFlow} />
     <ModalRoute
       transparent
-      path="*/groups/details/:groupId/:tabIndex?"
+      path="*/groups/edit/:groupId"
+      component={GroupCreationFlow}
+    />
+    <ModalRoute
+      transparent
+      path="*/groups/details/:groupId/:tab?"
       undoAllHistoryOnClickOutside
       component={GroupDetails}
     />
