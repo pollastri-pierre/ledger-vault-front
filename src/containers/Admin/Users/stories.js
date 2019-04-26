@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import React from "react";
+import StoryRouter from "storybook-react-router";
 import { storiesOf } from "@storybook/react";
 
 import schema from "data/schema";
@@ -32,10 +33,12 @@ const fakeNetwork = async url => {
   throw new Error("invalid url");
 };
 
-storiesOf("entities/User", module).add("User details", () => (
-  <RestlayProvider network={fakeNetwork}>
-    <Modal transparent isOpened>
-      <UserDetails match={{ params: { userID: 1 } }} history={[]} />
-    </Modal>
-  </RestlayProvider>
-));
+storiesOf("entities/User", module)
+  .addDecorator(StoryRouter())
+  .add("User details", () => (
+    <RestlayProvider network={fakeNetwork}>
+      <Modal transparent isOpened>
+        <UserDetails match={{ params: { userID: 1 } }} history={[]} />
+      </Modal>
+    </RestlayProvider>
+  ));
