@@ -63,12 +63,15 @@ class TransactionDetails extends Component<Props, *> {
     } = this.props;
 
     const note = transaction.notes[0];
+    const { transaction: rawTransaction } = transaction;
     const { value } = this.state;
     const currency = getCryptoCurrencyById(account.currency);
-    const url = getTransactionExplorer(
-      getDefaultExplorerView(currency),
-      transaction.transaction.hash,
-    );
+    const url = rawTransaction
+      ? getTransactionExplorer(
+          getDefaultExplorerView(currency),
+          rawTransaction.hash,
+        )
+      : null;
 
     const inner = (
       <ModalBody height={700} onClose={close}>
@@ -126,10 +129,7 @@ class TransactionDetails extends Component<Props, *> {
         {value === 3 && <TabHistory transaction={transaction} />}
 
         <ModalFooter>
-          {account.currency &&
-          transaction.transaction &&
-          transaction.transaction.hash &&
-          url ? (
+          {url ? (
             <DialogButton>
               <a target="_blank" rel="noopener noreferrer" href={url}>
                 <Trans i18nKey="transactionDetails:explore" />

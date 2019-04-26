@@ -13,31 +13,31 @@ import type { Transaction, Account } from "data/types";
 import colors from "shared/colors";
 
 class TxAmount extends PureComponent<{
-  operation: Transaction,
+  transaction: Transaction,
   account: Account,
 }> {
   render() {
-    const { operation, account } = this.props;
+    const { transaction, account } = this.props;
     return (
       <Box width={150} align="flex-end">
         <Text
-          color={operation.type === "RECEIVE" ? colors.green : colors.lead}
+          color={transaction.type === "RECEIVE" ? colors.green : colors.lead}
           bold
         >
           <CurrencyAccountValue
             alwaysShowSign
             account={account}
-            value={operation.amount}
-            type={operation.type}
+            value={transaction.amount}
+            type={transaction.type}
             erc20Format={account.account_type === "ERC20"}
           />
         </Text>
         <CounterValue
           from={account.currency}
-          value={operation.amount}
+          value={transaction.amount}
           alwaysShowSign
           disableCountervalue={account.account_type === "ERC20"}
-          type={operation.type}
+          type={transaction.type}
         />
       </Box>
     );

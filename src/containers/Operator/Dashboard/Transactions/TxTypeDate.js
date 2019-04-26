@@ -87,7 +87,7 @@ const styles = {
     textTransform: "capitalize",
   },
 };
-function OperationTypeFormatter({ type }: { type: string }) {
+function TransactionTypeFormatter({ type }: { type: string }) {
   return (
     <Text style={styles.type} bold>
       {type.toLowerCase()}
@@ -96,20 +96,20 @@ function OperationTypeFormatter({ type }: { type: string }) {
 }
 
 class TxTypeDate extends PureComponent<{
-  operation: Transaction,
+  transaction: Transaction,
 }> {
   render() {
-    const { operation } = this.props;
+    const { transaction } = this.props;
 
     return (
       <Box horizontal flow={10} align="center" width={250}>
         <TxType
-          type={operation.type}
-          isConfirmed={operation.confirmations > 0}
+          type={transaction.type}
+          isConfirmed={transaction.confirmations > 0}
         />
         <Box color={colors.lead}>
-          <OperationTypeFormatter type={operation.type} />
-          <DateFormat format="ddd D MMM, h:mmA" date={operation.created_on} />
+          <TransactionTypeFormatter type={transaction.type} />
+          <DateFormat format="ddd D MMM, h:mmA" date={transaction.created_on} />
         </Box>
       </Box>
     );

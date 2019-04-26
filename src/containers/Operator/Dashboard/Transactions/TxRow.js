@@ -25,11 +25,11 @@ class TxRow extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <TxTypeDate operation={transaction} />
+        <TxTypeDate transaction={transaction} />
         {account && <TxAccountName account={account} />}
-        <TxStatus operation={transaction} />
-        <TxHash operation={transaction} />
-        {account && <TxAmount operation={transaction} account={account} />}
+        <TxStatus transaction={transaction} />
+        <TxHash transaction={transaction} />
+        {account && <TxAmount transaction={transaction} account={account} />}
       </Fragment>
     );
   }
