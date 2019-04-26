@@ -285,6 +285,7 @@ export function create_account(currency, name, group, user1) {
   cy.get("#input_groups_users")
     .type(group, { force: true })
     .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
   cy.contains("Add approval").click();
   cy.get("input#input_groups_users")
     .eq(1)

@@ -7,7 +7,7 @@ import {
   error_message,
 } from "../../functions/actions";
 
-describe("Tests Creation Account", function() {
+describe("Test Case for Groups", function() {
   beforeEach(function() {
     login(4);
   });
@@ -60,7 +60,7 @@ describe("Tests Creation Account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-
+    cy.wait(2500);
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
@@ -204,6 +204,5 @@ describe("Tests Creation Account", function() {
     cy.contains("Delete group").click();
     cy.wait(1500);
     cy.contains("Reject").click();
-    successfull_message();
   });
 });
