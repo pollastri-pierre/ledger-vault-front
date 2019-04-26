@@ -14,37 +14,52 @@ import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
   <Fragment>
+    {/* USER */}
+    <ModalRoute transparent path="*/users/details/:userID" component={UserDetails} />
+
+    {/* ACCOUNT */}
     <ModalRoute
-      path="*/groups/details/:groupId/:tabIndex?"
-      undoAllHistoryOnClickOutside
-      component={GroupDetails}
-    />
-    <ModalRoute path="*/groups/edit/:groupId" component={GroupCreationFlow} />
-    <ModalRoute path="*/users/details/:userID" component={UserDetails} />
-    <ModalRoute
+      transparent
       path="*/accounts/details/:accountId"
       component={AccountDetails}
     />
     <ModalRoute
+      transparent
       path="*/accounts/edit/:accountId"
       component={AccountCreationFlow}
     />
-    <ModalRoute path="*/groups/new" component={GroupCreationFlow} />
-    <ModalRoute path="*/send" component={TransactionCreationFlow} />
     <ModalRoute
-      path="*/transactions/details/:transactionId/:tabIndex"
-      component={TransactionDetails}
-    />
-    <ModalRoute
-      path="*/organization/details/:id"
-      component={OrganizationDetails}
-    />
-    <ModalRoute
+      transparent
       path="*/accounts/new"
       component={AccountCreationFlow}
       disableBackdropClick
     />
+
+    {/* GROUP */}
+    <ModalRoute transparent path="*/groups/new" component={GroupCreationFlow} />
+    <ModalRoute transparent path="*/groups/edit/:groupId" component={GroupCreationFlow} />
+    <ModalRoute
+      transparent
+      path="*/groups/details/:groupId/:tabIndex?"
+      undoAllHistoryOnClickOutside
+      component={GroupDetails}
+    />
+
+    {/* TRANSACTION */}
+    <ModalRoute transparent path="*/send" component={TransactionCreationFlow} />
+    <ModalRoute
+      transparent
+      path="*/transactions/details/:transactionId/:tabIndex"
+      component={TransactionDetails}
+    />
     <ModalRoute path="*/receive" component={ReceiveFlow} disableBackdropClick />
-    <ModalRoute path="*/admin-rules" component={EditAdminRules} />
+
+    {/* ORGANIZATION */}
+    <ModalRoute
+      transparent
+      path="*/organization/details/:id"
+      component={OrganizationDetails}
+    />
+    <ModalRoute transparent path="*/admin-rules" component={EditAdminRules} />
   </Fragment>
 );

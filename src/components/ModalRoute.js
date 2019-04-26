@@ -32,6 +32,7 @@ class ModalRoute extends Component<{
   component?: *,
   render?: *,
   children?: *,
+  transparent?: boolean,
 }> {
   static defaultProps = {
     undoAllHistoryOnClickOutside: false,
@@ -72,6 +73,7 @@ class ModalRoute extends Component<{
       children, // eslint-disable-line no-unused-vars
       undoAllHistoryOnClickOutside, // eslint-disable-line no-unused-vars
       disableBackdropClick,
+      transparent,
       ...rest
     } = this.props;
     return (
@@ -90,6 +92,7 @@ class ModalRoute extends Component<{
               isOpened={open}
               disableBackdropClick={disableBackdropClick}
               onClose={this.close}
+              transparent={transparent}
             >
               {inner}
             </Modal>
