@@ -85,13 +85,15 @@ function EntityModal(props: Props) {
         {content}
       </Box>
 
-      <RichModalFooter>
-        {hasPendingRequest(entity) ? (
-          <RequestActionButtons onSuccess={onClose} entity={entity} />
-        ) : entity.status === "ACTIVE" && revokeButton ? (
-          revokeButton
-        ) : null}
-      </RichModalFooter>
+      {entity.status !== "PENDING_REGISTRATION" && (
+        <RichModalFooter>
+          {hasPendingRequest(entity) ? (
+            <RequestActionButtons onSuccess={onClose} entity={entity} />
+          ) : entity.status === "ACTIVE" && revokeButton ? (
+            revokeButton
+          ) : null}
+        </RichModalFooter>
+      )}
     </>
   );
 
