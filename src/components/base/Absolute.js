@@ -9,6 +9,8 @@ export default styled.div`
   right: ${position("right")};
   bottom: ${position("bottom")};
 
+  width: ${p => (p.width ? `${p.width}px` : "auto")};
+
   ${p =>
     p.center
       ? `

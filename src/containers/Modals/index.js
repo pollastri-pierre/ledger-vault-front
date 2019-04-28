@@ -24,7 +24,7 @@ export default () => (
     {/* ACCOUNT */}
     <ModalRoute
       transparent
-      path="*/accounts/details/:accountId"
+      path="*/accounts/details/:accountId/:tab?"
       component={AccountDetails}
     />
     <ModalRoute

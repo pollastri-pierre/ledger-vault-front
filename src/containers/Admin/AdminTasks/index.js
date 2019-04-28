@@ -21,21 +21,27 @@ const mutationsToListen = [ApproveRequestMutation, AbortRequestMutation];
 class Users extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
-      this.props.history.push(`tasks/groups/details/${request.target_id}/0`);
+      this.props.history.push(
+        `tasks/groups/details/${request.target_id}/overview`,
+      );
     } else if (request.target_type === "PERSON") {
-      this.props.history.push(`tasks/users/details/${request.target_id}`);
+      this.props.history.push(
+        `tasks/users/details/${request.target_id}/overview`,
+      );
     } else if (
       request.target_type === "BITCOIN_ACCOUNT" ||
       request.target_type === "ERC20_ACCOUNT" ||
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
-      this.props.history.push(`tasks/accounts/details/${request.target_id}`);
+      this.props.history.push(
+        `tasks/accounts/details/${request.target_id}/overview`,
+      );
     } else if (
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
     ) {
       this.props.history.push(
-        `tasks/transactions/details/${request.target_id}/0`,
+        `tasks/transactions/details/${request.target_id}/overview`,
       );
     } else if (request.target_type === "ORGANIZATION") {
       this.props.history.push(`tasks/organization/details/${request.id}`);

@@ -54,17 +54,20 @@ const breadcrumbConfig = [
       </Box>
     ),
     children: [
-      { path: "*/receive", render: "Receive", exact: true },
-      { path: "*/send", render: "Send", exact: true },
-      { path: "/:role/dashboard", render: "Dashboard", exact: true },
-      { path: "/:role/tasks", render: "Admin tasks", exact: true },
-      { path: "/:role/groups", render: "Groups", exact: true },
-      { path: "/:role/users", render: "Users", exact: true },
+      { path: "*/receive*", render: "Receive", exact: true },
+      { path: "*/send*", render: "Send", exact: true },
+      { path: "/:role/dashboard*", render: "Dashboard", exact: true },
+      { path: "/:role/tasks*", render: "Admin tasks", exact: true },
+      { path: "/:role/groups*", render: "Groups", exact: true },
+      { path: "/:role/users*", render: "Users", exact: true },
       {
         path: "/:role/accounts",
         render: "Accounts",
         children: [
-          { path: "/:role/accounts/:id", render: p => p.match.params.id },
+          {
+            path: "/:role/accounts/view/:id",
+            render: p => p.match.params.id,
+          },
         ],
       },
       { path: "/:role/transactions*", render: "Transactions", exact: true },
@@ -72,13 +75,15 @@ const breadcrumbConfig = [
   },
 ];
 
-const AppBreadcrumb = withMe(({ me }) => (
-  <ConnectedBreadcrumb
-    prefix={`/${window.location.pathname.split("/")[1]}`}
-    config={breadcrumbConfig}
-    additionalProps={{ me }}
-  />
-));
+const AppBreadcrumb = withMe(({ me }) => {
+  return (
+    <ConnectedBreadcrumb
+      prefix={`/${window.location.pathname.split("/")[1]}`}
+      config={breadcrumbConfig}
+      additionalProps={{ me }}
+    />
+  );
+});
 
 const App = withMe((props: Props & { me: User }) => {
   const {

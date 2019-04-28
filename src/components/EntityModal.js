@@ -100,7 +100,7 @@ function EntityModal(props: Props) {
         ) : null}
       </RichModalHeader>
 
-      <Box width={600} p={40} style={{ minHeight: 200 }}>
+      <Box width={600} p={40} style={{ minHeight: 300 }}>
         {content}
       </Box>
 
