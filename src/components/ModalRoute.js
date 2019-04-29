@@ -28,16 +28,11 @@ function renderInner(routeProps, { component, render, children }, extraProps) {
 
 class ModalRoute extends Component<{
   disableBackdropClick?: boolean,
-  undoAllHistoryOnClickOutside?: boolean,
   component?: *,
   render?: *,
   children?: *,
   transparent?: boolean,
 }> {
-  static defaultProps = {
-    undoAllHistoryOnClickOutside: true,
-  };
-
   static contextTypes = {
     router: PropTypes.shape({
       history: PropTypes.object.isRequired,
@@ -50,19 +45,24 @@ class ModalRoute extends Component<{
     this._unmounted = true;
   }
 
-  historyLengthOnEnter: number = 0;
+  lastPath: ?string = null;
 
-  close = (undoAllHistory?: boolean = false) => {
+  onClose = () => {
     if (this._unmounted) return;
-    const move = undoAllHistory
-      ? this.historyLengthOnEnter - this.context.router.history.length - 1
-      : -1;
-    // TODO we probably need to handle case where use just loaded a modal page.
-    // in such case we need to replace the history and remove the part before the modal route path
-    this.context.router.history.go(move);
+    if (this.lastPath) {
+      this.context.router.history.replace(this.lastPath);
+    } else {
+      // assume we need to go back to a 3-length history
+      // /{orga}/{role}/{page}
+      const { pathname } = this.context.router.history.location;
+      const url = pathname
+        .split("/")
+        // 4 because of leading /
+        .slice(0, 4)
+        .join("/");
+      this.context.router.history.replace(url);
+    }
   };
-
-  onClose = () => this.close(this.props.undoAllHistoryOnClickOutside);
 
   lastMatch: ?Object;
 
@@ -71,7 +71,6 @@ class ModalRoute extends Component<{
       component, // eslint-disable-line no-unused-vars
       render, // eslint-disable-line no-unused-vars
       children, // eslint-disable-line no-unused-vars
-      undoAllHistoryOnClickOutside, // eslint-disable-line no-unused-vars
       disableBackdropClick,
       transparent,
       ...rest
@@ -79,14 +78,14 @@ class ModalRoute extends Component<{
     return (
       <Route {...rest}>
         {routeProps => {
-          if (routeProps.match && !this.lastMatch) {
-            this.historyLengthOnEnter = this.context.router.history.length;
-          }
           this.lastMatch = routeProps.match;
           const inner = renderInner(routeProps, this.props, {
             close: this.onClose,
           });
           const open = !!routeProps.match;
+          if (!open) {
+            this.lastPath = routeProps.location.pathname;
+          }
           return (
             <Modal
               isOpened={open}

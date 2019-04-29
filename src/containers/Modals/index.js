@@ -49,7 +49,6 @@ export default () => (
     <ModalRoute
       transparent
       path="*/groups/details/:groupId/:tab?"
-      undoAllHistoryOnClickOutside
       component={GroupDetails}
     />
 
