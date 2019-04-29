@@ -5,7 +5,7 @@ import { MdEdit } from "react-icons/md";
 
 import { createAndApprove } from "device/interactions/approveFlow";
 import { CardError } from "components/base/Card";
-import { RichModalHeader, CtaContainer } from "components/base/MultiStepsFlow";
+import { RichModalHeader, RichModalFooter } from "components/base/Modal";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
@@ -35,15 +35,17 @@ function EditAdminRules(props: Props) {
           min={2}
         />
       </Box>
-      <CtaContainer>
-        <ApproveRequestButton
-          interactions={createAndApprove}
-          disabled={quorum === organization.quorum}
-          additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
-          onSuccess={close}
-          buttonLabel="Edit"
-        />
-      </CtaContainer>
+      <RichModalFooter>
+        <Box align="flex-end" grow={1}>
+          <ApproveRequestButton
+            interactions={createAndApprove}
+            disabled={quorum === organization.quorum}
+            additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
+            onSuccess={close}
+            buttonLabel="Edit"
+          />
+        </Box>
+      </RichModalFooter>
     </Box>
   );
 

@@ -11,7 +11,7 @@ import RequestQuery from "api/queries/RequestQuery";
 import connectData from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import Status from "components/Status";
-import { RichModalHeader } from "components/base/MultiStepsFlow";
+import { RichModalHeader, RichModalFooter } from "components/base/Modal";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import RequestActionButtons from "components/RequestActionButtons";
@@ -32,7 +32,11 @@ function OrganizationDetails({
   invariant(request.organization, "No organization found!");
   const inner = (
     <Box width={500}>
-      <RichModalHeader title="Edit admin rules request" Icon={MdEdit} />
+      <RichModalHeader
+        title="Edit admin rules request"
+        Icon={MdEdit}
+        onClose={close}
+      />
       <Box py={50} align="center" justify="center" horizontal flow={10}>
         <Text large color={colors.grenade}>
           {request.organization.quorum}/{request.organization.number_of_admins}
@@ -43,13 +47,15 @@ function OrganizationDetails({
         </Text>
       </Box>
       {request.status !== "ABORTED" && request.status !== "APPROVED" ? (
-        <RequestActionButtons
-          onSuccess={() => {
-            restlay.fetchQuery(new OrganizationQuery());
-            close();
-          }}
-          entity={{ last_request: request }}
-        />
+        <RichModalFooter>
+          <RequestActionButtons
+            onSuccess={() => {
+              restlay.fetchQuery(new OrganizationQuery());
+              close();
+            }}
+            entity={{ last_request: request }}
+          />
+        </RichModalFooter>
       ) : (
         <Box align="flex-end" height={35} pr={20}>
           <Status status={request.status} />

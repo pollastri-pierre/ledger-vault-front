@@ -34,7 +34,7 @@ const mutationsToListen = [
 
 class Users extends PureComponent<Props> {
   handleUserClick = (user: User) => {
-    this.props.history.push(`users/details/${user.id}`);
+    this.props.history.push(`users/details/${user.id}/overview`);
   };
 
   inviteUser = () => {

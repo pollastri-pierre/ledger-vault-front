@@ -37,7 +37,10 @@ class AbortRequestButton extends PureComponent<Props, State> {
     try {
       await restlay.commitMutation(new AbortRequestMutation({ requestID }));
       await restlay.fetchQuery(
-        new RequestsQuery({ status: "PENDING_APPROVAL", pageSize: -1 }),
+        new RequestsQuery({
+          status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
+          pageSize: -1,
+        }),
       );
       onSuccess();
     } catch (error) {

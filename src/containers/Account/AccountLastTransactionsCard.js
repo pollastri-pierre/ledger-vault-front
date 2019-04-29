@@ -29,7 +29,9 @@ type Props = {
 class AccountLastTransactionsCard extends Component<Props> {
   handleTransactionClick = (transaction: Transaction) => {
     const { history, match } = this.props;
-    history.push(`${match.url}/transactions/details/${transaction.id}/0`);
+    history.push(
+      `${match.url}/transactions/details/${transaction.id}/overview`,
+    );
   };
 
   render() {

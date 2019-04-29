@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -43,13 +43,31 @@ const StyledModalFooterButton = styled.button.attrs(p => ({
 
 type Props = {
   children: React$Node,
+  onClick?: () => any | Promise<any>,
   isLoading?: boolean,
 };
 
 export default (props: Props) => {
-  const { children, isLoading, ...p } = props;
+  const { children, isLoading, onClick, ...p } = props;
+  const [isLocalLoading, setIsLocalLoading] = useState(isLoading);
+
+  const handleClick = () => {
+    if (!onClick) return;
+    const p = onClick();
+    if (p && p.then) {
+      setIsLocalLoading(true);
+      p.finally(() => {
+        setIsLocalLoading(false);
+      });
+    }
+  };
+
   return (
-    <StyledModalFooterButton isLoading={isLoading} {...p}>
+    <StyledModalFooterButton
+      isLoading={isLoading || isLocalLoading}
+      onClick={handleClick}
+      {...p}
+    >
       {isLoading && (
         <Absolute top={0} left={0} right={0} bottom={0} center>
           <CircularProgress size={15} />

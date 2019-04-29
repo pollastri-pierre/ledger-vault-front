@@ -26,11 +26,13 @@ type Props = {
 
 const AdminRulesCard = (props: Props) => {
   const { organization, onEdit, pendingRequests } = props;
-  const updateQuorumRequest = pendingRequests.filter(
-    r => r.type === "UPDATE_QUORUM",
-  )[0];
+  const updateQuorumRequest = findOne(pendingRequests, "UPDATE_QUORUM");
+  const addAdminRequest = findOne(pendingRequests, "CREATE_ADMIN");
+  const revokeAdminRequest = getRevokeAdminReq(pendingRequests);
+  const canEdit =
+    !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
   return (
-    <Card height={300} width={400}>
+    <Card width={400} style={{ minHeight: 300 }}>
       <CardTitle noMargin>Admin rules</CardTitle>
       <CardDesc i18nKey="adminDashboard:editAdminRules" />
       <Box flow={20} grow>
@@ -40,7 +42,7 @@ const AdminRulesCard = (props: Props) => {
             {organization.number_of_admins} admins
           </Text>
         </Box>
-        {!!updateQuorumRequest && (
+        {updateQuorumRequest && (
           <InfoBox type="warning">
             <Text>
               There is already a pending `update_quorum`{" "}
@@ -48,11 +50,25 @@ const AdminRulesCard = (props: Props) => {
                 to={`dashboard/organization/details/${updateQuorumRequest.id}`}
               >
                 request
-              </Link>{" "}
+              </Link>
             </Text>
           </InfoBox>
         )}
-        {pendingRequests.length > 0 && !updateQuorumRequest && (
+        {addAdminRequest && (
+          <InfoBox type="warning">
+            <Text>
+              {"You can't edit admin rules while an admin is being created"}
+            </Text>
+          </InfoBox>
+        )}
+        {revokeAdminRequest && (
+          <InfoBox type="warning">
+            <Text>
+              {"You can't edit admin rules while an admin is being revoked"}
+            </Text>
+          </InfoBox>
+        )}
+        {pendingRequests.length > 0 && canEdit && (
           <InfoBox type="warning">
             <Text i18nKey="adminDashboard:warningEditAdminRules" />
           </InfoBox>
@@ -62,13 +78,21 @@ const AdminRulesCard = (props: Props) => {
           type="submit"
           IconLeft={MdEdit}
           onClick={onEdit}
-          disabled={!!updateQuorumRequest}
+          disabled={!canEdit}
         >
           Edit admin rules
         </Button>
       </Box>
     </Card>
   );
+};
+
+const findOne = (requests, type) => requests.find(r => r.type === type);
+
+const getRevokeAdminReq = requests => {
+  const req = findOne(requests, "REVOKE_USER");
+  if (!req) return null;
+  return !!req.user && req.user.role === "ADMIN";
 };
 
 export default connectData(AdminRulesCard, {
