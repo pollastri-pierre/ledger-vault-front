@@ -102,7 +102,7 @@ export default connectData(withMe(AdminDashboard), {
     data: RequestsQuery,
   },
   propsToQueryParams: () => ({
-    status: "PENDING_APPROVAL",
+    status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
     pageSize: -1,
   }),
 });

@@ -33,7 +33,10 @@ const refetchPending: Interaction = {
   responseKey: "pending",
   action: ({ restlay }) =>
     restlay.fetchQuery(
-      new RequestsQuery({ status: "PENDING_APPROVAL", pageSize: -1 }),
+      new RequestsQuery({
+        status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
+        pageSize: -1,
+      }),
     ),
 };
 
