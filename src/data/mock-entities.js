@@ -114,7 +114,7 @@ function genAccount({ users = [] } = {}, extra = {}) {
   const status = approvals.find(a => a.type === "ABORT")
     ? "ABORTED"
     : nbApprovals >= 2
-    ? "APPROVED"
+    ? "ACTIVE"
     : "PENDING_APPROVAL";
   return {
     id: faker.random.number({ min: 1, max: 100000000 }),

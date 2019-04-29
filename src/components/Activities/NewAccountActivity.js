@@ -15,7 +15,7 @@ type Props = {
 class NewAccountActivity extends Component<Props> {
   getAccountLink = (account: Object) => {
     let link = `admin/tasks`;
-    if (account.status === "APPROVED") {
+    if (account.status === "ACTIVE") {
       link = `admin/accounts/${account.id}`;
     }
     return link;

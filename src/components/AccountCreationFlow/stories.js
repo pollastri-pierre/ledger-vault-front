@@ -21,7 +21,7 @@ const fakeNetwork = async url => {
   await delay(500);
   if (
     url ===
-    "/accounts?status=APPROVED&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY&pageSize=-1"
+    "/accounts?status=ACTIVE&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY&pageSize=-1"
   ) {
     return wrapConnection(accounts);
   }

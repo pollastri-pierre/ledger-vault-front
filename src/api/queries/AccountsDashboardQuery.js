@@ -10,7 +10,7 @@ type Response = Account[];
 
 export default class AccountDashboardQuery extends Query<Input, Response> {
   uri =
-    "/accounts?status=APPROVED&status=PENDING_UPDATE&status=VIEW_ONLY&status=PENDING_UPDATE_VIEW_ONLY";
+    "/accounts?status=ACTIVE&status=PENDING_UPDATE&status=VIEW_ONLY&status=PENDING_UPDATE_VIEW_ONLY";
 
   responseSchema = [schema.Account];
 

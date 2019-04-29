@@ -17,18 +17,18 @@ test("should return false if accounts length is 0", () => {
 });
 
 test("should return false if there is 1 account with one pending", () => {
-  const accounts = genAccounts(1, { users }, { status: "APPROVED" });
+  const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
   const transactions = genTransactions(1, { accounts, users });
   expect(isCreateTransactionEnabled(accounts, transactions)).toBe(false);
 });
 
 test("should return true if there is 1 account with no pending", () => {
-  const accounts = genAccounts(1, { users }, { status: "APPROVED" });
+  const accounts = genAccounts(1, { users }, { status: "ACTIVE" });
   expect(isCreateTransactionEnabled(accounts, [])).toBe(true);
 });
 
 test("should return true if there is 2 account with pending only in one account", () => {
-  const accounts = genAccounts(2, { users }, { status: "APPROVED" });
+  const accounts = genAccounts(2, { users }, { status: "ACTIVE" });
   const transactions = genTransactions(1, { accounts, users });
   expect(isCreateTransactionEnabled(accounts, transactions)).toBe(true);
 });

@@ -127,7 +127,7 @@ type IconWrapperProps = {
 
 const IconWrapper = ({ Icon, isFocused }: IconWrapperProps) => (
   <Absolute left={0} top={0} bottom={0} center width={40}>
-    <Icon color={isFocused ? colors.text : colors.form.placeholder} />
+    <Icon color={isFocused ? colors.text : colors.form.placeholder} size={16} />
   </Absolute>
 );
 

@@ -31,7 +31,7 @@ class Accounts extends PureComponent<Props> {
       <div>
         <SelectAccount
           accounts={formattedAccounts.filter(
-            a => a.status === "APPROVED" || a.status === "VIEW_ONLY",
+            a => a.status === "ACTIVE" || a.status === "VIEW_ONLY",
           )}
           value={selectedAccount}
           onChange={this.onSelect}
