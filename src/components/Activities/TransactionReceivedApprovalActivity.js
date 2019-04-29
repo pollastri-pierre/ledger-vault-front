@@ -17,7 +17,9 @@ class TransactionReceivedApprovalActivity extends Component<Props> {
     // TODO: update links when available
     let link = `admin/tasks`;
     if (operation.status === "SUBMITTED") {
-      link = `account/${operation.account_id}/operation/${operation.id}/0`;
+      link = `account/${operation.account_id}/operation/${
+        operation.id
+      }/overview`;
     }
     return link;
   };

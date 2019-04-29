@@ -18,7 +18,7 @@ class NewTransactionActivity extends Component<Props> {
       // TODO update with transaction view link
       link = `account/${transaction.account_id}/transaction/${
         transaction.id
-      }/0`;
+      }/overview`;
     }
     return link;
   };

@@ -29,9 +29,7 @@ class AdminAccounts extends PureComponent<Props> {
     const { me, location } = this.props;
     const role = me.role === "ADMIN" ? "admin" : "operator";
     const orgaName = location.pathname.split("/")[1];
-    this.props.history.push(
-      `/${orgaName}/${role}/accounts/view/${account.id}/overview`,
-    );
+    this.props.history.push(`/${orgaName}/${role}/accounts/view/${account.id}`);
   };
 
   createAccount = () => {

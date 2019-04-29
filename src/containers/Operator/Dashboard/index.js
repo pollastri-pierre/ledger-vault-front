@@ -38,7 +38,9 @@ const OperatorDashboard = memo((props: Props) => {
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
     ) {
-      history.push(`dashboard/transactions/details/${request.target_id}/0`);
+      history.push(
+        `dashboard/transactions/details/${request.target_id}/overview`,
+      );
     }
   }, []);
 

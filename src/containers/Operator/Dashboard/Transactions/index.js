@@ -43,7 +43,7 @@ type Props = {
 class Transactions extends PureComponent<Props> {
   handleTransactionClick = (transactionId: string) => {
     const { history, match } = this.props;
-    history.push(`${match.url}/transactions/details/${transactionId}/0`);
+    history.push(`${match.url}/transactions/details/${transactionId}/overview`);
   };
 
   render() {
