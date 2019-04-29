@@ -11,6 +11,7 @@ import { opacity } from "shared/colors";
 const StyledModalFooterButton = styled.button.attrs(p => ({
   tabIndex: p.isDisabled || p.isLoading ? -1 : 0,
 }))`
+  position: relative;
   display: flex;
   min-width: 50px;
   align-items: center;
@@ -45,6 +46,7 @@ type Props = {
   children: React$Node,
   onClick?: () => any | Promise<any>,
   isLoading?: boolean,
+  color?: string,
 };
 
 export default (props: Props) => {
@@ -68,12 +70,22 @@ export default (props: Props) => {
       onClick={handleClick}
       {...p}
     >
-      {isLoading && (
-        <Absolute top={0} left={0} right={0} bottom={0} center>
-          <CircularProgress size={15} />
-        </Absolute>
-      )}
-      <div style={{ opacity: isLoading ? 0 : 1 }}>{children}</div>
+      {isLoading ||
+        (isLocalLoading && (
+          <Absolute
+            top={0}
+            left={0}
+            right={0}
+            bottom={0}
+            center
+            style={{ color: p.color }}
+          >
+            <CircularProgress size={20} color="inherit" />
+          </Absolute>
+        ))}
+      <div style={{ opacity: isLoading || isLocalLoading ? 0.5 : 1 }}>
+        {children}
+      </div>
     </StyledModalFooterButton>
   );
 };
