@@ -3,6 +3,7 @@
     "CREATE_GROUP": "Create group",
     "CREATE_TRANSACTION": "Create transaction",
     "EDIT_GROUP": "Edit group",
+    "EDIT_ACCOUNT": "Edit account",
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",
     "CREATE_ADMIN": "Create Administrator",
@@ -13,6 +14,7 @@
   "approve": {
     "CREATE_GROUP": "Approve group creation",
     "EDIT_GROUP": "Approve group edition",
+    "EDIT_ACCOUNT": "Approve account edition",
     "REVOKE_GROUP": "Approve group deletion",
     "CREATE_ACCOUNT": "Approve account creation",
     "CREATE_OPERATOR": "Approve operator creation",
