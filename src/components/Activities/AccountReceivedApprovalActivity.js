@@ -16,7 +16,7 @@ class AccountReceivedApprovalActivity extends Component<Props> {
   getAccountLink = (account: *) => {
     // FIXME this is probably outdated
     let link = `admin/pending/accounts/${account.id}`;
-    if (account.status === "APPROVED") {
+    if (account.status === "ACTIVE") {
       link = `admin/accounts/${account.id}`;
     }
     return link;

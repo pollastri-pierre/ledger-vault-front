@@ -6,7 +6,7 @@ import { storiesOf } from "@storybook/react";
 import Status from "components/Status";
 import Box from "components/base/Box";
 
-const statuses = ["ABORTED", "APPROVED", "PENDING_APPROVAL", "VIEW_ONLY"];
+const statuses = ["ABORTED", "ACTIVE", "PENDING_APPROVAL", "VIEW_ONLY"];
 
 storiesOf("components", module).add("Status", () => (
   <Box flow={10}>

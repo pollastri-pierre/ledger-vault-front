@@ -32,7 +32,7 @@ const fresh_addresses = [
 
 const fakeNetwork = async url => {
   await delay(200);
-  if (url === "/accounts?status=APPROVED&status=VIEW_ONLY&pageSize=-1") {
+  if (url === "/accounts?status=ACTIVE&status=VIEW_ONLY&pageSize=-1") {
     return wrapConnection(accounts);
   }
   if (url.match(/^\/accounts\/[^/]*\/fresh_addresses/)) {

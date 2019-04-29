@@ -16,7 +16,7 @@ const accounts = genAccounts(20, { users });
 
 const fakeNetwork = async url => {
   await delay(200);
-  if (url === "/accounts?status=APPROVED&status=VIEW_ONLY&pageSize=-1") {
+  if (url === "/accounts?status=ACTIVE&status=VIEW_ONLY&pageSize=-1") {
     return wrapConnection(accounts);
   }
   if (url.startsWith("/validation")) {

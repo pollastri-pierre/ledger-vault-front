@@ -15,7 +15,7 @@ export default class PotentialParentAccountsQuery extends ConnectionQuery<
   Response,
 > {
   uri =
-    "/accounts?status=APPROVED&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY";
+    "/accounts?status=ACTIVE&status=PENDING&status=PENDING_UPDATE&status=PENDING_UPDATE_VIEW_ONLY&status=VIEW_ONLY";
 
   responseSchema = schema.Account;
 

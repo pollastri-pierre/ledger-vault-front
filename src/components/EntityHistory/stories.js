@@ -45,7 +45,7 @@ export const mockUserHistory = [
       username: "Admin 2",
     },
     created_on: "2019-03-25T09:46:32.673263+00:00",
-    status: "APPROVED",
+    status: "APPROVE",
     type: "CREATE_OPERATOR",
   },
 ];

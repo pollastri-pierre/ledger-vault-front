@@ -75,7 +75,7 @@ export function route() {
   cy.route("post", "**/challenge?account_type=ERC20").as("account_ERC20");
   cy.route("post", "**/accounts").as("accounts");
   cy.route("get", "**/accounts/pending").as("pending");
-  cy.route("get", "**/accounts?status=APPROVED&status=VIEW_ONLY").as(
+  cy.route("get", "**/accounts?status=ACTIVE&status=VIEW_ONLY").as(
     "approve_acc",
   );
 }
