@@ -14,6 +14,8 @@ import GroupCreationFlow from "components/GroupCreationFlow";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import requests from "data/mock-requests.json";
 
+import { EntityModalDecorator } from "utils/storybook";
+
 import { genUsers, genGroups, genAccounts } from "data/mock-entities";
 
 const users = genUsers(20);
@@ -65,12 +67,9 @@ storiesOf("entities/Group", module).add("Group edit", () => (
 
 storiesOf("entities/Group", module)
   .addDecorator(StoryRouter())
+  .addDecorator(EntityModalDecorator("GROUP"))
   .add("Group details", () => (
-    <RestlayProvider network={fakeNetwork}>
-      <Modal transparent isOpened>
-        <GroupDetails match={{ params: { groupId: 0 } }} />
-      </Modal>
-    </RestlayProvider>
+    <GroupDetails match={{ params: { groupId: 0 } }} />
   ));
 
 function wrapConnection(data) {
