@@ -15,6 +15,7 @@ import type { Interaction } from "components/DeviceInteraction";
 type Props = {
   interactions: Interaction[],
   isRevoke?: boolean,
+  Icon?: React$ComponentType<*>,
   color?: string,
   additionalFields: Object,
   onSuccess: Function,
@@ -74,7 +75,10 @@ class ApproveRequestButton extends PureComponent<Props, State> {
       confirmTitle,
       confirmLabel,
       rejectLabel,
+      Icon,
     } = this.props;
+
+    const BtnIcon = Icon || (isRevoke ? FaTrash : FaCheck);
 
     return (
       <Fragment>
@@ -94,11 +98,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             onClick={withConfirm ? this.openConfirmModal : this.onCreate}
             isDisabled={disabled}
           >
-            {isRevoke ? (
-              <FaTrash style={{ marginRight: 10 }} />
-            ) : (
-              <FaCheck style={{ marginRight: 10 }} />
-            )}
+            <BtnIcon style={{ marginRight: 10 }} />
             {buttonLabel}
           </ModalFooterButton>
         )}
