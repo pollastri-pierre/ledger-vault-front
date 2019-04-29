@@ -11,7 +11,7 @@ const hasMoreThanAscii = str =>
   str.split("").some(char => char.charCodeAt(0) > 127);
 
 export const STATUS_UPDATE_IN_PROGRESS = "PENDING_UPDATE";
-export const VISIBLE_MENU_STATUS = ["APPROVED", "PENDING_UPDATE", "VIEW_ONLY"];
+export const VISIBLE_MENU_STATUS = ["ACTIVE", "PENDING_UPDATE", "VIEW_ONLY"];
 export const APPROVE = "APPROVE";
 
 export const getAccountTitle = (account: Account) => `${account.name}`;

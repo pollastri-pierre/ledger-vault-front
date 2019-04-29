@@ -4,7 +4,8 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { MdEdit } from "react-icons/md";
 import { withRouter, matchPath } from "react-router";
-import type { Location } from "react-router-dom";
+import type { Location, Match } from "react-router-dom";
+import type { MemoryHistory } from "history";
 
 import {
   RichModalHeader,
@@ -26,9 +27,13 @@ type Props = {
   Icon: React$ComponentType<*>,
   onClose: () => void,
   location: Location,
+  match: Match,
+  history: MemoryHistory,
   children: React$Element<*>[],
   growing?: boolean,
   revokeButton?: React$Node,
+  footer?: React$Node,
+  editURL?: string,
 };
 
 function EntityModal(props: Props) {
@@ -39,12 +44,18 @@ function EntityModal(props: Props) {
     onClose,
     children,
     location,
+    match,
     entity,
+    history,
+    editURL,
     revokeButton,
+    footer,
   } = props;
 
   const onClickEdit = () => {
-    // console.log(`clicking edit`);
+    if (match.params["0"] && editURL) {
+      history.push(`${match.params["0"]}${editURL}`);
+    }
   };
 
   const lastRequest = <EntityLastRequest key="lastRequest" entity={entity} />;
@@ -58,40 +69,50 @@ function EntityModal(props: Props) {
       return matchPath(location.pathname, { path, exact: true });
     }) || childs[0];
 
+  const hasPendingReq = hasPendingRequest(entity);
+  const showRevoke = entity.status === "ACTIVE" && revokeButton;
+  const showFooter =
+    entity.status !== "PENDING_REGISTRATION" &&
+    (hasPendingReq || showRevoke || footer);
+
   const inner = (
     <>
       <RichModalHeader title={title} Icon={Icon} onClose={onClose}>
         <RichModalTabsContainer>
-          {childs.map(child => (
-            <RichModalTab
-              key={child.key}
-              to={child.key}
-              isActive={child === content}
-            >
-              <Trans i18nKey={`entityModal:tabs.${child.key || ""}`} />
-            </RichModalTab>
-          ))}
+          {childs.map(child =>
+            child ? (
+              <RichModalTab
+                key={child.key}
+                to={child.key}
+                isActive={child === content}
+              >
+                <Trans i18nKey={`entityModal:tabs.${child.key || ""}`} />
+              </RichModalTab>
+            ) : null,
+          )}
         </RichModalTabsContainer>
-        {hasPendingRequest(entity) ? (
+        {hasPendingReq ? (
           <RichModalTab to="lastRequest" isActive={content === lastRequest}>
             <Trans i18nKey="entityModal:tabs.lastRequest" />
           </RichModalTab>
-        ) : (
+        ) : editURL ? (
           <EditButton onClick={onClickEdit} />
-        )}
+        ) : null}
       </RichModalHeader>
 
-      <Box width={600} p={40} style={{ minHeight: 200 }}>
+      <Box width={600} p={40} style={{ minHeight: 300 }}>
         {content}
       </Box>
 
-      {entity.status !== "PENDING_REGISTRATION" && (
+      {showFooter && (
         <RichModalFooter>
-          {hasPendingRequest(entity) ? (
+          {hasPendingReq ? (
             <RequestActionButtons onSuccess={onClose} entity={entity} />
-          ) : entity.status === "ACTIVE" && revokeButton ? (
-            revokeButton
-          ) : null}
+          ) : showRevoke ? (
+            revokeButton || null
+          ) : (
+            footer || null
+          )}
         </RichModalFooter>
       )}
     </>

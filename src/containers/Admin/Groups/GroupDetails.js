@@ -58,6 +58,7 @@ function GroupDetails(props: Props) {
       title={group.name}
       onClose={close}
       revokeButton={revokeButton}
+      editURL={`/groups/edit/${group.id}`}
     >
       <GroupDetailsOverview
         key="overview"

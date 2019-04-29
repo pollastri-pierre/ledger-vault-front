@@ -224,6 +224,7 @@ const genTransaction = ({ account, users }) => {
     senders: [],
     recipient: [],
     recipients: [],
+    notes: [],
     transaction: {
       version: faker.random.alphaNumeric("10"),
       hash: faker.random.alphaNumeric("10"),

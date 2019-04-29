@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import type { MemoryHistory } from "history";
 import type { Match } from "react-router-dom";
 
@@ -11,8 +11,6 @@ import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import { TransactionsTable } from "components/Table";
 import { TransactionsFilters } from "components/filters";
 import { CardLoading, CardError } from "components/base/Card";
-import TransactionModal from "components/transactions/TransactionModal";
-import ModalRoute from "components/ModalRoute";
 
 import DataSearch from "components/DataSearch";
 
@@ -32,22 +30,16 @@ class TransactionsContainer extends PureComponent<Props> {
   };
 
   render() {
-    const { accounts, history, match } = this.props;
+    const { accounts, history } = this.props;
     return (
-      <Fragment>
-        <DataSearch
-          Query={SearchTransactionsQuery}
-          TableComponent={TransactionsTable}
-          FilterComponent={TransactionsFilters}
-          extraProps={{ accounts: accounts.edges.map(e => e.node) }}
-          history={history}
-          onRowClick={this.handleTransactionClick}
-        />
-        <ModalRoute
-          path={`${match.url}/operation/:operationId/:tabIndex`}
-          component={TransactionModal}
-        />
-      </Fragment>
+      <DataSearch
+        Query={SearchTransactionsQuery}
+        TableComponent={TransactionsTable}
+        FilterComponent={TransactionsFilters}
+        extraProps={{ accounts: accounts.edges.map(e => e.node) }}
+        history={history}
+        onRowClick={this.handleTransactionClick}
+      />
     );
   }
 }

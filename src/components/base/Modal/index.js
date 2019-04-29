@@ -111,7 +111,6 @@ class Modal extends PureComponent<ModalProps, State> {
   };
 
   swallowClick = (e: SyntheticInputEvent<HTMLInputElement>) => {
-    e.preventDefault();
     e.stopPropagation();
   };
 

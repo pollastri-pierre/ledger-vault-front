@@ -27,7 +27,7 @@ function Content({ match, me }: { match: Match, me: User }) {
       <Route path={`${u}/admin/tasks`} component={AdminTasks} />
       <Route path={`${u}/admin/groups`} component={AdminGroups} />
       <Route path={`${u}/admin/users`} component={Users} />
-      <Route path={`${u}/admin/accounts/:id`} component={AccountView} />
+      <Route path={`${u}/admin/accounts/view/:id`} component={AccountView} />
       <Route path={`${u}/admin/accounts`} component={Accounts} />
       <Route path={`${u}/admin/transactions`} component={Transactions} />
 

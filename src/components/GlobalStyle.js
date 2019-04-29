@@ -25,4 +25,8 @@ export default createGlobalStyle`
       background: rgba(0, 0, 0, 0.1);
     }
   }
+
+  a {
+    text-decoration: none;
+  }
 `;

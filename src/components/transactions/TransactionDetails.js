@@ -1,163 +1,88 @@
 // @flow
-import React, { Component } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import {
   getTransactionExplorer,
   getDefaultExplorerView,
 } from "@ledgerhq/live-common/lib/explorers";
+import { FaExchangeAlt, FaExternalLinkAlt } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
 
 import connectData from "restlay/connectData";
-
 import TransactionWithAccountQuery from "api/queries/TransactionWithAccountQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
-
-import type { RestlayEnvironment } from "restlay/connectData";
-
-import TryAgain from "components/TryAgain";
-import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
-import {
-  ModalHeader,
-  ModalTitle,
-  ModalBody,
-  ModalFooter,
-} from "components/base/Modal";
-import DialogButton from "components/buttons/DialogButton";
-import Overscroll from "components/utils/Overscroll";
+import { GrowingSpinner } from "components/base/GrowingCard";
+import { CardError } from "components/base/Card";
+import { ModalFooterButton } from "components/base/Modal";
+import Box from "components/base/Box";
+import EntityModal from "components/EntityModal";
 import type { Transaction, Account } from "data/types";
+
 import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import TabDetails from "./TabDetails";
 
 type Props = {
-  close: Function,
-  tabIndex: number,
-  // injected by decorators:
+  close: () => void,
   transactionWithAccount: {
     transaction: Transaction,
     account: Account,
   },
-  match: Object,
 };
 
-class TransactionDetails extends Component<Props, *> {
-  constructor(props) {
-    super(props);
+function TransactionDetails(props: Props) {
+  const {
+    transactionWithAccount: { transaction, account },
+    close,
+  } = props;
 
-    this.state = {
-      value: parseInt(props.match.params.tabIndex, 10) || 0,
-    };
-  }
+  const note = transaction.notes[0];
+  const { transaction: rawTransaction } = transaction;
+  const currency = getCryptoCurrencyById(account.currency);
+  const url = rawTransaction
+    ? getTransactionExplorer(
+        getDefaultExplorerView(currency),
+        rawTransaction.hash,
+      )
+    : null;
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+  const footer = url ? (
+    <Box grow align="flex-end">
+      <a target="_blank" rel="noopener noreferrer" href={url}>
+        <ModalFooterButton>
+          <Box horizontal align="center" flow={5}>
+            <FaExternalLinkAlt />
+            <span>
+              <Trans i18nKey="transactionDetails:explore" />
+            </span>
+          </Box>
+        </ModalFooterButton>
+      </a>
+    </Box>
+  ) : null;
 
-  render() {
-    const {
-      transactionWithAccount: { transaction, account },
-      close,
-    } = this.props;
-
-    const note = transaction.notes[0];
-    const { transaction: rawTransaction } = transaction;
-    const { value } = this.state;
-    const currency = getCryptoCurrencyById(account.currency);
-    const url = rawTransaction
-      ? getTransactionExplorer(
-          getDefaultExplorerView(currency),
-          rawTransaction.hash,
-        )
-      : null;
-
-    const inner = (
-      <ModalBody height={700} onClose={close}>
-        <ModalHeader>
-          <ModalTitle>
-            <Trans i18nKey="transactionDetails:title" />
-          </ModalTitle>
-          <Tabs
-            value={value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-          >
-            <Tab
-              label={<Trans i18nKey="transactionDetails:tabs.overview" />}
-              disableRipple
-            />
-            <Tab
-              label={<Trans i18nKey="transactionDetails:tabs.details" />}
-              disableRipple
-              disabled={!transaction.transaction}
-            />
-            {transaction.type !== "RECEIVE" && (
-              <Tab
-                label={<Trans i18nKey="transactionDetails:tabs.label" />}
-                disableRipple
-              />
-            )}
-            <div
-              style={{ background: "pink", color: "blue", fontWeight: "bold" }}
-            >
-              waiting for backend
-            </div>
-            {/*
-            {transaction.approvals.length > 0 && (
-              <Tab
-                label={<Trans i18nKey="transactionDetails:tabs.history" />}
-                disableRipple
-              />
-            )}
-            */}
-          </Tabs>
-        </ModalHeader>
-
-        {value === 0 && (
-          <TabOverview transaction={transaction} account={account} />
-        )}
-        {value === 1 && (
-          <div style={{ height: "330px" }}>
-            <Overscroll top={20} bottom={40}>
-              <TabDetails transaction={transaction} account={account} />
-            </Overscroll>
-          </div>
-        )}
-        {value === 2 && <TabLabel note={note} />}
-        {value === 3 && <TabHistory transaction={transaction} />}
-
-        <ModalFooter>
-          {url ? (
-            <DialogButton>
-              <a target="_blank" rel="noopener noreferrer" href={url}>
-                <Trans i18nKey="transactionDetails:explore" />
-              </a>
-            </DialogButton>
-          ) : null}
-        </ModalFooter>
-      </ModalBody>
-    );
-
-    return <GrowingCard>{inner}</GrowingCard>;
-  }
+  return (
+    <EntityModal
+      growing
+      entity={transaction}
+      Icon={FaExchangeAlt}
+      title="Transaction details"
+      onClose={close}
+      footer={footer}
+    >
+      <TabOverview key="overview" transaction={transaction} account={account} />
+      <TabDetails key="details" transaction={transaction} account={account} />
+      <TabLabel key="note" note={note} />
+      {transaction.approvals && (
+        <TabHistory key="history" transaction={transaction} />
+      )}
+    </EntityModal>
+  );
 }
 
-const RenderError = ({
-  error,
-  restlay,
-}: {
-  error: Error,
-  restlay: RestlayEnvironment,
-}) => (
-  <div style={{ width: 500, height: 700 }}>
-    <TryAgain error={error} action={restlay.forceFetch} />
-  </div>
-);
-
 export default connectData(TransactionDetails, {
-  RenderError,
+  RenderError: CardError,
   RenderLoading: GrowingSpinner,
   queries: {
     transactionWithAccount: TransactionWithAccountQuery,

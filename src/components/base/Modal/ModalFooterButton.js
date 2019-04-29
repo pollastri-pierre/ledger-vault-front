@@ -24,6 +24,7 @@ const StyledModalFooterButton = styled.button.attrs(p => ({
   font-weight: bold;
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
   pointer-events: ${p => (p.isDisabled || p.isLoading ? "none" : "auto")};
   opacity: ${p => (p.isDisabled || p.isLoading ? 0.5 : 1)};
 
