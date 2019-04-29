@@ -20,17 +20,20 @@ import RestlayProvider from "restlay/RestlayProvider";
 import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import SearchGroupsQuery from "api/queries/SearchGroups";
 import SearchAccountsQuery from "api/queries/SearchAccounts";
+import SearchUsersQuery from "api/queries/SearchUsers";
 
 import {
   TransactionsTable,
   GroupsTable,
   AccountsTable,
+  UsersTable,
 } from "components/Table";
 
 import {
   TransactionsFilters,
   GroupsFilters,
   AccountsFilters,
+  UsersFilters,
 } from "components/filters";
 
 import DataSearch from "components/DataSearch";
@@ -66,6 +69,15 @@ export const AccountsSearch = props => (
   />
 );
 
+export const UsersSearch = props => (
+  <DataSearch
+    Query={SearchUsersQuery}
+    TableComponent={UsersTable}
+    FilterComponent={UsersFilters}
+    {...props}
+  />
+);
+
 // --------------------------------- mock data
 
 const users = genUsers(20);
@@ -79,6 +91,7 @@ const TransactionsSearchStory = wrapComponent(
 );
 const GroupsSearchStory = wrapComponent(GroupsSearch, "groups");
 const AccountsSearchStory = wrapComponent(AccountsSearch, "accounts");
+const UsersSearchStory = wrapComponent(UsersSearch, "accounts");
 
 storiesOf("entities/Transaction", module).add("Transactions search", () => (
   <TransactionsSearchStory />
@@ -90,6 +103,10 @@ storiesOf("entities/Group", module).add("Groups search", () => (
 
 storiesOf("entities/Account", module).add("Accounts search", () => (
   <AccountsSearchStory />
+));
+
+storiesOf("entities/User", module).add("Users search", () => (
+  <UsersSearchStory />
 ));
 
 // --------------------------------- story helpers
@@ -146,8 +163,12 @@ export const mockNetwork = async url => {
     };
   }
 
+  if (url.startsWith("/people")) {
+    edges = users;
+  }
+
   if (!edges) {
-    throw new Error("cant find route");
+    throw new Error(`cant find route ${url}`);
   }
 
   await delay(500);
@@ -156,7 +177,7 @@ export const mockNetwork = async url => {
       node: transaction,
       cursor: transaction.id,
     })),
-    pageInfo: { hasNextPage: false },
+    pageInfo: { hasNextPage: false, count: edges.length },
   };
 };
 

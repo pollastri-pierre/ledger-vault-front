@@ -167,7 +167,7 @@ function genUser() {
     "ACTIVE",
     "REVOKED",
     "PENDING_APPROVAL",
-    "PENDING_INVITATION",
+    "PENDING_REGISTRATION",
     "PENDING_REVOCATION",
   ]);
   return {
