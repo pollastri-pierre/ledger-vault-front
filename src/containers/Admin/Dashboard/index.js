@@ -63,10 +63,10 @@ class AdminDashboard extends PureComponent<Props> {
     const { data, me } = this.props;
     const requests = data.edges.map(el => el.node);
     const myRequests = requests.filter(
-      request => !hasUserApprovedRequest(request, me),
+      request => request.approvals && !hasUserApprovedRequest(request, me),
     );
-    const otherRequests = requests.filter(request =>
-      hasUserApprovedRequest(request, me),
+    const otherRequests = requests.filter(
+      request => hasUserApprovedRequest(request, me) || !request.approvals,
     );
 
     return (

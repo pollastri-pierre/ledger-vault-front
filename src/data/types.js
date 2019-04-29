@@ -30,6 +30,8 @@ type Price = {
 
 export type Entity = Group | Account | User | Transaction;
 
+export type UserRole = "ADMIN" | "OPERATOR";
+
 export type Unit = {
   id?: number,
   name: string,
@@ -376,7 +378,7 @@ type RequestCommon = {
   id: number,
   status: string,
   type: string,
-  approvals: RequestApproval[],
+  approvals?: RequestApproval[],
   target_id: number,
   url_id?: string,
   target_type: RequestTargetType,
@@ -405,6 +407,7 @@ type RequestUser = {
   status: string,
   user_id: string,
   username: string,
+  role: UserRole,
 };
 type RequestGroup = {};
 
