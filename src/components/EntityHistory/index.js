@@ -52,12 +52,18 @@ class EntityHistory extends PureComponent<Props> {
     const fullHistory = resolveFullHistory(history, organization.quorum || 0);
     return (
       <Box position="relative">
-        <Bar />
-        <Box flow={20}>
-          {fullHistory.map(item => (
-            <HistoryItem key={item.date.toString()} item={item} />
-          ))}
-        </Box>
+        {fullHistory.length ? (
+          <>
+            <Bar />
+            <Box flow={20}>
+              {fullHistory.map(item => (
+                <HistoryItem key={item.date.toString()} item={item} />
+              ))}
+            </Box>
+          </>
+        ) : (
+          "No history for this entity"
+        )}
       </Box>
     );
   }

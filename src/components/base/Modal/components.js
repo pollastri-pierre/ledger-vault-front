@@ -156,7 +156,7 @@ export const RichModalHeader = ({
   </RichModalHeaderContainer>
 );
 
-const RichModalFooterContainer = styled.div`
+export const RichModalFooter = styled.div`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   padding: 0 20px;
@@ -165,10 +165,6 @@ const RichModalFooterContainer = styled.div`
   display: flex;
   align-items: flex-end;
 `;
-
-export const RichModalFooter = ({ children }: { children: React$Node }) => (
-  <RichModalFooterContainer>{children}</RichModalFooterContainer>
-);
 
 export const RichModalTabsContainer = styled.div`
   display: flex;
