@@ -21,7 +21,7 @@ import Box from "components/base/Box";
 import { hasPendingRequest } from "utils/entities";
 import type { Entity } from "data/types";
 
-type Props = {
+type Props<T> = {
   entity: Entity,
   title: React$Node,
   Icon: React$ComponentType<*>,
@@ -34,9 +34,10 @@ type Props = {
   revokeButton?: React$Node,
   footer?: React$Node,
   editURL?: string,
+  additionalFields?: T,
 };
 
-function EntityModal(props: Props) {
+function EntityModal<T>(props: Props<T>) {
   const {
     growing,
     Icon,
@@ -50,6 +51,7 @@ function EntityModal(props: Props) {
     editURL,
     revokeButton,
     footer,
+    additionalFields,
   } = props;
 
   const onClickEdit = () => {
@@ -58,7 +60,13 @@ function EntityModal(props: Props) {
     }
   };
 
-  const lastRequest = <EntityLastRequest key="lastRequest" entity={entity} />;
+  const lastRequest = (
+    <EntityLastRequest
+      key="lastRequest"
+      entity={entity}
+      additionalFields={additionalFields}
+    />
+  );
 
   const childs = Array.isArray(children) ? children : [children];
 

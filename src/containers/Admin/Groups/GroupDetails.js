@@ -59,6 +59,7 @@ function GroupDetails(props: Props) {
       onClose={close}
       revokeButton={revokeButton}
       editURL={`/groups/edit/${group.id}`}
+      additionalFields={{ operators: operators.edges.map(e => e.node) }}
     >
       <GroupDetailsOverview
         key="overview"
