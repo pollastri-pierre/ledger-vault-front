@@ -20,6 +20,7 @@ import RestlayProvider from "restlay/RestlayProvider";
 import SearchTransactionsQuery from "api/queries/SearchTransactions";
 import SearchGroupsQuery from "api/queries/SearchGroups";
 import SearchAccountsQuery from "api/queries/SearchAccounts";
+import SearchRequestsQuery from "api/queries/RequestsQuery";
 import SearchUsersQuery from "api/queries/SearchUsers";
 
 import {
@@ -27,6 +28,7 @@ import {
   GroupsTable,
   AccountsTable,
   UsersTable,
+  RequestsTable,
 } from "components/Table";
 
 import {
@@ -34,10 +36,13 @@ import {
   GroupsFilters,
   AccountsFilters,
   UsersFilters,
+  RequestsFilters,
 } from "components/filters";
 
 import DataSearch from "components/DataSearch";
 import DisplayQueryParams from "stories/components/DisplayQueryParams";
+
+import mockRequests from "data/mock-requests.json";
 
 // --------------------------------- actual components
 
@@ -78,6 +83,15 @@ export const UsersSearch = props => (
   />
 );
 
+export const RequestsSearch = props => (
+  <DataSearch
+    Query={SearchRequestsQuery}
+    TableComponent={RequestsTable}
+    FilterComponent={RequestsFilters}
+    {...props}
+  />
+);
+
 // --------------------------------- mock data
 
 const users = genUsers(20);
@@ -92,6 +106,7 @@ const TransactionsSearchStory = wrapComponent(
 const GroupsSearchStory = wrapComponent(GroupsSearch, "groups");
 const AccountsSearchStory = wrapComponent(AccountsSearch, "accounts");
 const UsersSearchStory = wrapComponent(UsersSearch, "accounts");
+const RequestsSearchStory = wrapComponent(RequestsSearch, "requests");
 
 storiesOf("entities/Transaction", module).add("Transactions search", () => (
   <TransactionsSearchStory />
@@ -107,6 +122,10 @@ storiesOf("entities/Account", module).add("Accounts search", () => (
 
 storiesOf("entities/User", module).add("Users search", () => (
   <UsersSearchStory />
+));
+
+storiesOf("entities/Request", module).add("Requests search", () => (
+  <RequestsSearchStory />
 ));
 
 // --------------------------------- story helpers
@@ -165,6 +184,10 @@ export const mockNetwork = async url => {
 
   if (url.startsWith("/people")) {
     edges = users;
+  }
+
+  if (url.startsWith("/requests")) {
+    edges = mockRequests;
   }
 
   if (!edges) {
