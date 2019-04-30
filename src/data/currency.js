@@ -8,7 +8,7 @@ import type { Account, Unit } from "./types";
 // This define utility to deal with currencies, units, countervalues
 
 export function getAccountCurrencyUnit(account: Account): Unit {
-  if (!account.settings) {
+  if (!account.settings || !account.settings.currency_unit) {
     console.warn("account doesnt have settings. using default unit");
     const currency = getCryptoCurrencyById(account.currency);
     // $FlowFixMe this is compatible with Unit anyway

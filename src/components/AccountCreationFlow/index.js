@@ -33,6 +33,7 @@ import type { AccountCreationPayload } from "./types";
 
 const initialPayload: AccountCreationPayload = {
   name: "",
+  accountStatus: "",
   rules: [{ quorum: 1, group_id: null, users: [] }],
   currency: null,
   erc20token: null,
@@ -88,10 +89,11 @@ const steps = [
       isEditMode,
     }: {
       payload: AccountCreationPayload,
-      onClose: Function,
+      onClose: () => void,
       isEditMode?: boolean,
     }) => {
       const data = serializePayload(payload, isEditMode);
+      const isMigrated = payload.accountStatus === "MIGRATED";
       return (
         <ApproveRequestButton
           interactions={createAndApproveWithChallenge}
@@ -101,7 +103,11 @@ const steps = [
           }}
           disabled={false}
           additionalFields={{
-            type: isEditMode ? "EDIT_ACCOUNT" : "CREATE_ACCOUNT",
+            type: isMigrated
+              ? "MIGRATE_ACCOUNT"
+              : isEditMode
+              ? "EDIT_ACCOUNT"
+              : "CREATE_ACCOUNT",
             data,
           }}
           buttonLabel={
@@ -224,11 +230,10 @@ const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
 export default Wrapper;
 
 const deserialize: Account => AccountCreationPayload = account => {
-  if (!account.tx_approval_steps) return initialPayload;
   const { tx_approval_steps } = account;
 
   const rules =
-    tx_approval_steps.length === 0
+    !tx_approval_steps || tx_approval_steps.length === 0
       ? initialPayload.rules
       : tx_approval_steps.map(rule => ({
           quorum: rule.quorum,
@@ -241,6 +246,7 @@ const deserialize: Account => AccountCreationPayload = account => {
 
   return {
     id: account.id,
+    accountStatus: account.status,
     name: account.name,
     rules,
     currency:
@@ -285,15 +291,21 @@ function serializePayload(
     });
   }
 
-  if (isEditMode) {
+  if (isEditMode && payload.accountStatus !== "MIGRATED") {
     return {
       account_id: payload.id,
       edit_data: data,
     };
   }
 
-  return {
+  const finalPayload: Object = {
     account_type: getGateAccountType(payload),
     account_data: data,
   };
+
+  if (payload.accountStatus === "MIGRATED") {
+    finalPayload.account_id = payload.id;
+  }
+
+  return finalPayload;
 }
