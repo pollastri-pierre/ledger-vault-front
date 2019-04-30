@@ -3,7 +3,7 @@
 import React from "react";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
-import { FaMoneyCheck } from "react-icons/fa";
+import { FaMoneyCheck, FaArchive } from "react-icons/fa";
 
 import colors from "shared/colors";
 import AccountQuery from "api/queries/AccountQuery";
@@ -28,14 +28,15 @@ function AccountDetails(props: Props) {
     <ApproveRequestButton
       interactions={createAndApprove}
       onSuccess={close}
-      color={colors.grenade}
+      color={colors.warning}
       isRevoke
+      Icon={FaArchive}
       disabled={false}
       additionalFields={{
         data: { account_id: account.id },
         type: "REVOKE_ACCOUNT",
       }}
-      buttonLabel={<Trans i18nKey="common:revoke" />}
+      buttonLabel={<Trans i18nKey="accountDetails:archive" />}
     />
   );
   return (
