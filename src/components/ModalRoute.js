@@ -50,7 +50,7 @@ class ModalRoute extends Component<{
   onClose = () => {
     if (this._unmounted) return;
     if (this.lastPath) {
-      this.context.router.history.replace(this.lastPath);
+      this.context.router.history.push(this.lastPath);
     } else {
       // assume we need to go back to a 3-length history
       // /{orga}/{role}/{page}
@@ -60,7 +60,7 @@ class ModalRoute extends Component<{
         // 4 because of leading /
         .slice(0, 4)
         .join("/");
-      this.context.router.history.replace(url);
+      this.context.router.history.push(url);
     }
   };
 
