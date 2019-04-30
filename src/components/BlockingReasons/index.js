@@ -17,9 +17,11 @@ export type BlockingReasonType = {
 
 type Props = {
   error: {
-    blocking_reasons: BlockingReasonType[],
-    message: string,
-    name: string,
+    json: {
+      blocking_reasons: BlockingReasonType[],
+      message: string,
+      name: string,
+    },
   },
   onClose: () => void,
   history: MemoryHistory,
@@ -32,17 +34,20 @@ const BlockingReasons = ({ error, onClose, ...rest }: Props) => {
     const orgaName = location.pathname.split("/")[1];
     // TODO handle other kind of entity ?
     if (reason.type === "Account") {
-      history.push(`/${orgaName}/admin/accounts/${reason.entity.id}`);
+      history.push(`/${orgaName}/admin/accounts/view/${reason.entity.id}`);
     }
   };
 
   return (
     <Box p={40} flow={20} width={650}>
       <Box>
-        <Text header uppercase i18nKey={`reasons:${error.name}`} />
-        <Text small>{error.message}</Text>
+        <Text header uppercase i18nKey={`reasons:${error.json.name}`} />
+        <Text small>{error.json.message}</Text>
       </Box>
-      <ReasonsTable data={error.blocking_reasons} onRowClick={onRowClick} />
+      <ReasonsTable
+        data={error.json.blocking_reasons}
+        onRowClick={onRowClick}
+      />
     </Box>
   );
 };
