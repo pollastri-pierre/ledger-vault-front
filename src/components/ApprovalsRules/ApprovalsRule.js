@@ -28,6 +28,7 @@ type Props = {
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
   groups: Group[],
+  readOnly?: boolean,
   t: string => string,
 };
 
@@ -88,7 +89,15 @@ class ApprovalsRule extends PureComponent<Props, State> {
   };
 
   render() {
-    const { rule, users, groups, onRemove, parentSelectedIds, t } = this.props;
+    const {
+      rule,
+      users,
+      groups,
+      onRemove,
+      parentSelectedIds,
+      readOnly,
+      t,
+    } = this.props;
     const { hasBeenClosed } = this.state;
     const { group_id: ruleGroup, users: ruleUsers } = rule;
 
@@ -122,6 +131,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
               onChange={this.handleChangeQuorum}
               min={1}
               max={max}
+              readOnly={readOnly}
             />
             {approvalsFrom}
             <Box grow py={10} pr={10} justify="center">
@@ -136,7 +146,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
                 onChange={this.handleChangeSelect}
               />
             </Box>
-            {onRemove && (
+            {onRemove && !readOnly && (
               <RemoveContainer onClick={onRemove}>{iconTrash}</RemoveContainer>
             )}
           </Box>

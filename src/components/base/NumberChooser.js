@@ -11,6 +11,7 @@ type Props = {
   onChange: number => void,
   min: number,
   max: number,
+  readOnly?: boolean,
 };
 
 class NumberChooser extends PureComponent<Props> {
@@ -23,22 +24,26 @@ class NumberChooser extends PureComponent<Props> {
   decrement = () => this.props.onChange(this.props.value - 1);
 
   render() {
-    const { value, ...props } = this.props;
+    const { value, readOnly, ...props } = this.props;
     return (
       <NumberChooserContainer {...props}>
-        <NumberChooserAction
-          isDisabled={!this.canDecrement()}
-          onClick={this.decrement}
-        >
-          <FaAngleLeft data-test="leftAngle" />
-        </NumberChooserAction>
+        {!readOnly && (
+          <NumberChooserAction
+            isDisabled={!this.canDecrement()}
+            onClick={this.decrement}
+          >
+            <FaAngleLeft data-test="leftAngle" />
+          </NumberChooserAction>
+        )}
         <NumberChooserValue>{value}</NumberChooserValue>
-        <NumberChooserAction
-          isDisabled={!this.canIncrement()}
-          onClick={this.increment}
-        >
-          <FaAngleRight data-test="rightANgle" />
-        </NumberChooserAction>
+        {!readOnly && (
+          <NumberChooserAction
+            isDisabled={!this.canIncrement()}
+            onClick={this.increment}
+          >
+            <FaAngleRight data-test="rightANgle" />
+          </NumberChooserAction>
+        )}
       </NumberChooserContainer>
     );
   }
