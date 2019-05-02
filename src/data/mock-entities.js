@@ -161,6 +161,19 @@ function genAccount({ users = [] } = {}, extra = {}) {
   };
 }
 
+export const genRequest = type => {
+  const created_on = faker.date.past(1);
+  return {
+    created_on,
+    created_by: 1,
+    approvals: [],
+    target_id: 1,
+    target_type: "GROUP",
+    type: type || "CREATE_GROUP",
+    status: "PENDING_APPROVAL",
+  };
+};
+
 function genUser() {
   const date = faker.date.past(1);
   const status = faker.random.arrayElement([
