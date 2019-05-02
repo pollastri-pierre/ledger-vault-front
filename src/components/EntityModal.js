@@ -17,6 +17,7 @@ import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";
+import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
 import { hasPendingRequest } from "utils/entities";
 import type { Entity } from "data/types";
@@ -62,7 +63,7 @@ function EntityModal<T>(props: Props<T>) {
 
   const lastRequest = (
     <EntityLastRequest
-      key="lastRequest"
+      key="pendingRequest"
       entity={entity}
       additionalFields={additionalFields}
     />
@@ -100,8 +101,11 @@ function EntityModal<T>(props: Props<T>) {
           )}
         </RichModalTabsContainer>
         {hasPendingReq ? (
-          <RichModalTab to="lastRequest" isActive={content === lastRequest}>
-            <Trans i18nKey="entityModal:tabs.lastRequest" />
+          <RichModalTab to="pendingRequest" isActive={content === lastRequest}>
+            <Box horizontal align="center">
+              <Trans i18nKey="entityModal:tabs.pendingRequest" />
+              <Badge style={{ marginLeft: 5 }}>1</Badge>
+            </Box>
           </RichModalTab>
         ) : editURL ? (
           <EditButton onClick={onClickEdit} />

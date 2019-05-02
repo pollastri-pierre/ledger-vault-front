@@ -37,11 +37,8 @@ export default connectData(withMe(PendingBadge), {
   }),
 });
 
-export const NotifComponent = styled.div`
-  position: absolute;
+export const Badge = styled.div`
   border-radius: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
   height: 18px;
   min-width: 18px;
   display: flex;
@@ -54,4 +51,11 @@ export const NotifComponent = styled.div`
   font-weight: bold !important;
   font-size: 10px !important;
   background: ${colors.grenade};
+`;
+
+export const NotifComponent = styled(Badge)`
+  position: absolute;
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
