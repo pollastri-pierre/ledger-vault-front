@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -51,9 +51,8 @@ type Props = {
 
 export default (props: Props) => {
   const { children, isLoading, onClick, ...p } = props;
-  const [isLocalLoading, setIsLocalLoading] = useState(isLoading);
-
-  let unmounted = false;
+  const [isLocalLoading, setIsLocalLoading] = useState(false);
+  const unmounted = useRef(false);
 
   const handleClick = () => {
     if (!onClick) return;
@@ -61,7 +60,7 @@ export default (props: Props) => {
     if (p && p.then) {
       setIsLocalLoading(true);
       p.finally(() => {
-        if (!unmounted) return;
+        if (unmounted.current) return;
         setIsLocalLoading(false);
       });
     }
@@ -69,7 +68,7 @@ export default (props: Props) => {
 
   useEffect(
     () => () => {
-      unmounted = true;
+      unmounted.current = true;
     },
     [],
   );
