@@ -1,6 +1,6 @@
 // @flow
 import { denormalize } from "normalizr-gre";
-import type { Store } from "./dataStore";
+import type { Store, FetchParams } from "./dataStore";
 
 export type Connection<T> = {
   edges: Array<{
@@ -17,6 +17,8 @@ export type Connection<T> = {
 class ConnectionQuery<In, Node> {
   props: In;
 
+  fetchParams: FetchParams;
+
   // define the URI to hit for the API. can also pass a template function
   uri: string;
 
@@ -29,8 +31,9 @@ class ConnectionQuery<In, Node> {
   // TODO: type this properly...
   deserialize: any;
 
-  constructor(props: In) {
+  constructor(props: In, fetchParams: FetchParams) {
     this.props = props;
+    this.fetchParams = fetchParams;
   }
 
   // Overridable

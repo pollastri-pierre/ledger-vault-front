@@ -1,11 +1,13 @@
 // @flow
 import { denormalize } from "normalizr-gre";
-import type { Store } from "./dataStore";
+import type { Store, FetchParams } from "./dataStore";
 import type { Deserializer } from "./types";
 
 // A query maps to a GET on the api, it is idempotent to fetch and can be cached
 export default class Query<Input, Response> {
   props: Input;
+
+  fetchParams: FetchParams;
 
   // define the URI to hit for the API. can also pass a template function
   uri: string;
@@ -24,8 +26,9 @@ export default class Query<Input, Response> {
   // The response HTTP Code that will trigger the user to logout automatically
   logoutUserIfStatusCode: ?number; // FIXME technically this has nothing to do in this generic library model. not sure how put it in project specific only
 
-  constructor(props: Input) {
+  constructor(props: Input, fetchParams: FetchParams) {
     this.props = props;
+    this.fetchParams = fetchParams;
   }
 
   showError = true;

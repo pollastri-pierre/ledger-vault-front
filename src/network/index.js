@@ -14,6 +14,7 @@ export default function<T>(
   method: string,
   body: ?(Object | Array<Object>),
   tokenParam: ?string,
+  fetchParams: Object,
 ): Promise<T> {
   const token = tokenParam || getLocalStorageToken();
   const headers = {
@@ -25,7 +26,7 @@ export default function<T>(
   if (method !== "GET" && body) {
     options.body = JSON.stringify(body);
   }
-  return fetchF(uri, options).then(response => {
+  return fetchF(uri, options, fetchParams).then(response => {
     if (response.status < 200 || response.status >= 300) {
       const baseErrorObject = {
         message: "network error",
