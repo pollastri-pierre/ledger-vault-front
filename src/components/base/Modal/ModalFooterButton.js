@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -53,16 +53,26 @@ export default (props: Props) => {
   const { children, isLoading, onClick, ...p } = props;
   const [isLocalLoading, setIsLocalLoading] = useState(isLoading);
 
+  let unmounted = false;
+
   const handleClick = () => {
     if (!onClick) return;
     const p = onClick();
     if (p && p.then) {
       setIsLocalLoading(true);
       p.finally(() => {
+        if (!unmounted) return;
         setIsLocalLoading(false);
       });
     }
   };
+
+  useEffect(
+    () => () => {
+      unmounted = true;
+    },
+    [],
+  );
 
   return (
     <StyledModalFooterButton
