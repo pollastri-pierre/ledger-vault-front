@@ -32,6 +32,8 @@ import Text from "components/base/Text";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
 
+import CheckMigration from "./CheckMigration";
+
 const unknownDomainError = new UnknownDomain();
 const mapDispatchToProps = { login, addMessage, addError };
 
@@ -50,6 +52,7 @@ type State = {
   organization: ?Organization,
   isChecking: boolean,
   onboardingToBeDone: boolean,
+  workspace: ?string,
 };
 
 class Welcome extends Component<Props, State> {
@@ -60,13 +63,13 @@ class Welcome extends Component<Props, State> {
     errorDomain: false,
     onboardingToBeDone: false,
     isChecking: false,
+    workspace: null,
   };
 
   onFinishLogin = (responses: LoginFlowResponse) => {
-    const { login, history, addMessage } = this.props;
+    const { login } = this.props;
     login(responses.u2f_challenge.token);
-    history.push(`/${responses.organization.workspace}`);
-    addMessage("Hello", "Welcome to the Ledger Vault platform!");
+    this.setState({ workspace: responses.organization.workspace });
   };
 
   onError = (e: Error | DeviceError | GateError) => {
@@ -113,14 +116,21 @@ class Welcome extends Component<Props, State> {
   };
 
   render() {
-    const { t } = this.props;
+    const { t, history } = this.props;
     const {
       domain,
       error,
       errorDomain,
       isChecking,
       onboardingToBeDone,
+      workspace,
     } = this.state;
+
+    if (onboardingToBeDone) return <Redirect to={`${domain}/onboarding`} />;
+
+    // this is doing the redirection
+    if (workspace)
+      return <CheckMigration history={history} workspace={workspace} />;
 
     const footer =
       this.state.organization && !this.state.error ? (
@@ -147,7 +157,6 @@ class Welcome extends Component<Props, State> {
 
     return (
       <CenteredLayout>
-        {onboardingToBeDone && <Redirect to={`${domain}/onboarding`} />}
         <Alert
           onClose={this.onClose}
           open={errorDomain}

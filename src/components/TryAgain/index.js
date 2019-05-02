@@ -1,8 +1,11 @@
 // @flow
+
 import React, { Component } from "react";
-import errorFormatter from "formatters/error";
 import cx from "classnames";
 import { withStyles } from "@material-ui/core/styles";
+
+import errorFormatter from "formatters/error";
+import type { RestlayEnvironment } from "restlay/connectData";
 
 const styles = {
   base: {
@@ -71,4 +74,15 @@ class TryAgain extends Component<
   }
 }
 
-export default withStyles(styles)(TryAgain);
+const StyledTryAgain = withStyles(styles)(TryAgain);
+
+type ErrProps = {
+  error: Error,
+  restlay: RestlayEnvironment,
+};
+
+export const RestlayTryAgain = ({ error, restlay }: ErrProps) => (
+  <StyledTryAgain error={error} action={restlay.forceFetch} />
+);
+
+export default StyledTryAgain;
