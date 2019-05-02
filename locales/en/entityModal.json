@@ -5,7 +5,7 @@
     "operationRules": "Operation rules",
     "history": "History",
     "accounts": "Accounts",
-    "lastRequest": "Last request",
+    "pendingRequest": "Pending Request",
     "details": "Details",
     "note": "Note"
   }
