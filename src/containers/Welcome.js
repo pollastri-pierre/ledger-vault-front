@@ -221,7 +221,7 @@ class Welcome extends Component<Props, State> {
           </ModalFooter>
         </Card>
         <Box align="center" mt={40}>
-          <Text small>Vault - v0.2</Text>
+          <Text small>Vault - v{VAULT_FRONT_VERSION}</Text>
         </Box>
       </CenteredLayout>
     );

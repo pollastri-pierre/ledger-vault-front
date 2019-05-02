@@ -16,6 +16,7 @@
     "Cypress": false,
     "context": false,
     "before": false,
+    "VAULT_FRONT_VERSION": false,
   },
   "extends": [
     "airbnb",
