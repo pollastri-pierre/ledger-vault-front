@@ -51,7 +51,7 @@ type Props = {
 
 export default (props: Props) => {
   const { children, isLoading, onClick, ...p } = props;
-  const [isLocalLoading, setIsLocalLoading] = useState(isLoading);
+  const [isLocalLoading, setIsLocalLoading] = useState(false);
 
   let unmounted = false;
 
@@ -61,7 +61,7 @@ export default (props: Props) => {
     if (p && p.then) {
       setIsLocalLoading(true);
       p.finally(() => {
-        if (!unmounted) return;
+        if (unmounted) return;
         setIsLocalLoading(false);
       });
     }
