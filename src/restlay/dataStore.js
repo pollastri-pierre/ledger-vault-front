@@ -26,6 +26,10 @@ export const DATA_FETCHED_FAIL = "@@restlay/DATA_FETCHED_FAIL";
 
 const DATA_CONNECTION_SPLICE = "@@restlay/DATA_CONNECTION_SPLICE";
 
+export type FetchParams = {
+  prefix?: string,
+};
+
 export type Entities = {
   [_: string]: { [_: string]: Object },
 };
@@ -189,7 +193,7 @@ export const executeQueryOrMutation =
     }
 
     const promise = ctx
-      .network(uri, method, body)
+      .network(uri, method, body, undefined, queryOrMutation.fetchParams)
       .then(data => {
         let result;
 

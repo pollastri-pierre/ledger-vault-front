@@ -97,6 +97,9 @@ type Opts<Props, A> = ContextOverridableOpts<Props> & {
     vars: Object,
   ) => $Values<$ObjMap<A, ExtractQueryIn>>,
 
+  // ability to force a prefix for page that can't extract it from url
+  propsToFetchParams?: (props: Props, vars: Object) => ?string,
+
   // if a cached was defined on the Query, ignore it and make sure to reload the latest data
   forceFetch?: boolean,
 
@@ -116,6 +119,7 @@ const defaultOpts = {
   RenderLoading: () => null,
   RenderError: () => null,
   propsToQueryParams: (_1, _2) => ({}),
+  propsToFetchParams: (_1, _2) => ({}),
   forceFetch: false,
   optimisticRendering: false,
   freezeTransition: false,
@@ -149,6 +153,7 @@ export default function connectData<
   const {
     queries,
     propsToQueryParams,
+    propsToFetchParams,
     optimisticRendering,
     renderLoadingInTransition,
     freezeTransition,
@@ -277,18 +282,22 @@ export default function connectData<
       query: Query<any, Res> | ConnectionQuery<any, any>,
     ): Promise<Res> => this.execute(query);
 
-    updateQueryInstances(apiParams: Object) {
+    updateQueryInstances(apiParams: Object, fetchParams: Object) {
       const instances: $ObjMap<A, ExtractQuery> = {};
       queriesKeys.forEach(key => {
         const Q = queries[key];
         // TODO : we might want to be more lazy with a "shouldQueryUpdate" or
         // something that would check if we really want to create a new instance.
         // for instance if query params changes but only concern one of the query
-        const query: Query<*, *> | ConnectionQuery<*, *> = new Q(apiParams);
+        const query: Query<*, *> | ConnectionQuery<*, *> = new Q(
+          apiParams,
+          fetchParams,
+        );
         instances[key] = query;
       });
       this.queriesInstances = instances;
       this.apiParams = apiParams;
+      this.fetchParams = fetchParams;
     }
 
     syncAPI(
@@ -296,12 +305,17 @@ export default function connectData<
       props: ClazzProps<Props>,
       state: State,
       forceFetchMode: boolean = false,
+      fetchParams: Object,
     ): Array<Promise<*>> {
       const { dataStore, restlayProvider } = props;
       let queryUpdated = false;
-      if (!isEqual(apiParams, this.apiParams) || !this.queriesInstances) {
+      if (
+        !isEqual(apiParams, this.apiParams) ||
+        !isEqual(fetchParams, this.fetchParams) ||
+        !this.queriesInstances
+      ) {
         queryUpdated = true;
-        this.updateQueryInstances(apiParams);
+        this.updateQueryInstances(apiParams, fetchParams);
       }
       const queriesInstances = this.queriesInstances;
       invariant(queriesInstances, "queriesInstances must be defined");
@@ -359,11 +373,17 @@ export default function connectData<
       const state: State = { ...this.state, ...statePatch };
       const { dataStore } = props;
 
-      const apiParams = propsToQueryParams(
-        extractInputProps(props),
-        state.variables,
+      const extractedProps = extractInputProps(props);
+      const apiParams = propsToQueryParams(extractedProps, state.variables);
+      const fetchParams = propsToFetchParams(extractedProps, state.variables);
+
+      const promises = this.syncAPI(
+        apiParams,
+        props,
+        state,
+        forceFetchMode,
+        fetchParams,
       );
-      const promises = this.syncAPI(apiParams, props, state, forceFetchMode);
 
       let p: ?Promise<*>;
       if (promises.length > 0) {
@@ -438,7 +458,6 @@ export default function connectData<
     }
 
     UNSAFE_componentWillReceiveProps(props: ClazzProps<Props>) {
-      // console.log("HERE");
       this.syncProps(props);
     }
 

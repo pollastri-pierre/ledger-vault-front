@@ -1,5 +1,12 @@
 {
   "domain_description": "Enter the name of your workspace to sign in",
   "help": "Help",
-  "placeholder_domain": "Workspace name"
+  "placeholder_domain": "Workspace name",
+  "migration": {
+    "settingUp": "Setting up the workspace...",
+    "title": "Some accounts needs to be updated.",
+    "desc": "A migration has occured, and some accounts needs an action from you to be fully active. They have been set the status \"Migrated\" and you now have to update them one by one.",
+    "accounts": "Impacted accounts:",
+    "takeMeThere": "Take me there"
+  }
 }

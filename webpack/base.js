@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import Dotenv from "dotenv-webpack";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 
+import pkg from "../package.json";
 import paths from "./paths";
 import * as globals from "./globals";
 
@@ -89,6 +90,7 @@ export default {
         acc[key] = JSON.stringify(globals[key]); // eslint-disable-line
         return acc;
       }, {}),
+      VAULT_FRONT_VERSION: JSON.stringify(pkg.version),
       "process.env.NODE_ENV": JSON.stringify(globals.__ENV__),
       "process.env.ORGANIZATION_NAME": JSON.stringify(
         process.env.ORGANIZATION_NAME,
