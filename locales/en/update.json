@@ -4,9 +4,9 @@
   "install": "Installing the lastest version of the app",
   "no_version":
     "We didn't find any vault application version to install on your device.",
-  "provide_rule": "Provide operation rules",
+  "provide_rule": "Provide transaction rules",
   "provide_rule_subtext":
-    "You must define the operation rules of this account before you can create new operations",
+    "You must define the transaction rules of this account before you can create new operations",
   "retry": "retry",
   "sub_title":
     "Plug in your device and click Allow on your Ledger Blue Enterprise when prompted.",

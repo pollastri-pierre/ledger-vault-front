@@ -2,7 +2,7 @@
   "edit": "Edit",
   "tabs": {
     "overview": "Overview",
-    "operationRules": "Operation rules",
+    "transactionRules": "Transaction rules",
     "history": "History",
     "accounts": "Accounts",
     "pendingRequest": "Pending Request",

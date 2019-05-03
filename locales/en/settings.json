@@ -1,6 +1,6 @@
 {
   "general": "General",
-  "operation_rules": "Operation rules",
+  "transaction_rules": "Transaction rules",
   "security_scheme": {
     "autoexpire": "Auto-expire",
     "quorum": "Required approvals",
