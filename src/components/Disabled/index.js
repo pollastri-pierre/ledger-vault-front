@@ -1,28 +1,9 @@
 // @flow
-import React, { Component } from "react";
-import classnames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 
-const styles = {
-  disabled: {
-    opacity: "0.4",
-    pointerEvents: "none",
-  },
-};
+const Disabled = styled.div`
+  opacity: ${p => (p.disabled ? p.customOpacity || 0.4 : 1)};
+  pointer-events: ${p => (p.disabled ? "none" : "default")};
+`;
 
-class Disabled extends Component<{
-  classes: { [_: $Keys<typeof styles>]: string },
-  disabled: boolean,
-  children: *,
-}> {
-  render() {
-    const { disabled, classes, children } = this.props;
-    return (
-      <div className={classnames({ [classes.disabled]: disabled })}>
-        {children}
-      </div>
-    );
-  }
-}
-
-export default withStyles(styles)(Disabled);
+export default Disabled;

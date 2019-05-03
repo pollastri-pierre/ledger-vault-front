@@ -10,6 +10,7 @@ import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import type { User, Group } from "data/types";
 
 import Box from "components/base/Box";
+import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import Rule from "./ApprovalsRule";
 import StepBall from "./StepBall";
@@ -28,6 +29,7 @@ export type ApprovalsSelectedIds = {
 type Props = {
   // set & get approvals rules
   rules: ApprovalsRule[],
+  readOnly?: boolean,
   onChange: (ApprovalsRule[]) => void,
 
   // used to fill select
@@ -69,7 +71,7 @@ class ApprovalsRules extends PureComponent<Props> {
   };
 
   Rule = (rule: ApprovalsRule, i: number) => {
-    const { users, groups, rules, onChange } = this.props;
+    const { users, groups, rules, readOnly, onChange } = this.props;
     const handleChange = newRule => {
       const newRules = [...rules];
       newRules.splice(rules.indexOf(rule), 1, newRule);
@@ -90,6 +92,7 @@ class ApprovalsRules extends PureComponent<Props> {
         onChange={handleChange}
         onRemove={rules.length > 1 ? handleRemove : undefined}
         parentSelectedIds={this.selectedIds}
+        readOnly={readOnly}
       />
     );
   };
@@ -100,7 +103,7 @@ class ApprovalsRules extends PureComponent<Props> {
   };
 
   render() {
-    const { rules, maxRules } = this.props;
+    const { rules, maxRules, readOnly } = this.props;
 
     // used to filter options in cascade
     // put in `this` to retrieve it in this.Rule
@@ -119,7 +122,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
     const footer = (
       <Box horizontal justify="flex-end" style={styles.footer}>
-        {rules.length < maxRules && (
+        {rules.length < maxRules && !readOnly && (
           <AddButton
             onClick={this.addEmptyRule}
             disabled={!this.canAddApproval()}
@@ -129,13 +132,15 @@ class ApprovalsRules extends PureComponent<Props> {
     );
 
     return (
-      <Box horizontal style={styles.container}>
-        {stepsLine}
-        <Box grow pt={50}>
-          {rulesList}
-          {footer}
+      <Disabled disabled={readOnly} customOpacity={0.8}>
+        <Box horizontal style={styles.container}>
+          {stepsLine}
+          <Box grow pt={50}>
+            {rulesList}
+            {footer}
+          </Box>
         </Box>
-      </Box>
+      </Disabled>
     );
   }
 }

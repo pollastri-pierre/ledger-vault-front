@@ -7,13 +7,11 @@
 import React, { Fragment } from "react";
 import { Trans } from "react-i18next";
 
-import User from "components/icons/User";
-import colors from "shared/colors";
 import InfoBox from "components/base/InfoBox";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
 import AccountName from "components/AccountName";
 import LineRow from "components/LineRow";
+import ApprovalsRules from "components/ApprovalsRules";
 import type { AccountCreationStepProps } from "../types";
 
 export default (props: AccountCreationStepProps) => {
@@ -21,11 +19,6 @@ export default (props: AccountCreationStepProps) => {
   const { currency, erc20token, accountStatus } = payload;
   return (
     <Box grow flow={20}>
-      <Box align="center" justify="center" horizontal flow={10}>
-        <User size={16} color={colors.shark} />
-        <Text i18nKey="newAccount:confirmation.members" />
-        <Text color={colors.lead}>(5 selected)</Text>
-      </Box>
       <Box grow>
         {currency && (
           <LineRow label={<Trans i18nKey="newAccount:confirmation.account" />}>
@@ -63,6 +56,15 @@ export default (props: AccountCreationStepProps) => {
             values={{ count: payload.rules.length }}
           />
         </LineRow>
+        <Box py={20}>
+          <ApprovalsRules
+            rules={payload.rules}
+            users={props.users.edges.map(u => u.node)}
+            onChange={() => {}}
+            groups={props.groups.edges.map(g => g.node)}
+            readOnly
+          />
+        </Box>
       </Box>
       <InfoBox type="info" withIcon>
         {accountStatus === "MIGRATED" ? (
