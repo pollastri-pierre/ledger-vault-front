@@ -11,7 +11,7 @@ import { CardError } from "components/base/Card";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { createAndApprove } from "device/interactions/approveFlow";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
-import AccountOperationsRules from "containers/Admin/Accounts/AccountOperationsRules";
+import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import AccountHistory from "containers/Admin/Accounts/AccountHistory";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import EntityModal from "components/EntityModal";
@@ -50,7 +50,7 @@ function AccountDetails(props: Props) {
       editURL={`/accounts/edit/${account.id}`}
     >
       <AccountOverview key="overview" account={account} />
-      <AccountOperationsRules key="operationRules" account={account} />
+      <AccountTransactionRules key="transactionRules" account={account} />
       <AccountHistory key="history" account={account} />
     </EntityModal>
   );

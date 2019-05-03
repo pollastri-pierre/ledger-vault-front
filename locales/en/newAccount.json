@@ -57,7 +57,7 @@
     "members_selected": "{{nbMembersSelected}} member selected",
     "members_selected_plural": "{{nbMembersSelected}} members selected",
     "required": "required",
-    "scheme": "Operation rules",
+    "scheme": "Transaction rules",
     "selected": "selected",
     "title": "rules"
   },
