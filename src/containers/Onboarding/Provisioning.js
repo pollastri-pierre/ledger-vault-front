@@ -5,7 +5,7 @@ import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
 import FragmentKey from "containers/Onboarding/Fragment";
 import { translate, Trans } from "react-i18next";
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Title, Introduction } from "components/Onboarding";
@@ -147,7 +147,7 @@ class Provisioning extends Component<Props, State> {
         <Footer
           nextState
           render={(onNext, onPrevious) => (
-            <Fragment>
+            <>
               <DialogButton onTouchTap={onPrevious}>
                 {t("common:back")}
               </DialogButton>
@@ -158,7 +158,7 @@ class Provisioning extends Component<Props, State> {
               >
                 {t("common:continue")}
               </DialogButton>
-            </Fragment>
+            </>
           )}
         />
       </div>

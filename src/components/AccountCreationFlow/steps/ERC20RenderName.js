@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { translate } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
@@ -125,7 +125,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
     const parentAccountName = getParentAccountName(parentAccount);
 
     return (
-      <Fragment>
+      <>
         <Label>{t("newAccount:options.name")}</Label>
         <InputText
           value={payload.name}
@@ -137,12 +137,12 @@ class ERC20RenderName extends PureComponent<Props, State> {
           {...inputProps}
         />
         {parentAccount && parentAccount.id ? (
-          <Fragment>
+          <>
             <Label mt={30}>{t("newAccount:options.selectedParent")}</Label>
             {this.renderParentAccountSummary()}
-          </Fragment>
+          </>
         ) : (
-          <Fragment>
+          <>
             <Label mt={30}>{t("newAccount:options.parentName")}</Label>
             <InputText
               value={parentAccountName}
@@ -157,9 +157,9 @@ class ERC20RenderName extends PureComponent<Props, State> {
                 <Text>{t("newAccount:erc20.matchingNameWarning")}</Text>
               </InfoBox>
             )}
-          </Fragment>
+          </>
         )}
-      </Fragment>
+      </>
     );
   }
 }

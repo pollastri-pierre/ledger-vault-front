@@ -1,7 +1,7 @@
 // @flow
 import { Trans } from "react-i18next";
 import { withRouter } from "react-router";
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import type { MemoryHistory } from "history";
 
 import { isAccountOutdated } from "utils/accounts";
@@ -40,7 +40,7 @@ class AccountWarning extends Component<Props> {
   render() {
     const { classes, account } = this.props;
     return (
-      <Fragment>
+      <>
         {account.status === "VIEW_ONLY" && (
           <InfoBox
             type="warning"
@@ -80,7 +80,7 @@ class AccountWarning extends Component<Props> {
             <Trans i18nKey="update:provide_rule_subtext" />
           </InfoBox>
         )}
-      </Fragment>
+      </>
     );
   }
 }

@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
@@ -51,7 +51,7 @@ class Users extends PureComponent<Props> {
     const { match, history } = this.props;
 
     return (
-      <Fragment>
+      <>
         <DataSearch
           Query={SearchUsersQuery}
           TableComponent={UsersTable}
@@ -65,7 +65,7 @@ class Users extends PureComponent<Props> {
           path={`${match.url}/invite/user`}
           component={UserCreationFlow}
         />
-      </Fragment>
+      </>
     );
   }
 }

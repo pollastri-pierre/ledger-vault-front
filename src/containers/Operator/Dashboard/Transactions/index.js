@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
@@ -48,7 +48,7 @@ class Transactions extends PureComponent<Props> {
 
   render() {
     return (
-      <Fragment>
+      <>
         <Box flow={5} p={10}>
           <Text bold i18nKey="operatorDashboard:transactions.header" />
           <Box>
@@ -61,7 +61,7 @@ class Transactions extends PureComponent<Props> {
             ))}
           </Box>
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

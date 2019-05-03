@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import Animated from "animated/lib/targets/react-dom";
 import Easing from "animated/lib/Easing";
 import { createPortal } from "react-dom";
@@ -149,7 +149,7 @@ class Modal extends PureComponent<ModalProps, State> {
     };
 
     const modal = (
-      <Fragment>
+      <>
         <Animated.div style={backdropStyle} />
         <div style={containerStyle} onClick={this.handleClickOnBackdrop}>
           <Animated.div style={bodyWrapperStyle}>
@@ -163,7 +163,7 @@ class Modal extends PureComponent<ModalProps, State> {
             </ModalDialog>
           </Animated.div>
         </div>
-      </Fragment>
+      </>
     );
 
     return createPortal(modal, modalRoot);

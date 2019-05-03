@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { FaCheck, FaPlus } from "react-icons/fa";
@@ -115,7 +115,7 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
           type: approval.type === "APPROVE" ? "APPROVE" : "ABORT",
           date: approval.created_on,
           label: (
-            <Fragment>
+            <>
               <b>
                 {approval.type === "APPROVE"
                   ? `approved (${n}/${quorum})`
@@ -123,7 +123,7 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
                 {" by"}
               </b>
               <span>{approval.created_by.username}</span>
-            </Fragment>
+            </>
           ),
         });
       });
@@ -133,10 +133,10 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
         type: "REVOKE",
         date: cur.created_on,
         label: (
-          <Fragment>
+          <>
             <b>deleted by</b>
             <span>{cur.created_by.username}</span>
-          </Fragment>
+          </>
         ),
       });
     }
@@ -145,10 +145,10 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
         type: "EDIT",
         date: cur.created_on,
         label: (
-          <Fragment>
+          <>
             <b>edited by</b>
             <span>{cur.created_by.username}</span>
-          </Fragment>
+          </>
         ),
       });
     }
@@ -161,10 +161,10 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
         type: "CREATE",
         date: cur.created_on,
         label: (
-          <Fragment>
+          <>
             <b>created by</b>
             <span>{cur.created_by.username}</span>
-          </Fragment>
+          </>
         ),
       });
     }

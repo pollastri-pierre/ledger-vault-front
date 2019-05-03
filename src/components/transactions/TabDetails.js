@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, PureComponent, Fragment } from "react";
+import React, { Component, PureComponent } from "react";
 import cx from "classnames";
 import type { Transaction, Account, RawTransactionETH } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -134,7 +134,7 @@ class TabDetails extends PureComponent<{
           <p className={classes.hash}>{rawTransaction.hash}</p>
         )}
         {rawTransaction && cryptoCurrency.family === "bitcoin" && (
-          <Fragment>
+          <>
             <TransactionList
               title="From"
               dataTest="transaction-details-from"
@@ -147,7 +147,7 @@ class TabDetails extends PureComponent<{
               account={account}
               entries={rawTransaction.outputs}
             />
-          </Fragment>
+          </>
         )}
         {cryptoCurrency.family === "ethereum" && (
           <TransactionETHDetails transaction={rawTransaction} />

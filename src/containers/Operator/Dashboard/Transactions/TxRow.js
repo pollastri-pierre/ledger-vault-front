@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 
 import type { Account, Transaction } from "data/types";
 
@@ -24,13 +24,13 @@ class TxRow extends PureComponent<Props> {
     );
 
     return (
-      <Fragment>
+      <>
         <TxTypeDate transaction={transaction} />
         {account && <TxAccountName account={account} />}
         <TxStatus transaction={transaction} />
         <TxHash transaction={transaction} />
         {account && <TxAmount transaction={transaction} account={account} />}
-      </Fragment>
+      </>
     );
   }
 }

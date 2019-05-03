@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -85,14 +85,14 @@ const PrerequisiteSeed = ({
     </div>
     <Footer
       render={(onNext, onPrevious) => (
-        <Fragment>
+        <>
           <DialogButton onTouchTap={onPrevious}>
             {t("common:back")}
           </DialogButton>
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>
-        </Fragment>
+        </>
       )}
     />
   </div>

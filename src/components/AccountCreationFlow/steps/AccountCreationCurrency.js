@@ -4,7 +4,7 @@
 // DISCLAIMER: this is legacy code. to be refactored.
 // ==================================================
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Radio from "@material-ui/core/Radio";
@@ -222,7 +222,7 @@ function EthAccountsRadio({
   };
 
   return (
-    <Fragment>
+    <>
       <div className={classes.radioContainer} onClick={selectFirstIfNotSet}>
         <Radio color="primary" checked={account !== null} />
         <div className={classes.radioContent}>
@@ -242,7 +242,7 @@ function EthAccountsRadio({
           <Trans i18nKey="newAccount:erc20.createNew" />
         </div>
       </div>
-    </Fragment>
+    </>
   );
 }
 

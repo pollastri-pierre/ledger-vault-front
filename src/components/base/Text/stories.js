@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { Fragment } from "react";
+import React from "react";
 import { storiesOf } from "@storybook/react";
 
 import Text from "components/base/Text";
@@ -26,7 +26,7 @@ const TypographyRow = ({ children, label }) => (
 );
 
 storiesOf("components/base", module).add("Text", () => (
-  <Fragment>
+  <>
     <TypographyRow label="large">
       <Text large>{DUMMY_TEXT}</Text>
     </TypographyRow>
@@ -36,5 +36,5 @@ storiesOf("components/base", module).add("Text", () => (
     <TypographyRow label="small">
       <Text small>{DUMMY_TEXT}</Text>
     </TypographyRow>
-  </Fragment>
+  </>
 ));

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 
 import type { Account } from "data/types";
 
@@ -21,11 +21,11 @@ class TaskRow extends PureComponent<Props> {
     );
 
     return (
-      <Fragment>
+      <>
         <TaskStatus task={task} />
         {account && <TaskAccountName account={account} />}
         {account && <TaskAmount task={task} account={account} />}
-      </Fragment>
+      </>
     );
   }
 }

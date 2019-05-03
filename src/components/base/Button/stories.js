@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 
 import { delay } from "utils/promise";
-import React, { Fragment, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { storiesOf } from "@storybook/react";
 import { MdCreateNewFolder } from "react-icons/md";
 import { boolean, text } from "@storybook/addon-knobs";
@@ -46,7 +46,7 @@ storiesOf("components/base", module).add("Button", () => {
   const isDisabled = boolean("isDisabled", false);
   const label = text("label", "create account");
   return (
-    <Fragment>
+    <>
       <Box align="flex-start" flow={20}>
         <Box flow={20}>
           <Text header bold>
@@ -230,6 +230,6 @@ storiesOf("components/base", module).add("Button", () => {
           </Box>
         </Box>
       </Box>
-    </Fragment>
+    </>
   );
 });

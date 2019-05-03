@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import ModalRoute from "components/ModalRoute";
 import GroupDetails from "containers/Admin/Groups/GroupDetails";
 import AccountCreationFlow from "components/AccountCreationFlow";
@@ -13,7 +13,7 @@ import EditAdminRules from "containers/Admin/Dashboard/EditAdminRules";
 import ReceiveFlow from "components/ReceiveFlow";
 
 export default () => (
-  <Fragment>
+  <>
     {/* USER */}
     <ModalRoute
       transparent
@@ -68,5 +68,5 @@ export default () => (
       component={OrganizationDetails}
     />
     <ModalRoute transparent path="*/admin-rules" component={EditAdminRules} />
-  </Fragment>
+  </>
 );

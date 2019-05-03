@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { NetworkError } from "network";
 import { FaCheck, FaTrash } from "react-icons/fa";
 
@@ -81,7 +81,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
     const BtnIcon = Icon || (isRevoke ? FaTrash : FaCheck);
 
     return (
-      <Fragment>
+      <>
         {isInProgress ? (
           <Absolute right={15} bottom={15}>
             <DeviceInteraction
@@ -114,7 +114,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             {confirmContent}
           </ConfirmModal>
         )}
-      </Fragment>
+      </>
     );
   }
 }

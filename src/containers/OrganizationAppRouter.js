@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import counterValues from "data/counterValues";
 import { Switch, Route } from "react-router";
@@ -17,7 +17,7 @@ import RegisterUser from "./RegisterUser";
 const { PollingProvider } = counterValues;
 
 const OrganizationAppRouter = () => (
-  <Fragment>
+  <>
     <GlobalStyle />
 
     <BrowserRouter>
@@ -28,7 +28,7 @@ const OrganizationAppRouter = () => (
           <Route
             path="/:orga_name"
             render={({ match, history, location }) => (
-              <Fragment>
+              <>
                 <Switch>
                   <Route
                     path={`${match.url}/login`}
@@ -63,7 +63,7 @@ const OrganizationAppRouter = () => (
                     />
                   </PollingProvider>
                 </Switch>
-              </Fragment>
+              </>
             )}
           />
           <Route component={Welcome} />
@@ -71,7 +71,7 @@ const OrganizationAppRouter = () => (
       </>
     </BrowserRouter>
     {process.env.NODE_ENV === "e2e" && <MockDevices />}
-  </Fragment>
+  </>
 );
 
 export default OrganizationAppRouter;

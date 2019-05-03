@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import colors from "shared/colors";
 import Warning from "components/icons/TriangleWarning";
 import type { Translate } from "data/types";
@@ -85,14 +85,14 @@ const Backup = ({
     <Footer
       nextState
       render={(onNext, onPrevious) => (
-        <Fragment>
+        <>
           <DialogButton onTouchTap={onPrevious}>
             {t("common:back")}
           </DialogButton>
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>
-        </Fragment>
+        </>
       )}
     />
   </div>
