@@ -9,5 +9,11 @@
   "transactionRules": {
     "approvals": "Approval workflow",
     "title": "Transaction rules"
+  },
+  "advanced": {
+    "derivation_path": "Derivation path",
+    "xpub": "XPUB",
+    "warningXpub": "The XPUB must be used for reporting purposes only. If receiving addresses are derived from the XPUB, incoming funds won’t be accessible from the Ledger Vault.",
+    "understand_xpub": "I understand"
   }
 }
