@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import type { Translate } from "data/types";
@@ -126,7 +126,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
         </div>
         <Footer
           render={(onNext, onPrevious) => (
-            <Fragment>
+            <>
               <DialogButton onTouchTap={onPrevious}>
                 {t("common:back")}
               </DialogButton>
@@ -139,7 +139,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
               >
                 {t("common:continue")}
               </DialogButton>
-            </Fragment>
+            </>
           )}
         />
       </div>

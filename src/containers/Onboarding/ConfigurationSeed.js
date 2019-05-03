@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
@@ -35,14 +35,14 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => (
     </List>
     <Footer
       render={(onNext, onPrevious) => (
-        <Fragment>
+        <>
           <DialogButton onTouchTap={onPrevious}>
             {t("common:back")}
           </DialogButton>
           <DialogButton highlight onTouchTap={onNext}>
             {t("common:continue")}
           </DialogButton>
-        </Fragment>
+        </>
       )}
     />
   </div>

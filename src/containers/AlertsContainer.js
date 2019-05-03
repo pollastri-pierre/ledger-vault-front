@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Alert from "components/utils/Alert";
 import { closeMessage } from "redux/modules/alerts";
@@ -33,7 +33,7 @@ export function MessagesContainer(props: {
     title
   );
   return (
-    <Fragment>
+    <>
       <Modal isOpened={visible && type === "reason"} onClose={onClose}>
         <BlockingReasons error={error} onClose={onClose} />
       </Modal>
@@ -50,7 +50,7 @@ export function MessagesContainer(props: {
           <div>{content}</div>
         )}
       </Alert>
-    </Fragment>
+    </>
   );
 }
 

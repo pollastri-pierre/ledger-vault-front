@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -68,12 +68,12 @@ class AccountQuickInfo extends Component<Props, State> {
     return account.status === "VIEW_ONLY" ? (
       <span>-</span>
     ) : (
-      <Fragment>
+      <>
         <span>{members.length}</span>
         <span onClick={this.toggleModalMembers}>
           <Trans i18nKey="accountView:members_modal.toggle" />
         </span>
-      </Fragment>
+      </>
     );
   };
 
@@ -105,7 +105,7 @@ class AccountQuickInfo extends Component<Props, State> {
       : null;
 
     return (
-      <Fragment>
+      <>
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
           {this.renderListMember()}
         </BlurDialog>
@@ -162,7 +162,7 @@ class AccountQuickInfo extends Component<Props, State> {
                 value={<DateFormat date={account.created_on} />}
               />
               {account.account_type === "ERC20" && account.parent_id && (
-                <Fragment>
+                <>
                   <Row
                     label={
                       <Trans i18nKey="accountView:summary.token_address" />
@@ -175,13 +175,13 @@ class AccountQuickInfo extends Component<Props, State> {
                     }
                     value={<Link to={`${account.parent_id}`}>ETH account</Link>}
                   />
-                </Fragment>
+                </>
               )}
             </Box>
             <AccountWarning account={account} />
           </Box>
         </Card>
-      </Fragment>
+      </>
     );
   }
 }

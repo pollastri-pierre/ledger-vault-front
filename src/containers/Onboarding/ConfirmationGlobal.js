@@ -1,6 +1,6 @@
 // @flow
 import colors from "shared/colors";
-import React, { Fragment } from "react";
+import React from "react";
 import { Title } from "components/Onboarding";
 import type { Translate } from "data/types";
 import { translate } from "react-i18next";
@@ -99,7 +99,7 @@ const ConfirmationGlobal = ({
     </div>
     <Footer
       render={() => (
-        <Fragment>
+        <>
           <div />
           <DialogButton
             highlight
@@ -109,7 +109,7 @@ const ConfirmationGlobal = ({
           >
             {t("common:continue")}
           </DialogButton>
-        </Fragment>
+        </>
       )}
     />
   </div>

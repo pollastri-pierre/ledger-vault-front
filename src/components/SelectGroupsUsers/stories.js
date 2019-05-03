@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
 import { genUsers } from "data/mock-entities";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
@@ -55,7 +55,7 @@ class Wrapper extends Component<> {
   }
 }
 storiesOf("components/form/selects", module).add("SelectGroupsUsers", () => (
-  <Fragment>
+  <>
     <Box p={20}>
       <Text uppercase>Groups and user</Text>
       <Wrapper mixed />
@@ -68,5 +68,5 @@ storiesOf("components/form/selects", module).add("SelectGroupsUsers", () => (
       <Text uppercase>Only users</Text>
       <Wrapper onlyUser />
     </Box>
-  </Fragment>
+  </>
 ));

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 
 import connectData from "restlay/connectData";
 import styled from "styled-components";
@@ -66,7 +66,7 @@ class Tasks extends PureComponent<Props> {
     const displayTasks =
       tasks && tasks.length > 0 ? tasks.slice(0, 3) : mockTasks;
     return (
-      <Fragment>
+      <>
         <Box flow={15} p={10}>
           <Box p={10} style={styles.seeAll} onClick={this.handleSeeAllTasks}>
             <Text small color={colors.ocean}>
@@ -86,7 +86,7 @@ class Tasks extends PureComponent<Props> {
             <NoDataPlaceholder happy title="No tasks found." />
           )}
         </Box>
-      </Fragment>
+      </>
     );
   }
 }

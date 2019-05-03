@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
 import type { Translate } from "data/types";
@@ -66,7 +66,7 @@ const AdministrationScheme = ({
           }
         };
         return (
-          <Fragment>
+          <>
             <DialogButton onTouchTap={onPrevious}>
               {t("common:back")}
             </DialogButton>
@@ -77,7 +77,7 @@ const AdministrationScheme = ({
             >
               {t("common:continue")}
             </DialogButton>
-          </Fragment>
+          </>
         );
       }}
     />

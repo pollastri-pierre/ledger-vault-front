@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { NetworkError } from "network";
 import connectData from "restlay/connectData";
@@ -54,7 +54,7 @@ class AbortRequestButton extends PureComponent<Props, State> {
     const { error } = this.state;
 
     return (
-      <Fragment>
+      <>
         {error && <TriggerErrorNotification error={error} />}
         <ModalFooterButton
           disabled={disabled}
@@ -64,7 +64,7 @@ class AbortRequestButton extends PureComponent<Props, State> {
           <FaStopCircle style={{ marginRight: 10 }} />
           <Trans i18nKey="common:abort" />
         </ModalFooterButton>
-      </Fragment>
+      </>
     );
   }
 }

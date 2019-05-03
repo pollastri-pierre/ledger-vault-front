@@ -4,7 +4,7 @@
 // DISCLAIMER: this is legacy code. to be refactored.
 // ==================================================
 
-import React, { Fragment } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 
 import InfoBox from "components/base/InfoBox";
@@ -26,7 +26,7 @@ export default (props: AccountCreationStepProps) => {
           </LineRow>
         )}
         {erc20token && (
-          <Fragment>
+          <>
             <LineRow
               label={<Trans i18nKey="newAccount:confirmation.account" />}
             >
@@ -42,7 +42,7 @@ export default (props: AccountCreationStepProps) => {
                 {payload.parentAccount.name}
               </LineRow>
             )}
-          </Fragment>
+          </>
         )}
         {currency && (
           <LineRow label={<Trans i18nKey="newAccount:confirmation.currency" />}>

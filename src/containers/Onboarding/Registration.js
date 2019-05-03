@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 import cx from "classnames";
 import { translate } from "react-i18next";
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
 import {
@@ -162,7 +162,7 @@ class Registration extends Component<Props, *> {
         <Footer
           nextState
           render={(onNext, onPrevious) => (
-            <Fragment>
+            <>
               <DialogButton onTouchTap={onPrevious}>
                 {t("common:back")}
               </DialogButton>
@@ -173,7 +173,7 @@ class Registration extends Component<Props, *> {
               >
                 {t("common:continue")}
               </DialogButton>
-            </Fragment>
+            </>
           )}
         />
       </div>

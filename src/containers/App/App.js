@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from "react";
+import React from "react";
 import { Trans } from "react-i18next";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
@@ -108,7 +108,7 @@ const App = withMe((props: Props & { me: User }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <VaultLayout
         menuItems={menuItems}
         user={me}
@@ -119,7 +119,7 @@ const App = withMe((props: Props & { me: User }) => {
         <Content match={match} />
       </VaultLayout>
       <Modals match={match} />
-    </Fragment>
+    </>
   );
 });
 

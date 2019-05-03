@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from "react";
+import React, { PureComponent } from "react";
 import { FaRegEdit, FaCheck } from "react-icons/fa";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -53,7 +53,7 @@ class EditableField extends PureComponent<Props, State> {
     return (
       <Box horizontal align="center" flow={10}>
         {!editMode ? (
-          <Fragment>
+          <>
             <Text>{value}</Text>
             <FaRegEdit
               style={styles.cursor}
@@ -61,7 +61,7 @@ class EditableField extends PureComponent<Props, State> {
               size={12}
               onClick={this.toggleEditMode}
             />
-          </Fragment>
+          </>
         ) : (
           <InputField
             value={localValue}

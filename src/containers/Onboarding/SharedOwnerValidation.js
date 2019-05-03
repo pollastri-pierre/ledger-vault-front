@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import CircleProgress from "components/CircleProgress";
 import type { Translate } from "data/types";
@@ -181,7 +181,7 @@ class SharedOwnerValidation extends Component<Props, State> {
         <Footer
           isBack={false}
           render={(onNext, onPrevious) => (
-            <Fragment>
+            <>
               <DialogButton onTouchTap={onPrevious}>
                 {t("common:back")}
               </DialogButton>
@@ -195,7 +195,7 @@ class SharedOwnerValidation extends Component<Props, State> {
               >
                 {t("common:continue")}
               </DialogButton>
-            </Fragment>
+            </>
           )}
         />
       </div>

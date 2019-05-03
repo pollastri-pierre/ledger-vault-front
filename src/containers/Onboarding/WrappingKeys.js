@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { translate, Trans } from "react-i18next";
 import type { Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -152,7 +152,7 @@ class WrappingKeys extends Component<Props> {
         </div>
         <Footer
           render={(onNext, onPrevious) => (
-            <Fragment>
+            <>
               <DialogButton onTouchTap={onPrevious}>
                 {t("common:back")}
               </DialogButton>
@@ -163,7 +163,7 @@ class WrappingKeys extends Component<Props> {
               >
                 {t("common:continue")}
               </DialogButton>
-            </Fragment>
+            </>
           )}
         />
       </div>
