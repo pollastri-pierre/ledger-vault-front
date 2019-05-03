@@ -11,15 +11,12 @@ import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
 
 const ErrorsWrapper = ({ bg, errors }: { bg?: string, errors?: Error[] }) =>
-  errors ? (
+  errors && errors.length ? (
     <Absolute top="100%" right={0}>
       <StyledErrorsWrapper bg={bg}>
         {errors.map(err => (
-          <Box horizontal flow={5} align="center" key={err.message}>
-            <FaTimes size={10} />
-            <span>
-              <TranslatedError error={err} field="description" />
-            </span>
+          <Box key={err.message}>
+            <TranslatedError error={err} field="description" />
           </Box>
         ))}
       </StyledErrorsWrapper>
@@ -42,8 +39,9 @@ const StyledErrorsWrapper = styled.div`
   color: white;
   padding: 5px 10px;
   margin-top: 10px;
-  border-radius: 2px;
-  font-size: 11px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: bold;
   line-height: 20px;
   box-shadow: ${colors.form.shadow.error};
   position: relative;
