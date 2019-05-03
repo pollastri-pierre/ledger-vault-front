@@ -132,6 +132,7 @@ class SendDetails extends PureComponent<Props<*>, State> {
                 onChangeTransaction={onChangeTransaction}
                 bridge={bridge}
                 feeIsValid={feeIsValid}
+                amountIsValid={amountIsValid}
               />
             )}
           </div>
