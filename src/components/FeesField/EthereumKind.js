@@ -48,6 +48,7 @@ type Props<Transaction> = {
   transaction: Transaction,
   account: Account,
   feeIsValid: boolean,
+  amountIsValid: boolean,
   onChangeTransaction: Transaction => void,
   bridge: WalletBridge<Transaction>,
   restlay: RestlayEnvironment
@@ -76,7 +77,7 @@ class FeesFieldEthereumKind extends PureComponent<
   }
 
   async componentDidUpdate(prevProps) {
-    const { transaction } = this.props;
+    const { transaction, amountIsValid } = this.props;
 
     if (
       prevProps.transaction.gasLimit !== transaction.gasLimit ||
@@ -84,7 +85,10 @@ class FeesFieldEthereumKind extends PureComponent<
     ) {
       this.loadFees();
     }
-    if (prevProps.transaction.recipient !== transaction.recipient) {
+    if (
+      prevProps.transaction.recipient !== transaction.recipient ||
+      (amountIsValid && prevProps.transaction.amount !== transaction.amount)
+    ) {
       this.loadGasPrice();
     }
   }
