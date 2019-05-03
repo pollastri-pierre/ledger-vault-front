@@ -15,16 +15,24 @@ type Props = {
   alwaysShowSign?: boolean, // do you want to show the + before the number (N.B. minus is always displayed)
 };
 
+export function currencyUnitValueFormat(
+  unit: Unit,
+  value: BigNumber,
+  { alwaysShowSign }: { alwaysShowSign?: boolean } = {},
+) {
+  return formatCurrencyUnit(unit, value, {
+    showCode: true,
+    alwaysShowSign,
+    showAllDigits: false,
+  });
+}
+
 class CurrencyUnitValue extends PureComponent<Props> {
   render() {
     const { unit, value, alwaysShowSign, type } = this.props;
     let value_with_sign = value;
     if (type === "SEND") value_with_sign = value.multipliedBy(-1);
-    return formatCurrencyUnit(unit, value_with_sign, {
-      showCode: true,
-      alwaysShowSign,
-      showAllDigits: false,
-    });
+    return currencyUnitValueFormat(unit, value_with_sign, { alwaysShowSign });
   }
 }
 

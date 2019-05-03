@@ -14,7 +14,6 @@ export type Speed = $Values<typeof speeds>;
 type Input = {
   accountId: number,
   txGetFees: TransactionGetFees,
-  accountId: number,
 };
 
 type Response = {
@@ -22,6 +21,7 @@ type Response = {
     fees: string,
     gas_limit?: ?BigNumber,
     gas_price?: ?BigNumber,
+    max_amount?: ?BigNumber,
   },
 };
 
@@ -52,5 +52,6 @@ export default class AccountCalculateFeeQuery extends Mutation<
     fees: BigNumber(res.fees),
     gas_price: res.gas_price ? BigNumber(res.gas_price) : null,
     gas_limit: res.gas_limit ? BigNumber(res.gas_limit) : null,
+    max_amount: res.max_amount ? BigNumber(res.max_amount) : null,
   });
 }

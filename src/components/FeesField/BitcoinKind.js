@@ -72,6 +72,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
           onChangeTransaction({
             ...transaction,
             estimatedFees: estimatedFees.fees,
+            estimatedMaxAmount: estimatedFees.max_amount,
           });
         } catch (err) {
           console.error(err); // eslint-disable-line no-console
@@ -79,6 +80,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
           onChangeTransaction({
             ...transaction,
             estimatedFees: null,
+            estimatedMaxAmount: null,
           });
         }
       }

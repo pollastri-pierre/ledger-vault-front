@@ -12,11 +12,12 @@ import AccountName from "components/AccountName";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import InputAddress from "components/TransactionCreationFlow/InputAddress";
 import { Label, InputAmount, InputAmountNoUnits } from "components/base/form";
-import { AmountTooHigh } from "utils/errors";
+import { AmountTooHigh, AmountExceedMax } from "utils/errors";
+import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 
 import type { TransactionCreationStepProps } from "../types";
 
-const amountTooHigh = new AmountTooHigh();
+const amountTooHighError = new AmountTooHigh();
 
 const TransactionCreationAmount = (
   props: TransactionCreationStepProps<any>,
@@ -39,9 +40,23 @@ const TransactionCreationAmount = (
       bridge.editTransactionAmount(account, transaction, value),
     );
 
-  const isAmountTooHigh = bridge
+  // input amount validation
+  const amountErrors = [];
+  const gateMaxAmount =
+    bridge.getMaxAmount && bridge.getMaxAmount(account, transaction);
+  const amountTooHigh = bridge
     .getTotalSpent(account, transaction)
     .isGreaterThan(account.balance);
+  if (amountTooHigh) {
+    amountErrors.push(amountTooHighError);
+  }
+  if (gateMaxAmount && transaction.amount.isGreaterThan(gateMaxAmount)) {
+    amountErrors.push(
+      new AmountExceedMax(null, {
+        max: currencyUnitValueFormat(currency.units[0], gateMaxAmount),
+      }),
+    );
+  }
 
   return (
     <Box flow={20}>
@@ -90,14 +105,14 @@ const TransactionCreationAmount = (
                 bridge={bridge}
                 transaction={transaction}
                 onChangeTransaction={onChangeTransaction}
-                errors={isAmountTooHigh ? [amountTooHigh] : null}
+                errors={amountErrors}
               />
             ) : (
               <InputAmount
                 currency={currency}
                 value={transaction.amount}
                 onChange={onChangeAmount}
-                errors={isAmountTooHigh ? [amountTooHigh] : null}
+                errors={amountErrors}
               />
             )}
           </Box>

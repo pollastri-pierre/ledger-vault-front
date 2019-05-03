@@ -7,11 +7,11 @@ import type { Account, TransactionCreationNote } from "data/types";
 import FeesBitcoinKind from "components/FeesField/BitcoinKind";
 import type { WalletBridge } from "./types";
 
-// convertion to the BigNumber needed
 export type Transaction = {
   amount: BigNumber,
   recipient: string,
   estimatedFees: ?BigNumber,
+  estimatedMaxAmount: ?BigNumber,
   feeLevel: Speed,
   label: string,
   note: TransactionCreationNote,
@@ -39,6 +39,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     amount: BigNumber(0),
     recipient: "",
     estimatedFees: null,
+    estimatedMaxAmount: null,
     feeLevel: "normal",
     label: "",
     note: {
@@ -48,6 +49,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
   }),
 
   getFees: (a, t) => t.estimatedFees,
+  getMaxAmount: (a, t) => t.estimatedMaxAmount,
 
   getTotalSpent: (a, t) => {
     const estimatedFees = t.estimatedFees || BigNumber(0);
@@ -99,6 +101,8 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     if (!t.estimatedFees) return false;
     if (!t.estimatedFees.isGreaterThan(0)) return false;
     if (t.amount.plus(t.estimatedFees).isGreaterThan(a.balance)) return false;
+    if (!t.estimatedMaxAmount) return false;
+    if (t.amount.isGreaterThan(t.estimatedMaxAmount)) return false;
     return true;
   },
   isRecipientValid,
