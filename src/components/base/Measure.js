@@ -22,7 +22,7 @@ export default function Measure({
       onMeasure(node.current.getBoundingClientRect());
     });
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [onMeasure]);
 
   return <div ref={node}>{children}</div>;
 }

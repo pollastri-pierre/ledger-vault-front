@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Animated from "animated/lib/targets/react-dom";
 
 import { boxShadow } from "components/base/Modal/components";
@@ -32,38 +32,40 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
   const [dimensions, setDimensions] = useState({ width: SIZE, height: SIZE });
   const [finished, setFinished] = useState(false);
+  const unmounted = useRef(false);
 
   const { width, height } = dimensions;
 
-  let unmounted = false;
-
   useEffect(
     () => () => {
-      unmounted = true;
+      unmounted.current = true;
     },
     [],
   );
 
-  const onMeasure = dimensions => {
-    setDimensions(dimensions);
-    const { width, height } = dimensions;
-    anims.scaleX.setValue(SIZE / width);
-    anims.scaleY.setValue(SIZE / height);
-    Animated.spring(anims.scaleX, { toValue: 1 }).start();
-    Animated.spring(anims.scaleY, { toValue: 1 }).start();
-    const { innerHeight } = window;
-    if (height > innerHeight - 80) {
-      const offset = (height - innerHeight) / 2 + 40;
-      Animated.spring(anims.translateY, { toValue: offset }).start();
-    }
+  const onMeasure = useCallback(
+    dimensions => {
+      setDimensions(dimensions);
+      const { width, height } = dimensions;
+      anims.scaleX.setValue(SIZE / width);
+      anims.scaleY.setValue(SIZE / height);
+      Animated.spring(anims.scaleX, { toValue: 1 }).start();
+      Animated.spring(anims.scaleY, { toValue: 1 }).start();
+      const { innerHeight } = window;
+      if (height > innerHeight - 80) {
+        const offset = (height - innerHeight) / 2 + 40;
+        Animated.spring(anims.translateY, { toValue: offset }).start();
+      }
 
-    // couldn't find a way to get animation end callback
-    setTimeout(() => {
-      if (unmounted) return;
-      setFinished(true);
-      Animated.spring(anims.opacity, { toValue: 1 }).start();
-    }, 500);
-  };
+      // couldn't find a way to get animation end callback
+      setTimeout(() => {
+        if (unmounted.current) return;
+        setFinished(true);
+        Animated.spring(anims.opacity, { toValue: 1 }).start();
+      }, 500);
+    },
+    [anims],
+  );
 
   const wrapperStyle = {
     ...modalStyle,
