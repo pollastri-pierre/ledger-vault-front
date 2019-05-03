@@ -19,9 +19,15 @@ class LineRow extends Component<{
   label: React$Node,
   children?: React$Node | string,
   tooltipInfoMessage?: React$Node,
+  noOverflowHidden?: boolean,
 }> {
   render() {
-    const { label, children, tooltipInfoMessage } = this.props;
+    const {
+      label,
+      children,
+      tooltipInfoMessage,
+      noOverflowHidden,
+    } = this.props;
     return (
       <BoxLined
         horizontal
@@ -41,7 +47,7 @@ class LineRow extends Component<{
           )}
         </Box>
         {children && (
-          <Box ellipsis style={styles.value}>
+          <Box ellipsis={!noOverflowHidden} style={styles.value}>
             {children}
           </Box>
         )}

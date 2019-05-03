@@ -12,6 +12,7 @@ import { GrowingSpinner } from "components/base/GrowingCard";
 import { createAndApprove } from "device/interactions/approveFlow";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
+import AccountSettings from "containers/Accounts/AccountSettings";
 import AccountHistory from "containers/Admin/Accounts/AccountHistory";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import EntityModal from "components/EntityModal";
@@ -52,6 +53,7 @@ function AccountDetails(props: Props) {
       <AccountOverview key="overview" account={account} />
       <AccountTransactionRules key="transactionRules" account={account} />
       <AccountHistory key="history" account={account} />
+      <AccountSettings key="settings" account={account} />
     </EntityModal>
   );
 }

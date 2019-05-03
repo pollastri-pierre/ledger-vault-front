@@ -21,6 +21,7 @@ type Props = {
   align?: "center" | "flex-start" | "flex-end",
   justify?: "stretch" | "center" | "flex-start" | "flex-end",
   inline?: boolean,
+  ellipsis?: boolean,
   overflow?: string,
 };
 
@@ -36,7 +37,7 @@ const flexShrink = (props: Props) => ("noShrink" in props ? 0 : 1);
 const overflow = (props: Props) =>
   "overflow" in props ? props.overflow : "unset";
 const ellipsis = (props: Props) => {
-  if (!("ellipsis" in props)) return "";
+  if (props.ellipsis !== true) return "";
   return `
     overflow: hidden;
     text-overflow: ellipsis;
