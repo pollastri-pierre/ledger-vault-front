@@ -18,8 +18,6 @@ import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
 import BlurDialog from "components/BlurDialog";
 import MemberRow from "components/MemberRow";
-import AccountSettings from "components/AccountSettings";
-import ModalRoute from "components/ModalRoute";
 import { FaWrench } from "react-icons/fa";
 import type { Account } from "data/types";
 import AccountWarning from "./AccountWarning";
@@ -97,11 +95,6 @@ class AccountQuickInfo extends Component<Props, State> {
     );
   };
 
-  // TODO: type this labyrinth
-  AccountSettings = (props: *) => (
-    <AccountSettings account={this.props.account} {...props} />
-  );
-
   render() {
     const { account } = this.props;
     const { modalMembersOpen } = this.state;
@@ -113,11 +106,6 @@ class AccountQuickInfo extends Component<Props, State> {
 
     return (
       <Fragment>
-        <ModalRoute
-          path="*/account-settings"
-          component={this.AccountSettings}
-        />
-
         <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
           {this.renderListMember()}
         </BlurDialog>
