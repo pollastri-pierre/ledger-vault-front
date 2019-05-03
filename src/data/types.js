@@ -157,6 +157,7 @@ export type TransactionGetFees = {
   fees_level?: string,
   gas_limit?: ?BigNumber,
   gas_price?: ?BigNumber,
+  max_amount?: ?BigNumber,
 };
 
 export type AccountEntity = AccountCommon & {

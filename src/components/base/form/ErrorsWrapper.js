@@ -2,7 +2,6 @@
 
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { FaTimes } from "react-icons/fa";
 
 import colors from "shared/colors";
 

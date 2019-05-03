@@ -27,6 +27,10 @@
     "title": "Amount too high",
     "description": "The amount you entered is too high"
   },
+  "AmountExceedMax": {
+    "title": "Amount exceed max possible amount",
+    "description": "The amount you entered exceeds the limit of 100 UTXOs. To fix, lower the amount to a maximum of: {{max}}"
+  },
   "NonEIP55Address": {
     "title": "Auto-verification not available: carefully verify the address",
     "description": "Auto-verification not available: carefully verify the address"

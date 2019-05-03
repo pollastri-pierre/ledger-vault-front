@@ -20,4 +20,5 @@ export type DeviceError = {
 // send errors
 export const InvalidAddress = createCustomErrorClass("InvalidAddress");
 export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
+export const AmountExceedMax = createCustomErrorClass("AmountExceedMax");
 export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
