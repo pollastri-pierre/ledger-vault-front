@@ -13,5 +13,6 @@
   "PENDING_REVOCATION": "Pending revocation",
   "PENDING_REGISTRATION": "Pending registration",
   "PENDING_UPDATE": "Pending update",
+  "PENDING_MIGRATED": "Pending migration",
   "MIGRATED": "Migrated"
 }

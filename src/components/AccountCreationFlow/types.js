@@ -12,6 +12,7 @@ export type ParentAccount = { id: number } | { name: string };
 export type AccountCreationPayload = {
   id?: number,
   name: string,
+  accountStatus: string,
   rules: ApprovalsRule[],
   currency: CryptoCurrency | null,
   erc20token: ERC20Token | null,

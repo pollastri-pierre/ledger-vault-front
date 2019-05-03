@@ -10,7 +10,7 @@ type Node = Account;
 
 // Fetch all accounts
 export default class AccountsQuery extends ConnectionQuery<Input, Node> {
-  uri = "/accounts?status=ACTIVE&status=VIEW_ONLY";
+  uri = "/accounts?status=ACTIVE&status=VIEW_ONLY&status=MIGRATED";
 
   responseSchema = schema.Account;
 

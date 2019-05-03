@@ -16,7 +16,7 @@ import type { AccountCreationStepProps } from "../types";
 
 export default (props: AccountCreationStepProps) => {
   const { payload } = props;
-  const { currency, erc20token } = payload;
+  const { currency, erc20token, accountStatus } = payload;
   return (
     <Box grow flow={20}>
       <Box grow>
@@ -67,7 +67,11 @@ export default (props: AccountCreationStepProps) => {
         </Box>
       </Box>
       <InfoBox type="info" withIcon>
-        <Trans i18nKey="newAccount:confirmation.desc" />
+        {accountStatus === "MIGRATED" ? (
+          <Trans i18nKey="newAccount:confirmation.descMigrated" />
+        ) : (
+          <Trans i18nKey="newAccount:confirmation.desc" />
+        )}
       </InfoBox>
     </Box>
   );

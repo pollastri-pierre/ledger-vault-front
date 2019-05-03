@@ -4,6 +4,7 @@
     "CREATE_TRANSACTION": "Create transaction",
     "EDIT_GROUP": "Edit group",
     "EDIT_ACCOUNT": "Edit account",
+    "MIGRATE_ACCOUNT": "Migrate account",
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",
     "CREATE_ADMIN": "Create Administrator",
@@ -20,6 +21,7 @@
     "CREATE_OPERATOR": "Approve operator creation",
     "CREATE_ADMIN": "Approve administrator creation",
     "REVOKE_USER": "Approve user revocation",
-    "UPDATE_QUORUM": "Approve quorum update"
+    "UPDATE_QUORUM": "Approve quorum update",
+    "MIGRATE_ACCOUNT": "Approve account migration"
   }
 }
