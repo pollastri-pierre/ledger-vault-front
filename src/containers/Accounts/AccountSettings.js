@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import { connect } from "react-redux";
@@ -59,21 +59,17 @@ function AccountSettings(props: Props) {
       ...settings,
       currency_unit: unit.data,
     }));
-  };
-
-  const onXpubModal = () => {
-    setXpubModalOpen(!isXpubModalOpen);
-  };
-
-  // trigger API call when settings changes
-  useEffect(() => {
     const currencyCode = settings.currency_unit.code;
     const m = new SaveAccountSettingsMutation({
       account,
       currency_unit: currencyCode,
     });
     restlay.commitMutation(m);
-  }, [settings]);
+  };
+
+  const onXpubModal = () => {
+    setXpubModalOpen(!isXpubModalOpen);
+  };
 
   const current_unit = options.find(
     o => o.data.code === settings.currency_unit.code,
