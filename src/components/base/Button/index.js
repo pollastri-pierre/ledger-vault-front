@@ -17,7 +17,7 @@ type Props = {
   IconRight?: React$ComponentType<*>,
   customColor?: string,
   children: React$Node,
-  onClick: Function,
+  onClick?: Function,
   variant: Variant,
   size: Size,
 };
@@ -144,6 +144,7 @@ class VaultButton extends PureComponent<Props, State> {
   _unmounted = false;
 
   handleClick = () => {
+    if (!this.props.onClick) return;
     this.setState({ isLoading: true });
     Promise.resolve()
       .then(this.props.onClick)
