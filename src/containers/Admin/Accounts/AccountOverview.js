@@ -3,7 +3,6 @@ import React from "react";
 import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
-import DateFormat from "components/DateFormat";
 import AccountName from "components/AccountName";
 import type { Account } from "data/types";
 
@@ -21,11 +20,6 @@ const AccountOverview = ({ account }: { account: Account }) => (
         value={account.balance}
         erc20Format={account.account_type === "ERC20"}
       />
-    </LineRow>
-    <LineRow label={<Trans i18nKey="accountDetails:created" />}>
-      <DateFormat>
-        {account.last_request && account.last_request.created_on}
-      </DateFormat>
     </LineRow>
   </>
 );

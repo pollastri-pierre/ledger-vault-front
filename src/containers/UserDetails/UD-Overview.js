@@ -3,7 +3,6 @@ import React, { PureComponent } from "react";
 import type { User } from "data/types";
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
-import DateFormat from "components/DateFormat";
 import LineRow from "components/LineRow";
 import EditableField from "components/EditableField";
 import Box from "components/base/Box";
@@ -82,9 +81,6 @@ class UserDetailsOverview extends PureComponent<Props> {
           ) : (
             user.user_id
           )}
-        </LineRow>
-        <LineRow label={<Trans i18nKey="userDetails:date" />}>
-          <DateFormat format="ddd D MMM, h:mmA" date={user.created_on} />
         </LineRow>
         {url && (
           <LineRow label={<Trans i18nKey="userDetails:url" />}>

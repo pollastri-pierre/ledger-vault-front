@@ -9,7 +9,6 @@ import Box from "components/base/Box";
 import type { Transaction, Account } from "data/types";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
-import DateFormat from "../DateFormat";
 import OverviewTransaction from "../OverviewTransaction";
 import Amount from "../Amount";
 
@@ -58,9 +57,6 @@ class TabOverview extends Component<Props> {
             <TransactionStatus transaction={transaction} />
           </LineRow>
 
-          <LineRow label={<Trans i18nKey="transactionDetails:overview.date" />}>
-            <DateFormat date={transaction.created_on} />
-          </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.account" />}
           >

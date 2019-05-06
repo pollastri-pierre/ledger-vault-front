@@ -5,7 +5,6 @@ import { Trans } from "react-i18next";
 import Box from "components/base/Box";
 import MemberName from "components/base/MemberName";
 import LineRow from "components/LineRow";
-import DateFormat from "components/DateFormat";
 
 type Props = {
   group: Group,
@@ -21,9 +20,6 @@ class GroupDetailsDetails extends PureComponent<Props> {
         </LineRow>
         <LineRow label={<Trans i18nKey="group:details.description" />}>
           {group.description}
-        </LineRow>
-        <LineRow label={<Trans i18nKey="group:details.at" />}>
-          <DateFormat date={group.created_on} />
         </LineRow>
         {group.created_by && (
           <LineRow label={<Trans i18nKey="group:details.by" />}>
