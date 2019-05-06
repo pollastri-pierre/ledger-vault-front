@@ -24,7 +24,7 @@
     "prettier",
     "prettier/react",
   ],
-  "plugins": ["flowtype"],
+  "plugins": ["flowtype", "react-hooks"],
   "rules": {
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "linebreak-style": ["error", "unix"],
@@ -79,6 +79,8 @@
     "react/sort-comp": 0,
     "react/require-default-props": 0,
     "react/default-props-match-prop-types": 0,
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
     "import/resolver": {

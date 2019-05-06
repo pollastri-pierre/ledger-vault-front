@@ -1,6 +1,6 @@
 // @flow
 
-import React, { memo, useCallback } from "react";
+import React, { memo } from "react";
 import connectData from "restlay/connectData";
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { MemoryHistory } from "history";
@@ -33,7 +33,7 @@ const OperatorDashboard = memo((props: Props) => {
   const myRequests = requests.filter(myFilter);
   const otherRequests = requests.filter(otherFilter);
 
-  const handleRowClick = useCallback((request: Request) => {
+  const handleRowClick = (request: Request) => {
     if (
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
@@ -42,7 +42,7 @@ const OperatorDashboard = memo((props: Props) => {
         `dashboard/transactions/details/${request.target_id}/overview`,
       );
     }
-  }, []);
+  };
 
   return (
     <Box flow={20}>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useCallback } from "react";
+import React from "react";
 
 import type { Speed } from "api/queries/AccountCalculateFeeQuery";
 import Select from "components/base/Select";
@@ -24,9 +24,6 @@ type Option = {
 export default (props: Props) => {
   const { value, onChange } = props;
   const option = options.find(o => o.value === value);
-  const handleChange = useCallback(
-    (option: ?Option) => option && onChange(option.value),
-    [],
-  );
+  const handleChange = (option: ?Option) => option && onChange(option.value);
   return <Select value={option} options={options} onChange={handleChange} />;
 };

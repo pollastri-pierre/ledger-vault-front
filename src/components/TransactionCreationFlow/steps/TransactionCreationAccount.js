@@ -15,21 +15,24 @@ import type { TransactionCreationStepProps } from "../types";
 export default (props: TransactionCreationStepProps<any>) => {
   const { payload, updatePayload, transitionTo, accounts } = props;
 
-  const handleChange = useCallback(account => {
-    if (account) {
-      const currency = getCryptoCurrencyById(account.currency);
-      const bridge = account ? getBridgeForCurrency(currency) : null;
-      invariant(bridge, `Cannot find bridge for currency: ${currency.id}`);
-      const transaction = bridge ? bridge.createTransaction(account) : null;
-      if (transaction) {
-        updatePayload({ account, transaction, bridge }, () =>
-          transitionTo("amount"),
-        );
+  const handleChange = useCallback(
+    account => {
+      if (account) {
+        const currency = getCryptoCurrencyById(account.currency);
+        const bridge = account ? getBridgeForCurrency(currency) : null;
+        invariant(bridge, `Cannot find bridge for currency: ${currency.id}`);
+        const transaction = bridge ? bridge.createTransaction(account) : null;
+        if (transaction) {
+          updatePayload({ account, transaction, bridge }, () =>
+            transitionTo("amount"),
+          );
+        }
+      } else {
+        updatePayload({ transaction: null, account: null });
       }
-    } else {
-      updatePayload({ transaction: null, account: null });
-    }
-  }, []);
+    },
+    [transitionTo, updatePayload],
+  );
 
   const filteredAccounts = accounts.edges
     .map(el => el.node)
