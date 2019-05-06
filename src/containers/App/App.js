@@ -53,8 +53,6 @@ const breadcrumbConfig = [
       </Box>
     ),
     children: [
-      { path: "*/receive*", render: "Receive", exact: true },
-      { path: "*/send*", render: "Send", exact: true },
       { path: "/:role/dashboard*", render: "Dashboard", exact: true },
       { path: "/:role/tasks*", render: "Admin tasks", exact: true },
       { path: "/:role/groups*", render: "Groups", exact: true },
@@ -69,7 +67,18 @@ const breadcrumbConfig = [
           },
         ],
       },
-      { path: "/:role/transactions*", render: "Transactions", exact: true },
+      {
+        path: "/:role/transactions",
+        render: "Transactions",
+        children: [
+          {
+            path: "/:role/transactions/receive",
+            render: "Receive",
+            exact: true,
+          },
+          { path: "/:role/transactions/send", render: "Send", exact: true },
+        ],
+      },
     ],
   },
 ];

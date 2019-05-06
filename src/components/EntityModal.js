@@ -4,8 +4,8 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { MdEdit } from "react-icons/md";
 import { withRouter, matchPath } from "react-router";
+import { Link } from "react-router-dom";
 import type { Location, Match } from "react-router-dom";
-import type { MemoryHistory } from "history";
 
 import {
   RichModalHeader,
@@ -31,7 +31,6 @@ type Props<T> = {
   onClose: () => void,
   location: Location,
   match: Match,
-  history: MemoryHistory,
   children: React$Element<*>[],
   growing?: boolean,
   revokeButton?: React$Node,
@@ -50,18 +49,14 @@ function EntityModal<T>(props: Props<T>) {
     location,
     match,
     entity,
-    history,
     editURL,
     revokeButton,
     footer,
     additionalFields,
   } = props;
 
-  const onClickEdit = () => {
-    if (match.params["0"] && editURL) {
-      history.push(`${match.params["0"]}${editURL}`);
-    }
-  };
+  const fullEditURL =
+    editURL && match.params["0"] ? `${match.params["0"]}${editURL}` : null;
 
   const lastRequest = (
     <EntityLastRequest
@@ -109,8 +104,8 @@ function EntityModal<T>(props: Props<T>) {
               <Badge style={{ marginLeft: 5 }}>1</Badge>
             </Box>
           </RichModalTab>
-        ) : editURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (
-          <EditButton onClick={onClickEdit} />
+        ) : fullEditURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (
+          <EditButton url={fullEditURL} />
         ) : null}
       </RichModalHeader>
 
@@ -135,17 +130,13 @@ function EntityModal<T>(props: Props<T>) {
   return growing ? <GrowingCard>{inner}</GrowingCard> : inner;
 }
 
-function EditButton({ onClick }: { onClick: () => void }) {
+function EditButton({ url }: { url: string }) {
   return (
-    <Button
-      size="tiny"
-      type="submit"
-      variant="filled"
-      IconLeft={MdEdit}
-      onClick={onClick}
-    >
-      <Trans i18nKey="entityModal:edit" />
-    </Button>
+    <Link replace to={url}>
+      <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
+        <Trans i18nKey="entityModal:edit" />
+      </Button>
+    </Link>
   );
 }
 
