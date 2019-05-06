@@ -36,9 +36,13 @@ class RequestTitle extends PureComponent<Props> {
       <Box horizontal align="center" flow={5}>
         <Box horizontal align="center" flow={8}>
           {this.getIconByType()}
-          <Text i18nKey={`request:type.${type}`} />
+          <Text i18nKey={`request:type.${type}`} noWrap />
         </Box>
-        {entityTitle && <Text uppercase>{entityTitle}</Text>}
+        {entityTitle && (
+          <Text uppercase noWrap>
+            {entityTitle}
+          </Text>
+        )}
       </Box>
     );
   }

@@ -56,7 +56,7 @@ type Props = {
   withWarning?: boolean,
 };
 
-const iconWarning = <FaHourglassHalf size={15} />;
+const iconWarning = <FaHourglassHalf size={12} />;
 
 class Status extends PureComponent<Props> {
   getStr = () => {
@@ -80,7 +80,7 @@ class Status extends PureComponent<Props> {
 
     return (
       <Box
-        flow={10}
+        flow={5}
         horizontal
         align="center"
         inline
