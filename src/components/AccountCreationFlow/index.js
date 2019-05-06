@@ -22,6 +22,7 @@ import {
   getCurrencyIdFromBlockchainName,
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
+import { deserializeApprovalSteps } from "utils/accounts";
 
 import type { Account } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
@@ -235,14 +236,7 @@ const deserialize: Account => AccountCreationPayload = account => {
   const rules =
     !tx_approval_steps || tx_approval_steps.length === 0
       ? initialPayload.rules
-      : tx_approval_steps.map(rule => ({
-          quorum: rule.quorum,
-          group_id: rule.group.status === "ACTIVE" ? rule.group.id : null,
-          users:
-            rule.group.status !== "ACTIVE"
-              ? rule.group.members.map(m => m.id)
-              : [],
-        }));
+      : deserializeApprovalSteps(tx_approval_steps);
 
   return {
     id: account.id,

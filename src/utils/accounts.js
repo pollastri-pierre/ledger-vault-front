@@ -3,7 +3,8 @@
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
-import type { Account, User } from "data/types";
+import type { Account, User, TxApprovalStep } from "data/types";
+import type { ApprovalsRule } from "components/ApprovalsRules";
 
 const ACCOUNT_MAX_LENGTH = 19;
 
@@ -72,4 +73,17 @@ export const isSupportedAccount = (account: Account) => {
     return !!token;
   }
   return true;
+};
+
+// from full object to arrays of id
+export const deserializeApprovalSteps = (
+  tx_approval_steps: TxApprovalStep[],
+): ApprovalsRule[] => {
+  const rules = tx_approval_steps.map(rule => ({
+    quorum: rule.quorum,
+    group_id: rule.group.status === "ACTIVE" ? rule.group.id : null,
+    users:
+      rule.group.status !== "ACTIVE" ? rule.group.members.map(m => m.id) : [],
+  }));
+  return rules;
 };
