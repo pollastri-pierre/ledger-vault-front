@@ -101,7 +101,7 @@ export default function getMenuItems(props: Props) {
         key: "new-transaction",
         dataTest: "menuItem-new-transaction",
         label: <Trans i18nKey="menu:operator.send" />,
-        url: `${location.pathname}/send`,
+        url: `${location.pathname}/transactions/send`,
         Icon: SendIcon,
         isDisabled: !isCreateTransactionEnabled(
           accounts,
@@ -112,7 +112,7 @@ export default function getMenuItems(props: Props) {
         key: "receive",
         dataTest: "menuItem-receive",
         label: <Trans i18nKey="menu:operator.receive" />,
-        url: `${location.pathname}/receive`,
+        url: `${location.pathname}/transactions/receive`,
         Icon: ReceiveIcon,
         isDisabled: visibleAccounts.length === 0,
       },

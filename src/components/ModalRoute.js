@@ -45,23 +45,17 @@ class ModalRoute extends Component<{
     this._unmounted = true;
   }
 
-  lastPath: ?string = null;
-
   onClose = () => {
     if (this._unmounted) return;
-    if (this.lastPath) {
-      this.context.router.history.push(this.lastPath);
-    } else {
-      // assume we need to go back to a 3-length history
-      // /{orga}/{role}/{page}
-      const { pathname } = this.context.router.history.location;
-      const url = pathname
-        .split("/")
-        // 4 because of leading /
-        .slice(0, 4)
-        .join("/");
-      this.context.router.history.push(url);
-    }
+    // assume we need to go back to a 3-length history
+    // /{orga}/{role}/{page}
+    const { pathname } = this.context.router.history.location;
+    const url = pathname
+      .split("/")
+      // 4 because of leading /
+      .slice(0, 4)
+      .join("/");
+    this.context.router.history.push(url);
   };
 
   lastMatch: ?Object;
@@ -83,9 +77,6 @@ class ModalRoute extends Component<{
             close: this.onClose,
           });
           const open = !!routeProps.match;
-          if (!open) {
-            this.lastPath = routeProps.location.pathname;
-          }
           return (
             <Modal
               isOpened={open}
