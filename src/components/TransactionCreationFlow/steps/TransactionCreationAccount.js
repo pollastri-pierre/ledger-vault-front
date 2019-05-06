@@ -10,18 +10,32 @@ import Box from "components/base/Box";
 import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
 
+import type { Account } from "data/types";
 import type { TransactionCreationStepProps } from "../types";
+
+export const getBridgeAndTransactionFromAccount = (account: Account) => {
+  const currency = getCryptoCurrencyById(account.currency);
+  const bridge = account ? getBridgeForCurrency(currency) : null;
+  invariant(bridge, `Cannot find bridge for currency: ${currency.id}`);
+  const transaction = bridge ? bridge.createTransaction(account) : null;
+  return {
+    account,
+    bridge,
+    transaction,
+  };
+};
 
 export default (props: TransactionCreationStepProps<any>) => {
   const { payload, updatePayload, transitionTo, accounts } = props;
 
   const handleChange = useCallback(
-    account => {
-      if (account) {
-        const currency = getCryptoCurrencyById(account.currency);
-        const bridge = account ? getBridgeForCurrency(currency) : null;
-        invariant(bridge, `Cannot find bridge for currency: ${currency.id}`);
-        const transaction = bridge ? bridge.createTransaction(account) : null;
+    acc => {
+      if (acc) {
+        const {
+          transaction,
+          account,
+          bridge,
+        } = getBridgeAndTransactionFromAccount(acc);
         if (transaction) {
           updatePayload({ account, transaction, bridge }, () =>
             transitionTo("amount"),

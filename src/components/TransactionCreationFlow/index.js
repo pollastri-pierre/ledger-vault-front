@@ -13,7 +13,9 @@ import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
 import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
 
-import TransactionCreationAccount from "./steps/TransactionCreationAccount";
+import TransactionCreationAccount, {
+  getBridgeAndTransactionFromAccount,
+} from "./steps/TransactionCreationAccount";
 import TransactionCreationAmount from "./steps/TransactionCreationAmount";
 import TransactionCreationNote from "./steps/TransactionCreationNote";
 import TransactionCreationConfirmation from "./steps/TransactionCreationConfirmation";
@@ -85,15 +87,34 @@ const styles = {
 
 export default connectData(
   props => {
+    const { match, accounts } = props;
+    let cursor = 0;
+    let payload = initialPayload;
+
+    if (match.params && match.params.id) {
+      const acc = accounts.edges
+        .map(e => e.node)
+        .find(a => a.id === parseInt(match.params.id, 10));
+
+      if (acc) {
+        const {
+          bridge,
+          account,
+          transaction,
+        } = getBridgeAndTransactionFromAccount(acc);
+        cursor = 1;
+        payload = { ...initialPayload, account, transaction, bridge };
+      }
+    }
     return (
       <GrowingCard>
         <MultiStepsFlow
           Icon={FaMoneyCheck}
           title={title}
-          initialCursor={0}
-          initialPayload={initialPayload}
+          initialPayload={payload}
           steps={steps}
           additionalProps={props}
+          initialCursor={cursor}
           style={styles.container}
           onClose={props.close}
         />
