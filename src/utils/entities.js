@@ -10,4 +10,5 @@ export const hasPendingRequest = (entity: Entity) =>
 export const hasPendingEdit = (entity: Entity) =>
   !!entity.last_request &&
   hasPendingRequest(entity) &&
-  entity.last_request.type === `EDIT_${entity.last_request.target_type}`;
+  entity.last_request.type.startsWith("EDIT_");
+// entity.last_request.type === `EDIT_${entity.last_request.target_type}`;
