@@ -35,12 +35,14 @@ const RuleItem = ({ rule }: { rule: TxApprovalStep }) => (
   >
     {arrowRight}
 
-    <Box horizontal align="center" grow="1" justify="space-between">
-      <Trans
-        i18nKey="approvalsRules:approval"
-        count={rule.quorum}
-        values={{ count: rule.quorum }}
-      />
+    <Box horizontal align="center" grow="1" justify="space-between" p={5}>
+      <Box noShrink>
+        <Trans
+          i18nKey="approvalsRules:approval"
+          count={rule.quorum}
+          values={{ count: rule.quorum }}
+        />
+      </Box>
       <GroupOrUsers group={rule.group} />
     </Box>
   </Box>

@@ -117,7 +117,7 @@ type ExtendedPubKey = {
   chain_code: string,
 };
 
-export type TxApprovalStep = { quorum: number, group: Group };
+export type TxApprovalStep = { quorum: number, group: $Shape<Group> };
 type AccountCommon = {
   id: number,
   account_type: AccountType,
