@@ -22,6 +22,8 @@ import Box from "components/base/Box";
 import { hasPendingRequest } from "utils/entities";
 import type { Entity } from "data/types";
 
+const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
+
 type Props<T> = {
   entity: Entity,
   title: React$Node,
@@ -107,7 +109,7 @@ function EntityModal<T>(props: Props<T>) {
               <Badge style={{ marginLeft: 5 }}>1</Badge>
             </Box>
           </RichModalTab>
-        ) : editURL ? (
+        ) : editURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (
           <EditButton onClick={onClickEdit} />
         ) : null}
       </RichModalHeader>
