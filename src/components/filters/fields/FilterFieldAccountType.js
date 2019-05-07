@@ -4,15 +4,13 @@ import omit from "lodash/omit";
 import type { ObjectParameters } from "query-string";
 
 import SelectAccountType, { options } from "components/SelectAccountType";
-import { WrappableField, defaultFieldProps } from "components/filters";
+import { WrappableField } from "components/filters";
 import type { AccountTypeOption } from "components/SelectAccountType";
-import type { FieldProps } from "components/filters";
+import type { FieldProps } from "components/filters/types";
 
 const QUERY_KEY = "account_type";
 
-const FilterFieldAccountAccountType = (
-  props: FieldProps = defaultFieldProps,
-) => {
+const FilterFieldAccountAccountType = (props: FieldProps) => {
   const { updateQueryParams, queryParams } = props;
   const onChange = (val: ?AccountTypeOption) => {
     if (val) {
