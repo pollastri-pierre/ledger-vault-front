@@ -11,7 +11,7 @@ import type { FieldProps } from "components/filters/types";
 
 const QUERY_KEY = "account_type";
 
-const FilterFieldAccountAccountType = (props: FieldProps) => {
+const FilterFieldAccountType = (props: FieldProps) => {
   const { updateQueryParams, queryParams } = props;
   const onChange = (val: ?AccountTypeOption) => {
     if (val) {
@@ -43,9 +43,9 @@ const FilterFieldAccountAccountType = (props: FieldProps) => {
   );
 };
 
-export default FilterFieldAccountAccountType;
+export default FilterFieldAccountType;
 
 function resolveAccountType(queryParams: ObjectParameters): ?AccountTypeOption {
   if (!queryParams.account_type) return null;
-  return options.find(o => o.value === queryParams.account_type);
+  return options.find(o => o.value === queryParams[QUERY_KEY]);
 }
