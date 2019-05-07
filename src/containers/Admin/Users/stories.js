@@ -11,4 +11,4 @@ import UserDetails from "containers/Admin/Users/UserDetails";
 storiesOf("entities/User", module)
   .addDecorator(StoryRouter())
   .addDecorator(EntityModalDecorator("USER"))
-  .add("User details", () => <UserDetails match={{ params: { userID: 0 } }} />);
+  .add("User details", () => <UserDetails match={{ params: { userID: 1 } }} />);

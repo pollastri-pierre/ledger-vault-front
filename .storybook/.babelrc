@@ -1,0 +1,31 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions"],
+          "node": "current"
+        },
+        "corejs": 2,
+        "useBuiltIns": "usage"
+      }
+    ],
+    "@babel/preset-react",
+    "@babel/preset-flow",
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-syntax-dynamic-import",
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+
+    "react-hot-loader/babel",
+    [
+      "module-resolver",
+      {
+        "root": ["src"]
+      }
+    ]
+  ]
+}

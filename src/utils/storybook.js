@@ -147,7 +147,7 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     })[0];
     return wrapWithRequest({ entity: group, request_type, approved });
   }
-  throw new Error("invalid url");
+  throw new Error(`invalid url ${url}`);
 };
 
 const Inner = ({ story, entity }) => {
