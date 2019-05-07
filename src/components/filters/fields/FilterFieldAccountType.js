@@ -3,6 +3,7 @@ import React from "react";
 import omit from "lodash/omit";
 import type { ObjectParameters } from "query-string";
 
+import Text from "components/base/Text";
 import SelectAccountType, { options } from "components/SelectAccountType";
 import { WrappableField } from "components/filters";
 import type { AccountTypeOption } from "components/SelectAccountType";
@@ -30,7 +31,7 @@ const FilterFieldAccountAccountType = (props: FieldProps) => {
       label="Account type"
       isActive={!!value}
       closeOnChange={value}
-      RenderCollapsed={() => (value ? value.value : null)}
+      RenderCollapsed={() => (value ? <Text>{value.value}</Text> : null)}
     >
       <SelectAccountType
         autoFocus
