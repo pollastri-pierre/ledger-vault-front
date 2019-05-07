@@ -16,7 +16,10 @@ const accounts = genAccounts(20, { users });
 
 const fakeNetwork = async url => {
   await delay(200);
-  if (url === "/accounts?status=ACTIVE&status=VIEW_ONLY&pageSize=-1") {
+  if (
+    url ===
+    "/accounts?status=ACTIVE&status=VIEW_ONLY&status=MIGRATED&pageSize=-1"
+  ) {
     return wrapConnection(accounts);
   }
   if (url.startsWith("/validation")) {
@@ -37,6 +40,7 @@ const fakeNetwork = async url => {
     }
     return {
       fees: BigNumber(4046),
+      max_amount: BigNumber(50000000000),
     };
   }
   throw new Error(`invalid url ${url}`);
@@ -45,7 +49,7 @@ const fakeNetwork = async url => {
 storiesOf("entities/Transaction", module).add("Send", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
-      <TransactionCreationFlow />
+      <TransactionCreationFlow match={{ params: { id: 5 } }} />
     </Modal>
   </RestlayProvider>
 ));
