@@ -53,7 +53,11 @@ export default () => (
     />
 
     {/* TRANSACTION */}
-    <ModalRoute transparent path="*/send" component={TransactionCreationFlow} />
+    <ModalRoute
+      transparent
+      path="*/send/:id?"
+      component={TransactionCreationFlow}
+    />
     <ModalRoute
       transparent
       path="*/transactions/details/:transactionId/:tabIndex"
@@ -61,7 +65,7 @@ export default () => (
     />
     <ModalRoute
       transparent
-      path="*/receive"
+      path="*/receive/:id?"
       component={ReceiveFlow}
       disableBackdropClick
     />

@@ -78,15 +78,29 @@ const styles = {
 
 export default connectData(
   props => {
+    const { match, accounts } = props;
+    let payload = initialPayload;
+    let cursor = 0;
+    if (match.params && match.params.id) {
+      const selectedAccount = accounts.edges
+        .map(e => e.node)
+        .find(a => a.id === parseInt(match.params.id, 10));
+
+      if (selectedAccount) {
+        cursor = 1;
+        payload = { ...initialPayload, selectedAccount };
+      }
+    }
     return (
       <GrowingCard>
         <MultiStepsFlow
           Icon={FaUser}
           title={title}
-          initialPayload={initialPayload}
+          initialPayload={payload}
           additionalProps={props}
           steps={steps}
           style={styles.container}
+          initialCursor={cursor}
           onClose={props.close}
         />
       </GrowingCard>

@@ -16,7 +16,6 @@ import Card, { CardLoading, CardError } from "components/base/Card";
 
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastTransactionsCard from "./AccountLastTransactionsCard";
-import AccountCountervalueCard from "./AccountCountervalueCard";
 import AccountQuickInfo from "./AccountQuickInfo";
 import SubAccounts from "./SubAccounts";
 
@@ -51,14 +50,13 @@ class AccountView extends Component<Props> {
     } else {
       inner = (
         <Box flow={20}>
-          <AccountQuickInfo account={account} match={match} />
+          <Box horizontal flow={20}>
+            <AccountQuickInfo account={account} match={match} />
+            <AccountBalanceCard account={account} />
+          </Box>
           {account.account_type === "Ethereum" && (
             <SubAccounts account={account} />
           )}
-          <Box horizontal flow={20}>
-            <AccountBalanceCard account={account} />
-            <AccountCountervalueCard account={account} />
-          </Box>
           <AccountLastTransactionsCard key={accountId} account={account} />
         </Box>
       );

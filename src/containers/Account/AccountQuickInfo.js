@@ -16,8 +16,6 @@ import Box from "components/base/Box";
 import Text from "components/base/Text";
 import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
-import BlurDialog from "components/BlurDialog";
-import MemberRow from "components/MemberRow";
 import { FaWrench } from "react-icons/fa";
 import type { Account } from "data/types";
 import AccountWarning from "./AccountWarning";
@@ -46,58 +44,9 @@ const AccountTitle = ({ account }: { account: Account }) => (
   </div>
 );
 
-type State = {
-  modalMembersOpen: boolean,
-};
-
-class AccountQuickInfo extends Component<Props, State> {
-  state: State = {
-    modalMembersOpen: false,
-  };
-
-  toggleModalMembers = () => {
-    const { modalMembersOpen } = this.state;
-    this.setState({ modalMembersOpen: !modalMembersOpen });
-  };
-
-  renderMembersLink = () => {
-    const {
-      account,
-      account: { members },
-    } = this.props;
-    return account.status === "VIEW_ONLY" ? (
-      <span>-</span>
-    ) : (
-      <>
-        <span>{members.length}</span>
-        <span onClick={this.toggleModalMembers}>
-          <Trans i18nKey="accountView:members_modal.toggle" />
-        </span>
-      </>
-    );
-  };
-
-  renderListMember = () => {
-    const {
-      account: { members },
-    } = this.props;
-    return (
-      <div>
-        <div>
-          <Trans i18nKey="accountView:members_modal.title" />
-        </div>
-        <div>
-          {members.map(m => (
-            <MemberRow edidable={false} member={m} key={m.pub_key} />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
+class AccountQuickInfo extends Component<Props> {
   render() {
     const { account } = this.props;
-    const { modalMembersOpen } = this.state;
 
     const isERC20 = account.account_type === "ERC20";
     const token = isERC20
@@ -105,83 +54,69 @@ class AccountQuickInfo extends Component<Props, State> {
       : null;
 
     return (
-      <>
-        <BlurDialog open={modalMembersOpen} onClose={this.toggleModalMembers}>
-          {this.renderListMember()}
-        </BlurDialog>
-
-        <Card>
-          <Label>
-            <AccountTitle account={account} />
-          </Label>
-          {!isERC20 && (
-            <Absolute top={0} right={0}>
-              <SettingsLink
-                title="Settings"
-                to={`${location.pathname}/accounts/details/${
-                  account.id
-                }/overview`}
-                className="content-header-button"
-              >
-                <FaWrench />
-              </SettingsLink>
-            </Absolute>
-          )}
-          <Box horizontal align="center" justify="space-between">
-            <Box>
+      <Card grow>
+        <Label>
+          <AccountTitle account={account} />
+        </Label>
+        {!isERC20 && (
+          <Absolute top={0} right={0}>
+            <SettingsLink
+              title="Settings"
+              to={`${location.pathname}/accounts/details/${
+                account.id
+              }/overview`}
+              className="content-header-button"
+            >
+              <FaWrench />
+            </SettingsLink>
+          </Absolute>
+        )}
+        <Box horizontal align="center" justify="space-between">
+          <Box>
+            {isERC20 ? (
               <Row
-                label={<Trans i18nKey="accountView:summary.name" />}
-                value={account.name}
+                label={<Trans i18nKey="accountView:summary.token" />}
+                value={token && token.name}
               />
-              {isERC20 ? (
-                <Row
-                  label={<Trans i18nKey="accountView:summary.token" />}
-                  value={token && token.name}
-                />
-              ) : (
-                <Row
-                  label={<Trans i18nKey="accountView:summary.index" />}
-                  value={
-                    <CurrencyIndex
-                      currency={account.currency}
-                      index={account.index}
-                    />
-                  }
-                />
-              )}
+            ) : (
               <Row
-                label={<Trans i18nKey="accountView:summary.unit" />}
+                label={<Trans i18nKey="accountView:summary.index" />}
                 value={
-                  isERC20
-                    ? token && token.ticker
-                    : account.settings.currency_unit.code
+                  <CurrencyIndex
+                    currency={account.currency}
+                    index={account.index}
+                  />
                 }
               />
-              <Row
-                label={<Trans i18nKey="accountView:summary.date" />}
-                value={<DateFormat date={account.created_on} />}
-              />
-              {account.account_type === "ERC20" && account.parent_id && (
-                <>
-                  <Row
-                    label={
-                      <Trans i18nKey="accountView:summary.token_address" />
-                    }
-                    value={account.contract_address}
-                  />
-                  <Row
-                    label={
-                      <Trans i18nKey="accountView:summary.parent_account" />
-                    }
-                    value={<Link to={`${account.parent_id}`}>ETH account</Link>}
-                  />
-                </>
-              )}
-            </Box>
-            <AccountWarning account={account} />
+            )}
+            <Row
+              label={<Trans i18nKey="accountView:summary.unit" />}
+              value={
+                isERC20
+                  ? token && token.ticker
+                  : account.settings.currency_unit.code
+              }
+            />
+            <Row
+              label={<Trans i18nKey="accountView:summary.date" />}
+              value={<DateFormat date={account.created_on} />}
+            />
+            {account.account_type === "ERC20" && account.parent_id && (
+              <>
+                <Row
+                  label={<Trans i18nKey="accountView:summary.token_address" />}
+                  value={account.contract_address}
+                />
+                <Row
+                  label={<Trans i18nKey="accountView:summary.parent_account" />}
+                  value={<Link to={`${account.parent_id}`}>ETH account</Link>}
+                />
+              </>
+            )}
           </Box>
-        </Card>
-      </>
+          <AccountWarning account={account} />
+        </Box>
+      </Card>
     );
   }
 }
