@@ -6706,6 +6706,15 @@
       "3045022100ed8a440ee4905430dd6822c77aa2bde4db9879f3426a552302942d37b1a92e5102207349d068b859cd538952ccb9531f66a5cbc9cb25c41b43ddf4338795184bfc74"
   },
   {
+    "ticker": "FLETA",
+    "name": "FLETA",
+    "blockchain_name": "foundation",
+    "contract_address": "0x7788D759F21F53533051A9AE657fA05A1E068fc6",
+    "decimals": 18,
+    "signature":
+      "3045022100bfc9bfacb444dca8127512c81d24ae69ed5ae16196ae5b5d78951096aa9cd66d022026b2f8821b176e880f03812bdbfb03470433262aa75c62a7ac8eb2a367762376"
+  },
+  {
     "ticker": "FLR",
     "name": "Flair Coin",
     "blockchain_name": "foundation",
