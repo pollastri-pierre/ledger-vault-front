@@ -45,20 +45,18 @@ class ModalRoute extends Component<{
     this._unmounted = true;
   }
 
+  lastPath: ?string = null;
+
+  lastSearch: ?string = null;
+
   onClose = () => {
     if (this._unmounted) return;
-    // assume we need to go back to a 3-length history
-    // /{orga}/{role}/{page}
-    const { pathname } = this.context.router.history.location;
-    const url = pathname
-      .split("/")
-      // 4 because of leading /
-      .slice(0, 4)
-      .join("/");
-    this.context.router.history.push(url);
+    const history = this.context.router.history;
+    history.push({
+      pathname: resolveCloseURL(history, this.lastPath),
+      search: this.lastSearch || "",
+    });
   };
-
-  lastMatch: ?Object;
 
   render() {
     const {
@@ -72,11 +70,14 @@ class ModalRoute extends Component<{
     return (
       <Route {...rest}>
         {routeProps => {
-          this.lastMatch = routeProps.match;
           const inner = renderInner(routeProps, this.props, {
             close: this.onClose,
           });
           const open = !!routeProps.match;
+          if (!open) {
+            this.lastSearch = routeProps.location.search;
+            this.lastPath = routeProps.location.pathname;
+          }
           return (
             <Modal
               isOpened={open}
@@ -97,3 +98,37 @@ class ModalRoute extends Component<{
 ModalRoute.propTypes = Route.propTypes;
 
 export default ModalRoute;
+
+//
+//                          CLOSING THE MODAL. Vast subject.
+//   \
+//    '-.__.-'              After multiple iterations, it appears that a
+//    /oo |--.--,--,--.     little "customized" behaviour can work better
+//    \_.-'._i__i__i_.'     than an abstraction factory that discover more
+//          """""""""       and more bugging cases. Here it is:
+//
+const modalsRoutes = [
+  /(.*)\/send$/,
+  /(.*)\/receive$/,
+  /(.*)\/admin-rules$/,
+  /(.*)\/new$/,
+  /(.*)\/edit\/[0-9]+\/.+$/,
+  /(.*)\/details\/[0-9]+\/.+$/,
+];
+
+function getModalClosePath(p) {
+  let match;
+  // using find allow to stop parcourir the array when first match
+  modalsRoutes.find(regex => {
+    match = p.match(regex);
+    return match;
+  });
+  return match ? match[1] : null;
+}
+
+function resolveCloseURL(history, lastPath) {
+  const { pathname: actualURL } = history.location;
+  if (!lastPath) return getModalClosePath(actualURL) || "/";
+  const prevModalClosePath = getModalClosePath(actualURL);
+  return prevModalClosePath || lastPath || "/";
+}

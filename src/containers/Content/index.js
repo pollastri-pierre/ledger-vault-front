@@ -33,7 +33,7 @@ function Content({ match, me }: { match: Match, me: User }) {
 
       <Route path={`${u}/operator/dashboard`} component={OperatorDashboard} />
       <Route path={`${u}/operator/transactions`} component={Transactions} />
-      <Route path={`${u}/operator/accounts/:id`} component={AccountView} />
+      <Route path={`${u}/operator/accounts/view/:id`} component={AccountView} />
       <Route path={`${u}/operator/accounts`} component={Accounts} />
 
       <Route exact path={`${u}`} render={() => <Redirect to={defaultUrl} />} />
