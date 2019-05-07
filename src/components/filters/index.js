@@ -8,6 +8,7 @@ export {
 // Business logic fields
 export { default as FieldText } from "./fields/FilterFieldText";
 export { default as FieldAccountType } from "./fields/FilterFieldAccountType";
+export { default as FieldUserRole } from "./fields/FilterFieldUserRole";
 export { default as FieldAccounts } from "./fields/FilterFieldAccounts";
 export { default as FieldDate } from "./fields/FilterFieldDate";
 export { default as FieldCurrency } from "./fields/FilterFieldCurrency";

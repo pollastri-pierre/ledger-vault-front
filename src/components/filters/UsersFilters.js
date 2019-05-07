@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 
-import { FiltersCard, FieldText } from "components/filters";
+import { FiltersCard, FieldText, FieldUserRole } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 
 class UsersFilters extends PureComponent<FieldsGroupProps> {
@@ -11,6 +11,7 @@ class UsersFilters extends PureComponent<FieldsGroupProps> {
     return (
       <FiltersCard title="Find users" subtitle="Find users" {...props}>
         <FieldText title="Name" queryKey="name" placeholder="Name" />
+        <FieldUserRole />
       </FiltersCard>
     );
   }

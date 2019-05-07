@@ -4,16 +4,16 @@ import omit from "lodash/omit";
 import type { ObjectParameters } from "query-string";
 
 import Text from "components/base/Text";
-import SelectAccountType, { options } from "components/SelectAccountType";
+import SelectUserRole, { options } from "components/SelectUserRole";
 import { WrappableField } from "components/filters";
-import type { AccountTypeOption } from "components/SelectAccountType";
+import type { UserRoleOption } from "components/SelectUserRole";
 import type { FieldProps } from "components/filters/types";
 
-const QUERY_KEY = "account_type";
+const QUERY_KEY = "role";
 
-const FilterFieldAccountType = (props: FieldProps) => {
+const FilterFieldUserRole = (props: FieldProps) => {
   const { updateQueryParams, queryParams } = props;
-  const onChange = (val: ?AccountTypeOption) => {
+  const onChange = (val: ?UserRoleOption) => {
     if (val) {
       updateQueryParams(QUERY_KEY, val.value);
     } else {
@@ -24,16 +24,16 @@ const FilterFieldAccountType = (props: FieldProps) => {
     }
   };
 
-  const value = resolveAccountType(queryParams);
+  const value = resolveUserRole(queryParams);
 
   return (
     <WrappableField
-      label="Account type"
+      label="User role"
       isActive={!!value}
       closeOnChange={value}
-      RenderCollapsed={() => (value ? <Text>{value.value}</Text> : null)}
+      RenderCollapsed={() => (value ? <Text>{value.label}</Text> : null)}
     >
-      <SelectAccountType
+      <SelectUserRole
         autoFocus
         openMenuOnFocus={!value}
         onChange={onChange}
@@ -43,9 +43,9 @@ const FilterFieldAccountType = (props: FieldProps) => {
   );
 };
 
-export default FilterFieldAccountType;
+export default FilterFieldUserRole;
 
-function resolveAccountType(queryParams: ObjectParameters): ?AccountTypeOption {
-  if (!queryParams.account_type) return null;
+function resolveUserRole(queryParams: ObjectParameters): ?UserRoleOption {
+  if (!queryParams.role) return null;
   return options.find(o => o.value === queryParams[QUERY_KEY]);
 }
