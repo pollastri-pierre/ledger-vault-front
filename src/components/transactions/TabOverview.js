@@ -4,7 +4,7 @@ import { Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 
 import TransactionStatus from "components/TransactionStatus";
-import CopyToClipboardButton from "components/CopyToClipboardButton";
+import Copy from "components/base/Copy";
 import Box from "components/base/Box";
 import type { Transaction, Account } from "data/types";
 import LineRow from "../LineRow";
@@ -38,15 +38,13 @@ class TabOverview extends Component<Props> {
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.recipient" />}
           >
-            <CopyToClipboardButton textToCopy={transaction.recipient} />
+            <Copy text={transaction.recipient} />
           </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.identifier" />}
           >
             {transaction.transaction ? (
-              <CopyToClipboardButton
-                textToCopy={transaction.transaction.hash}
-              />
+              <Copy text={transaction.transaction.hash} />
             ) : (
               "N/A"
             )}

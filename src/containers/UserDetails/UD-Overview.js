@@ -6,7 +6,7 @@ import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import EditableField from "components/EditableField";
 import Box from "components/base/Box";
-import CopyToClipboardButton from "components/CopyToClipboardButton";
+import Copy from "components/base/Copy";
 import UserRoleFormatter from "components/UserRoleFormatter";
 
 import { updateUserInfo } from "components/UserCreationFlow/helpers";
@@ -84,7 +84,7 @@ class UserDetailsOverview extends PureComponent<Props> {
         </LineRow>
         {url && (
           <LineRow label={<Trans i18nKey="userDetails:url" />}>
-            {url && <CopyToClipboardButton visible textToCopy={url} />}
+            {url && <Copy text={url} />}
           </LineRow>
         )}
       </Box>

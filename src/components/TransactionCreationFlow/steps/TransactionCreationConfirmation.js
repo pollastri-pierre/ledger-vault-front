@@ -9,7 +9,7 @@ import LineRow from "components/LineRow";
 import OverviewTransaction from "components/OverviewTransaction";
 import AccountName from "components/AccountName";
 import Amount from "components/Amount";
-import CopyToClipboardButton from "components/CopyToClipboardButton";
+import Copy from "components/base/Copy";
 import type { TransactionCreationStepProps } from "../types";
 
 export default (props: TransactionCreationStepProps<any>) => {
@@ -27,7 +27,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         transactionType="SEND"
       />
       <LineRow label={<Trans i18nKey="send:confirmation.identifier" />}>
-        <CopyToClipboardButton textToCopy={transaction.recipient} />
+        <Copy text={transaction.recipient} />
       </LineRow>
       <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
         <AccountName account={account} />
