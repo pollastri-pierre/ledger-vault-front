@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { FaCheck, FaPlus } from "react-icons/fa";
+import { FaCheck, FaPlus, FaEnvelopeOpen } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 import connectData from "restlay/connectData";
@@ -15,7 +15,7 @@ import Text from "components/base/Text";
 import IconClose from "components/icons/Close";
 
 type Item = {
-  type: "CREATE" | "APPROVE" | "ABORT" | "EDIT" | "REVOKE",
+  type: "CREATE" | "APPROVE" | "ABORT" | "EDIT" | "REVOKE" | "INVITE",
   label: React$Node,
   date: string | Date,
 };
@@ -29,10 +29,13 @@ type Props = {
 const iconsByType = {
   CREATE: <FaPlus color={colors.ocean} />,
   REVOKE: <MdDelete color={colors.grenade} />,
+  INVITE: <FaEnvelopeOpen color={colors.ocean} />,
   EDIT: <MdEdit color={colors.ocean} />,
   APPROVE: <FaCheck color={colors.green} />,
   ABORT: <IconClose size={16} color={colors.grenade} />,
 };
+
+const ACTIONSCREATEUSER = ["CREATE_OPERATOR", "CREATE_ADMIN"];
 
 const HistoryItem = ({ item }: { item: Item }) => (
   <Box pl={40} position="relative" style={{ height: 50 }}>
@@ -154,8 +157,35 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
     }
     if (
       cur.type.startsWith("CREATE_") &&
-      (cur.status === "PENDING_REGISTRATION" ||
-        cur.status === "PENDING_APPROVAL")
+      cur.status === "PENDING_REGISTRATION"
+    ) {
+      acc.push({
+        type: "INVITE",
+        date: cur.created_on,
+        label: (
+          <>
+            <b>invited by</b>
+            <span>{cur.created_by.username}</span>
+          </>
+        ),
+      });
+    }
+    if (
+      ACTIONSCREATEUSER.indexOf(cur.type) > -1 &&
+      cur.status === "PENDING_APPROVAL"
+    ) {
+      acc.push({
+        type: "CREATE",
+        date: cur.created_on,
+        label: (
+          <>
+            <b>Registered on the platform</b>
+          </>
+        ),
+      });
+    } else if (
+      cur.type.startsWith("CREATE_") &&
+      cur.status === "PENDING_APPROVAL"
     ) {
       acc.push({
         type: "CREATE",
