@@ -29,10 +29,6 @@ describe("Test Case for Groups", function() {
     create_group("EMEA", "Group for EMEA", "James", "Aidan", "Thomas");
     successfull_message();
 
-    create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
-    error_message("Group already exists", "Error 10202");
-    cy.get("[data-test=close]").click();
-
     create_group(
       "NORTH Asia",
       "Group for NORTH Asia",
@@ -51,6 +47,10 @@ describe("Test Case for Groups", function() {
       "Thomas",
     );
     successfull_message();
+
+    create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
+    error_message("Error 10202", "Group already exists");
+    cy.get("[data-test=close]").click();
   });
 
   it("Approve Groups", () => {
@@ -94,7 +94,7 @@ describe("Test Case for Groups", function() {
 
     cy.contains("APAC").click();
     cy.wait(1500);
-    cy.get("[data-test=group_edit_button]").click();
+    cy.get("[data-test=edit-button]").click();
     cy.get("[data-test=group_description]").clear();
     cy.get("[data-test=group_description]").type("New descprition Group");
     cy.contains("Next").click();
@@ -116,7 +116,7 @@ describe("Test Case for Groups", function() {
 
     cy.contains("EMEA").click();
     cy.wait(1500);
-    cy.get("[data-test=group_edit_button]").click();
+    cy.get("[data-test=edit-button]").click();
     cy.get("[data-test=group_name]").clear();
     cy.get("[data-test=group_name]").type("New EMEA");
     cy.contains("Next").click();
@@ -134,7 +134,7 @@ describe("Test Case for Groups", function() {
     cy.url().should("include", "/admin/groups");
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
-    cy.get("[data-test=group_edit_button]").click();
+    cy.get("[data-test=edit-button]").click();
     cy.contains("Next").click();
     cy.get("#input_groups_users")
       .clear()
