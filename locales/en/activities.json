@@ -1,7 +1,7 @@
 {
   "account": {
     "abort":
-      "The <0>{{accountName}}</0> account request has been aborted by <0>{{author}} </0>.",
+      "The <0>{{accountName}}</0> account request has been rejected by <0>{{author}} </0>.",
     "active": "The <0>{{accoutnName}}</0> account is now active.",
     "quorumReached":
       "The <0>{{accountName}}</0> account request has been approved by <0> {{approvalNumber}} out of {{approvalNumber}} Administrators. </0> The account is now created in your workspace.",
@@ -18,7 +18,7 @@
     "requestCreated":
       "A <0>new transaction request</0> has been created by <0>{{author}} </0> in the <0>{{accountName}}</0> account. The transaction is pending to be approved by the members of the account.",
     "abort":
-      "The transaction request created in <0>{{accountName}}</0> has been aborted by <0>{{author}} </0>.",
+      "The transaction request created in <0>{{accountName}}</0> has been rejected by <0>{{author}} </0>.",
     "quorumReached":
       "The transaction created in <0> {{accountName}} </0> has been approved by <0> {{approvalNumber}} out of {{approvalNumber}} members </0>. The transaction has been broadcasted to the blockchain network.",
     "approved":
