@@ -61,6 +61,7 @@ const Container = styled.div`
   border: 1px solid #f0f0f0;
   border-radius: 4px;
   padding: 2px;
+  cursor: pointer;
 `;
 
 const IconContainer = styled.div`

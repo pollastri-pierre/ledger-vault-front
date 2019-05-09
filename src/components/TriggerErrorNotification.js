@@ -23,6 +23,12 @@ class TriggerErrorNotification extends PureComponent<Props> {
     this.findErrorType();
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.error !== this.props.error) {
+      this.findErrorType();
+    }
+  }
+
   findErrorType = () => {
     const { error, addMessage, addError } = this.props;
     switch (true) {
