@@ -14,5 +14,6 @@
   "PENDING_REGISTRATION": "Pending registration",
   "PENDING_UPDATE": "Pending update",
   "PENDING_MIGRATED": "Pending migration",
-  "MIGRATED": "Migrated"
+  "MIGRATED": "Migrated",
+  "HSM_COIN_UPDATED": "Require update"
 }

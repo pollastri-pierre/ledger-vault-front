@@ -41,14 +41,26 @@ const CheckMigration = (props: Props) => {
   const accounts = accountsToMigrate.edges.map(n => n.node);
 
   const onClick = () => {
-    history.push(`/${workspace}/admin/accounts?status=MIGRATED`);
+    history.push(
+      `/${workspace}/admin/accounts?status=MIGRATED&status=HSM_COIN_UPDATED`,
+    );
   };
+
+  // display different description if it's due to an update of hsm app
+  // instead of account migration
+  const isHSMAppUpdatedReason = accounts.some(
+    a => a.status === "HSM_COIN_UPDATED",
+  );
 
   return (
     <Card width={500} pb={80}>
       <Box flow={20}>
         <Text large bold i18nKey="welcome:migration.title" />
-        <Text i18nKey="welcome:migration.desc" />
+        {isHSMAppUpdatedReason ? (
+          <Text i18nKey="welcome:migration.desc_hsm_app_updated" />
+        ) : (
+          <Text i18nKey="welcome:migration.desc" />
+        )}
         <Text bold i18nKey="welcome:migration.accounts" />
         <Box>
           {accounts.map(account => (
