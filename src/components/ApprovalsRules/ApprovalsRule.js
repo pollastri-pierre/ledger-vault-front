@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import styled from "styled-components";
 import { SortableHandle, SortableElement } from "react-sortable-hoc";
 import { FaGripVertical, FaTrash } from "react-icons/fa";
@@ -297,4 +297,4 @@ function resolveSelectValue(
   };
 }
 
-export default SortableElement(translate()(ApprovalsRule));
+export default SortableElement(withTranslation()(ApprovalsRule));

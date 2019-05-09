@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
 import { components } from "react-select";
-import { Trans, translate } from "react-i18next";
+import { Trans, withTranslation } from "react-i18next";
 import type { OptionProps } from "react-select/lib/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
@@ -238,4 +238,4 @@ class SelectCurrency extends PureComponent<Props> {
   }
 }
 
-export default translate()(SelectCurrency);
+export default withTranslation()(SelectCurrency);

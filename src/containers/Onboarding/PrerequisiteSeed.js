@@ -2,7 +2,7 @@
 import React from "react";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -98,4 +98,4 @@ const PrerequisiteSeed = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(PrerequisiteSeed));
+export default withStyles(styles)(withTranslation()(PrerequisiteSeed));

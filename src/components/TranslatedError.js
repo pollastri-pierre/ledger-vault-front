@@ -5,7 +5,7 @@
 // - returned value is intentially not styled (is universal). wrap this in whatever you need
 
 import { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import type { Translate } from "data/types";
 
 type Props = {
@@ -42,4 +42,4 @@ class TranslatedError extends PureComponent<Props> {
   }
 }
 
-export default translate()(TranslatedError);
+export default withTranslation()(TranslatedError);

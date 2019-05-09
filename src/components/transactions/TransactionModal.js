@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import type { MemoryHistory } from "history";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import TransactionDetails from "./TransactionDetails";
 
 type Props = {
@@ -25,4 +25,4 @@ class TransactionModal extends Component<Props> {
   }
 }
 
-export default translate()(TransactionModal);
+export default withTranslation()(TransactionModal);

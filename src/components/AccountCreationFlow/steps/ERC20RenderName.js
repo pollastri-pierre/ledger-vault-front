@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
@@ -169,4 +169,4 @@ const styles = {
     marginTop: 20,
   },
 };
-export default withStyles(styles)(translate()(ERC20RenderName));
+export default withStyles(styles)(withTranslation()(ERC20RenderName));

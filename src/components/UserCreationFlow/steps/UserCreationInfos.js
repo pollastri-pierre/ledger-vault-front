@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import type { Translate } from "data/types";
 
@@ -68,4 +68,4 @@ class UserCreationInfo extends PureComponent<Props> {
     );
   }
 }
-export default translate()(UserCreationInfo);
+export default withTranslation()(UserCreationInfo);

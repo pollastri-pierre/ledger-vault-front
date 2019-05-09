@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { FaHourglassHalf } from "react-icons/fa";
 
 import Box from "components/base/Box";
@@ -104,4 +104,4 @@ const styles = {
   },
 };
 
-export default translate()(Status);
+export default withTranslation()(Status);

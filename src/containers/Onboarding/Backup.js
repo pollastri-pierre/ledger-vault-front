@@ -3,7 +3,7 @@ import React from "react";
 import colors from "shared/colors";
 import Warning from "components/icons/TriangleWarning";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import Trash from "components/icons/thin/Trash";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import RecoverySheet from "components/icons/thin/RecoverySheet";
@@ -98,4 +98,4 @@ const Backup = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(Backup));
+export default withStyles(styles)(withTranslation()(Backup));

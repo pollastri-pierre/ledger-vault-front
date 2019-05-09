@@ -3,7 +3,7 @@ import React from "react";
 import colors from "shared/colors";
 import cx from "classnames";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Cryptosteel from "components/icons/thin/Cryptosteel";
 import Briefcase from "components/icons/thin/Briefcase";
@@ -149,4 +149,4 @@ const Requirements = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(Requirements));
+export default withStyles(styles)(withTranslation()(Requirements));

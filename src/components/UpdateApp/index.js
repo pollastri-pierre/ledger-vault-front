@@ -5,7 +5,7 @@ import Home from "components/icons/Home";
 import type { Translate } from "data/types";
 import Trash from "components/icons/Trash";
 import Update from "components/icons/Update";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
@@ -259,4 +259,4 @@ class UpdateApp extends Component<Props, State> {
   }
 }
 
-export default withStyles(styles)(translate()(UpdateApp));
+export default withStyles(styles)(withTranslation()(UpdateApp));

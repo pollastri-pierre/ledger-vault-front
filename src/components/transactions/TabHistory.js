@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import ExpandableText from "components/ExpandableText";
 import DateFormat from "components/DateFormat";
 import { withStyles } from "@material-ui/core/styles";
@@ -27,7 +27,7 @@ const styles = {
 
 type ActionType = "APPROVE" | "ABORT" | "CREATED" | "SUBMITTED" | "CONFIRMED";
 
-const Action = translate()(
+const Action = withTranslation()(
   ({
     action,
     t,

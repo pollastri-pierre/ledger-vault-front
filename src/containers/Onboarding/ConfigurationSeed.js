@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
 import {
   Title,
@@ -48,4 +48,4 @@ const ConfigurationSeed = ({ t }: { t: Translate }) => (
   </div>
 );
 
-export default translate()(ConfigurationSeed);
+export default withTranslation()(ConfigurationSeed);

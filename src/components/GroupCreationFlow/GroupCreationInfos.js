@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 import Box from "components/base/Box";
 import { InputText, Label } from "components/base/form";
@@ -47,4 +47,4 @@ const GroupCreationInfos = (props: Props) => {
   );
 };
 
-export default translate()(GroupCreationInfos);
+export default withTranslation()(GroupCreationInfos);

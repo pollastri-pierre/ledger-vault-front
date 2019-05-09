@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
 import LinkCongureDevice from "./LinkCongureDevice";
 import {
@@ -43,4 +43,4 @@ const ConfigurationWrapping = ({ t }: { t: Translate }) => (
   </div>
 );
 
-export default translate()(ConfigurationWrapping);
+export default withTranslation()(ConfigurationWrapping);

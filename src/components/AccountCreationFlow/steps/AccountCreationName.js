@@ -1,6 +1,6 @@
 // @flow
 
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -103,4 +103,4 @@ class AccountCreationOptions extends PureComponent<Props> {
   }
 }
 
-export default withStyles(styles)(translate()(AccountCreationOptions));
+export default withStyles(styles)(withTranslation()(AccountCreationOptions));

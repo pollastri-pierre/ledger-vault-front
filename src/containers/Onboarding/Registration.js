@@ -1,7 +1,7 @@
 // @flow
 import { connect } from "react-redux";
 import cx from "classnames";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import BlurDialog from "components/BlurDialog";
@@ -184,4 +184,4 @@ class Registration extends Component<Props, *> {
 export default connect(
   mapStateToProps,
   mapDispatch,
-)(withStyles(styles)(translate()(Registration)));
+)(withStyles(styles)(withTranslation()(Registration)));

@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
 import Text from "components/base/Text";
@@ -100,7 +100,7 @@ class SelectTransactionStatusesComponent extends PureComponent<SelectProps> {
   }
 }
 
-const SelectTransactionStatuses = translate()(
+const SelectTransactionStatuses = withTranslation()(
   SelectTransactionStatusesComponent,
 );
 

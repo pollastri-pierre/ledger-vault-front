@@ -3,7 +3,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import cx from "classnames";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Title, Introduction } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
@@ -87,4 +87,4 @@ const AdministrationScheme = ({
 export default connect(
   mapStateToProps,
   mapDispatch,
-)(withStyles(styles)(translate()(AdministrationScheme)));
+)(withStyles(styles)(withTranslation()(AdministrationScheme)));

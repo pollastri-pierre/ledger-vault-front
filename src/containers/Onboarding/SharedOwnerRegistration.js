@@ -10,7 +10,7 @@ import {
   NoMembers,
   AddUser,
 } from "components/Onboarding";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import BlurDialog from "components/BlurDialog";
 import RegisterAdmins from "containers/Onboarding/RegisterAdmins";
@@ -158,4 +158,4 @@ const mapDispatchToProps = (dispatch: *) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(translate()(SharedOwnerRegistration));
+)(withTranslation()(SharedOwnerRegistration));
