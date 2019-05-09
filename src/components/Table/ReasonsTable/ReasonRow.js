@@ -26,7 +26,6 @@ class ReasonRow extends PureComponent<ReasonRowProps> {
 
     return (
       <MUITableRow
-        key={`${reason.type}_${reason.entity.id}`}
         hover={!!onClick}
         style={onClick ? reasonRowHover : undefined}
         onClick={onClick ? this.handleClick : undefined}

@@ -38,7 +38,7 @@ class Users extends PureComponent<Props> {
   };
 
   inviteUser = () => {
-    this.props.history.push("users/invite/user");
+    this.props.history.push("users/new");
   };
 
   ActionComponent = () => (
@@ -61,10 +61,7 @@ class Users extends PureComponent<Props> {
           onRowClick={this.handleUserClick}
           listenMutations={mutationsToListen}
         />
-        <ModalRoute
-          path={`${match.url}/invite/user`}
-          component={UserCreationFlow}
-        />
+        <ModalRoute path={`${match.url}/new`} component={UserCreationFlow} />
       </>
     );
   }
