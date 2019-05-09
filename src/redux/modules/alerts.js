@@ -80,8 +80,17 @@ export default function reducer(state: Store = initialState, action: Object) {
       }
       return {
         visible: true,
-        title: `Error ${error.json ? error.json.code : error.message}`,
-        content: error.json ? error.json.message : error.message,
+        title:
+          error.json && (error.json.code || error.json.message)
+            ? error.json.code
+              ? `Error ${error.json.code}`
+              : error.json.message
+            : error.message
+            ? error.message
+            : "Error",
+        content: error.json
+          ? error.json.message
+          : error.message || "Unexpected error",
         type: "error",
       };
     }
