@@ -112,7 +112,7 @@ const modalsRoutes = [
   /(.*)\/receive$/,
   /(.*)\/admin-rules$/,
   /(.*)\/new$/,
-  /(.*)\/edit\/[0-9]+\/.+$/,
+  /(.*)\/edit\/[0-9]+/,
   /(.*)\/details\/[0-9]+\/.+$/,
 ];
 
