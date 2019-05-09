@@ -1,6 +1,6 @@
 {
   "ACTIVE": "Active",
-  "ABORTED": "Aborted",
+  "ABORTED": "Rejected",
   "REVOKED": "Revoked",
   "DELETED": "Deleted",
   "APPROVED": "Approved",

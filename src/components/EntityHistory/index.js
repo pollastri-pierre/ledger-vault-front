@@ -1,15 +1,22 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { PureComponent, useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
-import { FaCheck, FaPlus, FaEnvelopeOpen } from "react-icons/fa";
+import {
+  FaCheck,
+  FaPlus,
+  FaAngleDown,
+  FaAngleUp,
+  FaEnvelopeOpen,
+} from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 import connectData from "restlay/connectData";
 import type { Approval, Organization } from "data/types";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import colors from "shared/colors";
+import Status from "components/Status";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import IconClose from "components/icons/Close";
@@ -29,7 +36,7 @@ type Props = {
 const iconsByType = {
   CREATE: <FaPlus color={colors.ocean} />,
   REVOKE: <MdDelete color={colors.grenade} />,
-  INVITE: <FaEnvelopeOpen color={colors.ocean} />,
+  INVITE: <FaEnvelopeOpen color={colors.lightGrey} />,
   EDIT: <MdEdit color={colors.ocean} />,
   APPROVE: <FaCheck color={colors.green} />,
   ABORT: <IconClose size={16} color={colors.grenade} />,
@@ -38,7 +45,7 @@ const iconsByType = {
 const ACTIONSCREATEUSER = ["CREATE_OPERATOR", "CREATE_ADMIN"];
 
 const HistoryItem = ({ item }: { item: Item }) => (
-  <Box pl={40} position="relative" style={{ height: 50 }}>
+  <Box pl={40} position="relative">
     <Ball>{iconsByType[item.type]}</Ball>
     <Box horizontal flow={5} color={colors.shark}>
       {item.label}
@@ -49,24 +56,88 @@ const HistoryItem = ({ item }: { item: Item }) => (
   </Box>
 );
 
+const CollapseIcon = ({ collapsed }: { collapsed: boolean }) =>
+  collapsed ? <FaAngleDown size={12} /> : <FaAngleUp size={12} />;
+
+const RequestHistory = ({
+  history,
+  quorum,
+  collapsed,
+  finalStatus,
+}: {
+  history: Array<any>,
+  quorum?: number,
+  collapsed?: boolean,
+  finalStatus: "APPROVED" | "PENDING",
+}) => {
+  const [isCollapsed, setCollapsed] = useState(!!collapsed);
+  const onCollapse = () => setCollapsed(!isCollapsed);
+
+  const r = [...history].reverse();
+  const fullHistory = resolveFullHistory(r, quorum || 0);
+  const request = fullHistory[fullHistory.length - 1];
+  const last = fullHistory[0];
+  return (
+    <RequestContainer
+      isPending={finalStatus === "PENDING"}
+      onClick={onCollapse}
+    >
+      <Bar />
+      <Box horizontal justify="space-between" align="flex-start">
+        <Box flow={20}>
+          {isCollapsed ? (
+            <Box
+              horizontal
+              justify="space-between"
+              align="flex-start"
+              flow={20}
+            >
+              <HistoryItem item={request} />
+            </Box>
+          ) : (
+            fullHistory
+              .reverse()
+              .map(item => (
+                <HistoryItem key={item.date.toString()} item={item} />
+              ))
+          )}
+        </Box>
+        <CollapseIconContainer>
+          <Status
+            status={(last.type === "ABORT" && "ABORTED") || finalStatus}
+          />
+          <CollapseIcon collapsed={isCollapsed} />
+        </CollapseIconContainer>
+      </Box>
+    </RequestContainer>
+  );
+};
 class EntityHistory extends PureComponent<Props> {
   render() {
     const { history, organization } = this.props;
-    const fullHistory = resolveFullHistory(history, organization.quorum || 0);
+    const groupedHistory = groupHistoryByRequest(history);
+
+    if (groupedHistory.length === 0) {
+      return <Text>No history for this entity</Text>;
+    }
     return (
-      <Box position="relative">
-        {fullHistory.length ? (
-          <>
-            <Bar />
-            <Box flow={20}>
-              {fullHistory.map(item => (
-                <HistoryItem key={item.date.toString()} item={item} />
-              ))}
-            </Box>
-          </>
-        ) : (
-          "No history for this entity"
-        )}
+      <Box flow={20}>
+        {groupedHistory.map((request, i) => {
+          const approvalsItem = request.find(r => !!r.approvals);
+          const nbApproval = approvalsItem && approvalsItem.approvals.length;
+          // request[0].approvals && request[0].approvals.length;
+          const finalStatus =
+            nbApproval === organization.quorum ? "APPROVED" : "PENDING";
+          return (
+            <RequestHistory
+              history={request}
+              quorum={organization.quorum}
+              finalStatus={finalStatus}
+              collapsed={finalStatus !== "PENDING"}
+              key={i} // eslint-disable-line react/no-array-index-key
+            />
+          );
+        })}
       </Box>
     );
   }
@@ -75,10 +146,27 @@ class EntityHistory extends PureComponent<Props> {
 const Bar = styled.div`
   position: absolute;
   top: 10px;
-  left: 14px;
+  left: 24px;
   bottom: 40px;
   width: 2px;
   background: #eee;
+`;
+
+const CollapseIconContainer = styled(Box).attrs({ horizontal: true, flow: 10 })`
+  color: grey;
+`;
+
+const RequestContainer = styled(Box).attrs({
+  position: "relative",
+  p: 10,
+})`
+  background: #fafafa;
+  border-radius: 4px;
+  cursor: pointer;
+  border: ${p => (p.isPending ? "2px solid #27d0e2" : "none")};
+  &:hover ${CollapseIconContainer} {
+    color: black;
+  }
 `;
 
 const Ball = styled.div`
@@ -105,12 +193,26 @@ function sumApprovals(approvals: Approval[], index: number) {
   return nb;
 }
 
-function resolveFullHistory(history: Array<any>, quorum: number) {
-  // TODO should be in correct order from the gate
-  const reversedHistory = [...history].reverse();
+function groupHistoryByRequest(history: Array<any>) {
+  const grouped = [];
+  let requests = [];
+  for (let i = 0; i < history.length; i++) {
+    requests.push(history[i]);
+    if (history[i].status === "APPROVED" || history[i].status === "ABORTED") {
+      grouped.push(requests);
+      requests = [];
+    }
+    if (i === history.length - 1 && requests.length > 0) {
+      grouped.push(requests);
+    }
+  }
 
+  return grouped;
+}
+
+function resolveFullHistory(history: Array<any>, quorum: number) {
   // unwrap the approvals
-  const fullHistory: Item[] = reversedHistory.reduce((acc, cur) => {
+  const fullHistory: Item[] = history.reduce((acc, cur) => {
     if (cur.status === "PENDING_APPROVAL") {
       cur.approvals.forEach((approval, i) => {
         const n = sumApprovals(cur.approvals, i);
