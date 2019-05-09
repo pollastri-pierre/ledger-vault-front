@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import emailValidator from "email-validator";
 // import Dropzone from "react-dropzone";
 import rectCrop from "rect-crop";
@@ -228,4 +228,4 @@ class ProfileEditModal extends Component<
   }
 }
 
-export default withStyles(styles)(translate()(ProfileEditModal));
+export default withStyles(styles)(withTranslation()(ProfileEditModal));

@@ -16,6 +16,11 @@ import RegisterUser from "./RegisterUser";
 
 const { PollingProvider } = counterValues;
 
+// as connect() returns now a React.memo, this is a hack to prevent
+// react-router Router component to complain that it doesnt receive
+// a function but an object
+const WelcomeComponent = p => <Welcome {...p} />;
+
 const OrganizationAppRouter = () => (
   <>
     <GlobalStyle />
@@ -66,7 +71,7 @@ const OrganizationAppRouter = () => (
               </>
             )}
           />
-          <Route component={Welcome} />
+          <Route component={WelcomeComponent} />
         </Switch>
       </>
     </BrowserRouter>

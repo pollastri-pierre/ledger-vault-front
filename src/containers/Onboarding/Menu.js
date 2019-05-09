@@ -4,7 +4,7 @@ import colors from "shared/colors";
 import { withStyles } from "@material-ui/core/styles";
 import LabelLink from "components/LabelLink";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import MenuLinkOnboarding from "./MenuLinkOnboarding";
 
 const styles = {
@@ -166,4 +166,4 @@ const Menu = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(Menu));
+export default withStyles(styles)(withTranslation()(Menu));

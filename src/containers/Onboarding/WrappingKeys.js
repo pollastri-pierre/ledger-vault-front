@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from "react";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import type { Translate } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import FragmentKey from "containers/Onboarding/Fragment";
@@ -177,4 +177,4 @@ export { WrappingKeys };
 export default connect(
   mapState,
   mapDispatch,
-)(withStyles(styles)(translate()(WrappingKeys)));
+)(withStyles(styles)(withTranslation()(WrappingKeys)));

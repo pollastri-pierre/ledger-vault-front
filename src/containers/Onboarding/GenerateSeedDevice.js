@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import type { Translate } from "data/types";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import createDevice, {
   checkToUpdate,
   CONFIDENTIALITY_PATH,
@@ -149,4 +149,4 @@ class GenerateSeedDevice extends Component<Props, State> {
   }
 }
 export { GenerateSeedDevice };
-export default translate()(GenerateSeedDevice);
+export default withTranslation()(GenerateSeedDevice);

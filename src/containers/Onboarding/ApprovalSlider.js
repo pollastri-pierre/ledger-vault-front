@@ -2,7 +2,7 @@
 import React from "react";
 import cx from "classnames";
 import type { Translate } from "data/types";
-import { translate, Interpolate } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Arrow from "../../components/icons/full/ArrowDown";
 
@@ -71,13 +71,13 @@ const ApprovalSlider = ({
   <div className={classes.base}>
     <div className={classes.flex}>
       <span className={classes.bold}>
-        <Interpolate
+        <Trans
           i18nKey="onboarding:administrators_scheme.nb_required"
           count={number}
         />
       </span>
       <span className={classes.out}>
-        <Interpolate
+        <Trans
           i18nKey="onboarding:administrators_scheme.out_of"
           total={total}
         />
@@ -126,4 +126,4 @@ const ApprovalSlider = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(ApprovalSlider));
+export default withStyles(styles)(withTranslation()(ApprovalSlider));

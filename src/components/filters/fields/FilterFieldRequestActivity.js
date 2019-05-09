@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
 import Select from "components/base/Select";
@@ -107,6 +107,6 @@ class SelectRequestActivityComponent extends PureComponent<SelectProps> {
   }
 }
 
-const SelectRequestActivity = translate()(SelectRequestActivityComponent);
+const SelectRequestActivity = withTranslation()(SelectRequestActivityComponent);
 
 export default FilterFieldRequestActivity;

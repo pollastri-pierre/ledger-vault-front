@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
 import { Title, Introduction, SubTitle } from "components/Onboarding";
 
@@ -75,4 +75,4 @@ const Prerequisite = ({
   </div>
 );
 
-export default withStyles(styles)(translate()(Prerequisite));
+export default withStyles(styles)(withTranslation()(Prerequisite));

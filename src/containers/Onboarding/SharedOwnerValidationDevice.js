@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import type { Translate } from "data/types";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import createDevice, {
   U2F_PATH,
   VALIDATION_PATH,
@@ -116,4 +116,4 @@ class SharedOwnerValidationDevice extends Component<Props, State> {
   }
 }
 export { SharedOwnerValidationDevice };
-export default translate()(SharedOwnerValidationDevice);
+export default withTranslation()(SharedOwnerValidationDevice);

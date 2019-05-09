@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { withRouter, Redirect } from "react-router";
 import { connect } from "react-redux";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { StatusCodes } from "@ledgerhq/hw-transport";
 import { FaUser } from "react-icons/fa";
 import type { MemoryHistory } from "history";
@@ -232,4 +232,4 @@ const inputProps = {
 export default connect(
   null,
   mapDispatchToProps,
-)(withRouter(translate()(Welcome)));
+)(withRouter(withTranslation()(Welcome)));

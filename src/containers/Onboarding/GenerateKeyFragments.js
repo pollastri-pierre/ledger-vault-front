@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import type { Translate } from "data/types";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import createDevice, {
   checkToUpdate,
   CONFIDENTIALITY_PATH,
@@ -154,4 +154,4 @@ class GenerateKeyFragments extends Component<Props, State> {
   }
 }
 export { GenerateKeyFragments };
-export default translate()(GenerateKeyFragments);
+export default withTranslation()(GenerateKeyFragments);

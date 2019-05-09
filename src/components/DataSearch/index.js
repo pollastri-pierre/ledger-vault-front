@@ -112,9 +112,6 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     try {
       const query = new Query(queryParams);
-      if (!queryParams.pageSize) {
-        queryParams.pageSize = String(query.pageSize);
-      }
       const response = await minWait(restlay.fetchQuery(query), 500);
       patch = { status: "idle", response, error: null };
     } catch (error) {

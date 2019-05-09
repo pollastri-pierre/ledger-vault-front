@@ -8,7 +8,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
-import { Interpolate, Trans } from "react-i18next";
+import { Trans } from "react-i18next";
 
 const styles = {
   base: {},
@@ -47,10 +47,7 @@ class ConfirmationCancel extends Component<Props, State> {
       <div className={classes.base}>
         <Title>{title}</Title>
         <Introduction>
-          <Interpolate
-            i18nKey="onboarding:confirmation_cancel.desc"
-            entity={step}
-          />
+          <Trans i18nKey="onboarding:confirmation_cancel.desc" entity={step} />
         </Introduction>
         <FormControl component="fieldset">
           <RadioGroup
@@ -73,7 +70,7 @@ class ConfirmationCancel extends Component<Props, State> {
               value="1"
               control={<Radio color="primary" />}
               label={
-                <Interpolate
+                <Trans
                   entity={entity}
                   i18nKey="onboarding:confirmation_cancel.mistake"
                 />

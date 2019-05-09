@@ -3,7 +3,7 @@ import colors from "shared/colors";
 import React from "react";
 import { Title } from "components/Onboarding";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
 import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People";
@@ -122,4 +122,4 @@ const mapProps = state => ({
 export default connect(
   mapProps,
   () => ({}),
-)(withStyles(styles)(translate()(ConfirmationGlobal)));
+)(withStyles(styles)(withTranslation()(ConfirmationGlobal)));

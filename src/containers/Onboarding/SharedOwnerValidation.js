@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import CircleProgress from "components/CircleProgress";
 import type { Translate } from "data/types";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import cx from "classnames";
 import BlurDialog from "components/BlurDialog";
 import { withStyles } from "@material-ui/core/styles";
@@ -219,4 +219,4 @@ const mapDispatch = (dispatch: *) => ({
 export default connect(
   mapState,
   mapDispatch,
-)(withStyles(styles)(translate()(SharedOwnerValidation)));
+)(withStyles(styles)(withTranslation()(SharedOwnerValidation)));

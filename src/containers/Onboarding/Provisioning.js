@@ -4,7 +4,7 @@ import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
 import FragmentKey from "containers/Onboarding/Fragment";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
@@ -181,4 +181,4 @@ const mapDispatch = (dispatch: *) => ({
 export default connect(
   mapProps,
   mapDispatch,
-)(withStyles(styles)(translate()(Provisioning)));
+)(withStyles(styles)(withTranslation()(Provisioning)));

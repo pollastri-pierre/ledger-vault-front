@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import connectData from "restlay/connectData";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import type { Translate } from "data/types";
-import { translate, Trans } from "react-i18next";
+import { withTranslation, Trans } from "react-i18next";
 import createDevice, {
   U2F_PATH,
   APPID_VAULT_ADMINISTRATOR,
@@ -109,7 +109,7 @@ class SignInDevice extends Component<Props, State> {
   }
 }
 export { SignInDevice };
-export default connectData(translate()(SignInDevice), {
+export default connectData(withTranslation()(SignInDevice), {
   queries: {
     organization: OrganizationQuery,
   },

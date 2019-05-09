@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { translate } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import network, { NetworkError } from "network";
 import { GenericError } from "utils/errors";
 import connectData from "restlay/connectData";
@@ -156,7 +156,7 @@ export default connect(
   undefined,
   mapDispatchToProps,
 )(
-  connectData(translate()(DeviceAuthenticate), {
+  connectData(withTranslation()(DeviceAuthenticate), {
     queries: {
       organization: OrganizationQuery,
     },
