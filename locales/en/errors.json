@@ -35,5 +35,6 @@
     "title": "Auto-verification not available: carefully verify the address",
     "description": "Auto-verification not available: carefully verify the address"
   },
+  "GenericError": { "description": "An error occured", "title": "Error" },
   "generic": { "description": "An error occured", "title": "Error" }
 }

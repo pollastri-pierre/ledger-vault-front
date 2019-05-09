@@ -132,7 +132,7 @@ function EntityModal<T>(props: Props<T>) {
 
 function EditButton({ url }: { url: string }) {
   return (
-    <Link replace to={url}>
+    <Link replace to={url} data-test="edit-button">
       <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
         <Trans i18nKey="entityModal:edit" />
       </Button>

@@ -9,10 +9,6 @@ export function login(id) {
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
-  cy.get(".top-message-body")
-    .contains("Welcome to the Ledger Vault platform!")
-    .get(".top-message-title")
-    .contains("Hello");
   cy.url().should("include", "/dashboard");
 }
 
