@@ -11,9 +11,7 @@ type Props = {
 };
 
 const GroupHistory = ({ history }: Props) => (
-  <div style={{ maxHeight: 500, overflow: "auto" }}>
-    <EntityHistory history={history} />
-  </div>
+  <EntityHistory history={history} />
 );
 
 const RenderLoading = () => <SpinnerCard />;

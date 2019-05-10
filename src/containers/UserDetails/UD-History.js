@@ -12,9 +12,7 @@ type Props = {
 };
 
 const UserDetailsHistory = ({ history }: Props) => (
-  <div style={{ maxHeight: 500, overflow: "auto" }}>
-    <EntityHistory history={history} />
-  </div>
+  <EntityHistory history={history} />
 );
 
 export default connectData(UserDetailsHistory, {
