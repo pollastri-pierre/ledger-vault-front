@@ -1,9 +1,10 @@
 // @flow
 import React, { Component } from "react";
 import { Redirect } from "react-router";
-import SpinnerCard from "components/spinners/SpinnerCard";
 import { connect } from "react-redux";
 import { logout } from "redux/modules/auth";
+import Card from "components/base/Card";
+import VaultCentered from "components/VaultCentered";
 
 const mapDispatchToProps = (dispatch: *) => ({
   logout: () => dispatch(logout()),
@@ -23,7 +24,13 @@ export class Logout extends Component<{
 
   render() {
     if (this.props.auth.isAuthenticated) {
-      return <SpinnerCard />;
+      return (
+        <VaultCentered>
+          <Card height={350} align="center" justify="center">
+            Logging out...
+          </Card>
+        </VaultCentered>
+      );
     }
     return <Redirect to={{ pathname: "/" }} />;
   }

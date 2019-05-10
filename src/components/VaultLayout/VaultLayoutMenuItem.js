@@ -151,8 +151,7 @@ const VaultLayoutMenuItem = styled.div`
   height: 40px;
 
   ${({ isActive, isMenuOpened, isDisabled, isMenuFloating }) => {
-    const isInteractive =
-      !isDisabled && !isActive && (isMenuOpened || !isMenuFloating);
+    const isInteractive = !isDisabled && (isMenuOpened || !isMenuFloating);
     const isIcon = !isMenuOpened;
 
     const bg =
@@ -186,7 +185,7 @@ const VaultLayoutIconContainer = styled.div`
   width: 60px;
   height: 40px;
   color: inherit;
-  pointer-events: ${p => (p.isDisabled || p.isActive ? "none" : "auto")};
+  pointer-events: ${p => (p.isDisabled ? "none" : "auto")};
   background-color: ${p =>
     p.isActive && (p.isMenuFloating && !p.isMenuOpened)
       ? opacity(colors.blue, 0.05)
