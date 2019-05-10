@@ -10,7 +10,7 @@ type Response = {
 const uri = () => "/nonce";
 
 // get a nonce to sign from the API/HSM
-// (used when approving an operation/account)
+// (used when approving a transaction/account)
 export default class NonceQuery extends Query<Input, Response> {
   uri = uri();
 }

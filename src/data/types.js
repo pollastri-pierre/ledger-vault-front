@@ -255,8 +255,6 @@ type TransactionCommon = {
   price?: Price,
   fees: BigNumber,
   approvedTime: ?string,
-  endOfTimeLockTime: ?string,
-  endOfRateLimiterTime: ?string,
   type: TransactionType,
   amount: BigNumber,
   account_id: string,

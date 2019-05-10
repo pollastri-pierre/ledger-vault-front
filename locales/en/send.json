@@ -7,7 +7,7 @@
   "confirmation": {
     "account": "Account to Debit",
     "desc":
-      "An Operation Request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.",
+      "A transaction request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.",
     "fees": "Confirmation Fees",
     "identifier": "Recipient address",
     "total": "Total Amount",
@@ -21,7 +21,7 @@
     "gasPrice": "Gas price",
     "note": "Add a comment",
     "title": "Label",
-    "totalFees": "Max Operation Fee:",
+    "totalFees": "Max transaction Fee:",
     "totalSpent": "Total:"
   },
   "label": { "note": "Note", "title": "Label" },
