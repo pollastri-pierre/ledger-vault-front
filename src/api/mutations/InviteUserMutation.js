@@ -1,5 +1,6 @@
 // @flow
 import Mutation from "restlay/Mutation";
+import { success } from "formatters/notification";
 
 export const types = {
   admin: "CREATE_ADMIN",
@@ -22,6 +23,10 @@ export default class InviteUserMutation extends Mutation<Input, Response> {
   method = "POST";
 
   uri = `/requests`;
+
+  getSuccessNotification = () => {
+    return success("User invitation", "created");
+  };
 
   getBody() {
     return this.props.user;
