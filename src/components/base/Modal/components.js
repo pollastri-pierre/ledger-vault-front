@@ -174,10 +174,11 @@ export const RichModalTabsContainer = styled.div`
   }
 `;
 
-export const RichModalTab = styled(({ isActive, ...props }) => (
+export const RichModalTab = styled(({ isActive, dark, ...props }) => (
   <Link {...props} />
 ))`
-  background: ${p => (p.isActive ? "white" : "unset")};
+  background: ${p =>
+    p.isActive ? "white" : p.dark ? "rgba(0, 0, 0, 0.05)" : "unset"};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   padding: 10px;
