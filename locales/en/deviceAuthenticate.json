@@ -1,9 +1,0 @@
-{
-  "errors": {
-    "hsm_unavailable": {
-      "content": "Could not reach the HSM. Network issue.",
-      "title": "HSM unavailable"
-    },
-    "unknown": { "content": "An error occured.", "title": "Error" }
-  }
-}

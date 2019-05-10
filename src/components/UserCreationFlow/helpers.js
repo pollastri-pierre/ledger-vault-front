@@ -45,14 +45,9 @@ export const processUserInfo = async (
       user,
     });
 
-    try {
-      const data = await restlay.fetchQuery(query);
-      const prefix = window.location.pathname.split("/")[1];
-      const url = `${window.location.origin}/${prefix}/register/${data.url_id}`;
-      updatePayload && updatePayload({ url, request_id: data.id });
-    } catch (error) {
-      // FIXME use internal error system to display banner etc.
-      console.error(error);
-    }
+    const data = await restlay.fetchQuery(query);
+    const prefix = window.location.pathname.split("/")[1];
+    const url = `${window.location.origin}/${prefix}/register/${data.url_id}`;
+    updatePayload && updatePayload({ url, request_id: data.id });
   }
 };

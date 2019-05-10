@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { Trans } from "react-i18next";
 
 import connectData from "restlay/connectData";
-import { VISIBLE_MENU_STATUS } from "utils/accounts";
 import AccountQuery from "api/queries/AccountQuery";
 import type { Account } from "data/types";
 
@@ -34,35 +33,30 @@ class AccountView extends Component<Props> {
     const { match, account } = this.props;
     const accountId = match.params.id;
 
-    let inner = null;
+    const showPendingBox = account.status.startsWith("PENDING");
 
-    if (account.status && VISIBLE_MENU_STATUS.indexOf(account.status) === -1) {
-      inner = (
-        <Card>
-          <Label>Account pending</Label>
-          <InfoBox withIcon type="info">
-            <Text>
-              <Trans i18nKey="accountView:approved" components={<b>0</b>} />
-            </Text>
-          </InfoBox>
-        </Card>
-      );
-    } else {
-      inner = (
-        <Box flow={20}>
-          <Box horizontal flow={20}>
-            <AccountQuickInfo account={account} match={match} />
-            <AccountBalanceCard account={account} />
-          </Box>
-          {account.account_type === "Ethereum" && (
-            <SubAccounts account={account} />
-          )}
-          <AccountLastTransactionsCard key={accountId} account={account} />
+    return (
+      <Box flow={20}>
+        <Box horizontal flow={20}>
+          <AccountQuickInfo account={account} match={match} />
+          <AccountBalanceCard account={account} />
         </Box>
-      );
-    }
-
-    return inner;
+        {showPendingBox && (
+          <Card>
+            <Label>Account pending</Label>
+            <InfoBox withIcon type="info">
+              <Text>
+                <Trans i18nKey="accountView:approved" components={<b>0</b>} />
+              </Text>
+            </InfoBox>
+          </Card>
+        )}
+        {account.account_type === "Ethereum" && (
+          <SubAccounts account={account} />
+        )}
+        <AccountLastTransactionsCard key={accountId} account={account} />
+      </Box>
+    );
   }
 }
 

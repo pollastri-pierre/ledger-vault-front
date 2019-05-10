@@ -7,7 +7,7 @@ import { isSupportedAccount } from "utils/accounts";
 import { deserializeAccount } from "api/transformations/Account";
 
 class AccountsToMigrateQuery extends ConnectionQuery<void, Account> {
-  uri = "/accounts?status=MIGRATED";
+  uri = "/accounts?status=MIGRATED&status=HSM_COIN_UPDATED";
 
   responseSchema = schema.Account;
 

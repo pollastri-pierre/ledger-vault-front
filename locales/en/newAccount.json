@@ -53,8 +53,6 @@
       "Define the number of approvals required before transactions created in this account are broadcasted to the blockchain network.",
     "approvals_from": "approvals from {{count}} members",
     "members": "Members",
-    "members_desc":
-      "Select the users who can create operations in this account.",
     "members_selected": "{{nbMembersSelected}} member selected",
     "members_selected_plural": "{{nbMembersSelected}} members selected",
     "required": "required",

@@ -320,17 +320,17 @@ export const genAccounts = genWithNoDups(
 export const genGroups = genWithNoDups(genGroup, FAKE_GROUP_NAMES, "name");
 
 export function genTransactions(nb, { accounts, users }) {
-  const operations = [];
+  const transactions = [];
   for (let i = 0; i < nb; i++) {
     const account = faker.random.arrayElement(accounts);
-    operations.push(genTransaction({ account, users }));
+    transactions.push(genTransaction({ account, users }));
   }
-  return operations;
+  return transactions;
 }
 
 const users = genUsers(20);
 const accounts = genAccounts(20, { users });
-const operations = genTransactions(100, { accounts, users });
+const transactions = genTransactions(100, { accounts, users });
 const groups = genGroups(4, { users });
 
 export default {
@@ -340,5 +340,5 @@ export default {
   groupsArray: groups,
   users: keyBy(users, "id"),
   usersArray: users,
-  operations: keyBy(operations, "id"),
+  transactions: keyBy(transactions, "id"),
 };

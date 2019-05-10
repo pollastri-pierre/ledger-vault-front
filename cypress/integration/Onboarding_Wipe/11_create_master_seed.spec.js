@@ -59,7 +59,7 @@ context("Create the Master Seed", () => {
       cy.contains("3 Shared-Owners").should("be.visible");
       cy.contains("3 Wrapping Keys Custodians").should("be.visible");
       cy.contains("3 Administrators").should("be.visible");
-      cy.contains("2/3 administration rule").should("be.visible");
+      cy.contains("2/3 admin rule").should("be.visible");
 
       cy.wait("@next");
       cy.request("POST", Cypress.env("api_switch_device"), {

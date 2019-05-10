@@ -30,7 +30,7 @@ class ReasonBodyCell extends PureComponent<CellProps> {
             </Box>
           );
         }
-        return <div>{reason.type}</div>;
+        return <div>{reason.type || "N/A"}</div>;
       case "reason":
         return <div>{reason.message}</div>;
       default:

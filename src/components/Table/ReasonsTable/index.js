@@ -15,7 +15,7 @@ import { reasonsTableDefault } from "./tableDefinitions";
 import TableScroll from "../TableScroll";
 
 type Props = {
-  data: Array<BlockingReasonType>,
+  data: BlockingReasonType[],
   onRowClick: BlockingReasonType => void,
   customTableDef?: TableDefinition,
 };
@@ -33,12 +33,12 @@ class ReasonsTable extends PureComponent<Props, State> {
     };
   }
 
-  Reason = (reason: BlockingReasonType) => {
+  Reason = (reason: BlockingReasonType, i: number) => {
     const { onRowClick } = this.props;
     const { tableDefinition } = this.state;
     return (
       <ReasonRow
-        key={`${reason.type}_${reason.entity.id}`}
+        key={`${reason.type}_${i}_${reason.entity ? reason.entity.id : ""}`}
         reason={reason}
         onClick={onRowClick}
         tableDefinition={tableDefinition}

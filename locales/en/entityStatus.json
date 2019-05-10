@@ -1,12 +1,12 @@
 {
   "ACTIVE": "Active",
-  "ABORTED": "Aborted",
+  "ABORTED": "Rejected",
   "REVOKED": "Revoked",
   "DELETED": "Deleted",
   "APPROVED": "Approved",
   "PENDING": "Pending",
   "VIEW_ONLY": "View only",
-  "CREATION_ABORTED": "Creation aborted",
+  "CREATION_ABORTED": "Creation rejected",
   "AWAITING_APPROVAL": "Awaiting approval",
   "PENDING_APPROVAL": "Pending approval",
   "PENDING_CREATION_APPROVAL": "Pending creation approval",
@@ -14,5 +14,6 @@
   "PENDING_REGISTRATION": "Pending registration",
   "PENDING_UPDATE": "Pending update",
   "PENDING_MIGRATED": "Pending migration",
-  "MIGRATED": "Migrated"
+  "MIGRATED": "Migrated",
+  "HSM_COIN_UPDATED": "Require update"
 }
