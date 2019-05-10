@@ -13,7 +13,7 @@
   "PENDING_REVOCATION": "Pending revocation",
   "PENDING_REGISTRATION": "Pending registration",
   "PENDING_UPDATE": "Pending update",
-  "PENDING_MIGRATED": "Pending migration",
-  "MIGRATED": "Migrated",
+  "PENDING_MIGRATED": "Pending update",
+  "MIGRATED": "Update required",
   "HSM_COIN_UPDATED": "Require update"
 }

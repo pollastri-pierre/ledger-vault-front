@@ -128,7 +128,7 @@ const App = withMe((props: Props & { me: User }) => {
         match={match}
         BreadcrumbComponent={AppBreadcrumb}
       >
-        <CheckMigration history={history} me={me} />
+        {me.role === "ADMIN" && <CheckMigration />}
         <Content match={match} />
       </VaultLayout>
       <Modals match={match} />

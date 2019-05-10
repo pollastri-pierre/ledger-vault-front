@@ -169,10 +169,7 @@ const AddButtonComponent = styled(Button).attrs({
     padding: 10px;
     min-height: 0;
     font-size: 11px;
-    // background-color: rgba(245, 0, 87, 0.05);
-    &:hover {
-      // background-color: rgba(245, 0, 87, 0.08);
-    }
+    background-color: rgba(39, 208, 226, 0.04);
 
     svg {
       margin-right: 5px;

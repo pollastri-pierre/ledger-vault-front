@@ -21,64 +21,62 @@ const { PollingProvider } = counterValues;
 // a function but an object
 const WelcomeComponent = p => <Welcome {...p} />;
 
-const OrganizationAppRouter = () => {
-  return (
-    <>
-      <GlobalStyle />
+const OrganizationAppRouter = () => (
+  <>
+    <GlobalStyle />
 
-      <BrowserRouter>
-        <>
-          <AlertsContainer />
-          <Switch>
-            <Route path="/update-app" component={UpdateApp} />
-            <Route
-              path="/:orga_name"
-              render={({ match, history, location }) => (
-                <>
-                  <Switch>
-                    <Route
-                      path={`${match.url}/login`}
-                      render={() => (
-                        <Welcome
-                          match={match}
-                          location={location}
-                          history={history}
-                        />
-                      )}
-                    />
-                    <Route
-                      path={`${match.url}/onboarding`}
-                      render={() => (
-                        <OnboardingContainer match={match} history={history} />
-                      )}
-                    />
-                    <Route
-                      path={`${match.url}/logout`}
-                      render={() => <Logout match={match} />}
-                    />
-                    <Route
-                      path={`${match.url}/register/:urlID`}
-                      component={RegisterUser}
-                    />
-                    <PollingProvider>
-                      <PrivateRoute
-                        path={`${match.url}/`}
-                        component={App}
-                        history={history}
+    <BrowserRouter>
+      <>
+        <AlertsContainer />
+        <Switch>
+          <Route path="/update-app" component={UpdateApp} />
+          <Route
+            path="/:orga_name"
+            render={({ match, history, location }) => (
+              <>
+                <Switch>
+                  <Route
+                    path={`${match.url}/login`}
+                    render={() => (
+                      <Welcome
                         match={match}
+                        location={location}
+                        history={history}
                       />
-                    </PollingProvider>
-                  </Switch>
-                </>
-              )}
-            />
-            <Route component={WelcomeComponent} />
-          </Switch>
-        </>
-      </BrowserRouter>
-      {process.env.NODE_ENV === "e2e" && <MockDevices />}
-    </>
-  );
-};
+                    )}
+                  />
+                  <Route
+                    path={`${match.url}/onboarding`}
+                    render={() => (
+                      <OnboardingContainer match={match} history={history} />
+                    )}
+                  />
+                  <Route
+                    path={`${match.url}/logout`}
+                    render={() => <Logout match={match} />}
+                  />
+                  <Route
+                    path={`${match.url}/register/:urlID`}
+                    component={RegisterUser}
+                  />
+                  <PollingProvider>
+                    <PrivateRoute
+                      path={`${match.url}/`}
+                      component={App}
+                      history={history}
+                      match={match}
+                    />
+                  </PollingProvider>
+                </Switch>
+              </>
+            )}
+          />
+          <Route component={WelcomeComponent} />
+        </Switch>
+      </>
+    </BrowserRouter>
+    {process.env.NODE_ENV === "e2e" && <MockDevices />}
+  </>
+);
 
 export default OrganizationAppRouter;
