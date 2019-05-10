@@ -27,17 +27,11 @@ const initialPayload: UserCreationPayload = {
   request_id: null,
 };
 
-const onProcessUserInfo = async (
+const onProcessUserInfo = (
   payload: UserCreationPayload,
   updatePayload: PayloadUpdater<UserCreationPayload>,
   restlay: RestlayEnvironment,
-) => {
-  try {
-    await processUserInfo(payload, updatePayload, restlay.restlay);
-  } catch (err) {
-    console.error(err);
-  }
-};
+) => processUserInfo(payload, updatePayload, restlay.restlay);
 
 const steps = [
   {

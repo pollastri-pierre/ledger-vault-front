@@ -11,7 +11,7 @@ import ReasonsTable from "components/Table/ReasonsTable";
 
 export type BlockingReasonType = {
   type: string,
-  entity: Entity,
+  entity: ?Entity,
   message: string,
 };
 
@@ -33,7 +33,7 @@ const BlockingReasons = ({ error, onClose, ...rest }: Props) => {
     onClose();
     const orgaName = location.pathname.split("/")[1];
     // TODO handle other kind of entity ?
-    if (reason.type === "Account") {
+    if (reason.entity && reason.type === "Account") {
       history.push(`/${orgaName}/admin/accounts/view/${reason.entity.id}`);
     }
   };
