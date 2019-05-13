@@ -263,11 +263,11 @@ export function successfull_message() {
     .contains("request updated");
 }
 
-export function error_message(message, title) {
-  cy.get(".top-message-body")
-    .contains(message)
-    .get(".top-message-title")
-    .contains(title);
+export function error_message(title, message) {
+  cy.get("data-test=error-message-title")
+    .contains(title)
+    .get("data-test=error-message-desc")
+    .contains(message);
 }
 
 export function create_account(currency, name, group, user1) {
@@ -325,7 +325,8 @@ export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();
   cy.url().should("include", "/admin/users");
   cy.contains(name).click();
-  cy.contains("Revoke").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=Confirm]").click();
   cy.wait(2500);
   login(5);
   cy.get("[data-test=menuItem-users]").click();
