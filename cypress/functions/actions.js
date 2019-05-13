@@ -325,7 +325,8 @@ export function revoke_users(name) {
   cy.get("[data-test=menuItem-users]").click();
   cy.url().should("include", "/admin/users");
   cy.contains(name).click();
-  cy.contains("Revoke").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.get("[data-test=Confirm]").click();
   cy.wait(2500);
   login(5);
   cy.get("[data-test=menuItem-users]").click();
