@@ -1,8 +1,6 @@
 import React, { Fragment } from "react";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
-import MuiPickersUtilsProvider from "material-ui-pickers/MuiPickersUtilsProvider";
-import MomentUtils from "material-ui-pickers/utils/moment-utils";
 import { composeWithDevTools } from "redux-devtools-extension";
 import JssProvider from "react-jss/lib/JssProvider";
 import { I18nextProvider } from "react-i18next";
@@ -63,9 +61,7 @@ addDecorator(story => (
       <I18nextProvider i18n={i18n}>
         <MuiThemeProvider theme={muiTheme}>
           <ThemeProvider theme={styledTheme}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <BrowserRouter>{story()}</BrowserRouter>
-            </MuiPickersUtilsProvider>
+            <BrowserRouter>{story()}</BrowserRouter>
           </ThemeProvider>
         </MuiThemeProvider>
       </I18nextProvider>
