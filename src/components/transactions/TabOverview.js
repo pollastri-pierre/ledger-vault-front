@@ -27,6 +27,7 @@ type Props = {
 class TabOverview extends Component<Props> {
   render() {
     const { transaction, account, classes } = this.props;
+    const note = transaction.notes.length ? transaction.notes[0] : null;
     return (
       <div>
         <OverviewTransaction
@@ -62,6 +63,24 @@ class TabOverview extends Component<Props> {
               <AccountName account={account} />
             </Box>
           </LineRow>
+          {note && note.title && (
+            <LineRow
+              label={
+                <Trans i18nKey="transactionCreation:steps.note.noteTitle" />
+              }
+            >
+              {note.title}
+            </LineRow>
+          )}
+          {note && note.content && (
+            <LineRow
+              label={
+                <Trans i18nKey="transactionCreation:steps.note.noteContent" />
+              }
+            >
+              {note.content}
+            </LineRow>
+          )}
           <LineRow label={<Trans i18nKey="transactionDetails:overview.fees" />}>
             <Amount account={account} value={transaction.fees} />
           </LineRow>

@@ -32,6 +32,20 @@ export default (props: TransactionCreationStepProps<any>) => {
       <LineRow label={<Trans i18nKey="send:confirmation.account" />}>
         <AccountName account={account} />
       </LineRow>
+      {transaction.note.title && (
+        <LineRow
+          label={<Trans i18nKey="transactionCreation:steps.note.noteTitle" />}
+        >
+          {transaction.note.title}
+        </LineRow>
+      )}
+      {transaction.note.content && (
+        <LineRow
+          label={<Trans i18nKey="transactionCreation:steps.note.noteContent" />}
+        >
+          {transaction.note.content}
+        </LineRow>
+      )}
       <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
         <Amount account={account} value={fees} />
       </LineRow>

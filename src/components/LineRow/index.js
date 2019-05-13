@@ -57,7 +57,10 @@ class LineRow extends Component<{
 }
 
 const styles = {
-  value: { userSelect: "text" },
+  value: {
+    userSelect: "text",
+    textAlign: "right",
+  },
 };
 
 export default LineRow;
