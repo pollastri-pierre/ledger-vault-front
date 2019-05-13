@@ -10,7 +10,7 @@ import type { ObjectParameters } from "query-string";
 import type { ERC20Token } from "data/types";
 import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 
-import SelectCurrency from "components/SelectCurrency";
+import { SelectCurrencyMultiple } from "components/SelectCurrency";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 
@@ -26,22 +26,41 @@ const erc20TokenIcon = <ERC20TokenIcon size={13} />;
 class FilterFieldCurrency extends PureComponent<FieldProps> {
   static defaultProps = defaultFieldProps;
 
-  handleChange = (item: ?SelectCurrencyItem) => {
+  handleChange = (items: SelectCurrencyItem[]) => {
     const { updateQueryParams } = this.props;
-    if (!item) {
-      updateQueryParams(q => omit(q, ["currency", "contract_address"]));
-    } else if (item.type === "erc20token") {
+    if (items.length === 0) {
       updateQueryParams(q => {
-        q = omit(q, ["currency"]);
-        // $FlowFixMe flow is incapable to infer that it's an ERC20Token
-        q.contract_address = item.value.contract_address;
+        q = omit(q, ["currency", "contract_address"]);
         return q;
       });
-    } else if (item.type === "currency") {
+    } else {
+      const tokens = items.filter(i => i.type === "erc20token");
+      const currencies = items.filter(i => i.type === "currency");
+
+      const toOmit = [];
+
+      let currencyStr;
+      let tokenStr;
+
       updateQueryParams(q => {
-        q = omit(q, ["contract_address"]);
-        // $FlowFixMe flow is incapable to infer that it's a currency
-        q.currency = item.value.id;
+        if (currencies.length > 0) {
+          // $FlowFixMe flow is incapable to infer that it's a currency
+          currencyStr = currencies.map(t => t.value.id).join();
+        } else {
+          toOmit.push("currency");
+        }
+
+        if (tokens.length > 0) {
+          // $FlowFixMe flow is incapable to infer that it's a token
+          tokenStr = tokens.map(t => t.value.contract_address).join();
+        } else {
+          toOmit.push("contract_address");
+        }
+
+        q = omit(q, toOmit);
+        q.contract_address = tokenStr;
+        q.currency = currencyStr;
+
         return q;
       });
     }
@@ -49,32 +68,36 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
 
   Collapsed = () => {
     const { queryParams } = this.props;
-    const currencyOrToken = resolveCurrencyOrToken(queryParams);
-    if (!currencyOrToken) return;
+    const currenciesAndToken = resolveCurrenciesAndTokens(queryParams);
+    if (!currenciesAndToken) return;
 
     return (
-      <Box horizontal flow={3} align="center">
-        {getItemIcon(currencyOrToken)}
-        <Text small>{currencyOrToken.name}</Text>
-      </Box>
+      <>
+        {currenciesAndToken.map(c => (
+          <Box horizontal align="center" flow={3} key={getItemId(c)}>
+            {getItemIcon(c)}
+            <Text small>{c.name}</Text>
+          </Box>
+        ))}
+      </>
     );
   };
 
   render() {
     const { queryParams } = this.props;
-    const currencyOrToken = resolveCurrencyOrToken(queryParams);
-    const isActive = !!currencyOrToken;
+    const currenciesAndToken = resolveCurrenciesAndTokens(queryParams);
+    const isActive = !!currenciesAndToken;
     return (
       <WrappableField
         label="Cryptocurrency"
         RenderCollapsed={this.Collapsed}
         isActive={isActive}
-        closeOnChange={currencyOrToken}
+        closeOnChange={false}
       >
-        <SelectCurrency
-          openMenuOnFocus={!currencyOrToken}
+        <SelectCurrencyMultiple
+          openMenuOnFocus={currenciesAndToken.length === 0}
           autoFocus
-          value={currencyOrToken}
+          value={currenciesAndToken}
           onChange={this.handleChange}
         />
       </WrappableField>
@@ -82,20 +105,30 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
   }
 }
 
-function resolveCurrencyOrToken(queryParams: ObjectParameters) {
+function resolveCurrenciesAndTokens(queryParams: ObjectParameters) {
+  const currenciesAndTokens = [];
+
   if (queryParams.currency) {
-    if (typeof queryParams.currency !== "string") return null;
-    let currency = null;
-    try {
-      currency = getCryptoCurrencyById(queryParams.currency) || null;
-    } catch (err) {} // eslint-disable-line no-empty
-    return currency;
+    if (typeof queryParams.currency !== "string") return [];
+    const currencies = queryParams.currency.split(",");
+    currencies.forEach(c => {
+      const curr = getCryptoCurrencyById(c) || null;
+      if (curr) {
+        currenciesAndTokens.push(curr);
+      }
+    });
   }
   if (queryParams.contract_address) {
-    if (typeof queryParams.contract_address !== "string") return null;
-    return getERC20TokenByContractAddress(queryParams.contract_address) || null;
+    if (typeof queryParams.contract_address !== "string") return [];
+    const tokens = queryParams.contract_address.split(",");
+    tokens.forEach(t => {
+      const token = getERC20TokenByContractAddress(t);
+      if (token) {
+        currenciesAndTokens.push(token);
+      }
+    });
   }
-  return null;
+  return currenciesAndTokens;
 }
 
 function getItemIcon(item: CryptoCurrency | ERC20Token) {
@@ -103,6 +136,12 @@ function getItemIcon(item: CryptoCurrency | ERC20Token) {
   // $FlowFixMe dunno how to solve this
   const cur: CryptoCurrency = item;
   return <CryptoCurrencyIcon currency={cur} color={cur.color} size={13} />;
+}
+
+function getItemId(item: CryptoCurrency | ERC20Token) {
+  if ("contract_address" in item) return item.name;
+  // $FlowFixMe me neither
+  return item.id;
 }
 
 export default FilterFieldCurrency;

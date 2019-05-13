@@ -7,7 +7,7 @@ import { Trans, withTranslation } from "react-i18next";
 import type { OptionProps } from "react-select/lib/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
-import type { ERC20Token } from "data/types";
+import type { ERC20Token, Translate } from "data/types";
 import {
   listCryptoCurrencies,
   listERC20Tokens,
@@ -131,6 +131,18 @@ const getValueOption = (value: CryptoCurrency | ERC20Token): Option | null => {
   return resolved || null;
 };
 
+const getMultipleValuesOptions = (values: *): Option[] => {
+  if (!values) return [];
+  const options = [];
+  values.forEach(v => {
+    const option = getValueOption(v);
+    if (option) {
+      options.push(option);
+    }
+  });
+  return options;
+};
+
 const styles = {
   contract: {
     fontSize: 10,
@@ -202,13 +214,50 @@ const customComponents = {
   Menu: MenuComponent,
 };
 
-type Props = {
-  value: CryptoCurrency | ERC20Token | null,
-  onChange: (?Item) => void,
-  t: *,
+type CurrencyOrToken = CryptoCurrency | ERC20Token;
+type SingleValue = CurrencyOrToken | null;
+type SingleHandler = (?Item) => void;
+
+type MultipleValue = CurrencyOrToken[];
+type MultipleHandler = (Item[]) => void;
+
+type Props<T, H> = {
+  t: Translate,
+  value: T,
+  onChange: H,
 };
 
-class SelectCurrency extends PureComponent<Props> {
+class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
+  handleChange = (options: Option[]) => {
+    const { onChange } = this.props;
+    onChange(options.map(o => o.data));
+  };
+
+  render() {
+    const { value, t, ...props } = this.props;
+
+    // find the currency OR erc20token inside all options
+    const resolvedValues =
+      value && value.length ? getMultipleValuesOptions(value) : [];
+
+    return (
+      <Select
+        async
+        inputId="input_crypto"
+        placeholder={t("newAccount:currency.placeholder")}
+        defaultOptions
+        isMulti
+        isClearable
+        loadOptions={fetchOptions}
+        components={customComponents}
+        {...props}
+        onChange={this.handleChange}
+        value={resolvedValues}
+      />
+    );
+  }
+}
+class SelectCurrency extends PureComponent<Props<SingleValue, SingleHandler>> {
   handleChange = (option: ?Option) => {
     const { onChange } = this.props;
     if (!option) return onChange(null);
@@ -238,4 +287,6 @@ class SelectCurrency extends PureComponent<Props> {
   }
 }
 
+const SelectCurrencyMultiple = withTranslation()(Multiple);
+export { SelectCurrencyMultiple };
 export default withTranslation()(SelectCurrency);
