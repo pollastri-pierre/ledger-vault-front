@@ -7,7 +7,6 @@ import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
 import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
 import Box from "components/base/Box";
-import Card from "components/base/Card";
 
 import QRCode from "components/QRCode";
 import AccountName from "components/AccountName";
@@ -35,7 +34,7 @@ class ReceiveFlowConfirmation extends PureComponent<Props> {
         : `${fresh_addresses[0].address}`;
 
     return (
-      <Card bg="#fdfdfd">
+      <>
         {selectedAccount && currency && (
           <AccountName currencyId={currency.id} name={selectedAccount.name} />
         )}
@@ -55,7 +54,7 @@ class ReceiveFlowConfirmation extends PureComponent<Props> {
             />
           )}
         </Box>
-      </Card>
+      </>
     );
   }
 }
