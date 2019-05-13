@@ -79,7 +79,7 @@ const ApprovalSlider = ({
       <span className={classes.out}>
         <Trans
           i18nKey="onboarding:administrators_scheme.out_of"
-          total={total}
+          values={{ total }}
         />
       </span>
     </div>
