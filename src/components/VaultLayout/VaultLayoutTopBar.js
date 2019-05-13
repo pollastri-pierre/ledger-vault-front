@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import type { Match } from "react-router-dom";
 import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
 import { FaQuestionCircle, FaPowerOff } from "react-icons/fa";
@@ -10,7 +9,6 @@ import colors from "shared/colors";
 import type { User } from "data/types";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import ActivityCard from "components/legacy/ActivityMenu";
 import { vaultLayoutConfig } from "styles/theme";
 import { urls } from "utils/urls";
 
@@ -18,7 +16,6 @@ type Props = {
   globalAnimation: Animated.Value,
   user: User,
   onLogout: () => void,
-  match: Match,
   BreadcrumbComponent: React$ComponentType<*>,
 };
 
@@ -26,7 +23,6 @@ export default ({
   globalAnimation,
   user,
   onLogout,
-  match,
   BreadcrumbComponent,
 }: Props) => {
   const contentStyle = getContentStyle(globalAnimation);
@@ -39,7 +35,6 @@ export default ({
         <Box horizontal align="center" px={20}>
           <Text small>{user.username}</Text>
         </Box>
-        <ActivityCard match={match} />
         <TopBarAction link={urls.customer_support} Icon={FaQuestionCircle} />
         <TopBarAction data-test="logout" Icon={FaPowerOff} onClick={onLogout} />
       </VaultLayoutTopBarRight>
