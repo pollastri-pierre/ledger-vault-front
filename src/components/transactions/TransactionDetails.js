@@ -38,12 +38,11 @@ function TransactionDetails(props: Props) {
   } = props;
 
   const note = transaction.notes[0];
-  const { transaction: rawTransaction } = transaction;
   const currency = getCryptoCurrencyById(account.currency);
-  const url = rawTransaction
+  const url = transaction.tx_hash
     ? getTransactionExplorer(
         getDefaultExplorerView(currency),
-        rawTransaction.hash,
+        transaction.tx_hash || "",
       )
     : null;
 
@@ -72,7 +71,9 @@ function TransactionDetails(props: Props) {
       footer={footer}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
-      <TabDetails key="details" transaction={transaction} account={account} />
+      {transaction.status === "SUBMITTED" && (
+        <TabDetails key="details" transaction={transaction} account={account} />
+      )}
       <TabLabel key="note" note={note} />
       {transaction.approvals && (
         <TabHistory key="history" transaction={transaction} />

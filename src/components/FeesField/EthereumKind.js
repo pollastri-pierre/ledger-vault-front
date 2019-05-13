@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import last from "lodash/last";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
@@ -194,7 +195,7 @@ class FeesFieldEthereumKind extends PureComponent<
                 {")"}
               </>
             ) : (
-              "N/A"
+              <CircularProgress size={13} />
             )}
           </Text>
         </Box>

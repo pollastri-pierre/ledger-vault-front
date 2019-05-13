@@ -22,6 +22,7 @@
     "CREATE_ADMIN": "Approve administrator creation",
     "REVOKE_USER": "Approve user revocation",
     "UPDATE_QUORUM": "Approve quorum update",
-    "MIGRATE_ACCOUNT": "Approve account update"
+    "MIGRATE_ACCOUNT": "Approve account update",
+    "CREATE_TRANSACTION": "Approve transaction creation"
   }
 }

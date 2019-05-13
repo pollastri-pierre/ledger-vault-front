@@ -37,18 +37,14 @@ class TabOverview extends Component<Props> {
         />
         <div className={classes.transactionList}>
           <LineRow
+            label={<Trans i18nKey="transactionDetails:overview.identifier" />}
+          >
+            {transaction.tx_hash ? <Copy text={transaction.tx_hash} /> : "N/A"}
+          </LineRow>
+          <LineRow
             label={<Trans i18nKey="transactionDetails:overview.recipient" />}
           >
             <Copy text={transaction.recipient} />
-          </LineRow>
-          <LineRow
-            label={<Trans i18nKey="transactionDetails:overview.identifier" />}
-          >
-            {transaction.transaction ? (
-              <Copy text={transaction.transaction.hash} />
-            ) : (
-              "N/A"
-            )}
           </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.status" />}
