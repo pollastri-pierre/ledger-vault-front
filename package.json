@@ -50,7 +50,6 @@
     "jss": "^9.8.1",
     "lodash": "^4.17.10",
     "material-design-icons": "^3.0.1",
-    "material-ui-pickers": "^1.0.0-rc.17",
     "moment": "^2.22.1",
     "node-polyglot": "^2.2.2",
     "normalizr-gre": "^3.2.4",

@@ -122,7 +122,7 @@ class WrappableField extends Component<Props, State> {
             {isActive ? ": " : ""}
           </Text>
           {isActive && RenderCollapsed && <RenderCollapsed />}
-          <FaCaretDown color={colors.mediumGrey} />
+          <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
         </InlineLabel>
         {isOpened && (
           <Menu pos={pos} width={width}>
@@ -156,7 +156,7 @@ const InlineLabel = styled(Box).attrs({
   &:hover {
     cursor: pointer;
 
-    svg {
+    svg[data-role="chevron"] {
       fill: ${colors.shark};
     }
   }

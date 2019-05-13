@@ -152,16 +152,6 @@ const theme = {
         paddingRight: 20,
       },
     },
-    MuiPickersToolbar: {
-      toolbar: {
-        backgroundColor: "#1d2028",
-      },
-    },
-    MuiPickersDay: {
-      day: {
-        color: "#1d2028",
-      },
-    },
     MuiPopover: {
       paper: {
         "& > ul": {
