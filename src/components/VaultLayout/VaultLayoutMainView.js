@@ -11,6 +11,7 @@ const VaultLayoutMainView = styled.div`
   flex-grow: 1;
 
   padding: 0 20px 20px 20px;
+  pointer-events: auto;
 
   // NOTE: to discuss which behavior we want for the content
   // overflow: scroll;

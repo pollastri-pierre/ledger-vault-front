@@ -18,7 +18,7 @@ const fakeNetwork = async url => {
   await delay(200);
   if (
     url ===
-    "/accounts?status=ACTIVE&status=VIEW_ONLY&status=MIGRATED&pageSize=-1"
+    "/accounts?status=ACTIVE&status=VIEW_ONLY&status=MIGRATED&status=HSM_COIN_UPDATED&pageSize=-1"
   ) {
     return wrapConnection(accounts);
   }

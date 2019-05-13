@@ -73,7 +73,7 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
 const styles = {
   whiteBackground: {
-    pointerEvents: "auto",
+    pointerEvents: "none",
     background: "white",
     boxShadow: "-3px 2px 5px 0 rgba(0, 0, 0, 0.2)",
     borderRight: "1px solid #f0f0f0",

@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 import { StatusCodes } from "@ledgerhq/hw-transport";
 import { FaUser } from "react-icons/fa";
-import type { MemoryHistory } from "history";
 
 import { UnknownDomain, GenericError, InvalidDataDevice } from "utils/errors";
 import colors from "shared/colors";
@@ -19,20 +18,16 @@ import { loginFlow } from "device/interactions/loginFlow";
 import type { LoginFlowResponse } from "device/interactions/loginFlow";
 import type { Translate, Organization, GateError } from "data/types";
 
-import CenteredLayout from "components/base/CenteredLayout";
+import VaultCentered from "components/VaultCentered";
 import DeviceInteraction from "components/DeviceInteraction";
 import TranslatedError from "components/TranslatedError";
 import { ModalFooterButton } from "components/base/Modal";
 import Absolute from "components/base/Absolute";
 import InputField from "components/InputField";
-import HelpLink from "components/HelpLink";
 import Alert from "components/utils/Alert";
-import Logo from "components/icons/Logo";
 import Text from "components/base/Text";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
-
-import CheckMigration from "./CheckMigration";
 
 const unknownDomainError = new UnknownDomain();
 const mapDispatchToProps = { login, addMessage, addError };
@@ -41,7 +36,6 @@ type Props = {
   login: string => void,
   addMessage: (string, string, ?string) => void,
   addError: Error => void,
-  history: MemoryHistory,
   t: Translate,
 };
 
@@ -116,7 +110,7 @@ class Welcome extends Component<Props, State> {
   };
 
   render() {
-    const { t, history } = this.props;
+    const { t } = this.props;
     const {
       domain,
       error,
@@ -129,8 +123,7 @@ class Welcome extends Component<Props, State> {
     if (onboardingToBeDone) return <Redirect to={`${domain}/onboarding`} />;
 
     // this is doing the redirection
-    if (workspace)
-      return <CheckMigration history={history} workspace={workspace} />;
+    if (workspace) return <Redirect to={workspace} />;
 
     const footer =
       this.state.organization && !this.state.error ? (
@@ -156,7 +149,7 @@ class Welcome extends Component<Props, State> {
       );
 
     return (
-      <CenteredLayout>
+      <VaultCentered>
         <Alert
           onClose={this.onClose}
           open={errorDomain}
@@ -166,10 +159,8 @@ class Welcome extends Component<Props, State> {
         >
           <TranslatedError error={unknownDomainError} field="description" />
         </Alert>
-        <LogoRow />
         <Card
           overflow="visible"
-          width={540}
           height={350}
           flow={20}
           px={60}
@@ -194,31 +185,10 @@ class Welcome extends Component<Props, State> {
             {footer}
           </Absolute>
         </Card>
-        <Box align="center" mt={40}>
-          <Text small>Vault - v{VAULT_FRONT_VERSION}</Text>
-        </Box>
-      </CenteredLayout>
+      </VaultCentered>
     );
   }
 }
-
-const LogoRow = () => (
-  <Box horizontal justify="space-between" align="center" mb={10} width={520}>
-    <Logo width={100} />
-    <HelpLink style={styles.help} subLink="/Content/transactions/signin.htm">
-      <Text small uppercase i18nKey="welcome:help" />
-    </HelpLink>
-  </Box>
-);
-
-const styles = {
-  help: {
-    cursor: "pointer",
-    opacity: "0.5",
-    textDecoration: "none",
-    transition: "opacity 0.2s ease",
-  },
-};
 
 const inputProps = {
   inputProps: {

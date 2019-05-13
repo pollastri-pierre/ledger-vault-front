@@ -98,7 +98,11 @@ function EntityModal<T>(props: Props<T>) {
           )}
         </RichModalTabsContainer>
         {hasPendingReq ? (
-          <RichModalTab to="pendingRequest" isActive={content === lastRequest}>
+          <RichModalTab
+            dark
+            to="pendingRequest"
+            isActive={content === lastRequest}
+          >
             <Box horizontal align="center">
               <Trans i18nKey="entityModal:tabs.pendingRequest" />
               <Badge style={{ marginLeft: 5 }}>1</Badge>

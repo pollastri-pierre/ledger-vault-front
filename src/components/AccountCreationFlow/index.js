@@ -23,6 +23,7 @@ import {
   getERC20TokenByContractAddress,
 } from "utils/cryptoCurrencies";
 import { deserializeApprovalSteps } from "utils/accounts";
+import type { ApprovalsRule } from "components/ApprovalsRules";
 
 import type { Account } from "data/types";
 import AccountCreationCurrency from "./steps/AccountCreationCurrency";
@@ -78,11 +79,7 @@ const steps = [
     name: <Trans i18nKey="accountCreation:steps.confirmation.title" />,
     Step: AccountCreationConfirmation,
     requirements: (payload: AccountCreationPayload) => {
-      const { rules } = payload;
-      if (!rules.length) return false;
-      return rules.every(
-        rule => rule.group_id !== null || rule.users.length > 0,
-      );
+      return areApprovalsRulesValid(payload.rules);
     },
     Cta: ({
       payload,
@@ -192,6 +189,7 @@ const AccountEdit = connectData(
     }),
   },
 );
+
 const AccountCreation = connectData(
   props => (
     <GrowingCard>
@@ -228,9 +226,10 @@ const Wrapper = ({ match, close }: { match: Match, close: Function }) => {
   }
   return <AccountCreation close={close} />;
 };
+
 export default Wrapper;
 
-const deserialize: Account => AccountCreationPayload = account => {
+export const deserialize: Account => AccountCreationPayload = account => {
   const { tx_approval_steps } = account;
 
   const rules =
@@ -254,7 +253,8 @@ const deserialize: Account => AccountCreationPayload = account => {
         : null,
   };
 };
-function serializePayload(
+
+export function serializePayload(
   payload: AccountCreationPayload,
   isEditMode: ?boolean,
 ) {
@@ -302,4 +302,9 @@ function serializePayload(
   }
 
   return finalPayload;
+}
+
+export function areApprovalsRulesValid(rules: ApprovalsRule[]) {
+  if (!rules.length) return false;
+  return rules.every(rule => rule.group_id !== null || rule.users.length > 0);
 }

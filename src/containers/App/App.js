@@ -8,15 +8,17 @@ import type { Account, User, Transaction } from "data/types";
 import colors from "shared/colors";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
+import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
 import Card from "components/base/Card";
-import SpinnerCard from "components/spinners/SpinnerCard";
+import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
 import VaultLayout from "components/VaultLayout";
+import VaultCentered from "components/VaultCentered";
 import ConnectedBreadcrumb from "components/ConnectedBreadcrumb";
 import AdminIcon from "components/icons/AdminIcon";
 import OperatorIcon from "components/icons/OperatorIcon";
@@ -28,6 +30,7 @@ const adminIcon = <AdminIcon size={16} color={colors.blue} />;
 const operatorIcon = <OperatorIcon size={16} color={colors.blue} />;
 
 type Props = {
+  me: User,
   match: Match,
   location: Location,
   history: MemoryHistory,
@@ -35,8 +38,8 @@ type Props = {
   allPendingTransactions: Transaction[],
 };
 
-const AppWrapper = (props: Props) => (
-  <UserContextProvider>
+const AppWrapper = ({ me, ...props }: Props) => (
+  <UserContextProvider me={me}>
     <App {...props} />
   </UserContextProvider>
 );
@@ -125,6 +128,7 @@ const App = withMe((props: Props & { me: User }) => {
         match={match}
         BreadcrumbComponent={AppBreadcrumb}
       >
+        {me.role === "ADMIN" && <CheckMigration />}
         <Content match={match} />
       </VaultLayout>
       <Modals match={match} />
@@ -140,12 +144,19 @@ const RenderError = ({ error, restlay }: *) => (
   </Box>
 );
 
-const RenderLoading = () => <SpinnerCard />;
+const RenderLoading = () => (
+  <VaultCentered>
+    <Card align="center" justify="center" height={350}>
+      Setting up workspace...
+    </Card>
+  </VaultCentered>
+);
 
 export default connectData(AppWrapper, {
   RenderLoading,
   RenderError,
   queries: {
+    me: ProfileQuery,
     accounts: AccountsQuery,
     allPendingTransactions: PendingTransactionsQuery,
   },
