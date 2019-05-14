@@ -73,7 +73,7 @@ const IconContainer = styled.div`
   justify-content: center;
   border-radius: 2px;
   color: hsl(0, 0%, 60%);
-  transition: 150ms ease background-color;
+  transition: 100ms ease background-color;
   &:hover {
     background: hsl(0, 0%, 95%);
     color: hsl(0, 0%, 40%);

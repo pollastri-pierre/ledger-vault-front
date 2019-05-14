@@ -18,6 +18,14 @@ const Text = styled.div`
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
   user-select: ${p => (p.noSelect ? "none" : "inherit")};
+
+  ${p =>
+    p.selectable
+      ? `
+    user-select: text;
+    cursor: text;
+  `
+      : ``}
 `;
 
 export default ({

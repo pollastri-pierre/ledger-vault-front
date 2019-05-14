@@ -110,7 +110,7 @@ const ModalCloseContainer = styled.div`
   }
 `;
 
-export const ModalClose = ({ onClick }: { onClick: () => void }) => (
+export const ModalClose = ({ onClick }: { onClick?: () => void }) => (
   <ModalCloseContainer onClick={onClick} data-test="close">
     <IconClose size={16} />
   </ModalCloseContainer>
@@ -177,8 +177,9 @@ export const RichModalTabsContainer = styled.div`
 export const RichModalTab = styled(({ isActive, dark, ...props }) => (
   <Link {...props} />
 ))`
+  position: relative;
   background: ${p =>
-    p.isActive ? "white" : p.dark ? "rgba(0, 0, 0, 0.05)" : "unset"};
+    p.isActive ? "white" : p.dark ? "rgba(0, 0, 0, 0.02)" : "unset"};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   padding: 10px;
@@ -187,10 +188,16 @@ export const RichModalTab = styled(({ isActive, dark, ...props }) => (
 
   &:hover {
     cursor: pointer;
-    background: ${p => (p.isActive ? "white" : "rgba(0, 0, 0, 0.02)")};
+    background: ${p =>
+      p.isActive
+        ? "white"
+        : p.dark
+        ? "rgba(0, 0, 0, 0.03)"
+        : "rgba(0, 0, 0, 0.02)"};
   }
 
   &:active {
-    background: rgba(0, 0, 0, 0.03);
+    transition: 100ms linear background-color;
+    background: rgba(0, 0, 0, 0.05);
   }
 `;

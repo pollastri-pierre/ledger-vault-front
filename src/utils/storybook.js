@@ -87,9 +87,6 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
   if (/^\/people\/([^/]+)$/.exec(url)) {
     return wrapWithRequest({ entity: users[0], request_type, approved });
   }
-  if (url.startsWith("/people/me")) {
-    return users[0];
-  }
   if (url.startsWith("/transactions")) {
     return {
       transaction: wrapWithRequest({
@@ -173,7 +170,7 @@ const Inner = ({ story, entity }) => {
 
   return (
     <RestlayProvider network={network}>
-      <UserContextProvider>
+      <UserContextProvider me={users[0]}>
         <Box
           horizontal
           align="center"

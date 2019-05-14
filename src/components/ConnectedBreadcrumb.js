@@ -22,7 +22,7 @@ type Props<T> = {
 };
 
 function ConnectedBreadcrumb<T>(props: Props<T>) {
-  const { config, location, additionalProps, prefix } = props;
+  const { config, location, additionalProps, prefix = "" } = props;
 
   const unwrap = node => {
     const { path: _path, render, children, exact } = node;
