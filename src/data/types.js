@@ -246,6 +246,24 @@ export type TransactionType = "SEND" | "RECEIVE";
 
 export type TransactionStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
 
+export type UserStatus =
+  | "ACTIVE"
+  | "REVOKED"
+  | "PENDING_APPROVAL"
+  | "PENDING_REVOCATION"
+  | "PENDING_REGISTRATION";
+
+export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
+
+export type AccountStatus =
+  | "ACTIVE"
+  | "REVOKED"
+  | "MIGRATED"
+  | "HSM_COIN_UPDATED"
+  | "PENDING_CREATION_APPROVAL"
+  | "PENDING_UPDATE"
+  | "PENDING_MIGRATED";
+
 type TransactionCommon = {
   id: number,
   created_by: User,
@@ -360,7 +378,8 @@ export type RequestActivityType =
   | "CREATE_OPERATOR"
   | "CREATE_ACCOUNT"
   | "EDIT_ACCOUNT"
-  | "REVOKE_ACCOUNT";
+  | "REVOKE_ACCOUNT"
+  | "UPDATE_QUORUM";
 
 type RequestTargetType =
   | "GROUP"

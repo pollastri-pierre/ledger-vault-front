@@ -39,7 +39,7 @@ class FilterFieldText extends PureComponent<Props> {
 
   Collapsed = () => {
     const { queryParams, queryKey } = this.props;
-    return <Text small>{queryParams[queryKey] || ""}</Text>;
+    return <Text>{queryParams[queryKey] || ""}</Text>;
   };
 
   render() {

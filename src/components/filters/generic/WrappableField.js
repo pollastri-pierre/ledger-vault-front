@@ -117,7 +117,7 @@ class WrappableField extends Component<Props, State> {
           isOpened={isOpened}
           isActive={isActive}
         >
-          <Text>
+          <Text bold={isActive}>
             {label}
             {isActive ? ": " : ""}
           </Text>
@@ -152,6 +152,9 @@ const InlineLabel = styled(Box).attrs({
   border-bottom-color: ${p => (p.isOpened ? "white" : "")};
   z-index: ${p => (p.isOpened ? 30 : 0)};
   background-color: ${p => (p.isOpened ? "white" : "#fafafa")};
+  transition: 100ms linear background-color;
+  pointer-events: ${p => (p.interactive === false ? "none" : "auto")};
+  opacity: ${p => (p.interactive === false ? 0.7 : 1)};
 
   &:hover {
     cursor: pointer;
@@ -184,5 +187,9 @@ const Menu = styled(Box).attrs({
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
   z-index: 20;
 `;
+
+export const WrappableFieldLoading = () => (
+  <InlineLabel interactive={false}>Loading...</InlineLabel>
+);
 
 export default WrappableField;

@@ -84,7 +84,6 @@ class FiltersCard extends PureComponent<Props> {
         overflow="visible"
         position="relative"
         flow={10}
-        noShrink
         pb={10}
         grow
         {...props}

@@ -48,7 +48,15 @@ class FilterFieldRequestActivity extends PureComponent<FieldProps> {
 }
 
 function resolveOptions(arr: $ReadOnlyArray<ObjectParameter>): Option[] {
-  return arr.map(s => options.find(o => o.value === s)).filter(Boolean);
+  return arr
+    .map(s => {
+      for (const group of options) {
+        const e = group.options.find(o => o.value === s);
+        if (e) return e;
+      }
+      return null;
+    })
+    .filter(Boolean);
 }
 
 function resolveRequestActivity(queryParams: ObjectParameters): Option[] {
@@ -64,24 +72,36 @@ type Option = {
   label: string,
 };
 
-const options: Option[] = [
-  { value: "CREATE_GROUP", label: "Create Group" },
-  { value: "EDIT_GROUP", label: "Edit Group" },
-  { value: "REVOKE_GROUP", label: "Revoke Group" },
-  { value: "REVOKE_USER", label: "Revoke User" },
-  { value: "CREATE_ADMIN", label: "Create Admin" },
-  { value: "CREATE_OPERATOR", label: "Create Operator" },
-  { value: "CREATE_ACCOUNT", label: "Create Account" },
-  { value: "EDIT_ACCOUNT", label: "Edit Account" },
-  { value: "REVOKE_ACCOUNT", label: "Revoke Account" },
+const options = [
+  {
+    label: "Users",
+    options: [
+      { value: "CREATE_ADMIN", label: "Create admin" },
+      { value: "CREATE_OPERATOR", label: "Create operator" },
+      { value: "REVOKE_USER", label: "Revoke user" },
+    ],
+  },
+  {
+    label: "Group",
+    options: [
+      { value: "CREATE_GROUP", label: "Create group" },
+      { value: "EDIT_GROUP", label: "Edit group" },
+      { value: "REVOKE_GROUP", label: "Delete group" },
+    ],
+  },
+  {
+    label: "Accounts",
+    options: [
+      { value: "CREATE_ACCOUNT", label: "Create account" },
+      { value: "EDIT_ACCOUNT", label: "Edit account" },
+      { value: "REVOKE_ACCOUNT", label: "Archive account" },
+    ],
+  },
+  {
+    label: "Other",
+    options: [{ value: "UPDATE_QUORUM", label: "Edit admin rules" }],
+  },
 ];
-
-const customStyles = {
-  menuList: p => ({
-    ...p,
-    fontSize: 13,
-  }),
-};
 
 type SelectProps = {
   value: Option[],
@@ -100,7 +120,6 @@ class SelectRequestActivityComponent extends PureComponent<SelectProps> {
         options={options}
         placeholder={t("common:requestActivity")}
         isClearable
-        styles={customStyles}
         {...props}
       />
     );

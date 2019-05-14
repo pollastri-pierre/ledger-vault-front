@@ -48,7 +48,7 @@ class FilterFieldAccounts extends PureComponent<Props> {
 
   Collapsed = () => {
     if (!this.accountsRef) return null;
-    return <Text small>{this.accountsRef.map(a => a.name).join(", ")}</Text>;
+    return <Text>{this.accountsRef.map(a => a.name).join(", ")}</Text>;
   };
 
   render() {
