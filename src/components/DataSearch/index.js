@@ -17,6 +17,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import type { TableDefinition } from "components/Table/types";
 import ConnectionQuery from "restlay/ConnectionQuery";
 
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Paginator from "components/base/Paginator";
@@ -170,19 +171,6 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const isFirstQuery = this._requestId <= 1;
     const isLoading = status === "loading";
 
-    if (status === "error") {
-      return (
-        <Card>
-          <Text>
-            Oww.. snap. Error.
-            <br />
-            {error && error.message}
-          </Text>
-          <button onClick={this.fetch}>retry</button>
-        </Card>
-      );
-    }
-
     const Loading =
       isFirstQuery || (!data.length && isLoading) ? InitialLoading : null;
 
@@ -194,13 +182,14 @@ class DataSearch extends PureComponent<Props<*>, State> {
 
     return (
       <Card>
+        {error && <TriggerErrorNotification error={error} />}
         {HeaderComponent && <HeaderComponent />}
         <Box horizontal justify="space-between">
           <FilterComponent
             noShrink
             onChange={this.handleUpdateQueryParams}
             queryParams={queryParams}
-            nbResults={status === "idle" ? count : null}
+            nbResults={status === "idle" || status === "error" ? count : null}
             paginator={
               showPaginator ? (
                 <Paginator

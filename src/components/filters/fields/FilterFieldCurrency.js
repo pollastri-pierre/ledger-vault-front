@@ -86,7 +86,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
   render() {
     const { queryParams } = this.props;
     const currenciesAndToken = resolveCurrenciesAndTokens(queryParams);
-    const isActive = !!currenciesAndToken;
+    const isActive = !!currenciesAndToken && !!currenciesAndToken.length;
     return (
       <WrappableField
         label="Cryptocurrency"
