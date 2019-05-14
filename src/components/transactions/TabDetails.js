@@ -1,72 +1,37 @@
 // @flow
+
 import React, { Component, PureComponent } from "react";
-import cx from "classnames";
-import type { Transaction, Account, RawTransactionETH } from "data/types";
-import { withStyles } from "@material-ui/core/styles";
-import colors from "shared/colors";
+import type { Transaction, Account } from "data/types";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+
+import Copy from "components/base/Copy";
+import Box from "components/base/Box";
 import CurrencyAccountValue from "../CurrencyAccountValue";
 import LineRow from "../LineRow";
 
-const stylesList = {
-  detailsContainer: {
-    marginBottom: "24px",
-    "& p": {
-      fontSize: "12px",
-      margin: "0px",
-    },
-  },
-  detailsRow: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: "8px",
-    color: colors.shark,
-  },
-  currencyAccountValue: {
-    textAlign: "right",
-  },
-  address: {
-    flexBasis: "80%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  small: {
-    fontSize: 12,
-  },
-};
-const TransactionETHDetails = withStyles(stylesList)(
-  ({
-    transaction,
-    classes,
-  }: {
-    transaction: RawTransactionETH,
-    classes: { [$Keys<typeof stylesList>]: string },
-  }) => (
-    <div className={classes.detailsContainer}>
-      <LineRow label="FROM" />
-      <div className={cx(classes.detailsRow, classes.small)}>
-        {transaction.sender}
-      </div>
-      <LineRow label="To" />
-      <div className={cx(classes.detailsRow, classes.small)}>
-        {transaction.receiver}
-      </div>
-    </div>
-  ),
+const TransactionETHDetails = ({
+  transaction,
+}: {
+  transaction: any, // YEAH ANY WHATEVER we need to destroy this component anyway
+}) => (
+  <Box>
+    <LineRow label="FROM" />
+    <Copy text={transaction.sender} />
+    <LineRow label="To" />
+    <Copy text={transaction.receiver} />
+  </Box>
 );
 
-class TransactionListT<T: *> extends Component<{
+class TransactionList<T: *> extends Component<{
   account: Account,
   title: string,
   entries: Array<T>,
-  classes: Object,
   dataTest: string,
 }> {
   render() {
-    const { account, title, entries, classes, dataTest } = this.props;
+    const { account, title, entries, dataTest } = this.props;
     return (
-      <div className={classes.detailsContainer}>
+      <div>
         <LineRow label={title}>
           <strong data-test={`${dataTest}-currency-unit`}>
             <CurrencyAccountValue
@@ -76,63 +41,35 @@ class TransactionListT<T: *> extends Component<{
             />
           </strong>
         </LineRow>
-        {entries.map(e => (
-          <div className={classes.detailsRow} key={e.address}>
-            <p className={classes.address} key={e.address} data-test={dataTest}>
-              {e.address}
-            </p>
-            {entries.length > 1 && (
-              <p className={classes.currencyAccountValue}>
+        <Box flow={10}>
+          {entries.map(e => (
+            <div key={e.address}>
+              <Copy text={e.address} />
+              {entries.length > 1 && (
                 <CurrencyAccountValue
                   account={account}
                   value={e.value}
                   alwaysShowSign
                 />
-              </p>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          ))}
+        </Box>
       </div>
     );
   }
 }
 
-const TransactionList = withStyles(stylesList)(TransactionListT);
-
-const styles = {
-  title: {
-    fontWeight: "600",
-    fontSize: "11px",
-    textTransform: "uppercase",
-    marginTop: "0",
-  },
-  hash: {
-    fontSize: "12px",
-    wordWrap: "break-word",
-    color: colors.shark,
-  },
-};
-
 class TabDetails extends PureComponent<{
   transaction: Transaction,
   account: Account,
-  classes: Object,
 }> {
   render() {
-    const { transaction, account, classes } = this.props;
+    const { transaction, account } = this.props;
     const { transaction: rawTransaction } = transaction;
     const cryptoCurrency = getCryptoCurrencyById(account.currency);
     return (
-      <div>
-        <span
-          data-test="transaction-details-identifier"
-          className={classes.title}
-        >
-          Identifier
-        </span>
-        {rawTransaction && (
-          <p className={classes.hash}>{rawTransaction.hash}</p>
-        )}
+      <>
         {rawTransaction && cryptoCurrency.family === "bitcoin" && (
           <>
             <TransactionList
@@ -152,9 +89,9 @@ class TabDetails extends PureComponent<{
         {cryptoCurrency.family === "ethereum" && (
           <TransactionETHDetails transaction={rawTransaction} />
         )}
-      </div>
+      </>
     );
   }
 }
 
-export default withStyles(styles)(TabDetails);
+export default TabDetails;

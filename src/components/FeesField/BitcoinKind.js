@@ -3,6 +3,7 @@
 import React, { PureComponent } from "react";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
@@ -148,7 +149,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
                 </span>
               </>
             ) : (
-              "N/A"
+              <CircularProgress size={13} />
             )}
           </Text>
         </Box>

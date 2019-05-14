@@ -4,6 +4,7 @@
   "REVOKED": "Revoked",
   "DELETED": "Deleted",
   "APPROVED": "Approved",
+  "SUBMITTED": "Submitted",
   "PENDING": "Pending",
   "VIEW_ONLY": "View only",
   "CREATION_ABORTED": "Creation rejected",

@@ -61,10 +61,11 @@ const Container = styled.div`
   border: 1px solid #f0f0f0;
   border-radius: 4px;
   padding: 2px;
-  cursor: pointer;
+  cursor: text;
 `;
 
 const IconContainer = styled.div`
+  cursor: pointer;
   width: 30px;
   flex-shrink: 0;
   display: flex;

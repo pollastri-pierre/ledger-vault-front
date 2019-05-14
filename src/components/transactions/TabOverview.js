@@ -27,6 +27,7 @@ type Props = {
 class TabOverview extends Component<Props> {
   render() {
     const { transaction, account, classes } = this.props;
+    const note = transaction.notes.length ? transaction.notes[0] : null;
     return (
       <div>
         <OverviewTransaction
@@ -36,18 +37,14 @@ class TabOverview extends Component<Props> {
         />
         <div className={classes.transactionList}>
           <LineRow
+            label={<Trans i18nKey="transactionDetails:overview.identifier" />}
+          >
+            {transaction.tx_hash ? <Copy text={transaction.tx_hash} /> : "N/A"}
+          </LineRow>
+          <LineRow
             label={<Trans i18nKey="transactionDetails:overview.recipient" />}
           >
             <Copy text={transaction.recipient} />
-          </LineRow>
-          <LineRow
-            label={<Trans i18nKey="transactionDetails:overview.identifier" />}
-          >
-            {transaction.transaction ? (
-              <Copy text={transaction.transaction.hash} />
-            ) : (
-              "N/A"
-            )}
           </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.status" />}
@@ -62,6 +59,24 @@ class TabOverview extends Component<Props> {
               <AccountName account={account} />
             </Box>
           </LineRow>
+          {note && note.title && (
+            <LineRow
+              label={
+                <Trans i18nKey="transactionCreation:steps.note.noteTitle" />
+              }
+            >
+              {note.title}
+            </LineRow>
+          )}
+          {note && note.content && (
+            <LineRow
+              label={
+                <Trans i18nKey="transactionCreation:steps.note.noteContent" />
+              }
+            >
+              {note.content}
+            </LineRow>
+          )}
           <LineRow label={<Trans i18nKey="transactionDetails:overview.fees" />}>
             <Amount account={account} value={transaction.fees} />
           </LineRow>

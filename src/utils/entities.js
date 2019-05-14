@@ -5,6 +5,7 @@ import type { Entity } from "data/types";
 export const hasPendingRequest = (entity: Entity) =>
   !!entity.last_request &&
   (entity.last_request.status !== "APPROVED" &&
+    entity.last_request.status !== "SUBMITTED" &&
     entity.last_request.status !== "ABORTED");
 
 export const hasPendingEdit = (entity: Entity) =>
