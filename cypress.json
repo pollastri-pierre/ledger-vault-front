@@ -1,15 +1,15 @@
 {
-    "viewportWidth": 1500,
-    "viewportHeight": 1000,
-    "chromeWebSecurity": false,
-    "video": false,
-    "env": {
-      "workspace": "ledger1",
-      "api_server": "https://localhost:9000",
-      "api_server2": "http://localhost:5000",
-      "api_device": "http://localhost:5001",
-      "api_switch_device": "http://localhost:5001/switch-device",
-      "approve_cancel_device": "http://localhost:5001/meta/store",
-      "polyfillUrl": "https://unpkg.com/unfetch/dist/unfetch.umd.js"
-    }
+  "viewportWidth": 1500,
+  "viewportHeight": 1000,
+  "chromeWebSecurity": false,
+  "video": true,
+  "env": {
+    "workspace": "ledger1",
+    "api_server": "https://localhost:9000",
+    "api_server2": "http://localhost:5000",
+    "api_device": "http://localhost:5001",
+    "api_switch_device": "http://localhost:5001/switch-device",
+    "approve_cancel_device": "http://localhost:5001/meta/store",
+    "polyfillUrl": "https://unpkg.com/unfetch/dist/unfetch.umd.js"
+  }
 }
