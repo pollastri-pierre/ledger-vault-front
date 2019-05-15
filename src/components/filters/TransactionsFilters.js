@@ -20,11 +20,12 @@ type Props = FieldsGroupProps & {
   accounts: Account[],
 };
 
-const statuses: TransactionStatus[] = [
+export const defaultStatuses: TransactionStatus[] = [
   "SUBMITTED",
-  "ABORTED",
   "PENDING_APPROVAL",
 ];
+
+const statuses: TransactionStatus[] = [...defaultStatuses, "ABORTED"];
 
 const txTypes = [
   { value: "SEND", label: "Send" },

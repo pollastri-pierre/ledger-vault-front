@@ -24,6 +24,12 @@ import IconReceive from "components/icons/Receive";
 import type { Account, Transaction } from "data/types";
 import type { MenuItem } from "components/VaultLayout/types";
 
+import { defaultStatuses as requestsStatuses } from "components/filters/RequestsFilters";
+import { defaultStatuses as groupsStatuses } from "components/filters/GroupsFilters";
+import { defaultStatuses as usersStatuses } from "components/filters/UsersFilters";
+import { defaultStatuses as accountsStatuses } from "components/filters/AccountsFilters";
+import { defaultStatuses as transactionsStatuses } from "components/filters/TransactionsFilters";
+
 const SendIcon = () => <IconSend size={11} />;
 const ReceiveIcon = () => <IconReceive size={11} />;
 
@@ -52,6 +58,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-admin-tasks",
         label: <Trans i18nKey="menu:admin.tasks" />,
         url: `${match.url}/admin/tasks`,
+        query: { status: requestsStatuses },
         Icon: FaList,
       },
       {
@@ -59,6 +66,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-groups",
         label: <Trans i18nKey="menu:admin.groups" />,
         url: `${match.url}/admin/groups`,
+        query: { status: groupsStatuses },
         Icon: FaUsers,
       },
       {
@@ -66,6 +74,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-users",
         label: <Trans i18nKey="menu:admin.users" />,
         url: `${match.url}/admin/users`,
+        query: { status: usersStatuses },
         Icon: FaUser,
       },
       {
@@ -73,6 +82,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-accounts",
         label: <Trans i18nKey="menu:admin.accounts" />,
         url: `${match.url}/admin/accounts`,
+        query: { status: accountsStatuses },
         Icon: FaMoneyCheck,
       },
       {
@@ -80,6 +90,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-transactions",
         label: <Trans i18nKey="menu:admin.transactions" />,
         url: `${match.url}/admin/transactions`,
+        query: { status: transactionsStatuses },
         Icon: FaExchangeAlt,
       },
     ]);
@@ -121,6 +132,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-accounts",
         label: <Trans i18nKey="menu:operator.accounts" />,
         url: `${match.url}/operator/accounts`,
+        query: { status: accountsStatuses },
         Icon: FaMoneyCheck,
       },
       {
@@ -128,6 +140,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-transactions",
         label: <Trans i18nKey="menu:operator.transactions" />,
         url: `${match.url}/operator/transactions`,
+        query: { status: transactionsStatuses },
         Icon: FaExchangeAlt,
       },
     ]);

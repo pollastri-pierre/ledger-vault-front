@@ -13,15 +13,15 @@ import {
 import type { FieldsGroupProps } from "components/filters/types";
 import type { AccountStatus } from "data/types";
 
-const statuses: AccountStatus[] = [
+export const defaultStatuses: AccountStatus[] = [
   "ACTIVE",
-  "REVOKED",
   "MIGRATED",
   "HSM_COIN_UPDATED",
   "PENDING_CREATION_APPROVAL",
   "PENDING_UPDATE",
-  "PENDING_MIGRATED",
 ];
+
+const statuses: AccountStatus[] = [...defaultStatuses, "REVOKED"];
 
 function AccountsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();

@@ -12,7 +12,8 @@ import {
 import type { FieldsGroupProps } from "components/filters/types";
 import type { GroupStatus } from "data/types";
 
-const statuses: GroupStatus[] = ["PENDING", "ACTIVE", "REVOKED"];
+export const defaultStatuses: GroupStatus[] = ["PENDING", "ACTIVE"];
+const statuses: GroupStatus[] = [...defaultStatuses, "REVOKED"];
 
 export default function GroupsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();

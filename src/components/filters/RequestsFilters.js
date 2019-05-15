@@ -12,12 +12,13 @@ import {
 import type { FieldsGroupProps } from "components/filters/types";
 import type { RequestStatus } from "data/types";
 
-const statuses: RequestStatus[] = [
+export const defaultStatuses: RequestStatus[] = [
   "APPROVED",
-  "ABORTED",
   "PENDING_APPROVAL",
   "PENDING_REGISTRATION",
 ];
+
+const statuses: RequestStatus[] = [...defaultStatuses, "ABORTED"];
 
 export default function RequestsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();

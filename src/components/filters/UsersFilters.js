@@ -12,13 +12,14 @@ import {
 import type { FieldsGroupProps } from "components/filters/types";
 import type { UserStatus } from "data/types";
 
-const statuses: UserStatus[] = [
+export const defaultStatuses: UserStatus[] = [
   "ACTIVE",
-  "REVOKED",
   "PENDING_APPROVAL",
   "PENDING_REVOCATION",
   "PENDING_REGISTRATION",
 ];
+
+const statuses: UserStatus[] = [...defaultStatuses, "REVOKED"];
 
 export default function UsersFilters(props: FieldsGroupProps) {
   const { ...p } = props;
