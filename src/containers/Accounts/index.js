@@ -52,7 +52,7 @@ class AdminAccounts extends PureComponent<Props> {
   ActionComponent = () => {
     const { me } = this.props;
     return (
-      <Box>
+      <Box noShrink>
         {me.role === "ADMIN" && (
           <AddLink onClick={this.createAccount}>
             <Text i18nKey="accountCreation:cta" />
