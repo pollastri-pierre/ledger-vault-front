@@ -16,7 +16,7 @@ export default (props: UserCreationStepProps) => {
   const { role } = payload;
   return (
     <Box>
-      <Box pt={80} horizontal align="center" justify="center" flow={20}>
+      <Box pt={50} horizontal align="center" justify="center" flow={20}>
         <Choice
           data-test="new_admin"
           isActive={role === "ADMIN"}

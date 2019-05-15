@@ -16,6 +16,7 @@ type Props = {
   numberSteps: number,
   currentStep: ?number,
   error?: boolean,
+  light?: boolean,
 };
 
 const computerIcon = <MdComputer size={20} />;
@@ -34,7 +35,7 @@ const Container = styled(Box).attrs({
   border-radius: 5px;
   opacity: ${p => (p.error ? "0.5" : "1")};
   position: relative;
-  background: #f5f5f5;
+  background: ${p => (p.light ? "white" : "#f5f5f5")};
   border: 1px solid #e9e9e9;
   color: #555;
 `;
@@ -210,13 +211,13 @@ const RightIcon = ({ type }: { type: CurrentActionType }) =>
 
 class DeviceInteractionAnimation extends PureComponent<Props> {
   render() {
-    const { numberSteps, interaction, currentStep, error } = this.props;
+    const { numberSteps, interaction, currentStep, error, light } = this.props;
 
     const { needsUserInput, tooltip } = interaction;
     const currentActionType = interaction.device ? "device" : "server";
 
     return (
-      <Container error={error}>
+      <Container error={error} light={light}>
         <LeftIcon type={currentActionType} needsUserInput={needsUserInput} />
         <DashContainer
           number={numberSteps}

@@ -35,14 +35,14 @@ const SIZE_ICON_BY_TYPE = {
 
 const MIN_HEIGHT_BY_SIZE = {
   tiny: 25,
-  small: 35,
+  small: 40,
   medium: 42,
 };
 
 const FONTSIZE_BY_SIZE = {
   tiny: 9,
   small: 11,
-  medium: 13,
+  medium: 11,
 };
 
 const PADDING_BY_SIZE = {
@@ -53,8 +53,8 @@ const PADDING_BY_SIZE = {
 
 const FLOW_BY_SIZE = {
   tiny: 4,
-  small: 5,
-  medium: 6,
+  small: 8,
+  medium: 8,
 };
 
 const LOADER_SIZE_BY_SIZE = {
@@ -98,6 +98,7 @@ const ButtonDecorated = styled(({ isLoading, customColor, type, ...rest }) => (
 }))`
   && {
     text-transform: uppercase;
+    letter-spacing: 1px;
     border-radius: 3px;
     padding: ${p => PADDING_BY_SIZE[p.size]}px;
     padding-right: 10px;
