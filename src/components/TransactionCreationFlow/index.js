@@ -81,10 +81,6 @@ const steps = [
 
 const title = <Trans i18nKey="transactionCreation:title" />;
 
-const styles = {
-  container: { minHeight: 620 },
-};
-
 export default connectData(
   props => {
     const { match, accounts } = props;
@@ -115,7 +111,6 @@ export default connectData(
           steps={steps}
           additionalProps={props}
           initialCursor={cursor}
-          style={styles.container}
           onClose={props.close}
         />
       </GrowingCard>

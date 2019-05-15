@@ -7,7 +7,11 @@ import { FaArrowRight, FaArrowLeft, FaCheck } from "react-icons/fa";
 
 import colors, { opacity } from "shared/colors";
 import Box from "components/base/Box";
-import { ModalFooterButton, ModalClose } from "components/base/Modal";
+import {
+  ModalFooterButton,
+  ModalClose,
+  RichModalFooter,
+} from "components/base/Modal";
 import Text from "components/base/Text";
 
 import type {
@@ -137,7 +141,6 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
       initialPayload,
       additionalProps,
       onClose,
-      ...props
     } = this.props;
     const { cursor, payload, isNextLoading } = this.state;
 
@@ -159,7 +162,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     };
 
     return (
-      <Box width={700} position="relative" {...props}>
+      <Box width={700} position="relative" style={styles.container}>
         <RichModalHeader
           onClose={onClose}
           Icon={Icon}
@@ -170,7 +173,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
         <Box grow p={40} style={styles.content}>
           <Step {...stepProps} />
         </Box>
-        <Box horizontal px={10} position="relative" style={styles.footer}>
+        <RichModalFooter>
           {prevStep && (
             <FooterButton onClick={this.prev} left color={colors.lead}>
               <FaArrowLeft style={{ marginRight: 10 }} />
@@ -201,13 +204,16 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
               />
             </CtaContainer>
           )}
-        </Box>
+        </RichModalFooter>
       </Box>
     );
   }
 }
 
 const styles = {
+  container: {
+    minHeight: 620,
+  },
   header: {
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,

@@ -23,9 +23,6 @@ import GroupCreationConfirmation from "./GroupCreationConfirmation";
 import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 import type { GroupCreationPayload } from "./types";
 
-const styles = {
-  container: { minHeight: 640 },
-};
 const initialPayload: GroupCreationPayload = {
   name: "",
   description: "",
@@ -115,7 +112,6 @@ const GroupEdit = connectData(
         steps={steps}
         additionalProps={{ ...props }}
         onClose={props.close}
-        style={styles.container}
         isEditMode
       />
     </GrowingCard>
@@ -142,7 +138,6 @@ const GroupCreation = connectData(
         steps={steps}
         additionalProps={props}
         onClose={props.close}
-        style={styles.container}
       />
     </GrowingCard>
   ),

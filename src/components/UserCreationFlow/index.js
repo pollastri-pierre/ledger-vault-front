@@ -68,10 +68,6 @@ const steps = [
 
 const title = <Trans i18nKey="inviteUser:inviteLink" />;
 
-const styles = {
-  container: { minHeight: 670 },
-};
-
 function UserCreationFlow(props: { close: () => void }) {
   return (
     <MultiStepsFlow
@@ -79,7 +75,6 @@ function UserCreationFlow(props: { close: () => void }) {
       title={title}
       initialPayload={initialPayload}
       steps={steps}
-      style={styles.container}
       onClose={props.close}
       additionalProps={props}
     />

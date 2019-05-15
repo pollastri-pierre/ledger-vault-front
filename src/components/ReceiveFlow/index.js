@@ -72,10 +72,6 @@ const steps = [
 
 const title = "Receive";
 
-const styles = {
-  container: { minHeight: 670 },
-};
-
 export default connectData(
   props => {
     const { match, accounts } = props;
@@ -99,7 +95,6 @@ export default connectData(
           initialPayload={payload}
           additionalProps={props}
           steps={steps}
-          style={styles.container}
           initialCursor={cursor}
           onClose={props.close}
         />
