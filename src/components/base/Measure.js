@@ -17,11 +17,17 @@ export default function Measure({
   const node = useRef(null);
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      if (!node.current) return;
-      onMeasure(node.current.getBoundingClientRect());
+    let frame;
+    const idleCallbackID = window.requestIdleCallback(() => {
+      frame = requestAnimationFrame(() => {
+        if (!node.current) return;
+        onMeasure(node.current.getBoundingClientRect());
+      });
     });
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelIdleCallback(idleCallbackID);
+      cancelAnimationFrame(frame);
+    };
   }, [onMeasure]);
 
   return <div ref={node}>{children}</div>;
