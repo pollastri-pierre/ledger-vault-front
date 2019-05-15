@@ -5,6 +5,7 @@ import type { ObjectParameter } from "query-string";
 
 import { WrappableField } from "components/filters";
 import Select from "components/base/Select";
+import Box from "components/base/Box";
 import Text from "components/base/Text";
 
 import type { FieldProps } from "components/filters";
@@ -20,6 +21,7 @@ type Props = FieldProps & {
   options: Option[],
   title: string,
   single: boolean,
+  RenderInWrap: React$ComponentType<*>,
 };
 
 export default function FilterFieldSelect(props: Props) {
@@ -31,6 +33,7 @@ export default function FilterFieldSelect(props: Props) {
     title,
     queryKey,
     single,
+    RenderInWrap,
   } = props;
 
   const resolveOptions = useCallback(
@@ -50,8 +53,25 @@ export default function FilterFieldSelect(props: Props) {
   }, [resolveOptions, queryParams, queryKey]);
 
   const Collapsed = useCallback(() => {
+    if (RenderInWrap) {
+      return (
+        <Box horizontal flow={5}>
+          {values.map(opt => (
+            <RenderInWrap key={opt.value} data={opt} />
+          ))}
+        </Box>
+      );
+    }
     return <Text>{values.map(s => s.label).join(", ")}</Text>;
-  }, [values]);
+  }, [values, RenderInWrap]);
+
+  const components = useMemo(() => {
+    const components = {};
+    if (RenderInWrap) {
+      Object.assign(components, { MultiValueLabel: RenderInWrap });
+    }
+    return components;
+  }, [RenderInWrap]);
 
   const handleChange = useCallback(
     (opt: Option[] | Option) => {
@@ -75,7 +95,6 @@ export default function FilterFieldSelect(props: Props) {
       width={300}
       label={title}
       isActive={isActive}
-      closeOnChange={values}
       RenderCollapsed={Collapsed}
     >
       <Select
@@ -88,6 +107,7 @@ export default function FilterFieldSelect(props: Props) {
         value={single ? (values.length ? values[0] : null) : values}
         options={options}
         onChange={handleChange}
+        components={components}
       />
     </WrappableField>
   );

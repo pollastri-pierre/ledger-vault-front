@@ -7,22 +7,17 @@ import {
   FiltersCard,
   FieldText,
   FieldUserRole,
-  FieldSelect,
+  FieldStatuses,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { UserStatus } from "data/types";
 
-type StatusOption = {
-  value: UserStatus,
-  label: string,
-};
-
-const statuses: StatusOption[] = [
-  { value: "ACTIVE", label: "Active" },
-  { value: "REVOKED", label: "Revoked" },
-  { value: "PENDING_APPROVAL", label: "Pending approval" },
-  { value: "PENDING_REVOCATION", label: "Pending revocation" },
-  { value: "PENDING_REGISTRATION", label: "Pending registration" },
+const statuses: UserStatus[] = [
+  "ACTIVE",
+  "REVOKED",
+  "PENDING_APPROVAL",
+  "PENDING_REVOCATION",
+  "PENDING_REGISTRATION",
 ];
 
 export default function UsersFilters(props: FieldsGroupProps) {
@@ -33,12 +28,7 @@ export default function UsersFilters(props: FieldsGroupProps) {
       <FieldText title="Name" queryKey="name" placeholder="Name" />
       <FieldUserRole />
       <FieldText title="User ID" queryKey="id" placeholder="User ID" />
-      <FieldSelect
-        title="Status"
-        queryKey="status"
-        options={statuses}
-        placeholder={t("common:userStatus")}
-      />
+      <FieldStatuses statuses={statuses} placeholder={t("common:userStatus")} />
     </FiltersCard>
   );
 }

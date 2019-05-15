@@ -6,22 +6,13 @@ import { useTranslation } from "react-i18next";
 import {
   FiltersCard,
   FieldText,
-  FieldSelect,
+  FieldStatuses,
   FieldMembers,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { GroupStatus } from "data/types";
 
-type StatusOption = {
-  value: GroupStatus,
-  label: string,
-};
-
-const statuses: StatusOption[] = [
-  { value: "PENDING", label: "Pending" },
-  { value: "ACTIVE", label: "Active" },
-  { value: "REVOKED", label: "Deleted" },
-];
+const statuses: GroupStatus[] = ["PENDING", "ACTIVE", "REVOKED"];
 
 export default function GroupsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
@@ -29,10 +20,8 @@ export default function GroupsFilters(props: FieldsGroupProps) {
     <FiltersCard title="Find groups" subtitle="Find groups" {...props}>
       <FieldText title="Name" queryKey="name" placeholder="Group name" />
       <FieldMembers />
-      <FieldSelect
-        title="Status"
-        queryKey="status"
-        options={statuses}
+      <FieldStatuses
+        statuses={statuses}
         placeholder={t("common:groupStatus")}
       />
     </FiltersCard>

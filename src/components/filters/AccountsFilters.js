@@ -8,24 +8,19 @@ import {
   FieldText,
   FieldCurrency,
   FieldAccountType,
-  FieldSelect,
+  FieldStatuses,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { AccountStatus } from "data/types";
 
-type StatusOption = {
-  value: AccountStatus,
-  label: string,
-};
-
-const statuses: StatusOption[] = [
-  { value: "ACTIVE", label: "Active" },
-  { value: "REVOKED", label: "Archived" },
-  { value: "MIGRATED", label: "Update required" },
-  { value: "HSM_COIN_UPDATED", label: "HSM coin updated" },
-  { value: "PENDING_CREATION_APPROVAL", label: "Pending creation approval" },
-  { value: "PENDING_UPDATE", label: "Pending update" },
-  { value: "PENDING_MIGRATED", label: "Pending migrated" },
+const statuses: AccountStatus[] = [
+  "ACTIVE",
+  "REVOKED",
+  "MIGRATED",
+  "HSM_COIN_UPDATED",
+  "PENDING_CREATION_APPROVAL",
+  "PENDING_UPDATE",
+  "PENDING_MIGRATED",
 ];
 
 function AccountsFilters(props: FieldsGroupProps) {
@@ -35,10 +30,8 @@ function AccountsFilters(props: FieldsGroupProps) {
       <FieldCurrency />
       <FieldText title="Name" queryKey="name" placeholder="Name" />
       <FieldAccountType />
-      <FieldSelect
-        title="Status"
-        queryKey="status"
-        options={statuses}
+      <FieldStatuses
+        statuses={statuses}
         placeholder={t("common:accountStatus")}
       />
       <FieldText title="Account ID" queryKey="id" placeholder="Account ID" />
