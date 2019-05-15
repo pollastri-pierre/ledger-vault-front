@@ -15,8 +15,6 @@ import type { AccountStatus } from "data/types";
 
 export const defaultStatuses: AccountStatus[] = [
   "ACTIVE",
-  "MIGRATED",
-  "HSM_COIN_UPDATED",
   "PENDING_CREATION_APPROVAL",
   "PENDING_UPDATE",
 ];
