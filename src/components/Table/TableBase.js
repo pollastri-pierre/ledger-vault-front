@@ -121,6 +121,7 @@ export const Table = styled(MUITable)`
       border-bottom: none;
     }
     tr:active td {
+      transition: 100ms linear background;
       background: ${opacity(colors.blue, 0.09)} !important;
     }
     tr:hover td {

@@ -1,8 +1,9 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
-import type { Account } from "data/types";
+import type { Account, TransactionStatus } from "data/types";
 import type { FieldsGroupProps } from "components/filters/types";
 
 import {
@@ -11,30 +12,50 @@ import {
   FieldAccounts,
   FieldDate,
   FieldText,
-  FieldTransactionStatuses,
+  FieldSelect,
 } from "components/filters";
 
 type Props = FieldsGroupProps & {
   accounts: Account[],
 };
 
-class TransactionsFilters extends PureComponent<Props> {
-  render() {
-    const { accounts, ...props } = this.props;
-    return (
-      <FiltersCard
-        title="Find transactions"
-        subtitle="Find transactions"
-        {...props}
-      >
-        <FieldCurrency />
-        <FieldAccounts accounts={accounts} />
-        <FieldTransactionStatuses />
-        <FieldDate />
-        <FieldText title="Label" queryKey="label" placeholder="Label" />
-      </FiltersCard>
-    );
-  }
-}
+type StatusOption = {
+  value: TransactionStatus,
+  label: string,
+};
 
-export default TransactionsFilters;
+const statuses: StatusOption[] = [
+  { value: "SUBMITTED", label: "Confirmed" },
+  { value: "ABORTED", label: "Aborted" },
+  { value: "PENDING_APPROVAL", label: "Pending approval" },
+];
+
+const txTypes = [
+  { value: "SEND", label: "Send" },
+  { value: "RECEIVE", label: "Receive" },
+];
+
+export default function TransactionsFilters(props: Props) {
+  const { accounts, ...p } = props;
+  const { t } = useTranslation();
+  return (
+    <FiltersCard title="Find transactions" subtitle="Find transactions" {...p}>
+      <FieldSelect
+        single
+        title="Transaction type"
+        queryKey="type"
+        options={txTypes}
+      />
+      <FieldCurrency />
+      <FieldAccounts accounts={accounts} />
+      <FieldSelect
+        title="Status"
+        queryKey="status"
+        options={statuses}
+        placeholder={t("common:transactionStatus")}
+      />
+      <FieldDate />
+      <FieldText title="Label" queryKey="label" placeholder="Label" />
+    </FiltersCard>
+  );
+}

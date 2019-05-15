@@ -186,7 +186,6 @@ class DataSearch extends PureComponent<Props<*>, State> {
         {HeaderComponent && <HeaderComponent />}
         <Box horizontal justify="space-between">
           <FilterComponent
-            noShrink
             onChange={this.handleUpdateQueryParams}
             queryParams={queryParams}
             nbResults={status === "idle" || status === "error" ? count : null}

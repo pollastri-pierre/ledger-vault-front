@@ -9,7 +9,7 @@ import Measure from "components/base/Measure";
 // FIXME `import` won't compile in storybook currently (wtf?)
 const CircularProgress = require("@material-ui/core/CircularProgress").default; // eslint-disable-line
 
-const SIZE = 150;
+const SIZE = 300;
 
 export function GrowingSpinner() {
   return (

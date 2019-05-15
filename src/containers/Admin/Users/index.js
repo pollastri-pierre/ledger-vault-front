@@ -8,8 +8,9 @@ import SearchUsersQuery from "api/queries/SearchUsers";
 import { UsersTable } from "components/Table";
 import { UsersFilters } from "components/filters";
 import ModalRoute from "components/ModalRoute";
-import InviteUserLink from "components/InviteUserLink";
 import Box from "components/base/Box";
+import Text from "components/base/Text";
+import AddLink from "components/base/AddLink";
 import DataSearch from "components/DataSearch";
 import InviteUserMutation from "api/mutations/InviteUserMutation";
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
@@ -42,8 +43,10 @@ class Users extends PureComponent<Props> {
   };
 
   ActionComponent = () => (
-    <Box>
-      <InviteUserLink onClick={this.inviteUser} />
+    <Box noShrink>
+      <AddLink onClick={this.inviteUser}>
+        <Text i18nKey="inviteUser:inviteLink" />
+      </AddLink>
     </Box>
   );
 

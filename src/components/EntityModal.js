@@ -19,6 +19,7 @@ import EntityLastRequest from "components/EntityLastRequest";
 import RequestActionButtons from "components/RequestActionButtons";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
+import Absolute from "components/base/Absolute";
 import { hasPendingRequest } from "utils/entities";
 import type { Entity } from "data/types";
 
@@ -105,7 +106,9 @@ function EntityModal<T>(props: Props<T>) {
           >
             <Box horizontal align="center">
               <Trans i18nKey="entityModal:tabs.pendingRequest" />
-              <Badge style={{ marginLeft: 5 }}>1</Badge>
+              <Absolute top={-6} right={-8}>
+                <Badge>1</Badge>
+              </Absolute>
             </Box>
           </RichModalTab>
         ) : fullEditURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (

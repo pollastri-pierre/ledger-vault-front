@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import { Trans } from "react-i18next";
 import type { MemoryHistory } from "history";
 import AddLink from "components/base/AddLink";
 import { GroupsTable } from "components/Table";
@@ -31,11 +30,9 @@ class AdminGroups extends PureComponent<Props> {
   };
 
   ActionComponent = () => (
-    <Box>
+    <Box noShrink>
       <AddLink onClick={this.createGroup}>
-        <Text>
-          <Trans i18nKey="group:create.title" />
-        </Text>
+        <Text i18nKey="group:create.title" />
       </AddLink>
     </Box>
   );

@@ -26,7 +26,7 @@ class AccountName extends Component<{
     currencyId = (account && account.currency) || currencyId;
 
     return (
-      <Box horizontal align="center" flow={5} {...props}>
+      <Box horizontal align="center" flow={10} {...props}>
         <AccountIcon isERC20={isERC20} currencyId={currencyId} />
         <Text lineHeight={1} noWrap data-test="name">
           {displayName}

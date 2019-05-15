@@ -28,10 +28,12 @@ const mock = [
 ];
 
 const error = {
-  message:
-    "We can not let you perform this request or it will break some object in your vault",
-  name: "PREVENT_BLOCKING_OBJECT_EXCEPTION",
-  blocking_reasons: mock,
+  json: {
+    message:
+      "We can not let you perform this request or it will break some object in your vault",
+    name: "PREVENT_BLOCKING_OBJECT_EXCEPTION",
+    blocking_reasons: mock,
+  },
 };
 
 storiesOf("components", module).add("BlockingReasons", () => (

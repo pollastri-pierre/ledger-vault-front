@@ -72,14 +72,14 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     if (!currenciesAndToken) return;
 
     return (
-      <>
+      <Box horizontal flow={10}>
         {currenciesAndToken.map(c => (
           <Box horizontal align="center" flow={3} key={getItemId(c)}>
             {getItemIcon(c)}
-            <Text small>{c.name}</Text>
+            <Text noWrap>{c.name}</Text>
           </Box>
         ))}
-      </>
+      </Box>
     );
   };
 

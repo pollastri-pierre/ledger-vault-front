@@ -16,6 +16,8 @@ type Node = User;
 const uri = (query: Input) => {
   let finalQuery = {};
 
+  // forced to force role in query because else, it returns shared owners,
+  // system admin, etc.
   if (query && query.role) {
     finalQuery = {
       ...query,
