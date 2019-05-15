@@ -139,12 +139,13 @@ const InlineLabel = styled(Box).attrs({
   flow: 5,
   align: "center",
   color: colors.shark,
-  px: 10,
   position: "relative",
 })`
-  height: 40px;
   border: 1px solid;
   user-select: none;
+  max-width: 300px;
+  min-height: 40px;
+  padding: 5px 10px;
 
   border-radius: 2px;
   border-color: ${p =>

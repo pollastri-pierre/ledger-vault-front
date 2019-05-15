@@ -37,6 +37,10 @@ export default function TransactionsFilters(props: Props) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find transactions" subtitle="Find transactions" {...p}>
+      <FieldStatuses
+        statuses={statuses}
+        placeholder={t("common:transactionStatus")}
+      />
       <FieldSelect
         single
         title="Transaction type"
@@ -45,10 +49,6 @@ export default function TransactionsFilters(props: Props) {
       />
       <FieldCurrency />
       <FieldAccounts accounts={accounts} />
-      <FieldStatuses
-        statuses={statuses}
-        placeholder={t("common:transactionStatus")}
-      />
       <FieldDate />
       <FieldText title="Label" queryKey="label" placeholder="Label" />
     </FiltersCard>

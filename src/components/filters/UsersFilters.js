@@ -26,10 +26,10 @@ export default function UsersFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find users" subtitle="Find users" {...p}>
+      <FieldStatuses statuses={statuses} placeholder={t("common:userStatus")} />
       <FieldText title="Name" queryKey="name" placeholder="Name" />
       <FieldUserRole />
       <FieldText title="User ID" queryKey="id" placeholder="User ID" />
-      <FieldStatuses statuses={statuses} placeholder={t("common:userStatus")} />
     </FiltersCard>
   );
 }

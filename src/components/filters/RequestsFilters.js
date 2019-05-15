@@ -24,11 +24,11 @@ export default function RequestsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find tasks" subtitle="Find tasks" {...props}>
-      <FieldDate />
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:requestStatus")}
       />
+      <FieldDate />
       <FieldRequestActivity />
     </FiltersCard>
   );

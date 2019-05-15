@@ -19,12 +19,12 @@ export default function GroupsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find groups" subtitle="Find groups" {...props}>
-      <FieldText title="Name" queryKey="name" placeholder="Group name" />
-      <FieldMembers />
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:groupStatus")}
       />
+      <FieldText title="Name" queryKey="name" placeholder="Group name" />
+      <FieldMembers />
     </FiltersCard>
   );
 }

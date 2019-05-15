@@ -27,13 +27,13 @@ function AccountsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find accounts" subtitle="Find accounts" {...props}>
-      <FieldCurrency />
-      <FieldText title="Name" queryKey="name" placeholder="Name" />
-      <FieldAccountType />
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:accountStatus")}
       />
+      <FieldCurrency />
+      <FieldText title="Name" queryKey="name" placeholder="Name" />
+      <FieldAccountType />
       <FieldText title="Account ID" queryKey="id" placeholder="Account ID" />
     </FiltersCard>
   );

@@ -55,9 +55,11 @@ export default function FilterFieldSelect(props: Props) {
   const Collapsed = useCallback(() => {
     if (RenderInWrap) {
       return (
-        <Box horizontal flow={5}>
+        <Box horizontal flexWrap="wrap">
           {values.map(opt => (
-            <RenderInWrap key={opt.value} data={opt} />
+            <Box key={opt.value} m={2}>
+              <RenderInWrap data={opt} />
+            </Box>
           ))}
         </Box>
       );
