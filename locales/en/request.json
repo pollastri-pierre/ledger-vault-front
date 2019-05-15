@@ -7,9 +7,10 @@
     "MIGRATE_ACCOUNT": "Update account",
     "REVOKE_GROUP": "Delete group",
     "REVOKE_USER": "Revoke user",
+    "REVOKE_ACCOUNT": "Archive account",
     "REVOKE_TRANSACTION": "Reject transaction",
-    "CREATE_ADMIN": "Create Administrator",
-    "CREATE_OPERATOR": "Create Operator",
+    "CREATE_ADMIN": "Create administrator",
+    "CREATE_OPERATOR": "Create operator",
     "CREATE_ACCOUNT": "Create account",
     "UPDATE_QUORUM": "Update quorum"
   },
