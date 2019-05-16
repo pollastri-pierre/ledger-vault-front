@@ -1,70 +1,98 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import { withTranslation } from "react-i18next";
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import type { ObjectParameters, ObjectParameter } from "query-string";
 
 import Select from "components/base/Select";
 import Text from "components/base/Text";
-import type { RequestActivityType, Translate } from "data/types";
+import type { RequestActivityType } from "data/types";
 
-import { WrappableField, defaultFieldProps } from "components/filters";
+import { WrappableField } from "components/filters";
 import type { FieldProps } from "components/filters";
 
-class FilterFieldRequestActivity extends PureComponent<FieldProps> {
-  static defaultProps = defaultFieldProps;
+const opts = [
+  {
+    label: "Users",
+    options: ["CREATE_ADMIN", "CREATE_OPERATOR", "REVOKE_USER"],
+  },
+  {
+    label: "Group",
+    options: ["CREATE_GROUP", "EDIT_GROUP", "REVOKE_GROUP"],
+  },
+  {
+    label: "Accounts",
+    options: [
+      "CREATE_ACCOUNT",
+      "EDIT_ACCOUNT",
+      "MIGRATE_ACCOUNT",
+      "REVOKE_ACCOUNT",
+    ],
+  },
+  {
+    label: "Other",
+    options: ["UPDATE_QUORUM"],
+  },
+];
 
-  handleChange = (opt: Option[]) => {
-    const { updateQueryParams } = this.props;
+function FilterFieldRequestActivity(props: FieldProps) {
+  const { queryParams, updateQueryParams } = props;
+  const { t } = useTranslation();
+
+  const options = useMemo(() => buildOptions(opts, t), [t]);
+
+  const Collapsed = () => (
+    <Text>{requestActivity.map(a => a.label).join(", ")}</Text>
+  );
+
+  const handleChange = (opt: Option[]) => {
     updateQueryParams("type", opt && opt.length ? opt.map(o => o.value) : null);
   };
 
-  Collapsed = () => {
-    const { queryParams } = this.props;
-    const requestActivity = resolveRequestActivity(queryParams);
-    return <Text>{requestActivity.map(a => a.label).join(", ")}</Text>;
+  const resolveOptions = (arr: $ReadOnlyArray<ObjectParameter>): Option[] => {
+    return arr
+      .map(s => {
+        for (const group of options) {
+          const e = group.options.find(o => o.value === s);
+          if (e) return e;
+        }
+        return null;
+      })
+      .filter(Boolean);
   };
 
-  render() {
-    const { queryParams } = this.props;
-    const requestActivity = resolveRequestActivity(queryParams);
-    const isActive = !!requestActivity.length;
-    return (
-      <WrappableField
-        label="Activity"
-        isActive={isActive}
-        RenderCollapsed={this.Collapsed}
-        closeOnChange={requestActivity}
-      >
-        <SelectRequestActivity
-          autoFocus
-          openMenuOnFocus
-          value={requestActivity}
-          onChange={this.handleChange}
-        />
-      </WrappableField>
-    );
-  }
-}
+  const resolveRequestActivity = (queryParams: ObjectParameters): Option[] => {
+    if (!queryParams.type) return [];
+    if (typeof queryParams.type === "string")
+      return resolveOptions([queryParams.type]);
+    if (Array.isArray(queryParams.type))
+      return resolveOptions(queryParams.type);
+    return [];
+  };
 
-function resolveOptions(arr: $ReadOnlyArray<ObjectParameter>): Option[] {
-  return arr
-    .map(s => {
-      for (const group of options) {
-        const e = group.options.find(o => o.value === s);
-        if (e) return e;
-      }
-      return null;
-    })
-    .filter(Boolean);
-}
+  const requestActivity = resolveRequestActivity(queryParams);
+  const isActive = !!requestActivity.length;
 
-function resolveRequestActivity(queryParams: ObjectParameters): Option[] {
-  if (!queryParams.type) return [];
-  if (typeof queryParams.type === "string")
-    return resolveOptions([queryParams.type]);
-  if (Array.isArray(queryParams.type)) return resolveOptions(queryParams.type);
-  return [];
+  return (
+    <WrappableField
+      label="Activity"
+      isActive={isActive}
+      RenderCollapsed={Collapsed}
+    >
+      <Select
+        isMulti
+        placeholder={t("common:requestActivity")}
+        isClearable
+        autoFocus
+        openMenuOnFocus
+        closeMenuOnSelect={false}
+        value={requestActivity}
+        onChange={handleChange}
+        // $FlowFixMe
+        options={options}
+      />
+    </WrappableField>
+  );
 }
 
 type Option = {
@@ -72,60 +100,26 @@ type Option = {
   label: string,
 };
 
-const options = [
-  {
-    label: "Users",
-    options: [
-      { value: "CREATE_ADMIN", label: "Create admin" },
-      { value: "CREATE_OPERATOR", label: "Create operator" },
-      { value: "REVOKE_USER", label: "Revoke user" },
-    ],
-  },
-  {
-    label: "Group",
-    options: [
-      { value: "CREATE_GROUP", label: "Create group" },
-      { value: "EDIT_GROUP", label: "Edit group" },
-      { value: "REVOKE_GROUP", label: "Delete group" },
-    ],
-  },
-  {
-    label: "Accounts",
-    options: [
-      { value: "CREATE_ACCOUNT", label: "Create account" },
-      { value: "EDIT_ACCOUNT", label: "Edit account" },
-      { value: "REVOKE_ACCOUNT", label: "Archive account" },
-    ],
-  },
-  {
-    label: "Other",
-    options: [{ value: "UPDATE_QUORUM", label: "Edit admin rules" }],
-  },
-];
-
-type SelectProps = {
-  value: Option[],
-  onChange: (Option[]) => void,
-  t: Translate,
+type RawSection = {
+  label: string,
+  options: RequestActivityType[],
 };
 
-class SelectRequestActivityComponent extends PureComponent<SelectProps> {
-  render() {
-    const { t, ...props } = this.props;
+type Section = {
+  label: string,
+  options: Option[],
+};
 
-    return (
-      <Select
-        isMulti
-        // $FlowFixMe flow is stupid
-        options={options}
-        placeholder={t("common:requestActivity")}
-        isClearable
-        {...props}
-      />
-    );
-  }
+function buildOptions(arr: RawSection[], t): Section[] {
+  return arr.map(section => {
+    return {
+      label: section.label,
+      options: section.options.map(s => ({
+        value: s,
+        label: t(`request:type.${s}`),
+      })),
+    };
+  });
 }
-
-const SelectRequestActivity = withTranslation()(SelectRequestActivityComponent);
 
 export default FilterFieldRequestActivity;

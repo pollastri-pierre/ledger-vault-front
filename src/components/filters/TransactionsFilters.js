@@ -13,22 +13,19 @@ import {
   FieldDate,
   FieldText,
   FieldSelect,
+  FieldStatuses,
 } from "components/filters";
 
 type Props = FieldsGroupProps & {
   accounts: Account[],
 };
 
-type StatusOption = {
-  value: TransactionStatus,
-  label: string,
-};
-
-const statuses: StatusOption[] = [
-  { value: "SUBMITTED", label: "Confirmed" },
-  { value: "ABORTED", label: "Aborted" },
-  { value: "PENDING_APPROVAL", label: "Pending approval" },
+export const defaultStatuses: TransactionStatus[] = [
+  "SUBMITTED",
+  "PENDING_APPROVAL",
 ];
+
+const statuses: TransactionStatus[] = [...defaultStatuses, "ABORTED"];
 
 const txTypes = [
   { value: "SEND", label: "Send" },
@@ -40,6 +37,10 @@ export default function TransactionsFilters(props: Props) {
   const { t } = useTranslation();
   return (
     <FiltersCard title="Find transactions" subtitle="Find transactions" {...p}>
+      <FieldStatuses
+        statuses={statuses}
+        placeholder={t("common:transactionStatus")}
+      />
       <FieldSelect
         single
         title="Transaction type"
@@ -48,12 +49,6 @@ export default function TransactionsFilters(props: Props) {
       />
       <FieldCurrency />
       <FieldAccounts accounts={accounts} />
-      <FieldSelect
-        title="Status"
-        queryKey="status"
-        options={statuses}
-        placeholder={t("common:transactionStatus")}
-      />
       <FieldDate />
       <FieldText title="Label" queryKey="label" placeholder="Label" />
     </FiltersCard>

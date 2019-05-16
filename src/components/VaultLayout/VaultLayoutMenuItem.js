@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import qs from "query-string";
 import { Link } from "react-router-dom";
 import Animated from "animated/lib/targets/react-dom";
 import styled from "styled-components";
@@ -73,8 +74,9 @@ export default ({
   );
 
   if (item.url && (!isMenuOpened && isMenuFloating)) {
+    const query = item.query ? qs.stringify(item.query) : "";
     icon = (
-      <Link style={styles.link} to={item.url}>
+      <Link style={styles.link} to={`${item.url}?${query}`}>
         {icon}
       </Link>
     );

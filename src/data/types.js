@@ -379,6 +379,7 @@ export type RequestActivityType =
   | "CREATE_ACCOUNT"
   | "EDIT_ACCOUNT"
   | "REVOKE_ACCOUNT"
+  | "MIGRATE_ACCOUNT"
   | "UPDATE_QUORUM";
 
 type RequestTargetType =

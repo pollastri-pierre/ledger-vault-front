@@ -13,6 +13,7 @@ export { default as FieldAccounts } from "./fields/FilterFieldAccounts";
 export { default as FieldDate } from "./fields/FilterFieldDate";
 export { default as FieldCurrency } from "./fields/FilterFieldCurrency";
 export { default as FieldSelect } from "./fields/FilterFieldSelect";
+export { default as FieldStatuses } from "./fields/FilterFieldStatuses";
 export { default as FieldMembers } from "./fields/FilterFieldMembers";
 export {
   default as FieldRequestActivity,
