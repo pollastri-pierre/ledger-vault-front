@@ -9,13 +9,17 @@ import Measure from "components/base/Measure";
 // FIXME `import` won't compile in storybook currently (wtf?)
 const CircularProgress = require("@material-ui/core/CircularProgress").default; // eslint-disable-line
 
-const SIZE = 300;
+const SIZE = 350;
+
+const SPEEDS = {
+  scaleX: { tension: 130, friction: 15 },
+  scaleY: { tension: 130, friction: 15 },
+};
 
 export function GrowingSpinner() {
   return (
     <div style={fixedStyle}>
-      {/* FIXME forced to create new ref for style. else, no bg (wtf?) */}
-      <div style={{ ...spinnerStyle }}>
+      <div style={spinnerStyle}>
         <CircularProgress size={24} />
       </div>
     </div>
@@ -23,6 +27,7 @@ export function GrowingSpinner() {
 }
 
 export default function GrowingCard({ children }: { children: React$Node }) {
+  const [isMeasured, setIsMeasured] = useState(false);
   const [anims] = useState({
     opacity: new Animated.Value(0),
     scaleX: new Animated.Value(1),
@@ -30,11 +35,7 @@ export default function GrowingCard({ children }: { children: React$Node }) {
     translateY: new Animated.Value(0),
   });
 
-  const [dimensions, setDimensions] = useState({ width: SIZE, height: SIZE });
-  const [finished, setFinished] = useState(false);
   const unmounted = useRef(false);
-
-  const { width, height } = dimensions;
 
   useEffect(
     () => () => {
@@ -45,42 +46,35 @@ export default function GrowingCard({ children }: { children: React$Node }) {
 
   const onMeasure = useCallback(
     dimensions => {
-      setDimensions(dimensions);
       const { width, height } = dimensions;
+      anims.opacity.setValue(0);
       anims.scaleX.setValue(SIZE / width);
       anims.scaleY.setValue(SIZE / height);
-      Animated.spring(anims.scaleX, { toValue: 1 }).start();
-      Animated.spring(anims.scaleY, { toValue: 1 }).start();
+
       const { innerHeight } = window;
+      let offset = 0;
       if (height > innerHeight - 80) {
-        const offset = (height - innerHeight) / 2 + 40;
+        offset = (height - innerHeight) / 2 + 40;
         Animated.spring(anims.translateY, { toValue: offset }).start();
       }
 
-      // couldn't find a way to get animation end callback
-      setTimeout(() => {
-        if (unmounted.current) return;
-        setFinished(true);
-        Animated.spring(anims.opacity, { toValue: 1 }).start();
-      }, 500);
+      Animated.stagger(100, [
+        Animated.parallel([
+          Animated.spring(anims.scaleX, { toValue: 1, ...SPEEDS.scaleX }),
+          Animated.spring(anims.scaleY, { toValue: 1, ...SPEEDS.scaleY }),
+          Animated.spring(anims.translateY, { toValue: offset }),
+        ]),
+        Animated.spring(anims.opacity, { toValue: 1 }),
+      ]).start();
+
+      setIsMeasured(true);
     },
     [anims],
   );
 
   const wrapperStyle = {
     ...modalStyle,
-    opacity: finished ? 1 : 0,
-  };
-
-  const contentStyle = {
-    opacity: anims.opacity,
-  };
-
-  const loadingStyle = {
-    ...modalStyle,
-    width,
-    height,
-    opacity: finished ? 0 : 1,
+    opacity: isMeasured ? 1 : 0,
     transform: [
       { scaleX: anims.scaleX },
       { scaleY: anims.scaleY },
@@ -88,16 +82,22 @@ export default function GrowingCard({ children }: { children: React$Node }) {
     ],
   };
 
+  const contentStyle = {
+    opacity: anims.opacity,
+  };
+
   return (
     <>
       <Measure onMeasure={onMeasure}>
-        <div style={wrapperStyle}>
+        <Animated.div style={wrapperStyle}>
           <Animated.div style={contentStyle}>{children}</Animated.div>
-        </div>
+        </Animated.div>
       </Measure>
-      <div style={fixedStyle}>
-        <Animated.div style={loadingStyle} />
-      </div>
+      {!isMeasured && (
+        <div style={fixedStyle}>
+          <div style={fakeModalStyle} />
+        </div>
+      )}
     </>
   );
 }
@@ -106,6 +106,12 @@ const modalStyle = {
   background: "white",
   borderRadius: 4,
   boxShadow,
+};
+
+const fakeModalStyle = {
+  ...modalStyle,
+  width: SIZE,
+  height: SIZE,
 };
 
 const fixedStyle = {

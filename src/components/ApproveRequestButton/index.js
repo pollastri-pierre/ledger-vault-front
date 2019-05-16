@@ -89,6 +89,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
         {isInProgress ? (
           <Absolute right={15} bottom={15}>
             <DeviceInteraction
+              light
               interactions={interactions}
               onSuccess={onSuccess}
               onError={this.onError}

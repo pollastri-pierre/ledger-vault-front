@@ -20,6 +20,7 @@ type Props = {
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
   onError: (Error | GateError) => void,
+  light?: boolean,
 };
 
 type State = {
@@ -79,10 +80,11 @@ class DeviceInteraction extends PureComponent<Props, State> {
   }
 
   render() {
-    const { interactions } = this.props;
+    const { interactions, light } = this.props;
     const { currentStep, interaction } = this.state;
     return (
       <DeviceInteractionAnimation
+        light={light}
         interaction={interaction}
         numberSteps={interactions.length}
         currentStep={currentStep}

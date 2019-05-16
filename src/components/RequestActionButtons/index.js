@@ -28,52 +28,63 @@ class RequestActionButtons extends PureComponent<Props> {
   render() {
     const { entity, onSuccess, onError, me } = this.props;
 
-    const hasUserApproved =
-      entity.last_request &&
-      entity.last_request.approvals &&
-      hasUserApprovedRequest(entity.last_request, me);
+    const lastRequest = entity.last_request;
+    if (!lastRequest) return null;
 
-    return (
-      <Box grow pt={10} flow={20} align="center" justify="center">
-        {entity.last_request && (
+    const hasUserApproved = hasUserApprovedRequest(lastRequest, me);
+    const isRequestBlocked = lastRequest.status === "BLOCKED";
+
+    const inner = isRequestBlocked ? (
+      <Box align="center" justify="center">
+        <InfoBox type="error">
+          <Text>The request has been blocked.</Text>
+        </InfoBox>
+      </Box>
+    ) : (
+      <>
+        <Box align="center" justify="center">
           <InfoBox withIcon type="info">
             <Box horizontal flow={5}>
-              <Text bold i18nKey={`request:type.${entity.last_request.type}`} />
+              <Text bold i18nKey={`request:type.${lastRequest.type}`} />
               <Text>request is pending.</Text>
             </Box>
           </InfoBox>
-        )}
+        </Box>
         {hasUserApproved ? (
-          <Box horizontal align="center" flow={10} pb={20}>
+          <Box horizontal align="center" justify="center" flow={10}>
             {checkedIcon}
             <Text bold>You already approved the request.</Text>
           </Box>
         ) : (
-          <Box horizontal align="center" width="100%" justify="space-between">
+          <Box
+            horizontal
+            align="center"
+            justify="space-between"
+            mb={-20}
+            mx={-5}
+          >
             <AbortRequestButton
-              requestID={entity.last_request && entity.last_request.id}
+              requestID={lastRequest.id}
               onSuccess={onSuccess}
             />
             <ApproveRequestButton
               interactions={approveFlow}
               onSuccess={onSuccess}
               onError={onError}
-              additionalFields={{
-                request_id: entity.last_request && entity.last_request.id,
-              }}
+              additionalFields={{ request_id: lastRequest.id }}
               disabled={false}
               buttonLabel={
-                <Trans
-                  i18nKey={
-                    entity.last_request
-                      ? `request:approve.${entity.last_request.type}`
-                      : `common:approve`
-                  }
-                />
+                <Trans i18nKey={`request:approve.${lastRequest.type}`} />
               }
             />
           </Box>
         )}
+      </>
+    );
+
+    return (
+      <Box grow flow={20} py={20} style={{ minHeight: 90 }} justify="center">
+        {inner}
       </Box>
     );
   }

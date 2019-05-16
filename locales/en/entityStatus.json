@@ -3,6 +3,7 @@
   "ABORTED": "Rejected",
   "REVOKED": "Revoked",
   "DELETED": "Deleted",
+  "BLOCKED": "Blocked",
   "APPROVED": "Approved",
   "SUBMITTED": "Submitted",
   "PENDING": "Pending",

@@ -121,10 +121,6 @@ const steps = [
 
 const title = <Trans i18nKey="accountCreation:title" />;
 
-const styles = {
-  container: { minHeight: 670 },
-};
-
 const GATE_ACCOUNT_TYPES_BY_CURRENCY_FAMILY = {
   bitcoin: "Bitcoin",
   ethereum: "Ethereum",
@@ -164,7 +160,6 @@ const AccountEdit = connectData(
         }
         steps={steps}
         additionalProps={props}
-        style={styles.container}
         onClose={props.close}
         isEditMode
         initialPayload={deserialize(props.account)}
@@ -199,7 +194,6 @@ const AccountCreation = connectData(
         initialPayload={initialPayload}
         steps={steps}
         additionalProps={props}
-        style={styles.container}
         onClose={props.close}
       />
     </GrowingCard>

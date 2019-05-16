@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 import type { MemoryHistory } from "history";
-import type { Match } from "react-router-dom";
 
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -19,16 +18,13 @@ import type { Connection } from "restlay/ConnectionQuery";
 
 type Props = {
   history: MemoryHistory,
-  match: Match,
   accounts: Connection<Account>,
 };
 
 class TransactionsContainer extends PureComponent<Props> {
   handleTransactionClick = (transaction: Transaction) => {
-    const { history, match } = this.props;
-    history.push(
-      `${match.url}/transactions/details/${transaction.id}/overview`,
-    );
+    const { history } = this.props;
+    history.push(`transactions/details/${transaction.id}/overview`);
   };
 
   render() {
