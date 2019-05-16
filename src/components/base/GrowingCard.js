@@ -51,9 +51,6 @@ export default function GrowingCard({ children }: { children: React$Node }) {
       anims.scaleX.setValue(SIZE / width);
       anims.scaleY.setValue(SIZE / height);
 
-      Animated.spring(anims.scaleX, { toValue: 1, ...SPEEDS.scaleX }).start();
-      Animated.spring(anims.scaleY, { toValue: 1, ...SPEEDS.scaleY }).start();
-
       const { innerHeight } = window;
       let offset = 0;
       if (height > innerHeight - 80) {
