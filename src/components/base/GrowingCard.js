@@ -47,24 +47,25 @@ export default function GrowingCard({ children }: { children: React$Node }) {
   const onMeasure = useCallback(
     dimensions => {
       const { width, height } = dimensions;
-      anims.opacity.setValue(0);
-      anims.scaleX.setValue(SIZE / width);
-      anims.scaleY.setValue(SIZE / height);
 
       const { innerHeight } = window;
       let offset = 0;
       if (height > innerHeight - 80) {
         offset = (height - innerHeight) / 2 + 40;
-        Animated.spring(anims.translateY, { toValue: offset }).start();
       }
+
+      anims.opacity.setValue(0);
+      anims.scaleX.setValue(SIZE / width);
+      anims.scaleY.setValue(SIZE / height);
+      anims.translateY.setValue(-offset);
 
       Animated.stagger(100, [
         Animated.parallel([
           Animated.spring(anims.scaleX, { toValue: 1, ...SPEEDS.scaleX }),
           Animated.spring(anims.scaleY, { toValue: 1, ...SPEEDS.scaleY }),
-          Animated.spring(anims.translateY, { toValue: offset }),
+          Animated.spring(anims.translateY, { toValue: 0 }),
         ]),
-        Animated.spring(anims.opacity, { toValue: 1 }),
+        Animated.spring(anims.opacity, { toValue: 1, ...SPEEDS.scaleY }),
       ]).start();
 
       setIsMeasured(true);
