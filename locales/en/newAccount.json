@@ -3,10 +3,10 @@
     "account": "Account",
     "approvals": "Required approvals",
     "approvals_members": "{{count}} of {{total}} members",
-    "currency": "Currency",
+    "currency": "Crypto asset",
     "desc":
-      "An Account Request will be sent to the workspace Administrators. The account will be created once they approve it.",
-    "descMigrated": "Carefully verify the update information",
+      "An account request is created and must be approved by Administrators to finalize the creation.",
+    "descMigrated": "Carefully verify the updated information",
     "members": "Members",
     "parentAccount": "Parent Ethereum account",
     "selectedMembers": "{{memberLength}} selected",
@@ -18,7 +18,7 @@
     "tabTitle": "Crypto asset"
   },
   "erc20": {
-    "createNew": "Create a new read-only Ethereum account",
+    "createNew": "Create a new view only Ethereum account",
     "infoNewAccount":
       "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center",
     "matchingNameWarning":
