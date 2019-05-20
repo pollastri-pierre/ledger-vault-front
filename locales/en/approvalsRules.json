@@ -3,12 +3,12 @@
   "approval_plural": "{{count}} approvals from",
   "firstStepLabel": "Transaction is created",
   "lastStepLabel": "Transaction is broadcasted",
-  "addApproval": "Add approval",
+  "addApproval": "Add approval step",
   "approvalsFrom": "approvals from",
-  "approvalsFromNb": "{{nb}} user selected",
-  "approvalsFromNb_plural": "{{nb}} users selected",
-  "approvalsFromNbGroup": "{{nb}} user in group",
-  "approvalsFromNbGroup_plural": "{{nb}} users in group",
-  "selectPlaceholder": "Select group or users",
-  "invalidRule": "No users or group selected, rule will be ignored."
+  "approvalsFromNb": "{{nb}} Operator selected",
+  "approvalsFromNb_plural": "{{nb}} Operators selected",
+  "approvalsFromNbGroup": "{{nb}} Operator in the selected group",
+  "approvalsFromNbGroup_plural": "{{nb}} Operators in the selected group",
+  "selectPlaceholder": "Select a group or Operators",
+  "invalidRule": "No Operators or group selected. This step will be ignored."
 }
