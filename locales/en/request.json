@@ -9,10 +9,10 @@
     "REVOKE_USER": "Revoke user",
     "REVOKE_ACCOUNT": "Archive account",
     "REVOKE_TRANSACTION": "Reject transaction",
-    "CREATE_ADMIN": "Create administrator",
-    "CREATE_OPERATOR": "Create operator",
+    "CREATE_ADMIN": "Create Administrator",
+    "CREATE_OPERATOR": "Create Operator",
     "CREATE_ACCOUNT": "Create account",
-    "UPDATE_QUORUM": "Update quorum"
+    "UPDATE_QUORUM": "Edit admin rule"
   },
   "approve": {
     "CREATE_GROUP": "Approve group creation",
@@ -21,10 +21,10 @@
     "REVOKE_GROUP": "Approve group deletion",
     "REVOKE_TRANSACTION": "Approve transaction rejection",
     "CREATE_ACCOUNT": "Approve account creation",
-    "CREATE_OPERATOR": "Approve operator creation",
-    "CREATE_ADMIN": "Approve administrator creation",
+    "CREATE_OPERATOR": "Approve Operator creation",
+    "CREATE_ADMIN": "Approve Administrator creation",
     "REVOKE_USER": "Approve user revocation",
-    "UPDATE_QUORUM": "Approve quorum update",
+    "UPDATE_QUORUM": "Approve admin rule edition",
     "MIGRATE_ACCOUNT": "Approve account update",
     "CREATE_TRANSACTION": "Approve transaction creation"
   }
