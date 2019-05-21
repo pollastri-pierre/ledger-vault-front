@@ -2,7 +2,7 @@
   "history": {
     "aborted": "rejected by",
     "approved": "approved by",
-    "confirmed": "confirmed on the blockchain",
+    "confirmed": "confirmed by the network",
     "created": "created by",
     "sent": "sent to the blockchain"
   }
