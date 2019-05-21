@@ -4,9 +4,8 @@
   "placeholder_domain": "Workspace name",
   "migration": {
     "settingUp": "Setting up the workspace...",
-    "title": "Some accounts needs to be updated",
-    "desc": "A migration has occured, and some accounts needs an action from you to be fully active. They have been set the status \"Updated\" and you now have to update them one by one.",
-    "desc_hsm_app_updated": "Some HSM coin apps has been updated. You need to update the accounts impacted.",
+    "title": "Some accounts require your attention...",
+    "desc": "We've updated the platform and some accounts have been updated. Before they can be fully active again, you need to provide their transaction rules. They'll have the 'Account updated required' status until you do so.",
     "accounts": "Impacted accounts ({{count}})",
     "takeMeThere": "Take me there"
   }
