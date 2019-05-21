@@ -7,12 +7,12 @@
   "created": "Created",
   "expires": "Expires",
   "userID": "User ID",
-  "date": "Create date",
-  "url": "Url",
+  "date": "Created",
+  "url": "URL",
   "revokeWarning": {
-    "title": "Are you sure you want to revoke?",
+    "title": "Are you sure you want to revoke this user?",
     "confirm": "Yes, revoke user",
-    "content": "The user will not have access to the platform anymore.",
+    "content": "The user won't have access to the platform anymore.",
     "contentAdmin": "Additionally, it will block all pending requests."
   }
 }

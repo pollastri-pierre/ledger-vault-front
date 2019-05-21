@@ -1,6 +1,6 @@
 {
-  "editInfo": "Editing the description doesn't require the quorum validation contrary to editing the list of members",
-  "no_accounts_yet": "There is no accounts linked to the group",
+  "editInfo": "Editing the description doesn't require the approval from other Administrators.",
+  "no_accounts_yet": "There are no accounts linked to this group",
   "details": {
     "name": "Group name",
     "description": "Group description",
@@ -8,25 +8,25 @@
     "by": "Created by",
     "users": "users"
   },
-  "delete": "Delete Group",
+  "delete": "Delete group",
   "create": {
-    "title": "New Group",
+    "title": "New group",
     "editTitle": "Edit group",
     "name": "Name",
-    "infos": "Informations",
+    "infos": "Details",
     "name_placeholder": "Enter group name",
     "desc_placeholder": "Enter group description",
     "description": "description",
     "members": "members",
-    "nb_members": "Number of members",
+    "nb_members": "Members",
     "confirmation": "confirmation",
-    "submit": "Create Group",
-    "no_hsm_validation": "You only updated the description. It doesn't requre HSM/Device validation",
-    "hsm_validation": "Name or members edition require HSM/Device validation",
-    "no_edit": "Nothing changed.",
-    "submit_edit": "Edit Group"
+    "submit": "Create group",
+    "no_hsm_validation": "Editing the description doesn't require the approval from other Administrators or your device",
+    "hsm_validation": "Editing the name or members of the group requires HSM and Device validation",
+    "no_edit": "No changes were made",
+    "submit_edit": "Edit group"
   },
   "revokeWarning": {
-    "content": "Once approved, group will be permanently removed."
+    "content": "Once the request is approved, this group will be permanently deleted."
   }
 }
