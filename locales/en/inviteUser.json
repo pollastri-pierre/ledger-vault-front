@@ -8,7 +8,7 @@
         "generateLink": "Generate link",
         "updateInfo": "Update details"
       },
-      "warningAddAdmin": "Adding an admin change your admin rules. As a result, it will be block all the pending requetsts."
+      "warningAddAdmin": "Adding an Administrator will change the admin rule of your workspace and block all pending requests. You'll have to recreate them if necessary."
     },
     "role": {
       "title": "Role",
@@ -19,7 +19,7 @@
       },
       "operator": {
         "title": "Operator",
-        "desc": "Operators can create and/or approve transactions for accounts they have an access to"
+        "desc": "Operators create and/or approve transactions for accounts they have access to"
       }
     },
     "confirmation": {
@@ -28,18 +28,18 @@
         "username": "Username",
         "userID": "User ID",
         "role": "Role",
-        "url": "Link"
+        "url": "Invitation URL"
       }
     }
   },
   "form": {
     "labelUsername": "Username",
     "placeholderUsername": "Enter a username",
-    "placeholderUserID": "Enter the user's user ID",
+    "placeholderUserID": "Enter the user ID of the user",
     "labelUserID": "User ID"
   },
-  "description": "Share this link with the new user using your organization's approved communication channel.",
-  "generateLink": "Generate link",
+  "description": "Share this URL with the new user using your organization's preferred communication channel.",
+  "generateLink": "Generate URL",
   "registration": {
     "title": "Register new {{userRole}}",
     "username": "Username:",
