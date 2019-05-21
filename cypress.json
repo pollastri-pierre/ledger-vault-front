@@ -11,5 +11,6 @@
     "api_switch_device": "http://localhost:5001/switch-device",
     "approve_cancel_device": "http://localhost:5001/meta/store",
     "polyfillUrl": "https://unpkg.com/unfetch/dist/unfetch.umd.js"
-  }
+  },
+  "projectId": "bmae7v"
 }
