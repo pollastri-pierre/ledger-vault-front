@@ -1,40 +1,40 @@
 {
   "ApprovalsExceedQuorum": {
-    "description": "Number of approvals cannot exceed number of members",
-    "title": "Approvals Exceed Quorum"
+    "description": "The number of approvals can't exceed the number of members.",
+    "title": "Invalid number of approvals"
   },
   "InvalidDataDevice": {
     "description": "Invalid data sent to the device",
     "title": "Invalid data"
   },
   "NoChannelForDevice": {
-    "description": "Are you sure to use the right device?",
+    "description": "Make sure you're using the right device.",
     "title": "No Channel For Device"
   },
   "UnknownDevice": {
-    "description": "Unknown device connected. Please connect an admin device",
+    "description": "Please connect an Administrator device.",
     "title": "Unknown device"
   },
   "UnknownDomain": {
-    "description": "Team domain unknown",
-    "title": "Unknown team"
+    "description": "This workspace name doesn't exist.",
+    "title": "Unknown workspace"
   },
   "InvalidAddress": {
     "title": "Invalid address",
-    "description": "Address is invalid"
+    "description": "This address is invalid."
   },
   "AmountTooHigh": {
     "title": "Amount too high",
-    "description": "The amount you entered is too high"
+    "description": "The amount you entered is too high."
   },
   "AmountExceedMax": {
-    "title": "Amount exceed max possible amount",
-    "description": "The amount you entered exceeds the limit of 100 UTXOs. To fix, lower the amount to a maximum of: {{max}}"
+    "title": "Max amount exceeded",
+    "description": "The amount entered exceeds the limit of 100 UTXOs. Decrease the amount to a maximum of: {{max}}"
   },
   "NonEIP55Address": {
     "title": "Auto-verification not available: carefully verify the address",
-    "description": "Auto-verification not available: carefully verify the address"
+    "description": "Auto-verification not available. Carefully verify the address"
   },
-  "GenericError": { "description": "An error occured", "title": "Error" },
-  "generic": { "description": "An error occured", "title": "Error" }
+  "GenericError": { "description": "An error occurred. Please try again or contact Support.", "title": "Error" },
+  "generic": { "description": "An error occurred. Please try again or contact Support.", "title": "Error" }
 }
