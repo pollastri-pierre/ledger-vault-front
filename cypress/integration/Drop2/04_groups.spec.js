@@ -50,7 +50,12 @@ describe("Test Case for Groups", function() {
 
     create_group("EMEA", "Group for EMEA", "Aidan", "Anna", "James");
     error_message("Error 10202", "Group already exists");
-    cy.get("[data-test=close]").click();
+    cy.get("[data-test=close]")
+      .eq(1)
+      .click();
+    cy.get("[data-test=close]")
+      .eq(0)
+      .click();
   });
 
   it("Approve Groups", () => {

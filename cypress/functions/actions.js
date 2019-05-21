@@ -264,9 +264,9 @@ export function successfull_message() {
 }
 
 export function error_message(title, message) {
-  cy.get("data-test=error-message-title")
+  cy.get("[data-test=error-message-title]")
     .contains(title)
-    .get("data-test=error-message-desc")
+    .get("[data-test=error-message-desc]")
     .contains(message);
 }
 
