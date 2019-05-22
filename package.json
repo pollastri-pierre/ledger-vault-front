@@ -16,6 +16,7 @@
     "cypress:run:revoke": "cypress run --spec 'cypress/integration/Drop2/05_revoke_user.spec.js' --record --key df20ba9d-38e1-4156-9c28-cbcf6e28326d --browser chrome",
     "cypress:run:record": "cypress run --record --key df20ba9d-38e1-4156-9c28-cbcf6e28326d --browser chrome",
     "cypress:run:account":"cypress run --spec 'cypress/integration/Drop2/03_accounts.spec.js' --record --key df20ba9d-38e1-4156-9c28-cbcf6e28326d --browser chrome",
+    "cypress:run:operator":"cypress run --spec 'cypress/integration/Drop2/07_operator.spec.js' --record --key df20ba9d-38e1-4156-9c28-cbcf6e28326d --browser chrome",
     "lint": "eslint src test webpack cypress",
     "flow-typed": "bash scripts/install-flow-typed.sh",
     "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook,cypress}/**/*.{js,json}\"",
