@@ -2,7 +2,12 @@
   "viewportWidth": 1500,
   "viewportHeight": 1000,
   "chromeWebSecurity": false,
+  "trashAssetsBeforeRuns": true,
+  "videoCompression": 32,
+  "videosFolder": "cypress/videos",
   "video": true,
+  "videoUploadOnPasses": true,
+  "screenshotsFolder": "cypress/screenshots",
   "env": {
     "workspace": "ledger1",
     "api_server": "https://localhost:9000",
