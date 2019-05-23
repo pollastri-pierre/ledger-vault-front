@@ -2,7 +2,12 @@
   "viewportWidth": 1500,
   "viewportHeight": 1000,
   "chromeWebSecurity": false,
+  "trashAssetsBeforeRuns": true,
+  "videoCompression": 32,
+  "videosFolder": "cypress/videos",
   "video": true,
+  "videoUploadOnPasses": true,
+  "screenshotsFolder": "cypress/screenshots",
   "env": {
     "workspace": "ledger1",
     "api_server": "https://localhost:9000",
@@ -11,5 +16,6 @@
     "api_switch_device": "http://localhost:5001/switch-device",
     "approve_cancel_device": "http://localhost:5001/meta/store",
     "polyfillUrl": "https://unpkg.com/unfetch/dist/unfetch.umd.js"
-  }
+  },
+  "projectId": "bmae7v"
 }
