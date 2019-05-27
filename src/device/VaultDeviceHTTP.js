@@ -9,6 +9,7 @@ export const ENDPOINTS = {
   REGISTER: "/register",
   VALIDATE_VAULT_OPERATION: "/validate-vault-operation",
   GENERATE_KEY_FRAGMENTS: "/generate-key-fragments",
+  REGISTER_DATA: "/u2f-register-data",
 };
 
 const pathArrayToString = (path: number[]): string =>
@@ -18,8 +19,11 @@ const deviceNetwork = async function<T>(
   uri: string,
   method: string,
   body: ?(Object | Array<Object>),
+  noJson?: boolean,
 ): Promise<T> {
-  return network(uri, method, body).catch(err => {
+  return network(uri, method, body, null, {
+    noJson: noJson || false,
+  }).catch(err => {
     console.error(err);
     if (err.json.status_code) {
       // TODO do we really want to throw a literal here?
@@ -30,25 +34,54 @@ const deviceNetwork = async function<T>(
   });
 };
 
+const fromStringRoleToBytes = {
+  shared_owner: Buffer.from([2]),
+  admin: Buffer.from([1]),
+  operator: Buffer.from([0]),
+};
+
+const psdType = Buffer.from([0]);
+
+export const registerData = async (
+  transport: *,
+  challenge: Buffer,
+): Promise<*> => {
+  const data = await deviceNetwork(ENDPOINTS.REGISTER_DATA, "POST", {
+    challenge: challenge.toString("hex"),
+  });
+
+  return Buffer.from(data, "hex");
+};
+
 export const register = async (
   transport: *,
   challenge: Buffer,
+
   application: string,
-  instanceName: string,
-  instanceReference: string,
-  instanceUrl: string,
-  agentRole: string,
+  name: string,
+  userRole: string,
+  registerData: Buffer,
+
+  // instanceName: string,
+  // instanceReference: string,
+  // instanceUrl: string,
+  // agentRole: string,
 ): Promise<{
   u2f_register: Buffer,
   keyHandle: Buffer,
 }> => {
   const data = await deviceNetwork(ENDPOINTS.REGISTER, "POST", {
     challenge: challenge.toString("hex"),
+    name,
+    role: fromStringRoleToBytes[userRole].toString("hex"),
+    hsm_data: registerData.toString("hex"),
+    type: psdType.toString("hex"),
     application,
-    name: instanceName,
-    role: agentRole,
-    domain_name: instanceUrl,
-    workspace: instanceReference,
+
+    // name: instanceName,
+    // role: agentRole,
+    // domain_name: instanceUrl,
+    // workspace: instanceReference,
   });
   const response = Buffer.from(data, "hex");
   let i = 0;
@@ -65,8 +98,29 @@ export const register = async (
     pubKey,
   };
 };
+export const generateKeyComponent = async (
+  transport: *,
+  path: number[],
+  isWrappingKey: boolean,
+): Promise<*> => {
+  let p1 = 0x00;
+  if (isWrappingKey) {
+    p1 = 0x01;
+  }
+  const data = await deviceNetwork(ENDPOINTS.GENERATE_KEY_FRAGMENTS, "POST", {
+    path: pathArrayToString(path),
+    goal: p1,
+  });
+  return Buffer.from(data, "hex");
+};
+
 export const getAttestationCertificate = async (): Promise<Buffer> => {
-  const data = await deviceNetwork(ENDPOINTS.GET_ATTESTATION, "GET");
+  const data = await deviceNetwork(
+    ENDPOINTS.GET_ATTESTATION,
+    "GET",
+    null,
+    true,
+  );
   return Buffer.from(data, "hex");
 };
 
@@ -119,10 +173,10 @@ export const authenticate = async (
   challenge: Buffer,
   application: string,
   keyHandle: Buffer,
-  instanceName: string,
-  instanceReference: string,
-  instanceUrl: string,
-  agentRole: string,
+  userName: string,
+  role: string,
+  // instanceUrl: string,
+  // agentRole: string,
 ): Promise<{
   userPresence: *,
   counter: *,
@@ -133,10 +187,11 @@ export const authenticate = async (
     challenge: challenge.toString("hex"),
     application,
     key_handle: keyHandle.toString("hex"),
-    name: instanceName,
-    role: agentRole,
-    domain_name: instanceUrl,
-    workspace: instanceReference,
+    name: userName,
+    role: fromStringRoleToBytes[role].toString("hex"),
+    type: psdType.toString("hex"),
+    // domain_name: instanceUrl,
+    // workspace: instanceReference,
   });
 
   // we add a fake status response because traaansport on device does it
@@ -236,6 +291,11 @@ export default class VaultDeviceHTTP {
 
   async register(
     challenge: Buffer,
+
+    userName: string,
+    roleName: string,
+    registerData: Buffer,
+
     application: string,
     instanceName: string,
     instanceReference: string,

@@ -19,7 +19,8 @@ export default function<T>(
   const token = tokenParam || getLocalStorageToken();
   const headers = {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type":
+      !fetchParams || !fetchParams.noJson ? "application/json" : "text/plain",
     ...(token ? { "X-Ledger-Auth": token } : {}),
   };
   const options: Object = { headers, method };
