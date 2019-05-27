@@ -1,6 +1,6 @@
 // @flow
 import Mutation from "restlay/Mutation";
-import { success, error } from "formatters/notification";
+import { success } from "formatters/notification";
 
 type In = {
   request_id: string,
@@ -17,13 +17,9 @@ export default class UpdateUserRegistrationMutation extends Mutation<In, Res> {
 
   uri = `/requests/${this.props.request_id}`;
 
-  getSuccessNotification() {
+  getSuccessNotification = () => {
     return success("invite user", "updated");
-  }
-
-  getErrorNotification(e: Error) {
-    return error("invite user", "updated", e);
-  }
+  };
 
   getBody() {
     const { user_info } = this.props;

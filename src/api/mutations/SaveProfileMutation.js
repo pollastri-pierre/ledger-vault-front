@@ -2,7 +2,7 @@
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { User } from "data/types";
-import { success, error } from "formatters/notification";
+import { success } from "formatters/notification";
 
 type Input = {
   first_name: string,
@@ -20,17 +20,11 @@ export default class SaveProfileMutation extends Mutation<Input, Response> {
 
   responseSchema = schema.User;
 
-  getSuccessNotification() {
+  getSuccessNotification = () => {
     return success("profile", "updated");
-  }
-
-  getErrorNotification(e: Error) {
-    return error("profile", "updated", e);
-  }
+  };
 
   getBody() {
     return this.props;
   }
-
-  // TODO implement optimisticUpdater
 }

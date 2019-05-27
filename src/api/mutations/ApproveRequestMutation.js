@@ -1,6 +1,6 @@
 // @flow
 import Mutation from "restlay/Mutation";
-import { success, error } from "formatters/notification";
+import { success } from "formatters/notification";
 
 type Input = {
   requestId: number,
@@ -19,10 +19,6 @@ export default class ApproveRequestMutation extends Mutation<Input, Response> {
 
   getSuccessNotification = () => {
     return success("request", "updated");
-  };
-
-  getErrorNotification = (e: Error) => {
-    return error("request", "updated", e);
   };
 
   getBody() {

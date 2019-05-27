@@ -60,7 +60,4 @@ export default class Mutation<Input, Response> {
 
   // notification to trigger after data fetch
   +getSuccessNotification: (_response: Response) => ?Notification;
-
-  // notification to trigger after data fetch failure
-  +getErrorNotification: (_error: *) => ?Notification;
 }
