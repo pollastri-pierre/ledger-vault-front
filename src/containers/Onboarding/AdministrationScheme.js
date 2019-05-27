@@ -73,7 +73,7 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.quorum < 2}
+              disabled={onboarding.quorum < 2 || onboarding.quorum === total}
             >
               {t("common:continue")}
             </DialogButton>

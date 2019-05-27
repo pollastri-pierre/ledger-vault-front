@@ -1,118 +1,90 @@
 // @flow
-import React, { Component } from "react";
-import EditProfile from "components/EditProfile";
-import type { User } from "data/types";
-import RegisterAdmins from "./RegisterAdmins";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-const steps = [
-  "Switch on the Ledger Blue Enterprise and connect it to your computer using the provided USB cable.",
-  "Enter your PIN code to unlock the device.",
-  "Open the Vault app from the Ledger Blue Enterprise dashboard and tap 'Confirm' when prompted.",
-];
+import Button from "components/base/Button";
+import InputField from "components/InputField";
+import colors from "shared/colors";
+import DeviceInteraction from "components/DeviceInteraction";
+import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
+import ProfileIcon from "components/icons/thin/Profile";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import type { Organization } from "data/types";
+
 type Props = {
   close: Function,
   finish: Function,
-  setAlert: Function,
-  editMember: Function,
-  history: *,
-  member: User,
-  challenge: string,
-};
-type State = {
-  step: number,
-  data: any,
+  organization: Organization,
 };
 
-class AddMember extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      step: 0,
-      data: {
-        email: props.member ? props.member.email : "",
-        username: props.member ? props.member.username : "",
-        picture: props.member ? props.member.picture : "",
-      },
-    };
-  }
+const AddMember = ({ close, finish, organization }: Props) => {
+  const [username, setUsername] = useState("");
+  const [registering, setRegistering] = useState("");
 
-  next = (data: *) => {
-    // we are editing a member, no need to register device again
-    if (this.props.member) {
-      // TODO modify member in store redux and call the API too
-      const newMember = {
-        ...this.props.member,
-        email: data.email,
-        username: data.username,
-        picture: data.picture,
-      };
-      const { setAlert } = this.props;
-      const promise = this.props.editMember(newMember);
-      // we have to return the promise so the dialogbutton will be able to be display in disable mode while pending
-      promise
-        .then(() => {
-          this.props.close();
-        })
-        .catch(() => {
-          setAlert(
-            "Error",
-            "Oops something went wrong. Please try again",
-            "error",
-          );
-        });
-      return promise;
-    }
-    this.setState({ step: 1, data });
+  const onSuccess = data => {
+    setRegistering(false);
+    finish({ ...data.register_input, username });
   };
 
-  prev = () => {
-    this.setState({ step: 0 });
+  const onError = () => {
+    setRegistering(false);
+    close();
   };
 
-  finish = (result: *) => {
-    this.setState({ step: 0 });
-    const data = {
-      username: this.state.data.username,
-      email: this.state.data.email,
-      picture: this.state.data.picture,
-    };
-    this.props.finish({ ...result, ...data });
-  };
+  return (
+    <Box p={40} pb={20} flow={20} width={500}>
+      <Text large>Add new admin</Text>
+      <Box horizontal flow={30} mt={80} align="center">
+        <ProfileIconContainer>
+          <ProfileIcon color="white" />
+        </ProfileIconContainer>
+        <Box flow={20}>
+          <InputField
+            placeholder="Username"
+            name="username"
+            maxLength={19}
+            onlyAscii
+            value={username}
+            onChange={setUsername}
+          />
+        </Box>
+      </Box>
+      <Box horizontal justify="flex-end" pt={20}>
+        {registering ? (
+          <DeviceInteraction
+            onSuccess={onSuccess}
+            interactions={onboardingRegisterFlow}
+            onError={onError}
+            additionalFields={{
+              organization,
+              role: "admin",
+            }}
+          />
+        ) : (
+          <Button
+            type="submit"
+            disabled={!username}
+            variant="outlined"
+            data-test="dialog-button"
+            onClick={() => setRegistering(!registering)}
+          >
+            Continue
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+};
 
-  render() {
-    let label = "Continue";
-    if (this.props.member) {
-      label = "save";
-    }
-
-    const { step } = this.state;
-
-    if (step === 0) {
-      return (
-        <EditProfile
-          title="Add new member"
-          profile={this.state.data}
-          onSubmit={this.next}
-          close={this.props.close}
-          labelSubmit={label}
-        />
-      );
-    }
-    if (step === 1) {
-      return (
-        <RegisterAdmins
-          steps={steps}
-          title="Register device"
-          close={this.props.close}
-          history={this.props.history}
-          finish={this.finish}
-          cancel={this.prev}
-          challenge={this.props.challenge}
-        />
-      );
-    }
-    return null;
-  }
-}
+const ProfileIconContainer = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+})`
+  width: 80px;
+  height: 80px;
+  background-color: ${colors.argile};
+  border-radius: 50%;
+`;
 
 export default AddMember;

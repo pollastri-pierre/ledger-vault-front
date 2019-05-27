@@ -1,38 +1,25 @@
 // @flow
 import { connect } from "react-redux";
-import cx from "classnames";
 import { withTranslation } from "react-i18next";
+import Modal from "components/base/Modal";
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import BlurDialog from "components/BlurDialog";
-import {
-  Title,
-  Introduction,
-  AddUser,
-  Careful,
-  NoMembers,
-} from "components/Onboarding";
+import { Title, Introduction, AddUser, NoMembers } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
+import InfoBox from "components/base/InfoBox";
+import Text from "components/base/Text";
+import Disabled from "components/Disabled";
 import { addMessage } from "redux/modules/alerts";
 import {
   getRegistrationChallenge,
   addMember,
   wipe,
-  editMember,
   toggleMemberModal,
 } from "redux/modules/onboarding";
 import MemberRow from "components/MemberRow";
-import SpinnerCard from "components/spinners/SpinnerCard";
-import type { User, Translate } from "data/types";
+import type { User, Translate, Organization } from "data/types";
 import Footer from "./Footer";
 import AddMember from "./AddMember";
-
-const styles = {
-  disabled: {
-    opacity: 0.3,
-    pointerEvents: "none",
-  },
-};
 
 const membersList = {
   base: {
@@ -69,17 +56,15 @@ const mapDispatch = (dispatch: *) => ({
   onToggleModalProfile: member => dispatch(toggleMemberModal(member)),
   onAddMember: data => dispatch(addMember(data)),
   onWipe: () => dispatch(wipe()),
-  onEditMember: data => dispatch(editMember(data)),
   onGetChallenge: () => dispatch(getRegistrationChallenge()),
   onAddMessage: (title, message, type) =>
     dispatch(addMessage(title, message, type)),
 });
 
 type Props = {
-  classes: { [$Keys<typeof styles>]: string },
   onToggleModalProfile: Function,
+  organization: Organization,
   onAddMember: Function,
-  onGetChallenge: Function,
   history: *,
   onEditMember: Function,
   onAddMessage: Function,
@@ -87,27 +72,17 @@ type Props = {
   t: Translate,
 };
 class Registration extends Component<Props, *> {
-  componentDidMount() {
-    // make an API call to get the challenge needed to register all the new members
-    const { onGetChallenge } = this.props;
-    onGetChallenge();
-  }
-
   addMember = data => {
     this.props.onAddMember(data);
     this.props.onToggleModalProfile();
   };
 
-  editMember = member => {
-    this.props.onToggleModalProfile(member);
-  };
-
   render() {
     const {
-      classes,
       onboarding,
       history,
       onToggleModalProfile,
+      organization,
       onEditMember,
       onAddMessage,
       t,
@@ -115,35 +90,32 @@ class Registration extends Component<Props, *> {
     if (onboarding.fatal_error) {
       return <div />;
     }
-    if (!onboarding.registering || !onboarding.registering.challenge) {
-      return <SpinnerCard />;
-    }
     return (
       <div>
         <Title>{t("onboarding:administrators_registration.title")}</Title>
-        <BlurDialog
-          open={onboarding.member_modal}
+        <Modal
+          isOpened={onboarding.member_modal}
           onClose={onToggleModalProfile}
         >
           <AddMember
             close={onToggleModalProfile}
+            organization={organization}
             finish={this.addMember}
             history={history}
-            member={onboarding.editMember}
             editMember={onEditMember}
             setAlert={onAddMessage}
             challenge={onboarding.registering.challenge}
           />
-        </BlurDialog>
-        <div className={cx({ [classes.disabled]: !onboarding.is_editable })}>
+        </Modal>
+        <Disabled disabled={!onboarding.is_editable}>
           <AddUser onClick={() => onToggleModalProfile()}>
             {t("onboarding:administrators_registration.add_member")}
           </AddUser>
           <Introduction>
             {t("onboarding:administrators_registration.description")}
-            <Careful>
-              {t("onboarding:administrators_registration.description_strong")}
-            </Careful>
+            <InfoBox withIcon type="info" style={{ marginTop: 20 }}>
+              <Text i18nKey="onboarding:administrators_registration.description_strong" />
+            </InfoBox>
           </Introduction>
           {onboarding.registering.admins.length === 0 ? (
             <NoMembers
@@ -153,12 +125,9 @@ class Registration extends Component<Props, *> {
               info={t("onboarding:administrators_registration.at_least")}
             />
           ) : (
-            <MembersList
-              members={onboarding.registering.admins}
-              editMember={this.editMember}
-            />
+            <MembersList members={onboarding.registering.admins} />
           )}
-        </div>
+        </Disabled>
         <Footer
           nextState
           render={(onNext, onPrevious) => (
@@ -184,4 +153,4 @@ class Registration extends Component<Props, *> {
 export default connect(
   mapStateToProps,
   mapDispatch,
-)(withStyles(styles)(withTranslation()(Registration)));
+)(withTranslation()(Registration));

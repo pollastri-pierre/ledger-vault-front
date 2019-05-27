@@ -1,13 +1,20 @@
 // @flow
 import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import io from "socket.io-client";
+
+import connectData from "restlay/connectData";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import HelpLink from "components/HelpLink";
 import Logo from "components/Logo";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import CenteredLayout from "components/base/CenteredLayout";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
+import Absolute from "components/base/Absolute";
 import { getState, changeQuorum } from "redux/modules/onboarding";
-import io from "socket.io-client";
+import type { Organization } from "data/types";
 import Welcome from "./Welcome";
 import WrappingKeys from "./WrappingKeys";
 import Prerequisite from "./Prerequisite";
@@ -34,67 +41,12 @@ const mapDispatchToProps = (dispatch: *) => ({
   changeNbRequired: nb => dispatch(changeQuorum(nb)),
 });
 
-const styles = {
-  fatal_error: {
-    opacity: 0.3,
-    pointerEvents: "none",
-  },
-  wrapper: {
-    width: "100%",
-    height: "100vh",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  banner: {
-    position: "absolute",
-    top: -52,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  support: {
-    fontSize: 11,
-    fontWeight: 600,
-    textTransform: "uppercase",
-    textDecoration: "none",
-    color: "#767676",
-  },
-  base: {
-    background: "white",
-    width: 728,
-    padding: "40px 40px 40px 0",
-    boxShadow: "0 2.5px 2.5px 0 rgba(0,0,0,.04)",
-    display: "flex",
-    position: "relative",
-  },
-  content: {
-    position: "relative",
-    flex: 1,
-  },
-  link: {
-    "& > span": {
-      textTransform: "uppercase",
-      color: "grey",
-    },
-  },
-  selected: {
-    color: "red",
-    "& > span": {
-      color: "black!important",
-    },
-  },
-  labelLinkMarginTop: {
-    marginTop: 20,
-  },
-};
-
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
   match: *,
   history: *,
   onboarding: *,
   changeNbRequired: Function,
+  organization: Organization,
   onGetState: Function,
 };
 
@@ -102,6 +54,21 @@ type State = {
   nbAdministrator: number,
   nbRequired: number,
 };
+
+const WIDTH = 750;
+
+const Container = styled(Box).attrs({
+  position: "relative",
+  horizontal: true,
+  p: 40,
+  pl: 0,
+  width: WIDTH,
+})`
+  background: white;
+  box-shadow: 0 2.5px 2.5px 0 rgba(0, 0, 0, 0.04);
+  opacity: ${p => (p.fatalError ? "0.3" : "1")};
+  pointerevents: ${p => (p.fatalError ? "none" : "auto")};
+`;
 
 class OnboardingContainer extends Component<Props, State> {
   componentDidMount() {
@@ -129,8 +96,8 @@ class OnboardingContainer extends Component<Props, State> {
 
   render() {
     const {
-      classes,
       onboarding,
+      organization,
       changeNbRequired,
       match,
       history,
@@ -139,16 +106,18 @@ class OnboardingContainer extends Component<Props, State> {
       return <SpinnerCard />;
     }
     return (
-      <div className={cx("App", classes.wrapper)}>
-        <div
-          className={cx(classes.base, {
-            [classes.fatal_error]: onboarding.fatal_error,
-          })}
-        >
-          <div className={classes.banner}>
-            <Logo />
-            <HelpLink className={classes.support}>HELP</HelpLink>
-          </div>
+      <CenteredLayout>
+        <Container fatalError={onboarding.fatal_error}>
+          <Absolute top={-52} width={WIDTH}>
+            <Box horizontal justify="space-between">
+              <Logo />
+              <HelpLink>
+                <Text small bold uppercase>
+                  HELP
+                </Text>
+              </HelpLink>
+            </Box>
+          </Absolute>
           <Menu
             nbMember={onboarding.registering.admins.length}
             nbSharedOwner={
@@ -156,7 +125,7 @@ class OnboardingContainer extends Component<Props, State> {
             }
             onboarding={onboarding}
           />
-          <div className={classes.content}>
+          <Box position="relative" flex={1}>
             {onboarding.state === "LOADING" && <SpinnerCard />}
             {onboarding.state === "EMPTY_PARTITION" && <Welcome />}
             {onboarding.state === "WRAPPING_KEY_PREREQUISITES" && (
@@ -166,9 +135,7 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationWrapping />
             )}
             {onboarding.state === "WRAPPING_KEY_BACKUP" && <Backup />}
-            {onboarding.state === "WRAPPING_KEY_SIGN_IN" && (
-              <WrappingKeys history={history} />
-            )}
+            {onboarding.state === "WRAPPING_KEY_SIGN_IN" && <WrappingKeys />}
             {onboarding.state === "ADMINISTRATORS_PREREQUISITE" && (
               <Prerequisite />
             )}
@@ -176,7 +143,7 @@ class OnboardingContainer extends Component<Props, State> {
               <ConfigurationAdministrators />
             )}
             {onboarding.state === "ADMINISTRATORS_REGISTRATION" && (
-              <Registration history={history} />
+              <Registration history={history} organization={organization} />
             )}
             {onboarding.state === "ADMINISTRATORS_SCHEME_CONFIGURATION" && (
               <AdministrationScheme
@@ -194,20 +161,18 @@ class OnboardingContainer extends Component<Props, State> {
             )}
             {onboarding.state === "MASTER_SEED_BACKUP" && <Backup />}
             {onboarding.state === "SHARED_OWNER_REGISTRATION" && (
-              <SharedOwnerRegistration history={history} />
+              <SharedOwnerRegistration organization={organization} />
             )}
             {onboarding.state === "SHARED_OWNER_VALIDATION" && (
               <SharedOwnerValidation />
             )}
-            {onboarding.state === "MASTER_SEED_GENERATION" && (
-              <Provisionning history={history} />
-            )}
+            {onboarding.state === "MASTER_SEED_GENERATION" && <Provisionning />}
             {onboarding.state === "COMPLETE" && (
               <ConfirmationGlobal match={match} history={history} />
             )}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Container>
+      </CenteredLayout>
     );
   }
 }
@@ -215,4 +180,10 @@ class OnboardingContainer extends Component<Props, State> {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(OnboardingContainer));
+)(
+  connectData(OnboardingContainer, {
+    queries: {
+      organization: OrganizationQuery,
+    },
+  }),
+);
