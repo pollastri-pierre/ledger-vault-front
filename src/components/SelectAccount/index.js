@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from "react";
 import { components } from "react-select";
-import type { OptionProps } from "react-select/lib/types";
+import type { OptionProps } from "react-select/src/types";
 
 import type { Account } from "data/types";
 

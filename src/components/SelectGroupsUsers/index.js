@@ -5,7 +5,7 @@ import type { GroupedOption } from "components/base/Select";
 import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import type { OptionProps } from "react-select/lib/types";
+import type { OptionProps } from "react-select/src/types";
 import type { User, Group } from "data/types";
 import { components } from "react-select";
 import { FaUser, FaUsers } from "react-icons/fa";
