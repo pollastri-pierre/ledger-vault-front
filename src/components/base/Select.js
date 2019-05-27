@@ -2,9 +2,9 @@
 
 import React, { PureComponent } from "react";
 import ReactSelect from "react-select";
-import AsyncReactSelect from "react-select/lib/Async";
+import AsyncReactSelect from "react-select/async";
 
-import type { PlaceholderProps } from "react-select/lib/types";
+import type { PlaceholderProps } from "react-select/src/types";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";

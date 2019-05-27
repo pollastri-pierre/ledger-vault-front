@@ -4,7 +4,7 @@ import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
 import { components } from "react-select";
 import { Trans, withTranslation } from "react-i18next";
-import type { OptionProps } from "react-select/lib/types";
+import type { OptionProps } from "react-select/src/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ERC20Token, Translate } from "data/types";

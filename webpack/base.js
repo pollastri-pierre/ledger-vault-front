@@ -9,7 +9,7 @@ import paths from "./paths";
 import * as globals from "./globals";
 
 export default {
-  entry: ["babel-polyfill", "./src/index"],
+  entry: ["@babel/polyfill", "./src/index"],
 
   resolve: {
     modules: [paths.src, paths.nodeModules],
