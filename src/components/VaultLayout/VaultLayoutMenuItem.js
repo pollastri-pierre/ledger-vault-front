@@ -27,6 +27,10 @@ export default ({
 }: Props) => {
   const { Icon, NotifComponent, dataTest } = item;
 
+  const url = item.url
+    ? `${item.url}?${item.query ? qs.stringify(item.query) : ""}`
+    : null;
+
   const iconContainerStyle = {
     ...styles.stick,
     transform: [
@@ -73,10 +77,9 @@ export default ({
     </VaultLayoutIconContainer>
   );
 
-  if (item.url && (!isMenuOpened && isMenuFloating)) {
-    const query = item.query ? qs.stringify(item.query) : "";
+  if (url && (!isMenuOpened && isMenuFloating)) {
     icon = (
-      <Link style={styles.link} to={`${item.url}?${query}`}>
+      <Link style={styles.link} to={url}>
         {icon}
       </Link>
     );
@@ -101,9 +104,9 @@ export default ({
     </VaultLayoutMenuItem>
   );
 
-  if (item.url && (isMenuOpened || !isMenuFloating)) {
+  if (url && (isMenuOpened || !isMenuFloating)) {
     menuItem = (
-      <Link style={styles.link} to={item.url}>
+      <Link style={styles.link} to={url}>
         {menuItem}
       </Link>
     );
