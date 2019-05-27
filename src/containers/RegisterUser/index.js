@@ -10,7 +10,7 @@ import GlobalLoading from "components/GlobalLoading";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import InviteUserQuery from "api/queries/InviteUserQuery";
 import DeviceInteraction from "components/DeviceInteraction";
-import { registerFlow } from "device/interactions/registerFlow";
+import { registerUserFlow } from "device/interactions/hsmFlows";
 import type { RestlayEnvironment } from "restlay/connectData";
 
 import CenteredLayout from "components/base/CenteredLayout";
@@ -89,10 +89,13 @@ function RegisterUser(props: Props) {
                 <Box mb={20}>
                   <DeviceInteraction
                     onSuccess={onSuccess}
-                    interactions={registerFlow}
+                    interactions={registerUserFlow}
                     onError={() => setRegistering(false)}
                     additionalFields={{
                       organization,
+                      role: userInvite
+                        ? userInvite.user.role.toLowerCase()
+                        : "admin",
                       member: userInvite,
                       urlID: match.params.urlID,
                       restlay,

@@ -10,7 +10,7 @@ import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import type { User } from "data/types";
 import colors from "shared/colors";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 
 import UserDetailsOverview from "./UD-Overview";
 import UserDetailsHistory from "./UD-History";
