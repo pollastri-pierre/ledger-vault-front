@@ -3,7 +3,7 @@ import React from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { Match } from "react-router-dom";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import UsersQuery from "api/queries/UsersQuery";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";

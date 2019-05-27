@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 
 import colors from "shared/colors";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import RequestActionButtons from "components/RequestActionButtons";
