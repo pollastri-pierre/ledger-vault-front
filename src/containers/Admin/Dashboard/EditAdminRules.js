@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
 
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import { CardError } from "components/base/Card";
 import { RichModalHeader, RichModalFooter } from "components/base/Modal";
 import ApproveRequestButton from "components/ApproveRequestButton";
