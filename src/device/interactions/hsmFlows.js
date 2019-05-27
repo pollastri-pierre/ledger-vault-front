@@ -5,7 +5,7 @@ import NewRequestMutation from "api/mutations/NewRequestMutation";
 import network, { retryOnCondition, retry } from "network";
 import {
   APPID_VAULT_ADMINISTRATOR,
-  INIT_SESSION,
+  ACCOUNT_MANAGER_SESSION,
   CONFIDENTIALITY_PATH,
   VALIDATION_PATH,
 } from "device";
@@ -109,7 +109,7 @@ const onboardingRegisterDevice: Interaction = {
         CONFIDENTIALITY_PATH,
         register_challenge.ephemeral_public_key,
         challengeAttestation,
-        INIT_SESSION,
+        ACCOUNT_MANAGER_SESSION,
       );
     });
 
@@ -228,7 +228,7 @@ const openSessionValidate: Interaction = {
         CONFIDENTIALITY_PATH,
         channel.ephemeral_public_key,
         certif,
-        INIT_SESSION,
+        ACCOUNT_MANAGER_SESSION,
       );
     });
 
@@ -256,7 +256,7 @@ const openSessionValidate2: Interaction = {
         CONFIDENTIALITY_PATH,
         channel.ephemeral_public_key,
         certif,
-        INIT_SESSION,
+        ACCOUNT_MANAGER_SESSION,
       );
     });
 
