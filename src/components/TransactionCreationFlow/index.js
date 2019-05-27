@@ -11,7 +11,7 @@ import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
-import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 
 import TransactionCreationAccount, {
   getBridgeAndTransactionFromAccount,
@@ -65,7 +65,7 @@ const steps = [
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
-          interactions={createAndApproveWithChallenge}
+          interactions={createAndApprove}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();

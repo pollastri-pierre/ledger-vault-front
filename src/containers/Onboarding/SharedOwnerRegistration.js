@@ -2,32 +2,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import type { Translate } from "data/types";
-import {
-  Title,
-  Careful,
-  Introduction,
-  NoMembers,
-  AddUser,
-} from "components/Onboarding";
+import type { Translate, Organization } from "data/types";
+import DeviceInteraction from "components/DeviceInteraction";
+import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
+import Modal from "components/base/Modal";
+import { Title, Introduction, NoMembers, AddUser } from "components/Onboarding";
 import { withTranslation, Trans } from "react-i18next";
-import SpinnerCard from "components/spinners/SpinnerCard";
-import BlurDialog from "components/BlurDialog";
-import RegisterAdmins from "containers/Onboarding/RegisterAdmins";
+import Box from "components/base/Box";
+import InfoBox from "components/base/InfoBox";
+import Text from "components/base/Text";
 import DialogButton from "components/buttons/DialogButton";
-import {
-  getSharedOwnerRegistrationChallenge,
-  addSharedOwner,
-} from "redux/modules/onboarding";
+import { addSharedOwner } from "redux/modules/onboarding";
 import type { Onboarding } from "redux/modules/onboarding";
 import Footer from "./Footer";
 
 type Props = {
   t: Translate,
+  organization: Organization,
   onboarding: Onboarding,
-  history: *,
   onAddSharedOwner: Function,
-  onGetChallenge: Function,
 };
 
 type State = {
@@ -38,54 +31,51 @@ class SharedOwnerRegistration extends Component<Props, State> {
     registering: false,
   };
 
-  componentDidMount() {
-    const { onGetChallenge } = this.props;
-    onGetChallenge();
-  }
-
   onToggleRegisteringModal = () => {
     this.setState(state => ({ registering: !state.registering }));
   };
 
   add = data => {
     this.onToggleRegisteringModal();
-    this.props.onAddSharedOwner(data);
+    this.props.onAddSharedOwner(data.register_input);
   };
 
   render() {
-    const { t, onboarding, history } = this.props;
+    const { t, onboarding, organization } = this.props;
     const { registering } = this.state;
     if (onboarding.fatal_error) {
       return <div />;
     }
-    if (
-      !onboarding.registering_shared_owner ||
-      !onboarding.registering_shared_owner.challenge
-    ) {
-      return <SpinnerCard />;
-    }
     return (
       <div>
-        <BlurDialog open={registering} onClose={this.onToggleRegisteringModal}>
-          <RegisterAdmins
-            title="Register Shared-Owner"
-            role="Shared-Owner"
-            close={this.onToggleRegisteringModal}
-            cancel={this.onToggleRegisteringModal}
-            challenge={onboarding.registering_shared_owner.challenge}
-            finish={this.add}
-            history={history}
-          />
-        </BlurDialog>
+        <Modal isOpened={registering} onClose={this.onToggleRegisteringModal}>
+          <Box flow={40} p={30} pb={80} width={500}>
+            <Text small uppercase>
+              Register Shared-Owner
+            </Text>
+            <Box align="center">
+              <DeviceInteraction
+                onSuccess={this.add}
+                interactions={onboardingRegisterFlow}
+                onError={this.onToggleRegisteringModal}
+                additionalFields={{
+                  organization,
+                  role: "shared_owner",
+                  // member: { user: { role: "Shared-Owner" } },
+                }}
+              />
+            </Box>
+          </Box>
+        </Modal>
         <Title>{t("onboarding:so_registration.title")}</Title>
         <Introduction>
           <Trans
             i18nKey="onboarding:so_registration.desc"
             components={<strong>0</strong>}
           />
-          <Careful>
+          <InfoBox withIcon type="info" style={{ marginTop: 20 }}>
             {t("onboarding:so_registration.description_strong")}
-          </Careful>
+          </InfoBox>
         </Introduction>
         {onboarding.registering_shared_owner.sharedOwners.length < 3 && (
           <AddUser onClick={this.onToggleRegisteringModal}>
@@ -153,7 +143,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddSharedOwner: data => dispatch(addSharedOwner(data)),
-  onGetChallenge: () => dispatch(getSharedOwnerRegistrationChallenge()),
 });
 export default connect(
   mapStateToProps,

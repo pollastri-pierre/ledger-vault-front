@@ -10,6 +10,27 @@ const splits = (chunk: number, buffer: Buffer): Buffer[] => {
   return chunks;
 };
 
+export const generateKeyComponent = async (
+  transport: Transport<*>,
+  path: number[],
+  isWrappingKey: boolean,
+): Promise<Buffer> => {
+  const data = Buffer.concat([
+    Buffer.from([path.length]),
+    ...path.map(derivation => {
+      const buf = Buffer.alloc(4);
+      buf.writeUInt32BE(derivation, 0);
+      return buf;
+    }),
+  ]);
+  let p1 = 0x00;
+  if (isWrappingKey) {
+    p1 = 0x01;
+  }
+  const response = await transport.send(0xe0, 0x44, p1, 0x00, data);
+  return response.slice(0, response.length - 2);
+};
+
 export const getAttestationCertificate = async (
   transport: Transport<*>,
 ): Promise<Buffer> => {
@@ -429,20 +450,7 @@ export default class VaultDeviceApp {
     path: number[],
     isWrappingKey: boolean,
   ): Promise<*> {
-    const data = Buffer.concat([
-      Buffer.from([path.length]),
-      ...path.map(derivation => {
-        const buf = Buffer.alloc(4);
-        buf.writeUInt32BE(derivation, 0);
-        return buf;
-      }),
-    ]);
-    let p1 = 0x00;
-    if (isWrappingKey) {
-      p1 = 0x01;
-    }
-    const response = await this.transport.send(0xe0, 0x44, p1, 0x00, data);
-    return response.slice(0, response.length - 2);
+    return generateKeyComponent(this.transport, path, isWrappingKey);
   }
 
   async openSession(

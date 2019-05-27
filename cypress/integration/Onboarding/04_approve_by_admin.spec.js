@@ -37,12 +37,12 @@ context("Admin Approve the registration of the Shared Owners", () => {
       // Try to sign in with the same device, Should Display Error
       cy.get(".test-onboarding-signin").click();
       cy.wait("@authenticate");
-      cy.get(".top-message-body")
-        .contains(
-          "This admin already validated the partition, please une another one",
-        )
-        .get(".top-message-title")
-        .contains("Error");
+      cy.wait(1000);
+      cy.get("[data-test=error-message-desc]").contains(
+        "This admin already validated the partition, please une another one",
+      );
+
+      cy.get("[data-test=close]").click();
 
       // Second Admin sign in
       cy.request("POST", Cypress.env("api_switch_device"), {

@@ -1,14 +1,17 @@
 // @flow
-import BlurDialog from "components/BlurDialog";
+import React, { useEffect, useState } from "react";
+
+import Box from "components/base/Box";
+import { DEVICE_REJECT_ERROR_CODE } from "device";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
+import { generateSeed } from "device/interactions/hsmFlows";
 import SpinnerCard from "components/spinners/SpinnerCard";
 import type { Translate } from "data/types";
-import FragmentKey from "containers/Onboarding/Fragment";
 import { withTranslation, Trans } from "react-i18next";
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { Title, Introduction } from "components/Onboarding";
+import Fragment from "containers/Onboarding/Fragments";
 import DialogButton from "components/buttons/DialogButton";
 import {
   toggleDeviceModal,
@@ -18,153 +21,120 @@ import {
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import Footer from "./Footer";
-import GenerateSeedDevice from "./GenerateSeedDevice";
 
-const styles = {
-  steps: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 35,
-  },
-  title: {
-    fontSize: 12,
-    fontWeight: 600,
-    margin: "0 0 12px 0",
-  },
-  step: {
-    paddingRight: 13,
-    paddingLeft: 25,
-    "&:first-child": {
-      paddingLeft: 0,
-    },
-    transition: "all 200ms ease",
-  },
-  disabled: {
-    opacity: 0.2,
-  },
-  separator: {
-    width: 1,
-    height: 94,
-    background: "#eeeeee",
-  },
-};
 type Props = {
-  classes: { [$Keys<typeof styles>]: string },
   t: Translate,
   onboarding: *,
-  onToggleDeviceModal: Function,
   onGetShardsChannel: Function,
   onWipe: Function,
-  history: *,
-  onAddMessage: (string, string, string) => void,
   onAddSeedShard: Function,
 };
-type State = {
-  deny: boolean,
-};
-class Provisioning extends Component<Props, State> {
-  state = {
-    deny: false,
-  };
+const Provisioning = ({
+  onWipe,
+  onboarding,
+  t,
+  onGetShardsChannel,
+  onAddSeedShard,
+}: Props) => {
+  const [deny, setDeny] = useState(false);
+  const [isLoading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
 
-  finish = data => {
-    this.props.onToggleDeviceModal();
-    this.props.onAddSeedShard(data);
-  };
-
-  componentDidMount() {
-    const { onGetShardsChannel } = this.props;
+  useEffect(() => {
     onGetShardsChannel();
-  }
+  }, [onGetShardsChannel]);
 
-  toggleCancelOnDevice = () => {
-    this.setState(state => ({ deny: !state.deny }));
+  const onSuccess = data => {
+    setLoading(null);
+    const {
+      blob,
+      validate_device,
+      u2f_key: { pubKey },
+    } = data;
+
+    const send = {
+      key_fragment: blob.toString("base64"),
+      signature: validate_device.toString("base64"),
+      public_key: pubKey.toString("hex"),
+    };
+    onAddSeedShard(send);
   };
 
-  render() {
-    const {
-      classes,
-      onboarding,
-      onToggleDeviceModal,
-      history,
-      onWipe,
-      onAddMessage,
-      t,
-    } = this.props;
-    if (!onboarding.provisionning.channel) {
-      return <SpinnerCard />;
+  const onError = e => {
+    setLoading(null);
+    if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
+      setDeny(true);
+    } else {
+      setError(e);
     }
-    if (this.state.deny) {
-      return (
-        <ConfirmationCancel
-          entity="Administrators"
-          step="Master Seed generation"
-          toggle={this.toggleCancelOnDevice}
-          wipe={onWipe}
-          title="Generate Master Seed"
-        />
-      );
-    }
+  };
+
+  if (deny) {
     return (
-      <div>
-        <Title>{t("onboarding:master_seed_provisionning.title")}</Title>
-        <BlurDialog
-          open={onboarding.device_modal}
-          onClose={onToggleDeviceModal}
-        >
-          <GenerateSeedDevice
-            shards_channel={onboarding.provisionning.channel}
-            onFinish={this.finish}
-            toggleCancelOnDevice={this.toggleCancelOnDevice}
-            history={history}
-            wraps={false}
-            addMessage={onAddMessage}
-            cancel={onToggleDeviceModal}
-          />
-        </BlurDialog>
-        <Introduction>
-          <Trans
-            i18nKey="onboarding:master_seed_provisionning.description"
-            components={<b>0</b>}
-          />
-        </Introduction>
-        <div className={classes.steps}>
+      <ConfirmationCancel
+        entity="Administrators"
+        step="Master Seed generation"
+        toggle={() => setDeny(false)}
+        wipe={onWipe}
+        title="Generate Master Seed"
+      />
+    );
+  }
+  return (
+    <Box>
+      {error && <TriggerErrorNotification error={error} />}
+      <Title>{t("onboarding:master_seed_provisionning.title")}</Title>
+      <Introduction>
+        <Trans
+          i18nKey="onboarding:master_seed_provisionning.description"
+          components={<b>0</b>}
+        />
+      </Introduction>
+      {onboarding.provisionning &&
+      onboarding.provisionning.channel &&
+      Object.keys(onboarding.provisionning.channel).length > 0 ? (
+        <Box horizontal mb={35} justify="space-evenly">
           {Array(3)
             .fill()
             .map((v, i) => (
-              <FragmentKey
-                key={i} // eslint-disable-line react/no-array-index-key
-                disabled={onboarding.provisionning.blobs.length <= i - 1}
+              <Fragment
+                disabled={i !== onboarding.provisionning.blobs.length}
+                loading={isLoading === i}
+                additionalFields={{
+                  secure_channels: onboarding.provisionning.channel,
+                }}
+                interactions={generateSeed}
                 label={t(`onboarding:master_seed_provisionning.step${i + 1}`)}
-                labelGenerate={t(
-                  "onboarding:master_seed_provisionning.generate_seed",
-                )}
-                generate={onToggleDeviceModal}
                 generated={onboarding.provisionning.blobs.length > i}
+                onSuccess={onSuccess}
+                onError={onError}
+                generate={() => setLoading(i)}
               />
             ))}
-        </div>
-        <Footer
-          nextState
-          render={(onNext, onPrevious) => (
-            <>
-              <DialogButton onTouchTap={onPrevious}>
-                {t("common:back")}
-              </DialogButton>
-              <DialogButton
-                highlight
-                onTouchTap={onNext}
-                disabled={onboarding.provisionning.blobs.length < 3}
-              >
-                {t("common:continue")}
-              </DialogButton>
-            </>
-          )}
-        />
-      </div>
-    );
-  }
-}
+        </Box>
+      ) : (
+        <SpinnerCard />
+      )}
+      <Footer
+        nextState
+        render={(onNext, onPrevious) => (
+          <>
+            <DialogButton onTouchTap={onPrevious}>
+              {t("common:back")}
+            </DialogButton>
+            <DialogButton
+              highlight
+              onTouchTap={onNext}
+              disabled={onboarding.provisionning.blobs.length < 3}
+            >
+              {t("common:continue")}
+            </DialogButton>
+          </>
+        )}
+      />
+    </Box>
+  );
+};
 
 const mapProps = state => ({
   onboarding: state.onboarding,
@@ -181,4 +151,4 @@ const mapDispatch = (dispatch: *) => ({
 export default connect(
   mapProps,
   mapDispatch,
-)(withStyles(styles)(withTranslation()(Provisioning)));
+)(withTranslation()(Provisioning));

@@ -7,7 +7,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
-import { approveFlow } from "device/interactions/approveFlow";
+import { approveFlow } from "device/interactions/hsmFlows";
 import AbortRequestButton from "components/AbortRequestButton";
 import { withMe } from "components/UserContextProvider";
 import ApproveRequestButton from "components/ApproveRequestButton";

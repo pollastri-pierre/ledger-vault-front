@@ -10,7 +10,7 @@ import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
 import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import connectData from "restlay/connectData";
-import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import type { User, Account, Group } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 
@@ -175,7 +175,7 @@ const AccountToMigrate = ({
           >
             <ApproveRequestButton
               disabled={!isValid}
-              interactions={createAndApproveWithChallenge}
+              interactions={createAndApprove}
               onSuccess={onMigrationSuccess}
               additionalFields={{
                 type: isMigrated ? "MIGRATE_ACCOUNT" : "EDIT_ACCOUNT",

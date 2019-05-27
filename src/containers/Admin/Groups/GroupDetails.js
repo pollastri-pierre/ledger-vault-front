@@ -13,7 +13,7 @@ import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
 import GroupHistory from "containers/Admin/Groups/GroupHistory";
 import colors from "shared/colors";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import { CardError } from "components/base/Card";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import Box from "components/base/Box";

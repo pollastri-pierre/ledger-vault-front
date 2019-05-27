@@ -3,8 +3,17 @@ import { retry } from "network";
 import React from "react";
 import type { Interaction } from "components/DeviceInteraction";
 import Text from "components/base/Text";
-import { U2F_PATH, CONFIDENTIALITY_PATH, VALIDATION_PATH } from "device";
-import { getPublicKey, getAttestationCertificate } from "device/interface";
+import {
+  U2F_PATH,
+  CONFIDENTIALITY_PATH,
+  VALIDATION_PATH,
+  KEY_MATERIAL_PATH,
+} from "device";
+import {
+  getPublicKey,
+  getAttestationCertificate,
+  generateKeyComponent,
+} from "device/interface";
 
 export const getU2FPublicKey: Interaction = {
   needsUserInput: false,
@@ -37,4 +46,20 @@ export const getAttestation: Interaction = {
   responseKey: "attestation",
   action: ({ transport }) =>
     retry(() => getAttestationCertificate()(transport)),
+};
+
+export const generateWrappingKey: Interaction = {
+  needsUserInput: true,
+  device: true,
+  responseKey: "blob",
+  action: ({ transport }) =>
+    retry(() => generateKeyComponent()(transport, KEY_MATERIAL_PATH, true)),
+};
+
+export const generateFragmentSeed: Interaction = {
+  needsUserInput: true,
+  device: true,
+  responseKey: "blob",
+  action: ({ transport }) =>
+    retry(() => generateKeyComponent()(transport, KEY_MATERIAL_PATH)),
 };

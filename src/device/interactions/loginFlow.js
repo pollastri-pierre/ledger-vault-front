@@ -33,9 +33,7 @@ export const u2fAuthenticate: Interaction = {
           APPID_VAULT_ADMINISTRATOR,
           Buffer.from(key_handle, "hex"),
           organization.name,
-          organization.workspace,
-          organization.domain_name,
-          "Administrator",
+          "admin",
         ),
       {
         shouldThrow: (e: DeviceError) =>

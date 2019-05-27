@@ -32,7 +32,6 @@ context("Create the Master Seed", () => {
         // Get Seed 1st Shared Owner
         cy.get(".fragment")
           .eq(0)
-          .find(".fragment-click")
           .click();
         cy.wait("@get-public-key");
         cy.wait("@open-session");
@@ -46,12 +45,11 @@ context("Create the Master Seed", () => {
         }).then(() => {
           cy.get(".fragment")
             .eq(1)
-            .find(".fragment-click")
             .click();
-          cy.get(".top-message-body")
-            .contains("Please connect a Shared-Owner device")
-            .get(".top-message-title")
-            .contains("Error");
+          cy.get("[data-test=error-message-desc]").contains(
+            "Are you sure to use the right device?",
+          );
+          cy.get("[data-test=close]").click();
 
           // Get Seed 2nd Shared Owner
 
@@ -60,7 +58,6 @@ context("Create the Master Seed", () => {
           }).then(() => {
             cy.get(".fragment")
               .eq(1)
-              .find(".fragment-click")
               .click();
             cy.wait("@get-public-key");
             cy.wait("@open-session");
@@ -71,14 +68,11 @@ context("Create the Master Seed", () => {
             // Try to see with the same device
             cy.get(".fragment")
               .eq(2)
-              .find(".fragment-click")
               .click();
-            cy.get(".top-message-body")
-              .contains(
-                "This device has already been used to generate the master seed, please connect another one.",
-              )
-              .get(".top-message-title")
-              .contains("Error");
+            cy.get("[data-test=error-message-desc]").contains(
+              "This device has already been used to generate the master seed, please connect another one.",
+            );
+            cy.get("[data-test=close]").click();
 
             // Get Seed 3rd Shared Owner
             cy.request("POST", DEVICE, {
@@ -86,7 +80,6 @@ context("Create the Master Seed", () => {
             }).then(() => {
               cy.get(".fragment")
                 .eq(2)
-                .find(".fragment-click")
                 .click();
               cy.wait("@get-public-key");
               cy.wait("@open-session");

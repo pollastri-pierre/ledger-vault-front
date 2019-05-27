@@ -57,6 +57,7 @@ export function route() {
   cy.route("get", `${API_DEVICE}/get-attestation`).as("get-attestation");
   cy.route("post", `${API_DEVICE}/open-session`).as("open-session");
   cy.route("post", `${API_DEVICE}/register`).as("register");
+  cy.route("post", `${API_DEVICE}/u2f-register-data`).as("register-data");
   cy.route("post", `${API_DEVICE}/generate-key-fragments`).as(
     "generate-key-fragments",
   );

@@ -4,7 +4,9 @@ import {
   register as softRegister,
   getAttestationCertificate as softGetAttestationCertificate,
   validateVaultOperation as softValidateVaultOperation,
+  generateKeyComponent as softGenerateKeyComponent,
   openSession as softOpenSession,
+  registerData as softRegisterData,
 } from "device/VaultDeviceHTTP";
 
 import {
@@ -14,6 +16,7 @@ import {
   getAttestationCertificate as hardGetAttestationCertificate,
   validateVaultOperation as hardValidateVaultOperation,
   openSession as hardOpenSession,
+  generateKeyComponent as hardGenerateKeyComponent,
 } from "device/VaultDeviceApp";
 
 const softwareMode = () =>
@@ -26,6 +29,8 @@ export const authenticate = () =>
   softwareMode() ? softAuthenticate : hardAuthenticate;
 
 export const register = () => (softwareMode() ? softRegister : hardRegister);
+// TODO implement hw version
+export const registerData = () => softRegisterData;
 
 export const getAttestationCertificate = () =>
   softwareMode()
@@ -37,3 +42,6 @@ export const openSession = () =>
 
 export const validateVaultOperation = () =>
   softwareMode() ? softValidateVaultOperation : hardValidateVaultOperation;
+
+export const generateKeyComponent = () =>
+  softwareMode() ? softGenerateKeyComponent : hardGenerateKeyComponent;

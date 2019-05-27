@@ -9,7 +9,7 @@ import colors from "shared/colors";
 import AccountQuery from "api/queries/AccountQuery";
 import { CardError } from "components/base/Card";
 import { GrowingSpinner } from "components/base/GrowingCard";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import AccountSettings from "containers/Accounts/AccountSettings";

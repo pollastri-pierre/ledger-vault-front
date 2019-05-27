@@ -7,7 +7,7 @@ import { FaMoneyCheck } from "react-icons/fa";
 import connectData from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
-import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import AccountQuery from "api/queries/AccountQuery";
@@ -94,7 +94,7 @@ const steps = [
       const isMigrated = payload.accountStatus === "MIGRATED";
       return (
         <ApproveRequestButton
-          interactions={createAndApproveWithChallenge}
+          interactions={createAndApprove}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();
@@ -177,9 +177,7 @@ const AccountEdit = connectData(
       groups: GroupsQuery,
     },
     propsToQueryParams: props => ({
-      // FIXME FIXME FIXME this is a hack to actually be able to create
-      // an account, because 1rst approval group require to have admin on it
-      role: ["ADMIN", "OPERATOR"],
+      role: ["OPERATOR"],
       accountId: props.accountId || "",
     }),
   },
@@ -207,9 +205,7 @@ const AccountCreation = connectData(
       groups: GroupsQuery,
     },
     propsToQueryParams: () => ({
-      // FIXME FIXME FIXME this is a hack to actually be able to create
-      // an account, because 1rst approval group require to have admin on it
-      role: ["ADMIN", "OPERATOR"],
+      role: ["OPERATOR"],
     }),
   },
 );
