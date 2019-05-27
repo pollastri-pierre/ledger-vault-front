@@ -1,3 +1,5 @@
+import { route } from "../../functions/actions";
+
 const orga_name = Cypress.env("workspace");
 context("Create Wrapping Key", () => {
   let polyfill;
@@ -9,18 +11,7 @@ context("Create Wrapping Key", () => {
   });
   it("should initialise the 3 Wrapping Key Custodians with one cancel", () => {
     cy.server();
-    cy.route(
-      "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/next`,
-    ).as("next");
-    cy.route(
-      "post",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/authenticate`,
-    ).as("authenticate");
-    cy.route(
-      "get",
-      `${Cypress.env("api_server2")}/${orga_name}/onboarding/challenge`,
-    ).as("challenge");
+    route();
     cy.visit(Cypress.env("api_server"), {
       onBeforeLoad: win => {
         win.fetch = null;
@@ -33,47 +24,75 @@ context("Create Wrapping Key", () => {
       device_number: 1,
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
-      cy.contains("continue").click();
+      cy.get("[data-test=continue_button]").click();
       cy.wait(1000);
       cy.contains("Welcome").should("be.visible");
       cy.contains("Get Started").click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.contains("Continue").click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.contains("Continue").click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.contains("Continue").click();
       cy.wait("@next");
-      cy.wait("@challenge");
-      cy.get(":nth-child(1) > .fragment").click();
+
+      cy.get(".fragment")
+        .eq(0)
+        .click();
+      cy.wait("@get-public-key");
+      cy.wait("@get-attestation");
+      cy.wait("@open-session");
+      cy.wait("@generate-key-fragments");
       cy.wait("@authenticate");
+
       cy.request("POST", Cypress.env("api_switch_device"), {
         device_number: 2,
-      });
-      cy.get(":nth-child(2) > .fragment").click();
-      cy.wait("@authenticate");
-      cy.request("POST", Cypress.env("api_switch_device"), {
-        device_number: 3,
-      });
-      // Cancel the approval
-      cy.request("POST", Cypress.env("approve_cancel_device"), {
-        approve: false,
-      });
-      cy.get(":nth-child(3) > .fragment").click();
+      }).then(() => {
+        cy.get(".fragment")
+          .eq(1)
+          .click();
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@open-session");
+        cy.wait("@generate-key-fragments");
+        cy.wait("@authenticate");
 
-      // Do the last WPK
-      cy.get(":nth-child(3) > .fragment").click();
-      cy.wait("@authenticate");
-      cy.contains("continue").click();
-      cy.wait("@next");
-      cy.contains("continue")
-        .debug()
-        .click();
-      cy.wait("@next");
-      cy.contains("continue")
-        .debug()
-        .click();
-      cy.wait("@next");
+        cy.request("POST", Cypress.env("api_switch_device"), {
+          device_number: 3,
+        }).then(() => {
+          // Cancel the approval
+          cy.request("POST", Cypress.env("approve_cancel_device"), {
+            approve: false,
+          });
+          cy.get(".fragment")
+            .eq(2)
+            .click();
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@open-session");
+          cy.wait("@generate-key-fragments");
+
+          // Do the last WPK
+          cy.get(".fragment")
+            .eq(2)
+            .click();
+          cy.wait("@get-public-key");
+          cy.wait("@get-attestation");
+          cy.wait("@open-session");
+          cy.wait("@generate-key-fragments");
+          cy.wait("@authenticate");
+          cy.contains("continue").click();
+          cy.wait("@next");
+          cy.contains("continue")
+            .debug()
+            .click();
+          cy.wait("@next");
+          cy.contains("continue")
+            .debug()
+            .click();
+          cy.wait("@next");
+        });
+      });
     });
   });
 });

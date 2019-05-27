@@ -14,12 +14,13 @@ export type Interaction = {
   action: Object => Promise<*>,
 };
 
+type DeviceError = { statusCode: number };
 type Props = {
   interactions: Interaction[],
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError) => void,
+  onError: (Error | GateError | DeviceError) => void,
   light?: boolean,
 };
 

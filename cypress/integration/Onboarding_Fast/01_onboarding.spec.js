@@ -39,7 +39,6 @@ context("Onboarding e2e", () => {
     // First WPK
     cy.get(".fragment")
       .eq(0)
-      .find(".fragment-click")
       .click();
     cy.wait("@get-public-key");
     cy.wait("@get-attestation");
@@ -53,7 +52,6 @@ context("Onboarding e2e", () => {
     }).then(() => {
       cy.get(".fragment")
         .eq(1)
-        .find(".fragment-click")
         .click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
@@ -68,7 +66,6 @@ context("Onboarding e2e", () => {
       }).then(() => {
         cy.get(".fragment")
           .eq(2)
-          .find(".fragment-click")
           .click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
@@ -95,13 +92,14 @@ context("Onboarding e2e", () => {
     switch_device(4);
     cy.contains("add administrator").click();
     cy.get("input[name=username]").type("user1");
-    cy.get("input[name=email]").type("user1@user.com");
-    cy.get("[role=dialog] [data-test=dialog-button]")
+    cy.get("[data-test=dialog-button]")
       .contains("Continue")
       .click();
     cy.wait("@get-public-key");
     cy.wait("@get-attestation");
+    cy.wait("@challenge");
     cy.wait("@register");
+    cy.wait("@register-data");
     cy.wait("@authenticate");
 
     // Second Admin
@@ -110,13 +108,14 @@ context("Onboarding e2e", () => {
     }).then(() => {
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
-      cy.get("input[name=email]").type("user2@ledger.fr");
-      cy.get("[role=dialog] [data-test=dialog-button]")
+      cy.get("[data-test=dialog-button]")
         .contains("Continue")
         .click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
+      cy.wait("@challenge");
       cy.wait("@register");
+      cy.wait("@register-data");
       cy.wait("@authenticate");
 
       // Thrid Admin
@@ -125,13 +124,14 @@ context("Onboarding e2e", () => {
       }).then(() => {
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user3");
-        cy.get("input[name=email]").type("user3@ledger.fr");
-        cy.get("[role=dialog] [data-test=dialog-button]")
+        cy.get("[data-test=dialog-button]")
           .contains("Continue")
           .click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
+        cy.wait("@challenge");
         cy.wait("@register");
+        cy.wait("@register-data");
         cy.wait("@authenticate");
         cy.contains("Continue").click();
         cy.wait("@next");
@@ -155,13 +155,14 @@ context("Onboarding e2e", () => {
       cy.wait("@next");
       cy.contains("Continue").click();
       cy.wait("@next");
-      cy.wait("@challenge");
 
       // Shared Owner 1
       cy.contains("Add shared-owner").click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
+      cy.wait("@challenge");
       cy.wait("@register");
+      cy.wait("@register-data");
       cy.wait("@authenticate");
 
       // Shared Owner 2
@@ -169,7 +170,9 @@ context("Onboarding e2e", () => {
         cy.contains("Add shared-owner").click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
+        cy.wait("@challenge");
         cy.wait("@register");
+        cy.wait("@register-data");
         cy.wait("@authenticate");
 
         // Shared Owner 3
@@ -178,7 +181,9 @@ context("Onboarding e2e", () => {
           cy.contains("Add shared-owner").click();
           cy.wait("@get-public-key");
           cy.wait("@get-attestation");
+          cy.wait("@challenge");
           cy.wait("@register");
+          cy.wait("@register-data");
           cy.wait("@authenticate");
 
           cy.contains("Continue").click();
@@ -221,7 +226,6 @@ context("Onboarding e2e", () => {
     // Get Seed 1st Shared Owner
     cy.get(".fragment")
       .eq(0)
-      .find(".fragment-click")
       .click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
@@ -233,7 +237,6 @@ context("Onboarding e2e", () => {
     switch_device(8);
     cy.get(".fragment")
       .eq(1)
-      .find(".fragment-click")
       .click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
@@ -245,7 +248,6 @@ context("Onboarding e2e", () => {
     switch_device(9);
     cy.get(".fragment")
       .eq(2)
-      .find(".fragment-click")
       .click();
     cy.wait("@get-public-key");
     cy.wait("@open-session");
