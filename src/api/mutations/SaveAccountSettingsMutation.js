@@ -1,7 +1,7 @@
 // @flow
 import Mutation from "restlay/Mutation";
 import type { Account } from "data/types";
-import { success, error } from "formatters/notification";
+import { success } from "formatters/notification";
 import schema from "data/schema";
 import { deserializeAccount } from "api/transformations/Account";
 
@@ -19,13 +19,9 @@ export default class SaveAccountSettingsMutation extends Mutation<In, Res> {
 
   deserialize = deserializeAccount;
 
-  getSuccessNotification() {
+  getSuccessNotification = () => {
     return success("account settings", "saved");
-  }
-
-  getErrorNotification(e: Error) {
-    return error("account settings", "saved", e);
-  }
+  };
 
   getBody() {
     const { account, ...rest } = this.props; // eslint-disable-line no-unused-vars

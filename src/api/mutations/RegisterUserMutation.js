@@ -1,7 +1,6 @@
 // @flow
 
 import Mutation from "restlay/Mutation";
-import { error } from "formatters/notification";
 
 type Data = {
   username: string,
@@ -29,10 +28,6 @@ export default class RegisterUserMutation extends Mutation<Input, Response> {
   method = "POST";
 
   uri = `/requests/registration/${this.props.urlID}/authenticate`;
-
-  getErrorNotification(e: Error) {
-    return error("register user", "failed", e);
-  }
 
   getBody() {
     return this.props.body;
