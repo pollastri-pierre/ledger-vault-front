@@ -66,7 +66,7 @@ export function MessagesContainer(props: {
         />
         <Box width={400} p={40} flow={20} align="center">
           <Copy text={errText}>
-            <Text data-test="error-message-desc">
+            <Text data-test="error-message-desc" style={styles.desc}>
               {content || (
                 <TranslatedError
                   field="description"
@@ -92,6 +92,12 @@ export function MessagesContainer(props: {
     </Alert>
   );
 }
+
+const styles = {
+  desc: {
+    wordBreak: "break-word",
+  },
+};
 
 export default connect(
   mapStateToProps,
