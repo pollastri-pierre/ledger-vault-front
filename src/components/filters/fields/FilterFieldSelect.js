@@ -77,7 +77,7 @@ export default function FilterFieldSelect(props: Props) {
 
   const handleChange = useCallback(
     (opt: Option[] | Option) => {
-      if ((single && !opt) || (!single && !opt.length)) {
+      if ((single && !opt) || (!single && (!opt || !opt.length))) {
         updateQueryParams(queryKey, null);
         return;
       }
