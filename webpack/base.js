@@ -8,6 +8,12 @@ import pkg from "../package.json";
 import paths from "./paths";
 import * as globals from "./globals";
 
+// get git info from command line
+let commitHash = require("child_process")
+  .execSync("git rev-parse --short HEAD")
+  .toString();
+
+commitHash = commitHash.substring(0, commitHash.length - 1);
 export default {
   entry: ["@babel/polyfill", "./src/index"],
 
@@ -101,6 +107,7 @@ export default {
     new webpack.NamedChunksPlugin(),
     new HtmlWebpackPlugin({
       title: "Ledger Vault",
+      commitHash,
       template: path.normalize(`${paths.src}/templates/layout.html`),
     }),
   ],
