@@ -18,7 +18,6 @@ import Box from "components/base/Box";
 import EntityModal from "components/EntityModal";
 import type { Transaction, Account } from "data/types";
 
-import TabHistory from "./TabHistory";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import TabDetails from "./TabDetails";
@@ -75,9 +74,6 @@ function TransactionDetails(props: Props) {
         <TabDetails key="details" transaction={transaction} account={account} />
       )}
       <TabLabel key="note" note={note} />
-      {transaction.approvals && (
-        <TabHistory key="history" transaction={transaction} />
-      )}
     </EntityModal>
   );
 }

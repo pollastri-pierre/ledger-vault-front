@@ -230,7 +230,11 @@ type Props<T, H> = {
 class Multiple extends PureComponent<Props<MultipleValue, MultipleHandler>> {
   handleChange = (options: Option[]) => {
     const { onChange } = this.props;
-    onChange(options.map(o => o.data));
+    if (options && options.length) {
+      onChange(options.map(o => o.data));
+    } else {
+      onChange([]);
+    }
   };
 
   render() {

@@ -9,7 +9,7 @@
   },
   "NoChannelForDevice": {
     "description": "Make sure you're using the right device.",
-    "title": "No Channel For Device"
+    "title": "Invalid device"
   },
   "UnknownDevice": {
     "description": "Please connect an Administrator device.",
@@ -21,7 +21,7 @@
   },
   "InvalidAddress": {
     "title": "Invalid address",
-    "description": "This address is invalid."
+    "description": "Please enter a valid address."
   },
   "AmountTooHigh": {
     "title": "Amount too high",
@@ -32,8 +32,8 @@
     "description": "The amount entered exceeds the limit of 100 UTXOs. Decrease the amount to a maximum of: {{max}}"
   },
   "NonEIP55Address": {
-    "title": "Auto-verification not available: carefully verify the address",
-    "description": "Auto-verification not available. Carefully verify the address"
+    "title": "Auto-verification unavailable",
+    "description": "The address couldn't be verified. Carefully check that the address is correct."
   },
   "GenericError": { "description": "An error occurred. Please try again or contact Support.", "title": "Error" },
   "generic": { "description": "An error occurred. Please try again or contact Support.", "title": "Error" }

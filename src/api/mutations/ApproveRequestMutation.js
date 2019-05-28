@@ -18,7 +18,7 @@ export default class ApproveRequestMutation extends Mutation<Input, Response> {
   // responseSchema = schema.Member;
 
   getSuccessNotification = () => {
-    return success("request", "updated");
+    return success("request", "created");
   };
 
   getBody() {

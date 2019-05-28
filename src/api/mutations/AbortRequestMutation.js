@@ -15,7 +15,7 @@ export default class AbortRequestMutation extends Mutation<Input, Response> {
   uri = `/requests/${this.props.requestID}/abort`;
 
   getSuccessNotification = () => {
-    return success("request", "aborted");
+    return success("request", "rejected");
   };
 
   getBody() {
