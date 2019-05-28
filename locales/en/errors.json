@@ -9,7 +9,7 @@
   },
   "NoChannelForDevice": {
     "description": "Make sure you're using the right device.",
-    "title": "No Channel For Device"
+    "title": "Invalid device"
   },
   "UnknownDevice": {
     "description": "Please connect an Administrator device.",
