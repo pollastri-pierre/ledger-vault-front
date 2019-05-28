@@ -27,5 +27,6 @@
     "UPDATE_QUORUM": "Approve admin rule edition",
     "MIGRATE_ACCOUNT": "Approve account update",
     "CREATE_TRANSACTION": "Approve transaction creation"
-  }
+  },
+  "expire_in": "request expires in {{count}}"
 }

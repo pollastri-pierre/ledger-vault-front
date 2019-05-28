@@ -27,9 +27,7 @@ class EntityLastRequest extends PureComponent<Props> {
             <Text i18nKey={`request:type.${entity.last_request.type}`} />
           </LineRow>
           <LineRow label="Expiration date">
-            <DateFormat
-              date={entity.last_request.expiration_date || new Date()}
-            />
+            <DateFormat date={entity.last_request.expired_at} />
           </LineRow>
         </Box>
         {hasPendingEdit(entity) && (
