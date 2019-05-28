@@ -14,6 +14,7 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 
 import UserDetailsOverview from "./UD-Overview";
 import UserDetailsHistory from "./UD-History";
+import UserDetailsPermissions from "./UD-Permissions";
 
 type Props = {
   user: User,
@@ -60,6 +61,7 @@ function UserDetails(props: Props) {
       revokeButton={revokeButton}
     >
       <UserDetailsOverview key="overview" user={user} />
+      <UserDetailsPermissions key="permissions" user={user} />
       <UserDetailsHistory key="history" user={user} />
     </EntityModal>
   );
