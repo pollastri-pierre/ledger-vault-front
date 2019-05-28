@@ -12,7 +12,7 @@ type Props = {
   displayDayBefore?: number,
 };
 
-const DEFAULT_DAY = 10;
+const DEFAULT_DAY = 1;
 
 const RequestExpirationDate = ({ expirationDate, displayDayBefore }: Props) => {
   const diff = moment(expirationDate).diff(moment(new Date()), "days");
