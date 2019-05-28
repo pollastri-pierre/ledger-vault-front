@@ -22,8 +22,14 @@ class EntityStatus extends PureComponent<Props> {
       return <Status status={status} />;
     }
 
-    if (!request.approvals) {
+    const isRequestBlocked = request.status === "BLOCKED";
+    const shouldDisplayBlockedStatus = isRequestBlocked && status !== "ACTIVE";
+
+    if (!request.approvals && !shouldDisplayBlockedStatus) {
       return <Status status={remapStatus(status, request.target_type)} />;
+    }
+    if (shouldDisplayBlockedStatus) {
+      return <Status status="BLOCKED" />;
     }
 
     const isWaitingForApproval =
@@ -33,7 +39,13 @@ class EntityStatus extends PureComponent<Props> {
       <Box horizontal flow={10} align="center">
         <Status
           withWarning={isWaitingForApproval}
-          status={isWaitingForApproval ? "AWAITING_APPROVAL" : status}
+          status={
+            isWaitingForApproval
+              ? "AWAITING_APPROVAL"
+              : shouldDisplayBlockedStatus
+              ? "BLOCKED"
+              : status
+          }
         />
         <RequestExpirationDate expirationDate={request.expired_at} />
       </Box>
