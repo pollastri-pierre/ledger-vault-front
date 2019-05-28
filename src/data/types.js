@@ -407,7 +407,7 @@ type RequestCommon = {
   group?: RequestGroup,
   quorum?: number,
   organization?: Organization,
-  expiration_date?: Date,
+  expired_at: Date,
   edit_data?: *,
 };
 

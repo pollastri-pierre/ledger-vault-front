@@ -2,6 +2,8 @@
 
 import React, { PureComponent } from "react";
 import Status from "components/Status";
+import RequestExpirationDate from "components/RequestExpirationDate";
+import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
 import type { User, Request } from "data/types";
 import { hasUserApprovedRequest } from "utils/request";
@@ -28,10 +30,13 @@ class EntityStatus extends PureComponent<Props> {
       !hasUserApprovedRequest(request, me) && status !== "ACTIVE";
 
     return (
-      <Status
-        withWarning={isWaitingForApproval}
-        status={isWaitingForApproval ? "AWAITING_APPROVAL" : status}
-      />
+      <Box horizontal flow={10} align="center">
+        <Status
+          withWarning={isWaitingForApproval}
+          status={isWaitingForApproval ? "AWAITING_APPROVAL" : status}
+        />
+        <RequestExpirationDate expirationDate={request.expired_at} />
+      </Box>
     );
   }
 }
