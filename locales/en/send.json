@@ -7,27 +7,27 @@
   "confirmation": {
     "account": "Account to Debit",
     "desc":
-      "A transaction request will be sent to the members of the account. It will not be broadcasted to the blockchain until it is approved.",
-    "fees": "Confirmation Fees",
+      "A transaction request will be sent to the members of the account. It won't be broadcasted to the blockchain until it's approved.",
+    "fees": "Confirmation fees",
     "identifier": "Recipient address",
-    "total": "Total Amount",
+    "total": "Total amount",
     "totalERC20Info": "Excluding confirmation fees"
   },
   "details": {
     "address": { "title": "Address to credit" },
     "amount": { "title": "Amount" },
-    "fees": { "title": "Confirmation Fees" },
+    "fees": { "title": "Confirmation fees" },
     "gasLimit": "Gas limit",
     "gasPrice": "Gas price",
     "note": "Add a comment",
     "title": "Label",
-    "totalFees": "Max transaction Fee:",
+    "totalFees": "Max. transaction fees:",
     "totalSpent": "Total:"
   },
   "label": { "note": "Note", "title": "Label" },
   "nonEIP55Warning":
-    "Auto-verification not available: carefully verify the address",
-  "parentFeeExceeded": "Max operation fee exceeds ETH parent account balance",
+    "Auto-verification not available. Carefully verify the address",
+  "parentFeeExceeded": "Max. transaction fees exceed the parent Ethereum account balance",
   "tabs": {
     "account": "account",
     "confirmation": "confirmation",
