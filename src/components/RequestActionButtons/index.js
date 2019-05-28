@@ -33,6 +33,7 @@ class RequestActionButtons extends PureComponent<Props> {
 
     const hasUserApproved = hasUserApprovedRequest(lastRequest, me);
     const isRequestBlocked = lastRequest.status === "BLOCKED";
+    const isPendingRegistration = lastRequest.status === "PENDING_REGISTRATION";
 
     const inner = isRequestBlocked ? (
       <Box align="center" justify="center">
@@ -67,16 +68,18 @@ class RequestActionButtons extends PureComponent<Props> {
               requestID={lastRequest.id}
               onSuccess={onSuccess}
             />
-            <ApproveRequestButton
-              interactions={approveFlow}
-              onSuccess={onSuccess}
-              onError={onError}
-              additionalFields={{ request_id: lastRequest.id }}
-              disabled={false}
-              buttonLabel={
-                <Trans i18nKey={`request:approve.${lastRequest.type}`} />
-              }
-            />
+            {!isPendingRegistration && (
+              <ApproveRequestButton
+                interactions={approveFlow}
+                onSuccess={onSuccess}
+                onError={onError}
+                additionalFields={{ request_id: lastRequest.id }}
+                disabled={false}
+                buttonLabel={
+                  <Trans i18nKey={`request:approve.${lastRequest.type}`} />
+                }
+              />
+            )}
           </Box>
         )}
       </>
