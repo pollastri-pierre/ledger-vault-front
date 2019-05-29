@@ -14,6 +14,7 @@ import type { Translate } from "data/types";
 const BG_BY_STATUS = {
   ABORTED: opacity(colors.grenade, 0.1),
   REVOKED: opacity(colors.grenade, 0.1),
+  ACCESS_SUSPENDED: opacity(colors.grenade, 0.1),
   DELETED: opacity(colors.grenade, 0.1),
   BLOCKED: "hsl(0, 0%, 85%)",
   CREATION_ABORTED: opacity(colors.grenade, 0.1),
@@ -36,6 +37,7 @@ const BG_BY_STATUS = {
 const COLOR_BY_STATUS = {
   ABORTED: colors.grenade,
   REVOKED: colors.grenade,
+  ACCESS_SUSPENDED: colors.grenade,
   DELETED: colors.grenade,
   BLOCKED: "hsl(0, 0%, 25%)",
   CREATION_ABORTED: colors.grenade,
