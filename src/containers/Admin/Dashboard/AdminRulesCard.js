@@ -57,14 +57,18 @@ const AdminRulesCard = (props: Props) => {
         {addAdminRequest && (
           <InfoBox type="warning">
             <Text>
-              {"You can't edit admin rules while an admin is being created"}
+              {
+                "You can't edit the admin rule if an Administrator is pending to be created."
+              }
             </Text>
           </InfoBox>
         )}
         {revokeAdminRequest && (
           <InfoBox type="warning">
             <Text>
-              {"You can't edit admin rules while an admin is being revoked"}
+              {
+                "You can't edit the admin rule if an Administrator is pending to be revoked."
+              }
             </Text>
           </InfoBox>
         )}
