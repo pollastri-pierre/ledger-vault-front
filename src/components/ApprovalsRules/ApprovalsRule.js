@@ -10,10 +10,12 @@ import type { User, Group } from "data/types";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
+import EntityStatus from "components/EntityStatus";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import NumberChooser from "components/base/NumberChooser";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
+import { isRequestPending } from "utils/request";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
@@ -142,6 +144,15 @@ class ApprovalsRule extends PureComponent<Props, State> {
                 openMenuOnFocus
                 groups={filteredGroups}
                 members={filteredUsers}
+                renderIfDisabled={(item: Group | User) =>
+                  item.last_request &&
+                  isRequestPending(item.last_request) && (
+                    <EntityStatus
+                      request={item.last_request}
+                      status={item.last_request.status}
+                    />
+                  )
+                }
                 value={resolveSelectValue(rule, groups, users)}
                 onChange={this.handleChangeSelect}
               />

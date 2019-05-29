@@ -8,3 +8,8 @@ export const hasUserApprovedRequest = (request: Request, me: User) =>
     approval =>
       approval.created_by.pub_key === me.pub_key && approval.type === "APPROVE",
   ).length > 0;
+
+export const isRequestPending = (request: Request) =>
+  request.status !== "APPROVED" &&
+  request.status !== "BLOCKED" &&
+  request.status !== "ABORTED";
