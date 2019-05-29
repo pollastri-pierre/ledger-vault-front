@@ -15,6 +15,7 @@ import type { AccountStatus } from "data/types";
 
 export const defaultStatuses: AccountStatus[] = [
   "ACTIVE",
+  "PENDING",
   "PENDING_CREATION_APPROVAL",
   "PENDING_UPDATE",
 ];
