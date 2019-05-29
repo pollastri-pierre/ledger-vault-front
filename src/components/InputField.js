@@ -62,7 +62,6 @@ class InputField extends PureComponent<Props> {
           style: {
             textAlign,
           },
-          dataTest,
         }}
         InputProps={{
           startAdornment: renderLeft && (
