@@ -78,9 +78,7 @@ function EntityModal<T>(props: Props<T>) {
 
   const hasPendingReq = hasPendingRequest(entity);
   const showRevoke = entity.status === "ACTIVE" && revokeButton;
-  const showFooter =
-    entity.status !== "PENDING_REGISTRATION" &&
-    (hasPendingReq || showRevoke || footer);
+  const showFooter = hasPendingReq || showRevoke || footer;
 
   const inner = (
     <>
