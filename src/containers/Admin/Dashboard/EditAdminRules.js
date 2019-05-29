@@ -25,9 +25,11 @@ function EditAdminRules(props: Props) {
   const [quorum, setQuorum] = useState(organization.quorum || 0);
   const inner = (
     <Box width={500} height={500}>
-      <RichModalHeader title="Edit admin rules" Icon={MdEdit} onClose={close} />
+      <RichModalHeader title="Edit admin rule" Icon={MdEdit} onClose={close} />
       <Box p={20} flow={20} grow>
-        <InfoBox type="info">Changing admin rule is very dangerous</InfoBox>
+        <InfoBox type="info">
+          Editing the admin will affect all pending requests.
+        </InfoBox>
         <ApprovalSlider
           number={quorum}
           total={organization.number_of_admins}
