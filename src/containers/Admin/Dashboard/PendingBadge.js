@@ -17,7 +17,11 @@ type Props = {
 class PendingBadge extends PureComponent<Props> {
   render() {
     const { data, me } = this.props;
-    const requests = data && data.edges.map(el => el.node);
+    const requests =
+      data &&
+      data.edges
+        .map(el => el.node)
+        .filter(r => r.status !== "PENDING_REGISTRATION");
     // NOTE: temp filter the me-related pending requests until gate gives this
     const myRequests = requests.filter(
       request => !hasUserApprovedRequest(request, me),
@@ -32,7 +36,7 @@ export default connectData(withMe(PendingBadge), {
     data: RequestsQuery,
   },
   propsToQueryParams: () => ({
-    status: ["PENDING_APPROVAL"],
+    status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
     pageSize: -1,
   }),
 });
