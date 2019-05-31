@@ -93,13 +93,13 @@ const onboardingRegisterDevice: Interaction = {
       ] || onboardingRegisterChallenge;
     const challengeAttestation = Buffer.concat([
       Buffer.from(
-        register_challenge.ephemeral_public_key_attestation.code_hash,
+        register_challenge.certificate.code_hash,
       ),
       Buffer.from(
-        register_challenge.ephemeral_public_key_attestation.attestation_pub,
+        register_challenge.certificate.attestation_pub,
       ),
       Buffer.from(
-        register_challenge.ephemeral_public_key_attestation.certificate,
+        register_challenge.certificate.certificate,
       ),
     ]);
 
