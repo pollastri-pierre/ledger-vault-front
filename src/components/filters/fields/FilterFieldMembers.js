@@ -23,7 +23,7 @@ function FilterFieldMembers(props: Props) {
     value: u.id,
   }));
   return (
-    <FieldSelect title="Members" queryKey="member" options={options} {...p} />
+    <FieldSelect title="Members" queryKey="members" options={options} {...p} />
   );
 }
 
