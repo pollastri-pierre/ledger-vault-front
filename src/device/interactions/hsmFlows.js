@@ -92,15 +92,9 @@ const onboardingRegisterDevice: Interaction = {
         u2f_key.pubKey.toString("hex").toUpperCase()
       ] || onboardingRegisterChallenge;
     const challengeAttestation = Buffer.concat([
-      Buffer.from(
-        register_challenge.certificate.code_hash,
-      ),
-      Buffer.from(
-        register_challenge.certificate.attestation_pub,
-      ),
-      Buffer.from(
-        register_challenge.certificate.certificate,
-      ),
+      Buffer.from(register_challenge.certificate.code_hash),
+      Buffer.from(register_challenge.certificate.attestation_pub),
+      Buffer.from(register_challenge.certificate.certificate),
     ]);
 
     await retry(() => {
