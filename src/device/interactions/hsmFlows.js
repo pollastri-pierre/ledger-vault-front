@@ -294,8 +294,7 @@ export const validateOperation = [
 const getSecureChannel: Interaction = {
   responseKey: "secure_channels",
   action: async ({ request_id }) => {
-    const request = await network(`/requests/${request_id}`, "GET");
-    return Promise.resolve(request.challenges);
+    return network(`/requests/${request_id}/challenge`, "POST", {});
   },
 };
 
