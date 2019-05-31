@@ -3,6 +3,7 @@ import React, { PureComponent } from "react";
 import Select from "components/base/Select";
 import type { GroupedOption } from "components/base/Select";
 import colors from "shared/colors";
+import Disabled from "components/Disabled";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import type { OptionProps } from "react-select/src/types";
@@ -57,14 +58,24 @@ const buildOptions = (items: Item[]): Option[] =>
     data: item,
   }));
 
-const OptionComponent = (props: OptionProps) => (
-  <components.Option {...props}>
-    <Box horizontal align="center" flow={10} py={5}>
-      <CheckboxItem {...props} />
-      <Text>{props.data.label}</Text>
-    </Box>
-  </components.Option>
-);
+const OptionComponent = (props: OptionProps) => {
+  const { selectProps, data } = props;
+  const renderDisabled =
+    selectProps.renderIfDisabled &&
+    selectProps.renderIfDisabled(data.data.value);
+
+  return (
+    <Disabled disabled={!!renderDisabled}>
+      <components.Option {...props}>
+        <Box horizontal align="center" flow={10} py={5}>
+          <CheckboxItem {...props} />
+          <Text>{props.data.label}</Text>
+          {renderDisabled}
+        </Box>
+      </components.Option>
+    </Disabled>
+  );
+};
 
 const MultiValueRemove = (props: OptionProps) => (
   <components.MultiValueRemove {...props}>

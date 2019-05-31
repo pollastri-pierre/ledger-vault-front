@@ -11,8 +11,8 @@ import { createAndApprove } from "device/interactions/hsmFlows";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
 import AccountQuery from "api/queries/AccountQuery";
-import UsersQuery from "api/queries/UsersQuery";
-import GroupsQuery from "api/queries/GroupsQuery";
+import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
+import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -173,11 +173,10 @@ const AccountEdit = connectData(
     queries: {
       allAccounts: PotentialParentAccountsQuery,
       account: AccountQuery,
-      users: UsersQuery,
-      groups: GroupsQuery,
+      users: OperatorsForAccountCreationQuery,
+      groups: GroupsForAccountCreationQuery,
     },
     propsToQueryParams: props => ({
-      role: ["OPERATOR"],
       accountId: props.accountId || "",
     }),
   },
@@ -201,12 +200,9 @@ const AccountCreation = connectData(
     RenderError: TryAgain,
     queries: {
       allAccounts: PotentialParentAccountsQuery,
-      users: UsersQuery,
-      groups: GroupsQuery,
+      users: OperatorsForAccountCreationQuery,
+      groups: GroupsForAccountCreationQuery,
     },
-    propsToQueryParams: () => ({
-      role: ["OPERATOR"],
-    }),
   },
 );
 
