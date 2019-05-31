@@ -261,6 +261,7 @@ export type AccountStatus =
   | "MIGRATED"
   | "HSM_COIN_UPDATED"
   | "PENDING_CREATION_APPROVAL"
+  | "PENDING"
   | "PENDING_UPDATE"
   | "PENDING_MIGRATED";
 
