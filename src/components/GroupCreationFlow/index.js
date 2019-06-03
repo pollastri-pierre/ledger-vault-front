@@ -124,6 +124,7 @@ const GroupEdit = connectData(
     },
     propsToQueryParams: props => ({
       role: "OPERATOR",
+      status: ["ACTIVE"],
       groupId: props.groupId || "",
     }),
   },
@@ -148,6 +149,7 @@ const GroupCreation = connectData(
     },
     propsToQueryParams: () => ({
       role: "OPERATOR",
+      status: ["ACTIVE"],
     }),
   },
 );
