@@ -9,8 +9,10 @@ import {
   VALIDATION_PATH,
   KEY_MATERIAL_PATH,
 } from "device";
+import { OutOfDateApp } from "utils/errors";
 import {
   getPublicKey,
+  getVersion,
   getAttestationCertificate,
   generateKeyComponent,
 } from "device/interface";
@@ -22,6 +24,25 @@ export const getU2FPublicKey: Interaction = {
   tooltip: <Text small i18nKey="common:plug_device" />,
   action: ({ transport }) =>
     retry(() => getPublicKey()(transport, U2F_PATH, false)),
+};
+
+export const checkVersion: Interaction = {
+  needsUserInput: false,
+  device: true,
+  responseKey: "get_version",
+  tooltip: <Text small i18nKey="common:plug_device" />,
+  action: ({ transport }) => {
+    const promise = new Promise((resolve, reject) => {
+      retry(() => getVersion()(transport)).then(version => {
+        if (version.appVersion !== window.config.APP_VERSION) {
+          reject(new OutOfDateApp());
+        } else {
+          resolve(version);
+        }
+      });
+    });
+    return promise;
+  },
 };
 
 export const getConfidentialityPublicKey: Interaction = {

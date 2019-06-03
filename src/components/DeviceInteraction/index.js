@@ -1,8 +1,9 @@
 // @flow
 import React, { PureComponent } from "react";
+import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
-import connectData from "restlay/connectData";
+import { checkVersion } from "device/interactions/common";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import type { GateError } from "data/types";
 
@@ -17,6 +18,7 @@ export type Interaction = {
 type DeviceError = { statusCode: number };
 type Props = {
   interactions: Interaction[],
+  noCheckVersion?: boolean,
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
@@ -42,7 +44,18 @@ class DeviceInteraction extends PureComponent<Props, State> {
   };
 
   runInteractions = async () => {
-    const { interactions, additionalFields, restlay } = this.props;
+    const {
+      interactions,
+      additionalFields,
+      noCheckVersion,
+      restlay,
+    } = this.props;
+
+    // always checking app version first
+    const interactionsWithCheckVersion = noCheckVersion
+      ? interactions
+      : [checkVersion, ...interactions];
+
     const responses = { ...additionalFields, restlay };
     if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
       // $FlowFixMe
@@ -52,18 +65,17 @@ class DeviceInteraction extends PureComponent<Props, State> {
       transport.setDebugMode(true);
       responses.transport = transport;
     }
-    for (let i = 0; i < interactions.length; i++) {
+    for (let i = 0; i < interactionsWithCheckVersion.length; i++) {
       try {
         this.setState({
           currentStep: i,
-          interaction: interactions[i],
+          interaction: interactionsWithCheckVersion[i],
         });
-        responses[interactions[i].responseKey] = await interactions[i].action(
-          responses,
-        );
+        responses[
+          interactionsWithCheckVersion[i].responseKey
+        ] = await interactionsWithCheckVersion[i].action(responses);
         if (this._unmounted) return;
       } catch (e) {
-        console.error(e);
         this.props.onError(e);
         return;
       }

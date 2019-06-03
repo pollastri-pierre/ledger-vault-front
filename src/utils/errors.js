@@ -12,6 +12,7 @@ export const ApprovalsExceedQuorum = createCustomErrorClass(
 export const InvalidDataDevice = createCustomErrorClass("InvalidDataDevice");
 export const NoChannelForDevice = createCustomErrorClass("NoChannelForDevice");
 export const UnknownDevice = createCustomErrorClass("UnknownDevice");
+export const OutOfDateApp = createCustomErrorClass("OutOfDateApp");
 
 export type DeviceError = {
   statusCode: $Values<typeof StatusCodes>,
