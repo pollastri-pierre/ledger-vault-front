@@ -9,6 +9,10 @@
   "userID": "User ID",
   "date": "Created",
   "url": "URL",
+  "suspend": {
+    "label": "Suspend workspace access",
+    "tooltip": "Immediately forbids the access to the workspace"
+  },
   "revokeWarning": {
     "title": "Are you sure you want to revoke this user?",
     "confirm": "Yes, revoke user",

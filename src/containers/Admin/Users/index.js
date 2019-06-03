@@ -16,6 +16,8 @@ import InviteUserMutation from "api/mutations/InviteUserMutation";
 import UpdateUserRegistrationMutation from "api/mutations/UpdateUserRegistrationMutation";
 import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import AbortRequestMutation from "api/mutations/AbortRequestMutation";
+import SuspendUserMutation from "api/mutations/SuspendUserMutation";
+import UnsuspendUserMutation from "api/mutations/UnsuspendUserMutation";
 
 import type { User } from "data/types";
 
@@ -31,6 +33,8 @@ const mutationsToListen = [
   UpdateUserRegistrationMutation,
   ApproveRequestMutation,
   AbortRequestMutation,
+  SuspendUserMutation,
+  UnsuspendUserMutation,
 ];
 
 class Users extends PureComponent<Props> {
