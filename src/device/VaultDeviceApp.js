@@ -38,6 +38,28 @@ export const getAttestationCertificate = async (
   return response.slice(0, response.length - 2);
 };
 
+export const getVersion = async (
+  transport: Transport<*>,
+): Promise<{ appName: string, appVersion: string }> => {
+  const res = await transport.send(0xb0, 0x01, 0x00, 0x00);
+  // const version = res.readInt8(0);
+  const appNameLen = res.readInt8(1);
+  const appNameHex = res.slice(2, appNameLen + 2);
+  const appName = Buffer.from(appNameHex).toString();
+  const appVersionLen = res.readInt8(2 + appNameLen);
+  const appVersionHex = res.slice(
+    2 + 1 + appNameLen,
+    2 + appNameLen + appVersionLen + 1,
+  );
+
+  const appVersion = Buffer.from(appVersionHex).toString();
+
+  return {
+    appName,
+    appVersion,
+  };
+};
+
 export const validateVaultOperation = async (
   transport: Transport<*>,
   path: number[],
@@ -337,23 +359,7 @@ export default class VaultDeviceApp {
     appName: string,
     appVersion: string,
   }> {
-    const res = await this.transport.send(0xb0, 0x01, 0x00, 0x00);
-    // const version = res.readInt8(0);
-    const appNameLen = res.readInt8(1);
-    const appNameHex = res.slice(2, appNameLen + 2);
-    const appName = Buffer.from(appNameHex).toString();
-    const appVersionLen = res.readInt8(2 + appNameLen);
-    const appVersionHex = res.slice(
-      2 + 1 + appNameLen,
-      2 + appNameLen + appVersionLen + 1,
-    );
-
-    const appVersion = Buffer.from(appVersionHex).toString();
-
-    return {
-      appName,
-      appVersion,
-    };
+    return getVersion(this.transport);
   }
 
   async getFirmwareInfo() {

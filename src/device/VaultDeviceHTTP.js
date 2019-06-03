@@ -42,6 +42,17 @@ const fromStringRoleToBytes = {
 
 const psdType = Buffer.from([0]);
 
+export const getVersion = (): Promise<{
+  appName: string,
+  appVersion: string,
+}> => {
+  const promise = Promise.resolve({
+    appName: "Vault",
+    appVersion: window.config.APP_VERSION,
+  });
+
+  return promise;
+};
 export const registerData = async (
   transport: *,
   challenge: Buffer,

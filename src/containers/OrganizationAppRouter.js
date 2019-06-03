@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import ModalRoute from "components/ModalRoute";
 import counterValues from "data/counterValues";
 import { Switch, Route } from "react-router";
 import AlertsContainer from "containers/AlertsContainer";
@@ -29,7 +30,7 @@ const OrganizationAppRouter = () => (
       <>
         <AlertsContainer />
         <Switch>
-          <Route path="/update-app" component={UpdateApp} />
+          <ModalRoute path="/update-app" component={UpdateApp} />
           <Route
             path="/:orga_name"
             render={({ match, history, location }) => (

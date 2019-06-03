@@ -5,6 +5,7 @@ import {
   getAttestationCertificate as softGetAttestationCertificate,
   validateVaultOperation as softValidateVaultOperation,
   generateKeyComponent as softGenerateKeyComponent,
+  getVersion as softGetVersion,
   openSession as softOpenSession,
   registerData as softRegisterData,
 } from "device/VaultDeviceHTTP";
@@ -15,6 +16,7 @@ import {
   register as hardRegister,
   getAttestationCertificate as hardGetAttestationCertificate,
   validateVaultOperation as hardValidateVaultOperation,
+  getVersion as hardGetVersion,
   openSession as hardOpenSession,
   generateKeyComponent as hardGenerateKeyComponent,
 } from "device/VaultDeviceApp";
@@ -45,3 +47,6 @@ export const validateVaultOperation = () =>
 
 export const generateKeyComponent = () =>
   softwareMode() ? softGenerateKeyComponent : hardGenerateKeyComponent;
+
+export const getVersion = () =>
+  softwareMode() ? softGetVersion : hardGetVersion;

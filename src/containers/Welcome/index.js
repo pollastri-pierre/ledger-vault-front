@@ -74,7 +74,9 @@ class Welcome extends Component<Props, State> {
       addMessage(`Error ${e.json.code}`, e.json.message, "error");
     } else if (e.statusCode && e.statusCode === StatusCodes.INCORRECT_DATA) {
       addError(new InvalidDataDevice());
-    } else if (e.statusCode !== StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED) {
+    } else if (e instanceof Error) {
+      addError(e);
+    } else {
       addError(new GenericError());
     }
   };

@@ -6,85 +6,49 @@ import type { Translate } from "data/types";
 import Trash from "components/icons/Trash";
 import Update from "components/icons/Update";
 import { withTranslation } from "react-i18next";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Check from "components/icons/Check";
 import CircleProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "components/base/Card";
-import { Label } from "components/base/form";
+import Button from "components/base/Button";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
 import createDevice, { U2F_TIMEOUT } from "device";
 
 let _isMounted = false;
-const styles = {
-  base: {
-    width: 550,
-    margin: "auto",
-    marginTop: 125,
-  },
-  error: {},
-  button: {
-    background: "green",
-    display: "block",
-    width: 120,
-    margin: "auto",
-    marginTop: 20,
-    height: 40,
-    border: 0,
-    fontSize: 19,
-    color: "white",
-  },
-};
 
-const row = {
-  base: {
-    background: "#f7f6f6",
-    position: "relative",
-    marginBottom: 5,
-    height: 75,
-    fontSize: 14,
-    display: "flex",
-    alignItems: "center",
-  },
-  icon: {
-    border: "1px solid",
-    marginRight: 20,
-    marginLeft: 15,
-    width: 30,
-    height: 30,
-    borderRadius: 5,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  right: {
-    position: "absolute",
-    right: 20,
-  },
-};
-const Row = withStyles(row)(
-  ({
-    icon,
-    children,
-    classes,
-    state,
-  }: {
-    icon: *,
-    children: *,
-    classes: { [_: $Keys<typeof row>]: string },
-    state: "None" | "Pending" | "Done",
-  }) => (
-    <div className={classes.base}>
-      <div className={classes.icon}>{icon}</div>
-      <div>{children}</div>
-      <div className={classes.right} style={{ color: "#27d0e2" }}>
+const Row = ({
+  icon,
+  children,
+  state,
+}: {
+  icon: *,
+  children: *,
+  state: "None" | "Pending" | "Done",
+}) => (
+  <Box
+    horizontal
+    align="center"
+    p={10}
+    justify="space-between"
+    style={{ background: "rgb(245, 245, 245)", borderRadius: 4 }}
+  >
+    <Box horizontal flow={10} align="center">
+      <Box style={{ borderRadius: "50%", background: "white" }} p={10}>
+        {icon}
+      </Box>
+      <Box>{children}</Box>
+    </Box>
+    <Box>
+      <div>
         {state === "Done" && <Check size={22} />}
         {state === "Pending" && <CircleProgress size={22} color="primary" />}
       </div>
-    </div>
-  ),
+    </Box>
+  </Box>
 );
+
 export const BASE_SOCKET_URL = "wss://api.ledgerwallet.com/update";
 
 const appToInstall = {
@@ -105,12 +69,10 @@ const appToUnInstall = {
   firmwareKey: "blue/2.1.1-ee/vault3/app_del_key",
 };
 type Props = {
-  classes: { [_: $Keys<typeof styles>]: string },
   t: Translate,
 };
 type State = {
   uninstalled: boolean,
-  no_application: boolean,
   error: boolean,
   installed: boolean,
   isDashboard: boolean,
@@ -122,7 +84,6 @@ class UpdateApp extends Component<Props, State> {
       uninstalled: false,
       error: false,
       installed: false,
-      no_application: false,
       isDashboard: false,
     };
   }
@@ -167,7 +128,7 @@ class UpdateApp extends Component<Props, State> {
             isDashboard: false,
             uninstalled: false,
             installed: false,
-            error: true,
+            // error: true,
           });
         }
       }
@@ -183,14 +144,8 @@ class UpdateApp extends Component<Props, State> {
   };
 
   render() {
-    const { classes, t } = this.props;
-    const {
-      isDashboard,
-      error,
-      uninstalled,
-      no_application,
-      installed,
-    } = this.state;
+    const { t } = this.props;
+    const { isDashboard, error, uninstalled, installed } = this.state;
 
     let stateUninstall = "None";
     let stateInstall = "None";
@@ -207,40 +162,20 @@ class UpdateApp extends Component<Props, State> {
       stateInstall = "Done";
     }
 
-    if (no_application) {
-      return (
-        <div className={classes.base}>
-          <Card>
-            <Label>{t("update:title")}</Label>
-            <div className={classes.error}>
-              {t("update:no_version")}
-              <button onClick={this.start} className={classes.button}>
-                {t("update:retry")}
-              </button>
-            </div>
-          </Card>
-        </div>
-      );
-    }
     if (error) {
       return (
-        <div className={classes.base}>
-          <Card title={t("update:title")}>
-            <div className={classes.error}>
-              {t("update:error")}
-              <button onClick={this.start} className={classes.button}>
-                {t("update:retry")}
-              </button>
-            </div>
-          </Card>
-        </div>
+        <Box align="flex-end" p={30} flow={10}>
+          <Text i18nKey="update:error" />
+          <Button onClick={this.start} customColor="green" variant="text">
+            {t("update:retry")}
+          </Button>
+        </Box>
       );
     }
     return (
-      <div className={classes.base}>
-        <Card title={t("update:title")}>
-          <p>{t("update:sub_title")}</p>
-          <br />
+      <Box p={30} flow={20}>
+        <p>{t("update:sub_title")}</p>
+        <Box flow={10}>
           <Row
             icon={<Home size={19} />}
             state={!isDashboard ? "Pending" : "Done"}
@@ -253,10 +188,10 @@ class UpdateApp extends Component<Props, State> {
           <Row icon={<Update size={19} />} state={stateInstall}>
             {t("update:install")}
           </Row>
-        </Card>
-      </div>
+        </Box>
+      </Box>
     );
   }
 }
 
-export default withStyles(styles)(withTranslation()(UpdateApp));
+export default withTranslation()(UpdateApp);
