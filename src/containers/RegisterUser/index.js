@@ -7,6 +7,7 @@ import { Trans } from "react-i18next";
 import type { Match } from "react-router-dom";
 import GlobalLoading from "components/GlobalLoading";
 
+import colors from "shared/colors";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import InviteUserQuery from "api/queries/InviteUserQuery";
 import DeviceInteraction from "components/DeviceInteraction";
@@ -15,13 +16,18 @@ import type { RestlayEnvironment } from "restlay/connectData";
 
 import CenteredLayout from "components/base/CenteredLayout";
 import TryAgain from "components/TryAgain";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
-import { ModalHeader, ModalBody, ModalFooter } from "components/base/Modal";
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalFooterButton,
+} from "components/base/Modal";
 import Card from "components/base/Card";
 import LineSeparator from "components/LineSeparator";
-import DialogButton from "components/buttons/DialogButton";
 
 import type { UserInvite, Organization } from "data/types";
 
@@ -36,6 +42,7 @@ type Props = {
 };
 
 function RegisterUser(props: Props) {
+  const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [isRegistering, setRegistering] = useState(false);
 
@@ -46,9 +53,17 @@ function RegisterUser(props: Props) {
   function onSuccess() {
     setRegistering(false);
     setSuccess(true);
+    setError(null);
   }
+
+  function onError(err) {
+    setRegistering(false);
+    setError(err);
+  }
+
   return (
     <CenteredLayout>
+      {error && <TriggerErrorNotification error={error} />}
       <Card overflow="visible">
         {success ? (
           <RegisterUserSuccess />
@@ -90,7 +105,7 @@ function RegisterUser(props: Props) {
                   <DeviceInteraction
                     onSuccess={onSuccess}
                     interactions={registerUserFlow}
-                    onError={() => setRegistering(false)}
+                    onError={onError}
                     additionalFields={{
                       organization,
                       role: userInvite
@@ -103,9 +118,12 @@ function RegisterUser(props: Props) {
                   />
                 </Box>
               ) : (
-                <DialogButton highlight onTouchTap={() => setRegistering(true)}>
+                <ModalFooterButton
+                  color={colors.ocean}
+                  onClick={() => setRegistering(true)}
+                >
                   <Trans i18nKey="inviteUser:registration.button" />
-                </DialogButton>
+                </ModalFooterButton>
               )}
             </ModalFooter>
           </ModalBody>
