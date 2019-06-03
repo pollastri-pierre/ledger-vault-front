@@ -230,34 +230,6 @@ const openSessionValidate: Interaction = {
   },
 };
 
-const openSessionValidate2: Interaction = {
-  device: true,
-  responseKey: "channel_blob",
-  action: async ({ transport, secure_channels, u2f_key }) => {
-    const channel =
-      secure_channels[u2f_key.pubKey.toString("hex").toUpperCase()];
-    if (!channel) {
-      throw new NoChannelForDevice();
-    }
-    await retry(() => {
-      const certif = Buffer.concat([
-        Buffer.from(channel.ephemeral_public_key_attestation.code_hash),
-        Buffer.from(channel.ephemeral_public_key_attestation.attestation_pub),
-        Buffer.from(channel.ephemeral_public_key_attestation.certificate),
-      ]);
-      return openSession()(
-        transport,
-        CONFIDENTIALITY_PATH,
-        channel.ephemeral_public_key,
-        certif,
-        ACCOUNT_MANAGER_SESSION,
-      );
-    });
-
-    return Promise.resolve(channel.blob);
-  },
-};
-
 const validateDevice: Interaction = {
   device: true,
   needsUserInput: true,
@@ -331,7 +303,7 @@ export const createAndApprove = [postRequest, ...approveFlow];
 
 export const generateSeed = [
   getU2FPublicKey,
-  openSessionValidate2,
+  openSessionValidate,
   validateDevice,
   generateFragmentSeed,
 ];
