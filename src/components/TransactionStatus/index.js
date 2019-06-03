@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from "react";
-import ConfirmationStatus from "components/ConfirmationStatus";
+// FIXME FIXME FIXME put it back when gate send us the nb of confirmatinos
+// import ConfirmationStatus from "components/ConfirmationStatus";
 import EntityStatus from "components/EntityStatus";
 import type { Transaction } from "data/types";
 
@@ -12,9 +13,10 @@ class TransactionStatus extends Component<*> {
   render() {
     const { transaction } = this.props;
 
-    if (transaction.status === "SUBMITTED") {
-      return <ConfirmationStatus nbConfirmations={transaction.confirmations} />;
-    }
+    // FIXME FIXME FIXME put it back when gate send us the nb of confirmatinos
+    // if (transaction.status === "SUBMITTED") {
+    //   return <ConfirmationStatus nbConfirmations={transaction.confirmations} />;
+    // }
 
     return (
       <EntityStatus
