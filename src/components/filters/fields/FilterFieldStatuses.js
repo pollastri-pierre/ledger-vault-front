@@ -29,7 +29,7 @@ export default function FilterFieldStatuses(props: Props) {
           />
         ),
       })),
-    [statuses],
+    [statuses, targetType],
   );
 
   return (

@@ -101,7 +101,7 @@ function RegisterUser(props: Props) {
             </Box>
             <ModalFooter>
               {isRegistering ? (
-                <Box mb={20}>
+                <Box mb={15}>
                   <DeviceInteraction
                     onSuccess={onSuccess}
                     interactions={registerUserFlow}
