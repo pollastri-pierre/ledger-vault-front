@@ -22,6 +22,7 @@ export default function GroupsFilters(props: FieldsGroupProps) {
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:groupStatus")}
+        targetType="GROUP"
       />
       <FieldText title="Name" queryKey="name" placeholder="Group name" />
       <FieldMembers />
