@@ -45,7 +45,7 @@ const BlockingReasons = ({ error, onClose, ...rest }: Props) => {
       <Box p={40} flow={20} width={650}>
         <Box>
           <Text header i18nKey={`reasons:${error.json.name}`} />
-          <Text>{error.json.message}</Text>
+          <Text small>{error.json.message}</Text>
         </Box>
         <ReasonsTable
           data={error.json.blocking_reasons}
