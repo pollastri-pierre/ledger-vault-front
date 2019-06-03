@@ -8,6 +8,7 @@ import {
   getVersion as softGetVersion,
   openSession as softOpenSession,
   registerData as softRegisterData,
+  getFirmwareInfo as softGetFirmwareInfo,
 } from "device/VaultDeviceHTTP";
 
 import {
@@ -19,6 +20,7 @@ import {
   getVersion as hardGetVersion,
   openSession as hardOpenSession,
   generateKeyComponent as hardGenerateKeyComponent,
+  getFirmwareInfo as hardGetFirmwareInfo,
 } from "device/VaultDeviceApp";
 
 const softwareMode = () =>
@@ -50,3 +52,6 @@ export const generateKeyComponent = () =>
 
 export const getVersion = () =>
   softwareMode() ? softGetVersion : hardGetVersion;
+
+export const getFirmwareInfo = () =>
+  softwareMode() ? softGetFirmwareInfo : hardGetFirmwareInfo;

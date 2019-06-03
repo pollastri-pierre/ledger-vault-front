@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from "react";
+import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 
 import {
   FaPowerOff,
@@ -9,7 +10,8 @@ import {
   FaRegHandPointUp,
 } from "react-icons/fa";
 
-import createDevice, { U2F_PATH, U2F_TIMEOUT } from "device";
+import { U2F_PATH, U2F_TIMEOUT } from "device";
+import { getPublicKey } from "device/interface";
 
 import colors from "shared/colors";
 import Box from "components/base/Box";
@@ -30,8 +32,11 @@ class ReceiveFlowDevice extends PureComponent<Props> {
     const { selectedAccount } = payload;
     if (selectedAccount) {
       try {
-        const device = await createDevice();
-        await device.getPublicKey(U2F_PATH, false);
+        let transport;
+        if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
+          transport = await LedgerTransportU2F.create(90000000, 90000000);
+        }
+        await getPublicKey(transport, U2F_PATH, false);
         updatePayload({ isOnVaultApp: true });
       } catch (error) {
         console.error(error);
