@@ -61,7 +61,9 @@ function UserDetails(props: Props) {
       revokeButton={revokeButton}
     >
       <UserDetailsOverview key="overview" user={user} />
-      <UserDetailsPermissions key="permissions" user={user} />
+      {user.role === "OPERATOR" && (
+        <UserDetailsPermissions key="permissions" user={user} />
+      )}
       <UserDetailsHistory key="history" user={user} />
     </EntityModal>
   );

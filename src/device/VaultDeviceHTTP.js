@@ -25,7 +25,7 @@ const deviceNetwork = async function<T>(
     noJson: noJson || false,
   }).catch(err => {
     console.error(err);
-    if (err.json.status_code) {
+    if (err.json && err.json.status_code) {
       // TODO do we really want to throw a literal here?
       throw { statusCode: err.json.status_code }; // eslint-disable-line no-throw-literal
     } else {

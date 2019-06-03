@@ -251,7 +251,8 @@ export type UserStatus =
   | "REVOKED"
   | "PENDING_APPROVAL"
   | "PENDING_REVOCATION"
-  | "PENDING_REGISTRATION";
+  | "PENDING_REGISTRATION"
+  | "ACCESS_SUSPENDED";
 
 export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
 
@@ -259,6 +260,7 @@ export type AccountStatus =
   | "ACTIVE"
   | "REVOKED"
   | "MIGRATED"
+  | "VIEW_ONLY"
   | "HSM_COIN_UPDATED"
   | "PENDING_CREATION_APPROVAL"
   | "PENDING"

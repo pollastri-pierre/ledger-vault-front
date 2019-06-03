@@ -4,13 +4,18 @@ import { connect } from "react-redux";
 import { NetworkError } from "network";
 
 import { NoChannelForDevice, GenericError } from "utils/errors";
-import { addMessage, addError } from "redux/modules/alerts";
+import {
+  addMessage,
+  addError,
+  extractErrorTitle,
+  extractErrorContent,
+} from "redux/modules/alerts";
 import type { GateError } from "data/types";
 
 type Props = {
   error: Error | GateError | typeof NetworkError,
   addMessage: (string, string, ?string) => void,
-  addError: Error => void,
+  addError: (Error | GateError | typeof NetworkError, type?: string) => void,
 };
 
 const mapDispatchToProps = {
@@ -31,13 +36,18 @@ class TriggerErrorNotification extends PureComponent<Props> {
 
   findErrorType = () => {
     const { error, addMessage, addError } = this.props;
+    const title = extractErrorTitle(error);
+    const content = extractErrorContent(error);
     switch (true) {
       case error.json && error instanceof NetworkError:
         // $FlowFixMe
-        addMessage(`Error ${error.json.code}`, error.json.message, "error");
+        if (error.json.blocking_reasons) {
+          addError(error, "reason");
+        } else {
+          addMessage(title, content, "error");
+        }
         break;
       case error instanceof Error && error instanceof NoChannelForDevice:
-        // $FlowFixMe
         addError(error);
         break;
       default:

@@ -18,6 +18,7 @@ export const defaultStatuses: AccountStatus[] = [
   "PENDING",
   "PENDING_CREATION_APPROVAL",
   "PENDING_UPDATE",
+  "VIEW_ONLY",
 ];
 
 const statuses: AccountStatus[] = [...defaultStatuses, "REVOKED"];
