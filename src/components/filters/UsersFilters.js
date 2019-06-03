@@ -17,6 +17,7 @@ export const defaultStatuses: UserStatus[] = [
   "PENDING_APPROVAL",
   "PENDING_REVOCATION",
   "PENDING_REGISTRATION",
+  "ACCESS_SUSPENDED",
 ];
 
 const statuses: UserStatus[] = [...defaultStatuses, "REVOKED"];

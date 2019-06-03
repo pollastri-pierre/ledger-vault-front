@@ -251,7 +251,8 @@ export type UserStatus =
   | "REVOKED"
   | "PENDING_APPROVAL"
   | "PENDING_REVOCATION"
-  | "PENDING_REGISTRATION";
+  | "PENDING_REGISTRATION"
+  | "ACCESS_SUSPENDED";
 
 export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
 
