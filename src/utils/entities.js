@@ -2,11 +2,12 @@
 
 import type { Entity } from "data/types";
 
+// FIXME added 'ACTIVE' because I saw ACTIVE status
+// for an account, don't know if it's only for account or not.
+const STATUS_NOT_PENDING = ["ACTIVE", "APPROVED", "SUBMITTED", "ABORTED"];
 export const hasPendingRequest = (entity: Entity) =>
   !!entity.last_request &&
-  (entity.last_request.status !== "APPROVED" &&
-    entity.last_request.status !== "SUBMITTED" &&
-    entity.last_request.status !== "ABORTED");
+  STATUS_NOT_PENDING.indexOf(entity.last_request.status) === -1;
 
 export const hasPendingEdit = (entity: Entity) =>
   !!entity.last_request &&
