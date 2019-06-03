@@ -260,6 +260,7 @@ export type AccountStatus =
   | "ACTIVE"
   | "REVOKED"
   | "MIGRATED"
+  | "VIEW_ONLY"
   | "HSM_COIN_UPDATED"
   | "PENDING_CREATION_APPROVAL"
   | "PENDING"
