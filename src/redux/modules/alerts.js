@@ -16,10 +16,11 @@ export function closeMessage() {
   };
 }
 
-export function addError(error: Error) {
+export function addError(error: Error, type?: string) {
   return {
     type: ADD_ERROR,
     error,
+    messageType: type,
   };
 }
 export function addMessage(
@@ -80,23 +81,14 @@ export default function reducer(state: Store = initialState, action: Object) {
       }
       return {
         visible: true,
-        title:
-          error.json && (error.json.code || error.json.message)
-            ? error.json.code
-              ? `Error ${error.json.code}`
-              : error.json.message
-            : error.message
-            ? error.message
-            : "Error",
-        content: error.json
-          ? error.json.message
-          : error.message || "Unexpected error",
+        title: extractErrorTitle(error),
+        content: extractErrorContent(error),
         type: "error",
       };
     }
     case ADD_ERROR: {
-      const { error } = action;
-      return { visible: true, error, type: "error" };
+      const { error, messageType } = action;
+      return { visible: true, error, type: messageType || "error" };
     }
     case ADD_MESSAGE: {
       const { title, content, messageType } = action;
@@ -115,4 +107,21 @@ export default function reducer(state: Store = initialState, action: Object) {
     default:
       return state;
   }
+}
+
+// code is intentionally defensive
+export function extractErrorTitle(error: *): string {
+  const title =
+    error.json && (error.json.code || error.json.message)
+      ? error.json.code && typeof error.json.code === "number"
+        ? `Error ${error.json.code}`
+        : error.json.message || "Unexpected error"
+      : error.message
+      ? error.message
+      : "Error";
+  return title || "Unexpected error";
+}
+
+export function extractErrorContent(error: *): string {
+  return error.json ? error.json.message : error.message || "Unexpected error";
 }
