@@ -151,7 +151,13 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
   };
 
   render() {
-    const { transaction, account, onClick, withStatus, withLabel } = this.props;
+    const {
+      transaction,
+      account,
+      onClick,
+      withStatus = true,
+      withLabel,
+    } = this.props;
 
     const amount =
       transaction.amount || (transaction.price && transaction.price.amount);
