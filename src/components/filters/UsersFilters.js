@@ -29,7 +29,7 @@ export default function UsersFilters(props: FieldsGroupProps) {
       <FieldStatuses statuses={statuses} placeholder={t("common:userStatus")} />
       <FieldText title="Name" queryKey="username" placeholder="Name" />
       <FieldUserRole />
-      <FieldText title="User ID" queryKey="id" placeholder="User ID" />
+      <FieldText title="User ID" queryKey="user_id" placeholder="User ID" />
     </FiltersCard>
   );
 }
