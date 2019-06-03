@@ -9,6 +9,49 @@ const splits = (chunk: number, buffer: Buffer): Buffer[] => {
   }
   return chunks;
 };
+export const getFirmwareInfo = async (
+  transport: Transport<*>,
+): Promise<{
+  targetId: string,
+  seVersion: string,
+  flags: string,
+  mcuVersion: string,
+}> => {
+  const res = await transport.send(0xe0, 0x01, 0x00, 0x00);
+  const byteArray = [...res];
+  const data = byteArray.slice(0, byteArray.length - 2);
+  const targetIdStr = Buffer.from(data.slice(0, 4));
+  const targetId = targetIdStr.readUIntBE(0, 4);
+  const seVersionLength = data[4];
+  const seVersion = Buffer.from(data.slice(5, 5 + seVersionLength)).toString();
+  const flagsLength = data[5 + seVersionLength];
+  const flags = Buffer.from(
+    data.slice(5 + seVersionLength + 1, 5 + seVersionLength + 1 + flagsLength),
+  ).toString();
+
+  const mcuVersionLength = data[5 + seVersionLength + 1 + flagsLength];
+  let mcuVersion = Buffer.from(
+    data.slice(
+      7 + seVersionLength + flagsLength,
+      7 + seVersionLength + flagsLength + mcuVersionLength,
+    ),
+  );
+  if (mcuVersion[mcuVersion.length - 1] === 0) {
+    mcuVersion = mcuVersion.slice(0, mcuVersion.length - 1);
+  }
+  mcuVersion = mcuVersion.toString();
+
+  if (!seVersionLength) {
+    return {
+      targetId,
+      seVersion: "0.0.0",
+      flags: "",
+      mcuVersion: "",
+    };
+  }
+
+  return { targetId, seVersion, flags, mcuVersion };
+};
 
 export const generateKeyComponent = async (
   transport: Transport<*>,
@@ -334,163 +377,3 @@ export const authenticate = async (
     rawResponse: lastResponse.slice(0, lastResponse.length - 2).toString("hex"),
   };
 };
-
-export default class VaultDeviceApp {
-  transport: Transport<*>;
-
-  constructor(
-    transport: Transport<*>,
-    scrambleKey: string = "v1+",
-    unwrap: boolean = true,
-  ) {
-    this.transport = transport;
-    transport.setScrambleKey(scrambleKey);
-    // $FlowFixMe : needs to be done in ledger-hw-transport-u2f
-    transport.setUnwrap(unwrap);
-  }
-
-  // F1 D0 00 00 00
-  async getScrambleKey(): Promise<{ scrambleKey: string }> {
-    const res = await this.transport.send(0xf1, 0xd0, 0x00, 0x00);
-    return res.slice(0, res.length - 2).toString();
-  }
-
-  async getVersion(): Promise<{
-    appName: string,
-    appVersion: string,
-  }> {
-    return getVersion(this.transport);
-  }
-
-  async getFirmwareInfo() {
-    const res = await this.transport.send(0xe0, 0x01, 0x00, 0x00);
-    const byteArray = [...res];
-    const data = byteArray.slice(0, byteArray.length - 2);
-    const targetIdStr = Buffer.from(data.slice(0, 4));
-    const targetId = targetIdStr.readUIntBE(0, 4);
-    const seVersionLength = data[4];
-    const seVersion = Buffer.from(
-      data.slice(5, 5 + seVersionLength),
-    ).toString();
-    const flagsLength = data[5 + seVersionLength];
-    const flags = Buffer.from(
-      data.slice(
-        5 + seVersionLength + 1,
-        5 + seVersionLength + 1 + flagsLength,
-      ),
-    ).toString();
-
-    const mcuVersionLength = data[5 + seVersionLength + 1 + flagsLength];
-    let mcuVersion = Buffer.from(
-      data.slice(
-        7 + seVersionLength + flagsLength,
-        7 + seVersionLength + flagsLength + mcuVersionLength,
-      ),
-    );
-    if (mcuVersion[mcuVersion.length - 1] === 0) {
-      mcuVersion = mcuVersion.slice(0, mcuVersion.length - 1);
-    }
-    mcuVersion = mcuVersion.toString();
-
-    if (!seVersionLength) {
-      return {
-        targetId,
-        seVersion: "0.0.0",
-        flags: "",
-        mcuVersion: "",
-      };
-    }
-
-    return { targetId, seVersion, flags, mcuVersion };
-  }
-
-  async register(
-    challenge: Buffer,
-    application: string,
-    instanceName: string,
-    instanceReference: string,
-    instanceUrl: string,
-    agentRole: string,
-  ): Promise<{
-    u2f_register: Buffer,
-    keyHandle: Buffer,
-  }> {
-    return register(
-      this.transport,
-      challenge,
-      application,
-      instanceName,
-      instanceReference,
-      instanceUrl,
-      agentRole,
-    );
-  }
-
-  async authenticate(
-    challenge: Buffer,
-    application: string,
-    keyHandle: Buffer,
-    instanceName: string,
-    instanceReference: string,
-    instanceUrl: string,
-    agentRole: string,
-  ): Promise<{
-    userPresence: *,
-    counter: *,
-    signature: string,
-    rawResponse: string,
-  }> {
-    return authenticate(
-      this.transport,
-      challenge,
-      application,
-      keyHandle,
-      instanceName,
-      instanceReference,
-      instanceUrl,
-      agentRole,
-    );
-  }
-
-  async generateKeyComponent(
-    path: number[],
-    isWrappingKey: boolean,
-  ): Promise<*> {
-    return generateKeyComponent(this.transport, path, isWrappingKey);
-  }
-
-  async openSession(
-    path: number[],
-    pubKey: Buffer,
-    attestation: Buffer,
-    scriptHash: number = 0x00,
-  ): Promise<*> {
-    return openSession(this.transport, path, pubKey, attestation, scriptHash);
-  }
-
-  splits(chunk: number, buffer: Buffer): Buffer[] {
-    const chunks = [];
-    for (let i = 0, size = chunk; i < buffer.length; i += size, size = chunk) {
-      chunks.push(buffer.slice(i, i + size));
-    }
-    return chunks;
-  }
-
-  async validateVaultOperation(path: number[], operation: Buffer) {
-    return validateVaultOperation(this.transport, path, operation);
-  }
-
-  async getAttestationCertificate(): Promise<Buffer> {
-    return getAttestationCertificate(this.transport);
-  }
-
-  async getPublicKey(
-    path: number[],
-    secp256k1: boolean = true,
-  ): Promise<{
-    pubKey: string,
-    signature: string,
-  }> {
-    return getPublicKey(this.transport, path, secp256k1);
-  }
-}

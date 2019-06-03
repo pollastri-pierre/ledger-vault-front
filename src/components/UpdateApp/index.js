@@ -14,7 +14,8 @@ import Button from "components/base/Button";
 import qs from "qs";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import { createDeviceSocket } from "network/socket";
-import createDevice, { U2F_TIMEOUT } from "device";
+import { U2F_TIMEOUT } from "device";
+import { getFirmwareInfo } from "device/interface";
 
 let _isMounted = false;
 
@@ -137,8 +138,12 @@ class UpdateApp extends Component<Props, State> {
 
   // we don't care about the result, just want to be sure we are on the dashboard
   getDeviceInfo = async (): Promise<boolean> => {
-    const device = await createDevice("B0L0S");
-    await device.getFirmwareInfo();
+    let transport;
+    if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
+      transport = await LedgerTransportU2F.create(90000000, 90000000);
+      transport.setScrambleKey("B0L0S");
+    }
+    await getFirmwareInfo(transport);
     this.setState({ isDashboard: true });
     return true;
   };
