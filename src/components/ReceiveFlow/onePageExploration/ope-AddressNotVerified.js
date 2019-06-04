@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { Trans } from "react-i18next";
 
-import { verifyAddressFlow } from "device/interactions/verifyAddressFlow";
+import { verifyAddressFlow } from "device/interactions/hsmFlows";
 
 import VaultButton from "components/base/Button";
 import Box from "components/base/Box";
