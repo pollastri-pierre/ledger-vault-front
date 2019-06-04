@@ -2,6 +2,7 @@
 import { StatusCodes } from "@ledgerhq/hw-transport";
 import { NoChannelForDevice } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
+import GetAddressQuery from "api/queries/GetAddressQuery";
 import network, { retryOnCondition, retry } from "network";
 import {
   APPID_VAULT_ADMINISTRATOR,
@@ -36,6 +37,17 @@ export const postResult: Interaction = {
       new RegisterUserMutation({
         urlID,
         body: { ...register_input, name: member.user.username },
+      }),
+    ),
+};
+export const getAddress: Interaction = {
+  needsUserInput: false,
+  responseKey: "address",
+  action: ({ accountId, fresh_address, restlay }) =>
+    restlay.fetchQuery(
+      new GetAddressQuery({
+        accountId,
+        derivation_path: fresh_address.derivation_path,
       }),
     ),
 };
@@ -299,6 +311,7 @@ export const approveFlow = [
   postApproval,
   refetchPending,
 ];
+export const verifyAddressFlow = [getAddress, ...validateOperation];
 export const createAndApprove = [postRequest, ...approveFlow];
 
 export const generateSeed = [
