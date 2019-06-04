@@ -22,7 +22,21 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin Testnet", "Hey2 ", "APAC 1", "New EMEA");
+    create_account("Bitcoin", "HeyBtcACC ", "APAC 1", "New EMEA");
+    successfull_message();
+  });
+
+  it("Create Bitcoin Testnet Account", () => {
+    cy.server();
+    route();
+    cy.get("[data-test=menuItem-accounts]").click();
+    cy.url().should("include", "/admin/accounts");
+    create_account(
+      "Bitcoin Testnet",
+      "HeytestBTC ",
+      "South Africa",
+      "New EMEA",
+    );
     successfull_message();
   });
 
@@ -62,10 +76,9 @@ describe("Test Case for Account", function() {
   it("approve account", () => {
     cy.server();
     route();
+    login(6);
     cy.url().should("include", "/admin/dashboard");
-    cy.contains("Create Account").click();
-    cy.get("[data-test=dialog-button]")
-      .eq(1)
-      .click();
+    cy.contains("Create account").click();
+    cy.get("[data-test=approve_button]").click();
   });
 });
