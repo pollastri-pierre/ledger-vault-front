@@ -88,7 +88,6 @@ context("Register the Administrators", () => {
       cy.contains("less").click();
       cy.contains("Continue").click();
       cy.wait("@next");
-      cy.wait("@challenge");
     });
   });
 });
