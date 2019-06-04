@@ -279,7 +279,7 @@ context("Onboarding e2e", () => {
     cy.contains("3 Shared-Owners").should("be.visible");
     cy.contains("3 Wrapping Keys Custodians").should("be.visible");
     cy.contains("3 Administrators").should("be.visible");
-    cy.contains("2/3 admin rule").should("be.visible");
+    cy.contains("2/3 Admin rule").should("be.visible");
 
     // login with user1
     switch_device(4);
