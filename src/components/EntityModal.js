@@ -13,6 +13,7 @@ import {
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
+import { withMe } from "components/UserContextProvider";
 import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
@@ -21,7 +22,7 @@ import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
 import Absolute from "components/base/Absolute";
 import { hasPendingRequest } from "utils/entities";
-import type { Entity } from "data/types";
+import type { Entity, User } from "data/types";
 
 const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
@@ -34,6 +35,7 @@ type Props<T> = {
   match: Match,
   children: React$Element<*>[],
   growing?: boolean,
+  me: User,
   revokeButton?: React$Node,
   footer?: React$Node,
   editURL?: string,
@@ -45,6 +47,7 @@ function EntityModal<T>(props: Props<T>) {
     growing,
     Icon,
     title,
+    me,
     onClose,
     children,
     location,
@@ -111,7 +114,9 @@ function EntityModal<T>(props: Props<T>) {
               </Absolute>
             </Box>
           </RichModalTab>
-        ) : fullEditURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (
+        ) : fullEditURL &&
+          EDIT_ALLOWED_STATUS.includes(entity.status) &&
+          me.role === "ADMIN" ? (
           <EditButton url={fullEditURL} />
         ) : null}
       </RichModalHeader>
@@ -147,4 +152,4 @@ function EditButton({ url }: { url: string }) {
   );
 }
 
-export default withRouter(EntityModal);
+export default withRouter(withMe(EntityModal));
