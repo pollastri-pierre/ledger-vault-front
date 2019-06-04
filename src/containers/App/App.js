@@ -35,7 +35,7 @@ type Props = {
   location: Location,
   history: MemoryHistory,
   accounts: Connection<Account>,
-  allPendingTransactions: Transaction[],
+  allPendingTransactions: Connection<Transaction>,
 };
 
 const AppWrapper = ({ me, ...props }: Props) => (
@@ -109,7 +109,7 @@ const App = withMe((props: Props & { me: User }) => {
   const menuItems = getMenuItems({
     role: me.role,
     accounts: accounts.edges.map(e => e.node),
-    allPendingTransactions,
+    allPendingTransactions: allPendingTransactions.edges.map(e => e.node),
     match,
     location,
   });

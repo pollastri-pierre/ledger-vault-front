@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { Trans } from "react-i18next";
 
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import { withMe } from "components/UserContextProvider";
 import colors from "shared/colors";
 import CounterValue from "components/CounterValue";
 import Card from "components/base/Card";
@@ -15,13 +16,14 @@ import Box from "components/base/Box";
 import IconSend from "components/icons/Send";
 import IconReceive from "components/icons/Receive";
 import { Label } from "components/base/form";
-import type { Account } from "data/types";
+import type { Account, User } from "data/types";
 
 const SendIcon = () => <IconSend size={11} />;
 const ReceiveIcon = () => <IconReceive size={11} />;
 
 type Props = {
   account: Account,
+  me: User,
   history: MemoryHistory,
 };
 
@@ -37,7 +39,7 @@ class AccountBalanceCard extends Component<Props> {
   };
 
   render() {
-    const { account } = this.props;
+    const { account, me } = this.props;
     const isERC20Token = account.account_type === "ERC20";
     return (
       <Card>
@@ -67,30 +69,32 @@ class AccountBalanceCard extends Component<Props> {
               />
             </Text>
           </Box>
-          <Box horizontal align="center" flow={10}>
-            <Button
-              variant="filled"
-              customColor={colors.ocean}
-              size="tiny"
-              IconLeft={ReceiveIcon}
-              onClick={this.onReceive}
-            >
-              Receive
-            </Button>
-            <Button
-              variant="filled"
-              customColor={colors.ocean}
-              size="tiny"
-              IconLeft={SendIcon}
-              onClick={this.onSend}
-            >
-              Send
-            </Button>
-          </Box>
+          {me.role === "OPERATOR" && (
+            <Box horizontal align="center" flow={10}>
+              <Button
+                variant="filled"
+                customColor={colors.ocean}
+                size="tiny"
+                IconLeft={ReceiveIcon}
+                onClick={this.onReceive}
+              >
+                Receive
+              </Button>
+              <Button
+                variant="filled"
+                customColor={colors.ocean}
+                size="tiny"
+                IconLeft={SendIcon}
+                onClick={this.onSend}
+              >
+                Send
+              </Button>
+            </Box>
+          )}
         </Box>
       </Card>
     );
   }
 }
 
-export default withRouter(AccountBalanceCard);
+export default withRouter(withMe(AccountBalanceCard));
