@@ -58,6 +58,16 @@ const defaultDefinition = [
   },
   {
     header: {
+      label: "Status",
+      align: "left",
+    },
+    body: {
+      prop: "status",
+      align: "left",
+    },
+  },
+  {
+    header: {
       label: "",
       align: "right",
     },
