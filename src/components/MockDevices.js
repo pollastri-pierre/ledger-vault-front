@@ -2,7 +2,8 @@
 
 import React, { PureComponent } from "react";
 import Switch from "@material-ui/core/Switch";
-import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaCopy } from "react-icons/fa";
 import Collapse from "@material-ui/core/Collapse";
 import { logout, login } from "redux/modules/auth";
 import { connect } from "react-redux";
@@ -36,6 +37,7 @@ const styles = {
     color: "white",
     fontWeight: "bold",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
@@ -48,6 +50,7 @@ const styles = {
     height: 30,
     borderRadius: "50%",
     backgroundColor: "rgba(0, 0, 0, 0.2)",
+    marginBottom: 10,
   },
   rowContainer: {
     display: "flex",
@@ -72,8 +75,22 @@ const devices = [
   ["Wrapping key", "orange", [1, 2, 3]],
   ["Admin", "green", [4, 5, 6]],
   ["Shared owner", "red", [7, 8, 9]],
-  ["Operators", "blue", [11, 12, 13]],
+  ["Operators", "blue", [10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22]],
 ];
+
+const deviceIds = {
+  10: "4f019f7e13795751",
+  11: "294857902d9200c2",
+  12: "51839a343537c54f",
+  13: "f4e02d6e9000fdbe",
+  16: "7201e8ecd398b1c9",
+  17: "f1f4296963a685f6",
+  18: "825696b3a0609531",
+  19: "b5f489585f89ecda",
+  20: "cb2bc36b417bbc5d",
+  21: "ce5a8c3e772bc77f",
+  22: "9bf0b2e0b22c4a45",
+};
 
 class MockDevices extends PureComponent {
   state = {
@@ -150,6 +167,7 @@ class MockDevices extends PureComponent {
                     key={d}
                     color={color}
                     id={d}
+                    deviceId={deviceIds[d] || null}
                     isActive={deviceId === d}
                     onClick={this.switchDevice}
                   />
@@ -174,7 +192,7 @@ function DeviceGroup({ name, children }) {
   );
 }
 
-function Device({ id, color, isActive, onClick }) {
+function Device({ id, color, isActive, onClick, deviceId }) {
   return (
     <div
       onClick={() => onClick(id)}
@@ -185,9 +203,14 @@ function Device({ id, color, isActive, onClick }) {
       }}
     >
       {isActive ? (
-        <div style={styles.circle}>
-          <Text>{id}</Text>
-        </div>
+        <>
+          <div style={styles.circle}>
+            <Text>{id}</Text>
+          </div>
+          <CopyToClipboard text={deviceId}>
+            <FaCopy />
+          </CopyToClipboard>
+        </>
       ) : (
         <Text>{id}</Text>
       )}
