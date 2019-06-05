@@ -140,7 +140,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
               <SelectGroupsUsers
                 onMenuClose={this.handleClose}
                 placeholder={t("approvalsRules:selectPlaceholder")}
-                autoFocus={nbSelected === 0}
+                autoFocus={nbSelected === 0 && !readOnly}
                 openMenuOnFocus
                 groups={filteredGroups}
                 members={filteredUsers}
