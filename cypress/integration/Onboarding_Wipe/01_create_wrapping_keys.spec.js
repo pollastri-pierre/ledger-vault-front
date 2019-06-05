@@ -60,7 +60,7 @@ context("Create Wrapping Key", () => {
         cy.request("POST", Cypress.env("api_switch_device"), {
           device_number: 3,
         }).then(() => {
-          // Cancel the approval
+          /*    // Cancel the approval
           cy.request("POST", Cypress.env("approve_cancel_device"), {
             approve: false,
           });
@@ -72,6 +72,8 @@ context("Create Wrapping Key", () => {
           cy.wait("@open-session");
           cy.wait("@generate-key-fragments");
 
+          */
+
           // Do the last WPK
           cy.get(".fragment")
             .eq(2)
@@ -81,13 +83,13 @@ context("Create Wrapping Key", () => {
           cy.wait("@open-session");
           cy.wait("@generate-key-fragments");
           cy.wait("@authenticate");
-          cy.contains("continue").click();
+          cy.contains("Continue").click();
           cy.wait("@next");
-          cy.contains("continue")
+          cy.contains("Continue")
             .debug()
             .click();
           cy.wait("@next");
-          cy.contains("continue")
+          cy.contains("Continue")
             .debug()
             .click();
           cy.wait("@next");
