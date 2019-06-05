@@ -12,7 +12,7 @@ import { Label } from "components/base/form";
 import SelectAccount from "components/SelectAccount";
 import { isMemberOfFirstApprovalStep } from "utils/users";
 
-import type { Account, User } from "data/types";
+import type { Account } from "data/types";
 import type { TransactionCreationStepProps } from "../types";
 
 export const getBridgeAndTransactionFromAccount = (account: Account) => {
@@ -28,9 +28,9 @@ export const getBridgeAndTransactionFromAccount = (account: Account) => {
 };
 
 const TransactionCreationAccount = (
-  props: TransactionCreationStepProps<any> & { me: User },
+  props: TransactionCreationStepProps<any>,
 ) => {
-  const { payload, updatePayload, transitionTo, accounts, me } = props;
+  const { payload, updatePayload, transitionTo, accounts } = props;
 
   const handleChange = useCallback(
     acc => {
@@ -56,7 +56,7 @@ const TransactionCreationAccount = (
     .map(el => el.node)
     .filter(
       account =>
-        isMemberOfFirstApprovalStep(account, me) &&
+        isMemberOfFirstApprovalStep(account) &&
         account.balance.isGreaterThan(0),
     );
 
