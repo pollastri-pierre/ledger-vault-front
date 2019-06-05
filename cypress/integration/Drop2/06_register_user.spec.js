@@ -9,13 +9,13 @@ describe("Test the registration of a User", function() {
     // logout();
   });
 
-  it("approve user", () => {
+  it("Copy Paste", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.contains("PENDING_REGISTRATION").click();
+    cy.contains("pending registration").click();
     cy.contains("Copy").click();
     cy.url().type("{ctrl}V");
   });

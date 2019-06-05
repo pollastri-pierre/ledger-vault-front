@@ -24,7 +24,7 @@ context("Onboarding e2e", () => {
     route();
     switch_device(1);
     cy.get("input[type=text]").type(orga_name, { delay: 40 });
-    cy.contains("Continue").click();
+    cy.get("[data-test=continue_button]").click();
     cy.wait(1000);
     cy.contains("Welcome").should("be.visible");
     cy.contains("Get Started").click();
@@ -93,7 +93,7 @@ context("Onboarding e2e", () => {
     cy.contains("add administrator").click();
     cy.get("input[name=username]").type("user1");
     cy.get("[data-test=dialog-button]")
-      .contains("Continue")
+      .eq(2)
       .click();
     cy.wait("@get-public-key");
     cy.wait("@get-attestation");
@@ -109,7 +109,7 @@ context("Onboarding e2e", () => {
       cy.contains("add administrator").click();
       cy.get("input[name=username]").type("user2");
       cy.get("[data-test=dialog-button]")
-        .contains("Continue")
+        .eq(2)
         .click();
       cy.wait("@get-public-key");
       cy.wait("@get-attestation");
@@ -125,7 +125,7 @@ context("Onboarding e2e", () => {
         cy.contains("add administrator").click();
         cy.get("input[name=username]").type("user3");
         cy.get("[data-test=dialog-button]")
-          .contains("Continue")
+          .eq(2)
           .click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
@@ -133,13 +133,17 @@ context("Onboarding e2e", () => {
         cy.wait("@register");
         cy.wait("@register-data");
         cy.wait("@authenticate");
-        cy.contains("Continue").click();
+        cy.get("[data-test=dialog-button]")
+          .eq(1)
+          .click();
         cy.wait("@next");
         cy.contains("more").click();
         cy.contains("more").click();
         cy.contains("more").click();
         cy.contains("less").click();
-        cy.contains("Continue").click();
+        cy.get("[data-test=dialog-button]")
+          .eq(1)
+          .click();
         cy.wait("@next");
       });
     });
@@ -149,11 +153,17 @@ context("Onboarding e2e", () => {
     cy.server();
     route();
     cy.request("POST", DEVICE, { device_number: 7 }).then(() => {
-      cy.contains("Continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
-      cy.contains("Continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
-      cy.contains("Continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
 
       // Shared Owner 1
@@ -186,7 +196,9 @@ context("Onboarding e2e", () => {
           cy.wait("@register-data");
           cy.wait("@authenticate");
 
-          cy.contains("Continue").click();
+          cy.get("[data-test=dialog-button]")
+            .eq(1)
+            .click();
           cy.wait("@next");
         });
       });
@@ -214,7 +226,9 @@ context("Onboarding e2e", () => {
     cy.wait("@authenticate");
 
     // finish
-    cy.contains("Continue").click();
+    cy.get("[data-test=dialog-button]")
+      .eq(1)
+      .click();
     cy.wait("@next");
   });
 
@@ -256,7 +270,9 @@ context("Onboarding e2e", () => {
     cy.wait("@authenticate");
     cy.wait(1000);
     // Complete Onboarding
-    cy.contains("Continue").click();
+    cy.get("[data-test=dialog-button]")
+      .eq(1)
+      .click();
     cy.wait("@next");
     cy.wait(2000);
 
@@ -270,7 +286,7 @@ context("Onboarding e2e", () => {
     cy.contains("Continue").click();
     cy.wait(1000);
     cy.get("input[type=text]").type(orga_name);
-    cy.contains("Continue").click();
+    cy.get("[data-test=continue_button]").click();
     cy.wait("@get-public-key");
     cy.wait("@authenticate");
     cy.wait(1000);

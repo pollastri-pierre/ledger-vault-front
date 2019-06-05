@@ -23,17 +23,17 @@ describe("Test Case for Groups", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
 
-    create_group("APAC", "Group for APAC 1", "Thomas", "Anna", "James");
+    create_group("APAC 1", "Group for APAC 1", "Thomas", "Anna", "Aidan");
     successfull_message();
 
-    create_group("EMEA", "Group for EMEA", "James", "Aidan", "Thomas");
+    create_group("EMEA", "Group for EMEA", "Anna", "Aidan", "Thomas");
     successfull_message();
 
     create_group(
       "NORTH Asia",
       "Group for NORTH Asia",
       "Aidan",
-      "James",
+      "Anna",
       "Thomas",
     );
     successfull_message();
@@ -43,7 +43,7 @@ describe("Test Case for Groups", function() {
       "South Africa",
       "Group for South Africa",
       "Aidan",
-      "James",
+      "Anna",
       "Thomas",
     );
     successfull_message();
@@ -78,7 +78,7 @@ describe("Test Case for Groups", function() {
     successfull_message();
     cy.get("[data-test=close]").click();
 
-    cy.contains("APAC").click();
+    cy.contains("APAC 1").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
@@ -97,7 +97,7 @@ describe("Test Case for Groups", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
 
-    cy.contains("APAC").click();
+    cy.contains("APAC 1").click();
     cy.wait(1500);
     cy.get("[data-test=edit-button]").click();
     cy.get("[data-test=group_description]").clear();

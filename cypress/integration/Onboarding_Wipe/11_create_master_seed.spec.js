@@ -33,7 +33,7 @@ context("Create the Master Seed", () => {
       },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
-      cy.contains("continue").click();
+      cy.get("[data-test=continue_button]").click();
       cy.wait(1000);
 
       // Get Seed 1st Shared Owner
@@ -65,10 +65,12 @@ context("Create the Master Seed", () => {
       cy.request("POST", Cypress.env("api_switch_device"), {
         device_number: 4,
       });
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait(1000);
       cy.get("input[type=text]").type(orga_name);
-      cy.contains("Continue").click();
+      cy.get("[data-test=continue_button]").click();
       cy.wait("@get-public-key");
       cy.wait("@authenticate");
       cy.wait(1000);

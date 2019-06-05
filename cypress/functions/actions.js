@@ -103,6 +103,7 @@ export function cancel() {
  */
 export function create_account1(currency, name) {
   cy.get(".test-new-account").click();
+  cy.wait(2500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
@@ -259,9 +260,9 @@ export function create_group(groupName, description, user1, user2, user3) {
 
 export function successfull_message() {
   cy.get(".top-message-body")
-    .contains("the request has been successfully updated")
+    .contains("the request has been successfully created")
     .get(".top-message-title")
-    .contains("request updated");
+    .contains("request created");
 }
 
 export function error_message(title, message) {
@@ -273,7 +274,7 @@ export function error_message(title, message) {
 
 export function create_account(currency, name, group, user1) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(1000);
+  cy.wait(3500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
@@ -301,7 +302,7 @@ export function create_erc20_account(
   user1,
 ) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(2000);
+  cy.wait(3500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
