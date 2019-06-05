@@ -42,7 +42,7 @@ export const postResult: Interaction = {
 };
 export const getAddress: Interaction = {
   needsUserInput: false,
-  responseKey: "address",
+  responseKey: "address_channel",
   action: ({ accountId, fresh_address, restlay }) =>
     restlay.fetchQuery(
       new GetAddressQuery({
@@ -241,6 +241,28 @@ const openSessionValidate: Interaction = {
     return Promise.resolve(channel.blob);
   },
 };
+const openSessionVerifyAddress: Interaction = {
+  device: true,
+  responseKey: "channel_blob",
+  action: async ({ transport, address_channel }) => {
+    await retry(() => {
+      const certif = Buffer.concat([
+        Buffer.from(address_channel.certificate.code_hash),
+        Buffer.from(address_channel.certificate.attestation_pub),
+        Buffer.from(address_channel.certificate.certificate),
+      ]);
+      return openSession()(
+        transport,
+        CONFIDENTIALITY_PATH,
+        address_channel.ephemeral_public_key,
+        certif,
+        ACCOUNT_MANAGER_SESSION,
+      );
+    });
+
+    return Promise.resolve(address_channel.blob);
+  },
+};
 
 const validateDevice: Interaction = {
   device: true,
@@ -266,6 +288,12 @@ const validateDevice: Interaction = {
 export const validateOperation = [
   getU2FPublicKey,
   openSessionValidate,
+  validateDevice,
+];
+
+export const validateAdddress = [
+  getU2FPublicKey,
+  openSessionVerifyAddress,
   validateDevice,
 ];
 
@@ -311,7 +339,7 @@ export const approveFlow = [
   postApproval,
   refetchPending,
 ];
-export const verifyAddressFlow = [getAddress, ...validateOperation];
+export const verifyAddressFlow = [getAddress, ...validateAdddress];
 export const createAndApprove = [postRequest, ...approveFlow];
 
 export const generateSeed = [
