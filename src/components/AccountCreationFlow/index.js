@@ -290,7 +290,9 @@ export function serializePayload(
   return finalPayload;
 }
 
-export function areApprovalsRulesValid(rules: ApprovalsRule[]) {
+export function areApprovalsRulesValid(rules: Array<?ApprovalsRule>) {
   if (!rules.length) return false;
-  return rules.every(rule => rule.group_id !== null || rule.users.length > 0);
+  return rules.every(
+    rule => rule && (rule.group_id !== null || rule.users.length > 0),
+  );
 }
