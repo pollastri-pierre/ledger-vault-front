@@ -22,6 +22,8 @@ const styles = {
     flexDirection: "column",
     background: colors.night,
     color: colors.lead,
+    // intended eheh :)
+    zIndex: 99999999,
   },
   group: {
     display: "flex",
@@ -50,7 +52,6 @@ const styles = {
     height: 30,
     borderRadius: "50%",
     backgroundColor: "rgba(0, 0, 0, 0.2)",
-    marginBottom: 10,
   },
   rowContainer: {
     display: "flex",
@@ -78,6 +79,8 @@ const devices = [
   ["Operators", "blue", [10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22]],
 ];
 
+const onboardingDevices = ["Wrapping key", "Shared owner"];
+
 const deviceIds = {
   10: "4f019f7e13795751",
   11: "294857902d9200c2",
@@ -97,6 +100,7 @@ class MockDevices extends PureComponent {
     deviceId: null,
     autoLogout: false,
     collapseMock: false,
+    showOnboarding: false,
   };
 
   changeAutoLogout = () => {
@@ -139,8 +143,12 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ collapseMock: !state.collapseMock }));
   };
 
+  onboardingToggle = () => {
+    this.setState(state => ({ showOnboarding: !state.showOnboarding }));
+  };
+
   render() {
-    const { deviceId, autoLogout, collapseMock } = this.state;
+    const { deviceId, autoLogout, collapseMock, showOnboarding } = this.state;
     return (
       <div style={styles.root}>
         <div style={styles.actionContainer}>
@@ -154,26 +162,40 @@ class MockDevices extends PureComponent {
               label="autologout"
             />
           </div>
+          <div style={styles.rowContainer}>
+            <Text small uppercase style={styles.autoLogout}>
+              Show wrapping / shared ?
+            </Text>
+            <Switch
+              onChange={this.onboardingToggle}
+              checked={showOnboarding}
+              label="show onboarding"
+            />
+          </div>
           <div onClick={this.collapseToggle} style={styles.collapseIcon}>
             {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
           </div>
         </div>
         <Collapse in={!collapseMock}>
           <div style={styles.rowContainer}>
-            {devices.map(([g, color, devices]) => (
-              <DeviceGroup name={g} key={g}>
-                {devices.map(d => (
-                  <Device
-                    key={d}
-                    color={color}
-                    id={d}
-                    deviceId={deviceIds[d] || null}
-                    isActive={deviceId === d}
-                    onClick={this.switchDevice}
-                  />
-                ))}
-              </DeviceGroup>
-            ))}
+            {devices
+              .filter(([g]) =>
+                showOnboarding ? true : !onboardingDevices.includes(g),
+              )
+              .map(([g, color, devices]) => (
+                <DeviceGroup name={g} key={g}>
+                  {devices.map(d => (
+                    <Device
+                      key={d}
+                      color={color}
+                      id={d}
+                      deviceId={deviceIds[d] || null}
+                      isActive={deviceId === d}
+                      onClick={this.switchDevice}
+                    />
+                  ))}
+                </DeviceGroup>
+              ))}
           </div>
         </Collapse>
       </div>
@@ -203,20 +225,27 @@ function Device({ id, color, isActive, onClick, deviceId }) {
       }}
     >
       {isActive ? (
-        <>
-          <div style={styles.circle}>
-            <Text>{id}</Text>
-          </div>
+        <div style={styles.circle}>
+          <Text>{id}</Text>
+        </div>
+      ) : (
+        <Text>{id}</Text>
+      )}
+      {deviceId && (
+        <div onClick={stopPropagate} style={{ marginTop: 10 }}>
           <CopyToClipboard text={deviceId}>
             <FaCopy />
           </CopyToClipboard>
-        </>
-      ) : (
-        <Text>{id}</Text>
+        </div>
       )}
     </div>
   );
 }
+
+const stopPropagate = e => {
+  e.stopPropagation();
+  e.preventDefault();
+};
 
 const mapDispatchToProps = {
   logout,
