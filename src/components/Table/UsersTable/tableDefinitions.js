@@ -5,7 +5,7 @@ export const usersTableDefault = [
     header: {
       label: "Username",
       align: "left",
-      sortable: false,
+      sortable: true,
     },
     body: {
       prop: "username",

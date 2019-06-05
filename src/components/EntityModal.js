@@ -13,6 +13,7 @@ import {
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
+import Disabled from "components/Disabled";
 import { withMe } from "components/UserContextProvider";
 import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
@@ -39,6 +40,7 @@ type Props<T> = {
   revokeButton?: React$Node,
   footer?: React$Node,
   editURL?: string,
+  disableEdit?: boolean,
   additionalFields?: T,
 };
 
@@ -54,6 +56,7 @@ function EntityModal<T>(props: Props<T>) {
     match,
     entity,
     editURL,
+    disableEdit,
     revokeButton,
     footer,
     additionalFields,
@@ -117,7 +120,7 @@ function EntityModal<T>(props: Props<T>) {
         ) : fullEditURL &&
           EDIT_ALLOWED_STATUS.includes(entity.status) &&
           me.role === "ADMIN" ? (
-          <EditButton url={fullEditURL} />
+          <EditButton disabled={disableEdit} url={fullEditURL} />
         ) : null}
       </RichModalHeader>
 
@@ -142,14 +145,20 @@ function EntityModal<T>(props: Props<T>) {
   return growing ? <GrowingCard>{inner}</GrowingCard> : inner;
 }
 
-function EditButton({ url }: { url: string }) {
-  return (
+function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
+  const inner = (
     <Link replace to={url} data-test="edit-button">
       <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
         <Trans i18nKey="entityModal:edit" />
       </Button>
     </Link>
   );
+
+  if (disabled) {
+    return <Disabled disabled={disabled}>{inner}</Disabled>;
+  }
+
+  return inner;
 }
 
 export default withRouter(withMe(EntityModal));
