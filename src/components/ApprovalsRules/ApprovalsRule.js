@@ -15,6 +15,7 @@ import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import NumberChooser from "components/base/NumberChooser";
 import SelectGroupsUsers from "components/SelectGroupsUsers";
+import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
 
 import type {
@@ -24,11 +25,12 @@ import type {
 import StepBall from "./StepBall";
 
 type Props = {
-  rule: ApprovalsRuleType,
+  rule: ?ApprovalsRuleType,
   onChange: ApprovalsRuleType => void,
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
+  index: number,
   groups: Group[],
   readOnly?: boolean,
   t: string => string,
@@ -62,8 +64,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
   }) => {
     const { rule, onChange } = this.props;
 
-    const justAddedGroup = !rule.group_id && !!groups.length;
-    const justAddedUser = rule.users.length !== users.length;
+    const justAddedGroup = rule && !rule.group_id && !!groups.length;
+    const justAddedUser = rule && rule.users.length !== users.length;
 
     const newRule = {
       ...rule,
@@ -97,9 +99,23 @@ class ApprovalsRule extends PureComponent<Props, State> {
       groups,
       onRemove,
       parentSelectedIds,
+      index,
       readOnly,
       t,
     } = this.props;
+    if (!rule) {
+      return (
+        <div style={styles.paddedBotForDrag}>
+          <RuleContainer>
+            <Box horizontal position="relative" align="flex-start">
+              {stepBall}
+              <HiddenRule stepNumber={index + 1} />
+            </Box>
+          </RuleContainer>
+        </div>
+      );
+    }
+
     const { hasBeenClosed } = this.state;
     const { group_id: ruleGroup, users: ruleUsers } = rule;
 

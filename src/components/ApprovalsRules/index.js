@@ -28,9 +28,9 @@ export type ApprovalsSelectedIds = {
 
 type Props = {
   // set & get approvals rules
-  rules: ApprovalsRule[],
+  rules: Array<?ApprovalsRule>,
   readOnly?: boolean,
-  onChange: (ApprovalsRule[]) => void,
+  onChange: (Array<?ApprovalsRule>) => void,
 
   // used to fill select
   users: User[],
@@ -70,11 +70,12 @@ class ApprovalsRules extends PureComponent<Props> {
     onChange(reordered);
   };
 
-  Rule = (rule: ApprovalsRule, i: number) => {
+  Rule = (rule: ?ApprovalsRule, i: number) => {
     const { users, groups, rules, readOnly, onChange } = this.props;
     const handleChange = newRule => {
+      if (!newRule) return;
       const newRules = [...rules];
-      newRules.splice(rules.indexOf(rule), 1, newRule);
+      newRules.splice(rules.indexOf(rule), 1, newRule).filter(Boolean);
       onChange(newRules);
     };
     const handleRemove = () => {
@@ -225,20 +226,21 @@ const stepsLine = (
   </Box>
 );
 
-const isRuleInvalid = (rule: ApprovalsRule) => {
+const isRuleInvalid = (rule: ?ApprovalsRule) => {
+  if (!rule) return false;
   const hasQuorum = rule.quorum > 0;
   const hasUsersOrGroup = rule.users.length > 0 || rule.group_id !== null;
   return !hasQuorum || !hasUsersOrGroup;
 };
 
-const collectSelectedIds = (rules: ApprovalsRule[]) => ({
-  groups: rules.reduce((acc, rule) => {
+const collectSelectedIds = (rules: Array<?ApprovalsRule>) => ({
+  groups: rules.filter(Boolean).reduce((acc, rule) => {
     if (rule.group_id) {
       acc.push(rule.group_id);
     }
     return acc;
   }, []),
-  users: rules.reduce((acc, rule) => {
+  users: rules.filter(Boolean).reduce((acc, rule) => {
     if (rule.users.length) {
       acc = [...acc, ...rule.users];
     }

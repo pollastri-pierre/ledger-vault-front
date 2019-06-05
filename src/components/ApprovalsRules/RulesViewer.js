@@ -29,6 +29,7 @@ const RuleItem = ({ rule }: { rule: TxApprovalStep }) => (
   <Box
     horizontal
     align="center"
+    justify="space-between"
     flow={7}
     py={10}
     style={{ borderBottom: `1px solid ${colors.cream}` }}
