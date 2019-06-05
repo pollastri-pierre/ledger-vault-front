@@ -38,7 +38,7 @@ class AccountEditRequest extends PureComponent<Props> {
       users.edges.map(e => e.node),
     );
     return (
-      <Box flow={10} horizontal align="flex-start">
+      <Box flow={10} horizontal align="flex-start" justify="space-between">
         <Box bg={opacity(colors.grenade, 0.05)} style={{ ...styles }}>
           <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
             BEFORE
@@ -59,6 +59,7 @@ class AccountEditRequest extends PureComponent<Props> {
 const styles = {
   borderRadius: 2,
   padding: 5,
+  flexGrow: 1,
 };
 
 const RenderLoading = () => (
