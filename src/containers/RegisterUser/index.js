@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
+import { Redirect } from "react-router";
 import type { Match } from "react-router-dom";
 import GlobalLoading from "components/GlobalLoading";
 
@@ -13,6 +14,7 @@ import InviteUserQuery from "api/queries/InviteUserQuery";
 import DeviceInteraction from "components/DeviceInteraction";
 import { registerUserFlow } from "device/interactions/hsmFlows";
 import type { RestlayEnvironment } from "restlay/connectData";
+import { UserInvitationAlreadyUsed } from "utils/errors";
 
 import CenteredLayout from "components/base/CenteredLayout";
 import TryAgain from "components/TryAgain";
@@ -59,6 +61,16 @@ function RegisterUser(props: Props) {
   function onError(err) {
     setRegistering(false);
     setError(err);
+  }
+
+  if (!userInvite || userInvite.status !== "PENDING_REGISTRATION") {
+    const error = new UserInvitationAlreadyUsed();
+    return (
+      <>
+        <TriggerErrorNotification error={error} />
+        <Redirect to="/" />
+      </>
+    );
   }
 
   return (
