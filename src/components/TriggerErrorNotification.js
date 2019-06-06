@@ -3,7 +3,7 @@ import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { NetworkError } from "network";
 
-import { NoChannelForDevice, GenericError } from "utils/errors";
+import { NoChannelForDevice } from "utils/errors";
 import {
   addMessage,
   addError,
@@ -51,7 +51,7 @@ class TriggerErrorNotification extends PureComponent<Props> {
         addError(error);
         break;
       default:
-        addError(new GenericError());
+        addError(error);
     }
   };
 
