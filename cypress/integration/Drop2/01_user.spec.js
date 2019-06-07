@@ -15,17 +15,13 @@ describe("Add User as Operator and Admin", function() {
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
 
-    /*    // Add Anna Wagner
+    // Add Anna Wagner
     create_user(
       "Anna Wagner",
       Cypress.env("opId10"),
       "[data-test=new_operator]",
     );
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
-    );
-*/
+
     // Add Aidan Fisher
     create_user(
       "Aidan Fisher",
