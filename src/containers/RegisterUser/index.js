@@ -133,6 +133,7 @@ function RegisterUser(props: Props) {
                 <ModalFooterButton
                   color={colors.ocean}
                   onClick={() => setRegistering(true)}
+                  data-test="button_registration"
                 >
                   <Trans i18nKey="inviteUser:registration.button" />
                 </ModalFooterButton>

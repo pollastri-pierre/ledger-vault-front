@@ -9,6 +9,7 @@ export function login(id) {
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
+  cy.wait(2500);
   cy.url().should("include", "/dashboard");
 }
 
@@ -291,7 +292,7 @@ export function create_account(currency, name, group, user1) {
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(2500);
+  cy.wait(3500);
 }
 
 export function create_erc20_account(
