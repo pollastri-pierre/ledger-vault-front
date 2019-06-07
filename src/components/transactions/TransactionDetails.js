@@ -21,6 +21,7 @@ import type { Transaction, Account } from "data/types";
 import TabOverview from "./TabOverview";
 import TabLabel from "./TabLabel";
 import TabDetails from "./TabDetails";
+import TransactionHistory from "./TransactionHistory";
 
 type Props = {
   close: () => void,
@@ -70,6 +71,7 @@ function TransactionDetails(props: Props) {
       footer={footer}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
+      <TransactionHistory key="history" transaction={transaction} />
       {transaction.status === "SUBMITTED" && (
         <TabDetails key="details" transaction={transaction} account={account} />
       )}
