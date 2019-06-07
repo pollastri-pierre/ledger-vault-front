@@ -9,6 +9,7 @@ export function login(id) {
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
+  cy.wait(2500);
   cy.url().should("include", "/dashboard");
 }
 
@@ -234,6 +235,10 @@ export function create_user(username, userID, role) {
   cy.get("[data-test=username]").type(username);
   cy.get("[data-test=userID]").type(userID);
   cy.contains("Next").click();
+  cy.get(".top-message-title").contains("User invitation created");
+  cy.get(".top-message-body").contains(
+    "the User invitation has been successfully created",
+  );
   cy.contains("Done").click();
 }
 
@@ -291,7 +296,7 @@ export function create_account(currency, name, group, user1) {
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(2500);
+  cy.wait(3500);
 }
 
 export function create_erc20_account(

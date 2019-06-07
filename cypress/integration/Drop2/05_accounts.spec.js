@@ -22,7 +22,7 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "HeyBtcACC ", "APAC 1", "New EMEA");
+    create_account("Bitcoin", "Coinhy.pe", "APAC", "New EMEA");
     successfull_message();
   });
 
@@ -33,7 +33,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/accounts");
     create_account(
       "Bitcoin Testnet",
-      "HeytestBTC ",
+      "Amanda Wong",
       "South Africa",
       "New EMEA",
     );
@@ -45,7 +45,7 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Ethereum", "MyETH2", "New EMEA", "South Africa");
+    create_account("Ethereum", "Syscoin", "New EMEA", "South Africa");
     successfull_message();
   });
 
@@ -56,7 +56,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/accounts");
     create_erc20_account(
       "USDC",
-      "MyErc2002",
+      "Block.Chain",
       "ETH2",
       "South Africa",
       "New EMEA",
@@ -69,16 +69,25 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "HeyBitcoin444", "New EMEA", "APAC 1");
+    create_account("Bitcoin", "Coinhy.pe", "New EMEA", "APAC");
     error_message("Account name already exists in this currency", "Error 236");
   });
 
   it("approve account", () => {
     cy.server();
     route();
-    login(6);
+    login(5);
     cy.url().should("include", "/admin/dashboard");
-    cy.contains("Create account").click();
+    cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
+    cy.wait(5500);
+    successfull_message();
+    cy.wait(2000);
+
+    cy.contains("Awaiting approval").click();
+    cy.wait(1500);
+    cy.get("[data-test=approve_button]").click();
+    cy.wait(5500);
+    successfull_message();
   });
 });
