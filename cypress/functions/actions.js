@@ -235,6 +235,10 @@ export function create_user(username, userID, role) {
   cy.get("[data-test=username]").type(username);
   cy.get("[data-test=userID]").type(userID);
   cy.contains("Next").click();
+  cy.get(".top-message-title").contains("User invitation created");
+  cy.get(".top-message-body").contains(
+    "the User invitation has been successfully created",
+  );
   cy.contains("Done").click();
 }
 
