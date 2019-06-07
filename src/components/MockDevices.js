@@ -4,7 +4,6 @@ import React, { PureComponent } from "react";
 import Switch from "@material-ui/core/Switch";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaCopy } from "react-icons/fa";
-import Collapse from "@material-ui/core/Collapse";
 import { logout, login } from "redux/modules/auth";
 import { connect } from "react-redux";
 
@@ -67,8 +66,9 @@ const styles = {
     marginLeft: 20,
   },
   collapseIcon: {
+    cursor: "pointer",
     alignSelf: "center",
-    marginRight: 10,
+    padding: 10,
   },
 };
 
@@ -99,7 +99,7 @@ class MockDevices extends PureComponent {
   state = {
     deviceId: null,
     autoLogout: false,
-    collapseMock: false,
+    collapseMock: true,
     showOnboarding: false,
   };
 
@@ -152,31 +152,35 @@ class MockDevices extends PureComponent {
     return (
       <div style={styles.root}>
         <div style={styles.actionContainer}>
-          <div style={styles.rowContainer}>
-            <Text small uppercase style={styles.autoLogout}>
-              Auto logout ?
-            </Text>
-            <Switch
-              onChange={this.changeAutoLogout}
-              checked={autoLogout}
-              label="autologout"
-            />
-          </div>
-          <div style={styles.rowContainer}>
-            <Text small uppercase style={styles.autoLogout}>
-              Show wrapping / shared ?
-            </Text>
-            <Switch
-              onChange={this.onboardingToggle}
-              checked={showOnboarding}
-              label="show onboarding"
-            />
-          </div>
+          {!collapseMock && (
+            <>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  Auto logout ?
+                </Text>
+                <Switch
+                  onChange={this.changeAutoLogout}
+                  checked={autoLogout}
+                  label="autologout"
+                />
+              </div>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  Show wrapping / shared ?
+                </Text>
+                <Switch
+                  onChange={this.onboardingToggle}
+                  checked={showOnboarding}
+                  label="show onboarding"
+                />
+              </div>
+            </>
+          )}
           <div onClick={this.collapseToggle} style={styles.collapseIcon}>
             {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
           </div>
         </div>
-        <Collapse in={!collapseMock}>
+        {!collapseMock && (
           <div style={styles.rowContainer}>
             {devices
               .filter(([g]) =>
@@ -197,7 +201,7 @@ class MockDevices extends PureComponent {
                 </DeviceGroup>
               ))}
           </div>
-        </Collapse>
+        )}
       </div>
     );
   }
