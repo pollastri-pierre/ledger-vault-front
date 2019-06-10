@@ -1,13 +1,11 @@
 // @flow
 import React, { PureComponent } from "react";
-import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
 import SearchUsersQuery from "api/queries/SearchUsers";
 
 import { UsersTable } from "components/Table";
 import { UsersFilters } from "components/filters";
-import ModalRoute from "components/ModalRoute";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import AddLink from "components/base/AddLink";
@@ -21,10 +19,7 @@ import UnsuspendUserMutation from "api/mutations/UnsuspendUserMutation";
 
 import type { User } from "data/types";
 
-import UserCreationFlow from "components/UserCreationFlow";
-
 type Props = {
-  match: Match,
   history: MemoryHistory,
 };
 
@@ -55,21 +50,18 @@ class Users extends PureComponent<Props> {
   );
 
   render() {
-    const { match, history } = this.props;
+    const { history } = this.props;
 
     return (
-      <>
-        <DataSearch
-          Query={SearchUsersQuery}
-          TableComponent={UsersTable}
-          FilterComponent={UsersFilters}
-          ActionComponent={this.ActionComponent}
-          history={history}
-          onRowClick={this.handleUserClick}
-          listenMutations={mutationsToListen}
-        />
-        <ModalRoute path={`${match.url}/new`} component={UserCreationFlow} />
-      </>
+      <DataSearch
+        Query={SearchUsersQuery}
+        TableComponent={UsersTable}
+        FilterComponent={UsersFilters}
+        ActionComponent={this.ActionComponent}
+        history={history}
+        onRowClick={this.handleUserClick}
+        listenMutations={mutationsToListen}
+      />
     );
   }
 }
