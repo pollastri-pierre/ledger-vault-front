@@ -15,7 +15,7 @@ describe("Test on Operator ", function() {
     cy.url().should("include", "/operator/dashboard");
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/operator/accounts");
-    cy.contains("heybtcnet").click();
+    cy.contains("Coinhy.pe1").click();
     cy.contains("Balance").should("be.visible");
     cy.contains("Cryptocurrency / Index").should("be.visible");
     cy.contains("Unit").should("be.visible");

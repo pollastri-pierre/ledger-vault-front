@@ -52,7 +52,7 @@ describe("Test Case for Account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
-    cy.wait(6000);
+    cy.wait(6500);
     successfull_message();
     cy.wait(2000);
   });
