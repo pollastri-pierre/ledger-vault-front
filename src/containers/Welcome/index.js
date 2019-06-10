@@ -164,28 +164,26 @@ class Welcome extends Component<Props, State> {
         <Card
           overflow="visible"
           height={350}
-          flow={20}
-          px={60}
-          pt={80}
           position="relative"
-          align="center"
         >
-          <FaUser color={colors.lightGrey} size={32} />
-          <InputField
-            value={domain}
-            disabled={isChecking}
-            autoFocus
-            autoComplete="off"
-            error={error ? domain !== "" : false}
-            InputProps={inputProps}
-            onKeyPress={this.onKeyPress}
-            onChange={this.onChange}
-            placeholder={t("welcome:placeholder_domain")}
-          />
-          <Text i18nKey="welcome:domain_description" />
-          <Absolute right={15} bottom={0}>
-            {footer}
-          </Absolute>
+          <Box flow={20} px={20} pt={60} align="center">
+            <FaUser color={colors.lightGrey} size={32} />
+            <InputField
+              value={domain}
+              disabled={isChecking}
+              autoFocus
+              autoComplete="off"
+              error={error ? domain !== "" : false}
+              InputProps={inputProps}
+              onKeyPress={this.onKeyPress}
+              onChange={this.onChange}
+              placeholder={t("welcome:placeholder_domain")}
+            />
+            <Text i18nKey="welcome:domain_description" />
+            <Absolute right={15} bottom={0}>
+              {footer}
+            </Absolute>
+          </Box>
         </Card>
       </VaultCentered>
     );
