@@ -32,7 +32,7 @@ const fresh_addresses = [
 
 const fakeNetwork = async url => {
   await delay(200);
-  if (url === "/accounts?status=ACTIVE&status=VIEW_ONLY&pageSize=-1") {
+  if (url.startsWith("/accounts?status=")) {
     return wrapConnection(accounts);
   }
   if (url.match(/^\/accounts\/[^/]*\/fresh_addresses/)) {
@@ -47,7 +47,7 @@ const fakeNetwork = async url => {
 storiesOf("entities/Transaction", module).add("Receive", () => (
   <RestlayProvider network={fakeNetwork}>
     <Modal transparent isOpened>
-      <ReceiveFlow />
+      <ReceiveFlow match={{ params: {} }} />
     </Modal>
   </RestlayProvider>
 ));
