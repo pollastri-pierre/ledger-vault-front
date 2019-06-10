@@ -3,7 +3,6 @@
 import Mutation from "restlay/Mutation";
 import schema from "data/schema";
 import type { User } from "data/types";
-import { success } from "formatters/notification";
 
 type Input = {
   id: number,
@@ -18,9 +17,10 @@ export default class SuspendUserMutation extends Mutation<Input, Response> {
 
   responseSchema = schema.User;
 
-  getSuccessNotification = () => {
-    return success("user", "suspended");
-  };
+  getSuccessNotification = () => ({
+    title: "Success",
+    content: "Workspace access has been suspended.",
+  });
 
   getBody() {
     return null;

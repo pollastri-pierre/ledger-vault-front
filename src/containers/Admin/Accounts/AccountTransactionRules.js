@@ -2,6 +2,7 @@
 import React from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
 import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
@@ -37,6 +38,7 @@ const RenderLoading = () => (
 );
 export default connectData(AccountTransactionRules, {
   RenderLoading,
+  RenderError: TryAgain,
   queries: {
     users: UsersQuery,
     groups: GroupsQuery,

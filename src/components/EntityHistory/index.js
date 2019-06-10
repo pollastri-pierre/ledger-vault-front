@@ -81,6 +81,7 @@ const RequestHistory = ({
     <RequestContainer
       isPending={finalStatus === "PENDING"}
       onClick={onCollapse}
+      canBeCollapsed={fullHistory.length > 1}
     >
       <Bar />
       <Box horizontal justify="space-between" align="flex-start">
@@ -162,8 +163,13 @@ const RequestContainer = styled(Box).attrs({
 })`
   background: #fafafa;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: ${p => (p.canBeCollapsed ? "pointer" : "default")};
   border: ${p => (p.isPending ? "2px solid #27d0e2" : "none")};
+
+  & ${CollapseIconContainer} svg {
+    opacity: ${p => (p.canBeCollapsed ? 1 : 0)};
+  }
+
   &:hover ${CollapseIconContainer} {
     color: black;
   }

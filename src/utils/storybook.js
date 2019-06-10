@@ -84,6 +84,10 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     };
   }
   // GET /people/:id
+  if (url.startsWith("/people?role=")) {
+    return wrapConnection(users);
+  }
+
   if (/^\/people\/([^/]+)$/.exec(url)) {
     return wrapWithRequest({ entity: users[0], request_type, approved });
   }

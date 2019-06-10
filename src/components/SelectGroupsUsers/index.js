@@ -46,8 +46,8 @@ type Props = {
 
 const checkedIcon = <MdCheckBox size={ICON_SIZE} />;
 const uncheckedIcon = <MdCheckBoxOutlineBlank size={ICON_SIZE} />;
-const groupIcon = <FaUsers size={ICON_SIZE} />;
-const userIcon = <FaUser size={ICON_SIZE} />;
+export const groupIcon = <FaUsers size={ICON_SIZE} />;
+export const userIcon = <FaUser size={ICON_SIZE} />;
 const clearIcon = <MdClear size={ICON_SIZE} />;
 
 const CheckboxItem = props => (props.isSelected ? checkedIcon : uncheckedIcon);
@@ -82,7 +82,7 @@ const MultiValueRemove = (props: OptionProps) => (
     {clearIcon}
   </components.MultiValueRemove>
 );
-const MultiValueLabel = (props: OptionProps) => (
+export const MultiValueLabel = (props: OptionProps) => (
   <Box horizontal align="center" pl={10}>
     {props.data.data.type === "group" ? groupIcon : userIcon}
     <components.MultiValueContainer {...props} />

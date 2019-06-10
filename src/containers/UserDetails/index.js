@@ -51,6 +51,10 @@ function UserDetails(props: Props) {
     />
   );
 
+  const hideAccessTab = ["PENDING_APPROVAL", "PENDING_REGISTRATION"].includes(
+    user.status,
+  );
+
   return (
     <EntityModal
       growing
@@ -61,7 +65,7 @@ function UserDetails(props: Props) {
       revokeButton={revokeButton}
     >
       <UserDetailsOverview key="overview" user={user} />
-      {user.role === "OPERATOR" && (
+      {user.role === "OPERATOR" && !hideAccessTab && (
         <UserDetailsPermissions key="permissions" user={user} />
       )}
       <UserDetailsHistory key="history" user={user} />
