@@ -66,7 +66,12 @@ const breadcrumbConfig = [
         children: [
           {
             path: "/:role/accounts/view/:id",
-            render: p => p.match.params.id,
+            render: ({ match, accounts }) => {
+              const account = accounts.edges.find(
+                i => i.node.id.toString() === match.params.id,
+              );
+              return account ? account.node.name : match.params.id;
+            },
           },
         ],
       },
@@ -86,12 +91,12 @@ const breadcrumbConfig = [
   },
 ];
 
-const AppBreadcrumb = withMe(({ me }) => {
+const AppBreadcrumb = withMe(props => {
   return (
     <ConnectedBreadcrumb
       prefix={`/${window.location.pathname.split("/")[1]}`}
       config={breadcrumbConfig}
-      additionalProps={{ me }}
+      additionalProps={props}
     />
   );
 });
@@ -126,7 +131,7 @@ const App = withMe((props: Props & { me: User }) => {
         user={me}
         onLogout={handleLogout}
         match={match}
-        BreadcrumbComponent={AppBreadcrumb}
+        BreadcrumbComponent={() => <AppBreadcrumb accounts={accounts} />}
       >
         {me.role === "ADMIN" && <CheckMigration />}
         <Content match={match} />
