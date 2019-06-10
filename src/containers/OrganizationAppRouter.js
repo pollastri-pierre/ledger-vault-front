@@ -25,7 +25,6 @@ const WelcomeComponent = p => <Welcome {...p} />;
 const OrganizationAppRouter = () => (
   <>
     <GlobalStyle />
-
     <BrowserRouter>
       <>
         <AlertsContainer />

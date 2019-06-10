@@ -260,7 +260,7 @@ export function create_group(groupName, description, user1, user2, user3) {
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(1500);
+  cy.wait(2500);
 }
 
 export function successfull_message() {
@@ -279,7 +279,7 @@ export function error_message(title, message) {
 
 export function create_account(currency, name, group, user1) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(3500);
+  cy.wait(4500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
