@@ -20,7 +20,7 @@ describe("Approve User as Operator with the first admin", function() {
 
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.wait(1500);
+    cy.wait(2500);
 
     // Laura operator
     cy.contains("Laura").click();

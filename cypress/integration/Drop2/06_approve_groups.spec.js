@@ -20,7 +20,7 @@ describe("Test Case for Approve the creation of Groups", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.wait(2500);
+    cy.wait(3500);
     cy.contains("NORTH Asia").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();

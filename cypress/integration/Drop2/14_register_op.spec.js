@@ -91,13 +91,13 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as Tyler Admin", () => {
+  it("Register as Tyler Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.wait(500);
+    cy.wait(1500);
     cy.contains("Tyler").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
@@ -112,7 +112,7 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as Charles Admin", () => {
+  it("Register as Charles Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");

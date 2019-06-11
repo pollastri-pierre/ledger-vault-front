@@ -19,7 +19,7 @@ describe("Approve User as Operator and Admin with the second Admin", function() 
     route();
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-
+    cy.wait(1500);
     // Add Anna Wagner
     cy.contains("Anna").click();
     cy.get("[data-test=approve_button]").click();

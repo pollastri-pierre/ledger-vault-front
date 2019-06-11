@@ -4,6 +4,7 @@ import {
   route,
   create_account,
   successfull_message,
+  error_message,
 } from "../../functions/actions";
 
 describe("Test Case for Account", function() {
@@ -41,7 +42,12 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin Testnet", "Amanda Wong", "APAC", "New EMEA");
+    create_account(
+      "Bitcoin Testnet",
+      "Amanda Wong",
+      "America Ops",
+      "Key accounts Ops",
+    );
     successfull_message();
   });
 
@@ -57,7 +63,7 @@ describe("Test Case for Account", function() {
     cy.wait(2000);
   });
 
-  /* it("Create a account with the same name should fail", () => {
+  it("Create a account with the same name should fail", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
@@ -65,5 +71,4 @@ describe("Test Case for Account", function() {
     create_account("Bitcoin", "Coinhy.pe", "New EMEA", "APAC");
     error_message("Account name already exists in this currency", "Error 236");
   });
-*/
 });

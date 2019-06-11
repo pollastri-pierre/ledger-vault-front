@@ -93,8 +93,8 @@ describe("Test Case for Groups", function() {
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
-
-    cy.contains("Edit group").click();
+    cy.wait(1500);
+    cy.contains("Awaiting approval").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();

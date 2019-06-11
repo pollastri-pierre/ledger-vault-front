@@ -69,7 +69,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.wait(2500);
+    cy.wait(3500);
     cy.contains("America Ops").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
@@ -83,7 +83,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
     cy.get("[data-test=buttonCreate]").click();
-    cy.wait(2000);
+    cy.wait(2500);
     cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.get("[data-test=group_description]").type(
       "America Ops group by cypress",
@@ -118,7 +118,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
-    cy.wait(2500);
+    cy.wait(4500);
     cy.contains("Key accounts Ops").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
