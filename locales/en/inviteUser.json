@@ -42,9 +42,9 @@
   "generateLink": "Generate URL",
   "registration": {
     "title": "Register new {{userRole}}",
-    "username": "Username:",
-    "workspace": "Workspace:",
-    "role": "Role:",
+    "username": "Username",
+    "workspace": "Workspace",
+    "userID": "User ID",
     "button": "Register",
     "success": {
       "title": "Success",

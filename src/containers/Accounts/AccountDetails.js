@@ -5,7 +5,7 @@ import connectData from "restlay/connectData";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import AccountQuery from "api/queries/AccountQuery";
-import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
+import PendingTransactionsForAccountQuery from "api/queries/PendingTransactionsForAccountQuery";
 import { CardError } from "components/base/Card";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { withMe } from "components/UserContextProvider";
@@ -58,7 +58,7 @@ export default connectData(withMe(AccountDetails), {
   RenderLoading: GrowingSpinner,
   queries: {
     account: AccountQuery,
-    pendingTransactions: PendingTransactionsQuery,
+    pendingTransactions: PendingTransactionsForAccountQuery,
   },
   propsToQueryParams: props => ({
     accountId: props.match.params.accountId || "",

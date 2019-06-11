@@ -14,7 +14,10 @@ import EntityStatus from "components/EntityStatus";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import NumberChooser from "components/base/NumberChooser";
-import SelectGroupsUsers from "components/SelectGroupsUsers";
+import SelectGroupsUsers, {
+  groupIcon,
+  userIcon,
+} from "components/SelectGroupsUsers";
 import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
 
@@ -153,25 +156,66 @@ class ApprovalsRule extends PureComponent<Props, State> {
             />
             {approvalsFrom}
             <Box grow py={10} pr={10} justify="center">
-              <SelectGroupsUsers
-                onMenuClose={this.handleClose}
-                placeholder={t("approvalsRules:selectPlaceholder")}
-                autoFocus={nbSelected === 0 && !readOnly}
-                openMenuOnFocus
-                groups={filteredGroups}
-                members={filteredUsers}
-                renderIfDisabled={(item: Group | User) =>
-                  item.last_request &&
-                  isRequestPending(item.last_request) && (
-                    <EntityStatus
-                      request={item.last_request}
-                      status={item.last_request.status}
-                    />
-                  )
-                }
-                value={resolveSelectValue(rule, groups, users)}
-                onChange={this.handleChangeSelect}
-              />
+              {readOnly ? (
+                group ? (
+                  <Box
+                    horizontal
+                    flow={5}
+                    ml={10}
+                    align="center"
+                    style={{ minHeight: 40 }}
+                  >
+                    {groupIcon}
+                    <span>{group.name}</span>
+                  </Box>
+                ) : rule.users && rule.users.length ? (
+                  <Box
+                    horizontal
+                    flexWrap="wrap"
+                    align="center"
+                    style={{ minHeight: 40 }}
+                  >
+                    {rule.users.map(u => {
+                      const user = users.find(user => user.id === u);
+                      if (!user) return null;
+                      return (
+                        <Box
+                          horizontal
+                          m={5}
+                          flow={5}
+                          bg="#eee"
+                          p={5}
+                          borderRadius={2}
+                          align="center"
+                        >
+                          {userIcon}
+                          <span>{user.username}</span>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                ) : null
+              ) : (
+                <SelectGroupsUsers
+                  onMenuClose={this.handleClose}
+                  placeholder={t("approvalsRules:selectPlaceholder")}
+                  autoFocus={nbSelected === 0 && !readOnly}
+                  openMenuOnFocus
+                  groups={filteredGroups}
+                  members={filteredUsers}
+                  renderIfDisabled={(item: Group | User) =>
+                    item.last_request &&
+                    isRequestPending(item.last_request) && (
+                      <EntityStatus
+                        request={item.last_request}
+                        status={item.last_request.status}
+                      />
+                    )
+                  }
+                  value={resolveSelectValue(rule, groups, users)}
+                  onChange={this.handleChangeSelect}
+                />
+              )}
             </Box>
             {onRemove && !readOnly && (
               <RemoveContainer onClick={onRemove}>{iconTrash}</RemoveContainer>

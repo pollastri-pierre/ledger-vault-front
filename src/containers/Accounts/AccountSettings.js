@@ -97,29 +97,33 @@ function AccountSettings(props: Props) {
           </Text>
         </Box>
       </LineRow>
-      {me.role === "ADMIN" && account.account_type === "Bitcoin" && (
-        <>
-          <LineRow
-            label={<Trans i18nKey="accountSettings:advanced.derivation_path" />}
-          >
-            <Text small>{Object.keys(account.extended_pub_keys)[0]}</Text>
-          </LineRow>
-          <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
-            <Button
-              variant="filled"
-              size="tiny"
-              customColor={colors.grenade}
-              IconLeft={FaRegCopy}
-              onClick={onXpubModal}
+      {me.role === "ADMIN" &&
+        account.account_type === "Bitcoin" &&
+        account.extended_pub_keys && (
+          <>
+            <LineRow
+              label={
+                <Trans i18nKey="accountSettings:advanced.derivation_path" />
+              }
             >
-              Copy XPUB
-            </Button>
-            <Modal isOpened={isXpubModalOpen} onClose={onXpubModal}>
-              <AccountXpub account={account} />
-            </Modal>
-          </LineRow>
-        </>
-      )}
+              <Text small>{Object.keys(account.extended_pub_keys)[0]}</Text>
+            </LineRow>
+            <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
+              <Button
+                variant="filled"
+                size="tiny"
+                customColor={colors.grenade}
+                IconLeft={FaRegCopy}
+                onClick={onXpubModal}
+              >
+                Copy XPUB
+              </Button>
+              <Modal isOpened={isXpubModalOpen} onClose={onXpubModal}>
+                <AccountXpub account={account} />
+              </Modal>
+            </LineRow>
+          </>
+        )}
     </Box>
   );
 }

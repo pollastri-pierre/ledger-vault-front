@@ -84,10 +84,14 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
     };
   }
   // GET /people/:id
+  if (url.startsWith("/people?role=")) {
+    return wrapConnection(users);
+  }
+
   if (/^\/people\/([^/]+)$/.exec(url)) {
     return wrapWithRequest({ entity: users[0], request_type, approved });
   }
-  if (url.startsWith("/transactions")) {
+  if (url.match(/\/transactions\/.*\/account$/)) {
     return {
       transaction: wrapWithRequest({
         entity: transactions[0],
@@ -96,6 +100,9 @@ const getFakeNetwork = ({ request_type, approved }) => async url => {
       }),
       account: accounts[0],
     };
+  }
+  if (url.startsWith("/transactions")) {
+    return wrapConnection(transactions);
   }
   if (/^\people$/.exec(url) || url.startsWith("/people?groupId")) {
     return wrapConnection(users);
