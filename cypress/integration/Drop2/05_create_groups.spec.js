@@ -26,15 +26,15 @@ describe("Test Case for Create Groups", function() {
     create_group("APAC", "Group for APAC", "Thomas", "Anna", "Aidan");
     successfull_message();
 
-    create_group("EMEA", "Group for EMEA", "Anna", "Aidan", "Thomas");
+    create_group("EMEA", "Group for EMEA", "James", "Laura", "Sally");
     successfull_message();
 
     create_group(
       "NORTH Asia",
       "Group for NORTH Asia",
-      "Aidan",
-      "Anna",
-      "Thomas",
+      "Claudia",
+      "Allison",
+      "Tyler",
     );
     successfull_message();
     cy.wait(1500);
@@ -42,9 +42,9 @@ describe("Test Case for Create Groups", function() {
     create_group(
       "South Africa",
       "Group for South Africa",
-      "Aidan",
+      "Charles",
       "Anna",
-      "Thomas",
+      "Laura",
     );
     successfull_message();
   });

@@ -7,19 +7,19 @@ describe("Test the registration of a User", function() {
 
   afterEach(function() {});
 
-  it("Register as Anna Operator", () => {
+  it("Register as Laura Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     cy.wait(500);
-    cy.contains("Anna").click();
+    cy.contains("Laura").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
       .then(text => {
         cy.visit(text);
-        switch_device(10);
+        switch_device(17);
         cy.get("[data-test=button_registration]").click();
         cy.wait(1500);
         cy.contains(
@@ -28,19 +28,19 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as Aidan Operator", () => {
+  it("Register as Sally Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     cy.wait(500);
-    cy.contains("Aidan").click();
+    cy.contains("Sally").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
       .then(text => {
         cy.visit(text);
-        switch_device(11);
+        switch_device(18);
         cy.get("[data-test=button_registration]").click();
         cy.wait(1500);
         cy.contains(
@@ -49,19 +49,19 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as Thomas Operator", () => {
+  it("Register as Claudia Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     cy.wait(500);
-    cy.contains("Thomas").click();
+    cy.contains("Claudia").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
       .then(text => {
         cy.visit(text);
-        switch_device(12);
+        switch_device(19);
         cy.get("[data-test=button_registration]").click();
         cy.wait(1500);
         cy.contains(
@@ -70,19 +70,19 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as James Operator", () => {
+  it("Register as Allison Operator", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     cy.wait(500);
-    cy.contains("James").click();
+    cy.contains("Allison").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
       .then(text => {
         cy.visit(text);
-        switch_device(13);
+        switch_device(20);
         cy.get("[data-test=button_registration]").click();
         cy.wait(1500);
         cy.contains(
@@ -91,19 +91,40 @@ describe("Test the registration of a User", function() {
       });
   });
 
-  it("Register as John Admin", () => {
+  it("Register as Tyler Admin", () => {
     cy.server();
     route();
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     cy.wait(500);
-    cy.contains("John").click();
+    cy.contains("Tyler").click();
     cy.get("[data-test=Copy_value]")
       .invoke("text")
       .then(text => {
         cy.visit(text);
-        switch_device(16);
+        switch_device(21);
+        cy.get("[data-test=button_registration]").click();
+        cy.wait(1500);
+        cy.contains(
+          "You've successfully registered to the Ledger Vault.",
+        ).should("be.visible");
+      });
+  });
+
+  it("Register as Charles Admin", () => {
+    cy.server();
+    route();
+    cy.url().should("include", "/admin/dashboard");
+    cy.get("[data-test=menuItem-users]").click();
+    cy.url().should("include", "/admin/users");
+    cy.wait(500);
+    cy.contains("Charles").click();
+    cy.get("[data-test=Copy_value]")
+      .invoke("text")
+      .then(text => {
+        cy.visit(text);
+        switch_device(22);
         cy.get("[data-test=button_registration]").click();
         cy.wait(1500);
         cy.contains(

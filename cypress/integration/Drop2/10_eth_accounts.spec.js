@@ -4,7 +4,6 @@ import {
   route,
   create_account,
   successfull_message,
-  error_message,
   create_erc20_account,
 } from "../../functions/actions";
 
@@ -22,7 +21,7 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Ethereum", "Syscoin", "New EMEA", "South Africa");
+    create_account("Ethereum", "Syscoin", "Key accounts Ops", "America Op");
     successfull_message();
   });
 
@@ -46,20 +45,11 @@ describe("Test Case for Account", function() {
     create_erc20_account(
       "USDC",
       "Block.Chain",
-      "ETH2",
+      "Syscoin",
       "South Africa",
       "New EMEA",
     );
     successfull_message();
-  });
-
-  it("Create a account with the same name should fail", () => {
-    cy.server();
-    route();
-    cy.get("[data-test=menuItem-accounts]").click();
-    cy.url().should("include", "/admin/accounts");
-    create_account("Bitcoin", "Coinhy.pe", "New EMEA", "APAC");
-    error_message("Account name already exists in this currency", "Error 236");
   });
 
   it("Approve ERC20 Account", () => {
@@ -72,4 +62,5 @@ describe("Test Case for Account", function() {
     cy.wait(5500);
     successfull_message();
   });
+  */
 });
