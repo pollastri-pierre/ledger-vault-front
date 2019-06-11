@@ -22,6 +22,12 @@
     "cypress:run:btc_account": "cypress run --spec 'cypress/integration/Drop2/09_btc_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:eth_account": "cypress run --spec 'cypress/integration/Drop2/10_eth_accounts.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
     "cypress:run:operator": "cypress run --spec 'cypress/integration/Drop2/11_operator.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:invite_op": "cypress run --spec 'cypress/integration/Drop2/13_invite_op.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:register_op": "cypress run --spec 'cypress/integration/Drop2/14_register_op.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:approval_op_1": "cypress run --spec 'cypress/integration/Drop2/15_first_op_approval.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:approval_op_2": "cypress run --spec 'cypress/integration/Drop2/16_second_op_approval.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+    "cypress:run:gp_multiple_member": "cypress run --spec 'cypress/integration/Drop2/17_create_group_multiple_members.spec.js' --record --key 03108232-3e45-47c9-8d35-3831cec62999 --browser chrome",
+
     "lint": "eslint src test webpack cypress",
     "flow-typed": "bash scripts/install-flow-typed.sh",
     "prettier": "prettier --write \"{src,webpack,test,cypress,.storybook,cypress}/**/*.{js,json}\"",

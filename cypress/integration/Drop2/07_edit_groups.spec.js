@@ -92,12 +92,11 @@ describe("Test Case for Groups", function() {
     cy.contains("Edit group").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(2500);
-
-    cy.contains("Edit group").click();
+    successfull_message();
+    cy.wait(1500);
+    cy.contains("Awaiting approval").click();
     cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
     successfull_message();
-    cy.wait(2500);
   });
 });
