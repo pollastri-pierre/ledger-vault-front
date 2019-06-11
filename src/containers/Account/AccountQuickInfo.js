@@ -14,7 +14,6 @@ import { Label } from "components/base/form";
 import Absolute from "components/base/Absolute";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
-import DateFormat from "components/DateFormat";
 import CurrencyIndex from "components/CurrencyIndex";
 import { FaWrench } from "react-icons/fa";
 import type { Account } from "data/types";
@@ -89,18 +88,6 @@ class AccountQuickInfo extends Component<Props> {
                 }
               />
             )}
-            <Row
-              label={<Trans i18nKey="accountView:summary.unit" />}
-              value={
-                isERC20
-                  ? token && token.ticker
-                  : account.settings.currency_unit.code
-              }
-            />
-            <Row
-              label={<Trans i18nKey="accountView:summary.date" />}
-              value={<DateFormat date={account.created_on} />}
-            />
             {account.account_type === "ERC20" && account.parent_id && (
               <>
                 <Row

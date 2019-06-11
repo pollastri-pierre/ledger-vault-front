@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import { Trans } from "react-i18next";
 import { MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -84,7 +85,7 @@ const AdminRulesCard = (props: Props) => {
           onClick={onEdit}
           disabled={!canEdit}
         >
-          Edit admin rules
+          <Trans i18nKey="request:type.UPDATE_QUORUM" />
         </Button>
       </Box>
     </Card>

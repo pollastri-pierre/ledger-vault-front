@@ -26,10 +26,7 @@ const AccountOverview = ({
 );
 
 const Rows = ({ account }: { account: Account }) => (
-  <>
-    <LineRow label={<Trans i18nKey="accountDetails:type" />}>
-      {account.last_request && account.last_request.type}
-    </LineRow>
+  <div>
     <LineRow label={<Trans i18nKey="accountDetails:name" />}>
       <AccountName account={account} />
     </LineRow>
@@ -40,7 +37,7 @@ const Rows = ({ account }: { account: Account }) => (
         erc20Format={account.account_type === "ERC20"}
       />
     </LineRow>
-  </>
+  </div>
 );
 
 export default AccountOverview;

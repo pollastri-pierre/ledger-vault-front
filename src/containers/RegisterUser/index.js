@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState } from "react";
+import invariant from "invariant";
 
 import connectData from "restlay/connectData";
 import { Trans } from "react-i18next";
@@ -19,6 +20,7 @@ import { UserInvitationAlreadyUsed } from "utils/errors";
 import CenteredLayout from "components/base/CenteredLayout";
 import TryAgain from "components/TryAgain";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
+import LineRow from "components/LineRow";
 
 import Text from "components/base/Text";
 import Box from "components/base/Box";
@@ -29,12 +31,11 @@ import {
   ModalFooterButton,
 } from "components/base/Modal";
 import Card from "components/base/Card";
-import LineSeparator from "components/LineSeparator";
 
 import type { UserInvite, Organization } from "data/types";
 
 import RegisterUserSuccess from "./RegisterUserSuccess";
-import { Row, userRoleIcon } from "./helpers";
+import { userRoleIcon } from "./helpers";
 
 type Props = {
   match: Match,
@@ -49,6 +50,9 @@ function RegisterUser(props: Props) {
   const [isRegistering, setRegistering] = useState(false);
 
   const { userInvite, organization, restlay, match } = props;
+
+  invariant(userInvite, "No user invitation found.");
+
   function renderUserIcon() {
     return userRoleIcon(userInvite);
   }
@@ -63,7 +67,7 @@ function RegisterUser(props: Props) {
     setError(err);
   }
 
-  if (!userInvite || userInvite.status !== "PENDING_REGISTRATION") {
+  if (userInvite.status !== "PENDING_REGISTRATION") {
     const error = new UserInvitationAlreadyUsed();
     return (
       <>
@@ -72,6 +76,11 @@ function RegisterUser(props: Props) {
       </>
     );
   }
+
+  const userRoleLabel =
+    userInvite.user.role === "OPERATOR" ? "Operator" : "Administrator";
+
+  const workspace = window.location.pathname.split("/")[1];
 
   return (
     <CenteredLayout>
@@ -87,29 +96,27 @@ function RegisterUser(props: Props) {
                   header
                   bold
                   i18nKey="inviteUser:registration.title"
-                  values={{
-                    userRole: userInvite
-                      ? userInvite.user.role.toLowerCase()
-                      : "User",
-                  }}
+                  values={{ userRole: userRoleLabel }}
                 />
                 {renderUserIcon()}
               </Box>
             </ModalHeader>
-            <LineSeparator />
-            <Box flow={15} mt={15}>
-              <Row
-                label="inviteUser:registration.username"
-                text={userInvite && userInvite.user.username}
-              />
-              <Row
-                label="inviteUser:registration.workspace"
-                text={userInvite && userInvite.user.user_id}
-              />
-              <Row
-                label="inviteUser:registration.role"
-                text={userInvite && userInvite.type}
-              />
+            <Box mt={15}>
+              <LineRow
+                label={<Trans i18nKey="inviteUser:registration.username" />}
+              >
+                {userInvite.user.username}
+              </LineRow>
+              <LineRow
+                label={<Trans i18nKey="inviteUser:registration.userID" />}
+              >
+                {userInvite.user.user_id}
+              </LineRow>
+              <LineRow
+                label={<Trans i18nKey="inviteUser:registration.workspace" />}
+              >
+                {workspace}
+              </LineRow>
             </Box>
             <ModalFooter>
               {isRegistering ? (
