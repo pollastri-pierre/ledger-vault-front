@@ -68,38 +68,6 @@ export default connectData(withMe(OperatorDashboard), {
   },
   propsToQueryParams: () => ({
     status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
+    pageSize: -1,
   }),
 });
-
-/*      TODO nicer dashboard using:
-
-import Statistics from "./Statistics";
-import Tasks from "./Tasks";
-import Activity from "./Activity";
-import Transactions from "./Transactions";
-
-class OperatorDashboard extends PureComponent<Props> {
-  render() {
-    const { history, match, data } = this.props;
-    return (
-      <Box flow={20}>
-        <Card grow style={{ height: 250 }}>
-          <Tasks history={history} match={match} />
-        </Card>
-        <Box flow={20} horizontal>
-          <Card grow style={{ height: 250 }}>
-            <Activity />
-          </Card>
-          <Card style={{ height: 250 }}>
-            <Statistics />
-          </Card>
-        </Box>
-        <Card grow>
-          <Transactions history={history} match={match} />
-        </Card>
-      </Box>
-    );
-  }
-}
-
-*/
