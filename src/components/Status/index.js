@@ -64,15 +64,19 @@ type Props = {
 
 const iconWarning = <FaHourglassHalf size={12} />;
 
+export const translateStatus = (status: string, t: string => string) => {
+  const translation = t(`entityStatus:${status}`);
+  if (translation !== `entityStatus:${status}`) {
+    // It is translated
+    return translation;
+  }
+  return status;
+};
+
 class Status extends PureComponent<Props> {
   getStr = () => {
     const { t, status } = this.props;
-    const translation = t(`entityStatus:${status}`);
-    if (translation !== `entityStatus:${status}`) {
-      // It is translated
-      return translation;
-    }
-    return status;
+    return translateStatus(status, t);
   };
 
   render() {
