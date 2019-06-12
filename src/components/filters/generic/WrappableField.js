@@ -16,6 +16,7 @@ type Props = {
   closeOnChange: any,
   isActive: boolean,
   width: number,
+  inPlace?: boolean,
 };
 
 type State = {
@@ -108,10 +109,20 @@ class WrappableField extends Component<Props, State> {
   ref: any = createRef();
 
   render() {
-    const { label, children, RenderCollapsed, isActive, width } = this.props;
+    const {
+      label,
+      children,
+      RenderCollapsed,
+      isActive,
+      width,
+      inPlace,
+    } = this.props;
     const { isOpened, pos } = this.state;
-    return (
-      <Box position="relative" ref={this.ref}>
+
+    const inner =
+      isOpened && inPlace ? (
+        <div style={{ width: 250 }}>{children}</div>
+      ) : (
         <InlineLabel
           onClick={this.toggle}
           isOpened={isOpened}
@@ -124,7 +135,12 @@ class WrappableField extends Component<Props, State> {
           {isActive && RenderCollapsed && <RenderCollapsed />}
           <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
         </InlineLabel>
-        {isOpened && (
+      );
+
+    return (
+      <Box position="relative" ref={this.ref}>
+        {inner}
+        {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
             {children}
           </Menu>
