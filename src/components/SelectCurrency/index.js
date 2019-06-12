@@ -69,13 +69,8 @@ const buildOptions = (items: Item[]): Option[] =>
     data: item,
   }));
 
-// We now want to never have testnet 🙃 (see history)
-const INCLUDE_DEV =
-  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "e2e";
-// const INCLUDE_DEV =
-//   process.env.NODE_ENV === "development" ||
-//   process.env.NODE_ENV === "e2e" ||
-//   window.config.SOFTWARE_DEVICE;
+// FINALLY we want testnet everywhere
+const INCLUDE_DEV = true;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
