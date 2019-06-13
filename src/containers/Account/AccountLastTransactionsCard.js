@@ -40,8 +40,8 @@ class AccountLastTransactionsCard extends Component<Props> {
     const orgaName = this.props.location.pathname.split("/")[1];
     const seeAllURL = `/${orgaName}/operator/transactions?account=${account.id}`;
 
-    return (
-      <Card>
+    const inner = transactions.edges.length ? (
+      <>
         <Box horizontal justify="space-between">
           <Label>Last transactions</Label>
           <Link to={seeAllURL}>See all</Link>
@@ -51,8 +51,12 @@ class AccountLastTransactionsCard extends Component<Props> {
           data={transactions.edges.map(e => e.node)}
           onRowClick={this.handleTransactionClick}
         />
-      </Card>
+      </>
+    ) : (
+      "No transactions for this account"
     );
+
+    return <Card>{inner}</Card>;
   }
 }
 
