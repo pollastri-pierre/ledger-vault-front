@@ -59,13 +59,17 @@ const buildOptions = (items: Item[]): Option[] =>
   }));
 
 const OptionComponent = (props: OptionProps) => {
-  const { selectProps, data } = props;
+  const { selectProps, data, isSelected } = props;
   const renderDisabled =
     selectProps.renderIfDisabled &&
     selectProps.renderIfDisabled(data.data.value);
 
   return (
-    <Disabled disabled={!!renderDisabled}>
+    <Disabled
+      disabled={
+        !!renderDisabled || (selectProps.hasReachMaxLength && !isSelected)
+      }
+    >
       <components.Option {...props}>
         <Box horizontal align="center" flow={10} py={5}>
           <CheckboxItem {...props} />
