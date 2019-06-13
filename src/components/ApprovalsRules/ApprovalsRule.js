@@ -20,6 +20,7 @@ import SelectGroupsUsers, {
 } from "components/SelectGroupsUsers";
 import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
+import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationMembers";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
@@ -42,8 +43,6 @@ type Props = {
 type State = {
   hasBeenClosed: boolean,
 };
-
-const MAX_USERS = 20;
 
 class ApprovalsRule extends PureComponent<Props, State> {
   state = {
@@ -77,7 +76,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
         : groups.length
         ? groups[groups.length - 1].id
         : null,
-      users: justAddedGroup ? [] : users.map(u => u.id).slice(0, MAX_USERS),
+      users: justAddedGroup ? [] : users.map(u => u.id),
     };
 
     // ensure quorum > groups length, etc.
@@ -203,6 +202,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
                   openMenuOnFocus
                   groups={filteredGroups}
                   members={filteredUsers}
+                  hasReachMaxLength={nbSelected === MAX_MEMBERS}
                   renderIfDisabled={(item: Group | User) =>
                     item.last_request &&
                     isRequestPending(item.last_request) && (
@@ -222,6 +222,13 @@ class ApprovalsRule extends PureComponent<Props, State> {
             )}
           </Box>
           {!!nbSelected && <NbOfUsers nb={nbSelected} isGroup={!!group} />}
+          {nbSelected === MAX_MEMBERS && (
+            <Box p={10} pl={40} pt={0}>
+              <InfoBox type="warning">
+                <Text i18nKey="group:maxMembers" />
+              </InfoBox>
+            </Box>
+          )}
           {isInvalid && (
             <Box p={10} pl={40} pt={0}>
               <InfoBox type="warning">

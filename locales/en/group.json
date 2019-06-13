@@ -28,5 +28,6 @@
   },
   "revokeWarning": {
     "content": "Once the request is approved, this group will be permanently deleted."
-  }
+  },
+  "maxMembers": "You can't add more than 20 members to a group"
 }
