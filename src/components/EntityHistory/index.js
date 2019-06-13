@@ -230,7 +230,7 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
               <b>
                 {approval.type === "APPROVE"
                   ? `approved (${n}/${quorum})`
-                  : "aborted"}
+                  : "rejected"}
                 {" by"}
               </b>
               <span>{approval.created_by.username}</span>
