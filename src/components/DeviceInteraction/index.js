@@ -1,6 +1,8 @@
 // @flow
 import React, { PureComponent } from "react";
 import connectData from "restlay/connectData";
+
+import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
 import { checkVersion } from "device/interactions/common";
@@ -31,6 +33,13 @@ type State = {
   interaction: Interaction,
 };
 
+if (
+  (process.env.NODE_ENV === "e2e" && window.FORCE_HARDWARE) ||
+  window.FORCE_APDU_LOGS
+) {
+  listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
+}
+
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
     currentStep: 0,
@@ -51,18 +60,20 @@ class DeviceInteraction extends PureComponent<Props, State> {
       restlay,
     } = this.props;
 
-    // always checking app version first
+    // always checking app version first unless opt-out by the consumer component
     const interactionsWithCheckVersion = noCheckVersion
       ? interactions
       : [checkVersion, ...interactions];
 
     const responses = { ...additionalFields, restlay };
-    if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
+    if (
+      window.FORCE_HARDWARE ||
+      (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE)
+    ) {
       // $FlowFixMe
       const transport = await LedgerTransportU2F.create();
       transport.setScrambleKey("v1+");
       transport.setUnwrap(true);
-      transport.setDebugMode(true);
       responses.transport = transport;
     }
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {

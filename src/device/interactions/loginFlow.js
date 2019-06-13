@@ -24,7 +24,10 @@ export const u2fAuthenticate: Interaction = {
   needsUserInput: true,
   device: true,
   responseKey: "u2f_authenticate",
-  action: ({ transport, organization, u2f_challenge: { token, key_handle } }) =>
+  action: ({
+    transport,
+    u2f_challenge: { token, key_handle, role, name, u2f_register_data },
+  }) =>
     retryOnCondition(
       () =>
         authenticate()(
@@ -32,8 +35,9 @@ export const u2fAuthenticate: Interaction = {
           Buffer.from(token, "base64"),
           APPID_VAULT_ADMINISTRATOR,
           Buffer.from(key_handle, "hex"),
-          organization.name,
-          "admin",
+          name,
+          role,
+          u2f_register_data,
         ),
       {
         shouldThrow: (e: DeviceError) =>

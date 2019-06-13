@@ -17,10 +17,24 @@ const openSessionDevice: Interaction = {
   responseKey: "session",
   action: ({ secure_channel, transport }) =>
     retry(() => {
+      const signature = Buffer.from(
+        secure_channel.ephemeral_certificate.signature,
+        "base64",
+      );
+      const attestation_pub = Buffer.from(
+        secure_channel.ephemeral_certificate.attestation_pub,
+        "base64",
+      );
+      const certificate = Buffer.from(
+        secure_channel.ephemeral_certificate.certificate,
+        "base64",
+      );
       const certif = Buffer.concat([
-        Buffer.from(secure_channel.ephemeral_certificate.code_hash),
-        Buffer.from(secure_channel.ephemeral_certificate.attestation_pub),
-        Buffer.from(secure_channel.ephemeral_certificate.certificate),
+        Buffer.from([signature.length]),
+        signature,
+        attestation_pub,
+        Buffer.from([certificate.length]),
+        certificate,
       ]);
       return openSession()(
         transport,

@@ -60,8 +60,8 @@ class SharedOwnerRegistration extends Component<Props, State> {
                 onError={this.onToggleRegisteringModal}
                 additionalFields={{
                   organization,
+                  username: "",
                   role: "shared_owner",
-                  // member: { user: { role: "Shared-Owner" } },
                 }}
               />
             </Box>

@@ -14,3 +14,9 @@ export const APPID_VAULT_BOOTSTRAP =
   "1e55aaa3241c6f9b630d3a53c6aa6877695fd0e0c6c7bbc0f8eed35bcb43ebe0";
 export const APPID_VAULT_ADMINISTRATOR =
   "ad5be1a1fe011ce7f53ae081a22ae000a42021f3f94106a3bac9f76e8230e4b9";
+
+export const fromStringRoleToBytes = {
+  shared_owner: Buffer.from([2]),
+  admin: Buffer.from([1]),
+  operator: Buffer.from([0]),
+};

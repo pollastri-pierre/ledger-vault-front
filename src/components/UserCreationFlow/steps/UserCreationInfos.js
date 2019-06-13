@@ -54,7 +54,7 @@ class UserCreationInfo extends PureComponent<Props> {
               onChange={this.handleChangeUserID}
               placeholder={t("inviteUser:form.placeholderUserID")}
               fullWidth
-              maxLength={19}
+              maxLength={16}
               onlyAscii
             />
           </Box>
