@@ -101,6 +101,7 @@ class MockDevices extends PureComponent {
     autoLogout: false,
     collapseMock: true,
     showOnboarding: false,
+    forceHardware: false,
   };
 
   changeAutoLogout = () => {
@@ -112,7 +113,9 @@ class MockDevices extends PureComponent {
       const result = await fetch(`${API_BASE_URL}/current-device`);
       const current = await result.json();
       const { device_id } = current;
-      this.setState({ deviceId: device_id });
+      this.setState({
+        deviceId: device_id,
+      });
     } catch (e) {
       console.warn(e);
     }
@@ -147,8 +150,19 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ showOnboarding: !state.showOnboarding }));
   };
 
+  forceHardwareToggle = () => {
+    window.FORCE_HARDWARE = !window.FORCE_HARDWARE;
+    this.setState(() => ({ forceHardware: window.FORCE_HARDWARE }));
+  };
+
   render() {
-    const { deviceId, autoLogout, collapseMock, showOnboarding } = this.state;
+    const {
+      deviceId,
+      autoLogout,
+      collapseMock,
+      showOnboarding,
+      forceHardware,
+    } = this.state;
     return (
       <div style={styles.root}>
         <div style={styles.actionContainer}>
@@ -171,6 +185,16 @@ class MockDevices extends PureComponent {
                 <Switch
                   onChange={this.onboardingToggle}
                   checked={showOnboarding}
+                  label="show onboarding"
+                />
+              </div>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  force hardware
+                </Text>
+                <Switch
+                  onChange={this.forceHardwareToggle}
+                  checked={forceHardware}
                   label="show onboarding"
                 />
               </div>

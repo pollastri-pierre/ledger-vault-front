@@ -21,10 +21,13 @@ import {
   openSession as hardOpenSession,
   generateKeyComponent as hardGenerateKeyComponent,
   getFirmwareInfo as hardGetFirmwareInfo,
+  registerData as hardRegisterData,
 } from "device/VaultDeviceApp";
 
-const softwareMode = () =>
-  process.env.NODE_ENV === "e2e" || window.config.SOFTWARE_DEVICE;
+const softwareMode = () => {
+  if (window.FORCE_HARDWARE) return false;
+  return window.config.SOFTWARE_DEVICE || process.env.NODE_ENV === "e2e";
+};
 
 export const getPublicKey = () =>
   softwareMode() ? softGetPublicKey : hardGetPublicKey;
