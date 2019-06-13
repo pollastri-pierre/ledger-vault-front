@@ -106,9 +106,7 @@ class TransactionsTable extends PureComponent<Props, State> {
       return null;
     }
 
-    const key = `${transaction.account_id}-${transaction.id}-${
-      transaction.type
-    }`;
+    const key = `${transaction.account_id}-${transaction.id}-${transaction.type}`;
 
     return (
       <TransactionRow

@@ -9,7 +9,5 @@ type Input = {
 type Response = *;
 
 export default class GetAddressQuery extends Query<Input, Response> {
-  uri = `/accounts/${this.props.accountId}/address?derivation_path=${
-    this.props.derivation_path
-  }`;
+  uri = `/accounts/${this.props.accountId}/address?derivation_path=${this.props.derivation_path}`;
 }

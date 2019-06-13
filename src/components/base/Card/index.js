@@ -39,12 +39,9 @@ export const CardDesc = ({
 export { default as CardError } from "./CardError";
 export { default as CardLoading } from "./CardLoading";
 
-export default styled(Box).attrs(p => ({
-  // $FlowFixMe
-  p: "p" in p ? p.p : 20,
-  // $FlowFixMe
-  position: "relative",
-}))`
+export default styled(Box)`
+  position: relative;
+  padding: 20px;
   background: white;
   overflow-x: ${p => p.overflow || "unset"};
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);

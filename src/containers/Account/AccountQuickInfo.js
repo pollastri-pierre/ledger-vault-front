@@ -61,9 +61,7 @@ class AccountQuickInfo extends Component<Props> {
           <Absolute top={0} right={0}>
             <SettingsLink
               title="Settings"
-              to={`${location.pathname}/accounts/details/${
-                account.id
-              }/overview`}
+              to={`${location.pathname}/accounts/details/${account.id}/overview`}
               className="content-header-button"
             >
               <FaWrench />

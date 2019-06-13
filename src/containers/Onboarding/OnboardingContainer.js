@@ -76,6 +76,7 @@ class OnboardingContainer extends Component<Props, State> {
 
     const url = process.env.NOTIFICATION_URL || "/";
     const path = process.env.NOTIFICATION_PATH || "/notification/socket.io";
+    // $FlowFixMe
     const socket = io.connect(url, { onboarding: true, path });
     socket.on("connect", () => {
       socket.emit("authenticate", {

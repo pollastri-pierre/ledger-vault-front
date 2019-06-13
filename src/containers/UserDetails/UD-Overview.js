@@ -50,9 +50,7 @@ class UserDetailsOverview extends PureComponent<Props> {
     const prefix = window.location.pathname.split("/")[1];
     const url =
       user.last_request && user.last_request.url_id
-        ? `${window.location.origin}/${prefix}/register/${
-            user.last_request.url_id
-          }`
+        ? `${window.location.origin}/${prefix}/register/${user.last_request.url_id}`
         : null;
 
     return (

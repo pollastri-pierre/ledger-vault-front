@@ -153,19 +153,24 @@ const styles = {
   },
 };
 
-class PieChart extends Component<
-  {
-    data: Array<PieChartData>,
-    radius: number,
-    showCaptions?: boolean,
-    showTooltips?: boolean,
-    highlightCaptionsOnHover?: boolean,
-    classes: { [_: $Keys<typeof styles>]: string },
-  },
-  { selected: number },
-> {
+type Props = {
+  data: Array<PieChartData>,
+  radius: number,
+  showCaptions?: boolean,
+  showTooltips?: boolean,
+  highlightCaptionsOnHover?: boolean,
+  classes: { [_: $Keys<typeof styles>]: string },
+};
+
+type State = {
+  selected: number,
+  prevSelected: number,
+};
+
+class PieChart extends Component<Props, State> {
   state = {
     selected: -1,
+    prevSelected: -1,
   };
 
   svg: ?Element;
@@ -257,7 +262,7 @@ class PieChart extends Component<
       .on("mouseout", this.handleMouseOut);
   }
 
-  componentDidUpdate(prevProps: *, prevState: *) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const { selected } = this.state;
     const { showTooltips } = this.props;
     const { prevSelected } = prevState;
