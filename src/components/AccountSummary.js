@@ -53,9 +53,9 @@ class AccountSummary extends PureComponent<Props> {
         </div>
         <div>
           <div className={classes.title}>{account.name}</div>
-          <div className={classes.desc}>{`${currency.name} #${
-            account.id
-          }`}</div>
+          <div className={classes.desc}>
+            {`${currency.name} #${account.id}`}
+          </div>
         </div>
       </div>
     );

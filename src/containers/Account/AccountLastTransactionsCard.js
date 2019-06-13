@@ -38,9 +38,7 @@ class AccountLastTransactionsCard extends Component<Props> {
     const { account, transactions } = this.props;
 
     const orgaName = this.props.location.pathname.split("/")[1];
-    const seeAllURL = `/${orgaName}/operator/transactions?account=${
-      account.id
-    }`;
+    const seeAllURL = `/${orgaName}/operator/transactions?account=${account.id}`;
 
     return (
       <Card>

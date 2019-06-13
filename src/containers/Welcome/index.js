@@ -161,11 +161,7 @@ class Welcome extends Component<Props, State> {
         >
           <TranslatedError error={unknownDomainError} field="description" />
         </Alert>
-        <Card
-          overflow="visible"
-          height={350}
-          position="relative"
-        >
+        <Card overflow="visible" height={350} position="relative">
           <Box flow={20} px={20} pt={60} align="center">
             <FaUser color={colors.lightGrey} size={32} />
             <InputField

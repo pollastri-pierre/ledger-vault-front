@@ -76,6 +76,7 @@ class ActivityMenu extends Component<
   componentDidMount() {
     const url = process.env.NOTIFICATION_URL || "/";
     const path = process.env.NOTIFICATION_PATH || "/notification/socket.io";
+    // $FlowFixMe
     const socket = io.connect(url, { path });
     const myAuthToken = getLocalStorageToken();
     socket.on("connect", () => {
