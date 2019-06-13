@@ -11,7 +11,7 @@ import type { GroupCreationStepProps } from "./types";
 
 type Props = GroupCreationStepProps & {};
 
-const MAX_MEMBERS = 20;
+export const MAX_MEMBERS = 20;
 
 class GroupCreationMembers extends PureComponent<Props> {
   onChange = (data: { members: User[] }) => {
