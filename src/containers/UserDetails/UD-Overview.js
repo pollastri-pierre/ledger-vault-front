@@ -18,8 +18,12 @@ type Props = {
   restlay: RestlayEnvironment,
 };
 
-const inputProps = {
+const inputPropsUsername = {
   maxLength: 19,
+  onlyAscii: true,
+};
+const inputPropsUserID = {
+  maxLength: 16,
   onlyAscii: true,
 };
 
@@ -60,7 +64,7 @@ class UserDetailsOverview extends PureComponent<Props> {
             <EditableField
               value={user.username}
               onChange={this.updateUsername}
-              inputProps={inputProps}
+              inputProps={inputPropsUsername}
             />
           ) : (
             user.username
@@ -75,6 +79,7 @@ class UserDetailsOverview extends PureComponent<Props> {
             <EditableField
               value={user.user_id || ""}
               onChange={this.updateUserID}
+              inputProps={inputPropsUserID}
             />
           ) : (
             user.user_id
