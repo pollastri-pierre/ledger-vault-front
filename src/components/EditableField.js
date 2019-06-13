@@ -41,9 +41,13 @@ class EditableField extends PureComponent<Props, State> {
   };
 
   onConfirm = () => {
-    const { onChange } = this.props;
+    const { onChange, value } = this.props;
     const { localValue } = this.state;
-    onChange(localValue);
+    if (localValue === "") {
+      this.setState({ localValue: value });
+    } else {
+      onChange(localValue);
+    }
     this.toggleEditMode();
   };
 
