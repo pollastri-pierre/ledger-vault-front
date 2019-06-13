@@ -258,12 +258,15 @@ export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
 
 export type AccountStatus =
   | "ACTIVE"
+  | "VIEW_ONLY"
   | "REVOKED"
   | "MIGRATED"
   | "VIEW_ONLY"
   | "HSM_COIN_UPDATED"
   | "PENDING"
   | "PENDING_UPDATE"
+  | "PENDING_VIEW_ONLY"
+  | "PENDING_CREATION_APPROVAL"
   | "PENDING_MIGRATED";
 
 type TransactionCommon = {

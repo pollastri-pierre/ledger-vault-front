@@ -15,9 +15,11 @@ import type { AccountStatus } from "data/types";
 
 export const defaultStatuses: AccountStatus[] = [
   "ACTIVE",
+  "VIEW_ONLY",
   "PENDING",
   "PENDING_UPDATE",
-  "VIEW_ONLY",
+  "PENDING_VIEW_ONLY",
+  "PENDING_MIGRATED",
 ];
 
 const statuses: AccountStatus[] = [...defaultStatuses, "REVOKED"];
