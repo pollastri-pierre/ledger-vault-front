@@ -10,7 +10,7 @@ type In = {
   label?: string,
   currency?: string,
   status?: string[],
-  accounts?: string[],
+  account?: string[],
   start?: string,
   end?: string,
 };

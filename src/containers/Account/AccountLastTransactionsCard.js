@@ -13,7 +13,7 @@ import { TransactionsTable } from "components/Table";
 import Card, { CardLoading, CardError } from "components/base/Card";
 
 import connectData from "restlay/connectData";
-import AccountTransactionsQuery from "api/queries/AccountTransactionsQuery";
+import SearchTransactions from "api/queries/SearchTransactions";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account, Transaction } from "data/types";
@@ -58,13 +58,10 @@ class AccountLastTransactionsCard extends Component<Props> {
 
 export default connectData(withRouter(AccountLastTransactionsCard), {
   queries: {
-    transactions: AccountTransactionsQuery,
-  },
-  initialVariables: {
-    transactions: 20,
+    transactions: SearchTransactions,
   },
   propsToQueryParams: ({ account }: { account: Account }) => ({
-    accountId: String(account.id),
+    account: [account.id],
   }),
   RenderError: CardError,
   RenderLoading: CardLoading,
