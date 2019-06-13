@@ -11,7 +11,11 @@ import { approveFlow } from "device/interactions/hsmFlows";
 import AbortRequestButton from "components/AbortRequestButton";
 import { withMe } from "components/UserContextProvider";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import { hasUserApprovedRequest } from "utils/request";
+import {
+  hasUserApprovedCurrentStep,
+  hasUserApprovedRequest,
+  isUserInCurrentStep,
+} from "utils/request";
 import colors from "shared/colors";
 
 import type { Entity, User } from "data/types";
@@ -31,7 +35,10 @@ class RequestActionButtons extends PureComponent<Props> {
     const lastRequest = entity.last_request;
     if (!lastRequest) return null;
 
-    const hasUserApproved = hasUserApprovedRequest(lastRequest, me);
+    const userInCurrentStep = isUserInCurrentStep(lastRequest, me);
+    const userApprovedCurrentStep = hasUserApprovedCurrentStep(lastRequest, me);
+    const userApprovedRequest = hasUserApprovedRequest(lastRequest, me);
+
     const isRequestBlocked = lastRequest.status === "BLOCKED";
     const isPendingRegistration = lastRequest.status === "PENDING_REGISTRATION";
 
@@ -51,12 +58,12 @@ class RequestActionButtons extends PureComponent<Props> {
             </Box>
           </InfoBox>
         </Box>
-        {hasUserApproved ? (
+        {userApprovedCurrentStep ? (
           <Box horizontal align="center" justify="center" flow={10}>
             {checkedIcon}
             <Text bold>You already approved the request.</Text>
           </Box>
-        ) : (
+        ) : userInCurrentStep ? (
           <Box
             horizontal
             align="center"
@@ -68,7 +75,7 @@ class RequestActionButtons extends PureComponent<Props> {
               requestID={lastRequest.id}
               onSuccess={onSuccess}
             />
-            {!isPendingRegistration && (
+            {!isPendingRegistration && !userApprovedRequest && (
               <ApproveRequestButton
                 interactions={approveFlow}
                 onSuccess={onSuccess}
@@ -81,7 +88,7 @@ class RequestActionButtons extends PureComponent<Props> {
               />
             )}
           </Box>
-        )}
+        ) : null}
       </>
     );
 
