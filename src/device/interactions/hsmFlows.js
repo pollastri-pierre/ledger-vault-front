@@ -53,7 +53,7 @@ export const getAddress: Interaction = {
 };
 
 const buildCertif = (attestation: Buffer, signature: Buffer) => {
-  const certLen = attestation.readInt8(98);
+  const certLen = attestation.readInt8(32 + 65 + 1);
   return {
     code_hash: attestation.slice(0, 32).toString("base64"),
     attestation_pub: attestation.slice(32, 32 + 65).toString("base64"),
@@ -91,11 +91,13 @@ const onboardingGetChallenge: Interaction = {
 
 const onboardingRegisterDevice: Interaction = {
   responseKey: "u2f_register",
+  device: true,
+  needsUserInput: true,
   action: async ({
     u2f_key,
     onboardingRegisterChallenge,
-    organization,
     role,
+    username,
     transport,
   }) => {
     // either the channel is in a map indexed by public key ( onboarding ) or directly in registerChallenge ( register operator )
@@ -103,17 +105,33 @@ const onboardingRegisterDevice: Interaction = {
       onboardingRegisterChallenge[
         u2f_key.pubKey.toString("hex").toUpperCase()
       ] || onboardingRegisterChallenge;
+
+    const signature = Buffer.from(
+      register_challenge.certificate.signature,
+      "base64",
+    );
+    const attestation_pub = Buffer.from(
+      register_challenge.certificate.attestation_pub,
+      "base64",
+    );
+    const certificate = Buffer.from(
+      register_challenge.certificate.certificate,
+      "base64",
+    );
+
     const challengeAttestation = Buffer.concat([
-      Buffer.from(register_challenge.certificate.code_hash),
-      Buffer.from(register_challenge.certificate.attestation_pub),
-      Buffer.from(register_challenge.certificate.certificate),
+      Buffer.from([signature.length]),
+      signature,
+      attestation_pub,
+      Buffer.from([certificate.length]),
+      certificate,
     ]);
 
     await retry(() => {
       return openSession()(
         transport,
         CONFIDENTIALITY_PATH,
-        register_challenge.ephemeral_public_key,
+        Buffer.from(register_challenge.ephemeral_public_key, "hex"),
         challengeAttestation,
         ACCOUNT_MANAGER_SESSION,
       );
@@ -125,9 +143,9 @@ const onboardingRegisterDevice: Interaction = {
           transport,
           Buffer.from(register_challenge.challenge, "hex"),
           APPID_VAULT_ADMINISTRATOR,
-          organization.name,
+          username,
           role,
-          Buffer.from(register_challenge.u2f_register_data, "hex"),
+          register_challenge.u2f_register_data,
         ),
       {
         shouldThrow: (e: DeviceError) =>
@@ -224,15 +242,26 @@ const openSessionValidate: Interaction = {
       throw new NoChannelForDevice();
     }
     await retry(() => {
+      const signature = Buffer.from(channel.certificate.signature, "base64");
+      const attestation_pub = Buffer.from(
+        channel.certificate.attestation_pub,
+        "base64",
+      );
+      const certificate = Buffer.from(
+        channel.certificate.certificate,
+        "base64",
+      );
       const certif = Buffer.concat([
-        Buffer.from(channel.certificate.code_hash),
-        Buffer.from(channel.certificate.attestation_pub),
-        Buffer.from(channel.certificate.certificate),
+        Buffer.from([signature.length]),
+        signature,
+        attestation_pub,
+        Buffer.from([certificate.length]),
+        certificate,
       ]);
       return openSession()(
         transport,
         CONFIDENTIALITY_PATH,
-        channel.ephemeral_public_key,
+        Buffer.from(channel.ephemeral_public_key, "hex"),
         certif,
         ACCOUNT_MANAGER_SESSION,
       );
@@ -246,15 +275,29 @@ const openSessionVerifyAddress: Interaction = {
   responseKey: "channel_blob",
   action: async ({ transport, address_channel }) => {
     await retry(() => {
+      const signature = Buffer.from(
+        address_channel.certificate.signature,
+        "base64",
+      );
+      const attestation_pub = Buffer.from(
+        address_channel.certificate.attestation_pub,
+        "base64",
+      );
+      const certificate = Buffer.from(
+        address_channel.certificate.certificate,
+        "base64",
+      );
       const certif = Buffer.concat([
-        Buffer.from(address_channel.certificate.code_hash),
-        Buffer.from(address_channel.certificate.attestation_pub),
-        Buffer.from(address_channel.certificate.certificate),
+        Buffer.from([signature.length]),
+        signature,
+        attestation_pub,
+        Buffer.from([certificate.length]),
+        certificate,
       ]);
       return openSession()(
         transport,
         CONFIDENTIALITY_PATH,
-        address_channel.ephemeral_public_key,
+        Buffer.from(address_channel.ephemeral_public_key, "hex"),
         certif,
         ACCOUNT_MANAGER_SESSION,
       );

@@ -127,6 +127,7 @@ function RegisterUser(props: Props) {
                     onError={onError}
                     additionalFields={{
                       organization,
+                      username: userInvite.user.username,
                       role: userInvite
                         ? userInvite.user.role.toLowerCase()
                         : "admin",

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import Button from "components/base/Button";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 import InputField from "components/InputField";
 import colors from "shared/colors";
 import DeviceInteraction from "components/DeviceInteraction";
@@ -13,13 +14,13 @@ import Text from "components/base/Text";
 import type { Organization } from "data/types";
 
 type Props = {
-  close: Function,
   finish: Function,
   organization: Organization,
 };
 
-const AddMember = ({ close, finish, organization }: Props) => {
+const AddMember = ({ finish, organization }: Props) => {
   const [username, setUsername] = useState("");
+  const [error, setError] = useState(null);
   const [registering, setRegistering] = useState("");
 
   const onSuccess = data => {
@@ -27,13 +28,14 @@ const AddMember = ({ close, finish, organization }: Props) => {
     finish({ ...data.register_input, username });
   };
 
-  const onError = () => {
+  const onError = e => {
     setRegistering(false);
-    close();
+    setError(e);
   };
 
   return (
     <Box p={40} pb={20} flow={20} width={500}>
+      {error && <TriggerErrorNotification error={error} />}
       <Text large>Add new admin</Text>
       <Box horizontal flow={30} mt={80} align="center">
         <ProfileIconContainer>
@@ -58,6 +60,7 @@ const AddMember = ({ close, finish, organization }: Props) => {
             onError={onError}
             additionalFields={{
               organization,
+              username,
               role: "admin",
             }}
           />

@@ -36,8 +36,9 @@ export const authenticate = () =>
   softwareMode() ? softAuthenticate : hardAuthenticate;
 
 export const register = () => (softwareMode() ? softRegister : hardRegister);
-// TODO implement hw version
-export const registerData = () => softRegisterData;
+
+export const registerData = () =>
+  softwareMode() ? softRegisterData : hardRegisterData;
 
 export const getAttestationCertificate = () =>
   softwareMode()

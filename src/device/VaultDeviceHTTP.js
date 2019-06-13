@@ -1,5 +1,6 @@
 // @flow
 import network from "network";
+import { fromStringRoleToBytes } from "device";
 
 export const ENDPOINTS = {
   GET_PUBLIC_KEY: "/get-public-key",
@@ -32,12 +33,6 @@ const deviceNetwork = async function<T>(
       throw err;
     }
   });
-};
-
-const fromStringRoleToBytes = {
-  shared_owner: Buffer.from([2]),
-  admin: Buffer.from([1]),
-  operator: Buffer.from([0]),
 };
 
 const psdType = Buffer.from([0]);
@@ -87,11 +82,6 @@ export const register = async (
   name: string,
   userRole: string,
   registerData: Buffer,
-
-  // instanceName: string,
-  // instanceReference: string,
-  // instanceUrl: string,
-  // agentRole: string,
 ): Promise<{
   u2f_register: Buffer,
   keyHandle: Buffer,
@@ -103,11 +93,6 @@ export const register = async (
     hsm_data: registerData.toString("hex"),
     type: psdType.toString("hex"),
     application,
-
-    // name: instanceName,
-    // role: agentRole,
-    // domain_name: instanceUrl,
-    // workspace: instanceReference,
   });
   const response = Buffer.from(data, "hex");
   let i = 0;
@@ -201,8 +186,7 @@ export const authenticate = async (
   keyHandle: Buffer,
   userName: string,
   role: string,
-  // instanceUrl: string,
-  // agentRole: string,
+  workspace: string,
 ): Promise<{
   userPresence: *,
   counter: *,
@@ -213,11 +197,10 @@ export const authenticate = async (
     challenge: challenge.toString("hex"),
     application,
     key_handle: keyHandle.toString("hex"),
+    hsm_data: workspace,
     name: userName,
-    role: fromStringRoleToBytes[role].toString("hex"),
+    role: fromStringRoleToBytes[role.toLowerCase()].toString("hex"),
     type: psdType.toString("hex"),
-    // domain_name: instanceUrl,
-    // workspace: instanceReference,
   });
 
   // we add a fake status response because traaansport on device does it

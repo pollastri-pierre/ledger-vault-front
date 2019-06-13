@@ -1,6 +1,11 @@
 // @flow
 import type Transport from "@ledgerhq/hw-transport";
+import { fromStringRoleToBytes } from "device";
 import invariant from "invariant";
+
+const STATUS_LENGTH = 2;
+const removeStatus = (result: Buffer): Buffer =>
+  result.slice(0, result.length - STATUS_LENGTH);
 
 const splits = (chunk: number, buffer: Buffer): Buffer[] => {
   const chunks = [];
@@ -18,8 +23,7 @@ export const getFirmwareInfo = async (
   mcuVersion: string,
 }> => {
   const res = await transport.send(0xe0, 0x01, 0x00, 0x00);
-  const byteArray = [...res];
-  const data = byteArray.slice(0, byteArray.length - 2);
+  const data = [...res];
   const targetIdStr = Buffer.from(data.slice(0, 4));
   const targetId = targetIdStr.readUIntBE(0, 4);
   const seVersionLength = data[4];
@@ -71,14 +75,14 @@ export const generateKeyComponent = async (
     p1 = 0x01;
   }
   const response = await transport.send(0xe0, 0x44, p1, 0x00, data);
-  return response.slice(0, response.length - 2);
+  return removeStatus(response);
 };
 
 export const getAttestationCertificate = async (
   transport: Transport<*>,
 ): Promise<Buffer> => {
   const response = await transport.send(0xe0, 0x41, 0x00, 0x00);
-  return response.slice(0, response.length - 2);
+  return removeStatus(response);
 };
 
 export const getVersion = async (
@@ -108,7 +112,7 @@ export const validateVaultOperation = async (
   path: number[],
   operation: Buffer,
 ) => {
-  const maxLength = 100;
+  const maxLength = 200;
   const paths = Buffer.concat([
     Buffer.from([path.length]),
     ...path.map(derivation => {
@@ -133,7 +137,7 @@ export const validateVaultOperation = async (
     lastResponse = await transport.send(0xe0, 0x45, 0x80, 0x00, chunks[i]);
   }
 
-  return lastResponse.slice(0, lastResponse.length - 2);
+  return removeStatus(lastResponse);
 };
 
 export const openSession = async (
@@ -157,23 +161,15 @@ export const openSession = async (
 
   const maxLength = 150;
 
-  const dataBuffer = Buffer.concat([
+  const chunks = splits(maxLength, attestation);
+  const data = Buffer.concat([
     dataDerivation,
     pubKey,
     lengthAttestation,
-    attestation,
-  ]);
-  let chunks = [dataBuffer];
-  if (maxLength < dataBuffer.length) {
-    chunks = splits(maxLength, dataBuffer);
-  }
-  let lastResponse = await transport.send(
-    0xe0,
-    0x42,
-    0x00,
-    scriptHash,
     chunks.shift(),
-  );
+  ]);
+
+  let lastResponse = await transport.send(0xe0, 0x42, 0x00, scriptHash, data);
 
   for (let i = 0; i < chunks.length; i++) {
     lastResponse = await transport.send(
@@ -187,14 +183,26 @@ export const openSession = async (
   return lastResponse;
 };
 
+export const registerData = async (
+  transport: Transport<*>,
+  challenge: Buffer,
+): Promise<*> => {
+  invariant(
+    challenge.length === 32,
+    "challenge hex is expected to have 32 bytes",
+  );
+
+  const response = await transport.send(0xe0, 0x03, 0x00, 0x00, challenge);
+  return removeStatus(response);
+};
+
 export const register = async (
   transport: Transport<*>,
   challenge: Buffer,
   application: string,
-  instanceName: string,
-  instanceReference: string,
-  instanceUrl: string,
-  agentRole: string,
+  userName: string,
+  userRole: string,
+  hsmData: string,
 ): Promise<{
   u2f_register: Buffer,
   keyHandle: Buffer,
@@ -209,22 +217,17 @@ export const register = async (
     "application hex is expected to have 32 bytes",
   );
 
-  const instanceNameBuf = Buffer.from(instanceName);
-  const instanceReferenceBuf = Buffer.from(instanceReference);
-  const instanceURLBuf = Buffer.from(instanceUrl);
-  const agentRoleBuf = Buffer.from(agentRole);
+  const userNameBuff = Buffer.from(userName);
+  const hsmDataBuff = Buffer.from(hsmData, "hex");
 
   const maxLength = 200;
 
   const bigChunk = Buffer.concat([
-    Buffer.from([instanceNameBuf.length]),
-    instanceNameBuf,
-    Buffer.from([instanceReferenceBuf.length]),
-    instanceReferenceBuf,
-    Buffer.from([instanceURLBuf.length]),
-    instanceURLBuf,
-    Buffer.from([agentRoleBuf.length]),
-    agentRoleBuf,
+    fromStringRoleToBytes[userRole.toLowerCase()],
+    Buffer.from([userNameBuff.length]),
+    userNameBuff,
+    Buffer.from([hsmDataBuff.length]),
+    hsmDataBuff,
   ]);
 
   const length = Buffer.alloc(2);
@@ -253,7 +256,7 @@ export const register = async (
   // const attestationSignature = lastResponse.slice(i, ++i)[0];
   // const signature = lastResponse.slice(i).toString("hex");
   return {
-    u2f_register: lastResponse.slice(0, lastResponse.length - 2),
+    u2f_register: removeStatus(lastResponse),
     keyHandle,
     rfu,
     pubKey,
@@ -285,7 +288,10 @@ export const getPublicKey = async (
     .slice(1, pubKeyLength + 1)
     .toString("hex")
     .toUpperCase();
-  const signature = response.slice(pubKeyLength + 1, response.length - 2);
+  const signature = response.slice(
+    pubKeyLength + 1,
+    response.length - STATUS_LENGTH,
+  );
   return { pubKey, signature };
 };
 export const authenticate = async (
@@ -293,10 +299,9 @@ export const authenticate = async (
   challenge: Buffer,
   application: string,
   keyHandle: Buffer,
-  instanceName: string,
-  instanceReference: string,
-  instanceUrl: string,
-  agentRole: string,
+  name: string,
+  role: string,
+  workspace: string,
 ): Promise<{
   userPresence: *,
   counter: *,
@@ -314,24 +319,22 @@ export const authenticate = async (
   );
   const maxLength = 150;
 
-  const instanceNameBuf = Buffer.from(instanceName);
-  const instanceReferenceBuf = Buffer.from(instanceReference);
-  const instanceURLBuf = Buffer.from(instanceUrl);
-  const agentRoleBuf = Buffer.from(agentRole);
+  const nameBuf = Buffer.from(name);
+  const roleBuf = fromStringRoleToBytes[role.toLowerCase()];
+  const workspaceBuf = Buffer.from(workspace, "hex");
 
   const bigChunk = Buffer.concat([
-    Buffer.from([instanceNameBuf.length]),
-    instanceNameBuf,
-    Buffer.from([instanceReferenceBuf.length]),
-    instanceReferenceBuf,
-    Buffer.from([instanceURLBuf.length]),
-    instanceURLBuf,
-    Buffer.from([agentRoleBuf.length]),
-    agentRoleBuf,
+    roleBuf,
+    Buffer.from([nameBuf.length]),
+    nameBuf,
+    Buffer.from([workspaceBuf.length]),
+    workspaceBuf,
   ]);
 
   const length = Buffer.alloc(2);
   length.writeUInt16BE(bigChunk.length, 0);
+
+  const chunks = splits(maxLength, bigChunk);
 
   const data = Buffer.concat([
     challenge,
@@ -339,28 +342,10 @@ export const authenticate = async (
     Buffer.from([keyHandle.length]),
     keyHandle,
     length,
-    Buffer.from([instanceNameBuf.length]),
-    instanceNameBuf,
-    Buffer.from([instanceReferenceBuf.length]),
-    instanceReferenceBuf,
-    Buffer.from([instanceURLBuf.length]),
-    instanceURLBuf,
-    Buffer.from([agentRoleBuf.length]),
-    agentRoleBuf,
+    chunks.shift(),
   ]);
 
-  let chunks = [data];
-  if (maxLength < data.length) {
-    chunks = splits(maxLength, data);
-  }
-
-  let lastResponse = await transport.send(
-    0xe0,
-    0x02,
-    0x00,
-    0x00,
-    chunks.shift(),
-  );
+  let lastResponse = await transport.send(0xe0, 0x02, 0x00, 0x00, data);
 
   for (let i = 0; i < chunks.length; i++) {
     lastResponse = await transport.send(0xe0, 0x02, 0x80, 0x00, chunks[i]);
@@ -368,12 +353,12 @@ export const authenticate = async (
   const userPresence = lastResponse.slice(0, 1);
   const counter = lastResponse.slice(1, 5);
   const signature = lastResponse
-    .slice(5, lastResponse.length - 2)
+    .slice(5, lastResponse.length - STATUS_LENGTH)
     .toString("hex");
   return {
     userPresence,
     counter,
     signature,
-    rawResponse: lastResponse.slice(0, lastResponse.length - 2).toString("hex"),
+    rawResponse: removeStatus(lastResponse).toString("hex"),
   };
 };
