@@ -116,6 +116,8 @@ const modalsRoutes = [
   /(.*)\/details\/[0-9]+\/.+$/,
 ];
 
+const usePrevFirst = [/.*\/dashboard$/, /.*\/tasks$/];
+
 function getModalClosePath(p) {
   let match;
   // using find allow to stop parcourir the array when first match
@@ -129,6 +131,9 @@ function getModalClosePath(p) {
 function resolveCloseURL(history, lastPath) {
   const { pathname: actualURL } = history.location;
   if (!lastPath) return getModalClosePath(actualURL) || "/";
+  if (lastPath && usePrevFirst.find(r => lastPath.match(r))) {
+    return lastPath;
+  }
   const prevModalClosePath = getModalClosePath(actualURL);
   return prevModalClosePath || lastPath || "/";
 }

@@ -179,6 +179,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
                       if (!user) return null;
                       return (
                         <Box
+                          key={u}
                           horizontal
                           m={5}
                           flow={5}

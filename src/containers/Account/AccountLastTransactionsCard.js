@@ -13,7 +13,7 @@ import { TransactionsTable } from "components/Table";
 import Card, { CardLoading, CardError } from "components/base/Card";
 
 import connectData from "restlay/connectData";
-import AccountTransactionsQuery from "api/queries/AccountTransactionsQuery";
+import SearchTransactions from "api/queries/SearchTransactions";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account, Transaction } from "data/types";
@@ -40,8 +40,8 @@ class AccountLastTransactionsCard extends Component<Props> {
     const orgaName = this.props.location.pathname.split("/")[1];
     const seeAllURL = `/${orgaName}/operator/transactions?account=${account.id}`;
 
-    return (
-      <Card>
+    const inner = transactions.edges.length ? (
+      <>
         <Box horizontal justify="space-between">
           <Label>Last transactions</Label>
           <Link to={seeAllURL}>See all</Link>
@@ -51,20 +51,21 @@ class AccountLastTransactionsCard extends Component<Props> {
           data={transactions.edges.map(e => e.node)}
           onRowClick={this.handleTransactionClick}
         />
-      </Card>
+      </>
+    ) : (
+      "No transactions for this account"
     );
+
+    return <Card>{inner}</Card>;
   }
 }
 
 export default connectData(withRouter(AccountLastTransactionsCard), {
   queries: {
-    transactions: AccountTransactionsQuery,
-  },
-  initialVariables: {
-    transactions: 20,
+    transactions: SearchTransactions,
   },
   propsToQueryParams: ({ account }: { account: Account }) => ({
-    accountId: String(account.id),
+    account: [account.id],
   }),
   RenderError: CardError,
   RenderLoading: CardLoading,

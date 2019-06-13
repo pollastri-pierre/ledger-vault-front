@@ -64,6 +64,7 @@ const BitcoinBridge: WalletBridge<Transaction> = {
     ...t,
     amount,
     estimatedFees: null,
+    estimatedMaxAmount: null,
   }),
 
   getTransactionAmount: (a: Account, t: Transaction) => t.amount,
