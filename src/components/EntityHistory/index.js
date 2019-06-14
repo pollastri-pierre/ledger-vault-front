@@ -298,11 +298,13 @@ function resolveFullHistory(history: Array<any>, quorum: number) {
       acc.push({
         type: "CREATE",
         date: cur.created_on,
-        label: (
+        label: cur.created_by ? (
           <>
-            <b>created by</b>
+            <b>Created by</b>
             <span>{cur.created_by.username}</span>
           </>
+        ) : (
+          <b>Created</b>
         ),
       });
     }
