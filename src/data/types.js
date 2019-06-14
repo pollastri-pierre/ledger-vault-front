@@ -404,6 +404,9 @@ type RequestCommon = {
   status: string,
   type: string,
   approvals?: RequestApproval[],
+  // TODO type this
+  approvals_steps: any,
+  current_step: number,
   target_id: number,
   url_id?: string,
   target_type: RequestTargetType,
@@ -422,6 +425,7 @@ type RequestApproval = {
   created_by: User,
   created_on: string,
   type: string,
+  step: number,
 };
 
 type RequestUser = {
