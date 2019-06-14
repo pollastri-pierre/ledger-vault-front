@@ -110,7 +110,7 @@ jobs:
       - run:
           name: Update the pointer "LATEST"
           command: |
-            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop-drop2" -o "$CIRCLE_BRANCH" = "develop-hsm2" -o "$CIRCLE_BRANCH" = "develop" -o "$CIRCLE_BRANCH" = "release_candidate" ]; then
+            if [ "$CIRCLE_BRANCH" = "master" -o "$CIRCLE_BRANCH" = "develop-drop2" -o "$CIRCLE_BRANCH" = "develop-hsm2" -o "$CIRCLE_BRANCH" = "release_candidate_drop2" -o "$CIRCLE_BRANCH" = "develop" -o "$CIRCLE_BRANCH" = "release_candidate" ]; then
               latest=$(mktemp)
               echo $latest_artifact > $latest
               latest_pointer="latest-${CIRCLE_BRANCH}"
@@ -145,6 +145,7 @@ workflows:
                 - develop
                 - develop-drop2
                 - develop-hsm2
+                - release_candidate_drop2
       - publish:
           name: publish_prod
           s3_bucket: *prod_s3_bucket
