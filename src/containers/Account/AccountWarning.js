@@ -41,7 +41,7 @@ class AccountWarning extends Component<Props> {
     const { classes, account } = this.props;
     return (
       <>
-        {account.status === "VIEW_ONLY" && (
+        {account.status === "VIEW_ONLY" && !account.last_request && (
           <InfoBox
             type="warning"
             withIcon

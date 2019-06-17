@@ -47,7 +47,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         </LineRow>
       )}
       <LineRow label={<Trans i18nKey="send:confirmation.fees" />}>
-        <Amount account={account} value={fees} />
+        <Amount account={account} value={fees} disableERC20 />
       </LineRow>
       <LineRow
         label={<Trans i18nKey="send:confirmation.total" />}
@@ -56,12 +56,7 @@ export default (props: TransactionCreationStepProps<any>) => {
         }
       >
         {totalSpent !== null && (
-          <Amount
-            account={account}
-            value={totalSpent}
-            strong
-            erc20Format={isERC20}
-          />
+          <Amount account={account} value={totalSpent} strong />
         )}
       </LineRow>
     </Box>

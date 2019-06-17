@@ -209,7 +209,6 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
             <CurrencyAccountValue
               account={account}
               value={amount}
-              erc20Format={account.account_type === "ERC20"}
               type={transaction.type}
               alwaysShowSign
             />

@@ -57,17 +57,15 @@ class AccountQuickInfo extends Component<Props> {
         <Label>
           <AccountTitle account={account} />
         </Label>
-        {!isERC20 && (
-          <Absolute top={0} right={0}>
-            <SettingsLink
-              title="Settings"
-              to={`${location.pathname}/accounts/details/${account.id}/overview`}
-              className="content-header-button"
-            >
-              <FaWrench />
-            </SettingsLink>
-          </Absolute>
-        )}
+        <Absolute top={0} right={0}>
+          <SettingsLink
+            title="Settings"
+            to={`${location.pathname}/accounts/details/${account.id}/overview`}
+            className="content-header-button"
+          >
+            <FaWrench />
+          </SettingsLink>
+        </Absolute>
         <Box horizontal align="center" justify="space-between">
           <Box>
             {isERC20 ? (

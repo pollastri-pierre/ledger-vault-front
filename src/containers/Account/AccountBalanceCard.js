@@ -49,11 +49,7 @@ class AccountBalanceCard extends Component<Props> {
         <Box flow={20}>
           <Box horizontal flow={10} align="center">
             <Text bold header>
-              <CurrencyAccountValue
-                account={account}
-                value={account.balance}
-                erc20Format={account.account_type === "ERC20"}
-              />
+              <CurrencyAccountValue account={account} value={account.balance} />
             </Text>
             <Text small>
               <CounterValue

@@ -29,7 +29,6 @@ class TxAmount extends PureComponent<{
             account={account}
             value={transaction.amount}
             type={transaction.type}
-            erc20Format={account.account_type === "ERC20"}
           />
         </Text>
         <CounterValue

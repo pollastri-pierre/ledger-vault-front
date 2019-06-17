@@ -41,11 +41,7 @@ class AccountBodyCell extends PureComponent<CellProps> {
         );
       case "balance":
         return (
-          <CurrencyAccountValue
-            account={account}
-            value={account.balance}
-            erc20Format={account.account_type === "erc20"}
-          />
+          <CurrencyAccountValue account={account} value={account.balance} />
         );
       case "date":
         return <DateFormat date={account.created_on} />;

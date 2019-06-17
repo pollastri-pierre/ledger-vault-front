@@ -31,11 +31,7 @@ const Rows = ({ account }: { account: Account }) => (
       <AccountName account={account} />
     </LineRow>
     <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
-      <CurrencyAccountValue
-        account={account}
-        value={account.balance}
-        erc20Format={account.account_type === "ERC20"}
-      />
+      <CurrencyAccountValue account={account} value={account.balance} />
     </LineRow>
   </div>
 );

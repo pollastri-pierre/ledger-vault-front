@@ -46,7 +46,11 @@ export const listCryptoCurrencies: boolean => CryptoCurrency[] = memoize(
 );
 
 export const listERC20Tokens: () => ERC20Token[] = memoize((): ERC20Token[] =>
-  sortBy(rawERC20List.filter(t => !!t.signature), "name"),
+  sortBy(
+    // TODO TODO TODO  remove t.hsm_account_parameters when backend ready
+    rawERC20List.filter(t => !!t.signature || !!t.hsm_account_parameters),
+    "name",
+  ),
 );
 
 export const isERC20Token = (v: ?ERC20Token | ?CryptoCurrency) =>
