@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import TransactionStatus from "components/TransactionStatus";
 import Copy from "components/base/Copy";
 import Box from "components/base/Box";
+import NextRequestButton from "components/NextRequestButton";
 import type { Transaction, Account } from "data/types";
 import LineRow from "../LineRow";
 import AccountName from "../AccountName";
@@ -49,7 +50,13 @@ class TabOverview extends Component<Props> {
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.status" />}
           >
-            <TransactionStatus transaction={transaction} />
+            <Box flow={10} horizontal>
+              <TransactionStatus transaction={transaction} />
+              {transaction.status === "APPROVED" &&
+                transaction.last_request && (
+                  <NextRequestButton request={transaction.last_request} />
+                )}
+            </Box>
           </LineRow>
 
           <LineRow
