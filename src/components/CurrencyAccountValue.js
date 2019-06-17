@@ -23,12 +23,13 @@ class CurrencyAccountValue extends Component<{
   alwaysShowSign?: boolean,
   // override the rate to use (default is the account.currentRate)
   type?: TransactionType,
-  erc20Format?: boolean,
+  disableERC20?: boolean,
 }> {
   render() {
-    const { account, value, type, erc20Format, ...rest } = this.props;
+    const { account, value, type, disableERC20, ...rest } = this.props;
     let unitValue;
-    if (erc20Format) {
+    const isERC20 = account.account_type === "ERC20";
+    if (isERC20 && !disableERC20) {
       const token = getERC20TokenByContractAddress(account.contract_address);
       unitValue = { value, unit: getCurrencyLikeUnit(token) };
     } else {

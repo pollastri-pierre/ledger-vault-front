@@ -22,7 +22,6 @@ class TaskAmount extends PureComponent<{
             alwaysShowSign
             account={account}
             value={task.transaction.price.amount}
-            erc20Format={account.account_type === "ERC20"}
           />
         </Text>
       </Box>

@@ -85,7 +85,7 @@ class TabOverview extends Component<Props> {
             </LineRow>
           )}
           <LineRow label={<Trans i18nKey="transactionDetails:overview.fees" />}>
-            <Amount account={account} value={transaction.fees} />
+            <Amount disableERC20 account={account} value={transaction.fees} />
           </LineRow>
           <LineRow
             label={<Trans i18nKey="transactionDetails:overview.total" />}
@@ -94,7 +94,6 @@ class TabOverview extends Component<Props> {
               account={account}
               value={transaction.amount || transaction.price.amount}
               strong
-              erc20Format={account.account_type === "ERC20"}
             />
           </LineRow>
         </div>
