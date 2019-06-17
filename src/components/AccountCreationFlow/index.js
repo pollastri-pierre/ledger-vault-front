@@ -263,6 +263,8 @@ export function serializePayload(
       address: token.contract_address,
       decimals: token.decimals,
       signature: token.signature || "",
+      // TODO TODO TODO remove hsm_account_parameters when backend ready
+      hsm_account_parameters: token.hsm_account_parameters || null,
     };
     Object.assign(data, {
       currency: { name: currencyName },

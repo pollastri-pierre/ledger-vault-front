@@ -366,6 +366,11 @@ export type ERC20Token = {
   name: string,
   ticker: string,
   signature: string,
+  hsm_account_parameters?: {
+    unique_id: string,
+    parameters: string,
+    psd_parameters: string,
+  },
 };
 
 export type RequestStatus =
