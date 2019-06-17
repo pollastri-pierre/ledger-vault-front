@@ -152,7 +152,7 @@ const RenderError = ({ error, restlay }: *) => (
 const RenderLoading = () => (
   <VaultCentered>
     <Card align="center" justify="center" height={350}>
-      Setting up workspace...
+      {"..."}
     </Card>
   </VaultCentered>
 );

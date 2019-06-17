@@ -195,6 +195,18 @@ export const executeQueryOrMutation =
     const promise = ctx
       .network(uri, method, body, undefined, queryOrMutation.fetchParams)
       .then(data => {
+        // FIXME FIXME FIXME prevent extremely weird and wicked behaviour
+        // of the gate, which send onboarding data instead of any other
+        // data if the onboarding is not finished.
+        //
+        // if we are in that case, it's because we have not onboarded
+        // AND we have an auth token in local storage, so we get rid
+        // of it in the mean time.
+        if ("is_editable" in data && "state" in data && "step" in data) {
+          dispatch(logout());
+          return;
+        }
+
         let result;
 
         // ability to deserialize query results
