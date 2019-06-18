@@ -133,9 +133,6 @@ class MockDevices extends PureComponent {
       this.setState({ deviceId: id });
       if (this.state.autoLogout) {
         await this.props.logout();
-        setTimeout(() => {
-          document.getElementsByTagName("button")[0].click();
-        }, 500);
       }
     } catch (e) {
       console.warn(e);
