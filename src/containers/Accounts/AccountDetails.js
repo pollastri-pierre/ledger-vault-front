@@ -12,7 +12,7 @@ import { withMe } from "components/UserContextProvider";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import AccountSettings from "containers/Accounts/AccountSettings";
-import AccountHistory from "containers/Admin/Accounts/AccountHistory";
+import { FetchEntityHistory } from "components/EntityHistory";
 import EntityModal from "components/EntityModal";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Account, User, Transaction } from "data/types";
@@ -46,7 +46,11 @@ function AccountDetails(props: Props) {
       />
       <AccountTransactionRules key="transactionRules" account={account} />
       {me.role === "ADMIN" && (
-        <AccountHistory key="history" account={account} />
+        <FetchEntityHistory
+          key="history"
+          url={`/accounts/${account.id}/history`}
+          entityType="account"
+        />
       )}
       <AccountSettings key="settings" account={account} />
     </EntityModal>

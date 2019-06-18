@@ -18,13 +18,6 @@ const Account = create("accounts", {
 
 const Request = create("requests");
 
-const HistorySlice = create(
-  "HistorySlices",
-  {},
-  // FIXME we don't have any id
-  "created_on",
-);
-
 const Activity = create(
   "activities",
   {
@@ -54,7 +47,6 @@ export default {
   User,
   Request,
   Currency,
-  HistorySlice,
   Account,
   Transaction,
   Fiat,
