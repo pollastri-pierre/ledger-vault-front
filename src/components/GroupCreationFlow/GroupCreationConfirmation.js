@@ -4,6 +4,7 @@ import { Trans } from "react-i18next";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import LineRow from "components/LineRow";
+import ListGroupMembers from "components/ListGroupMembers";
 import { hasEditOccured, onlyDescriptionChanged } from "./utils";
 
 import type { GroupCreationStepProps } from "./types";
@@ -32,7 +33,9 @@ class GroupCreationConfirmation extends PureComponent<Props> {
             data-test="group_member"
             label={<Trans i18nKey="group:create.nb_members" />}
           >
-            {payload.members.length}
+            <div style={{ width: 400 }}>
+              <ListGroupMembers users={payload.members} allUsers={[]} />
+            </div>
           </LineRow>
         </Box>
         {!hasEditOccured(payload, initialPayload) ? (

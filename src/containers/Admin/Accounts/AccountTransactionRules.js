@@ -33,7 +33,7 @@ const AccountTransactionRules = ({
 
 const RenderLoading = () => (
   <Box align="center">
-    <CircularProgress size={20} />;
+    <CircularProgress size={20} />
   </Box>
 );
 export default connectData(AccountTransactionRules, {

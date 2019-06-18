@@ -14,7 +14,7 @@ export const usersTableDefault = [
   },
   {
     header: {
-      label: "Role",
+      label: "User role",
       align: "left",
       sortable: false,
     },

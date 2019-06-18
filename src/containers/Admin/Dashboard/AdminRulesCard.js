@@ -35,7 +35,7 @@ const AdminRulesCard = (props: Props) => {
   return (
     <Card width={400} style={{ minHeight: 300 }}>
       <CardTitle noMargin>
-        <Text i18nKey="adminDashboard:adminRule"></Text>
+        <Text i18nKey="adminDashboard:adminRule" />
       </CardTitle>
       <CardDesc i18nKey="adminDashboard:adminRuleDesc" />
       <Box flow={20} grow>

@@ -33,9 +33,12 @@ function AccountsFilters(props: FieldsGroupProps) {
         placeholder={t("common:accountStatus")}
       />
       <FieldCurrency />
-      <FieldText title="Name" queryKey="name" placeholder="Name" />
       <FieldAccountType />
-      <FieldText title="Account ID" queryKey="id" placeholder="Account ID" />
+      <FieldText
+        title="Account name"
+        queryKey="name"
+        placeholder="Account name"
+      />
     </FiltersCard>
   );
 }

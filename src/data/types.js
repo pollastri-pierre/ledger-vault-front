@@ -244,7 +244,11 @@ export type RawTransactionETH = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
-export type TransactionStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
+export type TransactionStatus =
+  | "SUBMITTED"
+  | "ABORTED"
+  | "PENDING_APPROVAL"
+  | "BLOCKED";
 
 export type UserStatus =
   | "ACTIVE"

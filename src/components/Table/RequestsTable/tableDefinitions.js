@@ -16,10 +16,10 @@ export const requestsTableDefault = [
     header: {
       label: "Activity",
       align: "left",
-      sortable: false,
+      sortable: true,
     },
     body: {
-      prop: "activity",
+      prop: "type",
       align: "left",
     },
   },
