@@ -37,7 +37,7 @@ class Wrapper extends React.Component {
         },
         {
           key: "tasks",
-          label: "Admin tasks",
+          label: "All requests",
           Icon: FaList,
           isActive: true,
           onClick: this.onClick("tasks"),

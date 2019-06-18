@@ -57,7 +57,7 @@ const breadcrumbConfig = [
     ),
     children: [
       { path: "/:role/dashboard*", render: "Dashboard", exact: true },
-      { path: "/:role/tasks*", render: "Admin tasks", exact: true },
+      { path: "/:role/tasks*", render: "All requests", exact: true },
       { path: "/:role/groups*", render: "Groups", exact: true },
       { path: "/:role/users*", render: "Users", exact: true },
       {

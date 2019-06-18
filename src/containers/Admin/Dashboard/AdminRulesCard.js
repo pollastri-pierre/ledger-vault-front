@@ -34,8 +34,10 @@ const AdminRulesCard = (props: Props) => {
     !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
   return (
     <Card width={400} style={{ minHeight: 300 }}>
-      <CardTitle noMargin>Admin rules</CardTitle>
-      <CardDesc i18nKey="adminDashboard:editAdminRules" />
+      <CardTitle noMargin>
+        <Text i18nKey="adminDashboard:adminRule"></Text>
+      </CardTitle>
+      <CardDesc i18nKey="adminDashboard:adminRuleDesc" />
       <Box flow={20} grow>
         <Box grow align="center" justify="center">
           <Text large>
