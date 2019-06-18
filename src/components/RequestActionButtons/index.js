@@ -80,7 +80,10 @@ class RequestActionButtons extends PureComponent<Props> {
                 interactions={approveFlow}
                 onSuccess={onSuccess}
                 onError={onError}
-                additionalFields={{ request_id: lastRequest.id }}
+                additionalFields={{
+                  request_id: lastRequest.id,
+                  targetType: lastRequest.target_type,
+                }}
                 disabled={false}
                 buttonLabel={
                   <Trans i18nKey={`request:approve.${lastRequest.type}`} />
