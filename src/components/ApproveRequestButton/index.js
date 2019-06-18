@@ -91,6 +91,7 @@ class ApproveRequestButton extends PureComponent<Props, State> {
             <DeviceInteraction
               light
               interactions={interactions}
+              noCheckVersion
               onSuccess={onSuccess}
               onError={this.onError}
               additionalFields={additionalFields}

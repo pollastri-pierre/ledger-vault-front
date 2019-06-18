@@ -64,6 +64,12 @@ export default function Login(props: Props) {
             interactions={loginFlow}
             onError={setError}
             onSuccess={onSuccess}
+            noCheckVersion
+            additionalFields={{
+              organization: {
+                workspace: getDomainFromPath(match.path),
+              },
+            }}
           />
         ) : (
           "..."

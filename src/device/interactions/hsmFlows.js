@@ -9,6 +9,7 @@ import {
   ACCOUNT_MANAGER_SESSION,
   CONFIDENTIALITY_PATH,
   VALIDATION_PATH,
+  MATCHER_SESSION,
 } from "device";
 import {
   register,
@@ -235,7 +236,7 @@ export const onboardingRegisterFlow = [
 const openSessionValidate: Interaction = {
   device: true,
   responseKey: "channel_blob",
-  action: async ({ transport, secure_channels, u2f_key }) => {
+  action: async ({ transport, secure_channels, u2f_key, targetType }) => {
     const channel =
       secure_channels[u2f_key.pubKey.toString("hex").toUpperCase()];
     if (!channel) {
@@ -258,12 +259,18 @@ const openSessionValidate: Interaction = {
         Buffer.from([certificate.length]),
         certificate,
       ]);
+      const TransactionTargetsType = [
+        "BITCOIN_LIKE_TRANSACTION",
+        "ETHEREUM_LIKE_TRANSACTION",
+      ];
       return openSession()(
         transport,
         CONFIDENTIALITY_PATH,
         Buffer.from(channel.ephemeral_public_key, "hex"),
         certif,
-        ACCOUNT_MANAGER_SESSION,
+        targetType && TransactionTargetsType.indexOf(targetType) > -1
+          ? MATCHER_SESSION
+          : ACCOUNT_MANAGER_SESSION,
       );
     });
 
