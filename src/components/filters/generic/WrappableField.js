@@ -119,16 +119,21 @@ class WrappableField extends Component<Props, State> {
     } = this.props;
     const { isOpened, pos } = this.state;
 
+    const renderChildren = () =>
+      typeof children === "function"
+        ? children({ toggle: this.toggle })
+        : children;
+
     const inner =
       isOpened && inPlace ? (
-        <div style={{ width: 250 }}>{children}</div>
+        <div style={{ width: 250 }}>{renderChildren()}</div>
       ) : (
         <InlineLabel
           onClick={this.toggle}
           isOpened={isOpened}
           isActive={isActive}
         >
-          <Text bold={isActive}>
+          <Text bold={isActive} noWrap>
             {label}
             {isActive ? ": " : ""}
           </Text>
@@ -144,7 +149,7 @@ class WrappableField extends Component<Props, State> {
         {inner}
         {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
-            {children}
+            {renderChildren()}
           </Menu>
         )}
       </Box>

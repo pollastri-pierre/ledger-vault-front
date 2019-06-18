@@ -377,6 +377,8 @@ export type ERC20Token = {
   },
 };
 
+export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";
+
 export type RequestStatus =
   | "ABORTED"
   | "PENDING_APPROVAL"
