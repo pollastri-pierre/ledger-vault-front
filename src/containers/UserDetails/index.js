@@ -25,7 +25,7 @@ function UserDetails(props: Props) {
   const { user, close } = props;
   const revokeButton = (
     <ApproveRequestButton
-      interactions={createAndApprove}
+      interactions={createAndApprove("PERSON")}
       onSuccess={close}
       color={colors.grenade}
       isRevoke

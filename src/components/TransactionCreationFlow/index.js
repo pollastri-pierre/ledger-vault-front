@@ -78,7 +78,7 @@ const steps = [
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
-          interactions={createAndApprove}
+          interactions={createAndApprove("TRANSACTION")}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();

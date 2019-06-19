@@ -1,9 +1,12 @@
 // @flow
+import React from "react";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+
 import network, { retryOnCondition } from "network";
 import { APPID_VAULT_ADMINISTRATOR } from "device";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
+import Text from "components/base/Text";
 import type { Organization } from "data/types";
 import type { DeviceError } from "utils/errors";
 import { getU2FPublicKey } from "device/interactions/common";
@@ -20,6 +23,7 @@ export const getU2FChallenge: Interaction = {
 export const u2fAuthenticate: Interaction = {
   needsUserInput: true,
   device: true,
+  tooltip: <Text small i18nKey="deviceInteractions:u2f_authenticate" />,
   responseKey: "u2f_authenticate",
   action: ({
     transport,

@@ -67,8 +67,8 @@ const steps = [
         <ApproveRequestButton
           interactions={
             isEditMode && payload.description !== initialPayload.description
-              ? [editDescriptionMutation, ...createAndApprove]
-              : createAndApprove
+              ? [editDescriptionMutation, ...createAndApprove("GROUP")]
+              : createAndApprove("GROUP")
           }
           onSuccess={() => {
             onClose();

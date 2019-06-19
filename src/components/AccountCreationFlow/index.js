@@ -94,7 +94,7 @@ const steps = [
       const isMigrated = payload.accountStatus === "MIGRATED";
       return (
         <ApproveRequestButton
-          interactions={createAndApprove}
+          interactions={createAndApprove("ACCOUNT")}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();

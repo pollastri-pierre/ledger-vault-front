@@ -225,10 +225,9 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
           error={error}
         />
         <RightIcon type={currentActionType} />
-        {tooltip && <Tooltip>{tooltip}</Tooltip>}
         {needsUserInput && (
           <Tooltip right>
-            <Text small i18nKey="common:approve_device" />
+            {tooltip || <Text small i18nKey="common:approve_device" />}
           </Tooltip>
         )}
       </Container>

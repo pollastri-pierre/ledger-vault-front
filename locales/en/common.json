@@ -28,7 +28,7 @@
   "requestActivity": "Request Activity",
   "clickToEdit": "Click to edit",
   "plug_device": "Please connect your device and open the vault application.",
-  "approve_device": "Verify the transaction on your device",
+  "approve_device": "Verify the information on your device",
   "role": {
     "ADMIN": "Administrator",
     "OPERATOR": "Operator"
