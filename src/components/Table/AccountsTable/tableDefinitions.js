@@ -3,7 +3,7 @@
 export const accountsTableDefault = [
   {
     header: {
-      label: "Name",
+      label: "Account name",
       align: "left",
       sortable: true,
     },

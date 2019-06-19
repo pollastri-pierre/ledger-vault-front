@@ -1,7 +1,7 @@
 {
   "admin": {
     "dashboard": "Dashboard",
-    "tasks": "Admin Tasks",
+    "tasks": "All requests",
     "groups": "Groups",
     "users": "Users",
     "accounts": "Accounts",

@@ -10,7 +10,6 @@ import { SortableContainer, arrayMove } from "react-sortable-hoc";
 import type { User, Group } from "data/types";
 
 import Box from "components/base/Box";
-import Disabled from "components/Disabled";
 import Text from "components/base/Text";
 import Rule from "./ApprovalsRule";
 import StepBall from "./StepBall";
@@ -133,15 +132,13 @@ class ApprovalsRules extends PureComponent<Props> {
     );
 
     return (
-      <Disabled disabled={readOnly} customOpacity={0.8}>
-        <Box horizontal style={styles.container}>
-          {stepsLine}
-          <Box grow pt={50}>
-            {rulesList}
-            {footer}
-          </Box>
+      <Box horizontal style={styles.container}>
+        {stepsLine}
+        <Box grow pt={50}>
+          {rulesList}
+          {footer}
         </Box>
-      </Disabled>
+      </Box>
     );
   }
 }

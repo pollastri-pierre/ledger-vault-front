@@ -28,7 +28,7 @@ const FilterFieldAccountType = (props: FieldProps) => {
 
   return (
     <WrappableField
-      label="Account type"
+      label="Cryptocurrency family"
       isActive={!!value}
       closeOnChange={value}
       RenderCollapsed={() => (value ? <Text>{value.value}</Text> : null)}

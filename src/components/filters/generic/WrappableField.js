@@ -133,7 +133,9 @@ class WrappableField extends Component<Props, State> {
             {isActive ? ": " : ""}
           </Text>
           {isActive && RenderCollapsed && <RenderCollapsed />}
-          <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          <div style={styles.noShrink}>
+            <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          </div>
         </InlineLabel>
       );
 
@@ -204,6 +206,15 @@ const Menu = styled(Box).attrs({
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
   z-index: 20;
 `;
+
+const styles = {
+  noShrink: {
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
 
 export const WrappableFieldLoading = () => (
   <InlineLabel interactive={false}>Loading...</InlineLabel>

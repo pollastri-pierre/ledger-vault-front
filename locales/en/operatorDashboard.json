@@ -1,18 +1,6 @@
 {
-  "myRequestsTitle": "Operator tasks awaiting approval",
-  "myRequestsDesc": "Tasks that require an action from me",
-  "otherRequestsTitle": "All other operator tasks",
-  "otherRequestsDesc": "Tasks that do not require an action from me",
-  "tasks": {
-    "header": "Tasks assigned to you"
-  },
-  "transactions": {
-    "header": "Last Transactions"
-  },
-  "statistics": {
-    "header": "My Statistics"
-  },
-  "activity": {
-    "header": "Last Activity"
-  }
+  "myRequestsTitle": "Transactions awaiting approval",
+  "myRequestsDesc": "Transactions that require an action from me",
+  "otherRequestsTitle": "All other transactions",
+  "otherRequestsDesc": "Transactions that do not require an action from me"
 }

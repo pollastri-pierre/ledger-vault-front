@@ -143,7 +143,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
       <div style={styles.paddedBotForDrag}>
         <RuleContainer isInvalid={isInvalid}>
           <Box horizontal position="relative" align="flex-start">
-            {grip}
+            {!readOnly && grip}
             {stepBall}
             <NumberChooser
               style={styles.fixedHeight}
