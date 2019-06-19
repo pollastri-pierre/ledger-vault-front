@@ -13,7 +13,7 @@ import Text from "components/base/Text";
 
 const Update = () => (
   <Box p={30} flow={20} width={500}>
-    <Text uppercase i18nKey="update:title"></Text>
+    <Text uppercase i18nKey="update:title" />
     <InfoBox type="error" withIcon>
       <Trans i18nKey="update:infobox" />
     </InfoBox>
