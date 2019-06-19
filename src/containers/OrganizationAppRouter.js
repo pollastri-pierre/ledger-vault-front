@@ -31,13 +31,16 @@ const OrganizationAppRouter = () => (
       <>
         <AlertsContainer />
         <Switch>
-          <ModalRoute path="/update-app" component={UpdateApp} />
           <Route
             path="/:orga_name"
             render={({ match, history }) => (
               <>
                 <Switch>
                   <Route path={`${match.url}/login`} render={LoginComponent} />
+                  <ModalRoute
+                    path={`${match.url}/update-app`}
+                    component={UpdateApp}
+                  />
                   <Route
                     path={`${match.url}/onboarding`}
                     render={() => (
