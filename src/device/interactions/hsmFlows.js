@@ -1,5 +1,7 @@
 // @flow
+import React from "react";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+
 import { NoChannelForDevice } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
 import GetAddressQuery from "api/queries/GetAddressQuery";
@@ -28,7 +30,12 @@ import ApproveRequestMutation from "api/mutations/ApproveRequestMutation";
 import RegisterUserMutation from "api/mutations/RegisterUserMutation";
 import RequestsQuery from "api/queries/RequestsQuery";
 import type { Interaction } from "components/DeviceInteraction";
+import type { RequestTargetType } from "data/types";
+import Text from "components/base/Text";
 import type { DeviceError } from "utils/errors";
+
+type CustomTargetType = "ACCOUNT" | "TRANSACTION" | "ADDRESS";
+type TargetType = RequestTargetType | CustomTargetType;
 
 export const postResult: Interaction = {
   needsUserInput: false,
@@ -314,10 +321,13 @@ const openSessionVerifyAddress: Interaction = {
   },
 };
 
-const validateDevice: Interaction = {
+const validateDevice = (entity: ?TargetType): Interaction => ({
   device: true,
   needsUserInput: true,
   responseKey: "validate_device",
+  tooltip: entity ? (
+    <Text small i18nKey={`deviceInteractions:${entity}`} />
+  ) : null,
   action: ({ transport, channel_blob }) => {
     return retryOnCondition(
       () =>
@@ -333,18 +343,18 @@ const validateDevice: Interaction = {
       },
     );
   },
-};
+});
 
-export const validateOperation = [
+export const validateOperation = (entity: TargetType) => [
   getU2FPublicKey,
   openSessionValidate,
-  validateDevice,
+  validateDevice(entity),
 ];
 
 export const validateAdddress = [
   getU2FPublicKey,
   openSessionVerifyAddress,
-  validateDevice,
+  validateDevice("ADDRESS"),
 ];
 
 const getSecureChannel: Interaction = {
@@ -383,18 +393,21 @@ const postRequest: Interaction = {
       .commitMutation(new NewRequestMutation({ type, ...data }))
       .then(request => request.id),
 };
-export const approveFlow = [
+export const approveFlow = (entity: TargetType) => [
   getSecureChannel,
-  ...validateOperation,
+  ...validateOperation(entity),
   postApproval,
   refetchPending,
 ];
 export const verifyAddressFlow = [getAddress, ...validateAdddress];
-export const createAndApprove = [postRequest, ...approveFlow];
+export const createAndApprove = (entity: TargetType) => [
+  postRequest,
+  ...approveFlow(entity),
+];
 
 export const generateSeed = [
   getU2FPublicKey,
   openSessionValidate,
-  validateDevice,
+  validateDevice(),
   generateFragmentSeed,
 ];

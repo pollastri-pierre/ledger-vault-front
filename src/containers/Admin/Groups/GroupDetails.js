@@ -32,7 +32,7 @@ function GroupDetails(props: Props) {
   const { close, group, operators } = props;
   const revokeButton = (
     <ApproveRequestButton
-      interactions={createAndApprove}
+      interactions={createAndApprove("GROUP")}
       onSuccess={close}
       color={colors.grenade}
       isRevoke

@@ -40,7 +40,7 @@ function EditAdminRules(props: Props) {
       <RichModalFooter>
         <Box align="flex-end" grow={1}>
           <ApproveRequestButton
-            interactions={createAndApprove}
+            interactions={createAndApprove("ORGANIZATION")}
             disabled={quorum === organization.quorum}
             additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
             onSuccess={close}

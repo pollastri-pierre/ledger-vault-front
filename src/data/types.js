@@ -396,7 +396,7 @@ export type RequestActivityType =
   | "MIGRATE_ACCOUNT"
   | "UPDATE_QUORUM";
 
-type RequestTargetType =
+export type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
