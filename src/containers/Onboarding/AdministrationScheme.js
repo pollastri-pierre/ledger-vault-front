@@ -49,7 +49,12 @@ const AdministrationScheme = ({
       <Introduction>
         {t("onboarding:administrators_scheme.description")}
       </Introduction>
-      <ApprovalSlider number={number} total={total} onChange={onChange} />
+      <ApprovalSlider
+        number={number}
+        total={total}
+        onChange={onChange}
+        max={total - 1}
+      />
     </div>
     <Footer
       nextState
