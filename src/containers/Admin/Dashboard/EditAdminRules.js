@@ -34,6 +34,7 @@ function EditAdminRules(props: Props) {
           number={quorum}
           total={organization.number_of_admins}
           onChange={setQuorum}
+          max={organization.number_of_admins - 1}
           min={2}
         />
       </Box>
