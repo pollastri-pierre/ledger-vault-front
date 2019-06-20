@@ -52,7 +52,7 @@ export function MessagesContainer(props: {
     );
   }
   if (error instanceof OutOfDateApp) {
-    history.push("/update-app");
+    history.push(`update-app`);
     return false;
   }
 

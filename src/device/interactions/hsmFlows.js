@@ -345,7 +345,7 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   },
 });
 
-export const validateOperation = (entity: TargetType) => [
+export const validateOperation = (entity: ?TargetType) => [
   getU2FPublicKey,
   openSessionValidate,
   validateDevice(entity),
