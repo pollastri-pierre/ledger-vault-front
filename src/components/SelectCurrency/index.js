@@ -2,9 +2,14 @@
 
 import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
+import { FixedSizeList as List } from "react-window";
+
 import { components } from "react-select";
-import { Trans, withTranslation } from "react-i18next";
-import type { OptionProps } from "react-select/src/types";
+import { withTranslation } from "react-i18next";
+import type {
+  OptionProps,
+  MenuListComponentProps,
+} from "react-select/src/types";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ERC20Token, Translate } from "data/types";
@@ -101,7 +106,7 @@ const fuse = new Fuse(fullOptions, fuseOptions);
 const fetchOptions = (inputValue: string) =>
   new Promise(resolve => {
     window.requestAnimationFrame(() => {
-      if (!inputValue) return resolve(currenciesOptions);
+      if (!inputValue) return resolve(fullOptions);
       const result = fuse.search(inputValue);
       resolve(result.slice(0, 10));
     });
@@ -186,27 +191,48 @@ const ValueComponent = (props: OptionProps) => (
     <GenericRow {...props} />
   </components.SingleValue>
 );
-const MenuComponent = (props: OptionProps) => (
-  <components.Menu {...props}>
-    {props.children}
-    {props.options === currenciesOptions && !props.hasValue && (
-      <Text small italic style={styles.erc20Hint}>
-        <Trans
-          i18nKey="newAccount:search.extraERC20"
-          values={{
-            erc20Count: erc20TokensOptions.length + currenciesOptions.length,
-          }}
-          components={<b>0</b>}
-        />
-      </Text>
-    )}
-  </components.Menu>
-);
+const WindowList = (props: MenuListComponentProps) => {
+  const height = 40;
+  const { options, children, maxHeight, getValue } = props;
+  const [value] = getValue();
+  const initialOffset = value
+    ? options.findIndex(o => o.label === value.label) * height
+    : 0; // FIXME should we avoid to match on label? (erc20 don't have id)
+
+  // el famoso Juan trick see: https://github.com/JedWatson/react-select/issues/3128#issuecomment-433834170
+  if (children && children.forEach) {
+    children.forEach(key => {
+      delete key.props.innerProps.onMouseMove;
+      delete key.props.innerProps.onMouseOver;
+    });
+  }
+  return (
+    <List
+      height={options.length < 8 ? options.length * height : maxHeight}
+      itemCount={options.length}
+      itemSize={height}
+      initialScrollOffset={initialOffset}
+      width="100%"
+      overscanCount={8}
+    >
+      {({ index, style }) => (
+        <div style={{ ...style, overflow: "hidden" }}>{children[index]}</div>
+      )}
+    </List>
+  );
+};
+const MenuList = (props: MenuListComponentProps) => {
+  return (
+    <components.MenuList {...props}>
+      <WindowList {...props} />
+    </components.MenuList>
+  );
+};
 
 const customComponents = {
+  MenuList,
   Option: OptionComponent,
   SingleValue: ValueComponent,
-  Menu: MenuComponent,
 };
 
 type CurrencyOrToken = CryptoCurrency | ERC20Token;
