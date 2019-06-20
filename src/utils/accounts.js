@@ -78,18 +78,13 @@ export const isSupportedAccount = (account: Account) => {
 // from full object to arrays of id
 export const deserializeApprovalSteps = (
   tx_approval_steps: TxApprovalStep[],
-): Array<?ApprovalsRule> => {
-  const rules = tx_approval_steps.map(rule =>
+): Array<?ApprovalsRule> =>
+  tx_approval_steps.map(rule =>
     rule
       ? {
           quorum: rule.quorum,
-          group_id: rule.group.status === "ACTIVE" ? rule.group.id : null,
-          users:
-            rule.group.status !== "ACTIVE"
-              ? rule.group.members.map(m => m.id)
-              : [],
+          group_id: rule.group.id || null,
+          users: rule.group.members.map(m => m.id),
         }
       : null,
   );
-  return rules;
-};
