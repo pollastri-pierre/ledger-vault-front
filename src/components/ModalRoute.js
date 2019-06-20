@@ -116,7 +116,7 @@ const modalsRoutes = [
   /(.*)\/details\/[0-9]+\/.+$/,
 ];
 
-const usePrevFirst = [/.*\/dashboard$/, /.*\/tasks$/];
+const usePrevFirst = [/.*\/dashboard$/, /.*\/tasks$/, /.*\/accounts\/view\/.*/];
 
 function getModalClosePath(p) {
   let match;
