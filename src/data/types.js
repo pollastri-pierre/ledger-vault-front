@@ -196,11 +196,11 @@ type NoteCommon = {
 };
 
 export type Note = NoteCommon & {
-  author: User,
+  created_by: User,
 };
 
 export type NoteEntity = NoteCommon & {
-  author: string,
+  created_by: string,
 };
 
 export type RawTransactionInput = {
