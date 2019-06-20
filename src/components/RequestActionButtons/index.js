@@ -38,6 +38,9 @@ class RequestActionButtons extends PureComponent<Props> {
     const userInCurrentStep = isUserInCurrentStep(lastRequest, me);
     const userApprovedCurrentStep = hasUserApprovedCurrentStep(lastRequest, me);
     const userApprovedRequest = hasUserApprovedRequest(lastRequest, me);
+    const isUserCreationRequest =
+      lastRequest.type === "CREATE_OPERATOR" ||
+      lastRequest.type === "CREATE_ADMIN";
 
     const isRequestBlocked = lastRequest.status === "BLOCKED";
     const isPendingRegistration = lastRequest.status === "PENDING_REGISTRATION";
@@ -63,7 +66,7 @@ class RequestActionButtons extends PureComponent<Props> {
             {checkedIcon}
             <Text bold>You already approved the request.</Text>
           </Box>
-        ) : userInCurrentStep ? (
+        ) : userInCurrentStep || isUserCreationRequest ? (
           <Box
             horizontal
             align="center"
@@ -77,10 +80,13 @@ class RequestActionButtons extends PureComponent<Props> {
             />
             {!isPendingRegistration && !userApprovedRequest && (
               <ApproveRequestButton
-                interactions={approveFlow}
+                interactions={approveFlow(lastRequest.target_type)}
                 onSuccess={onSuccess}
                 onError={onError}
-                additionalFields={{ request_id: lastRequest.id }}
+                additionalFields={{
+                  request_id: lastRequest.id,
+                  targetType: lastRequest.target_type,
+                }}
                 disabled={false}
                 buttonLabel={
                   <Trans i18nKey={`request:approve.${lastRequest.type}`} />

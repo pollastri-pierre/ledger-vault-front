@@ -119,21 +119,28 @@ class WrappableField extends Component<Props, State> {
     } = this.props;
     const { isOpened, pos } = this.state;
 
+    const renderChildren = () =>
+      typeof children === "function"
+        ? children({ toggle: this.toggle })
+        : children;
+
     const inner =
       isOpened && inPlace ? (
-        <div style={{ width: 250 }}>{children}</div>
+        <div style={{ width: 250 }}>{renderChildren()}</div>
       ) : (
         <InlineLabel
           onClick={this.toggle}
           isOpened={isOpened}
           isActive={isActive}
         >
-          <Text bold={isActive}>
+          <Text bold={isActive} noWrap>
             {label}
             {isActive ? ": " : ""}
           </Text>
           {isActive && RenderCollapsed && <RenderCollapsed />}
-          <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          <div style={styles.noShrink}>
+            <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          </div>
         </InlineLabel>
       );
 
@@ -142,7 +149,7 @@ class WrappableField extends Component<Props, State> {
         {inner}
         {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
-            {children}
+            {renderChildren()}
           </Menu>
         )}
       </Box>
@@ -204,6 +211,15 @@ const Menu = styled(Box).attrs({
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
   z-index: 20;
 `;
+
+const styles = {
+  noShrink: {
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
 
 export const WrappableFieldLoading = () => (
   <InlineLabel interactive={false}>Loading...</InlineLabel>

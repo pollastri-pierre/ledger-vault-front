@@ -244,7 +244,11 @@ export type RawTransactionETH = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
-export type TransactionStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
+export type TransactionStatus =
+  | "SUBMITTED"
+  | "ABORTED"
+  | "PENDING_APPROVAL"
+  | "BLOCKED";
 
 export type UserStatus =
   | "ACTIVE"
@@ -366,7 +370,14 @@ export type ERC20Token = {
   name: string,
   ticker: string,
   signature: string,
+  hsm_account_parameters?: {
+    unique_id: string,
+    parameters: string,
+    psd_parameters: string,
+  },
 };
+
+export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";
 
 export type RequestStatus =
   | "ABORTED"
@@ -387,7 +398,7 @@ export type RequestActivityType =
   | "MIGRATE_ACCOUNT"
   | "UPDATE_QUORUM";
 
-type RequestTargetType =
+export type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"

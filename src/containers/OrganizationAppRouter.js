@@ -8,6 +8,7 @@ import UpdateApp from "components/UpdateApp";
 import MockDevices from "components/MockDevices";
 import GlobalStyle from "components/GlobalStyle";
 import Welcome from "./Welcome";
+import Login from "./Login";
 
 import App from "./App/App";
 import Logout from "./Login/Logout";
@@ -21,6 +22,7 @@ const { PollingProvider } = counterValues;
 // react-router Router component to complain that it doesnt receive
 // a function but an object
 const WelcomeComponent = p => <Welcome {...p} />;
+const LoginComponent = p => <Login {...p} />;
 
 const OrganizationAppRouter = () => (
   <>
@@ -29,21 +31,15 @@ const OrganizationAppRouter = () => (
       <>
         <AlertsContainer />
         <Switch>
-          <ModalRoute path="/update-app" component={UpdateApp} />
           <Route
             path="/:orga_name"
-            render={({ match, history, location }) => (
+            render={({ match, history }) => (
               <>
                 <Switch>
-                  <Route
-                    path={`${match.url}/login`}
-                    render={() => (
-                      <Welcome
-                        match={match}
-                        location={location}
-                        history={history}
-                      />
-                    )}
+                  <Route path={`${match.url}/login`} render={LoginComponent} />
+                  <ModalRoute
+                    path={`${match.url}/update-app`}
+                    component={UpdateApp}
                   />
                   <Route
                     path={`${match.url}/onboarding`}

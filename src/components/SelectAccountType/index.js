@@ -29,7 +29,7 @@ const SelectAccountType = ({
     // $FlowFixMe wtf
     options={options}
     value={value}
-    placeholder="Account type"
+    placeholder="Cryptocurrency family"
     onChange={onChange}
     {...rest}
   />

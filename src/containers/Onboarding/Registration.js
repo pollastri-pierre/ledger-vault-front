@@ -6,8 +6,6 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Title, Introduction, AddUser, NoMembers } from "components/Onboarding";
 import DialogButton from "components/buttons/DialogButton";
-import InfoBox from "components/base/InfoBox";
-import Text from "components/base/Text";
 import Disabled from "components/Disabled";
 import { addMessage } from "redux/modules/alerts";
 import {
@@ -113,9 +111,6 @@ class Registration extends Component<Props, *> {
           </AddUser>
           <Introduction>
             {t("onboarding:administrators_registration.description")}
-            <InfoBox withIcon type="info" style={{ marginTop: 20 }}>
-              <Text i18nKey="onboarding:administrators_registration.description_strong" />
-            </InfoBox>
           </Introduction>
           {onboarding.registering.admins.length === 0 ? (
             <NoMembers

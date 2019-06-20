@@ -30,7 +30,7 @@ type Props = {
   value: BigNumber,
   dataTest: ?string,
   strong?: boolean,
-  erc20Format?: boolean,
+  disableERC20?: boolean,
   hideCountervalue?: boolean,
   classes: { [_: $Keys<typeof styles>]: string },
 };
@@ -42,11 +42,16 @@ class Amount extends Component<Props> {
       value,
       strong,
       dataTest,
-      erc20Format,
+      disableERC20,
       hideCountervalue,
     } = this.props;
 
-    const disableCountervalue = !!erc20Format;
+    const cvProps = {};
+    if (disableERC20) {
+      Object.assign(cvProps, { from: account.currency });
+    } else {
+      Object.assign(cvProps, { fromAccount: account });
+    }
 
     return (
       <Box horizontal align="center" flow={5}>
@@ -59,17 +64,13 @@ class Amount extends Component<Props> {
           <CurrencyAccountValue
             account={account}
             value={value}
-            erc20Format={erc20Format}
+            disableERC20={disableERC20}
           />
         </Text>
         {!hideCountervalue && (
           <Text small color={colors.steel} lineHeight={1}>
             {"("}
-            <CounterValue
-              value={value}
-              from={account.currency}
-              disableCountervalue={disableCountervalue}
-            />
+            <CounterValue value={value} {...cvProps} />
             {")"}
           </Text>
         )}

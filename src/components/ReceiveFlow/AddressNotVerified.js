@@ -68,6 +68,7 @@ class AddressNotVerified extends Component<Props, State> {
           <Box align="center">
             <DeviceInteraction
               interactions={verifyAddressFlow}
+              noCheckVersion
               additionalFields={{
                 accountId: selectedAccount.id,
                 fresh_address,

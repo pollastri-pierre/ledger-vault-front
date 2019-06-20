@@ -186,6 +186,7 @@ class FeesFieldEthereumKind extends PureComponent<
                 <CurrencyAccountValue
                   account={account}
                   value={transaction.estimatedFees}
+                  disableERC20
                 />
                 {" ("}
                 <CounterValue

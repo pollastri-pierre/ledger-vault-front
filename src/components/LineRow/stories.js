@@ -42,12 +42,7 @@ class Wrapper extends Component<*, State> {
           <AccountName account={account} />
         </LineRow>
         <LineRow label="Balance">
-          <Amount
-            account={account}
-            value={account.balance}
-            strong
-            erc20Format={account.account_type === "ERC20"}
-          />
+          <Amount account={account} value={account.balance} strong />
         </LineRow>
         <LineRow label="Date">
           <DateFormat date={account.created_on} />

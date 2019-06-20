@@ -320,8 +320,9 @@ export const authenticate = async (
   const maxLength = 150;
 
   const nameBuf = Buffer.from(name);
+  const workspaceBuf = Buffer.from(workspace);
+
   const roleBuf = fromStringRoleToBytes[role.toLowerCase()];
-  const workspaceBuf = Buffer.from(workspace, "hex");
 
   const bigChunk = Buffer.concat([
     roleBuf,

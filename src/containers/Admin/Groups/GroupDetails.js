@@ -11,7 +11,7 @@ import UsersQuery from "api/queries/UsersQuery";
 import EntityModal from "components/EntityModal";
 import GroupDetailsOverview from "containers/Admin/Groups/GroupDetailsOverview";
 import GroupDetailsAccounts from "containers/Admin/Groups/GroupDetailsAccounts";
-import GroupHistory from "containers/Admin/Groups/GroupHistory";
+import { FetchEntityHistory } from "components/EntityHistory";
 import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import { CardError } from "components/base/Card";
@@ -32,7 +32,7 @@ function GroupDetails(props: Props) {
   const { close, group, operators } = props;
   const revokeButton = (
     <ApproveRequestButton
-      interactions={createAndApprove}
+      interactions={createAndApprove("GROUP")}
       onSuccess={close}
       color={colors.grenade}
       isRevoke
@@ -68,7 +68,11 @@ function GroupDetails(props: Props) {
         close={close}
       />
       <GroupDetailsAccounts key="accounts" group={group} />
-      <GroupHistory key="history" group={group} />
+      <FetchEntityHistory
+        key="history"
+        url={`/groups/${group.id}/history`}
+        entityType="group"
+      />
     </EntityModal>
   );
 }

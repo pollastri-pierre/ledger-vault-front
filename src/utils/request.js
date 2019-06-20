@@ -18,13 +18,12 @@ export const hasUserApprovedCurrentStep = (request: Request, me: User) =>
       approval.step === request.current_step,
   ).length > 0;
 
-export const isUserInCurrentStep = (request: Request, _me: User) => {
+export const isUserInCurrentStep = (request: Request, me: User) => {
   try {
+    if (!request || !request.approvals_steps) return false;
     const currentStep = request.approvals_steps[request.current_step];
-    // TODO the day we want multi step approvals for admin, we will need
-    // a smarter way to determine if `me` is in current step. for now
-    // we assume if we got the step, the user is in it lol.
-    return !!currentStep;
+    if (!currentStep) return false;
+    return currentStep.group.members.some(m => m.id === me.id);
   } catch (err) {
     console.warn("Cant check if user is in current step", err);
     return false;

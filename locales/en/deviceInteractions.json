@@ -1,0 +1,14 @@
+{
+  "GROUP": "Verify the group on your device",
+  "BITCOIN_ACCOUNT": "Verify the account on your device",
+  "ETHEREUM_ACCOUNT": "Verify the account on your device",
+  "ERC20_ACCOUNT": "Verify the account on your device",
+  "ACCOUNT": "Verify the account on your device",
+  "BITCOIN_LIKE_TRANSACTION": "Verify the transaction on your device",
+  "ETHEREUM_LIKE_TRANSACTION": "Verify the transaction on your device",
+  "TRANSACTION": "Verify the transaction on your device",
+  "PERSON": "Verify the user on your device",
+  "ORGANIZATION": "Verify the admin rules on your device",
+  "u2f_authenticate": "Click sign-in on the device",
+  "ADDRESS": "Verify the address on the device"
+}

@@ -40,7 +40,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
         {status === "ACTIVE" && tabsIndex < 2 && !hasPendingRequest(group) && (
           <Box px={15} align="flex-start">
             <ApproveRequestButton
-              interactions={createAndApprove}
+              interactions={createAndApprove("GROUP")}
               onSuccess={this.onSuccess}
               color={colors.grenade}
               isRevoke

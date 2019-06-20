@@ -16,7 +16,7 @@
   "revokeWarning": {
     "title": "Are you sure you want to revoke this user?",
     "confirm": "Yes, revoke user",
-    "content": "The user won't have access to the platform anymore.",
-    "contentAdmin": "Additionally, it will block all pending requests."
+    "content": "The user will immediately lose access to the platform.",
+    "contentAdmin": "All pending requests will be blocked."
   }
 }

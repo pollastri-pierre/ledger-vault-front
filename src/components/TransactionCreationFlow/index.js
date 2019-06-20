@@ -45,9 +45,22 @@ const steps = [
     id: "note",
     name: <Trans i18nKey="transactionCreation:steps.note.title" />,
     Step: TransactionCreationNote,
-    requirements: (payload: TransactionCreationPayload<any>) => {
+    requirements: (
+      payload: TransactionCreationPayload<any>,
+      additionalProps,
+    ) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
+      if (account.account_type === "ERC20" && additionalProps) {
+        const parent = additionalProps.accounts.edges
+          .map(e => e.node)
+          .find(a => a.id === account.parent);
+        return bridge.checkValidTransactionSyncSync(
+          account,
+          transaction,
+          parent,
+        );
+      }
       return bridge.checkValidTransactionSyncSync(account, transaction);
     },
   },
@@ -65,7 +78,7 @@ const steps = [
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
-          interactions={createAndApprove}
+          interactions={createAndApprove("TRANSACTION")}
           onSuccess={data => {
             console.log(data); // eslint-disable-line no-console
             onClose();

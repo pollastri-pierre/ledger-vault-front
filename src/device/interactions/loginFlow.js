@@ -1,9 +1,12 @@
 // @flow
+import React from "react";
 import { StatusCodes } from "@ledgerhq/hw-transport";
+
 import network, { retryOnCondition } from "network";
 import { APPID_VAULT_ADMINISTRATOR } from "device";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
+import Text from "components/base/Text";
 import type { Organization } from "data/types";
 import type { DeviceError } from "utils/errors";
 import { getU2FPublicKey } from "device/interactions/common";
@@ -13,20 +16,19 @@ type Flow = Interaction[];
 export const getU2FChallenge: Interaction = {
   needsUserInput: false,
   responseKey: "u2f_challenge",
-  action: ({ u2f_key: { pubKey }, organization }) =>
-    network(
-      `${organization.workspace}/u2f/authentications/${pubKey}/challenge`,
-      "GET",
-    ),
+  action: ({ u2f_key: { pubKey } }) =>
+    network(`/u2f/authentications/${pubKey}/challenge`, "GET"),
 };
 
 export const u2fAuthenticate: Interaction = {
   needsUserInput: true,
   device: true,
+  tooltip: <Text small i18nKey="deviceInteractions:u2f_authenticate" />,
   responseKey: "u2f_authenticate",
   action: ({
     transport,
-    u2f_challenge: { token, key_handle, role, name, u2f_register_data },
+    u2f_challenge: { token, key_handle, role, name },
+    organization,
   }) =>
     retryOnCondition(
       () =>
@@ -37,7 +39,7 @@ export const u2fAuthenticate: Interaction = {
           Buffer.from(key_handle, "hex"),
           name,
           role,
-          u2f_register_data,
+          organization.workspace,
         ),
       {
         shouldThrow: (e: DeviceError) =>
@@ -49,9 +51,9 @@ export const u2fAuthenticate: Interaction = {
 
 export const postU2FSignature: Interaction = {
   responseKey: "u2f_sign",
-  action: ({ u2f_authenticate, organization, u2f_challenge: { token } }) =>
+  action: ({ u2f_authenticate, u2f_challenge: { token } }) =>
     network(
-      `${organization.workspace}/u2f/authentications/authenticate`,
+      `/u2f/authentications/authenticate`,
       "POST",
       {
         authentication: u2f_authenticate.rawResponse,

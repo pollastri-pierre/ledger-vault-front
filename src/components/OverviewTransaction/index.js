@@ -58,7 +58,6 @@ class OverviewTransaction extends Component<Props, *> {
   render() {
     const { amount, account, classes, transactionType } = this.props;
     const isReceive = transactionType === "RECEIVE";
-    const erc20Format = account.account_type === "ERC20";
     return (
       <div className={classes.base}>
         <div>
@@ -73,7 +72,6 @@ class OverviewTransaction extends Component<Props, *> {
                 value={amount}
                 alwaysShowSign
                 type={transactionType}
-                erc20Format={erc20Format}
               />
             </div>
           </div>

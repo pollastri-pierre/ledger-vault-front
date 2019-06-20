@@ -87,13 +87,14 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
     );
 
   canTransitionTo = (stepId: string) => {
-    const { steps } = this.props;
+    const { steps, additionalProps } = this.props;
     const { payload } = this.state;
     const cursor = steps.findIndex(s => s.id === stepId);
     if (cursor === -1) return false;
     for (let i = 0; i <= cursor; i++) {
       const step = steps[i];
-      if (step.requirements && !step.requirements(payload)) return false;
+      if (step.requirements && !step.requirements(payload, additionalProps))
+        return false;
     }
     return true;
   };

@@ -101,6 +101,7 @@ const SharedOwnerValidation = ({
                   onSuccess={onSuccess}
                   onError={onError}
                   interactions={validateOperation}
+                  noCheckVersion
                   additionalFields={{
                     secure_channels:
                       onboarding.validating_shared_owner.channels,

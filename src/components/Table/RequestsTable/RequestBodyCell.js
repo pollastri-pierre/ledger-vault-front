@@ -26,7 +26,7 @@ class RequestBodyCell extends PureComponent<CellProps> {
     switch (item.body.prop) {
       case "status":
         return <EntityStatus status={request.status} request={request} />;
-      case "activity":
+      case "type":
         return <RequestTitle type={request.type} />;
       case "created_on":
         return <DateFormat date={request.created_on} />;

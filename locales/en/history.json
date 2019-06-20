@@ -1,0 +1,34 @@
+{
+  "approveLabel": "<0>{{name}}</0> approved {{- quorum}} on {{date}}",
+  "abortLabel": "<0>{{name}}</0> rejected {{- quorum}} on {{date}}",
+  "title": {
+    "CREATE": {
+      "user": "User creation request",
+      "group": "Group creation request",
+      "account": "Account creation request",
+      "transaction": "Transaction creation request"
+    },
+    "EDIT": {
+      "user": "User edition request",
+      "group": "Group edition request",
+      "account": "Account edition request",
+      "transaction": "Transaction edition request"
+    },
+    "DELETE": {
+      "user": "User deletion request",
+      "group": "Group deletion request",
+      "account": "Account deletion request",
+      "transaction": "Transaction deletion request"
+    }
+  },
+  "stepType": {
+    "CREATED": "Created",
+    "APPROVED": "Approved",
+    "ABORTED": "Rejected",
+    "REVOKED": "Deleted",
+    "EDITED": "Edited",
+    "REGISTERED": "Registered",
+    "SUBMITTED": "Submitted",
+    "INVITED": "Invited"
+  }
+}

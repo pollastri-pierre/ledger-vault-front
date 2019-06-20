@@ -1,0 +1,381 @@
+[
+  [
+    {
+      "approvals": [
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:28.859073+00:00",
+            "id": 6,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+            "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "941b94d9f627eb84",
+            "username": "Admin 2"
+          },
+          "created_on": "2019-06-18T13:53:59.724025+00:00",
+          "request_id": 7,
+          "step": 0,
+          "type": "APPROVE"
+        },
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:27.945323+00:00",
+            "id": 5,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+            "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "2c68305cbefaf64d",
+            "username": "Admin 1"
+          },
+          "created_on": "2019-06-18T13:53:59.720457+00:00",
+          "request_id": 7,
+          "step": 0,
+          "type": "APPROVE"
+        }
+      ],
+      "approvals_steps": [
+        {
+          "group": {
+            "created_by": {
+              "created_on": "2019-06-18T07:45:01.602819+00:00",
+              "id": 1,
+              "key_handle": null,
+              "pub_key": null,
+              "role": "ADMIN_SYSTEM",
+              "status": "PENDING_REGISTRATION",
+              "user_id": null,
+              "username": "system admin"
+            },
+            "created_on": "2019-06-18T07:45:01.631919+00:00",
+            "description": "admins group",
+            "id": 1,
+            "members": [
+              {
+                "created_on": "2019-06-18T07:45:27.945323+00:00",
+                "id": 5,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "2c68305cbefaf64d",
+                "username": "Admin 1"
+              },
+              {
+                "created_on": "2019-06-18T07:45:28.859073+00:00",
+                "id": 6,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+                "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "941b94d9f627eb84",
+                "username": "Admin 2"
+              },
+              {
+                "created_on": "2019-06-18T07:45:29.689205+00:00",
+                "id": 7,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000fd8e55835646ec4b5da3aa8abf6f7c968eca8076906cd10829f70ffed5743fe0",
+                "pub_key": "047F2ACCB0B06F77F98D37B358062CA2E17E042C48EC3D58355A52CF086BFA27C7E80B18D18283537D595DC96438CAC1943AA5DFDBF6DB079BCD68EBD3D2D32670",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "55e876a61b9fea21",
+                "username": "Admin 3"
+              }
+            ],
+            "name": "__ADMINS_GROUP__",
+            "status": "GroupStatus.ACTIVE"
+          },
+          "quorum": 2
+        }
+      ],
+      "created_by": {
+        "created_on": "2019-06-18T07:45:27.945323+00:00",
+        "id": 5,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+        "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "2c68305cbefaf64d",
+        "username": "Admin 1"
+      },
+      "created_on": "2019-06-18T13:53:59.645842+00:00",
+      "current_step": 0,
+      "expired_at": "2019-06-25T13:53:59.634585+00:00",
+      "is_complete": true,
+      "status": "PENDING_APPROVAL",
+      "type": "CREATE_GROUP"
+    },
+    {
+      "created_by": {
+        "created_on": "2019-06-18T07:45:28.859073+00:00",
+        "id": 6,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+        "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "941b94d9f627eb84",
+        "username": "Admin 2"
+      },
+      "created_on": "2019-06-18T13:54:12.044225+00:00",
+      "expired_at": "2019-06-25T13:53:59.634585+00:00",
+      "is_complete": false,
+      "status": "APPROVED",
+      "type": "CREATE_GROUP"
+    }
+  ],
+  [
+    {
+      "approvals": [
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:27.945323+00:00",
+            "id": 5,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+            "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "2c68305cbefaf64d",
+            "username": "Admin 1"
+          },
+          "created_on": "2019-06-18T13:54:24.541750+00:00",
+          "request_id": 8,
+          "step": 0,
+          "type": "ABORT"
+        },
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:28.859073+00:00",
+            "id": 6,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+            "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "941b94d9f627eb84",
+            "username": "Admin 2"
+          },
+          "created_on": "2019-06-18T13:54:24.544430+00:00",
+          "request_id": 8,
+          "step": 0,
+          "type": "APPROVE"
+        }
+      ],
+      "approvals_steps": [
+        {
+          "group": {
+            "created_by": {
+              "created_on": "2019-06-18T07:45:01.602819+00:00",
+              "id": 1,
+              "key_handle": null,
+              "pub_key": null,
+              "role": "ADMIN_SYSTEM",
+              "status": "PENDING_REGISTRATION",
+              "user_id": null,
+              "username": "system admin"
+            },
+            "created_on": "2019-06-18T07:45:01.631919+00:00",
+            "description": "admins group",
+            "id": 1,
+            "members": [
+              {
+                "created_on": "2019-06-18T07:45:27.945323+00:00",
+                "id": 5,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "2c68305cbefaf64d",
+                "username": "Admin 1"
+              },
+              {
+                "created_on": "2019-06-18T07:45:28.859073+00:00",
+                "id": 6,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+                "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "941b94d9f627eb84",
+                "username": "Admin 2"
+              },
+              {
+                "created_on": "2019-06-18T07:45:29.689205+00:00",
+                "id": 7,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000fd8e55835646ec4b5da3aa8abf6f7c968eca8076906cd10829f70ffed5743fe0",
+                "pub_key": "047F2ACCB0B06F77F98D37B358062CA2E17E042C48EC3D58355A52CF086BFA27C7E80B18D18283537D595DC96438CAC1943AA5DFDBF6DB079BCD68EBD3D2D32670",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "55e876a61b9fea21",
+                "username": "Admin 3"
+              }
+            ],
+            "name": "__ADMINS_GROUP__",
+            "status": "GroupStatus.ACTIVE"
+          },
+          "quorum": 2
+        }
+      ],
+      "created_by": {
+        "created_on": "2019-06-18T07:45:28.859073+00:00",
+        "id": 6,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+        "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "941b94d9f627eb84",
+        "username": "Admin 2"
+      },
+      "created_on": "2019-06-18T13:54:24.512033+00:00",
+      "current_step": 0,
+      "edit_data": {
+        "members": [12],
+        "name": "group"
+      },
+      "expired_at": "2019-06-25T13:54:24.508192+00:00",
+      "is_complete": true,
+      "status": "PENDING_APPROVAL",
+      "type": "EDIT_GROUP"
+    },
+    {
+      "created_by": {
+        "created_on": "2019-06-18T07:45:27.945323+00:00",
+        "id": 5,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+        "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "2c68305cbefaf64d",
+        "username": "Admin 1"
+      },
+      "created_on": "2019-06-18T13:54:35.199082+00:00",
+      "expired_at": "2019-06-25T13:54:24.508192+00:00",
+      "is_complete": false,
+      "status": "ABORTED",
+      "type": "EDIT_GROUP"
+    }
+  ],
+  [
+    {
+      "approvals": [
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:28.859073+00:00",
+            "id": 6,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+            "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "941b94d9f627eb84",
+            "username": "Admin 2"
+          },
+          "created_on": "2019-06-18T13:54:41.118843+00:00",
+          "request_id": 9,
+          "step": 0,
+          "type": "APPROVE"
+        },
+        {
+          "created_by": {
+            "created_on": "2019-06-18T07:45:27.945323+00:00",
+            "id": 5,
+            "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+            "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+            "role": "ADMIN",
+            "status": "ACTIVE",
+            "user_id": "2c68305cbefaf64d",
+            "username": "Admin 1"
+          },
+          "created_on": "2019-06-18T13:54:41.112941+00:00",
+          "request_id": 9,
+          "step": 0,
+          "type": "APPROVE"
+        }
+      ],
+      "approvals_steps": [
+        {
+          "group": {
+            "created_by": {
+              "created_on": "2019-06-18T07:45:01.602819+00:00",
+              "id": 1,
+              "key_handle": null,
+              "pub_key": null,
+              "role": "ADMIN_SYSTEM",
+              "status": "PENDING_REGISTRATION",
+              "user_id": null,
+              "username": "system admin"
+            },
+            "created_on": "2019-06-18T07:45:01.631919+00:00",
+            "description": "admins group",
+            "id": 1,
+            "members": [
+              {
+                "created_on": "2019-06-18T07:45:27.945323+00:00",
+                "id": 5,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+                "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "2c68305cbefaf64d",
+                "username": "Admin 1"
+              },
+              {
+                "created_on": "2019-06-18T07:45:28.859073+00:00",
+                "id": 6,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+                "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "941b94d9f627eb84",
+                "username": "Admin 2"
+              },
+              {
+                "created_on": "2019-06-18T07:45:29.689205+00:00",
+                "id": 7,
+                "key_handle": "0000000000000000000000000000000000000000000000000000000000000000fd8e55835646ec4b5da3aa8abf6f7c968eca8076906cd10829f70ffed5743fe0",
+                "pub_key": "047F2ACCB0B06F77F98D37B358062CA2E17E042C48EC3D58355A52CF086BFA27C7E80B18D18283537D595DC96438CAC1943AA5DFDBF6DB079BCD68EBD3D2D32670",
+                "role": "ADMIN",
+                "status": "ACTIVE",
+                "user_id": "55e876a61b9fea21",
+                "username": "Admin 3"
+              }
+            ],
+            "name": "__ADMINS_GROUP__",
+            "status": "GroupStatus.ACTIVE"
+          },
+          "quorum": 2
+        }
+      ],
+      "created_by": {
+        "created_on": "2019-06-18T07:45:27.945323+00:00",
+        "id": 5,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000739c36ac66147141066a75dd0373db1fd4c768861ecfe594af4ba901d36783a8",
+        "pub_key": "04A4A863A431732CDC3AF2047EB4DA69314C88EFA7F0C4F0C32976B9BF0EE776298B103DC316EE3DBA2363A008AA38FE86E535D77A26C9A9FF5424E14322915762",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "2c68305cbefaf64d",
+        "username": "Admin 1"
+      },
+      "created_on": "2019-06-18T13:54:41.062065+00:00",
+      "current_step": 0,
+      "expired_at": "2019-06-25T13:54:41.052386+00:00",
+      "is_complete": true,
+      "status": "PENDING_APPROVAL",
+      "type": "REVOKE_GROUP"
+    },
+    {
+      "created_by": {
+        "created_on": "2019-06-18T07:45:28.859073+00:00",
+        "id": 6,
+        "key_handle": "0000000000000000000000000000000000000000000000000000000000000000cb373320c3ef93efd31cf44472f105a0d0638beccefe3752153d5874fb2a4607",
+        "pub_key": "041D783B5B3DA70087771BD84A089860642CB98135CDC8794F3A41B49DCAADF20010F2CBB3145FED78C7481372ECA07315A1977C0EA5D4A308CEE048A7F25597EC",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "user_id": "941b94d9f627eb84",
+        "username": "Admin 2"
+      },
+      "created_on": "2019-06-18T13:54:55.207305+00:00",
+      "expired_at": "2019-06-25T13:54:41.052386+00:00",
+      "is_complete": false,
+      "status": "APPROVED",
+      "type": "REVOKE_GROUP"
+    }
+  ]
+]
