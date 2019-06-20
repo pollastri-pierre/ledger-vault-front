@@ -1,15 +1,14 @@
 // @flow
 import React from "react";
-import { Trans } from "react-i18next";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import type { Account, User, Transaction } from "data/types";
-import colors from "shared/colors";
+import type { Account, User, Transaction, Organization } from "data/types";
 import connectData from "restlay/connectData";
 import AccountsQuery from "api/queries/AccountsQuery";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
+import OrganizationQuery from "api/queries/OrganizationQuery";
 import TryAgain from "components/TryAgain";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
@@ -17,17 +16,16 @@ import Card from "components/base/Card";
 import CheckMigration from "components/CheckMigration";
 import Box from "components/base/Box";
 import UserContextProvider, { withMe } from "components/UserContextProvider";
+import {
+  OrganizationContextProvider,
+  useOrganization,
+} from "components/OrganizationContext";
 import VaultLayout from "components/VaultLayout";
 import VaultCentered from "components/VaultCentered";
 import ConnectedBreadcrumb from "components/ConnectedBreadcrumb";
-import AdminIcon from "components/icons/AdminIcon";
-import OperatorIcon from "components/icons/OperatorIcon";
 
 import type { Connection } from "restlay/ConnectionQuery";
 import getMenuItems from "./getMenuItems";
-
-const adminIcon = <AdminIcon size={16} color={colors.blue} />;
-const operatorIcon = <OperatorIcon size={16} color={colors.blue} />;
 
 type Props = {
   me: User,
@@ -36,25 +34,21 @@ type Props = {
   history: MemoryHistory,
   accounts: Connection<Account>,
   allPendingTransactions: Connection<Transaction>,
+  organization: Organization,
 };
 
-const AppWrapper = ({ me, ...props }: Props) => (
+const AppWrapper = ({ me, organization, ...props }: Props) => (
   <UserContextProvider me={me}>
-    <App {...props} />
+    <OrganizationContextProvider value={organization}>
+      <App {...props} />
+    </OrganizationContextProvider>
   </UserContextProvider>
 );
 
 const breadcrumbConfig = [
   {
     path: "",
-    render: p => (
-      <Box horizontal align="center" flow={5}>
-        {p.me.role === "ADMIN" ? adminIcon : operatorIcon}
-        <span>
-          <Trans i18nKey={`common:role.${p.me.role}`} />
-        </span>
-      </Box>
-    ),
+    render: p => p.organization.name,
     children: [
       { path: "/:role/dashboard*", render: "Dashboard", exact: true },
       { path: "/:role/tasks*", render: "All requests", exact: true },
@@ -92,11 +86,12 @@ const breadcrumbConfig = [
 ];
 
 const AppBreadcrumb = withMe(props => {
+  const organization = useOrganization();
   return (
     <ConnectedBreadcrumb
       prefix={`/${window.location.pathname.split("/")[1]}`}
       config={breadcrumbConfig}
-      additionalProps={props}
+      additionalProps={{ organization, ...props }}
     />
   );
 });
@@ -164,5 +159,6 @@ export default connectData(AppWrapper, {
     me: ProfileQuery,
     accounts: AccountsQuery,
     allPendingTransactions: PendingTransactionsQuery,
+    organization: OrganizationQuery,
   },
 });
