@@ -12,8 +12,8 @@ import type { User } from "data/types";
 import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/hsmFlows";
 
+import { FetchEntityHistory } from "components/EntityHistory";
 import UserDetailsOverview from "./UD-Overview";
-import UserDetailsHistory from "./UD-History";
 import UserDetailsPermissions from "./UD-Permissions";
 
 type Props = {
@@ -68,7 +68,11 @@ function UserDetails(props: Props) {
       {user.role === "OPERATOR" && !hideAccessTab && (
         <UserDetailsPermissions key="permissions" user={user} />
       )}
-      <UserDetailsHistory key="history" user={user} />
+      <FetchEntityHistory
+        key="history"
+        url={`/people/${user.id}/history`}
+        entityType="user"
+      />
     </EntityModal>
   );
 }
