@@ -38,6 +38,6 @@ const error = {
 
 storiesOf("components", module).add("BlockingReasons", () => (
   <Modal isOpened>
-    <BlockingReasons error={{ json: error }} />
+    <BlockingReasons error={error} />
   </Modal>
 ));
