@@ -20,6 +20,7 @@ export const hasUserApprovedCurrentStep = (request: Request, me: User) =>
 
 export const isUserInCurrentStep = (request: Request, me: User) => {
   try {
+    if (!request || !request.approvals_steps) return false;
     const currentStep = request.approvals_steps[request.current_step];
     if (!currentStep) return false;
     return currentStep.group.members.some(m => m.id === me.id);

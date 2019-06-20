@@ -119,18 +119,21 @@ export default function FilterFieldSelect(props: Props) {
       isActive={isActive}
       RenderCollapsed={Collapsed}
     >
-      <Select
-        {...props}
-        isMulti={!single}
-        autoFocus
-        openMenuOnFocus
-        placeholder={placeholder}
-        isClearable
-        value={single ? (values.length ? values[0] : null) : values}
-        options={options}
-        onChange={handleChange}
-        components={components}
-      />
+      {({ toggle }) => (
+        <Select
+          {...props}
+          isMulti={!single}
+          autoFocus
+          openMenuOnFocus
+          placeholder={placeholder}
+          isClearable
+          value={single ? (values.length ? values[0] : null) : values}
+          options={options}
+          onChange={handleChange}
+          components={components}
+          onMenuClose={toggle}
+        />
+      )}
     </WrappableField>
   );
 }
