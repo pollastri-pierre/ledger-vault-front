@@ -38,7 +38,7 @@ function main {
       OUTPUT="$(cat "$f"), "
       SIG_FILE="$DIR_NAME/vault_signature.json"
       if [[ -e $SIG_FILE ]]; then
-          OUTPUT=$(echo "$OUTPUT" | sed "s/}/, $(cat "$SIG_FILE" | grep "account_parameters") $(cat "$SIG_FILE" | grep "signature") }/g")
+        OUTPUT=$(echo "$OUTPUT" | sed "s/}/, $(grep "account_parameters" "$SIG_FILE") $(grep "signature" "$SIG_FILE") }/g")
       else
         >&2 echo "Signature not found for $f"
       fi
