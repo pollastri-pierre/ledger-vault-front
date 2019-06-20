@@ -6,14 +6,20 @@ import { useDispatch } from "react-redux";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
+import colors from "shared/colors";
 import network from "network";
 import { login } from "redux/modules/auth";
 import { loginFlow } from "device/interactions/loginFlow";
 
-import TriggerErrorNotification from "components/TriggerErrorNotification";
+import { UnknownDomain } from "utils/errors";
+import TranslatedError from "components/TranslatedError";
 import DeviceInteraction from "components/DeviceInteraction";
 import VaultCentered from "components/VaultCentered";
 import Card from "components/base/Card";
+import Box from "components/base/Box";
+import Button from "components/base/Button";
+import Text from "components/base/Text";
+import { MIGRATION_REDIRECTION } from "containers/Welcome";
 
 type Props = {
   match: Match,
@@ -36,8 +42,7 @@ export default function Login(props: Props) {
         if (unsub) return;
         setOnboardingToBeDone(state !== "COMPLETE");
       } catch (e) {
-        setError(e);
-        console.error(e);
+        setError(new UnknownDomain());
       }
     };
     effect();
@@ -51,15 +56,31 @@ export default function Login(props: Props) {
     history.push(`/${domain}`);
   };
 
+  const backToWelcome = () => {
+    if (MIGRATION_REDIRECTION) {
+      window.location.href = "/";
+    } else {
+      history.push("/");
+    }
+  };
+
   if (onboardingToBeDone) {
     return <Redirect to={`/${domain}/onboarding`} />;
   }
 
   return (
     <VaultCentered>
-      {error && <TriggerErrorNotification error={error} />}
       <Card height={350} align="center" justify="center">
-        {onboardingToBeDone === false ? (
+        {error ? (
+          <Box flow={20}>
+            <Text color={colors.grenade}>
+              Error: <TranslatedError error={error} />
+            </Text>
+            <Button type="submit" variant="filled" onClick={backToWelcome}>
+              Go back
+            </Button>
+          </Box>
+        ) : onboardingToBeDone === false ? (
           <DeviceInteraction
             interactions={loginFlow}
             onError={setError}

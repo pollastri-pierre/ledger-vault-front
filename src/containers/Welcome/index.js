@@ -26,7 +26,7 @@ const mapDispatchToProps = { login, addMessage, addError };
 // if set to `true`, instead of doing the login here, we
 // do a "hard" redirect to /{domain} page, and login occurs
 // here. so it will be on nginx hand to serve one front or another
-const MIGRATION_REDIRECTION = process.env.NODE_ENV === "production";
+export const MIGRATION_REDIRECTION = process.env.NODE_ENV === "production";
 
 type Props = {
   history: MemoryHistory,
