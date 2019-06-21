@@ -33,8 +33,7 @@ type Props = {
 class AccountWarning extends Component<Props> {
   editAccount = () => {
     const { history, account } = this.props;
-    const orgaName = location.pathname.split("/")[1];
-    history.push(`/${orgaName}/admin/accounts/edit/${account.id}`);
+    history.push(`${location.pathname}/accounts/edit/${account.id}`);
   };
 
   render() {
