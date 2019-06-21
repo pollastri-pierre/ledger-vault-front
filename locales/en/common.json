@@ -25,7 +25,7 @@
   "groupStatus": "Group status",
   "accountStatus": "Account status",
   "userStatus": "User status",
-  "requestActivity": "Request Activity",
+  "requestActivity": "Request type",
   "clickToEdit": "Click to edit",
   "plug_device": "Please connect your device and open the vault application.",
   "approve_device": "Verify the information on your device",

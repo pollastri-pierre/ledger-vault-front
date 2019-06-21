@@ -54,7 +54,20 @@ export default function FilterFieldSelect(props: Props) {
 
   const resolveOptions = useCallback(
     (arr: $ReadOnlyArray<ObjectParameter>): Option[] => {
-      return arr.map(s => options.find(o => o.value === s)).filter(Boolean);
+      return arr
+        .map(s => {
+          // handle both "simple" and "with sections" forms
+          for (const o of options) {
+            if (!("value" in o) && "options" in o) {
+              for (const subO of o.options) {
+                if (subO.value === s) return subO;
+              }
+            }
+            if (o.value === s) return o;
+          }
+          return null;
+        })
+        .filter(Boolean);
     },
     [options],
   );
