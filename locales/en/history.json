@@ -19,6 +19,9 @@
       "group": "Group deletion request",
       "account": "Account deletion request",
       "transaction": "Transaction deletion request"
+    },
+    "MIGRATE_ACCOUNT": {
+      "account": "Update account"
     }
   },
   "stepType": {
@@ -29,6 +32,8 @@
     "EDITED": "Edited",
     "REGISTERED": "Registered",
     "SUBMITTED": "Submitted",
-    "INVITED": "Invited"
+    "INVITED": "Invited",
+    "MIGRATED": "Updated",
+    "MIGRATION_FINISHED": "Update finished"
   }
 }

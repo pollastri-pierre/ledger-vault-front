@@ -14,6 +14,9 @@ import {
   FaRocket,
   FaUserPlus,
   FaCheck,
+  FaSyncAlt,
+  FaCog,
+  FaFlagCheckered,
 } from "react-icons/fa";
 import { MdEdit, MdDelete, MdClear, MdCheck } from "react-icons/md";
 
@@ -42,6 +45,7 @@ const itemIconsByType = {
   CREATE: <FaPlus color={colors.text} />,
   EDIT: <MdEdit color={colors.text} />,
   DELETE: <MdDelete color={colors.text} />,
+  MIGRATE_ACCOUNT: <FaSyncAlt color={colors.text} />,
 };
 
 const stepIconsByType = {
@@ -53,6 +57,8 @@ const stepIconsByType = {
   REGISTERED: <FaUserPlus color={colors.ocean} />,
   SUBMITTED: <FaRocket color={colors.ocean} />,
   INVITED: <FaEnvelopeOpen color={colors.ocean} />,
+  MIGRATED: <FaCog color={colors.light_orange} />,
+  MIGRATION_FINISHED: <FaFlagCheckered color={colors.green} />,
 };
 
 const CollapseIcon = ({ collapsed }: { collapsed: boolean }) =>
@@ -330,7 +336,11 @@ const Ball = styled.div`
 function getItemStatus(item: VaultHistoryItem) {
   const lastStep = item.steps[item.steps.length - 1];
   if (!lastStep) return null;
-  if (lastStep.type === "APPROVED" || lastStep.type === "SUBMITTED") {
+  if (
+    lastStep.type === "APPROVED" ||
+    lastStep.type === "SUBMITTED" ||
+    lastStep.type === "MIGRATION_FINISHED"
+  ) {
     return "APPROVED";
   }
   if (lastStep.type === "ABORTED") {

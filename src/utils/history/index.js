@@ -24,7 +24,8 @@ type VaultHistoryStepType =
   | "EDITED"
   | "REGISTERED"
   | "SUBMITTED"
-  | "INVITED";
+  | "INVITED"
+  | "MIGRATION_FINISHED";
 
 export type VaultHistoryStep = {
   type: VaultHistoryStepType,
@@ -81,7 +82,7 @@ function resolveItemType(item) {
   if (item.type.startsWith("REVOKE")) return "DELETE";
   if (item.type.startsWith("CREATE")) return "CREATE";
   if (item.type.startsWith("EDIT")) return "EDIT";
-  throw new Error(`Unknown history item type: ${item.type}`);
+  return item.type;
 }
 
 function resolveStepType(item): VaultHistoryStepType {
@@ -96,6 +97,9 @@ function resolveStepType(item): VaultHistoryStepType {
     (item.type === "CREATE_OPERATOR" || item.type === "CREATE_ADMIN")
   ) {
     return "REGISTERED";
+  }
+  if (item.type === "MIGRATE_ACCOUNT" && item.status === "ACTIVE") {
+    return "MIGRATION_FINISHED";
   }
   if (
     item.status !== "APPROVED" &&
