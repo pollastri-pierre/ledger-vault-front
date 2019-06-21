@@ -3,6 +3,9 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import type { Note } from "data/types";
 
+// after a migration, old notes will be created by SYSTEM ADMIN
+const SYS_ADMIN_ID = 1;
+
 const styles = {
   title: {
     outline: "none",
@@ -34,9 +37,11 @@ function TabLabel(props: { note: Note, classes: Object }) {
       <div>
         <h3 className={classes.title}>{note.title}</h3>
         <div className={classes.body}>{note.content}</div>
-        <div className={classes.author}>
-          Published by {note.author.username}
-        </div>
+        {note.created_by.id !== SYS_ADMIN_ID && (
+          <div className={classes.author}>
+            Published by {note.created_by.username}
+          </div>
+        )}
       </div>
     );
   }

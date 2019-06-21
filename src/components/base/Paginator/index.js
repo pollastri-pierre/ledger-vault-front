@@ -17,6 +17,8 @@ type ItemProps = {
   onChange: Function,
 };
 
+const MAX_LEFT_ITEMS = 8;
+
 class Item extends PureComponent<ItemProps> {
   onChange = () => this.props.onChange(this.props.item);
 
@@ -35,7 +37,13 @@ class Paginator extends PureComponent<Props> {
     const { count, pageSize, page, onChange } = this.props;
     const nbItem = Math.ceil(count / pageSize);
     const items = [];
+    const hasEllipsis = nbItem > 6;
     for (let i = 0; i < nbItem; i++) {
+      if (hasEllipsis && i === MAX_LEFT_ITEMS) {
+        items.push(<div key="ellipsis"> ... </div>);
+        continue; // eslint-disable-line no-continue
+      }
+      if (hasEllipsis && i > MAX_LEFT_ITEMS && i !== nbItem - 1) continue; // eslint-disable-line no-continue
       items.push(
         <Item selected={i === page} key={i} item={i + 1} onChange={onChange} />,
       );
