@@ -92,7 +92,12 @@ function EntityHistory(props: Props) {
   return (
     <Box flow={10} style={{ maxWidth: 600 }}>
       {history.map((item, i) => (
-        <HistoryItem key={i} entityType={entityType} item={item} />
+        <HistoryItem
+          key={i}
+          entityType={entityType}
+          item={item}
+          isLast={i === history.length - 1}
+        />
       ))}
     </Box>
   );
@@ -101,12 +106,14 @@ function EntityHistory(props: Props) {
 const HistoryItem = ({
   item,
   entityType,
+  isLast,
 }: {
   item: VaultHistoryItem,
   entityType: EntityType,
+  isLast: boolean,
 }) => {
   const status = getItemStatus(item);
-  const [isCollapsed, setCollapsed] = useState(status !== "PENDING");
+  const [isCollapsed, setCollapsed] = useState(!isLast);
   const onToggle = () => setCollapsed(!isCollapsed);
   return (
     <HistoryItemContainer>
