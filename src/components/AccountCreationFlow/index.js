@@ -262,9 +262,8 @@ export function serializePayload(
       ticker: token.ticker,
       address: token.contract_address,
       decimals: token.decimals,
-      signature: token.signature || "",
-      // TODO TODO TODO remove hsm_account_parameters when backend ready
-      hsm_account_parameters: token.hsm_account_parameters || null,
+      hsm_signature: token.hsm_signature,
+      hsm_account_parameters: token.hsm_account_parameters,
     };
     Object.assign(data, {
       currency: { name: currencyName },
