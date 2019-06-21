@@ -95,10 +95,7 @@ const steps = [
       return (
         <ApproveRequestButton
           interactions={createAndApprove("ACCOUNT")}
-          onSuccess={data => {
-            console.log(data); // eslint-disable-line no-console
-            onClose();
-          }}
+          onSuccess={onClose}
           disabled={false}
           additionalFields={{
             type: isMigrated
