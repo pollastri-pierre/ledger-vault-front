@@ -183,7 +183,6 @@ class ApprovalsRule extends PureComponent<Props, State> {
                           horizontal
                           m={5}
                           flow={5}
-                          bg="#eee"
                           p={5}
                           borderRadius={2}
                           align="center"

@@ -172,6 +172,7 @@ type GroupCommon = {
   description?: string,
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
+  is_internal: boolean,
 };
 
 export type GroupEntity = GroupCommon & {

@@ -11,18 +11,11 @@ import {
   FieldStatuses,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
-import type { AccountStatus } from "data/types";
+import type { MetaStatus } from "data/types";
 
-export const defaultStatuses: AccountStatus[] = [
-  "ACTIVE",
-  "VIEW_ONLY",
-  "PENDING",
-  "PENDING_UPDATE",
-  "PENDING_VIEW_ONLY",
-  "PENDING_MIGRATED",
-];
+export const defaultStatuses: MetaStatus[] = ["APPROVED", "PENDING"];
 
-const statuses: AccountStatus[] = [...defaultStatuses, "REVOKED"];
+const statuses: MetaStatus[] = [...defaultStatuses, "ABORTED"];
 
 function AccountsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
@@ -31,6 +24,7 @@ function AccountsFilters(props: FieldsGroupProps) {
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:accountStatus")}
+        queryKey="meta_status"
       />
       <FieldCurrency />
       <FieldAccountType />

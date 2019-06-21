@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { Redirect } from "react-router";
 import { useDispatch } from "react-redux";
 import type { Match } from "react-router-dom";
@@ -93,7 +94,7 @@ export default function Login(props: Props) {
             }}
           />
         ) : (
-          "..."
+          <CircularProgress size={20} />
         )}
       </Card>
     </VaultCentered>

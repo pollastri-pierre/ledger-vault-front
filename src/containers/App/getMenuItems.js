@@ -82,7 +82,7 @@ export default function getMenuItems(props: Props) {
         dataTest: "menuItem-accounts",
         label: <Trans i18nKey="menu:admin.accounts" />,
         url: `${match.url}/admin/accounts`,
-        query: { status: accountsStatuses },
+        query: { meta_status: accountsStatuses },
         Icon: FaMoneyCheck,
       },
       {

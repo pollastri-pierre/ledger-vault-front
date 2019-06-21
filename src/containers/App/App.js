@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
@@ -147,7 +148,7 @@ const RenderError = ({ error, restlay }: *) => (
 const RenderLoading = () => (
   <VaultCentered>
     <Card align="center" justify="center" height={350}>
-      {"..."}
+      <CircularProgress size={20} />
     </Card>
   </VaultCentered>
 );
