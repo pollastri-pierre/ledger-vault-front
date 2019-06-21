@@ -172,6 +172,7 @@ type GroupCommon = {
   description?: string,
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
+  is_internal: boolean,
 };
 
 export type GroupEntity = GroupCommon & {
@@ -196,11 +197,11 @@ type NoteCommon = {
 };
 
 export type Note = NoteCommon & {
-  author: User,
+  created_by: User,
 };
 
 export type NoteEntity = NoteCommon & {
-  author: string,
+  created_by: string,
 };
 
 export type RawTransactionInput = {
@@ -370,11 +371,8 @@ export type ERC20Token = {
   name: string,
   ticker: string,
   signature: string,
-  hsm_account_parameters?: {
-    unique_id: string,
-    parameters: string,
-    psd_parameters: string,
-  },
+  hsm_signature: string,
+  hsm_account_parameters: string,
 };
 
 export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";
