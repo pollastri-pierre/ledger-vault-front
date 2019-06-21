@@ -7,7 +7,7 @@ import { FaHourglassHalf, FaCheck, FaArrowRight } from "react-icons/fa";
 
 import colors from "shared/colors";
 import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
-import UsersQuery from "api/queries/UsersQuery";
+import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import connectData from "restlay/connectData";
 import { createAndApprove } from "device/interactions/hsmFlows";
@@ -194,7 +194,7 @@ export default connectData(CheckMigration, {
   RenderError: RestlayTryAgain,
   queries: {
     accountsToMigrate: AccountsToMigrateQuery,
-    allUsers: UsersQuery,
+    allUsers: OperatorsForAccountCreationQuery,
     allGroups: GroupsQuery,
   },
 });
