@@ -83,8 +83,10 @@ export const deserializeApprovalSteps = (
     rule
       ? {
           quorum: rule.quorum,
-          group_id: rule.group.id || null,
-          users: rule.group.members.map(m => m.id),
+          group_id: rule.group.is_internal ? null : rule.group.id,
+          users: rule.group.is_internal
+            ? rule.group.members.map(m => m.id)
+            : [],
         }
       : null,
   );
