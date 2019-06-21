@@ -86,6 +86,9 @@ function resolveItemType(item) {
 }
 
 function resolveStepType(item): VaultHistoryStepType {
+  if (item.status === "ACTIVE") {
+    return "APPROVED";
+  }
   if (
     item.status === "PENDING_REGISTRATION" &&
     (item.type === "CREATE_OPERATOR" || item.type === "CREATE_ADMIN")
