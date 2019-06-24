@@ -17,7 +17,7 @@ describe("Test on Operator ", function() {
     cy.url().should("include", "/operator/accounts");
     cy.contains("Coinhy.pe1").click();
     cy.contains("Balance").should("be.visible");
-    cy.contains("Cryptocurrency / Index").should("be.visible");
+    cy.contains("Crypto asset / Index").should("be.visible");
     cy.contains("Unit").should("be.visible");
     cy.contains("creation date").should("be.visible");
     cy.wait(5500);
