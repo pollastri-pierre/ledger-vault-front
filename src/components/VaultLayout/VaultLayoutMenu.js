@@ -48,7 +48,7 @@ class VaultLayoutMenuComponent extends PureComponent<Props> {
 
         <Animated.div style={headerStyle}>
           <VaultLayoutMenuHeader isOpened={isOpened} isFloating={isFloating}>
-            <VaultLogo width={100} />
+            <VaultLogo width={120} />
           </VaultLayoutMenuHeader>
         </Animated.div>
         <VaultLayoutMenuBody>
