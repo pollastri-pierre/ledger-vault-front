@@ -4,6 +4,7 @@ import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 
 import Box from "components/base/Box";
+import UserRoleFormatter from "components/UserRoleFormatter";
 import LineRow from "components/LineRow";
 import Copy from "components/base/Copy";
 import type { UserCreationStepProps } from "../types";
@@ -26,7 +27,7 @@ class UserCreationConfirmation extends PureComponent<UserCreationStepProps> {
             <Trans i18nKey="inviteUser:steps.confirmation.rowTitle.role" />
           }
         >
-          {role}
+          <UserRoleFormatter userRole={role} />
         </LineRow>
         <LineRow
           label={

@@ -190,7 +190,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
               <InfoBox withIcon type="info">
                 <Text>
                   <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
-                  <HelpLink>
+                  <HelpLink subLink="/Content/administrators/accounts/abouterc20tokens.htm">
                     <ExternalLink color={colors.ocean} size={13} />
                   </HelpLink>
                 </Text>

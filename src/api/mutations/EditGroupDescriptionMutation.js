@@ -19,7 +19,7 @@ export default class EditGroupDescriptionMutation extends Mutation<In, Res> {
   responseSchema = schema.Group;
 
   getSuccessNotification = () => {
-    return success("group's description", "saved");
+    return success("Group's description", "saved");
   };
 
   getBody() {
