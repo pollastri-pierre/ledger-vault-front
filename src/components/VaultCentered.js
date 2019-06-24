@@ -24,7 +24,7 @@ export default function VaultCentered({ children }: { children: React$Node }) {
 
 const LogoRow = () => (
   <Box horizontal justify="space-between" align="center" mb={10} width={520}>
-    <Logo width={100} />
+    <Logo width={120} />
     <HelpLink style={styles.help} subLink="/Content/transactions/signin.htm">
       <Text small uppercase i18nKey="welcome:help" />
     </HelpLink>
