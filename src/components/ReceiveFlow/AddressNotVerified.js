@@ -41,6 +41,7 @@ class AddressNotVerified extends Component<Props, State> {
   onError = () => {
     const { updatePayload } = this.props;
     updatePayload({ isAddressVerified: false });
+    this.setState({ verifificationInProgress: false });
   };
 
   verifyInProgress = () => {
