@@ -21,7 +21,7 @@ describe("Tests Abort Transaction", () => {
     cy.server();
     route();
     login(6);
-    // Device 6 is on read only, we should get a error
+    // Device 6 is on view-only, we should get a error
     cy.contains("Pending").click();
     cy.get("[data-test=pending-transaction]")
       .eq(0)

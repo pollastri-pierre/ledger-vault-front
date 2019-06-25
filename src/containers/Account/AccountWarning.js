@@ -72,11 +72,11 @@ class AccountWarning extends Component<Props> {
                 onClick={this.editAccount}
                 className={classes.actionButton}
               >
-                <Trans i18nKey="update:provide_rule" />
+                <Trans i18nKey="accountView:updated_provide_rule" />
               </Button>
             }
           >
-            <Trans i18nKey="update:provide_rule_subtext" />
+            <Trans i18nKey="accountView:updated_provide_rule_subtext" />
           </InfoBox>
         )}
       </>
