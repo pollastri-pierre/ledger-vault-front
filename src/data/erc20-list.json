@@ -199,6 +199,15 @@
       "30440220145d5af7fb626090b099865f5fc11170cca51510347cdba14400755ed04febe702201c361ee0fbe867be34f8f29918d0a162528bcfb6583e440337f9c506178978d8"
   },
   {
+    "ticker": "XTX",
+    "name": "Xtock",
+    "blockchain_name": "foundation",
+    "contract_address": "0x1822126fEedb4C7d61EecdBE3682FE61e91383d6",
+    "decimals": 18,
+    "signature":
+      "3044022034fffc362231860eaf411621261dff9267c029586d05fc1a2f07969d18a3cee6022035bf32f958cdfbaa114605c8d36b61b116d0123cf1e32218a874687dd95e8aef"
+  },
+  {
     "ticker": "XSC",
     "name": "XSC",
     "blockchain_name": "foundation",
@@ -296,6 +305,15 @@
     "decimals": 8,
     "signature":
       "30440220291232d008226e8e78d9b1c9b51a2471cfdbd5c269343abbe6b94d30072e7c5702201bc0dfd9da31244f4b834830283b66c30c98985e1d59cb1f857a48d4a464fe29"
+  },
+  {
+    "ticker": "XST",
+    "name": "Xensor",
+    "blockchain_name": "foundation",
+    "contract_address": "0x5bC901CbebefB03a56D45e57E4F356dc4DB30ab5",
+    "decimals": 18,
+    "signature":
+      "30440220479722278b13fad7a80a15c9690cc011a9819e82d913e2734ebaf1a47d4b569b02205a06ecccdab2c4d2bea64c82d7f89dcc39fa49c0913cd0efe782a7384c12cd9c"
   },
   {
     "ticker": "XNN",
@@ -586,6 +604,15 @@
       "3044022065ff7efb4f7ff909f59931b0852b5fc6dc2feeed8b5be36916bb2cea459026680220638c0dc25e276da509b5749e257623228c398056541a0d59ad3a75d8d03408e0"
   },
   {
+    "ticker": "VX",
+    "name": "VX Network",
+    "blockchain_name": "foundation",
+    "contract_address": "0xBF38bA2A90b825FBa02F60459a097fB202134687",
+    "decimals": 18,
+    "signature":
+      "304402202b0bb223edd67972ae11139654a62c65e592f6e721240180740d9d3685d13f5502204d2a57a4c3aeaa62916f8c0182b4e4a21b35cb1db6401c9e0830402a6dbf08e3"
+  },
+  {
     "ticker": "VRE",
     "name": "Vrenelium",
     "blockchain_name": "foundation",
@@ -701,6 +728,15 @@
     "decimals": 18,
     "signature":
       "3045022100e53c7daa9f35b420a28ddaba6167aa47fd20aa354506b107a0d666a59bf2338e0220363f4dcd1a1829692b3ddaf9cbef895be4e97aa9d5a83672010cfe9195b7ed2c"
+  },
+  {
+    "ticker": "VES",
+    "name": "Vestella",
+    "blockchain_name": "foundation",
+    "contract_address": "0x03452E69ffcd9c45Ca34Ff4d9Ba2209d38a8D56a",
+    "decimals": 18,
+    "signature":
+      "3045022100dd82224a0de81f8516f573a7b5525109f3f295d598813b396a6dc0b0a917f23702205cee45c5747577813649851fea653f29f69a42a385d3c474f6673eaa2b951aa3"
   },
   {
     "ticker": "VERSI",
@@ -820,6 +856,15 @@
       "3045022100ec885adee6ad733deed4614d1b3d88290a1dcbb52d65936660fb8b817b73ab7d02205fc58f248285ac710f39d4e5503692d5e14f470a37f2d3abe1f69b81e2f68cf6"
   },
   {
+    "ticker": "UUNIO",
+    "name": "UUNIO",
+    "blockchain_name": "foundation",
+    "contract_address": "0xcB7d2C31B87E0E88D5148c88bD7ADfDf96C3ddf9",
+    "decimals": 8,
+    "signature":
+      "3045022100c69b4dc9a391e90ee60e57b5f8a4c186e18fa7cfea4bdd2e2482e750ed2e2a9802205fee5f1c57b15e05960355f3ea337f30071db716afab68c3541b39a5a2837b12"
+  },
+  {
     "ticker": "UTK",
     "name": "UTK",
     "blockchain_name": "foundation",
@@ -892,15 +937,6 @@
       "30450221009895f560b5030d2b42ee0025769f38fc06c795d5c3a8a76613d98ad11c48174302201aa703c6154a3b2726ad7a16f8579502776e5996b8928a6ca45796e49450a9ee"
   },
   {
-    "ticker": "UPT",
-    "name": "Universal Protocol Token",
-    "blockchain_name": "foundation",
-    "contract_address": "0x6CA88Cc8D9288f5cAD825053B6A1B179B05c76fC",
-    "decimals": 18,
-    "signature":
-      "3045022100e7bd4ffe0903e61a6864bb4e8e7407206eb47507a435daac776aad694c20e69802201e2c6532a91a191db399ddf7c654b99aeb30591a9a875b752d0964642ddfdbfe"
-  },
-  {
     "ticker": "UFR",
     "name": "Upfiring",
     "blockchain_name": "foundation",
@@ -917,6 +953,24 @@
     "decimals": 2,
     "signature":
       "304402202ae31b6001a1305635f2090cbcfc5d4f6803b20780ff7da672bdfef25aad76e602206d86ccbe5929391eb6bd183f9f9c0058d075d18da77ccef5da386f7a628add44"
+  },
+  {
+    "ticker": "UPT",
+    "name": "Universal Protocol Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6CA88Cc8D9288f5cAD825053B6A1B179B05c76fC",
+    "decimals": 18,
+    "signature":
+      "3045022100e7bd4ffe0903e61a6864bb4e8e7407206eb47507a435daac776aad694c20e69802201e2c6532a91a191db399ddf7c654b99aeb30591a9a875b752d0964642ddfdbfe"
+  },
+  {
+    "ticker": "UPEUR",
+    "name": "Universal Euro",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6C103D85C15107Dce19F5a75fC746227e610AaBd",
+    "decimals": 2,
+    "signature":
+      "304402203a945d1f76ca4386777b6fd3ae5ba3760e591f777fa63d9b2c85ba280b382c2f022063fcde90957d81c609e381e21e07dade2068f416491411af5aa5b19c34de740a"
   },
   {
     "ticker": "UPBTC",
@@ -962,6 +1016,15 @@
     "decimals": 0,
     "signature":
       "3044022009179825e9834eeb62cbcca7430db27bdfbd4790bc0be907d63191b1249220c70220446cab18abac8d34ce5f48033356a6b38fe9810673fe65fb3b7adcf2bffa7536"
+  },
+  {
+    "ticker": "IUC",
+    "name": "UNICOIN",
+    "blockchain_name": "foundation",
+    "contract_address": "0x358D7acb360aEa4d495b87E1246fb752B7684351",
+    "decimals": 18,
+    "signature":
+      "30440220540960eb8c98f93b0d10a609738fc97dab2f71e7cda114acf4e253cc46a6c1e502207aa380a837aaee37f7b874e155cc9251576e84279ad14f3bf1ca18f06329bad4"
   },
   {
     "ticker": "UBT",
@@ -1027,6 +1090,15 @@
       "304402207d999c698abc7025600ec6cc5695cfea3451901097ccfd49ff39147ae4cab885022043600e4f60f657ecc230eb157c01a95514e3cb482a449b9bbe9a5e5425779492"
   },
   {
+    "ticker": "TUDA",
+    "name": "TudaToken",
+    "blockchain_name": "foundation",
+    "contract_address": "0x5E3002dff591C5e75Bb9DEdae268049742E6b13a",
+    "decimals": 8,
+    "signature":
+      "304402204bd2e5768ecb87def259586eeb066183d1d0203f3ed69f828731c272898397140220721ce84e5c8c0156e857bf93b1ec30496bf83592cc954182c6b23ae0e0a43f33"
+  },
+  {
     "ticker": "TTC",
     "name": "TTC Protocol",
     "blockchain_name": "foundation",
@@ -1034,6 +1106,15 @@
     "decimals": 18,
     "signature":
       "3045022100ee28e179471be85b277d69db9f5a95eb611acc07258dbc5b7544236a5e8eb1a30220582689b369ac5edef344b472caf3953242bd9294423494825f3d5467f3b8f9ef"
+  },
+  {
+    "ticker": "TRV",
+    "name": "TrustVerse",
+    "blockchain_name": "foundation",
+    "contract_address": "0x72955eCFf76E48F2C8AbCCe11d54e5734D6f3657",
+    "decimals": 18,
+    "signature":
+      "30450221008d6f060e66243356d7a17aab9624cc9f36fbb287297722f83630eba6beeb5b0a022016848aad0f5b1a4aea810b9a8e2c2a9e4e7ac5ce3ad06d4cd0e3df9047a91563"
   },
   {
     "ticker": "TDH",
@@ -1243,6 +1324,15 @@
       "30450221008dee5de36939826246d3f6b635558d55f620b432337846de6af45a04030297b70220518c5cbf51a5b2f25497e18c35246e42d4c4cd47a3a5da65357063d299713589"
   },
   {
+    "ticker": "TOKA",
+    "name": "TOKA",
+    "blockchain_name": "foundation",
+    "contract_address": "0x4ca819d706eE515C81B11651Bf1a902344223D04",
+    "decimals": 18,
+    "signature":
+      "30440220291123f6239fc40bd98e4f932089d319eb77890c90db4aa2092e2d37154f214e02202300230fe00ed826db398b282b5b1aa1a9d8bb0e1ca92d3f06360bc93b9d5dc7"
+  },
+  {
     "ticker": "TMTG",
     "name": "TMTG",
     "blockchain_name": "foundation",
@@ -1414,6 +1504,15 @@
       "3045022100bab95b0526bca51f708747e43d95ecc2ee349d164829c87297fc78da54fcc8b9022052512dd1186f25b9d77cb97408c38288f5fd26e1123cfd8f9ee1e4eefc2a7e02"
   },
   {
+    "ticker": "TRA",
+    "name": "Terra Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x44D2AC65c139168b02f1B2781B606125Ca39eaEE",
+    "decimals": 0,
+    "signature":
+      "3045022100b0d729882ad7252e1c0b8a0b5f35d3eadb36e38915e4fd35611f1975ee628e8b02207d8d14e4d4180a2df71a4433fa518ddc7837bf59826794ee3cdd87495cfcf257"
+  },
+  {
     "ticker": "TCNX",
     "name": "Tercet Network",
     "blockchain_name": "foundation",
@@ -1439,6 +1538,15 @@
     "decimals": 18,
     "signature":
       "304402207cac228713d8f9a2ece36d8886a6469e811bb776695e3385d634368baa03a91e02203555697ee465329bb038e189756b0752b0364012b865a158362924879f45142e"
+  },
+  {
+    "ticker": "TEMCO",
+    "name": "TEMCO",
+    "blockchain_name": "foundation",
+    "contract_address": "0x2Fc246aA66F0da5bB1368F688548ecBBE9bdee5d",
+    "decimals": 18,
+    "signature":
+      "3044022049200e84f15d4f5be04d307cd5788618ef5ac08afc60f65f8f35d405ed01127d02203344c9ddd4d1265b3baeeadf65092275685622fe1178b13a7be61c1533fbbf92"
   },
   {
     "ticker": "TLX",
@@ -1619,6 +1727,15 @@
     "decimals": 8,
     "signature":
       "30450221008475a46202e1886eecf6c15ba78cc3d3b0d70dce735b21db540f0aa8f6bc1a1d022063d2964785491b8e6e8a05022a2d378a36b0ef71d35aaea14065cca34518799f"
+  },
+  {
+    "ticker": "SUNC",
+    "name": "Sun Chain",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6b0D7b8357bB851De9F1953199c39c7Bc4675796",
+    "decimals": 18,
+    "signature":
+      "30440220378bd4e97592a8f8ba36e7c79f85d35d979ffb537ab5d09da2e4f2c890b27d5c02206eb08a2f99146607fc8340c5174cee71989eb392ee0888fadd321eadee9fe848"
   },
   {
     "ticker": "SGR",
@@ -2575,6 +2692,15 @@
       "304402204fc437cc840cb826157ced7e72760bdb3d23852d44234ac7658c0b4a650703ad022027f82c99eade69a270b84ae3f4e0f744c97d293e70cdc39a9040e04accf0dacd"
   },
   {
+    "ticker": "ROM",
+    "name": "ROMToken",
+    "blockchain_name": "foundation",
+    "contract_address": "0xacACa5b8805636608e14C64b0bFFfC2Deb2C6cEc",
+    "decimals": 18,
+    "signature":
+      "3045022100cd1305a94a54cb77fe2b65a83a14440a34522e7f483b187a90b6e1a2d8dc5d1302207dd97dfa9202783ec0473e37317e88b0bc65dde14972bdf4f014f8daea8ac9a5"
+  },
+  {
     "ticker": "ROK",
     "name": "Rocketchain",
     "blockchain_name": "foundation",
@@ -2834,6 +2960,15 @@
     "decimals": 18,
     "signature":
       "3044022058b0f2888d62be50fe28f5bf46fdb73aaa2488ceb4286bb77e98366514da15c30220215a267c6f5c59b50ebd5ffe0d7becec3cb654fb7c4a656a09abe9229219114d"
+  },
+  {
+    "ticker": "RET",
+    "name": "RealTract",
+    "blockchain_name": "foundation",
+    "contract_address": "0xD7394087E1DBBE477FE4F1CF373B9Ac9459565fF",
+    "decimals": 8,
+    "signature":
+      "3045022100e5cf2f221b4758eb5f342981faacea88bec41f1adc6dcba292c599831732392f022059af34645409524b074eef63ccac4f5194253d0c89c740cefb021cb07eaf589e"
   },
   {
     "ticker": "REA",
@@ -3331,6 +3466,15 @@
       "30440220770b1f5502b9470cae13e8a66064770d0fb8ca10ba9f613dec962d6e0ca53671022013150925879196fede9b20bedc1464374cfa760734288ced032a822bd67cb6c3"
   },
   {
+    "ticker": "PLG",
+    "name": "Pledgecamp",
+    "blockchain_name": "foundation",
+    "contract_address": "0xDB3A07425122F2C9cAa97a8f7318FCC8318E4D94",
+    "decimals": 18,
+    "signature":
+      "3045022100d3ebde136d3462cfd45827398ddc7bfa66028f021484cd28c9bc0ac18470070e02202270d0c581d90f2a6908ee77b01adef5122b8bb541eef3cf78894129e65980e1"
+  },
+  {
     "ticker": "PKT",
     "name": "PlayKey",
     "blockchain_name": "foundation",
@@ -3655,6 +3799,15 @@
       "3045022100ab33c1ea14c866f1b560c7c1249d14d49b5abe1a6aa1a8e3ec90f7874f7c4fe60220031bbfd1f83e8a8a063eddd775a88028ce5ec5703fe5dc1c59e6bde2ecb07b64"
   },
   {
+    "ticker": "XPN",
+    "name": "PANTHEON X",
+    "blockchain_name": "foundation",
+    "contract_address": "0x3b9e094D56103611f0ACEfDAb43182347BA60dF4",
+    "decimals": 18,
+    "signature":
+      "3045022100e520b365ae5460532566b7efd93233fc189811f7ad3c4a128011ac178ac96291022075c8addfcb142f1c41f74e70b64be1c67723cc4484e1650bd3d74c80ea1b94c1"
+  },
+  {
     "ticker": "XPAT",
     "name": "Pangea Arbitration Token",
     "blockchain_name": "foundation",
@@ -3934,6 +4087,15 @@
       "3045022100e3477d4d14b60d4cde72d72e15331a8ddbf5154d1a881637caaa15d419d3fe1b02205236f2c97fb63645bd3e8b77be0336a3cb72581582cd7e22c6b5b4af14ba3730"
   },
   {
+    "ticker": "OCEAN",
+    "name": "Ocean",
+    "blockchain_name": "foundation",
+    "contract_address": "0x985dd3D42De1e256d09e1c10F112bCCB8015AD41",
+    "decimals": 18,
+    "signature":
+      "3045022100ad8ac2fb6d62e8196a50c0804b582b9bbad8a3bf068425ca5c3869d260dd1d1c022038edc0c43be7b0b992700bc48bc46df62b0abfb1534d4b09dc0727a48f4347c3"
+  },
+  {
     "ticker": "OAX",
     "name": "OAX",
     "blockchain_name": "foundation",
@@ -3950,6 +4112,15 @@
     "decimals": 18,
     "signature":
       "30440220767982097a3367c220ddb0267a963a458469d039a6823260232728ff33b6885902207516201116b99cbd1bd1945a8a886f1c038d5c8c2c4782a0129f476a52825d8b"
+  },
+  {
+    "ticker": "O2O",
+    "name": "O2OPAY",
+    "blockchain_name": "foundation",
+    "contract_address": "0xEd00A2Cba066714999Ec703350E0a5B6B7AB66cB",
+    "decimals": 18,
+    "signature":
+      "304402207cb182e11e6cdc6298d2cf4dbbb5ffc5dafabeb2a454feae076b89ff1d0e502c022009d217b3415bafdc4197a8d8f74dd5ad3ddec2541d027f7a4f54c22d3b7738da"
   },
   {
     "ticker": "NXX OLD",
@@ -4789,6 +4960,15 @@
       "3045022100f5311c61cf383e1aa178330be0e0ebdf01c09512d2100340b5afb02c68bad5c50220732a00189d546d07594b5ab71093bf0b1135846e898b6872b504e9ee6453f993"
   },
   {
+    "ticker": "MAC",
+    "name": "MACARON COIN",
+    "blockchain_name": "foundation",
+    "contract_address": "0x4c3345105fCc6CdC29DB91058FFAAe33cCA5bCDb",
+    "decimals": 18,
+    "signature":
+      "3045022100eab7c0ace601c94a321a1b40d9b4dd5470c16c8aa18927f2dd50d6d5a5de16a502200b7eed32e4c3e2bfbd809637ef7b0b957da548e247045d686382313f6b94889f"
+  },
+  {
     "ticker": "M-ETH",
     "name": "M-ETH",
     "blockchain_name": "foundation",
@@ -5095,6 +5275,15 @@
       "3045022100c00cc357112f971b1885a683becd3f3e9651d081041b2b5b32b37bff4a6a360302203988ae4caa8c531076b27b0c748a634c2dfd388a932aad5e09e7b5141ddad20c"
   },
   {
+    "ticker": "LEO",
+    "name": "Leo Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x2AF5D2aD76741191D15Dfe7bF6aC92d4Bd912Ca3",
+    "decimals": 18,
+    "signature":
+      "3045022100d065ca5b1003a6eefb6ab83d9a83289920fbb7336bf98391ca677e010f8f17dc02202e8a0eb6b0aa1c1e9ce9c719c7de6b6f1c2879ca79ef05784d0c25248d77767a"
+  },
+  {
     "ticker": "LND",
     "name": "Lendingblock",
     "blockchain_name": "foundation",
@@ -5230,6 +5419,15 @@
       "30440220316d180e4a9874c47d1778db91c031bd7350ebb90d51440a29d39b69acf3f82f02206b045ab12ee386c9abe04fff82cd1da43f869372cb35e78cb9ddf2b4391d794e"
   },
   {
+    "ticker": "KREX",
+    "name": "KRONN",
+    "blockchain_name": "foundation",
+    "contract_address": "0x9588Fc24a9796fBd870951A2CD54C6f1f24b2E7c",
+    "decimals": 8,
+    "signature":
+      "3045022100ca8419c6afd110df9425f120e8e49b8551c552e78919fb2fef3d1d9fb096166c02201c7e2d8306709b1cc3384223954f99206d3b69334d28fdb59c84ea9fd792f6d3"
+  },
+  {
     "ticker": "KPR",
     "name": "KPRCoin",
     "blockchain_name": "foundation",
@@ -5237,6 +5435,15 @@
     "decimals": 18,
     "signature":
       "3044022028635c30eedb34ea573ed7e4c50011ed4f4d2a219292ef33751e9e747c6058650220357bd576366ec5e3f777ffc55a3eba6aeb9e2a22ced50d601b6fc6a3b9830e20"
+  },
+  {
+    "ticker": "KRS",
+    "name": "Koris",
+    "blockchain_name": "foundation",
+    "contract_address": "0x229A569B673D908cee8920658AE7BCaD68e7d01D",
+    "decimals": 18,
+    "signature":
+      "3045022100d25d0be8bdf5f633dd83bb6be5501439430daf86e835bbc06b186cc831653d3d0220265cc33a6aa9bc9f33313bccc4ff1d54366837dfa66ca2c3cc75030ad7ef5bfa"
   },
   {
     "ticker": "KMTBA",
@@ -5473,6 +5680,15 @@
       "3045022100fa904ca122fae0b6fdbc90b1cb7d291402a378dfe419f10aae86bdaee98257e2022006b3a5b676a1b476655699b7a0ef40e9aea972a9f70ff3348f49f3283a284cb5"
   },
   {
+    "ticker": "DEAL",
+    "name": "IPDeal",
+    "blockchain_name": "foundation",
+    "contract_address": "0xc86A3AC9a4997926631e658e63235ec8B526C97f",
+    "decimals": 18,
+    "signature":
+      "3045022100a04df643cfc83c6c08598feb5b0afbbf9da81650c3713a6d8a98f738dca93a0602201b3d469fbd3e936525989f9881d59959033e3b7a09e2101f7185c4d96ca9948d"
+  },
+  {
     "ticker": "IOTX",
     "name": "IoTeX Network",
     "blockchain_name": "foundation",
@@ -5507,6 +5723,15 @@
     "decimals": 18,
     "signature":
       "304402205a25fb3356a40c3d093a7ad9336a578a587253a67114179285a1f2b60daa83c402201a9ddec7a3a5d6d22358fde711cc5e9703b89cf32680cd9817fc0f57e6d4418c"
+  },
+  {
+    "ticker": "NIA",
+    "name": "IONIA",
+    "blockchain_name": "foundation",
+    "contract_address": "0x59C24B4903676cBbB3A8F1077eF0029E6419CEF2",
+    "decimals": 18,
+    "signature":
+      "30440220700052584002eff58a097c8b1361a729b8625e498e164f800bee0ee2f696560c02204ebf2e1efd7c38cf422758ea5a454abf857186a9a16d9099b1a7a6dd2d78cdbf"
   },
   {
     "ticker": "IFT",
@@ -5552,6 +5777,15 @@
     "decimals": 3,
     "signature":
       "3045022100b362268e3e3a5da37e49e59464c667737304fcf69bf2555a89d7ac4c0980006d0220407caf57b619bd34de33c19c5e1a54b42e0c4805682fcf772ab3870f0b306acd"
+  },
+  {
+    "ticker": "ISR",
+    "name": "Insureum Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0xd4a293aE8bB9E0BE12E99eB19d48239e8c83a136",
+    "decimals": 18,
+    "signature":
+      "3045022100bcfdd301b1f1cf01a9dc3a18d8bcbda8b2bafe17fdc6796288df62bed328cc3202200eefe615b887af76ca86dcc59679aafeb13e869478331bbcf39d391759ba2da2"
   },
   {
     "ticker": "IPL",
@@ -5941,6 +6175,15 @@
       "30450221008c03aed83da1ab3652f31e6d49b3f617244225e6423732a4cc1b8d9299d5065f0220364eadb0628afc62ba47f64924821028ff8c22499bc3a3a5e40850d6ca3b7c20"
   },
   {
+    "ticker": "HINT",
+    "name": "Hintchain",
+    "blockchain_name": "foundation",
+    "contract_address": "0x6CE21e5f5383c95691d243879A86A6025E0870c0",
+    "decimals": 18,
+    "signature":
+      "3044022024383249b1102dc690bb0ca7e635bd4f0a42668093ad2a6d4cbd13e18340b12a02204685de87cb0add5b20ea127d0445c3f0c4808e21135bc42a1e06dc46d518fb58"
+  },
+  {
     "ticker": "HV",
     "name": "HighVibe",
     "blockchain_name": "foundation",
@@ -6184,6 +6427,15 @@
       "304402204483de1dd6508580a957bcad8fdf93c7861af84055b77f0986c29ac93b92f45502203a10471c9f65cebab727d21870226c484ffb68f4907a51168d2e01d9cbe9906b"
   },
   {
+    "ticker": "GBT",
+    "name": "Grabity",
+    "blockchain_name": "foundation",
+    "contract_address": "0xcbD49182346421D3B410B04AeB1789346DA6Ce43",
+    "decimals": 18,
+    "signature":
+      "3045022100f3729b8db091b6c4fae754d19828e8dcf46b155fb98318895bb1a9bb29b39c3f02200c29ef30b6fefb60b183ca1b9a1f3fe0411e1d95eaf9b5fd2500268a240ca0a3"
+  },
+  {
     "ticker": "GOT",
     "name": "GoToken",
     "blockchain_name": "foundation",
@@ -6191,6 +6443,15 @@
     "decimals": 18,
     "signature":
       "3045022100e25d89f2ffb92c2f78c574a85b8009b9a413dc610e2b7cda7577364c3a3d30470220494ce9e8ca4cb557362ebc2f4b519e8b6d42922d97550cdb229a1f2621bb4290"
+  },
+  {
+    "ticker": "GOM",
+    "name": "Gomoney",
+    "blockchain_name": "foundation",
+    "contract_address": "0xd3141ACd3f5DC532077396Ff3984b67035234f41",
+    "decimals": 0,
+    "signature":
+      "3045022100e369f761cb8a10457be8cf9efc5495930aa3096508301fbc780e28be9484c3300220195580d799e0d417d404a26a5bf6c765a7d0f2b7ea2e95665621f4c4b486ebf5"
   },
   {
     "ticker": "GNT",
@@ -6400,6 +6661,15 @@
       "304402200884d5fdacbaa5a3638f0673fb8ba0ed97b1f3a93a66c566a03fe3755914bf2302203fac362767c82b170f2ac99dd500f338f07d11fc677622974e331c930d614045"
   },
   {
+    "ticker": "GMC",
+    "name": "Gemmy coin",
+    "blockchain_name": "foundation",
+    "contract_address": "0x68FeC0bcc61727dDec5CeCE2683027A383492710",
+    "decimals": 18,
+    "signature":
+      "3045022100f6580657e3a25b7430e15f91d8f58df6c0f87f324e6741e094de1de4f5e8bb18022009785888a12f1a40f214aeeacd1abbed184932fb073fdd4de7f23fdd78e94060"
+  },
+  {
     "ticker": "GUSD",
     "name": "Gemini dollar",
     "blockchain_name": "foundation",
@@ -6479,6 +6749,15 @@
     "decimals": 18,
     "signature":
       "3045022100badb7f742d2a42ac7269b94301487134b310ec1c62d5e76c19851b72ec094b350220466851e2a05f6da589acb9c6e91c7b5fc237d11f63d2733b851256fa5d8ed9f9"
+  },
+  {
+    "ticker": "GXC",
+    "name": "Game X Coin",
+    "blockchain_name": "foundation",
+    "contract_address": "0x953e22945b416730bAD05009aF05B420e598E412",
+    "decimals": 18,
+    "signature":
+      "3045022100b63fd624d46155699fca586958c42a29fc859d7e760ecdb869fd78901e31e5ec022005b4bb541270a390e6ae1c8fc18d9da428c1572f6bfa4c8903bcc213ca3dcafc"
   },
   {
     "ticker": "GAM",
@@ -6562,6 +6841,15 @@
       "3044022062473d2ce1fae0e420fb05a4733913b4e62e63ab838278ffaef5246f3002304302205f8488b89989c12f01540901eb157045873af9c1483713e9b97413f654d6cad9"
   },
   {
+    "ticker": "FIN",
+    "name": "Fuel Injection Network",
+    "blockchain_name": "foundation",
+    "contract_address": "0x1Dd7B2878B6d5671Ed602e60818b0D9A0CD1CDF7",
+    "decimals": 18,
+    "signature":
+      "304402200d0da23de7d88bef68d7d5c87aeb6de32062770522846757f830e394966da41002201deded388ec26aed9d1f2e02d237bc332f9b285558eb0432c05df85455b2ddce"
+  },
+  {
     "ticker": "FTI",
     "name": "FTI",
     "blockchain_name": "foundation",
@@ -6587,6 +6875,15 @@
     "decimals": 18,
     "signature":
       "3045022100f7244b7666c606471ca57d63b84739f9414795db1919520d2358561fcd9b2e1402200958f918f0eda529886f3233f27b0dcd08b44f2749e93a7516847a21063159f4"
+  },
+  {
+    "ticker": "FRNT",
+    "name": "Frontier",
+    "blockchain_name": "foundation",
+    "contract_address": "0xa3aE22304E4bec05327E7812768b11253b5a7c85",
+    "decimals": 18,
+    "signature":
+      "304402205531af7a2f391eac103939425b9c1f7a54254fd7eec8e5e6d4dff4f1dbf92cc9022032f5ccfb1635dc883600ee5da18d51234867b1230da8c628ee4575b0ce20d6b5"
   },
   {
     "ticker": "FDZ",
@@ -6659,6 +6956,15 @@
     "decimals": 18,
     "signature":
       "3045022100a71eac4e938b8f8e2f1aa41d2244bf04a70bd51634682ed39041a9c260ecdb7602202a41e121a5d1ed099fff6636b0c9e2561d3e8264044264f7cc7e811583265097"
+  },
+  {
+    "ticker": "FNB",
+    "name": "FNB Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x47b28F365Bf4CB38DB4B6356864BDE7bc4B35129",
+    "decimals": 18,
+    "signature":
+      "3044022040968a8bc4b0f94df635cd30f5a8fb4d4177ae0c5b60970ad13f1082745afa8402203f9511084024ac35145c5b64ba626b503a33558e626da95b4911fc1302ac2c9d"
   },
   {
     "ticker": "FYP",
@@ -6823,6 +7129,15 @@
       "30450221008095c7734e4eb9c055b468fb944360173c627258cbae898897e709a6b314488f02206edff7f9fdb63fc36c8c5add6fa03f8f1f78d60e1749b21f87cd5f87c4ae8cae"
   },
   {
+    "ticker": "FEMI",
+    "name": "Feminism",
+    "blockchain_name": "foundation",
+    "contract_address": "0xb26e8b9B6cf53E499aBDB2c83e15337be85A9E5a",
+    "decimals": 18,
+    "signature":
+      "30440220210458484f6c5163325d83e57b182256b4c47f8537d22db680ec34185d84083d022027a79b47d6e3a1e9d1c604d7c9a5544fd7f689832417e59a5c4deec671e69ba4"
+  },
+  {
     "ticker": "FTT",
     "name": "FarmaTrust Token",
     "blockchain_name": "foundation",
@@ -6965,6 +7280,15 @@
     "decimals": 18,
     "signature":
       "304502210081ca272b869c09da387e617f9e2fc0a798f547d6a98f6dcccf19c243b9c858ba0220141d29790479a20a85482f2b829df4da345aecebb13428656f4fda0e72c605af"
+  },
+  {
+    "ticker": "EVZ",
+    "name": "EVZ",
+    "blockchain_name": "foundation",
+    "contract_address": "0x7A939Bb714fd2A48EbeB1E495AA9aaa74BA9fA68",
+    "decimals": 18,
+    "signature":
+      "3045022100a3d4120550d6d7c27e9d8a7a0170895e7d46124f2bc8b87e05fd6377379d0bb002201e6699dada8620dd664f2435bbf9f8f0f33e8243cb68ca591867381355f23b76"
   },
   {
     "ticker": "EVX",
@@ -7642,6 +7966,15 @@
       "3044022019b7f9329fdbab4576ded0f0dec072873691a100591eaa6aac6e1e1cae05961902204c345ddd84d05b1723de35e2ffc01831c099179d898571d975d05055ee041357"
   },
   {
+    "ticker": "DRC",
+    "name": "DREAMCATCHER",
+    "blockchain_name": "foundation",
+    "contract_address": "0x1F4A9567c1F98a8c9D7f026827F099b41a2E54d6",
+    "decimals": 6,
+    "signature":
+      "3045022100fe1bb18d599f106d75bc918935229be3bc394adf2b82cfaf066fb529f02261e70220729a83fa1baeb0f5d7f8fe0e4c02b912eeee5c643ddad08b90c007f464ba8afe"
+  },
+  {
     "ticker": "DREAM",
     "name": "DREAM",
     "blockchain_name": "foundation",
@@ -7856,6 +8189,24 @@
     "decimals": 9,
     "signature":
       "304402200cb64f7e12c8e9ef35d1ca577147096a3c2a975249f9ea1f066a763967320cb302205d2891c9bfe4429d0bca08b5460d147a34fc1c92cb3911341233bcc95a597a16"
+  },
+  {
+    "ticker": "DXG",
+    "name": "DEXTERG",
+    "blockchain_name": "foundation",
+    "contract_address": "0x4571f3a386d1bd18E25d70d117e7067FA0Bd9D08",
+    "decimals": 18,
+    "signature":
+      "3045022100bc689b5511adbe4b8f07ecbc8e69d0198d12a8325f9cbac869164530616acef40220014e8a877c0a8ec3c987f619310a3275635dce0ff92ec170f4eeee6c9cb8f92b"
+  },
+  {
+    "ticker": "DXR",
+    "name": "DEXTER",
+    "blockchain_name": "foundation",
+    "contract_address": "0x65cCa2791087276856E99b14BC01f4664C3563dd",
+    "decimals": 18,
+    "signature":
+      "304502210093da2fc19d69b1a1a3625b9c6afd1ad14a7e4ca582bfc4b20e338c3a6dfcb6db022027d754383ad56846c994f7b48b152cdc67f839bb51a93ca185f2196532194df1"
   },
   {
     "ticker": "DEX",
@@ -8641,6 +8992,15 @@
       "30440220736b62914c2452734c19fdc66dd1a4c96cca1125ee61bc58f6b0be5a19a9522102201ba9b8edf0d7ca9299d79443cd3a477f833aba893c9a79c0d11f6624cb8b2e49"
   },
   {
+    "ticker": "CPL",
+    "name": "COPYLOCK",
+    "blockchain_name": "foundation",
+    "contract_address": "0x248C27F814EF2c9C51c26398d09715Cd35142fC4",
+    "decimals": 18,
+    "signature":
+      "304402200920195c9270d8bd75dd401252149a9aa934b072c5823da87d0ca19b766476db0220535ce16ea9a9bbaeaec82173c3aefb07d196af7374722dfdacc4a3d11d31d81c"
+  },
+  {
     "ticker": "CTGC",
     "name": "Convenient To Go",
     "blockchain_name": "foundation",
@@ -8711,6 +9071,15 @@
     "decimals": 18,
     "signature":
       "3045022100a80477e64bdfe778a82f5ac584fdef2d29f671f578d2ad5ea2f0dab25ac4a7e90220700dbe5cd6e16e38cb2732d9b2710701875dea5347be93d8ff8cc68897ab4712"
+  },
+  {
+    "ticker": "COINS",
+    "name": "Coinstar",
+    "blockchain_name": "foundation",
+    "contract_address": "0xa48D3B79F43477224933E492E42f5CACf4091ECc",
+    "decimals": 18,
+    "signature":
+      "30440220395d0eb206f3e83fcdd5dd35e4276bd682e3daca739ef9c0c1d242ba390a42a7022077b9c1cd9ce740df78a22eb0c757aeb198de2474150ab5f3385232ec5b97685e"
   },
   {
     "ticker": "CPEX",
@@ -8828,6 +9197,15 @@
     "decimals": 18,
     "signature":
       "3044022036a09b2dfd5492bdccb4393a00aa1cb892bee6fdade48fae047f6d23b5304b4f02202740503165f8b4bacc2d7b55dfdaefde191a935c7fe6252067babae00dbb4a37"
+  },
+  {
+    "ticker": "CKCT",
+    "name": "Clink",
+    "blockchain_name": "foundation",
+    "contract_address": "0xf6BC5dDB21B22b76A31c719a8Ae904232055d876",
+    "decimals": 5,
+    "signature":
+      "3044022046a6d5c2974011eda4d64c5afcac4390b31be9195c548679f1b5e794ccdfb07a02206e9e41dc1dbeee599b88262a6091ba19d51d05719bf62e017a75a078c954f94e"
   },
   {
     "ticker": "CO2",
@@ -9388,6 +9766,15 @@
       "30450221009ae637e0fcd297c551a06c258d62545f4984d8a2099faa79c14e1e3c3eb440a802204da59834c569a5e0ee1927c851b7abf830c2d2ea401c0bc55fe026abf5448ad7"
   },
   {
+    "ticker": "BOLT",
+    "name": "Bolt token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x9F235D23354857EfE6c541dB92a9eF1877689BCB",
+    "decimals": 18,
+    "signature":
+      "3044022048c2ca25ef6854ed65bde728360975d9cfef997494cf76c2b13a08e2b90d87ae022007d8ac5c8cfbd276b70959c4eb5ece49df5db5d9dcd6b1e7efbdc9a46ada1c1d"
+  },
+  {
     "ticker": "BLN",
     "name": "Boleno",
     "blockchain_name": "foundation",
@@ -9593,6 +9980,15 @@
     "decimals": 18,
     "signature":
       "304402204f47f78212c6be404c77c11c2ac77c3f70fb243b2e4f80860b3cca94982d89a302206d27ffd820f9b5e04918cc6058ca05d53bd52235bd74f7e8695b766dac3405c6"
+  },
+  {
+    "ticker": "BLINK",
+    "name": "Blink",
+    "blockchain_name": "foundation",
+    "contract_address": "0x42BEdD647E387daBeC65A7dc3A3bAbCc68BB664d",
+    "decimals": 18,
+    "signature":
+      "3045022100d7fbab96a875a62a87fbf82faee6fefd6afc7dd97ed82f171548e0342e7243da02207cc01fae03b6d968795698c6b946985349a3597a09aa84486aff234a12e1afab"
   },
   {
     "ticker": "BMC",
@@ -9899,6 +10295,15 @@
     "decimals": 18,
     "signature":
       "3045022100da0db5630f3df7aabe8953be3d54690b82f7e42c9a5c21c0047fec3d79de8d6d0220681019f74d7074422a80d35e2548a7c89a160d0abc6b23859ba1873099134b9a"
+  },
+  {
+    "ticker": "BPC",
+    "name": "BestPick Coin",
+    "blockchain_name": "foundation",
+    "contract_address": "0xE865A04Fb0d565107eaF9049Ef22c27DD0c4bBEf",
+    "decimals": 18,
+    "signature":
+      "3045022100c195c1d69c0375b923dd333eee5e8c2f60498b7a5d3ca651f6271103df3aaf4202207fb90231a6edc53b6f07f1c09a4a26ec868d59ac35c5aa9a3845386c3197d15c"
   },
   {
     "ticker": "BERRY",
@@ -10297,6 +10702,15 @@
       "3045022100ee9601651bcb9227437270ea4491c8ad9bbfb36cb97243c3dac9491f2a0e1fca02207833a7a6ebac0eda6505e4ca12d3859e2b663c685e261133fe26d4163868fd9f"
   },
   {
+    "ticker": "ARTS",
+    "name": "ARTISTA",
+    "blockchain_name": "foundation",
+    "contract_address": "0xF013e0ea26Cb386B3021783a3201BF2652778f93",
+    "decimals": 18,
+    "signature":
+      "3045022100e9fee90a9b89b83c1e5d2992cb2e82d1261f7303136ba89b50b65687b72e2f4d0220231efdbce1f6eb4b96d5ad592d1ade87e8ae4d6f25a121c2edc91a1b2ed113cc"
+  },
+  {
     "ticker": "ART",
     "name": "ART",
     "blockchain_name": "foundation",
@@ -10342,6 +10756,15 @@
       "3044022071f6ecd8f542581881c5642436ca309b36f2de278d01c70e66f8d52b9cc4c7ce022018201e5c4387fb7a362ac44f0670410982a84cfd57c0cdd94ce643bf27fb50c2"
   },
   {
+    "ticker": "ARBI",
+    "name": "ARBI Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0x5bffc45D740C213e19B68B40e9ed89705f495E44",
+    "decimals": 18,
+    "signature":
+      "3044022040814b316ded8d6c753301f488424ef4963936ecf071749777b8e8f4fdef7bdf0220141dc0acb0cdccdc44697768ed1aa91ab6892be8cdba29907b2fbb8bfe594c63"
+  },
+  {
     "ticker": "APPC",
     "name": "AppCoins",
     "blockchain_name": "foundation",
@@ -10349,6 +10772,15 @@
     "decimals": 18,
     "signature":
       "3045022100d9dfaa592f583c1856d8ca9fd38c9b4aa3fa42f3a72885876e6549e180d4b466022013dccca0000386036f2961daa566c9938a940fc289dd61c569e2e08327ba495a"
+  },
+  {
+    "ticker": "APOT",
+    "name": "Apot",
+    "blockchain_name": "foundation",
+    "contract_address": "0x16c1E5BAF21b9Fa4BC9f2C374E4dC19fAB5Ac5Dc",
+    "decimals": 18,
+    "signature":
+      "304402207252dde2a05e37f7422b812ffde8c7c870f44872134ee762a6d5af525ecea3ff022046284fcc1f89e2490c29d8af5b54222804d5bd84d900ff3ba4c93f35b03fef44"
   },
   {
     "ticker": "A18",
@@ -10450,6 +10882,15 @@
       "304402203e71f60d496e91a198ed5ffe119063e9bc6b7a57ec55c52fd84aebcbe569921f02201a96612da2ebcb15211e24babab9bd463ea13e405bdd3965f390c95637bd50b8"
   },
   {
+    "ticker": "ALP",
+    "name": "Alphacon",
+    "blockchain_name": "foundation",
+    "contract_address": "0x454B9f249bC1492eE995793Bbc3e57b830F1A5e9",
+    "decimals": 18,
+    "signature":
+      "30450221009279283fc1758b906b693c27648c79ccdc687f20ac062b8c7e61919a1652189e022029a62f470ce132b643014642ceaa5e05ccc3a1d7df597dc67876b8cce06ab5af"
+  },
+  {
     "ticker": "SOC",
     "name": "All Sports Coin",
     "blockchain_name": "foundation",
@@ -10538,6 +10979,15 @@
     "decimals": 18,
     "signature":
       "30450221009b5f35c695749847adf7653f20395b3fa090602a5572efc1053be3e9f19d487802207c577406cd97aef3e6cbcbcab87bd93d34dd44151073eb846b648544cc84fbfb"
+  },
+  {
+    "ticker": "AID",
+    "name": "Aidus",
+    "blockchain_name": "foundation",
+    "contract_address": "0xD178b20c6007572bD1FD01D205cC20D32B4A6015",
+    "decimals": 8,
+    "signature":
+      "3045022100b2a27cbe69c78c6e782c0d3e06536f9d12528c232401a3bb317ef63792dcc2ce0220146910fb0dd043b6ec16ef8cffc97b00bc7075e53826166354d4a6f6617a5860"
   },
   {
     "ticker": "AID",
