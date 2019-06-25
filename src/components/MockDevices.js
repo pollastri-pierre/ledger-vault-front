@@ -82,17 +82,22 @@ const devices = [
 const onboardingDevices = ["Wrapping key", "Shared owner"];
 
 const deviceIds = {
-  10: "4f019f7e13795751",
-  11: "294857902d9200c2",
-  12: "51839a343537c54f",
-  13: "f4e02d6e9000fdbe",
-  16: "7201e8ecd398b1c9",
-  17: "f1f4296963a685f6",
-  18: "825696b3a0609531",
-  19: "b5f489585f89ecda",
-  20: "cb2bc36b417bbc5d",
-  21: "ce5a8c3e772bc77f",
-  22: "9bf0b2e0b22c4a45",
+  4: "3e5d93bd3d1bb422",
+  5: "7c745c871a759648",
+  6: "776a93ed2a94b12d",
+  10: "84e5ca3641ab0d8f",
+  11: "2d6b4c922d0816a8",
+  12: "a1887741b3079235",
+  13: "ee28c05e09d91079",
+  14: "96f3b9d890e84b3e",
+  15: "3e5d93bd3d1bb422",
+  16: "7996a597c0dc62a0",
+  17: "ee19fed05c6d809d",
+  18: "cf3f26692e3bfb46",
+  19: "20c0a5fc173935e7",
+  20: "8db6447808dc4121",
+  21: "85a6f315cdb1efc7",
+  22: "6fdc95cfdc89ce6a",
 };
 
 class MockDevices extends PureComponent {
