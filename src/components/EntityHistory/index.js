@@ -50,6 +50,7 @@ const itemIconsByType = {
 
 const stepIconsByType = {
   CREATED: <FaPlus color={colors.ocean} />,
+  ACTIVED: <FaFlagCheckered color={colors.ocean} />,
   APPROVED: <FaCheck color={colors.ocean} />,
   ABORTED: <MdClear color={colors.grenade} />,
   REVOKED: <MdClear color={colors.grenade} />,
@@ -337,6 +338,7 @@ function getItemStatus(item: VaultHistoryItem) {
   const lastStep = item.steps[item.steps.length - 1];
   if (!lastStep) return null;
   if (
+    lastStep.type === "ACTIVED" ||
     lastStep.type === "APPROVED" ||
     lastStep.type === "SUBMITTED" ||
     lastStep.type === "MIGRATION_FINISHED"

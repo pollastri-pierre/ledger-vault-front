@@ -18,6 +18,7 @@ export type VaultHistoryApprovalStep = {
 
 type VaultHistoryStepType =
   | "CREATED"
+  | "ACTIVED"
   | "APPROVED"
   | "ABORTED"
   | "REVOKED"
@@ -87,7 +88,7 @@ function resolveItemType(item) {
 
 function resolveStepType(item): VaultHistoryStepType {
   if (item.status === "ACTIVE") {
-    return "APPROVED";
+    return "ACTIVED";
   }
   if (
     item.status === "PENDING_REGISTRATION" &&
