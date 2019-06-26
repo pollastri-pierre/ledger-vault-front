@@ -33,10 +33,9 @@ class AccountBodyCell extends PureComponent<CellProps> {
       case "countervalue":
         return (
           <CounterValue
-            from={account.currency}
+            fromAccount={account}
             value={account.balance}
             alwaysShowSign
-            disableCountervalue={account.account_type === "ERC20"}
           />
         );
       case "balance":

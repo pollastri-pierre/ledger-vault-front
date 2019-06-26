@@ -196,10 +196,9 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
 
         <MUITableCell align="right">
           <CounterValue
-            from={account.currency}
+            fromAccount={account}
             value={amount}
             alwaysShowSign
-            disableCountervalue={account.account_type === "ERC20"}
             type={transaction.type}
           />
         </MUITableCell>
