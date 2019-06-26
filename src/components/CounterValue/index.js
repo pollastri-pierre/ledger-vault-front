@@ -20,10 +20,6 @@ type CurOrToken = {
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const mapStateToProps = (state, ownProps) => {
-  if (ownProps.disableCountervalue) {
-    return {};
-  }
-
   const curOrToken = resolveCurOrToken({
     from: ownProps.from,
     fromAccount: ownProps.fromAccount,
