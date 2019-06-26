@@ -177,7 +177,7 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const showTable = !(isFirstQuery && (status === "initial" || isLoading));
 
     const count = resolveCount(data, response);
-    const page = (queryParams.page && parseInt(queryParams.page, 10) - 1) || 0;
+    const page = (queryParams.page && parseInt(queryParams.page, 10)) || 1;
     const showPaginator = count > data.length;
 
     return (
