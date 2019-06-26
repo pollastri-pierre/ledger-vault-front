@@ -52,7 +52,9 @@ function AccountDetails(props: Props) {
           entityType="account"
         />
       )}
-      <AccountSettings key="settings" account={account} />
+      {account.status === "ACTIVE" && (
+        <AccountSettings key="settings" account={account} />
+      )}
     </EntityModal>
   );
 }
