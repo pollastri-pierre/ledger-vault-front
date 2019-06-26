@@ -26,6 +26,7 @@
   },
   "stepType": {
     "CREATED": "Created",
+    "ACTIVED": "Actived",
     "APPROVED": "Approved",
     "ABORTED": "Rejected",
     "REVOKED": "Deleted",
