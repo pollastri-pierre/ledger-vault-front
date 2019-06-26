@@ -97,8 +97,8 @@ class AccountQuickInfo extends Component<Props> {
               </>
             )}
           </Box>
-          <AccountWarning account={account} />
         </Box>
+        <AccountWarning account={account} />
       </Card>
     );
   }
