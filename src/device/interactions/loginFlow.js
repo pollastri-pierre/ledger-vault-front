@@ -7,6 +7,7 @@ import { APPID_VAULT_ADMINISTRATOR } from "device";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
 import Text from "components/base/Text";
+import { UnknownDevice } from "utils/errors";
 import type { Organization } from "data/types";
 import type { DeviceError } from "utils/errors";
 import { getU2FPublicKey } from "device/interactions/common";
@@ -16,8 +17,14 @@ type Flow = Interaction[];
 export const getU2FChallenge: Interaction = {
   needsUserInput: false,
   responseKey: "u2f_challenge",
-  action: ({ u2f_key: { pubKey } }) =>
-    network(`/u2f/authentications/${pubKey}/challenge`, "GET"),
+  action: async ({ u2f_key: { pubKey } }) => {
+    const challenge = await network(
+      `/u2f/authentications/${pubKey}/challenge`,
+      "GET",
+    );
+    if (!challenge.key_handle) throw new UnknownDevice();
+    return challenge;
+  },
 };
 
 export const u2fAuthenticate: Interaction = {
