@@ -130,8 +130,10 @@ function genAccount({ users = [] } = {}, extra = {}) {
     contract_address: null,
     parent_id: null,
     users: getUniqueRandomElements(operators, 3),
-    extended_pub_keys: {
-      "44/0/0": "pub",
+    derivation_path: "44'/0'/0'",
+    extended_public_key: {
+      chain_code: "chain_code",
+      public_key: "public_key",
     },
     xpub: "xpubMOCK",
     settings: {
