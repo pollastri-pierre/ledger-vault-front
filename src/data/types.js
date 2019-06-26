@@ -144,7 +144,8 @@ type AccountCommon = {
   xpub: string,
   tx_approval_steps?: TxApprovalStep[],
   parent: ?number,
-  extended_pub_keys: ExtendedPubKey,
+  derivation_path: string,
+  extended_public_key: ExtendedPubKey,
 };
 export type Account = AccountCommon & {
   currency: string,
