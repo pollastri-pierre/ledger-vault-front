@@ -39,13 +39,13 @@ class AccountEditRequest extends PureComponent<Props> {
     );
     return (
       <Box flow={10} horizontal align="flex-start" justify="space-between">
-        <Box bg={opacity(colors.grenade, 0.05)} style={{ ...styles }}>
+        <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
           <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
             BEFORE
           </Text>
           <RulesViewer rules={tx_approval_steps} />
         </Box>
-        <Box bg={opacity(colors.ocean, 0.05)} style={{ ...styles }}>
+        <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
           <Text small uppercase bold color={opacity(colors.ocean, 0.8)}>
             After
           </Text>
@@ -56,10 +56,10 @@ class AccountEditRequest extends PureComponent<Props> {
   }
 }
 
-const styles = {
+const diffBoxProps = {
   borderRadius: 2,
   padding: 5,
-  flexGrow: 1,
+  flex: 1,
 };
 
 const RenderLoading = () => (
@@ -95,6 +95,7 @@ const resolveRules = (
       const members = users.filter(u => ruleUsers.indexOf(u.id) > -1);
       const group = {
         id: i,
+        is_internal: true,
         members,
       };
       newRules.push({
