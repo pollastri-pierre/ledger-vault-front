@@ -25,7 +25,9 @@ class GroupCreationMembers extends PureComponent<Props> {
     return (
       <Box justify="space-between" grow>
         <Box>
-          <Label>Select group members:</Label>
+          <Label>
+            <Trans i18nKey="group:membersTitle" />
+          </Label>
           <SelectGroupsUsers
             autoFocus={!isEditMode}
             openMenuOnFocus

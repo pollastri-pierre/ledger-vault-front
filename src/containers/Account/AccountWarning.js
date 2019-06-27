@@ -42,7 +42,8 @@ class AccountWarning extends Component<Props> {
 
     const showViewOnlyWarning =
       account.status === "VIEW_ONLY" &&
-      (!account.last_request || account.last_request.status === "ABORTED");
+      (account.last_request === null ||
+        (account.last_request && account.last_request.status === "ABORTED"));
 
     return (
       <Box alignSelf="flex-end">

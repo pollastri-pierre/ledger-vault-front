@@ -1,6 +1,7 @@
 {
   "editInfo": "Editing the description doesn't require the approval from other Administrators.",
   "no_accounts_yet": "There are no accounts linked to this group",
+  "membersTitle": "Group members:",
   "details": {
     "name": "Group name",
     "description": "Group description",

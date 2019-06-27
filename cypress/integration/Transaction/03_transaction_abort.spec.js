@@ -53,7 +53,7 @@ describe("Tests Abort Transaction", () => {
       .contains("Abort")
       .click();
     cy.get(".top-message-body")
-      .contains("the transaction request has been successfully aborted")
+      .contains("The transaction request has been successfully aborted")
       .get(".top-message-title")
       .contains("transaction request aborted");
   });
