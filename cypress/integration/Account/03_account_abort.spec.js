@@ -29,7 +29,7 @@ describe("Tests Abort Account", () => {
       .contains("Abort")
       .click();
     cy.get(".top-message-body")
-      .contains("the account request has been successfully aborted")
+      .contains("The account request has been successfully aborted")
       .get(".top-message-title")
       .contains("account request aborted");
   });
@@ -59,7 +59,7 @@ describe("Tests Abort Account", () => {
       .contains("Abort")
       .click({ force: true });
     cy.get(".top-message-body")
-      .contains("the account request has been successfully aborted")
+      .contains("The account request has been successfully aborted")
       .get(".top-message-title")
       .contains("account request aborted");
   });
