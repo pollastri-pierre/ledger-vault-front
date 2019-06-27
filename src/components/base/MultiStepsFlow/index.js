@@ -202,6 +202,7 @@ class MultiStepsFlow<T, P> extends Component<Props<T, P>, State<T>> {
                 initialPayload={initialPayload}
                 transitionTo={this.transitionTo}
                 updatePayload={this.updatePayload}
+                {...additionalProps}
               />
             </CtaContainer>
           )}
