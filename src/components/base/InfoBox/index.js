@@ -9,7 +9,7 @@ import InfoCircle from "components/icons/InfoCircle";
 
 import colors, { opacity, darken } from "shared/colors";
 
-type InfoBoxType = "info" | "warning" | "error";
+type InfoBoxType = "info" | "warning" | "error" | "success";
 
 type Props = {
   type: InfoBoxType,
