@@ -108,14 +108,7 @@ class FiltersCard extends PureComponent<Props> {
                 : "Loading..."}
             </Text>
           </Box>
-          {paginator && (
-            <Box horizontal align="center" flow={10}>
-              <Text small noSelect>
-                Page:
-              </Text>
-              {paginator}
-            </Box>
-          )}
+          {paginator}
         </Box>
       </Box>
     );
