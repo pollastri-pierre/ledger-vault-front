@@ -29,26 +29,49 @@ class AccountEditRequest extends PureComponent<Props> {
   render() {
     const { account, groups, users } = this.props;
     const { tx_approval_steps, last_request } = account;
-    if (!tx_approval_steps || !last_request || !last_request.edit_data)
-      return null;
+
+    if (!last_request || !last_request.edit_data) return null;
+
+    const { edit_data } = last_request;
 
     const newRules = resolveRules(
-      last_request.edit_data.governance_rules.tx_approval_steps,
+      edit_data.governance_rules.tx_approval_steps,
       groups.edges.map(e => e.node),
       users.edges.map(e => e.node),
     );
+
+    const hasNameChanged = edit_data && account.name !== edit_data.name;
+
     return (
-      <Box flow={10} horizontal align="flex-start" justify="space-between">
+      <Box flow={10} horizontal justify="space-between">
         <Box bg={opacity(colors.grenade, 0.05)} {...diffBoxProps}>
-          <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
-            BEFORE
-          </Text>
+          <Box mb={20}>
+            <Text small uppercase bold color={opacity(colors.grenade, 0.8)}>
+              BEFORE
+            </Text>
+          </Box>
+          {hasNameChanged && (
+            <Box mb={20}>
+              <b>Name</b>
+              <span>{account.name}</span>
+            </Box>
+          )}
+          <b>Rules</b>
           <RulesViewer rules={tx_approval_steps} />
         </Box>
         <Box bg={opacity(colors.ocean, 0.05)} {...diffBoxProps}>
-          <Text small uppercase bold color={opacity(colors.ocean, 0.8)}>
-            After
-          </Text>
+          <Box mb={20}>
+            <Text small uppercase bold color={opacity(colors.ocean, 0.8)}>
+              After
+            </Text>
+          </Box>
+          {hasNameChanged && edit_data && (
+            <Box mb={20}>
+              <b>Name</b>
+              <span>{edit_data.name}</span>
+            </Box>
+          )}
+          <b>Rules</b>
           <RulesViewer rules={newRules} />
         </Box>
       </Box>
@@ -64,7 +87,7 @@ const diffBoxProps = {
 
 const RenderLoading = () => (
   <Box align="center">
-    <CircularProgress size={20} />;
+    <CircularProgress size={20} />
   </Box>
 );
 export default connectData(AccountEditRequest, {

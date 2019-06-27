@@ -10,18 +10,23 @@ import type { Group, TxApprovalStep, User } from "data/types";
 import colors from "shared/colors";
 
 type Props = {
-  rules: TxApprovalStep[],
+  rules: TxApprovalStep[] | null | typeof undefined,
 };
 const arrowRight = <FaArrowRight size={8} />;
 const groupIcon = <FaUsers />;
 
-const RulesViewer = ({ rules }: Props) => (
-  <Box flow={10}>
-    {rules.map(r => (
-      <RuleItem rule={r} key={r.group.id} />
-    ))}
-  </Box>
-);
+const RulesViewer = ({ rules }: Props) => {
+  if (!rules) {
+    return "No rules";
+  }
+  return (
+    <Box flow={10}>
+      {rules.map(r => (
+        <RuleItem rule={r} key={r.group.id} />
+      ))}
+    </Box>
+  );
+};
 
 export default RulesViewer;
 
