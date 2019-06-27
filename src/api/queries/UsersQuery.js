@@ -8,7 +8,7 @@ import type { User } from "data/types";
 type Input = {
   role?: string,
 };
-type Response = User[];
+type Node = User;
 
 const uri = (query: Input) => {
   let finalQuery = {};
@@ -27,12 +27,10 @@ const uri = (query: Input) => {
   return `/people${q ? "?" : ""}${q}`;
 };
 
-//  TODO needs an endpoint not paginated for this
-//  when the endpoint exists, replace ConnectionQuery by simple Query
-export default class UsersQuery extends ConnectionQuery<Input, Response> {
+export default class UsersQuery extends ConnectionQuery<Input, Node> {
   uri = uri(this.props);
 
   pageSize = 30;
 
-  responseSchema = schema.User;
+  nodeSchema = schema.User;
 }
