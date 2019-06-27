@@ -18,7 +18,10 @@ class GroupDetailsDetails extends PureComponent<Props> {
         <LineRow label={<Trans i18nKey="group:details.name" />}>
           {group.name}
         </LineRow>
-        <LineRow noOverflowHidden label={<Trans i18nKey="group:details.description" />}>
+        <LineRow
+          noOverflowHidden
+          label={<Trans i18nKey="group:details.description" />}
+        >
           {group.description}
         </LineRow>
         {group.created_by && (

@@ -7,19 +7,16 @@ import { useDispatch } from "react-redux";
 import type { Match } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
-import colors from "shared/colors";
 import network from "network";
 import { login } from "redux/modules/auth";
 import { loginFlow } from "device/interactions/loginFlow";
 
 import { UnknownDomain } from "utils/errors";
-import TranslatedError from "components/TranslatedError";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 import DeviceInteraction from "components/DeviceInteraction";
 import VaultCentered from "components/VaultCentered";
 import Card from "components/base/Card";
-import Box from "components/base/Box";
 import Button from "components/base/Button";
-import Text from "components/base/Text";
 import { MIGRATION_REDIRECTION } from "containers/Welcome";
 
 type Props = {
@@ -73,14 +70,12 @@ export default function Login(props: Props) {
     <VaultCentered>
       <Card height={350} align="center" justify="center">
         {error ? (
-          <Box flow={20}>
-            <Text color={colors.grenade}>
-              Error: <TranslatedError error={error} />
-            </Text>
+          <>
+            <TriggerErrorNotification error={error} />
             <Button type="submit" variant="filled" onClick={backToWelcome}>
               Go back
             </Button>
-          </Box>
+          </>
         ) : onboardingToBeDone === false ? (
           <DeviceInteraction
             interactions={loginFlow}
