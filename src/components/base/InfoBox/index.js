@@ -24,6 +24,9 @@ const styles = {
   container: {
     color: "#555",
     borderRadius: 4,
+    "& a": {
+      textDecoration: "underline",
+    },
   },
   content: {
     display: "flex",

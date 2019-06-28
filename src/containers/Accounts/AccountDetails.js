@@ -44,7 +44,9 @@ function AccountDetails(props: Props) {
         hasPendingTransactions={hasPendingTransactions}
         account={account}
       />
-      <AccountTransactionRules key="transactionRules" account={account} />
+      {account.tx_approval_steps && (
+        <AccountTransactionRules key="transactionRules" account={account} />
+      )}
       {me.role === "ADMIN" && (
         <FetchEntityHistory
           key="history"

@@ -129,7 +129,7 @@ export function create_account1(currency, name) {
 
   // We should get a Account request created message
   cy.get(".top-message-body")
-    .contains("the account request has been successfully created")
+    .contains("The account request has been successfully created")
     .get(".top-message-title")
     .contains("account request created");
 }
@@ -165,7 +165,7 @@ export function approve_account(currency, name, fiat) {
     .click();
   cy.wait(2500);
   cy.get(".top-message-body")
-    .contains("the account request has been successfully approved")
+    .contains("The account request has been successfully approved")
     .get(".top-message-title")
     .contains("account request approved");
 }
@@ -192,7 +192,7 @@ export function create_transaction(name, id, address, amount) {
     .click({ force: true });
   cy.wait(6500);
   cy.get(".top-message-body")
-    .contains("the transaction request has been successfully created")
+    .contains("The transaction request has been successfully created")
     .get(".top-message-title")
     .contains("transaction request created");
 }
@@ -219,7 +219,7 @@ export function approve_transaction(name) {
     .click({ force: true });
   cy.wait(2000);
   cy.get(".top-message-body")
-    .contains("the transaction request has been successfully approved")
+    .contains("The transaction request has been successfully approved")
     .get(".top-message-title")
     .contains("transaction request approved");
 }
@@ -236,7 +236,7 @@ export function create_user(username, userID, role) {
   cy.contains("Next").click();
   cy.get(".top-message-title").contains("User invitation created");
   cy.get(".top-message-body").contains(
-    "the User invitation has been successfully created",
+    "The User invitation has been successfully created",
   );
   cy.contains("Done").click();
 }
@@ -264,7 +264,7 @@ export function create_group(groupName, description, user1, user2, user3) {
 
 export function successfull_message() {
   cy.get(".top-message-body")
-    .contains("the request has been successfully created")
+    .contains("The request has been successfully created")
     .get(".top-message-title")
     .contains("request created");
 }

@@ -42,7 +42,7 @@ const AdminRulesCard = (props: Props) => {
         <Box grow align="center" justify="center">
           <Text large>
             {organization.quorum} approvals out of{" "}
-            {organization.number_of_admins} admins
+            {organization.number_of_admins} administrators
           </Text>
         </Box>
         {updateQuorumRequest && (

@@ -1,5 +1,6 @@
 {
-  "approved": "The transaction rules of this account have already been submitted and you now need to approve the creation of the account. Go to the <0>Pending</0> page, review the account's details, and approve it.",
+  "need_approval_by_me": "This account is pending to be approved. <0>Click here</0> to review the request.",
+  "need_approval_by_other": "This account is pending to be approved. Additional approvals are required to finalize the request. Go to the <0>Dashboard</0> to track the request.",
   "approved_still_pending": "You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.",
   "balance": "Balance",
   "countervalue": "Countervalue",

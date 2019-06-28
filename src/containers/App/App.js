@@ -6,7 +6,7 @@ import type { MemoryHistory } from "history";
 
 import type { Account, User, Transaction, Organization } from "data/types";
 import connectData from "restlay/connectData";
-import AccountsQuery from "api/queries/AccountsQuery";
+import SearchAccounts from "api/queries/SearchAccounts";
 import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
@@ -158,7 +158,7 @@ export default connectData(AppWrapper, {
   RenderError,
   queries: {
     me: ProfileQuery,
-    accounts: AccountsQuery,
+    accounts: SearchAccounts,
     allPendingTransactions: PendingTransactionsQuery,
     organization: OrganizationQuery,
   },

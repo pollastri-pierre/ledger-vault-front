@@ -36,7 +36,7 @@ describe("Test Case for Groups", function() {
     );
     cy.get("[data-test=update-description]").click();
     cy.get(".top-message-body")
-      .contains("the group's description has been successfully saved")
+      .contains("The group's description has been successfully saved")
       .get(".top-message-title")
       .contains("group's description saved");
   });

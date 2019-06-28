@@ -37,6 +37,7 @@ const GroupCreationInfos = (props: Props) => {
       <Box>
         <Label>{t("group:create.desc_placeholder")}</Label>
         <InputText
+          maxLength={255}
           data-test="group_description"
           value={payload.description}
           onChange={handleChangeDesc}

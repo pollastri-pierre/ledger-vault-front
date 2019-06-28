@@ -7,16 +7,18 @@ import { Link } from "react-router-dom";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
+import { withMe } from "components/UserContextProvider";
 import { Label } from "components/base/form";
 import Box from "components/base/Box";
 import { TransactionsTable } from "components/Table";
 import Card, { CardLoading, CardError } from "components/base/Card";
+import { defaultDefinition as defaultTableDefinition } from "components/Table/TransactionsTable";
 
 import connectData from "restlay/connectData";
 import SearchTransactions from "api/queries/SearchTransactions";
 
 import type { Connection } from "restlay/ConnectionQuery";
-import type { Account, Transaction } from "data/types";
+import type { Account, Transaction, User } from "data/types";
 
 type Props = {
   account: Account,
@@ -24,7 +26,12 @@ type Props = {
   match: Match,
   history: MemoryHistory,
   location: Location,
+  me: User,
 };
+
+const tableDefinition = defaultTableDefinition.filter(
+  col => col.body.prop !== "name",
+);
 
 class AccountLastTransactionsCard extends Component<Props> {
   handleTransactionClick = (transaction: Transaction) => {
@@ -35,10 +42,11 @@ class AccountLastTransactionsCard extends Component<Props> {
   };
 
   render() {
-    const { account, transactions } = this.props;
+    const { account, transactions, me } = this.props;
 
     const orgaName = this.props.location.pathname.split("/")[1];
-    const seeAllURL = `/${orgaName}/operator/transactions?account=${account.id}`;
+    const role = me.role === "ADMIN" ? "admin" : "operator";
+    const seeAllURL = `/${orgaName}/${role}/transactions?account=${account.id}`;
 
     const inner = transactions.edges.length ? (
       <>
@@ -47,6 +55,7 @@ class AccountLastTransactionsCard extends Component<Props> {
           <Link to={seeAllURL}>See all</Link>
         </Box>
         <TransactionsTable
+          customTableDef={tableDefinition}
           accounts={[account]}
           data={transactions.edges.map(e => e.node)}
           onRowClick={this.handleTransactionClick}
@@ -60,7 +69,7 @@ class AccountLastTransactionsCard extends Component<Props> {
   }
 }
 
-export default connectData(withRouter(AccountLastTransactionsCard), {
+export default connectData(withRouter(withMe(AccountLastTransactionsCard)), {
   queries: {
     transactions: SearchTransactions,
   },
