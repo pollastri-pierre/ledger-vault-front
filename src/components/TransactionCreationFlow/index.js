@@ -6,7 +6,9 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
+import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import AccountsQuery from "api/queries/AccountsQuery";
@@ -68,20 +70,28 @@ const steps = [
     id: "confirmation",
     name: <Trans i18nKey="transactionCreation:steps.confirmation.title" />,
     Step: TransactionCreationConfirmation,
-    Cta: ({
-      payload,
-      onClose,
-    }: {
+    Cta: (props: {
       payload: TransactionCreationPayload<any>,
       onClose: Function,
+      restlay: RestlayEnvironment,
     }) => {
+      const { payload, onClose, restlay } = props;
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
           interactions={createAndApprove("TRANSACTION")}
-          onSuccess={data => {
-            console.log(data); // eslint-disable-line no-console
-            onClose();
+          onSuccess={async () => {
+            try {
+              if (payload.account) {
+                await restlay.fetchQuery(
+                  new SearchTransactions({
+                    account: [`${payload.account.id}`],
+                  }),
+                );
+              }
+            } finally {
+              onClose();
+            }
           }}
           disabled={false}
           additionalFields={{ type: "CREATE_TRANSACTION", data }}

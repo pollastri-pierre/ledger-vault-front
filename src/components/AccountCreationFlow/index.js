@@ -86,12 +86,12 @@ const steps = [
       payload,
       onClose,
       isEditMode,
-      additionalProps,
+      restlay,
     }: {
       payload: AccountCreationPayload,
       onClose: () => void,
       isEditMode?: boolean,
-      additionalProps: { restlay: RestlayEnvironment },
+      restlay: RestlayEnvironment,
     }) => {
       const data = serializePayload(payload, isEditMode);
       const isMigrated = payload.accountStatus === "MIGRATED";
@@ -99,12 +99,15 @@ const steps = [
         <ApproveRequestButton
           interactions={createAndApprove("ACCOUNT")}
           onSuccess={async () => {
-            if (isEditMode && payload.id) {
-              await additionalProps.restlay.fetchQuery(
-                new AccountQuery({ accountId: `${payload.id}` }),
-              );
+            try {
+              if (isEditMode && payload.id) {
+                await restlay.fetchQuery(
+                  new AccountQuery({ accountId: `${payload.id}` }),
+                );
+              }
+            } finally {
+              onClose();
             }
-            onClose();
           }}
           disabled={false}
           additionalFields={{

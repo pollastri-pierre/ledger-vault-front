@@ -1,128 +1,114 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import cx from "classnames";
-import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 
 import Warning from "components/icons/TriangleWarning";
+import Box from "components/base/Box";
 import InfoCircle from "components/icons/InfoCircle";
 
 import colors, { opacity, darken } from "shared/colors";
 
-type InfoBoxType = "info" | "warning" | "error";
+type InfoBoxType = "info" | "warning" | "error" | "success";
 
 type Props = {
-  className?: string,
   type: InfoBoxType,
   Footer?: *,
-  withIcon: boolean,
+  withIcon?: boolean,
+  alignCenter?: boolean,
   children: *,
-  classes: { [_: $Keys<typeof styles>]: string },
 };
 
-const styles = {
-  container: {
-    color: "#555",
-    borderRadius: 4,
-    "& a": {
-      textDecoration: "underline",
-    },
-  },
-  content: {
-    display: "flex",
-  },
-  inner: {
-    padding: 10,
-  },
-  footer: {
-    background: "rgba(0,0,0,0.1)",
-    display: "flex",
-    justifyContent: "flex-end",
-    padding: 5,
-    width: "100%",
-  },
-  icon: {
-    flexShrink: 0,
-    lineHeight: 0,
-    paddingLeft: 10,
-    paddingTop: 10,
-    display: "flex",
-    justifyContent: "center",
-  },
-  isInfo: {
-    backgroundColor: opacity(colors.ocean, 0.05),
-    color: darken(colors.ocean, 0.3),
-    "& .icon": {
-      color: opacity(darken(colors.ocean, 0.3), 0.3),
-    },
-    "& .footer": {
-      background: opacity(colors.ocean, 0.1),
-    },
-  },
-  isWarning: {
-    color: colors.light_orange,
-    backgroundColor: opacity(colors.blue_orange, 0.1),
-    "& .icon": {
-      color: opacity(colors.light_orange, 0.4),
-    },
-    "& .footer": {
-      background: opacity(colors.blue_orange, 0.1),
-    },
-  },
-  isError: {
-    color: colors.grenade,
-    backgroundColor: opacity(colors.grenade, 0.05),
-    "& .icon": {
-      color: opacity(colors.grenade, 0.6),
-    },
-    "& .footer": {
-      background: opacity(colors.grenade, 0.1),
-    },
-  },
-};
+const Container = styled(Box).attrs({})`
+  border-radius: 4px;
+  color: #555;
+  align-items: ${p => (p.alignCenter ? "center" : "default")};
+  justify-content: ${p => (p.alignCenter ? "center" : "default")};
+  & a {
+    text-decoration: underline;
+  }
+  color: ${p =>
+    p.type === "info"
+      ? darken(colors.ocean, 0.3)
+      : p.type === "warning"
+      ? colors.light_orange
+      : p.type === "error"
+      ? colors.grenade
+      : p.type === "success"
+      ? colors.green
+      : "black"};
+  background-color: ${p =>
+    p.type === "info"
+      ? opacity(colors.ocean, 0.05)
+      : p.type === "warning"
+      ? opacity(colors.blue_orange, 0.1)
+      : p.type === "error"
+      ? opacity(colors.grenade, 0.05)
+      : p.type === "success"
+      ? opacity(colors.green, 0.1)
+      : "white"};
+`;
 
+const FooterContainer = styled(Box).attrs({
+  align: "flex-end",
+  p: 5,
+})`
+  background: rgba(0, 0, 0, 0.1);
+  background-color: ${p =>
+    p.type === "info"
+      ? opacity(colors.ocean, 0.1)
+      : p.type === "warning"
+      ? opacity(colors.blue_orange, 0.1)
+      : p.type === "error"
+      ? opacity(colors.grenade, 0.05)
+      : "white"};
+`;
+
+const IconContainer = styled(Box).attrs({
+  noShrink: true,
+  pl: 10,
+  pt: 15,
+  justify: "center",
+})`
+  line-height: 0;
+  color: ${p =>
+    p.type === "info"
+      ? opacity(darken(colors.ocean, 0.3), 0.3)
+      : p.type === "warning"
+      ? opacity(colors.light_orange, 0.4)
+      : p.type === "success"
+      ? opacity(colors.green, 0.6)
+      : p.type === "error"
+      ? opacity(colors.grenade, 0.6)
+      : "white"};
+`;
 class InfoBox extends PureComponent<Props> {
   renderIcon = () => {
-    const { type, classes } = this.props;
+    const { type } = this.props;
     let icon;
     if (type === "warning" || type === "error") {
       icon = <Warning width={20} height={20} />;
-    } else if (type === "info") {
+    } else if (type === "info" || type === "success") {
       icon = <InfoCircle size={20} />;
     }
     if (!icon) return null;
-    return <div className={cx("icon", classes.icon)}>{icon}</div>;
+    return <IconContainer type={type}>{icon}</IconContainer>;
   };
 
   render() {
-    const {
-      children,
-      type,
-      Footer,
-      withIcon,
-      className,
-      classes,
-      ...props
-    } = this.props;
+    const { children, type, Footer, withIcon, alignCenter } = this.props;
     return (
-      <div
-        {...props}
-        className={cx(
-          classes.container,
-          type === "info" && classes.isInfo,
-          type === "warning" && classes.isWarning,
-          type === "error" && classes.isError,
-          className,
-        )}
-      >
-        <div className={classes.content}>
+      <Container type={type} alignCenter={alignCenter}>
+        <Box horizontal align="flex-start">
           {withIcon && this.renderIcon()}
-          <div className={classes.inner}>{children}</div>
-        </div>
-        {Footer && <div className={cx("footer", classes.footer)}>{Footer}</div>}
-      </div>
+          <Box p={10} style={{ textAlign: alignCenter ? "center" : "left" }}>
+            {children}
+          </Box>
+        </Box>
+        {Footer && <FooterContainer type={type}>{Footer}</FooterContainer>}
+      </Container>
     );
   }
 }
 
-export default withStyles(styles)(InfoBox);
+export default InfoBox;
