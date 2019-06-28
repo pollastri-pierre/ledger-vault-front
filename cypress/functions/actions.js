@@ -231,7 +231,6 @@ export function approve_transaction(name) {
 export function create_user(username, userID, role) {
   cy.get("[data-test=buttonCreate]").click();
   cy.get(role).click();
-  cy.contains("Next").click();
   cy.get("[data-test=username]").type(username);
   cy.get("[data-test=userID]").type(userID);
   cy.contains("Next").click();
@@ -313,11 +312,11 @@ export function create_erc20_account(
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=account_childname]").type(childname);
-  cy.get("[data-test=account_parentname]").type(parentname);
   cy.contains("Next").click();
   cy.get("#input_groups_users")
     .type(group, { force: true })
     .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
   cy.contains("Add approval").click();
   cy.get("input#input_groups_users")
     .eq(1)

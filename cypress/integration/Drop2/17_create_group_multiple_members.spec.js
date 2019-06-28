@@ -7,7 +7,7 @@ import {
 
 describe("Test Case for Create Groups with multiple member", function() {
   beforeEach(function() {
-    login(6);
+    login(4);
   });
 
   afterEach(function() {
@@ -83,13 +83,13 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
     cy.get("[data-test=buttonCreate]").click();
-    cy.wait(2500);
+    cy.wait(1500);
     cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.get("[data-test=group_description]").type(
-      "America Ops group by cypress",
+      "Key accounts Ops group by cypress",
     );
     cy.contains("Next").click();
-    cy.wait(1500);
+    cy.wait(2500);
     cy.get("#input_groups_users")
       .type("Laura", { force: true })
       .type("{enter}");

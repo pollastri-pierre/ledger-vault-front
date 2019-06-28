@@ -21,7 +21,7 @@ describe("Test Case for Account", function() {
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    create_account("Ethereum", "Syscoin", "Key accounts Ops", "America Op");
+    create_account("Ethereum", "Syscoin", "Key accounts Ops", "America Ops");
     successfull_message();
   });
 
@@ -73,7 +73,7 @@ describe("Test Case for Account", function() {
       "Block.Chain",
       "Syscoin",
       "South Africa",
-      "New EMEA",
+      "EMEA",
     );
     successfull_message();
   });
