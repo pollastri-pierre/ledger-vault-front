@@ -77,12 +77,7 @@ export default () => (
       path="*/transactions/details/:transactionId/:tabIndex"
       component={TransactionDetails}
     />
-    <ModalRoute
-      transparent
-      path="*/receive/:id?"
-      component={ReceiveFlow}
-      disableBackdropClick
-    />
+    <ModalRoute transparent path="*/receive/:id?" component={ReceiveFlow} />
 
     {/* ORGANIZATION */}
     <ModalRoute
