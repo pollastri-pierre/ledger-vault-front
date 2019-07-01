@@ -34,3 +34,7 @@ export const isRequestPending = (request: Request) =>
   request.status !== "APPROVED" &&
   request.status !== "BLOCKED" &&
   request.status !== "ABORTED";
+
+export function isNotTransaction(request: Request) {
+  return request.type !== "CREATE_TRANSACTION";
+}
