@@ -15,6 +15,7 @@ import {
   FaUserPlus,
   FaCheck,
   FaSyncAlt,
+  FaUserSecret,
   FaCog,
   FaFlagCheckered,
 } from "react-icons/fa";
@@ -240,10 +241,17 @@ const ApprovalsStep = ({
       ))}
     </ApprovalStepContainer>
   ) : (
-    <ApprovalStepContainer>Anonymized</ApprovalStepContainer>
+    <ApprovalStepContainer>
+      <FaUserSecret size={16} />
+      <Text>Anonymized</Text>
+    </ApprovalStepContainer>
   );
 
-const ApprovalStepContainer = styled(Box).attrs({ flow: 10 })`
+const ApprovalStepContainer = styled(Box).attrs({
+  flow: 10,
+  horizontal: true,
+  align: "center",
+})`
   position: relative;
   background: rgba(0, 0, 0, 0.05);
   padding: 10px;
