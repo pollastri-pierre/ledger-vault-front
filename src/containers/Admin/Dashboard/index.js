@@ -17,7 +17,7 @@ import Card, {
 import Box from "components/base/Box";
 import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
-import { hasUserApprovedRequest } from "utils/request";
+import { hasUserApprovedRequest, isNotTransaction } from "utils/request";
 
 type Props = {
   data: Connection<Request>,
@@ -61,7 +61,7 @@ class AdminDashboard extends PureComponent<Props> {
 
   render() {
     const { data, me } = this.props;
-    const requests = data.edges.map(el => el.node);
+    const requests = data.edges.map(el => el.node).filter(isNotTransaction);
     const myRequests = requests.filter(
       request => request.approvals && !hasUserApprovedRequest(request, me),
     );
