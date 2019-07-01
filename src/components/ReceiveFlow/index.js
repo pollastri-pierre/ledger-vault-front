@@ -96,9 +96,9 @@ const VerifyFreshAddress = connectData(
     };
 
     return (
-      <Box horizontal align="flex-start" flow={10}>
+      <Box horizontal align="center" flow={10}>
         <div style={{ marginLeft: 0, marginBottom: -10, marginRight: 10 }}>
-          <QRCode hash={hash} size={180} />
+          <QRCode hash={hash} size={150} />
         </div>
         <Box flow={10} pt={10}>
           <Copy text={freshAddress.address} />
