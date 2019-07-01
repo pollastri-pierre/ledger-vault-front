@@ -71,7 +71,7 @@ const getAvailableParentsAccounts = (
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
         el.node.contract_address === erc20token.contract_address,
     )
-    .map(el => el.node.parent_id);
+    .map(el => el.node.parent);
   return allAccounts.edges
     .filter(
       el =>
