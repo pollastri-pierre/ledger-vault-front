@@ -33,7 +33,7 @@
   },
   "NonEIP55Address": {
     "title": "Auto-verification unavailable",
-    "description": "The address couldn't be verified. Carefully check that the address is correct."
+    "description": "We can't verify this address because it's not EIP-55 compliant. Verify this address before creating the transaction."
   },
   "UserInvitationAlreadyUsed": {
     "title": "Invite link not available",
