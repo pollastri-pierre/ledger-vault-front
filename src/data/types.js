@@ -126,7 +126,7 @@ type AccountCommon = {
   id: number,
   account_type: AccountType,
   contract_address: string,
-  parent_id?: number,
+  parent?: number,
   name: string,
   members: User[],
   settings: AccountSettings,

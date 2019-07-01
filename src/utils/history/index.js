@@ -69,7 +69,10 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
                     })),
                 };
               })
-              .filter(approvalsStep => approvalsStep.approvals.length > 0),
+              .filter(
+                approvalsStep =>
+                  !approvalsStep || approvalsStep.approvals.length > 0,
+              ),
           });
         }
 
