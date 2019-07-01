@@ -87,6 +87,7 @@ describe("Test Case for Groups", function() {
   it("Approve Edit Groups", () => {
     cy.server();
     route();
+    logout();
     login(16);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Edit group").click();

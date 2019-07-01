@@ -306,7 +306,31 @@ export function create_erc20_account(
   user1,
 ) {
   cy.get("[data-test=buttonCreate]").click();
+  cy.wait(4500);
+  cy.get("#input_crypto")
+    .type(erc20, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=account_childname]").type(childname);
+  cy.get("[data-test=account_parentname]").type(parentname);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
   cy.wait(3500);
+}
+
+export function create_erc20_account_new_eth(erc20, childname, group, user1) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(5500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
@@ -324,7 +348,57 @@ export function create_erc20_account(
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(2500);
+  cy.wait(3500);
+}
+
+export function create_erc20_with_viewonly_eth_account(
+  erc20,
+  childname,
+  parentname,
+  group,
+  user1,
+) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(5500);
+  cy.get("#input_crypto")
+    .type(erc20, { force: true })
+    .type("{enter}");
+  cy.contains("Create a new view-only Ethereum account").click();
+  cy.contains("Next").click();
+  cy.get("[data-test=account_childname]").type(childname);
+  cy.get("[data-test=account_parentname]").type(parentname);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(3500);
+}
+
+export function provide_viewonly_rule(name, groups, user1) {
+  cy.get("[data-test=view_only_provide_rules]").click();
+  cy.wait(5500);
+  cy.get("[data-test=account_name]").should("have.value", name);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(groups, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(3500);
 }
 
 export function revoke_users(name) {
