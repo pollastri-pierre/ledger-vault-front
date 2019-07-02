@@ -57,6 +57,7 @@ class AccountWarning extends Component<Props> {
                 customColor="#503d1a"
                 onClick={this.editAccount}
                 variant="text"
+                data-test="view_only_provide_rules"
                 className={classes.actionButton}
               >
                 <Trans i18nKey="accountView:view_only_provide_rules" />

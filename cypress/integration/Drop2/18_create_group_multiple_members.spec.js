@@ -7,7 +7,7 @@ import {
 
 describe("Test Case for Create Groups with multiple member", function() {
   beforeEach(function() {
-    login(6);
+    login(4);
   });
 
   afterEach(function() {
@@ -55,7 +55,7 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("#input_groups_users")
       .type("Charles", { force: true })
       .type("{enter}");
-    cy.contains("Select group members").click();
+    cy.contains("members").click({ force: true });
     cy.contains("Next").click();
     cy.get("[data-test=approve_button]").click();
     cy.wait(2500);
@@ -65,6 +65,7 @@ describe("Test Case for Create Groups with multiple member", function() {
   it("Approve America Ops Group", () => {
     cy.server();
     route();
+    logout();
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
@@ -83,13 +84,13 @@ describe("Test Case for Create Groups with multiple member", function() {
     cy.get("[data-test=menuItem-groups]").click();
     cy.url().should("include", "/admin/groups");
     cy.get("[data-test=buttonCreate]").click();
-    cy.wait(2500);
+    cy.wait(1500);
     cy.get("[data-test=group_name]").type("Key accounts Ops");
     cy.get("[data-test=group_description]").type(
-      "America Ops group by cypress",
+      "Key accounts Ops group by cypress",
     );
     cy.contains("Next").click();
-    cy.wait(1500);
+    cy.wait(2500);
     cy.get("#input_groups_users")
       .type("Laura", { force: true })
       .type("{enter}");
@@ -114,6 +115,7 @@ describe("Test Case for Create Groups with multiple member", function() {
   it("Approve Key accounts Ops group", () => {
     cy.server();
     route();
+    logout();
     login(5);
     cy.url().should("include", "/admin/dashboard");
     cy.get("[data-test=menuItem-groups]").click();
