@@ -1,6 +1,5 @@
 // @flow
 
-import { retry } from "network";
 import {
   getConfidentialityPublicKey,
   getU2FPublicKey,
@@ -15,35 +14,34 @@ const openSessionDevice: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "session",
-  action: ({ secure_channel, transport }) =>
-    retry(() => {
-      const signature = Buffer.from(
-        secure_channel.ephemeral_certificate.signature,
-        "base64",
-      );
-      const attestation_pub = Buffer.from(
-        secure_channel.ephemeral_certificate.attestation_pub,
-        "base64",
-      );
-      const certificate = Buffer.from(
-        secure_channel.ephemeral_certificate.certificate,
-        "base64",
-      );
-      const certif = Buffer.concat([
-        Buffer.from([signature.length]),
-        signature,
-        attestation_pub,
-        Buffer.from([certificate.length]),
-        certificate,
-      ]);
-      return openSession()(
-        transport,
-        CONFIDENTIALITY_PATH,
-        Buffer.from(secure_channel.ephemeral_public_key, "hex"),
-        certif,
-        INIT_SESSION,
-      );
-    }),
+  action: async ({ secure_channel, transport }) => {
+    const signature = Buffer.from(
+      secure_channel.ephemeral_certificate.signature,
+      "base64",
+    );
+    const attestation_pub = Buffer.from(
+      secure_channel.ephemeral_certificate.attestation_pub,
+      "base64",
+    );
+    const certificate = Buffer.from(
+      secure_channel.ephemeral_certificate.certificate,
+      "base64",
+    );
+    const certif = Buffer.concat([
+      Buffer.from([signature.length]),
+      signature,
+      attestation_pub,
+      Buffer.from([certificate.length]),
+      certificate,
+    ]);
+    return openSession()(
+      transport,
+      CONFIDENTIALITY_PATH,
+      Buffer.from(secure_channel.ephemeral_public_key, "hex"),
+      certif,
+      INIT_SESSION,
+    );
+  },
 };
 
 const postFragment: Interaction = {

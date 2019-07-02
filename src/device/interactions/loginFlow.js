@@ -1,15 +1,13 @@
 // @flow
 import React from "react";
-import { StatusCodes } from "@ledgerhq/hw-transport";
 
-import network, { retryOnCondition } from "network";
+import network from "network";
 import { APPID_VAULT_ADMINISTRATOR } from "device";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
 import Text from "components/base/Text";
 import { UnknownDevice } from "utils/errors";
 import type { Organization } from "data/types";
-import type { DeviceError } from "utils/errors";
 import { getU2FPublicKey } from "device/interactions/common";
 
 type Flow = Interaction[];
@@ -37,22 +35,14 @@ export const u2fAuthenticate: Interaction = {
     u2f_challenge: { token, key_handle, role, name },
     organization,
   }) =>
-    retryOnCondition(
-      () =>
-        authenticate()(
-          transport,
-          Buffer.from(token, "base64"),
-          APPID_VAULT_ADMINISTRATOR,
-          Buffer.from(key_handle, "hex"),
-          name,
-          role,
-          organization.workspace,
-        ),
-      {
-        shouldThrow: (e: DeviceError) =>
-          e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA,
-      },
+    authenticate()(
+      transport,
+      Buffer.from(token, "base64"),
+      APPID_VAULT_ADMINISTRATOR,
+      Buffer.from(key_handle, "hex"),
+      name,
+      role,
+      organization.workspace,
     ),
 };
 

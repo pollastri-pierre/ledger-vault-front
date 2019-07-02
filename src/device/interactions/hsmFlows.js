@@ -1,11 +1,10 @@
 // @flow
 import React from "react";
-import { StatusCodes } from "@ledgerhq/hw-transport";
 
 import { NoChannelForDevice } from "utils/errors";
 import NewRequestMutation from "api/mutations/NewRequestMutation";
 import GetAddressQuery from "api/queries/GetAddressQuery";
-import network, { retryOnCondition, retry } from "network";
+import network from "network";
 import {
   APPID_VAULT_ADMINISTRATOR,
   ACCOUNT_MANAGER_SESSION,
@@ -32,7 +31,6 @@ import RequestsQuery from "api/queries/RequestsQuery";
 import type { Interaction } from "components/DeviceInteraction";
 import type { RequestTargetType } from "data/types";
 import Text from "components/base/Text";
-import type { DeviceError } from "utils/errors";
 
 type CustomTargetType = "ACCOUNT" | "TRANSACTION" | "ADDRESS";
 type TargetType = RequestTargetType | CustomTargetType;
@@ -135,31 +133,21 @@ const onboardingRegisterDevice: Interaction = {
       certificate,
     ]);
 
-    await retry(() => {
-      return openSession()(
-        transport,
-        CONFIDENTIALITY_PATH,
-        Buffer.from(register_challenge.ephemeral_public_key, "hex"),
-        challengeAttestation,
-        ACCOUNT_MANAGER_SESSION,
-      );
-    });
+    await openSession()(
+      transport,
+      CONFIDENTIALITY_PATH,
+      Buffer.from(register_challenge.ephemeral_public_key, "hex"),
+      challengeAttestation,
+      ACCOUNT_MANAGER_SESSION,
+    );
 
-    return retryOnCondition(
-      () =>
-        register()(
-          transport,
-          Buffer.from(register_challenge.challenge, "hex"),
-          APPID_VAULT_ADMINISTRATOR,
-          username,
-          role,
-          register_challenge.u2f_register_data,
-        ),
-      {
-        shouldThrow: (e: DeviceError) =>
-          e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA,
-      },
+    return register()(
+      transport,
+      Buffer.from(register_challenge.challenge, "hex"),
+      APPID_VAULT_ADMINISTRATOR,
+      username,
+      role,
+      register_challenge.u2f_register_data,
     );
   },
 };
@@ -173,17 +161,9 @@ const onboardingRegisterData: Interaction = {
         u2f_key.pubKey.toString("hex").toUpperCase()
       ] || onboardingRegisterChallenge;
 
-    return retryOnCondition(
-      () =>
-        registerData()(
-          transport,
-          Buffer.from(register_challenge.challenge, "hex"),
-        ),
-      {
-        shouldThrow: (e: DeviceError) =>
-          e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA,
-      },
+    return registerData()(
+      transport,
+      Buffer.from(register_challenge.challenge, "hex"),
     );
   },
 };
@@ -249,37 +229,32 @@ const openSessionValidate: Interaction = {
     if (!channel) {
       throw new NoChannelForDevice();
     }
-    await retry(() => {
-      const signature = Buffer.from(channel.certificate.signature, "base64");
-      const attestation_pub = Buffer.from(
-        channel.certificate.attestation_pub,
-        "base64",
-      );
-      const certificate = Buffer.from(
-        channel.certificate.certificate,
-        "base64",
-      );
-      const certif = Buffer.concat([
-        Buffer.from([signature.length]),
-        signature,
-        attestation_pub,
-        Buffer.from([certificate.length]),
-        certificate,
-      ]);
-      const TransactionTargetsType = [
-        "BITCOIN_LIKE_TRANSACTION",
-        "ETHEREUM_LIKE_TRANSACTION",
-      ];
-      return openSession()(
-        transport,
-        CONFIDENTIALITY_PATH,
-        Buffer.from(channel.ephemeral_public_key, "hex"),
-        certif,
-        targetType && TransactionTargetsType.indexOf(targetType) > -1
-          ? MATCHER_SESSION
-          : ACCOUNT_MANAGER_SESSION,
-      );
-    });
+    const signature = Buffer.from(channel.certificate.signature, "base64");
+    const attestation_pub = Buffer.from(
+      channel.certificate.attestation_pub,
+      "base64",
+    );
+    const certificate = Buffer.from(channel.certificate.certificate, "base64");
+    const certif = Buffer.concat([
+      Buffer.from([signature.length]),
+      signature,
+      attestation_pub,
+      Buffer.from([certificate.length]),
+      certificate,
+    ]);
+    const TransactionTargetsType = [
+      "BITCOIN_LIKE_TRANSACTION",
+      "ETHEREUM_LIKE_TRANSACTION",
+    ];
+    await openSession()(
+      transport,
+      CONFIDENTIALITY_PATH,
+      Buffer.from(channel.ephemeral_public_key, "hex"),
+      certif,
+      targetType && TransactionTargetsType.indexOf(targetType) > -1
+        ? MATCHER_SESSION
+        : ACCOUNT_MANAGER_SESSION,
+    );
 
     return Promise.resolve(channel.blob);
   },
@@ -288,34 +263,32 @@ const openSessionVerifyAddress: Interaction = {
   device: true,
   responseKey: "channel_blob",
   action: async ({ transport, address_channel }) => {
-    await retry(() => {
-      const signature = Buffer.from(
-        address_channel.certificate.signature,
-        "base64",
-      );
-      const attestation_pub = Buffer.from(
-        address_channel.certificate.attestation_pub,
-        "base64",
-      );
-      const certificate = Buffer.from(
-        address_channel.certificate.certificate,
-        "base64",
-      );
-      const certif = Buffer.concat([
-        Buffer.from([signature.length]),
-        signature,
-        attestation_pub,
-        Buffer.from([certificate.length]),
-        certificate,
-      ]);
-      return openSession()(
-        transport,
-        CONFIDENTIALITY_PATH,
-        Buffer.from(address_channel.ephemeral_public_key, "hex"),
-        certif,
-        ACCOUNT_MANAGER_SESSION,
-      );
-    });
+    const signature = Buffer.from(
+      address_channel.certificate.signature,
+      "base64",
+    );
+    const attestation_pub = Buffer.from(
+      address_channel.certificate.attestation_pub,
+      "base64",
+    );
+    const certificate = Buffer.from(
+      address_channel.certificate.certificate,
+      "base64",
+    );
+    const certif = Buffer.concat([
+      Buffer.from([signature.length]),
+      signature,
+      attestation_pub,
+      Buffer.from([certificate.length]),
+      certificate,
+    ]);
+    await openSession()(
+      transport,
+      CONFIDENTIALITY_PATH,
+      Buffer.from(address_channel.ephemeral_public_key, "hex"),
+      certif,
+      ACCOUNT_MANAGER_SESSION,
+    );
 
     return Promise.resolve(address_channel.blob);
   },
@@ -328,21 +301,12 @@ const validateDevice = (entity: ?TargetType): Interaction => ({
   tooltip: entity ? (
     <Text small i18nKey={`deviceInteractions:${entity}`} />
   ) : null,
-  action: ({ transport, channel_blob }) => {
-    return retryOnCondition(
-      () =>
-        validateVaultOperation()(
-          transport,
-          VALIDATION_PATH,
-          Buffer.from(channel_blob, "base64"),
-        ),
-      {
-        shouldThrow: (e: DeviceError) =>
-          e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA,
-      },
-    );
-  },
+  action: ({ transport, channel_blob }) =>
+    validateVaultOperation()(
+      transport,
+      VALIDATION_PATH,
+      Buffer.from(channel_blob, "base64"),
+    ),
 });
 
 export const validateOperation = (entity: ?TargetType) => [
