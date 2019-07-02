@@ -7,7 +7,7 @@
   "APPROVED": "Approved",
   "SUBMITTED": "Submitted",
   "PENDING": "Pending",
-  "VIEW_ONLY": "View only",
+  "VIEW_ONLY": "View-only",
   "CREATION_ABORTED": "Creation rejected",
   "AWAITING_APPROVAL": "Awaiting approval",
   "PENDING_APPROVAL": "Pending approval",
@@ -15,7 +15,7 @@
   "PENDING_REGISTRATION": "Pending registration",
   "PENDING_UPDATE": "Pending update",
   "PENDING_MIGRATED": "Pending update",
-  "PENDING_VIEW_ONLY": "Pending view only",
+  "PENDING_VIEW_ONLY": "Pending view-only",
   "ACCESS_SUSPENDED": "Access suspended",
   "MIGRATED": "Account update required",
   "HSM_COIN_UPDATED": "Coin update required"

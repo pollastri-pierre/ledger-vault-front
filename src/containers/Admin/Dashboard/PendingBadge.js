@@ -6,7 +6,7 @@ import RequestsQuery from "api/queries/RequestsQuery";
 import type { Connection } from "restlay/ConnectionQuery";
 import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
-import { hasUserApprovedRequest } from "utils/request";
+import { hasUserApprovedRequest, isNotTransaction } from "utils/request";
 import colors from "shared/colors";
 
 type Props = {
@@ -21,7 +21,8 @@ class PendingBadge extends PureComponent<Props> {
       data &&
       data.edges
         .map(el => el.node)
-        .filter(r => r.status !== "PENDING_REGISTRATION");
+        .filter(r => r.status !== "PENDING_REGISTRATION")
+        .filter(isNotTransaction);
     // NOTE: temp filter the me-related pending requests until gate gives this
     const myRequests = requests.filter(
       request => !hasUserApprovedRequest(request, me),

@@ -54,6 +54,7 @@ const AdministrationScheme = ({
         total={total}
         onChange={onChange}
         max={total - 1}
+        min={2}
       />
     </div>
     <Footer

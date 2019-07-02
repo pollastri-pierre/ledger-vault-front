@@ -89,7 +89,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
     const isActive = !!currenciesAndToken && !!currenciesAndToken.length;
     return (
       <WrappableField
-        label="Cryptocurrency"
+        label="Crypto asset"
         RenderCollapsed={this.Collapsed}
         isActive={isActive}
         closeOnChange={false}

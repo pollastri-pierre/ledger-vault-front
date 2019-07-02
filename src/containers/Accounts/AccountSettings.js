@@ -99,14 +99,14 @@ function AccountSettings(props: Props) {
       </LineRow>
       {me.role === "ADMIN" &&
         account.account_type === "Bitcoin" &&
-        account.extended_pub_keys && (
+        account.extended_public_key && (
           <>
             <LineRow
               label={
                 <Trans i18nKey="accountSettings:advanced.derivation_path" />
               }
             >
-              <Text small>{Object.keys(account.extended_pub_keys)[0]}</Text>
+              <Text small>{account.derivation_path}</Text>
             </LineRow>
             <LineRow label={<Trans i18nKey="accountSettings:advanced.xpub" />}>
               <Button

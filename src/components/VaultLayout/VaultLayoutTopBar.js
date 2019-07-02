@@ -10,7 +10,7 @@ import type { User } from "data/types";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import { vaultLayoutConfig } from "styles/theme";
-import { urls } from "utils/urls";
+import { urlByRole } from "components/HelpLink";
 
 type Props = {
   globalAnimation: Animated.Value,
@@ -35,7 +35,7 @@ export default ({
         <Box horizontal align="center" px={20}>
           <Text small>{user.username}</Text>
         </Box>
-        <TopBarAction link={urls.customer_support} Icon={FaQuestionCircle} />
+        <TopBarAction link={urlByRole[user.role]} Icon={FaQuestionCircle} />
         <TopBarAction data-test="logout" Icon={FaPowerOff} onClick={onLogout} />
       </VaultLayoutTopBarRight>
     </VaultLayoutTopBar>

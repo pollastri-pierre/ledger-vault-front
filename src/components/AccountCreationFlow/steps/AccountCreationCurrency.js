@@ -71,7 +71,7 @@ const getAvailableParentsAccounts = (
         // $FlowFixMe flow failed to see that we are sure that erc20token is not null nor undefined
         el.node.contract_address === erc20token.contract_address,
     )
-    .map(el => el.node.parent_id);
+    .map(el => el.node.parent);
   return allAccounts.edges
     .filter(
       el =>
@@ -190,7 +190,7 @@ class AccountCreationCurrencies extends PureComponent<Props> {
               <InfoBox withIcon type="info">
                 <Text>
                   <Trans i18nKey="newAccount:erc20.infoNewAccount" />{" "}
-                  <HelpLink>
+                  <HelpLink subLink="/Content/administrators/accounts/abouterc20tokens.htm">
                     <ExternalLink color={colors.ocean} size={13} />
                   </HelpLink>
                 </Text>

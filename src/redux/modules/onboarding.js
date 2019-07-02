@@ -131,7 +131,7 @@ const initialState = {
   step: 0,
   device_modal: false,
   member_modal: false,
-  quorum: 1,
+  quorum: 2,
   state: "LOADING",
   sharedOwners: [],
   wrapping: {
@@ -530,7 +530,9 @@ const syncNextState = (state: Store, action, next = false) => {
         ...state.registering,
         admins: actionState.admins,
       },
-      quorum: actionState.quorum,
+      // the gate return 0 as default quorum instead of 2
+      // TODO remove when gate fixed it
+      quorum: actionState.quorum < 2 ? 2 : actionState.quorum,
     };
   }
   if (actionState.state === "SHARED_OWNER_VALIDATION") {

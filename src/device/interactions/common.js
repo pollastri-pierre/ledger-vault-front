@@ -1,5 +1,4 @@
 // @flow
-import { retry } from "network";
 import React from "react";
 import type { Interaction } from "components/DeviceInteraction";
 import Text from "components/base/Text";
@@ -22,8 +21,7 @@ export const getU2FPublicKey: Interaction = {
   device: true,
   responseKey: "u2f_key",
   tooltip: <Text small i18nKey="common:plug_device" />,
-  action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, U2F_PATH, false)),
+  action: ({ transport }) => getPublicKey()(transport, U2F_PATH, false),
 };
 
 export const checkVersion: Interaction = {
@@ -33,7 +31,7 @@ export const checkVersion: Interaction = {
   tooltip: <Text small i18nKey="common:plug_device" />,
   action: ({ transport }) => {
     const promise = new Promise((resolve, reject) => {
-      retry(() => getVersion()(transport)).then(version => {
+      getVersion()(transport).then(version => {
         if (version.appVersion !== window.config.APP_VERSION) {
           reject(new OutOfDateApp());
         } else {
@@ -49,24 +47,21 @@ export const getConfidentialityPublicKey: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "confidentiality_key",
-  action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, CONFIDENTIALITY_PATH)),
+  action: ({ transport }) => getPublicKey()(transport, CONFIDENTIALITY_PATH),
 };
 
 export const getValidationPublicKey: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "validation_key",
-  action: ({ transport }) =>
-    retry(() => getPublicKey()(transport, VALIDATION_PATH)),
+  action: ({ transport }) => getPublicKey()(transport, VALIDATION_PATH),
 };
 
 export const getAttestation: Interaction = {
   needsUserInput: false,
   device: true,
   responseKey: "attestation",
-  action: ({ transport }) =>
-    retry(() => getAttestationCertificate()(transport)),
+  action: ({ transport }) => getAttestationCertificate()(transport),
 };
 
 export const generateWrappingKey: Interaction = {
@@ -74,7 +69,7 @@ export const generateWrappingKey: Interaction = {
   device: true,
   responseKey: "blob",
   action: ({ transport }) =>
-    retry(() => generateKeyComponent()(transport, KEY_MATERIAL_PATH, true)),
+    generateKeyComponent()(transport, KEY_MATERIAL_PATH, true),
 };
 
 export const generateFragmentSeed: Interaction = {
@@ -82,5 +77,5 @@ export const generateFragmentSeed: Interaction = {
   device: true,
   responseKey: "blob",
   action: ({ transport }) =>
-    retry(() => generateKeyComponent()(transport, KEY_MATERIAL_PATH)),
+    generateKeyComponent()(transport, KEY_MATERIAL_PATH),
 };

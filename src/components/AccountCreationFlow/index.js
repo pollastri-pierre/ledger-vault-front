@@ -5,14 +5,15 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
-import AccountQuery from "api/queries/AccountQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -85,17 +86,29 @@ const steps = [
       payload,
       onClose,
       isEditMode,
+      restlay,
     }: {
       payload: AccountCreationPayload,
       onClose: () => void,
       isEditMode?: boolean,
+      restlay: RestlayEnvironment,
     }) => {
       const data = serializePayload(payload, isEditMode);
       const isMigrated = payload.accountStatus === "MIGRATED";
       return (
         <ApproveRequestButton
           interactions={createAndApprove("ACCOUNT")}
-          onSuccess={onClose}
+          onSuccess={async () => {
+            try {
+              if (isEditMode && payload.id) {
+                await restlay.fetchQuery(
+                  new AccountQuery({ accountId: `${payload.id}` }),
+                );
+              }
+            } finally {
+              onClose();
+            }
+          }}
           disabled={false}
           additionalFields={{
             type: isMigrated

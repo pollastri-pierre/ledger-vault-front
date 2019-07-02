@@ -9,6 +9,6 @@
   "TRANSACTION": "Verify the transaction on your device",
   "PERSON": "Verify the user on your device",
   "ORGANIZATION": "Verify the admin rules on your device",
-  "u2f_authenticate": "Click sign-in on the device",
+  "u2f_authenticate": "Tap sign-in on the device",
   "ADDRESS": "Verify the address on the device"
 }

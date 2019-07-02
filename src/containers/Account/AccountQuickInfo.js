@@ -84,7 +84,7 @@ class AccountQuickInfo extends Component<Props> {
                 }
               />
             )}
-            {account.account_type === "ERC20" && account.parent_id && (
+            {account.account_type === "ERC20" && account.parent && (
               <>
                 <Row
                   label={<Trans i18nKey="accountView:summary.token_address" />}
@@ -92,13 +92,13 @@ class AccountQuickInfo extends Component<Props> {
                 />
                 <Row
                   label={<Trans i18nKey="accountView:summary.parent_account" />}
-                  value={<Link to={`${account.parent_id}`}>ETH account</Link>}
+                  value={<Link to={`${account.parent}`}>ETH account</Link>}
                 />
               </>
             )}
           </Box>
-          <AccountWarning account={account} />
         </Box>
+        <AccountWarning account={account} />
       </Card>
     );
   }

@@ -36,7 +36,7 @@ describe("Test Case for Groups", function() {
     );
     cy.get("[data-test=update-description]").click();
     cy.get(".top-message-body")
-      .contains("the group's description has been successfully saved")
+      .contains("The group's description has been successfully saved")
       .get(".top-message-title")
       .contains("group's description saved");
   });
@@ -87,7 +87,8 @@ describe("Test Case for Groups", function() {
   it("Approve Edit Groups", () => {
     cy.server();
     route();
-    login(6);
+    logout();
+    login(16);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Edit group").click();
     cy.wait(1500);

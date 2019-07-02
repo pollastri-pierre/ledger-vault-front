@@ -20,10 +20,6 @@ type CurOrToken = {
 const intermediaryCurrency = getCryptoCurrencyById("bitcoin");
 
 const mapStateToProps = (state, ownProps) => {
-  if (ownProps.disableCountervalue) {
-    return {};
-  }
-
   const curOrToken = resolveCurOrToken({
     from: ownProps.from,
     fromAccount: ownProps.fromAccount,
@@ -77,7 +73,7 @@ function resolveCurOrToken({
 // because currently the API and ledgerHQ don't share the same format for Currency
 
 type Props = {
-  countervalue: ?number,
+  countervalue: ?BigNumber,
   value: BigNumber, // eslint-disable-line react/no-unused-prop-types
   from?: string, // eslint-disable-line react/no-unused-prop-types
   fromAccount?: Account, // eslint-disable-line react/no-unused-prop-types
@@ -88,10 +84,17 @@ type Props = {
 
 class CounterValue extends PureComponent<Props> {
   render() {
-    const { countervalue, alwaysShowSign, type, renderNA } = this.props;
+    const { value, countervalue, alwaysShowSign, type, renderNA } = this.props;
     if (!countervalue) {
       return renderNA || "N/A";
     }
+
+    // display specific string if value is lower than 0.01 USD
+    // see https://ledgerhq.atlassian.net/browse/LV-828
+    if (value.isGreaterThan(0) && countervalue.isEqualTo(0)) {
+      return "< USD 0.01";
+    }
+
     return (
       <CurrencyFiatValue
         fiat="USD"

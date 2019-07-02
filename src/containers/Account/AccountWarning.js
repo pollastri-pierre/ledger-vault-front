@@ -6,6 +6,7 @@ import type { MemoryHistory } from "history";
 
 import { isAccountOutdated } from "utils/accounts";
 import InfoBox from "components/base/InfoBox";
+import Box from "components/base/Box";
 import Text from "components/base/Text";
 import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
@@ -38,19 +39,25 @@ class AccountWarning extends Component<Props> {
 
   render() {
     const { classes, account } = this.props;
+
+    const showViewOnlyWarning =
+      account.status === "VIEW_ONLY" &&
+      (account.last_request === null ||
+        (account.last_request && account.last_request.status === "ABORTED"));
+
     return (
-      <>
-        {account.status === "VIEW_ONLY" && !account.last_request && (
+      <Box alignSelf="flex-end">
+        {showViewOnlyWarning && (
           <InfoBox
             type="warning"
-            withIcon
             className={classes.infobox}
             Footer={
               <Button
-                size="small"
+                size="tiny"
                 customColor="#503d1a"
                 onClick={this.editAccount}
                 variant="text"
+                data-test="view_only_provide_rules"
                 className={classes.actionButton}
               >
                 <Trans i18nKey="accountView:view_only_provide_rules" />
@@ -65,21 +72,20 @@ class AccountWarning extends Component<Props> {
         {isAccountOutdated(account) && (
           <InfoBox
             type="warning"
-            withIcon
             className={classes.infobox}
             Footer={
               <Button
                 onClick={this.editAccount}
                 className={classes.actionButton}
               >
-                <Trans i18nKey="update:provide_rule" />
+                <Trans i18nKey="accountView:updated_provide_rule" />
               </Button>
             }
           >
-            <Trans i18nKey="update:provide_rule_subtext" />
+            <Trans i18nKey="accountView:updated_provide_rule_subtext" />
           </InfoBox>
         )}
-      </>
+      </Box>
     );
   }
 }
