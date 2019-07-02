@@ -78,7 +78,7 @@ const VerifyFreshAddress = connectData(
     const currency = getCryptoCurrencyById(account.currency);
     const hash =
       account && account.account_type === "Bitcoin" && currency
-        ? `${currency.scheme}:${freshAddress.address}`
+        ? `${currency.id}:${freshAddress.address}`
         : `${freshAddress.address}`;
     const [hasBeenVerified, setHasBeenVerified] = useState<boolean | null>(
       null,
