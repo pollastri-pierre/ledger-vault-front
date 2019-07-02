@@ -19,6 +19,7 @@ const formShadows = {
 form.shadow = formShadows;
 
 const colors = {
+  spinner: "hsl(0, 0%, 60%)",
   night: "#1d2028",
   mouse: "#e2e2e2",
   green: "rgb(102, 190, 84)",
@@ -47,6 +48,8 @@ const colors = {
   translucentGrenade: "rgb(234, 46, 73, 0.1)",
 
   // NEW COLORS
+  bgHover: opacity("#1ea7fd", 0.03),
+  bgActive: opacity("#1ea7fd", 0.06),
   text: "#6f6f6f",
   textLight: "#aaaaaa",
   form,

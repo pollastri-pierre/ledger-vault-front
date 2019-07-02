@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
+import Spinner from "components/base/Spinner";
 import TryAgain from "components/TryAgain";
 import connectData from "restlay/connectData";
 import UsersQuery from "api/queries/UsersQuery";
@@ -33,7 +33,7 @@ const AccountTransactionRules = ({
 
 const RenderLoading = () => (
   <Box align="center">
-    <CircularProgress size={20} />
+    <Spinner />
   </Box>
 );
 export default connectData(AccountTransactionRules, {

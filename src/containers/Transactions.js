@@ -9,7 +9,8 @@ import SearchTransactionsQuery from "api/queries/SearchTransactions";
 
 import { TransactionsTable } from "components/Table";
 import { TransactionsFilters } from "components/filters";
-import { CardLoading, CardError } from "components/base/Card";
+import { CardError } from "components/base/Card";
+import { WidgetLoading } from "components/widgets/Widget";
 
 import DataSearch from "components/DataSearch";
 
@@ -46,6 +47,6 @@ export default connectData(TransactionsContainer, {
   queries: {
     accounts: AccountsQuery,
   },
-  RenderLoading: CardLoading,
+  RenderLoading: () => <WidgetLoading height={300} />,
   RenderError: CardError,
 });

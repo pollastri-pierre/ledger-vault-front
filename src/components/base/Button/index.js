@@ -57,18 +57,8 @@ const FLOW_BY_SIZE = {
   medium: 8,
 };
 
-const LOADER_SIZE_BY_SIZE = {
-  tiny: 15,
-  small: 15,
-  medium: 20,
-};
-
-const Loader = ({ color, size }: { color: string, size: Size }) => (
-  <CircularProgress
-    color={color}
-    size={LOADER_SIZE_BY_SIZE[size]}
-    style={{ position: "absolute" }}
-  />
+const Loader = ({ color }: { color: string }) => (
+  <CircularProgress color={color} size={16} style={{ position: "absolute" }} />
 );
 const getBgColor = (customColor, type, variant) => {
   if (variant === "outlined" || variant === "text") {

@@ -126,18 +126,21 @@ class WrappableField extends Component<Props, State> {
 
     const inner =
       isOpened && inPlace ? (
-        <div style={{ width: 250 }}>{renderChildren()}</div>
+        <div style={{ width: width || 250 }}>{renderChildren()}</div>
       ) : (
         <InlineLabel
           onClick={this.toggle}
           isOpened={isOpened}
           isActive={isActive}
+          width={inPlace ? width || undefined : undefined}
         >
-          <Text bold={isActive} noWrap>
-            {label}
-            {isActive ? ": " : ""}
-          </Text>
-          {isActive && RenderCollapsed && <RenderCollapsed />}
+          <Box horizontal align="center" overflow="hidden" flow={5} grow>
+            <Text bold={isActive} noWrap>
+              {label}
+              {isActive ? ": " : ""}
+            </Text>
+            {isActive && RenderCollapsed && <RenderCollapsed />}
+          </Box>
           <div style={styles.noShrink}>
             <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
           </div>

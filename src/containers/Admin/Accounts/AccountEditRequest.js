@@ -1,12 +1,12 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import connectData from "restlay/connectData";
 import UsersQuery from "api/queries/UsersQuery";
 import GroupsQuery from "api/queries/GroupsQuery";
 import Box from "components/base/Box";
+import Spinner from "components/base/Spinner";
 import Text from "components/base/Text";
 import colors, { opacity } from "shared/colors";
 import RulesViewer from "components/ApprovalsRules/RulesViewer";
@@ -87,7 +87,7 @@ const diffBoxProps = {
 
 const RenderLoading = () => (
   <Box align="center">
-    <CircularProgress size={20} />
+    <Spinner />
   </Box>
 );
 export default connectData(AccountEditRequest, {

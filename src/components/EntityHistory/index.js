@@ -202,7 +202,7 @@ const HistoryStep = ({
       {" on "}
       {moment(step.createdOn).format("LLL")}
     </span>
-    {step.approvalsSteps && (
+    {step.approvalsSteps && !!step.approvalsSteps.length && (
       <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
     )}
   </HistoryStepContainer>

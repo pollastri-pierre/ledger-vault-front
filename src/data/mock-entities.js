@@ -7,6 +7,7 @@ import BigNumber from "bignumber.js/bignumber.js";
 import faker from "faker";
 import keyBy from "lodash/keyBy";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
+import { RequestActivityTypeList } from "data/types";
 
 import { listCryptoCurrencies } from "utils/cryptoCurrencies";
 
@@ -167,17 +168,29 @@ function genAccount({ users = [] } = {}, extra = {}) {
   };
 }
 
-export const genRequest = type => {
+export const genRequest = (
+  type = "CREATE_GROUP",
+  { target_type = "GROUP", status = "PENDING_APPROVAL" } = {},
+) => {
   const created_on = faker.date.past(1);
   return {
+    id: faker.random.alphaNumeric(40),
     created_on,
     created_by: 1,
     approvals: [],
     target_id: 1,
-    target_type: "GROUP",
-    type: type || "CREATE_GROUP",
-    status: "PENDING_APPROVAL",
+    target_type,
+    type,
+    status,
   };
+};
+
+export const genRequests = nb => {
+  const res = [];
+  for (let i = 0; i < nb; i++) {
+    res.push(genRequest(faker.random.arrayElement(RequestActivityTypeList)));
+  }
+  return res;
 };
 
 function genUser() {

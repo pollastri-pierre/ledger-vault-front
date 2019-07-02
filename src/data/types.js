@@ -388,18 +388,25 @@ export type RequestStatus =
   | "PENDING_REGISTRATION"
   | "APPROVED";
 
-export type RequestActivityType =
-  | "CREATE_GROUP"
-  | "EDIT_GROUP"
-  | "REVOKE_GROUP"
-  | "REVOKE_USER"
-  | "CREATE_ADMIN"
-  | "CREATE_OPERATOR"
-  | "CREATE_ACCOUNT"
-  | "EDIT_ACCOUNT"
-  | "REVOKE_ACCOUNT"
-  | "MIGRATE_ACCOUNT"
-  | "UPDATE_QUORUM";
+export const RequestActivityTypeDefs = {
+  CREATE_GROUP: "CREATE_GROUP",
+  EDIT_GROUP: "EDIT_GROUP",
+  REVOKE_GROUP: "REVOKE_GROUP",
+  REVOKE_USER: "REVOKE_USER",
+  CREATE_ADMIN: "CREATE_ADMIN",
+  CREATE_OPERATOR: "CREATE_OPERATOR",
+  CREATE_ACCOUNT: "CREATE_ACCOUNT",
+  EDIT_ACCOUNT: "EDIT_ACCOUNT",
+  REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
+  MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
+  UPDATE_QUORUM: "UPDATE_QUORUM",
+};
+
+export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
+
+export const RequestActivityTypeList: RequestActivityType[] = Object.keys(
+  RequestActivityTypeDefs,
+);
 
 export type RequestTargetType =
   | "GROUP"
@@ -412,7 +419,7 @@ export type RequestTargetType =
   | "ORGANIZATION";
 
 type RequestCommon = {
-  created_by: number,
+  created_by: User,
   created_on: string,
   id: number,
   status: string,

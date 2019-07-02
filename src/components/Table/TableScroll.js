@@ -12,8 +12,6 @@ type State = {
 
 const styles = {
   outer: {
-    border: "1px solid #f0f0f0",
-    borderRadius: 2,
     position: "relative",
     overflow: "hidden",
   },
@@ -26,7 +24,7 @@ const styles = {
     right: 0,
     bottom: 0,
     transition: "100ms linear opacity",
-    boxShadow: "rgba(0, 0, 0, 0.07) 0px 0px 12px 5px",
+    boxShadow: "rgba(0, 0, 0, 0.3) 0px 0px 12px 5px",
   },
 };
 
