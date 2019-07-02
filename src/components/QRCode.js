@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from "react";
-import Qrious from "qrious";
+
+const QRCode = require("qrcode");
 
 type Props = {
   hash: string,
@@ -8,15 +9,11 @@ type Props = {
   pixelRatio: number,
 };
 
-class QRCode extends PureComponent<Props> {
+class QRCodeComponent extends PureComponent<Props> {
   static defaultProps = {
     size: 100,
     pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1,
   };
-
-  canvas: ?HTMLCanvasElement;
-
-  qr: ?Qrious;
 
   componentDidMount() {
     this.drawQR(this.props.hash);
@@ -27,28 +24,26 @@ class QRCode extends PureComponent<Props> {
   }
 
   drawQR(hash: string) {
-    const { canvas } = this;
-    const { size, pixelRatio } = this.props;
-    if (!canvas) return;
-    this.qr = new Qrious({
-      foreground: "black",
-      element: canvas,
-      level: "L",
-      size: size * pixelRatio,
-      value: hash,
-    });
+    const { pixelRatio, size } = this.props;
+    QRCode.toCanvas(
+      hash,
+      { errorCorrectionLevel: "L", width: pixelRatio * size },
+      function(err, canvas) {
+        if (err) throw err;
+        const container = document.getElementById("qrcode-address");
+        if (container) {
+          container.appendChild(canvas);
+        }
+      },
+    );
   }
-
-  onCanvasRef = (c: ?HTMLCanvasElement) => {
-    this.canvas = c;
-  };
 
   render() {
     const { size } = this.props;
     const width = size;
     const height = size;
-    return <canvas ref={this.onCanvasRef} style={{ width, height }} />;
+    return <div id="qrcode-address" style={{ width, height }} />;
   }
 }
 
-export default QRCode;
+export default QRCodeComponent;
