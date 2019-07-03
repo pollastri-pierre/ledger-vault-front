@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
 import { DEVICE_REJECT_ERROR_CODE } from "device";
-import CircleProgress from "components/CircleProgress";
+import CircleProgress from "components/legacy/CircleProgress";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
 import DialogButton from "components/buttons/DialogButton";
