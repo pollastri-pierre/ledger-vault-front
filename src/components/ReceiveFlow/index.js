@@ -96,7 +96,7 @@ const VerifyFreshAddress = connectData(
     };
 
     return (
-      <Box horizontal align="flex-start" flow={10}>
+      <Box horizontal align="flex-start" justify="space-between" flow={10}>
         <div
           style={{
             marginLeft: 0,

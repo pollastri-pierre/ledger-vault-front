@@ -6,13 +6,11 @@ const QRCode = require("qrcode");
 type Props = {
   hash: string,
   size: number,
-  pixelRatio: number,
 };
 
 class QRCodeComponent extends PureComponent<Props> {
   static defaultProps = {
     size: 100,
-    pixelRatio: (typeof window !== "undefined" && window.devicePixelRatio) || 1,
   };
 
   componentDidMount() {
@@ -24,18 +22,17 @@ class QRCodeComponent extends PureComponent<Props> {
   }
 
   drawQR(hash: string) {
-    const { pixelRatio, size } = this.props;
-    QRCode.toCanvas(
-      hash,
-      { errorCorrectionLevel: "L", width: pixelRatio * size },
-      function(err, canvas) {
-        if (err) throw err;
-        const container = document.getElementById("qrcode-address");
-        if (container) {
-          container.appendChild(canvas);
-        }
-      },
-    );
+    const { size } = this.props;
+    QRCode.toCanvas(hash, { errorCorrectionLevel: "L", width: size }, function(
+      err,
+      canvas,
+    ) {
+      if (err) throw err;
+      const container = document.getElementById("qrcode-address");
+      if (container) {
+        container.appendChild(canvas);
+      }
+    });
   }
 
   render() {
