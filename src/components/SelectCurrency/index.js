@@ -10,6 +10,7 @@ import type {
   OptionProps,
   MenuListComponentProps,
 } from "react-select/src/types";
+import ERC20TokenIcon from "components/icons/ERC20Token";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ERC20Token, Translate } from "data/types";
@@ -19,7 +20,6 @@ import {
   isERC20Token,
 } from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
-import ERC20TokenIcon from "components/icons/ERC20Token";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import Select from "components/base/Select";
@@ -42,7 +42,7 @@ type Option = { label: string, value: string, data: Item };
 
 function getItemIcon(item: Item) {
   return item.type === "erc20token" ? (
-    erc20TokenIcon
+    <ERC20TokenIcon token={item.value} size={ICON_SIZE} />
   ) : (
     <CryptoCurrencyIcon
       currency={item.value}
@@ -57,10 +57,7 @@ function getItemLabel(item: Item) {
     <span>
       {`${item.value.name} - `}
       <b>{item.value.ticker}</b>{" "}
-      <span style={styles.contract}>{`${item.value.contract_address.substr(
-        0,
-        15,
-      )}...`}</span>
+      <span style={styles.contract}>{item.value.contract_address}</span>
     </span>
   ) : (
     item.value.name
@@ -160,8 +157,6 @@ const styles = {
     marginLeft: 2,
   },
 };
-
-const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
 
 const GenericRow = (props: OptionProps) => {
   const { data } = props;

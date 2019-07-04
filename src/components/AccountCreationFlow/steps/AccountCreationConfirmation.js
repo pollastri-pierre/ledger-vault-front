@@ -30,7 +30,13 @@ export default (props: AccountCreationStepProps) => {
             <LineRow
               label={<Trans i18nKey="newAccount:confirmation.account" />}
             >
-              <AccountName isERC20 name={payload.name} />
+              <AccountName
+                account={{
+                  account_type: "ERC20",
+                  contract_address: erc20token.contract_address,
+                }}
+                name={payload.name}
+              />
             </LineRow>
             {!!payload.parentAccount && !!payload.parentAccount.name && (
               <LineRow

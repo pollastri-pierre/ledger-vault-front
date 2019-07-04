@@ -21,8 +21,6 @@ import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
 import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters/types";
 
-const erc20TokenIcon = <ERC20TokenIcon size={13} />;
-
 class FilterFieldCurrency extends PureComponent<FieldProps> {
   static defaultProps = defaultFieldProps;
 
@@ -93,6 +91,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
         RenderCollapsed={this.Collapsed}
         isActive={isActive}
         closeOnChange={false}
+        width={530}
       >
         <SelectCurrencyMultiple
           openMenuOnFocus={currenciesAndToken.length === 0}
@@ -132,7 +131,10 @@ function resolveCurrenciesAndTokens(queryParams: ObjectParameters) {
 }
 
 function getItemIcon(item: CryptoCurrency | ERC20Token) {
-  if ("contract_address" in item) return erc20TokenIcon;
+  if ("contract_address" in item) {
+    // $FlowFixMe dunno how to solve this
+    return <ERC20TokenIcon size={13} token={item} />;
+  }
   // $FlowFixMe dunno how to solve this
   const cur: CryptoCurrency = item;
   return <CryptoCurrencyIcon currency={cur} color={cur.color} size={13} />;

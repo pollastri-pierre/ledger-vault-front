@@ -17,6 +17,7 @@ import Box from "components/base/Box";
 import { Label } from "components/base/form";
 import Card, { CardLoading, CardError } from "components/base/Card";
 import { hasUserApprovedRequest } from "utils/request";
+import { isBalanceAvailable } from "utils/accounts";
 
 import AccountBalanceCard from "./AccountBalanceCard";
 import AccountLastTransactionsCard from "./AccountLastTransactionsCard";
@@ -49,7 +50,9 @@ class AccountView extends Component<Props> {
       <Box flow={20}>
         <Box horizontal flow={20}>
           <AccountQuickInfo account={account} match={match} />
-          <AccountBalanceCard account={account} />
+          {isBalanceAvailable(account) && (
+            <AccountBalanceCard account={account} />
+          )}
         </Box>
         {showPendingBox && (
           <Card>

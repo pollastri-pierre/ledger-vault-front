@@ -90,3 +90,8 @@ export const deserializeApprovalSteps = (
         }
       : null,
   );
+
+export const isBalanceAvailable = (account: Account) => {
+  // This seems to work for eth/token/btc like account, what about XRP?
+  return !!account.extended_public_key;
+};

@@ -7,6 +7,7 @@ import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
+import { isBalanceAvailable } from "utils/accounts";
 import type { Account } from "data/types";
 
 const AccountOverview = ({
@@ -34,6 +35,11 @@ const Rows = ({ account }: { account: Account }) => (
     <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
       <CurrencyAccountValue account={account} value={account.balance} />
     </LineRow>
+    {isBalanceAvailable(account) && (
+      <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
+        <CurrencyAccountValue account={account} value={account.balance} />
+      </LineRow>
+    )}
     {account.tx_approval_steps && (
       <LineRow
         vertical
