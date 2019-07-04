@@ -30,6 +30,12 @@ export const isUserInCurrentStep = (request: Request, me: User) => {
   }
 };
 
+export const getModalTabLink = (request: ?Request, url: string) => {
+  const defaultLink = `${url}/overview`;
+  if (!request) return defaultLink;
+  return isRequestPending(request) ? `${url}/pendingRequest` : defaultLink;
+};
+
 export const isRequestPending = (request: Request) =>
   request.status !== "APPROVED" &&
   request.status !== "BLOCKED" &&
