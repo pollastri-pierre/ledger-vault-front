@@ -93,6 +93,7 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
         RenderCollapsed={this.Collapsed}
         isActive={isActive}
         closeOnChange={false}
+        width={530}
       >
         <SelectCurrencyMultiple
           openMenuOnFocus={currenciesAndToken.length === 0}

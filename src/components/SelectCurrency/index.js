@@ -57,10 +57,7 @@ function getItemLabel(item: Item) {
     <span>
       {`${item.value.name} - `}
       <b>{item.value.ticker}</b>{" "}
-      <span style={styles.contract}>{`${item.value.contract_address.substr(
-        0,
-        15,
-      )}...`}</span>
+      <span style={styles.contract}>{item.value.contract_address}</span>
     </span>
   ) : (
     item.value.name
