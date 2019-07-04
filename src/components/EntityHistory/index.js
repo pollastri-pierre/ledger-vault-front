@@ -242,16 +242,14 @@ const ApprovalsStep = ({
     </ApprovalStepContainer>
   ) : (
     <ApprovalStepContainer>
-      <FaUserSecret size={16} />
-      <Text>Anonymized</Text>
+      <Box horizontal flow={10} align="center">
+        <FaUserSecret size={16} />
+        <Text>Anonymized</Text>
+      </Box>
     </ApprovalStepContainer>
   );
 
-const ApprovalStepContainer = styled(Box).attrs({
-  flow: 10,
-  horizontal: true,
-  align: "center",
-})`
+const ApprovalStepContainer = styled(Box).attrs({ flow: 10 })`
   position: relative;
   background: rgba(0, 0, 0, 0.05);
   padding: 10px;
