@@ -1,18 +1,44 @@
 // @flow
 
 import React from "react";
+import styled from "styled-components";
 
-const inner = (
-  <path
-    d="m100-2.1362e-4 -2e-3 0.0014-0.0014 0.0027-88.875 147.46 88.875 52.534 0.0014 2e-3v-3e-3l88.874-52.533zm-15.649 83.972h31.291l2e-3 5.6853h-12.314v54.153h-6.6665v-54.153h-12.313z"
-    strokeWidth=".69455"
-  />
+import colors from "shared/colors";
+import type { ERC20Token } from "data/types";
+import Box from "components/base/Box";
+
+const ERC20TokenIcon = ({
+  size,
+  token,
+}: {
+  size: number,
+  token: ERC20Token,
+}) => (
+  <Container width={size} height={size}>
+    {token ? getFirstLetter(token.name) : ""}
+  </Container>
 );
 
-const ERC20Token = ({ size, ...p }: { size: number }) => (
-  <svg viewBox="0 0 200 200" height={size} width={size} {...p}>
-    {inner}
-  </svg>
-);
+export default ERC20TokenIcon;
 
-export default ERC20Token;
+const Container = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+})`
+  background: ${colors.night};
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 11px;
+  color: white;
+`;
+
+function getFirstLetter(name: string) {
+  const alphaNumRegex = /[0-9a-zA-Z]/;
+
+  const matches = name.match(alphaNumRegex);
+
+  if (matches && matches.length > 0) {
+    return matches[0].toUpperCase();
+  }
+  return "";
+}

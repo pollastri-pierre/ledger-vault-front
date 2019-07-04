@@ -133,7 +133,7 @@ class ERC20RenderName extends PureComponent<Props, State> {
           autoFocus
           onChange={this.handleChangeName}
           placeholder={t("newAccount:options.acc_name_placeholder")}
-          IconLeft={ERC20TokenIcon}
+          IconLeft={() => <ERC20TokenIcon token={erc20token} size={16} />}
           {...inputProps}
         />
         {parentAccount && parentAccount.id ? (
