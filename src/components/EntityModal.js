@@ -22,7 +22,7 @@ import RequestActionButtons from "components/RequestActionButtons";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
 import Absolute from "components/base/Absolute";
-import { hasPendingRequest } from "utils/entities";
+import { hasPendingRequest, hasPendingEdit } from "utils/entities";
 import type { Entity, User } from "data/types";
 
 const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
@@ -83,6 +83,7 @@ function EntityModal<T>(props: Props<T>) {
     }) || childs[0];
 
   const hasPendingReq = hasPendingRequest(entity);
+  const isPendingEdit = hasPendingEdit(entity);
   const showRevoke =
     (entity.status === "ACTIVE" || entity.status === "ACCESS_SUSPENDED") &&
     revokeButton;
@@ -104,7 +105,7 @@ function EntityModal<T>(props: Props<T>) {
             ) : null,
           )}
         </RichModalTabsContainer>
-        {hasPendingReq ? (
+        {hasPendingReq && isPendingEdit ? (
           <RichModalTab
             dark
             to="pendingRequest"
@@ -118,6 +119,7 @@ function EntityModal<T>(props: Props<T>) {
             </Box>
           </RichModalTab>
         ) : fullEditURL &&
+          !hasPendingReq &&
           EDIT_ALLOWED_STATUS.includes(entity.status) &&
           me.role === "ADMIN" ? (
           <EditButton disabled={disableEdit} url={fullEditURL} />

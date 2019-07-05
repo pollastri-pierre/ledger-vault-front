@@ -1,6 +1,7 @@
 // @flow
 
 import type { Entity } from "data/types";
+import { isEditRequest } from "utils/request";
 
 // FIXME added 'ACTIVE' because I saw ACTIVE status
 // for an account, don't know if it's only for account or not.
@@ -11,6 +12,7 @@ const STATUS_NOT_PENDING = [
   "ABORTED",
   "BLOCKED",
 ];
+
 export const hasPendingRequest = (entity: Entity) =>
   !!entity.last_request &&
   STATUS_NOT_PENDING.indexOf(entity.last_request.status) === -1;
@@ -18,5 +20,4 @@ export const hasPendingRequest = (entity: Entity) =>
 export const hasPendingEdit = (entity: Entity) =>
   !!entity.last_request &&
   hasPendingRequest(entity) &&
-  entity.last_request.type.startsWith("EDIT_");
-// entity.last_request.type === `EDIT_${entity.last_request.target_type}`;
+  isEditRequest(entity.last_request);
