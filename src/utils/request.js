@@ -34,7 +34,7 @@ export const getModalTabLink = (request: ?Request, url: string) => {
   const defaultLink = `${url}/overview`;
   if (!request) return defaultLink;
   return isRequestPending(request) && isEditRequest(request)
-    ? `${url}/pendingRequest`
+    ? `${url}/editRequest`
     : defaultLink;
 };
 

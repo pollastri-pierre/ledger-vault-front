@@ -67,7 +67,7 @@ function EntityModal<T>(props: Props<T>) {
 
   const lastRequest = (
     <EntityLastRequest
-      key="pendingRequest"
+      key="editRequest"
       entity={entity}
       additionalFields={additionalFields}
     />
@@ -108,11 +108,11 @@ function EntityModal<T>(props: Props<T>) {
         {hasPendingReq && isPendingEdit ? (
           <RichModalTab
             dark
-            to="pendingRequest"
+            to="editRequest"
             isActive={content === lastRequest}
           >
             <Box horizontal align="center">
-              <Trans i18nKey="entityModal:tabs.pendingRequest" />
+              <Trans i18nKey="entityModal:tabs.editRequest" />
               <Absolute top={-6} right={-8}>
                 <Badge>1</Badge>
               </Absolute>
