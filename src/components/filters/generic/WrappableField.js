@@ -51,8 +51,10 @@ class WrappableField extends Component<Props, State> {
   componentDidMount() {
     this.measure();
 
-    const resizeObserver = new ResizeObserver(this.measure);
-    if (document.body) resizeObserver.observe(document.body);
+    if (typeof ResizeObserver !== "undefined") {
+      const resizeObserver = new ResizeObserver(this.measure);
+      if (document.body) resizeObserver.observe(document.body);
+    }
   }
 
   componentWillUnmount() {

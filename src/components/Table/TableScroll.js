@@ -38,9 +38,11 @@ class TableScroll extends PureComponent<Props, State> {
       this.toggleScrollIndicator();
       // $FlowFixMe for no reason flow can't infer that ref is not null
       this.ref.current.addEventListener("scroll", this.toggleScrollIndicator);
-      const resizeObserver = new ResizeObserver(this.toggleScrollIndicator);
-      // $FlowFixMe for no reason flow can't infer that ref is not null
-      resizeObserver.observe(this.ref.current);
+      if (typeof ResizeObserver !== "undefined") {
+        const resizeObserver = new ResizeObserver(this.toggleScrollIndicator);
+        // $FlowFixMe for no reason flow can't infer that ref is not null
+        resizeObserver.observe(this.ref.current);
+      }
     }
   }
 

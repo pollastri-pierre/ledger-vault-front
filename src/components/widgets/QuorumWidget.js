@@ -45,6 +45,7 @@ function QuorumWidget(props: Props) {
         variant="filled"
         size="tiny"
         onClick={onEdit}
+        data-test="edit-admin-rule"
       >
         Edit admin rule
       </Button>
