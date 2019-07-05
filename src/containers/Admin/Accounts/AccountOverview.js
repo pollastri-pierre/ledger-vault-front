@@ -32,9 +32,6 @@ const Rows = ({ account }: { account: Account }) => (
     <LineRow label={<Trans i18nKey="accountDetails:name" />}>
       <AccountName account={account} />
     </LineRow>
-    <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
-      <CurrencyAccountValue account={account} value={account.balance} />
-    </LineRow>
     {isBalanceAvailable(account) && (
       <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
         <CurrencyAccountValue account={account} value={account.balance} />
