@@ -2,31 +2,18 @@
 
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import { isAccountOutdated } from "utils/accounts";
-import { getERC20TokenByContractAddress } from "utils/cryptoCurrencies";
 import colors from "shared/colors";
 
 import Card from "components/base/Card";
 import { Label } from "components/base/form";
 import Absolute from "components/base/Absolute";
-import Box from "components/base/Box";
-import Text from "components/base/Text";
 import CurrencyIndex from "components/CurrencyIndex";
 import { FaWrench } from "react-icons/fa";
 import type { Account } from "data/types";
 import AccountWarning from "./AccountWarning";
-
-const Row = ({ label, value }: { label: React$Node, value: ?React$Node }) => (
-  <Box horizontal flow={5}>
-    <Box>
-      <Text bold>{label}:</Text>
-    </Box>
-    {value && <Box>{value}</Box>}
-  </Box>
-);
 
 type Props = {
   account: Account,
@@ -47,11 +34,6 @@ class AccountQuickInfo extends Component<Props> {
   render() {
     const { account } = this.props;
 
-    const isERC20 = account.account_type === "ERC20";
-    const token = isERC20
-      ? getERC20TokenByContractAddress(account.contract_address)
-      : null;
-
     return (
       <Card grow>
         <Label>
@@ -66,38 +48,6 @@ class AccountQuickInfo extends Component<Props> {
             <FaWrench />
           </SettingsLink>
         </Absolute>
-        <Box horizontal align="center" justify="space-between">
-          <Box>
-            {isERC20 ? (
-              <Row
-                label={<Trans i18nKey="accountView:summary.token" />}
-                value={token && token.name}
-              />
-            ) : (
-              <Row
-                label={<Trans i18nKey="accountView:summary.index" />}
-                value={
-                  <CurrencyIndex
-                    currency={account.currency}
-                    index={account.index}
-                  />
-                }
-              />
-            )}
-            {account.account_type === "ERC20" && account.parent && (
-              <>
-                <Row
-                  label={<Trans i18nKey="accountView:summary.token_address" />}
-                  value={account.contract_address}
-                />
-                <Row
-                  label={<Trans i18nKey="accountView:summary.parent_account" />}
-                  value={<Link to={`${account.parent}`}>ETH account</Link>}
-                />
-              </>
-            )}
-          </Box>
-        </Box>
         <AccountWarning account={account} />
       </Card>
     );

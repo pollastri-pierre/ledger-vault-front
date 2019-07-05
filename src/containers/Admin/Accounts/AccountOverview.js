@@ -7,6 +7,7 @@ import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
+import ParentAccount from "components/ParentAccount";
 import { isBalanceAvailable } from "utils/accounts";
 import type { Account } from "data/types";
 
@@ -36,6 +37,16 @@ const Rows = ({ account }: { account: Account }) => (
       <LineRow label={<Trans i18nKey="accountDetails:balance" />}>
         <CurrencyAccountValue account={account} value={account.balance} />
       </LineRow>
+    )}
+    {account.account_type === "ERC20" && account.parent && (
+      <>
+        <LineRow label={<Trans i18nKey="accountView:summary.token_address" />}>
+          {account.contract_address}
+        </LineRow>
+        <LineRow label={<Trans i18nKey="accountView:summary.parent_account" />}>
+          <ParentAccount id={account.parent} />
+        </LineRow>
+      </>
     )}
     {account.tx_approval_steps && (
       <LineRow
