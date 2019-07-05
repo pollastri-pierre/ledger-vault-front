@@ -17,7 +17,11 @@ import Card, {
 import Box from "components/base/Box";
 import type { Request, User } from "data/types";
 import { withMe } from "components/UserContextProvider";
-import { hasUserApprovedRequest, isNotTransaction } from "utils/request";
+import {
+  hasUserApprovedRequest,
+  isNotTransaction,
+  getModalTabLink,
+} from "utils/request";
 
 type Props = {
   data: Connection<Request>,
@@ -29,11 +33,17 @@ class AdminDashboard extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
-        `dashboard/groups/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `dashboard/groups/details/${request.target_id}`,
+        ),
       );
     } else if (request.target_type === "PERSON") {
       this.props.history.push(
-        `dashboard/users/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `dashboard/users/details/${request.target_id}`,
+        ),
       );
     } else if (
       request.target_type === "BITCOIN_ACCOUNT" ||
@@ -41,14 +51,20 @@ class AdminDashboard extends PureComponent<Props> {
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
       this.props.history.push(
-        `dashboard/accounts/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `dashboard/accounts/details/${request.target_id}`,
+        ),
       );
     } else if (
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
     ) {
       this.props.history.push(
-        `dashboard/transactions/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `dashboard/transactions/details/${request.target_id}`,
+        ),
       );
     } else if (request.target_type === "ORGANIZATION") {
       this.props.history.push(`dashboard/organization/details/${request.id}`);

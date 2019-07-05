@@ -16,7 +16,7 @@ import Box from "components/base/Box";
 import type { Request, User } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
 import { withMe } from "components/UserContextProvider";
-import { hasUserApprovedRequest } from "utils/request";
+import { hasUserApprovedRequest, getModalTabLink } from "utils/request";
 
 type Props = {
   pendingRequests: Connection<Request>,
@@ -39,7 +39,10 @@ const OperatorDashboard = memo((props: Props) => {
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
     ) {
       history.push(
-        `dashboard/transactions/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `dashboard/transactions/details/${request.target_id}`,
+        ),
       );
     }
   };

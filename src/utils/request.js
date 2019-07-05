@@ -1,6 +1,6 @@
 // @flow
 
-import type { Request, User } from "data/types";
+import type { Request, User, RequestActivityType } from "data/types";
 
 export const hasUserApprovedRequest = (request: Request, me: User) =>
   request.approvals &&
@@ -30,10 +30,23 @@ export const isUserInCurrentStep = (request: Request, me: User) => {
   }
 };
 
+export const getModalTabLink = (request: ?Request, url: string) => {
+  const defaultLink = `${url}/overview`;
+  if (!request) return defaultLink;
+  return isRequestPending(request) && isEditRequest(request)
+    ? `${url}/editRequest`
+    : defaultLink;
+};
+
 export const isRequestPending = (request: Request) =>
   request.status !== "APPROVED" &&
   request.status !== "BLOCKED" &&
   request.status !== "ABORTED";
+
+const EDIT_REQUEST_TYPE: RequestActivityType[] = ["EDIT_ACCOUNT", "EDIT_GROUP"];
+
+export const isEditRequest = (request: Request) =>
+  EDIT_REQUEST_TYPE.indexOf(request.type) > -1;
 
 export function isNotTransaction(request: Request) {
   return request.type !== "CREATE_TRANSACTION";
