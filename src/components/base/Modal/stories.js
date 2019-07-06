@@ -24,9 +24,11 @@ storiesOf("components/base/modals", module)
     <Modal isOpened={boolean("isOpened", true)}>
       <RichModalHeader title="Banana split" Icon={FaUser}>
         <RichModalTabsContainer>
-          <RichModalTab isActive>Overview</RichModalTab>
-          <RichModalTab>Details</RichModalTab>
-          <RichModalTab>History</RichModalTab>
+          <RichModalTab isActive to="overview">
+            Overview
+          </RichModalTab>
+          <RichModalTab to="details">Details</RichModalTab>
+          <RichModalTab to="history">History</RichModalTab>
         </RichModalTabsContainer>
         <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
           Take action
@@ -39,6 +41,7 @@ storiesOf("components/base/modals", module)
 
       <RichModalFooter>
         <Box
+          grow
           horizontal
           flexDirection="row-reverse"
           align="flex-end"

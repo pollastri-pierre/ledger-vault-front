@@ -37,6 +37,7 @@ const mapStateToProps = (state, props) => {
         value: account.balance,
       },
     );
+    if (!countervalue) return total;
     return total.plus(countervalue);
   }, BigNumber(0));
 

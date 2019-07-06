@@ -177,6 +177,7 @@ export const genRequest = (
     id: faker.random.alphaNumeric(40),
     created_on,
     created_by: 1,
+    expired_at: faker.date.future(2),
     approvals: [],
     target_id: 1,
     target_type,

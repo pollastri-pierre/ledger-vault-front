@@ -69,11 +69,13 @@ function RequestCard(props: RequestCardProps) {
       </Absolute>
       <Box>
         <RequestTitle type={request.type} />
-        <Text color={colors.textLight}>
-          {"Created by "}
-          <strong>{request.created_by.username}</strong>
-          {`, ${moment(request.created_on).fromNow()}`}
-        </Text>
+        {request.created_by && (
+          <Text color={colors.textLight}>
+            {"Created by "}
+            <strong>{request.created_by.username}</strong>
+            {`, ${moment(request.created_on).fromNow()}`}
+          </Text>
+        )}
       </Box>
     </RequestCardContainer>
   );

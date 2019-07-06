@@ -55,6 +55,27 @@ const colors = {
   form,
 };
 
+const toast = {
+  info: {
+    fg: opacity(colors.blue, 0.7),
+    bg: lighten(colors.blue, 0.77),
+  },
+  success: {
+    fg: opacity(colors.green, 0.7),
+    bg: lighten(colors.green, 0.82),
+  },
+  warning: {
+    fg: darken(colors.warning, 0.05),
+    bg: lighten(colors.warning, 0.97),
+  },
+  error: {
+    fg: opacity(colors.grenade, 0.7),
+    bg: lighten(colors.grenade, 0.8),
+  },
+};
+
+colors.toast = toast;
+
 function opacity(c, op) {
   return color(c)
     .alpha(op)
