@@ -9,7 +9,7 @@ import type { MemoryHistory } from "history";
 
 import Mutation from "restlay/Mutation";
 import Spinner from "components/base/Spinner";
-import colors from "shared/colors";
+import colors, { darken } from "shared/colors";
 import { minWait } from "utils/promise";
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
@@ -243,7 +243,7 @@ const styles = {
   initialLoading: {
     height: 250,
     color: colors.steel,
-    background: "#fafafa",
+    background: darken(colors.form.bg, 0.02),
     border: `1px solid ${colors.form.border}`,
     borderRadius: 2,
   },

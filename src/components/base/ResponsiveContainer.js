@@ -4,10 +4,6 @@ export default styled.div`
   display: flex;
   align-items: flex-start;
 
-  > * {
-    flex: 1;
-  }
-
   > * + * {
     margin-left: 20px;
     margin-top: 0;

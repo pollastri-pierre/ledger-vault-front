@@ -2,19 +2,15 @@
 
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import ButtonBase from "@material-ui/core/ButtonBase";
-import styled from "styled-components";
 import type { MemoryHistory } from "history";
 import type { Location } from "react-router-dom";
 
 import colors from "shared/colors";
-import AccountName from "components/AccountName";
-import VaultLink from "components/VaultLink";
-import CurrencyAccountValue from "components/CurrencyAccountValue";
 import Card from "components/base/Card";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import Button from "components/base/Button";
+import { AccountsList } from "components/lists";
 import SearchAccounts from "api/queries/SearchAccounts";
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
@@ -41,25 +37,11 @@ function AccountsWidget(props: Props) {
   );
   return (
     <Widget title="Accounts" height={accounts.length ? undefined : 300}>
-      <Card grow flow={20}>
+      <Card grow flow={20} style={{ padding: 10 }}>
         {accounts.length ? (
           <>
             <Box grow>
-              {accounts.map(account => (
-                <VaultLink
-                  withRole
-                  key={account.id}
-                  to={`/accounts/view/${account.id}`}
-                >
-                  <StyledButton>
-                    <AccountName account={account} />
-                    <CurrencyAccountValue
-                      account={account}
-                      value={account.balance}
-                    />
-                  </StyledButton>
-                </VaultLink>
-              ))}
+              <AccountsList accounts={accounts} />
             </Box>
           </>
         ) : me.role === "ADMIN" ? (
@@ -75,16 +57,6 @@ function AccountsWidget(props: Props) {
     </Widget>
   );
 }
-
-const StyledButton = styled(ButtonBase)`
-  && {
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-`;
 
 export default connectWidget(AccountsWidget, {
   height: 300,

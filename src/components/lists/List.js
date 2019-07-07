@@ -60,6 +60,7 @@ const ListEmptyContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: white;
+  border-radius: 4px;
   > * + * {
     margin-top: 20px;
   }

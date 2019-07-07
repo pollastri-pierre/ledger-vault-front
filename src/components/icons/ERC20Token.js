@@ -1,11 +1,14 @@
 // @flow
 
 import React from "react";
+import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import styled from "styled-components";
 
-import colors from "shared/colors";
+import { opacity } from "shared/colors";
 import type { ERC20Token } from "data/types";
 import Box from "components/base/Box";
+
+const ethCurrency = getCryptoCurrencyById("ethereum");
 
 const ERC20TokenIcon = ({
   size,
@@ -25,7 +28,7 @@ const Container = styled(Box).attrs({
   align: "center",
   justify: "center",
 })`
-  background: ${colors.night};
+  background: ${opacity(ethCurrency.color, 0.5)};
   border-radius: 4px;
   font-weight: bold;
   font-size: 11px;

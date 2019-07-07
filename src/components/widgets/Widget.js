@@ -8,7 +8,7 @@ import { RestlayTryAgain } from "components/TryAgain";
 import connectData from "restlay/connectData";
 import Spinner from "components/base/Spinner";
 import Absolute from "components/base/Absolute";
-import colors from "shared/colors";
+import colors, { darken } from "shared/colors";
 import Text from "components/base/Text";
 
 type WidgetSettingsProps = {};
@@ -19,48 +19,56 @@ type Props = {
   children: React$Node,
   SettingsComponent?: React$ComponentType<WidgetSettingsProps>,
   height?: number,
+  width?: number,
+  style?: Object,
 };
 
 export default function Widget(props: Props) {
-  const { title, desc, children, SettingsComponent, height } = props;
-  const haveSettings = !!SettingsComponent;
+  const {
+    title,
+    desc,
+    children,
+    SettingsComponent,
+    height,
+    width,
+    style,
+  } = props;
+  const isInteractive = !!SettingsComponent;
   return (
-    <WidgetContainer isInteractive={haveSettings} height={height}>
-      <WidgetHeader>
-        <div>
-          <Text inline bold mr={5}>
-            {title}
-          </Text>
-          {desc && (
-            <Text inline color={colors.textLight}>
-              {desc}
-            </Text>
-          )}
-        </div>
-        {haveSettings && (
-          <Absolute top={-5} right={-5}>
-            <SettingsButton>
-              <FaWrench />
-            </SettingsButton>
-          </Absolute>
-        )}
-      </WidgetHeader>
+    <WidgetContainer
+      isInteractive={isInteractive}
+      height={height}
+      width={width}
+      style={style}
+    >
+      <WidgetHeader
+        title={title}
+        desc={desc}
+        SettingsComponent={SettingsComponent}
+      />
       {children}
     </WidgetContainer>
   );
 }
 
-export function WidgetLoading({ height }: { height: number }) {
+export function WidgetLoading({
+  height,
+  width,
+}: {
+  height?: number,
+  width?: number,
+}) {
   return (
-    <WidgetLoadingContainer height={height}>
+    <WidgetLoadingContainer height={height} width={width}>
       <Spinner />
     </WidgetLoadingContainer>
   );
 }
 
 const WidgetLoadingContainer = styled.div`
-  height: ${p => p.height}px;
-  background: ${colors.form.bg};
+  height: ${p => (p.height ? `${p.height}px` : "auto")};
+  width: ${p => (p.width ? `${p.width}px` : "auto")};
+  background: ${darken(colors.form.bg, 0.02)};
   border: 1px dashed ${colors.form.border};
   border-radius: 4px;
   display: flex;
@@ -91,6 +99,8 @@ const SettingsButton = styled.div.attrs({
 const WidgetContainer = styled.div`
   position: relative;
   height: ${p => (p.height ? `${p.height}px` : "auto")};
+  width: ${p => (p.width ? `${p.width}px` : "auto")};
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
 
@@ -129,7 +139,40 @@ const widgetContainerHover = `
   }
 `;
 
-const WidgetHeader = styled.div`
+const WidgetHeader = ({
+  title,
+  desc,
+  SettingsComponent,
+}: {
+  title?: React$Node,
+  desc?: React$Node,
+  SettingsComponent?: React$ComponentType<*>,
+}) => {
+  return (
+    <StyledWidgetHeader>
+      <div>
+        <Text inline bold mr={5}>
+          {title}
+        </Text>
+        {desc && (
+          <Text inline color={colors.textLight}>
+            {desc}
+          </Text>
+        )}
+      </div>
+      {!!SettingsComponent && (
+        <Absolute top={-5} right={-5}>
+          <SettingsButton>
+            <FaWrench />
+          </SettingsButton>
+        </Absolute>
+      )}
+    </StyledWidgetHeader>
+  );
+};
+
+const StyledWidgetHeader = styled.div`
+  min-height: 24px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -140,10 +183,10 @@ export function connectWidget(
   WidgetComponent: React$ComponentType<*>,
   options: Object,
 ) {
-  const { height, ...opts } = options;
+  const { height, width, ...opts } = options;
   return connectData(WidgetComponent, {
     ...opts,
-    RenderLoading: () => <WidgetLoading height={height} />,
+    RenderLoading: () => <WidgetLoading height={height} width={width} />,
     RenderError: RestlayTryAgain,
   });
 }

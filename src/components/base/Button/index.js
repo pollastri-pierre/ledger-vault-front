@@ -28,13 +28,13 @@ const COLORS_BY_TYPE = {
 };
 
 const SIZE_ICON_BY_TYPE = {
-  tiny: 12,
+  tiny: 10,
   small: 16,
   medium: 23,
 };
 
 const MIN_HEIGHT_BY_SIZE = {
-  tiny: 25,
+  tiny: 24,
   small: 40,
   medium: 42,
 };
@@ -184,7 +184,7 @@ class VaultButton extends PureComponent<Props, State> {
               <IconLeft size={SIZE_ICON_BY_TYPE[size]} />
             </Box>
           )}
-          <Box>{children}</Box>
+          <Box style={{ whiteSpace: "nowrap" }}>{children}</Box>
           {IconRight && (
             <Box>
               <IconRight size={SIZE_ICON_BY_TYPE[size]} />
