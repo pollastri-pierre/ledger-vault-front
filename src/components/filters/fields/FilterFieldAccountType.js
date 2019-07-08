@@ -19,14 +19,15 @@ const options: AccountTypeOption[] = [
 
 const FilterFieldAccountType = (props: FieldProps) => (
   <FieldSelect
-    title="Cryptocurrency family"
-    placeholder="Cryptocurrency family"
+    title="Crypto asset family"
+    placeholder="Crypto asset family"
     queryKey="account_type"
     options={options}
     closeMenuOnSelect={false}
     controlShouldRenderValue={false}
     hideSelectedOptions={false}
     withCheckboxes
+    width={200}
     {...props}
   />
 );

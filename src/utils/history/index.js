@@ -18,6 +18,7 @@ export type VaultHistoryApprovalStep = {
 
 type VaultHistoryStepType =
   | "CREATED"
+  | "ACTIVED"
   | "APPROVED"
   | "ABORTED"
   | "REVOKED"
@@ -68,7 +69,10 @@ export function deserializeHistory(gateHistory: GateHistory): VaultHistory {
                     })),
                 };
               })
-              .filter(approvalsStep => approvalsStep.approvals.length > 0),
+              .filter(
+                approvalsStep =>
+                  !approvalsStep || approvalsStep.approvals.length > 0,
+              ),
           });
         }
 
@@ -87,7 +91,7 @@ function resolveItemType(item) {
 
 function resolveStepType(item): VaultHistoryStepType {
   if (item.status === "ACTIVE") {
-    return "APPROVED";
+    return "ACTIVED";
   }
   if (
     item.status === "PENDING_REGISTRATION" &&

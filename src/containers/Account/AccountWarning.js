@@ -6,10 +6,12 @@ import type { MemoryHistory } from "history";
 
 import { isAccountOutdated } from "utils/accounts";
 import InfoBox from "components/base/InfoBox";
+import { SoftCard } from "components/base/Card";
 import Text from "components/base/Text";
 import type { Account } from "data/types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "components/base/Button";
+import { Widget } from "components/widgets";
 import colors, { opacity } from "shared/colors";
 
 const styles = {
@@ -38,48 +40,68 @@ class AccountWarning extends Component<Props> {
 
   render() {
     const { classes, account } = this.props;
+
+    const showViewOnlyWarning =
+      account.status === "VIEW_ONLY" &&
+      (account.last_request === null ||
+        (account.last_request && account.last_request.status === "ABORTED"));
+
+    const isOutdated = isAccountOutdated(account);
+
+    if (!showViewOnlyWarning && !isOutdated) return null;
+
     return (
-      <>
-        {account.status === "VIEW_ONLY" && !account.last_request && (
-          <InfoBox
-            type="warning"
-            withIcon
-            className={classes.infobox}
-            Footer={
-              <Button
-                size="small"
-                customColor="#503d1a"
-                onClick={this.editAccount}
-                variant="text"
-                className={classes.actionButton}
-              >
-                <Trans i18nKey="accountView:view_only_provide_rules" />
-              </Button>
-            }
-          >
-            <Text>
-              <Trans i18nKey="accountView:view_only_warning" />
-            </Text>
-          </InfoBox>
-        )}
-        {isAccountOutdated(account) && (
-          <InfoBox
-            type="warning"
-            withIcon
-            className={classes.infobox}
-            Footer={
-              <Button
-                onClick={this.editAccount}
-                className={classes.actionButton}
-              >
-                <Trans i18nKey="update:provide_rule" />
-              </Button>
-            }
-          >
-            <Trans i18nKey="update:provide_rule_subtext" />
-          </InfoBox>
-        )}
-      </>
+      <Widget
+        title={
+          showViewOnlyWarning ? (
+            <Trans i18nKey="accountView:widgetTitle.viewOnly" />
+          ) : (
+            <Trans i18nKey="accountView:widgetTitle.update" />
+          )
+        }
+        width={350}
+      >
+        <SoftCard>
+          {showViewOnlyWarning && (
+            <InfoBox
+              type="warning"
+              className={classes.infobox}
+              Footer={
+                <Button
+                  size="tiny"
+                  customColor="#503d1a"
+                  onClick={this.editAccount}
+                  variant="text"
+                  data-test="view_only_provide_rules"
+                  className={classes.actionButton}
+                >
+                  <Trans i18nKey="accountView:view_only_provide_rules" />
+                </Button>
+              }
+            >
+              <Text>
+                <Trans i18nKey="accountView:view_only_warning" />
+              </Text>
+            </InfoBox>
+          )}
+          {isOutdated && (
+            <InfoBox
+              type="warning"
+              className={classes.infobox}
+              Footer={
+                <Button
+                  onClick={this.editAccount}
+                  className={classes.actionButton}
+                >
+                  <Trans i18nKey="accountView:updated_provide_rule" />
+                </Button>
+              }
+            >
+              <Trans i18nKey="accountView:updated_provide_rule_subtext" />
+            </InfoBox>
+          )}
+        </SoftCard>
+      </Widget>
     );
   }
 }

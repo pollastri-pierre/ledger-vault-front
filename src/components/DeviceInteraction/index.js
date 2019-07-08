@@ -74,6 +74,7 @@ class DeviceInteraction extends PureComponent<Props, State> {
       const transport = await LedgerTransportU2F.create();
       transport.setScrambleKey("v1+");
       transport.setUnwrap(true);
+      transport.setExchangeTimeout(360000);
       responses.transport = transport;
     }
     for (let i = 0; i < interactionsWithCheckVersion.length; i++) {

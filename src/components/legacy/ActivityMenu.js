@@ -8,9 +8,10 @@ import React, { Component } from "react";
 import { getLocalStorageToken } from "redux/modules/auth";
 import connectData from "restlay/connectData";
 import { withStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "shared/colors";
 import io from "socket.io-client";
+
+import Spinner from "components/base/Spinner";
 import PopBubble from "components/utils/PopBubble";
 import ActivityList from "components/legacy/ActivityList";
 
@@ -175,7 +176,7 @@ class ActivityMenu extends Component<
                 match={match}
               />
             )}
-            {loading && <CircularProgress />}
+            {loading && <Spinner />}
           </div>
         </PopBubble>
       </span>

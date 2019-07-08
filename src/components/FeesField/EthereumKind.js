@@ -4,13 +4,13 @@ import React, { PureComponent } from "react";
 import last from "lodash/last";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Transaction as EthereumTransaction } from "bridge/EthereumBridge";
 import type { Account } from "data/types";
 import type { WalletBridge } from "bridge/types";
 import type { RestlayEnvironment } from "restlay/connectData";
 
+import Spinner from "components/base/Spinner";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
 import CounterValue from "components/CounterValue";
 import connectData from "restlay/connectData";
@@ -196,7 +196,7 @@ class FeesFieldEthereumKind extends PureComponent<
                 {")"}
               </>
             ) : (
-              <CircularProgress size={13} />
+              <Spinner />
             )}
           </Text>
         </Box>

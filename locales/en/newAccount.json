@@ -17,8 +17,8 @@
     "tabTitle": "Crypto asset"
   },
   "erc20": {
-    "createNew": "Create a new view only Ethereum account",
-    "infoNewAccount": "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center",
+    "createNew": "Create a new view-only Ethereum account",
+    "infoNewAccount": "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center.",
     "matchingNameWarning": "Please use different names for the ERC20 token account and the Ethereum account",
     "selectExisting": "Select an existing Ethereum account"
   },

@@ -5,7 +5,7 @@ import Text from "components/base/Text";
 import styled, { keyframes } from "styled-components";
 import colors from "shared/colors";
 import { MdComputer, MdTouchApp, MdError } from "react-icons/md";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Spinner from "components/base/Spinner";
 import { FaMobileAlt, FaServer } from "react-icons/fa";
 import type { Interaction } from "components/DeviceInteraction";
 
@@ -23,7 +23,7 @@ const computerIcon = <MdComputer size={20} />;
 const touchRequiredIcon = <MdTouchApp size={20} />;
 const serverIcon = <FaServer size={20} />;
 const blueIcon = <FaMobileAlt size={20} />;
-const loader = <CircularProgress size={15} />;
+const loader = <Spinner />;
 const errorIcon = <MdError size={15} color={colors.grenade} />;
 
 const Container = styled(Box).attrs({
@@ -225,7 +225,7 @@ class DeviceInteractionAnimation extends PureComponent<Props> {
           error={error}
         />
         <RightIcon type={currentActionType} />
-        {needsUserInput && (
+        {(needsUserInput || currentStep === 0) && (
           <Tooltip right>
             {tooltip || <Text small i18nKey="common:approve_device" />}
           </Tooltip>

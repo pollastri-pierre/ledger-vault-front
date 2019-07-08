@@ -30,7 +30,11 @@ type Price = {
 
 export type Entity = Group | Account | User | Transaction;
 
-export type UserRole = "ADMIN" | "OPERATOR";
+export const userRoleMap = {
+  ADMIN: "ADMIN",
+  OPERATOR: "OPERATOR",
+};
+export type UserRole = $Keys<typeof userRoleMap>;
 
 export type Unit = {
   id?: number,
@@ -82,7 +86,7 @@ type UserCommon = {
   status: string,
   email?: string,
   last_request?: Request,
-  role: string,
+  role: UserRole,
 };
 export type UserEntity = UserCommon;
 export type User = UserCommon;
@@ -122,7 +126,7 @@ type AccountCommon = {
   id: number,
   account_type: AccountType,
   contract_address: string,
-  parent_id?: number,
+  parent?: number,
   name: string,
   members: User[],
   settings: AccountSettings,
@@ -140,7 +144,8 @@ type AccountCommon = {
   xpub: string,
   tx_approval_steps?: TxApprovalStep[],
   parent: ?number,
-  extended_pub_keys: ExtendedPubKey,
+  derivation_path: string,
+  extended_public_key: ExtendedPubKey,
 };
 export type Account = AccountCommon & {
   currency: string,
@@ -383,18 +388,25 @@ export type RequestStatus =
   | "PENDING_REGISTRATION"
   | "APPROVED";
 
-export type RequestActivityType =
-  | "CREATE_GROUP"
-  | "EDIT_GROUP"
-  | "REVOKE_GROUP"
-  | "REVOKE_USER"
-  | "CREATE_ADMIN"
-  | "CREATE_OPERATOR"
-  | "CREATE_ACCOUNT"
-  | "EDIT_ACCOUNT"
-  | "REVOKE_ACCOUNT"
-  | "MIGRATE_ACCOUNT"
-  | "UPDATE_QUORUM";
+export const RequestActivityTypeDefs = {
+  CREATE_GROUP: "CREATE_GROUP",
+  EDIT_GROUP: "EDIT_GROUP",
+  REVOKE_GROUP: "REVOKE_GROUP",
+  REVOKE_USER: "REVOKE_USER",
+  CREATE_ADMIN: "CREATE_ADMIN",
+  CREATE_OPERATOR: "CREATE_OPERATOR",
+  CREATE_ACCOUNT: "CREATE_ACCOUNT",
+  EDIT_ACCOUNT: "EDIT_ACCOUNT",
+  REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
+  MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
+  UPDATE_QUORUM: "UPDATE_QUORUM",
+};
+
+export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
+
+export const RequestActivityTypeList: RequestActivityType[] = Object.keys(
+  RequestActivityTypeDefs,
+);
 
 export type RequestTargetType =
   | "GROUP"
@@ -407,7 +419,7 @@ export type RequestTargetType =
   | "ORGANIZATION";
 
 type RequestCommon = {
-  created_by: number,
+  created_by: User,
   created_on: string,
   id: number,
   status: string,

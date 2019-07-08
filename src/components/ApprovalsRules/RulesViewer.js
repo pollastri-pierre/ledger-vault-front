@@ -10,33 +10,39 @@ import type { Group, TxApprovalStep, User } from "data/types";
 import colors from "shared/colors";
 
 type Props = {
-  rules: TxApprovalStep[],
+  rules: TxApprovalStep[] | null | typeof undefined,
 };
-const arrowRight = <FaArrowRight size={9} color={colors.ocean} />;
+const arrowRight = <FaArrowRight size={8} />;
 const groupIcon = <FaUsers />;
 
-const RulesViewer = ({ rules }: Props) => (
-  <Box flow={10}>
-    {rules.map(r => (
-      <RuleItem rule={r} key={r.group.id} />
-    ))}
-  </Box>
-);
+const RulesViewer = ({ rules }: Props) => {
+  if (!rules) {
+    return "No rules";
+  }
+  return (
+    <Box flow={10}>
+      {rules.map(r => (
+        <RuleItem rule={r} key={r.group.id} />
+      ))}
+    </Box>
+  );
+};
 
 export default RulesViewer;
 
 const RuleItem = ({ rule }: { rule: TxApprovalStep }) => (
   <Box
     horizontal
-    align="center"
+    align="flex-start"
     justify="space-between"
-    flow={7}
-    py={10}
+    flow={5}
     style={{ borderBottom: `1px solid ${colors.cream}` }}
   >
-    {arrowRight}
+    <Box noShrink pt={7}>
+      {arrowRight}
+    </Box>
 
-    <Box horizontal align="center" grow="1" justify="space-between" p={5}>
+    <Box align="flex-start" grow justify="space-between">
       <Box noShrink>
         <Trans
           i18nKey="approvalsRules:approval"
@@ -50,26 +56,19 @@ const RuleItem = ({ rule }: { rule: TxApprovalStep }) => (
 );
 
 const GroupOrUsers = ({ group }: { group: Group }) =>
-  group.status !== "ACTIVE" ? (
+  group.is_internal ? (
     <ListUsers users={group.members} />
   ) : (
     <Box horizontal align="center" flow={5}>
-      {groupIcon}
-      <Text>{group.name}</Text>
+      <Box noShrink>{groupIcon}</Box>
+      <Text noWrap>{group.name}</Text>
     </Box>
   );
 
 const ListUsers = ({ users }: { users: User[] }) => (
-  <Box
-    pl={5}
-    horizontal
-    align="center"
-    flexWrap="wrap"
-    justify="flex-end"
-    style={{ maxWidth: 350 }}
-  >
+  <Box horizontal align="center" flexWrap="wrap" justify="flex-end">
     {users.map(m => (
-      <Box key={m.id} style={{ marginLeft: 8 }}>
+      <Box key={m.id} style={{ marginRight: 8 }}>
         <MemberName member={m} />
       </Box>
     ))}

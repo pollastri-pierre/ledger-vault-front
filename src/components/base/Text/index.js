@@ -11,13 +11,21 @@ const Text = styled.div`
   display: ${p => (p.inline ? "inline-block" : "block")};
   font-family: "Open Sans", "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: ${p =>
-    p.header ? "18px" : p.small ? "11px" : p.large ? "16px" : "inherit"};
+    p.header
+      ? "18px"
+      : p.small
+      ? "11px"
+      : p.large
+      ? "16px"
+      : p.normal
+      ? "13px"
+      : "inherit"};
   font-weight: ${p => (p.bold ? "bold" : "inherit")} !important;
   font-style: ${p => (p.italic ? "italic" : "inherit")};
   line-height: ${p => ("lineHeight" in p ? p.lineHeight : "1.75")};
   text-transform: ${p => (p.uppercase ? "uppercase" : "")};
   white-space: ${p => (p.noWrap ? "nowrap" : "normal")};
-  user-select: ${p => (p.noSelect ? "none" : "inherit")};
+  user-select: ${p => (p.select ? "text" : p.noSelect ? "none" : "inherit")};
 
   ${p =>
     p.selectable

@@ -39,13 +39,15 @@ function FilterFieldRequestActivity(props: FieldProps) {
 
   return (
     <FieldSelect
-      title={t("common:requestActivity")}
+      title={t("common:type")}
+      placeholder={t("common:requestActivity")}
       queryKey="type"
       options={options}
       closeMenuOnSelect={false}
       controlShouldRenderValue={false}
       hideSelectedOptions={false}
       withCheckboxes
+      width={200}
       {...props}
     />
   );

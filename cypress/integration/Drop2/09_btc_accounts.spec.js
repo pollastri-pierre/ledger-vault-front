@@ -28,11 +28,12 @@ describe("Test Case for Account", function() {
   it("Approve Btc Account", () => {
     cy.server();
     route();
+    logout();
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
-    cy.wait(6500);
+    cy.wait(7500);
     successfull_message();
     cy.wait(2000);
   });
@@ -54,11 +55,13 @@ describe("Test Case for Account", function() {
   it("Approve Btc Testnet Account", () => {
     cy.server();
     route();
+    logout();
     login(6);
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
+    cy.wait(1500);
     cy.get("[data-test=approve_button]").click();
-    cy.wait(7000);
+    cy.wait(7500);
     successfull_message();
     cy.wait(2000);
   });
@@ -69,6 +72,6 @@ describe("Test Case for Account", function() {
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
     create_account("Bitcoin", "Coinhy.pe", "New EMEA", "APAC");
-    error_message("Account name already exists in this currency", "Error 236");
+    error_message("Error 236", "Account name already exists in this currency");
   });
 });

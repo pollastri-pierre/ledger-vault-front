@@ -10,7 +10,6 @@ import { CardError } from "components/base/Card";
 import { GrowingSpinner } from "components/base/GrowingCard";
 import { withMe } from "components/UserContextProvider";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
-import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import AccountSettings from "containers/Accounts/AccountSettings";
 import { FetchEntityHistory } from "components/EntityHistory";
 import EntityModal from "components/EntityModal";
@@ -44,7 +43,6 @@ function AccountDetails(props: Props) {
         hasPendingTransactions={hasPendingTransactions}
         account={account}
       />
-      <AccountTransactionRules key="transactionRules" account={account} />
       {me.role === "ADMIN" && (
         <FetchEntityHistory
           key="history"
@@ -52,7 +50,9 @@ function AccountDetails(props: Props) {
           entityType="account"
         />
       )}
-      <AccountSettings key="settings" account={account} />
+      {account.status === "ACTIVE" && account.account_type !== "ERC20" && (
+        <AccountSettings key="settings" account={account} />
+      )}
     </EntityModal>
   );
 }

@@ -8,5 +8,5 @@ const styles = {
   },
 };
 export default ({ userRole }: { userRole: string }) => (
-  <Text style={styles.role}>{userRole.toLowerCase()}</Text>
+  <Text style={styles.role} i18nKey={`userDetails:${userRole}`} />
 );

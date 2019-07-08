@@ -9,6 +9,7 @@ import AbortRequestMutation from "api/mutations/AbortRequestMutation";
 import RequestsTable from "components/Table/RequestsTable";
 import { RequestsFilters } from "components/filters";
 import DataSearch from "components/DataSearch";
+import { getModalTabLink } from "utils/request";
 
 import type { Request } from "data/types";
 
@@ -22,11 +23,11 @@ class Users extends PureComponent<Props> {
   handleRowClick = (request: Request) => {
     if (request.target_type === "GROUP") {
       this.props.history.push(
-        `tasks/groups/details/${request.target_id}/overview`,
+        getModalTabLink(request, `tasks/groups/details/${request.target_id}`),
       );
     } else if (request.target_type === "PERSON") {
       this.props.history.push(
-        `tasks/users/details/${request.target_id}/overview`,
+        getModalTabLink(request, `tasks/users/details/${request.target_id}`),
       );
     } else if (
       request.target_type === "BITCOIN_ACCOUNT" ||
@@ -34,14 +35,17 @@ class Users extends PureComponent<Props> {
       request.target_type === "ETHEREUM_ACCOUNT"
     ) {
       this.props.history.push(
-        `tasks/accounts/details/${request.target_id}/overview`,
+        getModalTabLink(request, `tasks/accounts/details/${request.target_id}`),
       );
     } else if (
       request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
       request.target_type === "ETHEREUM_LIKE_TRANSACTION"
     ) {
       this.props.history.push(
-        `tasks/transactions/details/${request.target_id}/overview`,
+        getModalTabLink(
+          request,
+          `tasks/transactions/details/${request.target_id}`,
+        ),
       );
     } else if (request.target_type === "ORGANIZATION") {
       this.props.history.push(`tasks/organization/details/${request.id}`);

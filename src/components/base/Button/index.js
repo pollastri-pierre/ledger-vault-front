@@ -28,13 +28,13 @@ const COLORS_BY_TYPE = {
 };
 
 const SIZE_ICON_BY_TYPE = {
-  tiny: 12,
+  tiny: 10,
   small: 16,
   medium: 23,
 };
 
 const MIN_HEIGHT_BY_SIZE = {
-  tiny: 25,
+  tiny: 24,
   small: 40,
   medium: 42,
 };
@@ -57,18 +57,8 @@ const FLOW_BY_SIZE = {
   medium: 8,
 };
 
-const LOADER_SIZE_BY_SIZE = {
-  tiny: 15,
-  small: 15,
-  medium: 20,
-};
-
-const Loader = ({ color, size }: { color: string, size: Size }) => (
-  <CircularProgress
-    color={color}
-    size={LOADER_SIZE_BY_SIZE[size]}
-    style={{ position: "absolute" }}
-  />
+const Loader = ({ color }: { color: string }) => (
+  <CircularProgress color={color} size={16} style={{ position: "absolute" }} />
 );
 const getBgColor = (customColor, type, variant) => {
   if (variant === "outlined" || variant === "text") {
@@ -194,7 +184,7 @@ class VaultButton extends PureComponent<Props, State> {
               <IconLeft size={SIZE_ICON_BY_TYPE[size]} />
             </Box>
           )}
-          <Box>{children}</Box>
+          <Box style={{ whiteSpace: "nowrap" }}>{children}</Box>
           {IconRight && (
             <Box>
               <IconRight size={SIZE_ICON_BY_TYPE[size]} />

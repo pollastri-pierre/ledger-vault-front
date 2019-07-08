@@ -21,7 +21,7 @@ describe("Tests Abort Transaction", () => {
     cy.server();
     route();
     login(6);
-    // Device 6 is on read only, we should get a error
+    // Device 6 is on view-only, we should get a error
     cy.contains("Pending").click();
     cy.get("[data-test=pending-transaction]")
       .eq(0)
@@ -53,7 +53,7 @@ describe("Tests Abort Transaction", () => {
       .contains("Abort")
       .click();
     cy.get(".top-message-body")
-      .contains("the transaction request has been successfully aborted")
+      .contains("The transaction request has been successfully aborted")
       .get(".top-message-title")
       .contains("transaction request aborted");
   });

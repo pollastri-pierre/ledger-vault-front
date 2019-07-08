@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from "react";
 import { withTranslation } from "react-i18next";
-import { FaHourglassHalf } from "react-icons/fa";
 
 import Box from "components/base/Box";
 import Text from "components/base/Text";
@@ -31,7 +30,7 @@ const BG_BY_STATUS = {
   PENDING_VIEW_ONLY: opacity(colors.ocean, 0.1),
   PENDING_MIGRATED: opacity(colors.ocean, 0.1),
   PENDING_REVOCATION: opacity(colors.ocean, 0.1),
-  PENDING_REGISTRATION: opacity(colors.blue_orange, 0.1),
+  PENDING_REGISTRATION: opacity(colors.ocean, 0.1),
   VIEW_ONLY: colors.lightGrey,
 };
 
@@ -55,7 +54,7 @@ const COLOR_BY_STATUS = {
   PENDING_REVOCATION_APPROVAL: darken(colors.ocean, 0.5),
   PENDING_REVOCATION: darken(colors.ocean, 0.5),
   PENDING_MIGRATED: darken(colors.ocean, 0.5),
-  PENDING_REGISTRATION: darken(colors.blue_orange, 0.5),
+  PENDING_REGISTRATION: darken(colors.ocean, 0.5),
   VIEW_ONLY: colors.steel,
 };
 
@@ -63,10 +62,7 @@ type Props = {
   t: Translate,
   status: string,
   textOnly?: boolean,
-  withWarning?: boolean,
 };
-
-const iconWarning = <FaHourglassHalf size={12} />;
 
 export const translateStatus = (status: string, t: string => string) => {
   const translation = t(`entityStatus:${status}`);
@@ -84,7 +80,7 @@ class Status extends PureComponent<Props> {
   };
 
   render() {
-    const { status, textOnly, withWarning } = this.props;
+    const { status, textOnly } = this.props;
 
     const str = this.getStr();
     if (textOnly) return str;
@@ -103,7 +99,6 @@ class Status extends PureComponent<Props> {
         color={color}
         borderRadius={3}
       >
-        {withWarning && iconWarning}
         <Text small style={styles.text}>
           {str}
         </Text>

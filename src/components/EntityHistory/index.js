@@ -15,6 +15,7 @@ import {
   FaUserPlus,
   FaCheck,
   FaSyncAlt,
+  FaUserSecret,
   FaCog,
   FaFlagCheckered,
 } from "react-icons/fa";
@@ -50,6 +51,7 @@ const itemIconsByType = {
 
 const stepIconsByType = {
   CREATED: <FaPlus color={colors.ocean} />,
+  ACTIVED: <FaFlagCheckered color={colors.ocean} />,
   APPROVED: <FaCheck color={colors.ocean} />,
   ABORTED: <MdClear color={colors.grenade} />,
   REVOKED: <MdClear color={colors.grenade} />,
@@ -200,7 +202,7 @@ const HistoryStep = ({
       {" on "}
       {moment(step.createdOn).format("LLL")}
     </span>
-    {step.approvalsSteps && (
+    {step.approvalsSteps && !!step.approvalsSteps.length && (
       <ApprovalsSteps approvalsSteps={step.approvalsSteps} />
     )}
   </HistoryStepContainer>
@@ -239,7 +241,12 @@ const ApprovalsStep = ({
       ))}
     </ApprovalStepContainer>
   ) : (
-    <ApprovalStepContainer>Anonymized</ApprovalStepContainer>
+    <ApprovalStepContainer>
+      <Box horizontal flow={10} align="center">
+        <FaUserSecret size={16} />
+        <Text>Anonymized</Text>
+      </Box>
+    </ApprovalStepContainer>
   );
 
 const ApprovalStepContainer = styled(Box).attrs({ flow: 10 })`
@@ -337,6 +344,7 @@ function getItemStatus(item: VaultHistoryItem) {
   const lastStep = item.steps[item.steps.length - 1];
   if (!lastStep) return null;
   if (
+    lastStep.type === "ACTIVED" ||
     lastStep.type === "APPROVED" ||
     lastStep.type === "SUBMITTED" ||
     lastStep.type === "MIGRATION_FINISHED"

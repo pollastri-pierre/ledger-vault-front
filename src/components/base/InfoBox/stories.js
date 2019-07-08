@@ -12,7 +12,7 @@ import Text from "components/base/Text";
 
 storiesOf("components", module).add("InfoBox", () => {
   const withIcon = boolean("withIcon", true);
-  const types = ["info", "warning", "error"];
+  const types = ["info", "warning", "error", "success"];
   return (
     <div>
       {types.map(t => (
@@ -23,6 +23,16 @@ storiesOf("components", module).add("InfoBox", () => {
           withIcon={withIcon}
         />
       ))}
+      <div style={{ maxWidth: 400 }}>
+        <InfoBox alignCenter type="warning">
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac
+            massa orci. Vestibulum ante ipsum primis in faucibus orci luctus et
+            ultrices posuere cubilia Curae; Aliquam convallis sapien magna, ac
+            aliquet nunc lacinia pulvinar.
+          </Text>
+        </InfoBox>
+      </div>
     </div>
   );
 });

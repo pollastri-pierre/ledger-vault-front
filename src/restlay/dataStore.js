@@ -14,6 +14,7 @@ import URL from "url";
 import isEqual from "lodash/isEqual";
 import { logout } from "redux/modules/auth";
 import type { Account, Currency } from "data/types";
+import ProfileQuery from "api/queries/ProfileQuery";
 import Mutation from "./Mutation";
 import Query from "./Query";
 import ConnectionQuery from "./ConnectionQuery";
@@ -254,11 +255,9 @@ export const executeQueryOrMutation =
           queryOrMutation instanceof Query ||
           queryOrMutation instanceof ConnectionQuery
         ) {
-          // const shouldLogout =
-          //   error.status &&
-          //   queryOrMutation.logoutUserIfStatusCode &&
-          //   error.status === queryOrMutation.logoutUserIfStatusCode;
-          const shouldLogout = error.status && error.status === 403;
+          const shouldLogout =
+            (error.status && error.status === 403) ||
+            queryOrMutation instanceof ProfileQuery;
           if (shouldLogout) {
             dispatch(logout());
           }

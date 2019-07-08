@@ -23,6 +23,7 @@ type Props = {
   children: React$Node,
   onChange: ObjectParameters => void,
   paginator: ?React$Node,
+  withNoAction?: boolean,
 };
 
 const fieldsToExclude = ["page", "pageSize"];
@@ -67,6 +68,7 @@ class FiltersCard extends PureComponent<Props> {
       queryParams,
       paginator,
       onChange: _onChange,
+      withNoAction,
       ...props
     } = this.props;
 
@@ -80,15 +82,8 @@ class FiltersCard extends PureComponent<Props> {
     const showNbResults = typeof nbResults === "number";
 
     return (
-      <Box
-        overflow="visible"
-        position="relative"
-        flow={10}
-        pb={10}
-        grow
-        {...props}
-      >
-        <Filters>{filters}</Filters>
+      <Box overflow="visible" position="relative" flow={10} grow {...props}>
+        <Filters withNoAction={withNoAction}>{filters}</Filters>
         <Box
           align="center"
           justify="space-between"
@@ -108,14 +103,7 @@ class FiltersCard extends PureComponent<Props> {
                 : "Loading..."}
             </Text>
           </Box>
-          {paginator && (
-            <Box horizontal align="center" flow={10}>
-              <Text small noSelect>
-                Page:
-              </Text>
-              {paginator}
-            </Box>
-          )}
+          {paginator}
         </Box>
       </Box>
     );
@@ -159,7 +147,7 @@ const Filters = styled(Box).attrs({
   align: "flex-start",
   flexWrap: "wrap",
 })`
-  padding-right: 150px;
+  padding-right: ${p => (p.withNoAction ? "" : "150px")};
   > * {
     margin-right: 5px;
     margin-bottom: 5px;
