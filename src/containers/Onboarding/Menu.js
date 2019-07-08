@@ -1,43 +1,43 @@
 // @flow
 import React from "react";
+import styled from "styled-components";
+
+import Box from "components/base/Box";
 import colors from "shared/colors";
-import { withStyles } from "@material-ui/core/styles";
 import LabelLink from "components/LabelLink";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
 import MenuLinkOnboarding from "./MenuLinkOnboarding";
 
-const styles = {
-  menu: {
-    flex: 0.6,
-    width: 161,
-    position: "relative",
-    "&:after": {
-      content: '""',
-      background: "#eeeeee",
+const WIDTH = 161;
+const MenuContainer = styled(Box).attrs({
+  position: "relative",
+  width: WIDTH,
+  flex: 0.6,
+})`
+  &:after {
+      content: "",
+      background: #eeeeee,
       width: 1,
       height: 436,
-      display: "block",
-      position: "absolute",
+      display: block,
+      position: absolute,
       right: 42,
       top: 0,
-    },
-  },
-};
+  }
+`;
 const Menu = ({
-  classes,
   nbMember,
   nbSharedOwner,
   t,
   onboarding,
 }: {
-  classes: { [$Keys<typeof styles>]: string },
   onboarding: Object,
   nbSharedOwner: number,
   t: Translate,
   nbMember: number,
 }) => (
-  <div className={classes.menu}>
+  <MenuContainer>
     <div style={{ marginBottom: 10 }}>
       <MenuLinkOnboarding
         heading
@@ -163,7 +163,7 @@ const Menu = ({
         </span>
       </MenuLinkOnboarding>
     </div>
-  </div>
+  </MenuContainer>
 );
 
-export default withStyles(styles)(withTranslation()(Menu));
+export default withTranslation()(Menu);

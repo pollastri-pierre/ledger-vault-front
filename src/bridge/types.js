@@ -62,5 +62,6 @@ export interface WalletBridge<Transaction> {
   checkValidTransactionSyncSync(
     account: Account,
     transaction: Transaction,
+    parentAccount: ?Account,
   ): boolean;
 }

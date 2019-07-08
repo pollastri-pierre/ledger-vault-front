@@ -12,6 +12,7 @@ export const ApprovalsExceedQuorum = createCustomErrorClass(
 export const InvalidDataDevice = createCustomErrorClass("InvalidDataDevice");
 export const NoChannelForDevice = createCustomErrorClass("NoChannelForDevice");
 export const UnknownDevice = createCustomErrorClass("UnknownDevice");
+export const OutOfDateApp = createCustomErrorClass("OutOfDateApp");
 
 export type DeviceError = {
   statusCode: $Values<typeof StatusCodes>,
@@ -22,3 +23,6 @@ export const InvalidAddress = createCustomErrorClass("InvalidAddress");
 export const AmountTooHigh = createCustomErrorClass("AmountTooHigh");
 export const AmountExceedMax = createCustomErrorClass("AmountExceedMax");
 export const NonEIP55Address = createCustomErrorClass("NonEIP55Address");
+export const UserInvitationAlreadyUsed = createCustomErrorClass(
+  "UserInvitationAlreadyUsed",
+);

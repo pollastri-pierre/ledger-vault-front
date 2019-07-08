@@ -3,7 +3,7 @@ import React from "react";
 import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 import type { Match } from "react-router-dom";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import UsersQuery from "api/queries/UsersQuery";
 import EditGroupDescriptionMutation from "api/mutations/EditGroupDescriptionMutation";
 import GroupQuery from "api/queries/GroupQuery";
@@ -39,8 +39,7 @@ const steps = [
     id: "chooseMembers",
     name: <Trans i18nKey="group:create.members" />,
     Step: GroupCreationMembers,
-    requirements: (payload: GroupCreationPayload) =>
-      payload.description !== "" && payload.name !== "",
+    requirements: (payload: GroupCreationPayload) => payload.name !== "",
   },
   {
     id: "confirm",
@@ -68,8 +67,8 @@ const steps = [
         <ApproveRequestButton
           interactions={
             isEditMode && payload.description !== initialPayload.description
-              ? [editDescriptionMutation, ...createAndApprove]
-              : createAndApprove
+              ? [editDescriptionMutation, ...createAndApprove("GROUP")]
+              : createAndApprove("GROUP")
           }
           onSuccess={() => {
             onClose();
@@ -124,6 +123,7 @@ const GroupEdit = connectData(
     },
     propsToQueryParams: props => ({
       role: "OPERATOR",
+      status: ["ACTIVE"],
       groupId: props.groupId || "",
     }),
   },
@@ -148,6 +148,7 @@ const GroupCreation = connectData(
     },
     propsToQueryParams: () => ({
       role: "OPERATOR",
+      status: ["ACTIVE"],
     }),
   },
 );

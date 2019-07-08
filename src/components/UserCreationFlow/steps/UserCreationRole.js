@@ -12,15 +12,22 @@ import OperatorIcon from "components/icons/OperatorIcon";
 import type { UserCreationStepProps } from "../types";
 
 export default (props: UserCreationStepProps) => {
-  const { payload, updatePayload } = props;
+  const { payload, updatePayload, transitionTo } = props;
   const { role } = payload;
+
+  const chooseRoleAndNext = role => () => {
+    updatePayload({ role }, () => {
+      transitionTo("infos");
+    });
+  };
+
   return (
     <Box>
       <Box pt={50} horizontal align="center" justify="center" flow={20}>
         <Choice
           data-test="new_admin"
           isActive={role === "ADMIN"}
-          onClick={() => updatePayload({ role: "ADMIN" })}
+          onClick={chooseRoleAndNext("ADMIN")}
         >
           <Box flow={10}>
             <Title>
@@ -37,7 +44,7 @@ export default (props: UserCreationStepProps) => {
         <Choice
           isActive={role === "OPERATOR"}
           data-test="new_operator"
-          onClick={() => updatePayload({ role: "OPERATOR" })}
+          onClick={chooseRoleAndNext("OPERATOR")}
         >
           <Box flow={10}>
             <Title>

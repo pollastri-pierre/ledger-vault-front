@@ -2,26 +2,22 @@
 
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import Mutation from "restlay/Mutation";
 import qs from "query-string";
 import omit from "lodash/omit";
-import { MdCloudDownload } from "react-icons/md";
 import type { ObjectParameters } from "query-string";
 import type { MemoryHistory } from "history";
 
-import colors from "shared/colors";
+import Mutation from "restlay/Mutation";
+import Spinner from "components/base/Spinner";
+import colors, { darken } from "shared/colors";
 import { minWait } from "utils/promise";
-
 import connectData from "restlay/connectData";
 import type { RestlayEnvironment } from "restlay/connectData";
 import type { TableDefinition } from "components/Table/types";
 import ConnectionQuery from "restlay/ConnectionQuery";
-
 import TriggerErrorNotification from "components/TriggerErrorNotification";
 import Box from "components/base/Box";
-import Text from "components/base/Text";
 import Paginator from "components/base/Paginator";
-import Card from "components/base/Card";
 
 const DEFAULT_PAGE_SIZE = 30;
 
@@ -177,15 +173,16 @@ class DataSearch extends PureComponent<Props<*>, State> {
     const showTable = !(isFirstQuery && (status === "initial" || isLoading));
 
     const count = resolveCount(data, response);
-    const page = (queryParams.page && parseInt(queryParams.page, 10) - 1) || 0;
+    const page = (queryParams.page && parseInt(queryParams.page, 10)) || 1;
     const showPaginator = count > data.length;
 
-    return (
-      <Card>
+    const filters = (
+      <FiltersWrapper>
         {error && <TriggerErrorNotification error={error} />}
         {HeaderComponent && <HeaderComponent />}
         <Box horizontal justify="space-between">
           <FilterComponent
+            withNoAction={!ActionComponent}
             onChange={this.handleUpdateQueryParams}
             queryParams={queryParams}
             nbResults={status === "idle" || status === "error" ? count : null}
@@ -207,10 +204,18 @@ class DataSearch extends PureComponent<Props<*>, State> {
           />
           {ActionComponent && <ActionComponent />}
         </Box>
+      </FiltersWrapper>
+    );
 
+    const results = (
+      <>
         {isLoading && Loading && <Loading />}
         {showTable && !(Loading && !isFirstQuery) && (
-          <Box position="relative">
+          <Box
+            position="relative"
+            bg="white"
+            style={{ border: `1px solid ${colors.form.border}` }}
+          >
             <TableComponent
               data={data}
               customTableDef={customTableDef}
@@ -222,7 +227,14 @@ class DataSearch extends PureComponent<Props<*>, State> {
             <LoadingCanvas show={isLoading && data.length} />
           </Box>
         )}
-      </Card>
+      </>
+    );
+
+    return (
+      <Box>
+        {filters}
+        {results}
+      </Box>
     );
   }
 }
@@ -231,8 +243,8 @@ const styles = {
   initialLoading: {
     height: 250,
     color: colors.steel,
-    background: "#fafafa",
-    border: "1px solid #f0f0f0",
+    background: darken(colors.form.bg, 0.02),
+    border: `1px solid ${colors.form.border}`,
     borderRadius: 2,
   },
 };
@@ -249,10 +261,18 @@ const LoadingCanvas = styled.div`
   transition: 100ms linear opacity;
 `;
 
+const FiltersWrapper = styled.div`
+  border: 1px solid ${colors.form.border};
+  border-bottom: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 10px;
+  background: white;
+`;
+
 const InitialLoading = () => (
   <Box align="center" justify="center" style={styles.initialLoading}>
-    <MdCloudDownload color="#aaa" size={40} />
-    <Text small>Retrieving data...</Text>
+    <Spinner />
   </Box>
 );
 

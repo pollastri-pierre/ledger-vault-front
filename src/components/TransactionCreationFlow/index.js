@@ -6,12 +6,14 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
+import SearchTransactions from "api/queries/SearchTransactions";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import AccountsQuery from "api/queries/AccountsQuery";
 import { CardError } from "components/base/Card";
-import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 
 import TransactionCreationAccount, {
   getBridgeAndTransactionFromAccount,
@@ -45,9 +47,22 @@ const steps = [
     id: "note",
     name: <Trans i18nKey="transactionCreation:steps.note.title" />,
     Step: TransactionCreationNote,
-    requirements: (payload: TransactionCreationPayload<any>) => {
+    requirements: (
+      payload: TransactionCreationPayload<any>,
+      additionalProps,
+    ) => {
       const { bridge, transaction, account } = payload;
       if (!bridge || !transaction || !account) return false;
+      if (account.account_type === "ERC20" && additionalProps) {
+        const parent = additionalProps.accounts.edges
+          .map(e => e.node)
+          .find(a => a.id === account.parent);
+        return bridge.checkValidTransactionSyncSync(
+          account,
+          transaction,
+          parent,
+        );
+      }
       return bridge.checkValidTransactionSyncSync(account, transaction);
     },
   },
@@ -55,20 +70,28 @@ const steps = [
     id: "confirmation",
     name: <Trans i18nKey="transactionCreation:steps.confirmation.title" />,
     Step: TransactionCreationConfirmation,
-    Cta: ({
-      payload,
-      onClose,
-    }: {
+    Cta: (props: {
       payload: TransactionCreationPayload<any>,
       onClose: Function,
+      restlay: RestlayEnvironment,
     }) => {
+      const { payload, onClose, restlay } = props;
       const data = serializePayload(payload);
       return (
         <ApproveRequestButton
-          interactions={createAndApproveWithChallenge}
-          onSuccess={data => {
-            console.log(data); // eslint-disable-line no-console
-            onClose();
+          interactions={createAndApprove("TRANSACTION")}
+          onSuccess={async () => {
+            try {
+              if (payload.account) {
+                await restlay.fetchQuery(
+                  new SearchTransactions({
+                    account: [`${payload.account.id}`],
+                  }),
+                );
+              }
+            } finally {
+              onClose();
+            }
           }}
           disabled={false}
           additionalFields={{ type: "CREATE_TRANSACTION", data }}

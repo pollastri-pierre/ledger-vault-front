@@ -1,102 +1,61 @@
 // @flow
-import colors from "shared/colors";
 import React from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+
+import colors from "shared/colors";
 import { Title } from "components/Onboarding";
 import type { Translate } from "data/types";
-import { withTranslation } from "react-i18next";
-import { withStyles } from "@material-ui/core/styles";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import Validate from "components/icons/Validate";
 import People from "components/icons/thin/People";
 import Lock from "components/icons/thin/Lock";
 import DialogButton from "components/buttons/DialogButton";
-import { connect } from "react-redux";
 import Footer from "./Footer";
 
-const styles = {
-  base: {
-    textAlign: "center",
-    fontSize: 13,
-  },
-  icon: {
-    width: 35,
-    height: 35,
-    margin: "0 auto 20px",
-    borderRadius: "50%",
-    border: "3px solid #27d0e2",
-    paddingTop: 5,
-    textAlign: "center",
-  },
-  sep: {
-    width: 170,
-    height: 1,
-    background: "#eeeeee",
-    margin: "30px auto 30px auto",
-  },
-  sumary: {
-    display: "flex",
-    margin: "auto",
-  },
-  info: {
-    fontSize: 11,
-    textAlign: "center",
-    lineHeight: 1.82,
-  },
-};
 const ConfirmationGlobal = ({
-  classes,
   onboarding,
   match,
   history,
   t,
 }: {
-  classes: { [$Keys<typeof styles>]: string },
   match: *,
   history: *,
   onboarding: *,
   t: Translate,
 }) => (
-  <div>
+  <Box flow={20}>
     <Title>{t("onboarding:confirmation.title")}</Title>
-    <div>
-      <div className={classes.base}>
-        <div>
-          <div className={classes.icon}>
-            <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
-          </div>
-        </div>
-        <strong>{t("onboarding:confirmation.description")}</strong>
-        <p>{t("onboarding:confirmation.members_can_signin")}</p>
-      </div>
-      <div className={classes.sep} />
-      <div className={classes.sumary}>
-        <div className={classes.info}>
-          <div style={{ marginBottom: 12 }}>
-            <People color={colors.blue_red} style={{ height: 29 }} />
-          </div>
+    <Box flow={40}>
+      <Box align="center" flow={20}>
+        <Validate color="#27d0e2" style={{ strokeWidth: 4 }} />
+        <Text bold i18nKey="onboarding:confirmation.description" />
+        <Text i18nKey="onboarding:confirmation.members_can_signin" />
+      </Box>
+      <Sep />
+      <Box horizontal flow={20}>
+        <Info icon={<People color={colors.blue_red} style={{ height: 29 }} />}>
           3 Shared-Owners
-        </div>
-        <div className={classes.info}>
-          <div style={{ marginBottom: 12 }}>
-            <People color={colors.blue_orange} style={{ height: 29 }} />
-          </div>
+        </Info>
+        <Info
+          icon={<People color={colors.blue_orange} style={{ height: 29 }} />}
+        >
           3 Wrapping Keys Custodians
-        </div>
-        <div className={classes.info}>
-          <div style={{ marginBottom: 12 }}>
-            <People color={colors.blue_green} style={{ height: 29 }} />
-          </div>
+        </Info>
+        <Info
+          icon={<People color={colors.blue_green} style={{ height: 29 }} />}
+        >
           {onboarding.registering.admins.length}{" "}
           {t("onboarding:administrators")}
-        </div>
-        <div className={classes.info}>
-          <div style={{ marginBottom: 12 }}>
-            <Lock />
-          </div>
+        </Info>
+        <Info icon={<Lock />}>
           {onboarding.quorum}/{onboarding.registering.admins.length}{" "}
           {t("onboarding:confirmation.scheme")}
-        </div>
-      </div>
-    </div>
+        </Info>
+      </Box>
+    </Box>
     <Footer
       render={() => (
         <>
@@ -112,14 +71,40 @@ const ConfirmationGlobal = ({
         </>
       )}
     />
-  </div>
+  </Box>
 );
 
 const mapProps = state => ({
   onboarding: state.onboarding,
 });
 
+const InfoContainer = styled(Box).attrs({
+  align: "center",
+  justify: "center",
+  flow: 10,
+})``;
+
+const Info = ({
+  icon,
+  children,
+}: {
+  icon: React$Node,
+  children: React$Node,
+}) => (
+  <InfoContainer>
+    {icon}
+    <Box style={{ textAlign: "center" }}>{children}</Box>
+  </InfoContainer>
+);
+
 export default connect(
   mapProps,
   () => ({}),
-)(withStyles(styles)(withTranslation()(ConfirmationGlobal)));
+)(withTranslation()(ConfirmationGlobal));
+
+const Sep = styled.div`
+  width: 170px;
+  margin: auto;
+  height: 1px;
+  background: #eeeeee;
+`;

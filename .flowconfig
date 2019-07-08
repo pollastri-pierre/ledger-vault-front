@@ -1,5 +1,6 @@
 [ignore]
 <PROJECT_ROOT>/node_modules/@ledgerhq/live-common/lib/helpers/currencies/localeUtility.js.flow
+.*/core-js/.*
 
 [untyped]
 .*/node_modules/react-select

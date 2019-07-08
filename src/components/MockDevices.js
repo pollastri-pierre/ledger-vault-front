@@ -2,8 +2,8 @@
 
 import React, { PureComponent } from "react";
 import Switch from "@material-ui/core/Switch";
-import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import Collapse from "@material-ui/core/Collapse";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaCopy } from "react-icons/fa";
 import { logout, login } from "redux/modules/auth";
 import { connect } from "react-redux";
 
@@ -21,6 +21,8 @@ const styles = {
     flexDirection: "column",
     background: colors.night,
     color: colors.lead,
+    // intended eheh :)
+    zIndex: 99999999,
   },
   group: {
     display: "flex",
@@ -36,6 +38,7 @@ const styles = {
     color: "white",
     fontWeight: "bold",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
@@ -63,8 +66,9 @@ const styles = {
     marginLeft: 20,
   },
   collapseIcon: {
+    cursor: "pointer",
     alignSelf: "center",
-    marginRight: 10,
+    padding: 10,
   },
 };
 
@@ -72,14 +76,37 @@ const devices = [
   ["Wrapping key", "orange", [1, 2, 3]],
   ["Admin", "green", [4, 5, 6]],
   ["Shared owner", "red", [7, 8, 9]],
-  ["Operators", "blue", [11, 12, 13]],
+  ["Operators", "blue", [10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22]],
 ];
+
+const onboardingDevices = ["Wrapping key", "Shared owner"];
+
+const deviceIds = {
+  4: "3e5d93bd3d1bb422",
+  5: "7c745c871a759648",
+  6: "776a93ed2a94b12d",
+  10: "84e5ca3641ab0d8f",
+  11: "2d6b4c922d0816a8",
+  12: "a1887741b3079235",
+  13: "ee28c05e09d91079",
+  14: "96f3b9d890e84b3e",
+  15: "3e5d93bd3d1bb422",
+  16: "7996a597c0dc62a0",
+  17: "ee19fed05c6d809d",
+  18: "cf3f26692e3bfb46",
+  19: "20c0a5fc173935e7",
+  20: "8db6447808dc4121",
+  21: "85a6f315cdb1efc7",
+  22: "6fdc95cfdc89ce6a",
+};
 
 class MockDevices extends PureComponent {
   state = {
     deviceId: null,
     autoLogout: false,
-    collapseMock: false,
+    collapseMock: true,
+    showOnboarding: false,
+    forceHardware: false,
   };
 
   changeAutoLogout = () => {
@@ -91,7 +118,9 @@ class MockDevices extends PureComponent {
       const result = await fetch(`${API_BASE_URL}/current-device`);
       const current = await result.json();
       const { device_id } = current;
-      this.setState({ deviceId: device_id });
+      this.setState({
+        deviceId: device_id,
+      });
     } catch (e) {
       console.warn(e);
     }
@@ -109,9 +138,6 @@ class MockDevices extends PureComponent {
       this.setState({ deviceId: id });
       if (this.state.autoLogout) {
         await this.props.logout();
-        setTimeout(() => {
-          document.getElementsByTagName("button")[0].click();
-        }, 500);
       }
     } catch (e) {
       console.warn(e);
@@ -122,42 +148,86 @@ class MockDevices extends PureComponent {
     this.setState(state => ({ collapseMock: !state.collapseMock }));
   };
 
+  onboardingToggle = () => {
+    this.setState(state => ({ showOnboarding: !state.showOnboarding }));
+  };
+
+  forceHardwareToggle = () => {
+    window.FORCE_HARDWARE = !window.FORCE_HARDWARE;
+    this.setState(() => ({ forceHardware: window.FORCE_HARDWARE }));
+  };
+
   render() {
-    const { deviceId, autoLogout, collapseMock } = this.state;
+    const {
+      deviceId,
+      autoLogout,
+      collapseMock,
+      showOnboarding,
+      forceHardware,
+    } = this.state;
     return (
       <div style={styles.root}>
         <div style={styles.actionContainer}>
-          <div style={styles.rowContainer}>
-            <Text small uppercase style={styles.autoLogout}>
-              Auto logout ?
-            </Text>
-            <Switch
-              onChange={this.changeAutoLogout}
-              checked={autoLogout}
-              label="autologout"
-            />
-          </div>
+          {!collapseMock && (
+            <>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  Auto logout ?
+                </Text>
+                <Switch
+                  onChange={this.changeAutoLogout}
+                  checked={autoLogout}
+                  label="autologout"
+                />
+              </div>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  Show wrapping / shared ?
+                </Text>
+                <Switch
+                  onChange={this.onboardingToggle}
+                  checked={showOnboarding}
+                  label="show onboarding"
+                />
+              </div>
+              <div style={styles.rowContainer}>
+                <Text small uppercase style={styles.autoLogout}>
+                  force hardware
+                </Text>
+                <Switch
+                  onChange={this.forceHardwareToggle}
+                  checked={forceHardware}
+                  label="show onboarding"
+                />
+              </div>
+            </>
+          )}
           <div onClick={this.collapseToggle} style={styles.collapseIcon}>
             {collapseMock ? <FaAngleDoubleUp /> : <FaAngleDoubleDown />}
           </div>
         </div>
-        <Collapse in={!collapseMock}>
+        {!collapseMock && (
           <div style={styles.rowContainer}>
-            {devices.map(([g, color, devices]) => (
-              <DeviceGroup name={g} key={g}>
-                {devices.map(d => (
-                  <Device
-                    key={d}
-                    color={color}
-                    id={d}
-                    isActive={deviceId === d}
-                    onClick={this.switchDevice}
-                  />
-                ))}
-              </DeviceGroup>
-            ))}
+            {devices
+              .filter(([g]) =>
+                showOnboarding ? true : !onboardingDevices.includes(g),
+              )
+              .map(([g, color, devices]) => (
+                <DeviceGroup name={g} key={g}>
+                  {devices.map(d => (
+                    <Device
+                      key={d}
+                      color={color}
+                      id={d}
+                      deviceId={deviceIds[d] || null}
+                      isActive={deviceId === d}
+                      onClick={this.switchDevice}
+                    />
+                  ))}
+                </DeviceGroup>
+              ))}
           </div>
-        </Collapse>
+        )}
       </div>
     );
   }
@@ -174,7 +244,7 @@ function DeviceGroup({ name, children }) {
   );
 }
 
-function Device({ id, color, isActive, onClick }) {
+function Device({ id, color, isActive, onClick, deviceId }) {
   return (
     <div
       onClick={() => onClick(id)}
@@ -191,9 +261,21 @@ function Device({ id, color, isActive, onClick }) {
       ) : (
         <Text>{id}</Text>
       )}
+      {deviceId && (
+        <div onClick={stopPropagate} style={{ marginTop: 10 }}>
+          <CopyToClipboard text={deviceId}>
+            <FaCopy />
+          </CopyToClipboard>
+        </div>
+      )}
     </div>
   );
 }
+
+const stopPropagate = e => {
+  e.stopPropagation();
+  e.preventDefault();
+};
 
 const mapDispatchToProps = {
   logout,

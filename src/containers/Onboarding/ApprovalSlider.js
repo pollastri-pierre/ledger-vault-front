@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import cx from "classnames";
+import Disabled from "components/Disabled";
 import type { Translate } from "data/types";
 import { withTranslation, Trans } from "react-i18next";
 import { withStyles } from "@material-ui/core/styles";
@@ -58,12 +59,14 @@ const ApprovalSlider = ({
   number,
   total,
   min,
+  max,
   onChange,
   t,
 }: {
   classes: { [$Keys<typeof styles>]: string },
   number: number,
   min?: number,
+  max?: number,
   total: number,
   onChange: number => void,
   t: Translate,
@@ -100,28 +103,34 @@ const ApprovalSlider = ({
         })}
     </div>
     <div className={classes.flex}>
-      <span
-        className={classes.require}
-        onClick={() => {
-          if (!min || number - 1 >= min) {
-            onChange(number - 1);
-          }
-        }}
-      >
-        <Arrow className={classes.left} />
-        {t("onboarding:administrators_scheme.require_less")}
-      </span>
-      <span
-        className={classes.require}
-        onClick={() => {
-          if (number + 1 <= total) {
-            onChange(number + 1);
-          }
-        }}
-      >
-        {t("onboarding:administrators_scheme.require_more")}
-        <Arrow className={classes.right} />
-      </span>
+      <Disabled disabled={min && number === min}>
+        <span
+          data-test="edit-admin-rule_less"
+          className={classes.require}
+          onClick={() => {
+            if (!min || number - 1 >= min) {
+              onChange(number - 1);
+            }
+          }}
+        >
+          <Arrow className={classes.left} />
+          {t("onboarding:administrators_scheme.require_less")}
+        </span>
+      </Disabled>
+      <Disabled disabled={max && number === max}>
+        <span
+          data-test="edit-admin-rule_more"
+          className={classes.require}
+          onClick={() => {
+            if (number + 1 <= total && (!max || number + 1 <= max)) {
+              onChange(number + 1);
+            }
+          }}
+        >
+          {t("onboarding:administrators_scheme.require_more")}
+          <Arrow className={classes.right} />
+        </span>
+      </Disabled>
     </div>
   </div>
 );

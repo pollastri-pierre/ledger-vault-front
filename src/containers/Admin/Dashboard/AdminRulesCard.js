@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import { Trans } from "react-i18next";
 import { MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -33,13 +34,15 @@ const AdminRulesCard = (props: Props) => {
     !updateQuorumRequest && !revokeAdminRequest && !addAdminRequest;
   return (
     <Card width={400} style={{ minHeight: 300 }}>
-      <CardTitle noMargin>Admin rules</CardTitle>
-      <CardDesc i18nKey="adminDashboard:editAdminRules" />
+      <CardTitle noMargin>
+        <Text i18nKey="adminDashboard:adminRule" />
+      </CardTitle>
+      <CardDesc i18nKey="adminDashboard:adminRuleDesc" />
       <Box flow={20} grow>
         <Box grow align="center" justify="center">
           <Text large>
             {organization.quorum} approvals out of{" "}
-            {organization.number_of_admins} admins
+            {organization.number_of_admins} administrators
           </Text>
         </Box>
         {updateQuorumRequest && (
@@ -84,7 +87,7 @@ const AdminRulesCard = (props: Props) => {
           onClick={onEdit}
           disabled={!canEdit}
         >
-          Edit admin rules
+          <Trans i18nKey="request:type.UPDATE_QUORUM" />
         </Button>
       </Box>
     </Card>

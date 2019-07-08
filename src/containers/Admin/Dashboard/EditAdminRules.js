@@ -3,44 +3,52 @@
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
 
-import { createAndApprove } from "device/interactions/approveFlow";
-import { CardError } from "components/base/Card";
+import connectData from "restlay/connectData";
+import RequestsQuery from "api/queries/RequestsQuery";
+import { createAndApprove } from "device/interactions/hsmFlows";
+import Text from "components/base/Text";
 import { RichModalHeader, RichModalFooter } from "components/base/Modal";
 import ApproveRequestButton from "components/ApproveRequestButton";
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
+import { useOrganization } from "components/OrganizationContext";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
-import connectData from "restlay/connectData";
-import OrganizationQuery from "api/queries/OrganizationQuery";
+import { CardError } from "components/base/Card";
+import type { Connection } from "restlay/ConnectionQuery";
+import type { Request } from "data/types";
 import ApprovalSlider from "containers/Onboarding/ApprovalSlider";
-import type { Organization } from "data/types";
 
 type Props = {
-  organization: Organization,
   close: () => void,
+  requestsConnection: Connection<Request>,
 };
 
 function EditAdminRules(props: Props) {
-  const { organization, close } = props;
+  const { close, requestsConnection } = props;
+  const requests = requestsConnection.edges.map(e => e.node);
+  const organization = useOrganization();
   const [quorum, setQuorum] = useState(organization.quorum || 0);
   const inner = (
     <Box width={500} height={500}>
       <RichModalHeader title="Edit admin rule" Icon={MdEdit} onClose={close} />
       <Box p={20} flow={20} grow>
-        <InfoBox type="info">
-          Editing the admin will affect all pending requests.
-        </InfoBox>
+        {!!requests.length && (
+          <InfoBox type="warning">
+            <Text i18nKey="adminDashboard:warningEditAdminRules" />
+          </InfoBox>
+        )}
         <ApprovalSlider
           number={quorum}
           total={organization.number_of_admins}
           onChange={setQuorum}
+          max={organization.number_of_admins - 1}
           min={2}
         />
       </Box>
       <RichModalFooter>
         <Box align="flex-end" grow={1}>
           <ApproveRequestButton
-            interactions={createAndApprove}
+            interactions={createAndApprove("ORGANIZATION")}
             disabled={quorum === organization.quorum}
             additionalFields={{ type: "UPDATE_QUORUM", data: { quorum } }}
             onSuccess={close}
@@ -58,6 +66,10 @@ export default connectData(EditAdminRules, {
   RenderLoading: GrowingSpinner,
   RenderError: CardError,
   queries: {
-    organization: OrganizationQuery,
+    requestsConnection: RequestsQuery,
   },
+  propsToQueryParams: () => ({
+    status: ["PENDING_APPROVAL", "PENDING_REGISTRATION"],
+    pageSize: -1,
+  }),
 });

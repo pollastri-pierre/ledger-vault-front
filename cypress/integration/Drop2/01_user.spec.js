@@ -18,45 +18,29 @@ describe("Add User as Operator and Admin", function() {
     // Add Anna Wagner
     create_user(
       "Anna Wagner",
-      Cypress.env("userId1"),
+      Cypress.env("opId10"),
       "[data-test=new_operator]",
-    );
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
     );
 
     // Add Aidan Fisher
     create_user(
       "Aidan Fisher",
-      Cypress.env("userId2"),
+      Cypress.env("opId11"),
       "[data-test=new_operator]",
-    );
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
     );
 
     // Thomas Lebron
     create_user(
       "Thomas Lebron",
-      Cypress.env("userId3"),
+      Cypress.env("opId12"),
       "[data-test=new_operator]",
-    );
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
     );
 
     // James Lepic
     create_user(
       "James Lepic",
-      Cypress.env("userId4"),
+      Cypress.env("opId13"),
       "[data-test=new_operator]",
-    );
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
     );
   });
 
@@ -66,10 +50,6 @@ describe("Add User as Operator and Admin", function() {
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
     // Add John Clark
-    create_user("John Clark", Cypress.env("userId5"), "[data-test=new_admin]");
-    cy.get(".top-message-title").contains("User invitation created");
-    cy.get(".top-message-body").contains(
-      "the User invitation has been successfully created",
-    );
+    create_user("John Clark", Cypress.env("opId16"), "[data-test=new_admin]");
   });
 });

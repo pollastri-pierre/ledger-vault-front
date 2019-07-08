@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
@@ -39,12 +40,16 @@ export const CardDesc = ({
 export { default as CardError } from "./CardError";
 export { default as CardLoading } from "./CardLoading";
 
-export default styled(Box).attrs(p => ({
-  // $FlowFixMe
-  p: "p" in p ? p.p : 20,
-  // $FlowFixMe
-  position: "relative",
-}))`
+export const SoftCard = styled(Box)`
+  border: 1px solid ${colors.form.border};
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+`;
+
+export default styled(Box)`
+  position: relative;
+  padding: 20px;
   background: white;
   overflow-x: ${p => p.overflow || "unset"};
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);

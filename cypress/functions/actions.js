@@ -9,6 +9,7 @@ export function login(id) {
   switch_device(id);
   cy.get("input[type=text]").type(orga_name, { delay: 40 });
   cy.contains("Continue").click();
+  cy.wait(2500);
   cy.url().should("include", "/dashboard");
 }
 
@@ -57,6 +58,7 @@ export function route() {
   cy.route("get", `${API_DEVICE}/get-attestation`).as("get-attestation");
   cy.route("post", `${API_DEVICE}/open-session`).as("open-session");
   cy.route("post", `${API_DEVICE}/register`).as("register");
+  cy.route("post", `${API_DEVICE}/u2f-register-data`).as("register-data");
   cy.route("post", `${API_DEVICE}/generate-key-fragments`).as(
     "generate-key-fragments",
   );
@@ -102,6 +104,7 @@ export function cancel() {
  */
 export function create_account1(currency, name) {
   cy.get(".test-new-account").click();
+  cy.wait(2500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
@@ -126,7 +129,7 @@ export function create_account1(currency, name) {
 
   // We should get a Account request created message
   cy.get(".top-message-body")
-    .contains("the account request has been successfully created")
+    .contains("The account request has been successfully created")
     .get(".top-message-title")
     .contains("account request created");
 }
@@ -162,7 +165,7 @@ export function approve_account(currency, name, fiat) {
     .click();
   cy.wait(2500);
   cy.get(".top-message-body")
-    .contains("the account request has been successfully approved")
+    .contains("The account request has been successfully approved")
     .get(".top-message-title")
     .contains("account request approved");
 }
@@ -189,7 +192,7 @@ export function create_transaction(name, id, address, amount) {
     .click({ force: true });
   cy.wait(6500);
   cy.get(".top-message-body")
-    .contains("the transaction request has been successfully created")
+    .contains("The transaction request has been successfully created")
     .get(".top-message-title")
     .contains("transaction request created");
 }
@@ -216,7 +219,7 @@ export function approve_transaction(name) {
     .click({ force: true });
   cy.wait(2000);
   cy.get(".top-message-body")
-    .contains("the transaction request has been successfully approved")
+    .contains("The transaction request has been successfully approved")
     .get(".top-message-title")
     .contains("transaction request approved");
 }
@@ -228,10 +231,13 @@ export function approve_transaction(name) {
 export function create_user(username, userID, role) {
   cy.get("[data-test=buttonCreate]").click();
   cy.get(role).click();
-  cy.contains("Next").click();
   cy.get("[data-test=username]").type(username);
   cy.get("[data-test=userID]").type(userID);
   cy.contains("Next").click();
+  cy.get(".top-message-title").contains("User invitation created");
+  cy.get(".top-message-body").contains(
+    "The User invitation has been successfully created",
+  );
   cy.contains("Done").click();
 }
 
@@ -253,14 +259,14 @@ export function create_group(groupName, description, user1, user2, user3) {
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(1500);
+  cy.wait(2500);
 }
 
 export function successfull_message() {
   cy.get(".top-message-body")
-    .contains("the request has been successfully updated")
+    .contains("The request has been successfully created")
     .get(".top-message-title")
-    .contains("request updated");
+    .contains("request created");
 }
 
 export function error_message(title, message) {
@@ -272,7 +278,7 @@ export function error_message(title, message) {
 
 export function create_account(currency, name, group, user1) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(1000);
+  cy.wait(4500);
   cy.get("#input_crypto")
     .type(currency, { force: true })
     .type("{enter}");
@@ -289,7 +295,7 @@ export function create_account(currency, name, group, user1) {
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(2500);
+  cy.wait(3500);
 }
 
 export function create_erc20_account(
@@ -300,7 +306,7 @@ export function create_erc20_account(
   user1,
 ) {
   cy.get("[data-test=buttonCreate]").click();
-  cy.wait(2000);
+  cy.wait(4500);
   cy.get("#input_crypto")
     .type(erc20, { force: true })
     .type("{enter}");
@@ -311,6 +317,7 @@ export function create_erc20_account(
   cy.get("#input_groups_users")
     .type(group, { force: true })
     .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
   cy.contains("Add approval").click();
   cy.get("input#input_groups_users")
     .eq(1)
@@ -318,7 +325,80 @@ export function create_erc20_account(
     .type("{enter}");
   cy.contains("Next").click();
   cy.get("[data-test=approve_button]").click();
-  cy.wait(2500);
+  cy.wait(3500);
+}
+
+export function create_erc20_account_new_eth(erc20, childname, group, user1) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(5500);
+  cy.get("#input_crypto")
+    .type(erc20, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=account_childname]").type(childname);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(3500);
+}
+
+export function create_erc20_with_viewonly_eth_account(
+  erc20,
+  childname,
+  parentname,
+  group,
+  user1,
+) {
+  cy.get("[data-test=buttonCreate]").click();
+  cy.wait(5500);
+  cy.get("#input_crypto")
+    .type(erc20, { force: true })
+    .type("{enter}");
+  cy.contains("Create a new view-only Ethereum account").click();
+  cy.contains("Next").click();
+  cy.get("[data-test=account_childname]").type(childname);
+  cy.get("[data-test=account_parentname]").type(parentname);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(group, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(3500);
+}
+
+export function provide_viewonly_rule(name, groups, user1) {
+  cy.get("[data-test=view_only_provide_rules]").click();
+  cy.wait(5500);
+  cy.get("[data-test=account_name]").should("have.value", name);
+  cy.contains("Next").click();
+  cy.get("#input_groups_users")
+    .type(groups, { force: true })
+    .type("{enter}");
+  cy.get("[data-test=rightANgle]").click();
+  cy.contains("Add approval").click();
+  cy.get("input#input_groups_users")
+    .eq(1)
+    .type(user1, { force: true })
+    .type("{enter}");
+  cy.contains("Next").click();
+  cy.get("[data-test=approve_button]").click();
+  cy.wait(3500);
 }
 
 export function revoke_users(name) {

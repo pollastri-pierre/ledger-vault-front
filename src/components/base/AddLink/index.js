@@ -14,7 +14,7 @@ export default ({
   onClick: () => void,
   children: *,
 }) => (
-  <Absolute top={20} right={20}>
+  <Absolute top={30} right={30}>
     <Button
       onClick={onClick}
       data-test="buttonCreate"

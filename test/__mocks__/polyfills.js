@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === "test") {
 
 global.config = {
   API_BASE_URL: "http://localhost:5000",
-  HSM_SIMU: true,
 
   // TODO looks weird, but we don't want to trigger `checkToUpdate() => false`
   // because it trigger a window.history.push which is not supported by jsdom

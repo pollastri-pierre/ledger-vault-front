@@ -33,14 +33,20 @@ context("Registration Shared Owners", () => {
       },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
-      cy.contains("continue").click();
+      cy.get("[data-test=continue_button]").click();
       cy.wait(1000);
 
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
 
       // Shared Owner 1
@@ -51,12 +57,12 @@ context("Registration Shared Owners", () => {
       cy.request("POST", Cypress.env("api_switch_device"), {
         device_number: 8,
       });
-      // Cancel the approval
+      /*  // Cancel the approval
       cy.request("POST", Cypress.env("approve_cancel_device"), {
         approve: false,
       });
       cy.contains("Add shared-owner").click();
-
+*/
       // approval
       cy.request("POST", Cypress.env("approve_cancel_device"), {
         approve: true,
@@ -71,7 +77,9 @@ context("Registration Shared Owners", () => {
       cy.contains("Add shared-owner").click();
       cy.wait("@authenticate");
 
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
     });
   });

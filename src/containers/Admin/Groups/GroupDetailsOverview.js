@@ -5,6 +5,7 @@ import Box from "components/base/Box";
 import { withRouter } from "react-router-dom";
 import Text from "components/base/Text";
 import type { Group, User } from "data/types";
+import colors from "shared/colors";
 import ListGroupMembers from "components/ListGroupMembers";
 import GroupDetailsDetails from "containers/Admin/Groups/GroupDetailsDetails";
 import type { Connection } from "restlay/ConnectionQuery";
@@ -26,11 +27,13 @@ class GroupDetailsOverview extends PureComponent<Props> {
     // TODO need an endpoint not paginated for this
     const listOperators = operators.edges.map(e => e.node);
     return (
-      <Box flow={20}>
+      <Box>
         <GroupDetailsDetails group={group} />
-        <Box flow={20}>
+        <Box pt={20} flow={20} style={styles.borderTop}>
           <Box flow={0} horizontal align="center" justify="space-between">
-            <Text bold> Members</Text>
+            <Text bold uppercase small>
+              Members
+            </Text>
           </Box>
           <ListGroupMembers allUsers={listOperators} users={group.members} />
         </Box>
@@ -38,5 +41,11 @@ class GroupDetailsOverview extends PureComponent<Props> {
     );
   }
 }
+
+const styles = {
+  borderTop: {
+    borderTop: `1px solid ${colors.argile}`,
+  },
+};
 
 export default withRouter(GroupDetailsOverview);

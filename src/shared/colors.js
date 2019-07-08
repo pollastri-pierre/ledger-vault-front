@@ -19,6 +19,7 @@ const formShadows = {
 form.shadow = formShadows;
 
 const colors = {
+  spinner: "hsl(0, 0%, 60%)",
   night: "#1d2028",
   mouse: "#e2e2e2",
   green: "rgb(102, 190, 84)",
@@ -47,10 +48,33 @@ const colors = {
   translucentGrenade: "rgb(234, 46, 73, 0.1)",
 
   // NEW COLORS
+  bgHover: opacity("#1ea7fd", 0.03),
+  bgActive: opacity("#1ea7fd", 0.06),
   text: "#6f6f6f",
   textLight: "#aaaaaa",
   form,
 };
+
+const toast = {
+  info: {
+    fg: opacity(colors.blue, 0.7),
+    bg: lighten(colors.blue, 0.77),
+  },
+  success: {
+    fg: opacity(colors.green, 0.7),
+    bg: lighten(colors.green, 0.82),
+  },
+  warning: {
+    fg: darken(colors.warning, 0.05),
+    bg: lighten(colors.warning, 0.97),
+  },
+  error: {
+    fg: opacity(colors.grenade, 0.7),
+    bg: lighten(colors.grenade, 0.8),
+  },
+};
+
+colors.toast = toast;
 
 function opacity(c, op) {
   return color(c)

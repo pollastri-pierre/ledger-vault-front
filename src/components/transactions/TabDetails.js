@@ -68,6 +68,9 @@ class TabDetails extends PureComponent<{
     const { transaction, account } = this.props;
     const { transaction: rawTransaction } = transaction;
     const cryptoCurrency = getCryptoCurrencyById(account.currency);
+    if (!rawTransaction) {
+      return "No data.";
+    }
     return (
       <>
         {rawTransaction && cryptoCurrency.family === "bitcoin" && (

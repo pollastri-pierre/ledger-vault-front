@@ -3,15 +3,21 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
+import { MdTimer } from "react-icons/md";
 
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
+import DateFormat from "components/DateFormat";
 import Text from "components/base/Text";
-import { approveFlow } from "device/interactions/approveFlow";
+import { approveFlow } from "device/interactions/hsmFlows";
 import AbortRequestButton from "components/AbortRequestButton";
 import { withMe } from "components/UserContextProvider";
 import ApproveRequestButton from "components/ApproveRequestButton";
-import { hasUserApprovedRequest } from "utils/request";
+import {
+  hasUserApprovedCurrentStep,
+  hasUserApprovedRequest,
+  isUserInCurrentStep,
+} from "utils/request";
 import colors from "shared/colors";
 
 import type { Entity, User } from "data/types";
@@ -31,8 +37,15 @@ class RequestActionButtons extends PureComponent<Props> {
     const lastRequest = entity.last_request;
     if (!lastRequest) return null;
 
-    const hasUserApproved = hasUserApprovedRequest(lastRequest, me);
+    const userInCurrentStep = isUserInCurrentStep(lastRequest, me);
+    const userApprovedCurrentStep = hasUserApprovedCurrentStep(lastRequest, me);
+    const userApprovedRequest = hasUserApprovedRequest(lastRequest, me);
+    const isUserCreationRequest =
+      lastRequest.type === "CREATE_OPERATOR" ||
+      lastRequest.type === "CREATE_ADMIN";
+
     const isRequestBlocked = lastRequest.status === "BLOCKED";
+    const isPendingRegistration = lastRequest.status === "PENDING_REGISTRATION";
 
     const inner = isRequestBlocked ? (
       <Box align="center" justify="center">
@@ -42,20 +55,26 @@ class RequestActionButtons extends PureComponent<Props> {
       </Box>
     ) : (
       <>
-        <Box align="center" justify="center">
+        <Box align="center" justify="center" flow={5}>
           <InfoBox withIcon type="info">
             <Box horizontal flow={5}>
               <Text bold i18nKey={`request:type.${lastRequest.type}`} />
               <Text>request is pending.</Text>
             </Box>
           </InfoBox>
+          <Box horizontal align="center" flow={5}>
+            <MdTimer />
+            <Text small>
+              expires at <DateFormat date={lastRequest.expired_at} />
+            </Text>
+          </Box>
         </Box>
-        {hasUserApproved ? (
+        {userApprovedCurrentStep ? (
           <Box horizontal align="center" justify="center" flow={10}>
             {checkedIcon}
             <Text bold>You already approved the request.</Text>
           </Box>
-        ) : (
+        ) : userInCurrentStep || isUserCreationRequest ? (
           <Box
             horizontal
             align="center"
@@ -67,18 +86,23 @@ class RequestActionButtons extends PureComponent<Props> {
               requestID={lastRequest.id}
               onSuccess={onSuccess}
             />
-            <ApproveRequestButton
-              interactions={approveFlow}
-              onSuccess={onSuccess}
-              onError={onError}
-              additionalFields={{ request_id: lastRequest.id }}
-              disabled={false}
-              buttonLabel={
-                <Trans i18nKey={`request:approve.${lastRequest.type}`} />
-              }
-            />
+            {!isPendingRegistration && !userApprovedRequest && (
+              <ApproveRequestButton
+                interactions={approveFlow(lastRequest.target_type)}
+                onSuccess={onSuccess}
+                onError={onError}
+                additionalFields={{
+                  request_id: lastRequest.id,
+                  targetType: lastRequest.target_type,
+                }}
+                disabled={false}
+                buttonLabel={
+                  <Trans i18nKey={`request:approve.${lastRequest.type}`} />
+                }
+              />
+            )}
           </Box>
-        )}
+        ) : null}
       </>
     );
 

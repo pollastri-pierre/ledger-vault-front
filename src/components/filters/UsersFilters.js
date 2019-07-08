@@ -17,6 +17,7 @@ export const defaultStatuses: UserStatus[] = [
   "PENDING_APPROVAL",
   "PENDING_REVOCATION",
   "PENDING_REGISTRATION",
+  "ACCESS_SUSPENDED",
 ];
 
 const statuses: UserStatus[] = [...defaultStatuses, "REVOKED"];
@@ -27,9 +28,9 @@ export default function UsersFilters(props: FieldsGroupProps) {
   return (
     <FiltersCard title="Find users" subtitle="Find users" {...p}>
       <FieldStatuses statuses={statuses} placeholder={t("common:userStatus")} />
-      <FieldText title="Name" queryKey="name" placeholder="Name" />
+      <FieldText title="Username" queryKey="username" placeholder="Username" />
       <FieldUserRole />
-      <FieldText title="User ID" queryKey="id" placeholder="User ID" />
+      <FieldText title="User ID" queryKey="user_id" placeholder="User ID" />
     </FiltersCard>
   );
 }

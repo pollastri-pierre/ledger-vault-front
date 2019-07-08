@@ -23,9 +23,11 @@ type Props = FieldsGroupProps & {
 export const defaultStatuses: TransactionStatus[] = [
   "SUBMITTED",
   "PENDING_APPROVAL",
+  "BLOCKED",
+  "ABORTED",
 ];
 
-const statuses: TransactionStatus[] = [...defaultStatuses, "ABORTED"];
+const statuses: TransactionStatus[] = [...defaultStatuses];
 
 const txTypes = [
   { value: "SEND", label: "Send" },
@@ -43,9 +45,14 @@ export default function TransactionsFilters(props: Props) {
       />
       <FieldSelect
         single
-        title="Transaction type"
+        title="Type"
+        placeholder="Transaction type"
         queryKey="type"
         options={txTypes}
+        controlShouldRenderValue={false}
+        hideSelectedOptions={false}
+        withCheckboxes
+        width={180}
       />
       <FieldCurrency />
       <FieldAccounts accounts={accounts} />

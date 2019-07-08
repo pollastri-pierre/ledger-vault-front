@@ -16,9 +16,7 @@ class NewIncomingTransactionActivity extends Component<Props> {
     let link = `admin/tasks`;
     if (operation.status === "SUBMITTED") {
       // TODO: update link
-      link = `account/${operation.account_id}/operation/${
-        operation.id
-      }/overview`;
+      link = `account/${operation.account_id}/operation/${operation.id}/overview`;
     }
     return link;
   };

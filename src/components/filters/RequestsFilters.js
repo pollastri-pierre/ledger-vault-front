@@ -10,15 +10,16 @@ import {
   FieldDate,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
-import type { RequestStatus } from "data/types";
+import type { MetaStatus } from "data/types";
 
-export const defaultStatuses: RequestStatus[] = [
+export const defaultStatuses: MetaStatus[] = [];
+
+const statuses: MetaStatus[] = [
+  ...defaultStatuses,
   "APPROVED",
-  "PENDING_APPROVAL",
-  "PENDING_REGISTRATION",
+  "PENDING",
+  "ABORTED",
 ];
-
-const statuses: RequestStatus[] = [...defaultStatuses, "ABORTED"];
 
 export default function RequestsFilters(props: FieldsGroupProps) {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ export default function RequestsFilters(props: FieldsGroupProps) {
       <FieldStatuses
         statuses={statuses}
         placeholder={t("common:requestStatus")}
+        queryKey="meta_status"
       />
       <FieldDate />
       <FieldRequestActivity />

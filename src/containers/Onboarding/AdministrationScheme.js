@@ -49,7 +49,13 @@ const AdministrationScheme = ({
       <Introduction>
         {t("onboarding:administrators_scheme.description")}
       </Introduction>
-      <ApprovalSlider number={number} total={total} onChange={onChange} />
+      <ApprovalSlider
+        number={number}
+        total={total}
+        onChange={onChange}
+        max={total - 1}
+        min={2}
+      />
     </div>
     <Footer
       nextState
@@ -73,7 +79,7 @@ const AdministrationScheme = ({
             <DialogButton
               highlight
               onTouchTap={onclick}
-              disabled={onboarding.quorum < 2}
+              disabled={onboarding.quorum < 2 || onboarding.quorum === total}
             >
               {t("common:continue")}
             </DialogButton>

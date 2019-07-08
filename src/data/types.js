@@ -30,7 +30,11 @@ type Price = {
 
 export type Entity = Group | Account | User | Transaction;
 
-export type UserRole = "ADMIN" | "OPERATOR";
+export const userRoleMap = {
+  ADMIN: "ADMIN",
+  OPERATOR: "OPERATOR",
+};
+export type UserRole = $Keys<typeof userRoleMap>;
 
 export type Unit = {
   id?: number,
@@ -82,7 +86,7 @@ type UserCommon = {
   status: string,
   email?: string,
   last_request?: Request,
-  role: string,
+  role: UserRole,
 };
 export type UserEntity = UserCommon;
 export type User = UserCommon;
@@ -122,7 +126,7 @@ type AccountCommon = {
   id: number,
   account_type: AccountType,
   contract_address: string,
-  parent_id?: number,
+  parent?: number,
   name: string,
   members: User[],
   settings: AccountSettings,
@@ -140,7 +144,8 @@ type AccountCommon = {
   xpub: string,
   tx_approval_steps?: TxApprovalStep[],
   parent: ?number,
-  extended_pub_keys: ExtendedPubKey,
+  derivation_path: string,
+  extended_public_key: ExtendedPubKey,
 };
 export type Account = AccountCommon & {
   currency: string,
@@ -172,6 +177,7 @@ type GroupCommon = {
   description?: string,
   last_request?: Request,
   status: string, // TODO create UNION type when different status are known
+  is_internal: boolean,
 };
 
 export type GroupEntity = GroupCommon & {
@@ -196,11 +202,11 @@ type NoteCommon = {
 };
 
 export type Note = NoteCommon & {
-  author: User,
+  created_by: User,
 };
 
 export type NoteEntity = NoteCommon & {
-  author: string,
+  created_by: string,
 };
 
 export type RawTransactionInput = {
@@ -244,24 +250,33 @@ export type RawTransactionETH = {
 
 export type TransactionType = "SEND" | "RECEIVE";
 
-export type TransactionStatus = "SUBMITTED" | "ABORTED" | "PENDING_APPROVAL";
+export type TransactionStatus =
+  | "SUBMITTED"
+  | "ABORTED"
+  | "PENDING_APPROVAL"
+  | "BLOCKED";
 
 export type UserStatus =
   | "ACTIVE"
   | "REVOKED"
   | "PENDING_APPROVAL"
   | "PENDING_REVOCATION"
-  | "PENDING_REGISTRATION";
+  | "PENDING_REGISTRATION"
+  | "ACCESS_SUSPENDED";
 
 export type GroupStatus = "PENDING" | "ACTIVE" | "REVOKED";
 
 export type AccountStatus =
   | "ACTIVE"
+  | "VIEW_ONLY"
   | "REVOKED"
   | "MIGRATED"
+  | "VIEW_ONLY"
   | "HSM_COIN_UPDATED"
-  | "PENDING_CREATION_APPROVAL"
+  | "PENDING"
   | "PENDING_UPDATE"
+  | "PENDING_VIEW_ONLY"
+  | "PENDING_CREATION_APPROVAL"
   | "PENDING_MIGRATED";
 
 type TransactionCommon = {
@@ -361,7 +376,11 @@ export type ERC20Token = {
   name: string,
   ticker: string,
   signature: string,
+  hsm_signature: string,
+  hsm_account_parameters: string,
 };
+
+export type MetaStatus = "APPROVED" | "PENDING" | "ABORTED";
 
 export type RequestStatus =
   | "ABORTED"
@@ -369,20 +388,27 @@ export type RequestStatus =
   | "PENDING_REGISTRATION"
   | "APPROVED";
 
-export type RequestActivityType =
-  | "CREATE_GROUP"
-  | "EDIT_GROUP"
-  | "REVOKE_GROUP"
-  | "REVOKE_USER"
-  | "CREATE_ADMIN"
-  | "CREATE_OPERATOR"
-  | "CREATE_ACCOUNT"
-  | "EDIT_ACCOUNT"
-  | "REVOKE_ACCOUNT"
-  | "MIGRATE_ACCOUNT"
-  | "UPDATE_QUORUM";
+export const RequestActivityTypeDefs = {
+  CREATE_GROUP: "CREATE_GROUP",
+  EDIT_GROUP: "EDIT_GROUP",
+  REVOKE_GROUP: "REVOKE_GROUP",
+  REVOKE_USER: "REVOKE_USER",
+  CREATE_ADMIN: "CREATE_ADMIN",
+  CREATE_OPERATOR: "CREATE_OPERATOR",
+  CREATE_ACCOUNT: "CREATE_ACCOUNT",
+  EDIT_ACCOUNT: "EDIT_ACCOUNT",
+  REVOKE_ACCOUNT: "REVOKE_ACCOUNT",
+  MIGRATE_ACCOUNT: "MIGRATE_ACCOUNT",
+  UPDATE_QUORUM: "UPDATE_QUORUM",
+};
 
-type RequestTargetType =
+export type RequestActivityType = $Keys<typeof RequestActivityTypeDefs>;
+
+export const RequestActivityTypeList: RequestActivityType[] = Object.keys(
+  RequestActivityTypeDefs,
+);
+
+export type RequestTargetType =
   | "GROUP"
   | "BITCOIN_ACCOUNT"
   | "ETHEREUM_ACCOUNT"
@@ -393,12 +419,15 @@ type RequestTargetType =
   | "ORGANIZATION";
 
 type RequestCommon = {
-  created_by: number,
+  created_by: User,
   created_on: string,
   id: number,
   status: string,
   type: string,
   approvals?: RequestApproval[],
+  // TODO type this
+  approvals_steps: any,
+  current_step: number,
   target_id: number,
   url_id?: string,
   target_type: RequestTargetType,
@@ -417,6 +446,7 @@ type RequestApproval = {
   created_by: User,
   created_on: string,
   type: string,
+  step: number,
 };
 
 type RequestUser = {

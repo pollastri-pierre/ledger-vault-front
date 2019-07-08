@@ -2,9 +2,15 @@
 
 import React, { PureComponent } from "react";
 import Fuse from "fuse.js";
+import { FixedSizeList as List } from "react-window";
+
 import { components } from "react-select";
-import { Trans, withTranslation } from "react-i18next";
-import type { OptionProps } from "react-select/src/types";
+import { withTranslation } from "react-i18next";
+import type {
+  OptionProps,
+  MenuListComponentProps,
+} from "react-select/src/types";
+import ERC20TokenIcon from "components/icons/ERC20Token";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
 import type { ERC20Token, Translate } from "data/types";
@@ -14,7 +20,6 @@ import {
   isERC20Token,
 } from "utils/cryptoCurrencies";
 import CryptoCurrencyIcon from "components/CryptoCurrencyIcon";
-import ERC20TokenIcon from "components/icons/ERC20Token";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 import Select from "components/base/Select";
@@ -37,7 +42,7 @@ type Option = { label: string, value: string, data: Item };
 
 function getItemIcon(item: Item) {
   return item.type === "erc20token" ? (
-    erc20TokenIcon
+    <ERC20TokenIcon token={item.value} size={ICON_SIZE} />
   ) : (
     <CryptoCurrencyIcon
       currency={item.value}
@@ -52,10 +57,7 @@ function getItemLabel(item: Item) {
     <span>
       {`${item.value.name} - `}
       <b>{item.value.ticker}</b>{" "}
-      <span style={styles.contract}>{`${item.value.contract_address.substr(
-        0,
-        15,
-      )}...`}</span>
+      <span style={styles.contract}>{item.value.contract_address}</span>
     </span>
   ) : (
     item.value.name
@@ -69,13 +71,8 @@ const buildOptions = (items: Item[]): Option[] =>
     data: item,
   }));
 
-// We now want to never have testnet 🙃 (see history)
-const INCLUDE_DEV =
-  process.env.NODE_ENV === "development" || process.env.NODE_ENV === "e2e";
-// const INCLUDE_DEV =
-//   process.env.NODE_ENV === "development" ||
-//   process.env.NODE_ENV === "e2e" ||
-//   window.config.SOFTWARE_DEVICE;
+// FINALLY we want testnet everywhere
+const INCLUDE_DEV = true;
 
 const currenciesItems = listCryptoCurrencies(INCLUDE_DEV).map(c => ({
   type: "currency",
@@ -101,14 +98,17 @@ const fuseOptions = {
   keys: ["data.value.name", "data.value.ticker", "data.value.contract_address"],
 };
 
-const fuse = new Fuse(fullOptions, fuseOptions);
+const fuseCurrencies = new Fuse(currenciesOptions, fuseOptions);
+const fuseTokens = new Fuse(erc20TokensOptions, fuseOptions);
 
 const fetchOptions = (inputValue: string) =>
   new Promise(resolve => {
     window.requestAnimationFrame(() => {
-      if (!inputValue) return resolve(currenciesOptions);
-      const result = fuse.search(inputValue);
-      resolve(result.slice(0, 10));
+      if (!inputValue) return resolve(fullOptions);
+      const resultCurrencies = fuseCurrencies.search(inputValue);
+      const resultTokens = fuseTokens.search(inputValue);
+      const results = [...resultCurrencies, ...resultTokens];
+      resolve(results);
     });
   });
 
@@ -161,8 +161,6 @@ const styles = {
   },
 };
 
-const erc20TokenIcon = <ERC20TokenIcon size={ICON_SIZE} />;
-
 const GenericRow = (props: OptionProps) => {
   const { data } = props;
   const item: Item = data.data;
@@ -191,27 +189,48 @@ const ValueComponent = (props: OptionProps) => (
     <GenericRow {...props} />
   </components.SingleValue>
 );
-const MenuComponent = (props: OptionProps) => (
-  <components.Menu {...props}>
-    {props.children}
-    {props.options === currenciesOptions && !props.hasValue && (
-      <Text small italic style={styles.erc20Hint}>
-        <Trans
-          i18nKey="newAccount:search.extraERC20"
-          values={{
-            erc20Count: erc20TokensOptions.length + currenciesOptions.length,
-          }}
-          components={<b>0</b>}
-        />
-      </Text>
-    )}
-  </components.Menu>
-);
+const WindowList = (props: MenuListComponentProps) => {
+  const height = 40;
+  const { options, children, maxHeight, getValue } = props;
+  const [value] = getValue();
+  const initialOffset = value
+    ? options.findIndex(o => o.label === value.label) * height
+    : 0; // FIXME should we avoid to match on label? (erc20 don't have id)
+
+  // el famoso Juan trick see: https://github.com/JedWatson/react-select/issues/3128#issuecomment-433834170
+  if (children && children.forEach) {
+    children.forEach(key => {
+      delete key.props.innerProps.onMouseMove;
+      delete key.props.innerProps.onMouseOver;
+    });
+  }
+  return (
+    <List
+      height={options.length < 8 ? options.length * height : maxHeight}
+      itemCount={options.length}
+      itemSize={height}
+      initialScrollOffset={initialOffset}
+      width="100%"
+      overscanCount={8}
+    >
+      {({ index, style }) => (
+        <div style={{ ...style, overflow: "hidden" }}>{children[index]}</div>
+      )}
+    </List>
+  );
+};
+const MenuList = (props: MenuListComponentProps) => {
+  return (
+    <components.MenuList {...props}>
+      <WindowList {...props} />
+    </components.MenuList>
+  );
+};
 
 const customComponents = {
+  MenuList,
   Option: OptionComponent,
   SingleValue: ValueComponent,
-  Menu: MenuComponent,
 };
 
 type CurrencyOrToken = CryptoCurrency | ERC20Token;

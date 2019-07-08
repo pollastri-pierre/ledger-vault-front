@@ -5,14 +5,15 @@ import { Trans } from "react-i18next";
 import { FaMoneyCheck } from "react-icons/fa";
 
 import connectData from "restlay/connectData";
+import type { RestlayEnvironment } from "restlay/connectData";
 import type { Match } from "react-router-dom";
 import TryAgain from "components/TryAgain";
-import { createAndApproveWithChallenge } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import GrowingCard, { GrowingSpinner } from "components/base/GrowingCard";
 import PotentialParentAccountsQuery from "api/queries/PotentialParentAccountsQuery";
-import AccountQuery from "api/queries/AccountQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
 import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
+import AccountQuery from "api/queries/AccountQuery";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import MultiStepsFlow from "components/base/MultiStepsFlow";
 import Text from "components/base/Text";
@@ -85,19 +86,28 @@ const steps = [
       payload,
       onClose,
       isEditMode,
+      restlay,
     }: {
       payload: AccountCreationPayload,
       onClose: () => void,
       isEditMode?: boolean,
+      restlay: RestlayEnvironment,
     }) => {
       const data = serializePayload(payload, isEditMode);
       const isMigrated = payload.accountStatus === "MIGRATED";
       return (
         <ApproveRequestButton
-          interactions={createAndApproveWithChallenge}
-          onSuccess={data => {
-            console.log(data); // eslint-disable-line no-console
-            onClose();
+          interactions={createAndApprove("ACCOUNT")}
+          onSuccess={async () => {
+            try {
+              if (isEditMode && payload.id) {
+                await restlay.fetchQuery(
+                  new AccountQuery({ accountId: `${payload.id}` }),
+                );
+              }
+            } finally {
+              onClose();
+            }
           }}
           disabled={false}
           additionalFields={{
@@ -262,7 +272,8 @@ export function serializePayload(
       ticker: token.ticker,
       address: token.contract_address,
       decimals: token.decimals,
-      signature: token.signature || "",
+      hsm_signature: token.hsm_signature,
+      hsm_account_parameters: token.hsm_account_parameters,
     };
     Object.assign(data, {
       currency: { name: currencyName },
@@ -290,7 +301,9 @@ export function serializePayload(
   return finalPayload;
 }
 
-export function areApprovalsRulesValid(rules: ApprovalsRule[]) {
+export function areApprovalsRulesValid(rules: Array<?ApprovalsRule>) {
   if (!rules.length) return false;
-  return rules.every(rule => rule.group_id !== null || rule.users.length > 0);
+  return rules.every(
+    rule => rule && (rule.group_id !== null || rule.users.length > 0),
+  );
 }

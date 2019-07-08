@@ -34,7 +34,7 @@ type State = {
   tableDefinition: TableDefinition,
 };
 
-const defaultDefinition = [
+export const defaultDefinition = [
   {
     header: {
       label: "Date",
@@ -58,7 +58,17 @@ const defaultDefinition = [
   },
   {
     header: {
-      label: "",
+      label: "Status",
+      align: "left",
+    },
+    body: {
+      prop: "status",
+      align: "left",
+    },
+  },
+  {
+    header: {
+      label: "Countervalue",
       align: "right",
     },
     body: {
@@ -87,6 +97,7 @@ class TransactionsTable extends PureComponent<Props, State> {
 
   Transaction = (transaction: Transaction) => {
     const { accounts, onRowClick } = this.props;
+    const { tableDefinition } = this.state;
 
     const account = accounts.find(
       account => account.id === transaction.account_id,
@@ -96,13 +107,12 @@ class TransactionsTable extends PureComponent<Props, State> {
       return null;
     }
 
-    const key = `${transaction.account_id}-${transaction.id}-${
-      transaction.type
-    }`;
+    const key = `${transaction.account_id}-${transaction.id}-${transaction.type}`;
 
     return (
       <TransactionRow
         key={key}
+        tableDefinition={tableDefinition}
         transaction={transaction}
         account={account}
         onClick={onRowClick}
@@ -137,6 +147,7 @@ type TransactionRowProps = {
   transaction: Transaction,
   account: Account,
   onClick: Transaction => void,
+  tableDefinition: TableDefinition,
 
   // additional fields
   withStatus?: boolean,
@@ -151,12 +162,23 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
   };
 
   render() {
-    const { transaction, account, onClick, withStatus, withLabel } = this.props;
+    const {
+      transaction,
+      account,
+      onClick,
+      withStatus = true,
+      withLabel,
+      tableDefinition,
+    } = this.props;
 
     const amount =
       transaction.amount || (transaction.price && transaction.price.amount);
 
     const note = transaction.notes && transaction.notes[0];
+
+    // FIXME it should be handled like other tables, mapping into table
+    // definition, etc. For now, quick win.
+    const hasName = tableDefinition.find(col => col.body.prop === "name");
 
     return (
       <MUITableRow
@@ -168,9 +190,11 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
           <DateFormat format="ddd D MMM, h:mmA" date={transaction.created_on} />
         </MUITableCell>
 
-        <MUITableCell>
-          <AccountName account={account} />
-        </MUITableCell>
+        {hasName && (
+          <MUITableCell>
+            <AccountName account={account} />
+          </MUITableCell>
+        )}
 
         {withStatus && (
           <MUITableCell>
@@ -182,10 +206,9 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
 
         <MUITableCell align="right">
           <CounterValue
-            from={account.currency}
+            fromAccount={account}
             value={amount}
             alwaysShowSign
-            disableCountervalue={account.account_type === "ERC20"}
             type={transaction.type}
           />
         </MUITableCell>
@@ -195,7 +218,6 @@ class TransactionRow extends PureComponent<TransactionRowProps> {
             <CurrencyAccountValue
               account={account}
               value={amount}
-              erc20Format={account.account_type === "ERC20"}
               type={transaction.type}
               alwaysShowSign
             />

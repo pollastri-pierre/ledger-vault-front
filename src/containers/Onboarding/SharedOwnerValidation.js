@@ -1,15 +1,20 @@
 // @flow
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+
 import ConfirmationCancel from "containers/Onboarding/ConfirmationCancel";
-import CircleProgress from "components/CircleProgress";
+import { DEVICE_REJECT_ERROR_CODE } from "device";
+import CircleProgress from "components/legacy/CircleProgress";
 import type { Translate } from "data/types";
 import { withTranslation } from "react-i18next";
-import cx from "classnames";
-import BlurDialog from "components/BlurDialog";
-import { withStyles } from "@material-ui/core/styles";
 import DialogButton from "components/buttons/DialogButton";
-import Plus from "components/icons/full/Plus";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
+import { FaPlus } from "react-icons/fa";
+import DeviceInteraction from "components/DeviceInteraction";
+import { validateOperation } from "device/interactions/hsmFlows";
 import SpinnerCard from "components/spinners/SpinnerCard";
+import Box from "components/base/Box";
+import Text from "components/base/Text";
 import { connect } from "react-redux";
 import {
   openAdminValidationChannel,
@@ -19,189 +24,148 @@ import {
 } from "redux/modules/onboarding";
 import { addMessage } from "redux/modules/alerts";
 import { Title, Introduction } from "components/Onboarding";
-import SharedOwnerValidationDevice from "./SharedOwnerValidationDevice";
 import Footer from "./Footer";
-
-const styles = {
-  flex: { display: "flex", justifyContent: "space-between", marginBottom: 50 },
-  base: {
-    "& strong": {
-      fontSize: 12,
-    },
-  },
-  sign: {
-    fontSize: 11,
-    color: "#27d0e2",
-    fontWeight: 600,
-    textDecoration: "none",
-    textTransform: "uppercase",
-    display: "block",
-    cursor: "pointer",
-  },
-  counter: {
-    fontSize: 11,
-    color: "#767676",
-  },
-  sep: {
-    width: 220,
-    height: 1,
-    background: "#eeeeee",
-    margin: "20px 0 20px 0",
-  },
-  flexWrapper: {
-    flex: 1,
-  },
-  disabled: {
-    opacity: 0.5,
-    cursor: "default",
-  },
-  icon: {
-    width: 10,
-    marginRight: 5,
-  },
-};
 
 type Props = {
   onboarding: *,
-  classes: { [$Keys<typeof styles>]: string },
   onWipe: Function,
   onOpenAdminValidationChannel: Function,
-  onAddAdminValidation: Function,
-  onToggleSignin: Function,
   onOpenAdminValidationChannel: () => void,
   onAddAdminValidation: (string, string) => void,
-  onAddMessage: (string, string, string) => Function,
   t: Translate,
 };
-type State = {
-  deny: boolean,
-};
-class SharedOwnerValidation extends Component<Props, State> {
-  state = {
-    deny: false,
+const SharedOwnerValidation = ({
+  t,
+  onboarding,
+  onWipe,
+  onOpenAdminValidationChannel,
+  onAddAdminValidation,
+}: Props) => {
+  const [deny, setDeny] = useState(false);
+  const [validating, setValidating] = useState(false);
+  const [error, setError] = useState(null);
+
+  const onSuccess = data => {
+    setValidating(false);
+    onAddAdminValidation(
+      data.u2f_key.pubKey,
+      data.validate_device.toString("base64"),
+    );
   };
-
-  svg: ?Element;
-
-  componentDidMount() {
-    this.props.onOpenAdminValidationChannel();
-  }
-
-  toggleCancelOnDevice = () => {
-    this.setState(state => ({ deny: !state.deny }));
-  };
-
-  signIn = (pubKey: string, signature: string) => {
-    this.props.onAddAdminValidation(pubKey, signature);
-    this.props.onToggleSignin();
-  };
-
-  render() {
-    const {
-      classes,
-      onboarding,
-      onWipe,
-      onAddMessage,
-      onToggleSignin,
-      t,
-    } = this.props;
-    if (onboarding.validating_shared_owner.channels.length === 0) {
-      return <SpinnerCard />;
+  const onError = e => {
+    setValidating(false);
+    if (e.statusCode && e.statusCode === DEVICE_REJECT_ERROR_CODE) {
+      setDeny(true);
+    } else {
+      setError(e);
     }
-    if (this.state.deny) {
-      return (
-        <ConfirmationCancel
-          entity="Shared-Owners"
-          toggle={this.toggleCancelOnDevice}
-          wipe={onWipe}
-          step="Shared-Owner registration confirmation"
-          title="Shared-Owners registration confirmation"
-        />
-      );
-    }
+  };
+
+  useEffect(() => {
+    onOpenAdminValidationChannel();
+  }, [onOpenAdminValidationChannel]);
+
+  if (deny) {
     return (
-      <div className={classes.base}>
-        <Title>{t("onboarding:so_validation.title")}</Title>
-        <BlurDialog open={onboarding.device_modal} onClose={onToggleSignin}>
-          <SharedOwnerValidationDevice
-            channels={onboarding.validating_shared_owner.channels}
-            onAddMessage={onAddMessage}
-            toggleCancelOnDevice={this.toggleCancelOnDevice}
-            onFinish={this.signIn}
-            cancel={onToggleSignin}
-          />
-        </BlurDialog>
-        <Introduction>{t("onboarding:so_validation.desc")}</Introduction>
-        <div className={classes.flex}>
-          <div className={classes.flexWrapper}>
+      <ConfirmationCancel
+        entity="Shared-Owners"
+        toggle={() => setDeny(false)}
+        wipe={onWipe}
+        step="Shared-Owner registration confirmation"
+        title="Shared-Owners registration confirmation"
+      />
+    );
+  }
+  return (
+    <Box>
+      {error && <TriggerErrorNotification error={error} />}
+      <Title>{t("onboarding:so_validation.title")}</Title>
+      <Introduction>{t("onboarding:so_validation.desc")}</Introduction>
+      {onboarding.validating_shared_owner &&
+      onboarding.validating_shared_owner.channels &&
+      Object.keys(onboarding.validating_shared_owner.channels).length > 0 ? (
+        <Box horizontal justify="space-between" mb={50} flow={50}>
+          <Box>
             <CircleProgress
               label={t("onboarding:master_seed_signin.members_present")}
               nb={onboarding.validating_shared_owner.admins.length}
               total={onboarding.quorum}
             />
-          </div>
-          <div className={classes.flexWrapper}>
+          </Box>
+          <Box>
             <strong>{t("onboarding:master_seed_signin.ask_admin")}</strong>
-            <div className={classes.sep} />
-            <div>
-              <div
-                className={cx(classes.sign, {
-                  [classes.disabled]:
-                    onboarding.validating_shared_owner.admins.length ===
-                    onboarding.quorum,
-                })}
-                onClick={
-                  onboarding.validating_shared_owner.admins.length ===
-                  onboarding.quorum
-                    ? () => false
-                    : onToggleSignin
-                }
-              >
-                <Plus className={classes.icon} />
-                {onboarding.validating_shared_owner.admins.length === 0 ? (
-                  <span className="test-onboarding-signin">
-                    {t("onboarding:master_seed_signin.signin")}
-                  </span>
-                ) : (
-                  <span className="test-onboarding-signin">
-                    {t("onboarding:master_seed_signin.signin_next")}
-                  </span>
-                )}
-              </div>
-              <span className={classes.counter}>
-                {onboarding.validating_shared_owner.admins.length}{" "}
-                {t("onboarding:master_seed_signin.signed_in")},{" "}
-                {onboarding.quorum -
-                  onboarding.validating_shared_owner.admins.length}{" "}
-                {t("onboarding:master_seed_signin:remaining")}
-              </span>
-            </div>
-          </div>
-        </div>
-        <Footer
-          isBack={false}
-          render={(onNext, onPrevious) => (
-            <>
-              <DialogButton onTouchTap={onPrevious}>
-                {t("common:back")}
-              </DialogButton>
-              <DialogButton
-                highlight
-                onTouchTap={onNext}
-                disabled={
-                  onboarding.validating_shared_owner.admins.length <
-                  onboarding.quorum
-                }
-              >
-                {t("common:continue")}
-              </DialogButton>
-            </>
-          )}
-        />
-      </div>
-    );
-  }
-}
+            <Sep />
+            <Box>
+              {validating ? (
+                <DeviceInteraction
+                  onSuccess={onSuccess}
+                  onError={onError}
+                  noCheckVersion
+                  interactions={validateOperation()}
+                  additionalFields={{
+                    secure_channels:
+                      onboarding.validating_shared_owner.channels,
+                  }}
+                />
+              ) : (
+                <>
+                  <SigninButton
+                    disabled={
+                      onboarding.validating_shared_owner.admins.length ===
+                      onboarding.quorum
+                    }
+                    onClick={() => setValidating(true)}
+                  >
+                    <FaPlus size={12} />
+                    {onboarding.validating_shared_owner.admins.length === 0 ? (
+                      <span className="test-onboarding-signin">
+                        {t("onboarding:master_seed_signin.signin")}
+                      </span>
+                    ) : (
+                      <span className="test-onboarding-signin">
+                        {t("onboarding:master_seed_signin.signin_next")}
+                      </span>
+                    )}
+                  </SigninButton>
+                  <Text small color="#767676">
+                    {onboarding.validating_shared_owner.admins.length}{" "}
+                    {t("onboarding:master_seed_signin.signed_in")},{" "}
+                    {onboarding.quorum -
+                      onboarding.validating_shared_owner.admins.length}{" "}
+                    {t("onboarding:master_seed_signin:remaining")}
+                  </Text>
+                </>
+              )}
+            </Box>
+          </Box>
+        </Box>
+      ) : (
+        <SpinnerCard />
+      )}
+
+      <Footer
+        isBack={false}
+        render={(onNext, onPrevious) => (
+          <>
+            <DialogButton onTouchTap={onPrevious}>
+              {t("common:back")}
+            </DialogButton>
+            <DialogButton
+              highlight
+              onTouchTap={onNext}
+              disabled={
+                onboarding.validating_shared_owner.admins.length <
+                onboarding.quorum
+              }
+            >
+              {t("common:continue")}
+            </DialogButton>
+          </>
+        )}
+      />
+    </Box>
+  );
+};
 
 const mapState = state => ({
   onboarding: state.onboarding,
@@ -219,4 +183,25 @@ const mapDispatch = (dispatch: *) => ({
 export default connect(
   mapState,
   mapDispatch,
-)(withStyles(styles)(withTranslation()(SharedOwnerValidation)));
+)(withTranslation()(SharedOwnerValidation));
+
+const SigninButton = styled(Box).attrs({
+  horizontal: true,
+  flow: 5,
+  align: "center",
+})`
+  opacity: ${p => (p.disabled ? "0.5" : "1")};
+  pointer-events: ${p => (p.disabled ? "none" : "auto")};
+  cursor: ${p => (p.disabled ? "default" : "pointer")};
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #27d0e2;
+  fontweight: 600;
+`;
+
+const Sep = styled.div`
+  width: 220px;
+  height: 1;
+  background: #eeeeee;
+  margin: 20px 0 20px 0;
+`;

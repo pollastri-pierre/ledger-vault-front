@@ -16,6 +16,7 @@ type Props = {
   closeOnChange: any,
   isActive: boolean,
   width: number,
+  inPlace?: boolean,
 };
 
 type State = {
@@ -50,8 +51,10 @@ class WrappableField extends Component<Props, State> {
   componentDidMount() {
     this.measure();
 
-    const resizeObserver = new ResizeObserver(this.measure);
-    if (document.body) resizeObserver.observe(document.body);
+    if (typeof ResizeObserver !== "undefined") {
+      const resizeObserver = new ResizeObserver(this.measure);
+      if (document.body) resizeObserver.observe(document.body);
+    }
   }
 
   componentWillUnmount() {
@@ -108,25 +111,50 @@ class WrappableField extends Component<Props, State> {
   ref: any = createRef();
 
   render() {
-    const { label, children, RenderCollapsed, isActive, width } = this.props;
+    const {
+      label,
+      children,
+      RenderCollapsed,
+      isActive,
+      width,
+      inPlace,
+    } = this.props;
     const { isOpened, pos } = this.state;
-    return (
-      <Box position="relative" ref={this.ref}>
+
+    const renderChildren = () =>
+      typeof children === "function"
+        ? children({ toggle: this.toggle })
+        : children;
+
+    const inner =
+      isOpened && inPlace ? (
+        <div style={{ width: width || 250 }}>{renderChildren()}</div>
+      ) : (
         <InlineLabel
           onClick={this.toggle}
           isOpened={isOpened}
           isActive={isActive}
+          width={inPlace ? width || undefined : undefined}
         >
-          <Text bold={isActive}>
-            {label}
-            {isActive ? ": " : ""}
-          </Text>
-          {isActive && RenderCollapsed && <RenderCollapsed />}
-          <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          <Box horizontal align="center" overflow="hidden" flow={5} grow>
+            <Text bold={isActive} noWrap>
+              {label}
+              {isActive ? ": " : ""}
+            </Text>
+            {isActive && RenderCollapsed && <RenderCollapsed />}
+          </Box>
+          <div style={styles.noShrink}>
+            <FaCaretDown data-role="chevron" color={colors.mediumGrey} />
+          </div>
         </InlineLabel>
-        {isOpened && (
+      );
+
+    return (
+      <Box position="relative" ref={this.ref}>
+        {inner}
+        {isOpened && !inPlace && (
           <Menu pos={pos} width={width}>
-            {children}
+            {renderChildren()}
           </Menu>
         )}
       </Box>
@@ -188,6 +216,15 @@ const Menu = styled(Box).attrs({
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.07);
   z-index: 20;
 `;
+
+const styles = {
+  noShrink: {
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
 
 export const WrappableFieldLoading = () => (
   <InlineLabel interactive={false}>Loading...</InlineLabel>

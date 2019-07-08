@@ -14,11 +14,11 @@ const styles = {
     height: 250,
     color: colors.steel,
     background: "#fafafa",
-    border: "1px solid #f0f0f0",
     borderRadius: 2,
   },
   image: {
-    marginRight: -30,
+    width: 80,
+    marginRight: -10,
   },
 };
 
@@ -35,7 +35,7 @@ class NoDataPlaceholder extends Component<{
           alt=""
           style={styles.image}
         />
-        <Text small>{title}</Text>
+        <Text color={colors.textLight}>{title}</Text>
       </Box>
     );
   }

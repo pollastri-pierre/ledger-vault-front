@@ -24,7 +24,6 @@ export const ONBOARDING_ADD_ADMIN_VALIDATION =
   "ONBOARDING_ADD_ADMIN_VALIDATION";
 export const ONBOARDING_ADD_SIGNEDIN = "ONBOARDING_ADD_SIGNEDIN";
 export const ONBOARDING_MASTERSEED_CHANNEL = "ONBOARDING_MASTERSEED_CHANNEL";
-export const ONBOARDING_EDIT_MEMBER = "ONBOARDING_EDIT_MEMBER";
 export const ONBOARDING_ADD_MASTERSEED_KEY = "ONBOARDING_ADD_MASTERSEED_KEY";
 export const ONBOARDING_ADD_SHARED_OWNER = "ONBOARDING_ADD_SHARED_OWNER";
 
@@ -69,7 +68,7 @@ type Blob = {
 type Admin = $Shape<{
   uid: string,
   id: number,
-  pub_key: string,
+  public_key: string,
   user_name: string,
   email: string,
   key_handle: string,
@@ -132,7 +131,7 @@ const initialState = {
   step: 0,
   device_modal: false,
   member_modal: false,
-  quorum: 1,
+  quorum: 2,
   state: "LOADING",
   sharedOwners: [],
   wrapping: {
@@ -328,7 +327,9 @@ export const addMember = (data: Admin) => async (
 ) => {
   const { registering } = getState().onboarding;
   const admins = registering.admins;
-  const findIndex = admins.findIndex(member => member.pub_key === data.pub_key);
+  const findIndex = admins.findIndex(
+    member => member.public_key === data.public_key,
+  );
   if (findIndex > -1) {
     dispatch(addMessage("Error", "Device already registered", "error"));
     throw new Error("Already registered");
@@ -343,14 +344,6 @@ export const addMember = (data: Admin) => async (
       dispatch(handleError(e));
     }
   }
-};
-
-export const editMember = (data: Admin) => async (dispatch: Dispatch<*>) => {
-  await network(`/onboarding/admins/${data.id}`, "PUT", data);
-  dispatch({
-    type: ONBOARDING_EDIT_MEMBER,
-    admin: data,
-  });
 };
 
 export const changeQuorum = (nb: number) => ({
@@ -412,7 +405,7 @@ export const addAdminValidation = (pub_key: string, signature: *) => async (
 ) => {
   try {
     const data = {
-      pub_key: pub_key.toUpperCase(),
+      public_key: pub_key.toUpperCase(),
       signature,
     };
     const admins = await network("/onboarding/authenticate", "POST", data);
@@ -537,7 +530,9 @@ const syncNextState = (state: Store, action, next = false) => {
         ...state.registering,
         admins: actionState.admins,
       },
-      quorum: actionState.quorum,
+      // the gate return 0 as default quorum instead of 2
+      // TODO remove when gate fixed it
+      quorum: actionState.quorum < 2 ? 2 : actionState.quorum,
     };
   }
   if (actionState.state === "SHARED_OWNER_VALIDATION") {
@@ -648,7 +643,6 @@ export default function reducer(state: Store = initialState, action: Object) {
       return {
         ...state,
         member_modal: !state.member_modal,
-        editMember: action.member,
       };
     case ONBOARDING_CHANGE_QUORUM:
       if (action.nb > 0 && action.nb <= state.registering.admins.length) {
@@ -699,24 +693,6 @@ export default function reducer(state: Store = initialState, action: Object) {
           channel: action.channels,
         },
       };
-    case ONBOARDING_EDIT_MEMBER: {
-      const mapFilter = (admins: Admin[], action: *): Admin[] =>
-        admins.map(
-          (admin: Admin): Admin => {
-            if (admin.pub_key === action.admin.pub_key) {
-              return action.admin;
-            }
-            return admin;
-          },
-        );
-      return {
-        ...state,
-        registering: {
-          ...state.registering,
-          admins: mapFilter(state.registering.admins, action),
-        },
-      };
-    }
     case ONBOARDING_ADD_MASTERSEED_KEY:
       return {
         ...state,

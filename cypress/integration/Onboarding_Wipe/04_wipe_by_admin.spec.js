@@ -32,7 +32,7 @@ context("Admin Approve the registration of the Shared Owners", () => {
       },
     }).then(() => {
       cy.get("input[type=text]").type(orga_name);
-      cy.contains("continue").click();
+      cy.get("[data-test=continue_button]").click();
       cy.wait(1000);
       cy.get(".test-onboarding-signin").click();
       cy.wait("@authenticate");
@@ -62,9 +62,13 @@ context("Admin Approve the registration of the Shared Owners", () => {
       cy.contains("Register Shared-Owners again").click();
       //
       cy.contains("Prerequisites").should("be.visible");
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
-      cy.contains("continue").click();
+      cy.get("[data-test=dialog-button]")
+        .eq(1)
+        .click();
       cy.wait("@next");
     });
   });

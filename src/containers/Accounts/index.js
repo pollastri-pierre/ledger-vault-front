@@ -35,7 +35,7 @@ class AdminAccounts extends PureComponent<Props> {
       account.status === "HSM_COIN_UPDATED"
     ) {
       this.props.history.push(
-        `/${orgaName}/${role}/accounts/edit/${account.id}`,
+        `${location.pathname}/accounts/edit/${account.id}`,
       );
     } else {
       this.props.history.push(

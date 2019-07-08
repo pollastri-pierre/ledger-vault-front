@@ -1,12 +1,10 @@
 {
-  "approved":
-    "The transaction rules of this account have already been submitted and you now need to approve the creation of the account. Go to the <0>Pending</0> page, review the account's details, and approve it.",
-  "approved_still_pending":
-    "You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.",
+  "need_approval_by_me": "This account is pending to be approved. <0>Click here</0> to review the request.",
+  "need_approval_by_other": "This account is pending to be approved. Additional approvals are required to finalize the request. Go to the <0>Dashboard</0> to track the request.",
+  "approved_still_pending": "You have already approved this account. The account will be created once the necessary amount of  Administrators have approved it.",
   "balance": "Balance",
   "countervalue": "Countervalue",
-  "erc20NoCountervalue":
-    "There is no countervalue available for this ERC20 token",
+  "erc20NoCountervalue": "There is no countervalue available for this ERC20 token",
   "erc20_children": "Children ERC20 token accounts",
   "last_op": {
     "address": "address",
@@ -19,14 +17,13 @@
   "no_erc20_children": "No children ERC20 token on this account",
   "receive": {
     "addr": "Current Address",
-    "desc":
-      "A new address is generated when a first payment is received on the current address. Previous addresses remain valid and do not expire.",
+    "desc": "A new address is generated when a first payment is received on the current address. Previous addresses remain valid and do not expire.",
     "title": "Receive funds"
   },
   "summary": {
     "name": "Name",
     "date": "creation date",
-    "index": "Cryptocurrency / Index",
+    "index": "Crypto asset / Index",
     "members": "members",
     "parent_account": "Parent Ethereum account",
     "quorum": "required approvals",
@@ -34,7 +31,12 @@
     "token_address": "Smart contract address",
     "unit": "Unit"
   },
+  "widgetTitle": {
+    "viewOnly": "View-only account",
+    "update": "Update needed"
+  },
   "view_only_provide_rules": "provide transaction rules",
-  "view_only_warning":
-    "This account is read-only. Transactions cannot be created before you provide transaction rules."
+  "view_only_warning": "This account is view-only. Transactions cannot be created before you provide transaction rules.",
+  "updated_provide_rule": "Provide transaction rules",
+  "updated_provide_rule_subtext": "You must define the transaction rules of this account before you can create new transactions"
 }

@@ -16,6 +16,7 @@ import { CardError } from "components/base/Card";
 import { ModalFooterButton } from "components/base/Modal";
 import Box from "components/base/Box";
 import EntityModal from "components/EntityModal";
+import { FetchEntityHistory } from "components/EntityHistory";
 import type { Transaction, Account } from "data/types";
 
 import TabOverview from "./TabOverview";
@@ -70,6 +71,11 @@ function TransactionDetails(props: Props) {
       footer={footer}
     >
       <TabOverview key="overview" transaction={transaction} account={account} />
+      <FetchEntityHistory
+        key="history"
+        url={`/transactions/${transaction.id}/history`}
+        entityType="transaction"
+      />
       {transaction.status === "SUBMITTED" && (
         <TabDetails key="details" transaction={transaction} account={account} />
       )}

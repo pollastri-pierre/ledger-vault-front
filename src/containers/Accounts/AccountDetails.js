@@ -2,44 +2,32 @@
 
 import React from "react";
 import connectData from "restlay/connectData";
-import { Trans } from "react-i18next";
-import { FaMoneyCheck, FaArchive } from "react-icons/fa";
+import { FaMoneyCheck } from "react-icons/fa";
 
-import colors from "shared/colors";
 import AccountQuery from "api/queries/AccountQuery";
+import PendingTransactionsForAccountQuery from "api/queries/PendingTransactionsForAccountQuery";
 import { CardError } from "components/base/Card";
 import { GrowingSpinner } from "components/base/GrowingCard";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { withMe } from "components/UserContextProvider";
 import AccountOverview from "containers/Admin/Accounts/AccountOverview";
-import AccountTransactionRules from "containers/Admin/Accounts/AccountTransactionRules";
 import AccountSettings from "containers/Accounts/AccountSettings";
-import AccountHistory from "containers/Admin/Accounts/AccountHistory";
-import ApproveRequestButton from "components/ApproveRequestButton";
+import { FetchEntityHistory } from "components/EntityHistory";
 import EntityModal from "components/EntityModal";
-import type { Account } from "data/types";
+import type { Connection } from "restlay/ConnectionQuery";
+import type { Account, User, Transaction } from "data/types";
 
 type Props = {
   close: () => void,
+  me: User,
   account: Account,
+  pendingTransactions: Connection<Transaction>,
 };
 
 function AccountDetails(props: Props) {
-  const { close, account } = props;
-  const revokeButton = (
-    <ApproveRequestButton
-      interactions={createAndApprove}
-      onSuccess={close}
-      color={colors.warning}
-      isRevoke
-      Icon={FaArchive}
-      disabled={false}
-      additionalFields={{
-        data: { account_id: account.id },
-        type: "REVOKE_ACCOUNT",
-      }}
-      buttonLabel={<Trans i18nKey="accountDetails:archive" />}
-    />
-  );
+  const { close, account, me, pendingTransactions } = props;
+
+  const hasPendingTransactions = pendingTransactions.edges.length > 0;
+
   return (
     <EntityModal
       growing
@@ -47,22 +35,34 @@ function AccountDetails(props: Props) {
       Icon={FaMoneyCheck}
       title={account.name}
       onClose={close}
-      revokeButton={revokeButton}
       editURL={`/accounts/edit/${account.id}`}
+      disableEdit={hasPendingTransactions}
     >
-      <AccountOverview key="overview" account={account} />
-      <AccountTransactionRules key="transactionRules" account={account} />
-      <AccountHistory key="history" account={account} />
-      <AccountSettings key="settings" account={account} />
+      <AccountOverview
+        key="overview"
+        hasPendingTransactions={hasPendingTransactions}
+        account={account}
+      />
+      {me.role === "ADMIN" && (
+        <FetchEntityHistory
+          key="history"
+          url={`/accounts/${account.id}/history`}
+          entityType="account"
+        />
+      )}
+      {account.status === "ACTIVE" && account.account_type !== "ERC20" && (
+        <AccountSettings key="settings" account={account} />
+      )}
     </EntityModal>
   );
 }
 
-export default connectData(AccountDetails, {
+export default connectData(withMe(AccountDetails), {
   RenderError: CardError,
   RenderLoading: GrowingSpinner,
   queries: {
     account: AccountQuery,
+    pendingTransactions: PendingTransactionsForAccountQuery,
   },
   propsToQueryParams: props => ({
     accountId: props.match.params.accountId || "",

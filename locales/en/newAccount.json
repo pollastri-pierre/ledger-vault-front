@@ -4,8 +4,7 @@
     "approvals": "Required approvals",
     "approvals_members": "{{count}} of {{total}} members",
     "currency": "Crypto asset",
-    "desc":
-      "An account request is created and must be approved by Administrators to finalize the creation.",
+    "desc": "An account request is created and must be approved by Administrators to finalize the creation.",
     "descMigrated": "Carefully verify the updated information",
     "members": "Members",
     "parentAccount": "Parent Ethereum account",
@@ -18,11 +17,9 @@
     "tabTitle": "Crypto asset"
   },
   "erc20": {
-    "createNew": "Create a new view only Ethereum account",
-    "infoNewAccount":
-      "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center",
-    "matchingNameWarning":
-      "Please use different names for the ERC20 token account and the Ethereum account",
+    "createNew": "Create a new view-only Ethereum account",
+    "infoNewAccount": "To complete the creation of this ERC20 token account, a parent Ethereum account will be created. For more information, refer to the Help Center.",
+    "matchingNameWarning": "Please use different names for the ERC20 token account and the Ethereum account",
     "selectExisting": "Select an existing Ethereum account"
   },
   "errors": {
@@ -36,21 +33,14 @@
     "selectedParent": "Selected Ethereum account",
     "title": "name"
   },
-  "search": {
-    "extraERC20":
-      "<0>{{erc20Count}}</0> crypto assets and tokens available"
-  },
   "not_supported": "Support suspended due to a hard fork",
   "security": {
     "account_members": "Account members",
     "approvals": "Approvals",
-    "approvalsMaximum":
-      "You can't select more than <0>{{membersCount}}</1> members",
-    "approvalsMinimum":
-      "You must select at least <0>2</0> members",
+    "approvalsMaximum": "You can't select more than <0>{{membersCount}}</1> members",
+    "approvalsMinimum": "You must select at least <0>2</0> members",
     "approvals_amount": "Amount",
-    "approvals_desc":
-      "Define the number of approvals required before transactions created in this account are broadcasted to the blockchain network.",
+    "approvals_desc": "Define the number of approvals required before transactions created in this account are broadcasted to the blockchain network.",
     "approvals_from": "approvals from {{count}} members",
     "members": "Members",
     "members_selected": "{{nbMembersSelected}} member selected",

@@ -1,11 +1,13 @@
 // @flow
-import { StatusCodes } from "@ledgerhq/hw-transport";
-import network, { retryOnCondition } from "network";
+import React from "react";
+
+import network from "network";
 import { APPID_VAULT_ADMINISTRATOR } from "device";
 import { authenticate } from "device/interface";
 import type { Interaction } from "components/DeviceInteraction";
+import Text from "components/base/Text";
+import { UnknownDevice } from "utils/errors";
 import type { Organization } from "data/types";
-import type { DeviceError } from "utils/errors";
 import { getU2FPublicKey } from "device/interactions/common";
 
 type Flow = Interaction[];
@@ -13,43 +15,42 @@ type Flow = Interaction[];
 export const getU2FChallenge: Interaction = {
   needsUserInput: false,
   responseKey: "u2f_challenge",
-  action: ({ u2f_key: { pubKey }, organization }) =>
-    network(
-      `${organization.workspace}/u2f/authentications/${pubKey}/challenge`,
+  action: async ({ u2f_key: { pubKey } }) => {
+    const challenge = await network(
+      `/u2f/authentications/${pubKey}/challenge`,
       "GET",
-    ),
+    );
+    if (!challenge.key_handle) throw new UnknownDevice();
+    return challenge;
+  },
 };
 
 export const u2fAuthenticate: Interaction = {
   needsUserInput: true,
   device: true,
+  tooltip: <Text small i18nKey="deviceInteractions:u2f_authenticate" />,
   responseKey: "u2f_authenticate",
-  action: ({ transport, organization, u2f_challenge: { token, key_handle } }) =>
-    retryOnCondition(
-      () =>
-        authenticate()(
-          transport,
-          Buffer.from(token, "base64"),
-          APPID_VAULT_ADMINISTRATOR,
-          Buffer.from(key_handle, "hex"),
-          organization.name,
-          organization.workspace,
-          organization.domain_name,
-          "Administrator",
-        ),
-      {
-        shouldThrow: (e: DeviceError) =>
-          e.statusCode === StatusCodes.CONDITIONS_OF_USE_NOT_SATISFIED ||
-          e.statusCode === StatusCodes.INCORRECT_DATA,
-      },
+  action: ({
+    transport,
+    u2f_challenge: { token, key_handle, role, name },
+    organization,
+  }) =>
+    authenticate()(
+      transport,
+      Buffer.from(token, "base64"),
+      APPID_VAULT_ADMINISTRATOR,
+      Buffer.from(key_handle, "hex"),
+      name,
+      role,
+      organization.workspace,
     ),
 };
 
 export const postU2FSignature: Interaction = {
   responseKey: "u2f_sign",
-  action: ({ u2f_authenticate, organization, u2f_challenge: { token } }) =>
+  action: ({ u2f_authenticate, u2f_challenge: { token } }) =>
     network(
-      `${organization.workspace}/u2f/authentications/authenticate`,
+      `/u2f/authentications/authenticate`,
       "POST",
       {
         authentication: u2f_authenticate.rawResponse,

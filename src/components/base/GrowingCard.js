@@ -5,9 +5,7 @@ import Animated from "animated/lib/targets/react-dom";
 
 import { boxShadow } from "components/base/Modal/components";
 import Measure from "components/base/Measure";
-
-// FIXME `import` won't compile in storybook currently (wtf?)
-const CircularProgress = require("@material-ui/core/CircularProgress").default; // eslint-disable-line
+import Spinner from "components/base/Spinner";
 
 const SIZE = 350;
 
@@ -20,7 +18,7 @@ export function GrowingSpinner() {
   return (
     <div style={fixedStyle}>
       <div style={spinnerStyle}>
-        <CircularProgress size={24} />
+        <Spinner />
       </div>
     </div>
   );

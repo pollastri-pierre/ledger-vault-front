@@ -25,7 +25,7 @@ context("Create Wrapping Key", () => {
         device_number: 1,
       }).then(() => {
         cy.get("input[type=text]").type(orga_name, { delay: 40 });
-        cy.contains("Continue").click();
+        cy.get("[data-test=continue_button]").click();
         cy.wait(1000);
         cy.contains("Welcome").should("be.visible");
         cy.contains("Get Started").click();
@@ -40,7 +40,6 @@ context("Create Wrapping Key", () => {
         // First WPK
         cy.get(".fragment")
           .eq(0)
-          .find(".fragment-click")
           .click();
         cy.wait("@get-public-key");
         cy.wait("@get-attestation");
@@ -51,12 +50,18 @@ context("Create Wrapping Key", () => {
         // Using the same device, should display a error
         cy.get(".fragment")
           .eq(1)
-          .find(".fragment-click")
           .click();
-        cy.get(".top-message-body")
-          .contains("Person already exists")
-          .get(".top-message-title")
-          .contains("Error");
+
+        cy.wait("@get-public-key");
+        cy.wait("@get-attestation");
+        cy.wait("@open-session");
+        cy.wait("@generate-key-fragments");
+        cy.wait("@authenticate");
+
+        cy.get("[data-test=error-message-desc]").contains(
+          "Person already exists",
+        );
+        cy.get("[data-test=close]").click();
 
         // Second WPK
         cy.request("POST", DEVICE, {
@@ -64,7 +69,6 @@ context("Create Wrapping Key", () => {
         }).then(() => {
           cy.get(".fragment")
             .eq(1)
-            .find(".fragment-click")
             .click();
 
           cy.wait("@get-public-key");
@@ -80,7 +84,6 @@ context("Create Wrapping Key", () => {
           }).then(() => {
             cy.get(".fragment")
               .eq(2)
-              .find(".fragment-click")
               .click();
             cy.wait("@get-public-key");
             cy.wait("@get-attestation");

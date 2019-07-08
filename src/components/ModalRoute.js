@@ -112,8 +112,15 @@ const modalsRoutes = [
   /(.*)\/receive$/,
   /(.*)\/admin-rules$/,
   /(.*)\/new$/,
+  /(.*)\/accounts\/edit\/[0-9]+/,
   /(.*)\/edit\/[0-9]+/,
   /(.*)\/details\/[0-9]+\/.+$/,
+];
+
+const usePrevFirst = [
+  /.*\/dashboard$/,
+  /.*\/tasks$/,
+  /.*\/accounts\/view\/[0-9]+$/,
 ];
 
 function getModalClosePath(p) {
@@ -129,6 +136,9 @@ function getModalClosePath(p) {
 function resolveCloseURL(history, lastPath) {
   const { pathname: actualURL } = history.location;
   if (!lastPath) return getModalClosePath(actualURL) || "/";
+  if (lastPath && usePrevFirst.find(r => lastPath.match(r))) {
+    return lastPath;
+  }
   const prevModalClosePath = getModalClosePath(actualURL);
   return prevModalClosePath || lastPath || "/";
 }

@@ -6,10 +6,10 @@ import { MdCreateNewFolder, MdDelete, MdEdit } from "react-icons/md";
 import type { RequestActivityType } from "data/types";
 import colors from "shared/colors";
 
-const ICON_SIZE = 20;
+const ICON_SIZE = 24;
 const editIcon = <MdEdit size={ICON_SIZE} />;
-const newIcon = <MdCreateNewFolder size={ICON_SIZE} color={colors.lightGrey} />;
-const deleteIcon = <MdDelete size={ICON_SIZE} color={colors.lightGrey} />;
+const newIcon = <MdCreateNewFolder size={ICON_SIZE} />;
+const deleteIcon = <MdDelete size={ICON_SIZE} />;
 
 type Props = {
   type: RequestActivityType,
@@ -35,7 +35,9 @@ class RequestTitle extends PureComponent<Props> {
     return (
       <Box horizontal align="center" flow={5}>
         <Box horizontal align="center" flow={8}>
-          {this.getIconByType()}
+          <Box color={colors.lightGrey} justify="center">
+            {this.getIconByType()}
+          </Box>
           <Text i18nKey={`request:type.${type}`} noWrap />
         </Box>
         {entityTitle && (

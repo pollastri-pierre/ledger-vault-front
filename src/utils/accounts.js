@@ -78,12 +78,20 @@ export const isSupportedAccount = (account: Account) => {
 // from full object to arrays of id
 export const deserializeApprovalSteps = (
   tx_approval_steps: TxApprovalStep[],
-): ApprovalsRule[] => {
-  const rules = tx_approval_steps.map(rule => ({
-    quorum: rule.quorum,
-    group_id: rule.group.status === "ACTIVE" ? rule.group.id : null,
-    users:
-      rule.group.status !== "ACTIVE" ? rule.group.members.map(m => m.id) : [],
-  }));
-  return rules;
+): Array<?ApprovalsRule> =>
+  tx_approval_steps.map(rule =>
+    rule
+      ? {
+          quorum: rule.quorum,
+          group_id: rule.group.is_internal ? null : rule.group.id,
+          users: rule.group.is_internal
+            ? rule.group.members.map(m => m.id)
+            : [],
+        }
+      : null,
+  );
+
+export const isBalanceAvailable = (account: Account) => {
+  // This seems to work for eth/token/btc like account, what about XRP?
+  return !!account.extended_public_key;
 };

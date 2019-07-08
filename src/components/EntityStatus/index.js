@@ -38,7 +38,6 @@ class EntityStatus extends PureComponent<Props> {
     return (
       <Box horizontal flow={10} align="center">
         <Status
-          withWarning={isWaitingForApproval}
           status={
             isWaitingForApproval
               ? "AWAITING_APPROVAL"
@@ -53,7 +52,7 @@ class EntityStatus extends PureComponent<Props> {
   }
 }
 
-function remapStatus(status: string, targetType: string) {
+export function remapStatus(status: string, targetType: string) {
   // we want to display "deleted" instead of "revoked" for groups
   if (targetType === "GROUP" && status === "REVOKED") {
     return "DELETED";

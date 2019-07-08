@@ -16,9 +16,7 @@ class NewTransactionActivity extends Component<Props> {
     let link = `admin/tasks`;
     if (transaction.status === "SUBMITTED") {
       // TODO update with transaction view link
-      link = `account/${transaction.account_id}/transaction/${
-        transaction.id
-      }/overview`;
+      link = `account/${transaction.account_id}/transaction/${transaction.id}/overview`;
     }
     return link;
   };

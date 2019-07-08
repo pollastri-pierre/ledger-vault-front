@@ -1,6 +1,7 @@
 {
   "editInfo": "Editing the description doesn't require the approval from other Administrators.",
   "no_accounts_yet": "There are no accounts linked to this group",
+  "membersTitle": "Group members:",
   "details": {
     "name": "Group name",
     "description": "Group description",
@@ -14,8 +15,8 @@
     "editTitle": "Edit group",
     "name": "Name",
     "infos": "Details",
-    "name_placeholder": "Enter group name",
-    "desc_placeholder": "Enter group description",
+    "name_placeholder": "Group name",
+    "desc_placeholder": "Group description",
     "description": "description",
     "members": "members",
     "nb_members": "Members",
@@ -28,5 +29,6 @@
   },
   "revokeWarning": {
     "content": "Once the request is approved, this group will be permanently deleted."
-  }
+  },
+  "maxMembers": "You can't add more than 20 members to a group"
 }

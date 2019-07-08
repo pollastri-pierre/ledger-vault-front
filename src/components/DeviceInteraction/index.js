@@ -1,8 +1,11 @@
 // @flow
 import React, { PureComponent } from "react";
+import connectData from "restlay/connectData";
+
+import { listen } from "@ledgerhq/logs";
 import type { RestlayEnvironment } from "restlay/connectData";
 import DeviceInteractionAnimation from "components/DeviceInteractionAnimation";
-import connectData from "restlay/connectData";
+import { checkVersion } from "device/interactions/common";
 import LedgerTransportU2F from "@ledgerhq/hw-transport-u2f";
 import type { GateError } from "data/types";
 
@@ -14,12 +17,14 @@ export type Interaction = {
   action: Object => Promise<*>,
 };
 
+type DeviceError = { statusCode: number };
 type Props = {
   interactions: Interaction[],
+  noCheckVersion?: boolean,
   additionalFields: Object,
   restlay: RestlayEnvironment,
   onSuccess: Object => void,
-  onError: (Error | GateError) => void,
+  onError: (Error | GateError | DeviceError) => void,
   light?: boolean,
 };
 
@@ -27,6 +32,13 @@ type State = {
   currentStep: number,
   interaction: Interaction,
 };
+
+if (
+  (process.env.NODE_ENV === "e2e" && window.FORCE_HARDWARE) ||
+  window.FORCE_APDU_LOGS
+) {
+  listen(log => console.log(`${log.type}: ${log.message ? log.message : ""}`)); // eslint-disable-line no-console
+}
 
 class DeviceInteraction extends PureComponent<Props, State> {
   state = {
@@ -41,28 +53,41 @@ class DeviceInteraction extends PureComponent<Props, State> {
   };
 
   runInteractions = async () => {
-    const { interactions, additionalFields, restlay } = this.props;
+    const {
+      interactions,
+      additionalFields,
+      noCheckVersion,
+      restlay,
+    } = this.props;
+
+    // always checking app version first unless opt-out by the consumer component
+    const interactionsWithCheckVersion = noCheckVersion
+      ? interactions
+      : [checkVersion, ...interactions];
+
     const responses = { ...additionalFields, restlay };
-    if (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE) {
+    if (
+      window.FORCE_HARDWARE ||
+      (process.env.NODE_ENV !== "e2e" && !window.config.SOFTWARE_DEVICE)
+    ) {
       // $FlowFixMe
       const transport = await LedgerTransportU2F.create();
       transport.setScrambleKey("v1+");
       transport.setUnwrap(true);
-      transport.setDebugMode(true);
+      transport.setExchangeTimeout(360000);
       responses.transport = transport;
     }
-    for (let i = 0; i < interactions.length; i++) {
+    for (let i = 0; i < interactionsWithCheckVersion.length; i++) {
       try {
         this.setState({
           currentStep: i,
-          interaction: interactions[i],
+          interaction: interactionsWithCheckVersion[i],
         });
-        responses[interactions[i].responseKey] = await interactions[i].action(
-          responses,
-        );
+        responses[
+          interactionsWithCheckVersion[i].responseKey
+        ] = await interactionsWithCheckVersion[i].action(responses);
         if (this._unmounted) return;
       } catch (e) {
-        console.error(e);
         this.props.onError(e);
         return;
       }

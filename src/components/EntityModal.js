@@ -13,6 +13,8 @@ import {
   RichModalTabsContainer,
   RichModalTab,
 } from "components/base/Modal";
+import Disabled from "components/Disabled";
+import { withMe } from "components/UserContextProvider";
 import Button from "components/base/Button";
 import GrowingCard from "components/base/GrowingCard";
 import EntityLastRequest from "components/EntityLastRequest";
@@ -20,8 +22,8 @@ import RequestActionButtons from "components/RequestActionButtons";
 import { Badge } from "containers/Admin/Dashboard/PendingBadge";
 import Box from "components/base/Box";
 import Absolute from "components/base/Absolute";
-import { hasPendingRequest } from "utils/entities";
-import type { Entity } from "data/types";
+import { hasPendingRequest, hasPendingEdit } from "utils/entities";
+import type { Entity, User } from "data/types";
 
 const EDIT_ALLOWED_STATUS = ["ACTIVE", "VIEW_ONLY", "MIGRATED"];
 
@@ -34,9 +36,11 @@ type Props<T> = {
   match: Match,
   children: React$Element<*>[],
   growing?: boolean,
+  me: User,
   revokeButton?: React$Node,
   footer?: React$Node,
   editURL?: string,
+  disableEdit?: boolean,
   additionalFields?: T,
 };
 
@@ -45,12 +49,14 @@ function EntityModal<T>(props: Props<T>) {
     growing,
     Icon,
     title,
+    me,
     onClose,
     children,
     location,
     match,
     entity,
     editURL,
+    disableEdit,
     revokeButton,
     footer,
     additionalFields,
@@ -61,7 +67,7 @@ function EntityModal<T>(props: Props<T>) {
 
   const lastRequest = (
     <EntityLastRequest
-      key="pendingRequest"
+      key="editRequest"
       entity={entity}
       additionalFields={additionalFields}
     />
@@ -77,10 +83,11 @@ function EntityModal<T>(props: Props<T>) {
     }) || childs[0];
 
   const hasPendingReq = hasPendingRequest(entity);
-  const showRevoke = entity.status === "ACTIVE" && revokeButton;
-  const showFooter =
-    entity.status !== "PENDING_REGISTRATION" &&
-    (hasPendingReq || showRevoke || footer);
+  const isPendingEdit = hasPendingEdit(entity);
+  const showRevoke =
+    (entity.status === "ACTIVE" || entity.status === "ACCESS_SUSPENDED") &&
+    revokeButton;
+  const showFooter = hasPendingReq || showRevoke || footer;
 
   const inner = (
     <>
@@ -98,21 +105,24 @@ function EntityModal<T>(props: Props<T>) {
             ) : null,
           )}
         </RichModalTabsContainer>
-        {hasPendingReq ? (
+        {hasPendingReq && isPendingEdit ? (
           <RichModalTab
             dark
-            to="pendingRequest"
+            to="editRequest"
             isActive={content === lastRequest}
           >
             <Box horizontal align="center">
-              <Trans i18nKey="entityModal:tabs.pendingRequest" />
+              <Trans i18nKey="entityModal:tabs.editRequest" />
               <Absolute top={-6} right={-8}>
                 <Badge>1</Badge>
               </Absolute>
             </Box>
           </RichModalTab>
-        ) : fullEditURL && EDIT_ALLOWED_STATUS.includes(entity.status) ? (
-          <EditButton url={fullEditURL} />
+        ) : fullEditURL &&
+          !hasPendingReq &&
+          EDIT_ALLOWED_STATUS.includes(entity.status) &&
+          me.role === "ADMIN" ? (
+          <EditButton disabled={disableEdit} url={fullEditURL} />
         ) : null}
       </RichModalHeader>
 
@@ -137,14 +147,20 @@ function EntityModal<T>(props: Props<T>) {
   return growing ? <GrowingCard>{inner}</GrowingCard> : inner;
 }
 
-function EditButton({ url }: { url: string }) {
-  return (
+function EditButton({ url, disabled }: { url: string, disabled?: boolean }) {
+  const inner = (
     <Link replace to={url} data-test="edit-button">
       <Button size="tiny" type="submit" variant="filled" IconLeft={MdEdit}>
         <Trans i18nKey="entityModal:edit" />
       </Button>
     </Link>
   );
+
+  if (disabled) {
+    return <Disabled disabled={disabled}>{inner}</Disabled>;
+  }
+
+  return inner;
 }
 
-export default withRouter(EntityModal);
+export default withRouter(withMe(EntityModal));

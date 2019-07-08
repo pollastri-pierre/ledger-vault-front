@@ -4,5 +4,6 @@
   "status": "Status",
   "created": "Create date",
   "balance": "Balance",
-  "archive": "Archive"
+  "archive": "Archive",
+  "warnPendingTxs": "Accounts can't be edited when a transaction is pending approval"
 }

@@ -14,8 +14,13 @@ import EntityStatus from "components/EntityStatus";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
 import NumberChooser from "components/base/NumberChooser";
-import SelectGroupsUsers from "components/SelectGroupsUsers";
+import SelectGroupsUsers, {
+  groupIcon,
+  userIcon,
+} from "components/SelectGroupsUsers";
+import HiddenRule from "components/ApprovalsRules/HiddenRule";
 import { isRequestPending } from "utils/request";
+import { MAX_MEMBERS } from "components/GroupCreationFlow/GroupCreationMembers";
 
 import type {
   ApprovalsRule as ApprovalsRuleType,
@@ -24,11 +29,12 @@ import type {
 import StepBall from "./StepBall";
 
 type Props = {
-  rule: ApprovalsRuleType,
+  rule: ?ApprovalsRuleType,
   onChange: ApprovalsRuleType => void,
   onRemove: () => void,
   parentSelectedIds: ApprovalsSelectedIds,
   users: User[],
+  index: number,
   groups: Group[],
   readOnly?: boolean,
   t: string => string,
@@ -37,8 +43,6 @@ type Props = {
 type State = {
   hasBeenClosed: boolean,
 };
-
-const MAX_USERS = 20;
 
 class ApprovalsRule extends PureComponent<Props, State> {
   state = {
@@ -62,8 +66,8 @@ class ApprovalsRule extends PureComponent<Props, State> {
   }) => {
     const { rule, onChange } = this.props;
 
-    const justAddedGroup = !rule.group_id && !!groups.length;
-    const justAddedUser = rule.users.length !== users.length;
+    const justAddedGroup = rule && !rule.group_id && !!groups.length;
+    const justAddedUser = rule && rule.users.length !== users.length;
 
     const newRule = {
       ...rule,
@@ -72,7 +76,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
         : groups.length
         ? groups[groups.length - 1].id
         : null,
-      users: justAddedGroup ? [] : users.map(u => u.id).slice(0, MAX_USERS),
+      users: justAddedGroup ? [] : users.map(u => u.id),
     };
 
     // ensure quorum > groups length, etc.
@@ -97,9 +101,23 @@ class ApprovalsRule extends PureComponent<Props, State> {
       groups,
       onRemove,
       parentSelectedIds,
+      index,
       readOnly,
       t,
     } = this.props;
+    if (!rule) {
+      return (
+        <div style={styles.paddedBotForDrag}>
+          <RuleContainer>
+            <Box horizontal position="relative" align="flex-start">
+              {stepBall}
+              <HiddenRule stepNumber={index + 1} />
+            </Box>
+          </RuleContainer>
+        </div>
+      );
+    }
+
     const { hasBeenClosed } = this.state;
     const { group_id: ruleGroup, users: ruleUsers } = rule;
 
@@ -125,7 +143,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
       <div style={styles.paddedBotForDrag}>
         <RuleContainer isInvalid={isInvalid}>
           <Box horizontal position="relative" align="flex-start">
-            {grip}
+            {!readOnly && grip}
             {stepBall}
             <NumberChooser
               style={styles.fixedHeight}
@@ -137,31 +155,80 @@ class ApprovalsRule extends PureComponent<Props, State> {
             />
             {approvalsFrom}
             <Box grow py={10} pr={10} justify="center">
-              <SelectGroupsUsers
-                onMenuClose={this.handleClose}
-                placeholder={t("approvalsRules:selectPlaceholder")}
-                autoFocus={nbSelected === 0}
-                openMenuOnFocus
-                groups={filteredGroups}
-                members={filteredUsers}
-                renderIfDisabled={(item: Group | User) =>
-                  item.last_request &&
-                  isRequestPending(item.last_request) && (
-                    <EntityStatus
-                      request={item.last_request}
-                      status={item.last_request.status}
-                    />
-                  )
-                }
-                value={resolveSelectValue(rule, groups, users)}
-                onChange={this.handleChangeSelect}
-              />
+              {readOnly ? (
+                group ? (
+                  <Box
+                    horizontal
+                    flow={5}
+                    ml={10}
+                    align="center"
+                    style={{ minHeight: 40 }}
+                  >
+                    {groupIcon}
+                    <span>{group.name}</span>
+                  </Box>
+                ) : rule.users && rule.users.length ? (
+                  <Box
+                    horizontal
+                    flexWrap="wrap"
+                    align="center"
+                    style={{ minHeight: 40 }}
+                  >
+                    {rule.users.map(u => {
+                      const user = users.find(user => user.id === u);
+                      if (!user) return null;
+                      return (
+                        <Box
+                          key={u}
+                          horizontal
+                          m={5}
+                          flow={5}
+                          p={5}
+                          borderRadius={2}
+                          align="center"
+                        >
+                          {userIcon}
+                          <span>{user.username}</span>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                ) : null
+              ) : (
+                <SelectGroupsUsers
+                  onMenuClose={this.handleClose}
+                  placeholder={t("approvalsRules:selectPlaceholder")}
+                  autoFocus={nbSelected === 0 && !readOnly}
+                  openMenuOnFocus
+                  groups={filteredGroups}
+                  members={filteredUsers}
+                  hasReachMaxLength={nbSelected === MAX_MEMBERS}
+                  renderIfDisabled={(item: Group | User) =>
+                    item.last_request &&
+                    isRequestPending(item.last_request) && (
+                      <EntityStatus
+                        request={item.last_request}
+                        status={item.last_request.status}
+                      />
+                    )
+                  }
+                  value={resolveSelectValue(rule, groups, users)}
+                  onChange={this.handleChangeSelect}
+                />
+              )}
             </Box>
             {onRemove && !readOnly && (
               <RemoveContainer onClick={onRemove}>{iconTrash}</RemoveContainer>
             )}
           </Box>
           {!!nbSelected && <NbOfUsers nb={nbSelected} isGroup={!!group} />}
+          {nbSelected === MAX_MEMBERS && (
+            <Box p={10} pl={40} pt={0}>
+              <InfoBox type="warning">
+                <Text i18nKey="group:maxMembers" />
+              </InfoBox>
+            </Box>
+          )}
           {isInvalid && (
             <Box p={10} pl={40} pt={0}>
               <InfoBox type="warning">

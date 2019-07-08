@@ -35,9 +35,11 @@ export default function Copy(props: Props) {
 
   return (
     <Container>
-      <Text style={textStyles}>{children || text}</Text>
+      <Text data-test="Copy_value" style={textStyles}>
+        {children || text}
+      </Text>
       <Tooltip title={copied ? "Copied!" : "Copy"} placement="right">
-        <CopyToClipboard text={text} onCopy={onCopy}>
+        <CopyToClipboard data-test="Copy" text={text} onCopy={onCopy}>
           <IconContainer>
             <FaCopy />
           </IconContainer>

@@ -3,10 +3,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { FaExclamationCircle } from "react-icons/fa";
+import type { MemoryHistory } from "history";
+import { withRouter } from "react-router";
 
 import colors, { opacity } from "shared/colors";
 import Alert from "components/utils/Alert";
 import { closeMessage } from "redux/modules/alerts";
+import { OutOfDateApp } from "utils/errors";
 import Modal, { RichModalHeader } from "components/base/Modal";
 import Box from "components/base/Box";
 import Copy from "components/base/Copy";
@@ -35,9 +38,10 @@ export function MessagesContainer(props: {
     error?: Error,
     content?: string,
   },
+  history: MemoryHistory,
   onClose: Function,
 }) {
-  const { alerts, onClose } = props;
+  const { alerts, onClose, history } = props;
   const { error, visible, title, type, content } = alerts;
 
   if (type === "reason") {
@@ -46,6 +50,10 @@ export function MessagesContainer(props: {
         <BlockingReasons error={error} onClose={onClose} />
       </Modal>
     );
+  }
+  if (error instanceof OutOfDateApp) {
+    history.push(`update-app`);
+    return false;
   }
 
   if (type === "error") {
@@ -102,4 +110,4 @@ const styles = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MessagesContainer);
+)(withRouter(MessagesContainer));

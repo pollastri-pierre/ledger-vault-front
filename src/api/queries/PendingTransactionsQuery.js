@@ -1,13 +1,24 @@
 // @flow
-import Query from "restlay/Query";
+import ConnectionQuery from "restlay/ConnectionQuery";
 import schema from "data/schema";
 import type { Transaction } from "data/types";
 
-type Input = void;
-export type Response = Transaction[];
+type In = {
+  label?: string,
+  currency?: string,
+  status?: string[],
+  accounts?: string[],
+  start?: string,
+  end?: string,
+};
 
-export default class PendingTransactionsQuery extends Query<Input, Response> {
-  uri = "/transactions/pending";
+type Node = Transaction;
 
-  responseSchema = [schema.Transaction];
+export default class PendingTransactionsQuery extends ConnectionQuery<
+  In,
+  Node,
+> {
+  uri = "/transactions?status=PENDING";
+
+  nodeSchema = schema.Transaction;
 }

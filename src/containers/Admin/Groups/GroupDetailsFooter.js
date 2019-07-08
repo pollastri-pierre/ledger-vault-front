@@ -3,7 +3,7 @@ import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 
 import colors from "shared/colors";
-import { createAndApprove } from "device/interactions/approveFlow";
+import { createAndApprove } from "device/interactions/hsmFlows";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import RequestActionButtons from "components/RequestActionButtons";
@@ -40,7 +40,7 @@ class GroupDetailsFooter extends PureComponent<Props> {
         {status === "ACTIVE" && tabsIndex < 2 && !hasPendingRequest(group) && (
           <Box px={15} align="flex-start">
             <ApproveRequestButton
-              interactions={createAndApprove}
+              interactions={createAndApprove("GROUP")}
               onSuccess={this.onSuccess}
               color={colors.grenade}
               isRevoke

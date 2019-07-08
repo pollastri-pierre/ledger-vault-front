@@ -39,6 +39,8 @@ const overflow = (props: Props) =>
 const ellipsis = (props: Props) => {
   if (props.ellipsis !== true) return "";
   return `
+    display: block;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   `;
