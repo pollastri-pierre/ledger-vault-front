@@ -1,19 +1,20 @@
 // @flow
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
+import Spinner from "components/base/Spinner";
 
 function CardLoading() {
   return (
-    <div>
-      <CircularProgress
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          marginLeft: "-20px",
-          marginTop: "-20px",
-        }}
-      />
+    <div
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        marginLeft: "-20px",
+        marginTop: "-20px",
+      }}
+    >
+      <Spinner />
     </div>
   );
 }

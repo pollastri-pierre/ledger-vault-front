@@ -31,13 +31,7 @@ class AccountBodyCell extends PureComponent<CellProps> {
           />
         );
       case "countervalue":
-        return (
-          <CounterValue
-            fromAccount={account}
-            value={account.balance}
-            alwaysShowSign
-          />
-        );
+        return <CounterValue fromAccount={account} value={account.balance} />;
       case "balance":
         return (
           <CurrencyAccountValue account={account} value={account.balance} />

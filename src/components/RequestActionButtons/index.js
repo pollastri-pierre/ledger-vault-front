@@ -3,9 +3,11 @@
 import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
+import { MdTimer } from "react-icons/md";
 
 import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
+import DateFormat from "components/DateFormat";
 import Text from "components/base/Text";
 import { approveFlow } from "device/interactions/hsmFlows";
 import AbortRequestButton from "components/AbortRequestButton";
@@ -53,13 +55,19 @@ class RequestActionButtons extends PureComponent<Props> {
       </Box>
     ) : (
       <>
-        <Box align="center" justify="center">
+        <Box align="center" justify="center" flow={5}>
           <InfoBox withIcon type="info">
             <Box horizontal flow={5}>
               <Text bold i18nKey={`request:type.${lastRequest.type}`} />
               <Text>request is pending.</Text>
             </Box>
           </InfoBox>
+          <Box horizontal align="center" flow={5}>
+            <MdTimer />
+            <Text small>
+              expires at <DateFormat date={lastRequest.expired_at} />
+            </Text>
+          </Box>
         </Box>
         {userApprovedCurrentStep ? (
           <Box horizontal align="center" justify="center" flow={10}>

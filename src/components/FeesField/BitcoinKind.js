@@ -3,7 +3,6 @@
 import React, { PureComponent } from "react";
 import { BigNumber } from "bignumber.js";
 import { Trans } from "react-i18next";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Account } from "data/types";
 import connectData from "restlay/connectData";
@@ -14,6 +13,7 @@ import type { RestlayEnvironment } from "restlay/connectData";
 import type { Transaction as BitcoinLikeTx } from "bridge/BitcoinBridge";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 
+import Spinner from "components/base/Spinner";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 import InfoBox from "components/base/InfoBox";
@@ -149,7 +149,7 @@ class FeesBitcoinKind extends PureComponent<Props<BitcoinLikeTx>> {
                 </span>
               </>
             ) : (
-              <CircularProgress size={13} />
+              <Spinner />
             )}
           </Text>
         </Box>

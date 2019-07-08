@@ -38,7 +38,6 @@ class EntityStatus extends PureComponent<Props> {
     return (
       <Box horizontal flow={10} align="center">
         <Status
-          withWarning={isWaitingForApproval}
           status={
             isWaitingForApproval
               ? "AWAITING_APPROVAL"

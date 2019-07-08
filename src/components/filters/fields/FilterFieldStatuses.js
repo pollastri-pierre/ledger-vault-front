@@ -36,6 +36,7 @@ export default function FilterFieldStatuses(props: Props) {
       controlShouldRenderValue={false}
       hideSelectedOptions={false}
       withCheckboxes
+      width={200}
       {...p}
     />
   );

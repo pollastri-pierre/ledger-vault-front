@@ -6,6 +6,7 @@ import React, { PureComponent } from "react";
 import colors from "shared/colors";
 import ERC20TokenIcon from "components/icons/ERC20Token";
 import Box from "components/base/Box";
+import type { ERC20Token } from "data/types";
 
 import { getCryptoCurrencyIcon } from "utils/cryptoCurrencies";
 
@@ -17,7 +18,7 @@ const placeholderStyle = {
 type Props = {
   size: number,
   currencyId?: string,
-  isERC20?: boolean,
+  token?: ?ERC20Token,
 };
 
 class AccountIcon extends PureComponent<Props> {
@@ -32,8 +33,8 @@ class AccountIcon extends PureComponent<Props> {
 
   Inner = () => {
     const { Placeholder } = this;
-    const { size, isERC20, currencyId } = this.props;
-    if (isERC20) return <ERC20TokenIcon size={size} />;
+    const { size, token, currencyId } = this.props;
+    if (token) return <ERC20TokenIcon size={size} token={token} />;
     const currency = currencyId && getCryptoCurrencyById(currencyId);
     if (!currency) return <Placeholder />;
     const IconCurrency = currency ? getCryptoCurrencyIcon(currency) : null;

@@ -6,11 +6,9 @@ import { Trans } from "react-i18next";
 import connectData from "restlay/connectData";
 
 import type { RestlayEnvironment } from "restlay/connectData";
-import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import FreshAddressesQuery from "api/queries/FreshAddressesQuery";
 import type { Account, FreshAddress } from "data/types";
 import { verifyAddressFlow } from "device/interactions/hsmFlows";
-import QRCode from "components/QRCode";
 import colors from "shared/colors";
 import { RichModalHeader } from "components/base/Modal";
 import Button from "components/base/Button";
@@ -39,7 +37,7 @@ function ReceiveFlow(props: Props) {
   const [account, setAccount] = useState<?Account>(selectedAccount);
 
   return (
-    <Box width={600} style={{ minHeight: 455 }}>
+    <Box width={600} style={{ minHeight: 400 }}>
       <RichModalHeader Icon={FaUser} title="Receive" onClose={onClose} />
       <Box p={40} flow={20}>
         <Box>
@@ -75,11 +73,6 @@ const VerifyFreshAddress = connectData(
   (props: VerifyFreshAddressProps) => {
     const { freshAddresses, account, restlay } = props;
     const freshAddress = freshAddresses[0];
-    const currency = getCryptoCurrencyById(account.currency);
-    const hash =
-      account && account.account_type === "Bitcoin" && currency
-        ? `${currency.id}:${freshAddress.address}`
-        : `${freshAddress.address}`;
     const [hasBeenVerified, setHasBeenVerified] = useState<boolean | null>(
       null,
     );
@@ -96,90 +89,77 @@ const VerifyFreshAddress = connectData(
     };
 
     return (
-      <Box horizontal align="flex-start" flow={10}>
-        <div
-          style={{
-            marginLeft: 0,
-            marginBottom: -10,
-            marginRight: 10,
-            marginTop: 10,
-          }}
-        >
-          <QRCode hash={hash} size={150} />
-        </div>
-        <Box flow={10} pt={10}>
+      <Box flow={20}>
+        <Box horizontal flow={10} align="center">
           <Copy text={freshAddress.address} />
-          {isVerifying ? (
-            <Box align="center">
-              <DeviceInteraction
-                interactions={verifyAddressFlow}
-                noCheckVersion
-                additionalFields={{
-                  accountId: account.id,
-                  fresh_address: freshAddress,
-                  restlay,
-                }}
-                onSuccess={onVerifySuccess}
-                onError={onVerifyError}
-              />
-            </Box>
-          ) : (
-            <>
-              <Box>
-                <Button
-                  onClick={() => setVerifying(true)}
-                  type="submit"
-                  variant="filled"
-                  IconLeft={hasBeenVerified === false ? IconRetry : IconBlue}
-                >
-                  {hasBeenVerified === true ? (
-                    <Trans i18nKey="receive:verifyAgain" />
-                  ) : hasBeenVerified === false ? (
-                    <Trans i18nKey="receive:retry" />
-                  ) : (
-                    <Trans i18nKey="receive:verify" />
-                  )}
-                </Button>
-              </Box>
-              {hasBeenVerified === false ? (
-                <InfoBox type="error" alignCenter>
-                  <div>
-                    <Trans i18nKey="receive:addressRejected_line1" />
-                    <br />
-                    <Trans
-                      i18nKey="receive:addressRejected_line2"
-                      components={<strong>0</strong>}
-                    />
-                  </div>
-                </InfoBox>
-              ) : hasBeenVerified === true ? (
-                <InfoBox type="success" alignCenter>
-                  <div>
-                    <Box horizontal align="center" justify="center" flow={5}>
-                      <FaCheck />
-                      <Trans
-                        i18nKey="receive:addressVerified_line1"
-                        components={<strong>0</strong>}
-                      />
-                    </Box>
-                    <Trans i18nKey="receive:addressVerified_line2" />
-                  </div>
-                </InfoBox>
+          <Box grow="1">
+            <Button
+              onClick={() => setVerifying(true)}
+              type="submit"
+              variant="filled"
+              IconLeft={hasBeenVerified === false ? IconRetry : IconBlue}
+              disabled={isVerifying}
+            >
+              {hasBeenVerified === true ? (
+                <Trans i18nKey="receive:verifyAgain" />
+              ) : hasBeenVerified === false ? (
+                <Trans i18nKey="receive:retry" />
               ) : (
-                <InfoBox type="warning" alignCenter>
-                  <div>
-                    <Trans i18nKey="receive:addressNotVerified_line1" />
-                    <br />
-                    <Trans
-                      i18nKey="receive:addressNotVerified_line2"
-                      components={<strong>0</strong>}
-                    />
-                  </div>
-                </InfoBox>
+                <Trans i18nKey="receive:verify" />
               )}
-            </>
-          )}
+            </Button>
+          </Box>
         </Box>
+        {isVerifying ? (
+          <Box align="center" grow>
+            <DeviceInteraction
+              interactions={verifyAddressFlow}
+              noCheckVersion
+              additionalFields={{
+                accountId: account.id,
+                fresh_address: freshAddress,
+                restlay,
+              }}
+              onSuccess={onVerifySuccess}
+              onError={onVerifyError}
+            />
+          </Box>
+        ) : hasBeenVerified === false ? (
+          <InfoBox type="error" alignCenter>
+            <div>
+              <Trans i18nKey="receive:addressRejected_line1" />
+              <br />
+              <Trans
+                i18nKey="receive:addressRejected_line2"
+                components={<strong>0</strong>}
+              />
+            </div>
+          </InfoBox>
+        ) : hasBeenVerified === true ? (
+          <InfoBox type="success" alignCenter>
+            <div>
+              <Box horizontal align="center" justify="center" flow={5}>
+                <FaCheck />
+                <Trans
+                  i18nKey="receive:addressVerified_line1"
+                  components={<strong>0</strong>}
+                />
+              </Box>
+              <Trans i18nKey="receive:addressVerified_line2" />
+            </div>
+          </InfoBox>
+        ) : (
+          <InfoBox type="warning" alignCenter>
+            <div>
+              <Trans i18nKey="receive:addressNotVerified_line1" />
+              <br />
+              <Trans
+                i18nKey="receive:addressNotVerified_line2"
+                components={<strong>0</strong>}
+              />
+            </div>
+          </InfoBox>
+        )}
       </Box>
     );
   },
@@ -187,7 +167,7 @@ const VerifyFreshAddress = connectData(
     RenderError: RestlayTryAgain,
     RenderLoading: () => (
       <div
-        style={{ height: 175, background: colors.form.bg, borderRadius: 4 }}
+        style={{ height: 122, background: colors.form.bg, borderRadius: 4 }}
       />
     ),
     queries: {

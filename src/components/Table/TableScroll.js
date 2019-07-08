@@ -12,8 +12,6 @@ type State = {
 
 const styles = {
   outer: {
-    border: "1px solid #f0f0f0",
-    borderRadius: 2,
     position: "relative",
     overflow: "hidden",
   },
@@ -26,7 +24,7 @@ const styles = {
     right: 0,
     bottom: 0,
     transition: "100ms linear opacity",
-    boxShadow: "rgba(0, 0, 0, 0.07) 0px 0px 12px 5px",
+    boxShadow: "rgba(0, 0, 0, 0.3) 0px 0px 12px 5px",
   },
 };
 
@@ -40,9 +38,11 @@ class TableScroll extends PureComponent<Props, State> {
       this.toggleScrollIndicator();
       // $FlowFixMe for no reason flow can't infer that ref is not null
       this.ref.current.addEventListener("scroll", this.toggleScrollIndicator);
-      const resizeObserver = new ResizeObserver(this.toggleScrollIndicator);
-      // $FlowFixMe for no reason flow can't infer that ref is not null
-      resizeObserver.observe(this.ref.current);
+      if (typeof ResizeObserver !== "undefined") {
+        const resizeObserver = new ResizeObserver(this.toggleScrollIndicator);
+        // $FlowFixMe for no reason flow can't infer that ref is not null
+        resizeObserver.observe(this.ref.current);
+      }
     }
   }
 

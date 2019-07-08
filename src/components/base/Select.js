@@ -55,7 +55,7 @@ const customStyles = {
     ...styles,
     fontSize: 13,
     margin: 0,
-    marginLeft: 2,
+    marginLeft: 0,
     color: "inherit",
   }),
   singleValue: styles => ({
@@ -87,9 +87,9 @@ const customStyles = {
     borderBottomLeftRadius: state.menuIsOpen ? 0 : 4,
     borderBottomRightRadius: state.menuIsOpen ? 0 : 4,
   }),
-  valueContainer: (styles, state) => ({
+  valueContainer: styles => ({
     ...styles,
-    padding: state.hasValue && state.isMulti ? "4px 5px" : "5px 8px",
+    padding: "5px 8px",
   }),
   menu: styles => ({
     ...styles,
