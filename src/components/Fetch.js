@@ -1,8 +1,8 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
+import Spinner from "components/base/Spinner";
 import TranslatedError from "components/TranslatedError";
 import Box from "components/base/Box";
 import network from "network";
@@ -15,7 +15,7 @@ type Props<T> = {
 
 const spinner = (
   <Box align="center">
-    <CircularProgress size={20} />
+    <Spinner />
   </Box>
 );
 

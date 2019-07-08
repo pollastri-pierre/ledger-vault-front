@@ -105,6 +105,7 @@ const ApprovalSlider = ({
     <div className={classes.flex}>
       <Disabled disabled={min && number === min}>
         <span
+          data-test="edit-admin-rule_less"
           className={classes.require}
           onClick={() => {
             if (!min || number - 1 >= min) {
@@ -118,6 +119,7 @@ const ApprovalSlider = ({
       </Disabled>
       <Disabled disabled={max && number === max}>
         <span
+          data-test="edit-admin-rule_more"
           className={classes.require}
           onClick={() => {
             if (number + 1 <= total && (!max || number + 1 <= max)) {

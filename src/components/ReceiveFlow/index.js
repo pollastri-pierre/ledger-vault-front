@@ -37,7 +37,7 @@ function ReceiveFlow(props: Props) {
   const [account, setAccount] = useState<?Account>(selectedAccount);
 
   return (
-    <Box width={600} style={{ minHeight: 455 }}>
+    <Box width={600} style={{ minHeight: 400 }}>
       <RichModalHeader Icon={FaUser} title="Receive" onClose={onClose} />
       <Box p={40} flow={20}>
         <Box>
@@ -89,8 +89,8 @@ const VerifyFreshAddress = connectData(
     };
 
     return (
-      <Box flow={30}>
-        <Box horizontal flow={10}>
+      <Box flow={20}>
+        <Box horizontal flow={10} align="center">
           <Copy text={freshAddress.address} />
           <Box grow="1">
             <Button
@@ -111,7 +111,7 @@ const VerifyFreshAddress = connectData(
           </Box>
         </Box>
         {isVerifying ? (
-          <Box align="center" grow="1">
+          <Box align="center" grow>
             <DeviceInteraction
               interactions={verifyAddressFlow}
               noCheckVersion
@@ -167,7 +167,7 @@ const VerifyFreshAddress = connectData(
     RenderError: RestlayTryAgain,
     RenderLoading: () => (
       <div
-        style={{ height: 175, background: colors.form.bg, borderRadius: 4 }}
+        style={{ height: 122, background: colors.form.bg, borderRadius: 4 }}
       />
     ),
     queries: {

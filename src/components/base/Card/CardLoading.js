@@ -1,8 +1,8 @@
 // @flow
 
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
+import Spinner from "components/base/Spinner";
 import Card from "components/base/Card";
 
 export default ({ height, ...props }: { height?: number }) => (
@@ -12,6 +12,6 @@ export default ({ height, ...props }: { height?: number }) => (
     justify="center"
     {...props}
   >
-    <CircularProgress />
+    <Spinner />
   </Card>
 );

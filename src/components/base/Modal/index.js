@@ -80,27 +80,17 @@ class Modal extends PureComponent<ModalProps, State> {
   }
 
   animateEnter = () => {
-    window.requestAnimationFrame(() => {
-      Animated.timing(this.state.animShowHide, {
-        ...animShowHide,
-        toValue: 1,
-      }).start();
-      if (document.body) {
-        document.body.classList.add("blurDialogOpened");
-      }
-    });
+    Animated.timing(this.state.animShowHide, {
+      ...animShowHide,
+      toValue: 1,
+    }).start();
   };
 
   animateLeave = () => {
-    window.requestAnimationFrame(() => {
-      Animated.timing(this.state.animShowHide, {
-        ...animShowHide,
-        toValue: 0,
-      }).start();
-      if (document.body) {
-        document.body.classList.remove("blurDialogOpened");
-      }
-    });
+    Animated.timing(this.state.animShowHide, {
+      ...animShowHide,
+      toValue: 0,
+    }).start();
   };
 
   handleClickOnBackdrop = () => {

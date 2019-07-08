@@ -70,6 +70,12 @@ const theme = {
         },
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: 13,
+        textAlign: "center",
+      },
+    },
     MuiSelect: {
       select: {
         ".MuiSelect-disable-arrow &": {

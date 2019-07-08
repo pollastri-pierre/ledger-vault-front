@@ -23,7 +23,17 @@ function FilterFieldMembers(props: Props) {
     value: u.id,
   }));
   return (
-    <FieldSelect title="Members" queryKey="members" options={options} {...p} />
+    <FieldSelect
+      title="Members"
+      queryKey="members"
+      options={options}
+      closeMenuOnSelect={false}
+      controlShouldRenderValue={false}
+      hideSelectedOptions={false}
+      withCheckboxes
+      width={200}
+      {...p}
+    />
   );
 }
 

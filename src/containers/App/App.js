@@ -1,6 +1,5 @@
 // @flow
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import type { Match, Location } from "react-router-dom";
 import type { MemoryHistory } from "history";
 
@@ -11,6 +10,7 @@ import ProfileQuery from "api/queries/ProfileQuery";
 import PendingTransactionsQuery from "api/queries/PendingTransactionsQuery";
 import OrganizationQuery from "api/queries/OrganizationQuery";
 import TryAgain from "components/TryAgain";
+import Spinner from "components/base/Spinner";
 import Content from "containers/Content";
 import Modals from "containers/Modals";
 import Card from "components/base/Card";
@@ -148,7 +148,7 @@ const RenderError = ({ error, restlay }: *) => (
 const RenderLoading = () => (
   <VaultCentered>
     <Card align="center" justify="center" height={350}>
-      <CircularProgress size={20} />
+      <Spinner />
     </Card>
   </VaultCentered>
 );

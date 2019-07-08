@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState, useEffect } from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Redirect } from "react-router";
 import { useDispatch } from "react-redux";
 import type { Match } from "react-router-dom";
@@ -13,6 +12,7 @@ import { loginFlow } from "device/interactions/loginFlow";
 
 import { UnknownDomain } from "utils/errors";
 import TriggerErrorNotification from "components/TriggerErrorNotification";
+import Spinner from "components/base/Spinner";
 import DeviceInteraction from "components/DeviceInteraction";
 import VaultCentered from "components/VaultCentered";
 import Card from "components/base/Card";
@@ -89,7 +89,7 @@ export default function Login(props: Props) {
             }}
           />
         ) : (
-          <CircularProgress size={20} />
+          <Spinner />
         )}
       </Card>
     </VaultCentered>

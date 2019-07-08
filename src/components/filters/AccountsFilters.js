@@ -23,7 +23,7 @@ function AccountsFilters(props: FieldsGroupProps) {
     <FiltersCard title="Find accounts" subtitle="Find accounts" {...props}>
       <FieldStatuses
         statuses={statuses}
-        placeholder={t("common:accountStatus")}
+        placeholder={t("common:status")}
         queryKey="meta_status"
       />
       <FieldCurrency />

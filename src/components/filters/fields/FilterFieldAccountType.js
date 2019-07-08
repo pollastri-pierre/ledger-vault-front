@@ -27,6 +27,7 @@ const FilterFieldAccountType = (props: FieldProps) => (
     controlShouldRenderValue={false}
     hideSelectedOptions={false}
     withCheckboxes
+    width={200}
     {...props}
   />
 );

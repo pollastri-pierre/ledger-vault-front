@@ -98,14 +98,17 @@ const fuseOptions = {
   keys: ["data.value.name", "data.value.ticker", "data.value.contract_address"],
 };
 
-const fuse = new Fuse(fullOptions, fuseOptions);
+const fuseCurrencies = new Fuse(currenciesOptions, fuseOptions);
+const fuseTokens = new Fuse(erc20TokensOptions, fuseOptions);
 
 const fetchOptions = (inputValue: string) =>
   new Promise(resolve => {
     window.requestAnimationFrame(() => {
       if (!inputValue) return resolve(fullOptions);
-      const result = fuse.search(inputValue);
-      resolve(result.slice(0, 10));
+      const resultCurrencies = fuseCurrencies.search(inputValue);
+      const resultTokens = fuseTokens.search(inputValue);
+      const results = [...resultCurrencies, ...resultTokens];
+      resolve(results);
     });
   });
 

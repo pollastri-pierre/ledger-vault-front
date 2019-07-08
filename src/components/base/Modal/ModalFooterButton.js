@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Spinner from "components/base/Spinner";
 
 import Absolute from "components/base/Absolute";
 
@@ -89,7 +89,7 @@ export default (props: Props) => {
             center
             style={{ color: p.color }}
           >
-            <CircularProgress size={20} color="inherit" />
+            <Spinner />
           </Absolute>
         ))}
       <div style={{ opacity: isLoading || isLocalLoading ? 0.5 : 1 }}>

@@ -23,6 +23,7 @@ type Props = FieldProps & {
   options: Option[],
   title: string,
   single: boolean,
+  width?: number,
   RenderInWrap: React$ComponentType<*>,
   withCheckboxes: boolean,
 };
@@ -50,6 +51,7 @@ export default function FilterFieldSelect(props: Props) {
     single,
     RenderInWrap,
     withCheckboxes,
+    width,
   } = props;
 
   const resolveOptions = useCallback(
@@ -127,7 +129,7 @@ export default function FilterFieldSelect(props: Props) {
   return (
     <WrappableField
       inPlace
-      width={300}
+      width={width || 300}
       label={title}
       isActive={isActive}
       RenderCollapsed={Collapsed}
@@ -145,6 +147,7 @@ export default function FilterFieldSelect(props: Props) {
           onChange={handleChange}
           components={components}
           onMenuClose={toggle}
+          width={100}
         />
       )}
     </WrappableField>

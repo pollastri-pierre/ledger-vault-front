@@ -2,7 +2,7 @@
 import React, { PureComponent } from "react";
 import Box from "components/base/Box";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Spinner from "components/base/Spinner";
 import styled from "styled-components";
 import colors from "shared/colors";
 import TextField from "components/utils/TextField";
@@ -43,9 +43,7 @@ const iconValidate = <MdCheck size={25} />;
 const iconCancel = <MdClear size={25} />;
 
 const spinner = (
-  <CircularProgress
-    size={20}
-    color="primary"
+  <div
     style={{
       position: "absolute",
       left: "50%",
@@ -53,7 +51,9 @@ const spinner = (
       marginLeft: "-10px",
       marginTop: "-10px",
     }}
-  />
+  >
+    <Spinner />
+  </div>
 );
 
 class EditableText extends PureComponent<Props, State> {

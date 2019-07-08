@@ -48,8 +48,10 @@ class VaultLayout extends Component<Props, State> {
       });
     };
 
-    const resizeObserver = new ResizeObserver(onResize);
-    if (document.body) resizeObserver.observe(document.body);
+    if (typeof ResizeObserver !== "undefined") {
+      const resizeObserver = new ResizeObserver(onResize);
+      if (document.body) resizeObserver.observe(document.body);
+    }
   }
 
   componentWillUnmount() {

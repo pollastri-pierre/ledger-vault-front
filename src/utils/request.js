@@ -1,5 +1,7 @@
 // @flow
 
+import type { MemoryHistory } from "history";
+
 import type { Request, User, RequestActivityType } from "data/types";
 
 export const hasUserApprovedRequest = (request: Request, me: User) =>
@@ -50,4 +52,50 @@ export const isEditRequest = (request: Request) =>
 
 export function isNotTransaction(request: Request) {
   return request.type !== "CREATE_TRANSACTION";
+}
+
+export function navigateToRequest(request: Request, history: MemoryHistory) {
+  if (request.target_type === "GROUP") {
+    history.push(
+      getModalTabLink(request, `dashboard/groups/details/${request.target_id}`),
+    );
+  } else if (request.target_type === "PERSON") {
+    history.push(
+      getModalTabLink(request, `dashboard/users/details/${request.target_id}`),
+    );
+  } else if (
+    request.target_type === "BITCOIN_ACCOUNT" ||
+    request.target_type === "ERC20_ACCOUNT" ||
+    request.target_type === "ETHEREUM_ACCOUNT"
+  ) {
+    history.push(
+      getModalTabLink(
+        request,
+        `dashboard/accounts/details/${request.target_id}`,
+      ),
+    );
+  } else if (
+    request.target_type === "BITCOIN_LIKE_TRANSACTION" ||
+    request.target_type === "ETHEREUM_LIKE_TRANSACTION"
+  ) {
+    history.push(
+      getModalTabLink(
+        request,
+        `dashboard/transactions/details/${request.target_id}`,
+      ),
+    );
+  } else if (request.target_type === "ORGANIZATION") {
+    history.push(`dashboard/organization/details/${request.id}`);
+  }
+}
+
+export function getCurrentStepProgress(request: Request) {
+  if (!request) return null;
+  if (!request.approvals_steps) return null;
+  const step = request.approvals_steps[request.current_step];
+  if (!step) return null;
+  const nbApproved = (request.approvals || []).filter(
+    a => a.step === request.current_step,
+  ).length;
+  return { nb: nbApproved, total: step.quorum };
 }

@@ -33,7 +33,7 @@ function OrganizationDetails({
   const inner = (
     <Box width={500}>
       <RichModalHeader
-        title="Edit admin rules request"
+        title="Edit admin rule request"
         Icon={MdEdit}
         onClose={close}
       />

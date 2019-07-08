@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import colors from "shared/colors";
 import Box from "components/base/Box";
 import Text from "components/base/Text";
 
@@ -38,6 +39,13 @@ export const CardDesc = ({
 
 export { default as CardError } from "./CardError";
 export { default as CardLoading } from "./CardLoading";
+
+export const SoftCard = styled(Box)`
+  border: 1px solid ${colors.form.border};
+  background: white;
+  padding: 20px;
+  border-radius: 4px;
+`;
 
 export default styled(Box)`
   position: relative;
