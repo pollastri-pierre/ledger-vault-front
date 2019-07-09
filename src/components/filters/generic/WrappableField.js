@@ -234,8 +234,10 @@ const styles = {
   },
 };
 
-export const WrappableFieldLoading = () => (
-  <InlineLabel interactive={false}>Loading...</InlineLabel>
+export const WrappableFieldLoading = ({ width }) => (
+  <InlineLabel interactive={false} style={{ width }}>
+    Loading...
+  </InlineLabel>
 );
 
 export default WrappableField;
