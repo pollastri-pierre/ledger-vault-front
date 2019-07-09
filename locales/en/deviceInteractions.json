@@ -4,6 +4,7 @@
   "ETHEREUM_ACCOUNT": "Verify the account on your device",
   "ERC20_ACCOUNT": "Verify the account on your device",
   "ACCOUNT": "Verify the account on your device",
+  "CREATE_TRANSACTION": "Verify the transaction on your device",
   "BITCOIN_LIKE_TRANSACTION": "Verify the transaction on your device",
   "ETHEREUM_LIKE_TRANSACTION": "Verify the transaction on your device",
   "TRANSACTION": "Verify the transaction on your device",
