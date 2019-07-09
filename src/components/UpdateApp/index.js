@@ -32,7 +32,10 @@ const Update = () => (
       </Link>
     </Box>
     <Box horizontal align="center" justify="space-between" flow={20}>
-      <Support href={urls.customer_support}>
+      <Support target="_blank" href={urls.help_updater}>
+        <Trans i18nKey="update:help" />
+      </Support>
+      <Support target="_blank" href={urls.customer_support}>
         <Trans i18nKey="update:support" />
       </Support>
     </Box>
