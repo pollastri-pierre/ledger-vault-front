@@ -1,6 +1,6 @@
 {
-  "title": "Update app and firmware",
-  "infobox": "Your application is not up to date. Download our ledger-update software so you can update your app and your firmware. Contact support if needed.",
-  "link-updater": "ledger-updater",
-  "support": "contact support"
+  "title": "Update required",
+  "infobox": "The Ledger Vault app and Firmware must be updated. Download and run the Ledger Updater to continue.",
+  "support": "Contact support",
+  "help": "Help"
 }

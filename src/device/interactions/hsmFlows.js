@@ -243,6 +243,7 @@ const openSessionValidate: Interaction = {
       certificate,
     ]);
     const TransactionTargetsType = [
+      "CREATE_TRANSACTION",
       "BITCOIN_LIKE_TRANSACTION",
       "ETHEREUM_LIKE_TRANSACTION",
     ];
