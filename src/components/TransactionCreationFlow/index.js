@@ -94,7 +94,11 @@ const steps = [
             }
           }}
           disabled={false}
-          additionalFields={{ type: "CREATE_TRANSACTION", data }}
+          additionalFields={{
+            type: "CREATE_TRANSACTION",
+            targetType: "CREATE_TRANSACTION",
+            data,
+          }}
           buttonLabel={<Trans i18nKey="transactionCreation:cta" />}
         />
       );
