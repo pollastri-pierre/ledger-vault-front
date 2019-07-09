@@ -9,7 +9,6 @@ export {
 export { default as FieldText } from "./fields/FilterFieldText";
 export { default as FieldAccountType } from "./fields/FilterFieldAccountType";
 export { default as FieldUserRole } from "./fields/FilterFieldUserRole";
-export { default as FieldAccounts } from "./fields/FilterFieldAccounts";
 export { default as FieldDate } from "./fields/FilterFieldDate";
 export { default as FieldCurrency } from "./fields/FilterFieldCurrency";
 export { default as FieldSelect } from "./fields/FilterFieldSelect";
@@ -18,6 +17,9 @@ export { default as FieldMembers } from "./fields/FilterFieldMembers";
 export {
   default as FieldRequestActivity,
 } from "./fields/FilterFieldRequestActivity";
+export { default as FieldGroup } from "./fields/FilterFieldGroup";
+export { default as FieldAccount } from "./fields/FilterFieldAccount";
+export { default as FieldUser } from "./fields/FilterFieldUser";
 
 // High levels filters groups, used diretly inside pages
 export { default as TransactionsFilters } from "./TransactionsFilters";

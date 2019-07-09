@@ -179,7 +179,7 @@ const InlineLabel = styled(Box).attrs({
 })`
   border: 1px solid;
   user-select: none;
-  max-width: 300px;
+  max-width: 400px;
   min-height: 40px;
   padding: 5px 10px;
 
@@ -234,7 +234,7 @@ const styles = {
   },
 };
 
-export const WrappableFieldLoading = ({ width }) => (
+export const WrappableFieldLoading = ({ width }: { width: number }) => (
   <InlineLabel interactive={false} style={{ width }}>
     Loading...
   </InlineLabel>

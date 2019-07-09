@@ -8,6 +8,8 @@ import {
   FieldText,
   FieldUserRole,
   FieldStatuses,
+  FieldGroup,
+  FieldAccount,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { UserStatus } from "data/types";
@@ -31,6 +33,8 @@ export default function UsersFilters(props: FieldsGroupProps) {
       <FieldText title="Username" queryKey="username" placeholder="Username" />
       <FieldUserRole />
       <FieldText title="User ID" queryKey="user_id" placeholder="User ID" />
+      <FieldGroup />
+      <FieldAccount />
     </FiltersCard>
   );
 }

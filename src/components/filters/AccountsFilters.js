@@ -9,6 +9,8 @@ import {
   FieldCurrency,
   FieldAccountType,
   FieldStatuses,
+  FieldGroup,
+  FieldUser,
 } from "components/filters";
 import type { FieldsGroupProps } from "components/filters/types";
 import type { MetaStatus } from "data/types";
@@ -28,6 +30,8 @@ function AccountsFilters(props: FieldsGroupProps) {
       />
       <FieldCurrency />
       <FieldAccountType />
+      <FieldGroup />
+      <FieldUser />
       <FieldText
         title="Account name"
         queryKey="name"
