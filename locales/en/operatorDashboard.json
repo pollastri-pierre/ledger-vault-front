@@ -1,8 +1,6 @@
 {
   "myRequestsTitle": "Transactions awaiting approval",
-  "myRequestsDesc": "Transactions that require an action from me",
-  "otherRequestsTitle": "All pending transactions",
-  "otherRequestsDesc": "Transactions that do not require an action from me",
+  "otherRequestsTitle": "Pending transactions",
   "myRequestsEmpty": "No transactions to approve",
   "otherRequestsEmpty": "No transactions to track"
 }

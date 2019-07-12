@@ -4,7 +4,7 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaCoins, FaList, FaWrench, FaTicketAlt, FaLink } from "react-icons/fa";
+import { FaCoins, FaWrench, FaTicketAlt, FaLink } from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -126,34 +126,17 @@ function AccountQuickInfoWidget(props: Props) {
               />
             </div>
           </InfoSquare>
-          <InfoSquare>
-            <Label align="center" horizontal flow={5}>
-              <FaList />
-              <span>Rules</span>
-            </Label>
-            <Text header select noWrap>
-              {account.tx_approval_steps ? (
-                `${account.tx_approval_steps.length} step${
-                  account.tx_approval_steps.length > 1 ? "s" : ""
-                }`
-              ) : (
-                <Text color={colors.textLight} normal noWrap>
-                  Not set
-                </Text>
-              )}
-            </Text>
-          </InfoSquare>
           {account.contract_address && (
             <>
               <InfoSquare>
-                <Label>contract address</Label>
+                <Label>Smart contract address</Label>
                 <Box horizontal flow={20} align="center">
                   <Copy text={account.contract_address} />
                 </Box>
               </InfoSquare>
               {account.parent && (
                 <InfoSquare>
-                  <Label>Parent account</Label>
+                  <Label>Parent Ethereum account</Label>
                   <Link to={`${account.parent}`}>
                     <Button
                       IconLeft={FaLink}

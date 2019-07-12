@@ -46,15 +46,13 @@ function RequestsWidget(props: Props) {
 
   const prefix = isAdmin ? "adminDashboard" : "operatorDashboard";
   const myRequestsTitle = <Trans i18nKey={`${prefix}:myRequestsTitle`} />;
-  const myRequestsDesc = <Trans i18nKey={`${prefix}:myRequestsDesc`} />;
   const otherRequestsTitle = <Trans i18nKey={`${prefix}:otherRequestsTitle`} />;
-  const otherRequestsDesc = <Trans i18nKey={`${prefix}:otherRequestsDesc`} />;
   const myEmpty = <Trans i18nKey={`${prefix}:myRequestsEmpty`} />;
   const otherEmpty = <Trans i18nKey={`${prefix}:otherRequestsEmpty`} />;
 
   return (
     <Box flow={20}>
-      <Widget title={myRequestsTitle} desc={myRequestsDesc}>
+      <Widget title={myRequestsTitle}>
         <RequestsList
           emptyState={myEmpty}
           dataTest="awaiting-approval"
@@ -62,7 +60,7 @@ function RequestsWidget(props: Props) {
           onRequestClick={handleRequestClick}
         />
       </Widget>
-      <Widget title={otherRequestsTitle} desc={otherRequestsDesc}>
+      <Widget title={otherRequestsTitle}>
         <RequestsList
           emptyState={otherEmpty}
           dataTest="pending-approval"
