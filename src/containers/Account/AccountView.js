@@ -1,6 +1,7 @@
 // @flow
 
 import React from "react";
+import styled from "styled-components";
 import type { Match } from "react-router-dom";
 
 import AccountWarning from "containers/Account/AccountWarning";
@@ -32,16 +33,22 @@ function AccountView(props: Props) {
           {account.account_type === "Ethereum" && (
             <SubAccountsWidget account={account} />
           )}
+          <Container>
+            {account.tx_approval_steps && (
+              <Box flex={1} style={{ margin: 10 }}>
+                <AccountTransactionRulesWidget account={account} />
+              </Box>
+            )}
+            {isBalanceAvailable(account) && (
+              <Box flex={1} style={{ minWidth: 500, margin: 10 }}>
+                <TransactionsGraphWidget account={account} />
+              </Box>
+            )}
+          </Container>
           <AccountLastTransactionsWidget account={account} />
         </Box>
-        <Box flow={20} width={600}>
+        <Box flow={20}>
           <AccountWarning account={account} />
-          {account.tx_approval_steps && (
-            <AccountTransactionRulesWidget account={account} />
-          )}
-          {isBalanceAvailable(account) && (
-            <TransactionsGraphWidget account={account} />
-          )}
         </Box>
       </ResponsiveContainer>
     </Box>
@@ -57,3 +64,9 @@ export default connectWidget(AccountView, {
     accountId: match.params.id,
   }),
 });
+
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+`;
