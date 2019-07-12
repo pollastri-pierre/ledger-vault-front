@@ -27,9 +27,11 @@ type Props = {
 function RequestsWidget(props: Props) {
   const { data, me } = props;
 
+  const isAdmin = me.role === "ADMIN";
+
   const requests = data.edges
     .map(el => el.node)
-    .filter(me.role === "ADMIN" ? isNotTransaction : Boolean);
+    .filter(isAdmin ? isNotTransaction : Boolean);
 
   const myRequests = requests.filter(
     request => request.approvals && !hasUserApprovedRequest(request, me),
@@ -42,25 +44,27 @@ function RequestsWidget(props: Props) {
   const handleRequestClick = (request: Request) =>
     navigateToRequest(request, props.history);
 
+  const prefix = isAdmin ? "adminDashboard" : "operatorDashboard";
+  const myRequestsTitle = <Trans i18nKey={`${prefix}:myRequestsTitle`} />;
+  const myRequestsDesc = <Trans i18nKey={`${prefix}:myRequestsDesc`} />;
+  const otherRequestsTitle = <Trans i18nKey={`${prefix}:otherRequestsTitle`} />;
+  const otherRequestsDesc = <Trans i18nKey={`${prefix}:otherRequestsDesc`} />;
+  const myEmpty = <Trans i18nKey={`${prefix}:myRequestsEmpty`} />;
+  const otherEmpty = <Trans i18nKey={`${prefix}:otherRequestsEmpty`} />;
+
   return (
     <Box flow={20}>
-      <Widget
-        title={<Trans i18nKey="adminDashboard:myRequestsTitle" />}
-        desc={<Trans i18nKey="adminDashboard:myRequestsDesc" />}
-      >
+      <Widget title={myRequestsTitle} desc={myRequestsDesc}>
         <RequestsList
-          emptyState={<Trans i18nKey="adminDashboard:myRequestsEmpty" />}
+          emptyState={myEmpty}
           dataTest="awaiting-approval"
           requests={myRequests}
           onRequestClick={handleRequestClick}
         />
       </Widget>
-      <Widget
-        title={<Trans i18nKey="adminDashboard:otherRequestsTitle" />}
-        desc={<Trans i18nKey="adminDashboard:otherRequestsDesc" />}
-      >
+      <Widget title={otherRequestsTitle} desc={otherRequestsDesc}>
         <RequestsList
-          emptyState={<Trans i18nKey="adminDashboard:otherRequestsEmpty" />}
+          emptyState={otherEmpty}
           dataTest="pending-approval"
           requests={otherRequests}
           onRequestClick={handleRequestClick}

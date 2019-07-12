@@ -121,12 +121,8 @@ function AccountQuickInfoWidget(props: Props) {
             </Label>
             <div>
               <EntityStatus
+                status={account.status}
                 request={account.last_request}
-                status={
-                  account.last_request
-                    ? account.last_request.status
-                    : account.status
-                }
               />
             </div>
           </InfoSquare>

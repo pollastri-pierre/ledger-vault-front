@@ -4,7 +4,7 @@
   "myRequestsTitle": "Requests awaiting approval",
   "myRequestsDesc": "Requests that require an action from me",
   "myRequestsEmpty": "No requests to approve",
-  "otherRequestsTitle": "Other requests",
+  "otherRequestsTitle": "Pending requests",
   "otherRequestsDesc": "Requests that do not require an action from me",
   "otherRequestsEmpty": "No requests to track",
   "editAdminRules": "Update your organization security scheme",
