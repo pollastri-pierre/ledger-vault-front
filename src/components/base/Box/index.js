@@ -15,6 +15,7 @@ import {
 
 type Props = {
   flow?: number,
+  onClick?: Function,
   horizontal?: number,
   grow?: boolean,
   position?: "absolute" | "relative",
@@ -31,6 +32,7 @@ const direction = (props: Props) => (props.horizontal ? "row" : "column");
 const flexGrow = (props: Props) => (props.grow ? 1 : "initial");
 const align = (props: Props) => props.align || "stretch";
 const justify = (props: Props) => props.justify || "flex-start";
+const cursor = (props: Props) => (props.onClick ? "pointer" : "default");
 const position = (props: Props) => props.position || "static";
 const displayFlex = (props: Props) => (props.inline ? "inline-flex" : "flex");
 const flexShrink = (props: Props) => ("noShrink" in props ? 0 : 1);
@@ -70,6 +72,7 @@ export default styled.div`
   align-items: ${align};
   justify-content: ${justify};
   overflow: ${overflow};
+  cursor: ${cursor};
 
   position: ${position};
 
