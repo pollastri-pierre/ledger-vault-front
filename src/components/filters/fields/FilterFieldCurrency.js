@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from "react";
-import omit from "lodash/omit";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import type { CryptoCurrency } from "@ledgerhq/live-common/lib/types";
 
@@ -17,7 +16,11 @@ import ERC20TokenIcon from "components/icons/ERC20Token";
 import Text from "components/base/Text";
 import Box from "components/base/Box";
 
-import type { Item as SelectCurrencyItem } from "components/SelectCurrency";
+import type {
+  Item as SelectCurrencyItem,
+  ERC20TokenItem,
+  CurrencyItem,
+} from "components/SelectCurrency";
 import { WrappableField, defaultFieldProps } from "components/filters";
 import type { FieldProps } from "components/filters/types";
 
@@ -26,42 +29,22 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
 
   handleChange = (items: SelectCurrencyItem[]) => {
     const { updateQueryParams } = this.props;
+
     if (items.length === 0) {
-      updateQueryParams(q => {
-        q = omit(q, ["currency", "contract_address"]);
-        return q;
-      });
-    } else {
-      const tokens = items.filter(i => i.type === "erc20token");
-      const currencies = items.filter(i => i.type === "currency");
-
-      const toOmit = [];
-
-      let currencyStr;
-      let tokenStr;
-
-      updateQueryParams(q => {
-        if (currencies.length > 0) {
-          // $FlowFixMe flow is incapable to infer that it's a currency
-          currencyStr = currencies.map(t => t.value.id).join();
-        } else {
-          toOmit.push("currency");
-        }
-
-        if (tokens.length > 0) {
-          // $FlowFixMe flow is incapable to infer that it's a token
-          tokenStr = tokens.map(t => t.value.contract_address).join();
-        } else {
-          toOmit.push("contract_address");
-        }
-
-        q = omit(q, toOmit);
-        q.contract_address = tokenStr;
-        q.currency = currencyStr;
-
-        return q;
-      });
+      return updateQueryParams("currency", null);
     }
+
+    // $FlowFixMe dumbest parser ever
+    const tokens: ERC20TokenItem[] = items.filter(i => i.type === "erc20token");
+    // $FlowFixMe dumbest parser ever
+    const currencies: CurrencyItem[] = items.filter(i => i.type === "currency");
+
+    const q = [
+      ...currencies.map(c => c.value.id),
+      ...tokens.map(t => `ethereum:${t.value.contract_address}`),
+    ];
+
+    updateQueryParams("currency", q);
   };
 
   Collapsed = () => {
@@ -104,30 +87,31 @@ class FilterFieldCurrency extends PureComponent<FieldProps> {
   }
 }
 
-function resolveCurrenciesAndTokens(queryParams: ObjectParameters) {
-  const currenciesAndTokens = [];
+function resolveOptions(els: string[]) {
+  return els
+    .map(el => {
+      const isToken = /.+:0x.+/.test(el);
+      if (isToken) {
+        const contract = el.split(":")[1];
+        return getERC20TokenByContractAddress(contract);
+      }
+      try {
+        return getCryptoCurrencyById(el);
+      } catch (err) {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
 
-  if (queryParams.currency) {
-    if (typeof queryParams.currency !== "string") return [];
-    const currencies = queryParams.currency.split(",");
-    currencies.forEach(c => {
-      const curr = getCryptoCurrencyById(c) || null;
-      if (curr) {
-        currenciesAndTokens.push(curr);
-      }
-    });
-  }
-  if (queryParams.contract_address) {
-    if (typeof queryParams.contract_address !== "string") return [];
-    const tokens = queryParams.contract_address.split(",");
-    tokens.forEach(t => {
-      const token = getERC20TokenByContractAddress(t);
-      if (token) {
-        currenciesAndTokens.push(token);
-      }
-    });
-  }
-  return currenciesAndTokens;
+function resolveCurrenciesAndTokens(queryParams: ObjectParameters) {
+  if (!queryParams.currency) return [];
+  if (typeof queryParams.currency === "string")
+    return resolveOptions([queryParams.currency]);
+  if (Array.isArray(queryParams.currency))
+    // $FlowFixMe
+    return resolveOptions(queryParams.currency);
+  return [];
 }
 
 function getItemIcon(item: CryptoCurrency | ERC20Token) {
