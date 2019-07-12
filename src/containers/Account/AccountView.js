@@ -7,11 +7,14 @@ import AccountWarning from "containers/Account/AccountWarning";
 import ResponsiveContainer from "components/base/ResponsiveContainer";
 import type { Account } from "data/types";
 import AccountQuery from "api/queries/AccountQuery";
+import { isBalanceAvailable } from "utils/accounts";
 import Box from "components/base/Box";
 import {
   AccountQuickInfoWidget,
   AccountLastTransactionsWidget,
   SubAccountsWidget,
+  AccountTransactionRulesWidget,
+  TransactionsGraphWidget,
   connectWidget,
 } from "components/widgets";
 
@@ -24,15 +27,23 @@ function AccountView(props: Props) {
   return (
     <Box flow={20} key={account.id}>
       <ResponsiveContainer>
-        <Box grow>
+        <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />
+          {account.account_type === "Ethereum" && (
+            <SubAccountsWidget account={account} />
+          )}
+          <AccountLastTransactionsWidget account={account} />
         </Box>
-        <AccountWarning account={account} />
+        <Box flow={20} width={600}>
+          <AccountWarning account={account} />
+          {account.tx_approval_steps && (
+            <AccountTransactionRulesWidget account={account} />
+          )}
+          {isBalanceAvailable(account) && (
+            <TransactionsGraphWidget account={account} />
+          )}
+        </Box>
       </ResponsiveContainer>
-      {account.account_type === "Ethereum" && (
-        <SubAccountsWidget account={account} />
-      )}
-      <AccountLastTransactionsWidget account={account} />
     </Box>
   );
 }

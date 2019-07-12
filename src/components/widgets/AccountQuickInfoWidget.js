@@ -44,7 +44,7 @@ function AccountQuickInfoWidget(props: Props) {
         <Link to={`${account.id}/send/${account.id}`}>
           <Button
             IconLeft={IconSend}
-            customColor={colors.text}
+            customColor={colors.blue}
             variant="filled"
             size="tiny"
           >
@@ -54,7 +54,7 @@ function AccountQuickInfoWidget(props: Props) {
         <Link to={`${account.id}/receive/${account.id}`}>
           <Button
             IconLeft={IconReceive}
-            customColor={colors.text}
+            customColor={colors.blue}
             variant="filled"
             size="tiny"
           >
