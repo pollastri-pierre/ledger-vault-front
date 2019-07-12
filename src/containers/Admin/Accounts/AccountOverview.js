@@ -61,7 +61,13 @@ const Rows = ({ account }: { account: Account }) => {
       )}
       {account.tx_approval_steps && !isRuleVisible && (
         <LineRow label={<Trans i18nKey="entityModal:tabs.transactionRules" />}>
-          <Box onClick={setRuleVisible} horizontal flow={10} align="center">
+          <Box
+            onClick={setRuleVisible}
+            horizontal
+            flow={10}
+            align="center"
+            style={{ cursor: "pointer" }}
+          >
             <div>
               <Trans
                 i18nKey="accountCreation:rulesSumup"

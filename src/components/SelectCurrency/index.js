@@ -27,12 +27,12 @@ import colors from "shared/colors";
 
 const ICON_SIZE = 16;
 
-type CurrencyItem = {
+export type CurrencyItem = {
   type: "currency",
   value: CryptoCurrency,
 };
 
-type ERC20TokenItem = {
+export type ERC20TokenItem = {
   type: "erc20token",
   value: ERC20Token,
 };

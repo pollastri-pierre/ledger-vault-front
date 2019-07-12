@@ -23,22 +23,27 @@ const mapStateToProps = (state, props) => {
   const { accountsConnection } = props;
   const accounts = accountsConnection.edges.map(e => e.node);
   const totalBalance = accounts.reduce((total, account) => {
-    const from = resolveFrom(account);
-    if (!from) return total;
-    const countervalue = counterValues.calculateWithIntermediarySelector(
-      state,
-      {
-        // $FlowFixMe I guarantee curOrToken is compatible with CurrencyCommon :doge:
-        from,
-        fromExchange: state.exchanges.data[from.ticker],
-        intermediary: intermediaryCurrency,
-        toExchange: state.exchanges.data.USD,
-        to: getFiatCurrencyByTicker("USD"),
-        value: account.balance,
-      },
-    );
-    if (!countervalue) return total;
-    return total.plus(countervalue);
+    try {
+      const from = resolveFrom(account);
+      if (!from) return total;
+      const countervalue = counterValues.calculateWithIntermediarySelector(
+        state,
+        {
+          // $FlowFixMe I guarantee curOrToken is compatible with CurrencyCommon :doge:
+          from,
+          fromExchange: state.exchanges.data[from.ticker],
+          intermediary: intermediaryCurrency,
+          toExchange: state.exchanges.data.USD,
+          to: getFiatCurrencyByTicker("USD"),
+          value: account.balance,
+        },
+      );
+      if (!countervalue) return total;
+      return total.plus(countervalue);
+    } catch (err) {
+      console.error(err); // eslint-disable-line no-console
+      return total;
+    }
   }, BigNumber(0));
 
   return {
@@ -80,7 +85,7 @@ export default connectWidget(connect(mapStateToProps)(TotalBalanceWidget), {
     accountsConnection: SearchAccounts,
   },
   propsToQueryParams: () => ({
-    meta_status: "ACTIVE",
+    meta_status: "APPROVED",
     pageSize: -1,
   }),
 });

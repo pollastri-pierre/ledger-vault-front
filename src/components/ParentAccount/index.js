@@ -8,7 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import type { Account } from "data/types";
 import type { Connection } from "restlay/ConnectionQuery";
-import AccountsQuery from "api/queries/AccountsQuery";
+import SearchAccounts from "api/queries/SearchAccounts";
 import connectData from "restlay/connectData";
 import AccountName from "components/AccountName";
 import VaultLink from "components/VaultLink";
@@ -40,6 +40,9 @@ const RenderLoading = () => (
 export default connectData(ParentAccount, {
   RenderLoading,
   queries: {
-    accounts: AccountsQuery,
+    accounts: SearchAccounts,
   },
+  propsToQueryParams: () => ({
+    pageSize: -1,
+  }),
 });
