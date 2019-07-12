@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Trans } from "react-i18next";
 import LineRow from "components/LineRow";
 import CurrencyAccountValue from "components/CurrencyAccountValue";
+import Copy from "components/base/Copy";
 import AccountName from "components/AccountName";
 import Box from "components/base/Box";
 import { FaChevronDown } from "react-icons/fa";
@@ -49,7 +50,7 @@ const Rows = ({ account }: { account: Account }) => {
           <LineRow
             label={<Trans i18nKey="accountView:summary.token_address" />}
           >
-            {account.contract_address}
+            <Copy text={account.contract_address} />
           </LineRow>
           <LineRow
             label={<Trans i18nKey="accountView:summary.parent_account" />}

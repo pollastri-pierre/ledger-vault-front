@@ -29,7 +29,7 @@ type Props = {
   // set & get approvals rules
   rules: Array<?ApprovalsRule>,
   readOnly?: boolean,
-  onChange: (Array<?ApprovalsRule>) => void,
+  onChange?: (Array<?ApprovalsRule>) => void,
 
   // used to fill select
   users: User[],
@@ -53,6 +53,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
   addEmptyRule = () => {
     const { onChange, rules } = this.props;
+    if (!onChange) return;
     const rule = { quorum: 1, users: [], group_id: null };
     onChange([...rules, rule]);
   };
@@ -65,6 +66,7 @@ class ApprovalsRules extends PureComponent<Props> {
     newIndex: number,
   }) => {
     const { rules, onChange } = this.props;
+    if (!onChange) return;
     const reordered = arrayMove([...rules], oldIndex, newIndex);
     onChange(reordered);
   };
@@ -75,12 +77,16 @@ class ApprovalsRules extends PureComponent<Props> {
       if (!newRule) return;
       const newRules = [...rules];
       newRules.splice(rules.indexOf(rule), 1, newRule).filter(Boolean);
-      onChange(newRules);
+      if (onChange) {
+        onChange(newRules);
+      }
     };
     const handleRemove = () => {
       const newRules = [...rules];
       newRules.splice(i, 1);
-      onChange(newRules);
+      if (onChange) {
+        onChange(newRules);
+      }
     };
     return (
       <Rule
