@@ -21,20 +21,22 @@ type Props = {
   account: Account,
 };
 
-const size = 300;
-
 function TransactionsGraph(props: Props) {
   const { transactions, account } = props;
+  const containerRef = useRef();
   const ref = useRef();
   const NODES = useRef({});
 
-  const margin = { top: 80, right: 50, bottom: 30, left: 100 };
-  const width = 600 - margin.left - margin.right;
-  const height = 350 - margin.top - margin.bottom;
-  useEffect(() => {
+  const drawGraph = () => {
     const { current } = ref;
     if (!current) return;
+    if (!containerRef.current) return;
+
+    const margin = { top: 80, right: 50, bottom: 30, left: 100 };
+    const width = containerRef.current.clientWidth - margin.left - margin.right;
+    const height = 350 - margin.top - margin.bottom;
     const isERC20 = account.account_type === "ERC20";
+
     let color;
     if (isERC20) {
       const ethCurrency = getCryptoCurrencyById("ethereum");
@@ -79,12 +81,14 @@ function TransactionsGraph(props: Props) {
         .attr("y2", "100%"),
     );
 
-    const svg = d3
-      .select(current)
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    ensure({ key: "svg", NODES: NODES.current }, () =>
+      d3
+        .select(current)
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`),
+    );
 
     const rawTransactions = transactions.edges.map(el => el.node);
     const dotsNumber = 30;
@@ -126,7 +130,7 @@ function TransactionsGraph(props: Props) {
     ]);
 
     ensure({ key: "graphLine", NODES: NODES.current }, () =>
-      svg
+      NODES.current.svg
         .append("path")
         .data([evolutionOfBalance])
         .attr("d", graphLine)
@@ -136,7 +140,7 @@ function TransactionsGraph(props: Props) {
     );
 
     ensure({ key: "gradientArea", NODES: NODES.current }, () =>
-      svg
+      NODES.current.svg
         .append("path")
         .data([evolutionOfBalance])
         .attr("d", area)
@@ -156,14 +160,14 @@ function TransactionsGraph(props: Props) {
 
     // Y axis
     ensure({ key: "xAxis", NODES: NODES.current }, () =>
-      svg
+      NODES.current.svg
         .append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(x).ticks(6)),
     );
 
     ensure({ key: "yAxis", NODES: NODES.current }, () =>
-      svg.append("g").call(
+      NODES.current.svg.append("g").call(
         d3
           .axisLeft(y)
           .ticks(5)
@@ -187,14 +191,33 @@ function TransactionsGraph(props: Props) {
 
     styleAxis(NODES.current.yAxis, true);
     styleAxis(NODES.current.xAxis);
+  };
+
+  useEffect(() => {
+    let resizeObserver = null;
+    if (typeof ResizeObserver !== "undefined" && document.body) {
+      resizeObserver = new ResizeObserver(() => {
+        drawGraph();
+      });
+
+      resizeObserver.observe(document.body);
+    }
+
+    return () => {
+      if (document.body && resizeObserver) {
+        resizeObserver.unobserve(document.body);
+      }
+    };
   });
 
   return (
-    <Widget title="Your balance during the last 30 days">
-      <SoftCard style={{ padding: 20, height: 350, paddingTop: 100 }}>
-        <svg style={svgStyle} width={size} height={size} ref={ref} />
-      </SoftCard>
-    </Widget>
+    <div ref={containerRef}>
+      <Widget title="Your balance during the last 30 days">
+        <SoftCard style={{ padding: 20, height: 350, paddingTop: 100 }}>
+          <svg style={svgStyle} ref={ref} />
+        </SoftCard>
+      </Widget>
+    </div>
   );
 }
 
@@ -245,6 +268,9 @@ function ensure(
   create,
 ) {
   if (!condition && NODES[key]) {
+    remove(NODES, key);
+  }
+  if (condition && NODES[key]) {
     remove(NODES, key);
   }
   if (condition && !NODES[key]) {
