@@ -12,7 +12,7 @@ class TransactionStatus extends Component<*> {
   render() {
     const { transaction } = this.props;
 
-    if (transaction.status === "SUBMITTED") {
+    if (transaction.status === "SUBMITTED" && transaction.confirmations) {
       return <ConfirmationStatus nbConfirmations={transaction.confirmations} />;
     }
 
