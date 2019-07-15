@@ -6,7 +6,7 @@ import RequestExpirationDate from "components/RequestExpirationDate";
 import Box from "components/base/Box";
 import { withMe } from "components/UserContextProvider";
 import type { User, Request } from "data/types";
-import { hasUserApprovedRequest } from "utils/request";
+import { hasUserApprovedRequest, isUserInCurrentStep } from "utils/request";
 
 type Props = {
   status: string,
@@ -36,7 +36,9 @@ class EntityStatus extends PureComponent<Props> {
     }
 
     const isWaitingForApproval =
-      !hasUserApprovedRequest(request, me) && status !== "ACTIVE";
+      !hasUserApprovedRequest(request, me) &&
+      isUserInCurrentStep(request, me) &&
+      status !== "ACTIVE";
 
     return (
       <Box horizontal flow={10} align="center">
