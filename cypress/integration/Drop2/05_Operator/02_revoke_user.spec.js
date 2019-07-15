@@ -4,7 +4,7 @@ import {
   route,
   revoke_users,
   successfull_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
 describe("Test Revoke User", function() {
   beforeEach(function() {

@@ -3,9 +3,9 @@ import {
   logout,
   route,
   successfull_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
-describe("Approve User as Operator and Admin with the second Admin", function() {
+describe("Approve User as Operator with the first admin", function() {
   beforeEach(function() {
     login(5);
   });
@@ -14,38 +14,46 @@ describe("Approve User as Operator and Admin with the second Admin", function() 
     logout();
   });
 
-  it("Approve new operator and admin", () => {
+  it("Approve 6 new operator", () => {
     cy.server();
     route();
+
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.wait(1500);
-    // Add Anna Wagner
-    cy.contains("Anna").click();
+    cy.wait(2500);
+
+    // Laura operator
+    cy.contains("Laura").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.get("[data-test=close]").click();
 
-    // Add Aidan Fisher
-    cy.contains("Aidan").click();
+    // Sally operator
+    cy.contains("Sally").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.get("[data-test=close]").click();
 
-    // Thomas Lebron
-    cy.contains("Thomas").click();
+    // Claudia operator
+    cy.contains("Claudia").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.get("[data-test=close]").click();
 
-    // James Lepic
-    cy.contains("James").click();
+    // Allison operator
+    cy.contains("Allison").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.get("[data-test=close]").click();
 
-    // John Clark admin
-    cy.contains("John").click();
+    // Tyler operator
+    cy.contains("Tyler").click();
+    cy.get("[data-test=approve_button]").click();
+    successfull_message();
+    cy.get("[data-test=close]").click();
+
+    // Charles operator
+    cy.contains("Charles").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.get("[data-test=close]").click();

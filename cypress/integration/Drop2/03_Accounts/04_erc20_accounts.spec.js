@@ -7,7 +7,7 @@ import {
   create_erc20_account_new_eth,
   create_erc20_with_viewonly_eth_account,
   error_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
 describe("Test Case for Account", function() {
   beforeEach(function() {
