@@ -62,6 +62,7 @@ type Props = {
   t: Translate,
   status: string,
   textOnly?: boolean,
+  size?: "big" | "normal",
 };
 
 export const translateStatus = (status: string, t: string => string) => {
@@ -80,7 +81,7 @@ class Status extends PureComponent<Props> {
   };
 
   render() {
-    const { status, textOnly } = this.props;
+    const { status, textOnly, size } = this.props;
 
     const str = this.getStr();
     if (textOnly) return str;
@@ -99,7 +100,7 @@ class Status extends PureComponent<Props> {
         color={color}
         borderRadius={3}
       >
-        <Text small style={styles.text}>
+        <Text small={size !== "big"} style={styles.text}>
           {str}
         </Text>
       </Box>

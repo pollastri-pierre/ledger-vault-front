@@ -121,6 +121,7 @@ function AccountQuickInfoWidget(props: Props) {
             </Label>
             <div>
               <EntityStatus
+                size="big"
                 status={account.status}
                 request={account.last_request}
               />
