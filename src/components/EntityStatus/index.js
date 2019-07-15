@@ -12,24 +12,27 @@ type Props = {
   status: string,
   request: ?Request,
   me: User,
+  size?: "big" | "normal",
 };
 
 class EntityStatus extends PureComponent<Props> {
   render() {
-    const { status, me, request } = this.props;
+    const { status, me, request, size } = this.props;
 
     if (!request) {
-      return <Status status={status} />;
+      return <Status status={status} size={size} />;
     }
 
     const isRequestBlocked = request.status === "BLOCKED";
     const shouldDisplayBlockedStatus = isRequestBlocked && status !== "ACTIVE";
 
     if (!request.approvals && !shouldDisplayBlockedStatus) {
-      return <Status status={remapStatus(status, request.target_type)} />;
+      return (
+        <Status size={size} status={remapStatus(status, request.target_type)} />
+      );
     }
     if (shouldDisplayBlockedStatus) {
-      return <Status status="BLOCKED" />;
+      return <Status size={size} status="BLOCKED" />;
     }
 
     const isWaitingForApproval =
@@ -38,6 +41,7 @@ class EntityStatus extends PureComponent<Props> {
     return (
       <Box horizontal flow={10} align="center">
         <Status
+          size={size}
           status={
             isWaitingForApproval
               ? "AWAITING_APPROVAL"

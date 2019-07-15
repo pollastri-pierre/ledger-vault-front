@@ -27,6 +27,7 @@ function AccountView(props: Props) {
   const { account } = props;
   return (
     <Box flow={20} key={account.id}>
+      <AccountWarning account={account} />
       <ResponsiveContainer>
         <Box flow={20} grow>
           <AccountQuickInfoWidget account={account} />
@@ -46,9 +47,6 @@ function AccountView(props: Props) {
             )}
           </Container>
           <AccountLastTransactionsWidget account={account} />
-        </Box>
-        <Box flow={20}>
-          <AccountWarning account={account} />
         </Box>
       </ResponsiveContainer>
     </Box>
