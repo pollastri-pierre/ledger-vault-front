@@ -3,7 +3,7 @@ import {
   logout,
   route,
   successfull_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
 describe("Test Case for Groups", function() {
   beforeEach(function() {

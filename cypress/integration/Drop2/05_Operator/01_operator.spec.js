@@ -1,4 +1,4 @@
-import { login, logout, route } from "../../functions/actions";
+import { login, logout, route } from "../../../functions/actions";
 
 describe("Test on Operator ", function() {
   beforeEach(function() {

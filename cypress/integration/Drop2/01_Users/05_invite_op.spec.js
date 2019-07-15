@@ -1,4 +1,4 @@
-import { login, logout, route, create_user } from "../../functions/actions";
+import { login, logout, route, create_user } from "../../../functions/actions";
 
 describe("Add User as Operator", function() {
   beforeEach(function() {

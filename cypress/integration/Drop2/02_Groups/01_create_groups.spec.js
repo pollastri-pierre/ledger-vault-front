@@ -5,7 +5,7 @@ import {
   create_group,
   successfull_message,
   error_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
 describe("Test Case for Create Groups", function() {
   beforeEach(function() {

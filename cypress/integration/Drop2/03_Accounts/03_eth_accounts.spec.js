@@ -2,11 +2,11 @@ import {
   login,
   logout,
   route,
+  create_account,
   successfull_message,
-  provide_viewonly_rule,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
-describe("Provide transaction rules for View Only account", function() {
+describe("Test Case for Account", function() {
   beforeEach(function() {
     login(4);
   });
@@ -15,20 +15,16 @@ describe("Provide transaction rules for View Only account", function() {
     logout();
   });
 
-  it("Provide transaction rules for Eth view only account", () => {
+  it("Create Ethereum Account", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    cy.wait(3500);
-    cy.contains("View-only")
-      .eq(0)
-      .click();
-    provide_viewonly_rule("Limecoin", "APAC", "Anna");
+    create_account("Ethereum", "Syscoin", "Key accounts Ops", "America Ops");
     successfull_message();
   });
 
-  it("Approve Limecoin eth view only Account", () => {
+  it("Approve Eth Account", () => {
     cy.server();
     route();
     logout();
@@ -36,23 +32,26 @@ describe("Provide transaction rules for View Only account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
+    cy.wait(7500);
     successfull_message();
     cy.wait(2000);
   });
 
-  it("Provide transaction rules for Eth view only account", () => {
+  it("Create Ethereum Ropsten Account", () => {
     cy.server();
     route();
     cy.get("[data-test=menuItem-accounts]").click();
     cy.url().should("include", "/admin/accounts");
-    cy.wait(3500);
-    cy.contains("Syscoin").click();
-    cy.wait(1500);
-    provide_viewonly_rule("Syscoin", "America Ops", "Laura");
+    create_account(
+      "Ethereum Ropsten",
+      "WPNakamoto",
+      "Key accounts Ops",
+      "South Africa",
+    );
     successfull_message();
   });
 
-  it("Approve Syscoin eth view only Account", () => {
+  it("Approve Eth Ropsten Account", () => {
     cy.server();
     route();
     logout();
@@ -60,6 +59,7 @@ describe("Provide transaction rules for View Only account", function() {
     cy.url().should("include", "/admin/dashboard");
     cy.contains("Awaiting approval").click();
     cy.get("[data-test=approve_button]").click();
+    cy.wait(7500);
     successfull_message();
     cy.wait(2000);
   });

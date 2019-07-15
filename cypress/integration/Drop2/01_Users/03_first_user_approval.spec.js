@@ -3,9 +3,9 @@ import {
   logout,
   route,
   successfull_message,
-} from "../../functions/actions";
+} from "../../../functions/actions";
 
-describe("Approve User as Operator with the first admin", function() {
+describe("Approve User as Operator and Admin with the first admin", function() {
   beforeEach(function() {
     login(4);
   });
@@ -14,51 +14,43 @@ describe("Approve User as Operator with the first admin", function() {
     logout();
   });
 
-  it("Approve 6 new operator", () => {
+  it("Approve new operator and admin", () => {
     cy.server();
     route();
 
     cy.get("[data-test=menuItem-users]").click();
     cy.url().should("include", "/admin/users");
-    cy.wait(1500);
-    // Laura operator
-    cy.contains("Laura").click();
+
+    // Anna Wagner operator
+    cy.contains("Anna").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.contains("You already approved the request.");
     cy.get("[data-test=close]").click();
 
-    // Sally operator
-    cy.contains("Sally").click();
+    // Aidan Fisher operator
+    cy.contains("Aidan").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.contains("You already approved the request.");
     cy.get("[data-test=close]").click();
 
-    // Claudia operator
-    cy.contains("Claudia").click();
+    // Thomas Lebron operator
+    cy.contains("Thomas").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.contains("You already approved the request.");
     cy.get("[data-test=close]").click();
 
-    // Allison operator
-    cy.contains("Allison").click();
+    // James Lepic operator
+    cy.contains("James").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.contains("You already approved the request.");
     cy.get("[data-test=close]").click();
 
-    // Tyler operator
-    cy.contains("Tyler").click();
-    cy.get("[data-test=approve_button]").click();
-    successfull_message();
-    cy.wait(1500);
-    cy.contains("You already approved the request.");
-    cy.get("[data-test=close]").click();
-
-    // Charles operator
-    cy.contains("Charles").click();
+    // John Clark admin
+    cy.contains("John").click();
     cy.get("[data-test=approve_button]").click();
     successfull_message();
     cy.wait(1500);
