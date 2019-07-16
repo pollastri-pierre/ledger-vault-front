@@ -110,7 +110,7 @@ class ApprovalsRule extends PureComponent<Props, State> {
         <div style={styles.paddedBotForDrag}>
           <RuleContainer>
             <Box horizontal position="relative" align="flex-start">
-              {stepBall}
+              <StepBallComponent number={index + 1} />
               <HiddenRule stepNumber={index + 1} />
             </Box>
           </RuleContainer>
@@ -142,9 +142,22 @@ class ApprovalsRule extends PureComponent<Props, State> {
     return (
       <div style={styles.paddedBotForDrag}>
         <RuleContainer isInvalid={isInvalid}>
+          <div style={{ padding: 10, paddingLeft: 15 }}>
+            {index === 0 ? (
+              <Trans
+                i18nKey="approvalsRules:creator_role"
+                components={<strong>0</strong>}
+              />
+            ) : (
+              <Trans
+                i18nKey="approvalsRules:approver_role"
+                components={<strong>0</strong>}
+              />
+            )}
+          </div>
           <Box horizontal position="relative" align="flex-start">
             {!readOnly && grip}
-            {stepBall}
+            <StepBallComponent number={index + 1} />
             <NumberChooser
               style={styles.fixedHeight}
               value={rule.quorum}
@@ -281,8 +294,8 @@ const Grip = SortableHandle(styled(Box).attrs({
 
 const StepBallContainer = styled.div`
   position: absolute;
-  top: 20px;
-  left: -21px; //yep
+  top: -32px;
+  left: -25px; //yep yep
   display: flex;
   align-items: center;
   ${StepBall} {
@@ -339,9 +352,9 @@ const grip = (
   </Grip>
 );
 
-const stepBall = (
+const StepBallComponent = ({ number }: { number?: number }) => (
   <StepBallContainer>
-    <StepBall />
+    <StepBall>{number}</StepBall>
   </StepBallContainer>
 );
 
