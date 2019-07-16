@@ -11,6 +11,7 @@ import Text from "components/base/Text";
 import type { User } from "data/types";
 import colors from "shared/colors";
 import { createAndApprove } from "device/interactions/hsmFlows";
+import { useMe } from "components/UserContextProvider";
 
 import { FetchEntityHistory } from "components/EntityHistory";
 import UserDetailsOverview from "./UD-Overview";
@@ -23,7 +24,9 @@ type Props = {
 
 function UserDetails(props: Props) {
   const { user, close } = props;
-  const revokeButton = (
+  const me = useMe();
+  const isActuallyMyself = user.id === me.id;
+  const revokeButton = isActuallyMyself ? null : (
     <ApproveRequestButton
       interactions={createAndApprove("PERSON")}
       onSuccess={close}
