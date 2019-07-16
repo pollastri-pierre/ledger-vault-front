@@ -9,6 +9,7 @@ import Box from "components/base/Box";
 import {
   AccountsWidget,
   QuorumWidget,
+  AssetsDistributionWidget,
   TotalBalanceWidget,
   RequestsWidget,
 } from "components/widgets";
@@ -27,6 +28,7 @@ function AdminDashboard(props: Props) {
       </Box>
       <Box flex={1} flow={20}>
         <TotalBalanceWidget />
+        <AssetsDistributionWidget nbMax={8} />
         <QuorumWidget history={history} location={location} />
         <AccountsWidget history={history} location={location} />
       </Box>

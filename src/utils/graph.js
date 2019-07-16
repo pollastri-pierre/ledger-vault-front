@@ -5,7 +5,7 @@ export function ensure(
     NODES,
     key,
   }: { onlyIf?: boolean, NODES: Object, key: string },
-  create,
+  create: Function,
 ) {
   if (!condition && NODES[key]) {
     remove(NODES, key);
@@ -18,11 +18,11 @@ export function ensure(
   }
 }
 
-export function remove(NODES, key) {
+export function remove(NODES: Object, key: string) {
   NODES[key].remove();
   NODES[key] = null;
 }
 
-export function append(NODES, key, node) {
+export function append(NODES: Object, key: string, node: Object) {
   NODES[key] = node;
 }
