@@ -4,12 +4,19 @@ import React from "react";
 import { Trans } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaCoins, FaWrench, FaTicketAlt, FaLink } from "react-icons/fa";
+import {
+  FaCoins,
+  FaWrench,
+  FaTicketAlt,
+  FaLink,
+  FaCheck,
+} from "react-icons/fa";
 import { getCryptoCurrencyById } from "@ledgerhq/live-common/lib/currencies";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import EntityStatus from "components/EntityStatus";
 import CounterValue from "components/CounterValue";
+import ApproverRole from "components/ApproverRole";
 import IconSend from "components/icons/Send";
 import { useMe } from "components/UserContextProvider";
 import IconReceive from "components/icons/Receive";
@@ -127,6 +134,17 @@ function AccountQuickInfoWidget(props: Props) {
               />
             </div>
           </InfoSquare>
+          {me.role === "OPERATOR" && (
+            <InfoSquare>
+              <Label align="center" horizontal flow={5}>
+                <FaCheck />
+                <span>Role</span>
+              </Label>
+              <div>
+                <ApproverRole account={account} />
+              </div>
+            </InfoSquare>
+          )}
           {account.contract_address && (
             <>
               <InfoSquare>

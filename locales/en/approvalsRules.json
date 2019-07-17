@@ -1,14 +1,19 @@
 {
+  "approval_flow": "Approval workflow",
   "approval": "1 approval from",
   "approval_plural": "{{count}} approvals from",
-  "firstStepLabel": "Transaction is created",
-  "lastStepLabel": "Transaction is broadcasted",
+  "authorizedLabel": "Transaction authorized",
+  "lastStepLabel": "Transaction broadcasted",
   "addApproval": "Add approval step",
+  "creator_role": "<0>Create</0> and <0>Approve</0> the transaction",
+  "approver_role": "<0>Approve</0> the transaction",
   "approvalsFrom": "approvals from",
   "approvalsFromNb": "{{nb}} Operator selected",
   "approvalsFromNb_plural": "{{nb}} Operators selected",
   "approvalsFromNbGroup": "{{nb}} Operator in the selected group",
   "approvalsFromNbGroup_plural": "{{nb}} Operators in the selected group",
   "selectPlaceholder": "Select a group or Operators",
-  "invalidRule": "No Operators or group selected. This step will be ignored."
+  "invalidRule": "No Operators or group selected. This step will be ignored.",
+  "role_creator": "creator & approver",
+  "role_approver": "approver"
 }

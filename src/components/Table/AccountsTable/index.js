@@ -4,18 +4,20 @@ import React, { PureComponent } from "react";
 import MUITableBody from "@material-ui/core/TableBody";
 import type { ObjectParameters } from "query-string";
 
+import { withMe } from "components/UserContextProvider";
 import NoDataPlaceholder from "components/NoDataPlaceholder";
 
-import type { Account } from "data/types";
+import type { Account, User } from "data/types";
 import AccountRow from "./AccountRow";
 
 import { Table, TableHeader } from "../TableBase";
 import TableScroll from "../TableScroll";
-import { accountsTableDefault } from "./tableDefinitions";
+import { accountsTableDefault, roleColumn } from "./tableDefinitions";
 import type { TableDefinition } from "../types";
 
 type Props = {
   data: Account[],
+  me: User,
   customTableDef?: TableDefinition,
   onSortChange?: (string, ?string) => void,
   queryParams?: ObjectParameters,
@@ -30,8 +32,13 @@ class AccountsTable extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const isOperator = props.me.role === "OPERATOR";
+
     this.state = {
-      tableDefinition: props.customTableDef || accountsTableDefault,
+      tableDefinition:
+        props.customTableDef || isOperator
+          ? [...accountsTableDefault, roleColumn]
+          : accountsTableDefault,
     };
   }
 
@@ -71,4 +78,4 @@ class AccountsTable extends PureComponent<Props, State> {
   }
 }
 
-export default AccountsTable;
+export default withMe(AccountsTable);
