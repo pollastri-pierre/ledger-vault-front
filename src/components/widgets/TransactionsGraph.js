@@ -14,6 +14,7 @@ import { getCurrencyLikeUnit } from "components/CurrencyAccountValue";
 import { currencyUnitValueFormat } from "components/CurrencyUnitValue";
 import { SoftCard } from "components/base/Card";
 import type { Transaction, Account } from "data/types";
+import { ensure } from "utils/graph";
 import Widget, { connectWidget } from "./Widget";
 
 type Props = {
@@ -257,31 +258,4 @@ function styleAxis(node, noPath) {
   }
   node.selectAll("text").attr("fill", colors.textLight);
   node.selectAll("text").style("font-size", "12px");
-}
-
-function ensure(
-  {
-    onlyIf: condition = true,
-    NODES,
-    key,
-  }: { onlyIf?: boolean, NODES: Object, key: string },
-  create,
-) {
-  if (!condition && NODES[key]) {
-    remove(NODES, key);
-  }
-  if (condition && NODES[key]) {
-    remove(NODES, key);
-  }
-  if (condition && !NODES[key]) {
-    append(NODES, key, create());
-  }
-}
-function remove(NODES, key) {
-  NODES[key].remove();
-  NODES[key] = null;
-}
-
-function append(NODES, key, node) {
-  NODES[key] = node;
 }
