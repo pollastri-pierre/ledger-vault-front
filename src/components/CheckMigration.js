@@ -8,7 +8,7 @@ import { FaHourglassHalf, FaCheck, FaArrowRight } from "react-icons/fa";
 import colors from "shared/colors";
 import AccountsToMigrateQuery from "api/queries/AccountsToMigrateQuery";
 import OperatorsForAccountCreationQuery from "api/queries/OperatorsForAccountCreationQuery";
-import GroupsQuery from "api/queries/GroupsQuery";
+import GroupsForAccountCreationQuery from "api/queries/GroupsForAccountCreationQuery";
 import connectData from "restlay/connectData";
 import { createAndApprove } from "device/interactions/hsmFlows";
 import type { User, Account, Group } from "data/types";
@@ -195,6 +195,6 @@ export default connectData(CheckMigration, {
   queries: {
     accountsToMigrate: AccountsToMigrateQuery,
     allUsers: OperatorsForAccountCreationQuery,
-    allGroups: GroupsQuery,
+    allGroups: GroupsForAccountCreationQuery,
   },
 });
