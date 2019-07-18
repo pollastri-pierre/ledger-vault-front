@@ -14,6 +14,6 @@
   "approvalsFromNbGroup_plural": "{{nb}} Operators in the selected group",
   "selectPlaceholder": "Select a group or Operators",
   "invalidRule": "No Operators or group selected. This step will be ignored.",
-  "role_creator": "creator & approver",
+  "role_creator": "Create & Approve",
   "role_approver": "approver"
 }
