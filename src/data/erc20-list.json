@@ -442,6 +442,15 @@
       "3045022100d03d03b8ddb69bd1cf9b5e5a70d8af3486486c2e34ea5da92ec02c792edcaaf202207fcef2d9216e75a6d284e38d446fd060141ed27b19af1aac570a2dd0bc3bb943"
   },
   {
+    "ticker": "WDNT",
+    "name": "WINDBELLOWS",
+    "blockchain_name": "foundation",
+    "contract_address": "0x183433cbb5F4B52afF1509f7864ca2F76e4D8535",
+    "decimals": 18,
+    "signature":
+      "30440220514aa8a89cde3434bf217e0f3833dee3f0553249eb48e7e8918a33518214c50c02207d5bdb92c098fdb2ff01d1e6b73bd34c285e9a1c928622e287021e4f4238a0c4"
+  },
+  {
     "ticker": "WILD",
     "name": "WILD Token",
     "blockchain_name": "foundation",
@@ -910,6 +919,15 @@
       "3045022100b2e358726e4e6a6752cf344017c0e9d45b9a904120758d45f61b2804f9ad5299022015161ef28d8c4481bd9432c13562def9cce688bcfec896ef244c9a213f106cdd"
   },
   {
+    "ticker": "USD+",
+    "name": "USD+ Dukascash",
+    "blockchain_name": "foundation",
+    "contract_address": "0x3ECF807b8A10E053d5273312f2384e5d59f81057",
+    "decimals": 2,
+    "signature":
+      "30440220386de02b4251003068d7e9c3de0ade62c901884e2f1a8dc027af4484dbf662e702202657d0d8a6bf1696e2d0d624f85b3dd1b332597ed904cfe22099fa2fe7f1288d"
+  },
+  {
     "ticker": "URB",
     "name": "Urbit Data",
     "blockchain_name": "foundation",
@@ -1045,6 +1063,15 @@
       "304502210092da80ef165cb21ab0f7d8d8884cdc7cd404465f4c535bbfec9350a51299bca802206a528a721e6829db886112e6bd07eb6e6c577819f4c2656bec591eaf444a023a"
   },
   {
+    "ticker": "UOS",
+    "name": "Ultra Token",
+    "blockchain_name": "foundation",
+    "contract_address": "0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c",
+    "decimals": 4,
+    "signature":
+      "30440220176917b245a6e63a668299fa2bc6c4a588a54db6377d0f2761a2adcb9a77cc16022079d9ffd0bab8b9625ed78e65136f730e320338f9ef60f28eaec4d17dfaa52e4d"
+  },
+  {
     "ticker": "UCN",
     "name": "UChain Token",
     "blockchain_name": "foundation",
@@ -1153,6 +1180,24 @@
       "30440220793cabf5a84ff4eb548e5dc52c4fdeb4dde7aba5e057608fa09ff0ed74ebbe6c02206c068560de40324fc599069e05fb5b400be34e81269b459db1f7639d8396efaf"
   },
   {
+    "ticker": "THKD",
+    "name": "TrueHKD",
+    "blockchain_name": "foundation",
+    "contract_address": "0x0000852600CEB001E08e00bC008be620d60031F2",
+    "decimals": 18,
+    "signature":
+      "3044022000b2e5e9ea0e480400f2679f9ac553183c9f73a7f3679fd046e22d53e4720aa702206e68352630e5321256d7c97a15372003bd6ec4e0cded1c9eb7794778759e36ce"
+  },
+  {
+    "ticker": "TGBP",
+    "name": "TrueGBP",
+    "blockchain_name": "foundation",
+    "contract_address": "0x00000000441378008EA67F4284A57932B1c000a5",
+    "decimals": 18,
+    "signature":
+      "3045022100de7cf86606aa7842be11ae7c6492dbe1c0fe90479733c9951eb10347268469ed02201013f8470cd09bcb89f8f2245ea52f5869e92e4c10b0d7085a6f339e900fe497"
+  },
+  {
     "ticker": "TFL",
     "name": "TrueFlip",
     "blockchain_name": "foundation",
@@ -1160,6 +1205,24 @@
     "decimals": 8,
     "signature":
       "30450221009bbf3a6c914a7dc5bf580d324dddd1a2bf0dcb747dee59739304f06796bc715b022066ee3140636d30d0eec8baf2ddfc38f87325d341c350cb0f6cffd1733164eaf2"
+  },
+  {
+    "ticker": "TCAD",
+    "name": "TrueCAD",
+    "blockchain_name": "foundation",
+    "contract_address": "0x00000100F2A2bd000715001920eB70D229700085",
+    "decimals": 18,
+    "signature":
+      "304402207582e1c382a333d9e99d4501003f50468841c37bc81847042ca62dabb830c57b02200987dd9fe511d9d99c4d2faaa383781a59409421be35e291b81abccac0327fd1"
+  },
+  {
+    "ticker": "TAUD",
+    "name": "TrueAUD",
+    "blockchain_name": "foundation",
+    "contract_address": "0x00006100F7090010005F1bd7aE6122c3C2CF0090",
+    "decimals": 18,
+    "signature":
+      "304402200bea015bfa6ccd047e1b9decd7d6525d40c703eb2e5442c28de1dc69feac793102207120c37aac1beb86e569e4780b7afde7ff99ad66739e262b4c554add0f50c20d"
   },
   {
     "ticker": "TRST",
@@ -1349,6 +1412,15 @@
     "decimals": 18,
     "signature":
       "3044022061323206caee2cbbb8e89629de00cfeaa608263b31f356ea555b2767e24e88210220011273fc304b898e972d2a9abae93c409565ff43860c925c886cf66b94b0d9dc"
+  },
+  {
+    "ticker": "TIOx",
+    "name": "Trade Token X",
+    "blockchain_name": "foundation",
+    "contract_address": "0xd947b0ceab2A8885866B9A04A06AE99DE852a3d4",
+    "decimals": 18,
+    "signature":
+      "304402202ad0af829da31e34dc6b5d944d281998d54d87e469619b3be58b5830af320766022073a29b579898611709d9390b9ef75f141c223b4853ff96d1c1d832b51c6fecd3"
   },
   {
     "ticker": "TIO",
@@ -2296,6 +2368,15 @@
       "3045022100c9b95cfe41c1b55234e08a087b78f35a47c0dc972b93c94b36ca08b3456f96c4022034ca0aba810fa37eda74ad3fa36cf9e17b6012446b864c4fcf1808680ee8f5d4"
   },
   {
+    "ticker": "SBA",
+    "name": "simplyBrand",
+    "blockchain_name": "foundation",
+    "contract_address": "0xECB8F588EAf5A8ce9d964b0acece5D954E130e2f",
+    "decimals": 18,
+    "signature":
+      "304402207be8b4d095b01fc08ba44cd8829a4c540730074d45e9b5b0c0211a4ef968babd022066d388de17fbf74401ee54f9337caf1d22aa6506f7d5347afb67347981364a4f"
+  },
+  {
     "ticker": "OST",
     "name": "Simple Token 'OST'",
     "blockchain_name": "foundation",
@@ -3023,15 +3104,6 @@
     "decimals": 18,
     "signature":
       "3045022100b023f22ce80a3d51056f5890a97a2faf2fde215811c84a5a4533030c6c0ab0ec02203767258ef393d1194e74bc099929e0e37c16aabcdb66914e35f95bd9da46d6a6"
-  },
-  {
-    "ticker": "RDN",
-    "name": "Radien Network",
-    "blockchain_name": "foundation",
-    "contract_address": "0x255Aa6DF07540Cb5d3d297f0D0D4D84cb52bc8e6",
-    "decimals": 18,
-    "signature":
-      "304502210085cb77a3ef969f6a29ba426192f3d18eb48f518ad19cb9c5fa421b68eaca16ec022073c97271adeb5bb695ad9c9129d11380ae491560ea5918b35e817c437519ca9e"
   },
   {
     "ticker": "QVT",
@@ -4852,6 +4924,15 @@
       "30440220323405279551f27a0aa436f885e130d3d84e2371e0a0f36c59158491a5f901f6022065b264c4714f47dab0b4f1d39056ea4c78d167e9c6364decd88688c0736f2f3d"
   },
   {
+    "ticker": "MATIC",
+    "name": "Matic",
+    "blockchain_name": "foundation",
+    "contract_address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    "decimals": 18,
+    "signature":
+      "3044022000d8fa7b6e409a0dc55723ba975179e7d1181d1fc78fccbece4e5a264814366a02203927d84a710c8892d02f7386ad20147c75fba4bdd486b0256ecd005770a7ca5b"
+  },
+  {
     "ticker": "MUSD",
     "name": "MASTER USD",
     "blockchain_name": "foundation",
@@ -5129,6 +5210,15 @@
     "decimals": 18,
     "signature":
       "3045022100a25eefa2815324d7a30b8809cde7f7cf65d3b5169e956dd7ca1c3a66b68c2f8602202c7ea49a0cd812546d0b19da3c8beb6211576846f0b0c06b73f38fdf060bca80"
+  },
+  {
+    "ticker": "LPT",
+    "name": "Livepeer",
+    "blockchain_name": "foundation",
+    "contract_address": "0x58b6A8A3302369DAEc383334672404Ee733aB239",
+    "decimals": 18,
+    "signature":
+      "304402204e4fcc368035cc73a7de6d5cb8deb6204a005671db1716846676796cb9b068b0022069c54f0be2ad1802e3bdaf14f399341a85d5fe5c17b9bfa2305a7dd6213527f2"
   },
   {
     "ticker": "LIVE",
@@ -5898,15 +5988,6 @@
   {
     "ticker": "RLC",
     "name": "iExec RLC",
-    "blockchain_name": "foundation",
-    "contract_address": "0x607F4C5BB672230e8672085532f7e901544a7375",
-    "decimals": 9,
-    "signature":
-      "3045022100ee4d734dac8344f2af9859f6cbcd3e1bb9c65647e72f78a7ad7bd52c4eb8a83e02206338afff13497ea65b05fabcd51a791f98125c199e454740ecb2a860d7bd5c34"
-  },
-  {
-    "ticker": "RLC",
-    "name": "IEx.ec",
     "blockchain_name": "foundation",
     "contract_address": "0x607F4C5BB672230e8672085532f7e901544a7375",
     "decimals": 9,
@@ -7343,6 +7424,15 @@
     "decimals": 6,
     "signature":
       "3044022077361abd4f4fc21af860838a3988b8e4e1210539ca9f2fb06064ddbc38b4aba5022054b981ae9aeed06a7dea9b709ea321beb2c8c3ca98141ba2ec685aaae4e67b6a"
+  },
+  {
+    "ticker": "EUR+",
+    "name": "EUR+ Dukascash",
+    "blockchain_name": "foundation",
+    "contract_address": "0x57daE83653Dd99E876ff1f11B970c686b90A9A2e",
+    "decimals": 2,
+    "signature":
+      "304502210096f336b8e9b882e1bd4411fcea043dba06ce2d4e799c388a721c60898c925358022021e9b26d9d1b7f6b0e695a62ccd54ea57b47aa984c8b4fc6f837119c4856cab5"
   },
   {
     "ticker": "EPX",
@@ -9235,6 +9325,15 @@
       "3044022039caefbf69fdad842e6139d34b98339517ed16594f26e0d24cff4dd0872cfe9702200c8fcbf8a27a03d2f5b6e0ee7b04b1841da9bd3025e8a4f8b8930534a6ebdc2a"
   },
   {
+    "ticker": "CLM",
+    "name": "Claymore",
+    "blockchain_name": "foundation",
+    "contract_address": "0x0ED8343dfdEE32E38b4c4cE15a3b00A59E90F3dB",
+    "decimals": 18,
+    "signature":
+      "304402201032afdb7869910004cf5b10d468da210494cc7c2a0945a367467aad2c657bba02200935434b3964067813ce79740e5ae4b6616e9fa005e326589e09d90f75d95421"
+  },
+  {
     "ticker": "XCL",
     "name": "CLASSIE",
     "blockchain_name": "foundation",
@@ -9289,6 +9388,15 @@
       "304402202e5a292209adeb52cbe5e88fc401a7c0b042a030f2d9c96d4ef81a6ef3fce21702205c8079361926ca8f6935d6c9474641121ec1983edb5627f9edd154ce394d2adc"
   },
   {
+    "ticker": "CHF+",
+    "name": "CHF+ Dukascash",
+    "blockchain_name": "foundation",
+    "contract_address": "0x18aA37548ADc1826411b5da2AA026E7E7af9Ca4f",
+    "decimals": 2,
+    "signature":
+      "30450221009ed8380ffa5192c0789cdebe7887eba174097c78a09d9b89bbc83d52ba6e4eca02200583028e2bf467fec77b8425164212e2b39d235a00da8b8a06a51fb162693c78"
+  },
+  {
     "ticker": "CAG",
     "name": "Change Bank",
     "blockchain_name": "foundation",
@@ -9341,6 +9449,15 @@
     "decimals": 18,
     "signature":
       "3045022100aef4f37b817a8b3fc38df8d7171c50ff6a3712b3006c867a7ffec20ef87bf94302203e44149dfc5df99868e057309a8c8cab5a153c60319bde92c811cfcf7815ed6e"
+  },
+  {
+    "ticker": "CELR",
+    "name": "Celer",
+    "blockchain_name": "foundation",
+    "contract_address": "0x4F9254C83EB525f9FCf346490bbb3ed28a81C667",
+    "decimals": 18,
+    "signature":
+      "3045022100fea88eb097c0fb34df915c18184942f0e9efc9c9b653e51658f0e754a7e1139e02203bbfaf56feab6c89a07bafceebd9d25332dee2c5d6985a54e5464558c6951b5a"
   },
   {
     "ticker": "CEEK",
@@ -10808,6 +10925,15 @@
     "decimals": 18,
     "signature":
       "3044022021c0186e10ecc325deb4941e6edbe5d36638cf96cda4b08469dea57b508a126f02200f035d3d049ff87fbc3b09dccb897675b6f49c17e856bad092418f78484bfd5b"
+  },
+  {
+    "ticker": "AMPL",
+    "name": "Ampleforth",
+    "blockchain_name": "foundation",
+    "contract_address": "0xD46bA6D942050d489DBd938a2C909A5d5039A161",
+    "decimals": 9,
+    "signature":
+      "30440220682be221e5546fec4cf8123bc3cd7c690aa1b6207216b58ad7f7e6a1fa2c4f910220379206bcccbb803705c7a1d18ce10c9f2a61062da94ae0834d17d0c77d7e1824"
   },
   {
     "ticker": "AMN",
