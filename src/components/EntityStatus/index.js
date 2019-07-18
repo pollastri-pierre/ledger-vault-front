@@ -11,13 +11,17 @@ import { hasUserApprovedRequest, isUserInCurrentStep } from "utils/request";
 type Props = {
   status: string,
   request: ?Request,
+  useRequestStatus?: boolean,
   me: User,
   size?: "big" | "normal",
 };
 
+// gate has a weird status management
+const APPROVED_LIKE_STATUS = ["SUBMITTED", "ACTIVE"];
+
 class EntityStatus extends PureComponent<Props> {
   render() {
-    const { status, me, request, size } = this.props;
+    const { status, me, request, size, useRequestStatus } = this.props;
 
     if (!request) {
       return <Status status={status} size={size} />;
@@ -26,6 +30,9 @@ class EntityStatus extends PureComponent<Props> {
     const isRequestBlocked = request.status === "BLOCKED";
     const shouldDisplayBlockedStatus = isRequestBlocked && status !== "ACTIVE";
 
+    if (useRequestStatus && APPROVED_LIKE_STATUS.includes(request.status)) {
+      return <Status size={size} status="APPROVED" />;
+    }
     if (!request.approvals && !shouldDisplayBlockedStatus) {
       return (
         <Status size={size} status={remapStatus(status, request.target_type)} />
