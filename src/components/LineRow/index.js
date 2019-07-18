@@ -49,7 +49,12 @@ class LineRow extends Component<{
           )}
         </Box>
         {children && (
-          <Box ellipsis={!noOverflowHidden} style={styles.value}>
+          <Box
+            ellipsis={!noOverflowHidden}
+            style={
+              vertical ? { ...styles.value, textAlign: "left" } : styles.value
+            }
+          >
             {children}
           </Box>
         )}
