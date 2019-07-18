@@ -52,6 +52,7 @@ const itemIconsByType = {
 const stepIconsByType = {
   CREATED: <FaPlus color={colors.ocean} />,
   ACTIVED: <FaFlagCheckered color={colors.ocean} />,
+  BLOCKED: <MdClear color={colors.grenade} />,
   APPROVED: <FaCheck color={colors.ocean} />,
   ABORTED: <MdClear color={colors.grenade} />,
   REVOKED: <MdClear color={colors.grenade} />,
