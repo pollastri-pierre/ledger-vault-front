@@ -30,6 +30,7 @@ type Props = {
   // set & get approvals rules
   rules: Array<?ApprovalsRule>,
   readOnly?: boolean,
+  noTitle?: boolean,
   onChange?: (Array<?ApprovalsRule>) => void,
 
   // used to fill select
@@ -110,7 +111,7 @@ class ApprovalsRules extends PureComponent<Props> {
   };
 
   render() {
-    const { rules, maxRules, readOnly } = this.props;
+    const { rules, maxRules, readOnly, noTitle } = this.props;
 
     // used to filter options in cascade
     // put in `this` to retrieve it in this.Rule
@@ -140,7 +141,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
     return (
       <Box flow={10}>
-        <Text large i18nKey="approvalsRules:approval_flow" />
+        {!noTitle && <Text large i18nKey="approvalsRules:approval_flow" />}
         <Box horizontal style={styles.container}>
           {stepsLine}
           <Box grow pt={20}>

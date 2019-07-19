@@ -84,7 +84,7 @@ const Rows = ({ account }: { account: Account }) => {
           label={<Trans i18nKey="entityModal:tabs.transactionRules" />}
           vertical
         >
-          <AccountTransactionRules account={account} />
+          <AccountTransactionRules account={account} noTitle />
         </LineRow>
       )}
     </div>
