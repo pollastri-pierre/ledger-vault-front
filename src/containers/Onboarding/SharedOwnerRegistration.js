@@ -2,7 +2,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import type { Translate, Organization } from "data/types";
+import { NetworkError } from "network";
+import type { Translate, Organization, GateError } from "data/types";
 import DeviceInteraction from "components/DeviceInteraction";
 import { onboardingRegisterFlow } from "device/interactions/hsmFlows";
 import Modal from "components/base/Modal";
@@ -12,7 +13,8 @@ import Box from "components/base/Box";
 import InfoBox from "components/base/InfoBox";
 import Text from "components/base/Text";
 import DialogButton from "components/buttons/DialogButton";
-import { addSharedOwner } from "redux/modules/onboarding";
+import { addSharedOwner, getState } from "redux/modules/onboarding";
+import TriggerErrorNotification from "components/TriggerErrorNotification";
 import type { Onboarding } from "redux/modules/onboarding";
 import Footer from "./Footer";
 
@@ -21,10 +23,12 @@ type Props = {
   organization: Organization,
   onboarding: Onboarding,
   onAddSharedOwner: Function,
+  onGetState: Function,
 };
 
 type State = {
   registering: boolean,
+  error?: Error | GateError | typeof NetworkError,
 };
 class SharedOwnerRegistration extends Component<Props, State> {
   state = {
@@ -33,6 +37,13 @@ class SharedOwnerRegistration extends Component<Props, State> {
 
   onToggleRegisteringModal = () => {
     this.setState(state => ({ registering: !state.registering }));
+  };
+
+  onError = (e: Error | GateError | typeof NetworkError) => {
+    this.onToggleRegisteringModal();
+    this.setState({ error: e });
+    // we refresh the state because gate might wipe if hsm exception
+    this.props.onGetState();
   };
 
   add = data => {
@@ -48,6 +59,9 @@ class SharedOwnerRegistration extends Component<Props, State> {
     }
     return (
       <div>
+        {this.state.error && (
+          <TriggerErrorNotification error={this.state.error} />
+        )}
         <Modal isOpened={registering} onClose={this.onToggleRegisteringModal}>
           <Box flow={40} p={30} pb={80} width={500}>
             <Text small uppercase>
@@ -57,7 +71,7 @@ class SharedOwnerRegistration extends Component<Props, State> {
               <DeviceInteraction
                 onSuccess={this.add}
                 interactions={onboardingRegisterFlow}
-                onError={this.onToggleRegisteringModal}
+                onError={this.onError}
                 additionalFields={{
                   organization,
                   username: `Shared-Owner ${
@@ -148,6 +162,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch: *) => ({
   onAddSharedOwner: data => dispatch(addSharedOwner(data)),
+  onGetState: () => dispatch(getState()),
 });
 export default connect(
   mapStateToProps,
