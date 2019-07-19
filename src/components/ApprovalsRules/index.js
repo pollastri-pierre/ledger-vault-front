@@ -4,8 +4,9 @@ import React, { PureComponent } from "react";
 import { Trans } from "react-i18next";
 import styled from "styled-components";
 import Button from "@material-ui/core/Button";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaCheck, FaRegPaperPlane } from "react-icons/fa";
 import { SortableContainer, arrayMove } from "react-sortable-hoc";
+import colors from "shared/colors";
 
 import type { User, Group } from "data/types";
 
@@ -29,7 +30,8 @@ type Props = {
   // set & get approvals rules
   rules: Array<?ApprovalsRule>,
   readOnly?: boolean,
-  onChange: (Array<?ApprovalsRule>) => void,
+  noTitle?: boolean,
+  onChange?: (Array<?ApprovalsRule>) => void,
 
   // used to fill select
   users: User[],
@@ -53,6 +55,7 @@ class ApprovalsRules extends PureComponent<Props> {
 
   addEmptyRule = () => {
     const { onChange, rules } = this.props;
+    if (!onChange) return;
     const rule = { quorum: 1, users: [], group_id: null };
     onChange([...rules, rule]);
   };
@@ -65,6 +68,7 @@ class ApprovalsRules extends PureComponent<Props> {
     newIndex: number,
   }) => {
     const { rules, onChange } = this.props;
+    if (!onChange) return;
     const reordered = arrayMove([...rules], oldIndex, newIndex);
     onChange(reordered);
   };
@@ -75,12 +79,16 @@ class ApprovalsRules extends PureComponent<Props> {
       if (!newRule) return;
       const newRules = [...rules];
       newRules.splice(rules.indexOf(rule), 1, newRule).filter(Boolean);
-      onChange(newRules);
+      if (onChange) {
+        onChange(newRules);
+      }
     };
     const handleRemove = () => {
       const newRules = [...rules];
       newRules.splice(i, 1);
-      onChange(newRules);
+      if (onChange) {
+        onChange(newRules);
+      }
     };
     return (
       <Rule
@@ -103,7 +111,7 @@ class ApprovalsRules extends PureComponent<Props> {
   };
 
   render() {
-    const { rules, maxRules, readOnly } = this.props;
+    const { rules, maxRules, readOnly, noTitle } = this.props;
 
     // used to filter options in cascade
     // put in `this` to retrieve it in this.Rule
@@ -132,11 +140,14 @@ class ApprovalsRules extends PureComponent<Props> {
     );
 
     return (
-      <Box horizontal style={styles.container}>
-        {stepsLine}
-        <Box grow pt={50}>
-          {rulesList}
-          {footer}
+      <Box flow={10}>
+        {!noTitle && <Text large i18nKey="approvalsRules:approval_flow" />}
+        <Box horizontal style={styles.container}>
+          {stepsLine}
+          <Box grow pt={20}>
+            {rulesList}
+            {footer}
+          </Box>
         </Box>
       </Box>
     );
@@ -146,9 +157,10 @@ class ApprovalsRules extends PureComponent<Props> {
 const styles = {
   container: {
     maxWidth: 600,
+    paddingBottom: 40,
   },
   stepsLine: {
-    width: 30,
+    width: 40,
   },
   footer: {
     height: 40,
@@ -177,9 +189,9 @@ const AddButtonComponent = styled(Button).attrs({
 
 const Bar = styled.div`
   position: absolute;
-  top: 20px;
-  bottom: 20px;
-  left: 10px;
+  top: 30px;
+  bottom: -10px;
+  left: 15px;
   width: 4px;
   background: #eee;
   transform: translateX(-2px);
@@ -187,17 +199,16 @@ const Bar = styled.div`
 
 const StepBallLabel = styled.div`
   position: absolute;
-  left: 0;
-  top: ${p => (p.top ? "10px" : "unset")};
-  bottom: ${p => (p.bot ? "10px" : "unset")};
+  left: 0px;
+  bottom: ${p => (p.bot ? "0px" : p.botter ? "-40px" : "unset")};
   color: #aaa;
   user-select: none;
 
   // sounds hacky. but does the job, used to place the label.
   > div:nth-child(2) {
     position: absolute;
-    top: 0;
-    left: 30px;
+    top: 3px;
+    left: 40px;
     white-space: nowrap;
   }
 `;
@@ -212,12 +223,20 @@ const AddButton = props => (
 const stepsLine = (
   <Box style={styles.stepsLine} noShrink position="relative">
     <Bar />
-    <StepBallLabel top>
-      <StepBall />
-      <Text small uppercase i18nKey="approvalsRules:firstStepLabel" />
-    </StepBallLabel>
     <StepBallLabel bot>
-      <StepBall />
+      <StepBall>
+        <FaCheck size={12} color={colors.green} />
+      </StepBall>
+      <Text small uppercase i18nKey="approvalsRules:authorizedLabel" />
+    </StepBallLabel>
+    <StepBallLabel botter>
+      <StepBall>
+        <FaRegPaperPlane
+          size={12}
+          color={colors.ocean}
+          style={{ marginRight: 2 }}
+        />
+      </StepBall>
       <Text small uppercase i18nKey="approvalsRules:lastStepLabel" />
     </StepBallLabel>
   </Box>

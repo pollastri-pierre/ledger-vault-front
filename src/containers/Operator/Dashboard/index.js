@@ -8,7 +8,6 @@ import ResponsiveContainer from "components/base/ResponsiveContainer";
 import Box from "components/base/Box";
 import {
   AccountsWidget,
-  ActivityWidget,
   TotalBalanceWidget,
   RequestsWidget,
 } from "components/widgets";
@@ -24,7 +23,6 @@ const OperatorDashboard = (props: Props) => {
     <ResponsiveContainer style={{ alignItems: "stretch" }}>
       <Box flex={1} flow={20}>
         <RequestsWidget history={history} />
-        <ActivityWidget />
       </Box>
       <Box flex={1} flow={20}>
         <TotalBalanceWidget />
