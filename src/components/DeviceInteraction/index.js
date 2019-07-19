@@ -57,9 +57,10 @@ class DeviceInteraction extends PureComponent<Props, State> {
     } = this.props;
 
     // always checking app version first unless opt-out by the consumer component
-    const interactionsWithCheckVersion = noCheckVersion
-      ? interactions
-      : [checkVersion, ...interactions];
+    const interactionsWithCheckVersion =
+      noCheckVersion || localStorage.getItem("NO_CHECK_VERSION")
+        ? interactions
+        : [checkVersion, ...interactions];
 
     const responses = { ...additionalFields, restlay };
     if (
