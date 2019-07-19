@@ -45,7 +45,11 @@ export const isRequestPending = (request: Request) =>
   request.status !== "BLOCKED" &&
   request.status !== "ABORTED";
 
-const EDIT_REQUEST_TYPE: RequestActivityType[] = ["EDIT_ACCOUNT", "EDIT_GROUP"];
+const EDIT_REQUEST_TYPE: RequestActivityType[] = [
+  "EDIT_ACCOUNT",
+  "EDIT_GROUP",
+  "MIGRATE_ACCOUNT",
+];
 
 export const isEditRequest = (request: Request) =>
   EDIT_REQUEST_TYPE.indexOf(request.type) > -1;
