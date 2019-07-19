@@ -69,9 +69,7 @@ function AccountQuickInfoWidget(props: Props) {
           </Button>
         </Link>
       </Box>
-    ) : (
-      "Quick infos"
-    );
+    ) : null;
 
   return (
     <Widget title={title} grow position="relative">
